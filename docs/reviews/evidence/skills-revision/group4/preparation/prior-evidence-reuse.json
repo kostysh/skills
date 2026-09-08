@@ -1,0 +1,86 @@
+{
+  "implementation-discipline": {
+    "snapshot_path": "skills/implementation-discipline/docs/reviews/evidence/g1/final-review-snapshot.json",
+    "snapshot_sha256": "5c74d3ba9c4092b0c1eb869d070fbb1f526cae32f53cc657e70fd32b6a2742a9",
+    "prior_aggregate": "b773d8218c2bdc38057b51e2e082374ef68558355a640e5f430a6d5bd328f054",
+    "compared_non_docs_files": 5,
+    "matched": 5,
+    "differences": [],
+    "new_non_docs_files": [],
+    "report_path": "skills/implementation-discipline/docs/reviews/evidence/g1/final-audit.md",
+    "report_sha256": "842ccddf6113cdc07a5c8c96eb4536db784a2562616d3cd6766abf190b01a703",
+    "administrative_delta_path": "skills/implementation-discipline/docs/reviews/evidence/g1/administrative-delta.json"
+  },
+  "security-reviewer": {
+    "snapshot_path": "skills/security-reviewer/docs/reviews/evidence/g2/final-review-snapshot.json",
+    "snapshot_sha256": "9288ac0ba43d4d9357d9dd62e771e26103c4dfc1048dcb1882033fa7ac2378bc",
+    "prior_aggregate": "465e5fe27b8e365a850f7d58bf1a451bf9a28bf6d0118d858fb9f62ed3e57664",
+    "compared_non_docs_files": 17,
+    "matched": 17,
+    "differences": [],
+    "new_non_docs_files": [],
+    "report_path": "skills/security-reviewer/docs/reviews/evidence/g2/final-audit.md",
+    "report_sha256": "4344f3e18b68c85c7ac68031deeba31b0a9ad22bbb4451ddab999300d8d6c470",
+    "administrative_delta_path": "skills/security-reviewer/docs/reviews/evidence/g2/administrative-delta.json"
+  },
+  "git-engineer": {
+    "snapshot_path": "skills/git-engineer/docs/reviews/evidence/g2/final-review-snapshot.json",
+    "snapshot_sha256": "8655038ccdeeabaef32b8afb1526e9c730b58bb407ea69968c12f3e45a5db79a",
+    "prior_aggregate": "6a69d13932a376ca0415fc69ca1b1d5011c91f437a1f3f914d95191bd33e30ee",
+    "compared_non_docs_files": 6,
+    "matched": 6,
+    "differences": [],
+    "new_non_docs_files": [],
+    "report_path": "skills/git-engineer/docs/reviews/evidence/g2/final-audit.md",
+    "report_sha256": "7d0d4a670948373a794fa2ee39f2f8a0d52ee405149f3d73bcbb58e46fffcc5f",
+    "administrative_delta_path": "skills/git-engineer/docs/reviews/evidence/g2/administrative-delta.json"
+  },
+  "gh-utility": {
+    "snapshot_path": "skills/gh-utility/docs/reviews/evidence/g2/final-review-snapshot.json",
+    "snapshot_sha256": "4b148e9763100494473f33dad5732cc73e318c62986d9adecaef4fd8ca685f9f",
+    "prior_aggregate": "54831e89bfce7334d1fd7ef95d5c41df906a05363975566ecb735ec12950df1b",
+    "compared_non_docs_files": 28,
+    "matched": 28,
+    "differences": [],
+    "new_non_docs_files": [],
+    "report_path": "skills/gh-utility/docs/reviews/evidence/g2/final-audit.md",
+    "report_sha256": "880d7af460eafeabe3ef68f368b336aaab5e37f0a86e1f44a5f57e91e4a6d20a",
+    "administrative_delta_path": "skills/gh-utility/docs/reviews/evidence/g2/administrative-delta.json"
+  },
+  "architecture-engineer": {
+    "snapshot_path": "skills/architecture-engineer/docs/reviews/evidence/g3/final-review-snapshot.json",
+    "snapshot_sha256": "5af0404c644c5db2ac2c3ac025e773c70995cf7868eb6ba0064a02aa03847caf",
+    "prior_aggregate": null,
+    "compared_non_docs_files": 18,
+    "matched": 18,
+    "differences": [],
+    "new_non_docs_files": [],
+    "report_path": "skills/architecture-engineer/docs/reviews/evidence/g3/final-audit.md",
+    "report_sha256": "90d8a4a287dd34ac258bd3192480f0535e2c791a0ac7d5cdb64bbdfc315599f0",
+    "administrative_delta_path": "skills/architecture-engineer/docs/reviews/evidence/g3/administrative-delta.json"
+  },
+  "spec-engineer": {
+    "snapshot_path": "skills/spec-engineer/docs/reviews/evidence/g3/final-review-snapshot.json",
+    "snapshot_sha256": "8bceff0b42ff2bc476963915f4bae055b9c8bd1ef21c082d8281293175908fcb",
+    "prior_aggregate": null,
+    "compared_non_docs_files": 10,
+    "matched": 10,
+    "differences": [],
+    "new_non_docs_files": [],
+    "report_path": "skills/spec-engineer/docs/reviews/evidence/g3/final-audit.md",
+    "report_sha256": "ac3a5fd2e7a607696cded07c8cc68bbf155741539d8a98de13a971db13e08579",
+    "administrative_delta_path": "skills/spec-engineer/docs/reviews/evidence/g3/administrative-delta.json"
+  },
+  "delivery-planner": {
+    "snapshot_path": "skills/delivery-planner/docs/reviews/evidence/g3/final-review-snapshot.json",
+    "snapshot_sha256": "f88d55360990b15c0b097bd2e667826a2f1527aabbf688d07b9fdeb99f195efc",
+    "prior_aggregate": null,
+    "compared_non_docs_files": 10,
+    "matched": 10,
+    "differences": [],
+    "new_non_docs_files": [],
+    "report_path": "skills/delivery-planner/docs/reviews/evidence/g3/final-audit.md",
+    "report_sha256": "b7f648c739af73898354cd08a931befd9c21f66350304f1d33cb9211c4e8dca9",
+    "administrative_delta_path": "skills/delivery-planner/docs/reviews/evidence/g3/administrative-delta.json"
+  }
+}

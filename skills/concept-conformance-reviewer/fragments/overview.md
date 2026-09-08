@@ -45,7 +45,7 @@ Also return exactly one mode outcome:
 - design-time: use `design-ready` for a new capability, `invariant-ready` for capability preservation, or `substrate-ready` for `proceed as substrate`; each requires `assessable + low`, otherwise use `claim-not-ready` or `blocked`;
 - closure-time: use `capability-demonstrated`, `invariant-demonstrated`, or `substrate-demonstrated` at the matching claim boundary; each requires `assessable + low` and current boundary evidence, otherwise use `claim-not-demonstrated` or `blocked`.
 
-`Claim-not-ready` and `claim-not-demonstrated` refer only to the reviewed claim boundary. `Proceed` covers capability and invariant claims; `proceed as substrate` covers substrate. Design-time proceed authorizes work, not completion. Invariant and substrate outcomes never claim a new or owner capability.
+`Claim-not-ready` and `claim-not-demonstrated` refer only to the reviewed claim boundary. `Proceed` covers capability and invariant claims; `proceed as substrate` covers substrate. Design-time proceed establishes concept readiness, not permission to implement or publish. Preserve existing operator authorization and checkpoints; the review verdict neither grants new authority nor requires approval already given. Invariant and substrate outcomes never claim a new or owner capability.
 
 ### Output contract
 

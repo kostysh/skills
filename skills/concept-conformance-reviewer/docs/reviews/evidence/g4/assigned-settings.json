@@ -1,0 +1,159 @@
+{
+  "provenance": "Coordinator record of assigned spawn parameters and access limits. API readbacks do not expose initial prompts or actual runtime model metadata; do not claim independent observation of these settings. Each execution used a fresh spawn, no fork history or overrides; filesystem separation is instructional, not a hard sandbox.",
+  "runs": [
+    {
+      "agent": "g4_concept_trial_01a",
+      "fork_turns": "none",
+      "model_override": null,
+      "reasoning_override": null,
+      "task": "concept-cases/01/task.md",
+      "skill_root": "initial-providers/concept-conformance-reviewer/SKILL.md",
+      "permitted_inputs": [
+        "task.md",
+        "concept.md",
+        "spec.md"
+      ],
+      "output": "concept-runs/01-01/report.md",
+      "read_bound_chars": 8000,
+      "restrictions": "Only assigned task files and active skill; no history/rubric/neighbor outputs, source mutations, external actions, delegation"
+    },
+    {
+      "agent": "g4_concept_trial_01b",
+      "fork_turns": "none",
+      "model_override": null,
+      "reasoning_override": null,
+      "task": "concept-cases/01/task.md",
+      "skill_root": "concept-candidate-active/SKILL.md",
+      "permitted_inputs": [
+        "task.md",
+        "concept.md",
+        "spec.md"
+      ],
+      "output": "concept-runs/01-02/report.md",
+      "read_bound_chars": 8000,
+      "restrictions": "Only assigned task files and active skill; no history/rubric/neighbor outputs, source mutations, external actions, delegation"
+    },
+    {
+      "agent": "g4_concept_trial_02a",
+      "fork_turns": "none",
+      "model_override": null,
+      "reasoning_override": null,
+      "task": "concept-cases/02/task.md",
+      "skill_root": "initial-providers/concept-conformance-reviewer/SKILL.md",
+      "permitted_inputs": [
+        "task.md",
+        "plan.md"
+      ],
+      "output": "concept-runs/02-01/report.md",
+      "read_bound_chars": 8000,
+      "restrictions": "Only assigned task files and active skill; no history/rubric/neighbor outputs, source mutations, external actions, delegation"
+    },
+    {
+      "agent": "g4_concept_trial_02b",
+      "fork_turns": "none",
+      "model_override": null,
+      "reasoning_override": null,
+      "task": "concept-cases/02/task.md",
+      "skill_root": "concept-candidate-active/SKILL.md",
+      "permitted_inputs": [
+        "task.md",
+        "plan.md"
+      ],
+      "output": "concept-runs/02-02/report.md",
+      "read_bound_chars": 8000,
+      "restrictions": "Only assigned task files and active skill; no history/rubric/neighbor outputs, source mutations, external actions, delegation"
+    },
+    {
+      "agent": "g4_concept_trial_03a",
+      "fork_turns": "none",
+      "model_override": null,
+      "reasoning_override": null,
+      "task": "concept-cases/03/task.md",
+      "skill_root": "initial-providers/concept-conformance-reviewer/SKILL.md",
+      "permitted_inputs": [
+        "task.md",
+        "conversation.md",
+        "concept.md",
+        "spec.md"
+      ],
+      "output": "concept-runs/03-01/report.md",
+      "read_bound_chars": 8000,
+      "restrictions": "Only assigned task files and active skill; no history/rubric/neighbor outputs, source mutations, external actions, delegation"
+    },
+    {
+      "agent": "g4_concept_trial_03b",
+      "fork_turns": "none",
+      "model_override": null,
+      "reasoning_override": null,
+      "task": "concept-cases/03/task.md",
+      "skill_root": "concept-candidate-active/SKILL.md",
+      "permitted_inputs": [
+        "task.md",
+        "conversation.md",
+        "concept.md",
+        "spec.md"
+      ],
+      "output": "concept-runs/03-02/report.md",
+      "read_bound_chars": 8000,
+      "restrictions": "Only assigned task files and active skill; no history/rubric/neighbor outputs, source mutations, external actions, delegation"
+    },
+    {
+      "agent": "g4_concept_consumer_01",
+      "fork_turns": "none",
+      "model_override": null,
+      "reasoning_override": null,
+      "task": "concept-cases/01/consumer-task.md",
+      "skill_root": "initial-providers/spec-conformance-reviewer/SKILL.md",
+      "permitted_inputs": [
+        "concept-cases/01/concept.md",
+        "concept-cases/01/spec.md",
+        "concept-cases/01/implementation.py",
+        "concept-runs/01-01/report.md"
+      ],
+      "output": "concept-consumers/01/report.md",
+      "read_bound_chars": 8000,
+      "restrictions": "Active skill applicable references allowed; no execution/mutation of implementation, external actions, delegation, other outputs or rubric"
+    },
+    {
+      "agent": "g4_concept_consumer_02",
+      "fork_turns": "none",
+      "model_override": null,
+      "reasoning_override": null,
+      "task": "concept-cases/01/consumer-task.md",
+      "skill_root": "initial-providers/spec-conformance-reviewer/SKILL.md",
+      "permitted_inputs": [
+        "concept-cases/01/concept.md",
+        "concept-cases/01/spec.md",
+        "concept-cases/01/implementation.py",
+        "concept-runs/01-02/report.md"
+      ],
+      "output": "concept-consumers/02/report.md",
+      "read_bound_chars": 8000,
+      "restrictions": "Active skill applicable references allowed; no execution/mutation of implementation, external actions, delegation, other outputs or rubric"
+    },
+    {
+      "agent": "g4_concept_select_01",
+      "fork_turns": "none",
+      "model_override": null,
+      "reasoning_override": null,
+      "task": "concept-cases/selection/task.md",
+      "permitted_inputs": [
+        "concept-cases/selection/catalog.json"
+      ],
+      "output": "concept-selection-01.md",
+      "restrictions": "Only catalogue/task before selection; no skill bodies, other inputs, history, execution or delegation"
+    },
+    {
+      "agent": "g4_concept_select_02",
+      "fork_turns": "none",
+      "model_override": null,
+      "reasoning_override": null,
+      "task": "concept-cases/selection/task.md",
+      "permitted_inputs": [
+        "concept-cases/selection/catalog.json"
+      ],
+      "output": "concept-selection-02.md",
+      "restrictions": "Only catalogue/task before selection; no skill bodies, other inputs, history, execution or delegation"
+    }
+  ]
+}

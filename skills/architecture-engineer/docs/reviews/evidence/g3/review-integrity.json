@@ -1,0 +1,42 @@
+{
+  "source": {
+    "count": 29,
+    "equal": true,
+    "aggregate": "ee84d9d07c4a6d2e21fead82f6af9cf5f2aa1ed5b97cabcd46b629f5a192e7f1"
+  },
+  "emitted": {
+    "count": 25,
+    "equal": true,
+    "aggregate": "3aee9dfa934e6d688952513175a3945c407e6635686cf01ee82d4f8e8464ed21"
+  },
+  "active": {
+    "count": 14,
+    "equal": true,
+    "aggregate": "c7eee45bbf686a2a04b24d18a263d3b79977d97b78645e512ff426c21738cc82"
+  },
+  "live_source_equal": true,
+  "baseline_before_equal": true,
+  "baseline_active_equal": true,
+  "bindings": {
+    "consumer-02": true,
+    "consumer-01": true
+  },
+  "criteria_inputs_unchanged": true,
+  "providers_unchanged": {
+    "architecture-engineer": true,
+    "spec-engineer": true,
+    "implementation-discipline": true
+  },
+  "basis_unchanged": {
+    "docs/skill-standard.md": true,
+    "docs/plans/implementation-plan-20260907-2.md": true,
+    "skills/skill-reviewer/SKILL.md": true,
+    "skills/skill-reviewer/references/methodology.md": true,
+    "skills/skill-reviewer/references/forward-testing.md": true
+  },
+  "paired_inputs_equal": {
+    "a": true,
+    "b": true
+  },
+  "catalogues_equal": true
+}

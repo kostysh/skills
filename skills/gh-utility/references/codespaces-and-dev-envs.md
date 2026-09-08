@@ -29,7 +29,7 @@ gh codespace rebuild --codespace NAME
 gh codespace delete --codespace NAME
 ```
 
-Stop is medium risk; delete/rebuild is high risk because state may be lost. Ask first.
+Stop is medium risk; delete/rebuild is high risk because state may be lost. Apply the root [Authorization policy](../SKILL.md#authorization) to the exact Codespace and action.
 
 ### Logs
 

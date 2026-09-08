@@ -38,3 +38,7 @@
 - `docs/issues/*` contains proposals, bug reports, investigations, and implementation plans.
 - `docs/logs/*` contains non-normative implementation logs.
 - `docs/compile-report.md` is generated and non-normative.
+
+## Ревизия 2026-09-07
+
+- [logs/implementation-log-20260907-1.md](logs/implementation-log-20260907-1.md) — группа 1 принятой ревизии: authority и evidence. Новый журнал — source-only supporting record, не обязательная зависимость emitted-пакета.

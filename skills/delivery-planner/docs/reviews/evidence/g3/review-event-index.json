@@ -1,0 +1,724 @@
+[
+  {
+    "file": "g3_delivery_catalogue_01-readback.json",
+    "thread": "01a07d7d-31c0-7d62-aa5b-baec81061d17",
+    "page": {
+      "order": "newest_first",
+      "limit": 2,
+      "nextCursor": null,
+      "hasMore": false
+    },
+    "statuses": [
+      "completed"
+    ],
+    "events": [
+      {
+        "id": "exec-e17a55c4-084f-4827-b897-25e873aca1af",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-runs/catalogue-01/input/task.md /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-runs/catalogue-01/input/catalogue-queries.json /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-runs/catalogue-01/input/catalogue.json'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 3965
+      },
+      {
+        "id": "exec-25f89d3a-1bb8-44cd-8ad1-f92209454ab9",
+        "command": "/bin/bash -lc \"cat > /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-runs/catalogue-01/output/selection.md <<'EOF'\n# Выбор навыков по карточкам каталога\n\n| Запрос | Основной скил | Обоснование | Сопутствующий скил |\n| --- | --- | --- | --- |\n| Q1 | \"'`delivery-planner` | Принятые продуктовый объём, архитектура и спецификация позволяют перейти к небольшим исполнимым задачам, зависимостям и владельцам. Это декомпозиция и последовательность поставки функции. | `implementation-discipline` — для сохранения принятого объёма и соразмерных доказательств результатов. |\n| Q2 | `delivery-planner` | Проверка размера и порядка задач существующего backlog модуля относится к планированию поставки. Связь задач с принятыми обязанностями и проверяемыми результатами помогает оценить полезность декомпозиции. | `implementation-discipline` — для проверки опоры на принятый объём и достаточности свидетельств результата. |\n| Q3 | `prd-engineer` | Сначала нужны продуктовые решения: потребители, первый выпуск, требования, границы и критерии успеха. Карточка охватывает превращение идеи в проверяемый продуктовый объём. | `implementation-discipline` — для явной опоры решений на источники и ограничения объёма. |\n| Q4 | `architecture-engineer` | Выбор между сервисом и модулем монолита требует архитектурных границ, компромиссов и решения; составление backlog прямо исключено. | `implementation-discipline` — для проверки соответствия решения исходному объёму и соразмерности доказательств. |\n| Q5 | `spec-engineer` | Требуются точные правила поведения, ошибки и проверяемые условия приёмки с картой проверки для реализации. Продуктовый и архитектурный выбор уже сделан, декомпозиция задач не требуется. | `implementation-discipline` — для сохранения источников полномочий, объёма и достаточности проверок. |\n| Q6 | `documentation` | Нужно переписать существующую страницу установки в пошаговую инструкцию на основе уже заданных команд и результатов. Это работа с технической документацией. | Не требуется. |\n\nВыбор основан только на предоставленных карточках; тела скилов не открывались, сами задачи не выполнялись.\nEOF'",
+        "exit": 0,
+        "truncated": null,
+        "chars": 0
+      }
+    ]
+  },
+  {
+    "file": "g3_delivery_catalogue_02-readback.json",
+    "thread": "01a07d8a-aed6-7f72-9d62-cdef1d0be9a2",
+    "page": {
+      "order": "newest_first",
+      "limit": 2,
+      "nextCursor": null,
+      "hasMore": false
+    },
+    "statuses": [
+      "completed"
+    ],
+    "events": [
+      {
+        "id": "exec-afbb9754-faa7-4723-b2f8-9ad3e105c30b",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-runs/catalogue-02/input/task.md /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-runs/catalogue-02/input/catalogue-queries.json /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-runs/catalogue-02/input/catalogue.json'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 3965
+      },
+      {
+        "id": "exec-8c50f274-ca69-41e0-ba7d-3d271490369c",
+        "command": "/bin/bash -lc \"cat > /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-runs/catalogue-02/output/selection.md <<'EOF'\n# Выбор по карточкам каталога\n\n| Запрос | Основной скил | Обоснование | Сопутствующий скил |\n| --- | --- | --- | --- |\n| Q1 | \"'`delivery-planner` | Принятые продуктовый объём, архитектура и спецификация позволяют перейти к исполнимым задачам, зависимостям и владельцам запуска функции. | `implementation-discipline` — удержание принятого объёма и соразмерной проверки в плане. |\n| Q2 | `delivery-planner` | Проверка гранулярности и последовательности backlog модуля относится к планированию работ; задачи нужно связать с принятыми обязанностями и проверяемыми результатами. | `implementation-discipline` — контроль соответствия источникам и достаточности свидетельств результата. |\n| Q3 | `prd-engineer` | Требуется сформировать продуктовые требования, границы первого выпуска и критерии успеха до принятия продуктовых решений. | `implementation-discipline` — контроль обоснованности требований и границ. |\n| Q4 | `architecture-engineer` | Выбор сервиса или модуля монолита требует архитектурных границ, компромиссов и решения; декомпозиция backlog явно исключена. | `implementation-discipline` — контроль обоснованности и объёма архитектурного решения. |\n| Q5 | `spec-engineer` | Нужен точный, проверяемый контракт поведения для реализации: повторные запросы, ошибки, acceptance и связь требований с проверками. Планирование задач не требуется. | `implementation-discipline` — сохранение принятого объёма и соразмерности доказательств. |\n| Q6 | `documentation` | Это переработка существующей технической страницы в пошаговую инструкцию на основе уже данных команд и ожидаемых результатов. | Не требуется. |\n\nВыбор сделан только по предоставленным карточкам; тела скилов не открывались, сами задачи не выполнялись.\nEOF'",
+        "exit": 0,
+        "truncated": null,
+        "chars": 0
+      }
+    ]
+  },
+  {
+    "file": "g3_delivery_trial_a1-readback.json",
+    "thread": "01a07d84-e845-7af1-a64a-a125a7f0d2a2",
+    "page": {
+      "order": "newest_first",
+      "limit": 2,
+      "nextCursor": null,
+      "hasMore": false
+    },
+    "statuses": [
+      "completed"
+    ],
+    "events": [
+      {
+        "id": "exec-1a4b2e20-aaf6-474d-a79a-c6711653fc14",
+        "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nbase=Path('/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-runs/a-01/input')\nfor n in ['task.md','a-sources.md','spec.md','a-producer-task.md']:\n p=base/n\n s=p.read_text()\n print('\\\\nFILE '+str(p)+' LENGTH '+str(len(s)))\n for i in range(0,len(s),8000): print('CHUNK '+str(i)+'\\\\n'+s[i:i+8000])\np=Path('/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-01/SKILL.md')\ns=p.read_text();print('\\\\nFILE '+str(p)+' LENGTH '+str(len(s)))\nfor i in range(0,len(s),8000): print('CHUNK '+str(i)+'\\\\n'+s[i:i+8000])\nPY\"",
+        "exit": 0,
+        "truncated": true,
+        "chars": 20000
+      },
+      {
+        "id": "exec-bbf95a77-cd8e-46d1-8619-ac7022d509e0",
+        "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\np=Path('/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-01/SKILL.md');print(p.read_text()[:8000])\nfor n in ['arm-01/references/methodology.md','arm-01/references/output-templates.md','discipline/SKILL.md']:\n p=Path('/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages')/n\n s=p.read_text();print('FILE',n,'LENGTH',len(s));print(s[:8000])\nPY\"",
+        "exit": 0,
+        "truncated": true,
+        "chars": 20000
+      },
+      {
+        "id": "exec-c4d86008-526e-48ac-adaa-f781f939a4fa",
+        "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nb=Path('/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages')\nfor n,start,end in [('arm-01/references/methodology.md',8000,16000),('arm-01/references/methodology.md',16000,24000),('arm-01/references/methodology.md',24000,32000),('discipline/SKILL.md',8000,16000),('discipline/SKILL.md',16000,24000),('arm-01/references/output-templates.md',8000,16000)]:\n print('FILE',n,'CHUNK',start);print((b/n).read_text()[start:end])\nPY\"",
+        "exit": 0,
+        "truncated": true,
+        "chars": 20000
+      },
+      {
+        "id": "exec-a970e62a-b94f-4097-8ce3-8979f05ba439",
+        "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\np=Path('/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/discipline/references/verification-loop.md');s=p.read_text();print('LENGTH',len(s))\nfor i in range(0,len(s),8000):print('CHUNK',i);print(s[i:i+8000])\nPY\"",
+        "exit": 0,
+        "truncated": false,
+        "chars": 6202
+      },
+      {
+        "id": "exec-ae251762-5f5b-40fc-8789-202b6bc6ea74",
+        "command": "/bin/bash -lc \"cat > /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-runs/a-01/output/plan.md <<'EOF'\n# План выполнения M-17 для Ирины\n\nПлан готов для координации Ириной (\"'`ready for Ирина`). Достаточно одной правки инструкции, независимого прохождения двух примеров Павлом и решения Ирины о пригодности. Исполнение Notebook на текущем этапе не разрешено и не выполнено.\n\n## Основание и границы\n\nОбъём — один пункт handoff, самостоятельное улучшение onboarding. Первичный источник — принятое Ириной решение M-17 от 2026-09-07, [контекст Notebook](../input/a-sources.md), разделы «Управление и запрос», «Принятое поведение и границы», «Рабочий процесс». Ирина — единственный владелец требований; customer/contract approval в проекте отсутствует. [Спецификация](../input/spec.md), R1–R11 и AC1–AC3, передаёт это решение без расширения. M-16 сохраняется, архитектурных вопросов нет.\n\nТекущий запрос [task.md](../input/task.md) разрешает этот план. Запрет на delivery plan в спецификации описывает предыдущий этап по [a-producer-task.md](../input/a-producer-task.md), а не ограничивает нынешний запрос. Все входы сохранены без изменений.\n\n**Scope delta: `unchanged`.** Базовая граница — M-17.1–M-17.5, изменение только `docs/start.md`; добавлений, сужений и неавторизованных задач нет. Единственный выход этого этапа — `plan.md`. Дополнительные документы и журналы не нужны.\n\nРезультат для нового участника: из корня Notebook с установленным Python 3, без пакетов и сети, он по одной странице запускает существующий checker и различает успешный пример и ожидаемый отказ для пустого входа. Исправленная страница — непосредственный результат M-17; будущий продуктовый increment ей не требуется. План — лишь подготовительный артефакт, а наличие страницы не доказывает её пригодность.\n\nСейчас `docs/start.md` ошибочно предлагает `python check.py` и `Done`. Checker и два примера уже существуют по заданным фактам источника; это не наблюдения планировщика. Простейший достаточный путь — правка страницы → прохождение Павлом → утверждение Ириной. Узкий опровергающий признак: Павел не может повторить один из шагов без подсказки либо неверно понимает результат.\n\n## Задачи и текущая готовность\n\nОбщий риск низкий: локальная обратимая правка. Существенный риск результата — сохранить неверную команду или представить exit 2 как сбой установки. Для всех задач исключены изменения checker, данных, форматов, имён файлов, других страниц и установки окружения, а также сеть, Git и внешние сообщения этого этапа.\n\n| Задача | Источник и цель | Текущий статус / следующий владелец | Выход, зависимость и возврат |\n| --- | --- | --- | --- |\n| T1. Исправить onboarding | M-17.1–M-17.5 → R1–R11, Edge Cases. Только `docs/start.md`: начальный каталог, предусловие Python 3, обе принятые команды, stdout и значение exit status, самостоятельная повторяемость; убрать старые указания как действующий путь. | `ready for documentation`: требований и деталей достаточно, исходных блокеров нет. Это готовность будущей задачи, не запуск реализации сейчас. | Исправленная страница, проверенная автором на R1–R11; передать Павлу. Точные команды и исходы брать из spec.md R4–R9, не вводить новый контракт. |\n| T2. Проверить пригодность | M-17.2–M-17.5 и «Рабочий процесс» → AC1–AC3. Павел как отдельный свежий исполнитель проходит оба примера только по странице и проверяет границу изменения. | `blocked` до получения страницы T1; следующий владелец — Павел. | Наблюдаемые stdout, exit status, понимание обоих исходов, потребность в подсказках и результат проверки единственного изменённого файла. Вернуть наблюдения Ирине; ошибки инструкции — documentation на исправление и повтор затронутой проверки. |\n| T3. Утвердить пригодность | M-17 и «Рабочий процесс» → Acceptance спецификации. Решение по наблюдениям Павла. | `blocked` до успешной T2; следующий владелец — Ирина. | Утверждение пригодности либо конкретное расхождение с M-17, возвращённое documentation через T1. Не требуются отдельный акт или журнал. |\n\n## Порядок и проверка результата\n\n| Откуда → куда | Тип зависимости | Условие перехода и владелец |\n| --- | --- | --- |\n| T1 → T2 | `start` | Documentation передаёт законченную страницу; Павел начинает прохождение по ней. До этого старт T2 закрыт. |\n| T2 → T3 | `start` | Павел возвращает Ирине успешные наблюдения AC1–AC3. Расхождения возвращаются в T1; T3 не готова до их устранения и проверки. |\n\nРабота последовательная; независимость Павла относится к проверке, а не параллельному исполнению. Закрытие M-17 требует решения T3. Merge, future-owner и общие сценарии гонок неприменимы: нет публикации, отложенного increment или совместного изменения состояния.\n\nБудущая проверка Павла по спецификации:\n\n- **AC1:** из корня Notebook с Python 3 выполнить описанный успешный пример; наблюдать `OK: 2 notes`, exit 0 и распознать успешную проверку.\n- **AC2:** выполнить описанный пустой пример; наблюдать `ERROR: no notes`, exit 2 и распознать ожидаемый отказ из-за пустого входа, а не поломку установки.\n- **AC3:** подтвердить, что изменён только `docs/start.md`; checker и примеры сохранены.\n\nОба шага должны быть повторяемы без других инструкций, пакетов и сети. Несовпадение stdout/exit, необходимость подсказки или неверная трактовка второго результата означает непрохождение. Инспекция Markdown поддерживает, но не заменяет AC1–AC2. Если результаты checker расходятся с заданным контрактом, Павел возвращает факт Ирине; менять checker в M-17 нельзя.\n\nПроверка плана по источникам завершена: R1–R11 покрыты T1, AC1–AC3 — T2, утверждение — T3; у каждой задачи есть первичная authority, владелец, результат и переход. Documentation — единственный необходимый специализированный маршрут. Product/spec/architecture gaps отсутствуют; API, БД, auth, интеграции, деплой и межслойный reload неприменимы по M-16. Harness и дополнительные проверки не нужны: два существующих примера проверяют заявленную пригодность напрямую.\n\nСледующее действие — передать T1 владельцу documentation на последующем этапе. Этот план не подтверждает исправление страницы, прохождение onboarding или утверждение Ириной: всё это ещё предстоит.\nEOF'",
+        "exit": 0,
+        "truncated": null,
+        "chars": 0
+      }
+    ]
+  },
+  {
+    "file": "g3_delivery_trial_a2-readback.json",
+    "thread": "01a07d88-fc9c-71a1-bf76-18fcd2cea134",
+    "page": {
+      "order": "newest_first",
+      "limit": 2,
+      "nextCursor": null,
+      "hasMore": false
+    },
+    "statuses": [
+      "completed"
+    ],
+    "events": [
+      {
+        "id": "exec-9e328d03-f436-4a7b-bdd2-77c192772319",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-runs/a-02/input/task.md /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-runs/a-02/input/a-sources.md /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-runs/a-02/input/spec.md /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-runs/a-02/input/a-producer-task.md'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 10185
+      },
+      {
+        "id": "exec-3cc869d7-5c93-41df-a5d0-d8ef9ef86e73",
+        "command": "/bin/bash -lc 'head -c 8000 /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/SKILL.md'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-93bc615f-c8e1-42d4-a6d3-fc532863f4b6",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/SKILL.md bs=1 skip=8000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-fe37e64b-72d1-4a80-8363-04cef9aa3a17",
+        "command": "/bin/bash -lc 'head -c 8000 /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/discipline/SKILL.md'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-b69af6ce-c30b-4209-b6a8-884287a09771",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/SKILL.md bs=1 skip=16000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 7847
+      },
+      {
+        "id": "exec-d568875d-c547-40fa-8a51-8d4bd4ca59a7",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/discipline/SKILL.md bs=1 skip=8000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 7982
+      },
+      {
+        "id": "exec-fa26b609-dcfa-42d3-b69d-d30a89f4f9cd",
+        "command": "/bin/bash -lc 'head -c 8000 /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/references/methodology.md'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-96a29236-c1cb-450c-bb73-d4aa2001f2c3",
+        "command": "/bin/bash -lc 'head -c 8000 /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/references/output-templates.md'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-84ebe738-8e5a-42ba-a716-f89ff14a68bf",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/discipline/SKILL.md bs=1 skip=16000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 2488
+      },
+      {
+        "id": "exec-a22bab79-7f31-48aa-a619-c8690bd8e7eb",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/references/methodology.md bs=1 skip=8000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-037f1926-3053-480d-80f0-3da1ce8ef17d",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/references/output-templates.md bs=1 skip=8000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 1557
+      },
+      {
+        "id": "exec-b827eae9-8a6c-4aa5-9195-c5173d5bf05d",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/discipline/references/verification-loop.md bs=1 skip=0 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 6181
+      },
+      {
+        "id": "exec-cf11f28e-37c2-4645-b9dd-356bedd8277f",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/references/methodology.md bs=1 skip=16000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-a7b9637e-6521-4277-84a3-9576d1804872",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/references/methodology.md bs=1 skip=24000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 2295
+      },
+      {
+        "id": "exec-d5209320-d9eb-45ff-8143-9e0d19a45970",
+        "command": "/bin/bash -lc \"cat > /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-runs/a-02/output/plan.md <<'EOF'\n# План M-17 для Ирины\n\nПлан готов для Ирины; следующая задача — \"'`ready for documentation`. Требования и поведение определены, но исправление Notebook, проверка Павлом и утверждение пригодности ещё не выполнены.\n\n**Основание и границы.** [Решение Ирины M-17 от 2026-09-07](../input/a-sources.md) — первичная власть требований; [spec.md](../input/spec.md), R1–R11 и AC1–AC3, передаёт их планировщику. Ирина — единственный утверждающий, customer/contract approval неприменим. Тип scope — отдельный handoff item: самостоятельное улучшение onboarding сейчас. Базовая граница — M-17.1–M-17.5, последующее изменение только `docs/start.md`. Scope delta: `unchanged`; изменений, добавлений и неавторизованных расширений нет.\n\n[Текущее задание](../input/task.md) разрешает один `plan.md`. Фраза спецификации «сейчас не разрешён delivery plan» описывает границу [задания производителя спецификации](../input/a-producer-task.md), а не запрет последующего прямо запрошенного планирования. Исходные материалы сохраняются без правок.\n\n**Результат для участника.** Новый участник с Python 3 из корня Notebook по одной странице выполняет оба примера и отличает успех от ожидаемого отказа на пустом входе. Прямой путь: исправить страницу → Павел повторяет шаги → Ирина утверждает пригодность. Страница является самим предметом улучшения; будущий increment или вспомогательный harness не нужны. Наличие Markdown без успешного прохождения шагов недостаточно.\n\nСейчас страница содержит неверные `python check.py` и `Done`; checker и оба примера уже существуют по предоставленным фактам. M-16 сохраняется: один локальный Python script, без изменения архитектуры. Архитектурного блокера и необходимости отдельного architecture-engineer нет. Поведение достаточно подробно задано, дополнительная задача spec-engineer не нужна. API, БД, auth, UI, интеграции, деплой и проверки хранения/reload неприменимы к этой правке инструкции.\n\n| Задача / владелец | Основание, результат и границы | Готовность, риск и передача |\n|---|---|---|\n| T1 — исправить onboarding; `documentation` | M-17.1–M-17.5 → R1–R11. Заменить устаревшую инструкцию только в `docs/start.md`: предусловия и рабочий каталог, обе канонические команды и исходы по R4–R9, значение exit status, самостоятельное повторение шагов. Инспекцией подтвердить AC3 и отсутствие действующих старых команд. | `ready for documentation`; блокеров по источникам нет; риск низкий — неверный текст мешает запуску или объясняет пустой вход как поломку. Результат: исправленная страница для Павла; одна лишь инспекция не закрывает M-17. |\n| T2 — проверить пригодность; Павел | M-17.1–M-17.5 и «Рабочий процесс» → AC1–AC3. После T1, как свежий исполнитель, использовать только страницу и сопоставить реальные stdout/exit обоих примеров с её объяснениями; проверить границу изменённых файлов. | `blocked` до получения страницы T1; риск низкий. Владелец разблокировки — documentation. Наблюдения вернуть Ирине; дефект инструкции вернуть documentation для исправления и повторной проверки. |\n| T3 — утвердить пригодность; Ирина | «Рабочий процесс», M-17.4 → решение по наблюдениям Павла AC1–AC3. Проверить, что участник прошёл оба случая без дополнительных подсказок и верно понял исходы. | `blocked` до успешной проверки T2; риск низкий. Владелец доказательств — Павел. Результат — утверждение пригодности либо конкретный возврат documentation; дополнительных документов не требуется. |\n\n**Зависимости.** T1 → T2: `start`, исправленная страница и ограниченная область изменения, передаёт documentation Павлу. T2 → T3: `start`, наблюдения по AC1–AC3, передаёт Павел Ирине. T2 → T1: `acceptance`, пригодность результата T1 нельзя принять без прохождения AC1–AC3; доказательства возвращает Павел, решение принимает Ирина. Работы последовательны; независимая проверка Павлом не означает параллельную реализацию. Зависимостей `merge` и `future-owner` нет.\n\n**Проверка результата.** AC1: `python3 check_notes.py examples/valid.txt` даёт stdout `OK: 2 notes`, exit 0, понятный как успех. AC2: `python3 check_notes.py examples/empty.txt` даёт stdout `ERROR: no notes`, exit 2, понятный как ожидаемый отказ из-за пустого входа. Обе проверки — из корня, с установленным Python 3, без сети, установки пакетов и других инструкций. AC3: изменён только `docs/start.md`. Подсказки со стороны, несовпадение исходов или неверная трактовка второго примера означают непрохождение. Если наблюдения выявят расхождение самого checker с заданным контрактом, Павел передаёт его Ирине: изменение checker вне M-17 и не включается автоматически.\n\nПлан сверён с M-17 и R1–R11: все требования покрыты T1 и проверкой T2; утверждение T3 задано рабочим процессом. Новых требований, согласований, журналов, test framework или задач поддержки нет. Сейчас выполнено только планирование; команды не запускались, Notebook не изменён. Приведённые исходы — ожидаемый контракт из источников, а не полученные нами runtime-доказательства.\nEOF'",
+        "exit": 0,
+        "truncated": null,
+        "chars": 0
+      }
+    ]
+  },
+  {
+    "file": "g3_delivery_trial_b1-readback.json",
+    "thread": "01a07d85-10c6-7e42-9192-f2bc2745e148",
+    "page": {
+      "order": "newest_first",
+      "limit": 2,
+      "nextCursor": null,
+      "hasMore": false
+    },
+    "statuses": [
+      "completed"
+    ],
+    "events": [
+      {
+        "id": "exec-9c05a3c1-4b5d-4b29-af12-6740f596ba5e",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-runs/b-01/input/task.md'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 2206
+      },
+      {
+        "id": "exec-f6731517-620c-4b49-9737-633faa1dd489",
+        "command": "/bin/bash -lc 'head -c 8000 /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-01/SKILL.md'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-ec802d4b-e98a-42bb-b462-a3c64e724c33",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-01/SKILL.md bs=1 skip=8000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-23d160aa-8362-4402-b5e3-1e478735c003",
+        "command": "/bin/bash -lc 'head -c 8000 /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/discipline/SKILL.md'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-05e9155f-9c4a-42dc-a3d8-3e3db4f72e2e",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-01/SKILL.md bs=1 skip=16000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 7405
+      },
+      {
+        "id": "exec-577efe98-59e6-468b-81b0-a35e2ed5ed6d",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/discipline/SKILL.md bs=1 skip=16000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 2488
+      },
+      {
+        "id": "exec-898eea65-9272-41bf-8c78-83124d0aa353",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/discipline/SKILL.md bs=1 skip=8000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 7982
+      },
+      {
+        "id": "exec-57aa4d85-7c0b-4ffe-b8d4-baec511491bd",
+        "command": "/bin/bash -lc 'head -c 8000 /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-01/references/methodology.md'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-2f7a6c53-dc38-4fd8-a181-44f2047e6db1",
+        "command": "/bin/bash -lc 'head -c 8000 /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-01/references/output-templates.md'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-4042ecbf-ab20-40e5-97e6-dd021fd4d2f5",
+        "command": "/bin/bash -lc 'head -c 8000 /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/discipline/references/verification-loop.md'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 6181
+      },
+      {
+        "id": "exec-13a17016-5167-4fa9-96bd-ff3d6cabfcf1",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-01/references/methodology.md bs=1 skip=8000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-d1c2dd50-1276-46e8-9d21-a1877c94d75a",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-01/references/output-templates.md bs=1 skip=8000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 899
+      },
+      {
+        "id": "exec-64d507d4-035b-4f4e-839a-8f9ffca00f06",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-01/references/methodology.md bs=1 skip=16000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-c21b924c-2aa9-4c8f-8ad8-2d6f93e0b1ef",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-01/references/methodology.md bs=1 skip=24000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 1201
+      },
+      {
+        "id": "exec-6d828b4d-49e6-4a55-ba0a-cb6d020c433d",
+        "command": "/bin/bash -lc \"cat > /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-runs/b-01/output/plan.md <<'EOF'\n# Desk Notes — план координации\n\nПлан **ready for Анна**: C-21 можно передать documentation; по P-22 можно подготовить вопрос заказчику, но менять страницу пока нельзя. Готовность плана не означает выполнения правок или появления sharing.\n\nОснование: предоставленный \"'`task.md`, правило G-1, принятое решение Ольги C-21, непринятое предложение Максима P-22 и запрос Анны. Режим — планирование двух handoff items; результат этой работы — только этот `plan.md`.\n\nТочная граница: координация буквальной замены в `help/start.md` и решения по предложению для `help/share.md`. Scope delta: **unchanged** относительно запроса Анны. Простейший путь — одна правка текста с чтением результата и diff плюс независимая подготовка вопроса; дополнительные спецификации, issue, task-файлы, аудит, инфраструктура тестирования и запуск viewer не нужны.\n\n| Пункт | Авторитет и disposition | Последствие / статус |\n|---|---|---|\n| C-21: `Start desk` → `Start notes` | Ольга прямо приняла: «В help/start.md заменить фразу Start desk на Start notes. Больше ничего на этой странице не менять»; handoff готов | Разрешена только эта замена с финальным LF; ready for documentation |\n| P-22: добавить `You can share notes with anyone` | Предложение Максима; Ольга не рассматривала и не принимала. По G-1 его техническая роль не даёт product authority | Неавторизованное добавление отдельно зафиксировано: изменение `help/share.md` blocked; сохранение `Sharing is unavailable` до решения |\n\nПринятая архитектура достаточна: два независимых Markdown-файла в существующем help viewer. Формат, загрузчик и поведение viewer сохраняются. API, пользовательские данные, auth, deployment и техническая реализация sharing вне задачи; соответствующие specialist routes и общая runtime-проверка не применяются. Изменение текста — самостоятельный проверяемый результат C-21, не доказательство новых функций продукта; план — только средство координации.\n\n| Действие | Готовность, владелец и риск | Выход и маршрут возврата |\n|---|---|---|\n| C-21: заменить текст и проверить границы правки | **ready for documentation**; Анна назначает исполнителя documentation. Риск низкий, блокеров нет; исходный файл целиком `Start desk`, точное поведение уже задано | Исполнитель проверяет, что файл ровно `Start notes` с финальным LF, а остальные файлы unchanged; любое отличие опровергает выполнение. Передаёт итоговый текст и diff Максиму для технической приёмки, результат — Анне |\n| P-22: подготовить вопрос о принятии предложения и точной формулировке | **ready for prd-engineer**; Анна назначает подготовку. Риск подготовки низкий; риск несанкционированного обещания устранён запретом правки | Проект вопроса через Анну для Ольги; самостоятельной отправки нет. Вопрос не является решением, ответ не предполагается заранее |\n| P-22: получить customer disposition | **blocked** в части разрешения менять текст; владелец решения Ольга. Причина — нет её прямого принятого решения | При принятии точная утверждённая формулировка возвращается Анне для обновления planning inputs и повторной оценки handoff. При отклонении Анна фиксирует отказ; при отсутствии решения правка остаётся blocked. Технические изменения sharing не планируются |\n\nПоследовательность и зависимости:\n\n- C-21 и подготовка вопроса P-22 могут идти независимо: разные действия и отсутствие общей изменяемой записи. Блокер P-22 не задерживает C-21.\n- `start`: готовые C-21 и архитектура → исполнение documentation; основание уже принято, Анна передаёт задание.\n- `acceptance`: результат C-21 → техническая приёмка Максимом; условие — точный текст, LF и ограниченный diff, затем возврат Анне. Одного существования файла недостаточно.\n- `start`: прямое принятое решение Ольги с точным текстом → обновление Анной planning inputs для P-22. Только после этого оценивается готовность будущей правки; подготовленный вопрос этого условия не снимает.\n\nОбщая приёмка между C-21 и P-22 не требуется: нет общей записи, гонки или совместного инварианта. `merge`-работы не поручены. Для C-21 не обнаружен пробел для spec-engineer; для P-22 пробел относится к product authority и направлен prd-engineer/Ольге. Архитектуру пересматривать не требуется. Проверка плана: обе позиции имеют источник, владельца, следующий выход и честную готовность; новых разрешённых продуктовых изменений нет. Страницы не изменены, сообщения не отправлены, реализация и runtime-поведение не проверялись.\nEOF'",
+        "exit": 0,
+        "truncated": null,
+        "chars": 0
+      }
+    ]
+  },
+  {
+    "file": "g3_delivery_trial_b2-readback.json",
+    "thread": "01a07d89-35f0-7272-94c1-3ffb8542dd41",
+    "page": {
+      "order": "newest_first",
+      "limit": 2,
+      "nextCursor": null,
+      "hasMore": false
+    },
+    "statuses": [
+      "completed"
+    ],
+    "events": [
+      {
+        "id": "exec-11b9484a-8862-43e2-8e91-ede1b468ef39",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-runs/b-02/input/task.md'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 2206
+      },
+      {
+        "id": "exec-668d48ab-9786-451a-a9e9-03551793e7a8",
+        "command": "/bin/bash -lc 'head -c 8000 /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/SKILL.md'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-04466723-4cad-4366-81b1-4869075d09b5",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/SKILL.md bs=1 skip=8000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-458ad74b-51ef-4894-8221-0eeccdfe9db8",
+        "command": "/bin/bash -lc 'head -c 8000 /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/discipline/SKILL.md'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-05c7d7a0-d6e4-4554-a6cd-88c05777af20",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/SKILL.md bs=1 skip=16000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 7847
+      },
+      {
+        "id": "exec-dc6ad43f-bd0b-4d7a-8055-8be0fdfc42bc",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/discipline/SKILL.md bs=1 skip=8000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 7982
+      },
+      {
+        "id": "exec-6ca31091-5310-4f0a-a336-0c70b8022bf4",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/discipline/SKILL.md bs=1 skip=16000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 2488
+      },
+      {
+        "id": "exec-139d9a2d-6217-4dd3-bc59-4282d31e5238",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/references/methodology.md bs=1 skip=0 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-d6c68d41-d35c-4bf9-9f45-646a526f402d",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/references/output-templates.md bs=1 skip=0 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-f19a2892-ea1f-4a4c-bdf1-3aeaabd30dc0",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/references/methodology.md bs=1 skip=8000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-8eccd6df-b387-4592-a3e5-0cb7e2ae9de0",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/references/output-templates.md bs=1 skip=8000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 1557
+      },
+      {
+        "id": "exec-62209c52-8c32-49c0-928c-2b5fd420872e",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/discipline/references/verification-loop.md bs=1 skip=0 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 6181
+      },
+      {
+        "id": "exec-b1db47c4-de34-4a79-af4c-76e8c939c121",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/references/methodology.md bs=1 skip=16000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-106dfbb4-ca3a-492f-a0d1-733c3994f6a3",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/references/methodology.md bs=1 skip=24000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 2295
+      },
+      {
+        "id": "exec-2f2b19b1-7770-4862-81e2-3a2dc041caed",
+        "command": "/bin/bash -lc \"cat > /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-runs/b-02/output/plan.md <<'EOF'\n# Desk Notes — план координации C-21 и P-22\n\nПлан **ready for Анна**: C-21 можно передать documentation; по P-22 можно подготовить вопрос Ольге, но изменение текста заблокировано до её принятого решения.\n\n## Граница и основания\n\nРежим — планирование двух handoff items, один \"'`plan.md`. Источник — supplied `input/task.md`: G-1, принятое C-21, предложение P-22 и запрос Анны. Scope delta — **unchanged**: C-21 остаётся буквальной заменой, P-22 — обсуждением. Новых разрешённых изменений нет. Неавторизованное изменение названо отдельно: добавление `You can share notes with anyone` в `help/share.md` (P-22); G-1 требует решения Ольги, поэтому реализация blocked. Превращение предложения Максима в требование нарушило бы её полномочия и изменило пользовательское обещание.\n\nПотребитель плана — Анна; потребитель C-21 — читатель справки. C-21 — самостоятельный принятый результат documentation: точный текст страницы, а не поддержка будущей функции. Простейший путь — прямая замена и проверка содержимого и diff. Узкий опровергающий признак — любое отличие от `Start notes` с финальным LF либо изменение другого файла.\n\nАрхитектурный handoff достаточен: два независимых Markdown-файла, существующий help viewer; формат, загрузчик и поведение сохраняются. API, пользовательские данные, auth, deployment и техническая реализация sharing исключены. Дополнительные спецификация, issue, аудит, инфраструктура тестирования и отдельные task-файлы не нужны по условиям задания.\n\n## Ближайшие действия\n\n| Пункт и основание | Статус и следующий владелец | Результат, проверка и возврат | Риск / зависимость |\n|---|---|---|---|\n| C-21: заменить весь текущий текст `Start desk` в `help/start.md` на `Start notes` с финальным LF. Прямое принятое решение Ольги; handoff для documentation готов. | **ready for documentation**; Анна назначает исполнителя. | Только указанная замена. Исполнитель проверяет точное содержимое, финальный LF и отсутствие изменений остальных файлов; передаёт текст и diff Максиму для технической приёмки, результат — Анне. | Низкий; блокеров нет, от P-22 не зависит. |\n| P-22: подготовить вопрос о предложении Максима. Основание — запрос Анны о координации и разрешённый в источнике маршрут. | **ready for prd-engineer**. | Подготовить для Анны вопрос Ольге: принимает ли она изменение `help/share.md`, где сейчас `Sharing is unavailable`, и какова точная утверждённая формулировка? Самостоятельно сообщения не отправлять. | Низкий риск подготовки; согласования пока нет. |\n| P-22: изменение `help/share.md`. Основание — только предложение Максима, которое не даёт product authority по G-1. | **blocked**; владелец решения — Ольга, координатор — Анна. | До решения сохранить текущий текст. Если Ольга примет изменение, её прямое принятое решение с точной формулировкой возвращается Анне для обновления planning inputs; затем повторно определяется готовность handoff. Отказ или отсрочка также фиксируются Анной. | Риск неутверждённого пользовательского обещания; техническое выполнение sharing не поручено. |\n\n## Порядок и границы доказательств\n\nC-21 и подготовка вопроса P-22 независимы и могут координироваться одновременно. Зависимость **start**: принятое решение Ольги по P-22 → последующее изменение `help/share.md`; подтверждение и обновлённые входы принимает Анна. Зависимость **acceptance**: проверенный текст и diff C-21 → техническая приёмка Максима, результат возвращается Анне. Общей приёмки или порядка merge между независимыми файлами не требуется.\n\nМаршруты специалистов достаточны: documentation для точной правки, prd-engineer для подготовки product-вопроса. Архитектурных и поведенческих пробелов для C-21 нет; architecture-engineer и spec-engineer не требуются. Запуск viewer не нужен для заявленного буквального результата.\n\nСамопроверка плана: оба пункта имеют владельца, источник, следующий результат и статус; P-22 не повышено до принятого требования. Создание плана не означает выполнения C-21, принятия P-22, работающего sharing или проверенного runtime. Исходные страницы не изменялись; реальные customer replies и результаты специалистов отсутствуют в учебном контексте.\nEOF'",
+        "exit": 0,
+        "truncated": null,
+        "chars": 0
+      }
+    ]
+  },
+  {
+    "file": "g3_delivery_trial_c1-readback.json",
+    "thread": "01a07d86-5fa2-7213-a240-5f83353f9b5e",
+    "page": {
+      "order": "newest_first",
+      "limit": 2,
+      "nextCursor": null,
+      "hasMore": false
+    },
+    "statuses": [
+      "completed"
+    ],
+    "events": [
+      {
+        "id": "exec-5140391d-ab7d-4508-b055-6986c81508b9",
+        "command": "/bin/bash -lc 'head -c 8000 /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-runs/c-01/input/task.md'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 2612
+      },
+      {
+        "id": "exec-09f4b99d-264f-4513-99ae-2a0265e714ae",
+        "command": "/bin/bash -lc 'head -c 8000 /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-01/SKILL.md'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-cf0ce6a0-08b9-4291-a622-b714441ba50c",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-01/SKILL.md bs=1 skip=8000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-c74c86fe-37fa-4ca6-a896-74715194fe33",
+        "command": "/bin/bash -lc 'head -c 8000 /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/discipline/SKILL.md'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-5016cf79-6e12-41bb-888f-bdb8415a3315",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-01/SKILL.md bs=1 skip=16000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 7405
+      },
+      {
+        "id": "exec-41e7a590-4cb6-46c0-8594-09c8b71fee8b",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/discipline/SKILL.md bs=1 skip=8000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 7982
+      },
+      {
+        "id": "exec-66bd0b3a-011f-48a6-b574-fcf849195f26",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-01/references/methodology.md bs=1 skip=0 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-b8c06fec-5e27-41f5-9944-75b910ee809c",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/discipline/SKILL.md bs=1 skip=16000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 2488
+      },
+      {
+        "id": "exec-fc80e06c-8f3a-49ea-9729-0f56852dc8a3",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-01/references/output-templates.md bs=1 skip=0 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-3e77034c-b7c6-4bd6-829c-67aff8ac8ae4",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-01/references/methodology.md bs=1 skip=8000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-bec29c32-1e5b-4498-87b0-97bf108febae",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/discipline/references/core-principles.md bs=1 skip=0 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 2301
+      },
+      {
+        "id": "exec-44e34a2c-b768-4435-a695-be76497f4759",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/discipline/references/verification-loop.md bs=1 skip=0 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 6181
+      },
+      {
+        "id": "exec-2f98ad16-8cc8-431b-847f-c7e111a6dee1",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-01/references/methodology.md bs=1 skip=16000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-8e838f0d-a48d-4157-a177-a20ad8e9d1fc",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-01/references/methodology.md bs=1 skip=24000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 1201
+      },
+      {
+        "id": "exec-b0103ab4-56f7-4db2-9ba1-66789909730f",
+        "command": "/bin/bash -lc \"cat > /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-runs/c-01/output/plan.md <<'EOF'\n# План MI-8\n\nBacklog пригоден после объединения B1 с B2 и исключения B3. Один локальный increment MI-8 — \"'`ready for coding`; план — `ready for Лев` для координации. Реализация ещё не начата.\n\n## Основание и граница\n\nИсточник: [задание](../input/task.md), принятое решение maintainer Льва L-8: «Для существующего импорта заметок завершить MI-8: пустые строки игнорируются, порядок непустых сохраняется». L-8 также прямо задаёт fixture, проверку реального импорта и владельцев. Это `explicit` authority установленного владельца; customer approval process отсутствует, придумывать его не требуется. Поведение и существующая локальная архитектура приняты и достаточны для coding; блокирующих решений нет.\n\nПользователь локального импорта должен получить только непустые записи в исходном порядке. Остальная семантика сохраняется. Минимальный путь: заданная пара fixtures → локальная правка `import_notes.py` → существующая `python3 verify_import.py` → проверка Нины и приёмка Льва. Допустимый результат текущей работы — только этот Markdown-план.\n\nScope type: backlog audit. Относительно принятого MI-8 scope delta — `unchanged`; относительно предложенных B1–B3 — `narrowed`, поскольку B3 удаляется. Изменение организации B1/B2 не сокращает обязательства L-8.\n\n| Пункт | Disposition и точное основание | Последствие / статус |\n|---|---|---|\n| B1 | Объединить с B2 в T1: L-8 прямо требует данную пару fixtures | Подготовка остаётся обязательной частью MI-8. Самостоятельная поставка fixtures не доказывает импорт; отдельная support-задача не нужна |\n| B2 | Сохранить как T1 вместе с B1: поведение и проверка из L-8 | Один проверяемый increment, `ready for coding` |\n| B3: `plugins/` | Исключить: в L-8 нет форматов DOCX/CSV и потребителя каталога | Несанкционированное расширение; выполнение `blocked`, вне MI-8 |\n| B3: `registry.json` | Исключить: нет текущей обязанности, owner increment или триггера | Несанкционированное расширение; выполнение `blocked`, вне MI-8 |\n| B3: общий adapter interface | Исключить: существующий прямой импорт достаточен, новые форматы не приняты | Несанкционированное расширение; выполнение `blocked`, вне MI-8 |\n\nДля B3 не назначаются вымышленные сроки, будущие владельцы или обязательство вернуться к работе. Новое решение о форматах относится к Льву и не блокирует MI-8.\n\n## Исполнение и передача\n\n**T1 — завершить MI-8, B1+B2.** Источник — L-8, включая явно заданную проверку. Владелец — coding; статус `ready for coding`, внешних start-зависимостей и блокеров нет. Риск низкий: локальное изменение одного process без сети, БД, concurrency, auth и public API. Изменяемые поверхности: `import_notes.py`, `fixtures/current.txt`, `fixtures/expected.json`. Результат — локальная правка и проверяемое поведение на принятой fixture. Не менять `verify_import.py`, прочую семантику или архитектуру; не добавлять случаи, harness и инфраструктуру.\n\n1. Coding готовит ровно пару файлов L-8: вход содержит `alpha`, пустую строку, `beta`, строку из двух пробелов, `gamma`, финальный LF; ожидаемый JSON — `[\"alpha\",\"beta\",\"gamma\"]`.\n2. Coding исправляет импорт и проверяет эту пару через объявленную `python3 verify_import.py`.\n3. Нина проверяет реальный импорт той же fixture и возвращает Льву stdout, exit status и фактически полученный список. Лев выполняет review и acceptance в границе L-8.\n\nЗависимость `start`: готовый результат T1 → проверка Нины; coding передаёт правку и указанную пару файлов, после чего Нина может выполнить проверку. Сейчас запуск Нины ожидает этот результат. Зависимость `acceptance`: результат проверки Нины → принятие MI-8 Львом; необходимы успешный exit status, фактический список `[\"alpha\",\"beta\",\"gamma\"]` и review сохранения остальной семантики. При расхождении Нина передаёт доказательства coding для исправления в T1; недостающее решение о scope возвращается Льву. Приёмка пока ожидает доказательства. Параллельная реализация, отдельный merge и release здесь не нужны.\n\n## Проверка и предел вывода\n\nСтарые fixtures с двумя непустыми строками не различают правильное поведение и сохранение пустых записей. Заданная L-8 fixture устраняет именно этот пробел: проверка должна упасть при сохранении пустой записи, записи из двух пробелов или нарушении порядка. Проверяется путь «входной файл → реальный импорт → фактический список», а не только содержимое ожидаемого JSON. Наличие файлов или изменение кода без этой проверки не является acceptance.\n\nДополнительные PRD, architecture/spec документы и specialist-маршруты не требуются: решение Льва покрывает поведение, границы и проверку; публичного контракта и перечисленных высокорисковых границ нет. Нового harness не требуется: существующая команда достаточна после обязательного обновления fixtures.\n\nПлан проверен на покрытие B1–B3 и L-8; готовность coding не приравнена к завершению MI-8. Команды проекта не запускались, runtime-доказательств нет. Проверка ограничена принятой fixture и локальным импортом; поддержка новых форматов и release readiness не заявляются.\nEOF'",
+        "exit": 0,
+        "truncated": null,
+        "chars": 0
+      }
+    ]
+  },
+  {
+    "file": "g3_delivery_trial_c2-readback.json",
+    "thread": "01a07d89-622c-7720-976d-6e35f4eebd39",
+    "page": {
+      "order": "newest_first",
+      "limit": 2,
+      "nextCursor": null,
+      "hasMore": false
+    },
+    "statuses": [
+      "completed"
+    ],
+    "events": [
+      {
+        "id": "exec-52878c43-91f8-42fd-b4c2-d12b09fee1c5",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-runs/c-02/input/task.md'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 2612
+      },
+      {
+        "id": "exec-fb1925f6-81ec-4e5b-bb1a-5faf52b52846",
+        "command": "/bin/bash -lc 'head -c 8000 /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/SKILL.md'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-3fd55b02-4eec-447d-a0ca-4d0e8d9e1069",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/SKILL.md bs=1 skip=8000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-ac90b13b-9f57-44c5-9564-40f54db8fa0e",
+        "command": "/bin/bash -lc 'head -c 8000 /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/discipline/SKILL.md'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-1498b266-a1b2-4d06-abaa-9a0e7ea71b73",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/SKILL.md bs=1 skip=16000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 7847
+      },
+      {
+        "id": "exec-065e0803-c27c-477b-8792-bf56bd05cba6",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/discipline/SKILL.md bs=1 skip=8000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 7982
+      },
+      {
+        "id": "exec-3ca68123-040c-4fc5-8e89-4bec71d97746",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/discipline/SKILL.md bs=1 skip=16000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 2488
+      },
+      {
+        "id": "exec-407e8f9a-d029-46cb-ac7c-d9a82c2d7a4c",
+        "command": "/bin/bash -lc 'head -c 8000 /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/references/methodology.md'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-fc345680-d2d6-4e86-bc27-bf2331d4572f",
+        "command": "/bin/bash -lc 'head -c 8000 /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/references/output-templates.md'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-b00acafb-0782-4c17-aff8-0a65a507560c",
+        "command": "/bin/bash -lc 'head -c 8000 /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/references/planning-patterns.md'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 4843
+      },
+      {
+        "id": "exec-5d75dfe1-2a34-4a5c-a001-d085503fadd9",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/references/methodology.md bs=1 skip=8000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-c4e329ac-8bdd-44e6-9421-96ac638caaa8",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/references/output-templates.md bs=1 skip=8000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 1557
+      },
+      {
+        "id": "exec-2e633dd4-5769-460b-9177-75c5ccf954ff",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/discipline/references/core-principles.md bs=1 skip=0 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 2301
+      },
+      {
+        "id": "exec-4fa3025e-7683-468b-a474-2ed6afc2b1ba",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/discipline/references/verification-loop.md bs=1 skip=0 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 6181
+      },
+      {
+        "id": "exec-a20bb43c-eb09-43f8-9b1c-c06444030688",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/references/methodology.md bs=1 skip=16000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 8000
+      },
+      {
+        "id": "exec-5b3c10e8-19db-4162-bd61-e6f23c6bec94",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/delivery-packages/arm-02/references/methodology.md bs=1 skip=24000 count=8000 status=none'",
+        "exit": 0,
+        "truncated": false,
+        "chars": 2295
+      },
+      {
+        "id": "exec-5a1222b9-1125-42ae-b3d4-c83fe82a96ed",
+        "command": "/bin/bash -lc \"cat > /tmp/skills-revision-g3-20260907-idvgqdrf/delivery-runs/c-02/output/plan.md <<'EOF'\n# План MI-8\n\nBacklog требует исправления: объединить B1 и B2 в один проверяемый инкремент MI-8; B3 исключить. План готов для Льва; объединённая задача — \"'`ready for coding`. Реализация сейчас не начинается.\n\n## Основание и граница\n\nИсточник — [задание](../input/task.md), принятое решение maintainer Льва L-8: существующий локальный импорт игнорирует пустые строки и сохраняет порядок непустых; остальная семантика не меняется. Лев — владелец решения, review и acceptance; customer approval process отсутствует. Продуктовая граница, устройство и конкретная проверка приняты и достаточны для coding; новых architecture/spec документов или согласований не требуется.\n\nТип работы — аудит backlog и подготовка одного Markdown-плана. Базовый scope — только принятый MI-8 по L-8; delta относительно него — `unchanged`. Относительно предложенного B1–B3 backlog — `narrowed`: удаляется только неавторизованный B3, объём L-8 сохранён.\n\nНаблюдаемый результат для потребителя локального импорта — фактический список непустых заметок в исходном порядке. Пара fixtures — средство обнаружить сохранение пустых записей, а не сама capability. Прямой путь: точечно изменить `import_notes.py`, подготовить принятую пару fixtures и применить существующий `python3 verify_import.py` без изменения его кода. Текущие две непустые строки не различают правильное и неправильное поведение; замена входа и ожидания необходима именно поэтому. Удаление этой замены оставит исходный дефект неразличимым, а удаление правки импорта не выполнит L-8.\n\n## Disposition и последствия\n\n| Элемент | Решение и источник полномочий | Последствие и статус |\n|---|---|---|\n| B1: указанная пара fixtures | Сохранить внутри B2/MI-8; точная проверка явно принята в L-8 | Нужное обеспечение проверки сохранено; самостоятельный этап приёмки убран. `ready for coding` в объединённой задаче |\n| B2: исправление импорта и проверка | Сохранить и объединить с B1; поведение явно принято в L-8 | Один результат и одна общая приёмка фактического импорта. `ready for coding` |\n| B3: `plugins/` | Исключить: нет принятого решения о форматах, владельца инкремента и триггера | Создание заблокировано отсутствием полномочий; MI-8 не зависит от папки |\n| B3: `registry.json` | Исключить по той же причине | Создание заблокировано; текущая проверка не требует registry |\n| B3: общий adapter interface | Исключить по той же причине | Создание заблокировано; непосредственная правка достаточна |\n\nB3 не становится отложенной обязательной задачей: будущий scope должен отдельно определить Лев, если такая потребность появится. План не назначает срок, новый инкремент или искусственный триггер. Других добавлений нет.\n\n## Исполнение и передача\n\n| Работа | Владелец, готовность и зависимости | Результат и маршрут |\n|---|---|---|\n| MI-8: B1+B2 | coding; `ready for coding`; входы приняты, блокеров старта нет; риск низкий — локальная ограниченная правка | Указанная пара fixtures, точечная правка `import_notes.py` в L-8 и проверка на этой паре. Передать Нине для проверки и Льву для review |\n| Проверка MI-8 | Нина; `blocked` до получения готовой правки и fixtures от coding | Выполнить существующий `python3 verify_import.py`; вернуть Льву stdout, exit status и фактический список по той же fixture |\n| Review и acceptance MI-8 | Лев; `blocked` до правки и доказательств Нины | Проверить границу изменения и реальный результат; принять MI-8 либо вернуть coding конкретное несоответствие L-8 с доказательствами |\n\nЗависимости: MI-8 → проверка Нины — `start`, снимается передачей правки и точной пары fixtures от coding Нине. MI-8 + проверка Нины → acceptance Льва — `acceptance`, снимается review Льва и успешными фактическими доказательствами Нины. Правка кода может быть рассмотрена Львом раньше, но приёмка ждёт проверку. Отдельные merge/release и параллельные ветви не нужны и не поручены.\n\n## Проверка и граница доказательств\n\nТочный вход `fixtures/current.txt` по L-8, записанный с явными переводами строк: `alpha'\"\\\\n\\\\nbeta\\\\n  \\\\ngamma\\\\n\"'`. Строка между `beta` и `gamma` содержит ровно два пробела; в конце есть LF. `fixtures/expected.json` представляет массив `[\"alpha\",\"beta\",\"gamma\"]`.\n\nДоказательство успеха: неизменённый `python3 verify_import.py` проверяет фактический результат реального импорта на этой паре, завершается с exit status 0, полученный список равен `[\"alpha\",\"beta\",\"gamma\"]`. Пустая запись, запись из пробелов, потеря или перестановка непустой заметки опровергает успех на данной fixture. Наличие JSON или двух fixture-файлов само по себе не является приёмкой. Лев дополнительно проверяет, что остальная семантика не расширена правкой. При неуспехе Нина возвращает доказательства Льву, Лев направляет несоответствие coding; после исправления используется та же проверка.\n\nСпециалистских решений не выявлено: это один локальный process без сети, БД, concurrency, auth и public API. Поэтому новые канонические публичные схемы, provider/package owners, архитектурные решения, миграции, проверки гонок и внешний round trip неприменимы. Принятая семантика и проверка не требуют маршрута к prd-engineer, architecture-engineer или spec-engineer. Иные форматы, случаи, harness и изменения `verify_import.py` исключены.\n\nПлан подготовлен по полному синтетическому контексту; код и runtime не проверялись, команды проекта не запускались. Это готовность передачи в coding, а не доказательство выполненного MI-8, общего покрытия импорта или release readiness. Единственный артефакт — этот план; реализация и приёмка остаются следующими действиями названных владельцев.\nEOF'",
+        "exit": 0,
+        "truncated": null,
+        "chars": 0
+      }
+    ]
+  }
+]

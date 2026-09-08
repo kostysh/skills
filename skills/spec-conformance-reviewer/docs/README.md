@@ -28,3 +28,4 @@
 | [logs/implementation-log-20260713-1.md](logs/implementation-log-20260713-1.md) | Direct operator request | Independent PASS |
 | [logs/implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) | Direct operator request | Independent scoped PASS |
 | [logs/implementation-log-20260727-1.md](logs/implementation-log-20260727-1.md) | Aequitas-ADR/app#226 | Independent PASS; bounded remediation re-audit |
+| [logs/implementation-log-20260907-1.md](logs/implementation-log-20260907-1.md) | G4 общего плана | Independent bounded PASS; [evidence](reviews/evidence/g4/README.md) |

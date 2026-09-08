@@ -1,0 +1,13 @@
+{
+  "basis": "reviewed-snapshot.json; supporting status/navigation and exact evidence additions only; active surface unchanged",
+  "changed_reviewed_files": {
+    "docs/README.md": {
+      "before": "e6a2ff9c22d33151a8c9c5bd8181720d1beeacdf39b3e5d3150316e58427fa10",
+      "after": "aff064798c4481fbf89990e859c982a8fc90fe01c6868723f201b02be7ad0c36"
+    },
+    "docs/logs/implementation-log-20260907-1.md": {
+      "before": "a46efc129fd2192ce1430d08a4a26e9afd3683594664f5364f524a7e31c5c2e6",
+      "after": "583964388d3480dc939e06a9f646cf4433e56afae53c4e84f0ed7107b2039537"
+    }
+  }
+}

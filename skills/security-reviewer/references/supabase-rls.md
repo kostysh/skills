@@ -82,7 +82,8 @@ Flag when:
 - critical same-transaction events can fail silently while the protected operation succeeds;
 - lower-criticality but required events have neither a durable fallback nor an explicitly accepted fail-closed design;
 - append-only audit or fallback tables allow inappropriate user reads, updates, deletes, or broad grants;
-- tests do not cover capture failure for required fail-closed or fallback behavior.
+
+Missing capture-failure tests for required fail-closed or fallback behavior are an evidence gap. Inspect the actual capture and failure path before deciding whether a reachable security defect exists; the missing test alone is not a finding.
 
 ## PostgREST And Supabase REST Query Construction
 

@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.2.12`
+- Skill source version: `0.2.13`
 
 ## Source files
 - `agents/openai.yaml`
@@ -31,9 +31,11 @@ Generated from `skill.yaml`.
 
 ## Required references
 - `references/methodology.md`
+- `references/planning-patterns.md`
+- `references/output-templates.md`
 
 ## Warnings
-- none
+- Generated SKILL.md is 23857 bytes, above the recommended maximum 23500 bytes. Move detailed guidance into references/* and keep SKILL.md focused on activation, workflow, and navigation. Raise skill.recommended-skill-md-max-bytes only when references cannot reasonably reduce the size.
 
 ## Notes
 - This document is supporting output only.

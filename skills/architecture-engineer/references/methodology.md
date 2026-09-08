@@ -65,7 +65,7 @@ Apply explicit user or repository precedence first. When none is defined, use pr
 
 Observed code, configuration, schema, tests, or an available mechanism can establish current state and constraints. Their existence does not create a new normative ASR, exceptional operating mode, or actor prerequisite without an accepted source statement or accepted non-product authority.
 
-If equal-authority sources conflict in a way that changes architecture, stop for resolution. Treat lower-authority disagreement as drift and record non-blocking uncertainty as an assumption with a validation path.
+If equal-authority sources conflict in a way that changes architecture, apply the [canonical stop or escalation rules](../SKILL.md#stop-or-escalation-rules) to the dependent decision. Treat lower-authority disagreement as drift and record non-blocking uncertainty as an assumption with a validation path.
 
 ## Workflow stage: Normalize architecture-relevant requirements
 
@@ -533,6 +533,4 @@ Validation:
 
 ## Stop or escalation reminder
 
-Ask one focused question or mark human review required when the missing or conflicting input would change architecture across product conflict, security, privacy, compliance, data-loss, compatibility, public API, identity, tenancy, data model, migration, secrets handling, deployment topology, paid/operational dependency, external contract, rollback, observability, audit, or security posture.
-
-For non-blocking gaps, proceed with assumptions and validation steps.
+Apply the [canonical stop or escalation rules](../SKILL.md#stop-or-escalation-rules). Preserve existing authorization and continue independent supported work; a reminder does not add another approval gate.

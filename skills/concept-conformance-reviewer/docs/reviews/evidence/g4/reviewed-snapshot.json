@@ -1,0 +1,21 @@
+{
+  "source": {
+    "AGENTS.md": "8619fd5bbd55d5e25ccba55ea87ce3c828727ff8dfd8c44a0da87b4d2d5078ed",
+    "SKILL.md": "dfb0381067312e2e10cff4e846f631387856db864887da814f9a1f2350b95b6f",
+    "docs/README.md": "a7534672eab17e5a1d26f21cccddd4cdaa928a7fafc6130f161c87ac572dfb2d",
+    "docs/compile-report.md": "9e63f899561d3aec9d1cea7b1139d36abce02da099742ebd6ad810d572a8abc3",
+    "docs/logs/implementation-log-20260710-1.md": "5067e79f7fa8361b29889775c9243d90e983c7862932cbc241ba174ef9200e97",
+    "docs/logs/implementation-log-20260713-1.md": "a743b04f4818e0a3d043f082e80c10be4015f677c30fabcbf83367953088520d",
+    "docs/logs/implementation-log-20260715-1.md": "4458fbb45dd6267445f9811d9bd08bc28a637defb93f1fba3f8691c847587d59",
+    "docs/logs/implementation-log-20260727-1.md": "7eb403d08bbad12ff85d4bce3efd57fc4a67a02eb586420a55e9934c7bfd2b86",
+    "docs/logs/implementation-log-20260907-1.md": "fe1cafac918a238c9420ee7d1442d8d2a71dc1ed4b010188dd5a53a0ec0a33b3",
+    "fragments/overview.md": "65ab0e3402f2648fd17a7ec455c82c06a6f934dd3842e78a89e7ec2ab48fe179",
+    "skill.yaml": "4ee935b8fc6778cee14a6fc199c3af3f35f70b49c783e8b72835f68a63036abf"
+  },
+  "source_aggregate_sha256": "4c95da6f221e60f9463fe11eaa86952fc4d3397f3ff5deb1731bd9fb6e22c2ea",
+  "algorithm": "SHA256; sorted relative path TAB hash LF",
+  "active": {
+    "SKILL.md": "dfb0381067312e2e10cff4e846f631387856db864887da814f9a1f2350b95b6f"
+  },
+  "pre_edit_inputs_unchanged": true
+}

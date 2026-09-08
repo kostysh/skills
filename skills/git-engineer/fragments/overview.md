@@ -102,7 +102,8 @@ The portable default is `<repository-root>/.worktrees/<task-slug>`. An explicit 
 
 - Use `gh-utility` for GitHub repositories, issues, pull requests, checks, labels, Actions, merges, and other platform reads or mutations. `git-engineer` may supply the repository-approved history method and exact local branch/ref facts; `gh-utility` owns platform execution and fresh GitHub-state verification.
 - Use `code-reviewer` for findings, severity, approval, and merge-readiness judgment. A requested Git operation does not authorize a review verdict.
-- Use `gh-fix-ci` for diagnosis and remediation of failing GitHub pull-request checks. This skill may report the local branch or commit involved but does not decide the CI fix.
+- For failing GitHub pull-request checks, use `gh-fix-ci` when available; otherwise route diagnosis and remediation to an actually available implementation/domain owner for the affected code or workflow. Use `gh-utility` to gather GitHub check/run/log facts. Pass the repository and PR identity when known, exact branch/HEAD and relevant ref OIDs, repository-approved history method, current index/worktree or in-progress state, observed failing check/run identifiers and log evidence, and missing or unverified inputs. Do not invent unavailable provider facts or decide the CI fix here.
+- An unavailable CI specialist does not block independently supported, authorized Git work. Preserve its verified result and evidence limits in the handoff. If the implementation/domain owner cannot be identified, leave only the dependent CI-remediation handoff blocked and name the missing owner assignment; do not infer an expert conclusion or claim CI completion.
 
 ## Output contract
 

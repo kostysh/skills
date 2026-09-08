@@ -1,0 +1,2274 @@
+{
+  "source": {
+    "files": {
+      "AGENTS.md": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf",
+      "SKILL.md": "cf4145f20b390fd712a436039b1c9bc30f4105a565a7cb5d1722d2d2ae3b6cfa",
+      "agents/openai.yaml": "cfb46dd79b7c1dbea6f21726d24c55d1ecde761ced9005f103ffb30629c88b2b",
+      "assets/fixtures/consultant-admission-policy.md": "acc3607c90becff03a87356f0e43e094bb023e28ea1e80af64dbd4577c514b53",
+      "docs/README.md": "e6a2ff9c22d33151a8c9c5bd8181720d1beeacdf39b3e5d3150316e58427fa10",
+      "docs/compile-report.md": "7968b72fdb2d4761468f46a7efdf2c7fa37f95213674bcec898bccc0ea5bcf1f",
+      "docs/issues/implementation-plan-20260424-1.md": "68585ce36749976d88b5ab518b56f7ad18fe1bf476e4bd55ba1c7f73c5d637f4",
+      "docs/issues/issue-20260424-1.md": "78026e3b3227816347a495e34842f4465044e6ee8ac9a067a3b11eb37489a463",
+      "docs/issues/issue-20260428-1.md": "3f0059f9a239fe56e855b11fccca338fdaf211f839c02bd1c55ed99d7171acad",
+      "docs/logs/implementation-log-20260424-1.md": "4d51e23de0649a35191e6c7134cb59dc1efaed2298a9fe24de8e6aabed83407b",
+      "docs/logs/implementation-log-20260611-1.md": "a9998b1cc1ac7ccd8749b0f7b4e25b6d14902a1c7d5148ead0b52b26d2174961",
+      "docs/logs/implementation-log-20260708-1.md": "7d56612494b26856ea4925359440a92ab8ffc78dd8f2a0cfec8daa39b0a1f936",
+      "docs/logs/implementation-log-20260710-1.md": "67eb75d3aa8d5a42e5fb39b81f62950ffca335c584a64cdef7f84143e139486e",
+      "docs/logs/implementation-log-20260713-1.md": "bf653097ece4df4ab03763c7b17dfc31b10b7cd77930e0563b344691072f17f0",
+      "docs/logs/implementation-log-20260715-1.md": "8938b16d1018ff8f5337af483872d1bb1c0dbf1217dc5a608caa6a952fc71c0b",
+      "docs/logs/implementation-log-20260727-1.md": "0c9fa86ad964357a6f478ec5d926461781fcb759c4b7443d167f2357e73263d1",
+      "docs/logs/implementation-log-20260907-1.md": "a46efc129fd2192ce1430d08a4a26e9afd3683594664f5364f524a7e31c5c2e6",
+      "fragments/overview.md": "9489cacf692d63107339feab97bcc187617ed9834102e8c3f5b74d22b5035640",
+      "references/methodology.md": "a166d34182463fddba81ca4db49eb7401f8a177f4a09369969ce9355be74e816",
+      "references/policy-admission-matrix.md": "cfe2cd85876b46cdd71fd982b15bdbe3cff16e4dc95da48ca53a2c3b28578689",
+      "references/reporting.md": "75c49ef2eb6fc501952112b3e3c47dad83ebc7da4f996ba7e0d11e588795bc25",
+      "skill.yaml": "c44fb98b5cc41466dc0bc93e1b9312e259478689988f08b41ff726125b06c988"
+    },
+    "verified": true,
+    "extra": [],
+    "aggregate_algorithm": "sha256 UTF8 sorted relative POSIX path + TAB + file SHA256 + LF",
+    "aggregate": "a376b8fea459d7f1ff20c7243bc41e71cafd36e7d9b8abdb95a6b0698a5d68b7"
+  },
+  "active": {
+    "verified": true,
+    "count": 6
+  },
+  "preedit": {
+    "verified": true,
+    "count": 33
+  },
+  "producer_bindings": {
+    "test": {
+      "original_hash": "f83b52e789c0a8d9f65759bbf1640ef363b1be77c0e43e3cfbd28ab5feab814e",
+      "copy_hash": "f83b52e789c0a8d9f65759bbf1640ef363b1be77c0e43e3cfbd28ab5feab814e",
+      "matches": true
+    },
+    "concept": {
+      "original_hash": "5f2ac7d606108aacf74cff668295cebce76e092bb4ac125ffdf70d486423d596",
+      "copy_hash": "5f2ac7d606108aacf74cff668295cebce76e092bb4ac125ffdf70d486423d596",
+      "matches": true
+    }
+  },
+  "runs": {
+    "g4_speccon_trial01a": {
+      "threadId": "01a07db0-15bb-7a32-9dbd-d2ade498ac9a",
+      "page_hasMore": false,
+      "turn_statuses": [
+        "completed"
+      ],
+      "report_sha256": "a81d33741e49c92b49540de69837dc4ca3e0ede2175d8bb7ecdfb3d06489297e",
+      "command_count": 10,
+      "nonzero": [],
+      "truncated": [],
+      "read_bound": 6000,
+      "oversized_outputs": [
+        {
+          "event": "exec-9bfc1a6b-a1da-414b-82b4-6b3d30f212b9",
+          "chars": 18074
+        }
+      ],
+      "input_delivery": {
+        "spec-conformance-cases/executor/01.md": {
+          "chars": 904,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-922aa667-71c1-4e95-83e5-dfbd32911379",
+              "range": [
+                0,
+                904
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "initial-providers/spec-conformance-reviewer/SKILL.md": {
+          "chars": 18074,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-9bfc1a6b-a1da-414b-82b4-6b3d30f212b9",
+              "range": [
+                0,
+                18074
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "initial-providers/spec-conformance-reviewer/references/methodology.md": {
+          "chars": 13436,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-bf25c959-77ec-4f25-9197-9793f24696e4",
+              "range": [
+                0,
+                5800
+              ]
+            },
+            {
+              "event": "exec-80fb3914-d90d-4294-8a7c-25a6da7616ec",
+              "range": [
+                5800,
+                11600
+              ]
+            },
+            {
+              "event": "exec-a79ce7a9-984c-4763-91e0-881c1472b4fb",
+              "range": [
+                11600,
+                13436
+              ]
+            }
+          ]
+        },
+        "initial-providers/spec-conformance-reviewer/references/reporting.md": {
+          "chars": 9401,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-e71c57f6-7c26-41cd-8cc0-cd996496d4f9",
+              "range": [
+                0,
+                5800
+              ]
+            },
+            {
+              "event": "exec-d27e9111-41bf-4bfe-acbe-d047b7331fe9",
+              "range": [
+                5800,
+                9401
+              ]
+            }
+          ]
+        }
+      },
+      "event_index": [
+        {
+          "id": "exec-9bfc1a6b-a1da-414b-82b4-6b3d30f212b9",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/SKILL.md'",
+          "command_sha256": "a5346832f14e04a98cab52a23c7629a45c2e3ae3e720030d2a7e8bf7051ac24e",
+          "output_chars": 18074
+        },
+        {
+          "id": "exec-922aa667-71c1-4e95-83e5-dfbd32911379",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/spec-conformance-cases/executor/01.md'",
+          "command_sha256": "11772e1d70ec897bd0d06208688155ae809dbbd7bc4567041cbf2c3a064919c5",
+          "output_chars": 904
+        },
+        {
+          "id": "exec-5faa9750-75cd-4b4b-aa58-0b688d4d0d1f",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'wc -c /tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/methodology.md /tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/reporting.md'",
+          "command_sha256": "ff85a4c52560da6e1ad0541e041571e996fc7ebda1552a831b801afeeabb4df6",
+          "output_chars": 246
+        },
+        {
+          "id": "exec-bf25c959-77ec-4f25-9197-9793f24696e4",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python -c 'from pathlib import Path; print(Path(\\\"/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/methodology.md\\\").read_text()[0:5800])'\"",
+          "command_sha256": "5260ea9df79e3f4b6041a111d301d81d3f05237d6cad3f95012879b3484d34b8",
+          "output_chars": 5801
+        },
+        {
+          "id": "exec-80fb3914-d90d-4294-8a7c-25a6da7616ec",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python -c 'from pathlib import Path; print(Path(\\\"/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/methodology.md\\\").read_text()[5800:11600])'\"",
+          "command_sha256": "891b61d9a060ca90ff407a04c57faf3bc3fc67563471e907d6a69d3989da26de",
+          "output_chars": 5801
+        },
+        {
+          "id": "exec-a79ce7a9-984c-4763-91e0-881c1472b4fb",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python -c 'from pathlib import Path; print(Path(\\\"/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/methodology.md\\\").read_text()[11600:17400])'\"",
+          "command_sha256": "1a3bcd867a3026549daca1269d3d5f7528ab0eda83e6cc07205c3091ee65a7de",
+          "output_chars": 1837
+        },
+        {
+          "id": "exec-e71c57f6-7c26-41cd-8cc0-cd996496d4f9",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python -c 'from pathlib import Path; print(Path(\\\"/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/reporting.md\\\").read_text()[0:5800])'\"",
+          "command_sha256": "6bbac390e9f6116543918aa89f37023c0e8bccf4302a101734361742247d32ef",
+          "output_chars": 5801
+        },
+        {
+          "id": "exec-d27e9111-41bf-4bfe-acbe-d047b7331fe9",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python -c 'from pathlib import Path; print(Path(\\\"/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/reporting.md\\\").read_text()[5800:11600])'\"",
+          "command_sha256": "5bfaad8f28ea7e1519dd6212180965f002c03e9262d88a5b3109bccbae4b364e",
+          "output_chars": 3602
+        },
+        {
+          "id": "exec-df023230-a97d-490d-bbc3-4803768395f2",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'sha256sum /tmp/skills-revision-g4-20260907-ZMFe9Zkq/spec-conformance-cases/executor/01.md'",
+          "command_sha256": "ab93c62ef16e30e32959952c1dc34f6f4ab64d6c859c37eaf541f05eb6359d04",
+          "output_chars": 146
+        },
+        {
+          "id": "exec-f69a345a-d896-4b69-80ac-38d7e0702bcb",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"cat > /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-runs/01-01/report.md <<'EOF'\nThe supplied export boundary fulfills FS-12 v3 and contradicts ADR-8 v2; it cannot satisfy both current requirements, and the product owner must resolve which response behavior is intended.\n\nSnapshot and scope: frozen case 01.md, SHA-256 be78a6581eb1f59f646602ea56bda2c529c4882c9e9a7044e147355ffaf35a7b, containing the complete stipulated export hand",
+          "command_sha256": "21a5a9d28ed3195ccd0ea5ef34890f09820084523a9cfb940e19fa3bc0e83943",
+          "output_chars": 0
+        }
+      ]
+    },
+    "g4_speccon_trial01b": {
+      "threadId": "01a07db3-1f8a-7ab1-8e80-f572546e1063",
+      "page_hasMore": false,
+      "turn_statuses": [
+        "completed"
+      ],
+      "report_sha256": "6f6a29de5faa2754861cc45c3ab25c526614e0d1c079bf6337916883d7b1c1b4",
+      "command_count": 7,
+      "nonzero": [],
+      "truncated": [],
+      "read_bound": 6000,
+      "oversized_outputs": [
+        {
+          "event": "exec-79ec127e-970f-433f-bcdb-c9e21da12bc7",
+          "chars": 17777
+        },
+        {
+          "event": "exec-ad138fd6-d13e-4530-92f8-b430e0a654a5",
+          "chars": 11841
+        }
+      ],
+      "input_delivery": {
+        "spec-conformance-cases/executor/01.md": {
+          "chars": 904,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-8dcfcdee-1be3-46cf-bb4b-335f7d5685f8",
+              "range": [
+                0,
+                904
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "speccon-candidate-active/SKILL.md": {
+          "chars": 17777,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-79ec127e-970f-433f-bcdb-c9e21da12bc7",
+              "range": [
+                0,
+                17777
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "speccon-candidate-active/references/methodology.md": {
+          "chars": 13486,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-ad138fd6-d13e-4530-92f8-b430e0a654a5",
+              "range": [
+                0,
+                5900
+              ]
+            },
+            {
+              "event": "exec-04e3e1d8-dc04-4d26-8739-4c56c3792c34",
+              "range": [
+                5900,
+                11800
+              ]
+            },
+            {
+              "event": "exec-41d5b944-a169-4b16-b4c8-250b5d2cdb7b",
+              "range": [
+                11800,
+                13486
+              ]
+            }
+          ]
+        },
+        "speccon-candidate-active/references/reporting.md": {
+          "chars": 9401,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-ad138fd6-d13e-4530-92f8-b430e0a654a5",
+              "range": [
+                0,
+                5900
+              ]
+            },
+            {
+              "event": "exec-ef023ef6-28a2-4c67-b1ed-f72452a53524",
+              "range": [
+                5900,
+                9401
+              ]
+            }
+          ]
+        }
+      },
+      "event_index": [
+        {
+          "id": "exec-79ec127e-970f-433f-bcdb-c9e21da12bc7",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/SKILL.md'",
+          "command_sha256": "2558db15fe91e7d154ff0dc083f033a6ca64cfb97840cc4b4b9b33aaab413a1e",
+          "output_chars": 17777
+        },
+        {
+          "id": "exec-8dcfcdee-1be3-46cf-bb4b-335f7d5685f8",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/spec-conformance-cases/executor/01.md'",
+          "command_sha256": "11772e1d70ec897bd0d06208688155ae809dbbd7bc4567041cbf2c3a064919c5",
+          "output_chars": 904
+        },
+        {
+          "id": "exec-ad138fd6-d13e-4530-92f8-b430e0a654a5",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nfor name in ['methodology.md','reporting.md']:\n p=Path('/tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references')/name\n s=p.read_text(); print(name,len(s)); print(s[:5900])\nPY\"",
+          "command_sha256": "79d34180d560cbd806cd0b3867abe2cf0edcdb5d9837a53244114fb0daa970db",
+          "output_chars": 11841
+        },
+        {
+          "id": "exec-04e3e1d8-dc04-4d26-8739-4c56c3792c34",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nprint(Path('/tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/methodology.md').read_text()[5900:11800])\nPY\"",
+          "command_sha256": "04faa0b35c2b7c2269fb915ce793ec332522c19b24b79de45813ae49f7ea6075",
+          "output_chars": 5901
+        },
+        {
+          "id": "exec-41d5b944-a169-4b16-b4c8-250b5d2cdb7b",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nprint(Path('/tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/methodology.md').read_text()[11800:17700])\nPY\"",
+          "command_sha256": "ba3e95c7cbb577a2d6dec6072dd10fcf8b7653df086024aeb2faf2986330cf14",
+          "output_chars": 1687
+        },
+        {
+          "id": "exec-ef023ef6-28a2-4c67-b1ed-f72452a53524",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nprint(Path('/tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/reporting.md').read_text()[5900:11800])\nPY\"",
+          "command_sha256": "da7b42ec5f52ccc41ec81127805e9283be890ce13938aa2275ac49eaf7927a0a",
+          "output_chars": 3502
+        },
+        {
+          "id": "exec-b3f1bcae-3a5c-46ea-b2af-a333f7b5ad62",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nimport hashlib\ncase=Path('/tmp/skills-revision-g4-20260907-ZMFe9Zkq/spec-conformance-cases/executor/01.md')\ndigest=hashlib.sha256(case.read_bytes()).hexdigest()\nreport='''Предоставленная реализация выполняет синхронный экспорт по FS-12, но общий вывод о соответствии заблокирован противоречащими обязательными требованиями FS-12 и ADR-8.\n\nОбласть: полный предоставленный synthetic snapshot обра",
+          "command_sha256": "6d61a7d6d855002f987fc046fe3398595fe4b33cf6ddd6a41e71bac2d572d2a6",
+          "output_chars": 0
+        }
+      ]
+    },
+    "g4_speccon_trial02a": {
+      "threadId": "01a07db0-2e6d-7ee0-9863-fd71788f6c27",
+      "page_hasMore": false,
+      "turn_statuses": [
+        "completed"
+      ],
+      "report_sha256": "5a4becb62b560739a26a1b0b7538ddace069bf81065c0de42c1e83848217f790",
+      "command_count": 10,
+      "nonzero": [],
+      "truncated": [],
+      "read_bound": 6000,
+      "oversized_outputs": [
+        {
+          "event": "exec-49d80968-14c0-4587-8f82-0df7dcaa6c53",
+          "chars": 18074
+        }
+      ],
+      "input_delivery": {
+        "spec-conformance-cases/executor/02.md": {
+          "chars": 902,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-9fd979ed-7560-435f-b8c6-8a8f7191ce78",
+              "range": [
+                0,
+                902
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "initial-providers/spec-conformance-reviewer/SKILL.md": {
+          "chars": 18074,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-49d80968-14c0-4587-8f82-0df7dcaa6c53",
+              "range": [
+                0,
+                18074
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "initial-providers/spec-conformance-reviewer/references/methodology.md": {
+          "chars": 13436,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-c238f155-4019-4f6f-80f5-4cebbceb5c27",
+              "range": [
+                0,
+                5800
+              ]
+            },
+            {
+              "event": "exec-841bb8c1-d48b-4ceb-97b2-cbc8393d59b7",
+              "range": [
+                5800,
+                11600
+              ]
+            },
+            {
+              "event": "exec-7756050d-561d-4037-a808-fe716608eb7b",
+              "range": [
+                11600,
+                13436
+              ]
+            }
+          ]
+        },
+        "initial-providers/spec-conformance-reviewer/references/reporting.md": {
+          "chars": 9401,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-942a2718-8b81-4ff3-8b60-6dd4eb53eded",
+              "range": [
+                0,
+                5800
+              ]
+            },
+            {
+              "event": "exec-ca35c2c6-7e04-4150-af84-5eeac85e2a67",
+              "range": [
+                5800,
+                9401
+              ]
+            }
+          ]
+        }
+      },
+      "event_index": [
+        {
+          "id": "exec-49d80968-14c0-4587-8f82-0df7dcaa6c53",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/SKILL.md'",
+          "command_sha256": "a5346832f14e04a98cab52a23c7629a45c2e3ae3e720030d2a7e8bf7051ac24e",
+          "output_chars": 18074
+        },
+        {
+          "id": "exec-9fd979ed-7560-435f-b8c6-8a8f7191ce78",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/spec-conformance-cases/executor/02.md'",
+          "command_sha256": "afd786e7ea0f3a1b60b20375e6082f5fb07d44e878295842332c34ff09dc357d",
+          "output_chars": 902
+        },
+        {
+          "id": "exec-4cd04341-1a17-4d5d-8ca5-768afc453812",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'wc -c /tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/{methodology,reporting}.md'",
+          "command_sha256": "2f0a892176c99a75866a6db1eacb31cd1d8ed6bfd09adb0f654ca4a277d48dd3",
+          "output_chars": 246
+        },
+        {
+          "id": "exec-c238f155-4019-4f6f-80f5-4cebbceb5c27",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python -c 'from pathlib import Path; print(Path(\\\"/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/methodology.md\\\").read_text()[0:5800])'\"",
+          "command_sha256": "5260ea9df79e3f4b6041a111d301d81d3f05237d6cad3f95012879b3484d34b8",
+          "output_chars": 5801
+        },
+        {
+          "id": "exec-841bb8c1-d48b-4ceb-97b2-cbc8393d59b7",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python -c 'from pathlib import Path; print(Path(\\\"/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/methodology.md\\\").read_text()[5800:11600])'\"",
+          "command_sha256": "891b61d9a060ca90ff407a04c57faf3bc3fc67563471e907d6a69d3989da26de",
+          "output_chars": 5801
+        },
+        {
+          "id": "exec-7756050d-561d-4037-a808-fe716608eb7b",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python -c 'from pathlib import Path; print(Path(\\\"/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/methodology.md\\\").read_text()[11600:17400])'\"",
+          "command_sha256": "1a3bcd867a3026549daca1269d3d5f7528ab0eda83e6cc07205c3091ee65a7de",
+          "output_chars": 1837
+        },
+        {
+          "id": "exec-942a2718-8b81-4ff3-8b60-6dd4eb53eded",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python -c 'from pathlib import Path; print(Path(\\\"/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/reporting.md\\\").read_text()[0:5800])'\"",
+          "command_sha256": "6bbac390e9f6116543918aa89f37023c0e8bccf4302a101734361742247d32ef",
+          "output_chars": 5801
+        },
+        {
+          "id": "exec-ca35c2c6-7e04-4150-af84-5eeac85e2a67",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python -c 'from pathlib import Path; print(Path(\\\"/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/reporting.md\\\").read_text()[5800:11600])'\"",
+          "command_sha256": "5bfaad8f28ea7e1519dd6212180965f002c03e9262d88a5b3109bccbae4b364e",
+          "output_chars": 3602
+        },
+        {
+          "id": "exec-7d0eff8c-4506-442e-a6bf-7589040e33a0",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'sha256sum /tmp/skills-revision-g4-20260907-ZMFe9Zkq/spec-conformance-cases/executor/02.md'",
+          "command_sha256": "c877cf9edb174f60ba905d5c32f880d2c0662320227196e72f421dd15c3cb604",
+          "output_chars": 146
+        },
+        {
+          "id": "exec-16bc459b-4909-4ea1-9df7-ccce5018f02c",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nPath('/tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-runs/02-01/report.md').write_text('''Предоставленная реализация выполняет актуальные требования к завершению экспорта и ответу endpoint; нарушений в проверяемом поведении нет.\n\nВердикт: **compliant** в пределах предоставленного синтетического сценария.\n\nОснование и границы: read-only проверка frozen snapshot \"'`executor/02.md`, SHA-256 ",
+          "command_sha256": "d44f051084d5156aa3e2e1c398c6bc61a20871d21371a0d61f50864777b73781",
+          "output_chars": 0
+        }
+      ]
+    },
+    "g4_speccon_trial02b": {
+      "threadId": "01a07db3-3edd-76c3-8a29-3a1a422df390",
+      "page_hasMore": false,
+      "turn_statuses": [
+        "completed"
+      ],
+      "report_sha256": "ae52f91752320bcb97b9534e051d94b897468e231871311b6dc5b4c76f3b9f58",
+      "command_count": 10,
+      "nonzero": [],
+      "truncated": [],
+      "read_bound": 6000,
+      "oversized_outputs": [
+        {
+          "event": "exec-c6d897ed-07d7-40cb-a8ac-a0db461c16b6",
+          "chars": 17777
+        }
+      ],
+      "input_delivery": {
+        "spec-conformance-cases/executor/02.md": {
+          "chars": 902,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-1c3fe964-fa40-4423-9449-a946cb9c236a",
+              "range": [
+                0,
+                902
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "speccon-candidate-active/SKILL.md": {
+          "chars": 17777,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-c6d897ed-07d7-40cb-a8ac-a0db461c16b6",
+              "range": [
+                0,
+                17777
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "speccon-candidate-active/references/methodology.md": {
+          "chars": 13486,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-902e280d-6a47-4eb6-a370-3db4222c090a",
+              "range": [
+                0,
+                5500
+              ]
+            },
+            {
+              "event": "exec-203bf928-3dca-4b7d-8791-7e271ec9c9da",
+              "range": [
+                5500,
+                11000
+              ]
+            },
+            {
+              "event": "exec-91e5488f-7aee-444a-be1d-d8252cf736b0",
+              "range": [
+                11000,
+                13486
+              ]
+            }
+          ]
+        },
+        "speccon-candidate-active/references/reporting.md": {
+          "chars": 9401,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-6ac54b6b-ad78-4225-af9a-9f476a234073",
+              "range": [
+                0,
+                5500
+              ]
+            },
+            {
+              "event": "exec-8d517d5c-c7b9-47ff-afb5-9ff7f0a51dfb",
+              "range": [
+                5500,
+                9401
+              ]
+            }
+          ]
+        }
+      },
+      "event_index": [
+        {
+          "id": "exec-c6d897ed-07d7-40cb-a8ac-a0db461c16b6",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/SKILL.md'",
+          "command_sha256": "2558db15fe91e7d154ff0dc083f033a6ca64cfb97840cc4b4b9b33aaab413a1e",
+          "output_chars": 17777
+        },
+        {
+          "id": "exec-1c3fe964-fa40-4423-9449-a946cb9c236a",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/spec-conformance-cases/executor/02.md'",
+          "command_sha256": "afd786e7ea0f3a1b60b20375e6082f5fb07d44e878295842332c34ff09dc357d",
+          "output_chars": 902
+        },
+        {
+          "id": "exec-f6673792-6e0c-4c49-9c65-53da49a264fa",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'wc -c /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/methodology.md /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/reporting.md'",
+          "command_sha256": "b7d2503fdcbee6b5daef1f8ae77b90917c10ac8c2c1885b140dd641834d7c8e4",
+          "output_chars": 208
+        },
+        {
+          "id": "exec-902e280d-6a47-4eb6-a370-3db4222c090a",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python -c 'from pathlib import Path; print(Path(\\\"/tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/methodology.md\\\").read_text()[0:5500])'\"",
+          "command_sha256": "ab71d7b75bf4ecc47cd54899335bf5f723e642d48a076cdab4527bdd70435775",
+          "output_chars": 5501
+        },
+        {
+          "id": "exec-203bf928-3dca-4b7d-8791-7e271ec9c9da",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python -c 'from pathlib import Path; print(Path(\\\"/tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/methodology.md\\\").read_text()[5500:11000])'\"",
+          "command_sha256": "f009d5f29b9e0c82d74c669369bd5908416a89087a342e8cc37400b2ef28b976",
+          "output_chars": 5501
+        },
+        {
+          "id": "exec-91e5488f-7aee-444a-be1d-d8252cf736b0",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python -c 'from pathlib import Path; print(Path(\\\"/tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/methodology.md\\\").read_text()[11000:16500])'\"",
+          "command_sha256": "604bb0cdcfc248c1f70f4ffd40ed66404392f4319a8bd70f9d68d05241867d7d",
+          "output_chars": 2487
+        },
+        {
+          "id": "exec-6ac54b6b-ad78-4225-af9a-9f476a234073",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python -c 'from pathlib import Path; print(Path(\\\"/tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/reporting.md\\\").read_text()[0:5500])'\"",
+          "command_sha256": "6beedf225f75c9ebb45bfa8efd1478ee381ae382116a56c561c0debfc4385e76",
+          "output_chars": 5501
+        },
+        {
+          "id": "exec-8d517d5c-c7b9-47ff-afb5-9ff7f0a51dfb",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python -c 'from pathlib import Path; print(Path(\\\"/tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/reporting.md\\\").read_text()[5500:11000])'\"",
+          "command_sha256": "6a09eaf77a90cfa6c3dc4f65b9162cce011981cec02d14f155c188bac16d3198",
+          "output_chars": 3902
+        },
+        {
+          "id": "exec-0ee61f05-21e5-4ae3-ba28-f2108302476b",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'sha256sum /tmp/skills-revision-g4-20260907-ZMFe9Zkq/spec-conformance-cases/executor/02.md'",
+          "command_sha256": "c877cf9edb174f60ba905d5c32f880d2c0662320227196e72f421dd15c3cb604",
+          "output_chars": 146
+        },
+        {
+          "id": "exec-3f9fc216-878c-4130-927c-7dbf81726b0f",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"cat > /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-runs/02-02/report.md <<'EOF'\nПредоставленная реализация выполняет актуальные требования к завершению экспорта и ответу endpoint; нарушений в заданной границе не обнаружено.\n\nСнимок: frozen input \"'`executor/02.md`, SHA-256 `445ae078fa27e4c33243dd1f69c57bb74ec3e3a171a7fdedb9b24fd1c2867736`; он идентифицирует предоставленные описания реализации, источников и boundary transcript,",
+          "command_sha256": "aa36a3cfb80ddb8449b763e9e5c72e188bd120ab7e47e97a6613f20b8f267596",
+          "output_chars": 0
+        }
+      ]
+    },
+    "g4_speccon_trial03a": {
+      "threadId": "01a07db1-000d-76c1-be24-e5a668aeb84d",
+      "page_hasMore": false,
+      "turn_statuses": [
+        "completed"
+      ],
+      "report_sha256": "7e984c8224413999184322bfc528dfc2fb2c857bbac55fd7c450853fea8eded4",
+      "command_count": 12,
+      "nonzero": [],
+      "truncated": [],
+      "read_bound": 6000,
+      "oversized_outputs": [
+        {
+          "event": "exec-488bb14d-32e7-4d88-a656-f5a802e056a5",
+          "chars": 18074
+        }
+      ],
+      "input_delivery": {
+        "spec-conformance-cases/executor/03.md": {
+          "chars": 807,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-b9c6831d-47fd-486b-ab65-785911291757",
+              "range": [
+                0,
+                807
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "initial-providers/spec-conformance-reviewer/SKILL.md": {
+          "chars": 18074,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-488bb14d-32e7-4d88-a656-f5a802e056a5",
+              "range": [
+                0,
+                18074
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "initial-providers/spec-conformance-reviewer/references/methodology.md": {
+          "chars": 13436,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-a70e2571-5899-40da-8271-93d749730c2d",
+              "range": [
+                0,
+                6000
+              ]
+            },
+            {
+              "event": "exec-d318eee3-ec87-4ecf-a7a6-93c60a6df68e",
+              "range": [
+                6000,
+                12000
+              ]
+            },
+            {
+              "event": "exec-57ea9528-ec69-495e-bfe5-f7ad74ba1de2",
+              "range": [
+                12000,
+                13436
+              ]
+            }
+          ]
+        },
+        "initial-providers/spec-conformance-reviewer/references/reporting.md": {
+          "chars": 9401,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-165c41dd-c5b8-4213-bcfa-ca33d94fd57b",
+              "range": [
+                0,
+                6000
+              ]
+            },
+            {
+              "event": "exec-ce0b1fa3-8569-4165-8e0c-e874c6024e39",
+              "range": [
+                6000,
+                9401
+              ]
+            }
+          ]
+        },
+        "initial-providers/spec-conformance-reviewer/references/policy-admission-matrix.md": {
+          "chars": 3589,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-05e25841-86f7-4e4f-98c5-8839f530b426",
+              "range": [
+                0,
+                3589
+              ],
+              "whole": true
+            }
+          ]
+        }
+      },
+      "event_index": [
+        {
+          "id": "exec-488bb14d-32e7-4d88-a656-f5a802e056a5",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/SKILL.md'",
+          "command_sha256": "a5346832f14e04a98cab52a23c7629a45c2e3ae3e720030d2a7e8bf7051ac24e",
+          "output_chars": 18074
+        },
+        {
+          "id": "exec-b9c6831d-47fd-486b-ab65-785911291757",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/spec-conformance-cases/executor/03.md'",
+          "command_sha256": "12a0f77782cf7679165c27c25c67cf5aa752a717d6f3488c9068fd8edecb3835",
+          "output_chars": 807
+        },
+        {
+          "id": "exec-eb46884b-9543-4ec0-bb42-ee0e377c467e",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'wc -c /tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/{methodology,reporting}.md'",
+          "command_sha256": "2f0a892176c99a75866a6db1eacb31cd1d8ed6bfd09adb0f654ca4a277d48dd3",
+          "output_chars": 246
+        },
+        {
+          "id": "exec-a70e2571-5899-40da-8271-93d749730c2d",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'head -c 6000 /tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/methodology.md'",
+          "command_sha256": "70a36ca36276c07149f9392242f3af87a24b02e8d319c6e893b960342cf7a267",
+          "output_chars": 6000
+        },
+        {
+          "id": "exec-165c41dd-c5b8-4213-bcfa-ca33d94fd57b",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'head -c 6000 /tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/reporting.md'",
+          "command_sha256": "b7d91ac8360d35ac08db93df255735077afaac3160931a53448df9dbb3705f2d",
+          "output_chars": 6000
+        },
+        {
+          "id": "exec-d318eee3-ec87-4ecf-a7a6-93c60a6df68e",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'dd if=/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/methodology.md bs=1 skip=6000 count=6000 status=none'",
+          "command_sha256": "cf370ed174748d53b3054aef9f410ad74e99a55dab61ed139659af1ae52b4cb0",
+          "output_chars": 6000
+        },
+        {
+          "id": "exec-57ea9528-ec69-495e-bfe5-f7ad74ba1de2",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'dd if=/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/methodology.md bs=1 skip=12000 count=6000 status=none'",
+          "command_sha256": "ca2e1d507268ff2bb7f4485c6be48863d1ac8fc0988066d0d1990c75add9c0e8",
+          "output_chars": 1436
+        },
+        {
+          "id": "exec-ce0b1fa3-8569-4165-8e0c-e874c6024e39",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'dd if=/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/reporting.md bs=1 skip=6000 count=6000 status=none'",
+          "command_sha256": "0f1ecfdb7ed22cd8715dca1ea90283876724c93d11a8d8a1bfdc49935d053258",
+          "output_chars": 3401
+        },
+        {
+          "id": "exec-5913da01-f1d1-45e2-8fa3-bf1c2075b2df",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'wc -c /tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/policy-admission-matrix.md'",
+          "command_sha256": "e45a89141cc3862c942ed4bb38c4501a4fb9dc3043a349f26fec061cedb4148a",
+          "output_chars": 129
+        },
+        {
+          "id": "exec-05e25841-86f7-4e4f-98c5-8839f530b426",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'head -c 6000 /tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/policy-admission-matrix.md'",
+          "command_sha256": "eb0ca03c2a06f3a8278b75d386cfe37fb0cb2268425e1c46618b9d772c69e67c",
+          "output_chars": 3589
+        },
+        {
+          "id": "exec-f792d5fb-321a-4591-a84d-a8ae2eab2330",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'sha256sum /tmp/skills-revision-g4-20260907-ZMFe9Zkq/spec-conformance-cases/executor/03.md'",
+          "command_sha256": "17050afa81b25efca2981ab973479411121d1a9980f95a59dec2cac5ede4afac",
+          "output_chars": 146
+        },
+        {
+          "id": "exec-b051053b-c97f-4ffc-8211-ad5667099304",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"cat > /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-runs/03-01/report.md <<'EOF'\nF-7 закрыто: предоставленная трасса подтверждает требуемый 403 для отозванного участника; в пределах исправления и соседних ветвей авторизации незакрытых отклонений не установлено.\n\nОснование: замороженный synthetic input \"'`executor/03.md`, SHA-256 `6c186f47fa1e5c6e6f04e7cfc087f2ca102348be5b20da0934d648cb3598ee00`. Он идентифицирует предоставленны",
+          "command_sha256": "93da2d07179a660df290ddd4110dea1a2b1519035467ceaffb02ed72e4aee314",
+          "output_chars": 0
+        }
+      ]
+    },
+    "g4_speccon_trial03b": {
+      "threadId": "01a07db3-5cbb-7001-9255-09fd97161e8b",
+      "page_hasMore": false,
+      "turn_statuses": [
+        "completed"
+      ],
+      "report_sha256": "3138060013edb4cb3449b3939a724f51005e3b6692088175d1eacbd56e439bf2",
+      "command_count": 10,
+      "nonzero": [],
+      "truncated": [],
+      "read_bound": 6000,
+      "oversized_outputs": [
+        {
+          "event": "exec-9cae15f7-18d6-4876-8eef-1532862447ad",
+          "chars": 17777
+        }
+      ],
+      "input_delivery": {
+        "spec-conformance-cases/executor/03.md": {
+          "chars": 807,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-580dbc17-e26b-4b4b-99da-e4485987aa02",
+              "range": [
+                0,
+                807
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "speccon-candidate-active/SKILL.md": {
+          "chars": 17777,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-9cae15f7-18d6-4876-8eef-1532862447ad",
+              "range": [
+                0,
+                17777
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "speccon-candidate-active/references/methodology.md": {
+          "chars": 13486,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-604e81dc-673e-4322-a866-fe9679957a7b",
+              "range": [
+                0,
+                6000
+              ]
+            },
+            {
+              "event": "exec-62f55063-ccf7-47c6-82f8-8c2fc9ca253e",
+              "range": [
+                6000,
+                12000
+              ]
+            },
+            {
+              "event": "exec-244cfe2f-4676-493f-a84f-d5fc0a763379",
+              "range": [
+                12000,
+                13486
+              ]
+            }
+          ]
+        },
+        "speccon-candidate-active/references/reporting.md": {
+          "chars": 9401,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-b78ecd72-9e90-4666-a4bd-cb86bc0caf39",
+              "range": [
+                0,
+                6000
+              ]
+            },
+            {
+              "event": "exec-a358fb2a-4f87-4d07-9801-6cb261d1e5be",
+              "range": [
+                6000,
+                9401
+              ]
+            }
+          ]
+        },
+        "speccon-candidate-active/references/policy-admission-matrix.md": {
+          "chars": 3589,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-a2ca735f-34be-4a52-86ba-ae2c3fb760f6",
+              "range": [
+                0,
+                3589
+              ],
+              "whole": true
+            }
+          ]
+        }
+      },
+      "event_index": [
+        {
+          "id": "exec-9cae15f7-18d6-4876-8eef-1532862447ad",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/SKILL.md'",
+          "command_sha256": "2558db15fe91e7d154ff0dc083f033a6ca64cfb97840cc4b4b9b33aaab413a1e",
+          "output_chars": 17777
+        },
+        {
+          "id": "exec-580dbc17-e26b-4b4b-99da-e4485987aa02",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/spec-conformance-cases/executor/03.md'",
+          "command_sha256": "12a0f77782cf7679165c27c25c67cf5aa752a717d6f3488c9068fd8edecb3835",
+          "output_chars": 807
+        },
+        {
+          "id": "exec-b1cea24e-ba82-46bf-90d6-0b872f5c1541",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'wc -c /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/methodology.md /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/reporting.md'",
+          "command_sha256": "b7d2503fdcbee6b5daef1f8ae77b90917c10ac8c2c1885b140dd641834d7c8e4",
+          "output_chars": 208
+        },
+        {
+          "id": "exec-604e81dc-673e-4322-a866-fe9679957a7b",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'head -c 6000 /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/methodology.md'",
+          "command_sha256": "2951e254b1ed7aeb7d1cbf2e35ac4b260654a62e9124e5f8cbeace5518dce498",
+          "output_chars": 6000
+        },
+        {
+          "id": "exec-b78ecd72-9e90-4666-a4bd-cb86bc0caf39",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'head -c 6000 /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/reporting.md'",
+          "command_sha256": "7ea4bafdd14b1f42a64f56b4af28ac33f618eceb72c3bbe55dc00dcdedd1975b",
+          "output_chars": 6000
+        },
+        {
+          "id": "exec-62f55063-ccf7-47c6-82f8-8c2fc9ca253e",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'dd if=/tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/methodology.md bs=1 skip=6000 count=6000 status=none'",
+          "command_sha256": "cd57112c044a269daf593a76fb377f4f92fdf9d0fbe96ea4edb5d9b1ab6d91c2",
+          "output_chars": 6000
+        },
+        {
+          "id": "exec-244cfe2f-4676-493f-a84f-d5fc0a763379",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'dd if=/tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/methodology.md bs=1 skip=12000 count=1486 status=none'",
+          "command_sha256": "badb1724fb267c0fa77587a256143d5c6f55cd69bc8add890113093ff8a8a722",
+          "output_chars": 1486
+        },
+        {
+          "id": "exec-a358fb2a-4f87-4d07-9801-6cb261d1e5be",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'dd if=/tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/reporting.md bs=1 skip=6000 count=3401 status=none'",
+          "command_sha256": "670aae1d2ce87984fde7dd18a87e6338258b7a9d4d55c6951deb700240ed93ba",
+          "output_chars": 3401
+        },
+        {
+          "id": "exec-a2ca735f-34be-4a52-86ba-ae2c3fb760f6",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'head -c 6000 /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/policy-admission-matrix.md'",
+          "command_sha256": "adc3975b1eaa7744839bb5505e98068b6c16de3c4a0e344974a9513cd2630685",
+          "output_chars": 3589
+        },
+        {
+          "id": "exec-26988abe-223c-4e51-b845-28ab0d20d586",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"cat > /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-runs/03-02/report.md <<'EOF'\nF-7 закрыто по предоставленным замороженным данным: отозванный участник получает 403, соседние ветви авторизации сохраняют заявленное поведение; вывод ограничен принятой коррекцией и её соседними ветвями.\n\nИспользован spec-conformance-reviewer с methodology, reporting и policy-admission-matrix. Основание — synthetic case executor/03.md: его заморож",
+          "command_sha256": "46e2b54d58ac3e5a984e2c0c7c94c841c77c5d23892fad35c775b9f39414c188",
+          "output_chars": 0
+        }
+      ]
+    },
+    "g4_speccon_trial04a": {
+      "threadId": "01a07db1-578d-7081-84d8-10737bf970a5",
+      "page_hasMore": false,
+      "turn_statuses": [
+        "completed"
+      ],
+      "report_sha256": "5a0c98e6fbdbc560c6bc003a88426f7cb2d2cb2f1b067ffb47bc2eb8a457b54b",
+      "command_count": 10,
+      "nonzero": [],
+      "truncated": [],
+      "read_bound": 6000,
+      "oversized_outputs": [
+        {
+          "event": "exec-15ce3d13-29ee-434e-9de9-3344a668d12d",
+          "chars": 18074
+        }
+      ],
+      "input_delivery": {
+        "spec-conformance-cases/executor/04.md": {
+          "chars": 570,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-cec02b26-d2ca-4f34-be5a-de01cd7ecb70",
+              "range": [
+                0,
+                570
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "initial-providers/spec-conformance-reviewer/SKILL.md": {
+          "chars": 18074,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-15ce3d13-29ee-434e-9de9-3344a668d12d",
+              "range": [
+                0,
+                18074
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "initial-providers/spec-conformance-reviewer/references/methodology.md": {
+          "chars": 13436,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-27ac692d-cdb3-49a8-85f9-698519f3e3d1",
+              "range": [
+                0,
+                6000
+              ]
+            },
+            {
+              "event": "exec-0dd6a954-b171-4858-93fb-85b26637fb2d",
+              "range": [
+                6000,
+                12000
+              ]
+            },
+            {
+              "event": "exec-99d648e7-ed4e-474e-bd82-1a14ff9723fb",
+              "range": [
+                12000,
+                13436
+              ]
+            }
+          ]
+        },
+        "initial-providers/spec-conformance-reviewer/references/reporting.md": {
+          "chars": 9401,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-f3bc1d7d-9d16-4779-b0e9-a7c31ee0d44f",
+              "range": [
+                0,
+                6000
+              ]
+            },
+            {
+              "event": "exec-7549b88a-d4a8-49be-895f-6c7c200850bd",
+              "range": [
+                6000,
+                9401
+              ]
+            }
+          ]
+        },
+        "initial-providers/spec-conformance-reviewer/references/policy-admission-matrix.md": {
+          "chars": 3589,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-790dda51-470c-4dc9-a195-6b9088e1b4d0",
+              "range": [
+                0,
+                3589
+              ],
+              "whole": true
+            }
+          ]
+        }
+      },
+      "event_index": [
+        {
+          "id": "exec-15ce3d13-29ee-434e-9de9-3344a668d12d",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/SKILL.md'",
+          "command_sha256": "a5346832f14e04a98cab52a23c7629a45c2e3ae3e720030d2a7e8bf7051ac24e",
+          "output_chars": 18074
+        },
+        {
+          "id": "exec-cec02b26-d2ca-4f34-be5a-de01cd7ecb70",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/spec-conformance-cases/executor/04.md'",
+          "command_sha256": "314084d345c710add9fcf985f9d738d656462451a8816bf651142ff349e3facf",
+          "output_chars": 570
+        },
+        {
+          "id": "exec-c38c96cf-02bf-4d9c-8cbd-a31a08b97eb1",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'wc -c /tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/{methodology,reporting,policy-admission-matrix}.md'",
+          "command_sha256": "93df62c5f9cc8d840a02dcabf72156362f30594814fbbccd98f74d7d3ead3376",
+          "output_chars": 376
+        },
+        {
+          "id": "exec-27ac692d-cdb3-49a8-85f9-698519f3e3d1",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'head -c 6000 /tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/methodology.md'",
+          "command_sha256": "70a36ca36276c07149f9392242f3af87a24b02e8d319c6e893b960342cf7a267",
+          "output_chars": 6000
+        },
+        {
+          "id": "exec-f3bc1d7d-9d16-4779-b0e9-a7c31ee0d44f",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'head -c 6000 /tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/reporting.md'",
+          "command_sha256": "b7d91ac8360d35ac08db93df255735077afaac3160931a53448df9dbb3705f2d",
+          "output_chars": 6000
+        },
+        {
+          "id": "exec-0dd6a954-b171-4858-93fb-85b26637fb2d",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'dd if=/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/methodology.md bs=1 skip=6000 count=6000 status=none'",
+          "command_sha256": "cf370ed174748d53b3054aef9f410ad74e99a55dab61ed139659af1ae52b4cb0",
+          "output_chars": 6000
+        },
+        {
+          "id": "exec-99d648e7-ed4e-474e-bd82-1a14ff9723fb",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'dd if=/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/methodology.md bs=1 skip=12000 count=6000 status=none'",
+          "command_sha256": "ca2e1d507268ff2bb7f4485c6be48863d1ac8fc0988066d0d1990c75add9c0e8",
+          "output_chars": 1436
+        },
+        {
+          "id": "exec-7549b88a-d4a8-49be-895f-6c7c200850bd",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'dd if=/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/reporting.md bs=1 skip=6000 count=6000 status=none'",
+          "command_sha256": "0f1ecfdb7ed22cd8715dca1ea90283876724c93d11a8d8a1bfdc49935d053258",
+          "output_chars": 3401
+        },
+        {
+          "id": "exec-790dda51-470c-4dc9-a195-6b9088e1b4d0",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/policy-admission-matrix.md'",
+          "command_sha256": "32fddb68cf1ad494b3118d92545729d8f1fa07e9e184d9a02180dd6bc67d5e26",
+          "output_chars": 3589
+        },
+        {
+          "id": "exec-c9367702-28e3-4f43-9a56-40763d2d008a",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"cat > /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-runs/04-01/report.md <<'EOF'\nF-7 можно закрыть по предоставленному trace: отозванный участник получает 403; весь delta нельзя принять как исправление F-7, поскольку он также меняет посторонний публичный контракт POST /bulk-report.\n\nОснование: synthetic case executor/04.md, замороженный snapshot, обозначенный в условии; commit/hash и отдельные версии исходников не предоставлены",
+          "command_sha256": "a2a959e370d15299a717bf14c97437259d2256dfa11eae57169c1aef45dc3682",
+          "output_chars": 0
+        }
+      ]
+    },
+    "g4_speccon_trial04b": {
+      "threadId": "01a07db3-eeeb-7922-bb33-8e4c118951dc",
+      "page_hasMore": false,
+      "turn_statuses": [
+        "completed"
+      ],
+      "report_sha256": "413ecbf851842590b572fc90986ee5afe5dcf1b1883ce5e2a65af68c48202caa",
+      "command_count": 10,
+      "nonzero": [],
+      "truncated": [],
+      "read_bound": 6000,
+      "oversized_outputs": [
+        {
+          "event": "exec-efc4a15c-9dbc-44f6-bdb6-fd9e476f6650",
+          "chars": 17777
+        }
+      ],
+      "input_delivery": {
+        "spec-conformance-cases/executor/04.md": {
+          "chars": 570,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-08f8f427-31c4-4b05-831f-d585e8d2e1af",
+              "range": [
+                0,
+                570
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "speccon-candidate-active/SKILL.md": {
+          "chars": 17777,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-efc4a15c-9dbc-44f6-bdb6-fd9e476f6650",
+              "range": [
+                0,
+                17777
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "speccon-candidate-active/references/methodology.md": {
+          "chars": 13486,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-35d7c114-b2b2-4b6f-baba-878a5b57d41a",
+              "range": [
+                0,
+                6000
+              ]
+            },
+            {
+              "event": "exec-b4e370e4-a289-43a6-8d95-10192e50d2c3",
+              "range": [
+                6000,
+                12000
+              ]
+            },
+            {
+              "event": "exec-f82b2958-e8a9-488a-bda5-4e689f55c1b7",
+              "range": [
+                12000,
+                13486
+              ]
+            }
+          ]
+        },
+        "speccon-candidate-active/references/reporting.md": {
+          "chars": 9401,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-f462ebf3-51d9-4edf-8927-2bdbaf072725",
+              "range": [
+                0,
+                6000
+              ]
+            },
+            {
+              "event": "exec-a483982a-eef2-47e0-aa6d-7a277f8aa60e",
+              "range": [
+                6000,
+                9401
+              ]
+            }
+          ]
+        },
+        "speccon-candidate-active/references/policy-admission-matrix.md": {
+          "chars": 3589,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-199e40f0-1e94-4464-bc31-f88d0373a788",
+              "range": [
+                0,
+                3589
+              ],
+              "whole": true
+            }
+          ]
+        }
+      },
+      "event_index": [
+        {
+          "id": "exec-efc4a15c-9dbc-44f6-bdb6-fd9e476f6650",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/SKILL.md'",
+          "command_sha256": "2558db15fe91e7d154ff0dc083f033a6ca64cfb97840cc4b4b9b33aaab413a1e",
+          "output_chars": 17777
+        },
+        {
+          "id": "exec-08f8f427-31c4-4b05-831f-d585e8d2e1af",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/spec-conformance-cases/executor/04.md'",
+          "command_sha256": "314084d345c710add9fcf985f9d738d656462451a8816bf651142ff349e3facf",
+          "output_chars": 570
+        },
+        {
+          "id": "exec-fa478c66-3536-4dec-a366-77f1a40c46ca",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'wc -c /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/{methodology,reporting}.md'",
+          "command_sha256": "66042e22fec89b3582292b09be694d3fc4d7886d771e0f4dca52a0f66ccdac10",
+          "output_chars": 208
+        },
+        {
+          "id": "exec-35d7c114-b2b2-4b6f-baba-878a5b57d41a",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'head -c 6000 /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/methodology.md'",
+          "command_sha256": "2951e254b1ed7aeb7d1cbf2e35ac4b260654a62e9124e5f8cbeace5518dce498",
+          "output_chars": 6000
+        },
+        {
+          "id": "exec-f462ebf3-51d9-4edf-8927-2bdbaf072725",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'head -c 6000 /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/reporting.md'",
+          "command_sha256": "7ea4bafdd14b1f42a64f56b4af28ac33f618eceb72c3bbe55dc00dcdedd1975b",
+          "output_chars": 6000
+        },
+        {
+          "id": "exec-b4e370e4-a289-43a6-8d95-10192e50d2c3",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'dd if=/tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/methodology.md bs=1 skip=6000 count=6000 status=none'",
+          "command_sha256": "cd57112c044a269daf593a76fb377f4f92fdf9d0fbe96ea4edb5d9b1ab6d91c2",
+          "output_chars": 6000
+        },
+        {
+          "id": "exec-f82b2958-e8a9-488a-bda5-4e689f55c1b7",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'dd if=/tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/methodology.md bs=1 skip=12000 count=1486 status=none'",
+          "command_sha256": "badb1724fb267c0fa77587a256143d5c6f55cd69bc8add890113093ff8a8a722",
+          "output_chars": 1486
+        },
+        {
+          "id": "exec-a483982a-eef2-47e0-aa6d-7a277f8aa60e",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'dd if=/tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/reporting.md bs=1 skip=6000 count=3401 status=none'",
+          "command_sha256": "670aae1d2ce87984fde7dd18a87e6338258b7a9d4d55c6951deb700240ed93ba",
+          "output_chars": 3401
+        },
+        {
+          "id": "exec-199e40f0-1e94-4464-bc31-f88d0373a788",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'head -c 6000 /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/policy-admission-matrix.md'",
+          "command_sha256": "adc3975b1eaa7744839bb5505e98068b6c16de3c4a0e344974a9513cd2630685",
+          "output_chars": 3589
+        },
+        {
+          "id": "exec-02dac517-d0f9-483a-8b37-02f7ee4d3c44",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"cat > /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-runs/04-02/report.md <<'EOF'\nF-7 можно закрыть по предоставленной трассе: отозванный участник получает 403; весь изменённый снимок нельзя принять как соответствующий требованиям, поскольку дополнительное удаление лимита POST /bulk-report выходит за согласованное исправление и противоречит R-9.\n\nОснование: synthetic input executor/04.md, зафиксированный по условию снимок и опис",
+          "command_sha256": "03c8a02704486421338ece5406eb460de616c458a1266e02bb4608e58382a7c2",
+          "output_chars": 0
+        }
+      ]
+    },
+    "g4_speccon_trial05a": {
+      "threadId": "01a07db1-f643-7d82-823c-bcf07bc9cdbe",
+      "page_hasMore": false,
+      "turn_statuses": [
+        "completed"
+      ],
+      "report_sha256": "b8536ba42cd98ffccb6f1f85b183910c23837af4e3a615bc5468ac60887a617f",
+      "command_count": 15,
+      "nonzero": [],
+      "truncated": [],
+      "read_bound": 6000,
+      "oversized_outputs": [
+        {
+          "event": "exec-380287de-2913-4e54-9a2c-101939688ad8",
+          "chars": 18074
+        },
+        {
+          "event": "exec-dab086a6-19e8-4787-a032-551d57692d61",
+          "chars": 7905
+        }
+      ],
+      "input_delivery": {
+        "speccon-case05-frozen/task.md": {
+          "chars": 489,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-0c2199d7-84a3-4113-bb85-7037c6f3b1ac",
+              "range": [
+                0,
+                489
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "initial-providers/spec-conformance-reviewer/SKILL.md": {
+          "chars": 18074,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-380287de-2913-4e54-9a2c-101939688ad8",
+              "range": [
+                0,
+                18074
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "initial-providers/spec-conformance-reviewer/references/methodology.md": {
+          "chars": 13436,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-9aff242b-a2dc-4ca6-8740-cc25aa9d354a",
+              "range": [
+                0,
+                5800
+              ]
+            },
+            {
+              "event": "exec-3c40be43-05ae-4d91-a066-9f4534d72433",
+              "range": [
+                5800,
+                11600
+              ]
+            },
+            {
+              "event": "exec-fc3fddd0-c558-4a50-acd6-c71df072bae6",
+              "range": [
+                11600,
+                13436
+              ]
+            }
+          ]
+        },
+        "initial-providers/spec-conformance-reviewer/references/reporting.md": {
+          "chars": 9401,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-d1f8ffc0-b490-43e4-9233-1758fbb0df88",
+              "range": [
+                0,
+                5800
+              ]
+            },
+            {
+              "event": "exec-8f25a96f-0bae-4940-9e3d-4888f9bccf5d",
+              "range": [
+                5800,
+                9401
+              ]
+            }
+          ]
+        },
+        "speccon-case05-frozen/handoffs/concept-assessment.md": {
+          "chars": 3257,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-dab086a6-19e8-4787-a032-551d57692d61",
+              "range": [
+                0,
+                3257
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "speccon-case05-frozen/handoffs/test-assessment.md": {
+          "chars": 4648,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-dab086a6-19e8-4787-a032-551d57692d61",
+              "range": [
+                0,
+                4648
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "speccon-case05-frozen/shared/evidence.md": {
+          "chars": 857,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-c7d9953c-8a9a-4854-a17a-4d617a7f1275",
+              "range": [
+                0,
+                857
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "speccon-case05-frozen/shared/export.test.ts": {
+          "chars": 398,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-c7d9953c-8a9a-4854-a17a-4d617a7f1275",
+              "range": [
+                0,
+                398
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "speccon-case05-frozen/shared/sources.md": {
+          "chars": 1086,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-c7d9953c-8a9a-4854-a17a-4d617a7f1275",
+              "range": [
+                0,
+                1086
+              ],
+              "whole": true
+            }
+          ]
+        }
+      },
+      "event_index": [
+        {
+          "id": "exec-0c2199d7-84a3-4113-bb85-7037c6f3b1ac",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-case05-frozen/task.md'",
+          "command_sha256": "8b96b95b923adceb7ff00b8d5b90fce03ddfbca6d7a8adc8011cd401ee9e0de2",
+          "output_chars": 489
+        },
+        {
+          "id": "exec-380287de-2913-4e54-9a2c-101939688ad8",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/SKILL.md'",
+          "command_sha256": "a5346832f14e04a98cab52a23c7629a45c2e3ae3e720030d2a7e8bf7051ac24e",
+          "output_chars": 18074
+        },
+        {
+          "id": "exec-36154c0d-5eeb-40ce-8b16-6931ca4091a9",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\np=Path('/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/SKILL.md')\ns=p.read_text(); print(s[:5800])\nPY\"",
+          "command_sha256": "e5ec9a02546b5e0f810e2267a256e035d6003618812c88b6e9904fab6fe3b39f",
+          "output_chars": 5801
+        },
+        {
+          "id": "exec-b06c2a1c-18f3-4dfa-8b9a-8f91210ebcdb",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\ns=Path('/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/SKILL.md').read_text(); print(s[5800:11600]); print('TOTAL',len(s))\nPY\"",
+          "command_sha256": "03b2ff910ab7d58c0c04bdcdd9288cdffe1c9cc5816c4aefedc3d83edf0b47f9",
+          "output_chars": 5813
+        },
+        {
+          "id": "exec-ad87859c-ca55-4d05-8efa-4436eb3c93a4",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\ns=Path('/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/SKILL.md').read_text(); print(s[11600:17400]); print('TOTAL',len(s))\nPY\"",
+          "command_sha256": "105c6511df605a22c9b1e3fc09e247482f6e20877b889361fcca916d3bf5659f",
+          "output_chars": 5813
+        },
+        {
+          "id": "exec-9aff242b-a2dc-4ca6-8740-cc25aa9d354a",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\ns=Path('/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/methodology.md').read_text(); print(s[0:5800]); print('TOTAL',len(s))\nPY\"",
+          "command_sha256": "aeaff5032c3abd9b91e8ae3d4c944f7957344c2ba8f515c2555b142cb77c5439",
+          "output_chars": 5813
+        },
+        {
+          "id": "exec-d1f8ffc0-b490-43e4-9233-1758fbb0df88",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\ns=Path('/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/reporting.md').read_text(); print(s[0:5800]); print('TOTAL',len(s))\nPY\"",
+          "command_sha256": "b117ba7e8fbcade307ced18b8d4869481ffea0a080ee021376589da4ea5a4a81",
+          "output_chars": 5812
+        },
+        {
+          "id": "exec-b98d39c9-612f-47b3-bd98-6594ca8e5cf1",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nprint(Path('/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/SKILL.md').read_text()[17400:23200])\nPY\"",
+          "command_sha256": "a47a9e9df2b8e887c7221908d3a003f82ce8fad9779b50d13efb92df498c3925",
+          "output_chars": 675
+        },
+        {
+          "id": "exec-3c40be43-05ae-4d91-a066-9f4534d72433",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nprint(Path('/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/methodology.md').read_text()[5800:11600])\nPY\"",
+          "command_sha256": "437507db9cf41a7fae1fa965343170ae804d1fba0b4312060466b597393c4fb7",
+          "output_chars": 5801
+        },
+        {
+          "id": "exec-fc3fddd0-c558-4a50-acd6-c71df072bae6",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nprint(Path('/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/methodology.md').read_text()[11600:17400])\nPY\"",
+          "command_sha256": "0faedb2446f0d8148e3e4b7397f42c643cca7c6cacbe9985a0b58277cb4b9c6e",
+          "output_chars": 1837
+        },
+        {
+          "id": "exec-8f25a96f-0bae-4940-9e3d-4888f9bccf5d",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nprint(Path('/tmp/skills-revision-g4-20260907-ZMFe9Zkq/initial-providers/spec-conformance-reviewer/references/reporting.md').read_text()[5800:11600])\nPY\"",
+          "command_sha256": "aee76c3fcb82d90d46516e192630095ea84e14372331efff43a6d893685fc035",
+          "output_chars": 3602
+        },
+        {
+          "id": "exec-c7d9953c-8a9a-4854-a17a-4d617a7f1275",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-case05-frozen/shared/sources.md /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-case05-frozen/shared/evidence.md /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-case05-frozen/shared/export.test.ts'",
+          "command_sha256": "6a4d917cd4a5be0a36d459d9c7a811f1024260a24acec958ab603cdf820b6d4b",
+          "output_chars": 2341
+        },
+        {
+          "id": "exec-dab086a6-19e8-4787-a032-551d57692d61",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-case05-frozen/handoffs/test-assessment.md /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-case05-frozen/handoffs/concept-assessment.md'",
+          "command_sha256": "8a4fd2960efe6331bb4ce579c469ff9da9da46576ccb72f5565eeb596be0e2d7",
+          "output_chars": 7905
+        },
+        {
+          "id": "exec-b37728cd-9fc6-483d-86e3-d5656d9cf092",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'sha256sum /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-case05-frozen/shared/* /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-case05-frozen/handoffs/*'",
+          "command_sha256": "c92701a74f86e0a3f69b6662e4c14dc4e2b9f28220d2ed34913a11bc86018ab0",
+          "output_chars": 768
+        },
+        {
+          "id": "exec-1aa0cea8-236c-4153-a014-26d26965f968",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"cat > /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-runs/05-01/report.md <<'EOF'\n# Проверка соответствия FS-12\n\nЗавершённость экспорта не подтверждена: предоставленный тест проверяет локальную заглушку, а выполнение двух обязательных требований на производственном пути установить невозможно.\n\n**Вердикт: \"'`cannot determine due to insufficient implementation evidence`.** Подтверждённых нарушений реализации нет; оба обязательных ",
+          "command_sha256": "603e0cb78b5f6ca92833c2a9939dea6028ecb403e19b0010794fc4d6e01e0258",
+          "output_chars": 0
+        }
+      ]
+    },
+    "g4_speccon_trial05b": {
+      "threadId": "01a07db4-21e0-7422-83d7-6ce90038eae5",
+      "page_hasMore": false,
+      "turn_statuses": [
+        "completed"
+      ],
+      "report_sha256": "eb0d95d878c52f30d89e0ed728ad9ffa8a7d6062e9153d7e3843dbfcbf08bca4",
+      "command_count": 19,
+      "nonzero": [],
+      "truncated": [],
+      "read_bound": 6000,
+      "oversized_outputs": [
+        {
+          "event": "exec-2586992a-1f8a-40da-9e06-4b6eae930c6a",
+          "chars": 17777
+        },
+        {
+          "event": "exec-d80db430-de54-444a-ab52-cdd9c0b28656",
+          "chars": 6624
+        },
+        {
+          "event": "exec-75def27f-a368-499f-84e7-9c1e4ea31b16",
+          "chars": 6579
+        }
+      ],
+      "input_delivery": {
+        "speccon-case05-frozen/task.md": {
+          "chars": 489,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-b025a20c-500d-4c33-bad7-c99bd799b5ab",
+              "range": [
+                0,
+                489
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "speccon-candidate-active/SKILL.md": {
+          "chars": 17777,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-2586992a-1f8a-40da-9e06-4b6eae930c6a",
+              "range": [
+                0,
+                17777
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "speccon-candidate-active/references/methodology.md": {
+          "chars": 13486,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-dbc6133d-5001-436c-8ffd-c13255ec459c",
+              "range": [
+                0,
+                5500
+              ]
+            },
+            {
+              "event": "exec-a709fa0e-2985-404f-b83e-068f08f4da4e",
+              "range": [
+                5500,
+                11000
+              ]
+            },
+            {
+              "event": "exec-52eeab3c-d49d-4502-86ea-67357417db46",
+              "range": [
+                11000,
+                13486
+              ]
+            }
+          ]
+        },
+        "speccon-candidate-active/references/reporting.md": {
+          "chars": 9401,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-87c9b95d-46f0-4338-9f9a-d940dd3d728c",
+              "range": [
+                0,
+                5500
+              ]
+            },
+            {
+              "event": "exec-69d10041-3004-4522-8264-98117df2ce8d",
+              "range": [
+                5500,
+                9401
+              ]
+            }
+          ]
+        },
+        "speccon-case05-frozen/handoffs/concept-assessment.md": {
+          "chars": 3257,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-78a83a46-4dc3-4dae-a5f4-4ecc3a6634bc",
+              "range": [
+                0,
+                3257
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "speccon-case05-frozen/handoffs/test-assessment.md": {
+          "chars": 4648,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-7dd43dd9-23ea-40fe-9a17-df78e1c1062c",
+              "range": [
+                0,
+                4648
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "speccon-case05-frozen/shared/evidence.md": {
+          "chars": 857,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-d5cd4881-aa02-4487-aba8-fd6d9fdc7b45",
+              "range": [
+                0,
+                857
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "speccon-case05-frozen/shared/export.test.ts": {
+          "chars": 398,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-7bba3e76-1e50-44a8-b677-e816659b1c80",
+              "range": [
+                0,
+                398
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "speccon-case05-frozen/shared/sources.md": {
+          "chars": 1086,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-a56d9acd-33f8-4da6-93fa-30d60b8d5acd",
+              "range": [
+                0,
+                1086
+              ],
+              "whole": true
+            }
+          ]
+        }
+      },
+      "event_index": [
+        {
+          "id": "exec-b025a20c-500d-4c33-bad7-c99bd799b5ab",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-case05-frozen/task.md'",
+          "command_sha256": "8b96b95b923adceb7ff00b8d5b90fce03ddfbca6d7a8adc8011cd401ee9e0de2",
+          "output_chars": 489
+        },
+        {
+          "id": "exec-2586992a-1f8a-40da-9e06-4b6eae930c6a",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/SKILL.md'",
+          "command_sha256": "2558db15fe91e7d154ff0dc083f033a6ca64cfb97840cc4b4b9b33aaab413a1e",
+          "output_chars": 17777
+        },
+        {
+          "id": "exec-d80db430-de54-444a-ab52-cdd9c0b28656",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"sed -n '1,85p' /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/SKILL.md\"",
+          "command_sha256": "4a590666e42c76c53cd534a4b863fb594d3afac0d63a679725cc33ca1fdb75d9",
+          "output_chars": 6624
+        },
+        {
+          "id": "exec-cae674a1-07ec-4357-a7c1-9acd1273bebe",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"sed -n '86,170p' /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/SKILL.md\"",
+          "command_sha256": "2fccb26fd102c56477be952ec1f0e2afde1522b35692e8570ddee0870f742fa9",
+          "output_chars": 4574
+        },
+        {
+          "id": "exec-75def27f-a368-499f-84e7-9c1e4ea31b16",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"sed -n '171,270p' /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/SKILL.md\"",
+          "command_sha256": "42debbbac99d1dea63b3f28dafa4130af055dca7475688b256a1045207846957",
+          "output_chars": 6579
+        },
+        {
+          "id": "exec-bb501e58-b5dc-49fa-880e-67bf55288477",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'wc -l /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/{methodology,reporting}.md; rg --files /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-case05-frozen/shared /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-case05-frozen/handoffs'",
+          "command_sha256": "f8b977c887b66ab1b69bd55dc4b081819cf0c65b610bbef561f0add393b86867",
+          "output_chars": 646
+        },
+        {
+          "id": "exec-dbc6133d-5001-436c-8ffd-c13255ec459c",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python -c 'from pathlib import Path; s=Path(\\\"/tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/methodology.md\\\").read_text(); print(s[:5500])'\"",
+          "command_sha256": "983dd50945e2dee315049cd43f1d872d169c6488a7a8308cfc2cad554f463a2a",
+          "output_chars": 5501
+        },
+        {
+          "id": "exec-87c9b95d-46f0-4338-9f9a-d940dd3d728c",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python -c 'from pathlib import Path; s=Path(\\\"/tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/reporting.md\\\").read_text(); print(s[:5500])'\"",
+          "command_sha256": "407332c17b9eab38bca6446ddba892c01377e547ac8fa4fb00c1564cdf135e42",
+          "output_chars": 5501
+        },
+        {
+          "id": "exec-a709fa0e-2985-404f-b83e-068f08f4da4e",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python -c 'from pathlib import Path; s=Path(\\\"/tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/methodology.md\\\").read_text(); print(s[5500:11000])'\"",
+          "command_sha256": "0f7f59eabb0352725c38bbfcc8805c1530f6ef3e6eaef0462c39d2439f342ae3",
+          "output_chars": 5501
+        },
+        {
+          "id": "exec-52eeab3c-d49d-4502-86ea-67357417db46",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python -c 'from pathlib import Path; s=Path(\\\"/tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/methodology.md\\\").read_text(); print(s[11000:16500])'\"",
+          "command_sha256": "6d9e294eb4155511789eb650e0cc7549181cd5fde7c43a3024305b09b42cf27d",
+          "output_chars": 2487
+        },
+        {
+          "id": "exec-4b4c8d9b-a909-4804-bcec-a99700c2ef95",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python -c 'from pathlib import Path; s=Path(\\\"/tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/methodology.md\\\").read_text(); print(s[16500:22000])'\"",
+          "command_sha256": "d939d8a07a22163e58867daf2abb917918787128b962b498c1d3da56fc37cd6e",
+          "output_chars": 1
+        },
+        {
+          "id": "exec-69d10041-3004-4522-8264-98117df2ce8d",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"python -c 'from pathlib import Path; s=Path(\\\"/tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-candidate-active/references/reporting.md\\\").read_text(); print(s[5500:11000])'\"",
+          "command_sha256": "e0498607f48c4db5816033ed55d1fd4faa6829b67022b70412ea91bb994a24ff",
+          "output_chars": 3902
+        },
+        {
+          "id": "exec-a56d9acd-33f8-4da6-93fa-30d60b8d5acd",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-case05-frozen/shared/sources.md'",
+          "command_sha256": "9a46f8700e9cd42c613ad8e641cdc61c50e4e34310137baa3fac0da509513db0",
+          "output_chars": 1086
+        },
+        {
+          "id": "exec-d5cd4881-aa02-4487-aba8-fd6d9fdc7b45",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-case05-frozen/shared/evidence.md'",
+          "command_sha256": "0ab66924272a8c2384dd0b24acdb5b6b32332f69bf9c60ef3f89e3489d81ef1a",
+          "output_chars": 857
+        },
+        {
+          "id": "exec-7bba3e76-1e50-44a8-b677-e816659b1c80",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-case05-frozen/shared/export.test.ts'",
+          "command_sha256": "74e226841e3212ad261046d278592efa140741d1834d7489710b36e8d0d8d07a",
+          "output_chars": 398
+        },
+        {
+          "id": "exec-7dd43dd9-23ea-40fe-9a17-df78e1c1062c",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-case05-frozen/handoffs/test-assessment.md'",
+          "command_sha256": "470829533785fc46ddd375157226cb5024bd9b9c144a14d67cd4343d0692ff31",
+          "output_chars": 4648
+        },
+        {
+          "id": "exec-78a83a46-4dc3-4dae-a5f4-4ecc3a6634bc",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-case05-frozen/handoffs/concept-assessment.md'",
+          "command_sha256": "19fa34d7f7f2f2574dc2bb83788b6de576e57ce322392045bd75b88c6d324171",
+          "output_chars": 3257
+        },
+        {
+          "id": "exec-49f9212b-8f87-4c09-891f-37b67a436082",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'sha256sum /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-case05-frozen/shared/* /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-case05-frozen/handoffs/*'",
+          "command_sha256": "c92701a74f86e0a3f69b6662e4c14dc4e2b9f28220d2ed34913a11bc86018ab0",
+          "output_chars": 768
+        },
+        {
+          "id": "exec-30fe71b1-fd5f-4d70-aeaf-459465e4a41a",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"cat > /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-runs/05-02/report.md <<'EOF'\nЗавершённость экспорта не подтверждена: предоставленный тест проверяет только локальную заглушку, а соответствие производственной реализации обоим обязательным требованиям остаётся неизвестным.\n\n## Основание и граница\n\nRead-only review frozen-пакета speccon-case05-frozen; применены active spec-conformance-reviewer и references/methodology.md, refer",
+          "command_sha256": "3771e8ace0dfdab382d8354077f8ccc0fb424bcf8995b3926c3d1ca838893424",
+          "output_chars": 0
+        }
+      ]
+    },
+    "g4_speccon_select01": {
+      "threadId": "01a07db2-4ad4-7902-ba7e-f9e5e665b20f",
+      "page_hasMore": false,
+      "turn_statuses": [
+        "completed"
+      ],
+      "report_sha256": "ad8383b26a545523d198bc2c2f5e94f2ad361d51527b6234d0f8061ec43a6a0e",
+      "command_count": 2,
+      "nonzero": [],
+      "truncated": [],
+      "read_bound": null,
+      "oversized_outputs": [],
+      "input_delivery": {
+        "spec-conformance-cases/executor/selection-requests.md": {
+          "chars": 717,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-4dc6da36-3e18-4b17-84bf-3eab87b39edf",
+              "range": [
+                0,
+                717
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "spec-conformance-cases/executor/catalogue.md": {
+          "chars": 2151,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-4dc6da36-3e18-4b17-84bf-3eab87b39edf",
+              "range": [
+                0,
+                2151
+              ],
+              "whole": true
+            }
+          ]
+        }
+      },
+      "event_index": [
+        {
+          "id": "exec-4dc6da36-3e18-4b17-84bf-3eab87b39edf",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/spec-conformance-cases/executor/selection-requests.md /tmp/skills-revision-g4-20260907-ZMFe9Zkq/spec-conformance-cases/executor/catalogue.md'",
+          "command_sha256": "34f0ad8756eb2901c0572ffc87f046e0b81814c1d999603d3bd919c70c121c74",
+          "output_chars": 2868
+        },
+        {
+          "id": "exec-259726cf-86da-4149-a0ea-e9716c4ce638",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"cat > /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-selection-01.md <<'EOF'\n1. **spec-conformance-reviewer** — Проверяет фиксированную реализацию на соответствие утверждённой API-спецификации и обязательным критериям миграции, связывая требования с кодом и доказательствами.\n2. **concept-conformance-reviewer** — Проверяет достижение установленной продуктовой концепции, когда наличие маршрутов и моков может ошибочно приниматься з",
+          "command_sha256": "a2433cb37f13e70a077e6a9b9ca9976b7fa04bcd99e3d5cd5062698a06da55fb",
+          "output_chars": 0
+        }
+      ]
+    },
+    "g4_speccon_select02": {
+      "threadId": "01a07db4-3af4-7f43-9523-827ebba08025",
+      "page_hasMore": false,
+      "turn_statuses": [
+        "completed"
+      ],
+      "report_sha256": "fe7e06e5ac5124c50d124a22a89e8b425febd6c5c75d39a077ead3b13b662507",
+      "command_count": 2,
+      "nonzero": [],
+      "truncated": [],
+      "read_bound": null,
+      "oversized_outputs": [],
+      "input_delivery": {
+        "spec-conformance-cases/executor/selection-requests.md": {
+          "chars": 717,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-f116ba10-4fa9-44d2-948e-c48fcfb09e99",
+              "range": [
+                0,
+                717
+              ],
+              "whole": true
+            }
+          ]
+        },
+        "spec-conformance-cases/executor/catalogue.md": {
+          "chars": 2151,
+          "complete": true,
+          "gaps": [],
+          "segments": [
+            {
+              "event": "exec-f116ba10-4fa9-44d2-948e-c48fcfb09e99",
+              "range": [
+                0,
+                2151
+              ],
+              "whole": true
+            }
+          ]
+        }
+      },
+      "event_index": [
+        {
+          "id": "exec-f116ba10-4fa9-44d2-948e-c48fcfb09e99",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc 'cat /tmp/skills-revision-g4-20260907-ZMFe9Zkq/spec-conformance-cases/executor/selection-requests.md /tmp/skills-revision-g4-20260907-ZMFe9Zkq/spec-conformance-cases/executor/catalogue.md'",
+          "command_sha256": "34f0ad8756eb2901c0572ffc87f046e0b81814c1d999603d3bd919c70c121c74",
+          "output_chars": 2868
+        },
+        {
+          "id": "exec-054525ea-7cff-41a2-ad08-4fe6c0187865",
+          "exitCode": 0,
+          "command_prefix": "/bin/bash -lc \"cat > /tmp/skills-revision-g4-20260907-ZMFe9Zkq/speccon-selection-02.md <<'EOF'\n1. **spec-conformance-reviewer** — требуется сопоставить замороженную реализацию с утверждённой API-спецификацией и обязательными критериями миграции, проследив требования до кода.\n2. **concept-conformance-reviewer** — проверяется достижение установленной продуктовой концепции: наличие маршрутов и моков может ошибочно приниматься за работающую возможнос",
+          "command_sha256": "e627c05749b32b1f71dbb8872e7c5002c0fa5040fca9a429222cc6845b8764a8",
+          "output_chars": 0
+        }
+      ]
+    }
+  },
+  "emitted": {
+    "count": 9,
+    "all_equal": true
+  },
+  "author_snapshot_verified": true,
+  "author_manifest_file_sha256": "b1fd062039f7254d66b8d0e2ef2824f7266619315b73d43bfad7fd6f72d9885c",
+  "baseline_active_matches_original_manifest": {
+    "initial-providers/spec-conformance-reviewer/SKILL.md": true,
+    "initial-providers/spec-conformance-reviewer/agents/openai.yaml": true,
+    "initial-providers/spec-conformance-reviewer/assets/fixtures/consultant-admission-policy.md": true,
+    "initial-providers/spec-conformance-reviewer/references/methodology.md": true,
+    "initial-providers/spec-conformance-reviewer/references/policy-admission-matrix.md": true,
+    "initial-providers/spec-conformance-reviewer/references/reporting.md": true
+  },
+  "methods": {
+    "skill-reviewer": {
+      "version": "source-version: 0.2.5",
+      "path": "/home/kostysh/.codex/skills/custom/.worktrees/skills-revision/skills/skill-reviewer/SKILL.md",
+      "sha256": "7f536fd4bd4c35676e991b3b6eb9f7542c352c98067eee6112dee6af981e2c62",
+      "matches_supplied_basis": true
+    },
+    "skill-source-compiler": {
+      "version": "source-version: 0.2.10",
+      "path": "/home/kostysh/.codex/skills/custom/.worktrees/skills-revision/skills/skill-source-compiler/SKILL.md",
+      "sha256": "5de6ebc50e4e336670b1e3660c0681f551386769f1cf578f2687af5274a7b938",
+      "matches_supplied_basis": true
+    },
+    "implementation-discipline": {
+      "version": "source-version: 0.2.7",
+      "path": "/home/kostysh/.codex/skills/custom/.worktrees/skills-revision/skills/implementation-discipline/SKILL.md",
+      "sha256": "756624dde807f5d84e5e4172abf094a39cd807dcd3103a01cc98e547d1cb5d90",
+      "matches_supplied_basis": true
+    }
+  },
+  "case_assessment": {
+    "01": {
+      "baseline": "FAIL",
+      "candidate": "PASS",
+      "basis": "Frozen criterion requires unresolved authority and no unconditional implementation violation. Baseline preserves no type winner but reports unconditional non-compliant under aggregation; candidate correctly limits to ambiguous_spec. Literal type fallback not reproduced."
+    },
+    "02": {
+      "baseline": "PASS",
+      "candidate": "PASS",
+      "basis": "Explicit D-4 precedence; bounded supplied behavior compliant without invented extra gates."
+    },
+    "03": {
+      "baseline": "PASS",
+      "candidate": "PASS",
+      "basis": "Accepted correction closed within R7/adjacent scope; excludes unchanged R1-R6. Source correction justified; observed widening failure not reproduced."
+    },
+    "04": {
+      "baseline": "PASS",
+      "candidate": "PASS",
+      "basis": "F7 preserved; extra R9 delta identified, asks scope decision, does not widen inspection by itself."
+    },
+    "05": {
+      "baseline": "PASS",
+      "candidate": "PASS",
+      "basis": "Actual fixed producers both read; FS12-R1/R2 cannot_determine; normative source not replaced by expert FAIL or concept decision."
+    },
+    "catalogue": {
+      "baseline": "6/6 PASS",
+      "candidate": "6/6 PASS",
+      "basis": "Two selection-only contexts, same actual cards; no native activation claim."
+    }
+  },
+  "delivery_method": "Exact contiguous source substrings located in saved command outputs; full-file match or union of >=128-character anchors expanded to exact matching boundaries. Complete means all source characters covered. This does not measure model attention or unavailable internal truncation.",
+  "procedural_assessment": "All ten trial contexts exceed supplied 6000-character read bound at initial full root; 01b also combined reference11841,05a handoffs7905,05b two root rereads6624/6579. No reported truncation or missing delivered input/guidance. These are procedural FAIL, separate from material case results. No claim of complete instruction adherence.",
+  "side_effect_limit": "Observed commands read assigned inputs/active instructions and write designated report only; raw readback does not prove absence of invisible activity. No new trials or target edits by this assessor.",
+  "post_report_source_verified": true,
+  "report_sha256": "2297431a2d5f118719d31ade2dffe7671b2f3c9e569ea75070acb9753b588fa6"
+}

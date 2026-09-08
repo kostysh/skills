@@ -19,3 +19,7 @@ This directory contains supporting maintenance material only. The normative skil
 - [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — описание сокращено до лимита 300 code points; independent scoped PASS.
 - [implementation-log-20260717-1.md](logs/implementation-log-20260717-1.md) — source-authorized architecture and simplicity gate; independent PASS.
 - [implementation-log-20260817-1.md](logs/implementation-log-20260817-1.md) — semantic authority gate for material ASR and explicit unresolved-assumption boundary.
+
+- `docs/logs/implementation-log-20260907-1.md` — исправление stop predicate и условной классификации references; source-only журнал, independent PASS; ограничения отражены в отчёте.
+
+- [G3 independent PASS и evidence](reviews/evidence/g3/README.md) — остановка, conditional references и реальные spec consumers; ограничения сравнений сохранены.

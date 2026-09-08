@@ -141,10 +141,17 @@ test('Node and Cloudflare defaults follow current supported paths', async () => 
   assert.match(reference, /Treat `unstable_dev` only as a legacy migration case/);
 });
 
-test('Node module mocking uses current exports option and deterministic cleanup', async () => {
+test('Node module mocking follows pinned runtime API and deterministic cleanup', async () => {
   const reference = await readSkillFile('references/testing.md');
 
-  assert.match(reference, /Use the `exports` option/);
+  // Documentation contract only; paired task trials assess the version decision.
+  assert.match(reference, /official versioned documentation.*pinned Node runtime/);
+  assert.match(reference, /Use `exports` only when that runtime supports it/);
+  assert.match(reference, /Older runtimes.*Node 22\.22\.0.*defaultExport.*namedExports/);
+  assert.match(reference, /Do not combine the two option forms or migrate the runtime\/runner/);
+  assert.match(reference, /matching API evidence is unavailable.*compatibility limit/);
+  assert.doesNotMatch(reference, /Use the `exports` option\. `defaultExport` and `namedExports` are deprecated/);
+  assert.ok(reference.includes('mock.module("./dep.js", { defaultExport: dep, namedExports: named });'));
   assert.ok(
     reference.includes('mock.module("./dep.js", { exports: { default: dep, ...named } });'),
   );

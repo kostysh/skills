@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: spec-conformance-reviewer
-  source-version: 0.1.7
+  source-version: 0.1.8
   recommended-skill-md-max-bytes: 20000
   description: >-
     Review code against authoritative specs, contracts, ADRs, tickets, PRDs, RFCs,
@@ -95,7 +95,7 @@ sections:
       steps:
         - Extract atomic requirements with separate modality and origin fields, preserving derivation basis and confidence.
         - Trace each requirement to implementation, runtime or boundary evidence, and tests in both directions.
-        - In remediation re-audit, re-evaluate the fixed requirements and adjacent contracts only; widen to a fresh conformance review when normative authority, requirement meaning, public behavior, or material scope changed or blast radius cannot be bounded.
+        - In remediation re-audit, re-evaluate the fixed requirements and adjacent contracts; apply the widening criteria in references/methodology.md, Remediation Re-audit Scope.
         - Assign fulfilled, partial, not-fulfilled, ambiguous, or cannot-determine status according to the observed evidence surface.
       validation:
         - Every material conclusion cites an authoritative requirement and either observed implementation evidence or the exact missing evidence surface.
@@ -160,7 +160,7 @@ sections:
       text: Conformance review must trace public contracts, statuses, routes, payloads, and UX claims to their owning artifacts and name any unmatched behavior as drift, not as an implementation choice.
     - id: policy-authority-before-type
       title: Authority before artifact type
-      text: Explicit project or user source ownership, approval, version, applicability, and supersession win over generic artifact-type precedence; use type-based ordering only as a disclosed fallback among otherwise applicable sources.
+      text: Establish authority using the Source Authority and Conflicts rules in references/methodology.md; artifact type cannot resolve an otherwise unresolved authority conflict.
     - id: policy-read-only-snapshot
       title: Read-only stable snapshot
       text: Review a reproducible implementation and normative-source snapshot without remediation; stop on movement and invalidate the verdict after any material change.
@@ -172,7 +172,7 @@ sections:
       text: If a follow-up review after remediation repeats the same or a materially related blocking deviation, require root-cause investigation of assumptions, the full requirement-to-behavior path, adjacent contracts and surfaces, and remediation scope before another point fix.
     - id: policy-bounded-remediation-reaudit
       title: Bounded remediation re-audit
-      text: Re-audit fixed prior findings on a new stable snapshot against their original requirements, remediation delta, closure evidence, and adjacent contracts. Do not re-evaluate unchanged verified requirements or accept cosmetic edits as closure; widen when authority, requirement meaning, public behavior, or material scope changed or blast radius is unbounded.
+      text: Apply references/methodology.md, Remediation Re-audit Scope, for the bounded review surface and widening criteria; a public behavior change implementing the accepted correction does not by itself require widening.
   portability:
     required: true
     rules:

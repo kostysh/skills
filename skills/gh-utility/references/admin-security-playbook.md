@@ -4,7 +4,7 @@ Use this file for rulesets, branch protection, repository settings, secrets, var
 
 ## General admin rule
 
-Admin/security changes are high-risk. Always inspect current state and prepare a recovery and verification plan. Execute only when the current request explicitly authorizes the exact target and action.
+Admin/security changes are high-risk. Always inspect current state and prepare a recovery and verification plan. Apply the root [Authorization policy](../SKILL.md#authorization) to the exact target and action.
 
 ## Rulesets and branch protection
 

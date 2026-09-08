@@ -1,0 +1,255 @@
+[
+  {
+    "run": "g3_delivery_trial_a1-readback.json",
+    "file": "delivery-packages/arm-01/SKILL.md",
+    "method": "exact concatenation of dedicated untruncated head/dd outputs, or limited composite A1",
+    "exact_complete": false,
+    "event_ids": [],
+    "limit": "A1 composite capped commands cannot establish complete reading"
+  },
+  {
+    "run": "g3_delivery_trial_a1-readback.json",
+    "file": "delivery-packages/arm-01/references/methodology.md",
+    "method": "exact concatenation of dedicated untruncated head/dd outputs, or limited composite A1",
+    "exact_complete": false,
+    "event_ids": [],
+    "limit": "A1 composite capped commands cannot establish complete reading"
+  },
+  {
+    "run": "g3_delivery_trial_a1-readback.json",
+    "file": "delivery-packages/arm-01/references/output-templates.md",
+    "method": "exact concatenation of dedicated untruncated head/dd outputs, or limited composite A1",
+    "exact_complete": false,
+    "event_ids": [],
+    "limit": "A1 composite capped commands cannot establish complete reading"
+  },
+  {
+    "run": "g3_delivery_trial_a1-readback.json",
+    "file": "delivery-packages/arm-01/references/planning-patterns.md",
+    "method": "exact concatenation of dedicated untruncated head/dd outputs, or limited composite A1",
+    "exact_complete": false,
+    "event_ids": [],
+    "limit": "A1 composite capped commands cannot establish complete reading"
+  },
+  {
+    "run": "g3_delivery_trial_a2-readback.json",
+    "file": "delivery-packages/arm-02/SKILL.md",
+    "method": "exact concatenation of dedicated untruncated head/dd outputs, or limited composite A1",
+    "exact_complete": true,
+    "event_ids": [
+      "exec-3cc869d7-5c93-41df-a5d0-d8ef9ef86e73",
+      "exec-93bc615f-c8e1-42d4-a6d3-fc532863f4b6",
+      "exec-b69af6ce-c30b-4209-b6a8-884287a09771"
+    ],
+    "limit": null
+  },
+  {
+    "run": "g3_delivery_trial_a2-readback.json",
+    "file": "delivery-packages/arm-02/references/methodology.md",
+    "method": "exact concatenation of dedicated untruncated head/dd outputs, or limited composite A1",
+    "exact_complete": true,
+    "event_ids": [
+      "exec-fa26b609-dcfa-42d3-b69d-d30a89f4f9cd",
+      "exec-a22bab79-7f31-48aa-a619-c8690bd8e7eb",
+      "exec-cf11f28e-37c2-4645-b9dd-356bedd8277f",
+      "exec-a7b9637e-6521-4277-84a3-9576d1804872"
+    ],
+    "limit": null
+  },
+  {
+    "run": "g3_delivery_trial_a2-readback.json",
+    "file": "delivery-packages/arm-02/references/output-templates.md",
+    "method": "exact concatenation of dedicated untruncated head/dd outputs, or limited composite A1",
+    "exact_complete": true,
+    "event_ids": [
+      "exec-96a29236-c1cb-450c-bb73-d4aa2001f2c3",
+      "exec-037f1926-3053-480d-80f0-3da1ce8ef17d"
+    ],
+    "limit": null
+  },
+  {
+    "run": "g3_delivery_trial_a2-readback.json",
+    "file": "delivery-packages/arm-02/references/planning-patterns.md",
+    "method": "exact concatenation of dedicated untruncated head/dd outputs, or limited composite A1",
+    "exact_complete": false,
+    "event_ids": [],
+    "limit": null
+  },
+  {
+    "run": "g3_delivery_trial_b1-readback.json",
+    "file": "delivery-packages/arm-01/SKILL.md",
+    "method": "exact concatenation of dedicated untruncated head/dd outputs, or limited composite A1",
+    "exact_complete": true,
+    "event_ids": [
+      "exec-f6731517-620c-4b49-9737-633faa1dd489",
+      "exec-ec802d4b-e98a-42bb-b462-a3c64e724c33",
+      "exec-05e9155f-9c4a-42dc-a3d8-3e3db4f72e2e"
+    ],
+    "limit": null
+  },
+  {
+    "run": "g3_delivery_trial_b1-readback.json",
+    "file": "delivery-packages/arm-01/references/methodology.md",
+    "method": "exact concatenation of dedicated untruncated head/dd outputs, or limited composite A1",
+    "exact_complete": true,
+    "event_ids": [
+      "exec-57aa4d85-7c0b-4ffe-b8d4-baec511491bd",
+      "exec-13a17016-5167-4fa9-96bd-ff3d6cabfcf1",
+      "exec-64d507d4-035b-4f4e-839a-8f9ffca00f06",
+      "exec-c21b924c-2aa9-4c8f-8ad8-2d6f93e0b1ef"
+    ],
+    "limit": null
+  },
+  {
+    "run": "g3_delivery_trial_b1-readback.json",
+    "file": "delivery-packages/arm-01/references/output-templates.md",
+    "method": "exact concatenation of dedicated untruncated head/dd outputs, or limited composite A1",
+    "exact_complete": true,
+    "event_ids": [
+      "exec-2f7a6c53-dc38-4fd8-a181-44f2047e6db1",
+      "exec-d1c2dd50-1276-46e8-9d21-a1877c94d75a"
+    ],
+    "limit": null
+  },
+  {
+    "run": "g3_delivery_trial_b1-readback.json",
+    "file": "delivery-packages/arm-01/references/planning-patterns.md",
+    "method": "exact concatenation of dedicated untruncated head/dd outputs, or limited composite A1",
+    "exact_complete": false,
+    "event_ids": [],
+    "limit": null
+  },
+  {
+    "run": "g3_delivery_trial_b2-readback.json",
+    "file": "delivery-packages/arm-02/SKILL.md",
+    "method": "exact concatenation of dedicated untruncated head/dd outputs, or limited composite A1",
+    "exact_complete": true,
+    "event_ids": [
+      "exec-668d48ab-9786-451a-a9e9-03551793e7a8",
+      "exec-04466723-4cad-4366-81b1-4869075d09b5",
+      "exec-05c7d7a0-d6e4-4554-a6cd-88c05777af20"
+    ],
+    "limit": null
+  },
+  {
+    "run": "g3_delivery_trial_b2-readback.json",
+    "file": "delivery-packages/arm-02/references/methodology.md",
+    "method": "exact concatenation of dedicated untruncated head/dd outputs, or limited composite A1",
+    "exact_complete": true,
+    "event_ids": [
+      "exec-139d9a2d-6217-4dd3-bc59-4282d31e5238",
+      "exec-f19a2892-ea1f-4a4c-bdf1-3aeaabd30dc0",
+      "exec-b1db47c4-de34-4a79-af4c-76e8c939c121",
+      "exec-106dfbb4-ca3a-492f-a0d1-733c3994f6a3"
+    ],
+    "limit": null
+  },
+  {
+    "run": "g3_delivery_trial_b2-readback.json",
+    "file": "delivery-packages/arm-02/references/output-templates.md",
+    "method": "exact concatenation of dedicated untruncated head/dd outputs, or limited composite A1",
+    "exact_complete": true,
+    "event_ids": [
+      "exec-d6c68d41-d35c-4bf9-9f45-646a526f402d",
+      "exec-8eccd6df-b387-4592-a3e5-0cb7e2ae9de0"
+    ],
+    "limit": null
+  },
+  {
+    "run": "g3_delivery_trial_b2-readback.json",
+    "file": "delivery-packages/arm-02/references/planning-patterns.md",
+    "method": "exact concatenation of dedicated untruncated head/dd outputs, or limited composite A1",
+    "exact_complete": false,
+    "event_ids": [],
+    "limit": null
+  },
+  {
+    "run": "g3_delivery_trial_c1-readback.json",
+    "file": "delivery-packages/arm-01/SKILL.md",
+    "method": "exact concatenation of dedicated untruncated head/dd outputs, or limited composite A1",
+    "exact_complete": true,
+    "event_ids": [
+      "exec-09f4b99d-264f-4513-99ae-2a0265e714ae",
+      "exec-cf0ce6a0-08b9-4291-a622-b714441ba50c",
+      "exec-5016cf79-6e12-41bb-888f-bdb8415a3315"
+    ],
+    "limit": null
+  },
+  {
+    "run": "g3_delivery_trial_c1-readback.json",
+    "file": "delivery-packages/arm-01/references/methodology.md",
+    "method": "exact concatenation of dedicated untruncated head/dd outputs, or limited composite A1",
+    "exact_complete": true,
+    "event_ids": [
+      "exec-66bd0b3a-011f-48a6-b574-fcf849195f26",
+      "exec-3e77034c-b7c6-4bd6-829c-67aff8ac8ae4",
+      "exec-2f98ad16-8cc8-431b-847f-c7e111a6dee1",
+      "exec-8e838f0d-a48d-4157-a177-a20ad8e9d1fc"
+    ],
+    "limit": null
+  },
+  {
+    "run": "g3_delivery_trial_c1-readback.json",
+    "file": "delivery-packages/arm-01/references/output-templates.md",
+    "method": "exact concatenation of dedicated untruncated head/dd outputs, or limited composite A1",
+    "exact_complete": false,
+    "event_ids": [
+      "exec-fc80e06c-8f3a-49ea-9729-0f56852dc8a3"
+    ],
+    "limit": null
+  },
+  {
+    "run": "g3_delivery_trial_c1-readback.json",
+    "file": "delivery-packages/arm-01/references/planning-patterns.md",
+    "method": "exact concatenation of dedicated untruncated head/dd outputs, or limited composite A1",
+    "exact_complete": false,
+    "event_ids": [],
+    "limit": null
+  },
+  {
+    "run": "g3_delivery_trial_c2-readback.json",
+    "file": "delivery-packages/arm-02/SKILL.md",
+    "method": "exact concatenation of dedicated untruncated head/dd outputs, or limited composite A1",
+    "exact_complete": true,
+    "event_ids": [
+      "exec-fb1925f6-81ec-4e5b-bb1a-5faf52b52846",
+      "exec-3fd55b02-4eec-447d-a0ca-4d0e8d9e1069",
+      "exec-1498b266-a1b2-4d06-abaa-9a0e7ea71b73"
+    ],
+    "limit": null
+  },
+  {
+    "run": "g3_delivery_trial_c2-readback.json",
+    "file": "delivery-packages/arm-02/references/methodology.md",
+    "method": "exact concatenation of dedicated untruncated head/dd outputs, or limited composite A1",
+    "exact_complete": true,
+    "event_ids": [
+      "exec-407e8f9a-d029-46cb-ac7c-d9a82c2d7a4c",
+      "exec-5d75dfe1-2a34-4a5c-a001-d085503fadd9",
+      "exec-a20bb43c-eb09-43f8-9b1c-c06444030688",
+      "exec-5b3c10e8-19db-4162-bd61-e6f23c6bec94"
+    ],
+    "limit": null
+  },
+  {
+    "run": "g3_delivery_trial_c2-readback.json",
+    "file": "delivery-packages/arm-02/references/output-templates.md",
+    "method": "exact concatenation of dedicated untruncated head/dd outputs, or limited composite A1",
+    "exact_complete": true,
+    "event_ids": [
+      "exec-fc345680-d2d6-4e86-bc27-bf2331d4572f",
+      "exec-c4e329ac-8bdd-44e6-9421-96ac638caaa8"
+    ],
+    "limit": null
+  },
+  {
+    "run": "g3_delivery_trial_c2-readback.json",
+    "file": "delivery-packages/arm-02/references/planning-patterns.md",
+    "method": "exact concatenation of dedicated untruncated head/dd outputs, or limited composite A1",
+    "exact_complete": true,
+    "event_ids": [
+      "exec-b00acafb-0782-4c17-aff8-0a65a507560c"
+    ],
+    "limit": null
+  }
+]

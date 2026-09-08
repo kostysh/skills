@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: architecture-engineer
-  source-version: 0.1.8
+  source-version: 0.1.9
   recommended-skill-md-max-bytes: 26000
   description: >-
     Design or revise architecture for AI-agent-driven development. Use when
@@ -29,13 +29,13 @@ references:
     title: Artifact templates
     source: references/artifact-templates.md
     target: references/artifact-templates.md
-    required: false
+    required: true
     trigger: Read this when producing an architecture check, delta, ASR register, pattern decision, ADR, quality scenario, spike brief, architecture brief, or handoff item/register.
   - id: ref-pattern-catalog
     title: Pattern catalog
     source: references/pattern-catalog.md
     target: references/pattern-catalog.md
-    required: false
+    required: true
     trigger: Read this when architecture forces require comparing system, frontend, backend, data, integration, security, privacy, observability, deployment, or delivery-safety patterns.
 
 assets:
@@ -128,7 +128,6 @@ surfaces:
   active:
     requiredReferences:
       - ref-methodology
-    optionalReferences:
       - ref-artifact-templates
       - ref-pattern-catalog
   supportingGlobs:
@@ -370,16 +369,16 @@ sections:
     - id: policy-stop-escalation
       title: Stop or escalation rules
       text: |-
-        Ask one focused question or mark human review required when:
+        Ask one focused question or mark human review required only when missing or conflicting inputs materially affect an architecture decision, or an applicable policy checkpoint remains unfulfilled. Relevant areas:
 
-        - product requirements conflict in a way that changes architecture;
-        - implementation would require choosing between incompatible security, privacy, compliance, data-loss, or compatibility outcomes;
-        - a public API, identity model, tenant isolation model, data model, migration strategy, secrets handling, or deployment topology would change;
-        - a new paid or operationally significant external dependency is introduced;
-        - a required external contract is missing and cannot be inferred safely;
-        - the architecture would weaken rollback, observability, audit, or security posture.
+        - conflicting product requirements;
+        - incompatible security, privacy, compliance, data-loss, or compatibility outcomes;
+        - public API, identity, tenant isolation, data model, migration, secrets handling, or deployment topology changes;
+        - new paid or operationally significant external dependencies;
+        - required external contracts;
+        - rollback, observability, audit, or security posture.
 
-        For non-blocking gaps, proceed with assumptions and validation steps.
+        Preserve existing authorization within its scope; architectural change alone does not require renewed approval. Stop only dependent work, name the missing input or unfulfilled checkpoint, and continue independent authorized work. For non-blocking gaps, use assumptions and validation steps.
     - id: policy-output-contract
       title: Output contract
       text: Return the smallest complete, risk-fit subset defined by the rigor table. Every handoff states `draft`, `blocked`, or `ready` plus blockers.

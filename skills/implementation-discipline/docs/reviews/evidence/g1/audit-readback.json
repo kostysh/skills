@@ -1,0 +1,12 @@
+{
+  "identity": "G1-FINAL-NO-PLANNER-v1",
+  "files": 132,
+  "before_mismatches": [],
+  "after_mismatches": [],
+  "archive_files_verified": 594,
+  "extracted_files_verified": 594,
+  "emitted_parity_files": 9,
+  "verdict": "PASS",
+  "assurance": "independent",
+  "report_sha256": "842ccddf6113cdc07a5c8c96eb4536db784a2562616d3cd6766abf190b01a703"
+}

@@ -5,9 +5,9 @@ description: Perform bounded security review of code, CI, permissions, webhooks,
   triage, or scoped audits. Own threat modeling, confidence gating, attack
   paths, and findings—not scan orchestration, compliance, pentesting, or fixes.
 metadata:
-  source-version: 0.1.12
+  source-version: 0.1.13
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: d4be3ce6e5451299a0376dfd19cb4040ed6e23a302be84cd839be47b746eed50
+  skillforge-source-hash: 5cba140885619e1e6e118ac7c58e5fdaa99269488cb81199bcf762f6c3efe6ad
 ---
 
 # security-reviewer
@@ -108,7 +108,7 @@ Adjust the threat model explicitly if the code is internal-only or requires trus
 5. Apply the data-access construction checkpoint when backend code reads/writes a database, uses REST/PostgREST, Supabase clients, RPC calls, service-role clients, query builders, or manually constructs URLs/filters.
    This checkpoint must enumerate attacker-controlled request/body/query/header/cookie values and persisted user-controlled values that reach data-access filters, select lists, RPC args, query-builder fragments, SQL fragments, storage keys, table/function/column names, or service-role calls.
 6. Apply the browser storage and telemetry checkpoint when frontend code persists data or reports client errors:
-   - never accept browser storage of passwords, OTP/recovery material, CSRF secrets, cookies, JWT/session IDs, refresh tokens, or equivalent credentials/session material
+   - investigate browser storage of passwords, OTP/recovery material, CSRF values, cookies, JWT/session IDs, refresh tokens, or equivalent credentials/session material using the exposure and chosen-pattern rules in `references/secrets-config.md` and the methodology confidence gate
    - evaluate identity/provider/network payloads and telemetry fields by sensitivity, exposure, access control, retention, integrity/authority, and attacker impact rather than flagging field names alone
    - source-text checks are not evidence by themselves; require behavioral tests, sentinel payloads, or negative API tests for the claimed protection
 7. For CSRF refresh/reissue reviews, first identify the documented synchronizer-token, signed double-submit, or other accepted pattern. Check session binding, secrecy, Origin/CORS and request validation, response leakage, and pending-session scope; require atomic rotation only when the selected stateful contract promises rotation.
@@ -275,7 +275,7 @@ Verify accepted fixes without editing the target or reusing a stale verdict.
 
 1. Fix the re-audit scope to the accepted prior findings, exact remediation delta, current closure evidence, and adjacent regression surface on a new stable snapshot.
 2. Re-test each original attack path and the blast-radius surface; preserve unresolved items as needs verification or confirmed findings and do not repeat unchanged previously cleared full scope.
-3. Widen to a fresh formal or targeted review when the threat model, security authority, public behavior, or material scope changed or the blast radius cannot be bounded; cosmetic edits alone do not close an attack path.
+3. Apply the widening criteria in references/methodology.md under Bounded remediation re-audit; expected corrections inside accepted findings do not themselves widen review.
 4. If the same or a materially related confirmed finding survives remediation, require root-cause investigation of assumptions, the full attack path, adjacent controls and surfaces, and remediation scope before another point fix.
 5. Invalidate the prior result after any material code, configuration, runtime, test, or evidence change.
 
@@ -311,7 +311,7 @@ Security review is read-only by default. A separate domain or implementation own
 Targeted review never emits PASS. Formal FAIL requires a confirmed in-scope finding; PASS (scoped) requires a complete named security-review scope and no confirmed findings; INCOMPLETE represents missing mandatory coverage or evidence; BLOCKED represents an unavailable or unstable review basis. Standards/control fulfillment and compliance status always belong to spec-conformance-reviewer.
 
 ### Bounded remediation re-audit
-Re-audit fixed prior findings on a new stable snapshot using the remediation delta, original attack paths, closure evidence, and blast-radius surface. Skip unchanged cleared scope; widen when threat model, authority, public behavior, or material scope changed or blast radius is unbounded.
+Re-audit fixed prior findings on a new stable snapshot using the remediation delta, original attack paths, closure evidence, and blast-radius surface. Skip unchanged cleared scope and use the canonical widening criteria in references/methodology.md under Bounded remediation re-audit.
 
 ## Required active references
 - [Methodology](references/methodology.md) — Read this for every review before selecting mode, establishing the review basis, classifying findings, or issuing a scoped status.

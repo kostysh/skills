@@ -1,0 +1,1167 @@
+[
+  {
+    "file": "g3_spec_consumer_01-readback.json",
+    "read_mismatches": [],
+    "coverage": {
+      "spec-runs/consumer-01/input/task.md": {
+        "complete": true,
+        "bytes": 617,
+        "covered_prefix": 617,
+        "ranges": [
+          [
+            0,
+            617
+          ]
+        ]
+      },
+      "spec-runs/consumer-01/input/context.md": {
+        "complete": true,
+        "bytes": 1149,
+        "covered_prefix": 1149,
+        "ranges": [
+          [
+            0,
+            1149
+          ]
+        ]
+      },
+      "spec-packages/delivery-provider/SKILL.md": {
+        "complete": true,
+        "bytes": 23415,
+        "covered_prefix": 23415,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            16000
+          ],
+          [
+            16000,
+            23415
+          ]
+        ]
+      },
+      "spec-runs/01-01/output/specification.md": {
+        "complete": true,
+        "bytes": 9405,
+        "covered_prefix": 9405,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            9405
+          ]
+        ]
+      },
+      "spec-packages/discipline/SKILL.md": {
+        "complete": true,
+        "bytes": 18492,
+        "covered_prefix": 18492,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            16000
+          ],
+          [
+            16000,
+            18492
+          ]
+        ]
+      },
+      "spec-producer/input/task.md": {
+        "complete": true,
+        "bytes": 1859,
+        "covered_prefix": 1859,
+        "ranges": [
+          [
+            0,
+            1859
+          ]
+        ]
+      },
+      "spec-producer/input/context.md": {
+        "complete": true,
+        "bytes": 1149,
+        "covered_prefix": 1149,
+        "ranges": [
+          [
+            0,
+            1149
+          ]
+        ]
+      },
+      "spec-producer/output/architecture.md": {
+        "complete": true,
+        "bytes": 5604,
+        "covered_prefix": 5604,
+        "ranges": [
+          [
+            0,
+            5604
+          ]
+        ]
+      },
+      "spec-packages/delivery-provider/references/methodology.md": {
+        "complete": true,
+        "bytes": 25201,
+        "covered_prefix": 25201,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            16000
+          ],
+          [
+            16000,
+            24000
+          ],
+          [
+            24000,
+            25201
+          ],
+          [
+            32000,
+            25201
+          ]
+        ]
+      },
+      "spec-packages/delivery-provider/references/output-templates.md": {
+        "complete": true,
+        "bytes": 8901,
+        "covered_prefix": 8901,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            8901
+          ]
+        ]
+      },
+      "spec-packages/discipline/references/verification-loop.md": {
+        "complete": true,
+        "bytes": 6217,
+        "covered_prefix": 6217,
+        "ranges": [
+          [
+            0,
+            6217
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "file": "g3_spec_consumer_02-readback.json",
+    "read_mismatches": [],
+    "coverage": {
+      "spec-runs/consumer-02/input/task.md": {
+        "complete": true,
+        "bytes": 617,
+        "covered_prefix": 617,
+        "ranges": [
+          [
+            0,
+            617
+          ]
+        ]
+      },
+      "spec-runs/consumer-02/input/context.md": {
+        "complete": true,
+        "bytes": 1149,
+        "covered_prefix": 1149,
+        "ranges": [
+          [
+            0,
+            1149
+          ]
+        ]
+      },
+      "spec-packages/delivery-provider/SKILL.md": {
+        "complete": true,
+        "bytes": 23415,
+        "covered_prefix": 23415,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            16000
+          ],
+          [
+            16000,
+            23415
+          ]
+        ]
+      },
+      "spec-packages/discipline/SKILL.md": {
+        "complete": true,
+        "bytes": 18492,
+        "covered_prefix": 18492,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            16000
+          ],
+          [
+            16000,
+            18492
+          ]
+        ]
+      },
+      "spec-runs/01-02/output/specification.md": {
+        "complete": true,
+        "bytes": 8877,
+        "covered_prefix": 8877,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            8877
+          ]
+        ]
+      },
+      "spec-producer/input/task.md": {
+        "complete": true,
+        "bytes": 1859,
+        "covered_prefix": 1859,
+        "ranges": [
+          [
+            0,
+            1859
+          ]
+        ]
+      },
+      "spec-producer/output/architecture.md": {
+        "complete": true,
+        "bytes": 5604,
+        "covered_prefix": 5604,
+        "ranges": [
+          [
+            0,
+            5604
+          ]
+        ]
+      },
+      "spec-runs/01-02/input/context.md": {
+        "complete": true,
+        "bytes": 1149,
+        "covered_prefix": 1149,
+        "ranges": [
+          [
+            0,
+            1149
+          ]
+        ]
+      },
+      "spec-packages/delivery-provider/references/methodology.md": {
+        "complete": true,
+        "bytes": 25201,
+        "covered_prefix": 25201,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            16000
+          ],
+          [
+            16000,
+            24000
+          ],
+          [
+            24000,
+            25201
+          ]
+        ]
+      },
+      "spec-packages/delivery-provider/references/output-templates.md": {
+        "complete": true,
+        "bytes": 8901,
+        "covered_prefix": 8901,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            8901
+          ]
+        ]
+      },
+      "spec-packages/discipline/references/verification-loop.md": {
+        "complete": true,
+        "bytes": 6217,
+        "covered_prefix": 6217,
+        "ranges": [
+          [
+            0,
+            6217
+          ]
+        ]
+      },
+      "spec-producer/input/context.md": {
+        "complete": true,
+        "bytes": 1149,
+        "covered_prefix": 1149,
+        "ranges": [
+          [
+            0,
+            1149
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "file": "g3_spec_trial_01a-readback.json",
+    "read_mismatches": [],
+    "coverage": {
+      "spec-runs/01-01/input/task.md": {
+        "complete": true,
+        "bytes": 711,
+        "covered_prefix": 711,
+        "ranges": [
+          [
+            0,
+            711
+          ]
+        ]
+      },
+      "spec-runs/01-01/input/context.md": {
+        "complete": true,
+        "bytes": 1149,
+        "covered_prefix": 1149,
+        "ranges": [
+          [
+            0,
+            1149
+          ]
+        ]
+      },
+      "spec-packages/arm-01/SKILL.md": {
+        "complete": true,
+        "bytes": 27854,
+        "covered_prefix": 27854,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            16000
+          ],
+          [
+            16000,
+            24000
+          ],
+          [
+            24000,
+            27854
+          ]
+        ]
+      },
+      "spec-producer/output/architecture.md": {
+        "complete": true,
+        "bytes": 5604,
+        "covered_prefix": 5604,
+        "ranges": [
+          [
+            0,
+            5604
+          ]
+        ]
+      },
+      "spec-producer/input/task.md": {
+        "complete": true,
+        "bytes": 1859,
+        "covered_prefix": 1859,
+        "ranges": [
+          [
+            0,
+            1859
+          ]
+        ]
+      },
+      "spec-producer/input/context.md": {
+        "complete": true,
+        "bytes": 1149,
+        "covered_prefix": 1149,
+        "ranges": [
+          [
+            0,
+            1149
+          ]
+        ]
+      },
+      "spec-packages/discipline/SKILL.md": {
+        "complete": true,
+        "bytes": 18492,
+        "covered_prefix": 18492,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            16000
+          ],
+          [
+            16000,
+            18492
+          ]
+        ]
+      },
+      "spec-packages/arm-01/references/methodology.md": {
+        "complete": true,
+        "bytes": 29899,
+        "covered_prefix": 29899,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            16000
+          ],
+          [
+            16000,
+            24000
+          ],
+          [
+            24000,
+            29899
+          ]
+        ]
+      },
+      "spec-packages/arm-01/references/high-risk-backend-contract.md": {
+        "complete": true,
+        "bytes": 5677,
+        "covered_prefix": 5677,
+        "ranges": [
+          [
+            0,
+            5677
+          ]
+        ]
+      },
+      "spec-packages/discipline/references/verification-loop.md": {
+        "complete": true,
+        "bytes": 6217,
+        "covered_prefix": 6217,
+        "ranges": [
+          [
+            0,
+            6217
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "file": "g3_spec_trial_01b-readback.json",
+    "read_mismatches": [],
+    "coverage": {
+      "spec-runs/01-02/input/task.md": {
+        "complete": true,
+        "bytes": 711,
+        "covered_prefix": 711,
+        "ranges": [
+          [
+            0,
+            711
+          ]
+        ]
+      },
+      "spec-runs/01-02/input/context.md": {
+        "complete": true,
+        "bytes": 1149,
+        "covered_prefix": 1149,
+        "ranges": [
+          [
+            0,
+            1149
+          ]
+        ]
+      },
+      "spec-producer/output/architecture.md": {
+        "complete": true,
+        "bytes": 5604,
+        "covered_prefix": 5604,
+        "ranges": [
+          [
+            0,
+            5604
+          ]
+        ]
+      },
+      "spec-producer/input/task.md": {
+        "complete": true,
+        "bytes": 1859,
+        "covered_prefix": 1859,
+        "ranges": [
+          [
+            0,
+            1859
+          ]
+        ]
+      },
+      "spec-producer/input/context.md": {
+        "complete": true,
+        "bytes": 1149,
+        "covered_prefix": 1149,
+        "ranges": [
+          [
+            0,
+            1149
+          ]
+        ]
+      },
+      "spec-packages/arm-02/SKILL.md": {
+        "complete": true,
+        "bytes": 27095,
+        "covered_prefix": 27095,
+        "ranges": [
+          [
+            0,
+            7000
+          ],
+          [
+            7000,
+            14000
+          ],
+          [
+            14000,
+            21000
+          ],
+          [
+            21000,
+            27095
+          ]
+        ]
+      },
+      "spec-packages/arm-02/references/methodology.md": {
+        "complete": true,
+        "bytes": 30357,
+        "covered_prefix": 30357,
+        "ranges": [
+          [
+            0,
+            7000
+          ],
+          [
+            7000,
+            14000
+          ],
+          [
+            14000,
+            21000
+          ],
+          [
+            21000,
+            28000
+          ],
+          [
+            28000,
+            30357
+          ],
+          [
+            14000,
+            21000
+          ],
+          [
+            21000,
+            28000
+          ],
+          [
+            28000,
+            30357
+          ]
+        ]
+      },
+      "spec-packages/arm-02/references/high-risk-backend-contract.md": {
+        "complete": true,
+        "bytes": 5773,
+        "covered_prefix": 5773,
+        "ranges": [
+          [
+            0,
+            5773
+          ],
+          [
+            0,
+            5773
+          ]
+        ]
+      },
+      "spec-packages/discipline/SKILL.md": {
+        "complete": true,
+        "bytes": 18492,
+        "covered_prefix": 18492,
+        "ranges": [
+          [
+            0,
+            7000
+          ],
+          [
+            7000,
+            14000
+          ],
+          [
+            14000,
+            18492
+          ]
+        ]
+      },
+      "spec-packages/discipline/references/verification-loop.md": {
+        "complete": true,
+        "bytes": 6217,
+        "covered_prefix": 6217,
+        "ranges": [
+          [
+            0,
+            6217
+          ]
+        ]
+      },
+      "spec-runs/01-02/output/specification.md": {
+        "complete": true,
+        "bytes": 8877,
+        "covered_prefix": 8877,
+        "ranges": [
+          [
+            0,
+            7000
+          ],
+          [
+            7000,
+            8877
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "file": "g3_spec_trial_02a-readback.json",
+    "read_mismatches": [],
+    "coverage": {
+      "spec-runs/02-01/input/task.md": {
+        "complete": true,
+        "bytes": 3150,
+        "covered_prefix": 3150,
+        "ranges": [
+          [
+            0,
+            3150
+          ]
+        ]
+      },
+      "spec-runs/02-01/input/context.md": {
+        "complete": true,
+        "bytes": 1149,
+        "covered_prefix": 1149,
+        "ranges": [
+          [
+            0,
+            1149
+          ]
+        ]
+      },
+      "spec-packages/arm-01/SKILL.md": {
+        "complete": true,
+        "bytes": 27854,
+        "covered_prefix": 27854,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            16000
+          ],
+          [
+            16000,
+            24000
+          ],
+          [
+            24000,
+            27854
+          ]
+        ]
+      },
+      "spec-packages/discipline/SKILL.md": {
+        "complete": true,
+        "bytes": 18492,
+        "covered_prefix": 18492,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            16000
+          ],
+          [
+            16000,
+            18492
+          ]
+        ]
+      },
+      "spec-packages/arm-01/references/methodology.md": {
+        "complete": true,
+        "bytes": 29899,
+        "covered_prefix": 29899,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            16000
+          ],
+          [
+            16000,
+            24000
+          ],
+          [
+            24000,
+            29899
+          ]
+        ]
+      },
+      "spec-packages/arm-01/references/high-risk-backend-contract.md": {
+        "complete": true,
+        "bytes": 5677,
+        "covered_prefix": 5677,
+        "ranges": [
+          [
+            0,
+            5677
+          ]
+        ]
+      },
+      "spec-packages/arm-01/references/discovery-techniques.md": {
+        "complete": true,
+        "bytes": 3387,
+        "covered_prefix": 3387,
+        "ranges": [
+          [
+            0,
+            3387
+          ]
+        ]
+      },
+      "spec-packages/discipline/references/verification-loop.md": {
+        "complete": true,
+        "bytes": 6217,
+        "covered_prefix": 6217,
+        "ranges": [
+          [
+            0,
+            6217
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "file": "g3_spec_trial_02b-readback.json",
+    "read_mismatches": [],
+    "coverage": {
+      "spec-runs/02-02/input/task.md": {
+        "complete": true,
+        "bytes": 3150,
+        "covered_prefix": 3150,
+        "ranges": [
+          [
+            0,
+            3150
+          ]
+        ]
+      },
+      "spec-runs/02-02/input/context.md": {
+        "complete": true,
+        "bytes": 1149,
+        "covered_prefix": 1149,
+        "ranges": [
+          [
+            0,
+            1149
+          ]
+        ]
+      },
+      "spec-packages/arm-02/SKILL.md": {
+        "complete": true,
+        "bytes": 27095,
+        "covered_prefix": 27095,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            16000
+          ],
+          [
+            16000,
+            24000
+          ],
+          [
+            24000,
+            27095
+          ]
+        ]
+      },
+      "spec-packages/discipline/SKILL.md": {
+        "complete": true,
+        "bytes": 18492,
+        "covered_prefix": 18492,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            16000
+          ],
+          [
+            16000,
+            18492
+          ]
+        ]
+      },
+      "spec-packages/arm-02/references/methodology.md": {
+        "complete": true,
+        "bytes": 30357,
+        "covered_prefix": 30357,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            16000
+          ],
+          [
+            16000,
+            24000
+          ],
+          [
+            24000,
+            30357
+          ]
+        ]
+      },
+      "spec-packages/arm-02/references/high-risk-backend-contract.md": {
+        "complete": true,
+        "bytes": 5773,
+        "covered_prefix": 5773,
+        "ranges": [
+          [
+            0,
+            5773
+          ]
+        ]
+      },
+      "spec-packages/discipline/references/verification-loop.md": {
+        "complete": true,
+        "bytes": 6217,
+        "covered_prefix": 6217,
+        "ranges": [
+          [
+            0,
+            6217
+          ]
+        ]
+      },
+      "spec-packages/arm-02/references/discovery-techniques.md": {
+        "complete": true,
+        "bytes": 3387,
+        "covered_prefix": 3387,
+        "ranges": [
+          [
+            0,
+            3387
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "file": "g3_spec_trial_03a-readback.json",
+    "read_mismatches": [],
+    "coverage": {
+      "spec-runs/03-01/input/task.md": {
+        "complete": true,
+        "bytes": 1196,
+        "covered_prefix": 1196,
+        "ranges": [
+          [
+            0,
+            1196
+          ]
+        ]
+      },
+      "spec-runs/03-01/input/context.md": {
+        "complete": true,
+        "bytes": 1149,
+        "covered_prefix": 1149,
+        "ranges": [
+          [
+            0,
+            1149
+          ]
+        ]
+      },
+      "spec-packages/arm-01/SKILL.md": {
+        "complete": true,
+        "bytes": 27854,
+        "covered_prefix": 27854,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            16000
+          ],
+          [
+            16000,
+            24000
+          ],
+          [
+            24000,
+            27854
+          ]
+        ]
+      },
+      "spec-packages/discipline/SKILL.md": {
+        "complete": true,
+        "bytes": 18492,
+        "covered_prefix": 18492,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            16000
+          ],
+          [
+            16000,
+            18492
+          ]
+        ]
+      },
+      "spec-packages/arm-01/references/methodology.md": {
+        "complete": true,
+        "bytes": 29899,
+        "covered_prefix": 29899,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            16000
+          ],
+          [
+            16000,
+            24000
+          ],
+          [
+            24000,
+            29899
+          ]
+        ]
+      },
+      "spec-packages/discipline/references/core-principles.md": {
+        "complete": true,
+        "bytes": 2301,
+        "covered_prefix": 2301,
+        "ranges": [
+          [
+            0,
+            2301
+          ]
+        ]
+      },
+      "spec-packages/discipline/references/verification-loop.md": {
+        "complete": true,
+        "bytes": 6217,
+        "covered_prefix": 6217,
+        "ranges": [
+          [
+            0,
+            6217
+          ]
+        ]
+      },
+      "spec-runs/03-01/output/specification.md": {
+        "complete": true,
+        "bytes": 5481,
+        "covered_prefix": 5481,
+        "ranges": [
+          [
+            0,
+            5481
+          ]
+        ]
+      }
+    }
+  },
+  {
+    "file": "g3_spec_trial_03b-readback.json",
+    "read_mismatches": [],
+    "coverage": {
+      "spec-runs/03-02/input/task.md": {
+        "complete": true,
+        "bytes": 1196,
+        "covered_prefix": 1196,
+        "ranges": [
+          [
+            0,
+            1196
+          ]
+        ]
+      },
+      "spec-runs/03-02/input/context.md": {
+        "complete": true,
+        "bytes": 1149,
+        "covered_prefix": 1149,
+        "ranges": [
+          [
+            0,
+            1149
+          ]
+        ]
+      },
+      "spec-packages/arm-02/SKILL.md": {
+        "complete": true,
+        "bytes": 27095,
+        "covered_prefix": 27095,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            16000
+          ],
+          [
+            16000,
+            24000
+          ],
+          [
+            24000,
+            27095
+          ]
+        ]
+      },
+      "spec-packages/discipline/SKILL.md": {
+        "complete": true,
+        "bytes": 18492,
+        "covered_prefix": 18492,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            16000
+          ],
+          [
+            16000,
+            18492
+          ]
+        ]
+      },
+      "spec-packages/arm-02/references/methodology.md": {
+        "complete": true,
+        "bytes": 30357,
+        "covered_prefix": 30357,
+        "ranges": [
+          [
+            0,
+            8000
+          ],
+          [
+            8000,
+            16000
+          ],
+          [
+            16000,
+            24000
+          ],
+          [
+            24000,
+            30357
+          ]
+        ]
+      },
+      "spec-packages/discipline/references/core-principles.md": {
+        "complete": true,
+        "bytes": 2301,
+        "covered_prefix": 2301,
+        "ranges": [
+          [
+            0,
+            2301
+          ]
+        ]
+      },
+      "spec-packages/discipline/references/verification-loop.md": {
+        "complete": true,
+        "bytes": 6217,
+        "covered_prefix": 6217,
+        "ranges": [
+          [
+            0,
+            6217
+          ]
+        ]
+      }
+    }
+  }
+]

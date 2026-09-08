@@ -1,0 +1,22 @@
+{
+  "basis": "reviewed-snapshot.json; only supporting status/navigation changes; added exact evidence copies, no behavior/evidence reinterpretation",
+  "changed_reviewed_files": {
+    "docs/README.md": {
+      "before": "eb2f018d2c4c43a362da5f4732df92581135bf4a33bd8655ff2f5394472b0a1c",
+      "after": "3d7f1f3f4988653745697e57056ee0d11a85e46f7e1be98ca300b69ba3b2d0b3"
+    },
+    "docs/logs/implementation-log-20260907-1.md": {
+      "before": "ed709b03f77565506ab9101e9245c39a0babd10e776785e3462c023e22da549a",
+      "after": "bf9747a2ad18a4b42985d6853137342014da54419507fea8d2f785b6687803bf"
+    }
+  },
+  "new_evidence_files": [
+    "docs/reviews/evidence/g4/README.md",
+    "docs/reviews/evidence/g4/archive-manifest.json",
+    "docs/reviews/evidence/g4/assigned-settings.json",
+    "docs/reviews/evidence/g4/final-audit.md",
+    "docs/reviews/evidence/g4/independent-validation.json",
+    "docs/reviews/evidence/g4/raw-evidence.tar.gz",
+    "docs/reviews/evidence/g4/reviewed-snapshot.json"
+  ]
+}

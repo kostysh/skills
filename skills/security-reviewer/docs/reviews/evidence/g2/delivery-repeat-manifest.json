@@ -1,0 +1,31 @@
+{
+  "reason": "bounded original D checklist delivery gap, source and closed criteria unchanged",
+  "archiveSHA256": "1a2168e68498c8d4b3fc23d327a1e677d87c2cd4171eabd8a85395bd34ffac85",
+  "files": {
+    "baseline-emitted/security-reviewer/SKILL.md": "39cab9adc90624ed2b5c500226d5b3b31640d7c18121ca4fa4ab59be4b1bc410",
+    "baseline-emitted/security-reviewer/references/methodology.md": "f86304874d34d73d5c89493a771fa2d837830830982485f5e08514df1acfbe92",
+    "baseline-emitted/security-reviewer/references/secrets-config.md": "083f3349e090cb36bd44c2c5c97f16c3c2ebe3e04bc261125a0b09d31147faf2",
+    "baseline-emitted/security-reviewer/references/supabase-rls.md": "b08205246cb5b58e0e05e09d4539b999343f4ba954e28c5577947585ccb97d55",
+    "candidate-emitted/security-reviewer/SKILL.md": "0e0ee8025a1eae969512fcef4a4210d5712bca141620733cc624685744355fa1",
+    "candidate-emitted/security-reviewer/references/methodology.md": "742f47b7a979ca2771899446601afcf7f03e349b31feb6bf23512789fac1906e",
+    "candidate-emitted/security-reviewer/references/secrets-config.md": "8f46d5d2b652a74e17d670686b4d6c6adfc6f6bd59263b47606f204da95d6a36",
+    "candidate-emitted/security-reviewer/references/supabase-rls.md": "6dadce04c0a4d1e9323a64161218c5c0d8a6e601ac1eb0267b1dac657a573b0a",
+    "runs/security-d-baseline-delivery/input/browser.json": "0456b26b8732c72fdf2d1587caddfbee82cc8fd292bdc87c277619caeb2df2f2",
+    "runs/security-d-baseline-delivery/input/capture.py": "d490c4719be1597fa6051e980402f497a0c682a31f463c665fae1af4c9dbc6a1",
+    "runs/security-d-baseline-delivery/input/contract.md": "b856101bf243e9c76f7635f05243d3ea3183891ca5ed8cb98daf58828b21e872",
+    "runs/security-d-baseline-delivery/input/task.md": "4da59766b840831b3df557dbabdb1767f041295f7506821b8aae2108526b121a",
+    "runs/security-d-baseline-delivery/output/review.md": "8605f4aa50d1203a4948a9640e8b4736f88ec3e07e4e61948aa7e8b4436c4632",
+    "runs/security-d-baseline-delivery/trace.json": "3baa18b2f90c5bd6ef9384c56cc3faa2b4c5b8556a5bd3ea6ab5929acc2eebcb",
+    "runs/security-d-candidate-delivery/input/browser.json": "0456b26b8732c72fdf2d1587caddfbee82cc8fd292bdc87c277619caeb2df2f2",
+    "runs/security-d-candidate-delivery/input/capture.py": "d490c4719be1597fa6051e980402f497a0c682a31f463c665fae1af4c9dbc6a1",
+    "runs/security-d-candidate-delivery/input/contract.md": "b856101bf243e9c76f7635f05243d3ea3183891ca5ed8cb98daf58828b21e872",
+    "runs/security-d-candidate-delivery/input/task.md": "4da59766b840831b3df557dbabdb1767f041295f7506821b8aae2108526b121a",
+    "runs/security-d-candidate-delivery/output/review.md": "720c23b80d654f4a22cd3bcc914b6d7dee4f15d9db6c1927a6ef4aedbd81b0eb",
+    "runs/security-d-candidate-delivery/trace.json": "6580f0a2973cda85032a478eb1b05d4aa89c995aacbb7b42126c772c4b2b5f4d",
+    "security-audit-v1-blocked.md": "fe5062eaa3e0a479ffba0807febfb00448afcd6fce0766e59e2c6e21c2e46bc1",
+    "security-audit-v1-readback.json": "258e32a582132e79505026f56752508966e65214102e3724faa0c530ca153282",
+    "security-d-delivery-assessment.md": "ca4ce99df3ab00f0b18f6c76ee58090121366f1fe3e0cbfa7f7aa0072daf568e",
+    "security-d-delivery-repeat.json": "57c6a1caaff5e1014f092f04396e6af9bcea332d363aeefa75c3d816e217e741",
+    "security-final-review-snapshot.json": "70aa06ca43ee70a8b97ea4958b8f9fc242ae3e34204e83211c3f1413e9ef2d16"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "reviewed_aggregate": "4c95da6f221e60f9463fe11eaa86952fc4d3397f3ff5deb1731bd9fb6e22c2ea",
+  "reviewed_report_sha256": "26a5b880948389062675cec298c54c5f1ef52ca885261f4fa15021e00419600f",
+  "changed_reviewed_supporting_files": {
+    "docs/README.md": {
+      "before": "a7534672eab17e5a1d26f21cccddd4cdaa928a7fafc6130f161c87ac572dfb2d",
+      "after": "8572013d30d3492b167ff048769e47ef9d4f93fae0ce3f61e4e310e062a4a948"
+    },
+    "docs/logs/implementation-log-20260907-1.md": {
+      "before": "fe1cafac918a238c9420ee7d1442d8d2a71dc1ed4b010188dd5a53a0ec0a33b3",
+      "after": "6891b9301044d15f29cf2b65c8da21a0a0961cd08428738e2c6e9b2885bbf013"
+    }
+  },
+  "added_supporting_files": [
+    "docs/reviews/evidence/g4/README.md",
+    "docs/reviews/evidence/g4/archive-manifest.json",
+    "docs/reviews/evidence/g4/assigned-settings.json",
+    "docs/reviews/evidence/g4/final-audit.md",
+    "docs/reviews/evidence/g4/independent-consumer-delivery.json",
+    "docs/reviews/evidence/g4/independent-validation.json",
+    "docs/reviews/evidence/g4/raw-evidence.tar.gz",
+    "docs/reviews/evidence/g4/reviewed-snapshot.json",
+    "docs/reviews/evidence/g4/reviewer-final-readback.json"
+  ],
+  "active_unchanged": true
+}

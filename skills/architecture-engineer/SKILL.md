@@ -7,9 +7,9 @@ description: Design or revise architecture for AI-agent-driven development. Use
 compatibility: Portable documentation-only skill. It ships artifact templates
   but no runtime; all mandatory architecture guidance lives in this folder.
 metadata:
-  source-version: 0.1.8
+  source-version: 0.1.9
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: f211b97c389c60301da14fa21ab1def9581852e5d5a26b5328efd33f680e055c
+  skillforge-source-hash: b594a778ae91c43643c1361a5f27b7d244a6b6bceda9a427c23d92af5a4a53b7
 ---
 
 # architecture-engineer
@@ -280,24 +280,22 @@ Use short ID chains for medium/high-risk work: PRD requirement -> ASR -> decisio
 Use the user's working language unless repository conventions require another language. Keep stable technical identifiers in the repository language when needed.
 
 ### Stop or escalation rules
-Ask one focused question or mark human review required when:
+Ask one focused question or mark human review required only when missing or conflicting inputs materially affect an architecture decision, or an applicable policy checkpoint remains unfulfilled. Relevant areas:
 
-- product requirements conflict in a way that changes architecture;
-- implementation would require choosing between incompatible security, privacy, compliance, data-loss, or compatibility outcomes;
-- a public API, identity model, tenant isolation model, data model, migration strategy, secrets handling, or deployment topology would change;
-- a new paid or operationally significant external dependency is introduced;
-- a required external contract is missing and cannot be inferred safely;
-- the architecture would weaken rollback, observability, audit, or security posture.
+- conflicting product requirements;
+- incompatible security, privacy, compliance, data-loss, or compatibility outcomes;
+- public API, identity, tenant isolation, data model, migration, secrets handling, or deployment topology changes;
+- new paid or operationally significant external dependencies;
+- required external contracts;
+- rollback, observability, audit, or security posture.
 
-For non-blocking gaps, proceed with assumptions and validation steps.
+Preserve existing authorization within its scope; architectural change alone does not require renewed approval. Stop only dependent work, name the missing input or unfulfilled checkpoint, and continue independent authorized work. For non-blocking gaps, use assumptions and validation steps.
 
 ### Output contract
 Return the smallest complete, risk-fit subset defined by the rigor table. Every handoff states `draft`, `blocked`, or `ready` plus blockers.
 
 ## Required active references
 - [Architecture methodology](references/methodology.md) — Read this before medium/high-risk architecture work, ASR extraction, pattern selection, decision records, quality scenarios, spikes, or routed architecture handoff.
-
-## Optional references
 - [Artifact templates](references/artifact-templates.md) — Read this when producing an architecture check, delta, ASR register, pattern decision, ADR, quality scenario, spike brief, architecture brief, or handoff item/register.
 - [Pattern catalog](references/pattern-catalog.md) — Read this when architecture forces require comparing system, frontend, backend, data, integration, security, privacy, observability, deployment, or delivery-safety patterns.
 

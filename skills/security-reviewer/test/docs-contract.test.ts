@@ -13,7 +13,7 @@ const countMatches = (text: string, pattern: RegExp) => [...text.matchAll(patter
 test('source contract exposes one required methodology and optional domain references', async () => {
   const manifest = await readSkillFile('skill.yaml');
 
-  assert.match(manifest, /source-version: "0\.1\.12"/);
+  assert.match(manifest, /source-version: "0\.1\.13"/);
   assert.match(manifest, /requiredReferences:\n\s+- "ref-methodology"\n\s+optionalReferences:/);
   assert.match(manifest, /id: "ref-api-auth-input"[\s\S]*?required: false/);
   assert.match(manifest, /id: "ref-github-actions"[\s\S]*?required: false/);
@@ -111,11 +111,12 @@ test('re-audit is finding-bounded and reports a plain-language outcome first', a
 
   assert.match(skill, /exact remediation delta/);
   assert.match(skill, /do not repeat unchanged previously cleared full scope/);
-  assert.match(skill, /cosmetic edits alone do not close an attack path/);
+  assert.match(methodology, /Cosmetic or prose-only edits do not close a finding/);
+  assert.match(methodology, /expected behavior correction within the accepted findings/);
   assert.match(skill, /plain-language outcome sentence before security status/);
   assert.doesNotMatch(skill, /Findings first/);
   assert.match(methodology, /Record unchanged previously cleared scope as excluded/);
-  assert.match(methodology, /blast radius cannot be bounded/);
+  assert.match(methodology, /blast radius that cannot be bounded/);
 });
 
 test('standards control fulfillment always routes to spec-conformance-reviewer', async () => {
@@ -345,7 +346,7 @@ test('data-access guidance is reachable from related references', async () => {
   );
 });
 
-test('browser storage and telemetry checks are impact-aware while credential material stays prohibited', async () => {
+test('browser storage and telemetry checks use exposure and confidence gates', async () => {
   const [skill, secrets, methodology] = await Promise.all([
     readSkillFile('SKILL.md'),
     readSkillFile('references/secrets-config.md'),
@@ -356,7 +357,9 @@ test('browser storage and telemetry checks are impact-aware while credential mat
   assert.match(skill, /passwords, OTP\/recovery material/);
   assert.match(skill, /identity\/provider\/network payloads and telemetry fields by sensitivity/);
   assert.match(secrets, /Browser Durable Storage/);
-  assert.match(secrets, /Always flag browser durable storage of plaintext passwords/);
+  assert.match(secrets, /Investigate browser durable storage of plaintext passwords/);
+  assert.match(secrets, /protected browser profile alone does not establish attacker access/);
+  assert.match(secrets, /public bearer-token leak/);
   assert.match(
     secrets,
     /ordinary non-sensitive display preference or public identifier is not a security finding/,
@@ -400,4 +403,19 @@ test('GitHub Actions findings require actual untrusted execution reachability', 
     reference,
     /checking out data without executing or interpreting it is not the complete exploit/,
   );
+});
+
+// Documentation-contract guards only; independent task trials assess decisions.
+test('specialized signals and cross-layer discovery preserve the common review boundary', async () => {
+  const [methodology, handoffs, rls] = await Promise.all([
+    readSkillFile('references/methodology.md'),
+    readSkillFile('references/domain-handoffs.md'),
+    readSkillFile('references/supabase-rls.md'),
+  ]);
+
+  assert.match(methodology, /govern every specialized checklist/);
+  assert.match(methodology, /Missing tests alone are an evidence gap/);
+  assert.match(rls, /missing test alone is not a finding/);
+  assert.match(methodology, /unrelated stack does not expand a complete bounded review/);
+  assert.match(handoffs, /limit only the dependent conclusion/);
 });

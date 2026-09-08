@@ -1,0 +1,15 @@
+{
+  "scope": "group2 checkpoint only; no active source or evidence interpretation changes",
+  "changed": {
+    "docs/plans/implementation-plan-20260907-2.md": {
+      "before": "678acefeec7a240ddcdce345f6866e6ef3bf9c3d658c341f69c19411d55b46db",
+      "after": "89ea1f3102c85a6215496ea4d547d9d5ef3205993334fc183c00d16cccdb5252"
+    }
+  },
+  "skillCommits": {
+    "git-engineer": "8bf10118b43956c34537862af52ff40630575553",
+    "security-reviewer": "f72ec92ba98c84f7e7b9ee90a399bd936590916f",
+    "gh-utility": "9fac71b55eb7659c711edeb51631180cabd334c7"
+  },
+  "recordExcludesItself": true
+}

@@ -55,7 +55,7 @@ Included: what the plan covers
 Excluded: what the plan intentionally does not cover
 Scope baseline: exact request/source boundary
 Scope delta: unchanged | narrowed | expanded | mixed
-Scope delta inventory: each material change/addition -> delta type | exact authority/customer disposition | consequences | status/blocker
+Scope delta inventory: each material change/addition -> delta type | exact authority/owner disposition | consequences | status/blocker
 Unauthorized additions: none | individually listed and blocked in the inventory
 Source authority: PRD/product brief, architecture handoff, accepted specs, repo instructions, existing code
 Plan handoff: draft | blocked | ready for <consumer>
@@ -87,19 +87,22 @@ Use inputs according to their authority:
 - repository instructions define local workflow rules;
 - code/tests show existing implementation boundaries and integration seams.
 
-An owning product artifact is not necessarily origin authority. For every
-material product requirement, continue through PRDs, specs, plans, and tasks to
-an exact customer/contract statement or explicit customer decision. A derived
-artifact, even when accepted, does not prove customer coordination by itself.
-If the chain is missing or conflicts with customer requirements, keep dependent
-planning blocked and route the disposition to the product/customer-requirement
-owner.
+For every material product requirement, identify the established decision owner
+and applicable approval rules from the task and project governance. Trace through
+PRDs, specs, plans, and tasks to that owner's accepted primary decision. A derived
+artifact cannot authorize its own expansion. When customer-owned governance
+applies, require an exact customer/contract statement or explicit customer
+decision; acceptance of a derived artifact alone does not prove that coordination.
+Do not invent a customer approval process for internal or maintainer-owned work,
+or waive one that applies. Missing or conflicting authority blocks only dependent
+planning; route the disposition to the established product-requirement owner.
 
 Accepted architecture, security, privacy, legal/compliance, operations, and
 repository obligations may act as non-product authority only inside their own
-boundary. If such an obligation changes product scope, roles, workflow, visible
-behavior, or acceptance, require explicit disposition against customer
-requirements rather than relabeling it as product authority.
+boundary. If an obligation changes product scope, roles, workflow, visible
+behavior, or acceptance, require disposition by the established product owner
+under the same applicable approval rules rather than relabeling it as product
+authority.
 
 ### Readiness propagation
 
@@ -174,12 +177,12 @@ not applicable with rationale.
 
 Keep the source or obligation identifier on the disposition. Also trace every
 material planned task, behavior, and acceptance obligation back to its
-customer-coordinated product source or bounded non-product authority. An
-obligation that disappears on the way into the plan, or a planned item with no
+accepted product source under the applicable governance or bounded non-product
+authority. An obligation that disappears on the way into the plan, or a planned item with no
 reverse authority trace, makes the plan incomplete.
 
 Record every material narrowing, expansion, or addition as its own scope
-inventory item with exact authority or customer disposition, consequences, and
+inventory item with exact authority or owner disposition, consequences, and
 status or blocker. The aggregate word `findings` is not an inventory and cannot
 support a ready handoff. An unauthorized addition remains individually named and
 blocked.
@@ -250,6 +253,15 @@ Unless it is tied to a concrete capability, validation obligation, or module inc
 
 Do not keep future-only support tasks. A scaffold, wrapper, config surface, harness, folder, or extension point is valid only for a current source obligation or protected boundary when it names the owner increment, evidence unlocked, trigger, and why the direct task or existing verification contour is insufficient. Otherwise merge it into the owner task, delete it, or route the gap.
 
+A remediation, tooling, documentation, or skills task that actually supports a
+slice or module increment names the protected capability, defect class, evidence
+unlocked, and effectiveness check for that increment. A standalone accepted
+outcome in these areas instead names its current consumer, observable or
+verifiable outcome, source authority, and proportional verification. It needs no
+invented future slice or dependency. This is not an exception for future-only
+scaffolding: a current accepted outcome is still required, and neither support
+nor standalone delivery proves product runtime capability.
+
 ### Spike
 
 Use when a task cannot be planned safely without bounded evidence.
@@ -278,11 +290,11 @@ Default fields:
 ```text
 Task ID
 Title
-Slice / module increment
+Slice / module increment, or current standalone outcome
 Goal
 Scope / out of scope
 Source / obligation trace
-Customer/contract basis or bounded non-product authority
+Accepted owner decision (customer/contract basis when required) or bounded non-product authority
 Handoff status: draft | blocked | ready for <owner>
 Blockers and dependencies
 Risk: low | medium | high
@@ -348,7 +360,7 @@ A task is ready for coding only when:
 
 ```text
 product authority and handoff are accepted;
-material product requirements have verified customer/contract coordination;
+material product requirements have accepted owner decisions and all applicable approvals;
 architecture handoff is ready or irrelevant;
 dependencies are ready, not merely named;
 risk is explicit;
@@ -516,13 +528,13 @@ The plan matches the requested scope.
 Every task passed its applicable specialist-trigger, accepted-dependency, and canonical-public-contract readback before readiness.
 The exact baseline and scope delta are explicit; every narrowing or expansion has authority and consequences.
 Unauthorized additions are explicitly `none` or are listed as blockers.
-Every material product item traces past derived artifacts to a customer/contract statement or explicit customer decision.
-Every non-product obligation remains inside its authority boundary or has explicit customer disposition for product impact.
+Every material product item traces through derived artifacts to the established owner's accepted decision, with the customer/contract chain verified when that governance applies.
+Every non-product obligation remains inside its authority boundary or has explicit product-owner disposition under applicable approval rules for product impact.
 Product authority/handoff and architecture handoff item status are explicit.
 No task is more ready than its source or dependency inputs.
 The architecture handoff is consumed but not redesigned.
 Every in-scope product requirement and architecture obligation has a task, route, spike, or explicit not-applicable rationale.
-Every material planned item traces back to customer-coordinated product authority or bounded non-product authority.
+Every material planned item traces back to accepted product authority under the applicable governance or bounded non-product authority.
 Missing architecture decisions are routed.
 Missing product intent is routed.
 Missing behavior detail is routed.

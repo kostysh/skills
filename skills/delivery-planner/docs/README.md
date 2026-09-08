@@ -7,7 +7,7 @@ Default active guidance lives in:
 - `SKILL.md`
 - `references/methodology.md`
 
-Optional guidance is loaded only when its trigger applies:
+Conditionally required guidance is loaded only when its trigger applies:
 
 - `references/planning-patterns.md`
 - `references/output-templates.md`
@@ -33,3 +33,6 @@ Maintenance records:
 | `logs/implementation-log-20260727-1.md` | Independent PASS | Типизированные dependency edges и общий acceptance для shared invariants по #226. |
 | `logs/implementation-log-20260818-1.md` | Independent PASS | Customer-coordinated product authority, per-item scope inventory и plain-language output. |
 | `logs/implementation-log-20260822-1.md` | Independent PASS | Task-by-task specialist trigger, dependency и canonical-contract readiness readback; same-auditor targeted delta review. |
+| [implementation-log-20260907-1](logs/implementation-log-20260907-1.md) | Independent bounded PASS | G3: действующий owner, самостоятельные docs/tooling/skills outcomes и conditional references. |
+
+- [G3 independent PASS и evidence](reviews/evidence/g3/README.md) — actual spec handoff, source/standalone/support; P3 и procedural limits сохранены.

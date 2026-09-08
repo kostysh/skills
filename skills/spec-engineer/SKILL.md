@@ -9,9 +9,9 @@ compatibility: Portable, self-contained documentation-only skill. It ships no
   runtime and keeps all method instructions required to create specifications
   inside this folder.
 metadata:
-  source-version: 0.2.13
+  source-version: 0.2.14
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 5b613093fa72d7bd952b1f5a87fed6bd2b337e427f74ab26a81f5ef1384be9d0
+  skillforge-source-hash: 5bbd12b6c736cc6533aed518a693928564e151edc6f16db97dcd616721e588a6
 ---
 
 # spec-engineer
@@ -232,16 +232,7 @@ Use BDD/Gherkin only when scenarios materially clarify behavior, guards, failure
 Every important requirement needs a verification path such as demonstration, inspection, analysis, contract validation, schema validation, property-based checks, example-based tests, or executable scenarios. For a material cross-layer claim, apply the lifecycle-map rule in the required methodology reference. If verification is not currently possible, the spec must say why.
 
 ### Stop rules
-Stop and ask the user when:
-
-- a behavior-changing source conflict remains unresolved after applying authority and readiness precedence;
-- the requested spec scope conflicts with known parent product, system, workflow, or architecture intent in a behavior-changing way;
-- implementation would require choosing between incompatible product, security, privacy, compliance, data-loss, or compatibility outcomes;
-- the spec would make a capability claim that can only be proven by substrate evidence;
-- the spec would require changing a public contract, data model, auth/security boundary, tenant isolation, integration topology, deployment model, rollback path, or selected architecture pattern not covered by accepted architecture context;
-- a required external contract is missing and cannot be inferred safely.
-
-Do not stop for minor unknowns. Record them as assumptions, non-blocking gaps, validation gaps, or architecture delta needed.
+Apply the canonical Stop rules section in [Specification methodology](references/methodology.md) before finalizing; they distinguish blocked dependent decisions and handoff from supported draft or review work.
 
 ### Output language policy
 Produce the specification in the user's working language unless the target repository, existing spec corpus, or user request clearly requires another language.
@@ -273,9 +264,9 @@ release readiness.
 
 ## Required active references
 - [Specification methodology](references/methodology.md) — Read this when drafting or materially revising a software specification.
+- [High-risk backend contract matrix](references/high-risk-backend-contract.md) — Read this before drafting, revising, or accepting high-risk backend, multi-package/component, or external-provider scope. Apply all HRB rows only to high-risk scope; otherwise use its conditional readback.
 
 ## Optional references
-- [High-risk backend contract matrix](references/high-risk-backend-contract.md) — Read this before drafting, revising, or accepting a high-risk backend specification involving a public API, persistent state, authorization, money, retries, external resources, audit evidence, multiple packages, or an external provider.
 - [Specification patterns](references/spec-patterns.md) — Read this when choosing the minimal structure for a feature, vertical slice, spike, API endpoint, validation rule, workflow, migration, or non-functional constraint.
 - [Discovery techniques](references/discovery-techniques.md) — Read this when behavior inventory feels checklist-driven, risk is high, or you need systematic edge-case discovery.
 - [Self-deception anti-patterns](references/anti-patterns.md) — Read this before finalizing a spec with vague acceptance, mocks, substrate evidence, happy-path bias, or ambiguous terms.

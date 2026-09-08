@@ -9,9 +9,9 @@ compatibility: Portable documentation-only review skill. Use before
   specification, planning, implementation, or closure when concept alignment and
   real capability are more important than local artifact compliance.
 metadata:
-  source-version: 0.2.3
+  source-version: 0.2.4
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 3d35edd12aa4ef75795a517b4e34cbb02a69877bd927318d046b3199d3146fd7
+  skillforge-source-hash: acc9101f5884edbe205855ba2ffab33fd0cea9fa1ba835fc8e8565eb5e5fdd4b
 ---
 
 # concept-conformance-reviewer
@@ -87,7 +87,7 @@ Also return exactly one mode outcome:
 - design-time: use `design-ready` for a new capability, `invariant-ready` for capability preservation, or `substrate-ready` for `proceed as substrate`; each requires `assessable + low`, otherwise use `claim-not-ready` or `blocked`;
 - closure-time: use `capability-demonstrated`, `invariant-demonstrated`, or `substrate-demonstrated` at the matching claim boundary; each requires `assessable + low` and current boundary evidence, otherwise use `claim-not-demonstrated` or `blocked`.
 
-`Claim-not-ready` and `claim-not-demonstrated` refer only to the reviewed claim boundary. `Proceed` covers capability and invariant claims; `proceed as substrate` covers substrate. Design-time proceed authorizes work, not completion. Invariant and substrate outcomes never claim a new or owner capability.
+`Claim-not-ready` and `claim-not-demonstrated` refer only to the reviewed claim boundary. `Proceed` covers capability and invariant claims; `proceed as substrate` covers substrate. Design-time proceed establishes concept readiness, not permission to implement or publish. Preserve existing operator authorization and checkpoints; the review verdict neither grants new authority nor requires approval already given. Invariant and substrate outcomes never claim a new or owner capability.
 
 ### Output contract
 

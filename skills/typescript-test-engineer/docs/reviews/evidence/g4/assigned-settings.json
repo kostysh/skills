@@ -1,0 +1,46 @@
+{
+  "provenance": "Coordinator supplied fresh fork_turns=none; no model/reasoning overrides. Runtime metadata and initial prompt not exposed by readback API. Instructional access restriction, not hard sandbox.",
+  "runs": [
+    {
+      "agent": "/root/g4_tests_trial_01a",
+      "threadId": "01a07da1-3ab5-79e1-a6b0-11f8f1df3b76"
+    },
+    {
+      "agent": "/root/g4_tests_trial_02a",
+      "threadId": "01a07da2-6723-7321-a16c-f35b006e63d1"
+    },
+    {
+      "agent": "/root/g4_tests_trial_03a",
+      "threadId": "01a07da2-89ea-7ca3-b450-f9b4aa53caeb"
+    },
+    {
+      "agent": "/root/g4_tests_trial_01b",
+      "threadId": "01a07da3-be97-7831-ba72-0a2896a6a4bf"
+    },
+    {
+      "agent": "/root/g4_tests_trial_02b",
+      "threadId": "01a07da3-e0c3-7390-a679-7193602a9389"
+    },
+    {
+      "agent": "/root/g4_tests_trial_03b",
+      "threadId": "01a07da5-6b59-7bc2-a89b-d104022295a7"
+    },
+    {
+      "agent": "/root/g4_tests_select_01",
+      "threadId": "01a07da5-8e5d-73b0-82c7-70d9d6511fe7"
+    },
+    {
+      "agent": "/root/g4_tests_select_02",
+      "threadId": "01a07da6-3046-7ac0-886c-266232c16430"
+    },
+    {
+      "agent": "/root/g4_tests_consumer_01",
+      "threadId": "01a07da7-5e83-7bd3-aa74-50a81f171585"
+    },
+    {
+      "agent": "/root/g4_tests_consumer_02",
+      "threadId": "01a07da7-8efd-7ce3-8687-8ad7a325c69f"
+    }
+  ],
+  "restrictions": "Own raw task and assigned active skill/references only; no criteria/history/other results. Report writes only; no project/runtime/external mutation."
+}

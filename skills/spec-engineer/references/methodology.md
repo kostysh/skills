@@ -536,13 +536,14 @@ Check the specification itself:
 
 ## Stop rules
 
-Stop and ask the user when:
+Stop the dependent normative decision or ready handoff and ask for the missing decision when:
 
 - a behavior-changing source conflict remains unresolved after applying authority and readiness precedence;
-- a new or changed material `MUST` has no supported semantic derivation or cannot pass its removal falsifier;
+- the requested spec scope conflicts with known parent product, system, workflow, or architecture intent in a behavior-changing way;
+- a new or changed material `MUST` remains unresolved after the semantic authority gate;
 - implementation would require choosing between incompatible product, security, privacy, compliance, data-loss, or compatibility outcomes;
 - the spec would make a capability claim that can only be proven by substrate evidence;
 - the spec would require changing a public contract, data model, auth/security boundary, tenant isolation, integration topology, deployment model, rollback path, or selected architecture pattern not covered by accepted architecture context;
 - a required external contract is missing and cannot be inferred safely.
 
-Do not stop merely because an input is draft or non-authoritative when a useful draft can be produced without invention. Do not stop for minor unknowns. Record them as assumptions, non-blocking gaps, validation gaps, or architecture delta needed, and downgrade the handoff whenever the named consumer still cannot act safely.
+Apply the semantic authority gate above: remove an unsupported author-proposed obligation or retain it as an explicit unresolved gap; do not remove or alter an accepted obligation to avoid a blocker. Continue supported draft or review work without inventing the missing decision. Do not stop merely because an input is draft or non-authoritative when a useful draft can be produced without invention. Do not stop for minor unknowns. Record them as assumptions, non-blocking gaps, validation gaps, or architecture delta needed, and downgrade the handoff whenever the named consumer still cannot act safely.

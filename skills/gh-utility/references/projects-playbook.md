@@ -11,13 +11,15 @@ gh auth status
 gh auth refresh -s project
 ```
 
-Always identify:
+Identify only the inputs required by the actual installed command:
 
-- owner login/org
-- project number
-- project ID
-- field IDs and option IDs for updates
-- item IDs for item edits
+- List projects: owner login/org.
+- Create a project: owner and requested title; no future project or item IDs.
+- View, link, or list fields/items: owner and existing project number, plus the repository for linking.
+- Edit an item field: project, item, and field IDs; option ID only for a single-select update. Other item edits use their command-specific inputs.
+
+Discover existing IDs through native reads. Missing inputs stop only the dependent operation;
+continue supported inspection without inventing future IDs.
 
 ## Inspect before edits
 
@@ -82,7 +84,7 @@ Bulk project operations are medium-risk. Default to dry-run tables:
 | Item | Current field | Proposed field | Command |
 |---|---|---|---|
 
-Execute only when the current request authorizes the listed updates. Use small batches and stop on the first unexpected error.
+Apply the root [Authorization policy](../SKILL.md#authorization) to the listed updates. Use small batches and stop on the first unexpected error.
 
 ## Project reporting
 

@@ -1,0 +1,1076 @@
+[
+  {
+    "file": "g3_arch_author-readback.json",
+    "thread": "01a07d61-ba0d-7b41-bd1f-06b422263d69",
+    "page": {
+      "order": "newest_first",
+      "limit": 2,
+      "nextCursor": null,
+      "hasMore": false
+    },
+    "commands": [
+      {
+        "id": "exec-a40381f7-58f8-4d4b-8bd3-c0ec6bc2ce54",
+        "command": "/bin/bash -lc \"pwd; rg --files -g AGENTS.md -g '*plan*' -g 'skill-standard.md' -g '*architecture*' docs skills/architecture-engineer | head -60\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-daf01993-02e7-4492-9378-36226ca7ca09",
+        "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nroot=Path('/home/kostysh/.codex/skills/custom/.worktrees/skills-revision')\nfiles=['AGENTS.md','docs/skill-standard.md','docs/plans/implementation-plan-20260907-1.md','skills/architecture-engineer/AGENTS.md','skills/skill-source-compiler/SKILL.md','skills/implementation-discipline/SKILL.md']\nfor f in files:\n p=root/f\n print(str(p),p.stat().st_size if p.exists() else 'MISSING')\nprint(Path('/home/kostysh/.codex/skills/.system/skill-creator/SKILL.md').read_text()[:8000])\nPY\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-4454882a-5f78-482c-ad18-1a1e8de90c84",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('AGENTS.md').read_text()[0:8000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-231bf9f6-b5ea-42a7-b1d2-d5ca9e1c231e",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('docs/skill-standard.md').read_text()[0:8000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-68072741-7320-47ed-8e8f-405cf12eb45a",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('docs/skill-standard.md').read_text()[8000:16000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-abb887c0-e997-405d-9d2f-1ca84a192e40",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('docs/plans/implementation-plan-20260907-1.md').read_text()[0:8000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-4bc82267-d90a-4da2-8225-ef69ac164bc2",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('docs/plans/implementation-plan-20260907-1.md').read_text()[8000:16000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-fe3feb1c-adf3-4de5-9b78-9798b801ccea",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('skills/skill-source-compiler/SKILL.md').read_text()[0:8000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-573ec9a8-a3e0-4cb6-8259-9d2ad1f2c541",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('skills/skill-source-compiler/SKILL.md').read_text()[8000:16000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-1b87bf9a-54cc-440e-8014-b824b76a00c5",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('skills/skill-source-compiler/SKILL.md').read_text()[16000:24000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-906fe86d-137b-42c2-8697-93cfc44c2776",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('skills/implementation-discipline/SKILL.md').read_text()[0:8000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-cb527913-e240-4cf4-8201-07702e1ebf42",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('skills/implementation-discipline/SKILL.md').read_text()[8000:16000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-a2894d13-6dc7-4f31-b3f0-d58f54c82100",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('skills/implementation-discipline/SKILL.md').read_text()[16000:24000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-fbb2f138-6c01-472c-9718-6d716333d52f",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-baseline-review.md; rg --files skills/architecture-engineer; cat skills/architecture-engineer/package.json'",
+        "exit": 1,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-a15814af-24b3-4875-8c11-057a43c16e49",
+        "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nfor f in ['docs/plans/implementation-plan-20260907-2.md','skills/skill-source-compiler/SKILL.md','skills/architecture-engineer/skill.yaml']:\n p=Path(f); print(f,len(p.read_text()))\nprint(Path('docs/plans/implementation-plan-20260907-2.md').read_text()[:8000])\nPY\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-615b70fb-b06a-4531-bbdf-0b5eba48c718",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('skills/skill-source-compiler/SKILL.md').read_text()[0:8000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-6f1ec8e9-5b1a-43fe-8099-04f821ea48dd",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('skills/skill-source-compiler/SKILL.md').read_text()[8000:16000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-a60fed13-92a2-4fce-a54f-903fabdeff22",
+        "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\np=Path('skills/skill-source-compiler/SKILL.md'); print(p.read_text()[16000:])\nprint(Path('skills/implementation-discipline/references/verification-loop.md').read_text()[:8000])\nPY\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-0f04e7ee-d828-4ba1-80d3-14d78e584b69",
+        "command": "/bin/bash -lc 'cat skills/skill-source-compiler/references/authoring-guidelines.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-68f12284-5c47-47f5-9ac2-10d0fb24b4ca",
+        "command": "/bin/bash -lc 'cat skills/skill-source-compiler/references/conflict-resolution.md; cat skills/architecture-engineer/fragments/overview.md; cat skills/architecture-engineer/fragments/final-checks.md; cat skills/architecture-engineer/docs/README.md; cat docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md; cat package.json'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-e1efdfcf-c649-4ac6-9b6d-093534cd1235",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('skills/architecture-engineer/skill.yaml').read_text()[:8000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-ee8c5b55-54fe-49f0-8447-08652ba1919d",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('skills/architecture-engineer/skill.yaml').read_text()[8000:16000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-8036e02f-008b-4483-b7bb-229e49a182e2",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('skills/architecture-engineer/skill.yaml').read_text()[16000:24000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-0b863088-c713-4f1b-862a-409e9a865445",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('skills/architecture-engineer/skill.yaml').read_text()[24000:32000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-c701c2e5-3716-4a2d-a929-137f98674ca3",
+        "command": "/bin/bash -lc 'wc -c skills/architecture-engineer/references/* skills/architecture-engineer/assets/templates/*; cat skills/skill-source-compiler/references/source-language.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-afc77031-8d0a-4af6-9c14-7e8b3aef5d5c",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('skills/architecture-engineer/references/methodology.md').read_text()[0:8000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-716a48b7-15ec-4319-8376-7d522703a02b",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('skills/architecture-engineer/references/methodology.md').read_text()[8000:16000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-80bb05b9-8e57-46c0-b52a-91b1cdd85faa",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('skills/architecture-engineer/references/methodology.md').read_text()[16000:24000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-bd9211f3-6895-4ca7-81ae-925ba09036d2",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('skills/architecture-engineer/references/methodology.md').read_text()[24000:32000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-77a6f8f6-686d-4edb-8752-f933e985b714",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('skills/architecture-engineer/references/artifact-templates.md').read_text()[0:8000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-647208e9-3720-4c87-b86b-47ea16c1321d",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('skills/architecture-engineer/references/artifact-templates.md').read_text()[8000:16000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-685e9acd-ae6b-4131-8507-5452936081e4",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('skills/architecture-engineer/references/pattern-catalog.md').read_text()[0:8000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-fbfd1231-fac5-45ae-a427-4383f6c8e342",
+        "command": "/bin/bash -lc 'cat skills/architecture-engineer/assets/templates/* skills/architecture-engineer/agents/openai.yaml'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-550c9d71-3e0b-4cef-8775-824205f83399",
+        "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nimport shutil,json,hashlib\nroot=Path('skills/architecture-engineer'); out=Path('/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-author'); out.mkdir()\nshutil.copytree(root,out/'before')\np=root/'skill.yaml'; s=p.read_text().replace('source-version: 0.1.8','source-version: 0.1.9').replace('required: false','required: true').replace('    optionalReferences:\\\\n      - ref-artifact-templates\\\\n      - ref-pattern-catalog','      - ref-artifact-templates\\\\n      - ref-pattern-catalog')\na=s.index('        Ask one focused question or mark human review required when:'); b=s.index('    - id: policy-output-contract',a)\ns=s[:a]+'''        Ask one focused question or mark human review required only when a missing or conflicting input materially affects an architecture decision, or an applicable policy checkpoint remains unfulfilled. Relevant decision areas include:\n\n        - conflicting product requirements;\n        - incompatible security, privacy, compliance, data-loss, or compatibility outcomes;\n        - public API, identity, tenant isolation, data model, migration, secrets handling, or deployment topology changes;\n        - new paid or operationally significant external dependencies;\n        - required external contracts;\n        - rollback, observability, audit, or security posture.\n\n        Preserve sufficient authorization already given for the current scope; an architectural change alone does not require renewed approval. Stop only the dependent decision or action, identify the missing input or unfulfilled checkpoint, and continue independent authorized work. For non-blocking gaps, proceed with assumptions and validation steps.\n'''+s[b:]; p.write_text(s)\np=root/'references/methodology.md'; s=p.read_text().replace('If equal-authority sources conflict in a way that changes architecture, stop for resolution.','If equal-authority sources conflict in a way that changes architecture, apply the [canonical stop or escalation rules](../SKILL.md#stop-or-escalation-rules) to the dependent decision.')\na=s.index('Ask one focused question or mark human review required when the missing or conflicting input'); s=s[:a]+'''Apply the [canonical stop or escalation rules](../SKILL.md#stop-or-escalation-rules). Preserve existing authorization and continue independent supported work; a reminder does not add another approval gate.\n''';p.write_text(s)\n(out/'self-check.md').write_text('''# \u0410\u0432\u0442\u043e\u0440\u0441\u043a\u0438\u0439 self-check\\\\n\\\\n\u0420\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442: ready-to-regenerate, \u043d\u0435 independent PASS.\\\\n\\\\n\u041e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u0435: \u043f\u0440\u0438\u043d\u044f\u0442\u044b\u0439 \u043f\u043b\u0430\u043d implementation-plan-20260907-2, G3, baseline F1/P2 \u0438 F2/P3. \u041f\u043e\u0442\u0440\u0435\u0431\u0438\u0442\u0435\u043b\u044c \u2014 \u0430\u0440\u0445\u0438\u0442\u0435\u043a\u0442\u0443\u0440\u043d\u044b\u0439 \u0430\u0433\u0435\u043d\u0442; \u043e\u0436\u0438\u0434\u0430\u0435\u043c\u0430\u044f capability \u2014 \u0437\u0430\u0432\u0435\u0440\u0448\u0430\u0442\u044c \u0440\u0430\u0437\u0440\u0435\u0448\u0451\u043d\u043d\u0443\u044e \u0430\u0440\u0445\u0438\u0442\u0435\u043a\u0442\u0443\u0440\u043d\u0443\u044e \u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u043a\u0443 \u043f\u0440\u0438 \u0434\u043e\u0441\u0442\u0430\u0442\u043e\u0447\u043d\u044b\u0445 \u0432\u0445\u043e\u0434\u0430\u0445 \u0438 \u043e\u0433\u0440\u0430\u043d\u0438\u0447\u0438\u0432\u0430\u0442\u044c \u0442\u043e\u043b\u044c\u043a\u043e \u0437\u0430\u0432\u0438\u0441\u0438\u043c\u043e\u0435 \u0440\u0435\u0448\u0435\u043d\u0438\u0435 \u043f\u0440\u0438 \u0440\u0435\u0430\u043b\u044c\u043d\u043e\u043c \u043f\u0440\u043e\u0431\u0435\u043b\u0435/\u043a\u043e\u043d\u0444\u043b\u0438\u043a\u0442\u0435 \u043b\u0438\u0431\u043e \u043d\u0435\u0438\u0441\u043f\u043e\u043b\u043d\u0435\u043d\u043d\u043e\u043c checkpoint. \u0410\u0440\u0445\u0438\u0442\u0435\u043a\u0442\u0443\u0440\u043d\u044b\u0435 \u0430\u0440\u0442\u0435\u0444\u0430\u043a\u0442\u044b \u0438 compiler \u043e\u0441\u0442\u0430\u044e\u0442\u0441\u044f substrate, \u043d\u0435 runtime proof.\\\\n\\\\nF1: canonical policy-stop-escalation \u0432 skill.yaml; methodology \u0441\u0441\u044b\u043b\u0430\u0435\u0442\u0441\u044f \u043d\u0430 \u043d\u0435\u0433\u043e \u0432\u043c\u0435\u0441\u0442\u043e \u0432\u0442\u043e\u0440\u043e\u0433\u043e \u043f\u0440\u0435\u0434\u0438\u043a\u0430\u0442\u0430. \u041e\u0441\u0442\u0430\u044e\u0442\u0441\u044f authority gate ASR, risk-fit evidence, handoff readiness \u0438 \u0432\u0441\u0435 \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0435\u043d\u043d\u044b\u0435 \u043e\u0431\u043b\u0430\u0441\u0442\u0438 \u0440\u0438\u0441\u043a\u0430. \u0421\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u044e\u0449\u0435\u0435 \u0440\u0430\u0437\u0440\u0435\u0448\u0435\u043d\u0438\u0435 \u0441\u043e\u0445\u0440\u0430\u043d\u044f\u0435\u0442\u0441\u044f, \u0440\u0435\u0430\u043b\u044c\u043d\u044b\u0439 checkpoint \u043d\u0435 \u043e\u0431\u0445\u043e\u0434\u0438\u0442\u0441\u044f. F2: \u043e\u0431\u0430 references \u043f\u0435\u0440\u0435\u0432\u0435\u0434\u0435\u043d\u044b \u0432 required classification \u0441 \u0431\u0443\u043a\u0432\u0430\u043b\u044c\u043d\u044b\u043c \u0441\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u0438\u0435\u043c \u0443\u0437\u043a\u0438\u0445 triggers; inclusion \u043d\u0435 \u043e\u0437\u043d\u0430\u0447\u0430\u0435\u0442 \u0447\u0442\u0435\u043d\u0438\u0435 \u0432\u0441\u0435\u0433\u0434\u0430.\\\\n\\\\n\u041f\u0440\u043e\u0447\u0438\u0442\u0430\u043d\u044b source, \u043e\u0431\u0430 fragments, \u0432\u0441\u0435 \u0442\u0440\u0438 references, \u0434\u0435\u0441\u044f\u0442\u044c templates, metadata \u0438 supporting navigation. \u041d\u0438\u043a\u0430\u043a\u0438\u0445 \u043d\u043e\u0432\u044b\u0445 artifact families, commands, runtime, wrappers, \u0441\u043e\u0441\u0435\u0434\u043d\u0438\u0445 \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0439. \u041c\u0438\u043d\u0438\u043c\u0430\u043b\u044c\u043d\u0430\u044f \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 \u2014 source/emitted readback \u0438 \u043f\u043e\u043b\u043d\u0430\u044f parity; \u043d\u0435\u0437\u0430\u0432\u0438\u0441\u0438\u043c\u044b\u0435 trials \u0438 verdict \u0432\u044b\u043f\u043e\u043b\u043d\u044f\u0435\u0442 \u0434\u0440\u0443\u0433\u043e\u0439 \u0430\u0433\u0435\u043d\u0442. \u0410\u0432\u0442\u043e\u0440 \u043d\u0435 \u0447\u0438\u0442\u0430\u043b cases, private criteria, runs \u0438\u043b\u0438 candidate outputs \u0438\u0441\u043f\u044b\u0442\u0430\u043d\u0438\u0439 \u0438 \u043d\u0435 \u043e\u0446\u0435\u043d\u0438\u0432\u0430\u0435\u0442 \u043f\u043e\u0432\u0435\u0434\u0435\u043d\u0447\u0435\u0441\u043a\u0438\u0439 PASS. \u0412\u0441\u0435 \u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u044b\u0435 references \u0441\u0443\u0449\u0435\u0441\u0442\u0432\u0443\u044e\u0442; machine-specific dependencies \u0432 \u0430\u043a\u0442\u0438\u0432\u043d\u0443\u044e \u043f\u043e\u0432\u0435\u0440\u0445\u043d\u043e\u0441\u0442\u044c \u043d\u0435 \u0434\u043e\u0431\u0430\u0432\u043b\u0435\u043d\u044b.\\\\n\\\\n\u0423\u0441\u043b\u043e\u0432\u0438\u0435 \u0433\u0435\u043d\u0435\u0440\u0430\u0446\u0438\u0438 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u043e: \u0430\u0432\u0442\u043e\u0440\u0441\u043a\u043e\u0435 \u043d\u0430\u043c\u0435\u0440\u0435\u043d\u0438\u0435 \u0438 \u0440\u0430\u0437\u0440\u0435\u0448\u0451\u043d\u043d\u0430\u044f \u043a\u043e\u0440\u0440\u0435\u043a\u0446\u0438\u044f \u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0435\u043d\u044b, unresolved source conflict \u043d\u0435 \u043e\u0441\u0442\u0430\u043b\u043e\u0441\u044c. \u0421\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u043d\u044b\u0435 \u043a\u043e\u043c\u0430\u043d\u0434\u044b \u0438 readback \u0431\u0443\u0434\u0443\u0442 \u043f\u0440\u0438\u043b\u043e\u0436\u0435\u043d\u044b \u043e\u0442\u0434\u0435\u043b\u044c\u043d\u043e.\\\\n''')\nPY\"",
+        "exit": 0,
+        "readback_truncated": null
+      },
+      {
+        "id": "exec-8132da46-b4d2-4053-b148-9c5c61adcff2",
+        "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nr=Path('skills/architecture-engineer')\n(r/'docs/logs/implementation-log-20260907-1.md').write_text('''# \u0416\u0443\u0440\u043d\u0430\u043b \u0440\u0435\u0430\u043b\u0438\u0437\u0430\u0446\u0438\u0438 architecture-engineer\\\\n\\\\n## \u0418\u0434\u0435\u043d\u0442\u0438\u0444\u0438\u043a\u0430\u0442\u043e\u0440 \u0438 \u043e\u0441\u043d\u043e\u0432\u0430\u043d\u0438\u044f\\\\n\\\\n\"'`implementation-log-20260907-1`. \u041e\u0442\u0434\u0435\u043b\u044c\u043d\u044b\u0439 issue \u043d\u0435 \u0441\u043e\u0437\u0434\u0430\u0432\u0430\u043b\u0441\u044f: \u0440\u0430\u0431\u043e\u0442\u0430 \u043e\u0441\u043d\u043e\u0432\u0430\u043d\u0430 \u043d\u0430 [\u043f\u0440\u0438\u043d\u044f\u0442\u043e\u043c \u043f\u043b\u0430\u043d\u0435](../../../../docs/plans/implementation-plan-20260907-2.md), \u0433\u0440\u0443\u043f\u043f\u0430 3, \u0438 \u043d\u0435\u0437\u0430\u0432\u0438\u0441\u0438\u043c\u043e\u043c baseline `architecture-baseline-review.md` \u0432 evidence-\u043a\u0430\u0442\u0430\u043b\u043e\u0433\u0435 `/tmp/skills-revision-g3-20260907-idvgqdrf`. \u041e\u043f\u0435\u0440\u0430\u0442\u043e\u0440 \u0440\u0430\u0437\u0440\u0435\u0448\u0438\u043b \u043f\u043e\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c\u043d\u0443\u044e \u0440\u0435\u0432\u0438\u0437\u0438\u044e \u0441 \u043d\u0435\u0437\u0430\u0432\u0438\u0441\u0438\u043c\u044b\u043c\u0438 \u0430\u0433\u0435\u043d\u0442\u0430\u043c\u0438; \u0430\u0432\u0442\u043e\u0440 \u043c\u0435\u043d\u044f\u0435\u0442 \u0442\u043e\u043b\u044c\u043a\u043e architecture-engineer.'\"\\\\n\\\\n## \u0420\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442 \u0438 \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f\\\\n\\\\nSource-version 0.1.8 \u2192 0.1.9. \u041e\u0431\u0449\u0435\u0435 \u0430\u0440\u0445\u0438\u0442\u0435\u043a\u0442\u0443\u0440\u043d\u043e\u0435 \u043f\u043e\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u0441\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u043e; \u0438\u0441\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u044b \u0443\u0441\u043b\u043e\u0432\u0438\u0435 \u043e\u0441\u0442\u0430\u043d\u043e\u0432\u043a\u0438 \u0438 \u043a\u043b\u0430\u0441\u0441\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u044f \u0443\u0441\u043b\u043e\u0432\u043d\u043e\u0433\u043e \u0447\u0442\u0435\u043d\u0438\u044f.\\\\n\\\\n| \u041d\u0430\u0445\u043e\u0434\u043a\u0430 \u2192 \u0438\u0441\u0445\u043e\u0434\u043d\u044b\u0439 \u043f\u0443\u0442\u044c | \u0412\u043b\u0430\u0434\u0435\u043b\u0435\u0446 \u0438 \u043f\u043e\u0432\u0435\u0440\u0445\u043d\u043e\u0441\u0442\u044c \u2192 \u043a\u043e\u0440\u0440\u0435\u043a\u0446\u0438\u044f | \u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 \u0438 \u0441\u0442\u0430\u0442\u0443\u0441 |\\\\n| --- | --- | --- |\\\\n| F1/P2: \u0434\u043e\u0441\u0442\u0430\u0442\u043e\u0447\u043d\u044b\u0439 \u0443\u0436\u0435 \u0440\u0430\u0437\u0440\u0435\u0448\u0451\u043d\u043d\u044b\u0439 API change \u043e\u0448\u0438\u0431\u043e\u0447\u043d\u043e \u0442\u0440\u0435\u0431\u0443\u0435\u0442 \u043d\u043e\u0432\u043e\u0433\u043e human review | \"'`skill.yaml` policy-stop-escalation \u2014 canonical predicate: material missing/conflicting input \u0438\u043b\u0438 applicable unfulfilled checkpoint; \u0441\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u044b \u043f\u0440\u0435\u0436\u043d\u0438\u0435 \u043f\u043e\u043b\u043d\u043e\u043c\u043e\u0447\u0438\u044f \u0438 \u043d\u0435\u0437\u0430\u0432\u0438\u0441\u0438\u043c\u0430\u044f \u0440\u0430\u0431\u043e\u0442\u0430. `references/methodology.md` \u0441\u0441\u044b\u043b\u0430\u0435\u0442\u0441\u044f \u043d\u0430 \u043f\u0440\u0430\u0432\u0438\u043b\u043e \u0432 root. | Source/emitted readback \u043f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0430\u0435\u0442 \u0435\u0434\u0438\u043d\u044b\u0439 \u043f\u0440\u0435\u0434\u0438\u043a\u0430\u0442 \u0438 \u043e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0438\u0435 \u0431\u0435\u0437\u0443\u0441\u043b\u043e\u0432\u043d\u043e\u0433\u043e API gate: verified \u0432 \u0433\u0440\u0430\u043d\u0438\u0446\u0435 \u0430\u0432\u0442\u043e\u0440\u0441\u043a\u043e\u0439 \u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u043d\u043e\u0439 \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0438. \u041f\u043e\u0432\u0435\u0434\u0435\u043d\u0447\u0435\u0441\u043a\u043e\u0435 closure \u043e\u0436\u0438\u0434\u0430\u0435\u0442 \u043d\u0435\u0437\u0430\u0432\u0438\u0441\u0438\u043c\u044b\u0435 trials/re-audit. |'\"\\\\n| F2/P3: optional heading \u043f\u0440\u043e\u0442\u0438\u0432\u043e\u0440\u0435\u0447\u0438\u0442 \u0443\u0441\u043b\u043e\u0432\u043d\u043e\u043c\u0443 \u0438\u043c\u043f\u0435\u0440\u0430\u0442\u0438\u0432\u0443 \u0447\u0442\u0435\u043d\u0438\u044f | \"'`skill.yaml`: artifact-templates \u0438 pattern-catalog \u0438\u043c\u0435\u044e\u0442 required classification; \u0438\u0441\u0445\u043e\u0434\u043d\u044b\u0435 \u0443\u0437\u043a\u0438\u0435 triggers \u0441\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u044b \u0431\u0443\u043a\u0432\u0430\u043b\u044c\u043d\u043e. | Readback \u043a\u043b\u0430\u0441\u0441\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u0438 \u0438 triggers: verified \u0432 \u0433\u0440\u0430\u043d\u0438\u0446\u0435 \u0430\u0432\u0442\u043e\u0440\u0441\u043a\u043e\u0439 \u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u043d\u043e\u0439 \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0438. \u041d\u0435\u0437\u0430\u0432\u0438\u0441\u0438\u043c\u0430\u044f \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 reference selection \u043e\u0436\u0438\u0434\u0430\u0435\u0442\u0441\u044f. |'\"\\\\n\\\\n\u0420\u0435\u0433\u0435\u043d\u0435\u0440\u0438\u0440\u043e\u0432\u0430\u043d\u044b \"'`SKILL.md` \u0438 `docs/compile-report.md`. \u041e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0430 docs-\u043d\u0430\u0432\u0438\u0433\u0430\u0446\u0438\u044f. \u042d\u0442\u043e\u0442 \u0436\u0443\u0440\u043d\u0430\u043b \u043e\u0441\u0442\u0430\u0451\u0442\u0441\u044f source-only: \u043d\u043e\u0432\u0430\u044f supporting mapping \u043e\u0442\u0441\u0443\u0442\u0441\u0442\u0432\u0443\u0435\u0442, emitted inventory \u0441\u043e\u0445\u0440\u0430\u043d\u044f\u0435\u0442 25 \u0444\u0430\u0439\u043b\u043e\u0432.'\"\\\\n\\\\n## \u0420\u0435\u0448\u0435\u043d\u0438\u044f \u0438 \u0433\u0440\u0430\u043d\u0438\u0446\u044b\\\\n\\\\nCanonical stop decision \u043f\u0440\u0438\u043d\u0430\u0434\u043b\u0435\u0436\u0438\u0442 root; methodology \u0441\u043e\u0434\u0435\u0440\u0436\u0438\u0442 \u0441\u0441\u044b\u043b\u043a\u0443, \u0430 \u043d\u0435 \u043a\u043e\u043d\u043a\u0443\u0440\u0438\u0440\u0443\u044e\u0449\u0438\u0439 \u043f\u0440\u0435\u0434\u0438\u043a\u0430\u0442. \u0420\u0435\u0430\u043b\u044c\u043d\u044b\u0439 policy checkpoint \u0441\u043e\u0445\u0440\u0430\u043d\u044f\u0435\u0442\u0441\u044f. \u0422\u0440\u0435\u0431\u043e\u0432\u0430\u043d\u0438\u0435 \u0447\u0442\u0435\u043d\u0438\u044f references \u0434\u0435\u0439\u0441\u0442\u0432\u0443\u0435\u0442 \u0442\u043e\u043b\u044c\u043a\u043e \u043f\u043e \u043f\u0440\u0435\u0436\u043d\u0438\u043c \u0443\u0441\u043b\u043e\u0432\u0438\u044f\u043c. ASR authority, named-owner handoff, risk-fit evidence \u0438 readiness \u043d\u0435 \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u044b. \u041d\u043e\u0432\u044b\u0435 architecture rules, runtime, wrapper, package tests \u0438 \u0441\u0435\u043c\u0435\u0439\u0441\u0442\u0432\u0430 \u0430\u0440\u0442\u0435\u0444\u0430\u043a\u0442\u043e\u0432 \u043d\u0435 \u0434\u043e\u0431\u0430\u0432\u043b\u0435\u043d\u044b.\\\\n\\\\nCapability \u0434\u043b\u044f \u0430\u0433\u0435\u043d\u0442\u0430 \u2014 \u0437\u0430\u0432\u0435\u0440\u0448\u0438\u0442\u044c \u0440\u0430\u0437\u0440\u0435\u0448\u0451\u043d\u043d\u0443\u044e \u0430\u0440\u0445\u0438\u0442\u0435\u043a\u0442\u0443\u0440\u043d\u0443\u044e \u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u043a\u0443 \u043f\u0440\u0438 \u0434\u043e\u0441\u0442\u0430\u0442\u043e\u0447\u043d\u044b\u0445 \u0434\u0430\u043d\u043d\u044b\u0445 \u043b\u0438\u0431\u043e \u043e\u0433\u0440\u0430\u043d\u0438\u0447\u0438\u0442\u044c \u0437\u0430\u0432\u0438\u0441\u0438\u043c\u044b\u0439 \u0432\u044b\u0432\u043e\u0434 \u043f\u0440\u0438 \u0440\u0435\u0430\u043b\u044c\u043d\u043e\u0439 \u043d\u0435\u043e\u043f\u0440\u0435\u0434\u0435\u043b\u0451\u043d\u043d\u043e\u0441\u0442\u0438. \u0410\u0440\u0442\u0435\u0444\u0430\u043a\u0442\u044b, compiler \u0438 \u044d\u0442\u043e\u0442 \u0436\u0443\u0440\u043d\u0430\u043b \u043d\u0435 \u0434\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u044e\u0442 \u0440\u0435\u0430\u043b\u0438\u0437\u0430\u0446\u0438\u044e \u0441\u0438\u0441\u0442\u0435\u043c\u044b, \u0443\u043d\u0438\u0432\u0435\u0440\u0441\u0430\u043b\u044c\u043d\u0443\u044e \u043d\u0430\u0434\u0451\u0436\u043d\u043e\u0441\u0442\u044c, live integration \u0438\u043b\u0438 \u0438\u0441\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0435 handoff.\\\\n\\\\n## \u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0438 \u0438 evidence\\\\n\\\\n\u0410\u0432\u0442\u043e\u0440\u0441\u043a\u0438\u0439 self-check: \"'`ready-to-regenerate`, \u043e\u0442\u0434\u0435\u043b\u044c\u043d\u044b\u0439 \u043e\u0442 \u043d\u0435\u0437\u0430\u0432\u0438\u0441\u0438\u043c\u043e\u0433\u043e PASS. Raw evidence: `/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-author/`; `self-check.md`, `commands.json`, `changes.diff`, `source-manifest.json`, `emitted-manifest.json`, `parity.json`, `changed-files.json`. \u0422\u0430\u043c \u0441\u043e\u0445\u0440\u0430\u043d\u0451\u043d snapshot `before/`; final snapshot \u043e\u043f\u0440\u0435\u0434\u0435\u043b\u044f\u0435\u0442\u0441\u044f source manifest.'\"\\\\n\\\\n\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0438: owning compiler lint, regenerate, source check, isolated compile, emitted check, \u043f\u043e\u0431\u0430\u0439\u0442\u043e\u0432\u043e\u0435 \u0441\u0440\u0430\u0432\u043d\u0435\u043d\u0438\u0435 \u0432\u0441\u0435\u0445 25 emitted \u0444\u0430\u0439\u043b\u043e\u0432 \u0432\u043a\u043b\u044e\u0447\u0430\u044f compile-report. \u0420\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442\u044b \u043a\u043e\u043c\u0430\u043d\u0434 \u0438 exit codes \u0444\u0438\u043a\u0441\u0438\u0440\u0443\u044e\u0442\u0441\u044f \u0432 \"'`commands.json`; \u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u043d\u044b\u0439 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442 \u043d\u0435 \u043e\u0431\u044a\u044f\u0432\u043b\u044f\u0435\u0442\u0441\u044f \u043f\u043e\u0432\u0435\u0434\u0435\u043d\u0447\u0435\u0441\u043a\u0438\u043c PASS. \u041e\u0442\u0434\u0435\u043b\u044c\u043d\u043e\u0433\u043e package.json/test script \u0443 documentation-only target \u043d\u0435\u0442; \u0438\u0441\u043a\u0443\u0441\u0441\u0442\u0432\u0435\u043d\u043d\u044b\u0435 \u0442\u0435\u0441\u0442\u044b \u043d\u0435 \u0441\u043e\u0437\u0434\u0430\u0432\u0430\u043b\u0438\u0441\u044c.'\"\\\\n\\\\n### \u041d\u0435\u0437\u0430\u0432\u0438\u0441\u0438\u043c\u0430\u044f \u043e\u0446\u0435\u043d\u043a\u0430\\\\n\\\\nBaseline: independent FAIL, F1/P2 \u0438 F2/P3, \u0432\u0435\u0440\u0441\u0438\u044f 0.1.8, snapshot digest \"'`30aa82c8dba34743808843247ffd1b8af04b992e96a4d3a8b779f50456618c08`. \u041f\u0440\u043e\u043f\u043e\u0440\u0446\u0438\u043e\u043d\u0430\u043b\u044c\u043d\u044b\u0435 blind trials \u043d\u0435\u043e\u0431\u0445\u043e\u0434\u0438\u043c\u044b \u0438\u0437-\u0437\u0430 \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f \u0440\u0435\u0448\u0435\u043d\u0438\u0439 \u043e\u0441\u0442\u0430\u043d\u043e\u0432\u043a\u0438/\u0447\u0442\u0435\u043d\u0438\u044f. Cases \u0438 \u043d\u0435\u0437\u0430\u0432\u0438\u0441\u0438\u043c\u044b\u0435 \u043a\u0440\u0438\u0442\u0435\u0440\u0438\u0438 \u0437\u0430\u0444\u0438\u043a\u0441\u0438\u0440\u043e\u0432\u0430\u043d\u044b \u043a\u043e\u043e\u0440\u0434\u0438\u043d\u0430\u0442\u043e\u0440\u043e\u043c \u0434\u043e \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0439. \u0410\u0432\u0442\u043e\u0440 \u043d\u0435 \u0447\u0438\u0442\u0430\u043b cases/private criteria/runs \u0438\u043b\u0438 \u0447\u0443\u0436\u0438\u0435 candidate outputs \u0438 \u043d\u0435 \u043f\u0440\u0438\u0441\u0432\u0430\u0438\u0432\u0430\u0435\u0442 independent PASS. \u041d\u043e\u0432\u044b\u0439 \u043d\u0435\u0437\u0430\u0432\u0438\u0441\u0438\u043c\u044b\u0439 verdict \u0438 \u043f\u043e\u0432\u0435\u0434\u0435\u043d\u0447\u0435\u0441\u043a\u0438\u0435 \u0432\u044b\u0432\u043e\u0434\u044b \u0434\u043e\u0431\u0430\u0432\u0438\u0442 \u043a\u043e\u043e\u0440\u0434\u0438\u043d\u0430\u0442\u043e\u0440 \u043f\u043e\u0441\u043b\u0435 \u043e\u0446\u0435\u043d\u043a\u0438 \u0441\u0442\u0430\u0431\u0438\u043b\u044c\u043d\u043e\u0439 \u043f\u043e\u0432\u0435\u0440\u0445\u043d\u043e\u0441\u0442\u0438.'\"\\\\n\\\\n## \u041e\u0442\u043a\u043b\u043e\u043d\u0435\u043d\u0438\u044f \u0438 \u043f\u043e\u0431\u043e\u0447\u043d\u044b\u0435 \u044d\u0444\u0444\u0435\u043a\u0442\u044b\\\\n\\\\nScope delta: unchanged. Unauthorized additions: none. Git/index, \u0441\u0435\u0442\u044c, \u0441\u043e\u0441\u0435\u0434\u043d\u0438\u0435 \u0441\u043a\u0438\u043b\u044b \u0438 \u043f\u0443\u0431\u043b\u0438\u043a\u0430\u0446\u0438\u044f \u043d\u0435 \u0438\u0437\u043c\u0435\u043d\u044f\u043b\u0438\u0441\u044c. \u0418\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f \u043e\u0431\u0440\u0430\u0442\u0438\u043c\u044b \u0447\u0435\u0440\u0435\u0437 \u0441\u043e\u0445\u0440\u0430\u043d\u0451\u043d\u043d\u044b\u0439 \"'`before/`; \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044c\u0441\u043a\u0438\u0435 \u0441\u043e\u0441\u0435\u0434\u043d\u0438\u0435 \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f \u0441\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u044b. \u0414\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u0446\u0438\u043e\u043d\u043d\u044b\u0435 \u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u044f \u0432\u043b\u0438\u044f\u044e\u0442 \u043d\u0430 \u043f\u043e\u0441\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0435 \u0440\u0435\u0448\u0435\u043d\u0438\u044f \u0430\u0433\u0435\u043d\u0442\u0430, \u043f\u043e\u044d\u0442\u043e\u043c\u0443 author checks \u043d\u0435\u0434\u043e\u0441\u0442\u0430\u0442\u043e\u0447\u043d\u044b \u0434\u043b\u044f \u043f\u0440\u0438\u0451\u043c\u043a\u0438 G3.'\"\\\\n\\\\n## \u041f\u0435\u0440\u0435\u0434\u0430\u0447\u0430 \u0438 \u0438\u0442\u043e\u0433\u043e\u0432\u044b\u0439 \u0441\u0442\u0430\u0442\u0443\u0441\\\\n\\\\n\u0410\u0432\u0442\u043e\u0440\u0441\u043a\u0430\u044f \u043a\u043e\u0440\u0440\u0435\u043a\u0446\u0438\u044f \u043f\u043e\u0434\u0433\u043e\u0442\u043e\u0432\u043b\u0435\u043d\u0430 \u0434\u043b\u044f \u043d\u0435\u0437\u0430\u0432\u0438\u0441\u0438\u043c\u043e\u0439 \u043e\u0446\u0435\u043d\u043a\u0438; \u043e\u043a\u043e\u043d\u0447\u0430\u0442\u0435\u043b\u044c\u043d\u0430\u044f \u043f\u0440\u0438\u0451\u043c\u043a\u0430 \u0438 \u043f\u043e\u0432\u0435\u0434\u0435\u043d\u0447\u0435\u0441\u043a\u0438\u0439 PASS \u043d\u0435 \u0437\u0430\u044f\u0432\u043b\u0435\u043d\u044b. \u0421\u043b\u0435\u0434\u0443\u044e\u0449\u0438\u0439 \u0432\u043b\u0430\u0434\u0435\u043b\u0435\u0446 \u2014 \u043d\u0435\u0437\u0430\u0432\u0438\u0441\u0438\u043c\u044b\u0439 skill-reviewer \u0438 \u043a\u043e\u043e\u0440\u0434\u0438\u043d\u0430\u0442\u043e\u0440; \u0441\u043b\u0435\u0434\u0443\u044e\u0449\u0435\u0435 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u2014 \u043e\u0446\u0435\u043d\u0438\u0442\u044c frozen candidate \u0438 evidence \u043f\u043e \u043f\u0440\u0438\u043d\u044f\u0442\u043e\u043c\u0443 \u043f\u043b\u0430\u043d\u0443.\\\\n''')\np=r/'docs/README.md';p.write_text(p.read_text()+ '\\\\n- \"'`docs/logs/implementation-log-20260907-1.md` \u2014 \u0438\u0441\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u0438\u0435 stop predicate \u0438 \u0443\u0441\u043b\u043e\u0432\u043d\u043e\u0439 \u043a\u043b\u0430\u0441\u0441\u0438\u0444\u0438\u043a\u0430\u0446\u0438\u0438 references; source-only \u0436\u0443\u0440\u043d\u0430\u043b, independent re-audit \u043e\u0436\u0438\u0434\u0430\u0435\u0442\u0441\u044f.'\"\\\\n')\nPY\nnode skills/skill-source-compiler/scripts/skill-source-compiler.mjs --help\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-71cee5a1-57da-4a0d-9b03-d20923e8ead7",
+        "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nimport subprocess,json\nout=Path('/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-author');cli='skills/skill-source-compiler/scripts/skill-source-compiler.mjs';src='skills/architecture-engineer';dest=out/'compiled'\ncommands=[['node',cli,'lint',src],['node',cli,'regenerate',src],['node',cli,'check',src],['node',cli,'compile',src,'--out-dir',str(dest)],['node',cli,'check',str(dest/'architecture-engineer')]]\nresults=[]\nfor cmd in commands:\n p=subprocess.run(cmd,text=True,capture_output=True); row={'command':cmd,'exit':p.returncode,'stdout':p.stdout,'stderr':p.stderr}; results.append(row); print(json.dumps(row));(out/'commands.json').write_text(json.dumps(results,indent=2)+'\\\\n')\n if p.returncode:break\nPY\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-ed216076-9c63-4273-a63b-7ecb7429f48e",
+        "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\np=Path('skills/architecture-engineer/skill.yaml');s=p.read_text().replace('Ask one focused question or mark human review required only when a missing or conflicting input materially affects an architecture decision, or an applicable policy checkpoint remains unfulfilled. Relevant decision areas include:', 'Ask one focused question or mark human review required only when missing or conflicting inputs materially affect an architecture decision, or an applicable policy checkpoint remains unfulfilled. Relevant areas:').replace('Preserve sufficient authorization already given for the current scope; an architectural change alone does not require renewed approval. Stop only the dependent decision or action, identify the missing input or unfulfilled checkpoint, and continue independent authorized work. For non-blocking gaps, proceed with assumptions and validation steps.', 'Preserve existing authorization within its scope; architectural change alone does not require renewed approval. Stop only dependent work, name the missing input or unfulfilled checkpoint, and continue independent authorized work. For non-blocking gaps, use assumptions and validation steps.');p.write_text(s)\nPY\"",
+        "exit": 0,
+        "readback_truncated": null
+      },
+      {
+        "id": "exec-bdb81f2a-72dd-4d8d-9f34-e8fd398bd7a1",
+        "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nimport subprocess,json,hashlib,difflib\nout=Path('/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-author');cli='skills/skill-source-compiler/scripts/skill-source-compiler.mjs';src=Path('skills/architecture-engineer');dest=out/'compiled-final';results=json.loads((out/'commands.json').read_text())\nfor args in [['lint',str(src)],['regenerate',str(src)],['check',str(src)],['compile',str(src),'--out-dir',str(dest)],['check',str(dest/'architecture-engineer')]]:\n cmd=['node',cli]+args;p=subprocess.run(cmd,text=True,capture_output=True);row={'command':cmd,'exit':p.returncode,'stdout':p.stdout,'stderr':p.stderr};results.append(row);print(json.dumps(row));(out/'commands.json').write_text(json.dumps(results,indent=2)+'\\\\n')\n if p.returncode:raise SystemExit(p.returncode)\ndef manifest(root):return {str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(root.rglob('*')) if p.is_file()}\ns=manifest(src);e=manifest(dest/'architecture-engineer');b=manifest(out/'before');changed={p:{'before':b.get(p),'after':s.get(p)} for p in sorted(set(s)|set(b)) if s.get(p)\"'!=b.get(p)}\nparity={'\"'count':len(e),'mismatches':[p for p,h in e.items() if s.get(p)\"'!=h],'\"'includes_report':'docs/compile-report.md' in e}\nfor name,obj in [('source-manifest.json',s),('emitted-manifest.json',e),('changed-files.json',changed),('parity.json',parity)]: (out/name).write_text(json.dumps(obj,indent=2)+'\\\\n')\ndiff=''\nfor name in changed:\n a=(out/'before'/name).read_text().splitlines(True) if name in b else []\n z=(src/name).read_text().splitlines(True) if name in s else []\n diff+=''.join(difflib.unified_diff(a,z,fromfile='before/'+name,tofile='candidate/'+name))\n(out/'changes.diff').write_text(diff)\nprint(json.dumps({'parity':parity,'changed':changed,'source_digest':hashlib.sha256(json.dumps(s,sort_keys=True,separators=(',',':')).encode()).hexdigest()},indent=2))\nPY\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-a2a5b02f-6275-4142-b2f6-ab72290ebd88",
+        "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\np=Path('/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-author/changes.diff');s=p.read_text();print(s[:8000])\nPY\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-496aacd9-a1c4-4f56-a629-71e1dd3ca936",
+        "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\np=Path('/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-author/changes.diff');s=p.read_text();print(s[s.index('--- before/references/'):])\nPY\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-083970ed-2aea-4097-890f-a7d7ef3dd6d6",
+        "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nimport json,hashlib,difflib\nr=Path('skills/architecture-engineer');out=Path('/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-author');p=r/'docs/logs/implementation-log-20260907-1.md';s=p.read_text().replace('### \u041d\u0435\u0437\u0430\u0432\u0438\u0441\u0438\u043c\u0430\u044f \u043e\u0446\u0435\u043d\u043a\u0430','\u0418\u0442\u043e\u0433 \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u044b\u0445 \u043a\u043e\u043c\u0430\u043d\u0434: \u0432\u0441\u0435 \u043f\u044f\u0442\u044c exit 0; parity 25/25, \u0432\u043a\u043b\u044e\u0447\u0430\u044f compile-report. \u0421\u043e\u0445\u0440\u0430\u043d\u0435\u043d\u043e advisory warning: SKILL.md 26046 bytes \u043f\u0440\u0438 \u0440\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u043e\u0432\u0430\u043d\u043d\u044b\u0445 26000. \u042d\u0442\u043e \u043d\u0435 \u043e\u0448\u0438\u0431\u043a\u0430 \u0438 \u043d\u0435 \u043f\u0440\u0438\u0447\u0438\u043d\u0430 \u0440\u0430\u0441\u0448\u0438\u0440\u044f\u0442\u044c \u043c\u0438\u043d\u0438\u043c\u0430\u043b\u044c\u043d\u0443\u044e \u043f\u0440\u0430\u0432\u043a\u0443 \u0438\u043b\u0438 \u043f\u043e\u0432\u044b\u0448\u0430\u0442\u044c \u043b\u0438\u043c\u0438\u0442.\\\\n\\\\n### \u041d\u0435\u0437\u0430\u0432\u0438\u0441\u0438\u043c\u0430\u044f \u043e\u0446\u0435\u043d\u043a\u0430');p.write_text(s)\ndef manifest(root):return {str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(root.rglob('*')) if p.is_file()}\ns=manifest(r);b=manifest(out/'before');e=manifest(out/'compiled-final/architecture-engineer');changed={p:{'before':b.get(p),'after':s.get(p)} for p in sorted(set(s)|set(b)) if s.get(p)\"'!=b.get(p)}\nfor name,obj in [('\"'source-manifest.json',s),('changed-files.json',changed)]: (out/name).write_text(json.dumps(obj,indent=2)+'\\\\n')\ndiff=''\nfor name in changed:\n a=(out/'before'/name).read_text().splitlines(True) if name in b else [];z=(r/name).read_text().splitlines(True) if name in s else [];diff+=''.join(difflib.unified_diff(a,z,fromfile='before/'+name,tofile='candidate/'+name))\n(out/'changes.diff').write_text(diff)\nchecks={'changed_files':list(changed),'source_count':len(s),'emitted_count':len(e),'parity':all(s.get(p)==h for p,h in e.items()),'new_log_emitted': 'docs/logs/implementation-log-20260907-1.md' in e,'trailing_whitespace':[(n,i) for n in changed for i,line in enumerate((r/n).read_text().splitlines(),1) if line.rstrip()\"'!=line],'\"'root_stop_anchor_present':'### Stop or escalation rules' in (r/'SKILL.md').read_text(),'reference_triggers_unchanged':[l for l in (r/'skill.yaml').read_text().splitlines() if 'trigger: Read this' in l]==[l for l in (out/'before/skill.yaml').read_text().splitlines() if 'trigger: Read this' in l],'source_digest':hashlib.sha256(json.dumps(s,sort_keys=True,separators=(',',':')).encode()).hexdigest()}\n(out/'readback.json').write_text(json.dumps(checks,indent=2)+'\\\\n'); print(json.dumps(checks,indent=2))\nPY\"",
+        "exit": 0,
+        "readback_truncated": false
+      }
+    ]
+  },
+  {
+    "file": "g3_arch_cases-readback.json",
+    "thread": "01a07d5c-ce76-7390-8f23-cc296a756314",
+    "page": {
+      "order": "newest_first",
+      "limit": 2,
+      "nextCursor": null,
+      "hasMore": false
+    },
+    "commands": [
+      {
+        "id": "exec-1d017074-0bdf-4eeb-ab7f-d2337bfb10da",
+        "command": "/bin/bash -lc 'pwd && rg --files docs skills/architecture-engineer skills/skill-reviewer | head -70'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-4a3e7824-6ffb-4265-9d60-49872a523ceb",
+        "command": "/bin/bash -lc \"rg -n 'architecture|G3|handoff|forward' docs/plans/implementation-plan-20260907-1.md; wc -c skills/skill-reviewer/SKILL.md skills/skill-reviewer/references/*.md docs/skill-standard.md skills/architecture-engineer/SKILL.md skills/architecture-engineer/references/*.md; rg -n 'skill.*review|architecture' /home/kostysh/.codex/memories/MEMORY.md | head -8\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-2eee1d9e-be28-4a09-bcd3-8b92ef17f3b6",
+        "command": "/bin/bash -lc \"rg --files docs | rg 'plan|architecture|g3'; wc -c skills/architecture-engineer/SKILL.md skills/skill-reviewer/SKILL.md; cat skills/skill-reviewer/SKILL.md\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-6ec9bdff-ed40-4b23-beef-d7e4fa720e64",
+        "command": "/bin/bash -lc \"python3 -c 'from pathlib import Path; print(Path(\\\"skills/skill-reviewer/references/methodology.md\\\").read_text()[0:7900])'\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-56e4e926-58f4-4bee-8e43-1598d67ec62e",
+        "command": "/bin/bash -lc \"python3 -c 'from pathlib import Path; print(Path(\\\"skills/skill-reviewer/references/methodology.md\\\").read_text()[7900:15800])'\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-b89610b8-178a-4f12-8a26-316951abd1ed",
+        "command": "/bin/bash -lc \"python3 -c 'from pathlib import Path; print(Path(\\\"skills/skill-reviewer/references/forward-testing.md\\\").read_text()[0:7900])'\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-449b37ca-4aaf-40ca-9354-f94ffe869f9a",
+        "command": "/bin/bash -lc \"python3 -c 'from pathlib import Path; print(Path(\\\"docs/skill-standard.md\\\").read_text()[0:7900])'\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-db1c8226-1eb8-4810-8102-9446d1a8edaf",
+        "command": "/bin/bash -lc \"python3 -c 'from pathlib import Path; print(Path(\\\"docs/skill-standard.md\\\").read_text()[7900:15800])'\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-9f0ff4fb-b008-42a0-8638-02a5a5f83891",
+        "command": "/bin/bash -lc \"python3 -c 'from pathlib import Path; print(Path(\\\"docs/plans/implementation-plan-20260907-2.md\\\").read_text()[0:7900])'\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-03417434-ffbd-4a57-9bbb-5e0ba804fbe9",
+        "command": "/bin/bash -lc \"python3 -c 'from pathlib import Path; print(Path(\\\"docs/skill-standard.md\\\").read_text()[:7900])'\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-e3fe25b2-40f8-4e8e-989c-06e02b387f9a",
+        "command": "/bin/bash -lc \"python3 -c 'from pathlib import Path; print(Path(\\\"skills/architecture-engineer/SKILL.md\\\").read_text()[:7900])'\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-b46c6fbe-9fe1-4fa5-ad2c-f0cd561a42ed",
+        "command": "/bin/bash -lc \"python3 -c 'from pathlib import Path; print(Path(\\\"skills/architecture-engineer/SKILL.md\\\").read_text()[7900:15800])'\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-c670dfed-acd2-44e4-b809-9210f0f5e8bb",
+        "command": "/bin/bash -lc \"python3 -c 'from pathlib import Path; print(Path(\\\"skills/architecture-engineer/SKILL.md\\\").read_text()[15800:23700])'\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-6dca651d-7262-4554-9ab5-dcd653b23401",
+        "command": "/bin/bash -lc \"python3 -c 'from pathlib import Path; print(Path(\\\"skills/architecture-engineer/SKILL.md\\\").read_text()[23700:]); print(Path(\\\"skills/architecture-engineer/references/methodology.md\\\").read_text()[:5500])'\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-c6ad20ad-90e6-4edc-a119-b8a63a67ba8a",
+        "command": "/bin/bash -lc \"python3 -c 'from pathlib import Path; print(Path(\\\"skills/architecture-engineer/references/methodology.md\\\").read_text()[5500:13400])'\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-04f7a28c-88e9-4bdf-9050-0cd57aebe21b",
+        "command": "/bin/bash -lc \"python3 -c 'from pathlib import Path; print(Path(\\\"skills/architecture-engineer/references/methodology.md\\\").read_text()[13400:21300])'\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-d122f63c-c917-471f-b278-ac43ccaeb403",
+        "command": "/bin/bash -lc \"python3 -c 'from pathlib import Path; print(Path(\\\"skills/architecture-engineer/references/methodology.md\\\").read_text()[21300:]);'\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-1e5a3c27-bce7-484e-bd68-6f053fc8415d",
+        "command": "/bin/bash -lc \"python3 -c 'from pathlib import Path; print(Path(\\\"skills/architecture-engineer/references/artifact-templates.md\\\").read_text()[:7900])'\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-2558155d-2a32-4b84-9d76-c25871d505f5",
+        "command": "/bin/bash -lc \"python3 -c 'from pathlib import Path; print(Path(\\\"skills/architecture-engineer/references/artifact-templates.md\\\").read_text()[7900:]); print(Path(\\\"skills/architecture-engineer/references/pattern-catalog.md\\\").read_text()[:4200])'\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-818b54d9-1b2f-41d0-84ae-8e4821188635",
+        "command": "/bin/bash -lc \"python3 -c 'from pathlib import Path; print(Path(\\\"skills/architecture-engineer/references/pattern-catalog.md\\\").read_text()[4200:]); [print(\\\"\\\\nFILE\\\",p,\\\"\\\\n\\\",p.read_text()) for p in Path(\\\"skills/architecture-engineer/assets/templates\\\").glob(\\\"*\\\")]'\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-e566f1c9-44d4-4f28-8186-09761140fe71",
+        "command": "/bin/bash -lc \"ls /tmp/skills-revision-g3-20260907-idvgqdrf; rg -n 'Required|reference|Input|authority|handoff|source-version' skills/spec-engineer/SKILL.md\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-48814272-1e46-4205-8a67-8c14854db333",
+        "command": "/bin/bash -lc \"python3 -c 'from pathlib import Path; print(Path(\\\"/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-baseline-review.md\\\").read_text()[:7900])'\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-b6c21599-394a-4d61-ba97-f5a3bed8c99d",
+        "command": "/bin/bash -lc \"mkdir -p /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-cases /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-private-criteria; python3 - <<'PY'\nfrom pathlib import Path\nr=Path('/tmp/skills-revision-g3-20260907-idvgqdrf'); c=r/'architecture-cases'\nfiles={\n'context.md':'''# Fixture environment\nAll product and system facts in these fixtures are stipulated scenario facts, not reports of executed software. Use only the assigned case, this context, and the supplied active skill packages. No repository history, neighboring trials, private criteria, external network, or external tools are available as task inputs. Local file reading and writing are available. The coordinator supplies absolute INPUT_DIR, PACKAGE_DIR and OUTPUT_DIR in the dispatch; write only under OUTPUT_DIR. These are instruction-level access limits, not an OS sandbox. Do not spawn agents or contact services.\n\n# Project governance\nThe operator owns product decisions. Accepted product statements in the assigned case govern intended behavior. Accepted architecture statements govern boundaries. Current-state descriptions are evidence of existing design only. Equal-authority conflicting requirements have no implicit date precedence. Architecture decisions within explicit accepted requirements may be made by the architecture agent; no extra human acceptance gate exists for preparing architecture artifacts. There is no permission for implementation, deployment, purchase, or publication. Persist architecture results as OUTPUT_DIR/architecture.md, with stable local IDs and source locators; linked material may be additional files under OUTPUT_DIR. This output will be passed unedited to a separate specification agent with the original case inputs. Documentation is in English. Spec artifacts use OUTPUT_DIR/specification.md. No other artifact naming or indexing convention exists.\n''',\n'case-a.md':'''# Request: job status display labels\nPrepare the architecture change for the accepted status response extension and save a handoff for our specification agent.\n\n## Accepted product requirements (operator, PRD-A)\nA1: An authenticated workspace member reading an existing job's status shall receive an additional \"'`displayLabel` property in the successful public response. Its value is the job'\"'s saved label, including an empty string when that is saved. A legacy job with no saved label returns JSON null. No label normalization is requested.\nA2: Existing \"'`id` and `state` values and error responses must retain their current semantics. The extension must work for legacy jobs without a data migration or user action. Existing clients tolerate added response properties.\nA3: A member of another workspace and an unauthenticated caller must continue to receive no job data through this operation. No new access role, endpoint, job state, data write, logging obligation, asynchronous process or deployment unit is requested.\nA4: Acceptance is an actual status response showing the right label/null for an authorized caller while existing state and access behavior remain correct. Architecture and spec completion do not exercise this response.\n\n## Accepted architecture (ARCH-A)\nThe API service owns status response assembly and uses the existing workspace-scoped job repository. Preserve this boundary. The operator authorizes the architecture agent to select the bounded public-response mapping change required by PRD-A now. A fresh product approval is not required for this mapping.\n\n## Current-state contract (STATE-A)\nThere is one public read-status operation. It receives an opaque job identifier and the current authentication context, and returns a JSON object `{id, state}` on success. The repository returns the authorized workspace'\"'s job with its optional saved label already available. Existing authentication, missing-job, foreign-workspace, and malformed-identifier responses are governed by the existing operation and must be preserved byte-for-byte; their concrete status/body values are intentionally not changed or respecified by this slice. State values are also opaque and preserved. This is response mapping in the API service; no other package or storage change is needed. Labels are ordinary user-visible strings, not secrets. No new latency or throughput target has been accepted.\n''',\n'case-b.md':'''# Request: archive retention and preview architecture\nPrepare the architecture decisions and downstream handoffs for the accepted archive-preview change. Record what our next agents can do with the inputs available today.\n\n## Accepted product requirements\nPRD-B1 (product owner): Members can preview the first 20 saved archive titles for their own workspace; preserve title order and spelling. No cross-workspace reads. The preview is independent of retention changes and must be specified now.\nPRD-B2 (product owner): All archive data must be permanently erased 30 days after creation, with no recoverable copy.\nPRD-B3 (product owner, same authority as B2): Archive data must remain recoverable for 90 days after creation. No precedence or reconciliation has been accepted between B2 and B3.\nPRD-B4 (product owner): A full-workspace archive download is under consideration. Its performance target, maximum archive size, and whether users need a download at all have not been accepted. Do not add download capability to the preview slice.\n\n## Accepted architecture and investigation authority\nARCH-B1: Existing API and workspace-scoped archive repository remain the preview boundary. Saved records already expose title order and titles. This preview needs no new infrastructure or persistence.\nARCH-B2: Choosing the archive storage layout for future large archives needs evidence about ordered-title reads. The architecture agent is authorized to define a bounded local feasibility investigation comparing the current ordered-list representation with an indexed representation for 10,000 stipulated synthetic titles; this does not authorize a production change. The investigation question is whether either representation returns the first 20 titles in exact order for this dataset with its existing tenant partition preserved. Record duration and memory as exploratory measurements, not pass thresholds. Required correctness is exact title sequence and no other partition's titles. Return experiment artifacts and measurements before committing to a storage change. No performance threshold is accepted.\n\n## Available downstream roles\nA fresh spec-engineer can write preview behavior specifications from accepted architecture constraints. A delivery-planner is available to frame bounded executable investigation work. A repository implementation agent with local shell and filesystem tools can implement and run a small offline experiment in a disposable directory after receiving that brief; it cannot access production or an external service. No experiment has been run or supplied here. There is no retention-policy specialist or external archive vendor contract available.\n\n## Current-state evidence\nThe archive repository is partitioned by workspace. Saved titles are held in their saved order. Current storage has a \"'`retentionOverride` field used by an old internal maintenance script; no accepted requirement grants members or administrators an override mode. No runtime, benchmark or security validation evidence is supplied.\n'\"''',\n'consumer.md':'''Use the supplied spec-engineer package. Read context.md, case-a.md and the actual producer output at PRODUCER_DIR/architecture.md (plus any files it links inside PRODUCER_DIR). Prepare the smallest behavior specification for the requested status-response slice and save OUTPUT_DIR/specification.md. The downstream consumer is the repository implementation agent. The original accepted product and architecture statements remain authoritative. The producer has authority to decide the response mapping within those statements; its artifact is an inherited architecture input for this task, not product scope authority. Do not implement software or execute runtime tests. Report any concrete input gap that prevents the implementation agent from acting. Preserve the source boundary for existing behavior outside this slice.\n''',\n'selection.md':'''For each request below select the primary skill from catalog.md, or none, and give a one-sentence reason. Read only this file and catalog.md. Do not open any skill body, references, task fixtures, or other files. Do not execute the requests.\n1. We have accepted product scope for an archive preview, but need to settle API/repository boundaries and decide whether an uncertain storage strategy needs a spike. Prepare the architecture and route its constraints.\n2. The architecture and product behavior are already accepted. Write atomic behavioral requirements and falsifiers for one status-response extension.\n3. Accepted specifications and architecture are ready. Break the work into executable tasks with dependencies and verification evidence.\n4. Change a misspelled static button caption from \u201cPreveiw\u201d to \u201cPreview\u201d; behavior and component boundaries stay unchanged.\n'''\n}\nfor p,s in files.items(): (c/p).write_text(s)\nPY\"",
+        "exit": 0,
+        "readback_truncated": null
+      },
+      {
+        "id": "exec-6f63e5d2-3f6f-4ab5-ad6f-c2e87450b1f2",
+        "command": "/bin/bash -lc \"python3 - <<'PY'\nfrom pathlib import Path\nimport re,json,hashlib\nw=Path('/home/kostysh/.codex/skills/custom/.worktrees/skills-revision'); r=Path('/tmp/skills-revision-g3-20260907-idvgqdrf'); c=r/'architecture-cases'; p=r/'architecture-private-criteria'\ncards=[]\nfor n in ['architecture-engineer','spec-engineer','delivery-planner','prd-engineer']:\n t=(w/f'skills/{n}/SKILL.md').read_text(); d=re.search(r'description: (.*?)(?=\\\\n\\\\w[\"'^'\"\\\\n]*:)',t,re.S).group(1); cards.append(f'## {n}\\\\n'+re.sub(r'\\\\s+',' ',d).strip()+'\\\\n')\n(c/'catalog-baseline.md').write_text('\\\\n'.join(cards))\n(p/'rubric.md').write_text('''# Closed criteria v1 \u2014 assessor only\nFixed before candidate edits from accepted implementation plan, repository skill standard, current review/forward-testing method and baseline architecture sources. Baseline review F1 and F2 were read before freezing. Independent case author has no candidate authorship; executors must not see this file, audit findings, package history, other outputs, or this setup.\n\n## A: sufficient authorized public response change\nPASS requires an actual persisted architecture artifact readable by a fresh spec consumer; a recommendation to write one later fails. It completes the authorized mapping choice without another mandatory product approval, a question blocking completion, or a blanket human-review-required label merely because the public API changes. It traces label/null/empty behavior, unchanged existing fields/errors/access, no migration and existing repository/API boundary to A1\u2013A4 and ARCH-A. It provides ready spec-owner handoff with expected output, constraints and validation obligations and enough architecture context to avoid reselection. It does not add roles, override mode, endpoint/schema/service/queue, targets, or implementation tickets. It distinguishes decisions and planned checks from exercised response capability. Existing error internals need not be invented: unchanged existing behavior is the explicit accepted slice boundary. Routine recommended future validation is not an extra acceptance gate.\n\nFresh consumer observation is required: the coordinator passes original producer files unchanged, original product/state/governance and frozen baseline spec package to another agent. Consumer must actually read producer artifact and persist specification. Assess whether it can trace and preserve architectural decisions without new architecture choice or hidden producer context. A spec-only pre-existing defect is reported separately, not charged to architecture; locate cause in producer versus consumer events/output. Conversely a consumer repairing missing producer decisions does not prove producer usability. Missing actual consumer run makes handoff boundary INCONCLUSIVE.\n\n## B: partial authority and ready evidence work\nPASS requires supported preview architecture/handoff now; retention choice remains blocked/draft with exact B2/B3 conflict, product owner as decision owner and smallest clarification. No guessed precedence or retention compromise. Existence of retentionOverride cannot become normative exception/actor prerequisite. B4 cannot become download architecture, accepted target or ready download spec. Authorized investigation has a bounded question, correct synthetic dataset scope, exact order and tenant separation as correctness evidence, exploratory duration/memory without invented thresholds. A planner-owned item requests only executable brief with a real available local executor named by role, evidence contract and return to architecture-engineer. Direct known-executor routing is also acceptable if sufficiently framed. The layout decision remains unresolved until actual experiment evidence; ready investigation does not mean ready production layout/retention. No empirical success, actual runtime, availability or specialist conclusion is invented. No new all-work stop because retention is unresolved.\n\n## Selection\n1 primary architecture-engineer; 2 spec-engineer; 3 delivery-planner; 4 none (ordinary local edit, no listed skill needed). Supplementary optional skills do not fail if primary ownership is right and no execution occurs. Target description comes from the exact compared version; neighbor cards fixed to baseline text. Body access invalidates blind selection and makes it INCONCLUSIVE.\n\n## Progressive disclosure and effects\nInspect actual read events: architecture root and methodology must be usable from supplied active package, conditional artifacts/pattern content reachable when needed. A/B genuinely need artifact guidance; pattern comparison guidance is relevant for B's storage investigation where comparisons are discussed. Do not demand catalog reading for A's direct mapping. Judge ambiguity/material omission through decisions rather than read-count optimization. Unconditional loading of unrelated history or neighboring skills violates test input isolation; report exposure and bounded evidence, not fabricated behavior improvement. No byte/token/latency gain claim without comparable recorded measurements.\n\nEvery case: record PASS/FAIL/INCONCLUSIVE with output and event locators, missing evidence, forbidden writes where observable, source identity, exposure and actual runtime settings if available. Source inspection still owns structural contract and generalization limits; samples cannot prove universal reliability or live backend success. Never adjust criteria to favor candidate. Necessary criterion corrections invalidate affected paired comparisons.\n''')\n(p/'setup.md').write_text('''# Minimal paired execution and package contract\n1. Freeze hashes now; retain actual baseline active package from baseline snapshot. No candidate edits before this freeze. Source-wide parity remains separate inspection.\n2. Fresh blind architecture executor per A/B per version. Dispatch context.md + assigned case, supplied architecture active package and current frozen implementation-discipline active dependency. Explicitly use architecture-engineer, save architecture.md. Each OUTPUT_DIR separate, no other outputs exposed.\n3. Fresh consumer per A producer version: consumer.md + same context/case-a + original complete producer output + frozen spec-engineer 0.2.13 active package and same implementation-discipline. Replace only path bindings; no coordinator summary, synthesized handoff or producer repairs. This is a real agent-to-agent file boundary. Consumer baseline defects remain separately attributed.\n4. Fresh selection context per version with selection.md + catalog.md only. Derive target card from compared version; retain neighbor cards byte-identical to catalog-baseline.md. No forced skill, no body. Report catalogue-only selection, not host loader behavior.\n5. Assessor sees fixed criteria and raw outputs/events, hashes and permitted file deltas; never asks executor to award its own independent PASS. Reuse unchanged criteria. Minimum: 4 producer executions, 2 spec consumers, 2 catalogue selectors. These are cases, not permission for case author to launch agents.\n\nProducer package allowlist: architecture-engineer/SKILL.md, references/{methodology,artifact-templates,pattern-catalog}.md, all ten assets/templates files. Exclude skill.yaml/fragments/docs/agents metadata and repository history from forced execution; those are authoring/history/catalog surfaces and remain fully inspected separately. Current implementation-discipline package: SKILL.md and all active references (exact three files total; confirm actual manifest).\nConsumer allowlist: spec-engineer/SKILL.md, all six shipped references (methodology,high-risk-backend-contract,spec-patterns,discovery-techniques,anti-patterns,example-spec), plus current implementation-discipline three-file active package. No architecture candidate body in consumer package, only actual producer output and original accepted facts. Consumer may load references by own triggers. Inputs establish inherited architecture authority and named implementation consumer, avoiding missing-governance fixture artifacts.\nNo runtime/domain implementation is claimed. Roles in B are available downstream shell/file execution capabilities, not fabricated tool APIs or executed delegation. No service/network access is needed. Restriction is instruction-level only; audit event evidence to bound blindness.\n''')\npaths=list(c.glob('*'))+list(p.glob('*.md'))\nmanifest={'hash_algorithm':'sha256','path_base':str(r),'files':{str(x.relative_to(r)):hashlib.sha256(x.read_bytes()).hexdigest() for x in sorted(paths)}}\n(p/'inputs-manifest.json').write_text(json.dumps(manifest,indent=2)+'\\\\n')\nprint(json.dumps({'files':len(paths),'manifest':str(p/'inputs-manifest.json')}))\nPY\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-b628d6c9-8ca1-4487-a9c2-15d09bbc6b12",
+        "command": "/bin/bash -lc \"rg --files skills/implementation-discipline/references skills/spec-engineer/references; git status --short skills/architecture-engineer; python3 -c 'from pathlib import Path; print(Path(\\\"skills/spec-engineer/SKILL.md\\\").read_text()[2500:5800])'\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-aa4285c2-647c-4019-adb6-d858f5fc2f94",
+        "command": "/bin/bash -lc \"python3 - <<'PY'\nfrom pathlib import Path\nimport hashlib,json\nw=Path('/home/kostysh/.codex/skills/custom/.worktrees/skills-revision'); r=Path('/tmp/skills-revision-g3-20260907-idvgqdrf'); p=r/'architecture-private-criteria'\npackages={}\nfor name in ['architecture-engineer','spec-engineer','implementation-discipline']:\n root=w/'skills'/name; files=[root/'SKILL.md',*sorted((root/'references').glob('*.md'))]\n if name=='architecture-engineer':files+=sorted((root/'assets/templates').glob('*'))\n packages[name]={str(f.relative_to(root)):hashlib.sha256(f.read_bytes()).hexdigest() for f in files}\nbasis=['docs/skill-standard.md','docs/plans/implementation-plan-20260907-2.md','skills/skill-reviewer/SKILL.md','skills/skill-reviewer/references/methodology.md','skills/skill-reviewer/references/forward-testing.md']\n(p/'package-manifest.json').write_text(json.dumps({'algorithm':'sha256','package_relative_paths':packages,'basis_worktree_relative':{f:hashlib.sha256((w/f).read_bytes()).hexdigest() for f in basis},'preliminary_audit_sha256':hashlib.sha256((r/'architecture-baseline-review.md').read_bytes()).hexdigest()},indent=2)+'\\\\n')\nm=json.loads((p/'inputs-manifest.json').read_text()); m['files']['architecture-private-criteria/package-manifest.json']=hashlib.sha256((p/'package-manifest.json').read_bytes()).hexdigest(); (p/'inputs-manifest.json').write_text(json.dumps(m,indent=2)+'\\\\n')\nprint({k:len(v) for k,v in packages.items()}); print('freeze_manifest_sha256',hashlib.sha256((p/'inputs-manifest.json').read_bytes()).hexdigest())\nPY\"",
+        "exit": 0,
+        "readback_truncated": false
+      }
+    ]
+  },
+  {
+    "file": "g3_arch_catalogue_01-readback.json",
+    "thread": "01a07d68-2d66-77e2-a26e-6182e7049f25",
+    "page": {
+      "order": "newest_first",
+      "limit": 2,
+      "nextCursor": null,
+      "hasMore": false
+    },
+    "commands": [
+      {
+        "id": "exec-217e1939-25b6-4aac-8070-a85cca613a29",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/catalogue-01/input/task.md /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/catalogue-01/input/catalog.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-5b014362-5b0a-47f6-a700-c9c1249eefdc",
+        "command": "/bin/bash -lc \"cat > /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/catalogue-01/output/selection.md <<'EOF'\n1. **architecture-engineer** \u2014 The request requires settling architectural boundaries, evaluating a storage-strategy spike, and handing off architectural constraints.\n2. **spec-engineer** \u2014 The request translates accepted behavior and architecture into atomic, falsifiable requirements for a bounded API extension.\n3. **delivery-planner** \u2014 The request decomposes accepted specifications and architecture into executable tasks, dependencies, and verification evidence.\n4. **none** \u2014 A static caption typo correction with unchanged behavior and boundaries does not require any of the catalogued architecture, specification, planning, or product-requirements skills.\nEOF\"",
+        "exit": 0,
+        "readback_truncated": null
+      }
+    ]
+  },
+  {
+    "file": "g3_arch_catalogue_02-readback.json",
+    "thread": "01a07d68-ce3e-73c1-b33b-2dbdbcbd9a63",
+    "page": {
+      "order": "newest_first",
+      "limit": 2,
+      "nextCursor": null,
+      "hasMore": false
+    },
+    "commands": [
+      {
+        "id": "exec-816367fe-653f-4572-9e1c-e43e897b0eec",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/catalogue-02/input/task.md /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/catalogue-02/input/catalog.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-32ddabcc-b4f5-479d-a634-e8272a3b3fa2",
+        "command": "/bin/bash -lc \"mkdir -p /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/catalogue-02/output\ncat > /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/catalogue-02/output/selection.md <<'EOF'\n1. **architecture-engineer** \u2014 The request concerns architectural boundaries, storage trade-offs, spike decisions, and routing architectural constraints from accepted product scope.\n2. **spec-engineer** \u2014 The request turns accepted behavior and architecture into atomic, falsifiable software requirements for a specific extension.\n3. **delivery-planner** \u2014 The request decomposes accepted specifications and architecture into executable tasks, dependencies, and verification evidence.\n4. **none** \u2014 Correcting a static caption without behavioral or boundary changes does not require any of the catalogued architecture, specification, delivery-planning, or product-requirements skills.\nEOF\"",
+        "exit": 0,
+        "readback_truncated": null
+      }
+    ]
+  },
+  {
+    "file": "g3_arch_consumer_01-readback.json",
+    "thread": "01a07d65-1f3b-7e73-99fd-ed28cd5e1e2e",
+    "page": {
+      "order": "newest_first",
+      "limit": 2,
+      "nextCursor": null,
+      "hasMore": false
+    },
+    "commands": [
+      {
+        "id": "exec-e4c25dd4-cece-4149-bc89-84c7570869b6",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/consumer-01/input/context.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-2a842cc6-1c04-4371-8949-a16a7ecb78ce",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/consumer-01/input/case-a.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-64ea58cf-7c42-45c9-b13e-853ce9e1d5ee",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/consumer-01/input/task.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-d1e3fce0-8c4d-4a14-80df-0a1fbc013e0b",
+        "command": "/bin/bash -lc 'ls -R /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/spec-provider /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/a-01/output'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-29c25f78-3218-4597-8231-3579c325e0f1",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/spec-provider/SKILL.md'",
+        "exit": 0,
+        "readback_truncated": true
+      },
+      {
+        "id": "exec-b6d5d3a2-f243-4639-8dc1-8d9d6ba56137",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline/SKILL.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-26d92148-3856-49d3-9cbb-c15d28e079e5",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/a-01/output/architecture.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-93965a04-716f-447b-a6dd-3b6a3649ed01",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; p=Path('/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/spec-provider/SKILL.md'); print(p.read_text()[:7000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-52d9a88c-5568-4af4-b0e0-4de105958cd8",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/spec-provider/SKILL.md').read_text()[7000:14000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-be612a98-da12-41d1-b2be-48921d3f1eb7",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/spec-provider/SKILL.md').read_text()[14000:21000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-be11cd40-a447-4c18-a020-d4ea7ca66c40",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/spec-provider/SKILL.md').read_text()[21000:28000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-d08d38c9-6c4e-4b61-ab0e-6cc3ecd747c9",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline/SKILL.md').read_text()[:7000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-026a931c-ef01-43af-bee1-779a210f8041",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline/SKILL.md').read_text()[7000:14000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-e4dc2d8d-e753-468e-b65e-399d90722652",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline/SKILL.md').read_text()[14000:21000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-86b68788-1df5-4803-84ed-9d80389dde13",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/spec-provider/references/methodology.md').read_text()[:7000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-ea330735-2258-4f23-b3a2-f3f2eef82b7b",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/spec-provider/references/methodology.md').read_text()[7000:14000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-78601a47-ae6f-40c1-8586-d1c2fb3be06a",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/spec-provider/references/methodology.md').read_text()[14000:21000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-cb30b3b8-5dde-4a02-b5ef-6cf428140a4c",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/spec-provider/references/methodology.md').read_text()[21000:28000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-ccd82b9f-31e8-4c94-8bcf-97ceddcd5d1f",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/spec-provider/references/methodology.md').read_text()[28000:35000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-2457bf23-264f-4cc7-a14f-b84271232a86",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; print(Path('/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline/references/verification-loop.md').read_text()[:7000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-bc598794-73e2-4393-bd1e-dc3d7eac478f",
+        "command": "/bin/bash -lc \"mkdir -p /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/consumer-01/output\ncat > /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/consumer-01/output/specification.md <<'EOF'\n# Job status display label\n\n## Scope and handoff\n\n**Status: ready for the repository implementation agent.** No blocking product or architecture decision is missing. This artifact specifies one additive response mapping; implementation and executed acceptance remain outstanding.\n\nSources: [case-a.md](../input/case-a.md), accepted operator PRD-A A1\u2013A4 and accepted ARCH-A; STATE-A describes the stipulated current contract. The inherited [architecture.md](../../a-01/output/architecture.md), ASR-001, ASR-002, D-001 and AHI-001, selects the mapping within ARCH-A's delegated authority. It does not authorize additional product scope. [Task](../input/task.md) names the downstream consumer; [context](../input/context.md) establishes English and this artifact location, with no further indexing convention.\n\nParent intent: an authenticated workspace member can read a job's saved label through the existing status operation while existing job identity, state and access behavior continue unchanged. The direct implementation contour is the existing API success-response assembly using the label already returned by the workspace-scoped repository. Risk is medium for the public contract delta; access isolation is a critical preserved invariant, covered by negative actual-response checks.\n\n## Behavior\n\n\u201cStatus operation\u201d means the one existing public read-status operation, receiving an opaque job identifier and current authentication context. \u201cAuthorized member\u201d means an authenticated member of the job's workspace under the existing operation. \u201cSaved label\u201d is the optional string already supplied by that operation's repository; an empty string is a saved value. \u201cLegacy absence\u201d means no saved label exists.\n\nFor an existing job visible to the authorized member, reading status changes the successful JSON object from \"'`{id, state}` to `{id, state, displayLabel}`. The added value is the saved string verbatim, or JSON null for legacy absence. This is an immediate response projection with no persistent effect or repair prerequisite. No new state enumeration is defined.\n\n## Requirements\n\nAll rows are explicit obligations from the cited accepted statements; D-001 supplies the inherited placement decision. Each necessity also identifies the accepted obligation that removal would permit to fail.\n\n| ID | Atomic requirement and applicability | Authority; necessity/removal falsifier | Acceptance |\n| --- | --- | --- | --- |\n| SPEC-R1 | On every authorized successful status read, the API MUST include `displayLabel`. | A1; omitting it loses the accepted response extension. | AC1 |\n| SPEC-R2 | When a saved label exists, the API MUST return that string unchanged as `displayLabel`, including an empty string. | A1; transformation or empty-to-null conversion loses the saved value. | AC1 |\n| SPEC-R3 | When no saved label exists, the API MUST return JSON null as `displayLabel`. | A1; omission or another value violates legacy representation. | AC1 |\n| INV1 | For successful status reads, the API MUST retain the existing `id` value. | A2; an identity change violates compatibility. | AC2 |\n| INV2 | For successful status reads, the API MUST retain the existing opaque `state` value. | A2; a state change violates compatibility. | AC2 |\n| INV3 | The status operation MUST preserve its existing authentication, missing-job, foreign-workspace and malformed-identifier error responses byte-for-byte. | A2 and STATE-A; any changed error violates the expressly preserved contract. | AC3 |\n| INV4 | The status operation MUST NOT return job data to an unauthenticated caller or a member of another workspace. | A3; either disclosure violates access isolation. | AC3 |\n| SPEC-R4 | For legacy jobs, the extension MUST work without migration or user action. | A2; requiring repair excludes accepted legacy behavior. | AC1, AC4 |\n| SPEC-R5 | The API service MUST assemble the extension on its existing success path using the existing workspace-scoped repository. | ARCH-A and D-001; bypassing that ownership violates the accepted architecture boundary. | AC4 |\n\n## Edge cases and preserved boundary\n\nIllustrative saved-value examples: `\"Job title\"` returns `\"Job title\"`; `\"  Job title  \"` returns the same whitespace; `\"\"` returns `\"\"`; absence returns `null`, with the property present in every successful case. These examples do not introduce new allowed-state or identifier rules.\n\nAuthentication, identifier validity, missing-job handling and workspace visibility continue to be decided by the existing operation before its success mapping. Its concrete route, error status/body bytes, state vocabulary and code layout remain owned by the existing contract; discover them in the repository, rather than replacing them with values from this specification. Existing clients are stipulated to tolerate additive properties. No concurrency, retry, write, latency or throughput behavior changes are specified.\n\n## Acceptance and verification map\n\nThe repository implementation agent owns all future checks below, corresponding to inherited V-001\u2013V-003. No check has been executed here.\n\n- **AC1 (R1\u2013R4; V-001):** Exercise the actual public operation as an authorized member against jobs with non-empty text, whitespace-bearing text, empty text, and legacy absence. Observe `displayLabel` present with exactly the corresponding saved string or JSON null. Legacy success requires no migration or user repair. Falsifiers include property omission, altered text, and empty string becoming null.\n- **AC2 (INV1\u2013INV2; V-001):** In those successful responses, compare `id` and `state` with their existing expected values. Either value changing is failure.\n- **AC3 (INV3\u2013INV4; V-002):** Exercise unauthenticated, foreign-workspace, missing-job and malformed-identifier requests. Compare the operation'\"'s pre-change error status/body bytes with post-change responses and check that unauthorized callers receive no job data. Any error-byte difference or disclosure fails acceptance. Capture concrete baseline expectations from the existing operation before changing it; do not invent them.\n- **AC4 (R4\u2013R5; V-003):** Inspect the change to confirm the existing repository/access boundary and API success assembly remain in use and that no storage, migration or additional-package change was introduced. Inspection supports, but cannot replace, AC1\u2013AC3.\n\nShortest observation path: existing saved job (string/empty/absent) \u2192 existing workspace-scoped repository read (authorized/foreign/unauthenticated context governed by the operation) \u2192 API response projection \u2192 public JSON observed by the caller. The repository owns read visibility; the API owns projection. AC1\u2013AC3 falsify value corruption or access/error regressions along this path. Label production, normalization and persistence writes are outside the delta; no write-round-trip or new test infrastructure is required. Mapper-only, mock-only or schema-only success does not satisfy A4's actual-response acceptance.\n\n## Anti-claims and gaps\n\nOnly the specification was authored. No software, runtime test, deployment, publication or independent review is claimed. The slice introduces no endpoint, role, job state, write, logging obligation, asynchronous process, deployment unit or label normalization. No new architecture decision, ADR, approval gate or implementation harness is required.\n\nNo blocking input gap was identified. Repository paths, concrete error baselines and existing verification commands are discovery items for the implementation agent, not missing product decisions. Runtime access and response captures are outstanding validation evidence. If repository evidence contradicts STATE-A or requires a new boundary, route that specific discrepancy to the architecture owner; route changed product behavior to the operator. Specification readiness is not product acceptance or release readiness.\nEOF\"",
+        "exit": 0,
+        "readback_truncated": null
+      },
+      {
+        "id": "exec-9b156181-1ad6-4410-9f44-e86a9d265101",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; p=Path('/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/consumer-01/output/specification.md'); s=p.read_text(); print(s[:7000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-5b4d9fb1-96ca-4db3-ab13-a38cc437e1a9",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; p=Path('/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/consumer-01/output/specification.md'); print(p.read_text()[7000:14000])\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-cf4e4f7b-eb68-4cc9-a117-2354b3b6b743",
+        "command": "/bin/bash -lc \"python -c \\\"from pathlib import Path; p=Path('/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/consumer-01/output/specification.md'); s=p.read_text().replace('AC1 (R1\u2013R4;', 'AC1 (SPEC-R1\u2013SPEC-R4;').replace('AC4 (R4\u2013R5;', 'AC4 (SPEC-R4\u2013SPEC-R5;'); p.write_text(s); print('Saved specification; requirement references normalized.')\\\"\"",
+        "exit": 0,
+        "readback_truncated": false
+      }
+    ]
+  },
+  {
+    "file": "g3_arch_consumer_02-readback.json",
+    "thread": "01a07d69-43d7-7b82-aa67-be5507172cc6",
+    "page": {
+      "order": "newest_first",
+      "limit": 2,
+      "nextCursor": null,
+      "hasMore": false
+    },
+    "commands": [
+      {
+        "id": "exec-3f372d64-be11-423b-9d53-7963573a37e1",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/consumer-02/input/{task.md,context.md,case-a.md}'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-73df13b2-b549-478f-995a-50959385e31a",
+        "command": "/bin/bash -lc 'ls -R /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/spec-provider /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/a-02/output'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-6f444a9f-e561-4ac6-bf0c-3ec5489ed1ca",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/spec-provider/SKILL.md /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/a-02/output/architecture.md /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/a-02/input/{task.md,context.md}'",
+        "exit": 0,
+        "readback_truncated": true
+      },
+      {
+        "id": "exec-f9d4a9cd-d897-4a04-b20b-20d5031f876a",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/spec-provider/references/methodology.md'",
+        "exit": 0,
+        "readback_truncated": true
+      },
+      {
+        "id": "exec-c51153a0-3773-46c2-b781-95fbb8834b24",
+        "command": "/bin/bash -lc 'ls /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-8f960502-de51-4c1f-9aa9-baba210712f9",
+        "command": "/bin/bash -lc \"sed -n '220,290p' /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/spec-provider/SKILL.md\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-7ff777e7-a647-451a-92c6-011a40f91986",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline/SKILL.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-fea1ee06-fe2b-4558-b658-80db42c6f04c",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline/references/verification-loop.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-ce37a92e-660d-41f6-bed3-3714a90cee64",
+        "command": "/bin/bash -lc \"mkdir -p /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/consumer-02/output\ncat > /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/consumer-02/output/specification.md <<'EOF'\n# Job status display label\n\n## Scope and handoff\n\n**Status: ready for repository implementation agent.** No blocking input gap. This is a design-only handoff, not authorization to implement or evidence of runtime acceptance.\n\nScope is the existing public read-status operation's successful response mapping in the API service. Parent intent: let an authenticated workspace member obtain the saved job label while preserving existing status and access behavior. The simplest contour is the producer's direct mapping of the already-authorized repository result; no new component is needed.\n\nSources:\n- [Original accepted product PRD-A/A1\u2013A4 and architecture ARCH-A](../../a-02/input/task.md) own behavior and service/repository boundaries. [Assigned case](../input/case-a.md) supplies the same statements.\n- STATE-A in those inputs supplies stipulated existing behavior, not executed evidence. Concrete error responses and opaque state values remain owned by the existing operation.\n- [Producer architecture](../../a-02/output/architecture.md), ASR-001, ASR-002, D-001 and AHI-001: inherited, ready architecture input. ARCH-A explicitly authorizes its bounded mapping decision; this artifact does not independently authorize product expansion.\n- [Task](../input/task.md) and [governance](../input/context.md) authorize this specification and its path. No additional naming or indexing convention applies.\n\nRisk is medium for additive public-contract compatibility; an access regression would have serious consequences, so explicit denial invariants and actual-operation negative checks accompany the small mapping change. This is neither a new authorization design nor multi-package/provider work; a full high-risk backend matrix is not triggered.\n\n## Behavior\n\nA **saved label** is the optional string already available on the authorized repository result. An **authorized member** is an authenticated member of the job's workspace, as determined by existing operation behavior. A **legacy job** has no saved label. \"'`id` and `state` are opaque existing response values.\n\nGiven an existing job, when an authorized member reads its status through the existing operation, the API returns the existing `id` and `state` plus `displayLabel`: exactly the saved string, or JSON null when absent. The operation remains read-only and usable for legacy jobs without preparatory action.\n\nInherited architecture: API-owned assembly continues to use the existing workspace-scoped repository. D-001 applies only after the operation has produced an authorized successful result.\n\n## Requirements\n\nAll rows are explicit derivations within the stated applicability. PRD-A is operator-owned; ARCH-A owns the accepted boundary. The last column states why removal would violate that authority, rather than relying on the producer'\"'s readiness label.\n\n| ID | Applicability and atomic obligation | Authority | Necessity / removal falsifier |\n| --- | --- | --- | --- |\n| SPEC-R1 | Every successful status response MUST contain the additional \"'`displayLabel` property. | A1; D-001 | Property omission loses the accepted response extension. |\n| SPEC-R2 | For a saved string, the API MUST return that exact string as `displayLabel`, including empty string and whitespace. | A1; D-001 | Normalization or truthiness fallback changes the saved label. |\n| SPEC-R3 | For no saved label, the API MUST return JSON null as `displayLabel`. | A1; D-001 | Omission, an empty string, or a manufactured default violates legacy null behavior. |\n| SPEC-R4 | On success, the API MUST preserve the existing `id` value. | A2 | An altered identifier violates existing-value preservation. |\n| SPEC-R5 | On success, the API MUST preserve the existing opaque `state` value. | A2 | Remapped states violate existing-value preservation. |\n| SPEC-R6 | The extension MUST work for legacy jobs without migration. | A2 | A backfill prerequisite prevents migration-free use. |\n| SPEC-R7 | The extension MUST work for legacy jobs without user action. | A2 | A repair or label-edit prerequisite violates immediate legacy support. |\n| INV1 | For foreign-workspace and unauthenticated callers, the operation MUST NOT disclose job data, including the added label. | A3 | Disclosure breaks the accepted access invariant. |\n| INV2 | All existing error responses MUST remain byte-for-byte unchanged, including authentication, missing-job, foreign-workspace, and malformed-identifier paths. | A2 preservation; STATE-A identifies the existing contract; D-001 | Rewriting an error changes the preserved operation contract. |\n| INV3 | Status response assembly MUST remain API-owned using the existing workspace-scoped job repository. | ARCH-A; D-001 | Moving assembly or bypassing scoped retrieval violates accepted architecture. |\n| INV4 | The extension MUST NOT introduce a data write. | A3; D-001 | Saving defaults or labels expands the accepted read-only change. |\n\n## Edge cases\n\nIllustrative success projection, retaining the operation'\"'s actual opaque \"'`id` and `state`:\n\n| Existing saved label | New `displayLabel` |\n| --- | --- |\n| `\" Example \"` | `\" Example \"` |\n| `\"\"` | `\"\"` |\n| Absent | `null` |\n\nDo not use truthiness to equate empty with absent. Existing errors are deliberately not assigned new HTTP codes, body schemas, identifier-validation rules, or precedence here. New latency, throughput, retry, concurrency, persistence, or normalization guarantees are not introduced.\n\n## Acceptance and verification\n\nThe repository implementation agent owns execution and evidence. Use existing operation-boundary facilities; obtain the existing response baseline before changing its mapping. Source-file names and test commands are repository discovery details, not missing product decisions.\n\n| ID | Required observation / narrow falsifier | Requirements |\n| --- | --- | --- |\n| AC1 | Exercise the actual public status operation as an authorized member for saved non-empty (including whitespace), empty, and absent labels. Inspect JSON for the property and exact values above. Missing property, trimming, or empty-to-null conversion fails. Compare returned `id` and `state` with existing behavior for these jobs. | R1\u2013R5 |\n| AC2 | Exercise the existing legacy job'\"'s status without migration or user repair. Needing either before it returns explicit null fails. Inspect the bounded change for absence of new write/migration paths. | R3, R6, R7, INV4 |\n| AC3 | Exercise foreign-workspace and unauthenticated requests against the same operation. Any job data disclosure fails; compare their existing error responses byte-for-byte against baseline. | INV1, INV2 |\n| AC4 | Exercise missing-job and malformed-identifier paths; compare errors byte-for-byte against baseline. Inspect the change to confirm other existing errors remain untouched. | INV2 |\n| AC5 | Inspect the change for API-only success mapping through the existing scoped repository, with no new writes. Boundary bypass or added writes fails. | INV3, INV4 |\n\nThese checks derive from A1\u2013A4 and producer V-001\u2013V-003. Actual status-response observation is necessary for A4: mapper tests, mocked repository results, schemas, or this document alone cannot close acceptance.\n\nApplicable value path is the existing scoped repository result -> API public projection -> caller's JSON response. The API service owns the changed projection; label presence/empty/whitespace and caller workspace/authentication are the varying dimensions. Changed or leaked values are falsifiers. Label production, normalization, persistence changes and a write/reload lifecycle are outside this single response-mapping claim; no new upstream round trip or harness is required.\n\n## Anti-claims and gaps\n\nNo new role, endpoint, job state, storage change, package, logging obligation, asynchronous process, deployment unit, or operational target is specified. No implementation, runtime test, deployment, or publication was performed. Acceptance checks above remain unexecuted because the task permits document authoring only.\n\nAssumptions are the stipulated STATE-A facts, including optional-label availability and tolerant existing clients. Concrete error/state values must be read from the existing operation during implementation, not invented here. They are deliberately preserved external-to-slice behavior, not a blocking specification gap.\n\nNo architecture delta or new approval is needed for D-001. If repository inspection contradicts label availability or shows that this requires storage or access-boundary changes, return that concrete discrepancy to the architecture owner before expanding this slice; changed product semantics belong to the operator.\nEOF\nwc -l /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/consumer-02/output/specification.md\"",
+        "exit": 0,
+        "readback_truncated": false
+      }
+    ]
+  },
+  {
+    "file": "g3_arch_trial_a1-readback.json",
+    "thread": "01a07d61-ece6-7c41-b272-a8d15984930f",
+    "page": {
+      "order": "newest_first",
+      "limit": 2,
+      "nextCursor": null,
+      "hasMore": false
+    },
+    "commands": [
+      {
+        "id": "exec-1f49cb9c-a8de-4429-9ec8-30ce85923a81",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/a-01/input/context.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-6ed7958f-c027-4404-aea4-6ac33c396960",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/a-01/input/task.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-ecae4d58-e976-4ef8-9a40-7bbd4ff46944",
+        "command": "/bin/bash -lc 'wc -c /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/SKILL.md /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline/SKILL.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-73778a9e-02a2-4bcd-af6d-1c47ce0900a5",
+        "command": "/bin/bash -lc 'head -c 7800 /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/SKILL.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-7d6dc7a2-cdbf-4fdb-b460-02138ab1b1f8",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/SKILL.md bs=1 skip=7800 count=7800 status=none'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-c9e492a4-0d6b-47fe-a63c-043559696aa0",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/SKILL.md bs=1 skip=15600 count=7800 status=none'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-90bf3804-cb83-4fa1-949b-13400fc7fa87",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/SKILL.md bs=1 skip=23400 count=7800 status=none'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-37416017-d1f4-4e9a-9dcc-91d385087628",
+        "command": "/bin/bash -lc 'head -c 7800 /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline/SKILL.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-2dee0cc4-bff7-40ec-882d-1ddce32e48b7",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline/SKILL.md bs=1 skip=7800 count=7800 status=none'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-cc4cb48f-8699-4a95-8bc9-94575fe906e1",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline/SKILL.md bs=1 skip=15600 count=7800 status=none'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-7f8bacf8-792e-4947-8e8c-94681b92abb8",
+        "command": "/bin/bash -lc 'wc -c /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/references/methodology.md /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/references/artifact-templates.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-e156bca8-a8fc-48ec-aff8-4c8235b3afbc",
+        "command": "/bin/bash -lc 'head -c 7800 /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/references/methodology.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-bfeab55e-5d37-4ca6-bd78-ba58c4c139d4",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/references/methodology.md bs=1 skip=7800 count=7800 status=none'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-a614c266-1c31-4e47-be79-204ffa00423a",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/references/methodology.md bs=1 skip=15600 count=7800 status=none'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-9c5e1371-f6ab-4213-badd-4808584ca057",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/references/methodology.md bs=1 skip=23400 count=7800 status=none'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-854384c3-9b2f-454d-b4c2-b56bf2637688",
+        "command": "/bin/bash -lc 'wc -c /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline/references/verification-loop.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-64e87b47-1e55-44ed-90e9-ded1bb0cca55",
+        "command": "/bin/bash -lc 'head -c 7800 /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/references/artifact-templates.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-19d59f99-fdac-4542-bd86-4f0187892e04",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/references/artifact-templates.md bs=1 skip=7800 count=7800 status=none'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-4f1d2a7c-b6e5-4084-970a-64ddc5f940b5",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline/references/verification-loop.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-d3c15fab-6037-4249-9061-3788043c6768",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/assets/templates/architecture-delta.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-7f9911ab-d94d-4c79-ad59-a724b9c7fea0",
+        "command": "/bin/bash -lc \"mkdir -p /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/a-01/output\ncat > /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/a-01/output/architecture.md <<'EOF'\n# AD-001: Job status display label response extension\n\nStatus: architecture decision selected; handoff ready. Scope: component-level API public response change. Risk: medium because the public contract changes and existing access/error behavior must remain intact. A bounded architecture delta is sufficient; no new topology or significant pattern choice requires an ADR or spike.\n\n## Sources and claim boundary\n\n- S-01: [task.md, PRD-A A1\u2013A4](../input/task.md#accepted-product-requirements-operator-prd-a), accepted operator requirements: label/null response, compatibility, access invariants, and actual-response acceptance.\n- S-02: [task.md, ARCH-A](../input/task.md#accepted-architecture-arch-a), accepted API service ownership and existing workspace-scoped repository boundary; expressly authorizes this mapping decision without renewed product approval.\n- S-03: [task.md, STATE-A](../input/task.md#current-state-contract-state-a), stipulated current design: \"'`{id, state}` success, optional label already available, opaque states and existing error responses.\n- S-04: [context.md, Project governance](../input/context.md#project-governance), architecture artifact authority and output convention.\n\nAll system facts above are supplied scenario facts, not executed evidence. This design enables an authenticated workspace member to see a saved job label through the existing public status read. This artifact is handoff substrate: neither its completion nor a later specification proves that any actual response behaves correctly. Only this architecture artifact is authored; implementation, services, deployment and publication are outside authority.\n\n## Architecture-shaping requirements\n\n| ID | Requirement, authority and necessity | Forces and validation |\n| --- | --- | --- |\n| ASR-001 | Explicit source statement, operator S-01/A1\u2013A2: existing authorized successful reads add the saved label verbatim, including empty string; absence produces JSON null without migration or user action. Applies to existing and legacy jobs. Removing this requirement loses the accepted visible label or legacy compatibility. | Additive public projection; retain optional storage representation. Medium risk; high design confidence from supplied facts. Verify V-001. |\n| ASR-002 | Explicit source statement, operator S-01/A2\u2013A3: retain `id`, opaque `state`, existing errors and no-data access outcomes. Applies to authorized, foreign-workspace, unauthenticated, missing-job and malformed-identifier paths. Removing it permits a compatibility or access regression. S-02 also explicitly requires API assembly through the existing workspace-scoped repository, owned by accepted architecture authority. | Existing ownership and tenant boundary; no alternate lookup path. Medium change risk with access-critical invariants. Verify V-002. |\n\nThese requirements derive no additional product modes, actor prerequisites or storage obligations. No latency or throughput target has been accepted (S-03); targets remain unspecified and do not block the bounded mapping decision.\n\n## D-001: Selected response mapping\n\nWithin the existing API service success-response assembly, add `displayLabel` using the label already returned by the existing authorized workspace-scoped repository. Emit the saved string unchanged; when no saved label exists, emit explicit JSON null. In particular, an empty string remains an empty string. Leave existing `id` and `state` values intact.\n\nThe existing operation continues to determine authentication, identifier validity, workspace visibility and missing-job outcomes. Apply the extension only on its successful response path. Preserve its error responses byte-for-byte; do not select or restate concrete status codes, error bodies or state enumerations, which this slice intentionally leaves with the existing operation.\n\nThis directly satisfies ASR-001 and ASR-002 under S-02'\"'s delegated decision authority. The saved optional value is already available (S-03), so repository, persistence, migration, data-write and job-lifecycle changes are unnecessary. No new endpoint, role, asynchronous process, deployment unit, normalization, logging or instrumentation obligation is introduced (S-01/A3). Labels are stipulated ordinary user-visible strings (S-03).\n\nAlternatives exercise: unnecessary; the existing response assembly is sufficient. Additional layers or a new read mechanism have no accepted requirement and would enlarge the change without solving a current gap. Exact functions, files, language constructs and validation tooling are \"'`not_prescribed`.\n\nConsequence: the successful public JSON contract gains one property, tolerated by existing clients per S-01/A2. The change has no persistent side effect. Code reversal is locally simple, but removing the property would cease satisfying A1 and must not be described as accepted product behavior. No migration or data rollback procedure is required. Confidence is high for this architecture selection based on the stipulated inputs; runtime correctness is unverified.\n\n## Validation obligations\n\n- V-001 (A1, A2, A4; ASR-001): exercise the actual public operation as an authenticated member of the owning workspace for saved non-empty text, saved empty string, and a legacy job without a saved label. Observe the successful JSON response: `displayLabel` equals the saved value verbatim or is present with JSON null for absence, with original `id` and `state` values retained. Include a label with whitespace to detect unintended normalization. No migration or user repair step may be needed. The narrow falsifier is any actual response that omits the property, converts empty string to null, changes text, or changes `id`/`state`.\n- V-002 (A2, A3, A4; ASR-002): exercise unauthenticated, foreign-workspace, missing-job and malformed-identifier paths through the existing operation. Compare existing status/body bytes against the unchanged baseline and verify that unauthorized responses contain no job data. Obtain concrete baselines from the operation when implementation access is available; do not invent them in the specification.\n- V-003 (S-02, S-03): inspect the eventual change to confirm the existing repository/access boundary and success assembly are retained and no storage or additional-package change was introduced. Static inspection supplements V-001/V-002; it cannot replace actual-response evidence.\n\nThe applicable observation path is existing saved job \u2192 authorized workspace repository read \u2192 API success assembly \u2192 public JSON. This slice does not modify label creation, persistence or normalization; it requires no new write-flow test infrastructure. Mapper-only tests or schema checks cannot close A4. No checks against software were executed here because no runtime was supplied or authorized.\n\n## Architecture handoff\n\n- `id`: AHI-001\n- `kind`: spec_candidate\n- `status`: ready\n- `blockers`: []\n- `linked_prd`: S-01/A1\u2013A4\n- `linked_asr`: ASR-001, ASR-002\n- `linked_decision`: D-001\n- `next_stage_owner`: spec-engineer\n- `expected_next_output`: `specification.md`, an implementation-ready specification and verification map for this single existing status operation.\n- `architectural_intent`: extend its successful response locally while preserving the API/repository boundary and compatibility/access invariants.\n- `constraints`: D-001, including explicit null for absence, exact saved text, unchanged opaque fields, existing error bytes, and no expanded runtime scope.\n- `acceptance_constraints`: actual-response evidence required by S-01/A4; spec completion is not product acceptance.\n- `required_validation`: carry V-001\u2013V-003 into the verification map, clearly marking future executed evidence as outstanding.\n- `not_prescribed`: code layout, mapper syntax, existing operation path, concrete error values, opaque state enumeration, and test tooling.\n\nNo missing product or architecture decision blocks the specification. Runtime access and baseline captures are implementation-validation gaps, not reasons to reopen the authorized mapping decision. Return to architecture-engineer only if implementation evidence contradicts S-03 or fulfilling the requirement would require a new boundary; route any changed product semantics to the operator. Otherwise retain D-001 without additional architecture ceremony.\n\n## Artifact verification\n\nPerformed a source-to-decision and handoff review against S-01\u2013S-04: scope stays within response mapping, every accepted requirement has a constraint or validation obligation, and no additional authority gate was introduced. No runtime, integration, deployment or independent review result is claimed.\nEOF'",
+        "exit": 0,
+        "readback_truncated": null
+      },
+      {
+        "id": "exec-533b0846-24bd-4d8d-9ca9-251332b6134d",
+        "command": "/bin/bash -lc 'wc -c /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/a-01/output/architecture.md\nhead -c 7800 /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/a-01/output/architecture.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-3302fe54-0463-4601-87af-bb70ce5b34fe",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/a-01/output/architecture.md bs=1 skip=7800 count=7800 status=none'",
+        "exit": 0,
+        "readback_truncated": false
+      }
+    ]
+  },
+  {
+    "file": "g3_arch_trial_a2-readback.json",
+    "thread": "01a07d67-a455-7431-a01e-ad79c26038d5",
+    "page": {
+      "order": "newest_first",
+      "limit": 2,
+      "nextCursor": null,
+      "hasMore": false
+    },
+    "commands": [
+      {
+        "id": "exec-73565ec7-a187-484b-805c-7de1fded582c",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/a-02/input/task.md /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/a-02/input/context.md /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-02/SKILL.md'",
+        "exit": 0,
+        "readback_truncated": true
+      },
+      {
+        "id": "exec-5ac9dc19-dc1d-4bc3-8905-f40528e245ba",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-02/references/methodology.md /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-02/references/artifact-templates.md /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline/SKILL.md'",
+        "exit": 0,
+        "readback_truncated": true
+      },
+      {
+        "id": "exec-8cad5512-ff21-40ae-85c0-f5fa932e1733",
+        "command": "/bin/bash -lc \"sed -n '370,560p' /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-02/references/methodology.md\"",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-e3985e9f-70dc-4d4f-8cfb-3a66fc7e9798",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-02/references/artifact-templates.md /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-02/assets/templates/architecture-delta.md /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-02/assets/templates/architecture-handoff-item.yaml /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline/references/verification-loop.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-3fa2c7d9-9af6-487a-96e0-961b1ec92674",
+        "command": "/bin/bash -lc \"mkdir -p /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/a-02/output\ncat > /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/a-02/output/architecture.md <<'EOF'\n# AD-001: Job status display label response extension\n\nStatus: decided within ARCH-A authorization; handoff ready. Scope: component-level API response contract. Risk: medium because the public success shape changes; existing access and error behavior are protected invariants. A compact architecture delta is sufficient; no separate ADR, pattern comparison, or feasibility spike is needed for the direct mapping.\n\n## Sources and claim boundary\n\n- **PRD-A/A1\u2013A4**, [task.md, Accepted product requirements](../input/task.md): operator-owned accepted product authority.\n- **ARCH-A**, [task.md, Accepted architecture](../input/task.md): accepted API assembly/repository boundary and explicit delegation to select this mapping now.\n- **STATE-A**, [task.md, Current-state contract](../input/task.md): stipulated existing design, including an already-available optional saved label and opaque state/error behavior; not executed evidence.\n- **GOV-A**, [context.md, Project governance](../input/context.md): architecture decisions within accepted requirements need no additional product approval; output goes to the specification agent.\n\nThis is design/authoring only. The sole deliverable is this handoff. The enabled capability is an authenticated workspace member seeing the existing job's saved label in an actual status response, including an empty string or legacy null. The immediate consumer is \"'`spec-engineer`. This document and a future specification are substrate: neither demonstrates that the public operation works. No implementation, deployment, or publication is authorized here.\n\n## Existing boundary and scope\n\nSTATE-A supplies the complete current-state facts for this decision: the single read-status operation receives an opaque identifier plus authentication context; the API service assembles `{id, state}` from the existing workspace-scoped job repository. The authorized job already contains the optional saved label. ARCH-A requires preserving that ownership.\n\nThe change is confined to successful public-response assembly in the API service. Repository, persistence, authentication, workspace scoping, endpoint, job states, data writes, background processing, deployment units, and logging obligations remain outside this delta (PRD-A/A2\u2013A3; ARCH-A; STATE-A). No latency or throughput target is introduced; targets are unspecified/TBD and do not block this bounded mapping.\n\n## Architecture-shaping requirements\n\n### ASR-001 \u2014 Additive public projection with legacy compatibility\n\n- Requirement: The successful response exposes `displayLabel` as the saved string without normalization, preserving an empty saved string; absence of a saved label produces JSON null. Existing `id` and `state` semantics remain intact and no migration or user action is needed.\n- Authority: `source_statement`; locators PRD-A/A1\u2013A2; owner operator/product; derivation explicit. Normative statements: A1 requires the saved label, including empty string and legacy null; A2 requires existing values and migration-free legacy behavior.\n- Applicability: authorized members reading existing jobs through this operation.\n- Necessity/removal falsifier: Omitting this constraint permits a missing `displayLabel`, an empty string converted to null, or a legacy job needing a write, each violating A1 or A2.\n- Forces: additive client compatibility and reuse of available repository data. Medium risk, high confidence in the stipulated facts. Validation: V-001.\n\n### ASR-002 \u2014 Preserve scoped ownership and denial behavior\n\n- Requirement: API-owned assembly continues to consume the existing workspace-scoped repository; the extension provides no job data to foreign-workspace or unauthenticated callers and preserves all current error responses.\n- Authority: `accepted_non_product_authority` for ARCH-A'\"'s explicit boundary preservation, combined with \"'`source_statement` PRD-A/A2\u2013A3 for unchanged errors and access. Owners: accepted architecture/operator and operator/product respectively. Derivation explicit; STATE-A supplies the existing-operation preservation detail, not authority for a new access rule.\n- Applicability: every invocation, including denied, malformed, and missing-job paths.\n- Necessity/removal falsifier: Bypassing scoped access or changing an error response violates A2/A3; moving response ownership violates ARCH-A.\n- Forces: tenant isolation and compatibility through an unchanged existing path. The mapping is medium risk; access regressions have serious consequences and require real-operation validation. High confidence in stipulated facts, no runtime proof. Validation: V-002 and V-003.\n\n## D-001 \u2014 Direct API success-response mapping\n\nSelected under ARCH-A'\"'s explicit delegated authority, linked to ASR-001 and ASR-002. Extend the existing successful response with \"'`displayLabel`. Map the repository-returned saved label unchanged when present, including `\"\"`; use explicit JSON null for an absent saved label. Do not omit the property or use truthiness to decide whether a label exists. Keep `id` and opaque `state` unchanged.\n\nApply this projection only to the already-authorized successful result. Preserve the existing operation'\"'s authentication, missing-job, foreign-workspace, and malformed-identifier responses byte-for-byte, without specifying new status codes or bodies. The same service/repository boundary remains responsible for access.\n\nThe direct path satisfies all accepted forces; there is no unmet obligation justifying an abstraction, new DTO layer, registry, storage default/backfill, queue, instrumentation, or test seam. No alternatives exercise is warranted. Consequence: clients gain one success property and can distinguish empty labels from absent labels. There is no data migration, new operational lifecycle, or new dependency. Local code reversal does not require data rollback, but removing the property after delivery would violate A1 and cannot be presented as successful delivery. No rollback automation or rollout mechanism is prescribed.\n\n## Validation obligations\n\n- **V-001 (A1, A2, A4):** Exercise the actual existing read-status operation as an authorized workspace member against jobs with a saved non-empty label, a saved empty string, and no saved label. Inspect public JSON for exact string preservation, \"'`\"\"`, and explicit null respectively, with unchanged `id` and state. Include a string whose whitespace would reveal accidental normalization. These checks can falsify D-001 directly.\n- **V-002 (A2, A3, A4):** Exercise foreign-workspace and unauthenticated access through the same operation. Confirm no job data, including label, is disclosed and compare the existing response status/body with its pre-change baseline byte-for-byte.\n- **V-003 (A2, STATE-A):** Compare missing-job and malformed-identifier responses against the existing baseline byte-for-byte. Retain existing opaque state values on success. Obtain the baseline from the operation during downstream implementation verification; do not invent concrete errors or states in the specification.\n\nUse existing verification facilities at this operation'\"'s boundary. Mapping-only or mocked tests can support verification but cannot satisfy A4 alone. New label-writing, migration, or producer-to-storage flows are not part of this single response-projection change and are not prerequisites for acceptance. Actual operation execution and code inspection were unavailable under the fixture limits; all V-items remain unexecuted.\n\n## Architecture handoff\n\n\"'```yaml\narchitecture_handoff_item:\n  id: AHI-001\n  kind: spec_candidate\n  status: ready\n  blockers: []\n  title: Job status display label projection\n  linked_prd: [PRD-A/A1, PRD-A/A2, PRD-A/A3, PRD-A/A4]\n  linked_asr: [ASR-001, ASR-002]\n  linked_decision: [D-001]\n  architectural_intent: Extend only the successful API projection using the existing scoped repository result.\n  constraints:\n    - Preserve D-001 mapping and existing API/repository ownership.\n    - Preserve opaque id/state and current errors byte-for-byte.\n    - No access, persistence, endpoint, state, logging, async, or deployment expansion.\n  acceptance_constraints:\n    - Actual authorized response must show saved string, empty string, or explicit null as applicable.\n    - Existing access and state behavior must remain correct.\n    - Documentation or mapper-only evidence cannot close runtime acceptance.\n  required_validation: [V-001, V-002, V-003]\n  next_stage_owner: spec-engineer\n  expected_next_output:\n    - specification.md containing bounded behavior requirements and an operation-level verification map\n  not_prescribed:\n    - Exact source file, class, function, and test framework.\n    - Internal mapping syntax and error/state values already owned by the existing operation.\n```\n\nNo source conflict or missing architecture decision blocks specification. Readiness authorizes the next design stage only. Revisit D-001 with `architecture-engineer` if downstream evidence contradicts label availability, requires another boundary or storage change, or shows that existing access/error semantics cannot be preserved. Changed product semantics return to the operator. Otherwise retain this decision without adding architecture work.\nEOF\nwc -l /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/a-02/output/architecture.md'",
+        "exit": 0,
+        "readback_truncated": false
+      }
+    ]
+  },
+  {
+    "file": "g3_arch_trial_b1-readback.json",
+    "thread": "01a07d62-2103-70f0-95f8-217859241a86",
+    "page": {
+      "order": "newest_first",
+      "limit": 2,
+      "nextCursor": null,
+      "hasMore": false
+    },
+    "commands": [
+      {
+        "id": "exec-93e932de-c1b2-4424-9a37-774b0336fc95",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/b-01/input/context.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-1a032167-91c4-4f1a-afd9-a40d8bbfa2dd",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/b-01/input/task.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-80cd2c6b-c878-4a6e-bce0-4bf6ca25a5d8",
+        "command": "/bin/bash -lc 'wc -c /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/SKILL.md /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline/SKILL.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-c07b62b2-a940-4d1d-af8c-9c7cec5ad85a",
+        "command": "/bin/bash -lc 'head -c 7000 /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/SKILL.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-22ed0a17-561f-4316-8d85-b3379c3b10dd",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/SKILL.md bs=1 skip=7000 count=7000 status=none'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-04bc08e7-1ad2-4549-a514-908f7b407a32",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/SKILL.md bs=1 skip=14000 count=7000 status=none'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-b502c2d2-5a34-460a-8201-b16e61f6b561",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/SKILL.md bs=1 skip=21000 count=7000 status=none'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-b4ac67ae-0d1e-4f27-979b-29208eacc34e",
+        "command": "/bin/bash -lc 'head -c 7000 /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline/SKILL.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-7782f864-a630-4cf9-a991-183137b06e19",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline/SKILL.md bs=1 skip=7000 count=7000 status=none'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-645330cc-4d92-440e-b969-3e48732d6132",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline/SKILL.md bs=1 skip=14000 count=7000 status=none'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-b67fdb14-9c25-4636-b468-8397e6ae9c86",
+        "command": "/bin/bash -lc 'wc -c /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/references/methodology.md /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/references/artifact-templates.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-2b638188-9af2-42f7-9ffa-3e279786f032",
+        "command": "/bin/bash -lc 'head -c 7500 /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/references/methodology.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-ca7e4e42-f0ee-41fa-b7a9-883e4cfd6d06",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/references/methodology.md bs=1 skip=7500 count=7500 status=none'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-122aead1-481e-49ad-a8a2-5232bedfcd8a",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/references/methodology.md bs=1 skip=15000 count=7500 status=none'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-95cd11ee-c864-4466-b6a0-01608fb7c557",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/references/methodology.md bs=1 skip=22500 count=7500 status=none'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-f60115f7-9131-40af-919d-1fe79eab9ce6",
+        "command": "/bin/bash -lc 'wc -c /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline/references/verification-loop.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-c45547fb-116b-46ec-99c3-0aee362942e2",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline/references/verification-loop.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-468dd5b6-cbbc-4f14-a799-85d1a3498e72",
+        "command": "/bin/bash -lc 'head -c 7500 /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/references/artifact-templates.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-391dd2c9-d6f4-4dca-8d6f-0358a31146b4",
+        "command": "/bin/bash -lc 'dd if=/tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-01/references/artifact-templates.md bs=1 skip=7500 count=7500 status=none'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-c59803e5-e4c3-47ae-a8f3-5473c67058f9",
+        "command": "/bin/bash -lc \"mkdir -p /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/b-01/output\ncat > /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/b-01/output/architecture.md <<'EOF'\n# Architecture: archive preview and retention\n\nDocument ID: ARCH-NOTE-B. Mode: design/authoring. Documentation only.\n\nPreview specification is ready now. Retention architecture is blocked by incompatible accepted requirements. The local storage investigation is ready for a delivery-planner brief; storage selection remains pending actual experiment evidence. No runtime, benchmark, security validation, implementation, or production change has been performed.\n\n## Authority and scope\n\nSource locators below refer to the supplied \"'`../input/task.md` headings and stable statement IDs. Governance is `../input/context.md`, \u201cProject governance\u201d; evidence limitations are its \u201cFixture environment\u201d. These are stipulated facts, not inspected software. The product owner owns product decisions; accepted architecture grants bounded architecture choice and investigation authority. Equal-authority requirements have no date precedence.\n\nThe outcome for members is an own-workspace preview of the first 20 saved archive titles, preserving their saved sequence and spelling. This note enables a fresh specification agent to constrain that behavior; the note itself does not deliver preview or establish tenant safety. Source-authorized outputs are this architecture artifact and downstream handoffs. The direct path is the existing API and workspace-scoped archive repository. The narrowest behavioral falsifier is a member preview response that differs from their workspace'\"'s first 20 saved titles or includes a title read from another workspace.\n\nScope is component-level API/repository architecture. Tenant isolation has high security criticality; preview introduces no new boundary. Retention has high data-loss/recoverability risk. The offline investigation is bounded feasibility work, not a migration. Full-workspace download, new infrastructure, new persistence, override modes, implementation, deployment, external services and publication are excluded.\n\n## ASR register\n\n| ID / status | Authority, owner and derivation | Applicability and requirement | Necessity / removal falsifier | Forces, risk, confidence, validation |\n| --- | --- | --- | --- | --- |\n| ASR-B-P / accepted | \"'`task.md`, Accepted product requirements, PRD-B1; source_statement; product owner; explicit | Members preview the first 20 saved titles of their own workspace, in saved order and spelling; no cross-workspace reads | Removing sequence or tenancy constraints permits the response to violate PRD-B1 | Ordered projection and tenant confinement; high isolation risk; high source confidence, runtime unverified; QS-B-P |\n| ASR-B-E / accepted | `task.md`, Accepted architecture and investigation authority, ARCH-B1; accepted_non_product_authority; accepted architecture; explicit | Preview stays in existing API and workspace-scoped repository with existing ordered titles; no new infrastructure or persistence | Removing this constraint permits an unauthorized new persistence or service boundary | Existing-system fit and minimal surface; medium component risk; high stipulated confidence; PD-B-P and specification boundary check |\n| ASR-B-R / blocked | `task.md`, PRD-B2 and PRD-B3; source_statement; product owner; explicit conflicting obligations | All archive data permanently erased after 30 days with no recoverable copy AND recoverable through 90 days | Between days 30 and 90 either permanent erasure defeats B3 or a recoverable copy defeats B2 | Irreversible deletion versus recovery; high risk; conflict certain; product reconciliation required before retention design or validation criteria |\n| ASR-B-I / accepted for investigation only | `task.md`, ARCH-B2; accepted_non_product_authority; accepted architecture; explicit | Compare ordered-list and indexed representations on 10,000 synthetic titles, preserving partition and exact first-20 sequence; exploratory duration and memory | Without this bounded evidence, a storage commitment violates ARCH-B2'\"'s return-before-commit requirement | Evidence before storage choice; no performance threshold; experiment unexecuted; SPIKE-B-I |\n\nCurrent-state evidence (\"'`task.md`, \u201cCurrent-state evidence\u201d) says storage is workspace-partitioned and titles are saved in order. The existing `retentionOverride` belongs to an old internal maintenance script. It grants no member or administrator entitlement, prerequisite, retention exception or configuration mode. Its modification or removal is not authorized here.\n\n## Decisions\n\n### PD-B-P \u2014 Preserve existing preview boundary\n\nStatus: accepted within ARCH-B1 authority. Select direct ordered-title projection through the existing API and workspace-scoped repository. Preserve membership/own-workspace confinement from request through repository access and response; no cross-workspace fetch followed by filtering. This is a derived constraint of PRD-B1'\"'s prohibition on reads, not a new identity model.\n\nNo architecture alternative exercise is needed: ARCH-B1 already selects the sufficient existing boundary. No cache, worker, index, wrapper or persistence layer is needed for preview. Exact routes, schemas, classes and functions are \"'`not_prescribed`. A future spec may refine ordinary behavior within this frame without reopening storage design.\n\nConsequences: preview can proceed independently of retention or investigation; this makes no production performance claim. Confidence is high in source fit, with runtime conformance unverified. Preview has no migration or data rollback requirement because it adds no persistence change. Revisit if implementation cannot preserve ordering or tenancy on the existing boundary, or if accepted scope changes.\n\n### DEC-B-R \u2014 Retention decision withheld\n\nStatus: blocked; human product decision required. PRD-B2 and PRD-B3 are incompatible at equal authority. Neither overrides the other. No soft-delete, backup tier, encryption trick, override mode, or alternative time rule is selected as a reconciliation. Blocking dependency is only retention policy and its downstream architecture/specification.\n\nThe product owner must supply a single accepted reconciled obligation or explicit precedence, including whether recoverable copies may exist after day 30. No specialist or vendor is available to replace that ownership. After reconciliation, architecture must derive deletion/recovery boundary scenarios from the accepted rule, assess irreversible effects and any migration/rollback limits, and route a ready retention spec. No retention compliance is claimed today.\n\n### DEC-B-S \u2014 Storage selection pending\n\nStatus: proposed/unselected pending SPIKE-B-I evidence. Current ordered-list and indexed representations are investigation candidates, not selected production designs. Their runtime fit, resource costs and relative benefit remain unknown; numeric scores or a winner would fabricate evidence. Even a correct faster candidate does not automatically authorize production change. ARCH-B2 requires evidence return before commitment, and no performance target exists.\n\n## QS-B-P \u2014 Preview sequence and tenant isolation\n\nSource: member; stimulus: request own-workspace preview with distinguishable titles saved in different orders in two partitions. Environment: future production-equivalent existing API/repository boundary. Artifact: preview read path and member-visible response. Required response: exactly the first 20 saved titles for that workspace in original spelling and order, with no other-partition read or response content.\n\nVerification obligation: exercise the real member/API/repository/response path with more than 20 ordered titles, spelling-sensitive and duplicate titles; cover fewer than 20 and empty saved lists in the specification. A forged other-workspace request must not cause that partition to be read or its titles disclosed. Exact rejection presentation remains for the specification within existing conventions. Compare response against the saved sequence and observe repository access scope; response-only filtering is insufficient proof of no reads. These are future checks, not executed evidence.\n\n## SPIKE-B-I \u2014 Ordered-title feasibility\n\nQuestion: do the current ordered-list and an indexed representation each return the exact first 20 saved titles for the stipulated 10,000-title dataset while preserving the existing tenant partition?\n\nScope: a small offline experiment in a disposable directory, with only synthetic data and local shell/filesystem access. Reproducibly generate 10,000 titles with known saved ordering and spelling; record the dataset definition and partition allocation. Include distinct other-partition sentinel titles so cross-partition leakage is detectable, documenting any sentinel data separately from the stipulated dataset. Both representations receive equivalent records and ordering. No network, production data, external service, infrastructure, or production modification.\n\nCorrectness criteria: exact expected first-20 sequence for the selected partition; no other-partition title or read. Record each representation'\"'s result and failure details. Preserve repeated/spelling-sensitive titles in the expected sequence. Capture duration and memory with units, measurement method, runtime/environment, command, and repetition details sufficient to interpret and reproduce them. Duration and memory are exploratory observations, never pass/fail thresholds. Dataset-limited success does not prove arbitrary-scale performance, production tenant enforcement, or download viability.\n\nEventual executor evidence contract: local experiment source and dataset generation/reproduction instructions; expected and actual sequences; isolation observations; terminal results and exit status; raw duration/memory measurements and measurement limitations; bounded comparison and recommendation. Return all to architecture-engineer before any storage selection. No experiment or measurements exist in the supplied inputs or this output.\n\n## Architecture handoff register\n\n### AHI-B-P\n\n- kind: spec_candidate\n- status: ready\n- blockers: []\n- next_stage_owner: spec-engineer\n- linked_prd: PRD-B1, PRD-B4\n- linked_asr: ASR-B-P, ASR-B-E\n- linked_decision: PD-B-P\n- expected_next_output: \"'`specification.md`, containing preview behavior and verification map from the original inputs and this note.\n- constraints: own-workspace member preview; exact saved first-20 sequence and spelling; existing API/repository; no cross-workspace reads; independent of retention and storage investigation; no download or override mode.\n- acceptance_constraints / required_validation: QS-B-P, including saved-state-to-response sequence and actual read-scope checks; document unavailable runtime evidence honestly.\n- not_prescribed: exact API route, schema, function/class names, UI arrangement and test framework.\n- return path: architecture-engineer only if specification or implementation needs to change these boundaries or reveals an invariant failure.\n\n### AHI-B-I\n\n- kind: spike\n- status: ready\n- blockers: []\n- next_stage_owner: delivery-planner\n- linked_asr: ASR-B-I\n- linked_decision: DEC-B-S\n- expected_next_output: a bounded executable investigation brief based on SPIKE-B-I, naming the repository implementation agent as executor, correctness criteria, evidence contract and return route. The planner supplies a brief only, not measurements or experiment artifacts.\n- constraints: offline disposable experiment; 10,000 synthetic titles; ordered-list versus indexed; preserve partition; exploratory memory/duration only; no production change.\n- required_validation: executor must return SPIKE-B-I'\"'s artifact and measurement package before commitment.\n- evidence_return_to: architecture-engineer\n- not_prescribed: exact experimental file names, language, index implementation or measurement utility, provided the question and partition boundary are preserved and methods recorded.\n\nThe known repository implementation agent can implement and run that small offline experiment after receiving the planner's brief. This architecture author does not execute it. Evidence return enables architecture review, not automatic promotion to production.\n\n### AHI-B-R\n\n- kind: spec_candidate\n- status: blocked\n- blockers: unresolved PRD-B2 versus PRD-B3 product conflict; no reconciled retention architecture.\n- next_stage_owner: spec-engineer\n- linked_asr: ASR-B-R\n- linked_decision: DEC-B-R\n- expected_next_output: retention behavior specification only after product reconciliation and subsequent architecture constraints.\n- constraints: do not select either deadline, invent exceptions, or use \"'`retentionOverride` as requirement authority.\n- required_validation: eventual deletion/recovery scenarios follow the reconciled policy; none can currently demonstrate both conflicting obligations.\n- unblock owner and return path: product owner resolves conflict; architecture-engineer revisits DEC-B-R and supplies accepted constraints before this handoff becomes ready.\n\n## Deferred scope and evidence limits\n\nPRD-B4'\"'s full-workspace download remains under consideration. Need, maximum archive size and performance targets are unaccepted; there is no ready download handoff, fabricated target, or hidden download requirement in preview. Reopen only with product-owner accepted scope.\n\nCompleted verification is source-to-decision and handoff consistency inspection: preview has sufficient accepted authority; retention remains isolated and blocked; investigation routes planning separately from empirical execution; no current-state mechanism became a product entitlement. All system facts remain stipulated. No runtime, benchmark, security test, external contract check or independent review was executed. Artifact existence proves only the architecture handoff, not preview, erasure, recoverability, storage performance or tenant isolation in deployed software.\nEOF\"",
+        "exit": 0,
+        "readback_truncated": null
+      },
+      {
+        "id": "exec-9886c64c-f270-4f61-97a3-b05f522caebb",
+        "command": "/bin/bash -lc \"wc -c /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/b-01/output/architecture.md\nrg -n 'status:|next_stage_owner:|expected_next_output:|evidence_return_to:|No runtime|retentionOverride|Status:' /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/b-01/output/architecture.md\"",
+        "exit": 0,
+        "readback_truncated": false
+      }
+    ]
+  },
+  {
+    "file": "g3_arch_trial_b2-readback.json",
+    "thread": "01a07d67-d7fc-73c2-8e8a-9aa3c54b9ca1",
+    "page": {
+      "order": "newest_first",
+      "limit": 2,
+      "nextCursor": null,
+      "hasMore": false
+    },
+    "commands": [
+      {
+        "id": "exec-578dca55-50db-4b3c-b952-099ec7a28751",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/b-02/input/task.md /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/b-02/input/context.md /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-02/SKILL.md'",
+        "exit": 0,
+        "readback_truncated": true
+      },
+      {
+        "id": "exec-67d9a015-8e9b-4f9a-a2d5-702805735728",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-02/references/methodology.md /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-02/references/artifact-templates.md; ls /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/implementation-discipline'",
+        "exit": 2,
+        "readback_truncated": true
+      },
+      {
+        "id": "exec-21a34d36-94be-4d97-b26d-452c137a66eb",
+        "command": "/bin/bash -lc 'ls /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages; cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/arm-02/references/pattern-catalog.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-e6c2e45c-18ac-427e-9d26-fa4591971299",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline/SKILL.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-e5aef018-14bc-4d2b-982d-a878f90f3b29",
+        "command": "/bin/bash -lc 'cat /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline/references/core-principles.md /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-packages/discipline/references/verification-loop.md'",
+        "exit": 0,
+        "readback_truncated": false
+      },
+      {
+        "id": "exec-9531ee11-97d6-4671-b8fc-bcbd49d65029",
+        "command": "/bin/bash -lc \"mkdir -p /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/b-02/output\ncat > /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/b-02/output/architecture.md <<'EOF'\n# ARCH-B: Archive preview architecture and routed handoff\n\nPreview is ready for specification using the existing API and workspace-scoped repository. Retention architecture is blocked by contradictory product obligations. A bounded local storage investigation is ready for delivery framing; no storage change is selected.\n\n## Scope, authority, and evidence\n\nThis is design/authoring substrate for a member-visible preview, not an implemented capability. Only this architecture artifact is produced. No experiment, runtime validation, implementation, deployment, or publication has occurred.\n\nSource locators below refer to [task.md](../input/task.md), its named requirement statements and sections, and [context.md](../input/context.md), Project governance. Product owner/operator owns product decisions; ARCH-B1 and ARCH-B2 are accepted architecture authority. Current-state statements are stipulated design facts, not execution evidence or new normative authority. Confidence in source interpretation is high; operational correctness remains unverified.\n\nScope is component-level API/repository behavior. Preview has medium change complexity with a high-criticality tenant isolation invariant. Retention is high risk because irreversible deletion conflicts with recovery. Future storage selection has unproven feasibility. The smallest sufficient design is a read through the existing workspace partition in saved order, limited to the first 20 titles. No infrastructure, persistence, new auth mode, cache, queue, vendor, or generic storage layer is justified.\n\nThe downstream consumer is a fresh spec-engineer; the eventual actor is a member viewing their own workspace. The narrowest capability falsifier is a member preview returning any foreign-workspace title, changed spelling/order, or a sequence other than the first up-to-20 saved titles. Documentation completeness cannot pass as that runtime evidence.\n\n## Architecturally significant requirements\n\n| ID / status | Requirement and authority | Applicability, necessity, forces | Validation |\n| --- | --- | --- | --- |\n| ASR-B1 / accepted | Exact own-workspace title preview. \"'`source_statement`; task.md PRD-B1, product owner; explicit: \u201cMembers can preview the first 20 saved archive titles for their own workspace; preserve title order and spelling. No cross-workspace reads.\u201d | Member preview. Removing this violates the accepted capability and tenant boundary. Forces: partition-scoped reads, exact ordered projection; isolation high risk. | QS-B1; H-B1 |\n| ASR-B2 / accepted | Existing boundary and retention independence. `accepted_non_product_authority`; task.md ARCH-B1, accepted architecture owner; explicit existing API/repository and no new infrastructure or persistence. Independence additionally explicit in PRD-B1, product owner. | Preview only. Removing these constraints silently expands architecture or blocks an explicitly independent slice. Forces: direct existing read, minimal coupling. | Boundary review in H-B1 |\n| ASR-B3 / blocked | `source_statement`; task.md PRD-B2, product owner; explicit permanent erasure at day 30 with no recoverable copy. | All archive data. Removing it loses a stated obligation; accepting it alone violates ASR-B4. Forces: irreversible data lifecycle. | Product reconciliation, then QS-B2; H-B3 |\n| ASR-B4 / blocked | `source_statement`; task.md PRD-B3, same product owner authority; explicit recoverability through day 90. | All archive data. Removing it loses a stated obligation; accepting it alone violates ASR-B3. Forces: recovery lifecycle. | Product reconciliation, then QS-B2; H-B3 |\n| ASR-B5 / accepted investigation constraint | `accepted_non_product_authority`; task.md ARCH-B2, accepted architecture owner; explicit bounded comparison of ordered-list and indexed representations for 10,000 synthetic titles, first 20 exactly ordered, existing partition preserved. | Offline feasibility only. Removing the bound, correctness checks, or evidence return violates investigation authority. Forces: reversible experiment, no production commitment. Duration and memory are exploratory. | SP-B1; H-B2 |\n\nPRD-B4 is a scope exclusion: download need, size ceiling and performance target are unaccepted. It creates no download ASR. No performance threshold exists for preview or the investigation; neither a maximum production archive size nor a latency SLO may be invented.\n\n## Decisions and constraints\n\n**D-B1 \u2014 accepted preview frame.** Sources: PRD-B1, ARCH-B1 \u2192 ASR-B1/B2 \u2192 H-B1. Use the existing API and workspace-scoped repository to expose the first up-to-20 saved titles, preserving sequence, duplicates, and spelling; fewer records yield only available titles. The up-to-20 interpretation follows a prefix of existing saved records and introduces no fabricated titles. Workspace authorization must constrain the read itself; do not read other partitions and merely filter the response. Exact routes, DTO names, functions and query syntax are `not_prescribed` for the specification owner.\n\nThis direct existing path needs no alternatives exercise: a new store or service would violate ARCH-B1 without improving the accepted scope. No persistence migration is required. Preview is read-only and introduces no deletion or recovery action; rollback of its exposure must not mutate archive records. Revisit if implementation cannot preserve the existing boundary or partition/order invariant. Confidence: high in architectural fit from stipulated facts, no runtime proof.\n\n**D-B2 \u2014 retention blocked, no policy selected.** PRD-B2 and PRD-B3 apply to the same archive data and interval: immediately after day 30, no copy may be recoverable under B2 while recovery must remain possible under B3. Neither date order nor architecture discretion resolves equal-authority conflict. The product owner must supply one reconciled authoritative lifecycle rule before retention specifications, deletion mechanisms, recovery guarantees, migration or rollback policy can be committed. No vendor or specialist is available to supply this missing product decision, and neither would replace the product owner'\"'s authority.\n\nThe old \"'`retentionOverride` field and maintenance script (task.md, Current-state evidence) establish only existing mechanics. They authorize no member/admin exception, toggle, prerequisite, or bypass and cannot reconcile B2/B3. This work neither exposes nor removes them. Their treatment depends on the reconciled lifecycle; no assumption of compatibility or compliance is made.\n\n**D-B3 \u2014 proposed storage choice, commitment withheld.** ARCH-B2 \u2192 ASR-B5 \u2192 SP-B1/H-B2. Compare the existing ordered-list baseline with an indexed representation only inside the disposable experiment. The baseline has strongest stipulated codebase fit and lowest new conceptual cost; an index may offer different retrieval/memory behavior but adds representation and index construction cost. ASR fit, duration, memory, diagnostic visibility and partition safety are unmeasured for both. Both are locally reversible; production migration, operational fit and cost remain unknown. Numerical scoring would invent evidence. Retain the accepted current preview frame; return experiment evidence before selecting any future storage change. No final storage ADR or production migration is authorized.\n\n## Validation scenarios\n\n**QS-B1 \u2014 preview sequence and tenant boundary.** Source: member in workspace A. Stimulus: request preview while A has ordered titles and B has distinct sentinel titles. Environment: eventual production-equivalent existing API/repository path. Artifact: authorized scoped read and consumer-visible result. Required response: exact A prefix of length min(20, A count), unchanged spelling and duplicates, zero B reads and titles. Validate empty, fewer-than-20, exactly-20 and more-than-20 sets and a foreign-workspace request attempt. Compare saved authoritative order with API output and visible preview; inspect read scoping as well as output. No write path is changed here. Fixture-only checks cannot establish runtime authorization correctness. H-B1 must carry these obligations into the verification map.\n\n**QS-B2 \u2014 retention, blocked until reconciliation.** Source: lifecycle time progression. Stimulus: archive reaches days 30 and 90. Artifact: archive and every recoverable copy. The two current response measures contradict: no recoverable copy after day 30 versus successful recovery through day 90. No combined passing test exists. After the product owner reconciles them, architecture must identify relevant copy boundaries and lifecycle evidence, including irreversible deletion and recovery behavior; current facts cannot support a universal no-copy guarantee or safe rollback. This validation gap does not block QS-B1.\n\n## SP-B1 \u2014 bounded ordered-title feasibility investigation\n\nQuestion: for the stipulated 10,000 synthetic titles, can either current ordered-list or indexed representation return the first 20 titles in exact saved order while preserving the existing workspace partition?\n\nScope: a small offline experiment in a disposable directory, two representations only, no production/external service access. Use a reproducible synthetic sequence with known order/spelling and a separate foreign partition containing identifiable sentinels. State how the 10,000-title target dataset and isolation fixture are assigned. Represent indexing within the existing partition; do not compare a different tenancy topology. The implementation executor may select a minimal local representation and measurement tool, recording those choices and their limits.\n\nSuccess criteria: exact equality to the target'\"'s first 20 titles and no other partition's titles for each candidate. A failing candidate is a useful negative result; never report the investigation successful merely because timings exist. Record duration and memory with units, measurement method, environment and run context; distinguish construction/indexing from read measurements where measured. These are exploratory observations, not pass/fail performance thresholds or production scale evidence.\n\nEventual executor evidence contract: reproducible experiment source, synthetic dataset or deterministic generator, invocation instructions, observed and expected sequences, correctness/isolation results per representation, raw duration/memory measurements, failures and caveats. Return artifacts and measurements to architecture-engineer before storage commitment. No permanent benchmark framework, production seam, or download experiment is needed. Revisit D-B3 using actual evidence; a passing local experiment alone does not authorize a production change or establish runtime tenancy security.\n\n## Architecture handoff register\n\n### H-B1 \u2014 preview specification\n\n- kind: \"'`spec_candidate`\n- status: `ready`\n- blockers: []\n- linked_prd: PRD-B1; linked_asr: ASR-B1, ASR-B2; linked_decision: D-B1\n- next_stage_owner: `spec-engineer`\n- expected_next_output: preview behavior specification and verification map, using the context'\"'s \"'`specification.md` convention in that owner'\"'s assigned output directory.\n- constraints: existing API/repository, workspace-scoped reads, first up-to-20 exact saved titles, independent of retention, no download, no override mode, no new persistence or infrastructure.\n- required_validation: QS-B1 and source-to-spec boundary review; carry unexecuted runtime obligations explicitly.\n- rollback_constraints: no archive data mutation from preview enablement or rollback.\n- not_prescribed: endpoint names, data structure implementation, DTO names, local function organization, exact UI presentation.\n- return path: architecture-engineer if a spec or implementation finding requires a boundary change. Specification can be written now without waiting for retention or SP-B1.\n\n### H-B2 \u2014 investigation delivery framing\n\n- kind: \"'`spike`\n- status: `ready`\n- blockers: []\n- linked_prd: none; accepted authority: ARCH-B2; linked_asr: ASR-B5; linked_decision: D-B3\n- next_stage_owner: `delivery-planner`\n- expected_next_output: bounded executable investigation brief carrying SP-B1, its correctness criteria, evidence contract and return route, naming the available repository implementation agent with local shell/filesystem as execution owner.\n- constraints: offline disposable experiment; 10,000 synthetic titles; ordered-list versus indexed only; existing tenant partition; no production change, external service or download capability.\n- required_validation: brief contains an executor capable of producing SP-B1 evidence and separates exploratory measurements from correctness gates.\n- evidence_return_to: `architecture-engineer`\n- not_prescribed: exact experiment source filenames, local language, memory measurement utility.\n- Evidence production belongs to the implementation executor after the brief, not to delivery-planner. The planner'\"'s completion is only a brief; actual execution and returned artifacts remain future work. This architecture artifact performs no execution or delegation.\n\n### H-B3 \u2014 reconcile lifecycle authority\n\n- kind: \"'`architecture_revisit_trigger`\n- status: `ready`\n- blockers: []\n- linked_prd: PRD-B2, PRD-B3; linked_asr: ASR-B3, ASR-B4; linked_decision: D-B2\n- next_stage_owner: `product owner/operator`\n- expected_next_output: authoritative reconciliation of permanent erasure at 30 days and recoverability through 90 days, explicitly replacing or qualifying the conflicting statements.\n- constraints: no implicit precedence, no inferred override or exception.\n- required_validation: accepted rule no longer demands mutually exclusive outcomes for the same data and interval.\n- evidence_return_to: `architecture-engineer`\n- Readiness here means the owner can resolve the question; retention design/specification remains blocked by the absent reconciliation. No retention-ready handoff is issued.\n\n## Completion and limits\n\nThe handoff was checked for source traceability, per-owner executable outputs, independent preview readiness, retention conflict containment, and absence of unsupported override/download/performance commitments. This is an author consistency check only. No code, experiment, security validation or runtime capability is evidenced. Preview specification and investigation framing can proceed now; retention-dependent work waits only for the identified product decision. This output adds no approval gate for those independent artifacts.\nEOF\nwc -l /tmp/skills-revision-g3-20260907-idvgqdrf/architecture-runs/b-02/output/architecture.md'",
+        "exit": 0,
+        "readback_truncated": false
+      }
+    ]
+  }
+]

@@ -1,0 +1,105 @@
+
+> @kostysh/skills@ test:ci /home/kostysh/.codex/skills/custom/.worktrees/skills-revision
+> pnpm -r --filter './skills/*' --if-present test
+
+Scope: 5 of 6 workspace projects
+
+> @kostysh/code-reviewer@0.1.0 test /home/kostysh/.codex/skills/custom/.worktrees/skills-revision/skills/code-reviewer
+> node --test test/docs-contract.test.mjs
+
+✔ bundled review template preserves the outcome-first output contract (2.519439ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 31.066259
+
+> @kostysh/hono-engineer@0.1.0 test /home/kostysh/.codex/skills/custom/.worktrees/skills-revision/skills/hono-engineer
+> node --test test/docs-contract.test.mjs
+
+✔ root contract requires authoritative inputs, current compatibility, and bounded output (4.73804ms)
+✔ latest-oriented currency guidance is optional, reachable, and active/package surfaces do not pin Hono (2.685022ms)
+✔ optional references inherit root precedence and cannot create foreign policy (0.528789ms)
+✔ Workers guidance uses current Hono execution context and bounded delivery claims (0.676538ms)
+✔ scoped Context variables do not rely on unsafe global augmentation (0.407359ms)
+✔ middleware hooks are separate from the canonical chain (0.494033ms)
+✔ response runtime validation is not conflated with contract tests or static typing (0.962478ms)
+✔ request validation documents missing Content-Type semantics and explicit rejection (0.516526ms)
+✔ contract publication preserves OpenAPI, Hono RPC, and internal route choices (0.525843ms)
+✔ RPC guidance covers global responses and strict TypeScript compatibility (0.556721ms)
+✔ Hono csrf middleware and application token reissue remain distinct (0.479956ms)
+✔ JWT and JWK examples constrain algorithms without blanket kid guidance (0.499794ms)
+✔ cross-domain defaults remain project-owned or explicitly illustrative (0.729488ms)
+✔ active examples contain framework facts or owner placeholders, not project defaults (0.662932ms)
+✔ Workers environment, compatibility, and Cache API caveats are explicit (0.517908ms)
+✔ interop routes specialized decisions to producible owners (0.468415ms)
+✔ structural tests and schema presence cannot close production readiness (0.997864ms)
+✔ prior auth-admission and protected-lifecycle guardrails remain reachable (0.408962ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 48.397114
+
+> @kostysh/security-reviewer@0.1.0 test /home/kostysh/.codex/skills/custom/.worktrees/skills-revision/skills/security-reviewer
+> node --experimental-strip-types --test test/docs-contract.test.ts
+
+✔ source contract exposes one required methodology and optional domain references (5.421931ms)
+✔ TypeScript contract test runs directly with Node type stripping (0.836791ms)
+✔ generated root has one activation and interop surface (0.848312ms)
+✔ review basis and status contract prevent false closure (0.684333ms)
+✔ partial snippets cannot become findings through symbol-name inference (0.553415ms)
+✔ review ownership stays read-only and leaves merge decisions to code-reviewer (0.614931ms)
+✔ re-audit escalates a recurring related finding before another point fix (0.59822ms)
+✔ re-audit is finding-bounded and reports a plain-language outcome first (0.493753ms)
+✔ standards control fulfillment always routes to spec-conformance-reviewer (0.943091ms)
+✔ early-use workflow exposes the bounded auth-admission checkpoint (0.556571ms)
+✔ api auth reference keeps the auth-admission checklist narrow and complete (0.437997ms)
+✔ domain handoff keeps Hono-specific admission facts with hono-engineer (0.337457ms)
+✔ early-use workflow exposes the bounded policy-governance admission checkpoint (0.502178ms)
+✔ policy-governance admission reference keeps the checkpoint bounded and reportable (0.467693ms)
+✔ policy-governance examples cover external invocation and active-policy activation (0.613649ms)
+✔ policy-governance admission boundaries stay separated from route and release checks (0.749816ms)
+✔ workflow exposes the data-access construction checkpoint (0.479255ms)
+✔ data-access injection reference requires trace before reporting PostgREST findings (0.839876ms)
+✔ data-access documentation fixture preserves unsafe and safer examples without claiming behavioral proof (1.029505ms)
+✔ data-access guidance is reachable from related references (0.93694ms)
+✔ browser storage and telemetry checks use exposure and confidence gates (0.43976ms)
+✔ CSRF guidance follows the selected pattern and requires behavioral evidence (0.372765ms)
+✔ GitHub Actions findings require actual untrusted execution reachability (0.274018ms)
+✔ specialized signals and cross-layer discovery preserve the common review boundary (0.715602ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 76.976035
+
+> @kostysh/skill-source-compiler-cli@0.2.5 pretest /home/kostysh/.codex/skills/custom/.worktrees/skills-revision/skills/skill-source-compiler
+> pnpm run build
+
+
+> @kostysh/skill-source-compiler-cli@0.2.5 build /home/kostysh/.codex/skills/custom/.worktrees/skills-revision/skills/skill-source-compiler
+> vite build && chmod +x scripts/skill-source-compiler.mjs
+
+sh: 1: vite: not found
+ ELIFECYCLE  Command failed.
+ WARN   Local package.json exists, but node_modules missing, did you mean to install?
+/home/kostysh/.codex/skills/custom/.worktrees/skills-revision/skills/skill-source-compiler:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @kostysh/skill-source-compiler-cli@0.2.5 pretest: `pnpm run build`
+Exit status 1
+ WARN   Local package.json exists, but node_modules missing, did you mean to install?
+
+> @kostysh/typescript-test-engineer@0.1.0 test /home/kostysh/.codex/skills/custom/.worktrees/skills-revision/skills/typescript-test-engineer
+> node --test test/docs-contract.test.mjs
+
+ ELIFECYCLE  Command failed with exit code 1.
+ WARN   Local package.json exists, but node_modules missing, did you mean to install?

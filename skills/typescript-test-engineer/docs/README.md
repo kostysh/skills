@@ -27,6 +27,7 @@
 | [logs/implementation-log-20260710-1.md](logs/implementation-log-20260710-1.md) | Direct operator request | PASS |
 | [logs/implementation-log-20260727-1.md](logs/implementation-log-20260727-1.md) | `Aequitas-ADR/app#228` | На ревью |
 | [logs/implementation-log-20260820-1.md](logs/implementation-log-20260820-1.md) | `Aequitas-ADR/app#377` | PASS |
+| [logs/implementation-log-20260907-1.md](logs/implementation-log-20260907-1.md) | `TTE-B1`, G4 | Independent bounded PASS TTE-B1; [evidence](reviews/evidence/g4/README.md) |
 
 ## Forward Tests
 

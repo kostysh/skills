@@ -1,0 +1,34 @@
+Scope: all 6 workspace projects
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +110
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+   ╭─────────────────────────────────────────╮
+   │                                         │
+   │   Update available! 10.28.2 → 12.3.4.   │
+   │   Changelog: https://pnpm.io/v/12.3.4   │
+   │    To update, run: pnpm add -g pnpm     │
+   │                                         │
+   ╰─────────────────────────────────────────╯
+
+Progress: resolved 110, reused 110, downloaded 0, added 110, done
+
+devDependencies:
++ @biomejs/biome 2.4.9
++ @eslint/js 10.0.1
++ @types/node 25.5.0
++ @typescript-eslint/eslint-plugin 8.57.2
++ @typescript-eslint/parser 8.57.2
++ eslint 10.1.0
++ globals 17.4.0
++ typescript 5.9.3
+
+╭ Warning ─────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│   Ignored build scripts: esbuild@0.27.7.                                     │
+│   Run "pnpm approve-builds" to pick which dependencies should be allowed     │
+│   to run scripts.                                                            │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+Done in 582ms using pnpm v10.28.2

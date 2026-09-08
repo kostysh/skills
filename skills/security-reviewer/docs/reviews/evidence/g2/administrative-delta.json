@@ -1,0 +1,20 @@
+{
+  "reviewedAggregate": "465e5fe27b8e365a850f7d58bf1a451bf9a28bf6d0118d858fb9f62ed3e57664",
+  "unchangedReviewedFiles": 148,
+  "changed": {
+    "skills/security-reviewer/docs/logs/implementation-log-20260907-1.md": {
+      "before": "b83997c5f6627b0f87091b15d80dd6100966daaafc6c5a378fb54bbc92435f6c",
+      "after": "a0cbbb51c5f5c0e85988f2199863447ff5007fe2d1d189482bc5be4bbcecb565"
+    },
+    "skills/security-reviewer/docs/reviews/evidence/g2/README.md": {
+      "before": "b6d44b5f4ba31bda1ab977d2e7476d96e2de4a58525548e92032993de5d6c4f0",
+      "after": "bb4d72d53787480beb3631471418c4b38a872c7819b1d9abbcf4c9c54c2330dd"
+    }
+  },
+  "added": {
+    "skills/security-reviewer/docs/reviews/evidence/g2/final-audit.md": "4344f3e18b68c85c7ac68031deeba31b0a9ad22bbb4451ddab999300d8d6c470",
+    "skills/security-reviewer/docs/reviews/evidence/g2/final-review-snapshot.json": "9288ac0ba43d4d9357d9dd62e771e26103c4dfc1048dcb1882033fa7ac2378bc",
+    "skills/security-reviewer/docs/reviews/evidence/g2/audit-readback.json": "8f88c7774bcd790aba188ef02d8746e4027b32110135a06493490c8d0fa99705"
+  },
+  "scope": "supporting status and exact audit evidence copies only; manifest excludes itself"
+}

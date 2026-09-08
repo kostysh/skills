@@ -9,7 +9,7 @@ Bulk operations are where small `gh` mistakes become large incidents. Default to
 1. Define the scope: host, org/user, repo allowlist, archived/fork/private visibility filters, and maximum item count.
 2. Inventory read-only state into JSON/CSV.
 3. Produce a plan table: target, current state, proposed command, risk, rollback, verification.
-4. Confirm that the current request authorizes every medium/high-risk target/action pair; otherwise ask for the missing scope.
+4. Apply the root [Authorization policy](../SKILL.md#authorization) to every target/action pair.
 5. Execute in small batches.
 6. Stop on the first unexpected error unless the user approved continue-on-error.
 7. Verify with read-only commands and produce a final report.
@@ -103,7 +103,7 @@ gh workflow list --repo OWNER/REPO
 gh run list --repo OWNER/REPO --limit 20 --json databaseId,workflowName,status,conclusion,createdAt,url
 ```
 
-Rerun/cancel/disable can alter CI capacity and release state. Ask first:
+Rerun/cancel/disable can alter CI capacity and release state. Apply the root Authorization policy to the specified runs/workflows:
 
 ```bash
 gh run rerun RUN_ID --repo OWNER/REPO --failed
@@ -127,7 +127,7 @@ gh secret list --org ORG
 gh secret set NAME --org ORG --visibility selected --repos repo-a,repo-b
 ```
 
-Bulk secret rotation requires a separate approval artifact with secret names, scopes, app target, selected repositories, rollout order, and rollback/verification plan.
+Bulk secret rotation requires an approval record under the root Authorization policy covering secret names, scopes, app target, selected repositories, rollout order, and rollback/verification plan.
 
 ## Failure handling
 

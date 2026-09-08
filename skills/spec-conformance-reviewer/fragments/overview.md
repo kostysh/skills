@@ -7,7 +7,7 @@ Establish authority before extracting requirements:
 1. Apply explicit user or project declarations of source ownership and precedence.
 2. Confirm each source's owner, approval state, version, applicability, and supersession status.
 3. Treat a formal or generated contract as authoritative only for the contract dimension it owns. For example, an OpenAPI document may own the wire shape without owning product behavior.
-4. Use artifact-type ordering only as a disclosed fallback among sources that are otherwise current, applicable, and without declared precedence.
+4. Apply the Source Authority and Conflicts rules in `references/methodology.md`; artifact type supplies no fallback authority.
 5. Treat tickets, acceptance criteria, tests, and reference behavior as normative only when their authority is explicit.
 
 If sources conflict, cite each source and identify whether one is lower-authority, stale, superseded, generated drift, or an unresolved equal-authority conflict. Use `ambiguous_spec` or a limited verdict when authority cannot be established; do not invent a winner.

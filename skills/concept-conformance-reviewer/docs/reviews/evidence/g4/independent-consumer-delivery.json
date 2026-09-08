@@ -1,0 +1,46 @@
+{
+  "01": {
+    "SKILL.md": {
+      "chars": 18074,
+      "covered": 18074,
+      "missing": 0
+    },
+    "references/methodology.md": {
+      "chars": 13436,
+      "covered": 13436,
+      "missing": 0
+    },
+    "references/reporting.md": {
+      "chars": 9401,
+      "covered": 9401,
+      "missing": 0
+    },
+    "references/policy-admission-matrix.md": {
+      "chars": 3589,
+      "covered": 3589,
+      "missing": 0
+    }
+  },
+  "02": {
+    "SKILL.md": {
+      "chars": 18074,
+      "covered": 18074,
+      "missing": 0
+    },
+    "references/methodology.md": {
+      "chars": 13436,
+      "covered": 13436,
+      "missing": 0
+    },
+    "references/reporting.md": {
+      "chars": 9401,
+      "covered": 9401,
+      "missing": 0
+    },
+    "references/policy-admission-matrix.md": {
+      "chars": 3589,
+      "covered": 3589,
+      "missing": 0
+    }
+  }
+}

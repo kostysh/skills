@@ -1,0 +1,15 @@
+{
+  "auditedIdentity": "G1-FINAL-NO-PLANNER-v1",
+  "auditedAggregate": "b773d8218c2bdc38057b51e2e082374ef68558355a640e5f430a6d5bd328f054",
+  "changedReviewedFiles": [
+    "docs/plans/implementation-plan-20260907-2.md",
+    "skills/implementation-discipline/docs/logs/implementation-log-20260907-1.md"
+  ],
+  "unchangedReviewedFiles": 130,
+  "exactCopies": {
+    "final-audit.md": "842ccddf6113cdc07a5c8c96eb4536db784a2562616d3cd6766abf190b01a703",
+    "audit-readback.json": "e1e67c00aad005a076568b93ed9c718dca4f36ed939b3aec06616dac1273a1dc",
+    "final-review-snapshot.json": "5c74d3ba9c4092b0c1eb869d070fbb1f526cae32f53cc657e70fd32b6a2742a9"
+  },
+  "scope": "Only administrative status/links and exact report/snapshot copies; plan may receive scoped commit OIDs after Git readback; active/emitted/raw evidence untouched"
+}
