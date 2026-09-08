@@ -186,7 +186,18 @@ type Color = typeof colors[number];
 
 ### Overusing `as const`
 
-`as const` makes data deeply readonly. Use it when immutability is intended, not as a reflex.
+`as const` preserves literal types and makes literal object properties readonly and literal arrays readonly tuples. It does not make previously created mutable references deeply readonly, and it does not freeze runtime values:
+
+```typescript
+const values = [1];
+const config = { values, fixed: [1] } as const;
+config.values.push(2); // Allowed: the existing array remains mutable.
+values.push(3); // The same array is still reachable through its original alias.
+// config.values = []; // Error: the property is readonly.
+// config.fixed.push(2); // Error: the literal became a readonly tuple.
+```
+
+Use it for the intended literal/readonly type contract. Do not add deep-readonly or runtime-freeze machinery without a requirement for that stronger guarantee. See [const assertion caveats](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#caveats-1).
 
 ### Using broad assertions instead of derived types
 

@@ -1,0 +1,54 @@
+from pathlib import Path
+import json,sys,hashlib,shutil,uuid,yaml,os
+W=Path('/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills')
+E=W/'docs/reviews/evidence/engineering-skills'
+variant,case=sys.argv[1:3]
+source=E/(variant+'-packages')
+meta=json.loads((E/'closed-criteria.json').read_text())['cases'][case]
+root=Path('/tmp')/('task-'+uuid.uuid4().hex[:12]);root.mkdir()
+app=root/'app';app.mkdir()
+fixture=E/'cases'/case/'fixture'
+if fixture.exists():shutil.copytree(fixture,app,dirs_exist_ok=True)
+task=(E/'cases'/case/'task.md').read_text()
+if case=='C19':
+ index=json.loads((E/'run-index.json').read_text())
+ prev=Path(index[variant]['C17']['root'])
+ shutil.copytree(prev/'app',app,dirs_exist_ok=True,ignore=shutil.ignore_patterns('node_modules','.git'))
+ for child in prev.iterdir():
+  if child.is_dir() and child.name not in ['app','skills']:
+   shutil.copytree(child,root/child.name,symlinks=True)
+ incoming=root/'incoming';incoming.mkdir()
+ for f in prev.iterdir():
+  if f.is_file() and f.name not in ['task.md','record.py','catalog.json']:
+   shutil.copy2(f,incoming/f.name)
+ if (prev/'HANDOFF.md').exists() and not (app/'HANDOFF.md').exists():shutil.copy2(prev/'HANDOFF.md',app/'HANDOFF.md')
+ task+='\nПроект и HANDOFF.md поступили от предыдущего исполнителя. Его корневые файлы с raw commands и результатами доступны в incoming/; все каталоги результатов, архивы и установленный пакет скопированы с сохранением относительных путей из HANDOFF.md. Старые абсолютные пути в handoff описывают прежний временный каталог; используйте соответствующие файлы предоставленной копии. Не читайте другие task roots.\n'
+skills=root/'skills'; skills.mkdir()
+primary=meta['skill']; names=meta.get('available')
+if names is None:names=['documentation','typescript-engineer','node-engineer','cli-engineer','typescript-test-engineer','code-reviewer','security-reviewer','architecture-engineer','spec-engineer','prd-engineer','delivery-planner','git-engineer','gh-utility']
+catalog=[];included={}
+for name in names:
+ p=source/name
+ if not p.exists():p=E/'baseline-packages'/name
+ manifest=yaml.safe_load((p/'skill.yaml').read_text())
+ catalog_entry={'name':name,'description':manifest['skill']['description']}
+ if case=='C18' and manifest['skill'].get('metadata'):catalog_entry['metadata']=manifest['skill']['metadata']
+ if case=='C18' and (p/'agents/openai.yaml').exists():catalog_entry['ui']=yaml.safe_load((p/'agents/openai.yaml').read_text())
+ catalog.append(catalog_entry)
+ if case=='C18':continue
+ dst=skills/name;dst.mkdir()
+ shutil.copy2(p/'SKILL.md',dst/'SKILL.md')
+ for d in ['references','assets','agents','scripts']:
+  if (p/d).exists():shutil.copytree(p/d,dst/d)
+ included[name]={str(f.relative_to(dst)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(dst.rglob('*')) if f.is_file()}
+if case=='C18':
+ (app/'catalog.json').write_text(json.dumps(catalog,ensure_ascii=False,indent=2)+'\n')
+else:
+ (root/'catalog.json').write_text(json.dumps(catalog,ensure_ascii=False,indent=2)+'\n')
+ (app/'node_modules').symlink_to('/tmp/engineering-fixture-toolchain/node_modules',target_is_directory=True)
+shutil.copy2('/tmp/engineering-record.py',root/'record.py')
+(root/'task.md').write_text(task)
+indexfile=E/'run-index.json';index=json.loads(indexfile.read_text()) if indexfile.exists() else {}
+index.setdefault(variant,{})[case]={'root':str(root),'skill':primary,'active_files':included,'excluded':['source bundle','supporting history/docs','evals and expected results'],'task_sha256':hashlib.sha256(task.encode()).hexdigest(),'model_assigned':'gpt-6-astra','reasoning_assigned':'high','fork':'none'}
+indexfile.write_text(json.dumps(index,ensure_ascii=False,indent=2)+'\n')
+print(str(root))

@@ -1,0 +1,20 @@
+{
+  "time": "2026-09-08T19:37:01.067898+00:00",
+  "command": "git ls-remote https://github.com/kostysh/skills.git refs/heads/master",
+  "sha": "ef47c805624f77ad0b1febb9604f160e72eca441",
+  "prior_sha": "504b87331f22b3a5303875bef69163a40d4372d7",
+  "changed_direct_dependencies": [
+    "code-reviewer",
+    "prd-engineer"
+  ],
+  "source": "published master git archive; no G5 worktree inspection",
+  "unchanged": [
+    "four target source snapshots",
+    "AGENTS.md",
+    "docs/skill-standard.md",
+    "skill-reviewer",
+    "skill-source-compiler",
+    "implementation-discipline",
+    "other seven direct neighbors"
+  ]
+}

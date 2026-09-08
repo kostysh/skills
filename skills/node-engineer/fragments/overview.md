@@ -21,7 +21,8 @@ If equal-authority inputs conflict, the runtime path or compatibility range cann
 
 | Executed artifact | Runtime owner | Relative import contract | Required evidence |
 | --- | --- | --- | --- |
-| Source `.ts` executed directly | Node built-in stripping or an explicit loader | Match source files (`.ts`, `.mts`, `.cts`) | Exact Node version, command, supported syntax, and runtime smoke |
+| Source TypeScript via built-in stripping | Node built-in support | Match source files (`.ts`, `.mts`, `.cts`) | Exact Node version, command, supported syntax, and runtime smoke |
+| Source TypeScript via a third-party loader | Configured loader and resolver | Follow that loader/version/config contract; source extensions are not a universal rule | Exact loader version, effective options, resolved files, and execution of the existing command |
 | Emitted JavaScript | TypeScript compiler or build/bundle step | Valid emitted `.js`, `.mjs`, or `.cjs` specifiers | Build output inspection plus execution of the emitted entry |
 | Non-erasable TypeScript | Version-supported transform path, third-party loader, or build | Determined by the selected output path | Version compatibility and a real non-erasable syntax case |
 

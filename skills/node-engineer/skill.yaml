@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: node-engineer
-  source-version: 0.1.3
+  source-version: 0.1.4
   recommended-skill-md-max-bytes: 20000
   description: >-
     Explain, design, review, diagnose, and implement Node.js runtime behavior using
@@ -43,6 +43,10 @@ copies:
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
 supporting:
+  - id: supporting-implementation-log-20260908-1
+    source: docs/logs/implementation-log-20260908-1.md
+    target: docs/logs/implementation-log-20260908-1.md
+    description: Non-normative author implementation record; independent acceptance remains separate.
   - id: supporting-implementation-log-20260715-1
     source: docs/logs/implementation-log-20260715-1.md
     target: docs/logs/implementation-log-20260715-1.md
@@ -146,11 +150,11 @@ sections:
     - id: interop-typescript
       domain: TypeScript language, type-system, and compiler configuration
       winner: typescript-engineer
-      rationale: node-engineer establishes the executed source or emitted-JavaScript runtime contract; typescript-engineer configures and checks TypeScript consistently with that contract.
+      rationale: Pass the exact executed entry, Node/loader versions, module mode and resolver rules to typescript-engineer. Consume its compiler config, emitted specifiers and type results against that same path; execute the resulting artifact before claiming runtime success.
     - id: interop-testing
       domain: Test strategy, runner behavior, coverage, mocks, and CI contours
       winner: typescript-test-engineer
-      rationale: typescript-test-engineer owns the test workflow; node-engineer owns Node process, module, stream, and resource-lifecycle mechanics that may underlie a test hang.
+      rationale: Pass the runtime reproduction, supported versions, expected failure/cancellation/cleanup behavior and owned resources to typescript-test-engineer. Consume its scenario-to-command results only for the exercised versions and paths; runner policy stays with that owner and Node mechanics stay here.
     - id: interop-framework
       domain: Framework adapters, lifecycle hooks, routing, middleware, and readiness endpoints
       winner: the relevant framework skill
@@ -158,15 +162,19 @@ sections:
     - id: interop-cli
       domain: CLI command model, help, output/error contract, packaging, and release UX
       winner: cli-engineer
-      rationale: cli-engineer owns the public CLI surface; node-engineer owns low-level Node execution, module resolution, streams, signals, and process behavior.
+      rationale: Consume cli-engineer's accepted argv, stdout/stderr, exit and installed-bin contract. Return runtime entry/version and process evidence for its package/installation checks; source execution alone cannot prove the installed CLI boundary.
     - id: interop-architecture
       domain: Distributed cache topology, cross-service lifecycle, and architecturally significant runtime trade-offs
       winner: architecture-engineer
-      rationale: node-engineer may implement an accepted local runtime mechanism but does not invent distributed ownership, consistency, durability, or cross-system policy.
+      rationale: Consume accepted architecture-engineer constraints, ownership and validation obligations before implementing a local mechanism. Return runtime evidence and any contradiction with those constraints; route distributed consistency, durability or cross-system decisions back to that owner.
     - id: interop-review
       domain: Formal code-review scope, severity, findings, and merge guidance
       winner: code-reviewer
-      rationale: node-engineer supplies Node-specific analysis; code-reviewer owns the formal review verdict and merge-risk synthesis.
+      rationale: Pass the stable diff, runtime reproduction, compatibility range, failure/cleanup evidence and gaps to code-reviewer for formal severity and merge-risk synthesis. Successful execution is not that verdict.
+    - id: interop-security
+      domain: Security exploitability and vulnerability judgment
+      winner: security-reviewer
+      rationale: Pass the concrete runtime trust boundary, untrusted-input path, logging or process evidence to security-reviewer when a security judgment is required. Consume its scoped findings for authorized remediation; a runtime fix alone cannot establish security.
   commands: []
   gotchas:
     - id: gotcha-chunks-records
@@ -185,6 +193,15 @@ sections:
       priority: high
       text: Do not claim runtime success from generated guidance, typecheck/compiler success, mocks, logs, or a happy-path snippet that does not exercise the named runtime boundary and failure path.
   policies:
+    - id: policy-handoff-use
+      title: Use owner results
+      text: "Load another skill only when its decision is material to this task. Consume accepted product behavior from prd-engineer, implementation requirements from spec-engineer, architecture constraints from architecture-engineer, and task scope/checkpoints from delivery-planner when supplied; return the conflicting fact or missing decision to its owner rather than redesigning it. A handoff is usable only for the same contract, version and snapshot it covers."
+    - id: policy-missing-owner
+      title: Unavailable owner or evidence
+      text: "If a specialist, source or check is unavailable, continue supported local analysis and authorized changes. Identify the missing output and leave only its dependent decision or conclusion partial/blocked; do not invent a review verdict, product rule, security guarantee or runtime result."
+    - id: policy-publication-handoff
+      title: Publication handoff
+      text: "For an authorized publication step, pass changed paths, verification results, exact revision and remaining risks to git-engineer for Git operations and gh-utility for GitHub state. Consume fresh ref/check evidence for the matching revision; local success grants no publication authority and cannot replace unavailable remote evidence."
     - id: policy-source-precedence
       title: Source and compatibility precedence
       text: Explicit operator requirements govern the authorized task; compatible repository policy and actual installed/deployed behavior govern execution; current official version-matched documentation resolves Node facts; portable defaults apply only when stronger sources are absent. Equal-authority conflicts block the strongest claim.

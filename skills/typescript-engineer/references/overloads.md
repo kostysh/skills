@@ -34,9 +34,9 @@ Prefer a union parameter when:
 Write overload signatures first, then one compatible implementation:
 
 ```typescript
-function parse(input: string): object;
-function parse(input: object): string;
-function parse(input: string | object): object | string {
+function parse(input: string): unknown;
+function parse(input: object): string | undefined;
+function parse(input: string | object): unknown {
   if (typeof input === "string") {
     return JSON.parse(input);
   }
@@ -44,7 +44,22 @@ function parse(input: string | object): object | string {
 }
 ```
 
-The implementation signature must accept every overload case.
+The implementation signature must accept every overload case; its broad return type does not prove the narrower public overloads sound. Check each branch against the underlying runtime API.
+
+Here `JSON.parse` can produce objects, arrays, scalars, or `null`, so a string input returns `unknown`. `JSON.stringify` can return `undefined`, including for an object whose `toJSON()` returns `undefined`. Callers must narrow the parsed value and handle an absent serialized result:
+
+```typescript
+const value = parse("null");
+if (typeof value === "object" && value !== null) {
+  Object.keys(value);
+}
+const encoded = parse({ toJSON: () => undefined });
+if (encoded !== undefined) {
+  encoded.toUpperCase();
+}
+```
+
+These return types describe successful returns, not guaranteed success: malformed JSON throws, and serialization can throw for cycles or unsupported values such as BigInt. Preserve that error behavior unless an explicit API contract requires handling it. See [JSON.parse](https://tc39.es/ecma262/multipage/structured-data.html#sec-json.parse) and [JSON.stringify](https://tc39.es/ecma262/multipage/structured-data.html#sec-json.stringify).
 
 ---
 

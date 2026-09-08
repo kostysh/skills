@@ -1,4 +1,4 @@
 interface:
   display_name: "CLI engineer"
   short_description: "Production-grade TypeScript CLI and TUI design"
-  default_prompt: "Use $cli-engineer to design, review, implement, or verify a TypeScript CLI/TUI with the current Active LTS Node.js, Vite, node:test, native type stripping, installable command contracts, safe release boundaries, and no tsx."
+  default_prompt: "Use $cli-engineer to implement or verify a TypeScript CLI/TUI, preserving existing supported tooling and checking the installed command contract and authorized release boundary."

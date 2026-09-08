@@ -1,0 +1,154 @@
+{
+  "hash_readback": {
+    "typescript-engineer": {
+      "file_count": 22,
+      "manifest_exact": true,
+      "working_equals_archive": true,
+      "aggregate": "398f2821afd2dbf24b9bdd91383dc1beaa6cbd1dd092eba91cef95de3bbf67f3"
+    },
+    "node-engineer": {
+      "file_count": 16,
+      "manifest_exact": true,
+      "working_equals_archive": true,
+      "aggregate": "590c25015b82166fd7fbfb58165d81ecbbeeeb661450f0281403a64706823d4f"
+    },
+    "typescript-test-engineer": {
+      "file_count": 40,
+      "manifest_exact": true,
+      "working_equals_archive": true,
+      "aggregate": "8a8118b455ecb9947b3ebac5e449a9e3a6b4e43b156a0f897737a182b09e848b"
+    },
+    "code-reviewer": {
+      "file_count": 36,
+      "manifest_exact": true,
+      "working_equals_archive": true,
+      "aggregate": "76c2b174721d54ae8074faf44767cfa48bdbd9c8072ed453a826393fc4af590d"
+    },
+    "security-reviewer": {
+      "file_count": 52,
+      "manifest_exact": true,
+      "working_equals_archive": true,
+      "aggregate": "e9961d264f0855b5fe9cc4a8ce54bcd39a0bfa7a6cf864093c7d00932e99ebd9"
+    },
+    "architecture-engineer": {
+      "file_count": 38,
+      "manifest_exact": true,
+      "working_equals_archive": true,
+      "aggregate": "070786bdf059d5b919b9b8fac829255744ee52a13631e28cb905d770c207054f"
+    },
+    "spec-engineer": {
+      "file_count": 40,
+      "manifest_exact": true,
+      "working_equals_archive": true,
+      "aggregate": "1dfb7ea50444abe305d097bbfc29c610d058a1ebc5360f75389b58324247f336"
+    },
+    "prd-engineer": {
+      "file_count": 19,
+      "manifest_exact": true,
+      "working_equals_archive": true,
+      "aggregate": "613d97098bbff6620c9644ae45758792de022c9ae000078d272b686321163c40"
+    },
+    "delivery-planner": {
+      "file_count": 35,
+      "manifest_exact": true,
+      "working_equals_archive": true,
+      "aggregate": "01b6951a599209a20836a3af0e1dcd872915ee20ecd6482e7d461481ea400222"
+    },
+    "git-engineer": {
+      "file_count": 23,
+      "manifest_exact": true,
+      "working_equals_archive": true,
+      "aggregate": "49731da50afd57cdc4dad14d9c1be5d0dad412b0c9dee199ea13b1da0017c9aa"
+    },
+    "gh-utility": {
+      "file_count": 44,
+      "manifest_exact": true,
+      "working_equals_archive": true,
+      "aggregate": "f0298709905174c15db14a968b01488d8d98212de116cb0b388363fa043bd8d7"
+    },
+    "C01": {
+      "result_manifest_exact": true,
+      "active_candidate_snapshot_exact": true,
+      "task_baseline_equal": true
+    },
+    "C02": {
+      "result_manifest_exact": true,
+      "active_candidate_snapshot_exact": true,
+      "task_baseline_equal": true
+    },
+    "C03": {
+      "result_manifest_exact": true,
+      "active_candidate_snapshot_exact": true,
+      "task_baseline_equal": true
+    },
+    "C04": {
+      "result_manifest_exact": true,
+      "active_candidate_snapshot_exact": true,
+      "task_baseline_equal": true
+    },
+    "C05": {
+      "result_manifest_exact": true,
+      "active_candidate_snapshot_exact": true,
+      "task_baseline_equal": true
+    },
+    "C06": {
+      "result_manifest_exact": true,
+      "active_candidate_snapshot_exact": true,
+      "task_baseline_equal": true
+    },
+    "C07": {
+      "result_manifest_exact": true,
+      "active_candidate_snapshot_exact": true,
+      "task_baseline_equal": true
+    },
+    "C08": {
+      "result_manifest_exact": true,
+      "active_candidate_snapshot_exact": true,
+      "task_baseline_equal": true
+    }
+  },
+  "C05_archive_replay": {
+    "command": [
+      "npm",
+      "test"
+    ],
+    "cwd": "/tmp/independent-c05-readback-rvgf05l3/app",
+    "exit": 0,
+    "stdout": "\u2714 success closes once (2.783341ms)\n\u2714 stream error closes once (5.456404ms)\n\u2714 cancel closes once (0.960465ms)\n\u2714 source error is preserved and closes once (0.937964ms)\n\u2714 cancel while waiting for input closes once and preserves abort cause (0.932843ms)\n\u2714 cleanup return value does not replace the result (0.527237ms)\n\u2139 tests 6\n\u2139 suites 0\n\u2139 pass 6\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 52.597709\n",
+    "stderr": "npm notice run test\nnpm notice run node --test test/*.test.mjs\n"
+  },
+  "C01_C08_criteria_and_inputs": {
+    "C01": {
+      "criteria_unchanged": true,
+      "fixture_inputs_unchanged": true
+    },
+    "C02": {
+      "criteria_unchanged": true,
+      "fixture_inputs_unchanged": true
+    },
+    "C03": {
+      "criteria_unchanged": true,
+      "fixture_inputs_unchanged": true
+    },
+    "C04": {
+      "criteria_unchanged": true,
+      "fixture_inputs_unchanged": true
+    },
+    "C05": {
+      "criteria_unchanged": true,
+      "fixture_inputs_unchanged": true
+    },
+    "C06": {
+      "criteria_unchanged": true,
+      "fixture_inputs_unchanged": true
+    },
+    "C07": {
+      "criteria_unchanged": true,
+      "fixture_inputs_unchanged": true
+    },
+    "C08": {
+      "criteria_unchanged": true,
+      "fixture_inputs_unchanged": true
+    }
+  }
+}

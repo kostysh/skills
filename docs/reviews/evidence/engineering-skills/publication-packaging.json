@@ -1,0 +1,14 @@
+{
+  "archive": "raw-evidence.tar.gz",
+  "sha256": "f3f1577ec5eefbc7e41c16b59fba99e02b103d97144b82802bf80031b90d5d34",
+  "verified_files": 2096,
+  "directories": [
+    "baseline-packages",
+    "candidate-packages",
+    "cases",
+    "master-packages",
+    "results",
+    "source-probes"
+  ],
+  "verification": "All regular file bytes and symlink targets match original evidence; originals retained locally."
+}

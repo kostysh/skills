@@ -1,0 +1,929 @@
+diff --git a/skills/code-reviewer/SKILL.md b/skills/code-reviewer/SKILL.md
+index d1a3453..4075192 100644
+--- a/skills/code-reviewer/SKILL.md
++++ b/skills/code-reviewer/SKILL.md
+@@ -5,17 +5,17 @@ description: Perform read-only review of PRs, diffs, and local branch changes.
+   or lightweight intent alignment, and provide evidence-backed merge guidance
+   with stable scope, severity, and findings; pair with relevant domain skills.
+ metadata:
+-  source-version: 0.4.5
++  source-version: 0.4.6
+   skillforge-source-manifest: skill.yaml
+-  skillforge-source-hash: 3e02234c149d491381f335610a9569a606e37817115a91cfe394b7635124bd83
++  skillforge-source-hash: 72faf03a8b5215232c2f1fd6169b72e541a3b774ede4e80e189838d4e399ef28
+ ---
+ 
+ # code-reviewer
+ 
+ ## Start here
+ 
+-1. Confirm the request is for read-only merge-risk review, not implementation or a specialized audit owned by another skill.
+-2. Read the three required references and freeze a reproducible target, base, scope, and starting snapshot before judging code.
++1. Select normal merge-risk review, explicit complexity-only review, or a combined request; preserve the requested mode and leave specialized verdicts with their owners.
++2. Read diff-completeness, findings-format, and severity-confidence on every review; freeze the target and scope plus the applicable base and snapshot. Explicit snippet or repository scope need not have a diff base.
+ 3. Load only conditional references and available domain skills whose triggers match the changed behavior.
+ 4. Recheck snapshot identity before reporting and return an evidence-calibrated recommendation with explicit limits.
+ 
+@@ -44,6 +44,8 @@ Review one reproducible code-change snapshot for merge risk, not style. Keep rev
+ 
+ When the user asks only for over-engineering, simplification, unnecessary dependency, or deletion review, use the bounded `complexity-only` mode from `references/complexity-only.md` and do not imply a general merge recommendation. When the user asks for both normal review and simplification, run normal merge-risk review first and add a separate complexity section.
+ 
++The mode determines which passes apply; common snapshot, read-only, evidence, and authority rules still apply. Follow the user's current scope within host and repository constraints. If a rule blocks the requested review, name the exact rule, applicability and missing input; preserve independently supported findings. Reuse existing permission for the same bounded action, and check command side effects before running tests or tools. Use a disposable copy for checks that would change the reviewed snapshot.
++
+ ## Skill Interop (Priority)
+ 
+ - This skill owns review sequence, diff completeness, severity labeling, evidence quality, and merge recommendation framing.
+@@ -59,9 +61,9 @@ When the user asks only for over-engineering, simplification, unnecessary depend
+ 
+ ## Non-Negotiables
+ 
+-- Read `references/diff-completeness.md`, `references/findings-format.md`, and `references/severity-confidence.md` on every review. Load all other references only when their triggers match.
++- Read `references/diff-completeness.md`, `references/findings-format.md`, and `references/severity-confidence.md` on every review. Other references are required only when their triggers match.
+ - Keep review read-only. If the user also requests fixes, treat implementation as a separate phase and mark the review stale after any mutation.
+-- Read the full diff. If the diff is truncated, enumerate changed files and read changed hunks directly from the files.
++- Account for the full requested scope. For diff review, recover truncated hunks from the files when possible; list unavailable files explicitly and retain supported partial findings under `limited`.
+ - Separate report scope from research scope:
+   - report only on the diff or files under review
+   - research the wider codebase when needed to confirm or clear a concern
+@@ -79,14 +81,14 @@ When the user asks only for over-engineering, simplification, unnecessary depend
+ - Prefer a smaller set of real findings over a long list of weak comments.
+ - If you cannot verify a concern, move it to assumptions or open questions instead of upgrading it to a finding.
+ 
+-## Fast Workflow
++## Normal Merge-risk Workflow
+ 
+ 1. Establish the review basis using `references/diff-completeness.md`:
+    - authoritative target, base, scope, starting snapshot identity, linked issue, user intent, and any available normative source
+    - note risky file classes: migrations, auth, CI, runtime config, state, tests, runtime gates
+-2. Read the full diff and list touched files.
++2. Read the available diff and account for every touched file, distinguishing inspected content from unavailable content.
+ 3. If normative context exists, run the lightweight pass from `references/spec-pass.md`.
+-4. If diff completeness is in doubt, follow `references/diff-completeness.md` before writing any findings.
++4. Resolve completeness limits through `references/diff-completeness.md`; do not discard a finding established on a stable accessible part because another file is unavailable.
+ 5. Route by file type and load only the relevant domain skill. See `references/domain-routing.md`.
+ 6. If policy/admission triggers are present, run the bounded pass from `references/policy-admission-merge-risk.md`.
+ 7. If runtime-gate deployed-path triggers are present, run the pass from `references/runtime-gate-deployed-path.md`.
+@@ -101,46 +103,17 @@ When the user asks only for over-engineering, simplification, unnecessary depend
+    - the surrounding code does not already mitigate it
+    - severity matches actual impact
+    - confidence is high enough to emit as a finding instead of a question
+-11. Recheck snapshot identity. If it changed, mark the review stale and do not approve until a fresh or bounded delta review completes.
++11. Recheck snapshot identity. If it changed, mark the review stale and do not approve until a fresh or bounded delta review completes. After sufficient checks, repeat or broaden only for a new change, failure, or concrete unresolved concern.
+ 12. Start with one plain-language outcome sentence, then report findings by severity, the mandatory evidence footer, and exactly one recommendation status.
+ 
+-## What to Check
+-
+-### Correctness and Regression
+-
+-- Spec, issue, or acceptance-criteria drift between intended and implemented behavior
+-- Broken control flow, state drift, stale assumptions, or missing edge-case handling
+-- Incorrect data mapping, serialization, parsing, or boundary handling
+-- Async ordering issues, retries, timeouts, cancellation, or resource cleanup gaps
+-- Contract drift between producer and consumer
+-
+-### Design and Maintainability
+-
+-- Hidden coupling, duplicated rules, poor abstraction seams, or unclear ownership
+-- Public API changes without migration path or compatibility strategy
+-- Significant new behavior with no clear requirement or contract basis
+-- Configuration or environment assumptions that are not explicit
+-- Code that makes future changes harder without a payoff
++## Review lenses
+ 
+-### Tests and Operability
+-
+-- Missing tests for merge-critical behavior
+-- Missing tests for requirement-critical behavior when a normative source is available
+-- Tests that do not exercise the real risk path
+-- API tests that pass through mocked or in-memory stores while the real persistence/RLS/RPC/provider boundary can behave differently
+-- Fixtures that bypass production invariants, such as impossible role/profile states, mismatched session/context versions, wrong tenant/scope, or disabled/revoked statuses that production would reject
+-- Missing negative tests for stale session, stale active context, wrong role, wrong scope/tenant, disabled/revoked account/session/role, or missing profile/readiness state in auth/RBAC/session/context changes
+-- Long-lived protected endpoints that only test opening admission and not permission revocation, status change, maintenance denial, or context change during the connection
+-- Audit/durable behavior whose fallback or error path is silent best effort without test evidence
+-- New logs, metrics, migrations, jobs, or background work without enough validation
+-- Changes that need rollback or release notes but do not acknowledge it
+-
+-### Performance and Compatibility
+-
+-- New hot-path work, N+1 patterns, expensive loops, or repeated I/O
+-- Browser, runtime, schema, or API compatibility hazards
+-- Cache invalidation or stale data risks
+-- Resource usage that can grow with attacker or user input
++Apply the four passes to the changed behavior: correctness and contract drift;
++justified design and dependencies; tests and operability; performance and
++compatibility. Consider boundary values, async/resource lifetime, failure paths,
++public consumers and rollback where relevant. The detailed questions belong in
++`references/methodology.md` for broad, formal, high-risk or large reviews; the
++conditional gate references own their specialized checks.
+ 
+ ## High-risk Review Surfaces
+ 
+@@ -191,7 +164,7 @@ Always read:
+ - `references/findings-format.md` - findings shape, mandatory evidence footer, and recommendation statuses
+ - `references/severity-confidence.md` - confidence gating and impact-based severity
+ 
+-Read conditionally:
++Required when the stated condition applies:
+ 
+ - `references/methodology.md` - broad, formal, high-risk, or large review needing the full pass order
+ - `references/spec-pass.md` - linked issue, acceptance criteria, contract, ADR, migration note, or other normative source
+@@ -206,9 +179,9 @@ Read conditionally:
+ 
+ Produce findings and merge guidance for one reproducible read-only snapshot.
+ 
+-1. Resolve target and base by the authority order in `references/diff-completeness.md`; return `blocked` instead of guessing through unresolved candidates.
++1. Resolve the mode, target and applicable base by `references/diff-completeness.md`; do not invent a comparison for an explicitly scoped snippet or choose between unresolved targets.
+ 2. Freeze the snapshot, account for the changed scope, and use surrounding code only as research evidence.
+-3. Run matching conditional and domain passes, then validate candidates against reachable behavior and existing guards.
++3. Run only the passes applicable to that mode and changed behavior, then validate candidates against reachable behavior and existing guards. Retain confirmed findings on a stable accessible part when the remainder is unavailable.
+ 4. Recheck the snapshot identity and mark the result stale if the reviewed surface changed.
+ 5. Start with one plain-language outcome sentence, then report findings and the mandatory evidence footer with one recommendation status.
+ 
+@@ -228,14 +201,12 @@ Validation:
+ Review is read-only absent separate remediation authority. For review-and-fix, record review first, remediate separately, and invalidate the verdict after mutation. A related blocker recurring after remediation requires root-cause review of assumptions, failure path, adjacent surfaces, and scope before another fix.
+ 
+ ### Review scope evidence
+-Every review must state the target/base/snapshot, changed-scope accounting, checks and behavioral evidence considered, untested or unassessed user/API/data paths, and exactly one recommendation status. The absence of findings is not evidence for paths outside that boundary.
++Every review states the target, applicable base, snapshot, scope accounting, actual evidence, unassessed paths, and one recommendation status. Accounted but unread files limit coverage; they do not erase confirmed findings from the stable accessible part or permit clean approval.
+ 
+ ## Required active references
+ - [Review Basis and Diff Completeness](references/diff-completeness.md) — Always read this before reviewing to freeze the target, preserve read-only scope, account for changed files, and recheck snapshot identity before the verdict.
+ - [Findings Format](references/findings-format.md) — Always read this before reporting findings, evidence limits, or a merge recommendation.
+ - [Severity Confidence](references/severity-confidence.md) — Always read this before promoting a candidate concern to a finding or assigning severity.
+-
+-## Optional references
+ - [Domain Routing](references/domain-routing.md) — Read this when changed code needs specialized framework, platform, security, privacy, financial, skill-package, or other domain authority.
+ - [Methodology](references/methodology.md) — Read this for a broad, formal, high-risk, or large review that needs the full pass order and completeness audit.
+ - [Policy Admission Merge Risk](references/policy-admission-merge-risk.md) — Read this when changed files or linked review intent touch policy gates, admission-before-side-effect flow, decision or audit persistence, active scope, idempotency, replay, or freshness checks.
+@@ -258,9 +229,8 @@ Every review must state the target/base/snapshot, changed-scope accounting, chec
+ 
+ ## Portability checklist before finishing
+ 
+-- Run the skill-source-compiler check command after regeneration.
+-- Search the skill folder for absolute local paths before finishing.
+-- Confirm every required reference listed by SKILL.md exists inside this skill folder.
++- During skill maintenance only, run compiler check after regeneration and inspect active local dependencies for portability.
++- During skill maintenance only, verify all declared references and their load triggers. Ordinary code review does not compile or validate this skill package.
+ 
+ ## Supporting and historical surface
+ 
+diff --git a/skills/code-reviewer/assets/review-checklist.md b/skills/code-reviewer/assets/review-checklist.md
+index 5eb236b..1a2a672 100644
+--- a/skills/code-reviewer/assets/review-checklist.md
++++ b/skills/code-reviewer/assets/review-checklist.md
+@@ -2,8 +2,9 @@
+ 
+ - authoritative target/base/scope resolved without guessing
+ - starting snapshot identity recorded and review kept read-only
+-- full diff read
+-- changed files accounted for
++- requested review mode preserved; diff base omitted only when not applicable to the explicit scope
++- all available in-scope content read; unavailable content recorded as a coverage limit
++- changed files accounted for without dropping confirmed partial findings
+ - spec or intent alignment checked when normative sources exist
+ - risky paths reviewed: auth, migrations, CI, tests, config
+ - policy/admission merge-risk pass run when changed files or intent touch gates, admission, persistence, active scope, idempotency, replay, or freshness
+diff --git a/skills/code-reviewer/docs/README.md b/skills/code-reviewer/docs/README.md
+index a382b65..756adc5 100644
+--- a/skills/code-reviewer/docs/README.md
++++ b/skills/code-reviewer/docs/README.md
+@@ -33,3 +33,7 @@
+ | [logs/implementation-log-20260713-1.md](logs/implementation-log-20260713-1.md) | Direct operator request | Independent PASS after root-cause remediation |
+ | [logs/implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) | Direct operator request | Independent scoped PASS |
+ | [logs/implementation-log-20260727-1.md](logs/implementation-log-20260727-1.md) | Aequitas-ADR/app#226 | Independent PASS; bounded re-audit и outcome-first template |
++
++## Ревизия G5-v1
++
++- [Общий журнал реализации](../../../docs/implementation-log-20260908-methodology-group-5.md) — исходная оценка, изменения и свидетельства проверки группы; запись не является активной инструкцией.
+diff --git a/skills/code-reviewer/docs/compile-report.md b/skills/code-reviewer/docs/compile-report.md
+index 3b1fa5f..e928da4 100644
+--- a/skills/code-reviewer/docs/compile-report.md
++++ b/skills/code-reviewer/docs/compile-report.md
+@@ -2,7 +2,7 @@
+ Generated from `skill.yaml`.
+ 
+ ## Versions
+-- Skill source version: `0.4.5`
++- Skill source version: `0.4.6`
+ - CLI package version: `0.1.0`
+ 
+ ## Source files
+@@ -28,8 +28,14 @@ Generated from `skill.yaml`.
+ 
+ ## Required references
+ - `references/diff-completeness.md`
++- `references/domain-routing.md`
+ - `references/findings-format.md`
++- `references/methodology.md`
++- `references/policy-admission-merge-risk.md`
++- `references/runtime-gate-deployed-path.md`
+ - `references/severity-confidence.md`
++- `references/spec-pass.md`
++- `references/complexity-only.md`
+ 
+ ## Warnings
+ - none
+diff --git a/skills/code-reviewer/fragments/overview.md b/skills/code-reviewer/fragments/overview.md
+index 4056f8b..887deec 100644
+--- a/skills/code-reviewer/fragments/overview.md
++++ b/skills/code-reviewer/fragments/overview.md
+@@ -2,6 +2,8 @@ Review one reproducible code-change snapshot for merge risk, not style. Keep rev
+ 
+ When the user asks only for over-engineering, simplification, unnecessary dependency, or deletion review, use the bounded `complexity-only` mode from `references/complexity-only.md` and do not imply a general merge recommendation. When the user asks for both normal review and simplification, run normal merge-risk review first and add a separate complexity section.
+ 
++The mode determines which passes apply; common snapshot, read-only, evidence, and authority rules still apply. Follow the user's current scope within host and repository constraints. If a rule blocks the requested review, name the exact rule, applicability and missing input; preserve independently supported findings. Reuse existing permission for the same bounded action, and check command side effects before running tests or tools. Use a disposable copy for checks that would change the reviewed snapshot.
++
+ ## Skill Interop (Priority)
+ 
+ - This skill owns review sequence, diff completeness, severity labeling, evidence quality, and merge recommendation framing.
+@@ -17,9 +19,9 @@ When the user asks only for over-engineering, simplification, unnecessary depend
+ 
+ ## Non-Negotiables
+ 
+-- Read `references/diff-completeness.md`, `references/findings-format.md`, and `references/severity-confidence.md` on every review. Load all other references only when their triggers match.
++- Read `references/diff-completeness.md`, `references/findings-format.md`, and `references/severity-confidence.md` on every review. Other references are required only when their triggers match.
+ - Keep review read-only. If the user also requests fixes, treat implementation as a separate phase and mark the review stale after any mutation.
+-- Read the full diff. If the diff is truncated, enumerate changed files and read changed hunks directly from the files.
++- Account for the full requested scope. For diff review, recover truncated hunks from the files when possible; list unavailable files explicitly and retain supported partial findings under `limited`.
+ - Separate report scope from research scope:
+   - report only on the diff or files under review
+   - research the wider codebase when needed to confirm or clear a concern
+@@ -37,14 +39,14 @@ When the user asks only for over-engineering, simplification, unnecessary depend
+ - Prefer a smaller set of real findings over a long list of weak comments.
+ - If you cannot verify a concern, move it to assumptions or open questions instead of upgrading it to a finding.
+ 
+-## Fast Workflow
++## Normal Merge-risk Workflow
+ 
+ 1. Establish the review basis using `references/diff-completeness.md`:
+    - authoritative target, base, scope, starting snapshot identity, linked issue, user intent, and any available normative source
+    - note risky file classes: migrations, auth, CI, runtime config, state, tests, runtime gates
+-2. Read the full diff and list touched files.
++2. Read the available diff and account for every touched file, distinguishing inspected content from unavailable content.
+ 3. If normative context exists, run the lightweight pass from `references/spec-pass.md`.
+-4. If diff completeness is in doubt, follow `references/diff-completeness.md` before writing any findings.
++4. Resolve completeness limits through `references/diff-completeness.md`; do not discard a finding established on a stable accessible part because another file is unavailable.
+ 5. Route by file type and load only the relevant domain skill. See `references/domain-routing.md`.
+ 6. If policy/admission triggers are present, run the bounded pass from `references/policy-admission-merge-risk.md`.
+ 7. If runtime-gate deployed-path triggers are present, run the pass from `references/runtime-gate-deployed-path.md`.
+@@ -59,46 +61,17 @@ When the user asks only for over-engineering, simplification, unnecessary depend
+    - the surrounding code does not already mitigate it
+    - severity matches actual impact
+    - confidence is high enough to emit as a finding instead of a question
+-11. Recheck snapshot identity. If it changed, mark the review stale and do not approve until a fresh or bounded delta review completes.
++11. Recheck snapshot identity. If it changed, mark the review stale and do not approve until a fresh or bounded delta review completes. After sufficient checks, repeat or broaden only for a new change, failure, or concrete unresolved concern.
+ 12. Start with one plain-language outcome sentence, then report findings by severity, the mandatory evidence footer, and exactly one recommendation status.
+ 
+-## What to Check
+-
+-### Correctness and Regression
+-
+-- Spec, issue, or acceptance-criteria drift between intended and implemented behavior
+-- Broken control flow, state drift, stale assumptions, or missing edge-case handling
+-- Incorrect data mapping, serialization, parsing, or boundary handling
+-- Async ordering issues, retries, timeouts, cancellation, or resource cleanup gaps
+-- Contract drift between producer and consumer
+-
+-### Design and Maintainability
+-
+-- Hidden coupling, duplicated rules, poor abstraction seams, or unclear ownership
+-- Public API changes without migration path or compatibility strategy
+-- Significant new behavior with no clear requirement or contract basis
+-- Configuration or environment assumptions that are not explicit
+-- Code that makes future changes harder without a payoff
+-
+-### Tests and Operability
+-
+-- Missing tests for merge-critical behavior
+-- Missing tests for requirement-critical behavior when a normative source is available
+-- Tests that do not exercise the real risk path
+-- API tests that pass through mocked or in-memory stores while the real persistence/RLS/RPC/provider boundary can behave differently
+-- Fixtures that bypass production invariants, such as impossible role/profile states, mismatched session/context versions, wrong tenant/scope, or disabled/revoked statuses that production would reject
+-- Missing negative tests for stale session, stale active context, wrong role, wrong scope/tenant, disabled/revoked account/session/role, or missing profile/readiness state in auth/RBAC/session/context changes
+-- Long-lived protected endpoints that only test opening admission and not permission revocation, status change, maintenance denial, or context change during the connection
+-- Audit/durable behavior whose fallback or error path is silent best effort without test evidence
+-- New logs, metrics, migrations, jobs, or background work without enough validation
+-- Changes that need rollback or release notes but do not acknowledge it
+-
+-### Performance and Compatibility
++## Review lenses
+ 
+-- New hot-path work, N+1 patterns, expensive loops, or repeated I/O
+-- Browser, runtime, schema, or API compatibility hazards
+-- Cache invalidation or stale data risks
+-- Resource usage that can grow with attacker or user input
++Apply the four passes to the changed behavior: correctness and contract drift;
++justified design and dependencies; tests and operability; performance and
++compatibility. Consider boundary values, async/resource lifetime, failure paths,
++public consumers and rollback where relevant. The detailed questions belong in
++`references/methodology.md` for broad, formal, high-risk or large reviews; the
++conditional gate references own their specialized checks.
+ 
+ ## High-risk Review Surfaces
+ 
+@@ -149,7 +122,7 @@ Always read:
+ - `references/findings-format.md` - findings shape, mandatory evidence footer, and recommendation statuses
+ - `references/severity-confidence.md` - confidence gating and impact-based severity
+ 
+-Read conditionally:
++Required when the stated condition applies:
+ 
+ - `references/methodology.md` - broad, formal, high-risk, or large review needing the full pass order
+ - `references/spec-pass.md` - linked issue, acceptance criteria, contract, ADR, migration note, or other normative source
+diff --git a/skills/code-reviewer/references/diff-completeness.md b/skills/code-reviewer/references/diff-completeness.md
+index 2e5dac0..e8184dc 100644
+--- a/skills/code-reviewer/references/diff-completeness.md
++++ b/skills/code-reviewer/references/diff-completeness.md
+@@ -13,6 +13,8 @@ Resolve target, base, and scope in this order:
+ 
+ Do not silently choose between multiple plausible bases or targets. Return `blocked` and request the missing authority. When only part of an otherwise valid target can be inspected, return `limited` and name the excluded surface.
+ 
++An explicit snippet or repository scope can be reviewed without a comparison base. Record the supplied text or file-set identity and mark the base not applicable; do not force a diff or general merge review onto complexity-only work.
++
+ ## Read-only and Snapshot Rules
+ 
+ - Review is read-only by default.
+@@ -23,22 +25,22 @@ Do not silently choose between multiple plausible bases or targets. Return `bloc
+ 
+ ## Rules
+ 
+-- Do not finalize findings until every changed file is accounted for.
++- Account for every in-scope file as inspected or explicitly unavailable before reporting; these are different evidence states.
+ - If CLI diff output truncates, recover coverage by reading changed files directly.
+-- Do not finalize findings or a recommendation while target authority is unresolved or the snapshot is moving.
++- Do not approve an unresolved or moving target. Preserve findings tied to any independently stable, assessable part and explain which requested conclusion remains blocked or limited.
+ 
+ ## Remediation Re-audit Scope
+ 
+ For a remediation re-audit, record the prior reviewed snapshot, fixed findings, current stable snapshot, and exact remediation delta. Re-run each original failure path and inspect the adjacent regression surface identified by the change's blast radius. Do not re-read or re-audit unchanged full scope that the prior review already verified.
+ 
+-Widen to a fresh review when the claim, source authority, public behavior, or material scope changed, when unrelated changes overlap the evidence boundary, or when the blast radius cannot be bounded. A cosmetic or text-only diff does not close a behavioral finding without evidence against its original failure path.
++An accepted behavioral correction stays within re-audit when it changes only the agreed failure path and bounded adjacent contracts. Widen only when the delta leaves that accepted boundary, changes dependent contracts outside it, introduces unrelated behavior affecting the conclusion, or has an unbounded blast radius. Name the extra surface and obtain missing scope authority before reviewing it. A cosmetic or text-only diff does not close a behavioral finding without evidence against its original failure path.
+ 
+ ## Minimum Sequence
+ 
+ 1. Resolve target, base, and scope using the authority order above.
+ 2. Record the starting snapshot identity.
+-3. Read the full diff and list all changed files.
+-4. For any truncated file, read the file directly until every changed hunk is visible.
++3. Read the available diff and list all changed files; for a non-diff scope use the explicitly supplied file set or snippet.
++4. Recover truncated files directly when available; record any remaining unseen content as a coverage limit instead of implying it was checked.
+ 5. Keep a reviewed-files list and explicit exclusions.
+ 6. Compare the ending snapshot identity with the starting identity.
+ 7. Before final output, state:
+@@ -51,8 +53,10 @@ Widen to a fresh review when the claim, source authority, public behavior, or ma
+ 
+ Before finalizing:
+ 
+-- every changed file has been seen
+-- deleted tests or config files were checked, not skipped
++- every changed file is accounted for; any unread file is an explicit coverage limit
++- deleted tests or config files were inspected when available, and unavailable content is not claimed as checked
+ - no finding depends on an unseen hunk
+ - unverifiable areas are called out explicitly
+ - ending snapshot identity matches the starting identity; otherwise the result is stale and cannot approve
++
++A stable partial review may finish with confirmed findings and `limited`. State any known merge blocker explicitly; a coverage limit does not clear it. Clean approval requires sufficient coverage and evidence for the full declared merge boundary.
+diff --git a/skills/code-reviewer/references/findings-format.md b/skills/code-reviewer/references/findings-format.md
+index 184582e..1f2321e 100644
+--- a/skills/code-reviewer/references/findings-format.md
++++ b/skills/code-reviewer/references/findings-format.md
+@@ -48,6 +48,8 @@ Recommendation: approve | request changes | limited | blocked
+ - `blocked` means a reproducible review basis or indispensable authority could not be established.
+ - Use exactly one recommendation status. Do not use `comment only` as an ambiguous substitute; represent non-blocking observations with `approve` plus findings or limits.
+ 
++For a stable partial scope, use `limited` and retain every confirmed finding from the assessable part, including blocking findings. State that known blockers still prevent merge. Inaccessible content cannot support either an invented finding or clean approval of the whole target.
++
+ If a follow-up review repeats the same or a materially related blocker after remediation, set `Next` to root-cause investigation of assumptions, the full failure path, adjacent surfaces, and remediation scope before more fixes.
+ 
+ ## Good Finding Traits
+diff --git a/skills/code-reviewer/references/methodology.md b/skills/code-reviewer/references/methodology.md
+index 6294c20..f48d6b8 100644
+--- a/skills/code-reviewer/references/methodology.md
++++ b/skills/code-reviewer/references/methodology.md
+@@ -12,7 +12,7 @@ Before writing findings:
+    - explicit file list
+    - commit range
+    - PR diff
+-3. Read the full diff.
++3. Read the available diff and account for unavailable content as a coverage limit.
+ 4. List the changed files and explicit exclusions.
+ 5. Flag high-risk files early without assigning severity from file class alone:
+    - migrations
+@@ -29,7 +29,7 @@ Before writing findings:
+ 7. If changed files or linked intent touch policy/admission surfaces, run the bounded pass from `references/policy-admission-merge-risk.md`.
+ 8. If changed files or linked intent touch runtime gates in a shipped lifecycle, run the deployed-path pass from `references/runtime-gate-deployed-path.md`.
+ 
+-If any diff output is truncated, read the touched files directly until every changed hunk is seen.
++If diff output is truncated, recover touched files directly when possible. Use the partial-scope rules in `diff-completeness.md` when content remains unavailable; do not discard supported findings.
+ 
+ ## Conditional Policy/admission Merge-risk Pass
+ 
+@@ -40,7 +40,7 @@ Ask:
+ - Do deny and refusal paths terminate before any external invocation or durable side effect?
+ - Are duplicate request ids, persistence conflicts, replayed admissions, and stale audit rows resolved before side effects?
+ - When an age limit such as `maxEvidenceAgeMs` exists, does missing or stale freshness metadata fail closed?
+-- Can persistence failure, audit-write failure, or decision-write failure produce an allowed action?
++- Which decision or audit persistence is an admission prerequisite under the owning contract, and can its failure still produce an allowed action? Do not impose fail-closed behavior on a contractually best-effort observational sink.
+ - Do active-scope or singleton decisions use a transaction, lock, or constraint model that matches the data model?
+ - Do append-only fact tables avoid uniqueness shortcuts that hide conflicting facts?
+ - Do tests exercise the actual policy/admission risk path instead of only a nearby happy path?
+@@ -122,8 +122,8 @@ If you cannot support one of those points, downgrade it to a question or assumpt
+ 
+ Before finalizing, quickly check:
+ 
+-- every changed file was reviewed
+-- every high-risk file class received at least one explicit pass
++- every changed file is accounted for as inspected or unavailable
++- each applicable high-risk surface was inspected or is named as an evidence limit
+ - deleted or rewritten tests were inspected, not just counted
+ - findings are ordered by severity, not by file order
+ - no finding is just a style preference in disguise
+diff --git a/skills/code-reviewer/references/policy-admission-merge-risk.md b/skills/code-reviewer/references/policy-admission-merge-risk.md
+index 8bdd32f..f375521 100644
+--- a/skills/code-reviewer/references/policy-admission-merge-risk.md
++++ b/skills/code-reviewer/references/policy-admission-merge-risk.md
+@@ -22,14 +22,14 @@ Do not run it for unrelated diffs just because the repository has policy code el
+ 
+ ## Bounded Probes
+ 
+-For each touched surface, check only the reachable changed paths.
++For each touched surface, check only the reachable changed paths and establish the owning contract or demonstrated protected invariant before choosing required failure behavior. Observational telemetry is not automatically an admission prerequisite. If that distinction is unknown, report the dependent question or evidence limit rather than inventing fail-closed product behavior.
+ 
+ | Probe | What to verify | Merge-risk finding when |
+ | --- | --- | --- |
+ | No invocation after deny | Deny, refusal, invalid admission, and failed preconditions return before external invocation or durable side effect. | A denied or invalid path can still invoke the external action, enqueue work, or persist an allowed decision. |
+ | Replay and conflict handling | Duplicate request ids, idempotency keys, persistence conflicts, and replayed audit rows are resolved before side effects. | A replay can reuse stale success state, ignore a conflict, or perform the side effect before conflict resolution. |
+ | Freshness fail-closed | When age limits exist, missing or stale freshness metadata is rejected. | `maxEvidenceAgeMs` or equivalent exists, but absent `observedAt` or stale evidence silently passes through defaults. |
+-| Persistence fail-closed | Decision and audit persistence failures cannot produce an allowed action. | A write failure, partial write, or swallowed persistence error lets the operation continue as allowed. |
++| Required persistence | When durable decision or audit persistence is an admission prerequisite, failure prevents the allowed action. | A write failure, partial write, or swallowed error bypasses that required prerequisite; a contractually best-effort observational sink alone is not such a finding. |
+ | Audit capture semantics | Required audit/security events have the promised capture path, durability, and failure behavior. | Code only names or logs an event, or silently best-effort writes it, while the contract requires fail-closed capture, durable fallback, or append-only evidence. |
+ | Active-scope concurrency | Active or singleton decisions use a transaction, lock, compare-and-swap, or uniqueness constraint that matches the data model. | Concurrent activations can admit two active policies or leave the active state ambiguous. |
+ | Append-only facts | Append-only fact or audit tables do not rely on uniqueness shortcuts that hide conflicting facts. | A shortcut treats the first or last row as authoritative without resolving conflict, replay, or freshness. |
+@@ -41,6 +41,7 @@ For each touched surface, check only the reachable changed paths.
+ Before reporting a finding, confirm:
+ 
+ - the path is reachable from the changed behavior under review
++- the owning contract or demonstrated protected invariant requires the behavior being enforced
+ - surrounding code does not already fail closed, serialize access, or reject stale state
+ - the failure can affect a real action, persisted decision, audit trail, or merge-critical invariant
+ - the proposed fix direction is bounded to the reviewed behavior
+diff --git a/skills/code-reviewer/skill.yaml b/skills/code-reviewer/skill.yaml
+index 52b6e75..0959e11 100644
+--- a/skills/code-reviewer/skill.yaml
++++ b/skills/code-reviewer/skill.yaml
+@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
+ kind: SkillSource
+ skill:
+   name: code-reviewer
+-  source-version: 0.4.5
++  source-version: 0.4.6
+   recommended-skill-md-max-bytes: 20000
+   description: >-
+     Perform read-only review of PRs, diffs, and local branch changes. Use to find
+@@ -22,6 +22,7 @@ references:
+     title: Domain Routing
+     source: references/domain-routing.md
+     target: references/domain-routing.md
++    required: true
+     trigger: Read this when changed code needs specialized framework, platform, security, privacy, financial, skill-package, or other domain authority.
+   - id: ref-references-findings-format
+     title: Findings Format
+@@ -33,16 +34,19 @@ references:
+     title: Methodology
+     source: references/methodology.md
+     target: references/methodology.md
++    required: true
+     trigger: Read this for a broad, formal, high-risk, or large review that needs the full pass order and completeness audit.
+   - id: ref-references-policy-admission-merge-risk
+     title: Policy Admission Merge Risk
+     source: references/policy-admission-merge-risk.md
+     target: references/policy-admission-merge-risk.md
++    required: true
+     trigger: Read this when changed files or linked review intent touch policy gates, admission-before-side-effect flow, decision or audit persistence, active scope, idempotency, replay, or freshness checks.
+   - id: ref-references-runtime-gate-deployed-path
+     title: Runtime Gate Deployed Path
+     source: references/runtime-gate-deployed-path.md
+     target: references/runtime-gate-deployed-path.md
++    required: true
+     trigger: Read this when changed files or linked review intent touch runtime gates that authorize execution through a shipped lifecycle, production construction path, deployed dependency wiring, request or tick path, invocation boundary, idempotency lock scope, or deployment/cell identity binding.
+   - id: ref-references-severity-confidence
+     title: Severity Confidence
+@@ -54,11 +58,13 @@ references:
+     title: Spec Pass
+     source: references/spec-pass.md
+     target: references/spec-pass.md
++    required: true
+     trigger: Read this when a linked issue, acceptance criteria, contract, ADR, migration note, or other normative source exists.
+   - id: ref-references-complexity-only
+     title: Complexity-only Review
+     source: references/complexity-only.md
+     target: references/complexity-only.md
++    required: true
+     trigger: Read this only when the user explicitly asks to review for over-engineering, simplification, unnecessary dependencies, dead flexibility, or what can be deleted.
+ assets:
+   - id: asset-assets-pr-review-template
+@@ -97,19 +103,19 @@ surfaces:
+       - ref-references-diff-completeness
+       - ref-references-findings-format
+       - ref-references-severity-confidence
+-    optionalReferences:
+       - ref-references-domain-routing
+       - ref-references-methodology
+       - ref-references-policy-admission-merge-risk
+       - ref-references-runtime-gate-deployed-path
+       - ref-references-spec-pass
+       - ref-references-complexity-only
++    optionalReferences: []
+   supportingGlobs:
+     - docs/*
+ sections:
+   startHere:
+-    - Confirm the request is for read-only merge-risk review, not implementation or a specialized audit owned by another skill.
+-    - Read the three required references and freeze a reproducible target, base, scope, and starting snapshot before judging code.
++    - Select normal merge-risk review, explicit complexity-only review, or a combined request; preserve the requested mode and leave specialized verdicts with their owners.
++    - Read diff-completeness, findings-format, and severity-confidence on every review; freeze the target and scope plus the applicable base and snapshot. Explicit snippet or repository scope need not have a diff base.
+     - Load only conditional references and available domain skills whose triggers match the changed behavior.
+     - Recheck snapshot identity before reporting and return an evidence-calibrated recommendation with explicit limits.
+   whenToUse:
+@@ -132,9 +138,9 @@ sections:
+       title: Conduct a stable evidence-backed review
+       goal: Produce findings and merge guidance for one reproducible read-only snapshot.
+       steps:
+-        - Resolve target and base by the authority order in `references/diff-completeness.md`; return `blocked` instead of guessing through unresolved candidates.
++        - Resolve the mode, target and applicable base by `references/diff-completeness.md`; do not invent a comparison for an explicitly scoped snippet or choose between unresolved targets.
+         - Freeze the snapshot, account for the changed scope, and use surrounding code only as research evidence.
+-        - Run matching conditional and domain passes, then validate candidates against reachable behavior and existing guards.
++        - Run only the passes applicable to that mode and changed behavior, then validate candidates against reachable behavior and existing guards. Retain confirmed findings on a stable accessible part when the remainder is unavailable.
+         - Recheck the snapshot identity and mark the result stale if the reviewed surface changed.
+         - Start with one plain-language outcome sentence, then report findings and the mandatory evidence footer with one recommendation status.
+       validation:
+@@ -155,7 +161,7 @@ sections:
+       text: Review is read-only absent separate remediation authority. For review-and-fix, record review first, remediate separately, and invalidate the verdict after mutation. A related blocker recurring after remediation requires root-cause review of assumptions, failure path, adjacent surfaces, and scope before another fix.
+     - id: policy-review-scope-evidence
+       title: Review scope evidence
+-      text: Every review must state the target/base/snapshot, changed-scope accounting, checks and behavioral evidence considered, untested or unassessed user/API/data paths, and exactly one recommendation status. The absence of findings is not evidence for paths outside that boundary.
++      text: Every review states the target, applicable base, snapshot, scope accounting, actual evidence, unassessed paths, and one recommendation status. Accounted but unread files limit coverage; they do not erase confirmed findings from the stable accessible part or permit clean approval.
+   portability:
+     required: true
+     rules:
+@@ -163,6 +169,5 @@ sections:
+       - Keep all mandatory code-reviewer guidance inside this skill folder.
+       - Use relative links for local references, assets, scripts, tests, and supporting docs.
+     checklist:
+-      - Run the skill-source-compiler check command after regeneration.
+-      - Search the skill folder for absolute local paths before finishing.
+-      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
++      - During skill maintenance only, run compiler check after regeneration and inspect active local dependencies for portability.
++      - During skill maintenance only, verify all declared references and their load triggers. Ordinary code review does not compile or validate this skill package.
+diff --git a/skills/code-reviewer/test/docs-contract.test.mjs b/skills/code-reviewer/test/docs-contract.test.mjs
+index d23f463..2f43982 100644
+--- a/skills/code-reviewer/test/docs-contract.test.mjs
++++ b/skills/code-reviewer/test/docs-contract.test.mjs
+@@ -11,7 +11,9 @@ test('bundled review template preserves the outcome-first output contract', asyn
+     readSkillFile('assets/pr-review-template.md'),
+   ]);
+ 
+-  assert.match(manifest, /source-version: 0\.4\.5/);
++  const sourceVersion = manifest.match(/source-version:\s*(\d+\.\d+\.\d+)/)?.[1];
++  assert.ok(sourceVersion, 'source declares a semantic content version');
++  assert.equal(skill.match(/source-version:\s*(\d+\.\d+\.\d+)/)?.[1], sourceVersion);
+   assert.match(manifest, /source: assets\/pr-review-template\.md/);
+   assert.match(skill, /Begin with one plain-language outcome sentence, then findings by severity/);
+   assert.match(skill, /`assets\/pr-review-template\.md`/);
+diff --git a/skills/prd-engineer/SKILL.md b/skills/prd-engineer/SKILL.md
+index 5786633..15f8290 100644
+--- a/skills/prd-engineer/SKILL.md
++++ b/skills/prd-engineer/SKILL.md
+@@ -6,17 +6,17 @@ description: Create, refine, and review PRDs, product specs, feature and AI
+   evaluation; or audit ambiguity, missing evidence, weak acceptance, and scope
+   risk.
+ metadata:
+-  source-version: 0.1.7
++  source-version: 0.1.8
+   skillforge-source-manifest: skill.yaml
+-  skillforge-source-hash: 86a19aa50d71a78ee5374c3a99ed4feba851cbfbebdea291e34a2ca10d1faa7a
++  skillforge-source-hash: 6fd4432d95d86bf91e6d285107711c7eb9bf27012a41658ce0a4ed22fb444da1
+ ---
+ 
+ # prd-engineer
+ 
+ ## Start here
+ 
+-1. Confirm whether the task is a new PRD, refinement, or review; name the downstream consumer when handoff matters.
+-2. For every non-trivial creation, revision, or review, apply `implementation-discipline` before choosing PRD depth or expanding scope; capture the observable outcome, actor or consumer and claim boundary, source-authorized scope and non-goals, permitted product output, simplest sufficient user capability, and narrowest falsifier.
++1. Confirm whether the task is creation, refinement, or read-only review; name the downstream consumer when handoff matters. A review supplies findings and proposed rewrites; apply edits only when requested.
++2. Before choosing depth, capture the observable outcome, actor or consumer, source-authorized scope, permitted product output, simplest sufficient capability, and narrowest falsifier. Apply available `implementation-discipline`; if unavailable, use these local constraints and report the unavailable dependency without blocking a supported draft or claiming its gate ran.
+ 3. Resolve source precedence; separately verify approval of the current PRD version, and do not let risk, completeness, checklists, or same-session artifacts create product authority.
+ 4. Separate the observable product capability from substrate such as documentation, tickets, mocks, logs, or implementation scaffolding.
+ 5. Choose the lightest PRD mode that fits the risk; do not expand a one-pager into a heavyweight template by default.
+@@ -47,9 +47,13 @@ Create PRDs that are problem-first, scope-aware, and testable enough for product
+ 
+ This skill favors concise documents with strong requirements over heavyweight templates. Use it to turn product intent into observable behavior, acceptance criteria, risks, rollout, and learning loops. A PRD does not prove market demand, technical feasibility, or implementation correctness by itself; it makes those claims explicit enough to test.
+ 
++A product request and available facts can support a useful draft. Missing research or downstream decisions limit the dependent claim, not unrelated drafting or review. Use explicit assumptions and TBDs; reserve ready handoff for the authority and completeness gates below. When a rule blocks a requested transition, identify the exact rule, its applicability, the missing decision and its owner; continue supported work.
++
++Apply the user's current scope and output instructions within host and repository authority. Carry accepted decisions and permissions forward, but do not transfer prior content approval to materially changed requirements. Load a specialist only for an actual dependent judgment; an unavailable specialist does not erase the local PRD method or authorize invented domain facts.
++
+ ## Default Output Shape
+ 
+-For a new PRD, include:
++For a new PRD, cover the following information at the depth needed by its consumer; a short draft can combine fields and leave unknowns explicit:
+ 
+ - authority/handoff: source precedence, current-version approval, consumer, status, blockers, and owned gaps;
+ - problem/outcome: why now, users, scenarios, metrics, and guardrails;
+@@ -102,20 +106,20 @@ Validation:
+ - An unresolved equal- or unknown-authority conflict cannot produce a ready handoff.
+ - Input authority, prior approval, or status metadata cannot authorize newly generated or materially changed PRD content.
+ 
+-### Workflow stage: Reconcile the closed source universe
++### Workflow stage: Reconcile sources for the requested claim
+ 
+ Prevent summaries or polished synthesis from hiding omitted source obligations.
+ 
+-1. Bound the applicable source universe through the established authority and currentness rules.
+-2. Atomize prose clauses, table rows and notes, email decisions, and mockup annotations while preserving modality, conditions, exceptions, values, and locators.
+-3. Map every atom to a PRD requirement or source-authorized disposition, and every material requirement back to its atoms.
++1. For a source-completeness or ready-handoff claim, bound the applicable source universe through the established authority and currentness rules. For a draft or narrow review, preserve the relevant supplied obligations and state the limited scope; do not invent additional sources or a full reconciliation artifact.
++2. For those completeness or ready-handoff claims, atomize prose clauses, table rows and notes, email decisions, and mockup annotations while preserving modality, conditions, exceptions, values, and locators.
++3. For that bounded universe, map every atom to a PRD requirement or source-authorized disposition, and every material requirement back to its atoms.
+ 4. Treat summaries and derived registers as navigation, never disposition evidence.
+ 5. Block completeness and ready handoff for any unavailable, unmapped, ambiguously merged, or unauthorizedly dismissed in-scope atom.
+ 
+ Validation:
+ 
+-- Every bounded atom has a verifiable mapping or authorized disposition, with its qualifying details intact.
+-- An omitted clause, table entry, email decision, or mockup annotation blocks completeness even when a summary exists.
++- A completeness or ready-handoff claim accounts for every bounded atom, with its qualifying details intact; a draft does not claim that stronger result.
++- An omitted in-scope clause, table entry, email decision, or mockup annotation blocks completeness even when a summary exists.
+ 
+ ### Workflow stage: Run discovery checkpoint
+ 
+@@ -204,6 +208,7 @@ Validation:
+ 
+ - **source-authorized scope, simplest sufficient capability, self-expansion prevention, and proportional evidence:** implementation-discipline. implementation-discipline supplies the cross-cutting authoring gate; prd-engineer remains the owner of product intent, users, scope, metrics, and product acceptance.
+ - **product intent, users, scope, non-goals, success metrics, and product-level acceptance:** prd-engineer. prd-engineer owns product-source revisions and product-input readiness; it does not own architecture, implementation-ready behavior, or delivery decomposition.
++- **customer-owned open questions, reply assessment, and decision-workflow closure:** requirements-approval. requirements-approval supplies the question code, decision-owner evidence, accepted obligation, and remaining gaps. prd-engineer owns the corresponding PRD change and current-version authority; a complete reply alone does not approve a newly generated PRD.
+ - **independent concept drift and fake-risk review:** concept-conformance-reviewer. concept-conformance-reviewer owns the independent verdict when acceptance or plans may pass without the established capability; prd-engineer remains the owner of product-source revisions.
+ - **implementation against PRD:** spec-conformance-reviewer. spec-conformance-reviewer owns checking code or implementation evidence against an approved PRD.
+ - **architecture-significant requirements, pattern decisions, and ADRs:** architecture-engineer. architecture-engineer owns translating product requirements into architecture decisions, constraints, quality scenarios, architecture handoff, and architecture drift handling.
+@@ -215,10 +220,8 @@ Validation:
+ ## Gotchas
+ 
+ - **high** — A summary or register cannot disposition the underlying source atoms.
+-- **high** — A complete PRD template with vague content is still a bad PRD.
+ - **high** — Do not fabricate users, research, metrics, constraints, or technical decisions; mark them as assumptions, TBDs, or open questions.
+ - **medium** — Do not over-prescribe implementation details when acceptance criteria and boundaries are enough.
+-- **high** — AI feature PRDs need evaluation strategy and quality bars; a demo or prompt description is not enough.
+ - **high** — Do not present candidate architecture-significant inputs as accepted ASRs, pattern decisions, ADRs, or implementation designs.
+ - **medium** — For delivery PRDs, keep lifecycle tracking minimal but visible; status, owner, and next review are usually enough.
+ 
+@@ -230,28 +233,16 @@ Start from user problem, outcome, and evidence before solution details.
+ ### Just-enough detail policy
+ Include a section only when it changes a decision, reduces risk, clarifies scope, or supports acceptance.
+ 
+-### Acceptance integrity policy
+-Acceptance criteria must require observable product behavior or measurable evidence. Rewrite criteria that pass through substrate alone, but do not invent technical harnesses, runtime seams, or platform work when existing downstream verification can prove the claim.
+-
+-### Product source authority policy
+-Separate source precedence from artifact authority. Only the operator or repository process can approve the current PRD version; generated or materially changed content stays non-authoritative until then.
+-
+-### Product-input handoff readiness policy
+-Report `Authority` separately from `Handoff`. Use `not-assessed` without a requested consumer. Ready requires current-version authority and no product blocker; it covers product input only.
+-
+ ### Light traceability policy
+ Use requirement IDs, owners, source links, statuses, and change notes when multiple people or later implementation review will depend on the PRD.
+ 
+ ### Repository artifact conventions policy
+-When producing or recommending a persistent PRD, product brief, or PRD review in a repository, first check repo-local artifact conventions through AGENTS.md, README, CONTRIBUTING, or docs linked from them. If conventions exist, follow them for canonical location, stable PRD or product-brief IDs, metadata/front matter, requirement and acceptance ID prefixes, source links, related artifact links, and module index updates. Do not hard-code one repository's paths into this skill. If no repository convention exists, use this skill's default PRD shape and state any location assumption when writing files. Repository conventions override generic PRD location defaults when the artifact is canonical in the repo.
+-
+-### Architecture handoff policy
+-PRDs may surface architecture-relevant product constraints, quality guardrails, external systems, data sensitivity, release phases, and blocking questions, but architecture-engineer owns ASR extraction and architecture decisions.
++For persistent PRDs and reviews, follow repository conventions first; use the PRD template reference for the location, metadata, source-link and index checklist and its fallback when no convention exists.
+ 
+ ### Brevity policy
+ In chat, keep outputs concise unless the user asks for a formal artifact; use the reference template for full documents.
+ 
+-## Optional references
++## Required active references
+ - [PRD template](references/prd-template.md) — Read this when creating a formal PRD artifact, expanding an existing PRD, adding authority or handoff-readiness metadata, evidence, traceability, review routing, AI/security/rollout modules, or running a detailed PRD quality check.
+ 
+ ## Portability rules
+@@ -263,9 +254,8 @@ In chat, keep outputs concise unless the user asks for a formal artifact; use th
+ 
+ ## Portability checklist before finishing
+ 
+-- Run the skill-source-compiler check command after regeneration.
+-- Search the skill folder for absolute local paths before finishing.
+-- Confirm the optional PRD template reference is reachable from the generated SKILL.md.
++- During skill maintenance only, run the skill-source-compiler check command after regeneration and check active local dependencies for portability.
++- During skill maintenance only, confirm the PRD template and its conditional reading trigger are reachable. Ordinary PRD work does not compile or validate this package.
+ 
+ ## Supporting and historical surface
+ 
+diff --git a/skills/prd-engineer/docs/README.md b/skills/prd-engineer/docs/README.md
+index 2051589..ee523b4 100644
+--- a/skills/prd-engineer/docs/README.md
++++ b/skills/prd-engineer/docs/README.md
+@@ -32,3 +32,7 @@
+ | Evidence | Related issue | Scope |
+ | --- | --- | --- |
+ | [forward-tests/forward-test-evidence-20260727-1.md](forward-tests/forward-test-evidence-20260727-1.md) | Aequitas-ADR/app#225 | Blind mixed-format source reconciliation |
++
++## Ревизия G5-v1
++
++- [Общий журнал реализации](../../../docs/implementation-log-20260908-methodology-group-5.md) — исходная оценка, изменения и свидетельства проверки группы; запись не является активной инструкцией.
+diff --git a/skills/prd-engineer/docs/compile-report.md b/skills/prd-engineer/docs/compile-report.md
+index 4a456a0..dd1fcf6 100644
+--- a/skills/prd-engineer/docs/compile-report.md
++++ b/skills/prd-engineer/docs/compile-report.md
+@@ -2,7 +2,7 @@
+ Generated from `skill.yaml`.
+ 
+ ## Versions
+-- Skill source version: `0.1.7`
++- Skill source version: `0.1.8`
+ 
+ ## Source files
+ - `agents/openai.yaml`
+@@ -23,7 +23,7 @@ Generated from `skill.yaml`.
+ - `skill.yaml`
+ 
+ ## Required references
+-- none
++- `references/prd-template.md`
+ 
+ ## Warnings
+ - none
+diff --git a/skills/prd-engineer/fragments/overview.md b/skills/prd-engineer/fragments/overview.md
+index d8a3438..a724649 100644
+--- a/skills/prd-engineer/fragments/overview.md
++++ b/skills/prd-engineer/fragments/overview.md
+@@ -2,9 +2,13 @@ Create PRDs that are problem-first, scope-aware, and testable enough for product
+ 
+ This skill favors concise documents with strong requirements over heavyweight templates. Use it to turn product intent into observable behavior, acceptance criteria, risks, rollout, and learning loops. A PRD does not prove market demand, technical feasibility, or implementation correctness by itself; it makes those claims explicit enough to test.
+ 
++A product request and available facts can support a useful draft. Missing research or downstream decisions limit the dependent claim, not unrelated drafting or review. Use explicit assumptions and TBDs; reserve ready handoff for the authority and completeness gates below. When a rule blocks a requested transition, identify the exact rule, its applicability, the missing decision and its owner; continue supported work.
++
++Apply the user's current scope and output instructions within host and repository authority. Carry accepted decisions and permissions forward, but do not transfer prior content approval to materially changed requirements. Load a specialist only for an actual dependent judgment; an unavailable specialist does not erase the local PRD method or authorize invented domain facts.
++
+ ## Default Output Shape
+ 
+-For a new PRD, include:
++For a new PRD, cover the following information at the depth needed by its consumer; a short draft can combine fields and leave unknowns explicit:
+ 
+ - authority/handoff: source precedence, current-version approval, consumer, status, blockers, and owned gaps;
+ - problem/outcome: why now, users, scenarios, metrics, and guardrails;
+diff --git a/skills/prd-engineer/references/prd-template.md b/skills/prd-engineer/references/prd-template.md
+index 4b11e2b..f7fc8d0 100644
+--- a/skills/prd-engineer/references/prd-template.md
++++ b/skills/prd-engineer/references/prd-template.md
+@@ -1,6 +1,6 @@
+ # PRD template
+ 
+-Use this reference when the user needs a formal PRD artifact, not just a short chat answer.
++Use the relevant sections for a formal PRD, detailed quality check, or the authority/handoff and risk modules named in the root trigger. Reading one section does not require filling the entire template for a short chat draft.
+ 
+ ## Repository Artifact Conventions
+ 
+@@ -29,6 +29,8 @@ Do not hard-code a repository-specific path in this template. If no repository c
+ 
+ If the repository requires front matter or a different metadata block, use that convention and preserve the same product meaning.
+ 
++Select fields that serve the chosen mode. The source-universe table supports a completeness or ready-handoff claim; a draft may use concise source links without claiming full reconciliation. Do not invent metrics, approvals, or owners to fill placeholders.
++
+ ```markdown
+ # PRD: <title>
+ 
+diff --git a/skills/prd-engineer/skill.yaml b/skills/prd-engineer/skill.yaml
+index ef2f5f6..5f35bcf 100644
+--- a/skills/prd-engineer/skill.yaml
++++ b/skills/prd-engineer/skill.yaml
+@@ -3,7 +3,7 @@ kind: SkillSource
+ 
+ skill:
+   name: prd-engineer
+-  source-version: 0.1.7
++  source-version: 0.1.8
+   recommended-skill-md-max-bytes: 21000
+   description: >-
+     Create, refine, and review PRDs, product specs, feature and AI requirements.
+@@ -18,7 +18,7 @@ references:
+     title: PRD template
+     source: references/prd-template.md
+     target: references/prd-template.md
+-    required: false
++    required: true
+     trigger: Read this when creating a formal PRD artifact, expanding an existing PRD, adding authority or handoff-readiness metadata, evidence, traceability, review routing, AI/security/rollout modules, or running a detailed PRD quality check.
+ 
+ assets: []
+@@ -73,16 +73,16 @@ supporting:
+ 
+ surfaces:
+   active:
+-    requiredReferences: []
+-    optionalReferences:
++    requiredReferences:
+       - ref-prd-template
++    optionalReferences: []
+   supportingGlobs:
+     - docs/*
+ 
+ sections:
+   startHere:
+-    - Confirm whether the task is a new PRD, refinement, or review; name the downstream consumer when handoff matters.
+-    - For every non-trivial creation, revision, or review, apply `implementation-discipline` before choosing PRD depth or expanding scope; capture the observable outcome, actor or consumer and claim boundary, source-authorized scope and non-goals, permitted product output, simplest sufficient user capability, and narrowest falsifier.
++    - Confirm whether the task is creation, refinement, or read-only review; name the downstream consumer when handoff matters. A review supplies findings and proposed rewrites; apply edits only when requested.
++    - Before choosing depth, capture the observable outcome, actor or consumer, source-authorized scope, permitted product output, simplest sufficient capability, and narrowest falsifier. Apply available `implementation-discipline`; if unavailable, use these local constraints and report the unavailable dependency without blocking a supported draft or claiming its gate ran.
+     - Resolve source precedence; separately verify approval of the current PRD version, and do not let risk, completeness, checklists, or same-session artifacts create product authority.
+     - Separate the observable product capability from substrate such as documentation, tickets, mocks, logs, or implementation scaffolding.
+     - Choose the lightest PRD mode that fits the risk; do not expand a one-pager into a heavyweight template by default.
+@@ -130,17 +130,17 @@ sections:
+         - An unresolved equal- or unknown-authority conflict cannot produce a ready handoff.
+         - Input authority, prior approval, or status metadata cannot authorize newly generated or materially changed PRD content.
+     - id: stage-reconcile-source-universe
+-      title: Reconcile the closed source universe
++      title: Reconcile sources for the requested claim
+       goal: Prevent summaries or polished synthesis from hiding omitted source obligations.
+       steps:
+-        - Bound the applicable source universe through the established authority and currentness rules.
+-        - Atomize prose clauses, table rows and notes, email decisions, and mockup annotations while preserving modality, conditions, exceptions, values, and locators.
+-        - Map every atom to a PRD requirement or source-authorized disposition, and every material requirement back to its atoms.
++        - For a source-completeness or ready-handoff claim, bound the applicable source universe through the established authority and currentness rules. For a draft or narrow review, preserve the relevant supplied obligations and state the limited scope; do not invent additional sources or a full reconciliation artifact.
++        - For those completeness or ready-handoff claims, atomize prose clauses, table rows and notes, email decisions, and mockup annotations while preserving modality, conditions, exceptions, values, and locators.
++        - For that bounded universe, map every atom to a PRD requirement or source-authorized disposition, and every material requirement back to its atoms.
+         - Treat summaries and derived registers as navigation, never disposition evidence.
+         - Block completeness and ready handoff for any unavailable, unmapped, ambiguously merged, or unauthorizedly dismissed in-scope atom.
+       validation:
+-        - Every bounded atom has a verifiable mapping or authorized disposition, with its qualifying details intact.
+-        - An omitted clause, table entry, email decision, or mockup annotation blocks completeness even when a summary exists.
++        - A completeness or ready-handoff claim accounts for every bounded atom, with its qualifying details intact; a draft does not claim that stronger result.
++        - An omitted in-scope clause, table entry, email decision, or mockup annotation blocks completeness even when a summary exists.
+     - id: stage-discovery
+       title: Run discovery checkpoint
+       goal: Prevent a PRD from becoming a polished guess.
+@@ -218,6 +218,10 @@ sections:
+       domain: product intent, users, scope, non-goals, success metrics, and product-level acceptance
+       winner: prd-engineer
+       rationale: prd-engineer owns product-source revisions and product-input readiness; it does not own architecture, implementation-ready behavior, or delivery decomposition.
++    - id: interop-requirements-approval
++      domain: customer-owned open questions, reply assessment, and decision-workflow closure
++      winner: requirements-approval
++      rationale: requirements-approval supplies the question code, decision-owner evidence, accepted obligation, and remaining gaps. prd-engineer owns the corresponding PRD change and current-version authority; a complete reply alone does not approve a newly generated PRD.
+     - id: interop-concept-conformance
+       domain: independent concept drift and fake-risk review
+       winner: concept-conformance-reviewer
+@@ -251,18 +255,12 @@ sections:
+     - id: gotcha-summary-is-not-disposition
+       priority: high
+       text: A summary or register cannot disposition the underlying source atoms.
+-    - id: gotcha-template-is-not-quality
+-      priority: high
+-      text: A complete PRD template with vague content is still a bad PRD.
+     - id: gotcha-do-not-invent-evidence
+       priority: high
+       text: Do not fabricate users, research, metrics, constraints, or technical decisions; mark them as assumptions, TBDs, or open questions.
+     - id: gotcha-overspecification
+       priority: medium
+       text: Do not over-prescribe implementation details when acceptance criteria and boundaries are enough.
+-    - id: gotcha-ai-needs-evals
+-      priority: high
+-      text: AI feature PRDs need evaluation strategy and quality bars; a demo or prompt description is not enough.
+     - id: gotcha-candidate-asr-is-not-decision
+       priority: high
+       text: Do not present candidate architecture-significant inputs as accepted ASRs, pattern decisions, ADRs, or implementation designs.
+@@ -276,24 +274,12 @@ sections:
+     - id: policy-just-enough
+       title: Just-enough detail policy
+       text: Include a section only when it changes a decision, reduces risk, clarifies scope, or supports acceptance.
+-    - id: policy-acceptance-integrity
+-      title: Acceptance integrity policy
+-      text: Acceptance criteria must require observable product behavior or measurable evidence. Rewrite criteria that pass through substrate alone, but do not invent technical harnesses, runtime seams, or platform work when existing downstream verification can prove the claim.
+-    - id: policy-source-authority
+-      title: Product source authority policy
+-      text: Separate source precedence from artifact authority. Only the operator or repository process can approve the current PRD version; generated or materially changed content stays non-authoritative until then.
+-    - id: policy-handoff-readiness
+-      title: Product-input handoff readiness policy
+-      text: "Report `Authority` separately from `Handoff`. Use `not-assessed` without a requested consumer. Ready requires current-version authority and no product blocker; it covers product input only."
+     - id: policy-light-traceability
+       title: Light traceability policy
+       text: Use requirement IDs, owners, source links, statuses, and change notes when multiple people or later implementation review will depend on the PRD.
+     - id: policy-repository-artifact-conventions
+       title: Repository artifact conventions policy
+-      text: When producing or recommending a persistent PRD, product brief, or PRD review in a repository, first check repo-local artifact conventions through AGENTS.md, README, CONTRIBUTING, or docs linked from them. If conventions exist, follow them for canonical location, stable PRD or product-brief IDs, metadata/front matter, requirement and acceptance ID prefixes, source links, related artifact links, and module index updates. Do not hard-code one repository's paths into this skill. If no repository convention exists, use this skill's default PRD shape and state any location assumption when writing files. Repository conventions override generic PRD location defaults when the artifact is canonical in the repo.
+-    - id: policy-architecture-handoff
+-      title: Architecture handoff policy
+-      text: PRDs may surface architecture-relevant product constraints, quality guardrails, external systems, data sensitivity, release phases, and blocking questions, but architecture-engineer owns ASR extraction and architecture decisions.
++      text: For persistent PRDs and reviews, follow repository conventions first; use the PRD template reference for the location, metadata, source-link and index checklist and its fallback when no convention exists.
+     - id: policy-brevity
+       title: Brevity policy
+       text: In chat, keep outputs concise unless the user asks for a formal artifact; use the reference template for full documents.
+@@ -305,6 +291,5 @@ sections:
+       - Treat external examples and standards as optional background, not runtime dependencies.
+       - Use relative links for local references and supporting docs.
+     checklist:
+-      - Run the skill-source-compiler check command after regeneration.
+-      - Search the skill folder for absolute local paths before finishing.
+-      - Confirm the optional PRD template reference is reachable from the generated SKILL.md.
++      - During skill maintenance only, run the skill-source-compiler check command after regeneration and check active local dependencies for portability.
++      - During skill maintenance only, confirm the PRD template and its conditional reading trigger are reachable. Ordinary PRD work does not compile or validate this package.

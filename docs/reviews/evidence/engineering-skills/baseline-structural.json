@@ -1,0 +1,190 @@
+{
+  "time": "2026-09-08T18:51:59.003476+00:00",
+  "output_root": "/tmp/engineering-baseline-compile-zqxdsfdu",
+  "commands": [
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "lint",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/docs/reviews/evidence/engineering-skills/baseline-packages/documentation"
+      ],
+      "exit": 0,
+      "stdout": "OK /home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/docs/reviews/evidence/engineering-skills/baseline-packages/documentation\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/docs/reviews/evidence/engineering-skills/baseline-packages/documentation"
+      ],
+      "exit": 0,
+      "stdout": "OK /home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/docs/reviews/evidence/engineering-skills/baseline-packages/documentation\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "compile",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/docs/reviews/evidence/engineering-skills/baseline-packages/documentation",
+        "--out-dir",
+        "/tmp/engineering-baseline-compile-zqxdsfdu"
+      ],
+      "exit": 0,
+      "stdout": "Compiled /home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/docs/reviews/evidence/engineering-skills/baseline-packages/documentation -> /tmp/engineering-baseline-compile-zqxdsfdu/documentation\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "/tmp/engineering-baseline-compile-zqxdsfdu/documentation"
+      ],
+      "exit": 0,
+      "stdout": "OK /tmp/engineering-baseline-compile-zqxdsfdu/documentation\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "lint",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/docs/reviews/evidence/engineering-skills/baseline-packages/typescript-engineer"
+      ],
+      "exit": 0,
+      "stdout": "OK /home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/docs/reviews/evidence/engineering-skills/baseline-packages/typescript-engineer\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/docs/reviews/evidence/engineering-skills/baseline-packages/typescript-engineer"
+      ],
+      "exit": 0,
+      "stdout": "OK /home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/docs/reviews/evidence/engineering-skills/baseline-packages/typescript-engineer\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "compile",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/docs/reviews/evidence/engineering-skills/baseline-packages/typescript-engineer",
+        "--out-dir",
+        "/tmp/engineering-baseline-compile-zqxdsfdu"
+      ],
+      "exit": 0,
+      "stdout": "Compiled /home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/docs/reviews/evidence/engineering-skills/baseline-packages/typescript-engineer -> /tmp/engineering-baseline-compile-zqxdsfdu/typescript-engineer\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "/tmp/engineering-baseline-compile-zqxdsfdu/typescript-engineer"
+      ],
+      "exit": 0,
+      "stdout": "OK /tmp/engineering-baseline-compile-zqxdsfdu/typescript-engineer\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "lint",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/docs/reviews/evidence/engineering-skills/baseline-packages/node-engineer"
+      ],
+      "exit": 0,
+      "stdout": "OK /home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/docs/reviews/evidence/engineering-skills/baseline-packages/node-engineer\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/docs/reviews/evidence/engineering-skills/baseline-packages/node-engineer"
+      ],
+      "exit": 0,
+      "stdout": "OK /home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/docs/reviews/evidence/engineering-skills/baseline-packages/node-engineer\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "compile",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/docs/reviews/evidence/engineering-skills/baseline-packages/node-engineer",
+        "--out-dir",
+        "/tmp/engineering-baseline-compile-zqxdsfdu"
+      ],
+      "exit": 0,
+      "stdout": "Compiled /home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/docs/reviews/evidence/engineering-skills/baseline-packages/node-engineer -> /tmp/engineering-baseline-compile-zqxdsfdu/node-engineer\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "/tmp/engineering-baseline-compile-zqxdsfdu/node-engineer"
+      ],
+      "exit": 0,
+      "stdout": "OK /tmp/engineering-baseline-compile-zqxdsfdu/node-engineer\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "lint",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/docs/reviews/evidence/engineering-skills/baseline-packages/cli-engineer"
+      ],
+      "exit": 0,
+      "stdout": "OK /home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/docs/reviews/evidence/engineering-skills/baseline-packages/cli-engineer\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/docs/reviews/evidence/engineering-skills/baseline-packages/cli-engineer"
+      ],
+      "exit": 0,
+      "stdout": "OK /home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/docs/reviews/evidence/engineering-skills/baseline-packages/cli-engineer\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "compile",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/docs/reviews/evidence/engineering-skills/baseline-packages/cli-engineer",
+        "--out-dir",
+        "/tmp/engineering-baseline-compile-zqxdsfdu"
+      ],
+      "exit": 0,
+      "stdout": "Compiled /home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/docs/reviews/evidence/engineering-skills/baseline-packages/cli-engineer -> /tmp/engineering-baseline-compile-zqxdsfdu/cli-engineer\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/.worktrees/engineering-skills/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "/tmp/engineering-baseline-compile-zqxdsfdu/cli-engineer"
+      ],
+      "exit": 0,
+      "stdout": "OK /tmp/engineering-baseline-compile-zqxdsfdu/cli-engineer\n",
+      "stderr": ""
+    }
+  ]
+}

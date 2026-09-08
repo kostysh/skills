@@ -6,18 +6,9 @@ Current upstream evidence should come from the official [Node.js release table](
 
 ## Language, runtime, and runner baseline
 
-For new CLI test surfaces and when replacing test tooling:
+Apply the [Standard CLI toolchain policy](../SKILL.md#standard-cli-toolchain). New setup or authorized replacement uses `node:test` with the supported native TypeScript path and a separate typecheck. Existing repairs run the established runner/loader, including `tsx` when already used; adding regression coverage does not authorize replacing it. Check actual syntax, runtime versions, and loader configuration before deciding which execution mode applies.
 
-- use TypeScript for runtime code and tests
-- use `node:test` as the test runner
-- resolve the current Active LTS Node.js line from official Node.js sources before setting `engines`, CI, or test commands
-- use the native type-stripping behavior supported by that Active LTS; do not preserve obsolete experimental flags by memory
-- run an explicit TypeScript typecheck because native stripping does not type-check
-- keep directly executed test files and helpers within Node's supported erasable TypeScript profile and independent of `tsconfig`-only runtime transforms such as `paths`
-- never add or invoke `tsx`; rewrite incompatible test helpers to erasable TypeScript or execute Vite-built JavaScript
-- use Vitest only when the user or an authoritative project contract explicitly requires it
-
-Use a portable package script such as `node --test` when current Node discovery covers the repository layout. If explicit paths are required, avoid shell-only glob assumptions and verify the script on every claimed platform.
+For a new native test setup, use a portable package script such as `node --test` when current Node discovery covers the repository layout. If explicit paths are required, avoid shell-only glob assumptions and verify the script on every claimed platform.
 
 ## Test pyramid
 
@@ -78,7 +69,7 @@ Framework helpers may reduce rendering boilerplate, but they do not replace proc
 
 ## Quality gate
 
-If the target repository lacks an equivalent gate, add package scripts for:
+For new setup or explicitly authorized quality-gate hardening, add missing package scripts for:
 
 1. typecheck
 2. format check
@@ -88,7 +79,9 @@ If the target repository lacks an equivalent gate, add package scripts for:
 6. built-artifact smoke
 7. packed and installed-command verification for durable CLIs
 
-Expose at least `typecheck`, `format`, `format:check`, `lint`, `lint:fix`, and `test`. Preserve narrower formatter/linter scripts when the repository uses split tooling.
+In that setup scope, expose at least `typecheck`, `format`, `format:check`, `lint`, `lint:fix`, and `test`. Preserve narrower formatter/linter scripts when the repository uses split tooling.
+
+For an ordinary repair, run the applicable existing gate and add defect-focused coverage without replacing tools or installing an unrelated formatter/linter. Report any required unverified contour.
 
 The gate is necessary evidence, not sufficient proof of the user job. Do not call the CLI `verified` merely because these commands are green.
 
@@ -105,7 +98,7 @@ The build must preserve:
 - sourcemaps unless the distribution contract forbids them
 - an output path that matches `package.json#bin` and `package.json#files`
 
-If an existing project uses another build and migration is outside the request, verify its actual artifact without introducing a second bundler. Report the deviation from this skill's standard; do not claim Vite conformance.
+If an existing project uses another build and migration is outside the request, verify its actual artifact without introducing a second bundler. Use the actual artifact contract as the verification target.
 
 ## Installed-command evidence
 
@@ -204,7 +197,7 @@ If the publish response is ambiguous, read the registry before retrying. Never r
 
 ## Review checklist
 
-- Does the test command use `node:test` and the current Active LTS-supported TypeScript path without `tsx`?
+- Does the test command follow the established supported tooling, or the Standard CLI toolchain policy for a new setup or authorized replacement?
 - Was the exact built and installed command executed outside the source tree?
 - Did a representative success and failure job run, not only help/version?
 - Are stdout/stderr, exit codes, non-TTY behavior, and protected fail-before-side-effects asserted?

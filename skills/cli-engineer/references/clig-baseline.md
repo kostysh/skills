@@ -119,7 +119,7 @@ A production CLI should feel pleasant for humans and predictable inside scripts.
 
 - for general-user tools, consider whether a standalone distribution materially improves installation and removal
 - for language-specific developer tools, standard package-manager distribution is acceptable
-- analytics should be opt-in when possible, or at minimum explicitly disclosed and easy to disable
+- apply the canonical [telemetry consent rules](ux-and-security.md#telemetry-and-updates), including explicit opt-in for new collection
 - prefer docs instrumentation, download metrics, and direct user feedback over opaque background telemetry
 
 ### Documentation
@@ -136,7 +136,7 @@ CLIG is an excellent baseline, but adapt it carefully for this repository domain
 - CLIG does not focus on full-screen terminal programs. Use it for the command contract around a TUI, not as the sole guidance for persistent terminal UI design.
 - For Node.js, standalone distribution is a decision, not an absolute rule. npm distribution remains a sound default for interpreter-native or developer-facing tools; use SEA or installers only when distribution requirements justify the extra contract.
 - CLIG is stricter than many ecosystems about secret environment variables. For new designs, prefer files, stdin, keychain integration, secret managers, or IPC over env vars. If an existing ecosystem already depends on env-based secrets, document the risk and keep the interface explicit.
-- This skill's standard stack uses the current Active LTS Node.js line, TypeScript, Vite, `node:test`, and native type stripping, and prohibits `tsx`. An existing non-Vite build may be preserved when migration is outside the request; Vitest requires an explicit user or authoritative project contract. Treat these as this skill's operating standard layered on top of CLIG, not as a universal ecosystem claim.
+- Apply the [Standard CLI toolchain policy](../SKILL.md#standard-cli-toolchain) to new setup, authorized replacement, and preservation of existing tooling. These are task-scoped defaults layered on CLIG, not a universal ecosystem requirement.
 
 ## What To Pull Into Reviews
 

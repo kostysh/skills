@@ -10,9 +10,7 @@
 - Default to the lowest abstraction that still solves the real problem.
 - Before adding a new framework or library, check the first sufficient rung: built-in `node:util.parseArgs`, native shell/stdin/stdout behavior, a dependency already present in the project, then one small local adapter. Add a new CLI framework only when those rungs cannot meet the command, help, validation, extensibility, or TTY contract.
 - Verify the current Active LTS Node version and the current framework major before hardcoding version guidance into project files or docs.
-- For new CLI work and when build/test tooling is selected or replaced, use Vite and `node:test`. Never add or invoke `tsx`; use the current Active LTS native type-stripping path for compatible TypeScript.
-- Use Vitest only when the user or an authoritative project contract explicitly requires it.
-- Preserve an existing non-Vite build when migration is outside the request, verify its actual artifact, and report the deviation instead of expanding the alternative into another standard.
+- Apply the [Standard CLI toolchain policy](../SKILL.md#standard-cli-toolchain) for new setup or authorized replacement; an ordinary repair preserves existing supported build/test tools and verifies their actual artifact.
 - Preserve an existing framework unless it is the source of the problem or clearly blocks the required capability.
 
 ## Decision Matrix

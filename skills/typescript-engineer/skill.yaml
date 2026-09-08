@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "typescript-engineer"
-  source-version: "0.2.1"
+  source-version: "0.2.2"
   recommended-skill-md-max-bytes: 20000
   description: "Use for TypeScript language and type-system work, compiler diagnostics, type-safe APIs, tsconfig, and Biome/ESLint configuration. Ground explanations, review, diagnosis, and changes in repository and installed-version evidence; pair with runtime, framework, testing, validation, and domain owners."
 fragments:
@@ -12,55 +12,55 @@ references:
     title: "Generics"
     source: "references/generics.md"
     target: "references/generics.md"
-    required: false
+    required: true
     trigger: "Read this when designing or diagnosing generics, mapped or conditional types, template literal types, variadic tuples, or reusable type transforms."
   - id: "ref-monorepo"
     title: "Monorepo Typechecking"
     source: "references/monorepo.md"
     target: "references/monorepo.md"
-    required: false
+    required: true
     trigger: "Read this when the affected TypeScript project uses workspaces, project references, solution configs, composite builds, or shared tsconfig files."
   - id: "ref-overloads"
     title: "Function Overloads"
     source: "references/overloads.md"
     target: "references/overloads.md"
-    required: false
+    required: true
     trigger: "Read this when return types depend on input shape, an overloaded API is wrapped, or overloads must be compared with unions or an options object."
   - id: "ref-patterns"
     title: "Boundary Type Patterns"
     source: "references/patterns.md"
     target: "references/patterns.md"
-    required: false
+    required: true
     trigger: "Read this when modeling typed success/failure states, unknown boundaries, schema-derived types, or branded values without taking over runtime or domain policy."
   - id: "ref-practices"
     title: "TypeScript Practices"
     source: "references/practices.md"
     target: "references/practices.md"
-    required: false
+    required: true
     trigger: "Read this when migrating JavaScript, reducing unsafe any or assertions, preserving public type contracts, or handling TypeScript suppression directives."
   - id: "ref-runtime-derived-types"
     title: "Runtime-Derived Types"
     source: "references/runtime-derived-types.md"
     target: "references/runtime-derived-types.md"
-    required: false
+    required: true
     trigger: "Read this when deriving literal unions or API types with as const, typeof, indexed access, satisfies, or const type parameters."
   - id: "ref-toolchain"
     title: "TypeScript Toolchain"
     source: "references/toolchain.md"
     target: "references/toolchain.md"
-    required: false
+    required: true
     trigger: "Read this when changing tsconfig, module or moduleResolution, TypeScript versions, or coordinated Biome and ESLint plus typescript-eslint coverage."
   - id: "ref-type-debugging"
     title: "Type Debugging"
     source: "references/type-debugging.md"
     target: "references/type-debugging.md"
-    required: false
+    required: true
     trigger: "Read this when diagnosing compiler errors, inference failures, invalid indexing, assignability, overload resolution, or type-regression evidence."
   - id: "ref-type-system"
     title: "Type System"
     source: "references/type-system.md"
     target: "references/type-system.md"
-    required: false
+    required: true
     trigger: "Read this when the task needs TypeScript type-system fundamentals, narrowing, unions, intersections, interfaces, aliases, satisfies, unknown, or never."
 assets: []
 copies:
@@ -69,14 +69,17 @@ copies:
     target: "agents/openai.yaml"
     description: "Portable copy of agents/openai.yaml."
 supporting:
+  - id: supporting-implementation-log-20260908-1
+    source: docs/logs/implementation-log-20260908-1.md
+    target: docs/logs/implementation-log-20260908-1.md
+    description: Non-normative author implementation record; independent acceptance remains separate.
   - id: "supporting-implementation-log-20260715-1"
     source: "docs/logs/implementation-log-20260715-1.md"
     target: "docs/logs/implementation-log-20260715-1.md"
     description: "Non-normative log for the skill description length update."
 surfaces:
   active:
-    requiredReferences: []
-    optionalReferences:
+    requiredReferences:
       - "ref-generics"
       - "ref-monorepo"
       - "ref-overloads"
@@ -86,6 +89,7 @@ surfaces:
       - "ref-toolchain"
       - "ref-type-debugging"
       - "ref-type-system"
+    optionalReferences: []
   supportingGlobs:
     - "docs/*"
     - "docs/logs/*"
@@ -94,7 +98,7 @@ sections:
     - "Classify the request as explain, review/diagnose, or authorized change; review and diagnosis stay read-only unless the user also requests remediation."
     - "Establish the expected type or compiler behavior, repository policy, installed TypeScript and lint versions, relevant tsconfig and package or workspace commands, current diagnostics, and affected public call sites before choosing a fix."
     - "Apply precedence in this order: explicit user requirements, repository policy and compatible installed behavior, current official version-matched documentation, then this skill's portable defaults; stop when equal-authority inputs conflict."
-    - "Load only the optional reference triggered by the current problem and keep framework, runtime, testing, validation-library, and domain decisions with their owning skills."
+    - "Load only the required references whose conditions are triggered by the current problem and keep framework, runtime, testing, validation-library, and domain decisions with their owning skills."
     - "Define the evidence boundary before changing code: compiler and lint checks prove only the paths they inspect, not runtime or domain behavior."
   whenToUse:
     - "Explaining, designing, reviewing, diagnosing, or changing TypeScript language and type-system behavior."
@@ -154,11 +158,11 @@ sections:
     - id: "interop-node-runtime"
       domain: "Node execution mode, type stripping, ESM or CJS runtime semantics, and runtime import behavior"
       winner: "node-engineer"
-      rationale: "node-engineer establishes the runtime contract; typescript-engineer configures TypeScript consistently with that resolved contract."
+      rationale: "Consume node-engineer's exact executed entry, Node/loader versions, module mode, resolver rules, and smoke results before choosing module/emit settings. Return the compiler config, emitted specifiers and type evidence for Node to check against that same entry; typecheck cannot close its runtime claim."
     - id: "interop-testing"
       domain: "test strategy, runner behavior, mocks, coverage, and CI test contours"
       winner: "typescript-test-engineer"
-      rationale: "typescript-engineer owns compile-time type assertions and expected type contracts; typescript-test-engineer owns executable test design and runner policy."
+      rationale: "Pass expected public call/declaration behavior and positive/negative type assertions to typescript-test-engineer. Consume its scenario-to-command results only for the exercised files and boundary; it owns runner and test strategy, while this skill owns type soundness."
     - id: "interop-validation"
       domain: "runtime validation-library semantics and domain validation policy"
       winner: "the relevant validation-library, framework, or domain skill"
@@ -166,7 +170,11 @@ sections:
     - id: "interop-review"
       domain: "formal code-review scope, severity, findings format, and merge guidance"
       winner: "code-reviewer"
-      rationale: "typescript-engineer supplies TypeScript domain analysis while code-reviewer owns the formal review verdict and merge-risk synthesis."
+      rationale: "Pass the stable diff, affected callers/declarations, root diagnostics, and exact compiler evidence to code-reviewer for formal severity and merge-risk synthesis. A domain fix or green compiler is not that verdict."
+    - id: "interop-security"
+      domain: "security exploitability and vulnerability judgment"
+      winner: "security-reviewer"
+      rationale: "Pass the concrete type/runtime boundary, untrusted-input path and evidence to security-reviewer when a security judgment is required. Consume its scoped findings for authorized remediation; type soundness alone cannot establish security."
   commands: []
   gotchas:
     - id: "gotcha-empty-typecheck"
@@ -185,6 +193,15 @@ sections:
       priority: "medium"
       text: "Do not silently tighten an exported type without checking source compatibility, declaration output, and affected consumers."
   policies:
+    - id: policy-handoff-use
+      title: Use owner results
+      text: "Load another skill only when its decision is material to this task. Consume accepted product behavior from prd-engineer, implementation requirements from spec-engineer, architecture constraints from architecture-engineer, and task scope/checkpoints from delivery-planner when supplied; return the conflicting fact or missing decision to its owner rather than redesigning it. A handoff is usable only for the same contract, version and snapshot it covers."
+    - id: policy-missing-owner
+      title: Unavailable owner or evidence
+      text: "If a specialist, source or check is unavailable, continue supported local analysis and authorized changes. Identify the missing output and leave only its dependent decision or conclusion partial/blocked; do not invent a review verdict, product rule, security guarantee or runtime result."
+    - id: policy-publication-handoff
+      title: Publication handoff
+      text: "For an authorized publication step, pass changed paths, verification results, exact revision and remaining risks to git-engineer for Git operations and gh-utility for GitHub state. Consume fresh ref/check evidence for the matching revision; local success grants no publication authority and cannot replace unavailable remote evidence."
     - id: "policy-source-precedence"
       title: "Source precedence"
       text: "Explicit user requirements override repository policy only for the authorized task; compatible repository policy and installed behavior override generic defaults. Equal-authority conflicts stop the strongest claim."
@@ -205,8 +222,8 @@ sections:
     rules:
       - "Do not reference machine-specific absolute paths or require repository files outside this skill folder to understand core behavior."
       - "Treat package-manager commands, TypeScript versions, lint versions, tsconfig paths, workspace layout, and CI gates as discovered project context rather than portable constants."
-      - "Use only relative links for optional references and supporting documents inside the skill folder."
+      - "Use only relative links for conditional references and supporting documents inside the skill folder."
     checklist:
       - "Run skill-source-compiler lint, regenerate, and check after source changes."
-      - "Confirm every optional reference has a precise trigger and is reachable from generated SKILL.md."
+      - "Confirm every conditional reference has a precise trigger and is reachable from generated SKILL.md."
       - "Search the copied skill for absolute paths, stale assets or scripts, and external mandatory dependencies."

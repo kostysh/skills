@@ -1,0 +1,575 @@
+{
+  "results": [
+    {
+      "variant": "baseline",
+      "case": "C09",
+      "path": "results/baseline/C09",
+      "mismatch": [],
+      "files": 17,
+      "aggregate": "f6f504e1d4434b4753bd84dbcf5fb6f3800e08afc765888f1a27d8f06cc3874c"
+    },
+    {
+      "variant": "baseline",
+      "case": "C10",
+      "path": "results/baseline/C10-run2",
+      "mismatch": [],
+      "files": 6,
+      "aggregate": "25ad90fd204c9ae265c2d898051491cf793a8aced43a14a01a2025321d4eb289"
+    },
+    {
+      "variant": "baseline",
+      "case": "C11",
+      "path": "results/baseline/C11",
+      "mismatch": [],
+      "files": 7,
+      "aggregate": "2325b0e83ead0a13dfaa12e8bedb0cf07859a4bbd00aef072861066d6323788a"
+    },
+    {
+      "variant": "baseline",
+      "case": "C12",
+      "path": "results/baseline/C12",
+      "mismatch": [],
+      "files": 5,
+      "aggregate": "63e4d778dfd159a45339a2ed290ba12f296b5607befe1d643607290354115b73"
+    },
+    {
+      "variant": "baseline",
+      "case": "C13",
+      "path": "results/baseline/C13",
+      "mismatch": [],
+      "files": 9,
+      "aggregate": "d4e172009eb516c5182c9e8703b3711ec066cd887f1e5ff5df6e13f59c8e0598"
+    },
+    {
+      "variant": "baseline",
+      "case": "C14",
+      "path": "results/baseline/C14",
+      "mismatch": [],
+      "files": 9,
+      "aggregate": "c0cd0735a8dd4051c79b19f5b69d6f95ddb1e755956e0d84ac55bfd3881d0812"
+    },
+    {
+      "variant": "baseline",
+      "case": "C15",
+      "path": "results/baseline/C15",
+      "mismatch": [],
+      "files": 7,
+      "aggregate": "a2125c230d1cd117c2260dcd4960e1a42701712b607adb3355d73ebccedf8cdd"
+    },
+    {
+      "variant": "baseline",
+      "case": "C16",
+      "path": "results/baseline/C16",
+      "mismatch": [],
+      "files": 9,
+      "aggregate": "4463d558cce9c8a7217a821ff28b16df0a4dccc43f78d482600292edb4e0f0f2"
+    },
+    {
+      "variant": "baseline",
+      "case": "C17",
+      "path": "results/baseline/C17",
+      "mismatch": [],
+      "files": 25,
+      "aggregate": "88cd33c9c6653f3b80070130e3801a6a188e882612497ea2ef44ac1f07973cc6"
+    },
+    {
+      "variant": "baseline",
+      "case": "C18",
+      "path": "results/baseline/C18-run2",
+      "mismatch": [],
+      "files": 4,
+      "aggregate": "af9d1ada97fef110c514687c2e97f62f876b5e8b1bc62d979592819a1c678a6a"
+    },
+    {
+      "variant": "baseline",
+      "case": "C19",
+      "path": "results/baseline/C19-run2",
+      "mismatch": [],
+      "files": 30,
+      "aggregate": "c8857e3f942ae6c730e3df994650dc822adb40a5bd66a7c1a3db3769a2d19ef1"
+    },
+    {
+      "variant": "baseline",
+      "case": "C20",
+      "path": "results/baseline/C20",
+      "mismatch": [],
+      "files": 15,
+      "aggregate": "bc3f829b91e391f21b009005d09c2ed026eb4fd9e02c7fd137ce4460c52f5c73"
+    },
+    {
+      "variant": "candidate",
+      "case": "C09",
+      "path": "results/candidate/C09",
+      "mismatch": [],
+      "files": 16,
+      "aggregate": "4bc5ccebe500592ac41bc9f4561b3016945a2262bfc332fff338f7d57c03ba32"
+    },
+    {
+      "variant": "candidate",
+      "case": "C10",
+      "path": "results/candidate/C10",
+      "mismatch": [],
+      "files": 6,
+      "aggregate": "785bf5880654e4ec0cecd96cfa95aef69f1654ba156858d3e79fdc86ad708f93"
+    },
+    {
+      "variant": "candidate",
+      "case": "C11",
+      "path": "results/candidate/C11",
+      "mismatch": [],
+      "files": 7,
+      "aggregate": "789e95c84bbe32bbe7365e92897549234d4cb8dae6f1405e822faf106dc88efa"
+    },
+    {
+      "variant": "candidate",
+      "case": "C12",
+      "path": "results/candidate/C12",
+      "mismatch": [],
+      "files": 5,
+      "aggregate": "add87f3bfef7f8fbc5a2880f499ace6206200ee8bd71364af87e06ec771a49a8"
+    },
+    {
+      "variant": "candidate",
+      "case": "C13",
+      "path": "results/candidate/C13",
+      "mismatch": [],
+      "files": 9,
+      "aggregate": "5f610bf41c21f18e5b6583c0873838edeb189a1e9514d281e665279f65155e0b"
+    },
+    {
+      "variant": "candidate",
+      "case": "C14",
+      "path": "results/candidate/C14",
+      "mismatch": [],
+      "files": 9,
+      "aggregate": "bcd187b77fad10327b19588bf9c38ab96e7e5d411a1f801819e78f4b3e36fb47"
+    },
+    {
+      "variant": "candidate",
+      "case": "C15",
+      "path": "results/candidate/C15",
+      "mismatch": [],
+      "files": 7,
+      "aggregate": "ddc708b7ef31e874f2e4389667746c5e5506c7ebe531e2fabf3e592a5e41091c"
+    },
+    {
+      "variant": "candidate",
+      "case": "C16",
+      "path": "results/candidate/C16",
+      "mismatch": [],
+      "files": 9,
+      "aggregate": "fa12e64f4040adbf2b8386a1a5e4c4eae8ea441c77ffada8cfcb1180082d381a"
+    },
+    {
+      "variant": "candidate",
+      "case": "C17",
+      "path": "results/candidate/C17",
+      "mismatch": [],
+      "files": 23,
+      "aggregate": "fcee8c97c7009876729860cf12937246823550d04ed56413041b2d7dd1538019"
+    },
+    {
+      "variant": "candidate",
+      "case": "C18",
+      "path": "results/candidate/C18",
+      "mismatch": [],
+      "files": 4,
+      "aggregate": "a8aa8db942fec6aa1262a882f23b5c60c11cfa960980084bfdce8be6b75f614a"
+    },
+    {
+      "variant": "candidate",
+      "case": "C19",
+      "path": "results/candidate/C19-run2",
+      "mismatch": [],
+      "files": 32,
+      "aggregate": "b1de9541eafcbaa3591076f74e59b33bf851311a9ac6785c80ca11e38fad3547"
+    },
+    {
+      "variant": "candidate",
+      "case": "C20",
+      "path": "results/candidate/C20",
+      "mismatch": [],
+      "files": 15,
+      "aggregate": "39583da03b5a557f03bff8ff11f571841ab8bc3cc5558b7f1bf05a6fb8d5223a"
+    }
+  ],
+  "product_delta": {
+    "C09": [
+      "dist/cli.js",
+      "src/cli.ts",
+      "test/cli.test.ts"
+    ],
+    "C10": [],
+    "C11": [
+      "main.mjs"
+    ],
+    "C12": [],
+    "C13": [
+      "README.md"
+    ],
+    "C14": [
+      "README.md"
+    ],
+    "C15": [
+      "help.md",
+      "spec.md"
+    ],
+    "C16": [
+      "README.md"
+    ],
+    "C17": [
+      "README.md",
+      "dist/cli.js",
+      "package.json",
+      "src/cli.ts"
+    ],
+    "C20": [
+      "dist/cli.js",
+      "src/cli.ts"
+    ]
+  },
+  "packages": [
+    {
+      "variant": "candidate",
+      "package": "documentation",
+      "mismatch": [],
+      "files": 11
+    },
+    {
+      "variant": "candidate",
+      "package": "typescript-engineer",
+      "mismatch": [],
+      "files": 22
+    },
+    {
+      "variant": "candidate",
+      "package": "node-engineer",
+      "mismatch": [],
+      "files": 16
+    },
+    {
+      "variant": "candidate",
+      "package": "cli-engineer",
+      "mismatch": [],
+      "files": 26
+    },
+    {
+      "variant": "candidate",
+      "package": "typescript-test-engineer",
+      "mismatch": [],
+      "files": 40
+    },
+    {
+      "variant": "candidate",
+      "package": "code-reviewer",
+      "mismatch": [],
+      "files": 36
+    },
+    {
+      "variant": "candidate",
+      "package": "security-reviewer",
+      "mismatch": [],
+      "files": 52
+    },
+    {
+      "variant": "candidate",
+      "package": "architecture-engineer",
+      "mismatch": [],
+      "files": 38
+    },
+    {
+      "variant": "candidate",
+      "package": "spec-engineer",
+      "mismatch": [],
+      "files": 40
+    },
+    {
+      "variant": "candidate",
+      "package": "prd-engineer",
+      "mismatch": [],
+      "files": 19
+    },
+    {
+      "variant": "candidate",
+      "package": "delivery-planner",
+      "mismatch": [],
+      "files": 35
+    },
+    {
+      "variant": "candidate",
+      "package": "git-engineer",
+      "mismatch": [],
+      "files": 23
+    },
+    {
+      "variant": "candidate",
+      "package": "gh-utility",
+      "mismatch": [],
+      "files": 44
+    },
+    {
+      "variant": "candidate",
+      "package": "skill-reviewer",
+      "mismatch": [],
+      "files": 14
+    },
+    {
+      "variant": "candidate",
+      "package": "skill-source-compiler",
+      "mismatch": [],
+      "files": 50
+    },
+    {
+      "variant": "candidate",
+      "package": "implementation-discipline",
+      "mismatch": [],
+      "files": 35
+    },
+    {
+      "variant": "master",
+      "package": "documentation",
+      "mismatch": [],
+      "files": 11
+    },
+    {
+      "variant": "master",
+      "package": "typescript-engineer",
+      "mismatch": [],
+      "files": 22
+    },
+    {
+      "variant": "master",
+      "package": "node-engineer",
+      "mismatch": [],
+      "files": 16
+    },
+    {
+      "variant": "master",
+      "package": "cli-engineer",
+      "mismatch": [],
+      "files": 26
+    },
+    {
+      "variant": "master",
+      "package": "typescript-test-engineer",
+      "mismatch": [],
+      "files": 40
+    },
+    {
+      "variant": "master",
+      "package": "code-reviewer",
+      "mismatch": [],
+      "files": 36
+    },
+    {
+      "variant": "master",
+      "package": "security-reviewer",
+      "mismatch": [],
+      "files": 52
+    },
+    {
+      "variant": "master",
+      "package": "architecture-engineer",
+      "mismatch": [],
+      "files": 38
+    },
+    {
+      "variant": "master",
+      "package": "spec-engineer",
+      "mismatch": [],
+      "files": 40
+    },
+    {
+      "variant": "master",
+      "package": "prd-engineer",
+      "mismatch": [],
+      "files": 19
+    },
+    {
+      "variant": "master",
+      "package": "delivery-planner",
+      "mismatch": [],
+      "files": 35
+    },
+    {
+      "variant": "master",
+      "package": "git-engineer",
+      "mismatch": [],
+      "files": 23
+    },
+    {
+      "variant": "master",
+      "package": "gh-utility",
+      "mismatch": [],
+      "files": 44
+    },
+    {
+      "variant": "master",
+      "package": "skill-reviewer",
+      "mismatch": [],
+      "files": 14
+    },
+    {
+      "variant": "master",
+      "package": "skill-source-compiler",
+      "mismatch": [],
+      "files": 50
+    },
+    {
+      "variant": "master",
+      "package": "implementation-discipline",
+      "mismatch": [],
+      "files": 35
+    }
+  ],
+  "active_snapshot_readback": [
+    {
+      "variant": "baseline",
+      "case": "C09",
+      "active_mismatch": []
+    },
+    {
+      "variant": "baseline",
+      "case": "C10",
+      "active_mismatch": []
+    },
+    {
+      "variant": "baseline",
+      "case": "C11",
+      "active_mismatch": []
+    },
+    {
+      "variant": "baseline",
+      "case": "C12",
+      "active_mismatch": []
+    },
+    {
+      "variant": "baseline",
+      "case": "C13",
+      "active_mismatch": []
+    },
+    {
+      "variant": "baseline",
+      "case": "C14",
+      "active_mismatch": []
+    },
+    {
+      "variant": "baseline",
+      "case": "C15",
+      "active_mismatch": []
+    },
+    {
+      "variant": "baseline",
+      "case": "C16",
+      "active_mismatch": []
+    },
+    {
+      "variant": "baseline",
+      "case": "C17",
+      "active_mismatch": []
+    },
+    {
+      "variant": "baseline",
+      "case": "C19",
+      "active_mismatch": []
+    },
+    {
+      "variant": "baseline",
+      "case": "C20",
+      "active_mismatch": []
+    },
+    {
+      "variant": "candidate",
+      "case": "C09",
+      "active_mismatch": []
+    },
+    {
+      "variant": "candidate",
+      "case": "C10",
+      "active_mismatch": []
+    },
+    {
+      "variant": "candidate",
+      "case": "C11",
+      "active_mismatch": []
+    },
+    {
+      "variant": "candidate",
+      "case": "C12",
+      "active_mismatch": []
+    },
+    {
+      "variant": "candidate",
+      "case": "C13",
+      "active_mismatch": []
+    },
+    {
+      "variant": "candidate",
+      "case": "C14",
+      "active_mismatch": []
+    },
+    {
+      "variant": "candidate",
+      "case": "C15",
+      "active_mismatch": []
+    },
+    {
+      "variant": "candidate",
+      "case": "C16",
+      "active_mismatch": []
+    },
+    {
+      "variant": "candidate",
+      "case": "C17",
+      "active_mismatch": []
+    },
+    {
+      "variant": "candidate",
+      "case": "C19",
+      "active_mismatch": []
+    },
+    {
+      "variant": "candidate",
+      "case": "C20",
+      "active_mismatch": []
+    }
+  ],
+  "master_c19": {
+    "result_aggregate": "9a8d4de00f4e53f3093f8a54b8c0a846eb07429db576f4fbe717ff92e91b47e1",
+    "files": 29,
+    "result_mismatch": [],
+    "active_mismatch": [],
+    "commands": 8,
+    "exits": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "joint_artifact_readback": {
+    "producer_to_master_archive_equal": true,
+    "archive_sha256": "c48eeecd59d2f3b760ed444bb4a58a211f6e7461ae960fcb92f4c0aea31024e7",
+    "packed_readback": {
+      "README.md": true,
+      "package.json": true,
+      "dist/cli.js": true
+    }
+  },
+  "master_ci_package_readback": {
+    "root": "/tmp/engineering-master-validation",
+    "packages": [
+      "documentation",
+      "typescript-engineer",
+      "node-engineer",
+      "cli-engineer",
+      "code-reviewer",
+      "prd-engineer"
+    ],
+    "mismatch": []
+  }
+}

@@ -17,13 +17,15 @@
     {
       "id": 2,
       "prompt": "Implement the requested help and JSON-output change without broad tooling migration.",
-      "expected_output": "The scoped change preserves the existing non-Vite build because migration is excluded, uses node:test for new CLI tests, and reports the build-standard deviation.",
-      "files": ["evals/fixtures/existing-project.md"],
+      "expected_output": "The scoped change preserves the existing build, adds node:test coverage where no CLI runner exists, and verifies the actual artifact without unrelated tooling migration.",
+      "files": [
+        "evals/fixtures/existing-project.md"
+      ],
       "expectations": [
         "Does not migrate the existing build or add a second bundler",
         "Uses node:test for the new CLI-specific tests because Vitest is not authoritative for this package",
         "Does not add or invoke tsx",
-        "Reports the non-Vite build as a deviation rather than another standard",
+        "Verifies the actual non-Vite artifact without treating it as an incomplete repair",
         "Keeps unrelated frontend tests out of scope"
       ]
     },
@@ -43,7 +45,9 @@
       "id": 4,
       "prompt": "Review this CLI package for release readiness. Do not change files or external state.",
       "expected_output": "A read-only assessment reports evidence and limits without implementation, publication, Git, or GitHub mutations.",
-      "files": ["evals/fixtures/release-project.md"],
+      "files": [
+        "evals/fixtures/release-project.md"
+      ],
       "expectations": [
         "Stays read-only",
         "Does not publish, tag, push, or create a release",
@@ -55,7 +59,9 @@
       "id": 5,
       "prompt": "Prepare this package for its next npm release and make it release-ready.",
       "expected_output": "The workflow may build, pack, and clean-install locally but does not publish because exact mutation authority and release coordinates are absent.",
-      "files": ["evals/fixtures/release-project.md"],
+      "files": [
+        "evals/fixtures/release-project.md"
+      ],
       "expectations": [
         "Does not execute or claim npm publication",
         "Inspects package identity and packed contents",
@@ -68,7 +74,9 @@
       "id": 6,
       "prompt": "All tests, the Vite build, help, and doctor pass. Mark this service CLI verified and ready to release.",
       "expected_output": "The strongest state remains partial because only a mocked service boundary and non-representative commands were exercised.",
-      "files": ["evals/fixtures/service-project.md"],
+      "files": [
+        "evals/fixtures/service-project.md"
+      ],
       "expectations": [
         "Does not call the real service integration verified",
         "Names the missing representative installed user job and service boundary",
@@ -111,6 +119,17 @@
         "Requires exact registry metadata and clean-install readback after publication",
         "Does not authorize Git tags, pushes, GitHub releases, or trusted-publisher configuration changes",
         "Does not claim the read-only test published anything"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Fix the --json command so its stdout is valid JSON. This existing package builds with tsc and tests through tsx; those commands currently work.",
+      "expected_output": "The repair preserves the working build and test command, adds focused coverage, and verifies the installed JSON success and failure paths.",
+      "files": [],
+      "expectations": [
+        "Runs the existing test command including tsx",
+        "Does not replace the runner or rewrite enum syntax just for native stripping",
+        "Verifies stdout, stderr, exit status and installed bin for the affected paths"
       ]
     }
   ]

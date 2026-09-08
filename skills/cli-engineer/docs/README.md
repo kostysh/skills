@@ -24,6 +24,8 @@
 | [logs/implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) | Direct operator request | Independent scoped PASS |
 | [logs/implementation-log-20260716-1.md](logs/implementation-log-20260716-1.md) | Direct operator request | Independent PASS |
 
+| [logs/implementation-log-20260908-1.md](logs/implementation-log-20260908-1.md) | FOUR-SKILLS-20260908-v2 | Авторские исправления; независимая приёмка в общем журнале |
+
 ## Forward-test evidence
 
 - [forward-tests/forward-test-evidence-20260716-1.md](forward-tests/forward-test-evidence-20260716-1.md) — blind boundary, tooling, release-authority, substrate-only, completion, and interop cases for source version 0.2.0.

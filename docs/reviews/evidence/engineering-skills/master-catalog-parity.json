@@ -1,0 +1,8 @@
+{
+  "candidate": "/tmp/task-66a15575e496/app/catalog.json",
+  "master": "/tmp/task-6b9e80ee3d65/app/catalog.json",
+  "sha256": "af02cd5f5d26509a887b0242e3974ce1bf592a6e407774937e77548d0c071e34",
+  "byte_identical": true,
+  "task_identical": true,
+  "reused_result": "results/candidate/C18"
+}

@@ -1,0 +1,188 @@
+{
+  "criteria_revision": 3,
+  "matched_cases": [
+    {
+      "case": "C01",
+      "task_sha256": "2984727a8977e341b57a5cb47ff1767d12edd11fe9d7564bd056105e5873dfa1",
+      "baseline": "results/baseline/C01",
+      "candidate": "results/candidate/C01",
+      "baseline_commands": 4,
+      "candidate_commands": 3,
+      "evidence_hashes_verified": true
+    },
+    {
+      "case": "C02",
+      "task_sha256": "ea4f72cdbec794ccfdf6071b2e9ac2ccda4d73789af2a871f8f70918459dffbb",
+      "baseline": "results/baseline/C02",
+      "candidate": "results/candidate/C02",
+      "baseline_commands": 1,
+      "candidate_commands": 1,
+      "evidence_hashes_verified": true
+    },
+    {
+      "case": "C03",
+      "task_sha256": "42dc881b5458ce66717906d474d31f0705caa99bfac4d2e021d914c5f57a76ad",
+      "baseline": "results/baseline/C03",
+      "candidate": "results/candidate/C03",
+      "baseline_commands": 3,
+      "candidate_commands": 3,
+      "evidence_hashes_verified": true
+    },
+    {
+      "case": "C04",
+      "task_sha256": "e93bdc3f6692d54e240cebdf416589ffb50016355f4f929d720a9f8bde0822e7",
+      "baseline": "results/baseline/C04",
+      "candidate": "results/candidate/C04",
+      "baseline_commands": 2,
+      "candidate_commands": 2,
+      "evidence_hashes_verified": true
+    },
+    {
+      "case": "C05",
+      "task_sha256": "b65d843dd69e10cdf6c9d66c839a1bda10599a751e8490eb29b0620f8a33de41",
+      "baseline": "results/baseline/C05",
+      "candidate": "results/candidate/C05",
+      "baseline_commands": 3,
+      "candidate_commands": 8,
+      "evidence_hashes_verified": true
+    },
+    {
+      "case": "C06",
+      "task_sha256": "ba294fcbfba3608d2c3a11631ec1c64836d80e6996362e8a1ac6becfae7296cc",
+      "baseline": "results/baseline/C06",
+      "candidate": "results/candidate/C06",
+      "baseline_commands": 4,
+      "candidate_commands": 6,
+      "evidence_hashes_verified": true
+    },
+    {
+      "case": "C07",
+      "task_sha256": "59bca0664c13f707dde4493d3b6021bb9978b2764de00699a4002ebed67c9dea",
+      "baseline": "results/baseline/C07",
+      "candidate": "results/candidate/C07",
+      "baseline_commands": 6,
+      "candidate_commands": 4,
+      "evidence_hashes_verified": true
+    },
+    {
+      "case": "C08",
+      "task_sha256": "dec89f96aab540b6a5e968d2b110a31e2b9d1feb7ade25cf3c5cd03407347fc1",
+      "baseline": "results/baseline/C08",
+      "candidate": "results/candidate/C08",
+      "baseline_commands": 4,
+      "candidate_commands": 7,
+      "evidence_hashes_verified": true
+    },
+    {
+      "case": "C09",
+      "task_sha256": "328f95c0f608520370f0022161d7060c70a2d6fb20a129a6e869f65944343038",
+      "baseline": "results/baseline/C09",
+      "candidate": "results/candidate/C09",
+      "baseline_commands": 10,
+      "candidate_commands": 17,
+      "evidence_hashes_verified": true
+    },
+    {
+      "case": "C10",
+      "task_sha256": "27007251c7b0015c5e622833f941e3229ed06ca09cef2862377566f598a2258d",
+      "baseline": "results/baseline/C10-run2",
+      "candidate": "results/candidate/C10",
+      "baseline_commands": 1,
+      "candidate_commands": 3,
+      "evidence_hashes_verified": true
+    },
+    {
+      "case": "C11",
+      "task_sha256": "b764fab6c50d74b8105e9eba6c69341b661f307496d46a3cf95fcb47cf3a86ef",
+      "baseline": "results/baseline/C11",
+      "candidate": "results/candidate/C11",
+      "baseline_commands": 4,
+      "candidate_commands": 2,
+      "evidence_hashes_verified": true
+    },
+    {
+      "case": "C12",
+      "task_sha256": "49022314d156b757c1f4ebe82fed50d48abbe7e1ba227a5bdeea7df0642d655b",
+      "baseline": "results/baseline/C12",
+      "candidate": "results/candidate/C12",
+      "baseline_commands": 2,
+      "candidate_commands": 1,
+      "evidence_hashes_verified": true
+    },
+    {
+      "case": "C13",
+      "task_sha256": "1a42ee1d52f1f5a3d084d9609d211bb4d9c2b71d5093cdd64e12c408a9aee437",
+      "baseline": "results/baseline/C13",
+      "candidate": "results/candidate/C13",
+      "baseline_commands": 10,
+      "candidate_commands": 14,
+      "evidence_hashes_verified": true
+    },
+    {
+      "case": "C14",
+      "task_sha256": "1ddc19ccd688f921d7ffcac63512167d58536e3be4f566a6bcb17318b11c67a1",
+      "baseline": "results/baseline/C14",
+      "candidate": "results/candidate/C14",
+      "baseline_commands": 8,
+      "candidate_commands": 12,
+      "evidence_hashes_verified": true
+    },
+    {
+      "case": "C15",
+      "task_sha256": "5ffb098471e3fc367731048765beae6fcad92449ba4e102b8ecf64ff299f6fe1",
+      "baseline": "results/baseline/C15",
+      "candidate": "results/candidate/C15",
+      "baseline_commands": 2,
+      "candidate_commands": 2,
+      "evidence_hashes_verified": true
+    },
+    {
+      "case": "C16",
+      "task_sha256": "87bce60e4ddd0bc46a7522befda05bd7e3469126a0f5d242635ac104f3d4e761",
+      "baseline": "results/baseline/C16",
+      "candidate": "results/candidate/C16",
+      "baseline_commands": 8,
+      "candidate_commands": 9,
+      "evidence_hashes_verified": true
+    },
+    {
+      "case": "C17",
+      "task_sha256": "b8d6219f0ce649a9adb5fb207aeec84c07b16dece8dd49052dbf228422fcf21f",
+      "baseline": "results/baseline/C17",
+      "candidate": "results/candidate/C17",
+      "baseline_commands": 17,
+      "candidate_commands": 16,
+      "evidence_hashes_verified": true
+    },
+    {
+      "case": "C18",
+      "task_sha256": "27266ecbf727e3b7481e08459fed7a111fd089de5cb38e56c69581473a194d08",
+      "baseline": "results/baseline/C18-run2",
+      "candidate": "results/candidate/C18",
+      "baseline_commands": 0,
+      "candidate_commands": 0,
+      "evidence_hashes_verified": true
+    },
+    {
+      "case": "C19",
+      "task_sha256": "3e07781c43fc9b8c4f48d6cdbd6597c51ce4cf16b83b551ff801147b7dfda864",
+      "baseline": "results/baseline/C19-run2",
+      "candidate": "results/candidate/C19-run2",
+      "baseline_commands": 11,
+      "candidate_commands": 14,
+      "evidence_hashes_verified": true
+    },
+    {
+      "case": "C20",
+      "task_sha256": "ce5c9fb3bfb7b2ba359a09a19678755fbd878d6c69a0557324f1c81b4f3f46d9",
+      "baseline": "results/baseline/C20",
+      "candidate": "results/candidate/C20",
+      "baseline_commands": 11,
+      "candidate_commands": 13,
+      "evidence_hashes_verified": true
+    }
+  ],
+  "all_twenty_tasks_identical": true,
+  "archived_file_hashes_verified": true,
+  "C19_scope": "Producer outputs naturally differ; same C17 inputs and final C19 collector/task; earlier incomplete collector runs retained"
+}

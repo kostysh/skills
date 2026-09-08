@@ -5,11 +5,11 @@ description: Create, review, restructure, and rewrite source-grounded technical
   explanations, docs architecture, and audits of user-need fit, factual support,
   task completion, and maintainability.
 metadata:
-  source-version: 0.2.0
+  source-version: 0.2.1
   tags: documentation, technical-writing, diataxis, tutorials, how-to, reference,
     explanation
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 77f2c1370234e586d38145e401ebd2f8cdac7c75b1eb95f45abb2d5ab7ba40b6
+  skillforge-source-hash: 707cfce9fa20523bbcf4813819fb6f30accb3af5736e3d57909e000eee7fa4c6
 ---
 
 # documentation
@@ -33,7 +33,7 @@ metadata:
 ## When NOT to use this skill
 
 - Marketing copy, landing pages, or brand messaging.
-- Product requirements, software specifications, ADRs, RFCs, or architecture decisions.
+- Defining or changing product requirements, implementation behavior, architecture decisions, or delivery decomposition; route by the decision being made, not the document title.
 - Changelogs, release notes, incident reports, or status updates.
 - Pure technical correctness work where no documentation deliverable or review is requested.
 - File-format or visual-layout work whose primary problem is DOCX, PDF, or rendered-page fidelity.
@@ -179,7 +179,8 @@ Deliver an actionable document, review, or restructure handoff without crossing 
 1. In author or rewrite mode, create the requested artifact and keep factual, procedural, and version claims traceable to the established basis.
 2. In review mode, remain read-only unless remediation was also authorized; lead with inaccurate or unusable behavior, then user-need and structure mismatches, then style.
 3. In restructure mode, provide or apply a keep, rewrite, split, move, and retire map with link, navigation, URL, and redirect implications proportional to the requested scope.
-4. Route missing product decisions, technical facts, site mechanics, or file-format concerns to their owners while preserving the documentation intent and handoff.
+4. Route only the decision or evidence needed by this task to its owner in Interop priority; pass the reader goal, target state, accepted sources, exact question, and existing evidence. Consume the returned decision or result only within its stated scope and version.
+5. Load a neighboring skill only when that dependency applies and it is available. If unavailable, continue content work supported by accepted facts and direct checks; name the missing decision or unperformed specialist assessment, withhold dependent claims, and use the existing documentation status contract. Ordinary documentation does not require a specialist gate; unresolved product decisions still require their established owner.
 
 Validation:
 
@@ -191,10 +192,11 @@ Validation:
 Match the completion claim to current semantic, factual, executable, and publication evidence.
 
 1. Trace factual claims to authoritative sources and check terminology, language, prerequisites, examples, and expected results against the target version.
-2. For tutorials, safely walk the path end to end when possible; for how-to guides, check the main executable path and material branches; for reference, compare the scoped entries with the authoritative contract; for explanation, check factual claims and attributed rationale.
-3. For moved or published content, run available link, navigation, route, and docs-build checks; treat formatting, lint, file presence, and build success as structural evidence only.
-4. Do not execute destructive, production, privileged, or externally visible operations solely to validate documentation without authority; use a safe environment or static evidence and report the gap.
-5. Report structure-reviewed for a structure-only review, draft when material functional checks are missing, verified only when all applicable checks for the requested documentation boundary pass, or blocked when an unresolved authority gap prevents safe delivery.
+2. For executable CLI or Node/TypeScript documentation, match the handoff to the exact target version and executed artifact, runtime and platform, commands and flags, prerequisites, stdout/stderr, exit codes, and observed success/error evidence as applicable. For packaged CLI instructions, identify the package and installed bin. Use source or typecheck evidence only for its boundary; a source-tree run cannot verify instructions for an untested installed artifact.
+3. For tutorials, safely walk the path end to end when possible; for how-to guides, check the main executable path and material branches; for reference, compare the scoped entries with the authoritative contract; for explanation, check factual claims and attributed rationale.
+4. For moved or published content, run available link, navigation, route, and docs-build checks; treat formatting, lint, file presence, and build success as structural evidence only.
+5. Do not execute destructive, production, privileged, or externally visible operations solely to validate documentation without authority; use a safe environment or static evidence and report the gap.
+6. Report structure-reviewed for a structure-only review, draft when material functional checks are missing, verified only when all applicable checks for the requested documentation boundary pass, or blocked when an unresolved authority gap prevents safe delivery.
 
 Validation:
 
@@ -203,10 +205,14 @@ Validation:
 
 ## Interop priority
 
-- **product requirements, implementation-ready specifications, ADRs, RFCs, architecture decisions, and their factual authority:** prd-engineer, spec-engineer, or architecture-engineer according to artifact type. documentation may improve presentation and information design but must not create or revise the owning product or engineering decision.
+- **unresolved product scope or acceptance, implementation behavior, and architecture boundaries or trade-offs:** prd-engineer for product decisions; spec-engineer for implementation contracts; architecture-engineer for architecture decisions. Pass the accepted source and exact unresolved decision; consume the owner's decision and applicability as factual authority. A document title such as RFC does not select its owner. documentation may improve presentation but cannot invent the decision or its approval.
+- **decomposition into implementation tasks, dependencies, and sequencing:** delivery-planner. Pass accepted product, specification, and architecture sources plus requested scope; consume their traced task and handoff results. Documentation structure is local work; delivery decomposition must not manufacture scope from an editorial outline.
+- **executable CLI, Node.js, or TypeScript instructions needing technical diagnosis or verification:** cli-engineer for public commands and installed-bin behavior; node-engineer for runtime/version execution; typescript-engineer for compiler/type contracts. Supply the exact failing example and target artifact; consume the versioned command, runtime, or compiler result with raw evidence and limits using the executable-documentation check above. Do not turn a typecheck into runtime proof or change product code under documentation-only authority.
+- **test design or runner diagnosis, formal code review, or security assessment required by the task:** typescript-test-engineer, code-reviewer, or security-reviewer for the respective decision. Pass the documented behavior, exact snapshot, observed failure and requested check; consume test results and coverage limits, scoped code findings, or exploitability findings respectively. Preserve each owner's verdict and read-only boundary; ordinary prose edits do not trigger these assessments.
+- **authorized Git operations or GitHub resource inspection and publication:** git-engineer for history and refs; gh-utility for GitHub operations and fresh platform state. Pass exact repository, paths, refs or resource identity and existing action authority; consume verified ref/OID or resource/check readback. Writing documentation does not authorize commit, push, PR publication, or merge; unavailable publication evidence leaves that boundary unverified.
 - **framework, API, security, data, operational, and other specialized technical facts:** The relevant domain or framework skill and accepted project sources. documentation owns reader fit and form while domain owners establish technical correctness.
 - **Docusaurus config, routes, sidebars, MDX mechanics, search, build, deployment, and redirects:** docusaurus-repo. documentation owns content information architecture; docusaurus-repo owns platform implementation and publication mechanics.
-- **DOCX or PDF generation, editing, rendering, pagination, and visual-layout fidelity:** doc or pdf according to file format. documentation owns content intent and form while the format skill owns the rendered artifact boundary.
+- **DOCX or PDF generation, editing, rendering, pagination, and visual-layout fidelity:** An available skill discovered in the current catalog by its DOCX or PDF capability. Pass content, audience, required format and layout constraints; consume the artifact and render-check results. documentation owns content intent and form. If no format capability is available, complete supported content work and report rendering unverified; do not claim a verified rendered artifact.
 - **whether documentation or other artifacts prove a broader delivered product or system capability:** concept-conformance-reviewer. documentation can describe or support a capability but does not independently prove that runtime behavior exists.
 
 ## Gotchas

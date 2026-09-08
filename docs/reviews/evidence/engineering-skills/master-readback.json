@@ -1,0 +1,7 @@
+{
+  "time": "2026-09-08T19:11:01.278670+00:00",
+  "command": "git ls-remote https://github.com/kostysh/skills.git refs/heads/master",
+  "sha": "504b87331f22b3a5303875bef69163a40d4372d7",
+  "equals_baseline": true,
+  "basis": "Operator selected master for final dependencies; published ref unchanged from baseline; no G5 worktree read or copied"
+}
