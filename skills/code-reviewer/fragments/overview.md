@@ -2,6 +2,8 @@ Review one reproducible code-change snapshot for merge risk, not style. Keep rev
 
 When the user asks only for over-engineering, simplification, unnecessary dependency, or deletion review, use the bounded `complexity-only` mode from `references/complexity-only.md` and do not imply a general merge recommendation. When the user asks for both normal review and simplification, run normal merge-risk review first and add a separate complexity section.
 
+The mode determines which passes apply; common snapshot, read-only, evidence, and authority rules still apply. Follow the user's current scope within host and repository constraints. If a rule blocks the requested review, name the exact rule, applicability and missing input; preserve independently supported findings. Reuse existing permission for the same bounded action, and check command side effects before running tests or tools. Use a disposable copy for checks that would change the reviewed snapshot.
+
 ## Skill Interop (Priority)
 
 - This skill owns review sequence, diff completeness, severity labeling, evidence quality, and merge recommendation framing.
@@ -17,9 +19,9 @@ When the user asks only for over-engineering, simplification, unnecessary depend
 
 ## Non-Negotiables
 
-- Read `references/diff-completeness.md`, `references/findings-format.md`, and `references/severity-confidence.md` on every review. Load all other references only when their triggers match.
+- Read `references/diff-completeness.md`, `references/findings-format.md`, and `references/severity-confidence.md` on every review. Other references are required only when their triggers match.
 - Keep review read-only. If the user also requests fixes, treat implementation as a separate phase and mark the review stale after any mutation.
-- Read the full diff. If the diff is truncated, enumerate changed files and read changed hunks directly from the files.
+- Account for the full requested scope. For diff review, recover truncated hunks from the files when possible; list unavailable files explicitly and retain supported partial findings under `limited`.
 - Separate report scope from research scope:
   - report only on the diff or files under review
   - research the wider codebase when needed to confirm or clear a concern
@@ -37,14 +39,14 @@ When the user asks only for over-engineering, simplification, unnecessary depend
 - Prefer a smaller set of real findings over a long list of weak comments.
 - If you cannot verify a concern, move it to assumptions or open questions instead of upgrading it to a finding.
 
-## Fast Workflow
+## Normal Merge-risk Workflow
 
 1. Establish the review basis using `references/diff-completeness.md`:
    - authoritative target, base, scope, starting snapshot identity, linked issue, user intent, and any available normative source
    - note risky file classes: migrations, auth, CI, runtime config, state, tests, runtime gates
-2. Read the full diff and list touched files.
+2. Read the available diff and account for every touched file, distinguishing inspected content from unavailable content.
 3. If normative context exists, run the lightweight pass from `references/spec-pass.md`.
-4. If diff completeness is in doubt, follow `references/diff-completeness.md` before writing any findings.
+4. Resolve completeness limits through `references/diff-completeness.md`; do not discard a finding established on a stable accessible part because another file is unavailable.
 5. Route by file type and load only the relevant domain skill. See `references/domain-routing.md`.
 6. If policy/admission triggers are present, run the bounded pass from `references/policy-admission-merge-risk.md`.
 7. If runtime-gate deployed-path triggers are present, run the pass from `references/runtime-gate-deployed-path.md`.
@@ -59,46 +61,17 @@ When the user asks only for over-engineering, simplification, unnecessary depend
    - the surrounding code does not already mitigate it
    - severity matches actual impact
    - confidence is high enough to emit as a finding instead of a question
-11. Recheck snapshot identity. If it changed, mark the review stale and do not approve until a fresh or bounded delta review completes.
+11. Recheck snapshot identity. If it changed, mark the review stale and do not approve until a fresh or bounded delta review completes. After sufficient checks, repeat or broaden only for a new change, failure, or concrete unresolved concern.
 12. Start with one plain-language outcome sentence, then report findings by severity, the mandatory evidence footer, and exactly one recommendation status.
 
-## What to Check
+## Review lenses
 
-### Correctness and Regression
-
-- Spec, issue, or acceptance-criteria drift between intended and implemented behavior
-- Broken control flow, state drift, stale assumptions, or missing edge-case handling
-- Incorrect data mapping, serialization, parsing, or boundary handling
-- Async ordering issues, retries, timeouts, cancellation, or resource cleanup gaps
-- Contract drift between producer and consumer
-
-### Design and Maintainability
-
-- Hidden coupling, duplicated rules, poor abstraction seams, or unclear ownership
-- Public API changes without migration path or compatibility strategy
-- Significant new behavior with no clear requirement or contract basis
-- Configuration or environment assumptions that are not explicit
-- Code that makes future changes harder without a payoff
-
-### Tests and Operability
-
-- Missing tests for merge-critical behavior
-- Missing tests for requirement-critical behavior when a normative source is available
-- Tests that do not exercise the real risk path
-- API tests that pass through mocked or in-memory stores while the real persistence/RLS/RPC/provider boundary can behave differently
-- Fixtures that bypass production invariants, such as impossible role/profile states, mismatched session/context versions, wrong tenant/scope, or disabled/revoked statuses that production would reject
-- Missing negative tests for stale session, stale active context, wrong role, wrong scope/tenant, disabled/revoked account/session/role, or missing profile/readiness state in auth/RBAC/session/context changes
-- Long-lived protected endpoints that only test opening admission and not permission revocation, status change, maintenance denial, or context change during the connection
-- Audit/durable behavior whose fallback or error path is silent best effort without test evidence
-- New logs, metrics, migrations, jobs, or background work without enough validation
-- Changes that need rollback or release notes but do not acknowledge it
-
-### Performance and Compatibility
-
-- New hot-path work, N+1 patterns, expensive loops, or repeated I/O
-- Browser, runtime, schema, or API compatibility hazards
-- Cache invalidation or stale data risks
-- Resource usage that can grow with attacker or user input
+Apply the four passes to the changed behavior: correctness and contract drift;
+justified design and dependencies; tests and operability; performance and
+compatibility. Consider boundary values, async/resource lifetime, failure paths,
+public consumers and rollback where relevant. The detailed questions belong in
+`references/methodology.md` for broad, formal, high-risk or large reviews; the
+conditional gate references own their specialized checks.
 
 ## High-risk Review Surfaces
 
@@ -149,7 +122,7 @@ Always read:
 - `references/findings-format.md` - findings shape, mandatory evidence footer, and recommendation statuses
 - `references/severity-confidence.md` - confidence gating and impact-based severity
 
-Read conditionally:
+Required when the stated condition applies:
 
 - `references/methodology.md` - broad, formal, high-risk, or large review needing the full pass order
 - `references/spec-pass.md` - linked issue, acceptance criteria, contract, ADR, migration note, or other normative source

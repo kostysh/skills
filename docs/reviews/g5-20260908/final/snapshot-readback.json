@@ -1,0 +1,35 @@
+[
+  {
+    "snapshot": "candidate-v2",
+    "identity": "6ab6ffe4b3646630d01c775c629212fc6af57c7a4e6d5c64e18e305499f6ffbc",
+    "files": 446,
+    "mismatches": 0,
+    "extra_files": 0
+  },
+  {
+    "snapshot": "candidate-v2-source",
+    "identity": "14e896ffa04c5641919487e370f0331bf2c3c94a4a88822a0deb277afdfece37",
+    "files": 88,
+    "mismatches": 0,
+    "extra_files": 0
+  },
+  {
+    "snapshot": "candidate-v3",
+    "identity": "a2c5e282964bdec51b82e628856c8debf8d71c78d6502df69f2d3af5bfbd92e2",
+    "files": 446,
+    "mismatches": 0,
+    "extra_files": 0
+  },
+  {
+    "snapshot": "candidate-v3-source",
+    "identity": "b6c5a954d17876706999202bf85d107231983939c41b007cedf0a0e0b78f6dae",
+    "files": 88,
+    "mismatches": 0,
+    "extra_files": 0
+  },
+  {
+    "snapshot": "worktree vs candidate-v3-source",
+    "files": 88,
+    "mismatches": 0
+  }
+]

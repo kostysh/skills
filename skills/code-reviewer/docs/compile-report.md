@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.4.5`
+- Skill source version: `0.4.6`
 - CLI package version: `0.1.0`
 
 ## Source files
@@ -28,8 +28,14 @@ Generated from `skill.yaml`.
 
 ## Required references
 - `references/diff-completeness.md`
+- `references/domain-routing.md`
 - `references/findings-format.md`
+- `references/methodology.md`
+- `references/policy-admission-merge-risk.md`
+- `references/runtime-gate-deployed-path.md`
 - `references/severity-confidence.md`
+- `references/spec-pass.md`
+- `references/complexity-only.md`
 
 ## Warnings
 - none

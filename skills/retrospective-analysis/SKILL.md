@@ -8,9 +8,9 @@ compatibility: Portable documentation-only skill. It consumes available evidence
   and project rules; it has no required CLI, tracker, runtime, or repository
   layout.
 metadata:
-  source-version: 0.1.0
+  source-version: 0.1.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 676464b9c7ddd706d029c244841374bba69a0ba3a0221c2a3a2bbb71ede295ba
+  skillforge-source-hash: 8d8fb0c346e9ed942e2f01f8a72f2e3a2a6f7dfb5a268465629e969008ac8d27
 ---
 
 # retrospective-analysis
@@ -21,7 +21,7 @@ metadata:
 2. State the retrospective capability, substrate, and anti-claims; a report, issue count, or green audit cannot by itself prove that the underlying process improved.
 3. Select `targeted` for one bounded incident, review loop, or failure class, and `full evidentiary` for a slice, project, major session, systemic incident, or explicit exhaustive request.
 4. Establish the phase boundary, authority order, allowed evidence locations, mutation authority, intended outputs, and unavailable-source policy before drawing conclusions.
-5. For `full evidentiary`, read the evidence/causality and report/remediation references in full before analysis. Read task-routing only after task creation is requested and approved.
+5. For `full evidentiary`, read the evidence/causality and report/remediation references in full before analysis. For targeted work, use their applicable sections; load task-routing only for a requested handoff or its reconciliation.
 6. Prefer existing evidence and narrow read-only aids. Do not add a registry, script, harness, or workflow unless a named repeated risk cannot be checked sufficiently with existing means and its maintenance cost is lower than recurrence.
 
 ## When to use this skill
@@ -77,7 +77,7 @@ Validation:
 Turn evidence into falsifiable problems rather than anecdotes or audit transcription.
 
 1. Extract atomic observations with exact evidence pointers and separate fact, inference, and uncertainty.
-2. For each accepted problem, trace symptom, immediate cause, systemic root cause, prevention failure, late-detection reason, and consequence.
+2. For each accepted problem, trace symptom, immediate cause, systemic root cause, prevention failure, late-detection reason, and consequence; mark unsupported links unknown instead of inventing causes or controls.
 3. Verify every audit finding against the primary artifact; classify false positives, weak criteria, or overly broad prescriptions as audit-method findings instead of artifact defects.
 4. Classify contributing owners such as skill weakness, method ambiguity, skill misuse, missing project rule, missing automated check, implementation or test defect, document-code drift, tool limit, or audit defect only when evidence supports that link.
 5. Reject the inference that every repeated symptom has one root cause or that every audit finding implies a skill change.
@@ -104,21 +104,22 @@ Validation:
 - No commit subject, issue state, or document claim alone proves implementation.
 - Final problem rows have distinct causes and prevention mechanisms.
 
-### Workflow stage: Produce the report, matrix, and remediation plan
+### Workflow stage: Produce the mode-appropriate result
 
-Deliver a human-readable account and machine-readable mapping whose counts, statuses, and actions agree.
+Deliver a usable causal account and residual recommendations, with full reconciliation only for the full evidentiary claim.
 
-1. For full mode, read the report/remediation reference and produce the required report, matrix, appendices, reconciled counts, and statistics.
-2. Tie each active recommendation to evidence-backed root problems and distinguish project rules, skills or methods, tests or tools, runtime or domain work, and audit-method changes.
-3. Apply the complexity gate before recommending automation or a new workflow.
-4. Turn active recommendations into a strictly numbered independently assignable plan; record explicit dispositions for already implemented, cancelled, rejected, superseded, or not-applicable recommendations.
-5. Keep task creation outside report acceptance and stop for separate operator approval.
+1. Follow the mode/output contract in the report/remediation reference. A targeted answer keeps evidence, causality limits, prior-fix status, and a proportionate recommendation concise; it does not require a matrix or a project task hierarchy.
+2. For full mode, read the report/remediation reference and produce the required report, matrix, appendices, reconciled counts, and statistics.
+3. Tie each active recommendation to evidence-backed root problems and distinguish project rules, skills or methods, tests or tools, runtime or domain work, and audit-method changes.
+4. Apply the complexity gate before recommending automation or a new workflow.
+5. For full mode or an explicitly requested plan, map active recommendations into numbered steps; keep project task semantics with delivery-planner. Otherwise provide only the supported recommendation and next owner. Exclude verified completed or inactive work from new tasks.
+6. Task creation needs its own action/target authorization; reuse it if already given. Without it, finish the requested analysis or plan and stop only the external mutation.
 
 Validation:
 
-- Observation, problem, recommendation, and plan-step mappings reconcile.
+- Full-mode observation, problem, recommendation, and plan-step mappings reconcile; targeted output makes no full-completeness claim.
 - Every critical or high problem has concrete prevention or an explicit blocker.
-- The plan contains only residual work and can be assigned by step number.
+- Any requested plan contains only residual work and can be assigned by step number.
 
 ### Workflow stage: Independently review and define effectiveness
 
@@ -131,7 +132,7 @@ Protect completeness and causality without mistaking documents or tasks for chan
 
 Validation:
 
-- The stable snapshot has an honest independent verdict or is explicitly blocked.
+- A full or otherwise required independent verdict covers a stable snapshot or remains explicitly blocked; targeted analysis does not inherit a full-mode independence gate.
 - Later mutations that change scope, concepts, mappings, or recommendations make the prior verdict stale.
 - Effectiveness has an observable recurrence or prevention measure.
 
@@ -164,15 +165,15 @@ Track the status of the historical occurrence separately from the status of the 
 Use targeted mode for one bounded problem and reserve closed-universe, machine-readable, independently reviewed full retrospectives for broad or systemic claims.
 
 ### Task-separation policy
-Accepting a retrospective report and approving creation of remediation tasks are separate operator decisions.
+Report acceptance does not authorize external tasks. Reuse explicit task-creation permission within its accepted action/target scope; ask only for missing authority, and identify the exact rule and condition when it blocks a requested transition.
 
 ### Effectiveness policy
 Documents, rules, skills, scripts, tasks, and green CI show implemented substrate; only comparable future behavior can demonstrate prevention effectiveness.
 
-## Optional references
+## Required active references
 - [Evidence, causality, and deduplication](references/evidence-and-causality.md) — Read this for every full evidentiary retrospective and whenever source closure, audit-finding causality, prior-fix verification, or deduplication is material.
-- [Report, matrix, and remediation plan](references/report-and-remediation-plan.md) — Read this before producing a full report, machine-readable matrix, recommendation set, or independently assignable remediation plan.
-- [Approved task handoff](references/task-routing.md) — Read this only when the operator requests or approves creation of tracker tasks from an accepted retrospective plan.
+- [Report, matrix, and remediation plan](references/report-and-remediation-plan.md) — Read the mode/output contract before recommendations or a remediation plan; read the full-report and matrix sections for full evidentiary mode only.
+- [Approved task handoff](references/task-routing.md) — Read this when preparing or executing an explicitly requested tracker handoff, or reconciling its result; apply its mode-specific gates before any mutation.
 
 ## Portability rules
 
@@ -183,9 +184,8 @@ Documents, rules, skills, scripts, tasks, and green CI show implemented substrat
 
 ## Portability checklist before finishing
 
-- Confirm the generated SKILL links all three active references with explicit load triggers.
-- Confirm no absolute path, project issue ID, tracker field, or repository name appears in the active surface.
-- Compile to an isolated directory and verify that the emitted skill remains complete without the source repository.
+- During skill maintenance only, check all active references and load triggers plus portability of local dependencies.
+- During skill maintenance only, compile to an isolated directory and verify the emitted package; ordinary retrospective work needs neither the compiler nor the source repository.
 
 ## Supporting and historical surface
 

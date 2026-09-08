@@ -11,7 +11,9 @@ test('bundled review template preserves the outcome-first output contract', asyn
     readSkillFile('assets/pr-review-template.md'),
   ]);
 
-  assert.match(manifest, /source-version: 0\.4\.5/);
+  const sourceVersion = manifest.match(/source-version:\s*(\d+\.\d+\.\d+)/)?.[1];
+  assert.ok(sourceVersion, 'source declares a semantic content version');
+  assert.equal(skill.match(/source-version:\s*(\d+\.\d+\.\d+)/)?.[1], sourceVersion);
   assert.match(manifest, /source: assets\/pr-review-template\.md/);
   assert.match(skill, /Begin with one plain-language outcome sentence, then findings by severity/);
   assert.match(skill, /`assets\/pr-review-template\.md`/);

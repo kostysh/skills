@@ -2,8 +2,9 @@
 
 - authoritative target/base/scope resolved without guessing
 - starting snapshot identity recorded and review kept read-only
-- full diff read
-- changed files accounted for
+- requested review mode preserved; diff base omitted only when not applicable to the explicit scope
+- all available in-scope content read; unavailable content recorded as a coverage limit
+- changed files accounted for without dropping confirmed partial findings
 - spec or intent alignment checked when normative sources exist
 - risky paths reviewed: auth, migrations, CI, tests, config
 - policy/admission merge-risk pass run when changed files or intent touch gates, admission, persistence, active scope, idempotency, replay, or freshness

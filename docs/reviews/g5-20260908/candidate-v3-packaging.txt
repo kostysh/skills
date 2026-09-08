@@ -1,0 +1,11 @@
+node skills/skill-source-compiler/scripts/skill-source-compiler.mjs lint skills/retrospective-analysis
+exit=0
+OK skills/retrospective-analysis
+
+node skills/skill-source-compiler/scripts/skill-source-compiler.mjs check skills/retrospective-analysis
+exit=0
+OK skills/retrospective-analysis
+
+node skills/skill-source-compiler/scripts/skill-source-compiler.mjs compile skills/retrospective-analysis --out-dir /tmp/g5-evidence-8z1wlw3e/candidate-v3/skills
+exit=0
+Compiled skills/retrospective-analysis -> /tmp/g5-evidence-8z1wlw3e/candidate-v3/skills/retrospective-analysis

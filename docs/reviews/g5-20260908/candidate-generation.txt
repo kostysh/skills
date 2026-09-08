@@ -1,0 +1,25 @@
+regenerate prd-engineer: exit=0
+Regenerated /home/kostysh/.codex/skills/custom/.worktrees/g5-methodology/skills/prd-engineer
+
+check prd-engineer: exit=0
+OK skills/prd-engineer
+
+regenerate requirements-approval: exit=0
+Regenerated /home/kostysh/.codex/skills/custom/.worktrees/g5-methodology/skills/requirements-approval
+Warnings:
+- Generated SKILL.md is 15053 bytes, above the recommended maximum 15000 bytes. Move detailed guidance into references/* and keep SKILL.md focused on activation, workflow, and navigation. Raise skill.recommended-skill-md-max-bytes only when references cannot reasonably reduce the size.
+
+check requirements-approval: exit=0
+OK skills/requirements-approval
+
+regenerate code-reviewer: exit=0
+Regenerated /home/kostysh/.codex/skills/custom/.worktrees/g5-methodology/skills/code-reviewer
+
+check code-reviewer: exit=0
+OK skills/code-reviewer
+
+regenerate retrospective-analysis: exit=0
+Regenerated /home/kostysh/.codex/skills/custom/.worktrees/g5-methodology/skills/retrospective-analysis
+
+check retrospective-analysis: exit=0
+OK skills/retrospective-analysis

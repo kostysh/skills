@@ -1,6 +1,6 @@
 # PRD template
 
-Use this reference when the user needs a formal PRD artifact, not just a short chat answer.
+Use the relevant sections for a formal PRD, detailed quality check, or the authority/handoff and risk modules named in the root trigger. Reading one section does not require filling the entire template for a short chat draft.
 
 ## Repository Artifact Conventions
 
@@ -28,6 +28,8 @@ Do not hard-code a repository-specific path in this template. If no repository c
 ## Core PRD Skeleton
 
 If the repository requires front matter or a different metadata block, use that convention and preserve the same product meaning.
+
+Select fields that serve the chosen mode. The source-universe table supports a completeness or ready-handoff claim; a draft may use concise source links without claiming full reconciliation. Do not invent metrics, approvals, or owners to fill placeholders.
 
 ```markdown
 # PRD: <title>

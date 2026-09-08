@@ -4,6 +4,11 @@ Read this reference for every `full evidentiary` retrospective and whenever
 source closure, prior-fix verification, audit causality, or deduplication is
 material.
 
+For targeted work, use the relevant evidence and causal checks with concise
+locators and explicit unknowns. Full source/observation registers, exhaustive
+streams and count reconciliation below belong to the full-mode claim; reading
+this reference for one prior fix or causal question does not activate them.
+
 ## Evidence perimeter
 
 Begin with the requested phase boundary and discover evidence classes that can

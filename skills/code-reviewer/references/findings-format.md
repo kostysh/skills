@@ -48,6 +48,8 @@ Recommendation: approve | request changes | limited | blocked
 - `blocked` means a reproducible review basis or indispensable authority could not be established.
 - Use exactly one recommendation status. Do not use `comment only` as an ambiguous substitute; represent non-blocking observations with `approve` plus findings or limits.
 
+For a stable partial scope, use `limited` and retain every confirmed finding from the assessable part, including blocking findings. State that known blockers still prevent merge. Inaccessible content cannot support either an invented finding or clean approval of the whole target.
+
 If a follow-up review repeats the same or a materially related blocker after remediation, set `Next` to root-cause investigation of assumptions, the full failure path, adjacent surfaces, and remediation scope before more fixes.
 
 ## Good Finding Traits

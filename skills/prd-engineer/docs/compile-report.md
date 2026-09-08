@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.7`
+- Skill source version: `0.1.8`
 
 ## Source files
 - `agents/openai.yaml`
@@ -23,7 +23,7 @@ Generated from `skill.yaml`.
 - `skill.yaml`
 
 ## Required references
-- none
+- `references/prd-template.md`
 
 ## Warnings
 - none

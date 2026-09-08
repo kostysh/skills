@@ -1,0 +1,358 @@
+{
+  "algorithm": "sha256 of ordered compact JSON path/sha256 rows",
+  "identity": "14e896ffa04c5641919487e370f0331bf2c3c94a4a88822a0deb277afdfece37",
+  "files": [
+    {
+      "path": "skills/code-reviewer/AGENTS.md",
+      "sha256": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf"
+    },
+    {
+      "path": "skills/code-reviewer/SKILL.md",
+      "sha256": "a5449f8659b9964374c0aaaf754cbaf4af8ee7eb282cf11a7877e6b917ba0dc7"
+    },
+    {
+      "path": "skills/code-reviewer/agents/openai.yaml",
+      "sha256": "04ffae6319cbefd3d74507e3be353bae081e22b65bdbc8c003c646ff4e72279a"
+    },
+    {
+      "path": "skills/code-reviewer/assets/fixtures/policy-admission-review.md",
+      "sha256": "1a474f2391e00f7c0cd5c86de4d6b1b0b27ecce618aef203c2e8cba49fa54f2b"
+    },
+    {
+      "path": "skills/code-reviewer/assets/fixtures/runtime-gate-deployed-path-review.md",
+      "sha256": "16936898bf81546b8a974d790fd0efa8d081ebef4c9eb458dc3bcc29a6d28646"
+    },
+    {
+      "path": "skills/code-reviewer/assets/pr-review-template.md",
+      "sha256": "4184dd312f9c24a13845e9b57f3f28773c5468399f6c56a5cff2392275d2e1d6"
+    },
+    {
+      "path": "skills/code-reviewer/assets/review-checklist.md",
+      "sha256": "98c7ca18eb8d5bf30e7f142ddea8f122b88ad3e7f3da5fed2d48d0d735aa788a"
+    },
+    {
+      "path": "skills/code-reviewer/docs/README.md",
+      "sha256": "27f2cbf49892f636b6da116a6835dc00f0ccfdd9e70f3199f5a36a2c87a0ddfd"
+    },
+    {
+      "path": "skills/code-reviewer/docs/compile-report.md",
+      "sha256": "ba00fd4f70914c1ce88894e3aef17f41a7aa2132e9a5d0eabfd7c8a72410368b"
+    },
+    {
+      "path": "skills/code-reviewer/docs/forward-test-evidence-20260710.md",
+      "sha256": "f92e8637fe19d24f219900ee3cacbcd9c37dc7b922168f151d110b4baef7c3dd"
+    },
+    {
+      "path": "skills/code-reviewer/docs/issues/implementation-plan-20260424-1.md",
+      "sha256": "34c379f326db901e0b58847e89ad616094173e6ca240b515ffc6101b12a4e337"
+    },
+    {
+      "path": "skills/code-reviewer/docs/issues/implementation-plan-20260428-1.md",
+      "sha256": "36ec36db74ec71bcd73d75cc2429209c076fa3a1a1174dd61daf73a06f52e422"
+    },
+    {
+      "path": "skills/code-reviewer/docs/issues/issue-20260424-1.md",
+      "sha256": "547a5942bcc2893dcdfefb090cd1ea23db421baeed7f276118de8f5769bb39e4"
+    },
+    {
+      "path": "skills/code-reviewer/docs/issues/issue-20260428-1.md",
+      "sha256": "e3a6a1c65831aaf5255aacc7222662a6f8240891c863ef9419a3602a887b9448"
+    },
+    {
+      "path": "skills/code-reviewer/docs/logs/implementation-log-20260424-1.md",
+      "sha256": "68c0099c88dce13a82529e96931fb6da25ec7b83834dfe703b8827661104a15c"
+    },
+    {
+      "path": "skills/code-reviewer/docs/logs/implementation-log-20260428-1.md",
+      "sha256": "1485d77f35a807d3a3332ea27e3d9a50f0d23d781d64a79d4e80901b81e6eb9c"
+    },
+    {
+      "path": "skills/code-reviewer/docs/logs/implementation-log-20260611-1.md",
+      "sha256": "88c37435c18e0462b1cb6cf351dbc923969915c874e7c4933a376af62321c809"
+    },
+    {
+      "path": "skills/code-reviewer/docs/logs/implementation-log-20260622-1.md",
+      "sha256": "14c3be96e120f26e6e2e782197bf84d939518b70d1e8c88dbc9c134bcb03754a"
+    },
+    {
+      "path": "skills/code-reviewer/docs/logs/implementation-log-20260708-1.md",
+      "sha256": "bea0bf81e4a1d3950c4e5b0f53d047b3cd26dd2de46033c176d0be9fd831e150"
+    },
+    {
+      "path": "skills/code-reviewer/docs/logs/implementation-log-20260710-1.md",
+      "sha256": "a91e1304d3f4b91982190c050d69e09b6a064f8fdab40ed6915908c277db81f9"
+    },
+    {
+      "path": "skills/code-reviewer/docs/logs/implementation-log-20260713-1.md",
+      "sha256": "ba517587774b0d63f65744e1704487d9262a3041129e77e0bd07111921431956"
+    },
+    {
+      "path": "skills/code-reviewer/docs/logs/implementation-log-20260715-1.md",
+      "sha256": "cdc3a3249143b75c8a2189100ae5e16e72c5c11108aabd1ca5203846b27f4afe"
+    },
+    {
+      "path": "skills/code-reviewer/docs/logs/implementation-log-20260727-1.md",
+      "sha256": "77d86851aa865357f213694a78dc7440ea3e50e8ca7b9bd26477ef2b29fd45a4"
+    },
+    {
+      "path": "skills/code-reviewer/fragments/overview.md",
+      "sha256": "a9951fe992193c2e97f836f0d247f1602407f73335c2b7c511f6633a3ed4d8b8"
+    },
+    {
+      "path": "skills/code-reviewer/package.json",
+      "sha256": "559c24259b0cd4bea622d314dd52605c335bd9cb0127e22547f67b1e17015dbe"
+    },
+    {
+      "path": "skills/code-reviewer/references/complexity-only.md",
+      "sha256": "b058c376f2e41582006c96fad4de174d48ca02b5631e323ad5444431b89aabf4"
+    },
+    {
+      "path": "skills/code-reviewer/references/diff-completeness.md",
+      "sha256": "078d87a26c1eecd8b9e746ef3793fcfcca41e81a1838fbe96146a24fca8b4e29"
+    },
+    {
+      "path": "skills/code-reviewer/references/domain-routing.md",
+      "sha256": "6ae9f975e69c60368e099317906439c66ffc7972e711d7481231b2770ab082b8"
+    },
+    {
+      "path": "skills/code-reviewer/references/findings-format.md",
+      "sha256": "0815275a744293999e9817db75b7fa19b83cf12bfac44c4c8340c53c8cdf9ea1"
+    },
+    {
+      "path": "skills/code-reviewer/references/methodology.md",
+      "sha256": "eb130938d322428e8b638e58445943756e319956df2051e6cb1bd5beab462d45"
+    },
+    {
+      "path": "skills/code-reviewer/references/policy-admission-merge-risk.md",
+      "sha256": "b749fc90c4a4adc1d60b636b38b4ef193de3afda007d595cbec4c0a97271f716"
+    },
+    {
+      "path": "skills/code-reviewer/references/runtime-gate-deployed-path.md",
+      "sha256": "3024c304cbad164ffe1e0c5c6ae58d033c9080d2ece5560c0f3dfc45c0597d79"
+    },
+    {
+      "path": "skills/code-reviewer/references/severity-confidence.md",
+      "sha256": "0cede58ece812426647e84e3c5b1a2a4e6ce75073c71e70d7dcb14b806e7bcb4"
+    },
+    {
+      "path": "skills/code-reviewer/references/spec-pass.md",
+      "sha256": "567e83c62d6abc78df4ed7ec613bb32c859ae6f0eeff52b85d183baf102a2fc0"
+    },
+    {
+      "path": "skills/code-reviewer/skill.yaml",
+      "sha256": "8fb5fee1ff9e5ec7048e23cc89962e214ad321ab4b1a20d7460f910c8f69edb6"
+    },
+    {
+      "path": "skills/code-reviewer/test/docs-contract.test.mjs",
+      "sha256": "344b39166ec563b92c526cf4c5355a7718ecf80c792610bb9da0f1223bb1cc59"
+    },
+    {
+      "path": "skills/prd-engineer/AGENTS.md",
+      "sha256": "427ae1b54437df8e7f1c0a3b342dda3286c835c412360d25cde422096575524d"
+    },
+    {
+      "path": "skills/prd-engineer/SKILL.md",
+      "sha256": "a70a5a2522e52246470476529fe4fc6ef7f214849848401ad00ebc20e53f246d"
+    },
+    {
+      "path": "skills/prd-engineer/agents/openai.yaml",
+      "sha256": "eab726e197d945488aff0c681ad059775a0b0e47035495b310d437b4434b0662"
+    },
+    {
+      "path": "skills/prd-engineer/docs/README.md",
+      "sha256": "b302e7405d0ef9ed6891dc9bfb9d8dc0e8a0b99b995bb1bd1e96158a46fc701b"
+    },
+    {
+      "path": "skills/prd-engineer/docs/compile-report.md",
+      "sha256": "35c0998a062bd24e9b0ca341f88bab881ff364d930d1f06717a9c8edd0c5f47b"
+    },
+    {
+      "path": "skills/prd-engineer/docs/forward-tests/forward-test-evidence-20260727-1.md",
+      "sha256": "12439e9b0dde6fd6048f2106dda2199955dd88ee635745b74ee91630d16427ac"
+    },
+    {
+      "path": "skills/prd-engineer/docs/logs/implementation-log-20260506-1.md",
+      "sha256": "990f3ede899343a4b4b5f96f25787ba8cbccdf6fd3e14d4927ab04c4d8df78e6"
+    },
+    {
+      "path": "skills/prd-engineer/docs/logs/implementation-log-20260506-2.md",
+      "sha256": "7ef30c12e26faa17e6d466eaf7c40db36fae8daf9ef3cd44968ef725f49733fd"
+    },
+    {
+      "path": "skills/prd-engineer/docs/logs/implementation-log-20260515-1.md",
+      "sha256": "e8cab80e19338f4aa22cc81532387d373e299b1593eb4307876cbb80ff5a338d"
+    },
+    {
+      "path": "skills/prd-engineer/docs/logs/implementation-log-20260515-2.md",
+      "sha256": "b871d0f747ea892b61aabb0f1acd6c3951a1e34e3c289911d92514bd1f5abef3"
+    },
+    {
+      "path": "skills/prd-engineer/docs/logs/implementation-log-20260710-1.md",
+      "sha256": "ea84836766f29076547dc7bc4a91c2f5f1d848992a5f1e90a3cc29881e059d26"
+    },
+    {
+      "path": "skills/prd-engineer/docs/logs/implementation-log-20260715-1.md",
+      "sha256": "b72dd6d4d10f656ecbaaebd712ad8ba3dbe2f208265d3b05ce3195f75eef1d39"
+    },
+    {
+      "path": "skills/prd-engineer/docs/logs/implementation-log-20260717-1.md",
+      "sha256": "ffac358769accdd68fb8b2e71b3c72cd55b834addd6ed375b0615995693aafb6"
+    },
+    {
+      "path": "skills/prd-engineer/docs/logs/implementation-log-20260727-1.md",
+      "sha256": "8b6b3e0c93f4771d1b317c72b995846474e4be35e472b35f8ef85d21b52977cf"
+    },
+    {
+      "path": "skills/prd-engineer/evals/evals.json",
+      "sha256": "24aef28ab1c28a1fd0486fc8f2804f442c7fa551e6c2e37f28e43c3b8027396c"
+    },
+    {
+      "path": "skills/prd-engineer/evals/fixtures/source-bundle-input.md",
+      "sha256": "8b8f055433abd0f7ae7bbc5dce285226914063a17e8687ce20ae198d467e2be4"
+    },
+    {
+      "path": "skills/prd-engineer/fragments/overview.md",
+      "sha256": "a4193a5325fd777b1a8f1f79c2a205942b36b0d99c32225a05a13a0092c6aca5"
+    },
+    {
+      "path": "skills/prd-engineer/references/prd-template.md",
+      "sha256": "2387759726520e2cbff865dcd7c84f48e101f02f2f9550231f17a8728e9f3f27"
+    },
+    {
+      "path": "skills/prd-engineer/skill.yaml",
+      "sha256": "005c64cb2508d2cb4778cb7290a7fd5cfc14e52ec86cbfc0e6b8eb4e3d8a9acd"
+    },
+    {
+      "path": "skills/requirements-approval/AGENTS.md",
+      "sha256": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf"
+    },
+    {
+      "path": "skills/requirements-approval/SKILL.md",
+      "sha256": "0ac1b78b365d207ca470d53f1a572ecb74fd8401ac2850894b32391939a54757"
+    },
+    {
+      "path": "skills/requirements-approval/agents/openai.yaml",
+      "sha256": "51f2514d7b21571f74146747eb34933f8a0c76416e8999ce5bb82b4ace00b152"
+    },
+    {
+      "path": "skills/requirements-approval/docs/README.md",
+      "sha256": "1d12bbfd5cb25182321d54645ea9b297c009e975c889b2630363ed59aa1dd045"
+    },
+    {
+      "path": "skills/requirements-approval/docs/compile-report.md",
+      "sha256": "60bcb00e3b37ab22e2995b9a6907e34e815f18f74b2f114d3628798d9b4c7d84"
+    },
+    {
+      "path": "skills/requirements-approval/docs/forward-tests/forward-test-evidence-20260716-1.md",
+      "sha256": "700939e9b1cca85ec7e1c276e1a18790c05dbb2f30952b91d30fa6a9f10ac428"
+    },
+    {
+      "path": "skills/requirements-approval/docs/forward-tests/forward-test-evidence-20260727-1.md",
+      "sha256": "3135c840dce6c9cb2e3d23c111391cfbcef2a3a22de240f3199a9977ea3f2cf5"
+    },
+    {
+      "path": "skills/requirements-approval/docs/forward-tests/forward-test-evidence-20260728-1.md",
+      "sha256": "6a8eec98787e85bc220269678540929677f41ef3a287ae6120a47e9ac5f97f5d"
+    },
+    {
+      "path": "skills/requirements-approval/docs/logs/implementation-log-20260610-1.md",
+      "sha256": "b4926d00b7c34de98fe4c5086f29d47e119acc57a6c07a61fc0f56eb2a01e861"
+    },
+    {
+      "path": "skills/requirements-approval/docs/logs/implementation-log-20260715-1.md",
+      "sha256": "2b091b88bb10e347a9486ae3d3ebd6824f0219e08d0c467ef793092fdccfaf00"
+    },
+    {
+      "path": "skills/requirements-approval/docs/logs/implementation-log-20260716-1.md",
+      "sha256": "cf76120e847e7e398b32b32cf67a94d81a58ef733e59de389c1dafae786da90c"
+    },
+    {
+      "path": "skills/requirements-approval/docs/logs/implementation-log-20260727-1.md",
+      "sha256": "8b0283c6a2188081bf754afa4ba8ca8525618d7a03a225bed62c970975178d84"
+    },
+    {
+      "path": "skills/requirements-approval/docs/logs/implementation-log-20260728-1.md",
+      "sha256": "cb3cd0d7009194d4bcb844041b4f448281d4dad298db3a2f78b55b417721147c"
+    },
+    {
+      "path": "skills/requirements-approval/evals/evals.json",
+      "sha256": "d5642d1240e76ff4ff9ff526f45cfd206ce146545936460f2e984c82a1c26166"
+    },
+    {
+      "path": "skills/requirements-approval/evals/fixtures/authorized-handoff-input.md",
+      "sha256": "10adb7f8ac233b9f034670a3b2fe59fca114715c5ed382db21a28452a8ef07b0"
+    },
+    {
+      "path": "skills/requirements-approval/evals/fixtures/closure-input.md",
+      "sha256": "07f20d727758ef428f19f2cd142fecdd1a94b47011620c2251ddb6f1e53a99ab"
+    },
+    {
+      "path": "skills/requirements-approval/evals/fixtures/durable-disposition-input.md",
+      "sha256": "d86afead199c7a8572f853080279b9c60da9a43ceaf3ac6c7a93e948c6435ae3"
+    },
+    {
+      "path": "skills/requirements-approval/evals/fixtures/prepare-input.md",
+      "sha256": "216553d5c136f8c26af27bfa201b451c6e8989f1433ac26b65cb88d32985face"
+    },
+    {
+      "path": "skills/requirements-approval/evals/fixtures/reply-input.md",
+      "sha256": "6f5661352de5c4225c36eb60d0c05ca47d5b1fa5d1689181ca223dc6afa80537"
+    },
+    {
+      "path": "skills/requirements-approval/evals/fixtures/triage-falsifiers-input.md",
+      "sha256": "0fb1ed767cc698621825e7a85c947744224d09db33e06b5ff713bf97f2dfd2b9"
+    },
+    {
+      "path": "skills/requirements-approval/fragments/overview.md",
+      "sha256": "7f54e0a58d8b570b28eef182f8c56cae61eb4c9d93f3eeb293044a23089770c4"
+    },
+    {
+      "path": "skills/requirements-approval/skill.yaml",
+      "sha256": "c5237ff1c1b7b64b292d1f59227f5b951aa1b3a282339d060f5afd212e0119dc"
+    },
+    {
+      "path": "skills/retrospective-analysis/SKILL.md",
+      "sha256": "6df75be5546485b81bbf5ea454a75d347c83e2c8ecaea84c787f7d97d9e77e6b"
+    },
+    {
+      "path": "skills/retrospective-analysis/agents/openai.yaml",
+      "sha256": "128427295b4582ee3cb92628c9a3819c5a30388d5683ddd35c5f27be94b21628"
+    },
+    {
+      "path": "skills/retrospective-analysis/docs/README.md",
+      "sha256": "018dbe1262cbffd8e184be7abcb20bd8af9213b94d35fdd5fef283b915682972"
+    },
+    {
+      "path": "skills/retrospective-analysis/docs/compile-report.md",
+      "sha256": "0f76f7b97247e876014f21ca26db44466036c5f13c823f23ef4cd21a0eea6092"
+    },
+    {
+      "path": "skills/retrospective-analysis/docs/issues/implementation-plan-20260727-1.md",
+      "sha256": "9c06efb45f9ad48297bed67d88eaa21394e51775ac530653629c3eb7e5460707"
+    },
+    {
+      "path": "skills/retrospective-analysis/docs/issues/issue-20260727-1.md",
+      "sha256": "10850166cd23b83692345faf760a8d67a01ed94319e6828eeba19cb762e3c9e2"
+    },
+    {
+      "path": "skills/retrospective-analysis/docs/logs/implementation-log-20260727-1.md",
+      "sha256": "0dfec3cfe8f8166ffdf02b6d449e85556049e82c7817a23ddd81a518fed9e612"
+    },
+    {
+      "path": "skills/retrospective-analysis/references/evidence-and-causality.md",
+      "sha256": "d382e47c0dcb07e3872a7af87168344a8da12aa15cfdc875fdbffd0a3a752b23"
+    },
+    {
+      "path": "skills/retrospective-analysis/references/report-and-remediation-plan.md",
+      "sha256": "8bfeec7dc7d9847c0115e25bd6308a8a9917a1218999ec50e34ffd17bcddaf22"
+    },
+    {
+      "path": "skills/retrospective-analysis/references/task-routing.md",
+      "sha256": "c7cc94e7b344cf04a12cdc4ab9247712bd23efa9520cf7a87f3ea9cdaa3c9e8c"
+    },
+    {
+      "path": "skills/retrospective-analysis/skill.yaml",
+      "sha256": "78a088872150d80cf00d4908e55596a9e167f791b1f65fcf943b129f75994cd4"
+    }
+  ]
+}
