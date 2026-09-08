@@ -1,0 +1,66 @@
+diff --git a/tmp/g5-evidence-8z1wlw3e/candidate-v2-source/skills/retrospective-analysis/references/task-routing.md b/tmp/g5-evidence-8z1wlw3e/candidate-v3-source/skills/retrospective-analysis/references/task-routing.md
+index edfa376..78e8bbe 100644
+--- a/tmp/g5-evidence-8z1wlw3e/candidate-v2-source/skills/retrospective-analysis/references/task-routing.md
++++ b/tmp/g5-evidence-8z1wlw3e/candidate-v3-source/skills/retrospective-analysis/references/task-routing.md
+@@ -13,7 +13,8 @@ Do not mutate a tracker until all conditions hold:
+    require it; a targeted action does not inherit the full-mode audit gate;
+ 3. every active action has a stable identifier, source, owner and acceptance
+    boundary; full mode additionally reconciles the numbered plan;
+-4. the operator has separately approved creation of tasks from that plan;
++4. the operator has separately approved creation for the accepted actions or
++   numbered plan in the exact target;
+ 5. project-specific task-management rules and tracker tools are available.
+ 
+ Approval of the retrospective request, report, audit, or implementation plan is
+@@ -40,12 +41,13 @@ Do not create children for recommendations marked already implemented,
+ cancelled, rejected, superseded, not applicable, or intentionally retained
+ without action.
+ 
+-Issue bodies navigate to the authoritative report and exact plan step. They may
+-summarize outcome, dependencies, owner, evidence, and anti-claims, but must not
+-copy and fork the normative remediation plan.
++Issue bodies link to the stable analysis and exact accepted action, or to the
++authoritative report and numbered step when a plan applies. They may summarize
++outcome, dependencies, owner, evidence, and anti-claims without forking that
++source. A targeted action needs no invented plan or step.
+ 
+-Use the project's native parent-child mechanism and field semantics. Set status
+-from actual dependencies:
++Use native project fields and, when the selected shape includes a parent,
++its parent-child mechanism. Set status from actual dependencies:
+ 
+ - ready only when prerequisites and source authority are ready;
+ - blocked when a named external or predecessor gate is unresolved;
+@@ -70,10 +72,11 @@ For each authorized create:
+ 1. create once;
+ 2. capture the returned immutable issue/item ID and URL directly from the
+    mutation response;
+-3. add native parent/project linkage using that identity;
++3. add required project linkage and any parent linkage in the selected shape
++   using that identity;
+ 4. read the issue and project item back directly by ID;
+-5. verify title, body source link, parent, status, and required fields before
+-   continuing.
++5. verify title, body source link, status, required fields, and parent presence
++   or absence against the selected shape before continuing.
+ 
+ Do not repeat a mutation because:
+ 
+@@ -93,13 +96,14 @@ After creation, verify:
+ - navigation items match the selected shape (one parent for a full program);
+ - exactly one actionable item for every active action/step and none for
+   inactive dispositions;
+-- unique stable step IDs and titles;
+-- correct native parent links;
++- unique stable action/step IDs and titles;
++- correct native parent links, or their absence for a standalone item;
+ - correct target project and status/dependency fields;
+ - actionable count equals the accepted active-action/step count;
+ - total item count equals navigation count plus actionable count: for a full
+   program with N active steps, one parent plus N children is N + 1 items;
+-- report links point to the stable authoritative revision.
++- analysis/report links point to the stable authoritative revision and exact
++  accepted action or plan step.
+ 
+ Record the returned IDs/URLs and reconciliation evidence. Task existence proves
+ only backlog routing, not implementation or effectiveness.

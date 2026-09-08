@@ -1,0 +1,14 @@
+node skills/skill-source-compiler/scripts/skill-source-compiler.mjs compile skills/prd-engineer --out-dir /tmp/g5-evidence-8z1wlw3e/candidate-v2/skills
+exit=0
+Compiled skills/prd-engineer -> /tmp/g5-evidence-8z1wlw3e/candidate-v2/skills/prd-engineer
+node skills/skill-source-compiler/scripts/skill-source-compiler.mjs compile skills/requirements-approval --out-dir /tmp/g5-evidence-8z1wlw3e/candidate-v2/skills
+exit=0
+Compiled skills/requirements-approval -> /tmp/g5-evidence-8z1wlw3e/candidate-v2/skills/requirements-approval
+Warnings:
+- Generated SKILL.md is 15002 bytes, above the recommended maximum 15000 bytes. Move detailed guidance into references/* and keep SKILL.md focused on activation, workflow, and navigation. Raise skill.recommended-skill-md-max-bytes only when references cannot reasonably reduce the size.
+node skills/skill-source-compiler/scripts/skill-source-compiler.mjs compile skills/code-reviewer --out-dir /tmp/g5-evidence-8z1wlw3e/candidate-v2/skills
+exit=0
+Compiled skills/code-reviewer -> /tmp/g5-evidence-8z1wlw3e/candidate-v2/skills/code-reviewer
+node skills/skill-source-compiler/scripts/skill-source-compiler.mjs compile skills/retrospective-analysis --out-dir /tmp/g5-evidence-8z1wlw3e/candidate-v2/skills
+exit=0
+Compiled skills/retrospective-analysis -> /tmp/g5-evidence-8z1wlw3e/candidate-v2/skills/retrospective-analysis

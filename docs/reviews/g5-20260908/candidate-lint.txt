@@ -1,0 +1,11 @@
+prd-engineer: exit=0
+OK skills/prd-engineer
+
+requirements-approval: exit=0
+OK skills/requirements-approval
+
+code-reviewer: exit=0
+OK skills/code-reviewer
+
+retrospective-analysis: exit=0
+OK skills/retrospective-analysis

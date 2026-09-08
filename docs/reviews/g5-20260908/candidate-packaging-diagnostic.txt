@@ -1,0 +1,24 @@
+node skills/skill-source-compiler/scripts/skill-source-compiler.mjs check skills/prd-engineer
+exit=0
+OK skills/prd-engineer
+python3 /home/kostysh/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/prd-engineer
+exit=0
+Skill is valid!
+node skills/skill-source-compiler/scripts/skill-source-compiler.mjs check skills/requirements-approval
+exit=0
+OK skills/requirements-approval
+python3 /home/kostysh/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/requirements-approval
+exit=0
+Skill is valid!
+node skills/skill-source-compiler/scripts/skill-source-compiler.mjs check skills/code-reviewer
+exit=0
+OK skills/code-reviewer
+python3 /home/kostysh/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/code-reviewer
+exit=0
+Skill is valid!
+node skills/skill-source-compiler/scripts/skill-source-compiler.mjs check skills/retrospective-analysis
+exit=0
+OK skills/retrospective-analysis
+python3 /home/kostysh/.codex/skills/.system/skill-creator/scripts/quick_validate.py skills/retrospective-analysis
+exit=1
+Unexpected key(s) in SKILL.md frontmatter: compatibility. Allowed properties are: allowed-tools, description, license, metadata, name

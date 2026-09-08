@@ -1,0 +1,174 @@
+[
+  {
+    "path": "assessor-criteria.md",
+    "sha256": "c1dd1e097baa4410eb6459c1483a7e5f08d3c8a7c1a3ac36f4da6b3e675ffcf6"
+  },
+  {
+    "path": "baseline/baseline-approval-trial.md",
+    "sha256": "17d88352f0ec46dd83788510f0615c932141a2361c10faa435860fee9053f4d9"
+  },
+  {
+    "path": "baseline/baseline-code-extended.md",
+    "sha256": "febdabc621795b3bfe13f1bdb6b6794b366ded8e1432f108e360552699c1c3f7"
+  },
+  {
+    "path": "baseline/baseline-code-trial.md",
+    "sha256": "2b7cecc3e62dca60104d7dd1c6758dbd72cf67992f23da2fea47740548e3e752"
+  },
+  {
+    "path": "baseline/baseline-prd-standalone.md",
+    "sha256": "3896ac4ad0ebcd84072e7d32f9f58e687b616f08557f510760be3fab0d72a0fb"
+  },
+  {
+    "path": "baseline/baseline-prd-trial.md",
+    "sha256": "08866ffbd7d5c2eee3b86ffca394560b195bda4d69401a1be260e094779b66e4"
+  },
+  {
+    "path": "baseline/baseline-product-review.md",
+    "sha256": "ca3c9d68156c3bc88f582edb838a024362a7184614fbb1b5db011ad5d600f852"
+  },
+  {
+    "path": "baseline/baseline-retro-extended.md",
+    "sha256": "cd2a266b5ba3a74f5390e4d6085ed4e547496a0c48bf7d61798a54b6c853b46c"
+  },
+  {
+    "path": "baseline/baseline-retro-trial.md",
+    "sha256": "e74cdac62e6be126bb50f1852fab9759cc66c0b187c560810a6b7ad105f2d1f0"
+  },
+  {
+    "path": "baseline/baseline-review-retro.md",
+    "sha256": "a95453c1f7cd30ac8d3c15ce17dbb0ef05024820461c6cd18d3eff6876f7ddfc"
+  },
+  {
+    "path": "baseline/baseline-selection.md",
+    "sha256": "7efc10cfa318e5042073fa06df5610dc755351127791a1d78c4dad3e4d0ce221"
+  },
+  {
+    "path": "baseline/catalog.md",
+    "sha256": "04c9d48fad45df852ef717c8e113423361645283948b7b2ada3dc57c1e8aacd1"
+  },
+  {
+    "path": "baseline/files.json",
+    "sha256": "700a7ada2f4078b81c645badb46eb9b4af74483ee908a73ee5dd33b4e0242b14"
+  },
+  {
+    "path": "baseline-structural.txt",
+    "sha256": "4a75da6239a3603cad2fe14fcc9a3ba758185f7087d546013d2e1a93d6f1b3d5"
+  },
+  {
+    "path": "candidate-generation.txt",
+    "sha256": "87c5a0e0cf70d60fb25c5e86744f295a4c9a64a788a2a94e16c9104ee3dd1ced"
+  },
+  {
+    "path": "candidate-lint.txt",
+    "sha256": "4a75da6239a3603cad2fe14fcc9a3ba758185f7087d546013d2e1a93d6f1b3d5"
+  },
+  {
+    "path": "candidate-packaging-diagnostic.txt",
+    "sha256": "5185590100fda947e48d2f668c35e03d00174589d5d56dbee7d869610a8792bf"
+  },
+  {
+    "path": "candidate-packaging.txt",
+    "sha256": "53c2f2f1b006906c0dc34a9f524bea94ccb38d906377c1806a68b7a9839db1e8"
+  },
+  {
+    "path": "candidate-v2/assessment.md",
+    "sha256": "62ddff2d8f93c93a55aa1f67bab5a58149262725afb0b4e75b0eb3f6030979ca"
+  },
+  {
+    "path": "candidate-v2/candidate-code-trials.md",
+    "sha256": "7651e5b447c4e484c337543c631178b701ff823394b0d5d2b074f6babff80c13"
+  },
+  {
+    "path": "candidate-v2/candidate-prd-isolated.md",
+    "sha256": "376c49f4618763c8b26c94f4d28def4d94c66ad8d3bcb9f623cb428c22ee6d85"
+  },
+  {
+    "path": "candidate-v2/candidate-product-trials.md",
+    "sha256": "7d1fb27bf25c5fa5f79d528dc2ee56ef84bd21a229ba1f8a410399b8eb84492f"
+  },
+  {
+    "path": "candidate-v2/candidate-retro-trials.md",
+    "sha256": "a34cf6b1e6a9a5c12601a82b545d9f2bb8f61aa50fc0b35b5c53026dac097199"
+  },
+  {
+    "path": "candidate-v2/candidate-v2-files.json",
+    "sha256": "7ebf707bd009b53664659a8bbd55602b5b09099ea91a8210bd8cbb6e19c94769"
+  },
+  {
+    "path": "candidate-v2/candidate-v2-source-files.json",
+    "sha256": "f03bf406ecd4f74114dd0bf612a1b242c07383278904f2b0906c56073e7cdb32"
+  },
+  {
+    "path": "candidate-v2/final-review-code-retro.md",
+    "sha256": "7e4ad877863e4a4f12e73875179faf24dab38648ebbd8a2b57ab1497b2b88e76"
+  },
+  {
+    "path": "candidate-v2/final-review-product.md",
+    "sha256": "5089667a7391168e1f7471e582e0e609501330e0b21f7ac898cdb0d0c669dc32"
+  },
+  {
+    "path": "candidate-v2/joint-execution.md",
+    "sha256": "9c5b2b232507bf9f836bfd06c95247e3d234c8638c7bf38882f73a014e194b14"
+  },
+  {
+    "path": "candidate-v2/source-diff.patch",
+    "sha256": "65471b9df0aa73d84b3d9079cde6342f2aac31458250d7fcacf8116426beda12"
+  },
+  {
+    "path": "candidate-v3/candidate-v3-delta.patch",
+    "sha256": "1a21db9841264dd893604283c650178c133dc690eb2f9b7ca6b7bca98a434f32"
+  },
+  {
+    "path": "candidate-v3/candidate-v3-files.json",
+    "sha256": "67c5262969dec5f6f2703820f727935500ca0407d2942ef34db5f76091315856"
+  },
+  {
+    "path": "candidate-v3/candidate-v3-source-files.json",
+    "sha256": "8fbff90a2a96bc73fc199ed790f9487aa4d87288c58bce269e5a5bc1f0560be2"
+  },
+  {
+    "path": "candidate-v3-packaging.txt",
+    "sha256": "9df8b7e4aee9ef7ad68cfaf3a28cf09241986fed1e6a317588ef4aad72001b3b"
+  },
+  {
+    "path": "case-inputs.md",
+    "sha256": "0ad3d3f1369adff7cf71f2544faf9158b9e9fcb0b8bb00175e2cb969fec7da5a"
+  },
+  {
+    "path": "catalog-parity.json",
+    "sha256": "14453a203a86df4d68469848ae49c1d28ca1d5f65cafac499c6741d857be7aad"
+  },
+  {
+    "path": "evidence-location.txt",
+    "sha256": "90974a9d1aa0acec3a4f83a5b863d2007129a94bafc34dad88ec7f8aa3b8dc91"
+  },
+  {
+    "path": "final/final-review-code-retro.md",
+    "sha256": "7e4ad877863e4a4f12e73875179faf24dab38648ebbd8a2b57ab1497b2b88e76"
+  },
+  {
+    "path": "final/final-review-product.md",
+    "sha256": "5089667a7391168e1f7471e582e0e609501330e0b21f7ac898cdb0d0c669dc32"
+  },
+  {
+    "path": "final/final-review-retro-v3.md",
+    "sha256": "be05f27cca33b112091ed01c56a0b7d7338c4af1323c44c80531805e3f8e2282"
+  },
+  {
+    "path": "final/joint-retro-v3.md",
+    "sha256": "24c5ba02de7090f52d0ba59c1c3e0fc3db9d609acfb625d3ab3c53bc8ea05340"
+  },
+  {
+    "path": "final/snapshot-readback.json",
+    "sha256": "523ecdb6ea547ec8b39684e14bfd5412bc35d81d53ffc47df1522531d3569bd4"
+  },
+  {
+    "path": "joint-handoff-input.md",
+    "sha256": "2b40a7894c405b1700a5f9c9736e18707ec29d3a9bb93f2ada5ca7d6a20bc5ab"
+  },
+  {
+    "path": "joint-retro-input.md",
+    "sha256": "e8e3542e631ca86d0968f7742a4cb7fccc53a9ded7df92bba64ce790c4c04689"
+  }
+]
