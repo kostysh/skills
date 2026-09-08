@@ -6,9 +6,9 @@ description: Use for TypeScript language and type-system work, compiler
   installed-version evidence; pair with runtime, framework, testing, validation,
   and domain owners.
 metadata:
-  source-version: 0.2.1
+  source-version: 0.2.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: f49fff450f4148b6ea549e90824a957f47fb47bc031c6c071728c797d5ef3947
+  skillforge-source-hash: 65219add1388c1bcc026b886ce7b96f155535b53d0f6204641c3f6b3aa0453d5
 ---
 
 # typescript-engineer
@@ -18,7 +18,7 @@ metadata:
 1. Classify the request as explain, review/diagnose, or authorized change; review and diagnosis stay read-only unless the user also requests remediation.
 2. Establish the expected type or compiler behavior, repository policy, installed TypeScript and lint versions, relevant tsconfig and package or workspace commands, current diagnostics, and affected public call sites before choosing a fix.
 3. Apply precedence in this order: explicit user requirements, repository policy and compatible installed behavior, current official version-matched documentation, then this skill's portable defaults; stop when equal-authority inputs conflict.
-4. Load only the optional reference triggered by the current problem and keep framework, runtime, testing, validation-library, and domain decisions with their owning skills.
+4. Load only the required references whose conditions are triggered by the current problem and keep framework, runtime, testing, validation-library, and domain decisions with their owning skills.
 5. Define the evidence boundary before changing code: compiler and lint checks prove only the paths they inspect, not runtime or domain behavior.
 
 ## When to use this skill
@@ -133,10 +133,11 @@ Validation:
 ## Interop priority
 
 - **framework APIs, framework lifecycle, bundler integration, React or Vite application setup:** the relevant framework skill. typescript-engineer owns the isolated TypeScript compiler and type-system facet; the framework owner decides framework behavior and integration.
-- **Node execution mode, type stripping, ESM or CJS runtime semantics, and runtime import behavior:** node-engineer. node-engineer establishes the runtime contract; typescript-engineer configures TypeScript consistently with that resolved contract.
-- **test strategy, runner behavior, mocks, coverage, and CI test contours:** typescript-test-engineer. typescript-engineer owns compile-time type assertions and expected type contracts; typescript-test-engineer owns executable test design and runner policy.
+- **Node execution mode, type stripping, ESM or CJS runtime semantics, and runtime import behavior:** node-engineer. Consume node-engineer's exact executed entry, Node/loader versions, module mode, resolver rules, and smoke results before choosing module/emit settings. Return the compiler config, emitted specifiers and type evidence for Node to check against that same entry; typecheck cannot close its runtime claim.
+- **test strategy, runner behavior, mocks, coverage, and CI test contours:** typescript-test-engineer. Pass expected public call/declaration behavior and positive/negative type assertions to typescript-test-engineer. Consume its scenario-to-command results only for the exercised files and boundary; it owns runner and test strategy, while this skill owns type soundness.
 - **runtime validation-library semantics and domain validation policy:** the relevant validation-library, framework, or domain skill. typescript-engineer may derive and inspect types from an accepted runtime schema but cannot invent what must be validated or claim runtime safety from a type alone.
-- **formal code-review scope, severity, findings format, and merge guidance:** code-reviewer. typescript-engineer supplies TypeScript domain analysis while code-reviewer owns the formal review verdict and merge-risk synthesis.
+- **formal code-review scope, severity, findings format, and merge guidance:** code-reviewer. Pass the stable diff, affected callers/declarations, root diagnostics, and exact compiler evidence to code-reviewer for formal severity and merge-risk synthesis. A domain fix or green compiler is not that verdict.
+- **security exploitability and vulnerability judgment:** security-reviewer. Pass the concrete type/runtime boundary, untrusted-input path and evidence to security-reviewer when a security judgment is required. Consume its scoped findings for authorized remediation; type soundness alone cannot establish security.
 
 ## Gotchas
 
@@ -147,6 +148,15 @@ Validation:
 - **medium** — Do not silently tighten an exported type without checking source compatibility, declaration output, and affected consumers.
 
 ## Policies
+
+### Use owner results
+Load another skill only when its decision is material to this task. Consume accepted product behavior from prd-engineer, implementation requirements from spec-engineer, architecture constraints from architecture-engineer, and task scope/checkpoints from delivery-planner when supplied; return the conflicting fact or missing decision to its owner rather than redesigning it. A handoff is usable only for the same contract, version and snapshot it covers.
+
+### Unavailable owner or evidence
+If a specialist, source or check is unavailable, continue supported local analysis and authorized changes. Identify the missing output and leave only its dependent decision or conclusion partial/blocked; do not invent a review verdict, product rule, security guarantee or runtime result.
+
+### Publication handoff
+For an authorized publication step, pass changed paths, verification results, exact revision and remaining risks to git-engineer for Git operations and gh-utility for GitHub state. Consume fresh ref/check evidence for the matching revision; local success grants no publication authority and cannot replace unavailable remote evidence.
 
 ### Source precedence
 Explicit user requirements override repository policy only for the authorized task; compatible repository policy and installed behavior override generic defaults. Equal-authority conflicts stop the strongest claim.
@@ -163,7 +173,7 @@ Verified requires the targeted behavior or diagnostic, no new relevant diagnosti
 ### Output contract
 Report the outcome or root cause, source basis and assumptions, changed type or API contract, exact verification and remaining diagnostics, unverified runtime or owner boundaries, and verified, partial, or blocked status.
 
-## Optional references
+## Required active references
 - [Generics](references/generics.md) — Read this when designing or diagnosing generics, mapped or conditional types, template literal types, variadic tuples, or reusable type transforms.
 - [Monorepo Typechecking](references/monorepo.md) — Read this when the affected TypeScript project uses workspaces, project references, solution configs, composite builds, or shared tsconfig files.
 - [Function Overloads](references/overloads.md) — Read this when return types depend on input shape, an overloaded API is wrapped, or overloads must be compared with unions or an options object.
@@ -178,12 +188,12 @@ Report the outcome or root cause, source basis and assumptions, changed type or 
 
 - Do not reference machine-specific absolute paths or require repository files outside this skill folder to understand core behavior.
 - Treat package-manager commands, TypeScript versions, lint versions, tsconfig paths, workspace layout, and CI gates as discovered project context rather than portable constants.
-- Use only relative links for optional references and supporting documents inside the skill folder.
+- Use only relative links for conditional references and supporting documents inside the skill folder.
 
 ## Portability checklist before finishing
 
 - Run skill-source-compiler lint, regenerate, and check after source changes.
-- Confirm every optional reference has a precise trigger and is reachable from generated SKILL.md.
+- Confirm every conditional reference has a precise trigger and is reachable from generated SKILL.md.
 - Search the copied skill for absolute paths, stale assets or scripts, and external mandatory dependencies.
 
 ## Supporting and historical surface

@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+"""Disposable subprocess recorder for one authorized local task."""
+import argparse, datetime, json, os, subprocess, sys, time
+from pathlib import Path
+p=argparse.ArgumentParser()
+p.add_argument('--cwd',default='app')
+p.add_argument('--timeout',type=int,default=90)
+p.add_argument('command',nargs=argparse.REMAINDER)
+a=p.parse_args()
+cmd=a.command[1:] if a.command[:1]==['--'] else a.command
+if not cmd: p.error('command required after --')
+root=Path(__file__).resolve().parent
+cwd=(root/a.cwd).resolve()
+env=os.environ.copy()
+env.update({'npm_config_cache':'/tmp/engineering-tools/npm-cache','XDG_CACHE_HOME':'/tmp/engineering-tools/cache','XDG_DATA_HOME':'/tmp/engineering-tools/data','XDG_STATE_HOME':'/tmp/engineering-tools/state'})
+start=time.monotonic(); status=None
+try:
+ r=subprocess.run(cmd,cwd=cwd,env=env,capture_output=True,text=True,timeout=a.timeout)
+ out,err,status=r.stdout,r.stderr,r.returncode
+except subprocess.TimeoutExpired as e:
+ out=e.stdout or '';err=e.stderr or ''
+ out=out.decode(errors='replace') if isinstance(out,bytes) else out
+ err=err.decode(errors='replace') if isinstance(err,bytes) else err
+ err+='\nRecorder timeout; subprocess killed.\n'
+ status=124
+event={'time':datetime.datetime.now(datetime.timezone.utc).isoformat(),'cwd':str(cwd),'command':cmd,'exit':status,'stdout':out,'stderr':err,'elapsed_seconds':round(time.monotonic()-start,3)}
+with (root/'commands.jsonl').open('a') as f:f.write(json.dumps(event,ensure_ascii=False)+'\n')
+sys.stdout.write(out);sys.stderr.write(err)
+print('\n[recorded exit=%s]'%status,file=sys.stderr)
+sys.exit(status)

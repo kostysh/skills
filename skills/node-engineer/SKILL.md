@@ -6,9 +6,9 @@ description: Explain, design, review, diagnose, and implement Node.js runtime
   hangs, and open resources; keep diagnosis read-only unless fixes are
   requested.
 metadata:
-  source-version: 0.1.3
+  source-version: 0.1.4
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: e18095a69fdb0d2ce38e338d2c9793ff257ce6c1ff0d5de8a49b8a001c0d9d6f
+  skillforge-source-hash: 1c56be18b04e592e74ce4b65aab1ed63f96886a7e3d14a2a9bdb7edfe9b5ded8
 ---
 
 # node-engineer
@@ -62,7 +62,8 @@ If equal-authority inputs conflict, the runtime path or compatibility range cann
 
 | Executed artifact | Runtime owner | Relative import contract | Required evidence |
 | --- | --- | --- | --- |
-| Source `.ts` executed directly | Node built-in stripping or an explicit loader | Match source files (`.ts`, `.mts`, `.cts`) | Exact Node version, command, supported syntax, and runtime smoke |
+| Source TypeScript via built-in stripping | Node built-in support | Match source files (`.ts`, `.mts`, `.cts`) | Exact Node version, command, supported syntax, and runtime smoke |
+| Source TypeScript via a third-party loader | Configured loader and resolver | Follow that loader/version/config contract; source extensions are not a universal rule | Exact loader version, effective options, resolved files, and execution of the existing command |
 | Emitted JavaScript | TypeScript compiler or build/bundle step | Valid emitted `.js`, `.mjs`, or `.cjs` specifiers | Build output inspection plus execution of the emitted entry |
 | Non-erasable TypeScript | Version-supported transform path, third-party loader, or build | Determined by the selected output path | Version compatibility and a real non-erasable syntax case |
 
@@ -132,12 +133,13 @@ Validation:
 ## Interop priority
 
 - **Implementation scope, minimal diffs, and evidence discipline:** implementation-discipline. node-engineer owns Node runtime semantics; implementation-discipline owns capability reality, surgical changes, and completion evidence for authorized implementation.
-- **TypeScript language, type-system, and compiler configuration:** typescript-engineer. node-engineer establishes the executed source or emitted-JavaScript runtime contract; typescript-engineer configures and checks TypeScript consistently with that contract.
-- **Test strategy, runner behavior, coverage, mocks, and CI contours:** typescript-test-engineer. typescript-test-engineer owns the test workflow; node-engineer owns Node process, module, stream, and resource-lifecycle mechanics that may underlie a test hang.
+- **TypeScript language, type-system, and compiler configuration:** typescript-engineer. Pass the exact executed entry, Node/loader versions, module mode and resolver rules to typescript-engineer. Consume its compiler config, emitted specifiers and type results against that same path; execute the resulting artifact before claiming runtime success.
+- **Test strategy, runner behavior, coverage, mocks, and CI contours:** typescript-test-engineer. Pass the runtime reproduction, supported versions, expected failure/cancellation/cleanup behavior and owned resources to typescript-test-engineer. Consume its scenario-to-command results only for the exercised versions and paths; runner policy stays with that owner and Node mechanics stay here.
 - **Framework adapters, lifecycle hooks, routing, middleware, and readiness endpoints:** the relevant framework skill. the framework owner implements framework APIs; node-engineer owns signal, process, server, stream, and resource semantics beneath that integration.
-- **CLI command model, help, output/error contract, packaging, and release UX:** cli-engineer. cli-engineer owns the public CLI surface; node-engineer owns low-level Node execution, module resolution, streams, signals, and process behavior.
-- **Distributed cache topology, cross-service lifecycle, and architecturally significant runtime trade-offs:** architecture-engineer. node-engineer may implement an accepted local runtime mechanism but does not invent distributed ownership, consistency, durability, or cross-system policy.
-- **Formal code-review scope, severity, findings, and merge guidance:** code-reviewer. node-engineer supplies Node-specific analysis; code-reviewer owns the formal review verdict and merge-risk synthesis.
+- **CLI command model, help, output/error contract, packaging, and release UX:** cli-engineer. Consume cli-engineer's accepted argv, stdout/stderr, exit and installed-bin contract. Return runtime entry/version and process evidence for its package/installation checks; source execution alone cannot prove the installed CLI boundary.
+- **Distributed cache topology, cross-service lifecycle, and architecturally significant runtime trade-offs:** architecture-engineer. Consume accepted architecture-engineer constraints, ownership and validation obligations before implementing a local mechanism. Return runtime evidence and any contradiction with those constraints; route distributed consistency, durability or cross-system decisions back to that owner.
+- **Formal code-review scope, severity, findings, and merge guidance:** code-reviewer. Pass the stable diff, runtime reproduction, compatibility range, failure/cleanup evidence and gaps to code-reviewer for formal severity and merge-risk synthesis. Successful execution is not that verdict.
+- **Security exploitability and vulnerability judgment:** security-reviewer. Pass the concrete runtime trust boundary, untrusted-input path, logging or process evidence to security-reviewer when a security judgment is required. Consume its scoped findings for authorized remediation; a runtime fix alone cannot establish security.
 
 ## Gotchas
 
@@ -148,6 +150,15 @@ Validation:
 - **high** — Do not claim runtime success from generated guidance, typecheck/compiler success, mocks, logs, or a happy-path snippet that does not exercise the named runtime boundary and failure path.
 
 ## Policies
+
+### Use owner results
+Load another skill only when its decision is material to this task. Consume accepted product behavior from prd-engineer, implementation requirements from spec-engineer, architecture constraints from architecture-engineer, and task scope/checkpoints from delivery-planner when supplied; return the conflicting fact or missing decision to its owner rather than redesigning it. A handoff is usable only for the same contract, version and snapshot it covers.
+
+### Unavailable owner or evidence
+If a specialist, source or check is unavailable, continue supported local analysis and authorized changes. Identify the missing output and leave only its dependent decision or conclusion partial/blocked; do not invent a review verdict, product rule, security guarantee or runtime result.
+
+### Publication handoff
+For an authorized publication step, pass changed paths, verification results, exact revision and remaining risks to git-engineer for Git operations and gh-utility for GitHub state. Consume fresh ref/check evidence for the matching revision; local success grants no publication authority and cannot replace unavailable remote evidence.
 
 ### Source and compatibility precedence
 Explicit operator requirements govern the authorized task; compatible repository policy and actual installed/deployed behavior govern execution; current official version-matched documentation resolves Node facts; portable defaults apply only when stronger sources are absent. Equal-authority conflicts block the strongest claim.

@@ -4,20 +4,9 @@ Applies to TypeScript-only Node.js command-line software, from small commands to
 
 The outcome is a CLI whose documented user jobs work through the built or installed command on the claimed platforms and boundaries. A parser, package manifest, Vite build, generated help, green test suite, mock, or stub is substrate or bounded evidence; it is not the end-to-end capability by itself.
 
-## Standard tooling baseline
+## Tooling applicability
 
-For new CLI work and when selecting or replacing build/test tooling:
-
-- resolve the current **Active LTS** Node.js line from official Node.js sources at task time; do not permanently encode a remembered major as this skill's default
-- use TypeScript for runtime source and tests
-- use Vite for the CLI build, with an explicit Node target and executable artifact contract
-- use `node:test` for unit, process-level integration, and CLI contract tests
-- run compatible TypeScript tests and scripts with the current Active LTS native type-stripping path and run a separate typecheck
-- keep directly executed TypeScript erasable and independent of `tsconfig`-only runtime transforms
-- never add or invoke `tsx`; rewrite the script to the supported profile or execute Vite-built JavaScript instead
-- use Vitest only when the user or an authoritative project contract explicitly requires it
-
-When an existing project uses another build system and migration is outside the request, work with that build without broad migration, report the deviation, and do not extend it into another recommended standard. This exception does not permit adding or invoking `tsx`.
+Apply the [Standard CLI toolchain policy](#standard-cli-toolchain) before choosing tools. Inspect and run existing supported repository commands for an ordinary fix; use the new-setup defaults only when that setup or replacement is in scope.
 
 ## CLI contract non-negotiables
 
@@ -37,7 +26,7 @@ When an existing project uses another build system and migration is outside the 
 
 ## Verification boundary
 
-Unit tests are mandatory, followed by process-level integration and public-contract coverage. The repository quality gate should include typecheck, format check, lint, `node:test`, Vite build, and artifact smoke verification.
+Verify the changed behavior with unit, process, and public-contract coverage as applicable, plus the repository's required checks. New setup or authorized quality-gate hardening supplies missing gates; an ordinary repair uses existing supported tooling and reports material coverage gaps.
 
 For durable or installable CLIs:
 
@@ -48,16 +37,3 @@ For durable or installable CLIs:
 5. observe exit status, `stdout`, `stderr`, and relevant side effects.
 
 For service-backed jobs, use a real service, a sandbox, or an authoritative contract-conformant boundary. Mock/stub-only evidence must remain `partial` and cannot verify the real service boundary.
-
-## Reference navigation
-
-Read only the smallest matching optional reference:
-
-- [clig-baseline.md](references/clig-baseline.md) — baseline command behavior and design-review questions
-- [framework-selection.md](references/framework-selection.md) — parser, framework, prompt, and TUI selection
-- [architecture-and-layout.md](references/architecture-and-layout.md) — modular boundaries, Vite artifact layout, config, output, and cross-platform design
-- [service-backed-clis.md](references/service-backed-clis.md) — service command taxonomy, auth reporting, installability, and representative boundary verification
-- [testing-and-release.md](references/testing-and-release.md) — `node:test`, native TypeScript execution, installed-command evidence, packaging, release preparation, and authorized publication
-- [ux-and-security.md](references/ux-and-security.md) — help, prompts/TUI, completion, secrets, protected options, subprocesses, and telemetry
-
-Load multiple references only when the task crosses those boundaries. Use `rg` inside the selected file when only one section is needed.

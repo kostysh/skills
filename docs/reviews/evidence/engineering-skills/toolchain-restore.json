@@ -1,0 +1,20 @@
+{
+  "command": [
+    "npm",
+    "ci",
+    "--ignore-scripts",
+    "--no-audit",
+    "--no-fund"
+  ],
+  "exit": 0,
+  "stdout": "\nadded 25 packages in 352ms\n",
+  "stderr": "",
+  "lock_sha256": "a530a72938e1ad5ca22d15580243d2778e49d9e7d120cf020f5d3ac862a9c4b7",
+  "versions": {
+    "typescript": "5.9.3",
+    "tsx": "4.20.5",
+    "ts-node": "10.9.2",
+    "@types/node": "24.0.0"
+  },
+  "old_tree": "/tmp/engineering-fixture-toolchain/node_modules-author-incident"
+}

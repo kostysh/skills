@@ -2,11 +2,12 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.2.1`
+- Skill source version: `0.2.2`
 
 ## Source files
 - `agents/openai.yaml`
 - `docs/logs/implementation-log-20260715-1.md`
+- `docs/logs/implementation-log-20260908-1.md`
 - `fragments/overview.md`
 - `references/generics.md`
 - `references/monorepo.md`
@@ -20,7 +21,15 @@ Generated from `skill.yaml`.
 - `skill.yaml`
 
 ## Required references
-- none
+- `references/generics.md`
+- `references/monorepo.md`
+- `references/overloads.md`
+- `references/patterns.md`
+- `references/practices.md`
+- `references/runtime-derived-types.md`
+- `references/toolchain.md`
+- `references/type-debugging.md`
+- `references/type-system.md`
 
 ## Warnings
 - none

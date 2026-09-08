@@ -6,6 +6,7 @@
 
 | Log | Related issue | Status |
 | --- | --- | --- |
+| [logs/implementation-log-20260908-1.md](logs/implementation-log-20260908-1.md) | Принятый FOUR-SKILLS план | Авторские проверки; независимая приёмка ожидается |
 | [logs/implementation-log-20260622-1.md](logs/implementation-log-20260622-1.md) | Direct operator request | Structural checks passed; capability not assessed |
 | [logs/implementation-log-20260713-1.md](logs/implementation-log-20260713-1.md) | Direct operator request | Independent PASS; supporting-only P3 correction included |
 

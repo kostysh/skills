@@ -1,0 +1,77 @@
+{
+  "typescript-engineer": {
+    "matched_emitted_files": [
+      "SKILL.md",
+      "agents/openai.yaml",
+      "docs/logs/implementation-log-20260715-1.md",
+      "docs/logs/implementation-log-20260908-1.md",
+      "references/generics.md",
+      "references/monorepo.md",
+      "references/overloads.md",
+      "references/patterns.md",
+      "references/practices.md",
+      "references/runtime-derived-types.md",
+      "references/toolchain.md",
+      "references/type-debugging.md",
+      "references/type-system.md"
+    ],
+    "source_snapshot": {
+      "AGENTS.md": "b37db36f41f2fc677617fe96db9c5b6e0ca2ef6e365bf3059d4c0d0bcc1cc086",
+      "SKILL.md": "8dccdca0e96b7c9f7caf51baaab9fb909df0bb01345a0ae7fac7c444bb597e86",
+      "agents/openai.yaml": "372a72c8d2943c55ba133bbda5e0ed8f46cdfd8f8d4940418beefcbaf62484ab",
+      "docs/README.md": "0b2342fbc323c4942b69c9e7c70aee0634131fb020678de9e6c4ebebe8794ce6",
+      "docs/compile-report.md": "c0da71c1c7758fb212d6737f89cf7faf68147faf6fd9ab166b780e9174eee1f7",
+      "docs/logs/forward-tests-core-20260710.md": "b609e8b003698dd70e74a65fa8e6289f5ebeb888500760576516ef41c270904b",
+      "docs/logs/forward-tests-routing-20260710.md": "9a01150970b2533a344fad0ab9259aa687607f86961b4f8d57ee910baae401bb",
+      "docs/logs/implementation-log-20260622-1.md": "d6e9995cd60c5a87ec7c4c8e7d0c44be14bcb8159d7349d078ba71072dcb55f0",
+      "docs/logs/implementation-log-20260710-1.md": "09f72d7e8217960d5c2fc2f46159b944559d3c8964c00af0bdf03b0d496a3ecd",
+      "docs/logs/implementation-log-20260715-1.md": "e1e7a6934bf3ebf6ffb74772dd0d4d8fdf907e63ac0c166358a9e325af1a2f9e",
+      "docs/logs/implementation-log-20260908-1.md": "f136baabe069957b4206735955079cf07fb125c30b193f504b97086d6862fdea",
+      "fragments/overview.md": "6ec81463560c773fec65a60ac0dd9408cd82814054b3e0bf62943b5560b5757b",
+      "references/generics.md": "7201b89492c473093a6818db8bcf0b26e445d2f0689eb84916ff185503c3c4c4",
+      "references/monorepo.md": "a725bf2737a1c0716b2c8f9f2a6d6d79cc0e14a401a06b7de5ed9744166fb5e4",
+      "references/overloads.md": "39494766556c8c7aa46c2aa16aa20718aedcaf7a4ec8cf0a28443324d3c5936b",
+      "references/patterns.md": "8636aec6c320d894a10ada0db3f452b7d31e9dc608d00a6e0a57e1b5c3aa1f57",
+      "references/practices.md": "51f765dcd0f2e1732e00d83504a4a832f177437f96aeed0d992a634e949c827a",
+      "references/runtime-derived-types.md": "1e1a327d0a2e59792ec25aa5c69bb2cd313273ef2a9d7730014700303e9e4aa0",
+      "references/toolchain.md": "313bb758492c473f47b7d1670fd01ecb605512296ab98edcf36fe59914794771",
+      "references/type-debugging.md": "2fb09da3deb9e434b50336644da63a6539503d30f05a0304fa7c9a78d7690304",
+      "references/type-system.md": "451bec02f0fe0cad7a3967b6d4b8388e98600c4655be7fee51b971f1db0f40e9",
+      "skill.yaml": "e4dd80ca098e46594ed798f0d4c06788139c7c99750ca0c037ac70b8dff82d1a"
+    }
+  },
+  "node-engineer": {
+    "matched_emitted_files": [
+      "SKILL.md",
+      "agents/openai.yaml",
+      "docs/README.md",
+      "docs/logs/implementation-log-20260622-1.md",
+      "docs/logs/implementation-log-20260713-1.md",
+      "docs/logs/implementation-log-20260715-1.md",
+      "docs/logs/implementation-log-20260908-1.md",
+      "docs/reviews/validation-20260713-1.md",
+      "references/debugging-profiling.md",
+      "references/operations.md",
+      "references/runtime-typescript.md",
+      "references/streams-caching.md"
+    ],
+    "source_snapshot": {
+      "AGENTS.md": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf",
+      "SKILL.md": "073a05ee05c1ef9db06d375ec9412fd2f8308a3d0ae2e028ed8df4f45eb55eef",
+      "agents/openai.yaml": "b41169df35aa53b56726f39c42a18008af7066d2a64269f1a8213d8309fe66df",
+      "docs/README.md": "9adf9d13f7eadf582e6df4aee2b56c6c6e22837d760fc7ca6cd172b37fe9d247",
+      "docs/compile-report.md": "0bb10d25d6bd98474b586f695609d635063b1415f973aea1fb1391afb64a647e",
+      "docs/logs/implementation-log-20260622-1.md": "868845f987018c2d8fb363b3d73d048249d1e9f8cd653c054dc77d5aacede797",
+      "docs/logs/implementation-log-20260713-1.md": "ba103099107acc04a9962b03a64dde24bfdeade7c96c3200e7d004b1eee74461",
+      "docs/logs/implementation-log-20260715-1.md": "9b575ec4d0e3ae4502f55afde13885679a572f6ff383c35879b7834b34ad6842",
+      "docs/logs/implementation-log-20260908-1.md": "c4ecc53504cbcf18089460a3df659657b40a372d7c4f07902787578e7dad7319",
+      "docs/reviews/validation-20260713-1.md": "152619384cb2b6ec30024ac2812cef8a800f1b170233eae30700464343f4c911",
+      "fragments/overview.md": "bc1db7bf987a7313b76677762b1b617f03c5a72584a4f15aed315c0c1cc074c8",
+      "references/debugging-profiling.md": "f20e33fa2ce9d7cf1c3a9c26c1552fcff4df75bc7c2527e1d56f2298be3a1cd3",
+      "references/operations.md": "d6f741c8a9f74c66d40c82516839a09c7f769d66d46fc89ea446f9f608e6fb95",
+      "references/runtime-typescript.md": "c255ca59ea91b9144baf7a624ffb84a717aafdb83f90156fbc96eba2e7c22e58",
+      "references/streams-caching.md": "1a24ea44947df1ed6826f86ffba0ae7f39670202467d9487e0570cc69b548d00",
+      "skill.yaml": "3271468043dea4b336ef8eb91d9fedb57467ba83cb8687b3fb521a1fd6408dbc"
+    }
+  }
+}

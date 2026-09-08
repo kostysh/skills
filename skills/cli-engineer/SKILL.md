@@ -5,9 +5,9 @@ description: Design, review, implement, verify, package, and release
   node:test, command/help/output/error contracts, prompts, terminal UI,
   installability, service-backed commands, and release readiness.
 metadata:
-  source-version: 0.2.0
+  source-version: 0.2.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 808f6083278d45c361605997143d51f819500dfdb102956f296487d26a7f9662
+  skillforge-source-hash: 11d5db9f414321af49bba1b5623efda81e15daabac81cb82f1bdf82a576dab5b
 ---
 
 # cli-engineer
@@ -16,10 +16,9 @@ metadata:
 
 1. Classify the request as design, review, implementation, release preparation, or authorized publication; review and release preparation do not authorize external mutation.
 2. Define the representative user jobs, command/output/error contract, supported platforms, install boundary, service boundary, and side-effect class before selecting tools or claiming readiness.
-3. Apply this skill's standard stack for new CLI work and build/test selection: current Active LTS Node.js, TypeScript, Vite, node:test, native type stripping, and no tsx.
-4. Preserve an existing non-Vite build when migration is outside the request, report the deviation, and do not extend it into a competing standard.
-5. Load only the optional active references whose triggers match the current task.
-6. Match every completion claim to observed behavior through the built or installed command; files, scripts, mocks, and green checks alone are not the capability.
+3. Apply the Standard CLI toolchain policy to distinguish new setup or authorized replacement from an ordinary repair using existing tools.
+4. Load only the optional active references whose triggers match the current task.
+5. Match every completion claim to observed behavior through the built or installed command; files, scripts, mocks, and green checks alone are not the capability.
 
 ## When to use this skill
 
@@ -47,20 +46,9 @@ Applies to TypeScript-only Node.js command-line software, from small commands to
 
 The outcome is a CLI whose documented user jobs work through the built or installed command on the claimed platforms and boundaries. A parser, package manifest, Vite build, generated help, green test suite, mock, or stub is substrate or bounded evidence; it is not the end-to-end capability by itself.
 
-## Standard tooling baseline
+## Tooling applicability
 
-For new CLI work and when selecting or replacing build/test tooling:
-
-- resolve the current **Active LTS** Node.js line from official Node.js sources at task time; do not permanently encode a remembered major as this skill's default
-- use TypeScript for runtime source and tests
-- use Vite for the CLI build, with an explicit Node target and executable artifact contract
-- use `node:test` for unit, process-level integration, and CLI contract tests
-- run compatible TypeScript tests and scripts with the current Active LTS native type-stripping path and run a separate typecheck
-- keep directly executed TypeScript erasable and independent of `tsconfig`-only runtime transforms
-- never add or invoke `tsx`; rewrite the script to the supported profile or execute Vite-built JavaScript instead
-- use Vitest only when the user or an authoritative project contract explicitly requires it
-
-When an existing project uses another build system and migration is outside the request, work with that build without broad migration, report the deviation, and do not extend it into another recommended standard. This exception does not permit adding or invoking `tsx`.
+Apply the [Standard CLI toolchain policy](#standard-cli-toolchain) before choosing tools. Inspect and run existing supported repository commands for an ordinary fix; use the new-setup defaults only when that setup or replacement is in scope.
 
 ## CLI contract non-negotiables
 
@@ -80,7 +68,7 @@ When an existing project uses another build system and migration is outside the 
 
 ## Verification boundary
 
-Unit tests are mandatory, followed by process-level integration and public-contract coverage. The repository quality gate should include typecheck, format check, lint, `node:test`, Vite build, and artifact smoke verification.
+Verify the changed behavior with unit, process, and public-contract coverage as applicable, plus the repository's required checks. New setup or authorized quality-gate hardening supplies missing gates; an ordinary repair uses existing supported tooling and reports material coverage gaps.
 
 For durable or installable CLIs:
 
@@ -92,19 +80,6 @@ For durable or installable CLIs:
 
 For service-backed jobs, use a real service, a sandbox, or an authoritative contract-conformant boundary. Mock/stub-only evidence must remain `partial` and cannot verify the real service boundary.
 
-## Reference navigation
-
-Read only the smallest matching optional reference:
-
-- [clig-baseline.md](references/clig-baseline.md) — baseline command behavior and design-review questions
-- [framework-selection.md](references/framework-selection.md) — parser, framework, prompt, and TUI selection
-- [architecture-and-layout.md](references/architecture-and-layout.md) — modular boundaries, Vite artifact layout, config, output, and cross-platform design
-- [service-backed-clis.md](references/service-backed-clis.md) — service command taxonomy, auth reporting, installability, and representative boundary verification
-- [testing-and-release.md](references/testing-and-release.md) — `node:test`, native TypeScript execution, installed-command evidence, packaging, release preparation, and authorized publication
-- [ux-and-security.md](references/ux-and-security.md) — help, prompts/TUI, completion, secrets, protected options, subprocesses, and telemetry
-
-Load multiple references only when the task crosses those boundaries. Use `rg` inside the selected file when only one section is needed.
-
 ## Workflow stages
 
 ### Workflow stage: Resolve mode, authority, and CLI contract
@@ -114,7 +89,7 @@ Establish the requested outcome, allowed side effects, standard-stack applicabil
 1. Classify the request as design, review, implementation, release preparation, or authorized publication.
 2. Record the target repository, representative jobs, public command contract, supported platforms, install/distribution boundary, service boundary, and protected side effects.
 3. Verify the current Active LTS from official Node.js sources before setting engines, CI, Vite targets, or TypeScript execution guidance.
-4. For new or replaced build/test surfaces, apply Vite and node:test; preserve an existing alternative build only when migration is outside scope, and use Vitest only when the user or an authoritative project contract explicitly requires it.
+4. Inspect existing build/test commands and their supported execution path; apply the Standard CLI toolchain policy before selecting or replacing tools.
 5. Stop publication when package, registry, version, dist-tag, access/visibility, release target, or mutation authority is missing.
 
 Validation:
@@ -124,13 +99,12 @@ Validation:
 
 ### Workflow stage: Design, review, or implement the CLI contract
 
-Produce the smallest standard-conformant CLI change or an evidence-backed read-only assessment.
+Produce the smallest compatible CLI change or an evidence-backed read-only assessment.
 
 1. Design thin CLI, application, domain, and infrastructure boundaries; define non-interactive, stdout/stderr, exit-code, config, TTY, protected-option, and completion behavior before polish.
 2. In design mode, return a decision-complete design without editing files; in review mode, inspect and report without remediation.
-3. In implementation mode, use Vite, node:test, TypeScript, and current-LTS native type stripping; never add or invoke tsx.
-4. Keep directly executed TypeScript erasable and independent of tsconfig-only runtime transforms; otherwise rewrite it to the supported profile or execute Vite-built JavaScript.
-5. For an existing non-Vite build outside migration scope, make only the requested compatible change and report that the package does not conform to the standard build baseline.
+3. In implementation mode, preserve working repository scripts, runner, loader, and build unless changing them is necessary to fix the demonstrated cause or explicitly authorized.
+4. When built-in type stripping is the selected execution path, keep directly executed TypeScript erasable and independent of tsconfig-only runtime transforms; verify any established loader path by its own contract.
 
 Validation:
 
@@ -141,7 +115,7 @@ Validation:
 
 Prove the claimed user job through the same built or installed entrypoint consumers will use.
 
-1. Run typecheck, format check, lint, node:test unit/integration/contract tests, Vite build, and artifact smoke checks required by the repository.
+1. Run applicable repository typecheck, formatting, lint, unit/process/contract tests, build, and artifact checks through their declared commands; report missing required coverage without installing unrelated tooling.
 2. Pack or install durable CLIs into an isolated platform-appropriate temporary location, invoke the exact bin outside the source tree, and verify help, version, a representative success path, and a representative failure path.
 3. For service-backed jobs, exercise a real, sandbox, or authoritative contract-conformant boundary; label mock/stub-only evidence as partial and do not claim the real boundary was verified.
 4. Record observed command, exit status, stdout/stderr, side effects, environment, and any unverified platform or boundary.
@@ -167,27 +141,30 @@ Validation:
 
 ## Interop priority
 
-- **Node.js runtime, current Active LTS evidence, ESM/CJS behavior, native type stripping, signals, and resources:** node-engineer. cli-engineer owns the CLI contract and standard baseline; node-engineer owns runtime semantics and version-specific feasibility.
-- **TypeScript language, compiler, module-resolution, and tsconfig rules:** typescript-engineer. cli-engineer requires TypeScript and an erasable direct-execution profile; typescript-engineer owns language and compiler correctness.
-- **Test mechanics, node:test diagnostics, coverage, hangs, and CI runner behavior:** typescript-test-engineer. cli-engineer owns mandatory CLI unit/process/contract/artifact coverage and the node:test standard; typescript-test-engineer owns test implementation mechanics.
-- **Stable diff review, finding severity, and merge guidance:** code-reviewer. code-reviewer owns formal read-only review; cli-engineer supplies CLI-domain judgments.
+- **Node.js runtime, current Active LTS evidence, ESM/CJS behavior, native type stripping, signals, and resources:** node-engineer. Supply exact bin, command, runtime range, and observed failure; consume the Node execution/module/resource contract only for the versions and paths it verifies.
+- **TypeScript language, compiler, module-resolution, and tsconfig rules:** typescript-engineer. Supply the selected runtime and public consumers; consume compiler/config and type evidence without treating typecheck as installed-command proof.
+- **Test mechanics, node:test diagnostics, coverage, hangs, and CI runner behavior:** typescript-test-engineer. Supply public success/failure, output, exit, and install scenarios; consume runner/test evidence from the established tooling, retaining any untested boundary.
+- **Stable diff review, finding severity, and merge guidance:** code-reviewer. Supply a stable diff and exact CLI evidence; consume scoped findings and merge guidance only for that snapshot. Domain checks are not an independent review.
 - **Authorized implementation scope and minimal remediation:** implementation-discipline. implementation-discipline owns mutation discipline; cli-engineer owns the required CLI behavior.
-- **Threat modeling, secrets, plugins, subprocesses, supply chain, and security sign-off:** security-reviewer. cli-engineer owns CLI safeguards; security-reviewer owns deep exploitability and sign-off.
-- **Commits, tags, branches, and pushes:** git-engineer. Release readiness does not authorize Git mutations; git-engineer owns exact Git targets and verification.
-- **GitHub Actions, releases, repository settings, and remote readback:** gh-utility. cli-engineer supplies release requirements; gh-utility owns GitHub operations and target verification.
+- **Threat modeling, secrets, plugins, subprocesses, supply chain, and bounded security assessment:** security-reviewer. Supply trust boundaries and concrete CLI safeguards/evidence; consume the bounded exploitability assessment without converting it into overall release approval.
+- **Commits, tags, branches, and pushes:** git-engineer. Supply authorized release intent and exact source revision; consume verified refs and mutation readback only for authorized Git actions. Local release preparation grants no Git authority.
+- **GitHub Actions, releases, repository settings, and remote readback:** gh-utility. Supply exact repository, workflow/release target, and existing authorization when GitHub work is requested; consume operation-specific remote readback, not local release readiness.
+- **Reader-facing command instructions:** documentation. Supply exact package/version/bin, prerequisites, commands, output/errors, and installed evidence; consume an executable guide for that artifact without changing command semantics through prose.
+- **Missing product requirements, behavioral contracts, and architectural trade-offs:** prd-engineer, spec-engineer, or architecture-engineer according to the unresolved decision. Supply the concrete gap and CLI constraints; consume the accepted requirement, contract, or architecture decision before dependent implementation, without turning a tooling default into product authority.
+- **Execution breakdown and sequencing from accepted scope:** delivery-planner. Supply accepted CLI scope, dependencies, and evidence gaps; consume the executable plan when planning is requested. CLI design alone does not authorize a backlog or implementation.
 
 ## Gotchas
 
 - **high** — A Vite build, package scripts, green tests, help output, mock, or stub proves only its exercised boundary; none alone proves the representative installed CLI job or real service integration.
 - **high** — A request to prepare, review, configure, or make a CLI release-ready does not authorize npm publication, Git tags or pushes, GitHub releases, or trusted-publisher configuration.
 - **high** — Never hardcode a remembered Node LTS major as this skill's permanent baseline; resolve the current Active LTS and version-specific TypeScript/Vite behavior from official sources when the task runs.
-- **high** — Do not add or invoke tsx. Keep direct TypeScript entrypoints compatible with current-LTS native type stripping, or execute Vite-built JavaScript.
+- **high** — An ordinary CLI fix is not a tooling migration. Do not replace a working test command or rewrite compatible syntax merely to satisfy a new-project default.
 - **medium** — Do not present /tmp, command -v, POSIX signals, shell chaining, or executable-bit checks as universal cross-platform verification.
 
 ## Policies
 
 ### Standard CLI toolchain
-For new CLI work and when selecting or replacing build/test tooling, use current Active LTS Node.js, TypeScript, Vite, node:test, and native type stripping; tsx is prohibited. Use Vitest only when the user or an authoritative project contract explicitly requires it. Preserve an existing alternative build when migration is outside scope, but report the deviation and do not make it a competing standard.
+For a new setup or explicitly authorized tooling replacement, use current Active LTS Node.js, TypeScript, Vite, node:test, and supported native type stripping; do not introduce tsx. An explicit user or authoritative project requirement can select another tool. For an existing project repair, preserve and run its supported build, runner, and loader, including existing tsx or Vitest. Adding a regression test does not authorize runner replacement. Change tools or rewrite syntax only when required by the demonstrated cause or authorized migration; explain that reason and verify the affected path.
 
 ### Mode and side-effect boundary
 Design returns a decision-complete design; review is read-only; implementation changes the authorized project scope; release preparation may build, pack, and verify locally but does not publish or mutate Git/GitHub; publication requires exact targets and explicit mutation authority.
@@ -196,10 +173,13 @@ Design returns a decision-complete design; review is read-only; implementation c
 Report design/draft, implemented, verified, release-ready, published, partial, or blocked according to observed evidence. `verified` requires a representative job through the built or installed entrypoint and claimed boundary; `release-ready` additionally requires packed-content and clean-install evidence; `published` requires authorized registry write plus fresh registry and install readback.
 
 ### Agent output contract
-Report task mode, authoritative inputs, standard-stack deviations, changed or reviewed scope, observed commands and results, stdout/stderr and exit behavior when relevant, proposed versus executed side effects, strongest warranted state, evidence limits, and next owner or blocker.
+Report task mode, authoritative inputs, applicable toolchain and justified changes, changed or reviewed scope, observed commands and results, stdout/stderr and exit behavior when relevant, proposed versus executed side effects, strongest warranted state, evidence limits, and next owner or blocker.
 
 ### Publication safety
 Before npm publication require and confirm package identity, registry, version, dist-tag, access/visibility, release target, credentials path, and exact authorization. Inspect packed contents before the write; after it, read registry metadata and clean-install the published version. Stop on ambiguous write results instead of retrying blindly.
+
+### Unavailable owner
+Route only the decision the task needs. When its specialist is unavailable, continue authorized CLI work using accepted sources and checks; identify the missing input or assessment and withhold only the dependent claim. Never invent an owner verdict or require every neighboring skill for an ordinary repair.
 
 ## Optional references
 - [architecture-and-layout.md](references/architecture-and-layout.md) — Read this when you need package structure, command layering, config precedence, output model, and cross-platform design.

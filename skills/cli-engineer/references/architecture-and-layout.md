@@ -229,7 +229,7 @@ In a pnpm workspace:
 
 In this skill, Vite is the build standard for new TypeScript CLIs and for requested build migrations. Verify the installed Vite major and its current official build configuration before writing config; the contract below wins over a memorized option name.
 
-When an existing project uses another build and migration is outside the request, preserve that build for the scoped change, verify its real artifact, and report the deviation. Do not introduce a second bundler or present the alternative as another standard.
+When an existing project uses another build and migration is outside the request, preserve that build for the scoped change and verify its real artifact. Apply the [Standard CLI toolchain policy](../SKILL.md#standard-cli-toolchain); do not introduce a second bundler for an ordinary repair.
 
 Use Vite only when the configuration is clearly shaped around a Node CLI contract:
 

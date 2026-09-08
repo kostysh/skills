@@ -40,7 +40,7 @@ For Node 26, code containing enums, parameter properties, namespaces with runtim
 
 Do not silently change the production artifact, introduce a loader, or mass-rewrite syntax merely to make one local command pass. Route TypeScript language/config work to `typescript-engineer` after the Node runtime path is selected.
 
-## Runtime facts that affect correctness
+## Built-in runtime facts that affect correctness
 
 - Node ignores `tsconfig.json` runtime options such as `paths` and downlevel targets.
 - Type-only imports need `import type` or inline `type` markers; otherwise Node treats them as runtime imports.
@@ -50,10 +50,16 @@ Do not silently change the production artifact, introduce a loader, or mass-rewr
 
 ## Import extensions
 
-When Node executes source TypeScript directly:
+When Node executes source TypeScript through built-in stripping:
 
 - use explicit `.ts`, `.mts`, or `.cts` relative specifiers matching the source files;
 - verify the module system from extensions and the nearest `package.json` `type` field.
+
+When an established third-party loader executes TypeScript:
+
+- inspect the installed loader version, effective resolver/transform configuration, module mode, and actual command before changing imports;
+- preserve a supported resolver contract: for example, `ts-node` 10.9.2 documents `.js` → `.ts` remapping with `experimentalResolver` enabled; verify that version/configuration and exercise the command rather than assuming the option is enabled or every loader supports it ([ts-node resolver options](https://typestrong.org/ts-node/docs/options/#experimentalresolver));
+- do not force source-extension rewrites or add a loader when the existing resolver already supports the accepted execution path.
 
 When Node executes emitted JavaScript:
 
@@ -65,7 +71,7 @@ Do not mix source-execution and emitted-output extension rules in one recommenda
 
 ## Typecheck guard for erasable source
 
-When the installed TypeScript version supports these options and direct source execution is accepted, a typecheck-only config can enforce the runtime subset:
+When the installed TypeScript version supports these options and built-in erasable source execution is accepted, a typecheck-only config can enforce the runtime subset:
 
 ```json
 {

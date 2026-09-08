@@ -1,0 +1,51 @@
+{
+  "compiled_parity": [
+    {
+      "path": "SKILL.md",
+      "sha256": "c3bfd58accd178da66da372e023d1c56fdbd77677c190641a0d96cc4bf311b1a"
+    },
+    {
+      "path": "agents/openai.yaml",
+      "sha256": "6636d02bb369b94d4609f716f4d239112e45827f90e0b3925fe6cce2afefe713"
+    },
+    {
+      "path": "evals/evals.json",
+      "sha256": "3a2ed37b10b00dfec768cd1df6224081dd09ac9d39c3503803eb31bb4b0442a1"
+    },
+    {
+      "path": "references/architecture-and-layout.md",
+      "sha256": "b9146bb7ef055a0be35b979e399a0839159f185e24d523b6bbd6b5d40d60b187"
+    },
+    {
+      "path": "references/testing-and-release.md",
+      "sha256": "1242eed806eb5370a7877dff1e8b261256a6bea1063af15d09f3818c04495919"
+    },
+    {
+      "path": "references/service-backed-clis.md",
+      "sha256": "b6167536c12de7caddf6c23f57ab91b25550686bbfb7056ab658644ed0790a51"
+    },
+    {
+      "path": "references/framework-selection.md",
+      "sha256": "404d236d1d93ac474ca34f16cff6320dc3811c5178562d4437f6e021030bccf9"
+    },
+    {
+      "path": "references/clig-baseline.md",
+      "sha256": "04db969526870771fa235ab3c54baa3eed61e7c473ade9dfdd12bd610e6ce398"
+    },
+    {
+      "path": "references/ux-and-security.md",
+      "sha256": "41ae8b7adb56b8878cf93bd73c2c2348c13dab0ea141d0867832e5d1008e9d84"
+    }
+  ],
+  "check": {
+    "command": [
+      "node",
+      "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+      "check",
+      "/tmp/engineering-cli-compiled/cli-engineer"
+    ],
+    "exit": 0,
+    "stdout": "OK /tmp/engineering-cli-compiled/cli-engineer\n",
+    "stderr": ""
+  }
+}
