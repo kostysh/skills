@@ -1,9 +1,25 @@
 # Report, matrix, and remediation plan
 
-Read this reference before producing a full report, machine-readable matrix,
-recommendation set, or independently assignable remediation plan.
+Read the mode/output contract before recommendations or a remediation plan.
+The full-report and matrix requirements apply only to `full evidentiary` mode.
 
-## Human-readable report
+## Mode and output contract
+
+- `targeted`: give the outcome, relevant evidence pointers, supported causal
+  links and unknowns, historical-fix versus prevention/effectiveness status,
+  and a proportionate residual recommendation or next owner. Combine these in
+  short prose. Do not require a machine-readable matrix, full appendices, or a
+  project task hierarchy. Add a numbered plan only when requested; apply the
+  relevant recommendation/step fields below without creating full-mode output.
+- `full evidentiary`: retain the complete report, machine-readable matrix,
+  source disposition, mappings, counts, numbered remediation plan, and required
+  independent review specified below. Missing evidence limits this claim; it
+  does not silently switch the task to targeted.
+
+In both modes, recommendations address only source-supported residual work.
+Creating tasks or implementing recommendations requires its own authority.
+
+## Human-readable full report
 
 Use the smallest structure that preserves these sections:
 
@@ -40,7 +56,7 @@ Each problem row contains:
 Severity expresses consequence and recurrence risk, not how much prose the audit
 used. Confidence expresses evidence strength and causal certainty.
 
-## Machine-readable matrix
+## Full-mode machine-readable matrix
 
 Use JSON by default unless project rules require CSV. The machine copy must
 preserve, at minimum:
@@ -74,8 +90,9 @@ Required reconciliation:
 
 ## Recommendations
 
-Keep detailed proposals outside the compact problem matrix. Give each
-recommendation:
+In full mode, keep detailed proposals outside the compact problem matrix and
+give each recommendation the fields below. For targeted work, keep only the
+fields needed to understand and act on the bounded recommendation:
 
 - stable ID;
 - target file, skill, rule, process stage, test, tool, runtime boundary, or
@@ -107,9 +124,11 @@ harness, registry, or workflow is justified only when:
 
 ## Numbered remediation plan
 
-The final plan is a numbered list of concrete steps, not a package taxonomy plus
-a second checklist. An operator must be able to say “take step N” without the
-implementer making source-owned decisions.
+For a full retrospective or an explicitly requested plan, use a numbered list
+of concrete steps. An operator must be able to say “take step N” without the
+implementer making source-owned decisions. retrospective-analysis owns the
+recommendation mapping; delivery-planner owns project task decomposition,
+dependencies and readiness when those decisions are needed.
 
 Every step contains:
 
@@ -139,7 +158,7 @@ Do not reopen verified historical work. A step may validate a current control or
 complete residual prevention, but its scope must name what remains after history
 verification.
 
-## Acceptance and status
+## Full-report acceptance and status
 
 A full report may receive independent audit `PASS` while its program verdict is
 `FAIL` because unresolved problems remain. Explain this in plain language:
@@ -158,4 +177,6 @@ Report acceptance requires:
 - concrete prevention for all critical and high problems or explicit blockers;
 - independent completeness/causality/deduplication review when required.
 
-Task creation is a later, separately approved operation.
+Task creation needs explicit action/target approval distinct from report
+acceptance. Reuse existing approval within that scope; do not ask again merely
+because the workflow reached the handoff stage.

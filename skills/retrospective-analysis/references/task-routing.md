@@ -1,38 +1,53 @@
 # Approved task handoff
 
-Read this reference only when the operator requests or approves creation of
-tracker tasks from an accepted retrospective plan.
+Read this reference for an explicitly requested tracker handoff or its
+reconciliation. Preparing a handoff does not itself authorize tracker mutation.
 
 ## Hard gates
 
 Do not mutate a tracker until all conditions hold:
 
-1. the report and machine matrix are stable;
-2. the required independent audit is `PASS`;
-3. the numbered remediation plan reconciles all active recommendations;
-4. the operator has separately approved creation of tasks from that plan;
+1. the analysis and accepted residual actions are stable; full mode additionally
+   requires its stable report and machine matrix;
+2. an independent audit is `PASS` when full mode or applicable project rules
+   require it; a targeted action does not inherit the full-mode audit gate;
+3. every active action has a stable identifier, source, owner and acceptance
+   boundary; full mode additionally reconciles the numbered plan;
+4. the operator has separately approved creation for the accepted actions or
+   numbered plan in the exact target;
 5. project-specific task-management rules and tracker tools are available.
 
 Approval of the retrospective request, report, audit, or implementation plan is
 not implied approval to create external tasks.
 
+Reuse explicit creation approval already given for the same accepted actions
+and target. If a gate is missing, identify that gate and continue supported
+handoff preparation without creating external items.
+
 ## Task shape
 
-Create:
+Choose the smallest shape required by the accepted scope and native project
+rules:
 
-- one navigation parent for the accepted remediation program;
-- one child per active numbered plan step.
+- full program: one navigation parent and one child per active numbered step;
+- targeted work: one actionable item per approved residual action, with an
+  existing parent or a new navigation item only when the project requires it.
+
+If no active actions remain, report that no creation is needed; do not add an
+empty navigation item. Record expected navigation and actionable counts
+separately before mutation.
 
 Do not create children for recommendations marked already implemented,
 cancelled, rejected, superseded, not applicable, or intentionally retained
 without action.
 
-Issue bodies navigate to the authoritative report and exact plan step. They may
-summarize outcome, dependencies, owner, evidence, and anti-claims, but must not
-copy and fork the normative remediation plan.
+Issue bodies link to the stable analysis and exact accepted action, or to the
+authoritative report and numbered step when a plan applies. They may summarize
+outcome, dependencies, owner, evidence, and anti-claims without forking that
+source. A targeted action needs no invented plan or step.
 
-Use the project's native parent-child mechanism and field semantics. Set status
-from actual dependencies:
+Use native project fields and, when the selected shape includes a parent,
+its parent-child mechanism. Set status from actual dependencies:
 
 - ready only when prerequisites and source authority are ready;
 - blocked when a named external or predecessor gate is unresolved;
@@ -43,9 +58,10 @@ from actual dependencies:
 
 Before any create operation:
 
-1. read the accepted plan and enumerate exact active step IDs;
-2. query the target repository/project for the navigation parent and each step
-   using stable step ID, exact title, parent linkage, and project identity;
+1. read the accepted actions or plan and enumerate exact active action/step IDs;
+2. query the target repository/project for each action and any parent required
+   by the selected shape, using stable ID, title, applicable parent linkage,
+   and project identity;
 3. classify each as absent, exactly present, duplicate, or ambiguous;
 4. stop on duplicate or ambiguous state; do not “repair” by creating another
    item;
@@ -56,10 +72,11 @@ For each authorized create:
 1. create once;
 2. capture the returned immutable issue/item ID and URL directly from the
    mutation response;
-3. add native parent/project linkage using that identity;
+3. add required project linkage and any parent linkage in the selected shape
+   using that identity;
 4. read the issue and project item back directly by ID;
-5. verify title, body source link, parent, status, and required fields before
-   continuing.
+5. verify title, body source link, status, required fields, and parent presence
+   or absence against the selected shape before continuing.
 
 Do not repeat a mutation because:
 
@@ -76,13 +93,17 @@ stop for reconciliation.
 
 After creation, verify:
 
-- exactly one navigation parent;
-- exactly one child for every active step and none for inactive dispositions;
-- unique stable step IDs and titles;
-- correct native parent links;
+- navigation items match the selected shape (one parent for a full program);
+- exactly one actionable item for every active action/step and none for
+  inactive dispositions;
+- unique stable action/step IDs and titles;
+- correct native parent links, or their absence for a standalone item;
 - correct target project and status/dependency fields;
-- total task count equals the accepted active-step count;
-- report links point to the stable authoritative revision.
+- actionable count equals the accepted active-action/step count;
+- total item count equals navigation count plus actionable count: for a full
+  program with N active steps, one parent plus N children is N + 1 items;
+- analysis/report links point to the stable authoritative revision and exact
+  accepted action or plan step.
 
 Record the returned IDs/URLs and reconciliation evidence. Task existence proves
 only backlog routing, not implementation or effectiveness.
