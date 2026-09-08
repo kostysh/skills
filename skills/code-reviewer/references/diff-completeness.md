@@ -13,6 +13,8 @@ Resolve target, base, and scope in this order:
 
 Do not silently choose between multiple plausible bases or targets. Return `blocked` and request the missing authority. When only part of an otherwise valid target can be inspected, return `limited` and name the excluded surface.
 
+An explicit snippet or repository scope can be reviewed without a comparison base. Record the supplied text or file-set identity and mark the base not applicable; do not force a diff or general merge review onto complexity-only work.
+
 ## Read-only and Snapshot Rules
 
 - Review is read-only by default.
@@ -23,22 +25,22 @@ Do not silently choose between multiple plausible bases or targets. Return `bloc
 
 ## Rules
 
-- Do not finalize findings until every changed file is accounted for.
+- Account for every in-scope file as inspected or explicitly unavailable before reporting; these are different evidence states.
 - If CLI diff output truncates, recover coverage by reading changed files directly.
-- Do not finalize findings or a recommendation while target authority is unresolved or the snapshot is moving.
+- Do not approve an unresolved or moving target. Preserve findings tied to any independently stable, assessable part and explain which requested conclusion remains blocked or limited.
 
 ## Remediation Re-audit Scope
 
 For a remediation re-audit, record the prior reviewed snapshot, fixed findings, current stable snapshot, and exact remediation delta. Re-run each original failure path and inspect the adjacent regression surface identified by the change's blast radius. Do not re-read or re-audit unchanged full scope that the prior review already verified.
 
-Widen to a fresh review when the claim, source authority, public behavior, or material scope changed, when unrelated changes overlap the evidence boundary, or when the blast radius cannot be bounded. A cosmetic or text-only diff does not close a behavioral finding without evidence against its original failure path.
+An accepted behavioral correction stays within re-audit when it changes only the agreed failure path and bounded adjacent contracts. Widen only when the delta leaves that accepted boundary, changes dependent contracts outside it, introduces unrelated behavior affecting the conclusion, or has an unbounded blast radius. Name the extra surface and obtain missing scope authority before reviewing it. A cosmetic or text-only diff does not close a behavioral finding without evidence against its original failure path.
 
 ## Minimum Sequence
 
 1. Resolve target, base, and scope using the authority order above.
 2. Record the starting snapshot identity.
-3. Read the full diff and list all changed files.
-4. For any truncated file, read the file directly until every changed hunk is visible.
+3. Read the available diff and list all changed files; for a non-diff scope use the explicitly supplied file set or snippet.
+4. Recover truncated files directly when available; record any remaining unseen content as a coverage limit instead of implying it was checked.
 5. Keep a reviewed-files list and explicit exclusions.
 6. Compare the ending snapshot identity with the starting identity.
 7. Before final output, state:
@@ -51,8 +53,10 @@ Widen to a fresh review when the claim, source authority, public behavior, or ma
 
 Before finalizing:
 
-- every changed file has been seen
-- deleted tests or config files were checked, not skipped
+- every changed file is accounted for; any unread file is an explicit coverage limit
+- deleted tests or config files were inspected when available, and unavailable content is not claimed as checked
 - no finding depends on an unseen hunk
 - unverifiable areas are called out explicitly
 - ending snapshot identity matches the starting identity; otherwise the result is stale and cannot approve
+
+A stable partial review may finish with confirmed findings and `limited`. State any known merge blocker explicitly; a coverage limit does not clear it. Clean approval requires sufficient coverage and evidence for the full declared merge boundary.

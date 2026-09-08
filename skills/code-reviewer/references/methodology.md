@@ -12,7 +12,7 @@ Before writing findings:
    - explicit file list
    - commit range
    - PR diff
-3. Read the full diff.
+3. Read the available diff and account for unavailable content as a coverage limit.
 4. List the changed files and explicit exclusions.
 5. Flag high-risk files early without assigning severity from file class alone:
    - migrations
@@ -29,7 +29,7 @@ Before writing findings:
 7. If changed files or linked intent touch policy/admission surfaces, run the bounded pass from `references/policy-admission-merge-risk.md`.
 8. If changed files or linked intent touch runtime gates in a shipped lifecycle, run the deployed-path pass from `references/runtime-gate-deployed-path.md`.
 
-If any diff output is truncated, read the touched files directly until every changed hunk is seen.
+If diff output is truncated, recover touched files directly when possible. Use the partial-scope rules in `diff-completeness.md` when content remains unavailable; do not discard supported findings.
 
 ## Conditional Policy/admission Merge-risk Pass
 
@@ -40,7 +40,7 @@ Ask:
 - Do deny and refusal paths terminate before any external invocation or durable side effect?
 - Are duplicate request ids, persistence conflicts, replayed admissions, and stale audit rows resolved before side effects?
 - When an age limit such as `maxEvidenceAgeMs` exists, does missing or stale freshness metadata fail closed?
-- Can persistence failure, audit-write failure, or decision-write failure produce an allowed action?
+- Which decision or audit persistence is an admission prerequisite under the owning contract, and can its failure still produce an allowed action? Do not impose fail-closed behavior on a contractually best-effort observational sink.
 - Do active-scope or singleton decisions use a transaction, lock, or constraint model that matches the data model?
 - Do append-only fact tables avoid uniqueness shortcuts that hide conflicting facts?
 - Do tests exercise the actual policy/admission risk path instead of only a nearby happy path?
@@ -122,8 +122,8 @@ If you cannot support one of those points, downgrade it to a question or assumpt
 
 Before finalizing, quickly check:
 
-- every changed file was reviewed
-- every high-risk file class received at least one explicit pass
+- every changed file is accounted for as inspected or unavailable
+- each applicable high-risk surface was inspected or is named as an evidence limit
 - deleted or rewritten tests were inspected, not just counted
 - findings are ordered by severity, not by file order
 - no finding is just a style preference in disguise

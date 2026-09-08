@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: code-reviewer
-  source-version: 0.4.5
+  source-version: 0.4.6
   recommended-skill-md-max-bytes: 20000
   description: >-
     Perform read-only review of PRs, diffs, and local branch changes. Use to find
@@ -22,6 +22,7 @@ references:
     title: Domain Routing
     source: references/domain-routing.md
     target: references/domain-routing.md
+    required: true
     trigger: Read this when changed code needs specialized framework, platform, security, privacy, financial, skill-package, or other domain authority.
   - id: ref-references-findings-format
     title: Findings Format
@@ -33,16 +34,19 @@ references:
     title: Methodology
     source: references/methodology.md
     target: references/methodology.md
+    required: true
     trigger: Read this for a broad, formal, high-risk, or large review that needs the full pass order and completeness audit.
   - id: ref-references-policy-admission-merge-risk
     title: Policy Admission Merge Risk
     source: references/policy-admission-merge-risk.md
     target: references/policy-admission-merge-risk.md
+    required: true
     trigger: Read this when changed files or linked review intent touch policy gates, admission-before-side-effect flow, decision or audit persistence, active scope, idempotency, replay, or freshness checks.
   - id: ref-references-runtime-gate-deployed-path
     title: Runtime Gate Deployed Path
     source: references/runtime-gate-deployed-path.md
     target: references/runtime-gate-deployed-path.md
+    required: true
     trigger: Read this when changed files or linked review intent touch runtime gates that authorize execution through a shipped lifecycle, production construction path, deployed dependency wiring, request or tick path, invocation boundary, idempotency lock scope, or deployment/cell identity binding.
   - id: ref-references-severity-confidence
     title: Severity Confidence
@@ -54,11 +58,13 @@ references:
     title: Spec Pass
     source: references/spec-pass.md
     target: references/spec-pass.md
+    required: true
     trigger: Read this when a linked issue, acceptance criteria, contract, ADR, migration note, or other normative source exists.
   - id: ref-references-complexity-only
     title: Complexity-only Review
     source: references/complexity-only.md
     target: references/complexity-only.md
+    required: true
     trigger: Read this only when the user explicitly asks to review for over-engineering, simplification, unnecessary dependencies, dead flexibility, or what can be deleted.
 assets:
   - id: asset-assets-pr-review-template
@@ -97,19 +103,19 @@ surfaces:
       - ref-references-diff-completeness
       - ref-references-findings-format
       - ref-references-severity-confidence
-    optionalReferences:
       - ref-references-domain-routing
       - ref-references-methodology
       - ref-references-policy-admission-merge-risk
       - ref-references-runtime-gate-deployed-path
       - ref-references-spec-pass
       - ref-references-complexity-only
+    optionalReferences: []
   supportingGlobs:
     - docs/*
 sections:
   startHere:
-    - Confirm the request is for read-only merge-risk review, not implementation or a specialized audit owned by another skill.
-    - Read the three required references and freeze a reproducible target, base, scope, and starting snapshot before judging code.
+    - Select normal merge-risk review, explicit complexity-only review, or a combined request; preserve the requested mode and leave specialized verdicts with their owners.
+    - Read diff-completeness, findings-format, and severity-confidence on every review; freeze the target and scope plus the applicable base and snapshot. Explicit snippet or repository scope need not have a diff base.
     - Load only conditional references and available domain skills whose triggers match the changed behavior.
     - Recheck snapshot identity before reporting and return an evidence-calibrated recommendation with explicit limits.
   whenToUse:
@@ -132,9 +138,9 @@ sections:
       title: Conduct a stable evidence-backed review
       goal: Produce findings and merge guidance for one reproducible read-only snapshot.
       steps:
-        - Resolve target and base by the authority order in `references/diff-completeness.md`; return `blocked` instead of guessing through unresolved candidates.
+        - Resolve the mode, target and applicable base by `references/diff-completeness.md`; do not invent a comparison for an explicitly scoped snippet or choose between unresolved targets.
         - Freeze the snapshot, account for the changed scope, and use surrounding code only as research evidence.
-        - Run matching conditional and domain passes, then validate candidates against reachable behavior and existing guards.
+        - Run only the passes applicable to that mode and changed behavior, then validate candidates against reachable behavior and existing guards. Retain confirmed findings on a stable accessible part when the remainder is unavailable.
         - Recheck the snapshot identity and mark the result stale if the reviewed surface changed.
         - Start with one plain-language outcome sentence, then report findings and the mandatory evidence footer with one recommendation status.
       validation:
@@ -155,7 +161,7 @@ sections:
       text: Review is read-only absent separate remediation authority. For review-and-fix, record review first, remediate separately, and invalidate the verdict after mutation. A related blocker recurring after remediation requires root-cause review of assumptions, failure path, adjacent surfaces, and scope before another fix.
     - id: policy-review-scope-evidence
       title: Review scope evidence
-      text: Every review must state the target/base/snapshot, changed-scope accounting, checks and behavioral evidence considered, untested or unassessed user/API/data paths, and exactly one recommendation status. The absence of findings is not evidence for paths outside that boundary.
+      text: Every review states the target, applicable base, snapshot, scope accounting, actual evidence, unassessed paths, and one recommendation status. Accounted but unread files limit coverage; they do not erase confirmed findings from the stable accessible part or permit clean approval.
   portability:
     required: true
     rules:
@@ -163,6 +169,5 @@ sections:
       - Keep all mandatory code-reviewer guidance inside this skill folder.
       - Use relative links for local references, assets, scripts, tests, and supporting docs.
     checklist:
-      - Run the skill-source-compiler check command after regeneration.
-      - Search the skill folder for absolute local paths before finishing.
-      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
+      - During skill maintenance only, run compiler check after regeneration and inspect active local dependencies for portability.
+      - During skill maintenance only, verify all declared references and their load triggers. Ordinary code review does not compile or validate this skill package.

@@ -22,14 +22,14 @@ Do not run it for unrelated diffs just because the repository has policy code el
 
 ## Bounded Probes
 
-For each touched surface, check only the reachable changed paths.
+For each touched surface, check only the reachable changed paths and establish the owning contract or demonstrated protected invariant before choosing required failure behavior. Observational telemetry is not automatically an admission prerequisite. If that distinction is unknown, report the dependent question or evidence limit rather than inventing fail-closed product behavior.
 
 | Probe | What to verify | Merge-risk finding when |
 | --- | --- | --- |
 | No invocation after deny | Deny, refusal, invalid admission, and failed preconditions return before external invocation or durable side effect. | A denied or invalid path can still invoke the external action, enqueue work, or persist an allowed decision. |
 | Replay and conflict handling | Duplicate request ids, idempotency keys, persistence conflicts, and replayed audit rows are resolved before side effects. | A replay can reuse stale success state, ignore a conflict, or perform the side effect before conflict resolution. |
 | Freshness fail-closed | When age limits exist, missing or stale freshness metadata is rejected. | `maxEvidenceAgeMs` or equivalent exists, but absent `observedAt` or stale evidence silently passes through defaults. |
-| Persistence fail-closed | Decision and audit persistence failures cannot produce an allowed action. | A write failure, partial write, or swallowed persistence error lets the operation continue as allowed. |
+| Required persistence | When durable decision or audit persistence is an admission prerequisite, failure prevents the allowed action. | A write failure, partial write, or swallowed error bypasses that required prerequisite; a contractually best-effort observational sink alone is not such a finding. |
 | Audit capture semantics | Required audit/security events have the promised capture path, durability, and failure behavior. | Code only names or logs an event, or silently best-effort writes it, while the contract requires fail-closed capture, durable fallback, or append-only evidence. |
 | Active-scope concurrency | Active or singleton decisions use a transaction, lock, compare-and-swap, or uniqueness constraint that matches the data model. | Concurrent activations can admit two active policies or leave the active state ambiguous. |
 | Append-only facts | Append-only fact or audit tables do not rely on uniqueness shortcuts that hide conflicting facts. | A shortcut treats the first or last row as authoritative without resolving conflict, replay, or freshness. |
@@ -41,6 +41,7 @@ For each touched surface, check only the reachable changed paths.
 Before reporting a finding, confirm:
 
 - the path is reachable from the changed behavior under review
+- the owning contract or demonstrated protected invariant requires the behavior being enforced
 - surrounding code does not already fail closed, serialize access, or reject stale state
 - the failure can affect a real action, persisted decision, audit trail, or merge-critical invariant
 - the proposed fix direction is bounded to the reviewed behavior
