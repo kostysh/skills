@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: prd-engineer
-  source-version: 0.1.7
+  source-version: 0.1.8
   recommended-skill-md-max-bytes: 21000
   description: >-
     Create, refine, and review PRDs, product specs, feature and AI requirements.
@@ -18,7 +18,7 @@ references:
     title: PRD template
     source: references/prd-template.md
     target: references/prd-template.md
-    required: false
+    required: true
     trigger: Read this when creating a formal PRD artifact, expanding an existing PRD, adding authority or handoff-readiness metadata, evidence, traceability, review routing, AI/security/rollout modules, or running a detailed PRD quality check.
 
 assets: []
@@ -73,16 +73,16 @@ supporting:
 
 surfaces:
   active:
-    requiredReferences: []
-    optionalReferences:
+    requiredReferences:
       - ref-prd-template
+    optionalReferences: []
   supportingGlobs:
     - docs/*
 
 sections:
   startHere:
-    - Confirm whether the task is a new PRD, refinement, or review; name the downstream consumer when handoff matters.
-    - For every non-trivial creation, revision, or review, apply `implementation-discipline` before choosing PRD depth or expanding scope; capture the observable outcome, actor or consumer and claim boundary, source-authorized scope and non-goals, permitted product output, simplest sufficient user capability, and narrowest falsifier.
+    - Confirm whether the task is creation, refinement, or read-only review; name the downstream consumer when handoff matters. A review supplies findings and proposed rewrites; apply edits only when requested.
+    - Before choosing depth, capture the observable outcome, actor or consumer, source-authorized scope, permitted product output, simplest sufficient capability, and narrowest falsifier. Apply available `implementation-discipline`; if unavailable, use these local constraints and report the unavailable dependency without blocking a supported draft or claiming its gate ran.
     - Resolve source precedence; separately verify approval of the current PRD version, and do not let risk, completeness, checklists, or same-session artifacts create product authority.
     - Separate the observable product capability from substrate such as documentation, tickets, mocks, logs, or implementation scaffolding.
     - Choose the lightest PRD mode that fits the risk; do not expand a one-pager into a heavyweight template by default.
@@ -130,17 +130,17 @@ sections:
         - An unresolved equal- or unknown-authority conflict cannot produce a ready handoff.
         - Input authority, prior approval, or status metadata cannot authorize newly generated or materially changed PRD content.
     - id: stage-reconcile-source-universe
-      title: Reconcile the closed source universe
+      title: Reconcile sources for the requested claim
       goal: Prevent summaries or polished synthesis from hiding omitted source obligations.
       steps:
-        - Bound the applicable source universe through the established authority and currentness rules.
-        - Atomize prose clauses, table rows and notes, email decisions, and mockup annotations while preserving modality, conditions, exceptions, values, and locators.
-        - Map every atom to a PRD requirement or source-authorized disposition, and every material requirement back to its atoms.
+        - For a source-completeness or ready-handoff claim, bound the applicable source universe through the established authority and currentness rules. For a draft or narrow review, preserve the relevant supplied obligations and state the limited scope; do not invent additional sources or a full reconciliation artifact.
+        - For those completeness or ready-handoff claims, atomize prose clauses, table rows and notes, email decisions, and mockup annotations while preserving modality, conditions, exceptions, values, and locators.
+        - For that bounded universe, map every atom to a PRD requirement or source-authorized disposition, and every material requirement back to its atoms.
         - Treat summaries and derived registers as navigation, never disposition evidence.
         - Block completeness and ready handoff for any unavailable, unmapped, ambiguously merged, or unauthorizedly dismissed in-scope atom.
       validation:
-        - Every bounded atom has a verifiable mapping or authorized disposition, with its qualifying details intact.
-        - An omitted clause, table entry, email decision, or mockup annotation blocks completeness even when a summary exists.
+        - A completeness or ready-handoff claim accounts for every bounded atom, with its qualifying details intact; a draft does not claim that stronger result.
+        - An omitted in-scope clause, table entry, email decision, or mockup annotation blocks completeness even when a summary exists.
     - id: stage-discovery
       title: Run discovery checkpoint
       goal: Prevent a PRD from becoming a polished guess.
@@ -218,6 +218,10 @@ sections:
       domain: product intent, users, scope, non-goals, success metrics, and product-level acceptance
       winner: prd-engineer
       rationale: prd-engineer owns product-source revisions and product-input readiness; it does not own architecture, implementation-ready behavior, or delivery decomposition.
+    - id: interop-requirements-approval
+      domain: customer-owned open questions, reply assessment, and decision-workflow closure
+      winner: requirements-approval
+      rationale: requirements-approval supplies the question code, decision-owner evidence, accepted obligation, and remaining gaps. prd-engineer owns the corresponding PRD change and current-version authority; a complete reply alone does not approve a newly generated PRD.
     - id: interop-concept-conformance
       domain: independent concept drift and fake-risk review
       winner: concept-conformance-reviewer
@@ -251,18 +255,12 @@ sections:
     - id: gotcha-summary-is-not-disposition
       priority: high
       text: A summary or register cannot disposition the underlying source atoms.
-    - id: gotcha-template-is-not-quality
-      priority: high
-      text: A complete PRD template with vague content is still a bad PRD.
     - id: gotcha-do-not-invent-evidence
       priority: high
       text: Do not fabricate users, research, metrics, constraints, or technical decisions; mark them as assumptions, TBDs, or open questions.
     - id: gotcha-overspecification
       priority: medium
       text: Do not over-prescribe implementation details when acceptance criteria and boundaries are enough.
-    - id: gotcha-ai-needs-evals
-      priority: high
-      text: AI feature PRDs need evaluation strategy and quality bars; a demo or prompt description is not enough.
     - id: gotcha-candidate-asr-is-not-decision
       priority: high
       text: Do not present candidate architecture-significant inputs as accepted ASRs, pattern decisions, ADRs, or implementation designs.
@@ -276,24 +274,12 @@ sections:
     - id: policy-just-enough
       title: Just-enough detail policy
       text: Include a section only when it changes a decision, reduces risk, clarifies scope, or supports acceptance.
-    - id: policy-acceptance-integrity
-      title: Acceptance integrity policy
-      text: Acceptance criteria must require observable product behavior or measurable evidence. Rewrite criteria that pass through substrate alone, but do not invent technical harnesses, runtime seams, or platform work when existing downstream verification can prove the claim.
-    - id: policy-source-authority
-      title: Product source authority policy
-      text: Separate source precedence from artifact authority. Only the operator or repository process can approve the current PRD version; generated or materially changed content stays non-authoritative until then.
-    - id: policy-handoff-readiness
-      title: Product-input handoff readiness policy
-      text: "Report `Authority` separately from `Handoff`. Use `not-assessed` without a requested consumer. Ready requires current-version authority and no product blocker; it covers product input only."
     - id: policy-light-traceability
       title: Light traceability policy
       text: Use requirement IDs, owners, source links, statuses, and change notes when multiple people or later implementation review will depend on the PRD.
     - id: policy-repository-artifact-conventions
       title: Repository artifact conventions policy
-      text: When producing or recommending a persistent PRD, product brief, or PRD review in a repository, first check repo-local artifact conventions through AGENTS.md, README, CONTRIBUTING, or docs linked from them. If conventions exist, follow them for canonical location, stable PRD or product-brief IDs, metadata/front matter, requirement and acceptance ID prefixes, source links, related artifact links, and module index updates. Do not hard-code one repository's paths into this skill. If no repository convention exists, use this skill's default PRD shape and state any location assumption when writing files. Repository conventions override generic PRD location defaults when the artifact is canonical in the repo.
-    - id: policy-architecture-handoff
-      title: Architecture handoff policy
-      text: PRDs may surface architecture-relevant product constraints, quality guardrails, external systems, data sensitivity, release phases, and blocking questions, but architecture-engineer owns ASR extraction and architecture decisions.
+      text: For persistent PRDs and reviews, follow repository conventions first; use the PRD template reference for the location, metadata, source-link and index checklist and its fallback when no convention exists.
     - id: policy-brevity
       title: Brevity policy
       text: In chat, keep outputs concise unless the user asks for a formal artifact; use the reference template for full documents.
@@ -305,6 +291,5 @@ sections:
       - Treat external examples and standards as optional background, not runtime dependencies.
       - Use relative links for local references and supporting docs.
     checklist:
-      - Run the skill-source-compiler check command after regeneration.
-      - Search the skill folder for absolute local paths before finishing.
-      - Confirm the optional PRD template reference is reachable from the generated SKILL.md.
+      - During skill maintenance only, run the skill-source-compiler check command after regeneration and check active local dependencies for portability.
+      - During skill maintenance only, confirm the PRD template and its conditional reading trigger are reachable. Ordinary PRD work does not compile or validate this package.

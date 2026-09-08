@@ -32,3 +32,7 @@
 | Evidence | Related issue | Scope |
 | --- | --- | --- |
 | [forward-tests/forward-test-evidence-20260727-1.md](forward-tests/forward-test-evidence-20260727-1.md) | Aequitas-ADR/app#225 | Blind mixed-format source reconciliation |
+
+## Ревизия G5-v1
+
+- [Общий журнал реализации](../../../docs/implementation-log-20260908-methodology-group-5.md) — исходная оценка, изменения и свидетельства проверки группы; запись не является активной инструкцией.
