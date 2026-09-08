@@ -62,9 +62,9 @@
 
 ## Статус исполнения
 
-ID: `implementation-plan-20260907-2`. План принят оператором 2026-09-07; группы1–3 приняты оператором, группа4 технически завершена и ожидает приёмки. Основание: сообщение `01a07cbd-2716-79f1-9c93-a8c6acda8d37`, задача `01a07be0-5ad2-7c31-920e-81e048807c1a`. Worktree `codex/skills-revision`; исходный SHA `4ddcb698457a741028664ed9af441009c4838d23`.
+ID: `implementation-plan-20260907-2`. План принят оператором 2026-09-07; все четыре группы приняты оператором; выполняется согласованная публикация. Основание: сообщение `01a07cbd-2716-79f1-9c93-a8c6acda8d37`, задача `01a07be0-5ad2-7c31-920e-81e048807c1a`. Worktree `codex/skills-revision`; исходный SHA `4ddcb698457a741028664ed9af441009c4838d23`.
 
-[Независимый аудит плана](../reviews/audit-implementation-plan-20260907-2.md). Текущая граница: приёмка группы4; полный test:ci и публикация ожидают её принятия. Ниже сохранена хронология предыдущих checkpoints.
+[Независимый аудит плана](../reviews/audit-implementation-plan-20260907-2.md). Текущая граница: публикация после приёмки G4 и успешного полного local test:ci. Ниже сохранена хронология предыдущих checkpoints.
 
 ## Уточнение оператора и текущий прогресс
 
@@ -219,3 +219,10 @@ Npm запустил тот же declared TTE package script после изве
 
 Stop: awaiting explicit approval to continue
 Next autonomous action: none
+
+
+## Продолжение: публикация
+
+Оператор принял G4 сообщением «Продолжай» 2026-09-08; предыдущая остановка снята. Разрешена заключительная последовательность принятого плана: полный test:ci → push → один PR в master → exact-SHA checks → merge без squash → remote/CI readback → синхронизация main checkout и удаление только собственной ветки/worktree. Ограничение нагрузки сохраняется.
+
+Полный local test:ci на `3361e34` прошёл108/108 после установки отсутствовавших lockfile dependencies; tracked files не изменились. [Доказательства и устранённые environment blockers](../reviews/evidence/skills-revision/publication/README.md). Этот служебный record не меняет audited instructions. Удалённые refs до публикации: master `4ddcb698457a741028664ed9af441009c4838d23`, task branch отсутствует; PR ещё не создан. Финальные PR/merge/CI SHA и cleanup будут подтверждены отдельным readback и итоговым сообщением задачи, а не заранее объявлены завершёнными.
