@@ -15,6 +15,8 @@ Assessment or drafting requires the question source, available project context, 
 
 Missing execution inputs permit a useful draft, not external writes or verified closure.
 
+Continue the supported stage using available sources and the user's latest scope or language clarification. Reuse permissions already given for the same action and target; ask only for a material missing input. If a rule prevents a requested transition, name its exact source, applicability, decision owner, and unblock condition rather than requesting generic confirmation.
+
 Workflow authority controls which actions the agent may take. It does not transfer product, architecture, specification, planning, document-version, or customer-decision authority.
 
 ## Source precedence
@@ -47,4 +49,4 @@ For each question report:
 - proposed versus executed actions and observed artifact/ref/issue/Project state;
 - remaining gap, next owner, and evidence needed for a stronger state.
 
-End with one overall state; a complete answer may still lack workflow closure.
+End with one overall state.

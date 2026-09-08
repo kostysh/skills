@@ -6,9 +6,9 @@ description: "Coordinate customer-owned requirements decisions: triage open
   authoritative project documents. Use for approval workflows and «согласование
   требований»."
 metadata:
-  source-version: 0.2.2
+  source-version: 0.2.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: d7dc5d2bcf71fba0134de1bb8fd67b121f3b77b31b7b804b929b725914207de9
+  skillforge-source-hash: f72b7980217b1ce8d52f7ae4fde906f3488d2628bd4b73f1c6568653f87ab810
 ---
 
 # requirements-approval
@@ -16,11 +16,11 @@ metadata:
 ## Start here
 
 1. Confirm whether the request is assessment/drafting or authorizes external execution against exact targets.
-2. Define success as an authoritative decision preserved by a verified owning change or complete linked follow-up and a verified workflow state, not coordination artifacts alone.
+2. Match success to the requested stage using the state/output contract; an actionable draft does not require workflow closure.
 3. Identify each question's decision owner, authority, affected artifacts, and downstream owners before interpretation or closure.
 4. Use repository-defined source precedence; unresolved equal-authority conflicts block acceptance instead of being resolved by recency or convenience.
 5. Route document content and authority decisions to their owning skills; requirements-approval owns triage, traceability, and the closure gate.
-6. Execute GitHub or Git mutations only with exact action/target authorization; otherwise return a draft, partial, or blocked state.
+6. Resolve exact GitHub or Git action targets from the request and available context, and reuse existing authorization within that scope. Missing mutation authority limits execution, not useful drafting or assessment.
 
 ## When to use this skill
 
@@ -55,6 +55,8 @@ Assessment or drafting requires the question source, available project context, 
 
 Missing execution inputs permit a useful draft, not external writes or verified closure.
 
+Continue the supported stage using available sources and the user's latest scope or language clarification. Reuse permissions already given for the same action and target; ask only for a material missing input. If a rule prevents a requested transition, name its exact source, applicability, decision owner, and unblock condition rather than requesting generic confirmation.
+
 Workflow authority controls which actions the agent may take. It does not transfer product, architecture, specification, planning, document-version, or customer-decision authority.
 
 ## Source precedence
@@ -87,7 +89,7 @@ For each question report:
 - proposed versus executed actions and observed artifact/ref/issue/Project state;
 - remaining gap, next owner, and evidence needed for a stronger state.
 
-End with one overall state; a complete answer may still lack workflow closure.
+End with one overall state.
 
 ## Workflow stages
 
@@ -98,19 +100,19 @@ Escalate only unresolved customer-owned decisions and keep proposed actions dist
 1. Extract open questions and preserve stable source codes; create a short project-local code only when the source lacks one.
 2. Identify the decision owner and affected product, architecture, specification, plan, data, or documentation artifacts for each question.
 3. Inspect authoritative project inputs, decisions, dependencies, and issue history before external research.
-4. Check current runtime evidence; record an authoritative answer as an internal resolution.
-5. Check the environment perimeter and contracts; do not escalate a choice they already fix.
+4. Check current runtime evidence when it can resolve a factual subquestion. Observed behavior is not customer preference or approval; unavailable unrelated runtime evidence does not block drafting.
+5. Check the environment perimeter and accepted contracts when they constrain the question; do not escalate a choice those authoritative constraints already fix.
 6. Check existing TODO, approval, and decision records; reuse the owning record or accepted answer.
-7. Test a narrower technical resolution or domain-owner route before asking for customer intent.
+7. Consider a narrower technical resolution or domain-owner route before asking for customer intent; investigate it only when it could resolve the current question without changing agreed scope or choosing a customer preference.
 8. Use current authoritative public sources only for factual parts that can narrow the question; do not use public facts to invent a customer preference or approval.
 9. Classify each question as resolved internally, customer input required, partial, or blocked by missing/conflicting authority.
 10. For customer input required, prepare a concise request in the customer's language with context, research, exact missing input, and current-scope choices.
-11. With exact GitHub target and mutation authority, hand creation to gh-utility and verify by fresh read; otherwise draft and list the missing repository, record target, applicable Project mapping, and authorization.
+11. When creation is requested and authorized, hand the resolved GitHub target to gh-utility and verify by fresh read. For preparation-only scope, deliver the draft; list missing execution inputs only if they affect a requested next transition.
 
 Validation:
 
 - Every question names its decision owner, authority basis, affected artifacts, and next owner.
-- Runtime- or environment-resolved questions are not escalated.
+- Applicable runtime and environment checks resolve factual questions only; a remaining customer-owned preference still goes to its decision owner.
 - Existing owning records are reused, not duplicated.
 - Technical or domain-owned questions stay internal unless customer-owned intent remains.
 - An internally resolved or authority-conflicted question is not escalated as a customer task.
@@ -168,21 +170,13 @@ Validation:
 
 ## Gotchas
 
-- **high** — Before customer escalation, separately test runtime, environment, existing owning records, and a narrower technical resolution.
-- **high** — A broad request to organize or review approvals does not identify an external mutation target; return drafts until exact action, target, and authorization are available.
-- **high** — Finding an email proves message presence, not sender authority, decision ownership, currentness, or acceptance of affected artifacts.
-- **high** — Public research may resolve current facts but cannot choose a customer preference or approve product scope.
-- **medium** — Request only the unavailable attachment required by a named question and continue independent items.
-- **high** — GitHub Project status names and option IDs are target-specific; inspect them and verify each update instead of assuming workflow labels.
-- **high** — Terminal state, a comment, commit, generated document, test, or traceability row is substrate until every accepted obligation has a freshly verified owning change or complete linked follow-up.
+- **high** — Before customer escalation, consider runtime, environment, existing owning records, and a narrower technical resolution for their relevance to the question. Inspect applicable evidence; neither an irrelevant unavailable service nor an unapproved technical alternative resolves customer intent.
+- **high** — Organizing approvals does not authorize external writes; resolve the action, target and permission before execution.
 
 ## Policies
 
 ### Conservative customer language
 Ask only for decisions required by current scope, in plain customer language, without embedding optional enhancements or a preferred answer.
-
-### Traceability
-Preserve the chain from question code and authority evidence through research, reply, accepted obligation, durable disposition route, verified Git/ref state, GitHub item, and remaining gap.
 
 ## Portability rules
 
@@ -192,10 +186,9 @@ Preserve the chain from question code and authority evidence through research, r
 
 ## Portability checklist before finishing
 
-- Run skill-source-compiler lint, regenerate, and check after source changes.
-- Resolve local links and search the complete emitted package for absolute local dependencies.
-- Compile to an isolated directory and confirm copied eval and supporting artifacts remain readable.
-- Confirm structural checks are not reported as behavioral PASS.
+- During skill maintenance only, lint and regenerate changed sources, check generated parity and local links, and inspect active dependencies for portability.
+- During skill maintenance only, compile to an isolated directory and check declared files; ordinary approval work does not compile the package or require a compiler.
+- Maintenance structural checks do not establish behavioral PASS or decision-workflow closure.
 
 ## Supporting and historical surface
 
