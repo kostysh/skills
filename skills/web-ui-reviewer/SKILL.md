@@ -5,9 +5,9 @@ description: Review web UI code and rendered states against project requirements
   form, or frontend-performance audits that need scoped findings and evidence
   limits; not implementation or conformance certification.
 metadata:
-  source-version: 0.2.3
+  source-version: 0.2.4
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 561f24e1ee5536e4d0209a03074b9ff7ee13a81c17042a84ff0cc9b41fcc99e7
+  skillforge-source-hash: 64c414507c7a2e09c4a363b9eb6987f7fb12585fa850a05b510ef01c65eceea5
 ---
 
 # web-ui-reviewer
@@ -146,7 +146,7 @@ Require current browser or design-tool evidence for affected desktop and mobile 
 The portable reference is the reproducible baseline. A live upstream overlay may add non-conflicting guidance only when its URL and revision or retrieval date are reported; it never creates product authority or silently overrides project requirements.
 
 ### Bounded remediation re-audit
-On a new stable snapshot, re-audit fixed prior findings, the exact remediation delta, original UI failure states, current evidence, and adjacent states selected by a blast-radius check. Skip unchanged verified states; widen when the claim, UI authority, user-visible behavior, or material scope changed or blast radius is unbounded. Cosmetic edits do not close behavioral or accessibility findings.
+On a new stable snapshot, re-audit fixed prior findings, the exact remediation delta, original UI failure states, current evidence, and adjacent states selected by a blast-radius check. Skip unchanged verified states. Widen only when the delta changes claims, UI authority, behavior, or contracts outside the accepted remediation boundary, or when blast radius is unbounded; name the additional surface and reason. A behavior change that fixes the accepted finding is not by itself a widening trigger. Cosmetic edits do not close behavioral or accessibility findings.
 
 ### Peer-view functional coverage
 For module or journey completeness claims, compare applicable peer views and source-established standard capabilities before accepting polish; classify omissions as findings only with authority and preserve justified divergence or `N/A`.
@@ -162,9 +162,7 @@ For module or journey completeness claims, compare applicable peer views and sou
 
 ## Portability checklist before finishing
 
-- Run the skill-source-compiler check command after regeneration.
-- Search the skill folder for absolute local paths before finishing.
-- Confirm every required reference listed by SKILL.md exists inside this skill folder.
+- Only when editing or packaging this skill itself, run compiler lint, regenerate, check, and an isolated compile; verify generated parity, local references, portability, and packaged files. These maintenance checks are not prerequisites for ordinary tasks performed with the skill.
 
 ## Supporting and historical surface
 

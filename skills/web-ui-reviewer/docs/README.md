@@ -23,3 +23,7 @@
 - [logs/implementation-log-20260716-1.md](logs/implementation-log-20260716-1.md) — capability-first review, evidence-aware output contract, guidance authority/freshness и interop. Статус: independent PASS; final supporting-only delta подтверждён.
 - [logs/implementation-log-20260727-1.md](logs/implementation-log-20260727-1.md) — bounded UI remediation re-audit и outcome-first status contract по #226. Статус: independent PASS.
 - [logs/implementation-log-20260727-2.md](logs/implementation-log-20260727-2.md) — peer-view completeness review contract по #228.
+
+## Ревизия UI-REV-v1
+
+- [Общий журнал UI-REV-v1](../../../docs/implementation-log-20260908-ui-revision.md) — исходный снимок, проверки и статус ревизии интерфейсной группы; supporting-запись репозитория.
