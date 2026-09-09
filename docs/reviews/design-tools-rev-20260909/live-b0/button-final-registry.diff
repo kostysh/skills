@@ -1,0 +1,18 @@
+- Resolving items.
+┌ shadcn add button (dry run)
+│
+├ src/components/ui/button.tsx (overwrite)
+│ ┌──────────────────────────────────────────────
+│ │ --- a/src/components/ui/button.tsx
+│ │ +++ b/src/components/ui/button.tsx
+│ │ @@ -8,7 +8,6 @@
+│ │    {
+│ │      variants: {
+│ │        variant: {
+│ │ -        brand: "bg-primary text-primary-foreground font-bold",
+│ │          default: "bg-primary text-primary-foreground hover:bg-primary/80",
+│ │          outline:
+│ │            "border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
+│ └──────────────────────────────────────────────
+│
+└ Run without --dry-run to apply.

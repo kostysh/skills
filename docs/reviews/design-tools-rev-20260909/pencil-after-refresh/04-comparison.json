@@ -1,0 +1,182 @@
+{
+  "B_root_comparison": [
+    {
+      "id": "jYGGQ",
+      "root_unchanged": true
+    },
+    {
+      "id": "z2Por",
+      "root_unchanged": true
+    },
+    {
+      "id": "snDqf",
+      "root_unchanged": true
+    },
+    {
+      "id": "F9YG0",
+      "root_unchanged": true
+    },
+    {
+      "id": "E58XP",
+      "root_unchanged": true
+    },
+    {
+      "id": "P6Voh",
+      "root_unchanged": true
+    },
+    {
+      "id": "D8GhR",
+      "root_unchanged": true
+    }
+  ],
+  "current_problems": {
+    "bi8Au": [],
+    "CR7qO": [],
+    "P1cmj": [],
+    "w15TUy": [],
+    "vczSV": [],
+    "q5njV2": [],
+    "YinY7": [],
+    "U5hcvC": [],
+    "KSPqv": [],
+    "Rn7JR": [],
+    "F9YSQK": [],
+    "ypajU": [],
+    "jYGGQ": [],
+    "z2Por": [],
+    "snDqf": [],
+    "F9YG0": [],
+    "E58XP": [],
+    "P6Voh": [],
+    "D8GhR": []
+  },
+  "current_refs": {
+    "bi8Au": [],
+    "CR7qO": [],
+    "P1cmj": [
+      {
+        "id": "uSH5O",
+        "ref": "CR7qO"
+      }
+    ],
+    "w15TUy": [],
+    "vczSV": [
+      {
+        "id": "CKBsf",
+        "ref": "w15TUy"
+      }
+    ],
+    "q5njV2": [],
+    "YinY7": [
+      {
+        "id": "vAlv5",
+        "ref": "CR7qO"
+      },
+      {
+        "id": "oPZnK",
+        "ref": "q5njV2"
+      }
+    ],
+    "U5hcvC": [
+      {
+        "id": "AIUDZ",
+        "ref": "CR7qO"
+      },
+      {
+        "id": "hZmcp",
+        "ref": "q5njV2"
+      }
+    ],
+    "KSPqv": [
+      {
+        "id": "YVOUO",
+        "ref": "CR7qO"
+      },
+      {
+        "id": "GSVaD",
+        "ref": "q5njV2"
+      }
+    ],
+    "Rn7JR": [
+      {
+        "id": "fG5xg",
+        "ref": "CR7qO"
+      },
+      {
+        "id": "BEIgH",
+        "ref": "q5njV2"
+      }
+    ],
+    "F9YSQK": [
+      {
+        "id": "K23cdE",
+        "ref": "CR7qO"
+      },
+      {
+        "id": "vbkzQ",
+        "ref": "q5njV2"
+      }
+    ],
+    "ypajU": [
+      {
+        "id": "Du0dN",
+        "ref": "CR7qO"
+      },
+      {
+        "id": "fUDOU",
+        "ref": "q5njV2"
+      }
+    ],
+    "jYGGQ": [
+      {
+        "id": "YPqkY",
+        "ref": "w15TUy"
+      }
+    ],
+    "z2Por": [
+      {
+        "id": "Xrjdb",
+        "ref": "jYGGQ"
+      }
+    ],
+    "snDqf": [
+      {
+        "id": "etJey",
+        "ref": "jYGGQ"
+      }
+    ],
+    "F9YG0": [
+      {
+        "id": "bqs7p",
+        "ref": "jYGGQ"
+      },
+      {
+        "id": "x8k0I",
+        "ref": "w15TUy"
+      }
+    ],
+    "E58XP": [
+      {
+        "id": "FJlrz",
+        "ref": "jYGGQ"
+      },
+      {
+        "id": "VEjAM",
+        "ref": "w15TUy"
+      }
+    ],
+    "P6Voh": [
+      {
+        "id": "ZJGw4",
+        "ref": "w15TUy"
+      }
+    ],
+    "D8GhR": [
+      {
+        "id": "VbePW",
+        "ref": "w15TUy"
+      }
+    ]
+  },
+  "note": "Full authored pre/post tree equality not claimed: frozen final readback is depth0 roots plus refs/problems."
+}

@@ -1,0 +1,7 @@
+- generic
+  - dialog "Review your changes"
+    - heading "Review your changes" [level=2, ref=e1]
+    - paragraph
+      - StaticText "Confirm to apply these notification settings for this session."
+    - button "Cancel" [ref=e2]
+    - button "Confirm" [ref=e3]

@@ -1,0 +1,6 @@
+ 344853   11674 /bin/bash -lc pnpm dev --host 127.0.0.1 --port 43868 --strictPort > /tmp/design-tools-rev-20260909/joint-controlled-review-evidence/server.log 2>&1
+ 344916  344853 node /home/kostysh/.nvm/versions/node/v24.15.0/bin/pnpm dev --host 127.0.0.1 --port 43868 --strictPort
+ 344944  344916 node /tmp/.pnpm-store/v11/links/@/pnpm/10.28.2/0258174c06562d978b174b36ee223ada6b57b3e4a027f536dcb022ed7fac4523/bin/../node_modules/pnpm/bin/pnpm.cjs dev --host 127.0.0.1 --port 43868 --strictPort
+ 344962  344961 node /tmp/design-tools-rev-20260909/joint-controlled-project/node_modules/.bin/../vite/bin/vite.js --host 127.0.0.1 --port 43868 --strictPort
+ 349652   11674 /bin/bash -c ps -eo pid,ppid,args | rg 'node .*43868|pnpm dev.*43868' > /tmp/design-tools-rev-20260909/joint-controlled-review-evidence/cleanup-before.txt cat /tmp/design-tools-rev-20260909/joint-controlled-review-evidence/cleanup-before.txt python3 /tmp/design-tools-rev-20260909/joint-controlled-review-evidence/run.py close
+ 349654  349652 rg node .*43868|pnpm dev.*43868

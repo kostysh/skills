@@ -1,0 +1,4 @@
+
+> fixture@0.0.1 typecheck /tmp/design-tools-rev-20260909/live-b0
+> tsc -b --pretty false
+

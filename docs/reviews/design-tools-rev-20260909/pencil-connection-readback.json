@@ -1,0 +1,9 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "tool call error: tool call failed for `pencil/get_app_state`\n\nCaused by:\n    Mcp error: -32603: failed to connect to running Pencil app: desktop after 3 retries: transport not connected to app: desktop"
+    }
+  ],
+  "isError": true
+}

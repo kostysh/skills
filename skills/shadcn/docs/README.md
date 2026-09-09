@@ -12,3 +12,8 @@
 | --- | --- | --- |
 | [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) | PASS | Описание сокращено до 300 code points; independent scoped review complete. |
 | [implementation-log-20260716-1.md](logs/implementation-log-20260716-1.md) | PASS | Сквозная способность, current CLI, portable evidence и independent `skill-reviewer` re-audit завершены. |
+
+## Ревизия инструментов дизайна и компонентов
+
+- [Общий план](../../../docs/implementation-plan-20260909-design-tools-revision.md)
+- [Общий журнал](../../../docs/implementation-log-20260909-design-tools-revision.md)

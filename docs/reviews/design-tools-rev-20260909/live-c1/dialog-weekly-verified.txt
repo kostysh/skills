@@ -1,0 +1,25 @@
+- generic
+  - generic [ref=e1] clickable [onclick]
+    - main
+      - form
+        - status
+          - paragraph
+            - StaticText "Settings applied for this session."
+          - paragraph
+            - StaticText "Last applied: reviewer@example.com. Notifications on. Delivery: daily."
+  - dialog "Review notification settings"
+    - heading "Review notification settings" [level=2, ref=e2]
+    - paragraph
+      - StaticText "Confirm these preferences for this session, or cancel to keep editing your draft."
+    - DescriptionList
+      - term "Email address"
+      - definition
+        - StaticText "reviewer@example.com"
+      - term "Notifications"
+      - definition
+        - StaticText "On"
+      - term "Delivery frequency"
+      - definition
+        - StaticText "Weekly"
+    - button "Cancel" [ref=e3]
+    - button "Confirm" [ref=e4]

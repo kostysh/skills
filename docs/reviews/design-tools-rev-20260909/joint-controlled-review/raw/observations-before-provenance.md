@@ -1,0 +1,3 @@
+Observed independently before provenance access: 2026-09-09T12:54:46.612585+00:00
+
+Frozen App.tsx sha256 19e033b13f67a14452c5b3667bd088611de48a1f4dfcb89ae377ca74fd73cb19. One-line delta at 125: finalFocus callback replaced with false. Keyboard opening focuses Cancel. Escape dismissal settles with no dialog and activeElement BODY; next Tab focuses email. Keyboard Cancel settles with BODY. Tab from Cancel reaches Confirm; Enter applies alex@example.test/on/weekly with visible result/status but activeElement BODY. Original snapshot restored Review on dismissal and result heading on confirm. Raw evidence browser-transcript.jsonl. No source edits or provenance.json read.

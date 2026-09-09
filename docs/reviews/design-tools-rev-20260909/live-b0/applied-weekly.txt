@@ -1,0 +1,51 @@
+- generic [ref=e1] clickable [onclick]
+  - main
+    - sectionheader
+      - paragraph
+        - StaticText "Preferences"
+      - heading "Notification settings" [level=1, ref=e2]
+      - paragraph
+        - StaticText "Choose where and how often you hear from us."
+    - form
+      - group
+        - LabelText
+          - StaticText "Email address"
+          - StaticText "(required)"
+        - textbox "Email address (required)" [required, ref=e4]: test@example.com
+          - StaticText "test@example.com"
+        - paragraph
+          - StaticText "Your preferred address for notification emails."
+      - group
+        - LabelText
+          - StaticText "Email notifications"
+        - paragraph
+          - StaticText "Turn updates on or pause them at any time."
+        - switch "Email notifications" [checked=true, ref=e5]
+      - group "Delivery frequency"
+        - Legend
+          - StaticText "Delivery frequency"
+        - paragraph
+          - StaticText "Choose a rhythm that works for you."
+        - radiogroup "Delivery frequency" [ref=e6] focusable [tabindex]
+          - group
+            - radio "Daily" [checked=false, ref=e8]
+            - LabelText
+              - StaticText "Daily"
+            - paragraph
+              - StaticText "A little, every day"
+          - group
+            - radio "Weekly" [checked=true, ref=e9]
+            - LabelText
+              - StaticText "Weekly"
+            - paragraph
+              - StaticText "One weekly digest"
+      - button "Review changes" [ref=e3]
+      - paragraph
+        - StaticText "Changes apply after confirmation. This demo keeps settings only until you reload."
+    - status
+      - generic
+        - heading "Settings applied" [level=2, ref=e7]
+        - paragraph
+          - StaticText "Email: test@example.com. Notifications: On. Frequency: Weekly."
+        - paragraph
+          - StaticText "Saved for this session. No email is sent."

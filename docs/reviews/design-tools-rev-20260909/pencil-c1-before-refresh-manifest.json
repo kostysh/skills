@@ -1,0 +1,82 @@
+[
+  {
+    "path": "07-card-readback.json",
+    "sha256": "025a96f06bb9fce90bb733ef2dc29902ea203ae43d0af6d751bfb10ece4227ec"
+  },
+  {
+    "path": "08-layout-repair.json",
+    "sha256": "a7606516b33d0a0d95cdb7110434a54533e7a808cd7d3c8c75b1b1425b65a12e"
+  },
+  {
+    "path": "09-provider-diagnostic.json",
+    "sha256": "8d542a4260b6798673e4d902400881d5cb9a1422283016f7bc50546c276d6001"
+  },
+  {
+    "path": "10-fresh-geometry.json",
+    "sha256": "84f83d554447974c6685daada0517b11e37d9aa3bceae65cd6e1a95b8346aacb"
+  },
+  {
+    "path": "11-edit-screens.json",
+    "sha256": "2ffd0c29fc23b04cf57bd9719bf915a7d40332216a5d40d41f7e044eaea18816"
+  },
+  {
+    "path": "12-mobile-visual.json",
+    "sha256": "fbc15587767d2654444107a7f21091e7e589740aa7329e5abff0a34b5ef07865"
+  },
+  {
+    "path": "13-confirmation-screens.json",
+    "sha256": "7d4b604cb70c1bc4dfbd8e0cfa1a5cf53ee501dc0e550013ea500e1c744b9525"
+  },
+  {
+    "path": "14-applied-screens.json",
+    "sha256": "62a8fa4bb91387f806846c995ec2effcda610aeb4769d15b4c59f3726e5be49d"
+  },
+  {
+    "path": "15-final-readback-export.json",
+    "sha256": "f30b647274e5e8941995788f7b4db1c3e7f112ead9970214214b6670c70bdf0f"
+  },
+  {
+    "path": "16-component-evidence.json",
+    "sha256": "0dfb5015bc27e28b08129ef56a40086ae2e7e34c19ebf920326f442b296a4c35"
+  },
+  {
+    "path": "diagnostic/jYGGQ.png",
+    "sha256": "b807d1c870c1e4a769611848b6a0154cc1cae38d6a33a3fa91925cf1343e8bef"
+  },
+  {
+    "path": "exports/D8GhR.png",
+    "sha256": "f5903016819c92cf418af3749b0f54f99ec2a08d565839dd5d61c2b4554547c6"
+  },
+  {
+    "path": "exports/E58XP.png",
+    "sha256": "4759fb630a6757f353668af3bcf8abbd786dc57d2f9d1baa3303f1b63eb9fcb7"
+  },
+  {
+    "path": "exports/F9YG0.png",
+    "sha256": "ec14fe45785a7a85eae7362fc8e9f5faa6775c9cedc83a300ef309db0f41572b"
+  },
+  {
+    "path": "exports/P6Voh.png",
+    "sha256": "49daa6ac2a0f5fc0f0ce335ff74614ca65d27f699846a4b7d42d5c574f76e235"
+  },
+  {
+    "path": "exports/snDqf.png",
+    "sha256": "f5903016819c92cf418af3749b0f54f99ec2a08d565839dd5d61c2b4554547c6"
+  },
+  {
+    "path": "exports/z2Por.png",
+    "sha256": "49daa6ac2a0f5fc0f0ce335ff74614ca65d27f699846a4b7d42d5c574f76e235"
+  },
+  {
+    "path": "handoff.md",
+    "sha256": "7d99db969408719511a7f91a24bc61b348d3870bd75e0a627b99fc71ab7a677d"
+  },
+  {
+    "path": "raw-tools.json",
+    "sha256": "cabef0a16989e44fd813335b115ab3e094decdecbdf99e6b5c5f62f951ef2cdd"
+  },
+  {
+    "path": "result.md",
+    "sha256": "075a7cf93731d9fdc9b085fbb23c6516bc9a7f7d3cad33a6c37edb8fe2c25cbb"
+  }
+]

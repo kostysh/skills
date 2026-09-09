@@ -1,0 +1,1 @@
+Checked 85 files after cleanup: source and original C1 evidence remain byte-identical to pre-diagnostic SHA256 hashes.

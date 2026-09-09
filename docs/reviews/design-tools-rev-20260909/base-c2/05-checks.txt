@@ -1,0 +1,37 @@
+
+> fixture-base@0.0.1 typecheck /tmp/design-tools-rev-20260909/live-base-c2
+> tsc -b --pretty false
+
+
+> fixture-base@0.0.1 build /tmp/design-tools-rev-20260909/live-base-c2
+> tsc -b && vite build
+
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vite.config.ts:11:27). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+vite v8.2.2 building client environment for production...
+transforming...
+✓ 2066 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                              0.45 kB │ gzip:   0.29 kB
+dist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2    7.42 kB
+dist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2      8.00 kB
+dist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2       15.08 kB
+dist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2      16.51 kB
+dist/assets/geist-latin-wght-normal-BgDaEnEv.woff2          29.40 kB
+dist/assets/index-IR0S7cMW.css                              47.04 kB │ gzip:   8.50 kB
+dist/assets/index-Bew29NPR.js                              318.55 kB │ gzip: 103.94 kB
+
+✓ built in 160ms
+
+> fixture-base@0.0.1 lint /tmp/design-tools-rev-20260909/live-base-c2
+> eslint .
+
+
+/tmp/design-tools-rev-20260909/live-base-c2/src/components/ui/button.tsx
+  58:18  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+✖ 1 problem (1 error, 0 warnings)
+
+ ELIFECYCLE  Command failed with exit code 1.

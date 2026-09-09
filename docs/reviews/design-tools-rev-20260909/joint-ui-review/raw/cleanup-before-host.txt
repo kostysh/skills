@@ -1,0 +1,6 @@
+ 325590   11674 /bin/bash -lc pnpm dev --host 127.0.0.1 --port 43867 --strictPort > /tmp/design-tools-rev-20260909/joint-ui-review-evidence/server.log 2>&1
+ 325651  325590 node /home/kostysh/.nvm/versions/node/v24.15.0/bin/pnpm dev --host 127.0.0.1 --port 43867 --strictPort
+ 325681  325651 node /tmp/.pnpm-store/v11/links/@/pnpm/10.28.2/0258174c06562d978b174b36ee223ada6b57b3e4a027f536dcb022ed7fac4523/bin/../node_modules/pnpm/bin/pnpm.cjs dev --host 127.0.0.1 --port 43867 --strictPort
+ 325699  325698 node /tmp/design-tools-rev-20260909/joint-ui-review-project/node_modules/.bin/../vite/bin/vite.js --host 127.0.0.1 --port 43867 --strictPort
+ 338537   11674 /bin/bash -c ps -eo pid,ppid,args | rg 'node .*43867|pnpm dev.*43867|agent-browser.*dtr-joint-review' > /tmp/design-tools-rev-20260909/joint-ui-review-evidence/cleanup-before-host.txt cat /tmp/design-tools-rev-20260909/joint-ui-review-evidence/cleanup-before-host.txt python3 /tmp/design-tools-rev-20260909/joint-ui-review-evidence/run.py close
+ 338593  338537 rg node .*43867|pnpm dev.*43867|agent-browser.*dtr-joint-review

@@ -1,0 +1,546 @@
+[
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "--executable-path",
+      "/usr/bin/google-chrome",
+      "open",
+      "--init-script",
+      "/tmp/design-tools-rev-20260909/keyboard-diagnostic/trace-init.js",
+      "http://127.0.0.1:43863"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 vite-app\n  http://127.0.0.1:43863/\n",
+    "stderr": "",
+    "elapsed": 0.6889910350000719
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "snapshot",
+      "-i"
+    ],
+    "returncode": 0,
+    "stdout": "- generic \"Your preferencesStay in the loopNotification settingsChoose where and how often you receive updates.\" [ref=e1] clickable [onclick]\n  - heading \"Notification settings\" [level=1, ref=e2]\n  - textbox \"Email address (required)\" [required, ref=e4]\n  - switch \"Notifications\" [checked=true, ref=e5]\n  - radiogroup \"Delivery frequency\" [ref=e6] focusable [tabindex]\n    - radio \"Daily\" [checked=true, ref=e7]\n    - radio \"Weekly\" [checked=false, ref=e8]\n  - button \"Review changes\" [expanded=false, ref=e3]\n",
+    "stderr": "",
+    "elapsed": 0.013163201000224944
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "fill",
+      "#email",
+      "reviewer@example.com"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.011780626000017946
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "press",
+      "Tab"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.0033723790002113674
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "press",
+      "Space"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.007761242000015045
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "press",
+      "Tab"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.0023345569998127758
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "press",
+      "Enter"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.020508596999661677
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "wait",
+      "--fn",
+      "document.activeElement.textContent === \"Cancel\""
+    ],
+    "returncode": 0,
+    "stdout": "true\n",
+    "stderr": "",
+    "elapsed": 0.0020242999999027234
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "press",
+      "Shift+Tab"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.0027529580002010334
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "press",
+      "Tab"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.0018681440001273586
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "press",
+      "Escape"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.01066467400005422
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "wait",
+      "--fn",
+      "!document.querySelector(\"[role=dialog]\")"
+    ],
+    "returncode": 0,
+    "stdout": "true\n",
+    "stderr": "",
+    "elapsed": 0.20882593299984364
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "press",
+      "Shift+Tab"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.005732794999858015
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "press",
+      "Space"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.009173253999961162
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "press",
+      "Tab"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.004643745000066701
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "eval",
+      "JSON.stringify({focus:document.activeElement.id,radios:[...document.querySelectorAll(\"[role=radio]\")].map(e=>({id:e.id,checked:e.getAttribute(\"aria-checked\")})),events:window.__keydiag})"
+    ],
+    "returncode": 0,
+    "stdout": "\"{\\\"focus\\\":\\\"daily\\\",\\\"radios\\\":[{\\\"id\\\":\\\"daily\\\",\\\"checked\\\":\\\"true\\\"},{\\\"id\\\":\\\"weekly\\\",\\\"checked\\\":\\\"false\\\"}],\\\"events\\\":[{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"email\\\",\\\"eventTime\\\":350.39999999990687,\\\"observedAt\\\":350.60000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"email\\\",\\\"eventTime\\\":361.79999999981374,\\\"observedAt\\\":362.1999999997206,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":363,\\\"observedAt\\\":363,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":363.29999999981374,\\\"observedAt\\\":363.29999999981374,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\" \\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":364.89999999990687,\\\"observedAt\\\":365.10000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\" \\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":365.29999999981374,\\\"observedAt\\\":365.5,\\\"trusted\\\":true},{\\\"type\\\":\\\"click\\\",\\\"key\\\":null,\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":365.29999999981374,\\\"observedAt\\\":365.5,\\\"trusted\\\":true},{\\\"type\\\":\\\"click\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":370.29999999981374,\\\"observedAt\\\":370.29999999981374,\\\"trusted\\\":false},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":372.6999999997206,\\\"observedAt\\\":372.89999999990687,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":373.29999999981374,\\\"observedAt\\\":373.29999999981374,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":373.5,\\\"observedAt\\\":373.5,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Enter\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":375.39999999990687,\\\"observedAt\\\":375.39999999990687,\\\"trusted\\\":true},{\\\"type\\\":\\\"click\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":375.39999999990687,\\\"observedAt\\\":375.39999999990687,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":392.29999999981374,\\\"observedAt\\\":392.29999999981374,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Enter\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":392.6999999997206,\\\"observedAt\\\":394.10000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":398,\\\"observedAt\\\":398.10000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":398.89999999990687,\\\"observedAt\\\":398.89999999990687,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":399.10000000009313,\\\"observedAt\\\":399.1999999997206,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":400.60000000009313,\\\"observedAt\\\":400.6999999997206,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":401,\\\"observedAt\\\":401,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":401.1999999997206,\\\"observedAt\\\":401.1999999997206,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Escape\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":402.60000000009313,\\\"observedAt\\\":402.60000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Escape\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":411.39999999990687,\\\"observedAt\\\":412,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":523.1000000000931,\\\"observedAt\\\":523.1000000000931,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":624.2999999998137,\\\"observedAt\\\":624.6000000000931,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":626.1000000000931,\\\"observedAt\\\":626.1000000000931,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":626.5,\\\"observedAt\\\":626.6000000000931,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\" \\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":629,\\\"observedAt\\\":629.1000000000931,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\" \\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":629.5,\\\"observedAt\\\":629.6000000000931,\\\"trusted\\\":true},{\\\"type\\\":\\\"click\\\",\\\"key\\\":null,\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":629.5,\\\"observedAt\\\":629.6000000000931,\\\"trusted\\\":true},{\\\"type\\\":\\\"click\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":635.6000000000931,\\\"observedAt\\\":635.6000000000931,\\\"trusted\\\":false},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":638.3999999999069,\\\"observedAt\\\":639.3999999999069,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":639.6999999997206,\\\"observedAt\\\":639.6999999997206,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"daily\\\",\\\"eventTime\\\":640.1000000000931,\\\"observedAt\\\":640.1000000000931,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"daily\\\",\\\"eventTime\\\":641.1000000000931,\\\"observedAt\\\":641.1000000000931,\\\"trusted\\\":true}]}\"\n",
+    "stderr": "",
+    "elapsed": 0.001746313000239752
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "press",
+      "ArrowRight"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.0015834660002838064
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "wait",
+      "--fn",
+      "document.activeElement.id === \"weekly\""
+    ],
+    "returncode": 0,
+    "stdout": "true\n",
+    "stderr": "",
+    "elapsed": 0.10370222699975784
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "eval",
+      "JSON.stringify({focus:document.activeElement.id,radios:[...document.querySelectorAll(\"[role=radio]\")].map(e=>({id:e.id,checked:e.getAttribute(\"aria-checked\")})),events:window.__keydiag})"
+    ],
+    "returncode": 0,
+    "stdout": "\"{\\\"focus\\\":\\\"weekly\\\",\\\"radios\\\":[{\\\"id\\\":\\\"daily\\\",\\\"checked\\\":\\\"true\\\"},{\\\"id\\\":\\\"weekly\\\",\\\"checked\\\":\\\"false\\\"}],\\\"events\\\":[{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"email\\\",\\\"eventTime\\\":350.39999999990687,\\\"observedAt\\\":350.60000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"email\\\",\\\"eventTime\\\":361.79999999981374,\\\"observedAt\\\":362.1999999997206,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":363,\\\"observedAt\\\":363,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":363.29999999981374,\\\"observedAt\\\":363.29999999981374,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\" \\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":364.89999999990687,\\\"observedAt\\\":365.10000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\" \\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":365.29999999981374,\\\"observedAt\\\":365.5,\\\"trusted\\\":true},{\\\"type\\\":\\\"click\\\",\\\"key\\\":null,\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":365.29999999981374,\\\"observedAt\\\":365.5,\\\"trusted\\\":true},{\\\"type\\\":\\\"click\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":370.29999999981374,\\\"observedAt\\\":370.29999999981374,\\\"trusted\\\":false},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":372.6999999997206,\\\"observedAt\\\":372.89999999990687,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":373.29999999981374,\\\"observedAt\\\":373.29999999981374,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":373.5,\\\"observedAt\\\":373.5,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Enter\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":375.39999999990687,\\\"observedAt\\\":375.39999999990687,\\\"trusted\\\":true},{\\\"type\\\":\\\"click\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":375.39999999990687,\\\"observedAt\\\":375.39999999990687,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":392.29999999981374,\\\"observedAt\\\":392.29999999981374,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Enter\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":392.6999999997206,\\\"observedAt\\\":394.10000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":398,\\\"observedAt\\\":398.10000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":398.89999999990687,\\\"observedAt\\\":398.89999999990687,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":399.10000000009313,\\\"observedAt\\\":399.1999999997206,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":400.60000000009313,\\\"observedAt\\\":400.6999999997206,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":401,\\\"observedAt\\\":401,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":401.1999999997206,\\\"observedAt\\\":401.1999999997206,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Escape\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":402.60000000009313,\\\"observedAt\\\":402.60000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Escape\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":411.39999999990687,\\\"observedAt\\\":412,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":523.1000000000931,\\\"observedAt\\\":523.1000000000931,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":624.2999999998137,\\\"observedAt\\\":624.6000000000931,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":626.1000000000931,\\\"observedAt\\\":626.1000000000931,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":626.5,\\\"observedAt\\\":626.6000000000931,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\" \\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":629,\\\"observedAt\\\":629.1000000000931,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\" \\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":629.5,\\\"observedAt\\\":629.6000000000931,\\\"trusted\\\":true},{\\\"type\\\":\\\"click\\\",\\\"key\\\":null,\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":629.5,\\\"observedAt\\\":629.6000000000931,\\\"trusted\\\":true},{\\\"type\\\":\\\"click\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":635.6000000000931,\\\"observedAt\\\":635.6000000000931,\\\"trusted\\\":false},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":638.3999999999069,\\\"observedAt\\\":639.3999999999069,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":639.6999999997206,\\\"observedAt\\\":639.6999999997206,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"daily\\\",\\\"eventTime\\\":640.1000000000931,\\\"observedAt\\\":640.1000000000931,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"daily\\\",\\\"eventTime\\\":641.1000000000931,\\\"observedAt\\\":641.1000000000931,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"ArrowRight\\\",\\\"target\\\":\\\"daily\\\",\\\"eventTime\\\":644.3999999999069,\\\"observedAt\\\":644.5,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"ArrowRight\\\",\\\"target\\\":\\\"daily\\\",\\\"eventTime\\\":644.8999999999069,\\\"observedAt\\\":644.8999999999069,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"weekly\\\",\\\"eventTime\\\":654.1999999997206,\\\"observedAt\\\":654.1999999997206,\\\"trusted\\\":true}]}\"\n",
+    "stderr": "",
+    "elapsed": 0.002679819999684696
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "snapshot",
+      "-i"
+    ],
+    "returncode": 0,
+    "stdout": "- generic \"Your preferencesStay in the loopNotification settingsChoose where and how often you receive updates.\" [ref=e1] clickable [onclick]\n  - heading \"Notification settings\" [level=1, ref=e2]\n  - textbox \"Email address (required)\" [required, ref=e4]: reviewer@example.com\n  - switch \"Notifications\" [checked=true, ref=e5]\n  - radiogroup \"Delivery frequency\" [ref=e6] focusable [tabindex]\n    - radio \"Daily\" [checked=true, ref=e7]\n    - radio \"Weekly\" [checked=false, ref=e8]\n  - button \"Review changes\" [expanded=false, ref=e3]\n",
+    "stderr": "",
+    "elapsed": 0.006230186000266258
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "reload"
+    ],
+    "returncode": 0,
+    "stdout": "http://127.0.0.1:43863/\n",
+    "stderr": "",
+    "elapsed": 0.08549924199996894
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "snapshot",
+      "-i"
+    ],
+    "returncode": 0,
+    "stdout": "- generic \"Your preferencesStay in the loopNotification settingsChoose where and how often you receive updates.\" [ref=e1] clickable [onclick]\n  - heading \"Notification settings\" [level=1, ref=e2]\n  - textbox \"Email address (required)\" [required, ref=e4]\n  - switch \"Notifications\" [checked=true, ref=e5]\n  - radiogroup \"Delivery frequency\" [ref=e6] focusable [tabindex]\n    - radio \"Daily\" [checked=true, ref=e7]\n    - radio \"Weekly\" [checked=false, ref=e8]\n  - button \"Review changes\" [expanded=false, ref=e3]\n",
+    "stderr": "",
+    "elapsed": 0.008265776999905938
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "fill",
+      "#email",
+      "reviewer@example.com"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.011707367000326485
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "press",
+      "Tab"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.0021618190003209747
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "press",
+      "Space"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.009214671999870916
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "press",
+      "Tab"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.004054120000091643
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "press",
+      "Enter"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.020763128999988112
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "wait",
+      "--fn",
+      "document.activeElement.textContent === \"Cancel\""
+    ],
+    "returncode": 0,
+    "stdout": "true\n",
+    "stderr": "",
+    "elapsed": 0.003171869999732735
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "press",
+      "Shift+Tab"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.002468138999574876
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "press",
+      "Tab"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.0018262450003021513
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "press",
+      "Escape"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.01385193399983109
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "wait",
+      "--fn",
+      "!document.querySelector(\"[role=dialog]\")"
+    ],
+    "returncode": 0,
+    "stdout": "true\n",
+    "stderr": "",
+    "elapsed": 0.10369664600011674
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "press",
+      "Shift+Tab"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.002976992000185419
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "press",
+      "Space"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.008224218000123074
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "press",
+      "Tab"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.003969730000335403
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "eval",
+      "JSON.stringify({focus:document.activeElement.id,radios:[...document.querySelectorAll(\"[role=radio]\")].map(e=>({id:e.id,checked:e.getAttribute(\"aria-checked\")})),events:window.__keydiag})"
+    ],
+    "returncode": 0,
+    "stdout": "\"{\\\"focus\\\":\\\"daily\\\",\\\"radios\\\":[{\\\"id\\\":\\\"daily\\\",\\\"checked\\\":\\\"true\\\"},{\\\"id\\\":\\\"weekly\\\",\\\"checked\\\":\\\"false\\\"}],\\\"events\\\":[{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"email\\\",\\\"eventTime\\\":93.29999999981374,\\\"observedAt\\\":93.29999999981374,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"email\\\",\\\"eventTime\\\":103.89999999990687,\\\"observedAt\\\":104.10000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":104.6999999997206,\\\"observedAt\\\":104.6999999997206,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":104.89999999990687,\\\"observedAt\\\":104.89999999990687,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\" \\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":105.89999999990687,\\\"observedAt\\\":105.89999999990687,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\" \\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":106.10000000009313,\\\"observedAt\\\":106.1999999997206,\\\"trusted\\\":true},{\\\"type\\\":\\\"click\\\",\\\"key\\\":null,\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":106.10000000009313,\\\"observedAt\\\":106.29999999981374,\\\"trusted\\\":true},{\\\"type\\\":\\\"click\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":113.1999999997206,\\\"observedAt\\\":113.1999999997206,\\\"trusted\\\":false},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":116.5,\\\"observedAt\\\":117.5,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":118,\\\"observedAt\\\":118,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":118.1999999997206,\\\"observedAt\\\":118.1999999997206,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Enter\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":119.6999999997206,\\\"observedAt\\\":119.79999999981374,\\\"trusted\\\":true},{\\\"type\\\":\\\"click\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":119.6999999997206,\\\"observedAt\\\":119.79999999981374,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":138.6999999997206,\\\"observedAt\\\":138.6999999997206,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Enter\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":139,\\\"observedAt\\\":139.1999999997206,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":144.10000000009313,\\\"observedAt\\\":144.1999999997206,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":144.79999999981374,\\\"observedAt\\\":144.79999999981374,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":145,\\\"observedAt\\\":145.10000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":146.5,\\\"observedAt\\\":146.5,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":146.79999999981374,\\\"observedAt\\\":146.79999999981374,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":147,\\\"observedAt\\\":147.10000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Escape\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":148.39999999990687,\\\"observedAt\\\":148.39999999990687,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Escape\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":159.89999999990687,\\\"observedAt\\\":160.79999999981374,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":263.10000000009313,\\\"observedAt\\\":263.10000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":266.89999999990687,\\\"observedAt\\\":267.10000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":267.79999999981374,\\\"observedAt\\\":267.79999999981374,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":268,\\\"observedAt\\\":268.10000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\" \\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":269.39999999990687,\\\"observedAt\\\":269.5,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\" \\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":269.6999999997206,\\\"observedAt\\\":270.10000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"click\\\",\\\"key\\\":null,\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":269.6999999997206,\\\"observedAt\\\":270.10000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"click\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":275.79999999981374,\\\"observedAt\\\":275.79999999981374,\\\"trusted\\\":false},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":277.89999999990687,\\\"observedAt\\\":278.89999999990687,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":279.29999999981374,\\\"observedAt\\\":279.29999999981374,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"daily\\\",\\\"eventTime\\\":279.5,\\\"observedAt\\\":279.5,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"daily\\\",\\\"eventTime\\\":280.5,\\\"observedAt\\\":280.60000000009313,\\\"trusted\\\":true}]}\"\n",
+    "stderr": "",
+    "elapsed": 0.001700927000001684
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "keydown",
+      "ArrowRight"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.0017284499999732361
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "keyup",
+      "ArrowRight"
+    ],
+    "returncode": 0,
+    "stdout": "\u2713 Done\n",
+    "stderr": "",
+    "elapsed": 0.004246823999892513
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "wait",
+      "--fn",
+      "document.activeElement.id === \"weekly\""
+    ],
+    "returncode": 0,
+    "stdout": "true\n",
+    "stderr": "",
+    "elapsed": 0.0028663120001510833
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "eval",
+      "JSON.stringify({focus:document.activeElement.id,radios:[...document.querySelectorAll(\"[role=radio]\")].map(e=>({id:e.id,checked:e.getAttribute(\"aria-checked\")})),events:window.__keydiag})"
+    ],
+    "returncode": 0,
+    "stdout": "\"{\\\"focus\\\":\\\"weekly\\\",\\\"radios\\\":[{\\\"id\\\":\\\"daily\\\",\\\"checked\\\":\\\"false\\\"},{\\\"id\\\":\\\"weekly\\\",\\\"checked\\\":\\\"true\\\"}],\\\"events\\\":[{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"email\\\",\\\"eventTime\\\":93.29999999981374,\\\"observedAt\\\":93.29999999981374,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"email\\\",\\\"eventTime\\\":103.89999999990687,\\\"observedAt\\\":104.10000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":104.6999999997206,\\\"observedAt\\\":104.6999999997206,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":104.89999999990687,\\\"observedAt\\\":104.89999999990687,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\" \\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":105.89999999990687,\\\"observedAt\\\":105.89999999990687,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\" \\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":106.10000000009313,\\\"observedAt\\\":106.1999999997206,\\\"trusted\\\":true},{\\\"type\\\":\\\"click\\\",\\\"key\\\":null,\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":106.10000000009313,\\\"observedAt\\\":106.29999999981374,\\\"trusted\\\":true},{\\\"type\\\":\\\"click\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":113.1999999997206,\\\"observedAt\\\":113.1999999997206,\\\"trusted\\\":false},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":116.5,\\\"observedAt\\\":117.5,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":118,\\\"observedAt\\\":118,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":118.1999999997206,\\\"observedAt\\\":118.1999999997206,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Enter\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":119.6999999997206,\\\"observedAt\\\":119.79999999981374,\\\"trusted\\\":true},{\\\"type\\\":\\\"click\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":119.6999999997206,\\\"observedAt\\\":119.79999999981374,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":138.6999999997206,\\\"observedAt\\\":138.6999999997206,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Enter\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":139,\\\"observedAt\\\":139.1999999997206,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":144.10000000009313,\\\"observedAt\\\":144.1999999997206,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":144.79999999981374,\\\"observedAt\\\":144.79999999981374,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":145,\\\"observedAt\\\":145.10000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":146.5,\\\"observedAt\\\":146.5,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":146.79999999981374,\\\"observedAt\\\":146.79999999981374,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":147,\\\"observedAt\\\":147.10000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Escape\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":148.39999999990687,\\\"observedAt\\\":148.39999999990687,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Escape\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":159.89999999990687,\\\"observedAt\\\":160.79999999981374,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":263.10000000009313,\\\"observedAt\\\":263.10000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"\\\",\\\"eventTime\\\":266.89999999990687,\\\"observedAt\\\":267.10000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":267.79999999981374,\\\"observedAt\\\":267.79999999981374,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":268,\\\"observedAt\\\":268.10000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\" \\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":269.39999999990687,\\\"observedAt\\\":269.5,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\" \\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":269.6999999997206,\\\"observedAt\\\":270.10000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"click\\\",\\\"key\\\":null,\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":269.6999999997206,\\\"observedAt\\\":270.10000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"click\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":275.79999999981374,\\\"observedAt\\\":275.79999999981374,\\\"trusted\\\":false},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"notifications\\\",\\\"eventTime\\\":277.89999999990687,\\\"observedAt\\\":278.89999999990687,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":279.29999999981374,\\\"observedAt\\\":279.29999999981374,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"daily\\\",\\\"eventTime\\\":279.5,\\\"observedAt\\\":279.5,\\\"trusted\\\":true},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"Tab\\\",\\\"target\\\":\\\"daily\\\",\\\"eventTime\\\":280.5,\\\"observedAt\\\":280.60000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"ArrowRight\\\",\\\"target\\\":\\\"daily\\\",\\\"eventTime\\\":284.1999999997206,\\\"observedAt\\\":284.39999999990687,\\\"trusted\\\":true},{\\\"type\\\":\\\"focusin\\\",\\\"key\\\":null,\\\"target\\\":\\\"weekly\\\",\\\"eventTime\\\":292.10000000009313,\\\"observedAt\\\":292.10000000009313,\\\"trusted\\\":true},{\\\"type\\\":\\\"click\\\",\\\"key\\\":null,\\\"target\\\":\\\"weekly\\\",\\\"eventTime\\\":292.10000000009313,\\\"observedAt\\\":292.10000000009313,\\\"trusted\\\":false},{\\\"type\\\":\\\"click\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":297.79999999981374,\\\"observedAt\\\":297.79999999981374,\\\"trusted\\\":false},{\\\"type\\\":\\\"click\\\",\\\"key\\\":null,\\\"target\\\":\\\"\\\",\\\"eventTime\\\":298,\\\"observedAt\\\":298,\\\"trusted\\\":false},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"ArrowRight\\\",\\\"target\\\":\\\"weekly\\\",\\\"eventTime\\\":388.39999999990687,\\\"observedAt\\\":388.79999999981374,\\\"trusted\\\":true}]}\"\n",
+    "stderr": "",
+    "elapsed": 0.0016397419999520935
+  },
+  {
+    "args": [
+      "agent-browser",
+      "--session",
+      "dtr-keydiag",
+      "snapshot",
+      "-i"
+    ],
+    "returncode": 0,
+    "stdout": "- generic \"Your preferencesStay in the loopNotification settingsChoose where and how often you receive updates.\" [ref=e1] clickable [onclick]\n  - heading \"Notification settings\" [level=1, ref=e2]\n  - textbox \"Email address (required)\" [required, ref=e4]: reviewer@example.com\n  - switch \"Notifications\" [checked=true, ref=e5]\n  - radiogroup \"Delivery frequency\" [ref=e6] focusable [tabindex]\n    - radio \"Daily\" [checked=false, ref=e7]\n    - radio \"Weekly\" [checked=true, ref=e8]\n  - button \"Review changes\" [expanded=false, ref=e3]\n",
+    "stderr": "",
+    "elapsed": 0.00643244799994136
+  }
+]

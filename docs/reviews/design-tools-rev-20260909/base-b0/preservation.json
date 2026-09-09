@@ -1,0 +1,26 @@
+{
+  "components.json": {
+    "unchanged": true,
+    "sha256": "742073b3f86f3b0a503e4eef3a3dea2dad18745e33901318c9acc33ee6911694"
+  },
+  "package.json": {
+    "unchanged": true,
+    "sha256": "d0856aa82607a8ad4cb8ae714d572dcac114ed34bc622ea586810e360af12beb"
+  },
+  "pnpm-lock.yaml": {
+    "unchanged": true,
+    "sha256": "103b09b27a9fe99c4a98fade0861ebf111d8b4e8802e58b1fb7307448c10f6f5"
+  },
+  "src/index.css": {
+    "unchanged": true,
+    "sha256": "9bde270cb8d0493a24091df8ae292e3a2b3484f91d738fa70a037866fe206d48"
+  },
+  "src/preserved-note.ts": {
+    "unchanged": true,
+    "sha256": "63342b08277a771a3f4643af89159820581459bed11554f6164206d0bfd1310b"
+  },
+  "src/components/theme-provider.tsx": {
+    "unchanged": true,
+    "sha256": "7e9140cbb4471cbcf20f9e6348406a0a9f5f00689982f6f6fae7a63f44d063e3"
+  }
+}

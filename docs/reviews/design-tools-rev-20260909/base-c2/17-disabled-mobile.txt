@@ -1,0 +1,51 @@
+✓ Done
+✓ Done
+✓ Done
+- generic "PreferencesNotification settingsChoose where and how often you receive updates.Email address (requir" [ref=e1] clickable [onclick]
+  - heading "Notification settings" [level=1, ref=e2]
+  - textbox "Email address (required)" [required, ref=e4]: trial@example.com
+  - switch "Enable notifications" [checked=false, ref=e5]
+  - radio "Daily A daily catch-up" [checked=false, disabled, ref=e6]
+  - radio "Weekly One weekly digest" [checked=true, disabled, ref=e7]
+  - button "Review changes" [ref=e3]
+✓ Done
+- generic "PreferencesNotification settingsChoose where and how often you receive updates.Email address (requir" [ref=e1] clickable [onclick]
+  - heading "Notification settings" [level=1, ref=e2]
+  - textbox "Email address (required)" [required, ref=e4]: trial@example.com
+  - switch "Enable notifications" [checked=false, ref=e5]
+  - radio "Daily A daily catch-up" [checked=false, disabled, ref=e6]
+  - radio "Weekly One weekly digest" [checked=true, disabled, ref=e7]
+  - button "Review changes" [ref=e3]
+"{\"radios\":[{\"name\":\"daily-label\",\"checked\":\"false\",\"disabled\":\"true\"},{\"name\":\"weekly-label\",\"checked\":\"true\",\"disabled\":\"true\"}],\"status\":\"Settings appliedtrial@example.comNotifications on · Weekly delivery\"}"
+✓ Done
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/base-c2-evidence/mobile-disabled.png
+"{\"viewport\":390,\"document\":390}"
+✓ Done
+true
+- generic
+  - generic [ref=e1] clickable [onclick]
+    - main
+      - status
+        - paragraph
+          - StaticText "Settings applied"
+        - paragraph
+          - StaticText "trial@example.com"
+        - paragraph
+          - StaticText "Notifications on · Weekly delivery"
+  - dialog "Review notification settings"
+    - heading "Review notification settings" [level=2, ref=e2]
+    - paragraph
+      - StaticText "Confirm to apply these choices. Cancel to keep editing your draft."
+    - DescriptionList
+      - term "Email address"
+      - definition
+        - StaticText "trial@example.com"
+      - term "Notifications"
+      - definition
+        - StaticText "Off"
+      - term "Delivery frequency"
+      - definition
+        - StaticText "Weekly (saved for when notifications are on)"
+    - button "Cancel" [ref=e3]
+    - button "Confirm" [ref=e4]
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/base-c2-evidence/mobile-dialog.png

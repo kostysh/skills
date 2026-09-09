@@ -1,0 +1,7 @@
+{
+  "components.json": true,
+  "package.json": true,
+  "pnpm-lock.yaml": true,
+  "src/index.css": true,
+  "src/preserved-note.ts": true
+}

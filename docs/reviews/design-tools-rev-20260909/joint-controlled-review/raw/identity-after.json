@@ -1,0 +1,188 @@
+[
+  {
+    "path": ".gitignore",
+    "before": "fe718e7babb14f3cbad2d97f08889b9ce5215ed3fe0e43b2b8cfbfb3b9b844e8",
+    "after": "fe718e7babb14f3cbad2d97f08889b9ce5215ed3fe0e43b2b8cfbfb3b9b844e8",
+    "unchanged": true
+  },
+  {
+    "path": ".prettierignore",
+    "before": "61cdcfa5e23efb23b84bd054a15860c3a49ea24200da10c89ee30332f61c9570",
+    "after": "61cdcfa5e23efb23b84bd054a15860c3a49ea24200da10c89ee30332f61c9570",
+    "unchanged": true
+  },
+  {
+    "path": ".prettierrc",
+    "before": "d51608bb6a349cb8fe4b9428d719c6f66770b9ce6e23a602bc56fa6055e54188",
+    "after": "d51608bb6a349cb8fe4b9428d719c6f66770b9ce6e23a602bc56fa6055e54188",
+    "unchanged": true
+  },
+  {
+    "path": "README.md",
+    "before": "821a9696dddd5e3bd1dd4cc04aeba1ba9dfb527eac91028b4235659260ff21e1",
+    "after": "821a9696dddd5e3bd1dd4cc04aeba1ba9dfb527eac91028b4235659260ff21e1",
+    "unchanged": true
+  },
+  {
+    "path": "components.json",
+    "before": "742073b3f86f3b0a503e4eef3a3dea2dad18745e33901318c9acc33ee6911694",
+    "after": "742073b3f86f3b0a503e4eef3a3dea2dad18745e33901318c9acc33ee6911694",
+    "unchanged": true
+  },
+  {
+    "path": "eslint.config.js",
+    "before": "cf80a7510234dcd5ae594b30b44682b8b45ba13c0fcb5bf8928bea143802aa1c",
+    "after": "cf80a7510234dcd5ae594b30b44682b8b45ba13c0fcb5bf8928bea143802aa1c",
+    "unchanged": true
+  },
+  {
+    "path": "index.html",
+    "before": "f5ed80cea17c8985d4d40cf5936d0c94aa6f675cade574b7c720264e342589a9",
+    "after": "f5ed80cea17c8985d4d40cf5936d0c94aa6f675cade574b7c720264e342589a9",
+    "unchanged": true
+  },
+  {
+    "path": "package.json",
+    "before": "d0856aa82607a8ad4cb8ae714d572dcac114ed34bc622ea586810e360af12beb",
+    "after": "d0856aa82607a8ad4cb8ae714d572dcac114ed34bc622ea586810e360af12beb",
+    "unchanged": true
+  },
+  {
+    "path": "pnpm-lock.yaml",
+    "before": "103b09b27a9fe99c4a98fade0861ebf111d8b4e8802e58b1fb7307448c10f6f5",
+    "after": "103b09b27a9fe99c4a98fade0861ebf111d8b4e8802e58b1fb7307448c10f6f5",
+    "unchanged": true
+  },
+  {
+    "path": "pnpm-workspace.yaml",
+    "before": "1e831b89d4d46e629c888d0ca10abc161e66a953e0778409facb96bcd828d9a0",
+    "after": "1e831b89d4d46e629c888d0ca10abc161e66a953e0778409facb96bcd828d9a0",
+    "unchanged": true
+  },
+  {
+    "path": "public/vite.svg",
+    "before": "4a748afd443918bb16591c834c401dae33e87861ab5dbad0811c3a3b4a9214fb",
+    "after": "4a748afd443918bb16591c834c401dae33e87861ab5dbad0811c3a3b4a9214fb",
+    "unchanged": true
+  },
+  {
+    "path": "src/App.tsx",
+    "before": "19e033b13f67a14452c5b3667bd088611de48a1f4dfcb89ae377ca74fd73cb19",
+    "after": "19e033b13f67a14452c5b3667bd088611de48a1f4dfcb89ae377ca74fd73cb19",
+    "unchanged": true
+  },
+  {
+    "path": "src/assets/react.svg",
+    "before": "35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5",
+    "after": "35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5",
+    "unchanged": true
+  },
+  {
+    "path": "src/components/theme-provider.tsx",
+    "before": "7e9140cbb4471cbcf20f9e6348406a0a9f5f00689982f6f6fae7a63f44d063e3",
+    "after": "7e9140cbb4471cbcf20f9e6348406a0a9f5f00689982f6f6fae7a63f44d063e3",
+    "unchanged": true
+  },
+  {
+    "path": "src/components/ui/button.tsx",
+    "before": "cf093b290ac4e742ee82059d41fc8a294f7598d7af8ed643efa12a98a4896bdd",
+    "after": "cf093b290ac4e742ee82059d41fc8a294f7598d7af8ed643efa12a98a4896bdd",
+    "unchanged": true
+  },
+  {
+    "path": "src/components/ui/card.tsx",
+    "before": "8ad3a18d36bda0598dc0e9aa96ea22854944d5443ee4946f1d173815e115375f",
+    "after": "8ad3a18d36bda0598dc0e9aa96ea22854944d5443ee4946f1d173815e115375f",
+    "unchanged": true
+  },
+  {
+    "path": "src/components/ui/dialog.tsx",
+    "before": "ae89de4e8d12dafc3cf736b34dbb6c5d4fc7a2a2b0e0dd5daf57110a92f9a7a8",
+    "after": "ae89de4e8d12dafc3cf736b34dbb6c5d4fc7a2a2b0e0dd5daf57110a92f9a7a8",
+    "unchanged": true
+  },
+  {
+    "path": "src/components/ui/field.tsx",
+    "before": "90cbc96b0de5c836ebb82a2997c45956e81f939566d5e91fc701af007849c92b",
+    "after": "90cbc96b0de5c836ebb82a2997c45956e81f939566d5e91fc701af007849c92b",
+    "unchanged": true
+  },
+  {
+    "path": "src/components/ui/input.tsx",
+    "before": "dab990dfefa0ba78854ab6602ad074270dba9d7d1262184d9bfbb62bd990903b",
+    "after": "dab990dfefa0ba78854ab6602ad074270dba9d7d1262184d9bfbb62bd990903b",
+    "unchanged": true
+  },
+  {
+    "path": "src/components/ui/label.tsx",
+    "before": "86232709f634da7f357a8aaec0e815f3f562604bb67202c88997fae97659b450",
+    "after": "86232709f634da7f357a8aaec0e815f3f562604bb67202c88997fae97659b450",
+    "unchanged": true
+  },
+  {
+    "path": "src/components/ui/radio-group.tsx",
+    "before": "f779542f2370b82fcbb91278fb94f7ad4af59d0f36512633492604b27da48e8d",
+    "after": "f779542f2370b82fcbb91278fb94f7ad4af59d0f36512633492604b27da48e8d",
+    "unchanged": true
+  },
+  {
+    "path": "src/components/ui/separator.tsx",
+    "before": "9a80ff8c110e0c55489509f4f82ebcc929c0174b59544047147b7134f86a54e7",
+    "after": "9a80ff8c110e0c55489509f4f82ebcc929c0174b59544047147b7134f86a54e7",
+    "unchanged": true
+  },
+  {
+    "path": "src/components/ui/switch.tsx",
+    "before": "367ad27cfe2f4ce5648fd3941410d3c3504876ee23e4360a220f1e6cd05f5c2d",
+    "after": "367ad27cfe2f4ce5648fd3941410d3c3504876ee23e4360a220f1e6cd05f5c2d",
+    "unchanged": true
+  },
+  {
+    "path": "src/index.css",
+    "before": "9bde270cb8d0493a24091df8ae292e3a2b3484f91d738fa70a037866fe206d48",
+    "after": "9bde270cb8d0493a24091df8ae292e3a2b3484f91d738fa70a037866fe206d48",
+    "unchanged": true
+  },
+  {
+    "path": "src/lib/utils.ts",
+    "before": "14300d758170c270c75b057f38fedb3793a5920ea872f0477e29fb131185e8a7",
+    "after": "14300d758170c270c75b057f38fedb3793a5920ea872f0477e29fb131185e8a7",
+    "unchanged": true
+  },
+  {
+    "path": "src/main.tsx",
+    "before": "36302f6e7cd3e4556ef482c8a623155b6b851d957679ab1b76d2b93099af9ca1",
+    "after": "36302f6e7cd3e4556ef482c8a623155b6b851d957679ab1b76d2b93099af9ca1",
+    "unchanged": true
+  },
+  {
+    "path": "src/preserved-note.ts",
+    "before": "63342b08277a771a3f4643af89159820581459bed11554f6164206d0bfd1310b",
+    "after": "63342b08277a771a3f4643af89159820581459bed11554f6164206d0bfd1310b",
+    "unchanged": true
+  },
+  {
+    "path": "tsconfig.app.json",
+    "before": "1b10733ad1b7359a2b0b6f58a8bb3a13b95eabf0022b4320856eea0127e9588b",
+    "after": "1b10733ad1b7359a2b0b6f58a8bb3a13b95eabf0022b4320856eea0127e9588b",
+    "unchanged": true
+  },
+  {
+    "path": "tsconfig.json",
+    "before": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+    "after": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+    "unchanged": true
+  },
+  {
+    "path": "tsconfig.node.json",
+    "before": "90a22c920cbc14624fb4658b58f15c875abf3234224f3933f211849c3ada3242",
+    "after": "90a22c920cbc14624fb4658b58f15c875abf3234224f3933f211849c3ada3242",
+    "unchanged": true
+  },
+  {
+    "path": "vite.config.ts",
+    "before": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+    "after": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+    "unchanged": true
+  }
+]

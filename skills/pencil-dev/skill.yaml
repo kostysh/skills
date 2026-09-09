@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: pencil-dev
-  source-version: 0.2.0
+  source-version: 0.2.1
   recommended-skill-md-max-bytes: 18000
   description: >-
     Create, inspect, iterate, validate, import, and export Pencil `.pen` designs
@@ -22,7 +22,7 @@ references:
     title: Component libraries
     source: references/component-libraries.md
     target: references/component-libraries.md
-    required: false
+    required: true
     trigger: Read this when the operator asks to create, maintain, import, inspect, or use Pencil component libraries, reusable components, `.lib.pen` files, or design-system assets.
 copies:
   - id: copy-agents-openai
@@ -54,8 +54,8 @@ surfaces:
   active:
     requiredReferences:
       - ref-unified-mcp-api
-    optionalReferences:
       - ref-component-libraries
+    optionalReferences: []
   supportingGlobs:
     - docs/*
     - docs/forward-tests/*
@@ -132,12 +132,12 @@ sections:
         - Browser inspection or import is not reported as formal web-app E2E or production capability proof.
     - id: stage-create-or-use-component-libraries
       title: Create or use component libraries
-      goal: Build reusable Pencil component assets and use them in mockups without leaving the MCP-only boundary.
+      goal: Complete the requested Pencil component operation through MCP.
       steps:
         - Read `references/component-libraries.md` before creating, importing, inspecting, or using reusable components or `.lib.pen` files.
-        - Work only against MCP-visible library and consumer files; use current `execute` operations to create/read reusable origins and instances, and surface required UI-only lifecycle actions immediately.
+        - Work only against the MCP-visible files needed for the requested operation; use current `execute` operations and surface required UI-only lifecycle actions immediately.
       validation:
-        - The component inventory and target mockup usage are visible through MCP reads.
+        - Verify the requested operation using references/component-libraries.md; do not require unrequested consumer work.
         - Any required UI-only library setup/import step is reported immediately and not bypassed with CLI or raw `.pen` editing.
     - id: stage-create-or-iterate-with-mcp
       title: Create or iterate with MCP
@@ -209,7 +209,7 @@ sections:
       text: Do not use temporary directories for durable exports or handoff docs unless the user explicitly wants throwaway output.
     - id: gotcha-reference-frame-cleanup
       priority: medium
-      text: Copied foundation/reference frames are scaffolding. Remove them from the target `.pen` after target frames are created and verify the top-level inventory through MCP.
+      text: Remove only confirmed disposable scaffolding created by this task or explicitly included in authorized cleanup. Before deletion, re-read the nodes and relevant refs; preserve pre-existing nodes outside that cleanup scope and nodes whose ownership or needed connections remain unresolved. Verify remaining inventory and affected instances through MCP.
     - id: gotcha-design-substrate
       priority: high
       text: Pencil mockups, screenshots, and image/PDF/HTML exports are design or handoff substrate, not implemented runtime behavior or production delivery gates.
@@ -234,7 +234,7 @@ sections:
       text: Creation and material visual edits require structural readback plus screenshot/export inspection; if visual evidence or save confirmation is missing, report that limitation and the split result explicitly.
     - id: policy-component-libraries
       title: Component library policy
-      text: Component library work must prove reusable component origins and mockup instances through MCP-visible nodes; UI-only library creation/import steps must be surfaced to the operator immediately when MCP does not expose them.
+      text: Use claim-specific evidence from references/component-libraries.md; surface required UI-only lifecycle actions without adding unrequested consumer work.
     - id: policy-handoff-clarity
       title: Handoff clarity policy
       text: Multi-frame mockups need a sibling README or index when the project expects a handoff artifact; it should explain purpose, status, source links, frame inventory, anti-claims, privacy constraints, and review evidence.

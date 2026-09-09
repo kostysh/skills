@@ -1,0 +1,179 @@
+{
+  "algorithm": "SHA256 file bytes; sorted relative POSIX paths",
+  "skills": [
+    {
+      "skill": "shadcn",
+      "files": [
+        {
+          "path": "AGENTS.md",
+          "sha256": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "c23fe9f979cc0c924e861447d004c63ff65868d46d0bf2625ea14eb72a8d8ee8"
+        },
+        {
+          "path": "agents/openai.yml",
+          "sha256": "1b30383f2756d0042b680dc9f81a62fbe41072c2ac3ec41903ad8a6b23e5660e"
+        },
+        {
+          "path": "assets/shadcn-small.png",
+          "sha256": "0ecc62d682727f68fc4937eed19960c706714fa084d44f63028d611ae02bf3d7"
+        },
+        {
+          "path": "assets/shadcn.png",
+          "sha256": "7d60ad6fec4d89a0d44ba5a3c9283d2fea0047af5467f9227040e20d927d39b7"
+        },
+        {
+          "path": "docs/README.md",
+          "sha256": "8c736fd18fd8f78d78fdf5496f3107d3396418dac0a8b0196650c6b7cbd040a4"
+        },
+        {
+          "path": "docs/compile-report.md",
+          "sha256": "06e3e8f8dbf8c9b3dd6fdbdcee589ce881863e88c06cd0a2a1af491c5d52d312"
+        },
+        {
+          "path": "docs/forward-tests/forward-test-evidence-20260716-1.md",
+          "sha256": "1df3ad515b9d1cc77a779b7e3d058e4d1449465f9526efb80fe2a0e247bf3439"
+        },
+        {
+          "path": "docs/logs/implementation-log-20260715-1.md",
+          "sha256": "9f2d6e194bb3f38d6703359209cba889dd73a15a6fdffae19a291ea96d9db2b2"
+        },
+        {
+          "path": "docs/logs/implementation-log-20260716-1.md",
+          "sha256": "2a0184a408601891badd3faae4c0880115118e84a5d1ecb1938fe687ca4d7baa"
+        },
+        {
+          "path": "evals/evals.json",
+          "sha256": "6acdbdc85eccc1b7a60084eaecefb893b332f71bbbf1ca45edcc5c01d959b08e"
+        },
+        {
+          "path": "fragments/overview.md",
+          "sha256": "1776a3c9e24a68867bef09be24c44d7df25a267d295b6214f87eef44a053bd40"
+        },
+        {
+          "path": "references/cli.md",
+          "sha256": "dc3a0ecc8ec861801e77bda084ba20f2e68cab0b34eeeac7ca6e65ccb89e181b"
+        },
+        {
+          "path": "references/customization.md",
+          "sha256": "04c54b19947c3827fe3e7d437434720252ee6cbbe5b61617501acba9245884ec"
+        },
+        {
+          "path": "references/rules/composition.md",
+          "sha256": "9e4ad7ad2861dc8854a61f8e4d0edc56d4def0ce7a603e9b405ca266a563acf8"
+        },
+        {
+          "path": "references/rules/forms.md",
+          "sha256": "c33fe220bbdecd471aba8a62439335a362944b212982fdfedfdb9f309473d318"
+        },
+        {
+          "path": "references/rules/icons.md",
+          "sha256": "7b79511251df08df996f4b6fcab7a08103bd1ab0f1b97d1a5023a679495c3790"
+        },
+        {
+          "path": "references/rules/styling.md",
+          "sha256": "321f473b67ba2250e850a40cc8b3f939bfa4e37c8a18a3b42e667d2ab353b9f0"
+        },
+        {
+          "path": "skill.yaml",
+          "sha256": "fe21a643d9139a3b055727c2d3de6c29b00a989513d27594bfe55a5147ff43f8"
+        }
+      ]
+    },
+    {
+      "skill": "pencil-dev",
+      "files": [
+        {
+          "path": "AGENTS.md",
+          "sha256": "ce58251ccbe88eed2e3aa4dd2f6cf3f07f68b43f27432982a8304145afc9c188"
+        },
+        {
+          "path": "SKILL.md",
+          "sha256": "6b8befc7446f6e2f499693a04c1819829677559ff416c5f33397b36ffe381123"
+        },
+        {
+          "path": "agents/openai.yaml",
+          "sha256": "90fac8a26c8ef71b04b96eeb580dd8bb1663d35c1a30e715bc7f50291b8a3a81"
+        },
+        {
+          "path": "docs/README.md",
+          "sha256": "eba0828933149c7226ae696f6b3cf4f04d143bf8c7fd001953abcf77e6219823"
+        },
+        {
+          "path": "docs/compile-report.md",
+          "sha256": "4aeac23b00f73dbea2b8d5239085f75b3e49fa116944146d8818c7368cdfb9d2"
+        },
+        {
+          "path": "docs/forward-tests/forward-test-evidence-20260727-1.md",
+          "sha256": "b7e92ae41b290fb6368a40d2ed259cf646ed63a5adab739f2ed6fa6b9b728f21"
+        },
+        {
+          "path": "docs/forward-tests/forward-test-evidence-20260822-1.md",
+          "sha256": "969b45068dc90847f4927f161d207005d1925d0d73cd9a4cafc508542e182236"
+        },
+        {
+          "path": "docs/logs/implementation-log-20260608-1.md",
+          "sha256": "89b6e99d384a300d26e14e5365832e46de438cb228e8441235b7b567ca4f36ef"
+        },
+        {
+          "path": "docs/logs/implementation-log-20260608-2.md",
+          "sha256": "3e21ed187eedc39713bcaf53679512af5e71dd8dbaab48f97c5ee152e2e7a57e"
+        },
+        {
+          "path": "docs/logs/implementation-log-20260608-3.md",
+          "sha256": "0fcc39f5e9ff0386e9e2795c6c6d9e5462767fb818d7c5f51ba9bbe9ea58cf60"
+        },
+        {
+          "path": "docs/logs/implementation-log-20260610-1.md",
+          "sha256": "f7172b2ff5ccee75e53bde997b20f46ca103779f1d47f14a087f94443043bc66"
+        },
+        {
+          "path": "docs/logs/implementation-log-20260629-1.md",
+          "sha256": "3e49b1808dc697bc2e8600ce056bfabe48392f008cad37dba339b4235af49ba2"
+        },
+        {
+          "path": "docs/logs/implementation-log-20260629-2.md",
+          "sha256": "1c7b4ffebd2a6ecdac721555b02e28955e25eedddc9687e78b10992913fc0321"
+        },
+        {
+          "path": "docs/logs/implementation-log-20260708-1.md",
+          "sha256": "bd56bcb3d61ae0ca76f3d16716288cb5021c915f4e0fb037436f3a1ed481d7ca"
+        },
+        {
+          "path": "docs/logs/implementation-log-20260713-1.md",
+          "sha256": "3e41472117bd52d35665e8c3d24ca109de85dfa6f9a1c1fda7560fb03e9fcbc1"
+        },
+        {
+          "path": "docs/logs/implementation-log-20260715-1.md",
+          "sha256": "6510231e305308d5019de8daca792acf678a0199aa3df7e129821b804692d79d"
+        },
+        {
+          "path": "docs/logs/implementation-log-20260727-1.md",
+          "sha256": "c350344d679b21e4669079656f34b6d0a7d45f970084085bdfb57be38cf52db5"
+        },
+        {
+          "path": "docs/logs/implementation-log-20260822-1.md",
+          "sha256": "82a3ac4bdb90a9f9f37e830645cf645df413bd59aac9405aa1d65563bab6b7c5"
+        },
+        {
+          "path": "fragments/overview.md",
+          "sha256": "5c71214bf6341218f4d36e09db0e528a69bcc5912bcff6ec0b8f4cc13fe664b3"
+        },
+        {
+          "path": "references/component-libraries.md",
+          "sha256": "f5ec8fdcf64193843932c7baaa7b145c1ec5d57ec187d300c0e8c9e40829bb74"
+        },
+        {
+          "path": "references/unified-mcp-api.md",
+          "sha256": "8666d48fe0a8fa917c68ca38e878ef98fe60b5a0f1f22e35fb8259567b9f2be9"
+        },
+        {
+          "path": "skill.yaml",
+          "sha256": "80d2458bb58631b4befb4369409c6b0d74c5870d3f028cd6e383ce2fea5a4098"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "describedBy": "email-help email-error",
+  "dialogs": 0,
+  "error": "Enter a valid email address.",
+  "focus": "email",
+  "invalid": "true"
+}

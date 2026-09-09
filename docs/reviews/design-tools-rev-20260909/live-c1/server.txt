@@ -1,0 +1,19 @@
+
+> fixture@0.0.1 dev /tmp/design-tools-rev-20260909/live-c1
+> vite --host 127.0.0.1 --port 43862 --strictPort
+
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vite.config.ts:11:27). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+  VITE v8.2.2  ready in 118 ms
+
+  ➜  Local:   http://127.0.0.1:43862/
+1:54:44 PM [vite] (client) hmr update /src/index.css
+1:54:44 PM [vite] (client) hmr update /src/index.css
+1:54:44 PM [vite] (client) hmr update /src/index.css
+1:54:44 PM [vite] (client) hmr update /src/index.css
+1:54:44 PM [vite] (client) hmr update /src/index.css
+1:54:44 PM [vite] (client) hmr update /src/index.css
+1:54:44 PM [vite] (client) hmr update /src/index.css
+ ELIFECYCLE  Command failed with exit code 143.

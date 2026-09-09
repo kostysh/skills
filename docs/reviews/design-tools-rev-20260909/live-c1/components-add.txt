@@ -1,0 +1,12 @@
+[2K[G[2K[1G✔ The file button.tsx already exists. Would you like to overwrite? … no
+[?25h✔ Created 7 files:
+  - src/components/ui/input.tsx
+  - src/components/ui/switch.tsx
+  - src/components/ui/radio-group.tsx
+  - src/components/ui/label.tsx
+  - src/components/ui/separator.tsx
+  - src/components/ui/dialog.tsx
+  - src/components/ui/field.tsx
+ℹ Skipped 1 file: (files might be identical, use --overwrite to overwrite)
+  - src/components/ui/button.tsx
+

@@ -1,0 +1,8 @@
+- generic "Your preferencesStay in the loopNotification settingsChoose where and how often you receive updates." [ref=e1] clickable [onclick]
+  - heading "Notification settings" [level=1, ref=e2]
+  - textbox "Email address (required)" [required, ref=e4]
+  - switch "Notifications" [checked=true, ref=e5]
+  - radiogroup "Delivery frequency" [ref=e6] focusable [tabindex]
+    - radio "Daily" [checked=true, ref=e7]
+    - radio "Weekly" [checked=false, ref=e8]
+  - button "Review changes" [expanded=false, ref=e3]

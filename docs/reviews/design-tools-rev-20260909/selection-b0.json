@@ -1,0 +1,50 @@
+[
+  {
+    "id": "S1",
+    "primary": ["shadcn"],
+    "handoff": [],
+    "rationale": "shadcn owns adding the official Dialog through the configured project's registry workflow while preserving local component variants."
+  },
+  {
+    "id": "S2",
+    "primary": ["pencil-dev"],
+    "handoff": [],
+    "rationale": "pencil-dev owns creating the reusable card and connected instance in the open Pencil document and exporting the PNG through MCP."
+  },
+  {
+    "id": "S3",
+    "primary": ["frontend-design"],
+    "handoff": [],
+    "rationale": "frontend-design owns the dashboard's art direction, typography and visual hierarchy as a design strategy without implementation."
+  },
+  {
+    "id": "S4",
+    "primary": ["react-components-engineer"],
+    "handoff": [],
+    "rationale": "react-components-engineer owns fixing reusable component lifecycle cleanup and forwarded-ref behavior."
+  },
+  {
+    "id": "S5",
+    "primary": ["react-spa-engineer"],
+    "handoff": [],
+    "rationale": "react-spa-engineer owns the SPA form's validation, pending state and retry integration."
+  },
+  {
+    "id": "S6",
+    "primary": ["web-ui-reviewer"],
+    "handoff": [],
+    "rationale": "web-ui-reviewer owns the read-only UX and accessibility assessment with scoped findings and evidence limits."
+  },
+  {
+    "id": "S7",
+    "primary": ["agent-browser"],
+    "handoff": [],
+    "rationale": "agent-browser owns opening the local website, submitting its form and verifying the visible terminal state."
+  },
+  {
+    "id": "S8",
+    "primary": ["pencil-dev"],
+    "handoff": ["shadcn", "agent-browser"],
+    "rationale": "pencil-dev owns the settings-screen design in Pencil, shadcn owns implementing that design with its components, and agent-browser owns verifying the rendered browser result."
+  }
+]

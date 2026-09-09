@@ -1,0 +1,46 @@
+✓ Done
+- generic [ref=e1] clickable [onclick]
+  - main
+    - sectionheader
+      - paragraph
+        - StaticText "PREFERENCES"
+      - heading "Notification settings" [level=1, ref=e2]
+      - paragraph
+        - StaticText "Choose where and how often you receive updates."
+    - form
+      - group
+        - LabelText
+          - StaticText "Email address"
+          - StaticText "(required)"
+        - textbox "Email address (required)" [required, ref=e4]
+        - paragraph
+          - StaticText "The address for your notification updates."
+        - alert
+          - StaticText "Enter your email address."
+      - group
+        - paragraph
+          - StaticText "Pause updates whenever you need a little quiet."
+        - switch "Enable notifications" [checked=true, ref=e5]
+      - group "Delivery frequency"
+        - Legend
+          - StaticText "Delivery frequency"
+        - paragraph
+          - StaticText "Choose the pace that works for you."
+        - radiogroup "Delivery frequency"
+          - LabelText
+            - group
+              - radio "Daily A daily catch-up" [checked=true, ref=e6]
+              - StaticText "Daily"
+              - StaticText "A daily catch-up"
+          - LabelText
+            - group
+              - radio "Weekly One weekly digest" [checked=false, ref=e7]
+              - StaticText "Weekly"
+              - StaticText "One weekly digest"
+      - paragraph
+        - StaticText "You’ll review your choices before applying."
+      - button "Review changes" [ref=e3]
+    - status
+    - paragraph
+      - StaticText "These settings last for this session. No emails will be sent."
+"{\"focus\":\"email\",\"dialogs\":0,\"errorLink\":\"email-hint email-error\",\"invalid\":\"true\"}"

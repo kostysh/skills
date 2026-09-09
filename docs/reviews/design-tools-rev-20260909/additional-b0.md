@@ -1,0 +1,35 @@
+# Stipulated case responses
+
+Assigned configuration: gpt-6-astra / high. Actual runtime identity is not independently available. These are reasoning responses only; no project, browser, or Pencil operations were executed. Instruction sources used: the supplied standalone shadcn and pencil-dev roots, shadcn Styling, and Pencil Unified MCP API and Component libraries references.
+
+## D0 — Installed Button spacing adjustment
+
+The requested app change is complete on the stipulated evidence: the Button spacing is adjusted, the local variant is preserved, and the project build and browser checks passed. I would report those results and identify the actual project context, installed source/documentation, modified file, and verification commands from the implementation record. The case supplies no exact paths or commands, so I would not invent them or claim coverage of unmentioned states.
+
+There is nevertheless an outstanding instruction requirement in this supplied skill: its unconditional “Portability checklist before finishing” says to “Regenerate and run the skill-source-compiler lint and check commands,” resolve emitted-package links, search the whole skill folder, and compile to an isolated directory. The stipulated standalone environment has no compiler, so I cannot mark that checklist completed. No skill changes were requested, so I would not regenerate or modify the skill merely to satisfy it. I would report the app result separately from this blocked skill-level checklist and request resolution of the checklist's applicability (or provision of the required maintenance tooling if it is intended to apply here). I would not rerun the successful app checks, change the Button again, or represent compiler checks as app behavior evidence.
+
+Instruction basis: shadcn “Completion contract” and “Verify behavior and report evidence” limit claims to actual project and interaction evidence; “Apply surgically” requires preservation of local variants; Styling prefers the smallest bounded adjustment and limits state checks to affected states. The root “Portability checklist before finishing” contains the remaining unqualified maintenance requirements. The operator's no-skill-change scope prevents treating those requirements as authority to change the skill.
+
+## P6e — Settings frame cleanup
+
+I would preserve the pre-existing “Reference foundation” frame, its reusable origin, and the connected instance elsewhere. Its name does not make it disposable task scaffolding: it predates the task and has an existing consumer. I would remove only the temporary reference and isolated scratch frame copied during this task, using the confirmed document and current MCP execute contract. The stipulated absence of scratch consumers supports that bounded deletion. Before a real deletion I would use a compact MCP read to confirm the intended scratch IDs and relevant refs remain as expected; a mismatch would require fresh app state/readback before proceeding.
+
+After cleanup I would:
+
+1. Read the top-level inventory through MCP and confirm the completed settings frame and pre-existing foundation remain while the task-created scratch is absent.
+2. Read the relevant reusable origin and existing connected instance to confirm the connection is preserved. Use instance resolution only as needed for this check.
+3. Read the settings subtree with a visitor checking `ctx.bounds` and `ctx.problems`; resolve any returned warnings. Confirm the completed frame's placeholder is cleared and any asynchronous generation is finished before visual review.
+4. Take and inspect an MCP screenshot of the smallest meaningful settings frame against the accepted brief. If screenshots are unavailable, report “structurally verified, visually unreviewed.” Clean layout alone would not establish visual completion.
+5. Ask the operator to save in Pencil after the material changes. Report live verification separately from durable `.pen` persistence until save confirmation arrives. Produce exports only if requested. Update a sibling handoff README/index only if the project expects one for this multi-frame artifact.
+
+The report would name the actual confirmed file, settings criteria verified, removed task scratch, retained foundation and connection evidence, structural/visual results, warnings or generation state, and save status. It would not claim implemented settings functionality from the mockup.
+
+Instruction basis: pencil-dev “Create or iterate with MCP” keeps edits scoped and requires readback; its scaffolding gotcha requires removal of copied reference/foundation scaffolding and top-level inventory verification. That applies to the task-created scratch in this case, not indiscriminately to an existing frame with “Reference” in its name. “Review, persist, and export with MCP” supplies structural, screenshot, and save gates. Unified MCP API supplies targeted reads, deletion routing, placeholder and generation rules. Component libraries requires maintaining connected origins/instances rather than silently detaching or replacing them, and MCP readback supplies evidence of that preservation.
+
+## P6f — Reference loading decisions
+
+For a minor text correction in a confirmed non-library frame with no reusable assets, the required supplied reference is `references/unified-mcp-api.md`. It is required before every Pencil MCP task. I would not load `references/component-libraries.md`: this request does not create, maintain, import, inspect, or use a library, reusable component, `.lib.pen`, or design-system asset. Neither live-page browser work nor style discovery is needed for the stated correction. In an actual run, the unified reference additionally directs reading provider `read_skill` root, `pen-schema.md`, and `execute.md` before the first mutation when that surface is available; those are live provider guidance, not another supplied bundled reference.
+
+For a request to inspect a library component inventory, both supplied references are required. Read Unified MCP API first, then Component libraries, because inspection of reusable components/library inventory explicitly triggers the latter even though it is listed under “Optional references.” I would inspect the inventory using bounded MCP reads or a compact visitor for reusable origins and relevant refs. I would not create instances, change library status, export, or ask for a save solely to answer an inventory request. An inventory report would state what was inspected and avoid claiming new component usage or a completed library implementation.
+
+Instruction basis: pencil-dev “Required active references” makes Unified MCP API universal before calls; “Optional references,” “Component libraries,” and the library workflow explicitly make the library reference conditional on matching tasks, including inspection. The Component libraries reference itself says to read Unified MCP API first. The unified reference distinguishes provider guidance needed before mutation and targeted reads appropriate for inspection.

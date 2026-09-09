@@ -1,0 +1,79 @@
+[
+  {
+    "request_id": "S1",
+    "primary_skills": [
+      "shadcn"
+    ],
+    "necessary_handoffs": [],
+    "ownership_rationale": "shadcn owns adding official registry components to the configured app while safely preserving its existing local variants."
+  },
+  {
+    "request_id": "S2",
+    "primary_skills": [
+      "pencil-dev"
+    ],
+    "necessary_handoffs": [],
+    "ownership_rationale": "pencil-dev owns creating and connecting components in the open Pencil document and exporting the requested PNG through Pencil MCP."
+  },
+  {
+    "request_id": "S3",
+    "primary_skills": [
+      "frontend-design"
+    ],
+    "necessary_handoffs": [],
+    "ownership_rationale": "frontend-design owns the dashboard's art direction, typography, and visual hierarchy as a design strategy deliverable without implementation."
+  },
+  {
+    "request_id": "S4",
+    "primary_skills": [
+      "react-components-engineer"
+    ],
+    "necessary_handoffs": [],
+    "ownership_rationale": "react-components-engineer owns reusable component runtime behavior, including listener cleanup and forwarded ref correctness, independently of any UI library."
+  },
+  {
+    "request_id": "S5",
+    "primary_skills": [
+      "react-spa-engineer"
+    ],
+    "necessary_handoffs": [],
+    "ownership_rationale": "react-spa-engineer owns integrating form validation, pending state, and retry behavior with the React SPA's runtime and server state."
+  },
+  {
+    "request_id": "S6",
+    "primary_skills": [
+      "web-ui-reviewer"
+    ],
+    "necessary_handoffs": [],
+    "ownership_rationale": "web-ui-reviewer owns the requested read-only UX and accessibility audit and its evidence-scoped findings."
+  },
+  {
+    "request_id": "S7",
+    "primary_skills": [
+      "agent-browser"
+    ],
+    "necessary_handoffs": [],
+    "ownership_rationale": "agent-browser owns opening the rendered website, submitting its form, and verifying the visible terminal result."
+  },
+  {
+    "request_id": "S8",
+    "primary_skills": [
+      "pencil-dev"
+    ],
+    "necessary_handoffs": [
+      {
+        "skill": "frontend-design",
+        "purpose": "Translate the Pencil design into the implemented web interface while preserving its visual hierarchy and existing UI system."
+      },
+      {
+        "skill": "shadcn",
+        "purpose": "Implement the screen using the project's configured shadcn components and conventions."
+      },
+      {
+        "skill": "agent-browser",
+        "purpose": "Verify the implemented screen and requested visible behavior in the browser."
+      }
+    ],
+    "ownership_rationale": "pencil-dev owns the initial Pencil screen design, frontend-design carries the design into web code, shadcn owns its component integration, and agent-browser supplies rendered verification."
+  }
+]

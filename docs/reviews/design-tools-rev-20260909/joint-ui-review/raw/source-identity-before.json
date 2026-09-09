@@ -1,0 +1,188 @@
+[
+  {
+    "path": ".gitignore",
+    "expected": "fe718e7babb14f3cbad2d97f08889b9ce5215ed3fe0e43b2b8cfbfb3b9b844e8",
+    "actual": "fe718e7babb14f3cbad2d97f08889b9ce5215ed3fe0e43b2b8cfbfb3b9b844e8",
+    "match": true
+  },
+  {
+    "path": ".prettierignore",
+    "expected": "61cdcfa5e23efb23b84bd054a15860c3a49ea24200da10c89ee30332f61c9570",
+    "actual": "61cdcfa5e23efb23b84bd054a15860c3a49ea24200da10c89ee30332f61c9570",
+    "match": true
+  },
+  {
+    "path": ".prettierrc",
+    "expected": "d51608bb6a349cb8fe4b9428d719c6f66770b9ce6e23a602bc56fa6055e54188",
+    "actual": "d51608bb6a349cb8fe4b9428d719c6f66770b9ce6e23a602bc56fa6055e54188",
+    "match": true
+  },
+  {
+    "path": "README.md",
+    "expected": "821a9696dddd5e3bd1dd4cc04aeba1ba9dfb527eac91028b4235659260ff21e1",
+    "actual": "821a9696dddd5e3bd1dd4cc04aeba1ba9dfb527eac91028b4235659260ff21e1",
+    "match": true
+  },
+  {
+    "path": "components.json",
+    "expected": "742073b3f86f3b0a503e4eef3a3dea2dad18745e33901318c9acc33ee6911694",
+    "actual": "742073b3f86f3b0a503e4eef3a3dea2dad18745e33901318c9acc33ee6911694",
+    "match": true
+  },
+  {
+    "path": "eslint.config.js",
+    "expected": "cf80a7510234dcd5ae594b30b44682b8b45ba13c0fcb5bf8928bea143802aa1c",
+    "actual": "cf80a7510234dcd5ae594b30b44682b8b45ba13c0fcb5bf8928bea143802aa1c",
+    "match": true
+  },
+  {
+    "path": "index.html",
+    "expected": "f5ed80cea17c8985d4d40cf5936d0c94aa6f675cade574b7c720264e342589a9",
+    "actual": "f5ed80cea17c8985d4d40cf5936d0c94aa6f675cade574b7c720264e342589a9",
+    "match": true
+  },
+  {
+    "path": "package.json",
+    "expected": "d0856aa82607a8ad4cb8ae714d572dcac114ed34bc622ea586810e360af12beb",
+    "actual": "d0856aa82607a8ad4cb8ae714d572dcac114ed34bc622ea586810e360af12beb",
+    "match": true
+  },
+  {
+    "path": "pnpm-lock.yaml",
+    "expected": "103b09b27a9fe99c4a98fade0861ebf111d8b4e8802e58b1fb7307448c10f6f5",
+    "actual": "103b09b27a9fe99c4a98fade0861ebf111d8b4e8802e58b1fb7307448c10f6f5",
+    "match": true
+  },
+  {
+    "path": "pnpm-workspace.yaml",
+    "expected": "1e831b89d4d46e629c888d0ca10abc161e66a953e0778409facb96bcd828d9a0",
+    "actual": "1e831b89d4d46e629c888d0ca10abc161e66a953e0778409facb96bcd828d9a0",
+    "match": true
+  },
+  {
+    "path": "public/vite.svg",
+    "expected": "4a748afd443918bb16591c834c401dae33e87861ab5dbad0811c3a3b4a9214fb",
+    "actual": "4a748afd443918bb16591c834c401dae33e87861ab5dbad0811c3a3b4a9214fb",
+    "match": true
+  },
+  {
+    "path": "src/App.tsx",
+    "expected": "0a5cacbb934b782d671a6395e17996147165d76994acd18f1686bcc9aff95080",
+    "actual": "0a5cacbb934b782d671a6395e17996147165d76994acd18f1686bcc9aff95080",
+    "match": true
+  },
+  {
+    "path": "src/assets/react.svg",
+    "expected": "35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5",
+    "actual": "35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5",
+    "match": true
+  },
+  {
+    "path": "src/components/theme-provider.tsx",
+    "expected": "7e9140cbb4471cbcf20f9e6348406a0a9f5f00689982f6f6fae7a63f44d063e3",
+    "actual": "7e9140cbb4471cbcf20f9e6348406a0a9f5f00689982f6f6fae7a63f44d063e3",
+    "match": true
+  },
+  {
+    "path": "src/components/ui/button.tsx",
+    "expected": "cf093b290ac4e742ee82059d41fc8a294f7598d7af8ed643efa12a98a4896bdd",
+    "actual": "cf093b290ac4e742ee82059d41fc8a294f7598d7af8ed643efa12a98a4896bdd",
+    "match": true
+  },
+  {
+    "path": "src/components/ui/card.tsx",
+    "expected": "8ad3a18d36bda0598dc0e9aa96ea22854944d5443ee4946f1d173815e115375f",
+    "actual": "8ad3a18d36bda0598dc0e9aa96ea22854944d5443ee4946f1d173815e115375f",
+    "match": true
+  },
+  {
+    "path": "src/components/ui/dialog.tsx",
+    "expected": "ae89de4e8d12dafc3cf736b34dbb6c5d4fc7a2a2b0e0dd5daf57110a92f9a7a8",
+    "actual": "ae89de4e8d12dafc3cf736b34dbb6c5d4fc7a2a2b0e0dd5daf57110a92f9a7a8",
+    "match": true
+  },
+  {
+    "path": "src/components/ui/field.tsx",
+    "expected": "90cbc96b0de5c836ebb82a2997c45956e81f939566d5e91fc701af007849c92b",
+    "actual": "90cbc96b0de5c836ebb82a2997c45956e81f939566d5e91fc701af007849c92b",
+    "match": true
+  },
+  {
+    "path": "src/components/ui/input.tsx",
+    "expected": "dab990dfefa0ba78854ab6602ad074270dba9d7d1262184d9bfbb62bd990903b",
+    "actual": "dab990dfefa0ba78854ab6602ad074270dba9d7d1262184d9bfbb62bd990903b",
+    "match": true
+  },
+  {
+    "path": "src/components/ui/label.tsx",
+    "expected": "86232709f634da7f357a8aaec0e815f3f562604bb67202c88997fae97659b450",
+    "actual": "86232709f634da7f357a8aaec0e815f3f562604bb67202c88997fae97659b450",
+    "match": true
+  },
+  {
+    "path": "src/components/ui/radio-group.tsx",
+    "expected": "f779542f2370b82fcbb91278fb94f7ad4af59d0f36512633492604b27da48e8d",
+    "actual": "f779542f2370b82fcbb91278fb94f7ad4af59d0f36512633492604b27da48e8d",
+    "match": true
+  },
+  {
+    "path": "src/components/ui/separator.tsx",
+    "expected": "9a80ff8c110e0c55489509f4f82ebcc929c0174b59544047147b7134f86a54e7",
+    "actual": "9a80ff8c110e0c55489509f4f82ebcc929c0174b59544047147b7134f86a54e7",
+    "match": true
+  },
+  {
+    "path": "src/components/ui/switch.tsx",
+    "expected": "367ad27cfe2f4ce5648fd3941410d3c3504876ee23e4360a220f1e6cd05f5c2d",
+    "actual": "367ad27cfe2f4ce5648fd3941410d3c3504876ee23e4360a220f1e6cd05f5c2d",
+    "match": true
+  },
+  {
+    "path": "src/index.css",
+    "expected": "9bde270cb8d0493a24091df8ae292e3a2b3484f91d738fa70a037866fe206d48",
+    "actual": "9bde270cb8d0493a24091df8ae292e3a2b3484f91d738fa70a037866fe206d48",
+    "match": true
+  },
+  {
+    "path": "src/lib/utils.ts",
+    "expected": "14300d758170c270c75b057f38fedb3793a5920ea872f0477e29fb131185e8a7",
+    "actual": "14300d758170c270c75b057f38fedb3793a5920ea872f0477e29fb131185e8a7",
+    "match": true
+  },
+  {
+    "path": "src/main.tsx",
+    "expected": "36302f6e7cd3e4556ef482c8a623155b6b851d957679ab1b76d2b93099af9ca1",
+    "actual": "36302f6e7cd3e4556ef482c8a623155b6b851d957679ab1b76d2b93099af9ca1",
+    "match": true
+  },
+  {
+    "path": "src/preserved-note.ts",
+    "expected": "63342b08277a771a3f4643af89159820581459bed11554f6164206d0bfd1310b",
+    "actual": "63342b08277a771a3f4643af89159820581459bed11554f6164206d0bfd1310b",
+    "match": true
+  },
+  {
+    "path": "tsconfig.app.json",
+    "expected": "1b10733ad1b7359a2b0b6f58a8bb3a13b95eabf0022b4320856eea0127e9588b",
+    "actual": "1b10733ad1b7359a2b0b6f58a8bb3a13b95eabf0022b4320856eea0127e9588b",
+    "match": true
+  },
+  {
+    "path": "tsconfig.json",
+    "expected": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+    "actual": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+    "match": true
+  },
+  {
+    "path": "tsconfig.node.json",
+    "expected": "90a22c920cbc14624fb4658b58f15c875abf3234224f3933f211849c3ada3242",
+    "actual": "90a22c920cbc14624fb4658b58f15c875abf3234224f3933f211849c3ada3242",
+    "match": true
+  },
+  {
+    "path": "vite.config.ts",
+    "expected": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+    "actual": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+    "match": true
+  }
+]

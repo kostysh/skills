@@ -1,0 +1,8 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "OK\n\n## Print output\n{\"variables\":{}}  \n{\"type\":\"frame\",\"id\":\"w15TUy\",\"x\":10000,\"y\":0,\"name\":\"B · Reference library\",\"reusable\":true,\"width\":260,\"fill\":\"#F4F4F5\",\"cornerRadius\":8,\"layout\":\"vertical\",\"gap\":8,\"padding\":16,\"children\":[{\"type\":\"text\",\"id\":\"PUxt0\",\"name\":\"Library label\",\"fill\":\"#18181B\",\"content\":\"Notification summary\",\"fontFamily\":\"Inter\",\"fontSize\":16,\"fontWeight\":\"normal\"},{\"type\":\"text\",\"id\":\"L9UqL7\",\"name\":\"Library detail\",\"fill\":\"#52525B\",\"content\":\"Email preferences\",\"fontFamily\":\"Inter\",\"fontSize\":14,\"fontWeight\":\"normal\"}]}  \n{\"type\":\"frame\",\"id\":\"vczSV\",\"x\":10340,\"y\":0,\"name\":\"B · Existing overview\",\"width\":340,\"height\":200,\"fill\":\"#FFFFFF\",\"layout\":\"vertical\",\"gap\":16,\"padding\":24,\"children\":[{\"type\":\"text\",\"id\":\"K3PRhQ\",\"name\":\"Existing heading\",\"fill\":\"#18181B\",\"content\":\"Existing account overview\",\"fontFamily\":\"Inter\",\"fontSize\":18,\"fontWeight\":\"normal\"},{\"id\":\"CKBsf\",\"type\":\"ref\",\"ref\":\"w15TUy\",\"name\":\"Existing summary\",\"width\":\"fill_container\"}]}  \n{\"type\":\"frame\",\"id\":\"bi8Au\",\"x\":0,\"y\":0,\"name\":\"Frame\",\"clip\":true,\"width\":800,\"height\":600,\"fill\":\"#FFFFFF\",\"layout\":\"none\"}\n"
+    }
+  ]
+}

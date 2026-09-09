@@ -1,0 +1,13 @@
+{
+  "focus": "Review changes",
+  "radios": [
+    {
+      "checked": "true",
+      "disabled": true
+    },
+    {
+      "checked": "false",
+      "disabled": true
+    }
+  ]
+}

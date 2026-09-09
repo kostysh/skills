@@ -1,0 +1,3 @@
+Command: ss -ltnp '( sport >= :43861 and sport <= :43869 )'
+Result: header only; no listening sockets in task port range.
+Per-run process/browser cleanup is preserved in each raw evidence bundle.

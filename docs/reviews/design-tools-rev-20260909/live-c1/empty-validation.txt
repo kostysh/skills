@@ -1,0 +1,45 @@
+- generic [ref=e1] clickable [onclick]
+  - main
+    - sectionheader
+      - StaticText "Your preferences"
+    - paragraph
+      - StaticText "STAY IN THE LOOP"
+    - heading "Notification settings" [level=1, ref=e2]
+    - paragraph
+      - StaticText "Choose where and how often you receive updates. Review your preferences before applying them."
+    - paragraph
+      - StaticText "Settings apply to this session only. No emails are sent."
+    - form
+      - group
+        - LabelText
+          - StaticText "Email address"
+          - StaticText "(required)"
+        - textbox "Email address (required)" [required, ref=e4]
+        - paragraph
+          - StaticText "The address for your notification updates."
+        - alert
+          - StaticText "Enter your email address."
+      - group
+        - LabelText
+          - StaticText "Notifications"
+        - paragraph
+          - StaticText "Turn updates on or pause them anytime."
+        - switch "Notifications" [checked=true, ref=e5]
+      - group "Delivery frequency"
+        - Legend
+          - StaticText "Delivery frequency"
+        - paragraph
+          - StaticText "Choose the rhythm that suits you."
+        - radiogroup "Delivery frequency" [ref=e6] focusable [tabindex]
+          - group
+            - radio "Daily" [checked=true, ref=e7]
+            - LabelText
+              - StaticText "Daily"
+          - group
+            - radio "Weekly" [checked=false, ref=e8]
+            - LabelText
+              - StaticText "Weekly"
+      - button "Review changes" [expanded=false, ref=e3]
+      - paragraph
+        - StaticText "You can still make changes before confirming."
+      - status

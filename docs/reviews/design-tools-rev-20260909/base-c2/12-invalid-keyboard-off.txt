@@ -1,0 +1,24 @@
+✓ Done
+✓ Done
+- generic "PreferencesNotification settingsChoose where and how often you receive updates.Email address (requir" [ref=e1] clickable [onclick]
+  - heading "Notification settings" [level=1, ref=e2]
+  - textbox "Email address (required)" [required, ref=e4]: invalid-address
+  - switch "Enable notifications" [checked=true, ref=e5]
+  - radio "Daily A daily catch-up" [checked=true, ref=e6]
+  - radio "Weekly One weekly digest" [checked=false, ref=e7]
+  - button "Review changes" [ref=e3]
+"{\"focus\":\"email\",\"dialogs\":0,\"error\":\"Enter a valid email address.\"}"
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/base-c2-evidence/desktop-invalid.png
+✓ Done
+✓ Done
+"<span data-checked=\"\" role=\"switch\" tabindex=\"0\" id=\"base-ui-_r_1_\" aria-checked=\"true\" data-slot=\"switch\" data-size=\"default\" aria-describedby=\"notifications-hint\" class=\"peer group/switch relative inline-flex shrink-0 items-center rounded-full border border-transparent transition-all outline-none group-has-[:focus-visible]/field-label:border-transparent group-has-[:focus-visible]/field-label:ring-0 after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-[size=default]:h-[18.4px] data-[size=default]:w-[32px] data-[size=sm]:h-[14px] data-[size=sm]:w-[24px] dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:bg-primary data-unchecked:bg-input dark:data-unchecked:bg-input/80 data-disabled:cursor-not-allowed data-disabled:opacity-50\" aria-labelledby=\"notifications-label\"><span data-checked=\"\" data-slot=\"switch-thumb\" class=\"pointer-events-none block rounded-full bg-background ring-0 transition-transform group-data-[size=default]/switch:size-4 group-data-[size=sm]/switch:size-3 group-data-[size=default]/switch:data-checked:translate-x-[calc(100%-2px)] group-data-[size=sm]/switch:data-checked:translate-x-[calc(100%-2px)] dark:data-checked:bg-primary-foreground group-data-[size=default]/switch:data-unchecked:translate-x-0 group-data-[size=sm]/switch:data-unchecked:translate-x-0 dark:data-unchecked:bg-foreground\"></span></span>"
+✓ Done
+- generic "PreferencesNotification settingsChoose where and how often you receive updates.Email address (requir" [ref=e1] clickable [onclick]
+  - heading "Notification settings" [level=1, ref=e2]
+  - textbox "Email address (required)" [required, ref=e4]: trial@example.com
+  - switch "Enable notifications" [checked=false, ref=e5]
+  - radio "Daily A daily catch-up" [checked=true, disabled, ref=e6]
+  - radio "Weekly One weekly digest" [checked=false, disabled, ref=e7]
+  - button "Review changes" [ref=e3]
+✓ Done
+""

@@ -6,9 +6,20 @@ design-system assets. Read [Unified Pencil MCP API](unified-mcp-api.md) first.
 
 ## Capability boundary
 
-A component-library task is complete only when MCP evidence shows reusable
-component origins and their usage in target frames. Naming, screenshots,
-duplicate shapes, or a file suffix alone are substrate.
+Match completion evidence to the requested operation:
+
+- For inspection, report the requested MCP-visible inventory, structure, or
+  properties and any uninspected portion. Do not require mutations or a consumer.
+- For origin-only creation or maintenance, verify the requested reusable origins
+  and changed properties, plus visual review for material visual changes. A new
+  consumer mockup or instance is not a prerequisite unless requested. If existing
+  consumers are affected, inspect those connections within the change's scope.
+- For requested usage, verify the connected refs/instances in the intended
+  consumer and their resolved content. Names, screenshots, duplicate shapes, or a
+  file suffix do not prove a reusable origin or connected instance.
+
+Apply the root visual, export, and persistence contract to the actual claim;
+inspection does not require saving an unchanged document.
 
 Stay inside the MCP-only `.pen` boundary:
 

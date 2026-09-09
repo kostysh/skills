@@ -1,0 +1,56 @@
+{
+  "base": "radix",
+  "results": [
+    {
+      "component": "button",
+      "base": "radix",
+      "links": {
+        "docs": "https://ui.shadcn.com/docs/components/radix/button",
+        "examples": "https://ui.shadcn.com/code/apps/v4/registry/bases/radix/examples/button-example.tsx"
+      }
+    },
+    {
+      "component": "input",
+      "base": "radix",
+      "links": {
+        "docs": "https://ui.shadcn.com/docs/components/radix/input",
+        "examples": "https://ui.shadcn.com/code/apps/v4/registry/bases/radix/examples/input-example.tsx"
+      }
+    },
+    {
+      "component": "switch",
+      "base": "radix",
+      "links": {
+        "docs": "https://ui.shadcn.com/docs/components/radix/switch",
+        "examples": "https://ui.shadcn.com/code/apps/v4/registry/bases/radix/examples/switch-example.tsx",
+        "api": "https://www.radix-ui.com/docs/primitives/components/switch.md"
+      }
+    },
+    {
+      "component": "radio-group",
+      "base": "radix",
+      "links": {
+        "docs": "https://ui.shadcn.com/docs/components/radix/radio-group",
+        "examples": "https://ui.shadcn.com/code/apps/v4/registry/bases/radix/examples/radio-group-example.tsx",
+        "api": "https://www.radix-ui.com/docs/primitives/components/radio-group.md"
+      }
+    },
+    {
+      "component": "dialog",
+      "base": "radix",
+      "links": {
+        "docs": "https://ui.shadcn.com/docs/components/radix/dialog",
+        "examples": "https://ui.shadcn.com/code/apps/v4/registry/bases/radix/examples/dialog-example.tsx",
+        "api": "https://www.radix-ui.com/docs/primitives/components/dialog.md"
+      }
+    },
+    {
+      "component": "field",
+      "base": "radix",
+      "links": {
+        "docs": "https://ui.shadcn.com/docs/components/radix/field",
+        "examples": "https://ui.shadcn.com/code/apps/v4/registry/bases/radix/examples/field-example.tsx"
+      }
+    }
+  ]
+}

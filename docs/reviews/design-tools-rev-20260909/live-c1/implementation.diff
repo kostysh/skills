@@ -1,0 +1,689 @@
+--- before/src/App.tsx
++++ after/src/App.tsx
+@@ -1,2 +1,110 @@
++import { useRef, useState, type FormEvent } from "react"
++import { ArrowRightIcon, BellIcon, CheckIcon } from "lucide-react"
+ import { Button } from "~ui/components/ui/button"
+-export default function App() { return <main className="p-8"><h1>Notification settings</h1><Button variant="brand">Existing brand button</Button></main> }
++import { Input } from "~ui/components/ui/input"
++import { Switch } from "~ui/components/ui/switch"
++import { RadioGroup, RadioGroupItem } from "~ui/components/ui/radio-group"
++import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "~ui/components/ui/dialog"
++import { Field, FieldContent, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSet } from "~ui/components/ui/field"
++
++type Settings = { email: string; enabled: boolean; frequency: "daily" | "weekly" }
++
++export default function App() {
++  const [draft, setDraft] = useState<Settings>({ email: "", enabled: true, frequency: "daily" })
++  const [applied, setApplied] = useState<Settings | null>(null)
++  const [error, setError] = useState("")
++  const [open, setOpen] = useState(false)
++  const emailRef = useRef<HTMLInputElement>(null)
++  const reviewRef = useRef<HTMLButtonElement>(null)
++  const cancelRef = useRef<HTMLButtonElement>(null)
++
++  function review(event: FormEvent<HTMLFormElement>) {
++    event.preventDefault()
++    const input = emailRef.current
++    if (!input || !input.validity.valid) {
++      setError(input?.validity.valueMissing ? "Enter your email address." : "Enter a valid email address.")
++      input?.focus()
++      return
++    }
++    setError("")
++    setOpen(true)
++  }
++
++  return (
++    <main className="mx-auto flex min-h-svh max-w-5xl flex-col gap-10 px-5 py-10 sm:px-10 sm:py-16">
++      <header className="flex items-center gap-3 border-b pb-5">
++        <BellIcon aria-hidden="true" className="size-5" />
++        <span className="text-sm font-medium">Your preferences</span>
++      </header>
++      <div className="grid gap-8 md:grid-cols-[1fr_1.5fr] md:gap-16">
++        <div className="flex flex-col gap-4">
++          <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">Stay in the loop</p>
++          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Notification settings</h1>
++          <p className="text-sm leading-relaxed text-muted-foreground">Choose where and how often you receive updates. Review your preferences before applying them.</p>
++          <p className="text-xs leading-relaxed text-muted-foreground">Settings apply to this session only. No emails are sent.</p>
++        </div>
++        <Dialog open={open} onOpenChange={setOpen}>
++          <form noValidate onSubmit={review} className="flex min-w-0 flex-col gap-7 rounded-xl border bg-card p-5 text-card-foreground sm:p-7">
++            <FieldGroup className="gap-7">
++              <Field data-invalid={!!error}>
++                <FieldLabel htmlFor="email">Email address <span className="text-muted-foreground">(required)</span></FieldLabel>
++                <Input ref={emailRef} id="email" name="email" type="email" autoComplete="email" required placeholder="you@example.com" value={draft.email} onChange={(event) => { setDraft({ ...draft, email: event.target.value }); setError("") }} aria-invalid={!!error} aria-describedby={error ? "email-help email-error" : "email-help"} />
++                <FieldDescription id="email-help">The address for your notification updates.</FieldDescription>
++                {error && <FieldError id="email-error">{error}</FieldError>}
++              </Field>
++              <Field orientation="horizontal" className="border-y py-5">
++                <FieldContent>
++                  <FieldLabel htmlFor="notifications">Notifications</FieldLabel>
++                  <FieldDescription id="notifications-help">Turn updates on or pause them anytime.</FieldDescription>
++                </FieldContent>
++                <Switch id="notifications" checked={draft.enabled} onCheckedChange={(enabled) => setDraft({ ...draft, enabled })} aria-describedby="notifications-help" />
++              </Field>
++              <FieldSet disabled={!draft.enabled}>
++                <FieldLegend id="frequency-label" variant="label">Delivery frequency</FieldLegend>
++                <FieldDescription id="frequency-help">{draft.enabled ? "Choose the rhythm that suits you." : "Turn notifications on to change frequency. Your choice is kept."}</FieldDescription>
++                <RadioGroup value={draft.frequency} onValueChange={(frequency) => { if (frequency === "daily" || frequency === "weekly") setDraft({ ...draft, frequency }) }} disabled={!draft.enabled} aria-labelledby="frequency-label" aria-describedby="frequency-help" className="grid gap-3 sm:grid-cols-2">
++                  {(["daily", "weekly"] as const).map((frequency) => (
++                    <Field key={frequency} orientation="horizontal" data-disabled={!draft.enabled} className="rounded-lg border p-4">
++                      <RadioGroupItem value={frequency} id={frequency} disabled={!draft.enabled} />
++                      <FieldLabel htmlFor={frequency}>{frequency === "daily" ? "Daily" : "Weekly"}</FieldLabel>
++                    </Field>
++                  ))}
++                </RadioGroup>
++              </FieldSet>
++            </FieldGroup>
++            <div className="flex flex-col gap-3 border-t pt-5">
++              <Button ref={reviewRef} type="submit" variant="brand" size="lg" aria-haspopup="dialog" aria-expanded={open}>
++                Review changes <ArrowRightIcon data-icon="inline-end" aria-hidden="true" />
++              </Button>
++              <p className="text-center text-xs text-muted-foreground">You can still make changes before confirming.</p>
++            </div>
++            <div role="status" aria-live="polite" aria-atomic="true">
++              {applied && <div className="flex items-start gap-3 rounded-lg border bg-muted p-4 text-sm">
++                <CheckIcon aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
++                <div className="flex min-w-0 flex-col gap-1">
++                  <p className="font-medium">Settings applied for this session.</p>
++                  <p className="break-words text-muted-foreground">Last applied: {applied.email}. Notifications {applied.enabled ? "on" : "off"}. {applied.enabled ? `Delivery: ${applied.frequency}.` : `Saved frequency: ${applied.frequency} (paused).`}</p>
++                </div>
++              </div>}
++            </div>
++          </form>
++          <DialogContent showCloseButton={false} className="max-h-[calc(100svh-2rem)] overflow-y-auto" onOpenAutoFocus={(event) => { event.preventDefault(); cancelRef.current?.focus() }} onCloseAutoFocus={(event) => { event.preventDefault(); reviewRef.current?.focus() }}>
++            <DialogHeader>
++              <DialogTitle>Review notification settings</DialogTitle>
++              <DialogDescription>Confirm these preferences for this session, or cancel to keep editing your draft.</DialogDescription>
++            </DialogHeader>
++            <dl className="grid min-w-0 gap-4 py-2">
++              <div><dt className="text-muted-foreground">Email address</dt><dd className="break-words font-medium">{draft.email}</dd></div>
++              <div><dt className="text-muted-foreground">Notifications</dt><dd className="font-medium">{draft.enabled ? "On" : "Off"}</dd></div>
++              <div><dt className="text-muted-foreground">Delivery frequency</dt><dd className="font-medium">{draft.frequency === "daily" ? "Daily" : "Weekly"}{!draft.enabled && " (paused)"}</dd></div>
++            </dl>
++            <DialogFooter>
++              <DialogClose asChild><Button ref={cancelRef} type="button" variant="outline">Cancel</Button></DialogClose>
++              <Button type="button" variant="brand" onClick={() => { setApplied({ ...draft }); setOpen(false) }}>Confirm</Button>
++            </DialogFooter>
++          </DialogContent>
++        </Dialog>
++      </div>
++    </main>
++  )
++}
+--- before/src/components/ui/button.tsx
++++ after/src/components/ui/button.tsx
+@@ -4,7 +4,7 @@
+ import { Slot } from "radix-ui"
+ 
+ const buttonVariants = cva(
+-  "group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
++  "group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+   {
+     variants: {
+       variant: {
+--- before/src/components/ui/dialog.tsx
++++ after/src/components/ui/dialog.tsx
+@@ -0,0 +1,166 @@
++import * as React from "react"
++import { cn } from "cn"
++import { Dialog as DialogPrimitive } from "radix-ui"
++
++import { Button } from "~ui/components/ui/button"
++import { XIcon } from "lucide-react"
++
++function Dialog({
++  ...props
++}: React.ComponentProps<typeof DialogPrimitive.Root>) {
++  return <DialogPrimitive.Root data-slot="dialog" {...props} />
++}
++
++function DialogTrigger({
++  ...props
++}: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
++  return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />
++}
++
++function DialogPortal({
++  ...props
++}: React.ComponentProps<typeof DialogPrimitive.Portal>) {
++  return <DialogPrimitive.Portal data-slot="dialog-portal" {...props} />
++}
++
++function DialogClose({
++  ...props
++}: React.ComponentProps<typeof DialogPrimitive.Close>) {
++  return <DialogPrimitive.Close data-slot="dialog-close" {...props} />
++}
++
++function DialogOverlay({
++  className,
++  ...props
++}: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
++  return (
++    <DialogPrimitive.Overlay
++      data-slot="dialog-overlay"
++      className={cn(
++        "fixed inset-0 isolate z-50 bg-black/10 duration-100 supports-backdrop-filter:backdrop-blur-xs data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0",
++        className
++      )}
++      {...props}
++    />
++  )
++}
++
++function DialogContent({
++  className,
++  children,
++  showCloseButton = true,
++  ...props
++}: React.ComponentProps<typeof DialogPrimitive.Content> & {
++  showCloseButton?: boolean
++}) {
++  return (
++    <DialogPortal>
++      <DialogOverlay />
++      <DialogPrimitive.Content
++        data-slot="dialog-content"
++        className={cn(
++          "fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl bg-popover p-4 text-sm text-popover-foreground ring-1 ring-foreground/10 duration-100 outline-none sm:max-w-sm data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
++          className
++        )}
++        {...props}
++      >
++        {children}
++        {showCloseButton && (
++          <DialogPrimitive.Close data-slot="dialog-close" asChild>
++            <Button
++              variant="ghost"
++              className="absolute top-2 right-2"
++              size="icon-sm"
++            >
++              <XIcon
++              />
++              <span className="sr-only">Close</span>
++            </Button>
++          </DialogPrimitive.Close>
++        )}
++      </DialogPrimitive.Content>
++    </DialogPortal>
++  )
++}
++
++function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
++  return (
++    <div
++      data-slot="dialog-header"
++      className={cn("flex flex-col gap-2", className)}
++      {...props}
++    />
++  )
++}
++
++function DialogFooter({
++  className,
++  showCloseButton = false,
++  children,
++  ...props
++}: React.ComponentProps<"div"> & {
++  showCloseButton?: boolean
++}) {
++  return (
++    <div
++      data-slot="dialog-footer"
++      className={cn(
++        "-mx-4 -mb-4 flex flex-col-reverse gap-2 rounded-b-xl border-t bg-muted/50 p-4 sm:flex-row sm:justify-end",
++        className
++      )}
++      {...props}
++    >
++      {children}
++      {showCloseButton && (
++        <DialogPrimitive.Close asChild>
++          <Button variant="outline">Close</Button>
++        </DialogPrimitive.Close>
++      )}
++    </div>
++  )
++}
++
++function DialogTitle({
++  className,
++  ...props
++}: React.ComponentProps<typeof DialogPrimitive.Title>) {
++  return (
++    <DialogPrimitive.Title
++      data-slot="dialog-title"
++      className={cn(
++        "font-heading text-base leading-none font-medium",
++        className
++      )}
++      {...props}
++    />
++  )
++}
++
++function DialogDescription({
++  className,
++  ...props
++}: React.ComponentProps<typeof DialogPrimitive.Description>) {
++  return (
++    <DialogPrimitive.Description
++      data-slot="dialog-description"
++      className={cn(
++        "text-sm text-muted-foreground *:[a]:underline *:[a]:underline-offset-3 *:[a]:hover:text-foreground",
++        className
++      )}
++      {...props}
++    />
++  )
++}
++
++export {
++  Dialog,
++  DialogClose,
++  DialogContent,
++  DialogDescription,
++  DialogFooter,
++  DialogHeader,
++  DialogOverlay,
++  DialogPortal,
++  DialogTitle,
++  DialogTrigger,
++}
+--- before/src/components/ui/field.tsx
++++ after/src/components/ui/field.tsx
+@@ -0,0 +1,238 @@
++"use client"
++
++import { useMemo } from "react"
++import { cva, type VariantProps } from "class-variance-authority"
++import { cn } from "cn"
++
++import { Label } from "~ui/components/ui/label"
++import { Separator } from "~ui/components/ui/separator"
++
++function FieldSet({ className, ...props }: React.ComponentProps<"fieldset">) {
++  return (
++    <fieldset
++      data-slot="field-set"
++      className={cn(
++        "flex flex-col gap-4 has-[>[data-slot=checkbox-group]]:gap-3 has-[>[data-slot=radio-group]]:gap-3",
++        className
++      )}
++      {...props}
++    />
++  )
++}
++
++function FieldLegend({
++  className,
++  variant = "legend",
++  ...props
++}: React.ComponentProps<"legend"> & { variant?: "legend" | "label" }) {
++  return (
++    <legend
++      data-slot="field-legend"
++      data-variant={variant}
++      className={cn(
++        "mb-1.5 font-medium data-[variant=label]:text-sm data-[variant=legend]:text-base",
++        className
++      )}
++      {...props}
++    />
++  )
++}
++
++function FieldGroup({ className, ...props }: React.ComponentProps<"div">) {
++  return (
++    <div
++      data-slot="field-group"
++      className={cn(
++        "group/field-group @container/field-group flex w-full flex-col gap-5 data-[slot=checkbox-group]:gap-3 *:data-[slot=field-group]:gap-4",
++        className
++      )}
++      {...props}
++    />
++  )
++}
++
++const fieldVariants = cva(
++  "group/field flex w-full gap-2 data-[invalid=true]:text-destructive",
++  {
++    variants: {
++      orientation: {
++        vertical: "flex-col *:w-full [&>.sr-only]:w-auto",
++        horizontal:
++          "flex-row items-center has-[>[data-slot=field-content]]:items-start *:data-[slot=field-label]:flex-auto has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px",
++        responsive:
++          "flex-col *:w-full @md/field-group:flex-row @md/field-group:items-center @md/field-group:*:w-auto @md/field-group:has-[>[data-slot=field-content]]:items-start @md/field-group:*:data-[slot=field-label]:flex-auto [&>.sr-only]:w-auto @md/field-group:has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px",
++      },
++    },
++    defaultVariants: {
++      orientation: "vertical",
++    },
++  }
++)
++
++function Field({
++  className,
++  orientation = "vertical",
++  ...props
++}: React.ComponentProps<"div"> & VariantProps<typeof fieldVariants>) {
++  return (
++    <div
++      role="group"
++      data-slot="field"
++      data-orientation={orientation}
++      className={cn(fieldVariants({ orientation }), className)}
++      {...props}
++    />
++  )
++}
++
++function FieldContent({ className, ...props }: React.ComponentProps<"div">) {
++  return (
++    <div
++      data-slot="field-content"
++      className={cn(
++        "group/field-content flex flex-1 flex-col gap-0.5 leading-snug",
++        className
++      )}
++      {...props}
++    />
++  )
++}
++
++function FieldLabel({
++  className,
++  ...props
++}: React.ComponentProps<typeof Label>) {
++  return (
++    <Label
++      data-slot="field-label"
++      className={cn(
++        "group/field-label peer/field-label flex w-fit gap-2 leading-snug group-data-[disabled=true]/field:opacity-50 has-data-checked:border-primary/30 has-data-checked:bg-primary/5 has-[>[data-slot=field]]:rounded-lg has-[>[data-slot=field]]:border has-[>[data-slot=field]]:not-has-[:disabled,[data-disabled]]:hover:bg-muted/50 has-[>[data-slot=field]]:has-[:focus-visible]:border-ring has-[>[data-slot=field]]:has-[:focus-visible]:ring-3 has-[>[data-slot=field]]:has-[:focus-visible]:ring-ring/50 *:data-[slot=field]:p-2.5 dark:has-data-checked:border-primary/20 dark:has-data-checked:bg-primary/10",
++        "has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col",
++        className
++      )}
++      {...props}
++    />
++  )
++}
++
++function FieldTitle({ className, ...props }: React.ComponentProps<"div">) {
++  return (
++    <div
++      data-slot="field-label"
++      className={cn(
++        "flex w-fit items-center gap-2 text-sm font-medium group-data-[disabled=true]/field:opacity-50",
++        className
++      )}
++      {...props}
++    />
++  )
++}
++
++function FieldDescription({ className, ...props }: React.ComponentProps<"p">) {
++  return (
++    <p
++      data-slot="field-description"
++      className={cn(
++        "text-left text-sm leading-normal font-normal text-muted-foreground group-has-data-horizontal/field:text-balance [[data-variant=legend]+&]:-mt-1.5",
++        "last:mt-0 nth-last-2:-mt-1",
++        "[&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary",
++        className
++      )}
++      {...props}
++    />
++  )
++}
++
++function FieldSeparator({
++  children,
++  className,
++  ...props
++}: React.ComponentProps<"div"> & {
++  children?: React.ReactNode
++}) {
++  return (
++    <div
++      data-slot="field-separator"
++      data-content={!!children}
++      className={cn(
++        "relative -my-2 h-5 text-sm group-data-[variant=outline]/field-group:-mb-2",
++        className
++      )}
++      {...props}
++    >
++      <Separator className="absolute inset-0 top-1/2" />
++      {children && (
++        <span
++          className="relative mx-auto block w-fit bg-background px-2 text-muted-foreground"
++          data-slot="field-separator-content"
++        >
++          {children}
++        </span>
++      )}
++    </div>
++  )
++}
++
++function FieldError({
++  className,
++  children,
++  errors,
++  ...props
++}: React.ComponentProps<"div"> & {
++  errors?: Array<{ message?: string } | undefined>
++}) {
++  const content = useMemo(() => {
++    if (children) {
++      return children
++    }
++
++    if (!errors?.length) {
++      return null
++    }
++
++    const uniqueErrors = [
++      ...new Map(errors.map((error) => [error?.message, error])).values(),
++    ]
++
++    if (uniqueErrors?.length == 1) {
++      return uniqueErrors[0]?.message
++    }
++
++    return (
++      <ul className="ml-4 flex list-disc flex-col gap-1">
++        {uniqueErrors.map(
++          (error, index) =>
++            error?.message && <li key={index}>{error.message}</li>
++        )}
++      </ul>
++    )
++  }, [children, errors])
++
++  if (!content) {
++    return null
++  }
++
++  return (
++    <div
++      role="alert"
++      data-slot="field-error"
++      className={cn("text-sm font-normal text-destructive", className)}
++      {...props}
++    >
++      {content}
++    </div>
++  )
++}
++
++export {
++  Field,
++  FieldLabel,
++  FieldDescription,
++  FieldError,
++  FieldGroup,
++  FieldLegend,
++  FieldSeparator,
++  FieldSet,
++  FieldContent,
++  FieldTitle,
++}
+--- before/src/components/ui/input.tsx
++++ after/src/components/ui/input.tsx
+@@ -0,0 +1,18 @@
++import * as React from "react"
++import { cn } from "cn"
++
++function Input({ className, type, ...props }: React.ComponentProps<"input">) {
++  return (
++    <input
++      type={type}
++      data-slot="input"
++      className={cn(
++        "h-8 w-full min-w-0 rounded-lg border border-input bg-transparent px-2.5 py-1 text-base transition-colors outline-none file:inline-flex file:h-6 file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm dark:bg-input/30 dark:disabled:bg-input/80 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40",
++        className
++      )}
++      {...props}
++    />
++  )
++}
++
++export { Input }
+--- before/src/components/ui/label.tsx
++++ after/src/components/ui/label.tsx
+@@ -0,0 +1,21 @@
++import * as React from "react"
++import { cn } from "cn"
++import { Label as LabelPrimitive } from "radix-ui"
++
++function Label({
++  className,
++  ...props
++}: React.ComponentProps<typeof LabelPrimitive.Root>) {
++  return (
++    <LabelPrimitive.Root
++      data-slot="label"
++      className={cn(
++        "flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
++        className
++      )}
++      {...props}
++    />
++  )
++}
++
++export { Label }
+--- before/src/components/ui/radio-group.tsx
++++ after/src/components/ui/radio-group.tsx
+@@ -0,0 +1,43 @@
++"use client"
++
++import * as React from "react"
++import { cn } from "cn"
++import { RadioGroup as RadioGroupPrimitive } from "radix-ui"
++
++function RadioGroup({
++  className,
++  ...props
++}: React.ComponentProps<typeof RadioGroupPrimitive.Root>) {
++  return (
++    <RadioGroupPrimitive.Root
++      data-slot="radio-group"
++      className={cn("grid w-full gap-2", className)}
++      {...props}
++    />
++  )
++}
++
++function RadioGroupItem({
++  className,
++  ...props
++}: React.ComponentProps<typeof RadioGroupPrimitive.Item>) {
++  return (
++    <RadioGroupPrimitive.Item
++      data-slot="radio-group-item"
++      className={cn(
++        "group/radio-group-item peer relative flex aspect-square size-4 shrink-0 rounded-full border border-input outline-none group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 aria-invalid:aria-checked:border-primary dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:border-primary data-checked:bg-primary data-checked:text-primary-foreground group-has-[:focus-visible]/field-label:data-checked:border-primary dark:data-checked:bg-primary",
++        className
++      )}
++      {...props}
++    >
++      <RadioGroupPrimitive.Indicator
++        data-slot="radio-group-indicator"
++        className="flex size-4 items-center justify-center"
++      >
++        <span className="absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary-foreground" />
++      </RadioGroupPrimitive.Indicator>
++    </RadioGroupPrimitive.Item>
++  )
++}
++
++export { RadioGroup, RadioGroupItem }
+--- before/src/components/ui/separator.tsx
++++ after/src/components/ui/separator.tsx
+@@ -0,0 +1,27 @@
++"use client"
++
++import * as React from "react"
++import { cn } from "cn"
++import { Separator as SeparatorPrimitive } from "radix-ui"
++
++function Separator({
++  className,
++  orientation = "horizontal",
++  decorative = true,
++  ...props
++}: React.ComponentProps<typeof SeparatorPrimitive.Root>) {
++  return (
++    <SeparatorPrimitive.Root
++      data-slot="separator"
++      decorative={decorative}
++      orientation={orientation}
++      className={cn(
++        "shrink-0 bg-border data-horizontal:h-px data-horizontal:w-full data-vertical:w-px data-vertical:self-stretch",
++        className
++      )}
++      {...props}
++    />
++  )
++}
++
++export { Separator }
+--- before/src/components/ui/switch.tsx
++++ after/src/components/ui/switch.tsx
+@@ -0,0 +1,30 @@
++import * as React from "react"
++import { cn } from "cn"
++import { Switch as SwitchPrimitive } from "radix-ui"
++
++function Switch({
++  className,
++  size = "default",
++  ...props
++}: React.ComponentProps<typeof SwitchPrimitive.Root> & {
++  size?: "sm" | "default"
++}) {
++  return (
++    <SwitchPrimitive.Root
++      data-slot="switch"
++      data-size={size}
++      className={cn(
++        "peer group/switch relative inline-flex shrink-0 items-center rounded-full border border-transparent transition-all outline-none group-has-[:focus-visible]/field-label:border-transparent group-has-[:focus-visible]/field-label:ring-0 after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-[size=default]:h-[18.4px] data-[size=default]:w-[32px] data-[size=sm]:h-[14px] data-[size=sm]:w-[24px] dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:bg-primary data-unchecked:bg-input dark:data-unchecked:bg-input/80 data-disabled:cursor-not-allowed data-disabled:opacity-50",
++        className
++      )}
++      {...props}
++    >
++      <SwitchPrimitive.Thumb
++        data-slot="switch-thumb"
++        className="pointer-events-none block rounded-full bg-background ring-0 transition-transform group-data-[size=default]/switch:size-4 group-data-[size=sm]/switch:size-3 group-data-[size=default]/switch:data-checked:translate-x-[calc(100%-2px)] group-data-[size=sm]/switch:data-checked:translate-x-[calc(100%-2px)] dark:data-checked:bg-primary-foreground group-data-[size=default]/switch:data-unchecked:translate-x-0 group-data-[size=sm]/switch:data-unchecked:translate-x-0 dark:data-unchecked:bg-foreground"
++      />
++    </SwitchPrimitive.Root>
++  )
++}
++
++export { Switch }

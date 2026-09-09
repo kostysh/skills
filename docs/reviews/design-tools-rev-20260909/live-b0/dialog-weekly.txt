@@ -1,0 +1,17 @@
+- generic
+  - dialog "Review your changes"
+    - heading "Review your changes" [level=2, ref=e1]
+    - paragraph
+      - StaticText "Confirm to apply these notification settings for this session."
+    - DescriptionList
+      - term "Email address"
+      - definition
+        - StaticText "test@example.com"
+      - term "Email notifications"
+      - definition
+        - StaticText "On"
+      - term "Delivery frequency"
+      - definition
+        - StaticText "Weekly"
+    - button "Cancel" [ref=e2]
+    - button "Confirm" [ref=e3]

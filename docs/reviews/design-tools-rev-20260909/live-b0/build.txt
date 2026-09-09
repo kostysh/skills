@@ -1,0 +1,22 @@
+
+> fixture@0.0.1 build /tmp/design-tools-rev-20260909/live-b0
+> tsc -b && vite build
+
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vite.config.ts:11:27). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+vite v8.2.2 building client environment for production...
+transforming...
+✓ 1960 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                              0.45 kB │ gzip:  0.29 kB
+dist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2    7.42 kB
+dist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2      8.00 kB
+dist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2       15.08 kB
+dist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2      16.51 kB
+dist/assets/geist-latin-wght-normal-BgDaEnEv.woff2          29.40 kB
+dist/assets/index-whPHMsBB.css                              46.79 kB │ gzip:  8.49 kB
+dist/assets/index-D4K8JM8i.js                              297.76 kB │ gzip: 95.47 kB
+
+✓ built in 146ms

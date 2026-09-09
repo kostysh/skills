@@ -1,0 +1,6 @@
+
+/tmp/design-tools-rev-20260909/live-base-c2/src/components/ui/button.tsx
+  58:18  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+✖ 1 problem (1 error, 0 warnings)
+

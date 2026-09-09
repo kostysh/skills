@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: shadcn
-  source-version: 0.2.0
+  source-version: 0.2.2
   recommended-skill-md-max-bytes: 20000
   description: "Build and maintain shadcn/ui projects with Base UI defaults: inspect components.json, use current CLI/docs, add or update registry components safely, compose and theme them, and verify project behavior. Use for shadcn components, registries, presets, configuration, fixes, or debugging."
 fragments:
@@ -205,7 +205,4 @@ sections:
       - Keep mandatory shadcn guidance inside this skill folder and use relative links for local resources.
       - Treat network-fetched docs as current authority with installed source and command help as the offline fallback.
     checklist:
-      - Regenerate and run the skill-source-compiler lint and check commands.
-      - Resolve every local Markdown link in the emitted package.
-      - Search the complete skill folder for forbidden terminology and absolute local dependencies.
-      - Compile to an isolated directory and confirm the copied skill remains understandable and usable.
+      - Only when editing or packaging this skill itself, run compiler lint, regenerate, check, and an isolated compile; verify generated parity, local links, and active instructions/assets for absolute local dependencies. These maintenance checks are not prerequisites for ordinary shadcn project tasks.

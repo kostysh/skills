@@ -5,9 +5,9 @@ description: Create, inspect, iterate, validate, import, and export Pencil
   app screens, dashboards, web pages, marketing visuals, slide-like graphics, or
   existing design edits; keep `.pen` handling MCP-only.
 metadata:
-  source-version: 0.2.0
+  source-version: 0.2.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: e31571fdef4987b90949f5f6fd9988fa26f185d36eba8d91f76b61a19610385b
+  skillforge-source-hash: f22dbf5b03096a975f2693dcb749cab0d0c3aaf27804efea1bede9ed0ee41534
 ---
 
 # pencil-dev
@@ -140,14 +140,14 @@ Validation:
 
 ### Workflow stage: Create or use component libraries
 
-Build reusable Pencil component assets and use them in mockups without leaving the MCP-only boundary.
+Complete the requested Pencil component operation through MCP.
 
 1. Read `references/component-libraries.md` before creating, importing, inspecting, or using reusable components or `.lib.pen` files.
-2. Work only against MCP-visible library and consumer files; use current `execute` operations to create/read reusable origins and instances, and surface required UI-only lifecycle actions immediately.
+2. Work only against the MCP-visible files needed for the requested operation; use current `execute` operations and surface required UI-only lifecycle actions immediately.
 
 Validation:
 
-- The component inventory and target mockup usage are visible through MCP reads.
+- Verify the requested operation using references/component-libraries.md; do not require unrequested consumer work.
 - Any required UI-only library setup/import step is reported immediately and not bypassed with CLI or raw `.pen` editing.
 
 ### Workflow stage: Create or iterate with MCP
@@ -207,7 +207,7 @@ Validation:
 - **high** — Do not call removed discrete Pencil tools unless the current live surface advertises them; route consolidated reads, mutations, layout checks, screenshots, variables, and exports through `execute`.
 - **high** — Do not claim component-library work from naming, screenshots, or duplicate shapes alone; verify reusable components, refs, or instances through MCP.
 - **medium** — Do not use temporary directories for durable exports or handoff docs unless the user explicitly wants throwaway output.
-- **medium** — Copied foundation/reference frames are scaffolding. Remove them from the target `.pen` after target frames are created and verify the top-level inventory through MCP.
+- **medium** — Remove only confirmed disposable scaffolding created by this task or explicitly included in authorized cleanup. Before deletion, re-read the nodes and relevant refs; preserve pre-existing nodes outside that cleanup scope and nodes whose ownership or needed connections remain unresolved. Verify remaining inventory and affected instances through MCP.
 - **high** — Pencil mockups, screenshots, and image/PDF/HTML exports are design or handoff substrate, not implemented runtime behavior or production delivery gates.
 
 ## Policies
@@ -231,7 +231,7 @@ Derive checkable criteria from the user's request and accepted upstream art dire
 Creation and material visual edits require structural readback plus screenshot/export inspection; if visual evidence or save confirmation is missing, report that limitation and the split result explicitly.
 
 ### Component library policy
-Component library work must prove reusable component origins and mockup instances through MCP-visible nodes; UI-only library creation/import steps must be surfaced to the operator immediately when MCP does not expose them.
+Use claim-specific evidence from references/component-libraries.md; surface required UI-only lifecycle actions without adding unrequested consumer work.
 
 ### Handoff clarity policy
 Multi-frame mockups need a sibling README or index when the project expects a handoff artifact; it should explain purpose, status, source links, frame inventory, anti-claims, privacy constraints, and review evidence.
@@ -241,8 +241,6 @@ Do not treat Pencil artifacts as proof of implemented runtime capability when th
 
 ## Required active references
 - [Unified Pencil MCP API](references/unified-mcp-api.md) — Read this before calling Pencil MCP for any `.pen` task; it owns current tool routing, execute safety, browser bridging, verification, and API-drift handling.
-
-## Optional references
 - [Component libraries](references/component-libraries.md) — Read this when the operator asks to create, maintain, import, inspect, or use Pencil component libraries, reusable components, `.lib.pen` files, or design-system assets.
 
 ## Portability rules

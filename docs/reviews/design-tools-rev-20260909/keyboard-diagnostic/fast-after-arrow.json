@@ -1,0 +1,319 @@
+{
+  "focus": "weekly",
+  "radios": [
+    {
+      "id": "daily",
+      "checked": "true"
+    },
+    {
+      "id": "weekly",
+      "checked": "false"
+    }
+  ],
+  "events": [
+    {
+      "type": "focusin",
+      "key": null,
+      "target": "email",
+      "eventTime": 350.39999999990687,
+      "observedAt": 350.60000000009313,
+      "trusted": true
+    },
+    {
+      "type": "keydown",
+      "key": "Tab",
+      "target": "email",
+      "eventTime": 361.79999999981374,
+      "observedAt": 362.1999999997206,
+      "trusted": true
+    },
+    {
+      "type": "focusin",
+      "key": null,
+      "target": "notifications",
+      "eventTime": 363,
+      "observedAt": 363,
+      "trusted": true
+    },
+    {
+      "type": "keyup",
+      "key": "Tab",
+      "target": "notifications",
+      "eventTime": 363.29999999981374,
+      "observedAt": 363.29999999981374,
+      "trusted": true
+    },
+    {
+      "type": "keydown",
+      "key": " ",
+      "target": "notifications",
+      "eventTime": 364.89999999990687,
+      "observedAt": 365.10000000009313,
+      "trusted": true
+    },
+    {
+      "type": "keyup",
+      "key": " ",
+      "target": "notifications",
+      "eventTime": 365.29999999981374,
+      "observedAt": 365.5,
+      "trusted": true
+    },
+    {
+      "type": "click",
+      "key": null,
+      "target": "notifications",
+      "eventTime": 365.29999999981374,
+      "observedAt": 365.5,
+      "trusted": true
+    },
+    {
+      "type": "click",
+      "key": null,
+      "target": "",
+      "eventTime": 370.29999999981374,
+      "observedAt": 370.29999999981374,
+      "trusted": false
+    },
+    {
+      "type": "keydown",
+      "key": "Tab",
+      "target": "notifications",
+      "eventTime": 372.6999999997206,
+      "observedAt": 372.89999999990687,
+      "trusted": true
+    },
+    {
+      "type": "focusin",
+      "key": null,
+      "target": "",
+      "eventTime": 373.29999999981374,
+      "observedAt": 373.29999999981374,
+      "trusted": true
+    },
+    {
+      "type": "keyup",
+      "key": "Tab",
+      "target": "",
+      "eventTime": 373.5,
+      "observedAt": 373.5,
+      "trusted": true
+    },
+    {
+      "type": "keydown",
+      "key": "Enter",
+      "target": "",
+      "eventTime": 375.39999999990687,
+      "observedAt": 375.39999999990687,
+      "trusted": true
+    },
+    {
+      "type": "click",
+      "key": null,
+      "target": "",
+      "eventTime": 375.39999999990687,
+      "observedAt": 375.39999999990687,
+      "trusted": true
+    },
+    {
+      "type": "focusin",
+      "key": null,
+      "target": "",
+      "eventTime": 392.29999999981374,
+      "observedAt": 392.29999999981374,
+      "trusted": true
+    },
+    {
+      "type": "keyup",
+      "key": "Enter",
+      "target": "",
+      "eventTime": 392.6999999997206,
+      "observedAt": 394.10000000009313,
+      "trusted": true
+    },
+    {
+      "type": "keydown",
+      "key": "Tab",
+      "target": "",
+      "eventTime": 398,
+      "observedAt": 398.10000000009313,
+      "trusted": true
+    },
+    {
+      "type": "focusin",
+      "key": null,
+      "target": "",
+      "eventTime": 398.89999999990687,
+      "observedAt": 398.89999999990687,
+      "trusted": true
+    },
+    {
+      "type": "keyup",
+      "key": "Tab",
+      "target": "",
+      "eventTime": 399.10000000009313,
+      "observedAt": 399.1999999997206,
+      "trusted": true
+    },
+    {
+      "type": "keydown",
+      "key": "Tab",
+      "target": "",
+      "eventTime": 400.60000000009313,
+      "observedAt": 400.6999999997206,
+      "trusted": true
+    },
+    {
+      "type": "focusin",
+      "key": null,
+      "target": "",
+      "eventTime": 401,
+      "observedAt": 401,
+      "trusted": true
+    },
+    {
+      "type": "keyup",
+      "key": "Tab",
+      "target": "",
+      "eventTime": 401.1999999997206,
+      "observedAt": 401.1999999997206,
+      "trusted": true
+    },
+    {
+      "type": "keydown",
+      "key": "Escape",
+      "target": "",
+      "eventTime": 402.60000000009313,
+      "observedAt": 402.60000000009313,
+      "trusted": true
+    },
+    {
+      "type": "keyup",
+      "key": "Escape",
+      "target": "",
+      "eventTime": 411.39999999990687,
+      "observedAt": 412,
+      "trusted": true
+    },
+    {
+      "type": "focusin",
+      "key": null,
+      "target": "",
+      "eventTime": 523.1000000000931,
+      "observedAt": 523.1000000000931,
+      "trusted": true
+    },
+    {
+      "type": "keydown",
+      "key": "Tab",
+      "target": "",
+      "eventTime": 624.2999999998137,
+      "observedAt": 624.6000000000931,
+      "trusted": true
+    },
+    {
+      "type": "focusin",
+      "key": null,
+      "target": "notifications",
+      "eventTime": 626.1000000000931,
+      "observedAt": 626.1000000000931,
+      "trusted": true
+    },
+    {
+      "type": "keyup",
+      "key": "Tab",
+      "target": "notifications",
+      "eventTime": 626.5,
+      "observedAt": 626.6000000000931,
+      "trusted": true
+    },
+    {
+      "type": "keydown",
+      "key": " ",
+      "target": "notifications",
+      "eventTime": 629,
+      "observedAt": 629.1000000000931,
+      "trusted": true
+    },
+    {
+      "type": "keyup",
+      "key": " ",
+      "target": "notifications",
+      "eventTime": 629.5,
+      "observedAt": 629.6000000000931,
+      "trusted": true
+    },
+    {
+      "type": "click",
+      "key": null,
+      "target": "notifications",
+      "eventTime": 629.5,
+      "observedAt": 629.6000000000931,
+      "trusted": true
+    },
+    {
+      "type": "click",
+      "key": null,
+      "target": "",
+      "eventTime": 635.6000000000931,
+      "observedAt": 635.6000000000931,
+      "trusted": false
+    },
+    {
+      "type": "keydown",
+      "key": "Tab",
+      "target": "notifications",
+      "eventTime": 638.3999999999069,
+      "observedAt": 639.3999999999069,
+      "trusted": true
+    },
+    {
+      "type": "focusin",
+      "key": null,
+      "target": "",
+      "eventTime": 639.6999999997206,
+      "observedAt": 639.6999999997206,
+      "trusted": true
+    },
+    {
+      "type": "focusin",
+      "key": null,
+      "target": "daily",
+      "eventTime": 640.1000000000931,
+      "observedAt": 640.1000000000931,
+      "trusted": true
+    },
+    {
+      "type": "keyup",
+      "key": "Tab",
+      "target": "daily",
+      "eventTime": 641.1000000000931,
+      "observedAt": 641.1000000000931,
+      "trusted": true
+    },
+    {
+      "type": "keydown",
+      "key": "ArrowRight",
+      "target": "daily",
+      "eventTime": 644.3999999999069,
+      "observedAt": 644.5,
+      "trusted": true
+    },
+    {
+      "type": "keyup",
+      "key": "ArrowRight",
+      "target": "daily",
+      "eventTime": 644.8999999999069,
+      "observedAt": 644.8999999999069,
+      "trusted": true
+    },
+    {
+      "type": "focusin",
+      "key": null,
+      "target": "weekly",
+      "eventTime": 654.1999999997206,
+      "observedAt": 654.1999999997206,
+      "trusted": true
+    }
+  ]
+}

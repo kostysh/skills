@@ -1,0 +1,16 @@
+- Resolving items.
+┌ shadcn add button (dry run)
+│
+├ Files (1) ~1 overwrite
+│ ~ src/components/ui/button.tsx  overwrite
+│
+├ Dependencies (1)
+│ + cn
+│
+⚠ 1 file will be overwritten.
+│
+│ 1 file, 1 dep
+│
+│ Run with --diff to view changes.
+│ Run with --view to view file contents.
+└ Run without --dry-run to apply.

@@ -1,0 +1,13 @@
+{
+  "candidate": {
+    "checked": 41,
+    "mismatches": []
+  },
+  "neighbors": {
+    "checked": 85,
+    "mismatches": []
+  },
+  "head": "d89d66f2c99bf8b9e84e5b4def54fa60192856a5",
+  "main_status": "",
+  "diff_check_exit": 0
+}

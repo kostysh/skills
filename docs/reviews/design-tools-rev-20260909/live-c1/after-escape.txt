@@ -1,0 +1,4 @@
+- generic "Your preferencesStay in the loopNotification settingsChoose where and how often you receive updates." [ref=e1] clickable [onclick]
+- heading "Review notification settings" [level=2, ref=e2]
+- button "Cancel" [ref=e3]
+- button "Confirm" [ref=e4]

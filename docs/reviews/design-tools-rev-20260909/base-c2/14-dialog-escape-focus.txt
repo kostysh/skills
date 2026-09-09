@@ -1,0 +1,41 @@
+✓ Done
+- generic
+  - generic [ref=e1] clickable [onclick]
+    - main
+      - status
+  - dialog "Review notification settings"
+    - heading "Review notification settings" [level=2, ref=e2]
+    - paragraph
+      - StaticText "Confirm to apply these choices. Cancel to keep editing your draft."
+    - DescriptionList
+      - term "Email address"
+      - definition
+        - StaticText "trial@example.com"
+      - term "Notifications"
+      - definition
+        - StaticText "On"
+      - term "Delivery frequency"
+      - definition
+        - StaticText "Weekly"
+    - button "Cancel" [ref=e3]
+    - button "Confirm" [ref=e4]
+"{\"focus\":\"Cancel\",\"inDialog\":true}"
+✓ Done
+"Confirm"
+✓ Done
+""
+✓ Done
+"Cancel"
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/base-c2-evidence/desktop-dialog.png
+✓ Done
+- generic "PreferencesNotification settingsChoose where and how often you receive updates.Email address (requir" [ref=e1] clickable [onclick]
+  - heading "Notification settings" [level=1, ref=e5]
+  - textbox "Email address (required)" [required, ref=e7]: trial@example.com
+  - switch "Enable notifications" [checked=true, ref=e8]
+  - radio "Daily A daily catch-up" [checked=false, ref=e9]
+  - radio "Weekly One weekly digest" [checked=true, ref=e10]
+  - button "Review changes" [ref=e6]
+- heading "Review notification settings" [level=2, ref=e2]
+- button "Cancel" [ref=e3]
+- button "Confirm" [ref=e4]
+"{\"focus\":\"Cancel\",\"email\":\"trial@example.com\",\"status\":\"\",\"dialogs\":1}"
