@@ -2,7 +2,7 @@ Build React components that preserve their declared behavior in the rendering co
 
 ## Capability and anti-claims
 
-This skill succeeds when it identifies a concrete component-level failure path, selects a project-compatible React pattern, and reports a result whose status is supported by evidence from the relevant renderer or browser boundary.
+This skill succeeds when it implements an accepted component contract or provides a supported review or diagnosis. Preserve the public behavior, choose project-compatible patterns where needed, and match completion to the requested source or runtime claim; a clean review does not require finding a defect.
 
 The instructions do not create runtime capability, choose a framework contract, grant authorization, prove accessibility or performance, or establish security by themselves. A hook, API import, wrapper, Storybook story, mock, typecheck, build, or generated file is bounded evidence and cannot close a broader behavior claim.
 
@@ -19,7 +19,7 @@ The instructions do not create runtime capability, choose a framework contract, 
 | Server/client boundary | RSC or another server/client component boundary is real | Client props follow the framework serialization contract; sensitive fields are allowlisted on the server | Framework integration/build plus boundary behavior; security owner evidence for security claims |
 | Transition or optimization | The feature exists and a measured interaction or duplicate-work path is in scope | Optimization APIs never carry semantic correctness; version and release-channel gates are satisfied | Observed transition or measurement matching the claim |
 
-Exclude contexts that project evidence makes impossible. Do not add substrate to satisfy an inapplicable row.
+The evidence column applies to claims about runtime behavior in that context. A source-only review may assess the corresponding code invariant without exercising or claiming the runtime boundary. Exclude contexts that project evidence makes impossible; do not add substrate to satisfy an inapplicable row.
 
 ## Version-sensitive API gates
 

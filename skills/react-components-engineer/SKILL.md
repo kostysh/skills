@@ -9,9 +9,9 @@ compatibility: Portable documentation-only engineering skill. It ships no
   runtime or test harness and requires repository evidence plus installed React
   and framework versions for project-specific decisions.
 metadata:
-  source-version: 0.2.0
+  source-version: 0.2.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 2c04626f28953a33b303a8f18b71dbdca6a0f960e25d8dfc147cf61f1f54a58b
+  skillforge-source-hash: 7862d1acc89523e31e94af221d9d99fa77784491f173d3b0efe0eb2fac68b9b9
 ---
 
 # react-components-engineer
@@ -44,7 +44,7 @@ Build React components that preserve their declared behavior in the rendering co
 
 ## Capability and anti-claims
 
-This skill succeeds when it identifies a concrete component-level failure path, selects a project-compatible React pattern, and reports a result whose status is supported by evidence from the relevant renderer or browser boundary.
+This skill succeeds when it implements an accepted component contract or provides a supported review or diagnosis. Preserve the public behavior, choose project-compatible patterns where needed, and match completion to the requested source or runtime claim; a clean review does not require finding a defect.
 
 The instructions do not create runtime capability, choose a framework contract, grant authorization, prove accessibility or performance, or establish security by themselves. A hook, API import, wrapper, Storybook story, mock, typecheck, build, or generated file is bounded evidence and cannot close a broader behavior claim.
 
@@ -61,7 +61,7 @@ The instructions do not create runtime capability, choose a framework contract, 
 | Server/client boundary | RSC or another server/client component boundary is real | Client props follow the framework serialization contract; sensitive fields are allowlisted on the server | Framework integration/build plus boundary behavior; security owner evidence for security claims |
 | Transition or optimization | The feature exists and a measured interaction or duplicate-work path is in scope | Optimization APIs never carry semantic correctness; version and release-channel gates are satisfied | Observed transition or measurement matching the claim |
 
-Exclude contexts that project evidence makes impossible. Do not add substrate to satisfy an inapplicable row.
+The evidence column applies to claims about runtime behavior in that context. A source-only review may assess the corresponding code invariant without exercising or claiming the runtime boundary. Exclude contexts that project evidence makes impossible; do not add substrate to satisfy an inapplicable row.
 
 ## Version-sensitive API gates
 
@@ -94,16 +94,16 @@ Validation:
 
 ### Workflow stage: Select and apply the smallest supported pattern
 
-Correct the applicable component failure without universal checklists or version-incompatible APIs.
+Implement or assess the component contract without inventing defects, universal checklists, or version-incompatible APIs.
 
-1. Load the optional resilience reference only for the concrete risks in scope and apply its version and context gates.
+1. Load the conditional resilience reference only for the concrete risks in scope and apply its version and context gates.
 2. Prefer project-native and stable React or framework mechanisms; add a version-sensitive API only when the installed environment supports it and the component actually uses the corresponding feature.
 3. Preserve render purity, deterministic server/client output where hydration applies, symmetric Effect setup and cleanup, per-instance ownership, opaque-child contracts, correct DOM realm ownership, and explicit server/client data boundaries as applicable.
 4. Route framework, security, accessibility, visual, TypeScript, test-runner, and formal-review decisions to their owners while retaining component-semantics responsibility.
 
 Validation:
 
-- The change or finding addresses the observed failure path instead of merely adding a recommended API, wrapper, story, test file, or checklist item.
+- The result addresses the accepted component contract or supported failure path; a clean review need not invent a defect or add an API, wrapper, story, or checklist item.
 - Stable projects receive no unsupported Canary or Experimental imports and no release-channel change without explicit authority.
 
 ### Workflow stage: Verify and hand off the component result
@@ -111,12 +111,12 @@ Validation:
 Match the completion status to observed evidence and give the next consumer an actionable result.
 
 1. Run only applicable scenarios, using the existing project test stack and a real renderer or browser boundary when the claim depends on hydration, another document, visibility lifecycle, or server/client integration.
-2. Classify the result as verified, partial, or blocked. Verified requires evidence that exercises the claimed behavior; an implemented change without that evidence is partial.
+2. Classify the result using the Evidence and status policy for the requested claim, distinguishing a source-level conclusion from runtime verification.
 3. Report mode, component contract, applicable contexts, change or findings, verification evidence, status, residual risks or blockers, anti-claims, and next owner.
 
 Validation:
 
-- Unavailable or lower-fidelity verification lowers the result status instead of being reported as completed.
+- Missing evidence lowers only the conclusion that depends on it; a completed source-level review does not imply runtime verification.
 - The handoff does not imply framework support, accessibility, performance, or security assurance that was not established by the owning skill and evidence.
 
 ## Interop priority
@@ -148,9 +148,9 @@ Evaluate and verify only contexts that the component contract and project eviden
 Prefer the installed stable React and framework mechanisms. Canary or Experimental APIs require existing project adoption or explicit operator authority and must retain their channel caveats.
 
 ### Evidence and status policy
-Report verified only when claim-matched behavior was exercised. Report partial when analysis or implementation is useful but the required boundary was not observed, and blocked when a missing authoritative decision or conflict prevents a safe result.
+Report verified when evidence establishes the requested claim. A source-only review or diagnosis may be complete from inspected code, including a clean result; name that boundary without implying runtime verification. A runtime behavior claim requires the relevant renderer or browser evidence. Report partial only for a requested conclusion whose evidence is missing, and block only decisions that depend on unresolved authority or conflict.
 
-## Optional references
+## Required active references
 - [React Component Resilience Patterns](references/bulletproof-patterns.md) — Read this when a concrete SSR, hydration, multi-instance, composition, portal, Effect lifecycle, transition, Activity, RSC, sensitive-data, or memoization risk is in scope and exact pattern or version caveats are needed.
 
 ## Portability rules
@@ -162,10 +162,7 @@ Report verified only when claim-matched behavior was exercised. Report partial w
 
 ## Portability checklist before finishing
 
-- Run the skill-source-compiler check command after regeneration.
-- Search active instructions and declared files for absolute local dependencies before finishing.
-- Confirm every active reference listed by SKILL.md exists inside this skill folder.
-- Confirm a copied skill remains understandable without repository history, runtime files, or supporting logs.
+- Only when editing or packaging this skill itself, run compiler lint, regenerate, check, and an isolated compile; verify generated parity, local references, portability, and packaged files. These maintenance checks are not prerequisites for ordinary tasks performed with the skill.
 
 ## Supporting and historical surface
 

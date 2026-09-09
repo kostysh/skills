@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: react-components-engineer
-  source-version: 0.2.0
+  source-version: 0.2.1
   recommended-skill-md-max-bytes: 20000
   description: >-
     Build, harden, review, and diagnose reusable React components across SSR,
@@ -20,7 +20,7 @@ references:
     title: React Component Resilience Patterns
     source: references/bulletproof-patterns.md
     target: references/bulletproof-patterns.md
-    required: false
+    required: true
     trigger: Read this when a concrete SSR, hydration, multi-instance, composition, portal, Effect lifecycle, transition, Activity, RSC, sensitive-data, or memoization risk is in scope and exact pattern or version caveats are needed.
 assets: []
 copies:
@@ -43,9 +43,9 @@ supporting:
     description: Non-normative navigation for issues, plans, and implementation logs.
 surfaces:
   active:
-    requiredReferences: []
-    optionalReferences:
+    requiredReferences:
       - ref-references-bulletproof-patterns
+    optionalReferences: []
   supportingGlobs:
     - docs/*
     - docs/logs/*
@@ -79,24 +79,24 @@ sections:
         - Each selected resilience risk has a concrete failure path in the supplied component and contexts.
     - id: stage-select-and-apply-pattern
       title: Select and apply the smallest supported pattern
-      goal: Correct the applicable component failure without universal checklists or version-incompatible APIs.
+      goal: Implement or assess the component contract without inventing defects, universal checklists, or version-incompatible APIs.
       steps:
-        - Load the optional resilience reference only for the concrete risks in scope and apply its version and context gates.
+        - Load the conditional resilience reference only for the concrete risks in scope and apply its version and context gates.
         - Prefer project-native and stable React or framework mechanisms; add a version-sensitive API only when the installed environment supports it and the component actually uses the corresponding feature.
         - Preserve render purity, deterministic server/client output where hydration applies, symmetric Effect setup and cleanup, per-instance ownership, opaque-child contracts, correct DOM realm ownership, and explicit server/client data boundaries as applicable.
         - Route framework, security, accessibility, visual, TypeScript, test-runner, and formal-review decisions to their owners while retaining component-semantics responsibility.
       validation:
-        - The change or finding addresses the observed failure path instead of merely adding a recommended API, wrapper, story, test file, or checklist item.
+        - The result addresses the accepted component contract or supported failure path; a clean review need not invent a defect or add an API, wrapper, story, or checklist item.
         - Stable projects receive no unsupported Canary or Experimental imports and no release-channel change without explicit authority.
     - id: stage-verify-and-handoff
       title: Verify and hand off the component result
       goal: Match the completion status to observed evidence and give the next consumer an actionable result.
       steps:
         - Run only applicable scenarios, using the existing project test stack and a real renderer or browser boundary when the claim depends on hydration, another document, visibility lifecycle, or server/client integration.
-        - Classify the result as verified, partial, or blocked. Verified requires evidence that exercises the claimed behavior; an implemented change without that evidence is partial.
+        - Classify the result using the Evidence and status policy for the requested claim, distinguishing a source-level conclusion from runtime verification.
         - Report mode, component contract, applicable contexts, change or findings, verification evidence, status, residual risks or blockers, anti-claims, and next owner.
       validation:
-        - Unavailable or lower-fidelity verification lowers the result status instead of being reported as completed.
+        - Missing evidence lowers only the conclusion that depends on it; a completed source-level review does not imply runtime verification.
         - The handoff does not imply framework support, accessibility, performance, or security assurance that was not established by the owning skill and evidence.
   interop:
     - id: interop-typescript
@@ -160,7 +160,7 @@ sections:
       text: Prefer the installed stable React and framework mechanisms. Canary or Experimental APIs require existing project adoption or explicit operator authority and must retain their channel caveats.
     - id: policy-evidence-status
       title: Evidence and status policy
-      text: Report verified only when claim-matched behavior was exercised. Report partial when analysis or implementation is useful but the required boundary was not observed, and blocked when a missing authoritative decision or conflict prevents a safe result.
+      text: Report verified when evidence establishes the requested claim. A source-only review or diagnosis may be complete from inspected code, including a clean result; name that boundary without implying runtime verification. A runtime behavior claim requires the relevant renderer or browser evidence. Report partial only for a requested conclusion whose evidence is missing, and block only decisions that depend on unresolved authority or conflict.
   portability:
     required: true
     rules:
@@ -169,7 +169,4 @@ sections:
       - Treat external documentation links as optional provenance; the local instructions must remain sufficient offline.
       - Use relative links for local references, assets, scripts, tests, and supporting docs.
     checklist:
-      - Run the skill-source-compiler check command after regeneration.
-      - Search active instructions and declared files for absolute local dependencies before finishing.
-      - Confirm every active reference listed by SKILL.md exists inside this skill folder.
-      - Confirm a copied skill remains understandable without repository history, runtime files, or supporting logs.
+      - "Only when editing or packaging this skill itself, run compiler lint, regenerate, check, and an isolated compile; verify generated parity, local references, portability, and packaged files. These maintenance checks are not prerequisites for ordinary tasks performed with the skill."

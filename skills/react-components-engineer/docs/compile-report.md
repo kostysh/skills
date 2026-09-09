@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.2.0`
+- Skill source version: `0.2.1`
 
 ## Source files
 - `agents/openai.yaml`
@@ -14,7 +14,7 @@ Generated from `skill.yaml`.
 - `skill.yaml`
 
 ## Required references
-- none
+- `references/bulletproof-patterns.md`
 
 ## Warnings
 - none
