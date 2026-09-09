@@ -1,0 +1,4 @@
+interface:
+  display_name: "Payload Migration"
+  short_description: "Map CMS exports to Payload"
+  default_prompt: "Use $payload-migration to design Payload collections from source CMS data."

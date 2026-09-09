@@ -1,0 +1,412 @@
+{
+  "exported_at": "2026-09-09T16:29:31.716072+00:00",
+  "scope": "Only public tool call inputs/outputs and public coordinator dispatch metadata (encrypted message text omitted; plaintext delivery not independently attested) for current-task fresh execution agents. No reasoning, system/developer instructions, private context, or general conversation content included. Credential values redacted. Tool arguments preserve heredoc bodies missing from command recorder. Settings are recorded turn configuration, not independent backend model attestation. Active agent files are provisional until final export.",
+  "traces": [
+    {
+      "agent": "/root/baseline_docusaurus_docs_executor",
+      "source_session_id": "01a08679-84ce-7c22-b736-ce570ecaba02",
+      "journal_sha256": "44aa94d01c78a8a0535edbaa9e6142af7b9c13bf8ff6011b4be9aafc1283caec",
+      "public_trace": "baseline_docusaurus_docs_executor.jsonl",
+      "public_trace_sha256": "18d1d0955f8060722460a9252dcb4b891f7572d300d4bf204ad0936813dd108d",
+      "tool_events": 98,
+      "public_task_messages": "baseline_docusaurus_docs_executor-task-messages.jsonl",
+      "task_messages_sha256": "cf12275bae2dcfe6538e494ba9d2e8daddeb318a85a7366351387454671af65c",
+      "recorded_turn_settings": [
+        {
+          "turn_id": "01a08679-857d-7273-bf28-928fe7b7e451",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        }
+      ]
+    },
+    {
+      "agent": "/root/baseline_payload_version_executor",
+      "source_session_id": "01a086ce-350a-74b0-9f0a-c67d0b416e24",
+      "journal_sha256": "85c3697dcba6b9a4a6d2fa644528e1d26a45353fbcfe685fb81308609f10768f",
+      "public_trace": "baseline_payload_version_executor.jsonl",
+      "public_trace_sha256": "598cdd40dc1111369b1e62c046a9690040ecc80d0a7c1f19c6aa2008933a66de",
+      "tool_events": 150,
+      "public_task_messages": "baseline_payload_version_executor-task-messages.jsonl",
+      "task_messages_sha256": "9380356da7b1c9672fc4c40e6ba29ceef11f102ece845fdbd01c87fa051f2e45",
+      "recorded_turn_settings": [
+        {
+          "turn_id": "01a086ce-35af-7770-9784-91284454392b",
+          "model": "gpt-6-astra",
+          "effort": "medium"
+        }
+      ]
+    },
+    {
+      "agent": "/root/baseline_authority_executor",
+      "source_session_id": "01a08615-4a2b-7740-a7ff-85c2e7a2b841",
+      "journal_sha256": "1dd5bfda1dbf846745e1973ddd0cfcd9ccad3f6431b4ccbd6e479816c77ade77",
+      "public_trace": "baseline_authority_executor.jsonl",
+      "public_trace_sha256": "cd0d5c5b09313ae0f6c62d3814e97adf9cc1185de5156f6f893f45215db6f3c1",
+      "tool_events": 18,
+      "public_task_messages": "baseline_authority_executor-task-messages.jsonl",
+      "task_messages_sha256": "c22f8c65a6382e298a29efda92bdca55db06ebe1b4e95ed10c57f3f72c53f7c5",
+      "recorded_turn_settings": [
+        {
+          "turn_id": "01a08615-4a9f-72e3-8753-afb4fd72b2a2",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        },
+        {
+          "turn_id": "01a08616-864c-7c02-b8fe-f5130959206d",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        }
+      ]
+    },
+    {
+      "agent": "/root/candidate_mapping_executor",
+      "source_session_id": "01a086f7-63d3-73d1-af97-9d3fb6da9557",
+      "journal_sha256": "51df59606348b0897483cd0197eccb6b206040584de61795c431d97a517ae423",
+      "public_trace": "candidate_mapping_executor.jsonl",
+      "public_trace_sha256": "b00c8f7ed298854ef6a7066f1f3fb92783e2e117b55e5610afd610734dfceaa3",
+      "tool_events": 10,
+      "public_task_messages": "candidate_mapping_executor-task-messages.jsonl",
+      "task_messages_sha256": "0d231cb1040e9a98e62e7ae48a300b519a5caffe250718133c087c072411ca36",
+      "recorded_turn_settings": [
+        {
+          "turn_id": "01a086f7-648d-7a93-b731-073350933f19",
+          "model": "gpt-6-astra",
+          "effort": "medium"
+        }
+      ]
+    },
+    {
+      "agent": "/root/baseline_electron_legacy_executor",
+      "source_session_id": "01a0864f-58a4-7ba1-96ab-1633219f73c3",
+      "journal_sha256": "cade0112f4b8ef415dfd1f22ccb67456fb2bc087690c9b555dc54221796e66da",
+      "public_trace": "baseline_electron_legacy_executor.jsonl",
+      "public_trace_sha256": "3061b39a109608c1797af1df567742caa2f7f32034160874486acb4f81f70582",
+      "tool_events": 54,
+      "public_task_messages": "baseline_electron_legacy_executor-task-messages.jsonl",
+      "task_messages_sha256": "afe37299e633b870585509af54fd484a321bd4d00e6156d81d6f359166583612",
+      "recorded_turn_settings": [
+        {
+          "turn_id": "01a0864f-5961-7b92-9289-35d12aacd3d3",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        }
+      ]
+    },
+    {
+      "agent": "/root/baseline_catalog_executor",
+      "source_session_id": "01a0860e-8ed6-7b60-8b04-ad7344b6cbd3",
+      "journal_sha256": "fe5899c94bbd4a6c8e1ecdd11b4f230ae203ee73f637fde1cc8021d69220ea32",
+      "public_trace": "baseline_catalog_executor.jsonl",
+      "public_trace_sha256": "45c8a2307e06591cda4f5836e3e8f08ff4b57ddd7fdbaca1b39caeaaa08ac987",
+      "tool_events": 4,
+      "public_task_messages": "baseline_catalog_executor-task-messages.jsonl",
+      "task_messages_sha256": "838d05fea8ae4e8333afafaeacfe7f3468a8036f83ac6067ff5b03d3b287bbd8",
+      "recorded_turn_settings": [
+        {
+          "turn_id": "01a0860e-8f50-7a11-b303-86aa22a757fc",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        }
+      ]
+    },
+    {
+      "agent": "/root/baseline_supabase_tabletop_executor",
+      "source_session_id": "01a08663-ae9f-79f0-b4ea-91487d6f7149",
+      "journal_sha256": "2d71d883817f345e191f0736bc3613a8549476c3a2e19746b0378627d5a597fb",
+      "public_trace": "baseline_supabase_tabletop_executor.jsonl",
+      "public_trace_sha256": "0f84b7bb9e95b158a73aa11cc863b541220b48ec7dd546c3d663411a1b16b419",
+      "tool_events": 12,
+      "public_task_messages": "baseline_supabase_tabletop_executor-task-messages.jsonl",
+      "task_messages_sha256": "b8687031ee5746cdd35ac15047a1d2407c2a491ea7de6430c03d375a7c8bf92d",
+      "recorded_turn_settings": [
+        {
+          "turn_id": "01a08663-af25-7760-8589-32cf09e4a184",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        }
+      ]
+    },
+    {
+      "agent": "/root/baseline_hs_runtime_executor",
+      "source_session_id": "01a0860d-24c6-7262-a4c1-d6d013bb1273",
+      "journal_sha256": "8de2517a047574c24cd66ace343442867d16520829888ce6974336038bfe10ee",
+      "public_trace": "baseline_hs_runtime_executor.jsonl",
+      "public_trace_sha256": "30482f686b060c926ff2727ba331a64cf6bda74e52a8eeb1e8c9ef5970e947c1",
+      "tool_events": 26,
+      "public_task_messages": "baseline_hs_runtime_executor-task-messages.jsonl",
+      "task_messages_sha256": "b42ea2ee67bc0a73ec1178dd8adb05142b80d2192830381def716528d16086e6",
+      "recorded_turn_settings": [
+        {
+          "turn_id": "01a0860d-2554-7701-bd2d-6ea66d20cd1e",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        }
+      ]
+    },
+    {
+      "agent": "/root/baseline_supabase_current_cli_executor",
+      "source_session_id": "01a086a2-40c4-7593-bfd7-763912fd5388",
+      "journal_sha256": "62db7085c119b30b2ce0651fbcd4e8e0538266ff1b506df654bc59c30f5811cd",
+      "public_trace": "baseline_supabase_current_cli_executor.jsonl",
+      "public_trace_sha256": "46449b91521a80f275680240f77def43a45dc0610f9c056917457313c873d1cd",
+      "tool_events": 36,
+      "public_task_messages": "baseline_supabase_current_cli_executor-task-messages.jsonl",
+      "task_messages_sha256": "57e3b1fa7bea7573e39e176e4e4c00bbd9fff547288dfba9a02352165ddde924",
+      "recorded_turn_settings": [
+        {
+          "turn_id": "01a086a2-41b2-72e1-835b-c80246f7c36e",
+          "model": "gpt-6-astra",
+          "effort": "medium"
+        }
+      ]
+    },
+    {
+      "agent": "/root/baseline_next_legacy_executor",
+      "source_session_id": "01a08642-f221-7063-abe1-d74f30d44428",
+      "journal_sha256": "ca76fc1444b44179b60d3dbce3a2090346294000b44ff2a95e25d2eb9f9f2fba",
+      "public_trace": "baseline_next_legacy_executor.jsonl",
+      "public_trace_sha256": "3b7ed8efcf29da17b8c4d87d935b6cc183b914a5d9a1a4a73300d93e311857bd",
+      "tool_events": 68,
+      "public_task_messages": "baseline_next_legacy_executor-task-messages.jsonl",
+      "task_messages_sha256": "834fc9f4fde202ae3d5b90ce18a0ea7789ebe80f182f3217ff4d44f2f0c570fd",
+      "recorded_turn_settings": [
+        {
+          "turn_id": "01a08642-f2bb-70d0-903d-b374f62ddc2c",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        }
+      ]
+    },
+    {
+      "agent": "/root/baseline_next_runtime_executor",
+      "source_session_id": "01a08625-e54b-7032-859e-b9e0e9988d6e",
+      "journal_sha256": "4d33b20354765c7404df7323b07db8826c65240645e1f89a94a5b1fff3fb67c5",
+      "public_trace": "baseline_next_runtime_executor.jsonl",
+      "public_trace_sha256": "4bc40f4590e4bfe98e81f505e0c6b60548312ed305ef7b4d13010de841b377e0",
+      "tool_events": 84,
+      "public_task_messages": "baseline_next_runtime_executor-task-messages.jsonl",
+      "task_messages_sha256": "75978ddc9866dd7928b993ba85ea102b97a5de23e97245d1a81d3bbb743e0958",
+      "recorded_turn_settings": [
+        {
+          "turn_id": "01a08625-e5c2-77b2-804e-6868a52c3ad8",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        }
+      ]
+    },
+    {
+      "agent": "/root/baseline_catalog_captured_executor",
+      "source_session_id": "01a08614-27f0-7a23-83a3-29cbe909650e",
+      "journal_sha256": "cca252b7611387d99be04998187b57f87ca51d5a83eb72409b09e07419b899c2",
+      "public_trace": "baseline_catalog_captured_executor.jsonl",
+      "public_trace_sha256": "05fb9cac5f723d1872b0b7ccffc4fdb96ca3d049f7f4bab490e780ea53480d70",
+      "tool_events": 4,
+      "public_task_messages": "baseline_catalog_captured_executor-task-messages.jsonl",
+      "task_messages_sha256": "dbd82e41f1b66ee94c4efd440d910ea723091e900bafc276a2aa1a70960b4916",
+      "recorded_turn_settings": [
+        {
+          "turn_id": "01a08614-288b-7ec3-91f9-a7ba299334f4",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        }
+      ]
+    },
+    {
+      "agent": "/root/baseline_supabase_legacy_cli_executor",
+      "source_session_id": "01a086af-0cd0-7843-bf53-ef50d830777f",
+      "journal_sha256": "7e6d913d41f979d7c7c9507a10e0e96572fa9e05c9444d2148a3bdb2d74276a0",
+      "public_trace": "baseline_supabase_legacy_cli_executor.jsonl",
+      "public_trace_sha256": "3a96b9c217420ffd25b4f0db044f0052c6177fb073d0fb2079fa1b1675921c37",
+      "tool_events": 32,
+      "public_task_messages": "baseline_supabase_legacy_cli_executor-task-messages.jsonl",
+      "task_messages_sha256": "cfb1edacc385202545c3fdb5dd40ca7a1fdfb324deee2848a96104930a30f1ec",
+      "recorded_turn_settings": [
+        {
+          "turn_id": "01a086af-0d66-7cc3-8a3a-190e17cf8dd0",
+          "model": "gpt-6-astra",
+          "effort": "medium"
+        }
+      ]
+    },
+    {
+      "agent": "/root/baseline_payload_core_executor",
+      "source_session_id": "01a08656-d1a4-7a23-8038-60119cf6073f",
+      "journal_sha256": "520483c55bb8eea47cd4ed7a9d829e645a4a42cf06ed79f258b81e91cc8a80bc",
+      "public_trace": "baseline_payload_core_executor.jsonl",
+      "public_trace_sha256": "003b901838f61bb204808b18f500900e4c7502264f8bce6d4438208ba0b69a64",
+      "tool_events": 120,
+      "public_task_messages": "baseline_payload_core_executor-task-messages.jsonl",
+      "task_messages_sha256": "25b83a7fc3186a79ff2dff00c5e80faf73111b54739aea23ab2a072e4d752bea",
+      "recorded_turn_settings": [
+        {
+          "turn_id": "01a08656-d230-70e2-95ad-240e7916474c",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        }
+      ]
+    },
+    {
+      "agent": "/root/baseline_migration_runtime_executor",
+      "source_session_id": "01a0861d-19e6-7f53-b449-5181497a92a1",
+      "journal_sha256": "6ab3659e7e35a1a51f620784c60d56a8c95b1d4954c3dd0a7541c0a586f04ec4",
+      "public_trace": "baseline_migration_runtime_executor.jsonl",
+      "public_trace_sha256": "b896c5e04b455ad3c60ec22ddbff074e6443d010efe74ef8ef9d2f45650702be",
+      "tool_events": 72,
+      "public_task_messages": "baseline_migration_runtime_executor-task-messages.jsonl",
+      "task_messages_sha256": "5a7929599707f998a40eb3e80f25cb21d53549b19b745c91a48f051a3ade2cc2",
+      "recorded_turn_settings": [
+        {
+          "turn_id": "01a0861d-1a4a-7b52-b621-70286508d58b",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        }
+      ]
+    },
+    {
+      "agent": "/root/baseline_workers_executor",
+      "source_session_id": "01a086c3-36bb-7ed1-9055-f3849ea0b363",
+      "journal_sha256": "ba7ac930d4cc0671efc1d709c8060d235d8a8efb7a3499e977dc81286a294467",
+      "public_trace": "baseline_workers_executor.jsonl",
+      "public_trace_sha256": "9cbd266e29a27b0e9d57c0bd22dc917de1056be6c922c95ea03a7c7c2f0351ea",
+      "tool_events": 28,
+      "public_task_messages": "baseline_workers_executor-task-messages.jsonl",
+      "task_messages_sha256": "da5736819d087fea5be7f5ad1ed852f7479f74566b73f44bf29713e55cd2f15c",
+      "recorded_turn_settings": [
+        {
+          "turn_id": "01a086c3-3765-7992-b2e4-a427ba59fe41",
+          "model": "gpt-6-astra",
+          "effort": "medium"
+        }
+      ]
+    },
+    {
+      "agent": "/root/baseline_mapping_executor",
+      "source_session_id": "01a08610-e982-76b1-8868-0df61c031a9f",
+      "journal_sha256": "8ae8f97bf577bfa4a3832531d2cf74896bbe6705a514c7fb81a8108d795c068f",
+      "public_trace": "baseline_mapping_executor.jsonl",
+      "public_trace_sha256": "4e3a8997b85814f7e545334dcf4b1707cc06a2491856ede955d5d5d31eaa9f97",
+      "tool_events": 14,
+      "public_task_messages": "baseline_mapping_executor-task-messages.jsonl",
+      "task_messages_sha256": "3f4c1d5ddce3b21999a80b1c6efd7e1783b14ba3babebf5abd0fd2dc7fa22777",
+      "recorded_turn_settings": [
+        {
+          "turn_id": "01a08610-ea43-7462-a908-f497c764dd23",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        }
+      ]
+    },
+    {
+      "agent": "/root/baseline_supabase_services_executor",
+      "source_session_id": "01a086b9-00b2-7e23-80f1-e786c763831c",
+      "journal_sha256": "ff5754c5b877042ae8a08f6a3a7c9b51964cb58f338cfd190c13fa119dc33c65",
+      "public_trace": "baseline_supabase_services_executor.jsonl",
+      "public_trace_sha256": "e76fca40a94467ef41ea5f33b4cdef697fb442df870bf72ebc99297a7ca8bb16",
+      "tool_events": 32,
+      "public_task_messages": "baseline_supabase_services_executor-task-messages.jsonl",
+      "task_messages_sha256": "1ea13c3044b96f7cae81f9ae6d692e4f3aee6de33fc52a59bc96bf11320567f1",
+      "recorded_turn_settings": [
+        {
+          "turn_id": "01a086b9-0147-7743-b2bb-8da8066684c8",
+          "model": "gpt-6-astra",
+          "effort": "medium"
+        }
+      ]
+    },
+    {
+      "agent": "/root/candidate_docusaurus_runtime_executor",
+      "source_session_id": "01a086ed-9201-7fa2-95b4-bc9dfbb72b4d",
+      "journal_sha256": "7a976dc84c07514596c04b6c283e2e83b49278e5cf76125b602c9d553644037e",
+      "public_trace": "candidate_docusaurus_runtime_executor.jsonl",
+      "public_trace_sha256": "ffd06c3fb1be19c5f31fe8e3f6aa80e084aa18d3fa6457f11190d45f7bbdb961",
+      "tool_events": 172,
+      "public_task_messages": "candidate_docusaurus_runtime_executor-task-messages.jsonl",
+      "task_messages_sha256": "b9eb5043dbce17a487a901723f12846e6aa5248cd0cda2a526163dc94fe139a7",
+      "recorded_turn_settings": [
+        {
+          "turn_id": "01a086ed-92af-7bc3-b3dc-4faa863eda4b",
+          "model": "gpt-6-astra",
+          "effort": "medium"
+        }
+      ]
+    },
+    {
+      "agent": "/root/baseline_electron_runtime_executor",
+      "source_session_id": "01a08641-d472-7553-8033-311e8b3806d4",
+      "journal_sha256": "3556c4b83ee69f8e0c940ea26f619f55515ceb9c76e14088486b7ba4bb4c572e",
+      "public_trace": "baseline_electron_runtime_executor.jsonl",
+      "public_trace_sha256": "926195e33c136e08e0291c487602a890d7d0bfd25b1db5387ae7090224a9da37",
+      "tool_events": 78,
+      "public_task_messages": "baseline_electron_runtime_executor-task-messages.jsonl",
+      "task_messages_sha256": "9873dbe94de9e385226316642ecdb9a877abe26c0e26d18f4860f276111a1ae7",
+      "recorded_turn_settings": [
+        {
+          "turn_id": "01a08641-d512-72b3-95ed-30ba36d6415d",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        }
+      ]
+    },
+    {
+      "agent": "/root/baseline_hs_tech_executor",
+      "source_session_id": "01a0861e-d1d1-78b1-87a0-d4a48692f84e",
+      "journal_sha256": "ae68965aad71acad904f1a209c6955476cf02e0f9df3691d23100469599d2b13",
+      "public_trace": "baseline_hs_tech_executor.jsonl",
+      "public_trace_sha256": "af2d4be838c5326a27f3a0df28ea16c492565daf89616bcf9dc341ae2414d584",
+      "tool_events": 38,
+      "public_task_messages": "baseline_hs_tech_executor-task-messages.jsonl",
+      "task_messages_sha256": "4a6ee07052bce0cfe93b480c270bbe64a379c5d160f4b35c75b09ef809c869f0",
+      "recorded_turn_settings": [
+        {
+          "turn_id": "01a0861e-d262-7211-9178-4280ead0c466",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        },
+        {
+          "turn_id": "01a08625-8ebe-7792-a4d6-c3f716f98140",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        }
+      ]
+    },
+    {
+      "agent": "/root/baseline_docusaurus_runtime_executor",
+      "source_session_id": "01a0865d-21eb-76f0-9837-347572ae6523",
+      "journal_sha256": "977531719344c2f5599c1d1a2623cb296b37b5191f59cd3280a7bbb3f67c6c18",
+      "public_trace": "baseline_docusaurus_runtime_executor.jsonl",
+      "public_trace_sha256": "dfd54ca252217432992f57a7a168a19e60d5d2227b7358eab54d89fcbd49f03b",
+      "tool_events": 206,
+      "public_task_messages": "baseline_docusaurus_runtime_executor-task-messages.jsonl",
+      "task_messages_sha256": "979a78a8b1a24caa1178063dca9e0e391f29b227fddbe5a17812fd6ebfe89747",
+      "recorded_turn_settings": [
+        {
+          "turn_id": "01a0865d-2276-7ca3-be13-bc1ad5c25bed",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        },
+        {
+          "turn_id": "01a08673-53cb-79e1-877c-f75321020603",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        }
+      ]
+    },
+    {
+      "agent": "/root/baseline_docusaurus_legacy_executor",
+      "source_session_id": "01a0868d-debf-7b72-a594-e053140cbfef",
+      "journal_sha256": "9ff6d729228903bf8425c97169b70d193a4aec5c823192bb4f4c841da77a9bff",
+      "public_trace": "baseline_docusaurus_legacy_executor.jsonl",
+      "public_trace_sha256": "6ed79daaf90336289d650ab38117eb643c1ee1833e7caefc43db582d38af35af",
+      "tool_events": 82,
+      "public_task_messages": "baseline_docusaurus_legacy_executor-task-messages.jsonl",
+      "task_messages_sha256": "1dac886db53aae6c6885c25a03ef1711bce423d5a22f0b492fdd4f9a2b7495cc",
+      "recorded_turn_settings": [
+        {
+          "turn_id": "01a0868d-df15-7643-89c0-c75aef487f02",
+          "model": "gpt-6-astra",
+          "effort": "medium"
+        }
+      ]
+    }
+  ]
+}

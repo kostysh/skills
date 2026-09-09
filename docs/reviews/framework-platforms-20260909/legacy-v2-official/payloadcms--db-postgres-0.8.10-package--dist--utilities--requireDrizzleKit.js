@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+Object.defineProperty(exports, "requireDrizzleKit", {
+    enumerable: true,
+    get: function() {
+        return requireDrizzleKit;
+    }
+});
+const requireDrizzleKit = ()=>require('drizzle-kit/api');
+
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy91dGlsaXRpZXMvcmVxdWlyZURyaXp6bGVLaXQudHMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHR5cGUgeyBQb3N0Z3Jlc0FkYXB0ZXIgfSBmcm9tICcuLi90eXBlcydcblxudHlwZSBSZXF1aXJlRHJpenpsZUtpdCA9ICgpID0+IHtcbiAgZ2VuZXJhdGVEcml6emxlSnNvbjogKGFyZ3M6IHsgc2NoZW1hOiBSZWNvcmQ8c3RyaW5nLCB1bmtub3duPiB9KSA9PiB1bmtub3duXG4gIHB1c2hTY2hlbWE6IChcbiAgICBzY2hlbWE6IFJlY29yZDxzdHJpbmcsIHVua25vd24+LFxuICAgIGRyaXp6bGU6IFBvc3RncmVzQWRhcHRlclsnZHJpenpsZSddLFxuICAgIGZpbHRlclNjaGVtYT86IHN0cmluZ1tdLFxuICApID0+IFByb21pc2U8eyBhcHBseTsgaGFzRGF0YUxvc3M7IHdhcm5pbmdzIH0+XG59XG5cbmV4cG9ydCBjb25zdCByZXF1aXJlRHJpenpsZUtpdDogUmVxdWlyZURyaXp6bGVLaXQgPSAoKSA9PiByZXF1aXJlKCdkcml6emxlLWtpdC9hcGknKVxuIl0sIm5hbWVzIjpbInJlcXVpcmVEcml6emxlS2l0IiwicmVxdWlyZSJdLCJyYW5nZU1hcHBpbmdzIjoiOzs7Ozs7Ozs7OyIsIm1hcHBpbmdzIjoiOzs7OytCQVdhQTs7O2VBQUFBOzs7QUFBTixNQUFNQSxvQkFBdUMsSUFBTUMsUUFBUSJ9

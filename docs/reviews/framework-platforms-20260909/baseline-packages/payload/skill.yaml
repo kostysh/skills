@@ -1,0 +1,228 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+
+skill:
+  name: payload
+  source-version: 0.1.0
+  recommended-skill-md-max-bytes: 32000
+  description: >-
+    Use when working with Payload CMS projects: payload.config.ts, collections,
+    globals, fields, hooks, access control, Payload Local/REST/GraphQL APIs,
+    adapters, endpoints, jobs, plugins, and Payload-specific validation,
+    security, relationship, transaction, or hook behavior.
+  compatibility: >-
+    Portable documentation-only skill based on the upstream payloadcms/skills
+    Payload guidance. Use alongside framework, TypeScript, testing, and security
+    skills for non-Payload concerns.
+
+fragments:
+  overview: fragments/overview.md
+
+references:
+  - id: ref-access-control
+    title: Access Control
+    source: references/access-control.md
+    target: references/access-control.md
+    required: true
+    trigger: Read this when implementing collection, field, global, RBAC, multi-tenant, or Local API access behavior.
+  - id: ref-access-control-advanced
+    title: Access Control Advanced
+    source: references/access-control-advanced.md
+    target: references/access-control-advanced.md
+    required: true
+    trigger: Read this when access depends on context, time, subscriptions, factory functions, templates, debugging, or performance.
+  - id: ref-adapters
+    title: Adapters
+    source: references/adapters.md
+    target: references/adapters.md
+    required: true
+    trigger: Read this when configuring database, storage, email adapters, transactions, or nested operations that must share req.
+  - id: ref-advanced
+    title: Advanced
+    source: references/advanced.md
+    target: references/advanced.md
+    required: true
+    trigger: Read this when working with auth flows, jobs queue, custom endpoints, admin components, plugins, localization, or core Payload types.
+  - id: ref-collections
+    title: Collections
+    source: references/collections.md
+    target: references/collections.md
+    required: true
+    trigger: Read this when designing collections, auth collections, uploads, live preview, drafts, versions, or globals.
+  - id: ref-endpoints
+    title: Endpoints
+    source: references/endpoints.md
+    target: references/endpoints.md
+    required: true
+    trigger: Read this when adding or debugging custom root, collection, or global endpoints, request helpers, CORS, or endpoint auth.
+  - id: ref-field-type-guards
+    title: Field Type Guards
+    source: references/field-type-guards.md
+    target: references/field-type-guards.md
+    required: true
+    trigger: Read this when traversing Payload fields at runtime or narrowing field config types safely.
+  - id: ref-fields
+    title: Fields
+    source: references/fields.md
+    target: references/fields.md
+    required: true
+    trigger: Read this when choosing or configuring field types, validation, admin options, virtual fields, joins, arrays, blocks, tabs, or field factories.
+  - id: ref-hooks
+    title: Hooks
+    source: references/hooks.md
+    target: references/hooks.md
+    required: true
+    trigger: Read this when implementing collection or field hooks, hook context, revalidation, auto-set fields, or loop prevention.
+  - id: ref-plugin-development
+    title: Plugin Development
+    source: references/plugin-development.md
+    target: references/plugin-development.md
+    required: true
+    trigger: Read this when creating or maintaining Payload plugins, plugin package structure, field/collection injection, hooks, endpoints, admin components, or i18n.
+  - id: ref-queries
+    title: Queries
+    source: references/queries.md
+    target: references/queries.md
+    required: true
+    trigger: Read this when using Local API, REST, GraphQL, query operators, relationship depth, select, transactions, or access-aware user operations.
+
+assets: []
+copies:
+  - id: copy-agents-openai-yaml
+    source: agents/openai.yaml
+    target: agents/openai.yaml
+    description: Portable copy of agents/openai.yaml.
+supporting:
+  - id: supporting-docs-readme
+    source: docs/README.md
+    target: docs/README.md
+    description: Non-normative navigation for payload skill maintenance records.
+  - id: supporting-implementation-log-20260509-1
+    source: docs/logs/implementation-log-20260509-1.md
+    target: docs/logs/implementation-log-20260509-1.md
+    description: Non-normative implementation log for initial payload skill creation.
+
+surfaces:
+  active:
+    requiredReferences:
+      - ref-access-control
+      - ref-access-control-advanced
+      - ref-adapters
+      - ref-advanced
+      - ref-collections
+      - ref-endpoints
+      - ref-field-type-guards
+      - ref-fields
+      - ref-hooks
+      - ref-plugin-development
+      - ref-queries
+    optionalReferences: []
+  supportingGlobs:
+    - docs/*
+    - docs/logs/*
+
+sections:
+  startHere:
+    - Confirm the project actually uses Payload CMS or the task is explicitly about Payload behavior.
+    - Inspect local Payload version, package manager, database adapter, payload.config.ts, collection/global files, generated types, and available validation commands before choosing a pattern.
+    - Load only the reference files that match the touched Payload surface; do not read every reference by default.
+    - Preserve existing project conventions unless they conflict with Payload access, transaction, hook, type, or adapter semantics.
+    - Treat config, docs, wrappers, or generated types as substrate until the requested Payload behavior is compiled, tested, or otherwise exercised.
+  whenToUse:
+    - Building, changing, reviewing, or debugging Payload CMS applications.
+    - Working on payload.config.ts, collections, globals, fields, hooks, access control, Local API, REST, GraphQL, adapters, endpoints, jobs, plugins, admin components, or generated Payload types.
+    - Investigating Payload-specific validation errors, security problems, relationship queries, hook loops, transaction issues, adapter behavior, or plugin composition.
+  whenNotToUse:
+    - The task is only a generic Next.js, React, Node.js, TypeScript, or database problem with no Payload-specific API or config surface.
+    - The user is mapping source CMS exports into Payload collections before implementation; use payload-migration.
+    - The request is a security audit across auth, secrets, webhooks, or permissions rather than Payload-specific guidance; pair with security-reviewer.
+    - The work is pure visual design or admin UI layout without Payload framework behavior.
+  workflow:
+    - id: stage-establish-payload-context
+      title: Establish Payload context
+      goal: Ground the work in the installed Payload version, project structure, adapter, and runtime constraints.
+      steps:
+        - Inspect package metadata, payload.config.ts, collection/global definitions, generated type location, database/storage adapters, and local commands.
+        - Identify whether the change touches access control, hooks, transactions, fields, endpoints, adapter setup, or plugin composition.
+        - Select the smallest relevant reference file for that surface.
+      validation:
+        - The chosen approach matches the local Payload version and project conventions or states a version assumption.
+        - The task is scoped to concrete Payload behavior, not generic framework advice.
+    - id: stage-apply-payload-pattern
+      title: Apply the Payload pattern
+      goal: Implement or review the Payload change using the framework primitive that preserves type safety, access behavior, hook behavior, and transaction boundaries.
+      steps:
+        - Use the loaded reference guidance together with local code style.
+        - Keep access-control decisions explicit, especially Local API calls that operate for a user.
+        - Thread req through nested operations when transaction atomicity matters.
+        - Use context flags or equivalent guards for hook-triggered follow-up operations that could recurse.
+      validation:
+        - The result avoids known Payload pitfalls for access control, hooks, transactions, fields, and relationships.
+        - Any substrate-only output is not described as completed runtime behavior unless verified.
+    - id: stage-verify-payload-behavior
+      title: Verify Payload behavior
+      goal: Prove the changed Payload surface with the narrowest meaningful project check.
+      steps:
+        - Run existing type generation, typecheck, lint, tests, build, or a targeted API/admin smoke check when available.
+        - For config and collection changes, prefer checks that load Payload config or generate Payload types.
+        - If validation cannot run, perform the next-best static check and report the limitation.
+      validation:
+        - The final report names the checks that passed or the exact verification gap.
+  interop:
+    - id: interop-payload-migration
+      domain: source CMS export analysis and Payload collection migration design
+      winner: payload-migration
+      rationale: payload-migration owns config-first migration analysis; this skill owns general Payload application development.
+    - id: interop-nextjs
+      domain: Next.js routing, React Server Components, Server Actions, metadata, images, fonts, bundling, or self-hosting
+      winner: nextjs
+      rationale: Payload is Next.js native, but Next.js framework semantics belong to nextjs.
+    - id: interop-typescript
+      domain: TypeScript language, tsconfig, linting, and type-system issues
+      winner: typescript-engineer
+      rationale: This skill owns Payload APIs and idioms; TypeScript language and toolchain rules belong to typescript-engineer.
+    - id: interop-testing
+      domain: TypeScript test design, mocks, fixtures, determinism, and runner behavior
+      winner: typescript-test-engineer
+      rationale: This skill names Payload verification targets; TypeScript test structure belongs to typescript-test-engineer.
+    - id: interop-security
+      domain: cross-cutting security review, threat modeling, secrets, webhook verification, and vulnerability triage
+      winner: security-reviewer
+      rationale: Use this skill for Payload-specific access semantics; use security-reviewer for broader security audit workflow.
+  commands: []
+  gotchas:
+    - id: gotcha-local-api-access
+      priority: high
+      text: Payload Local API bypasses access control by default; set overrideAccess false when operating on behalf of a user.
+    - id: gotcha-thread-req
+      priority: high
+      text: Nested operations in hooks or request flows can leave the transaction boundary unless req is threaded through supported operations.
+    - id: gotcha-hook-recursion
+      priority: high
+      text: Hook-triggered operations can recurse; use context or another explicit guard when an operation could trigger the same hook again.
+    - id: gotcha-reference-scope
+      priority: medium
+      text: Do not load the full reference set by default; choose the file whose trigger matches the current Payload surface.
+    - id: gotcha-version-sensitive
+      priority: medium
+      text: Payload examples are version-sensitive; verify local package versions and generated types before applying remembered API details.
+  policies:
+    - id: policy-access-evidence
+      title: Access evidence policy
+      text: Access-control changes must state whether they affect admin UI, Local API, REST, GraphQL, or all paths, and verification should exercise the relevant path when possible.
+    - id: policy-transaction-evidence
+      title: Transaction evidence policy
+      text: Hook or nested-operation changes must preserve the intended transaction boundary or explicitly state when atomicity is not required.
+    - id: policy-output-reporting
+      title: Output reporting policy
+      text: Final reports must distinguish implemented Payload behavior from supporting config, generated files, docs, or unverified examples.
+  portability:
+    required: true
+    rules:
+      - Do not reference machine-specific absolute paths or local files outside this skill folder.
+      - Keep all mandatory Payload guidance inside this skill folder through SKILL.md and local references.
+      - Use relative links for local references, assets, scripts, tests, and supporting docs.
+    checklist:
+      - Run the skill-source-compiler check command after regeneration.
+      - Search the skill folder for absolute local paths before finishing.
+      - Confirm every required reference listed by SKILL.md exists inside this skill folder.

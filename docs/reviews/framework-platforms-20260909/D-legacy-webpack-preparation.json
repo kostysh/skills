@@ -1,0 +1,24 @@
+{
+  "phase": "coordinator readiness before executor exposure",
+  "runtime_failure": "5.110.3 ProgressPlugin rejects webpackbar6 name/color/reporters/reporter options",
+  "official_sources": [
+    "https://github.com/facebook/docusaurus/issues/11923",
+    "https://github.com/facebook/docusaurus/issues/11974",
+    "https://github.com/facebook/docusaurus/pull/11981"
+  ],
+  "decision": "Pin Webpack5.105.4 via fixture-only pnpm override; preserve Docusaurus3.9.2 and React18.3.1. This is historical compatibility fixture, not current security assurance.",
+  "old_package_sha256": "374a6c113a8a95cc8dc49f6d6962d10934015b1deef3b825fef6d8f1154e3525",
+  "old_lock_sha256": "b9d0c38d3c94c3b0dfa1297357ca0cce5281f498875ce64ed5d5cf87eee5b35d",
+  "runtime_after": "pending",
+  "runtime_after_completion": {
+    "result": "PASS",
+    "command": "corepack pnpm build",
+    "locales": [
+      "en",
+      "it"
+    ],
+    "exit": 0,
+    "source": "coordinator runtime session45810 completed before D5 first executor; original runtime_after pending retained as preparation history",
+    "independent_case_evidence": "baseline-D-legacy-assessment.md"
+  }
+}

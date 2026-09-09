@@ -1,0 +1,1342 @@
+{
+  "reviewer": "candidate_ned_independent_reviewer",
+  "freeze": "candidate-ned-post-remediation-freeze.json",
+  "scope": "72 grouped technical aspects, not count of individual assertions; full active package text reviewed across calls and relevant official API/source sections independently checked. Author maps are navigation not evidence by themselves.",
+  "technical_source_status": "No outstanding material source findings in reviewed post-remediation N/E/D; runtime and other mandatory evidence remain separate.",
+  "rows": [
+    {
+      "id": "N01",
+      "aspect": "Stable/runtime/React/TypeScript support, existing-project version branch",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "Installed engine and peer ranges verified in registry343 and installation002; preserve15 branch.",
+      "source_files": [
+        "fragments/overview.md",
+        "skill.yaml",
+        "SKILL.md"
+      ],
+      "official_source_ids": [
+        "000",
+        "001",
+        "002",
+        "076",
+        "340",
+        "342",
+        "343"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N02",
+      "aspect": "App Router files: page/layout/template/loading/error/not-found/default, route groups and special folders",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "File hierarchy/project structure003 and template030/error031 support names and state semantics.",
+      "source_files": [
+        "references/file-conventions.md",
+        "references/app-router-files.md"
+      ],
+      "official_source_ids": [
+        "003",
+        "004",
+        "030",
+        "031",
+        "203"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N03",
+      "aspect": "Proxy config export, matcher, middleware migration and runtime",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "config export and Node proxy matched026/000/tagged333; no proxyConfig retained.",
+      "source_files": [
+        "references/file-conventions.md"
+      ],
+      "official_source_ids": [
+        "000",
+        "026",
+        "333"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N04",
+      "aspect": "Renderable data example and metadata route runtime",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "Response parsed before React output;032/061 establish metadata runtime.",
+      "source_files": [
+        "references/app-router-files.md"
+      ],
+      "official_source_ids": [
+        "006",
+        "032",
+        "061"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N05",
+      "aspect": "Async request APIs: params/searchParams/cookies/headers/draftMode/use() and codemod",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "Async APIs and viewport params matched version16 migration and055/056; generateImageMetadata exception preserved.",
+      "source_files": [
+        "references/async-patterns.md",
+        "references/metadata.md"
+      ],
+      "official_source_ids": [
+        "000",
+        "001",
+        "048",
+        "049",
+        "050",
+        "055",
+        "056",
+        "080"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N06",
+      "aspect": "React server/client serialization and Date/Map/Set/functions/classes",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "React077 supports Date/Map/Set beyond JSON; ordinary functions/classes excluded.",
+      "source_files": [
+        "references/rsc-boundaries.md",
+        "fragments/overview.md",
+        "SKILL.md"
+      ],
+      "official_source_ids": [
+        "005",
+        "077",
+        "078"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N07",
+      "aspect": "Client async prohibition, server-only data, composition through children",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "React078 and Next338 support async-server functions and nonasync client;005 supports JSX composition.",
+      "source_files": [
+        "references/rsc-boundaries.md",
+        "references/directives.md"
+      ],
+      "official_source_ids": [
+        "005",
+        "077",
+        "078",
+        "338"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N08",
+      "aspect": "Server Actions reachability, authentication, authorization and input validation",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "Data-security017 establishes directly callable action input/auth checks; corrected examples include application-owned validation and actor checks.",
+      "source_files": [
+        "references/data-patterns.md",
+        "references/directives.md",
+        "references/route-handlers.md"
+      ],
+      "official_source_ids": [
+        "007",
+        "017",
+        "078"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N09",
+      "aspect": "Data fetching, route handlers vs actions, parallel fetch, use/Suspense and deduplication",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "006/011/079 distinguish parallel fetching, uncached GET, request memoization, persistent cache.",
+      "source_files": [
+        "references/data-patterns.md",
+        "references/route-handlers.md"
+      ],
+      "official_source_ids": [
+        "006",
+        "007",
+        "011",
+        "029",
+        "079",
+        "080"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N10",
+      "aspect": "revalidateTag/updateTag/revalidatePath and cache intent",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "062/063/064/067 verified SWR max versus action-only updateTag and opt-in cacheComponents;025 prohibits direct request APIs in shared cache.",
+      "source_files": [
+        "references/data-patterns.md",
+        "references/directives.md"
+      ],
+      "official_source_ids": [
+        "008",
+        "024",
+        "025",
+        "062",
+        "063",
+        "064",
+        "067"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N11",
+      "aspect": "Route Handler methods, params/body/cookies/status, page conflict",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "011/029/048 support methods, async params and page/route collision; examples not complete app authentication.",
+      "source_files": [
+        "references/route-handlers.md"
+      ],
+      "official_source_ids": [
+        "011",
+        "029",
+        "048",
+        "059",
+        "060"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N12",
+      "aspect": "Node vs Edge APIs, dependency compatibility and deployment-dependent latency",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "075 supports Node default, limited Edge APIs and noISR; no universal latency guarantee.",
+      "source_files": [
+        "references/runtime-selection.md"
+      ],
+      "official_source_ids": [
+        "018",
+        "075",
+        "076"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N13",
+      "aspect": "Turbopack defaults, webpack preservation, server external packages and transpilation",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "000/068/069 versioned Turbopack and external/transpile boundaries; preserving existingWebpack supported.",
+      "source_files": [
+        "references/bundling.md"
+      ],
+      "official_source_ids": [
+        "000",
+        "013",
+        "068",
+        "069",
+        "204"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N14",
+      "aspect": "Browser-only dynamic import, ssr:false, client wrapper and CSS",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "005/010/012 support client wrapper for ssr:false and SSR of ordinary client components.",
+      "source_files": [
+        "references/bundling.md"
+      ],
+      "official_source_ids": [
+        "005",
+        "010",
+        "012"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N15",
+      "aspect": "Navigation hooks, Link, params/segments/reportWebVitals",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "Hook names/imports and navigation roles matched040-047; useLinkStatus pending claim needs correct function context; no generic prefetch claim.",
+      "source_files": [
+        "references/functions.md"
+      ],
+      "official_source_ids": [
+        "040",
+        "041",
+        "042",
+        "043",
+        "044",
+        "045",
+        "046",
+        "047"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N16",
+      "aspect": "Server helpers after/connection/userAgent and request-response classes",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "051/052 support import/duration/request semantics; helpers request classes matched048-061.",
+      "source_files": [
+        "references/functions.md"
+      ],
+      "official_source_ids": [
+        "048",
+        "049",
+        "050",
+        "051",
+        "052",
+        "053",
+        "054",
+        "059",
+        "060",
+        "061"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N17",
+      "aspect": "Suspense conditions, static production search and pathname",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "040/041/337 support production-build fail for missing applicable Suspense, dev notproof.",
+      "source_files": [
+        "references/suspense-boundaries.md"
+      ],
+      "official_source_ids": [
+        "040",
+        "041",
+        "052",
+        "337"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N18",
+      "aspect": "Hydration causes, useEffect/useId/suppressHydrationWarning and client-only island",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "081/339 and005/012 support deterministic SSR and bounded client-only/Effect workarounds.",
+      "source_files": [
+        "references/hydration-error.md"
+      ],
+      "official_source_ids": [
+        "005",
+        "012",
+        "081",
+        "339"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N19",
+      "aspect": "Error boundaries, reset/global-error and Next control-flow exceptions",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "031/034/036/039 support client boundaries, throws, streamed200 and experimental rethrow; expected errors distinct009.",
+      "source_files": [
+        "references/error-handling.md"
+      ],
+      "official_source_ids": [
+        "009",
+        "031",
+        "034",
+        "035",
+        "036",
+        "039"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N20",
+      "aspect": "forbidden/unauthorized experimental authInterrupts",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "037/038/336 experimental branch labeled, no production recommendation.",
+      "source_files": [
+        "references/error-handling.md"
+      ],
+      "official_source_ids": [
+        "037",
+        "038",
+        "336"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N21",
+      "aspect": "Metadata/static metadata/generateMetadata/viewport/OG/sitemap/robots/icons",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "055-058 and032/033 supported exports and version16 Promise contracts with sync generateImageMetadata exception.",
+      "source_files": [
+        "references/metadata.md"
+      ],
+      "official_source_ids": [
+        "032",
+        "033",
+        "055",
+        "056",
+        "057",
+        "058",
+        "061"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N22",
+      "aspect": "Images: sizes/fill/remotePatterns/static imports/preload/priority/quality/security defaults",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "072 intrinsic/CSS distinction corrected N-C2; official size/security defaults preserved.",
+      "source_files": [
+        "references/image.md"
+      ],
+      "official_source_ids": [
+        "000",
+        "072"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N23",
+      "aspect": "Fonts: Google/local loading, weights/styles/subsets/preload, CSS vars and Tailwind",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "073 supports selfhosting/build-time font fetch, subsets preload and variable font; Tailwind3 branch preserved.",
+      "source_files": [
+        "references/font.md"
+      ],
+      "official_source_ids": [
+        "073",
+        "331",
+        "332"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N24",
+      "aspect": "Scripts: loading strategies, client handlers, worker and JSON-LD",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "074 worker experimental/noAppRouter and handler constraints; native JSONLD is appropriate exception.",
+      "source_files": [
+        "references/scripts.md"
+      ],
+      "official_source_ids": [
+        "020",
+        "021",
+        "022",
+        "074"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N25",
+      "aspect": "Parallel/intercepting routes, default/null/catchall, refresh and modal history",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "027/028 support slots/default/interception/null catchall and history distinctions.",
+      "source_files": [
+        "references/parallel-routes.md"
+      ],
+      "official_source_ids": [
+        "027",
+        "028",
+        "042"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N26",
+      "aspect": "CLI debug-build-paths and MCP dev diagnostics, upgrade codemod authority",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "071 debug-build-paths filesystem semantics and014MCP16+ verified; no universal pre16 flag.",
+      "source_files": [
+        "references/debug-tricks.md"
+      ],
+      "official_source_ids": [
+        "014",
+        "015",
+        "071",
+        "334",
+        "340",
+        "341"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N27",
+      "aspect": "Self-hosting start/standalone/static export/Docker/PM2/env/sharp/reverse proxy",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "018/019/070 and taggedDockerfile plus DockerCOPY confirm standalone/env flow; N-C1 corrected .next ownership, permission delta execution pending.",
+      "source_files": [
+        "references/self-hosting.md"
+      ],
+      "official_source_ids": [
+        "018",
+        "019",
+        "023",
+        "070",
+        "199",
+        "354"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N28",
+      "aspect": "Distributed cache handlers, Redis/S3 examples and cross-instance invalidation",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "018/066 support shared invalidation/consistency obligations; no-op cache specimens removed.065 service response notproof.",
+      "source_files": [
+        "references/self-hosting.md"
+      ],
+      "official_source_ids": [
+        "018",
+        "024",
+        "065",
+        "066"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "N29",
+      "aspect": "OpenNext/platform adapter support and deployment API",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "328-330 adapter-specific features/version limits; no all-platform parity claim.",
+      "source_files": [
+        "references/self-hosting.md"
+      ],
+      "official_source_ids": [
+        "327",
+        "328",
+        "329",
+        "330"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "E01",
+      "aspect": "Installed tool/runtime/OS release matrix and stable vs experimental",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "Registry344/345/360 and322 engine/peer fields separate hostNode from bundledNode;097 breaking changes preserve existing branch.",
+      "source_files": [
+        "fragments/overview.md",
+        "SKILL.md",
+        "references/tooling-project-structure.md"
+      ],
+      "official_source_ids": [
+        "094",
+        "095",
+        "097",
+        "319",
+        "322",
+        "344",
+        "345",
+        "360"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "E02",
+      "aspect": "Process model/lifecycle/single instance/window/session/utility ownership",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "102/103/105/112 support lifecycle/process ownership and utility ready timing.",
+      "source_files": [
+        "references/architecture.md"
+      ],
+      "official_source_ids": [
+        "082",
+        "102",
+        "103",
+        "105",
+        "112"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "E03",
+      "aspect": "Protocol scheme privileges vs handler/session registration timing",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "109 separates privileged scheme pre-ready from handlers/session post-ready; generic premature registration removed.",
+      "source_files": [
+        "references/architecture.md"
+      ],
+      "official_source_ids": [
+        "109"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "E04",
+      "aspect": "Sandbox/contextIsolation/nodeIntegration/webviewTag/CSP/openExternal",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "083/084/103 support security baseline and limited sandboxed preload require.",
+      "source_files": [
+        "references/security-ipc-preload.md",
+        "references/renderer-integration.md"
+      ],
+      "official_source_ids": [
+        "083",
+        "084",
+        "085",
+        "103",
+        "106"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "E05",
+      "aspect": "IPC handle/invoke schemas/results/sender/window/frame/session and contextBridge limits",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "083/085/086/106-108 support narrow bridge, sender authority and clone limits.",
+      "source_files": [
+        "references/security-ipc-preload.md",
+        "references/typescript-in-electron.md"
+      ],
+      "official_source_ids": [
+        "083",
+        "085",
+        "086",
+        "106",
+        "107",
+        "108"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "E06",
+      "aspect": "Navigation deprecated positional arguments and deny policy",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "104 positional deprecated and programmatic navigation exceptions reviewed against097.",
+      "source_files": [
+        "references/security-ipc-preload.md",
+        "references/review-playbooks.md"
+      ],
+      "official_source_ids": [
+        "083",
+        "104",
+        "097"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "E07",
+      "aspect": "Session permission check/request/device/display-media and cleanup",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "110 check+request contract, null webContents/subframes and requestingOrigin preserved.",
+      "source_files": [
+        "references/security-ipc-preload.md",
+        "references/native-os-integration.md",
+        "references/testing-observability.md"
+      ],
+      "official_source_ids": [
+        "110",
+        "120"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "E08",
+      "aspect": "Electron-vite build/dev/preview/outDir/env/assets/externalization",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "129/130/133/134/137/139-141 match build/dev/preview/config/dependencies; not blanket module bundling.",
+      "source_files": [
+        "references/build-process.md",
+        "references/tooling-project-structure.md",
+        "references/typescript-in-electron.md"
+      ],
+      "official_source_ids": [
+        "129",
+        "130",
+        "133",
+        "134",
+        "137",
+        "139",
+        "140",
+        "141",
+        "321",
+        "322"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "E09",
+      "aspect": "Isolated build release channel and sandboxed preload bundling",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "135 explicitly experimental;084/087 require suitable bundled sandbox preload.",
+      "source_files": [
+        "references/build-process.md",
+        "references/tooling-project-structure.md",
+        "references/typescript-in-electron.md"
+      ],
+      "official_source_ids": [
+        "084",
+        "087",
+        "134",
+        "135"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "E10",
+      "aspect": "Forge package/make/publish cascading and same-artifact evidence",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "142/315 show cascading artifact mutation. E-C1 outerpnpm dispatch now explicitrun; actual immutableForge delta pending.",
+      "source_files": [
+        "references/build-process.md",
+        "references/packaging-release-updates.md"
+      ],
+      "official_source_ids": [
+        "142",
+        "315"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "E11",
+      "aspect": "pnpm install layout with Forge",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "142 explicitly requires pnpm hoisted layout; corrected project-local advice.",
+      "source_files": [
+        "references/build-process.md",
+        "references/tooling-project-structure.md"
+      ],
+      "official_source_ids": [
+        "142"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "E12",
+      "aspect": "ASAR/native unpack/rebuild/fuses/integrity/source exposure",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "088-091 validate ABI/nativeUnpack/fuses/integrity and signing order; ASAR not source secrecy.",
+      "source_files": [
+        "references/source-protection.md",
+        "references/build-process.md",
+        "references/packaging-release-updates.md",
+        "references/data-storage-native.md"
+      ],
+      "official_source_ids": [
+        "088",
+        "089",
+        "090",
+        "091",
+        "101",
+        "318"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "E13",
+      "aspect": "Bytecode/source maps/minification/SWC/source protection and platform caveats",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "132/136/138 validate bytecode production main/preload, sandbox limitation, string/source exposure and v5 config.",
+      "source_files": [
+        "references/source-protection.md",
+        "references/build-process.md"
+      ],
+      "official_source_ids": [
+        "132",
+        "136",
+        "138",
+        "322"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "E14",
+      "aspect": "Signing/notarization/timestamp/CI makers and update channel/provenance",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "113 Linux limitation and093/143/146/147 signing/updater source reviewed; platform release remains separate real boundary.",
+      "source_files": [
+        "references/packaging-release-updates.md"
+      ],
+      "official_source_ids": [
+        "092",
+        "093",
+        "101",
+        "113",
+        "143",
+        "146",
+        "147",
+        "315",
+        "316",
+        "317"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "E15",
+      "aspect": "TS process aliases/moduleResolution/typechecks/shared declarations",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "082/085/087/132/141 support process typing, separate typecheck, no runtime privilege via aliases.",
+      "source_files": [
+        "references/typescript-in-electron.md"
+      ],
+      "official_source_ids": [
+        "082",
+        "085",
+        "087",
+        "132",
+        "141"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "E16",
+      "aspect": "Decorators, emitDecoratorMetadata and electron-vite SWC option",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "132 and322 confirm SWC metadata optional path not obsolete.",
+      "source_files": [
+        "references/typescript-in-electron.md"
+      ],
+      "official_source_ids": [
+        "132",
+        "322"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "E17",
+      "aspect": "App paths, safeStorage availability/weak Linux backend/session-only persistence",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "102/111 support paths and weak Linux basic_text fallback; async API current branch.",
+      "source_files": [
+        "references/data-storage-native.md"
+      ],
+      "official_source_ids": [
+        "102",
+        "111",
+        "097"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "E18",
+      "aspect": "File imports/dialogs/native modules/local data migrations",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "117 cancellation/result fields and088/089/102 native/data locations match bounded policies; no SQL library API invented.",
+      "source_files": [
+        "references/data-storage-native.md",
+        "references/native-os-integration.md"
+      ],
+      "official_source_ids": [
+        "088",
+        "089",
+        "102",
+        "117"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "E19",
+      "aspect": "Native menu/tray/global shortcut/dialog/clipboard/notification/desktop capture/display/power/theme",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "097 versions and114-125 APIs support main-owned native surface; platform capabilities require actual target checks.",
+      "source_files": [
+        "references/native-os-integration.md"
+      ],
+      "official_source_ids": [
+        "097",
+        "114",
+        "115",
+        "116",
+        "117",
+        "118",
+        "119",
+        "120",
+        "121",
+        "122",
+        "123",
+        "124",
+        "125"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "E20",
+      "aspect": "React renderer routing/state/forms/offline UI and browser-only dependencies",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "082/083/085/087 browser renderer and main privilege interop consistent.",
+      "source_files": [
+        "references/renderer-integration.md"
+      ],
+      "official_source_ids": [
+        "082",
+        "083",
+        "085",
+        "087"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "E21",
+      "aspect": "Playwright/WebdriverIO/Spectron and packaged runtime verification",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "099 explicitly Playwright experimental;200/201 tool owner evidence and packaged/runtime limits preserved.",
+      "source_files": [
+        "references/testing-observability.md"
+      ],
+      "official_source_ids": [
+        "099",
+        "200",
+        "201"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "E22",
+      "aspect": "Main debugger/logging/crashReporter/netLog/contentTracing/performance",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "098/100/126-128 support inspector/logging/tracing distinctions; remote debug/sensitive diagnostics policy bounded.",
+      "source_files": [
+        "references/testing-observability.md"
+      ],
+      "official_source_ids": [
+        "098",
+        "100",
+        "126",
+        "127",
+        "128"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "E23",
+      "aspect": "Review playbooks, output proof limits and direct owners",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "Playbooks preserve domain ownership and evidence limits; E10 remediation still needs real artifact boundary.",
+      "source_files": [
+        "references/review-playbooks.md",
+        "fragments/overview.md",
+        "SKILL.md"
+      ],
+      "official_source_ids": [
+        "082",
+        "083",
+        "099",
+        "315"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "D01",
+      "aspect": "Scaffold/current stable engines and existing project compatibility",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "151/305/306 and361 distinguish existing3.9.2 React18 from stable3.10.2 engines.",
+      "source_files": [
+        "fragments/overview.md",
+        "SKILL.md",
+        "references/bootstrap-and-structure.md"
+      ],
+      "official_source_ids": [
+        "151",
+        "305",
+        "306",
+        "361"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "D02",
+      "aspect": "pnpm create/install/run/exec workspace structure and frozen lockfile",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "151/191/192/300 scaffold/workspace command flow; no frozen install before lockfile.",
+      "source_files": [
+        "references/bootstrap-and-structure.md",
+        "references/doc-quality-tooling-and-agents.md"
+      ],
+      "official_source_ids": [
+        "151",
+        "191",
+        "192",
+        "300"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "D03",
+      "aspect": "Production serve CLI flags and repeated command examples",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "307/308 CLI siteDir/--build and191 forwarding support fixed serve invocation; real production preview succeeded.",
+      "source_files": [
+        "fragments/overview.md",
+        "SKILL.md",
+        "references/bootstrap-and-structure.md",
+        "references/search-and-ecosystem.md",
+        "references/deployment-versioning-i18n.md",
+        "references/doc-quality-tooling-and-agents.md",
+        "assets/project-files/AGENTS.md"
+      ],
+      "official_source_ids": [
+        "191",
+        "300",
+        "307",
+        "308"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "D04",
+      "aspect": "Core config/presets/docs-only homepage/routes/sidebars/plugin IDs",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "155/157/301 route bases and instanceIDs; D-C1 global slug prohibition corrected, paired collision execution pending.",
+      "source_files": [
+        "references/config-presets-and-routing.md"
+      ],
+      "official_source_ids": [
+        "153",
+        "154",
+        "155",
+        "156",
+        "157",
+        "158",
+        "159",
+        "301"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "D05",
+      "aspect": "MDX parser/Markdown frontmatter/links/assets/React browser-only constraints",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "154/160/161 parser mode and browser-safe React/MDX constraints supported.",
+      "source_files": [
+        "references/content-authoring.md"
+      ],
+      "official_source_ids": [
+        "160",
+        "161",
+        "154",
+        "305"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "D06",
+      "aspect": "Sidebars/categories/slug IDs/version-safe imports",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "158/159/170/301 category/sidebar/slugID and @site versioned imports supported.",
+      "source_files": [
+        "references/content-authoring.md",
+        "references/config-presets-and-routing.md"
+      ],
+      "official_source_ids": [
+        "158",
+        "159",
+        "170",
+        "301"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "D07",
+      "aspect": "Mermaid/live-code/tabs/admonitions/code blocks and theme plugins",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "162-165/303/304 Mermaid/live-code/tabs config supported; D-runtime actual diagram+tabs.",
+      "source_files": [
+        "references/content-authoring.md"
+      ],
+      "official_source_ids": [
+        "162",
+        "163",
+        "164",
+        "165",
+        "303",
+        "304"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "D08",
+      "aspect": "ThemeConfig/colors/navbar/footer/prism/announcementBar/CSS/modules/swizzling",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "166-168/300 theme config and wrap/eject/list boundary supported; no forced unsafe swizzle.",
+      "source_files": [
+        "references/customization-and-ux.md"
+      ],
+      "official_source_ids": [
+        "166",
+        "167",
+        "168",
+        "300"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "D09",
+      "aspect": "Algolia contextual search/crawler/facets/AskAI and credential boundary",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "173/178/302 contextual defaults/askAi and credential/crawler separation; no remote index runtime claim.",
+      "source_files": [
+        "references/search-and-ecosystem.md"
+      ],
+      "official_source_ids": [
+        "173",
+        "178",
+        "302"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "D10",
+      "aspect": "Local search @cmfcmf config/versions/locales/runtime/peer dependencies",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "186/313/363 local search version/locale/options match; D-runtime docs indexes and search results real, default pages404 disclosed.",
+      "source_files": [
+        "references/search-and-ecosystem.md"
+      ],
+      "official_source_ids": [
+        "186",
+        "313",
+        "363"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "D11",
+      "aspect": "Typesense config/node/React/Docusaurus support and crawler",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "314/365 TypeSense version matrix and service/crawler requirement verified; no inferred provisioned service.",
+      "source_files": [
+        "references/search-and-ecosystem.md"
+      ],
+      "official_source_ids": [
+        "314",
+        "365"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "D12",
+      "aspect": "OpenAPI generator/theme version matrix/generated trees and docs plugin integration",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "188/364 official owner matrix5x->3.10+,4x->3.5-3.9.2 and docItemComponent supported.",
+      "source_files": [
+        "references/search-and-ecosystem.md"
+      ],
+      "official_source_ids": [
+        "188",
+        "364"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "D13",
+      "aspect": "Deployment url/baseUrl/trailingSlash/build/clear/static host and readback",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "154/169/308 static output/baseUrl/trailingSlash/serve; local browser not canonical deployment proof.",
+      "source_files": [
+        "references/deployment-versioning-i18n.md"
+      ],
+      "official_source_ids": [
+        "154",
+        "169",
+        "300",
+        "308"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "D14",
+      "aspect": "Versioning copies/current/latest/versioned roots/multi-instance commands",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "170 copies docs/sidebars and distinguishes current/latest; actual current1.0 remained intact.",
+      "source_files": [
+        "references/deployment-versioning-i18n.md"
+      ],
+      "official_source_ids": [
+        "157",
+        "170",
+        "301"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "D15",
+      "aspect": "i18n content/UI JSON/React translations/version paths/locale URLs",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "171/172/301 React translation APIs versus Markdown copies/version paths; D-runtime FR/current1.0 navigation verified.",
+      "source_files": [
+        "references/deployment-versioning-i18n.md"
+      ],
+      "official_source_ids": [
+        "171",
+        "172",
+        "301"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "D16",
+      "aspect": "Prettier/markdownlint config options/ignores/fix vs check-only",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "179/193-195/312 options reviewed; invalid frontMatter override removed, paired real CLI delta must be assessed separately.",
+      "source_files": [
+        "references/doc-quality-tooling-and-agents.md",
+        "assets/project-files/.prettierrc.json",
+        "assets/project-files/.prettierignore",
+        "assets/project-files/.markdownlint-cli2.jsonc",
+        "assets/project-files/AGENTS.md"
+      ],
+      "official_source_ids": [
+        "179",
+        "193",
+        "194",
+        "195",
+        "312"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "D17",
+      "aspect": "Quality content coverage across non-default roots and versioned instances",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "157/301 custom/translated/versioned roots must derive actual content; runtime12 negative quality checks cover6trees.",
+      "source_files": [
+        "references/doc-quality-tooling-and-agents.md",
+        "assets/project-files/.markdownlint-cli2.jsonc"
+      ],
+      "official_source_ids": [
+        "157",
+        "179",
+        "301",
+        "312"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "D18",
+      "aspect": "GitHub Actions Node/tool engines/pnpm cache/install/scripts",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "310/354/362 Node22+ linter commonruntime corrected to24; workflowv4 does not imply latest upgrade obligation.",
+      "source_files": [
+        "references/doc-quality-tooling-and-agents.md",
+        "assets/project-files/.github/workflows/docs-quality.yml"
+      ],
+      "official_source_ids": [
+        "182",
+        "310",
+        "324",
+        "325",
+        "326",
+        "354",
+        "362"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "D19",
+      "aspect": "New stable3.10 capabilities vs future.v4/experimental flags",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "305 future.v4 opt-in flags distinct from stableFaster; no blanket migration.",
+      "source_files": [
+        "references/config-presets-and-routing.md",
+        "references/bootstrap-and-structure.md"
+      ],
+      "official_source_ids": [
+        "154",
+        "305",
+        "309"
+      ],
+      "baseline_disposition": "verified",
+      "behavioral_status": "separate mandatory evidence assessment"
+    },
+    {
+      "id": "D20",
+      "aspect": "Direct documentation/frontend-design contract and verification authority",
+      "review": "independent source comparison; no additional material source defect after consolidated remediation",
+      "judgment": "documentation/frontend-design accepted direct owners match site handoff; actual D2 consumer still separate.",
+      "source_files": [
+        "fragments/overview.md",
+        "SKILL.md"
+      ],
+      "official_source_ids": [
+        "155",
+        "156",
+        "167",
+        "169"
+      ],
+      "baseline_disposition": "correction-required",
+      "behavioral_status": "separate mandatory evidence assessment"
+    }
+  ],
+  "source_limits": [
+    "Downloaded source alone not validation;007 updating-data and065 cacheHandler service/redirect responses excluded as technical support; use017data-security and018selfhosting respectively.",
+    "Current official docs can mix release channels; installed/tagged contracts and explicit experimental branches win.",
+    "No assertion of exhaustive ecosystem/API coverage outside owned active guidance."
+  ],
+  "finding_deltas": {
+    "E-C1": "source corrected; real Forge flow pending",
+    "N-C1": "source corrected; actual nonroot directory-write delta pending",
+    "N-C2": "source clarity corrected supported072 and independent Image readback",
+    "D-C1": "source corrected; actual distinct/duplicate finalroutes pending"
+  },
+  "direct_owner_files": {
+    "skills/react-components-engineer/SKILL.md": "54fec3b0548ca36ea157c32dcc3a3ec710b5ce0f7f0960fab7798ece27b83009",
+    "skills/react-spa-engineer/SKILL.md": "b466489e4b9e53008b3f1049c1ceefc24c52644c727242450bb7e22436f59c0d",
+    "skills/documentation/SKILL.md": "4498e3ef26485edc0e63ee0fef18b371f81aa8daa694634484410c43003ae7be",
+    "skills/frontend-design/SKILL.md": "52b2d1da1e9855a78306f0c2e261a50bff19db33335e9dbb8539b0bdc729fd9d",
+    "skills/supabase-engineer/SKILL.md": "63d04dc0dd91685f6ee3987d14de620598e2ee89147790e33fabc1d9fc0d1098",
+    "skills/payload/SKILL.md": "9a02717763b328222f840d34f3096ed54f115a3ea6f8a430f3a96f89dc3827b4"
+  }
+}

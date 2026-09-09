@@ -1,0 +1,2040 @@
+{
+  "skill": "payload-migration",
+  "mode": "independent baseline technical source audit",
+  "base": "d89d66f2c99bf8b9e84e5b4def54fa60192856a5",
+  "sourceVersion": "0.1.1",
+  "checkedAt": "2026-09-09",
+  "stable": "3.88.0",
+  "prerelease": "4.0.0-canary.33; not a recommended upgrade",
+  "existingProject": "none supplied; no installed product version inferred",
+  "snapshot": "baseline-snapshot.json",
+  "sourceArchive": "payload-official/ (official docs, exact v3.88 source, release feed, npm tags)",
+  "coverageClaim": "All target active files and sections inventoried. Result applies to explicitly stated source claims, not every example runtime. Unverified rows remain open and prohibit a full currentness/PASS claim.",
+  "technicalAspects": [
+    {
+      "id": "M-T01",
+      "aspect": "Outcome, authorization, activation, complete model and import ownership",
+      "occurrences": [
+        {
+          "file": "skill.yaml",
+          "start": 1,
+          "end": 165,
+          "sha256": "e65042914669f947a5bdfd169805790c65cc164d5dea0d84092553eff4f46c21"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/local-api/outside-nextjs",
+        "https://payloadcms.com/docs/local-api/overview"
+      ],
+      "result": "correction-required",
+      "basis": "Description promises migration but workflow ends at planning/offer script; hard-coded confirm complete model can re-ask already supplied authorization. Direct interop narrows migration to mapping and leaves actual durable execution/reconciliation owner unstated.",
+      "requiredChange": "Migration owns authorized transformation/import/rerun/reconciliation; reuse accepted model and authority, stop only missing dependent fact/action.",
+      "falsifier": "M01 runs authorized import with accepted schema; M04 plans only when import is not authorized.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "M-T02",
+      "aspect": "Generated workflow overview, dynamic enum choices and promised outputs",
+      "occurrences": [
+        {
+          "file": "fragments/overview.md",
+          "start": 1,
+          "end": 142,
+          "sha256": "0e5f0fa6c07ef33b0395311c51dcca8508ebeb7d575fb998539eb49957112dda"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/configuration/collections",
+        "https://payloadcms.com/docs/fields/select",
+        "https://payloadcms.com/docs/fields/relationship"
+      ],
+      "result": "correction-required",
+      "basis": "Config-first sequencing useful for unknown schema, but repeated every-collection confirmation is unconditional. Direct assignment field schema snippets omit explicit import despite copy-ready instruction. User-approved fixed enum should not be reopened.",
+      "requiredChange": "Unify source/generated path, minimum input and accepted decision reuse; distinguish config, plan, execution and verified result.",
+      "falsifier": "Accepted enum is preserved; sufficient authorized input reaches import without unrelated confirmation.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "M-T03",
+      "aspect": "Field schema universal base and type fidelity",
+      "occurrences": [
+        {
+          "file": "references/payload-field-reference.md",
+          "start": 1,
+          "end": 61,
+          "sha256": "a716216645e2150d5c8d514dd8f54a78c120e97ebc20f9dd2f3f1b0d6f3f23cb"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/fields/overview",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/fields/config/types.ts"
+      ],
+      "result": "correction-required",
+      "basis": "Pseudo BaseField claims all fields require name, conflicting with layout fields; hidden comment says admin-only though field.hidden also removes default API output. label and callback types are narrowed too far for current public Field union.",
+      "requiredChange": "Use Payload exported types and clearly illustrative subset, not complete schema; distinguish admin.hidden from field.hidden.",
+      "falsifier": "Generated complete config typechecks with unnamed layout fields and intended visibility.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "M-T04",
+      "aspect": "Scalar text/textarea/number/email/date/checkbox fields and transforms",
+      "occurrences": [
+        {
+          "file": "references/payload-field-reference.md",
+          "start": 62,
+          "end": 357,
+          "sha256": "a716216645e2150d5c8d514dd8f54a78c120e97ebc20f9dd2f3f1b0d6f3f23cb"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/fields/text",
+        "https://payloadcms.com/docs/fields/textarea",
+        "https://payloadcms.com/docs/fields/number",
+        "https://payloadcms.com/docs/fields/email",
+        "https://payloadcms.com/docs/fields/date",
+        "https://payloadcms.com/docs/fields/checkbox",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/Date"
+      ],
+      "result": "correction-required",
+      "basis": "Text/textarea/number/checkbox properties mostly match. Email does not support copied minLength/maxLength options. Unix timestamp conversion new Date(timestamp) treats number as milliseconds; seconds require scaling. Dates need source timezone and null policy.",
+      "requiredChange": "Remove unsupported Email props; explicit seconds/ms/ISO/date-only branches; validate absent/null/value before coercion.",
+      "falsifier": "Seconds1700000000 and milliseconds1700000000000 produce same intended instant; nullable value preserved.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "M-T05",
+      "aspect": "Rich text editor config, HTML/Markdown/Slate/AST conversion",
+      "occurrences": [
+        {
+          "file": "references/payload-field-reference.md",
+          "start": 147,
+          "end": 193,
+          "sha256": "a716216645e2150d5c8d514dd8f54a78c120e97ebc20f9dd2f3f1b0d6f3f23cb"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/fields/rich-text",
+        "https://payloadcms.com/docs/rich-text/converting-html",
+        "https://payloadcms.com/docs/rich-text/converting-markdown",
+        "https://payloadcms.com/docs/rich-text/migration"
+      ],
+      "result": "correction-required",
+      "basis": "Payload richText requires configured editor, not raw HTML; Lexical is default template choice, not magic acceptance of HTML. Converters require actual editor configuration. HTML img and Markdown URLs are not auto-uploaded to Payload.",
+      "requiredChange": "Choose installed editor, transform source shape, preimport/remap media and internal links; unknown nodes reported as incomplete rather than silently dropped.",
+      "falsifier": "Formatting, internal relation and embedded media render after restart; unknown node or failed media prevents complete claim.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "M-T06",
+      "aspect": "Select/radio, relationship and upload schemas/cardinality/filterOptions",
+      "occurrences": [
+        {
+          "file": "references/payload-field-reference.md",
+          "start": 352,
+          "end": 613,
+          "sha256": "a716216645e2150d5c8d514dd8f54a78c120e97ebc20f9dd2f3f1b0d6f3f23cb"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/fields/select",
+        "https://payloadcms.com/docs/fields/radio",
+        "https://payloadcms.com/docs/fields/relationship",
+        "https://payloadcms.com/docs/fields/upload",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/fields/config/types.ts"
+      ],
+      "result": "correction-required",
+      "basis": "Core enum/relation/upload patterns supported. Relationship and upload can be polymorphic in current stable; filterOptions accepts Where or full callback/Promise. Source IDs and URLs are not Payload relation IDs.",
+      "requiredChange": "Use exact exported field types; accepted schema governs cardinality; durable source-to-target mapping and unresolved link handling.",
+      "falsifier": "Single/hasMany/polymorphic identities resolve to existing correct target records.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "M-T07",
+      "aspect": "Array/group/blocks nested mappings and deprecated block images",
+      "occurrences": [
+        {
+          "file": "references/payload-field-reference.md",
+          "start": 614,
+          "end": 871,
+          "sha256": "a716216645e2150d5c8d514dd8f54a78c120e97ebc20f9dd2f3f1b0d6f3f23cb"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/fields/array",
+        "https://payloadcms.com/docs/fields/group",
+        "https://payloadcms.com/docs/fields/blocks",
+        "https://github.com/payloadcms/payload/releases/tag/v3.79.0"
+      ],
+      "result": "correction-required",
+      "basis": "Core nested models supported; blocks imageURL/imageAltText are deprecated since v3.79 in favor of images icon/thumbnail. Mapping must preserve array order/blockType and subtype fields.",
+      "requiredChange": "Replace deprecated main path with images API; explicit version branch for old installed projects; preserve subtype and order.",
+      "falsifier": "Nested ordered content round-trips with actual configured block slugs and image options.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "M-T08",
+      "aspect": "JSON schema and fallback data",
+      "occurrences": [
+        {
+          "file": "references/payload-field-reference.md",
+          "start": 872,
+          "end": 925,
+          "sha256": "a716216645e2150d5c8d514dd8f54a78c120e97ebc20f9dd2f3f1b0d6f3f23cb"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/fields/json",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/fields/config/types.ts"
+      ],
+      "result": "correction-required",
+      "basis": "jsonSchema expects wrapper containing uri/fileMatch/schema; example gives raw JSON Schema. json fallback preserves bytes but does not prove meaning or renderer capability.",
+      "requiredChange": "Correct wrapper per exact type and label unknown raw preservation versus successful semantic conversion.",
+      "falsifier": "Config typechecks; expected invalid JSON detected by actual validator, unknown source stays unresolved.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "M-T09",
+      "aspect": "Point, row/collapsible/tabs/UI and layout fields",
+      "occurrences": [
+        {
+          "file": "references/payload-field-reference.md",
+          "start": 926,
+          "end": 1099,
+          "sha256": "a716216645e2150d5c8d514dd8f54a78c120e97ebc20f9dd2f3f1b0d6f3f23cb"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/fields/point",
+        "https://payloadcms.com/docs/fields/code",
+        "https://payloadcms.com/docs/fields/row",
+        "https://payloadcms.com/docs/fields/collapsible",
+        "https://payloadcms.com/docs/fields/tabs",
+        "https://payloadcms.com/docs/fields/ui"
+      ],
+      "result": "correction-required",
+      "basis": "Point API stores coordinate pair rather than universal GeoJSON shape; geospatial operations depend on adapter. Layout fields differ in name requirements, UI is not stored, named/unnamed tabs change persisted nesting.",
+      "requiredChange": "Use current exported field union, correct pair mapping and adapter limitation; no storage claims from UI layout.",
+      "falsifier": "Lat/lon not swapped; layout grouping is reflected correctly in persisted shape; UI-only data not asserted.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "M-T10",
+      "aspect": "Auth/upload/localization/version collection configuration",
+      "occurrences": [
+        {
+          "file": "references/payload-field-reference.md",
+          "start": 1100,
+          "end": 1181,
+          "sha256": "a716216645e2150d5c8d514dd8f54a78c120e97ebc20f9dd2f3f1b0d6f3f23cb"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/upload/overview",
+        "https://payloadcms.com/docs/configuration/localization",
+        "https://payloadcms.com/docs/versions/drafts",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/docs/migration-guide/overview.mdx"
+      ],
+      "result": "correction-required",
+      "basis": "Auth role select lacks field protections. upload.staticURL was removed in v3; s3Adapter comment is legacy standalone adapter migration. Localization root config plus fields is needed; fallback defaults true. Draft status source policy is separate from standard enum.",
+      "requiredChange": "Fix current upload storage family and role boundaries; preserve v2 only explicit installed branch; validate locales without fallback and source publication policy.",
+      "falsifier": "New v3 config loads and file URL works; v2 remains unchanged; en/it read with fallbackLocale:false matches source.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "M-T11",
+      "aspect": "WordPress REST v2/export/DB and ACF mapping",
+      "occurrences": [
+        {
+          "file": "references/payload-field-reference.md",
+          "start": 1182,
+          "end": 1198,
+          "sha256": "a716216645e2150d5c8d514dd8f54a78c120e97ebc20f9dd2f3f1b0d6f3f23cb"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://developer.wordpress.org/rest-api/reference/posts/",
+        "https://developer.wordpress.org/rest-api/reference/media/",
+        "https://www.advancedcustomfields.com/resources/repeater/",
+        "https://www.advancedcustomfields.com/resources/group/",
+        "https://www.advancedcustomfields.com/resources/flexible-content/"
+      ],
+      "result": "correction-required",
+      "basis": "Table mixes DB post_title/post_content/post_author with REST featured_media. REST title/content are rendered/raw objects; status set includes publish/private/future/etc, not Payload draft/published identity. Date fields have site timezone versus GMT. ACF repeater/group/flexible mapping is conceptual and subtype-dependent.",
+      "requiredChange": "Name source format/version; explicit status/timezone/HTML conversion and ACF subtype mapping rather than direct column rename.",
+      "falsifier": "REST and DB samples map independently; private/future source is not silently published; images survive HTML conversion.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "M-T12",
+      "aspect": "Contentful schema, assets, links and locale objects",
+      "occurrences": [
+        {
+          "file": "references/payload-field-reference.md",
+          "start": 1199,
+          "end": 1213,
+          "sha256": "a716216645e2150d5c8d514dd8f54a78c120e97ebc20f9dd2f3f1b0d6f3f23cb"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://www.contentful.com/developers/docs/concepts/rich-text/",
+        "https://www.contentful.com/developers/docs/concepts/links/",
+        "https://www.contentful.com/developers/docs/concepts/data-model/"
+      ],
+      "result": "correction-required",
+      "basis": "Scalar family mapping is conceptual; Rich Text JSON AST includes linked entries/assets and localization response differs by API/export. sys identity and environment/space context must survive mapping.",
+      "requiredChange": "Expand only execution-relevant source contract: explicit raw export/API, identity namespace, entry/asset link resolution, actual locale values and conversion.",
+      "falsifier": "Raw exported locale/link object never becomes literal field string or wrong Payload ID; embedded links render.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "M-T13",
+      "aspect": "Strapi5 versus older source formats and CMS-only trigger branches",
+      "occurrences": [
+        {
+          "file": "references/payload-field-reference.md",
+          "start": 1214,
+          "end": 1252,
+          "sha256": "a716216645e2150d5c8d514dd8f54a78c120e97ebc20f9dd2f3f1b0d6f3f23cb"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://docs.strapi.io/cms/backend-customization/models",
+        "https://docs.strapi.io/cms/api/rest",
+        "https://www.sanity.io/docs/apis-and-sdks/introduction-to-schemas",
+        "https://www.sanity.io/docs/developer-guides/beginners-guide-to-portable-text"
+      ],
+      "result": "correction-required",
+      "basis": "Strapi5 richtext Markdown and blocks AST are distinct; documentId differs from numeric id and REST5 shape differs v4. Dynamiczones/components require subtype/field mapping. Sanity is mentioned in trigger but has no conversion path; Portable Text/_ref are not Lexical. Webflow only trigger; API assertions absent so N/A for existing technical example, not certified support.",
+      "requiredChange": "Identify actual source release/API/export; exact format-specific converters; inspect Sanity schema/PortableText when selected; do not invent Webflow semantics.",
+      "falsifier": "Same sample from each source shape yields expected target value; unknown shape reports exact needed input.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "M-T14",
+      "aspect": "Import scripts, crash/rerun, cycles, media failures and full reconciliation",
+      "occurrences": [
+        {
+          "file": "SKILL.md",
+          "start": 225,
+          "end": 263,
+          "sha256": "0194fe2deb085a1407c91983d41735ef4db7b89b50a68742ed2c73c59eacc569"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/local-api/outside-nextjs",
+        "https://payloadcms.com/docs/local-api/overview",
+        "https://payloadcms.com/docs/queries/pagination",
+        "https://payloadcms.com/docs/configuration/localization",
+        "https://payloadcms.com/docs/rich-text/converting-html"
+      ],
+      "result": "correction-required",
+      "basis": "Current plan names source-ID mapping and representative verification but does not define durable identity, restart semantics, two-pass/cyclic relations, checkpoint/errors, source-vs-target set reconciliation or missing locale/media classification. User requested reliable execution, not only schema/plan.",
+      "requiredChange": "Add owning workflow through authorized import, deterministic rerun/checkpoint, failure classification and complete source-ID/count/locale/relationship/media reconciliation; exact public readback when requested.",
+      "falsifier": "Crash+temporary media failure then restart creates no duplicate records/media; all source ids/locales accounted for; exit0 alone insufficient.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    }
+  ],
+  "fileInventory": [
+    {
+      "file": "AGENTS.md",
+      "lines": 33,
+      "sha256": "5e660fa5527924dbc24faab6578790dce971e57bab597f358a4de435e0d6ba72",
+      "surface": "active-or-maintenance",
+      "aspectIds": [],
+      "classification": "N/A technical API assertion"
+    },
+    {
+      "file": "SKILL.md",
+      "lines": 283,
+      "sha256": "0194fe2deb085a1407c91983d41735ef4db7b89b50a68742ed2c73c59eacc569",
+      "surface": "active-or-maintenance",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "classification": "covered by aspect rows; generated counterparts derive from identical source snippets"
+    },
+    {
+      "file": "agents/openai.yaml",
+      "lines": 4,
+      "sha256": "ec8e4693ba7fcfec1e6a8b573ffb1342d674a4fdf1042112f494a9063ba7d40c",
+      "surface": "active-or-maintenance",
+      "aspectIds": [],
+      "classification": "N/A technical API assertion"
+    },
+    {
+      "file": "docs/README.md",
+      "lines": 12,
+      "sha256": "a37455de87fa8ddbba70aad8f6518ed94172d5714ea2f52d39f3e43eb403a3e5",
+      "surface": "supporting-history",
+      "aspectIds": [],
+      "classification": "N/A technical API assertion"
+    },
+    {
+      "file": "docs/compile-report.md",
+      "lines": 24,
+      "sha256": "ba1e0bc6ac1cb91715c907f2108917f3f006b158b757d06448b48d9904eda87d",
+      "surface": "supporting-history",
+      "aspectIds": [],
+      "classification": "N/A technical API assertion"
+    },
+    {
+      "file": "docs/logs/implementation-log-20260509-1.md",
+      "lines": 66,
+      "sha256": "359ada1957ce87b19745fa00cabcbbf3967ebdbfdc7f092d53e21b2f74b2094f",
+      "surface": "supporting-history",
+      "aspectIds": [],
+      "classification": "N/A technical API assertion"
+    },
+    {
+      "file": "docs/logs/implementation-log-20260715-1.md",
+      "lines": 25,
+      "sha256": "f0032de8cf410357d20228aefd726a4b2865d6a28ee49a8ef4d338c865556596",
+      "surface": "supporting-history",
+      "aspectIds": [],
+      "classification": "N/A technical API assertion"
+    },
+    {
+      "file": "fragments/overview.md",
+      "lines": 142,
+      "sha256": "0e5f0fa6c07ef33b0395311c51dcca8508ebeb7d575fb998539eb49957112dda",
+      "surface": "active-or-maintenance",
+      "aspectIds": [
+        "M-T02"
+      ],
+      "classification": "covered by aspect rows; generated counterparts derive from identical source snippets"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "lines": 1252,
+      "sha256": "a716216645e2150d5c8d514dd8f54a78c120e97ebc20f9dd2f3f1b0d6f3f23cb",
+      "surface": "active-or-maintenance",
+      "aspectIds": [
+        "M-T03",
+        "M-T04",
+        "M-T05",
+        "M-T06",
+        "M-T07",
+        "M-T08",
+        "M-T09",
+        "M-T10",
+        "M-T11",
+        "M-T12",
+        "M-T13"
+      ],
+      "classification": "covered by aspect rows; generated counterparts derive from identical source snippets"
+    },
+    {
+      "file": "skill.yaml",
+      "lines": 165,
+      "sha256": "e65042914669f947a5bdfd169805790c65cc164d5dea0d84092553eff4f46c21",
+      "surface": "active-or-maintenance",
+      "aspectIds": [
+        "M-T01"
+      ],
+      "classification": "covered by aspect rows; generated counterparts derive from identical source snippets"
+    }
+  ],
+  "sectionInventory": [
+    {
+      "file": "AGENTS.md",
+      "start": 8,
+      "end": 11,
+      "heading": "# AGENTS.md",
+      "aspectIds": [],
+      "scope": "instruction/metadata"
+    },
+    {
+      "file": "AGENTS.md",
+      "start": 12,
+      "end": 27,
+      "heading": "## Skill Type",
+      "aspectIds": [],
+      "scope": "instruction/metadata"
+    },
+    {
+      "file": "AGENTS.md",
+      "start": 28,
+      "end": 33,
+      "heading": "## Maintenance Rules",
+      "aspectIds": [],
+      "scope": "instruction/metadata"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 16,
+      "end": 17,
+      "heading": "# payload-migration",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 18,
+      "end": 25,
+      "heading": "## Start here",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 26,
+      "end": 31,
+      "heading": "## When to use this skill",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 32,
+      "end": 38,
+      "heading": "## When NOT to use this skill",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 39,
+      "end": 42,
+      "heading": "## Overview",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 43,
+      "end": 70,
+      "heading": "## Workflow",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 71,
+      "end": 79,
+      "heading": "## Phase 1: Data Analysis",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 80,
+      "end": 98,
+      "heading": "## Phase 2: Propose Collection Config",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 99,
+      "end": 102,
+      "heading": "## Phase 3: Iterate with User",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 103,
+      "end": 116,
+      "heading": "## Phase 4: Additional Collections",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 117,
+      "end": 127,
+      "heading": "## Phase 5: Migration Approach",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 128,
+      "end": 138,
+      "heading": "## Things to Clarify",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 139,
+      "end": 169,
+      "heading": "## Critical: Select vs Relationship",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 170,
+      "end": 173,
+      "heading": "## Reference Documentation",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 174,
+      "end": 183,
+      "heading": "## Common Pitfalls",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 184,
+      "end": 185,
+      "heading": "## Workflow stages",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 186,
+      "end": 198,
+      "heading": "### Workflow stage: Analyze source data",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 199,
+      "end": 211,
+      "heading": "### Workflow stage: Propose collection config",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 212,
+      "end": 224,
+      "heading": "### Workflow stage: Confirm complete model",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 225,
+      "end": 238,
+      "heading": "### Workflow stage: Plan import",
+      "aspectIds": [
+        "M-T14"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 239,
+      "end": 244,
+      "heading": "## Interop priority",
+      "aspectIds": [
+        "M-T14"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 245,
+      "end": 252,
+      "heading": "## Gotchas",
+      "aspectIds": [
+        "M-T14"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 253,
+      "end": 254,
+      "heading": "## Policies",
+      "aspectIds": [
+        "M-T14"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 255,
+      "end": 257,
+      "heading": "### Config-first policy",
+      "aspectIds": [
+        "M-T14"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 258,
+      "end": 260,
+      "heading": "### Ambiguity policy",
+      "aspectIds": [
+        "M-T14"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 261,
+      "end": 263,
+      "heading": "### Capability claims policy",
+      "aspectIds": [
+        "M-T14"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 264,
+      "end": 266,
+      "heading": "## Required active references",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 267,
+      "end": 272,
+      "heading": "## Portability rules",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 273,
+      "end": 278,
+      "heading": "## Portability checklist before finishing",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 279,
+      "end": 283,
+      "heading": "## Supporting and historical surface",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "fragments/overview.md",
+      "start": 3,
+      "end": 30,
+      "heading": "## Workflow",
+      "aspectIds": [
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "fragments/overview.md",
+      "start": 31,
+      "end": 39,
+      "heading": "## Phase 1: Data Analysis",
+      "aspectIds": [
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "fragments/overview.md",
+      "start": 40,
+      "end": 58,
+      "heading": "## Phase 2: Propose Collection Config",
+      "aspectIds": [
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "fragments/overview.md",
+      "start": 59,
+      "end": 62,
+      "heading": "## Phase 3: Iterate with User",
+      "aspectIds": [
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "fragments/overview.md",
+      "start": 63,
+      "end": 76,
+      "heading": "## Phase 4: Additional Collections",
+      "aspectIds": [
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "fragments/overview.md",
+      "start": 77,
+      "end": 87,
+      "heading": "## Phase 5: Migration Approach",
+      "aspectIds": [
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "fragments/overview.md",
+      "start": 88,
+      "end": 98,
+      "heading": "## Things to Clarify",
+      "aspectIds": [
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "fragments/overview.md",
+      "start": 99,
+      "end": 129,
+      "heading": "## Critical: Select vs Relationship",
+      "aspectIds": [
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "fragments/overview.md",
+      "start": 130,
+      "end": 133,
+      "heading": "## Reference Documentation",
+      "aspectIds": [
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "fragments/overview.md",
+      "start": 134,
+      "end": 142,
+      "heading": "## Common Pitfalls",
+      "aspectIds": [
+        "M-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 1,
+      "end": 4,
+      "heading": "# Payload CMS Field Reference for AI-Assisted Migration",
+      "aspectIds": [
+        "M-T03"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 5,
+      "end": 13,
+      "heading": "## How to Use This Document",
+      "aspectIds": [
+        "M-T03"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 14,
+      "end": 61,
+      "heading": "## Field Type Schemas",
+      "aspectIds": [
+        "M-T03"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 62,
+      "end": 63,
+      "heading": "## Field Types",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 64,
+      "end": 107,
+      "heading": "### text",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 108,
+      "end": 146,
+      "heading": "### textarea",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 147,
+      "end": 193,
+      "heading": "### richText",
+      "aspectIds": [
+        "M-T04",
+        "M-T05"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 194,
+      "end": 237,
+      "heading": "### number",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 238,
+      "end": 272,
+      "heading": "### email",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 273,
+      "end": 317,
+      "heading": "### date",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 318,
+      "end": 351,
+      "heading": "### checkbox",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 352,
+      "end": 427,
+      "heading": "### select",
+      "aspectIds": [
+        "M-T04",
+        "M-T06"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 428,
+      "end": 473,
+      "heading": "### radio",
+      "aspectIds": [
+        "M-T06"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 474,
+      "end": 553,
+      "heading": "### relationship",
+      "aspectIds": [
+        "M-T06"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 554,
+      "end": 613,
+      "heading": "### upload",
+      "aspectIds": [
+        "M-T06"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 614,
+      "end": 696,
+      "heading": "### array",
+      "aspectIds": [
+        "M-T07"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 697,
+      "end": 766,
+      "heading": "### group",
+      "aspectIds": [
+        "M-T07"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 767,
+      "end": 871,
+      "heading": "### blocks",
+      "aspectIds": [
+        "M-T07"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 872,
+      "end": 925,
+      "heading": "### json",
+      "aspectIds": [
+        "M-T08"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 926,
+      "end": 966,
+      "heading": "### point",
+      "aspectIds": [
+        "M-T09"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 967,
+      "end": 995,
+      "heading": "### row (Layout)",
+      "aspectIds": [
+        "M-T09"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 996,
+      "end": 1028,
+      "heading": "### collapsible (Layout)",
+      "aspectIds": [
+        "M-T09"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 1029,
+      "end": 1077,
+      "heading": "### tabs (Layout)",
+      "aspectIds": [
+        "M-T09"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 1078,
+      "end": 1099,
+      "heading": "### ui (Custom Component)",
+      "aspectIds": [
+        "M-T09"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 1100,
+      "end": 1101,
+      "heading": "## Collection-Level Configuration",
+      "aspectIds": [
+        "M-T10"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 1102,
+      "end": 1120,
+      "heading": "### Basic Collection",
+      "aspectIds": [
+        "M-T10"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 1121,
+      "end": 1166,
+      "heading": "### Upload Collection",
+      "aspectIds": [
+        "M-T10"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 1167,
+      "end": 1181,
+      "heading": "### Auth Collection",
+      "aspectIds": [
+        "M-T10"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 1182,
+      "end": 1183,
+      "heading": "## Common Migration Patterns",
+      "aspectIds": [
+        "M-T11"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 1184,
+      "end": 1198,
+      "heading": "### WordPress to Payload",
+      "aspectIds": [
+        "M-T11"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 1199,
+      "end": 1212,
+      "heading": "### Contentful to Payload",
+      "aspectIds": [
+        "M-T12"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 1213,
+      "end": 1230,
+      "heading": "### Strapi to Payload",
+      "aspectIds": [
+        "M-T12",
+        "M-T13"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 1231,
+      "end": 1252,
+      "heading": "## AI Instructions",
+      "aspectIds": [
+        "M-T13"
+      ],
+      "scope": "technical-or-workflow"
+    }
+  ],
+  "codeBlockInventory": [
+    {
+      "file": "SKILL.md",
+      "start": 45,
+      "end": 69,
+      "language": "",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 84,
+      "end": 95,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 145,
+      "end": 149,
+      "language": "json",
+      "aspectIds": [
+        "M-T14",
+        "M-T01",
+        "M-T02"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "fragments/overview.md",
+      "start": 5,
+      "end": 29,
+      "language": "",
+      "aspectIds": [
+        "M-T02"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "fragments/overview.md",
+      "start": 44,
+      "end": 55,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T02"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "fragments/overview.md",
+      "start": 105,
+      "end": 109,
+      "language": "json",
+      "aspectIds": [
+        "M-T02"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 18,
+      "end": 58,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T03"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 69,
+      "end": 83,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 91,
+      "end": 96,
+      "language": "json",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 99,
+      "end": 104,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 113,
+      "end": 124,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 132,
+      "end": 136,
+      "language": "json",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 139,
+      "end": 143,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 152,
+      "end": 165,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T04",
+        "M-T05"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 174,
+      "end": 178,
+      "language": "json",
+      "aspectIds": [
+        "M-T04",
+        "M-T05"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 181,
+      "end": 184,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T04",
+        "M-T05"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 199,
+      "end": 213,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 221,
+      "end": 226,
+      "language": "json",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 229,
+      "end": 234,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 243,
+      "end": 253,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 260,
+      "end": 263,
+      "language": "json",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 266,
+      "end": 269,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 278,
+      "end": 291,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 299,
+      "end": 303,
+      "language": "json",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 306,
+      "end": 310,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 323,
+      "end": 329,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 337,
+      "end": 341,
+      "language": "json",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 344,
+      "end": 348,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T04"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 357,
+      "end": 371,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T04",
+        "M-T06"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 380,
+      "end": 385,
+      "language": "json",
+      "aspectIds": [
+        "M-T06"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 388,
+      "end": 415,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T06"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 419,
+      "end": 424,
+      "language": "json",
+      "aspectIds": [
+        "M-T06"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 433,
+      "end": 445,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T06"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 452,
+      "end": 470,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T06"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 479,
+      "end": 501,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T06"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 509,
+      "end": 523,
+      "language": "json",
+      "aspectIds": [
+        "M-T06"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 526,
+      "end": 550,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T06"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 559,
+      "end": 575,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T06"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 583,
+      "end": 598,
+      "language": "json",
+      "aspectIds": [
+        "M-T06"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 601,
+      "end": 605,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T06"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 619,
+      "end": 641,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T07"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 649,
+      "end": 663,
+      "language": "json",
+      "aspectIds": [
+        "M-T07"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 666,
+      "end": 693,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T07"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 702,
+      "end": 713,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T07"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 721,
+      "end": 737,
+      "language": "json",
+      "aspectIds": [
+        "M-T07"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 740,
+      "end": 763,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T07"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 772,
+      "end": 805,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T07"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 814,
+      "end": 822,
+      "language": "json",
+      "aspectIds": [
+        "M-T07"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 825,
+      "end": 864,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T07"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 877,
+      "end": 887,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T08"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 896,
+      "end": 900,
+      "language": "json",
+      "aspectIds": [
+        "M-T08"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 903,
+      "end": 918,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T08"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 931,
+      "end": 940,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T09"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 948,
+      "end": 952,
+      "language": "json",
+      "aspectIds": [
+        "M-T09"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 955,
+      "end": 958,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T09"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 972,
+      "end": 981,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T09"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 984,
+      "end": 992,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T09"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 1001,
+      "end": 1012,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T09"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 1015,
+      "end": 1025,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T09"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 1034,
+      "end": 1050,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T09"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 1053,
+      "end": 1074,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T09"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 1083,
+      "end": 1096,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T09"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 1104,
+      "end": 1119,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T10"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 1123,
+      "end": 1154,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T10"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 1169,
+      "end": 1178,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T10"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "start": 1243,
+      "end": 1252,
+      "language": "typescript",
+      "aspectIds": [
+        "M-T13"
+      ],
+      "execution": "not run"
+    }
+  ],
+  "inlineTechnicalTokens": [
+    {
+      "file": "AGENTS.md",
+      "line": 18,
+      "assertionToken": "skill.yaml"
+    },
+    {
+      "file": "AGENTS.md",
+      "line": 25,
+      "assertionToken": "SKILL.md"
+    },
+    {
+      "file": "AGENTS.md",
+      "line": 26,
+      "assertionToken": "docs/compile-report.md"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "line": 187,
+      "assertionToken": "content.rendered"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "line": 314,
+      "assertionToken": "new Date(timestamp).toISOString()"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "line": 1191,
+      "assertionToken": "select"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "line": 1192,
+      "assertionToken": "relationship"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "line": 1193,
+      "assertionToken": "upload"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "line": 1209,
+      "assertionToken": "upload"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "line": 1210,
+      "assertionToken": "relationship"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "line": 1211,
+      "assertionToken": "relationship"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "line": 1223,
+      "assertionToken": "select"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "line": 1224,
+      "assertionToken": "upload"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "line": 1225,
+      "assertionToken": "relationship"
+    },
+    {
+      "file": "references/payload-field-reference.md",
+      "line": 1236,
+      "assertionToken": "relationship"
+    }
+  ],
+  "counts": {
+    "correction-required": 14
+  },
+  "unperformed": [
+    "blind agent executions",
+    "installed API probes",
+    "database/browser/provider execution",
+    "compiler checks and pnpm test:ci delegated to root"
+  ],
+  "N_A": [
+    {
+      "aspect": "Product deployment/provider credentials",
+      "reason": "No product or provider environment is supplied/authorized to this reviewer; source review is applicable, remote execution not performed."
+    },
+    {
+      "aspect": "Supporting historic logs as current instruction source",
+      "reason": "Classified as supporting, not loaded as active normative API instructions; hashes preserved."
+    }
+  ]
+}

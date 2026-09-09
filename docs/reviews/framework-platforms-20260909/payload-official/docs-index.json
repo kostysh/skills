@@ -1,0 +1,892 @@
+[
+  {
+    "url": "https://payloadcms.com/docs/getting-started/what-is-payload",
+    "file": "getting-started--what-is-payload.md",
+    "lines": 62
+  },
+  {
+    "url": "https://payloadcms.com/docs/getting-started/use-cases",
+    "file": "getting-started--use-cases.md",
+    "lines": 92
+  },
+  {
+    "url": "https://payloadcms.com/docs/getting-started/concepts",
+    "file": "getting-started--concepts.md",
+    "lines": 131
+  },
+  {
+    "url": "https://payloadcms.com/docs/getting-started/installation",
+    "file": "getting-started--installation.md",
+    "lines": 210
+  },
+  {
+    "url": "https://payloadcms.com/docs/configuration/overview",
+    "file": "configuration--overview.md",
+    "lines": 403
+  },
+  {
+    "url": "https://payloadcms.com/docs/configuration/collections",
+    "file": "configuration--collections.md",
+    "lines": 469
+  },
+  {
+    "url": "https://payloadcms.com/docs/configuration/globals",
+    "file": "configuration--globals.md",
+    "lines": 221
+  },
+  {
+    "url": "https://payloadcms.com/docs/configuration/i18n",
+    "file": "configuration--i18n.md",
+    "lines": 276
+  },
+  {
+    "url": "https://payloadcms.com/docs/configuration/localization",
+    "file": "configuration--localization.md",
+    "lines": 305
+  },
+  {
+    "url": "https://payloadcms.com/docs/configuration/environment-vars",
+    "file": "configuration--environment-vars.md",
+    "lines": 98
+  },
+  {
+    "url": "https://payloadcms.com/docs/database/overview",
+    "file": "database--overview.md",
+    "lines": 72
+  },
+  {
+    "url": "https://payloadcms.com/docs/database/migrations",
+    "file": "database--migrations.md",
+    "lines": 310
+  },
+  {
+    "url": "https://payloadcms.com/docs/database/transactions",
+    "file": "database--transactions.md",
+    "lines": 137
+  },
+  {
+    "url": "https://payloadcms.com/docs/database/indexes",
+    "file": "database--indexes.md",
+    "lines": 92
+  },
+  {
+    "url": "https://payloadcms.com/docs/database/mongodb",
+    "file": "database--mongodb.md",
+    "lines": 114
+  },
+  {
+    "url": "https://payloadcms.com/docs/database/postgres",
+    "file": "database--postgres.md",
+    "lines": 315
+  },
+  {
+    "url": "https://payloadcms.com/docs/database/sqlite",
+    "file": "database--sqlite.md",
+    "lines": 365
+  },
+  {
+    "url": "https://payloadcms.com/docs/fields/overview",
+    "file": "fields--overview.md",
+    "lines": 1178
+  },
+  {
+    "url": "https://payloadcms.com/docs/fields/default-fields",
+    "file": "fields--default-fields.md",
+    "lines": 108
+  },
+  {
+    "url": "https://payloadcms.com/docs/fields/array",
+    "file": "fields--array.md",
+    "lines": 243
+  },
+  {
+    "url": "https://payloadcms.com/docs/fields/blocks",
+    "file": "fields--blocks.md",
+    "lines": 573
+  },
+  {
+    "url": "https://payloadcms.com/docs/fields/checkbox",
+    "file": "fields--checkbox.md",
+    "lines": 151
+  },
+  {
+    "url": "https://payloadcms.com/docs/fields/code",
+    "file": "fields--code.md",
+    "lines": 181
+  },
+  {
+    "url": "https://payloadcms.com/docs/fields/json",
+    "file": "fields--json.md",
+    "lines": 237
+  },
+  {
+    "url": "https://payloadcms.com/docs/fields/collapsible",
+    "file": "fields--collapsible.md",
+    "lines": 92
+  },
+  {
+    "url": "https://payloadcms.com/docs/fields/date",
+    "file": "fields--date.md",
+    "lines": 373
+  },
+  {
+    "url": "https://payloadcms.com/docs/fields/email",
+    "file": "fields--email.md",
+    "lines": 175
+  },
+  {
+    "url": "https://payloadcms.com/docs/fields/group",
+    "file": "fields--group.md",
+    "lines": 175
+  },
+  {
+    "url": "https://payloadcms.com/docs/fields/number",
+    "file": "fields--number.md",
+    "lines": 183
+  },
+  {
+    "url": "https://payloadcms.com/docs/fields/point",
+    "file": "fields--point.md",
+    "lines": 213
+  },
+  {
+    "url": "https://payloadcms.com/docs/fields/radio",
+    "file": "fields--radio.md",
+    "lines": 205
+  },
+  {
+    "url": "https://payloadcms.com/docs/fields/relationship",
+    "file": "fields--relationship.md",
+    "lines": 456
+  },
+  {
+    "url": "https://payloadcms.com/docs/fields/join",
+    "file": "fields--join.md",
+    "lines": 312
+  },
+  {
+    "url": "https://payloadcms.com/docs/fields/rich-text",
+    "file": "fields--rich-text.md",
+    "lines": 61
+  },
+  {
+    "url": "https://payloadcms.com/docs/fields/row",
+    "file": "fields--row.md",
+    "lines": 74
+  },
+  {
+    "url": "https://payloadcms.com/docs/fields/select",
+    "file": "fields--select.md",
+    "lines": 269
+  },
+  {
+    "url": "https://payloadcms.com/docs/fields/tabs",
+    "file": "fields--tabs.md",
+    "lines": 135
+  },
+  {
+    "url": "https://payloadcms.com/docs/fields/text",
+    "file": "fields--text.md",
+    "lines": 287
+  },
+  {
+    "url": "https://payloadcms.com/docs/fields/textarea",
+    "file": "fields--textarea.md",
+    "lines": 176
+  },
+  {
+    "url": "https://payloadcms.com/docs/fields/ui",
+    "file": "fields--ui.md",
+    "lines": 60
+  },
+  {
+    "url": "https://payloadcms.com/docs/fields/upload",
+    "file": "fields--upload.md",
+    "lines": 177
+  },
+  {
+    "url": "https://payloadcms.com/docs/access-control/overview",
+    "file": "access-control--overview.md",
+    "lines": 82
+  },
+  {
+    "url": "https://payloadcms.com/docs/access-control/collections",
+    "file": "access-control--collections.md",
+    "lines": 364
+  },
+  {
+    "url": "https://payloadcms.com/docs/access-control/globals",
+    "file": "access-control--globals.md",
+    "lines": 147
+  },
+  {
+    "url": "https://payloadcms.com/docs/access-control/fields",
+    "file": "access-control--fields.md",
+    "lines": 103
+  },
+  {
+    "url": "https://payloadcms.com/docs/hooks/overview",
+    "file": "hooks--overview.md",
+    "lines": 235
+  },
+  {
+    "url": "https://payloadcms.com/docs/hooks/collections",
+    "file": "hooks--collections.md",
+    "lines": 556
+  },
+  {
+    "url": "https://payloadcms.com/docs/hooks/globals",
+    "file": "hooks--globals.md",
+    "lines": 253
+  },
+  {
+    "url": "https://payloadcms.com/docs/hooks/fields",
+    "file": "hooks--fields.md",
+    "lines": 317
+  },
+  {
+    "url": "https://payloadcms.com/docs/hooks/context",
+    "file": "hooks--context.md",
+    "lines": 143
+  },
+  {
+    "url": "https://payloadcms.com/docs/local-api/overview",
+    "file": "local-api--overview.md",
+    "lines": 506
+  },
+  {
+    "url": "https://payloadcms.com/docs/local-api/outside-nextjs",
+    "file": "local-api--outside-nextjs.md",
+    "lines": 83
+  },
+  {
+    "url": "https://payloadcms.com/docs/local-api/server-functions",
+    "file": "local-api--server-functions.md",
+    "lines": 523
+  },
+  {
+    "url": "https://payloadcms.com/docs/local-api/access-control",
+    "file": "local-api--access-control.md",
+    "lines": 45
+  },
+  {
+    "url": "https://payloadcms.com/docs/rest-api/overview",
+    "file": "rest-api--overview.md",
+    "lines": 1102
+  },
+  {
+    "url": "https://payloadcms.com/docs/graphql/overview",
+    "file": "graphql--overview.md",
+    "lines": 184
+  },
+  {
+    "url": "https://payloadcms.com/docs/graphql/extending",
+    "file": "graphql--extending.md",
+    "lines": 174
+  },
+  {
+    "url": "https://payloadcms.com/docs/graphql/graphql-schema",
+    "file": "graphql--graphql-schema.md",
+    "lines": 86
+  },
+  {
+    "url": "https://payloadcms.com/docs/queries/overview",
+    "file": "queries--overview.md",
+    "lines": 319
+  },
+  {
+    "url": "https://payloadcms.com/docs/queries/sort",
+    "file": "queries--sort.md",
+    "lines": 113
+  },
+  {
+    "url": "https://payloadcms.com/docs/queries/depth",
+    "file": "queries--depth.md",
+    "lines": 118
+  },
+  {
+    "url": "https://payloadcms.com/docs/queries/select",
+    "file": "queries--select.md",
+    "lines": 208
+  },
+  {
+    "url": "https://payloadcms.com/docs/queries/pagination",
+    "file": "queries--pagination.md",
+    "lines": 161
+  },
+  {
+    "url": "https://payloadcms.com/docs/admin/overview",
+    "file": "admin--overview.md",
+    "lines": 437
+  },
+  {
+    "url": "https://payloadcms.com/docs/admin/preview",
+    "file": "admin--preview.md",
+    "lines": 258
+  },
+  {
+    "url": "https://payloadcms.com/docs/admin/admin-panel-location",
+    "file": "admin--admin-panel-location.md",
+    "lines": 311
+  },
+  {
+    "url": "https://payloadcms.com/docs/admin/locked-documents",
+    "file": "admin--locked-documents.md",
+    "lines": 81
+  },
+  {
+    "url": "https://payloadcms.com/docs/admin/accessibility",
+    "file": "admin--accessibility.md",
+    "lines": 27
+  },
+  {
+    "url": "https://payloadcms.com/docs/admin/customizing-css",
+    "file": "admin--customizing-css.md",
+    "lines": 87
+  },
+  {
+    "url": "https://payloadcms.com/docs/admin/react-hooks",
+    "file": "admin--react-hooks.md",
+    "lines": 1258
+  },
+  {
+    "url": "https://payloadcms.com/docs/admin/preferences",
+    "file": "admin--preferences.md",
+    "lines": 144
+  },
+  {
+    "url": "https://payloadcms.com/docs/admin/metadata",
+    "file": "admin--metadata.md",
+    "lines": 240
+  },
+  {
+    "url": "https://payloadcms.com/docs/custom-components/overview",
+    "file": "custom-components--overview.md",
+    "lines": 619
+  },
+  {
+    "url": "https://payloadcms.com/docs/custom-components/root-components",
+    "file": "custom-components--root-components.md",
+    "lines": 509
+  },
+  {
+    "url": "https://payloadcms.com/docs/custom-components/custom-providers",
+    "file": "custom-components--custom-providers.md",
+    "lines": 46
+  },
+  {
+    "url": "https://payloadcms.com/docs/custom-components/custom-views",
+    "file": "custom-components--custom-views.md",
+    "lines": 366
+  },
+  {
+    "url": "https://payloadcms.com/docs/custom-components/dashboard",
+    "file": "custom-components--dashboard.md",
+    "lines": 193
+  },
+  {
+    "url": "https://payloadcms.com/docs/custom-components/document-views",
+    "file": "custom-components--document-views.md",
+    "lines": 180
+  },
+  {
+    "url": "https://payloadcms.com/docs/custom-components/edit-view",
+    "file": "custom-components--edit-view.md",
+    "lines": 841
+  },
+  {
+    "url": "https://payloadcms.com/docs/custom-components/list-view",
+    "file": "custom-components--list-view.md",
+    "lines": 433
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/overview",
+    "file": "ui-components--overview.md",
+    "lines": 176
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/animate-height",
+    "file": "ui-components--animate-height.md",
+    "lines": 33
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/banner",
+    "file": "ui-components--banner.md",
+    "lines": 38
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/button",
+    "file": "ui-components--button.md",
+    "lines": 69
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/card",
+    "file": "ui-components--card.md",
+    "lines": 40
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/code-editor",
+    "file": "ui-components--code-editor.md",
+    "lines": 36
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/collapsible",
+    "file": "ui-components--collapsible.md",
+    "lines": 44
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/copy-to-clipboard",
+    "file": "ui-components--copy-to-clipboard.md",
+    "lines": 29
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/date-picker",
+    "file": "ui-components--date-picker.md",
+    "lines": 61
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/dropzone",
+    "file": "ui-components--dropzone.md",
+    "lines": 36
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/error-pill",
+    "file": "ui-components--error-pill.md",
+    "lines": 32
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/gutter",
+    "file": "ui-components--gutter.md",
+    "lines": 34
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/hamburger",
+    "file": "ui-components--hamburger.md",
+    "lines": 28
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/link",
+    "file": "ui-components--link.md",
+    "lines": 34
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/list-and-pagination-controls",
+    "file": "ui-components--list-and-pagination-controls.md",
+    "lines": 90
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/modals-and-drawers",
+    "file": "ui-components--modals-and-drawers.md",
+    "lines": 77
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/motion-and-loading",
+    "file": "ui-components--motion-and-loading.md",
+    "lines": 86
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/navigation-controls",
+    "file": "ui-components--navigation-controls.md",
+    "lines": 79
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/pill",
+    "file": "ui-components--pill.md",
+    "lines": 43
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/pill-selector",
+    "file": "ui-components--pill-selector.md",
+    "lines": 44
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/popup",
+    "file": "ui-components--popup.md",
+    "lines": 37
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/react-select",
+    "file": "ui-components--react-select.md",
+    "lines": 39
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/search-filter",
+    "file": "ui-components--search-filter.md",
+    "lines": 43
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/shimmer-effect",
+    "file": "ui-components--shimmer-effect.md",
+    "lines": 37
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/table",
+    "file": "ui-components--table.md",
+    "lines": 37
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/thumbnail",
+    "file": "ui-components--thumbnail.md",
+    "lines": 36
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/timezone-picker",
+    "file": "ui-components--timezone-picker.md",
+    "lines": 36
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/tooltip",
+    "file": "ui-components--tooltip.md",
+    "lines": 36
+  },
+  {
+    "url": "https://payloadcms.com/docs/ui-components/upload",
+    "file": "ui-components--upload.md",
+    "lines": 104
+  },
+  {
+    "url": "https://payloadcms.com/docs/authentication/overview",
+    "file": "authentication--overview.md",
+    "lines": 261
+  },
+  {
+    "url": "https://payloadcms.com/docs/authentication/operations",
+    "file": "authentication--operations.md",
+    "lines": 448
+  },
+  {
+    "url": "https://payloadcms.com/docs/authentication/email",
+    "file": "authentication--email.md",
+    "lines": 210
+  },
+  {
+    "url": "https://payloadcms.com/docs/authentication/cookies",
+    "file": "authentication--cookies.md",
+    "lines": 130
+  },
+  {
+    "url": "https://payloadcms.com/docs/authentication/jwt",
+    "file": "authentication--jwt.md",
+    "lines": 73
+  },
+  {
+    "url": "https://payloadcms.com/docs/authentication/api-keys",
+    "file": "authentication--api-keys.md",
+    "lines": 81
+  },
+  {
+    "url": "https://payloadcms.com/docs/authentication/custom-strategies",
+    "file": "authentication--custom-strategies.md",
+    "lines": 98
+  },
+  {
+    "url": "https://payloadcms.com/docs/authentication/token-data",
+    "file": "authentication--token-data.md",
+    "lines": 102
+  },
+  {
+    "url": "https://payloadcms.com/docs/rich-text/overview",
+    "file": "rich-text--overview.md",
+    "lines": 346
+  },
+  {
+    "url": "https://payloadcms.com/docs/rich-text/converters",
+    "file": "rich-text--converters.md",
+    "lines": 128
+  },
+  {
+    "url": "https://payloadcms.com/docs/rich-text/converting-jsx",
+    "file": "rich-text--converting-jsx.md",
+    "lines": 190
+  },
+  {
+    "url": "https://payloadcms.com/docs/rich-text/converting-html",
+    "file": "rich-text--converting-html.md",
+    "lines": 435
+  },
+  {
+    "url": "https://payloadcms.com/docs/rich-text/converting-markdown",
+    "file": "rich-text--converting-markdown.md",
+    "lines": 285
+  },
+  {
+    "url": "https://payloadcms.com/docs/rich-text/converting-plaintext",
+    "file": "rich-text--converting-plaintext.md",
+    "lines": 68
+  },
+  {
+    "url": "https://payloadcms.com/docs/rich-text/official-features",
+    "file": "rich-text--official-features.md",
+    "lines": 596
+  },
+  {
+    "url": "https://payloadcms.com/docs/rich-text/blocks",
+    "file": "rich-text--blocks.md",
+    "lines": 498
+  },
+  {
+    "url": "https://payloadcms.com/docs/rich-text/custom-features",
+    "file": "rich-text--custom-features.md",
+    "lines": 910
+  },
+  {
+    "url": "https://payloadcms.com/docs/rich-text/rendering-on-demand",
+    "file": "rich-text--rendering-on-demand.md",
+    "lines": 118
+  },
+  {
+    "url": "https://payloadcms.com/docs/rich-text/migration",
+    "file": "rich-text--migration.md",
+    "lines": 281
+  },
+  {
+    "url": "https://payloadcms.com/docs/rich-text/views",
+    "file": "rich-text--views.md",
+    "lines": 454
+  },
+  {
+    "url": "https://payloadcms.com/docs/rich-text/slate",
+    "file": "rich-text--slate.md",
+    "lines": 364
+  },
+  {
+    "url": "https://payloadcms.com/docs/live-preview/overview",
+    "file": "live-preview--overview.md",
+    "lines": 179
+  },
+  {
+    "url": "https://payloadcms.com/docs/live-preview/frontend",
+    "file": "live-preview--frontend.md",
+    "lines": 16
+  },
+  {
+    "url": "https://payloadcms.com/docs/live-preview/server",
+    "file": "live-preview--server.md",
+    "lines": 198
+  },
+  {
+    "url": "https://payloadcms.com/docs/live-preview/client",
+    "file": "live-preview--client.md",
+    "lines": 305
+  },
+  {
+    "url": "https://payloadcms.com/docs/versions/overview",
+    "file": "versions--overview.md",
+    "lines": 252
+  },
+  {
+    "url": "https://payloadcms.com/docs/versions/drafts",
+    "file": "versions--drafts.md",
+    "lines": 315
+  },
+  {
+    "url": "https://payloadcms.com/docs/versions/autosave",
+    "file": "versions--autosave.md",
+    "lines": 79
+  },
+  {
+    "url": "https://payloadcms.com/docs/upload/overview",
+    "file": "upload--overview.md",
+    "lines": 798
+  },
+  {
+    "url": "https://payloadcms.com/docs/upload/storage-adapters",
+    "file": "upload--storage-adapters.md",
+    "lines": 541
+  },
+  {
+    "url": "https://payloadcms.com/docs/folders/overview",
+    "file": "folders--overview.md",
+    "lines": 116
+  },
+  {
+    "url": "https://payloadcms.com/docs/email/overview",
+    "file": "email--overview.md",
+    "lines": 313
+  },
+  {
+    "url": "https://payloadcms.com/docs/jobs-queue/overview",
+    "file": "jobs-queue--overview.md",
+    "lines": 267
+  },
+  {
+    "url": "https://payloadcms.com/docs/jobs-queue/quick-start-example",
+    "file": "jobs-queue--quick-start-example.md",
+    "lines": 297
+  },
+  {
+    "url": "https://payloadcms.com/docs/jobs-queue/tasks",
+    "file": "jobs-queue--tasks.md",
+    "lines": 587
+  },
+  {
+    "url": "https://payloadcms.com/docs/jobs-queue/workflows",
+    "file": "jobs-queue--workflows.md",
+    "lines": 528
+  },
+  {
+    "url": "https://payloadcms.com/docs/jobs-queue/jobs",
+    "file": "jobs-queue--jobs.md",
+    "lines": 305
+  },
+  {
+    "url": "https://payloadcms.com/docs/jobs-queue/queues",
+    "file": "jobs-queue--queues.md",
+    "lines": 655
+  },
+  {
+    "url": "https://payloadcms.com/docs/jobs-queue/schedules",
+    "file": "jobs-queue--schedules.md",
+    "lines": 534
+  },
+  {
+    "url": "https://payloadcms.com/docs/query-presets/overview",
+    "file": "query-presets--overview.md",
+    "lines": 208
+  },
+  {
+    "url": "https://payloadcms.com/docs/trash/overview",
+    "file": "trash--overview.md",
+    "lines": 266
+  },
+  {
+    "url": "https://payloadcms.com/docs/troubleshooting/troubleshooting",
+    "file": "troubleshooting--troubleshooting.md",
+    "lines": 175
+  },
+  {
+    "url": "https://payloadcms.com/docs/typescript/overview",
+    "file": "typescript--overview.md",
+    "lines": 90
+  },
+  {
+    "url": "https://payloadcms.com/docs/typescript/generating-types",
+    "file": "typescript--generating-types.md",
+    "lines": 258
+  },
+  {
+    "url": "https://payloadcms.com/docs/typescript/ts-plugin",
+    "file": "typescript--ts-plugin.md",
+    "lines": 124
+  },
+  {
+    "url": "https://payloadcms.com/docs/plugins/overview",
+    "file": "plugins--overview.md",
+    "lines": 158
+  },
+  {
+    "url": "https://payloadcms.com/docs/plugins/build-your-own",
+    "file": "plugins--build-your-own.md",
+    "lines": 339
+  },
+  {
+    "url": "https://payloadcms.com/docs/plugins/plugin-api",
+    "file": "plugins--plugin-api.md",
+    "lines": 235
+  },
+  {
+    "url": "https://payloadcms.com/docs/plugins/form-builder",
+    "file": "plugins--form-builder.md",
+    "lines": 764
+  },
+  {
+    "url": "https://payloadcms.com/docs/plugins/import-export",
+    "file": "plugins--import-export.md",
+    "lines": 990
+  },
+  {
+    "url": "https://payloadcms.com/docs/plugins/mcp",
+    "file": "plugins--mcp.md",
+    "lines": 791
+  },
+  {
+    "url": "https://payloadcms.com/docs/plugins/multi-tenant",
+    "file": "plugins--multi-tenant.md",
+    "lines": 430
+  },
+  {
+    "url": "https://payloadcms.com/docs/plugins/nested-docs",
+    "file": "plugins--nested-docs.md",
+    "lines": 251
+  },
+  {
+    "url": "https://payloadcms.com/docs/plugins/redirects",
+    "file": "plugins--redirects.md",
+    "lines": 112
+  },
+  {
+    "url": "https://payloadcms.com/docs/plugins/search",
+    "file": "plugins--search.md",
+    "lines": 218
+  },
+  {
+    "url": "https://payloadcms.com/docs/plugins/sentry",
+    "file": "plugins--sentry.md",
+    "lines": 166
+  },
+  {
+    "url": "https://payloadcms.com/docs/plugins/seo",
+    "file": "plugins--seo.md",
+    "lines": 317
+  },
+  {
+    "url": "https://payloadcms.com/docs/plugins/stripe",
+    "file": "plugins--stripe.md",
+    "lines": 331
+  },
+  {
+    "url": "https://payloadcms.com/docs/ecommerce/overview",
+    "file": "ecommerce--overview.md",
+    "lines": 142
+  },
+  {
+    "url": "https://payloadcms.com/docs/ecommerce/plugin",
+    "file": "ecommerce--plugin.md",
+    "lines": 993
+  },
+  {
+    "url": "https://payloadcms.com/docs/ecommerce/frontend",
+    "file": "ecommerce--frontend.md",
+    "lines": 497
+  },
+  {
+    "url": "https://payloadcms.com/docs/ecommerce/payments",
+    "file": "ecommerce--payments.md",
+    "lines": 460
+  },
+  {
+    "url": "https://payloadcms.com/docs/ecommerce/advanced",
+    "file": "ecommerce--advanced.md",
+    "lines": 449
+  },
+  {
+    "url": "https://payloadcms.com/docs/examples/overview",
+    "file": "examples--overview.md",
+    "lines": 25
+  },
+  {
+    "url": "https://payloadcms.com/docs/integrations/vercel-content-link",
+    "file": "integrations--vercel-content-link.md",
+    "lines": 135
+  },
+  {
+    "url": "https://payloadcms.com/docs/production/building-without-a-db-connection",
+    "file": "production--building-without-a-db-connection.md",
+    "lines": 30
+  },
+  {
+    "url": "https://payloadcms.com/docs/production/deployment",
+    "file": "production--deployment.md",
+    "lines": 322
+  },
+  {
+    "url": "https://payloadcms.com/docs/production/preventing-abuse",
+    "file": "production--preventing-abuse.md",
+    "lines": 43
+  },
+  {
+    "url": "https://payloadcms.com/docs/performance/overview",
+    "file": "performance--overview.md",
+    "lines": 238
+  }
+]

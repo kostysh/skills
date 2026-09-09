@@ -1,0 +1,8 @@
+{
+  "checkedAt": "2026-09-09T16:33:12.185196+00:00",
+  "url": "https://registry.npmjs.org/vitest/3.88.0",
+  "status": 404,
+  "body": "\"version not found: 3.88.0\"",
+  "sha256": "a3bca5b1549e9c13df5a7319491b67e91b53424b1e8ed16d3cc418d653cd4f99",
+  "templateArchive": "payload-official/v3.88.0--templates--plugin--package.json"
+}

@@ -1,0 +1,183 @@
+{
+  "at": "2026-09-09T15:23:04.355134+00:00",
+  "mode": "independent bounded baseline behavioral assessment",
+  "case": "S-services",
+  "verdict": "PASS",
+  "fullSourceVerdictUnchanged": "FAIL",
+  "aggregateSha256": "04e09ba7aa83122299e0c4da988f9e434a29dbbd43acc3dd3d731540fd0dd5d8",
+  "roots": {
+    "E": "/home/kostysh/.codex/skills/custom/.worktrees/framework-platforms/docs/reviews/framework-platforms-20260909",
+    "L": "/tmp/framework-platforms-20260909/trials/baseline/S-services"
+  },
+  "filesSha256": {
+    "E/protocol/S-services.json": "66474fd0bc5dcd6d4f400a07165ce84f5f28760a2c5bca4b86d1e8e51b7ed2bb",
+    "E/case-proposals-hono-supabase.md": "ec10cb26c7fa593b306dcf2e1f373e14cb421902acae37742b6dfd074f4637a2",
+    "E/baseline-supabase-review.md": "14ab175365f841196d97698df9b41c8fec9640d4419372bdf86a5fcd0f402a69",
+    "E/runtime-node-metadata-correction.json": "9949d37e139ba51465dc3e493a0e64a3fb545a188d05fab81d3811604df81284",
+    "E/raw-agent-traces/baseline_supabase_services_executor.jsonl": "e76fca40a94467ef41ea5f33b4cdef697fb442df870bf72ebc99297a7ca8bb16",
+    "E/raw-agent-traces/baseline_supabase_services_executor-task-messages.jsonl": "1ea13c3044b96f7cae81f9ae6d692e4f3aee6de33fc52a59bc96bf11320567f1",
+    "L/RUNTIME.md": "b4af27e25ee22ec0272d5b6cb264948ba4395c75185302425f4b239ad57a434d",
+    "L/task.txt": "7cd8f38bc835c10629392e42f958dad0d2356925e9d9f43cc11ec66014e9e69b",
+    "L/app/package.json": "fc462b46f75ccadae2c6166a433cf3196e89baae9fe761590ae8a13ac7ff6e78",
+    "L/app/REQUIREMENTS.md": "bcc5ee607eeabb713748b7f425624026003998258eb844843d27b8c5b9580b96",
+    "L/app/services.mjs": "917732e70c8461bd8a2eeca8fe0f283d69871c7c33495282b1369400e6030eeb",
+    "L/app/verify.mjs": "32c41dc88a24f924d5ba45112fc95af365c12dad7af744ee057a663e3862ed0b",
+    "L/app/.env": "ef3e66a7d0a8614643dc9f69f5af44fb1d39ff6a0b7abd37e5fdf35758e0ce4a",
+    "L/app/package-lock.json": "7072acd836cd7584e4a40f07439d7915ceb8139258fb75808480ab6cfc80c620",
+    "L/app/test/ready.test.mjs": "fecede0e73a5e98e3a7572db0027d8e2b20db5faaa7efb3d68df1fab5e73a2c7",
+    "L/app/source/articles.json": "f55f5e9164f1025f55b6d77af74e89a6de2167aca4004f0625cc5564f3110c12",
+    "L/app/source/vectors.json": "5e73587832712b992ec248b953c6249f0009caf572f37bdaa8a7000c9464bbf2",
+    "L/skills/supabase-engineer/skill.yaml": "35a7c84be2bf9c23acae207b36dd23439f1f3c36bc057fa49f5249d0c1cc8fa2",
+    "L/skills/supabase-engineer/AGENTS.md": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf",
+    "L/skills/supabase-engineer/SKILL.md": "3ee79ab832636a6cc36d1b9009a46b80c8090642bdfd89a90e478a271774a751",
+    "L/skills/supabase-engineer/docs/compile-report.md": "7f35926cb38467bd19293216117765bccbe53df6ed39749b93ebeb8eafd104b2",
+    "L/skills/supabase-engineer/docs/README.md": "87d104ab367d2dcfe33a6fa81587ab700edd4e9e013d75dbc2d4846b6b877c4b",
+    "L/skills/supabase-engineer/fragments/overview.md": "0733a8ba6cb0d7332ab0c2af28001a0629803731dee66bf0681494564e140665",
+    "L/skills/supabase-engineer/agents/openai.yaml": "f08b004b6312540db55f0be5991f16445925d7cf9a1d30f8558205946a975c8a",
+    "L/skills/supabase-engineer/references/operations-observability.md": "7c420f1c360dc8b593375236d5669c22079295c00817a3b94376edc9f89b3033",
+    "L/skills/supabase-engineer/references/migrations-cli.md": "79a092ddbd4ac83955738362e5a3290fda467873264da69b162f4b8f8cd99185",
+    "L/skills/supabase-engineer/references/security-privileges.md": "214a577902106b6eef3c558fe13daa9ff6f0217f2dd98ceca620652d469cf0c7",
+    "L/skills/supabase-engineer/references/troubleshooting.md": "63c61c836531e1d32432c70dc5ad1bb641728ff1d920d32c02d63b0339f2d8af",
+    "L/skills/supabase-engineer/references/data-handling.md": "dd76601cf580a5d95552eb0ffef049c207c8ab676f2e3fae7cba0972532f872b",
+    "L/skills/supabase-engineer/references/operations-reliability.md": "7505e899d38fcb7942ecf11e3f79fbf52402297201b2c39ee0e82cf590a19b2a",
+    "L/skills/supabase-engineer/references/vector.md": "0d8a7bc349178b46093ea78ac64247a98cf99cfdb941ca8ad4032b5f7c40c6c4",
+    "L/skills/supabase-engineer/references/storage.md": "ed0bb795237db67cf063172a34eca6f5466cd79745d0bee848079eba20c9cd2f",
+    "L/skills/supabase-engineer/references/realtime.md": "4cd90caaeecd1abf9b18424a9b3fea97ba5daba02418d58568822871508532eb",
+    "L/skills/supabase-engineer/references/auth.md": "d955c7263ab57a9cf8e3801929a0232525aa9adf020554662ffd4fda73348942",
+    "L/skills/supabase-engineer/references/rls.md": "4b4f75f94aafe570784bb6d7741c96bfbcd33d5c09425048b8752b6832d96e7a",
+    "L/skills/supabase-engineer/references/client-setup.md": "0146449ca44cac32d43f3ccc8c68e7877762083d4f15c5982b400346a4ffed49",
+    "L/skills/supabase-engineer/references/database.md": "28c95d7d48590ee55c4b322b06549410e801b21fa1c86b930373d2392ef938e5",
+    "L/skills/supabase-engineer/references/high-risk-backend-contract.md": "24de22f8621fceed881c6e8821d836b23835da6e1f93bbe478fca065a98f745d",
+    "L/skills/supabase-engineer/references/edge-functions.md": "8692826835d80ebf6cbc9ab69f42d258517c4fa8676e6374014f486eb183ddc3",
+    "L/skills/supabase-engineer/references/architecture.md": "84c9bf4c2444d7680adcd79590220b30ed44d71fee456805b9b9f71c9909aa9d",
+    "L/skills/supabase-engineer/references/operations-release.md": "6b980167153fcf1bfb5412e60a2bd04f4bf97c395c29c623e321a154db1c4135",
+    "L/skills/supabase-engineer/references/webhooks.md": "b98d93838d9aa328ed1937d0c1ed962840d7e308132ed156c63b87cf0e429be9",
+    "L/skills/supabase-engineer/references/db-functions.md": "d1ea67c1ae3208a7d980af990b611c3b04978812e8bd9a769af3c64ff717d94e",
+    "L/skills/supabase-engineer/docs/logs/implementation-log-20260727-1.md": "69bb000561b1e3e7cd204aa93ce3a04154809e454e9b3575396966af568ed76c",
+    "L/skills/supabase-engineer/docs/logs/implementation-log-20260708-1.md": "553790d2a9a9b447b1c554f6d1569d12f04d3bbd9529d474ab18490d1d42e973",
+    "L/skills/supabase-engineer/docs/logs/implementation-log-20260611-1.md": "33f347b95fed2a2cb42de92aface4cd793799cfd753e504018ff3ee66c4efc11",
+    "L/skills/supabase-engineer/docs/logs/implementation-log-20260710-1.md": "e8c71338f93a920fb6bcd2e4239df66a0969a2096a6f652b841574257f3b4bda",
+    "L/skills/supabase-engineer/docs/logs/implementation-log-20260715-1.md": "60b2db2aac6fbee8411227cd0292da59a062ca774f080c53cbb39e5901c1ec90",
+    "L/skills/supabase-engineer/docs/logs/implementation-log-20260717-1.md": "66729a3735b9536755c9b5fce2dfdc8053ea1124d997fdf58e245a800a6befd9",
+    "L/commands.jsonl": "702f3f63cfbb574083bf01ee3173e4690eeb950d34c0d1d7eba4f7f823d966df",
+    "L/result.md": "124fb2dc2f3909fefa20a3602445d05a98f0d4e925ecd46e77f9f9a02577f355",
+    "L/selection.md": "8a88d52325bb784a51f9c8ef5d7be01d29c8299ec99b71ded31118e399e12d38",
+    "L/app/migrations/001_services.sql": "76902e778afd18b39f1b20b06e2aa9c59fa510d7690d99a73aac8c293a818934",
+    "L/app/inspect-plans.mjs": "18ea1cef1717150a0d72e65b4f776331bd0c79fc29d7f4487768057ceae01e16",
+    "L/app/evidence.json": "cc1ab86cfbfc279548ec0c7dc691c3acc381a720b86bbd5786bdbdb5140e0dbf",
+    "L/app/index-readback.json": "68118ad7eb3ce75a200cf6f14edfb26d1a6689118462c656e4eadf29cb9875d2",
+    "L/app/plan-8.json": "0e59b1bff0590e9231bfdb664b9ee18c17376d561203b6565d64cb3f1d04f9d4",
+    "L/app/plan-1200.json": "df467ec709c11b1e6fe54e3da7783e3861d96ce95d0715d1d56ead5b40943d3b",
+    "L/app/plan-body-8.json": "95491d53396b224cb63107776e3f331306621ad0d71febddff302a580fdecb66",
+    "L/app/plan-body-1200.json": "e2d75565624dc76af1619ce9dc1130ada301b069599084183de03f2e06c002bc",
+    "L/app/node_modules/@supabase/supabase-js/package.json": "7fb2b72ae229cc489891f65915a11ba0528f14783ffaa95379d50bcef95f1d0c",
+    "L/app/node_modules/pg/package.json": "e42dd36cba6e9dd8dbb6f773a2f7be8a8c3c273e18b155e42e75961a4cb8bc28",
+    "L/app/node_modules/@supabase/postgrest-js/src/PostgrestBuilder.ts": "12a13c40d213a6ee9691b8441404193ecbb7628597c6c6159c46cb86fe787c4e",
+    "L/app/node_modules/@supabase/postgrest-js/src/PostgrestTransformBuilder.ts": "01a57078ecf2c9d63d138d3b19c24753b608960b1d0bde75f942e74cee5350ec"
+  },
+  "privateFilesHashOnly": [
+    "L/app/.env"
+  ],
+  "frozenInputCount": 43,
+  "changedFrozenInputs": [
+    "app/services.mjs",
+    "app/verify.mjs"
+  ],
+  "traceManifestEntry": {
+    "agent": "/root/baseline_supabase_services_executor",
+    "source_session_id": "01a086b9-00b2-7e23-80f1-e786c763831c",
+    "journal_sha256": "ff5754c5b877042ae8a08f6a3a7c9b51964cb58f338cfd190c13fa119dc33c65",
+    "public_trace": "baseline_supabase_services_executor.jsonl",
+    "public_trace_sha256": "e76fca40a94467ef41ea5f33b4cdef697fb442df870bf72ebc99297a7ca8bb16",
+    "tool_events": 32,
+    "public_task_messages": "baseline_supabase_services_executor-task-messages.jsonl",
+    "task_messages_sha256": "1ea13c3044b96f7cae81f9ae6d692e4f3aee6de33fc52a59bc96bf11320567f1",
+    "recorded_turn_settings": [
+      {
+        "turn_id": "01a086b9-0147-7743-b2bb-8da8066684c8",
+        "model": "gpt-6-astra",
+        "effort": "medium"
+      }
+    ]
+  },
+  "assertionExecutions": 1257,
+  "distinctAssertionLabels": 69,
+  "commandRecords": 3,
+  "allCommandExitZero": true,
+  "versions": {
+    "node": "v24.20.0",
+    "supabase": "2.116.0",
+    "pgvector": "0.8.2"
+  },
+  "pgPackageVersion": "8.23.0",
+  "results": {
+    "articles": {
+      "sourceCount": 137,
+      "publishedCount": 121,
+      "identityHash": "a006413243c08fce013049605dc745f39c629b81678223584aaed354bf0aeb3b"
+    },
+    "injectedTransport": {
+      "requests": 2,
+      "maxRequestsPerPage": 1,
+      "durationMs": 5.471215000000029,
+      "partialSuccess": false
+    },
+    "vectors": [
+      {
+        "count": 8,
+        "user": "alice",
+        "queries": 20,
+        "k": 5,
+        "meanRecallAt5": 1,
+        "maxDistanceError": 6.91495390947594e-08,
+        "totalMs": 61.529607999999826
+      },
+      {
+        "count": 8,
+        "user": "bob",
+        "queries": 20,
+        "k": 5,
+        "meanRecallAt5": 1,
+        "maxDistanceError": 6.91495390947594e-08,
+        "totalMs": 58.62493100000029
+      },
+      {
+        "count": 1200,
+        "user": "alice",
+        "queries": 20,
+        "k": 5,
+        "meanRecallAt5": 1,
+        "maxDistanceError": 8.618412321304003e-08,
+        "totalMs": 74.03991399999995
+      },
+      {
+        "count": 1200,
+        "user": "bob",
+        "queries": 20,
+        "k": 5,
+        "meanRecallAt5": 1,
+        "maxDistanceError": 8.618412321304003e-08,
+        "totalMs": 63.46628299999975
+      }
+    ]
+  },
+  "limits": [
+    "execution of supplied skill; no catalog-selection proof",
+    "encrypted initial dispatch plaintext not independently attested",
+    "32 events and recorded medium settings; not backend model attestation",
+    "RUNTIME Node24.15.0 corrected to actual24.20.0; candidate needs same recorded correction",
+    "503 is injected transport evidence; no independent 2s expiry/deadline suite",
+    "signed TTL and successful GET, not actual expiry observation",
+    "vector plans/recall scoped to supplied synthetic corpus; no ANN or semantic quality",
+    "assertion labels/summaries retained; raw full API return sequence not persisted",
+    "no broad security review or cleanup attestation"
+  ],
+  "reviewerActions": "read-only source/evidence/hash/offline assertions; no DB/Docker/runtime rerun",
+  "endingIdentityMatches": true,
+  "additiveCleanupEvidence": {
+    "file": "baseline-S-services-cleanup-evidence.json",
+    "sha256": "46d47f425c7370c634f05a705e6f5cc2c67368444fd2002a756bfdf32b067bd8",
+    "scriptSha256": "0d4cd2b5a1d3a344d4b19a7f4c7de4d47ecd9f9152ae8baafdfb0a2cb73ff07c",
+    "originalAggregateRetained": true
+  }
+}

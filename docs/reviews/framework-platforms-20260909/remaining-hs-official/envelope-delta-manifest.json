@@ -1,0 +1,43 @@
+[
+  {
+    "file": "declarative.orchestrate.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/schema/declarative/declarative.orchestrate.ts",
+    "sha256": "9838d963f3e6171779970975bbc077d9ee9d56721af009581ff485d9f5e28e3e",
+    "checkedAt": "2026-09-09T13:44:29.290526+00:00"
+  },
+  {
+    "file": "legacy-pgdelta.seam.layer.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/shared/legacy-pgdelta.seam.layer.ts",
+    "sha256": "f291c0fcddd84ac227c79e189beb5d3519899f511186f23f01b83a4b5062c90c",
+    "checkedAt": "2026-09-09T13:44:30.386928+00:00"
+  },
+  {
+    "file": "legacy-pgdelta.seam.service.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/shared/legacy-pgdelta.seam.service.ts",
+    "sha256": "c8f4ee98a891a7a89d196cf98cd6683dc1b0a504be38f328ed53f76fa43d6087",
+    "checkedAt": "2026-09-09T13:44:29.223633+00:00"
+  },
+  {
+    "file": "legacy-pgdelta-declarative-shadow-prep.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/shared/legacy-pgdelta-declarative-shadow-prep.ts",
+    "sha256": "ee05c7e120257b446f328d5032d22c7e454b13792abd39f70d4755ef9db60bea",
+    "checkedAt": "2026-09-09T13:44:29.227286+00:00"
+  },
+  {
+    "file": "legacy-pgdelta-next-shadow.service.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/shared/legacy-pgdelta-next-shadow.service.ts",
+    "sha256": "f9ebaf140e44070ba48c861bcae48577bafc378e601efc3dc8167ae34341e6d5",
+    "checkedAt": "2026-09-09T13:44:29.247691+00:00"
+  },
+  {
+    "file": "declarative.smart-target.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/schema/declarative/declarative.smart-target.ts",
+    "sha256": "ee7f783d8b88e1e5e36ddcdc3db000d4035bf66d2c0ce5b259f891dfa7e590a7",
+    "checkedAt": "2026-09-09T13:44:29.551429+00:00"
+  },
+  {
+    "file": "legacy-pgdelta-next.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/shared/legacy-pgdelta-next.ts",
+    "error": "HTTP Error 404: Not Found"
+  }
+]

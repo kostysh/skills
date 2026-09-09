@@ -1,0 +1,114 @@
+AWSOverview💡
+This docs is for the V3 of OpenNext. If you are looking for the V2 docs, you can find them here.
+
+If you're migrating from V2 to V3, you can find the migration guide here.
+
+
+AWS
+
+
+
+OpenNext takes the Next.js build output and converts it into packages that can be deployed across a variety of environments.
+Natively OpenNext has support for AWS Lambda, Cloudflare, and classic Node.js Server.
+
+
+One notable feature of OpenNext is its ability to split the Next.js output, enabling selective deployment to different targets such as AWS Lambda, Cloudflare Workers, or Amazon ECS. This facilitates a tailored deployment strategy that aligns with the specific needs of your application.
+
+
+Thanks to this, you could deploy part of your API to ECS, another part to Cloudflare Workers, your SSR routes to another ECS cluster, and your ISR/SSG routes to Lambda.
+
+
+
+OpenNext AWS is currently maintained by the SST (opens in a new tab) community; notably, conico974 (opens in a new tab) and khuezy (opens in a new tab).
+
+
+We need your help keeping it up to date and feature complete. Make sure to join us on Discord (opens in a new tab) and star us on GitHub (opens in a new tab).
+
+
+
+OpenNext aims to support all Next.js 15 features and is widely deployed in production across multiple platforms.
+
+
+NHS England (opens in a new tab), Udacity (opens in a new tab), Gymshark UK (opens in a new tab), SST (opens in a new tab), Cloudflare (opens in a new tab)
+
+
+Some features are work in progress. Please open a new issue (opens in a new tab) to let us know!
+
+
+
+ App & Pages Router
+
+
+ API routes
+
+
+ Dynamic routes
+
+
+ Static site generation (SSG)
+
+
+ Server-side rendering (SSR)
+
+
+ Incremental static regeneration (ISR)
+
+
+ Middleware
+
+
+ Image optimization
+
+
+ NextAuth.js (opens in a new tab)
+
+
+ Running in lambda@edge
+
+
+ No cold start
+
+
+ Support for after
+
+
+ Composable Caching (opens in a new tab) ('use cache')
+
+
+
+
+OpenNext can be used on Windows systems but Windows full support is not guaranteed because:
+
+
+
+Next.js tooling itself has Windows support issues and OpenNext is built on these tools
+
+
+the OpenNext team has limited capacity and fully supporting Windows (given the point above)
+has been determined to be a lower priority, thus the effort and testing on Windows is limited
+
+
+
+Given the above, you can develop your application under Windows at your own risk. If you don't have an alternative we
+recommend either:
+
+
+
+running OpenNext using the Windows Subsystem for Linux (WSL) (opens in a new tab),
+
+
+in a Linux Virtual Machine or
+
+
+develop your application using the standard Next.js tooling and deploy it using OpenNext in CI/CD systems such
+as GitHub Actions (opens in a new tab) that run linux/MacOS environments
+
+
+
+Windows Subsystem for Linux (WSL) allows you to run a Linux environment on your Windows machine, without the need for
+a separate virtual machine or dual booting. Visual Studio Code has an extension (opens in a new tab)
+that makes developing with WSL very easy.
+
+
+
+Get started with deploying your app with OpenNext and your favorite framework.

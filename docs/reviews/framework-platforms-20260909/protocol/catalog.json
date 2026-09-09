@@ -1,0 +1,65 @@
+{
+  "frozen_at": "2026-09-09T12:04:33.644561+00:00",
+  "criteria": "Choose owning skill; related skills only for real sub-decisions. Primary required owner is first oracle entry. Companion inclusion may be staged/handoff. No body loaded before decision; no implementation. Inapplicable target mandatory selection is failure. Natural selection evidence bounded to supplied 22-entry catalog.",
+  "oracle": {
+    "C01": [
+      "hono-engineer"
+    ],
+    "C02": [
+      "supabase-engineer"
+    ],
+    "C03": [
+      "nextjs",
+      "supabase-engineer"
+    ],
+    "C04": [
+      "electron-engineer"
+    ],
+    "C05": [
+      "docusaurus-repo"
+    ],
+    "C06": [
+      "payload"
+    ],
+    "C07": [
+      "payload-migration",
+      "payload",
+      "nextjs"
+    ],
+    "C08": [
+      "node-engineer"
+    ],
+    "C09": [
+      "security-reviewer"
+    ],
+    "C10": [
+      "react-components-engineer"
+    ],
+    "C11": [
+      "react-spa-engineer"
+    ],
+    "C12": [
+      "documentation"
+    ],
+    "C13": [
+      "typescript-engineer"
+    ],
+    "C14": [
+      "payload-migration"
+    ],
+    "C15": [
+      "architecture-engineer",
+      "supabase-engineer"
+    ]
+  },
+  "inputs": {
+    "tasks.json": "78b01d8948c5194e78f8e09dfa54ed271455af76c650cfdb8ab22f1d2b6b28f5",
+    "catalog.json": "7c87ebe3691ae0efffddd255004b7df3454aa8860f2f167ac3aa1448c2f13489"
+  },
+  "instrumentation_addendum": {
+    "time": "2026-09-09T12:09:58.801016+00:00",
+    "reason": "Original selection did not persist command read trace. Preserve it as limited evidence; repeat same raw inputs with every file read/write via recorder for paired exposure audit. No criteria/task/catalog changes.",
+    "baseline_repeat": "catalog-captured",
+    "candidate_same_capture": true
+  }
+}

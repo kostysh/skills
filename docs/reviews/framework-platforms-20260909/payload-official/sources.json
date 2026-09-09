@@ -1,0 +1,11 @@
+{
+  "llms-full.txt": "https://payloadcms.com/llms-full.txt",
+  "releases.json": "https://api.github.com/repos/payloadcms/payload/releases?per_page=30",
+  "payload-package.json": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/package.json",
+  "next-package.json": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/next/package.json",
+  "lexical-package.json": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/richtext-lexical/package.json",
+  "db-postgres-package.json": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/db-postgres/package.json",
+  "db-mongodb-package.json": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/db-mongodb/package.json",
+  "db-sqlite-package.json": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/db-sqlite/package.json",
+  "npm-tags.json": "https://registry.npmjs.org/-/package/payload/dist-tags"
+}

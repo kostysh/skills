@@ -1,0 +1,29 @@
+{
+  "name": "framework-docusaurus-fixture",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.28.2",
+  "scripts": {
+    "build": "docusaurus build",
+    "start": "docusaurus start",
+    "serve": "docusaurus serve",
+    "typecheck": "tsc --noEmit",
+    "greet": "node tools/greet.mjs"
+  },
+  "dependencies": {
+    "@docusaurus/core": "3.10.2",
+    "@docusaurus/preset-classic": "3.10.2",
+    "@mdx-js/react": "3.1.1",
+    "clsx": "2.1.1",
+    "prism-react-renderer": "2.4.1",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "@docusaurus/plugin-content-docs": "3.10.2"
+  },
+  "devDependencies": {
+    "@docusaurus/tsconfig": "3.10.2",
+    "@docusaurus/types": "3.10.2",
+    "typescript": "5.9.3"
+  }
+}

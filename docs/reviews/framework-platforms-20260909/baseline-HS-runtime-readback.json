@@ -1,0 +1,555 @@
+{
+  "reviewedAt": "2026-09-09T12:15:44.760127+00:00",
+  "protocolSha256": "c65d154cb65b166132054f2c17f42525c7178875c8a9d36f4ffc12ac0ffc1f42",
+  "files": [
+    {
+      "path": "commands.jsonl",
+      "bytes": 7194,
+      "sha256": "21b2a00410632987c7fa34e96aa76a8d4dc78af8ec2bb4b2fa597dc6704ae804",
+      "mtimeUTC": "2026-09-09T12:09:41.159661+00:00"
+    },
+    {
+      "path": "result.md",
+      "bytes": 6299,
+      "sha256": "d841f1ddcb28656ad22b461aae48f75b63810a2b725aaef1ee334d6709ef5dab",
+      "mtimeUTC": "2026-09-09T12:10:24.315167+00:00"
+    },
+    {
+      "path": "app/src/app.ts",
+      "bytes": 3816,
+      "sha256": "45a7b95a01e31c1249ba45e8206513006b033e09a418ff1079385afde7ab9d50",
+      "mtimeUTC": "2026-09-09T12:05:58.987319+00:00"
+    },
+    {
+      "path": "app/src/server.ts",
+      "bytes": 216,
+      "sha256": "9f5c9585c0134db16ac00b6aa4d083ff5bbed5cb45995610fbe3819ec1d3fd12",
+      "mtimeUTC": "2026-09-09T11:53:32.477654+00:00"
+    },
+    {
+      "path": "app/migrations/001_documents.sql",
+      "bytes": 3971,
+      "sha256": "e9ac063c4ffaa4949c9cd689ca6f8d5cb641437301a2cb64251fc0beb4b12cc6",
+      "mtimeUTC": "2026-09-09T12:06:57.156709+00:00"
+    },
+    {
+      "path": "app/scripts/migrate.mjs",
+      "bytes": 690,
+      "sha256": "4f2ce8fa9c384b90a841201d0f31e88f25f3aec47723cf26af6f37c2128576ab",
+      "mtimeUTC": "2026-09-09T12:06:57.161736+00:00"
+    },
+    {
+      "path": "app/scripts/test-runtime.mjs",
+      "bytes": 11672,
+      "sha256": "cd6d4adc61279838b2aa66c00a063e25e9708cae6876e729245203b15567b72b",
+      "mtimeUTC": "2026-09-09T12:09:01.094191+00:00"
+    },
+    {
+      "path": "app/scripts/readback.mjs",
+      "bytes": 1701,
+      "sha256": "31151bbc7a8d1459d254efef7c39b64fc1c854d22ae485666f1ed574f687cd72",
+      "mtimeUTC": "2026-09-09T12:09:01.093191+00:00"
+    },
+    {
+      "path": "app/DATA_AUTH_HANDOFF.md",
+      "bytes": 4970,
+      "sha256": "15f1fd4e9a4aa0c79d161a948a97a53ba272bf1a23215099faebd9a59ac25db4",
+      "mtimeUTC": "2026-09-09T12:06:57.159736+00:00"
+    },
+    {
+      "path": "app/package.json",
+      "bytes": 542,
+      "sha256": "b98bb0859df071165007c3e41548f96a0fb36e2ff873db697aa6dacb552fd29c",
+      "mtimeUTC": "2026-09-09T11:53:32.477555+00:00"
+    },
+    {
+      "path": "app/package-lock.json",
+      "bytes": 7085,
+      "sha256": "012f7726f92a4f8a58d456e44ad2673d5bd7e45ac11e840d5a63592347c4ece4",
+      "mtimeUTC": "2026-09-09T11:54:49.998863+00:00"
+    },
+    {
+      "path": "app/tsconfig.json",
+      "bytes": 279,
+      "sha256": "b8901b35c3208ed76a3b6fb5fff6b1d788ce0314a7492defe7333e53d27168a2",
+      "mtimeUTC": "2026-09-09T11:53:32.477605+00:00"
+    },
+    {
+      "path": "app/REQUIREMENTS.md",
+      "bytes": 3182,
+      "sha256": "c90488c6969331b6ab00b8a3ec943319fe196af547ffed8ce911f783b7ae9bdc",
+      "mtimeUTC": "2026-09-09T12:03:04.472043+00:00"
+    },
+    {
+      "path": "app/test/health.test.ts",
+      "bytes": 183,
+      "sha256": "d63fb8107278dba2bc026c7772144927da33739fa836796b42a3ec07956e3c2d",
+      "mtimeUTC": "2026-09-09T11:53:32.477680+00:00"
+    }
+  ],
+  "unchangedFrozenSurfaces": [
+    {
+      "path": "task.txt",
+      "matches": true
+    },
+    {
+      "path": "app/package.json",
+      "matches": true
+    },
+    {
+      "path": "app/tsconfig.json",
+      "matches": true
+    },
+    {
+      "path": "app/package-lock.json",
+      "matches": true
+    },
+    {
+      "path": "app/REQUIREMENTS.md",
+      "matches": true
+    },
+    {
+      "path": "app/src/server.ts",
+      "matches": true
+    },
+    {
+      "path": "app/test/health.test.ts",
+      "matches": true
+    },
+    {
+      "path": "skills/spec-engineer/SKILL.md",
+      "matches": true
+    },
+    {
+      "path": "skills/node-engineer/SKILL.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-test-engineer/SKILL.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-engineer/SKILL.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/SKILL.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/SKILL.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/agents/openai.yaml",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/security.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/contracts-types.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/pipelines.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/supabase.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/typing.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/workers-platform.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/validation-openapi.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/rate-limiting.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/perf-security.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/architecture.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/caching.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/routers.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/high-risk-backend-contract.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/auth.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/observability.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/wrangler.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/errors-logs.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/framework-currency.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/agents/openai.yaml",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/db-functions.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/webhooks.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/operations-release.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/architecture.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/edge-functions.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/high-risk-backend-contract.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/database.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/client-setup.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/rls.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/auth.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/realtime.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/storage.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/vector.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/operations-reliability.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/data-handling.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/troubleshooting.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/security-privileges.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/migrations-cli.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/operations-observability.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-engineer/agents/openai.yaml",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-engineer/references/monorepo.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-engineer/references/generics.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-engineer/references/practices.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-engineer/references/type-debugging.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-engineer/references/toolchain.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-engineer/references/overloads.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-engineer/references/patterns.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-engineer/references/type-system.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-engineer/references/runtime-derived-types.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-test-engineer/agents/openai.yaml",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-test-engineer/references/tdd.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-test-engineer/references/testing-anti-patterns.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-test-engineer/references/react-vitest.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-test-engineer/references/testing.md",
+      "matches": true
+    },
+    {
+      "path": "skills/node-engineer/agents/openai.yaml",
+      "matches": true
+    },
+    {
+      "path": "skills/node-engineer/references/debugging-profiling.md",
+      "matches": true
+    },
+    {
+      "path": "skills/node-engineer/references/operations.md",
+      "matches": true
+    },
+    {
+      "path": "skills/node-engineer/references/streams-caching.md",
+      "matches": true
+    },
+    {
+      "path": "skills/node-engineer/references/runtime-typescript.md",
+      "matches": true
+    },
+    {
+      "path": "skills/spec-engineer/agents/openai.yaml",
+      "matches": true
+    },
+    {
+      "path": "skills/spec-engineer/references/methodology.md",
+      "matches": true
+    },
+    {
+      "path": "skills/spec-engineer/references/high-risk-backend-contract.md",
+      "matches": true
+    },
+    {
+      "path": "skills/spec-engineer/references/discovery-techniques.md",
+      "matches": true
+    },
+    {
+      "path": "skills/spec-engineer/references/spec-patterns.md",
+      "matches": true
+    },
+    {
+      "path": "skills/spec-engineer/references/anti-patterns.md",
+      "matches": true
+    },
+    {
+      "path": "skills/spec-engineer/references/example-spec.md",
+      "matches": true
+    }
+  ],
+  "scopeExclusions": [
+    ".env",
+    "private credentials",
+    "other task databases",
+    "heavy test rerun"
+  ],
+  "runtimeWhitespaceFalsifier": "confirmed separate root probe at 2026-09-09T12:18:46.199617+00:00; original trial log preserved",
+  "commandsSummary": [
+    {
+      "index": 1,
+      "time": "2026-09-09T12:04:19.223313+00:00",
+      "commandTail": [
+        "mcr.microsoft.com/playwright:v1.63.0-noble",
+        "npm",
+        "ci"
+      ],
+      "exit": 0,
+      "seconds": 0.861
+    },
+    {
+      "index": 2,
+      "time": "2026-09-09T12:06:57.524691+00:00",
+      "commandTail": [
+        "mcr.microsoft.com/playwright:v1.63.0-noble",
+        "node",
+        "scripts/migrate.mjs"
+      ],
+      "exit": 0,
+      "seconds": 0.174
+    },
+    {
+      "index": 3,
+      "time": "2026-09-09T12:09:03.036778+00:00",
+      "commandTail": [
+        "npm",
+        "run",
+        "typecheck"
+      ],
+      "exit": 0,
+      "seconds": 1.754
+    },
+    {
+      "index": 4,
+      "time": "2026-09-09T12:09:13.384824+00:00",
+      "commandTail": [
+        "mcr.microsoft.com/playwright:v1.63.0-noble",
+        "node",
+        "scripts/test-runtime.mjs"
+      ],
+      "exit": 0,
+      "seconds": 3.298
+    },
+    {
+      "index": 5,
+      "time": "2026-09-09T12:09:41.160611+00:00",
+      "commandTail": [
+        "mcr.microsoft.com/playwright:v1.63.0-noble",
+        "npm",
+        "test"
+      ],
+      "exit": 0,
+      "seconds": 0.396
+    }
+  ],
+  "runtimeGroupCountInScript": 14,
+  "runtimePassLinesInLog": 15,
+  "originalArtifactsStillMatch": {
+    "commands.jsonl": true,
+    "result.md": true,
+    "app/src/app.ts": true,
+    "app/src/server.ts": true,
+    "app/migrations/001_documents.sql": true,
+    "app/scripts/migrate.mjs": true,
+    "app/scripts/test-runtime.mjs": true,
+    "app/scripts/readback.mjs": true,
+    "app/DATA_AUTH_HANDOFF.md": true,
+    "app/package.json": true,
+    "app/package-lock.json": true,
+    "app/tsconfig.json": true,
+    "app/REQUIREMENTS.md": true,
+    "app/test/health.test.ts": true
+  },
+  "separateAssessmentProbe": [
+    {
+      "path": "/tmp/framework-platforms-20260909/assessment-probes/hs-trim-result.json",
+      "sha256": "ae8d0f9e47991b272a4c65459595ecda8f62c16473d23a15d1afe48458296f20",
+      "bytes": 469
+    },
+    {
+      "path": "/tmp/framework-platforms-20260909/assessment-probes/hs-trim-commands.jsonl",
+      "sha256": "d3b87da49aa723f1e2347a8e12b819aec2a31b1264327991221438231d493cbc",
+      "bytes": 1508
+    },
+    {
+      "path": "/tmp/framework-platforms-20260909/assessment-probes/hs-trim.mjs",
+      "sha256": "e2bd6a896409a2068caaba83153b1c53a1b1ab9df2ff064aa01a3227cb8006e5",
+      "bytes": 2266
+    }
+  ],
+  "publicTraceAddendum": {
+    "checkedAt": "2026-09-09T12:46:36.468279+00:00",
+    "evidence": "baseline-hono-supabase-public-trace-delta.json",
+    "trace": {
+      "file": "raw-agent-traces/baseline_hs_runtime_executor.jsonl",
+      "sha256": "30482f686b060c926ff2727ba331a64cf6bda74e52a8eeb1e8c9ef5970e947c1",
+      "toolEvents": 26,
+      "recordedTurnSettings": [
+        {
+          "turn_id": "01a0860d-2554-7701-bd2d-6ea66d20cd1e",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        }
+      ]
+    },
+    "verdict": "FAIL; Hono bounded PASS; HS-S01 P2 unchanged",
+    "initialRootOutputTruncated": true,
+    "reconstructedFiles": {
+      "app/src/app.ts": {
+        "sha256": "45a7b95a01e31c1249ba45e8206513006b033e09a418ff1079385afde7ab9d50",
+        "publicInputsReconstructExactBytes": true
+      },
+      "app/migrations/001_documents.sql": {
+        "sha256": "e9ac063c4ffaa4949c9cd689ca6f8d5cb641437301a2cb64251fc0beb4b12cc6",
+        "publicInputsReconstructExactBytes": true
+      },
+      "app/DATA_AUTH_HANDOFF.md": {
+        "sha256": "15f1fd4e9a4aa0c79d161a948a97a53ba272bf1a23215099faebd9a59ac25db4",
+        "publicInputsReconstructExactBytes": true
+      },
+      "app/scripts/migrate.mjs": {
+        "sha256": "4f2ce8fa9c384b90a841201d0f31e88f25f3aec47723cf26af6f37c2128576ab",
+        "publicInputsReconstructExactBytes": true
+      },
+      "app/scripts/readback.mjs": {
+        "sha256": "31151bbc7a8d1459d254efef7c39b64fc1c854d22ae485666f1ed574f687cd72",
+        "publicInputsReconstructExactBytes": true
+      },
+      "app/scripts/test-runtime.mjs": {
+        "sha256": "cd6d4adc61279838b2aa66c00a063e25e9708cae6876e729245203b15567b72b",
+        "publicInputsReconstructExactBytes": true
+      },
+      "result.md": {
+        "sha256": "d841f1ddcb28656ad22b461aae48f75b63810a2b725aaef1ee334d6709ef5dab",
+        "publicInputsReconstructExactBytes": true
+      }
+    }
+  }
+}

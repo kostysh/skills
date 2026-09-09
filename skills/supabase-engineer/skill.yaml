@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: supabase-engineer
-  source-version: 0.1.6
+  source-version: 0.1.7
   recommended-skill-md-max-bytes: 20000
   description: Build, review, debug, and operate Supabase across schema, Data API, Auth, RLS, Storage, Realtime, Edge Functions, migrations, and operations. Use for Supabase design, implementation, boundary verification, CLI/MCP workflows, or incidents; pair with domain owners where they determine correctness.
 fragments:
@@ -169,6 +169,7 @@ surfaces:
 sections:
   startHere:
     - Classify the request as design, implement, review, debug, or operate and keep work inside that requested mode.
+    - Reuse task inputs and operation-specific permissions already given. Clarify only material unresolved decisions, continue independent authorized work, and resume the affected work when its missing input arrives without asking for the same permission again.
     - Inspect repository authority, installed versions, target environment, data ownership, and trust or authorization boundaries before choosing a Supabase pattern.
     - For version-sensitive Auth, keys, CLI, MCP, Edge Functions, or Realtime behavior, check installed versions and current official Supabase guidance when accessible; otherwise report the freshness gap and avoid an unverified contract claim.
     - Load only the active references whose concrete trigger matches the task.

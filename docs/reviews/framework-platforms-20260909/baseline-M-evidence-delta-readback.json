@@ -1,0 +1,83 @@
+{
+  "date": "2026-09-09T12:42:58.730216+00:00",
+  "scope": "Evidence-only bounded delta; no rerun, source or fixture mutation",
+  "manifest_exported_at": "2026-09-09T12:39:35.739251+00:00",
+  "trace_hashes_verified": {
+    "baseline_authority_executor.jsonl": "cd0d5c5b09313ae0f6c62d3814e97adf9cc1185de5156f6f893f45215db6f3c1",
+    "baseline_migration_runtime_executor.jsonl": "b896c5e04b455ad3c60ec22ddbff074e6443d010efe74ef8ef9d2f45650702be",
+    "baseline_mapping_executor.jsonl": "4e3a8997b85814f7e545334dcf4b1707cc06a2491856ede955d5d5d31eaa9f97"
+  },
+  "recorded_settings": {
+    "/root/baseline_authority_executor": [
+      {
+        "turn_id": "01a08615-4a9f-72e3-8753-afb4fd72b2a2",
+        "model": "gpt-6-astra",
+        "effort": "high"
+      },
+      {
+        "turn_id": "01a08616-864c-7c02-b8fe-f5130959206d",
+        "model": "gpt-6-astra",
+        "effort": "high"
+      }
+    ],
+    "/root/baseline_migration_runtime_executor": [
+      {
+        "turn_id": "01a0861d-1a4a-7b52-b621-70286508d58b",
+        "model": "gpt-6-astra",
+        "effort": "high"
+      }
+    ],
+    "/root/baseline_mapping_executor": [
+      {
+        "turn_id": "01a08610-ea43-7462-a908-f497c764dd23",
+        "model": "gpt-6-astra",
+        "effort": "high"
+      }
+    ]
+  },
+  "limits": [
+    "No full-context or backend identity attestation",
+    "Incoming owner followup transport transcript not included",
+    "Requested reads distinguished from returned snippets/truncated output",
+    "Public collaboration payloads treated as opaque; not interpreted"
+  ],
+  "verdicts": {
+    "M-mapping": "PASS unchanged",
+    "M-authority": "PASS unchanged",
+    "M-runtime_runtime": "PASS unchanged",
+    "M-runtime_full_contract": "FAIL unchanged; M-runtime-01 P2",
+    "M-runtime-02": "P3 narrowed; terminal Ctrl-C exit130 attested separately from late recorder timeout124"
+  },
+  "runtime_process_evidence": {
+    "terminal": {
+      "trace_lines": [
+        29,
+        30,
+        39,
+        40
+      ],
+      "session_id": 50512,
+      "exit": 130,
+      "time": "2026-09-09T12:27:43.203Z"
+    },
+    "recorded_docker": {
+      "commands_jsonl_line": 28,
+      "name": "fp20260909-run-7f2308ec",
+      "exit": 124,
+      "elapsed_seconds": 420.016,
+      "time": "2026-09-09T12:33:56.654104+00:00"
+    },
+    "successful_replacement": {
+      "trace_lines": [
+        65,
+        66
+      ],
+      "commands_jsonl_line": 24,
+      "exit": 0
+    }
+  },
+  "runner_readonly_sha256": {
+    "/tmp/framework-platforms-20260909/runtime-run.py": "93c63c1ca340eb4b4fafa92e4ffd1cb433c30179ce6aa07715c2101c5b886219",
+    "/tmp/framework-platforms-20260909/record.py": "122c7699acf4e0d6063da84106b1506605777f6d3d48e1e2484a286a4531c873"
+  }
+}

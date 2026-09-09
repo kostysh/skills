@@ -1,0 +1,19 @@
+{
+  "at": "2026-09-09T16:34:39.192031+00:00",
+  "before": "candidate-snapshots/pre-payload-source-remediation",
+  "findings": [
+    {
+      "id": "P-C1",
+      "cause": "Performance examples substituted authorization policy in three adjacent pairs: org/team/sub -> org only; internalCode -> status/org membership; expensive policy -> admin role.",
+      "fix": "Concurrent same three reads/AND; identical query filter with index guidance; original array policy retained with explicit scoped-cache invariants. Denial/error behavior preserved.",
+      "evidence": "Paired extracted-function all eight predicate combinations, guest and lookup-failure probe pending; literal source review of query/array invariants pending."
+    },
+    {
+      "id": "P-C2",
+      "cause": "Payload family version substituted into unrelated Vitest devDependency.",
+      "fix": "Use exact tagged official template Vitest4.0.18 and explicit independent-tool version ownership. All3.88.0 manifest entries checked: remaining belong to Payload family.",
+      "evidence": "candidate-payload-reviewer-official-readback.json; actual plugin package runtime still pending."
+    }
+  ],
+  "limits": "Source remediation/self-check only. Independent delta/whole-scope/runtime/CI required."
+}

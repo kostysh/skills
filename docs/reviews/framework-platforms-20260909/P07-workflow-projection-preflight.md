@@ -1,0 +1,13 @@
+# P07 workflow — независимый read-only preflight
+
+**PASS для ограниченной статической готовности literal source probe; runtime pending.** Прочитаны полностью literal-workflow.mjs, workflow.mjs, package.json, manifest и сравнен frozen source. Оценщик не менял и не запускал fixture.
+
+В manifest корректный источник — `baseline-packages/payload/references/advanced.md:134–154`, SHA `b28ab2787cb974f98a6aa077af8e6265da85a9d7bde6b764214ebfd69c15a293`. Раннее сообщение root называло131–154, но actual extraction начинается134. Машинно подтверждено точное равенство body и manifest hashes. Projection SHA `4025bd5995d635d9a7dca88cba13e961a56bb9070dfa00b53ff1105a50cd1b3d`; authored host SHA `826600939a2a97786ecdc6185efd8b50f4d982d6f812347e18fb29fdce3df18b`; package SHA `d634f53a461221404deca1a2e9fbd3b291cc4c813fa458daabb2342c016edfce`.
+
+Изменения вокруг исходника ограничены export array wrapper и локальными определениями sendEmail/createTasks, которые только регистрируют вызовы в sideEffects. Никаких внешних email/tasks действий нет; тела двух job.runInlineTask неизменны. Stub functions нужны для runnable host; они не добавляют отсутствующий API и не исправляют передачу input.
+
+Host выполняет настоящую Payload queue/run на отдельном свежем SQLite file, включает transactionOptions:{}, сохраняет job перед worker, runResult либо caught error и local sideEffects, затем запускает отдельный observe process с push:false и elevated unfiltered jobs readback. deleteJobOnComplete:false сохраняет inspection state. Очистка ограничена workflow.sqlite и его WAL/SHM; content других trials не затронут. Declared script `probe:workflow` использует public package imports с pinned payload/db-sqlite3.88.0.
+
+Blocking preparation findings по прочитанному delta нет. Код observer выводит количества persisted/completed/errored jobs, но это регистрация результата без assertions на функциональный успех. Exit0 означает завершение observer, а не успешное onboarding workflow. Runtime verdict должен опираться на реальные error/message, completedAt/hasError/task logs и sideEffects; нельзя считать caught failure корректным выполнением двух шагов. Ожидаемая по installed signature несовместимость job.runInlineTask остаётся source finding до actual execution; preflight не приписывает ещё не наблюдённый runtime TypeError.
+
+Перед запуском нужны root runtime slot, lock/install equivalence и freeze нового package hash. Probe — прямое исполнение source body в authored host, не blind агентский выбор. P-core использовал другой, самостоятельно исправленный inlineTask API, и его успешные jobs не закрывают этот literal source case.

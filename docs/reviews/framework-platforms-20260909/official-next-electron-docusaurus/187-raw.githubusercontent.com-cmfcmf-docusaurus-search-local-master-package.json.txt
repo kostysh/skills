@@ -1,0 +1,41 @@
+{
+  "name": "root",
+  "private": true,
+  "dependencies": {
+    "@commitlint/cli": "^20.0.0",
+    "@commitlint/config-conventional": "^20.0.0",
+    "@types/node": "^20.19.21",
+    "commit-and-tag-version": "^12.6.0",
+    "git-branch-is": "^4.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.5.2",
+    "prettier": "^3.6.2",
+    "syncpack": "^13.0.4",
+    "turbo": "^2.5.8"
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "lint": "turbo lint:all",
+    "format": "turbo format:all",
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "serve": "turbo serve",
+    "test": "turbo test",
+    "test:e2e": "turbo test:e2e",
+    "lint:style": "prettier --check .",
+    "lint:dependencies": "syncpack list-mismatches",
+    "format:style": "prettier --write .",
+    "format:dependencies": "syncpack fix-mismatches",
+    "bump-version": "commit-and-tag-version"
+  },
+  "lint-staged": {
+    ".": [
+      "prettier --write"
+    ]
+  },
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=10"
+  },
+  "packageManager": "pnpm@10.18.3"
+}

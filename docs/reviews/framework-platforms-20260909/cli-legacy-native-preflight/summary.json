@@ -1,0 +1,11 @@
+{
+  "nativeVersion": "2.39.2",
+  "dbStart": 0,
+  "noChangeDiff": 0,
+  "seedInsert": 0,
+  "samplingSeconds": 90,
+  "peakObserved": 3,
+  "allObservedChildBoundsVerified": true,
+  "proxySourceUnchangedFromCurrentReview": true,
+  "limits": "Readiness only; preserved-data ALTER and clean-apply still belong to trial. No forced-failure cleanup evidence. Official DockerHub migra locally aliased after ECR rate exceeded; no cross-registry digest equivalence claim."
+}

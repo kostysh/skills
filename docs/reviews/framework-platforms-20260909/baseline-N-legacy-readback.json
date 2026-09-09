@@ -1,0 +1,806 @@
+{
+  "case": "N-legacy",
+  "variant": "baseline",
+  "assessor": "/root/baseline_next_electron_docs",
+  "checked_at": "2026-09-09T13:21:25.003334+00:00",
+  "algorithm": "sha256",
+  "final_source_files": [
+    {
+      "file": "app/REQUIREMENTS.md",
+      "expected": "f6bffc8287b9c2255a9fc6ad7af9cde3b55dbac9fd5630eeebaacc82154c6e8f",
+      "actual": "f6bffc8287b9c2255a9fc6ad7af9cde3b55dbac9fd5630eeebaacc82154c6e8f",
+      "matches": true
+    },
+    {
+      "file": "app/app/filter.tsx",
+      "expected": "0881e288fca7df3a13909c2bf49fc7e1378bf9f00865a5d8d238f5e96bbf4e0f",
+      "actual": "0881e288fca7df3a13909c2bf49fc7e1378bf9f00865a5d8d238f5e96bbf4e0f",
+      "matches": true
+    },
+    {
+      "file": "app/app/layout.tsx",
+      "expected": "75f4c66b0f10f849a6c46817bb6e798d249c5b588ff4dbc9e53a59cd6cedb3ba",
+      "actual": "75f4c66b0f10f849a6c46817bb6e798d249c5b588ff4dbc9e53a59cd6cedb3ba",
+      "matches": true
+    },
+    {
+      "file": "app/app/loading.tsx",
+      "expected": "f259994ead18fd75e5412302dc8a882ee63d867e03b0534b9b6f4f8ce9500f92",
+      "actual": "f259994ead18fd75e5412302dc8a882ee63d867e03b0534b9b6f4f8ce9500f92",
+      "matches": true
+    },
+    {
+      "file": "app/app/page.tsx",
+      "expected": "639b10f876be6072a61b2908124eb7c8132aea784f42653adcfb8dbbaf59a521",
+      "actual": "639b10f876be6072a61b2908124eb7c8132aea784f42653adcfb8dbbaf59a521",
+      "matches": true
+    },
+    {
+      "file": "app/app/timeline.tsx",
+      "expected": "b72feea9cb7ec1c53f399121310ba0cc86cea6aa2dc28fb9a381633cfb0dd89f",
+      "actual": "b72feea9cb7ec1c53f399121310ba0cc86cea6aa2dc28fb9a381633cfb0dd89f",
+      "matches": true
+    },
+    {
+      "file": "app/catalog.fixture",
+      "expected": "ec4d887841cc87f3d49a10332f1388bab3734f314d00f49ad6b54d6db464ee17",
+      "actual": "ec4d887841cc87f3d49a10332f1388bab3734f314d00f49ad6b54d6db464ee17",
+      "matches": true
+    },
+    {
+      "file": "app/fixture.d.ts",
+      "expected": "63dd4f636fa8eb84f9e532b6918b83e16b132ee8d7890276ac2fc3ceef5a903e",
+      "actual": "63dd4f636fa8eb84f9e532b6918b83e16b132ee8d7890276ac2fc3ceef5a903e",
+      "matches": true
+    },
+    {
+      "file": "app/loaders/fixture.cjs",
+      "expected": "3db7e676e26554b7aa3690c82bc106975e47d56c30143e935fb4147b971b6935",
+      "actual": "3db7e676e26554b7aa3690c82bc106975e47d56c30143e935fb4147b971b6935",
+      "matches": true
+    },
+    {
+      "file": "app/next-env.d.ts",
+      "expected": "85ae5aee75f011967cf2d25cbc342f62d69314e9d925f7f4aa3456fc2cffcca6",
+      "actual": "85ae5aee75f011967cf2d25cbc342f62d69314e9d925f7f4aa3456fc2cffcca6",
+      "matches": true
+    },
+    {
+      "file": "app/next.config.mjs",
+      "expected": "4cc1b747bf3c88c2c827a972ffb1d58bb8545477d914558d2995fa4c493104fd",
+      "actual": "4cc1b747bf3c88c2c827a972ffb1d58bb8545477d914558d2995fa4c493104fd",
+      "matches": true
+    },
+    {
+      "file": "app/package-lock.json",
+      "expected": "537c016079533f09ef6f9518b0141011ca62594bceb397290b3c123f10fe124c",
+      "actual": "537c016079533f09ef6f9518b0141011ca62594bceb397290b3c123f10fe124c",
+      "matches": true
+    },
+    {
+      "file": "app/package.json",
+      "expected": "677b93717d75d79a09b9cbe6629c1c2de2984f0115d062ad0b50d0a6548a9442",
+      "actual": "677b93717d75d79a09b9cbe6629c1c2de2984f0115d062ad0b50d0a6548a9442",
+      "matches": true
+    },
+    {
+      "file": "app/tsconfig.json",
+      "expected": "642202265069c4b3fce6775871c9cc2f87b23a2e7d37d9c87070c1599a8e3035",
+      "actual": "642202265069c4b3fce6775871c9cc2f87b23a2e7d37d9c87070c1599a8e3035",
+      "matches": true
+    },
+    {
+      "file": "app/vendor/browser-widget.js",
+      "expected": "2e3a762b2a5754fe47362fdbfa38c058c118569190553dc6359b138f1073f823",
+      "actual": "2e3a762b2a5754fe47362fdbfa38c058c118569190553dc6359b138f1073f823",
+      "matches": true
+    }
+  ],
+  "frozen_inputs": [
+    {
+      "file": "task.txt",
+      "expected": "30a1b5ee25ff711bdc24e7137b83a42cc4d037d6d21ca51c67438edcf973daeb",
+      "actual": "30a1b5ee25ff711bdc24e7137b83a42cc4d037d6d21ca51c67438edcf973daeb",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/tsconfig.json",
+      "expected": "c8819fea3b3a3d6b750c9c339805c02991aa2cee0bfedf9ccbc0fc773045db0a",
+      "actual": "642202265069c4b3fce6775871c9cc2f87b23a2e7d37d9c87070c1599a8e3035",
+      "matches": false,
+      "classification": "permitted implementation or framework change"
+    },
+    {
+      "file": "app/package.json",
+      "expected": "677b93717d75d79a09b9cbe6629c1c2de2984f0115d062ad0b50d0a6548a9442",
+      "actual": "677b93717d75d79a09b9cbe6629c1c2de2984f0115d062ad0b50d0a6548a9442",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/next.config.mjs",
+      "expected": "4cc1b747bf3c88c2c827a972ffb1d58bb8545477d914558d2995fa4c493104fd",
+      "actual": "4cc1b747bf3c88c2c827a972ffb1d58bb8545477d914558d2995fa4c493104fd",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/catalog.fixture",
+      "expected": "ec4d887841cc87f3d49a10332f1388bab3734f314d00f49ad6b54d6db464ee17",
+      "actual": "ec4d887841cc87f3d49a10332f1388bab3734f314d00f49ad6b54d6db464ee17",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/fixture.d.ts",
+      "expected": "63dd4f636fa8eb84f9e532b6918b83e16b132ee8d7890276ac2fc3ceef5a903e",
+      "actual": "63dd4f636fa8eb84f9e532b6918b83e16b132ee8d7890276ac2fc3ceef5a903e",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/REQUIREMENTS.md",
+      "expected": "f6bffc8287b9c2255a9fc6ad7af9cde3b55dbac9fd5630eeebaacc82154c6e8f",
+      "actual": "f6bffc8287b9c2255a9fc6ad7af9cde3b55dbac9fd5630eeebaacc82154c6e8f",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/package-lock.json",
+      "expected": "537c016079533f09ef6f9518b0141011ca62594bceb397290b3c123f10fe124c",
+      "actual": "537c016079533f09ef6f9518b0141011ca62594bceb397290b3c123f10fe124c",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/vendor/browser-widget.js",
+      "expected": "2e3a762b2a5754fe47362fdbfa38c058c118569190553dc6359b138f1073f823",
+      "actual": "2e3a762b2a5754fe47362fdbfa38c058c118569190553dc6359b138f1073f823",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/app/timeline.tsx",
+      "expected": "b72feea9cb7ec1c53f399121310ba0cc86cea6aa2dc28fb9a381633cfb0dd89f",
+      "actual": "b72feea9cb7ec1c53f399121310ba0cc86cea6aa2dc28fb9a381633cfb0dd89f",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/app/page.tsx",
+      "expected": "53091b3497eb898087f137404b627fbcda44a40ec62cf2e3121e164ccc406cc2",
+      "actual": "639b10f876be6072a61b2908124eb7c8132aea784f42653adcfb8dbbaf59a521",
+      "matches": false,
+      "classification": "permitted implementation or framework change"
+    },
+    {
+      "file": "app/app/layout.tsx",
+      "expected": "75f4c66b0f10f849a6c46817bb6e798d249c5b588ff4dbc9e53a59cd6cedb3ba",
+      "actual": "75f4c66b0f10f849a6c46817bb6e798d249c5b588ff4dbc9e53a59cd6cedb3ba",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/app/filter.tsx",
+      "expected": "487dfa58d49ce53a385540d5f48a3f5467f9d493bb0a101e39e9d37a803f7da3",
+      "actual": "0881e288fca7df3a13909c2bf49fc7e1378bf9f00865a5d8d238f5e96bbf4e0f",
+      "matches": false,
+      "classification": "permitted implementation or framework change"
+    },
+    {
+      "file": "app/loaders/fixture.cjs",
+      "expected": "3db7e676e26554b7aa3690c82bc106975e47d56c30143e935fb4147b971b6935",
+      "actual": "3db7e676e26554b7aa3690c82bc106975e47d56c30143e935fb4147b971b6935",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/react-components-engineer/SKILL.md",
+      "expected": "54fec3b0548ca36ea157c32dcc3a3ec710b5ce0f7f0960fab7798ece27b83009",
+      "actual": "54fec3b0548ca36ea157c32dcc3a3ec710b5ce0f7f0960fab7798ece27b83009",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-test-engineer/SKILL.md",
+      "expected": "44dbdb487ed12ae2329f06806e935914871aed61f69a4de8e26da1ead83df4f8",
+      "actual": "44dbdb487ed12ae2329f06806e935914871aed61f69a4de8e26da1ead83df4f8",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/SKILL.md",
+      "expected": "8dccdca0e96b7c9f7caf51baaab9fb909df0bb01345a0ae7fac7c444bb597e86",
+      "actual": "8dccdca0e96b7c9f7caf51baaab9fb909df0bb01345a0ae7fac7c444bb597e86",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/nextjs/SKILL.md",
+      "expected": "eb437b3de1c9525621303bd1aa5b6aef2a52e6ccbbcede333abe310e3d56b8e9",
+      "actual": "eb437b3de1c9525621303bd1aa5b6aef2a52e6ccbbcede333abe310e3d56b8e9",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/nextjs/agents/openai.yaml",
+      "expected": "0574da0d2953839f600e3f4d89fd67949d54aa990fd06a8268b7d580e57ed62b",
+      "actual": "0574da0d2953839f600e3f4d89fd67949d54aa990fd06a8268b7d580e57ed62b",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/nextjs/references/functions.md",
+      "expected": "39a8a418af501d7132d289f4b5dd6cae59d1bfa6fda941d502fc29bb0204e079",
+      "actual": "39a8a418af501d7132d289f4b5dd6cae59d1bfa6fda941d502fc29bb0204e079",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/nextjs/references/error-handling.md",
+      "expected": "30b4e825b625df01d4a7c441591ac46782aab4f913432e96f408153d5fa62098",
+      "actual": "30b4e825b625df01d4a7c441591ac46782aab4f913432e96f408153d5fa62098",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/nextjs/references/font.md",
+      "expected": "cb1f8d43e8fbca39839056b4621724837858bdace13e73bf3faf69abca318a21",
+      "actual": "cb1f8d43e8fbca39839056b4621724837858bdace13e73bf3faf69abca318a21",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/nextjs/references/scripts.md",
+      "expected": "fff3bc7530d5af472e2825fde69a26218c9e58acba74d60913f403baab4628a3",
+      "actual": "fff3bc7530d5af472e2825fde69a26218c9e58acba74d60913f403baab4628a3",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/nextjs/references/bundling.md",
+      "expected": "5496b337073985068c61527e0a89fbf7088faa47b9f92d2dd09a7d070cb48a7c",
+      "actual": "5496b337073985068c61527e0a89fbf7088faa47b9f92d2dd09a7d070cb48a7c",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/nextjs/references/async-patterns.md",
+      "expected": "3a5e4a91d8399f0922c4a3b15b3490fbeb7396f976139a92311ea34cfa300584",
+      "actual": "3a5e4a91d8399f0922c4a3b15b3490fbeb7396f976139a92311ea34cfa300584",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/nextjs/references/app-router-files.md",
+      "expected": "d11b45d535b41d047fbe22e062de5c72716d64b39b85e9c259cc8e1f5362a567",
+      "actual": "d11b45d535b41d047fbe22e062de5c72716d64b39b85e9c259cc8e1f5362a567",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/nextjs/references/rsc-boundaries.md",
+      "expected": "2b50b0310884609efc9f2620fbb81ef83a30a810544e449ff669c55935d5b920",
+      "actual": "2b50b0310884609efc9f2620fbb81ef83a30a810544e449ff669c55935d5b920",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/nextjs/references/file-conventions.md",
+      "expected": "95eeb1c6e1c98571192662c8ba3cbf6a034f754596aba54a35077a50a5266de3",
+      "actual": "95eeb1c6e1c98571192662c8ba3cbf6a034f754596aba54a35077a50a5266de3",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/nextjs/references/data-patterns.md",
+      "expected": "538c8e24cd60eded9825a9461f2c644f5e6e5203d95aa4bf7c9486412bcc7aa1",
+      "actual": "538c8e24cd60eded9825a9461f2c644f5e6e5203d95aa4bf7c9486412bcc7aa1",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/nextjs/references/image.md",
+      "expected": "231a15ddea67fe0b965762cc89993ca5aaeb0c35c0e67767bd53ca138ec04c05",
+      "actual": "231a15ddea67fe0b965762cc89993ca5aaeb0c35c0e67767bd53ca138ec04c05",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/nextjs/references/route-handlers.md",
+      "expected": "976a17de8024b3a65063350ae0fb6b9b617293f06358305800c858f58b015680",
+      "actual": "976a17de8024b3a65063350ae0fb6b9b617293f06358305800c858f58b015680",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/nextjs/references/metadata.md",
+      "expected": "19b00274877056f222f2284be5ade2479690e79e86af9a0466bc9d209506a95d",
+      "actual": "19b00274877056f222f2284be5ade2479690e79e86af9a0466bc9d209506a95d",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/nextjs/references/debug-tricks.md",
+      "expected": "62617a7cb131a2111f9f033617404fadb3458d56aeb0643f75aa5b2e43abf192",
+      "actual": "62617a7cb131a2111f9f033617404fadb3458d56aeb0643f75aa5b2e43abf192",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/nextjs/references/directives.md",
+      "expected": "60b82ee24a8d43631da59beeec11f46ab25ce83c8000578f2222ecb6b6cadf4d",
+      "actual": "60b82ee24a8d43631da59beeec11f46ab25ce83c8000578f2222ecb6b6cadf4d",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/nextjs/references/self-hosting.md",
+      "expected": "f59e9afa0ff4dcbe20374dff13517ccec3ac6a239ef6d02e0ee8863cf9fc7082",
+      "actual": "f59e9afa0ff4dcbe20374dff13517ccec3ac6a239ef6d02e0ee8863cf9fc7082",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/nextjs/references/hydration-error.md",
+      "expected": "d4baec07ab818045e284c45dd24422685ac934a38ea325139651f664a94eff57",
+      "actual": "d4baec07ab818045e284c45dd24422685ac934a38ea325139651f664a94eff57",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/nextjs/references/suspense-boundaries.md",
+      "expected": "63e2e7125b1a1a9d652dd301814ad7140f8ab3ad6726b2b53df76a89d9bc262a",
+      "actual": "63e2e7125b1a1a9d652dd301814ad7140f8ab3ad6726b2b53df76a89d9bc262a",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/nextjs/references/runtime-selection.md",
+      "expected": "7abb95f9af0f4769e7e9e91aba94a5787ed16e2c4009a140c8577a3a49828060",
+      "actual": "7abb95f9af0f4769e7e9e91aba94a5787ed16e2c4009a140c8577a3a49828060",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/nextjs/references/parallel-routes.md",
+      "expected": "d8a1c2546d90af2b37e22a4a56a1978555af0d62a7683e349ce3e3287ab8a4af",
+      "actual": "d8a1c2546d90af2b37e22a4a56a1978555af0d62a7683e349ce3e3287ab8a4af",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/agents/openai.yaml",
+      "expected": "372a72c8d2943c55ba133bbda5e0ed8f46cdfd8f8d4940418beefcbaf62484ab",
+      "actual": "372a72c8d2943c55ba133bbda5e0ed8f46cdfd8f8d4940418beefcbaf62484ab",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/monorepo.md",
+      "expected": "a725bf2737a1c0716b2c8f9f2a6d6d79cc0e14a401a06b7de5ed9744166fb5e4",
+      "actual": "a725bf2737a1c0716b2c8f9f2a6d6d79cc0e14a401a06b7de5ed9744166fb5e4",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/generics.md",
+      "expected": "7201b89492c473093a6818db8bcf0b26e445d2f0689eb84916ff185503c3c4c4",
+      "actual": "7201b89492c473093a6818db8bcf0b26e445d2f0689eb84916ff185503c3c4c4",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/practices.md",
+      "expected": "51f765dcd0f2e1732e00d83504a4a832f177437f96aeed0d992a634e949c827a",
+      "actual": "51f765dcd0f2e1732e00d83504a4a832f177437f96aeed0d992a634e949c827a",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/type-debugging.md",
+      "expected": "2fb09da3deb9e434b50336644da63a6539503d30f05a0304fa7c9a78d7690304",
+      "actual": "2fb09da3deb9e434b50336644da63a6539503d30f05a0304fa7c9a78d7690304",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/toolchain.md",
+      "expected": "313bb758492c473f47b7d1670fd01ecb605512296ab98edcf36fe59914794771",
+      "actual": "313bb758492c473f47b7d1670fd01ecb605512296ab98edcf36fe59914794771",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/overloads.md",
+      "expected": "39494766556c8c7aa46c2aa16aa20718aedcaf7a4ec8cf0a28443324d3c5936b",
+      "actual": "39494766556c8c7aa46c2aa16aa20718aedcaf7a4ec8cf0a28443324d3c5936b",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/patterns.md",
+      "expected": "8636aec6c320d894a10ada0db3f452b7d31e9dc608d00a6e0a57e1b5c3aa1f57",
+      "actual": "8636aec6c320d894a10ada0db3f452b7d31e9dc608d00a6e0a57e1b5c3aa1f57",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/type-system.md",
+      "expected": "451bec02f0fe0cad7a3967b6d4b8388e98600c4655be7fee51b971f1db0f40e9",
+      "actual": "451bec02f0fe0cad7a3967b6d4b8388e98600c4655be7fee51b971f1db0f40e9",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/runtime-derived-types.md",
+      "expected": "1e1a327d0a2e59792ec25aa5c69bb2cd313273ef2a9d7730014700303e9e4aa0",
+      "actual": "1e1a327d0a2e59792ec25aa5c69bb2cd313273ef2a9d7730014700303e9e4aa0",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-test-engineer/agents/openai.yaml",
+      "expected": "9fc7def9a8ab00f4acd2d5dfd8c166e5fcd853de375a8d620b24660ea1512a04",
+      "actual": "9fc7def9a8ab00f4acd2d5dfd8c166e5fcd853de375a8d620b24660ea1512a04",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-test-engineer/references/tdd.md",
+      "expected": "029f55af01dd0a9efb77e71693c3503a89bdd8a75367454e02a93712ed18b957",
+      "actual": "029f55af01dd0a9efb77e71693c3503a89bdd8a75367454e02a93712ed18b957",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-test-engineer/references/testing-anti-patterns.md",
+      "expected": "fa8919e363c264db7d14a3cd0dc56ccf85c114c2080ef5a0c22c6b36bb7dd0b6",
+      "actual": "fa8919e363c264db7d14a3cd0dc56ccf85c114c2080ef5a0c22c6b36bb7dd0b6",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-test-engineer/references/react-vitest.md",
+      "expected": "f76b527d1fa2b68c38b4a0a51fd5c4c88e5a2a32ca65ce1ad86fd41fbb8669b5",
+      "actual": "f76b527d1fa2b68c38b4a0a51fd5c4c88e5a2a32ca65ce1ad86fd41fbb8669b5",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-test-engineer/references/testing.md",
+      "expected": "11a86f47ef1a6ca14a12d9fad6a58d2dd9c8e2e3d716e48ce1cb0a7ccffae476",
+      "actual": "11a86f47ef1a6ca14a12d9fad6a58d2dd9c8e2e3d716e48ce1cb0a7ccffae476",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/react-components-engineer/agents/openai.yaml",
+      "expected": "00053143793ac9ff6808e29f0548f0eb66f75ee2c1d6d14ac8fbeb66ae56a942",
+      "actual": "00053143793ac9ff6808e29f0548f0eb66f75ee2c1d6d14ac8fbeb66ae56a942",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/react-components-engineer/references/bulletproof-patterns.md",
+      "expected": "31ee8c6f9044f908c682b2f7c47c5c9ab89781dcbd992309d8d772e12cb0b795",
+      "actual": "31ee8c6f9044f908c682b2f7c47c5c9ab89781dcbd992309d8d772e12cb0b795",
+      "matches": true,
+      "classification": "immutable input"
+    }
+  ],
+  "unexpected_immutable_input_mismatches": [],
+  "next_skill_content_identity": [
+    {
+      "file": "skills/nextjs/SKILL.md",
+      "frozen": "eb437b3de1c9525621303bd1aa5b6aef2a52e6ccbbcede333abe310e3d56b8e9",
+      "staged_actual": "eb437b3de1c9525621303bd1aa5b6aef2a52e6ccbbcede333abe310e3d56b8e9",
+      "canonical_actual": "eb437b3de1c9525621303bd1aa5b6aef2a52e6ccbbcede333abe310e3d56b8e9",
+      "staged_matches_frozen": true,
+      "canonical_matches_frozen": true
+    },
+    {
+      "file": "skills/nextjs/agents/openai.yaml",
+      "frozen": "0574da0d2953839f600e3f4d89fd67949d54aa990fd06a8268b7d580e57ed62b",
+      "staged_actual": "0574da0d2953839f600e3f4d89fd67949d54aa990fd06a8268b7d580e57ed62b",
+      "canonical_actual": "0574da0d2953839f600e3f4d89fd67949d54aa990fd06a8268b7d580e57ed62b",
+      "staged_matches_frozen": true,
+      "canonical_matches_frozen": true
+    },
+    {
+      "file": "skills/nextjs/references/functions.md",
+      "frozen": "39a8a418af501d7132d289f4b5dd6cae59d1bfa6fda941d502fc29bb0204e079",
+      "staged_actual": "39a8a418af501d7132d289f4b5dd6cae59d1bfa6fda941d502fc29bb0204e079",
+      "canonical_actual": "39a8a418af501d7132d289f4b5dd6cae59d1bfa6fda941d502fc29bb0204e079",
+      "staged_matches_frozen": true,
+      "canonical_matches_frozen": true
+    },
+    {
+      "file": "skills/nextjs/references/error-handling.md",
+      "frozen": "30b4e825b625df01d4a7c441591ac46782aab4f913432e96f408153d5fa62098",
+      "staged_actual": "30b4e825b625df01d4a7c441591ac46782aab4f913432e96f408153d5fa62098",
+      "canonical_actual": "30b4e825b625df01d4a7c441591ac46782aab4f913432e96f408153d5fa62098",
+      "staged_matches_frozen": true,
+      "canonical_matches_frozen": true
+    },
+    {
+      "file": "skills/nextjs/references/font.md",
+      "frozen": "cb1f8d43e8fbca39839056b4621724837858bdace13e73bf3faf69abca318a21",
+      "staged_actual": "cb1f8d43e8fbca39839056b4621724837858bdace13e73bf3faf69abca318a21",
+      "canonical_actual": "cb1f8d43e8fbca39839056b4621724837858bdace13e73bf3faf69abca318a21",
+      "staged_matches_frozen": true,
+      "canonical_matches_frozen": true
+    },
+    {
+      "file": "skills/nextjs/references/scripts.md",
+      "frozen": "fff3bc7530d5af472e2825fde69a26218c9e58acba74d60913f403baab4628a3",
+      "staged_actual": "fff3bc7530d5af472e2825fde69a26218c9e58acba74d60913f403baab4628a3",
+      "canonical_actual": "fff3bc7530d5af472e2825fde69a26218c9e58acba74d60913f403baab4628a3",
+      "staged_matches_frozen": true,
+      "canonical_matches_frozen": true
+    },
+    {
+      "file": "skills/nextjs/references/bundling.md",
+      "frozen": "5496b337073985068c61527e0a89fbf7088faa47b9f92d2dd09a7d070cb48a7c",
+      "staged_actual": "5496b337073985068c61527e0a89fbf7088faa47b9f92d2dd09a7d070cb48a7c",
+      "canonical_actual": "5496b337073985068c61527e0a89fbf7088faa47b9f92d2dd09a7d070cb48a7c",
+      "staged_matches_frozen": true,
+      "canonical_matches_frozen": true
+    },
+    {
+      "file": "skills/nextjs/references/async-patterns.md",
+      "frozen": "3a5e4a91d8399f0922c4a3b15b3490fbeb7396f976139a92311ea34cfa300584",
+      "staged_actual": "3a5e4a91d8399f0922c4a3b15b3490fbeb7396f976139a92311ea34cfa300584",
+      "canonical_actual": "3a5e4a91d8399f0922c4a3b15b3490fbeb7396f976139a92311ea34cfa300584",
+      "staged_matches_frozen": true,
+      "canonical_matches_frozen": true
+    },
+    {
+      "file": "skills/nextjs/references/app-router-files.md",
+      "frozen": "d11b45d535b41d047fbe22e062de5c72716d64b39b85e9c259cc8e1f5362a567",
+      "staged_actual": "d11b45d535b41d047fbe22e062de5c72716d64b39b85e9c259cc8e1f5362a567",
+      "canonical_actual": "d11b45d535b41d047fbe22e062de5c72716d64b39b85e9c259cc8e1f5362a567",
+      "staged_matches_frozen": true,
+      "canonical_matches_frozen": true
+    },
+    {
+      "file": "skills/nextjs/references/rsc-boundaries.md",
+      "frozen": "2b50b0310884609efc9f2620fbb81ef83a30a810544e449ff669c55935d5b920",
+      "staged_actual": "2b50b0310884609efc9f2620fbb81ef83a30a810544e449ff669c55935d5b920",
+      "canonical_actual": "2b50b0310884609efc9f2620fbb81ef83a30a810544e449ff669c55935d5b920",
+      "staged_matches_frozen": true,
+      "canonical_matches_frozen": true
+    },
+    {
+      "file": "skills/nextjs/references/file-conventions.md",
+      "frozen": "95eeb1c6e1c98571192662c8ba3cbf6a034f754596aba54a35077a50a5266de3",
+      "staged_actual": "95eeb1c6e1c98571192662c8ba3cbf6a034f754596aba54a35077a50a5266de3",
+      "canonical_actual": "95eeb1c6e1c98571192662c8ba3cbf6a034f754596aba54a35077a50a5266de3",
+      "staged_matches_frozen": true,
+      "canonical_matches_frozen": true
+    },
+    {
+      "file": "skills/nextjs/references/data-patterns.md",
+      "frozen": "538c8e24cd60eded9825a9461f2c644f5e6e5203d95aa4bf7c9486412bcc7aa1",
+      "staged_actual": "538c8e24cd60eded9825a9461f2c644f5e6e5203d95aa4bf7c9486412bcc7aa1",
+      "canonical_actual": "538c8e24cd60eded9825a9461f2c644f5e6e5203d95aa4bf7c9486412bcc7aa1",
+      "staged_matches_frozen": true,
+      "canonical_matches_frozen": true
+    },
+    {
+      "file": "skills/nextjs/references/image.md",
+      "frozen": "231a15ddea67fe0b965762cc89993ca5aaeb0c35c0e67767bd53ca138ec04c05",
+      "staged_actual": "231a15ddea67fe0b965762cc89993ca5aaeb0c35c0e67767bd53ca138ec04c05",
+      "canonical_actual": "231a15ddea67fe0b965762cc89993ca5aaeb0c35c0e67767bd53ca138ec04c05",
+      "staged_matches_frozen": true,
+      "canonical_matches_frozen": true
+    },
+    {
+      "file": "skills/nextjs/references/route-handlers.md",
+      "frozen": "976a17de8024b3a65063350ae0fb6b9b617293f06358305800c858f58b015680",
+      "staged_actual": "976a17de8024b3a65063350ae0fb6b9b617293f06358305800c858f58b015680",
+      "canonical_actual": "976a17de8024b3a65063350ae0fb6b9b617293f06358305800c858f58b015680",
+      "staged_matches_frozen": true,
+      "canonical_matches_frozen": true
+    },
+    {
+      "file": "skills/nextjs/references/metadata.md",
+      "frozen": "19b00274877056f222f2284be5ade2479690e79e86af9a0466bc9d209506a95d",
+      "staged_actual": "19b00274877056f222f2284be5ade2479690e79e86af9a0466bc9d209506a95d",
+      "canonical_actual": "19b00274877056f222f2284be5ade2479690e79e86af9a0466bc9d209506a95d",
+      "staged_matches_frozen": true,
+      "canonical_matches_frozen": true
+    },
+    {
+      "file": "skills/nextjs/references/debug-tricks.md",
+      "frozen": "62617a7cb131a2111f9f033617404fadb3458d56aeb0643f75aa5b2e43abf192",
+      "staged_actual": "62617a7cb131a2111f9f033617404fadb3458d56aeb0643f75aa5b2e43abf192",
+      "canonical_actual": "62617a7cb131a2111f9f033617404fadb3458d56aeb0643f75aa5b2e43abf192",
+      "staged_matches_frozen": true,
+      "canonical_matches_frozen": true
+    },
+    {
+      "file": "skills/nextjs/references/directives.md",
+      "frozen": "60b82ee24a8d43631da59beeec11f46ab25ce83c8000578f2222ecb6b6cadf4d",
+      "staged_actual": "60b82ee24a8d43631da59beeec11f46ab25ce83c8000578f2222ecb6b6cadf4d",
+      "canonical_actual": "60b82ee24a8d43631da59beeec11f46ab25ce83c8000578f2222ecb6b6cadf4d",
+      "staged_matches_frozen": true,
+      "canonical_matches_frozen": true
+    },
+    {
+      "file": "skills/nextjs/references/self-hosting.md",
+      "frozen": "f59e9afa0ff4dcbe20374dff13517ccec3ac6a239ef6d02e0ee8863cf9fc7082",
+      "staged_actual": "f59e9afa0ff4dcbe20374dff13517ccec3ac6a239ef6d02e0ee8863cf9fc7082",
+      "canonical_actual": "f59e9afa0ff4dcbe20374dff13517ccec3ac6a239ef6d02e0ee8863cf9fc7082",
+      "staged_matches_frozen": true,
+      "canonical_matches_frozen": true
+    },
+    {
+      "file": "skills/nextjs/references/hydration-error.md",
+      "frozen": "d4baec07ab818045e284c45dd24422685ac934a38ea325139651f664a94eff57",
+      "staged_actual": "d4baec07ab818045e284c45dd24422685ac934a38ea325139651f664a94eff57",
+      "canonical_actual": "d4baec07ab818045e284c45dd24422685ac934a38ea325139651f664a94eff57",
+      "staged_matches_frozen": true,
+      "canonical_matches_frozen": true
+    },
+    {
+      "file": "skills/nextjs/references/suspense-boundaries.md",
+      "frozen": "63e2e7125b1a1a9d652dd301814ad7140f8ab3ad6726b2b53df76a89d9bc262a",
+      "staged_actual": "63e2e7125b1a1a9d652dd301814ad7140f8ab3ad6726b2b53df76a89d9bc262a",
+      "canonical_actual": "63e2e7125b1a1a9d652dd301814ad7140f8ab3ad6726b2b53df76a89d9bc262a",
+      "staged_matches_frozen": true,
+      "canonical_matches_frozen": true
+    },
+    {
+      "file": "skills/nextjs/references/runtime-selection.md",
+      "frozen": "7abb95f9af0f4769e7e9e91aba94a5787ed16e2c4009a140c8577a3a49828060",
+      "staged_actual": "7abb95f9af0f4769e7e9e91aba94a5787ed16e2c4009a140c8577a3a49828060",
+      "canonical_actual": "7abb95f9af0f4769e7e9e91aba94a5787ed16e2c4009a140c8577a3a49828060",
+      "staged_matches_frozen": true,
+      "canonical_matches_frozen": true
+    },
+    {
+      "file": "skills/nextjs/references/parallel-routes.md",
+      "frozen": "d8a1c2546d90af2b37e22a4a56a1978555af0d62a7683e349ce3e3287ab8a4af",
+      "staged_actual": "d8a1c2546d90af2b37e22a4a56a1978555af0d62a7683e349ce3e3287ab8a4af",
+      "canonical_actual": "d8a1c2546d90af2b37e22a4a56a1978555af0d62a7683e349ce3e3287ab8a4af",
+      "staged_matches_frozen": true,
+      "canonical_matches_frozen": true
+    }
+  ],
+  "observed_skill_read_path": "staged trial skills/nextjs package, explicit cwd in tool calls",
+  "installed_versions": {
+    "next": "15.5.25",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "typescript": "5.9.3"
+  },
+  "public_evidence_files": [
+    {
+      "file": "task.txt",
+      "sha256": "30a1b5ee25ff711bdc24e7137b83a42cc4d037d6d21ca51c67438edcf973daeb",
+      "bytes": 446
+    },
+    {
+      "file": "app/REQUIREMENTS.md",
+      "sha256": "f6bffc8287b9c2255a9fc6ad7af9cde3b55dbac9fd5630eeebaacc82154c6e8f",
+      "bytes": 276
+    },
+    {
+      "file": "result.md",
+      "sha256": "027299e7b2d30e950d1e477e57a02669f2d0adfaa7a7ae87d06850274b8e0dd6",
+      "bytes": 5254
+    },
+    {
+      "file": "final-source-hashes.json",
+      "sha256": "7acb8d425c1b4bbf92af2036ab847eba05e7b67aacbfa5f94dea67b40118b1de",
+      "bytes": 1399
+    },
+    {
+      "file": "smoke.mjs",
+      "sha256": "3f82e4271593dccd891ee3b47f44076bdd8952596d4285e677fdc637c8de0512",
+      "bytes": 3309
+    },
+    {
+      "file": "commands.jsonl",
+      "sha256": "049aa058ea809fc8c10386a3a1664ff972bba4c8313d578b47b69905ca90d2db",
+      "bytes": 11036
+    }
+  ],
+  "protocol_sha256": "29370d0ad1afa52b53559cb8b31d44718f5d8def505c19804635d389e75d63a4",
+  "trace_manifest_sha256": "39e2025cdd94365abadd043ce6e1f3d17a59d68c8841d8b2aa47fdeac68bf92d",
+  "trace_manifest_entry": {
+    "agent": "/root/baseline_next_legacy_executor",
+    "source_session_id": "01a08642-f221-7063-abe1-d74f30d44428",
+    "journal_sha256": "ca76fc1444b44179b60d3dbce3a2090346294000b44ff2a95e25d2eb9f9f2fba",
+    "public_trace": "baseline_next_legacy_executor.jsonl",
+    "public_trace_sha256": "3b7ed8efcf29da17b8c4d87d935b6cc183b914a5d9a1a4a73300d93e311857bd",
+    "tool_events": 68,
+    "public_task_messages": "baseline_next_legacy_executor-task-messages.jsonl",
+    "task_messages_sha256": "834fc9f4fde202ae3d5b90ce18a0ea7789ebe80f182f3217ff4d44f2f0c570fd",
+    "recorded_turn_settings": [
+      {
+        "turn_id": "01a08642-f2bb-70d0-903d-b374f62ddc2c",
+        "model": "gpt-6-astra",
+        "effort": "high"
+      }
+    ]
+  },
+  "trace_hash_checks": [
+    {
+      "file": "raw-agent-traces/baseline_next_legacy_executor.jsonl",
+      "expected": "3b7ed8efcf29da17b8c4d87d935b6cc183b914a5d9a1a4a73300d93e311857bd",
+      "actual": "3b7ed8efcf29da17b8c4d87d935b6cc183b914a5d9a1a4a73300d93e311857bd",
+      "matches": true
+    },
+    {
+      "file": "raw-agent-traces/baseline_next_legacy_executor-task-messages.jsonl",
+      "expected": "834fc9f4fde202ae3d5b90ce18a0ea7789ebe80f182f3217ff4d44f2f0c570fd",
+      "actual": "834fc9f4fde202ae3d5b90ce18a0ea7789ebe80f182f3217ff4d44f2f0c570fd",
+      "matches": true
+    }
+  ],
+  "command_records": [
+    {
+      "record": 1,
+      "time": "2026-09-09T13:04:29.816646+00:00",
+      "exit": 0,
+      "elapsed_seconds": 0.002,
+      "stdout_sha256": "b70f70688993918064af06df1cab67f6e8f368d5207dc421777a0b2d7f80dfdd",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "record": 2,
+      "time": "2026-09-09T13:13:05.865551+00:00",
+      "exit": 0,
+      "elapsed_seconds": 4.276,
+      "stdout_sha256": "0523f4ed334ee8f59c615db739a3b884512c2390ed5bb8ab617d2ba1bf23645a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "record": 3,
+      "time": "2026-09-09T13:13:25.501070+00:00",
+      "exit": 0,
+      "elapsed_seconds": 11.512,
+      "stdout_sha256": "02da8fb9335fe952859d2c7cdaefd5adfd32ed7887fa1470a062cfe86f8b395d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "record": 4,
+      "time": "2026-09-09T13:13:38.515658+00:00",
+      "exit": 0,
+      "elapsed_seconds": 1.937,
+      "stdout_sha256": "68920428cbcf43609d7d2080acf5c54a06f1396f7fb1d83c72549bbdcb1cd65d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "record": 5,
+      "time": "2026-09-09T13:13:49.783507+00:00",
+      "exit": 0,
+      "elapsed_seconds": 1.384,
+      "stdout_sha256": "04afaf58ee116b269e8d9bb7853577e1a8f72b91d85d85d47882cd6f79424f6d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "record": 6,
+      "time": "2026-09-09T13:14:16.233269+00:00",
+      "exit": 0,
+      "elapsed_seconds": 1.406,
+      "stdout_sha256": "52110065a97d53d4d0e86cc6dc9be91a1064f4cf7bb53c915853483b0da0004c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "record": 7,
+      "time": "2026-09-09T13:14:41.021446+00:00",
+      "exit": 0,
+      "elapsed_seconds": 0.094,
+      "stdout_sha256": "7acb8d425c1b4bbf92af2036ab847eba05e7b67aacbfa5f94dea67b40118b1de",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "raw_trace_tool_events": 68,
+  "runtime_rerun": false,
+  "private_files_read": false,
+  "boundary": "Read-only independent assessment of final source, assertions, recorded build/typecheck/production-browser results, exact versions and hashes. q URL navigation is not dataset filtering; no dataset exists in source. Loading fallback visibility is demonstrated with JavaScript disabled, not delayed-navigation pending duration. Plaintext dispatch content unavailable."
+}

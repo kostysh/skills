@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-09-09T12:01:03.697941+00:00",
+  "targets": {
+    "hono-engineer": {
+      "declaredFiles": 42,
+      "presentFiles": 42,
+      "missing": [],
+      "mismatch": []
+    },
+    "supabase-engineer": {
+      "declaredFiles": 32,
+      "presentFiles": 32,
+      "missing": [],
+      "mismatch": []
+    }
+  }
+}

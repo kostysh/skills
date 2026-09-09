@@ -1,0 +1,97 @@
+{
+  "reports": [
+    {
+      "id": 1,
+      "requestKey": "report-001",
+      "inputText": "  Quarter Report  ",
+      "normalizedText": "Quarter Report",
+      "characterCount": 14,
+      "updatedAt": "2026-09-09T13:33:54.171Z",
+      "createdAt": "2026-09-09T13:33:54.171Z"
+    }
+  ],
+  "jobs": [
+    {
+      "id": 2,
+      "input": {
+        "text": "  Quarter Report  ",
+        "requestKey": "report-001"
+      },
+      "completedAt": "2026-09-09T13:35:54.904Z",
+      "totalTried": 1,
+      "hasError": false,
+      "error": null,
+      "log": [
+        {
+          "id": "6aa160ba2ae8e90068c5bf30",
+          "executedAt": "2026-09-09T13:35:54.844Z",
+          "completedAt": "2026-09-09T13:35:54.844Z",
+          "taskSlug": "inline",
+          "taskID": "normalize",
+          "input": {
+            "text": "  Quarter Report  ",
+            "requestKey": "report-001"
+          },
+          "output": {
+            "normalizedText": "Quarter Report"
+          },
+          "state": "succeeded",
+          "error": null
+        },
+        {
+          "id": "6aa160ba2ae8e90068c5bf31",
+          "executedAt": "2026-09-09T13:35:54.848Z",
+          "completedAt": "2026-09-09T13:35:54.901Z",
+          "taskSlug": "inline",
+          "taskID": "store-report",
+          "input": {
+            "text": "  Quarter Report  ",
+            "requestKey": "report-001",
+            "normalizedText": "Quarter Report"
+          },
+          "output": {
+            "reportID": 1
+          },
+          "state": "succeeded",
+          "error": null
+        }
+      ],
+      "workflowSlug": "prepare-report",
+      "taskSlug": null,
+      "queue": "reports",
+      "waitUntil": null,
+      "processing": false,
+      "updatedAt": "2026-09-09T13:35:54.905Z",
+      "createdAt": "2026-09-09T13:35:36.750Z",
+      "taskStatus": {
+        "inline": {
+          "normalize": {
+            "complete": true,
+            "input": {
+              "text": "  Quarter Report  ",
+              "requestKey": "report-001"
+            },
+            "output": {
+              "normalizedText": "Quarter Report"
+            },
+            "taskSlug": "inline",
+            "totalTried": 1
+          },
+          "store-report": {
+            "complete": true,
+            "input": {
+              "text": "  Quarter Report  ",
+              "requestKey": "report-001",
+              "normalizedText": "Quarter Report"
+            },
+            "output": {
+              "reportID": 1
+            },
+            "taskSlug": "inline",
+            "totalTried": 1
+          }
+        }
+      }
+    }
+  ]
+}

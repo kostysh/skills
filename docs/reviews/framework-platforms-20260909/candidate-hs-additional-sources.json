@@ -1,0 +1,8 @@
+{
+  "sdk-filter-builder": {
+    "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/postgrest-js/src/PostgrestFilterBuilder.ts",
+    "snapshot": "official-hono-supabase/sdk-filter-builder.txt",
+    "retrievedAt": "2026-09-09T16:06:42.396937+00:00",
+    "sha256": "a1247c0dd4f57bc7621249e0ac96f3964baf74c6497005698ba72e09d5efdf08"
+  }
+}

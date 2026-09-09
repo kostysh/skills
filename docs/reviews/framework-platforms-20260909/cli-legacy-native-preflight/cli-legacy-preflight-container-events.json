@@ -1,0 +1,72 @@
+[
+  {
+    "timeNano": 1788965549667015274,
+    "action": "create",
+    "id": "31eb418f50ec4ed563d551480d68cba64fdaaab86f6416d8863604601f02e3fa",
+    "name": "supabase_db_fp-cli-legacy-20260909",
+    "image": "public.ecr.aws/supabase/postgres:17.4.1.074"
+  },
+  {
+    "timeNano": 1788965549777736922,
+    "action": "start",
+    "id": "31eb418f50ec4ed563d551480d68cba64fdaaab86f6416d8863604601f02e3fa",
+    "name": "supabase_db_fp-cli-legacy-20260909",
+    "image": "public.ecr.aws/supabase/postgres:17.4.1.074"
+  },
+  {
+    "timeNano": 1788965598538920190,
+    "action": "create",
+    "id": "fc933a2fcdf0c3fdb9f1200326ef05af83effebd03efbefa43ebbd2d06618ba9",
+    "name": "fp-cli-legacy-20260909-f15572aa-16b4-47ae-ada6-8b3a0bad9f95",
+    "image": "public.ecr.aws/supabase/postgres:17.4.1.074"
+  },
+  {
+    "timeNano": 1788965598662556006,
+    "action": "start",
+    "id": "fc933a2fcdf0c3fdb9f1200326ef05af83effebd03efbefa43ebbd2d06618ba9",
+    "name": "fp-cli-legacy-20260909-f15572aa-16b4-47ae-ada6-8b3a0bad9f95",
+    "image": "public.ecr.aws/supabase/postgres:17.4.1.074"
+  },
+  {
+    "timeNano": 1788965609792863136,
+    "action": "create",
+    "id": "ea5d30971020d6dbd86b6a09cc0cda420d861f56678bb6fa831b50fd124a2b7c",
+    "name": "fp-cli-legacy-20260909-5ba229ca-df9f-42d7-904c-c06876a4247d",
+    "image": "public.ecr.aws/supabase/migra:3.0.1663481299"
+  },
+  {
+    "timeNano": 1788965609873342006,
+    "action": "start",
+    "id": "ea5d30971020d6dbd86b6a09cc0cda420d861f56678bb6fa831b50fd124a2b7c",
+    "name": "fp-cli-legacy-20260909-5ba229ca-df9f-42d7-904c-c06876a4247d",
+    "image": "public.ecr.aws/supabase/migra:3.0.1663481299"
+  },
+  {
+    "timeNano": 1788965611251857410,
+    "action": "die",
+    "id": "ea5d30971020d6dbd86b6a09cc0cda420d861f56678bb6fa831b50fd124a2b7c",
+    "name": "fp-cli-legacy-20260909-5ba229ca-df9f-42d7-904c-c06876a4247d",
+    "image": "public.ecr.aws/supabase/migra:3.0.1663481299"
+  },
+  {
+    "timeNano": 1788965611257017355,
+    "action": "destroy",
+    "id": "ea5d30971020d6dbd86b6a09cc0cda420d861f56678bb6fa831b50fd124a2b7c",
+    "name": "fp-cli-legacy-20260909-5ba229ca-df9f-42d7-904c-c06876a4247d",
+    "image": "public.ecr.aws/supabase/migra:3.0.1663481299"
+  },
+  {
+    "timeNano": 1788965611448949378,
+    "action": "die",
+    "id": "fc933a2fcdf0c3fdb9f1200326ef05af83effebd03efbefa43ebbd2d06618ba9",
+    "name": "fp-cli-legacy-20260909-f15572aa-16b4-47ae-ada6-8b3a0bad9f95",
+    "image": "public.ecr.aws/supabase/postgres:17.4.1.074"
+  },
+  {
+    "timeNano": 1788965611472456470,
+    "action": "destroy",
+    "id": "fc933a2fcdf0c3fdb9f1200326ef05af83effebd03efbefa43ebbd2d06618ba9",
+    "name": "fp-cli-legacy-20260909-f15572aa-16b4-47ae-ada6-8b3a0bad9f95",
+    "image": "public.ecr.aws/supabase/postgres:17.4.1.074"
+  }
+]

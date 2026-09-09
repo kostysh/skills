@@ -1,0 +1,6 @@
+{
+  "seconds": 180,
+  "peakObserved": 3,
+  "allObservedChildBoundsVerified": true,
+  "claimLimit": "Polling covers observed snapshots, not all instantaneous host resource usage"
+}

@@ -1,0 +1,203 @@
+[
+  {
+    "mode": "default",
+    "outcome": "success",
+    "expected": {
+      "stock": 8,
+      "orders": 1,
+      "audit": 1
+    },
+    "operation": {
+      "transactionPresent": false,
+      "operationError": null,
+      "before": {
+        "inventory": [
+          {
+            "id": 1,
+            "sourceKey": "sku-1",
+            "stock": 10,
+            "updatedAt": "2026-09-09T13:59:40.454Z",
+            "createdAt": "2026-09-09T13:59:40.453Z"
+          }
+        ],
+        "orders": [],
+        "audit": []
+      }
+    },
+    "observed": {
+      "inventory": [
+        {
+          "id": 1,
+          "sourceKey": "sku-1",
+          "stock": 8,
+          "updatedAt": "2026-09-09T13:59:40.469Z",
+          "createdAt": "2026-09-09T13:59:40.453Z"
+        }
+      ],
+      "orders": [
+        {
+          "id": 1,
+          "sourceKey": "order-1",
+          "quantity": 2,
+          "inventory": 1,
+          "updatedAt": "2026-09-09T13:59:40.463Z",
+          "createdAt": "2026-09-09T13:59:40.463Z"
+        }
+      ],
+      "audit": [
+        {
+          "id": 1,
+          "order": 1,
+          "inventory": 1,
+          "quantity": 2,
+          "updatedAt": "2026-09-09T13:59:40.470Z",
+          "createdAt": "2026-09-09T13:59:40.470Z"
+        }
+      ]
+    }
+  },
+  {
+    "mode": "default",
+    "outcome": "failure",
+    "expected": {
+      "stock": 8,
+      "orders": 1,
+      "audit": 0
+    },
+    "operation": {
+      "transactionPresent": false,
+      "operationError": "P04_CONTROLLED_FAILURE",
+      "before": {
+        "inventory": [
+          {
+            "id": 1,
+            "sourceKey": "sku-1",
+            "stock": 10,
+            "updatedAt": "2026-09-09T13:59:44.799Z",
+            "createdAt": "2026-09-09T13:59:44.798Z"
+          }
+        ],
+        "orders": [],
+        "audit": []
+      }
+    },
+    "observed": {
+      "inventory": [
+        {
+          "id": 1,
+          "sourceKey": "sku-1",
+          "stock": 8,
+          "updatedAt": "2026-09-09T13:59:44.858Z",
+          "createdAt": "2026-09-09T13:59:44.798Z"
+        }
+      ],
+      "orders": [
+        {
+          "id": 1,
+          "sourceKey": "order-1",
+          "quantity": 2,
+          "inventory": 1,
+          "updatedAt": "2026-09-09T13:59:44.810Z",
+          "createdAt": "2026-09-09T13:59:44.810Z"
+        }
+      ],
+      "audit": []
+    }
+  },
+  {
+    "mode": "reference-enabled",
+    "outcome": "success",
+    "expected": {
+      "stock": 8,
+      "orders": 1,
+      "audit": 1
+    },
+    "operation": {
+      "transactionPresent": true,
+      "operationError": null,
+      "before": {
+        "inventory": [
+          {
+            "id": 1,
+            "sourceKey": "sku-1",
+            "stock": 10,
+            "updatedAt": "2026-09-09T13:59:49.088Z",
+            "createdAt": "2026-09-09T13:59:49.088Z"
+          }
+        ],
+        "orders": [],
+        "audit": []
+      }
+    },
+    "observed": {
+      "inventory": [
+        {
+          "id": 1,
+          "sourceKey": "sku-1",
+          "stock": 8,
+          "updatedAt": "2026-09-09T13:59:49.150Z",
+          "createdAt": "2026-09-09T13:59:49.088Z"
+        }
+      ],
+      "orders": [
+        {
+          "id": 1,
+          "sourceKey": "order-1",
+          "quantity": 2,
+          "inventory": 1,
+          "updatedAt": "2026-09-09T13:59:49.098Z",
+          "createdAt": "2026-09-09T13:59:49.098Z"
+        }
+      ],
+      "audit": [
+        {
+          "id": 1,
+          "order": 1,
+          "inventory": 1,
+          "quantity": 2,
+          "updatedAt": "2026-09-09T13:59:49.152Z",
+          "createdAt": "2026-09-09T13:59:49.152Z"
+        }
+      ]
+    }
+  },
+  {
+    "mode": "reference-enabled",
+    "outcome": "failure",
+    "expected": {
+      "stock": 10,
+      "orders": 0,
+      "audit": 0
+    },
+    "operation": {
+      "transactionPresent": true,
+      "operationError": "P04_CONTROLLED_FAILURE",
+      "before": {
+        "inventory": [
+          {
+            "id": 1,
+            "sourceKey": "sku-1",
+            "stock": 10,
+            "updatedAt": "2026-09-09T13:59:53.588Z",
+            "createdAt": "2026-09-09T13:59:53.587Z"
+          }
+        ],
+        "orders": [],
+        "audit": []
+      }
+    },
+    "observed": {
+      "inventory": [
+        {
+          "id": 1,
+          "sourceKey": "sku-1",
+          "stock": 10,
+          "updatedAt": "2026-09-09T13:59:53.588Z",
+          "createdAt": "2026-09-09T13:59:53.587Z"
+        }
+      ],
+      "orders": [],
+      "audit": []
+    }
+  }
+]

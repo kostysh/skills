@@ -1,0 +1,506 @@
+{
+  "case": "D5 / baseline D-legacy",
+  "verdict": "PASS",
+  "assurance": "independent",
+  "scope": "Only observed D5 execution; not whole skill approval",
+  "created_at": "2026-09-09T14:33:24.326904+00:00",
+  "algorithm": "SHA-256 bytes; paths relative to trial_root or evidence_root",
+  "trial_root": "/tmp/framework-platforms-20260909/trials/baseline/D-legacy",
+  "evidence_root": "/home/kostysh/.codex/skills/custom/.worktrees/framework-platforms/docs/reviews/framework-platforms-20260909",
+  "input_checks": {
+    "task.txt": {
+      "frozen": "c490c1fbfd40c344cc781042992261642656122203492c3febf50b2744961450",
+      "observed": "c490c1fbfd40c344cc781042992261642656122203492c3febf50b2744961450",
+      "unchanged": true
+    },
+    "app/versions.json": {
+      "frozen": "61047c2ff1f3da68bec02ca3af69df70519622c12b24896049d3d89ce66e3ced",
+      "observed": "61047c2ff1f3da68bec02ca3af69df70519622c12b24896049d3d89ce66e3ced",
+      "unchanged": true
+    },
+    "app/tsconfig.json": {
+      "frozen": "29f80a15092dcba71151f15a09a2172901594ad79c6f5caa0236301b0da6eae2",
+      "observed": "29f80a15092dcba71151f15a09a2172901594ad79c6f5caa0236301b0da6eae2",
+      "unchanged": true
+    },
+    "app/sidebars.ts": {
+      "frozen": "bc9974ea1076d6f6c6243e194243a39b1f5fe4fd4c866b7f284ad26056e307a3",
+      "observed": "bc9974ea1076d6f6c6243e194243a39b1f5fe4fd4c866b7f284ad26056e307a3",
+      "unchanged": true
+    },
+    "app/docusaurus.config.ts": {
+      "frozen": "f9652fff359e573064cd70abb02ac66c0aa02e97b017342b6170c84d60b24caf",
+      "observed": "d7c7c37ec0b73a940d98f85a92629eeb9a649d65197c1d60b9bd4ab2f79a971a",
+      "unchanged": false
+    },
+    "app/package.json": {
+      "frozen": "de6173aa856cc242a13f50bc4d4bbff3166d049398ce63530b6b04ed2f14e876",
+      "observed": "2378fe3aa34ca98d881bf21307fe8546f19560e3e09f463d00ec6dc765cd4226",
+      "unchanged": false
+    },
+    "app/pnpm-lock.yaml": {
+      "frozen": "7250f358a8eb60c1882bf0ae411af033b12235fe5d55555836c9b1415f14a0a8",
+      "observed": "a1d0d8a2823b01906259c29af7ef106781d88d57159a6d383427639687fa73dd",
+      "unchanged": false
+    },
+    "app/versioned_sidebars/version-1.0-sidebars.json": {
+      "frozen": "e96fbf165f71beb1814a08bb745057d294cba8295e281800dbe2069a288a8d26",
+      "observed": "e96fbf165f71beb1814a08bb745057d294cba8295e281800dbe2069a288a8d26",
+      "unchanged": true
+    },
+    "app/tools/greet.mjs": {
+      "frozen": "c73ee06224dce16c62082aa7a5f5c1c2020045e208df298df1b340c2680068b4",
+      "observed": "c73ee06224dce16c62082aa7a5f5c1c2020045e208df298df1b340c2680068b4",
+      "unchanged": true
+    },
+    "app/src/custom.css": {
+      "frozen": "4da12187b8f67fc9b8cdcc943b90ea1f4aac2602dd1d0d3a2e48142d60ff86bd",
+      "observed": "4da12187b8f67fc9b8cdcc943b90ea1f4aac2602dd1d0d3a2e48142d60ff86bd",
+      "unchanged": true
+    },
+    "app/docs/reference.mdx": {
+      "frozen": "b0182c8fb4b1bcd3cab7c4f754ed494ecfe4440cf2591157eb68dd350668464b",
+      "observed": "b0182c8fb4b1bcd3cab7c4f754ed494ecfe4440cf2591157eb68dd350668464b",
+      "unchanged": true
+    },
+    "app/docs/intro.md": {
+      "frozen": "d43090e054b40e03c77684db67c4af04510241c91256ffc2118ae55b07a08666",
+      "observed": "d43090e054b40e03c77684db67c4af04510241c91256ffc2118ae55b07a08666",
+      "unchanged": true
+    },
+    "app/tools/fixtures/error.json": {
+      "frozen": "91b16c68aeadcff408b41c2adca5b642fd877edb8ca41e6a091a3cdcf7cdde5f",
+      "observed": "91b16c68aeadcff408b41c2adca5b642fd877edb8ca41e6a091a3cdcf7cdde5f",
+      "unchanged": true
+    },
+    "app/tools/fixtures/success.json": {
+      "frozen": "f77e793c3814598d0d5780339c3504d4d68d5a3a7e41fddd696fcf87af270fd2",
+      "observed": "f77e793c3814598d0d5780339c3504d4d68d5a3a7e41fddd696fcf87af270fd2",
+      "unchanged": true
+    },
+    "app/tools/fixtures/help.json": {
+      "frozen": "f743d61f7165b16d27ae5eb3c61c7889af854c3681a05610be09c7bed24c403c",
+      "observed": "f743d61f7165b16d27ae5eb3c61c7889af854c3681a05610be09c7bed24c403c",
+      "unchanged": true
+    },
+    "app/versioned_docs/version-1.0/reference.mdx": {
+      "frozen": "b0182c8fb4b1bcd3cab7c4f754ed494ecfe4440cf2591157eb68dd350668464b",
+      "observed": "b0182c8fb4b1bcd3cab7c4f754ed494ecfe4440cf2591157eb68dd350668464b",
+      "unchanged": true
+    },
+    "app/versioned_docs/version-1.0/intro.md": {
+      "frozen": "d43090e054b40e03c77684db67c4af04510241c91256ffc2118ae55b07a08666",
+      "observed": "d43090e054b40e03c77684db67c4af04510241c91256ffc2118ae55b07a08666",
+      "unchanged": true
+    },
+    "app/i18n/it/docusaurus-plugin-content-docs/version-1.0/reference.mdx": {
+      "frozen": "f7653ec20f098add0692fd2e258a501d153ac64c4b2f3e58b4e51166bd8d05c2",
+      "observed": "f7653ec20f098add0692fd2e258a501d153ac64c4b2f3e58b4e51166bd8d05c2",
+      "unchanged": true
+    },
+    "app/i18n/it/docusaurus-plugin-content-docs/version-1.0/intro.md": {
+      "frozen": "c836166f1ba273f89726affe0e11b120b1afaa9edc888771005375553a13c20b",
+      "observed": "c836166f1ba273f89726affe0e11b120b1afaa9edc888771005375553a13c20b",
+      "unchanged": true
+    },
+    "app/i18n/it/docusaurus-plugin-content-docs/current/reference.mdx": {
+      "frozen": "f7653ec20f098add0692fd2e258a501d153ac64c4b2f3e58b4e51166bd8d05c2",
+      "observed": "f7653ec20f098add0692fd2e258a501d153ac64c4b2f3e58b4e51166bd8d05c2",
+      "unchanged": true
+    },
+    "app/i18n/it/docusaurus-plugin-content-docs/current/intro.md": {
+      "frozen": "c836166f1ba273f89726affe0e11b120b1afaa9edc888771005375553a13c20b",
+      "observed": "c836166f1ba273f89726affe0e11b120b1afaa9edc888771005375553a13c20b",
+      "unchanged": true
+    },
+    "skills/typescript-engineer/SKILL.md": {
+      "frozen": "8dccdca0e96b7c9f7caf51baaab9fb909df0bb01345a0ae7fac7c444bb597e86",
+      "observed": "8dccdca0e96b7c9f7caf51baaab9fb909df0bb01345a0ae7fac7c444bb597e86",
+      "unchanged": true
+    },
+    "skills/documentation/SKILL.md": {
+      "frozen": "4498e3ef26485edc0e63ee0fef18b371f81aa8daa694634484410c43003ae7be",
+      "observed": "4498e3ef26485edc0e63ee0fef18b371f81aa8daa694634484410c43003ae7be",
+      "unchanged": true
+    },
+    "skills/docusaurus-repo/SKILL.md": {
+      "frozen": "600431e268896aec98c689214c5fe7dd3f4e2e48468c9de8d724c612e0edbb38",
+      "observed": "600431e268896aec98c689214c5fe7dd3f4e2e48468c9de8d724c612e0edbb38",
+      "unchanged": true
+    },
+    "skills/docusaurus-repo/agents/openai.yaml": {
+      "frozen": "0e30f97b7080acd2833c3c60f8dcf8c6d8567b0442a6ffcd87ee1dab3575c21e",
+      "observed": "0e30f97b7080acd2833c3c60f8dcf8c6d8567b0442a6ffcd87ee1dab3575c21e",
+      "unchanged": true
+    },
+    "skills/docusaurus-repo/references/search-and-ecosystem.md": {
+      "frozen": "fc8db77136205a3e19b0e0936d72cc1abf55d989aad85a6bd95f0cb01079b2c5",
+      "observed": "fc8db77136205a3e19b0e0936d72cc1abf55d989aad85a6bd95f0cb01079b2c5",
+      "unchanged": true
+    },
+    "skills/docusaurus-repo/references/bootstrap-and-structure.md": {
+      "frozen": "5c44fe340a714d3436e76b0d41c72b9896f7b3e7cb4cfdd3e5f8e9e744855a8c",
+      "observed": "5c44fe340a714d3436e76b0d41c72b9896f7b3e7cb4cfdd3e5f8e9e744855a8c",
+      "unchanged": true
+    },
+    "skills/docusaurus-repo/references/config-presets-and-routing.md": {
+      "frozen": "f26735ffe51a00e07c876c385fc7247f1877e101b18996d33a7fd9f25fd3df06",
+      "observed": "f26735ffe51a00e07c876c385fc7247f1877e101b18996d33a7fd9f25fd3df06",
+      "unchanged": true
+    },
+    "skills/docusaurus-repo/references/doc-quality-tooling-and-agents.md": {
+      "frozen": "09d3860f67d1545e6913438ae298b5051a6ec8605c9efeb8b61a2e8fdf5905e1",
+      "observed": "09d3860f67d1545e6913438ae298b5051a6ec8605c9efeb8b61a2e8fdf5905e1",
+      "unchanged": true
+    },
+    "skills/docusaurus-repo/references/content-authoring.md": {
+      "frozen": "2afb9056dc99c12ab9231a9faebf7544e7562f0508f17e513459b063371d46dc",
+      "observed": "2afb9056dc99c12ab9231a9faebf7544e7562f0508f17e513459b063371d46dc",
+      "unchanged": true
+    },
+    "skills/docusaurus-repo/references/deployment-versioning-i18n.md": {
+      "frozen": "ddb0b88532efdfe5087952d02f1140a924f57c45f97f481f2cda1ee975f396dd",
+      "observed": "ddb0b88532efdfe5087952d02f1140a924f57c45f97f481f2cda1ee975f396dd",
+      "unchanged": true
+    },
+    "skills/docusaurus-repo/references/customization-and-ux.md": {
+      "frozen": "c06dda188a4a4c29cb7776d133749d3336f1493253a578d8f2aafefaa3d8a5da",
+      "observed": "c06dda188a4a4c29cb7776d133749d3336f1493253a578d8f2aafefaa3d8a5da",
+      "unchanged": true
+    },
+    "skills/docusaurus-repo/assets/project-files/.prettierignore": {
+      "frozen": "0e2d69697fed9001df076dc0e14de9ef3ed045a8b945961564b8e0d98a54fc90",
+      "observed": "0e2d69697fed9001df076dc0e14de9ef3ed045a8b945961564b8e0d98a54fc90",
+      "unchanged": true
+    },
+    "skills/docusaurus-repo/assets/project-files/.prettierrc.json": {
+      "frozen": "8b92ed4e7a6cd9ddcfa606663ab1cf6328da668557adc02510f776ea28991f1c",
+      "observed": "8b92ed4e7a6cd9ddcfa606663ab1cf6328da668557adc02510f776ea28991f1c",
+      "unchanged": true
+    },
+    "skills/docusaurus-repo/assets/project-files/AGENTS.md": {
+      "frozen": "ee1315fcb0d75ee320b61d0db07d622e6ae2bf0f12745f1f3e8a22990404a09e",
+      "observed": "ee1315fcb0d75ee320b61d0db07d622e6ae2bf0f12745f1f3e8a22990404a09e",
+      "unchanged": true
+    },
+    "skills/docusaurus-repo/assets/project-files/.markdownlint-cli2.jsonc": {
+      "frozen": "38aee27be4da3ab62eeda149f411eebda245a11b1297a11b9df5f596d56e85e1",
+      "observed": "38aee27be4da3ab62eeda149f411eebda245a11b1297a11b9df5f596d56e85e1",
+      "unchanged": true
+    },
+    "skills/docusaurus-repo/assets/project-files/.github/workflows/docs-quality.yml": {
+      "frozen": "add3089d34f217f3ffc8b4b2f5d2d068b7d8f7e43b46a4228700225b04de09b9",
+      "observed": "add3089d34f217f3ffc8b4b2f5d2d068b7d8f7e43b46a4228700225b04de09b9",
+      "unchanged": true
+    },
+    "skills/documentation/references/diataxis-guide.md": {
+      "frozen": "2fd3a9fcbedd9fde5b4b4b06bd003b65d1b812b124299f1469a6420ed4e49d87",
+      "observed": "2fd3a9fcbedd9fde5b4b4b06bd003b65d1b812b124299f1469a6420ed4e49d87",
+      "unchanged": true
+    },
+    "skills/typescript-engineer/agents/openai.yaml": {
+      "frozen": "372a72c8d2943c55ba133bbda5e0ed8f46cdfd8f8d4940418beefcbaf62484ab",
+      "observed": "372a72c8d2943c55ba133bbda5e0ed8f46cdfd8f8d4940418beefcbaf62484ab",
+      "unchanged": true
+    },
+    "skills/typescript-engineer/references/monorepo.md": {
+      "frozen": "a725bf2737a1c0716b2c8f9f2a6d6d79cc0e14a401a06b7de5ed9744166fb5e4",
+      "observed": "a725bf2737a1c0716b2c8f9f2a6d6d79cc0e14a401a06b7de5ed9744166fb5e4",
+      "unchanged": true
+    },
+    "skills/typescript-engineer/references/generics.md": {
+      "frozen": "7201b89492c473093a6818db8bcf0b26e445d2f0689eb84916ff185503c3c4c4",
+      "observed": "7201b89492c473093a6818db8bcf0b26e445d2f0689eb84916ff185503c3c4c4",
+      "unchanged": true
+    },
+    "skills/typescript-engineer/references/practices.md": {
+      "frozen": "51f765dcd0f2e1732e00d83504a4a832f177437f96aeed0d992a634e949c827a",
+      "observed": "51f765dcd0f2e1732e00d83504a4a832f177437f96aeed0d992a634e949c827a",
+      "unchanged": true
+    },
+    "skills/typescript-engineer/references/type-debugging.md": {
+      "frozen": "2fb09da3deb9e434b50336644da63a6539503d30f05a0304fa7c9a78d7690304",
+      "observed": "2fb09da3deb9e434b50336644da63a6539503d30f05a0304fa7c9a78d7690304",
+      "unchanged": true
+    },
+    "skills/typescript-engineer/references/toolchain.md": {
+      "frozen": "313bb758492c473f47b7d1670fd01ecb605512296ab98edcf36fe59914794771",
+      "observed": "313bb758492c473f47b7d1670fd01ecb605512296ab98edcf36fe59914794771",
+      "unchanged": true
+    },
+    "skills/typescript-engineer/references/overloads.md": {
+      "frozen": "39494766556c8c7aa46c2aa16aa20718aedcaf7a4ec8cf0a28443324d3c5936b",
+      "observed": "39494766556c8c7aa46c2aa16aa20718aedcaf7a4ec8cf0a28443324d3c5936b",
+      "unchanged": true
+    },
+    "skills/typescript-engineer/references/patterns.md": {
+      "frozen": "8636aec6c320d894a10ada0db3f452b7d31e9dc608d00a6e0a57e1b5c3aa1f57",
+      "observed": "8636aec6c320d894a10ada0db3f452b7d31e9dc608d00a6e0a57e1b5c3aa1f57",
+      "unchanged": true
+    },
+    "skills/typescript-engineer/references/type-system.md": {
+      "frozen": "451bec02f0fe0cad7a3967b6d4b8388e98600c4655be7fee51b971f1db0f40e9",
+      "observed": "451bec02f0fe0cad7a3967b6d4b8388e98600c4655be7fee51b971f1db0f40e9",
+      "unchanged": true
+    },
+    "skills/typescript-engineer/references/runtime-derived-types.md": {
+      "frozen": "1e1a327d0a2e59792ec25aa5c69bb2cd313273ef2a9d7730014700303e9e4aa0",
+      "observed": "1e1a327d0a2e59792ec25aa5c69bb2cd313273ef2a9d7730014700303e9e4aa0",
+      "unchanged": true
+    },
+    "app/src/pages/index.tsx": {
+      "frozen": "d3ffa327a118c69d6bd2e7ad5b7db8761e6d3c6968e2f9159ca5ac8746f05915",
+      "observed": "d3ffa327a118c69d6bd2e7ad5b7db8761e6d3c6968e2f9159ca5ac8746f05915",
+      "unchanged": true
+    },
+    "app/REQUIREMENTS.md": {
+      "frozen": "cb5253f33bc52c49b8711b542477de23ad4ea583e233e3f4a0815dbb94ff7675",
+      "observed": "cb5253f33bc52c49b8711b542477de23ad4ea583e233e3f4a0815dbb94ff7675",
+      "unchanged": true
+    }
+  },
+  "trial_files": {
+    "result.md": "c3dae565aa73d4b8227a4dd21150a6b23ea95aed6486f83922c2d1cd12c90b29",
+    "browser-results.json": "820652859bdee7a61e430fb59ef643058a081c9a30350d5264a0b4e2a31084f2",
+    "it-1.0-destination.png": "2ff4bd8a0f498a0527df19da3edb25d18e814fbffb547530c6e652bfe2c77d6f",
+    "it-1.0-search.png": "65bae6158e6148c10e237635c0373bbd03af668c5a896c09174aca98df0c651e",
+    "it-current-destination.png": "24b0d380c27e23fe2d3f475fdbb0ffc1a793ed1bd94a670bcc500b1c49ffde53",
+    "it-current-search.png": "fb2151b6f291d2e966882ca1733b56ad89ab87b431fbb2f0d8d335e9b1bf2c96",
+    "en-1.0-destination.png": "47032fb230dd2da3e342ae20645d51d73156831fb25df86ea992a399d193f3f8",
+    "en-1.0-search.png": "4caf22cf02f72f6e1e78b38f363461c36ecf726c4dd682deac7fc8b3afe0d01e",
+    "en-current-destination.png": "2c8c107bcade4dbe7d8384985c411b9f42cbd28ac953c719bb02bb20b5beb211",
+    "en-current-search.png": "9cad91abe832e1ea606858d2579281cfbde93c8ed189262f9060d09b4d77c01e",
+    "initial.png": "1c5862ce4dab170f5bdd19bd3bce887b7c8e09d76b78e0f3f1a35c38bec2e3d3",
+    "preview.log": "3317ff2997e1ed2618ed784f0ad1ba4284abee95c94daf663dcafc340bc3dfab",
+    "browser-check.cjs": "ded63bb17fc769fad1b8a2b31864ec04467762b30bb730cfa5fe4c46645cd4ac",
+    "commands.jsonl": "aa5ac0b77de5272fbafbb175bf0c85c20a6e53debe14a06e488955cc5afcd630",
+    "task.txt": "c490c1fbfd40c344cc781042992261642656122203492c3febf50b2744961450",
+    "browser/package-lock.json": "ce3f1340ab509c0b94b5c53e80358d5fea324c915d225814bbddbb48c08c0ac6",
+    "browser/package.json": "34688dbfa8de357de4ed93308329b81e2c6f57de385307651d0c9caf624769f2",
+    "app/SEARCH.md": "6738d1c6da5815bb5ea67f51918811f9cef626be1497bbcca734aebd324f233d",
+    "app/package.json": "2378fe3aa34ca98d881bf21307fe8546f19560e3e09f463d00ec6dc765cd4226",
+    "app/pnpm-lock.yaml": "a1d0d8a2823b01906259c29af7ef106781d88d57159a6d383427639687fa73dd",
+    "app/REQUIREMENTS.md": "cb5253f33bc52c49b8711b542477de23ad4ea583e233e3f4a0815dbb94ff7675",
+    "app/versions.json": "61047c2ff1f3da68bec02ca3af69df70519622c12b24896049d3d89ce66e3ced",
+    "app/tsconfig.json": "29f80a15092dcba71151f15a09a2172901594ad79c6f5caa0236301b0da6eae2",
+    "app/sidebars.ts": "bc9974ea1076d6f6c6243e194243a39b1f5fe4fd4c866b7f284ad26056e307a3",
+    "app/docusaurus.config.ts": "d7c7c37ec0b73a940d98f85a92629eeb9a649d65197c1d60b9bd4ab2f79a971a",
+    "app/build/search-index-docs-default-1.0.json": "d20cf75c2833460f32020aa62db116d84e2cbe61a493c36138cfeec6fca4581b",
+    "app/build/search-index-docs-default-current.json": "e0e55ee2348e6f279e6352428c3e91506196db9139658ae9ec4bc90fbcff5420",
+    "app/build/sitemap.xml": "dfd6ee7311ad657a48e29666580ec648fd7767c82f6c19bf7d7d042fb411de2b",
+    "app/build/index.html": "13f365b9bcf2357d0c0b9f8b21378537355949a93187274db816f301477e69c4",
+    "app/build/404.html": "4f0f68442d14c54ffc85552d0bffbcf82379d16561b926bcfab7e3d2e92c48e1",
+    "app/versioned_sidebars/version-1.0-sidebars.json": "e96fbf165f71beb1814a08bb745057d294cba8295e281800dbe2069a288a8d26",
+    "app/tools/greet.mjs": "c73ee06224dce16c62082aa7a5f5c1c2020045e208df298df1b340c2680068b4",
+    "app/src/custom.css": "4da12187b8f67fc9b8cdcc943b90ea1f4aac2602dd1d0d3a2e48142d60ff86bd",
+    "app/docs/reference.mdx": "b0182c8fb4b1bcd3cab7c4f754ed494ecfe4440cf2591157eb68dd350668464b",
+    "app/docs/intro.md": "d43090e054b40e03c77684db67c4af04510241c91256ffc2118ae55b07a08666",
+    "app/src/pages/index.tsx": "d3ffa327a118c69d6bd2e7ad5b7db8761e6d3c6968e2f9159ca5ac8746f05915",
+    "app/tools/fixtures/error.json": "91b16c68aeadcff408b41c2adca5b642fd877edb8ca41e6a091a3cdcf7cdde5f",
+    "app/tools/fixtures/success.json": "f77e793c3814598d0d5780339c3504d4d68d5a3a7e41fddd696fcf87af270fd2",
+    "app/tools/fixtures/help.json": "f743d61f7165b16d27ae5eb3c61c7889af854c3681a05610be09c7bed24c403c",
+    "app/versioned_docs/version-1.0/reference.mdx": "b0182c8fb4b1bcd3cab7c4f754ed494ecfe4440cf2591157eb68dd350668464b",
+    "app/versioned_docs/version-1.0/intro.md": "d43090e054b40e03c77684db67c4af04510241c91256ffc2118ae55b07a08666",
+    "app/i18n/it/docusaurus-plugin-content-docs/version-1.0/reference.mdx": "f7653ec20f098add0692fd2e258a501d153ac64c4b2f3e58b4e51166bd8d05c2",
+    "app/i18n/it/docusaurus-plugin-content-docs/version-1.0/intro.md": "c836166f1ba273f89726affe0e11b120b1afaa9edc888771005375553a13c20b",
+    "app/i18n/it/docusaurus-plugin-content-docs/current/reference.mdx": "f7653ec20f098add0692fd2e258a501d153ac64c4b2f3e58b4e51166bd8d05c2",
+    "app/i18n/it/docusaurus-plugin-content-docs/current/intro.md": "c836166f1ba273f89726affe0e11b120b1afaa9edc888771005375553a13c20b",
+    "app/build/it/search-index-docs-default-1.0.json": "4fb00dfbe702877343eceef6ceeadf83158002d679fa7359d0a3c1dc26759a4d",
+    "app/build/it/search-index-docs-default-current.json": "ca8a2a0f6afc9c4c26a8e0fb63db43f162b36d2ecb2dad5baec2125d928b3825",
+    "app/build/it/sitemap.xml": "e99e55e1f1d69d3c44b7ac1eb99cc6c9ca8ae4abddbb9fca82ebf045c8f52f90",
+    "app/build/it/index.html": "333ffc2ef3d8645d9d1e6e5980c1ab69841d920af3e2ce7196fb8904e26d51ec",
+    "app/build/it/404.html": "9a63bab53ae00850c1a21a545a0bc4fa8cdd687385d60d3a74ff41380a6ca21f",
+    "app/build/assets/css/styles.911567e4.css": "050297991b1eb17314d98e8fa1b07cddbd2778cb8511be92620090b55166ec99",
+    "app/build/assets/js/main.89553ed3.js": "6121d78955a6b536eac7707d6e07fd44d96332d7afc62f9c7422e667930754c4",
+    "app/build/assets/js/main.89553ed3.js.LICENSE.txt": "b372d5ca80a9a0861f0cb0cf95740e207fcc7ed88b5e3d96ba43d2e1ffb17023",
+    "app/build/assets/js/cd6bae76.5ed18688.js": "37bf4093052cb147a0aacbf81df3492060f6bc1d310954ac2745b0478ee4fc43",
+    "app/build/assets/js/aba21aa0.1bea2f7f.js": "a2ad19e0dfa15647587bad0288e9db9b8ad05cae770d9d5ae62e3fa47e8ac83b",
+    "app/build/assets/js/a94703ab.de26a5ae.js": "bd05e2ee63bc3f1a7f5bb556ce200e349f10a8f28b09f80c3655a4979fb0fa7e",
+    "app/build/assets/js/a7456010.62761aa2.js": "788f1acb143349fee9460ae7fab103636860c1d2630caa605494042f649322a1",
+    "app/build/assets/js/a7bd4aaa.d7742c02.js": "056e0ff762c98fe303c30cee1986655f501b3cac865b46a62535db1294e03255",
+    "app/build/assets/js/7bd8db71.a962a5aa.js": "ffb750528f8b3d2a29dc0eb37595a5b042f0af7e5f718c488f712fd4753db448",
+    "app/build/assets/js/7439c4ee.de07a07c.js": "cdca145ce4019f7a20379d204e30523ba5e9f4186d471a90eb9bed55970d6415",
+    "app/build/assets/js/5e95c892.d636db19.js": "40fd878e76bd5004b890728acefce0da0ebf7fa581251f222eb3377cfa96147f",
+    "app/build/assets/js/57da61d5.ce7d0686.js": "ee5d3912705e94a167cf16461210bf9dc9347be4ecbbda6b2e6772eeb96a91c8",
+    "app/build/assets/js/378fcd2c.c771780e.js": "f511302994f5f341673cf2699c27545a861d504cabc985cbda05a956508c4e0f",
+    "app/build/assets/js/1df93b7f.1169c43a.js": "325cbea5dda6b7a2dead96cb63026e1be8d7c3b68a799660842db22daf674a87",
+    "app/build/assets/js/17896441.b217a469.js": "7180b79a388b360756ef66679086724b7dd08c64c9432af0d1a518ffce6dee04",
+    "app/build/assets/js/0e384e19.04727ee3.js": "a4a92ef19019331bae896a31d97ff4961f33767171a4b9920ceced852dac41c8",
+    "app/build/assets/js/955.e4c8b1eb.js": "72fb5bf1ad49c502494464ed013a4e7aecc97253dc0e6f4f1c13343ba873a696",
+    "app/build/assets/js/runtime~main.2d44f139.js": "3b6a1db87d3b82d64210b6f0bec0f37401c9d3080184da4ef2fc941e0abac199",
+    "app/build/docs/reference/index.html": "0d072a0e6679d399bdaca0d51b6a5fbbdf3cd7feba31e563d33147b5631484ad",
+    "app/build/docs/intro/index.html": "a8924ba7338801112182fffc430890c013675b0ace6a22509682201a25b75369",
+    "app/build/docs/next/intro/index.html": "eefc1088155116860f8e5fa4122f48c75f0fe06a21494274dadd8abf36f454f0",
+    "app/build/docs/next/reference/index.html": "3ca0d6d48ac831d42d80bd9c03830d83b4b05c05cf5a0d0fb93609c39e5b67db",
+    "app/build/it/assets/css/styles.3ec4ba58.css": "de1106eca7061478f05b9d3162a703aa7b40aca3a822028f5a3db4d0e30cb341",
+    "app/build/it/assets/js/main.9a36acda.js": "7d099dcddad5aa50cd6f22fbf9d42daf9447db5805fb36d31457bd5616fb3428",
+    "app/build/it/assets/js/main.9a36acda.js.LICENSE.txt": "b372d5ca80a9a0861f0cb0cf95740e207fcc7ed88b5e3d96ba43d2e1ffb17023",
+    "app/build/it/assets/js/cc33e31e.61f5a1a2.js": "c67796088c2d4c7d5b76c68a884b87f14c1b91729ca02ec060b0f0f4b553d5a3",
+    "app/build/it/assets/js/be180efc.714a8f59.js": "801a72c8da87794425342ac2c71f875e373f6f4410e33acb72f2ef6a6171737d",
+    "app/build/it/assets/js/afc8f933.3eaa46c2.js": "f265afe62f4b169d62fa8d50cc247ab9f20b657817080261b9ff312a818a405d",
+    "app/build/it/assets/js/aba21aa0.1bea2f7f.js": "a2ad19e0dfa15647587bad0288e9db9b8ad05cae770d9d5ae62e3fa47e8ac83b",
+    "app/build/it/assets/js/a94703ab.928094ea.js": "368f9444b37265bf3f9fe5fa3064493afeddabae4b7baa95eeaa34088cfd5583",
+    "app/build/it/assets/js/a7bd4aaa.d7742c02.js": "056e0ff762c98fe303c30cee1986655f501b3cac865b46a62535db1294e03255",
+    "app/build/it/assets/js/a7456010.62761aa2.js": "788f1acb143349fee9460ae7fab103636860c1d2630caa605494042f649322a1",
+    "app/build/it/assets/js/5e95c892.d636db19.js": "40fd878e76bd5004b890728acefce0da0ebf7fa581251f222eb3377cfa96147f",
+    "app/build/it/assets/js/5a8a9e47.7eb2511d.js": "0b5267a0f83898775f45beb3b54ac36b36b35f8ed19c907e17e9e38cbe56169a",
+    "app/build/it/assets/js/49b07f50.ddcb6719.js": "296dfd651888591caadd996d7c4294c73091f27d3ddf0c5c9c1a523dd1e71446",
+    "app/build/it/assets/js/1df93b7f.1169c43a.js": "325cbea5dda6b7a2dead96cb63026e1be8d7c3b68a799660842db22daf674a87",
+    "app/build/it/assets/js/17896441.b92c60ca.js": "2c816cbcd5d1a3e5d85dd650a2e2dc849fc462ee4b37e166c23c0f6016fb88bf",
+    "app/build/it/assets/js/0cdbce35.90623874.js": "69cd6906a334152710ce6f6715853b07770c83b268297b7ea07e0ca959a80a82",
+    "app/build/it/assets/js/955.e4c8b1eb.js": "72fb5bf1ad49c502494464ed013a4e7aecc97253dc0e6f4f1c13343ba873a696",
+    "app/build/it/assets/js/runtime~main.8ac8574b.js": "551a2308da121247f136d3cc5224403690a43e346f758cab425bd9ac4ba12f30",
+    "app/build/it/docs/reference/index.html": "e7861299f47b3610d3e4c3aa3d705abc8dbe23a11372732d9fe95b8be04ce829",
+    "app/build/it/docs/intro/index.html": "f76022ccee43f95b7762c8c74269b3cca3ed69a4f17a62b80ae9524a5f3c1eee",
+    "app/build/it/docs/next/intro/index.html": "d053c2c42fef51ea3819a6c2a93b3b08afe63fbaf9b540377e5c8e24afaeaf95",
+    "app/build/it/docs/next/reference/index.html": "3e430ff1257b9febd09d56aad48d38711654ebcb1ab1ff79adf02fc41b8e963b",
+    "skills/typescript-engineer/SKILL.md": "8dccdca0e96b7c9f7caf51baaab9fb909df0bb01345a0ae7fac7c444bb597e86",
+    "skills/documentation/SKILL.md": "4498e3ef26485edc0e63ee0fef18b371f81aa8daa694634484410c43003ae7be",
+    "skills/docusaurus-repo/SKILL.md": "600431e268896aec98c689214c5fe7dd3f4e2e48468c9de8d724c612e0edbb38",
+    "skills/docusaurus-repo/agents/openai.yaml": "0e30f97b7080acd2833c3c60f8dcf8c6d8567b0442a6ffcd87ee1dab3575c21e",
+    "skills/docusaurus-repo/references/search-and-ecosystem.md": "fc8db77136205a3e19b0e0936d72cc1abf55d989aad85a6bd95f0cb01079b2c5",
+    "skills/docusaurus-repo/references/bootstrap-and-structure.md": "5c44fe340a714d3436e76b0d41c72b9896f7b3e7cb4cfdd3e5f8e9e744855a8c",
+    "skills/docusaurus-repo/references/config-presets-and-routing.md": "f26735ffe51a00e07c876c385fc7247f1877e101b18996d33a7fd9f25fd3df06",
+    "skills/docusaurus-repo/references/doc-quality-tooling-and-agents.md": "09d3860f67d1545e6913438ae298b5051a6ec8605c9efeb8b61a2e8fdf5905e1",
+    "skills/docusaurus-repo/references/content-authoring.md": "2afb9056dc99c12ab9231a9faebf7544e7562f0508f17e513459b063371d46dc",
+    "skills/docusaurus-repo/references/deployment-versioning-i18n.md": "ddb0b88532efdfe5087952d02f1140a924f57c45f97f481f2cda1ee975f396dd",
+    "skills/docusaurus-repo/references/customization-and-ux.md": "c06dda188a4a4c29cb7776d133749d3336f1493253a578d8f2aafefaa3d8a5da",
+    "skills/docusaurus-repo/assets/project-files/.prettierignore": "0e2d69697fed9001df076dc0e14de9ef3ed045a8b945961564b8e0d98a54fc90",
+    "skills/docusaurus-repo/assets/project-files/.prettierrc.json": "8b92ed4e7a6cd9ddcfa606663ab1cf6328da668557adc02510f776ea28991f1c",
+    "skills/docusaurus-repo/assets/project-files/AGENTS.md": "ee1315fcb0d75ee320b61d0db07d622e6ae2bf0f12745f1f3e8a22990404a09e",
+    "skills/docusaurus-repo/assets/project-files/.markdownlint-cli2.jsonc": "38aee27be4da3ab62eeda149f411eebda245a11b1297a11b9df5f596d56e85e1",
+    "skills/docusaurus-repo/assets/project-files/.github/workflows/docs-quality.yml": "add3089d34f217f3ffc8b4b2f5d2d068b7d8f7e43b46a4228700225b04de09b9",
+    "skills/documentation/references/diataxis-guide.md": "2fd3a9fcbedd9fde5b4b4b06bd003b65d1b812b124299f1469a6420ed4e49d87",
+    "skills/typescript-engineer/agents/openai.yaml": "372a72c8d2943c55ba133bbda5e0ed8f46cdfd8f8d4940418beefcbaf62484ab",
+    "skills/typescript-engineer/references/monorepo.md": "a725bf2737a1c0716b2c8f9f2a6d6d79cc0e14a401a06b7de5ed9744166fb5e4",
+    "skills/typescript-engineer/references/generics.md": "7201b89492c473093a6818db8bcf0b26e445d2f0689eb84916ff185503c3c4c4",
+    "skills/typescript-engineer/references/practices.md": "51f765dcd0f2e1732e00d83504a4a832f177437f96aeed0d992a634e949c827a",
+    "skills/typescript-engineer/references/type-debugging.md": "2fb09da3deb9e434b50336644da63a6539503d30f05a0304fa7c9a78d7690304",
+    "skills/typescript-engineer/references/toolchain.md": "313bb758492c473f47b7d1670fd01ecb605512296ab98edcf36fe59914794771",
+    "skills/typescript-engineer/references/overloads.md": "39494766556c8c7aa46c2aa16aa20718aedcaf7a4ec8cf0a28443324d3c5936b",
+    "skills/typescript-engineer/references/patterns.md": "8636aec6c320d894a10ada0db3f452b7d31e9dc608d00a6e0a57e1b5c3aa1f57",
+    "skills/typescript-engineer/references/type-system.md": "451bec02f0fe0cad7a3967b6d4b8388e98600c4655be7fee51b971f1db0f40e9",
+    "skills/typescript-engineer/references/runtime-derived-types.md": "1e1a327d0a2e59792ec25aa5c69bb2cd313273ef2a9d7730014700303e9e4aa0",
+    "app/node_modules/@docusaurus/core/package.json": "061185cbe5ec392af69eb86ca6e17a9b1a7f5dfa969da8e7309499ab8951031f",
+    "app/node_modules/react/package.json": "d4e68a5c96babb20cad1daafea8b78822eae45b341552cf5418d06a5304fa64c",
+    "app/node_modules/react-dom/package.json": "d2f29e31bd48b833e48cd7bbf41f192e8ee4ff8da249fdbe10d4ac4114b8b12e",
+    "app/node_modules/@cmfcmf/docusaurus-search-local/package.json": "591659b44efef34b7caf839ce3bd2c23838564645baa16c9b80e9eeb7c1ed88d"
+  },
+  "trial_file_count": 125,
+  "evidence_files": {
+    "protocol/D-legacy.json": "1c57da32479b451e607490ffecf0c3b1d899a3a544ac9809c5123be389f342e6",
+    "case-proposals-next-electron-docusaurus.md": "e132745c39b0020a7e5730e92a7181bf5fa699f275e5f916edfb80bb2c536f8b",
+    "D-legacy-webpack-preparation.json": "a4f3899406fa65b7ce028f0cb9e0a947c6d1467cf21fc97445f6b2573ce07c8e",
+    "raw-agent-traces/baseline_docusaurus_legacy_executor.jsonl": "6ed79daaf90336289d650ab38117eb643c1ee1833e7caefc43db582d38af35af",
+    "raw-agent-traces/baseline_docusaurus_legacy_executor-task-messages.jsonl": "1dac886db53aae6c6885c25a03ef1711bce423d5a22f0b492fdd4f9a2b7495cc"
+  },
+  "trace_manifest_entry": {
+    "agent": "/root/baseline_docusaurus_legacy_executor",
+    "source_session_id": "01a0868d-debf-7b72-a594-e053140cbfef",
+    "journal_sha256": "9ff6d729228903bf8425c97169b70d193a4aec5c823192bb4f4c841da77a9bff",
+    "public_trace": "baseline_docusaurus_legacy_executor.jsonl",
+    "public_trace_sha256": "6ed79daaf90336289d650ab38117eb643c1ee1833e7caefc43db582d38af35af",
+    "tool_events": 82,
+    "public_task_messages": "baseline_docusaurus_legacy_executor-task-messages.jsonl",
+    "task_messages_sha256": "1dac886db53aae6c6885c25a03ef1711bce423d5a22f0b492fdd4f9a2b7495cc",
+    "recorded_turn_settings": [
+      {
+        "turn_id": "01a0868d-df15-7643-89c0-c75aef487f02",
+        "model": "gpt-6-astra",
+        "effort": "medium"
+      }
+    ]
+  },
+  "commands": [
+    {
+      "line": 1,
+      "exit": 0
+    },
+    {
+      "line": 2,
+      "exit": 0
+    },
+    {
+      "line": 3,
+      "exit": 127
+    },
+    {
+      "line": 4,
+      "exit": 0
+    },
+    {
+      "line": 5,
+      "exit": 0
+    },
+    {
+      "line": 6,
+      "exit": 0
+    },
+    {
+      "line": 7,
+      "exit": 0
+    },
+    {
+      "line": 8,
+      "exit": 124
+    },
+    {
+      "line": 9,
+      "exit": 0
+    },
+    {
+      "line": 10,
+      "exit": 0
+    },
+    {
+      "line": 11,
+      "exit": 2
+    },
+    {
+      "line": 12,
+      "exit": 0
+    }
+  ],
+  "browser_results": {
+    "results": [
+      {
+        "locale": "en",
+        "version": "current",
+        "query": "command",
+        "result": "/manual/docs/next/reference",
+        "destination": "http://127.0.0.1:18542/manual/docs/next/reference",
+        "reloadStatus": 200,
+        "heading": "Command reference"
+      },
+      {
+        "locale": "en",
+        "version": "1.0",
+        "query": "command",
+        "result": "/manual/docs/reference",
+        "destination": "http://127.0.0.1:18542/manual/docs/reference",
+        "reloadStatus": 200,
+        "heading": "Command reference"
+      },
+      {
+        "locale": "it",
+        "version": "current",
+        "query": "riferimento",
+        "result": "/manual/it/docs/next/reference",
+        "destination": "http://127.0.0.1:18542/manual/it/docs/next/reference",
+        "reloadStatus": 200,
+        "heading": "Riferimento comando"
+      },
+      {
+        "locale": "it",
+        "version": "1.0",
+        "query": "riferimento",
+        "result": "/manual/it/docs/reference",
+        "destination": "http://127.0.0.1:18542/manual/it/docs/reference",
+        "reloadStatus": 200,
+        "heading": "Riferimento comando"
+      }
+    ],
+    "errors": []
+  },
+  "blindness": "Fresh fork recorded; plaintext dispatch and follow-up unavailable; not independently established"
+}

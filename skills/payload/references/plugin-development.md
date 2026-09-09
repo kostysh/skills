@@ -1,6 +1,6 @@
 # Payload Plugin Development
 
-Complete guide to creating Payload plugins with TypeScript patterns, package structure, and best practices from the official Payload plugin template.
+Version-scoped plugin patterns based on the official template. Code blocks are independent integration fragments unless explicitly supplied as a complete fixture; retain host-generated types, imports and app helpers. Preserve every existing config branch, hook and access policy touched by composition.
 
 ## Plugin Architecture
 
@@ -129,39 +129,43 @@ plugin-<name>/
     "dev:generate-types": "cross-env PAYLOAD_CONFIG_PATH=./dev/payload.config.ts payload generate:types",
     "dev:payload": "cross-env PAYLOAD_CONFIG_PATH=./dev/payload.config.ts payload",
     "test": "npm run test:int && npm run test:e2e",
-    "test:int": "vitest",
+    "test:int": "vitest run",
     "test:e2e": "playwright test",
     "lint": "eslint",
     "lint:fix": "eslint ./src --fix",
     "prepublishOnly": "npm run clean && npm run build"
   },
   "dependencies": {
-    "@payloadcms/translations": "^3.0.0",
-    "@payloadcms/ui": "^3.0.0"
+    "@payloadcms/translations": "3.88.0",
+    "@payloadcms/ui": "3.88.0"
   },
   "devDependencies": {
-    "@payloadcms/db-mongodb": "^3.0.0",
-    "@payloadcms/next": "^3.0.0",
-    "@payloadcms/richtext-lexical": "^3.0.0",
+    "@payloadcms/db-mongodb": "3.88.0",
+    "@payloadcms/next": "3.88.0",
+    "@payloadcms/richtext-lexical": "3.88.0",
     "@playwright/test": "^1.40.0",
     "@swc/cli": "^0.1.62",
     "@swc/core": "^1.3.0",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "eslint": "^9.0.0",
-    "next": "^15.4.10",
-    "payload": "^3.0.0",
+    "graphql": "^16.8.1",
+    "next": "15.4.11",
+    "payload": "3.88.0",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
     "rimraf": "^5.0.0",
     "typescript": "^5.0.0",
-    "vitest": "^3.0.0"
+    "vitest": "4.0.18"
   },
   "peerDependencies": {
-    "payload": "^3.0.0"
+    "graphql": "^16.8.1",
+    "payload": "3.88.0"
   }
 }
 ```
+
+This is a 3.88.0 version example, not an instruction to upgrade an existing plugin. Materialize `.swcrc`, tsconfig, declared export files, Next route/layout/import-map setup and test configs from the matching official template before running these scripts. Match versions within the Payload package family; independent tools such as Vitest keep their own compatible releases (the tagged template uses Vitest 4.0.18). Compatible Next/React/GraphQL peers are required; package ranges alone do not establish compatibility. Run the declared build and pack, then install that artifact in an independent consumer and exercise actual imports/UI/routes.
 
 **Key Points:**
 
@@ -242,18 +246,19 @@ export const redirectsPlugin =
 import type { Config, Plugin, CollectionAfterChangeHook } from 'payload'
 
 const resaveChildrenHook: CollectionAfterChangeHook = async ({ doc, req, operation }) => {
-  if (operation === 'update') {
-    // Resave child documents
-    const children = await req.payload.find({
-      collection: 'pages',
-      where: { parent: { equals: doc.id } },
-    })
-
-    for (const child of children.docs) {
+  if (operation !== 'update') return doc
+  // Same request visited set prevents a cycle while still processing descendants.
+  const seen = (req.context.resavedPages ??= new Set()) as Set<string | number>
+  if (seen.has(doc.id)) return doc
+  seen.add(doc.id)
+  const children = await req.payload.find({
+    collection: 'pages', where: { parent: { equals: doc.id } },
+    req, overrideAccess: false, pagination: false, depth: 0,
+  })
+  for (const child of children.docs) {
+    if (!seen.has(child.id)) {
       await req.payload.update({
-        collection: 'pages',
-        id: child.id,
-        data: child,
+        collection: 'pages', id: child.id, data: {}, req, overrideAccess: false,
       })
     }
   }
@@ -278,6 +283,8 @@ export const nestedDocsPlugin =
     }),
   })
 ```
+
+The bounded child-set example re-runs hooks with an empty update. Large sets need stable paginated traversal; never silently process only the default first page. An invariant requiring all children including hidden ones needs explicit policy-owned system authority before bypass, plus the same req.
 
 ### Adding Root-Level Endpoints
 
@@ -428,7 +435,7 @@ export const seoPlugin =
 
 ### Disable Plugin Pattern
 
-Allow users to disable plugin without removing it (important for database schema consistency):
+This plugin chooses to preserve schema while disabled; that is an explicit plugin policy, not a universal Payload default. Disabling must not silently remove existing schema or data:
 
 ```ts
 import type { Config, Plugin } from 'payload'
@@ -530,7 +537,7 @@ export const BeforeDashboardClient = () => {
       }),
     )
       .then((res) => res.json())
-      .then(setData)
+      .then((result) => setData(String(result.message ?? '')))
   }, [config.serverURL, config.routes.api])
 
   return <div>Client Component: {data}</div>
@@ -593,16 +600,18 @@ export const myPlugin =
       // Plugin initialization
       payload.logger.info('Plugin initialized')
 
-      // Example: Seed data
+      // Example: Seed data under explicit plugin initialization authority.
+      // Use single-writer initialization or recover a unique seedKey conflict by rereading.
+      // Define seedKey as unique text in plugin-collection; returned database ID is authoritative.
       const { totalDocs } = await payload.count({
         collection: 'plugin-collection',
-        where: { id: { equals: 'seeded-by-plugin' } },
+        where: { seedKey: { equals: 'seeded-by-plugin' } },
       })
 
       if (totalDocs === 0) {
         await payload.create({
           collection: 'plugin-collection',
-          data: { id: 'seeded-by-plugin' },
+          data: { seedKey: 'seeded-by-plugin' },
         })
       }
     }
@@ -678,17 +687,19 @@ export const CustomFieldComponent: TextFieldClientComponent = ({ field, path }) 
 
 ```ts
 // src/fields/CustomField/index.ts
-import type { Field } from 'payload'
+import type { TextField } from 'payload'
 
-export const CustomField = (overrides?: Partial<Field>): Field => ({
+export const CustomField = (overrides: Partial<TextField> = {}): TextField => ({
   name: 'customField',
   type: 'text',
+  ...overrides,
   admin: {
+    ...overrides.admin,
     components: {
       Field: '/fields/CustomField/Component#CustomFieldComponent',
+      ...overrides.admin?.components,
     },
   },
-  ...overrides,
 })
 ```
 
@@ -756,7 +767,7 @@ import type { Config, Plugin, CollectionConfig, Field, CollectionSlug, GlobalSlu
 
 ### Field Path Imports
 
-Use absolute paths for client components:
+Use import-map component paths relative to the configured baseDir (a leading slash is not a machine filesystem dependency):
 
 ```ts
 admin: {
@@ -772,7 +783,7 @@ Always call existing `onInit` before your initialization. See [onInit Hook](#oni
 
 ## Advanced Patterns
 
-These patterns are extracted from official Payload plugins and represent production-ready techniques for complex plugin development.
+These adapted fragments illustrate mechanisms used by plugins; they are not verbatim official production implementations and require host integration and verification.
 
 ### Advanced Configuration
 
@@ -785,13 +796,13 @@ export const myPlugin =
   (pluginConfig?: PluginConfig) =>
   async (incomingConfig: Config): Promise<Config> => {
     // Can await async operations during initialization
-    const customCollection = await pluginConfig.collectionOverride?.({
+    const customCollection = (await pluginConfig?.collectionOverride?.({
       defaultCollection,
-    })
+    })) ?? defaultCollection
 
     return {
       ...incomingConfig,
-      collections: [...incomingConfig.collections, customCollection],
+      collections: [...(incomingConfig.collections ?? []), customCollection],
     }
   }
 ```
@@ -892,10 +903,11 @@ interface PluginConfig {
 }
 
 // In plugin
-for (const collection of config.collections!) {
+for (const collection of config.collections ?? []) {
   const syncConfig = pluginConfig.sync?.find((s) => s.collection === collection.slug)
   if (!syncConfig) continue
 
+  collection.hooks ??= {}
   collection.hooks.afterChange = [
     ...(collection.hooks?.afterChange || []),
     async ({ doc, operation }) => {
@@ -1046,82 +1058,70 @@ collection.hooks = {
 
 #### Access Control Wrapper Pattern
 
-Wrap existing access control with plugin-specific logic:
+Keep the complete callback arguments and await the original result. Denial must remain denial; a Where may be narrowed only for query-supported operations. An absent custom read policy still has Payload's authenticated default, not public access.
 
 ```ts
-// From plugin-multi-tenant
-export const multiTenantPlugin =
-  (pluginOptions: PluginOptions) =>
-  (config: Config): Config => ({
-    ...config,
-    collections: (config.collections || []).map((collection) => {
-      if (!pluginOptions.collections.includes(collection.slug)) {
-        return collection
-      }
-
-      return {
-        ...collection,
-        access: {
-          ...collection.access,
-          read: ({ req }) => {
-            // Inject tenant filter
-            return {
-              and: [
-                collection.access?.read ? collection.access.read({ req }) : {},
-                { tenant: { equals: req.user?.tenant } },
-              ],
-            }
-          },
-        },
-      }
-    }),
-  })
+import type { Access, Where } from 'payload'
+export const tenantRead = (original?: Access): Access => async (args) => {
+  if (!args.req.user?.tenant) return false
+  const previous = original ? await original(args) : Boolean(args.req.user)
+  if (previous === false) return false
+  const tenant: Where = { tenant: { equals: args.req.user.tenant } }
+  return previous === true ? tenant : { and: [previous, tenant] }
+}
+// collection.access = { ...collection.access, read: tenantRead(collection.access?.read) }
 ```
+
+Create requires a boolean admission and server-owned tenant data; see [access control](access-control.md#multi-tenant-access-control). Do not use this read wrapper for create.
 
 #### BaseFilter Composition
 
-Combine plugin filters with existing baseListFilter:
+`admin.baseFilter` is a callback for Admin list/internal-link filtering, not a security policy. `baseListFilter` is deprecated in 3.88.0; retain its callback behavior only for a matching legacy version.
 
 ```ts
-// From plugin-multi-tenant
-const existingBaseFilter = collection.admin?.baseListFilter
-const tenantFilter = { tenant: { equals: req.user?.tenant } }
-
-collection.admin = {
-  ...collection.admin,
-  baseListFilter: existingBaseFilter ? { and: [existingBaseFilter, tenantFilter] } : tenantFilter,
+import type { CollectionConfig, Where } from 'payload'
+const existingBaseFilter = collection.admin?.baseFilter ?? collection.admin?.baseListFilter
+const baseFilter: NonNullable<NonNullable<CollectionConfig['admin']>['baseFilter']> = async (args) => {
+  const prior = await existingBaseFilter?.(args)
+  const tenant: Where = args.req.user?.tenant
+    ? { tenant: { equals: args.req.user.tenant } }
+    : { id: { in: [] } }
+  return prior ? { and: [prior, tenant] } : tenant
 }
+collection.admin = { ...collection.admin, baseFilter }
 ```
 
 #### Relationship FilterOptions Modification
 
-Add filters to relationship field options:
+`filterOptions` can be static or a callback returning boolean/Where asynchronously. Preserve the full callback args and false/true/Where result. Option filtering alone does not secure the related collection or tenant field.
 
 ```ts
-// From plugin-multi-tenant
 collection.fields = collection.fields.map((field) => {
-  if (field.type === 'relationship') {
-    return {
-      ...field,
-      filterOptions: ({ relationTo }) => {
-        return {
-          and: [field.filterOptions?.(relationTo) || {}, { tenant: { equals: req.user?.tenant } }],
-        }
-      },
-    }
+  if (field.type !== 'relationship') return field
+  const original = field.filterOptions
+  return {
+    ...field,
+    filterOptions: async (args) => {
+      if (!args.user?.tenant) return false
+      const prior = typeof original === 'function' ? await original(args) : (original ?? true)
+      if (prior === false) return false
+      const tenant = { tenant: { equals: args.user.tenant } }
+      return prior === true ? tenant : { and: [prior, tenant] }
+    },
   }
-  return field
 })
 ```
+
+The installed FilterOptions callback exposes `user` and `req`; pass all args unchanged to a wrapped callback. Test static Where, true/false and async callbacks, then real denied HTTP access. For nested fields use the complete traversal in the field-guards reference.
 
 ### Admin UI Customization
 
 #### Metadata Storage Pattern
 
-Use admin.meta for plugin-specific UI state without database fields:
+Use `admin.custom` for serializable plugin-specific Admin state without database fields:
 
 ```ts
-// From plugin-nested-docs
+// Adapted pattern; not verbatim plugin-nested-docs
 export const nestedDocsPlugin =
   (pluginOptions: PluginOptions) =>
   (config: Config): Config => ({
@@ -1130,8 +1130,8 @@ export const nestedDocsPlugin =
       ...collection,
       admin: {
         ...collection.admin,
-        meta: {
-          ...collection.admin?.meta,
+        custom: {
+          ...collection.admin?.custom,
           nestedDocs: {
             breadcrumbsFieldSlug: pluginOptions.breadcrumbsFieldSlug || 'breadcrumbs',
             parentFieldSlug: pluginOptions.parentFieldSlug || 'parent',
@@ -1147,18 +1147,18 @@ export const nestedDocsPlugin =
 Add components based on plugin configuration:
 
 ```ts
-// From plugin-seo
-const beforeFields = collection.admin?.components?.beforeFields || []
-
-if (pluginOptions.uploadsCollection === collection.slug) {
-  beforeFields.push('/path/to/ImagePreview#ImagePreview')
-}
-
+// Adapted pattern; not verbatim plugin-seo
+const beforeDocumentControls = collection.admin?.components?.edit?.beforeDocumentControls ?? []
 collection.admin = {
   ...collection.admin,
   components: {
     ...collection.admin?.components,
-    beforeFields,
+    edit: {
+      ...collection.admin?.components?.edit,
+      beforeDocumentControls: pluginOptions.uploadsCollection === collection.slug
+        ? [...beforeDocumentControls, '/components/ImagePreview#ImagePreview']
+        : beforeDocumentControls,
+    },
   },
 }
 ```
@@ -1168,13 +1168,12 @@ collection.admin = {
 Inject context providers for shared state:
 
 ```ts
-// From plugin-nested-docs
-collection.admin = {
-  ...collection.admin,
+config.admin = {
+  ...config.admin,
   components: {
-    ...collection.admin?.components,
+    ...config.admin?.components,
     providers: [
-      ...(collection.admin?.components?.providers || []),
+      ...(config.admin?.components?.providers ?? []),
       '/components/NestedDocsProvider#NestedDocsProvider',
     ],
   },
@@ -1186,13 +1185,13 @@ collection.admin = {
 Add collection-level action buttons:
 
 ```ts
-// From plugin-import-export
+// Adapted pattern; not verbatim plugin-import-export
 collection.admin = {
   ...collection.admin,
   components: {
     ...collection.admin?.components,
-    actions: [
-      ...(collection.admin?.components?.actions || []),
+    beforeList: [
+      ...(collection.admin?.components?.beforeList || []),
       '/components/ImportButton#ImportButton',
       '/components/ExportButton#ExportButton',
     ],
@@ -1205,7 +1204,7 @@ collection.admin = {
 Modify how items appear in collection lists:
 
 ```ts
-// From plugin-ecommerce
+// Adapted pattern; not verbatim plugin-ecommerce
 collection.admin = {
   ...collection.admin,
   components: {
@@ -1226,23 +1225,25 @@ collection.admin = {
 Add collection-scoped endpoints (accessible at `/api/<collection-slug>/<path>`):
 
 ```ts
-// From plugin-import-export
+// Adapted pattern; not verbatim plugin-import-export
 collection.endpoints = [
   ...(collection.endpoints || []),
   {
     path: '/import',
     method: 'post',
     handler: async (req) => {
-      // Import logic accessible at /api/posts/import
-      return Response.json({ success: true })
+      // App-supplied policy and importer receive the request, not just payload.
+      if (!(await canImport(req))) throw new APIError('Forbidden', 403)
+      const result = await importRecords(req)
+      return Response.json(result)
     },
   },
   {
     path: '/export',
     method: 'get',
     handler: async (req) => {
-      // Export logic accessible at /api/posts/export
-      return Response.json({ data: exportedData })
+      if (!(await canExport(req))) throw new APIError('Forbidden', 403)
+      return Response.json(await exportRecords(req))
     },
   },
 ]
@@ -1255,7 +1256,7 @@ collection.endpoints = [
 Control admin UI organization:
 
 ```ts
-// From plugin-redirects
+// Adapted pattern; not verbatim plugin-redirects
 collection.admin = {
   ...collection.admin,
   group: pluginOptions.group || 'Settings',
@@ -1271,7 +1272,7 @@ collection.admin = {
 Register plugin background tasks:
 
 ```ts
-// From plugin-stripe
+// Adapted pattern; not verbatim plugin-stripe
 export const stripePlugin =
   (pluginOptions: PluginOptions) =>
   (config: Config): Config => ({
@@ -1283,9 +1284,13 @@ export const stripePlugin =
         {
           slug: 'syncStripeProducts',
           handler: async ({ req }) => {
-            const products = await stripe.products.list()
-            // Sync to Payload
-            return { output: { synced: products.data.length } }
+            let synced = 0
+            // App-supplied idempotent syncProduct persists through the authorized req.
+            for await (const product of stripe.products.list({ limit: 100 })) {
+              await syncProduct({ req, product })
+              synced += 1
+            }
+            return { output: { synced } }
           },
         },
       ],
@@ -1432,5 +1437,7 @@ Provides infrastructure (database, storage, email)
 
 ## Resources
 
-- [Plugin Examples](https://github.com/payloadcms/payload/tree/main/packages/) - Official plugins source code, payload-\* prefix
-- [Plugin Template](https://github.com/payloadcms/payload/tree/main/templates/plugin) - Starter template for new plugins
+- [Plugin Examples](https://github.com/payloadcms/payload/tree/v3.88.0/packages/) - Official plugins source code, payload-\* prefix
+- [Plugin Template](https://github.com/payloadcms/payload/tree/v3.88.0/templates/plugin) - Starter template for new plugins
+
+Application snippets with externalService/cache/Stripe/helpers must define their actual contracts; they do not prove external sync. Database rollback does not undo those effects. Endpoint skeletons need validation, operation-specific authorization and a real response before use; a placeholder success or synced count must not be reported as completed work. Preserve nested admin/hooks settings in override functions unless the documented option intentionally replaces that exact branch.

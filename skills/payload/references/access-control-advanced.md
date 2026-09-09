@@ -1,6 +1,6 @@
 # Payload Access Control - Advanced Patterns
 
-Advanced access control patterns including context-aware access, time-based restrictions, factory functions, and production templates.
+Application policy fragments for context, time, subscriptions and factories. Role/org/subscription fields and helpers are supplied by the host, not built-in Payload features. Use the operation/authorization matrix in [access control](access-control.md).
 
 ## Context-Aware Access Patterns
 
@@ -9,7 +9,7 @@ Advanced access control patterns including context-aware access, time-based rest
 Control access based on user locale for internationalized content.
 
 ```ts
-import type { Access } from 'payload'
+import type { Access, CollectionConfig } from 'payload'
 
 export const localeSpecificAccess: Access = ({ req: { user, locale } }) => {
   // Authenticated users can access all locales
@@ -38,7 +38,7 @@ export const Posts: CollectionConfig = {
 Restrict access based on device type or user agent.
 
 ```ts
-import type { Access } from 'payload'
+import type { Access, CollectionConfig } from 'payload'
 
 export const mobileOnlyAccess: Access = ({ req: { headers } }) => {
   const userAgent = headers?.get('user-agent') || ''
@@ -64,47 +64,36 @@ export const MobileContent: CollectionConfig = {
 
 ### IP-Based Access
 
-Restrict access from specific IP addresses (requires middleware/proxy headers).
+Forwarded headers are user-controlled unless the deployment's trusted proxy removes incoming values and sets a canonical client address. Bind that trust boundary before using an IP policy. Exact-address checks do not implement CIDR.
 
 ```ts
 import type { Access } from 'payload'
-
-export const restrictedIpAccess = (allowedIps: string[]): Access => {
-  return ({ req: { headers } }) => {
-    const ip = headers?.get('x-forwarded-for') || headers?.get('x-real-ip')
-    return allowedIps.includes(ip || '')
-  }
-}
-
-// Usage
-const internalIps = ['192.168.1.0/24', '10.0.0.5']
-
-export const InternalDocs: CollectionConfig = {
-  slug: 'internal-docs',
-  access: {
-    read: restrictedIpAccess(internalIps),
-  },
-  fields: [{ name: 'content', type: 'richText' }],
+// Application-provided, trusted-proxy address resolver and parsed range matcher.
+export const restrictedIpAccess = (
+  resolveTrustedIP: (req: Parameters<Access>[0]['req']) => string | undefined,
+  inAllowedRange: (ip: string) => boolean,
+): Access => ({ req }) => {
+  const ip = resolveTrustedIP(req)
+  return Boolean(req.user && ip && inAllowedRange(ip))
 }
 ```
 
-**Note**: Requires your server to pass IP address via headers (common with proxies/load balancers).
-
-**Source**: Synthesized (headers pattern)
+Use an explicitly installed IP parser when CIDR is required and test IPv4/IPv6, malformed input and spoofed forwarded headers. User-Agent/device patterns above are spoofable content hints and cannot authenticate or authorize private data.
 
 ## Time-Based Access Patterns
 
 ### Today's Records Only
 
 ```ts
-import type { Access } from 'payload'
+import type { Access, CollectionConfig } from 'payload'
 
 export const todayOnlyAccess: Access = ({ req: { user } }) => {
   if (!user) return false
 
   const now = new Date()
   const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-  const endOfDay = new Date(startOfDay.getTime() + 24 * 60 * 60 * 1000)
+  const endOfDay = new Date(startOfDay)
+  endOfDay.setDate(endOfDay.getDate() + 1) // Calendar day; choose the project timezone explicitly
 
   return {
     createdAt: {
@@ -120,7 +109,7 @@ export const todayOnlyAccess: Access = ({ req: { user } }) => {
 ### Recent Records (Last N Days)
 
 ```ts
-import type { Access } from 'payload'
+import type { Access, CollectionConfig } from 'payload'
 
 export const recentRecordsAccess = (days: number): Access => {
   return ({ req: { user } }) => {
@@ -151,7 +140,7 @@ export const Logs: CollectionConfig = {
 ### Scheduled Content (Publish Date Range)
 
 ```ts
-import type { Access } from 'payload'
+import type { Access, CollectionConfig } from 'payload'
 
 export const scheduledContentAccess: Access = ({ req: { user } }) => {
   // Editors see all content
@@ -180,14 +169,17 @@ export const scheduledContentAccess: Access = ({ req: { user } }) => {
 ### Active Subscription Required
 
 ```ts
-import type { Access } from 'payload'
+import type { Access, CollectionConfig } from 'payload'
 
-export const activeSubscriptionAccess: Access = async ({ req: { user } }) => {
+export const activeSubscriptionAccess: Access = async ({ req }) => {
+  const { user } = req
   if (!user) return false
   if (user.roles?.includes('admin')) return true
 
   try {
     const subscription = await req.payload.findByID({
+      req,
+      overrideAccess: true, // Policy-owned entitlement lookup, not returned to caller
       collection: 'subscriptions',
       id: user.subscriptionId,
     })
@@ -211,17 +203,20 @@ export const PremiumContent: CollectionConfig = {
 ### Subscription Tier-Based Access
 
 ```ts
-import type { Access } from 'payload'
+import type { Access, CollectionConfig } from 'payload'
 
 export const tierBasedAccess = (requiredTier: string): Access => {
   const tierHierarchy = ['free', 'basic', 'pro', 'enterprise']
 
-  return async ({ req: { user } }) => {
+  return async ({ req }) => {
+    const { user } = req
     if (!user) return false
     if (user.roles?.includes('admin')) return true
 
     try {
       const subscription = await req.payload.findByID({
+        req,
+        overrideAccess: true, // Policy-owned entitlement lookup, not returned to caller
         collection: 'subscriptions',
         id: user.subscriptionId,
       })
@@ -231,7 +226,7 @@ export const tierBasedAccess = (requiredTier: string): Access => {
       const userTierIndex = tierHierarchy.indexOf(subscription.tier)
       const requiredTierIndex = tierHierarchy.indexOf(requiredTier)
 
-      return userTierIndex >= requiredTierIndex
+      return requiredTierIndex >= 0 && userTierIndex >= requiredTierIndex
     } catch {
       return false
     }
@@ -259,7 +254,7 @@ Reusable functions that generate access control configurations.
 Generate access control for specific roles.
 
 ```ts
-import type { Access } from 'payload'
+import type { Access, CollectionConfig } from 'payload'
 
 export function createRoleBasedAccess(roles: string[]): Access {
   return ({ req: { user } }) => {
@@ -290,7 +285,7 @@ export const Posts: CollectionConfig = {
 Generate organization-scoped access with optional admin bypass.
 
 ```ts
-import type { Access } from 'payload'
+import type { Access, CollectionConfig } from 'payload'
 
 export function createOrgScopedAccess(allowAdmin = true): Access {
   return ({ req: { user } }) => {
@@ -328,7 +323,7 @@ export const Projects: CollectionConfig = {
 Generate team-scoped access with configurable field name.
 
 ```ts
-import type { Access } from 'payload'
+import type { Access, CollectionConfig } from 'payload'
 
 export function createTeamBasedAccess(teamField = 'teamId'): Access {
   return ({ req: { user } }) => {
@@ -364,7 +359,7 @@ export const Tasks: CollectionConfig = {
 Generate access limited to records within specified days.
 
 ```ts
-import type { Access } from 'payload'
+import type { Access, CollectionConfig } from 'payload'
 
 export function createTimeLimitedAccess(daysAccess: number): Access {
   return ({ req: { user } }) => {
@@ -496,7 +491,8 @@ export const SelfServiceCollection: CollectionConfig = {
       hasMany: true,
       options: ['admin', 'editor', 'user'],
       access: {
-        // Only admins can read/update roles
+        // Only admins can assign/read/update roles
+        create: ({ req: { user } }) => Boolean(user?.roles?.includes('admin')),
         read: ({ req: { user } }) => user?.roles?.includes('admin') || false,
         update: ({ req: { user } }) => user?.roles?.includes('admin') || false,
       },
@@ -541,10 +537,11 @@ export const checkArgsAccess: Access = (args) => {
 
 ```ts
 export const timedAsyncAccess: Access = async ({ req }) => {
+  if (!req.user) return false
   const start = Date.now()
 
   const result = await fetch('https://auth-service.example.com/validate', {
-    headers: { userId: req.user?.id },
+    headers: { userId: String(req.user.id) },
   })
 
   console.log(`Access check took ${Date.now() - start}ms`)
@@ -573,45 +570,50 @@ console.log('Public access result:', testAccess.docs.length)
 ### Async Operations Impact
 
 ```ts
-// WRONG Slow: Multiple sequential async calls
-export const slowAccess: Access = async ({ req: { user } }) => {
-  const org = await req.payload.findByID({ collection: 'orgs', id: user.orgId })
-  const team = await req.payload.findByID({ collection: 'teams', id: user.teamId })
-  const subscription = await req.payload.findByID({ collection: 'subs', id: user.subId })
+// Sequential baseline: preserve all three accepted policy predicates.
+export const slowAccess: Access = async ({ req }) => {
+  const { user } = req
+  if (!user) return false
+  const org = await req.payload.findByID({ collection: 'orgs', id: user.orgId, req, overrideAccess: true })
+  const team = await req.payload.findByID({ collection: 'teams', id: user.teamId, req, overrideAccess: true })
+  const subscription = await req.payload.findByID({ collection: 'subs', id: user.subId, req, overrideAccess: true })
 
   return org.active && team.active && subscription.active
 }
 
-// OK Fast: Use query constraints or cache in context
-export const fastAccess: Access = ({ req: { user, context } }) => {
-  // Cache expensive lookups
-  if (!context.orgStatus) {
-    context.orgStatus = checkOrgStatus(user.orgId)
-  }
+// Concurrent reads of independent policy records; the accepted decision is unchanged.
+export const fastAccess: Access = async ({ req }) => {
+  const { user } = req
+  if (!user) return false
+  const [org, team, subscription] = await Promise.all([
+    req.payload.findByID({ collection: 'orgs', id: user.orgId, req, overrideAccess: true }),
+    req.payload.findByID({ collection: 'teams', id: user.teamId, req, overrideAccess: true }),
+    req.payload.findByID({ collection: 'subs', id: user.subId, req, overrideAccess: true }),
+  ])
 
-  return context.orgStatus
+  return org.active && team.active && subscription.active
 }
 ```
 
+Compare every allow/deny combination before and after optimization, including unauthenticated callers and lookup failure. A rejected lookup must not become an allow. These internal policy reads intentionally bypass collection access to avoid recursion; their records are not returned to the caller. Use concurrency only when the lookups are independent and compatible with the request's transaction/consistency contract.
+
 ### Query Constraint Optimization
 
-```ts
-// WRONG Avoid: Non-indexed fields in constraints
-export const slowQuery: Access = () => ({
-  'metadata.internalCode': { equals: 'ABC123' }, // Slow if not indexed
-})
+Keep the accepted filter unchanged. If this field needs an index, add an appropriate index through the authorized schema/migration path and inspect the actual query plan; substituting another indexed field changes authorization.
 
-// OK Better: Use indexed fields
-export const fastQuery: Access = () => ({
-  status: { equals: 'active' }, // Indexed field
-  organizationId: { in: ['org1', 'org2'] }, // Indexed field
+```ts
+export const accessByCode: Access = () => ({
+  'metadata.internalCode': { equals: 'ABC123' },
 })
 ```
 
+Compare the full allowed/denied record sets before and after the index change. Do not replace this predicate with status, role or organization membership merely because those fields have indexes.
+
 ### Field Access on Large Arrays
 
+The same authorized policy must decide access for every item:
+
 ```ts
-// WRONG Slow: Complex access on array fields
 const arrayField: ArrayField = {
   name: 'items',
   type: 'array',
@@ -620,31 +622,8 @@ const arrayField: ArrayField = {
       name: 'secretData',
       type: 'text',
       access: {
-        read: async ({ req }) => {
-          // Async call runs for EVERY array item
-          const result = await expensiveCheck()
-          return result
-        },
-      },
-    },
-  ],
-}
-
-// OK Fast: Simple checks or cache result
-const optimizedArrayField: ArrayField = {
-  name: 'items',
-  type: 'array',
-  fields: [
-    {
-      name: 'secretData',
-      type: 'text',
-      access: {
-        read: ({ req: { user }, context }) => {
-          // Cache once, reuse for all items
-          if (context.canReadSecret === undefined) {
-            context.canReadSecret = user?.roles?.includes('admin')
-          }
-          return context.canReadSecret
+        read: async () => {
+          return await expensiveCheck()
         },
       },
     },
@@ -652,13 +631,16 @@ const optimizedArrayField: ArrayField = {
 }
 ```
 
+Here `expensiveCheck` represents the application's existing boolean policy, including its established inputs; do not replace it with an unrelated role check. Coalesce or cache calls only when the policy is independent of the item and its relevant inputs remain unchanged within that cache scope. Include principal, operation, document/item and other policy inputs where relevant; never reuse another caller's decision. Verify both grants and denials across items and principals, plus errors. A missing policy contract leaves the caching decision open, not permission to broaden access.
+
 ### Avoid N+1 Queries
 
 ```ts
 // WRONG N+1 Problem: Query per access check
 export const n1Access: Access = async ({ req, id }) => {
-  // Runs for EACH document in list
-  const doc = await req.payload.findByID({ collection: 'docs', id })
+  // List access has no document id and runs once for the query, not once per result
+  if (id == null) return false
+  const doc = await req.payload.findByID({ collection: 'docs', id, req, overrideAccess: true })
   return doc.isPublic
 }
 
@@ -702,3 +684,5 @@ Comprehensive security and implementation guidelines:
 18. **Principle of Least Privilege**: Grant minimum access required for functionality
 
 **Sources**: `docs/access-control/*.mdx`, synthesized best practices
+
+Diagnostic callbacks returning true are temporary test probes, never replacement production policies. Cache only server-computed results within the same request and identity; distinguish absent entries from false, and include policy/tenant/locale keys if a request checks multiple contexts. Remote validation helpers need authenticated transport and fail-closed behavior.

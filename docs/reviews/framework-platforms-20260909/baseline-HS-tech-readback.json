@@ -1,0 +1,508 @@
+{
+  "checkedAt": "2026-09-09T12:35:02.149002+00:00",
+  "protocolSha256": "e3089c8729739dea54da05c8999e11fab21f9df9eeb837410d2258ea1e5932ee",
+  "frozenInputs": [
+    {
+      "path": "task.txt",
+      "matches": true
+    },
+    {
+      "path": "inputs.json",
+      "matches": true
+    },
+    {
+      "path": "app/package.json",
+      "matches": true
+    },
+    {
+      "path": "app/tsconfig.json",
+      "matches": true
+    },
+    {
+      "path": "app/package-lock.json",
+      "matches": true
+    },
+    {
+      "path": "app/src/app.ts",
+      "matches": true
+    },
+    {
+      "path": "app/src/server.ts",
+      "matches": true
+    },
+    {
+      "path": "app/test/health.test.ts",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/SKILL.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/SKILL.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-engineer/SKILL.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-test-engineer/SKILL.md",
+      "matches": true
+    },
+    {
+      "path": "skills/node-engineer/SKILL.md",
+      "matches": true
+    },
+    {
+      "path": "skills/spec-engineer/SKILL.md",
+      "matches": true
+    },
+    {
+      "path": "skills/spec-engineer/references/example-spec.md",
+      "matches": true
+    },
+    {
+      "path": "skills/spec-engineer/references/anti-patterns.md",
+      "matches": true
+    },
+    {
+      "path": "skills/spec-engineer/references/spec-patterns.md",
+      "matches": true
+    },
+    {
+      "path": "skills/spec-engineer/references/discovery-techniques.md",
+      "matches": true
+    },
+    {
+      "path": "skills/spec-engineer/references/high-risk-backend-contract.md",
+      "matches": true
+    },
+    {
+      "path": "skills/spec-engineer/references/methodology.md",
+      "matches": true
+    },
+    {
+      "path": "skills/spec-engineer/agents/openai.yaml",
+      "matches": true
+    },
+    {
+      "path": "skills/node-engineer/references/runtime-typescript.md",
+      "matches": true
+    },
+    {
+      "path": "skills/node-engineer/references/streams-caching.md",
+      "matches": true
+    },
+    {
+      "path": "skills/node-engineer/references/operations.md",
+      "matches": true
+    },
+    {
+      "path": "skills/node-engineer/references/debugging-profiling.md",
+      "matches": true
+    },
+    {
+      "path": "skills/node-engineer/agents/openai.yaml",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-test-engineer/references/testing.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-test-engineer/references/react-vitest.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-test-engineer/references/testing-anti-patterns.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-test-engineer/references/tdd.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-test-engineer/agents/openai.yaml",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-engineer/references/runtime-derived-types.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-engineer/references/type-system.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-engineer/references/patterns.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-engineer/references/overloads.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-engineer/references/toolchain.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-engineer/references/type-debugging.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-engineer/references/practices.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-engineer/references/generics.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-engineer/references/monorepo.md",
+      "matches": true
+    },
+    {
+      "path": "skills/typescript-engineer/agents/openai.yaml",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/operations-observability.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/migrations-cli.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/security-privileges.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/troubleshooting.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/data-handling.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/operations-reliability.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/vector.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/storage.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/realtime.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/auth.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/rls.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/client-setup.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/database.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/high-risk-backend-contract.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/edge-functions.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/architecture.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/operations-release.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/webhooks.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/references/db-functions.md",
+      "matches": true
+    },
+    {
+      "path": "skills/supabase-engineer/agents/openai.yaml",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/framework-currency.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/errors-logs.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/wrangler.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/observability.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/auth.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/high-risk-backend-contract.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/routers.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/caching.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/architecture.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/perf-security.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/rate-limiting.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/validation-openapi.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/workers-platform.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/typing.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/supabase.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/pipelines.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/contracts-types.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/references/security.md",
+      "matches": true
+    },
+    {
+      "path": "skills/hono-engineer/agents/openai.yaml",
+      "matches": true
+    }
+  ],
+  "files": [
+    {
+      "path": "commands.jsonl",
+      "sha256": "507ba2205cdc8a1988b2e725103774e87e13825bbec928f0dafaaaa22a799a04",
+      "bytes": 116054,
+      "mtimeUTC": "2026-09-09T12:30:48.499348+00:00"
+    },
+    {
+      "path": "infrastructure-recheck.jsonl",
+      "sha256": "49177eb65ea46ea0c2ef4bdac1c1786fc6b8bf016d4b40f914cc6e5d916017d2",
+      "bytes": 667,
+      "mtimeUTC": "2026-09-09T12:29:48.147345+00:00"
+    },
+    {
+      "path": "result.md",
+      "sha256": "23ff4d9ffddeee44184f3219d0cec5966b75e036fe7cb3019c94875cb71c7e75",
+      "bytes": 10154,
+      "mtimeUTC": "2026-09-09T12:30:48.495348+00:00"
+    },
+    {
+      "path": "inputs.json",
+      "sha256": "661b0f425b54cd52abc71df74bf3cb54e290eb13773ec0cac75d02e349ba6857",
+      "bytes": 1009,
+      "mtimeUTC": "2026-09-09T12:21:58.423706+00:00"
+    },
+    {
+      "path": "task.txt",
+      "sha256": "6fac88e91aaf76666895dd1df290290bc40c39abcd7f6666022cc3ff621198ed",
+      "bytes": 1296,
+      "mtimeUTC": "2026-09-09T12:21:58.423732+00:00"
+    },
+    {
+      "path": "app/src/read-rows.ts",
+      "sha256": "7b353478f146a4118607151c80549796bc489dd5a1663f4a40c064c45bd23129",
+      "bytes": 2242,
+      "mtimeUTC": "2026-09-09T12:27:24.737305+00:00"
+    },
+    {
+      "path": "app/test/transport.test.ts",
+      "sha256": "7c5c01f2d1c4c51f31f41262caf18cacadaad5b11c15cb22200df2415c43ef63",
+      "bytes": 5774,
+      "mtimeUTC": "2026-09-09T12:30:20.775059+00:00"
+    },
+    {
+      "path": "evidence/observations.json",
+      "sha256": "797f56fc7a72e5131953101ef4a8e061d10d3607a6836f874aeebb07d5ba26b0",
+      "bytes": 4451,
+      "mtimeUTC": "2026-09-09T12:30:31.382128+00:00"
+    },
+    {
+      "path": "app/package.json",
+      "sha256": "b98bb0859df071165007c3e41548f96a0fb36e2ff873db697aa6dacb552fd29c",
+      "bytes": 542,
+      "mtimeUTC": "2026-09-09T11:53:32.477555+00:00"
+    },
+    {
+      "path": "app/package-lock.json",
+      "sha256": "012f7726f92a4f8a58d456e44ad2673d5bd7e45ac11e840d5a63592347c4ece4",
+      "bytes": 7085,
+      "mtimeUTC": "2026-09-09T11:54:49.998863+00:00"
+    }
+  ],
+  "dependencyLaunchers": {
+    "tsc": {
+      "isSymlink": true,
+      "target": "../typescript/bin/tsc"
+    },
+    "tsserver": {
+      "isSymlink": true,
+      "target": "../typescript/bin/tsserver"
+    }
+  },
+  "commandLimits": "python - stdin programs not captured; final files and stdout observed; no full read/write provenance or model introspection claimed",
+  "recordedInitialInputReadExact": true,
+  "recordedSourceReads": [
+    {
+      "record": 1,
+      "command": [
+        "cat",
+        "task.txt",
+        "inputs.json",
+        "skills/hono-engineer/SKILL.md",
+        "skills/supabase-engineer/SKILL.md"
+      ]
+    },
+    {
+      "record": 2,
+      "command": [
+        "sh",
+        "-c",
+        "cat skills/hono-engineer/SKILL.md | tail -90; cat skills/hono-engineer/references/framework-currency.md skills/supabase-engineer/references/operations-reliability.md skills/supabase-engineer/references/client-setup.md skills/supabase-engineer/references/database.md; rg --files app -g \"!node_modules\""
+      ]
+    },
+    {
+      "record": 3,
+      "command": [
+        "sh",
+        "-c",
+        "cat app/package.json app/src/app.ts app/src/server.ts app/test/health.test.ts app/tsconfig.json skills/hono-engineer/references/auth.md skills/hono-engineer/references/high-risk-backend-contract.md skills/supabase-engineer/references/high-risk-backend-contract.md; node --version; cat app/node_modules/hono/dist/middleware/bearer-auth/index.js; rg -n \"retry|Retry|abortSignal\" app/node_modules/@supabase/postgrest-js/src/PostgrestBuilder.ts app/node_modules/@supabase/postgrest-js/src/PostgrestTransformBuilder.ts app/node_modules/@supabase/supabase-js/src/lib/types.ts"
+      ]
+    },
+    {
+      "record": 4,
+      "command": [
+        "sh",
+        "-c",
+        "cat app/node_modules/@supabase/postgrest-js/src/fetchWithRetry.ts; sed -n \"185,212p;254,294p;380,460p\" app/node_modules/@supabase/postgrest-js/src/PostgrestBuilder.ts; sed -n \"125,151p\" app/node_modules/@supabase/supabase-js/src/lib/types.ts; cat app/node_modules/@supabase/postgrest-js/package.json | head -12"
+      ]
+    },
+    {
+      "record": 13,
+      "command": [
+        "cat",
+        "evidence/observations.json",
+        "app/src/read-rows.ts"
+      ]
+    }
+  ],
+  "recordedCommands": 18,
+  "opaqueStdinCommands": [
+    5,
+    6,
+    9,
+    11,
+    14,
+    15,
+    18
+  ],
+  "finalChecks": [
+    {
+      "record": 16,
+      "command": [
+        "npm",
+        "run",
+        "typecheck"
+      ],
+      "exit": 0
+    },
+    {
+      "record": 17,
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exit": 0
+    }
+  ],
+  "publicTraceAddendum": {
+    "checkedAt": "2026-09-09T12:46:36.468279+00:00",
+    "evidence": "baseline-hono-supabase-public-trace-delta.json",
+    "trace": {
+      "file": "raw-agent-traces/baseline_hs_tech_executor.jsonl",
+      "sha256": "af2d4be838c5326a27f3a0df28ea16c492565daf89616bcf9dc341ae2414d584",
+      "toolEvents": 38,
+      "recordedTurnSettings": [
+        {
+          "turn_id": "01a0861e-d262-7211-9178-4280ead0c466",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        },
+        {
+          "turn_id": "01a08625-8ebe-7792-a4d6-c3f716f98140",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        }
+      ]
+    },
+    "verdict": "bounded PASS Hono Bearer and SDK task",
+    "initialRootOutputTruncated": true,
+    "sevenStdinBodiesRecovered": true,
+    "initialRuntimeFailureRCA": "unresolved; finally assertion masks original exception; diagnostic run passed before Connection close edit",
+    "reconstructedFiles": {
+      "app/src/read-rows.ts": {
+        "sha256": "7b353478f146a4118607151c80549796bc489dd5a1663f4a40c064c45bd23129",
+        "publicInputsReconstructExactBytes": true
+      },
+      "app/test/transport.test.ts": {
+        "sha256": "7c5c01f2d1c4c51f31f41262caf18cacadaad5b11c15cb22200df2415c43ef63",
+        "publicInputsReconstructExactBytes": true
+      }
+    }
+  }
+}

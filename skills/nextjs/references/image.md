@@ -33,6 +33,8 @@ import heroImage from './hero.png'
 
 ## Remote Images Configuration
 
+Constrain protocol, host, port, pathname and search in `remotePatterns`; omitted fields can broaden access. The optimizer does not forward authentication headers. Next 16 defaults include qualities [75], maximumRedirects 3, local IP access off, and minimumCacheTTL 4 hours; verify installed defaults before changing a protected image path.
+
 Remote domains must be configured in `next.config.js`:
 
 ```js
@@ -115,13 +117,13 @@ import heroImage from './hero.png'
 />
 ```
 
-## Priority Loading
+## LCP Loading
 
-Use `priority` for above-the-fold images (LCP):
+Next 16 deprecates `priority` in favor of `preload`; retain `priority` only for a supported older installed branch such as Next 15. Preload only a known critical LCP image; for many cases `loading="eager"` or `fetchPriority="high"` is sufficient. Do not combine preload with loading/fetchPriority.
 
 ```tsx
 // Hero image - loads immediately
-<Image src="/hero.png" alt="Hero" fill priority />
+<Image src="/hero.png" alt="Hero" fill sizes="100vw" preload />
 
 // Below-fold images - lazy loaded by default (no priority needed)
 <Image src="/card.png" alt="Card" width={400} height={300} />
@@ -130,16 +132,18 @@ Use `priority` for above-the-fold images (LCP):
 ## Common Mistakes
 
 ```tsx
-// Bad: Missing sizes with fill - downloads largest image
+// Bad: Missing sizes with fill - browser assumes 100vw and may overfetch
 <Image src="/hero.png" alt="Hero" fill />
 
 // Good: Add sizes for proper responsive behavior
 <Image src="/hero.png" alt="Hero" fill sizes="100vw" />
 
-// Bad: Using width/height for aspect ratio only
-<Image src="/hero.png" alt="Hero" width={16} height={9} />
+// Intrinsic dimensions reserve the aspect ratio; CSS controls rendered size.
+// Supply the image's actual intrinsic dimensions, not invented display pixels.
+<Image src="/hero.png" alt="Hero" width={1600} height={900}
+  sizes="100vw" style={{ width: '100%', height: 'auto' }} />
 
-// Good: Use actual display dimensions or fill with sizes
+// Or use fill inside a positioned parent with an accepted size/aspect ratio.
 <Image src="/hero.png" alt="Hero" fill sizes="100vw" style={{ objectFit: 'cover' }} />
 
 // Bad: Remote image without config

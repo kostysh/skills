@@ -1,0 +1,34 @@
+
+
+The `Gutter` component applies the standard horizontal spacing used by Payload views. Use it to align custom view content with the surrounding Admin Panel.
+
+## Import
+
+```tsx
+import { Gutter } from '@payloadcms/ui'
+```
+
+## Basic usage
+
+<ComponentPreview component="Gutter" example="basic" />
+
+Left and right padding are enabled by default. Negative gutters let a child extend through spacing already applied by a parent layout.
+
+## Common props
+
+These are the props most commonly used with this component. See its exported types in `@payloadcms/ui` for the complete list.
+
+| Prop            | Type        | Default | Description                           |
+| --------------- | ----------- | ------- | ------------------------------------- |
+| `children` \*   | `ReactNode` | —       | Content positioned within the gutter. |
+| `left`          | `boolean`   | `true`  | Applies the standard left padding.    |
+| `right`         | `boolean`   | `true`  | Applies the standard right padding.   |
+| `negativeLeft`  | `boolean`   | `false` | Applies a negative left margin.       |
+| `negativeRight` | `boolean`   | `false` | Applies a negative right margin.      |
+| `className`     | `string`    | —       | Adds a custom class to the wrapper.   |
+
+_\* An asterisk denotes that a prop is required._
+
+
+# Hamburger
+

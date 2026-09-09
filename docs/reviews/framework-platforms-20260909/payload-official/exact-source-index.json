@@ -1,0 +1,168 @@
+[
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/fields/config/types.ts",
+    "file": "v3.88.0--packages--payload--src--fields--config--types.ts",
+    "bytes": 69383
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/fields/config/typeGuards.ts",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/config/types.ts",
+    "file": "v3.88.0--packages--payload--src--config--types.ts",
+    "bytes": 52714
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/collections/config/types.ts",
+    "file": "v3.88.0--packages--payload--src--collections--config--types.ts",
+    "bytes": 27029
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/globals/config/types.ts",
+    "file": "v3.88.0--packages--payload--src--globals--config--types.ts",
+    "bytes": 9370
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/collections/operations/create.ts",
+    "file": "v3.88.0--packages--payload--src--collections--operations--create.ts",
+    "bytes": 13409
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/collections/operations/find.ts",
+    "file": "v3.88.0--packages--payload--src--collections--operations--find.ts",
+    "bytes": 11926
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/collections/operations/count.ts",
+    "file": "v3.88.0--packages--payload--src--collections--operations--count.ts",
+    "bytes": 3340
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/fields/slug/index.ts",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/storage-r2/src/index.ts",
+    "file": "v3.88.0--packages--storage-r2--src--index.ts",
+    "bytes": 4304
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/utilities/addLocalesToRequestFromData.ts",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/utilities/addDataAndFileToRequest.ts",
+    "file": "v3.88.0--packages--payload--src--utilities--addDataAndFileToRequest.ts",
+    "bytes": 4126
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/utilities/formatAdminURL.ts",
+    "file": "v3.88.0--packages--payload--src--utilities--formatAdminURL.ts",
+    "bytes": 1896
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/queues/config/types/workflowTypes.ts",
+    "file": "v3.88.0--packages--payload--src--queues--config--types--workflowTypes.ts",
+    "bytes": 7624
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/templates/plugin/package.json",
+    "file": "v3.88.0--templates--plugin--package.json",
+    "bytes": 3479
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/plugin-multi-tenant/src/index.ts",
+    "file": "v3.88.0--packages--plugin-multi-tenant--src--index.ts",
+    "bytes": 19753
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/uploads/types.ts",
+    "file": "v3.88.0--packages--payload--src--uploads--types.ts",
+    "bytes": 10720
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/docs/migration-guide/overview.mdx",
+    "file": "v3.88.0--docs--migration-guide--overview.mdx",
+    "bytes": 36286
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/auth/executeAccess.ts",
+    "file": "v3.88.0--packages--payload--src--auth--executeAccess.ts",
+    "bytes": 863
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/database/migrations/migrate.ts",
+    "file": "v3.88.0--packages--payload--src--database--migrations--migrate.ts",
+    "bytes": 1920
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/database/migrations/migrateDown.ts",
+    "file": "v3.88.0--packages--payload--src--database--migrations--migrateDown.ts",
+    "bytes": 2135
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/database/migrations/migrateRefresh.ts",
+    "file": "v3.88.0--packages--payload--src--database--migrations--migrateRefresh.ts",
+    "bytes": 3155
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/database/migrations/migrateReset.ts",
+    "file": "v3.88.0--packages--payload--src--database--migrations--migrateReset.ts",
+    "bytes": 2250
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/database/migrations/migrateStatus.ts",
+    "file": "v3.88.0--packages--payload--src--database--migrations--migrateStatus.ts",
+    "bytes": 1133
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/fields/baseFields/slug/countVersions.ts",
+    "file": "v3.88.0--packages--payload--src--fields--baseFields--slug--countVersions.ts",
+    "bytes": 1021
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/fields/baseFields/slug/generateSlug.ts",
+    "file": "v3.88.0--packages--payload--src--fields--baseFields--slug--generateSlug.ts",
+    "bytes": 3523
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/fields/baseFields/slug/index.ts",
+    "file": "v3.88.0--packages--payload--src--fields--baseFields--slug--index.ts",
+    "bytes": 4987
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/utilities/addLocalesToRequest.ts",
+    "file": "v3.88.0--packages--payload--src--utilities--addLocalesToRequest.ts",
+    "bytes": 2349
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/queues/config/types/taskTypes.ts",
+    "file": "v3.88.0--packages--payload--src--queues--config--types--taskTypes.ts",
+    "bytes": 9994
+  },
+  {
+    "path": "packages/payload/src/queues/operations/queue.ts",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/globals/operations/findOne.ts",
+    "file": "v3.88.0--packages--payload--src--globals--operations--findOne.ts",
+    "bytes": 8091
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/globals/operations/update.ts",
+    "file": "v3.88.0--packages--payload--src--globals--operations--update.ts",
+    "bytes": 13938
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/next/src/templates/Default/index.tsx",
+    "file": "v3.88.0--packages--next--src--templates--Default--index.tsx",
+    "bytes": 4241
+  },
+  {
+    "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.88.0/packages/payload/src/versions/baseFields.ts",
+    "file": "v3.88.0--packages--payload--src--versions--baseFields.ts",
+    "bytes": 1075
+  }
+]

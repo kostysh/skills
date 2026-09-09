@@ -1,0 +1,37 @@
+Overview
+OpenNext
+
+
+OpenNext started in 2023 as an open-source initiative to make Next.js truly portable — deployable on any platform, not just Vercel. What began as a serverless adapter for AWS Lambda by the SST (opens in a new tab) community has grown into a multi-platform effort backed by Cloudflare (opens in a new tab), Netlify (opens in a new tab), and a broader community of contributors.
+
+
+Where we are today
+
+
+In collaboration with Vercel, OpenNext helped establish the Deployment Adapters Working Group, alongside Cloudflare, Netlify, Google, AWS Amplify, and others, to design a standard Deployment Adapters API (opens in a new tab) for Next.js. That API is now stable in Next.js 16.2, meaning platforms no longer need to reverse-engineer the build output.
+
+
+New adapters for AWS, Cloudflare, and Netlify are in active development, built on this official API. Read the full story →.
+
+
+As of March 2026, OpenNext members are now part of the Next.js Ecosystem Working Group (opens in a new tab), where they continue to collaborate with the Next.js team and other partners.
+
+
+Adapters
+
+
+
+SST (opens in a new tab) community, maintains the AWS adapter
+
+
+Cloudflare (opens in a new tab) team, maintains the Cloudflare adapter
+
+
+Netlify (opens in a new tab) team, maintains the Netlify adapter
+
+
+
+Get involved
+
+
+If you'd like to join the effort, connect with us on Discord (opens in a new tab).

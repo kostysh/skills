@@ -1,0 +1,32 @@
+[
+  {
+    "file": "cli-current-config-template.toml",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli-go/pkg/config/templates/config.toml",
+    "sha256": "b03e3bcd077c06545803a5ac406c2524f884d6234f997170876951f2b6c6e5a7",
+    "checkedAt": "2026-09-09T13:19:26.275097+00:00"
+  },
+  {
+    "file": "cli-legacy-start.go",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.39.2/internal/start/start.go",
+    "sha256": "a22ff836877b7085a9d974b9000716ad35ef627303701623f440fa523c019306",
+    "checkedAt": "2026-09-09T13:19:26.768618+00:00"
+  },
+  {
+    "file": "cli-legacy-diff-main.go",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.39.2/internal/db/diff/pgadmin.go",
+    "sha256": "8b9af4d5b2d27e195ec76444f6a8355a4d89b4d64cf39005fd04fcf814294924",
+    "checkedAt": "2026-09-09T13:19:26.435727+00:00"
+  },
+  {
+    "file": "docker-api.yaml",
+    "url": "https://raw.githubusercontent.com/moby/moby/v28.5.2/docs/api/v1.51.yaml",
+    "sha256": "2afceffc4138e3f4a030140c14f27d4118cec99024695f53d4884c79f3a10138",
+    "checkedAt": "2026-09-09T13:19:26.956216+00:00"
+  },
+  {
+    "file": "current-shadow-layer.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/shared/legacy-pgdelta-next-shadow.layer.ts",
+    "sha256": "c80921da691b38e0182a80b89b3552fdd324b2a2f13e3835fc5971ed7c281055",
+    "checkedAt": "2026-09-09T13:19:26.271788+00:00"
+  }
+]

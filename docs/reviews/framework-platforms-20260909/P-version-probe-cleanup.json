@@ -1,0 +1,19 @@
+{
+  "at": "2026-09-09T15:44:36.073168+00:00",
+  "containerId": "19905607d51a0c2bd63359543b7966af50d5063f1611a0a7dfcb16a3a6206454",
+  "name": "fp20260909-run-0afa9fbe",
+  "cmd": [
+    "node",
+    "--env-file=.env",
+    "--import",
+    "tsx",
+    "scripts/plugin-check.ts"
+  ],
+  "cwd": "/tmp/framework-platforms-20260909/trials/baseline/P-version/app/current-v3",
+  "nanoCpus": 1250000000,
+  "memory": 6442450944,
+  "observedAfterActorInterrupt": "Up About a minute; exit130 of tool/session was not container cleanup",
+  "coordinatorAction": "docker stop --time 3 exact ID exit0; CLI warned --time deprecated use --timeout",
+  "finalReadback": "docker ps -a --filter id=exactID --format id/name/status exit0 empty",
+  "limits": "Coordinator readback record; actor interrupted command may lack complete recorder entry; not general runner interruption-cleanup PASS"
+}

@@ -1,0 +1,25 @@
+{
+  "name": "@payloadcms/db-postgres",
+  "version": "0.8.10",
+  "engines": null,
+  "peerDependencies": {
+    "payload": "^2.0.0"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": null,
+  "bin": null,
+  "dist": {
+    "shasum": "33a3c422e231a22cb320650f4b33cdaa8caed4f0",
+    "tarball": "https://registry.npmjs.org/@payloadcms/db-postgres/-/db-postgres-0.8.10.tgz",
+    "fileCount": 254,
+    "integrity": "sha512-bJ0Vcbj0WXYONi42pKhPyAzEvQ31nBwnnyHCcVa61rpfoYOxYSQO5CjMaNQk1ADBawh5SQsLfCHHPbwdoibvPQ==",
+    "signatures": [
+      {
+        "sig": "MEYCIQDhUlSyjuNND7/Xu1JM1eN/Rwky1urgt1crlSd1t0PtHwIhANuxxH9yfcDausSM6/RvqLyTK33w6Xa9D482IAZNA0iO",
+        "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+      }
+    ],
+    "unpackedSize": 904003
+  }
+}

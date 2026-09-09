@@ -1,0 +1,1379 @@
+[
+  {
+    "skill": "architecture-engineer",
+    "file": "skills/architecture-engineer/SKILL.md",
+    "sha256": "521aa429418fa99057bfede65ef36a9b625b5e014fe0b34f5980c738a7eed61b",
+    "version": "0.1.9",
+    "contractLocations": [
+      {
+        "line": 8,
+        "text": "  but no runtime; all mandatory architecture guidance lives in this folder."
+      },
+      {
+        "line": 29,
+        "text": "11. Route architecture handoff items to named downstream owners; do not emit implementation tickets."
+      },
+      {
+        "line": 35,
+        "text": "- Choosing system-level patterns such as modular monolith, service-based architecture, microservices, event-driven architecture, CQRS-lite, tenancy model, or deployment topology."
+      },
+      {
+        "line": 56,
+        "text": "Architecture is the decision layer between product input and downstream specifications, delivery planning, domain work, and implementation evidence."
+      },
+      {
+        "line": 58,
+        "text": "The architecture agent owns the shape of the system and the reasoning behind it. It does not normally own sprint or task decomposition."
+      },
+      {
+        "line": 62,
+        "text": "Architecture output is not completed product behavior. It is a frame that lets downstream agents produce and verify behavior without silently reselecting architecture. Treat architecture artifacts, ADRs, handoff items, schemas, queues, wrappers, tests, and docs as substrate unless they are connected to an observable capability later exercised by a user, operator, integration, or runtime."
+      },
+      {
+        "line": 68,
+        "text": "This skill does not produce implementation task backlogs, sprint tickets, estimates, human staffing assignments, full behavior-level implementation specs, or exact file/class/function names unless the architecture itself requires them. `next_stage_owner` routes workflow responsibility to a skill or role; it does not assign a person to an implementation task."
+      },
+      {
+        "line": 74,
+        "text": "The required methodology owns definitions and shapes for ASR, forces, decisions, quality scenarios, spikes, and routed architecture handoff. Handoff items are constraints and evidence obligations, not implementation tasks."
+      },
+      {
+        "line": 80,
+        "text": "Minimum useful input for architecture work is the target capability or change, affected system/component, known constraints, risk level or enough information to classify risk, and source of authority for requirements. If information is incomplete, proceed with explicit assumptions unless the missing information can change a high-risk decision such as auth, tenant isolation, billing, public API, data migration, secrets, deployment topology, or external dependency."
+      },
+      {
+        "line": 89,
+        "text": "| Medium-risk component/API/data/integration change | Architecture delta or pattern decision, plus handoff for downstream work, validation, or revisit obligations |"
+      },
+      {
+        "line": 103,
+        "text": "2. Identify whether the task changes component boundaries, public contracts, persistent data, auth/security, tenant isolation, integration topology, deployment, observability, cost, or operability."
+      },
+      {
+        "line": 120,
+        "text": "2. For greenfield work, inspect PRD or product brief, users, core scenarios, product metrics, non-goals, runtime, platform, team, cost, compliance, and delivery constraints."
+      },
+      {
+        "line": 165,
+        "text": "3. Only for a source-authorized significant decision, compare credible candidates; choose the narrowest supported option and block any broader choice that depends on unresolved topology, ownership, lifecycle, or operations facts."
+      },
+      {
+        "line": 187,
+        "text": "- Validation depth has not created a production boundary or runtime seam only to make evidence easier to obtain."
+      },
+      {
+        "line": 193,
+        "text": "Preserve useful rationale and route constraints downstream without creating implementation tickets."
+      },
+      {
+        "line": 197,
+        "text": "3. Route each handoff to a named owner that can produce its expected output; for spikes, `delivery-planner` produces only the task brief and an executor-capable owner produces evidence."
+      },
+      {
+        "line": 198,
+        "text": "4. Set each handoff to `draft`, `blocked`, or `ready` and list blockers; `ready` means the named owner has sufficient authoritative input to act."
+      },
+      {
+        "line": 205,
+        "text": "- Each ready downstream owner can produce the expected output without reselecting architecture; spike or revisit evidence returns to `architecture-engineer`."
+      },
+      {
+        "line": 222,
+        "text": "## Interop priority"
+      },
+      {
+        "line": 224,
+        "text": "- **source-authorized scope, simplest sufficient architecture, self-expansion prevention, complexity exceptions, and proportional evidence:** implementation-discipline. implementation-discipline supplies the scope and simplicity gate; architecture-engineer owns ASR, patterns, ADRs, and handoff."
+      },
+      {
+        "line": 226,
+        "text": "- **ASR extraction, architecture forces, pattern selection, boundaries, trade-offs, ADRs, design notes, and routed architecture handoff:** architecture-engineer. this skill owns architecture frames and constraints before behavior-level specs are written."
+      },
+      {
+        "line": 229,
+        "text": "- **implementation backlog, sequencing, estimates, and ticket structure:** delivery-planner. architecture-engineer may identify handoff obligations or spec candidates, but delivery-planner owns executable decomposition and sequencing."
+      },
+      {
+        "line": 233,
+        "text": "- **high** — Pattern name chasing selects microservices, CQRS, event sourcing, GraphQL, or edge runtime by popularity rather than ASR."
+      },
+      {
+        "line": 234,
+        "text": "- **high** — Premature distribution splits services without team topology, scaling, reliability, or ownership reason."
+      },
+      {
+        "line": 271,
+        "text": "Each significant ASR or decision that imposes downstream work, validation, or revisit must trace to a named owner, expected output, verification or revisit path, and preserved constraints; omit handoff when no downstream obligation exists."
+      },
+      {
+        "line": 274,
+        "text": "Do not emit implementation tickets from this skill. Use `architecture_handoff_item` for downstream obligations and leave executable decomposition to `delivery-planner`."
+      },
+      {
+        "line": 277,
+        "text": "Use short ID chains for medium/high-risk work: PRD requirement -> ASR -> decision -> architecture handoff item -> next owner/output -> verification or revisit."
+      },
+      {
+        "line": 287,
+        "text": "- public API, identity, tenant isolation, data model, migration, secrets handling, or deployment topology changes;"
+      },
+      {
+        "line": 349,
+        "text": "- Each significant ASR or decision with downstream obligations traces to a routed `architecture_handoff_item`, status, expected output, and verification or revisit path."
+      },
+      {
+        "line": 350,
+        "text": "- Downstream owners can proceed without reselecting architecture; architecture output is not claimed as implemented capability or a task backlog."
+      }
+    ],
+    "claim": "Static direct-owner comparison only; no fresh multi-skill execution from this audit."
+  },
+  {
+    "skill": "security-reviewer",
+    "file": "skills/security-reviewer/SKILL.md",
+    "sha256": "0e0ee8025a1eae969512fcef4a4210d5712bca141620733cc624685744355fa1",
+    "version": "0.1.13",
+    "contractLocations": [
+      {
+        "line": 25,
+        "text": "- Authn, authz, sessions, tokens, secrets, permissions, webhooks, CI, Supabase RLS, app-layer data-access construction, or sensitive input-to-sink flows."
+      },
+      {
+        "line": 44,
+        "text": "- Do not author final Hono middleware designs, Supabase policies, or Cloudflare configuration from this skill alone."
+      },
+      {
+        "line": 45,
+        "text": "- Do not present this skill as penetration testing, SAST/DAST, dependency scanning, exhaustive repository traversal, or standards compliance. Even when a versioned control set is supplied, `spec-conformance-reviewer` owns control fulfillment and compliance status; this skill contributes only exploitability findings and evidence limits."
+      },
+      {
+        "line": 103,
+        "text": "   - Supabase RLS"
+      },
+      {
+        "line": 108,
+        "text": "5. Apply the data-access construction checkpoint when backend code reads/writes a database, uses REST/PostgREST, Supabase clients, RPC calls, service-role clients, query builders, or manually constructs URLs/filters."
+      },
+      {
+        "line": 191,
+        "text": "  - what still needs runtime or infrastructure verification if uncertainty remains"
+      },
+      {
+        "line": 217,
+        "text": "- `references/supabase-rls.md` - RLS, grants, privileged functions, RPC, and service-role review"
+      },
+      {
+        "line": 229,
+        "text": "2. Identify actors, assets, trust boundaries, authoritative requirements or exceptions, available runtime/config evidence, and any prior findings."
+      },
+      {
+        "line": 245,
+        "text": "4. Apply the data-access construction checkpoint when backend code reads or writes a database, constructs REST/PostgREST filters, uses Supabase clients, calls RPC, uses query builders, touches storage keys, or reaches service-role clients."
+      },
+      {
+        "line": 248,
+        "text": "7. Classify confidence and severity; keep unresolved stack or runtime facts in needs verification rather than promoting them to findings."
+      },
+      {
+        "line": 259,
+        "text": "Return a security result whose status, coverage, and downstream ownership cannot be mistaken for broader proof."
+      },
+      {
+        "line": 280,
+        "text": "5. Invalidate the prior result after any material code, configuration, runtime, test, or evidence change."
+      },
+      {
+        "line": 286,
+        "text": "## Interop priority"
+      },
+      {
+        "line": 288,
+        "text": "- **security threat model, exploitability, confidence thresholds, and vulnerability reporting:** security-reviewer. This skill owns security findings and reporting discipline."
+      },
+      {
+        "line": 289,
+        "text": "- **framework/runtime facts and remediation detail:** the relevant domain skill. Domain skills own framework behavior and remediation implementation, while this skill decides whether the issue is exploitable and reportable and later re-audits the result."
+      },
+      {
+        "line": 291,
+        "text": "- **mapping implementation to an explicit security standard or versioned control set:** spec-conformance-reviewer. spec-conformance-reviewer owns requirement coverage and compliance status; security-reviewer owns exploitability and vulnerability classification."
+      },
+      {
+        "line": 292,
+        "text": "- **Git-backed diff scans, repository scans, deep multi-pass scans, and durable scan artifacts when a dedicated orchestrator is available:** security-diff-scan, security-scan, or deep-security-scan. The scan skill owns traversal and canonical scan artifacts; security-reviewer must not run a parallel scan or issue a competing scan verdict."
+      },
+      {
+        "line": 297,
+        "text": "- **high** — Do not use FAIL merely because the target, coverage, runtime facts, or evidence are missing; use INCOMPLETE or BLOCKED according to the status contract."
+      },
+      {
+        "line": 308,
+        "text": "Security review is read-only by default. A separate domain or implementation owner applies remediation only when explicitly authorized, and security-reviewer re-audits the resulting stable snapshot."
+      },
+      {
+        "line": 326,
+        "text": "- [Supabase Rls](references/supabase-rls.md) — Read this when you need RLS, grants, privileged functions, RPC, and service-role review."
+      }
+    ],
+    "claim": "Static direct-owner comparison only; no fresh multi-skill execution from this audit."
+  },
+  {
+    "skill": "spec-engineer",
+    "file": "skills/spec-engineer/SKILL.md",
+    "sha256": "f1b9d2b339dfb9fc88ef965fd55bc71b1b661a3ba58696931ff898724bd74e3f",
+    "version": "0.2.14",
+    "contractLocations": [
+      {
+        "line": 9,
+        "text": "  runtime and keeps all method instructions required to create specifications"
+      },
+      {
+        "line": 23,
+        "text": "3. Distinguish draftable from handoff-ready input: readiness requires sufficient source authority, applicable accepted constraints, and a named downstream consumer."
+      },
+      {
+        "line": 40,
+        "text": "- Assessing or revising whether a specification is honestly ready for a named downstream consumer."
+      },
+      {
+        "line": 87,
+        "text": "7. List source material, authority, approval/readiness, and the named downstream consumer; same-session PRDs, architecture notes, specs, or plans are outputs rather than higher authority for their own expansion."
+      },
+      {
+        "line": 106,
+        "text": "- A triggered spec cannot be handoff-ready while its applicable matrix/readback lacks authority, contract, falsifier/evidence, or downstream owner."
+      },
+      {
+        "line": 116,
+        "text": "5. Decide which unknowns block implementation and which can be recorded as explicit assumptions or gaps."
+      },
+      {
+        "line": 134,
+        "text": "6. Apply the methodology's semantic authority and removal-falsifier gate before accepting each new or changed material `MUST`; locators, downstream artifacts, observed code, tests, and later review are not proof by themselves."
+      },
+      {
+        "line": 160,
+        "text": "6. For either trigger, reject readiness when the applicable matrix/readback is omitted, uses unsupported `not_applicable`, or lacks a negative oracle/evidence owner."
+      },
+      {
+        "line": 171,
+        "text": "- If verification infrastructure would exceed the authorized behavior change, the claim or design was narrowed and any remaining edge is marked unproven rather than stabilized with invented runtime scope."
+      },
+      {
+        "line": 173,
+        "text": "## Interop priority"
+      },
+      {
+        "line": 175,
+        "text": "- **source-authorized scope, simplest sufficient specification, self-expansion prevention, and proportional evidence:** implementation-discipline. implementation-discipline supplies the cross-cutting authoring gate; spec-engineer remains the owner of behavior, edge cases, falsifiers, and verification maps."
+      },
+      {
+        "line": 176,
+        "text": "- **product scope, users, scenarios, success criteria, and product acceptance framing:** prd-engineer. prd-engineer owns product intent and gaps; this skill consumes accepted product basis when producing implementation-ready behavior."
+      },
+      {
+        "line": 177,
+        "text": "- **architecture boundaries, ASRs, pattern decisions, ADRs, quality scenarios, and architecture drift:** architecture-engineer. architecture-engineer owns architecture decisions and handoff; this skill inherits those constraints and routes drift back instead of deciding architecture inside a spec."
+      },
+      {
+        "line": 178,
+        "text": "- **vertical slices, task briefs, sequencing, dependencies, and risk routing:** delivery-planner. delivery-planner owns decomposition and sequencing; this skill may specify a slice or task but does not create the delivery plan."
+      },
+      {
+        "line": 179,
+        "text": "- **checking implementation evidence against an existing spec:** spec-conformance-reviewer. spec-conformance-reviewer owns conformance review after a spec exists; this skill owns authoring or revising the spec."
+      },
+      {
+        "line": 180,
+        "text": "- **independent design-time concept alignment and false-capability risk:** concept-conformance-reviewer. concept-conformance-reviewer owns the independent verdict; this skill owns repairing the specification requirements and acceptance criteria."
+      },
+      {
+        "line": 192,
+        "text": "- **high** — Do not turn missing architecture decisions into spec requirements; route public contracts, data model, security boundary, tenancy, integration topology, deployment, rollback, or selected pattern changes to architecture."
+      },
+      {
+        "line": 223,
+        "text": "Runtime history or audit events must define purpose, bounded result/status, safe payload fields, forbidden data, and consumer usefulness. Events that only say an action happened are incomplete unless their explicit purpose is access accountability."
+      },
+      {
+        "line": 245,
+        "text": "- named downstream consumer;"
+      },
+      {
+        "line": 262,
+        "text": "does not demonstrate implementation progress, runtime behavior, or"
+      }
+    ],
+    "claim": "Static direct-owner comparison only; no fresh multi-skill execution from this audit."
+  },
+  {
+    "skill": "typescript-engineer",
+    "file": "skills/typescript-engineer/SKILL.md",
+    "sha256": "8dccdca0e96b7c9f7caf51baaab9fb909df0bb01345a0ae7fac7c444bb597e86",
+    "version": "0.2.2",
+    "contractLocations": [
+      {
+        "line": 6,
+        "text": "  installed-version evidence; pair with runtime, framework, testing, validation,"
+      },
+      {
+        "line": 7,
+        "text": "  and domain owners."
+      },
+      {
+        "line": 21,
+        "text": "4. Load only the required references whose conditions are triggered by the current problem and keep framework, runtime, testing, validation-library, and domain decisions with their owning skills."
+      },
+      {
+        "line": 22,
+        "text": "5. Define the evidence boundary before changing code: compiler and lint checks prove only the paths they inspect, not runtime or domain behavior."
+      },
+      {
+        "line": 33,
+        "text": "- Node execution mode, built-in type stripping, ESM or CJS runtime behavior, runtime import extensions, or process behavior; use node-engineer."
+      },
+      {
+        "line": 35,
+        "text": "- Package-manager selection, business or domain modeling policy, validation-library runtime semantics, or application architecture without a TypeScript-specific decision."
+      },
+      {
+        "line": 39,
+        "text": "Guide TypeScript language, type-system, compiler, and lint decisions to a sound, observable result. The skill is useful only when the agent can explain the type contract, preserve the authorized runtime behavior, and show what the selected compiler and lint commands actually checked."
+      },
+      {
+        "line": 45,
+        "text": "This documentation does not typecheck a project by itself. Compiler or lint success does not prove runtime, framework, validation, security, or domain behavior. A generated config, lower diagnostic count, empty solution program, type assertion, schema type, test double, or supporting log cannot close a broader capability claim."
+      },
+      {
+        "line": 49,
+        "text": "Derive or obtain the expected behavior, repository instructions, installed TypeScript and lint versions, relevant `tsconfig` chain, package or workspace commands, current diagnostics, and affected public call sites or declaration consumers. For toolchain work, also identify the emitter, runtime, bundler, and downstream package consumers that determine module behavior."
+      },
+      {
+        "line": 62,
+        "text": "For greenfield TypeScript setup or explicitly authorized lint hardening, use both Biome and ESLint with typescript-eslint. Biome owns formatting, fast syntax-oriented checks, and the type-aware rules supported by the installed Biome version. ESLint owns the remaining type-informed and repository-policy rules. Inspect installed versions and assign one owner to overlapping rules so duplicate diagnostics do not obscure the complementary coverage."
+      },
+      {
+        "line": 76,
+        "text": "- remaining diagnostics and unverified owner boundaries;"
+      },
+      {
+        "line": 87,
+        "text": "3. Define the targeted diagnostic or type/API behavior and identify any runtime, framework, test, validation-library, or domain owner that must be paired."
+      },
+      {
+        "line": 99,
+        "text": "2. Prefer inference, control-flow narrowing, satisfies, built-in utility types, runtime- or schema-derived types, and constrained generics before bespoke conditional types or helper dependencies."
+      },
+      {
+        "line": 101,
+        "text": "4. Keep runtime and domain semantics unchanged unless the user explicitly authorized that separate owner-controlled change."
+      },
+      {
+        "line": 109,
+        "text": "Implement the narrowest sound change while preserving repository and owner boundaries."
+      },
+      {
+        "line": 113,
+        "text": "3. For a new setup or explicit lint hardening, keep both Biome and ESLint plus typescript-eslint, assign one owner to overlapping rules, and retain ESLint rules that cover installed-version gaps."
+      },
+      {
+        "line": 126,
+        "text": "3. Use positive and negative compile assertions for fragile type APIs; route runtime, integration, and test-runner evidence to the owning skill."
+      },
+      {
+        "line": 133,
+        "text": "## Interop priority"
+      },
+      {
+        "line": 135,
+        "text": "- **framework APIs, framework lifecycle, bundler integration, React or Vite application setup:** the relevant framework skill. typescript-engineer owns the isolated TypeScript compiler and type-system facet; the framework owner decides framework behavior and integration."
+      },
+      {
+        "line": 136,
+        "text": "- **Node execution mode, type stripping, ESM or CJS runtime semantics, and runtime import behavior:** node-engineer. Consume node-engineer's exact executed entry, Node/loader versions, module mode, resolver rules, and smoke results before choosing module/emit settings. Return the compiler config, emitted specifiers and type evidence for Node to check against that same entry; typecheck cannot close its runtime claim."
+      },
+      {
+        "line": 137,
+        "text": "- **test strategy, runner behavior, mocks, coverage, and CI test contours:** typescript-test-engineer. Pass expected public call/declaration behavior and positive/negative type assertions to typescript-test-engineer. Consume its scenario-to-command results only for the exercised files and boundary; it owns runner and test strategy, while this skill owns type soundness."
+      },
+      {
+        "line": 138,
+        "text": "- **runtime validation-library semantics and domain validation policy:** the relevant validation-library, framework, or domain skill. typescript-engineer may derive and inspect types from an accepted runtime schema but cannot invent what must be validated or claim runtime safety from a type alone."
+      },
+      {
+        "line": 140,
+        "text": "- **security exploitability and vulnerability judgment:** security-reviewer. Pass the concrete type/runtime boundary, untrusted-input path and evidence to security-reviewer when a security judgment is required. Consume its scoped findings for authorized remediation; type soundness alone cannot establish security."
+      },
+      {
+        "line": 145,
+        "text": "- **high** — Do not treat compiler or lint success as runtime, framework, validation, security, or domain proof."
+      },
+      {
+        "line": 147,
+        "text": "- **high** — Do not assume Biome and ESLint coverage is static; inspect installed versions, assign one owner to overlapping rules, and preserve the complementary contour required by repository policy."
+      },
+      {
+        "line": 152,
+        "text": "### Use owner results"
+      },
+      {
+        "line": 153,
+        "text": "Load another skill only when its decision is material to this task. Consume accepted product behavior from prd-engineer, implementation requirements from spec-engineer, architecture constraints from architecture-engineer, and task scope/checkpoints from delivery-planner when supplied; return the conflicting fact or missing decision to its owner rather than redesigning it. A handoff is usable only for the same contract, version and snapshot it covers."
+      },
+      {
+        "line": 155,
+        "text": "### Unavailable owner or evidence"
+      },
+      {
+        "line": 156,
+        "text": "If a specialist, source or check is unavailable, continue supported local analysis and authorized changes. Identify the missing output and leave only its dependent decision or conclusion partial/blocked; do not invent a review verdict, product rule, security guarantee or runtime result."
+      },
+      {
+        "line": 174,
+        "text": "Report the outcome or root cause, source basis and assumptions, changed type or API contract, exact verification and remaining diagnostics, unverified runtime or owner boundaries, and verified, partial, or blocked status."
+      },
+      {
+        "line": 180,
+        "text": "- [Boundary Type Patterns](references/patterns.md) — Read this when modeling typed success/failure states, unknown boundaries, schema-derived types, or branded values without taking over runtime or domain policy."
+      },
+      {
+        "line": 182,
+        "text": "- [Runtime-Derived Types](references/runtime-derived-types.md) — Read this when deriving literal unions or API types with as const, typeof, indexed access, satisfies, or const type parameters."
+      }
+    ],
+    "claim": "Static direct-owner comparison only; no fresh multi-skill execution from this audit."
+  },
+  {
+    "skill": "node-engineer",
+    "file": "skills/node-engineer/SKILL.md",
+    "sha256": "073a05ee05c1ef9db06d375ec9412fd2f8308a3d0ae2e028ed8df4f45eb55eef",
+    "version": "0.1.4",
+    "contractLocations": [
+      {
+        "line": 3,
+        "text": "description: Explain, design, review, diagnose, and implement Node.js runtime"
+      },
+      {
+        "line": 19,
+        "text": "2. Establish the actual Node versions and runtime path from repository scripts, package metadata, CI/deployment configuration, the failing command, and a narrow reproduction before recommending flags, imports, dependencies, or code changes."
+      },
+      {
+        "line": 21,
+        "text": "4. Load only the reference triggered by the current runtime problem and route language, test-runner, framework, CLI, architecture, or formal-review decisions to their owning skills."
+      },
+      {
+        "line": 22,
+        "text": "5. Define the observable runtime result and evidence boundary before implementation; generated files, types, mocks, logs, and compiler success do not prove application runtime behavior."
+      },
+      {
+        "line": 26,
+        "text": "- Explaining, designing, reviewing, diagnosing, or changing Node.js runtime and process behavior."
+      },
+      {
+        "line": 27,
+        "text": "- Running TypeScript directly in Node, selecting a transform/build path, or resolving runtime import extensions."
+      },
+      {
+        "line": 36,
+        "text": "- Type-level API design, inference, general compiler diagnostics, or TypeScript correctness without a Node runtime decision; use `typescript-engineer`."
+      },
+      {
+        "line": 40,
+        "text": "- Browser or bundler-only behavior with no Node runtime boundary; use the relevant frontend or bundler skill."
+      },
+      {
+        "line": 44,
+        "text": "Use repository and installed-version evidence to establish the Node runtime contract, diagnose the first runtime cause, design or apply only an authorized change, and report what the selected checks actually proved. The result should let the operator or routed owner act without guessing the executed source, emitted artifact, module system, process lifecycle, compatibility range, or remaining evidence gap."
+      },
+      {
+        "line": 46,
+        "text": "This documentation does not execute, typecheck, profile, benchmark, or deploy an application by itself. A generated skill, valid config, successful compiler/typecheck, mock, log, profile file, benchmark command, or happy-path snippet is substrate or bounded evidence; none proves a broader runtime claim unless it exercises the named behavior and relevant failure path."
+      },
+      {
+        "line": 59,
+        "text": "If equal-authority inputs conflict, the runtime path or compatibility range cannot be established, or the required check would cross an unauthorized process, network, benchmark, profile, or external-system boundary, return `blocked` or bounded guidance instead of inventing the missing contract."
+      },
+      {
+        "line": 61,
+        "text": "## Runtime-mode matrix"
+      },
+      {
+        "line": 63,
+        "text": "| Executed artifact | Runtime owner | Relative import contract | Required evidence |"
+      },
+      {
+        "line": 65,
+        "text": "| Source TypeScript via built-in stripping | Node built-in support | Match source files (`.ts`, `.mts`, `.cts`) | Exact Node version, command, supported syntax, and runtime smoke |"
+      },
+      {
+        "line": 74,
+        "text": "Use `verified` only when current evidence exercises the targeted Node runtime behavior, supported version range, and relevant failure case. Use `partial` when the diagnosis or authorized change is useful but a required runtime contour remains unexecuted. Use `blocked` when missing authority, conflicting constraints, unavailable runtime versions, or an unsafe validation boundary prevents a sound result."
+      },
+      {
+        "line": 76,
+        "text": "The final response states the outcome or root cause, authoritative inputs and assumptions, Node/runtime mode and compatibility range, changed or proposed runtime contract, exact checks and failure cases, routed owner boundaries, remaining risk, and status."
+      },
+      {
+        "line": 80,
+        "text": "### Workflow stage: Establish the runtime basis"
+      },
+      {
+        "line": 82,
+        "text": "Make the requested outcome, authority, runtime path, compatibility range, and mutation boundary reconstructable."
+      },
+      {
+        "line": 86,
+        "text": "3. Define the expected observable behavior, affected consumer, compatibility range, and the narrowest runtime check that could prove or falsify the result."
+      },
+      {
+        "line": 87,
+        "text": "4. Stop with `blocked` or bounded guidance when required authority is missing, equal-authority sources conflict, the runtime path cannot be identified, or the requested check would cross an unauthorized boundary."
+      },
+      {
+        "line": 91,
+        "text": "- Task mode, allowed side effects, sources, Node/runtime mode, target behavior, consumer, and verification boundary are explicit."
+      },
+      {
+        "line": 94,
+        "text": "### Workflow stage: Diagnose and choose the first sufficient runtime path"
+      },
+      {
+        "line": 96,
+        "text": "Identify the first runtime cause and smallest compatible solution without inventing adjacent language, framework, test, or architecture policy."
+      },
+      {
+        "line": 98,
+        "text": "1. Reproduce or inspect the narrowest failing behavior, then distinguish Node runtime semantics from TypeScript language/toolchain, framework, runner, CLI, data, and architecture concerns."
+      },
+      {
+        "line": 101,
+        "text": "4. In explain/design or review/diagnose mode, return the bounded result without editing; in change mode, define the exact authorized runtime contract before implementation."
+      },
+      {
+        "line": 105,
+        "text": "- The root cause or bounded hypothesis, owner boundary, compatibility constraints, rejected simpler options, and evidence limit are explicit."
+      },
+      {
+        "line": 107,
+        "text": "### Workflow stage: Apply only the authorized runtime change"
+      },
+      {
+        "line": 109,
+        "text": "Implement the smallest Node-runtime change that delivers the accepted observable behavior."
+      },
+      {
+        "line": 111,
+        "text": "1. Change only the accepted runtime scope and preserve repository module, lifecycle, logging, and dependency conventions unless they are the demonstrated cause."
+      },
+      {
+        "line": 117,
+        "text": "- Every changed hunk and dependency traces to the accepted runtime behavior and compatibility range."
+      },
+      {
+        "line": 122,
+        "text": "Prove the targeted Node behavior without treating substrate checks as runtime completion."
+      },
+      {
+        "line": 124,
+        "text": "1. Run the exact reproduction and the narrowest repository-native runtime, integration, process, or benchmark check that exercises the changed boundary; add typecheck or runner evidence only through the owning toolchain."
+      },
+      {
+        "line": 126,
+        "text": "3. Report the outcome or root cause, authoritative inputs and assumptions, runtime contract or change, exact checks, interop handoffs, unverified boundaries, remaining risk, and status as `verified`, `partial`, or `blocked`."
+      },
+      {
+        "line": 130,
+        "text": "- `verified` requires current evidence for the claimed runtime boundary and compatibility range."
+      },
+      {
+        "line": 131,
+        "text": "- Generated prose, compiler/typecheck success, mocks, a clean process start, or a happy-path example cannot by themselves establish runtime completion."
+      },
+      {
+        "line": 133,
+        "text": "## Interop priority"
+      },
+      {
+        "line": 135,
+        "text": "- **Implementation scope, minimal diffs, and evidence discipline:** implementation-discipline. node-engineer owns Node runtime semantics; implementation-discipline owns capability reality, surgical changes, and completion evidence for authorized implementation."
+      },
+      {
+        "line": 136,
+        "text": "- **TypeScript language, type-system, and compiler configuration:** typescript-engineer. Pass the exact executed entry, Node/loader versions, module mode and resolver rules to typescript-engineer. Consume its compiler config, emitted specifiers and type results against that same path; execute the resulting artifact before claiming runtime success."
+      },
+      {
+        "line": 137,
+        "text": "- **Test strategy, runner behavior, coverage, mocks, and CI contours:** typescript-test-engineer. Pass the runtime reproduction, supported versions, expected failure/cancellation/cleanup behavior and owned resources to typescript-test-engineer. Consume its scenario-to-command results only for the exercised versions and paths; runner policy stays with that owner and Node mechanics stay here."
+      },
+      {
+        "line": 138,
+        "text": "- **Framework adapters, lifecycle hooks, routing, middleware, and readiness endpoints:** the relevant framework skill. the framework owner implements framework APIs; node-engineer owns signal, process, server, stream, and resource semantics beneath that integration."
+      },
+      {
+        "line": 139,
+        "text": "- **CLI command model, help, output/error contract, packaging, and release UX:** cli-engineer. Consume cli-engineer's accepted argv, stdout/stderr, exit and installed-bin contract. Return runtime entry/version and process evidence for its package/installation checks; source execution alone cannot prove the installed CLI boundary."
+      },
+      {
+        "line": 140,
+        "text": "- **Distributed cache topology, cross-service lifecycle, and architecturally significant runtime trade-offs:** architecture-engineer. Consume accepted architecture-engineer constraints, ownership and validation obligations before implementing a local mechanism. Return runtime evidence and any contradiction with those constraints; route distributed consistency, durability or cross-system decisions back to that owner."
+      },
+      {
+        "line": 141,
+        "text": "- **Formal code-review scope, severity, findings, and merge guidance:** code-reviewer. Pass the stable diff, runtime reproduction, compatibility range, failure/cleanup evidence and gaps to code-reviewer for formal severity and merge-risk synthesis. Successful execution is not that verdict."
+      },
+      {
+        "line": 142,
+        "text": "- **Security exploitability and vulnerability judgment:** security-reviewer. Pass the concrete runtime trust boundary, untrusted-input path, logging or process evidence to security-reviewer when a security judgment is required. Consume its scoped findings for authorized remediation; a runtime fix alone cannot establish security."
+      },
+      {
+        "line": 150,
+        "text": "- **high** — Do not claim runtime success from generated guidance, typecheck/compiler success, mocks, logs, or a happy-path snippet that does not exercise the named runtime boundary and failure path."
+      },
+      {
+        "line": 154,
+        "text": "### Use owner results"
+      },
+      {
+        "line": 155,
+        "text": "Load another skill only when its decision is material to this task. Consume accepted product behavior from prd-engineer, implementation requirements from spec-engineer, architecture constraints from architecture-engineer, and task scope/checkpoints from delivery-planner when supplied; return the conflicting fact or missing decision to its owner rather than redesigning it. A handoff is usable only for the same contract, version and snapshot it covers."
+      },
+      {
+        "line": 157,
+        "text": "### Unavailable owner or evidence"
+      },
+      {
+        "line": 158,
+        "text": "If a specialist, source or check is unavailable, continue supported local analysis and authorized changes. Identify the missing output and leave only its dependent decision or conclusion partial/blocked; do not invent a review verdict, product rule, security guarantee or runtime result."
+      },
+      {
+        "line": 169,
+        "text": "### Runtime evidence boundary"
+      },
+      {
+        "line": 170,
+        "text": "Match proof to the claim. Static and compiler checks prove only inspected structure; process and integration checks prove only exercised runtime paths; benchmarks prove only recorded conditions; deployed evidence proves only the observed environment."
+      },
+      {
+        "line": 172,
+        "text": "### First sufficient runtime surface"
+      },
+      {
+        "line": 173,
+        "text": "Prefer supported Node built-ins, repository helpers, installed dependencies, and small local adapters before new runtime dependencies or generic lifecycle, logging, stream, cache, or profiling wrappers."
+      },
+      {
+        "line": 176,
+        "text": "Report the outcome or root cause, source basis and assumptions, Node/runtime mode and compatibility range, changed or proposed runtime contract, exact checks and failure cases, interop handoffs, unverified boundaries, remaining risk, and `verified`, `partial`, or `blocked` status."
+      },
+      {
+        "line": 181,
+        "text": "- [Runtime TypeScript](references/runtime-typescript.md) — Read this for built-in TypeScript execution, type stripping, Node-version compatibility, import extensions, or build-path decisions."
+      }
+    ],
+    "claim": "Static direct-owner comparison only; no fresh multi-skill execution from this audit."
+  },
+  {
+    "skill": "typescript-test-engineer",
+    "file": "skills/typescript-test-engineer/SKILL.md",
+    "sha256": "44dbdb487ed12ae2329f06806e935914871aed61f69a4de8e26da1ead83df4f8",
+    "version": "0.1.10",
+    "contractLocations": [
+      {
+        "line": 54,
+        "text": "This skill does not define framework, platform, security, money, persistence, or product behavior. Consume those rules from accepted sources and the relevant domain owner. Browser smoke evidence does not satisfy a formal repository E2E gate unless the repository contract says it does."
+      },
+      {
+        "line": 61,
+        "text": "- Do not downshift security, privacy, money, data-loss, auth, accessibility, release, persistence, RLS, RPC, provider, or production-wiring verification to a tiny self-check."
+      },
+      {
+        "line": 64,
+        "text": "- Test doubles must be local or test-only and impossible to select in stage or production runtime."
+      },
+      {
+        "line": 73,
+        "text": "1. Identify the named behavior, falsifier, risk, runner, TypeScript execution path, and downstream consumer."
+      },
+      {
+        "line": 74,
+        "text": "2. Select the evidence layer that owns the invariant:"
+      },
+      {
+        "line": 78,
+        "text": "   - runtime or database boundary tests for RLS, RPC, bindings, persistence, or provider behavior;"
+      },
+      {
+        "line": 102,
+        "text": "- For Cloudflare Workers without a repository-specific harness, use the current Workers Vitest integration for local runtime unit and integration tests. Treat `unstable_dev` as a legacy migration case, not the default."
+      },
+      {
+        "line": 107,
+        "text": "- Fix warnings introduced by the current change. For pre-existing or upstream-blocked warnings, record the exact warning, ownership, blocker, and next evidence instead of silently broadening the mutation scope."
+      },
+      {
+        "line": 123,
+        "text": "If an interop skill such as `agent-browser`, `code-reviewer`, or a domain owner is unavailable, preserve its boundary: provide the test strategy or limited finding that this skill owns and report the unperformed browser, formal-review, or domain judgment instead of inventing evidence."
+      },
+      {
+        "line": 132,
+        "text": "2. Identify the requested scope, runner, TypeScript execution path, test level, changed behavior, and downstream consumer."
+      },
+      {
+        "line": 149,
+        "text": "4. Before a React mutation-lifetime test, populate a sourced matrix for route, access scope, entity, client attempt, outcome-verification sequence, owner, remount lifetime, context-loss disposition, and late-completion rule; return limited or blocked when a material row cannot be sourced."
+      },
+      {
+        "line": 169,
+        "text": "3. Route formal diff severity and merge guidance to code-reviewer while retaining ownership of test-strategy and runner judgments."
+      },
+      {
+        "line": 191,
+        "text": "## Interop priority"
+      },
+      {
+        "line": 193,
+        "text": "- **TypeScript language and type-system rules:** typescript-engineer. This skill owns testing strategy and runner behavior, while TypeScript language semantics belong to typescript-engineer."
+      },
+      {
+        "line": 194,
+        "text": "- **Stable diff scope, finding severity, and merge guidance:** code-reviewer. code-reviewer owns the formal read-only review process; this skill supplies test-strategy and runner-domain judgments."
+      },
+      {
+        "line": 195,
+        "text": "- **Authorized code and test remediation:** implementation-discipline. implementation-discipline owns mutation discipline and minimal changes; this skill owns the test behavior and evidence contract."
+      },
+      {
+        "line": 197,
+        "text": "- **CI permissions, secrets, and untrusted inputs:** security-reviewer. security-reviewer owns permissions, secrets, untrusted-input, and exploitability judgments; this skill owns tests that exercise the sourced security contract."
+      },
+      {
+        "line": 198,
+        "text": "- **Framework, platform, and domain behavior used as the test oracle:** the relevant framework or domain skill. Specialized owners define the behavior contract; this skill converts that contract into proportionate test evidence without inventing domain rules."
+      },
+      {
+        "line": 226,
+        "text": "Prefer the smallest runnable check that fails on the behavior regression for low-risk logic. Do not use that rule to downshift security, privacy, money, data-loss, auth, accessibility, release, persistence/RLS/RPC/provider, or production-wiring verification."
+      },
+      {
+        "line": 250,
+        "text": "- Confirm every linked reference listed by SKILL.md exists inside this skill folder and that optional interop skills are not required for the core capability."
+      }
+    ],
+    "claim": "Static direct-owner comparison only; no fresh multi-skill execution from this audit."
+  },
+  {
+    "skill": "nextjs",
+    "file": "skills/nextjs/SKILL.md",
+    "sha256": "eb437b3de1c9525621303bd1aa5b6aef2a52e6ccbbcede333abe310e3d56b8e9",
+    "version": "0.1.1",
+    "contractLocations": [
+      {
+        "line": 36,
+        "text": "- The task is backend Node.js runtime behavior outside Next.js; use node-engineer."
+      },
+      {
+        "line": 61,
+        "text": "- [runtime-selection.md](references/runtime-selection.md) - Node.js vs Edge runtime selection."
+      },
+      {
+        "line": 112,
+        "text": "Make the requested change using Next.js primitives and boundaries that fit the route, runtime, and data flow."
+      },
+      {
+        "line": 115,
+        "text": "2. Keep Server Component, Client Component, Server Action, Route Handler, and runtime boundaries explicit."
+      },
+      {
+        "line": 121,
+        "text": "- Any substrate-only work such as config, docs, or wrappers is not described as completed runtime behavior unless verified."
+      },
+      {
+        "line": 128,
+        "text": "2. For build/runtime issues, prefer `next build` or the repo's production-equivalent command when feasible."
+      },
+      {
+        "line": 135,
+        "text": "## Interop priority"
+      },
+      {
+        "line": 137,
+        "text": "- **TypeScript language, tsconfig, linting, and type-system issues:** typescript-engineer. This skill owns Next.js framework semantics; TypeScript language/toolchain rules belong to typescript-engineer."
+      },
+      {
+        "line": 140,
+        "text": "- **visual design, UI hierarchy, and frontend presentation polish:** frontend-design. Use frontend-design for visual direction while this skill owns Next.js implementation constraints."
+      },
+      {
+        "line": 141,
+        "text": "- **general Node.js runtime behavior outside Next.js:** node-engineer. Use this skill for Next.js runtime selection and deployment-specific framework behavior; use node-engineer for broader Node runtime work."
+      },
+      {
+        "line": 149,
+        "text": "- **medium** — Self-hosting is not equivalent to Vercel hosting unless cache handlers, image optimization, runtime env behavior, and process management are explicitly configured."
+      },
+      {
+        "line": 161,
+        "text": "Keep server/client/runtime/data boundaries explicit and local; broad boundary changes require a concrete behavioral reason."
+      },
+      {
+        "line": 186,
+        "text": "- [Runtime Selection](references/runtime-selection.md) — Read this when choosing Node.js or Edge runtime for Next.js code."
+      },
+      {
+        "line": 188,
+        "text": "- [Self Hosting](references/self-hosting.md) — Read this when deploying Next.js outside Vercel, using standalone output, Docker, PM2, custom cache handlers, or runtime env config."
+      }
+    ],
+    "claim": "Static direct-owner comparison only; no fresh multi-skill execution from this audit."
+  },
+  {
+    "skill": "hono-engineer",
+    "file": "skills/hono-engineer/SKILL.md",
+    "sha256": "80e21320047b0d4502ea75aed08f99c574411d896521a45c013237fbb1bd8c49",
+    "version": "0.1.7",
+    "contractLocations": [
+      {
+        "line": 2,
+        "text": "name: hono-engineer"
+      },
+      {
+        "line": 3,
+        "text": "description: Build, change, and diagnose Hono API services. Use for Hono"
+      },
+      {
+        "line": 4,
+        "text": "  routing, middleware composition, Context and runtime APIs, validation,"
+      },
+      {
+        "line": 5,
+        "text": "  contract integration, or test boundaries. Pair with TypeScript, runtime,"
+      },
+      {
+        "line": 14,
+        "text": "# hono-engineer"
+      },
+      {
+        "line": 18,
+        "text": "1. Confirm the request requires a Hono-specific decision or change; otherwise route to the owning skill."
+      },
+      {
+        "line": 19,
+        "text": "2. Establish the authoritative behavior, existing app composition, installed Hono and runtime/tooling versions, endpoint class, security contract, and available test contours before proposing implementation."
+      },
+      {
+        "line": 21,
+        "text": "4. Apply precedence in this order: authoritative requirements, compatible existing project conventions, then verified Hono/runtime facts. This skill supplies no fallback product or project policy. Stop or limit the claim when equal-authority inputs conflict or required runtime evidence is unavailable."
+      },
+      {
+        "line": 23,
+        "text": "6. When any public/runtime choice is unknown—including success or failure status, headers, media type, body, schema stack, path/layout, middleware, limit, timeout, retry, config format, binding, dependency, data source, or observability setting—use an explicitly named owner-supplied placeholder or stop for authority; an assumption or greenfield label does not grant authority."
+      },
+      {
+        "line": 24,
+        "text": "7. Make an owner-supplied placeholder cover the whole unresolved boundary. A placeholder for only one argument does not authorize adjacent choices: for example, `c.json(value, projectStatus)` still selects JSON media and a body shape. When the request part or response contract is unknown, stop or delegate the complete route/response to an opaque owner-supplied handler instead of showing an executable partial handler. If the existing Hono composition seam is also unknown, show no handler/router wiring at all: even `app.route(...)` would choose a mount and composition contract."
+      },
+      {
+        "line": 25,
+        "text": "8. Define the observable HTTP/runtime behavior and the evidence boundary before editing; schema, route, compiler, mock, or docs-test existence is not completion."
+      },
+      {
+        "line": 26,
+        "text": "9. When the high-risk backend trigger applies, read High-risk Backend Contract, consume the owning specification's `HRB-*` matrix when available, and do not report the Hono boundary complete until every applicable Hono-owned row has an exact contract and executable evidence."
+      },
+      {
+        "line": 30,
+        "text": "- Designing, implementing, diagnosing, or changing Hono endpoints, routers, middleware, Context usage, or app composition."
+      },
+      {
+        "line": 31,
+        "text": "- Integrating Hono validation, contracts, errors, logging, auth admission, caching, streaming, or runtime adapters."
+      },
+      {
+        "line": 32,
+        "text": "- Selecting Hono-specific unit, app.request integration, or runtime-boundary verification."
+      },
+      {
+        "line": 36,
+        "text": "- The task has no Hono-specific API, middleware, Context, routing, or adapter behavior."
+      },
+      {
+        "line": 37,
+        "text": "- The task is solely TypeScript language design, generic testing, platform operations, security review, Supabase/data design, or architecture without a Hono integration decision."
+      },
+      {
+        "line": 38,
+        "text": "- The requested outcome is a production, security, data, or architecture verdict that requires a specialized owner; use this skill only for the Hono portion."
+      },
+      {
+        "line": 42,
+        "text": "Guide Hono-specific routing, middleware, Context, contract integration, and verification decisions inside an existing or greenfield API. The capability is an observable HTTP or runtime behavior with evidence at the boundary claimed by the task."
+      },
+      {
+        "line": 44,
+        "text": "This documentation does not ship a Hono runtime, make an endpoint production-ready by itself, or replace security, data, runtime, architecture, and testing authorities. Compiler success, route/schema presence, mocks, `app.request()`, and structural docs tests are substrate or bounded evidence, not universal runtime proof."
+      },
+      {
+        "line": 52,
+        "text": "- installed `hono`, companion package, adapter, and runtime/tooling versions;"
+      },
+      {
+        "line": 54,
+        "text": "- available unit, Hono integration, runtime integration, and live verification contours."
+      },
+      {
+        "line": 56,
+        "text": "If an authoritative behavior is missing, equal-authority sources conflict, or a required runtime boundary cannot be exercised, provide bounded guidance or report the work blocked. Do not invent product behavior, security policy, migration authority, or production readiness."
+      },
+      {
+        "line": 60,
+        "text": "Recommendations track the latest official stable Hono guidance rather than a pinned version. For version-sensitive work, inspect the project's installed versions and read `references/framework-currency.md`. Preserve compatible installed behavior unless the request authorizes an upgrade; report any latest-versus-installed gap explicitly."
+      },
+      {
+        "line": 62,
+        "text": "## Hono baseline decisions"
+      },
+      {
+        "line": 64,
+        "text": "- Preserve the existing compatible app composition. In greenfield work, do not select structure without authority; use typed factories or `app.route()` only when the accepted composition needs them. Capture chained route return types when Hono RPC or typed test clients consume them."
+      },
+      {
+        "line": 66,
+        "text": "- Keep route handlers focused on the accepted HTTP boundary when that fits the project architecture; do not introduce a new service/domain layering scheme during a narrow Hono change."
+      },
+      {
+        "line": 67,
+        "text": "- Keep request-scoped state in Hono Context or explicit parameters, never module-level mutable state."
+      },
+      {
+        "line": 68,
+        "text": "- Validate configuration at its accepted boundary and preserve the project's typed Context bindings or variables. On Workers, use current `wrangler types` output only when the project owns generated bindings; do not impose that migration over a different accepted Env boundary."
+      },
+      {
+        "line": 71,
+        "text": "- Do not use `void` merely to silence a floating Promise. Detached work needs an explicit lifecycle owner, failure handling, and evidence appropriate to its delivery claim."
+      },
+      {
+        "line": 73,
+        "text": "- For secrets and signatures, implement only the accepted cryptographic contract with runtime-compatible verified primitives. `Math.random()` and plain string equality do not establish security for attacker-controlled secret material."
+      },
+      {
+        "line": 78,
+        "text": "2. Preserve the route's current admission boundary and owner/tenant semantics. When the accepted auth contract defines a body bound, apply that owner-supplied limit before parsing; preserve accepted quota isolation and replay behavior."
+      },
+      {
+        "line": 81,
+        "text": "5. Choose contract publication deliberately: use OpenAPI when an external or project contract requires it; use Hono RPC/type exports when that is the project boundary; an internal route may document why neither public surface applies."
+      },
+      {
+        "line": 82,
+        "text": "6. Distinguish runtime response validation from schema-based contract tests. Production validation requires code on the response path; contract tests prove only the branches they exercise."
+      },
+      {
+        "line": 89,
+        "text": "- Hono's built-in `csrf()` allows a request when either its Origin check or Fetch Metadata check passes for the documented unsafe, form-capable request set. It is not a synchronizer-token or double-submit implementation and does not by itself prove token-protected JSON mutation behavior."
+      },
+      {
+        "line": 90,
+        "text": "- If the accepted cookie-session contract includes CSRF token reissue after losing memory state, preserve that project-owned recovery contract; do not introduce one as a Hono default."
+      },
+      {
+        "line": 95,
+        "text": "- Pure unit tests cover helpers and domain logic, not Hono or platform integration."
+      },
+      {
+        "line": 96,
+        "text": "- `app.request()` or `testClient()` covers the Hono request/response composition actually exercised. Preserve the project's runner rather than imposing `node:test`, Vitest, or another runner."
+      },
+      {
+        "line": 97,
+        "text": "- Runtime integration covers adapter APIs, bindings, ExecutionContext, streaming, caching, and platform behavior. Preserve the project's Workers harness; introduce or migrate to the current Workers Vitest integration only when the task authorizes that tooling decision."
+      },
+      {
+        "line": 104,
+        "text": "- delivered or proposed HTTP/runtime behavior and changed public contracts;"
+      },
+      {
+        "line": 112,
+        "text": "### Workflow stage: Establish the Hono decision basis"
+      },
+      {
+        "line": 116,
+        "text": "1. Inspect the project entrypoint or app factory, route composition, middleware and error hooks, installed versions, runtime config, contracts, and existing test harness."
+      },
+      {
+        "line": 118,
+        "text": "3. Classify whether the high-risk backend matrix applies; if it does, load it and identify the Hono-owned rows, cross-layer handoffs, and missing authority before changing the route."
+      },
+      {
+        "line": 124,
+        "text": "- No specialized security, data, runtime, or architecture verdict is invented by Hono guidance."
+      },
+      {
+        "line": 125,
+        "text": "- Applicable Hono-owned `HRB-*` rows have an exact HTTP/runtime contract, negative oracle, evidence contour, and owner, or the result remains blocked or guidance-only."
+      },
+      {
+        "line": 127,
+        "text": "### Workflow stage: Implement the Hono boundary"
+      },
+      {
+        "line": 129,
+        "text": "Preserve compatible project composition while making the smallest Hono-specific change that delivers the requested behavior."
+      },
+      {
+        "line": 132,
+        "text": "2. Preserve the accepted handler/dependency boundary, keep request validation distinct from runtime response guarantees, and preserve route type inference when Hono RPC or typed clients consume it."
+      },
+      {
+        "line": 133,
+        "text": "3. Use runtime lifecycle APIs only with their documented durability and failure semantics."
+      },
+      {
+        "line": 144,
+        "text": "1. Run the narrowest project checks for pure logic, Hono app integration, and the real runtime boundary required by the claim."
+      },
+      {
+        "line": 151,
+        "text": "- app.request, mocks, schemas, OpenAPI, and docs-contract tests are not described as production-runtime proof."
+      },
+      {
+        "line": 153,
+        "text": "- Every applicable Hono-owned matrix row maps to a pure, `app.request()`, runtime, or direct-data-boundary check at the strength required by the claim."
+      },
+      {
+        "line": 155,
+        "text": "## Interop priority"
+      },
+      {
+        "line": 157,
+        "text": "- **Implementation scope and evidence discipline:** implementation-discipline. hono-engineer owns framework-specific choices; implementation-discipline owns minimal diffs, capability reality, remediation traceability, and completion evidence."
+      },
+      {
+        "line": 158,
+        "text": "- **TypeScript language and type-system design:** typescript-engineer. hono-engineer owns Hono generics and Context integration; TypeScript language semantics and reusable type design belong to typescript-engineer."
+      },
+      {
+        "line": 159,
+        "text": "- **TypeScript test runner, mocking, and test architecture:** typescript-test-engineer. hono-engineer selects the Hono and runtime boundary; runner conventions and test implementation depth belong to typescript-test-engineer."
+      },
+      {
+        "line": 160,
+        "text": "- **Node.js runtime behavior:** node-engineer. Hono adapter integration remains here; Node process, module, stream, and runtime lifecycle behavior belongs to node-engineer."
+      },
+      {
+        "line": 161,
+        "text": "- **Security verdicts and exploitability:** security-reviewer. hono-engineer integrates auth and security middleware but does not issue a security audit verdict."
+      },
+      {
+        "line": 162,
+        "text": "- **Supabase schema, RLS, RPC, and data boundaries:** supabase-engineer. hono-engineer owns the HTTP integration; Supabase correctness and direct data-path evidence belong to supabase-engineer."
+      },
+      {
+        "line": 163,
+        "text": "- **Architecturally significant boundaries and trade-offs:** architecture-engineer. hono-engineer may apply an accepted architecture but does not invent cross-system boundaries or quality trade-offs."
+      },
+      {
+        "line": 168,
+        "text": "- **high** — Contract tests validate only exercised responses. Claim runtime response validation only when production code validates the emitted payload and failure behavior is tested."
+      },
+      {
+        "line": 169,
+        "text": "- **high** — Do not rely on remembered Hono, adapter, or runtime APIs for version-sensitive work; verify latest official guidance and reconcile it with installed project versions."
+      },
+      {
+        "line": 170,
+        "text": "- **high** — Do not let predictable validation or service failures escape as raw internal errors. Map only safe, contract-approved details before the response leaves Hono."
+      },
+      {
+        "line": 171,
+        "text": "- **high** — An illustrative snippet must classify every concrete choice as authoritative input, verified framework fact, or owner-supplied placeholder. The placeholder must encapsulate the entire unknown boundary; wrapping only a status, schema, or dependency while selecting a media type, body, request part, or handler flow remains unauthorized. Even when a composition seam is supplied, show only the source-supplied composition primitives; do not add illustrative route methods, mounts, exports, or handlers merely to demonstrate ordering. The snippet must not decide unknown success/failure wire behavior, schema/tool stack, layout, middleware, limits, timeouts, retry, config, bindings, dependencies, data, security, or observability policy."
+      },
+      {
+        "line": 179,
+        "text": "Match proof to the claim: unit tests cover pure logic, app.request covers Hono integration, a runtime harness covers platform behavior, and live evidence covers only the observed deployment conditions."
+      },
+      {
+        "line": 182,
+        "text": "Report the delivered or proposed HTTP/runtime behavior, changed interfaces, installed-versus-latest compatibility constraints, checks and their boundaries, blocked or unverified work, and residual risk."
+      },
+      {
+        "line": 185,
+        "text": "- [High-risk Backend Contract](references/high-risk-backend-contract.md) — Read this for high-risk Hono routes involving a public API, Supabase-backed state, authorization, money, retries, external resources, or required audit evidence."
+      },
+      {
+        "line": 186,
+        "text": "- [Framework Currency](references/framework-currency.md) — Read this before a version-sensitive Hono, adapter, or runtime decision, or when installed and latest versions may differ."
+      },
+      {
+        "line": 187,
+        "text": "- [Architecture](references/architecture.md) — Read this when Hono app composition, route type inference, layering, or dependency boundaries are in scope."
+      },
+      {
+        "line": 188,
+        "text": "- [Auth](references/auth.md) — Read this when Hono middleware integrates API keys, JWT/JWKS, mTLS metadata, cookie sessions, CSRF, pending sessions, authorization, or protected long-lived endpoints."
+      },
+      {
+        "line": 189,
+        "text": "- [Caching](references/caching.md) — Read this when HTTP or runtime cache behavior is part of the requested Hono route."
+      },
+      {
+        "line": 190,
+        "text": "- [Contracts Types](references/contracts-types.md) — Read this when Hono RPC, exported request or response types, runtime schemas, or external consumers are in scope."
+      },
+      {
+        "line": 191,
+        "text": "- [Errors Logs](references/errors-logs.md) — Read this when changing Hono error mapping, Problem Details, request correlation, or structured logging."
+      },
+      {
+        "line": 193,
+        "text": "- [Perf Security](references/perf-security.md) — Read this when Hono request limits, timeouts, retries, compression, upstream resilience, or security middleware defaults are in scope."
+      },
+      {
+        "line": 195,
+        "text": "- [Rate Limiting](references/rate-limiting.md) — Read this when Hono integrates pre-auth, post-auth, application, or edge rate limits."
+      },
+      {
+        "line": 196,
+        "text": "- [Routers](references/routers.md) — Read this only when measured route registration, matching, or bundle constraints justify overriding Hono's default router."
+      },
+      {
+        "line": 197,
+        "text": "- [Security](references/security.md) — Read this when Hono must integrate with edge WAF, mTLS, API discovery, or schema enforcement; use security-reviewer for a security verdict."
+      },
+      {
+        "line": 198,
+        "text": "- [Supabase](references/supabase.md) — Read this when a Hono route calls Supabase; use supabase-engineer for RLS, RPC, schema, or data-boundary decisions."
+      },
+      {
+        "line": 199,
+        "text": "- [Typing](references/typing.md) — Read this when Hono Context Bindings or Variables typing is in scope; use typescript-engineer for language-level type design."
+      },
+      {
+        "line": 200,
+        "text": "- [Validation Openapi](references/validation-openapi.md) — Read this when request validation, runtime response validation, OpenAPI, Hono RPC, exported schemas, or contract evidence is in scope."
+      },
+      {
+        "line": 201,
+        "text": "- [Workers Platform](references/workers-platform.md) — Read this when a Hono service runs on Cloudflare Workers or uses ExecutionContext, bindings, streaming, queues, or service bindings."
+      },
+      {
+        "line": 207,
+        "text": "- Keep all mandatory hono-engineer guidance inside this skill folder and use official external docs only as live version authority."
+      }
+    ],
+    "claim": "Static direct-owner comparison only; no fresh multi-skill execution from this audit."
+  },
+  {
+    "skill": "supabase-engineer",
+    "file": "skills/supabase-engineer/SKILL.md",
+    "sha256": "3ee79ab832636a6cc36d1b9009a46b80c8090642bdfd89a90e478a271774a751",
+    "version": "0.1.6",
+    "contractLocations": [
+      {
+        "line": 2,
+        "text": "name: supabase-engineer"
+      },
+      {
+        "line": 3,
+        "text": "description: Build, review, debug, and operate Supabase across schema, Data API,"
+      },
+      {
+        "line": 5,
+        "text": "  for Supabase design, implementation, boundary verification, CLI/MCP workflows,"
+      },
+      {
+        "line": 6,
+        "text": "  or incidents; pair with domain owners where they determine correctness."
+      },
+      {
+        "line": 13,
+        "text": "# supabase-engineer"
+      },
+      {
+        "line": 18,
+        "text": "2. Inspect repository authority, installed versions, target environment, data ownership, and trust or authorization boundaries before choosing a Supabase pattern."
+      },
+      {
+        "line": 19,
+        "text": "3. For version-sensitive Auth, keys, CLI, MCP, Edge Functions, or Realtime behavior, check installed versions and current official Supabase guidance when accessible; otherwise report the freshness gap and avoid an unverified contract claim."
+      },
+      {
+        "line": 21,
+        "text": "5. When the high-risk backend trigger applies, read High-risk Backend Contract, consume the owning specification's `HRB-*` matrix when available, and do not report the Supabase boundary complete until every applicable Supabase-owned row has an exact contract and executable evidence."
+      },
+      {
+        "line": 26,
+        "text": "- Building, refactoring, reviewing, or debugging Supabase-backed applications."
+      },
+      {
+        "line": 28,
+        "text": "- Using Supabase CLI, local development, MCP discovery, or cloud-safe Supabase inspection."
+      },
+      {
+        "line": 32,
+        "text": "- The task has no Supabase, PostgreSQL, RLS, auth, storage, realtime, Edge Function, or Supabase operations surface."
+      },
+      {
+        "line": 33,
+        "text": "- The task is purely frontend, framework, or TypeScript work without Supabase-specific behavior."
+      },
+      {
+        "line": 34,
+        "text": "- The task is general PostgreSQL tuning, general architecture selection, a formal security audit, or privacy compliance with no Supabase-specific integration decision; route it to the owning specialist."
+      },
+      {
+        "line": 38,
+        "text": "Guide a Supabase-specific task from project authority to a verified result without confusing files, policies, mocks, or generated output with working runtime behavior."
+      },
+      {
+        "line": 44,
+        "text": "| `design` | Supabase-specific design and downstream handoff | No implementation unless requested | Inputs, trust/data boundaries, alternatives, verification plan |"
+      },
+      {
+        "line": 45,
+        "text": "| `implement` | Requested SQL, code, config, or migration change | Repository/local changes authorized by the user; cloud changes follow the project deployment path | Narrow checks plus the production-equivalent Supabase boundary |"
+      },
+      {
+        "line": 54,
+        "text": "- Treat explicit user requirements and repository authority as inputs; do not invent ownership, tenancy, authorization, retention, migration, or topology decisions."
+      },
+      {
+        "line": 55,
+        "text": "- Inspect installed versions and local types/help for version-sensitive Auth, API keys, CLI, MCP, Edge Functions, and Realtime behavior; check current official Supabase docs/changelog when accessible. If neither can resolve the contract, report the freshness gap instead of guessing."
+      },
+      {
+        "line": 60,
+        "text": "- Enable RLS on every table in an exposed schema and add policies matching the real ownership model. Storage authorization is enforced through policies on `storage.objects`."
+      },
+      {
+        "line": 67,
+        "text": "- Do not retry non-idempotent writes unless the operation has a verified idempotency design. Handle the `{ data, error }` result contract used by `supabase-js` instead of assuming every failure throws."
+      },
+      {
+        "line": 68,
+        "text": "- For Edge Functions, follow current runtime guidance, pin or constrain imports according to repository policy, and use only `/tmp` for ephemeral local writes."
+      },
+      {
+        "line": 79,
+        "text": "For Auth/RBAC changes, include negative cases for wrong owner/tenant/role, stale or revoked state when applicable, and the direct path that could bypass a server API. A green server-route test does not prove database authorization."
+      },
+      {
+        "line": 83,
+        "text": "- Prefer local Supabase or an isolated development project for implementation and destructive verification."
+      },
+      {
+        "line": 85,
+        "text": "- Do not connect Supabase MCP to production data. If exceptional production inspection is explicitly authorized, scope to one project, enable read-only mode, restrict feature groups, review every call, and treat returned data as untrusted content."
+      },
+      {
+        "line": 86,
+        "text": "- Discover available MCP tools instead of assuming a runtime-specific namespace. Project-scoped mode intentionally omits account-level tools."
+      },
+      {
+        "line": 107,
+        "text": "- Supabase-specific architecture drivers: `references/architecture.md`"
+      },
+      {
+        "line": 118,
+        "text": "1. Identify the requested mode, target environment, downstream consumer, and whether mutations are authorized."
+      },
+      {
+        "line": 119,
+        "text": "2. Discover repository conventions, installed Supabase and framework versions, migration model, data ownership, and trust or authorization boundaries."
+      },
+      {
+        "line": 120,
+        "text": "3. Classify whether the high-risk backend matrix applies; if it does, load it and identify the Supabase-owned rows, cross-layer handoffs, and missing authority before designing or changing the boundary."
+      },
+      {
+        "line": 122,
+        "text": "5. Stop on unresolved conflicts that would change data ownership, tenant isolation, authorization, production safety, migration strategy, or external contracts; otherwise record a bounded assumption."
+      },
+      {
+        "line": 127,
+        "text": "- Applicable Supabase-owned `HRB-*` rows have an exact database contract, negative oracle, evidence contour, and owner, or the result remains partial or blocked."
+      },
+      {
+        "line": 131,
+        "text": "Produce the smallest complete Supabase result and match evidence to the real boundary being claimed."
+      },
+      {
+        "line": 137,
+        "text": "5. Report status as completed, partial, or blocked with decisions, artifacts, Supabase boundaries, evidence, and remaining risk."
+      },
+      {
+        "line": 141,
+        "text": "- Structural artifacts, generated files, mocks, and happy-path tests are not treated as proof of a broader runtime or security capability."
+      },
+      {
+        "line": 143,
+        "text": "- Every applicable Supabase-owned matrix row maps to a direct SQL, RPC, RLS, Storage, Realtime, or production-equivalent check that would fail for the prohibited outcome."
+      },
+      {
+        "line": 145,
+        "text": "## Interop priority"
+      },
+      {
+        "line": 147,
+        "text": "- **system topology, service decomposition, deployment model, ASRs, and architecture trade-offs:** architecture-engineer. architecture-engineer owns general topology decisions; supabase-engineer supplies Supabase-specific constraints and verifies their integration."
+      },
+      {
+        "line": 148,
+        "text": "- **formal vulnerability review, severity, exploitability, and security verdicts:** security-reviewer. security-reviewer owns the independent audit; supabase-engineer owns Supabase implementation guidance and remediation inputs."
+      },
+      {
+        "line": 149,
+        "text": "- **framework lifecycle, rendering, middleware or proxy conventions, and language or type-system semantics:** the relevant framework or language skill. framework and language skills own their APIs; supabase-engineer owns Supabase client, session, data, and trust-boundary integration."
+      },
+      {
+        "line": 150,
+        "text": "- **PostgreSQL query planning, indexing, schema performance, and database configuration:** supabase-postgres-best-practices. PostgreSQL guidance owns database performance details; supabase-engineer adds Data API, RLS, Auth, and platform constraints."
+      },
+      {
+        "line": 151,
+        "text": "- **GDPR or other privacy-law assessment, legal basis, rights, retention, and compliance verdicts:** gdpr-compliance. gdpr-compliance owns regulatory conclusions; supabase-engineer implements accepted data-handling controls without claiming legal compliance."
+      },
+      {
+        "line": 155,
+        "text": "- **high** — Do not treat memory-store tests, mocked API tests, or direct table reads as evidence for a production Supabase/RLS path that is supposed to be RPC-first."
+      },
+      {
+        "line": 158,
+        "text": "- **high** — A migration file, policy definition, generated types, mock, or compiler success is substrate; it cannot close a runtime, authorization, reliability, or end-to-end capability claim by itself."
+      },
+      {
+        "line": 163,
+        "text": "For Supabase-backed API work, design notes must name tables, RPCs, grants/RLS, service-role exceptions, direct table paths, validation/constraint mapping, audit/history payload profile, and tests before migration application. When the high-risk backend trigger applies, this output is organized by the applicable `HRB-*` rows and includes a row-by-row executable test inventory."
+      },
+      {
+        "line": 178,
+        "text": "- affected Supabase trust, data, API, migration, and environment boundaries;"
+      },
+      {
+        "line": 180,
+        "text": "- remaining risks, blockers, and downstream owner when a handoff is required."
+      },
+      {
+        "line": 183,
+        "text": "- [Architecture](references/architecture.md) — Read this before making a topology or service-boundary recommendation for a Supabase-backed system."
+      },
+      {
+        "line": 185,
+        "text": "- [Client Setup](references/client-setup.md) — Read this for browser, SSR, request-scoped, or elevated Supabase client setup; verify framework and package versions first."
+      },
+      {
+        "line": 190,
+        "text": "- [Migrations Cli](references/migrations-cli.md) — Read this before creating, diffing, replaying, or deploying database changes with the Supabase CLI."
+      },
+      {
+        "line": 203,
+        "text": "- [High-risk Backend Contract](references/high-risk-backend-contract.md) — Read this for high-risk Supabase-backed commands or reads involving a public API, persistent state, authorization, concurrency, money, external resources, or required audit evidence."
+      },
+      {
+        "line": 208,
+        "text": "- Keep all mandatory supabase-engineer guidance inside this skill folder."
+      }
+    ],
+    "claim": "Static direct-owner comparison only; no fresh multi-skill execution from this audit."
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "kind": "literal workflow body inside array expression; source runtime probe only",
+  "source": "baseline-packages/payload/references/advanced.md",
+  "source_sha256": "b28ab2787cb974f98a6aa077af8e6265da85a9d7bde6b764214ebfd69c15a293",
+  "lines": [
+    134,
+    154
+  ],
+  "adaptations": [
+    "Wrap unchanged object/trailing comma in export default [body][0]",
+    "Supply observable local no-op sendEmail/createTasks function definitions; no external actions"
+  ],
+  "runtime": "pending",
+  "projection_sha256": "4025bd5995d635d9a7dca88cba13e961a56bb9070dfa00b53ff1105a50cd1b3d"
+}

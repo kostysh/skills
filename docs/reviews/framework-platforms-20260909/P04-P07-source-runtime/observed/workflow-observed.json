@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "input": {
+      "userId": "synthetic-user-1"
+    },
+    "completedAt": null,
+    "totalTried": 1,
+    "hasError": true,
+    "error": {
+      "name": "Error",
+      "cancelled": false,
+      "message": "job.runInlineTask is not a function",
+      "stack": "Error: job.runInlineTask is not a function\n    at runJob (/tmp/framework-platforms-20260909/fixtures/payload-atomic/node_modules/payload/src/queues/operations/runJobs/runJob/index.ts:73:13)\n    at async runSingleJob (/tmp/framework-platforms-20260909/fixtures/payload-atomic/node_modules/payload/src/queues/operations/runJobs/index.ts:422:24)\n    at async Promise.all (index 0)\n    at async runJobs (/tmp/framework-platforms-20260909/fixtures/payload-atomic/node_modules/payload/src/queues/operations/runJobs/index.ts:503:21)\n    at async Object.run (/tmp/framework-platforms-20260909/fixtures/payload-atomic/node_modules/payload/src/queues/localAPI.ts:304:12)\n    at async <anonymous> (/tmp/framework-platforms-20260909/fixtures/payload-atomic/workflow.mjs:28:18)"
+    },
+    "log": [],
+    "workflowSlug": "onboardUser",
+    "taskSlug": null,
+    "queue": "default",
+    "waitUntil": null,
+    "processing": false,
+    "updatedAt": "2026-09-09T14:02:13.822Z",
+    "createdAt": "2026-09-09T14:02:13.804Z",
+    "taskStatus": {}
+  }
+]

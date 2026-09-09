@@ -1,0 +1,71 @@
+{
+  "preparedAt": "2026-09-09T13:18:14.044531+00:00",
+  "scope": "Preparation only; no runtime, package install, Docker or database execution",
+  "servicesRequirementsBeforeSha256": "9887a28f0cd2820dae119d0a7da7427e2c19db744f9d0ddef637734dfe5a7838",
+  "servicesRequirementsAfterSha256": "bcc5ee607eeabb713748b7f425624026003998258eb844843d27b8c5b9580b96",
+  "newFiles": {
+    "supabase-services/task.txt": "7cd8f38bc835c10629392e42f958dad0d2356925e9d9f43cc11ec66014e9e69b",
+    "supabase-cli-current/task.txt": "30ea72c21a7998cc7c186dfafd6ffb88c34f0de79f1eae22daf59bc6343c405e",
+    "supabase-cli-current/REQUIREMENTS.md": "1ee2a060a70f51cabb4d286f4cb9a66e558f8365235103efb0dae46f8ca6db15",
+    "supabase-cli-current/supabase/config.toml": "12e73cf458cb2b20269825ec86a3783758edbfdf24d6835e3fba449831d159bc",
+    "supabase-cli-current/supabase/schemas/posts.sql": "1b60eb070c387f1c3e8429d91373c505ed539a6eab24f91757cafe398e5fbdcf",
+    "supabase-cli-current/supabase/migrations/20260101000000_posts.sql": "1b60eb070c387f1c3e8429d91373c505ed539a6eab24f91757cafe398e5fbdcf",
+    "supabase-cli-current/source/rows.json": "f5767705cb6793481cc904c120efc5cdd753ba5c6249f73a8888b70dcd2bd43c",
+    "supabase-cli-current/toolchain.json": "3da0c58309c5fdcd2e408155e36b9a1c64796ba8c2510e750b33884dfcf4003b",
+    "supabase-cli-legacy/task.txt": "86a451a77e1f1f237e7ab29499931a6368cb5cecf3d4b4667212733d07d12500",
+    "supabase-cli-legacy/REQUIREMENTS.md": "760475af9a1026c7768cb9ff780bbec035ee0f5551c2d37664235b5611fdb277",
+    "supabase-cli-legacy/supabase/config.toml": "4389fbbcb0a76c8bdec99a170ce82baf87c1323754b6915cdf404959e4f5f15f",
+    "supabase-cli-legacy/supabase/schemas/posts.sql": "1b60eb070c387f1c3e8429d91373c505ed539a6eab24f91757cafe398e5fbdcf",
+    "supabase-cli-legacy/supabase/migrations/20260101000000_posts.sql": "1b60eb070c387f1c3e8429d91373c505ed539a6eab24f91757cafe398e5fbdcf",
+    "supabase-cli-legacy/source/rows.json": "f5767705cb6793481cc904c120efc5cdd753ba5c6249f73a8888b70dcd2bd43c",
+    "supabase-cli-legacy/toolchain.json": "0a1c9209c4ec2017c169844658f843f5162a1df8ea7a4c505da9fe814441c77f",
+    "workers-compatibility/task.txt": "e607d535b963e20a8ecbd929d4333f4d1498945b81f5d6ba8e15011749acc405",
+    "workers-compatibility/REQUIREMENTS.md": "52132504c437412e0224d482efd8ae4ac098df3c3dd9379b220edf07f0624de8",
+    "workers-compatibility/package.json": "8ab7156eb61c0c9f7cd3c0be9db698dc41239b03a4911c1ab2879c07718a31d5",
+    "workers-compatibility/required/src/index.mjs": "144f5875d4dc1dceb4c55202cebe4dd2f462c6c0156e03a7c55d0bb0eedf4940",
+    "workers-compatibility/required/wrangler.toml": "320641949935eb78850ca1c6504265e6299f907bcb1f91c68020c92325d162ed",
+    "workers-compatibility/disabled/src/index.mjs": "144f5875d4dc1dceb4c55202cebe4dd2f462c6c0156e03a7c55d0bb0eedf4940",
+    "workers-compatibility/disabled/wrangler.toml": "5fb6f76c348009e2082a924a91be2ec7db717c5d41f322d07c6639e2aede9600",
+    "workers-compatibility/diagnostics/node-api.mjs": "8d7e05cd4b71db9b14d8e4575dab8dae57fe9b7cd1a8c8ba2bb3c291ca6c889a",
+    "workers-compatibility/inputs.json": "5155a5f4d7b21bbc2e5b76ac7fb913624e464bdd880fc054c07a4802e7d07643",
+    "supabase-partial-evidence/task.txt": "c5d45f6779621815a9a4bc85206d3ff0ff558c96df735acb49147b6d5cdd64eb",
+    "supabase-partial-evidence/CASE_FACTS.md": "ad239aefa7e9166765a3628eb1367388612b13be1e87a045465f297279766908",
+    "supabase-partial-evidence/callback.mjs": "321d249163a1502e8b18eae3ad6ed7b37cd5c2eb9e026e9fd2c90caa4d974c4c",
+    "supabase-partial-evidence/realtime.mjs": "38f76681c98096b01321c1d2876f5d2eb1271b826b936855d70abeac2d10caae",
+    "supabase-partial-evidence/webhook-definition.sql": "7f46731a4c45ac6e4f96e9d3c093f6eb1d532cc87741fc63f62123f4de8478a8",
+    "supabase-readonly-authority/task.txt": "e95d4754aeb4aa1978904d69c8f0b1334b06d73e1556815d6d3c18f2e0a80b06",
+    "supabase-readonly-authority/AUTHORITY.md": "d8b1890632fcc9aebb2fceb6c17746c8727c8ee40ad10ae859ebd2f8ef50cc36",
+    "supabase-readonly-authority/connector-catalog.json": "06438bd61c254b16163593f97b9d2d56c6442fd23607121fb737275c0a8e3c1e"
+  },
+  "sourceDatasetHashes": {
+    "supabase-services/source/vectors.json": "5e73587832712b992ec248b953c6249f0009caf572f37bdaa8a7000c9464bbf2",
+    "supabase-services/source/articles.json": "f55f5e9164f1025f55b6d77af74e89a6de2167aca4004f0625cc5564f3110c12"
+  },
+  "readiness": {
+    "supabase-services": "source reviewed; pending supplied services, credentials, pgvector and locked install",
+    "supabase-cli-current": "pending platform declarative baseline, bounded Docker infrastructure and clean runtime",
+    "supabase-cli-legacy": "pending exact2.39.2 binary/help, Docker API resource enforcement and isolated seeded runtime; preserved historical workflow only",
+    "workers-compatibility": "pending locked Wrangler4.130.0 install and available bounded local runtime",
+    "supabase-partial-evidence": "tabletop inputs prepared; no actual delivery boundary",
+    "supabase-readonly-authority": "tabletop inputs prepared; no actual connector execution"
+  },
+  "staticChecks": {
+    "jsonAndTomlParsed": [
+      "supabase-services/package.json",
+      "supabase-services/source/vectors.json",
+      "supabase-services/source/articles.json",
+      "supabase-cli-current/toolchain.json",
+      "supabase-cli-current/source/rows.json",
+      "supabase-cli-current/supabase/config.toml",
+      "supabase-cli-legacy/toolchain.json",
+      "supabase-cli-legacy/source/rows.json",
+      "supabase-cli-legacy/supabase/config.toml",
+      "workers-compatibility/inputs.json",
+      "workers-compatibility/package.json",
+      "workers-compatibility/disabled/wrangler.toml",
+      "workers-compatibility/required/wrangler.toml",
+      "supabase-readonly-authority/connector-catalog.json"
+    ],
+    "packageInstallationOrRuntimeExecuted": false
+  }
+}

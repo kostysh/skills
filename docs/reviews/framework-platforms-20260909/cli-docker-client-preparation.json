@@ -1,0 +1,7 @@
+{
+  "source": "/usr/bin/docker",
+  "target": "/tmp/framework-platforms-20260909/tools/docker",
+  "sha256": "34cd0de16cc0b3d51a04188372b20f08f5f9c83553a34ad3a214e8adeb4b1294",
+  "reason": "Current CLI spawns Docker client; isolated runner gets public tools read-only, no host socket. Only libc dependency observed; container execution pending.",
+  "runtime": "pending"
+}

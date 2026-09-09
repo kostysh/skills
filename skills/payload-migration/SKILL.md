@@ -1,262 +1,160 @@
 ---
 name: payload-migration
-description: Migrate content from WordPress, Contentful, Strapi, Sanity,
-  Webflow, CSV/JSON, or other CMSs into Payload CMS. Use to analyze source data,
-  design collections, map fields, resolve relationships, media, rich text, and
-  localization, and plan a reliable import strategy.
-compatibility: Portable documentation-only migration planning skill based on the
-  upstream payloadcms/skills cms-migration guidance. Use payload for general
-  Payload implementation after the migration model is agreed.
+description: Migrate WordPress, Contentful, Strapi, Sanity, Webflow or CSV/JSON
+  content into Payload. Analyze exports, design schemas, map fields, relations,
+  media, rich text and locales; execute authorized imports, recover reruns and
+  reconcile results. Use payload for target runtime mechanics.
+compatibility: Portable documentation-only migration skill. Execution needs the
+  supplied source, installed Payload environment and operation authority; no
+  bundled importer or universal source CMS converter is claimed.
 metadata:
-  source-version: 0.1.1
+  source-version: 0.1.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: d0e580e6d02f9e72ba616b0e0c2a1f95b96a194d5aa43b71ba016a4676ee50a1
+  skillforge-source-hash: c41fe7a14d0c6c8d1b1a8e653d0db669090e16a4690d27b0691a98d389986458
 ---
 
 # payload-migration
 
 ## Start here
 
-1. Confirm the task is about migrating content or schema into Payload CMS.
-2. Ask for representative source data, schema, or export samples before proposing collection configs; one happy-path row is not enough when edge cases matter.
-3. Use a config-first workflow: design and confirm Payload collections before planning or writing an import.
-4. Load the field reference when choosing Payload field types or mapping CMS-specific patterns.
-5. Do not claim data has been migrated until import code or a migration run has been verified against real or representative data.
+1. Establish the requested outcome (analysis, schema, script, import or reconciliation), source/version/format, target environment and existing authority from the conversation and project.
+2. Reuse accepted schema, fixed enums, source mapping and execution approvals; do not restart confirmation when they are already supplied.
+3. Inspect representative and edge-case source records, the accepted model, installed Payload/editor/adapter packages and declared project commands; missing facts stop only dependent work.
+4. Load the field reference when mapping data or choosing target config; retain the source namespace and full expected identity set for execution.
+5. Continue through the authorized import, recovery and reconciliation scope; report only the boundary actually exercised.
 
 ## When to use this skill
 
-- Migrating content from WordPress, Contentful, Strapi, Sanity, Webflow, custom CMSs, CSV, JSON, API responses, or database schemas into Payload CMS.
-- Mapping source fields to Payload text, textarea, richText, number, date, relationship, upload, array, blocks, group, select, json, auth, or upload collection configs.
-- Designing migration order, source-ID to Payload-ID mapping, media handling, rich text conversion, localization, and seed/import scripts after collection configs are confirmed.
+- Migrating WordPress, Contentful, Strapi, Sanity, Webflow, custom CMS, CSV, JSON, API or database content into Payload.
+- Designing or implementing field mappings, collections/globals, source identity, relationships, media, rich text and locale conversion.
+- Implementing or running authorized imports, recovering interrupted runs, rerunning safely and reconciling migrated data.
 
 ## When NOT to use this skill
 
-- The task is general Payload application development with an existing schema; use payload.
-- The migration target is not Payload CMS.
-- The user only needs generic ETL, database import, or data cleaning with no Payload collection or field design.
-- The user asks to execute a destructive import but source data, target environment, rollback, or verification path is unclear; stop and ask.
+- General Payload development unrelated to source migration; use payload for target runtime mechanisms.
+- The migration target is not Payload CMS, or the task is generic ETL without a Payload boundary.
+- A pure frontend rendering/cache task belongs to nextjs; pair it when migration acceptance needs a rendered page.
 
 ## Overview
 
-Interactive workflow to design Payload collections from source CMS data. Config-first approach: establish the data structure through conversation before any data import.
+The consumer is the owner of the target Payload application. Deliver the requested migration result: source-grounded schema/transformations when that is the scope, or persisted and reconciled content when execution is authorized. Reuse accepted choices and permissions throughout follow-ups.
 
-## Workflow
+## Version and minimum input boundary
 
-```
-Start
-  v
-Ask for data sample
-  v
-Analyze data shape
-  v
-Propose collection config
-  v
-User reviews --------------+
-  |                        |
-  |-- changes needed ----> Adjust config ---> (back to User reviews)
-  |
-  `-- looks good ----> Config confirmed
-                            v
-                    More collections? ------+
-                            |               |
-                            |-- yes ---> (back to Ask for data sample)
-                            |
-                            `-- no ----> All collections confirmed
-                                              v
-                                      Discuss migration approach
-                                              v
-                                            Done
-```
+The target examples were checked against **Payload 3.88.0 stable on 2026-09-09**. **4.0.0-canary.33** is a separate prerelease. Inspect the actual installed Payload, editor, database and storage packages; matching `@payloadcms/*` versions and peer compatibility matter. Preserve an existing supported v2 project and its initialization/storage/CLI contracts; do not upgrade it to make a v3 example work. Use exact installed types and official version-matched docs for another version.
 
-## Phase 1: Data Analysis
+For analysis, samples/schema plus the requested mapping are enough to make supported progress. Actual import additionally needs source access and namespace, accepted target model/environment, write authority, identity/update policy and a verification path. Destructive import, production mutation and cutover require that operation's authority. They do not require new permission when the current conversation already provides it. A missing expert/tool/current source limits only the dependent conclusion; this local method remains usable for supported data work.
 
-When user provides data (JSON, CSV, or describes their schema):
+## Durable identity and recovery
 
-1. **Identify field types** - text, number, date, relationships, media, rich text
-2. **Spot patterns** - IDs, timestamps, nested objects, arrays
-3. **Note relationships** - foreign keys, embedded refs, linked content types
-4. **Flag ambiguities** - fields that could be multiple types, unclear purposes
+Use the source installation/space/dataset/environment, content type and source ID as a deterministic identity; include locale only if the accepted target stores locales as separate documents. Source IDs from different systems must not collide. Preserve the source snapshot/revision or export hash so a resumed run does not silently mix changing datasets.
 
-## Phase 2: Propose Collection Config
+Prefer an existing importer/identity field. Otherwise persist a unique source key with the target document or an equivalent transactionally safe durable map. The map records target collection/ID and per-record/per-locale/per-phase state, source revision/hash, retries and unresolved errors. A separate checkpoint file alone is insufficient: a crash after the target commit but before the checkpoint must recover the existing target through its source key. Uniqueness must also resolve concurrent create races. Advance a durable checkpoint only after persisted work is known; on uncertain responses reread by identity before retrying. Use a single writer unless the accepted importer handles concurrency.
 
-Present a Payload collection config based on analysis:
+State the policy for existing target records: create missing, update the accepted fields, skip unchanged, retry failed phases, and surface conflicts with target edits. Do not delete records or replace unrelated data because they are absent from the current source sample. A retry is not an unbounded loop; distinguish transient transport failures from malformed source, schema violations, denied access and unresolved mappings.
 
-```typescript
-// Example output format
-export const Posts: CollectionConfig = {
-  slug: 'posts',
-  fields: [
-    { name: 'title', type: 'text', required: true },
-    { name: 'content', type: 'richText' },
-    { name: 'author', type: 'relationship', relationTo: 'users' },
-    // ...
-  ],
-}
-```
+## Relationships, media, rich text and locales
 
-Explain your reasoning for each field choice. When something could go multiple ways (group vs JSON, text vs textarea, select vs relationship), ask rather than assume.
+Import entities/media to obtain real target IDs, then resolve cyclic references in a second pass. Required cyclic fields may need an already accepted staging/draft model or an atomic adapter-supported strategy; do not silently weaken schema or insert fake IDs. Preserve relation collection/cardinality, ordered arrays and block discriminators. Keep unresolved references in the failure ledger.
 
-## Phase 3: Iterate with User
+For media, persist source identity and returned upload ID, validate response status and bytes/type/metadata, and recover transient failures without re-upload duplicates. Preimport media before converting embedded editor uploads and internal links. External URLs are not upload relationships. Use the installed editor's supported converter/nodes: HTML, Markdown, Contentful AST, Strapi Blocks and Sanity Portable Text are different inputs. Preserve unknown nodes/raw source as diagnostic material when permitted and mark required content partial; do not silently flatten or label raw HTML as Lexical.
 
-Work through uncertainties: required fields, hasMany relationships, rich text vs HTML, custom timestamps vs built-in. Continue until the user confirms the config.
+Write each supplied locale explicitly and reread it with `fallbackLocale: false`; a fallback value must not disguise a missing translation. Preserve the difference between missing, explicit null/empty and a provided value under the accepted mapping. Retain source status/privacy/timezone semantics instead of assuming every status maps to Payload draft/published.
 
-## Phase 4: Additional Collections
+## Verification and handoff
 
-After each confirmation, ask:
+Freeze or account for source changes and enumerate all pages. Reconcile complete expected source-key sets against authoritative target queries, including records missed by the checkpoint. Compare counts per collection and explicit locale; detect duplicates, missing/extra imports, failed media, unresolved relations and content differences. Sampling is useful for visual checks but not proof of full ID coverage.
 
-> "Are there other content types we should create collections for?"
+A reliable-rerun claim needs an interrupted/partial run followed by recovery and a repeat run with unchanged source; inspect persisted state for duplicates and omissions. Test the same actor and data path. Payload owns target adapter/API/access mechanisms, TypeScript/test skills own language/test mechanics, and nextjs owns frontend rendering/cache. Supply IDs, expected content and requested routes to those owners and consume their actual observations; their config or build cannot replace migration reconciliation.
 
-If yes, loop back to Phase 1 with new data sample.
+The final result names the requested and completed scope, source/target versions/environment, created/updated/skipped/failed counts, full identity reconciliation, unresolved content, rerun/check results and evidence limits. Report partial until every required record, relation, locale, media and node is accounted for. A dry run, generated script, local database import, public API read and rendered page are distinct evidence boundaries.
 
-Common related collections to prompt for:
-- Media/uploads
-- Users/authors
-- Categories/tags
-- Settings (global)
+## Schema decisions
 
-## Phase 5: Migration Approach
-
-Only after ALL collections are confirmed, discuss data import:
-
-1. **Order matters** - which collections have no dependencies? Migrate those first
-2. **Relationship mapping** - how to resolve source IDs to Payload IDs
-3. **Media handling** - download/re-upload vs external URLs
-4. **Rich text** - HTML conversion needs or keep raw
-
-Offer to generate a seed script or walk through manual import.
-
-## Things to Clarify
-
-Throughout the process, watch for these:
-
-- **ID references** - are they relationships to other collections?
-- **Image/file URLs** - upload fields or keep as external URLs?
-- **Nested objects** - group, array, or blocks?
-- **Localization** - any fields need per-locale values?
-- **Access control** - who can read/write this collection?
-- **Related content types** - categories, tags, authors that need their own collections?
-
-## Critical: Select vs Relationship
-
-**This is the most common migration mistake.** Data that looks static often needs to be dynamic.
-
-When you see repeated string values (categories, tags, types, statuses):
-
-```json
-{ "category": "Technology" }
-{ "category": "News" }
-{ "category": "Technology" }
-```
-
-**Don't assume it's a select field.** Ask:
-
-> "I see `category` has values like 'Technology', 'News'. Should this be:
-> - A **select field** with fixed options (values won't change)
-> - A **relationship** to a Categories collection (users can add/edit/remove categories later)"
-
-**Default to relationship** for anything that looks like:
-- Categories, tags, topics, labels
-- Authors, assignees, reviewers
-- Statuses beyond simple draft/published
-- Types that might expand over time
-
-**Use select only for:**
-- Truly fixed enums (yes/no, draft/published/archived)
-- Options defined by business logic, not content (payment status, priority levels)
-- Values that would break functionality if changed (role types with code dependencies)
-
-If creating a relationship, remember to add the related collection (Categories, Tags, etc.) to the migration plan.
-
-## Reference Documentation
-
-- **[PAYLOAD-FIELD-REFERENCE.md](references/payload-field-reference.md)** - Complete Payload field type schemas with examples
-
-## Common Pitfalls
-
-| Issue | How to Handle |
-|-------|---------------|
-| User provides partial data | Ask for more samples, especially edge cases |
-| Unclear relationships | Ask user to describe how content types connect |
-| Rich text ambiguity | Clarify: Lexical editor, Slate, or store raw HTML |
-| Missing media collection | Always confirm upload collection exists before referencing |
-| Overly complex nested data | Consider flattening or using blocks instead of deep groups |
+Use relationships for editor-managed categories/tags/authors and select for accepted fixed enums. Repetition in a sample alone does not establish either. Do not reopen an accepted enum. Model required related collections and globals, preserving nesting, array order and accepted cardinality. Read [Payload Field Reference](references/payload-field-reference.md) for field and source-format details.
 
 ## Workflow stages
 
-### Workflow stage: Analyze source data
+### Workflow stage: Establish source and accepted target
 
-Understand the source content model, field shapes, relationships, and edge cases before proposing Payload config.
+Resolve the source contract and the existing target model without inventing missing semantics.
 
-1. Inspect sample JSON, CSV headers, API responses, database schemas, or user-provided CMS descriptions.
-2. Identify field types, repeated patterns, IDs, timestamps, nested objects, arrays, media URLs, rich text, localization, and relationship candidates.
-3. Flag ambiguous fields instead of silently choosing a Payload type.
-
-Validation:
-
-- The analysis names source content types, candidate relationships, and missing samples or edge cases.
-- Ambiguities that affect Payload field choice are explicit.
-
-### Workflow stage: Propose collection config
-
-Produce Payload collection configs that match the source model and can be reviewed before data import.
-
-1. Use Payload field types from the field reference and local project conventions when available.
-2. Prefer relationships for dynamic content concepts such as categories, tags, authors, assignees, topics, and labels unless the user confirms they are fixed enums.
-3. Explain uncertain choices and ask for confirmation when select vs relationship, rich text format, media handling, nesting, or localization is unclear.
+1. Identify source system/version/API or export shape, identity namespace, content types, all pages, source snapshot boundaries and expected IDs.
+2. Identify null/absent values, timestamps and units, statuses/privacy, relationships, arrays/blocks, media, editor format and explicit locale variants.
+3. Reuse accepted collections/globals, cardinality, enums and constraints; propose changes only for a material uncovered source requirement.
+4. Ask only for missing or conflicting decisions that affect the dependent mapping or action; continue supported inspection or pure transformation.
 
 Validation:
 
-- Proposed configs are copy-paste-ready TypeScript or clearly marked pseudocode when project context is missing.
-- Related collections needed by relationship fields are included in the migration model.
+- The model includes the required related collections/globals and preserves accepted choices.
+- Unsupported source formats or nodes remain explicit gaps, not invented conversions.
 
-### Workflow stage: Confirm complete model
+### Workflow stage: Prepare schema and transformations
 
-Iterate until all collections and globals needed for the migration are agreed.
+Produce version-matched target config and transformations for the agreed source model.
 
-1. Incorporate user feedback into the collection configs.
-2. Ask whether more content types, media, users/authors, categories/tags, or settings/globals must be modeled.
-3. Do not move to import planning until the user confirms the collection set.
-
-Validation:
-
-- The final model lists every collection/global needed for the migration.
-- Unresolved schema decisions are either closed or explicitly deferred.
-
-### Workflow stage: Plan import
-
-Define an import approach that respects dependency order, identity mapping, media, rich text, localization, and verification.
-
-1. Order collections by dependency and identify source-ID to Payload-ID mapping storage.
-2. Define media download/re-upload versus external URL handling.
-3. Define rich text conversion strategy and any fields that must remain raw.
-4. Offer a seed/import script only after the model is confirmed.
+1. Use exported Payload types and installed version-specific APIs; pair payload for target config/access/adapter behavior and preserve existing supported legacy versions.
+2. Prefer relationships for editable content vocabularies and select for accepted fixed enums; sample repetition alone does not decide either.
+3. Define source-ID to target-ID keys, media import and editor-specific node/link conversion, locale writes and the create/update/retry policy before executing dependent writes.
+4. Validate the actual config and pure transformations with declared project checks; label incomplete fragments and unsupported values honestly.
 
 Validation:
 
-- The plan separates generated configs from actual data import behavior.
-- Verification includes representative migrated records, relationships, media, and rich text where applicable.
+- Config, transformed data and required host dependencies are distinguished from an imported dataset.
+- Genuine unresolved schema decisions remain with the owner; existing accepted decisions need no repeated approval.
+
+### Workflow stage: Execute and recover the authorized import
+
+Persist the intended dataset and recover partial failures without duplicates or lost relationships.
+
+1. For analysis-only or script-only tasks, stop at the requested artifact. Otherwise continue using existing authorization for the named target; production/destructive actions need their own existing authority.
+2. Import through the installed public Payload API or accepted project importer, using durable source identity, recoverable checkpoints and an explicit failure/skipped ledger.
+3. Import entities and media before resolving cyclic relationships and embedded links; use a second pass where necessary and never invent placeholder IDs to satisfy required fields.
+4. Recover interruption and transient failures using stable identities and source versions; verify persisted success before advancing checkpoints or retrying writes.
+5. Preserve unrelated target records; deletion, overwriting user edits, source removal and cutover require their own accepted policy.
+
+Validation:
+
+- A retry can locate already-persisted records even after a crash between target write and checkpoint update.
+- Failed media, unresolved links/nodes and missing locale values are visible; a successful process exit does not establish completeness.
+
+### Workflow stage: Reconcile and report
+
+Establish which source content survived the actual target boundary and what remains incomplete.
+
+1. Compare full expected and observed source-identity sets and per-collection counts; detect missing, extra and duplicate imports independently of the in-memory checkpoint.
+2. Reread content, relation IDs/cardinality/order, media bytes/metadata and locale fields with fallback disabled; compare explicit source values and agreed transforms.
+3. Exercise interrupted or repeated runs when reliable rerun is claimed, and confirm they do not duplicate or silently omit data.
+4. When requested, follow migrated content through public API and the consuming frontend after reload; pair nextjs for routing/cache/rendering and retain exact source-to-page evidence.
+5. Report source/target versions, actions and target, counts and identity reconciliation, failures, rerun results, checks and unverified boundaries with the next supported action.
+
+Validation:
+
+- Completion applies only to the authorized dataset and requested evidence boundary; representative records alone do not prove a full import.
+- Any unresolved required record, relation, media, locale or rich-text node keeps the migration partial.
 
 ## Interop priority
 
-- **general Payload project implementation after schema decisions are made:** payload. payload-migration owns source-to-Payload mapping; payload owns ongoing Payload app development.
-- **TypeScript language, module structure, type generation, and compile errors in import scripts:** typescript-engineer. This skill owns migration modeling; TypeScript language/toolchain rules belong to typescript-engineer.
+- **target Payload schema, Local API, access, hooks, adapters and transactions:** payload. payload supplies target runtime mechanisms and API/DB evidence; this skill retains extraction, transformation, execution, rerun and reconciliation ownership.
+- **TypeScript language, module structure, type generation, and compile errors in import scripts:** typescript-engineer. This skill owns migration semantics; TypeScript language/toolchain rules belong to typescript-engineer.
 - **deterministic tests for import scripts, fixtures, and parity checks:** typescript-test-engineer. This skill defines migration verification targets; test design belongs to typescript-test-engineer.
+- **consuming frontend routing, rendering, cache and reload:** nextjs. Provide migrated IDs/URLs and expected content; consume actual page readback without treating build/cache config as rendered migration evidence. If unavailable, report that frontend boundary unverified and finish supported data work.
 
 ## Gotchas
 
 - **high** — Repeated strings such as categories, tags, authors, topics, or labels often need relationship collections, not select fields.
 - **high** — Partial source data can hide nullable fields, mixed types, relationship cardinality, rich text formats, media variants, and localization.
-- **high** — Collection config approval is not a completed migration; import code or execution needs separate verification.
+- **high** — Schema or script creation is not migrated data; complete the authorized execution and full reconciliation before claiming an import complete.
 - **medium** — Rich text sources may be HTML, Markdown, Lexical JSON, Slate JSON, or vendor-specific ASTs; choose a conversion path explicitly.
 - **medium** — Media URLs are not equivalent to Payload upload relationships unless download, upload, metadata, and failure handling are planned.
 
 ## Policies
 
 ### Config-first policy
-Design and confirm the Payload content model before writing or running data import code.
+Establish the accepted target model before dependent writes; reuse prior acceptance and authority. Missing or conflicting schema decisions stop only the affected mapping/action, not independent work.
 
 ### Ambiguity policy
-Ask when a source field could reasonably map to multiple Payload types; do not hide irreversible modeling choices inside generated config.
+Ask when a material choice lacks an accepted source; do not reopen an already accepted enum, cardinality or mapping merely because another design is possible.
 
 ### Capability claims policy
 Distinguish schema design, import planning, generated scripts, and verified migrated data in final reports.

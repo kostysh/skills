@@ -1,0 +1,27 @@
+{
+  "name": "payload",
+  "version": "2.32.3",
+  "engines": {
+    "node": ">=14"
+  },
+  "peerDependencies": null,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": null,
+  "bin": {
+    "payload": "bin.js"
+  },
+  "dist": {
+    "shasum": "862af7486f43ce02bd34df7332b4be2c5db814ae",
+    "tarball": "https://registry.npmjs.org/payload/-/payload-2.32.3.tgz",
+    "fileCount": 3039,
+    "integrity": "sha512-q5zSx3Z08mOSU783Qqe9wBS3lG6M0p16FtUudav3EG+m/KrjN48ddkpdjkNsPWX06uf3GdT7jbD0ZArPCOOPtA==",
+    "signatures": [
+      {
+        "sig": "MEYCIQDhViDxJ0S4A3mUxuhpoH5a2wAZslgmi5oSW1Gw/f+ZgwIhAIzBqgRJxd+fodUztOxHrgNpl/2pjGcRJt59O9HHvgxg",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      }
+    ],
+    "unpackedSize": 10681393
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "framework-payload-atomic-probe",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "probe:atomic": "node --import tsx atomic.mjs",
+    "probe:literal": "node --import tsx literal.mjs",
+    "probe:workflow": "node --import tsx workflow.mjs"
+  },
+  "dependencies": {
+    "payload": "3.88.0",
+    "@payloadcms/db-sqlite": "3.88.0",
+    "sharp": "0.34.3",
+    "graphql": "16.11.0"
+  },
+  "devDependencies": {
+    "tsx": "4.20.5"
+  }
+}

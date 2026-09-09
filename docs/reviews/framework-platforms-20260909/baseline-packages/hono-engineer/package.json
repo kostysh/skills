@@ -1,0 +1,10 @@
+{
+  "name": "@kostysh/hono-engineer",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Docs-contract tests for the HONO engineer skill.",
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/docs-contract.test.mjs"
+  }
+}

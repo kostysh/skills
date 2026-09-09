@@ -1,0 +1,42 @@
+{
+  "date": "2026-09-09T16:23:14.008443+00:00",
+  "sources": [
+    {
+      "url": "https://pnpm.io/10.x/cli/run",
+      "final_url": "https://pnpm.io/10.x/cli/run",
+      "file": "candidate-ned-official-pnpm10-run.txt",
+      "raw_response_sha256": "d9dea906c95360730de25d8d9f6420933d34e1f654e876aedc4f1f178c029764",
+      "raw_response_bytes": 53643,
+      "text_sha256": "60caab9da2332712b1d52a2117fb668ed2b62a6a69f2038d0076de74a387ecce",
+      "bytes": 7362,
+      "extraction": "HTMLParser text, script/style omitted, nonempty stripped lines"
+    },
+    {
+      "url": "https://pnpm.io/10.x/cli/publish",
+      "final_url": "https://pnpm.io/10.x/cli/publish",
+      "file": "candidate-ned-official-pnpm10-publish.txt",
+      "raw_response_sha256": "0ac7448307a1b617944e27c5f9f551dd167327582d0eb8158e0e2d3832d6dc5a",
+      "raw_response_bytes": 46633,
+      "text_sha256": "cd5f065abdf95c4fd158337662665148b1062a0820f16a17224afe1e87cb16c4",
+      "bytes": 4186,
+      "extraction": "HTMLParser text, script/style omitted, nonempty stripped lines"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/vercel/next.js/v16.3.4/examples/with-docker/Dockerfile",
+      "final_url": "https://raw.githubusercontent.com/vercel/next.js/v16.3.4/examples/with-docker/Dockerfile",
+      "file": "candidate-ned-official-next16-dockerfile.txt",
+      "sha256": "d11bb1051a1ce7570c8c8b02927985f8a744c51bec5119f1984c94c401bab17f",
+      "bytes": 3929
+    },
+    {
+      "url": "https://docs.docker.com/reference/dockerfile/",
+      "final_url": "https://docs.docker.com/reference/dockerfile/",
+      "file": "candidate-ned-official-docker-copy.txt",
+      "raw_response_sha256": "a72d3b5f931c8af48bfc71a9cfa6ceed7b846712cc323dfbdde5c0e67cc14e59",
+      "raw_response_bytes": 1052583,
+      "text_sha256": "ffffe6d987a8243136e8dd5a59c84292eebe72b0f710890e592cef26ef81b126",
+      "bytes": 116620,
+      "extraction": "HTMLParser text, script/style omitted, nonempty stripped lines"
+    }
+  ]
+}

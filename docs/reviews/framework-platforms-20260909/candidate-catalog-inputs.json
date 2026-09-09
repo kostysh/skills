@@ -1,0 +1,9 @@
+{
+  "at": "2026-09-09T16:21:20.789140+00:00",
+  "protocol": "protocol/catalog.json",
+  "files": {
+    "tasks.json": "78b01d8948c5194e78f8e09dfa54ed271455af76c650cfdb8ab22f1d2b6b28f5",
+    "catalog.json": "0dc45846c00c407d91cb9e5609b93c3f4a3c6fb54e924a32a6402956f81da9c9"
+  },
+  "changes": "Target descriptions/UI updated only; 15 tasks and all neighbor entries preserved. Same recorder required; body loading forbidden before decisions."
+}

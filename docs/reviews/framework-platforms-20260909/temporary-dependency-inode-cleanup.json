@@ -1,0 +1,14 @@
+{
+  "date": "2026-09-09T15:38:40.068004+00:00",
+  "reason": "Task temporary dependency copies exhausted tmpfs inode count, not storage bytes",
+  "removedRecoverableDependencyDirectories": [
+    "/tmp/framework-platforms-20260909/fixtures/payload-version/current-v3/node_modules",
+    "/tmp/framework-platforms-20260909/fixtures/payload-version/legacy-v2/node_modules",
+    "/tmp/framework-platforms-20260909/fixtures/payload-core/node_modules",
+    "/tmp/framework-platforms-20260909/fixtures/payload/node_modules",
+    "/tmp/framework-platforms-20260909/fixtures/payload-atomic/node_modules"
+  ],
+  "preserved": "All fixture/trial sources, lockfiles, uploads, generated application artifacts and evidence; active P-version trial untouched",
+  "remainingFreeInodes": 226940,
+  "totalInodes": 1048576
+}

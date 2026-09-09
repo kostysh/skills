@@ -1,0 +1,26 @@
+{
+  "case": "M-mapping",
+  "frozen_at": "2026-09-09T12:07:16.319331+00:00",
+  "raw_task": "Подготовь точные mapping-функции для приложенных независимых примеров WordPress REST v2, WordPress database rows, Strapi5, Contentful и Sanity в sources.json. Они содержат даты, автора, rich text, файлы и локализации. Цель — Payload3.88 с Lexical, поля sourceKey, title (localized en/it), body (localized richText), publishedAt date, publicationState enum published/private/scheduled/draft, author relationship Authors и hero upload Media. Это mapping preparation: импорт и создание БД не разрешены. Покажи сохраняемое значение для каждого поля, необходимые дополнительные входы и проверь чистые преобразования локальными вызовами. Для ссылок, чьи целевые записи ещё не даны, не придумывай ID. Исходные форматы независимы; не смешивай записи разных CMS в одну БД. Можно создать JS/TS mapping и тесты в этой папке, зависимости не устанавливать.",
+  "criteria_source": "case-proposals-payload.md M03 (all branches); pure local transformations only, no DB/browser claim",
+  "inputs": {
+    "task.txt": "b46f7d1addb8f5c7309dd8ea4b74cbee8d1effcaa7ca64efe1859273b616b3b9",
+    "sources.json": "ba6b4bba276a77c869bbbe130d492a78fe46708f1f1b7ea6bd91d02091b1b24d",
+    "skills/payload/SKILL.md": "d78623a1db9a7f93db5e8da14677b4ab2df20eaa4bbd90320c39afd96b47e817",
+    "skills/payload-migration/SKILL.md": "0194fe2deb085a1407c91983d41735ef4db7b89b50a68742ed2c73c59eacc569",
+    "skills/payload-migration/agents/openai.yaml": "ec8e4693ba7fcfec1e6a8b573ffb1342d674a4fdf1042112f494a9063ba7d40c",
+    "skills/payload-migration/references/payload-field-reference.md": "a716216645e2150d5c8d514dd8f54a78c120e97ebc20f9dd2f3f1b0d6f3f23cb",
+    "skills/payload/agents/openai.yaml": "2dd7d1903a7b294cdf577504078c63216d8533e36b386fb9426688ac61292c35",
+    "skills/payload/references/advanced.md": "b28ab2787cb974f98a6aa077af8e6265da85a9d7bde6b764214ebfd69c15a293",
+    "skills/payload/references/collections.md": "4927007c1a85b332d8040fba1e6e1715e18a3d8b3c9dde8088514e15d9c1479d",
+    "skills/payload/references/endpoints.md": "126c5bc1d99e794720c21b38b748b85d118a9b6c13fbf7913df7f90ae310f874",
+    "skills/payload/references/access-control.md": "1537d27102ff1ea7f31e2a6447d3557772bd82ee9e23c6ff78c44c22ff089f0e",
+    "skills/payload/references/hooks.md": "980fcc6b3fcd0b7007ceec4616e88e41c220e09a24ef476d4fe4b23facd76109",
+    "skills/payload/references/field-type-guards.md": "294635bac34748a0ddd499fa3723750544c0ec796f8a0e12c3db7fb06a30ac2d",
+    "skills/payload/references/queries.md": "c3d524ddbc46335bfe6b949f1a7e7e15e14bacf9274c261995ffcf74fd918d0c",
+    "skills/payload/references/plugin-development.md": "6081759fc1f16b75de63cbb74dd30c28233dfb251323a2c8c63acfe65b25b9c5",
+    "skills/payload/references/fields.md": "520bb3769f41bda757afc19e966db2f3efa7e34ee59d41552f49cfdb572ad8e9",
+    "skills/payload/references/adapters.md": "0c1d62bfa15ad36b44701f647e2fef75c76f5805d1153a8658436d6807e71d83",
+    "skills/payload/references/access-control-advanced.md": "fe49222c903d2a1de80848ea253eef4d0a6eb2c7fb0c3104ff658002ae165cff"
+  }
+}

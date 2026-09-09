@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "hono-engineer"
-  source-version: "0.1.7"
+  source-version: "0.1.8"
   recommended-skill-md-max-bytes: 24000
   description: >-
     Build, change, and diagnose Hono API services. Use for Hono routing,
@@ -171,6 +171,7 @@ surfaces:
 sections:
   startHere:
     - "Confirm the request requires a Hono-specific decision or change; otherwise route to the owning skill."
+    - "Reuse authoritative inputs and permissions already supplied in the task. Clarify only a material unresolved decision, continue independent authorized work, and resume the affected work when its missing input arrives without asking for the same authority again."
     - "Establish the authoritative behavior, existing app composition, installed Hono and runtime/tooling versions, endpoint class, security contract, and available test contours before proposing implementation."
     - "For a version-sensitive API or platform decision, read Framework Currency and check current official sources; treat the installed project version as a compatibility constraint rather than silently upgrading it."
     - "Apply precedence in this order: authoritative requirements, compatible existing project conventions, then verified Hono/runtime facts. This skill supplies no fallback product or project policy. Stop or limit the claim when equal-authority inputs conflict or required runtime evidence is unavailable."
@@ -271,7 +272,7 @@ sections:
   policies:
     - id: "policy-source-precedence"
       title: "Source and compatibility precedence"
-      text: "Authoritative requirements and compatible project conventions precede verified framework facts. No greenfield label supplies missing authority. When inputs conflict or latest guidance is incompatible with installed versions, stop, surface the gap, and do not invent a migration or policy decision."
+      text: "Authoritative requirements and compatible project conventions precede verified framework facts. No greenfield label supplies missing authority. When inputs conflict or latest guidance is incompatible with installed versions, stop the affected decision, surface the gap, and continue independent authorized work without inventing a migration or policy decision."
     - id: "policy-evidence-boundary"
       title: "Evidence boundary"
       text: "Match proof to the claim: unit tests cover pure logic, app.request covers Hono integration, a runtime harness covers platform behavior, and live evidence covers only the observed deployment conditions."

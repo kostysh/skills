@@ -1,0 +1,18 @@
+{
+  "parents": [
+    {
+      "id": 1,
+      "sourceKey": "literal-1",
+      "updatedAt": "2026-09-09T14:01:02.448Z",
+      "createdAt": "2026-09-09T14:01:02.447Z"
+    }
+  ],
+  "audit-log": [
+    {
+      "id": 1,
+      "docId": 1,
+      "updatedAt": "2026-09-09T14:01:02.451Z",
+      "createdAt": "2026-09-09T14:01:02.451Z"
+    }
+  ]
+}

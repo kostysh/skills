@@ -1,0 +1,7249 @@
+{
+  "skill": "payload",
+  "mode": "independent baseline technical source audit",
+  "base": "d89d66f2c99bf8b9e84e5b4def54fa60192856a5",
+  "sourceVersion": "0.1.0",
+  "checkedAt": "2026-09-09",
+  "stable": "3.88.0",
+  "prerelease": "4.0.0-canary.33; not a recommended upgrade",
+  "existingProject": "none supplied; no installed product version inferred",
+  "snapshot": "baseline-snapshot.json",
+  "sourceArchive": "payload-official/ (official docs, exact v3.88 source, release feed, npm tags)",
+  "coverageClaim": "All target active files and sections inventoried. Result applies to explicitly stated source claims, not every example runtime. Unverified rows remain open and prohibit a full currentness/PASS claim.",
+  "technicalAspects": [
+    {
+      "id": "P-T01",
+      "aspect": "Runtime, channels, installed-version discovery and dependency compatibility",
+      "occurrences": [
+        {
+          "file": "skill.yaml",
+          "start": 1,
+          "end": 228,
+          "sha256": "4d1c4829152629494acd81f471c314fe640e1ba1bd25e5871b771bd5108ec11b"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/getting-started/installation",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/next/package.json",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/package.json",
+        "https://registry.npmjs.org/-/package/payload/dist-tags",
+        "https://github.com/payloadcms/payload/releases/tag/v3.88.0"
+      ],
+      "result": "correction-required",
+      "basis": "Root asks for project version but carries no stable/prerelease dependency basis. Stable npm tag and latest GitHub release are 3.88.0; canary is 4.0.0-canary.33. Installation docs require Node 20.9+, package engine also admits ^18.20.2; this is not an app compatibility guarantee. Exact @payloadcms/next peers exclude Next 15.5 and require patched 15.x or >=16.2.6<17.",
+      "requiredChange": "Record stable versus existing project, same-version @payloadcms packages, installed peers and adapters; no unrequested upgrade.",
+      "falsifier": "Version case preserves v2 while new v3 fixture rejects incompatible Next peer.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T02",
+      "aspect": "Source/generated root, Local API defaults, request threading and loop prevention",
+      "occurrences": [
+        {
+          "file": "fragments/overview.md",
+          "start": 1,
+          "end": 156,
+          "sha256": "e389f8d056bcbe9858cc3da953d85c63a98fc35266b2a50acf797a1b639e7e11"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/local-api/access-control",
+        "https://payloadcms.com/docs/database/transactions",
+        "https://payloadcms.com/docs/database/sqlite"
+      ],
+      "result": "correction-required",
+      "basis": "Local API default overrideAccess=true is accurately warned; same req propagates request context/transaction and does not enable access checks by itself. Blanket atomicity requires adapter support and enabled transactions. Root transaction example lacks SQLite default qualification.",
+      "requiredChange": "Preserve correct security rule; separate authorization and transaction propagation; state adapter prerequisite.",
+      "falsifier": "Actor request respects policy and injected nested write failure rolls back only when supported/enabled.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T03",
+      "aspect": "Collection CRUD access, Where return scope, admin entry and ordering",
+      "occurrences": [
+        {
+          "file": "references/access-control.md",
+          "start": 1,
+          "end": 94,
+          "sha256": "1537d27102ff1ea7f31e2a6447d3557772bd82ee9e23c6ff78c44c22ff089f0e"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/access-control/collections",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/collections/operations/create.ts"
+      ],
+      "result": "correction-required",
+      "basis": "Collection create accepts boolean, read/update/delete/readVersions can use Where; admin gates Admin Panel access. beforeOperation precedes executeAccess in exact create operation. End note contradicts its own table by limiting Where to collection read.",
+      "requiredChange": "Publish exact operation matrix and distinguish Admin visibility from access enforcement.",
+      "falsifier": "Create returns Where must not count as tenant enforcement; update/delete Where remain permitted.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T04",
+      "aspect": "RBAC/auth creation and roles privilege escalation",
+      "occurrences": [
+        {
+          "file": "references/access-control.md",
+          "start": 94,
+          "end": 157,
+          "sha256": "1537d27102ff1ea7f31e2a6447d3557772bd82ee9e23c6ff78c44c22ff089f0e"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/access-control/fields",
+        "https://payloadcms.com/docs/access-control/collections",
+        "https://payloadcms.com/docs/authentication/overview"
+      ],
+      "result": "correction-required",
+      "basis": "Roles field protects update only; collection has auth but no create policy, so authenticated default creation can write admin role on a new user. API admission and field create must enforce privilege assignment.",
+      "requiredChange": "Protect create and update for privileged fields; explicit first-admin bootstrap boundary.",
+      "falsifier": "Ordinary authenticated actor cannot create another admin or promote itself.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T05",
+      "aspect": "Reusable access, ownership, query composition, headers and field access",
+      "occurrences": [
+        {
+          "file": "references/access-control.md",
+          "start": 158,
+          "end": 409,
+          "sha256": "1537d27102ff1ea7f31e2a6447d3557772bd82ee9e23c6ff78c44c22ff089f0e"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/access-control/fields",
+        "https://payloadcms.com/docs/access-control/globals",
+        "https://payloadcms.com/docs/authentication/api-keys"
+      ],
+      "result": "correction-required",
+      "basis": "Simple boolean/Where ownership and global/field distinction are supported. Field admin.hidden/condition is UI only. Optional id/user comparisons and header equality examples need actual identity/undefined handling; custom API key cannot infer missing env as authentication.",
+      "requiredChange": "Keep valid patterns, explicit no-user guards; align field access argument availability and UI-only visibility.",
+      "falsifier": "Anonymous/undefined ids cannot satisfy owner rule; hidden field remains API-readable unless access denies it.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T06",
+      "aspect": "Tenant create and tenant field spoofing",
+      "occurrences": [
+        {
+          "file": "references/access-control.md",
+          "start": 410,
+          "end": 471,
+          "sha256": "1537d27102ff1ea7f31e2a6447d3557772bd82ee9e23c6ff78c44c22ff089f0e"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/access-control/collections",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/auth/executeAccess.ts",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/collections/operations/create.ts"
+      ],
+      "result": "correction-required",
+      "basis": "tenantAccess returns a Where and is assigned create. Exact executeAccess rejects only falsy and create does not constrain data by that Where. Field hook fills tenant only if !value, preserving attacker-supplied other tenant.",
+      "requiredChange": "Boolean create authorization and server-owned tenant assignment or explicit input equality validation; field create/update control.",
+      "falsifier": "Tenant A cannot create document for B even when supplying B id.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T07",
+      "aspect": "Auth self/admin, cross-collection count and arguments",
+      "occurrences": [
+        {
+          "file": "references/access-control.md",
+          "start": 472,
+          "end": 697,
+          "sha256": "1537d27102ff1ea7f31e2a6447d3557772bd82ee9e23c6ff78c44c22ff089f0e"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/local-api/overview",
+        "https://payloadcms.com/docs/access-control/collections",
+        "https://payloadcms.com/docs/access-control/fields",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/collections/operations/count.ts"
+      ],
+      "result": "correction-required",
+      "basis": "count returns object {totalDocs}, but delete rule compares entire count result ===0. Hooks/access argument availability differs by operation; notes incorrectly say only collection read supports Where and all access runs before hooks.",
+      "requiredChange": "Destructure totalDocs, preserve req, handle missing id/user; unify exact matrix.",
+      "falsifier": "Unreferenced record can delete; referenced record cannot; no undefined-id access lookup.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T08",
+      "aspect": "Context, tenant, user-agent, IP and time-based access examples",
+      "occurrences": [
+        {
+          "file": "references/access-control-advanced.md",
+          "start": 1,
+          "end": 177,
+          "sha256": "fe49222c903d2a1de80848ea253eef4d0a6eb2c7fb0c3104ff658002ae165cff"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/access-control/overview",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/fields/config/types.ts"
+      ],
+      "result": "correction-required",
+      "basis": "Context and Date logic are ordinary app policy; forwarded headers and user-agent do not authenticate an actor. Listed CIDR strings are tested with exact string includes, not network containment. Exact IP allowlist cannot evaluate CIDR.",
+      "requiredChange": "Use a declared trusted proxy identity boundary and real parsed IP ranges only when required; distinguish contextual hints from authorization.",
+      "falsifier": "Spoofed forwarded IP/user-agent cannot confer access; CIDR member and nonmember are evaluated accurately.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T09",
+      "aspect": "Subscription access, factory functions, configurations and diagnostics",
+      "occurrences": [
+        {
+          "file": "references/access-control-advanced.md",
+          "start": 178,
+          "end": 570,
+          "sha256": "fe49222c903d2a1de80848ea253eef4d0a6eb2c7fb0c3104ff658002ae165cff"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/access-control/collections",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/collections/config/types.ts"
+      ],
+      "result": "correction-required",
+      "basis": "Several callbacks destructure req:{user} then reference req, so they throw ReferenceError. Application policies are illustrative rather than built-in Payload subscriptions.",
+      "requiredChange": "Keep req object and derive user; type against Access; label app-supplied data/helpers.",
+      "falsifier": "Typecheck and invoke each retained callback with authenticated and missing user.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T10",
+      "aspect": "Access caching and per-query versus per-document performance",
+      "occurrences": [
+        {
+          "file": "references/access-control-advanced.md",
+          "start": 571,
+          "end": 704,
+          "sha256": "fe49222c903d2a1de80848ea253eef4d0a6eb2c7fb0c3104ff658002ae165cff"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/access-control/fields",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/collections/operations/find.ts",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/fields/config/types.ts"
+      ],
+      "result": "correction-required",
+      "basis": "Collection find evaluates collection read policy once for query, not once per returned document. FieldAccess lacks top-level context; use req.context. False cached results require presence check, not truthiness.",
+      "requiredChange": "Remove incorrect N+1 claim, use actual request-scoped cache and arguments.",
+      "falsifier": "Multiple document result evaluates collection policy at query boundary; cached denial stays denial.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T11",
+      "aspect": "Mongo/Postgres/SQLite adapters, IDs and DB requirements",
+      "occurrences": [
+        {
+          "file": "references/adapters.md",
+          "start": 1,
+          "end": 49,
+          "sha256": "0c1d62bfa15ad36b44701f647e2fef75c76f5805d1153a8658436d6807e71d83"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/database/mongodb",
+        "https://payloadcms.com/docs/database/postgres",
+        "https://payloadcms.com/docs/database/sqlite",
+        "https://github.com/payloadcms/payload/releases/tag/v3.83.0"
+      ],
+      "result": "verified",
+      "basis": "Named mongooseAdapter/postgresAdapter/sqliteAdapter and connection configuration are present in current docs. Mongo transactions need replica set; SQL default ID shape differs from Mongo and uuid/uuidv7 branches.",
+      "requiredChange": "Add installed adapter/engine evidence before inferring compatibility; v3.83 uuidv7 is optional, not mandatory update.",
+      "falsifier": "Load exact declared adapter configuration and verify chosen ID shape.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T12",
+      "aspect": "Automatic/manual transactions and migration CLI operations",
+      "occurrences": [
+        {
+          "file": "references/adapters.md",
+          "start": 50,
+          "end": 154,
+          "sha256": "0c1d62bfa15ad36b44701f647e2fef75c76f5805d1153a8658436d6807e71d83"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/database/transactions",
+        "https://payloadcms.com/docs/database/migrations",
+        "https://payloadcms.com/docs/database/sqlite",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/database/migrations/migrate.ts"
+      ],
+      "result": "correction-required",
+      "basis": "Same req and await are required for nested operations; overrideAccess=true does not remove transaction need. SQLite disables transactions by default; set transactionOptions:{} to enable. beginTransaction may return null without support. Migration up/down/status exist; reset/refresh/fresh are destructive paths.",
+      "requiredChange": "Qualify atomicity, check transaction support, distinguish schema migrations and data imports; use installed declared CLI and explicit destructive boundary.",
+      "falsifier": "Force nested write failure and inspect persisted state; migration create/up/status on disposable DB only.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T13",
+      "aspect": "Storage: S3, R2, Azure, GCS, Vercel Blob and Payload Cloud",
+      "occurrences": [
+        {
+          "file": "references/adapters.md",
+          "start": 155,
+          "end": 290,
+          "sha256": "0c1d62bfa15ad36b44701f647e2fef75c76f5805d1153a8658436d6807e71d83"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/upload/storage-adapters",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/storage-r2/src/index.ts",
+        "https://github.com/payloadcms/payload/releases/tag/v3.74.0"
+      ],
+      "result": "correction-required",
+      "basis": "Current standalone storage packages are correct family. R2 example supplies string bucket and S3 config; stable r2Storage requires Cloudflare R2Bucket binding. S3 credentials/endpoints belong to s3Storage branch. Remote availability is untested.",
+      "requiredChange": "Replace R2 example with binding or explicit S3-compatible alternative; keep provider credentials/runtime requirements separate.",
+      "falsifier": "Exact R2 config typecheck; real provider readback required for remote claim.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T14",
+      "aspect": "Email adapter configuration and delivery boundary",
+      "occurrences": [
+        {
+          "file": "references/adapters.md",
+          "start": 291,
+          "end": 326,
+          "sha256": "0c1d62bfa15ad36b44701f647e2fef75c76f5805d1153a8658436d6807e71d83"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://github.com/payloadcms/payload/blob/v3.88.0/docs/migration-guide/overview.mdx",
+        "https://payloadcms.com/docs/email/overview"
+      ],
+      "result": "verified",
+      "basis": "Official email documentation directly matches retained nodemailerAdapter transportOptions host/port/auth and resendAdapter apiKey/from fields. Full options examples were read. No delivery was attempted.",
+      "requiredChange": "Preserve version-matched packages and provider boundary; do not infer delivery from sendEmail resolve.",
+      "falsifier": "Configured adapter loads; controlled provider delivery only within authorized environment.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T15",
+      "aspect": "Auth login, reset, custom strategies and API keys",
+      "occurrences": [
+        {
+          "file": "references/advanced.md",
+          "start": 1,
+          "end": 80,
+          "sha256": "b28ab2787cb974f98a6aa077af8e6265da85a9d7bde6b764214ebfd69c15a293"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/authentication/operations",
+        "https://payloadcms.com/docs/authentication/custom-strategies",
+        "https://payloadcms.com/docs/authentication/api-keys"
+      ],
+      "result": "correction-required",
+      "basis": "Login/forgotPassword and API-key-only options match current APIs. Strategy is not exported by payload 3.88.0; exact source exports AuthStrategyFunction/Args/Result. Auth callback must return a Payload user document or null; verifyToken is an unspecified application helper. Custom strategy changes require server restart.",
+      "requiredChange": "Use exported AuthStrategyFunction or type auth.strategies through CollectionConfig; specify verifyToken trust contract and distinguish local token from browser cookie/session.",
+      "falsifier": "Login/session readback and invalid credentials; no token/cookie leaked in evidence.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T16",
+      "aspect": "Jobs tasks, workflows, inline API, worker execution and retries",
+      "occurrences": [
+        {
+          "file": "references/advanced.md",
+          "start": 81,
+          "end": 156,
+          "sha256": "b28ab2787cb974f98a6aa077af8e6265da85a9d7bde6b764214ebfd69c15a293"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/jobs-queue/workflows",
+        "https://payloadcms.com/docs/jobs-queue/queues",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/queues/config/types/workflowTypes.ts",
+        "https://github.com/payloadcms/payload/releases/tag/v3.85.0"
+      ],
+      "result": "correction-required",
+      "basis": "job.runInlineTask does not exist in stable WorkflowHandler. Handler receives inlineTask and tasks; inlineTask(taskId,{task,input}) is supported. queue creates a pending job; a worker/run operation must process it. v3.71 added optional concurrency; v3.85 fixed no-retries loop.",
+      "requiredChange": "Use exact stable handler API and document queue→run→terminal result; preserve idempotent step ids and failure distinction.",
+      "falsifier": "Task is queued, run, completes and output is visible; queued-only cannot pass.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T17",
+      "aspect": "Custom endpoints and default Local API privilege",
+      "occurrences": [
+        {
+          "file": "references/advanced.md",
+          "start": 157,
+          "end": 218,
+          "sha256": "b28ab2787cb974f98a6aa077af8e6265da85a9d7bde6b764214ebfd69c15a293"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/local-api/access-control",
+        "https://payloadcms.com/docs/rest-api/overview"
+      ],
+      "result": "correction-required",
+      "basis": "Featured collection endpoint invokes req.payload.find without overrideAccess:false; active detailed reference repeats that defect. PayloadRequest presence does not enforce caller permissions.",
+      "requiredChange": "All caller-scoped operations carry req and overrideAccess:false; explicit system operation requires actual task reason.",
+      "falsifier": "Anonymous and tenant actors receive only allowed records.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T18",
+      "aspect": "Custom React components and views",
+      "occurrences": [
+        {
+          "file": "references/advanced.md",
+          "start": 219,
+          "end": 273,
+          "sha256": "b28ab2787cb974f98a6aa077af8e6265da85a9d7bde6b764214ebfd69c15a293"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/custom-components/overview",
+        "https://payloadcms.com/docs/admin/react-hooks",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/next/src/templates/Default/index.tsx"
+      ],
+      "result": "correction-required",
+      "basis": "Client component invokes useField without {path}; custom view imports server DefaultTemplate into client and omits required init props. File paths/import map and client/server split are required in v3.",
+      "requiredChange": "Use typed field props/path and server view template; verify rendered Admin.",
+      "falsifier": "Generated import map resolves; custom field edits correct nested path; view renders.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T19",
+      "aspect": "Official plugins, localization and exported type reference list",
+      "occurrences": [
+        {
+          "file": "references/advanced.md",
+          "start": 274,
+          "end": 386,
+          "sha256": "b28ab2787cb974f98a6aa077af8e6265da85a9d7bde6b764214ebfd69c15a293"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/plugins/overview",
+        "https://payloadcms.com/docs/configuration/localization",
+        "https://payloadcms.com/docs/typescript/overview"
+      ],
+      "result": "correction-required",
+      "basis": "plugin-search stores first-party indexed records; no built-in Algolia support claimed by official docs. Redirects plugin manages data and requires frontend redirect implementation. Import-export supports CSV and JSON with job runner requirements. Localization sample uses unimported TextField and buildConfig fragments lack db. main source links follow development branch rather than installed stable.",
+      "requiredChange": "Fix plugin capability summaries, missing snippet imports/prerequisites; use tag/installed exports instead of main; distinguish configured redirects from observed HTTP redirect.",
+      "falsifier": "Each import/config resolves under locked versions; no fallback masquerades as translated field.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T20",
+      "aspect": "Basic/auth/upload collections and Globals",
+      "occurrences": [
+        {
+          "file": "references/collections.md",
+          "start": 1,
+          "end": 125,
+          "sha256": "4927007c1a85b332d8040fba1e6e1715e18a3d8b3c9dde8088514e15d9c1479d"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/configuration/collections",
+        "https://payloadcms.com/docs/upload/overview",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/docs/migration-guide/overview.mdx"
+      ],
+      "result": "correction-required",
+      "basis": "Basic field/collection/upload config is supported, but auth roles are not guarded on create/update. Image resizing requires supplied sharp dependency in v3; collection examples alone are not complete buildConfig.",
+      "requiredChange": "Guard privileged roles; mark schema fragments and complete required runtime dependencies where called runnable.",
+      "falsifier": "Actor cannot set admin role; upload creates a retrievable file.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T21",
+      "aspect": "Live preview, draft visibility and version status",
+      "occurrences": [
+        {
+          "file": "references/collections.md",
+          "start": 126,
+          "end": 303,
+          "sha256": "4927007c1a85b332d8040fba1e6e1715e18a3d8b3c9dde8088514e15d9c1479d"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/versions/drafts",
+        "https://payloadcms.com/docs/live-preview/overview",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/versions/baseFields.ts",
+        "https://payloadcms.com/docs/configuration/globals"
+      ],
+      "result": "correction-required",
+      "basis": "_status stored values are draft/published; changed is UI state, not persisted enum. Draft enablement is not authorization: public read requires published filter. URL config alone is not frontend live-preview listener/rendering. Globals config/access supported.",
+      "requiredChange": "Fix draft claims and distinguish preview URL from live-update end-to-end wiring.",
+      "falsifier": "Anonymous cannot read drafts; editor change appears in preview if live claim is made.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T22",
+      "aspect": "Endpoint request/response, paths, body parsing and helper signatures",
+      "occurrences": [
+        {
+          "file": "references/endpoints.md",
+          "start": 1,
+          "end": 307,
+          "sha256": "126c5bc1d99e794720c21b38b748b85d118a9b6c13fbf7913df7f90ae310f874"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/rest-api/overview",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/utilities/addDataAndFileToRequest.ts",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/utilities/addLocalesToRequest.ts",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/docs/migration-guide/overview.mdx"
+      ],
+      "result": "correction-required",
+      "basis": "v3 uses Web Request/Response and routeParams, no Express res/next. JSON/file body and locale helpers need awaiting and correct package exports. Actual request-specific CRUD examples omit overrideAccess:false.",
+      "requiredChange": "Preserve current response/body patterns but bind all actor operations to access; avoid body double-consumption; verify helper export paths.",
+      "falsifier": "JSON/multipart and route params work; unauthorized request cannot perform CRUD.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T23",
+      "aspect": "Endpoint examples: custom search, upload, preview, placement and factories",
+      "occurrences": [
+        {
+          "file": "references/endpoints.md",
+          "start": 308,
+          "end": 634,
+          "sha256": "126c5bc1d99e794720c21b38b748b85d118a9b6c13fbf7913df7f90ae310f874"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/rest-api/overview",
+        "https://payloadcms.com/docs/local-api/access-control"
+      ],
+      "result": "correction-required",
+      "basis": "Real-world examples and best-practice claim that req.payload ensures access conflict with Local API default bypass. Authentication check alone is insufficient. OpenAPI comments are metadata, not installed API specification generation.",
+      "requiredChange": "Correct every example and misleading best-practice line; mark application helpers/framework integration prerequisites.",
+      "falsifier": "Same actor input yields same allowed set as standard REST API; upload/publish deny cases covered.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T24",
+      "aspect": "Structural/capability/data/layout/tab/option guards and traversal",
+      "occurrences": [
+        {
+          "file": "references/field-type-guards.md",
+          "start": 1,
+          "end": 553,
+          "sha256": "294635bac34748a0ddd499fa3723750544c0ec796f8a0e12c3db7fb06a30ac2d"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/fields/config/types.ts"
+      ],
+      "result": "correction-required",
+      "basis": "Exact stable guard source differs from copied signatures: fieldSupportsMany includes upload runtime; fieldHasMaxDepth includes join; fieldAffectsData also admits virtual fields; optionsAreObjects checks first option only; fieldIsHiddenOrDisabled checks field.hidden/admin.disabled. Recursive traversal shown skips blocks and tabs.",
+      "requiredChange": "Use installed exported guards and describe actual predicate; traverse all nested containers explicitly; do not claim persistence solely from name guard.",
+      "falsifier": "Mixed/nested schema visits fields inside blocks and named/unnamed tabs; guard examples match exact exports.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T25",
+      "aspect": "Text validation, experimental slug helper and Lexical features",
+      "occurrences": [
+        {
+          "file": "references/fields.md",
+          "start": 1,
+          "end": 156,
+          "sha256": "520bb3769f41bda757afc19e966db2f3efa7e34ee59d41552f49cfdb572ad8e9"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/fields/text",
+        "https://payloadcms.com/docs/rich-text/official-features",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/fields/baseFields/slug/index.ts"
+      ],
+      "result": "correction-required",
+      "basis": "Custom text validate replaces default constraints; Boolean(value) does not preserve minLength/maxLength. slugField is experimental in stable source. EXPERIMENTAL_TableFeature needs explicit experimental boundary. Feature replacement must preserve intended defaults.",
+      "requiredChange": "Wrap built-in validator or avoid redundant override; label experimental/version requirements and typecheck imports.",
+      "falsifier": "Short nonempty value fails declared minimum; optional experimental helper exists in exact version.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T26",
+      "aspect": "Relationships, arrays, blocks, select and upload shapes",
+      "occurrences": [
+        {
+          "file": "references/fields.md",
+          "start": 157,
+          "end": 302,
+          "sha256": "520bb3769f41bda757afc19e966db2f3efa7e34ee59d41552f49cfdb572ad8e9"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/fields/relationship",
+        "https://payloadcms.com/docs/fields/array",
+        "https://payloadcms.com/docs/fields/blocks",
+        "https://payloadcms.com/docs/fields/select",
+        "https://payloadcms.com/docs/fields/upload"
+      ],
+      "result": "verified",
+      "basis": "Single/hasMany/polymorphic relationship structures and corresponding config fields are supported. Storage uses returned Payload document IDs; population depth may return IDs or objects.",
+      "requiredChange": "Preserve configured relationTo/cardinality; optional newer polymorphic uploads do not force changes.",
+      "falsifier": "Create/read representative single, multiple and polymorphic relationship with depth0 and depth1.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T27",
+      "aspect": "Point operators, joins, virtual fields and UI-only conditions",
+      "occurrences": [
+        {
+          "file": "references/fields.md",
+          "start": 303,
+          "end": 465,
+          "sha256": "520bb3769f41bda757afc19e966db2f3efa7e34ee59d41552f49cfdb572ad8e9"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/fields/point",
+        "https://payloadcms.com/docs/queries/overview",
+        "https://payloadcms.com/docs/fields/join",
+        "https://payloadcms.com/docs/fields/overview"
+      ],
+      "result": "correction-required",
+      "basis": "Point data is [longitude,latitude]. near expects combined comma tuple; separate maxDistance/minDistance operator keys shown are invalid. SQLite geospatial query capability is limited. Join on collection relationship is supported; virtual fields not persisted, UI conditions not security.",
+      "requiredChange": "Fix near syntax and adapter boundaries; preserve ownership/relationship source and virtual anti-claim.",
+      "falsifier": "Known inside/outside distance points filter correctly on supported adapter; virtual value absent from DB storage.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T28",
+      "aspect": "Radio/row/collapsible/UI/tabs/groups and field factories",
+      "occurrences": [
+        {
+          "file": "references/fields.md",
+          "start": 466,
+          "end": 744,
+          "sha256": "520bb3769f41bda757afc19e966db2f3efa7e34ee59d41552f49cfdb572ad8e9"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/fields/radio",
+        "https://payloadcms.com/docs/fields/row",
+        "https://payloadcms.com/docs/fields/collapsible",
+        "https://payloadcms.com/docs/fields/ui",
+        "https://payloadcms.com/docs/fields/tabs",
+        "https://payloadcms.com/docs/fields/group"
+      ],
+      "result": "correction-required",
+      "basis": "Field layouts and component paths are supported; custom deepMerge performs shallow spreads and can discard nested admin defaults. appearances argument is accepted but not used to restrict radio options.",
+      "requiredChange": "Use accurately named shallow merge or real tested recursive merge; make accepted factory options affect output.",
+      "falsifier": "Factory override retains unrelated nested defaults and emitted appearance options equal input contract.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T29",
+      "aspect": "Hooks lifecycle, context and date auto-set",
+      "occurrences": [
+        {
+          "file": "references/hooks.md",
+          "start": 1,
+          "end": 186,
+          "sha256": "980fcc6b3fcd0b7007ceec4616e88e41c220e09a24ef476d4fe4b23facd76109"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/hooks/overview",
+        "https://payloadcms.com/docs/hooks/collections",
+        "https://payloadcms.com/docs/hooks/fields",
+        "https://payloadcms.com/docs/hooks/context",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/collections/operations/create.ts"
+      ],
+      "result": "correction-required",
+      "basis": "Hook APIs/context are current. afterRead computes only output; beforeChange input is unvalidated and partial on update. Revalidation sample needs Next-specific cache API version grounding and failure propagation.",
+      "requiredChange": "Bind hook phase, partial data/originalDoc, same req and loop guard; hand Next cache behavior to installed nextjs owner.",
+      "falsifier": "No loop; partial update preserves missing fields; failure does not produce false cache/data success.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T30",
+      "aspect": "Plugin packaging, exports, build commands and peers",
+      "occurrences": [
+        {
+          "file": "references/plugin-development.md",
+          "start": 1,
+          "end": 177,
+          "sha256": "6081759fc1f16b75de63cbb74dd30c28233dfb251323a2c8c63acfe65b25b9c5"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/plugins/build-your-own",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/templates/plugin/package.json",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/next/package.json"
+      ],
+      "result": "correction-required",
+      "basis": "Plugin functions Config→Config/Promise supported. Example next^15.4.10 is incompatible with current patched peer minimum and admits excluded minors. SWC command correctly declares @swc/core but its referenced .swcrc is not supplied in the fragment. Example lacks graphql peer and does not establish exact package compatibility.",
+      "requiredChange": "Use exact official template as version-scoped basis; verify declared build plus packed installed consumer import rather than isolated source compile.",
+      "falsifier": "Fresh plugin build/package install/import works against locked Payload fixture.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T31",
+      "aspect": "Plugin fields/hooks/endpoints/overrides/tabs/disabled behavior/i18n/onInit",
+      "occurrences": [
+        {
+          "file": "references/plugin-development.md",
+          "start": 178,
+          "end": 613,
+          "sha256": "6081759fc1f16b75de63cbb74dd30c28233dfb251323a2c8c63acfe65b25b9c5"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/plugins/plugin-api",
+        "https://payloadcms.com/docs/plugins/build-your-own",
+        "https://payloadcms.com/docs/database/postgres",
+        "https://payloadcms.com/docs/configuration/collections"
+      ],
+      "result": "correction-required",
+      "basis": "Composition should preserve existing config. onInit seed supplies string id seeded-by-plugin without custom ID schema; default SQL numeric IDs cannot accept it. Disabled-schema preservation is a deliberate plugin policy, not generic system default. Some overrides drop nested settings.",
+      "requiredChange": "Use natural unique seed key and returned ID or explicit ID schema; preserve config/hook order; describe disabled plugin behavior.",
+      "falsifier": "Existing config/hook survives plugin; repeated init does not duplicate records; SQL seed succeeds.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T32",
+      "aspect": "Plugin TypeScript, client field, composition and async configuration",
+      "occurrences": [
+        {
+          "file": "references/plugin-development.md",
+          "start": 614,
+          "end": 1044,
+          "sha256": "6081759fc1f16b75de63cbb74dd30c28233dfb251323a2c8c63acfe65b25b9c5"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/plugins/plugin-api",
+        "https://payloadcms.com/docs/custom-components/overview",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/config/types.ts"
+      ],
+      "result": "correction-required",
+      "basis": "Basic typed custom field useField({path}) is valid. Async plugin example may dereference optional config or append undefined; hooks map mutates collection.hooks without initializing it. Type/schema augmentation must match actual exports.",
+      "requiredChange": "Typecheck complete retained fragments and invoke optional empty configuration; preserve existing config.",
+      "falsifier": "Plugin called with default/empty options and collections with no hooks returns valid config.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T33",
+      "aspect": "Plugin authorization/filter composition",
+      "occurrences": [
+        {
+          "file": "references/plugin-development.md",
+          "start": 1045,
+          "end": 1116,
+          "sha256": "6081759fc1f16b75de63cbb74dd30c28233dfb251323a2c8c63acfe65b25b9c5"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/access-control/collections",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/collections/config/types.ts",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/fields/config/types.ts",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/plugin-multi-tenant/src/index.ts"
+      ],
+      "result": "correction-required",
+      "basis": "Wrapper puts original boolean/Promise directly in Where.and, so deny and async policy do not have defined correct composition. baseListFilter is deprecated and function typed, not static Where; filterOptions may static or async callback with full args, while example calls with relationTo string and undefined req.",
+      "requiredChange": "Await original policy; false stays false, true becomes tenant filter, Where combines with tenant; use current baseFilter function and preserve filterOptions forms.",
+      "falsifier": "Original false denies; true/Where/Promise resolve correctly; no boolean/Promise is serialized into where.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T34",
+      "aspect": "Plugin admin metadata/providers/actions/views and recursive background work",
+      "occurrences": [
+        {
+          "file": "references/plugin-development.md",
+          "start": 1117,
+          "end": 1295,
+          "sha256": "6081759fc1f16b75de63cbb74dd30c28233dfb251323a2c8c63acfe65b25b9c5"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/custom-components/custom-providers",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/collections/config/types.ts",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/config/types.ts",
+        "https://payloadcms.com/docs/queries/pagination"
+      ],
+      "result": "correction-required",
+      "basis": "Arbitrary plugin metadata belongs to custom/admin.custom, not typed admin.meta; providers belong root admin.components, not collection. beforeFields is not current collection slot. Recursive resave requires pagination and req; omitted pagination reads first10 only.",
+      "requiredChange": "Use actual typed slots, remove false From plugin attribution unless exact; iterate entire child set with cycle safeguards and transaction req.",
+      "falsifier": "Admin resolves components, metadata is available where intended, >10 children all processed without cycles.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T35",
+      "aspect": "Plugin dev fixture, Vitest/Playwright tests and package verification",
+      "occurrences": [
+        {
+          "file": "references/plugin-development.md",
+          "start": 1296,
+          "end": 1436,
+          "sha256": "6081759fc1f16b75de63cbb74dd30c28233dfb251323a2c8c63acfe65b25b9c5"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/plugins/build-your-own",
+        "https://github.com/payloadcms/payload/blob/v3.88.0/templates/plugin/package.json",
+        "https://vitest.dev/guide/",
+        "https://playwright.dev/docs/intro"
+      ],
+      "result": "verified",
+      "basis": "Test APIs describe optional integration/browser fixtures. Exact createPayloadRequest accepts Request and Promise<SanitizedConfig>, getPayload/destroy are present; Vitest test/expect and Playwright page/expect syntax is valid. vitest defaults to watch, one-shot requires run. Fixtures are fragments and source handler calls do not prove HTTP routing or packed consumer interoperability. Package-version compatibility remains P-T30; no command was executed.",
+      "requiredChange": "Verify declared scripts/dependencies in safe fixture, keep current runner and installed-package boundary; no permanent harness required.",
+      "falsifier": "Declared commands run fresh fixture and packed import resolves; test process shuts down.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    },
+    {
+      "id": "P-T36",
+      "aspect": "Query operators, nested filters, Local/REST/GraphQL and pagination",
+      "occurrences": [
+        {
+          "file": "references/queries.md",
+          "start": 1,
+          "end": 274,
+          "sha256": "c3d524ddbc46335bfe6b949f1a7e7e15e14bacf9274c261995ffcf74fd918d0c"
+        }
+      ],
+      "version": "Payload 3.88.0 stable unless specified; installed project version must be established separately",
+      "checkedAt": "2026-09-09",
+      "officialSources": [
+        "https://payloadcms.com/docs/queries/overview",
+        "https://payloadcms.com/docs/queries/depth",
+        "https://payloadcms.com/docs/queries/pagination",
+        "https://payloadcms.com/docs/local-api/overview",
+        "https://payloadcms.com/docs/graphql/overview"
+      ],
+      "result": "correction-required",
+      "basis": "Where/and/or/dotted fields and CRUD/REST/GraphQL shapes are documented. all operator is Mongo-only; depth has no GraphQL effect; defaultDepth2 and pagination10 apply outside GraphQL shape. req is needed for transaction even if overrideAccess=true, contrary to optional wording.",
+      "requiredChange": "Add operator/adapter limits, retain correct bypass warning and distinguish req transaction role.",
+      "falsifier": "Adapter-appropriate filters return expected set; totalDocs read as property; nested administrative write shares transaction.",
+      "evidenceBoundary": "Source/documentation review; code and agent execution not performed"
+    }
+  ],
+  "fileInventory": [
+    {
+      "file": "AGENTS.md",
+      "lines": 33,
+      "sha256": "160adcb8b9ac3f7f4b61341ba09b6b07ad8f0dc3cd7adadd7d86f25caee786bb",
+      "surface": "active-or-maintenance",
+      "aspectIds": [],
+      "classification": "N/A technical API assertion"
+    },
+    {
+      "file": "SKILL.md",
+      "lines": 296,
+      "sha256": "d78623a1db9a7f93db5e8da14677b4ab2df20eaa4bbd90320c39afd96b47e817",
+      "surface": "active-or-maintenance",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "classification": "covered by aspect rows; generated counterparts derive from identical source snippets"
+    },
+    {
+      "file": "agents/openai.yaml",
+      "lines": 4,
+      "sha256": "2dd7d1903a7b294cdf577504078c63216d8533e36b386fb9426688ac61292c35",
+      "surface": "active-or-maintenance",
+      "aspectIds": [],
+      "classification": "N/A technical API assertion"
+    },
+    {
+      "file": "docs/README.md",
+      "lines": 11,
+      "sha256": "953f7b1b4ea6a9d37fa503ed464f9df1c51e3cf02c4cd48e132184092043643b",
+      "surface": "supporting-history",
+      "aspectIds": [],
+      "classification": "N/A technical API assertion"
+    },
+    {
+      "file": "docs/compile-report.md",
+      "lines": 43,
+      "sha256": "f85867e09390621025b0c6601a79d07418857b32b23149c178a05e6ca1d7b6a4",
+      "surface": "supporting-history",
+      "aspectIds": [],
+      "classification": "N/A technical API assertion"
+    },
+    {
+      "file": "docs/logs/implementation-log-20260509-1.md",
+      "lines": 66,
+      "sha256": "9825ffcb9f7fe1589794769ff5b698f7f6660abb8639449520a354b161dd660b",
+      "surface": "supporting-history",
+      "aspectIds": [],
+      "classification": "N/A technical API assertion"
+    },
+    {
+      "file": "fragments/overview.md",
+      "lines": 156,
+      "sha256": "e389f8d056bcbe9858cc3da953d85c63a98fc35266b2a50acf797a1b639e7e11",
+      "surface": "active-or-maintenance",
+      "aspectIds": [
+        "P-T02"
+      ],
+      "classification": "covered by aspect rows; generated counterparts derive from identical source snippets"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "lines": 704,
+      "sha256": "fe49222c903d2a1de80848ea253eef4d0a6eb2c7fb0c3104ff658002ae165cff",
+      "surface": "active-or-maintenance",
+      "aspectIds": [
+        "P-T08",
+        "P-T09",
+        "P-T10"
+      ],
+      "classification": "covered by aspect rows; generated counterparts derive from identical source snippets"
+    },
+    {
+      "file": "references/access-control.md",
+      "lines": 697,
+      "sha256": "1537d27102ff1ea7f31e2a6447d3557772bd82ee9e23c6ff78c44c22ff089f0e",
+      "surface": "active-or-maintenance",
+      "aspectIds": [
+        "P-T03",
+        "P-T04",
+        "P-T05",
+        "P-T06",
+        "P-T07"
+      ],
+      "classification": "covered by aspect rows; generated counterparts derive from identical source snippets"
+    },
+    {
+      "file": "references/adapters.md",
+      "lines": 326,
+      "sha256": "0c1d62bfa15ad36b44701f647e2fef75c76f5805d1153a8658436d6807e71d83",
+      "surface": "active-or-maintenance",
+      "aspectIds": [
+        "P-T11",
+        "P-T12",
+        "P-T13",
+        "P-T14"
+      ],
+      "classification": "covered by aspect rows; generated counterparts derive from identical source snippets"
+    },
+    {
+      "file": "references/advanced.md",
+      "lines": 386,
+      "sha256": "b28ab2787cb974f98a6aa077af8e6265da85a9d7bde6b764214ebfd69c15a293",
+      "surface": "active-or-maintenance",
+      "aspectIds": [
+        "P-T15",
+        "P-T16",
+        "P-T17",
+        "P-T18",
+        "P-T19"
+      ],
+      "classification": "covered by aspect rows; generated counterparts derive from identical source snippets"
+    },
+    {
+      "file": "references/collections.md",
+      "lines": 303,
+      "sha256": "4927007c1a85b332d8040fba1e6e1715e18a3d8b3c9dde8088514e15d9c1479d",
+      "surface": "active-or-maintenance",
+      "aspectIds": [
+        "P-T20",
+        "P-T21"
+      ],
+      "classification": "covered by aspect rows; generated counterparts derive from identical source snippets"
+    },
+    {
+      "file": "references/endpoints.md",
+      "lines": 634,
+      "sha256": "126c5bc1d99e794720c21b38b748b85d118a9b6c13fbf7913df7f90ae310f874",
+      "surface": "active-or-maintenance",
+      "aspectIds": [
+        "P-T22",
+        "P-T23"
+      ],
+      "classification": "covered by aspect rows; generated counterparts derive from identical source snippets"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "lines": 553,
+      "sha256": "294635bac34748a0ddd499fa3723750544c0ec796f8a0e12c3db7fb06a30ac2d",
+      "surface": "active-or-maintenance",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "classification": "covered by aspect rows; generated counterparts derive from identical source snippets"
+    },
+    {
+      "file": "references/fields.md",
+      "lines": 744,
+      "sha256": "520bb3769f41bda757afc19e966db2f3efa7e34ee59d41552f49cfdb572ad8e9",
+      "surface": "active-or-maintenance",
+      "aspectIds": [
+        "P-T25",
+        "P-T26",
+        "P-T27",
+        "P-T28"
+      ],
+      "classification": "covered by aspect rows; generated counterparts derive from identical source snippets"
+    },
+    {
+      "file": "references/hooks.md",
+      "lines": 186,
+      "sha256": "980fcc6b3fcd0b7007ceec4616e88e41c220e09a24ef476d4fe4b23facd76109",
+      "surface": "active-or-maintenance",
+      "aspectIds": [
+        "P-T29"
+      ],
+      "classification": "covered by aspect rows; generated counterparts derive from identical source snippets"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "lines": 1436,
+      "sha256": "6081759fc1f16b75de63cbb74dd30c28233dfb251323a2c8c63acfe65b25b9c5",
+      "surface": "active-or-maintenance",
+      "aspectIds": [
+        "P-T30",
+        "P-T31",
+        "P-T32",
+        "P-T33",
+        "P-T34",
+        "P-T35"
+      ],
+      "classification": "covered by aspect rows; generated counterparts derive from identical source snippets"
+    },
+    {
+      "file": "references/queries.md",
+      "lines": 274,
+      "sha256": "c3d524ddbc46335bfe6b949f1a7e7e15e14bacf9274c261995ffcf74fd918d0c",
+      "surface": "active-or-maintenance",
+      "aspectIds": [
+        "P-T36"
+      ],
+      "classification": "covered by aspect rows; generated counterparts derive from identical source snippets"
+    },
+    {
+      "file": "skill.yaml",
+      "lines": 228,
+      "sha256": "4d1c4829152629494acd81f471c314fe640e1ba1bd25e5871b771bd5108ec11b",
+      "surface": "active-or-maintenance",
+      "aspectIds": [
+        "P-T01"
+      ],
+      "classification": "covered by aspect rows; generated counterparts derive from identical source snippets"
+    }
+  ],
+  "sectionInventory": [
+    {
+      "file": "AGENTS.md",
+      "start": 8,
+      "end": 11,
+      "heading": "# AGENTS.md",
+      "aspectIds": [],
+      "scope": "instruction/metadata"
+    },
+    {
+      "file": "AGENTS.md",
+      "start": 12,
+      "end": 27,
+      "heading": "## Skill Type",
+      "aspectIds": [],
+      "scope": "instruction/metadata"
+    },
+    {
+      "file": "AGENTS.md",
+      "start": 28,
+      "end": 33,
+      "heading": "## Maintenance Rules",
+      "aspectIds": [],
+      "scope": "instruction/metadata"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 17,
+      "end": 18,
+      "heading": "# payload",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 19,
+      "end": 26,
+      "heading": "## Start here",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 27,
+      "end": 32,
+      "heading": "## When to use this skill",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 33,
+      "end": 39,
+      "heading": "## When NOT to use this skill",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 40,
+      "end": 43,
+      "heading": "## Overview",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 44,
+      "end": 75,
+      "heading": "## Quick Reference",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 76,
+      "end": 77,
+      "heading": "## Security Pitfalls",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 78,
+      "end": 103,
+      "heading": "### 1. Local API Access Control (CRITICAL)",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 104,
+      "end": 137,
+      "heading": "### 2. Transaction Failures in Hooks",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 138,
+      "end": 176,
+      "heading": "### 3. Infinite Hook Loops",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 177,
+      "end": 190,
+      "heading": "## Reference Documentation",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 191,
+      "end": 198,
+      "heading": "## Resources",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 199,
+      "end": 200,
+      "heading": "## Workflow stages",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 201,
+      "end": 213,
+      "heading": "### Workflow stage: Establish Payload context",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 214,
+      "end": 227,
+      "heading": "### Workflow stage: Apply the Payload pattern",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 228,
+      "end": 239,
+      "heading": "### Workflow stage: Verify Payload behavior",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 240,
+      "end": 247,
+      "heading": "## Interop priority",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 248,
+      "end": 255,
+      "heading": "## Gotchas",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 256,
+      "end": 257,
+      "heading": "## Policies",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 258,
+      "end": 260,
+      "heading": "### Access evidence policy",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 261,
+      "end": 263,
+      "heading": "### Transaction evidence policy",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 264,
+      "end": 266,
+      "heading": "### Output reporting policy",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 267,
+      "end": 279,
+      "heading": "## Required active references",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 280,
+      "end": 285,
+      "heading": "## Portability rules",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 286,
+      "end": 291,
+      "heading": "## Portability checklist before finishing",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 292,
+      "end": 296,
+      "heading": "## Supporting and historical surface",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "fragments/overview.md",
+      "start": 3,
+      "end": 34,
+      "heading": "## Quick Reference",
+      "aspectIds": [
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "fragments/overview.md",
+      "start": 35,
+      "end": 36,
+      "heading": "## Security Pitfalls",
+      "aspectIds": [
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "fragments/overview.md",
+      "start": 37,
+      "end": 62,
+      "heading": "### 1. Local API Access Control (CRITICAL)",
+      "aspectIds": [
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "fragments/overview.md",
+      "start": 63,
+      "end": 96,
+      "heading": "### 2. Transaction Failures in Hooks",
+      "aspectIds": [
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "fragments/overview.md",
+      "start": 97,
+      "end": 135,
+      "heading": "### 3. Infinite Hook Loops",
+      "aspectIds": [
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "fragments/overview.md",
+      "start": 136,
+      "end": 149,
+      "heading": "## Reference Documentation",
+      "aspectIds": [
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "fragments/overview.md",
+      "start": 150,
+      "end": 156,
+      "heading": "## Resources",
+      "aspectIds": [
+        "P-T02"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 1,
+      "end": 4,
+      "heading": "# Payload Access Control - Advanced Patterns",
+      "aspectIds": [
+        "P-T08"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 5,
+      "end": 6,
+      "heading": "## Context-Aware Access Patterns",
+      "aspectIds": [
+        "P-T08"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 7,
+      "end": 35,
+      "heading": "### Locale-Specific Access",
+      "aspectIds": [
+        "P-T08"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 36,
+      "end": 64,
+      "heading": "### Device-Specific Access",
+      "aspectIds": [
+        "P-T08"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 65,
+      "end": 94,
+      "heading": "### IP-Based Access",
+      "aspectIds": [
+        "P-T08"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 95,
+      "end": 96,
+      "heading": "## Time-Based Access Patterns",
+      "aspectIds": [
+        "P-T08"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 97,
+      "end": 119,
+      "heading": "### Today's Records Only",
+      "aspectIds": [
+        "P-T08"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 120,
+      "end": 150,
+      "heading": "### Recent Records (Last N Days)",
+      "aspectIds": [
+        "P-T08"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 151,
+      "end": 177,
+      "heading": "### Scheduled Content (Publish Date Range)",
+      "aspectIds": [
+        "P-T08"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 178,
+      "end": 179,
+      "heading": "## Subscription-Based Access",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 180,
+      "end": 210,
+      "heading": "### Active Subscription Required",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 211,
+      "end": 252,
+      "heading": "### Subscription Tier-Based Access",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 253,
+      "end": 256,
+      "heading": "## Factory Functions",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 257,
+      "end": 287,
+      "heading": "### createRoleBasedAccess",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 288,
+      "end": 325,
+      "heading": "### createOrgScopedAccess",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 326,
+      "end": 361,
+      "heading": "### createTeamBasedAccess",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 362,
+      "end": 396,
+      "heading": "### createTimeLimitedAccess",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 397,
+      "end": 400,
+      "heading": "## Configuration Templates",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 401,
+      "end": 422,
+      "heading": "### Basic Authenticated Collection",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 423,
+      "end": 464,
+      "heading": "### Public + Authenticated Collection",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 465,
+      "end": 509,
+      "heading": "### Multi-User/Self-Service Collection",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 510,
+      "end": 511,
+      "heading": "## Debugging Tips",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 512,
+      "end": 525,
+      "heading": "### Log Access Check Execution",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 526,
+      "end": 539,
+      "heading": "### Verify Arguments Availability",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 540,
+      "end": 555,
+      "heading": "### Measure Async Operation Timing",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 556,
+      "end": 570,
+      "heading": "### Test Access Without User",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 571,
+      "end": 572,
+      "heading": "## Performance Considerations",
+      "aspectIds": [
+        "P-T10"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 573,
+      "end": 595,
+      "heading": "### Async Operations Impact",
+      "aspectIds": [
+        "P-T10"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 596,
+      "end": 610,
+      "heading": "### Query Constraint Optimization",
+      "aspectIds": [
+        "P-T10"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 611,
+      "end": 654,
+      "heading": "### Field Access on Large Arrays",
+      "aspectIds": [
+        "P-T10"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 655,
+      "end": 680,
+      "heading": "### Avoid N+1 Queries",
+      "aspectIds": [
+        "P-T10"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 681,
+      "end": 704,
+      "heading": "## Enhanced Best Practices",
+      "aspectIds": [
+        "P-T10"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 1,
+      "end": 4,
+      "heading": "# Payload Access Control Reference",
+      "aspectIds": [
+        "P-T03"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 5,
+      "end": 12,
+      "heading": "## At a Glance",
+      "aspectIds": [
+        "P-T03"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 13,
+      "end": 20,
+      "heading": "## Three Layers of Access Control",
+      "aspectIds": [
+        "P-T03"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 21,
+      "end": 29,
+      "heading": "## Return Value Types",
+      "aspectIds": [
+        "P-T03"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 30,
+      "end": 46,
+      "heading": "## Operation Decision Tree",
+      "aspectIds": [
+        "P-T03"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 47,
+      "end": 48,
+      "heading": "## Collection Access Control",
+      "aspectIds": [
+        "P-T03"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 49,
+      "end": 93,
+      "heading": "### Basic Patterns",
+      "aspectIds": [
+        "P-T03"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 94,
+      "end": 157,
+      "heading": "### Role-Based Access Control (RBAC) Pattern",
+      "aspectIds": [
+        "P-T03",
+        "P-T04"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 158,
+      "end": 203,
+      "heading": "### Reusable Access Functions",
+      "aspectIds": [
+        "P-T05"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 204,
+      "end": 246,
+      "heading": "### Row-Level Security with Complex Queries",
+      "aspectIds": [
+        "P-T05"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 247,
+      "end": 273,
+      "heading": "### Header-Based Access (API Keys)",
+      "aspectIds": [
+        "P-T05"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 274,
+      "end": 277,
+      "heading": "## Field Access Control",
+      "aspectIds": [
+        "P-T05"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 278,
+      "end": 304,
+      "heading": "### Basic Field Access",
+      "aspectIds": [
+        "P-T05"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 305,
+      "end": 336,
+      "heading": "### Sibling Data Access",
+      "aspectIds": [
+        "P-T05"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 337,
+      "end": 359,
+      "heading": "### Nested Field Access",
+      "aspectIds": [
+        "P-T05"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 360,
+      "end": 386,
+      "heading": "### Hiding Admin Fields",
+      "aspectIds": [
+        "P-T05"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 387,
+      "end": 409,
+      "heading": "## Global Access Control",
+      "aspectIds": [
+        "P-T05"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 410,
+      "end": 471,
+      "heading": "## Multi-Tenant Access Control",
+      "aspectIds": [
+        "P-T06"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 472,
+      "end": 473,
+      "heading": "## Auth Collection Patterns",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 474,
+      "end": 501,
+      "heading": "### Self or Admin Pattern",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 502,
+      "end": 531,
+      "heading": "### Restrict Self-Updates",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 532,
+      "end": 568,
+      "heading": "## Cross-Collection Validation",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 569,
+      "end": 570,
+      "heading": "## Access Control Function Arguments",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 571,
+      "end": 583,
+      "heading": "### Collection Create",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 584,
+      "end": 594,
+      "heading": "### Collection Read",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 595,
+      "end": 604,
+      "heading": "### Collection Update",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 605,
+      "end": 613,
+      "heading": "### Collection Delete",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 614,
+      "end": 625,
+      "heading": "### Field Create",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 626,
+      "end": 638,
+      "heading": "### Field Read",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 639,
+      "end": 652,
+      "heading": "### Field Update",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 653,
+      "end": 681,
+      "heading": "## Important Notes",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 682,
+      "end": 694,
+      "heading": "## Best Practices",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 695,
+      "end": 697,
+      "heading": "## Advanced Patterns",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 1,
+      "end": 4,
+      "heading": "# Payload Adapters Reference",
+      "aspectIds": [
+        "P-T11"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 5,
+      "end": 6,
+      "heading": "## Database Adapters",
+      "aspectIds": [
+        "P-T11"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 7,
+      "end": 18,
+      "heading": "### MongoDB",
+      "aspectIds": [
+        "P-T11"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 19,
+      "end": 34,
+      "heading": "### Postgres",
+      "aspectIds": [
+        "P-T11"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 35,
+      "end": 49,
+      "heading": "### SQLite",
+      "aspectIds": [
+        "P-T11"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 50,
+      "end": 88,
+      "heading": "## Transactions",
+      "aspectIds": [
+        "P-T12"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 89,
+      "end": 154,
+      "heading": "### Threading req Through Operations",
+      "aspectIds": [
+        "P-T12"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 155,
+      "end": 165,
+      "heading": "## Storage Adapters",
+      "aspectIds": [
+        "P-T13"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 166,
+      "end": 189,
+      "heading": "### AWS S3",
+      "aspectIds": [
+        "P-T13"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 190,
+      "end": 207,
+      "heading": "### Azure Blob Storage",
+      "aspectIds": [
+        "P-T13"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 208,
+      "end": 228,
+      "heading": "### Google Cloud Storage",
+      "aspectIds": [
+        "P-T13"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 229,
+      "end": 253,
+      "heading": "### Cloudflare R2",
+      "aspectIds": [
+        "P-T13"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 254,
+      "end": 270,
+      "heading": "### Vercel Blob",
+      "aspectIds": [
+        "P-T13"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 271,
+      "end": 290,
+      "heading": "### Uploadthing",
+      "aspectIds": [
+        "P-T13"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 291,
+      "end": 292,
+      "heading": "## Email Adapters",
+      "aspectIds": [
+        "P-T14"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 293,
+      "end": 313,
+      "heading": "### Nodemailer (SMTP)",
+      "aspectIds": [
+        "P-T14"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 314,
+      "end": 326,
+      "heading": "### Resend",
+      "aspectIds": [
+        "P-T14"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 1,
+      "end": 4,
+      "heading": "# Payload Advanced Features",
+      "aspectIds": [
+        "P-T15"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 5,
+      "end": 6,
+      "heading": "## Authentication",
+      "aspectIds": [
+        "P-T15"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 7,
+      "end": 29,
+      "heading": "### Login",
+      "aspectIds": [
+        "P-T15"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 30,
+      "end": 40,
+      "heading": "### Forgot Password",
+      "aspectIds": [
+        "P-T15"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 41,
+      "end": 65,
+      "heading": "### Custom Strategy",
+      "aspectIds": [
+        "P-T15"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 66,
+      "end": 80,
+      "heading": "### API Keys",
+      "aspectIds": [
+        "P-T15"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 81,
+      "end": 84,
+      "heading": "## Jobs Queue",
+      "aspectIds": [
+        "P-T16"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 85,
+      "end": 114,
+      "heading": "### Tasks",
+      "aspectIds": [
+        "P-T16"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 115,
+      "end": 128,
+      "heading": "### Queueing Jobs",
+      "aspectIds": [
+        "P-T16"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 129,
+      "end": 156,
+      "heading": "### Workflows",
+      "aspectIds": [
+        "P-T16"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 157,
+      "end": 160,
+      "heading": "## Custom Endpoints",
+      "aspectIds": [
+        "P-T17"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 161,
+      "end": 191,
+      "heading": "### Root Endpoints",
+      "aspectIds": [
+        "P-T17"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 192,
+      "end": 218,
+      "heading": "### Collection Endpoints",
+      "aspectIds": [
+        "P-T17"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 219,
+      "end": 220,
+      "heading": "## Custom Components",
+      "aspectIds": [
+        "P-T18"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 221,
+      "end": 234,
+      "heading": "### Field Component (Client)",
+      "aspectIds": [
+        "P-T18"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 235,
+      "end": 250,
+      "heading": "### Custom View",
+      "aspectIds": [
+        "P-T18"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 251,
+      "end": 273,
+      "heading": "### Admin Config",
+      "aspectIds": [
+        "P-T18"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 274,
+      "end": 275,
+      "heading": "## Plugins",
+      "aspectIds": [
+        "P-T19"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 276,
+      "end": 289,
+      "heading": "### Available Plugins",
+      "aspectIds": [
+        "P-T19"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 290,
+      "end": 310,
+      "heading": "### Using Plugins",
+      "aspectIds": [
+        "P-T19"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 311,
+      "end": 337,
+      "heading": "### Creating Plugins",
+      "aspectIds": [
+        "P-T19"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 338,
+      "end": 367,
+      "heading": "## Localization",
+      "aspectIds": [
+        "P-T19"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 368,
+      "end": 371,
+      "heading": "## TypeScript Type References",
+      "aspectIds": [
+        "P-T19"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 372,
+      "end": 375,
+      "heading": "### Core Configuration Types",
+      "aspectIds": [
+        "P-T19"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 376,
+      "end": 381,
+      "heading": "### Database & Adapters",
+      "aspectIds": [
+        "P-T19"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 382,
+      "end": 386,
+      "heading": "### Rich Text & Plugins",
+      "aspectIds": [
+        "P-T19"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/collections.md",
+      "start": 1,
+      "end": 4,
+      "heading": "# Payload Collections Reference",
+      "aspectIds": [
+        "P-T20"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/collections.md",
+      "start": 5,
+      "end": 48,
+      "heading": "## Basic Collection",
+      "aspectIds": [
+        "P-T20"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/collections.md",
+      "start": 49,
+      "end": 82,
+      "heading": "## Auth Collection",
+      "aspectIds": [
+        "P-T20"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/collections.md",
+      "start": 83,
+      "end": 125,
+      "heading": "## Upload Collection",
+      "aspectIds": [
+        "P-T20"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/collections.md",
+      "start": 126,
+      "end": 173,
+      "heading": "## Live Preview",
+      "aspectIds": [
+        "P-T21"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/collections.md",
+      "start": 174,
+      "end": 212,
+      "heading": "## Versioning & Drafts",
+      "aspectIds": [
+        "P-T21"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/collections.md",
+      "start": 213,
+      "end": 256,
+      "heading": "### Draft API Usage",
+      "aspectIds": [
+        "P-T21"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/collections.md",
+      "start": 257,
+      "end": 264,
+      "heading": "### Document Status",
+      "aspectIds": [
+        "P-T21"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/collections.md",
+      "start": 265,
+      "end": 303,
+      "heading": "## Globals",
+      "aspectIds": [
+        "P-T21"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 1,
+      "end": 4,
+      "heading": "# Payload Custom API Endpoints Reference",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 5,
+      "end": 6,
+      "heading": "## Quick Reference",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 7,
+      "end": 15,
+      "heading": "### Endpoint Configuration",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 16,
+      "end": 33,
+      "heading": "### Request Context",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 34,
+      "end": 35,
+      "heading": "## Common Patterns",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 36,
+      "end": 56,
+      "heading": "### Authentication Check",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 57,
+      "end": 84,
+      "heading": "### Using Payload Operations",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 85,
+      "end": 106,
+      "heading": "### Route Parameters",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 107,
+      "end": 152,
+      "heading": "### Request Body Handling",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 153,
+      "end": 175,
+      "heading": "### CORS Headers",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 176,
+      "end": 198,
+      "heading": "### Error Handling",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 199,
+      "end": 226,
+      "heading": "### Query Parameters",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 227,
+      "end": 228,
+      "heading": "## Helper Functions",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 229,
+      "end": 256,
+      "heading": "### addDataAndFileToRequest",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 257,
+      "end": 282,
+      "heading": "### addLocalesToRequestFromData",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 283,
+      "end": 307,
+      "heading": "### headersWithCors",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 308,
+      "end": 309,
+      "heading": "## Real-World Examples",
+      "aspectIds": [
+        "P-T23"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 310,
+      "end": 366,
+      "heading": "### Multi-Tenant Login Endpoint",
+      "aspectIds": [
+        "P-T23"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 367,
+      "end": 400,
+      "heading": "### Webhook Handler (Stripe)",
+      "aspectIds": [
+        "P-T23"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 401,
+      "end": 442,
+      "heading": "### Data Preview Endpoint",
+      "aspectIds": [
+        "P-T23"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 443,
+      "end": 468,
+      "heading": "### Reindex Action Endpoint",
+      "aspectIds": [
+        "P-T23"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 469,
+      "end": 470,
+      "heading": "## Endpoint Placement",
+      "aspectIds": [
+        "P-T23"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 471,
+      "end": 496,
+      "heading": "### Collection Endpoints",
+      "aspectIds": [
+        "P-T23"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 497,
+      "end": 522,
+      "heading": "### Global Endpoints",
+      "aspectIds": [
+        "P-T23"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 523,
+      "end": 524,
+      "heading": "## Advanced Patterns",
+      "aspectIds": [
+        "P-T23"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 525,
+      "end": 547,
+      "heading": "### Factory Functions",
+      "aspectIds": [
+        "P-T23"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 548,
+      "end": 578,
+      "heading": "### Conditional Endpoints",
+      "aspectIds": [
+        "P-T23"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 579,
+      "end": 615,
+      "heading": "### OpenAPI Documentation",
+      "aspectIds": [
+        "P-T23"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 616,
+      "end": 628,
+      "heading": "## Best Practices",
+      "aspectIds": [
+        "P-T23"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 629,
+      "end": 634,
+      "heading": "## Resources",
+      "aspectIds": [
+        "P-T23"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 1,
+      "end": 4,
+      "heading": "# Payload Field Type Guards Reference",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 5,
+      "end": 6,
+      "heading": "## Structural Guards",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 7,
+      "end": 40,
+      "heading": "### fieldHasSubFields",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 41,
+      "end": 62,
+      "heading": "### fieldIsArrayType",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 63,
+      "end": 95,
+      "heading": "### fieldIsBlockType",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 96,
+      "end": 116,
+      "heading": "### fieldIsGroupType",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 117,
+      "end": 118,
+      "heading": "## Capability Guards",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 119,
+      "end": 142,
+      "heading": "### fieldSupportsMany",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 143,
+      "end": 164,
+      "heading": "### fieldHasMaxDepth",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 165,
+      "end": 197,
+      "heading": "### fieldShouldBeLocalized",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 198,
+      "end": 221,
+      "heading": "### fieldIsVirtual",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 222,
+      "end": 223,
+      "heading": "## Data Guards",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 224,
+      "end": 254,
+      "heading": "### fieldAffectsData",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 255,
+      "end": 276,
+      "heading": "### fieldIsPresentationalOnly",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 277,
+      "end": 297,
+      "heading": "### fieldIsID",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 298,
+      "end": 315,
+      "heading": "### fieldIsHiddenOrDisabled",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 316,
+      "end": 317,
+      "heading": "## Layout Guards",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 318,
+      "end": 343,
+      "heading": "### fieldIsSidebar",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 344,
+      "end": 345,
+      "heading": "## Tab & Group Guards",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 346,
+      "end": 369,
+      "heading": "### tabHasName",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 370,
+      "end": 388,
+      "heading": "### groupHasName",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 389,
+      "end": 390,
+      "heading": "## Option & Value Guards",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 391,
+      "end": 412,
+      "heading": "### optionIsObject",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 413,
+      "end": 431,
+      "heading": "### optionsAreObjects",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 432,
+      "end": 450,
+      "heading": "### optionIsValue",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 451,
+      "end": 470,
+      "heading": "### valueIsValueWithRelation",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 471,
+      "end": 472,
+      "heading": "## Common Patterns",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 473,
+      "end": 490,
+      "heading": "### Recursive Field Traversal",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 491,
+      "end": 501,
+      "heading": "### Filter Data-Bearing Fields",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 502,
+      "end": 515,
+      "heading": "### Container Type Switching",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 516,
+      "end": 533,
+      "heading": "### Safe Property Access",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 534,
+      "end": 553,
+      "heading": "## Type Preservation",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 1,
+      "end": 4,
+      "heading": "# Payload Field Types Reference",
+      "aspectIds": [
+        "P-T25"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 5,
+      "end": 28,
+      "heading": "## Text Field",
+      "aspectIds": [
+        "P-T25"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 29,
+      "end": 55,
+      "heading": "### Slug Field Helper",
+      "aspectIds": [
+        "P-T25"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 56,
+      "end": 81,
+      "heading": "## Rich Text (Lexical)",
+      "aspectIds": [
+        "P-T25"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 82,
+      "end": 156,
+      "heading": "### Advanced Lexical Configuration",
+      "aspectIds": [
+        "P-T25"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 157,
+      "end": 190,
+      "heading": "## Relationship",
+      "aspectIds": [
+        "P-T26"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 191,
+      "end": 222,
+      "heading": "## Array",
+      "aspectIds": [
+        "P-T26"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 223,
+      "end": 261,
+      "heading": "## Blocks",
+      "aspectIds": [
+        "P-T26"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 262,
+      "end": 286,
+      "heading": "## Select",
+      "aspectIds": [
+        "P-T26"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 287,
+      "end": 302,
+      "heading": "## Upload",
+      "aspectIds": [
+        "P-T26"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 303,
+      "end": 320,
+      "heading": "## Point (Geolocation)",
+      "aspectIds": [
+        "P-T27"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 321,
+      "end": 372,
+      "heading": "### Geospatial Queries",
+      "aspectIds": [
+        "P-T27"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 373,
+      "end": 404,
+      "heading": "## Join Fields",
+      "aspectIds": [
+        "P-T27"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 405,
+      "end": 427,
+      "heading": "## Virtual Fields",
+      "aspectIds": [
+        "P-T27"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 428,
+      "end": 465,
+      "heading": "## Conditional Fields",
+      "aspectIds": [
+        "P-T27"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 466,
+      "end": 487,
+      "heading": "## Radio",
+      "aspectIds": [
+        "P-T28"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 488,
+      "end": 511,
+      "heading": "## Row (Layout)",
+      "aspectIds": [
+        "P-T28"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 512,
+      "end": 531,
+      "heading": "## Collapsible (Layout)",
+      "aspectIds": [
+        "P-T28"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 532,
+      "end": 550,
+      "heading": "## UI (Custom Components)",
+      "aspectIds": [
+        "P-T28"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 551,
+      "end": 587,
+      "heading": "## Tabs & Groups",
+      "aspectIds": [
+        "P-T28"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 588,
+      "end": 701,
+      "heading": "## Reusable Field Factories",
+      "aspectIds": [
+        "P-T28"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 702,
+      "end": 744,
+      "heading": "## Field Type Guards",
+      "aspectIds": [
+        "P-T28"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/hooks.md",
+      "start": 1,
+      "end": 4,
+      "heading": "# Payload Hooks Reference",
+      "aspectIds": [
+        "P-T29"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/hooks.md",
+      "start": 5,
+      "end": 58,
+      "heading": "## Collection Hooks",
+      "aspectIds": [
+        "P-T29"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/hooks.md",
+      "start": 59,
+      "end": 85,
+      "heading": "## Field Hooks",
+      "aspectIds": [
+        "P-T29"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/hooks.md",
+      "start": 86,
+      "end": 111,
+      "heading": "## Hook Context",
+      "aspectIds": [
+        "P-T29"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/hooks.md",
+      "start": 112,
+      "end": 149,
+      "heading": "## Next.js Revalidation with Context Control",
+      "aspectIds": [
+        "P-T29"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/hooks.md",
+      "start": 150,
+      "end": 178,
+      "heading": "## Date Field Auto-Set",
+      "aspectIds": [
+        "P-T29"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/hooks.md",
+      "start": 179,
+      "end": 186,
+      "heading": "## Hook Patterns Best Practices",
+      "aspectIds": [
+        "P-T29"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1,
+      "end": 4,
+      "heading": "# Payload Plugin Development",
+      "aspectIds": [
+        "P-T30"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 5,
+      "end": 29,
+      "heading": "## Plugin Architecture",
+      "aspectIds": [
+        "P-T30"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 30,
+      "end": 31,
+      "heading": "## Plugin Package Structure",
+      "aspectIds": [
+        "P-T30"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 32,
+      "end": 46,
+      "heading": "### Simple Structure",
+      "aspectIds": [
+        "P-T30"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 47,
+      "end": 91,
+      "heading": "### Exhaustive Structure",
+      "aspectIds": [
+        "P-T30"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 92,
+      "end": 177,
+      "heading": "## Package.json Configuration",
+      "aspectIds": [
+        "P-T30"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 178,
+      "end": 179,
+      "heading": "## Plugin Patterns",
+      "aspectIds": [
+        "P-T31"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 180,
+      "end": 213,
+      "heading": "### Adding Fields to Collections",
+      "aspectIds": [
+        "P-T31"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 214,
+      "end": 238,
+      "heading": "### Adding New Collections",
+      "aspectIds": [
+        "P-T31"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 239,
+      "end": 281,
+      "heading": "### Adding Hooks",
+      "aspectIds": [
+        "P-T31"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 282,
+      "end": 328,
+      "heading": "### Adding Root-Level Endpoints",
+      "aspectIds": [
+        "P-T31"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 329,
+      "end": 368,
+      "heading": "### Field Overrides with Defaults",
+      "aspectIds": [
+        "P-T31"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 369,
+      "end": 428,
+      "heading": "### Tabs UI Pattern",
+      "aspectIds": [
+        "P-T31"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 429,
+      "end": 485,
+      "heading": "### Disable Plugin Pattern",
+      "aspectIds": [
+        "P-T31"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 486,
+      "end": 550,
+      "heading": "### Admin Components",
+      "aspectIds": [
+        "P-T31"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 551,
+      "end": 580,
+      "heading": "### Translations (i18n)",
+      "aspectIds": [
+        "P-T31"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 581,
+      "end": 613,
+      "heading": "### onInit Hook",
+      "aspectIds": [
+        "P-T31"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 614,
+      "end": 615,
+      "heading": "## TypeScript Patterns",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 616,
+      "end": 646,
+      "heading": "### Plugin Config Types",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 647,
+      "end": 656,
+      "heading": "### Export Types",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 657,
+      "end": 658,
+      "heading": "## Client Components",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 659,
+      "end": 694,
+      "heading": "### Custom Field Component",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 695,
+      "end": 696,
+      "heading": "## Best Practices",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 697,
+      "end": 708,
+      "heading": "### Preserve Existing Config",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 709,
+      "end": 720,
+      "heading": "### Respect User Overrides",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 721,
+      "end": 734,
+      "heading": "### Conditional Logic",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 735,
+      "end": 748,
+      "heading": "### Hook Composition",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 749,
+      "end": 756,
+      "heading": "### Type Safety",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 757,
+      "end": 768,
+      "heading": "### Field Path Imports",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 769,
+      "end": 772,
+      "heading": "### onInit Pattern",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 773,
+      "end": 776,
+      "heading": "## Advanced Patterns",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 777,
+      "end": 778,
+      "heading": "### Advanced Configuration",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 779,
+      "end": 798,
+      "heading": "#### Async Plugin Function",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 799,
+      "end": 820,
+      "heading": "#### Collection Override with Async Support",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 821,
+      "end": 852,
+      "heading": "#### Config Sanitization Pattern",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 853,
+      "end": 880,
+      "heading": "#### Collection Slug Mapping",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 881,
+      "end": 909,
+      "heading": "#### Multi-Collection Configuration",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 910,
+      "end": 911,
+      "heading": "### TypeScript Extensions",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 912,
+      "end": 939,
+      "heading": "#### TypeScript Schema Extension",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 940,
+      "end": 968,
+      "heading": "#### Module Declaration Augmentation",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 969,
+      "end": 970,
+      "heading": "### Advanced Hooks",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 971,
+      "end": 999,
+      "heading": "#### Global Error Hooks",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1000,
+      "end": 1044,
+      "heading": "#### Multiple Hook Types on Same Collection",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1045,
+      "end": 1046,
+      "heading": "### Access Control & Filtering",
+      "aspectIds": [
+        "P-T33"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1047,
+      "end": 1080,
+      "heading": "#### Access Control Wrapper Pattern",
+      "aspectIds": [
+        "P-T33"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1081,
+      "end": 1095,
+      "heading": "#### BaseFilter Composition",
+      "aspectIds": [
+        "P-T33"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1096,
+      "end": 1116,
+      "heading": "#### Relationship FilterOptions Modification",
+      "aspectIds": [
+        "P-T33"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1117,
+      "end": 1118,
+      "heading": "### Admin UI Customization",
+      "aspectIds": [
+        "P-T34"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1119,
+      "end": 1144,
+      "heading": "#### Metadata Storage Pattern",
+      "aspectIds": [
+        "P-T34"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1145,
+      "end": 1165,
+      "heading": "#### Conditional Component Rendering",
+      "aspectIds": [
+        "P-T34"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1166,
+      "end": 1183,
+      "heading": "#### Custom Provider Pattern",
+      "aspectIds": [
+        "P-T34"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1184,
+      "end": 1202,
+      "heading": "#### Custom Actions",
+      "aspectIds": [
+        "P-T34"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1203,
+      "end": 1223,
+      "heading": "#### Custom List Item Views",
+      "aspectIds": [
+        "P-T34"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1224,
+      "end": 1250,
+      "heading": "#### Custom Collection Endpoints",
+      "aspectIds": [
+        "P-T34"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1251,
+      "end": 1252,
+      "heading": "### Field & Collection Modifications",
+      "aspectIds": [
+        "P-T34"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1253,
+      "end": 1266,
+      "heading": "#### Admin Folders Override",
+      "aspectIds": [
+        "P-T34"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1267,
+      "end": 1268,
+      "heading": "### Background Jobs & Async Operations",
+      "aspectIds": [
+        "P-T34"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1269,
+      "end": 1295,
+      "heading": "#### Jobs Registration",
+      "aspectIds": [
+        "P-T34"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1296,
+      "end": 1297,
+      "heading": "## Testing Plugins",
+      "aspectIds": [
+        "P-T35"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1298,
+      "end": 1338,
+      "heading": "### Local Development with dev/ Directory (optional)",
+      "aspectIds": [
+        "P-T35"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1339,
+      "end": 1389,
+      "heading": "### Integration Tests (Vitest) (optional)",
+      "aspectIds": [
+        "P-T35"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1390,
+      "end": 1406,
+      "heading": "### End-to-End Tests (Playwright)",
+      "aspectIds": [
+        "P-T35"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1407,
+      "end": 1408,
+      "heading": "## Common Plugin Types",
+      "aspectIds": [
+        "P-T35"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1409,
+      "end": 1412,
+      "heading": "### Field Enhancer",
+      "aspectIds": [
+        "P-T35"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1413,
+      "end": 1416,
+      "heading": "### Collection Provider",
+      "aspectIds": [
+        "P-T35"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1417,
+      "end": 1420,
+      "heading": "### Hook Injector",
+      "aspectIds": [
+        "P-T35"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1421,
+      "end": 1424,
+      "heading": "### UI Enhancer",
+      "aspectIds": [
+        "P-T35"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1425,
+      "end": 1428,
+      "heading": "### Integration",
+      "aspectIds": [
+        "P-T35"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1429,
+      "end": 1432,
+      "heading": "### Adapter",
+      "aspectIds": [
+        "P-T35"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1433,
+      "end": 1436,
+      "heading": "## Resources",
+      "aspectIds": [
+        "P-T35"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/queries.md",
+      "start": 1,
+      "end": 4,
+      "heading": "# Payload Querying Reference",
+      "aspectIds": [
+        "P-T36"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/queries.md",
+      "start": 5,
+      "end": 35,
+      "heading": "## Query Operators",
+      "aspectIds": [
+        "P-T36"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/queries.md",
+      "start": 36,
+      "end": 50,
+      "heading": "## AND/OR Logic",
+      "aspectIds": [
+        "P-T36"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/queries.md",
+      "start": 51,
+      "end": 61,
+      "heading": "## Nested Properties",
+      "aspectIds": [
+        "P-T36"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/queries.md",
+      "start": 62,
+      "end": 122,
+      "heading": "## Local API",
+      "aspectIds": [
+        "P-T36"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/queries.md",
+      "start": 123,
+      "end": 148,
+      "heading": "### Threading req Parameter",
+      "aspectIds": [
+        "P-T36"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/queries.md",
+      "start": 149,
+      "end": 193,
+      "heading": "### Access Control in Local API",
+      "aspectIds": [
+        "P-T36"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/queries.md",
+      "start": 194,
+      "end": 215,
+      "heading": "## REST API",
+      "aspectIds": [
+        "P-T36"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/queries.md",
+      "start": 216,
+      "end": 229,
+      "heading": "### REST Endpoints",
+      "aspectIds": [
+        "P-T36"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/queries.md",
+      "start": 230,
+      "end": 267,
+      "heading": "## GraphQL",
+      "aspectIds": [
+        "P-T36"
+      ],
+      "scope": "technical-or-workflow"
+    },
+    {
+      "file": "references/queries.md",
+      "start": 268,
+      "end": 274,
+      "heading": "## Performance Best Practices",
+      "aspectIds": [
+        "P-T36"
+      ],
+      "scope": "technical-or-workflow"
+    }
+  ],
+  "codeBlockInventory": [
+    {
+      "file": "SKILL.md",
+      "start": 82,
+      "end": 95,
+      "language": "ts",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 108,
+      "end": 134,
+      "language": "ts",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "SKILL.md",
+      "start": 142,
+      "end": 173,
+      "language": "ts",
+      "aspectIds": [
+        "P-T01",
+        "P-T02"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "fragments/overview.md",
+      "start": 41,
+      "end": 54,
+      "language": "ts",
+      "aspectIds": [
+        "P-T02"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "fragments/overview.md",
+      "start": 67,
+      "end": 93,
+      "language": "ts",
+      "aspectIds": [
+        "P-T02"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "fragments/overview.md",
+      "start": 101,
+      "end": 132,
+      "language": "ts",
+      "aspectIds": [
+        "P-T02"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 11,
+      "end": 32,
+      "language": "ts",
+      "aspectIds": [
+        "P-T08"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 40,
+      "end": 61,
+      "language": "ts",
+      "aspectIds": [
+        "P-T08"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 69,
+      "end": 89,
+      "language": "ts",
+      "aspectIds": [
+        "P-T08"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 99,
+      "end": 116,
+      "language": "ts",
+      "aspectIds": [
+        "P-T08"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 122,
+      "end": 149,
+      "language": "ts",
+      "aspectIds": [
+        "P-T08"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 153,
+      "end": 174,
+      "language": "ts",
+      "aspectIds": [
+        "P-T08"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 182,
+      "end": 209,
+      "language": "ts",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 213,
+      "end": 249,
+      "language": "ts",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 261,
+      "end": 284,
+      "language": "ts",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 292,
+      "end": 322,
+      "language": "ts",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 330,
+      "end": 358,
+      "language": "ts",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 366,
+      "end": 393,
+      "language": "ts",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 403,
+      "end": 419,
+      "language": "ts",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 425,
+      "end": 461,
+      "language": "ts",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 467,
+      "end": 506,
+      "language": "ts",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 514,
+      "end": 524,
+      "language": "ts",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 528,
+      "end": 538,
+      "language": "ts",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 542,
+      "end": 554,
+      "language": "ts",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 558,
+      "end": 567,
+      "language": "ts",
+      "aspectIds": [
+        "P-T09"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 575,
+      "end": 594,
+      "language": "ts",
+      "aspectIds": [
+        "P-T10"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 598,
+      "end": 609,
+      "language": "ts",
+      "aspectIds": [
+        "P-T10"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 613,
+      "end": 653,
+      "language": "ts",
+      "aspectIds": [
+        "P-T10"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "start": 657,
+      "end": 669,
+      "language": "ts",
+      "aspectIds": [
+        "P-T10"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 32,
+      "end": 45,
+      "language": "txt",
+      "aspectIds": [
+        "P-T03"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 51,
+      "end": 92,
+      "language": "ts",
+      "aspectIds": [
+        "P-T03"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 98,
+      "end": 123,
+      "language": "ts",
+      "aspectIds": [
+        "P-T04"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 135,
+      "end": 156,
+      "language": "ts",
+      "aspectIds": [
+        "P-T04"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 160,
+      "end": 202,
+      "language": "ts",
+      "aspectIds": [
+        "P-T05"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 206,
+      "end": 245,
+      "language": "ts",
+      "aspectIds": [
+        "P-T05"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 249,
+      "end": 272,
+      "language": "ts",
+      "aspectIds": [
+        "P-T05"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 280,
+      "end": 303,
+      "language": "ts",
+      "aspectIds": [
+        "P-T05"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 307,
+      "end": 335,
+      "language": "ts",
+      "aspectIds": [
+        "P-T05"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 339,
+      "end": 358,
+      "language": "ts",
+      "aspectIds": [
+        "P-T05"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 362,
+      "end": 385,
+      "language": "ts",
+      "aspectIds": [
+        "P-T05"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 389,
+      "end": 408,
+      "language": "ts",
+      "aspectIds": [
+        "P-T05"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 412,
+      "end": 470,
+      "language": "ts",
+      "aspectIds": [
+        "P-T06"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 476,
+      "end": 500,
+      "language": "ts",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 504,
+      "end": 530,
+      "language": "ts",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 534,
+      "end": 567,
+      "language": "ts",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 573,
+      "end": 582,
+      "language": "ts",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 586,
+      "end": 593,
+      "language": "ts",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 597,
+      "end": 603,
+      "language": "ts",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 607,
+      "end": 612,
+      "language": "ts",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 616,
+      "end": 624,
+      "language": "ts",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 628,
+      "end": 637,
+      "language": "ts",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/access-control.md",
+      "start": 641,
+      "end": 651,
+      "language": "ts",
+      "aspectIds": [
+        "P-T07"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 9,
+      "end": 17,
+      "language": "ts",
+      "aspectIds": [
+        "P-T11"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 21,
+      "end": 33,
+      "language": "ts",
+      "aspectIds": [
+        "P-T11"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 37,
+      "end": 48,
+      "language": "ts",
+      "aspectIds": [
+        "P-T11"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 54,
+      "end": 85,
+      "language": "ts",
+      "aspectIds": [
+        "P-T12"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 93,
+      "end": 133,
+      "language": "ts",
+      "aspectIds": [
+        "P-T12"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 168,
+      "end": 188,
+      "language": "ts",
+      "aspectIds": [
+        "P-T13"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 192,
+      "end": 206,
+      "language": "ts",
+      "aspectIds": [
+        "P-T13"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 210,
+      "end": 227,
+      "language": "ts",
+      "aspectIds": [
+        "P-T13"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 231,
+      "end": 252,
+      "language": "ts",
+      "aspectIds": [
+        "P-T13"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 256,
+      "end": 269,
+      "language": "ts",
+      "aspectIds": [
+        "P-T13"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 273,
+      "end": 289,
+      "language": "ts",
+      "aspectIds": [
+        "P-T13"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 295,
+      "end": 312,
+      "language": "ts",
+      "aspectIds": [
+        "P-T14"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/adapters.md",
+      "start": 316,
+      "end": 326,
+      "language": "ts",
+      "aspectIds": [
+        "P-T14"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 9,
+      "end": 28,
+      "language": "ts",
+      "aspectIds": [
+        "P-T15"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 32,
+      "end": 39,
+      "language": "ts",
+      "aspectIds": [
+        "P-T15"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 43,
+      "end": 64,
+      "language": "ts",
+      "aspectIds": [
+        "P-T15"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 68,
+      "end": 79,
+      "language": "ts",
+      "aspectIds": [
+        "P-T15"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 87,
+      "end": 113,
+      "language": "ts",
+      "aspectIds": [
+        "P-T16"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 117,
+      "end": 127,
+      "language": "ts",
+      "aspectIds": [
+        "P-T16"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 133,
+      "end": 155,
+      "language": "ts",
+      "aspectIds": [
+        "P-T16"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 163,
+      "end": 190,
+      "language": "ts",
+      "aspectIds": [
+        "P-T17"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 194,
+      "end": 217,
+      "language": "ts",
+      "aspectIds": [
+        "P-T17"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 223,
+      "end": 233,
+      "language": "tsx",
+      "aspectIds": [
+        "P-T18"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 237,
+      "end": 249,
+      "language": "tsx",
+      "aspectIds": [
+        "P-T18"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 253,
+      "end": 272,
+      "language": "ts",
+      "aspectIds": [
+        "P-T18"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 292,
+      "end": 309,
+      "language": "ts",
+      "aspectIds": [
+        "P-T19"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 313,
+      "end": 336,
+      "language": "ts",
+      "aspectIds": [
+        "P-T19"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/advanced.md",
+      "start": 340,
+      "end": 366,
+      "language": "ts",
+      "aspectIds": [
+        "P-T19"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/collections.md",
+      "start": 7,
+      "end": 47,
+      "language": "ts",
+      "aspectIds": [
+        "P-T20"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/collections.md",
+      "start": 51,
+      "end": 81,
+      "language": "ts",
+      "aspectIds": [
+        "P-T20"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/collections.md",
+      "start": 85,
+      "end": 124,
+      "language": "ts",
+      "aspectIds": [
+        "P-T20"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/collections.md",
+      "start": 130,
+      "end": 172,
+      "language": "ts",
+      "aspectIds": [
+        "P-T21"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/collections.md",
+      "start": 178,
+      "end": 211,
+      "language": "ts",
+      "aspectIds": [
+        "P-T21"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/collections.md",
+      "start": 215,
+      "end": 255,
+      "language": "ts",
+      "aspectIds": [
+        "P-T21"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/collections.md",
+      "start": 269,
+      "end": 303,
+      "language": "ts",
+      "aspectIds": [
+        "P-T21"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 40,
+      "end": 55,
+      "language": "ts",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 61,
+      "end": 83,
+      "language": "ts",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 89,
+      "end": 105,
+      "language": "ts",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 111,
+      "end": 126,
+      "language": "ts",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 130,
+      "end": 151,
+      "language": "ts",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 157,
+      "end": 174,
+      "language": "ts",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 180,
+      "end": 197,
+      "language": "ts",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 203,
+      "end": 225,
+      "language": "ts",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 233,
+      "end": 249,
+      "language": "ts",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 261,
+      "end": 281,
+      "language": "ts",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 287,
+      "end": 306,
+      "language": "ts",
+      "aspectIds": [
+        "P-T22"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 314,
+      "end": 365,
+      "language": "ts",
+      "aspectIds": [
+        "P-T23"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 371,
+      "end": 399,
+      "language": "ts",
+      "aspectIds": [
+        "P-T23"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 405,
+      "end": 441,
+      "language": "ts",
+      "aspectIds": [
+        "P-T23"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 447,
+      "end": 467,
+      "language": "ts",
+      "aspectIds": [
+        "P-T23"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 475,
+      "end": 495,
+      "language": "ts",
+      "aspectIds": [
+        "P-T23"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 501,
+      "end": 521,
+      "language": "ts",
+      "aspectIds": [
+        "P-T23"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 529,
+      "end": 546,
+      "language": "ts",
+      "aspectIds": [
+        "P-T23"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 552,
+      "end": 577,
+      "language": "ts",
+      "aspectIds": [
+        "P-T23"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/endpoints.md",
+      "start": 583,
+      "end": 614,
+      "language": "ts",
+      "aspectIds": [
+        "P-T23"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 11,
+      "end": 23,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 27,
+      "end": 31,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 35,
+      "end": 39,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 45,
+      "end": 53,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 57,
+      "end": 61,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 67,
+      "end": 76,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 80,
+      "end": 84,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 88,
+      "end": 94,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 100,
+      "end": 107,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 111,
+      "end": 115,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 123,
+      "end": 133,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 137,
+      "end": 141,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 147,
+      "end": 155,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 159,
+      "end": 163,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 169,
+      "end": 177,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 181,
+      "end": 189,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 191,
+      "end": 196,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 202,
+      "end": 214,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 218,
+      "end": 220,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 228,
+      "end": 239,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 243,
+      "end": 247,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 251,
+      "end": 253,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 259,
+      "end": 267,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 271,
+      "end": 275,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 281,
+      "end": 288,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 292,
+      "end": 296,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 302,
+      "end": 306,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 310,
+      "end": 314,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 322,
+      "end": 334,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 338,
+      "end": 342,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 350,
+      "end": 360,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 364,
+      "end": 368,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 374,
+      "end": 381,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 385,
+      "end": 387,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 395,
+      "end": 405,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 409,
+      "end": 411,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 417,
+      "end": 424,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 428,
+      "end": 430,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 436,
+      "end": 443,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 447,
+      "end": 449,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 455,
+      "end": 463,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 467,
+      "end": 469,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 475,
+      "end": 489,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 493,
+      "end": 500,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 504,
+      "end": 514,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 518,
+      "end": 532,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "start": 538,
+      "end": 553,
+      "language": "ts",
+      "aspectIds": [
+        "P-T24"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 7,
+      "end": 27,
+      "language": "ts",
+      "aspectIds": [
+        "P-T25"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 33,
+      "end": 54,
+      "language": "ts",
+      "aspectIds": [
+        "P-T25"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 58,
+      "end": 80,
+      "language": "ts",
+      "aspectIds": [
+        "P-T25"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 84,
+      "end": 155,
+      "language": "ts",
+      "aspectIds": [
+        "P-T25"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 159,
+      "end": 189,
+      "language": "ts",
+      "aspectIds": [
+        "P-T26"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 193,
+      "end": 221,
+      "language": "ts",
+      "aspectIds": [
+        "P-T26"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 225,
+      "end": 260,
+      "language": "ts",
+      "aspectIds": [
+        "P-T26"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 264,
+      "end": 285,
+      "language": "ts",
+      "aspectIds": [
+        "P-T26"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 289,
+      "end": 301,
+      "language": "ts",
+      "aspectIds": [
+        "P-T26"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 307,
+      "end": 319,
+      "language": "ts",
+      "aspectIds": [
+        "P-T27"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 323,
+      "end": 369,
+      "language": "ts",
+      "aspectIds": [
+        "P-T27"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 377,
+      "end": 403,
+      "language": "ts",
+      "aspectIds": [
+        "P-T27"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 407,
+      "end": 426,
+      "language": "ts",
+      "aspectIds": [
+        "P-T27"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 430,
+      "end": 464,
+      "language": "ts",
+      "aspectIds": [
+        "P-T27"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 470,
+      "end": 486,
+      "language": "ts",
+      "aspectIds": [
+        "P-T28"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 492,
+      "end": 510,
+      "language": "ts",
+      "aspectIds": [
+        "P-T28"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 516,
+      "end": 530,
+      "language": "ts",
+      "aspectIds": [
+        "P-T28"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 536,
+      "end": 549,
+      "language": "ts",
+      "aspectIds": [
+        "P-T28"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 553,
+      "end": 586,
+      "language": "ts",
+      "aspectIds": [
+        "P-T28"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 592,
+      "end": 700,
+      "language": "ts",
+      "aspectIds": [
+        "P-T28"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/fields.md",
+      "start": 728,
+      "end": 742,
+      "language": "ts",
+      "aspectIds": [
+        "P-T28"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/hooks.md",
+      "start": 7,
+      "end": 57,
+      "language": "ts",
+      "aspectIds": [
+        "P-T29"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/hooks.md",
+      "start": 61,
+      "end": 84,
+      "language": "ts",
+      "aspectIds": [
+        "P-T29"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/hooks.md",
+      "start": 90,
+      "end": 110,
+      "language": "ts",
+      "aspectIds": [
+        "P-T29"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/hooks.md",
+      "start": 114,
+      "end": 148,
+      "language": "ts",
+      "aspectIds": [
+        "P-T29"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/hooks.md",
+      "start": 154,
+      "end": 177,
+      "language": "ts",
+      "aspectIds": [
+        "P-T29"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 9,
+      "end": 23,
+      "language": "ts",
+      "aspectIds": [
+        "P-T30"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 34,
+      "end": 45,
+      "language": "",
+      "aspectIds": [
+        "P-T30"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 49,
+      "end": 82,
+      "language": "",
+      "aspectIds": [
+        "P-T30"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 94,
+      "end": 164,
+      "language": "json",
+      "aspectIds": [
+        "P-T30"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 182,
+      "end": 212,
+      "language": "ts",
+      "aspectIds": [
+        "P-T31"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 216,
+      "end": 237,
+      "language": "ts",
+      "aspectIds": [
+        "P-T31"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 241,
+      "end": 280,
+      "language": "ts",
+      "aspectIds": [
+        "P-T31"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 286,
+      "end": 307,
+      "language": "ts",
+      "aspectIds": [
+        "P-T31"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 311,
+      "end": 327,
+      "language": "ts",
+      "aspectIds": [
+        "P-T31"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 331,
+      "end": 367,
+      "language": "ts",
+      "aspectIds": [
+        "P-T31"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 371,
+      "end": 427,
+      "language": "ts",
+      "aspectIds": [
+        "P-T31"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 433,
+      "end": 484,
+      "language": "ts",
+      "aspectIds": [
+        "P-T31"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 490,
+      "end": 510,
+      "language": "ts",
+      "aspectIds": [
+        "P-T31"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 514,
+      "end": 549,
+      "language": "tsx",
+      "aspectIds": [
+        "P-T31"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 553,
+      "end": 579,
+      "language": "ts",
+      "aspectIds": [
+        "P-T31"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 583,
+      "end": 612,
+      "language": "ts",
+      "aspectIds": [
+        "P-T31"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 618,
+      "end": 645,
+      "language": "ts",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 649,
+      "end": 655,
+      "language": "ts",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 661,
+      "end": 677,
+      "language": "tsx",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 679,
+      "end": 693,
+      "language": "ts",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 701,
+      "end": 707,
+      "language": "ts",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 713,
+      "end": 719,
+      "language": "ts",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 725,
+      "end": 733,
+      "language": "ts",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 739,
+      "end": 747,
+      "language": "ts",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 753,
+      "end": 755,
+      "language": "ts",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 761,
+      "end": 767,
+      "language": "ts",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 783,
+      "end": 797,
+      "language": "ts",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 803,
+      "end": 819,
+      "language": "ts",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 825,
+      "end": 851,
+      "language": "ts",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 857,
+      "end": 879,
+      "language": "ts",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 885,
+      "end": 908,
+      "language": "ts",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 916,
+      "end": 938,
+      "language": "ts",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 944,
+      "end": 967,
+      "language": "ts",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 975,
+      "end": 998,
+      "language": "ts",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1004,
+      "end": 1043,
+      "language": "ts",
+      "aspectIds": [
+        "P-T32"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1051,
+      "end": 1079,
+      "language": "ts",
+      "aspectIds": [
+        "P-T33"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1085,
+      "end": 1094,
+      "language": "ts",
+      "aspectIds": [
+        "P-T33"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1100,
+      "end": 1115,
+      "language": "ts",
+      "aspectIds": [
+        "P-T33"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1123,
+      "end": 1143,
+      "language": "ts",
+      "aspectIds": [
+        "P-T34"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1149,
+      "end": 1164,
+      "language": "ts",
+      "aspectIds": [
+        "P-T34"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1170,
+      "end": 1182,
+      "language": "ts",
+      "aspectIds": [
+        "P-T34"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1188,
+      "end": 1201,
+      "language": "ts",
+      "aspectIds": [
+        "P-T34"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1207,
+      "end": 1222,
+      "language": "ts",
+      "aspectIds": [
+        "P-T34"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1228,
+      "end": 1249,
+      "language": "ts",
+      "aspectIds": [
+        "P-T34"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1257,
+      "end": 1265,
+      "language": "ts",
+      "aspectIds": [
+        "P-T34"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1273,
+      "end": 1294,
+      "language": "ts",
+      "aspectIds": [
+        "P-T34"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1304,
+      "end": 1307,
+      "language": "bash",
+      "aspectIds": [
+        "P-T35"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1311,
+      "end": 1331,
+      "language": "ts",
+      "aspectIds": [
+        "P-T35"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1335,
+      "end": 1337,
+      "language": "bash",
+      "aspectIds": [
+        "P-T35"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1343,
+      "end": 1386,
+      "language": "ts",
+      "aspectIds": [
+        "P-T35"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "start": 1394,
+      "end": 1403,
+      "language": "ts",
+      "aspectIds": [
+        "P-T35"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/queries.md",
+      "start": 7,
+      "end": 34,
+      "language": "ts",
+      "aspectIds": [
+        "P-T36"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/queries.md",
+      "start": 38,
+      "end": 49,
+      "language": "ts",
+      "aspectIds": [
+        "P-T36"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/queries.md",
+      "start": 53,
+      "end": 60,
+      "language": "ts",
+      "aspectIds": [
+        "P-T36"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/queries.md",
+      "start": 64,
+      "end": 121,
+      "language": "ts",
+      "aspectIds": [
+        "P-T36"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/queries.md",
+      "start": 127,
+      "end": 145,
+      "language": "ts",
+      "aspectIds": [
+        "P-T36"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/queries.md",
+      "start": 153,
+      "end": 177,
+      "language": "ts",
+      "aspectIds": [
+        "P-T36"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/queries.md",
+      "start": 196,
+      "end": 214,
+      "language": "ts",
+      "aspectIds": [
+        "P-T36"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/queries.md",
+      "start": 218,
+      "end": 228,
+      "language": "txt",
+      "aspectIds": [
+        "P-T36"
+      ],
+      "execution": "not run"
+    },
+    {
+      "file": "references/queries.md",
+      "start": 232,
+      "end": 266,
+      "language": "graphql",
+      "aspectIds": [
+        "P-T36"
+      ],
+      "execution": "not run"
+    }
+  ],
+  "inlineTechnicalTokens": [
+    {
+      "file": "AGENTS.md",
+      "line": 18,
+      "assertionToken": "skill.yaml"
+    },
+    {
+      "file": "AGENTS.md",
+      "line": 25,
+      "assertionToken": "SKILL.md"
+    },
+    {
+      "file": "AGENTS.md",
+      "line": 26,
+      "assertionToken": "docs/compile-report.md"
+    },
+    {
+      "file": "SKILL.md",
+      "line": 48,
+      "assertionToken": "slugField()"
+    },
+    {
+      "file": "SKILL.md",
+      "line": 53,
+      "assertionToken": "admin.condition"
+    },
+    {
+      "file": "SKILL.md",
+      "line": 56,
+      "assertionToken": "select"
+    },
+    {
+      "file": "SKILL.md",
+      "line": 58,
+      "assertionToken": "req.context"
+    },
+    {
+      "file": "SKILL.md",
+      "line": 60,
+      "assertionToken": "near"
+    },
+    {
+      "file": "SKILL.md",
+      "line": 60,
+      "assertionToken": "within"
+    },
+    {
+      "file": "SKILL.md",
+      "line": 70,
+      "assertionToken": "(options) => (config) => Config"
+    },
+    {
+      "file": "fragments/overview.md",
+      "line": 7,
+      "assertionToken": "slugField()"
+    },
+    {
+      "file": "fragments/overview.md",
+      "line": 12,
+      "assertionToken": "admin.condition"
+    },
+    {
+      "file": "fragments/overview.md",
+      "line": 15,
+      "assertionToken": "select"
+    },
+    {
+      "file": "fragments/overview.md",
+      "line": 17,
+      "assertionToken": "req.context"
+    },
+    {
+      "file": "fragments/overview.md",
+      "line": 19,
+      "assertionToken": "near"
+    },
+    {
+      "file": "fragments/overview.md",
+      "line": 19,
+      "assertionToken": "within"
+    },
+    {
+      "file": "fragments/overview.md",
+      "line": 29,
+      "assertionToken": "(options) => (config) => Config"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "line": 34,
+      "assertionToken": "docs/access-control/overview.mdx"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "line": 118,
+      "assertionToken": "test/access-control/config.ts"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "line": 286,
+      "assertionToken": "test/access-control/config.ts"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "line": 324,
+      "assertionToken": "test/access-control/config.ts"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "line": 421,
+      "assertionToken": "docs/access-control/collections.mdx"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "line": 463,
+      "assertionToken": "templates/website/src/collections/Posts/index.ts"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "line": 508,
+      "assertionToken": "templates/website/src/collections/Users/index.ts"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "line": 550,
+      "assertionToken": "Access check took ${Date.now() - start}ms"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "line": 674,
+      "assertionToken": "req.context"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "line": 693,
+      "assertionToken": "req.context"
+    },
+    {
+      "file": "references/access-control-advanced.md",
+      "line": 704,
+      "assertionToken": "docs/access-control/*.mdx"
+    },
+    {
+      "file": "references/access-control.md",
+      "line": 680,
+      "assertionToken": "read"
+    },
+    {
+      "file": "references/access-control.md",
+      "line": 686,
+      "assertionToken": "req.context"
+    },
+    {
+      "file": "references/adapters.md",
+      "line": 147,
+      "assertionToken": "req.context"
+    },
+    {
+      "file": "references/adapters.md",
+      "line": 147,
+      "assertionToken": "req.user"
+    },
+    {
+      "file": "references/advanced.md",
+      "line": 105,
+      "assertionToken": "Welcome ${input.userName}"
+    },
+    {
+      "file": "references/advanced.md",
+      "line": 180,
+      "assertionToken": "Hello ${req.routeParams.name}!"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 13,
+      "assertionToken": "(req: PayloadRequest) => Promise<Response>"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 20,
+      "assertionToken": "req.user"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 21,
+      "assertionToken": "req.payload"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 21,
+      "assertionToken": "Payload"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 22,
+      "assertionToken": "req.routeParams"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 23,
+      "assertionToken": "req.url"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 24,
+      "assertionToken": "req.method"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 25,
+      "assertionToken": "req.headers"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 26,
+      "assertionToken": "req.json()"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 26,
+      "assertionToken": "() => Promise<any>"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 27,
+      "assertionToken": "req.text()"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 27,
+      "assertionToken": "() => Promise<string>"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 28,
+      "assertionToken": "req.data"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 28,
+      "assertionToken": "addDataAndFileToRequest()"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 29,
+      "assertionToken": "req.file"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 29,
+      "assertionToken": "addDataAndFileToRequest()"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 30,
+      "assertionToken": "req.locale"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 30,
+      "assertionToken": "addLocalesToRequestFromData()"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 31,
+      "assertionToken": "req.i18n"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 32,
+      "assertionToken": "req.t"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 38,
+      "assertionToken": "req.user"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 59,
+      "assertionToken": "req.payload"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 87,
+      "assertionToken": "req.routeParams"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 231,
+      "assertionToken": "req.data"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 231,
+      "assertionToken": "req.file"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 394,
+      "assertionToken": "Webhook error: ${err.message}"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 462,
+      "assertionToken": "Reindexed ${result.count} documents"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 619,
+      "assertionToken": "req.payload"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 622,
+      "assertionToken": "Response.json()"
+    },
+    {
+      "file": "references/endpoints.md",
+      "line": 625,
+      "assertionToken": "req.payload.logger"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "line": 50,
+      "assertionToken": "Min rows: ${field.minRows}"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "line": 51,
+      "assertionToken": "Max rows: ${field.maxRows}"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "line": 73,
+      "assertionToken": "Block: ${block.slug}"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "line": 105,
+      "assertionToken": "Interface: ${field.interfaceName}"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "line": 121,
+      "assertionToken": "hasMany"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "line": 209,
+      "assertionToken": "Virtual path: ${field.virtual}"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "line": 400,
+      "assertionToken": "${option.label}: ${option.value}"
+    },
+    {
+      "file": "references/field-type-guards.md",
+      "line": 461,
+      "assertionToken": "Related to ${fieldValue.relationTo}: ${fieldValue.value}"
+    },
+    {
+      "file": "references/fields.md",
+      "line": 416,
+      "assertionToken": "${siblingData.firstName} ${siblingData.lastName}"
+    },
+    {
+      "file": "references/fields.md",
+      "line": 713,
+      "assertionToken": "hasMany"
+    },
+    {
+      "file": "references/hooks.md",
+      "line": 126,
+      "assertionToken": "/${doc.slug}"
+    },
+    {
+      "file": "references/hooks.md",
+      "line": 133,
+      "assertionToken": "/${previousDoc.slug}"
+    },
+    {
+      "file": "references/hooks.md",
+      "line": 143,
+      "assertionToken": "/${doc?.slug}"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "line": 169,
+      "assertionToken": "./dist"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "line": 169,
+      "assertionToken": "./src"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "line": 962,
+      "assertionToken": "$${value.toFixed(2)}"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "line": 1031,
+      "assertionToken": "doc:${doc.id}"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "line": 1302,
+      "assertionToken": "dev/.env"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "line": 1302,
+      "assertionToken": ".env.example"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "line": 1309,
+      "assertionToken": "dev/payload.config.ts"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "line": 1341,
+      "assertionToken": "dev/int.spec.ts"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "line": 1388,
+      "assertionToken": "npm run test:int"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "line": 1392,
+      "assertionToken": "dev/e2e.spec.ts"
+    },
+    {
+      "file": "references/plugin-development.md",
+      "line": 1405,
+      "assertionToken": "npm run test:e2e"
+    },
+    {
+      "file": "references/queries.md",
+      "line": 212,
+      "assertionToken": "https://api.example.com/api/posts${queryString}"
+    },
+    {
+      "file": "references/queries.md",
+      "line": 271,
+      "assertionToken": "select"
+    }
+  ],
+  "counts": {
+    "correction-required": 32,
+    "verified": 4
+  },
+  "unperformed": [
+    "blind agent executions",
+    "installed API probes",
+    "database/browser/provider execution",
+    "compiler checks and pnpm test:ci delegated to root"
+  ],
+  "N_A": [
+    {
+      "aspect": "Product deployment/provider credentials",
+      "reason": "No product or provider environment is supplied/authorized to this reviewer; source review is applicable, remote execution not performed."
+    },
+    {
+      "aspect": "Supporting historic logs as current instruction source",
+      "reason": "Classified as supporting, not loaded as active normative API instructions; hashes preserved."
+    }
+  ]
+}

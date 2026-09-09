@@ -1,0 +1,55 @@
+[
+  {
+    "file": "legacy-container-cli.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/command-internal/legacy-container-cli.ts",
+    "sha256": "c66ea56f21328b024d53fb81952bb847071a3e776c48fa3f90b627cdb25e7787",
+    "checkedAt": "2026-09-09T13:14:13.774949+00:00"
+  },
+  {
+    "file": "legacy-docker-run.args.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/command-internal/legacy-docker-run.args.ts",
+    "sha256": "97b78edf316c5aeef568a5072a2924c518d6228bfac3dd4c1ae667ca3d5f81a8",
+    "checkedAt": "2026-09-09T13:14:13.786280+00:00"
+  },
+  {
+    "file": "pgdelta-native.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/command-internal/legacy-pgdelta.ts",
+    "sha256": "78b237537836134b93a4d1d1737f47723c9fcbaf50df427670a321f869863d3c",
+    "checkedAt": "2026-09-09T13:14:13.866436+00:00"
+  },
+  {
+    "file": "db-setup.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/command-internal/db-bootstrap/db-setup.ts",
+    "sha256": "71732e50bbb51042a56f5d518dc9e09846b57862f7011d95247e840d34df032b",
+    "checkedAt": "2026-09-09T13:14:13.793923+00:00"
+  },
+  {
+    "file": "sync.integration.test.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/schema/declarative/sync/sync.integration.test.ts",
+    "sha256": "cda50269b7a211e36a4908b65625f7359aab55f8a4970b6f2e8ca8b2882a7215",
+    "checkedAt": "2026-09-09T13:14:13.777329+00:00"
+  },
+  {
+    "file": "cli-legacy-docker.go",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.39.2/internal/utils/docker.go",
+    "sha256": "4ce18f9be9329037c543c96be91ba75979c8f7752d43dc6a653cd0c2f9648c09",
+    "checkedAt": "2026-09-09T13:14:13.786087+00:00"
+  },
+  {
+    "file": "cli-legacy-cmd-db.go",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.39.2/cmd/db.go",
+    "sha256": "37c8a23d1349c62ba9ba4865bf84d4f6a7be9a57c9b1158ec9ad68f1865eed24",
+    "checkedAt": "2026-09-09T13:14:14.146277+00:00"
+  },
+  {
+    "file": "docker-resource-doc.md",
+    "url": "https://raw.githubusercontent.com/docker/docs/main/content/manuals/engine/containers/resource_constraints.md",
+    "sha256": "9da4d895066037917254a089996e2e0de047187734ac922381d7f3b6f4aed53e",
+    "checkedAt": "2026-09-09T13:14:14.165924+00:00"
+  },
+  {
+    "file": "wrangler-cli-doc.md",
+    "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/wrangler/commands.mdx",
+    "error": "HTTP Error 404: Not Found"
+  }
+]

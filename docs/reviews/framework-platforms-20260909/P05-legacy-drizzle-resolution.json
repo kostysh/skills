@@ -1,0 +1,20 @@
+{
+  "date": "2026-09-09T15:28:54.512178+00:00",
+  "failure": "npm install ETARGET: drizzle-kit0.23.2-df9e596 absent from npm metadata and tarball404",
+  "owning_contract": "Coordinator prepares compatible legacy host before first freeze; Payload2.32.3 unchanged. Initial0.8.10 adapter graph was preparation, not installed baseline.",
+  "resolution": "Exact scoped override db-postgres0.8.10 -> drizzle-kit0.23.2 stable. Original package archived.",
+  "source_basis": [
+    "Payload2.32.3 lockfile confirms absent prerelease",
+    "Published adapter calls drizzle-kit/api pushSchema(schema,drizzle,schemaFilters) and consumes apply/hasDataLoss/warnings",
+    "Published stable0.23.2 api.d.ts exports matching shape; no supported full API equivalence claim"
+  ],
+  "pending": "Actual install/typecheck/schema push/seed/image upload+download before freeze. Same final pinned graph for candidate; no target skill change.",
+  "runtime": {
+    "install": 0,
+    "typecheck_before_loader_fix": 0,
+    "seed_after_loader_fix": 0,
+    "actual_image_http_readback": 0,
+    "limit": "Only dedicated image-only host readiness, not repaired manual upload or broad adapter compatibility"
+  },
+  "config_loader_RCA": "Direct eager config import bypassed Payload2 config loader clientFiles ignore and imported SCSS. Removed eager import and config argument; payload.init loads root config through supported normal path. Published config/load+find and installed code verified. Original scripts archived; no custom style stub or internal runtime entry used."
+}

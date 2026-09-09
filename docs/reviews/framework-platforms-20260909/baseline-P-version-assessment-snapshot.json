@@ -1,0 +1,283 @@
+{
+  "at": "2026-09-09T15:51:51.931922+00:00",
+  "case": "baseline P-version",
+  "assessor": "/root/cli_native_preflight_assessor",
+  "method": "offline evidence/source/hash review; no runtime/database rerun or mutation",
+  "trial_files_sha256": {
+    "versions.json": "3098c2e8beaa1aca6b2b3ec1f415a431869da04453534175584f3d026ec84dcb",
+    "result.md": "617051568bbf71c02dca7a217600ab78a27b1f8e7f66f542649576f2d4454ac1",
+    "progress.md": "1bda5ec4c4a84576a8ca29958e6488efcfeda5871cf49b1b95a5da1408cac4ef",
+    "plugin-initial-failure.md": "dd0cd8e639e47c5067271a13cda775b1556f9c05f9a3ca3bbd44d8d8f94295f6",
+    "commands.jsonl": "18ac96beb8961dc3e82316145333e2d47df689333ad8bcf14736373d6eecdd1f",
+    "selection.md": "e2cce976c01160fc21615eaa65f2c2ef4d9e98ef2c33ec5b00b7373a63af77be",
+    "RUNTIME.md": "3b30d97f090c3192616b1c38b1af07951ebbf48c296ffb51d77aa45b5bbafd6e",
+    "task.txt": "b04788a6d052e01d8e3d493639c1030fe22a3809753ea05ecee6b68822377192",
+    "app/REQUIREMENTS.md": "d2923790992452b66bb5dc268a95d130d8e7b738542664a6a5719b75889629fc",
+    "app/legacy-v2/package.json": "8a8522b1e83cad9a2d84f5d26e73d41e0d1ea09e727ade2283697da773e04da3",
+    "app/legacy-v2/tsconfig.json": "b7e3d3c247322ac1c8539b7e54fcdb1e140ed306268c17a29df102bb2653e6a0",
+    "app/legacy-v2/REQUIREMENTS.md": "95689d6e9ccb7113a3dbfb16982ece8f66927d0e3d43e7d976d96dbfb792d0b9",
+    "app/legacy-v2/.gitignore": "9234ab1d8a54d0d49c6f13433d6199d7e3e7f9e048653dac63edb459d813aeea",
+    "app/legacy-v2/payload.config.ts": "52aa335f5b549d8ae893f4816c67ee937b972ffb2f940612a7e900b823e57f4a",
+    "app/legacy-v2/HOST-SETUP.md": "4f9a7f2e4e2ec870dcca1f9e2f114498e447c13998692c8d248ea88dfd62ba8a",
+    "app/legacy-v2/.env": "3d23c35f938359f437b2fbfdb31fee1b9a1d92038f7319f3c19af75a346506d0",
+    "app/legacy-v2/package-lock.json": "5de8be111081b5534a82bf70724c66572776898176575c44d51ab7bbb46a5a7a",
+    "app/current-v3/payload-types.ts": "741cd3aab4bf42f9f1e5d7ce05042b5667215417c6052b82ff1e096730c6fd5f",
+    "app/current-v3/tsconfig.tsbuildinfo": "daa4a64e1f02d4e4deff0891a597535185c581d26408de6a54dedfd5b4f11a46",
+    "app/current-v3/package.json": "99ab430afc2e9a63a7a64c77491d23231db0850e50ad514088a5d2133b94c5c4",
+    "app/current-v3/package-lock.json": "3f7d2e59f2763ca03c36fc382910f2c2a614e2815d713f1b8b2d326a25f95cb3",
+    "app/current-v3/tsconfig.json": "6bf102b8ecab1f3d366d415e0ea89bb95b2f90036570e40703a2175cd62f10b7",
+    "app/current-v3/next.config.mjs": "09668e33a23b3fdcbb392132bab958e9b1cff17c0b1c2d3019fe20cf36a2b546",
+    "app/current-v3/next-env.d.ts": "1862ac4bbbc5192d4bf562161df66ea547ed3e67173100656ab606ae9797db2b",
+    "app/current-v3/payload.config.ts": "726a9f34a2cd46a0e2b65b40735cda0d3f3ee77015ebe67dab6eb1be3fcf5cb0",
+    "app/current-v3/REQUIREMENTS.md": "e172b943fbe4125f4410c4cd3a8779d15267904f83716d612b89688cb257786b",
+    "app/current-v3/.env": "e27a4ef7cfd15bbe163d7ef653007e72017c7d5df5070cd2f0d9f4d7b58ef663",
+    "app/plugin/fixture-payload-access-note-0.0.1.tgz": "c00a3d610807f4046d3fa8d77f1a50ff8ae6fe530b7125415f4f85d120879994",
+    "app/plugin/package-lock.json": "c5892008ed86b2121ba1dd0ca8b07a3aff60b0c1e9f9b64a2a4c54a56ac44ddc",
+    "app/plugin/package.json": "8cb2b050b8483663c4f4aa36a5c578aee52004ec95a60bd7069a228ee377be5d",
+    "app/plugin/tsconfig.json": "b0e8ca2936e06a316a01fd5cff3740f5de3acc893f3f0402db1799761fc48ea1",
+    "app/plugin/OPERATIONS.md": "2a0675c2e9bb390caa39345189b25a79ae176551fbbc1372b1ad4e25841443fe",
+    "app/plugin/REQUIREMENTS.md": "b7802ddba7bc76f6e19248613c3f7fc29ef0b9dc33e471a5d2dd2207c0cd67f2",
+    "app/plugin/dist/storage.d.ts": "f143bd6a6fb4f807226357336b7b0dbaf24f1059bfd1c050f4bcb8adf80fc7bc",
+    "app/plugin/dist/storage.js": "95dc0b9a5d8a5a21bf3006d93bb441b390da437364eba5904321fb798216083a",
+    "app/plugin/dist/index.d.ts": "08428e5da696428242b7cc8018d85e68b1d0297ae1f88a53636b5364cefc0a89",
+    "app/plugin/dist/index.js": "107541dfacf37018ca478b1bc7da5ed79d1b900b4eff4c1eaf4ae3c513f5217a",
+    "app/plugin/dist/database.d.ts": "a99ab454a9093d8f573a8e0544ea3959b731fb6db9368de9315c9be91de0cf64",
+    "app/plugin/dist/database.js": "5fd193211b797a20897d98c356237465e13a3105b68a5aaf94f6514f50e83247",
+    "app/plugin/src/index.ts": "ab521fe6c3fabc7b8eccbfbec92ae6c952d349ef9bf1db441225bcac5882ec03",
+    "app/plugin/src/storage.ts": "1d3848100d2fcaba69d78bd44c47ac947cd8fa64b730ded7243ef46cb4b7a649",
+    "app/plugin/src/database.ts": "4d7e0811a1ce648b6eca7dcc86bc3e03d64eb64f7cf6ffbcee7462bf43a74632",
+    "app/current-v3/evidence/upload.json": "c2283156a855527afec137d9b1315b39bbc5617525166fb4d39600a600e98919",
+    "app/current-v3/uploads/manual.txt": "cee9d92f106a6e1e8b0d15a8df2639ce51386249a5113bcab243deb609450fbf",
+    "app/current-v3/collections/Media.ts": "a0806edf1cb2e93723988d5769e1dd8b142c36de2830970d65307281abb392e2",
+    "app/current-v3/source/manual.txt": "cee9d92f106a6e1e8b0d15a8df2639ce51386249a5113bcab243deb609450fbf",
+    "app/current-v3/scripts/plugin-check.ts": "f8ea2bcd189a2f1e291521444976b234c788ab0b49c77eb7ea23f1a2ef940272",
+    "app/current-v3/scripts/live.mjs": "5a53a0ae1b2cb3a30a494a8ff7173a618bdd525cf1e9cc97a95b3139595a8b25",
+    "app/current-v3/scripts/seed-host.ts": "e6fbeb9bd51196ee76bf2623397c634c5d3852250f83f76a551a74d7108c2491",
+    "app/current-v3/app/(frontend)/layout.tsx": "75f4c66b0f10f849a6c46817bb6e798d249c5b588ff4dbc9e53a59cd6cedb3ba",
+    "app/current-v3/app/(frontend)/page.tsx": "509a1bbc8a0cf999c0f2e29242ce350ad7944c1b476346c8a85af75f29c13930",
+    "app/current-v3/app/(payload)/api/[...slug]/route.ts": "976152dac2aebdb30bf51a44616a70eaef38f6aebd6b19227b6276f76e6ca44a",
+    "app/legacy-v2/collections/Media.ts": "8beea98c2a15e2ebb7f6135ab1c423cdf1054bc91b9d0b5c5ac89ad56a46fcd2",
+    "app/legacy-v2/source/manual.txt": "cee9d92f106a6e1e8b0d15a8df2639ce51386249a5113bcab243deb609450fbf",
+    "app/legacy-v2/source/legacy-image.png": "025440465f3adbac4244dc58480cd88e506eedad0b8fb5309467ae0b638452f6",
+    "app/legacy-v2/src/settings.ts": "54169ccee2df746eb21e798048c61ba598038df65e749840d602bb06d538e101",
+    "app/legacy-v2/src/server.ts": "1594973c5e5162d0e3d65b8fa255501f0a6163a5b995bfde464108316c237ccc",
+    "app/legacy-v2/scripts/live.mjs": "88d088101e56b2054b3a83acb39fe1b14024d046c92180759ed8ba12d717668e",
+    "app/legacy-v2/scripts/seed-local.ts": "c8959e7ca5798101f5bb8def4c083f59eb28ce67109e91593c3d86430efc1189",
+    "app/legacy-v2/scripts/upload-smoke.mjs": "8e26cdb81e7a06bccde883f60524de73446c19916ec3b41646bb69dbab991b75",
+    "app/legacy-v2/uploads/manual.txt": "cee9d92f106a6e1e8b0d15a8df2639ce51386249a5113bcab243deb609450fbf",
+    "app/legacy-v2/uploads/legacy-image.png": "025440465f3adbac4244dc58480cd88e506eedad0b8fb5309467ae0b638452f6",
+    "app/legacy-v2/evidence/upload-smoke-all.json": "30fc36a2cb58cd01483d95afa7c18942cffc7c8ed09dd248f81f2ef4bac97b65",
+    "app/legacy-v2/evidence/seed.json": "84204acf3120e5e6dc47889ec593372a1e394ca3d578836485a4c09e5af5e383",
+    "app/legacy-v2/evidence/upload-smoke-image.json": "f67497e0426fe56cca21bf676fb9992b5ca421b4dc12cad78e987711b866bafe",
+    "skills/payload/SKILL.md": "d78623a1db9a7f93db5e8da14677b4ab2df20eaa4bbd90320c39afd96b47e817",
+    "skills/nextjs/SKILL.md": "eb437b3de1c9525621303bd1aa5b6aef2a52e6ccbbcede333abe310e3d56b8e9",
+    "skills/typescript-engineer/SKILL.md": "8dccdca0e96b7c9f7caf51baaab9fb909df0bb01345a0ae7fac7c444bb597e86",
+    "skills/typescript-test-engineer/SKILL.md": "44dbdb487ed12ae2329f06806e935914871aed61f69a4de8e26da1ead83df4f8",
+    "skills/node-engineer/SKILL.md": "073a05ee05c1ef9db06d375ec9412fd2f8308a3d0ae2e028ed8df4f45eb55eef",
+    "skills/security-reviewer/SKILL.md": "0e0ee8025a1eae969512fcef4a4210d5712bca141620733cc624685744355fa1",
+    "skills/security-reviewer/references/secrets-config.md": "8f46d5d2b652a74e17d670686b4d6c6adfc6f6bd59263b47606f204da95d6a36",
+    "skills/security-reviewer/references/github-actions.md": "3da3ce160c9244033008420e7c999479319951c63f47cc14dae9f455a7cd10e7",
+    "skills/security-reviewer/references/data-access-injection.md": "a2906a795948d5eba413fdcb81e2ed0d8dafe5c2c54271d4747f5a9bd938beef",
+    "skills/security-reviewer/references/api-auth-input.md": "af207e5692d93e8d403c8ad00631055bd44f8e703d7b7f1d21d80818f7655e8a",
+    "skills/security-reviewer/references/policy-governance-admission.md": "9dd88facc864d2245a5597b7f06f3fe010a2ac01722b06c22053032b2a4ca5ac",
+    "skills/security-reviewer/references/supabase-rls.md": "6dadce04c0a4d1e9323a64161218c5c0d8a6e601ac1eb0267b1dac657a573b0a",
+    "skills/security-reviewer/references/methodology.md": "742f47b7a979ca2771899446601afcf7f03e349b31feb6bf23512789fac1906e",
+    "skills/security-reviewer/references/domain-handoffs.md": "937f9cb6706fbab573667811c5b1219296707a49108975b8d376b67d2c40be26",
+    "skills/security-reviewer/references/webhooks.md": "ccfc22d57d6f7e8a5250610b59e3243b10ac61f0bf699a592e98b134a79e1dec",
+    "skills/security-reviewer/agents/openai.yaml": "d4f95ce6a167349b42743a4270ad2a483d87f2ac1eab8df9105958b7339d97ee",
+    "skills/node-engineer/references/runtime-typescript.md": "c255ca59ea91b9144baf7a624ffb84a717aafdb83f90156fbc96eba2e7c22e58",
+    "skills/node-engineer/references/streams-caching.md": "1a24ea44947df1ed6826f86ffba0ae7f39670202467d9487e0570cc69b548d00",
+    "skills/node-engineer/references/operations.md": "d6f741c8a9f74c66d40c82516839a09c7f769d66d46fc89ea446f9f608e6fb95",
+    "skills/node-engineer/references/debugging-profiling.md": "f20e33fa2ce9d7cf1c3a9c26c1552fcff4df75bc7c2527e1d56f2298be3a1cd3",
+    "skills/node-engineer/agents/openai.yaml": "b41169df35aa53b56726f39c42a18008af7066d2a64269f1a8213d8309fe66df",
+    "skills/typescript-test-engineer/references/testing.md": "11a86f47ef1a6ca14a12d9fad6a58d2dd9c8e2e3d716e48ce1cb0a7ccffae476",
+    "skills/typescript-test-engineer/references/react-vitest.md": "f76b527d1fa2b68c38b4a0a51fd5c4c88e5a2a32ca65ce1ad86fd41fbb8669b5",
+    "skills/typescript-test-engineer/references/testing-anti-patterns.md": "fa8919e363c264db7d14a3cd0dc56ccf85c114c2080ef5a0c22c6b36bb7dd0b6",
+    "skills/typescript-test-engineer/references/tdd.md": "029f55af01dd0a9efb77e71693c3503a89bdd8a75367454e02a93712ed18b957",
+    "skills/typescript-test-engineer/agents/openai.yaml": "9fc7def9a8ab00f4acd2d5dfd8c166e5fcd853de375a8d620b24660ea1512a04",
+    "skills/typescript-engineer/references/runtime-derived-types.md": "1e1a327d0a2e59792ec25aa5c69bb2cd313273ef2a9d7730014700303e9e4aa0",
+    "skills/typescript-engineer/references/type-system.md": "451bec02f0fe0cad7a3967b6d4b8388e98600c4655be7fee51b971f1db0f40e9",
+    "skills/typescript-engineer/references/patterns.md": "8636aec6c320d894a10ada0db3f452b7d31e9dc608d00a6e0a57e1b5c3aa1f57",
+    "skills/typescript-engineer/references/overloads.md": "39494766556c8c7aa46c2aa16aa20718aedcaf7a4ec8cf0a28443324d3c5936b",
+    "skills/typescript-engineer/references/toolchain.md": "313bb758492c473f47b7d1670fd01ecb605512296ab98edcf36fe59914794771",
+    "skills/typescript-engineer/references/type-debugging.md": "2fb09da3deb9e434b50336644da63a6539503d30f05a0304fa7c9a78d7690304",
+    "skills/typescript-engineer/references/practices.md": "51f765dcd0f2e1732e00d83504a4a832f177437f96aeed0d992a634e949c827a",
+    "skills/typescript-engineer/references/generics.md": "7201b89492c473093a6818db8bcf0b26e445d2f0689eb84916ff185503c3c4c4",
+    "skills/typescript-engineer/references/monorepo.md": "a725bf2737a1c0716b2c8f9f2a6d6d79cc0e14a401a06b7de5ed9744166fb5e4",
+    "skills/typescript-engineer/agents/openai.yaml": "372a72c8d2943c55ba133bbda5e0ed8f46cdfd8f8d4940418beefcbaf62484ab",
+    "skills/nextjs/references/parallel-routes.md": "d8a1c2546d90af2b37e22a4a56a1978555af0d62a7683e349ce3e3287ab8a4af",
+    "skills/nextjs/references/runtime-selection.md": "7abb95f9af0f4769e7e9e91aba94a5787ed16e2c4009a140c8577a3a49828060",
+    "skills/nextjs/references/suspense-boundaries.md": "63e2e7125b1a1a9d652dd301814ad7140f8ab3ad6726b2b53df76a89d9bc262a",
+    "skills/nextjs/references/hydration-error.md": "d4baec07ab818045e284c45dd24422685ac934a38ea325139651f664a94eff57",
+    "skills/nextjs/references/self-hosting.md": "f59e9afa0ff4dcbe20374dff13517ccec3ac6a239ef6d02e0ee8863cf9fc7082",
+    "skills/nextjs/references/directives.md": "60b82ee24a8d43631da59beeec11f46ab25ce83c8000578f2222ecb6b6cadf4d",
+    "skills/nextjs/references/debug-tricks.md": "62617a7cb131a2111f9f033617404fadb3458d56aeb0643f75aa5b2e43abf192",
+    "skills/nextjs/references/metadata.md": "19b00274877056f222f2284be5ade2479690e79e86af9a0466bc9d209506a95d",
+    "skills/nextjs/references/route-handlers.md": "976a17de8024b3a65063350ae0fb6b9b617293f06358305800c858f58b015680",
+    "skills/nextjs/references/image.md": "231a15ddea67fe0b965762cc89993ca5aaeb0c35c0e67767bd53ca138ec04c05",
+    "skills/nextjs/references/data-patterns.md": "538c8e24cd60eded9825a9461f2c644f5e6e5203d95aa4bf7c9486412bcc7aa1",
+    "skills/nextjs/references/file-conventions.md": "95eeb1c6e1c98571192662c8ba3cbf6a034f754596aba54a35077a50a5266de3",
+    "skills/nextjs/references/rsc-boundaries.md": "2b50b0310884609efc9f2620fbb81ef83a30a810544e449ff669c55935d5b920",
+    "skills/nextjs/references/app-router-files.md": "d11b45d535b41d047fbe22e062de5c72716d64b39b85e9c259cc8e1f5362a567",
+    "skills/nextjs/references/async-patterns.md": "3a5e4a91d8399f0922c4a3b15b3490fbeb7396f976139a92311ea34cfa300584",
+    "skills/nextjs/references/bundling.md": "5496b337073985068c61527e0a89fbf7088faa47b9f92d2dd09a7d070cb48a7c",
+    "skills/nextjs/references/scripts.md": "fff3bc7530d5af472e2825fde69a26218c9e58acba74d60913f403baab4628a3",
+    "skills/nextjs/references/font.md": "cb1f8d43e8fbca39839056b4621724837858bdace13e73bf3faf69abca318a21",
+    "skills/nextjs/references/error-handling.md": "30b4e825b625df01d4a7c441591ac46782aab4f913432e96f408153d5fa62098",
+    "skills/nextjs/references/functions.md": "39a8a418af501d7132d289f4b5dd6cae59d1bfa6fda941d502fc29bb0204e079",
+    "skills/nextjs/agents/openai.yaml": "0574da0d2953839f600e3f4d89fd67949d54aa990fd06a8268b7d580e57ed62b",
+    "skills/payload/references/access-control-advanced.md": "fe49222c903d2a1de80848ea253eef4d0a6eb2c7fb0c3104ff658002ae165cff",
+    "skills/payload/references/adapters.md": "0c1d62bfa15ad36b44701f647e2fef75c76f5805d1153a8658436d6807e71d83",
+    "skills/payload/references/fields.md": "520bb3769f41bda757afc19e966db2f3efa7e34ee59d41552f49cfdb572ad8e9",
+    "skills/payload/references/plugin-development.md": "6081759fc1f16b75de63cbb74dd30c28233dfb251323a2c8c63acfe65b25b9c5",
+    "skills/payload/references/queries.md": "c3d524ddbc46335bfe6b949f1a7e7e15e14bacf9274c261995ffcf74fd918d0c",
+    "skills/payload/references/field-type-guards.md": "294635bac34748a0ddd499fa3723750544c0ec796f8a0e12c3db7fb06a30ac2d",
+    "skills/payload/references/hooks.md": "980fcc6b3fcd0b7007ceec4616e88e41c220e09a24ef476d4fe4b23facd76109",
+    "skills/payload/references/access-control.md": "1537d27102ff1ea7f31e2a6447d3557772bd82ee9e23c6ff78c44c22ff089f0e",
+    "skills/payload/references/endpoints.md": "126c5bc1d99e794720c21b38b748b85d118a9b6c13fbf7913df7f90ae310f874",
+    "skills/payload/references/collections.md": "4927007c1a85b332d8040fba1e6e1715e18a3d8b3c9dde8088514e15d9c1479d",
+    "skills/payload/references/advanced.md": "b28ab2787cb974f98a6aa077af8e6265da85a9d7bde6b764214ebfd69c15a293",
+    "skills/payload/agents/openai.yaml": "2dd7d1903a7b294cdf577504078c63216d8533e36b386fb9426688ac61292c35"
+  },
+  "changed_frozen_inputs": {
+    "app/current-v3/package.json": {
+      "before": "489c05e7daf462f844c4121d01ce12d9375dfb310343caee3df082a4533ca578",
+      "after": "99ab430afc2e9a63a7a64c77491d23231db0850e50ad514088a5d2133b94c5c4"
+    },
+    "app/current-v3/package-lock.json": {
+      "before": "8771bf067167bd31afb42ee393b75c5e47242dec33789dc43af76413275049b1",
+      "after": "3f7d2e59f2763ca03c36fc382910f2c2a614e2815d713f1b8b2d326a25f95cb3"
+    },
+    "app/current-v3/next-env.d.ts": {
+      "before": "879741880b6ab48da99dcc06dcc674d381c9826137b0496bf7bb368f302de9fc",
+      "after": "1862ac4bbbc5192d4bf562161df66ea547ed3e67173100656ab606ae9797db2b"
+    },
+    "app/current-v3/payload.config.ts": {
+      "before": "414c32dcd34415c3c04fdabb24bfb231c8bac94d1ea20eec7280e201d9c691de",
+      "after": "726a9f34a2cd46a0e2b65b40735cda0d3f3ee77015ebe67dab6eb1be3fcf5cb0"
+    },
+    "app/plugin/package.json": {
+      "before": "f019061fb75b2adb5aee6177b196205a40093707884030f302d4ab4233809af3",
+      "after": "8cb2b050b8483663c4f4aa36a5c578aee52004ec95a60bd7069a228ee377be5d"
+    },
+    "app/plugin/OPERATIONS.md": {
+      "before": "eb5db767b487b3c2c218cfd7bfc63c9f78d9dda4dc379ac18a528a4954b6fdb7",
+      "after": "2a0675c2e9bb390caa39345189b25a79ae176551fbbc1372b1ad4e25841443fe"
+    },
+    "app/plugin/src/storage.ts": {
+      "before": "f624a66f93ddf434a59ad8e6a324b4a07fa97ded161c0ffe0816e48d2e94af6a",
+      "after": "1d3848100d2fcaba69d78bd44c47ac947cd8fa64b730ded7243ef46cb4b7a649"
+    },
+    "app/current-v3/collections/Media.ts": {
+      "before": "b42dc8e6220580328d639df9e3559aed44701917ae90f57b295d18dc0269a5e6",
+      "after": "a0806edf1cb2e93723988d5769e1dd8b142c36de2830970d65307281abb392e2"
+    },
+    "app/legacy-v2/collections/Media.ts": {
+      "before": "e7bad8ed5265f7133028a0c5926b6c015b0b315a2bf206c0c609670fe1d2ade9",
+      "after": "8beea98c2a15e2ebb7f6135ab1c423cdf1054bc91b9d0b5c5ac89ad56a46fcd2"
+    }
+  },
+  "evidence_sha256": {
+    "protocol/P-version.json": "4a426cfa024aa14a0bccfd6b8ef3411c3e23e6870d4b1c8ccd833f6124a0c313",
+    "case-proposals-payload.md": "12b79f386d90d804ce8808726be67be08f6ff3c78bb88c94b90144adff38545f",
+    "P05-legacy-drizzle-resolution.json": "0def01cb4e7c61aaeeb2cb3f007838bffc0f6cca87cffba69c8a804a0ee24c0c",
+    "P-version-probe-cleanup.json": "71f525d3cd478cc844826ad5b0a8d987a4d232f80e01be0c97832e3e2a644ec5",
+    "temporary-dependency-inode-cleanup.json": "ee033be1bf732a55a4634ec92bbdaee3fa9f66dd7e75439ee4293c67e2fe8940",
+    "raw-agent-traces/baseline_payload_version_executor.jsonl": "598cdd40dc1111369b1e62c046a9690040ecc80d0a7c1f19c6aa2008933a66de",
+    "raw-agent-traces/baseline_payload_version_executor-task-messages.jsonl": "9380356da7b1c9672fc4c40e6ba29ceef11f102ece845fdbd01c87fa051f2e45",
+    "/tmp/framework-platforms-20260909/P-version-coordinator-probe-observations.jsonl": "f40a02b0d0f255da7e9f7891c4092d5403e6f78e2f9fb14978ff1d87c1115b79"
+  },
+  "selected_trace_manifest_entry": {
+    "agent": "/root/baseline_payload_version_executor",
+    "source_session_id": "01a086ce-350a-74b0-9f0a-c67d0b416e24",
+    "journal_sha256": "85c3697dcba6b9a4a6d2fa644528e1d26a45353fbcfe685fb81308609f10768f",
+    "public_trace": "baseline_payload_version_executor.jsonl",
+    "public_trace_sha256": "598cdd40dc1111369b1e62c046a9690040ecc80d0a7c1f19c6aa2008933a66de",
+    "tool_events": 150,
+    "public_task_messages": "baseline_payload_version_executor-task-messages.jsonl",
+    "task_messages_sha256": "9380356da7b1c9672fc4c40e6ba29ceef11f102ece845fdbd01c87fa051f2e45",
+    "recorded_turn_settings": [
+      {
+        "turn_id": "01a086ce-35af-7770-9784-91284454392b",
+        "model": "gpt-6-astra",
+        "effort": "medium"
+      }
+    ]
+  },
+  "installed_source_sha256": {
+    "app/current-v3/node_modules/@fixture/payload-access-note/package.json": "8cb2b050b8483663c4f4aa36a5c578aee52004ec95a60bd7069a228ee377be5d",
+    "app/current-v3/node_modules/@fixture/payload-access-note/dist/index.js": "107541dfacf37018ca478b1bc7da5ed79d1b900b4eff4c1eaf4ae3c513f5217a",
+    "app/current-v3/node_modules/@fixture/payload-access-note/dist/index.d.ts": "08428e5da696428242b7cc8018d85e68b1d0297ae1f88a53636b5364cefc0a89",
+    "app/current-v3/node_modules/@fixture/payload-access-note/dist/storage.js": "95dc0b9a5d8a5a21bf3006d93bb441b390da437364eba5904321fb798216083a",
+    "app/current-v3/node_modules/@fixture/payload-access-note/dist/storage.d.ts": "f143bd6a6fb4f807226357336b7b0dbaf24f1059bfd1c050f4bcb8adf80fc7bc",
+    "app/current-v3/node_modules/@fixture/payload-access-note/dist/database.js": "5fd193211b797a20897d98c356237465e13a3105b68a5aaf94f6514f50e83247",
+    "app/current-v3/node_modules/@fixture/payload-access-note/dist/database.d.ts": "a99ab454a9093d8f573a8e0544ea3959b731fb6db9368de9315c9be91de0cf64",
+    "app/plugin/node_modules/@payloadcms/db-sqlite/package.json": "f0090096d43b4d095820a990714bef2578366f17405773ca91831a6a7fa1ae02",
+    "app/plugin/node_modules/@payloadcms/db-sqlite/dist/index.js": "8ad258b3cb8fabcfaa641aa9974685189f28943f7f90eded10b118f42b53e04a",
+    "app/plugin/node_modules/@payloadcms/storage-r2/package.json": "43fbefcc507111213d677e8af1558b696b6f2a4f61217c7faf4e7152bcfe6fe2",
+    "app/plugin/node_modules/@payloadcms/storage-r2/dist/index.js": "a00997c400bcd5c13e962ad7b6445934c7afad94c1befea7dc8749a6a0c1f181",
+    "app/plugin/node_modules/@payloadcms/storage-r2/dist/index.d.ts": "c3d186aad40f764b984e7a74400cb959614e5e13f418f5b4208aa461f287024e",
+    "app/plugin/node_modules/@payloadcms/storage-r2/dist/types.d.ts": "7291a22ed0698392955c9a998420475a7065c4388c31c3e7841d750f30459253",
+    "app/plugin/node_modules/payload/dist/database/defaultBeginTransaction.js": "ba65d2867b2f427f7f556bdd1524877bbdddf2be71239696d43f0052147554aa",
+    "app/plugin/node_modules/@payloadcms/next/package.json": "d3d346de2320175f3e73fac0e036ea6043dca683e38a73f75a22ccf08388a06b"
+  },
+  "package_boundary": {
+    "installed_is_symlink": false,
+    "resolved": "/tmp/framework-platforms-20260909/trials/baseline/P-version/app/current-v3/node_modules/@fixture/payload-access-note",
+    "members": [
+      {
+        "path": "dist/database.js",
+        "sha256": "5fd193211b797a20897d98c356237465e13a3105b68a5aaf94f6514f50e83247",
+        "installed_equals_archive": true,
+        "build_equals_archive": true
+      },
+      {
+        "path": "dist/index.js",
+        "sha256": "107541dfacf37018ca478b1bc7da5ed79d1b900b4eff4c1eaf4ae3c513f5217a",
+        "installed_equals_archive": true,
+        "build_equals_archive": true
+      },
+      {
+        "path": "dist/storage.js",
+        "sha256": "95dc0b9a5d8a5a21bf3006d93bb441b390da437364eba5904321fb798216083a",
+        "installed_equals_archive": true,
+        "build_equals_archive": true
+      },
+      {
+        "path": "package.json",
+        "sha256": "8cb2b050b8483663c4f4aa36a5c578aee52004ec95a60bd7069a228ee377be5d",
+        "installed_equals_archive": true,
+        "build_equals_archive": true
+      },
+      {
+        "path": "dist/database.d.ts",
+        "sha256": "a99ab454a9093d8f573a8e0544ea3959b731fb6db9368de9315c9be91de0cf64",
+        "installed_equals_archive": true,
+        "build_equals_archive": true
+      },
+      {
+        "path": "dist/index.d.ts",
+        "sha256": "08428e5da696428242b7cc8018d85e68b1d0297ae1f88a53636b5364cefc0a89",
+        "installed_equals_archive": true,
+        "build_equals_archive": true
+      },
+      {
+        "path": "dist/storage.d.ts",
+        "sha256": "f143bd6a6fb4f807226357336b7b0dbaf24f1059bfd1c050f4bcb8adf80fc7bc",
+        "installed_equals_archive": true,
+        "build_equals_archive": true
+      }
+    ]
+  },
+  "private_inputs": "Only hashes; .env contents not displayed",
+  "verdicts": {
+    "P05legacy": "PASS",
+    "P05current": "PASS",
+    "P06plugin": "PASS"
+  },
+  "limits": [
+    "bounded baseline task success only; full source FAIL unchanged",
+    "coordinator followup plaintext unavailable; no complete blind-input attestation",
+    "no remote R2, SQLite rollback, full peer range, or graceful driver shutdown claim"
+  ]
+}

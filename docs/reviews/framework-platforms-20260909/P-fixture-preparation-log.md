@@ -1,0 +1,14 @@
+# P fixtures: подготовка inputs до target edits
+
+Созданы только лёгкие временные files, без npm/build/DB/browser. Потребитель — будущие blind execution agents; критерии оценки остались в E, а fixture содержит только product tasks/requirements/inputs и намеренно незавершённые stubs. Skill sources не менялись.
+
+- `/tmp/framework-platforms-20260909/fixtures/payload-core`: Next/Payload skeleton; P01/P02/P03/P07 task texts; Posts subtitle пока отсутствует, related возвращает501, create/update/role administration запрещены до реализации, tenant plugin возвращает config без изменений, report workflow/queue/run бросают not implemented. Это исходные задачи, не готовые ответы. Existing read policies и hook — входные ограничения.
+- `/tmp/framework-platforms-20260909/fixtures/payload-version`: отдельные legacy-v2/current-v3/plugin inputs для P05/P06. Legacy сохраняет API branch2.32.3 и требует plain-text upload наряду с images; v3 получает скопированную старую collection; plugin содержит исходный несовместимый набор версий, SQLite operations note и R2 config. Remote service не предоставлен.
+- [P04-P07-probe-plan.md](P04-P07-probe-plan.md): закрытый evaluator plan exact source/installed API/runtime observations; НЕ выдавать исполнителю.
+- [P-fixture-preparation-manifest.json](P-fixture-preparation-manifest.json): file hashes, лёгкие структурные проверки и нерешённая bootstrap готовность.
+
+Объединение P01/P02/P03/P07 только организационное: один host/DB, отдельные tasks и критерии. P07 plugin работает на note collections, не меняет Posts anonymous/read policy; иначе объединение изменило бы смысл P02. Шесть read variants минимально покрывают синхронные и асинхронные false/true/Where контракты. Не выдавать один task text с чужими готовыми findings. Runtime baseline/candidate могут реализовывать все четыре принятые задачи вместе, но закрывать каждую следует отдельно.
+
+P05 legacy/current намеренно раздельны; запуск последовательно как upgrade нарушил бы запрет major upgrade legacy. P06 development package намеренно остаётся несовместимым исходником; host current-v3 имеет exact3.88.0/Next16.3.4. Его upload integration и plugin installation должны оцениваться раздельно, чтобы ошибки одного шага не скрыли другой. Пока нет legacy installed app/lock/DB и P06 lock: они НЕ выдуманы при запрете npm, root должен подготовить перед freeze. V3 host также требует отдельной БД, не P-core/миграционной.
+
+Проверено только JSON parse, dependency equality package.json с root copied lock для P-core/current-v3, отсутствие env/dependencies в созданных папках и file hashes. TypeScript/config startup не проверялись; сознательно unfinished code не является baseline runtime proof. Root получает reviewable inputs и должен проверить scope, readiness smoke и freeze до передачи blind executor. Конкретные actor credentials следует provision отдельно и никогда не записывать в отчёт.

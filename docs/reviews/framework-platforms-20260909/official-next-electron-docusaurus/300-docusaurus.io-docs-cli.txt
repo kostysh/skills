@@ -1,0 +1,260 @@
+
+
+Version: 3.10.2On this page
+CLI
+
+
+Docusaurus provides a set of scripts to help you generate, serve, and deploy your website.
+
+
+Once your website is bootstrapped, the website source will contain the Docusaurus scripts that you can invoke with your package manager:
+
+package.json
+{
+  // ...
+  "scripts": {
+    "docusaurus": "docusaurus",
+    "start": "docusaurus start",
+    "build": "docusaurus build",
+    "swizzle": "docusaurus swizzle",
+    "deploy": "docusaurus deploy",
+    "clear": "docusaurus clear",
+    "serve": "docusaurus serve",
+    "write-translations": "docusaurus write-translations",
+    "write-heading-ids": "docusaurus write-heading-ids"
+  }
+}
+
+
+
+Docusaurus CLI commands​
+
+
+Below is a list of Docusaurus CLI commands and their usages:
+
+
+docusaurus start [siteDir]​
+
+
+Builds and serves a preview of your site locally with Webpack Dev Server.
+
+
+Options​
+
+
+NameDefaultDescription
+--port3000Specifies the port of the dev server.
+--hostlocalhostSpecify a host to use. For example, if you want your server to be accessible externally, you can use --host 0.0.0.0.
+--localeSpecify site locale to be used.
+--hot-onlyfalseEnables Hot Module Replacement without page refresh as a fallback in case of build failures. More information here.
+--no-openfalseDo not open the page automatically in the browser.
+--configundefinedPath to Docusaurus config file, default to [siteDir]/docusaurus.config.js
+--poll [optionalIntervalMs]falseUse polling of files rather than watching for live reload as a fallback in environments where watching doesn't work. More information here.
+--no-minifyfalseBuild website without minimizing JS/CSS bundles.
+info
+Please note that some functionality (for example, anchor links) will not work in development. The functionality will work as expected in production.
+Development over network
+When forwarding port 3000 from a remote server or VM (e.g. GitHub Codespaces), you can run the dev server on 0.0.0.0 to make it listen on the local IP.
+npm
+Yarn
+pnpm
+Bun
+npm run start -- --host 0.0.0.0
+
+
+yarn run start --host 0.0.0.0
+
+
+pnpm run start --host 0.0.0.0
+
+
+bun run start --host 0.0.0.0
+
+
+
+Enabling HTTPS​
+
+
+There are multiple ways to obtain a certificate. We will use mkcert as an example.
+
+
+
+
+
+Run mkcert localhost to generate localhost.pem + localhost-key.pem
+
+
+
+
+
+
+Run mkcert -install to install the cert in your trust store, and restart your browser
+
+
+
+
+
+
+Start the app with Docusaurus HTTPS env variables:
+
+
+
+
+
+HTTPS=true SSL_CRT_FILE=localhost.pem SSL_KEY_FILE=localhost-key.pem yarn start
+
+
+
+
+Open https://localhost:3000/
+
+
+
+docusaurus build [siteDir]​
+
+
+Compiles your site for production.
+
+
+Options​
+
+
+NameDefaultDescription
+--devBuilds the website in dev mode, including full React error messages.
+--bundle-analyzerfalseAnalyze your bundle with the webpack bundle analyzer.
+--out-dirbuildThe full path for the new output directory, relative to the current workspace.
+--configundefinedPath to Docusaurus config file, default to [siteDir]/docusaurus.config.js
+--localeBuild the site in the specified locale(s). If not specified, all known locales are built.
+--no-minifyfalseBuild website without minimizing JS/CSS bundles.
+info
+For advanced minification of CSS bundle, we use the advanced cssnano preset (along with additional several PostCSS plugins) and level 2 optimization of clean-css. If as a result of this advanced CSS minification you find broken CSS, build your website with the environment variable USE_SIMPLE_CSS_MINIFIER=true to minify CSS with the default cssnano preset. Please fill out an issue if you experience CSS minification bugs.
+You can skip the HTML minification with the environment variable SKIP_HTML_MINIFICATION=true.
+
+docusaurus swizzle [themeName] [componentName] [siteDir]​
+
+
+Swizzle a theme component to customize it.
+
+
+npm
+Yarn
+pnpm
+Bun
+npm run swizzle [themeName] [componentName] [siteDir]
+
+# Example (leaving out the siteDir to indicate this directory)
+npm run swizzle @docusaurus/theme-classic Footer -- --eject
+
+
+yarn swizzle [themeName] [componentName] [siteDir]
+
+# Example (leaving out the siteDir to indicate this directory)
+yarn swizzle @docusaurus/theme-classic Footer --eject
+
+
+pnpm run swizzle [themeName] [componentName] [siteDir]
+
+# Example (leaving out the siteDir to indicate this directory)
+pnpm run swizzle @docusaurus/theme-classic Footer --eject
+
+
+bun run swizzle [themeName] [componentName] [siteDir]
+
+# Example (leaving out the siteDir to indicate this directory)
+bun run swizzle @docusaurus/theme-classic Footer --eject
+
+
+
+The swizzle CLI is interactive and will guide you through the whole swizzle process.
+
+
+Options​
+
+
+NameDescription
+themeNameThe name of the theme to swizzle from.
+componentNameThe name of the theme component to swizzle.
+--listDisplay components available for swizzling
+--ejectEject the theme component
+--wrapWrap the theme component
+--dangerAllow immediate swizzling of unsafe components
+--typescriptSwizzle the TypeScript variant component
+--configPath to docusaurus config file, default to [siteDir]/docusaurus.config.js
+warning
+Unsafe components have a higher risk of breaking changes due to internal refactorings.
+
+docusaurus deploy [siteDir]​
+
+
+Deploys your site with GitHub Pages. Check out the docs on deployment for more details.
+
+
+Options​
+
+
+NameDefaultDescription
+--localeDeploy the site in the specified locale(s). If not specified, all known locales are deployed.
+--out-dirbuildThe full path for the new output directory, relative to the current workspace.
+--skip-buildfalseDeploy website without building it. This may be useful when using a custom deploy script.
+--target-dir.Path to the target directory to deploy to.
+--configundefinedPath to Docusaurus config file, default to [siteDir]/docusaurus.config.js
+
+docusaurus serve [siteDir]​
+
+
+Serve your built website locally.
+
+
+NameDefaultDescription
+--port3000Use specified port
+--dirbuildThe full path for the output directory, relative to the current workspace
+--buildfalseBuild website before serving
+--configundefinedPath to Docusaurus config file, default to [siteDir]/docusaurus.config.js
+--hostlocalhostSpecify a host to use. For example, if you want your server to be accessible externally, you can use --host 0.0.0.0.
+--no-openfalse locally, true in CIDo not open a browser window to the server location.
+
+docusaurus clear [siteDir]​
+
+
+Clear a Docusaurus site's generated assets, caches, build artifacts.
+
+
+We recommend running this command before reporting bugs, after upgrading versions, or anytime you have issues with your Docusaurus site.
+
+
+docusaurus write-translations [siteDir]​
+
+
+Write the JSON translation files that you will have to translate.
+
+
+By default, the files are written in website/i18n/<defaultLocale>/....
+
+
+NameDefaultDescription
+--locale<defaultLocale>Define which locale folder you want to write translations the JSON files in
+--overridefalseOverride existing translation messages
+--configundefinedPath to Docusaurus config file, default to [siteDir]/docusaurus.config.js
+--messagePrefix''Allows adding a prefix to each translation message, to help you highlight untranslated strings
+
+docusaurus write-heading-ids [siteDir] [files]​
+
+
+Add explicit heading IDs to the Markdown documents of your site.
+
+
+NameDefaultDescription
+filesAll MD files used by pluginsThe files that you want heading IDs to be written to.
+--syntaxclassicHeading ID syntax to use: classic ({#id}) or mdx-comment ({/* #id */}).
+--migratefalseMigrate existing heading IDs to the target --syntax, if they are using a different syntax.
+--overwritefalseOverwrite existing heading IDs, re-generate them from the heading text.
+--maintain-casefalseKeep the headings' casing, otherwise make all lowercase.
+Docusaurus CLI commands
+docusaurus start [siteDir]
+docusaurus build [siteDir]
+docusaurus swizzle [themeName] [componentName] [siteDir]
+docusaurus deploy [siteDir]
+docusaurus serve [siteDir]
+docusaurus clear [siteDir]
+docusaurus write-translations [siteDir]
+docusaurus write-heading-ids [siteDir] [files]

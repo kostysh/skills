@@ -1,0 +1,53 @@
+{
+  "id": "c7914c259259f0a2a61f562be9b87b22a29a101ce24756ac03dc198c78698977",
+  "name": "/fp20260909-cli-proxy-current",
+  "image": "sha256:2c1f4e0fd6450f43ddb46d60c2a6df30855a8588e165b1f2559fb0eda8d7ff35",
+  "resources": {
+    "NanoCpus": 250000000,
+    "Memory": 268435456,
+    "MemorySwap": 268435456,
+    "CpusetCpus": "28-31",
+    "NetworkMode": "none",
+    "SecurityOpt": [
+      "no-new-privileges:true"
+    ],
+    "CapDrop": [
+      "ALL"
+    ]
+  },
+  "mounts": [
+    {
+      "Type": "bind",
+      "Source": "/tmp/framework-platforms-20260909/infrastructure/docker-proxy/sockets/current",
+      "Destination": "/tmp/framework-platforms-20260909/infrastructure/docker-proxy/sockets/current",
+      "Mode": "",
+      "RW": true,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/var/run/docker.sock",
+      "Destination": "/var/run/docker.sock",
+      "Mode": "",
+      "RW": true,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/tmp/framework-platforms-20260909/infrastructure/docker-proxy/proxy.mjs",
+      "Destination": "/tmp/framework-platforms-20260909/infrastructure/docker-proxy/proxy.mjs",
+      "Mode": "ro",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/tmp/framework-platforms-20260909/infrastructure/docker-proxy/private/current",
+      "Destination": "/tmp/framework-platforms-20260909/infrastructure/docker-proxy/private/current",
+      "Mode": "",
+      "RW": true,
+      "Propagation": "rprivate"
+    }
+  ],
+  "first_attempt_error": "EACCES: host-visible socket GID65534 mapped differently than daemon-mounted socket GID981; add observed container GID981"
+}

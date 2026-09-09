@@ -1,0 +1,51 @@
+[
+  {
+    "id": "cli-diff-doc",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/docs/supabase/db/diff.md",
+    "retrievedAt": "2026-09-09T11:41:23.035534+00:00",
+    "sha256": "34430ebb5e28a1c91e6d2beeeceead84822e19569e6aaaed32972d2d3da47610",
+    "file": "cli-diff-doc.txt"
+  },
+  {
+    "id": "cli-declarative-generate-doc",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/docs/supabase/db/schema-declarative-generate.md",
+    "retrievedAt": "2026-09-09T11:41:23.378833+00:00",
+    "sha256": "4a65ccfefbfee07ab2a5b4224ff83b28d2251fed0861c414273c502197a7f77a",
+    "file": "cli-declarative-generate-doc.txt"
+  },
+  {
+    "id": "cli-declarative-sync-doc",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/docs/supabase/db/schema-declarative-sync.md",
+    "retrievedAt": "2026-09-09T11:41:23.902599+00:00",
+    "sha256": "619e0c0c7a88ac5209543a7053f5d1b9718058d61a450a51a0a0cec2df7316e8",
+    "file": "cli-declarative-sync-doc.txt"
+  },
+  {
+    "id": "cli-diff-command",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/diff/diff.command.ts",
+    "retrievedAt": "2026-09-09T11:41:24.234747+00:00",
+    "sha256": "963c6704e96d17b481ad8a24b5ef99bac1b551cb15910cc4c3810da1ab660153",
+    "file": "cli-diff-command.txt"
+  },
+  {
+    "id": "cli-generate-command",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/schema/declarative/generate/generate.command.ts",
+    "retrievedAt": "2026-09-09T11:41:24.579962+00:00",
+    "sha256": "578d377f9240c3d99179bd694fa8879818213e4b52669d92b4196733b5a3f1f8",
+    "file": "cli-generate-command.txt"
+  },
+  {
+    "id": "cli-diff-handler",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/diff/diff.handler.ts",
+    "retrievedAt": "2026-09-09T11:41:25.318199+00:00",
+    "sha256": "8f52a9be13c35de0d54fe48efb1ad6248bc49056ff51431b1e5accc4064401e2",
+    "file": "cli-diff-handler.txt"
+  },
+  {
+    "id": "cli-former-default",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/schema/declarative/declarative.former-default.ts",
+    "retrievedAt": "2026-09-09T11:41:25.759066+00:00",
+    "sha256": "b2c9d9a83149ce8432006d7df3ef4ed9e70bcd35a72fcffb7cb6b01b709cb8b6",
+    "file": "cli-former-default.txt"
+  }
+]

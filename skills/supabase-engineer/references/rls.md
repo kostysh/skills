@@ -13,6 +13,8 @@
 - Never authorize from `user_metadata`. Use trusted database state or trusted claims such as `app_metadata`, and account for JWT staleness.
 
 ## Policy templates
+
+These are alternatives for already accepted ownership/public-access models, not a cumulative policy set or authority to make tables public. Adapt columns, roles and grants to the actual schema.
 ```sql
 -- Owner-only access
 create policy "Owner access"
@@ -59,6 +61,8 @@ using (
 ```
 
 ## Storage RLS
+
+The example SELECT policy intentionally permits both listing and reading this bucket. If the accepted contract permits reads but forbids listing, use the installed Storage operation-aware helpers (such as `storage.allow_only_operation()` or `storage.allow_any_operation()`) for the intended operations and verify both paths; do not assume SELECT is download-only.
 ```sql
 create policy "Users can upload own avatars"
 on storage.objects for insert
@@ -84,7 +88,7 @@ from public.documents
 where user_id = (select auth.uid());
 ```
 
-Prefer `security_invoker = true` for views that should respect caller policies. Avoid exposing default-definer views to untrusted callers unless the bypass is deliberate and documented.
+PostgreSQL >=15 supports `security_invoker = true` for views that should respect caller policies. On older versions, preserve the compatible protection by revoking access or keeping the view outside exposed schemas; do not upgrade Postgres merely to copy this example. Avoid exposing default-definer views to untrusted callers unless the bypass is deliberate and documented.
 
 ## Policy coverage matrix
 

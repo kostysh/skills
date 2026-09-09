@@ -36,3 +36,8 @@
 - [Strict authority stable-snapshot rerun 2026-07-13](logs/raw-forward-authority-rerun-20260713.md)
 - [Composition-authority paired rerun 2026-07-13](logs/raw-forward-composition-rerun-20260713.md)
 - [Description length update 2026-07-15](logs/implementation-log-20260715-1.md) — independent scoped PASS.
+
+## Ревизия фреймворков и платформ
+
+- [Принятый общий план](../../../docs/plans/implementation-plan-20260909-1.md).
+- [Общий implementation log](../../../docs/logs/implementation-log-20260909-1.md) — авторские изменения; candidate и независимая приёмка ещё не завершены.

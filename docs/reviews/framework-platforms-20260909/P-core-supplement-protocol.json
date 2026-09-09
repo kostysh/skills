@@ -1,0 +1,49 @@
+{
+  "kind": "Coordinator supplemental verification of finished baseline artifact; not new blind execution or remediation",
+  "authority": "P04-P07-probe-plan.md Jobs pre-run absence and fresh note hook invocation",
+  "original": "trials/baseline/P-core/app",
+  "copy": "assessment-probes/P-core-delta/app",
+  "changes": [
+    "Copy original app and build; link exact existing dependency tree read-only by convention",
+    "Add three supplemental scripts and package scripts only; original implementations unchanged",
+    "Reset only fixture Reports/report-001 and prepare-report jobs with same input key after preserving before rows",
+    "Elevated create then REST read then exact-ID cleanup of one sync-notes record"
+  ],
+  "runtime": {
+    "records": "P-core-supplement/commands.jsonl",
+    "attempts": [
+      {
+        "exit": 1,
+        "cause": "Coordinator copy ignored nested .next/node_modules generated aliases. Setup/reset and note cleanup ran; no queue worker ran."
+      },
+      {
+        "exit": 0,
+        "result": "Restored four original generated alias symlinks in copied build. Existing queue/run scripts job3; queued Reports totalDocs0, fresh sync-notes hook origin via REST, completed2steps and sole report then note cleanup totalDocs0."
+      }
+    ],
+    "limits": "Coordinator supplemental execution after blind baseline; fixture DB now contains job3/report2. Earlier job1/job2 physical executions retained in original evidence and pre-reset snapshot. Original app/evidence unchanged."
+  },
+  "script_hashes": {
+    "supplement-run.mjs": "4a95d840a2d9f6ab32713c3b03acd15a8414c39911735d1657ff095831005a4f",
+    "supplement-read.mjs": "baacce2769551afa2649a25e51ef7928251a7118477ea0dae7a67ec6501e843b",
+    "supplement-setup.mjs": "6c282d043272ea9c0680b2304d7462278830bf342ab4a1772130803eff1f2386"
+  },
+  "evidence_hashes": {
+    "commands.jsonl": "efc2136296a508eecbe0211d9d6be384f81ef41cfd463d973f67f12e88a94b5e",
+    "supplement-cleanup.json": "374b8d371606f639bf49f2603fd13a263eacbbf9cc16d47b1606114133ff3c20",
+    "supplement-setup.json": "669cb0797e4f62bf302885c47d604853e10a7a61c78dbdc516b90673fd461fe7",
+    "job-queued-api.json": "d751349284197d8dcb0e2fff69a1069a3e9066cdc56cc15c1025e6f6bc08887a",
+    "supplement-rest.json": "705e302cf715fa4f84f8fef3b40ab1151f6974709430f2cc327f7902560e2cbf",
+    "job-completed-api.json": "28234f7e3d82d3fbd16646fcbdaf79ce509d41519b534dafac28e841e44e6908",
+    "report-api.json": "650590be090c2682db26dc30e0585ac25ae3e0fd1b46ff7673a410bffa978b4d",
+    "queued-job.json": "2d7758349e3a3a929051787cedfcc9ae41f659fb04b87f38c1bacfdb209b59a9",
+    "supplement-before-reset.json": "c8fa7f6ba13fdb738af3542d77e299bd5d5cb3dcba6141d3cdb22a2efef475bd",
+    "attempt-01/commands.jsonl": "a5903f2d66b58eb15e0f1291f52e3b075bca69fbd3c69435fb5f7a316110eba1",
+    "attempt-01/supplement-cleanup.json": "358b23db56163b6f660bb286901adb4e0015efb68ec89fc1976728ddbec4180c",
+    "attempt-01/supplement-setup.json": "5557b2a75e4187c963f00af46f9f2ad91be1454ebe8a680cd95c098307cf48b2",
+    "attempt-01/supplement-before-reset.json": "6550369dea781cd5f0b619a27e9ddf763d0f2c3817ef0ce465c450524edc11ab",
+    "app/scripts/supplement-run.mjs": "4a95d840a2d9f6ab32713c3b03acd15a8414c39911735d1657ff095831005a4f",
+    "app/scripts/supplement-setup.mjs": "6c282d043272ea9c0680b2304d7462278830bf342ab4a1772130803eff1f2386",
+    "app/scripts/supplement-read.mjs": "baacce2769551afa2649a25e51ef7928251a7118477ea0dae7a67ec6501e843b"
+  }
+}

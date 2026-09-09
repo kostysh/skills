@@ -1,0 +1,7 @@
+> For the complete documentation index, see [llms.txt](https://www.electronforge.io/llms.txt). Markdown versions of documentation pages are available by appending `.md` to page URLs; this page is available as [Markdown](https://www.electronforge.io/guides/framework-integration.md).
+
+# Framework Integration
+
+Use various frontend frameworks with Electron Forge
+
+Since Electron uses Chromium under the hood, there's nothing particularly different about integrating your frontend framework of choice with Electron Forge as opposed to a web application, especially considering Forge's first-party Webpack support.

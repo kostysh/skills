@@ -1,0 +1,45 @@
+
+
+
+Version: 3.10.2On this page
+📦 theme-live-codeblock
+
+
+This theme provides a @theme/CodeBlock component that is powered by react-live. You can read more on interactive code editor documentation.
+
+
+npm
+Yarn
+pnpm
+Bun
+npm install --save @docusaurus/theme-live-codeblock
+
+
+yarn add @docusaurus/theme-live-codeblock
+
+
+pnpm add @docusaurus/theme-live-codeblock
+
+
+bun add @docusaurus/theme-live-codeblock
+
+
+
+Configuration​
+
+docusaurus.config.js
+export default {
+  plugins: ['@docusaurus/theme-live-codeblock'],
+  themeConfig: {
+    liveCodeBlock: {
+      /**
+       * The position of the live playground, above or under the editor
+       * Possible values: "top" | "bottom"
+       */
+      playgroundPosition: 'bottom',
+    },
+  },
+};
+
+
+Configuration

@@ -1,0 +1,11 @@
+{
+  "cli-legacy-preflight-commands-cleanup.jsonl": "278eb4041b52eb0d516373c7031b82c4b6be5d6ee91c5480dd0b6b401aa2a8a7",
+  "cli-legacy-preflight-container-events.json": "1f72bf43b1c08ef6583e328ca4c9c06b6f9a723ad3e16bc5bb72885abbbfe869",
+  "monitor-cli-legacy-preflight.py": "03f93f335094f0e76bc9883be293bedd8f7219a595eb3d68d9056ecde5a05ac8",
+  "cli-legacy-preflight-resource-observations.jsonl": "e8978772437930b38b2f0ba764ccf3fa38754d66179a03d2bf0f1d81fee714c1",
+  "cli-legacy-preflight-commands.jsonl": "caea4071af8f271608e23d500b429ac784cacb8b5bd04e125064afdcbdb9467c",
+  "state.json": "bd14ffcbe12d85eccd1a12b587c528473a6b33825ddefaa570194d5016452ea7",
+  "supervisor-readback.json": "1ed4f3078c9868c81c4619a9221b14a6ee5a444f9db3bf1052cdb6d336544a51",
+  "summary.json": "4c564b62dc90019c51ebe3a03eb51eb7825bba4cfa7269275692cee4daec1999",
+  "image-bindings.json": "6d934a35221943994e9fb275b1bf600ab5e5c1be1fba838447467378b97afd18"
+}

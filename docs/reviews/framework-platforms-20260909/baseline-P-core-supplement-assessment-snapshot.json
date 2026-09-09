@@ -1,0 +1,13 @@
+{
+  "kind": "offline independent evidence re-evaluation, no runtime replay",
+  "checks": {
+    "original60hashes": true,
+    "16supplementhashes": true,
+    "queued_empty_result": true,
+    "newhook_rest_cleanup": true,
+    "job3_real_steps": true,
+    "newreport_exact": true
+  },
+  "protocol_sha256": "0a86325fb049512390c1665cbeca1b974898bc432c3853f79ab623112c6d4315",
+  "initial_assessment_sha256": "b8a89a90fe7dc31d7fc0055d57da4c89748777638bffdfe80f52aa494a9ad3c7"
+}

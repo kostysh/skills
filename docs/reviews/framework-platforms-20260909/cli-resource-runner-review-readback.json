@@ -1,0 +1,13 @@
+{
+  "checkedAt": "2026-09-09T14:15:31.216326+00:00",
+  "path": "/tmp/framework-platforms-20260909/runtime-cli-run.py",
+  "initialSha256": "1bb6b9944059dba1e6cc6c64a7b11ad5b46ee4910f389fc4fe00dc0fde377527",
+  "finalSha256": "de5147a39ec0f3818fa1d4d2eda7114f3d0a22f3b4a65790b3ae80ce8f671b5b",
+  "finalSnapshotUnchanged": true,
+  "syntax": "ast.parse and compile exec without execution PASS",
+  "priorFinding": "CRR-01 P2 closed statically",
+  "newFindings": [],
+  "recommendation": "approve static preflight readiness only",
+  "nativeBoundary": "unverified",
+  "reportSha256": "f28d8acd80e2562fad39a8e1f4efcca620d827921cd05e3d2b41429a27095a38"
+}

@@ -1,0 +1,27 @@
+{
+  "date": "2026-09-09T11:43:34.456586+00:00",
+  "lab": "/tmp/framework-platforms-20260909",
+  "hostNode": "24.15.0",
+  "docker": "29.6.2",
+  "compose": "5.3.1",
+  "supabaseCli": "2.117.0",
+  "cliOfficialSha256": "69c05f85b9e47ee706d30f1a6ca8a526b4e337bfd12c7ef1ef522d24e7280d24",
+  "selfhostTag": "self-hosted/v0.8.0",
+  "selfhostCommit": "241bb11c0627f2981746d37033f57dbfa81d29b0",
+  "boundary": "real local self-hosted official Supabase containers; not managed cloud nor CLI-start parity",
+  "limits": "8 task services sum2.75CPU/8.75GiB, cpuset28-31, loopback API18400/DB18432, restart=no; remaining1.25CPU/7.25GiB for runner",
+  "incidents": [
+    {
+      "command": "CLI download checksum lookup",
+      "result": "lookup expected unversioned filename but official checksums use versioned filename; no CLI executed; corrected lookup and SHA matched"
+    },
+    {
+      "command": "supabase --version/start --help without env",
+      "result": "CLI tried ~/.supabase telemetry write; sandbox EROFS, no global update; rerun with SUPABASE_TELEMETRY_DISABLED=1 DO_NOT_TRACK=1 succeeded"
+    },
+    {
+      "command": "compose config in parent directory",
+      "result": "config path not found; correct task directory used, config valid"
+    }
+  ]
+}

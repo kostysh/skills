@@ -1,0 +1,211 @@
+[
+  {
+    "id": "supabase-getting-started-api-keys",
+    "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/getting-started/api-keys.mdx",
+    "finalURL": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/getting-started/api-keys.mdx",
+    "retrievedAt": "2026-09-09T11:36:56.019959+00:00",
+    "bytes": 22094,
+    "sha256": "17bed83f79df3fc16b6eaacae370b70e2237e44cff2e073b3edc51549ecef301",
+    "file": "supabase-getting-started-api-keys.txt"
+  },
+  {
+    "id": "supabase-getting-started-migrating-to-new-api-keys",
+    "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/getting-started/migrating-to-new-api-keys.mdx",
+    "finalURL": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/getting-started/migrating-to-new-api-keys.mdx",
+    "retrievedAt": "2026-09-09T11:36:56.327393+00:00",
+    "bytes": 12093,
+    "sha256": "11827f52966c1edee9018fd0c6d04448d0f36704ac34105d612e010cfcca2d5a",
+    "file": "supabase-getting-started-migrating-to-new-api-keys.txt"
+  },
+  {
+    "id": "supabase-database-functions",
+    "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/functions.mdx",
+    "finalURL": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/functions.mdx",
+    "retrievedAt": "2026-09-09T11:36:56.307574+00:00",
+    "bytes": 16715,
+    "sha256": "461607ff1bf44cd88e7e5f4d48f59723e64c336f8fc6e649907b045ba9874e99",
+    "file": "supabase-database-functions.txt"
+  },
+  {
+    "id": "supabase-api-securing-your-api",
+    "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/api/securing-your-api.mdx",
+    "finalURL": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/api/securing-your-api.mdx",
+    "retrievedAt": "2026-09-09T11:36:56.298994+00:00",
+    "bytes": 17088,
+    "sha256": "36dd87275b5b6b5cf89a9d58b580ab372bfbc3c86ce936d7a0df634bd7239047",
+    "file": "supabase-api-securing-your-api.txt"
+  },
+  {
+    "id": "supabase-api-automatic-retries-in-supabase-js",
+    "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/api/automatic-retries-in-supabase-js.mdx",
+    "finalURL": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/api/automatic-retries-in-supabase-js.mdx",
+    "retrievedAt": "2026-09-09T11:36:55.964552+00:00",
+    "bytes": 5011,
+    "sha256": "3d3a4eefb72acb4c971e8f800366f9a26ab6d7fe030981b13dd92ad9a6402a5a",
+    "file": "supabase-api-automatic-retries-in-supabase-js.txt"
+  },
+  {
+    "id": "supabase-api-handling-errors-in-supabase-js",
+    "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/api/handling-errors-in-supabase-js.mdx",
+    "finalURL": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/api/handling-errors-in-supabase-js.mdx",
+    "retrievedAt": "2026-09-09T11:36:56.191880+00:00",
+    "bytes": 5465,
+    "sha256": "abf029ef988b0dce062867b9fe54fb9505d3e6bffd196ce9c871e52a0ff8e11b",
+    "file": "supabase-api-handling-errors-in-supabase-js.txt"
+  },
+  {
+    "id": "supabase-database-joins-and-nesting",
+    "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/joins-and-nesting.mdx",
+    "finalURL": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/joins-and-nesting.mdx",
+    "retrievedAt": "2026-09-09T11:36:56.415255+00:00",
+    "bytes": 19560,
+    "sha256": "bbf1ddb88090d51375f66502ae94462043506e405dc6c53a62ba9fa2a1807bb3",
+    "file": "supabase-database-joins-and-nesting.txt"
+  },
+  {
+    "id": "supabase-ai-vector-indexes-ivf-indexes",
+    "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/ai/vector-indexes/ivf-indexes.mdx",
+    "finalURL": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/ai/vector-indexes/ivf-indexes.mdx",
+    "retrievedAt": "2026-09-09T11:36:56.612349+00:00",
+    "bytes": 4388,
+    "sha256": "c87afc2071f7cf7b3d6d18180e823152293370c98821dff35def9b40d18ce116",
+    "file": "supabase-ai-vector-indexes-ivf-indexes.txt"
+  },
+  {
+    "id": "supabase-ai-vector-indexes-hnsw-indexes",
+    "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/ai/vector-indexes/hnsw-indexes.mdx",
+    "finalURL": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/ai/vector-indexes/hnsw-indexes.mdx",
+    "retrievedAt": "2026-09-09T11:36:56.563938+00:00",
+    "bytes": 8409,
+    "sha256": "28e93837d625dcf26d67b3e7692e1639dd1887ed098a39fa1b1d5e45baa2cde9",
+    "file": "supabase-ai-vector-indexes-hnsw-indexes.txt"
+  },
+  {
+    "id": "cf-runtime-apis-nodejs-index",
+    "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/runtime-apis/nodejs/index.mdx",
+    "finalURL": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/runtime-apis/nodejs/index.mdx",
+    "retrievedAt": "2026-09-09T11:36:56.648041+00:00",
+    "bytes": 10753,
+    "sha256": "ae1e388350503c2562bcc507b9dfb1010330146e3c1bf3d8058bb94beeefedbd",
+    "file": "cf-runtime-apis-nodejs-index.txt"
+  },
+  {
+    "id": "cf-languages-typescript-index",
+    "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/languages/typescript/index.mdx",
+    "finalURL": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/languages/typescript/index.mdx",
+    "retrievedAt": "2026-09-09T11:36:56.684885+00:00",
+    "bytes": 7518,
+    "sha256": "4226b4938fbe41e25bb84f1c97e0926b0a56a090f15901b246524e30d96655e0",
+    "file": "cf-languages-typescript-index.txt"
+  },
+  {
+    "id": "cf-languages-typescript-generate-types",
+    "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/languages/typescript/generate-types.mdx",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "id": "cf-testing-vitest-integration-get-started",
+    "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/testing/vitest-integration/get-started.mdx",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "id": "cf-runtime-apis-web-crypto",
+    "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/runtime-apis/web-crypto.mdx",
+    "finalURL": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/runtime-apis/web-crypto.mdx",
+    "retrievedAt": "2026-09-09T11:36:57.394529+00:00",
+    "bytes": 20846,
+    "sha256": "864e1694335946e3c226564cbce0b87657631377ea7766dc03b7890025329442",
+    "file": "cf-runtime-apis-web-crypto.txt"
+  },
+  {
+    "id": "sdk-package",
+    "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/supabase-js/package.json",
+    "finalURL": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/supabase-js/package.json",
+    "retrievedAt": "2026-09-09T11:36:56.928640+00:00",
+    "bytes": 6476,
+    "sha256": "4e6c5bc46b84681be897b12a9bfabc3324e555c5158505e9389461db2c099b95",
+    "file": "sdk-package.txt"
+  },
+  {
+    "id": "sdk-readme",
+    "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/README.md",
+    "finalURL": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/README.md",
+    "retrievedAt": "2026-09-09T11:36:57.486306+00:00",
+    "bytes": 9431,
+    "sha256": "bdeb8aa45054a402b92b4b70e197dc6b66a4bf1e0217523e914ffd937d1f0ec1",
+    "file": "sdk-readme.txt"
+  },
+  {
+    "id": "sdk-storage-source",
+    "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/storage-js/src/packages/StorageFileApi.ts",
+    "finalURL": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/storage-js/src/packages/StorageFileApi.ts",
+    "retrievedAt": "2026-09-09T11:36:57.062799+00:00",
+    "bytes": 48593,
+    "sha256": "0f2d84813cd3c97cb1b90deda7e373c8643868ef14afa892110d545a1d511e18",
+    "file": "sdk-storage-source.txt"
+  },
+  {
+    "id": "sdk-postgrest-source",
+    "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/postgrest-js/src/PostgrestTransformBuilder.ts",
+    "finalURL": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/postgrest-js/src/PostgrestTransformBuilder.ts",
+    "retrievedAt": "2026-09-09T11:36:57.225793+00:00",
+    "bytes": 28739,
+    "sha256": "01a57078ecf2c9d63d138d3b19c24753b608960b1d0bde75f942e74cee5350ec",
+    "file": "sdk-postgrest-source.txt"
+  },
+  {
+    "id": "cli-diff-source",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/cmd/db.go",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "id": "cli-migration-source",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/cmd/migration.go",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "id": "standardwebhooks-spec",
+    "url": "https://raw.githubusercontent.com/standard-webhooks/standard-webhooks/main/spec/standard-webhooks.md",
+    "finalURL": "https://raw.githubusercontent.com/standard-webhooks/standard-webhooks/main/spec/standard-webhooks.md",
+    "retrievedAt": "2026-09-09T11:36:57.394212+00:00",
+    "bytes": 28403,
+    "sha256": "47cf696ee08a583f6cddf2d02b13e544e1bd28435b8e418870e8b557b1ed4082",
+    "file": "standardwebhooks-spec.txt"
+  },
+  {
+    "id": "pg-sql-select",
+    "url": "https://www.postgresql.org/docs/current/sql-select.html",
+    "finalURL": "https://www.postgresql.org/docs/current/sql-select.html",
+    "retrievedAt": "2026-09-09T11:36:57.617842+00:00",
+    "bytes": 118110,
+    "sha256": "b09d4107b0cd6790f3ea21ce95f9d57007f2f34ed12fa91316bf25852d0d08b5",
+    "file": "pg-sql-select.txt"
+  },
+  {
+    "id": "pg-retry",
+    "url": "https://www.postgresql.org/docs/current/mvcc-serialization-failure-handling.html",
+    "finalURL": "https://www.postgresql.org/docs/current/mvcc-serialization-failure-handling.html",
+    "retrievedAt": "2026-09-09T11:36:57.506629+00:00",
+    "bytes": 13532,
+    "sha256": "e00499d69ddeaa7be0618b65cd48003c27cbbb4693ecd8e50f24bd911a904936",
+    "file": "pg-retry.txt"
+  },
+  {
+    "id": "pg-function",
+    "url": "https://www.postgresql.org/docs/current/sql-createfunction.html",
+    "finalURL": "https://www.postgresql.org/docs/current/sql-createfunction.html",
+    "retrievedAt": "2026-09-09T11:36:57.571340+00:00",
+    "bytes": 51164,
+    "sha256": "ecdb16535bea7e5771c6a39c1123bca92ff8c2b2a9c1d8ebdb2834856c921686",
+    "file": "pg-function.txt"
+  },
+  {
+    "id": "pg-errors",
+    "url": "https://www.postgresql.org/docs/current/errcodes-appendix.html",
+    "finalURL": "https://www.postgresql.org/docs/current/errcodes-appendix.html",
+    "retrievedAt": "2026-09-09T11:36:57.718657+00:00",
+    "bytes": 66370,
+    "sha256": "0ebcc58411118aa7849020aa23256112a205abe94d9b64fa6576f1baa3dda263",
+    "file": "pg-errors.txt"
+  }
+]

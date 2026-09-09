@@ -14,7 +14,7 @@ Before implementation, derive or obtain:
 - endpoint class and its auth, CSRF, tenancy, replay, payload, caching, streaming, or webhook contract;
 - available unit, Hono integration, runtime integration, and live verification contours.
 
-If an authoritative behavior is missing, equal-authority sources conflict, or a required runtime boundary cannot be exercised, provide bounded guidance or report the work blocked. Do not invent product behavior, security policy, migration authority, or production readiness.
+If an authoritative behavior is missing, equal-authority sources conflict, or a required runtime boundary cannot be exercised, limit or block that part and continue independent authorized work. Reuse inputs and permissions already given; ask only for the material missing decision. Do not invent product behavior, security policy, migration authority, or production readiness.
 
 ## Latest framework currency
 

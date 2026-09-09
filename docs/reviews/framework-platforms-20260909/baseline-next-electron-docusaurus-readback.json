@@ -1,0 +1,71 @@
+{
+  "base": "d89d66f2c99bf8b9e84e5b4def54fa60192856a5",
+  "checked_at": "2026-09-09T11:55:35.314554+00:00",
+  "targets": {
+    "nextjs": {
+      "files": 29,
+      "hash_mismatches": [],
+      "unchanged": true
+    },
+    "electron-engineer": {
+      "files": 30,
+      "hash_mismatches": [],
+      "unchanged": true
+    },
+    "docusaurus-repo": {
+      "files": 20,
+      "hash_mismatches": [],
+      "unchanged": true
+    }
+  },
+  "direct_owner_contracts": [
+    {
+      "skill": "react-components-engineer",
+      "surface": "SKILL.md exclusions/interop/completion",
+      "sha256": "54fec3b0548ca36ea157c32dcc3a3ec710b5ce0f7f0960fab7798ece27b83009",
+      "matches_frozen_manifest": true
+    },
+    {
+      "skill": "react-spa-engineer",
+      "surface": "SKILL.md exclusions/interop/completion",
+      "sha256": "b466489e4b9e53008b3f1049c1ceefc24c52644c727242450bb7e22436f59c0d",
+      "matches_frozen_manifest": true
+    },
+    {
+      "skill": "documentation",
+      "surface": "SKILL.md exclusions/interop/completion",
+      "sha256": "4498e3ef26485edc0e63ee0fef18b371f81aa8daa694634484410c43003ae7be",
+      "matches_frozen_manifest": true
+    },
+    {
+      "skill": "frontend-design",
+      "surface": "SKILL.md exclusions/interop/completion",
+      "sha256": "52b2d1da1e9855a78306f0c2e261a50bff19db33335e9dbb8539b0bdc729fd9d",
+      "matches_frozen_manifest": true
+    },
+    {
+      "skill": "node-engineer",
+      "surface": "SKILL.md exclusions/interop/completion",
+      "sha256": "073a05ee05c1ef9db06d375ec9412fd2f8308a3d0ae2e028ed8df4f45eb55eef",
+      "matches_frozen_manifest": true
+    },
+    {
+      "skill": "typescript-engineer",
+      "surface": "SKILL.md exclusions/interop/completion",
+      "sha256": "8dccdca0e96b7c9f7caf51baaab9fb909df0bb01345a0ae7fac7c444bb597e86",
+      "matches_frozen_manifest": true
+    },
+    {
+      "skill": "typescript-test-engineer",
+      "surface": "SKILL.md exclusions/interop/completion",
+      "sha256": "44dbdb487ed12ae2329f06806e935914871aed61f69a4de8e26da1ead83df4f8",
+      "matches_frozen_manifest": true
+    },
+    {
+      "skill": "security-reviewer",
+      "surface": "SKILL.md exclusions/interop/completion",
+      "sha256": "0e0ee8025a1eae969512fcef4a4210d5712bca141620733cc624685744355fa1",
+      "matches_frozen_manifest": true
+    }
+  ]
+}

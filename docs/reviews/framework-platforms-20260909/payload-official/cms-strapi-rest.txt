@@ -1,0 +1,582 @@
+REST API reference | Strapi 5 Documentation
+Skip to main content
+CMS Cloud
+GitHub Contribution Program
+Ask AI
+Navigation◀
+Getting Started
+Quick Start Guide
+Project structure
+Installation
+Admin panel
+Content Manager
+Content Type Builder
+Deployment
+Billing portal
+Features
+API Tokens
+Admin tokens
+Audit Logs
+Content History
+Custom Fields
+Data Management
+Draft & Publish
+Email
+Internationalization (i18n)
+Media LibraryUpdatedThis content was recently updated.
+MCP server
+Preview
+Role-Based Access Control (RBAC)
+Releases
+Review Workflows
+Single Sign-On (SSO)
+Users & Permissions
+Strapi plugins
+AI
+AI for content managers
+AI for developers
+Docs MCP server
+Content APIs
+Content APIs Introduction
+Document concept
+REST API
+Endpoints
+Parameters
+Filters
+Locale
+Status
+Publication filter
+Populate & Select
+Relations
+Sort & Pagination
+Upload files
+Interactive Query Builder
+Guides
+Strapi Client
+OpenAPI specification
+GraphQL API
+Document Service API
+Configurations
+Introduction
+Admin panel
+API calls
+CRON jobs
+Database
+Environment variables
+Features
+Middlewares
+Plugins and providers
+Server
+Guides
+Development
+Introduction
+Lifecycle functions
+Backend customization
+Admin panel customization
+Homepage customization
+Error handling
+strapi-utils
+Templates
+Testing
+TypeScript
+Introduction
+Configuration
+Development
+Guides
+Command Line Interface
+Strapi CLI
+Plugins development
+Marketplace
+Developing plugins
+Basics
+Admin Panel API
+Server API
+Guides
+Plugins extension
+Upgrades
+Upgrade tool reference
+v4 → v5
+Elegant ModeMarkdown ModeAI Mode
+Content APIs
+REST API
+Endpoints
+On this page
+REST API reference
+Copy Markdown
+Page summary:
+Strapi's REST API automatically generates endpoints for content-types to fetch, create, update, and delete documents using GET, POST, PUT, and DELETE methods, with support for filtering, sorting, field selection, and relation population.
+The REST API allows accessing the content-types through API endpoints. Strapi automatically creates API endpoints when a content-type is created. API parameters can be used when querying API endpoints to refine the results.
+This section of the documentation is for the REST API reference for content-types. We also have guides available for specific use cases.
+Prerequisites
+All content types are private by default and need to be either made public or queries need to be authenticated with the proper permissions. See the Quick Start Guide, the user guide for the Users & Permissions feature, and API tokens configuration documentation for more details.
+Note
+By default, the REST API responses only include top-level fields and does not populate any relations, media fields, components, or dynamic zones. Use the
+populate parameter to populate specific fields. Ensure that the find permission is given to the field(s) for the relation(s) you populate.
+Strapi Client
+The Strapi Client library simplifies interactions with your Strapi back end, providing a way to fetch, create, update, and delete content.
+Endpoints​
+For each Content-Type, the following endpoints are automatically generated:
+Plural API ID vs. Singular API ID:
+In the following tables:
+:singularApiId refers to the value of the "API ID (Singular)" field of the content-type,
+and
+:pluralApiId refers to the value of the "API ID (Plural)" field of the content-type.
+These values are defined when creating a content-type in the Content-Type Builder, and can be found while editing a content-type in the admin panel (see User Guide). For instance, by default, for an "Article" content-type:
+:singularApiId will be
+article
+:pluralApiId will be
+articles
+Collection type
+Single type
+MethodURLDescription
+GET
+/api/:pluralApiIdGet a list of documents
+POST
+/api/:pluralApiIdCreate a document
+GET
+/api/:pluralApiId/:documentIdGet a document
+PUT
+/api/:pluralApiId/:documentIdUpdate a document
+DELETE
+/api/:pluralApiId/:documentIdDelete a document
+MethodURLDescription
+GET
+/api/:singularApiIdGet a document
+PUT
+/api/:singularApiIdUpdate/Create a document
+DELETE
+/api/:singularApiIdDelete a document
+Upload API
+The Upload package (which powers the Media Library feature) has a specific API accessible through its
+/api/upload endpoints.
+Note
+Components don't have API endpoints.
+Requests and responses​
+Strapi 5 vs. Strapi v4
+Strapi 5's Content API includes 2 major differences with Strapi v4:
+The response format has been flattened, which means attributes are no longer nested in a
+data.attributes object and are directly accessible at the first level of the
+data object (e.g., a content-type's "title" attribute is accessed with
+data.title).
+Strapi 5 now uses documents
+A document in Strapi 5 is an API-only concept which represents all the variations of content (for different locales, for the draft and published versions) for a given entry found in the Content Manager.
+More details can be found in the Documents introduction. and documents are accessed by their
+documentId (see breaking change entry for details)
+Requests return a response as an object which usually includes the following keys:
+data: the response data itself, which could be:
+a single document, as an object with the following keys:
+id (integer)
+documentId (string), which is the unique identifier to use when querying a given document,
+the attributes (each attribute's type depends on the attribute, see models attributes documentation for details)
+meta (object)
+a list of documents, as an array of objects
+a custom response
+meta (object): information about pagination, publication state, available locales, etc.
+error (object, optional): information about any error thrown by the request
+Note
+Some plugins (including Users & Permissions and Upload) may not follow this response format.
+The following sections detail each generated endpoint.
+Get documents​
+Tip: Strapi 5 vs. Strapi 4
+In Strapi 5 the response format has been flattened, and attributes are directly accessible from the
+data object instead of being nested in
+data.attributes.
+You can pass an optional header while you're migrating to Strapi 5 (see the related breaking change).
+GET/api/:pluralApiId
+List documents
+Returns a paginated list of documents. Supports filtering, sorting, field selection, and relation population.
+Query Parameters
+sort
+string | string[]optional
+Sort by field. Use
+field:asc or
+field:desc
+filters
+objectoptional
+Filter with operators:
+$eq,
+$contains,
+$gt,
+$lt. See filtering.
+populate
+string | objectoptional
+Relations and components to include. Use
+* for all. See populate.
+fields
+string[]optional
+Select specific fields to return. See field selection.
+pagination[page]
+integeroptional
+Page number. Default:
+1
+pagination[pageSize]
+integeroptional
+Items per page. Default:
+25. The maximum is set by
+api.rest.maxLimit (see pagination).
+locale
+stringoptional
+Locale of the documents to fetch. See locale.
+status
+stringoptional
+published or
+draft. See status.
+publicationFilter
+stringoptional
+Query documents by the relationship between their draft and published versions. See publicationFilter.
+cURL
+JavaScript
+terminal
+Ask AI
+curl 'http://localhost:1337/api/restaurants' \
+-H 'Authorization: Bearer <token>'
+const response = await fetch(
+'http://localhost:1337/api/restaurants',
+{
+headers: {
+Authorization: 'Bearer <token>',
+},
+}
+);
+const data = await response.json();
+200 OK
+{
+"data": [
+{
+"id": 2,
+"documentId": "hgv1vny5cebq2l3czil1rpb3",
+"Name": "BMK Paris Bamako",
+"Description": null,
+"createdAt": "2024-03-06T13:42:05.098Z",
+"updatedAt": "2024-03-06T13:42:05.098Z",
+"publishedAt": "2024-03-06T13:42:05.103Z",
+"locale": "en"
+},
+{
+"id": 4,
+"documentId": "znrlzntu9ei5onjvwfaalu2v",
+"Name": "Biscotte Restaurant",
+"createdAt": "2024-03-06T13:43:30.172Z",
+"updatedAt": "2024-03-06T13:43:30.172Z",
+"publishedAt": "2024-03-06T13:43:30.175Z",
+"locale": "en"
+}
+],
+"meta": {
+"pagination": { "page": 1, "pageSize": 25, "pageCount": 1, "total": 2 }
+}
+}
+Get a document​
+Strapi 5 vs. Strapi v4
+In Strapi 5, a specific document is reached by its
+documentId.
+GET/api/:pluralApiId/:documentId
+Get a document
+Returns a single document by its documentId. Supports field selection and relation population.
+Path Parameters
+pluralApiId
+stringrequired
+Plural API ID of the content-type (e.g.
+restaurants)
+documentId
+stringrequired
+Unique document identifier
+cURL
+JavaScript
+terminal
+Ask AI
+curl 'http://localhost:1337/api/restaurants/znrlzntu9ei5onjvwfaalu2v' \
+-H 'Authorization: Bearer <token>'
+const response = await fetch(
+'http://localhost:1337/api/restaurants/znrlzntu9ei5onjvwfaalu2v',
+{
+headers: {
+Authorization: 'Bearer <token>',
+},
+}
+);
+const data = await response.json();
+200 OK
+404 Not Found
+200 OK
+{
+"data": {
+"id": 6,
+"documentId": "znrlzntu9ei5onjvwfaalu2v",
+"Name": "Biscotte Restaurant",
+"Description": [
+{
+"type": "paragraph",
+"children": [{ "type": "text", "text": "Welcome to Biscotte restaurant! Restaurant Biscotte offers a cuisine based on fresh, quality products." }]
+}
+],
+"createdAt": "2024-02-27T10:19:04.953Z",
+"updatedAt": "2024-03-05T15:52:05.591Z",
+"publishedAt": "2024-03-05T15:52:05.600Z",
+"locale": "en"
+},
+"meta": {}
+}
+404 Not Found
+{
+"data": null,
+"error": {
+"status": 404,
+"name": "NotFoundError",
+"message": "Not Found",
+"details": {}
+}
+}
+Create a document​
+If the Internationalization (i18n) feature is installed, it's possible to use POST requests to the REST API to create localized documents.
+Note
+While creating a document, you can define its relations and their order (see Managing relations through the REST API for more details).
+Draft & Publish
+With Draft & Publish enabled, a POST request without a
+status parameter creates the document and publishes it immediately. Pass
+?status=draft to create it as a draft (see REST API:
+status).
+Dynamic zones
+Each entry you send for a dynamic zone must include
+__component with the target component's UID (for example
+shared.media). Strapi uses that field to pick the component schema when you create or update items in the zone; without it, writes can fail validation or return success without changing data. Use the UID shown in the Content-Type Builder for each component in the zone.
+POST/api/:pluralApiId
+Create a document
+Creates a new document and returns it. Send field values inside a data object in the request body.
+Parameters
+data
+objectrequired
+Body parameter: object containing the field values for the new document
+status
+stringoptional
+Query parameter:
+draft to create the document as a draft, or
+published to publish it immediately. Default:
+published. See status.
+cURL
+JavaScript
+terminal
+Ask AI
+curl -X POST \
+'http://localhost:1337/api/restaurants' \
+-H 'Authorization: Bearer <token>' \
+-H 'Content-Type: application/json' \
+-d '{
+"data": {
+"Name": "Restaurant D",
+"Description": [
+{
+"type": "paragraph",
+"children": [{ "type": "text", "text": "A very short description goes here." }]
+}
+]
+}
+}'
+const response = await fetch(
+'http://localhost:1337/api/restaurants',
+{
+method: 'POST',
+headers: {
+Authorization: 'Bearer <token>',
+'Content-Type': 'application/json',
+},
+body: JSON.stringify({
+data: {
+Name: 'Restaurant D',
+Description: [
+{
+type: 'paragraph',
+children: [{ type: 'text', text: 'A very short description goes here.' }],
+},
+],
+},
+}),
+}
+);
+const data = await response.json();
+201 Created
+{
+"data": {
+"documentId": "bw64dnu97i56nq85106yt4du",
+"Name": "Restaurant D",
+"Description": [
+{
+"type": "paragraph",
+"children": [{ "type": "text", "text": "A very short description goes here." }]
+}
+],
+"createdAt": "2024-03-05T16:44:47.689Z",
+"updatedAt": "2024-03-05T16:44:47.689Z",
+"publishedAt": "2024-03-05T16:44:47.687Z",
+"locale": "en"
+},
+"meta": {}
+}
+Update a document​
+Note
+Even with the Internationalization (i18n) feature installed, it's currently not possible to update the locale of a document.
+While updating a document, you can define its relations and their order (see Managing relations through the REST API for more details).
+Draft & Publish
+With Draft & Publish enabled, a PUT request without a
+status parameter publishes the changes immediately. Pass
+?status=draft to update the draft only (see REST API:
+status). This also applies to single types, where
+PUT /api/:singularApiId publishes the changes unless you pass
+?status=draft.
+Dynamic zones
+Each entry you send for a dynamic zone must include
+__component with the target component's UID (for example
+shared.media). Strapi uses that field to pick the component schema when you create or update items in the zone; without it, writes can fail validation or return success without changing data. Use the UID shown in the Content-Type Builder for each component in the zone.
+PUT/api/:pluralApiId/:documentId
+Update a document
+Partially updates a document by documentId and returns its value. Send a null value to clear fields.
+Parameters
+data
+objectrequired
+Body parameter: object containing the field values to update
+status
+stringoptional
+Query parameter:
+draft to update the draft only, or
+published to publish the changes immediately. Default:
+published. See status.
+cURL
+JavaScript
+terminal
+Ask AI
+curl -X PUT \
+'http://localhost:1337/api/restaurants/hgv1vny5cebq2l3czil1rpb3' \
+-H 'Authorization: Bearer <token>' \
+-H 'Content-Type: application/json' \
+-d '{
+"data": {
+"Name": "BMK Paris Bamako",
+"Description": [
+{
+"type": "paragraph",
+"children": [{ "type": "text", "text": "A very short description goes here." }]
+}
+]
+}
+}'
+const response = await fetch(
+'http://localhost:1337/api/restaurants/hgv1vny5cebq2l3czil1rpb3',
+{
+method: 'PUT',
+headers: {
+Authorization: 'Bearer <token>',
+'Content-Type': 'application/json',
+},
+body: JSON.stringify({
+data: {
+Name: 'BMK Paris Bamako',
+Description: [
+{
+type: 'paragraph',
+children: [{ type: 'text', text: 'A very short description goes here.' }],
+},
+],
+},
+}),
+}
+);
+const data = await response.json();
+200 OK
+{
+"data": {
+"id": 9,
+"documentId": "hgv1vny5cebq2l3czil1rpb3",
+"Name": "BMK Paris Bamako",
+"Description": [
+{
+"type": "paragraph",
+"children": [{ "type": "text", "text": "A very short description goes here." }]
+}
+],
+"createdAt": "2024-03-06T13:42:05.098Z",
+"updatedAt": "2024-03-06T14:16:56.883Z",
+"publishedAt": "2024-03-06T14:16:56.895Z",
+"locale": "en"
+},
+"meta": {}
+}
+Delete a document​
+DEL/api/:pluralApiId/:documentId
+Delete a document
+Permanently deletes a document by documentId. This action is irreversible.
+Path Parameters
+pluralApiId
+stringrequired
+Plural API ID (e.g.
+restaurants)
+documentId
+stringrequired
+Document ID of the entry to delete
+cURL
+JavaScript
+terminal
+Ask AI
+curl -X DELETE \
+'http://localhost:1337/api/restaurants/bw64dnu97i56nq85106yt4du' \
+-H 'Authorization: Bearer <token>'
+const response = await fetch(
+'http://localhost:1337/api/restaurants/bw64dnu97i56nq85106yt4du',
+{
+method: 'DELETE',
+headers: {
+Authorization: 'Bearer <token>',
+},
+}
+);
+204 No Content
+DELETE requests only send a
+204 HTTP status code on success and do not return any data in the response body.
+Performance best practices
+For production applications, be intentional about data fetching: use explicit population, limit population depth, and centralize population logic in route middlewares. See Building High-Performance Strapi Applications on the Strapi blog for a comprehensive guide.
+Was this page helpful?
+Tags:
+API
+Content API
+documentId
+Documents
+plural API ID
+REST API
+singular API ID
+Contribute to this page
+Previous
+Document concept
+Next
+Parameters
+On this page▶
+Endpoints
+Requests and responses
+Get documents
+Get a document
+Create a document
+Update a document
+Delete a document
+Contribute to this page
+Back
+Strapi Docs AI Assistant
+To get back to elegant or markdown mode, click the in the upper right corner.To get back to elegant or markdown mode, tap Back in the upper left corner.
+No summary available for this page.
+Updates & Support
+What's new?
+Release notes
+FAQ
+Community & Support
+Usage information
+Additional resources
+v4 Docs
+Contributor Docs
+Strapi Design System
+v3 Docs (unsupported)
+Community
+Discord
+Twitter
+Stack Overflow
+Docs contribution program
+More
+Blog
+GitHub
+Strapi.io

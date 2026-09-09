@@ -1,0 +1,20 @@
+{
+  "at": "2026-09-09T16:09:17.284245+00:00",
+  "reason": "All named baseline trials independently assessed; recoverable dependencies only removed to preserve inode budget for candidates. Sources, locks, build artifacts, evidence and DB data retained.",
+  "removed": [
+    "/tmp/framework-platforms-20260909/trials/baseline/D-docs/app/node_modules",
+    "/tmp/framework-platforms-20260909/trials/baseline/D-legacy/app/node_modules",
+    "/tmp/framework-platforms-20260909/trials/baseline/D-runtime/app/node_modules",
+    "/tmp/framework-platforms-20260909/trials/baseline/E-legacy/app/node_modules",
+    "/tmp/framework-platforms-20260909/trials/baseline/E-runtime/app/node_modules",
+    "/tmp/framework-platforms-20260909/trials/baseline/H-workers/app/node_modules",
+    "/tmp/framework-platforms-20260909/trials/baseline/HS-runtime/app/node_modules",
+    "/tmp/framework-platforms-20260909/trials/baseline/HS-tech/app/node_modules",
+    "/tmp/framework-platforms-20260909/trials/baseline/M-runtime/app/node_modules",
+    "/tmp/framework-platforms-20260909/trials/baseline/N-legacy/app/node_modules",
+    "/tmp/framework-platforms-20260909/trials/baseline/N-runtime/app/node_modules",
+    "/tmp/framework-platforms-20260909/trials/baseline/P-core/app/node_modules",
+    "/tmp/framework-platforms-20260909/trials/baseline/S-services/app/node_modules"
+  ],
+  "freeInodes": 451593
+}

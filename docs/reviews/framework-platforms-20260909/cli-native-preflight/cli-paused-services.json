@@ -1,0 +1,42 @@
+[
+  {
+    "name": "/fp20260909-auth",
+    "id": "05ad1fad0ca0973e48e115329aaeccce551a76638029dd019337ccc7b44709a1",
+    "running": false
+  },
+  {
+    "name": "/fp20260909-functions",
+    "id": "94fb3d3749ab614fc8d0da45502b1a63b31be8760f03f5fb08f9292807bc5300",
+    "running": false
+  },
+  {
+    "name": "/fp20260909-storage",
+    "id": "f7c1e8398c7747a68c63a1651c292f708255a201db3606648defc244ad07b912",
+    "running": false
+  },
+  {
+    "name": "/fp20260909-api-gw",
+    "id": "78e58060bad40068c25aeeaab434345d013472b3ae3ac43e58f4b9af53358645",
+    "running": false
+  },
+  {
+    "name": "/fp20260909-realtime",
+    "id": "2d8e7237145736262bfcf937a6db7d9d48308f7c940b5a6624326bedd689ae02",
+    "running": false
+  },
+  {
+    "name": "/fp20260909-rest",
+    "id": "571eca842c9eee451268bd2306dde858fdb7136c80b9f529ca7370ff6464fc55",
+    "running": false
+  },
+  {
+    "name": "/fp20260909-db",
+    "id": "3a848fa9be18ef1cd117f2698cee491e3252fce7cb1c38cb8dd342f313ec5787",
+    "running": false
+  },
+  {
+    "name": "/fp20260909-imgproxy",
+    "id": "6c28452291288ad394150f0221ea5eb9ff00c249e51c1de9a0cc10e41f84031e",
+    "running": false
+  }
+]

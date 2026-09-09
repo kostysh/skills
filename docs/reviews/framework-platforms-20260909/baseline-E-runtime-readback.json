@@ -1,0 +1,860 @@
+{
+  "case": "E-runtime",
+  "variant": "baseline",
+  "assessor": "/root/baseline_next_electron_docs",
+  "checked_at": "2026-09-09T13:16:42.744841+00:00",
+  "algorithm": "sha256",
+  "final_source_artifact_files": [
+    {
+      "file": "app/src/main/index.ts",
+      "expected": "3592f830bfe6bd9d9b188bf0214e4e57238535230fdddda34162663575c88de1",
+      "actual": "3592f830bfe6bd9d9b188bf0214e4e57238535230fdddda34162663575c88de1",
+      "matches": true
+    },
+    {
+      "file": "app/src/preload/index.ts",
+      "expected": "19bd8e589a271bdcdcaced875f578c5030f7a0f9aefe2684a7eab1a57ecec3f6",
+      "actual": "19bd8e589a271bdcdcaced875f578c5030f7a0f9aefe2684a7eab1a57ecec3f6",
+      "matches": true
+    },
+    {
+      "file": "app/src/renderer/index.html",
+      "expected": "382e01deed996660fdca134c0c70bfd992b224fb2a50e19f2cf8bb326b5b3f72",
+      "actual": "382e01deed996660fdca134c0c70bfd992b224fb2a50e19f2cf8bb326b5b3f72",
+      "matches": true
+    },
+    {
+      "file": "app/src/renderer/src.tsx",
+      "expected": "7c88f6318e7b7b415e4d9317ccb5e2e0e76b834ca1e03a6c9f25a585f8009eb8",
+      "actual": "7c88f6318e7b7b415e4d9317ccb5e2e0e76b834ca1e03a6c9f25a585f8009eb8",
+      "matches": true
+    },
+    {
+      "file": "app/src/shared/desktop.ts",
+      "expected": "72a6f46e77e1dcc80832e2deb78ec5a07e43b696bcaecc06dbb9df78413fc7ea",
+      "actual": "72a6f46e77e1dcc80832e2deb78ec5a07e43b696bcaecc06dbb9df78413fc7ea",
+      "matches": true
+    },
+    {
+      "file": "app/package.json",
+      "expected": "3483cd4f154f18e4c7d0e956082928121ebe4116b60805a80b858ed25e016ef9",
+      "actual": "3483cd4f154f18e4c7d0e956082928121ebe4116b60805a80b858ed25e016ef9",
+      "matches": true
+    },
+    {
+      "file": "app/package-lock.json",
+      "expected": "998420a8c68c41cee429814097538044cd66524d1cba628f931a8f9d40c6618c",
+      "actual": "998420a8c68c41cee429814097538044cd66524d1cba628f931a8f9d40c6618c",
+      "matches": true
+    },
+    {
+      "file": "app/tsconfig.json",
+      "expected": "d943d1b7f372c22f5fae7f68893abfb5f456c8778cb4d56c47691b8348ba7b12",
+      "actual": "d943d1b7f372c22f5fae7f68893abfb5f456c8778cb4d56c47691b8348ba7b12",
+      "matches": true
+    },
+    {
+      "file": "app/forge.config.cjs",
+      "expected": "47e587368a7dc3529c91a3476888964be7f1821f746882a13a7a2a4aa8c6165a",
+      "actual": "47e587368a7dc3529c91a3476888964be7f1821f746882a13a7a2a4aa8c6165a",
+      "matches": true
+    },
+    {
+      "file": "app/electron.vite.config.ts",
+      "expected": "f6591e7308ec03f2a84806d1c2f6972fb08462fdaa53eab6b629848cc27b3c65",
+      "actual": "f6591e7308ec03f2a84806d1c2f6972fb08462fdaa53eab6b629848cc27b3c65",
+      "matches": true
+    },
+    {
+      "file": "app/artifacts/framework-electron-fixture-linux-x64/resources/app.asar",
+      "expected": "7ded356a3f81943674a8e373caba65763e4dad62e950853d905d35e343169f14",
+      "actual": "7ded356a3f81943674a8e373caba65763e4dad62e950853d905d35e343169f14",
+      "matches": true
+    },
+    {
+      "file": "app/artifacts/framework-electron-fixture-linux-x64/framework-electron-fixture",
+      "expected": "9578f5ece2da6cbba4b5d0fb7e7adaaf8f07d44684bddfdab92024c84d80d2f3",
+      "actual": "9578f5ece2da6cbba4b5d0fb7e7adaaf8f07d44684bddfdab92024c84d80d2f3",
+      "matches": true
+    }
+  ],
+  "frozen_inputs": [
+    {
+      "file": "task.txt",
+      "expected": "4fbbe699bfaebaf41bd10541dfa6fbecbea4817284ba37c941113bd19a541982",
+      "actual": "4fbbe699bfaebaf41bd10541dfa6fbecbea4817284ba37c941113bd19a541982",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/package.json",
+      "expected": "3483cd4f154f18e4c7d0e956082928121ebe4116b60805a80b858ed25e016ef9",
+      "actual": "3483cd4f154f18e4c7d0e956082928121ebe4116b60805a80b858ed25e016ef9",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/electron.vite.config.ts",
+      "expected": "f6591e7308ec03f2a84806d1c2f6972fb08462fdaa53eab6b629848cc27b3c65",
+      "actual": "f6591e7308ec03f2a84806d1c2f6972fb08462fdaa53eab6b629848cc27b3c65",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/forge.config.cjs",
+      "expected": "320d7ebcb1ac24860c024c5d0413256a32567c623e3804c07ecc475acdf5aa55",
+      "actual": "47e587368a7dc3529c91a3476888964be7f1821f746882a13a7a2a4aa8c6165a",
+      "matches": false,
+      "classification": "permitted implementation change"
+    },
+    {
+      "file": "app/tsconfig.json",
+      "expected": "d943d1b7f372c22f5fae7f68893abfb5f456c8778cb4d56c47691b8348ba7b12",
+      "actual": "d943d1b7f372c22f5fae7f68893abfb5f456c8778cb4d56c47691b8348ba7b12",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/package-lock.json",
+      "expected": "998420a8c68c41cee429814097538044cd66524d1cba628f931a8f9d40c6618c",
+      "actual": "998420a8c68c41cee429814097538044cd66524d1cba628f931a8f9d40c6618c",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/REQUIREMENTS.md",
+      "expected": "c81eabc321a3bc4ac8e3e630f0bc0b3bfa4076cc0413f9751e8ed2c5f5c1b4cd",
+      "actual": "c81eabc321a3bc4ac8e3e630f0bc0b3bfa4076cc0413f9751e8ed2c5f5c1b4cd",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/src/main/index.ts",
+      "expected": "4c1b2548fd051f9898f3e5c632acf5c6618313f14037ee84ca3c81681a225859",
+      "actual": "3592f830bfe6bd9d9b188bf0214e4e57238535230fdddda34162663575c88de1",
+      "matches": false,
+      "classification": "permitted implementation change"
+    },
+    {
+      "file": "app/src/preload/index.ts",
+      "expected": "7992a39d6cde5e050eb78461a8bf9ad986175a94826e835c110b3967290bd249",
+      "actual": "19bd8e589a271bdcdcaced875f578c5030f7a0f9aefe2684a7eab1a57ecec3f6",
+      "matches": false,
+      "classification": "permitted implementation change"
+    },
+    {
+      "file": "app/src/renderer/index.html",
+      "expected": "42bf2de5c00a03db1d7fad06180857cc59911b0e215857789f956efc3628bdec",
+      "actual": "382e01deed996660fdca134c0c70bfd992b224fb2a50e19f2cf8bb326b5b3f72",
+      "matches": false,
+      "classification": "permitted implementation change"
+    },
+    {
+      "file": "app/src/renderer/src.tsx",
+      "expected": "4417f3aaea45833d76bebe55c7b00d9af1d5057b1aba3bdce9a5bd8a60d822a7",
+      "actual": "7c88f6318e7b7b415e4d9317ccb5e2e0e76b834ca1e03a6c9f25a585f8009eb8",
+      "matches": false,
+      "classification": "permitted implementation change"
+    },
+    {
+      "file": "skills/react-components-engineer/SKILL.md",
+      "expected": "54fec3b0548ca36ea157c32dcc3a3ec710b5ce0f7f0960fab7798ece27b83009",
+      "actual": "54fec3b0548ca36ea157c32dcc3a3ec710b5ce0f7f0960fab7798ece27b83009",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/node-engineer/SKILL.md",
+      "expected": "073a05ee05c1ef9db06d375ec9412fd2f8308a3d0ae2e028ed8df4f45eb55eef",
+      "actual": "073a05ee05c1ef9db06d375ec9412fd2f8308a3d0ae2e028ed8df4f45eb55eef",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-test-engineer/SKILL.md",
+      "expected": "44dbdb487ed12ae2329f06806e935914871aed61f69a4de8e26da1ead83df4f8",
+      "actual": "44dbdb487ed12ae2329f06806e935914871aed61f69a4de8e26da1ead83df4f8",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/SKILL.md",
+      "expected": "8dccdca0e96b7c9f7caf51baaab9fb909df0bb01345a0ae7fac7c444bb597e86",
+      "actual": "8dccdca0e96b7c9f7caf51baaab9fb909df0bb01345a0ae7fac7c444bb597e86",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/SKILL.md",
+      "expected": "49cbaedf44923aa52942c26e9f32f704b750396dc91d4a293762ddaeec9eb7b2",
+      "actual": "49cbaedf44923aa52942c26e9f32f704b750396dc91d4a293762ddaeec9eb7b2",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/agents/openai.yaml",
+      "expected": "9ccbb65808889c4fb29b3909b25aaa4e3032288030a750c9d246af691e146ed1",
+      "actual": "9ccbb65808889c4fb29b3909b25aaa4e3032288030a750c9d246af691e146ed1",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/references/data-storage-native.md",
+      "expected": "4cb5757b54216bd7dd4f64778e0f74397817a41c544a19268f1e938ee26aeb08",
+      "actual": "4cb5757b54216bd7dd4f64778e0f74397817a41c544a19268f1e938ee26aeb08",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/references/build-process.md",
+      "expected": "51d89e99bd66ba517e51d43def578d1b3b089a84a13b19298d7fbbbed01d412d",
+      "actual": "51d89e99bd66ba517e51d43def578d1b3b089a84a13b19298d7fbbbed01d412d",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/references/tooling-project-structure.md",
+      "expected": "fa53e72f8a7a41cb3631fefc149e55fb8a4d7fc39d31e7adea8ad30d550f386b",
+      "actual": "fa53e72f8a7a41cb3631fefc149e55fb8a4d7fc39d31e7adea8ad30d550f386b",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/references/architecture.md",
+      "expected": "2f403b1fefa9a9bf692330bcf902bac4272d2873dfeba727e04ee2509c8648aa",
+      "actual": "2f403b1fefa9a9bf692330bcf902bac4272d2873dfeba727e04ee2509c8648aa",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/references/review-playbooks.md",
+      "expected": "f5215ea6a813076ad6c44d0d0458f3f0f8afe9b0134d45b881a142a55519ec35",
+      "actual": "f5215ea6a813076ad6c44d0d0458f3f0f8afe9b0134d45b881a142a55519ec35",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/references/security-ipc-preload.md",
+      "expected": "1bccaeb09e9ea3c196d878aff88f8a6de0a338b681298842988072cd58134dfc",
+      "actual": "1bccaeb09e9ea3c196d878aff88f8a6de0a338b681298842988072cd58134dfc",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/references/native-os-integration.md",
+      "expected": "d78547367bcfd0a1dccbadd7480e8941fb98bc142c881b607ad38b64f6a4340b",
+      "actual": "d78547367bcfd0a1dccbadd7480e8941fb98bc142c881b607ad38b64f6a4340b",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/references/renderer-integration.md",
+      "expected": "6b0f11b08f6bd86c1c67d54b40247c9062b23a1904341c45ebbdcfc4e3525e32",
+      "actual": "6b0f11b08f6bd86c1c67d54b40247c9062b23a1904341c45ebbdcfc4e3525e32",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/references/testing-observability.md",
+      "expected": "0b6d6e43a6e9f32c93def5030687f03c3ec8ca014eafff218625328de81f7c69",
+      "actual": "0b6d6e43a6e9f32c93def5030687f03c3ec8ca014eafff218625328de81f7c69",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/references/typescript-in-electron.md",
+      "expected": "a6516798f4e45777e757aeb535a46da1588150bbbf0f94f2f92e1ba293c5d330",
+      "actual": "a6516798f4e45777e757aeb535a46da1588150bbbf0f94f2f92e1ba293c5d330",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/references/source-protection.md",
+      "expected": "8439e0ce6939ca2ea17e80be4ae740b2aa1ac58a2731f86c8fa97a6c4fd066d2",
+      "actual": "8439e0ce6939ca2ea17e80be4ae740b2aa1ac58a2731f86c8fa97a6c4fd066d2",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/references/packaging-release-updates.md",
+      "expected": "11310b87a8726e2159e8bdb450f69e07d6e62c2a81ac597a3e50318ca28d845b",
+      "actual": "11310b87a8726e2159e8bdb450f69e07d6e62c2a81ac597a3e50318ca28d845b",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/agents/openai.yaml",
+      "expected": "372a72c8d2943c55ba133bbda5e0ed8f46cdfd8f8d4940418beefcbaf62484ab",
+      "actual": "372a72c8d2943c55ba133bbda5e0ed8f46cdfd8f8d4940418beefcbaf62484ab",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/monorepo.md",
+      "expected": "a725bf2737a1c0716b2c8f9f2a6d6d79cc0e14a401a06b7de5ed9744166fb5e4",
+      "actual": "a725bf2737a1c0716b2c8f9f2a6d6d79cc0e14a401a06b7de5ed9744166fb5e4",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/generics.md",
+      "expected": "7201b89492c473093a6818db8bcf0b26e445d2f0689eb84916ff185503c3c4c4",
+      "actual": "7201b89492c473093a6818db8bcf0b26e445d2f0689eb84916ff185503c3c4c4",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/practices.md",
+      "expected": "51f765dcd0f2e1732e00d83504a4a832f177437f96aeed0d992a634e949c827a",
+      "actual": "51f765dcd0f2e1732e00d83504a4a832f177437f96aeed0d992a634e949c827a",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/type-debugging.md",
+      "expected": "2fb09da3deb9e434b50336644da63a6539503d30f05a0304fa7c9a78d7690304",
+      "actual": "2fb09da3deb9e434b50336644da63a6539503d30f05a0304fa7c9a78d7690304",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/toolchain.md",
+      "expected": "313bb758492c473f47b7d1670fd01ecb605512296ab98edcf36fe59914794771",
+      "actual": "313bb758492c473f47b7d1670fd01ecb605512296ab98edcf36fe59914794771",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/overloads.md",
+      "expected": "39494766556c8c7aa46c2aa16aa20718aedcaf7a4ec8cf0a28443324d3c5936b",
+      "actual": "39494766556c8c7aa46c2aa16aa20718aedcaf7a4ec8cf0a28443324d3c5936b",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/patterns.md",
+      "expected": "8636aec6c320d894a10ada0db3f452b7d31e9dc608d00a6e0a57e1b5c3aa1f57",
+      "actual": "8636aec6c320d894a10ada0db3f452b7d31e9dc608d00a6e0a57e1b5c3aa1f57",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/type-system.md",
+      "expected": "451bec02f0fe0cad7a3967b6d4b8388e98600c4655be7fee51b971f1db0f40e9",
+      "actual": "451bec02f0fe0cad7a3967b6d4b8388e98600c4655be7fee51b971f1db0f40e9",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/runtime-derived-types.md",
+      "expected": "1e1a327d0a2e59792ec25aa5c69bb2cd313273ef2a9d7730014700303e9e4aa0",
+      "actual": "1e1a327d0a2e59792ec25aa5c69bb2cd313273ef2a9d7730014700303e9e4aa0",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-test-engineer/agents/openai.yaml",
+      "expected": "9fc7def9a8ab00f4acd2d5dfd8c166e5fcd853de375a8d620b24660ea1512a04",
+      "actual": "9fc7def9a8ab00f4acd2d5dfd8c166e5fcd853de375a8d620b24660ea1512a04",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-test-engineer/references/tdd.md",
+      "expected": "029f55af01dd0a9efb77e71693c3503a89bdd8a75367454e02a93712ed18b957",
+      "actual": "029f55af01dd0a9efb77e71693c3503a89bdd8a75367454e02a93712ed18b957",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-test-engineer/references/testing-anti-patterns.md",
+      "expected": "fa8919e363c264db7d14a3cd0dc56ccf85c114c2080ef5a0c22c6b36bb7dd0b6",
+      "actual": "fa8919e363c264db7d14a3cd0dc56ccf85c114c2080ef5a0c22c6b36bb7dd0b6",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-test-engineer/references/react-vitest.md",
+      "expected": "f76b527d1fa2b68c38b4a0a51fd5c4c88e5a2a32ca65ce1ad86fd41fbb8669b5",
+      "actual": "f76b527d1fa2b68c38b4a0a51fd5c4c88e5a2a32ca65ce1ad86fd41fbb8669b5",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-test-engineer/references/testing.md",
+      "expected": "11a86f47ef1a6ca14a12d9fad6a58d2dd9c8e2e3d716e48ce1cb0a7ccffae476",
+      "actual": "11a86f47ef1a6ca14a12d9fad6a58d2dd9c8e2e3d716e48ce1cb0a7ccffae476",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/node-engineer/agents/openai.yaml",
+      "expected": "b41169df35aa53b56726f39c42a18008af7066d2a64269f1a8213d8309fe66df",
+      "actual": "b41169df35aa53b56726f39c42a18008af7066d2a64269f1a8213d8309fe66df",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/node-engineer/references/debugging-profiling.md",
+      "expected": "f20e33fa2ce9d7cf1c3a9c26c1552fcff4df75bc7c2527e1d56f2298be3a1cd3",
+      "actual": "f20e33fa2ce9d7cf1c3a9c26c1552fcff4df75bc7c2527e1d56f2298be3a1cd3",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/node-engineer/references/operations.md",
+      "expected": "d6f741c8a9f74c66d40c82516839a09c7f769d66d46fc89ea446f9f608e6fb95",
+      "actual": "d6f741c8a9f74c66d40c82516839a09c7f769d66d46fc89ea446f9f608e6fb95",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/node-engineer/references/streams-caching.md",
+      "expected": "1a24ea44947df1ed6826f86ffba0ae7f39670202467d9487e0570cc69b548d00",
+      "actual": "1a24ea44947df1ed6826f86ffba0ae7f39670202467d9487e0570cc69b548d00",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/node-engineer/references/runtime-typescript.md",
+      "expected": "c255ca59ea91b9144baf7a624ffb84a717aafdb83f90156fbc96eba2e7c22e58",
+      "actual": "c255ca59ea91b9144baf7a624ffb84a717aafdb83f90156fbc96eba2e7c22e58",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/react-components-engineer/agents/openai.yaml",
+      "expected": "00053143793ac9ff6808e29f0548f0eb66f75ee2c1d6d14ac8fbeb66ae56a942",
+      "actual": "00053143793ac9ff6808e29f0548f0eb66f75ee2c1d6d14ac8fbeb66ae56a942",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/react-components-engineer/references/bulletproof-patterns.md",
+      "expected": "31ee8c6f9044f908c682b2f7c47c5c9ab89781dcbd992309d8d772e12cb0b795",
+      "actual": "31ee8c6f9044f908c682b2f7c47c5c9ab89781dcbd992309d8d772e12cb0b795",
+      "matches": true,
+      "classification": "immutable input"
+    }
+  ],
+  "unexpected_immutable_input_mismatches": [],
+  "canonical_electron_skill_content_identity": [
+    {
+      "file": "skills/electron-engineer/SKILL.md",
+      "frozen": "49cbaedf44923aa52942c26e9f32f704b750396dc91d4a293762ddaeec9eb7b2",
+      "canonical_actual": "49cbaedf44923aa52942c26e9f32f704b750396dc91d4a293762ddaeec9eb7b2",
+      "matches_frozen": true
+    },
+    {
+      "file": "skills/electron-engineer/agents/openai.yaml",
+      "frozen": "9ccbb65808889c4fb29b3909b25aaa4e3032288030a750c9d246af691e146ed1",
+      "canonical_actual": "9ccbb65808889c4fb29b3909b25aaa4e3032288030a750c9d246af691e146ed1",
+      "matches_frozen": true
+    },
+    {
+      "file": "skills/electron-engineer/references/data-storage-native.md",
+      "frozen": "4cb5757b54216bd7dd4f64778e0f74397817a41c544a19268f1e938ee26aeb08",
+      "canonical_actual": "4cb5757b54216bd7dd4f64778e0f74397817a41c544a19268f1e938ee26aeb08",
+      "matches_frozen": true
+    },
+    {
+      "file": "skills/electron-engineer/references/build-process.md",
+      "frozen": "51d89e99bd66ba517e51d43def578d1b3b089a84a13b19298d7fbbbed01d412d",
+      "canonical_actual": "51d89e99bd66ba517e51d43def578d1b3b089a84a13b19298d7fbbbed01d412d",
+      "matches_frozen": true
+    },
+    {
+      "file": "skills/electron-engineer/references/tooling-project-structure.md",
+      "frozen": "fa53e72f8a7a41cb3631fefc149e55fb8a4d7fc39d31e7adea8ad30d550f386b",
+      "canonical_actual": "fa53e72f8a7a41cb3631fefc149e55fb8a4d7fc39d31e7adea8ad30d550f386b",
+      "matches_frozen": true
+    },
+    {
+      "file": "skills/electron-engineer/references/architecture.md",
+      "frozen": "2f403b1fefa9a9bf692330bcf902bac4272d2873dfeba727e04ee2509c8648aa",
+      "canonical_actual": "2f403b1fefa9a9bf692330bcf902bac4272d2873dfeba727e04ee2509c8648aa",
+      "matches_frozen": true
+    },
+    {
+      "file": "skills/electron-engineer/references/review-playbooks.md",
+      "frozen": "f5215ea6a813076ad6c44d0d0458f3f0f8afe9b0134d45b881a142a55519ec35",
+      "canonical_actual": "f5215ea6a813076ad6c44d0d0458f3f0f8afe9b0134d45b881a142a55519ec35",
+      "matches_frozen": true
+    },
+    {
+      "file": "skills/electron-engineer/references/security-ipc-preload.md",
+      "frozen": "1bccaeb09e9ea3c196d878aff88f8a6de0a338b681298842988072cd58134dfc",
+      "canonical_actual": "1bccaeb09e9ea3c196d878aff88f8a6de0a338b681298842988072cd58134dfc",
+      "matches_frozen": true
+    },
+    {
+      "file": "skills/electron-engineer/references/native-os-integration.md",
+      "frozen": "d78547367bcfd0a1dccbadd7480e8941fb98bc142c881b607ad38b64f6a4340b",
+      "canonical_actual": "d78547367bcfd0a1dccbadd7480e8941fb98bc142c881b607ad38b64f6a4340b",
+      "matches_frozen": true
+    },
+    {
+      "file": "skills/electron-engineer/references/renderer-integration.md",
+      "frozen": "6b0f11b08f6bd86c1c67d54b40247c9062b23a1904341c45ebbdcfc4e3525e32",
+      "canonical_actual": "6b0f11b08f6bd86c1c67d54b40247c9062b23a1904341c45ebbdcfc4e3525e32",
+      "matches_frozen": true
+    },
+    {
+      "file": "skills/electron-engineer/references/testing-observability.md",
+      "frozen": "0b6d6e43a6e9f32c93def5030687f03c3ec8ca014eafff218625328de81f7c69",
+      "canonical_actual": "0b6d6e43a6e9f32c93def5030687f03c3ec8ca014eafff218625328de81f7c69",
+      "matches_frozen": true
+    },
+    {
+      "file": "skills/electron-engineer/references/typescript-in-electron.md",
+      "frozen": "a6516798f4e45777e757aeb535a46da1588150bbbf0f94f2f92e1ba293c5d330",
+      "canonical_actual": "a6516798f4e45777e757aeb535a46da1588150bbbf0f94f2f92e1ba293c5d330",
+      "matches_frozen": true
+    },
+    {
+      "file": "skills/electron-engineer/references/source-protection.md",
+      "frozen": "8439e0ce6939ca2ea17e80be4ae740b2aa1ac58a2731f86c8fa97a6c4fd066d2",
+      "canonical_actual": "8439e0ce6939ca2ea17e80be4ae740b2aa1ac58a2731f86c8fa97a6c4fd066d2",
+      "matches_frozen": true
+    },
+    {
+      "file": "skills/electron-engineer/references/packaging-release-updates.md",
+      "frozen": "11310b87a8726e2159e8bdb450f69e07d6e62c2a81ac597a3e50318ca28d845b",
+      "canonical_actual": "11310b87a8726e2159e8bdb450f69e07d6e62c2a81ac597a3e50318ca28d845b",
+      "matches_frozen": true
+    }
+  ],
+  "asar_readback": [
+    {
+      "file": "/electron.vite.config.ts",
+      "bytes": 207,
+      "sha256": "f6591e7308ec03f2a84806d1c2f6972fb08462fdaa53eab6b629848cc27b3c65",
+      "matches_build_output": null,
+      "asar_integrity_matches": true
+    },
+    {
+      "file": "/forge.config.cjs",
+      "bytes": 170,
+      "sha256": "47e587368a7dc3529c91a3476888964be7f1821f746882a13a7a2a4aa8c6165a",
+      "matches_build_output": null,
+      "asar_integrity_matches": true
+    },
+    {
+      "file": "/node_modules/.package-lock.json",
+      "bytes": 249947,
+      "sha256": "a0ab33b269a7366dd4d0c948e85407452bdb793d724f3c8e0dcf68286d661fba",
+      "matches_build_output": null,
+      "asar_integrity_matches": true
+    },
+    {
+      "file": "/out/main/index.js",
+      "bytes": 5260,
+      "sha256": "a2d81f0091285928ba7f3db6543a4469963ee4e35a2d3a31cbd5e594cb68a9a6",
+      "matches_build_output": true,
+      "asar_integrity_matches": true
+    },
+    {
+      "file": "/out/preload/index.cjs",
+      "bytes": 780,
+      "sha256": "717cc08efc82da3c54645a4d4dde39b23ccd9a0d68284c3443801185dbbae09b",
+      "matches_build_output": true,
+      "asar_integrity_matches": true
+    },
+    {
+      "file": "/out/renderer/assets/index-D7ilsEqv.js",
+      "bytes": 558503,
+      "sha256": "978d23d8c6cb2fa14094bed856d9fd3019aac710f793a89b3af6f1eb27a5ab4e",
+      "matches_build_output": true,
+      "asar_integrity_matches": true
+    },
+    {
+      "file": "/out/renderer/index.html",
+      "bytes": 406,
+      "sha256": "f574b71dc79bf2bb8b3e2d6caf52d4a1cea0473058e1f372ace7dcac6269f8e5",
+      "matches_build_output": true,
+      "asar_integrity_matches": true
+    },
+    {
+      "file": "/package.json",
+      "bytes": 714,
+      "sha256": "3483cd4f154f18e4c7d0e956082928121ebe4116b60805a80b858ed25e016ef9",
+      "matches_build_output": null,
+      "asar_integrity_matches": true
+    },
+    {
+      "file": "/REQUIREMENTS.md",
+      "bytes": 1648,
+      "sha256": "c81eabc321a3bc4ac8e3e630f0bc0b3bfa4076cc0413f9751e8ed2c5f5c1b4cd",
+      "matches_build_output": null,
+      "asar_integrity_matches": true
+    },
+    {
+      "file": "/tsconfig.json",
+      "bytes": 298,
+      "sha256": "d943d1b7f372c22f5fae7f68893abfb5f456c8778cb4d56c47691b8348ba7b12",
+      "matches_build_output": null,
+      "asar_integrity_matches": true
+    }
+  ],
+  "asar_paths_match_executor_listing": true,
+  "public_evidence_files": [
+    {
+      "file": "task.txt",
+      "sha256": "4fbbe699bfaebaf41bd10541dfa6fbecbea4817284ba37c941113bd19a541982",
+      "bytes": 668
+    },
+    {
+      "file": "result.md",
+      "sha256": "924954fe4b25c63a33a50b78306ce64ccca4cfac42428e6f007b172ebfa3e9e2",
+      "bytes": 8254
+    },
+    {
+      "file": "hashes.json",
+      "sha256": "89d145d6fd197ec916fe12a961a4623fb7e1256b72dd9dc481c269a68db82574",
+      "bytes": 1643
+    },
+    {
+      "file": "artifact-audit.json",
+      "sha256": "cec48854829c955f0601094399e9c8a93e4da6a27ffbf420d3dae6807e434f47",
+      "bytes": 345
+    },
+    {
+      "file": "asar-files.json",
+      "sha256": "fbdd5527490b3129c3367319c2c5c4281f1caf74e127d84320fd8ee50ba5ea8c",
+      "bytes": 281
+    },
+    {
+      "file": "commands.jsonl",
+      "sha256": "69f33045cdf40a578de99d0975a5721c4582db692035cedb1549d72a9a465e91",
+      "bytes": 38712
+    },
+    {
+      "file": "runtime.mjs",
+      "sha256": "41b0d5d56b4f716b63624e0b9209ccc700a8d82f9aebce6e0871ad561582bcd2",
+      "bytes": 8776
+    },
+    {
+      "file": "clipboard-check.mjs",
+      "sha256": "489f4aa69efa8181b4566ff28ed1380de130f2265dbecaae14f7cacb7622fb91",
+      "bytes": 2206
+    },
+    {
+      "file": "attack.cjs",
+      "sha256": "cdaad0970a5f64f1cc187b790a2f361fb2b45c973a828385a95d302934457122",
+      "bytes": 194
+    },
+    {
+      "file": "x11.py",
+      "sha256": "bc22c2a0e943bf31e22dd47360018c50ec27659e180c9bc89c2c877e45fdd35f",
+      "bytes": 3643
+    },
+    {
+      "file": "packaged-evidence.json",
+      "sha256": "72e5d7502e367306c290d14ed030d5fdc6df557e75af42888cad5ad733251691",
+      "bytes": 3645
+    },
+    {
+      "file": "packaged-evidence-partial.json",
+      "sha256": "72e5d7502e367306c290d14ed030d5fdc6df557e75af42888cad5ad733251691",
+      "bytes": 3645
+    },
+    {
+      "file": "runtime-evidence-partial.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    {
+      "file": "clipboard-evidence.json",
+      "sha256": "d8b91182217414914f37f1b9bbaae7882565122cc1badfee7369124922ff9aaf",
+      "bytes": 301
+    },
+    {
+      "file": "session-persistence-check.json",
+      "sha256": "06b20da5bb8ceffce9860691fac6bfe9d7cb07ffd0327724b889eee83a6db004",
+      "bytes": 101
+    },
+    {
+      "file": "dialog.png",
+      "sha256": "2acc49506e2b9825ac2301b21a566966ff90209bd7d3ad40192462be99d5af97",
+      "bytes": 25889
+    },
+    {
+      "file": "packaged-main.png",
+      "sha256": "f91809707429c5164e786e0ba655c1147c9232f0d327acdddbe9fc990b7684b8",
+      "bytes": 26675
+    },
+    {
+      "file": "packaged-help.png",
+      "sha256": "7ca642a95e8265ece0b8b9134284dc8a0953ca89706efda358f7577655e74266",
+      "bytes": 9248
+    },
+    {
+      "file": "packaged-copy-success.png",
+      "sha256": "ca6b0f0f0a766d8d7a20508de19b51229d6b43add78f3b38f192ae9d6ee21079",
+      "bytes": 26113
+    },
+    {
+      "file": "app/REQUIREMENTS.md",
+      "sha256": "c81eabc321a3bc4ac8e3e630f0bc0b3bfa4076cc0413f9751e8ed2c5f5c1b4cd",
+      "bytes": 1648
+    }
+  ],
+  "protocol_sha256": "38b5a10f18177540ddeba0bfc954a4b329a7c3d8c5f92ac55d6f0d1b08cccc01",
+  "trace_manifest_sha256": "39e2025cdd94365abadd043ce6e1f3d17a59d68c8841d8b2aa47fdeac68bf92d",
+  "trace_manifest_entry": {
+    "agent": "/root/baseline_electron_runtime_executor",
+    "source_session_id": "01a08641-d472-7553-8033-311e8b3806d4",
+    "journal_sha256": "3556c4b83ee69f8e0c940ea26f619f55515ceb9c76e14088486b7ba4bb4c572e",
+    "public_trace": "baseline_electron_runtime_executor.jsonl",
+    "public_trace_sha256": "926195e33c136e08e0291c487602a890d7d0bfd25b1db5387ae7090224a9da37",
+    "tool_events": 78,
+    "public_task_messages": "baseline_electron_runtime_executor-task-messages.jsonl",
+    "task_messages_sha256": "9873dbe94de9e385226316642ecdb9a877abe26c0e26d18f4860f276111a1ae7",
+    "recorded_turn_settings": [
+      {
+        "turn_id": "01a08641-d512-72b3-95ed-30ba36d6415d",
+        "model": "gpt-6-astra",
+        "effort": "high"
+      }
+    ]
+  },
+  "trace_hash_checks": [
+    {
+      "file": "raw-agent-traces/baseline_electron_runtime_executor.jsonl",
+      "expected": "926195e33c136e08e0291c487602a890d7d0bfd25b1db5387ae7090224a9da37",
+      "actual": "926195e33c136e08e0291c487602a890d7d0bfd25b1db5387ae7090224a9da37",
+      "matches": true
+    },
+    {
+      "file": "raw-agent-traces/baseline_electron_runtime_executor-task-messages.jsonl",
+      "expected": "9873dbe94de9e385226316642ecdb9a877abe26c0e26d18f4860f276111a1ae7",
+      "actual": "9873dbe94de9e385226316642ecdb9a877abe26c0e26d18f4860f276111a1ae7",
+      "matches": true
+    }
+  ],
+  "command_records": [
+    {
+      "record": 1,
+      "time": "2026-09-09T13:01:33.951674+00:00",
+      "exit": 0,
+      "elapsed_seconds": 5.765,
+      "command_sha256": "e5fe068761e8faa77a37cdaefd381c9d593df4a5b402cc273f3c08733ae1b4a9",
+      "stdout_sha256": "ac2ef11110e5ba160c6679a1e9d0b26f0cf97cfb19995a215b1bca4d1cfaf87b",
+      "stderr_sha256": "0c4e706116728076ac493351da11df9c193b3ff98084bf4f10492ea74ba17c45"
+    },
+    {
+      "record": 2,
+      "time": "2026-09-09T13:03:28.020711+00:00",
+      "exit": 1,
+      "elapsed_seconds": 5.254,
+      "command_sha256": "eb69069372e71e59d4c5bdac7e1a1c7b804858bc7956c2446f94ef87f1b529d6",
+      "stdout_sha256": "d84231ff545c56b6deae06e70ed6901380c477c626bb58dc3ff31d466b61738e",
+      "stderr_sha256": "627dc3e413c3fa029ceaff672c8b8a710ab93c00191f572070ad59154f01cab7"
+    },
+    {
+      "record": 3,
+      "time": "2026-09-09T13:05:31.243797+00:00",
+      "exit": 0,
+      "elapsed_seconds": 3.984,
+      "command_sha256": "032623baa9648d3d815aa4a83b3a529d48bab833f98ceb693f19baa2c854d151",
+      "stdout_sha256": "10bce53a80232dccf4ad6a35130526b5f20f1fca16fba93aa2d88c5b8ee988d6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "record": 4,
+      "time": "2026-09-09T13:05:36.164033+00:00",
+      "exit": 1,
+      "elapsed_seconds": 0.418,
+      "command_sha256": "1ff401667ff9aacb7760dc537cfb1898e578bc7eb5986bfff8c9fa48be8555db",
+      "stdout_sha256": "6795ee96b742688b982e41aa96c841f347e61817372dd74dcb528a73206dfc24",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "record": 5,
+      "time": "2026-09-09T13:05:50.896688+00:00",
+      "exit": 0,
+      "elapsed_seconds": 0.475,
+      "command_sha256": "f283fb6dbd6dae1e8d305988806b8d8bbcb3d82ac112f791cfe7b1b402208292",
+      "stdout_sha256": "5fea06889844726ffbf8e27f38feb7a12898a3d5a295ed2d1284ad720672f18e",
+      "stderr_sha256": "6d5bb8dac0febedc7e775f2b2c1ddb08ad29d7c1d1b09e2b878530f191d0da5a"
+    },
+    {
+      "record": 6,
+      "time": "2026-09-09T13:06:04.362195+00:00",
+      "exit": 1,
+      "elapsed_seconds": 0.929,
+      "command_sha256": "a383000caca83f9e50b66b813fbd5e8a1177864c98fea612babf15536d2f6cae",
+      "stdout_sha256": "12a54c88d67572aa181174605d8324745193343846470319a21d26e9d44ba4d1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "record": 7,
+      "time": "2026-09-09T13:06:32.668602+00:00",
+      "exit": 1,
+      "elapsed_seconds": 18.448,
+      "command_sha256": "47c6f38137b569794a17bb3f69990179075b491cf5b2515d5c9adbdf4025cfdc",
+      "stdout_sha256": "c1ca5b4250b1ea519d0aed56000e799583b9e7d602df575706afa8db458a81a1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "record": 8,
+      "time": "2026-09-09T13:07:35.120379+00:00",
+      "exit": 1,
+      "elapsed_seconds": 30.842,
+      "command_sha256": "219b8904bb3bfbf04735bb8099a375a55dd18f790ce30fddb032aee533d2a926",
+      "stdout_sha256": "e3f7da8eb8d7228b54c69ec6bc44f633b1f172df2fafefaac3ca3fcf8988e6d6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "record": 9,
+      "time": "2026-09-09T13:08:09.283905+00:00",
+      "exit": 1,
+      "elapsed_seconds": 18.119,
+      "command_sha256": "27933aae7d62a1463eb404d23fe24c977c9541372668e04c74a45fbaedfbf4ae",
+      "stdout_sha256": "2c8a6ce60739f950bd57b3f4c8ff1772dd40bbd24cd4e9aedc5bdc7b6c6316a9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "record": 10,
+      "time": "2026-09-09T13:09:02.448245+00:00",
+      "exit": 5,
+      "elapsed_seconds": 18.92,
+      "command_sha256": "a68ef337af1c5dac53fd81560b50a743e2542c15a7ebe4801b4dec291b816c80",
+      "stdout_sha256": "5c1c3a0304554c5138e1f5f2fd62c1f206d9111aa4cf38db45834804468f9ce8",
+      "stderr_sha256": "eeb7160338b33f8e4b1065d7ac62728e1eee8f06a984f4c1f0b3e5c87cb1fcf2"
+    },
+    {
+      "record": 11,
+      "time": "2026-09-09T13:09:33.975808+00:00",
+      "exit": 1,
+      "elapsed_seconds": 18.85,
+      "command_sha256": "5af33ef9fcc6b9512fe140d0cdd75df752ef5964c100cb1c69e6edcafa2ba89d",
+      "stdout_sha256": "5c1c3a0304554c5138e1f5f2fd62c1f206d9111aa4cf38db45834804468f9ce8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "record": 12,
+      "time": "2026-09-09T13:09:47.351138+00:00",
+      "exit": 0,
+      "elapsed_seconds": 5.785,
+      "command_sha256": "dde19ba9048c00eb1361931eb4f46d1935c161dd7f0b151ce7d104f7d33b4f24",
+      "stdout_sha256": "7741b618f506acede3c618492caef67060795a2b688461ed5cb1111a19d692cd",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "record": 13,
+      "time": "2026-09-09T13:11:08.609039+00:00",
+      "exit": 0,
+      "elapsed_seconds": 2.405,
+      "command_sha256": "05c8e4f82fa7ecf199a832ba1d19f3f8180ef287fa16c42f8e84a52a6f32fd37",
+      "stdout_sha256": "c2429de089706104a69e842074c38818f995ba8af813b7eb81926caf4d7d857c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "final_packaged_stdout_matches_evidence": true,
+  "final_packaged_observation_count": 17,
+  "private_profile_read": false,
+  "env_read": false,
+  "runtime_rerun": false,
+  "boundary": "Independent inspection of source, assertions, recorded outputs, screenshots, ASAR contents and file hashes; no product execution. Frame denial is handler-level with real WebFrameMain, not raw child-frame IPC transport. Full plaintext dispatch provenance unavailable."
+}

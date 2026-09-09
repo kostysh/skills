@@ -1,0 +1,1074 @@
+{
+  "checkedAt": "2026-09-09T16:27:38.654307+00:00",
+  "hash": "SHA256 bytes; freeze key namespace package-relative",
+  "packages": {
+    "hono-engineer": {
+      "frozenAggregate": "276e69265579aa0f51f32a1935081ee2ef52cb8fcafe1a856525a62f6f3f0060",
+      "fileCount": 42,
+      "mismatches": []
+    },
+    "supabase-engineer": {
+      "frozenAggregate": "808e02901c087fa4ee868afcbfb7be9efcbeb5e58d38c20a1b452878deeb96c9",
+      "fileCount": 32,
+      "mismatches": []
+    },
+    "payload": {
+      "frozenAggregate": "512a9ef66cd3e6daa583a6ee7fadc6ce8917a6e636642c745dd7425912e28109",
+      "fileCount": 19,
+      "mismatches": []
+    },
+    "payload-migration": {
+      "frozenAggregate": "c9bbcaffea7eb6f1cc7a2f0af21de8446037fe945bc729ac42934fae34e19f2e",
+      "fileCount": 10,
+      "mismatches": []
+    }
+  },
+  "sources": {
+    "official-hono-supabase/cf-compat-flags.txt": {
+      "sha256": "2ff839dbc3e6802863ff34073edde653179177e83a731a6f6e944c4a3508b80c",
+      "expected": "2ff839dbc3e6802863ff34073edde653179177e83a731a6f6e944c4a3508b80c",
+      "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/configuration/compatibility-flags.mdx"
+    },
+    "official-hono-supabase/cf-languages-typescript-index.txt": {
+      "sha256": "4226b4938fbe41e25bb84f1c97e0926b0a56a090f15901b246524e30d96655e0",
+      "expected": "4226b4938fbe41e25bb84f1c97e0926b0a56a090f15901b246524e30d96655e0",
+      "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/languages/typescript/index.mdx"
+    },
+    "official-hono-supabase/cf-platform-limits.txt": {
+      "sha256": "5666bb5286d2adf63daa246870f231191139e0c5266b9462f289ee428b05002b",
+      "expected": "5666bb5286d2adf63daa246870f231191139e0c5266b9462f289ee428b05002b",
+      "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/platform/limits.mdx"
+    },
+    "official-hono-supabase/cf-runtime-apis-bindings-rate-limit.txt": {
+      "sha256": "c4c8b557b289c49d3f8781587029a2f54be8ea3df16cb8d9144c0bffe2f36b67",
+      "expected": "c4c8b557b289c49d3f8781587029a2f54be8ea3df16cb8d9144c0bffe2f36b67",
+      "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/runtime-apis/bindings/rate-limit.mdx"
+    },
+    "official-hono-supabase/cf-runtime-apis-cache.txt": {
+      "sha256": "c94076aec28a33b0cc7725ebd749530c233a559c90167d32a2d1ca4db8607d60",
+      "expected": "c94076aec28a33b0cc7725ebd749530c233a559c90167d32a2d1ca4db8607d60",
+      "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/runtime-apis/cache.mdx"
+    },
+    "official-hono-supabase/cf-runtime-apis-context.txt": {
+      "sha256": "c35fb5004718f62717b6c79041cc8e1267f8d64088f703d599a437eacc321e6b",
+      "expected": "c35fb5004718f62717b6c79041cc8e1267f8d64088f703d599a437eacc321e6b",
+      "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/runtime-apis/context.mdx"
+    },
+    "official-hono-supabase/cf-runtime-apis-nodejs-index.txt": {
+      "sha256": "ae1e388350503c2562bcc507b9dfb1010330146e3c1bf3d8058bb94beeefedbd",
+      "expected": "ae1e388350503c2562bcc507b9dfb1010330146e3c1bf3d8058bb94beeefedbd",
+      "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/runtime-apis/nodejs/index.mdx"
+    },
+    "official-hono-supabase/cf-runtime-apis-web-crypto.txt": {
+      "sha256": "864e1694335946e3c226564cbce0b87657631377ea7766dc03b7890025329442",
+      "expected": "864e1694335946e3c226564cbce0b87657631377ea7766dc03b7890025329442",
+      "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/runtime-apis/web-crypto.mdx"
+    },
+    "official-hono-supabase/cf-wrangler-configuration.txt": {
+      "sha256": "074d3f733cc2f1edeaef3fc270c5b981b49ce5e932211926dc49c5845a19b59d",
+      "expected": "074d3f733cc2f1edeaef3fc270c5b981b49ce5e932211926dc49c5845a19b59d",
+      "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/wrangler/configuration.mdx"
+    },
+    "official-hono-supabase/cf-wrangler-environments.txt": {
+      "sha256": "953ead91e7b3d498fb6bfe0389814411b4de47e4b64209bd74c0e576eecb3781",
+      "expected": "953ead91e7b3d498fb6bfe0389814411b4de47e4b64209bd74c0e576eecb3781",
+      "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/wrangler/environments.mdx"
+    },
+    "official-hono-supabase/hono-api-context.txt": {
+      "sha256": "44017aa16555dc6184a2d4d2fe22217bd799b3144c771461e5e4ee1843cb196f",
+      "expected": "44017aa16555dc6184a2d4d2fe22217bd799b3144c771461e5e4ee1843cb196f",
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/api/context.md"
+    },
+    "official-hono-supabase/hono-api-exception.txt": {
+      "sha256": "4c1ee31ac2b3ee5d4388eddebd041127a9b3721ace327dd76481a9fb956281fb",
+      "expected": "4c1ee31ac2b3ee5d4388eddebd041127a9b3721ace327dd76481a9fb956281fb",
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/api/exception.md"
+    },
+    "official-hono-supabase/hono-api-hono.txt": {
+      "sha256": "4ac59ca6edd35e80bfbbec4a46b3ae337bc9c679669ddb01aa71d39a9f593c0f",
+      "expected": "4ac59ca6edd35e80bfbbec4a46b3ae337bc9c679669ddb01aa71d39a9f593c0f",
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/api/hono.md"
+    },
+    "official-hono-supabase/hono-api-routing.txt": {
+      "sha256": "d94e30e8c7de6ff4e76378e89aca3e25e7056851d0e454e96481b4f668c95f61",
+      "expected": "d94e30e8c7de6ff4e76378e89aca3e25e7056851d0e454e96481b4f668c95f61",
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/api/routing.md"
+    },
+    "official-hono-supabase/hono-bearer-source.txt": {
+      "sha256": "812029f5490dbfc24b4cebb04ab3aea58d93c024904c1db52b91b840f6b2c262",
+      "expected": "812029f5490dbfc24b4cebb04ab3aea58d93c024904c1db52b91b840f6b2c262",
+      "url": "https://raw.githubusercontent.com/honojs/hono/v4.13.7/src/middleware/bearer-auth/index.ts"
+    },
+    "official-hono-supabase/hono-concepts-routers.txt": {
+      "sha256": "43987c236781636f40d9a18aa21ac2ac268d1df1ac6c4b9aa9c6875509325c70",
+      "expected": "43987c236781636f40d9a18aa21ac2ac268d1df1ac6c4b9aa9c6875509325c70",
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/concepts/routers.md"
+    },
+    "official-hono-supabase/hono-getting-started-cloudflare-workers.txt": {
+      "sha256": "ed4b4800792124e03bac761e24843f1e1709b1269b801367967d6a8cd4a750c6",
+      "expected": "ed4b4800792124e03bac761e24843f1e1709b1269b801367967d6a8cd4a750c6",
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/getting-started/cloudflare-workers.md"
+    },
+    "official-hono-supabase/hono-guides-middleware.txt": {
+      "sha256": "15b51a21ef0b8c6e3507b952d79360593a8e3b26dffe71d01bb9be1884e3adbc",
+      "expected": "15b51a21ef0b8c6e3507b952d79360593a8e3b26dffe71d01bb9be1884e3adbc",
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/guides/middleware.md"
+    },
+    "official-hono-supabase/hono-guides-rpc.txt": {
+      "sha256": "8c6ee6d2f25bbbd69e5dab4d225b9b1fcc86e8909e233ef0fd464c1440b05aca",
+      "expected": "8c6ee6d2f25bbbd69e5dab4d225b9b1fcc86e8909e233ef0fd464c1440b05aca",
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/guides/rpc.md"
+    },
+    "official-hono-supabase/hono-guides-validation.txt": {
+      "sha256": "e44320a65740583af6c27bdbb62c212fe5de428ca6ca30c53147f51ae48d1e99",
+      "expected": "e44320a65740583af6c27bdbb62c212fe5de428ca6ca30c53147f51ae48d1e99",
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/guides/validation.md"
+    },
+    "official-hono-supabase/hono-helpers-factory.txt": {
+      "sha256": "1ed9b3bb1c0bb1f4f1b90c1d1894fd0e646d832abc07582a27914674962287a5",
+      "expected": "1ed9b3bb1c0bb1f4f1b90c1d1894fd0e646d832abc07582a27914674962287a5",
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/helpers/factory.md"
+    },
+    "official-hono-supabase/hono-helpers-streaming.txt": {
+      "sha256": "9b26ed08a675fc65468589190c7a676b1bc784dead047ca9127fc45c0d878030",
+      "expected": "9b26ed08a675fc65468589190c7a676b1bc784dead047ca9127fc45c0d878030",
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/helpers/streaming.md"
+    },
+    "official-hono-supabase/hono-middleware-builtin-body-limit.txt": {
+      "sha256": "52f81a9bea2857e8c207a61ff900e2aedd8569ff702f5809f0827eb01af61673",
+      "expected": "52f81a9bea2857e8c207a61ff900e2aedd8569ff702f5809f0827eb01af61673",
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/middleware/builtin/body-limit.md"
+    },
+    "official-hono-supabase/hono-middleware-builtin-cache.txt": {
+      "sha256": "c91dbbab38da9a74500569d5d749e30d5fc556f8144119d0b42fb443b9e62d69",
+      "expected": "c91dbbab38da9a74500569d5d749e30d5fc556f8144119d0b42fb443b9e62d69",
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/middleware/builtin/cache.md"
+    },
+    "official-hono-supabase/hono-middleware-builtin-combine.txt": {
+      "sha256": "8964da42245c3d5395902ac7f3bbd10247159b96c46673893a9b87f566486902",
+      "expected": "8964da42245c3d5395902ac7f3bbd10247159b96c46673893a9b87f566486902",
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/middleware/builtin/combine.md"
+    },
+    "official-hono-supabase/hono-middleware-builtin-compress.txt": {
+      "sha256": "a2e9aad42c8521e24a8a56fc9d15ed0a1ab49045892722d0401c51d667595338",
+      "expected": "a2e9aad42c8521e24a8a56fc9d15ed0a1ab49045892722d0401c51d667595338",
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/middleware/builtin/compress.md"
+    },
+    "official-hono-supabase/hono-middleware-builtin-cors.txt": {
+      "sha256": "22be7f6dd7a94df12d204f9cfc54b9567c9010de0000aab2a176ff9249e3979b",
+      "expected": "22be7f6dd7a94df12d204f9cfc54b9567c9010de0000aab2a176ff9249e3979b",
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/middleware/builtin/cors.md"
+    },
+    "official-hono-supabase/hono-middleware-builtin-csrf.txt": {
+      "sha256": "3ea1715aea929b8360250e57a916c61fa01b938159461cab99f9aa5be86a3fd4",
+      "expected": "3ea1715aea929b8360250e57a916c61fa01b938159461cab99f9aa5be86a3fd4",
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/middleware/builtin/csrf.md"
+    },
+    "official-hono-supabase/hono-middleware-builtin-etag.txt": {
+      "sha256": "7d6764da0fb953c5293f4695dd76cc6592ba2ca471a7dc1cb167d47553b6c5fb",
+      "expected": "7d6764da0fb953c5293f4695dd76cc6592ba2ca471a7dc1cb167d47553b6c5fb",
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/middleware/builtin/etag.md"
+    },
+    "official-hono-supabase/hono-middleware-builtin-jwk.txt": {
+      "sha256": "ca448fe78b2e54d390bb09d9fb415a9865a0f7ebc66c1cf09cf5f96977a33c25",
+      "expected": "ca448fe78b2e54d390bb09d9fb415a9865a0f7ebc66c1cf09cf5f96977a33c25",
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/middleware/builtin/jwk.md"
+    },
+    "official-hono-supabase/hono-middleware-builtin-jwt.txt": {
+      "sha256": "99322065a0a670fea10a047cb9db688b7c53ff6a185d8182f4e6caa897d512ac",
+      "expected": "99322065a0a670fea10a047cb9db688b7c53ff6a185d8182f4e6caa897d512ac",
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/middleware/builtin/jwt.md"
+    },
+    "official-hono-supabase/hono-middleware-builtin-logger.txt": {
+      "sha256": "dc5e69f0a602b7d761727cf0aa089e07d8ba85562fd0a78d07c6b80a412fb647",
+      "expected": "dc5e69f0a602b7d761727cf0aa089e07d8ba85562fd0a78d07c6b80a412fb647",
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/middleware/builtin/logger.md"
+    },
+    "official-hono-supabase/hono-middleware-builtin-secure-headers.txt": {
+      "sha256": "269df763b339df300163f9f71de96b4e28c8a3a94f0084a55db8a37c06670bb7",
+      "expected": "269df763b339df300163f9f71de96b4e28c8a3a94f0084a55db8a37c06670bb7",
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/middleware/builtin/secure-headers.md"
+    },
+    "official-hono-supabase/hono-middleware-builtin-timeout.txt": {
+      "sha256": "608f5ada1a253259d9ac45058e83a2562c859d64c9a00f86d4e1e691955b0794",
+      "expected": "608f5ada1a253259d9ac45058e83a2562c859d64c9a00f86d4e1e691955b0794",
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/middleware/builtin/timeout.md"
+    },
+    "official-hono-supabase/hono-migration.txt": {
+      "sha256": "5c8950d13ea733441a8eb7a7f09f94d0a4384734d072aba0e136f3bfd8e602c2",
+      "expected": "5c8950d13ea733441a8eb7a7f09f94d0a4384734d072aba0e136f3bfd8e602c2",
+      "url": "https://raw.githubusercontent.com/honojs/hono/v4.13.7/docs/MIGRATION.md"
+    },
+    "official-hono-supabase/hono-node-release.txt": {
+      "sha256": "df73c9ed1ae56ea4774cc088f5e69015ca476765a6e1180456ad493ba22b3ca0",
+      "expected": "df73c9ed1ae56ea4774cc088f5e69015ca476765a6e1180456ad493ba22b3ca0",
+      "url": "https://api.github.com/repos/honojs/node-server/releases/latest"
+    },
+    "official-hono-supabase/hono-release.txt": {
+      "sha256": "9e0ad18a9ee03ba6f052cc2139397b9644d0c1c32259f2081debdf7e486ee624",
+      "expected": "9e0ad18a9ee03ba6f052cc2139397b9644d0c1c32259f2081debdf7e486ee624",
+      "url": "https://api.github.com/repos/honojs/hono/releases/latest"
+    },
+    "official-hono-supabase/node-adapter-package.txt": {
+      "sha256": "f4fa3bd681dfc19b68d4541f67ca83427456f19b124594d0187c3cd70346aaf5",
+      "expected": "f4fa3bd681dfc19b68d4541f67ca83427456f19b124594d0187c3cd70346aaf5",
+      "url": "https://raw.githubusercontent.com/honojs/node-server/v2.1.1/package.json"
+    },
+    "official-hono-supabase/sdk-package.txt": {
+      "sha256": "4e6c5bc46b84681be897b12a9bfabc3324e555c5158505e9389461db2c099b95",
+      "expected": "4e6c5bc46b84681be897b12a9bfabc3324e555c5158505e9389461db2c099b95",
+      "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/supabase-js/package.json"
+    },
+    "official-hono-supabase/supabase-database-postgres-row-level-security.txt": {
+      "sha256": "fe0736cfad9eb7dbae839677c73df0fb33f456ea0b416d9c0f4db1018af78356",
+      "expected": "fe0736cfad9eb7dbae839677c73df0fb33f456ea0b416d9c0f4db1018af78356",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/postgres/row-level-security.mdx"
+    },
+    "official-hono-supabase/supabase-getting-started-api-keys.txt": {
+      "sha256": "17bed83f79df3fc16b6eaacae370b70e2237e44cff2e073b3edc51549ecef301",
+      "expected": "17bed83f79df3fc16b6eaacae370b70e2237e44cff2e073b3edc51549ecef301",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/getting-started/api-keys.mdx"
+    },
+    "official-hono-supabase/workerd-compat.txt": {
+      "sha256": "fab40a68e920e10875e24b6de702a2a500fffa50420a2c983ef8f244afd5154d",
+      "expected": "fab40a68e920e10875e24b6de702a2a500fffa50420a2c983ef8f244afd5154d",
+      "url": "https://raw.githubusercontent.com/cloudflare/workerd/main/src/workerd/io/compatibility-date.capnp"
+    },
+    "official-hono-supabase/zod-validator-package.txt": {
+      "sha256": "93bbdbd56ecd265765c3bde73a77c01ac573ba79c409021ef93e090b27d7f068",
+      "expected": "93bbdbd56ecd265765c3bde73a77c01ac573ba79c409021ef93e090b27d7f068",
+      "url": "https://raw.githubusercontent.com/honojs/middleware/main/packages/zod-validator/package.json"
+    },
+    "official-hono-supabase/zod-validator-readme.txt": {
+      "sha256": "6d10c6e36fd42589bc10aa2ae7507eebe4d9601ba45e8a3fee6348f3eec3462d",
+      "expected": "6d10c6e36fd42589bc10aa2ae7507eebe4d9601ba45e8a3fee6348f3eec3462d",
+      "url": "https://raw.githubusercontent.com/honojs/middleware/main/packages/zod-validator/README.md"
+    },
+    "official-hono-supabase/cli-declarative-generate-doc.txt": {
+      "sha256": "4a65ccfefbfee07ab2a5b4224ff83b28d2251fed0861c414273c502197a7f77a",
+      "expected": "4a65ccfefbfee07ab2a5b4224ff83b28d2251fed0861c414273c502197a7f77a",
+      "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/docs/supabase/db/schema-declarative-generate.md"
+    },
+    "official-hono-supabase/cli-declarative-sync-doc.txt": {
+      "sha256": "619e0c0c7a88ac5209543a7053f5d1b9718058d61a450a51a0a0cec2df7316e8",
+      "expected": "619e0c0c7a88ac5209543a7053f5d1b9718058d61a450a51a0a0cec2df7316e8",
+      "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/docs/supabase/db/schema-declarative-sync.md"
+    },
+    "official-hono-supabase/cli-diff-command.txt": {
+      "sha256": "963c6704e96d17b481ad8a24b5ef99bac1b551cb15910cc4c3810da1ab660153",
+      "expected": "963c6704e96d17b481ad8a24b5ef99bac1b551cb15910cc4c3810da1ab660153",
+      "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/diff/diff.command.ts"
+    },
+    "official-hono-supabase/cli-diff-doc.txt": {
+      "sha256": "34430ebb5e28a1c91e6d2beeeceead84822e19569e6aaaed32972d2d3da47610",
+      "expected": "34430ebb5e28a1c91e6d2beeeceead84822e19569e6aaaed32972d2d3da47610",
+      "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/docs/supabase/db/diff.md"
+    },
+    "official-hono-supabase/cli-diff-handler.txt": {
+      "sha256": "8f52a9be13c35de0d54fe48efb1ad6248bc49056ff51431b1e5accc4064401e2",
+      "expected": "8f52a9be13c35de0d54fe48efb1ad6248bc49056ff51431b1e5accc4064401e2",
+      "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/diff/diff.handler.ts"
+    },
+    "official-hono-supabase/cli-generate-command.txt": {
+      "sha256": "578d377f9240c3d99179bd694fa8879818213e4b52669d92b4196733b5a3f1f8",
+      "expected": "578d377f9240c3d99179bd694fa8879818213e4b52669d92b4196733b5a3f1f8",
+      "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/schema/declarative/generate/generate.command.ts"
+    },
+    "official-hono-supabase/cli-release.txt": {
+      "sha256": "a98453b7310cfb265d3dcaf8856863a5b4a5894410bdf0cb3f123cfaf4613d63",
+      "expected": "a98453b7310cfb265d3dcaf8856863a5b4a5894410bdf0cb3f123cfaf4613d63",
+      "url": "https://api.github.com/repos/supabase/cli/releases/latest"
+    },
+    "official-hono-supabase/pg-errors.txt": {
+      "sha256": "0ebcc58411118aa7849020aa23256112a205abe94d9b64fa6576f1baa3dda263",
+      "expected": "0ebcc58411118aa7849020aa23256112a205abe94d9b64fa6576f1baa3dda263",
+      "url": "https://www.postgresql.org/docs/current/errcodes-appendix.html"
+    },
+    "official-hono-supabase/pg-function.txt": {
+      "sha256": "ecdb16535bea7e5771c6a39c1123bca92ff8c2b2a9c1d8ebdb2834856c921686",
+      "expected": "ecdb16535bea7e5771c6a39c1123bca92ff8c2b2a9c1d8ebdb2834856c921686",
+      "url": "https://www.postgresql.org/docs/current/sql-createfunction.html"
+    },
+    "official-hono-supabase/pg-retry.txt": {
+      "sha256": "e00499d69ddeaa7be0618b65cd48003c27cbbb4693ecd8e50f24bd911a904936",
+      "expected": "e00499d69ddeaa7be0618b65cd48003c27cbbb4693ecd8e50f24bd911a904936",
+      "url": "https://www.postgresql.org/docs/current/mvcc-serialization-failure-handling.html"
+    },
+    "official-hono-supabase/pg-sql-select.txt": {
+      "sha256": "b09d4107b0cd6790f3ea21ce95f9d57007f2f34ed12fa91316bf25852d0d08b5",
+      "expected": "b09d4107b0cd6790f3ea21ce95f9d57007f2f34ed12fa91316bf25852d0d08b5",
+      "url": "https://www.postgresql.org/docs/current/sql-select.html"
+    },
+    "official-hono-supabase/pgvector.txt": {
+      "sha256": "54cb3a5f4344308476cb2378469ac77d10fbff415d1b5be66608bb386ce8f527",
+      "expected": "54cb3a5f4344308476cb2378469ac77d10fbff415d1b5be66608bb386ce8f527",
+      "url": "https://raw.githubusercontent.com/pgvector/pgvector/master/README.md"
+    },
+    "official-hono-supabase/sdk-auth-source.txt": {
+      "sha256": "8b9180b10d021280a1da03fb8108d7d7730092465ddf192a855d8584f6a124eb",
+      "expected": "8b9180b10d021280a1da03fb8108d7d7730092465ddf192a855d8584f6a124eb",
+      "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/auth-js/src/GoTrueClient.ts"
+    },
+    "official-hono-supabase/sdk-builder.txt": {
+      "sha256": "12a13c40d213a6ee9691b8441404193ecbb7628597c6c6159c46cb86fe787c4e",
+      "expected": "12a13c40d213a6ee9691b8441404193ecbb7628597c6c6159c46cb86fe787c4e",
+      "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/postgrest-js/src/PostgrestBuilder.ts"
+    },
+    "official-hono-supabase/sdk-postgrest-client.txt": {
+      "sha256": "acfe0e1647cac92a9b47d2f368e2c1ce62f3e3ff6f4b6d63fa3058db0f7b9e0e",
+      "expected": "acfe0e1647cac92a9b47d2f368e2c1ce62f3e3ff6f4b6d63fa3058db0f7b9e0e",
+      "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/postgrest-js/src/PostgrestClient.ts"
+    },
+    "official-hono-supabase/sdk-postgrest-source.txt": {
+      "sha256": "01a57078ecf2c9d63d138d3b19c24753b608960b1d0bde75f942e74cee5350ec",
+      "expected": "01a57078ecf2c9d63d138d3b19c24753b608960b1d0bde75f942e74cee5350ec",
+      "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/postgrest-js/src/PostgrestTransformBuilder.ts"
+    },
+    "official-hono-supabase/sdk-retry.txt": {
+      "sha256": "6a6a43c649ed9446f05c0ed2ff9b0df53348a40d20343261b00a77dad6c65987",
+      "expected": "6a6a43c649ed9446f05c0ed2ff9b0df53348a40d20343261b00a77dad6c65987",
+      "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/postgrest-js/src/fetchWithRetry.ts"
+    },
+    "official-hono-supabase/sdk-retry-common.txt": {
+      "sha256": "b83315a6e0b6bd4887cff0807114d3afa437ce4ef7614a92297c095e3e80691b",
+      "expected": "b83315a6e0b6bd4887cff0807114d3afa437ce4ef7614a92297c095e3e80691b",
+      "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/postgrest-js/src/types/common/common.ts"
+    },
+    "official-hono-supabase/sdk-storage-source.txt": {
+      "sha256": "0f2d84813cd3c97cb1b90deda7e373c8643868ef14afa892110d545a1d511e18",
+      "expected": "0f2d84813cd3c97cb1b90deda7e373c8643868ef14afa892110d545a1d511e18",
+      "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/storage-js/src/packages/StorageFileApi.ts"
+    },
+    "official-hono-supabase/ssr-changelog.txt": {
+      "sha256": "8cc7159bfc46d89002d9324e99410a45dc2a1a61805394952582cc4ccd334e55",
+      "expected": "8cc7159bfc46d89002d9324e99410a45dc2a1a61805394952582cc4ccd334e55",
+      "url": "https://raw.githubusercontent.com/supabase/ssr/v0.12.7/CHANGELOG.md"
+    },
+    "official-hono-supabase/ssr-cookies.txt": {
+      "sha256": "dc2065b2e7fd9e7f8ba52024292f62004a5625f26fcf0669a5fe01ac4e5617c4",
+      "expected": "dc2065b2e7fd9e7f8ba52024292f62004a5625f26fcf0669a5fe01ac4e5617c4",
+      "url": "https://raw.githubusercontent.com/supabase/ssr/v0.12.7/src/cookies.ts"
+    },
+    "official-hono-supabase/ssr-types.txt": {
+      "sha256": "6096b4a29dab0bba393b151e5447663464a589a480d198d9a97a0a5c7c550f62",
+      "expected": "6096b4a29dab0bba393b151e5447663464a589a480d198d9a97a0a5c7c550f62",
+      "url": "https://raw.githubusercontent.com/supabase/ssr/v0.12.7/src/types.ts"
+    },
+    "official-hono-supabase/standardwebhooks-spec.txt": {
+      "sha256": "47cf696ee08a583f6cddf2d02b13e544e1bd28435b8e418870e8b557b1ed4082",
+      "expected": "47cf696ee08a583f6cddf2d02b13e544e1bd28435b8e418870e8b557b1ed4082",
+      "url": "https://raw.githubusercontent.com/standard-webhooks/standard-webhooks/main/spec/standard-webhooks.md"
+    },
+    "official-hono-supabase/supabase-ai-semantic-search.txt": {
+      "sha256": "827eb837d6ef60b2c7afcb5c4173f3c635792b09349b1b653079aaa01e7712c7",
+      "expected": "827eb837d6ef60b2c7afcb5c4173f3c635792b09349b1b653079aaa01e7712c7",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/ai/semantic-search.mdx"
+    },
+    "official-hono-supabase/supabase-ai-vector-columns.txt": {
+      "sha256": "ab7bf65224c1d9be3e17203ad6aa42dae4318a66d3a324f3769da9faa02fe6a6",
+      "expected": "ab7bf65224c1d9be3e17203ad6aa42dae4318a66d3a324f3769da9faa02fe6a6",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/ai/vector-columns.mdx"
+    },
+    "official-hono-supabase/supabase-ai-vector-indexes.txt": {
+      "sha256": "3c3dab77fc11bb2ee3bbeba1cfd3f92c2c67acdc72e256dcb652ef26a251b226",
+      "expected": "3c3dab77fc11bb2ee3bbeba1cfd3f92c2c67acdc72e256dcb652ef26a251b226",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/ai/vector-indexes.mdx"
+    },
+    "official-hono-supabase/supabase-ai-vector-indexes-hnsw-indexes.txt": {
+      "sha256": "28e93837d625dcf26d67b3e7692e1639dd1887ed098a39fa1b1d5e45baa2cde9",
+      "expected": "28e93837d625dcf26d67b3e7692e1639dd1887ed098a39fa1b1d5e45baa2cde9",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/ai/vector-indexes/hnsw-indexes.mdx"
+    },
+    "official-hono-supabase/supabase-ai-vector-indexes-ivf-indexes.txt": {
+      "sha256": "c87afc2071f7cf7b3d6d18180e823152293370c98821dff35def9b40d18ce116",
+      "expected": "c87afc2071f7cf7b3d6d18180e823152293370c98821dff35def9b40d18ce116",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/ai/vector-indexes/ivf-indexes.mdx"
+    },
+    "official-hono-supabase/supabase-api-automatic-retries-in-supabase-js.txt": {
+      "sha256": "3d3a4eefb72acb4c971e8f800366f9a26ab6d7fe030981b13dd92ad9a6402a5a",
+      "expected": "3d3a4eefb72acb4c971e8f800366f9a26ab6d7fe030981b13dd92ad9a6402a5a",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/api/automatic-retries-in-supabase-js.mdx"
+    },
+    "official-hono-supabase/supabase-api-handling-errors-in-supabase-js.txt": {
+      "sha256": "abf029ef988b0dce062867b9fe54fb9505d3e6bffd196ce9c871e52a0ff8e11b",
+      "expected": "abf029ef988b0dce062867b9fe54fb9505d3e6bffd196ce9c871e52a0ff8e11b",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/api/handling-errors-in-supabase-js.mdx"
+    },
+    "official-hono-supabase/supabase-api-securing-your-api.txt": {
+      "sha256": "36dd87275b5b6b5cf89a9d58b580ab372bfbc3c86ce936d7a0df634bd7239047",
+      "expected": "36dd87275b5b6b5cf89a9d58b580ab372bfbc3c86ce936d7a0df634bd7239047",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/api/securing-your-api.mdx"
+    },
+    "official-hono-supabase/supabase-auth-auth-hooks.txt": {
+      "sha256": "040a6656c06f12b2d11e3cf10b53562dd6d036ae8dfccdf3ea0127217d0781d9",
+      "expected": "040a6656c06f12b2d11e3cf10b53562dd6d036ae8dfccdf3ea0127217d0781d9",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/auth/auth-hooks.mdx"
+    },
+    "official-hono-supabase/supabase-auth-auth-hooks-send-email-hook.txt": {
+      "sha256": "5e32e9707746680abcc5715160a1cd9d6794ce2c83748064212d0b50ff41ac71",
+      "expected": "5e32e9707746680abcc5715160a1cd9d6794ce2c83748064212d0b50ff41ac71",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/auth/auth-hooks/send-email-hook.mdx"
+    },
+    "official-hono-supabase/supabase-auth-jwts.txt": {
+      "sha256": "d75738498c31d82a0577e338c361fa85723e5ade31c8921730d8895dfc29a8c0",
+      "expected": "d75738498c31d82a0577e338c361fa85723e5ade31c8921730d8895dfc29a8c0",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/auth/jwts.mdx"
+    },
+    "official-hono-supabase/supabase-auth-managing-user-data.txt": {
+      "sha256": "24faed5a695f45e0f2c1feb4c402746ec2b934a5f9c239048392fa608e2950ed",
+      "expected": "24faed5a695f45e0f2c1feb4c402746ec2b934a5f9c239048392fa608e2950ed",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/auth/managing-user-data.mdx"
+    },
+    "official-hono-supabase/supabase-auth-server-side-advanced-guide.txt": {
+      "sha256": "3f392b0394c8098d3dfa40b527fc96731dc153a763fff539eb6df9ae17f1ec8c",
+      "expected": "3f392b0394c8098d3dfa40b527fc96731dc153a763fff539eb6df9ae17f1ec8c",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/auth/server-side/advanced-guide.mdx"
+    },
+    "official-hono-supabase/supabase-auth-server-side-creating-a-client.txt": {
+      "sha256": "d2e06c960f87a730fe02fa83f47dc2d646a079cdd0631e88ef98cf652d7f7e07",
+      "expected": "d2e06c960f87a730fe02fa83f47dc2d646a079cdd0631e88ef98cf652d7f7e07",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/auth/server-side/creating-a-client.mdx"
+    },
+    "official-hono-supabase/supabase-auth-server-side-migrating-to-ssr-from-auth-helpers.txt": {
+      "sha256": "cf46c44b9241bf5dfae9d4183c92bc59934f1ee4592508984bcada7c2bcd2283",
+      "expected": "cf46c44b9241bf5dfae9d4183c92bc59934f1ee4592508984bcada7c2bcd2283",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/auth/server-side/migrating-to-ssr-from-auth-helpers.mdx"
+    },
+    "official-hono-supabase/supabase-auth-sessions.txt": {
+      "sha256": "3788d1eafe730ce0fa519c2479d56fd0abc065bb2fc8a51e4993800054a728f8",
+      "expected": "3788d1eafe730ce0fa519c2479d56fd0abc065bb2fc8a51e4993800054a728f8",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/auth/sessions.mdx"
+    },
+    "official-hono-supabase/supabase-cli-getting-started.txt": {
+      "sha256": "f6e1674c384b4c259655274f5ba0e450707afee85742935cbc80eba4add3483c",
+      "expected": "f6e1674c384b4c259655274f5ba0e450707afee85742935cbc80eba4add3483c",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/local-development/cli/getting-started.mdx"
+    },
+    "official-hono-supabase/supabase-database-connecting-to-postgres.txt": {
+      "sha256": "64a434040c8cf46a408118a4faae8e132cb0124f3f44ecca5b074b7326fa3779",
+      "expected": "64a434040c8cf46a408118a4faae8e132cb0124f3f44ecca5b074b7326fa3779",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/connecting-to-postgres.mdx"
+    },
+    "official-hono-supabase/supabase-database-extensions-pg_net.txt": {
+      "sha256": "978bd657fdde8d8a18bd59d4b5e2b2d4a3edbceb8f1ee86a0aeb88d658d660d7",
+      "expected": "978bd657fdde8d8a18bd59d4b5e2b2d4a3edbceb8f1ee86a0aeb88d658d660d7",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/extensions/pg_net.mdx"
+    },
+    "official-hono-supabase/supabase-database-functions.txt": {
+      "sha256": "461607ff1bf44cd88e7e5f4d48f59723e64c336f8fc6e649907b045ba9874e99",
+      "expected": "461607ff1bf44cd88e7e5f4d48f59723e64c336f8fc6e649907b045ba9874e99",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/functions.mdx"
+    },
+    "official-hono-supabase/supabase-database-joins-and-nesting.txt": {
+      "sha256": "bbf1ddb88090d51375f66502ae94462043506e405dc6c53a62ba9fa2a1807bb3",
+      "expected": "bbf1ddb88090d51375f66502ae94462043506e405dc6c53a62ba9fa2a1807bb3",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/joins-and-nesting.mdx"
+    },
+    "official-hono-supabase/supabase-database-postgres-roles.txt": {
+      "sha256": "36888ac5dbd0a9e2648634b3267063b2aa8b9f754c9ac6a2f5036256aff7bc49",
+      "expected": "36888ac5dbd0a9e2648634b3267063b2aa8b9f754c9ac6a2f5036256aff7bc49",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/postgres/roles.mdx"
+    },
+    "official-hono-supabase/supabase-database-postgres-triggers.txt": {
+      "sha256": "79c1abde3004262e86a52fd0de2dfe2772b07edeb95a1cedb84ef0813cc61a3e",
+      "expected": "79c1abde3004262e86a52fd0de2dfe2772b07edeb95a1cedb84ef0813cc61a3e",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/postgres/triggers.mdx"
+    },
+    "official-hono-supabase/supabase-database-vault.txt": {
+      "sha256": "40b26d1a5f3d1aea4117b04449542420ed2d08bf5cec3574884c15671f7828c5",
+      "expected": "40b26d1a5f3d1aea4117b04449542420ed2d08bf5cec3574884c15671f7828c5",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/vault.mdx"
+    },
+    "official-hono-supabase/supabase-database-webhooks.txt": {
+      "sha256": "06e516d842a9fca7918f47ae53271799388ced17dc910cb4f0954c5d98b2aa9f",
+      "expected": "06e516d842a9fca7918f47ae53271799388ced17dc910cb4f0954c5d98b2aa9f",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/webhooks.mdx"
+    },
+    "official-hono-supabase/supabase-functions-auth.txt": {
+      "sha256": "8dcc6baf373e8ea149c77cb831d419f16a432e41b0c52b55db797fe30db58891",
+      "expected": "8dcc6baf373e8ea149c77cb831d419f16a432e41b0c52b55db797fe30db58891",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/functions/auth.mdx"
+    },
+    "official-hono-supabase/supabase-functions-auth-headers.txt": {
+      "sha256": "043bc110866b7e1cf8660cfb605b04145045d543dabfa99990ec3c2b1a3e69dc",
+      "expected": "043bc110866b7e1cf8660cfb605b04145045d543dabfa99990ec3c2b1a3e69dc",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/functions/auth-headers.mdx"
+    },
+    "official-hono-supabase/supabase-functions-background-tasks.txt": {
+      "sha256": "f03522b07dcc38cf897a03c29d695df73eacaac5f5b4f92b03c38287866a5aa5",
+      "expected": "f03522b07dcc38cf897a03c29d695df73eacaac5f5b4f92b03c38287866a5aa5",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/functions/background-tasks.mdx"
+    },
+    "official-hono-supabase/supabase-functions-dependencies.txt": {
+      "sha256": "e90892c46a39bf329093a5f7b38e3dc5e79ce5be43ab9b4df8f483a14f79209e",
+      "expected": "e90892c46a39bf329093a5f7b38e3dc5e79ce5be43ab9b4df8f483a14f79209e",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/functions/dependencies.mdx"
+    },
+    "official-hono-supabase/supabase-functions-ephemeral-storage.txt": {
+      "sha256": "2684c592e5ddd4fdbe4f823a9042a64d695ca41056cd40f46ddeaeb4e98f9418",
+      "expected": "2684c592e5ddd4fdbe4f823a9042a64d695ca41056cd40f46ddeaeb4e98f9418",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/functions/ephemeral-storage.mdx"
+    },
+    "official-hono-supabase/supabase-functions-limits.txt": {
+      "sha256": "b3f9b68ddb7fcdae2957c9f0ae549d43057bfad5530b01928d1fe9a64a798c47",
+      "expected": "b3f9b68ddb7fcdae2957c9f0ae549d43057bfad5530b01928d1fe9a64a798c47",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/functions/limits.mdx"
+    },
+    "official-hono-supabase/supabase-js-release.txt": {
+      "sha256": "5bf63d71f297121da72d1d3d7f13e7e246e4b55f8524755b8b16d41ca554e18d",
+      "expected": "5bf63d71f297121da72d1d3d7f13e7e246e4b55f8524755b8b16d41ca554e18d",
+      "url": "https://api.github.com/repos/supabase/supabase-js/releases/latest"
+    },
+    "official-hono-supabase/supabase-local-development-declarative-database-schemas.txt": {
+      "sha256": "3bd0a24037532ca326d471697988a37b13d95b3f6ae3a5a70aeb091971b827f2",
+      "expected": "3bd0a24037532ca326d471697988a37b13d95b3f6ae3a5a70aeb091971b827f2",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/local-development/declarative-database-schemas.mdx"
+    },
+    "official-hono-supabase/supabase-realtime-authorization.txt": {
+      "sha256": "1b9fefe25c6e1870ea242d877e5f6d66469305954097684e414316d345d55c70",
+      "expected": "1b9fefe25c6e1870ea242d877e5f6d66469305954097684e414316d345d55c70",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/realtime/authorization.mdx"
+    },
+    "official-hono-supabase/supabase-realtime-postgres-changes.txt": {
+      "sha256": "c3928e6c7371f67dd911e202bcfe8e8891ef53613d13085fce83e2447edb8bf5",
+      "expected": "c3928e6c7371f67dd911e202bcfe8e8891ef53613d13085fce83e2447edb8bf5",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/realtime/postgres-changes.mdx"
+    },
+    "official-hono-supabase/supabase-realtime-presence.txt": {
+      "sha256": "46265a84b17eb6969faecd500e252b3ca8c7f29705634a40cb59433d72b24896",
+      "expected": "46265a84b17eb6969faecd500e252b3ca8c7f29705634a40cb59433d72b24896",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/realtime/presence.mdx"
+    },
+    "official-hono-supabase/supabase-realtime-subscribing-to-database-changes.txt": {
+      "sha256": "5322d6c71cae55c91969acf9f659b6334141458c5f6cf42164a8f1db30c1f9f8",
+      "expected": "5322d6c71cae55c91969acf9f659b6334141458c5f6cf42164a8f1db30c1f9f8",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/realtime/subscribing-to-database-changes.mdx"
+    },
+    "official-hono-supabase/supabase-storage-security-access-control.txt": {
+      "sha256": "61409c2e6db3cc5071050978b5f8f785da18915eb647f8f2c1bf3c66b5f6844e",
+      "expected": "61409c2e6db3cc5071050978b5f8f785da18915eb647f8f2c1bf3c66b5f6844e",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/storage/security/access-control.mdx"
+    },
+    "official-hono-supabase/supabase-storage-serving-downloads.txt": {
+      "sha256": "5b29a7faab81245bbc1db5d501fc636f71328b56ae13226ce250e23e21b17093",
+      "expected": "5b29a7faab81245bbc1db5d501fc636f71328b56ae13226ce250e23e21b17093",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/storage/serving/downloads.mdx"
+    },
+    "official-hono-supabase/supabase-storage-uploads-standard-uploads.txt": {
+      "sha256": "30e8880a493925816efbb06ea3e8bca34f79a8259faca0b21a0a4ab579e41594",
+      "expected": "30e8880a493925816efbb06ea3e8bca34f79a8259faca0b21a0a4ab579e41594",
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/storage/uploads/standard-uploads.mdx"
+    },
+    "official-hono-supabase/sdk-filter-builder.txt": {
+      "sha256": "a1247c0dd4f57bc7621249e0ac96f3964baf74c6497005698ba72e09d5efdf08",
+      "expected": "a1247c0dd4f57bc7621249e0ac96f3964baf74c6497005698ba72e09d5efdf08",
+      "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/postgrest-js/src/PostgrestFilterBuilder.ts"
+    },
+    "remaining-hs-official/sync.command.ts": {
+      "sha256": "bd2b51efdf045eceb7d6079a3ef724930c03deebc2781044a7fb07fc2d6ccf78",
+      "expected": "bd2b51efdf045eceb7d6079a3ef724930c03deebc2781044a7fb07fc2d6ccf78",
+      "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/schema/declarative/sync/sync.command.ts"
+    },
+    "remaining-hs-official/sync.handler.ts": {
+      "sha256": "9409e36b5bbf5b3703030b943166b9adb7b9614d2a4edccf5e525aa9dda26849",
+      "expected": "9409e36b5bbf5b3703030b943166b9adb7b9614d2a4edccf5e525aa9dda26849",
+      "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/schema/declarative/sync/sync.handler.ts"
+    },
+    "remaining-hs-official/cli-legacy-diff.go": {
+      "sha256": "ccc7010bbd723efecdc58f721d2cfcdd57597c76581603cc946af6781530b922",
+      "expected": "ccc7010bbd723efecdc58f721d2cfcdd57597c76581603cc946af6781530b922",
+      "url": "https://raw.githubusercontent.com/supabase/cli/v2.39.2/internal/db/diff/diff.go"
+    },
+    "payload-official/getting-started--installation.md": {
+      "sha256": "5244f74613619f18ca27f02861fb0dc14aa2ba002ad5b79a6054b37da5e6f5d1",
+      "expected": "5244f74613619f18ca27f02861fb0dc14aa2ba002ad5b79a6054b37da5e6f5d1",
+      "url": "https://payloadcms.com/docs/getting-started/installation"
+    },
+    "payload-official/next-package.json": {
+      "sha256": "0c58631d5204441fcb405fcdaaad94547d31de72d8c2d359cdb0971d4e8f80ad",
+      "expected": "0c58631d5204441fcb405fcdaaad94547d31de72d8c2d359cdb0971d4e8f80ad",
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/next/package.json"
+    },
+    "payload-official/payload-package.json": {
+      "sha256": "67bfcd3925d485fc392cc88fc4111fdeb25525652199a3473ebc7ec364422623",
+      "expected": "67bfcd3925d485fc392cc88fc4111fdeb25525652199a3473ebc7ec364422623",
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/package.json"
+    },
+    "payload-official/npm-tags.json": {
+      "sha256": "a0932807b878ee13f1ce515595739bf251b2cea39367636f160816ae3b82d496",
+      "expected": "a0932807b878ee13f1ce515595739bf251b2cea39367636f160816ae3b82d496",
+      "url": "https://registry.npmjs.org/-/package/payload/dist-tags"
+    },
+    "payload-official/releases.json": {
+      "sha256": "20ddc37374fa5054416b263415a802418a79d2e00c7a1c551f5fee01e539a8cd",
+      "expected": "20ddc37374fa5054416b263415a802418a79d2e00c7a1c551f5fee01e539a8cd",
+      "url": "https://github.com/payloadcms/payload/releases/tag/v3.79.0"
+    },
+    "payload-official/local-api--access-control.md": {
+      "sha256": "4eb6397882894cf388356e32aacd13a338a167a3c10725e9712a58de1366273d",
+      "expected": "4eb6397882894cf388356e32aacd13a338a167a3c10725e9712a58de1366273d",
+      "url": "https://payloadcms.com/docs/local-api/access-control"
+    },
+    "payload-official/database--transactions.md": {
+      "sha256": "492b0c0f5f3fd494e0c6486f2f2ccba2d6628d8ad6273bdaa75ed4122f378074",
+      "expected": "492b0c0f5f3fd494e0c6486f2f2ccba2d6628d8ad6273bdaa75ed4122f378074",
+      "url": "https://payloadcms.com/docs/database/transactions"
+    },
+    "payload-official/database--sqlite.md": {
+      "sha256": "35cc2da9bbf8b7cb286b2b270048d796b433d835228265004cc18a8d131acfed",
+      "expected": "35cc2da9bbf8b7cb286b2b270048d796b433d835228265004cc18a8d131acfed",
+      "url": "https://payloadcms.com/docs/database/sqlite"
+    },
+    "payload-official/access-control--collections.md": {
+      "sha256": "95ec6113d3de5d0653d84c4af97163c66c101d9f4fa52f4aab98e62d579683f4",
+      "expected": "95ec6113d3de5d0653d84c4af97163c66c101d9f4fa52f4aab98e62d579683f4",
+      "url": "https://payloadcms.com/docs/access-control/collections"
+    },
+    "payload-official/v3.88.0--packages--payload--src--collections--operations--create.ts": {
+      "sha256": "f69e26fe299bd56f6c73394b3a90f0ff060655d30be82153fde3b5334afa85c5",
+      "expected": "f69e26fe299bd56f6c73394b3a90f0ff060655d30be82153fde3b5334afa85c5",
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/collections/operations/create.ts"
+    },
+    "payload-official/access-control--fields.md": {
+      "sha256": "581e5bfef2f64e665c742737baaa765b0ce8f3a0995296439e1f786cd1ed6f8a",
+      "expected": "581e5bfef2f64e665c742737baaa765b0ce8f3a0995296439e1f786cd1ed6f8a",
+      "url": "https://payloadcms.com/docs/access-control/fields"
+    },
+    "payload-official/authentication--overview.md": {
+      "sha256": "369479c567f5747257dd7ab9be3cdd83b2ba55bc25ec6cfb3548369333496877",
+      "expected": "369479c567f5747257dd7ab9be3cdd83b2ba55bc25ec6cfb3548369333496877",
+      "url": "https://payloadcms.com/docs/authentication/overview"
+    },
+    "payload-official/access-control--globals.md": {
+      "sha256": "7594a96d49440e9ef6345988a36b62a73d9492c37daa440f5c8a06bfe418dd81",
+      "expected": "7594a96d49440e9ef6345988a36b62a73d9492c37daa440f5c8a06bfe418dd81",
+      "url": "https://payloadcms.com/docs/access-control/globals"
+    },
+    "payload-official/authentication--api-keys.md": {
+      "sha256": "034606b7b8487fec5f34ab8074dc9575349c1eb2a2cb34c206d508124d41df59",
+      "expected": "034606b7b8487fec5f34ab8074dc9575349c1eb2a2cb34c206d508124d41df59",
+      "url": "https://payloadcms.com/docs/authentication/api-keys"
+    },
+    "payload-official/v3.88.0--packages--payload--src--auth--executeAccess.ts": {
+      "sha256": "75b6d832d294ee376c7472612b1f652b9a81e2d8d4e5f10d1d0d982ee2e2fe31",
+      "expected": "75b6d832d294ee376c7472612b1f652b9a81e2d8d4e5f10d1d0d982ee2e2fe31",
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/auth/executeAccess.ts"
+    },
+    "payload-official/local-api--overview.md": {
+      "sha256": "0fa2991a76ff548c80bf51a3f2e43fde2b8c1d9413d776594c6127d52e353b76",
+      "expected": "0fa2991a76ff548c80bf51a3f2e43fde2b8c1d9413d776594c6127d52e353b76",
+      "url": "https://payloadcms.com/docs/local-api/overview"
+    },
+    "payload-official/v3.88.0--packages--payload--src--collections--operations--count.ts": {
+      "sha256": "f4504be67573219c6efb192a4a6a3b5d3ac933af1c80e2b226572130d177ba46",
+      "expected": "f4504be67573219c6efb192a4a6a3b5d3ac933af1c80e2b226572130d177ba46",
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/collections/operations/count.ts"
+    },
+    "payload-official/access-control--overview.md": {
+      "sha256": "fb3388187529cb43373883b0857859ad4bad3c57fc08f3cdcb9a26e56bbef003",
+      "expected": "fb3388187529cb43373883b0857859ad4bad3c57fc08f3cdcb9a26e56bbef003",
+      "url": "https://payloadcms.com/docs/access-control/overview"
+    },
+    "payload-official/v3.88.0--packages--payload--src--fields--config--types.ts": {
+      "sha256": "d6db5559351e95821bf55a5d6f5d46c54900f3b87db84d6f42ca34ff6aa4384f",
+      "expected": "d6db5559351e95821bf55a5d6f5d46c54900f3b87db84d6f42ca34ff6aa4384f",
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/fields/config/types.ts"
+    },
+    "payload-official/v3.88.0--packages--payload--src--collections--config--types.ts": {
+      "sha256": "23e95a48843a026d0c55cc0ab53d1e0e005d74bd8166da8f682fada539eb773c",
+      "expected": "23e95a48843a026d0c55cc0ab53d1e0e005d74bd8166da8f682fada539eb773c",
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/collections/config/types.ts"
+    },
+    "payload-official/v3.88.0--packages--payload--src--collections--operations--find.ts": {
+      "sha256": "3a4d205878af4f0432373e4a2aa09788e6dd422c9469350b8172f2a1b1cae55d",
+      "expected": "3a4d205878af4f0432373e4a2aa09788e6dd422c9469350b8172f2a1b1cae55d",
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/collections/operations/find.ts"
+    },
+    "payload-official/database--mongodb.md": {
+      "sha256": "a9747415cc88d1fb42e9c2f91bdf1f4d88d5620c46733b742fec90d591300adf",
+      "expected": "a9747415cc88d1fb42e9c2f91bdf1f4d88d5620c46733b742fec90d591300adf",
+      "url": "https://payloadcms.com/docs/database/mongodb"
+    },
+    "payload-official/database--postgres.md": {
+      "sha256": "005691a374b3dcc5c234339805aff5f71daa91c20516b649a022df421ec2b7c0",
+      "expected": "005691a374b3dcc5c234339805aff5f71daa91c20516b649a022df421ec2b7c0",
+      "url": "https://payloadcms.com/docs/database/postgres"
+    },
+    "payload-official/database--migrations.md": {
+      "sha256": "1c43b7169713421e878b050f012718f489df9c50b42f4223c3b931dc16721c7c",
+      "expected": "1c43b7169713421e878b050f012718f489df9c50b42f4223c3b931dc16721c7c",
+      "url": "https://payloadcms.com/docs/database/migrations"
+    },
+    "payload-official/v3.88.0--packages--payload--src--database--migrations--migrate.ts": {
+      "sha256": "fc4bd15b5a9a864d9bf01935a689efc23865b4e9728cab8139330485ad84e34e",
+      "expected": "fc4bd15b5a9a864d9bf01935a689efc23865b4e9728cab8139330485ad84e34e",
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/database/migrations/migrate.ts"
+    },
+    "payload-official/upload--storage-adapters.md": {
+      "sha256": "d95199a68c7b363a76a51bdd44611c915ad328bce2bc25269159799a84c109ab",
+      "expected": "d95199a68c7b363a76a51bdd44611c915ad328bce2bc25269159799a84c109ab",
+      "url": "https://payloadcms.com/docs/upload/storage-adapters"
+    },
+    "payload-official/v3.88.0--packages--storage-r2--src--index.ts": {
+      "sha256": "5aa19945c0e590279f5f476f4c9483810b5336e6239d0984656f9a2766f3e988",
+      "expected": "5aa19945c0e590279f5f476f4c9483810b5336e6239d0984656f9a2766f3e988",
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/storage-r2/src/index.ts"
+    },
+    "payload-official/v3.88.0--docs--migration-guide--overview.mdx": {
+      "sha256": "2219f1d1709c0ac7ad616d488399eda9f79a1131cad3091d2363fd40718365bd",
+      "expected": "2219f1d1709c0ac7ad616d488399eda9f79a1131cad3091d2363fd40718365bd",
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/docs/migration-guide/overview.mdx"
+    },
+    "payload-official/email--overview.md": {
+      "sha256": "53fa921565aca405496ebbfde6644bd93f89c19a49a6815197c75a6be024512c",
+      "expected": "53fa921565aca405496ebbfde6644bd93f89c19a49a6815197c75a6be024512c",
+      "url": "https://payloadcms.com/docs/email/overview"
+    },
+    "payload-official/authentication--operations.md": {
+      "sha256": "fa4a72eb1be4ce2008a347bdf0d7d0ad46e512536995e35b1066537e2ec754ce",
+      "expected": "fa4a72eb1be4ce2008a347bdf0d7d0ad46e512536995e35b1066537e2ec754ce",
+      "url": "https://payloadcms.com/docs/authentication/operations"
+    },
+    "payload-official/authentication--custom-strategies.md": {
+      "sha256": "82728a7b834bf08fe7f0d9520ae79fbaa93d3b3d1255a1316601220542c2a524",
+      "expected": "82728a7b834bf08fe7f0d9520ae79fbaa93d3b3d1255a1316601220542c2a524",
+      "url": "https://payloadcms.com/docs/authentication/custom-strategies"
+    },
+    "payload-official/jobs-queue--workflows.md": {
+      "sha256": "0324a11a433b192a34158a7f1fcb496ecc938b7cd74b2dacb6485cbb94b1174a",
+      "expected": "0324a11a433b192a34158a7f1fcb496ecc938b7cd74b2dacb6485cbb94b1174a",
+      "url": "https://payloadcms.com/docs/jobs-queue/workflows"
+    },
+    "payload-official/jobs-queue--queues.md": {
+      "sha256": "751f7e6471154ae3a380e3b9a39372037c21ba5f2826902973988894113d1e69",
+      "expected": "751f7e6471154ae3a380e3b9a39372037c21ba5f2826902973988894113d1e69",
+      "url": "https://payloadcms.com/docs/jobs-queue/queues"
+    },
+    "payload-official/v3.88.0--packages--payload--src--queues--config--types--workflowTypes.ts": {
+      "sha256": "c4f2772cb3d449a8a729ba287772609fa6830744556e2bf299ae63e82041c7c5",
+      "expected": "c4f2772cb3d449a8a729ba287772609fa6830744556e2bf299ae63e82041c7c5",
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/queues/config/types/workflowTypes.ts"
+    },
+    "payload-official/rest-api--overview.md": {
+      "sha256": "d0d3a46f66cddade9d714808c9921fa46aa46751f5eba324ec9a9fdc83c2e217",
+      "expected": "d0d3a46f66cddade9d714808c9921fa46aa46751f5eba324ec9a9fdc83c2e217",
+      "url": "https://payloadcms.com/docs/rest-api/overview"
+    },
+    "payload-official/custom-components--overview.md": {
+      "sha256": "7041873c78ce244dbfaa8aefc391cdb4a5c6f0aca419df905a6b5a9acbda8609",
+      "expected": "7041873c78ce244dbfaa8aefc391cdb4a5c6f0aca419df905a6b5a9acbda8609",
+      "url": "https://payloadcms.com/docs/custom-components/overview"
+    },
+    "payload-official/admin--react-hooks.md": {
+      "sha256": "a368239e412cf947c2bb5fc9967705ae43d0bd973c3e752d18e64e69c4d40753",
+      "expected": "a368239e412cf947c2bb5fc9967705ae43d0bd973c3e752d18e64e69c4d40753",
+      "url": "https://payloadcms.com/docs/admin/react-hooks"
+    },
+    "payload-official/v3.88.0--packages--next--src--templates--Default--index.tsx": {
+      "sha256": "84bf30470443979ef04ead4804a71d465786bb2ce3ce081a7fc9a7bea14f9ed0",
+      "expected": "84bf30470443979ef04ead4804a71d465786bb2ce3ce081a7fc9a7bea14f9ed0",
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/next/src/templates/Default/index.tsx"
+    },
+    "payload-official/plugins--overview.md": {
+      "sha256": "56fb345faad6674505dbb59f74cf316ddf38a011fee11c41e1a03cc811bf1144",
+      "expected": "56fb345faad6674505dbb59f74cf316ddf38a011fee11c41e1a03cc811bf1144",
+      "url": "https://payloadcms.com/docs/plugins/overview"
+    },
+    "payload-official/configuration--localization.md": {
+      "sha256": "c8f6468bd9f094d774d83389435dd58f45a28217c807c1cd4744176e308dfcd2",
+      "expected": "c8f6468bd9f094d774d83389435dd58f45a28217c807c1cd4744176e308dfcd2",
+      "url": "https://payloadcms.com/docs/configuration/localization"
+    },
+    "payload-official/typescript--overview.md": {
+      "sha256": "9f78691bbbd59e36a6560295275e8ffa43c6e3d6d5868ef1519a33bb0a15ad8a",
+      "expected": "9f78691bbbd59e36a6560295275e8ffa43c6e3d6d5868ef1519a33bb0a15ad8a",
+      "url": "https://payloadcms.com/docs/typescript/overview"
+    },
+    "payload-official/configuration--collections.md": {
+      "sha256": "e9f5758a5a0605ba6d1f746f75897a72fbde95704aedfaa2301f255a33c0f9df",
+      "expected": "e9f5758a5a0605ba6d1f746f75897a72fbde95704aedfaa2301f255a33c0f9df",
+      "url": "https://payloadcms.com/docs/configuration/collections"
+    },
+    "payload-official/upload--overview.md": {
+      "sha256": "db835f60b68731bc0bf684185b1046c2fc55c912f55f25f9601dad25f43c8090",
+      "expected": "db835f60b68731bc0bf684185b1046c2fc55c912f55f25f9601dad25f43c8090",
+      "url": "https://payloadcms.com/docs/upload/overview"
+    },
+    "payload-official/versions--drafts.md": {
+      "sha256": "9f661e8c8dfa713bdb62c4fc99fe93b93db2492755fe2c223de1369ed28c3062",
+      "expected": "9f661e8c8dfa713bdb62c4fc99fe93b93db2492755fe2c223de1369ed28c3062",
+      "url": "https://payloadcms.com/docs/versions/drafts"
+    },
+    "payload-official/live-preview--overview.md": {
+      "sha256": "caeb8a2be68065a43ef88e107cb8bcb7f017892f9741eb53a40a9b13c64f66d4",
+      "expected": "caeb8a2be68065a43ef88e107cb8bcb7f017892f9741eb53a40a9b13c64f66d4",
+      "url": "https://payloadcms.com/docs/live-preview/overview"
+    },
+    "payload-official/v3.88.0--packages--payload--src--versions--baseFields.ts": {
+      "sha256": "cf47fb61fbc16662f8a8a30ceee1802a46338a2397fbc0c04790e3f018f0d5f1",
+      "expected": "cf47fb61fbc16662f8a8a30ceee1802a46338a2397fbc0c04790e3f018f0d5f1",
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/versions/baseFields.ts"
+    },
+    "payload-official/configuration--globals.md": {
+      "sha256": "369164dc9d24b07ce2fec2462e11978faaeb0b78054163c73a0547a205776b7d",
+      "expected": "369164dc9d24b07ce2fec2462e11978faaeb0b78054163c73a0547a205776b7d",
+      "url": "https://payloadcms.com/docs/configuration/globals"
+    },
+    "payload-official/v3.88.0--packages--payload--src--utilities--addDataAndFileToRequest.ts": {
+      "sha256": "b196e99ed70b97472cf06811c27217dff0cceb2a6e574c6752819bde2f21dd9a",
+      "expected": "b196e99ed70b97472cf06811c27217dff0cceb2a6e574c6752819bde2f21dd9a",
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/utilities/addDataAndFileToRequest.ts"
+    },
+    "payload-official/v3.88.0--packages--payload--src--utilities--addLocalesToRequest.ts": {
+      "sha256": "c3689ca7982246bcac61968d6d9648e51edc961a4dc1a522fa19ad5f5a80cfe7",
+      "expected": "c3689ca7982246bcac61968d6d9648e51edc961a4dc1a522fa19ad5f5a80cfe7",
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/utilities/addLocalesToRequest.ts"
+    },
+    "payload-official/fields--text.md": {
+      "sha256": "d37f07495b6a9e4f31ec083f592754a55190007475171c5d605fd89cea21d9bc",
+      "expected": "d37f07495b6a9e4f31ec083f592754a55190007475171c5d605fd89cea21d9bc",
+      "url": "https://payloadcms.com/docs/fields/text"
+    },
+    "payload-official/rich-text--official-features.md": {
+      "sha256": "e385de8cf1263f54a3570134e20f6782cf8d2dc89022ec27d2a322e1848dc540",
+      "expected": "e385de8cf1263f54a3570134e20f6782cf8d2dc89022ec27d2a322e1848dc540",
+      "url": "https://payloadcms.com/docs/rich-text/official-features"
+    },
+    "payload-official/v3.88.0--packages--payload--src--fields--baseFields--slug--index.ts": {
+      "sha256": "e7974da6e3b59a6b8ed802d86d980ac710541859006469f7dc2d4b0dfd6dfb31",
+      "expected": "e7974da6e3b59a6b8ed802d86d980ac710541859006469f7dc2d4b0dfd6dfb31",
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/fields/baseFields/slug/index.ts"
+    },
+    "payload-official/fields--relationship.md": {
+      "sha256": "c659ece846ea1a5634d8cef7109b9654a14279ba9b491205921624e96959af7e",
+      "expected": "c659ece846ea1a5634d8cef7109b9654a14279ba9b491205921624e96959af7e",
+      "url": "https://payloadcms.com/docs/fields/relationship"
+    },
+    "payload-official/fields--array.md": {
+      "sha256": "d0efd9ee953a6624005d81124cd72b0af6b62dbbc476601b3350dc623897db9f",
+      "expected": "d0efd9ee953a6624005d81124cd72b0af6b62dbbc476601b3350dc623897db9f",
+      "url": "https://payloadcms.com/docs/fields/array"
+    },
+    "payload-official/fields--blocks.md": {
+      "sha256": "1cd22d44221cf33ffbbfe52e0facf344cd11752acb77cb5089e78362e8aefa3e",
+      "expected": "1cd22d44221cf33ffbbfe52e0facf344cd11752acb77cb5089e78362e8aefa3e",
+      "url": "https://payloadcms.com/docs/fields/blocks"
+    },
+    "payload-official/fields--select.md": {
+      "sha256": "deee5892b076c4f867a47e35a9f3ecfa998b8689eca74dc778f5ad7d7d4f1b56",
+      "expected": "deee5892b076c4f867a47e35a9f3ecfa998b8689eca74dc778f5ad7d7d4f1b56",
+      "url": "https://payloadcms.com/docs/fields/select"
+    },
+    "payload-official/fields--upload.md": {
+      "sha256": "6b37505d420b82d0b13b614e948e26056a256e1fd8a0fd977d46787d62be3f51",
+      "expected": "6b37505d420b82d0b13b614e948e26056a256e1fd8a0fd977d46787d62be3f51",
+      "url": "https://payloadcms.com/docs/fields/upload"
+    },
+    "payload-official/fields--point.md": {
+      "sha256": "dc7f5ee3da73392e2a5a04a533a626c3f00be09d74b4a47a5d2e698a5305b034",
+      "expected": "dc7f5ee3da73392e2a5a04a533a626c3f00be09d74b4a47a5d2e698a5305b034",
+      "url": "https://payloadcms.com/docs/fields/point"
+    },
+    "payload-official/queries--overview.md": {
+      "sha256": "30df9812f8238106204fa1c738b3b97c0c405c595c6e01b1fb18cb4273e30477",
+      "expected": "30df9812f8238106204fa1c738b3b97c0c405c595c6e01b1fb18cb4273e30477",
+      "url": "https://payloadcms.com/docs/queries/overview"
+    },
+    "payload-official/fields--join.md": {
+      "sha256": "a4c788f69cea4291938aa38786ad3cb248f18c547677097b06a2ed6226e38609",
+      "expected": "a4c788f69cea4291938aa38786ad3cb248f18c547677097b06a2ed6226e38609",
+      "url": "https://payloadcms.com/docs/fields/join"
+    },
+    "payload-official/fields--overview.md": {
+      "sha256": "cba5e7ab99b33066e795e42f795e5d19fc617a85554450452a60698b9473e04c",
+      "expected": "cba5e7ab99b33066e795e42f795e5d19fc617a85554450452a60698b9473e04c",
+      "url": "https://payloadcms.com/docs/fields/overview"
+    },
+    "payload-official/fields--radio.md": {
+      "sha256": "73f6133237a3ebfff1a90b427ca7a4af1c74ef85b5595ce1b5d5fb47e9bd56a7",
+      "expected": "73f6133237a3ebfff1a90b427ca7a4af1c74ef85b5595ce1b5d5fb47e9bd56a7",
+      "url": "https://payloadcms.com/docs/fields/radio"
+    },
+    "payload-official/fields--row.md": {
+      "sha256": "685c51c09ac4cc411c839c2cb45475d08bf539962ed5d36c4bcfcc6cdb608a42",
+      "expected": "685c51c09ac4cc411c839c2cb45475d08bf539962ed5d36c4bcfcc6cdb608a42",
+      "url": "https://payloadcms.com/docs/fields/row"
+    },
+    "payload-official/fields--collapsible.md": {
+      "sha256": "9465de5492f936e518ce6f41b1185cac93dae08ba2aa16fba7b763dc4e6c161f",
+      "expected": "9465de5492f936e518ce6f41b1185cac93dae08ba2aa16fba7b763dc4e6c161f",
+      "url": "https://payloadcms.com/docs/fields/collapsible"
+    },
+    "payload-official/fields--ui.md": {
+      "sha256": "833e610a70d27f79c913aa41d86a7728a5652baf93407a01c9f00bda098645ec",
+      "expected": "833e610a70d27f79c913aa41d86a7728a5652baf93407a01c9f00bda098645ec",
+      "url": "https://payloadcms.com/docs/fields/ui"
+    },
+    "payload-official/fields--tabs.md": {
+      "sha256": "3e835a0b4f7b240803bfcc1d001a9be30a04e38a7ccf075213a46b17dd4953a7",
+      "expected": "3e835a0b4f7b240803bfcc1d001a9be30a04e38a7ccf075213a46b17dd4953a7",
+      "url": "https://payloadcms.com/docs/fields/tabs"
+    },
+    "payload-official/fields--group.md": {
+      "sha256": "a9177c66c0d300d8f67bdf97e625278ca8c1f16781a9edd36f3247b7d07f20c7",
+      "expected": "a9177c66c0d300d8f67bdf97e625278ca8c1f16781a9edd36f3247b7d07f20c7",
+      "url": "https://payloadcms.com/docs/fields/group"
+    },
+    "payload-official/hooks--overview.md": {
+      "sha256": "d8c675b0bd5fc42bbfb08cd40b4e727bb361a23152f02f81fc657c0892f832b8",
+      "expected": "d8c675b0bd5fc42bbfb08cd40b4e727bb361a23152f02f81fc657c0892f832b8",
+      "url": "https://payloadcms.com/docs/hooks/overview"
+    },
+    "payload-official/hooks--collections.md": {
+      "sha256": "57f5c7f521d5b6aa640880e42dd351e4979e5fa7783e31fc998ab32f408a0d8e",
+      "expected": "57f5c7f521d5b6aa640880e42dd351e4979e5fa7783e31fc998ab32f408a0d8e",
+      "url": "https://payloadcms.com/docs/hooks/collections"
+    },
+    "payload-official/hooks--fields.md": {
+      "sha256": "75ff7c8b899f151f19195e77a01de74b24aaf70ae4057c67522d45d9ca08ac57",
+      "expected": "75ff7c8b899f151f19195e77a01de74b24aaf70ae4057c67522d45d9ca08ac57",
+      "url": "https://payloadcms.com/docs/hooks/fields"
+    },
+    "payload-official/hooks--context.md": {
+      "sha256": "b814e634aca515d6730ea83152c0732a516edd8e2de48fa0fbc3d3748e92934c",
+      "expected": "b814e634aca515d6730ea83152c0732a516edd8e2de48fa0fbc3d3748e92934c",
+      "url": "https://payloadcms.com/docs/hooks/context"
+    },
+    "payload-official/plugins--build-your-own.md": {
+      "sha256": "1588364634943c12ab876808008457c33aac71e30c826520ec8e601151fdca4d",
+      "expected": "1588364634943c12ab876808008457c33aac71e30c826520ec8e601151fdca4d",
+      "url": "https://payloadcms.com/docs/plugins/build-your-own"
+    },
+    "payload-official/v3.88.0--templates--plugin--package.json": {
+      "sha256": "cdeb50bfc6b26c1350a67b33c1b656aa33d6f8fde755407223cdb926e7373370",
+      "expected": "cdeb50bfc6b26c1350a67b33c1b656aa33d6f8fde755407223cdb926e7373370",
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/templates/plugin/package.json"
+    },
+    "payload-official/plugins--plugin-api.md": {
+      "sha256": "5a64936a08c46c0e00c3cf9e2dfd9f36223b671cd7421fe49e00acca6a9bf8c1",
+      "expected": "5a64936a08c46c0e00c3cf9e2dfd9f36223b671cd7421fe49e00acca6a9bf8c1",
+      "url": "https://payloadcms.com/docs/plugins/plugin-api"
+    },
+    "payload-official/v3.88.0--packages--payload--src--config--types.ts": {
+      "sha256": "5261256d500fb544d9f9aeca7ff5cd41979486be36cb2ca2fe1cf7da1babe02c",
+      "expected": "5261256d500fb544d9f9aeca7ff5cd41979486be36cb2ca2fe1cf7da1babe02c",
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/config/types.ts"
+    },
+    "payload-official/v3.88.0--packages--plugin-multi-tenant--src--index.ts": {
+      "sha256": "2a2c17b60486593f80801d5e8fc13896f92274e3eab858f0446c87d66ac1e737",
+      "expected": "2a2c17b60486593f80801d5e8fc13896f92274e3eab858f0446c87d66ac1e737",
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/plugin-multi-tenant/src/index.ts"
+    },
+    "payload-official/custom-components--custom-providers.md": {
+      "sha256": "169ede1adede6126e211979e8242b70081fcf86611e6a270dd291c3660401600",
+      "expected": "169ede1adede6126e211979e8242b70081fcf86611e6a270dd291c3660401600",
+      "url": "https://payloadcms.com/docs/custom-components/custom-providers"
+    },
+    "payload-official/queries--pagination.md": {
+      "sha256": "5a347d10687215b537f6b00e6ca3bd8eec28daabb7641af617ca29dd775c7efd",
+      "expected": "5a347d10687215b537f6b00e6ca3bd8eec28daabb7641af617ca29dd775c7efd",
+      "url": "https://payloadcms.com/docs/queries/pagination"
+    },
+    "payload-official/queries--depth.md": {
+      "sha256": "4d9d6fa79013a7e730c67f5b14be738ce2bb70967ef7042fb17e045591d92fde",
+      "expected": "4d9d6fa79013a7e730c67f5b14be738ce2bb70967ef7042fb17e045591d92fde",
+      "url": "https://payloadcms.com/docs/queries/depth"
+    },
+    "payload-official/graphql--overview.md": {
+      "sha256": "95f759c780180bc15ebf5edf5aabf386c5961f78343aaf9ab018182d209d35d0",
+      "expected": "95f759c780180bc15ebf5edf5aabf386c5961f78343aaf9ab018182d209d35d0",
+      "url": "https://payloadcms.com/docs/graphql/overview"
+    },
+    "payload-official/local-api--outside-nextjs.md": {
+      "sha256": "a267480f8df95bbbe45101c45a772de2dc9b157db49115d7b16497ac167e9922",
+      "expected": "a267480f8df95bbbe45101c45a772de2dc9b157db49115d7b16497ac167e9922",
+      "url": "https://payloadcms.com/docs/local-api/outside-nextjs"
+    },
+    "payload-official/fields--textarea.md": {
+      "sha256": "1f0d6a625188d93024c19414fafb3b51dda9cbc958e461c871c3e579c7a56857",
+      "expected": "1f0d6a625188d93024c19414fafb3b51dda9cbc958e461c871c3e579c7a56857",
+      "url": "https://payloadcms.com/docs/fields/textarea"
+    },
+    "payload-official/fields--number.md": {
+      "sha256": "664d7c40955347957770aa0349901cdefacaa0be874031970a8eb70265de80e9",
+      "expected": "664d7c40955347957770aa0349901cdefacaa0be874031970a8eb70265de80e9",
+      "url": "https://payloadcms.com/docs/fields/number"
+    },
+    "payload-official/fields--email.md": {
+      "sha256": "e9b55f2c13aaae7bb7d5a46f43de1f5bd28bf49944304a79ec4603f29faf0ef8",
+      "expected": "e9b55f2c13aaae7bb7d5a46f43de1f5bd28bf49944304a79ec4603f29faf0ef8",
+      "url": "https://payloadcms.com/docs/fields/email"
+    },
+    "payload-official/fields--date.md": {
+      "sha256": "3899c525b44d96b772013e6e9dbd75f6023b81a7378f26b94010fe9c4ba87c0d",
+      "expected": "3899c525b44d96b772013e6e9dbd75f6023b81a7378f26b94010fe9c4ba87c0d",
+      "url": "https://payloadcms.com/docs/fields/date"
+    },
+    "payload-official/fields--checkbox.md": {
+      "sha256": "23bca92817d334a61071c455a9f2723072e9dc6cb9db8c8013c0cd52c9d70183",
+      "expected": "23bca92817d334a61071c455a9f2723072e9dc6cb9db8c8013c0cd52c9d70183",
+      "url": "https://payloadcms.com/docs/fields/checkbox"
+    },
+    "payload-official/fields--rich-text.md": {
+      "sha256": "a89928d474644355001001c867103f41ebc5f13bd9276cd61fe64bc5760b4623",
+      "expected": "a89928d474644355001001c867103f41ebc5f13bd9276cd61fe64bc5760b4623",
+      "url": "https://payloadcms.com/docs/fields/rich-text"
+    },
+    "payload-official/rich-text--converting-html.md": {
+      "sha256": "bdc67c1a76fadb688eb2aedd83b17d52867fa8b4a012835907a4c07d120d408a",
+      "expected": "bdc67c1a76fadb688eb2aedd83b17d52867fa8b4a012835907a4c07d120d408a",
+      "url": "https://payloadcms.com/docs/rich-text/converting-html"
+    },
+    "payload-official/rich-text--converting-markdown.md": {
+      "sha256": "bb3a5c69018448c754f9ec3487cc9bb1f3c2fb3761ccacac3e77fb96598ffc97",
+      "expected": "bb3a5c69018448c754f9ec3487cc9bb1f3c2fb3761ccacac3e77fb96598ffc97",
+      "url": "https://payloadcms.com/docs/rich-text/converting-markdown"
+    },
+    "payload-official/rich-text--migration.md": {
+      "sha256": "c0379a96fc3aab01e100fa7f14c54580336bec135139eba5a5a1c14e552046ee",
+      "expected": "c0379a96fc3aab01e100fa7f14c54580336bec135139eba5a5a1c14e552046ee",
+      "url": "https://payloadcms.com/docs/rich-text/migration"
+    },
+    "payload-official/fields--json.md": {
+      "sha256": "12eea389043f67df6918b93846537ddd73c1d945542506a4d20ca885397a3c0e",
+      "expected": "12eea389043f67df6918b93846537ddd73c1d945542506a4d20ca885397a3c0e",
+      "url": "https://payloadcms.com/docs/fields/json"
+    },
+    "payload-official/fields--code.md": {
+      "sha256": "199a785fc91cab6909396a39879276b9dcd50679c9d610e26d3816983bd2940b",
+      "expected": "199a785fc91cab6909396a39879276b9dcd50679c9d610e26d3816983bd2940b",
+      "url": "https://payloadcms.com/docs/fields/code"
+    },
+    "payload-official/cms-wordpress-posts.txt": {
+      "sha256": "b2cc882c2637a7e0099a2d6d0465f9fbe1fc91739285c74eeb02c6ff5d4e4523",
+      "expected": "b2cc882c2637a7e0099a2d6d0465f9fbe1fc91739285c74eeb02c6ff5d4e4523",
+      "url": "https://developer.wordpress.org/rest-api/reference/posts/"
+    },
+    "payload-official/cms-wordpress-media.txt": {
+      "sha256": "f93711ec5786f0016e5dba624e18cccea1c75a9c62fff9b3c0c02b263ffed617",
+      "expected": "f93711ec5786f0016e5dba624e18cccea1c75a9c62fff9b3c0c02b263ffed617",
+      "url": "https://developer.wordpress.org/rest-api/reference/media/"
+    },
+    "payload-official/cms-strapi-models.txt": {
+      "sha256": "240cedfebeea72f776f21af780485f376d9495e000e6b0f8a953a015ba31a741",
+      "expected": "240cedfebeea72f776f21af780485f376d9495e000e6b0f8a953a015ba31a741",
+      "url": "https://docs.strapi.io/cms/backend-customization/models"
+    },
+    "payload-official/cms-strapi-rest.txt": {
+      "sha256": "0658274caf6645f0a3800cb87656afa32525a1909ac273a592088e33a81de89a",
+      "expected": "0658274caf6645f0a3800cb87656afa32525a1909ac273a592088e33a81de89a",
+      "url": "https://docs.strapi.io/cms/api/rest"
+    },
+    "payload-official/cms-sanity-schema.txt": {
+      "sha256": "8acdfd407d0aebb4df3da600672505833426c072faf492d61d4bd437ea771d34",
+      "expected": "8acdfd407d0aebb4df3da600672505833426c072faf492d61d4bd437ea771d34",
+      "url": "https://www.sanity.io/docs/apis-and-sdks/introduction-to-schemas"
+    },
+    "payload-official/cms-sanity-portable.txt": {
+      "sha256": "b3487850d29b252f9d506edf357c467133e37d94f0da59f708ffccc38917132a",
+      "expected": "b3487850d29b252f9d506edf357c467133e37d94f0da59f708ffccc38917132a",
+      "url": "https://www.sanity.io/docs/developer-guides/beginners-guide-to-portable-text"
+    }
+  },
+  "scope": "Read-only source/hash assessment; no compiler/runtime execution"
+}

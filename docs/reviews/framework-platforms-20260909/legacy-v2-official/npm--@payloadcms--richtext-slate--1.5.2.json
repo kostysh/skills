@@ -1,0 +1,26 @@
+{
+  "name": "@payloadcms/richtext-slate",
+  "version": "1.5.2",
+  "engines": null,
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "payload": "^2.3.0"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": null,
+  "bin": null,
+  "dist": {
+    "shasum": "3611923b7a1d62882a10b2df3508f98cb8a11dbf",
+    "tarball": "https://registry.npmjs.org/@payloadcms/richtext-slate/-/richtext-slate-1.5.2.tgz",
+    "fileCount": 300,
+    "integrity": "sha512-0rq9zgOhpPHO5kcFlajld3h5beww6jjYwHZH5sxgtuen3bz6pepIr3agg650R/aE1+sfez0NdpwoB0gb7FX03g==",
+    "signatures": [
+      {
+        "sig": "MEQCIGwPRBHC/gIBgmaqZ//9qlomCse1bv9MiehKVCH7SYUnAiA2N95Zf2doHcFjISV4aYaOct/zTdMQc/OAuTraaV/1tQ==",
+        "keyid": "SHA256:jl3bwswu80PjjokCgh0o2w5c2U4LhQAE57gj9cz1kzA"
+      }
+    ],
+    "unpackedSize": 566730
+  }
+}

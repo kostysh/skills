@@ -1,0 +1,17 @@
+{
+  "at": "2026-09-09T16:12:37.423303+00:00",
+  "trigger": "Candidate executor reported 20 false MD022/MD003 errors using staged template on existing YAML documents. Independent assessment pending.",
+  "templateHash": "df826293791608e940a32fb0d83263402182ffc5ac94b687b0f5386a3f8702db",
+  "pattern": "(^---\\s*$[^]*?^---\\s*$)(\\r\\n|\\r|\\n|$)",
+  "installedCLIHash": "1af3068addafcb9984558f85e099ea4c07e630b179df1dc309a8f7536cb1d838",
+  "installedConstructor": "\"frontMatter\": markdownlintOptions.frontMatter\n        ? new RegExp(markdownlintOptions.frontMatter, \"u\")\n        : undefined,\n      \"handleRuleFailures\": true,\n      markdownItFac",
+  "coordinatorProbe": {
+    "sample": "---\\ntitle: Sample\\n---\\n\\n# Sample\\n",
+    "originalPatternU": false,
+    "singleEscapePatternU": false,
+    "singleEscapePatternMU": true
+  },
+  "cause": "Template double escaping plus line anchors require multiline while installed CLI uses only u. Official README raw example not executable proof.",
+  "proposedCorrection": "Remove unnecessary frontMatter override and verify default handling through actual CLI with accepted original content and negative malformed-heading probe.",
+  "claimLimit": "No corrected runtime claim yet; preserve candidate snapshot and old trial exposure. Material correction invalidates template source verdict and needs bounded recheck."
+}

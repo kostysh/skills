@@ -1,0 +1,9 @@
+# Native CLI preflight
+
+Current2.117.0: actual --version, Docker29.6.2 version, db start, migration up --local, tracked docker exec SQL, declarative generate and no-change sync exit0. Final DB has exactly two accepted seed rows; one retained task DB remains. Other eight study services stopped with data retained.
+
+Initial failures: socket EACCES from host GID65534 vs actual mounted GID981; supervisor group fixed, no daemon policy change. Native current CLI classifies absence by message regex (remaining-hs-official/legacy-container-cli.ts152-173); 404 untracked changed only for containers to No such container. Native Docker network request explicitly had IPAM Driver=default with inert Options/Config; normalize only that case, custom choices remain denied. Docker client serialized MemorySwappiness=-1; this daemon-default sentinel is discarded; other nonzero values remain denied and MemorySwap stays Memory. Temporary diagnostic metadata removed. All14 fake tests pass on final source. Source unchanged from prior review except these compatibility deltas.
+
+No-change sync created/cleaned native shadows and returned no schema changes. Cache restore exceeded16MiB archive cap and CLI fell back to recreation successfully; no cap bypass. Actual three-container peak has not been sampled; source internal create inspection enforces limits, final retained DB was independently inspected with .75CPU/3GiB/cpuset28-31. State journal preserves one DB plus scoped network; no untracked cleanup allowed. CLI failure cleanup attempts prune and is denied; coordinator confirmed no leftover child at preparation end except intended DB. Legacy runtime not yet run.
+
+Assess final source delta, native boundary evidence and readiness for current-only isolated trial; do not issue full security/native legacy PASS.

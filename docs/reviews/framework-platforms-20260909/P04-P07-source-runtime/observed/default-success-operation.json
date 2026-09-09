@@ -1,0 +1,17 @@
+{
+  "transactionPresent": false,
+  "operationError": null,
+  "before": {
+    "inventory": [
+      {
+        "id": 1,
+        "sourceKey": "sku-1",
+        "stock": 10,
+        "updatedAt": "2026-09-09T13:59:40.454Z",
+        "createdAt": "2026-09-09T13:59:40.453Z"
+      }
+    ],
+    "orders": [],
+    "audit": []
+  }
+}

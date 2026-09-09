@@ -1,0 +1,122 @@
+{
+  "checkedAt": "2026-09-09T12:46:36.468279+00:00",
+  "scope": "Evidence-only bounded delta; no reruns, candidate changes or database access",
+  "manifestSha256": "94571ce4b3e4dd14a9732f4d77a7864b854c60985ceef7b4489271e7b29084c5",
+  "traces": {
+    "baseline_catalog_executor": {
+      "file": "raw-agent-traces/baseline_catalog_executor.jsonl",
+      "sha256": "45c8a2307e06591cda4f5836e3e8f08ff4b57ddd7fdbaca1b39caeaaa08ac987",
+      "toolEvents": 4,
+      "recordedTurnSettings": [
+        {
+          "turn_id": "01a0860e-8f50-7a11-b303-86aa22a757fc",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        }
+      ]
+    },
+    "baseline_catalog_captured_executor": {
+      "file": "raw-agent-traces/baseline_catalog_captured_executor.jsonl",
+      "sha256": "05fb9cac5f723d1872b0b7ccffc4fdb96ca3d049f7f4bab490e780ea53480d70",
+      "toolEvents": 4,
+      "recordedTurnSettings": [
+        {
+          "turn_id": "01a08614-288b-7ec3-91f9-a7ba299334f4",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        }
+      ]
+    },
+    "baseline_hs_runtime_executor": {
+      "file": "raw-agent-traces/baseline_hs_runtime_executor.jsonl",
+      "sha256": "30482f686b060c926ff2727ba331a64cf6bda74e52a8eeb1e8c9ef5970e947c1",
+      "toolEvents": 26,
+      "recordedTurnSettings": [
+        {
+          "turn_id": "01a0860d-2554-7701-bd2d-6ea66d20cd1e",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        }
+      ]
+    },
+    "baseline_hs_tech_executor": {
+      "file": "raw-agent-traces/baseline_hs_tech_executor.jsonl",
+      "sha256": "af2d4be838c5326a27f3a0df28ea16c492565daf89616bcf9dc341ae2414d584",
+      "toolEvents": 38,
+      "recordedTurnSettings": [
+        {
+          "turn_id": "01a0861e-d262-7211-9178-4280ead0c466",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        },
+        {
+          "turn_id": "01a08625-8ebe-7792-a4d6-c3f716f98140",
+          "model": "gpt-6-astra",
+          "effort": "high"
+        }
+      ]
+    }
+  },
+  "modelEvidence": "Recorded turn configuration only; backend identity and full context not attested",
+  "catalogOriginal": {
+    "acquisition": "bounded PASS",
+    "inputVisibleOutputExact": true,
+    "patchReconstructsFinalResult": true,
+    "verdict": "14 PASS / 1 FAIL C09; primary 15/15"
+  },
+  "catalogCaptured": {
+    "acquisition": "bounded PASS",
+    "publicCallsCorroborateRecorder": true,
+    "verdict": "14 PASS / 1 FAIL C09; primary 15/15"
+  },
+  "HS-runtime": {
+    "verdict": "FAIL; Hono bounded PASS; HS-S01 P2 unchanged",
+    "initialRootOutputTruncated": true,
+    "reconstructedFiles": {
+      "app/src/app.ts": {
+        "sha256": "45a7b95a01e31c1249ba45e8206513006b033e09a418ff1079385afde7ab9d50",
+        "publicInputsReconstructExactBytes": true
+      },
+      "app/migrations/001_documents.sql": {
+        "sha256": "e9ac063c4ffaa4949c9cd689ca6f8d5cb641437301a2cb64251fc0beb4b12cc6",
+        "publicInputsReconstructExactBytes": true
+      },
+      "app/DATA_AUTH_HANDOFF.md": {
+        "sha256": "15f1fd4e9a4aa0c79d161a948a97a53ba272bf1a23215099faebd9a59ac25db4",
+        "publicInputsReconstructExactBytes": true
+      },
+      "app/scripts/migrate.mjs": {
+        "sha256": "4f2ce8fa9c384b90a841201d0f31e88f25f3aec47723cf26af6f37c2128576ab",
+        "publicInputsReconstructExactBytes": true
+      },
+      "app/scripts/readback.mjs": {
+        "sha256": "31151bbc7a8d1459d254efef7c39b64fc1c854d22ae485666f1ed574f687cd72",
+        "publicInputsReconstructExactBytes": true
+      },
+      "app/scripts/test-runtime.mjs": {
+        "sha256": "cd6d4adc61279838b2aa66c00a063e25e9708cae6876e729245203b15567b72b",
+        "publicInputsReconstructExactBytes": true
+      },
+      "result.md": {
+        "sha256": "d841f1ddcb28656ad22b461aae48f75b63810a2b725aaef1ee334d6709ef5dab",
+        "publicInputsReconstructExactBytes": true
+      }
+    }
+  },
+  "HS-tech": {
+    "verdict": "bounded PASS Hono Bearer and SDK task",
+    "initialRootOutputTruncated": true,
+    "sevenStdinBodiesRecovered": true,
+    "initialRuntimeFailureRCA": "unresolved; finally assertion masks original exception; diagnostic run passed before Connection close edit",
+    "reconstructedFiles": {
+      "app/src/read-rows.ts": {
+        "sha256": "7b353478f146a4118607151c80549796bc489dd5a1663f4a40c064c45bd23129",
+        "publicInputsReconstructExactBytes": true
+      },
+      "app/test/transport.test.ts": {
+        "sha256": "7c5c01f2d1c4c51f31f41262caf18cacadaad5b11c15cb22200df2415c43ef63",
+        "publicInputsReconstructExactBytes": true
+      }
+    }
+  }
+}
