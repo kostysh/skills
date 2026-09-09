@@ -6,9 +6,9 @@ description: Design and implement visually strong web interfaces and
   Preserve authoritative behavior and existing systems, then verify rendered
   results.
 metadata:
-  source-version: 0.2.1
+  source-version: 0.2.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: a6443dc398b957f350e30e1e0fe2d45bdb31d386870ff31a0552e590e88d0df7
+  skillforge-source-hash: b0cd204ffae993d86c86d70922740c177ccb1d2038a71804827859cd104c14aa
 ---
 
 # frontend-design
@@ -18,7 +18,7 @@ metadata:
 1. Confirm that visual direction, design strategy, or translating design into a rendered interface is material to the request.
 2. Name the requested deliverable as strategy-only, design-artifact, runtime-implementation, or a combination.
 3. Inspect the authoritative brief, existing runtime, design system, component inventory, and assets that can govern the work before making visual decisions.
-4. Classify surface type, constraint profile, and primary visual engine; load only the optional references whose triggers match.
+4. Classify surface type, constraint profile, and primary visual engine; load only the references whose conditions match the task.
 5. Define the evidence required for the strongest honest completion status before building.
 
 ## When to use this skill
@@ -299,11 +299,13 @@ Match evidence to the requested deliverable and never use artifact-level or stru
 ### Status contract
 Report strategy-ready, artifact-ready, implemented-not-verified, verified, or blocked per deliverable; do not collapse several deliverables into the strongest status achieved by only one.
 
-## Optional references
-- [Anti Patterns](references/anti-patterns.md) — Read this when output feels generic, overdesigned, weakly grounded, or at risk of substrate-only closure.
+## Required active references
 - [Surface Modes](references/surface-modes.md) — Read this when surface type or the design-system constraint profile is ambiguous.
 - [Visual Engines](references/visual-engines.md) — Read this after classifying the surface when the primary visual engine is not already established.
 - [Strategy To Implementation](references/strategy-to-implementation.md) — Read this for non-trivial strategy, system-constrained work, implementation handoff, or runtime completion claims.
+
+## Optional references
+- [Anti Patterns](references/anti-patterns.md) — Consult this when output feels generic, overdesigned, weakly grounded, or at risk of substrate-only closure.
 
 ## Portability rules
 
@@ -313,10 +315,7 @@ Report strategy-ready, artifact-ready, implemented-not-verified, verified, or bl
 
 ## Portability checklist before finishing
 
-- Run the packaged skill-source-compiler lint, regenerate, and check commands after source changes.
-- Search the skill folder for absolute local paths before finishing.
-- Confirm every active reference listed by SKILL.md exists inside this skill folder.
-- Compile to an isolated directory and confirm the copied package retains the strategy, interop, and evidence contract.
+- Only when editing or packaging this skill itself, run compiler lint, regenerate, check, and an isolated compile; verify generated parity, local references, portability, and packaged files. These maintenance checks are not prerequisites for ordinary tasks performed with the skill.
 
 ## Supporting and historical surface
 
