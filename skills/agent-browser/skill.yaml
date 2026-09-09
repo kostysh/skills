@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: agent-browser
-  source-version: 0.2.2
+  source-version: 0.2.4
   recommended-skill-md-max-bytes: 20000
   description: Use agent-browser to navigate and interact with rendered web pages, fill forms, take screenshots, extract data, and run browser smoke or diagnostic checks. Verify the requested terminal state and report completed, partial, or blocked; do not replace a formal project E2E suite.
   allowedTools:
@@ -14,7 +14,7 @@ references:
     title: Cloudflare Access OTP
     source: references/cloudflare-access-otp.md
     target: references/cloudflare-access-otp.md
-    required: false
+    required: true
     trigger: Read this before a browser flow protected by a human Cloudflare Access email OTP, especially when the application has a separate OTP or infrastructure credentials are also available.
 assets: []
 copies:
@@ -45,9 +45,9 @@ supporting:
     description: Non-normative navigation for agent-browser maintenance records.
 surfaces:
   active:
-    requiredReferences: []
-    optionalReferences:
+    requiredReferences:
       - ref-cloudflare-access-otp
+    optionalReferences: []
   supportingGlobs:
     - docs/*
     - docs/logs/*
@@ -86,7 +86,8 @@ sections:
         - "Report exactly one status: completed, partial, or blocked."
         - Name the target and context, main actions, expected and observed terminal state, real or intercepted network mode when relevant, and any unverified scope.
         - Do not expose credentials, tokens, cookies, or saved-state contents; report artifacts only when created.
-        - Close sessions and processes started for the task, or state what remains running and who owns it.
+        - Close task-owned sessions and processes and verify their actual termination, including any server child; Ctrl-C or launcher exit alone is not cleanup evidence. Confirm ownership before further termination actions.
+        - If termination cannot be completed or verified, report the running or unverified remainder and its owner without claiming successful cleanup.
       validation:
         - The user can tell what result was achieved, what was not proved, and whether anything remains running.
   interop:
@@ -129,5 +130,4 @@ sections:
       - Do not reference machine-specific absolute paths or local files outside this skill folder.
       - Keep the stable snapshot workflow and evidence contract inside this skill; external CLI guidance supplies only version-specific command details.
     checklist:
-      - Run the skill-source-compiler check command after regeneration.
-      - Confirm the copied skill remains understandable when the CLI is unavailable, while clearly reporting execution as blocked or handed off.
+      - "Only when editing or packaging this skill itself, run compiler lint, regenerate, check, and an isolated compile; verify generated parity, local references, portability, and packaged files. These maintenance checks are not prerequisites for ordinary tasks performed with the skill."
