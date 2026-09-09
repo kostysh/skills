@@ -115,3 +115,9 @@ Next autonomous action: none
 2026-09-09 оператор ответил «да, делай что нужно» на явный запрос полного цикла: коммиты → push → PR в master → CI → merge при успешных проверках → очистка своего worktree. Полномочия подтверждены для codex/ui-revision и kostysh/skills; повторная приёмка реализации не требуется. Remote master перед публикацией:4aed5e89fa98edb46190eb2833b9b156005a782c; ветка codex/ui-revision на remote отсутствовала.
 
 Publication hygiene: staged supporting evidence содержит5 verbatim файлов с whitespace diagnostics: patch context blank lines, два исходных decision inputs с blank EOF и два raw browser outputs. Они сохранены побайтово ради целостности patch/input/raw; автоматически strip не применялся. Проверка всех остальных staged файлов проходит, active source whitespace check ранее PASS. Это точное исключение неизменённых raw артефактов, не изменение repository policy.
+
+## Публикация реализации и сохранение raw logs
+
+PR https://github.com/kostysh/skills/pull/11 объединён2026-09-09; head d83f561cef6ebe2a1ac428f51bcc2d3a448bec8c, merge bd1ca034d1b6ea1dca308583e98b7c165ec15725. Push CI34331784923, PR CI34331831485 и merged-head CI34331901880 — success; последний проверяет exact merged SHA. Все85 skill file hashes на merge совпадают с принятым final manifest.
+
+Перед cleanup обнаружены5 ранее скопированных raw .log файлов, пропущенных обычным git add из-за repository *.log ignore: baseline SPA browser-raw/commands, candidate SPA browser-raw/commands, candidate browser commands. Они остаются в worktree и /tmp, потери исходных evidence нет. Исправление ограничено принудительным добавлением этих точных supporting файлов и этой записью; зависимости остаются ignored. Follow-up publication сохраняет evidence перед удалением worktree; active пакеты и verdict hashes не меняются.

@@ -1,0 +1,205 @@
+✗ Auto-launch failed: Chrome exited early (exit code: unknown) without writing DevToolsActivePort
+(also tried parsing stderr) Chrome exited before providing DevTools URL
+Chrome stderr:
+  [74:74:0908/232755.645917:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:208] open /home/kostysh/.config/google-chrome/Crash Reports/settings.dat: Read-only file system (30)
+  [74:74:0908/232755.646018:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:208] open /home/kostysh/.config/google-chrome/Crash Reports/settings.dat: Read-only file system (30)
+  [74:74:0908/232755.648976:FATAL:sandbox/linux/suid/client/setuid_sandbox_host.cc:166] The SUID sandbox helper binary was found, but is not configured correctly. Rather than run without sandboxing I'm aborting now. You need to make sure that /opt/google/chrome/chrome-sandbox is owned by root and has mode 4755.
+  [0908/232755.652290:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:208] open /home/kostysh/.config/google-chrome/Crash Reports/settings.dat: Read-only file system (30)
+  [0908/232755.652357:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:153] open /home/kostysh/.config/google-chrome/Crash Reports/new/77f0e8fe-8432-4e2e-a460-72eb97bd230f.dmp: Read-only file system (30)
+  [0908/232755.652364:ERROR:third_party/crashpad/crashpad/handler/linux/crash_report_exception_handler.cc:209] PrepareNewCrashReport failed
+Hint: try --args "--no-sandbox" (required in containers, VMs, and some Linux setups)
+✗ Auto-launch failed: Chrome exited early (exit code: unknown) without writing DevToolsActivePort
+(also tried parsing stderr) Chrome exited before providing DevTools URL
+Chrome stderr:
+  [125:125:0908/232757.109761:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:208] open /home/kostysh/.config/google-chrome/Crash Reports/settings.dat: Read-only file system (30)
+  [125:125:0908/232757.109853:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:208] open /home/kostysh/.config/google-chrome/Crash Reports/settings.dat: Read-only file system (30)
+  [125:125:0908/232757.112589:FATAL:sandbox/linux/suid/client/setuid_sandbox_host.cc:166] The SUID sandbox helper binary was found, but is not configured correctly. Rather than run without sandboxing I'm aborting now. You need to make sure that /opt/google/chrome/chrome-sandbox is owned by root and has mode 4755.
+  [0908/232757.116445:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:208] open /home/kostysh/.config/google-chrome/Crash Reports/settings.dat: Read-only file system (30)
+  [0908/232757.116519:ERROR:third_party/crashpad/crashpad/util/file/file_io_posix.cc:153] open /home/kostysh/.config/google-chrome/Crash Reports/new/e6307f6e-5009-4130-919e-21eb338bd756.dmp: Read-only file system (30)
+  [0908/232757.116525:ERROR:third_party/crashpad/crashpad/handler/linux/crash_report_exception_handler.cc:209] PrepareNewCrashReport failed
+Hint: try --args "--no-sandbox" (required in containers, VMs, and some Linux setups)
+✓ Request desk
+  http://127.0.0.1:43783/
+- generic "REQUEST DESKRequestsSearch New request CreateNameActionsAlphaDelete AlphaBetaDelete BetaPage 1 of 2;" [ref=e1] clickable [onclick]
+  - heading "Requests" [level=1, ref=e2]
+  - textbox "Search" [ref=e5]
+  - textbox "New request" [required, ref=e7]
+  - button "Create" [ref=e6]
+  - columnheader "Name" [ref=e12]
+  - columnheader "Actions" [ref=e13]
+  - cell "Alpha" [ref=e8]
+    - link "Alpha" [ref=e14]
+  - cell "Delete Alpha" [ref=e9]
+    - button "Delete Alpha" [ref=e15]
+  - cell "Beta" [ref=e10]
+    - link "Beta" [ref=e16]
+  - cell "Delete Beta" [ref=e11]
+    - button "Delete Beta" [ref=e17]
+  - button "Previous" [disabled, ref=e3]
+  - button "Next" [ref=e4]
+✓ Done
+- generic "REQUEST DESKRequest 1Name SaveBack to requests" [ref=e1] clickable [onclick]
+- generic "REQUEST DESKRequest 1Name SaveBack to requests" [ref=e1] clickable [onclick]
+  - heading "Request 1" [level=1, ref=e2]
+  - textbox "Name" [ref=e5]: Alpha
+  - button "Save" [ref=e4]
+  - link "Back to requests" [ref=e3]
+✓ Done
+✓ Done
+Try again: temporary save error
+- generic [ref=e1] clickable [onclick]
+  - banner
+    - StaticText "REQUEST DESK"
+  - main
+    - heading "Request 1" [level=1, ref=e2]
+      - StaticText "Request 1"
+    - form
+      - LabelText
+        - StaticText "Name"
+        - textbox "Name" [ref=e5]: Alpha draft
+          - StaticText "Alpha draft"
+      - button "Save" [ref=e4]
+    - alert
+      - StaticText "Try again: temporary save error"
+    - link "Back to requests" [ref=e3]
+✓ Done
+✓ Done
+Saved
+- generic [ref=e1] clickable [onclick]
+  - banner
+    - StaticText "REQUEST DESK"
+  - main
+    - heading "Request 1" [level=1, ref=e2]
+      - StaticText "Request 1"
+    - form
+      - LabelText
+        - StaticText "Name"
+        - textbox "Name" [ref=e5]: Alpha corrected
+          - StaticText "Alpha corrected"
+      - button "Save" [ref=e4]
+    - status
+      - StaticText "Saved"
+    - link "Back to requests" [ref=e3]
+✗ Element not found. Verify the selector is correct and the element exists in the DOM.
+✗ Wait timed out after 25000ms
+- generic "REQUEST DESKRequest 1Name SaveSavedBack to requests" [ref=e1] clickable [onclick]
+  - heading "Request 1" [level=1, ref=e2]
+  - textbox "Name" [ref=e5]: Alpha corrected
+  - button "Save" [ref=e4]
+  - link "Back to requests" [ref=e3]
+- generic "REQUEST DESKRequest 1Name SaveSavedBack to requests" [ref=e1] clickable [onclick]
+  - heading "Request 1" [level=1, ref=e2]
+  - textbox "Name" [ref=e5]: Alpha corrected
+  - button "Save" [ref=e4]
+  - link "Back to requests" [ref=e3]
+✓ Done
+http://127.0.0.1:43783/
+- generic "REQUEST DESKRequestsSearch New request CreateNameActionsAlpha correctedDelete Alpha correctedBetaDel" [ref=e1] clickable [onclick]
+  - heading "Requests" [level=1, ref=e2]
+  - textbox "Search" [ref=e5]
+  - textbox "New request" [required, ref=e7]
+  - button "Create" [ref=e6]
+  - columnheader "Name" [ref=e12]
+  - columnheader "Actions" [ref=e13]
+  - cell "Alpha corrected" [ref=e8]
+    - link "Alpha corrected" [ref=e14]
+  - cell "Delete Alpha corrected" [ref=e9]
+    - button "Delete Alpha corrected" [ref=e15]
+  - cell "Beta" [ref=e10]
+    - link "Beta" [ref=e16]
+  - cell "Delete Beta" [ref=e11]
+    - button "Delete Beta" [ref=e17]
+  - button "Previous" [disabled, ref=e3]
+  - button "Next" [ref=e4]
+✓ Done
+http://127.0.0.1:43783/items/1
+- generic "REQUEST DESKRequestsSearch New request CreateNameActionsAlpha correctedDelete Alpha correctedBetaDel" [ref=e1] clickable [onclick]
+  - heading "Requests" [level=1, ref=e2]
+  - textbox "Search" [ref=e5]
+  - textbox "New request" [required, ref=e7]
+  - button "Create" [ref=e6]
+  - columnheader "Name" [ref=e12]
+  - columnheader "Actions" [ref=e13]
+  - cell "Alpha corrected" [ref=e8]
+    - link "Alpha corrected" [ref=e14]
+  - cell "Delete Alpha corrected" [ref=e9]
+    - button "Delete Alpha corrected" [ref=e15]
+  - cell "Beta" [ref=e10]
+    - link "Beta" [ref=e16]
+  - cell "Delete Beta" [ref=e11]
+    - button "Delete Beta" [ref=e17]
+  - button "Previous" [disabled, ref=e3]
+  - button "Next" [ref=e4]
+http://127.0.0.1:43783/items/1
+✓ Done
+- generic "REQUEST DESKRequest 1Name SaveBack to requests" [ref=e1] clickable [onclick]
+  - heading "Request 1" [level=1, ref=e2]
+  - textbox "Name" [ref=e5]: Alpha corrected
+  - button "Save" [ref=e4]
+  - link "Back to requests" [ref=e3]
+http://127.0.0.1:43783/items/1
+[71FB1805673E8214D4F792207BD3F94F] GET http://127.0.0.1:43783/ (Document) 200
+[946657.2] GET http://127.0.0.1:43783/@vite/client (Script) 200
+[946657.3] GET http://127.0.0.1:43783/src/main.jsx (Script) 200
+[946657.6] GET http://127.0.0.1:43783/node_modules/.vite/deps/react.js?v=c6ce8a6f (Script) 200
+[946657.7] GET http://127.0.0.1:43783/node_modules/.vite/deps/react-dom_client.js?v=43c7492d (Script) 200
+[946657.8] GET http://127.0.0.1:43783/node_modules/.vite/deps/react-router.js?v=57b739f7 (Script) 200
+[946657.9] GET http://127.0.0.1:43783/node_modules/.vite/deps/@tanstack_react-query.js?v=b76979f3 (Script) 200
+[946657.10] GET http://127.0.0.1:43783/node_modules/.vite/deps/react-hook-form.js?v=952d000e (Script) 200
+[946657.11] GET http://127.0.0.1:43783/src/Tooltip.js (Script) 200
+[946657.12] GET http://127.0.0.1:43783/src/style.css (Script) 200
+[946657.13] GET http://127.0.0.1:43783/@fs/tmp/ui-rev-20260908/fixture-base/node_modules/vite/dist/client/env.mjs (Script) 200
+[946657.14] GET http://127.0.0.1:43783/node_modules/.vite/deps/chunk-FOLAJSP2.js?v=f328c458 (Script) 200
+[946657.16] GET http://127.0.0.1:43783/node_modules/.vite/deps/chunk-D3OIOTDO.js?v=f328c458 (Script) 200
+[946657.17] GET http://127.0.0.1:43783/api/items?q=&page=1 (Fetch) 200
+[946657.18] GET http://127.0.0.1:43783/favicon.ico (Other) 200
+[946657.19] GET http://127.0.0.1:43783/api/items/1 (Fetch) 200
+[946657.20] GET http://127.0.0.1:43783/favicon.ico (Other) 200
+[946657.21] PATCH http://127.0.0.1:43783/api/items/1 (Fetch) 503
+[946657.22] PATCH http://127.0.0.1:43783/api/items/1 (Fetch) 200
+[946657.23] GET http://127.0.0.1:43783/favicon.ico (Other) 200
+[946657.24] GET http://127.0.0.1:43783/api/items?q=&page=1 (Fetch) 200
+[2AC44BD9167CDF7CF4EC71E871458360] GET http://127.0.0.1:43783/items/1 (Document) 200
+[946657.25] GET http://127.0.0.1:43783/favicon.ico (Other) 200
+[946657.27] GET http://127.0.0.1:43783/@vite/client (Script) 200
+[946657.28] GET http://127.0.0.1:43783/src/main.jsx (Script) 200
+[946657.31] GET http://127.0.0.1:43783/node_modules/.vite/deps/react.js?v=c6ce8a6f (Script) 200
+[946657.32] GET http://127.0.0.1:43783/node_modules/.vite/deps/react-dom_client.js?v=43c7492d (Script) 200
+[946657.33] GET http://127.0.0.1:43783/node_modules/.vite/deps/react-router.js?v=57b739f7 (Script) 200
+[946657.34] GET http://127.0.0.1:43783/node_modules/.vite/deps/@tanstack_react-query.js?v=b76979f3 (Script) 200
+[946657.35] GET http://127.0.0.1:43783/node_modules/.vite/deps/react-hook-form.js?v=952d000e (Script) 200
+[946657.36] GET http://127.0.0.1:43783/src/Tooltip.js (Script) 200
+[946657.37] GET http://127.0.0.1:43783/src/style.css (Script) 200
+[946657.38] GET http://127.0.0.1:43783/node_modules/.vite/deps/chunk-FOLAJSP2.js?v=f328c458 (Script) 200
+[946657.39] GET http://127.0.0.1:43783/node_modules/.vite/deps/chunk-D3OIOTDO.js?v=f328c458 (Script) 200
+[946657.40] GET http://127.0.0.1:43783/@fs/tmp/ui-rev-20260908/fixture-base/node_modules/vite/dist/client/env.mjs (Script) 200
+[946657.42] GET http://127.0.0.1:43783/api/items/1 (Fetch) 200
+[946657.43] GET http://127.0.0.1:43783/favicon.ico (Other) 200
+✓ Done
+✓ Done
+- generic "REQUEST DESKRequestsSearch New request CreateNameActionsAlpha correctedDelete Alpha correctedBetaDel" [ref=e1] clickable [onclick]
+  - heading "Requests" [level=1, ref=e2]
+  - textbox "Search" [ref=e5]
+  - textbox "New request" [required, ref=e7]
+  - button "Create" [ref=e6]
+  - columnheader "Name" [ref=e12]
+  - columnheader "Actions" [ref=e13]
+  - cell "Alpha corrected" [ref=e8]
+    - link "Alpha corrected" [ref=e14]
+  - cell "Delete Alpha corrected" [ref=e9]
+    - button "Delete Alpha corrected" [ref=e15]
+  - cell "Beta" [ref=e10]
+    - link "Beta" [ref=e16]
+  - cell "Delete Beta" [ref=e11]
+    - button "Delete Beta" [ref=e17]
+  - button "Previous" [disabled, ref=e3]
+  - button "Next" [ref=e4]
+✓ Done
+✓ Done
+- generic "REQUEST DESKRequest 1Name SaveBack to requests" [ref=e1] clickable [onclick]
+  - heading "Request 1" [level=1, ref=e2]
+  - textbox "Name" [ref=e5]: Alpha corrected
+  - button "Save" [ref=e4]
+  - link "Back to requests" [ref=e3]
+Alpha corrected
+✓ Browser closed

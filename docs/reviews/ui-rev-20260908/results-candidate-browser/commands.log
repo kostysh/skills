@@ -1,0 +1,364 @@
+agent-browser --session ui-rev-candidate-browser open http://localhost:43787 
+✗ Socket directory '/run/user/1000/agent-browser' is not writable: Read-only file system (os error 30)
+agent-browser --session ui-rev-candidate-browser snapshot 
+✗ Socket directory '/run/user/1000/agent-browser' is not writable: Read-only file system (os error 30)
+agent-browser --session ui-rev-candidate-browser doctor --offline --quick 
+agent-browser doctor
+
+Environment
+  pass  CLI version 0.27.3 (linux x86_64)
+  pass  Home directory /home/kostysh
+  info  State directory does not exist yet (will be created on first use): /home/kostysh/.agent-browser
+  pass  Socket directory /run/user/1000/agent-browser
+  pass  382.8 GB free at state dir
+
+Chrome
+  pass  Google Chrome 152.0.7977.82 at /usr/bin/google-chrome
+  info  1 Chrome profile(s) at /home/kostysh/.config/google-chrome
+
+Daemons
+  pass  No active daemons
+
+Security
+  info  No encryption key set (will be auto-generated on first auth save)
+        fix: export AGENT_BROWSER_ENCRYPTION_KEY=$(openssl rand -hex 32)
+
+Providers
+  info  Browserless: BROWSERLESS_API_KEY not set
+  info  Browserbase: BROWSERBASE_API_KEY not set
+  info  Browser Use: BROWSER_USE_API_KEY not set
+  info  Kernel: KERNEL_API_KEY not set
+  info  AgentCore: no AWS credentials in env (AWS_ACCESS_KEY_ID / AWS_PROFILE)
+  info  AI_GATEWAY_API_KEY not set (chat command disabled)
+        fix: export AI_GATEWAY_API_KEY=gw_...
+
+Summary: 6 pass, 0 warn, 0 fail
+
+tip: Run with --fix to attempt repairs.
+agent-browser --session ui-rev-candidate-browser open http://localhost:43787 
+✓ Request desk
+  http://localhost:43787/
+agent-browser --session ui-rev-candidate-browser snapshot 
+- generic [ref=e1] clickable [onclick]
+  - banner
+    - StaticText "REQUEST DESK"
+  - main
+    - heading "Requests" [level=1, ref=e2]
+    - LabelText
+      - StaticText "Search"
+      - textbox "Search" [ref=e5]
+    - form
+      - LabelText
+        - StaticText "New request"
+        - textbox "New request" [required, ref=e7]
+      - button "Create" [ref=e6]
+    - table
+      - rowgroup
+        - row
+          - columnheader "Name" [ref=e12]
+          - columnheader "Actions" [ref=e13]
+      - row
+        - cell "Alpha" [ref=e8]
+          - link "Alpha" [ref=e14]
+        - cell "Delete Alpha" [ref=e9]
+          - button "Delete Alpha" [ref=e15]
+            - StaticText "Delete Alpha"
+      - row
+        - cell "Beta" [ref=e10]
+          - link "Beta" [ref=e16]
+        - cell "Delete Beta" [ref=e11]
+          - button "Delete Beta" [ref=e17]
+            - StaticText "Delete Beta"
+    - paragraph
+      - StaticText "Page 1 of 2; total 3"
+    - button "Previous" [disabled, ref=e3]
+    - button "Next" [ref=e4]
+agent-browser --session ui-rev-candidate-browser fill @e7 Test\ UI-REV 
+✓ Done
+agent-browser --session ui-rev-candidate-browser snapshot -i 
+- generic "REQUEST DESKRequestsSearch New request CreateNameActionsAlphaDelete AlphaBetaDelete BetaPage 1 of 2;" [ref=e1] clickable [onclick]
+  - heading "Requests" [level=1, ref=e2]
+  - textbox "Search" [ref=e5]
+  - textbox "New request" [required, ref=e7]: Test UI-REV
+  - button "Create" [ref=e6]
+  - columnheader "Name" [ref=e12]
+  - columnheader "Actions" [ref=e13]
+  - cell "Alpha" [ref=e8]
+    - link "Alpha" [ref=e14]
+  - cell "Delete Alpha" [ref=e9]
+    - button "Delete Alpha" [ref=e15]
+  - cell "Beta" [ref=e10]
+    - link "Beta" [ref=e16]
+  - cell "Delete Beta" [ref=e11]
+    - button "Delete Beta" [ref=e17]
+  - button "Previous" [disabled, ref=e3]
+  - button "Next" [ref=e4]
+agent-browser --session ui-rev-candidate-browser click @e6 
+✓ Done
+agent-browser --session ui-rev-candidate-browser wait --load networkidle 
+✓ Done
+agent-browser --session ui-rev-candidate-browser snapshot 
+- generic [ref=e1] clickable [onclick]
+  - banner
+    - StaticText "REQUEST DESK"
+  - main
+    - heading "Requests" [level=1, ref=e2]
+    - LabelText
+      - StaticText "Search"
+      - textbox "Search" [ref=e5]
+    - form
+      - LabelText
+        - StaticText "New request"
+        - textbox "New request" [required, ref=e7]
+      - button "Create" [ref=e6]
+    - table
+      - rowgroup
+        - row
+          - columnheader "Name" [ref=e12]
+          - columnheader "Actions" [ref=e13]
+      - row
+        - cell "Alpha" [ref=e8]
+          - link "Alpha" [ref=e14]
+        - cell "Delete Alpha" [ref=e9]
+          - button "Delete Alpha" [ref=e15]
+            - StaticText "Delete Alpha"
+      - row
+        - cell "Beta" [ref=e10]
+          - link "Beta" [ref=e16]
+        - cell "Delete Beta" [ref=e11]
+          - button "Delete Beta" [ref=e17]
+            - StaticText "Delete Beta"
+    - paragraph
+      - StaticText "Page 1 of 2; total 4"
+    - button "Previous" [disabled, ref=e3]
+    - button "Next" [ref=e4]
+agent-browser --session ui-rev-candidate-browser fill @e5 Test\ UI-REV 
+✓ Done
+agent-browser --session ui-rev-candidate-browser wait --load networkidle 
+✓ Done
+agent-browser --session ui-rev-candidate-browser snapshot 
+- generic [ref=e1] clickable [onclick]
+  - banner
+    - StaticText "REQUEST DESK"
+  - main
+    - heading "Requests" [level=1, ref=e2]
+    - LabelText
+      - StaticText "Search"
+      - textbox "Search" [ref=e5]: Test UI-REV
+        - StaticText "Test UI-REV"
+    - form
+      - LabelText
+        - StaticText "New request"
+        - textbox "New request" [required, ref=e7]
+      - button "Create" [ref=e6]
+    - table
+      - rowgroup
+        - row
+          - columnheader "Name" [ref=e10]
+          - columnheader "Actions" [ref=e11]
+      - row
+        - cell "Test UI-REV" [ref=e8]
+          - link "Test UI-REV" [ref=e12]
+        - cell "Delete Test UI-REV" [ref=e9]
+          - button "Delete Test UI-REV" [ref=e13]
+            - StaticText "Delete Test UI-REV"
+    - paragraph
+      - StaticText "Page 1 of 1; total 1"
+    - button "Previous" [disabled, ref=e3]
+    - button "Next" [disabled, ref=e4]
+agent-browser --session ui-rev-candidate-browser click @e12 
+✓ Done
+agent-browser --session ui-rev-candidate-browser wait --load networkidle 
+✓ Done
+agent-browser --session ui-rev-candidate-browser snapshot 
+- generic [ref=e1] clickable [onclick]
+  - banner
+    - StaticText "REQUEST DESK"
+  - main
+    - heading "Request 4" [level=1, ref=e2]
+      - StaticText "Request 4"
+    - form
+      - LabelText
+        - StaticText "Name"
+        - textbox "Name" [ref=e5]: Test UI-REV
+          - StaticText "Test UI-REV"
+      - button "Save" [ref=e4]
+    - link "Back to requests" [ref=e3]
+agent-browser --session ui-rev-candidate-browser get url 
+http://localhost:43787/items/4
+agent-browser --session ui-rev-candidate-browser reload 
+http://localhost:43787/items/4
+agent-browser --session ui-rev-candidate-browser wait --load networkidle 
+✓ Done
+agent-browser --session ui-rev-candidate-browser snapshot 
+- generic [ref=e1] clickable [onclick]
+  - banner
+    - StaticText "REQUEST DESK"
+  - main
+    - heading "Request 4" [level=1, ref=e2]
+      - StaticText "Request 4"
+    - form
+      - LabelText
+        - StaticText "Name"
+        - textbox "Name" [ref=e5]: Test UI-REV
+          - StaticText "Test UI-REV"
+      - button "Save" [ref=e4]
+    - link "Back to requests" [ref=e3]
+agent-browser --session ui-rev-candidate-browser screenshot /tmp/ui-rev-20260908/results-candidate-browser/reloaded-detail.png 
+✓ Screenshot saved to /tmp/ui-rev-20260908/results-candidate-browser/reloaded-detail.png
+agent-browser --session ui-rev-candidate-browser click @e3 
+✓ Done
+agent-browser --session ui-rev-candidate-browser wait --load networkidle 
+✓ Done
+agent-browser --session ui-rev-candidate-browser snapshot 
+- generic [ref=e1] clickable [onclick]
+  - banner
+    - StaticText "REQUEST DESK"
+  - main
+    - heading "Requests" [level=1, ref=e2]
+    - LabelText
+      - StaticText "Search"
+      - textbox "Search" [ref=e5]
+    - form
+      - LabelText
+        - StaticText "New request"
+        - textbox "New request" [required, ref=e7]
+      - button "Create" [ref=e6]
+    - table
+      - rowgroup
+        - row
+          - columnheader "Name" [ref=e12]
+          - columnheader "Actions" [ref=e13]
+      - row
+        - cell "Alpha" [ref=e8]
+          - link "Alpha" [ref=e14]
+        - cell "Delete Alpha" [ref=e9]
+          - button "Delete Alpha" [ref=e15]
+            - StaticText "Delete Alpha"
+      - row
+        - cell "Beta" [ref=e10]
+          - link "Beta" [ref=e16]
+        - cell "Delete Beta" [ref=e11]
+          - button "Delete Beta" [ref=e17]
+            - StaticText "Delete Beta"
+    - paragraph
+      - StaticText "Page 1 of 2; total 4"
+    - button "Previous" [disabled, ref=e3]
+    - button "Next" [ref=e4]
+agent-browser --session ui-rev-candidate-browser click @e4 
+✓ Done
+agent-browser --session ui-rev-candidate-browser wait --load networkidle 
+✓ Done
+agent-browser --session ui-rev-candidate-browser snapshot 
+- generic [ref=e1] clickable [onclick]
+  - banner
+    - StaticText "REQUEST DESK"
+  - main
+    - heading "Requests" [level=1, ref=e2]
+    - LabelText
+      - StaticText "Search"
+      - textbox "Search" [ref=e5]
+    - form
+      - LabelText
+        - StaticText "New request"
+        - textbox "New request" [required, ref=e7]
+      - button "Create" [ref=e6]
+    - table
+      - rowgroup
+        - row
+          - columnheader "Name" [ref=e12]
+          - columnheader "Actions" [ref=e13]
+      - row
+        - cell "Gamma" [ref=e8]
+          - link "Gamma" [ref=e14]
+        - cell "Delete Gamma" [ref=e9]
+          - button "Delete Gamma" [ref=e15]
+            - StaticText "Delete Gamma"
+      - row
+        - cell "Test UI-REV" [ref=e10]
+          - link "Test UI-REV" [ref=e16]
+        - cell "Delete Test UI-REV" [ref=e11]
+          - button "Delete Test UI-REV" [ref=e17]
+            - StaticText "Delete Test UI-REV"
+    - paragraph
+      - StaticText "Page 2 of 2; total 4"
+    - button "Previous" [ref=e3]
+    - button "Next" [disabled, ref=e4]
+agent-browser --session ui-rev-candidate-browser click @e17 
+✓ Done
+agent-browser --session ui-rev-candidate-browser wait --load networkidle 
+✓ Done
+agent-browser --session ui-rev-candidate-browser snapshot 
+- generic [ref=e1] clickable [onclick]
+  - banner
+    - StaticText "REQUEST DESK"
+  - main
+    - heading "Requests" [level=1, ref=e2]
+    - LabelText
+      - StaticText "Search"
+      - textbox "Search" [ref=e5]
+    - form
+      - LabelText
+        - StaticText "New request"
+        - textbox "New request" [required, ref=e7]
+      - button "Create" [ref=e6]
+    - table
+      - rowgroup
+        - row
+          - columnheader "Name" [ref=e10]
+          - columnheader "Actions" [ref=e11]
+      - row
+        - cell "Gamma" [ref=e8]
+          - link "Gamma" [ref=e12]
+        - cell "Delete Gamma" [ref=e9]
+          - button "Delete Gamma" [ref=e13]
+            - StaticText "Delete Gamma"
+    - paragraph
+      - StaticText "Page 2 of 2; total 3"
+    - button "Previous" [ref=e3]
+    - button "Next" [disabled, ref=e4]
+agent-browser --session ui-rev-candidate-browser network requests 
+[8BAF7F5A080D77ACCFB7042957F943B8] GET http://localhost:43787/ (Document) 200
+[963471.2] GET http://localhost:43787/@vite/client (Script) 200
+[963471.3] GET http://localhost:43787/src/main.jsx (Script) 200
+[963471.6] GET http://localhost:43787/node_modules/.vite/deps/react.js?v=6df2c331 (Script) 200
+[963471.7] GET http://localhost:43787/node_modules/.vite/deps/react-dom_client.js?v=27dd5b74 (Script) 200
+[963471.8] GET http://localhost:43787/node_modules/.vite/deps/react-router.js?v=ee027b59 (Script) 200
+[963471.9] GET http://localhost:43787/node_modules/.vite/deps/@tanstack_react-query.js?v=23e97908 (Script) 200
+[963471.10] GET http://localhost:43787/node_modules/.vite/deps/react-hook-form.js?v=d4c02063 (Script) 200
+[963471.11] GET http://localhost:43787/src/Tooltip.js (Script) 200
+[963471.12] GET http://localhost:43787/src/style.css (Script) 200
+[963471.13] GET http://localhost:43787/@fs/tmp/ui-rev-20260908/fixture-base/node_modules/vite/dist/client/env.mjs (Script) 200
+[963471.14] GET http://localhost:43787/node_modules/.vite/deps/chunk-FOLAJSP2.js?v=600f3bda (Script) 200
+[963471.15] GET http://localhost:43787/node_modules/.vite/deps/chunk-D3OIOTDO.js?v=600f3bda (Script) 200
+[963471.17] GET http://localhost:43787/api/items?q=&page=1 (Fetch) 200
+[963471.18] GET http://localhost:43787/favicon.ico (Other) 200
+[963471.19] POST http://localhost:43787/api/items (Fetch) 201
+[963471.20] GET http://localhost:43787/api/items?q=&page=1 (Fetch) 200
+[963471.21] GET http://localhost:43787/api/items?q=Test%20UI-REV&page=1 (Fetch) 200
+[963471.22] GET http://localhost:43787/favicon.ico (Other) 200
+[963471.23] GET http://localhost:43787/favicon.ico (Other) 200
+[963471.24] GET http://localhost:43787/api/items/4 (Fetch) 200
+[6F29A909A9880C62718DE4FF3722106C] GET http://localhost:43787/items/4 (Document) 200
+[963471.26] GET http://localhost:43787/@vite/client (Script) 200
+[963471.27] GET http://localhost:43787/src/main.jsx (Script) 200
+[963471.30] GET http://localhost:43787/node_modules/.vite/deps/react.js?v=6df2c331 (Script) 200
+[963471.31] GET http://localhost:43787/node_modules/.vite/deps/react-dom_client.js?v=27dd5b74 (Script) 200
+[963471.32] GET http://localhost:43787/node_modules/.vite/deps/react-router.js?v=ee027b59 (Script) 200
+[963471.33] GET http://localhost:43787/node_modules/.vite/deps/@tanstack_react-query.js?v=23e97908 (Script) 200
+[963471.34] GET http://localhost:43787/node_modules/.vite/deps/react-hook-form.js?v=d4c02063 (Script) 200
+[963471.35] GET http://localhost:43787/src/Tooltip.js (Script) 200
+[963471.36] GET http://localhost:43787/src/style.css (Script) 200
+[963471.37] GET http://localhost:43787/node_modules/.vite/deps/chunk-FOLAJSP2.js?v=600f3bda (Script) 200
+[963471.38] GET http://localhost:43787/node_modules/.vite/deps/chunk-D3OIOTDO.js?v=600f3bda (Script) 200
+[963471.39] GET http://localhost:43787/@fs/tmp/ui-rev-20260908/fixture-base/node_modules/vite/dist/client/env.mjs (Script) 200
+[963471.41] GET http://localhost:43787/api/items/4 (Fetch) 200
+[963471.42] GET http://localhost:43787/favicon.ico (Other) 200
+[963471.43] GET http://localhost:43787/favicon.ico (Other) 200
+[963471.44] GET http://localhost:43787/api/items?q=&page=1 (Fetch) 200
+[963471.45] GET http://localhost:43787/favicon.ico (Other) 200
+[963471.46] GET http://localhost:43787/api/items?q=&page=2 (Fetch) 200
+[963471.47] DELETE http://localhost:43787/api/items/4 (Fetch) 200
+[963471.48] GET http://localhost:43787/api/items?q=&page=2 (Fetch) 200
+agent-browser --session ui-rev-candidate-browser close 
+✓ Browser closed

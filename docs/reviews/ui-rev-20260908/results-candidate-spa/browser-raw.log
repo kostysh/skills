@@ -1,0 +1,382 @@
+✓ Request desk
+  http://127.0.0.1:43786/
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+- generic [ref=e1] clickable [onclick]
+  - banner
+    - StaticText "REQUEST DESK"
+  - main
+    - heading "Requests" [level=1, ref=e2]
+    - LabelText
+      - StaticText "Search"
+      - textbox "Search" [ref=e5]
+    - form
+      - LabelText
+        - StaticText "New request"
+        - textbox "New request" [required, ref=e7]
+      - button "Create" [ref=e6]
+    - table
+      - rowgroup
+        - row
+          - columnheader "Name" [ref=e12]
+          - columnheader "Actions" [ref=e13]
+      - row
+        - cell "Alpha" [ref=e8]
+          - link "Alpha" [ref=e14]
+        - cell "Delete Alpha" [ref=e9]
+          - button "Delete Alpha" [ref=e15]
+            - StaticText "Delete Alpha"
+      - row
+        - cell "Beta" [ref=e10]
+          - link "Beta" [ref=e16]
+        - cell "Delete Beta" [ref=e11]
+          - button "Delete Beta" [ref=e17]
+            - StaticText "Delete Beta"
+    - paragraph
+      - StaticText "Page 1 of 2; total 3"
+    - button "Previous" [disabled, ref=e3]
+    - button "Next" [ref=e4]
+✓ HAR recording started
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+✗ Unknown ref: e14
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+(empty page)
+✓ Request desk
+  http://127.0.0.1:43786/
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+- generic [ref=e1] clickable [onclick]
+  - banner
+    - StaticText "REQUEST DESK"
+  - main
+    - heading "Requests" [level=1, ref=e2]
+    - LabelText
+      - StaticText "Search"
+      - textbox "Search" [ref=e5]
+    - form
+      - LabelText
+        - StaticText "New request"
+        - textbox "New request" [required, ref=e7]
+      - button "Create" [ref=e6]
+    - table
+      - rowgroup
+        - row
+          - columnheader "Name" [ref=e12]
+          - columnheader "Actions" [ref=e13]
+      - row
+        - cell "Alpha" [ref=e8]
+          - link "Alpha" [ref=e14]
+        - cell "Delete Alpha" [ref=e9]
+          - button "Delete Alpha" [ref=e15]
+            - StaticText "Delete Alpha"
+      - row
+        - cell "Beta" [ref=e10]
+          - link "Beta" [ref=e16]
+        - cell "Delete Beta" [ref=e11]
+          - button "Delete Beta" [ref=e17]
+            - StaticText "Delete Beta"
+    - paragraph
+      - StaticText "Page 1 of 2; total 3"
+    - button "Previous" [disabled, ref=e3]
+    - button "Next" [ref=e4]
+✗ Unknown ref: e14
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+(empty page)
+✓ Request desk
+  http://127.0.0.1:43786/
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+- generic [ref=e1] clickable [onclick]
+  - banner
+    - StaticText "REQUEST DESK"
+  - main
+    - heading "Requests" [level=1, ref=e2]
+    - LabelText
+      - StaticText "Search"
+      - textbox "Search" [ref=e5]
+    - form
+      - LabelText
+        - StaticText "New request"
+        - textbox "New request" [required, ref=e7]
+      - button "Create" [ref=e6]
+    - table
+      - rowgroup
+        - row
+          - columnheader "Name" [ref=e12]
+          - columnheader "Actions" [ref=e13]
+      - row
+        - cell "Alpha" [ref=e8]
+          - link "Alpha" [ref=e14]
+        - cell "Delete Alpha" [ref=e9]
+          - button "Delete Alpha" [ref=e15]
+            - StaticText "Delete Alpha"
+      - row
+        - cell "Beta" [ref=e10]
+          - link "Beta" [ref=e16]
+        - cell "Delete Beta" [ref=e11]
+          - button "Delete Beta" [ref=e17]
+            - StaticText "Delete Beta"
+    - paragraph
+      - StaticText "Page 1 of 2; total 3"
+    - button "Previous" [disabled, ref=e3]
+    - button "Next" [ref=e4]
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+✓ Done
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+- generic [ref=e1] clickable [onclick]
+  - banner
+    - StaticText "REQUEST DESK"
+  - main
+    - heading "Requests" [level=1, ref=e2]
+    - LabelText
+      - StaticText "Search"
+      - textbox "Search" [ref=e5]
+    - form
+      - LabelText
+        - StaticText "New request"
+        - textbox "New request" [required, ref=e7]
+      - button "Create" [ref=e6]
+    - table
+      - rowgroup
+        - row
+          - columnheader "Name" [ref=e12]
+          - columnheader "Actions" [ref=e13]
+      - row
+        - cell "Alpha" [ref=e8]
+          - link "Alpha" [ref=e14]
+        - cell "Delete Alpha" [ref=e9]
+          - button "Delete Alpha" [ref=e15]
+            - StaticText "Delete Alpha"
+      - row
+        - cell "Beta" [ref=e10]
+          - link "Beta" [ref=e16]
+        - cell "Delete Beta" [ref=e11]
+          - button "Delete Beta" [ref=e17]
+            - StaticText "Delete Beta"
+    - paragraph
+      - StaticText "Page 1 of 2; total 3"
+    - button "Previous" [disabled, ref=e3]
+    - button "Next" [ref=e4]
+✓ Request desk
+  http://127.0.0.1:43786/
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+- generic [ref=e1] clickable [onclick]
+  - banner
+    - StaticText "REQUEST DESK"
+  - main
+    - heading "Requests" [level=1, ref=e2]
+    - LabelText
+      - StaticText "Search"
+      - textbox "Search" [ref=e5]
+    - form
+      - LabelText
+        - StaticText "New request"
+        - textbox "New request" [required, ref=e7]
+      - button "Create" [ref=e6]
+    - table
+      - rowgroup
+        - row
+          - columnheader "Name" [ref=e12]
+          - columnheader "Actions" [ref=e13]
+      - row
+        - cell "Alpha" [ref=e8]
+          - link "Alpha" [ref=e14]
+        - cell "Delete Alpha" [ref=e9]
+          - button "Delete Alpha" [ref=e15]
+            - StaticText "Delete Alpha"
+      - row
+        - cell "Beta" [ref=e10]
+          - link "Beta" [ref=e16]
+        - cell "Delete Beta" [ref=e11]
+          - button "Delete Beta" [ref=e17]
+            - StaticText "Delete Beta"
+    - paragraph
+      - StaticText "Page 1 of 2; total 3"
+    - button "Previous" [disabled, ref=e3]
+    - button "Next" [ref=e4]
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+✓ Done
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+Request 1
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+- generic [ref=e1] clickable [onclick]
+  - banner
+    - StaticText "REQUEST DESK"
+  - main
+    - heading "Request 1" [level=1, ref=e2]
+      - StaticText "Request 1"
+    - form
+      - LabelText
+        - StaticText "Name"
+        - textbox "Name" [ref=e5]: Alpha
+          - StaticText "Alpha"
+      - button "Save" [ref=e4]
+    - link "Back to requests" [ref=e3]
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+✓ Done
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+✓ Done
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+Try again: temporary save error
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+- generic [ref=e1] clickable [onclick]
+  - banner
+    - StaticText "REQUEST DESK"
+  - main
+    - heading "Request 1" [level=1, ref=e2]
+      - StaticText "Request 1"
+    - form
+      - LabelText
+        - StaticText "Name"
+        - textbox "Name" [ref=e5]: Alpha failed draft
+          - StaticText "Alpha failed draft"
+      - button "Save" [ref=e4]
+    - alert
+      - StaticText "Try again: temporary save error"
+    - link "Back to requests" [ref=e3]
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+Alpha failed draft
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+✓ Done
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+✓ Done
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+Saved
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+- generic [ref=e1] clickable [onclick]
+  - banner
+    - StaticText "REQUEST DESK"
+  - main
+    - heading "Request 1" [level=1, ref=e2]
+      - StaticText "Request 1"
+    - form
+      - LabelText
+        - StaticText "Name"
+        - textbox "Name" [ref=e5]: Alpha corrected saved
+          - StaticText "Alpha corrected saved"
+      - button "Save" [ref=e4]
+    - status
+      - StaticText "Saved"
+    - link "Back to requests" [ref=e3]
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+Alpha corrected saved
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+✓ Done
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+Alpha corrected saved
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+- generic [ref=e1] clickable [onclick]
+  - banner
+    - StaticText "REQUEST DESK"
+  - main
+    - heading "Requests" [level=1, ref=e2]
+    - LabelText
+      - StaticText "Search"
+      - textbox "Search" [ref=e5]
+    - form
+      - LabelText
+        - StaticText "New request"
+        - textbox "New request" [required, ref=e7]
+      - button "Create" [ref=e6]
+    - table
+      - rowgroup
+        - row
+          - columnheader "Name" [ref=e12]
+          - columnheader "Actions" [ref=e13]
+      - row
+        - cell "Alpha corrected saved" [ref=e8]
+          - link "Alpha corrected saved" [ref=e14]
+        - cell "Delete Alpha corrected saved" [ref=e9]
+          - button "Delete Alpha corrected saved" [ref=e15]
+            - StaticText "Delete Alpha corrected saved"
+      - row
+        - cell "Beta" [ref=e10]
+          - link "Beta" [ref=e16]
+        - cell "Delete Beta" [ref=e11]
+          - button "Delete Beta" [ref=e17]
+            - StaticText "Delete Beta"
+    - paragraph
+      - StaticText "Page 1 of 2; total 3"
+    - button "Previous" [disabled, ref=e3]
+    - button "Next" [ref=e4]
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+✓ Done
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+Request 1
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+- generic [ref=e1] clickable [onclick]
+  - banner
+    - StaticText "REQUEST DESK"
+  - main
+    - heading "Request 1" [level=1, ref=e2]
+      - StaticText "Request 1"
+    - form
+      - LabelText
+        - StaticText "Name"
+        - textbox "Name" [ref=e5]: Alpha corrected saved
+          - StaticText "Alpha corrected saved"
+      - button "Save" [ref=e4]
+    - link "Back to requests" [ref=e3]
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+Alpha corrected saved
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+http://127.0.0.1:43786/items/1
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+Request 1
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+- generic [ref=e1] clickable [onclick]
+  - banner
+    - StaticText "REQUEST DESK"
+  - main
+    - heading "Request 1" [level=1, ref=e2]
+      - StaticText "Request 1"
+    - form
+      - LabelText
+        - StaticText "Name"
+        - textbox "Name" [ref=e5]: Alpha corrected saved
+          - StaticText "Alpha corrected saved"
+      - button "Save" [ref=e4]
+    - link "Back to requests" [ref=e3]
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+Alpha corrected saved
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+http://127.0.0.1:43786/items/1
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+[085F2A01DB4DCE5E9D29EADC6E120498] GET http://127.0.0.1:43786/ (Document) 200
+[159.2] GET http://127.0.0.1:43786/@vite/client (Script) 200
+[159.3] GET http://127.0.0.1:43786/src/main.jsx (Script) 200
+[159.6] GET http://127.0.0.1:43786/node_modules/.vite/deps/react.js?v=27e8c2b5 (Script) 200
+[159.7] GET http://127.0.0.1:43786/node_modules/.vite/deps/react-dom_client.js?v=f805e7b3 (Script) 200
+[159.8] GET http://127.0.0.1:43786/node_modules/.vite/deps/react-router.js?v=86a87676 (Script) 200
+[159.9] GET http://127.0.0.1:43786/node_modules/.vite/deps/@tanstack_react-query.js?v=004a4a5c (Script) 200
+[159.10] GET http://127.0.0.1:43786/node_modules/.vite/deps/react-hook-form.js?v=e5735d2c (Script) 200
+[159.11] GET http://127.0.0.1:43786/src/Tooltip.js (Script) 200
+[159.12] GET http://127.0.0.1:43786/src/style.css (Script) 200
+[159.13] GET http://127.0.0.1:43786/@fs/tmp/ui-rev-20260908/fixture-base/node_modules/vite/dist/client/env.mjs (Script) 200
+[159.14] GET http://127.0.0.1:43786/node_modules/.vite/deps/chunk-FOLAJSP2.js?v=e9b4e963 (Script) 200
+[159.16] GET http://127.0.0.1:43786/node_modules/.vite/deps/chunk-D3OIOTDO.js?v=e9b4e963 (Script) 200
+[159.17] GET http://127.0.0.1:43786/api/items?q=&page=1 (Fetch) 200
+[159.18] GET http://127.0.0.1:43786/favicon.ico (Other) 200
+[159.19] GET http://127.0.0.1:43786/favicon.ico (Other) 200
+[159.20] GET http://127.0.0.1:43786/api/items/1 (Fetch) 200
+[159.21] PATCH http://127.0.0.1:43786/api/items/1 (Fetch) 503
+[159.22] PATCH http://127.0.0.1:43786/api/items/1 (Fetch) 200
+[159.23] GET http://127.0.0.1:43786/favicon.ico (Other) 200
+[159.24] GET http://127.0.0.1:43786/api/items?q=&page=1 (Fetch) 200
+[159.25] GET http://127.0.0.1:43786/favicon.ico (Other) 200
+[3C70940C5B2802ED77AA6A8F1DEE90C7] GET http://127.0.0.1:43786/items/1 (Document) 200
+[159.27] GET http://127.0.0.1:43786/@vite/client (Script) 304
+[159.28] GET http://127.0.0.1:43786/src/main.jsx (Script) 304
+[159.31] GET http://127.0.0.1:43786/@fs/tmp/ui-rev-20260908/fixture-base/node_modules/vite/dist/client/env.mjs (Script) 304
+[159.32] GET http://127.0.0.1:43786/node_modules/.vite/deps/react.js?v=27e8c2b5 (Script) 200
+[159.33] GET http://127.0.0.1:43786/node_modules/.vite/deps/react-dom_client.js?v=f805e7b3 (Script) 200
+[159.34] GET http://127.0.0.1:43786/node_modules/.vite/deps/react-router.js?v=86a87676 (Script) 200
+[159.35] GET http://127.0.0.1:43786/node_modules/.vite/deps/@tanstack_react-query.js?v=004a4a5c (Script) 200
+[159.36] GET http://127.0.0.1:43786/node_modules/.vite/deps/react-hook-form.js?v=e5735d2c (Script) 200
+[159.37] GET http://127.0.0.1:43786/src/Tooltip.js (Script) 304
+[159.38] GET http://127.0.0.1:43786/src/style.css (Script) 304
+[159.39] GET http://127.0.0.1:43786/node_modules/.vite/deps/chunk-FOLAJSP2.js?v=e9b4e963 (Script) 200
+[159.40] GET http://127.0.0.1:43786/node_modules/.vite/deps/chunk-D3OIOTDO.js?v=e9b4e963 (Script) 200
+[159.42] GET http://127.0.0.1:43786/api/items/1 (Fetch) 200
+[159.43] GET http://127.0.0.1:43786/favicon.ico (Other) 200
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+✓ HAR saved to /tmp/ui-rev-20260908/results-candidate-spa/requests.har (0 requests)
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+✓ Browser closed
