@@ -1,0 +1,4471 @@
+{
+  "skill": "docusaurus-repo",
+  "base_revision": "d89d66f2c99bf8b9e84e5b4def54fa60192856a5",
+  "baseline_manifest": "baseline-snapshot.json",
+  "review_mode": "author-candidate-source-readback",
+  "verified_date": "2026-09-09",
+  "release_channel": "stable unless aspect explicitly says experimental or existing-project branch",
+  "coverage_method": "All active baseline files read; equivalent claims grouped by aspect. File inventory preserves source/emitted/reference/asset identifiers and sections. Whole-file ranges describe occurrence search scope, not per-line execution. Historical records excluded from current technical authority.",
+  "technical_review_boundary": "Source-grounded inventory. Downloaded is not synonymous with verified. Every aspect supplies a substantive comparison; unavailable/soft404 sources are excluded as positive evidence. Product APIs/commands and blind agent behavior still require coordinator trials.",
+  "source_version": "0.1.3",
+  "generated_source_hash": "1d8b29e9b300301edc768d149717c9125eb7d142c51090fd64ebad44b558b3df",
+  "aspects": [
+    {
+      "id": "D01",
+      "aspect": "Scaffold/current stable engines and existing project compatibility",
+      "source_files": [
+        "fragments/overview.md",
+        "SKILL.md",
+        "references/bootstrap-and-structure.md"
+      ],
+      "basis": "Docusaurus3.10.2 stable, Node>=20 accepted by core, React19 current scaffolds;3.9.2/React18 is separate existing-project branch. Latest scaffold MDX and faster defaults differ.",
+      "version": "Docusaurus3.10.2 stable;3.9.2 existing; React19/18; Node24 LTS",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Baseline independent official-source comparison retained; author compared corrected source and emitted package. No product runtime or independent candidate PASS.",
+      "official_sources": [
+        {
+          "url": "https://docusaurus.io/docs/installation",
+          "final_url": "https://docusaurus.io/docs/installation",
+          "file": "official-next-electron-docusaurus/151-docusaurus.io-docs-installation.txt",
+          "retrieved_at": "2026-09-09T11:37:10.269928+00:00",
+          "status": "downloaded",
+          "text_sha256": "b09ebd48b54fcc8d29ef54adfe0ef56067306328cd4600357c8388d663c507f0",
+          "candidate_readback_sha256": "b09ebd48b54fcc8d29ef54adfe0ef56067306328cd4600357c8388d663c507f0",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/blog/releases/3.10",
+          "final_url": "https://docusaurus.io/blog/releases/3.10",
+          "file": "official-next-electron-docusaurus/305-docusaurus.io-blog-releases-3.10.txt",
+          "retrieved_at": "2026-09-09T11:40:07.570736+00:00",
+          "status": "downloaded",
+          "text_sha256": "750276a94a05ecbfad16c1a6eaa45a7e8a4d904601c314398c552b97f566c000",
+          "candidate_readback_sha256": "750276a94a05ecbfad16c1a6eaa45a7e8a4d904601c314398c552b97f566c000",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/3.9.2/installation",
+          "final_url": "https://docusaurus.io/docs/3.9.2/installation",
+          "file": "official-next-electron-docusaurus/306-docusaurus.io-docs-3.9.2-installation.txt",
+          "retrieved_at": "2026-09-09T11:40:08.043546+00:00",
+          "status": "downloaded",
+          "text_sha256": "f0e39c8d900644d69fea14b36e013d796a0dde0757cf93e35dd2ae82994ad6d9",
+          "candidate_readback_sha256": "f0e39c8d900644d69fea14b36e013d796a0dde0757cf93e35dd2ae82994ad6d9",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://registry.npmjs.org/@docusaurus%2fcore/latest",
+          "final_url": "https://registry.npmjs.org/@docusaurus%2fcore/latest",
+          "file": "official-next-electron-docusaurus/361-registry-docusaurus-core-latest.json",
+          "retrieved_at": "2026-09-09T11:49:59.653099+00:00",
+          "status": "downloaded",
+          "text_sha256": "675a0484db4791bb21f186dafc92dcf6ca3655d847842878e79cbdc8f04ad9b4",
+          "candidate_readback_sha256": "675a0484db4791bb21f186dafc92dcf6ca3655d847842878e79cbdc8f04ad9b4",
+          "snapshot_hash_matches_baseline": true
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution.",
+      "baseline_result": "correction-required",
+      "result": "source-corrected",
+      "candidate_version": "0.1.3",
+      "disposition": "Author source/readback verified; independent candidate behavioral/runtime assessment remains with coordinator",
+      "current_locations": [
+        {
+          "file": "SKILL.md",
+          "sha256": "fb1838a9ad32911ec71a7563f273292eb7c586e3069184fc74d0d0149be9a52c",
+          "line_start": 1,
+          "line_end": 200,
+          "sections": [
+            {
+              "line": 15,
+              "title": "docusaurus-repo"
+            },
+            {
+              "line": 17,
+              "title": "Start here"
+            },
+            {
+              "line": 24,
+              "title": "When to use this skill"
+            },
+            {
+              "line": 32,
+              "title": "When NOT to use this skill"
+            },
+            {
+              "line": 38,
+              "title": "Outcome and task boundary"
+            },
+            {
+              "line": 46,
+              "title": "Interop priority"
+            },
+            {
+              "line": 53,
+              "title": "Reasonable defaults"
+            },
+            {
+              "line": 64,
+              "title": "Deliverables by default"
+            },
+            {
+              "line": 72,
+              "title": "First pass"
+            },
+            {
+              "line": 90,
+              "title": "Working rules"
+            },
+            {
+              "line": 107,
+              "title": "Decision shortcuts"
+            },
+            {
+              "line": 125,
+              "title": "Verification and handoff"
+            },
+            {
+              "line": 143,
+              "title": "References"
+            },
+            {
+              "line": 153,
+              "title": "Workflow stages"
+            },
+            {
+              "line": 155,
+              "title": "Workflow stage: Apply docusaurus-repo guidance"
+            },
+            {
+              "line": 168,
+              "title": "Required active references"
+            },
+            {
+              "line": 177,
+              "title": "Bundled assets"
+            },
+            {
+              "line": 185,
+              "title": "Portability rules"
+            },
+            {
+              "line": 191,
+              "title": "Portability checklist before finishing"
+            },
+            {
+              "line": 197,
+              "title": "Supporting and historical surface"
+            }
+          ]
+        },
+        {
+          "file": "fragments/overview.md",
+          "sha256": "cf869aed9c4e0077f8db235a4ebc17c79705ddac9a4575e59cb40cde9e4dbe55",
+          "line_start": 1,
+          "line_end": 114,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Outcome and task boundary"
+            },
+            {
+              "line": 9,
+              "title": "Interop priority"
+            },
+            {
+              "line": 16,
+              "title": "Reasonable defaults"
+            },
+            {
+              "line": 27,
+              "title": "Deliverables by default"
+            },
+            {
+              "line": 35,
+              "title": "First pass"
+            },
+            {
+              "line": 53,
+              "title": "Working rules"
+            },
+            {
+              "line": 70,
+              "title": "Decision shortcuts"
+            },
+            {
+              "line": 88,
+              "title": "Verification and handoff"
+            },
+            {
+              "line": 106,
+              "title": "References"
+            }
+          ]
+        },
+        {
+          "file": "references/bootstrap-and-structure.md",
+          "sha256": "d695e4c71a2788767e1d5b94010932024846fdb95cf1d598697706147f81ff85",
+          "line_start": 1,
+          "line_end": 128,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Bootstrap and Structure"
+            },
+            {
+              "line": 3,
+              "title": "Baseline"
+            },
+            {
+              "line": 27,
+              "title": "What the classic template gives you"
+            },
+            {
+              "line": 39,
+              "title": "Recommended starting modes"
+            },
+            {
+              "line": 41,
+              "title": "Docs-only"
+            },
+            {
+              "line": 77,
+              "title": "Docs + blog/changelog"
+            },
+            {
+              "line": 85,
+              "title": "Docs + landing page"
+            },
+            {
+              "line": 93,
+              "title": "Monorepo guidance"
+            },
+            {
+              "line": 117,
+              "title": "Core commands"
+            }
+          ]
+        }
+      ],
+      "baseline_source_occurrences": [
+        {
+          "file": "fragments/overview.md",
+          "line_start": 1,
+          "line_end": 110
+        },
+        {
+          "file": "SKILL.md",
+          "line_start": 1,
+          "line_end": 196
+        },
+        {
+          "file": "references/bootstrap-and-structure.md",
+          "line_start": 1,
+          "line_end": 123
+        }
+      ],
+      "baseline_required_change": "Add version-first/no unsolicited upgrade rule; distinguish framework minimum from combined toolchain and supported Node LTS."
+    },
+    {
+      "id": "D02",
+      "aspect": "pnpm create/install/run/exec workspace structure and frozen lockfile",
+      "source_files": [
+        "references/bootstrap-and-structure.md",
+        "references/doc-quality-tooling-and-agents.md"
+      ],
+      "basis": "pnpm create docusaurus@latest site classic --typescript, workspace site directory and pnpm exec commands supported. Root package scripts/workspace filters should be discovered; frozen install belongs CI after a lockfile exists.",
+      "version": "Docusaurus3.10.2 stable; existing3.9.2/React18 branch; Node24 LTS",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Baseline independent official-source comparison retained; author compared corrected source and emitted package. No product runtime or independent candidate PASS.",
+      "official_sources": [
+        {
+          "url": "https://docusaurus.io/docs/installation",
+          "final_url": "https://docusaurus.io/docs/installation",
+          "file": "official-next-electron-docusaurus/151-docusaurus.io-docs-installation.txt",
+          "retrieved_at": "2026-09-09T11:37:10.269928+00:00",
+          "status": "downloaded",
+          "text_sha256": "b09ebd48b54fcc8d29ef54adfe0ef56067306328cd4600357c8388d663c507f0",
+          "candidate_readback_sha256": "b09ebd48b54fcc8d29ef54adfe0ef56067306328cd4600357c8388d663c507f0",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://pnpm.io/cli/run",
+          "final_url": "https://pnpm.io/cli/run",
+          "file": "official-next-electron-docusaurus/191-pnpm.io-cli-run.txt",
+          "retrieved_at": "2026-09-09T11:37:14.043285+00:00",
+          "status": "downloaded",
+          "text_sha256": "dcaae6995059b40a6c69761ad2d72524de671ac69eee7089b1a80c5c3e4850fe",
+          "candidate_readback_sha256": "dcaae6995059b40a6c69761ad2d72524de671ac69eee7089b1a80c5c3e4850fe",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://pnpm.io/installation",
+          "final_url": "https://pnpm.io/installation",
+          "file": "official-next-electron-docusaurus/192-pnpm.io-installation.txt",
+          "retrieved_at": "2026-09-09T11:37:14.035142+00:00",
+          "status": "downloaded",
+          "text_sha256": "3946f45f1bc1358fe650d4711388bd99c94e1b6585f30d9234b504b302df55ad",
+          "candidate_readback_sha256": "3946f45f1bc1358fe650d4711388bd99c94e1b6585f30d9234b504b302df55ad",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/cli",
+          "final_url": "https://docusaurus.io/docs/cli",
+          "file": "official-next-electron-docusaurus/300-docusaurus.io-docs-cli.txt",
+          "retrieved_at": "2026-09-09T11:40:07.482946+00:00",
+          "status": "downloaded",
+          "text_sha256": "a331370afd2c8fc609f1efc65380486202dd8f3bd80f09e7d7cf3ada4f3c4577",
+          "candidate_readback_sha256": "a331370afd2c8fc609f1efc65380486202dd8f3bd80f09e7d7cf3ada4f3c4577",
+          "snapshot_hash_matches_baseline": true
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution.",
+      "baseline_result": "verified",
+      "result": "source-retained-with-clarification",
+      "candidate_version": "0.1.3",
+      "disposition": "Author source/readback verified; independent candidate behavioral/runtime assessment remains with coordinator",
+      "current_locations": [
+        {
+          "file": "references/bootstrap-and-structure.md",
+          "sha256": "d695e4c71a2788767e1d5b94010932024846fdb95cf1d598697706147f81ff85",
+          "line_start": 1,
+          "line_end": 128,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Bootstrap and Structure"
+            },
+            {
+              "line": 3,
+              "title": "Baseline"
+            },
+            {
+              "line": 27,
+              "title": "What the classic template gives you"
+            },
+            {
+              "line": 39,
+              "title": "Recommended starting modes"
+            },
+            {
+              "line": 41,
+              "title": "Docs-only"
+            },
+            {
+              "line": 77,
+              "title": "Docs + blog/changelog"
+            },
+            {
+              "line": 85,
+              "title": "Docs + landing page"
+            },
+            {
+              "line": 93,
+              "title": "Monorepo guidance"
+            },
+            {
+              "line": 117,
+              "title": "Core commands"
+            }
+          ]
+        },
+        {
+          "file": "references/doc-quality-tooling-and-agents.md",
+          "sha256": "68bf2c3a60a8f51990a8ba54046f8b4f0f2b2346f22222c41b165948108aea4f",
+          "line_start": 1,
+          "line_end": 133,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Doc Quality Tooling and AGENTS"
+            },
+            {
+              "line": 3,
+              "title": "Scope and runtime"
+            },
+            {
+              "line": 7,
+              "title": "Mandatory bootstrap"
+            },
+            {
+              "line": 21,
+              "title": "Install"
+            },
+            {
+              "line": 27,
+              "title": "Required package scripts"
+            },
+            {
+              "line": 50,
+              "title": "Default config files"
+            },
+            {
+              "line": 62,
+              "title": "GitHub Actions workflow"
+            },
+            {
+              "line": 79,
+              "title": "Why this split"
+            },
+            {
+              "line": 87,
+              "title": "Docusaurus-specific markdownlint defaults"
+            },
+            {
+              "line": 96,
+              "title": "Content coverage"
+            },
+            {
+              "line": 100,
+              "title": "MDX policy"
+            },
+            {
+              "line": 110,
+              "title": "AGENTS.md requirements"
+            },
+            {
+              "line": 123,
+              "title": "Mandatory doc quality gates"
+            }
+          ]
+        }
+      ],
+      "baseline_source_occurrences": [
+        {
+          "file": "references/bootstrap-and-structure.md",
+          "line_start": 1,
+          "line_end": 123
+        },
+        {
+          "file": "references/doc-quality-tooling-and-agents.md",
+          "line_start": 1,
+          "line_end": 125
+        }
+      ],
+      "baseline_required_change": "Сохранить; точное выполнение зависит от установленной версии и задачи."
+    },
+    {
+      "id": "D03",
+      "aspect": "Production serve CLI flags and repeated command examples",
+      "source_files": [
+        "fragments/overview.md",
+        "SKILL.md",
+        "references/bootstrap-and-structure.md",
+        "references/search-and-ecosystem.md",
+        "references/deployment-versioning-i18n.md",
+        "references/doc-quality-tooling-and-agents.md",
+        "assets/project-files/AGENTS.md"
+      ],
+      "basis": "pnpm forwards flags after script without npm-style separator. Docusaurus serve has positional siteDir and --build option; literal -- shifts --build into siteDir.",
+      "version": "Docusaurus3.10.2 stable; existing3.9.2/React18 branch; Node24 LTS",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Baseline independent official-source comparison retained; author compared corrected source and emitted package. No product runtime or independent candidate PASS.",
+      "official_sources": [
+        {
+          "url": "https://pnpm.io/cli/run",
+          "final_url": "https://pnpm.io/cli/run",
+          "file": "official-next-electron-docusaurus/191-pnpm.io-cli-run.txt",
+          "retrieved_at": "2026-09-09T11:37:14.043285+00:00",
+          "status": "downloaded",
+          "text_sha256": "dcaae6995059b40a6c69761ad2d72524de671ac69eee7089b1a80c5c3e4850fe",
+          "candidate_readback_sha256": "dcaae6995059b40a6c69761ad2d72524de671ac69eee7089b1a80c5c3e4850fe",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/cli",
+          "final_url": "https://docusaurus.io/docs/cli",
+          "file": "official-next-electron-docusaurus/300-docusaurus.io-docs-cli.txt",
+          "retrieved_at": "2026-09-09T11:40:07.482946+00:00",
+          "status": "downloaded",
+          "text_sha256": "a331370afd2c8fc609f1efc65380486202dd8f3bd80f09e7d7cf3ada4f3c4577",
+          "candidate_readback_sha256": "a331370afd2c8fc609f1efc65380486202dd8f3bd80f09e7d7cf3ada4f3c4577",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://raw.githubusercontent.com/facebook/docusaurus/v3.10.2/packages/docusaurus/src/commands/cli.ts",
+          "final_url": "https://raw.githubusercontent.com/facebook/docusaurus/v3.10.2/packages/docusaurus/src/commands/cli.ts",
+          "file": "official-next-electron-docusaurus/307-raw.githubusercontent.com-facebook-docusaurus-v3.10.2-packages-docusaurus-src-commands-cli.ts.txt",
+          "retrieved_at": "2026-09-09T11:40:07.850251+00:00",
+          "status": "downloaded",
+          "text_sha256": "b75f51fe95683878d32a96be4bc42e25ee818436299672dc3b1391861043400c",
+          "candidate_readback_sha256": "b75f51fe95683878d32a96be4bc42e25ee818436299672dc3b1391861043400c",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://raw.githubusercontent.com/facebook/docusaurus/v3.10.2/packages/docusaurus/src/commands/serve.ts",
+          "final_url": "https://raw.githubusercontent.com/facebook/docusaurus/v3.10.2/packages/docusaurus/src/commands/serve.ts",
+          "file": "official-next-electron-docusaurus/308-raw.githubusercontent.com-facebook-docusaurus-v3.10.2-packages-docusaurus-src-commands-serve.ts.txt",
+          "retrieved_at": "2026-09-09T11:40:08.434333+00:00",
+          "status": "downloaded",
+          "text_sha256": "13185c2148fca30ecaaeb9bfd2179a53a9704f614fc2ec81e6f9b17380763bc5",
+          "candidate_readback_sha256": "13185c2148fca30ecaaeb9bfd2179a53a9704f614fc2ec81e6f9b17380763bc5",
+          "snapshot_hash_matches_baseline": true
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution.",
+      "baseline_result": "correction-required",
+      "result": "source-corrected",
+      "candidate_version": "0.1.3",
+      "disposition": "Author source/readback verified; independent candidate behavioral/runtime assessment remains with coordinator",
+      "current_locations": [
+        {
+          "file": "SKILL.md",
+          "sha256": "fb1838a9ad32911ec71a7563f273292eb7c586e3069184fc74d0d0149be9a52c",
+          "line_start": 1,
+          "line_end": 200,
+          "sections": [
+            {
+              "line": 15,
+              "title": "docusaurus-repo"
+            },
+            {
+              "line": 17,
+              "title": "Start here"
+            },
+            {
+              "line": 24,
+              "title": "When to use this skill"
+            },
+            {
+              "line": 32,
+              "title": "When NOT to use this skill"
+            },
+            {
+              "line": 38,
+              "title": "Outcome and task boundary"
+            },
+            {
+              "line": 46,
+              "title": "Interop priority"
+            },
+            {
+              "line": 53,
+              "title": "Reasonable defaults"
+            },
+            {
+              "line": 64,
+              "title": "Deliverables by default"
+            },
+            {
+              "line": 72,
+              "title": "First pass"
+            },
+            {
+              "line": 90,
+              "title": "Working rules"
+            },
+            {
+              "line": 107,
+              "title": "Decision shortcuts"
+            },
+            {
+              "line": 125,
+              "title": "Verification and handoff"
+            },
+            {
+              "line": 143,
+              "title": "References"
+            },
+            {
+              "line": 153,
+              "title": "Workflow stages"
+            },
+            {
+              "line": 155,
+              "title": "Workflow stage: Apply docusaurus-repo guidance"
+            },
+            {
+              "line": 168,
+              "title": "Required active references"
+            },
+            {
+              "line": 177,
+              "title": "Bundled assets"
+            },
+            {
+              "line": 185,
+              "title": "Portability rules"
+            },
+            {
+              "line": 191,
+              "title": "Portability checklist before finishing"
+            },
+            {
+              "line": 197,
+              "title": "Supporting and historical surface"
+            }
+          ]
+        },
+        {
+          "file": "assets/project-files/AGENTS.md",
+          "sha256": "fffd49ecca4562de9557b75a36b1da6818b8b6ceacaa7a8be4bce97f968e53d8",
+          "line_start": 1,
+          "line_end": 56,
+          "sections": [
+            {
+              "line": 1,
+              "title": "AGENTS.md"
+            },
+            {
+              "line": 3,
+              "title": "Applicability"
+            },
+            {
+              "line": 7,
+              "title": "Package manager"
+            },
+            {
+              "line": 13,
+              "title": "Documentation workflow"
+            },
+            {
+              "line": 22,
+              "title": "Authoring rules"
+            },
+            {
+              "line": 32,
+              "title": "Quality gates"
+            },
+            {
+              "line": 44,
+              "title": "Route and IA safety"
+            },
+            {
+              "line": 51,
+              "title": "MDX policy"
+            }
+          ]
+        },
+        {
+          "file": "fragments/overview.md",
+          "sha256": "cf869aed9c4e0077f8db235a4ebc17c79705ddac9a4575e59cb40cde9e4dbe55",
+          "line_start": 1,
+          "line_end": 114,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Outcome and task boundary"
+            },
+            {
+              "line": 9,
+              "title": "Interop priority"
+            },
+            {
+              "line": 16,
+              "title": "Reasonable defaults"
+            },
+            {
+              "line": 27,
+              "title": "Deliverables by default"
+            },
+            {
+              "line": 35,
+              "title": "First pass"
+            },
+            {
+              "line": 53,
+              "title": "Working rules"
+            },
+            {
+              "line": 70,
+              "title": "Decision shortcuts"
+            },
+            {
+              "line": 88,
+              "title": "Verification and handoff"
+            },
+            {
+              "line": 106,
+              "title": "References"
+            }
+          ]
+        },
+        {
+          "file": "references/bootstrap-and-structure.md",
+          "sha256": "d695e4c71a2788767e1d5b94010932024846fdb95cf1d598697706147f81ff85",
+          "line_start": 1,
+          "line_end": 128,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Bootstrap and Structure"
+            },
+            {
+              "line": 3,
+              "title": "Baseline"
+            },
+            {
+              "line": 27,
+              "title": "What the classic template gives you"
+            },
+            {
+              "line": 39,
+              "title": "Recommended starting modes"
+            },
+            {
+              "line": 41,
+              "title": "Docs-only"
+            },
+            {
+              "line": 77,
+              "title": "Docs + blog/changelog"
+            },
+            {
+              "line": 85,
+              "title": "Docs + landing page"
+            },
+            {
+              "line": 93,
+              "title": "Monorepo guidance"
+            },
+            {
+              "line": 117,
+              "title": "Core commands"
+            }
+          ]
+        },
+        {
+          "file": "references/deployment-versioning-i18n.md",
+          "sha256": "caed7743fb340a5285a929e76da88fed187ef1a832f2569a1f4325b6a2342ffe",
+          "line_start": 1,
+          "line_end": 126,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Deployment, Versioning, and i18n"
+            },
+            {
+              "line": 3,
+              "title": "Deployment essentials"
+            },
+            {
+              "line": 29,
+              "title": "`trailingSlash`"
+            },
+            {
+              "line": 37,
+              "title": "Clear stale build state"
+            },
+            {
+              "line": 47,
+              "title": "Host notes"
+            },
+            {
+              "line": 53,
+              "title": "Versioning"
+            },
+            {
+              "line": 84,
+              "title": "i18n"
+            },
+            {
+              "line": 119,
+              "title": "Release checklist"
+            }
+          ]
+        },
+        {
+          "file": "references/doc-quality-tooling-and-agents.md",
+          "sha256": "68bf2c3a60a8f51990a8ba54046f8b4f0f2b2346f22222c41b165948108aea4f",
+          "line_start": 1,
+          "line_end": 133,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Doc Quality Tooling and AGENTS"
+            },
+            {
+              "line": 3,
+              "title": "Scope and runtime"
+            },
+            {
+              "line": 7,
+              "title": "Mandatory bootstrap"
+            },
+            {
+              "line": 21,
+              "title": "Install"
+            },
+            {
+              "line": 27,
+              "title": "Required package scripts"
+            },
+            {
+              "line": 50,
+              "title": "Default config files"
+            },
+            {
+              "line": 62,
+              "title": "GitHub Actions workflow"
+            },
+            {
+              "line": 79,
+              "title": "Why this split"
+            },
+            {
+              "line": 87,
+              "title": "Docusaurus-specific markdownlint defaults"
+            },
+            {
+              "line": 96,
+              "title": "Content coverage"
+            },
+            {
+              "line": 100,
+              "title": "MDX policy"
+            },
+            {
+              "line": 110,
+              "title": "AGENTS.md requirements"
+            },
+            {
+              "line": 123,
+              "title": "Mandatory doc quality gates"
+            }
+          ]
+        },
+        {
+          "file": "references/search-and-ecosystem.md",
+          "sha256": "197273c8ed4b7afc8ab31469d839408080767567913d45b83e5dc45d762a6bc9",
+          "line_start": 1,
+          "line_end": 155,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Search and Ecosystem"
+            },
+            {
+              "line": 3,
+              "title": "Search strategy"
+            },
+            {
+              "line": 7,
+              "title": "Use Algolia DocSearch when"
+            },
+            {
+              "line": 35,
+              "title": "Ask AI"
+            },
+            {
+              "line": 52,
+              "title": "Use Typesense when"
+            },
+            {
+              "line": 74,
+              "title": "Use local search when"
+            },
+            {
+              "line": 105,
+              "title": "Build your own search UI when"
+            },
+            {
+              "line": 113,
+              "title": "Community plugin rules"
+            },
+            {
+              "line": 120,
+              "title": "API docs ecosystem"
+            },
+            {
+              "line": 147,
+              "title": "Dated compatibility evidence"
+            }
+          ]
+        }
+      ],
+      "baseline_source_occurrences": [
+        {
+          "file": "fragments/overview.md",
+          "line_start": 1,
+          "line_end": 110
+        },
+        {
+          "file": "SKILL.md",
+          "line_start": 1,
+          "line_end": 196
+        },
+        {
+          "file": "references/bootstrap-and-structure.md",
+          "line_start": 1,
+          "line_end": 123
+        },
+        {
+          "file": "references/search-and-ecosystem.md",
+          "line_start": 1,
+          "line_end": 144
+        },
+        {
+          "file": "references/deployment-versioning-i18n.md",
+          "line_start": 1,
+          "line_end": 120
+        },
+        {
+          "file": "references/doc-quality-tooling-and-agents.md",
+          "line_start": 1,
+          "line_end": 125
+        },
+        {
+          "file": "assets/project-files/AGENTS.md",
+          "line_start": 1,
+          "line_end": 51
+        }
+      ],
+      "baseline_required_change": "Replace pnpm run serve -- --build with pnpm run serve --build or build then serve; remove unnecessary rebuild when validating frozen artifact; exact CLI probe required."
+    },
+    {
+      "id": "D04",
+      "aspect": "Core config/presets/docs-only homepage/routes/sidebars/plugin IDs",
+      "source_files": [
+        "references/config-presets-and-routing.md"
+      ],
+      "basis": "Classic preset includes docs/blog/pages; routeBasePath / with doc slug / requires removing page index collision; multi-instance id/path/routeBasePath/sidebarPath and navbar docsPluginId valid. Explicit config controls url/baseUrl/trailingSlash.",
+      "version": "Docusaurus3.10.2 stable; existing3.9.2/React18 branch; Node24 LTS",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Baseline independent official-source comparison retained; author compared corrected source and emitted package. No product runtime or independent candidate PASS.",
+      "official_sources": [
+        {
+          "url": "https://docusaurus.io/docs/configuration",
+          "final_url": "https://docusaurus.io/docs/configuration",
+          "file": "official-next-electron-docusaurus/153-docusaurus.io-docs-configuration.txt",
+          "retrieved_at": "2026-09-09T11:37:10.469156+00:00",
+          "status": "downloaded",
+          "text_sha256": "3b8d8159ab5330c08ffbcf6815dae61634930ae121afccf2cba9116494575e77",
+          "candidate_readback_sha256": "3b8d8159ab5330c08ffbcf6815dae61634930ae121afccf2cba9116494575e77",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/api/docusaurus-config",
+          "final_url": "https://docusaurus.io/docs/api/docusaurus-config",
+          "file": "official-next-electron-docusaurus/154-docusaurus.io-docs-api-docusaurus-config.txt",
+          "retrieved_at": "2026-09-09T11:37:10.676571+00:00",
+          "status": "downloaded",
+          "text_sha256": "9d378827eb834359914b35a9b99e60b121792d586ce4e331b60f09b061792d68",
+          "candidate_readback_sha256": "9d378827eb834359914b35a9b99e60b121792d586ce4e331b60f09b061792d68",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/creating-pages",
+          "final_url": "https://docusaurus.io/docs/creating-pages",
+          "file": "official-next-electron-docusaurus/155-docusaurus.io-docs-creating-pages.txt",
+          "retrieved_at": "2026-09-09T11:37:10.980196+00:00",
+          "status": "downloaded",
+          "text_sha256": "703ad3434551dd0f7c8de3cdbf68de7d0f809ea0f69e9aaae02b555a998f853d",
+          "candidate_readback_sha256": "703ad3434551dd0f7c8de3cdbf68de7d0f809ea0f69e9aaae02b555a998f853d",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/docs-introduction",
+          "final_url": "https://docusaurus.io/docs/docs-introduction",
+          "file": "official-next-electron-docusaurus/156-docusaurus.io-docs-docs-introduction.txt",
+          "retrieved_at": "2026-09-09T11:37:10.921869+00:00",
+          "status": "downloaded",
+          "text_sha256": "d2fa193f8a2db9410d218247e56a704a2d70f8266712c551e0e1dcbe83321911",
+          "candidate_readback_sha256": "d2fa193f8a2db9410d218247e56a704a2d70f8266712c551e0e1dcbe83321911",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/docs-multi-instance",
+          "final_url": "https://docusaurus.io/docs/docs-multi-instance",
+          "file": "official-next-electron-docusaurus/157-docusaurus.io-docs-docs-multi-instance.txt",
+          "retrieved_at": "2026-09-09T11:37:10.676330+00:00",
+          "status": "downloaded",
+          "text_sha256": "fb3ffc573ee5b5609b797c2cabdfe16eff92da376c1c1686dc6207479dc5f835",
+          "candidate_readback_sha256": "fb3ffc573ee5b5609b797c2cabdfe16eff92da376c1c1686dc6207479dc5f835",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/sidebar",
+          "final_url": "https://docusaurus.io/docs/sidebar",
+          "file": "official-next-electron-docusaurus/158-docusaurus.io-docs-sidebar.txt",
+          "retrieved_at": "2026-09-09T11:37:11.171135+00:00",
+          "status": "downloaded",
+          "text_sha256": "fad17fefdbd59fd5eb727dfd5feae509788ab59a4722fec7bfb22f84d5d09562",
+          "candidate_readback_sha256": "fad17fefdbd59fd5eb727dfd5feae509788ab59a4722fec7bfb22f84d5d09562",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/sidebar/autogenerated",
+          "final_url": "https://docusaurus.io/docs/sidebar/autogenerated",
+          "file": "official-next-electron-docusaurus/159-docusaurus.io-docs-sidebar-autogenerated.txt",
+          "retrieved_at": "2026-09-09T11:37:10.878567+00:00",
+          "status": "downloaded",
+          "text_sha256": "a922586a4a70578ccd466c7aa607996fb3b95424ca8c5977f234d6c4fbd4fdd4",
+          "candidate_readback_sha256": "a922586a4a70578ccd466c7aa607996fb3b95424ca8c5977f234d6c4fbd4fdd4",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs",
+          "final_url": "https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs",
+          "file": "official-next-electron-docusaurus/301-docusaurus.io-docs-api-plugins-docusaurus-plugin-content-docs.txt",
+          "retrieved_at": "2026-09-09T11:40:07.344330+00:00",
+          "status": "downloaded",
+          "text_sha256": "2beb0f9179596fe9d5f9bd32929b7ff947e448162e1731b33751c68422d04c21",
+          "candidate_readback_sha256": "2beb0f9179596fe9d5f9bd32929b7ff947e448162e1731b33751c68422d04c21",
+          "snapshot_hash_matches_baseline": true
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution.",
+      "baseline_result": "verified",
+      "result": "source-retained-with-clarification",
+      "candidate_version": "0.1.3",
+      "disposition": "Author source/readback verified; independent candidate behavioral/runtime assessment remains with coordinator",
+      "current_locations": [
+        {
+          "file": "references/config-presets-and-routing.md",
+          "sha256": "7eab4eb7d7d7090a9b736b7419880a827270b5b23b981716473eb9c524de6c70",
+          "line_start": 1,
+          "line_end": 168,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Config, Presets, and Routing"
+            },
+            {
+              "line": 3,
+              "title": "Site config priorities"
+            },
+            {
+              "line": 26,
+              "title": "Preset vs plugin composition"
+            },
+            {
+              "line": 69,
+              "title": "Routing rules"
+            },
+            {
+              "line": 85,
+              "title": "Route-collision traps"
+            },
+            {
+              "line": 92,
+              "title": "Navbar strategy"
+            },
+            {
+              "line": 128,
+              "title": "Multi-instance docs"
+            },
+            {
+              "line": 166,
+              "title": "Build flags and release channels"
+            }
+          ]
+        }
+      ],
+      "baseline_source_occurrences": [
+        {
+          "file": "references/config-presets-and-routing.md",
+          "line_start": 1,
+          "line_end": 164
+        }
+      ],
+      "baseline_required_change": "Сохранить; точное выполнение зависит от установленной версии и задачи."
+    },
+    {
+      "id": "D05",
+      "aspect": "MDX parser/Markdown frontmatter/links/assets/React browser-only constraints",
+      "source_files": [
+        "references/content-authoring.md"
+      ],
+      "basis": "Docusaurus default markdown.format is mdx even for .md; detect makes extension matter.3.10 scaffolds now .mdx. MDX imports/React server rendering require browser-safe code.",
+      "version": "Docusaurus3.10.2 stable; existing3.9.2/React18 branch; Node24 LTS",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Baseline independent official-source comparison retained; author compared corrected source and emitted package. No product runtime or independent candidate PASS.",
+      "official_sources": [
+        {
+          "url": "https://docusaurus.io/docs/markdown-features",
+          "final_url": "https://docusaurus.io/docs/markdown-features",
+          "file": "official-next-electron-docusaurus/160-docusaurus.io-docs-markdown-features.txt",
+          "retrieved_at": "2026-09-09T11:37:11.434661+00:00",
+          "status": "downloaded",
+          "text_sha256": "e33153eb44112c60cf221f1d324f8769e34d76b105b21a74a20fd8f9f30bc0a8",
+          "candidate_readback_sha256": "e33153eb44112c60cf221f1d324f8769e34d76b105b21a74a20fd8f9f30bc0a8",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/markdown-features/react",
+          "final_url": "https://docusaurus.io/docs/markdown-features/react",
+          "file": "official-next-electron-docusaurus/161-docusaurus.io-docs-markdown-features-react.txt",
+          "retrieved_at": "2026-09-09T11:37:11.112768+00:00",
+          "status": "downloaded",
+          "text_sha256": "ba970f8d97d64854ead3d8c4a6b7fd5b165e3bdac1e057d5a42dcb692e4842a2",
+          "candidate_readback_sha256": "ba970f8d97d64854ead3d8c4a6b7fd5b165e3bdac1e057d5a42dcb692e4842a2",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/api/docusaurus-config",
+          "final_url": "https://docusaurus.io/docs/api/docusaurus-config",
+          "file": "official-next-electron-docusaurus/154-docusaurus.io-docs-api-docusaurus-config.txt",
+          "retrieved_at": "2026-09-09T11:37:10.676571+00:00",
+          "status": "downloaded",
+          "text_sha256": "9d378827eb834359914b35a9b99e60b121792d586ce4e331b60f09b061792d68",
+          "candidate_readback_sha256": "9d378827eb834359914b35a9b99e60b121792d586ce4e331b60f09b061792d68",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/blog/releases/3.10",
+          "final_url": "https://docusaurus.io/blog/releases/3.10",
+          "file": "official-next-electron-docusaurus/305-docusaurus.io-blog-releases-3.10.txt",
+          "retrieved_at": "2026-09-09T11:40:07.570736+00:00",
+          "status": "downloaded",
+          "text_sha256": "750276a94a05ecbfad16c1a6eaa45a7e8a4d904601c314398c552b97f566c000",
+          "candidate_readback_sha256": "750276a94a05ecbfad16c1a6eaa45a7e8a4d904601c314398c552b97f566c000",
+          "snapshot_hash_matches_baseline": true
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution.",
+      "baseline_result": "correction-required",
+      "result": "source-corrected",
+      "candidate_version": "0.1.3",
+      "disposition": "Author source/readback verified; independent candidate behavioral/runtime assessment remains with coordinator",
+      "current_locations": [
+        {
+          "file": "references/content-authoring.md",
+          "sha256": "890b4c84a5c45c4590a2edd5c80442d3485f3d13eb3e5728f0c23705b95f4630",
+          "line_start": 1,
+          "line_end": 121,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Content Authoring"
+            },
+            {
+              "line": 3,
+              "title": "File-system rules"
+            },
+            {
+              "line": 30,
+              "title": "Sidebars"
+            },
+            {
+              "line": 48,
+              "title": "MDX rules"
+            },
+            {
+              "line": 69,
+              "title": "Global MDX components"
+            },
+            {
+              "line": 75,
+              "title": "Authoring features worth enabling"
+            },
+            {
+              "line": 84,
+              "title": "Mermaid"
+            },
+            {
+              "line": 97,
+              "title": "Live code blocks"
+            },
+            {
+              "line": 116,
+              "title": "Writing heuristics"
+            }
+          ]
+        }
+      ],
+      "baseline_source_occurrences": [
+        {
+          "file": "references/content-authoring.md",
+          "line_start": 1,
+          "line_end": 119
+        }
+      ],
+      "baseline_required_change": "Clarify .md extension does not disable MDX; preserve intentional authored format and current parser config, qualify new-scaffold default."
+    },
+    {
+      "id": "D06",
+      "aspect": "Sidebars/categories/slug IDs/version-safe imports",
+      "source_files": [
+        "references/content-authoring.md",
+        "references/config-presets-and-routing.md"
+      ],
+      "basis": "Autogenerated sidebars/category metadata/sidebar_position/slug supported; docs links resolve by IDs, routes differ. @site absolute imports remain stable when versioned docs move deeper.",
+      "version": "Docusaurus3.10.2 stable; existing3.9.2/React18 branch; Node24 LTS",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Baseline independent official-source comparison retained; author compared corrected source and emitted package. No product runtime or independent candidate PASS.",
+      "official_sources": [
+        {
+          "url": "https://docusaurus.io/docs/sidebar",
+          "final_url": "https://docusaurus.io/docs/sidebar",
+          "file": "official-next-electron-docusaurus/158-docusaurus.io-docs-sidebar.txt",
+          "retrieved_at": "2026-09-09T11:37:11.171135+00:00",
+          "status": "downloaded",
+          "text_sha256": "fad17fefdbd59fd5eb727dfd5feae509788ab59a4722fec7bfb22f84d5d09562",
+          "candidate_readback_sha256": "fad17fefdbd59fd5eb727dfd5feae509788ab59a4722fec7bfb22f84d5d09562",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/sidebar/autogenerated",
+          "final_url": "https://docusaurus.io/docs/sidebar/autogenerated",
+          "file": "official-next-electron-docusaurus/159-docusaurus.io-docs-sidebar-autogenerated.txt",
+          "retrieved_at": "2026-09-09T11:37:10.878567+00:00",
+          "status": "downloaded",
+          "text_sha256": "a922586a4a70578ccd466c7aa607996fb3b95424ca8c5977f234d6c4fbd4fdd4",
+          "candidate_readback_sha256": "a922586a4a70578ccd466c7aa607996fb3b95424ca8c5977f234d6c4fbd4fdd4",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/versioning",
+          "final_url": "https://docusaurus.io/docs/versioning",
+          "file": "official-next-electron-docusaurus/170-docusaurus.io-docs-versioning.txt",
+          "retrieved_at": "2026-09-09T11:37:11.764355+00:00",
+          "status": "downloaded",
+          "text_sha256": "7c430b7469dc4dc189ed7779ef19f0744668ca73329cb91260c4902bf606683b",
+          "candidate_readback_sha256": "7c430b7469dc4dc189ed7779ef19f0744668ca73329cb91260c4902bf606683b",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs",
+          "final_url": "https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs",
+          "file": "official-next-electron-docusaurus/301-docusaurus.io-docs-api-plugins-docusaurus-plugin-content-docs.txt",
+          "retrieved_at": "2026-09-09T11:40:07.344330+00:00",
+          "status": "downloaded",
+          "text_sha256": "2beb0f9179596fe9d5f9bd32929b7ff947e448162e1731b33751c68422d04c21",
+          "candidate_readback_sha256": "2beb0f9179596fe9d5f9bd32929b7ff947e448162e1731b33751c68422d04c21",
+          "snapshot_hash_matches_baseline": true
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution.",
+      "baseline_result": "verified",
+      "result": "source-retained-with-clarification",
+      "candidate_version": "0.1.3",
+      "disposition": "Author source/readback verified; independent candidate behavioral/runtime assessment remains with coordinator",
+      "current_locations": [
+        {
+          "file": "references/config-presets-and-routing.md",
+          "sha256": "7eab4eb7d7d7090a9b736b7419880a827270b5b23b981716473eb9c524de6c70",
+          "line_start": 1,
+          "line_end": 168,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Config, Presets, and Routing"
+            },
+            {
+              "line": 3,
+              "title": "Site config priorities"
+            },
+            {
+              "line": 26,
+              "title": "Preset vs plugin composition"
+            },
+            {
+              "line": 69,
+              "title": "Routing rules"
+            },
+            {
+              "line": 85,
+              "title": "Route-collision traps"
+            },
+            {
+              "line": 92,
+              "title": "Navbar strategy"
+            },
+            {
+              "line": 128,
+              "title": "Multi-instance docs"
+            },
+            {
+              "line": 166,
+              "title": "Build flags and release channels"
+            }
+          ]
+        },
+        {
+          "file": "references/content-authoring.md",
+          "sha256": "890b4c84a5c45c4590a2edd5c80442d3485f3d13eb3e5728f0c23705b95f4630",
+          "line_start": 1,
+          "line_end": 121,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Content Authoring"
+            },
+            {
+              "line": 3,
+              "title": "File-system rules"
+            },
+            {
+              "line": 30,
+              "title": "Sidebars"
+            },
+            {
+              "line": 48,
+              "title": "MDX rules"
+            },
+            {
+              "line": 69,
+              "title": "Global MDX components"
+            },
+            {
+              "line": 75,
+              "title": "Authoring features worth enabling"
+            },
+            {
+              "line": 84,
+              "title": "Mermaid"
+            },
+            {
+              "line": 97,
+              "title": "Live code blocks"
+            },
+            {
+              "line": 116,
+              "title": "Writing heuristics"
+            }
+          ]
+        }
+      ],
+      "baseline_source_occurrences": [
+        {
+          "file": "references/content-authoring.md",
+          "line_start": 1,
+          "line_end": 119
+        },
+        {
+          "file": "references/config-presets-and-routing.md",
+          "line_start": 1,
+          "line_end": 164
+        }
+      ],
+      "baseline_required_change": "Сохранить; точное выполнение зависит от установленной версии и задачи."
+    },
+    {
+      "id": "D07",
+      "aspect": "Mermaid/live-code/tabs/admonitions/code blocks and theme plugins",
+      "source_files": [
+        "references/content-authoring.md"
+      ],
+      "basis": "markdown.mermaid + @docusaurus/theme-mermaid required; theme-live-codeblock in plugins is official supported example (not a defect). Live code SSR/browser restrictions and correct fenced syntax apply.",
+      "version": "Docusaurus3.10.2 stable; existing3.9.2/React18 branch; Node24 LTS",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Baseline independent official-source comparison retained; author compared corrected source and emitted package. No product runtime or independent candidate PASS.",
+      "official_sources": [
+        {
+          "url": "https://docusaurus.io/docs/markdown-features/diagrams",
+          "final_url": "https://docusaurus.io/docs/markdown-features/diagrams",
+          "file": "official-next-electron-docusaurus/162-docusaurus.io-docs-markdown-features-diagrams.txt",
+          "retrieved_at": "2026-09-09T11:37:11.116186+00:00",
+          "status": "downloaded",
+          "text_sha256": "4b75cc2508a66014da77faf89ca2e3ac33bf533a1133446cfccf0b463b7a62d2",
+          "candidate_readback_sha256": "4b75cc2508a66014da77faf89ca2e3ac33bf533a1133446cfccf0b463b7a62d2",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/markdown-features/code-blocks",
+          "final_url": "https://docusaurus.io/docs/markdown-features/code-blocks",
+          "file": "official-next-electron-docusaurus/163-docusaurus.io-docs-markdown-features-code-blocks.txt",
+          "retrieved_at": "2026-09-09T11:37:11.380112+00:00",
+          "status": "downloaded",
+          "text_sha256": "3b59f6473b6173ecb5a6d41459aecabaf23f2a1184bf71922850f126737acf03",
+          "candidate_readback_sha256": "3b59f6473b6173ecb5a6d41459aecabaf23f2a1184bf71922850f126737acf03",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/markdown-features/tabs",
+          "final_url": "https://docusaurus.io/docs/markdown-features/tabs",
+          "file": "official-next-electron-docusaurus/164-docusaurus.io-docs-markdown-features-tabs.txt",
+          "retrieved_at": "2026-09-09T11:37:11.516965+00:00",
+          "status": "downloaded",
+          "text_sha256": "6f56faf6db1afbd4a906d7485a40ac315e7880497f4fac3fc61100edbf9e0242",
+          "candidate_readback_sha256": "6f56faf6db1afbd4a906d7485a40ac315e7880497f4fac3fc61100edbf9e0242",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/markdown-features/admonitions",
+          "final_url": "https://docusaurus.io/docs/markdown-features/admonitions",
+          "file": "official-next-electron-docusaurus/165-docusaurus.io-docs-markdown-features-admonitions.txt",
+          "retrieved_at": "2026-09-09T11:37:11.618194+00:00",
+          "status": "downloaded",
+          "text_sha256": "3c4baa3d928cfa12bc61c9d7d4485aabad68645f431afb04eddecde640edcee2",
+          "candidate_readback_sha256": "3c4baa3d928cfa12bc61c9d7d4485aabad68645f431afb04eddecde640edcee2",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/api/themes/@docusaurus/theme-live-codeblock",
+          "final_url": "https://docusaurus.io/docs/api/themes/@docusaurus/theme-live-codeblock",
+          "file": "official-next-electron-docusaurus/303-docusaurus.io-docs-api-themes-docusaurus-theme-live-codeblock.txt",
+          "retrieved_at": "2026-09-09T11:40:07.539395+00:00",
+          "status": "downloaded",
+          "text_sha256": "af43250ae5cb3d12d45153b1d50ff00967eb7e0bb6cad1c91094430dc8657b61",
+          "candidate_readback_sha256": "af43250ae5cb3d12d45153b1d50ff00967eb7e0bb6cad1c91094430dc8657b61",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/api/themes/@docusaurus/theme-mermaid",
+          "final_url": "https://docusaurus.io/docs/api/themes/@docusaurus/theme-mermaid",
+          "file": "official-next-electron-docusaurus/304-docusaurus.io-docs-api-themes-docusaurus-theme-mermaid.txt",
+          "retrieved_at": "2026-09-09T11:40:07.817425+00:00",
+          "status": "downloaded",
+          "text_sha256": "c7b1d902e622afc7593322f3f49be9bfdbb1c7981b510129d61c05c6d21285f9",
+          "candidate_readback_sha256": "c7b1d902e622afc7593322f3f49be9bfdbb1c7981b510129d61c05c6d21285f9",
+          "snapshot_hash_matches_baseline": true
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution.",
+      "baseline_result": "verified",
+      "result": "source-retained-with-clarification",
+      "candidate_version": "0.1.3",
+      "disposition": "Author source/readback verified; independent candidate behavioral/runtime assessment remains with coordinator",
+      "current_locations": [
+        {
+          "file": "references/content-authoring.md",
+          "sha256": "890b4c84a5c45c4590a2edd5c80442d3485f3d13eb3e5728f0c23705b95f4630",
+          "line_start": 1,
+          "line_end": 121,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Content Authoring"
+            },
+            {
+              "line": 3,
+              "title": "File-system rules"
+            },
+            {
+              "line": 30,
+              "title": "Sidebars"
+            },
+            {
+              "line": 48,
+              "title": "MDX rules"
+            },
+            {
+              "line": 69,
+              "title": "Global MDX components"
+            },
+            {
+              "line": 75,
+              "title": "Authoring features worth enabling"
+            },
+            {
+              "line": 84,
+              "title": "Mermaid"
+            },
+            {
+              "line": 97,
+              "title": "Live code blocks"
+            },
+            {
+              "line": 116,
+              "title": "Writing heuristics"
+            }
+          ]
+        }
+      ],
+      "baseline_source_occurrences": [
+        {
+          "file": "references/content-authoring.md",
+          "line_start": 1,
+          "line_end": 119
+        }
+      ],
+      "baseline_required_change": "Сохранить; точное выполнение зависит от установленной версии и задачи."
+    },
+    {
+      "id": "D08",
+      "aspect": "ThemeConfig/colors/navbar/footer/prism/announcementBar/CSS/modules/swizzling",
+      "source_files": [
+        "references/customization-and-ux.md"
+      ],
+      "basis": "Theme fields/examples and --list/--eject swizzle supported; @theme-original wrapper pattern valid. Unsafe swizzle API surface needs upgrade review; CSS variables and wrapped components minimize coupling.",
+      "version": "Docusaurus3.10.2 stable; existing3.9.2/React18 branch; Node24 LTS",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Baseline independent official-source comparison retained; author compared corrected source and emitted package. No product runtime or independent candidate PASS.",
+      "official_sources": [
+        {
+          "url": "https://docusaurus.io/docs/api/themes/configuration",
+          "final_url": "https://docusaurus.io/docs/api/themes/configuration",
+          "file": "official-next-electron-docusaurus/166-docusaurus.io-docs-api-themes-configuration.txt",
+          "retrieved_at": "2026-09-09T11:37:11.600147+00:00",
+          "status": "downloaded",
+          "text_sha256": "dae2e930a9b96caf37e811c9d85f2fcb1c17006a19d3f5f543042cfde7f89a5b",
+          "candidate_readback_sha256": "dae2e930a9b96caf37e811c9d85f2fcb1c17006a19d3f5f543042cfde7f89a5b",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/swizzling",
+          "final_url": "https://docusaurus.io/docs/swizzling",
+          "file": "official-next-electron-docusaurus/167-docusaurus.io-docs-swizzling.txt",
+          "retrieved_at": "2026-09-09T11:37:12.071740+00:00",
+          "status": "downloaded",
+          "text_sha256": "990bfab170136a28657d8b82eaec8fc1f4b9384b2d8bb3b37e83cb6bfff2a327",
+          "candidate_readback_sha256": "990bfab170136a28657d8b82eaec8fc1f4b9384b2d8bb3b37e83cb6bfff2a327",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/styling-layout",
+          "final_url": "https://docusaurus.io/docs/styling-layout",
+          "file": "official-next-electron-docusaurus/168-docusaurus.io-docs-styling-layout.txt",
+          "retrieved_at": "2026-09-09T11:37:11.689192+00:00",
+          "status": "downloaded",
+          "text_sha256": "2c7525bca5aff9c78c9b129701772c7fda1773cb15bea85bad2078cf10a03177",
+          "candidate_readback_sha256": "2c7525bca5aff9c78c9b129701772c7fda1773cb15bea85bad2078cf10a03177",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/cli",
+          "final_url": "https://docusaurus.io/docs/cli",
+          "file": "official-next-electron-docusaurus/300-docusaurus.io-docs-cli.txt",
+          "retrieved_at": "2026-09-09T11:40:07.482946+00:00",
+          "status": "downloaded",
+          "text_sha256": "a331370afd2c8fc609f1efc65380486202dd8f3bd80f09e7d7cf3ada4f3c4577",
+          "candidate_readback_sha256": "a331370afd2c8fc609f1efc65380486202dd8f3bd80f09e7d7cf3ada4f3c4577",
+          "snapshot_hash_matches_baseline": true
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution.",
+      "baseline_result": "verified",
+      "result": "source-retained-with-clarification",
+      "candidate_version": "0.1.3",
+      "disposition": "Author source/readback verified; independent candidate behavioral/runtime assessment remains with coordinator",
+      "current_locations": [
+        {
+          "file": "references/customization-and-ux.md",
+          "sha256": "ae6d1d7a79bd4df3345d437a58c7b734c9059af349a820fda4cd6328d7d3de06",
+          "line_start": 1,
+          "line_end": 121,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Customization and UX"
+            },
+            {
+              "line": 3,
+              "title": "Theme config that matters most"
+            },
+            {
+              "line": 38,
+              "title": "CSS strategy"
+            },
+            {
+              "line": 69,
+              "title": "Pages and custom UI"
+            },
+            {
+              "line": 80,
+              "title": "Swizzling"
+            },
+            {
+              "line": 112,
+              "title": "UX heuristics for docs sites"
+            }
+          ]
+        }
+      ],
+      "baseline_source_occurrences": [
+        {
+          "file": "references/customization-and-ux.md",
+          "line_start": 1,
+          "line_end": 120
+        }
+      ],
+      "baseline_required_change": "Сохранить; точное выполнение зависит от установленной версии и задачи."
+    },
+    {
+      "id": "D09",
+      "aspect": "Algolia contextual search/crawler/facets/AskAI and credential boundary",
+      "source_files": [
+        "references/search-and-ecosystem.md"
+      ],
+      "basis": "contextualSearch true default; version/language facets and crawler configuration needed; askAi assistant ID supported3.9+ DocSearch4. Search-only API key frontend, admin/crawler credentials external; current example field names supported.",
+      "version": "Docusaurus3.10.2 stable; existing3.9.2/React18 branch; Node24 LTS",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Baseline independent official-source comparison retained; author compared corrected source and emitted package. No product runtime or independent candidate PASS.",
+      "official_sources": [
+        {
+          "url": "https://docusaurus.io/docs/search",
+          "final_url": "https://docusaurus.io/docs/search",
+          "file": "official-next-electron-docusaurus/173-docusaurus.io-docs-search.txt",
+          "retrieved_at": "2026-09-09T11:37:12.312920+00:00",
+          "status": "downloaded",
+          "text_sha256": "2a888a1319b1995ef1e782d42d6a9e0bb2ebf49ee1b907083690523f3fb57f72",
+          "candidate_readback_sha256": "2a888a1319b1995ef1e782d42d6a9e0bb2ebf49ee1b907083690523f3fb57f72",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/blog/releases/3.9",
+          "final_url": "https://docusaurus.io/blog/releases/3.9",
+          "file": "official-next-electron-docusaurus/178-docusaurus.io-blog-releases-3.9.txt",
+          "retrieved_at": "2026-09-09T11:37:12.932395+00:00",
+          "status": "downloaded",
+          "text_sha256": "62833cfde701a3e9ee4f983a4d59066d3ae007c34d05991edf2f4405abe84c2a",
+          "candidate_readback_sha256": "62833cfde701a3e9ee4f983a4d59066d3ae007c34d05991edf2f4405abe84c2a",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/api/themes/@docusaurus/theme-search-algolia",
+          "final_url": "https://docusaurus.io/docs/api/themes/@docusaurus/theme-search-algolia",
+          "file": "official-next-electron-docusaurus/302-docusaurus.io-docs-api-themes-docusaurus-theme-search-algolia.txt",
+          "retrieved_at": "2026-09-09T11:40:07.220646+00:00",
+          "status": "downloaded",
+          "text_sha256": "85b36b4ee0adae4cc3a70189120b5b1075b791aec9176faeb3a36c3b89cc85d9",
+          "candidate_readback_sha256": "85b36b4ee0adae4cc3a70189120b5b1075b791aec9176faeb3a36c3b89cc85d9",
+          "snapshot_hash_matches_baseline": true
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution.",
+      "baseline_result": "verified",
+      "result": "source-corrected",
+      "candidate_version": "0.1.3",
+      "disposition": "Author source/readback verified; independent candidate behavioral/runtime assessment remains with coordinator",
+      "current_locations": [
+        {
+          "file": "references/search-and-ecosystem.md",
+          "sha256": "197273c8ed4b7afc8ab31469d839408080767567913d45b83e5dc45d762a6bc9",
+          "line_start": 1,
+          "line_end": 155,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Search and Ecosystem"
+            },
+            {
+              "line": 3,
+              "title": "Search strategy"
+            },
+            {
+              "line": 7,
+              "title": "Use Algolia DocSearch when"
+            },
+            {
+              "line": 35,
+              "title": "Ask AI"
+            },
+            {
+              "line": 52,
+              "title": "Use Typesense when"
+            },
+            {
+              "line": 74,
+              "title": "Use local search when"
+            },
+            {
+              "line": 105,
+              "title": "Build your own search UI when"
+            },
+            {
+              "line": 113,
+              "title": "Community plugin rules"
+            },
+            {
+              "line": 120,
+              "title": "API docs ecosystem"
+            },
+            {
+              "line": 147,
+              "title": "Dated compatibility evidence"
+            }
+          ]
+        }
+      ],
+      "baseline_source_occurrences": [
+        {
+          "file": "references/search-and-ecosystem.md",
+          "line_start": 1,
+          "line_end": 144
+        }
+      ],
+      "baseline_required_change": "Сохранить; точное выполнение зависит от установленной версии и задачи."
+    },
+    {
+      "id": "D10",
+      "aspect": "Local search @cmfcmf config/versions/locales/runtime/peer dependencies",
+      "source_files": [
+        "references/search-and-ecosystem.md"
+      ],
+      "basis": "indexDocs/indexBlog/indexPages/language/maxSearchResults supported; versions/i18n supported; core^3, React18|19 peers. Search requires production build, not development mode.",
+      "version": "Docusaurus3.10.2 stable; existing3.9.2/React18 branch; Node24 LTS",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Baseline independent official-source comparison retained; author compared corrected source and emitted package. No product runtime or independent candidate PASS.",
+      "official_sources": [
+        {
+          "url": "https://raw.githubusercontent.com/cmfcmf/docusaurus-search-local/master/README.md",
+          "final_url": "https://raw.githubusercontent.com/cmfcmf/docusaurus-search-local/master/README.md",
+          "file": "official-next-electron-docusaurus/186-raw.githubusercontent.com-cmfcmf-docusaurus-search-local-master-README.md.txt",
+          "retrieved_at": "2026-09-09T11:37:13.380400+00:00",
+          "status": "downloaded",
+          "text_sha256": "a33d24d9a7043377b9aee21dc68e284fe6a9f74d012a26011bd1e737010c9b2b",
+          "candidate_readback_sha256": "a33d24d9a7043377b9aee21dc68e284fe6a9f74d012a26011bd1e737010c9b2b",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://raw.githubusercontent.com/cmfcmf/docusaurus-search-local/master/packages/docusaurus-search-local/package.json",
+          "final_url": "https://raw.githubusercontent.com/cmfcmf/docusaurus-search-local/master/packages/docusaurus-search-local/package.json",
+          "file": "official-next-electron-docusaurus/313-raw.githubusercontent.com-cmfcmf-docusaurus-search-local-master-packages-docusaurus-search-local-package.json.txt",
+          "retrieved_at": "2026-09-09T11:40:08.773291+00:00",
+          "status": "downloaded",
+          "text_sha256": "046da6dbf057429e42e0dfd8b68f187ae09b1c38fe32e1bd174d755432a2e64a",
+          "candidate_readback_sha256": "046da6dbf057429e42e0dfd8b68f187ae09b1c38fe32e1bd174d755432a2e64a",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://registry.npmjs.org/@cmfcmf%2fdocusaurus-search-local/latest",
+          "final_url": "https://registry.npmjs.org/@cmfcmf%2fdocusaurus-search-local/latest",
+          "file": "official-next-electron-docusaurus/363-registry-cmfcmf-docusaurus-search-local-latest.json",
+          "retrieved_at": "2026-09-09T11:50:00.693150+00:00",
+          "status": "downloaded",
+          "text_sha256": "4fc1d214fbb2859aca149bec04f293cf03098cb6bd10a115f90bb2d880da30e3",
+          "candidate_readback_sha256": "4fc1d214fbb2859aca149bec04f293cf03098cb6bd10a115f90bb2d880da30e3",
+          "snapshot_hash_matches_baseline": true
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution.",
+      "baseline_result": "verified",
+      "result": "source-corrected",
+      "candidate_version": "0.1.3",
+      "disposition": "Author source/readback verified; independent candidate behavioral/runtime assessment remains with coordinator",
+      "current_locations": [
+        {
+          "file": "references/search-and-ecosystem.md",
+          "sha256": "197273c8ed4b7afc8ab31469d839408080767567913d45b83e5dc45d762a6bc9",
+          "line_start": 1,
+          "line_end": 155,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Search and Ecosystem"
+            },
+            {
+              "line": 3,
+              "title": "Search strategy"
+            },
+            {
+              "line": 7,
+              "title": "Use Algolia DocSearch when"
+            },
+            {
+              "line": 35,
+              "title": "Ask AI"
+            },
+            {
+              "line": 52,
+              "title": "Use Typesense when"
+            },
+            {
+              "line": 74,
+              "title": "Use local search when"
+            },
+            {
+              "line": 105,
+              "title": "Build your own search UI when"
+            },
+            {
+              "line": 113,
+              "title": "Community plugin rules"
+            },
+            {
+              "line": 120,
+              "title": "API docs ecosystem"
+            },
+            {
+              "line": 147,
+              "title": "Dated compatibility evidence"
+            }
+          ]
+        }
+      ],
+      "baseline_source_occurrences": [
+        {
+          "file": "references/search-and-ecosystem.md",
+          "line_start": 1,
+          "line_end": 144
+        }
+      ],
+      "baseline_required_change": "Сохранить совместимую pinned version и production search probe; explicitly document dev limitation."
+    },
+    {
+      "id": "D11",
+      "aspect": "Typesense config/node/React/Docusaurus support and crawler",
+      "source_files": [
+        "references/search-and-ecosystem.md"
+      ],
+      "basis": "Owner README matrix0.27 supports Docusaurus>=3.9<4/Node20; own search service+crawler required. themes and typesenseCollectionName/typesenseServerConfig/contextualSearch structure owner-supported; do not imply server exists from UI config.",
+      "version": "Docusaurus3.10.2 stable; existing3.9.2/React18 branch; Node24 LTS",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Baseline independent official-source comparison retained; author compared corrected source and emitted package. No product runtime or independent candidate PASS.",
+      "official_sources": [
+        {
+          "url": "https://raw.githubusercontent.com/typesense/docusaurus-theme-search-typesense/master/README.md",
+          "final_url": "https://raw.githubusercontent.com/typesense/docusaurus-theme-search-typesense/master/README.md",
+          "file": "official-next-electron-docusaurus/314-raw.githubusercontent.com-typesense-docusaurus-theme-search-typesense-master-README.md.txt",
+          "retrieved_at": "2026-09-09T11:40:09.071916+00:00",
+          "status": "downloaded",
+          "text_sha256": "a3da07f2ad56d7ddd99bfb0e854f5d45faae9ff20e3af3c80c0375fd6ae0f854",
+          "candidate_readback_sha256": "a3da07f2ad56d7ddd99bfb0e854f5d45faae9ff20e3af3c80c0375fd6ae0f854",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://registry.npmjs.org/docusaurus-theme-search-typesense/latest",
+          "final_url": "https://registry.npmjs.org/docusaurus-theme-search-typesense/latest",
+          "file": "official-next-electron-docusaurus/365-registry-docusaurus-theme-search-typesense-latest.json",
+          "retrieved_at": "2026-09-09T11:50:01.308898+00:00",
+          "status": "downloaded",
+          "text_sha256": "ec3004b3c1df1a70f511704263d0b751a054f90a0d1cfc7e455d937d26183a2f",
+          "candidate_readback_sha256": "ec3004b3c1df1a70f511704263d0b751a054f90a0d1cfc7e455d937d26183a2f",
+          "snapshot_hash_matches_baseline": true
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution.",
+      "baseline_result": "verified",
+      "result": "source-corrected",
+      "candidate_version": "0.1.3",
+      "disposition": "Author source/readback verified; independent candidate behavioral/runtime assessment remains with coordinator",
+      "current_locations": [
+        {
+          "file": "references/search-and-ecosystem.md",
+          "sha256": "197273c8ed4b7afc8ab31469d839408080767567913d45b83e5dc45d762a6bc9",
+          "line_start": 1,
+          "line_end": 155,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Search and Ecosystem"
+            },
+            {
+              "line": 3,
+              "title": "Search strategy"
+            },
+            {
+              "line": 7,
+              "title": "Use Algolia DocSearch when"
+            },
+            {
+              "line": 35,
+              "title": "Ask AI"
+            },
+            {
+              "line": 52,
+              "title": "Use Typesense when"
+            },
+            {
+              "line": 74,
+              "title": "Use local search when"
+            },
+            {
+              "line": 105,
+              "title": "Build your own search UI when"
+            },
+            {
+              "line": 113,
+              "title": "Community plugin rules"
+            },
+            {
+              "line": 120,
+              "title": "API docs ecosystem"
+            },
+            {
+              "line": 147,
+              "title": "Dated compatibility evidence"
+            }
+          ]
+        }
+      ],
+      "baseline_source_occurrences": [
+        {
+          "file": "references/search-and-ecosystem.md",
+          "line_start": 1,
+          "line_end": 144
+        }
+      ],
+      "baseline_required_change": "Сохранить; точное выполнение зависит от установленной версии и задачи."
+    },
+    {
+      "id": "D12",
+      "aspect": "OpenAPI generator/theme version matrix/generated trees and docs plugin integration",
+      "source_files": [
+        "references/search-and-ecosystem.md"
+      ],
+      "basis": "Current5.x→Docusaurus3.10+, legacy4.x→3.5–3.9.2; plugin/theme pair and docItemComponent integration needed. Baseline correctly requires matrix check and source-owned generated docs.",
+      "version": "Docusaurus3.10.2 stable; existing3.9.2/React18 branch; Node24 LTS",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Baseline independent official-source comparison retained; author compared corrected source and emitted package. No product runtime or independent candidate PASS.",
+      "official_sources": [
+        {
+          "url": "https://raw.githubusercontent.com/PaloAltoNetworks/docusaurus-openapi-docs/main/README.md",
+          "final_url": "https://raw.githubusercontent.com/PaloAltoNetworks/docusaurus-openapi-docs/main/README.md",
+          "file": "official-next-electron-docusaurus/188-raw.githubusercontent.com-PaloAltoNetworks-docusaurus-openapi-docs-main-README.md.txt",
+          "retrieved_at": "2026-09-09T11:37:13.591297+00:00",
+          "status": "downloaded",
+          "text_sha256": "6ef9cca754e4b62c061d26f5e5de48143b3ece8fe155effaf2743634645fd9c7",
+          "candidate_readback_sha256": "6ef9cca754e4b62c061d26f5e5de48143b3ece8fe155effaf2743634645fd9c7",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://registry.npmjs.org/docusaurus-plugin-openapi-docs/latest",
+          "final_url": "https://registry.npmjs.org/docusaurus-plugin-openapi-docs/latest",
+          "file": "official-next-electron-docusaurus/364-registry-docusaurus-plugin-openapi-docs-latest.json",
+          "retrieved_at": "2026-09-09T11:50:01.000461+00:00",
+          "status": "downloaded",
+          "text_sha256": "f339f2588947a5d81a7867efdcc6dd35b51628ea1a7373de1ed9563a9af86bc1",
+          "candidate_readback_sha256": "f339f2588947a5d81a7867efdcc6dd35b51628ea1a7373de1ed9563a9af86bc1",
+          "snapshot_hash_matches_baseline": true
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution.",
+      "baseline_result": "verified",
+      "result": "source-corrected",
+      "candidate_version": "0.1.3",
+      "disposition": "Author source/readback verified; independent candidate behavioral/runtime assessment remains with coordinator",
+      "current_locations": [
+        {
+          "file": "references/search-and-ecosystem.md",
+          "sha256": "197273c8ed4b7afc8ab31469d839408080767567913d45b83e5dc45d762a6bc9",
+          "line_start": 1,
+          "line_end": 155,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Search and Ecosystem"
+            },
+            {
+              "line": 3,
+              "title": "Search strategy"
+            },
+            {
+              "line": 7,
+              "title": "Use Algolia DocSearch when"
+            },
+            {
+              "line": 35,
+              "title": "Ask AI"
+            },
+            {
+              "line": 52,
+              "title": "Use Typesense when"
+            },
+            {
+              "line": 74,
+              "title": "Use local search when"
+            },
+            {
+              "line": 105,
+              "title": "Build your own search UI when"
+            },
+            {
+              "line": 113,
+              "title": "Community plugin rules"
+            },
+            {
+              "line": 120,
+              "title": "API docs ecosystem"
+            },
+            {
+              "line": 147,
+              "title": "Dated compatibility evidence"
+            }
+          ]
+        }
+      ],
+      "baseline_source_occurrences": [
+        {
+          "file": "references/search-and-ecosystem.md",
+          "line_start": 1,
+          "line_end": 144
+        }
+      ],
+      "baseline_required_change": "В компактной reference записать current/legacy matrix as dated evidence, not forced upgrade; generated endpoint pages not hand-edited."
+    },
+    {
+      "id": "D13",
+      "aspect": "Deployment url/baseUrl/trailingSlash/build/clear/static host and readback",
+      "source_files": [
+        "references/deployment-versioning-i18n.md"
+      ],
+      "basis": "Static build + serving path prefix supported; clear removes generated state. Local serve handles baseUrl explicitly but is not canonical remote/CDN readback; host trailingSlash behavior separate.",
+      "version": "Docusaurus3.10.2 stable; existing3.9.2/React18 branch; Node24 LTS",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Baseline independent official-source comparison retained; author compared corrected source and emitted package. No product runtime or independent candidate PASS.",
+      "official_sources": [
+        {
+          "url": "https://docusaurus.io/docs/api/docusaurus-config",
+          "final_url": "https://docusaurus.io/docs/api/docusaurus-config",
+          "file": "official-next-electron-docusaurus/154-docusaurus.io-docs-api-docusaurus-config.txt",
+          "retrieved_at": "2026-09-09T11:37:10.676571+00:00",
+          "status": "downloaded",
+          "text_sha256": "9d378827eb834359914b35a9b99e60b121792d586ce4e331b60f09b061792d68",
+          "candidate_readback_sha256": "9d378827eb834359914b35a9b99e60b121792d586ce4e331b60f09b061792d68",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/deployment",
+          "final_url": "https://docusaurus.io/docs/deployment",
+          "file": "official-next-electron-docusaurus/169-docusaurus.io-docs-deployment.txt",
+          "retrieved_at": "2026-09-09T11:37:12.220461+00:00",
+          "status": "downloaded",
+          "text_sha256": "8faa5c67740febfa12748267603dcd51519e34124df86021d7d05461183f755f",
+          "candidate_readback_sha256": "8faa5c67740febfa12748267603dcd51519e34124df86021d7d05461183f755f",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/cli",
+          "final_url": "https://docusaurus.io/docs/cli",
+          "file": "official-next-electron-docusaurus/300-docusaurus.io-docs-cli.txt",
+          "retrieved_at": "2026-09-09T11:40:07.482946+00:00",
+          "status": "downloaded",
+          "text_sha256": "a331370afd2c8fc609f1efc65380486202dd8f3bd80f09e7d7cf3ada4f3c4577",
+          "candidate_readback_sha256": "a331370afd2c8fc609f1efc65380486202dd8f3bd80f09e7d7cf3ada4f3c4577",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://raw.githubusercontent.com/facebook/docusaurus/v3.10.2/packages/docusaurus/src/commands/serve.ts",
+          "final_url": "https://raw.githubusercontent.com/facebook/docusaurus/v3.10.2/packages/docusaurus/src/commands/serve.ts",
+          "file": "official-next-electron-docusaurus/308-raw.githubusercontent.com-facebook-docusaurus-v3.10.2-packages-docusaurus-src-commands-serve.ts.txt",
+          "retrieved_at": "2026-09-09T11:40:08.434333+00:00",
+          "status": "downloaded",
+          "text_sha256": "13185c2148fca30ecaaeb9bfd2179a53a9704f614fc2ec81e6f9b17380763bc5",
+          "candidate_readback_sha256": "13185c2148fca30ecaaeb9bfd2179a53a9704f614fc2ec81e6f9b17380763bc5",
+          "snapshot_hash_matches_baseline": true
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution.",
+      "baseline_result": "verified",
+      "result": "source-corrected",
+      "candidate_version": "0.1.3",
+      "disposition": "Author source/readback verified; independent candidate behavioral/runtime assessment remains with coordinator",
+      "current_locations": [
+        {
+          "file": "references/deployment-versioning-i18n.md",
+          "sha256": "caed7743fb340a5285a929e76da88fed187ef1a832f2569a1f4325b6a2342ffe",
+          "line_start": 1,
+          "line_end": 126,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Deployment, Versioning, and i18n"
+            },
+            {
+              "line": 3,
+              "title": "Deployment essentials"
+            },
+            {
+              "line": 29,
+              "title": "`trailingSlash`"
+            },
+            {
+              "line": 37,
+              "title": "Clear stale build state"
+            },
+            {
+              "line": 47,
+              "title": "Host notes"
+            },
+            {
+              "line": 53,
+              "title": "Versioning"
+            },
+            {
+              "line": 84,
+              "title": "i18n"
+            },
+            {
+              "line": 119,
+              "title": "Release checklist"
+            }
+          ]
+        }
+      ],
+      "baseline_source_occurrences": [
+        {
+          "file": "references/deployment-versioning-i18n.md",
+          "line_start": 1,
+          "line_end": 120
+        }
+      ],
+      "baseline_required_change": "Сохранить; точное выполнение зависит от установленной версии и задачи."
+    },
+    {
+      "id": "D14",
+      "aspect": "Versioning copies/current/latest/versioned roots/multi-instance commands",
+      "source_files": [
+        "references/deployment-versioning-i18n.md"
+      ],
+      "basis": "Version command copies docs and sidebars; does not move current docs away. Current vs latest distinct, multi-instance roots use pluginId prefixes.",
+      "version": "Docusaurus3.10.2 stable; existing3.9.2/React18 branch; Node24 LTS",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Baseline independent official-source comparison retained; author compared corrected source and emitted package. No product runtime or independent candidate PASS.",
+      "official_sources": [
+        {
+          "url": "https://docusaurus.io/docs/docs-multi-instance",
+          "final_url": "https://docusaurus.io/docs/docs-multi-instance",
+          "file": "official-next-electron-docusaurus/157-docusaurus.io-docs-docs-multi-instance.txt",
+          "retrieved_at": "2026-09-09T11:37:10.676330+00:00",
+          "status": "downloaded",
+          "text_sha256": "fb3ffc573ee5b5609b797c2cabdfe16eff92da376c1c1686dc6207479dc5f835",
+          "candidate_readback_sha256": "fb3ffc573ee5b5609b797c2cabdfe16eff92da376c1c1686dc6207479dc5f835",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/versioning",
+          "final_url": "https://docusaurus.io/docs/versioning",
+          "file": "official-next-electron-docusaurus/170-docusaurus.io-docs-versioning.txt",
+          "retrieved_at": "2026-09-09T11:37:11.764355+00:00",
+          "status": "downloaded",
+          "text_sha256": "7c430b7469dc4dc189ed7779ef19f0744668ca73329cb91260c4902bf606683b",
+          "candidate_readback_sha256": "7c430b7469dc4dc189ed7779ef19f0744668ca73329cb91260c4902bf606683b",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs",
+          "final_url": "https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs",
+          "file": "official-next-electron-docusaurus/301-docusaurus.io-docs-api-plugins-docusaurus-plugin-content-docs.txt",
+          "retrieved_at": "2026-09-09T11:40:07.344330+00:00",
+          "status": "downloaded",
+          "text_sha256": "2beb0f9179596fe9d5f9bd32929b7ff947e448162e1731b33751c68422d04c21",
+          "candidate_readback_sha256": "2beb0f9179596fe9d5f9bd32929b7ff947e448162e1731b33751c68422d04c21",
+          "snapshot_hash_matches_baseline": true
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution.",
+      "baseline_result": "correction-required",
+      "result": "source-corrected",
+      "candidate_version": "0.1.3",
+      "disposition": "Author source/readback verified; independent candidate behavioral/runtime assessment remains with coordinator",
+      "current_locations": [
+        {
+          "file": "references/deployment-versioning-i18n.md",
+          "sha256": "caed7743fb340a5285a929e76da88fed187ef1a832f2569a1f4325b6a2342ffe",
+          "line_start": 1,
+          "line_end": 126,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Deployment, Versioning, and i18n"
+            },
+            {
+              "line": 3,
+              "title": "Deployment essentials"
+            },
+            {
+              "line": 29,
+              "title": "`trailingSlash`"
+            },
+            {
+              "line": 37,
+              "title": "Clear stale build state"
+            },
+            {
+              "line": 47,
+              "title": "Host notes"
+            },
+            {
+              "line": 53,
+              "title": "Versioning"
+            },
+            {
+              "line": 84,
+              "title": "i18n"
+            },
+            {
+              "line": 119,
+              "title": "Release checklist"
+            }
+          ]
+        }
+      ],
+      "baseline_source_occurrences": [
+        {
+          "file": "references/deployment-versioning-i18n.md",
+          "line_start": 1,
+          "line_end": 120
+        }
+      ],
+      "baseline_required_change": "Replace move phrasing with snapshot copy; show named-instance and existing numbered-version conditions where needed."
+    },
+    {
+      "id": "D15",
+      "aspect": "i18n content/UI JSON/React translations/version paths/locale URLs",
+      "source_files": [
+        "references/deployment-versioning-i18n.md"
+      ],
+      "basis": "current path only current docs; archived version translation uses version-X and instance suffix. React pages use Translate/translate/code.json; copied pages translation path applies Markdown pages.",
+      "version": "Docusaurus3.10.2 stable; existing3.9.2/React18 branch; Node24 LTS",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Baseline independent official-source comparison retained; author compared corrected source and emitted package. No product runtime or independent candidate PASS.",
+      "official_sources": [
+        {
+          "url": "https://docusaurus.io/docs/i18n/introduction",
+          "final_url": "https://docusaurus.io/docs/i18n/introduction",
+          "file": "official-next-electron-docusaurus/171-docusaurus.io-docs-i18n-introduction.txt",
+          "retrieved_at": "2026-09-09T11:37:11.876352+00:00",
+          "status": "downloaded",
+          "text_sha256": "27efc463e314165eca42a23b56dcf2827d1aebf5276982988601bd7975181429",
+          "candidate_readback_sha256": "27efc463e314165eca42a23b56dcf2827d1aebf5276982988601bd7975181429",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/i18n/tutorial",
+          "final_url": "https://docusaurus.io/docs/i18n/tutorial",
+          "file": "official-next-electron-docusaurus/172-docusaurus.io-docs-i18n-tutorial.txt",
+          "retrieved_at": "2026-09-09T11:37:12.172020+00:00",
+          "status": "downloaded",
+          "text_sha256": "9837d042491fe99db4671a70927ec3ff91ce316bfcbaef88034a10dc563741c4",
+          "candidate_readback_sha256": "9837d042491fe99db4671a70927ec3ff91ce316bfcbaef88034a10dc563741c4",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs",
+          "final_url": "https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs",
+          "file": "official-next-electron-docusaurus/301-docusaurus.io-docs-api-plugins-docusaurus-plugin-content-docs.txt",
+          "retrieved_at": "2026-09-09T11:40:07.344330+00:00",
+          "status": "downloaded",
+          "text_sha256": "2beb0f9179596fe9d5f9bd32929b7ff947e448162e1731b33751c68422d04c21",
+          "candidate_readback_sha256": "2beb0f9179596fe9d5f9bd32929b7ff947e448162e1731b33751c68422d04c21",
+          "snapshot_hash_matches_baseline": true
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution.",
+      "baseline_result": "correction-required",
+      "result": "source-corrected",
+      "candidate_version": "0.1.3",
+      "disposition": "Author source/readback verified; independent candidate behavioral/runtime assessment remains with coordinator",
+      "current_locations": [
+        {
+          "file": "references/deployment-versioning-i18n.md",
+          "sha256": "caed7743fb340a5285a929e76da88fed187ef1a832f2569a1f4325b6a2342ffe",
+          "line_start": 1,
+          "line_end": 126,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Deployment, Versioning, and i18n"
+            },
+            {
+              "line": 3,
+              "title": "Deployment essentials"
+            },
+            {
+              "line": 29,
+              "title": "`trailingSlash`"
+            },
+            {
+              "line": 37,
+              "title": "Clear stale build state"
+            },
+            {
+              "line": 47,
+              "title": "Host notes"
+            },
+            {
+              "line": 53,
+              "title": "Versioning"
+            },
+            {
+              "line": 84,
+              "title": "i18n"
+            },
+            {
+              "line": 119,
+              "title": "Release checklist"
+            }
+          ]
+        }
+      ],
+      "baseline_source_occurrences": [
+        {
+          "file": "references/deployment-versioning-i18n.md",
+          "line_start": 1,
+          "line_end": 120
+        }
+      ],
+      "baseline_required_change": "Differentiate Markdown and JSX, current/versioned/named-instance directories; test locale/version route and reload."
+    },
+    {
+      "id": "D16",
+      "aspect": "Prettier/markdownlint config options/ignores/fix vs check-only",
+      "source_files": [
+        "references/doc-quality-tooling-and-agents.md",
+        "assets/project-files/.prettierrc.json",
+        "assets/project-files/.prettierignore",
+        "assets/project-files/.markdownlint-cli2.jsonc",
+        "assets/project-files/AGENTS.md"
+      ],
+      "basis": "Formatter/linter options have version-specific schemas. The original frontMatter override failed actual CLI0.20.0 due to escaping and missing multiline flags; remove it and retain default front matter parsing. gitignore string is supported. Source correction alone does not close runtime finding.",
+      "version": "Docusaurus3.10.2 stable; existing3.9.2/React18 branch; Node24 LTS",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Baseline independent official-source comparison retained; author compared corrected source and emitted package. No product runtime or independent candidate PASS.",
+      "official_sources": [
+        {
+          "url": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/README.md",
+          "final_url": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/README.md",
+          "file": "official-next-electron-docusaurus/179-raw.githubusercontent.com-DavidAnson-markdownlint-cli2-main-README.md.txt",
+          "retrieved_at": "2026-09-09T11:37:12.704118+00:00",
+          "status": "downloaded",
+          "text_sha256": "2f642b2c2432b827936837641f8829014fde79375bf3be92b3d9d5e49bb22d7c",
+          "candidate_readback_sha256": "2f642b2c2432b827936837641f8829014fde79375bf3be92b3d9d5e49bb22d7c",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://prettier.io/docs/cli",
+          "final_url": "https://prettier.io/docs/cli",
+          "file": "official-next-electron-docusaurus/193-prettier.io-docs-cli.txt",
+          "retrieved_at": "2026-09-09T11:37:14.682046+00:00",
+          "status": "downloaded",
+          "text_sha256": "18136f22985db74fe87b02cf4bb0d7354da763343e8a5c5128088ab051a15a57",
+          "candidate_readback_sha256": "18136f22985db74fe87b02cf4bb0d7354da763343e8a5c5128088ab051a15a57",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://prettier.io/docs/ignore",
+          "final_url": "https://prettier.io/docs/ignore",
+          "file": "official-next-electron-docusaurus/194-prettier.io-docs-ignore.txt",
+          "retrieved_at": "2026-09-09T11:37:14.764052+00:00",
+          "status": "downloaded",
+          "text_sha256": "7996a60ce638ed7095b9114734fcd805f11cb8dbac0d598feb2d325c16a0081b",
+          "candidate_readback_sha256": "7996a60ce638ed7095b9114734fcd805f11cb8dbac0d598feb2d325c16a0081b",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://prettier.io/docs/options",
+          "final_url": "https://prettier.io/docs/options",
+          "file": "official-next-electron-docusaurus/195-prettier.io-docs-options.txt",
+          "retrieved_at": "2026-09-09T11:37:15.229428+00:00",
+          "status": "downloaded",
+          "text_sha256": "f23ca86c099075eb6d29a038b8057eae0294a94a5b609235707d348fdbe41832",
+          "candidate_readback_sha256": "f23ca86c099075eb6d29a038b8057eae0294a94a5b609235707d348fdbe41832",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://raw.githubusercontent.com/DavidAnson/vscode-markdownlint/main/markdownlint-cli2-config-schema.json",
+          "final_url": "https://raw.githubusercontent.com/DavidAnson/vscode-markdownlint/main/markdownlint-cli2-config-schema.json",
+          "file": "official-next-electron-docusaurus/312-raw.githubusercontent.com-DavidAnson-vscode-markdownlint-main-markdownlint-cli2-config-schema.json.txt",
+          "retrieved_at": "2026-09-09T11:40:08.685034+00:00",
+          "status": "downloaded",
+          "text_sha256": "e487f246f4265da380a912ddb328ec5639181adef0db34ba5d9d7540a0021cc5",
+          "candidate_readback_sha256": "e487f246f4265da380a912ddb328ec5639181adef0db34ba5d9d7540a0021cc5",
+          "snapshot_hash_matches_baseline": true
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution.",
+      "baseline_result": "verified",
+      "result": "source-retained-with-clarification",
+      "candidate_version": "0.1.3",
+      "disposition": "Author source/readback verified; independent candidate behavioral/runtime assessment remains with coordinator",
+      "current_locations": [
+        {
+          "file": "assets/project-files/.markdownlint-cli2.jsonc",
+          "sha256": "df826293791608e940a32fb0d83263402182ffc5ac94b687b0f5386a3f8702db",
+          "line_start": 1,
+          "line_end": 19,
+          "sections": []
+        },
+        {
+          "file": "assets/project-files/.prettierignore",
+          "sha256": "0e2d69697fed9001df076dc0e14de9ef3ed045a8b945961564b8e0d98a54fc90",
+          "line_start": 1,
+          "line_end": 4,
+          "sections": []
+        },
+        {
+          "file": "assets/project-files/.prettierrc.json",
+          "sha256": "8b92ed4e7a6cd9ddcfa606663ab1cf6328da668557adc02510f776ea28991f1c",
+          "line_start": 1,
+          "line_end": 4,
+          "sections": []
+        },
+        {
+          "file": "assets/project-files/AGENTS.md",
+          "sha256": "fffd49ecca4562de9557b75a36b1da6818b8b6ceacaa7a8be4bce97f968e53d8",
+          "line_start": 1,
+          "line_end": 56,
+          "sections": [
+            {
+              "line": 1,
+              "title": "AGENTS.md"
+            },
+            {
+              "line": 3,
+              "title": "Applicability"
+            },
+            {
+              "line": 7,
+              "title": "Package manager"
+            },
+            {
+              "line": 13,
+              "title": "Documentation workflow"
+            },
+            {
+              "line": 22,
+              "title": "Authoring rules"
+            },
+            {
+              "line": 32,
+              "title": "Quality gates"
+            },
+            {
+              "line": 44,
+              "title": "Route and IA safety"
+            },
+            {
+              "line": 51,
+              "title": "MDX policy"
+            }
+          ]
+        },
+        {
+          "file": "references/doc-quality-tooling-and-agents.md",
+          "sha256": "68bf2c3a60a8f51990a8ba54046f8b4f0f2b2346f22222c41b165948108aea4f",
+          "line_start": 1,
+          "line_end": 133,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Doc Quality Tooling and AGENTS"
+            },
+            {
+              "line": 3,
+              "title": "Scope and runtime"
+            },
+            {
+              "line": 7,
+              "title": "Mandatory bootstrap"
+            },
+            {
+              "line": 21,
+              "title": "Install"
+            },
+            {
+              "line": 27,
+              "title": "Required package scripts"
+            },
+            {
+              "line": 50,
+              "title": "Default config files"
+            },
+            {
+              "line": 62,
+              "title": "GitHub Actions workflow"
+            },
+            {
+              "line": 79,
+              "title": "Why this split"
+            },
+            {
+              "line": 87,
+              "title": "Docusaurus-specific markdownlint defaults"
+            },
+            {
+              "line": 96,
+              "title": "Content coverage"
+            },
+            {
+              "line": 100,
+              "title": "MDX policy"
+            },
+            {
+              "line": 110,
+              "title": "AGENTS.md requirements"
+            },
+            {
+              "line": 123,
+              "title": "Mandatory doc quality gates"
+            }
+          ]
+        }
+      ],
+      "baseline_source_occurrences": [
+        {
+          "file": "references/doc-quality-tooling-and-agents.md",
+          "line_start": 1,
+          "line_end": 125
+        },
+        {
+          "file": "assets/project-files/.prettierrc.json",
+          "line_start": 1,
+          "line_end": 4
+        },
+        {
+          "file": "assets/project-files/.prettierignore",
+          "line_start": 1,
+          "line_end": 4
+        },
+        {
+          "file": "assets/project-files/.markdownlint-cli2.jsonc",
+          "line_start": 1,
+          "line_end": 24
+        },
+        {
+          "file": "assets/project-files/AGENTS.md",
+          "line_start": 1,
+          "line_end": 51
+        }
+      ],
+      "baseline_required_change": "Сохранить; точное выполнение зависит от установленной версии и задачи.",
+      "candidate_frontmatter_correction": {
+        "finding": "D-F4",
+        "RCA": "D-frontmatter-coordinator-RCA.json",
+        "disposition": "Removed unnecessary override; exact CLI positive/negative verification pending.",
+        "original_trial": "D-runtime initial candidate preserved separately."
+      }
+    },
+    {
+      "id": "D17",
+      "aspect": "Quality content coverage across non-default roots and versioned instances",
+      "source_files": [
+        "references/doc-quality-tooling-and-agents.md",
+        "assets/project-files/.markdownlint-cli2.jsonc"
+      ],
+      "basis": "Fixed globs root/docs/blog/versioned/i18n miss skill-supported product/api/community and named-instance versioned roots. Green lint therefore omits requested authored content.",
+      "version": "Docusaurus3.10.2 stable; existing3.9.2/React18 branch; Node24 LTS",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Baseline independent official-source comparison retained; author compared corrected source and emitted package. No product runtime or independent candidate PASS.",
+      "official_sources": [
+        {
+          "url": "https://docusaurus.io/docs/docs-multi-instance",
+          "final_url": "https://docusaurus.io/docs/docs-multi-instance",
+          "file": "official-next-electron-docusaurus/157-docusaurus.io-docs-docs-multi-instance.txt",
+          "retrieved_at": "2026-09-09T11:37:10.676330+00:00",
+          "status": "downloaded",
+          "text_sha256": "fb3ffc573ee5b5609b797c2cabdfe16eff92da376c1c1686dc6207479dc5f835",
+          "candidate_readback_sha256": "fb3ffc573ee5b5609b797c2cabdfe16eff92da376c1c1686dc6207479dc5f835",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/README.md",
+          "final_url": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/README.md",
+          "file": "official-next-electron-docusaurus/179-raw.githubusercontent.com-DavidAnson-markdownlint-cli2-main-README.md.txt",
+          "retrieved_at": "2026-09-09T11:37:12.704118+00:00",
+          "status": "downloaded",
+          "text_sha256": "2f642b2c2432b827936837641f8829014fde79375bf3be92b3d9d5e49bb22d7c",
+          "candidate_readback_sha256": "2f642b2c2432b827936837641f8829014fde79375bf3be92b3d9d5e49bb22d7c",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs",
+          "final_url": "https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs",
+          "file": "official-next-electron-docusaurus/301-docusaurus.io-docs-api-plugins-docusaurus-plugin-content-docs.txt",
+          "retrieved_at": "2026-09-09T11:40:07.344330+00:00",
+          "status": "downloaded",
+          "text_sha256": "2beb0f9179596fe9d5f9bd32929b7ff947e448162e1731b33751c68422d04c21",
+          "candidate_readback_sha256": "2beb0f9179596fe9d5f9bd32929b7ff947e448162e1731b33751c68422d04c21",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://raw.githubusercontent.com/DavidAnson/vscode-markdownlint/main/markdownlint-cli2-config-schema.json",
+          "final_url": "https://raw.githubusercontent.com/DavidAnson/vscode-markdownlint/main/markdownlint-cli2-config-schema.json",
+          "file": "official-next-electron-docusaurus/312-raw.githubusercontent.com-DavidAnson-vscode-markdownlint-main-markdownlint-cli2-config-schema.json.txt",
+          "retrieved_at": "2026-09-09T11:40:08.685034+00:00",
+          "status": "downloaded",
+          "text_sha256": "e487f246f4265da380a912ddb328ec5639181adef0db34ba5d9d7540a0021cc5",
+          "candidate_readback_sha256": "e487f246f4265da380a912ddb328ec5639181adef0db34ba5d9d7540a0021cc5",
+          "snapshot_hash_matches_baseline": true
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution.",
+      "baseline_result": "correction-required",
+      "result": "source-corrected",
+      "candidate_version": "0.1.3",
+      "disposition": "Author source/readback verified; independent candidate behavioral/runtime assessment remains with coordinator",
+      "current_locations": [
+        {
+          "file": "assets/project-files/.markdownlint-cli2.jsonc",
+          "sha256": "df826293791608e940a32fb0d83263402182ffc5ac94b687b0f5386a3f8702db",
+          "line_start": 1,
+          "line_end": 19,
+          "sections": []
+        },
+        {
+          "file": "references/doc-quality-tooling-and-agents.md",
+          "sha256": "68bf2c3a60a8f51990a8ba54046f8b4f0f2b2346f22222c41b165948108aea4f",
+          "line_start": 1,
+          "line_end": 133,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Doc Quality Tooling and AGENTS"
+            },
+            {
+              "line": 3,
+              "title": "Scope and runtime"
+            },
+            {
+              "line": 7,
+              "title": "Mandatory bootstrap"
+            },
+            {
+              "line": 21,
+              "title": "Install"
+            },
+            {
+              "line": 27,
+              "title": "Required package scripts"
+            },
+            {
+              "line": 50,
+              "title": "Default config files"
+            },
+            {
+              "line": 62,
+              "title": "GitHub Actions workflow"
+            },
+            {
+              "line": 79,
+              "title": "Why this split"
+            },
+            {
+              "line": 87,
+              "title": "Docusaurus-specific markdownlint defaults"
+            },
+            {
+              "line": 96,
+              "title": "Content coverage"
+            },
+            {
+              "line": 100,
+              "title": "MDX policy"
+            },
+            {
+              "line": 110,
+              "title": "AGENTS.md requirements"
+            },
+            {
+              "line": 123,
+              "title": "Mandatory doc quality gates"
+            }
+          ]
+        }
+      ],
+      "baseline_source_occurrences": [
+        {
+          "file": "references/doc-quality-tooling-and-agents.md",
+          "line_start": 1,
+          "line_end": 125
+        },
+        {
+          "file": "assets/project-files/.markdownlint-cli2.jsonc",
+          "line_start": 1,
+          "line_end": 24
+        }
+      ],
+      "baseline_required_change": "Derive globs from actual roots; verify representative bad Markdown from every authored tree is detected, generated exclusions explicit."
+    },
+    {
+      "id": "D18",
+      "aspect": "GitHub Actions Node/tool engines/pnpm cache/install/scripts",
+      "source_files": [
+        "references/doc-quality-tooling-and-agents.md",
+        "assets/project-files/.github/workflows/docs-quality.yml"
+      ],
+      "basis": "Mandatory latest markdownlint-cli2 0.23.2 engines Node>=22; workflow fallbackNode20 incompatible (and EOL). v4 Actions remain published version branches; latest action version alone is not defect.",
+      "version": "Docusaurus3.10.2 stable; existing3.9.2/React18 branch; Node24 LTS",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Baseline independent official-source comparison retained; author compared corrected source and emitted package. No product runtime or independent candidate PASS.",
+      "official_sources": [
+        {
+          "url": "https://raw.githubusercontent.com/github/docs/main/content/actions/reference/runners/github-hosted-runners.md",
+          "final_url": "https://raw.githubusercontent.com/github/docs/main/content/actions/reference/runners/github-hosted-runners.md",
+          "file": "official-next-electron-docusaurus/182-raw.githubusercontent.com-github-docs-main-content-actions-reference-runners-github-hosted-runners.md.txt",
+          "retrieved_at": "2026-09-09T11:37:13.030990+00:00",
+          "status": "downloaded",
+          "text_sha256": "2ba4307f64e55251e63555e97a51381e4eb36334693a464c743522a09546a148",
+          "candidate_readback_sha256": "2ba4307f64e55251e63555e97a51381e4eb36334693a464c743522a09546a148",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/v0.23.2/package.json",
+          "final_url": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/v0.23.2/package.json",
+          "file": "official-next-electron-docusaurus/310-raw.githubusercontent.com-DavidAnson-markdownlint-cli2-v0.23.2-package.json.txt",
+          "retrieved_at": "2026-09-09T11:40:08.698038+00:00",
+          "status": "downloaded",
+          "text_sha256": "5ef15dc1700238b73a8786987c75a69fcb3a5204c3dd50709e3bea5fee33677e",
+          "candidate_readback_sha256": "5ef15dc1700238b73a8786987c75a69fcb3a5204c3dd50709e3bea5fee33677e",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://raw.githubusercontent.com/actions/checkout/v4/README.md",
+          "final_url": "https://raw.githubusercontent.com/actions/checkout/v4/README.md",
+          "file": "official-next-electron-docusaurus/324-raw.githubusercontent.com-actions-checkout-v4-README.md.txt",
+          "retrieved_at": "2026-09-09T11:40:10.442454+00:00",
+          "status": "downloaded",
+          "text_sha256": "2556582f5103560617b79b50d33d7f75a330064746388d35ecea918cb14cc228",
+          "candidate_readback_sha256": "2556582f5103560617b79b50d33d7f75a330064746388d35ecea918cb14cc228",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://raw.githubusercontent.com/actions/setup-node/v4/README.md",
+          "final_url": "https://raw.githubusercontent.com/actions/setup-node/v4/README.md",
+          "file": "official-next-electron-docusaurus/325-raw.githubusercontent.com-actions-setup-node-v4-README.md.txt",
+          "retrieved_at": "2026-09-09T11:40:10.279075+00:00",
+          "status": "downloaded",
+          "text_sha256": "f4f58871b575aa66acf341aa111cd8fbaf7a4b789264fbd49c857ffb838bef59",
+          "candidate_readback_sha256": "f4f58871b575aa66acf341aa111cd8fbaf7a4b789264fbd49c857ffb838bef59",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://raw.githubusercontent.com/pnpm/action-setup/v4/README.md",
+          "final_url": "https://raw.githubusercontent.com/pnpm/action-setup/v4/README.md",
+          "file": "official-next-electron-docusaurus/326-raw.githubusercontent.com-pnpm-action-setup-v4-README.md.txt",
+          "retrieved_at": "2026-09-09T11:40:10.564972+00:00",
+          "status": "downloaded",
+          "text_sha256": "7bb0e05879dd61978907ac765dbed4081d72ba3ae451ceb2981643603777bd45",
+          "candidate_readback_sha256": "7bb0e05879dd61978907ac765dbed4081d72ba3ae451ceb2981643603777bd45",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://raw.githubusercontent.com/nodejs/Release/main/schedule.json",
+          "final_url": "https://raw.githubusercontent.com/nodejs/Release/main/schedule.json",
+          "file": "official-next-electron-docusaurus/354-raw.githubusercontent.com-nodejs-Release-main-schedule.json.txt",
+          "retrieved_at": "2026-09-09T11:40:12.924845+00:00",
+          "status": "downloaded",
+          "text_sha256": "1cf0432ceb9dfde7f1fd4cce43206519942cfdfad5a26039c2f4bb20fde8549c",
+          "candidate_readback_sha256": "1cf0432ceb9dfde7f1fd4cce43206519942cfdfad5a26039c2f4bb20fde8549c",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://registry.npmjs.org/markdownlint-cli2/latest",
+          "final_url": "https://registry.npmjs.org/markdownlint-cli2/latest",
+          "file": "official-next-electron-docusaurus/362-registry-markdownlint-cli2-latest.json",
+          "retrieved_at": "2026-09-09T11:50:00.352757+00:00",
+          "status": "downloaded",
+          "text_sha256": "9893907d04a289963d6d5f796b57fb79b4079247f9eb8942762c01b7cc4534a1",
+          "candidate_readback_sha256": "9893907d04a289963d6d5f796b57fb79b4079247f9eb8942762c01b7cc4534a1",
+          "snapshot_hash_matches_baseline": true
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution.",
+      "baseline_result": "correction-required",
+      "result": "source-corrected",
+      "candidate_version": "0.1.3",
+      "disposition": "Author source/readback verified; independent candidate behavioral/runtime assessment remains with coordinator",
+      "current_locations": [
+        {
+          "file": "SKILL.md",
+          "sha256": "fb1838a9ad32911ec71a7563f273292eb7c586e3069184fc74d0d0149be9a52c",
+          "line_start": 1,
+          "line_end": 200,
+          "sections": [
+            {
+              "line": 15,
+              "title": "docusaurus-repo"
+            },
+            {
+              "line": 17,
+              "title": "Start here"
+            },
+            {
+              "line": 24,
+              "title": "When to use this skill"
+            },
+            {
+              "line": 32,
+              "title": "When NOT to use this skill"
+            },
+            {
+              "line": 38,
+              "title": "Outcome and task boundary"
+            },
+            {
+              "line": 46,
+              "title": "Interop priority"
+            },
+            {
+              "line": 53,
+              "title": "Reasonable defaults"
+            },
+            {
+              "line": 64,
+              "title": "Deliverables by default"
+            },
+            {
+              "line": 72,
+              "title": "First pass"
+            },
+            {
+              "line": 90,
+              "title": "Working rules"
+            },
+            {
+              "line": 107,
+              "title": "Decision shortcuts"
+            },
+            {
+              "line": 125,
+              "title": "Verification and handoff"
+            },
+            {
+              "line": 143,
+              "title": "References"
+            },
+            {
+              "line": 153,
+              "title": "Workflow stages"
+            },
+            {
+              "line": 155,
+              "title": "Workflow stage: Apply docusaurus-repo guidance"
+            },
+            {
+              "line": 168,
+              "title": "Required active references"
+            },
+            {
+              "line": 177,
+              "title": "Bundled assets"
+            },
+            {
+              "line": 185,
+              "title": "Portability rules"
+            },
+            {
+              "line": 191,
+              "title": "Portability checklist before finishing"
+            },
+            {
+              "line": 197,
+              "title": "Supporting and historical surface"
+            }
+          ]
+        },
+        {
+          "file": "assets/project-files/.github/workflows/docs-quality.yml",
+          "sha256": "968eb18850f0ddec8b5a54d4027c8657e81419d264e7e9a4bf1e81c52696d2af",
+          "line_start": 1,
+          "line_end": 38,
+          "sections": []
+        },
+        {
+          "file": "fragments/overview.md",
+          "sha256": "cf869aed9c4e0077f8db235a4ebc17c79705ddac9a4575e59cb40cde9e4dbe55",
+          "line_start": 1,
+          "line_end": 114,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Outcome and task boundary"
+            },
+            {
+              "line": 9,
+              "title": "Interop priority"
+            },
+            {
+              "line": 16,
+              "title": "Reasonable defaults"
+            },
+            {
+              "line": 27,
+              "title": "Deliverables by default"
+            },
+            {
+              "line": 35,
+              "title": "First pass"
+            },
+            {
+              "line": 53,
+              "title": "Working rules"
+            },
+            {
+              "line": 70,
+              "title": "Decision shortcuts"
+            },
+            {
+              "line": 88,
+              "title": "Verification and handoff"
+            },
+            {
+              "line": 106,
+              "title": "References"
+            }
+          ]
+        },
+        {
+          "file": "references/doc-quality-tooling-and-agents.md",
+          "sha256": "68bf2c3a60a8f51990a8ba54046f8b4f0f2b2346f22222c41b165948108aea4f",
+          "line_start": 1,
+          "line_end": 133,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Doc Quality Tooling and AGENTS"
+            },
+            {
+              "line": 3,
+              "title": "Scope and runtime"
+            },
+            {
+              "line": 7,
+              "title": "Mandatory bootstrap"
+            },
+            {
+              "line": 21,
+              "title": "Install"
+            },
+            {
+              "line": 27,
+              "title": "Required package scripts"
+            },
+            {
+              "line": 50,
+              "title": "Default config files"
+            },
+            {
+              "line": 62,
+              "title": "GitHub Actions workflow"
+            },
+            {
+              "line": 79,
+              "title": "Why this split"
+            },
+            {
+              "line": 87,
+              "title": "Docusaurus-specific markdownlint defaults"
+            },
+            {
+              "line": 96,
+              "title": "Content coverage"
+            },
+            {
+              "line": 100,
+              "title": "MDX policy"
+            },
+            {
+              "line": 110,
+              "title": "AGENTS.md requirements"
+            },
+            {
+              "line": 123,
+              "title": "Mandatory doc quality gates"
+            }
+          ]
+        }
+      ],
+      "baseline_source_occurrences": [
+        {
+          "file": "references/doc-quality-tooling-and-agents.md",
+          "line_start": 1,
+          "line_end": 125
+        },
+        {
+          "file": "assets/project-files/.github/workflows/docs-quality.yml",
+          "line_start": 1,
+          "line_end": 38
+        }
+      ],
+      "baseline_required_change": "Choose common supported runtime of core+lint+pnpm; keep project pin if compatible, identify conflict if not; new default Node24 or compatible22."
+    },
+    {
+      "id": "D19",
+      "aspect": "New stable3.10 capabilities vs future.v4/experimental flags",
+      "source_files": [
+        "references/config-presets-and-routing.md",
+        "references/bootstrap-and-structure.md"
+      ],
+      "basis": "3.10 Faster feature maturity and new scaffold defaults relevant to current owned build tasks; future.v4 are opt-in compatibility flags, not stablev4. No mandate to turn on every new feature.",
+      "version": "Docusaurus3.10.2 stable; existing3.9.2/React18 branch; Node24 LTS",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Baseline independent official-source comparison retained; author compared corrected source and emitted package. No product runtime or independent candidate PASS.",
+      "official_sources": [
+        {
+          "url": "https://docusaurus.io/docs/api/docusaurus-config",
+          "final_url": "https://docusaurus.io/docs/api/docusaurus-config",
+          "file": "official-next-electron-docusaurus/154-docusaurus.io-docs-api-docusaurus-config.txt",
+          "retrieved_at": "2026-09-09T11:37:10.676571+00:00",
+          "status": "downloaded",
+          "text_sha256": "9d378827eb834359914b35a9b99e60b121792d586ce4e331b60f09b061792d68",
+          "candidate_readback_sha256": "9d378827eb834359914b35a9b99e60b121792d586ce4e331b60f09b061792d68",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/blog/releases/3.10",
+          "final_url": "https://docusaurus.io/blog/releases/3.10",
+          "file": "official-next-electron-docusaurus/305-docusaurus.io-blog-releases-3.10.txt",
+          "retrieved_at": "2026-09-09T11:40:07.570736+00:00",
+          "status": "downloaded",
+          "text_sha256": "750276a94a05ecbfad16c1a6eaa45a7e8a4d904601c314398c552b97f566c000",
+          "candidate_readback_sha256": "750276a94a05ecbfad16c1a6eaa45a7e8a4d904601c314398c552b97f566c000",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://raw.githubusercontent.com/facebook/docusaurus/v3.10.2/CHANGELOG.md",
+          "final_url": "https://raw.githubusercontent.com/facebook/docusaurus/v3.10.2/CHANGELOG.md",
+          "file": "official-next-electron-docusaurus/309-raw.githubusercontent.com-facebook-docusaurus-v3.10.2-CHANGELOG.md.txt",
+          "retrieved_at": "2026-09-09T11:40:08.874337+00:00",
+          "status": "downloaded",
+          "text_sha256": "9985aae39b97e33febae6006b805f251451906f3bf77041d2418d485ed7d3e0d",
+          "candidate_readback_sha256": "9985aae39b97e33febae6006b805f251451906f3bf77041d2418d485ed7d3e0d",
+          "snapshot_hash_matches_baseline": true
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution.",
+      "baseline_result": "verified",
+      "result": "source-retained-with-clarification",
+      "candidate_version": "0.1.3",
+      "disposition": "Author source/readback verified; independent candidate behavioral/runtime assessment remains with coordinator",
+      "current_locations": [
+        {
+          "file": "references/bootstrap-and-structure.md",
+          "sha256": "d695e4c71a2788767e1d5b94010932024846fdb95cf1d598697706147f81ff85",
+          "line_start": 1,
+          "line_end": 128,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Bootstrap and Structure"
+            },
+            {
+              "line": 3,
+              "title": "Baseline"
+            },
+            {
+              "line": 27,
+              "title": "What the classic template gives you"
+            },
+            {
+              "line": 39,
+              "title": "Recommended starting modes"
+            },
+            {
+              "line": 41,
+              "title": "Docs-only"
+            },
+            {
+              "line": 77,
+              "title": "Docs + blog/changelog"
+            },
+            {
+              "line": 85,
+              "title": "Docs + landing page"
+            },
+            {
+              "line": 93,
+              "title": "Monorepo guidance"
+            },
+            {
+              "line": 117,
+              "title": "Core commands"
+            }
+          ]
+        },
+        {
+          "file": "references/config-presets-and-routing.md",
+          "sha256": "7eab4eb7d7d7090a9b736b7419880a827270b5b23b981716473eb9c524de6c70",
+          "line_start": 1,
+          "line_end": 168,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Config, Presets, and Routing"
+            },
+            {
+              "line": 3,
+              "title": "Site config priorities"
+            },
+            {
+              "line": 26,
+              "title": "Preset vs plugin composition"
+            },
+            {
+              "line": 69,
+              "title": "Routing rules"
+            },
+            {
+              "line": 85,
+              "title": "Route-collision traps"
+            },
+            {
+              "line": 92,
+              "title": "Navbar strategy"
+            },
+            {
+              "line": 128,
+              "title": "Multi-instance docs"
+            },
+            {
+              "line": 166,
+              "title": "Build flags and release channels"
+            }
+          ]
+        }
+      ],
+      "baseline_source_occurrences": [
+        {
+          "file": "references/config-presets-and-routing.md",
+          "line_start": 1,
+          "line_end": 164
+        },
+        {
+          "file": "references/bootstrap-and-structure.md",
+          "line_start": 1,
+          "line_end": 123
+        }
+      ],
+      "baseline_required_change": "Use when current build/config task requires; do not auto-migrate existing projects or assume all future flags stable."
+    },
+    {
+      "id": "D20",
+      "aspect": "Direct documentation/frontend-design contract and verification authority",
+      "source_files": [
+        "fragments/overview.md",
+        "SKILL.md"
+      ],
+      "basis": "Site ownership vs Diataxis/visual direction complementary. Existing text names owners but no handoff inputs/output or missing-owner continuation; universal pnpm start/build requirement can overrun read-only scope.",
+      "version": "Docusaurus3.10.2 stable; existing3.9.2/React18 branch; Node24 LTS",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Baseline independent official-source comparison retained; author compared corrected source and emitted package. No product runtime or independent candidate PASS.",
+      "official_sources": [
+        {
+          "url": "https://docusaurus.io/docs/creating-pages",
+          "final_url": "https://docusaurus.io/docs/creating-pages",
+          "file": "official-next-electron-docusaurus/155-docusaurus.io-docs-creating-pages.txt",
+          "retrieved_at": "2026-09-09T11:37:10.980196+00:00",
+          "status": "downloaded",
+          "text_sha256": "703ad3434551dd0f7c8de3cdbf68de7d0f809ea0f69e9aaae02b555a998f853d",
+          "candidate_readback_sha256": "703ad3434551dd0f7c8de3cdbf68de7d0f809ea0f69e9aaae02b555a998f853d",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/docs-introduction",
+          "final_url": "https://docusaurus.io/docs/docs-introduction",
+          "file": "official-next-electron-docusaurus/156-docusaurus.io-docs-docs-introduction.txt",
+          "retrieved_at": "2026-09-09T11:37:10.921869+00:00",
+          "status": "downloaded",
+          "text_sha256": "d2fa193f8a2db9410d218247e56a704a2d70f8266712c551e0e1dcbe83321911",
+          "candidate_readback_sha256": "d2fa193f8a2db9410d218247e56a704a2d70f8266712c551e0e1dcbe83321911",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/swizzling",
+          "final_url": "https://docusaurus.io/docs/swizzling",
+          "file": "official-next-electron-docusaurus/167-docusaurus.io-docs-swizzling.txt",
+          "retrieved_at": "2026-09-09T11:37:12.071740+00:00",
+          "status": "downloaded",
+          "text_sha256": "990bfab170136a28657d8b82eaec8fc1f4b9384b2d8bb3b37e83cb6bfff2a327",
+          "candidate_readback_sha256": "990bfab170136a28657d8b82eaec8fc1f4b9384b2d8bb3b37e83cb6bfff2a327",
+          "snapshot_hash_matches_baseline": true
+        },
+        {
+          "url": "https://docusaurus.io/docs/deployment",
+          "final_url": "https://docusaurus.io/docs/deployment",
+          "file": "official-next-electron-docusaurus/169-docusaurus.io-docs-deployment.txt",
+          "retrieved_at": "2026-09-09T11:37:12.220461+00:00",
+          "status": "downloaded",
+          "text_sha256": "8faa5c67740febfa12748267603dcd51519e34124df86021d7d05461183f755f",
+          "candidate_readback_sha256": "8faa5c67740febfa12748267603dcd51519e34124df86021d7d05461183f755f",
+          "snapshot_hash_matches_baseline": true
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution.",
+      "baseline_result": "correction-required",
+      "result": "source-corrected",
+      "candidate_version": "0.1.3",
+      "disposition": "Author source/readback verified; independent candidate behavioral/runtime assessment remains with coordinator",
+      "current_locations": [
+        {
+          "file": "SKILL.md",
+          "sha256": "fb1838a9ad32911ec71a7563f273292eb7c586e3069184fc74d0d0149be9a52c",
+          "line_start": 1,
+          "line_end": 200,
+          "sections": [
+            {
+              "line": 15,
+              "title": "docusaurus-repo"
+            },
+            {
+              "line": 17,
+              "title": "Start here"
+            },
+            {
+              "line": 24,
+              "title": "When to use this skill"
+            },
+            {
+              "line": 32,
+              "title": "When NOT to use this skill"
+            },
+            {
+              "line": 38,
+              "title": "Outcome and task boundary"
+            },
+            {
+              "line": 46,
+              "title": "Interop priority"
+            },
+            {
+              "line": 53,
+              "title": "Reasonable defaults"
+            },
+            {
+              "line": 64,
+              "title": "Deliverables by default"
+            },
+            {
+              "line": 72,
+              "title": "First pass"
+            },
+            {
+              "line": 90,
+              "title": "Working rules"
+            },
+            {
+              "line": 107,
+              "title": "Decision shortcuts"
+            },
+            {
+              "line": 125,
+              "title": "Verification and handoff"
+            },
+            {
+              "line": 143,
+              "title": "References"
+            },
+            {
+              "line": 153,
+              "title": "Workflow stages"
+            },
+            {
+              "line": 155,
+              "title": "Workflow stage: Apply docusaurus-repo guidance"
+            },
+            {
+              "line": 168,
+              "title": "Required active references"
+            },
+            {
+              "line": 177,
+              "title": "Bundled assets"
+            },
+            {
+              "line": 185,
+              "title": "Portability rules"
+            },
+            {
+              "line": 191,
+              "title": "Portability checklist before finishing"
+            },
+            {
+              "line": 197,
+              "title": "Supporting and historical surface"
+            }
+          ]
+        },
+        {
+          "file": "agents/openai.yaml",
+          "sha256": "9b8a48731c3bc59fa6fc82a040d3fbde1fd2fb08c5cc020e81384f839e482ecf",
+          "line_start": 1,
+          "line_end": 4,
+          "sections": []
+        },
+        {
+          "file": "fragments/overview.md",
+          "sha256": "cf869aed9c4e0077f8db235a4ebc17c79705ddac9a4575e59cb40cde9e4dbe55",
+          "line_start": 1,
+          "line_end": 114,
+          "sections": [
+            {
+              "line": 1,
+              "title": "Outcome and task boundary"
+            },
+            {
+              "line": 9,
+              "title": "Interop priority"
+            },
+            {
+              "line": 16,
+              "title": "Reasonable defaults"
+            },
+            {
+              "line": 27,
+              "title": "Deliverables by default"
+            },
+            {
+              "line": 35,
+              "title": "First pass"
+            },
+            {
+              "line": 53,
+              "title": "Working rules"
+            },
+            {
+              "line": 70,
+              "title": "Decision shortcuts"
+            },
+            {
+              "line": 88,
+              "title": "Verification and handoff"
+            },
+            {
+              "line": 106,
+              "title": "References"
+            }
+          ]
+        },
+        {
+          "file": "skill.yaml",
+          "sha256": "d6d9ae519337a98b6a51b3b8703dbc99314c228ec6f0fde48a8b7c3adb930816",
+          "line_start": 1,
+          "line_end": 148,
+          "sections": []
+        }
+      ],
+      "baseline_source_occurrences": [
+        {
+          "file": "fragments/overview.md",
+          "line_start": 1,
+          "line_end": 110
+        },
+        {
+          "file": "SKILL.md",
+          "line_start": 1,
+          "line_end": 196
+        }
+      ],
+      "baseline_required_change": "Add task mode/authority and usable direct handoff: validated content source+site route context, same snapshot/version; local useful work proceeds with dependent claim partial."
+    }
+  ],
+  "file_inventory": [
+    {
+      "file": "AGENTS.md",
+      "sha256": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf",
+      "line_count": 32,
+      "role": "metadata-or-maintenance",
+      "aspect_ids": [],
+      "technical_claim_identifiers": [
+        "SKILL.md",
+        "assets/*",
+        "docs/compile-report.md",
+        "fragments/*",
+        "references/*",
+        "skill-source-compiler",
+        "skill.yaml"
+      ],
+      "sections": [
+        {
+          "line": 8,
+          "title": "AGENTS.md"
+        },
+        {
+          "line": 12,
+          "title": "Skill Type"
+        },
+        {
+          "line": 28,
+          "title": "Maintenance Rules"
+        }
+      ],
+      "assessment": "Non-normative maintenance/generated record"
+    },
+    {
+      "file": "SKILL.md",
+      "sha256": "fb1838a9ad32911ec71a7563f273292eb7c586e3069184fc74d0d0149be9a52c",
+      "line_count": 200,
+      "role": "emitted",
+      "aspect_ids": [
+        "D01",
+        "D03",
+        "D20",
+        "D18"
+      ],
+      "technical_claim_identifiers": [
+        "--",
+        ".github/workflows/docs-quality.yml",
+        ".markdownlint-cli2.jsonc",
+        ".md",
+        ".mdx",
+        ".prettierignore",
+        ".prettierrc.json",
+        "/",
+        "AGENTS.md",
+        "assets/project-files/.github/workflows/docs-quality.yml",
+        "assets/project-files/.markdownlint-cli2.jsonc",
+        "assets/project-files/.prettierignore",
+        "assets/project-files/.prettierrc.json",
+        "assets/project-files/AGENTS.md",
+        "baseUrl",
+        "docs/*",
+        "docs/issues/*",
+        "docs:quality",
+        "documentation",
+        "docusaurus.config.*",
+        "docusaurus.config.ts",
+        "format",
+        "format:check",
+        "frontend-design",
+        "lint:md",
+        "lint:md:fix",
+        "markdownlint-cli2",
+        "markdownlint-cli2 --fix",
+        "pnpm build",
+        "pnpm create docusaurus@latest <site> classic --typescript",
+        "pnpm exec docusaurus clear",
+        "pnpm format:check",
+        "pnpm lint:md",
+        "pnpm run serve",
+        "pnpm run serve --build",
+        "pnpm start",
+        "prettier",
+        "prettier --write",
+        "routeBasePath",
+        "routeBasePath: '/'",
+        "sidebars.ts",
+        "slug",
+        "src/pages/",
+        "src/pages/index.*",
+        "trailingSlash",
+        "url"
+      ],
+      "sections": [
+        {
+          "line": 15,
+          "title": "docusaurus-repo"
+        },
+        {
+          "line": 17,
+          "title": "Start here"
+        },
+        {
+          "line": 24,
+          "title": "When to use this skill"
+        },
+        {
+          "line": 32,
+          "title": "When NOT to use this skill"
+        },
+        {
+          "line": 38,
+          "title": "Outcome and task boundary"
+        },
+        {
+          "line": 46,
+          "title": "Interop priority"
+        },
+        {
+          "line": 53,
+          "title": "Reasonable defaults"
+        },
+        {
+          "line": 64,
+          "title": "Deliverables by default"
+        },
+        {
+          "line": 72,
+          "title": "First pass"
+        },
+        {
+          "line": 90,
+          "title": "Working rules"
+        },
+        {
+          "line": 107,
+          "title": "Decision shortcuts"
+        },
+        {
+          "line": 125,
+          "title": "Verification and handoff"
+        },
+        {
+          "line": 143,
+          "title": "References"
+        },
+        {
+          "line": 153,
+          "title": "Workflow stages"
+        },
+        {
+          "line": 155,
+          "title": "Workflow stage: Apply docusaurus-repo guidance"
+        },
+        {
+          "line": 168,
+          "title": "Required active references"
+        },
+        {
+          "line": 177,
+          "title": "Bundled assets"
+        },
+        {
+          "line": 185,
+          "title": "Portability rules"
+        },
+        {
+          "line": 191,
+          "title": "Portability checklist before finishing"
+        },
+        {
+          "line": 197,
+          "title": "Supporting and historical surface"
+        }
+      ],
+      "assessment": "Covered by mapped aspects; source review is not runtime evidence"
+    },
+    {
+      "file": "agents/openai.yaml",
+      "sha256": "9b8a48731c3bc59fa6fc82a040d3fbde1fd2fb08c5cc020e81384f839e482ecf",
+      "line_count": 4,
+      "role": "metadata-or-maintenance",
+      "aspect_ids": [
+        "D20"
+      ],
+      "technical_claim_identifiers": [],
+      "sections": [],
+      "assessment": "Covered by mapped aspects; source review is not runtime evidence"
+    },
+    {
+      "file": "assets/project-files/.github/workflows/docs-quality.yml",
+      "sha256": "968eb18850f0ddec8b5a54d4027c8657e81419d264e7e9a4bf1e81c52696d2af",
+      "line_count": 38,
+      "role": "active-asset",
+      "aspect_ids": [
+        "D18"
+      ],
+      "technical_claim_identifiers": [],
+      "sections": [],
+      "assessment": "Covered by mapped aspects; source review is not runtime evidence"
+    },
+    {
+      "file": "assets/project-files/.markdownlint-cli2.jsonc",
+      "sha256": "25b490a3f41fdc7f032d618b7b29779f325c82a54e29e6ae7a2e06f73ab03bc3",
+      "line_count": 18,
+      "role": "active-asset",
+      "aspect_ids": [
+        "D16",
+        "D17"
+      ],
+      "technical_claim_identifiers": [],
+      "sections": [],
+      "assessment": "Covered by mapped aspects; source review is not runtime evidence"
+    },
+    {
+      "file": "assets/project-files/.prettierignore",
+      "sha256": "0e2d69697fed9001df076dc0e14de9ef3ed045a8b945961564b8e0d98a54fc90",
+      "line_count": 4,
+      "role": "active-asset",
+      "aspect_ids": [
+        "D16"
+      ],
+      "technical_claim_identifiers": [],
+      "sections": [],
+      "assessment": "Covered by mapped aspects; source review is not runtime evidence"
+    },
+    {
+      "file": "assets/project-files/.prettierrc.json",
+      "sha256": "8b92ed4e7a6cd9ddcfa606663ab1cf6328da668557adc02510f776ea28991f1c",
+      "line_count": 4,
+      "role": "active-asset",
+      "aspect_ids": [
+        "D16"
+      ],
+      "technical_claim_identifiers": [],
+      "sections": [],
+      "assessment": "Covered by mapped aspects; source review is not runtime evidence"
+    },
+    {
+      "file": "assets/project-files/AGENTS.md",
+      "sha256": "fffd49ecca4562de9557b75a36b1da6818b8b6ceacaa7a8be4bce97f968e53d8",
+      "line_count": 56,
+      "role": "active-asset",
+      "aspect_ids": [
+        "D03",
+        "D16"
+      ],
+      "technical_claim_identifiers": [
+        "--",
+        ".github/workflows/docs-quality.yml",
+        ".md",
+        ".mdx",
+        "/",
+        "baseUrl",
+        "bun",
+        "bunx",
+        "docs/",
+        "markdown.format",
+        "markdownlint-cli2 --fix",
+        "npm",
+        "npx",
+        "pnpm",
+        "pnpm build",
+        "pnpm docs:quality",
+        "pnpm format:check",
+        "pnpm lint:md",
+        "pnpm lint:md:fix",
+        "pnpm run serve",
+        "pnpm run serve --build",
+        "slug",
+        "src/pages/index.*",
+        "trailingSlash",
+        "yarn"
+      ],
+      "sections": [
+        {
+          "line": 1,
+          "title": "AGENTS.md"
+        },
+        {
+          "line": 3,
+          "title": "Applicability"
+        },
+        {
+          "line": 7,
+          "title": "Package manager"
+        },
+        {
+          "line": 13,
+          "title": "Documentation workflow"
+        },
+        {
+          "line": 22,
+          "title": "Authoring rules"
+        },
+        {
+          "line": 32,
+          "title": "Quality gates"
+        },
+        {
+          "line": 44,
+          "title": "Route and IA safety"
+        },
+        {
+          "line": 51,
+          "title": "MDX policy"
+        }
+      ],
+      "assessment": "Covered by mapped aspects; source review is not runtime evidence"
+    },
+    {
+      "file": "docs/README.md",
+      "sha256": "cb5dad977a3adb8792ba930b60f0a9893803fa960ea7f91ec2ae3e580a98bbae",
+      "line_count": 9,
+      "role": "supporting-history",
+      "aspect_ids": [],
+      "technical_claim_identifiers": [
+        "SKILL.md"
+      ],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Docusaurus Repo — maintenance records"
+        },
+        {
+          "line": 5,
+          "title": "Журналы реализации"
+        }
+      ],
+      "assessment": "Non-normative maintenance/generated record"
+    },
+    {
+      "file": "docs/compile-report.md",
+      "sha256": "6831c77f862e34e05dffd959731f4ec9b821ee4b8f05638e3d1cfc7563441367",
+      "line_count": 40,
+      "role": "supporting-history",
+      "aspect_ids": [],
+      "technical_claim_identifiers": [
+        "0.1.3",
+        "SKILL.md",
+        "agents/openai.yaml",
+        "assets/project-files/.github/workflows/docs-quality.yml",
+        "assets/project-files/.markdownlint-cli2.jsonc",
+        "assets/project-files/.prettierignore",
+        "assets/project-files/.prettierrc.json",
+        "assets/project-files/AGENTS.md",
+        "docs/README.md",
+        "docs/logs/implementation-log-20260715-1.md",
+        "fragments/overview.md",
+        "references/bootstrap-and-structure.md",
+        "references/config-presets-and-routing.md",
+        "references/content-authoring.md",
+        "references/customization-and-ux.md",
+        "references/deployment-versioning-i18n.md",
+        "references/doc-quality-tooling-and-agents.md",
+        "references/search-and-ecosystem.md",
+        "skill.yaml"
+      ],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Compile report"
+        },
+        {
+          "line": 4,
+          "title": "Versions"
+        },
+        {
+          "line": 7,
+          "title": "Source files"
+        },
+        {
+          "line": 26,
+          "title": "Required references"
+        },
+        {
+          "line": 35,
+          "title": "Warnings"
+        },
+        {
+          "line": 38,
+          "title": "Notes"
+        }
+      ],
+      "assessment": "Non-normative maintenance/generated record"
+    },
+    {
+      "file": "docs/logs/implementation-log-20260715-1.md",
+      "sha256": "30b0ce1b6d51cb37b5a24934c22a476d1d25ced9a4c03df9a0e8af0edc949d72",
+      "line_count": 25,
+      "role": "supporting-history",
+      "aspect_ids": [],
+      "technical_claim_identifiers": [
+        "PASS",
+        "check",
+        "description",
+        "dfd3832",
+        "lint",
+        "regenerate",
+        "skill.yaml"
+      ],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Журнал реализации: ограничение описания docusaurus-repo"
+        },
+        {
+          "line": 6,
+          "title": "Результат"
+        },
+        {
+          "line": 12,
+          "title": "Проверка"
+        },
+        {
+          "line": 17,
+          "title": "Границы"
+        },
+        {
+          "line": 23,
+          "title": "Статус"
+        }
+      ],
+      "assessment": "Non-normative maintenance/generated record"
+    },
+    {
+      "file": "fragments/overview.md",
+      "sha256": "cf869aed9c4e0077f8db235a4ebc17c79705ddac9a4575e59cb40cde9e4dbe55",
+      "line_count": 114,
+      "role": "source",
+      "aspect_ids": [
+        "D01",
+        "D03",
+        "D20",
+        "D18"
+      ],
+      "technical_claim_identifiers": [
+        "--",
+        ".github/workflows/docs-quality.yml",
+        ".markdownlint-cli2.jsonc",
+        ".md",
+        ".mdx",
+        ".prettierignore",
+        ".prettierrc.json",
+        "/",
+        "AGENTS.md",
+        "baseUrl",
+        "docs:quality",
+        "documentation",
+        "docusaurus.config.*",
+        "docusaurus.config.ts",
+        "format",
+        "format:check",
+        "frontend-design",
+        "lint:md",
+        "lint:md:fix",
+        "markdownlint-cli2",
+        "markdownlint-cli2 --fix",
+        "pnpm build",
+        "pnpm create docusaurus@latest <site> classic --typescript",
+        "pnpm exec docusaurus clear",
+        "pnpm format:check",
+        "pnpm lint:md",
+        "pnpm run serve",
+        "pnpm run serve --build",
+        "pnpm start",
+        "prettier",
+        "prettier --write",
+        "routeBasePath",
+        "routeBasePath: '/'",
+        "sidebars.ts",
+        "slug",
+        "src/pages/",
+        "src/pages/index.*",
+        "trailingSlash",
+        "url"
+      ],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Outcome and task boundary"
+        },
+        {
+          "line": 9,
+          "title": "Interop priority"
+        },
+        {
+          "line": 16,
+          "title": "Reasonable defaults"
+        },
+        {
+          "line": 27,
+          "title": "Deliverables by default"
+        },
+        {
+          "line": 35,
+          "title": "First pass"
+        },
+        {
+          "line": 53,
+          "title": "Working rules"
+        },
+        {
+          "line": 70,
+          "title": "Decision shortcuts"
+        },
+        {
+          "line": 88,
+          "title": "Verification and handoff"
+        },
+        {
+          "line": 106,
+          "title": "References"
+        }
+      ],
+      "assessment": "Covered by mapped aspects; source review is not runtime evidence"
+    },
+    {
+      "file": "references/bootstrap-and-structure.md",
+      "sha256": "d695e4c71a2788767e1d5b94010932024846fdb95cf1d598697706147f81ff85",
+      "line_count": 128,
+      "role": "active-reference",
+      "aspect_ids": [
+        "D01",
+        "D02",
+        "D03",
+        "D19"
+      ],
+      "technical_claim_identifiers": [
+        ".github/workflows/docs-quality.yml",
+        ".mdx",
+        ".nvmrc",
+        "/",
+        "/blog",
+        "/docs",
+        "AGENTS.md",
+        "blog",
+        "blog/",
+        "create-docusaurus",
+        "docs",
+        "docs/",
+        "docusaurus.config.*",
+        "docusaurus.config.ts",
+        "engines",
+        "package.json",
+        "pnpm create docusaurus website classic --typescript",
+        "pnpm docs:quality",
+        "pnpm run serve",
+        "pnpm run serve --build",
+        "sidebars.js",
+        "sidebars.ts",
+        "slug: /",
+        "src/css/custom.css",
+        "src/pages/",
+        "src/pages/index.*",
+        "src/pages/index.tsx",
+        "static/",
+        "website/"
+      ],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Bootstrap and Structure"
+        },
+        {
+          "line": 3,
+          "title": "Baseline"
+        },
+        {
+          "line": 27,
+          "title": "What the classic template gives you"
+        },
+        {
+          "line": 39,
+          "title": "Recommended starting modes"
+        },
+        {
+          "line": 41,
+          "title": "Docs-only"
+        },
+        {
+          "line": 77,
+          "title": "Docs + blog/changelog"
+        },
+        {
+          "line": 85,
+          "title": "Docs + landing page"
+        },
+        {
+          "line": 93,
+          "title": "Monorepo guidance"
+        },
+        {
+          "line": 117,
+          "title": "Core commands"
+        }
+      ],
+      "assessment": "Covered by mapped aspects; source review is not runtime evidence"
+    },
+    {
+      "file": "references/config-presets-and-routing.md",
+      "sha256": "7eab4eb7d7d7090a9b736b7419880a827270b5b23b981716473eb9c524de6c70",
+      "line_count": 168,
+      "role": "active-reference",
+      "aspect_ids": [
+        "D04",
+        "D06",
+        "D19"
+      ],
+      "technical_claim_identifiers": [
+        "/",
+        "/api/*",
+        "/blog/*",
+        "/docs/*",
+        "/foo",
+        "/reference/*",
+        "baseUrl",
+        "customFields",
+        "docId",
+        "docsPluginId",
+        "docusaurus.config.*",
+        "favicon",
+        "future.experimental_faster",
+        "future.faster",
+        "future.v4",
+        "id",
+        "organizationName",
+        "plugins",
+        "preset-classic",
+        "presets",
+        "projectName",
+        "routeBasePath",
+        "routeBasePath: '/'",
+        "slug",
+        "src/pages/foo.tsx",
+        "src/pages/index.*",
+        "static/",
+        "tagline",
+        "themes",
+        "title",
+        "type: 'doc'",
+        "type: 'docSidebar'",
+        "type: 'docsVersionDropdown'",
+        "type: 'localeDropdown'",
+        "url"
+      ],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Config, Presets, and Routing"
+        },
+        {
+          "line": 3,
+          "title": "Site config priorities"
+        },
+        {
+          "line": 26,
+          "title": "Preset vs plugin composition"
+        },
+        {
+          "line": 69,
+          "title": "Routing rules"
+        },
+        {
+          "line": 85,
+          "title": "Route-collision traps"
+        },
+        {
+          "line": 92,
+          "title": "Navbar strategy"
+        },
+        {
+          "line": 128,
+          "title": "Multi-instance docs"
+        },
+        {
+          "line": 166,
+          "title": "Build flags and release channels"
+        }
+      ],
+      "assessment": "Covered by mapped aspects; source review is not runtime evidence"
+    },
+    {
+      "file": "references/content-authoring.md",
+      "sha256": "890b4c84a5c45c4590a2edd5c80442d3485f3d13eb3e5728f0c23705b95f4630",
+      "line_count": 121,
+      "role": "active-reference",
+      "aspect_ids": [
+        "D05",
+        "D06",
+        "D07"
+      ],
+      "technical_claim_identifiers": [
+        ".md",
+        ".mdx",
+        "@docusaurus/theme-mermaid",
+        "@site/...",
+        "@theme/MDXComponents",
+        "BrowserOnly",
+        "_",
+        "detect",
+        "markdown.format",
+        "mdx",
+        "slug",
+        "src/components/",
+        "src/theme/MDXComponents.*"
+      ],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Content Authoring"
+        },
+        {
+          "line": 3,
+          "title": "File-system rules"
+        },
+        {
+          "line": 30,
+          "title": "Sidebars"
+        },
+        {
+          "line": 48,
+          "title": "MDX rules"
+        },
+        {
+          "line": 69,
+          "title": "Global MDX components"
+        },
+        {
+          "line": 75,
+          "title": "Authoring features worth enabling"
+        },
+        {
+          "line": 84,
+          "title": "Mermaid"
+        },
+        {
+          "line": 97,
+          "title": "Live code blocks"
+        },
+        {
+          "line": 116,
+          "title": "Writing heuristics"
+        }
+      ],
+      "assessment": "Covered by mapped aspects; source review is not runtime evidence"
+    },
+    {
+      "file": "references/customization-and-ux.md",
+      "sha256": "ae6d1d7a79bd4df3345d437a58c7b734c9059af349a820fda4cd6328d7d3de06",
+      "line_count": 121,
+      "role": "active-reference",
+      "aspect_ids": [
+        "D08"
+      ],
+      "technical_claim_identifiers": [
+        "--wrap",
+        "announcementBar",
+        "colorMode",
+        "docs.sidebar",
+        "docs/",
+        "footer",
+        "image",
+        "metadata",
+        "navbar",
+        "prism",
+        "src/css/custom.css",
+        "src/pages/",
+        "src/theme/",
+        "swizzle --list",
+        "themeConfig"
+      ],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Customization and UX"
+        },
+        {
+          "line": 3,
+          "title": "Theme config that matters most"
+        },
+        {
+          "line": 38,
+          "title": "CSS strategy"
+        },
+        {
+          "line": 69,
+          "title": "Pages and custom UI"
+        },
+        {
+          "line": 80,
+          "title": "Swizzling"
+        },
+        {
+          "line": 112,
+          "title": "UX heuristics for docs sites"
+        }
+      ],
+      "assessment": "Covered by mapped aspects; source review is not runtime evidence"
+    },
+    {
+      "file": "references/deployment-versioning-i18n.md",
+      "sha256": "caed7743fb340a5285a929e76da88fed187ef1a832f2569a1f4325b6a2342ffe",
+      "line_count": 126,
+      "role": "active-reference",
+      "aspect_ids": [
+        "D03",
+        "D13",
+        "D14",
+        "D15"
+      ],
+      "technical_claim_identifiers": [
+        "/<locale>/",
+        "<pluginId>_versioned_docs/",
+        "<pluginId>_versioned_sidebars/",
+        "Translate",
+        "baseUrl",
+        "build",
+        "current/",
+        "docs/",
+        "docs:version",
+        "docs:version:<pluginId>",
+        "docusaurus serve",
+        "i18n/<locale>/",
+        "i18n/<locale>/code.json",
+        "i18n/<locale>/docusaurus-plugin-content-blog/",
+        "i18n/<locale>/docusaurus-plugin-content-docs-<pluginId>/current/",
+        "i18n/<locale>/docusaurus-plugin-content-docs/current/",
+        "i18n/<locale>/docusaurus-plugin-content-pages/",
+        "organizationName",
+        "pnpm run serve",
+        "projectName",
+        "trailingSlash",
+        "translate",
+        "url",
+        "version-<version>/",
+        "versioned_docs/version-<version>/",
+        "versioned_sidebars/",
+        "website/",
+        "write-translations"
+      ],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Deployment, Versioning, and i18n"
+        },
+        {
+          "line": 3,
+          "title": "Deployment essentials"
+        },
+        {
+          "line": 29,
+          "title": "`trailingSlash`"
+        },
+        {
+          "line": 37,
+          "title": "Clear stale build state"
+        },
+        {
+          "line": 47,
+          "title": "Host notes"
+        },
+        {
+          "line": 53,
+          "title": "Versioning"
+        },
+        {
+          "line": 84,
+          "title": "i18n"
+        },
+        {
+          "line": 119,
+          "title": "Release checklist"
+        }
+      ],
+      "assessment": "Covered by mapped aspects; source review is not runtime evidence"
+    },
+    {
+      "file": "references/doc-quality-tooling-and-agents.md",
+      "sha256": "04bb9c7f11ee753ee9e416a603ec02ee64f7cfe5e3b17344ff135a8c4b749707",
+      "line_count": 133,
+      "role": "active-reference",
+      "aspect_ids": [
+        "D02",
+        "D03",
+        "D16",
+        "D17",
+        "D18"
+      ],
+      "technical_claim_identifiers": [
+        "**/*.md",
+        "--fix",
+        ".github/workflows/docs-quality.yml",
+        ".markdownlint-cli2.jsonc",
+        ".md",
+        ".mdx",
+        ".prettierignore",
+        ".prettierrc.json",
+        "AGENTS.md",
+        "MD013",
+        "MD033",
+        "MD041",
+        "api/",
+        "assets/project-files/",
+        "assets/project-files/.github/workflows/docs-quality.yml",
+        "community/",
+        "docs:quality",
+        "frontMatter",
+        "markdownlint-cli2",
+        "package.json",
+        "pnpm",
+        "pnpm build",
+        "pnpm docs:quality",
+        "pnpm format",
+        "pnpm format:check",
+        "pnpm lint:md",
+        "pnpm lint:md:fix",
+        "prettier",
+        "product/",
+        "pull_request",
+        "push",
+        "title"
+      ],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Doc Quality Tooling and AGENTS"
+        },
+        {
+          "line": 3,
+          "title": "Scope and runtime"
+        },
+        {
+          "line": 7,
+          "title": "Mandatory bootstrap"
+        },
+        {
+          "line": 21,
+          "title": "Install"
+        },
+        {
+          "line": 27,
+          "title": "Required package scripts"
+        },
+        {
+          "line": 50,
+          "title": "Default config files"
+        },
+        {
+          "line": 62,
+          "title": "GitHub Actions workflow"
+        },
+        {
+          "line": 79,
+          "title": "Why this split"
+        },
+        {
+          "line": 87,
+          "title": "Docusaurus-specific markdownlint defaults"
+        },
+        {
+          "line": 96,
+          "title": "Content coverage"
+        },
+        {
+          "line": 100,
+          "title": "MDX policy"
+        },
+        {
+          "line": 110,
+          "title": "AGENTS.md requirements"
+        },
+        {
+          "line": 123,
+          "title": "Mandatory doc quality gates"
+        }
+      ],
+      "assessment": "Covered by mapped aspects; source review is not runtime evidence"
+    },
+    {
+      "file": "references/search-and-ecosystem.md",
+      "sha256": "197273c8ed4b7afc8ab31469d839408080767567913d45b83e5dc45d762a6bc9",
+      "line_count": 155,
+      "role": "active-reference",
+      "aspect_ids": [
+        "D03",
+        "D09",
+        "D10",
+        "D11",
+        "D12"
+      ],
+      "technical_claim_identifiers": [
+        "/api",
+        "@cmfcmf/docusaurus-search-local",
+        "@theme/ApiItem",
+        "AGENTS.md",
+        "SearchBar",
+        "custom.css",
+        "docItemComponent",
+        "docusaurus-plugin-openapi-docs",
+        "docusaurus-theme-openapi-docs",
+        "pnpm run serve"
+      ],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Search and Ecosystem"
+        },
+        {
+          "line": 3,
+          "title": "Search strategy"
+        },
+        {
+          "line": 7,
+          "title": "Use Algolia DocSearch when"
+        },
+        {
+          "line": 35,
+          "title": "Ask AI"
+        },
+        {
+          "line": 52,
+          "title": "Use Typesense when"
+        },
+        {
+          "line": 74,
+          "title": "Use local search when"
+        },
+        {
+          "line": 105,
+          "title": "Build your own search UI when"
+        },
+        {
+          "line": 113,
+          "title": "Community plugin rules"
+        },
+        {
+          "line": 120,
+          "title": "API docs ecosystem"
+        },
+        {
+          "line": 147,
+          "title": "Dated compatibility evidence"
+        }
+      ],
+      "assessment": "Covered by mapped aspects; source review is not runtime evidence"
+    },
+    {
+      "file": "skill.yaml",
+      "sha256": "d6d9ae519337a98b6a51b3b8703dbc99314c228ec6f0fde48a8b7c3adb930816",
+      "line_count": 148,
+      "role": "source",
+      "aspect_ids": [
+        "D20"
+      ],
+      "technical_claim_identifiers": [],
+      "sections": [],
+      "assessment": "Covered by mapped aspects; source review is not runtime evidence"
+    }
+  ],
+  "isolated_readback": [
+    {
+      "file": "SKILL.md",
+      "sha256": "fb1838a9ad32911ec71a7563f273292eb7c586e3069184fc74d0d0149be9a52c"
+    },
+    {
+      "file": "agents/openai.yaml",
+      "sha256": "9b8a48731c3bc59fa6fc82a040d3fbde1fd2fb08c5cc020e81384f839e482ecf"
+    },
+    {
+      "file": "references/search-and-ecosystem.md",
+      "sha256": "197273c8ed4b7afc8ab31469d839408080767567913d45b83e5dc45d762a6bc9"
+    },
+    {
+      "file": "references/doc-quality-tooling-and-agents.md",
+      "sha256": "04bb9c7f11ee753ee9e416a603ec02ee64f7cfe5e3b17344ff135a8c4b749707"
+    },
+    {
+      "file": "references/deployment-versioning-i18n.md",
+      "sha256": "caed7743fb340a5285a929e76da88fed187ef1a832f2569a1f4325b6a2342ffe"
+    },
+    {
+      "file": "references/customization-and-ux.md",
+      "sha256": "ae6d1d7a79bd4df3345d437a58c7b734c9059af349a820fda4cd6328d7d3de06"
+    },
+    {
+      "file": "references/content-authoring.md",
+      "sha256": "890b4c84a5c45c4590a2edd5c80442d3485f3d13eb3e5728f0c23705b95f4630"
+    },
+    {
+      "file": "references/config-presets-and-routing.md",
+      "sha256": "7eab4eb7d7d7090a9b736b7419880a827270b5b23b981716473eb9c524de6c70"
+    },
+    {
+      "file": "references/bootstrap-and-structure.md",
+      "sha256": "d695e4c71a2788767e1d5b94010932024846fdb95cf1d598697706147f81ff85"
+    },
+    {
+      "file": "docs/README.md",
+      "sha256": "cb5dad977a3adb8792ba930b60f0a9893803fa960ea7f91ec2ae3e580a98bbae"
+    },
+    {
+      "file": "docs/logs/implementation-log-20260715-1.md",
+      "sha256": "30b0ce1b6d51cb37b5a24934c22a476d1d25ced9a4c03df9a0e8af0edc949d72"
+    },
+    {
+      "file": "assets/project-files/AGENTS.md",
+      "sha256": "fffd49ecca4562de9557b75a36b1da6818b8b6ceacaa7a8be4bce97f968e53d8"
+    },
+    {
+      "file": "assets/project-files/.prettierrc.json",
+      "sha256": "8b92ed4e7a6cd9ddcfa606663ab1cf6328da668557adc02510f776ea28991f1c"
+    },
+    {
+      "file": "assets/project-files/.prettierignore",
+      "sha256": "0e2d69697fed9001df076dc0e14de9ef3ed045a8b945961564b8e0d98a54fc90"
+    },
+    {
+      "file": "assets/project-files/.markdownlint-cli2.jsonc",
+      "sha256": "25b490a3f41fdc7f032d618b7b29779f325c82a54e29e6ae7a2e06f73ab03bc3"
+    },
+    {
+      "file": "assets/project-files/.github/workflows/docs-quality.yml",
+      "sha256": "968eb18850f0ddec8b5a54d4027c8657e81419d264e7e9a4bf1e81c52696d2af"
+    }
+  ],
+  "author_static_checks": {
+    "all_isolated_files_identical_except_compile_report": true,
+    "markdownlint_engine_source": ">=22",
+    "new_template_node": 24,
+    "active_bad_serve_separator_occurrences": 0,
+    "active_absolute_local_dependencies": 0
+  },
+  "unverified_boundaries": [
+    "Independent candidate skill-reviewer and catalog/behavioral trials owned by coordinator.",
+    "No author app install/build/browser/linter invocation or CLI preview probe.",
+    "No remote CI/deploy/search service or canonical-host claim.",
+    "Inherited baseline source comparison remains attributed; author readback is not independent technical audit."
+  ],
+  "snapshot_aggregate_sha256": "e1c15b458584d81f26344e8876db7ad306cc9325f60d35648a892a33abca7dc8",
+  "direct_owner_readback": [
+    {
+      "skill": "documentation",
+      "sha256": "4498e3ef26485edc0e63ee0fef18b371f81aa8daa694634484410c43003ae7be",
+      "matches_frozen": true
+    },
+    {
+      "skill": "frontend-design",
+      "sha256": "52b2d1da1e9855a78306f0c2e261a50bff19db33335e9dbb8539b0bdc729fd9d",
+      "matches_frozen": true
+    }
+  ],
+  "coordinator_remediation": {
+    "at": "2026-09-09T16:14:10.880562+00:00",
+    "finding": "D-F4",
+    "scope": "Remove frontMatter asset override and update its direct claim in doc-quality reference. Current-source aggregate and isolated parity refreshed after both changes.",
+    "officialSourceEvidence": "D-frontmatter-official-source.json"
+  }
+}

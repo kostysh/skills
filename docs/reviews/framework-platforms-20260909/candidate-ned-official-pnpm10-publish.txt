@@ -1,0 +1,178 @@
+pnpm publish | pnpm
+Skip to main content
+Learn how to Mitigate supply chain attacks with pnpm
+pnpmClient (pnpm)Registry (pnpr)BlogFAQBenchmarks
+More
+Blog
+FAQ
+Benchmarks
+10.x
+12.x
+11.x
+10.x
+English
+English
+Italiano (61%)
+简体中文 (99%)
+日本語 (86%)
+한국어 (52%)
+Português Brasileiro (61%)
+正體中文 (43%)
+Русский (38%)
+Українська (80%)
+Français (50%)
+Türkçe (28%)
+Español (67%)
+Bahasa Indonesia (32%)
+Help Us Translate
+🧡 Sponsor Us
+Open Collective
+GitHub Sponsors
+Crypto Donations
+Search
+Introduction
+Usage
+CLI commands
+Manage dependencies
+Patch dependencies
+Review dependencies
+Run scripts
+Manage environments
+Inspect the store
+Manage cache
+Misc.
+pnpm self-update
+pnpm publish
+pnpm pack
+pnpm -r, --recursive
+pnpm server
+pnpm store
+pnpm root
+pnpm bin
+pnpm setup
+pnpm init
+pnpm deploy
+pnpm doctor
+pnpm config
+pnpm help <command>
+Configuration
+Features
+Recipes
+Advanced
+This is documentation for pnpm 10.x, which is no longer actively maintained.
+For up-to-date documentation, see the latest version (12.x).
+CLI commands
+Misc.
+pnpm publishVersion: 10.x
+On this page
+pnpm publish
+Publishes a package to the registry.
+pnpm [-r] publish [<tarball|folder>] [--tag <tag>]
+[--access <public|restricted>] [options]
+When publishing a package inside a workspace, the LICENSE file
+from the root of the workspace is packed with the package (unless the package
+has a license of its own).
+You may override some fields before publish, using the
+publishConfig field in package.json.
+You also can use the publishConfig.directory to customize the published subdirectory (usually using third party build tools).
+When running this command recursively (pnpm -r publish), pnpm will publish all
+the packages that have versions not yet published to the registry.
+Options​
+--recursive, -r​
+Publish all packages from the workspace.
+--json​
+Show information in JSON format.
+--tag <tag>​
+Publishes the package with the given tag. By default, pnpm publish updates
+the latest tag.
+For example:
+# inside the foo package directory
+pnpm publish --tag next
+# in a project where you want to use the next version of foo
+pnpm add foo@next
+--access <public|restricted>​
+Tells the registry whether the published package should be public or restricted.
+--no-git-checks​
+Don't check if current branch is your publish branch, clean, and up-to-date with remote.
+--publish-branch <branch>​
+Default: master and main
+Types: String
+The primary branch of the repository which is used for publishing the latest
+changes.
+--force​
+Try to publish packages even if their current version is already found in the
+registry.
+--report-summary​
+Save the list of published packages to pnpm-publish-summary.json. Useful when some other tooling is used to report the list of published packages.
+An example of a pnpm-publish-summary.json file:
+{
+"publishedPackages": [
+{
+"name": "foo",
+"version": "1.0.0"
+},
+{
+"name": "bar",
+"version": "2.0.0"
+}
+]
+}
+--dry-run​
+Does everything a publish would do except actually publishing to the registry.
+--otp​
+When publishing packages that require two-factor authentication, this option can specify a one-time password.
+--provenance​
+When publishing from a supported cloud CI/CD system, the package will be publicly linked to where it was built and published from.
+--filter <package_selector>​
+Read more about filtering.
+Configuration​
+You can also set gitChecks, publishBranch options in the pnpm-workspace.yaml file.
+For example:
+pnpm-workspace.yaml
+gitChecks: false
+publishBranch: production
+Life Cycle Scripts​
+prepublishOnly
+prepublish
+prepack
+prepare
+postpack
+publish
+postpublish
+Edit this page
+Last updated on Feb 24, 2026 by Zoltan Kochan
+Previous
+pnpm self-update
+Next
+pnpm pack
+Options
+--recursive, -r
+--json
+--tag <tag>
+--access <public|restricted>
+--no-git-checks
+--publish-branch <branch>
+--force
+--report-summary
+--dry-run
+--otp
+--provenance
+--filter <package_selector>
+Configuration
+Life Cycle Scripts
+Docs
+Getting Started
+pnpm CLI
+Workspace
+Settings (pnpm-workspace.yaml)
+pnpr (registry server)
+Community
+X (Twitter)
+YouTube
+Reddit
+Bluesky
+Discord
+Contributing
+GitHub
+Help Us Translate
+Copyright © 2015-2026 contributors of pnpm

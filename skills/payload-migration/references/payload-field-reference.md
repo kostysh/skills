@@ -13,49 +13,14 @@ This document helps AI assistants analyze source CMS data and generate appropria
 
 ## Field Type Schemas
 
-Every field shares these **base properties**:
+Use Payload's exported discriminated field types. There is no universal copyable BaseField: layout fields can be unnamed, and each field has its own validation/admin/callback contract. A field-level `hidden` also affects default API output; `admin.hidden`, readOnly and condition are UI controls, not authorization.
 
 ```typescript
-type BaseField = {
-  name: string                    // Required. Field identifier (camelCase)
-  label?: string                  // Admin UI label. Defaults to name
-  required?: boolean              // Validation. Default: false
-  unique?: boolean                // Database unique constraint
-  index?: boolean                 // Database index for faster queries
-  localized?: boolean             // Enable per-locale values
-  hidden?: boolean                // Hide from admin UI
-  saveToJWT?: boolean             // Include in auth JWT
-  defaultValue?: unknown          // Default when creating new docs
-  validate?: Function             // Custom validation function
-  access?: {                      // Field-level access control
-    create?: Function
-    read?: Function
-    update?: Function
-  }
-  hooks?: {                       // Field lifecycle hooks
-    beforeValidate?: Function[]
-    beforeChange?: Function[]
-    afterChange?: Function[]
-    afterRead?: Function[]
-  }
-  admin?: {
-    condition?: Function          // Conditionally show/hide field
-    description?: string          // Help text below field
-    position?: 'sidebar'          // Move to sidebar in admin
-    width?: string                // CSS width (e.g., '50%')
-    style?: CSSProperties         // Inline styles
-    className?: string            // CSS class
-    readOnly?: boolean            // Disable editing
-    disabled?: boolean            // Disable field entirely
-    hidden?: boolean              // Hide in admin
-    components?: {                // Custom React components
-      Field?: Component
-      Cell?: Component
-      Filter?: Component
-    }
-  }
-}
+import type { CollectionConfig, Field } from 'payload'
+const title: Field = { name: 'title', type: 'text', required: true }
 ```
+
+The snippets below are field fragments to insert into a typed collection. They omit host registration, db/secret/editor and related collection definitions. Use actual exported types to produce a complete config when the target project is available; otherwise label the unresolved host dependencies rather than claim copy-paste readiness.
 
 ---
 
@@ -65,21 +30,9 @@ type BaseField = {
 
 Single-line text input.
 
-**Full schema:**
+**Type authority:**
 ```typescript
-type TextField = BaseField & {
-  type: 'text'
-  minLength?: number              // Minimum character count
-  maxLength?: number              // Maximum character count
-  hasMany?: boolean               // Allow multiple values (array of strings)
-  minRows?: number                // Min items when hasMany: true
-  maxRows?: number                // Max items when hasMany: true
-  admin?: BaseField['admin'] & {
-    placeholder?: string          // Placeholder text
-    autoComplete?: string         // HTML autocomplete attribute
-    rtl?: boolean                 // Right-to-left text
-  }
-}
+import type { TextField } from 'payload'
 ```
 
 **Use when:**
@@ -109,18 +62,9 @@ type TextField = BaseField & {
 
 Multi-line text without formatting.
 
-**Full schema:**
+**Type authority:**
 ```typescript
-type TextareaField = BaseField & {
-  type: 'textarea'
-  minLength?: number              // Minimum character count
-  maxLength?: number              // Maximum character count
-  admin?: BaseField['admin'] & {
-    placeholder?: string          // Placeholder text
-    rows?: number                 // Visible rows (height)
-    rtl?: boolean                 // Right-to-left text
-  }
-}
+import type { TextareaField } from 'payload'
 ```
 
 **Use when:**
@@ -146,22 +90,11 @@ type TextareaField = BaseField & {
 
 ### richText
 
-Rich text editor (Lexical by default, or Slate).
+Rich text requires an editor configured at root or field level. Templates often choose Lexical; existing Slate projects retain their installed editor until conversion is requested.
 
-**Full schema:**
+**Type authority:**
 ```typescript
-type RichTextField = BaseField & {
-  type: 'richText'
-  editor?: LexicalEditorConfig     // Lexical editor configuration
-  // Lexical-specific options (via editor config):
-  // - features: Enable/disable toolbar features
-  // - lexical: Raw Lexical configuration
-  admin?: BaseField['admin'] & {
-    hideGutter?: boolean           // Hide left gutter
-    elements?: string[]            // Deprecated (Slate). Use editor.features
-    leaves?: string[]              // Deprecated (Slate). Use editor.features
-  }
-}
+import type { RichTextField } from 'payload'
 ```
 
 **Use when:**
@@ -184,10 +117,10 @@ type RichTextField = BaseField & {
 ```
 
 **Migration notes:**
-- WordPress `content.rendered` can be imported as HTML
-- Contentful Rich Text requires conversion to Lexical format
-- Markdown should be converted to HTML first, or use Lexical markdown plugin
-- Data stored as Lexical JSON, not HTML
+- WordPress REST `content.rendered` is HTML input to a converter, not a valid direct richText value.
+- Convert Contentful Rich Text AST to the configured editor format.
+- Use the installed editor-specific HTML or Markdown converter; no intermediate HTML stage is mandatory.
+- Lexical stores its serialized node tree; Slate stores its own format. Validate the chosen editor and preserve embedded links/media.
 
 ---
 
@@ -195,21 +128,9 @@ type RichTextField = BaseField & {
 
 Numeric values (integers or decimals).
 
-**Full schema:**
+**Type authority:**
 ```typescript
-type NumberField = BaseField & {
-  type: 'number'
-  min?: number                    // Minimum value
-  max?: number                    // Maximum value
-  hasMany?: boolean               // Allow multiple values (array of numbers)
-  minRows?: number                // Min items when hasMany: true
-  maxRows?: number                // Max items when hasMany: true
-  admin?: BaseField['admin'] & {
-    placeholder?: string          // Placeholder text
-    autoComplete?: string         // HTML autocomplete attribute
-    step?: number                 // Increment step (e.g., 0.01 for currency)
-  }
-}
+import type { NumberField } from 'payload'
 ```
 
 **Use when:**
@@ -239,17 +160,9 @@ type NumberField = BaseField & {
 
 Email address field with built-in validation.
 
-**Full schema:**
+**Type authority:**
 ```typescript
-type EmailField = BaseField & {
-  type: 'email'
-  minLength?: number              // Minimum character count
-  maxLength?: number              // Maximum character count
-  admin?: BaseField['admin'] & {
-    placeholder?: string          // Placeholder text
-    autoComplete?: string         // HTML autocomplete attribute
-  }
-}
+import type { EmailField } from 'payload'
 ```
 
 **Use when:**
@@ -274,20 +187,9 @@ type EmailField = BaseField & {
 
 Date/datetime picker.
 
-**Full schema:**
+**Type authority:**
 ```typescript
-type DateField = BaseField & {
-  type: 'date'
-  admin?: BaseField['admin'] & {
-    placeholder?: string          // Placeholder text
-    date?: {
-      displayFormat?: string      // Display format (e.g., 'MMM d, yyyy')
-      pickerAppearance?: 'dayOnly' | 'dayAndTime' | 'monthOnly' | 'timeOnly'
-      minDate?: Date              // Earliest selectable date
-      maxDate?: Date              // Latest selectable date
-    }
-  }
-}
+import type { DateField } from 'payload'
 ```
 
 **Use when:**
@@ -311,7 +213,7 @@ type DateField = BaseField & {
 
 **Migration notes:**
 - Payload stores dates as ISO strings
-- Unix timestamps should be converted: `new Date(timestamp).toISOString()`
+- Establish units: Unix seconds → `new Date(seconds * 1000).toISOString()`; milliseconds → `new Date(milliseconds).toISOString()`. Parse ISO with its timezone; date-only input needs the accepted timezone/calendar policy. Validate null/absent and finite values before coercing.
 
 ---
 
@@ -319,13 +221,9 @@ type DateField = BaseField & {
 
 Boolean true/false toggle.
 
-**Full schema:**
+**Type authority:**
 ```typescript
-type CheckboxField = BaseField & {
-  type: 'checkbox'
-  defaultValue?: boolean          // Default checked state
-  admin?: BaseField['admin']      // No additional checkbox-specific admin options
-}
+import type { CheckboxField } from 'payload'
 ```
 
 **Use when:**
@@ -353,21 +251,9 @@ type CheckboxField = BaseField & {
 
 Dropdown with predefined options.
 
-**Full schema:**
+**Type authority:**
 ```typescript
-type SelectField = BaseField & {
-  type: 'select'
-  options: Array<                 // Required. List of options
-    | string                      // Simple: just the value (label = value)
-    | { label: string; value: string }  // Full: separate label and value
-  >
-  hasMany?: boolean               // Allow multiple selections
-  defaultValue?: string | string[] // Default selected value(s)
-  admin?: BaseField['admin'] & {
-    isClearable?: boolean         // Allow clearing selection
-    isSortable?: boolean          // Allow drag-to-reorder when hasMany
-  }
-}
+import type { SelectField } from 'payload'
 ```
 
 **Use when:**
@@ -429,19 +315,9 @@ If you see the same field with different values across records, collect unique v
 
 Radio button group (single selection, always visible).
 
-**Full schema:**
+**Type authority:**
 ```typescript
-type RadioField = BaseField & {
-  type: 'radio'
-  options: Array<                 // Required. List of options
-    | string                      // Simple: just the value
-    | { label: string; value: string }  // Full: separate label and value
-  >
-  defaultValue?: string           // Default selected value
-  admin?: BaseField['admin'] & {
-    layout?: 'horizontal' | 'vertical'  // Button arrangement
-  }
-}
+import type { RadioField } from 'payload'
 ```
 
 **Use when:**
@@ -475,29 +351,9 @@ type RadioField = BaseField & {
 
 Reference to another document.
 
-**Full schema:**
+**Type authority:**
 ```typescript
-type RelationshipField = BaseField & {
-  type: 'relationship'
-  relationTo: string | string[]   // Required. Target collection slug(s)
-  hasMany?: boolean               // Allow multiple selections
-  minRows?: number                // Min items when hasMany: true
-  maxRows?: number                // Max items when hasMany: true
-  filterOptions?:                 // Limit selectable documents
-    | Where                       // Static where query
-    | ((args: FilterOptionsProps) => Where | boolean)  // Dynamic filter
-  admin?: BaseField['admin'] & {
-    isSortable?: boolean          // Allow drag-to-reorder when hasMany
-    allowCreate?: boolean         // Allow creating new docs from field (default: true)
-    allowEdit?: boolean           // Allow editing related doc inline
-  }
-}
-
-// When relationTo is an array (polymorphic), stored value shape is:
-// { relationTo: 'collectionSlug', value: 'documentId' }
-
-// When relationTo is a string, stored value is just the ID:
-// 'documentId'
+import type { RelationshipField } from 'payload'
 ```
 
 **Use when:**
@@ -555,23 +411,9 @@ type RelationshipField = BaseField & {
 
 File/media upload field. References a document in an upload-enabled collection.
 
-**Full schema:**
+**Type authority:**
 ```typescript
-type UploadField = BaseField & {
-  type: 'upload'
-  relationTo: string              // Required. Upload collection slug (e.g., 'media')
-  hasMany?: boolean               // Allow multiple files
-  minRows?: number                // Min items when hasMany: true
-  maxRows?: number                // Max items when hasMany: true
-  filterOptions?:                 // Limit selectable files
-    | Where
-    | ((args: FilterOptionsProps) => Where | boolean)
-  admin?: BaseField['admin'] & {
-    isSortable?: boolean          // Allow drag-to-reorder when hasMany
-  }
-}
-
-// Stored value is the upload document ID (or array of IDs when hasMany)
+import type { UploadField } from 'payload'
 ```
 
 **Use when:**
@@ -615,29 +457,9 @@ type UploadField = BaseField & {
 
 Repeatable group of fields.
 
-**Full schema:**
+**Type authority:**
 ```typescript
-type ArrayField = BaseField & {
-  type: 'array'
-  fields: Field[]                 // Required. Sub-fields for each row
-  minRows?: number                // Minimum number of rows
-  maxRows?: number                // Maximum number of rows
-  labels?: {                      // Custom row labels
-    singular?: string
-    plural?: string
-  }
-  admin?: BaseField['admin'] & {
-    initCollapsed?: boolean       // Start rows collapsed
-    isSortable?: boolean          // Allow drag-to-reorder (default: true)
-    components?: {
-      RowLabel?: Component        // Custom row label component
-    }
-  }
-  // Each row automatically gets an 'id' field
-}
-
-// Stored as array of objects:
-// [{ id: 'abc', field1: 'value', field2: 'value' }, ...]
+import type { ArrayField } from 'payload'
 ```
 
 **Use when:**
@@ -698,18 +520,9 @@ type ArrayField = BaseField & {
 
 Nested object (non-repeating).
 
-**Full schema:**
+**Type authority:**
 ```typescript
-type GroupField = BaseField & {
-  type: 'group'
-  fields: Field[]                 // Required. Sub-fields
-  admin?: BaseField['admin'] & {
-    hideGutter?: boolean          // Remove left border/gutter
-  }
-}
-
-// Stored as nested object:
-// { field1: 'value', field2: 'value' }
+import type { GroupField } from 'payload'
 ```
 
 **Use when:**
@@ -768,40 +581,9 @@ type GroupField = BaseField & {
 
 Flexible content / page builder blocks.
 
-**Full schema:**
+**Type authority:**
 ```typescript
-type BlocksField = BaseField & {
-  type: 'blocks'
-  blocks: Block[]                 // Required. Available block types
-  minRows?: number                // Minimum number of blocks
-  maxRows?: number                // Maximum number of blocks
-  admin?: BaseField['admin'] & {
-    initCollapsed?: boolean       // Start blocks collapsed
-    isSortable?: boolean          // Allow drag-to-reorder (default: true)
-  }
-}
-
-type Block = {
-  slug: string                    // Required. Unique block identifier
-  labels?: {                      // Custom labels
-    singular?: string
-    plural?: string
-  }
-  fields: Field[]                 // Required. Fields in this block
-  imageURL?: string               // Preview image URL
-  imageAltText?: string           // Alt text for preview
-  admin?: {
-    components?: {
-      Label?: Component           // Custom block label
-    }
-  }
-}
-
-// Stored as array with blockType identifier:
-// [
-//   { id: 'abc', blockType: 'hero', title: 'Welcome' },
-//   { id: 'def', blockType: 'textBlock', content: {...} }
-// ]
+import type { BlocksField } from 'payload'
 ```
 
 **Use when:**
@@ -865,7 +647,8 @@ type Block = {
 
 **Migration notes:**
 - Map source block `type` field to Payload `blockType`
-- Each block type needs its own field definitions
+- Each block type needs its own field definitions; preserve array order, subtype data and stable nested identity when relevant.
+- In 3.79+, use `images.icon` / `images.thumbnail` (URL or light/dark image settings) for block picker images. `imageURL` / `imageAltText` are deprecated; preserve them only for an installed older branch that needs them.
 
 ---
 
@@ -873,17 +656,9 @@ type Block = {
 
 Arbitrary JSON data.
 
-**Full schema:**
+**Type authority:**
 ```typescript
-type JSONField = BaseField & {
-  type: 'json'
-  jsonSchema?: JSONSchema         // Optional JSON Schema for validation
-  admin?: BaseField['admin'] & {
-    editorOptions?: object        // Monaco editor options
-  }
-}
-
-// Stored as-is (any valid JSON)
+import type { JSONField } from 'payload'
 ```
 
 **Use when:**
@@ -908,17 +683,21 @@ type JSONField = BaseField & {
   name: 'settings',
   type: 'json',
   jsonSchema: {
-    type: 'object',
-    properties: {
-      theme: { type: 'string' },
-      notifications: { type: 'boolean' },
+    uri: 'https://example.com/settings.schema.json',
+    fileMatch: ['*'],
+    schema: {
+      type: 'object',
+      properties: {
+        theme: { type: 'string' },
+        notifications: { type: 'boolean' },
+      },
     },
   },
 }
 ```
 
 **Migration notes:**
-- Use as fallback when data structure is unknown or highly variable
+- Use only an accepted JSON/raw fallback when data structure is unknown; retaining raw data does not prove rich-text rendering or a completed semantic conversion.
 - Consider converting to proper fields later for better querying
 
 ---
@@ -927,16 +706,9 @@ type JSONField = BaseField & {
 
 Geographic coordinates (longitude, latitude).
 
-**Full schema:**
+**Type authority:**
 ```typescript
-type PointField = BaseField & {
-  type: 'point'
-  admin?: BaseField['admin']      // No additional point-specific admin options
-}
-
-// Stored as GeoJSON Point:
-// [longitude, latitude]  // Note: longitude first!
-// e.g., [-74.0060, 40.7128] for New York City
+import type { PointField } from 'payload'
 ```
 
 **Use when:**
@@ -958,7 +730,7 @@ type PointField = BaseField & {
 ```
 
 **Migration notes:**
-- Payload uses GeoJSON format: `[longitude, latitude]`
+- Payload stores a coordinate pair `[longitude, latitude]`
 - Many sources use `[latitude, longitude]` - swap if needed!
 - Convert from `{ lat, lng }` objects to `[lng, lat]` array
 
@@ -968,16 +740,9 @@ type PointField = BaseField & {
 
 Horizontal layout for placing fields side-by-side.
 
-**Full schema:**
+**Type authority:**
 ```typescript
-type RowField = {
-  type: 'row'
-  fields: Field[]                 // Required. Fields to display in row
-  admin?: {
-    condition?: Function          // Conditionally show/hide
-  }
-}
-// No name required - purely layout
+import type { RowField } from 'payload'
 ```
 
 **Payload config example:**
@@ -997,18 +762,9 @@ type RowField = {
 
 Collapsible section for grouping fields.
 
-**Full schema:**
+**Type authority:**
 ```typescript
-type CollapsibleField = {
-  type: 'collapsible'
-  label: string | Function        // Required. Section header
-  fields: Field[]                 // Required. Fields inside
-  admin?: {
-    initCollapsed?: boolean       // Start collapsed (default: false)
-    condition?: Function
-  }
-}
-// No name required - purely layout
+import type { CollapsibleField } from 'payload'
 ```
 
 **Payload config example:**
@@ -1030,23 +786,9 @@ type CollapsibleField = {
 
 Tabbed interface for organizing fields.
 
-**Full schema:**
+**Type authority:**
 ```typescript
-type TabsField = {
-  type: 'tabs'
-  tabs: Tab[]                     // Required. Array of tabs
-  admin?: {
-    condition?: Function
-  }
-}
-
-type Tab = {
-  label: string                   // Required. Tab label
-  name?: string                   // If set, fields are nested under this key
-  fields: Field[]                 // Required. Fields in this tab
-  description?: string            // Help text for tab
-}
-// No name on parent - tabs are layout only (unless tab has name)
+import type { TabsField } from 'payload'
 ```
 
 **Payload config example:**
@@ -1079,20 +821,9 @@ type Tab = {
 
 Render custom React component without storing data.
 
-**Full schema:**
+**Type authority:**
 ```typescript
-type UIField = {
-  type: 'ui'
-  name: string                    // Required (for key, not storage)
-  admin: {
-    components: {
-      Field: Component            // Required. React component to render
-      Cell?: Component            // List view component
-    }
-    condition?: Function
-  }
-}
-// Does NOT store data - purely visual
+import type { UIField } from 'payload'
 ```
 
 ---
@@ -1129,7 +860,6 @@ const media: CollectionConfig = {
   },
   upload: {
     staticDir: 'media',           // Directory for files (relative to project)
-    staticURL: '/media',          // URL path prefix
     mimeTypes: ['image/*', 'application/pdf'],  // Allowed types
     filesRequiredOnCreate: true,  // Require file on create (default: true)
 
@@ -1143,8 +873,7 @@ const media: CollectionConfig = {
     focalPoint: true,             // Enable focal point selection
     crop: true,                   // Enable cropping
 
-    // Storage adapter (optional - defaults to local):
-    // adapter: s3Adapter({ ... })
+    // v3 cloud storage is a root plugin, e.g. s3Storage from @payloadcms/storage-s3.
   },
   fields: [
     { name: 'alt', type: 'text', required: true },
@@ -1172,7 +901,13 @@ const users: CollectionConfig = {
   auth: true,
   fields: [
     { name: 'name', type: 'text' },
-    { name: 'role', type: 'select', options: ['admin', 'editor', 'user'] },
+    {
+      name: 'role', type: 'select', options: ['admin', 'editor', 'user'], defaultValue: 'user',
+      access: {
+        create: ({ req: { user } }) => user?.role === 'admin',
+        update: ({ req: { user } }) => user?.role === 'admin',
+      },
+    },
   ],
 }
 ```
@@ -1183,48 +918,54 @@ const users: CollectionConfig = {
 
 ### WordPress to Payload
 
-| WordPress | Payload |
-|-----------|---------|
-| `post_title` | `text` (title) |
-| `post_content` | `richText` (HTML) |
-| `post_excerpt` | `textarea` |
-| `post_status` | `select` (draft/published) |
-| `post_author` | `relationship` to users |
-| `featured_media` | `upload` to media |
-| `post_date` | `date` |
-| ACF Repeater | `array` |
-| ACF Group | `group` |
-| ACF Flexible Content | `blocks` |
+First distinguish WordPress REST v2 from a database/WXR export. Do not mix their keys. REST has `id`, `title.rendered`, `content.rendered`, `excerpt.rendered`, `author`, `featured_media`, `status`, `date` and `date_gmt`; DB exports instead use keys such as `ID`, `post_title`, `post_content`, `post_author`, `post_status`, `post_date_gmt` and attachment metadata. Preserve the source installation/content-type namespace.
+
+| Source meaning | Payload transform |
+|---|---|
+| Title/excerpt | Extract documented string; decode/strip markup only according to the accepted text policy |
+| Content HTML | Convert using the installed editor; remap images/internal links, never store the raw string as richText |
+| Author/featured media/taxonomies | Resolve durable source IDs to actual relationship/upload IDs |
+| Status | Preserve publish/future/draft/pending/private and custom statuses; map `_status` only under an accepted publication/privacy/scheduling rule |
+| Date | Use documented GMT versus local timezone; account for null/zero dates and source timezone |
+| ACF repeater/group/flexible content | Map supplied ACF schema/version to array/group/blocks, retaining nested order and subtype |
+
+A REST `future` or `private` record must not become publicly published merely because it is not draft. Excerpt HTML needs the accepted plain-text transform if targeted to textarea.
 
 ### Contentful to Payload
 
-| Contentful | Payload |
-|------------|---------|
-| Short Text | `text` |
-| Long Text | `textarea` |
-| Rich Text | `richText` (needs conversion) |
-| Number | `number` |
-| Date | `date` |
-| Boolean | `checkbox` |
-| Media | `upload` |
-| Reference | `relationship` |
-| Array of References | `relationship` (hasMany) |
+Inspect the supplied Delivery/Management/export contract: responses may use locale-specific values or `{ locale: value }` objects. Contentful links use `sys.id` and link type; resolve entries/assets across the namespace (space/environment/type), not display labels. Enumerate pagination and included/resolved resources. Preserve missing locale entries separately from explicit values.
+
+| Contentful value | Payload transform |
+|---|---|
+| Short/long text, number, boolean, date | text/textarea/number/checkbox/date with null and timezone policy |
+| Rich Text document AST | Editor-specific conversion of node/mark tree, embedded assets/entries and internal links |
+| Asset | Import actual file bytes and metadata, then use returned upload ID |
+| Link/array of Links | Resolve target collection/cardinality and stable IDs in a second pass when cyclic |
+| Localized fields | Explicit locale writes and readback with fallback disabled |
 
 ### Strapi to Payload
 
-| Strapi | Payload |
-|--------|---------|
-| string | `text` |
-| text | `textarea` |
-| richtext/blocks | `richText` |
-| integer/float/decimal | `number` |
-| boolean | `checkbox` |
-| date/datetime | `date` |
-| enumeration | `select` |
-| media | `upload` |
-| relation | `relationship` |
-| component | `group` or `array` |
-| dynamiczone | `blocks` |
+Inspect the actual Strapi version. Strapi 5 REST identifies a document through `documentId`; numeric row IDs alone do not establish identity across variants. Include source installation/content type and the accepted locale/status identity policy. Do not apply a Strapi 4 response wrapper to a flattened v5 response.
+
+| Strapi type | Payload transform |
+|---|---|
+| string/text | text/textarea |
+| richtext | Markdown conversion using the installed editor |
+| blocks | Strapi Blocks AST conversion, preserving formatting and links |
+| integer/float/decimal | number only with accepted precision/coercion |
+| boolean/date/datetime | checkbox/date with explicit date-only/timezone rules |
+| enumeration | accepted fixed select |
+| media/relation | upload/relationship through the durable ID map |
+| component/repeatable component | group/array |
+| dynamiczone | blocks with explicit component-to-blockType mapping and source order |
+
+### Sanity, Webflow and generic exports
+
+Sanity documents use `_id` within the project/dataset namespace. Resolve `_ref`, including asset references; Portable Text is an ordered block/span/markDefs structure, not HTML or Lexical. Map custom blocks/annotations explicitly and retain/report unknown nodes. Use the installed schema's preview or rendering contract to validate output.
+
+For Webflow or another source without a supplied API/export contract, inspect the actual versioned export and official source documentation first; the trigger is not an assertion of a bundled converter. CSV/JSON need declared column/value conventions, escaping, nulls, encoding, timestamps, cardinality and identity. Do not infer a universal CMS export from a filename.
+
+Official sources: [WordPress posts](https://developer.wordpress.org/rest-api/reference/posts/), [Contentful links](https://www.contentful.com/developers/docs/concepts/links/), [Strapi models](https://docs.strapi.io/cms/backend-customization/models), [Sanity Portable Text](https://www.sanity.io/docs/developer-guides/beginners-guide-to-portable-text).
 
 ---
 
@@ -1237,7 +978,7 @@ When analyzing source data to generate Payload config:
 3. **Infer field types** - Use the patterns above to match data to Payload types
 4. **Preserve structure** - Nested objects become `group`, arrays of objects become `array`
 5. **Flag unknowns** - If data doesn't match patterns, suggest `json` as fallback and add a warning
-6. **Generate valid TypeScript** - Output should be copy-paste ready
+6. **Generate valid TypeScript** - Use installed exported types and host imports; incomplete integration fragments remain explicitly labeled.
 
 **Output format:**
 ```typescript
@@ -1250,3 +991,17 @@ export const collectionName: CollectionConfig = {
   ],
 }
 ```
+
+## Execution prerequisites for these mappings
+
+Rich text conversion must use the configured editor and supported nodes, with actual media/relationship IDs remapped before final persistence. HTML/Markdown converters do not automatically download and upload remote images. Unrecognized nodes and failed media remain partial. Validate render output in the editor or consuming page when that behavior is claimed.
+
+Upload examples require a configured storage runtime; v3 resizing needs `sharp` installed and passed in root config. Do not restore removed `staticURL` or a legacy inline `s3Adapter` on v3. An existing v2 target retains its matching storage plugin/route contract; follow its tagged docs, not v3 replacements. Returned upload IDs are authoritative, and URLs alone do not prove bytes were migrated.
+
+Auth example role assignment is protected on both create and update. Establish the accepted user creation and first-admin bootstrap policy separately; source authors are not automatically login users, and importing identities does not authorize importing passwords or granting admin.
+
+Point data is a pair `[longitude, latitude]`, not a GeoJSON object. Validate coordinate order/ranges and adapter-specific query support. Hidden/layout/UI/virtual fields have different storage semantics; preserve existing schema and do not treat layout as extra nested data unless it has a name. Relationship filtering can be a Where or full callback, sync/async; it is not tenant authorization.
+
+Use the root recovery/reconciliation method for full identity sets, locale-without-fallback reads, cyclic links and interrupted imports. A valid schema or preserved raw source is not a completed import.
+
+Target sources: [field types at 3.88.0](https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/fields/config/types.ts), [HTML conversion](https://payloadcms.com/docs/rich-text/converting-html), [Markdown conversion](https://payloadcms.com/docs/rich-text/converting-markdown), [localization](https://payloadcms.com/docs/configuration/localization).

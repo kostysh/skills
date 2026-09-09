@@ -1,0 +1,137 @@
+{
+  "boundary": "Exact extracted pre-remediation/current fastAccess bodies; export/type annotation adapted. Stubbed lookups test policy logic, not Payload API runtime.",
+  "rows": [
+    {
+      "variant": "before",
+      "case": 0,
+      "actual": false,
+      "expected": false,
+      "pass": true
+    },
+    {
+      "variant": "before",
+      "case": 1,
+      "actual": false,
+      "expected": false,
+      "pass": true
+    },
+    {
+      "variant": "before",
+      "case": 2,
+      "actual": false,
+      "expected": false,
+      "pass": true
+    },
+    {
+      "variant": "before",
+      "case": 3,
+      "actual": false,
+      "expected": false,
+      "pass": true
+    },
+    {
+      "variant": "before",
+      "case": 4,
+      "actual": true,
+      "expected": false,
+      "pass": false
+    },
+    {
+      "variant": "before",
+      "case": 5,
+      "actual": true,
+      "expected": false,
+      "pass": false
+    },
+    {
+      "variant": "before",
+      "case": 6,
+      "actual": true,
+      "expected": false,
+      "pass": false
+    },
+    {
+      "variant": "before",
+      "case": 7,
+      "actual": true,
+      "expected": true,
+      "pass": true
+    },
+    {
+      "variant": "before",
+      "case": "guest",
+      "pass": true
+    },
+    {
+      "variant": "before",
+      "case": "lookup-error-not-allow",
+      "pass": false
+    },
+    {
+      "variant": "candidate",
+      "case": 0,
+      "actual": false,
+      "expected": false,
+      "pass": true
+    },
+    {
+      "variant": "candidate",
+      "case": 1,
+      "actual": false,
+      "expected": false,
+      "pass": true
+    },
+    {
+      "variant": "candidate",
+      "case": 2,
+      "actual": false,
+      "expected": false,
+      "pass": true
+    },
+    {
+      "variant": "candidate",
+      "case": 3,
+      "actual": false,
+      "expected": false,
+      "pass": true
+    },
+    {
+      "variant": "candidate",
+      "case": 4,
+      "actual": false,
+      "expected": false,
+      "pass": true
+    },
+    {
+      "variant": "candidate",
+      "case": 5,
+      "actual": false,
+      "expected": false,
+      "pass": true
+    },
+    {
+      "variant": "candidate",
+      "case": 6,
+      "actual": false,
+      "expected": false,
+      "pass": true
+    },
+    {
+      "variant": "candidate",
+      "case": 7,
+      "actual": true,
+      "expected": true,
+      "pass": true
+    },
+    {
+      "variant": "candidate",
+      "case": "guest",
+      "pass": true
+    },
+    {
+      "variant": "candidate",
+      "case": "lookup-error-not-allow",
+      "pass": true
+    }
+  ]
+}

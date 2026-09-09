@@ -1,0 +1,234 @@
+{
+  "reviewer": "candidate_ned_independent_reviewer",
+  "claim": "D1/D3/D4 bounded runtime assessment, not final skill PASS",
+  "sourceTree": "8c5a77778494029ea89b36bdeb09a25054d3c339de392dd08dec3d343948327e",
+  "buildTree": "72ed3c7b65abd1efdae50fcd0d94618d520f912d4934562a7d266d5b5d5a55fd",
+  "hashMismatches": {
+    "source": [],
+    "build": []
+  },
+  "preservedInputs": {
+    "app/docs/intro.md": true,
+    "app/docs/reference.mdx": true,
+    "app/tools/greet.mjs": true,
+    "app/i18n/it/docusaurus-plugin-content-docs/current/intro.md": true,
+    "app/i18n/it/docusaurus-plugin-content-docs/current/reference.mdx": true,
+    "app/i18n/it/docusaurus-plugin-content-docs/version-1.0/intro.md": true,
+    "app/i18n/it/docusaurus-plugin-content-docs/version-1.0/reference.mdx": true,
+    "app/versioned_docs/version-1.0/intro.md": true,
+    "app/versioned_docs/version-1.0/reference.mdx": true,
+    "app/tools/fixtures/help.json": true,
+    "app/tools/fixtures/success.json": true,
+    "app/tools/fixtures/error.json": true
+  },
+  "qualityProbes": [
+    {
+      "root": "docs",
+      "check": "lint",
+      "exit": 1
+    },
+    {
+      "root": "docs",
+      "check": "format",
+      "exit": 1
+    },
+    {
+      "root": "product",
+      "check": "lint",
+      "exit": 1
+    },
+    {
+      "root": "product",
+      "check": "format",
+      "exit": 1
+    },
+    {
+      "root": "api",
+      "check": "lint",
+      "exit": 1
+    },
+    {
+      "root": "api",
+      "check": "format",
+      "exit": 1
+    },
+    {
+      "root": "versioned_docs/version-1.0",
+      "check": "lint",
+      "exit": 1
+    },
+    {
+      "root": "versioned_docs/version-1.0",
+      "check": "format",
+      "exit": 1
+    },
+    {
+      "root": "i18n/it/docusaurus-plugin-content-docs/current",
+      "check": "lint",
+      "exit": 1
+    },
+    {
+      "root": "i18n/it/docusaurus-plugin-content-docs/current",
+      "check": "format",
+      "exit": 1
+    },
+    {
+      "root": "i18n/fr/docusaurus-plugin-content-docs/current",
+      "check": "lint",
+      "exit": 1
+    },
+    {
+      "root": "i18n/fr/docusaurus-plugin-content-docs/current",
+      "check": "format",
+      "exit": 1
+    }
+  ],
+  "browserChecks": [
+    {
+      "check": "direct+reload",
+      "route": "/manual/docs/intro",
+      "title": "Introduction"
+    },
+    {
+      "check": "search+navigation+reload",
+      "route": "/manual/docs/intro",
+      "query": "Introduction",
+      "href": "/manual/docs/intro"
+    },
+    {
+      "check": "direct+reload",
+      "route": "/manual/docs/next/intro",
+      "title": "Introduction"
+    },
+    {
+      "check": "search+navigation+reload",
+      "route": "/manual/docs/next/intro",
+      "query": "Introduction",
+      "href": "/manual/docs/next/intro"
+    },
+    {
+      "check": "direct+reload",
+      "route": "/manual/it/docs/intro",
+      "title": "Introduzione"
+    },
+    {
+      "check": "search+navigation+reload",
+      "route": "/manual/it/docs/intro",
+      "query": "Introduzione",
+      "href": "/manual/it/docs/intro"
+    },
+    {
+      "check": "direct+reload",
+      "route": "/manual/it/docs/next/intro",
+      "title": "Introduzione"
+    },
+    {
+      "check": "search+navigation+reload",
+      "route": "/manual/it/docs/next/intro",
+      "query": "Introduzione",
+      "href": "/manual/it/docs/next/intro"
+    },
+    {
+      "check": "direct+reload",
+      "route": "/manual/fr/docs/intro",
+      "title": "Introduction"
+    },
+    {
+      "check": "search+navigation+reload",
+      "route": "/manual/fr/docs/intro",
+      "query": "Introduction",
+      "href": "/manual/fr/docs/intro"
+    },
+    {
+      "check": "direct+reload",
+      "route": "/manual/fr/docs/next/intro",
+      "title": "Introduction"
+    },
+    {
+      "check": "search+navigation+reload",
+      "route": "/manual/fr/docs/next/intro",
+      "query": "Introduction",
+      "href": "/manual/fr/docs/next/intro"
+    },
+    {
+      "check": "french-installation",
+      "url": "http://127.0.0.1:4317/manual/fr/docs/next/installation"
+    },
+    {
+      "check": "french-installation-search"
+    },
+    {
+      "check": "locale+version-menus",
+      "menuInfo": [
+        "NextNext1.0",
+        "FrançaisEnglishItalianoFrançais"
+      ],
+      "url": "http://127.0.0.1:4317/manual/it/docs/intro"
+    },
+    {
+      "check": "MDX tabs",
+      "url": "http://127.0.0.1:4317/manual/docs/next/reference"
+    },
+    {
+      "check": "Mermaid SVG + dark mode",
+      "count": 1
+    },
+    {
+      "check": "mobile navigation"
+    }
+  ],
+  "badResponses": [
+    {
+      "url": "http://127.0.0.1:4317/manual/search-index-default.json",
+      "status": 404
+    },
+    {
+      "url": "http://127.0.0.1:4317/manual/search-index-default.json",
+      "status": 404
+    },
+    {
+      "url": "http://127.0.0.1:4317/manual/it/search-index-default.json",
+      "status": 404
+    },
+    {
+      "url": "http://127.0.0.1:4317/manual/it/search-index-default.json",
+      "status": 404
+    },
+    {
+      "url": "http://127.0.0.1:4317/manual/fr/search-index-default.json",
+      "status": 404
+    },
+    {
+      "url": "http://127.0.0.1:4317/manual/fr/search-index-default.json",
+      "status": 404
+    },
+    {
+      "url": "http://127.0.0.1:4317/manual/fr/search-index-default.json",
+      "status": 404
+    }
+  ],
+  "badResponseDisposition": "Nonblocking for requested docs-only search: indexPages false; installed plugin fetchIndex explicitly returns EMPTY_INDEX when requested optional index is absent. Existing docs index and real result/click/reload verified for EN IT FR current and1.0. Not clean network claim.",
+  "evidenceHashes": {
+    "commands.jsonl": "0e1368f03445642dde719b5b61ae831bed81663bca780ac59c29f9b5a3891775",
+    "browser-check.mjs": "46f981ace2cef4a5378b8ed4d6d1341bfde1a4738b819d9bdd349a6d37889711",
+    "mobile-check.mjs": "1c8c8bd8962c846137523425845d4420c2e0a68a8d11f4644c8874076b52e4dd",
+    "verify-final.mjs": "65e539be60c7e4c85be26399f947c3f62c04bc50e726e305237526e97f75d85c",
+    "quality-probes.mjs": "ed0aa3d25b14f1bff9e0906c1b28e3ec50b5fb407049dce5c46879c10cd0d2c9",
+    "browser-results.json": "772befd293a4ab656284df40f7cc0fdc86a53be9220385b61dbbd48bd7b6db45",
+    "quality-probes.json": "82ba0e1c5f9cc27b0938c7be59e52fe58a714d76fc5b341dc1012fe9fc8a5563",
+    "final-checks.json": "cfff49a00db14b8bd0e4ce3ba31ec0e1bf33aa2ab9e7d17dfbd13cad46f2dff4",
+    "final-hashes.json": "9d96407d398433e4bba0a303c6d9b6b777c8acb904f09d918a1af3a5220d2d8c",
+    "result.md": "9c9efaa10eb68924e9bffa9fdecdf95454a3c149d12ddab7897658652fa6dec7",
+    "app/REQUIREMENTS.md": "ab47a99177da3caab79775010091f2802603906e4a14cd40209334bacbd27547",
+    "app/docusaurus.config.ts": "727a1216a8af2ff449bfab7f9483479eedddc4a034b46edf28bd0945d2bcde69",
+    "app/.markdownlint-cli2.jsonc": "fa0d900ff20ceb3ba59deda4b21aea829d95fb7b95370bf1a2ce2eebfbbdc9e7",
+    "app/node_modules/@cmfcmf/docusaurus-search-local/src/client/theme/SearchBar/index.tsx": "876cdff02fba54c32cebd08a5fd2fc03e2a9a228d8a5799ddae5628b3d0b614a"
+  },
+  "limits": [
+    "Assessed actual preserved executor outputs and source; reviewer did not rerun runtime.",
+    "Initial D runtime used pre-frontMatter and pre-route-template source; coordinator paired frontMatter and distinct/duplicate route deltas separately required.",
+    "D2 consumer, natural selection, legacy/partial and repository mandatory checks separate.",
+    "Shared filesystem and supplied public traces cannot establish hard isolation or unseen reads.",
+    "Baseline high vs candidate medium is not controlled skill-only comparison."
+  ]
+}

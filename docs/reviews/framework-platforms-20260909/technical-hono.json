@@ -1,0 +1,2715 @@
+{
+  "skill": "hono-engineer",
+  "auditKind": "independent baseline, full active technical inventory",
+  "snapshot": {
+    "baseCommit": "d89d66f2c99bf8b9e84e5b4def54fa60192856a5",
+    "packageVersion": "0.1.7",
+    "rootSha256": "80e21320047b0d4502ea75aed08f99c574411d896521a45c013237fbb1bd8c49",
+    "baselineReadback": "hono-supabase-baseline-readback.json"
+  },
+  "checkedAt": "2026-09-09",
+  "officialSourceCatalog": "official-hono-supabase-sources.json",
+  "findings": [
+    "H01",
+    "H02"
+  ],
+  "boundaries": {
+    "sourceCoverage": "All active references, complete YAML, fragment, generated root, UI and maintenance declaration inventoried; each nonblank reference line mapped.",
+    "notClaimed": [
+      "Fresh GPT-6 Astra behavioral performance",
+      "Runtime Hono or Supabase API behavior from this audit",
+      "Cloud deploy, Realtime delivery, Auth server, Storage, Edge runtime, operating-system or production correctness",
+      "Historical logs as current evidence"
+    ],
+    "structuralChecks": "Baseline hash readback only by reviewer; Hono package test and repository mandatory gates owned by parent",
+    "runtimeChecks": "Supabase CLI2.117.0 read-only version/help probes only; no local/remote DB mutation performed by reviewer",
+    "sourceConflicts": [
+      "CLI live declarative guide vs stable2.117 pinned help: exact installed CLI branch wins.",
+      "Supabase automatic retry live page vs stable2.116 implementation: pin observed source policy, do not copy unsupported POST retries.",
+      "Hono live Node guide legacy floor vs adapter2.1.1 engine>=20: exact adapter package constrains runtime."
+    ]
+  },
+  "inventory": [
+    {
+      "file": "skills/hono-engineer/AGENTS.md",
+      "sha256": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf",
+      "bytes": 754,
+      "role": "maintenance guidance",
+      "review": "Read; structural tests do not invoke Hono/runtime/Supabase services"
+    },
+    {
+      "file": "skills/hono-engineer/SKILL.md",
+      "sha256": "80e21320047b0d4502ea75aed08f99c574411d896521a45c013237fbb1bd8c49",
+      "bytes": 22067,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/hono-engineer/agents/openai.yaml",
+      "sha256": "a0134d8b02c6cb344f83bd01f963979502b051cbd4cf714b1d4251b70e9142bc",
+      "bytes": 313,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/hono-engineer/docs/README.md",
+      "sha256": "639a9a52af9988700a6831aff63af2aa8d14fef44672baf1d04cd792bc30016d",
+      "bytes": 2474,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/hono-engineer/docs/compile-report.md",
+      "sha256": "54cfa349dd027d143c6e309fb4c6d5b475df21d5cc4ee1533c13b7c305f404b4",
+      "bytes": 1038,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/hono-engineer/docs/logs/forward-tests-20260710.md",
+      "sha256": "5c60299f2f6360f92d9880670a79ff78dc551cb7e9a51a472890b40364ba247f",
+      "bytes": 20524,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/hono-engineer/docs/logs/forward-tests-20260713.md",
+      "sha256": "591820072c5785140a57b03ab14653fc3122c08a6183e15242aa9869aad697fc",
+      "bytes": 12463,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/hono-engineer/docs/logs/implementation-log-20260611-1.md",
+      "sha256": "76c2c76fb54eac52992d7357f4401e40acbb1bf77d34ba338b887b2fa71e2e4c",
+      "bytes": 2687,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/hono-engineer/docs/logs/implementation-log-20260612-1.md",
+      "sha256": "717bfa6e254a6e5f1b898935dd7a30be167c9cc8e34b4b4dcffac786e264f56b",
+      "bytes": 2649,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/hono-engineer/docs/logs/implementation-log-20260708-1.md",
+      "sha256": "63fcc2a5b5ef50d7af1f17457e8963b98422740acb638ca9f423ca7dfc8aa707",
+      "bytes": 1501,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/hono-engineer/docs/logs/implementation-log-20260710-1.md",
+      "sha256": "d79ceb70914721bb7e2865f6fd97f1b8bb3bcdb8eff02e5f396fc5512c8ce378",
+      "bytes": 9727,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/hono-engineer/docs/logs/implementation-log-20260713-1.md",
+      "sha256": "0be9aab11d8e40f2aca20fd16f534d20e65116c3e34b46e4962738daec48a553",
+      "bytes": 11219,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/hono-engineer/docs/logs/implementation-log-20260715-1.md",
+      "sha256": "ae21d650bd60acc2e735d1c875edc65d27a9e40378c73ddce17f901e4a803af8",
+      "bytes": 1863,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/hono-engineer/docs/logs/implementation-log-20260727-1.md",
+      "sha256": "a2df88d640a639b2016a4d974695fa94ec9b36bda88ea86f36132a867ef2aea7",
+      "bytes": 3652,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/hono-engineer/docs/logs/raw-forward-authority-rerun-20260713.md",
+      "sha256": "306ba6dc19419621405223944f11290447a48a766d1e27a807e2d99141a9cc8b",
+      "bytes": 25162,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/hono-engineer/docs/logs/raw-forward-composition-rerun-20260713.md",
+      "sha256": "ca50b5714232811945a84b9c323108e5ae8ad83d3de29a886e7bbce95e726cc7",
+      "bytes": 17231,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/hono-engineer/docs/logs/raw-forward-final-20260713.md",
+      "sha256": "ca90400c1db5264b3a3125554648f1c48930e02b0f869f393fb9808c7e82cc97",
+      "bytes": 25661,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/hono-engineer/docs/logs/raw-forward-general-20260710.md",
+      "sha256": "260857022f2ddaf1a1c32dc07630508af37cebdcf34848ef02a83492a06c9694",
+      "bytes": 11023,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/hono-engineer/docs/logs/raw-forward-remediation-20260713.md",
+      "sha256": "5c1f55a4db7551ad176546a6532687e8a236d396d5061c07e113225dcc522079",
+      "bytes": 6583,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/hono-engineer/docs/logs/raw-forward-worker-20260710.md",
+      "sha256": "dcdd66218c838fa0e99c2c236cf0bc9e929762a0b3e3e3bca1a36f195115bf68",
+      "bytes": 8502,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/hono-engineer/fragments/overview.md",
+      "sha256": "2ec8108755739d1e65376290166803f2c3c053571db0c0748d64ddd3a65aed87",
+      "bytes": 7500,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/hono-engineer/package.json",
+      "sha256": "243aaf9a2e4d79d012d94f3c8e8cb577bf45695e707ce21a7d4f23b49435defd",
+      "bytes": 243,
+      "role": "structural-only test/package",
+      "review": "Read; structural tests do not invoke Hono/runtime/Supabase services"
+    },
+    {
+      "file": "skills/hono-engineer/references/architecture.md",
+      "sha256": "470cc0825e23de0dad50dc92c7fbd3d5a177cad3aa9e7d0b2a937963fce4c0ea",
+      "bytes": 1771,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/hono-engineer/references/auth.md",
+      "sha256": "ca841f2a2d0002fb12e8f3b44fae8a9e20631ef53fafd1c7f7f8aefde702840e",
+      "bytes": 6458,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/hono-engineer/references/caching.md",
+      "sha256": "d02f9fc9ee8691e122e3f9f8194b65fca5409257d9df6ae384c34d3e2cf59ddb",
+      "bytes": 1683,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/hono-engineer/references/contracts-types.md",
+      "sha256": "6fe56f540454d6a8917e1cd5aabd88672cdb489c5cfffd05cde490810612a03b",
+      "bytes": 2611,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/hono-engineer/references/errors-logs.md",
+      "sha256": "314944e33e1e011e64347f5505f063eca50142767fceee59b5f13ea7e61c49ff",
+      "bytes": 1920,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/hono-engineer/references/framework-currency.md",
+      "sha256": "b5a086b156cfac1f2fe533b9113aa413d5bb1ddf6c1572558ff2e31850097571",
+      "bytes": 2947,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/hono-engineer/references/high-risk-backend-contract.md",
+      "sha256": "f6d420ab9892541c0a0b84050c93754f3011d536dd755717d0f2944e68a09bc4",
+      "bytes": 3602,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/hono-engineer/references/observability.md",
+      "sha256": "604d64c12a258189b17b3e259276094ff0e65046a4a6a65ef86ed886cbd13dd7",
+      "bytes": 1571,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/hono-engineer/references/perf-security.md",
+      "sha256": "1afbc790af794e7e5602f204aed24854dc895e6ea8644625ec9dc1883423b47e",
+      "bytes": 2343,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/hono-engineer/references/pipelines.md",
+      "sha256": "152af85642de844722ba758b48ec0ff5456713d2dc151adc7880a7eb99ac0add",
+      "bytes": 1861,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/hono-engineer/references/rate-limiting.md",
+      "sha256": "f815aea19eca48ad8eef5266f685407123d4f5f76f7ccac5a7f2c7472d973379",
+      "bytes": 1309,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/hono-engineer/references/routers.md",
+      "sha256": "3f8d4992ec22ded988ee4aa3bc0fbba8b38fabfe6177fc53e42adf3b8d22ad2a",
+      "bytes": 563,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/hono-engineer/references/security.md",
+      "sha256": "1425d8c8370e4628c74d2ecccf6db4dbc90954ec8668a48793be79f1454e74a2",
+      "bytes": 652,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/hono-engineer/references/supabase.md",
+      "sha256": "1f01fb82fa7ae84eee05cf8c296cd728f4c8beedacefa17f868d376cb591380d",
+      "bytes": 669,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/hono-engineer/references/typing.md",
+      "sha256": "df16fa710a81168c348164644e55834282b388235216e93fa91585910c318537",
+      "bytes": 2305,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/hono-engineer/references/validation-openapi.md",
+      "sha256": "022cd75cc0db79a6b6e7508c0a5ca24d8d6c6e57a3532a0aa76aaa2fae8eb2ae",
+      "bytes": 5234,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/hono-engineer/references/workers-platform.md",
+      "sha256": "03d25c2243d4916a498be7d72b3f09bfd363a9591bb01172b81c530cec01c2a6",
+      "bytes": 3311,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/hono-engineer/references/wrangler.md",
+      "sha256": "2b8f8c44b25ab1bdd6bdf47c800505483854632c30bd152e1aaec2a9a69b6568",
+      "bytes": 1510,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/hono-engineer/skill.yaml",
+      "sha256": "b6d3b523641ee5bd863211c72dbf14856ff8dc53de2fa6190b7240c2e009e2c9",
+      "bytes": 19683,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/hono-engineer/test/docs-contract.test.mjs",
+      "sha256": "4b9b3943a31647a5b157c89a00df3c8a8e704091f3a7bd2416f850aa80b62281",
+      "bytes": 16108,
+      "role": "structural-only test/package",
+      "review": "Read; structural tests do not invoke Hono/runtime/Supabase services"
+    }
+  ],
+  "coverage": [
+    {
+      "aspect": "Architecture & Boundaries",
+      "location": {
+        "file": "skills/hono-engineer/references/architecture.md",
+        "lines": [
+          1,
+          1
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-api-routing",
+        "hono-helpers-factory",
+        "hono-guides-rpc"
+      ],
+      "result": "N/A",
+      "verification": "app.route, chained schema inference and factory helpers are supported. Layering and topology stay project-owned.",
+      "necessaryChange": "none",
+      "falsifier": "A chained route/client fixture loses a declared route or the agent invents a layer.",
+      "kinds": [
+        "heading"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Route composition",
+      "location": {
+        "file": "skills/hono-engineer/references/architecture.md",
+        "lines": [
+          3,
+          7
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-api-routing",
+        "hono-helpers-factory",
+        "hono-guides-rpc"
+      ],
+      "result": "verified",
+      "verification": "app.route, chained schema inference and factory helpers are supported. Layering and topology stay project-owned.",
+      "necessaryChange": "none",
+      "falsifier": "A chained route/client fixture loses a declared route or the agent invents a layer.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Architecture ownership",
+      "location": {
+        "file": "skills/hono-engineer/references/architecture.md",
+        "lines": [
+          9,
+          12
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-api-routing",
+        "hono-helpers-factory",
+        "hono-guides-rpc"
+      ],
+      "result": "verified",
+      "verification": "app.route, chained schema inference and factory helpers are supported. Layering and topology stay project-owned.",
+      "necessaryChange": "none",
+      "falsifier": "A chained route/client fixture loses a declared route or the agent invents a layer.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Conditional integration utilities",
+      "location": {
+        "file": "skills/hono-engineer/references/architecture.md",
+        "lines": [
+          14,
+          17
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-api-routing",
+        "hono-helpers-factory",
+        "hono-guides-rpc"
+      ],
+      "result": "verified",
+      "verification": "app.route, chained schema inference and factory helpers are supported. Layering and topology stay project-owned.",
+      "necessaryChange": "none",
+      "falsifier": "A chained route/client fixture loses a declared route or the agent invents a layer.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Growth path",
+      "location": {
+        "file": "skills/hono-engineer/references/architecture.md",
+        "lines": [
+          19,
+          20
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-api-routing",
+        "hono-helpers-factory",
+        "hono-guides-rpc"
+      ],
+      "result": "verified",
+      "verification": "app.route, chained schema inference and factory helpers are supported. Layering and topology stay project-owned.",
+      "necessaryChange": "none",
+      "falsifier": "A chained route/client fixture loses a declared route or the agent invents a layer.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Authentication & Authorization",
+      "location": {
+        "file": "skills/hono-engineer/references/auth.md",
+        "lines": [
+          1,
+          1
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-bearer-source",
+        "hono-middleware-builtin-jwt",
+        "hono-middleware-builtin-jwk",
+        "hono-middleware-builtin-csrf",
+        "hono-middleware-builtin-combine",
+        "hono-helpers-streaming"
+      ],
+      "result": "N/A",
+      "verification": "JWT explicit alg, JWK kid/asymmetric selection, csrf OR semantics, some/every/except and abort cleanup agree with current sources. Bearer configuration claim is incorrect.",
+      "necessaryChange": "H01",
+      "falsifier": "Exercise malformed Authorization, missing header, valid mismatch and middleware construction separately.",
+      "kinds": [
+        "heading"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "General principles",
+      "location": {
+        "file": "skills/hono-engineer/references/auth.md",
+        "lines": [
+          3,
+          6
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-bearer-source",
+        "hono-middleware-builtin-jwt",
+        "hono-middleware-builtin-jwk",
+        "hono-middleware-builtin-csrf",
+        "hono-middleware-builtin-combine",
+        "hono-helpers-streaming"
+      ],
+      "result": "verified",
+      "verification": "JWT explicit alg, JWK kid/asymmetric selection, csrf OR semantics, some/every/except and abort cleanup agree with current sources. Bearer configuration claim is incorrect.",
+      "necessaryChange": "H01",
+      "falsifier": "Exercise malformed Authorization, missing header, valid mismatch and middleware construction separately.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "API keys (machine-to-machine)",
+      "location": {
+        "file": "skills/hono-engineer/references/auth.md",
+        "lines": [
+          8,
+          12
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-bearer-source",
+        "hono-middleware-builtin-jwt",
+        "hono-middleware-builtin-jwk",
+        "hono-middleware-builtin-csrf",
+        "hono-middleware-builtin-combine",
+        "hono-helpers-streaming"
+      ],
+      "result": "correction-required",
+      "verification": "JWT explicit alg, JWK kid/asymmetric selection, csrf OR semantics, some/every/except and abort cleanup agree with current sources. Bearer configuration claim is incorrect.",
+      "necessaryChange": "H01",
+      "falsifier": "Exercise malformed Authorization, missing header, valid mismatch and middleware construction separately.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "JWT (user auth)",
+      "location": {
+        "file": "skills/hono-engineer/references/auth.md",
+        "lines": [
+          14,
+          39
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-bearer-source",
+        "hono-middleware-builtin-jwt",
+        "hono-middleware-builtin-jwk",
+        "hono-middleware-builtin-csrf",
+        "hono-middleware-builtin-combine",
+        "hono-helpers-streaming"
+      ],
+      "result": "verified",
+      "verification": "JWT explicit alg, JWK kid/asymmetric selection, csrf OR semantics, some/every/except and abort cleanup agree with current sources. Bearer configuration claim is incorrect.",
+      "necessaryChange": "H01",
+      "falsifier": "Exercise malformed Authorization, missing header, valid mismatch and middleware construction separately.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim",
+        "code-example"
+      ]
+    },
+    {
+      "aspect": "mTLS / service auth",
+      "location": {
+        "file": "skills/hono-engineer/references/auth.md",
+        "lines": [
+          41,
+          42
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-bearer-source",
+        "hono-middleware-builtin-jwt",
+        "hono-middleware-builtin-jwk",
+        "hono-middleware-builtin-csrf",
+        "hono-middleware-builtin-combine",
+        "hono-helpers-streaming"
+      ],
+      "result": "verified",
+      "verification": "JWT explicit alg, JWK kid/asymmetric selection, csrf OR semantics, some/every/except and abort cleanup agree with current sources. Bearer configuration claim is incorrect.",
+      "necessaryChange": "H01",
+      "falsifier": "Exercise malformed Authorization, missing header, valid mismatch and middleware construction separately.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Cookies + CSRF (if browser auth is used)",
+      "location": {
+        "file": "skills/hono-engineer/references/auth.md",
+        "lines": [
+          44,
+          50
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-bearer-source",
+        "hono-middleware-builtin-jwt",
+        "hono-middleware-builtin-jwk",
+        "hono-middleware-builtin-csrf",
+        "hono-middleware-builtin-combine",
+        "hono-helpers-streaming"
+      ],
+      "result": "verified",
+      "verification": "JWT explicit alg, JWK kid/asymmetric selection, csrf OR semantics, some/every/except and abort cleanup agree with current sources. Bearer configuration claim is incorrect.",
+      "necessaryChange": "H01",
+      "falsifier": "Exercise malformed Authorization, missing header, valid mismatch and middleware construction separately.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Conditional CSRF reissue integration",
+      "location": {
+        "file": "skills/hono-engineer/references/auth.md",
+        "lines": [
+          52,
+          58
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-bearer-source",
+        "hono-middleware-builtin-jwt",
+        "hono-middleware-builtin-jwk",
+        "hono-middleware-builtin-csrf",
+        "hono-middleware-builtin-combine",
+        "hono-helpers-streaming"
+      ],
+      "result": "verified",
+      "verification": "JWT explicit alg, JWK kid/asymmetric selection, csrf OR semantics, some/every/except and abort cleanup agree with current sources. Bearer configuration claim is incorrect.",
+      "necessaryChange": "H01",
+      "falsifier": "Exercise malformed Authorization, missing header, valid mismatch and middleware construction separately.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Pending/onboarding sessions",
+      "location": {
+        "file": "skills/hono-engineer/references/auth.md",
+        "lines": [
+          60,
+          62
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-bearer-source",
+        "hono-middleware-builtin-jwt",
+        "hono-middleware-builtin-jwk",
+        "hono-middleware-builtin-csrf",
+        "hono-middleware-builtin-combine",
+        "hono-helpers-streaming"
+      ],
+      "result": "verified",
+      "verification": "JWT explicit alg, JWK kid/asymmetric selection, csrf OR semantics, some/every/except and abort cleanup agree with current sources. Bearer configuration claim is incorrect.",
+      "necessaryChange": "H01",
+      "falsifier": "Exercise malformed Authorization, missing header, valid mismatch and middleware construction separately.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Authorization policies",
+      "location": {
+        "file": "skills/hono-engineer/references/auth.md",
+        "lines": [
+          64,
+          68
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-bearer-source",
+        "hono-middleware-builtin-jwt",
+        "hono-middleware-builtin-jwk",
+        "hono-middleware-builtin-csrf",
+        "hono-middleware-builtin-combine",
+        "hono-helpers-streaming"
+      ],
+      "result": "verified",
+      "verification": "JWT explicit alg, JWK kid/asymmetric selection, csrf OR semantics, some/every/except and abort cleanup agree with current sources. Bearer configuration claim is incorrect.",
+      "necessaryChange": "H01",
+      "falsifier": "Exercise malformed Authorization, missing header, valid mismatch and middleware construction separately.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Long-lived protected endpoints",
+      "location": {
+        "file": "skills/hono-engineer/references/auth.md",
+        "lines": [
+          70,
+          80
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-bearer-source",
+        "hono-middleware-builtin-jwt",
+        "hono-middleware-builtin-jwk",
+        "hono-middleware-builtin-csrf",
+        "hono-middleware-builtin-combine",
+        "hono-helpers-streaming"
+      ],
+      "result": "verified",
+      "verification": "JWT explicit alg, JWK kid/asymmetric selection, csrf OR semantics, some/every/except and abort cleanup agree with current sources. Bearer configuration claim is incorrect.",
+      "necessaryChange": "H01",
+      "falsifier": "Exercise malformed Authorization, missing header, valid mismatch and middleware construction separately.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Middleware composition (complex auth flows)",
+      "location": {
+        "file": "skills/hono-engineer/references/auth.md",
+        "lines": [
+          82,
+          83
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-bearer-source",
+        "hono-middleware-builtin-jwt",
+        "hono-middleware-builtin-jwk",
+        "hono-middleware-builtin-csrf",
+        "hono-middleware-builtin-combine",
+        "hono-helpers-streaming"
+      ],
+      "result": "verified",
+      "verification": "JWT explicit alg, JWK kid/asymmetric selection, csrf OR semantics, some/every/except and abort cleanup agree with current sources. Bearer configuration claim is incorrect.",
+      "necessaryChange": "H01",
+      "falsifier": "Exercise malformed Authorization, missing header, valid mismatch and middleware construction separately.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Caching",
+      "location": {
+        "file": "skills/hono-engineer/references/caching.md",
+        "lines": [
+          1,
+          1
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-middleware-builtin-etag",
+        "hono-middleware-builtin-cache",
+        "cf-runtime-apis-cache"
+      ],
+      "result": "N/A",
+      "verification": "ETag/cache APIs supported; CF Cache API skips Set-Cookie unless removed or private=Set-Cookie; locality is not global consistency. Privacy/freshness remain accepted policy.",
+      "necessaryChange": "none",
+      "falsifier": "A private response crosses identities or a Set-Cookie response is claimed cached without platform observation.",
+      "kinds": [
+        "heading"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "HTTP caching (client-facing)",
+      "location": {
+        "file": "skills/hono-engineer/references/caching.md",
+        "lines": [
+          3,
+          4
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-middleware-builtin-etag",
+        "hono-middleware-builtin-cache",
+        "cf-runtime-apis-cache"
+      ],
+      "result": "verified",
+      "verification": "ETag/cache APIs supported; CF Cache API skips Set-Cookie unless removed or private=Set-Cookie; locality is not global consistency. Privacy/freshness remain accepted policy.",
+      "necessaryChange": "none",
+      "falsifier": "A private response crosses identities or a Set-Cookie response is claimed cached without platform observation.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Runtime/edge caching",
+      "location": {
+        "file": "skills/hono-engineer/references/caching.md",
+        "lines": [
+          6,
+          14
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-middleware-builtin-etag",
+        "hono-middleware-builtin-cache",
+        "cf-runtime-apis-cache"
+      ],
+      "result": "verified",
+      "verification": "ETag/cache APIs supported; CF Cache API skips Set-Cookie unless removed or private=Set-Cookie; locality is not global consistency. Privacy/freshness remain accepted policy.",
+      "necessaryChange": "none",
+      "falsifier": "A private response crosses identities or a Set-Cookie response is claimed cached without platform observation.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "What to cache",
+      "location": {
+        "file": "skills/hono-engineer/references/caching.md",
+        "lines": [
+          16,
+          19
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-middleware-builtin-etag",
+        "hono-middleware-builtin-cache",
+        "cf-runtime-apis-cache"
+      ],
+      "result": "verified",
+      "verification": "ETag/cache APIs supported; CF Cache API skips Set-Cookie unless removed or private=Set-Cookie; locality is not global consistency. Privacy/freshness remain accepted policy.",
+      "necessaryChange": "none",
+      "falsifier": "A private response crosses identities or a Set-Cookie response is claimed cached without platform observation.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Contract Types Export",
+      "location": {
+        "file": "skills/hono-engineer/references/contracts-types.md",
+        "lines": [
+          1,
+          11
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-guides-rpc"
+      ],
+      "result": "verified",
+      "verification": "Chained typeof, strict:true and ApplyGlobalResponse status-keyed json maps supported; onError and global middleware not inferred automatically. Type exports/OpenAPI do not validate runtime.",
+      "necessaryChange": "none",
+      "falsifier": "Compile success and known error unions from an actual client import; omitted branch must fail type expectation.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Hono RPC global responses",
+      "location": {
+        "file": "skills/hono-engineer/references/contracts-types.md",
+        "lines": [
+          13,
+          35
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-guides-rpc"
+      ],
+      "result": "verified",
+      "verification": "Chained typeof, strict:true and ApplyGlobalResponse status-keyed json maps supported; onError and global middleware not inferred automatically. Type exports/OpenAPI do not validate runtime.",
+      "necessaryChange": "none",
+      "falsifier": "Compile success and known error unions from an actual client import; omitted branch must fail type expectation.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim",
+        "code-example"
+      ]
+    },
+    {
+      "aspect": "Notes",
+      "location": {
+        "file": "skills/hono-engineer/references/contracts-types.md",
+        "lines": [
+          37,
+          40
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-guides-rpc"
+      ],
+      "result": "verified",
+      "verification": "Chained typeof, strict:true and ApplyGlobalResponse status-keyed json maps supported; onError and global middleware not inferred automatically. Type exports/OpenAPI do not validate runtime.",
+      "necessaryChange": "none",
+      "falsifier": "Compile success and known error unions from an actual client import; omitted branch must fail type expectation.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Errors & Logs",
+      "location": {
+        "file": "skills/hono-engineer/references/errors-logs.md",
+        "lines": [
+          1,
+          1
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-api-exception",
+        "hono-api-hono",
+        "hono-middleware-builtin-logger"
+      ],
+      "result": "N/A",
+      "verification": "HTTPException.getResponse does not import Context headers; onError is an error hook; logger does not supply project redaction/status policy.",
+      "necessaryChange": "none",
+      "falsifier": "An actual thrown HTTPException drops accepted Context headers or changes the existing unknown-error envelope.",
+      "kinds": [
+        "heading"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Preserve the project error contract",
+      "location": {
+        "file": "skills/hono-engineer/references/errors-logs.md",
+        "lines": [
+          3,
+          6
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-api-exception",
+        "hono-api-hono",
+        "hono-middleware-builtin-logger"
+      ],
+      "result": "verified",
+      "verification": "HTTPException.getResponse does not import Context headers; onError is an error hook; logger does not supply project redaction/status policy.",
+      "necessaryChange": "none",
+      "falsifier": "An actual thrown HTTPException drops accepted Context headers or changes the existing unknown-error envelope.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Error mapping",
+      "location": {
+        "file": "skills/hono-engineer/references/errors-logs.md",
+        "lines": [
+          8,
+          11
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-api-exception",
+        "hono-api-hono",
+        "hono-middleware-builtin-logger"
+      ],
+      "result": "verified",
+      "verification": "HTTPException.getResponse does not import Context headers; onError is an error hook; logger does not supply project redaction/status policy.",
+      "necessaryChange": "none",
+      "falsifier": "An actual thrown HTTPException drops accepted Context headers or changes the existing unknown-error envelope.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Controlled errors",
+      "location": {
+        "file": "skills/hono-engineer/references/errors-logs.md",
+        "lines": [
+          13,
+          17
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-api-exception",
+        "hono-api-hono",
+        "hono-middleware-builtin-logger"
+      ],
+      "result": "verified",
+      "verification": "HTTPException.getResponse does not import Context headers; onError is an error hook; logger does not supply project redaction/status policy.",
+      "necessaryChange": "none",
+      "falsifier": "An actual thrown HTTPException drops accepted Context headers or changes the existing unknown-error envelope.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Logging",
+      "location": {
+        "file": "skills/hono-engineer/references/errors-logs.md",
+        "lines": [
+          19,
+          21
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-api-exception",
+        "hono-api-hono",
+        "hono-middleware-builtin-logger"
+      ],
+      "result": "verified",
+      "verification": "HTTPException.getResponse does not import Context headers; onError is an error hook; logger does not supply project redaction/status policy.",
+      "necessaryChange": "none",
+      "falsifier": "An actual thrown HTTPException drops accepted Context headers or changes the existing unknown-error envelope.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Redaction rules",
+      "location": {
+        "file": "skills/hono-engineer/references/errors-logs.md",
+        "lines": [
+          23,
+          25
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-api-exception",
+        "hono-api-hono",
+        "hono-middleware-builtin-logger"
+      ],
+      "result": "verified",
+      "verification": "HTTPException.getResponse does not import Context headers; onError is an error hook; logger does not supply project redaction/status policy.",
+      "necessaryChange": "none",
+      "falsifier": "An actual thrown HTTPException drops accepted Context headers or changes the existing unknown-error envelope.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Framework Currency and Official Sources",
+      "location": {
+        "file": "skills/hono-engineer/references/framework-currency.md",
+        "lines": [
+          1,
+          3
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-release",
+        "hono-migration",
+        "hono-node-release",
+        "node-adapter-package",
+        "cf-compat-flags"
+      ],
+      "result": "verified",
+      "verification": "Version-first method is sound; live Node guide still advertises older Node floor while stable adapter v2.1.1 requires Node >=20. CF flags now have a date-dependent default.",
+      "necessaryChange": "Add concrete dated compatibility branch; never upgrade installed runtime implicitly.",
+      "falsifier": "Resolve Node18+adapter2 as incompatible; preserve an independently verified older adapter branch.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Latest-oriented decision rule",
+      "location": {
+        "file": "skills/hono-engineer/references/framework-currency.md",
+        "lines": [
+          5,
+          11
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-release",
+        "hono-migration",
+        "hono-node-release",
+        "node-adapter-package",
+        "cf-compat-flags"
+      ],
+      "result": "verified",
+      "verification": "Version-first method is sound; live Node guide still advertises older Node floor while stable adapter v2.1.1 requires Node >=20. CF flags now have a date-dependent default.",
+      "necessaryChange": "Add concrete dated compatibility branch; never upgrade installed runtime implicitly.",
+      "falsifier": "Resolve Node18+adapter2 as incompatible; preserve an independently verified older adapter branch.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Official source map",
+      "location": {
+        "file": "skills/hono-engineer/references/framework-currency.md",
+        "lines": [
+          13,
+          32
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-release",
+        "hono-migration",
+        "hono-node-release",
+        "node-adapter-package",
+        "cf-compat-flags"
+      ],
+      "result": "verified",
+      "verification": "Version-first method is sound; live Node guide still advertises older Node floor while stable adapter v2.1.1 requires Node >=20. CF flags now have a date-dependent default.",
+      "necessaryChange": "Add concrete dated compatibility branch; never upgrade installed runtime implicitly.",
+      "falsifier": "Resolve Node18+adapter2 as incompatible; preserve an independently verified older adapter branch.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "High-risk backend contract matrix: Hono ownership",
+      "location": {
+        "file": "skills/hono-engineer/references/high-risk-backend-contract.md",
+        "lines": [
+          1,
+          3
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "Local HRB ownership contract, not a Hono product API. HTTP contribution remains separate from database/domain/spec/security evidence.",
+      "necessaryChange": "none",
+      "falsifier": "An HTTP-only test is presented as direct RLS/RPC or durable-delivery proof.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Responsibility boundary",
+      "location": {
+        "file": "skills/hono-engineer/references/high-risk-backend-contract.md",
+        "lines": [
+          5,
+          9
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "Local HRB ownership contract, not a Hono product API. HTTP contribution remains separate from database/domain/spec/security evidence.",
+      "necessaryChange": "none",
+      "falsifier": "An HTTP-only test is presented as direct RLS/RPC or durable-delivery proof.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Hono-owned checks",
+      "location": {
+        "file": "skills/hono-engineer/references/high-risk-backend-contract.md",
+        "lines": [
+          11,
+          26
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "Local HRB ownership contract, not a Hono product API. HTTP contribution remains separate from database/domain/spec/security evidence.",
+      "necessaryChange": "none",
+      "falsifier": "An HTTP-only test is presented as direct RLS/RPC or durable-delivery proof.",
+      "kinds": [
+        "heading",
+        "contract-table"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Evidence gate",
+      "location": {
+        "file": "skills/hono-engineer/references/high-risk-backend-contract.md",
+        "lines": [
+          28,
+          30
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "Local HRB ownership contract, not a Hono product API. HTTP contribution remains separate from database/domain/spec/security evidence.",
+      "necessaryChange": "none",
+      "falsifier": "An HTTP-only test is presented as direct RLS/RPC or durable-delivery proof.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Observability",
+      "location": {
+        "file": "skills/hono-engineer/references/observability.md",
+        "lines": [
+          1,
+          1
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "Conditional project-owned logging, metrics, telemetry and live debugging obligations; no platform API/default asserted.",
+      "necessaryChange": "none",
+      "falsifier": "Agent creates an unrequested telemetry endpoint or treats configuration as operational readback.",
+      "kinds": [
+        "heading"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Logging",
+      "location": {
+        "file": "skills/hono-engineer/references/observability.md",
+        "lines": [
+          3,
+          4
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "Conditional project-owned logging, metrics, telemetry and live debugging obligations; no platform API/default asserted.",
+      "necessaryChange": "none",
+      "falsifier": "Agent creates an unrequested telemetry endpoint or treats configuration as operational readback.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Metrics & tracing",
+      "location": {
+        "file": "skills/hono-engineer/references/observability.md",
+        "lines": [
+          6,
+          8
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "Conditional project-owned logging, metrics, telemetry and live debugging obligations; no platform API/default asserted.",
+      "necessaryChange": "none",
+      "falsifier": "Agent creates an unrequested telemetry endpoint or treats configuration as operational readback.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Correlation",
+      "location": {
+        "file": "skills/hono-engineer/references/observability.md",
+        "lines": [
+          10,
+          11
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "Conditional project-owned logging, metrics, telemetry and live debugging obligations; no platform API/default asserted.",
+      "necessaryChange": "none",
+      "falsifier": "Agent creates an unrequested telemetry endpoint or treats configuration as operational readback.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Client telemetry ingestion",
+      "location": {
+        "file": "skills/hono-engineer/references/observability.md",
+        "lines": [
+          13,
+          16
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "Conditional project-owned logging, metrics, telemetry and live debugging obligations; no platform API/default asserted.",
+      "necessaryChange": "none",
+      "falsifier": "Agent creates an unrequested telemetry endpoint or treats configuration as operational readback.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Live debugging",
+      "location": {
+        "file": "skills/hono-engineer/references/observability.md",
+        "lines": [
+          18,
+          19
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "Conditional project-owned logging, metrics, telemetry and live debugging obligations; no platform API/default asserted.",
+      "necessaryChange": "none",
+      "falsifier": "Agent creates an unrequested telemetry endpoint or treats configuration as operational readback.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Performance & Security Notes",
+      "location": {
+        "file": "skills/hono-engineer/references/perf-security.md",
+        "lines": [
+          1,
+          1
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-middleware-builtin-body-limit",
+        "hono-middleware-builtin-timeout",
+        "hono-middleware-builtin-compress",
+        "hono-concepts-routers",
+        "hono-middleware-builtin-secure-headers",
+        "hono-middleware-builtin-cors"
+      ],
+      "result": "N/A",
+      "verification": "bodyLimit and timeout supported; timeout does not fit streaming. CF Workers/Deno Deploy compression guidance and Bun body bound require runtime distinction. Presets/router choice does not prove performance.",
+      "necessaryChange": "none",
+      "falsifier": "Oversize request bypasses selected bound, timeout breaks stream, or compression is attributed to unobserved adapter.",
+      "kinds": [
+        "heading"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Request limits",
+      "location": {
+        "file": "skills/hono-engineer/references/perf-security.md",
+        "lines": [
+          3,
+          8
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-middleware-builtin-body-limit",
+        "hono-middleware-builtin-timeout",
+        "hono-middleware-builtin-compress",
+        "hono-concepts-routers",
+        "hono-middleware-builtin-secure-headers",
+        "hono-middleware-builtin-cors"
+      ],
+      "result": "verified",
+      "verification": "bodyLimit and timeout supported; timeout does not fit streaming. CF Workers/Deno Deploy compression guidance and Bun body bound require runtime distinction. Presets/router choice does not prove performance.",
+      "necessaryChange": "none",
+      "falsifier": "Oversize request bypasses selected bound, timeout breaks stream, or compression is attributed to unobserved adapter.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Upstream resilience",
+      "location": {
+        "file": "skills/hono-engineer/references/perf-security.md",
+        "lines": [
+          10,
+          12
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-middleware-builtin-body-limit",
+        "hono-middleware-builtin-timeout",
+        "hono-middleware-builtin-compress",
+        "hono-concepts-routers",
+        "hono-middleware-builtin-secure-headers",
+        "hono-middleware-builtin-cors"
+      ],
+      "result": "verified",
+      "verification": "bodyLimit and timeout supported; timeout does not fit streaming. CF Workers/Deno Deploy compression guidance and Bun body bound require runtime distinction. Presets/router choice does not prove performance.",
+      "necessaryChange": "none",
+      "falsifier": "Oversize request bypasses selected bound, timeout breaks stream, or compression is attributed to unobserved adapter.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Compression",
+      "location": {
+        "file": "skills/hono-engineer/references/perf-security.md",
+        "lines": [
+          14,
+          16
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-middleware-builtin-body-limit",
+        "hono-middleware-builtin-timeout",
+        "hono-middleware-builtin-compress",
+        "hono-concepts-routers",
+        "hono-middleware-builtin-secure-headers",
+        "hono-middleware-builtin-cors"
+      ],
+      "result": "verified",
+      "verification": "bodyLimit and timeout supported; timeout does not fit streaming. CF Workers/Deno Deploy compression guidance and Bun body bound require runtime distinction. Presets/router choice does not prove performance.",
+      "necessaryChange": "none",
+      "falsifier": "Oversize request bypasses selected bound, timeout breaks stream, or compression is attributed to unobserved adapter.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Hono presets",
+      "location": {
+        "file": "skills/hono-engineer/references/perf-security.md",
+        "lines": [
+          18,
+          19
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-middleware-builtin-body-limit",
+        "hono-middleware-builtin-timeout",
+        "hono-middleware-builtin-compress",
+        "hono-concepts-routers",
+        "hono-middleware-builtin-secure-headers",
+        "hono-middleware-builtin-cors"
+      ],
+      "result": "verified",
+      "verification": "bodyLimit and timeout supported; timeout does not fit streaming. CF Workers/Deno Deploy compression guidance and Bun body bound require runtime distinction. Presets/router choice does not prove performance.",
+      "necessaryChange": "none",
+      "falsifier": "Oversize request bypasses selected bound, timeout breaks stream, or compression is attributed to unobserved adapter.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Rate limiting",
+      "location": {
+        "file": "skills/hono-engineer/references/perf-security.md",
+        "lines": [
+          21,
+          23
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-middleware-builtin-body-limit",
+        "hono-middleware-builtin-timeout",
+        "hono-middleware-builtin-compress",
+        "hono-concepts-routers",
+        "hono-middleware-builtin-secure-headers",
+        "hono-middleware-builtin-cors"
+      ],
+      "result": "verified",
+      "verification": "bodyLimit and timeout supported; timeout does not fit streaming. CF Workers/Deno Deploy compression guidance and Bun body bound require runtime distinction. Presets/router choice does not prove performance.",
+      "necessaryChange": "none",
+      "falsifier": "Oversize request bypasses selected bound, timeout breaks stream, or compression is attributed to unobserved adapter.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Caching",
+      "location": {
+        "file": "skills/hono-engineer/references/perf-security.md",
+        "lines": [
+          25,
+          26
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-middleware-builtin-body-limit",
+        "hono-middleware-builtin-timeout",
+        "hono-middleware-builtin-compress",
+        "hono-concepts-routers",
+        "hono-middleware-builtin-secure-headers",
+        "hono-middleware-builtin-cors"
+      ],
+      "result": "verified",
+      "verification": "bodyLimit and timeout supported; timeout does not fit streaming. CF Workers/Deno Deploy compression guidance and Bun body bound require runtime distinction. Presets/router choice does not prove performance.",
+      "necessaryChange": "none",
+      "falsifier": "Oversize request bypasses selected bound, timeout breaks stream, or compression is attributed to unobserved adapter.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Upstream calls",
+      "location": {
+        "file": "skills/hono-engineer/references/perf-security.md",
+        "lines": [
+          28,
+          29
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-middleware-builtin-body-limit",
+        "hono-middleware-builtin-timeout",
+        "hono-middleware-builtin-compress",
+        "hono-concepts-routers",
+        "hono-middleware-builtin-secure-headers",
+        "hono-middleware-builtin-cors"
+      ],
+      "result": "verified",
+      "verification": "bodyLimit and timeout supported; timeout does not fit streaming. CF Workers/Deno Deploy compression guidance and Bun body bound require runtime distinction. Presets/router choice does not prove performance.",
+      "necessaryChange": "none",
+      "falsifier": "Oversize request bypasses selected bound, timeout breaks stream, or compression is attributed to unobserved adapter.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Security integration",
+      "location": {
+        "file": "skills/hono-engineer/references/perf-security.md",
+        "lines": [
+          31,
+          34
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-middleware-builtin-body-limit",
+        "hono-middleware-builtin-timeout",
+        "hono-middleware-builtin-compress",
+        "hono-concepts-routers",
+        "hono-middleware-builtin-secure-headers",
+        "hono-middleware-builtin-cors"
+      ],
+      "result": "verified",
+      "verification": "bodyLimit and timeout supported; timeout does not fit streaming. CF Workers/Deno Deploy compression guidance and Bun body bound require runtime distinction. Presets/router choice does not prove performance.",
+      "necessaryChange": "none",
+      "falsifier": "Oversize request bypasses selected bound, timeout breaks stream, or compression is attributed to unobserved adapter.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Middleware Pipelines (endpoint classes)",
+      "location": {
+        "file": "skills/hono-engineer/references/pipelines.md",
+        "lines": [
+          1,
+          3
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-guides-middleware",
+        "hono-api-hono",
+        "hono-guides-validation",
+        "hono-middleware-builtin-cors",
+        "hono-middleware-builtin-secure-headers"
+      ],
+      "result": "verified",
+      "verification": "Registration order and onion execution matter; hooks not middleware positions; provider signature raw-body order stays producer-owned.",
+      "necessaryChange": "none",
+      "falsifier": "Real request demonstrates changed admission, missing error headers, or body consumed before signature verification.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Hono ordering consequences after a concern is selected",
+      "location": {
+        "file": "skills/hono-engineer/references/pipelines.md",
+        "lines": [
+          5,
+          19
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-guides-middleware",
+        "hono-api-hono",
+        "hono-guides-validation",
+        "hono-middleware-builtin-cors",
+        "hono-middleware-builtin-secure-headers"
+      ],
+      "result": "verified",
+      "verification": "Registration order and onion execution matter; hooks not middleware positions; provider signature raw-body order stays producer-owned.",
+      "necessaryChange": "none",
+      "falsifier": "Real request demonstrates changed admission, missing error headers, or body consumed before signature verification.",
+      "kinds": [
+        "heading",
+        "contract-table",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Rate Limiting",
+      "location": {
+        "file": "skills/hono-engineer/references/rate-limiting.md",
+        "lines": [
+          1,
+          1
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "cf-runtime-apis-bindings-rate-limit"
+      ],
+      "result": "N/A",
+      "verification": "Workers rate limit binding is local/eventually consistent and unsuitable for exact accounting. Actor/key scope and WAF choices stay owner-supplied.",
+      "necessaryChange": "none",
+      "falsifier": "Location-local limiter accepted as exact cross-region financial/quota counter.",
+      "kinds": [
+        "heading"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Strategy",
+      "location": {
+        "file": "skills/hono-engineer/references/rate-limiting.md",
+        "lines": [
+          3,
+          7
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "cf-runtime-apis-bindings-rate-limit"
+      ],
+      "result": "verified",
+      "verification": "Workers rate limit binding is local/eventually consistent and unsuitable for exact accounting. Actor/key scope and WAF choices stay owner-supplied.",
+      "necessaryChange": "none",
+      "falsifier": "Location-local limiter accepted as exact cross-region financial/quota counter.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Key choice",
+      "location": {
+        "file": "skills/hono-engineer/references/rate-limiting.md",
+        "lines": [
+          9,
+          10
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "cf-runtime-apis-bindings-rate-limit"
+      ],
+      "result": "verified",
+      "verification": "Workers rate limit binding is local/eventually consistent and unsuitable for exact accounting. Actor/key scope and WAF choices stay owner-supplied.",
+      "necessaryChange": "none",
+      "falsifier": "Location-local limiter accepted as exact cross-region financial/quota counter.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Edge/WAF rules",
+      "location": {
+        "file": "skills/hono-engineer/references/rate-limiting.md",
+        "lines": [
+          12,
+          13
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "cf-runtime-apis-bindings-rate-limit"
+      ],
+      "result": "verified",
+      "verification": "Workers rate limit binding is local/eventually consistent and unsuitable for exact accounting. Actor/key scope and WAF choices stay owner-supplied.",
+      "necessaryChange": "none",
+      "falsifier": "Location-local limiter accepted as exact cross-region financial/quota counter.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Consistency notes",
+      "location": {
+        "file": "skills/hono-engineer/references/rate-limiting.md",
+        "lines": [
+          15,
+          16
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "cf-runtime-apis-bindings-rate-limit"
+      ],
+      "result": "verified",
+      "verification": "Workers rate limit binding is local/eventually consistent and unsuitable for exact accounting. Actor/key scope and WAF choices stay owner-supplied.",
+      "necessaryChange": "none",
+      "falsifier": "Location-local limiter accepted as exact cross-region financial/quota counter.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Routers",
+      "location": {
+        "file": "skills/hono-engineer/references/routers.md",
+        "lines": [
+          1,
+          3
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-concepts-routers"
+      ],
+      "result": "verified",
+      "verification": "SmartRouter/RegExpRouter/TrieRouter/LinearRouter/PatternRouter and default selection documented. Route-set constraints and measurement required before overriding.",
+      "necessaryChange": "none",
+      "falsifier": "Selected router fails project route syntax or assumed benchmark replaces measured workload.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Router types",
+      "location": {
+        "file": "skills/hono-engineer/references/routers.md",
+        "lines": [
+          5,
+          7
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-concepts-routers"
+      ],
+      "result": "verified",
+      "verification": "SmartRouter/RegExpRouter/TrieRouter/LinearRouter/PatternRouter and default selection documented. Route-set constraints and measurement required before overriding.",
+      "necessaryChange": "none",
+      "falsifier": "Selected router fails project route syntax or assumed benchmark replaces measured workload.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Selecting a router",
+      "location": {
+        "file": "skills/hono-engineer/references/routers.md",
+        "lines": [
+          9,
+          10
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-concepts-routers"
+      ],
+      "result": "verified",
+      "verification": "SmartRouter/RegExpRouter/TrieRouter/LinearRouter/PatternRouter and default selection documented. Route-set constraints and measurement required before overriding.",
+      "necessaryChange": "none",
+      "falsifier": "Selected router fails project route syntax or assumed benchmark replaces measured workload.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Edge Security (platform features)",
+      "location": {
+        "file": "skills/hono-engineer/references/security.md",
+        "lines": [
+          1,
+          7
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "cf-runtime-apis-web-crypto",
+        "hono-middleware-builtin-secure-headers",
+        "hono-middleware-builtin-cors"
+      ],
+      "result": "verified",
+      "verification": "Runtime primitives/features exist, but policy and exploitability belong to security/platform owner; no fixed WAF/Turnstile policy asserted.",
+      "necessaryChange": "none",
+      "falsifier": "Platform feature name is treated as complete authorization or a new policy is imposed.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Supabase Integration",
+      "location": {
+        "file": "skills/hono-engineer/references/supabase.md",
+        "lines": [
+          1,
+          8
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "supabase-getting-started-api-keys",
+        "supabase-database-postgres-row-level-security",
+        "sdk-package"
+      ],
+      "result": "verified",
+      "verification": "Request-scoped user client preserves JWT/RLS; elevated backend isolation required. Hono response evidence cannot close Data API boundary. SDK stable Node >=22 raises joint adapter/runtime floor for Node integration.",
+      "necessaryChange": "Record installed SDK/adapter/runtime matrix when Node is targeted.",
+      "falsifier": "Request user A reads B rows or Hono tests substitute for direct JWT/RLS calls.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Typing Context Variables",
+      "location": {
+        "file": "skills/hono-engineer/references/typing.md",
+        "lines": [
+          1,
+          3
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-api-context",
+        "hono-helpers-factory"
+      ],
+      "result": "verified",
+      "verification": "Bindings/Variables generics, createMiddleware and conditional ContextVariableMap augmentation supported; global augmentation does not initialize request values.",
+      "necessaryChange": "none",
+      "falsifier": "Route reads absent Context state despite type assertion or scoped state leaks across requests.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Scoped variables: prefer generics and middleware inference",
+      "location": {
+        "file": "skills/hono-engineer/references/typing.md",
+        "lines": [
+          5,
+          17
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-api-context",
+        "hono-helpers-factory"
+      ],
+      "result": "verified",
+      "verification": "Bindings/Variables generics, createMiddleware and conditional ContextVariableMap augmentation supported; global augmentation does not initialize request values.",
+      "necessaryChange": "none",
+      "falsifier": "Route reads absent Context state despite type assertion or scoped state leaks across requests.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim",
+        "code-example"
+      ]
+    },
+    {
+      "aspect": "App-wide variables: conditional module augmentation",
+      "location": {
+        "file": "skills/hono-engineer/references/typing.md",
+        "lines": [
+          19,
+          36
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-api-context",
+        "hono-helpers-factory"
+      ],
+      "result": "verified",
+      "verification": "Bindings/Variables generics, createMiddleware and conditional ContextVariableMap augmentation supported; global augmentation does not initialize request values.",
+      "necessaryChange": "none",
+      "falsifier": "Route reads absent Context state despite type assertion or scoped state leaks across requests.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim",
+        "code-example"
+      ]
+    },
+    {
+      "aspect": "Validation & API Contracts",
+      "location": {
+        "file": "skills/hono-engineer/references/validation-openapi.md",
+        "lines": [
+          1,
+          1
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-guides-validation",
+        "hono-guides-rpc",
+        "zod-validator-readme",
+        "zod-validator-package"
+      ],
+      "result": "N/A",
+      "verification": "validator/zValidator, c.req.valid, content-type empty-object behavior, lowercase header keys and multiple validator composition supported. OpenAPI chosen only where contract needs it. Runtime response validation requires executing code.",
+      "necessaryChange": "none",
+      "falsifier": "Missing/wrong content type passes required validation; compile/schema presence is called response-path validation.",
+      "kinds": [
+        "heading"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Project-owned validation",
+      "location": {
+        "file": "skills/hono-engineer/references/validation-openapi.md",
+        "lines": [
+          3,
+          6
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-guides-validation",
+        "hono-guides-rpc",
+        "zod-validator-readme",
+        "zod-validator-package"
+      ],
+      "result": "verified",
+      "verification": "validator/zValidator, c.req.valid, content-type empty-object behavior, lowercase header keys and multiple validator composition supported. OpenAPI chosen only where contract needs it. Runtime response validation requires executing code.",
+      "necessaryChange": "none",
+      "falsifier": "Missing/wrong content type passes required validation; compile/schema presence is called response-path validation.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "New route contract checklist",
+      "location": {
+        "file": "skills/hono-engineer/references/validation-openapi.md",
+        "lines": [
+          8,
+          14
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-guides-validation",
+        "hono-guides-rpc",
+        "zod-validator-readme",
+        "zod-validator-package"
+      ],
+      "result": "verified",
+      "verification": "validator/zValidator, c.req.valid, content-type empty-object behavior, lowercase header keys and multiple validator composition supported. OpenAPI chosen only where contract needs it. Runtime response validation requires executing code.",
+      "necessaryChange": "none",
+      "falsifier": "Missing/wrong content type passes required validation; compile/schema presence is called response-path validation.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "How to validate in Hono (request data)",
+      "location": {
+        "file": "skills/hono-engineer/references/validation-openapi.md",
+        "lines": [
+          16,
+          35
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-guides-validation",
+        "hono-guides-rpc",
+        "zod-validator-readme",
+        "zod-validator-package"
+      ],
+      "result": "verified",
+      "verification": "validator/zValidator, c.req.valid, content-type empty-object behavior, lowercase header keys and multiple validator composition supported. OpenAPI chosen only where contract needs it. Runtime response validation requires executing code.",
+      "necessaryChange": "none",
+      "falsifier": "Missing/wrong content type passes required validation; compile/schema presence is called response-path validation.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim",
+        "code-example"
+      ]
+    },
+    {
+      "aspect": "OpenAPI integration",
+      "location": {
+        "file": "skills/hono-engineer/references/validation-openapi.md",
+        "lines": [
+          37,
+          40
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-guides-validation",
+        "hono-guides-rpc",
+        "zod-validator-readme",
+        "zod-validator-package"
+      ],
+      "result": "verified",
+      "verification": "validator/zValidator, c.req.valid, content-type empty-object behavior, lowercase header keys and multiple validator composition supported. OpenAPI chosen only where contract needs it. Runtime response validation requires executing code.",
+      "necessaryChange": "none",
+      "falsifier": "Missing/wrong content type passes required validation; compile/schema presence is called response-path validation.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Edge schema validation (optional)",
+      "location": {
+        "file": "skills/hono-engineer/references/validation-openapi.md",
+        "lines": [
+          42,
+          43
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-guides-validation",
+        "hono-guides-rpc",
+        "zod-validator-readme",
+        "zod-validator-package"
+      ],
+      "result": "verified",
+      "verification": "validator/zValidator, c.req.valid, content-type empty-object behavior, lowercase header keys and multiple validator composition supported. OpenAPI chosen only where contract needs it. Runtime response validation requires executing code.",
+      "necessaryChange": "none",
+      "falsifier": "Missing/wrong content type passes required validation; compile/schema presence is called response-path validation.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Response contract evidence",
+      "location": {
+        "file": "skills/hono-engineer/references/validation-openapi.md",
+        "lines": [
+          45,
+          53
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-guides-validation",
+        "hono-guides-rpc",
+        "zod-validator-readme",
+        "zod-validator-package"
+      ],
+      "result": "verified",
+      "verification": "validator/zValidator, c.req.valid, content-type empty-object behavior, lowercase header keys and multiple validator composition supported. OpenAPI chosen only where contract needs it. Runtime response validation requires executing code.",
+      "necessaryChange": "none",
+      "falsifier": "Missing/wrong content type passes required validation; compile/schema presence is called response-path validation.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Output validation integration",
+      "location": {
+        "file": "skills/hono-engineer/references/validation-openapi.md",
+        "lines": [
+          55,
+          58
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "hono-guides-validation",
+        "hono-guides-rpc",
+        "zod-validator-readme",
+        "zod-validator-package"
+      ],
+      "result": "verified",
+      "verification": "validator/zValidator, c.req.valid, content-type empty-object behavior, lowercase header keys and multiple validator composition supported. OpenAPI chosen only where contract needs it. Runtime response validation requires executing code.",
+      "necessaryChange": "none",
+      "falsifier": "Missing/wrong content type passes required validation; compile/schema presence is called response-path validation.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Edge Runtime Constraints (Cloudflare Workers focus)",
+      "location": {
+        "file": "skills/hono-engineer/references/workers-platform.md",
+        "lines": [
+          1,
+          1
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "cf-platform-limits",
+        "cf-runtime-apis-context",
+        "cf-languages-typescript-index",
+        "cf-runtime-apis-web-crypto",
+        "hono-getting-started-cloudflare-workers"
+      ],
+      "result": "N/A",
+      "verification": "Workers CPU/wall/subrequest/memory/lifecycle distinctions and bindings supported; waitUntil shared post-response window is bounded and non-durable; limits are retrieved per plan/environment.",
+      "necessaryChange": "none",
+      "falsifier": "waitUntil is claimed durable or Node/process APIs are assumed without actual compatibility mode.",
+      "kinds": [
+        "heading"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Retrieval rule",
+      "location": {
+        "file": "skills/hono-engineer/references/workers-platform.md",
+        "lines": [
+          3,
+          4
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "cf-platform-limits",
+        "cf-runtime-apis-context",
+        "cf-languages-typescript-index",
+        "cf-runtime-apis-web-crypto",
+        "hono-getting-started-cloudflare-workers"
+      ],
+      "result": "verified",
+      "verification": "Workers CPU/wall/subrequest/memory/lifecycle distinctions and bindings supported; waitUntil shared post-response window is bounded and non-durable; limits are retrieved per plan/environment.",
+      "necessaryChange": "none",
+      "falsifier": "waitUntil is claimed durable or Node/process APIs are assumed without actual compatibility mode.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Limits to design around",
+      "location": {
+        "file": "skills/hono-engineer/references/workers-platform.md",
+        "lines": [
+          6,
+          10
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "cf-platform-limits",
+        "cf-runtime-apis-context",
+        "cf-languages-typescript-index",
+        "cf-runtime-apis-web-crypto",
+        "hono-getting-started-cloudflare-workers"
+      ],
+      "result": "verified",
+      "verification": "Workers CPU/wall/subrequest/memory/lifecycle distinctions and bindings supported; waitUntil shared post-response window is bounded and non-durable; limits are retrieved per plan/environment.",
+      "necessaryChange": "none",
+      "falsifier": "waitUntil is claimed durable or Node/process APIs are assumed without actual compatibility mode.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Bindings and typing",
+      "location": {
+        "file": "skills/hono-engineer/references/workers-platform.md",
+        "lines": [
+          12,
+          15
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "cf-platform-limits",
+        "cf-runtime-apis-context",
+        "cf-languages-typescript-index",
+        "cf-runtime-apis-web-crypto",
+        "hono-getting-started-cloudflare-workers"
+      ],
+      "result": "verified",
+      "verification": "Workers CPU/wall/subrequest/memory/lifecycle distinctions and bindings supported; waitUntil shared post-response window is bounded and non-durable; limits are retrieved per plan/environment.",
+      "necessaryChange": "none",
+      "falsifier": "waitUntil is claimed durable or Node/process APIs are assumed without actual compatibility mode.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Runtime model",
+      "location": {
+        "file": "skills/hono-engineer/references/workers-platform.md",
+        "lines": [
+          17,
+          25
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "cf-platform-limits",
+        "cf-runtime-apis-context",
+        "cf-languages-typescript-index",
+        "cf-runtime-apis-web-crypto",
+        "hono-getting-started-cloudflare-workers"
+      ],
+      "result": "verified",
+      "verification": "Workers CPU/wall/subrequest/memory/lifecycle distinctions and bindings supported; waitUntil shared post-response window is bounded and non-durable; limits are retrieved per plan/environment.",
+      "necessaryChange": "none",
+      "falsifier": "waitUntil is claimed durable or Node/process APIs are assumed without actual compatibility mode.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Security-sensitive patterns",
+      "location": {
+        "file": "skills/hono-engineer/references/workers-platform.md",
+        "lines": [
+          27,
+          30
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "cf-platform-limits",
+        "cf-runtime-apis-context",
+        "cf-languages-typescript-index",
+        "cf-runtime-apis-web-crypto",
+        "hono-getting-started-cloudflare-workers"
+      ],
+      "result": "verified",
+      "verification": "Workers CPU/wall/subrequest/memory/lifecycle distinctions and bindings supported; waitUntil shared post-response window is bounded and non-durable; limits are retrieved per plan/environment.",
+      "necessaryChange": "none",
+      "falsifier": "waitUntil is claimed durable or Node/process APIs are assumed without actual compatibility mode.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Architecture patterns",
+      "location": {
+        "file": "skills/hono-engineer/references/workers-platform.md",
+        "lines": [
+          32,
+          35
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "cf-platform-limits",
+        "cf-runtime-apis-context",
+        "cf-languages-typescript-index",
+        "cf-runtime-apis-web-crypto",
+        "hono-getting-started-cloudflare-workers"
+      ],
+      "result": "verified",
+      "verification": "Workers CPU/wall/subrequest/memory/lifecycle distinctions and bindings supported; waitUntil shared post-response window is bounded and non-durable; limits are retrieved per plan/environment.",
+      "necessaryChange": "none",
+      "falsifier": "waitUntil is claimed durable or Node/process APIs are assumed without actual compatibility mode.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Wrangler / Runtime Config (Cloudflare Workers)",
+      "location": {
+        "file": "skills/hono-engineer/references/wrangler.md",
+        "lines": [
+          1,
+          11
+        ]
+      },
+      "versions": "Hono4.13.7 stable; adapter2.1.1 stable; Workers rolling compatibility-date contract",
+      "officialSources": [
+        "cf-wrangler-configuration",
+        "cf-wrangler-environments",
+        "cf-languages-typescript-index",
+        "cf-runtime-apis-nodejs-index",
+        "cf-compat-flags",
+        "workerd-compat"
+      ],
+      "result": "correction-required",
+      "verification": "Generated types and non-inheritable environment bindings/vars are supported; nodejs_compat instruction lacks new 2026-08-04 default.",
+      "necessaryChange": "H02",
+      "falsifier": "Compare effective compatibility before and after 2026-08-04, including both negative flags.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "fragments/overview.md complete surface",
+      "location": {
+        "file": "skills/hono-engineer/fragments/overview.md",
+        "lines": [
+          1,
+          69
+        ]
+      },
+      "versions": "0.1.7",
+      "result": "verified",
+      "officialSources": [],
+      "verification": "Read complete source, mode/trigger/reference/interop/output contract; vendor assertions duplicate aspects in references above and inherit their result, including correction-required findings. This row verifies source coverage/parity, not blanket technical correctness.",
+      "technicalClaimsResult": "See complete reference aspect map and findings; no independent current claim for duplicate root/YAML.",
+      "emittedFragmentLines": [
+        40,
+        108
+      ],
+      "necessaryChange": "Propagate confirmed technical corrections through source and regenerate. Metadata/UI contain no independent vendor command.",
+      "falsifier": "Source/emitted drift, missing active reference, conflicting mode/owner/output contract, or unrequested behavior in future blind run."
+    },
+    {
+      "aspect": "skill.yaml complete surface",
+      "location": {
+        "file": "skills/hono-engineer/skill.yaml",
+        "lines": [
+          1,
+          290
+        ]
+      },
+      "versions": "0.1.7",
+      "result": "verified",
+      "officialSources": [],
+      "verification": "Read complete source, mode/trigger/reference/interop/output contract; vendor assertions duplicate aspects in references above and inherit their result, including correction-required findings. This row verifies source coverage/parity, not blanket technical correctness.",
+      "technicalClaimsResult": "See complete reference aspect map and findings; no independent current claim for duplicate root/YAML.",
+      "emittedFragmentLines": null,
+      "necessaryChange": "Propagate confirmed technical corrections through source and regenerate. Metadata/UI contain no independent vendor command.",
+      "falsifier": "Source/emitted drift, missing active reference, conflicting mode/owner/output contract, or unrequested behavior in future blind run."
+    },
+    {
+      "aspect": "SKILL.md complete surface",
+      "location": {
+        "file": "skills/hono-engineer/SKILL.md",
+        "lines": [
+          1,
+          220
+        ]
+      },
+      "versions": "0.1.7",
+      "result": "verified",
+      "officialSources": [],
+      "verification": "Read complete source, mode/trigger/reference/interop/output contract; vendor assertions duplicate aspects in references above and inherit their result, including correction-required findings. This row verifies source coverage/parity, not blanket technical correctness.",
+      "technicalClaimsResult": "See complete reference aspect map and findings; no independent current claim for duplicate root/YAML.",
+      "emittedFragmentLines": null,
+      "necessaryChange": "Propagate confirmed technical corrections through source and regenerate. Metadata/UI contain no independent vendor command.",
+      "falsifier": "Source/emitted drift, missing active reference, conflicting mode/owner/output contract, or unrequested behavior in future blind run."
+    },
+    {
+      "aspect": "agents/openai.yaml complete surface",
+      "location": {
+        "file": "skills/hono-engineer/agents/openai.yaml",
+        "lines": [
+          1,
+          4
+        ]
+      },
+      "versions": "0.1.7",
+      "result": "verified",
+      "officialSources": [],
+      "verification": "Read complete source, mode/trigger/reference/interop/output contract; vendor assertions duplicate aspects in references above and inherit their result, including correction-required findings. This row verifies source coverage/parity, not blanket technical correctness.",
+      "technicalClaimsResult": "See complete reference aspect map and findings; no independent current claim for duplicate root/YAML.",
+      "emittedFragmentLines": null,
+      "necessaryChange": "Propagate confirmed technical corrections through source and regenerate. Metadata/UI contain no independent vendor command.",
+      "falsifier": "Source/emitted drift, missing active reference, conflicting mode/owner/output contract, or unrequested behavior in future blind run."
+    },
+    {
+      "aspect": "AGENTS.md complete surface",
+      "location": {
+        "file": "skills/hono-engineer/AGENTS.md",
+        "lines": [
+          1,
+          32
+        ]
+      },
+      "versions": "0.1.7",
+      "result": "verified",
+      "officialSources": [],
+      "verification": "Read complete source, mode/trigger/reference/interop/output contract; vendor assertions duplicate aspects in references above and inherit their result, including correction-required findings. This row verifies source coverage/parity, not blanket technical correctness.",
+      "technicalClaimsResult": "See complete reference aspect map and findings; no independent current claim for duplicate root/YAML.",
+      "emittedFragmentLines": null,
+      "necessaryChange": "Propagate confirmed technical corrections through source and regenerate. Metadata/UI contain no independent vendor command.",
+      "falsifier": "Source/emitted drift, missing active reference, conflicting mode/owner/output contract, or unrequested behavior in future blind run."
+    }
+  ],
+  "officialSources": {
+    "cf-compat-flags": {
+      "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/configuration/compatibility-flags.mdx",
+      "snapshot": "official-hono-supabase/cf-compat-flags.txt",
+      "retrievedAt": "2026-09-09T11:43:57.168131+00:00",
+      "sha256": "2ff839dbc3e6802863ff34073edde653179177e83a731a6f6e944c4a3508b80c"
+    },
+    "cf-languages-typescript-index": {
+      "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/languages/typescript/index.mdx",
+      "snapshot": "official-hono-supabase/cf-languages-typescript-index.txt",
+      "retrievedAt": "2026-09-09T11:36:56.684885+00:00",
+      "sha256": "4226b4938fbe41e25bb84f1c97e0926b0a56a090f15901b246524e30d96655e0"
+    },
+    "cf-platform-limits": {
+      "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/platform/limits.mdx",
+      "snapshot": "official-hono-supabase/cf-platform-limits.txt",
+      "retrievedAt": "2026-09-09T11:35:41.310648+00:00",
+      "sha256": "5666bb5286d2adf63daa246870f231191139e0c5266b9462f289ee428b05002b"
+    },
+    "cf-runtime-apis-bindings-rate-limit": {
+      "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/runtime-apis/bindings/rate-limit.mdx",
+      "snapshot": "official-hono-supabase/cf-runtime-apis-bindings-rate-limit.txt",
+      "retrievedAt": "2026-09-09T11:35:41.631380+00:00",
+      "sha256": "c4c8b557b289c49d3f8781587029a2f54be8ea3df16cb8d9144c0bffe2f36b67"
+    },
+    "cf-runtime-apis-cache": {
+      "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/runtime-apis/cache.mdx",
+      "snapshot": "official-hono-supabase/cf-runtime-apis-cache.txt",
+      "retrievedAt": "2026-09-09T11:35:40.649448+00:00",
+      "sha256": "c94076aec28a33b0cc7725ebd749530c233a559c90167d32a2d1ca4db8607d60"
+    },
+    "cf-runtime-apis-context": {
+      "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/runtime-apis/context.mdx",
+      "snapshot": "official-hono-supabase/cf-runtime-apis-context.txt",
+      "retrievedAt": "2026-09-09T11:35:40.638401+00:00",
+      "sha256": "c35fb5004718f62717b6c79041cc8e1267f8d64088f703d599a437eacc321e6b"
+    },
+    "cf-runtime-apis-nodejs-index": {
+      "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/runtime-apis/nodejs/index.mdx",
+      "snapshot": "official-hono-supabase/cf-runtime-apis-nodejs-index.txt",
+      "retrievedAt": "2026-09-09T11:36:56.648041+00:00",
+      "sha256": "ae1e388350503c2562bcc507b9dfb1010330146e3c1bf3d8058bb94beeefedbd"
+    },
+    "cf-runtime-apis-web-crypto": {
+      "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/runtime-apis/web-crypto.mdx",
+      "snapshot": "official-hono-supabase/cf-runtime-apis-web-crypto.txt",
+      "retrievedAt": "2026-09-09T11:36:57.394529+00:00",
+      "sha256": "864e1694335946e3c226564cbce0b87657631377ea7766dc03b7890025329442"
+    },
+    "cf-wrangler-configuration": {
+      "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/wrangler/configuration.mdx",
+      "snapshot": "official-hono-supabase/cf-wrangler-configuration.txt",
+      "retrievedAt": "2026-09-09T11:35:41.199151+00:00",
+      "sha256": "074d3f733cc2f1edeaef3fc270c5b981b49ce5e932211926dc49c5845a19b59d"
+    },
+    "cf-wrangler-environments": {
+      "url": "https://raw.githubusercontent.com/cloudflare/cloudflare-docs/production/src/content/docs/workers/wrangler/environments.mdx",
+      "snapshot": "official-hono-supabase/cf-wrangler-environments.txt",
+      "retrievedAt": "2026-09-09T11:35:40.985240+00:00",
+      "sha256": "953ead91e7b3d498fb6bfe0389814411b4de47e4b64209bd74c0e576eecb3781"
+    },
+    "hono-api-context": {
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/api/context.md",
+      "snapshot": "official-hono-supabase/hono-api-context.txt",
+      "retrievedAt": "2026-09-09T11:35:35.631669+00:00",
+      "sha256": "44017aa16555dc6184a2d4d2fe22217bd799b3144c771461e5e4ee1843cb196f"
+    },
+    "hono-api-exception": {
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/api/exception.md",
+      "snapshot": "official-hono-supabase/hono-api-exception.txt",
+      "retrievedAt": "2026-09-09T11:35:35.892864+00:00",
+      "sha256": "4c1ee31ac2b3ee5d4388eddebd041127a9b3721ace327dd76481a9fb956281fb"
+    },
+    "hono-api-hono": {
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/api/hono.md",
+      "snapshot": "official-hono-supabase/hono-api-hono.txt",
+      "retrievedAt": "2026-09-09T11:35:35.529883+00:00",
+      "sha256": "4ac59ca6edd35e80bfbbec4a46b3ae337bc9c679669ddb01aa71d39a9f593c0f"
+    },
+    "hono-api-routing": {
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/api/routing.md",
+      "snapshot": "official-hono-supabase/hono-api-routing.txt",
+      "retrievedAt": "2026-09-09T11:35:35.641308+00:00",
+      "sha256": "d94e30e8c7de6ff4e76378e89aca3e25e7056851d0e454e96481b4f668c95f61"
+    },
+    "hono-bearer-source": {
+      "url": "https://raw.githubusercontent.com/honojs/hono/v4.13.7/src/middleware/bearer-auth/index.ts",
+      "snapshot": "official-hono-supabase/hono-bearer-source.txt",
+      "retrievedAt": "2026-09-09T11:35:42.038550+00:00",
+      "sha256": "812029f5490dbfc24b4cebb04ab3aea58d93c024904c1db52b91b840f6b2c262"
+    },
+    "hono-concepts-routers": {
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/concepts/routers.md",
+      "snapshot": "official-hono-supabase/hono-concepts-routers.txt",
+      "retrievedAt": "2026-09-09T11:35:35.951352+00:00",
+      "sha256": "43987c236781636f40d9a18aa21ac2ac268d1df1ac6c4b9aa9c6875509325c70"
+    },
+    "hono-getting-started-cloudflare-workers": {
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/getting-started/cloudflare-workers.md",
+      "snapshot": "official-hono-supabase/hono-getting-started-cloudflare-workers.txt",
+      "retrievedAt": "2026-09-09T11:35:36.511173+00:00",
+      "sha256": "ed4b4800792124e03bac761e24843f1e1709b1269b801367967d6a8cd4a750c6"
+    },
+    "hono-guides-middleware": {
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/guides/middleware.md",
+      "snapshot": "official-hono-supabase/hono-guides-middleware.txt",
+      "retrievedAt": "2026-09-09T11:35:35.562125+00:00",
+      "sha256": "15b51a21ef0b8c6e3507b952d79360593a8e3b26dffe71d01bb9be1884e3adbc"
+    },
+    "hono-guides-rpc": {
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/guides/rpc.md",
+      "snapshot": "official-hono-supabase/hono-guides-rpc.txt",
+      "retrievedAt": "2026-09-09T11:35:34.981220+00:00",
+      "sha256": "8c6ee6d2f25bbbd69e5dab4d225b9b1fcc86e8909e233ef0fd464c1440b05aca"
+    },
+    "hono-guides-validation": {
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/guides/validation.md",
+      "snapshot": "official-hono-supabase/hono-guides-validation.txt",
+      "retrievedAt": "2026-09-09T11:35:35.328098+00:00",
+      "sha256": "e44320a65740583af6c27bdbb62c212fe5de428ca6ca30c53147f51ae48d1e99"
+    },
+    "hono-helpers-factory": {
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/helpers/factory.md",
+      "snapshot": "official-hono-supabase/hono-helpers-factory.txt",
+      "retrievedAt": "2026-09-09T11:35:35.893115+00:00",
+      "sha256": "1ed9b3bb1c0bb1f4f1b90c1d1894fd0e646d832abc07582a27914674962287a5"
+    },
+    "hono-helpers-streaming": {
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/helpers/streaming.md",
+      "snapshot": "official-hono-supabase/hono-helpers-streaming.txt",
+      "retrievedAt": "2026-09-09T11:35:36.100698+00:00",
+      "sha256": "9b26ed08a675fc65468589190c7a676b1bc784dead047ca9127fc45c0d878030"
+    },
+    "hono-middleware-builtin-body-limit": {
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/middleware/builtin/body-limit.md",
+      "snapshot": "official-hono-supabase/hono-middleware-builtin-body-limit.txt",
+      "retrievedAt": "2026-09-09T11:35:37.172389+00:00",
+      "sha256": "52f81a9bea2857e8c207a61ff900e2aedd8569ff702f5809f0827eb01af61673"
+    },
+    "hono-middleware-builtin-cache": {
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/middleware/builtin/cache.md",
+      "snapshot": "official-hono-supabase/hono-middleware-builtin-cache.txt",
+      "retrievedAt": "2026-09-09T11:35:37.406809+00:00",
+      "sha256": "c91dbbab38da9a74500569d5d749e30d5fc556f8144119d0b42fb443b9e62d69"
+    },
+    "hono-middleware-builtin-combine": {
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/middleware/builtin/combine.md",
+      "snapshot": "official-hono-supabase/hono-middleware-builtin-combine.txt",
+      "retrievedAt": "2026-09-09T11:35:36.921731+00:00",
+      "sha256": "8964da42245c3d5395902ac7f3bbd10247159b96c46673893a9b87f566486902"
+    },
+    "hono-middleware-builtin-compress": {
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/middleware/builtin/compress.md",
+      "snapshot": "official-hono-supabase/hono-middleware-builtin-compress.txt",
+      "retrievedAt": "2026-09-09T11:35:37.871076+00:00",
+      "sha256": "a2e9aad42c8521e24a8a56fc9d15ed0a1ab49045892722d0401c51d667595338"
+    },
+    "hono-middleware-builtin-cors": {
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/middleware/builtin/cors.md",
+      "snapshot": "official-hono-supabase/hono-middleware-builtin-cors.txt",
+      "retrievedAt": "2026-09-09T11:35:37.220083+00:00",
+      "sha256": "22be7f6dd7a94df12d204f9cfc54b9567c9010de0000aab2a176ff9249e3979b"
+    },
+    "hono-middleware-builtin-csrf": {
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/middleware/builtin/csrf.md",
+      "snapshot": "official-hono-supabase/hono-middleware-builtin-csrf.txt",
+      "retrievedAt": "2026-09-09T11:35:36.629032+00:00",
+      "sha256": "3ea1715aea929b8360250e57a916c61fa01b938159461cab99f9aa5be86a3fd4"
+    },
+    "hono-middleware-builtin-etag": {
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/middleware/builtin/etag.md",
+      "snapshot": "official-hono-supabase/hono-middleware-builtin-etag.txt",
+      "retrievedAt": "2026-09-09T11:35:37.999240+00:00",
+      "sha256": "7d6764da0fb953c5293f4695dd76cc6592ba2ca471a7dc1cb167d47553b6c5fb"
+    },
+    "hono-middleware-builtin-jwk": {
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/middleware/builtin/jwk.md",
+      "snapshot": "official-hono-supabase/hono-middleware-builtin-jwk.txt",
+      "retrievedAt": "2026-09-09T11:35:37.124114+00:00",
+      "sha256": "ca448fe78b2e54d390bb09d9fb415a9865a0f7ebc66c1cf09cf5f96977a33c25"
+    },
+    "hono-middleware-builtin-jwt": {
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/middleware/builtin/jwt.md",
+      "snapshot": "official-hono-supabase/hono-middleware-builtin-jwt.txt",
+      "retrievedAt": "2026-09-09T11:35:37.417711+00:00",
+      "sha256": "99322065a0a670fea10a047cb9db688b7c53ff6a185d8182f4e6caa897d512ac"
+    },
+    "hono-middleware-builtin-logger": {
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/middleware/builtin/logger.md",
+      "snapshot": "official-hono-supabase/hono-middleware-builtin-logger.txt",
+      "retrievedAt": "2026-09-09T11:35:37.583301+00:00",
+      "sha256": "dc5e69f0a602b7d761727cf0aa089e07d8ba85562fd0a78d07c6b80a412fb647"
+    },
+    "hono-middleware-builtin-secure-headers": {
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/middleware/builtin/secure-headers.md",
+      "snapshot": "official-hono-supabase/hono-middleware-builtin-secure-headers.txt",
+      "retrievedAt": "2026-09-09T11:35:37.519074+00:00",
+      "sha256": "269df763b339df300163f9f71de96b4e28c8a3a94f0084a55db8a37c06670bb7"
+    },
+    "hono-middleware-builtin-timeout": {
+      "url": "https://raw.githubusercontent.com/honojs/website/main/docs/middleware/builtin/timeout.md",
+      "snapshot": "official-hono-supabase/hono-middleware-builtin-timeout.txt",
+      "retrievedAt": "2026-09-09T11:35:36.958870+00:00",
+      "sha256": "608f5ada1a253259d9ac45058e83a2562c859d64c9a00f86d4e1e691955b0794"
+    },
+    "hono-migration": {
+      "url": "https://raw.githubusercontent.com/honojs/hono/v4.13.7/docs/MIGRATION.md",
+      "snapshot": "official-hono-supabase/hono-migration.txt",
+      "retrievedAt": "2026-09-09T11:35:37.769191+00:00",
+      "sha256": "5c8950d13ea733441a8eb7a7f09f94d0a4384734d072aba0e136f3bfd8e602c2"
+    },
+    "hono-node-release": {
+      "url": "https://api.github.com/repos/honojs/node-server/releases/latest",
+      "snapshot": "official-hono-supabase/hono-node-release.txt",
+      "retrievedAt": "2026-09-09T11:35:35.178005+00:00",
+      "sha256": "df73c9ed1ae56ea4774cc088f5e69015ca476765a6e1180456ad493ba22b3ca0"
+    },
+    "hono-release": {
+      "url": "https://api.github.com/repos/honojs/hono/releases/latest",
+      "snapshot": "official-hono-supabase/hono-release.txt",
+      "retrievedAt": "2026-09-09T11:35:35.190164+00:00",
+      "sha256": "9e0ad18a9ee03ba6f052cc2139397b9644d0c1c32259f2081debdf7e486ee624"
+    },
+    "node-adapter-package": {
+      "url": "https://raw.githubusercontent.com/honojs/node-server/v2.1.1/package.json",
+      "snapshot": "official-hono-supabase/node-adapter-package.txt",
+      "retrievedAt": "2026-09-09T11:40:14.333371+00:00",
+      "sha256": "f4fa3bd681dfc19b68d4541f67ca83427456f19b124594d0187c3cd70346aaf5"
+    },
+    "sdk-package": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/supabase-js/package.json",
+      "snapshot": "official-hono-supabase/sdk-package.txt",
+      "retrievedAt": "2026-09-09T11:36:56.928640+00:00",
+      "sha256": "4e6c5bc46b84681be897b12a9bfabc3324e555c5158505e9389461db2c099b95"
+    },
+    "supabase-database-postgres-row-level-security": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/postgres/row-level-security.mdx",
+      "snapshot": "official-hono-supabase/supabase-database-postgres-row-level-security.txt",
+      "retrievedAt": "2026-09-09T11:35:37.941248+00:00",
+      "sha256": "fe0736cfad9eb7dbae839677c73df0fb33f456ea0b416d9c0f4db1018af78356"
+    },
+    "supabase-getting-started-api-keys": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/getting-started/api-keys.mdx",
+      "snapshot": "official-hono-supabase/supabase-getting-started-api-keys.txt",
+      "retrievedAt": "2026-09-09T11:36:56.019959+00:00",
+      "sha256": "17bed83f79df3fc16b6eaacae370b70e2237e44cff2e073b3edc51549ecef301"
+    },
+    "workerd-compat": {
+      "url": "https://raw.githubusercontent.com/cloudflare/workerd/main/src/workerd/io/compatibility-date.capnp",
+      "snapshot": "official-hono-supabase/workerd-compat.txt",
+      "retrievedAt": "2026-09-09T11:43:57.611976+00:00",
+      "sha256": "fab40a68e920e10875e24b6de702a2a500fffa50420a2c983ef8f244afd5154d"
+    },
+    "zod-validator-package": {
+      "url": "https://raw.githubusercontent.com/honojs/middleware/main/packages/zod-validator/package.json",
+      "snapshot": "official-hono-supabase/zod-validator-package.txt",
+      "retrievedAt": "2026-09-09T11:40:17.216748+00:00",
+      "sha256": "93bbdbd56ecd265765c3bde73a77c01ac573ba79c409021ef93e090b27d7f068"
+    },
+    "zod-validator-readme": {
+      "url": "https://raw.githubusercontent.com/honojs/middleware/main/packages/zod-validator/README.md",
+      "snapshot": "official-hono-supabase/zod-validator-readme.txt",
+      "retrievedAt": "2026-09-09T11:40:17.857479+00:00",
+      "sha256": "6d10c6e36fd42589bc10aa2ae7507eebe4d9601ba45e8a3fee6348f3eec3462d"
+    }
+  },
+  "coverageNote": "Each reference section maps its assertions and included code/examples to dated official source IDs resolved in officialSources. Contiguous location includes headings; local owner/evidence rules are N/A for vendor verification. Root/vendor duplicates inherit reference findings, not a separate technical PASS.",
+  "activeCoverageCounts": {
+    "references": 18,
+    "aspects": 87,
+    "sourceEmittedUiMaintenanceSurfaces": 5
+  },
+  "sourceDeltaDisposition": {
+    "current-stable": "Pinned release metadata and code checked; do not auto-upgrade installed projects.",
+    "prerelease-experimental": "CLI declarative sync opt-in and Auth PKCE flow options inspected only where owned workflow needs them; no invented stable availability.",
+    "not-applicable": "Hono JSX-specific XSS release item outside API skill scope; SDK added bucket lifecycle/versioning/MFA features do not by themselves expand this baseline task.",
+    "pending-boundaries": "Hosted deployment, real Auth refresh, Realtime/Storage/Edge delivery, alternative OS/runtime executions not observed by reviewer."
+  },
+  "finalBaselineReadback": "hono-supabase-final-baseline-readback.json"
+}

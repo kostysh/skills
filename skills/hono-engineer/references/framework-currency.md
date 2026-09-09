@@ -10,6 +10,10 @@ Use this reference before a version-sensitive Hono, companion-package, adapter, 
 4. If latest guidance and the installed project surface differ, use behavior supported by the installed version unless the request authorizes an upgrade. Report the delta and the evidence needed to migrate.
 5. Stop or provide guidance-only output when the installed version cannot be established and the decision could change runtime behavior.
 
+## Dated adapter compatibility
+
+Checked 2026-09-09: `@hono/node-server` 2.1.1 declares Node >=20 in its published package engines. Some unversioned getting-started examples advertise an older floor; use the installed adapter's engines/source for a Node deployment decision. Preserve a compatible older adapter/runtime pair unless an upgrade is authorized. Core framework compatibility alone does not establish adapter or downstream SDK compatibility.
+
 ## Official source map
 
 - Hono current package release: <https://www.npmjs.com/package/hono>

@@ -1,0 +1,114 @@
+[
+  {
+    "file": "shadow-database.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/command-internal/db-bootstrap/shadow-database.ts",
+    "sha256": "56cbffa03638f5aab7fba568ebb403787fc0a273f3702aa8d64ee0f6a46dd511",
+    "bytes": 46317,
+    "checkedAt": "2026-09-09T13:12:31.164003+00:00"
+  },
+  {
+    "file": "shadow-cache.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/command-internal/db-bootstrap/shadow-cache.ts",
+    "sha256": "a3a8bbc1e9e010063bfda8a9af88e32773ae80128ed9df604990d471c240f1f3",
+    "bytes": 51308,
+    "checkedAt": "2026-09-09T13:12:30.979117+00:00"
+  },
+  {
+    "file": "docker-create-args.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/command-internal/db-bootstrap/docker-create-args.ts",
+    "sha256": "ec5491680005a90b85fe7d029d1f8acd14c39a2f75dc03dbf489cc4e23651f56",
+    "bytes": 29631,
+    "checkedAt": "2026-09-09T13:12:31.052745+00:00"
+  },
+  {
+    "file": "container-lifecycle.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/command-internal/db-bootstrap/container-lifecycle.ts",
+    "sha256": "8c1e6c29573c4a8221a92cdf4d1b8848b4f02684b961cfd5313400e7e1445273",
+    "bytes": 38195,
+    "checkedAt": "2026-09-09T13:12:31.099391+00:00"
+  },
+  {
+    "file": "bootstrap-config.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/command-internal/db-bootstrap/bootstrap-config.ts",
+    "sha256": "17bbd96c5c985f0b0e10de63d13b2097c895e0514730ec11230a7f4cbd3d2ca6",
+    "bytes": 17232,
+    "checkedAt": "2026-09-09T13:12:31.174423+00:00"
+  },
+  {
+    "file": "local-container-inputs.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/command-internal/db-bootstrap/local-container-inputs.ts",
+    "sha256": "888a4ddb7c66e06c4d3fe3af626b7180fc73c80eb9e9ea5b89cf90f9d7cd68ba",
+    "bytes": 16444,
+    "checkedAt": "2026-09-09T13:12:31.475796+00:00"
+  },
+  {
+    "file": "postgres.service.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/command-internal/db-bootstrap/postgres.service.ts",
+    "sha256": "cc898a0e73bf2cf9d7be0390af4925a9acd47a9f5d68811834cfa4640965721b",
+    "bytes": 29004,
+    "checkedAt": "2026-09-09T13:12:31.547445+00:00"
+  },
+  {
+    "file": "slim-runtime.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/command-internal/db-bootstrap/slim-runtime.ts",
+    "sha256": "375a1eaa7db89a625983c935caa961172dd5e244e8477d1e99380752f16dacd8",
+    "bytes": 1878,
+    "checkedAt": "2026-09-09T13:12:31.343481+00:00"
+  },
+  {
+    "file": "pinned-image.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/command-internal/db-bootstrap/pinned-image.ts",
+    "sha256": "a132945d305d64554ab97ae0c225ac10658b2b223d04294dd893d46ab48998cf",
+    "bytes": 1597,
+    "checkedAt": "2026-09-09T13:12:31.431926+00:00"
+  },
+  {
+    "file": "sync.command.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/schema/declarative/sync/sync.command.ts",
+    "sha256": "bd2b51efdf045eceb7d6079a3ef724930c03deebc2781044a7fb07fc2d6ccf78",
+    "bytes": 4564,
+    "checkedAt": "2026-09-09T13:12:31.539613+00:00"
+  },
+  {
+    "file": "sync.handler.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/schema/declarative/sync/sync.handler.ts",
+    "sha256": "9409e36b5bbf5b3703030b943166b9adb7b9614d2a4edccf5e525aa9dda26849",
+    "bytes": 38576,
+    "checkedAt": "2026-09-09T13:12:31.934786+00:00"
+  },
+  {
+    "file": "SIDE_EFFECTS.md",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/schema/declarative/sync/SIDE_EFFECTS.md",
+    "sha256": "8dcb1bc59a891cd2424632c6b86c9025ca93e4ebd6fa3b66d4803d6678615263",
+    "bytes": 18853,
+    "checkedAt": "2026-09-09T13:12:31.651519+00:00"
+  },
+  {
+    "file": "wrangler-latest.json",
+    "url": "https://registry.npmjs.org/wrangler/latest",
+    "sha256": "40251e008811cfdf2df973a19278c84a7180451697045f6752ff1e1447f71c05",
+    "bytes": 7044,
+    "checkedAt": "2026-09-09T13:12:31.794792+00:00"
+  },
+  {
+    "file": "cli-legacy-diff.go",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.39.2/internal/db/diff/diff.go",
+    "sha256": "ccc7010bbd723efecdc58f721d2cfcdd57597c76581603cc946af6781530b922",
+    "bytes": 6636,
+    "checkedAt": "2026-09-09T13:12:31.767545+00:00"
+  },
+  {
+    "file": "cli-legacy-config.go",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.39.2/pkg/config/config.go",
+    "sha256": "97de9a73543f3dcbccde3e4770007081f2b1f3bce02755f4ad08b62a3aa4eb2a",
+    "bytes": 47180,
+    "checkedAt": "2026-09-09T13:12:32.415381+00:00"
+  },
+  {
+    "file": "cli-legacy-release.json",
+    "url": "https://api.github.com/repos/supabase/cli/releases/tags/v2.39.2",
+    "sha256": "da826268b7468a8764b699bafea21f6d33047649026e8e3b91a8aff6e2991dde",
+    "bytes": 27010,
+    "checkedAt": "2026-09-09T13:12:31.907130+00:00"
+  }
+]

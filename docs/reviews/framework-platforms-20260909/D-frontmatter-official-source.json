@@ -1,0 +1,24 @@
+{
+  "v0.20.0": {
+    "url": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/v0.20.0/markdownlint-cli2.mjs",
+    "file": "official-next-electron-docusaurus/markdownlint-cli2-v0.20.0.mjs",
+    "retrievedAt": "2026-09-09T16:14:27.285142+00:00",
+    "sha256": "1af3068addafcb9984558f85e099ea4c07e630b179df1dc309a8f7536cb1d838",
+    "lines": [
+      784,
+      786
+    ],
+    "constructor": "      \"frontMatter\": markdownlintOptions.frontMatter\n        ? new RegExp(markdownlintOptions.frontMatter, \"u\")\n        : undefined,"
+  },
+  "v0.23.2": {
+    "url": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/v0.23.2/markdownlint-cli2.mjs",
+    "file": "official-next-electron-docusaurus/markdownlint-cli2-v0.23.2.mjs",
+    "retrievedAt": "2026-09-09T16:14:27.908794+00:00",
+    "sha256": "0d0f9dfec83c44c28a09d1023e8eb3478379cb7de3faf823ccbaf3ee49be495d",
+    "lines": [
+      776,
+      778
+    ],
+    "constructor": "      \"frontMatter\": markdownlintOptions?.frontMatter\n        ? new RegExp(markdownlintOptions?.frontMatter, \"u\")\n        : undefined,"
+  }
+}

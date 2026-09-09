@@ -1,0 +1,24 @@
+{
+  "files": {
+    "commands.jsonl": "3221722956844f299269517fbea932e4678fdac22a724edd1ed042b6253eaa9c",
+    "results.json": "965b190743a1e07489637d1d1e471f7dbd257cf46beb4b34e3e8b0fac8f9a8a9",
+    "run.mjs": "339ebfe7a48783a3137d5e97c4007f3b66252199bad77308b917c0d66fb435d9",
+    "baseline-negative/.markdownlint-cli2.jsonc": "38aee27be4da3ab62eeda149f411eebda245a11b1297a11b9df5f596d56e85e1",
+    "baseline-negative/.gitignore": "16d30e4462189fb14dd611bdb708c510630c576a1f35b9383e89a4352da36c97",
+    "baseline-negative/doc.md": "df51a7f2c9c9f41377f7e1f27da1f9e5402cb2455b4ebe6e9a12b3a225022c0f",
+    "baseline-negative/package.json": "0f7e9053efef64b614bd9c682c678d577072ca49d4209ed5fc11ca32668b2d8c",
+    "candidate-negative/.markdownlint-cli2.jsonc": "25b490a3f41fdc7f032d618b7b29779f325c82a54e29e6ae7a2e06f73ab03bc3",
+    "candidate-negative/.gitignore": "16d30e4462189fb14dd611bdb708c510630c576a1f35b9383e89a4352da36c97",
+    "candidate-negative/doc.md": "df51a7f2c9c9f41377f7e1f27da1f9e5402cb2455b4ebe6e9a12b3a225022c0f",
+    "candidate-negative/package.json": "0f7e9053efef64b614bd9c682c678d577072ca49d4209ed5fc11ca32668b2d8c",
+    "baseline-positive/.markdownlint-cli2.jsonc": "38aee27be4da3ab62eeda149f411eebda245a11b1297a11b9df5f596d56e85e1",
+    "baseline-positive/.gitignore": "16d30e4462189fb14dd611bdb708c510630c576a1f35b9383e89a4352da36c97",
+    "baseline-positive/doc.md": "188a106a8d92c635bf547558cee44d72cfd00629a2e26fe5c100ea0c5e42605c",
+    "baseline-positive/package.json": "0f7e9053efef64b614bd9c682c678d577072ca49d4209ed5fc11ca32668b2d8c",
+    "candidate-positive/.markdownlint-cli2.jsonc": "25b490a3f41fdc7f032d618b7b29779f325c82a54e29e6ae7a2e06f73ab03bc3",
+    "candidate-positive/.gitignore": "16d30e4462189fb14dd611bdb708c510630c576a1f35b9383e89a4352da36c97",
+    "candidate-positive/doc.md": "188a106a8d92c635bf547558cee44d72cfd00629a2e26fe5c100ea0c5e42605c",
+    "candidate-positive/package.json": "0f7e9053efef64b614bd9c682c678d577072ca49d4209ed5fc11ca32668b2d8c"
+  },
+  "boundary": "Paired actual CLI0.20.0: baseline valid YAML fails MD022; candidate valid YAML passes; malformed heading fails both. No disabled-rule workaround. Plain fixture root globs comparable despite intended candidate scope expansion."
+}

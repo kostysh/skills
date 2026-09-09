@@ -1,0 +1,10 @@
+{
+  "imageId": "sha256:66089200353d90686fe9b252a47d17d078364bf47c50190852c33dc850a0191f",
+  "repoDigests": [
+    "public.ecr.aws/supabase/postgres@sha256:6942962433a569e87f228b4d4ab7e11db5deca64e43babb3a038443ad6c4f1bb"
+  ],
+  "allowedAliases": [
+    "supabase/postgres:17.6.1.167",
+    "public.ecr.aws/supabase/postgres:17.6.1.167"
+  ]
+}

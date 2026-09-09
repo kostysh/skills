@@ -1,0 +1,8 @@
+{
+  "at": "2026-09-09T15:52:29.956750+00:00",
+  "base": "d89d66f2c99bf8b9e84e5b4def54fa60192856a5",
+  "targetCount": 7,
+  "allBaselineTargetHashesUnchanged": true,
+  "baselineSnapshot": "baseline-snapshot.json",
+  "stage": "Baseline executions and assessments recorded before candidate target edits; baseline source FAIL findings remain the authoring input."
+}

@@ -1,0 +1,14 @@
+{
+  "hono-engineer": {
+    "declaredFiles": 42,
+    "presentFiles": 42,
+    "missing": [],
+    "mismatch": []
+  },
+  "supabase-engineer": {
+    "declaredFiles": 32,
+    "presentFiles": 32,
+    "missing": [],
+    "mismatch": []
+  }
+}

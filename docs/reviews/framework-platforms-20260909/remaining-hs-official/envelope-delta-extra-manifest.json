@@ -1,0 +1,26 @@
+[
+  {
+    "file": "legacy-pgdelta-engine.next.layer.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/shared/legacy-pgdelta-engine.next.layer.ts",
+    "sha256": "0453c5ba512886a1fccb949e37b028e3c850d64e9eb7b94d7b0802e3deecc415",
+    "checkedAt": "2026-09-09T13:45:29.121926+00:00"
+  },
+  {
+    "file": "legacy-pgdelta-next-adapter.layer.ts",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/shared/legacy-pgdelta-next-adapter.layer.ts",
+    "sha256": "13cf7ef0b8927bde183ff63951faf497797ba2cdfcdaa6b0b669abdd005ef466",
+    "checkedAt": "2026-09-09T13:45:29.733850+00:00"
+  },
+  {
+    "file": "cli-legacy-migra.go",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.39.2/internal/db/diff/migra.go",
+    "sha256": "660a5727fb557e0f9d612b59e05e2dcebbac3bc86e6d29e23fa88a1a967c9f90",
+    "checkedAt": "2026-09-09T13:45:29.070059+00:00"
+  },
+  {
+    "file": "cli-legacy-dbstart.go",
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.39.2/internal/db/start/start.go",
+    "sha256": "f1b5aa0599058e048a84f717aa81762904c31c2bc9306bbf29a96a2a274db7ba",
+    "checkedAt": "2026-09-09T13:45:28.870161+00:00"
+  }
+]

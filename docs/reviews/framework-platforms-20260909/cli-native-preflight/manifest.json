@@ -1,0 +1,16 @@
+{
+  "cli-preflight-commands.jsonl": "07de14ee9cbd4eebf8ca1820e0f5a15d24f0d7c096832b49d72af2a6c35a5b49",
+  "proxy.test.mjs": "0dd1c993f597825871ed27fc7beac07467a97deff5ef611e763bc9cb641d8c99",
+  "proxy-final-readback.json": "8d434afb178e910bf38e144ce8541ab405b930e1c953b524cad618b527d8fe4f",
+  "cli-infrastructure-commands.jsonl": "f7257623310ff72a6341b639054f257c505441a2290394126803bc6778e0a948",
+  "proxy.pre-native.mjs": "1f0d99e2cbbc9ca64c663fa901e3bc1cb80b1695ce57f22d3039c60a6d4cabfb",
+  "proxy.mjs": "29a28aa281fb290cb952325c1744c085e8bd9e5055617b80d22a11b21e28c3c2",
+  "cli-native-inventory.jsonl": "22228be496d5fda5e681f85e8086bd75a580a90676258f218d4c9d9fdd82cb6a",
+  "state.json": "7391f7b6ebb31af1c8cf3877b4d076cadbf16e140ee8fcfff9c5722c370fbc4c",
+  "README.md": "acbc203a2ed85dcad1ac83c9efdf5eb2652dcbc63def280e88fc77f46e7b771e",
+  "cli-paused-services.json": "181d303578be5a680c101ec2de097df8f8ba65054afce405ed9d867198913fdf",
+  "cli-preflight-commands-cleanup.jsonl": "9e5830a3898ab86deac7b3fafd1bd6be9345522f10ea6416dbbabb96afe21b96",
+  "supervisor-readback.json": "02eb5c2b660d51bd9f48e7daacca1d6b3e9bcf6e130b04c4a3c0b31ec3640516",
+  "runtime-cli-run.py": "de5147a39ec0f3818fa1d4d2eda7114f3d0a22f3b4a65790b3ae80ce8f671b5b",
+  "image-bindings.json": "2eb7f3279ad1f19a5ee0320b66137911525661b40f05c35f0f8b3b9579e2e447"
+}

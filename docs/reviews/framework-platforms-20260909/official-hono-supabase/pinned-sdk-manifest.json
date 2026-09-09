@@ -1,0 +1,30 @@
+[
+  {
+    "id": "sdk-builder",
+    "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/postgrest-js/src/PostgrestBuilder.ts",
+    "retrievedAt": "2026-09-09T11:37:33.124979+00:00",
+    "sha256": "12a13c40d213a6ee9691b8441404193ecbb7628597c6c6159c46cb86fe787c4e",
+    "file": "sdk-builder.txt"
+  },
+  {
+    "id": "sdk-postgrest-client",
+    "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/postgrest-js/src/PostgrestClient.ts",
+    "retrievedAt": "2026-09-09T11:37:33.631539+00:00",
+    "sha256": "acfe0e1647cac92a9b47d2f368e2c1ce62f3e3ff6f4b6d63fa3058db0f7b9e0e",
+    "file": "sdk-postgrest-client.txt"
+  },
+  {
+    "id": "sdk-types",
+    "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/supabase-js/src/lib/types.ts",
+    "retrievedAt": "2026-09-09T11:37:33.975677+00:00",
+    "sha256": "6d21d981242cd2d8ac65009f5974ad2138f2a53f23da1e42f0ca28cd09b97990",
+    "file": "sdk-types.txt"
+  },
+  {
+    "id": "sdk-client",
+    "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/supabase-js/src/SupabaseClient.ts",
+    "retrievedAt": "2026-09-09T11:37:34.331533+00:00",
+    "sha256": "eb923579957052a1160cda34a65ff67496d46abf37ae022cdd331f8d6d8bd800",
+    "file": "sdk-client.txt"
+  }
+]

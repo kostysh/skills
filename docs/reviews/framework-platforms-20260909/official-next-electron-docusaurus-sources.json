@@ -1,0 +1,2594 @@
+[
+  {
+    "url": "https://nextjs.org/docs/app/guides/upgrading/version-16",
+    "final_url": "https://nextjs.org/docs/app/guides/upgrading/version-16",
+    "file": "official-next-electron-docusaurus/000-nextjs.org-docs-app-guides-upgrading-version-16.txt",
+    "bytes": 43388,
+    "content_sha256": "3e7964c1a88e05896018c5e12e7331bb5e01b01405f053d3ff49750d94572993",
+    "text_sha256": "3e7964c1a88e05896018c5e12e7331bb5e01b01405f053d3ff49750d94572993",
+    "retrieved_at": "2026-09-09T11:36:58.598160+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/guides/upgrading/version-15",
+    "final_url": "https://nextjs.org/docs/app/guides/upgrading/version-15",
+    "file": "official-next-electron-docusaurus/001-nextjs.org-docs-app-guides-upgrading-version-15.txt",
+    "bytes": 17291,
+    "content_sha256": "56a2272e68df43af726f790b944364144efb2346a2cfa9f8844011cf8206113b",
+    "text_sha256": "56a2272e68df43af726f790b944364144efb2346a2cfa9f8844011cf8206113b",
+    "retrieved_at": "2026-09-09T11:36:58.575727+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/getting-started/installation",
+    "final_url": "https://nextjs.org/docs/app/getting-started/installation",
+    "file": "official-next-electron-docusaurus/002-nextjs.org-docs-app-getting-started-installation.txt",
+    "bytes": 14159,
+    "content_sha256": "01a28507a261d32855e202408d02a8d40bad6c18707a532dc7fde080c39465ac",
+    "text_sha256": "01a28507a261d32855e202408d02a8d40bad6c18707a532dc7fde080c39465ac",
+    "retrieved_at": "2026-09-09T11:36:58.579095+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/getting-started/project-structure",
+    "final_url": "https://nextjs.org/docs/app/getting-started/project-structure",
+    "file": "official-next-electron-docusaurus/003-nextjs.org-docs-app-getting-started-project-structure.txt",
+    "bytes": 22484,
+    "content_sha256": "e2b5d1794100b56ff2ecd6a50200482bf2f18e168b73feda5bf419e68a76c3ee",
+    "text_sha256": "e2b5d1794100b56ff2ecd6a50200482bf2f18e168b73feda5bf419e68a76c3ee",
+    "retrieved_at": "2026-09-09T11:36:58.586345+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/getting-started/layouts-and-pages",
+    "final_url": "https://nextjs.org/docs/app/getting-started/layouts-and-pages",
+    "file": "official-next-electron-docusaurus/004-nextjs.org-docs-app-getting-started-layouts-and-pages.txt",
+    "bytes": 13369,
+    "content_sha256": "42ceb018813ead338255cc35add3c0a0da8830787c7ee5e41d6fdc3d5f5f79a4",
+    "text_sha256": "42ceb018813ead338255cc35add3c0a0da8830787c7ee5e41d6fdc3d5f5f79a4",
+    "retrieved_at": "2026-09-09T11:36:58.781971+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/getting-started/server-and-client-components",
+    "final_url": "https://nextjs.org/docs/app/getting-started/server-and-client-components",
+    "file": "official-next-electron-docusaurus/005-nextjs.org-docs-app-getting-started-server-and-client-components.txt",
+    "bytes": 20420,
+    "content_sha256": "4595c1a2ed17ab6ae80a0bd9ffe41cea8e6deeb8c57a93b715ddbcf4ad6a04b0",
+    "text_sha256": "4595c1a2ed17ab6ae80a0bd9ffe41cea8e6deeb8c57a93b715ddbcf4ad6a04b0",
+    "retrieved_at": "2026-09-09T11:36:58.754401+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/getting-started/fetching-data",
+    "final_url": "https://nextjs.org/docs/app/getting-started/fetching-data",
+    "file": "official-next-electron-docusaurus/006-nextjs.org-docs-app-getting-started-fetching-data.txt",
+    "bytes": 24696,
+    "content_sha256": "98bf8ea8f196a95fb44fe37e1ba6e15053030092ce5584e3c2c57f238d9305b2",
+    "text_sha256": "98bf8ea8f196a95fb44fe37e1ba6e15053030092ce5584e3c2c57f238d9305b2",
+    "retrieved_at": "2026-09-09T11:36:58.758490+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/getting-started/updating-data",
+    "final_url": "https://nextjs.org/docs/app/getting-started/updating-data",
+    "file": "official-next-electron-docusaurus/007-nextjs.org-docs-app-getting-started-updating-data.txt",
+    "bytes": 628,
+    "content_sha256": "1ccc370563b3b7a4dbcd6341d908bc6b5b6b63c0b549ba21b55306fe7608586c",
+    "text_sha256": "1ccc370563b3b7a4dbcd6341d908bc6b5b6b63c0b549ba21b55306fe7608586c",
+    "retrieved_at": "2026-09-09T11:36:58.899698+00:00",
+    "status": "unavailable",
+    "reason": "HTTP200 soft404; excluded as substantive evidence"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/getting-started/caching-and-revalidating",
+    "final_url": "https://nextjs.org/docs/app/getting-started/caching",
+    "file": "official-next-electron-docusaurus/008-nextjs.org-docs-app-getting-started-caching-and-revalidating.txt",
+    "bytes": 30314,
+    "content_sha256": "b614b642af9d386be0a49e54c1d21dabd99694f147a8a8863eab26673c2039a2",
+    "text_sha256": "b614b642af9d386be0a49e54c1d21dabd99694f147a8a8863eab26673c2039a2",
+    "retrieved_at": "2026-09-09T11:36:59.111644+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/getting-started/error-handling",
+    "final_url": "https://nextjs.org/docs/app/getting-started/error-handling",
+    "file": "official-next-electron-docusaurus/009-nextjs.org-docs-app-getting-started-error-handling.txt",
+    "bytes": 12965,
+    "content_sha256": "aaf9e67b2fe8a30f9476064a2340051ed587a7780d8f7c83d929766b17624681",
+    "text_sha256": "aaf9e67b2fe8a30f9476064a2340051ed587a7780d8f7c83d929766b17624681",
+    "retrieved_at": "2026-09-09T11:36:58.950898+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/getting-started/css",
+    "final_url": "https://nextjs.org/docs/app/getting-started/css",
+    "file": "official-next-electron-docusaurus/010-nextjs.org-docs-app-getting-started-css.txt",
+    "bytes": 8933,
+    "content_sha256": "8aa878c201e7de50338d9df7053f362c178a0422b9564b0d762ad3dfb078793d",
+    "text_sha256": "8aa878c201e7de50338d9df7053f362c178a0422b9564b0d762ad3dfb078793d",
+    "retrieved_at": "2026-09-09T11:36:58.947328+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/getting-started/route-handlers",
+    "final_url": "https://nextjs.org/docs/app/getting-started/route-handlers",
+    "file": "official-next-electron-docusaurus/011-nextjs.org-docs-app-getting-started-route-handlers.txt",
+    "bytes": 8796,
+    "content_sha256": "4f493fd76fcc91cfa8ac9c1c32338ce50c326f1421981d8990f184ac1ce54469",
+    "text_sha256": "4f493fd76fcc91cfa8ac9c1c32338ce50c326f1421981d8990f184ac1ce54469",
+    "retrieved_at": "2026-09-09T11:36:59.051172+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/guides/lazy-loading",
+    "final_url": "https://nextjs.org/docs/app/guides/lazy-loading",
+    "file": "official-next-electron-docusaurus/012-nextjs.org-docs-app-guides-lazy-loading.txt",
+    "bytes": 7812,
+    "content_sha256": "5edce91f1c2b184229be09622b52131498832c8481351247a1bec7ed6cab8b8d",
+    "text_sha256": "5edce91f1c2b184229be09622b52131498832c8481351247a1bec7ed6cab8b8d",
+    "retrieved_at": "2026-09-09T11:36:59.087489+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/guides/package-bundling",
+    "final_url": "https://nextjs.org/docs/app/guides/package-bundling",
+    "file": "official-next-electron-docusaurus/013-nextjs.org-docs-app-guides-package-bundling.txt",
+    "bytes": 9634,
+    "content_sha256": "c282ccabbf46e1e3a4caf624354bd18593a146b65b452e328925d9d20ac22d4d",
+    "text_sha256": "c282ccabbf46e1e3a4caf624354bd18593a146b65b452e328925d9d20ac22d4d",
+    "retrieved_at": "2026-09-09T11:36:59.118930+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/guides/mcp",
+    "final_url": "https://nextjs.org/docs/app/guides/mcp",
+    "file": "official-next-electron-docusaurus/014-nextjs.org-docs-app-guides-mcp.txt",
+    "bytes": 8111,
+    "content_sha256": "5385a8f6f036dbadc022c14fd74dc165f751bf3f9ece75804a0782121376d335",
+    "text_sha256": "5385a8f6f036dbadc022c14fd74dc165f751bf3f9ece75804a0782121376d335",
+    "retrieved_at": "2026-09-09T11:36:59.383513+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/guides/ai-agents",
+    "final_url": "https://nextjs.org/docs/app/guides/ai-agents",
+    "file": "official-next-electron-docusaurus/015-nextjs.org-docs-app-guides-ai-agents.txt",
+    "bytes": 15001,
+    "content_sha256": "1367645c5ca8229b6a0be894bde11ecc975bfdf140dd9bbde26a1872ce2197e5",
+    "text_sha256": "1367645c5ca8229b6a0be894bde11ecc975bfdf140dd9bbde26a1872ce2197e5",
+    "retrieved_at": "2026-09-09T11:36:59.259582+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/guides/server-actions",
+    "final_url": "https://nextjs.org/docs/app/guides/server-actions",
+    "file": "official-next-electron-docusaurus/016-nextjs.org-docs-app-guides-server-actions.txt",
+    "bytes": 14216,
+    "content_sha256": "e9831c8b96e4812f78bab0a0dac150524eed4fc2714df38b01bd6df615b0ff45",
+    "text_sha256": "e9831c8b96e4812f78bab0a0dac150524eed4fc2714df38b01bd6df615b0ff45",
+    "retrieved_at": "2026-09-09T11:36:59.251808+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/guides/data-security",
+    "final_url": "https://nextjs.org/docs/app/guides/data-security",
+    "file": "official-next-electron-docusaurus/017-nextjs.org-docs-app-guides-data-security.txt",
+    "bytes": 24790,
+    "content_sha256": "e228d041e3ebaefb6d13aff0b693028366818393f54a610abdf89140d9b0f628",
+    "text_sha256": "e228d041e3ebaefb6d13aff0b693028366818393f54a610abdf89140d9b0f628",
+    "retrieved_at": "2026-09-09T11:36:59.254865+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/guides/self-hosting",
+    "final_url": "https://nextjs.org/docs/app/guides/self-hosting",
+    "file": "official-next-electron-docusaurus/018-nextjs.org-docs-app-guides-self-hosting.txt",
+    "bytes": 18830,
+    "content_sha256": "2fd8093a58ca203ba96e0bf17cd159924d08ef66d6e33a1b5e0fe1999e70e7ae",
+    "text_sha256": "2fd8093a58ca203ba96e0bf17cd159924d08ef66d6e33a1b5e0fe1999e70e7ae",
+    "retrieved_at": "2026-09-09T11:36:59.474025+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/guides/environment-variables",
+    "final_url": "https://nextjs.org/docs/app/guides/environment-variables",
+    "file": "official-next-electron-docusaurus/019-nextjs.org-docs-app-guides-environment-variables.txt",
+    "bytes": 10720,
+    "content_sha256": "3c5178a7f9ae25f181f7cebf86c67cb4dd36519618519b158cc15ea3689beb11",
+    "text_sha256": "3c5178a7f9ae25f181f7cebf86c67cb4dd36519618519b158cc15ea3689beb11",
+    "retrieved_at": "2026-09-09T11:36:59.431613+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/guides/json-ld",
+    "final_url": "https://nextjs.org/docs/app/guides/json-ld",
+    "file": "official-next-electron-docusaurus/020-nextjs.org-docs-app-guides-json-ld.txt",
+    "bytes": 3664,
+    "content_sha256": "7e38dabbc576a98b209575eb952977e8eb376d3ad8bdab7d2b37f5c151e340cc",
+    "text_sha256": "7e38dabbc576a98b209575eb952977e8eb376d3ad8bdab7d2b37f5c151e340cc",
+    "retrieved_at": "2026-09-09T11:36:59.432331+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/guides/scripts",
+    "final_url": "https://nextjs.org/docs/app/guides/scripts",
+    "file": "official-next-electron-docusaurus/021-nextjs.org-docs-app-guides-scripts.txt",
+    "bytes": 8455,
+    "content_sha256": "ed879021a7889164def3badf9a04aee46cebe42f34a59b32b2824e68275eeb98",
+    "text_sha256": "ed879021a7889164def3badf9a04aee46cebe42f34a59b32b2824e68275eeb98",
+    "retrieved_at": "2026-09-09T11:36:59.567393+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/guides/third-party-libraries",
+    "final_url": "https://nextjs.org/docs/app/guides/third-party-libraries",
+    "file": "official-next-electron-docusaurus/022-nextjs.org-docs-app-guides-third-party-libraries.txt",
+    "bytes": 14515,
+    "content_sha256": "8e784ee40648e03ad53bc134ea92ca9e1dcd91f2f69ab07da8c2b1868972afab",
+    "text_sha256": "8e784ee40648e03ad53bc134ea92ca9e1dcd91f2f69ab07da8c2b1868972afab",
+    "retrieved_at": "2026-09-09T11:36:59.663234+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/guides/static-exports",
+    "final_url": "https://nextjs.org/docs/app/guides/static-exports",
+    "file": "official-next-electron-docusaurus/023-nextjs.org-docs-app-guides-static-exports.txt",
+    "bytes": 10938,
+    "content_sha256": "84a49d5ff81b48f509a594acb3aa8a72be6e7e58265a24272d837efd5c34936d",
+    "text_sha256": "84a49d5ff81b48f509a594acb3aa8a72be6e7e58265a24272d837efd5c34936d",
+    "retrieved_at": "2026-09-09T11:36:59.619478+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/guides/caching",
+    "final_url": "https://nextjs.org/docs/app/guides/caching-without-cache-components",
+    "file": "official-next-electron-docusaurus/024-nextjs.org-docs-app-guides-caching.txt",
+    "bytes": 16534,
+    "content_sha256": "c579a0e5dd55cf6c81e204348d64759069e9eb4ccb1ef5887d09c521655d174a",
+    "text_sha256": "c579a0e5dd55cf6c81e204348d64759069e9eb4ccb1ef5887d09c521655d174a",
+    "retrieved_at": "2026-09-09T11:36:59.846704+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/directives/use-cache",
+    "final_url": "https://nextjs.org/docs/app/api-reference/directives/use-cache",
+    "file": "official-next-electron-docusaurus/025-nextjs.org-docs-app-api-reference-directives-use-cache.txt",
+    "bytes": 31968,
+    "content_sha256": "b1b0e5c005752f305b8646c9b9c685fbe4d16aa106680c518056aff12af13ea3",
+    "text_sha256": "b1b0e5c005752f305b8646c9b9c685fbe4d16aa106680c518056aff12af13ea3",
+    "retrieved_at": "2026-09-09T11:36:59.743114+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/file-conventions/proxy",
+    "final_url": "https://nextjs.org/docs/app/api-reference/file-conventions/proxy",
+    "file": "official-next-electron-docusaurus/026-nextjs.org-docs-app-api-reference-file-conventions-proxy.txt",
+    "bytes": 31480,
+    "content_sha256": "0b6595132a692e3b93bfb06a486008592b19ae06381a7b9440eaf7dd6b94a004",
+    "text_sha256": "0b6595132a692e3b93bfb06a486008592b19ae06381a7b9440eaf7dd6b94a004",
+    "retrieved_at": "2026-09-09T11:36:59.785697+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/file-conventions/parallel-routes",
+    "final_url": "https://nextjs.org/docs/app/api-reference/file-conventions/parallel-routes",
+    "file": "official-next-electron-docusaurus/027-nextjs.org-docs-app-api-reference-file-conventions-parallel-routes.txt",
+    "bytes": 16347,
+    "content_sha256": "e4ef20455197b82250f098bc10549bbb4ff1d86c7a428db11c972ff94e2391e9",
+    "text_sha256": "e4ef20455197b82250f098bc10549bbb4ff1d86c7a428db11c972ff94e2391e9",
+    "retrieved_at": "2026-09-09T11:36:59.834313+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/file-conventions/intercepting-routes",
+    "final_url": "https://nextjs.org/docs/app/api-reference/file-conventions/intercepting-routes",
+    "file": "official-next-electron-docusaurus/028-nextjs.org-docs-app-api-reference-file-conventions-intercepting-routes.txt",
+    "bytes": 4386,
+    "content_sha256": "89ba0f614497d7c49dc7efdde6fec6621180579da52deaea0c3457a4dd3e3b5c",
+    "text_sha256": "89ba0f614497d7c49dc7efdde6fec6621180579da52deaea0c3457a4dd3e3b5c",
+    "retrieved_at": "2026-09-09T11:37:00.005850+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/file-conventions/route",
+    "final_url": "https://nextjs.org/docs/app/api-reference/file-conventions/route",
+    "file": "official-next-electron-docusaurus/029-nextjs.org-docs-app-api-reference-file-conventions-route.txt",
+    "bytes": 20575,
+    "content_sha256": "993bb9c959ba60292a309f709071b386a16b866088e634cbf7574d27231df390",
+    "text_sha256": "993bb9c959ba60292a309f709071b386a16b866088e634cbf7574d27231df390",
+    "retrieved_at": "2026-09-09T11:36:59.930772+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/file-conventions/template",
+    "final_url": "https://nextjs.org/docs/app/api-reference/file-conventions/template",
+    "file": "official-next-electron-docusaurus/030-nextjs.org-docs-app-api-reference-file-conventions-template.txt",
+    "bytes": 5736,
+    "content_sha256": "05b1bb47db021074b2129c86799da42f0c9d2351e51988a9e947be54107e3d21",
+    "text_sha256": "05b1bb47db021074b2129c86799da42f0c9d2351e51988a9e947be54107e3d21",
+    "retrieved_at": "2026-09-09T11:36:59.997984+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/file-conventions/error",
+    "final_url": "https://nextjs.org/docs/app/api-reference/file-conventions/error",
+    "file": "official-next-electron-docusaurus/031-nextjs.org-docs-app-api-reference-file-conventions-error.txt",
+    "bytes": 11594,
+    "content_sha256": "9dc5e0db78089b0797f94709c8cf426a0a0646e0d26eb196a1908f58e92d231a",
+    "text_sha256": "9dc5e0db78089b0797f94709c8cf426a0a0646e0d26eb196a1908f58e92d231a",
+    "retrieved_at": "2026-09-09T11:37:00.014527+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/file-conventions/metadata/opengraph-image",
+    "final_url": "https://nextjs.org/docs/app/api-reference/file-conventions/metadata/opengraph-image",
+    "file": "official-next-electron-docusaurus/032-nextjs.org-docs-app-api-reference-file-conventions-metadata-opengraph-image.txt",
+    "bytes": 17233,
+    "content_sha256": "fbccc2a9001f54bc74aa523f754432c1313b4f93df6e69a12fe28bc8a71a30ba",
+    "text_sha256": "fbccc2a9001f54bc74aa523f754432c1313b4f93df6e69a12fe28bc8a71a30ba",
+    "retrieved_at": "2026-09-09T11:37:00.066595+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap",
+    "final_url": "https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap",
+    "file": "official-next-electron-docusaurus/033-nextjs.org-docs-app-api-reference-file-conventions-metadata-sitemap.txt",
+    "bytes": 12385,
+    "content_sha256": "26d75662c67aa4b036562488520b1aeaa74b7257996afff9496a92d35e943b3b",
+    "text_sha256": "26d75662c67aa4b036562488520b1aeaa74b7257996afff9496a92d35e943b3b",
+    "retrieved_at": "2026-09-09T11:37:00.134548+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/redirect",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/redirect",
+    "file": "official-next-electron-docusaurus/034-nextjs.org-docs-app-api-reference-functions-redirect.txt",
+    "bytes": 9068,
+    "content_sha256": "5a63cea1036eec628a3e2b98cf12c6caac7aaaa03fe930bce7d7eb9b502f3675",
+    "text_sha256": "5a63cea1036eec628a3e2b98cf12c6caac7aaaa03fe930bce7d7eb9b502f3675",
+    "retrieved_at": "2026-09-09T11:37:00.138295+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/permanentRedirect",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/permanentRedirect",
+    "file": "official-next-electron-docusaurus/035-nextjs.org-docs-app-api-reference-functions-permanentRedirect.txt",
+    "bytes": 4049,
+    "content_sha256": "65905ef82c45b5513da3073a555474c6c1a7cb6bb1ed408a589d0d3422311a47",
+    "text_sha256": "65905ef82c45b5513da3073a555474c6c1a7cb6bb1ed408a589d0d3422311a47",
+    "retrieved_at": "2026-09-09T11:37:00.250192+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/not-found",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/not-found",
+    "file": "official-next-electron-docusaurus/036-nextjs.org-docs-app-api-reference-functions-not-found.txt",
+    "bytes": 8624,
+    "content_sha256": "a53abb9907a1707c1df543a7d2a23e3198e8b060bf475824e95fe09b4ab91b8a",
+    "text_sha256": "a53abb9907a1707c1df543a7d2a23e3198e8b060bf475824e95fe09b4ab91b8a",
+    "retrieved_at": "2026-09-09T11:37:00.202293+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/unauthorized",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/unauthorized",
+    "file": "official-next-electron-docusaurus/037-nextjs.org-docs-app-api-reference-functions-unauthorized.txt",
+    "bytes": 11615,
+    "content_sha256": "1cbe048e2bee32eac5fbdac4006d14600f049e1a1930a739fbc030d2a028a7a4",
+    "text_sha256": "1cbe048e2bee32eac5fbdac4006d14600f049e1a1930a739fbc030d2a028a7a4",
+    "retrieved_at": "2026-09-09T11:37:00.514862+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/forbidden",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/forbidden",
+    "file": "official-next-electron-docusaurus/038-nextjs.org-docs-app-api-reference-functions-forbidden.txt",
+    "bytes": 10320,
+    "content_sha256": "4194fc5df261c199d3ab4b3cc8904092b993efe2247c60588c979afb064881b1",
+    "text_sha256": "4194fc5df261c199d3ab4b3cc8904092b993efe2247c60588c979afb064881b1",
+    "retrieved_at": "2026-09-09T11:37:00.430725+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/unstable_rethrow",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/unstable_rethrow",
+    "file": "official-next-electron-docusaurus/039-nextjs.org-docs-app-api-reference-functions-unstable-rethrow.txt",
+    "bytes": 3688,
+    "content_sha256": "0d035be2284f98f0cf97fadbc6861be0e0d35f7e09415c35a17222e35c5489bc",
+    "text_sha256": "0d035be2284f98f0cf97fadbc6861be0e0d35f7e09415c35a17222e35c5489bc",
+    "retrieved_at": "2026-09-09T11:37:00.458301+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/use-pathname",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/use-pathname",
+    "file": "official-next-electron-docusaurus/040-nextjs.org-docs-app-api-reference-functions-use-pathname.txt",
+    "bytes": 7892,
+    "content_sha256": "d164b7205836cd9a728b955f150e350c2b689ed9ac1b70d6b53b33c6a3425159",
+    "text_sha256": "d164b7205836cd9a728b955f150e350c2b689ed9ac1b70d6b53b33c6a3425159",
+    "retrieved_at": "2026-09-09T11:37:00.529676+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/use-search-params",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/use-search-params",
+    "file": "official-next-electron-docusaurus/041-nextjs.org-docs-app-api-reference-functions-use-search-params.txt",
+    "bytes": 14525,
+    "content_sha256": "6371f12bc835d5494824b5f83da3644fb698390b67f238470e42634642ca6901",
+    "text_sha256": "6371f12bc835d5494824b5f83da3644fb698390b67f238470e42634642ca6901",
+    "retrieved_at": "2026-09-09T11:37:00.598330+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/use-router",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/use-router",
+    "file": "official-next-electron-docusaurus/042-nextjs.org-docs-app-api-reference-functions-use-router.txt",
+    "bytes": 9143,
+    "content_sha256": "e1a50f511f02f47635a38c46521c04ee0dce050e67f41f3dcf4aa2c5d678462c",
+    "text_sha256": "e1a50f511f02f47635a38c46521c04ee0dce050e67f41f3dcf4aa2c5d678462c",
+    "retrieved_at": "2026-09-09T11:37:00.722035+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/use-link-status",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/use-link-status",
+    "file": "official-next-electron-docusaurus/043-nextjs.org-docs-app-api-reference-functions-use-link-status.txt",
+    "bytes": 7545,
+    "content_sha256": "03d6ca3e0a18cc93f6456041133f4e06dd68b28e9bb7cb2f8dc7718178a4e9fa",
+    "text_sha256": "03d6ca3e0a18cc93f6456041133f4e06dd68b28e9bb7cb2f8dc7718178a4e9fa",
+    "retrieved_at": "2026-09-09T11:37:00.910282+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/use-params",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/use-params",
+    "file": "official-next-electron-docusaurus/044-nextjs.org-docs-app-api-reference-functions-use-params.txt",
+    "bytes": 3993,
+    "content_sha256": "655fddf11bab0554f8dcb9ee89f5dc9308adb112fe4980c4394fead04eb01976",
+    "text_sha256": "655fddf11bab0554f8dcb9ee89f5dc9308adb112fe4980c4394fead04eb01976",
+    "retrieved_at": "2026-09-09T11:37:00.941794+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/use-selected-layout-segment",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/use-selected-layout-segment",
+    "file": "official-next-electron-docusaurus/045-nextjs.org-docs-app-api-reference-functions-use-selected-layout-segment.txt",
+    "bytes": 8407,
+    "content_sha256": "995edfde4c0b9258e41aa2c2d1754794c036f5b9a42a7988d0e6f22c35889066",
+    "text_sha256": "995edfde4c0b9258e41aa2c2d1754794c036f5b9a42a7988d0e6f22c35889066",
+    "retrieved_at": "2026-09-09T11:37:01.010626+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/use-selected-layout-segments",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/use-selected-layout-segments",
+    "file": "official-next-electron-docusaurus/046-nextjs.org-docs-app-api-reference-functions-use-selected-layout-segments.txt",
+    "bytes": 6083,
+    "content_sha256": "4d607a33a0a7f3630b4f71b82a219bcded9831a2a4bc38df63874ab5dc3132c8",
+    "text_sha256": "4d607a33a0a7f3630b4f71b82a219bcded9831a2a4bc38df63874ab5dc3132c8",
+    "retrieved_at": "2026-09-09T11:37:01.154216+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/use-report-web-vitals",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/use-report-web-vitals",
+    "file": "official-next-electron-docusaurus/047-nextjs.org-docs-app-api-reference-functions-use-report-web-vitals.txt",
+    "bytes": 6565,
+    "content_sha256": "f3f9ee1f9cd9bc6dda8d194c0b1f34f5f8c07f481da5940a90fc61e549c03241",
+    "text_sha256": "f3f9ee1f9cd9bc6dda8d194c0b1f34f5f8c07f481da5940a90fc61e549c03241",
+    "retrieved_at": "2026-09-09T11:37:01.057814+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/cookies",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/cookies",
+    "file": "official-next-electron-docusaurus/048-nextjs.org-docs-app-api-reference-functions-cookies.txt",
+    "bytes": 12864,
+    "content_sha256": "48256342e0600124c19d5bf340fc25af63f7b2d7ed661221f0c1d752d8d4f89c",
+    "text_sha256": "48256342e0600124c19d5bf340fc25af63f7b2d7ed661221f0c1d752d8d4f89c",
+    "retrieved_at": "2026-09-09T11:37:01.122743+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/headers",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/headers",
+    "file": "official-next-electron-docusaurus/049-nextjs.org-docs-app-api-reference-functions-headers.txt",
+    "bytes": 4716,
+    "content_sha256": "4388b32df9318f11aff7fab505ed64de611aa3cff20ac7565eaa8c12d72bd35f",
+    "text_sha256": "4388b32df9318f11aff7fab505ed64de611aa3cff20ac7565eaa8c12d72bd35f",
+    "retrieved_at": "2026-09-09T11:37:01.282057+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/draft-mode",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/draft-mode",
+    "file": "official-next-electron-docusaurus/050-nextjs.org-docs-app-api-reference-functions-draft-mode.txt",
+    "bytes": 6052,
+    "content_sha256": "720619c29eca2dd69041d09d1d47b347ba4ec2623170f92cb3a64735ec37e7c6",
+    "text_sha256": "720619c29eca2dd69041d09d1d47b347ba4ec2623170f92cb3a64735ec37e7c6",
+    "retrieved_at": "2026-09-09T11:37:01.486172+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/after",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/after",
+    "file": "official-next-electron-docusaurus/051-nextjs.org-docs-app-api-reference-functions-after.txt",
+    "bytes": 11776,
+    "content_sha256": "6cc391452cfe9c41972582914dab16b5d42f8a2f07e8052ea4250c21b1198e22",
+    "text_sha256": "6cc391452cfe9c41972582914dab16b5d42f8a2f07e8052ea4250c21b1198e22",
+    "retrieved_at": "2026-09-09T11:37:01.266407+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/connection",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/connection",
+    "file": "official-next-electron-docusaurus/052-nextjs.org-docs-app-api-reference-functions-connection.txt",
+    "bytes": 3527,
+    "content_sha256": "6a6b09118092f4ee5d5e787681c58c87abf304b618238aab0a583c012a232e93",
+    "text_sha256": "6a6b09118092f4ee5d5e787681c58c87abf304b618238aab0a583c012a232e93",
+    "retrieved_at": "2026-09-09T11:37:01.546453+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/userAgent",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/userAgent",
+    "file": "official-next-electron-docusaurus/053-nextjs.org-docs-app-api-reference-functions-userAgent.txt",
+    "bytes": 3477,
+    "content_sha256": "67b5872004cd9f6c5c2eedaa4541f5f3043f20710e24c6fafee51cc0ac85d860",
+    "text_sha256": "67b5872004cd9f6c5c2eedaa4541f5f3043f20710e24c6fafee51cc0ac85d860",
+    "retrieved_at": "2026-09-09T11:37:01.419602+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/generate-static-params",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/generate-static-params",
+    "file": "official-next-electron-docusaurus/054-nextjs.org-docs-app-api-reference-functions-generate-static-params.txt",
+    "bytes": 18983,
+    "content_sha256": "2ef9b053778505ea8c4516766eef13f23455e962f1091b4d4cf3919c9af34860",
+    "text_sha256": "2ef9b053778505ea8c4516766eef13f23455e962f1091b4d4cf3919c9af34860",
+    "retrieved_at": "2026-09-09T11:37:01.419256+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/generate-metadata",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/generate-metadata",
+    "file": "official-next-electron-docusaurus/055-nextjs.org-docs-app-api-reference-functions-generate-metadata.txt",
+    "bytes": 50150,
+    "content_sha256": "357a052a64604a1ebac5204a7131fad2eebe874ecba8eb223f4ecf727e680726",
+    "text_sha256": "357a052a64604a1ebac5204a7131fad2eebe874ecba8eb223f4ecf727e680726",
+    "retrieved_at": "2026-09-09T11:37:01.594396+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/generate-viewport",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/generate-viewport",
+    "file": "official-next-electron-docusaurus/056-nextjs.org-docs-app-api-reference-functions-generate-viewport.txt",
+    "bytes": 10004,
+    "content_sha256": "d12e29d8fb057e07b88d40fcd5f9283bb88033fd08f56fb2df2a746848d5761c",
+    "text_sha256": "d12e29d8fb057e07b88d40fcd5f9283bb88033fd08f56fb2df2a746848d5761c",
+    "retrieved_at": "2026-09-09T11:37:01.698205+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/generate-sitemaps",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/generate-sitemaps",
+    "file": "official-next-electron-docusaurus/057-nextjs.org-docs-app-api-reference-functions-generate-sitemaps.txt",
+    "bytes": 3742,
+    "content_sha256": "2d2776c770d9ba6b4f6c888e7d3d144689c45da476f5062f53ee0fe234dc08e4",
+    "text_sha256": "2d2776c770d9ba6b4f6c888e7d3d144689c45da476f5062f53ee0fe234dc08e4",
+    "retrieved_at": "2026-09-09T11:37:01.646016+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/generate-image-metadata",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/generate-image-metadata",
+    "file": "official-next-electron-docusaurus/058-nextjs.org-docs-app-api-reference-functions-generate-image-metadata.txt",
+    "bytes": 8069,
+    "content_sha256": "221a2ac6c9aaa5ae5bc5fd5d3805eba71da0a7ee8d4fba8b3ca5d2f4ff363d46",
+    "text_sha256": "221a2ac6c9aaa5ae5bc5fd5d3805eba71da0a7ee8d4fba8b3ca5d2f4ff363d46",
+    "retrieved_at": "2026-09-09T11:37:01.990216+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/next-request",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/next-request",
+    "file": "official-next-electron-docusaurus/059-nextjs.org-docs-app-api-reference-functions-next-request.txt",
+    "bytes": 4176,
+    "content_sha256": "c3eaa141b361e3a85fd282344211cd138a1df7c39bf69bdaf512753d2294bfbe",
+    "text_sha256": "c3eaa141b361e3a85fd282344211cd138a1df7c39bf69bdaf512753d2294bfbe",
+    "retrieved_at": "2026-09-09T11:37:01.757962+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/next-response",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/next-response",
+    "file": "official-next-electron-docusaurus/060-nextjs.org-docs-app-api-reference-functions-next-response.txt",
+    "bytes": 6769,
+    "content_sha256": "d8bf8ec1f68d3a0d7a313ffa4f263fa208c6a527fc0e36423a612a3c6df9f125",
+    "text_sha256": "d8bf8ec1f68d3a0d7a313ffa4f263fa208c6a527fc0e36423a612a3c6df9f125",
+    "retrieved_at": "2026-09-09T11:37:01.834540+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/image-response",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/image-response",
+    "file": "official-next-electron-docusaurus/061-nextjs.org-docs-app-api-reference-functions-image-response.txt",
+    "bytes": 6328,
+    "content_sha256": "a4361687c448142c3363642dc0b728ff8243da3a4a6e68af763c45086d8f49a8",
+    "text_sha256": "a4361687c448142c3363642dc0b728ff8243da3a4a6e68af763c45086d8f49a8",
+    "retrieved_at": "2026-09-09T11:37:01.986474+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/revalidateTag",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/revalidateTag",
+    "file": "official-next-electron-docusaurus/062-nextjs.org-docs-app-api-reference-functions-revalidateTag.txt",
+    "bytes": 6780,
+    "content_sha256": "b3dc3829a1fa026cf4243dc69bf563d17d494d0f5f02a2065349c59a46faf468",
+    "text_sha256": "b3dc3829a1fa026cf4243dc69bf563d17d494d0f5f02a2065349c59a46faf468",
+    "retrieved_at": "2026-09-09T11:37:01.938291+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/revalidatePath",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/revalidatePath",
+    "file": "official-next-electron-docusaurus/063-nextjs.org-docs-app-api-reference-functions-revalidatePath.txt",
+    "bytes": 8767,
+    "content_sha256": "c3eb3a50606b318e2f783d94bd145182a84c2d70981d7e34565f1ae70402a87f",
+    "text_sha256": "c3eb3a50606b318e2f783d94bd145182a84c2d70981d7e34565f1ae70402a87f",
+    "retrieved_at": "2026-09-09T11:37:02.182663+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions/updateTag",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions/updateTag",
+    "file": "official-next-electron-docusaurus/064-nextjs.org-docs-app-api-reference-functions-updateTag.txt",
+    "bytes": 5495,
+    "content_sha256": "74906a4f8332b7295a3c333b3e2de5e6c4b6c922c0cf76fcb6859dd25d1ddf24",
+    "text_sha256": "74906a4f8332b7295a3c333b3e2de5e6c4b6c922c0cf76fcb6859dd25d1ddf24",
+    "retrieved_at": "2026-09-09T11:37:02.226355+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheHandler",
+    "final_url": "https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheHandler",
+    "file": "official-next-electron-docusaurus/065-nextjs.org-docs-app-api-reference-config-next-config-js-cacheHandler.txt",
+    "bytes": 647,
+    "content_sha256": "4d94d5929c60d1637ea59b4ea609dde8b6e1a872de941d140d9f785b40a82f04",
+    "text_sha256": "4d94d5929c60d1637ea59b4ea609dde8b6e1a872de941d140d9f785b40a82f04",
+    "retrieved_at": "2026-09-09T11:37:02.142398+00:00",
+    "status": "unavailable",
+    "reason": "HTTP200 soft404; excluded as substantive evidence"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheHandlers",
+    "final_url": "https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheHandlers",
+    "file": "official-next-electron-docusaurus/066-nextjs.org-docs-app-api-reference-config-next-config-js-cacheHandlers.txt",
+    "bytes": 21149,
+    "content_sha256": "de7d15376a41023b0b1e10705ec034cf821f6380fc13924f7db3e112fb2ccd55",
+    "text_sha256": "de7d15376a41023b0b1e10705ec034cf821f6380fc13924f7db3e112fb2ccd55",
+    "retrieved_at": "2026-09-09T11:37:02.194792+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheComponents",
+    "final_url": "https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheComponents",
+    "file": "official-next-electron-docusaurus/067-nextjs.org-docs-app-api-reference-config-next-config-js-cacheComponents.txt",
+    "bytes": 5533,
+    "content_sha256": "041b046da18119ada1612c080ecce6c9cf5ecebf23db8bba67e0170bc8064889",
+    "text_sha256": "041b046da18119ada1612c080ecce6c9cf5ecebf23db8bba67e0170bc8064889",
+    "retrieved_at": "2026-09-09T11:37:02.306179+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/config/next-config-js/serverExternalPackages",
+    "final_url": "https://nextjs.org/docs/app/api-reference/config/next-config-js/serverExternalPackages",
+    "file": "official-next-electron-docusaurus/068-nextjs.org-docs-app-api-reference-config-next-config-js-serverExternalPackages.txt",
+    "bytes": 3211,
+    "content_sha256": "b7b77007c707a252ca63da6f4a2da758ece57b09feb902476264ec7126eee1e1",
+    "text_sha256": "b7b77007c707a252ca63da6f4a2da758ece57b09feb902476264ec7126eee1e1",
+    "retrieved_at": "2026-09-09T11:37:02.346496+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/config/next-config-js/transpilePackages",
+    "final_url": "https://nextjs.org/docs/app/api-reference/config/next-config-js/transpilePackages",
+    "file": "official-next-electron-docusaurus/069-nextjs.org-docs-app-api-reference-config-next-config-js-transpilePackages.txt",
+    "bytes": 3037,
+    "content_sha256": "42978ce568710fa12ba7a2f8d3f2c210995cda427a338c2063612ac7bc4f6cf6",
+    "text_sha256": "42978ce568710fa12ba7a2f8d3f2c210995cda427a338c2063612ac7bc4f6cf6",
+    "retrieved_at": "2026-09-09T11:37:02.485725+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/config/next-config-js/output",
+    "final_url": "https://nextjs.org/docs/app/api-reference/config/next-config-js/output",
+    "file": "official-next-electron-docusaurus/070-nextjs.org-docs-app-api-reference-config-next-config-js-output.txt",
+    "bytes": 6829,
+    "content_sha256": "f3e24e4cc6c665d580016860bcfc6e91981ff6d5df8a9794c14391bf735bc1e5",
+    "text_sha256": "f3e24e4cc6c665d580016860bcfc6e91981ff6d5df8a9794c14391bf735bc1e5",
+    "retrieved_at": "2026-09-09T11:37:02.390451+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/cli/next",
+    "final_url": "https://nextjs.org/docs/app/api-reference/cli/next",
+    "file": "official-next-electron-docusaurus/071-nextjs.org-docs-app-api-reference-cli-next.txt",
+    "bytes": 25990,
+    "content_sha256": "8a7cff3895f2ce93e87d7b7d80d862e5c3e63e23549175db76cd0e5bf2cd8fd1",
+    "text_sha256": "8a7cff3895f2ce93e87d7b7d80d862e5c3e63e23549175db76cd0e5bf2cd8fd1",
+    "retrieved_at": "2026-09-09T11:37:02.474961+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/components/image",
+    "final_url": "https://nextjs.org/docs/app/api-reference/components/image",
+    "file": "official-next-electron-docusaurus/072-nextjs.org-docs-app-api-reference-components-image.txt",
+    "bytes": 60084,
+    "content_sha256": "652c29d3224542a588f5ee32b146f49afbe221e4cdba3e96370395f6956e6ceb",
+    "text_sha256": "652c29d3224542a588f5ee32b146f49afbe221e4cdba3e96370395f6956e6ceb",
+    "retrieved_at": "2026-09-09T11:37:02.550292+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/components/font",
+    "final_url": "https://nextjs.org/docs/app/api-reference/components/font",
+    "file": "official-next-electron-docusaurus/073-nextjs.org-docs-app-api-reference-components-font.txt",
+    "bytes": 27016,
+    "content_sha256": "8b089750423c51221f46952c20a0d2572b7497cc928c58c6d194409dba3929ed",
+    "text_sha256": "8b089750423c51221f46952c20a0d2572b7497cc928c58c6d194409dba3929ed",
+    "retrieved_at": "2026-09-09T11:37:02.555015+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/components/script",
+    "final_url": "https://nextjs.org/docs/app/api-reference/components/script",
+    "file": "official-next-electron-docusaurus/074-nextjs.org-docs-app-api-reference-components-script.txt",
+    "bytes": 12288,
+    "content_sha256": "25a362a53724dddac9f13ad1bcfb7824d5457f70e90eee25ce562ea455a34ea8",
+    "text_sha256": "25a362a53724dddac9f13ad1bcfb7824d5457f70e90eee25ce562ea455a34ea8",
+    "retrieved_at": "2026-09-09T11:37:02.622346+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/edge",
+    "final_url": "https://nextjs.org/docs/app/api-reference/edge",
+    "file": "official-next-electron-docusaurus/075-nextjs.org-docs-app-api-reference-edge.txt",
+    "bytes": 29510,
+    "content_sha256": "7b50470c199170ca8ffccf49cfa3a20b47e642c57bae1a06acc57e57ca27f514",
+    "text_sha256": "7b50470c199170ca8ffccf49cfa3a20b47e642c57bae1a06acc57e57ca27f514",
+    "retrieved_at": "2026-09-09T11:37:02.618808+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/architecture/supported-browsers",
+    "final_url": "https://nextjs.org/docs/architecture/supported-browsers",
+    "file": "official-next-electron-docusaurus/076-nextjs.org-docs-architecture-supported-browsers.txt",
+    "bytes": 5034,
+    "content_sha256": "f6be443ef314b4625a905095896163ca84090b3534e1550fcb7a5c765f55e44a",
+    "text_sha256": "f6be443ef314b4625a905095896163ca84090b3534e1550fcb7a5c765f55e44a",
+    "retrieved_at": "2026-09-09T11:37:02.694380+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://react.dev/reference/rsc/use-client",
+    "final_url": "https://react.dev/reference/rsc/use-client",
+    "file": "official-next-electron-docusaurus/077-react.dev-reference-rsc-use-client.txt",
+    "bytes": 20599,
+    "content_sha256": "5a7cc0af976ac7574737117062b23c42393cff385579be9b53ba2b5f5ad99311",
+    "text_sha256": "5a7cc0af976ac7574737117062b23c42393cff385579be9b53ba2b5f5ad99311",
+    "retrieved_at": "2026-09-09T11:37:02.878949+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://react.dev/reference/rsc/use-server",
+    "final_url": "https://react.dev/reference/rsc/use-server",
+    "file": "official-next-electron-docusaurus/078-react.dev-reference-rsc-use-server.txt",
+    "bytes": 10404,
+    "content_sha256": "a826f5e39199273c5b1fd74c100ab20d3f00319eac882e9e3ee30dc3a3865deb",
+    "text_sha256": "a826f5e39199273c5b1fd74c100ab20d3f00319eac882e9e3ee30dc3a3865deb",
+    "retrieved_at": "2026-09-09T11:37:03.002200+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://react.dev/reference/react/cache",
+    "final_url": "https://react.dev/reference/react/cache",
+    "file": "official-next-electron-docusaurus/079-react.dev-reference-react-cache.txt",
+    "bytes": 19237,
+    "content_sha256": "c56f563b6ae741681817ab9d48013cecb8df789a78d5fcb87710084bc4bb53bd",
+    "text_sha256": "c56f563b6ae741681817ab9d48013cecb8df789a78d5fcb87710084bc4bb53bd",
+    "retrieved_at": "2026-09-09T11:37:02.782360+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://react.dev/reference/react/use",
+    "final_url": "https://react.dev/reference/react/use",
+    "file": "official-next-electron-docusaurus/080-react.dev-reference-react-use.txt",
+    "bytes": 42793,
+    "content_sha256": "18feb5908daa6760af632057decf574220fcf870d370483be0316c9704db8dbb",
+    "text_sha256": "18feb5908daa6760af632057decf574220fcf870d370483be0316c9704db8dbb",
+    "retrieved_at": "2026-09-09T11:37:03.038063+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://react.dev/reference/react/useId",
+    "final_url": "https://react.dev/reference/react/useId",
+    "file": "official-next-electron-docusaurus/081-react.dev-reference-react-useId.txt",
+    "bytes": 9480,
+    "content_sha256": "72bbb6fd9212f2a525729a43764c88669734f76f83b7210b1f19bd0f3c848303",
+    "text_sha256": "72bbb6fd9212f2a525729a43764c88669734f76f83b7210b1f19bd0f3c848303",
+    "retrieved_at": "2026-09-09T11:37:03.114095+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/tutorial/process-model",
+    "final_url": "https://www.electronjs.org/docs/latest/tutorial/process-model",
+    "file": "official-next-electron-docusaurus/082-www.electronjs.org-docs-latest-tutorial-process-model.txt",
+    "bytes": 59377,
+    "content_sha256": "341aefce3414e8cddfa02374bde7a00c6f78924305607acdeea4ece79d4803f4",
+    "text_sha256": "6c7f0ded3093e1e122f227a63e75986a1c2cb22dce07587d7b34bb96247aabd0",
+    "retrieved_at": "2026-09-09T11:37:03.682408+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/tutorial/security",
+    "final_url": "https://www.electronjs.org/docs/latest/tutorial/security",
+    "file": "official-next-electron-docusaurus/083-www.electronjs.org-docs-latest-tutorial-security.txt",
+    "bytes": 170321,
+    "content_sha256": "1b53b15cf03c2edf11f4e412562d9e9776143cad846ebc4902dfbf46985ec212",
+    "text_sha256": "480a78f7f5684a6f4607a8644c920725778a616e579b7bd89a71fa7b4edaf927",
+    "retrieved_at": "2026-09-09T11:37:03.800134+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/tutorial/sandbox",
+    "final_url": "https://www.electronjs.org/docs/latest/tutorial/sandbox",
+    "file": "official-next-electron-docusaurus/084-www.electronjs.org-docs-latest-tutorial-sandbox.txt",
+    "bytes": 52151,
+    "content_sha256": "f66f349965e30192d133fdf72dac26024744c7ff0770946fb3e0026d24ca6774",
+    "text_sha256": "93a2d85766c21ef63503d48e570967a8573a1109122e8aec7ca130785a78d765",
+    "retrieved_at": "2026-09-09T11:37:03.657489+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/tutorial/context-isolation",
+    "final_url": "https://www.electronjs.org/docs/latest/tutorial/context-isolation",
+    "file": "official-next-electron-docusaurus/085-www.electronjs.org-docs-latest-tutorial-context-isolation.txt",
+    "bytes": 49746,
+    "content_sha256": "6ffc99c00b0b03d61cd0ba3f812cd3b5854080ded2193dd3885f38fae4cef0cd",
+    "text_sha256": "4ad2f817875e0e31f0259f72b40b6ba792498abceb8a4fee86d5b73aef6d74fd",
+    "retrieved_at": "2026-09-09T11:37:03.744388+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/tutorial/ipc",
+    "final_url": "https://www.electronjs.org/docs/latest/tutorial/ipc",
+    "file": "official-next-electron-docusaurus/086-www.electronjs.org-docs-latest-tutorial-ipc.txt",
+    "bytes": 273702,
+    "content_sha256": "207b0e27ab479d38b20fc4d09a701fa336dac50434409c083fdd859d5ee1a194",
+    "text_sha256": "f32b03f3b228280462de318f6b5aa33cfc44ff7ce67e0f31906b0c2d95dc6c1b",
+    "retrieved_at": "2026-09-09T11:37:04.571397+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/tutorial/esm",
+    "final_url": "https://www.electronjs.org/docs/latest/tutorial/esm",
+    "file": "official-next-electron-docusaurus/087-www.electronjs.org-docs-latest-tutorial-esm.txt",
+    "bytes": 52335,
+    "content_sha256": "367a7569b1ef018150261bc095d7d226fbf52099594a32bb2ffb00d5dad2bb96",
+    "text_sha256": "2bd5c3eeefbd967d935f9a450d7fbb08ceb62234656812001d99f46ff6d791ea",
+    "retrieved_at": "2026-09-09T11:37:04.304274+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/tutorial/using-native-node-modules",
+    "final_url": "https://www.electronjs.org/docs/latest/tutorial/using-native-node-modules",
+    "file": "official-next-electron-docusaurus/088-www.electronjs.org-docs-latest-tutorial-using-native-node-modules.txt",
+    "bytes": 43941,
+    "content_sha256": "c7ca8d9bd65494712edca8cf14fc75e4f231f27065eaaf5b3a465e234f09680b",
+    "text_sha256": "4ae89b6b407aa1cbe88187b65260cc0e704101b374cd95a49171a9844a27319c",
+    "retrieved_at": "2026-09-09T11:37:03.951340+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/tutorial/asar-archives",
+    "final_url": "https://www.electronjs.org/docs/latest/tutorial/asar-archives",
+    "file": "official-next-electron-docusaurus/089-www.electronjs.org-docs-latest-tutorial-asar-archives.txt",
+    "bytes": 51657,
+    "content_sha256": "44a5a206b1d83ba79d211dcaf40ed6780471834e47ef7ef6af9da17b1b4c073b",
+    "text_sha256": "772b290d86334cc3e63809f688e66be84255ae145c4f892a23b3b0edfd710ffd",
+    "retrieved_at": "2026-09-09T11:37:04.380506+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/tutorial/asar-integrity",
+    "final_url": "https://www.electronjs.org/docs/latest/tutorial/asar-integrity",
+    "file": "official-next-electron-docusaurus/090-www.electronjs.org-docs-latest-tutorial-asar-integrity.txt",
+    "bytes": 50857,
+    "content_sha256": "cfbd30216201af179a04d2ac34b4319a50dc42c6d892bbf6c178ea8cd80fbb94",
+    "text_sha256": "d3738fa15e2c6d96d8fb3c0f8786d4eb85615e8dda9a85ff7c94db7d1e3e0532",
+    "retrieved_at": "2026-09-09T11:37:04.536570+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/tutorial/fuses",
+    "final_url": "https://www.electronjs.org/docs/latest/tutorial/fuses",
+    "file": "official-next-electron-docusaurus/091-www.electronjs.org-docs-latest-tutorial-fuses.txt",
+    "bytes": 52295,
+    "content_sha256": "d77cf02d7a292a3a8f60c76f78ae373e9be13d4500ade2371e851d95e57b7421",
+    "text_sha256": "f2170f41d0c3157d7b0e136e3dd072e267a6b6cb63855a17a5ee0b7de3f3bc5f",
+    "retrieved_at": "2026-09-09T11:37:04.595651+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/tutorial/code-signing",
+    "final_url": "https://www.electronjs.org/docs/latest/tutorial/code-signing",
+    "file": "official-next-electron-docusaurus/092-www.electronjs.org-docs-latest-tutorial-code-signing.txt",
+    "bytes": 76427,
+    "content_sha256": "9319d01cf3b2a11aba42f3db2d35c849d1191f8cd7dd07ee25966d3cae8af768",
+    "text_sha256": "0bf4a6f94a3691d1631c917a691b5dbd7e26bf1e02b1e14e392c48e788ef2192",
+    "retrieved_at": "2026-09-09T11:37:05.087527+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/tutorial/updates",
+    "final_url": "https://www.electronjs.org/docs/latest/tutorial/updates",
+    "file": "official-next-electron-docusaurus/093-www.electronjs.org-docs-latest-tutorial-updates.txt",
+    "bytes": 85646,
+    "content_sha256": "64be28fae523cca0f995d293a23323e2e176d542b02d1d07e94725b1fd3c1137",
+    "text_sha256": "2cc7bcaf5907e8e09df4982d7073abb822501c1e85e7a2450b79dd0e3745d87f",
+    "retrieved_at": "2026-09-09T11:37:04.852386+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/tutorial/electron-timelines",
+    "final_url": "https://www.electronjs.org/docs/latest/tutorial/electron-timelines",
+    "file": "official-next-electron-docusaurus/094-www.electronjs.org-docs-latest-tutorial-electron-timelines.txt",
+    "bytes": 36864,
+    "content_sha256": "7bb8c5881d652def8c41679dcbf9c432073b7f25b7864232c0b755f7b96c7c0d",
+    "text_sha256": "a7687c5a039473157b703d5769c575ac8715c5a67d4a3d1ca2c464c225d9f83d",
+    "retrieved_at": "2026-09-09T11:37:05.155313+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/tutorial/electron-versioning",
+    "final_url": "https://www.electronjs.org/docs/latest/tutorial/electron-versioning",
+    "file": "official-next-electron-docusaurus/095-www.electronjs.org-docs-latest-tutorial-electron-versioning.txt",
+    "bytes": 39645,
+    "content_sha256": "a1e33ef8d9c87fe026ced6e5942b4e5d0574ecc30fa1a904355d608f41be889c",
+    "text_sha256": "71a52760c5ea63d153e2c26d9d486ef6549722958779de41e8e21e7cd067bc2b",
+    "retrieved_at": "2026-09-09T11:37:04.796221+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/tutorial/electron-releases",
+    "status": "unavailable",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/breaking-changes",
+    "final_url": "https://www.electronjs.org/docs/latest/breaking-changes",
+    "file": "official-next-electron-docusaurus/097-www.electronjs.org-docs-latest-breaking-changes.txt",
+    "bytes": 820048,
+    "content_sha256": "a7f8be7bf4549468e12cf5cea6f38dcbb27e13d4c44a005f6dc5e443b45bdec1",
+    "text_sha256": "2d7d794a2f196c17fe6db83c73bd5c6ba71ff965e645f95402e5628e3d984e88",
+    "retrieved_at": "2026-09-09T11:37:06.175261+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/tutorial/performance",
+    "final_url": "https://www.electronjs.org/docs/latest/tutorial/performance",
+    "file": "official-next-electron-docusaurus/098-www.electronjs.org-docs-latest-tutorial-performance.txt",
+    "bytes": 71063,
+    "content_sha256": "134c5509b8dbbb95d2b3ea36acbfe4b0042c3409441273f748eade987f20a847",
+    "text_sha256": "fe16f38d52d7be84a262929e8b84ce551588cc99ab9a031c6746f60e06fce30a",
+    "retrieved_at": "2026-09-09T11:37:05.213864+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/tutorial/automated-testing",
+    "final_url": "https://www.electronjs.org/docs/latest/tutorial/automated-testing",
+    "file": "official-next-electron-docusaurus/099-www.electronjs.org-docs-latest-tutorial-automated-testing.txt",
+    "bytes": 160991,
+    "content_sha256": "10d92a72dc151a0a4ea3be60172537d9b4b79c471255636bf5c1ba579eb3dabe",
+    "text_sha256": "85200a077ad1a29114970009ae6818cfd87769bcb478a06ca09d85adb895abd6",
+    "retrieved_at": "2026-09-09T11:37:05.392410+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/tutorial/debugging-main-process",
+    "final_url": "https://www.electronjs.org/docs/latest/tutorial/debugging-main-process",
+    "file": "official-next-electron-docusaurus/100-www.electronjs.org-docs-latest-tutorial-debugging-main-process.txt",
+    "bytes": 30718,
+    "content_sha256": "4bc3d27ce3c6d0900fb4ab4f329d70a27def6f93630b15938be9613548affcd5",
+    "text_sha256": "4bdb09d0f7a9f16fe16aab5a9ce34b83ef287ca2d4179a3845bd34045d6bb106",
+    "retrieved_at": "2026-09-09T11:37:05.354767+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/tutorial/application-distribution",
+    "final_url": "https://www.electronjs.org/docs/latest/tutorial/application-distribution",
+    "file": "official-next-electron-docusaurus/101-www.electronjs.org-docs-latest-tutorial-application-distribution.txt",
+    "bytes": 39872,
+    "content_sha256": "1d07cd271a46d254beccb656bb1dc16b08b08dca63f8de1800fd37f7c4dacd75",
+    "text_sha256": "f0b62d30765f31f2913a3d87a714561d8d6fc222cd7f35759eb60741cb61502e",
+    "retrieved_at": "2026-09-09T11:37:05.420710+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/app",
+    "final_url": "https://www.electronjs.org/docs/latest/api/app",
+    "file": "official-next-electron-docusaurus/102-www.electronjs.org-docs-latest-api-app.txt",
+    "bytes": 321836,
+    "content_sha256": "77ebbdb099b31eb7eb4dba03f4b152d60573711198c4b4d0686c3726540f0319",
+    "text_sha256": "d5f843124608f62952bb5cf37954b3149f6127303d63de42d196caa19bb47dab",
+    "retrieved_at": "2026-09-09T11:37:05.791332+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/browser-window",
+    "final_url": "https://www.electronjs.org/docs/latest/api/browser-window",
+    "file": "official-next-electron-docusaurus/103-www.electronjs.org-docs-latest-api-browser-window.txt",
+    "bytes": 297246,
+    "content_sha256": "8961d27e3533c2c52d7e69a393faeec9a5ea3aded014d6982e86667798121270",
+    "text_sha256": "2b98d57da5473fc8f8ddae5bdde33c59c9cc65735cadb2defedfa27ddab57d77",
+    "retrieved_at": "2026-09-09T11:37:05.895880+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/web-contents",
+    "final_url": "https://www.electronjs.org/docs/latest/api/web-contents",
+    "file": "official-next-electron-docusaurus/104-www.electronjs.org-docs-latest-api-web-contents.txt",
+    "bytes": 395522,
+    "content_sha256": "8a2c18b5dba2b41719e344b3a2deab75fa46326432f20362229c0d62bba6de63",
+    "text_sha256": "32bc827dca016d9deec0e960137b1fceeaf3798a623025bed0d250747bb7e324",
+    "retrieved_at": "2026-09-09T11:37:05.855685+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/web-contents-view",
+    "final_url": "https://www.electronjs.org/docs/latest/api/web-contents-view",
+    "file": "official-next-electron-docusaurus/105-www.electronjs.org-docs-latest-api-web-contents-view.txt",
+    "bytes": 48479,
+    "content_sha256": "ae4b7431c09a7a2837b462b4ea812c91e947c299a4e94bc61f0ffdd4f2e095e1",
+    "text_sha256": "8f05a0cde96ea5d9f33dd1a0b6b8095b985dd7251afbc2389e6904f07a24c767",
+    "retrieved_at": "2026-09-09T11:37:06.009408+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/context-bridge",
+    "final_url": "https://www.electronjs.org/docs/latest/api/context-bridge",
+    "file": "official-next-electron-docusaurus/106-www.electronjs.org-docs-latest-api-context-bridge.txt",
+    "bytes": 67470,
+    "content_sha256": "c4b9a5b2726d0953a256d4f87824ff94b8bd884a469c3b04d7747a124efb026a",
+    "text_sha256": "e4c72343ab4a326d87b6d05fb98408b9ac7e2ecd77ac46e1dd162e7b2f375c4a",
+    "retrieved_at": "2026-09-09T11:37:06.194413+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/ipc-main",
+    "final_url": "https://www.electronjs.org/docs/latest/api/ipc-main",
+    "file": "official-next-electron-docusaurus/107-www.electronjs.org-docs-latest-api-ipc-main.txt",
+    "bytes": 48312,
+    "content_sha256": "ed666d894bce07f54c88dc34b0e4d0a553076b6fe30519d6e0970c71a85c565e",
+    "text_sha256": "32ca9d7b55bc29564efa1e3171cfe51ba73968ba2755a13f0c051a1a9b81354d",
+    "retrieved_at": "2026-09-09T11:37:06.174685+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/ipc-renderer",
+    "final_url": "https://www.electronjs.org/docs/latest/api/ipc-renderer",
+    "file": "official-next-electron-docusaurus/108-www.electronjs.org-docs-latest-api-ipc-renderer.txt",
+    "bytes": 56686,
+    "content_sha256": "746697e9530547e66ba847e84227f0e3e9229ed95ba74e9f1182cb6da56b977b",
+    "text_sha256": "b05d8ae8ea1202cd461cbc76b47aa655c9b3eb8bb029f9573b835c32ad7dd673",
+    "retrieved_at": "2026-09-09T11:37:06.214199+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/protocol",
+    "final_url": "https://www.electronjs.org/docs/latest/api/protocol",
+    "file": "official-next-electron-docusaurus/109-www.electronjs.org-docs-latest-api-protocol.txt",
+    "bytes": 128688,
+    "content_sha256": "a71b148d2d4c9328766f0be47bb7244eca17096af365989b8481faacd796e760",
+    "text_sha256": "450443c87cf527e600f33fd1b35a0a5116604d9114617e3270b2e1f1284b3d1d",
+    "retrieved_at": "2026-09-09T11:37:06.427840+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/session",
+    "final_url": "https://www.electronjs.org/docs/latest/api/session",
+    "file": "official-next-electron-docusaurus/110-www.electronjs.org-docs-latest-api-session.txt",
+    "bytes": 410064,
+    "content_sha256": "9f3d379439f2b4e67e9423f7d5e59363ffeea3263dd65931d5599e70e6a9ee68",
+    "text_sha256": "bb62164bdad51a0ec1edfd8b4a7fc584325f0d161f8dc401a6f3e1246eeb64cb",
+    "retrieved_at": "2026-09-09T11:37:06.537040+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/safe-storage",
+    "final_url": "https://www.electronjs.org/docs/latest/api/safe-storage",
+    "file": "official-next-electron-docusaurus/111-www.electronjs.org-docs-latest-api-safe-storage.txt",
+    "bytes": 47838,
+    "content_sha256": "696cd13acad7b9278ee7b54afd081d2195929f8778b1adae29dcde6610cee168",
+    "text_sha256": "762cce6183191d40b5d45368701ff8613d7dc5ba2f13fe2540f6ac8f089e70d0",
+    "retrieved_at": "2026-09-09T11:37:06.428107+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/utility-process",
+    "final_url": "https://www.electronjs.org/docs/latest/api/utility-process",
+    "file": "official-next-electron-docusaurus/112-www.electronjs.org-docs-latest-api-utility-process.txt",
+    "bytes": 72991,
+    "content_sha256": "b56352b768eafd42505e91d262cf66fdcab6ff57bb552098782c4843eab6a432",
+    "text_sha256": "8c5e56c45b11ebd5b0151c5b4aac1dce9dc28e480522d96afebe8139fec7c189",
+    "retrieved_at": "2026-09-09T11:37:06.445332+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/auto-updater",
+    "final_url": "https://www.electronjs.org/docs/latest/api/auto-updater",
+    "file": "official-next-electron-docusaurus/113-www.electronjs.org-docs-latest-api-auto-updater.txt",
+    "bytes": 50339,
+    "content_sha256": "04807d4464ff8c08dfe614992b719b97762cab0ba160a3fa08fd812c8283a1e2",
+    "text_sha256": "45600c5e85938c37c079a7d1d91a6f11c94c02875376a9f79b5448cc477a0a6c",
+    "retrieved_at": "2026-09-09T11:37:06.624297+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/menu",
+    "final_url": "https://www.electronjs.org/docs/latest/api/menu",
+    "file": "official-next-electron-docusaurus/114-www.electronjs.org-docs-latest-api-menu.txt",
+    "bytes": 50739,
+    "content_sha256": "e42d9f1eb0cb209c514ef160ece439f7f5f2b2871ca33fb8bd4f9442d5d09508",
+    "text_sha256": "09a505a9f1afedd24c757d638a34fe90d2010b65098f57417694376f2419d555",
+    "retrieved_at": "2026-09-09T11:37:06.631152+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/tray",
+    "final_url": "https://www.electronjs.org/docs/latest/api/tray",
+    "file": "official-next-electron-docusaurus/115-www.electronjs.org-docs-latest-api-tray.txt",
+    "bytes": 93317,
+    "content_sha256": "c2738f1f6182ce7d3d01a426aa48bc41988f76ce52c25df3932b31ce25e0aa60",
+    "text_sha256": "bce40679af31b43185f1aebbee53c2229a4edc82309d3ae9f96051ed8d40fc85",
+    "retrieved_at": "2026-09-09T11:37:06.682966+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/global-shortcut",
+    "final_url": "https://www.electronjs.org/docs/latest/api/global-shortcut",
+    "file": "official-next-electron-docusaurus/116-www.electronjs.org-docs-latest-api-global-shortcut.txt",
+    "bytes": 55754,
+    "content_sha256": "b27b8e744d8d36b44ffaaae9d2051b37a04ee15052256b1ccecd6024195756f5",
+    "text_sha256": "ecbbdd9fbdec45d05a7d9454ffac5682ec803790f8a52a9200015ed8325dcec1",
+    "retrieved_at": "2026-09-09T11:37:06.748842+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/dialog",
+    "final_url": "https://www.electronjs.org/docs/latest/api/dialog",
+    "file": "official-next-electron-docusaurus/117-www.electronjs.org-docs-latest-api-dialog.txt",
+    "bytes": 92374,
+    "content_sha256": "b7abba3c9242860af6fb8b5c8f3a96639b207c52e413f036885d58b59ce5bec3",
+    "text_sha256": "ea78261d9a3c60664cd27e9c6847ebd1754413aa64fa93a27ed41bf73617f825",
+    "retrieved_at": "2026-09-09T11:37:06.867776+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/clipboard",
+    "final_url": "https://www.electronjs.org/docs/latest/api/clipboard",
+    "file": "official-next-electron-docusaurus/118-www.electronjs.org-docs-latest-api-clipboard.txt",
+    "bytes": 80424,
+    "content_sha256": "41eb9e555fcb9939474c23fec3dc7069da0542a6d87ea762d89b9abd66114503",
+    "text_sha256": "cae35d14172cfc7bf558b950bcc3da48d6e7729427f186df479ee549baca79c4",
+    "retrieved_at": "2026-09-09T11:37:06.854149+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/download-item",
+    "final_url": "https://www.electronjs.org/docs/latest/api/download-item",
+    "file": "official-next-electron-docusaurus/119-www.electronjs.org-docs-latest-api-download-item.txt",
+    "bytes": 63968,
+    "content_sha256": "39baf031ce97f42b65250c7a7e6cafb5a3f486edf47783d045ac1fb077ee9016",
+    "text_sha256": "93f0c6a1b7614720bafd5ee2bd22beff44aeee52b63a79d8bcad1e7834a682f2",
+    "retrieved_at": "2026-09-09T11:37:06.900292+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/notification",
+    "final_url": "https://www.electronjs.org/docs/latest/api/notification",
+    "file": "official-next-electron-docusaurus/120-www.electronjs.org-docs-latest-api-notification.txt",
+    "bytes": 153923,
+    "content_sha256": "2f6669c87ea9a4497d49277e710fa0ccf3e25f413b114a9f5ab7a60449782474",
+    "text_sha256": "85275c148212d2a1302f8be2bf7b629cafe67bfdb9e87ada8ddffa02d70212eb",
+    "retrieved_at": "2026-09-09T11:37:07.008942+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/desktop-capturer",
+    "final_url": "https://www.electronjs.org/docs/latest/api/desktop-capturer",
+    "file": "official-next-electron-docusaurus/121-www.electronjs.org-docs-latest-api-desktop-capturer.txt",
+    "bytes": 73552,
+    "content_sha256": "cfb551b54396d0229234b3d714c49f20c018e412b17280831df899a008ea6ac7",
+    "text_sha256": "b6887e7f820559ca4b11c71a02c98499643f415315ee3dd2203801bb5c1f4453",
+    "retrieved_at": "2026-09-09T11:37:07.100083+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/screen",
+    "final_url": "https://www.electronjs.org/docs/latest/api/screen",
+    "file": "official-next-electron-docusaurus/122-www.electronjs.org-docs-latest-api-screen.txt",
+    "bytes": 63579,
+    "content_sha256": "f44e655b3b131183744c20fd715c21062037b3de53d789ba41a857498c9bb75c",
+    "text_sha256": "0739058991b0ab8e4c64eb7f171d0b7b0164408218a7459207d31ce8d8e2c177",
+    "retrieved_at": "2026-09-09T11:37:07.098310+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/power-monitor",
+    "final_url": "https://www.electronjs.org/docs/latest/api/power-monitor",
+    "file": "official-next-electron-docusaurus/123-www.electronjs.org-docs-latest-api-power-monitor.txt",
+    "bytes": 44609,
+    "content_sha256": "6f4e6370fa106f55a05dd658cbc1f4ab6649b42b04f04371f3a11186a7a1ca18",
+    "text_sha256": "b2e80f668dfde40bd2d2deeb1563aa16929e21b25b93d729dacf8f0a70e20487",
+    "retrieved_at": "2026-09-09T11:37:07.100361+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/power-save-blocker",
+    "final_url": "https://www.electronjs.org/docs/latest/api/power-save-blocker",
+    "file": "official-next-electron-docusaurus/124-www.electronjs.org-docs-latest-api-power-save-blocker.txt",
+    "bytes": 39670,
+    "content_sha256": "f69696e73382aec90d9038f033cd64d01e11261e24fc072096c43e5a1911c0e9",
+    "text_sha256": "576ef3bc071def837c7d46fd57f9c6a426269f0bf259c3806c79c760503ec8d0",
+    "retrieved_at": "2026-09-09T11:37:07.207475+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/native-theme",
+    "final_url": "https://www.electronjs.org/docs/latest/api/native-theme",
+    "file": "official-next-electron-docusaurus/125-www.electronjs.org-docs-latest-api-native-theme.txt",
+    "bytes": 42846,
+    "content_sha256": "55d88a89f18b5a7a5402f86026ce471788b565c931f85351e6d1ac92a0ff35d1",
+    "text_sha256": "2529ccbca8e0560e192555394bb00fd13f7340d6a1d617e745d4c0c99cc91bb2",
+    "retrieved_at": "2026-09-09T11:37:07.300703+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/crash-reporter",
+    "final_url": "https://www.electronjs.org/docs/latest/api/crash-reporter",
+    "file": "official-next-electron-docusaurus/126-www.electronjs.org-docs-latest-api-crash-reporter.txt",
+    "bytes": 65107,
+    "content_sha256": "a4f74f546919a74bee7b45ca4de6675f8267def82cb7681503f40e515a513663",
+    "text_sha256": "a1fd0085ac1ff009c71ce0ba9fe873c3c75aa9ae94224c048613cc664c9ab362",
+    "retrieved_at": "2026-09-09T11:37:07.348520+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/net-log",
+    "final_url": "https://www.electronjs.org/docs/latest/api/net-log",
+    "file": "official-next-electron-docusaurus/127-www.electronjs.org-docs-latest-api-net-log.txt",
+    "bytes": 40800,
+    "content_sha256": "dcd2788a740c1e383c8f6e8ab5d0f3d070e3d1017ec02fa1ee8b03def131afc2",
+    "text_sha256": "bdae17ad3abf45a4313a19e418b7cc7db82ac7136a59451a9e61886aac21d2e6",
+    "retrieved_at": "2026-09-09T11:37:07.712154+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronjs.org/docs/latest/api/content-tracing",
+    "final_url": "https://www.electronjs.org/docs/latest/api/content-tracing",
+    "file": "official-next-electron-docusaurus/128-www.electronjs.org-docs-latest-api-content-tracing.txt",
+    "bytes": 59813,
+    "content_sha256": "ce3ff5e050236e62e41aca9eeae81edd2d9a09c15c1e0392374295242b5102b4",
+    "text_sha256": "eec2eb26a7e29c4da08b7702f9e4598764b3cd9fc5f4cddb3585388adddd34bf",
+    "retrieved_at": "2026-09-09T11:37:07.428850+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://electron-vite.org/guide/",
+    "final_url": "https://electron-vite.org/guide/",
+    "file": "official-next-electron-docusaurus/129-electron-vite.org-guide-.txt",
+    "bytes": 47389,
+    "content_sha256": "a1aca0eaa0c6cc49baf951167e4615ff741475c0d3ec0566695048c015adb12e",
+    "text_sha256": "ab8b420bca121dd2acf69a2ed3b34b337cc711c5099aefc63e292a461ff5884e",
+    "retrieved_at": "2026-09-09T11:37:08.262433+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://electron-vite.org/guide/cli",
+    "final_url": "https://electron-vite.org/guide/cli",
+    "file": "official-next-electron-docusaurus/130-electron-vite.org-guide-cli.txt",
+    "bytes": 30291,
+    "content_sha256": "982f501fc02b976ae766fe6d40ec8ed805d5aa101a89ced686490d7ace4e4ba1",
+    "text_sha256": "9c7214c95f6e8cb98c4ef63f5cc527f71d22ccc7d4dcc63a7a8f11d863b162b6",
+    "retrieved_at": "2026-09-09T11:37:08.162305+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://electron-vite.org/guide/development",
+    "status": "unavailable",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "url": "https://electron-vite.org/guide/typescript",
+    "final_url": "https://electron-vite.org/guide/typescript",
+    "file": "official-next-electron-docusaurus/132-electron-vite.org-guide-typescript.txt",
+    "bytes": 29811,
+    "content_sha256": "71596ebfceb01ce48411b817bad103896bc22434eacffb901cdb187ef0b6ac71",
+    "text_sha256": "4ba1df1b5ab310384757edc5d481b6360796355629488264a97289cbec8a36d0",
+    "retrieved_at": "2026-09-09T11:37:08.181912+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://electron-vite.org/guide/env-and-mode",
+    "final_url": "https://electron-vite.org/guide/env-and-mode",
+    "file": "official-next-electron-docusaurus/133-electron-vite.org-guide-env-and-mode.txt",
+    "bytes": 30639,
+    "content_sha256": "4944e9a3452d54a9f992ffc8a85a13e641f8d5e043e025044e75daafb61a45f1",
+    "text_sha256": "8e615736f3d7e190e24c03f1dee6e9c405f4a5c03d6ad01d40b137a6fcac65bb",
+    "retrieved_at": "2026-09-09T11:37:08.650007+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://electron-vite.org/guide/dependency-handling",
+    "final_url": "https://electron-vite.org/guide/dependency-handling",
+    "file": "official-next-electron-docusaurus/134-electron-vite.org-guide-dependency-handling.txt",
+    "bytes": 35070,
+    "content_sha256": "4fa6463e83fd19308c19297f619f2a10e2eabfbabfaf7d9475ca3a1cc62e24e7",
+    "text_sha256": "e099178b35e4e21e6362a44ffaecaf48e332262d4bf1e7b8031dbae9f348e85e",
+    "retrieved_at": "2026-09-09T11:37:08.669879+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://electron-vite.org/guide/isolated-build",
+    "final_url": "https://electron-vite.org/guide/isolated-build",
+    "file": "official-next-electron-docusaurus/135-electron-vite.org-guide-isolated-build.txt",
+    "bytes": 37400,
+    "content_sha256": "ace58f77250579ca3d2d765ebfce82e949787ce228c3170e37e9fe45a4875eec",
+    "text_sha256": "d89217deb956e8c2bb110c1c20da9b239a8080d435958e637332e627df1b272b",
+    "retrieved_at": "2026-09-09T11:37:08.637896+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://electron-vite.org/guide/source-code-protection",
+    "final_url": "https://electron-vite.org/guide/source-code-protection",
+    "file": "official-next-electron-docusaurus/136-electron-vite.org-guide-source-code-protection.txt",
+    "bytes": 59000,
+    "content_sha256": "da4df487f0302d2e967219adfa1a5422d7321145b94120d0c7428f04c1dfb58f",
+    "text_sha256": "30f307d2e98f362cb149d2394b982d7b21112cdaacb78b3043a229c102072691",
+    "retrieved_at": "2026-09-09T11:37:08.906214+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://electron-vite.org/guide/distribution",
+    "final_url": "https://electron-vite.org/guide/distribution",
+    "file": "official-next-electron-docusaurus/137-electron-vite.org-guide-distribution.txt",
+    "bytes": 62029,
+    "content_sha256": "360e2bac027eb5c88ebb5ce15ec7afc2610ff3eb853fbe8ae84f477c500c52a6",
+    "text_sha256": "a7671c0225c069378f9ae5c303375362ee43d659552b8bd1361614b3c0d3dd16",
+    "retrieved_at": "2026-09-09T11:37:09.091081+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://electron-vite.org/guide/migration",
+    "final_url": "https://electron-vite.org/guide/migration",
+    "file": "official-next-electron-docusaurus/138-electron-vite.org-guide-migration.txt",
+    "bytes": 38104,
+    "content_sha256": "d8ebf8a7bd832092760188f436a87c337e1d1aa2b8cc8f5718d289edd8ee4601",
+    "text_sha256": "027a1759f7e1ee0a0798ce6aecacca61867e600016fe24959fbfc6877c441acc",
+    "retrieved_at": "2026-09-09T11:37:09.194852+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://electron-vite.org/guide/build",
+    "final_url": "https://electron-vite.org/guide/build",
+    "file": "official-next-electron-docusaurus/139-electron-vite.org-guide-build.txt",
+    "bytes": 36582,
+    "content_sha256": "5516fcfd3c5c83ee2220b4704e3ffe5d8a95c591dc6fa2fffa677bc34f59ec11",
+    "text_sha256": "ea64081d994dbeddef36a0c0e3fe290eea619885975dc16127ed68230fd8912e",
+    "retrieved_at": "2026-09-09T11:37:09.205904+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://electron-vite.org/guide/assets",
+    "final_url": "https://electron-vite.org/guide/assets",
+    "file": "official-next-electron-docusaurus/140-electron-vite.org-guide-assets.txt",
+    "bytes": 49440,
+    "content_sha256": "7af88195060496c28b5c4ae6dfa98a0ffe6ba3604dacf0f412966137654cc46f",
+    "text_sha256": "287960b4b258820273b31cfbe369a41092e089e9f83fef6a9ecba1bf50690be7",
+    "retrieved_at": "2026-09-09T11:37:09.438329+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://electron-vite.org/config/",
+    "final_url": "https://electron-vite.org/config/",
+    "file": "official-next-electron-docusaurus/141-electron-vite.org-config-.txt",
+    "bytes": 45601,
+    "content_sha256": "e68bb15703d6582b412d412619895b8229310a41d2a4282bcf660d852978c1c9",
+    "text_sha256": "d41747d6daabcce8ec133f637b6dc91dcca6720b3c8ba776ef1671d917e6beac",
+    "retrieved_at": "2026-09-09T11:37:09.643459+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronforge.io/cli",
+    "final_url": "https://www.electronforge.io/cli",
+    "file": "official-next-electron-docusaurus/142-www.electronforge.io-cli.txt",
+    "bytes": 10870,
+    "content_sha256": "e38b2433e7e38cf327033c0c2b70646ea81f520ef4980ee9458175e760dadfc7",
+    "text_sha256": "e38b2433e7e38cf327033c0c2b70646ea81f520ef4980ee9458175e760dadfc7",
+    "retrieved_at": "2026-09-09T11:37:09.521982+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronforge.io/config/configuration",
+    "final_url": "https://www.electronforge.io/config/configuration",
+    "file": "official-next-electron-docusaurus/143-www.electronforge.io-config-configuration.txt",
+    "bytes": 8522,
+    "content_sha256": "dad5b08a362aa0ee7a78c27da6ac467474792ee0d43d29faaf3bd655dd9d2c1c",
+    "text_sha256": "dad5b08a362aa0ee7a78c27da6ac467474792ee0d43d29faaf3bd655dd9d2c1c",
+    "retrieved_at": "2026-09-09T11:37:09.678599+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronforge.io/config/plugins/vite",
+    "final_url": "https://www.electronforge.io/config/plugins/vite",
+    "file": "official-next-electron-docusaurus/144-www.electronforge.io-config-plugins-vite.txt",
+    "bytes": 7275,
+    "content_sha256": "ca249f4299aad3b6a0a6a973ae671afa28929a5a8c02646d9eb409ce2410c279",
+    "text_sha256": "ca249f4299aad3b6a0a6a973ae671afa28929a5a8c02646d9eb409ce2410c279",
+    "retrieved_at": "2026-09-09T11:37:09.766361+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronforge.io/build-lifecycle",
+    "final_url": "https://www.electronforge.io/build-lifecycle",
+    "file": "official-next-electron-docusaurus/145-www.electronforge.io-build-lifecycle.txt",
+    "bytes": 2045,
+    "content_sha256": "5b18a9c4a089f511d09fe6cb94e9213b885e844facdd7e5e22259154e495805f",
+    "text_sha256": "5b18a9c4a089f511d09fe6cb94e9213b885e844facdd7e5e22259154e495805f",
+    "retrieved_at": "2026-09-09T11:37:10.058129+00:00",
+    "status": "unavailable",
+    "reason": "HTTP200 soft404; excluded as substantive evidence"
+  },
+  {
+    "url": "https://www.electronforge.io/guides/code-signing/code-signing-macos",
+    "final_url": "https://www.electronforge.io/guides/code-signing/code-signing-macos",
+    "file": "official-next-electron-docusaurus/146-www.electronforge.io-guides-code-signing-code-signing-macos.txt",
+    "bytes": 11093,
+    "content_sha256": "ef51596d8c5bda3e653576bc5614fc4c8955cf0f0e6b98762f0dd05c9a4f65c1",
+    "text_sha256": "ef51596d8c5bda3e653576bc5614fc4c8955cf0f0e6b98762f0dd05c9a4f65c1",
+    "retrieved_at": "2026-09-09T11:37:09.963017+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronforge.io/guides/code-signing/code-signing-windows",
+    "final_url": "https://www.electronforge.io/guides/code-signing/code-signing-windows",
+    "file": "official-next-electron-docusaurus/147-www.electronforge.io-guides-code-signing-code-signing-windows.txt",
+    "bytes": 8022,
+    "content_sha256": "e86834e8548d74f17f122ec7bc0383425b4778991e07b4445c5871d7b121b28f",
+    "text_sha256": "e86834e8548d74f17f122ec7bc0383425b4778991e07b4445c5871d7b121b28f",
+    "retrieved_at": "2026-09-09T11:37:10.037949+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronforge.io/guides/framework-integration",
+    "final_url": "https://www.electronforge.io/guides/framework-integration",
+    "file": "official-next-electron-docusaurus/148-www.electronforge.io-guides-framework-integration.txt",
+    "bytes": 611,
+    "content_sha256": "d6a2fd822a3204329912d7baaaf3d0d647451873ddcf9c3da68795441872bb10",
+    "text_sha256": "d6a2fd822a3204329912d7baaaf3d0d647451873ddcf9c3da68795441872bb10",
+    "retrieved_at": "2026-09-09T11:37:10.174041+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronforge.io/guides/auto-update",
+    "final_url": "https://www.electronforge.io/guides/auto-update",
+    "file": "official-next-electron-docusaurus/149-www.electronforge.io-guides-auto-update.txt",
+    "bytes": 2023,
+    "content_sha256": "3760ce8b636d08cc12ac1fbc78a3f2fa88e26bb739d94d558387db80ccb15e57",
+    "text_sha256": "3760ce8b636d08cc12ac1fbc78a3f2fa88e26bb739d94d558387db80ccb15e57",
+    "retrieved_at": "2026-09-09T11:37:10.459287+00:00",
+    "status": "unavailable",
+    "reason": "HTTP200 soft404; excluded as substantive evidence"
+  },
+  {
+    "url": "https://www.electronforge.io/makers",
+    "final_url": "https://www.electronforge.io/makers",
+    "file": "official-next-electron-docusaurus/150-www.electronforge.io-makers.txt",
+    "bytes": 1901,
+    "content_sha256": "145b60cd844d3fc3dca5b8a335e1d83fda0a2cca910c3370bf492f4349cd4f29",
+    "text_sha256": "145b60cd844d3fc3dca5b8a335e1d83fda0a2cca910c3370bf492f4349cd4f29",
+    "retrieved_at": "2026-09-09T11:37:10.507161+00:00",
+    "status": "unavailable",
+    "reason": "HTTP200 soft404; excluded as substantive evidence"
+  },
+  {
+    "url": "https://docusaurus.io/docs/installation",
+    "final_url": "https://docusaurus.io/docs/installation",
+    "file": "official-next-electron-docusaurus/151-docusaurus.io-docs-installation.txt",
+    "bytes": 65433,
+    "content_sha256": "749c7a1cf1fe1fa84ea5676efabfb6ffefb56e3298de10dcb794d1d9f8420422",
+    "text_sha256": "b09ebd48b54fcc8d29ef54adfe0ef56067306328cd4600357c8388d663c507f0",
+    "retrieved_at": "2026-09-09T11:37:10.269928+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/api/misc/cli",
+    "status": "unavailable",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "url": "https://docusaurus.io/docs/configuration",
+    "final_url": "https://docusaurus.io/docs/configuration",
+    "file": "official-next-electron-docusaurus/153-docusaurus.io-docs-configuration.txt",
+    "bytes": 93556,
+    "content_sha256": "6910003e59cd1a48ccce6b29a7991834d349aaa596090dd01be74b9668db28ab",
+    "text_sha256": "3b8d8159ab5330c08ffbcf6815dae61634930ae121afccf2cba9116494575e77",
+    "retrieved_at": "2026-09-09T11:37:10.469156+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/api/docusaurus-config",
+    "final_url": "https://docusaurus.io/docs/api/docusaurus-config",
+    "file": "official-next-electron-docusaurus/154-docusaurus.io-docs-api-docusaurus-config.txt",
+    "bytes": 238472,
+    "content_sha256": "1b94b74baca68bb225487b9f0fad3082106abe79bdd16316f71209e3a128b36f",
+    "text_sha256": "9d378827eb834359914b35a9b99e60b121792d586ce4e331b60f09b061792d68",
+    "retrieved_at": "2026-09-09T11:37:10.676571+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/creating-pages",
+    "final_url": "https://docusaurus.io/docs/creating-pages",
+    "file": "official-next-electron-docusaurus/155-docusaurus.io-docs-creating-pages.txt",
+    "bytes": 58206,
+    "content_sha256": "245585a41b3becfd670a56070fe0388e5c01f81ab1ef63a58c8c9fcf7b388a7d",
+    "text_sha256": "703ad3434551dd0f7c8de3cdbf68de7d0f809ea0f69e9aaae02b555a998f853d",
+    "retrieved_at": "2026-09-09T11:37:10.980196+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/docs-introduction",
+    "final_url": "https://docusaurus.io/docs/docs-introduction",
+    "file": "official-next-electron-docusaurus/156-docusaurus.io-docs-docs-introduction.txt",
+    "bytes": 51717,
+    "content_sha256": "b3cdc4918043554781e2cd7ea903fa982271f7405d6dc41e9e41367b29b3bf4d",
+    "text_sha256": "d2fa193f8a2db9410d218247e56a704a2d70f8266712c551e0e1dcbe83321911",
+    "retrieved_at": "2026-09-09T11:37:10.921869+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/docs-multi-instance",
+    "final_url": "https://docusaurus.io/docs/docs-multi-instance",
+    "file": "official-next-electron-docusaurus/157-docusaurus.io-docs-docs-multi-instance.txt",
+    "bytes": 74815,
+    "content_sha256": "b2f77b0867d454ee29b8adc593a3661d15ce6eaeca0cb90959bd9c8fc5ad5cf1",
+    "text_sha256": "fb3ffc573ee5b5609b797c2cabdfe16eff92da376c1c1686dc6207479dc5f835",
+    "retrieved_at": "2026-09-09T11:37:10.676330+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/sidebar",
+    "final_url": "https://docusaurus.io/docs/sidebar",
+    "file": "official-next-electron-docusaurus/158-docusaurus.io-docs-sidebar.txt",
+    "bytes": 141016,
+    "content_sha256": "16d338eaa82f7cdd352c11b539eceb2127d66579c2ee9c310acc25624e958634",
+    "text_sha256": "fad17fefdbd59fd5eb727dfd5feae509788ab59a4722fec7bfb22f84d5d09562",
+    "retrieved_at": "2026-09-09T11:37:11.171135+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/sidebar/autogenerated",
+    "final_url": "https://docusaurus.io/docs/sidebar/autogenerated",
+    "file": "official-next-electron-docusaurus/159-docusaurus.io-docs-sidebar-autogenerated.txt",
+    "bytes": 147579,
+    "content_sha256": "be7b8604e3a03507370810b572bdc4725d311069b78ea11d1c7f28c698ea6248",
+    "text_sha256": "a922586a4a70578ccd466c7aa607996fb3b95424ca8c5977f234d6c4fbd4fdd4",
+    "retrieved_at": "2026-09-09T11:37:10.878567+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/markdown-features",
+    "final_url": "https://docusaurus.io/docs/markdown-features",
+    "file": "official-next-electron-docusaurus/160-docusaurus.io-docs-markdown-features.txt",
+    "bytes": 81026,
+    "content_sha256": "2098371e0b067bfc98a1a5f59dbb01ab20e9024017916dee0bfccc918891baf0",
+    "text_sha256": "e33153eb44112c60cf221f1d324f8769e34d76b105b21a74a20fd8f9f30bc0a8",
+    "retrieved_at": "2026-09-09T11:37:11.434661+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/markdown-features/react",
+    "final_url": "https://docusaurus.io/docs/markdown-features/react",
+    "file": "official-next-electron-docusaurus/161-docusaurus.io-docs-markdown-features-react.txt",
+    "bytes": 134561,
+    "content_sha256": "457edac94f5c43c142ba6c2a75d92921a2bf27f4179e28c39c1d2187a6542df5",
+    "text_sha256": "ba970f8d97d64854ead3d8c4a6b7fd5b165e3bdac1e057d5a42dcb692e4842a2",
+    "retrieved_at": "2026-09-09T11:37:11.112768+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/markdown-features/diagrams",
+    "final_url": "https://docusaurus.io/docs/markdown-features/diagrams",
+    "file": "official-next-electron-docusaurus/162-docusaurus.io-docs-markdown-features-diagrams.txt",
+    "bytes": 56093,
+    "content_sha256": "89d476803ee7ad6abee8172c21866756fbe1cfb6c76704a303f97b9752267f50",
+    "text_sha256": "4b75cc2508a66014da77faf89ca2e3ac33bf533a1133446cfccf0b463b7a62d2",
+    "retrieved_at": "2026-09-09T11:37:11.116186+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/markdown-features/code-blocks",
+    "final_url": "https://docusaurus.io/docs/markdown-features/code-blocks",
+    "file": "official-next-electron-docusaurus/163-docusaurus.io-docs-markdown-features-code-blocks.txt",
+    "bytes": 220420,
+    "content_sha256": "677aa11c855d87a13993a3da9ce9894683b0f23b09c9dd14ac9faf2218466d3a",
+    "text_sha256": "3b59f6473b6173ecb5a6d41459aecabaf23f2a1184bf71922850f126737acf03",
+    "retrieved_at": "2026-09-09T11:37:11.380112+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/markdown-features/tabs",
+    "final_url": "https://docusaurus.io/docs/markdown-features/tabs",
+    "file": "official-next-electron-docusaurus/164-docusaurus.io-docs-markdown-features-tabs.txt",
+    "bytes": 141631,
+    "content_sha256": "6c3172db8441e605017737818102343d8ccd16a957852060af87999158feedd6",
+    "text_sha256": "6f56faf6db1afbd4a906d7485a40ac315e7880497f4fac3fc61100edbf9e0242",
+    "retrieved_at": "2026-09-09T11:37:11.516965+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/markdown-features/admonitions",
+    "final_url": "https://docusaurus.io/docs/markdown-features/admonitions",
+    "file": "official-next-electron-docusaurus/165-docusaurus.io-docs-markdown-features-admonitions.txt",
+    "bytes": 118603,
+    "content_sha256": "b0417d936bc345ff91e8940b9df34ae8138b5bb481588b9ad4879945250fed15",
+    "text_sha256": "3c4baa3d928cfa12bc61c9d7d4485aabad68645f431afb04eddecde640edcee2",
+    "retrieved_at": "2026-09-09T11:37:11.618194+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/api/themes/configuration",
+    "final_url": "https://docusaurus.io/docs/api/themes/configuration",
+    "file": "official-next-electron-docusaurus/166-docusaurus.io-docs-api-themes-configuration.txt",
+    "bytes": 253086,
+    "content_sha256": "aa61c1d548d6453c5850f82dcb10f4977b73b85cbf71f1701a95d02a58413096",
+    "text_sha256": "dae2e930a9b96caf37e811c9d85f2fcb1c17006a19d3f5f543042cfde7f89a5b",
+    "retrieved_at": "2026-09-09T11:37:11.600147+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/swizzling",
+    "final_url": "https://docusaurus.io/docs/swizzling",
+    "file": "official-next-electron-docusaurus/167-docusaurus.io-docs-swizzling.txt",
+    "bytes": 112282,
+    "content_sha256": "fc09f3f10acbbc32dca9bb30de0044f00ca7af5a8961d00b42d0f3a1ba0dad24",
+    "text_sha256": "990bfab170136a28657d8b82eaec8fc1f4b9384b2d8bb3b37e83cb6bfff2a327",
+    "retrieved_at": "2026-09-09T11:37:12.071740+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/styling-layout",
+    "final_url": "https://docusaurus.io/docs/styling-layout",
+    "file": "official-next-electron-docusaurus/168-docusaurus.io-docs-styling-layout.txt",
+    "bytes": 140263,
+    "content_sha256": "789b154de2b26ebbdbf69d8742524370c56d5c829e4dcde9877d44c65df79f48",
+    "text_sha256": "2c7525bca5aff9c78c9b129701772c7fda1773cb15bea85bad2078cf10a03177",
+    "retrieved_at": "2026-09-09T11:37:11.689192+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/deployment",
+    "final_url": "https://docusaurus.io/docs/deployment",
+    "file": "official-next-electron-docusaurus/169-docusaurus.io-docs-deployment.txt",
+    "bytes": 217028,
+    "content_sha256": "571a760643195de8562e559a4978e215423d485fb21e533bb9af890d31870cbb",
+    "text_sha256": "8faa5c67740febfa12748267603dcd51519e34124df86021d7d05461183f755f",
+    "retrieved_at": "2026-09-09T11:37:12.220461+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/versioning",
+    "final_url": "https://docusaurus.io/docs/versioning",
+    "file": "official-next-electron-docusaurus/170-docusaurus.io-docs-versioning.txt",
+    "bytes": 92790,
+    "content_sha256": "b7b614ccfc513412becf751f4171dec794bf060767996bff4ecce5dfe6ca95d6",
+    "text_sha256": "7c430b7469dc4dc189ed7779ef19f0744668ca73329cb91260c4902bf606683b",
+    "retrieved_at": "2026-09-09T11:37:11.764355+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/i18n/introduction",
+    "final_url": "https://docusaurus.io/docs/i18n/introduction",
+    "file": "official-next-electron-docusaurus/171-docusaurus.io-docs-i18n-introduction.txt",
+    "bytes": 50446,
+    "content_sha256": "b7b30ffe97f862db22213c26bd0c2e3f4e8aeb6a0e93c165ddf8e499d109c7bd",
+    "text_sha256": "27efc463e314165eca42a23b56dcf2827d1aebf5276982988601bd7975181429",
+    "retrieved_at": "2026-09-09T11:37:11.876352+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/i18n/tutorial",
+    "final_url": "https://docusaurus.io/docs/i18n/tutorial",
+    "file": "official-next-electron-docusaurus/172-docusaurus.io-docs-i18n-tutorial.txt",
+    "bytes": 166190,
+    "content_sha256": "161534a3275f105837292eca30df58d3746c831da326c1af0a6bf152c18cfce4",
+    "text_sha256": "9837d042491fe99db4671a70927ec3ff91ce316bfcbaef88034a10dc563741c4",
+    "retrieved_at": "2026-09-09T11:37:12.172020+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/search",
+    "final_url": "https://docusaurus.io/docs/search",
+    "file": "official-next-electron-docusaurus/173-docusaurus.io-docs-search.txt",
+    "bytes": 124771,
+    "content_sha256": "b1835693140063e78448173d76b32cb0ec9ed82e45d36d030f59af42523a4cf6",
+    "text_sha256": "2a888a1319b1995ef1e782d42d6a9e0bb2ebf49ee1b907083690523f3fb57f72",
+    "retrieved_at": "2026-09-09T11:37:12.312920+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/api/themes/theme-search-algolia",
+    "status": "unavailable",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "url": "https://docusaurus.io/docs/api/plugins/plugin-content-docs",
+    "status": "unavailable",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "url": "https://docusaurus.io/docs/api/themes/theme-live-codeblock",
+    "status": "unavailable",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "url": "https://docusaurus.io/docs/api/themes/theme-mermaid",
+    "status": "unavailable",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "url": "https://docusaurus.io/blog/releases/3.9",
+    "final_url": "https://docusaurus.io/blog/releases/3.9",
+    "file": "official-next-electron-docusaurus/178-docusaurus.io-blog-releases-3.9.txt",
+    "bytes": 63388,
+    "content_sha256": "279bf6f32fe057992b3b6b28056cf5c6d41ad854e490a99d364b59f7437cb611",
+    "text_sha256": "62833cfde701a3e9ee4f983a4d59066d3ae007c34d05991edf2f4405abe84c2a",
+    "retrieved_at": "2026-09-09T11:37:12.932395+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/README.md",
+    "final_url": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/README.md",
+    "file": "official-next-electron-docusaurus/179-raw.githubusercontent.com-DavidAnson-markdownlint-cli2-main-README.md.txt",
+    "bytes": 28066,
+    "content_sha256": "2f642b2c2432b827936837641f8829014fde79375bf3be92b3d9d5e49bb22d7c",
+    "text_sha256": "2f642b2c2432b827936837641f8829014fde79375bf3be92b3d9d5e49bb22d7c",
+    "retrieved_at": "2026-09-09T11:37:12.704118+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/package.json",
+    "final_url": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/package.json",
+    "file": "official-next-electron-docusaurus/180-raw.githubusercontent.com-DavidAnson-markdownlint-cli2-main-package.json.txt",
+    "bytes": 6741,
+    "content_sha256": "626c8dbf82c40e8a3c655b49cb291799bcc56d6a7a8810e82e1ee979406d62f3",
+    "text_sha256": "626c8dbf82c40e8a3c655b49cb291799bcc56d6a7a8810e82e1ee979406d62f3",
+    "retrieved_at": "2026-09-09T11:37:12.807924+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/schema/.markdownlint-cli2.jsonc",
+    "status": "unavailable",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/github/docs/main/content/actions/reference/runners/github-hosted-runners.md",
+    "final_url": "https://raw.githubusercontent.com/github/docs/main/content/actions/reference/runners/github-hosted-runners.md",
+    "file": "official-next-electron-docusaurus/182-raw.githubusercontent.com-github-docs-main-content-actions-reference-runners-github-hosted-runners.md.txt",
+    "bytes": 8957,
+    "content_sha256": "2ba4307f64e55251e63555e97a51381e4eb36334693a464c743522a09546a148",
+    "text_sha256": "2ba4307f64e55251e63555e97a51381e4eb36334693a464c743522a09546a148",
+    "retrieved_at": "2026-09-09T11:37:13.030990+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/actions/setup-node/main/README.md",
+    "final_url": "https://raw.githubusercontent.com/actions/setup-node/main/README.md",
+    "file": "official-next-electron-docusaurus/183-raw.githubusercontent.com-actions-setup-node-main-README.md.txt",
+    "bytes": 14971,
+    "content_sha256": "d8a3975d3194be46f878eb9e78bcfa6823b78cd076b0ebf98ea533f381718fc0",
+    "text_sha256": "d8a3975d3194be46f878eb9e78bcfa6823b78cd076b0ebf98ea533f381718fc0",
+    "retrieved_at": "2026-09-09T11:37:13.108014+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/actions/checkout/main/README.md",
+    "final_url": "https://raw.githubusercontent.com/actions/checkout/main/README.md",
+    "file": "official-next-electron-docusaurus/184-raw.githubusercontent.com-actions-checkout-main-README.md.txt",
+    "bytes": 14138,
+    "content_sha256": "3df94d90d0df6df603a549cc779bc6cab4b21f8deef82eb6fef1f4d88b788174",
+    "text_sha256": "3df94d90d0df6df603a549cc779bc6cab4b21f8deef82eb6fef1f4d88b788174",
+    "retrieved_at": "2026-09-09T11:37:13.163009+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/pnpm/action-setup/master/README.md",
+    "final_url": "https://raw.githubusercontent.com/pnpm/action-setup/master/README.md",
+    "file": "official-next-electron-docusaurus/185-raw.githubusercontent.com-pnpm-action-setup-master-README.md.txt",
+    "bytes": 8070,
+    "content_sha256": "b6b422eae84a81af694e8831b328dcdc2afc0cb73ba740a30e08437e6f7646d2",
+    "text_sha256": "b6b422eae84a81af694e8831b328dcdc2afc0cb73ba740a30e08437e6f7646d2",
+    "retrieved_at": "2026-09-09T11:37:13.231966+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/cmfcmf/docusaurus-search-local/master/README.md",
+    "final_url": "https://raw.githubusercontent.com/cmfcmf/docusaurus-search-local/master/README.md",
+    "file": "official-next-electron-docusaurus/186-raw.githubusercontent.com-cmfcmf-docusaurus-search-local-master-README.md.txt",
+    "bytes": 7913,
+    "content_sha256": "a33d24d9a7043377b9aee21dc68e284fe6a9f74d012a26011bd1e737010c9b2b",
+    "text_sha256": "a33d24d9a7043377b9aee21dc68e284fe6a9f74d012a26011bd1e737010c9b2b",
+    "retrieved_at": "2026-09-09T11:37:13.380400+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/cmfcmf/docusaurus-search-local/master/package.json",
+    "final_url": "https://raw.githubusercontent.com/cmfcmf/docusaurus-search-local/master/package.json",
+    "file": "official-next-electron-docusaurus/187-raw.githubusercontent.com-cmfcmf-docusaurus-search-local-master-package.json.txt",
+    "bytes": 1032,
+    "content_sha256": "e4ea04afb21d070316f455d8908a3b8920686ea1989cd589b818edb032a697e1",
+    "text_sha256": "e4ea04afb21d070316f455d8908a3b8920686ea1989cd589b818edb032a697e1",
+    "retrieved_at": "2026-09-09T11:37:13.411712+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/PaloAltoNetworks/docusaurus-openapi-docs/main/README.md",
+    "final_url": "https://raw.githubusercontent.com/PaloAltoNetworks/docusaurus-openapi-docs/main/README.md",
+    "file": "official-next-electron-docusaurus/188-raw.githubusercontent.com-PaloAltoNetworks-docusaurus-openapi-docs-main-README.md.txt",
+    "bytes": 35176,
+    "content_sha256": "6ef9cca754e4b62c061d26f5e5de48143b3ece8fe155effaf2743634645fd9c7",
+    "text_sha256": "6ef9cca754e4b62c061d26f5e5de48143b3ece8fe155effaf2743634645fd9c7",
+    "retrieved_at": "2026-09-09T11:37:13.591297+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/typesense/docusaurus-theme-search-typesense/main/README.md",
+    "status": "unavailable",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "url": "https://nodejs.org/en/about/previous-releases",
+    "final_url": "https://nodejs.org/en/about/previous-releases",
+    "file": "official-next-electron-docusaurus/190-nodejs.org-en-about-previous-releases.txt",
+    "bytes": 296047,
+    "content_sha256": "7f5073af9713a4e8191bdf592eccd9197f6d6efd45c76e4eaace913c72d5b64c",
+    "text_sha256": "f7db49c5b50a1914ce3d605493d1c150644fb5edce74f5fc80fb6320a3b4a02a",
+    "retrieved_at": "2026-09-09T11:37:13.591481+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://pnpm.io/cli/run",
+    "final_url": "https://pnpm.io/cli/run",
+    "file": "official-next-electron-docusaurus/191-pnpm.io-cli-run.txt",
+    "bytes": 59996,
+    "content_sha256": "5fa012d7c59ecc4c729b2e6f08ef851d8972988c28b498158a4bc1b88f3f590f",
+    "text_sha256": "dcaae6995059b40a6c69761ad2d72524de671ac69eee7089b1a80c5c3e4850fe",
+    "retrieved_at": "2026-09-09T11:37:14.043285+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://pnpm.io/installation",
+    "final_url": "https://pnpm.io/installation",
+    "file": "official-next-electron-docusaurus/192-pnpm.io-installation.txt",
+    "bytes": 48750,
+    "content_sha256": "7675b2429c5b8aa948760c28219f0d7fa96293b85b71cbc4c87ad038998833cc",
+    "text_sha256": "3946f45f1bc1358fe650d4711388bd99c94e1b6585f30d9234b504b302df55ad",
+    "retrieved_at": "2026-09-09T11:37:14.035142+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://prettier.io/docs/cli",
+    "final_url": "https://prettier.io/docs/cli",
+    "file": "official-next-electron-docusaurus/193-prettier.io-docs-cli.txt",
+    "bytes": 50293,
+    "content_sha256": "2a42a96fb1b0860427393db612075be0b7d6095cbb0ddcb9de97b0f747f50814",
+    "text_sha256": "18136f22985db74fe87b02cf4bb0d7354da763343e8a5c5128088ab051a15a57",
+    "retrieved_at": "2026-09-09T11:37:14.682046+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://prettier.io/docs/ignore",
+    "final_url": "https://prettier.io/docs/ignore",
+    "file": "official-next-electron-docusaurus/194-prettier.io-docs-ignore.txt",
+    "bytes": 57027,
+    "content_sha256": "97662c7b2210591cc4b254c222681d6a2dcd38fa3db715a17941527be5648e0a",
+    "text_sha256": "7996a60ce638ed7095b9114734fcd805f11cb8dbac0d598feb2d325c16a0081b",
+    "retrieved_at": "2026-09-09T11:37:14.764052+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://prettier.io/docs/options",
+    "final_url": "https://prettier.io/docs/options",
+    "file": "official-next-electron-docusaurus/195-prettier.io-docs-options.txt",
+    "bytes": 79685,
+    "content_sha256": "d0cedeaa1730664de1fc059df1617c62333cdb89e6f7c993495d150352cf820a",
+    "text_sha256": "f23ca86c099075eb6d29a038b8057eae0294a94a5b609235707d348fdbe41832",
+    "retrieved_at": "2026-09-09T11:37:15.229428+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://open-next.js.org/",
+    "final_url": "https://open-next.js.org/",
+    "file": "official-next-electron-docusaurus/196-open-next.js.org-.txt",
+    "bytes": 1131,
+    "content_sha256": "4578ca2b14bf768a21e108f5ee89cb59c0cffdf5a332d297caf65f915e35d0cb",
+    "text_sha256": "dd356677eb83c6ad027cb403482be0ba3d43152d4348138e222e23164e1ecdc0",
+    "retrieved_at": "2026-09-09T11:37:14.324396+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://open-next.js.org/aws/get_started",
+    "status": "unavailable",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "url": "https://open-next.js.org/cloudflare/get-started",
+    "status": "unavailable",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "url": "https://pm2.keymetrics.io/docs/usage/application-declaration/",
+    "final_url": "https://pm2.keymetrics.io/docs/usage/application-declaration/",
+    "file": "official-next-electron-docusaurus/199-pm2.keymetrics.io-docs-usage-application-declaration-.txt",
+    "bytes": 86188,
+    "content_sha256": "c2fb3a0b29140920e2fed472cf6f5e88a46c043c83a98bcedb1f7f841a7098b5",
+    "text_sha256": "81a910b833c2dd2bc82f8be33cd4ced5b17d9295745042c501bd3f9a8395af8a",
+    "retrieved_at": "2026-09-09T11:37:14.987787+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://playwright.dev/docs/api/class-electron",
+    "final_url": "https://playwright.dev/docs/api/class-electron",
+    "file": "official-next-electron-docusaurus/200-playwright.dev-docs-api-class-electron.txt",
+    "bytes": 87746,
+    "content_sha256": "0665796c4f413247b545ef72f7b46501ec0a2d2cda56cd481f556449ea18e607",
+    "text_sha256": "beb31f9d184b1b7f1ae3222c79a1bf886d80201de02fa8230a07396f88e14748",
+    "retrieved_at": "2026-09-09T11:37:15.009161+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://webdriver.io/docs/desktop-testing/electron/",
+    "final_url": "https://webdriver.io/docs/desktop-testing/electron/",
+    "file": "official-next-electron-docusaurus/201-webdriver.io-docs-desktop-testing-electron-.txt",
+    "bytes": 51601,
+    "content_sha256": "d1af8d128790da2ecaa22a448b993cb1ac781466a4e5a64175da44c6a607912f",
+    "text_sha256": "2441154ac529cc0251d894dc38cd54ec6b31d949e901e9ead7b623f43168cb9d",
+    "retrieved_at": "2026-09-09T11:37:15.047882+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://developers.openai.com/api/docs/guides/latest-model",
+    "final_url": "https://developers.openai.com/api/docs/guides/latest-model",
+    "file": "official-next-electron-docusaurus/202-developers.openai.com-api-docs-guides-latest-model.txt",
+    "bytes": 16564,
+    "content_sha256": "2a59b26078e001a4e4e3da10693e80ad5ee1c02cbe472afa6b682308f27b8b22",
+    "text_sha256": "2a59b26078e001a4e4e3da10693e80ad5ee1c02cbe472afa6b682308f27b8b22",
+    "retrieved_at": "2026-09-09T11:37:15.156022+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/file-conventions",
+    "final_url": "https://nextjs.org/docs/app/api-reference/file-conventions",
+    "file": "official-next-electron-docusaurus/203-nextjs.org-docs-app-api-reference-file-conventions.txt",
+    "bytes": 3661,
+    "content_sha256": "22fb1807582b1bbdaf6bb5018d64d0bbf25f60adb4c7aef8a7fbfe61086fd396",
+    "text_sha256": "22fb1807582b1bbdaf6bb5018d64d0bbf25f60adb4c7aef8a7fbfe61086fd396",
+    "retrieved_at": "2026-09-09T11:37:15.271849+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/building-your-application/upgrading/from-webpack-to-turbopack",
+    "final_url": "https://nextjs.org/docs/app/building-your-application/upgrading/from-webpack-to-turbopack",
+    "file": "official-next-electron-docusaurus/204-nextjs.org-docs-app-building-your-application-upgrading-from-webpack-to-turbopack.txt",
+    "bytes": 660,
+    "content_sha256": "7eaf88a390129547e1a01b143d7e864094da302e2702b1f817668eec87e9dc63",
+    "text_sha256": "7eaf88a390129547e1a01b143d7e864094da302e2702b1f817668eec87e9dc63",
+    "retrieved_at": "2026-09-09T11:37:15.467637+00:00",
+    "status": "unavailable",
+    "reason": "HTTP200 soft404; excluded as substantive evidence"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/functions",
+    "final_url": "https://nextjs.org/docs/app/api-reference/functions",
+    "file": "official-next-electron-docusaurus/205-nextjs.org-docs-app-api-reference-functions.txt",
+    "bytes": 5625,
+    "content_sha256": "a2b06ac3a35446c0fcc9fff6b391e1f9f7929730a60b5de0529abf85b96d1bf3",
+    "text_sha256": "a2b06ac3a35446c0fcc9fff6b391e1f9f7929730a60b5de0529abf85b96d1bf3",
+    "retrieved_at": "2026-09-09T11:37:15.423875+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/cli",
+    "final_url": "https://docusaurus.io/docs/cli",
+    "file": "official-next-electron-docusaurus/300-docusaurus.io-docs-cli.txt",
+    "bytes": 61695,
+    "content_sha256": "601f53b06b5668d942bc95ea4fdf470232ce7aed56e59083497f4b8e9869e92e",
+    "text_sha256": "a331370afd2c8fc609f1efc65380486202dd8f3bd80f09e7d7cf3ada4f3c4577",
+    "retrieved_at": "2026-09-09T11:40:07.482946+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs",
+    "final_url": "https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs",
+    "file": "official-next-electron-docusaurus/301-docusaurus.io-docs-api-plugins-docusaurus-plugin-content-docs.txt",
+    "bytes": 194165,
+    "content_sha256": "6ecf92a2131fe8b5befe46c0f4949ce35d882395f9effb241c1352c16181c7aa",
+    "text_sha256": "2beb0f9179596fe9d5f9bd32929b7ff947e448162e1731b33751c68422d04c21",
+    "retrieved_at": "2026-09-09T11:40:07.344330+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/api/themes/@docusaurus/theme-search-algolia",
+    "final_url": "https://docusaurus.io/docs/api/themes/@docusaurus/theme-search-algolia",
+    "file": "official-next-electron-docusaurus/302-docusaurus.io-docs-api-themes-docusaurus-theme-search-algolia.txt",
+    "bytes": 34750,
+    "content_sha256": "54f004661bc022425e91ce4a31f979e8e12b7dbdf3aeb8871245954818b8669e",
+    "text_sha256": "85b36b4ee0adae4cc3a70189120b5b1075b791aec9176faeb3a36c3b89cc85d9",
+    "retrieved_at": "2026-09-09T11:40:07.220646+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/api/themes/@docusaurus/theme-live-codeblock",
+    "final_url": "https://docusaurus.io/docs/api/themes/@docusaurus/theme-live-codeblock",
+    "file": "official-next-electron-docusaurus/303-docusaurus.io-docs-api-themes-docusaurus-theme-live-codeblock.txt",
+    "bytes": 38191,
+    "content_sha256": "23eab4d347eabaa4dda4583466f00d755682a533af1a9d25817c80bc53105fa9",
+    "text_sha256": "af43250ae5cb3d12d45153b1d50ff00967eb7e0bb6cad1c91094430dc8657b61",
+    "retrieved_at": "2026-09-09T11:40:07.539395+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/api/themes/@docusaurus/theme-mermaid",
+    "final_url": "https://docusaurus.io/docs/api/themes/@docusaurus/theme-mermaid",
+    "file": "official-next-electron-docusaurus/304-docusaurus.io-docs-api-themes-docusaurus-theme-mermaid.txt",
+    "bytes": 36847,
+    "content_sha256": "8209539b20268833743073357bae4a91004d7a05fd8298da48ccccd272376e99",
+    "text_sha256": "c7b1d902e622afc7593322f3f49be9bfdbb1c7981b510129d61c05c6d21285f9",
+    "retrieved_at": "2026-09-09T11:40:07.817425+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/blog/releases/3.10",
+    "final_url": "https://docusaurus.io/blog/releases/3.10",
+    "file": "official-next-electron-docusaurus/305-docusaurus.io-blog-releases-3.10.txt",
+    "bytes": 94129,
+    "content_sha256": "5bfce0c8d5bd77aa7781e315e3470b51f43c5f9754df47c9ab6545edc7333a1f",
+    "text_sha256": "750276a94a05ecbfad16c1a6eaa45a7e8a4d904601c314398c552b97f566c000",
+    "retrieved_at": "2026-09-09T11:40:07.570736+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://docusaurus.io/docs/3.9.2/installation",
+    "final_url": "https://docusaurus.io/docs/3.9.2/installation",
+    "file": "official-next-electron-docusaurus/306-docusaurus.io-docs-3.9.2-installation.txt",
+    "bytes": 66684,
+    "content_sha256": "d32ade2bf79a960544de4e6fa62058228aec07ce67ecd107ae872d1c63a21bd1",
+    "text_sha256": "f0e39c8d900644d69fea14b36e013d796a0dde0757cf93e35dd2ae82994ad6d9",
+    "retrieved_at": "2026-09-09T11:40:08.043546+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/facebook/docusaurus/v3.10.2/packages/docusaurus/src/commands/cli.ts",
+    "final_url": "https://raw.githubusercontent.com/facebook/docusaurus/v3.10.2/packages/docusaurus/src/commands/cli.ts",
+    "file": "official-next-electron-docusaurus/307-raw.githubusercontent.com-facebook-docusaurus-v3.10.2-packages-docusaurus-src-commands-cli.ts.txt",
+    "bytes": 10001,
+    "content_sha256": "b75f51fe95683878d32a96be4bc42e25ee818436299672dc3b1391861043400c",
+    "text_sha256": "b75f51fe95683878d32a96be4bc42e25ee818436299672dc3b1391861043400c",
+    "retrieved_at": "2026-09-09T11:40:07.850251+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/facebook/docusaurus/v3.10.2/packages/docusaurus/src/commands/serve.ts",
+    "final_url": "https://raw.githubusercontent.com/facebook/docusaurus/v3.10.2/packages/docusaurus/src/commands/serve.ts",
+    "file": "official-next-electron-docusaurus/308-raw.githubusercontent.com-facebook-docusaurus-v3.10.2-packages-docusaurus-src-commands-serve.ts.txt",
+    "bytes": 3532,
+    "content_sha256": "13185c2148fca30ecaaeb9bfd2179a53a9704f614fc2ec81e6f9b17380763bc5",
+    "text_sha256": "13185c2148fca30ecaaeb9bfd2179a53a9704f614fc2ec81e6f9b17380763bc5",
+    "retrieved_at": "2026-09-09T11:40:08.434333+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/facebook/docusaurus/v3.10.2/CHANGELOG.md",
+    "final_url": "https://raw.githubusercontent.com/facebook/docusaurus/v3.10.2/CHANGELOG.md",
+    "file": "official-next-electron-docusaurus/309-raw.githubusercontent.com-facebook-docusaurus-v3.10.2-CHANGELOG.md.txt",
+    "bytes": 218419,
+    "content_sha256": "9985aae39b97e33febae6006b805f251451906f3bf77041d2418d485ed7d3e0d",
+    "text_sha256": "9985aae39b97e33febae6006b805f251451906f3bf77041d2418d485ed7d3e0d",
+    "retrieved_at": "2026-09-09T11:40:08.874337+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/v0.23.2/package.json",
+    "final_url": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/v0.23.2/package.json",
+    "file": "official-next-electron-docusaurus/310-raw.githubusercontent.com-DavidAnson-markdownlint-cli2-v0.23.2-package.json.txt",
+    "bytes": 6741,
+    "content_sha256": "5ef15dc1700238b73a8786987c75a69fcb3a5204c3dd50709e3bea5fee33677e",
+    "text_sha256": "5ef15dc1700238b73a8786987c75a69fcb3a5204c3dd50709e3bea5fee33677e",
+    "retrieved_at": "2026-09-09T11:40:08.698038+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/DavidAnson/markdownlint-cli2/main/markdownlint-cli2-config-schema.json",
+    "status": "unavailable",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/DavidAnson/vscode-markdownlint/main/markdownlint-cli2-config-schema.json",
+    "final_url": "https://raw.githubusercontent.com/DavidAnson/vscode-markdownlint/main/markdownlint-cli2-config-schema.json",
+    "file": "official-next-electron-docusaurus/312-raw.githubusercontent.com-DavidAnson-vscode-markdownlint-main-markdownlint-cli2-config-schema.json.txt",
+    "bytes": 6856,
+    "content_sha256": "e487f246f4265da380a912ddb328ec5639181adef0db34ba5d9d7540a0021cc5",
+    "text_sha256": "e487f246f4265da380a912ddb328ec5639181adef0db34ba5d9d7540a0021cc5",
+    "retrieved_at": "2026-09-09T11:40:08.685034+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/cmfcmf/docusaurus-search-local/master/packages/docusaurus-search-local/package.json",
+    "final_url": "https://raw.githubusercontent.com/cmfcmf/docusaurus-search-local/master/packages/docusaurus-search-local/package.json",
+    "file": "official-next-electron-docusaurus/313-raw.githubusercontent.com-cmfcmf-docusaurus-search-local-master-packages-docusaurus-search-local-package.json.txt",
+    "bytes": 2990,
+    "content_sha256": "046da6dbf057429e42e0dfd8b68f187ae09b1c38fe32e1bd174d755432a2e64a",
+    "text_sha256": "046da6dbf057429e42e0dfd8b68f187ae09b1c38fe32e1bd174d755432a2e64a",
+    "retrieved_at": "2026-09-09T11:40:08.773291+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/typesense/docusaurus-theme-search-typesense/master/README.md",
+    "final_url": "https://raw.githubusercontent.com/typesense/docusaurus-theme-search-typesense/master/README.md",
+    "file": "official-next-electron-docusaurus/314-raw.githubusercontent.com-typesense-docusaurus-theme-search-typesense-master-README.md.txt",
+    "bytes": 1484,
+    "content_sha256": "a3da07f2ad56d7ddd99bfb0e854f5d45faae9ff20e3af3c80c0375fd6ae0f854",
+    "text_sha256": "a3da07f2ad56d7ddd99bfb0e854f5d45faae9ff20e3af3c80c0375fd6ae0f854",
+    "retrieved_at": "2026-09-09T11:40:09.071916+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronforge.io/core-concepts/build-lifecycle",
+    "final_url": "https://www.electronforge.io/core-concepts/build-lifecycle",
+    "file": "official-next-electron-docusaurus/315-www.electronforge.io-core-concepts-build-lifecycle.txt",
+    "bytes": 5814,
+    "content_sha256": "7b0f2ca45b7bd9a09b9cd74a208dcfd668a900786f079bb3c2ee670f3d610dd4",
+    "text_sha256": "7b0f2ca45b7bd9a09b9cd74a208dcfd668a900786f079bb3c2ee670f3d610dd4",
+    "retrieved_at": "2026-09-09T11:40:09.084919+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronforge.io/config/makers",
+    "final_url": "https://www.electronforge.io/config/makers",
+    "file": "official-next-electron-docusaurus/316-www.electronforge.io-config-makers.txt",
+    "bytes": 1843,
+    "content_sha256": "86fe1c3a2603185610a7fd3e435737fd7dcf12e19139c9882c583d8d8e3ac5ea",
+    "text_sha256": "86fe1c3a2603185610a7fd3e435737fd7dcf12e19139c9882c583d8d8e3ac5ea",
+    "retrieved_at": "2026-09-09T11:40:09.119350+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronforge.io/advanced/auto-update",
+    "final_url": "https://www.electronforge.io/advanced/auto-update",
+    "file": "official-next-electron-docusaurus/317-www.electronforge.io-advanced-auto-update.txt",
+    "bytes": 2763,
+    "content_sha256": "abed239a0408b6c42437a52f33a7dff654aa7daed9b8d218aa969838165bd1a3",
+    "text_sha256": "abed239a0408b6c42437a52f33a7dff654aa7daed9b8d218aa969838165bd1a3",
+    "retrieved_at": "2026-09-09T11:40:09.370301+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://www.electronforge.io/config/plugins/auto-unpack-natives",
+    "final_url": "https://www.electronforge.io/config/plugins/auto-unpack-natives",
+    "file": "official-next-electron-docusaurus/318-www.electronforge.io-config-plugins-auto-unpack-natives.txt",
+    "bytes": 1834,
+    "content_sha256": "b2fb86e8360aff0925ba195b69b0b423b570c95c04a956ea1a218911521e8c11",
+    "text_sha256": "b2fb86e8360aff0925ba195b69b0b423b570c95c04a956ea1a218911521e8c11",
+    "retrieved_at": "2026-09-09T11:40:09.479576+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://releases.electronjs.org/releases/stable",
+    "final_url": "https://releases.electronjs.org/release?channel=stable",
+    "file": "official-next-electron-docusaurus/319-releases.electronjs.org-releases-stable.txt",
+    "bytes": 38978,
+    "content_sha256": "6999cdf7ca5f6420bfe5641738b1d489c8887f45e3606a1c0f015c11c838e75a",
+    "text_sha256": "085995de50dd70d83f9b3ff68d2d065069828984b9a9a97639f4ddaf5d9de0f8",
+    "retrieved_at": "2026-09-09T11:40:10.647983+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/electron/electron/main/releases/lite.json",
+    "status": "unavailable",
+    "error": "HTTP Error 404: Not Found"
+  },
+  {
+    "url": "https://electron-vite.org/guide/dev",
+    "final_url": "https://electron-vite.org/guide/dev",
+    "file": "official-next-electron-docusaurus/321-electron-vite.org-guide-dev.txt",
+    "bytes": 93745,
+    "content_sha256": "ee4478b5aa34986b134234205d09b5bb2d3621210b5bf24bd2ba8edb472e83ee",
+    "text_sha256": "b43fc2568c167effd0558ee78b8b05b36e277bced677475c01af9d27d7f7b03f",
+    "retrieved_at": "2026-09-09T11:40:10.068295+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/alex8088/electron-vite/v5.0.0/package.json",
+    "final_url": "https://raw.githubusercontent.com/alex8088/electron-vite/v5.0.0/package.json",
+    "file": "official-next-electron-docusaurus/322-raw.githubusercontent.com-alex8088-electron-vite-v5.0.0-package.json.txt",
+    "bytes": 2611,
+    "content_sha256": "76a61d3f06a16c4b0f7de7f0915e5c251de0060a75b3259ef3da2a5125b4ecca",
+    "text_sha256": "76a61d3f06a16c4b0f7de7f0915e5c251de0060a75b3259ef3da2a5125b4ecca",
+    "retrieved_at": "2026-09-09T11:40:09.853076+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/electron/forge/main/packages/api/core/package.json",
+    "final_url": "https://raw.githubusercontent.com/electron/forge/main/packages/api/core/package.json",
+    "file": "official-next-electron-docusaurus/323-raw.githubusercontent.com-electron-forge-main-packages-api-core-package.json.txt",
+    "bytes": 2736,
+    "content_sha256": "ea5127e45bf033cadeb91f01f0c71720ea38da0aba52bc319c64d9788c08d3e6",
+    "text_sha256": "ea5127e45bf033cadeb91f01f0c71720ea38da0aba52bc319c64d9788c08d3e6",
+    "retrieved_at": "2026-09-09T11:40:09.866828+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/actions/checkout/v4/README.md",
+    "final_url": "https://raw.githubusercontent.com/actions/checkout/v4/README.md",
+    "file": "official-next-electron-docusaurus/324-raw.githubusercontent.com-actions-checkout-v4-README.md.txt",
+    "bytes": 12391,
+    "content_sha256": "2556582f5103560617b79b50d33d7f75a330064746388d35ecea918cb14cc228",
+    "text_sha256": "2556582f5103560617b79b50d33d7f75a330064746388d35ecea918cb14cc228",
+    "retrieved_at": "2026-09-09T11:40:10.442454+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/actions/setup-node/v4/README.md",
+    "final_url": "https://raw.githubusercontent.com/actions/setup-node/v4/README.md",
+    "file": "official-next-electron-docusaurus/325-raw.githubusercontent.com-actions-setup-node-v4-README.md.txt",
+    "bytes": 11569,
+    "content_sha256": "f4f58871b575aa66acf341aa111cd8fbaf7a4b789264fbd49c857ffb838bef59",
+    "text_sha256": "f4f58871b575aa66acf341aa111cd8fbaf7a4b789264fbd49c857ffb838bef59",
+    "retrieved_at": "2026-09-09T11:40:10.279075+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/pnpm/action-setup/v4/README.md",
+    "final_url": "https://raw.githubusercontent.com/pnpm/action-setup/v4/README.md",
+    "file": "official-next-electron-docusaurus/326-raw.githubusercontent.com-pnpm-action-setup-v4-README.md.txt",
+    "bytes": 4268,
+    "content_sha256": "7bb0e05879dd61978907ac765dbed4081d72ba3ae451ceb2981643603777bd45",
+    "text_sha256": "7bb0e05879dd61978907ac765dbed4081d72ba3ae451ceb2981643603777bd45",
+    "retrieved_at": "2026-09-09T11:40:10.564972+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://opennext.js.org/",
+    "final_url": "https://opennext.js.org/",
+    "file": "official-next-electron-docusaurus/327-opennext.js.org-.txt",
+    "bytes": 122676,
+    "content_sha256": "2f7c6d3463c6e3109eac4c95d4c0cf9bf91606df0b82897efaebb4604c83872d",
+    "text_sha256": "95acc7e7ec5ac06c9b4d6f494e2dbbf82ff7b462f16383365b0debfc9cdfde29",
+    "retrieved_at": "2026-09-09T11:40:10.652810+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://opennext.js.org/aws",
+    "final_url": "https://opennext.js.org/aws",
+    "file": "official-next-electron-docusaurus/328-opennext.js.org-aws.txt",
+    "bytes": 129139,
+    "content_sha256": "10aab24f18eb647dfd5eafba110ba7a6ddcc85e42010cecf691e97e545bd7898",
+    "text_sha256": "f0a1d0a2abd09d0e0dd0c164670e24739b83c4d5d983405b01efe096b9054638",
+    "retrieved_at": "2026-09-09T11:40:10.851554+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://opennext.js.org/cloudflare",
+    "final_url": "https://opennext.js.org/cloudflare",
+    "file": "official-next-electron-docusaurus/329-opennext.js.org-cloudflare.txt",
+    "bytes": 143598,
+    "content_sha256": "46295da63ad3ae34301039d7652385f59beabce2b06be45b80d8c32add02a2f5",
+    "text_sha256": "5f62288716602c3179b1d96c97f32ae803cd279e49aff2dd97ebb5e02d2a822e",
+    "retrieved_at": "2026-09-09T11:40:10.791564+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://opennext.js.org/aws/get_started",
+    "final_url": "https://opennext.js.org/aws/get_started",
+    "file": "official-next-electron-docusaurus/330-opennext.js.org-aws-get-started.txt",
+    "bytes": 124108,
+    "content_sha256": "17bb7f5e77cd66a01664000ce92975216e19c25d038ea3d0b079d052bb43752c",
+    "text_sha256": "5aa44c435fbfcffb5aefdbdd9c848bbbce7e64f650ede2fad7c293c107dd6aff",
+    "retrieved_at": "2026-09-09T11:40:10.966408+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://tailwindcss.com/docs/font-family",
+    "final_url": "https://tailwindcss.com/docs/font-family",
+    "file": "official-next-electron-docusaurus/331-tailwindcss.com-docs-font-family.txt",
+    "bytes": 344538,
+    "content_sha256": "e8be13824827fb7967dc4ce16aeb4e945a63d93174a22f0116162d1cc50a1f99",
+    "text_sha256": "8d5e12ce9468a227f8d498e40722aa8e1ea228b13dcd64358d78b75dfc3975a2",
+    "retrieved_at": "2026-09-09T11:40:11.028151+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/guides/tailwind-v3",
+    "final_url": "https://nextjs.org/docs/app/guides/tailwind-v3",
+    "file": "official-next-electron-docusaurus/332-nextjs.org-docs-app-guides-tailwind-v3.txt",
+    "bytes": 617,
+    "content_sha256": "27de9cbf99220db30fdfc4892e49d71440f7f7b81feaeb151cedd3c915b873ac",
+    "text_sha256": "27de9cbf99220db30fdfc4892e49d71440f7f7b81feaeb151cedd3c915b873ac",
+    "retrieved_at": "2026-09-09T11:40:11.236637+00:00",
+    "status": "unavailable",
+    "reason": "HTTP200 soft404; excluded as substantive evidence"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/vercel/next.js/v16.3.4/packages/next/src/build/analysis/get-page-static-info.ts",
+    "final_url": "https://raw.githubusercontent.com/vercel/next.js/v16.3.4/packages/next/src/build/analysis/get-page-static-info.ts",
+    "file": "official-next-electron-docusaurus/333-raw.githubusercontent.com-vercel-next.js-v16.3.4-packages-next-src-build-analysis-get-page-static-info.ts.txt",
+    "bytes": 28209,
+    "content_sha256": "56526e8ea826cb5d33d55c17bb6b6f2fa30df95fb5859e1a80e9dabce76529f0",
+    "text_sha256": "56526e8ea826cb5d33d55c17bb6b6f2fa30df95fb5859e1a80e9dabce76529f0",
+    "retrieved_at": "2026-09-09T11:40:11.305014+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/vercel/next.js/v16.3.4/packages/next/src/cli/next-build.ts",
+    "final_url": "https://raw.githubusercontent.com/vercel/next.js/v16.3.4/packages/next/src/cli/next-build.ts",
+    "file": "official-next-electron-docusaurus/334-raw.githubusercontent.com-vercel-next.js-v16.3.4-packages-next-src-cli-next-build.ts.txt",
+    "bytes": 4526,
+    "content_sha256": "36318daf431b406d74228077846a3236ac640cb7f9bb3e997e3abc2ca249e96c",
+    "text_sha256": "36318daf431b406d74228077846a3236ac640cb7f9bb3e997e3abc2ca249e96c",
+    "retrieved_at": "2026-09-09T11:40:11.284517+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/vercel/next.js/v16.3.4/packages/next/src/build/webpack-config-rules/resolve.ts",
+    "final_url": "https://raw.githubusercontent.com/vercel/next.js/v16.3.4/packages/next/src/build/webpack-config-rules/resolve.ts",
+    "file": "official-next-electron-docusaurus/335-raw.githubusercontent.com-vercel-next.js-v16.3.4-packages-next-src-build-webpack-config-rules-resolve.ts.txt",
+    "bytes": 933,
+    "content_sha256": "ae6a6cffa6f167c8fe3161d59b25e9997f45062791e78503448a11348a4da7e4",
+    "text_sha256": "ae6a6cffa6f167c8fe3161d59b25e9997f45062791e78503448a11348a4da7e4",
+    "retrieved_at": "2026-09-09T11:40:11.399333+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/app/api-reference/config/next-config-js/authInterrupts",
+    "final_url": "https://nextjs.org/docs/app/api-reference/config/next-config-js/authInterrupts",
+    "file": "official-next-electron-docusaurus/336-nextjs.org-docs-app-api-reference-config-next-config-js-authInterrupts.txt",
+    "bytes": 2281,
+    "content_sha256": "9be4c495bc9f73a68cb248a9a9cc82eb6a36608929a246f935811dbc0327cfbd",
+    "text_sha256": "9be4c495bc9f73a68cb248a9a9cc82eb6a36608929a246f935811dbc0327cfbd",
+    "retrieved_at": "2026-09-09T11:40:11.698334+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout",
+    "final_url": "https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout",
+    "file": "official-next-electron-docusaurus/337-nextjs.org-docs-messages-missing-suspense-with-csr-bailout.txt",
+    "bytes": 5535,
+    "content_sha256": "c51eb7ff274b4a15df8ae10a3c0828eb95f3aeb455d2cd3b3a0f830567f09ffa",
+    "text_sha256": "c51eb7ff274b4a15df8ae10a3c0828eb95f3aeb455d2cd3b3a0f830567f09ffa",
+    "retrieved_at": "2026-09-09T11:40:11.630169+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/messages/no-async-client-component",
+    "final_url": "https://nextjs.org/docs/messages/no-async-client-component",
+    "file": "official-next-electron-docusaurus/338-nextjs.org-docs-messages-no-async-client-component.txt",
+    "bytes": 4209,
+    "content_sha256": "dab098169ce1aa99e95eb0b2865a1ea1be6f587665c0b14667f9338e3d86eda2",
+    "text_sha256": "dab098169ce1aa99e95eb0b2865a1ea1be6f587665c0b14667f9338e3d86eda2",
+    "retrieved_at": "2026-09-09T11:40:11.746353+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/docs/messages/react-hydration-error",
+    "final_url": "https://nextjs.org/docs/messages/react-hydration-error",
+    "file": "official-next-electron-docusaurus/339-nextjs.org-docs-messages-react-hydration-error.txt",
+    "bytes": 3787,
+    "content_sha256": "cf547eafe924bac49c9e979ffe0e85dec5212583f7a87ab91f298ba84bf1e170",
+    "text_sha256": "cf547eafe924bac49c9e979ffe0e85dec5212583f7a87ab91f298ba84bf1e170",
+    "retrieved_at": "2026-09-09T11:40:11.596932+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/blog/next-16-3",
+    "final_url": "https://nextjs.org/blog/next-16-3",
+    "file": "official-next-electron-docusaurus/340-nextjs.org-blog-next-16-3.txt",
+    "bytes": 27824,
+    "content_sha256": "2001800716ada856083bd91a9bcc99ffae86090e2beb123bb30c322598ba53de",
+    "text_sha256": "2001800716ada856083bd91a9bcc99ffae86090e2beb123bb30c322598ba53de",
+    "retrieved_at": "2026-09-09T11:40:11.935573+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/blog/next-16-1",
+    "final_url": "https://nextjs.org/blog/next-16-1",
+    "file": "official-next-electron-docusaurus/341-nextjs.org-blog-next-16-1.txt",
+    "bytes": 9935,
+    "content_sha256": "bedff7ec42b4c49b46c23f0c21260536dfccb494afcbd96c9e21160009249dc6",
+    "text_sha256": "bedff7ec42b4c49b46c23f0c21260536dfccb494afcbd96c9e21160009249dc6",
+    "retrieved_at": "2026-09-09T11:40:11.847927+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://nextjs.org/support-policy",
+    "final_url": "https://nextjs.org/support-policy",
+    "file": "official-next-electron-docusaurus/342-nextjs.org-support-policy.txt",
+    "bytes": 150748,
+    "content_sha256": "fc0475165270452e68d36d789e9a3d6da6cbf5db3f8f06683b950875437a902b",
+    "text_sha256": "370a5bcf8d66b8d2a5441576a0938d66108ed21a12f42caf822a96b91e0b905e",
+    "retrieved_at": "2026-09-09T11:40:12.050418+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://registry.npmjs.org/next/latest",
+    "final_url": "https://registry.npmjs.org/next/latest",
+    "file": "official-next-electron-docusaurus/343-registry.npmjs.org-next-latest.txt",
+    "bytes": 3069,
+    "content_sha256": "bb435dde0aa268dff7042a32d90be5f05615b537fa14e7dc3aa992624a19afa1",
+    "text_sha256": "bb435dde0aa268dff7042a32d90be5f05615b537fa14e7dc3aa992624a19afa1",
+    "retrieved_at": "2026-09-09T11:40:11.895311+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://registry.npmjs.org/electron/latest",
+    "final_url": "https://registry.npmjs.org/electron/latest",
+    "file": "official-next-electron-docusaurus/344-registry.npmjs.org-electron-latest.txt",
+    "bytes": 1992,
+    "content_sha256": "e51218b506358ecf060a29dab0d92824967bc8fe65bc0a087f8c8da9cdbd0ba2",
+    "text_sha256": "e51218b506358ecf060a29dab0d92824967bc8fe65bc0a087f8c8da9cdbd0ba2",
+    "retrieved_at": "2026-09-09T11:40:12.041622+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://registry.npmjs.org/electron-vite/latest",
+    "final_url": "https://registry.npmjs.org/electron-vite/latest",
+    "file": "official-next-electron-docusaurus/345-registry.npmjs.org-electron-vite-latest.txt",
+    "bytes": 2951,
+    "content_sha256": "0ffaee1ca093884494544b348eddbfe9682783f9f60f593fd55d5a799f1ccf4e",
+    "text_sha256": "0ffaee1ca093884494544b348eddbfe9682783f9f60f593fd55d5a799f1ccf4e",
+    "retrieved_at": "2026-09-09T11:40:12.141307+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://registry.npmjs.org/@electron-forge%2fcli/latest",
+    "status": "unavailable",
+    "error": "HTTP Error 406: Not Acceptable"
+  },
+  {
+    "url": "https://registry.npmjs.org/@docusaurus%2fcore/latest",
+    "status": "unavailable",
+    "error": "HTTP Error 406: Not Acceptable"
+  },
+  {
+    "url": "https://registry.npmjs.org/markdownlint-cli2/latest",
+    "status": "unavailable",
+    "error": "HTTP Error 406: Not Acceptable"
+  },
+  {
+    "url": "https://registry.npmjs.org/@cmfcmf%2fdocusaurus-search-local/latest",
+    "status": "unavailable",
+    "error": "HTTP Error 406: Not Acceptable"
+  },
+  {
+    "url": "https://registry.npmjs.org/docusaurus-plugin-openapi-docs/latest",
+    "status": "unavailable",
+    "error": "HTTP Error 406: Not Acceptable"
+  },
+  {
+    "url": "https://registry.npmjs.org/docusaurus-theme-search-typesense/latest",
+    "status": "unavailable",
+    "error": "HTTP Error 406: Not Acceptable"
+  },
+  {
+    "url": "https://registry.npmjs.org/pnpm/latest",
+    "final_url": "https://registry.npmjs.org/pnpm/latest",
+    "file": "official-next-electron-docusaurus/352-registry.npmjs.org-pnpm-latest.txt",
+    "bytes": 2240,
+    "content_sha256": "a183a093490bdd20b2931b078488ba351c3accd244a9c2a48a3f34802bb7b3f5",
+    "text_sha256": "a183a093490bdd20b2931b078488ba351c3accd244a9c2a48a3f34802bb7b3f5",
+    "retrieved_at": "2026-09-09T11:40:12.597739+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://registry.npmjs.org/prettier/latest",
+    "final_url": "https://registry.npmjs.org/prettier/latest",
+    "file": "official-next-electron-docusaurus/353-registry.npmjs.org-prettier-latest.txt",
+    "bytes": 5705,
+    "content_sha256": "6c532e075f5ed3ffbf76cd6ee2a1408f3fa37dc69bedf3ece24c229cdd37a743",
+    "text_sha256": "6c532e075f5ed3ffbf76cd6ee2a1408f3fa37dc69bedf3ece24c229cdd37a743",
+    "retrieved_at": "2026-09-09T11:40:12.749628+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/nodejs/Release/main/schedule.json",
+    "final_url": "https://raw.githubusercontent.com/nodejs/Release/main/schedule.json",
+    "file": "official-next-electron-docusaurus/354-raw.githubusercontent.com-nodejs-Release-main-schedule.json.txt",
+    "bytes": 3255,
+    "content_sha256": "1cf0432ceb9dfde7f1fd4cce43206519942cfdfad5a26039c2f4bb20fde8549c",
+    "text_sha256": "1cf0432ceb9dfde7f1fd4cce43206519942cfdfad5a26039c2f4bb20fde8549c",
+    "retrieved_at": "2026-09-09T11:40:12.924845+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://developers.openai.com/api/docs/guides/latest-model/gpt-6-astra.md",
+    "final_url": "https://developers.openai.com/api/docs/guides/latest-model/gpt-6-astra.md",
+    "file": "official-next-electron-docusaurus/355-developers.openai.com-api-docs-guides-latest-model-gpt-6-astra.md.txt",
+    "bytes": 16564,
+    "content_sha256": "2a59b26078e001a4e4e3da10693e80ad5ee1c02cbe472afa6b682308f27b8b22",
+    "text_sha256": "2a59b26078e001a4e4e3da10693e80ad5ee1c02cbe472afa6b682308f27b8b22",
+    "retrieved_at": "2026-09-09T11:40:12.957040+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://registry.npmjs.org/@electron-forge%2fcli/latest",
+    "final_url": "https://registry.npmjs.org/@electron-forge%2fcli/latest",
+    "file": "official-next-electron-docusaurus/360-registry-electron-forge-cli-latest.json",
+    "bytes": 2545,
+    "content_sha256": "9b3bceba99c9bb3ef5a24759d5bacc28660950955ea8e4fa6d4d119b610f8d22",
+    "text_sha256": "9b3bceba99c9bb3ef5a24759d5bacc28660950955ea8e4fa6d4d119b610f8d22",
+    "retrieved_at": "2026-09-09T11:49:59.324884+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://registry.npmjs.org/@docusaurus%2fcore/latest",
+    "final_url": "https://registry.npmjs.org/@docusaurus%2fcore/latest",
+    "file": "official-next-electron-docusaurus/361-registry-docusaurus-core-latest.json",
+    "bytes": 3879,
+    "content_sha256": "675a0484db4791bb21f186dafc92dcf6ca3655d847842878e79cbdc8f04ad9b4",
+    "text_sha256": "675a0484db4791bb21f186dafc92dcf6ca3655d847842878e79cbdc8f04ad9b4",
+    "retrieved_at": "2026-09-09T11:49:59.653099+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://registry.npmjs.org/markdownlint-cli2/latest",
+    "final_url": "https://registry.npmjs.org/markdownlint-cli2/latest",
+    "file": "official-next-electron-docusaurus/362-registry-markdownlint-cli2-latest.json",
+    "bytes": 6856,
+    "content_sha256": "9893907d04a289963d6d5f796b57fb79b4079247f9eb8942762c01b7cc4534a1",
+    "text_sha256": "9893907d04a289963d6d5f796b57fb79b4079247f9eb8942762c01b7cc4534a1",
+    "retrieved_at": "2026-09-09T11:50:00.352757+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://registry.npmjs.org/@cmfcmf%2fdocusaurus-search-local/latest",
+    "final_url": "https://registry.npmjs.org/@cmfcmf%2fdocusaurus-search-local/latest",
+    "file": "official-next-electron-docusaurus/363-registry-cmfcmf-docusaurus-search-local-latest.json",
+    "bytes": 3974,
+    "content_sha256": "4fc1d214fbb2859aca149bec04f293cf03098cb6bd10a115f90bb2d880da30e3",
+    "text_sha256": "4fc1d214fbb2859aca149bec04f293cf03098cb6bd10a115f90bb2d880da30e3",
+    "retrieved_at": "2026-09-09T11:50:00.693150+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://registry.npmjs.org/docusaurus-plugin-openapi-docs/latest",
+    "final_url": "https://registry.npmjs.org/docusaurus-plugin-openapi-docs/latest",
+    "file": "official-next-electron-docusaurus/364-registry-docusaurus-plugin-openapi-docs-latest.json",
+    "bytes": 2907,
+    "content_sha256": "f339f2588947a5d81a7867efdcc6dd35b51628ea1a7373de1ed9563a9af86bc1",
+    "text_sha256": "f339f2588947a5d81a7867efdcc6dd35b51628ea1a7373de1ed9563a9af86bc1",
+    "retrieved_at": "2026-09-09T11:50:01.000461+00:00",
+    "status": "downloaded"
+  },
+  {
+    "url": "https://registry.npmjs.org/docusaurus-theme-search-typesense/latest",
+    "final_url": "https://registry.npmjs.org/docusaurus-theme-search-typesense/latest",
+    "file": "official-next-electron-docusaurus/365-registry-docusaurus-theme-search-typesense-latest.json",
+    "bytes": 3426,
+    "content_sha256": "ec3004b3c1df1a70f511704263d0b751a054f90a0d1cfc7e455d937d26183a2f",
+    "text_sha256": "ec3004b3c1df1a70f511704263d0b751a054f90a0d1cfc7e455d937d26183a2f",
+    "retrieved_at": "2026-09-09T11:50:01.308898+00:00",
+    "status": "downloaded"
+  }
+]

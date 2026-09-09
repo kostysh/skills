@@ -1,0 +1,8 @@
+{
+  "seconds": 180,
+  "peakObserved": 3,
+  "allObservedChildBoundsVerified": true,
+  "hostModeObserved": true,
+  "distinctImageIds": 2,
+  "limit": "Polling measures captured snapshots, not every instantaneous host state"
+}

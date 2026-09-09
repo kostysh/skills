@@ -1,0 +1,57 @@
+AWSGetting started
+OpenNext allows you to deploy your Next.js apps to AWS using a growing list of frameworks.
+
+
+SST
+
+
+The easiest way to deploy OpenNext to AWS is with SST (opens in a new tab). This is maintained by the OpenNext AWS team and only requires three simple steps:
+
+
+
+Run npx sst@latest init in your Next.js app
+
+
+Run npm install
+
+
+Deploy to AWS npx sst deploy
+
+
+
+For more information, check out the SST docs: https://sst.dev/docs/start/aws/nextjs (opens in a new tab)
+
+
+Other Frameworks
+
+
+The OpenNext community has contributed deployment options for a few other frameworks. Many of these are no longer maintained, so newer versions of OpenNext may not be supported.
+
+
+
+CDK (TS): https://github.com/jetbridge/cdk-nextjs (opens in a new tab)
+
+
+CDK (TS, Java, Go, Py, .NET): https://github.com/datasprayio/open-next-cdk (opens in a new tab)
+
+
+CloudFormation: https://github.com/serverless-stack/open-next/issues/32 (opens in a new tab)
+
+
+Serverless Framework: https://github.com/serverless-stack/open-next/issues/32 (opens in a new tab)
+
+
+Terraform: https://github.com/RJPearson94/terraform-aws-open-next (opens in a new tab)
+
+
+Terraform: https://github.com/nhs-england-tools/terraform-aws-opennext#diagrams (opens in a new tab)
+
+
+
+To use these, you'll need to run the following inside your Next.js app.
+
+
+$ npx @opennextjs/aws@latest build
+
+
+If you are using OpenNext to deploy using a framework that is not listed here, please let us know so we can add it to the list.

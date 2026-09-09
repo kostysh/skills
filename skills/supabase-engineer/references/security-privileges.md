@@ -27,7 +27,7 @@ Creating `app_readonly` or `app_writer` does not make PostgREST use them. Use cu
 ## Functions and elevated access
 
 - Revoke default function `EXECUTE` from `PUBLIC` and grant only the intended caller roles.
-- Secret and legacy `service_role` keys map to an elevated `BYPASSRLS` path; isolate and document them.
+- Secret and legacy `service_role` keys provide an elevated `BYPASSRLS` path when a user access token does not override the request identity; inspect the effective caller and isolate/document elevated clients.
 - Keep elevated jobs/admin tools out of ordinary request handling.
 - Required audit/history writes must have narrow append-only privileges and share the mutation transaction when the contract is fail-closed.
 

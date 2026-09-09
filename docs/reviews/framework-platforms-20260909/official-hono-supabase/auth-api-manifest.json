@@ -1,0 +1,9 @@
+[
+  {
+    "id": "sdk-auth-source",
+    "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/auth-js/src/GoTrueClient.ts",
+    "file": "sdk-auth-source.txt",
+    "retrievedAt": "2026-09-09T12:00:06.640388+00:00",
+    "sha256": "8b9180b10d021280a1da03fb8108d7d7730092465ddf192a855d8584f6a124eb"
+  }
+]

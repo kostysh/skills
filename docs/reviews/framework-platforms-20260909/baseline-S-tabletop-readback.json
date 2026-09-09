@@ -1,0 +1,33 @@
+{
+  "checkedAt": "2026-09-09T13:43:21.322725+00:00",
+  "scope": "Independent output assessment; fictional tabletop only; no real MCP/runtime",
+  "cases": {
+    "S-partial": {
+      "protocolSha256": "8270bc7fd1c898b643651245d7c6c1ecaf879f55c1aebb482714d65475db0ce1",
+      "resultSha256": "ddc6e5f6863ebee5c71522bb3c153423753035a73bab3b84908b1c047b5d573c",
+      "frozenInputCount": 37,
+      "frozenMismatches": [],
+      "outputVerdict": "bounded PASS",
+      "toolTraceSupplied": true
+    },
+    "S-authority": {
+      "protocolSha256": "7e995498272e2147c260c93b31d5316e1d32b5fb7a2586747a2853f561ef515b",
+      "resultSha256": "4783d932198b50927d3434a8eba8a42999af31505e52edb73c577b7ac1b833aa",
+      "frozenInputCount": 35,
+      "frozenMismatches": [],
+      "outputVerdict": "bounded PASS",
+      "toolTraceSupplied": true
+    }
+  },
+  "publicTrace": {
+    "file": "raw-agent-traces/baseline_supabase_tabletop_executor.jsonl",
+    "sha256": "0f84b7bb9e95b158a73aa11cc863b541220b48ec7dd546c3d663411a1b16b419",
+    "toolEvents": 12,
+    "recordedModel": "gpt-6-astra",
+    "recordedEffort": "high",
+    "rootReadOutputTruncated": true,
+    "literalWritesReconstructBothResults": true,
+    "observedCalls": "file discovery/reads, result writes, line-count only",
+    "limits": "backend identity/full context/dispatch plaintext not attested"
+  }
+}

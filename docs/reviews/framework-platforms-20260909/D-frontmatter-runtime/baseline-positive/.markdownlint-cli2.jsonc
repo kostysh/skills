@@ -1,0 +1,24 @@
+{
+  "$schema": "https://raw.githubusercontent.com/DavidAnson/vscode-markdownlint/main/markdownlint-cli2-config-schema.json",
+  "gitignore": ".gitignore",
+  "frontMatter": "(^---\\s*$[^]*?^---\\s*$)(\\r\\n|\\r|\\n|$)",
+  "globs": [
+    "*.md",
+    "docs/**/*.md",
+    "blog/**/*.md",
+    "versioned_docs/**/*.md",
+    "i18n/**/*.md",
+    "AGENTS.md"
+  ],
+  "ignores": [
+    ".docusaurus/**",
+    "build/**",
+    "node_modules/**"
+  ],
+  "config": {
+    "default": true,
+    "MD013": false,
+    "MD033": false,
+    "MD041": false
+  }
+}

@@ -6,9 +6,9 @@ description: Build, change, and diagnose Hono API services. Use for Hono
   testing, security, data, or architecture skills when those domains determine
   correctness.
 metadata:
-  source-version: 0.1.7
+  source-version: 0.1.8
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 6d32329b0270f4e47bc0cb1399550b45f5e6171be5a3ab1f6c90914b7a4831de
+  skillforge-source-hash: d427501f938a7e07c41247a3aa22180ce93fcf3b78098ac29ebd7d3a23d75d00
 ---
 
 # hono-engineer
@@ -16,14 +16,15 @@ metadata:
 ## Start here
 
 1. Confirm the request requires a Hono-specific decision or change; otherwise route to the owning skill.
-2. Establish the authoritative behavior, existing app composition, installed Hono and runtime/tooling versions, endpoint class, security contract, and available test contours before proposing implementation.
-3. For a version-sensitive API or platform decision, read Framework Currency and check current official sources; treat the installed project version as a compatibility constraint rather than silently upgrading it.
-4. Apply precedence in this order: authoritative requirements, compatible existing project conventions, then verified Hono/runtime facts. This skill supplies no fallback product or project policy. Stop or limit the claim when equal-authority inputs conflict or required runtime evidence is unavailable.
-5. Treat optional references as conditional integration guidance: they cannot establish a new architecture, security, data, error, logging, or operational policy without an accepted project contract or the owning skill.
-6. When any public/runtime choice is unknown—including success or failure status, headers, media type, body, schema stack, path/layout, middleware, limit, timeout, retry, config format, binding, dependency, data source, or observability setting—use an explicitly named owner-supplied placeholder or stop for authority; an assumption or greenfield label does not grant authority.
-7. Make an owner-supplied placeholder cover the whole unresolved boundary. A placeholder for only one argument does not authorize adjacent choices: for example, `c.json(value, projectStatus)` still selects JSON media and a body shape. When the request part or response contract is unknown, stop or delegate the complete route/response to an opaque owner-supplied handler instead of showing an executable partial handler. If the existing Hono composition seam is also unknown, show no handler/router wiring at all: even `app.route(...)` would choose a mount and composition contract.
-8. Define the observable HTTP/runtime behavior and the evidence boundary before editing; schema, route, compiler, mock, or docs-test existence is not completion.
-9. When the high-risk backend trigger applies, read High-risk Backend Contract, consume the owning specification's `HRB-*` matrix when available, and do not report the Hono boundary complete until every applicable Hono-owned row has an exact contract and executable evidence.
+2. Reuse authoritative inputs and permissions already supplied in the task. Clarify only a material unresolved decision, continue independent authorized work, and resume the affected work when its missing input arrives without asking for the same authority again.
+3. Establish the authoritative behavior, existing app composition, installed Hono and runtime/tooling versions, endpoint class, security contract, and available test contours before proposing implementation.
+4. For a version-sensitive API or platform decision, read Framework Currency and check current official sources; treat the installed project version as a compatibility constraint rather than silently upgrading it.
+5. Apply precedence in this order: authoritative requirements, compatible existing project conventions, then verified Hono/runtime facts. This skill supplies no fallback product or project policy. Stop or limit the claim when equal-authority inputs conflict or required runtime evidence is unavailable.
+6. Treat optional references as conditional integration guidance: they cannot establish a new architecture, security, data, error, logging, or operational policy without an accepted project contract or the owning skill.
+7. When any public/runtime choice is unknown—including success or failure status, headers, media type, body, schema stack, path/layout, middleware, limit, timeout, retry, config format, binding, dependency, data source, or observability setting—use an explicitly named owner-supplied placeholder or stop for authority; an assumption or greenfield label does not grant authority.
+8. Make an owner-supplied placeholder cover the whole unresolved boundary. A placeholder for only one argument does not authorize adjacent choices: for example, `c.json(value, projectStatus)` still selects JSON media and a body shape. When the request part or response contract is unknown, stop or delegate the complete route/response to an opaque owner-supplied handler instead of showing an executable partial handler. If the existing Hono composition seam is also unknown, show no handler/router wiring at all: even `app.route(...)` would choose a mount and composition contract.
+9. Define the observable HTTP/runtime behavior and the evidence boundary before editing; schema, route, compiler, mock, or docs-test existence is not completion.
+10. When the high-risk backend trigger applies, read High-risk Backend Contract, consume the owning specification's `HRB-*` matrix when available, and do not report the Hono boundary complete until every applicable Hono-owned row has an exact contract and executable evidence.
 
 ## When to use this skill
 
@@ -53,7 +54,7 @@ Before implementation, derive or obtain:
 - endpoint class and its auth, CSRF, tenancy, replay, payload, caching, streaming, or webhook contract;
 - available unit, Hono integration, runtime integration, and live verification contours.
 
-If an authoritative behavior is missing, equal-authority sources conflict, or a required runtime boundary cannot be exercised, provide bounded guidance or report the work blocked. Do not invent product behavior, security policy, migration authority, or production readiness.
+If an authoritative behavior is missing, equal-authority sources conflict, or a required runtime boundary cannot be exercised, limit or block that part and continue independent authorized work. Reuse inputs and permissions already given; ask only for the material missing decision. Do not invent product behavior, security policy, migration authority, or production readiness.
 
 ## Latest framework currency
 
@@ -173,7 +174,7 @@ Validation:
 ## Policies
 
 ### Source and compatibility precedence
-Authoritative requirements and compatible project conventions precede verified framework facts. No greenfield label supplies missing authority. When inputs conflict or latest guidance is incompatible with installed versions, stop, surface the gap, and do not invent a migration or policy decision.
+Authoritative requirements and compatible project conventions precede verified framework facts. No greenfield label supplies missing authority. When inputs conflict or latest guidance is incompatible with installed versions, stop the affected decision, surface the gap, and continue independent authorized work without inventing a migration or policy decision.
 
 ### Evidence boundary
 Match proof to the claim: unit tests cover pure logic, app.request covers Hono integration, a runtime harness covers platform behavior, and live evidence covers only the observed deployment conditions.

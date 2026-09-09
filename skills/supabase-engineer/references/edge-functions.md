@@ -11,7 +11,7 @@ Choose the caller contract before creating clients:
 - internal endpoint: authenticate a controlled backend secret and use elevated access only for the documented operation;
 - external webhook: disable platform JWT verification only when required by the producer contract, then verify that producer's signature before parsing or trusting the payload.
 
-Publishable and secret keys are opaque API keys, not user JWTs. Send them through the supported `apikey` path. If current platform JWT verification does not support the chosen key model, configure the function accordingly and perform explicit authorization in code or use the current official server adapter.
+Publishable and secret keys are opaque API keys, not user JWTs. Send them through the supported `apikey` path. According to the official auth-header contract checked 2026-09-09, the default `verify_jwt` check validates supported legacy HS256 and asymmetric user JWTs, but for migration compatibility also passes publishable/secret keys supplied on either header. Passing that gateway check with an API key does not authenticate the caller. Preserve explicit handler authorization, using the installed supported server adapter or equivalent verified code. For a key-only service, the current documented pattern disables `verify_jwt` and validates the intended secret in the handler; a public/webhook path needs its own accepted admission/signature checks. Verify the deployed platform's behavior rather than importing this rolling contract into an older local stack as a guarantee.
 
 ## Runtime rules
 

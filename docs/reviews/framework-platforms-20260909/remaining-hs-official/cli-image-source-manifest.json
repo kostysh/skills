@@ -1,0 +1,38 @@
+[
+  {
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.39.2/pkg/config/constants.go",
+    "file": "cli-2.39.2-constants.go",
+    "sha256": "eff5d945f1f77f611b8a2afb3d904d4f5ea382729751756753d1744c3c6d5212",
+    "retrieved_at": "2026-09-09T14:25:57.231799+00:00"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.39.2/pkg/config/templates/Dockerfile",
+    "file": "cli-2.39.2-Dockerfile",
+    "sha256": "b47d58fc134429729ae323c66742b643fae13968f8b34f301fa8e27c531b63b9",
+    "retrieved_at": "2026-09-09T14:25:57.576957+00:00"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli-go/pkg/config/constants.go",
+    "file": "cli-2.117.0-constants.go",
+    "sha256": "6bccac7527677c3e5f13f2fb3fe62a758421f12238a4647db9d93400e36b7c71",
+    "retrieved_at": "2026-09-09T14:25:57.577120+00:00"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli-go/pkg/config/templates/Dockerfile",
+    "file": "cli-2.117.0-Dockerfile",
+    "sha256": "d9b2e12daf33415b47802e9ecb8008ac3ec285663ebf8502ac96a6639182be0d",
+    "retrieved_at": "2026-09-09T14:25:57.972889+00:00"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/shared/services/slim-images.ts",
+    "file": "slim-images.ts",
+    "sha256": "dd19d83dee6e9a708c5a4b32b6a12cb236e47219c48ec552a9aac433fedb4978",
+    "retrieved_at": "2026-09-09T14:28:33.555825+00:00"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/shared/services/dockerfile-images.ts",
+    "file": "dockerfile-images.ts",
+    "sha256": "cebf8a0cb85197c22187700db1e8aa12838b303601513638ddd0cf4d32d6ab21",
+    "retrieved_at": "2026-09-09T14:28:33.555866+00:00"
+  }
+]

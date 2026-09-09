@@ -1,0 +1,19 @@
+
+
+On this page
+Electron
+
+Electron is a framework for building desktop applications using JavaScript, HTML, and CSS. By embedding Chromium and Node.js into its binary, Electron allows you to maintain one JavaScript codebase and create cross-platform apps that work on Windows, macOS, and Linux — no native development experience is required.
+
+WebdriverIO provides an integrated service that simplifies the interaction with your Electron app and makes testing it very simple. The advantages of using WebdriverIO for testing Electron applications are:
+
+🚗 auto-setup of required Chromedriver
+
+📦 automatic path detection of your Electron application - supports Electron Forge and Electron Builder
+
+🧩 access Electron APIs within your tests
+
+🕵️ mocking of Electron APIs via a Vitest-like API
+
+You just need a few simple steps to get started. Watch this simple step-by-step getting started video tutorial from the WebdriverIO YouTube channel:
+

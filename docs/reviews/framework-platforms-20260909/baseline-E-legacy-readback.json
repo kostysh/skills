@@ -1,0 +1,1235 @@
+{
+  "case": "E-legacy",
+  "variant": "baseline",
+  "assessor": "/root/baseline_next_electron_docs",
+  "checked_at": "2026-09-09T13:26:30.165401+00:00",
+  "algorithm": "sha256",
+  "frozen_inputs": [
+    {
+      "file": "task.txt",
+      "expected": "05a185414de87306c81e35cb628983d1e2192a1a2c60e804b71bc734509e57ed",
+      "actual": "05a185414de87306c81e35cb628983d1e2192a1a2c60e804b71bc734509e57ed",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/tsconfig.json",
+      "expected": "d943d1b7f372c22f5fae7f68893abfb5f456c8778cb4d56c47691b8348ba7b12",
+      "actual": "d943d1b7f372c22f5fae7f68893abfb5f456c8778cb4d56c47691b8348ba7b12",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/forge.config.cjs",
+      "expected": "320d7ebcb1ac24860c024c5d0413256a32567c623e3804c07ecc475acdf5aa55",
+      "actual": "0fe9d987e56657544ecc6429df22a43eb8f76ff6630645b540489fbb4a10c9b3",
+      "matches": false,
+      "classification": "permitted implementation change"
+    },
+    {
+      "file": "app/electron.vite.config.ts",
+      "expected": "f78456989b8b89ae1e7c67caf049624e780c8bf07f83c8d456d7af619c9bba0a",
+      "actual": "f78456989b8b89ae1e7c67caf049624e780c8bf07f83c8d456d7af619c9bba0a",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/package.json",
+      "expected": "33a4df4f0c857673fea223905efc0826b09cdb8323066bc3cf8c4032fb8b03b2",
+      "actual": "33a4df4f0c857673fea223905efc0826b09cdb8323066bc3cf8c4032fb8b03b2",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/package-lock.json",
+      "expected": "d3d222862996ed2747ef1ad1067ab1e5f72c00d804774ddc8a9115e03f69e701",
+      "actual": "d3d222862996ed2747ef1ad1067ab1e5f72c00d804774ddc8a9115e03f69e701",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/REQUIREMENTS.md",
+      "expected": "5f221805fb6fb32e21aa83d7a436ddef7c0007aa8ae20a26716ae8832f184709",
+      "actual": "5f221805fb6fb32e21aa83d7a436ddef7c0007aa8ae20a26716ae8832f184709",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/src/renderer/src.tsx",
+      "expected": "4417f3aaea45833d76bebe55c7b00d9af1d5057b1aba3bdce9a5bd8a60d822a7",
+      "actual": "4417f3aaea45833d76bebe55c7b00d9af1d5057b1aba3bdce9a5bd8a60d822a7",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/src/renderer/index.html",
+      "expected": "42bf2de5c00a03db1d7fad06180857cc59911b0e215857789f956efc3628bdec",
+      "actual": "42bf2de5c00a03db1d7fad06180857cc59911b0e215857789f956efc3628bdec",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/src/preload/index.ts",
+      "expected": "acd85b2bd2db65e28b57322cb1507ef7f009cc20ecefe46dd7b7d83cd5bb07ef",
+      "actual": "acd85b2bd2db65e28b57322cb1507ef7f009cc20ecefe46dd7b7d83cd5bb07ef",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "app/src/main/index.ts",
+      "expected": "4c1b2548fd051f9898f3e5c632acf5c6618313f14037ee84ca3c81681a225859",
+      "actual": "53feaf8d941ffa8a8cc6cd3ea477bd1992697fc00c517d20d9c753e7d3e6e0a0",
+      "matches": false,
+      "classification": "permitted implementation change"
+    },
+    {
+      "file": "skills/node-engineer/SKILL.md",
+      "expected": "073a05ee05c1ef9db06d375ec9412fd2f8308a3d0ae2e028ed8df4f45eb55eef",
+      "actual": "073a05ee05c1ef9db06d375ec9412fd2f8308a3d0ae2e028ed8df4f45eb55eef",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/SKILL.md",
+      "expected": "8dccdca0e96b7c9f7caf51baaab9fb909df0bb01345a0ae7fac7c444bb597e86",
+      "actual": "8dccdca0e96b7c9f7caf51baaab9fb909df0bb01345a0ae7fac7c444bb597e86",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/SKILL.md",
+      "expected": "49cbaedf44923aa52942c26e9f32f704b750396dc91d4a293762ddaeec9eb7b2",
+      "actual": "49cbaedf44923aa52942c26e9f32f704b750396dc91d4a293762ddaeec9eb7b2",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/agents/openai.yaml",
+      "expected": "9ccbb65808889c4fb29b3909b25aaa4e3032288030a750c9d246af691e146ed1",
+      "actual": "9ccbb65808889c4fb29b3909b25aaa4e3032288030a750c9d246af691e146ed1",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/references/data-storage-native.md",
+      "expected": "4cb5757b54216bd7dd4f64778e0f74397817a41c544a19268f1e938ee26aeb08",
+      "actual": "4cb5757b54216bd7dd4f64778e0f74397817a41c544a19268f1e938ee26aeb08",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/references/build-process.md",
+      "expected": "51d89e99bd66ba517e51d43def578d1b3b089a84a13b19298d7fbbbed01d412d",
+      "actual": "51d89e99bd66ba517e51d43def578d1b3b089a84a13b19298d7fbbbed01d412d",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/references/tooling-project-structure.md",
+      "expected": "fa53e72f8a7a41cb3631fefc149e55fb8a4d7fc39d31e7adea8ad30d550f386b",
+      "actual": "fa53e72f8a7a41cb3631fefc149e55fb8a4d7fc39d31e7adea8ad30d550f386b",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/references/architecture.md",
+      "expected": "2f403b1fefa9a9bf692330bcf902bac4272d2873dfeba727e04ee2509c8648aa",
+      "actual": "2f403b1fefa9a9bf692330bcf902bac4272d2873dfeba727e04ee2509c8648aa",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/references/review-playbooks.md",
+      "expected": "f5215ea6a813076ad6c44d0d0458f3f0f8afe9b0134d45b881a142a55519ec35",
+      "actual": "f5215ea6a813076ad6c44d0d0458f3f0f8afe9b0134d45b881a142a55519ec35",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/references/security-ipc-preload.md",
+      "expected": "1bccaeb09e9ea3c196d878aff88f8a6de0a338b681298842988072cd58134dfc",
+      "actual": "1bccaeb09e9ea3c196d878aff88f8a6de0a338b681298842988072cd58134dfc",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/references/native-os-integration.md",
+      "expected": "d78547367bcfd0a1dccbadd7480e8941fb98bc142c881b607ad38b64f6a4340b",
+      "actual": "d78547367bcfd0a1dccbadd7480e8941fb98bc142c881b607ad38b64f6a4340b",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/references/renderer-integration.md",
+      "expected": "6b0f11b08f6bd86c1c67d54b40247c9062b23a1904341c45ebbdcfc4e3525e32",
+      "actual": "6b0f11b08f6bd86c1c67d54b40247c9062b23a1904341c45ebbdcfc4e3525e32",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/references/testing-observability.md",
+      "expected": "0b6d6e43a6e9f32c93def5030687f03c3ec8ca014eafff218625328de81f7c69",
+      "actual": "0b6d6e43a6e9f32c93def5030687f03c3ec8ca014eafff218625328de81f7c69",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/references/typescript-in-electron.md",
+      "expected": "a6516798f4e45777e757aeb535a46da1588150bbbf0f94f2f92e1ba293c5d330",
+      "actual": "a6516798f4e45777e757aeb535a46da1588150bbbf0f94f2f92e1ba293c5d330",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/references/source-protection.md",
+      "expected": "8439e0ce6939ca2ea17e80be4ae740b2aa1ac58a2731f86c8fa97a6c4fd066d2",
+      "actual": "8439e0ce6939ca2ea17e80be4ae740b2aa1ac58a2731f86c8fa97a6c4fd066d2",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/electron-engineer/references/packaging-release-updates.md",
+      "expected": "11310b87a8726e2159e8bdb450f69e07d6e62c2a81ac597a3e50318ca28d845b",
+      "actual": "11310b87a8726e2159e8bdb450f69e07d6e62c2a81ac597a3e50318ca28d845b",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/agents/openai.yaml",
+      "expected": "372a72c8d2943c55ba133bbda5e0ed8f46cdfd8f8d4940418beefcbaf62484ab",
+      "actual": "372a72c8d2943c55ba133bbda5e0ed8f46cdfd8f8d4940418beefcbaf62484ab",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/monorepo.md",
+      "expected": "a725bf2737a1c0716b2c8f9f2a6d6d79cc0e14a401a06b7de5ed9744166fb5e4",
+      "actual": "a725bf2737a1c0716b2c8f9f2a6d6d79cc0e14a401a06b7de5ed9744166fb5e4",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/generics.md",
+      "expected": "7201b89492c473093a6818db8bcf0b26e445d2f0689eb84916ff185503c3c4c4",
+      "actual": "7201b89492c473093a6818db8bcf0b26e445d2f0689eb84916ff185503c3c4c4",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/practices.md",
+      "expected": "51f765dcd0f2e1732e00d83504a4a832f177437f96aeed0d992a634e949c827a",
+      "actual": "51f765dcd0f2e1732e00d83504a4a832f177437f96aeed0d992a634e949c827a",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/type-debugging.md",
+      "expected": "2fb09da3deb9e434b50336644da63a6539503d30f05a0304fa7c9a78d7690304",
+      "actual": "2fb09da3deb9e434b50336644da63a6539503d30f05a0304fa7c9a78d7690304",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/toolchain.md",
+      "expected": "313bb758492c473f47b7d1670fd01ecb605512296ab98edcf36fe59914794771",
+      "actual": "313bb758492c473f47b7d1670fd01ecb605512296ab98edcf36fe59914794771",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/overloads.md",
+      "expected": "39494766556c8c7aa46c2aa16aa20718aedcaf7a4ec8cf0a28443324d3c5936b",
+      "actual": "39494766556c8c7aa46c2aa16aa20718aedcaf7a4ec8cf0a28443324d3c5936b",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/patterns.md",
+      "expected": "8636aec6c320d894a10ada0db3f452b7d31e9dc608d00a6e0a57e1b5c3aa1f57",
+      "actual": "8636aec6c320d894a10ada0db3f452b7d31e9dc608d00a6e0a57e1b5c3aa1f57",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/type-system.md",
+      "expected": "451bec02f0fe0cad7a3967b6d4b8388e98600c4655be7fee51b971f1db0f40e9",
+      "actual": "451bec02f0fe0cad7a3967b6d4b8388e98600c4655be7fee51b971f1db0f40e9",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/typescript-engineer/references/runtime-derived-types.md",
+      "expected": "1e1a327d0a2e59792ec25aa5c69bb2cd313273ef2a9d7730014700303e9e4aa0",
+      "actual": "1e1a327d0a2e59792ec25aa5c69bb2cd313273ef2a9d7730014700303e9e4aa0",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/node-engineer/agents/openai.yaml",
+      "expected": "b41169df35aa53b56726f39c42a18008af7066d2a64269f1a8213d8309fe66df",
+      "actual": "b41169df35aa53b56726f39c42a18008af7066d2a64269f1a8213d8309fe66df",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/node-engineer/references/debugging-profiling.md",
+      "expected": "f20e33fa2ce9d7cf1c3a9c26c1552fcff4df75bc7c2527e1d56f2298be3a1cd3",
+      "actual": "f20e33fa2ce9d7cf1c3a9c26c1552fcff4df75bc7c2527e1d56f2298be3a1cd3",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/node-engineer/references/operations.md",
+      "expected": "d6f741c8a9f74c66d40c82516839a09c7f769d66d46fc89ea446f9f608e6fb95",
+      "actual": "d6f741c8a9f74c66d40c82516839a09c7f769d66d46fc89ea446f9f608e6fb95",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/node-engineer/references/streams-caching.md",
+      "expected": "1a24ea44947df1ed6826f86ffba0ae7f39670202467d9487e0570cc69b548d00",
+      "actual": "1a24ea44947df1ed6826f86ffba0ae7f39670202467d9487e0570cc69b548d00",
+      "matches": true,
+      "classification": "immutable input"
+    },
+    {
+      "file": "skills/node-engineer/references/runtime-typescript.md",
+      "expected": "c255ca59ea91b9144baf7a624ffb84a717aafdb83f90156fbc96eba2e7c22e58",
+      "actual": "c255ca59ea91b9144baf7a624ffb84a717aafdb83f90156fbc96eba2e7c22e58",
+      "matches": true,
+      "classification": "immutable input"
+    }
+  ],
+  "unexpected_immutable_input_mismatches": [],
+  "final_sources": [
+    {
+      "file": "app/REQUIREMENTS.md",
+      "expected": "5f221805fb6fb32e21aa83d7a436ddef7c0007aa8ae20a26716ae8832f184709",
+      "actual": "5f221805fb6fb32e21aa83d7a436ddef7c0007aa8ae20a26716ae8832f184709",
+      "matches": true
+    },
+    {
+      "file": "app/electron.vite.config.ts",
+      "expected": "f78456989b8b89ae1e7c67caf049624e780c8bf07f83c8d456d7af619c9bba0a",
+      "actual": "f78456989b8b89ae1e7c67caf049624e780c8bf07f83c8d456d7af619c9bba0a",
+      "matches": true
+    },
+    {
+      "file": "app/forge.config.cjs",
+      "expected": "0fe9d987e56657544ecc6429df22a43eb8f76ff6630645b540489fbb4a10c9b3",
+      "actual": "0fe9d987e56657544ecc6429df22a43eb8f76ff6630645b540489fbb4a10c9b3",
+      "matches": true
+    },
+    {
+      "file": "app/package-lock.json",
+      "expected": "d3d222862996ed2747ef1ad1067ab1e5f72c00d804774ddc8a9115e03f69e701",
+      "actual": "d3d222862996ed2747ef1ad1067ab1e5f72c00d804774ddc8a9115e03f69e701",
+      "matches": true
+    },
+    {
+      "file": "app/package.json",
+      "expected": "33a4df4f0c857673fea223905efc0826b09cdb8323066bc3cf8c4032fb8b03b2",
+      "actual": "33a4df4f0c857673fea223905efc0826b09cdb8323066bc3cf8c4032fb8b03b2",
+      "matches": true
+    },
+    {
+      "file": "app/src/main/index.ts",
+      "expected": "53feaf8d941ffa8a8cc6cd3ea477bd1992697fc00c517d20d9c753e7d3e6e0a0",
+      "actual": "53feaf8d941ffa8a8cc6cd3ea477bd1992697fc00c517d20d9c753e7d3e6e0a0",
+      "matches": true
+    },
+    {
+      "file": "app/src/preload/index.ts",
+      "expected": "acd85b2bd2db65e28b57322cb1507ef7f009cc20ecefe46dd7b7d83cd5bb07ef",
+      "actual": "acd85b2bd2db65e28b57322cb1507ef7f009cc20ecefe46dd7b7d83cd5bb07ef",
+      "matches": true
+    },
+    {
+      "file": "app/src/renderer/index.html",
+      "expected": "42bf2de5c00a03db1d7fad06180857cc59911b0e215857789f956efc3628bdec",
+      "actual": "42bf2de5c00a03db1d7fad06180857cc59911b0e215857789f956efc3628bdec",
+      "matches": true
+    },
+    {
+      "file": "app/src/renderer/src.tsx",
+      "expected": "4417f3aaea45833d76bebe55c7b00d9af1d5057b1aba3bdce9a5bd8a60d822a7",
+      "actual": "4417f3aaea45833d76bebe55c7b00d9af1d5057b1aba3bdce9a5bd8a60d822a7",
+      "matches": true
+    },
+    {
+      "file": "app/test/packaged-smoke.mjs",
+      "expected": "3199f3460937ecf937d60110bb5822fe62b83094c2f5ce23aeb2595a0d955617",
+      "actual": "3199f3460937ecf937d60110bb5822fe62b83094c2f5ce23aeb2595a0d955617",
+      "matches": true
+    },
+    {
+      "file": "app/tsconfig.json",
+      "expected": "d943d1b7f372c22f5fae7f68893abfb5f456c8778cb4d56c47691b8348ba7b12",
+      "actual": "d943d1b7f372c22f5fae7f68893abfb5f456c8778cb4d56c47691b8348ba7b12",
+      "matches": true
+    }
+  ],
+  "packaged_files": [
+    {
+      "file": "LICENSE",
+      "expected": "5154e165bd6c2cc0cfbcd8916498c7abab0497923bafcd5cb07673fe8480087d",
+      "actual": "5154e165bd6c2cc0cfbcd8916498c7abab0497923bafcd5cb07673fe8480087d",
+      "matches": true
+    },
+    {
+      "file": "LICENSES.chromium.html",
+      "expected": "7ae82e97b8a60b9d97871e0e11a05285aea2d42bef665f93f6a4f415235839ed",
+      "actual": "7ae82e97b8a60b9d97871e0e11a05285aea2d42bef665f93f6a4f415235839ed",
+      "matches": true
+    },
+    {
+      "file": "chrome-sandbox",
+      "expected": "d7d2a29b6bd265950a83d583a3901c5b7d6daba6ab7eca9439076bcf99343cc9",
+      "actual": "d7d2a29b6bd265950a83d583a3901c5b7d6daba6ab7eca9439076bcf99343cc9",
+      "matches": true
+    },
+    {
+      "file": "chrome_100_percent.pak",
+      "expected": "1ff5aa654241727c1f4b095aa4b3058bab1c2844581dd154dff184eb9bbbbe4a",
+      "actual": "1ff5aa654241727c1f4b095aa4b3058bab1c2844581dd154dff184eb9bbbbe4a",
+      "matches": true
+    },
+    {
+      "file": "chrome_200_percent.pak",
+      "expected": "c52032766c57a529e6263fd23a39844f64244b6736d0a07c85e2a48bbfb16403",
+      "actual": "c52032766c57a529e6263fd23a39844f64244b6736d0a07c85e2a48bbfb16403",
+      "matches": true
+    },
+    {
+      "file": "chrome_crashpad_handler",
+      "expected": "702a0b5e3c839d2eedac0b58af26ddf1fddce07a3047d1d11317af2969ef77d5",
+      "actual": "702a0b5e3c839d2eedac0b58af26ddf1fddce07a3047d1d11317af2969ef77d5",
+      "matches": true
+    },
+    {
+      "file": "framework-electron-fixture-legacy",
+      "expected": "7cb3b42c3beb87ac1783c82cc7a3e8d53bdb9fc015a523a7cd078bba49807d63",
+      "actual": "7cb3b42c3beb87ac1783c82cc7a3e8d53bdb9fc015a523a7cd078bba49807d63",
+      "matches": true
+    },
+    {
+      "file": "icudtl.dat",
+      "expected": "bd8c145abdf3f8383276ce01dfa4ae48709bef9fef1c0711eb7c3fab4f6eb7c2",
+      "actual": "bd8c145abdf3f8383276ce01dfa4ae48709bef9fef1c0711eb7c3fab4f6eb7c2",
+      "matches": true
+    },
+    {
+      "file": "libEGL.so",
+      "expected": "38a00abcb86d9be195d452efbbd6b79499b370656e958699b07389b89d043e9c",
+      "actual": "38a00abcb86d9be195d452efbbd6b79499b370656e958699b07389b89d043e9c",
+      "matches": true
+    },
+    {
+      "file": "libGLESv2.so",
+      "expected": "1f195de4dac8460654fcae794b257d9d74f5787e2f3c7f654620ff05b0ed9844",
+      "actual": "1f195de4dac8460654fcae794b257d9d74f5787e2f3c7f654620ff05b0ed9844",
+      "matches": true
+    },
+    {
+      "file": "libffmpeg.so",
+      "expected": "c72c12bc7d772beaffd9c8afebf230b66aaa6ff8bbeff1d4f9b17db96b251cb8",
+      "actual": "c72c12bc7d772beaffd9c8afebf230b66aaa6ff8bbeff1d4f9b17db96b251cb8",
+      "matches": true
+    },
+    {
+      "file": "libvk_swiftshader.so",
+      "expected": "1cf9310d0b52c920f872f1bb49037656647e0aa51443fb0f7c5d31aad5d06dc3",
+      "actual": "1cf9310d0b52c920f872f1bb49037656647e0aa51443fb0f7c5d31aad5d06dc3",
+      "matches": true
+    },
+    {
+      "file": "libvulkan.so.1",
+      "expected": "9a1371ea9df3bd559a01243b9de061835bb0f91d0b447089bb4e16d10fabbad6",
+      "actual": "9a1371ea9df3bd559a01243b9de061835bb0f91d0b447089bb4e16d10fabbad6",
+      "matches": true
+    },
+    {
+      "file": "locales/af.pak",
+      "expected": "2d3972c468f5f568cb9f1bbfedf10b0f91c6b426f69a4ca1710af69db5a759b3",
+      "actual": "2d3972c468f5f568cb9f1bbfedf10b0f91c6b426f69a4ca1710af69db5a759b3",
+      "matches": true
+    },
+    {
+      "file": "locales/am.pak",
+      "expected": "1c7c04f543a48948dfa879450c1c64f210d3b5d1dbb935ce81320bb2a5762831",
+      "actual": "1c7c04f543a48948dfa879450c1c64f210d3b5d1dbb935ce81320bb2a5762831",
+      "matches": true
+    },
+    {
+      "file": "locales/ar.pak",
+      "expected": "70aeaf41149ec07c70365b0fd65aee8a42b367266e44acf9319af65255701d0e",
+      "actual": "70aeaf41149ec07c70365b0fd65aee8a42b367266e44acf9319af65255701d0e",
+      "matches": true
+    },
+    {
+      "file": "locales/bg.pak",
+      "expected": "9ae8e4d765e097d0fe702e288eb270907a9e75d2319ecfa4ec032738ea533e53",
+      "actual": "9ae8e4d765e097d0fe702e288eb270907a9e75d2319ecfa4ec032738ea533e53",
+      "matches": true
+    },
+    {
+      "file": "locales/bn.pak",
+      "expected": "04c62c08e8b3a7f2dcb250d7a2457c53f0c53c31da214a8e48185854b889d6ae",
+      "actual": "04c62c08e8b3a7f2dcb250d7a2457c53f0c53c31da214a8e48185854b889d6ae",
+      "matches": true
+    },
+    {
+      "file": "locales/ca.pak",
+      "expected": "ef2a96e13e7a94629a39c0a32b27174d63ae49e7455d12053f859eae9db9e069",
+      "actual": "ef2a96e13e7a94629a39c0a32b27174d63ae49e7455d12053f859eae9db9e069",
+      "matches": true
+    },
+    {
+      "file": "locales/cs.pak",
+      "expected": "f48b1cd9db7221dfbc5467511b88d51eb5db4d1c7ab5633e7054bf088b407a83",
+      "actual": "f48b1cd9db7221dfbc5467511b88d51eb5db4d1c7ab5633e7054bf088b407a83",
+      "matches": true
+    },
+    {
+      "file": "locales/da.pak",
+      "expected": "b4d58598f7e7479663306bacd99efc3f1e32566874c8a084f97996c243535c87",
+      "actual": "b4d58598f7e7479663306bacd99efc3f1e32566874c8a084f97996c243535c87",
+      "matches": true
+    },
+    {
+      "file": "locales/de.pak",
+      "expected": "c19085b24fd5dfdee7ba49cf11106d5604e08f37f284ed19ac7269413b223c3e",
+      "actual": "c19085b24fd5dfdee7ba49cf11106d5604e08f37f284ed19ac7269413b223c3e",
+      "matches": true
+    },
+    {
+      "file": "locales/el.pak",
+      "expected": "e4fd66ba3d677ddec3743cd915d372ea6ed3465c539f618da192152d86c4bdf5",
+      "actual": "e4fd66ba3d677ddec3743cd915d372ea6ed3465c539f618da192152d86c4bdf5",
+      "matches": true
+    },
+    {
+      "file": "locales/en-GB.pak",
+      "expected": "dbac0b5607ab6550716a3bbecd00985b81c1bcfb8d29a85b3a8eff98c3eafe08",
+      "actual": "dbac0b5607ab6550716a3bbecd00985b81c1bcfb8d29a85b3a8eff98c3eafe08",
+      "matches": true
+    },
+    {
+      "file": "locales/en-US.pak",
+      "expected": "4395608e5feda0077bbf35d2a3f592bfac90958e6de6b54c1e194ff2bd34a436",
+      "actual": "4395608e5feda0077bbf35d2a3f592bfac90958e6de6b54c1e194ff2bd34a436",
+      "matches": true
+    },
+    {
+      "file": "locales/es-419.pak",
+      "expected": "fc98e363501bb24b72524c324c28c161a464b889225f99fb9d8e9ec396a6a41d",
+      "actual": "fc98e363501bb24b72524c324c28c161a464b889225f99fb9d8e9ec396a6a41d",
+      "matches": true
+    },
+    {
+      "file": "locales/es.pak",
+      "expected": "9adf5fdf6f9ffc48fe851c69b168ca99ffe69c37f79ca53c563cc720a2bc4b45",
+      "actual": "9adf5fdf6f9ffc48fe851c69b168ca99ffe69c37f79ca53c563cc720a2bc4b45",
+      "matches": true
+    },
+    {
+      "file": "locales/et.pak",
+      "expected": "425c3c7425bca875e1b59dc0311581bb652910d29b6d547ccc2530fe904a3763",
+      "actual": "425c3c7425bca875e1b59dc0311581bb652910d29b6d547ccc2530fe904a3763",
+      "matches": true
+    },
+    {
+      "file": "locales/fa.pak",
+      "expected": "f14a40219e5f7c60aab87fd706cc381200ba7226cc00b46cb7cea9f9fdd4798b",
+      "actual": "f14a40219e5f7c60aab87fd706cc381200ba7226cc00b46cb7cea9f9fdd4798b",
+      "matches": true
+    },
+    {
+      "file": "locales/fi.pak",
+      "expected": "da48d3a7e3df6461786d1450a0872a9c97154e3cfdd44fcdef8a85d7e5ccfe21",
+      "actual": "da48d3a7e3df6461786d1450a0872a9c97154e3cfdd44fcdef8a85d7e5ccfe21",
+      "matches": true
+    },
+    {
+      "file": "locales/fil.pak",
+      "expected": "054eedd63714dd059bef598cc0b4f2257426f58dd2631da372b3deac5e810368",
+      "actual": "054eedd63714dd059bef598cc0b4f2257426f58dd2631da372b3deac5e810368",
+      "matches": true
+    },
+    {
+      "file": "locales/fr.pak",
+      "expected": "14ed3b3c06e28052643f42dbce22ef0c694e15674921092e2beef54c56faa8d2",
+      "actual": "14ed3b3c06e28052643f42dbce22ef0c694e15674921092e2beef54c56faa8d2",
+      "matches": true
+    },
+    {
+      "file": "locales/gu.pak",
+      "expected": "7a1d5e5cc2721bea1a9cca02ffdbcf555535c399a0d490fa5c98bd77e96fae76",
+      "actual": "7a1d5e5cc2721bea1a9cca02ffdbcf555535c399a0d490fa5c98bd77e96fae76",
+      "matches": true
+    },
+    {
+      "file": "locales/he.pak",
+      "expected": "6d40d497ccd1d038aa9ade3be3044e0850929c599a0f52d0788fe9e1489ecba0",
+      "actual": "6d40d497ccd1d038aa9ade3be3044e0850929c599a0f52d0788fe9e1489ecba0",
+      "matches": true
+    },
+    {
+      "file": "locales/hi.pak",
+      "expected": "6f6e7b7d9b651e237577b8ed528b1035762c25830d56462b2881a786f1aaa5f9",
+      "actual": "6f6e7b7d9b651e237577b8ed528b1035762c25830d56462b2881a786f1aaa5f9",
+      "matches": true
+    },
+    {
+      "file": "locales/hr.pak",
+      "expected": "c1477b28e0bfb5fd06ca687f662525eaabb1befc4487dc455326bae1c4f76c93",
+      "actual": "c1477b28e0bfb5fd06ca687f662525eaabb1befc4487dc455326bae1c4f76c93",
+      "matches": true
+    },
+    {
+      "file": "locales/hu.pak",
+      "expected": "5edb24c71bee587cc3bae0ba11237a6b208a1bfa7f713cdf8a0e6e4e1d8d46a5",
+      "actual": "5edb24c71bee587cc3bae0ba11237a6b208a1bfa7f713cdf8a0e6e4e1d8d46a5",
+      "matches": true
+    },
+    {
+      "file": "locales/id.pak",
+      "expected": "abc587bbbe737aa22e97fb3c5170c9c5fe3e0fdab9453e277ce1514f77f4a57f",
+      "actual": "abc587bbbe737aa22e97fb3c5170c9c5fe3e0fdab9453e277ce1514f77f4a57f",
+      "matches": true
+    },
+    {
+      "file": "locales/it.pak",
+      "expected": "37730cc4eaf81be495f23fda486900c96a9bc7158f3a93189d78e90dff74d26a",
+      "actual": "37730cc4eaf81be495f23fda486900c96a9bc7158f3a93189d78e90dff74d26a",
+      "matches": true
+    },
+    {
+      "file": "locales/ja.pak",
+      "expected": "94f06f8f78871db9bacc21fac3e258f55913d3ff1d3186703447be821b1780b9",
+      "actual": "94f06f8f78871db9bacc21fac3e258f55913d3ff1d3186703447be821b1780b9",
+      "matches": true
+    },
+    {
+      "file": "locales/kn.pak",
+      "expected": "ed19373833f32929c7beca32d5c35153ecbe8be23ea6cfcadf7e96edf2d6b0f9",
+      "actual": "ed19373833f32929c7beca32d5c35153ecbe8be23ea6cfcadf7e96edf2d6b0f9",
+      "matches": true
+    },
+    {
+      "file": "locales/ko.pak",
+      "expected": "081d56a27dc2cdf3e7ec42b9f1aa7654d7c551b1cbfd6dc6f4f72a86c5398342",
+      "actual": "081d56a27dc2cdf3e7ec42b9f1aa7654d7c551b1cbfd6dc6f4f72a86c5398342",
+      "matches": true
+    },
+    {
+      "file": "locales/lt.pak",
+      "expected": "8c5fb43489a2bb418dff0bd2515d128ee942eb03f588c18a86c82a16eedec30e",
+      "actual": "8c5fb43489a2bb418dff0bd2515d128ee942eb03f588c18a86c82a16eedec30e",
+      "matches": true
+    },
+    {
+      "file": "locales/lv.pak",
+      "expected": "4191891036b8940eadaf833e194a48f67128352996906042e9595f98622be772",
+      "actual": "4191891036b8940eadaf833e194a48f67128352996906042e9595f98622be772",
+      "matches": true
+    },
+    {
+      "file": "locales/ml.pak",
+      "expected": "23ecfbd48987a0c1bcb507209c8e76965935ae34b49da284a1be1d3fb60c4e70",
+      "actual": "23ecfbd48987a0c1bcb507209c8e76965935ae34b49da284a1be1d3fb60c4e70",
+      "matches": true
+    },
+    {
+      "file": "locales/mr.pak",
+      "expected": "febefc1277e3a0e3a1a34cabf8e3a22ea8d4b3d444f6357073f684ceded71cd8",
+      "actual": "febefc1277e3a0e3a1a34cabf8e3a22ea8d4b3d444f6357073f684ceded71cd8",
+      "matches": true
+    },
+    {
+      "file": "locales/ms.pak",
+      "expected": "cceccca98cb4cc3603a1ae9812ff72e0ad180750d6423b3aa6cc83b95610fcc7",
+      "actual": "cceccca98cb4cc3603a1ae9812ff72e0ad180750d6423b3aa6cc83b95610fcc7",
+      "matches": true
+    },
+    {
+      "file": "locales/nb.pak",
+      "expected": "482a34c1a22aaa94f0b14908bdd0404a6276deec9d17267532b231894de1653b",
+      "actual": "482a34c1a22aaa94f0b14908bdd0404a6276deec9d17267532b231894de1653b",
+      "matches": true
+    },
+    {
+      "file": "locales/nl.pak",
+      "expected": "18c67c90b2f38cfe015d7af51a0090fc140a829ed97b27c00e5932a683cbe7a1",
+      "actual": "18c67c90b2f38cfe015d7af51a0090fc140a829ed97b27c00e5932a683cbe7a1",
+      "matches": true
+    },
+    {
+      "file": "locales/pl.pak",
+      "expected": "8c4a828bbe55c2595f9c40141555fb2aa94d7f551fe487f86773405f54d92b28",
+      "actual": "8c4a828bbe55c2595f9c40141555fb2aa94d7f551fe487f86773405f54d92b28",
+      "matches": true
+    },
+    {
+      "file": "locales/pt-BR.pak",
+      "expected": "987523c1987c6c80ad77e402ebe93062833cbecf1422f81c08ffccdb75c4270a",
+      "actual": "987523c1987c6c80ad77e402ebe93062833cbecf1422f81c08ffccdb75c4270a",
+      "matches": true
+    },
+    {
+      "file": "locales/pt-PT.pak",
+      "expected": "b82f6605364b8f00db9708082b230bb7600c38edf46e7e2eea385b48f0bfbddc",
+      "actual": "b82f6605364b8f00db9708082b230bb7600c38edf46e7e2eea385b48f0bfbddc",
+      "matches": true
+    },
+    {
+      "file": "locales/ro.pak",
+      "expected": "04064073d83e86234927bc06363caba0f5648fbb85efb45b91d2d55b3f159361",
+      "actual": "04064073d83e86234927bc06363caba0f5648fbb85efb45b91d2d55b3f159361",
+      "matches": true
+    },
+    {
+      "file": "locales/ru.pak",
+      "expected": "68167dfcfeabdc95ccf40a63555f33958eba283841b5df56f85f58b59687173e",
+      "actual": "68167dfcfeabdc95ccf40a63555f33958eba283841b5df56f85f58b59687173e",
+      "matches": true
+    },
+    {
+      "file": "locales/sk.pak",
+      "expected": "0f3e0bd5ff9d2f1644cf011abd4d89b712343b1876a3e4bcd7dc33fc71e1f1f6",
+      "actual": "0f3e0bd5ff9d2f1644cf011abd4d89b712343b1876a3e4bcd7dc33fc71e1f1f6",
+      "matches": true
+    },
+    {
+      "file": "locales/sl.pak",
+      "expected": "9a92dc34f3a3868665405ddffbf7368f32585d7dcbf3b8c4a675cbeb8ea95a17",
+      "actual": "9a92dc34f3a3868665405ddffbf7368f32585d7dcbf3b8c4a675cbeb8ea95a17",
+      "matches": true
+    },
+    {
+      "file": "locales/sr.pak",
+      "expected": "32b7ce3ce3d291d486dc0cc26d5ee701b228c930690ebb7ab49e23999f24889a",
+      "actual": "32b7ce3ce3d291d486dc0cc26d5ee701b228c930690ebb7ab49e23999f24889a",
+      "matches": true
+    },
+    {
+      "file": "locales/sv.pak",
+      "expected": "190224456c69f1fe1920e6a3a3a540851768660f9a7af069e6ad6b8ae2ccd945",
+      "actual": "190224456c69f1fe1920e6a3a3a540851768660f9a7af069e6ad6b8ae2ccd945",
+      "matches": true
+    },
+    {
+      "file": "locales/sw.pak",
+      "expected": "6fca818af284efa3a6e65fd05c67abca97b8059c0f2acbbb17c101abe3c5c738",
+      "actual": "6fca818af284efa3a6e65fd05c67abca97b8059c0f2acbbb17c101abe3c5c738",
+      "matches": true
+    },
+    {
+      "file": "locales/ta.pak",
+      "expected": "5982fab72cb5723da14e2a43cafe60b0fc73900e2bf94038c3a48dfc6ed1bf9d",
+      "actual": "5982fab72cb5723da14e2a43cafe60b0fc73900e2bf94038c3a48dfc6ed1bf9d",
+      "matches": true
+    },
+    {
+      "file": "locales/te.pak",
+      "expected": "def8484a7a45afed4a08fd43b87810548eb5e9cfb80aee262ab399dde3824711",
+      "actual": "def8484a7a45afed4a08fd43b87810548eb5e9cfb80aee262ab399dde3824711",
+      "matches": true
+    },
+    {
+      "file": "locales/th.pak",
+      "expected": "94cd597afaed5a6b28fc66c3dc55705303da02abcefdad53cd4ce1ffb73ead12",
+      "actual": "94cd597afaed5a6b28fc66c3dc55705303da02abcefdad53cd4ce1ffb73ead12",
+      "matches": true
+    },
+    {
+      "file": "locales/tr.pak",
+      "expected": "c959afa6eb40274df34c00f20ced55c8849182de836197992c52a4c6ce7f26cd",
+      "actual": "c959afa6eb40274df34c00f20ced55c8849182de836197992c52a4c6ce7f26cd",
+      "matches": true
+    },
+    {
+      "file": "locales/uk.pak",
+      "expected": "8886654c17da7af32673ce87eaf9a81204e076c9f6ca43102740e8abcbe5c7cf",
+      "actual": "8886654c17da7af32673ce87eaf9a81204e076c9f6ca43102740e8abcbe5c7cf",
+      "matches": true
+    },
+    {
+      "file": "locales/ur.pak",
+      "expected": "f6cf957c758610b6fcd5672f6f2f27f1a4dad58fd29a64f02451f2abbdeb837e",
+      "actual": "f6cf957c758610b6fcd5672f6f2f27f1a4dad58fd29a64f02451f2abbdeb837e",
+      "matches": true
+    },
+    {
+      "file": "locales/vi.pak",
+      "expected": "d36fb50423b68a3687ae93fd1e3b914bb191675d809116fadae386dcf0928ec0",
+      "actual": "d36fb50423b68a3687ae93fd1e3b914bb191675d809116fadae386dcf0928ec0",
+      "matches": true
+    },
+    {
+      "file": "locales/zh-CN.pak",
+      "expected": "96c4d2826c9628e43f9c8eb797e9fa646708d402bcfcad0544e2caa08d3c7174",
+      "actual": "96c4d2826c9628e43f9c8eb797e9fa646708d402bcfcad0544e2caa08d3c7174",
+      "matches": true
+    },
+    {
+      "file": "locales/zh-TW.pak",
+      "expected": "f95f42ba264148ad3f890fc7dbedfca2b8c396ea2b0c2cd8b4b8e3a2b458403d",
+      "actual": "f95f42ba264148ad3f890fc7dbedfca2b8c396ea2b0c2cd8b4b8e3a2b458403d",
+      "matches": true
+    },
+    {
+      "file": "resources/app.asar",
+      "expected": "71e960096975c6e320576440301c177c97a29d506923c4504a0d4e16d965df7f",
+      "actual": "71e960096975c6e320576440301c177c97a29d506923c4504a0d4e16d965df7f",
+      "matches": true
+    },
+    {
+      "file": "resources.pak",
+      "expected": "998b84e9797ea2b73605d9fd8978f4d162a5c0ed088adec6b4ee8653666cacd7",
+      "actual": "998b84e9797ea2b73605d9fd8978f4d162a5c0ed088adec6b4ee8653666cacd7",
+      "matches": true
+    },
+    {
+      "file": "snapshot_blob.bin",
+      "expected": "8823f193e991b540e7f2eb7710bdb30e8d997b5368421ecfb94e40cc9705aac3",
+      "actual": "8823f193e991b540e7f2eb7710bdb30e8d997b5368421ecfb94e40cc9705aac3",
+      "matches": true
+    },
+    {
+      "file": "v8_context_snapshot.bin",
+      "expected": "fbe7992da8fe4f7791dac415a417c2a3a35aba1050df3ee36ad1cbe208b63dfe",
+      "actual": "fbe7992da8fe4f7791dac415a417c2a3a35aba1050df3ee36ad1cbe208b63dfe",
+      "matches": true
+    },
+    {
+      "file": "version",
+      "expected": "79ca831c4d34b5d3b6dca6c7451d7b927a1d130b69879f6aa3011ddbc3c09af1",
+      "actual": "79ca831c4d34b5d3b6dca6c7451d7b927a1d130b69879f6aa3011ddbc3c09af1",
+      "matches": true
+    },
+    {
+      "file": "vk_swiftshader_icd.json",
+      "expected": "c9eef28b6b984fec220ef0abfecc40b502d46946706e47bfe97707027cb818bd",
+      "actual": "c9eef28b6b984fec220ef0abfecc40b502d46946706e47bfe97707027cb818bd",
+      "matches": true
+    }
+  ],
+  "packaged_inventory_matches": true,
+  "packaged_tree_expected": "ccf35915f57993323f2b0d776975e76aad0bd569f867a5f886acf9017618fabd",
+  "packaged_tree_actual": "ccf35915f57993323f2b0d776975e76aad0bd569f867a5f886acf9017618fabd",
+  "packaged_tree_matches": true,
+  "asar_entries": [
+    {
+      "file": "/electron.vite.config.ts",
+      "bytes": 208,
+      "sha256": "f78456989b8b89ae1e7c67caf049624e780c8bf07f83c8d456d7af619c9bba0a",
+      "asar_integrity_matches": true,
+      "matches_build_output": null
+    },
+    {
+      "file": "/forge.config.cjs",
+      "bytes": 170,
+      "sha256": "0fe9d987e56657544ecc6429df22a43eb8f76ff6630645b540489fbb4a10c9b3",
+      "asar_integrity_matches": true,
+      "matches_build_output": null
+    },
+    {
+      "file": "/node_modules/.package-lock.json",
+      "bytes": 249953,
+      "sha256": "9543ee83447214f470df4d77ea0a0910ebbda699f041cd881d3b7d404c556cdd",
+      "asar_integrity_matches": true,
+      "matches_build_output": null
+    },
+    {
+      "file": "/out/main/index.js",
+      "bytes": 442,
+      "sha256": "7f01f90ca43b256833c17b0156808de66e4e95e3a63b299e63cabbfb1cf48f58",
+      "asar_integrity_matches": true,
+      "matches_build_output": true
+    },
+    {
+      "file": "/out/preload/bridge.cjs",
+      "bytes": 53,
+      "sha256": "63fb64a72f12b5864ecbf3ea971e291fb997ebb146b5203a973bdca412bf8d80",
+      "asar_integrity_matches": true,
+      "matches_build_output": true
+    },
+    {
+      "file": "/out/renderer/assets/index-CDOh5xfH.js",
+      "bytes": 554545,
+      "sha256": "00b17dfcab29caf65d08f5eb0566e60a34e1c6c256be3b1d32262aa1e5ea332a",
+      "asar_integrity_matches": true,
+      "matches_build_output": true
+    },
+    {
+      "file": "/out/renderer/index.html",
+      "bytes": 207,
+      "sha256": "ee8742d34fdf1fc47889e4528938284a288d1982f5f09c1ff36a844d5244275f",
+      "asar_integrity_matches": true,
+      "matches_build_output": true
+    },
+    {
+      "file": "/package.json",
+      "bytes": 721,
+      "sha256": "33a4df4f0c857673fea223905efc0826b09cdb8323066bc3cf8c4032fb8b03b2",
+      "asar_integrity_matches": true,
+      "matches_build_output": null
+    },
+    {
+      "file": "/REQUIREMENTS.md",
+      "bytes": 499,
+      "sha256": "5f221805fb6fb32e21aa83d7a436ddef7c0007aa8ae20a26716ae8832f184709",
+      "asar_integrity_matches": true,
+      "matches_build_output": null
+    },
+    {
+      "file": "/tsconfig.json",
+      "bytes": 298,
+      "sha256": "d943d1b7f372c22f5fae7f68893abfb5f456c8778cb4d56c47691b8348ba7b12",
+      "asar_integrity_matches": true,
+      "matches_build_output": null
+    }
+  ],
+  "skill_content_identity": [
+    {
+      "file": "skills/electron-engineer/SKILL.md",
+      "frozen": "49cbaedf44923aa52942c26e9f32f704b750396dc91d4a293762ddaeec9eb7b2",
+      "staged": "49cbaedf44923aa52942c26e9f32f704b750396dc91d4a293762ddaeec9eb7b2",
+      "canonical": "49cbaedf44923aa52942c26e9f32f704b750396dc91d4a293762ddaeec9eb7b2",
+      "both_match": true
+    },
+    {
+      "file": "skills/electron-engineer/agents/openai.yaml",
+      "frozen": "9ccbb65808889c4fb29b3909b25aaa4e3032288030a750c9d246af691e146ed1",
+      "staged": "9ccbb65808889c4fb29b3909b25aaa4e3032288030a750c9d246af691e146ed1",
+      "canonical": "9ccbb65808889c4fb29b3909b25aaa4e3032288030a750c9d246af691e146ed1",
+      "both_match": true
+    },
+    {
+      "file": "skills/electron-engineer/references/data-storage-native.md",
+      "frozen": "4cb5757b54216bd7dd4f64778e0f74397817a41c544a19268f1e938ee26aeb08",
+      "staged": "4cb5757b54216bd7dd4f64778e0f74397817a41c544a19268f1e938ee26aeb08",
+      "canonical": "4cb5757b54216bd7dd4f64778e0f74397817a41c544a19268f1e938ee26aeb08",
+      "both_match": true
+    },
+    {
+      "file": "skills/electron-engineer/references/build-process.md",
+      "frozen": "51d89e99bd66ba517e51d43def578d1b3b089a84a13b19298d7fbbbed01d412d",
+      "staged": "51d89e99bd66ba517e51d43def578d1b3b089a84a13b19298d7fbbbed01d412d",
+      "canonical": "51d89e99bd66ba517e51d43def578d1b3b089a84a13b19298d7fbbbed01d412d",
+      "both_match": true
+    },
+    {
+      "file": "skills/electron-engineer/references/tooling-project-structure.md",
+      "frozen": "fa53e72f8a7a41cb3631fefc149e55fb8a4d7fc39d31e7adea8ad30d550f386b",
+      "staged": "fa53e72f8a7a41cb3631fefc149e55fb8a4d7fc39d31e7adea8ad30d550f386b",
+      "canonical": "fa53e72f8a7a41cb3631fefc149e55fb8a4d7fc39d31e7adea8ad30d550f386b",
+      "both_match": true
+    },
+    {
+      "file": "skills/electron-engineer/references/architecture.md",
+      "frozen": "2f403b1fefa9a9bf692330bcf902bac4272d2873dfeba727e04ee2509c8648aa",
+      "staged": "2f403b1fefa9a9bf692330bcf902bac4272d2873dfeba727e04ee2509c8648aa",
+      "canonical": "2f403b1fefa9a9bf692330bcf902bac4272d2873dfeba727e04ee2509c8648aa",
+      "both_match": true
+    },
+    {
+      "file": "skills/electron-engineer/references/review-playbooks.md",
+      "frozen": "f5215ea6a813076ad6c44d0d0458f3f0f8afe9b0134d45b881a142a55519ec35",
+      "staged": "f5215ea6a813076ad6c44d0d0458f3f0f8afe9b0134d45b881a142a55519ec35",
+      "canonical": "f5215ea6a813076ad6c44d0d0458f3f0f8afe9b0134d45b881a142a55519ec35",
+      "both_match": true
+    },
+    {
+      "file": "skills/electron-engineer/references/security-ipc-preload.md",
+      "frozen": "1bccaeb09e9ea3c196d878aff88f8a6de0a338b681298842988072cd58134dfc",
+      "staged": "1bccaeb09e9ea3c196d878aff88f8a6de0a338b681298842988072cd58134dfc",
+      "canonical": "1bccaeb09e9ea3c196d878aff88f8a6de0a338b681298842988072cd58134dfc",
+      "both_match": true
+    },
+    {
+      "file": "skills/electron-engineer/references/native-os-integration.md",
+      "frozen": "d78547367bcfd0a1dccbadd7480e8941fb98bc142c881b607ad38b64f6a4340b",
+      "staged": "d78547367bcfd0a1dccbadd7480e8941fb98bc142c881b607ad38b64f6a4340b",
+      "canonical": "d78547367bcfd0a1dccbadd7480e8941fb98bc142c881b607ad38b64f6a4340b",
+      "both_match": true
+    },
+    {
+      "file": "skills/electron-engineer/references/renderer-integration.md",
+      "frozen": "6b0f11b08f6bd86c1c67d54b40247c9062b23a1904341c45ebbdcfc4e3525e32",
+      "staged": "6b0f11b08f6bd86c1c67d54b40247c9062b23a1904341c45ebbdcfc4e3525e32",
+      "canonical": "6b0f11b08f6bd86c1c67d54b40247c9062b23a1904341c45ebbdcfc4e3525e32",
+      "both_match": true
+    },
+    {
+      "file": "skills/electron-engineer/references/testing-observability.md",
+      "frozen": "0b6d6e43a6e9f32c93def5030687f03c3ec8ca014eafff218625328de81f7c69",
+      "staged": "0b6d6e43a6e9f32c93def5030687f03c3ec8ca014eafff218625328de81f7c69",
+      "canonical": "0b6d6e43a6e9f32c93def5030687f03c3ec8ca014eafff218625328de81f7c69",
+      "both_match": true
+    },
+    {
+      "file": "skills/electron-engineer/references/typescript-in-electron.md",
+      "frozen": "a6516798f4e45777e757aeb535a46da1588150bbbf0f94f2f92e1ba293c5d330",
+      "staged": "a6516798f4e45777e757aeb535a46da1588150bbbf0f94f2f92e1ba293c5d330",
+      "canonical": "a6516798f4e45777e757aeb535a46da1588150bbbf0f94f2f92e1ba293c5d330",
+      "both_match": true
+    },
+    {
+      "file": "skills/electron-engineer/references/source-protection.md",
+      "frozen": "8439e0ce6939ca2ea17e80be4ae740b2aa1ac58a2731f86c8fa97a6c4fd066d2",
+      "staged": "8439e0ce6939ca2ea17e80be4ae740b2aa1ac58a2731f86c8fa97a6c4fd066d2",
+      "canonical": "8439e0ce6939ca2ea17e80be4ae740b2aa1ac58a2731f86c8fa97a6c4fd066d2",
+      "both_match": true
+    },
+    {
+      "file": "skills/electron-engineer/references/packaging-release-updates.md",
+      "frozen": "11310b87a8726e2159e8bdb450f69e07d6e62c2a81ac597a3e50318ca28d845b",
+      "staged": "11310b87a8726e2159e8bdb450f69e07d6e62c2a81ac597a3e50318ca28d845b",
+      "canonical": "11310b87a8726e2159e8bdb450f69e07d6e62c2a81ac597a3e50318ca28d845b",
+      "both_match": true
+    }
+  ],
+  "observed_skill_read_path": "staged trial skills/electron-engineer package via explicit absolute paths",
+  "installed_versions": {
+    "electron": "43.6.0",
+    "electron-vite": "4.0.1",
+    "@electron-forge/cli": "7.11.2",
+    "@electron/packager": "18.4.4",
+    "typescript": "5.9.3",
+    "@electron-forge/core": "7.11.2"
+  },
+  "public_evidence_files": [
+    {
+      "file": "task.txt",
+      "sha256": "05a185414de87306c81e35cb628983d1e2192a1a2c60e804b71bc734509e57ed",
+      "bytes": 476
+    },
+    {
+      "file": "result.md",
+      "sha256": "381c4e1961ebc2bfe858fff45de5b118df983c47a349c79b1db68d17feea7175",
+      "bytes": 6307
+    },
+    {
+      "file": "commands.jsonl",
+      "sha256": "4cfd6685cc16812b1c3653565d942c51e88e1819e9d7afbba9ee3ad53f9f36aa",
+      "bytes": 23628
+    },
+    {
+      "file": "final-hashes.json",
+      "sha256": "235881811a2a56c58e506923bf6b824560f8dbc82439b523caf09482f0800802",
+      "bytes": 7915
+    },
+    {
+      "file": "app/test/packaged-smoke.mjs",
+      "sha256": "3199f3460937ecf937d60110bb5822fe62b83094c2f5ce23aeb2595a0d955617",
+      "bytes": 2668
+    },
+    {
+      "file": "app/REQUIREMENTS.md",
+      "sha256": "5f221805fb6fb32e21aa83d7a436ddef7c0007aa8ae20a26716ae8832f184709",
+      "bytes": 499
+    }
+  ],
+  "protocol_sha256": "40c8d9f6ca146a807fc7e0fc47ff6cbd9ef337e226bdfe2cf3af673d08eba51c",
+  "trace_manifest_sha256": "a5c7cbd6a83e1d81c1dfc084a44fee69e379012f1200e988112c7bd5578fe139",
+  "trace_manifest_entry": {
+    "agent": "/root/baseline_electron_legacy_executor",
+    "source_session_id": "01a0864f-58a4-7ba1-96ab-1633219f73c3",
+    "journal_sha256": "cade0112f4b8ef415dfd1f22ccb67456fb2bc087690c9b555dc54221796e66da",
+    "public_trace": "baseline_electron_legacy_executor.jsonl",
+    "public_trace_sha256": "3061b39a109608c1797af1df567742caa2f7f32034160874486acb4f81f70582",
+    "tool_events": 54,
+    "public_task_messages": "baseline_electron_legacy_executor-task-messages.jsonl",
+    "task_messages_sha256": "afe37299e633b870585509af54fd484a321bd4d00e6156d81d6f359166583612",
+    "recorded_turn_settings": [
+      {
+        "turn_id": "01a0864f-5961-7b92-9289-35d12aacd3d3",
+        "model": "gpt-6-astra",
+        "effort": "high"
+      }
+    ]
+  },
+  "trace_hash_checks": [
+    {
+      "file": "raw-agent-traces/baseline_electron_legacy_executor.jsonl",
+      "expected": "3061b39a109608c1797af1df567742caa2f7f32034160874486acb4f81f70582",
+      "actual": "3061b39a109608c1797af1df567742caa2f7f32034160874486acb4f81f70582",
+      "matches": true
+    },
+    {
+      "file": "raw-agent-traces/baseline_electron_legacy_executor-task-messages.jsonl",
+      "expected": "afe37299e633b870585509af54fd484a321bd4d00e6156d81d6f359166583612",
+      "actual": "afe37299e633b870585509af54fd484a321bd4d00e6156d81d6f359166583612",
+      "matches": true
+    }
+  ],
+  "commands": [
+    {
+      "record": 1,
+      "time": "2026-09-09T13:19:35.994564+00:00",
+      "exit": 0,
+      "elapsed_seconds": 5.305,
+      "stdout_sha256": "d064aba1f42d8992fe47fdb9cdb5429644d5a26eb37f0c3cf411882305bea8f7",
+      "stderr_sha256": "0c4e706116728076ac493351da11df9c193b3ff98084bf4f10492ea74ba17c45"
+    },
+    {
+      "record": 2,
+      "time": "2026-09-09T13:19:57.676413+00:00",
+      "exit": 1,
+      "elapsed_seconds": 11.366,
+      "stdout_sha256": "d3352af290f5c5a9d7561d598977697fc6f7a742045535352fb64f1770187364",
+      "stderr_sha256": "a0657a01e9cb04857ee5f816d833760ed1f3f498444ce80ee14b56e3227b836e"
+    },
+    {
+      "record": 3,
+      "time": "2026-09-09T13:20:31.837137+00:00",
+      "exit": 0,
+      "elapsed_seconds": 3.544,
+      "stdout_sha256": "b2b8aca81cda1520193a7139339b3155d318f2f2e5317f3ba8ba3ef5fb3cf0af",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "record": 4,
+      "time": "2026-09-09T13:20:47.642578+00:00",
+      "exit": 5,
+      "elapsed_seconds": 0.853,
+      "stdout_sha256": "fa36996aa90772ac37996a3b66b42458089f0ad1bb145930b1f761ff50d5dc3d",
+      "stderr_sha256": "eeb7160338b33f8e4b1065d7ac62728e1eee8f06a984f4c1f0b3e5c87cb1fcf2"
+    },
+    {
+      "record": 5,
+      "time": "2026-09-09T13:21:08.283489+00:00",
+      "exit": 0,
+      "elapsed_seconds": 1.679,
+      "stdout_sha256": "21c194e526477d9f3888536f4173ef55c4652d72dce177347c1477d24bf4db27",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "record": 6,
+      "time": "2026-09-09T13:21:20.926982+00:00",
+      "exit": 0,
+      "elapsed_seconds": 3.435,
+      "stdout_sha256": "d04efffe38ddc124c4d4e1839d5ff2650ee6553e132a8c6b6c7118955a167977",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "record": 7,
+      "time": "2026-09-09T13:21:40.118228+00:00",
+      "exit": 0,
+      "elapsed_seconds": 0.86,
+      "stdout_sha256": "5781237328d68f04ef9e0d64dc5e07f56d37eacf041e25c4e7749b50ca13c901",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "record": 8,
+      "time": "2026-09-09T13:22:07.496950+00:00",
+      "exit": 0,
+      "elapsed_seconds": 0.435,
+      "stdout_sha256": "f82b78039ee925b8450f7103bddad69aa280750bda90007af60252b2fe4490d5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "record": 9,
+      "time": "2026-09-09T13:22:15.245159+00:00",
+      "exit": 0,
+      "elapsed_seconds": 0.012,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "recorded_runtime_observations": [
+    {
+      "record": 4,
+      "events": [
+        {
+          "event": "packaged-runtime",
+          "isPackaged": true,
+          "appPath": "/tmp/framework-platforms-20260909/trials/baseline/E-legacy/app/artifacts/framework-electron-fixture-legacy-linux-x64/resources/app.asar",
+          "electron": "43.6.0",
+          "sandbox": true,
+          "contextIsolation": true,
+          "nodeIntegration": false,
+          "arguments": [
+            "/tmp/framework-platforms-20260909/trials/baseline/E-legacy/app/artifacts/framework-electron-fixture-legacy-linux-x64/framework-electron-fixture-legacy",
+            "--inspect=0",
+            "--remote-debugging-port=0",
+            "--disable-setuid-sandbox"
+          ]
+        },
+        {
+          "event": "preload-readback",
+          "consoleMessages": [
+            {
+              "type": "error",
+              "text": "Unable to load preload script: /tmp/framework-platforms-20260909/trials/baseline/E-legacy/app/artifacts/framework-electron-fixture-legacy-linux-x64/resources/app.asar/out/preload/index.cjs"
+            },
+            {
+              "type": "error",
+              "text": "Error: ENOENT: no such file or directory, open '/tmp/framework-platforms-20260909/trials/baseline/E-legacy/app/artifacts/framework-electron-fixture-legacy-linux-x64/resources/app.asar/out/preload/index.cjs'"
+            }
+          ],
+          "pageErrors": [],
+          "boundary": {
+            "require": "undefined",
+            "process": "undefined"
+          },
+          "url": "file:///tmp/framework-platforms-20260909/trials/baseline/E-legacy/app/artifacts/framework-electron-fixture-legacy-linux-x64/resources/app.asar/out/renderer/index.html"
+        }
+      ]
+    },
+    {
+      "record": 7,
+      "events": [
+        {
+          "event": "packaged-runtime",
+          "isPackaged": true,
+          "appPath": "/tmp/framework-platforms-20260909/trials/baseline/E-legacy/app/artifacts/framework-electron-fixture-legacy-linux-x64/resources/app.asar",
+          "electron": "43.6.0",
+          "sandbox": true,
+          "contextIsolation": true,
+          "nodeIntegration": false,
+          "arguments": [
+            "/tmp/framework-platforms-20260909/trials/baseline/E-legacy/app/artifacts/framework-electron-fixture-legacy-linux-x64/framework-electron-fixture-legacy",
+            "--inspect=0",
+            "--remote-debugging-port=0",
+            "--disable-setuid-sandbox"
+          ]
+        },
+        {
+          "event": "preload-readback",
+          "consoleMessages": [
+            {
+              "type": "info",
+              "text": "Fixture preload ready"
+            }
+          ],
+          "pageErrors": [],
+          "boundary": {
+            "require": "undefined",
+            "process": "undefined"
+          },
+          "url": "file:///tmp/framework-platforms-20260909/trials/baseline/E-legacy/app/artifacts/framework-electron-fixture-legacy-linux-x64/resources/app.asar/out/renderer/index.html"
+        }
+      ]
+    }
+  ],
+  "runtime_rerun": false,
+  "private_files_read": false,
+  "boundary": "Read-only assessment and file/ASAR readback. Negative repro has actual preload ENOENT and independent xvfb cleanup exit5; final marker observed after reload with listeners attached, not first cold-start console event. Plaintext dispatch provenance incomplete.",
+  "independent_packaging_cause_sources": [
+    {
+      "file": "node_modules/@electron-forge/core/dist/util/out-dir.js",
+      "sha256": "abcb0572a41c4c4a58a7aad7d7947bf5f30e3bb0ea543dedb7c312d680e3bc19"
+    },
+    {
+      "file": "node_modules/@electron-forge/core/dist/api/package.js",
+      "sha256": "597ee2566eb360fb0332a19800161dabde82d04e218021bc82c2b6f59f185076"
+    },
+    {
+      "file": "node_modules/@electron/packager/dist/copy-filter.js",
+      "sha256": "007fcf0360338a4c6c28141c014b8ead689b9ce34134071f9baefee2a91773ce"
+    }
+  ]
+}

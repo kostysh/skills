@@ -28,8 +28,10 @@ This creates a minimal `standalone` folder with only production dependencies:
 
 ### Dockerfile
 
+Example for a new compatible Node 24 LTS/npm project; preserve the existing package manager, lockfile and supported runtime. Node 20 is EOL at the 2026-09-09 source check. Pin the chosen image/version per deployment policy; this example assumes a public directory exists.
+
 ```dockerfile
-FROM node:20-alpine AS base
+FROM node:24-alpine AS base
 
 # Install dependencies
 FROM base AS deps
@@ -58,6 +60,10 @@ RUN adduser --system --uid 1001 nextjs
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
+
+# Default image/ISR caches write inside .next at runtime.
+# Keep public assets, server.js and dependencies owned by root.
+RUN mkdir -p .next/cache && chown -R nextjs:nodejs .next
 
 USER nextjs
 
@@ -90,7 +96,7 @@ services:
 
 ## PM2 Deployment
 
-For traditional server deployments:
+For an existing PM2-based server deployment (a supervisor/container choice is not a universal Next requirement):
 
 ```js
 // ecosystem.config.js
@@ -135,107 +141,17 @@ module.exports = {
 };
 ```
 
-#### Redis Cache Handler Example
+### Shared invalidation contract
 
-```js
-// cache-handler.js
-const Redis = require('ioredis');
+A Redis/S3 get/set sketch is not a working shared cache handler. Choose an existing maintained handler or implement the installed Next `cacheHandler` API, including tag/path invalidation semantics, metadata/lifetimes, serialization, failures and concurrency. `cacheHandlers` for Cache Components is a different interface; do not swap these configuration keys.
 
-const redis = new Redis(process.env.REDIS_URL);
-const CACHE_PREFIX = 'nextjs:';
+All instances need coherent invalidation, compatible cache namespaces/build identity and consistent Server Action encryption keys where used. Sharing stored values alone cannot guarantee freshness. See the version-matched [cacheHandler API](https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheHandler) and [self-hosting guide](https://nextjs.org/docs/app/guides/self-hosting).
 
-module.exports = class CacheHandler {
-  constructor(options) {
-    this.options = options;
-  }
+Before claiming multi-instance correctness, cache an old value on instance B, mutate and invalidate through authorized instance A, then read B according to the selected immediate or SWR contract and repeat after reload. Include denied mutation and failure behavior. A local build, single-instance success, or equal initial pages does not prove this boundary.
 
-  async get(key) {
-    const data = await redis.get(CACHE_PREFIX + key);
-    if (!data) return null;
+## Deployment feature boundaries
 
-    const parsed = JSON.parse(data);
-    return {
-      value: parsed.value,
-      lastModified: parsed.lastModified,
-    };
-  }
-
-  async set(key, data, ctx) {
-    const cacheData = {
-      value: data,
-      lastModified: Date.now(),
-    };
-
-    // Set TTL based on revalidate option
-    if (ctx?.revalidate) {
-      await redis.setex(
-        CACHE_PREFIX + key,
-        ctx.revalidate,
-        JSON.stringify(cacheData)
-      );
-    } else {
-      await redis.set(CACHE_PREFIX + key, JSON.stringify(cacheData));
-    }
-  }
-
-  async revalidateTag(tags) {
-    // Implement tag-based invalidation
-    // This requires tracking which keys have which tags
-  }
-};
-```
-
-#### S3 Cache Handler Example
-
-```js
-// cache-handler.js
-const { S3Client, GetObjectCommand, PutObjectCommand } = require('@aws-sdk/client-s3');
-
-const s3 = new S3Client({ region: process.env.AWS_REGION });
-const BUCKET = process.env.CACHE_BUCKET;
-
-module.exports = class CacheHandler {
-  async get(key) {
-    try {
-      const response = await s3.send(new GetObjectCommand({
-        Bucket: BUCKET,
-        Key: `cache/${key}`,
-      }));
-      const body = await response.Body.transformToString();
-      return JSON.parse(body);
-    } catch (err) {
-      if (err.name === 'NoSuchKey') return null;
-      throw err;
-    }
-  }
-
-  async set(key, data, ctx) {
-    await s3.send(new PutObjectCommand({
-      Bucket: BUCKET,
-      Key: `cache/${key}`,
-      Body: JSON.stringify({
-        value: data,
-        lastModified: Date.now(),
-      }),
-      ContentType: 'application/json',
-    }));
-  }
-};
-```
-
-## What Works vs What Needs Setup
-
-| Feature | Single Instance | Multi-Instance | Notes |
-|---------|----------------|----------------|-------|
-| SSR | Yes | Yes | No special setup |
-| SSG | Yes | Yes | Built at deploy time |
-| ISR | Yes | Needs cache handler | Filesystem cache breaks |
-| Image Optimization | Yes | Yes | CPU-intensive, consider CDN |
-| Middleware | Yes | Yes | Runs on Node.js |
-| Edge Runtime | Limited | Limited | Some features Node-only |
-| `revalidatePath/Tag` | Yes | Needs cache handler | Must share cache |
-| `next/font` | Yes | Yes | Fonts bundled at build |
-| Draft Mode | Yes | Yes | Cookie-based |
+SSR/SSG, image optimization, request-time rendering, draft cookies, Proxy/middleware and caching depend on the selected output, runtime and adapter. `next start` runs a completed normal build; standalone uses its generated `server.js` with separately copied `public` and `.next/static`. Static export cannot supply Server Actions, ISR or other server-only features. Proxy in Next 16 is Node; legacy middleware runtime is version-dependent.
 
 ## Image Optimization
 
@@ -308,19 +224,7 @@ export async function GET() {
 
 ## OpenNext: Serverless Without Vercel
 
-[OpenNext](https://open-next.js.org/) adapts Next.js for AWS Lambda, Cloudflare Workers, etc.
-
-```bash
-npx create-sst@latest
-# or
-npx @opennextjs/aws build
-```
-
-Supports:
-- AWS Lambda + CloudFront
-- Cloudflare Workers
-- Netlify Functions
-- Deno Deploy
+[OpenNext](https://opennext.js.org/) provides separately maintained adapters, including AWS and Cloudflare. Select the exact adapter and supported Next version/feature matrix before running its locally installed build command. Do not infer Netlify/Deno support, Edge/Node parity or production readiness from the OpenNext name. Preserve a working existing deployment unless migration is authorized.
 
 ## Health Check Endpoint
 
@@ -354,18 +258,4 @@ export async function GET() {
 
 ## Testing Cache Handler
 
-**Critical**: Test your cache handler on every Next.js upgrade:
-
-```bash
-# Start multiple instances
-PORT=3001 node .next/standalone/server.js &
-PORT=3002 node .next/standalone/server.js &
-
-# Trigger ISR revalidation
-curl http://localhost:3001/api/revalidate?path=/posts
-
-# Verify both instances see the update
-curl http://localhost:3001/posts
-curl http://localhost:3002/posts
-# Should return identical content
-```
+On a Next upgrade, repeat the shared-invalidation scenario above using the existing authenticated mutation/revalidation boundary. Do not introduce an unauthenticated GET `/api/revalidate` endpoint for a smoke check. Record writer/reader instance identity, old/new values and the freshness policy; an unavailable distributed fixture leaves that claim open.

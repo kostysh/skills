@@ -1,0 +1,131 @@
+
+
+Payload is based around a small and intuitive set of high-level concepts. Before starting to work with Payload, it's a good idea to familiarize yourself with these concepts in order to establish a common language and understanding when discussing Payload.
+
+<CardGroup>
+  <Card
+    title="Config"
+    description="A deeply typed JavaScript object that drives everything Payload does — the central piece of every project."
+    link="../configuration/overview"
+  />
+  <Card
+    title="Database"
+    description="Plug in Postgres, MongoDB, or SQLite behind Payload's APIs via a Database Adapter — Payload is database agnostic."
+    link="../database/overview"
+  />
+  <Card
+    title="Collections"
+    description="A group of records (Documents) that share a schema. The most common way you'll model data in Payload."
+    link="../configuration/collections"
+  />
+  <Card
+    title="Globals"
+    description="Like Collections, but for content that has only one of — settings, navigation, footer, and so on."
+    link="../configuration/globals"
+  />
+  <Card
+    title="Fields"
+    description="The building blocks of Payload — they define your schema and auto-generate the matching Admin UI."
+    link="../fields/overview"
+  />
+  <Card
+    title="Hooks"
+    description="Run your own side effects at specific points in the Document lifecycle — before read, after create, and more."
+    link="../hooks/overview"
+  />
+  <Card
+    title="Authentication"
+    description="A secure, portable user-account system for both the Admin Panel and your own external applications."
+    link="../authentication/overview"
+  />
+  <Card
+    title="Access Control"
+    description="Decide who can read, update, or delete every Document — and what they see in the Admin Panel."
+    link="../access-control/overview"
+  />
+  <Card
+    title="Admin Panel"
+    description="The auto-generated, fully type-safe React interface editors use to manage your data. Built on Next.js."
+    link="../admin/overview"
+  />
+</CardGroup>
+
+## Retrieving Data
+
+Everything Payload does (create, read, update, delete, login, logout, etc.) is exposed to you via three APIs:
+
+<CardGroup>
+  <Card
+    title="Local API"
+    description="Direct-to-database access with no HTTP overhead — call payload.find from any server context, including React Server Components."
+    link="../local-api/overview"
+  />
+  <Card
+    title="REST API"
+    description="Standard HTTP endpoints mounted at /api — fetch documents from any client with full pagination, depth, and sorting."
+    link="../rest-api/overview"
+  />
+  <Card
+    title="GraphQL"
+    description="A full GraphQL API with a Playground at /api/graphql-playground. Works with graphql-request, Apollo, or any other client."
+    link="../graphql/overview"
+  />
+</CardGroup>
+
+<Banner type="success">
+  **Note:** All of these APIs share the exact same query language. [More
+  details](../queries/overview).
+</Banner>
+
+## Package Structure
+
+Payload is abstracted into a set of dedicated packages to keep the core `payload` package as lightweight as possible. This allows you to only install the parts of Payload based on your unique project requirements.
+
+<Banner type="warning">
+  **Important:** Version numbers of all official Payload packages are always
+  published in sync. You should make sure that you always use matching versions
+  for all official Payload packages.
+</Banner>
+
+`payload`
+
+The `payload` package is where core business logic for Payload lives. You can think of Payload as an ORM with superpowers—it contains the logic for all Payload "operations" like `find`, `create`, `update`, and `delete` and exposes a [Local API](../local-api/overview). It executes [Access Control](../access-control/overview), [Hooks](../hooks/overview), [Validation](../fields/overview#validation), and more.
+
+Payload itself is extremely compact, and can be used in any Node environment. As long as you have `payload` installed and you have access to your Payload Config, you can query and mutate your database directly without going through an unnecessary HTTP layer.
+
+Payload also contains all TypeScript definitions, which can be imported from `payload` directly.
+
+Here's how to import some common Payload types:
+
+```ts
+import { Config, CollectionConfig, GlobalConfig, Field } from 'payload'
+```
+
+`@payloadcms/next`
+
+Whereas Payload itself is responsible for direct database access, and control over Payload business logic, the `@payloadcms/next` package is responsible for the Admin Panel and the entire HTTP layer that Payload exposes, including the [REST API](../rest-api/overview) and [GraphQL API](../graphql/overview).
+
+`@payloadcms/graphql`
+
+All of Payload's GraphQL functionality is abstracted into a separate package. Payload, its Admin UI, and REST API have absolutely no overlap with GraphQL, and you will incur no performance overhead from GraphQL if you are not using it. However, it's installed within the `@payloadcms/next` package so you don't have to install it manually. You do, however, need to have GraphQL installed separately in your `package.json` if you are using GraphQL.
+
+`@payloadcms/ui`
+
+This is the UI library that Payload's Admin Panel uses. All components are exported from this package and can be re-used as you build extensions to the Payload admin UI, or want to use Payload components in your own React apps. Some exports are server components and some are client components.
+
+`@payloadcms/db-postgres`, `@payloadcms/db-vercel-postgres`, `@payloadcms/db-mongodb`, `@payloadcms/db-sqlite`
+
+You can choose which Database Adapter you'd like to use for your project, and no matter which you choose, the entire data layer for Payload is contained within these packages. You can only use one at a time for any given project.
+
+`@payloadcms/richtext-lexical`, `@payloadcms/richtext-slate`
+
+Payload's Rich Text functionality is abstracted into separate packages and if you want to enable Rich Text in your project, you'll need to install one of these packages. We recommend Lexical for all new projects, and this is where Payload will focus its efforts on from this point, but Slate is still supported if you have already built with it.
+
+<Banner type="info">
+  **Note:** Rich Text is entirely optional and you may not need it for your
+  project.
+</Banner>
+
+
+# Installation
+

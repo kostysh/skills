@@ -1,0 +1,3412 @@
+{
+  "skill": "supabase-engineer",
+  "auditKind": "independent baseline, full active technical inventory",
+  "snapshot": {
+    "baseCommit": "d89d66f2c99bf8b9e84e5b4def54fa60192856a5",
+    "packageVersion": "0.1.6",
+    "rootSha256": "3ee79ab832636a6cc36d1b9009a46b80c8090642bdfd89a90e478a271774a751",
+    "baselineReadback": "hono-supabase-baseline-readback.json"
+  },
+  "checkedAt": "2026-09-09",
+  "officialSourceCatalog": "official-hono-supabase-sources.json",
+  "findings": [
+    "S01",
+    "S02",
+    "S03",
+    "S04",
+    "S05",
+    "S06"
+  ],
+  "boundaries": {
+    "sourceCoverage": "All active references, complete YAML, fragment, generated root, UI and maintenance declaration inventoried; each nonblank reference line mapped.",
+    "notClaimed": [
+      "Fresh GPT-6 Astra behavioral performance",
+      "Runtime Hono or Supabase API behavior from this audit",
+      "Cloud deploy, Realtime delivery, Auth server, Storage, Edge runtime, operating-system or production correctness",
+      "Historical logs as current evidence"
+    ],
+    "structuralChecks": "Baseline hash readback only by reviewer; Hono package test and repository mandatory gates owned by parent",
+    "runtimeChecks": "Supabase CLI2.117.0 read-only version/help probes only; no local/remote DB mutation performed by reviewer",
+    "sourceConflicts": [
+      "CLI live declarative guide vs stable2.117 pinned help: exact installed CLI branch wins.",
+      "Supabase automatic retry live page vs stable2.116 implementation: pin observed source policy, do not copy unsupported POST retries.",
+      "Hono live Node guide legacy floor vs adapter2.1.1 engine>=20: exact adapter package constrains runtime."
+    ]
+  },
+  "inventory": [
+    {
+      "file": "skills/supabase-engineer/AGENTS.md",
+      "sha256": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf",
+      "bytes": 754,
+      "role": "maintenance guidance",
+      "review": "Read; structural tests do not invoke Hono/runtime/Supabase services"
+    },
+    {
+      "file": "skills/supabase-engineer/SKILL.md",
+      "sha256": "3ee79ab832636a6cc36d1b9009a46b80c8090642bdfd89a90e478a271774a751",
+      "bytes": 19159,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/supabase-engineer/agents/openai.yaml",
+      "sha256": "f08b004b6312540db55f0be5991f16445925d7cf9a1d30f8558205946a975c8a",
+      "bytes": 123,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/supabase-engineer/docs/README.md",
+      "sha256": "87d104ab367d2dcfe33a6fa81587ab700edd4e9e013d75dbc2d4846b6b877c4b",
+      "bytes": 1407,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/supabase-engineer/docs/compile-report.md",
+      "sha256": "7f35926cb38467bd19293216117765bccbe53df6ed39749b93ebeb8eafd104b2",
+      "bytes": 1611,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/supabase-engineer/docs/logs/implementation-log-20260611-1.md",
+      "sha256": "33f347b95fed2a2cb42de92aface4cd793799cfd753e504018ff3ee66c4efc11",
+      "bytes": 2772,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/supabase-engineer/docs/logs/implementation-log-20260708-1.md",
+      "sha256": "553790d2a9a9b447b1c554f6d1569d12f04d3bbd9529d474ab18490d1d42e973",
+      "bytes": 1464,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/supabase-engineer/docs/logs/implementation-log-20260710-1.md",
+      "sha256": "e8c71338f93a920fb6bcd2e4239df66a0969a2096a6f652b841574257f3b4bda",
+      "bytes": 9892,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/supabase-engineer/docs/logs/implementation-log-20260715-1.md",
+      "sha256": "60b2db2aac6fbee8411227cd0292da59a062ca774f080c53cbb39e5901c1ec90",
+      "bytes": 1867,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/supabase-engineer/docs/logs/implementation-log-20260717-1.md",
+      "sha256": "66729a3735b9536755c9b5fce2dfdc8053ea1124d997fdf58e245a800a6befd9",
+      "bytes": 7606,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/supabase-engineer/docs/logs/implementation-log-20260727-1.md",
+      "sha256": "69bb000561b1e3e7cd204aa93ce3a04154809e454e9b3575396966af568ed76c",
+      "bytes": 3667,
+      "role": "supporting historical evidence/navigation",
+      "review": "Inventoried; selected declared logs/compile-report/docs navigation read; no historical behavioral PASS reused"
+    },
+    {
+      "file": "skills/supabase-engineer/fragments/overview.md",
+      "sha256": "0733a8ba6cb0d7332ab0c2af28001a0629803731dee66bf0681494564e140665",
+      "bytes": 7107,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/supabase-engineer/references/architecture.md",
+      "sha256": "84c9bf4c2444d7680adcd79590220b30ed44d71fee456805b9b9f71c9909aa9d",
+      "bytes": 1781,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/supabase-engineer/references/auth.md",
+      "sha256": "d955c7263ab57a9cf8e3801929a0232525aa9adf020554662ffd4fda73348942",
+      "bytes": 2539,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/supabase-engineer/references/client-setup.md",
+      "sha256": "0146449ca44cac32d43f3ccc8c68e7877762083d4f15c5982b400346a4ffed49",
+      "bytes": 2285,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/supabase-engineer/references/data-handling.md",
+      "sha256": "dd76601cf580a5d95552eb0ffef049c207c8ab676f2e3fae7cba0972532f872b",
+      "bytes": 1445,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/supabase-engineer/references/database.md",
+      "sha256": "28c95d7d48590ee55c4b322b06549410e801b21fa1c86b930373d2392ef938e5",
+      "bytes": 1624,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/supabase-engineer/references/db-functions.md",
+      "sha256": "d1ea67c1ae3208a7d980af990b611c3b04978812e8bd9a769af3c64ff717d94e",
+      "bytes": 4257,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/supabase-engineer/references/edge-functions.md",
+      "sha256": "8692826835d80ebf6cbc9ab69f42d258517c4fa8676e6374014f486eb183ddc3",
+      "bytes": 2029,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/supabase-engineer/references/high-risk-backend-contract.md",
+      "sha256": "24de22f8621fceed881c6e8821d836b23835da6e1f93bbe478fca065a98f745d",
+      "bytes": 3453,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/supabase-engineer/references/migrations-cli.md",
+      "sha256": "79a092ddbd4ac83955738362e5a3290fda467873264da69b162f4b8f8cd99185",
+      "bytes": 1953,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/supabase-engineer/references/operations-observability.md",
+      "sha256": "7c420f1c360dc8b593375236d5669c22079295c00817a3b94376edc9f89b3033",
+      "bytes": 782,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/supabase-engineer/references/operations-release.md",
+      "sha256": "6b980167153fcf1bfb5412e60a2bd04f4bf97c395c29c623e321a154db1c4135",
+      "bytes": 1631,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/supabase-engineer/references/operations-reliability.md",
+      "sha256": "7505e899d38fcb7942ecf11e3f79fbf52402297201b2c39ee0e82cf590a19b2a",
+      "bytes": 2778,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/supabase-engineer/references/realtime.md",
+      "sha256": "4cd90caaeecd1abf9b18424a9b3fea97ba5daba02418d58568822871508532eb",
+      "bytes": 1465,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/supabase-engineer/references/rls.md",
+      "sha256": "4b4f75f94aafe570784bb6d7741c96bfbcd33d5c09425048b8752b6832d96e7a",
+      "bytes": 5470,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/supabase-engineer/references/security-privileges.md",
+      "sha256": "214a577902106b6eef3c558fe13daa9ff6f0217f2dd98ceca620652d469cf0c7",
+      "bytes": 2288,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/supabase-engineer/references/storage.md",
+      "sha256": "ed0bb795237db67cf063172a34eca6f5466cd79745d0bee848079eba20c9cd2f",
+      "bytes": 1552,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/supabase-engineer/references/troubleshooting.md",
+      "sha256": "63c61c836531e1d32432c70dc5ad1bb641728ff1d920d32c02d63b0339f2d8af",
+      "bytes": 1866,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/supabase-engineer/references/vector.md",
+      "sha256": "0d8a7bc349178b46093ea78ac64247a98cf99cfdb941ca8ad4032b5f7c40c6c4",
+      "bytes": 986,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/supabase-engineer/references/webhooks.md",
+      "sha256": "b98d93838d9aa328ed1937d0c1ed962840d7e308132ed156c63b87cf0e429be9",
+      "bytes": 2343,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    },
+    {
+      "file": "skills/supabase-engineer/skill.yaml",
+      "sha256": "35a7c84be2bf9c23acae207b36dd23439f1f3c36bc057fa49f5249d0c1cc8fa2",
+      "bytes": 16986,
+      "role": "active reference/source",
+      "review": "Full current active read and reference map"
+    }
+  ],
+  "coverage": [
+    {
+      "aspect": "Supabase Architecture Drivers",
+      "location": {
+        "file": "skills/supabase-engineer/references/architecture.md",
+        "lines": [
+          1,
+          3
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "Supabase supplies platform constraints; general topology/decomposition remains architecture-engineer-owned. No DAU-only architecture selection.",
+      "necessaryChange": "none",
+      "falsifier": "Agent invents topology or blocks an adequate existing design on hypothetical scale.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Required decision inputs",
+      "location": {
+        "file": "skills/supabase-engineer/references/architecture.md",
+        "lines": [
+          5,
+          12
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "Supabase supplies platform constraints; general topology/decomposition remains architecture-engineer-owned. No DAU-only architecture selection.",
+      "necessaryChange": "none",
+      "falsifier": "Agent invents topology or blocks an adequate existing design on hypothetical scale.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Supabase-owned constraints",
+      "location": {
+        "file": "skills/supabase-engineer/references/architecture.md",
+        "lines": [
+          14,
+          22
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "Supabase supplies platform constraints; general topology/decomposition remains architecture-engineer-owned. No DAU-only architecture selection.",
+      "necessaryChange": "none",
+      "falsifier": "Agent invents topology or blocks an adequate existing design on hypothetical scale.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Handoff",
+      "location": {
+        "file": "skills/supabase-engineer/references/architecture.md",
+        "lines": [
+          24,
+          28
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "Supabase supplies platform constraints; general topology/decomposition remains architecture-engineer-owned. No DAU-only architecture selection.",
+      "necessaryChange": "none",
+      "falsifier": "Agent invents topology or blocks an adequate existing design on hypothetical scale.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Auth",
+      "location": {
+        "file": "skills/supabase-engineer/references/auth.md",
+        "lines": [
+          1,
+          3
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "sdk-auth-source",
+        "supabase-auth-server-side-advanced-guide",
+        "supabase-auth-jwts",
+        "supabase-auth-sessions",
+        "supabase-auth-managing-user-data"
+      ],
+      "result": "verified",
+      "verification": "getClaims verifies identity; getUser obtains fresh server state; getSession user object untrusted. app_metadata trusted only with freshness constraints; user_metadata user-editable. auth.users not exposed Data API; profiles FK valid.",
+      "necessaryChange": "none",
+      "falsifier": "getSession user object authorizes protected data or editable metadata grants a role.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Identity and session methods",
+      "location": {
+        "file": "skills/supabase-engineer/references/auth.md",
+        "lines": [
+          5,
+          11
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "sdk-auth-source",
+        "supabase-auth-server-side-advanced-guide",
+        "supabase-auth-jwts",
+        "supabase-auth-sessions",
+        "supabase-auth-managing-user-data"
+      ],
+      "result": "verified",
+      "verification": "getClaims verifies identity; getUser obtains fresh server state; getSession user object untrusted. app_metadata trusted only with freshness constraints; user_metadata user-editable. auth.users not exposed Data API; profiles FK valid.",
+      "necessaryChange": "none",
+      "falsifier": "getSession user object authorizes protected data or editable metadata grants a role.",
+      "kinds": [
+        "heading",
+        "contract-table"
+      ]
+    },
+    {
+      "aspect": "Email/password",
+      "location": {
+        "file": "skills/supabase-engineer/references/auth.md",
+        "lines": [
+          13,
+          26
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "sdk-auth-source",
+        "supabase-auth-server-side-advanced-guide",
+        "supabase-auth-jwts",
+        "supabase-auth-sessions",
+        "supabase-auth-managing-user-data"
+      ],
+      "result": "verified",
+      "verification": "getClaims verifies identity; getUser obtains fresh server state; getSession user object untrusted. app_metadata trusted only with freshness constraints; user_metadata user-editable. auth.users not exposed Data API; profiles FK valid.",
+      "necessaryChange": "none",
+      "falsifier": "getSession user object authorizes protected data or editable metadata grants a role.",
+      "kinds": [
+        "heading",
+        "code-example",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "OAuth and PKCE",
+      "location": {
+        "file": "skills/supabase-engineer/references/auth.md",
+        "lines": [
+          28,
+          32
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "sdk-auth-source",
+        "supabase-auth-server-side-advanced-guide",
+        "supabase-auth-jwts",
+        "supabase-auth-sessions",
+        "supabase-auth-managing-user-data"
+      ],
+      "result": "verified",
+      "verification": "getClaims verifies identity; getUser obtains fresh server state; getSession user object untrusted. app_metadata trusted only with freshness constraints; user_metadata user-editable. auth.users not exposed Data API; profiles FK valid.",
+      "necessaryChange": "none",
+      "falsifier": "getSession user object authorizes protected data or editable metadata grants a role.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Authorization claims",
+      "location": {
+        "file": "skills/supabase-engineer/references/auth.md",
+        "lines": [
+          34,
+          39
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "sdk-auth-source",
+        "supabase-auth-server-side-advanced-guide",
+        "supabase-auth-jwts",
+        "supabase-auth-sessions",
+        "supabase-auth-managing-user-data"
+      ],
+      "result": "verified",
+      "verification": "getClaims verifies identity; getUser obtains fresh server state; getSession user object untrusted. app_metadata trusted only with freshness constraints; user_metadata user-editable. auth.users not exposed Data API; profiles FK valid.",
+      "necessaryChange": "none",
+      "falsifier": "getSession user object authorizes protected data or editable metadata grants a role.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Admin operations",
+      "location": {
+        "file": "skills/supabase-engineer/references/auth.md",
+        "lines": [
+          41,
+          43
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "sdk-auth-source",
+        "supabase-auth-server-side-advanced-guide",
+        "supabase-auth-jwts",
+        "supabase-auth-sessions",
+        "supabase-auth-managing-user-data"
+      ],
+      "result": "verified",
+      "verification": "getClaims verifies identity; getUser obtains fresh server state; getSession user object untrusted. app_metadata trusted only with freshness constraints; user_metadata user-editable. auth.users not exposed Data API; profiles FK valid.",
+      "necessaryChange": "none",
+      "falsifier": "getSession user object authorizes protected data or editable metadata grants a role.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Auth data model",
+      "location": {
+        "file": "skills/supabase-engineer/references/auth.md",
+        "lines": [
+          45,
+          49
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "sdk-auth-source",
+        "supabase-auth-server-side-advanced-guide",
+        "supabase-auth-jwts",
+        "supabase-auth-sessions",
+        "supabase-auth-managing-user-data"
+      ],
+      "result": "verified",
+      "verification": "getClaims verifies identity; getUser obtains fresh server state; getSession user object untrusted. app_metadata trusted only with freshness constraints; user_metadata user-editable. auth.users not exposed Data API; profiles FK valid.",
+      "necessaryChange": "none",
+      "falsifier": "getSession user object authorizes protected data or editable metadata grants a role.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Client Setup",
+      "location": {
+        "file": "skills/supabase-engineer/references/client-setup.md",
+        "lines": [
+          1,
+          3
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-auth-server-side-creating-a-client",
+        "supabase-auth-server-side-advanced-guide",
+        "ssr-types",
+        "ssr-cookies",
+        "ssr-changelog",
+        "supabase-getting-started-api-keys",
+        "supabase-auth-server-side-migrating-to-ssr-from-auth-helpers"
+      ],
+      "result": "verified",
+      "verification": "Current SSR getAll/setAll supported and old get/set/remove deprecated. Current callback supplies cache headers; request+response cookie propagation required. Key channel and JWT are distinct; elevated header can be replaced by signed-in user JWT.",
+      "necessaryChange": "Clarify callback headers version branch (SSR >=0.10); old supported projects must not be silently upgraded. Explain effective Authorization identity when discussing bypass.",
+      "falsifier": "Capture real SSR Set-Cookie/cache headers, and separate user/elevated clients; installed old SSR must stay compatible.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Browser client",
+      "location": {
+        "file": "skills/supabase-engineer/references/client-setup.md",
+        "lines": [
+          5,
+          16
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-auth-server-side-creating-a-client",
+        "supabase-auth-server-side-advanced-guide",
+        "ssr-types",
+        "ssr-cookies",
+        "ssr-changelog",
+        "supabase-getting-started-api-keys",
+        "supabase-auth-server-side-migrating-to-ssr-from-auth-helpers"
+      ],
+      "result": "verified",
+      "verification": "Current SSR getAll/setAll supported and old get/set/remove deprecated. Current callback supplies cache headers; request+response cookie propagation required. Key channel and JWT are distinct; elevated header can be replaced by signed-in user JWT.",
+      "necessaryChange": "Clarify callback headers version branch (SSR >=0.10); old supported projects must not be silently upgraded. Explain effective Authorization identity when discussing bypass.",
+      "falsifier": "Capture real SSR Set-Cookie/cache headers, and separate user/elevated clients; installed old SSR must stay compatible.",
+      "kinds": [
+        "heading",
+        "code-example"
+      ]
+    },
+    {
+      "aspect": "Server client",
+      "location": {
+        "file": "skills/supabase-engineer/references/client-setup.md",
+        "lines": [
+          18,
+          20
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-auth-server-side-creating-a-client",
+        "supabase-auth-server-side-advanced-guide",
+        "ssr-types",
+        "ssr-cookies",
+        "ssr-changelog",
+        "supabase-getting-started-api-keys",
+        "supabase-auth-server-side-migrating-to-ssr-from-auth-helpers"
+      ],
+      "result": "verified",
+      "verification": "Current SSR getAll/setAll supported and old get/set/remove deprecated. Current callback supplies cache headers; request+response cookie propagation required. Key channel and JWT are distinct; elevated header can be replaced by signed-in user JWT.",
+      "necessaryChange": "Clarify callback headers version branch (SSR >=0.10); old supported projects must not be silently upgraded. Explain effective Authorization identity when discussing bypass.",
+      "falsifier": "Capture real SSR Set-Cookie/cache headers, and separate user/elevated clients; installed old SSR must stay compatible.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Next.js Proxy boundary",
+      "location": {
+        "file": "skills/supabase-engineer/references/client-setup.md",
+        "lines": [
+          22,
+          28
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-auth-server-side-creating-a-client",
+        "supabase-auth-server-side-advanced-guide",
+        "ssr-types",
+        "ssr-cookies",
+        "ssr-changelog",
+        "supabase-getting-started-api-keys",
+        "supabase-auth-server-side-migrating-to-ssr-from-auth-helpers"
+      ],
+      "result": "verified",
+      "verification": "Current SSR getAll/setAll supported and old get/set/remove deprecated. Current callback supplies cache headers; request+response cookie propagation required. Key channel and JWT are distinct; elevated header can be replaced by signed-in user JWT.",
+      "necessaryChange": "Clarify callback headers version branch (SSR >=0.10); old supported projects must not be silently upgraded. Explain effective Authorization identity when discussing bypass.",
+      "falsifier": "Capture real SSR Set-Cookie/cache headers, and separate user/elevated clients; installed old SSR must stay compatible.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Request-scoped user client",
+      "location": {
+        "file": "skills/supabase-engineer/references/client-setup.md",
+        "lines": [
+          30,
+          32
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-auth-server-side-creating-a-client",
+        "supabase-auth-server-side-advanced-guide",
+        "ssr-types",
+        "ssr-cookies",
+        "ssr-changelog",
+        "supabase-getting-started-api-keys",
+        "supabase-auth-server-side-migrating-to-ssr-from-auth-helpers"
+      ],
+      "result": "verified",
+      "verification": "Current SSR getAll/setAll supported and old get/set/remove deprecated. Current callback supplies cache headers; request+response cookie propagation required. Key channel and JWT are distinct; elevated header can be replaced by signed-in user JWT.",
+      "necessaryChange": "Clarify callback headers version branch (SSR >=0.10); old supported projects must not be silently upgraded. Explain effective Authorization identity when discussing bypass.",
+      "falsifier": "Capture real SSR Set-Cookie/cache headers, and separate user/elevated clients; installed old SSR must stay compatible.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Elevated backend client",
+      "location": {
+        "file": "skills/supabase-engineer/references/client-setup.md",
+        "lines": [
+          34,
+          45
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-auth-server-side-creating-a-client",
+        "supabase-auth-server-side-advanced-guide",
+        "ssr-types",
+        "ssr-cookies",
+        "ssr-changelog",
+        "supabase-getting-started-api-keys",
+        "supabase-auth-server-side-migrating-to-ssr-from-auth-helpers"
+      ],
+      "result": "verified",
+      "verification": "Current SSR getAll/setAll supported and old get/set/remove deprecated. Current callback supplies cache headers; request+response cookie propagation required. Key channel and JWT are distinct; elevated header can be replaced by signed-in user JWT.",
+      "necessaryChange": "Clarify callback headers version branch (SSR >=0.10); old supported projects must not be silently upgraded. Explain effective Authorization identity when discussing bypass.",
+      "falsifier": "Capture real SSR Set-Cookie/cache headers, and separate user/elevated clients; installed old SSR must stay compatible.",
+      "kinds": [
+        "heading",
+        "code-example",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Verification",
+      "location": {
+        "file": "skills/supabase-engineer/references/client-setup.md",
+        "lines": [
+          47,
+          51
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-auth-server-side-creating-a-client",
+        "supabase-auth-server-side-advanced-guide",
+        "ssr-types",
+        "ssr-cookies",
+        "ssr-changelog",
+        "supabase-getting-started-api-keys",
+        "supabase-auth-server-side-migrating-to-ssr-from-auth-helpers"
+      ],
+      "result": "verified",
+      "verification": "Current SSR getAll/setAll supported and old get/set/remove deprecated. Current callback supplies cache headers; request+response cookie propagation required. Key channel and JWT are distinct; elevated header can be replaced by signed-in user JWT.",
+      "necessaryChange": "Clarify callback headers version branch (SSR >=0.10); old supported projects must not be silently upgraded. Explain effective Authorization identity when discussing bypass.",
+      "falsifier": "Capture real SSR Set-Cookie/cache headers, and separate user/elevated clients; installed old SSR must stay compatible.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Data Handling (PII, Retention, Redaction)",
+      "location": {
+        "file": "skills/supabase-engineer/references/data-handling.md",
+        "lines": [
+          1,
+          1
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "PII discovery, redaction and accepted retention are integration policy; no independent GDPR/legal assertion. Regulatory conclusions stay gdpr-compliance-owned.",
+      "necessaryChange": "none",
+      "falsifier": "Logs leak fixture credentials or retention job deletes data without an accepted contract.",
+      "kinds": [
+        "heading"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Data classification",
+      "location": {
+        "file": "skills/supabase-engineer/references/data-handling.md",
+        "lines": [
+          3,
+          9
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "PII discovery, redaction and accepted retention are integration policy; no independent GDPR/legal assertion. Regulatory conclusions stay gdpr-compliance-owned.",
+      "necessaryChange": "none",
+      "falsifier": "Logs leak fixture credentials or retention job deletes data without an accepted contract.",
+      "kinds": [
+        "heading",
+        "contract-table"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Discovery and classification",
+      "location": {
+        "file": "skills/supabase-engineer/references/data-handling.md",
+        "lines": [
+          11,
+          15
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "PII discovery, redaction and accepted retention are integration policy; no independent GDPR/legal assertion. Regulatory conclusions stay gdpr-compliance-owned.",
+      "necessaryChange": "none",
+      "falsifier": "Logs leak fixture credentials or retention job deletes data without an accepted contract.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Redaction",
+      "location": {
+        "file": "skills/supabase-engineer/references/data-handling.md",
+        "lines": [
+          17,
+          21
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "PII discovery, redaction and accepted retention are integration policy; no independent GDPR/legal assertion. Regulatory conclusions stay gdpr-compliance-owned.",
+      "necessaryChange": "none",
+      "falsifier": "Logs leak fixture credentials or retention job deletes data without an accepted contract.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Retention rules",
+      "location": {
+        "file": "skills/supabase-engineer/references/data-handling.md",
+        "lines": [
+          23,
+          27
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "PII discovery, redaction and accepted retention are integration policy; no independent GDPR/legal assertion. Regulatory conclusions stay gdpr-compliance-owned.",
+      "necessaryChange": "none",
+      "falsifier": "Logs leak fixture credentials or retention job deletes data without an accepted contract.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Database Operations",
+      "location": {
+        "file": "skills/supabase-engineer/references/database.md",
+        "lines": [
+          1,
+          1
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "sdk-postgrest-source",
+        "sdk-builder",
+        "supabase-database-joins-and-nesting",
+        "pg-sql-select"
+      ],
+      "result": "N/A",
+      "verification": "CRUD/select/filter/order/single/maybeSingle/count/head/RPC shapes supported. Cursor uses non-unique created_at and may omit tied rows. Several snippets ignore returned errors.",
+      "necessaryChange": "S02,S04",
+      "falsifier": "51 equal timestamps with page size50 must all be returned exactly once; deny/error must remain distinct from no rows.",
+      "kinds": [
+        "heading"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "CRUD",
+      "location": {
+        "file": "skills/supabase-engineer/references/database.md",
+        "lines": [
+          3,
+          37
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "sdk-postgrest-source",
+        "sdk-builder",
+        "supabase-database-joins-and-nesting",
+        "pg-sql-select"
+      ],
+      "result": "correction-required",
+      "verification": "CRUD/select/filter/order/single/maybeSingle/count/head/RPC shapes supported. Cursor uses non-unique created_at and may omit tied rows. Several snippets ignore returned errors.",
+      "necessaryChange": "S02,S04",
+      "falsifier": "51 equal timestamps with page size50 must all be returned exactly once; deny/error must remain distinct from no rows.",
+      "kinds": [
+        "heading",
+        "code-example"
+      ]
+    },
+    {
+      "aspect": "Single vs maybeSingle",
+      "location": {
+        "file": "skills/supabase-engineer/references/database.md",
+        "lines": [
+          39,
+          41
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "sdk-postgrest-source",
+        "sdk-builder",
+        "supabase-database-joins-and-nesting",
+        "pg-sql-select"
+      ],
+      "result": "verified",
+      "verification": "CRUD/select/filter/order/single/maybeSingle/count/head/RPC shapes supported. Cursor uses non-unique created_at and may omit tied rows. Several snippets ignore returned errors.",
+      "necessaryChange": "S02,S04",
+      "falsifier": "51 equal timestamps with page size50 must all be returned exactly once; deny/error must remain distinct from no rows.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Pagination (cursor)",
+      "location": {
+        "file": "skills/supabase-engineer/references/database.md",
+        "lines": [
+          43,
+          52
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "sdk-postgrest-source",
+        "sdk-builder",
+        "supabase-database-joins-and-nesting",
+        "pg-sql-select"
+      ],
+      "result": "correction-required",
+      "verification": "CRUD/select/filter/order/single/maybeSingle/count/head/RPC shapes supported. Cursor uses non-unique created_at and may omit tied rows. Several snippets ignore returned errors.",
+      "necessaryChange": "S02,S04",
+      "falsifier": "51 equal timestamps with page size50 must all be returned exactly once; deny/error must remain distinct from no rows.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim",
+        "code-example"
+      ]
+    },
+    {
+      "aspect": "Count for pagination",
+      "location": {
+        "file": "skills/supabase-engineer/references/database.md",
+        "lines": [
+          54,
+          59
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "sdk-postgrest-source",
+        "sdk-builder",
+        "supabase-database-joins-and-nesting",
+        "pg-sql-select"
+      ],
+      "result": "correction-required",
+      "verification": "CRUD/select/filter/order/single/maybeSingle/count/head/RPC shapes supported. Cursor uses non-unique created_at and may omit tied rows. Several snippets ignore returned errors.",
+      "necessaryChange": "S02,S04",
+      "falsifier": "51 equal timestamps with page size50 must all be returned exactly once; deny/error must remain distinct from no rows.",
+      "kinds": [
+        "heading",
+        "code-example"
+      ]
+    },
+    {
+      "aspect": "RPC (SQL function)",
+      "location": {
+        "file": "skills/supabase-engineer/references/database.md",
+        "lines": [
+          61,
+          68
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "sdk-postgrest-source",
+        "sdk-builder",
+        "supabase-database-joins-and-nesting",
+        "pg-sql-select"
+      ],
+      "result": "correction-required",
+      "verification": "CRUD/select/filter/order/single/maybeSingle/count/head/RPC shapes supported. Cursor uses non-unique created_at and may omit tied rows. Several snippets ignore returned errors.",
+      "necessaryChange": "S02,S04",
+      "falsifier": "51 equal timestamps with page size50 must all be returned exactly once; deny/error must remain distinct from no rows.",
+      "kinds": [
+        "heading",
+        "code-example"
+      ]
+    },
+    {
+      "aspect": "Query best practices",
+      "location": {
+        "file": "skills/supabase-engineer/references/database.md",
+        "lines": [
+          70,
+          73
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "sdk-postgrest-source",
+        "sdk-builder",
+        "supabase-database-joins-and-nesting",
+        "pg-sql-select"
+      ],
+      "result": "verified",
+      "verification": "CRUD/select/filter/order/single/maybeSingle/count/head/RPC shapes supported. Cursor uses non-unique created_at and may omit tied rows. Several snippets ignore returned errors.",
+      "necessaryChange": "S02,S04",
+      "falsifier": "51 equal timestamps with page size50 must all be returned exactly once; deny/error must remain distinct from no rows.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Database Functions & Triggers",
+      "location": {
+        "file": "skills/supabase-engineer/references/db-functions.md",
+        "lines": [
+          1,
+          1
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-database-functions",
+        "supabase-database-postgres-triggers",
+        "pg-function",
+        "pg-retry",
+        "pg-errors"
+      ],
+      "result": "N/A",
+      "verification": "SQL/PLpgSQL functions, trigger NEW/return NEW, SECURITY INVOKER/default PUBLIC EXECUTE/search_path/schema qualification supported. Genuine 40001/40P01 whole-transaction retry distinct from application outcomes; immutability must reflect actual effects.",
+      "necessaryChange": "none",
+      "falsifier": "Replayed effective function spoofs domain conflict as40001, loses same-transaction audit or exposes definer to unwanted role.",
+      "kinds": [
+        "heading"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Function template",
+      "location": {
+        "file": "skills/supabase-engineer/references/db-functions.md",
+        "lines": [
+          3,
+          22
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-database-functions",
+        "supabase-database-postgres-triggers",
+        "pg-function",
+        "pg-retry",
+        "pg-errors"
+      ],
+      "result": "verified",
+      "verification": "SQL/PLpgSQL functions, trigger NEW/return NEW, SECURITY INVOKER/default PUBLIC EXECUTE/search_path/schema qualification supported. Genuine 40001/40P01 whole-transaction retry distinct from application outcomes; immutability must reflect actual effects.",
+      "necessaryChange": "none",
+      "falsifier": "Replayed effective function spoofs domain conflict as40001, loses same-transaction audit or exposes definer to unwanted role.",
+      "kinds": [
+        "heading",
+        "code-example"
+      ]
+    },
+    {
+      "aspect": "Trigger template",
+      "location": {
+        "file": "skills/supabase-engineer/references/db-functions.md",
+        "lines": [
+          24,
+          42
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-database-functions",
+        "supabase-database-postgres-triggers",
+        "pg-function",
+        "pg-retry",
+        "pg-errors"
+      ],
+      "result": "verified",
+      "verification": "SQL/PLpgSQL functions, trigger NEW/return NEW, SECURITY INVOKER/default PUBLIC EXECUTE/search_path/schema qualification supported. Genuine 40001/40P01 whole-transaction retry distinct from application outcomes; immutability must reflect actual effects.",
+      "necessaryChange": "none",
+      "falsifier": "Replayed effective function spoofs domain conflict as40001, loses same-transaction audit or exposes definer to unwanted role.",
+      "kinds": [
+        "heading",
+        "code-example"
+      ]
+    },
+    {
+      "aspect": "Rules",
+      "location": {
+        "file": "skills/supabase-engineer/references/db-functions.md",
+        "lines": [
+          44,
+          49
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-database-functions",
+        "supabase-database-postgres-triggers",
+        "pg-function",
+        "pg-retry",
+        "pg-errors"
+      ],
+      "result": "verified",
+      "verification": "SQL/PLpgSQL functions, trigger NEW/return NEW, SECURITY INVOKER/default PUBLIC EXECUTE/search_path/schema qualification supported. Genuine 40001/40P01 whole-transaction retry distinct from application outcomes; immutability must reflect actual effects.",
+      "necessaryChange": "none",
+      "falsifier": "Replayed effective function spoofs domain conflict as40001, loses same-transaction audit or exposes definer to unwanted role.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "SQLSTATE classification",
+      "location": {
+        "file": "skills/supabase-engineer/references/db-functions.md",
+        "lines": [
+          51,
+          78
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-database-functions",
+        "supabase-database-postgres-triggers",
+        "pg-function",
+        "pg-retry",
+        "pg-errors"
+      ],
+      "result": "verified",
+      "verification": "SQL/PLpgSQL functions, trigger NEW/return NEW, SECURITY INVOKER/default PUBLIC EXECUTE/search_path/schema qualification supported. Genuine 40001/40P01 whole-transaction retry distinct from application outcomes; immutability must reflect actual effects.",
+      "necessaryChange": "none",
+      "falsifier": "Replayed effective function spoofs domain conflict as40001, loses same-transaction audit or exposes definer to unwanted role.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim",
+        "code-example"
+      ]
+    },
+    {
+      "aspect": "Security-definer RPCs",
+      "location": {
+        "file": "skills/supabase-engineer/references/db-functions.md",
+        "lines": [
+          80,
+          95
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-database-functions",
+        "supabase-database-postgres-triggers",
+        "pg-function",
+        "pg-retry",
+        "pg-errors"
+      ],
+      "result": "verified",
+      "verification": "SQL/PLpgSQL functions, trigger NEW/return NEW, SECURITY INVOKER/default PUBLIC EXECUTE/search_path/schema qualification supported. Genuine 40001/40P01 whole-transaction retry distinct from application outcomes; immutability must reflect actual effects.",
+      "necessaryChange": "none",
+      "falsifier": "Replayed effective function spoofs domain conflict as40001, loses same-transaction audit or exposes definer to unwanted role.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Edge Functions",
+      "location": {
+        "file": "skills/supabase-engineer/references/edge-functions.md",
+        "lines": [
+          1,
+          3
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-functions-auth",
+        "supabase-functions-auth-headers",
+        "supabase-functions-dependencies",
+        "supabase-functions-background-tasks",
+        "supabase-functions-ephemeral-storage",
+        "supabase-functions-limits"
+      ],
+      "result": "verified",
+      "verification": "Deno.serve/npm:/node:/tmp and bounded waitUntil supported. Current verify_jwt accepts legacy/asymmetric JWT and may pass opaque API keys without authenticating caller; current official server adapter offers explicit auth modes.",
+      "necessaryChange": "Add dated concrete auth behavior and explicit handler auth; do not infer caller authentication from gateway pass.",
+      "falsifier": "Direct requests with public key/userJWT/secret/no credential prove selected auth mode; local success does not close cloud gateway.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Trust boundary first",
+      "location": {
+        "file": "skills/supabase-engineer/references/edge-functions.md",
+        "lines": [
+          5,
+          14
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-functions-auth",
+        "supabase-functions-auth-headers",
+        "supabase-functions-dependencies",
+        "supabase-functions-background-tasks",
+        "supabase-functions-ephemeral-storage",
+        "supabase-functions-limits"
+      ],
+      "result": "verified",
+      "verification": "Deno.serve/npm:/node:/tmp and bounded waitUntil supported. Current verify_jwt accepts legacy/asymmetric JWT and may pass opaque API keys without authenticating caller; current official server adapter offers explicit auth modes.",
+      "necessaryChange": "Add dated concrete auth behavior and explicit handler auth; do not infer caller authentication from gateway pass.",
+      "falsifier": "Direct requests with public key/userJWT/secret/no credential prove selected auth mode; local success does not close cloud gateway.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Runtime rules",
+      "location": {
+        "file": "skills/supabase-engineer/references/edge-functions.md",
+        "lines": [
+          16,
+          22
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-functions-auth",
+        "supabase-functions-auth-headers",
+        "supabase-functions-dependencies",
+        "supabase-functions-background-tasks",
+        "supabase-functions-ephemeral-storage",
+        "supabase-functions-limits"
+      ],
+      "result": "verified",
+      "verification": "Deno.serve/npm:/node:/tmp and bounded waitUntil supported. Current verify_jwt accepts legacy/asymmetric JWT and may pass opaque API keys without authenticating caller; current official server adapter offers explicit auth modes.",
+      "necessaryChange": "Add dated concrete auth behavior and explicit handler auth; do not infer caller authentication from gateway pass.",
+      "falsifier": "Direct requests with public key/userJWT/secret/no credential prove selected auth mode; local success does not close cloud gateway.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Verification",
+      "location": {
+        "file": "skills/supabase-engineer/references/edge-functions.md",
+        "lines": [
+          24,
+          28
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-functions-auth",
+        "supabase-functions-auth-headers",
+        "supabase-functions-dependencies",
+        "supabase-functions-background-tasks",
+        "supabase-functions-ephemeral-storage",
+        "supabase-functions-limits"
+      ],
+      "result": "verified",
+      "verification": "Deno.serve/npm:/node:/tmp and bounded waitUntil supported. Current verify_jwt accepts legacy/asymmetric JWT and may pass opaque API keys without authenticating caller; current official server adapter offers explicit auth modes.",
+      "necessaryChange": "Add dated concrete auth behavior and explicit handler auth; do not infer caller authentication from gateway pass.",
+      "falsifier": "Direct requests with public key/userJWT/secret/no credential prove selected auth mode; local success does not close cloud gateway.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "High-risk backend contract matrix: Supabase ownership",
+      "location": {
+        "file": "skills/supabase-engineer/references/high-risk-backend-contract.md",
+        "lines": [
+          1,
+          3
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "Local HRB contract assigns durable transaction, RLS/RPC, audit, concurrency and lifecycle gates to Supabase; HRB08 response taxonomy stays HTTP-owner.",
+      "necessaryChange": "none",
+      "falsifier": "One route or mocked DB response closes an unobserved RLS or concurrent transaction boundary.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Responsibility boundary",
+      "location": {
+        "file": "skills/supabase-engineer/references/high-risk-backend-contract.md",
+        "lines": [
+          5,
+          9
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "Local HRB contract assigns durable transaction, RLS/RPC, audit, concurrency and lifecycle gates to Supabase; HRB08 response taxonomy stays HTTP-owner.",
+      "necessaryChange": "none",
+      "falsifier": "One route or mocked DB response closes an unobserved RLS or concurrent transaction boundary.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Supabase-owned checks",
+      "location": {
+        "file": "skills/supabase-engineer/references/high-risk-backend-contract.md",
+        "lines": [
+          11,
+          25
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "Local HRB contract assigns durable transaction, RLS/RPC, audit, concurrency and lifecycle gates to Supabase; HRB08 response taxonomy stays HTTP-owner.",
+      "necessaryChange": "none",
+      "falsifier": "One route or mocked DB response closes an unobserved RLS or concurrent transaction boundary.",
+      "kinds": [
+        "heading",
+        "contract-table"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Evidence gate",
+      "location": {
+        "file": "skills/supabase-engineer/references/high-risk-backend-contract.md",
+        "lines": [
+          27,
+          29
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "Local HRB contract assigns durable transaction, RLS/RPC, audit, concurrency and lifecycle gates to Supabase; HRB08 response taxonomy stays HTTP-owner.",
+      "necessaryChange": "none",
+      "falsifier": "One route or mocked DB response closes an unobserved RLS or concurrent transaction boundary.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Migrations & CLI",
+      "location": {
+        "file": "skills/supabase-engineer/references/migrations-cli.md",
+        "lines": [
+          1,
+          1
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "cli-release",
+        "cli-diff-doc",
+        "cli-declarative-sync-doc",
+        "cli-declarative-generate-doc",
+        "cli-diff-command",
+        "cli-diff-handler",
+        "cli-generate-command",
+        "supabase-cli-getting-started",
+        "supabase-local-development-declarative-database-schemas"
+      ],
+      "result": "N/A",
+      "verification": "CLI2.117 stable help/pinned docs: db diff compares migration shadow/live DB, excludes declarative files; declarative sync experimental generates migration from files. Live guide still describes older db diff path. Imperative migration new/up/reset commands exist.",
+      "necessaryChange": "S01",
+      "falsifier": "Change only declarative file and prove generated migration contains delta; ordinary dbdiff on pinned CLI is not that proof.",
+      "kinds": [
+        "heading"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Discover before changing",
+      "location": {
+        "file": "skills/supabase-engineer/references/migrations-cli.md",
+        "lines": [
+          3,
+          7
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "cli-release",
+        "cli-diff-doc",
+        "cli-declarative-sync-doc",
+        "cli-declarative-generate-doc",
+        "cli-diff-command",
+        "cli-diff-handler",
+        "cli-generate-command",
+        "supabase-cli-getting-started",
+        "supabase-local-development-declarative-database-schemas"
+      ],
+      "result": "verified",
+      "verification": "CLI2.117 stable help/pinned docs: db diff compares migration shadow/live DB, excludes declarative files; declarative sync experimental generates migration from files. Live guide still describes older db diff path. Imperative migration new/up/reset commands exist.",
+      "necessaryChange": "S01",
+      "falsifier": "Change only declarative file and prove generated migration contains delta; ordinary dbdiff on pinned CLI is not that proof.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Declarative schema model",
+      "location": {
+        "file": "skills/supabase-engineer/references/migrations-cli.md",
+        "lines": [
+          9,
+          14
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "cli-release",
+        "cli-diff-doc",
+        "cli-declarative-sync-doc",
+        "cli-declarative-generate-doc",
+        "cli-diff-command",
+        "cli-diff-handler",
+        "cli-generate-command",
+        "supabase-cli-getting-started",
+        "supabase-local-development-declarative-database-schemas"
+      ],
+      "result": "correction-required",
+      "verification": "CLI2.117 stable help/pinned docs: db diff compares migration shadow/live DB, excludes declarative files; declarative sync experimental generates migration from files. Live guide still describes older db diff path. Imperative migration new/up/reset commands exist.",
+      "necessaryChange": "S01",
+      "falsifier": "Change only declarative file and prove generated migration contains delta; ordinary dbdiff on pinned CLI is not that proof.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Imperative migration model",
+      "location": {
+        "file": "skills/supabase-engineer/references/migrations-cli.md",
+        "lines": [
+          16,
+          20
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "cli-release",
+        "cli-diff-doc",
+        "cli-declarative-sync-doc",
+        "cli-declarative-generate-doc",
+        "cli-diff-command",
+        "cli-diff-handler",
+        "cli-generate-command",
+        "supabase-cli-getting-started",
+        "supabase-local-development-declarative-database-schemas"
+      ],
+      "result": "verified",
+      "verification": "CLI2.117 stable help/pinned docs: db diff compares migration shadow/live DB, excludes declarative files; declarative sync experimental generates migration from files. Live guide still describes older db diff path. Imperative migration new/up/reset commands exist.",
+      "necessaryChange": "S01",
+      "falsifier": "Change only declarative file and prove generated migration contains delta; ordinary dbdiff on pinned CLI is not that proof.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Local verification",
+      "location": {
+        "file": "skills/supabase-engineer/references/migrations-cli.md",
+        "lines": [
+          22,
+          27
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "cli-release",
+        "cli-diff-doc",
+        "cli-declarative-sync-doc",
+        "cli-declarative-generate-doc",
+        "cli-diff-command",
+        "cli-diff-handler",
+        "cli-generate-command",
+        "supabase-cli-getting-started",
+        "supabase-local-development-declarative-database-schemas"
+      ],
+      "result": "verified",
+      "verification": "CLI2.117 stable help/pinned docs: db diff compares migration shadow/live DB, excludes declarative files; declarative sync experimental generates migration from files. Live guide still describes older db diff path. Imperative migration new/up/reset commands exist.",
+      "necessaryChange": "S01",
+      "falsifier": "Change only declarative file and prove generated migration contains delta; ordinary dbdiff on pinned CLI is not that proof.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Completion boundary",
+      "location": {
+        "file": "skills/supabase-engineer/references/migrations-cli.md",
+        "lines": [
+          29,
+          31
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "cli-release",
+        "cli-diff-doc",
+        "cli-declarative-sync-doc",
+        "cli-declarative-generate-doc",
+        "cli-diff-command",
+        "cli-diff-handler",
+        "cli-generate-command",
+        "supabase-cli-getting-started",
+        "supabase-local-development-declarative-database-schemas"
+      ],
+      "result": "verified",
+      "verification": "CLI2.117 stable help/pinned docs: db diff compares migration shadow/live DB, excludes declarative files; declarative sync experimental generates migration from files. Live guide still describes older db diff path. Imperative migration new/up/reset commands exist.",
+      "necessaryChange": "S01",
+      "falsifier": "Change only declarative file and prove generated migration contains delta; ordinary dbdiff on pinned CLI is not that proof.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Observability & Debugging",
+      "location": {
+        "file": "skills/supabase-engineer/references/operations-observability.md",
+        "lines": [
+          1,
+          1
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "Metrics, trace fields and health endpoint are architectural/HTTP contract choices. Baseline mandates new /health and blanket backoff/queueing despite root and reliability scope rules.",
+      "necessaryChange": "S05",
+      "falsifier": "Narrow diagnostic task introduces public health endpoint/queue or retries a write without accepted idempotency.",
+      "kinds": [
+        "heading"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Metrics + tracing",
+      "location": {
+        "file": "skills/supabase-engineer/references/operations-observability.md",
+        "lines": [
+          3,
+          5
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [],
+      "result": "correction-required",
+      "verification": "Metrics, trace fields and health endpoint are architectural/HTTP contract choices. Baseline mandates new /health and blanket backoff/queueing despite root and reliability scope rules.",
+      "necessaryChange": "S05",
+      "falsifier": "Narrow diagnostic task introduces public health endpoint/queue or retries a write without accepted idempotency.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Structured logging",
+      "location": {
+        "file": "skills/supabase-engineer/references/operations-observability.md",
+        "lines": [
+          7,
+          9
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [],
+      "result": "correction-required",
+      "verification": "Metrics, trace fields and health endpoint are architectural/HTTP contract choices. Baseline mandates new /health and blanket backoff/queueing despite root and reliability scope rules.",
+      "necessaryChange": "S05",
+      "falsifier": "Narrow diagnostic task introduces public health endpoint/queue or retries a write without accepted idempotency.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Health check",
+      "location": {
+        "file": "skills/supabase-engineer/references/operations-observability.md",
+        "lines": [
+          11,
+          12
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [],
+      "result": "correction-required",
+      "verification": "Metrics, trace fields and health endpoint are architectural/HTTP contract choices. Baseline mandates new /health and blanket backoff/queueing despite root and reliability scope rules.",
+      "necessaryChange": "S05",
+      "falsifier": "Narrow diagnostic task introduces public health endpoint/queue or retries a write without accepted idempotency.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Debug bundle (support escalation)",
+      "location": {
+        "file": "skills/supabase-engineer/references/operations-observability.md",
+        "lines": [
+          14,
+          19
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [],
+      "result": "N/A",
+      "verification": "Metrics, trace fields and health endpoint are architectural/HTTP contract choices. Baseline mandates new /health and blanket backoff/queueing despite root and reliability scope rules.",
+      "necessaryChange": "S05",
+      "falsifier": "Narrow diagnostic task introduces public health endpoint/queue or retries a write without accepted idempotency.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Incident triage cues",
+      "location": {
+        "file": "skills/supabase-engineer/references/operations-observability.md",
+        "lines": [
+          21,
+          24
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [],
+      "result": "correction-required",
+      "verification": "Metrics, trace fields and health endpoint are architectural/HTTP contract choices. Baseline mandates new /health and blanket backoff/queueing despite root and reliability scope rules.",
+      "necessaryChange": "S05",
+      "falsifier": "Narrow diagnostic task introduces public health endpoint/queue or retries a write without accepted idempotency.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "CI, Deploy, Multi-Env, Upgrades",
+      "location": {
+        "file": "skills/supabase-engineer/references/operations-release.md",
+        "lines": [
+          1,
+          1
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-cli-getting-started",
+        "supabase-js-release"
+      ],
+      "result": "N/A",
+      "verification": "Upgrade changelog/test workflow is valid when upgrade authorized. Dedicated cloud project, split environments and health alerts are unconditionally imposed despite accepted topology ownership. Load/cost changes otherwise properly conditional.",
+      "necessaryChange": "S05",
+      "falsifier": "Local-only CI task creates external project or new service; narrow fix upgrades SDK without authorization.",
+      "kinds": [
+        "heading"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "CI integration",
+      "location": {
+        "file": "skills/supabase-engineer/references/operations-release.md",
+        "lines": [
+          3,
+          6
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-cli-getting-started",
+        "supabase-js-release"
+      ],
+      "result": "correction-required",
+      "verification": "Upgrade changelog/test workflow is valid when upgrade authorized. Dedicated cloud project, split environments and health alerts are unconditionally imposed despite accepted topology ownership. Load/cost changes otherwise properly conditional.",
+      "necessaryChange": "S05",
+      "falsifier": "Local-only CI task creates external project or new service; narrow fix upgrades SDK without authorization.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Multi-environment setup",
+      "location": {
+        "file": "skills/supabase-engineer/references/operations-release.md",
+        "lines": [
+          8,
+          11
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-cli-getting-started",
+        "supabase-js-release"
+      ],
+      "result": "correction-required",
+      "verification": "Upgrade changelog/test workflow is valid when upgrade authorized. Dedicated cloud project, split environments and health alerts are unconditionally imposed despite accepted topology ownership. Load/cost changes otherwise properly conditional.",
+      "necessaryChange": "S05",
+      "falsifier": "Local-only CI task creates external project or new service; narrow fix upgrades SDK without authorization.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Deploy checklist (minimum)",
+      "location": {
+        "file": "skills/supabase-engineer/references/operations-release.md",
+        "lines": [
+          13,
+          17
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-cli-getting-started",
+        "supabase-js-release"
+      ],
+      "result": "correction-required",
+      "verification": "Upgrade changelog/test workflow is valid when upgrade authorized. Dedicated cloud project, split environments and health alerts are unconditionally imposed despite accepted topology ownership. Load/cost changes otherwise properly conditional.",
+      "necessaryChange": "S05",
+      "falsifier": "Local-only CI task creates external project or new service; narrow fix upgrades SDK without authorization.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Upgrade workflow",
+      "location": {
+        "file": "skills/supabase-engineer/references/operations-release.md",
+        "lines": [
+          19,
+          22
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-cli-getting-started",
+        "supabase-js-release"
+      ],
+      "result": "verified",
+      "verification": "Upgrade changelog/test workflow is valid when upgrade authorized. Dedicated cloud project, split environments and health alerts are unconditionally imposed despite accepted topology ownership. Load/cost changes otherwise properly conditional.",
+      "necessaryChange": "S05",
+      "falsifier": "Local-only CI task creates external project or new service; narrow fix upgrades SDK without authorization.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Load testing + scale",
+      "location": {
+        "file": "skills/supabase-engineer/references/operations-release.md",
+        "lines": [
+          24,
+          27
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-cli-getting-started",
+        "supabase-js-release"
+      ],
+      "result": "verified",
+      "verification": "Upgrade changelog/test workflow is valid when upgrade authorized. Dedicated cloud project, split environments and health alerts are unconditionally imposed despite accepted topology ownership. Load/cost changes otherwise properly conditional.",
+      "necessaryChange": "S05",
+      "falsifier": "Local-only CI task creates external project or new service; narrow fix upgrades SDK without authorization.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Cost tuning",
+      "location": {
+        "file": "skills/supabase-engineer/references/operations-release.md",
+        "lines": [
+          29,
+          32
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-cli-getting-started",
+        "supabase-js-release"
+      ],
+      "result": "verified",
+      "verification": "Upgrade changelog/test workflow is valid when upgrade authorized. Dedicated cloud project, split environments and health alerts are unconditionally imposed despite accepted topology ownership. Load/cost changes otherwise properly conditional.",
+      "necessaryChange": "S05",
+      "falsifier": "Local-only CI task creates external project or new service; narrow fix upgrades SDK without authorization.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Reliability, Rate Limits, Performance",
+      "location": {
+        "file": "skills/supabase-engineer/references/operations-reliability.md",
+        "lines": [
+          1,
+          1
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "pg-retry",
+        "sdk-builder",
+        "sdk-retry",
+        "sdk-retry-common",
+        "sdk-postgrest-client",
+        "supabase-api-automatic-retries-in-supabase-js",
+        "supabase-database-connecting-to-postgres"
+      ],
+      "result": "N/A",
+      "verification": "Application retry/idempotency/bounded budgets are sound but current SDK has default retry policy. Pinned v2.116 source retries GET/HEAD/OPTIONS for503/520/network max3 retries; live page advertises a different broader contract. Pool mode/prepared statement compatibility verified.",
+      "necessaryChange": "S06",
+      "falsifier": "Injected transient failure counts actual transport calls against whole-operation budget including SDK retries.",
+      "kinds": [
+        "heading"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Retry decision",
+      "location": {
+        "file": "skills/supabase-engineer/references/operations-reliability.md",
+        "lines": [
+          3,
+          18
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "pg-retry",
+        "sdk-builder",
+        "sdk-retry",
+        "sdk-retry-common",
+        "sdk-postgrest-client",
+        "supabase-api-automatic-retries-in-supabase-js",
+        "supabase-database-connecting-to-postgres"
+      ],
+      "result": "correction-required",
+      "verification": "Application retry/idempotency/bounded budgets are sound but current SDK has default retry policy. Pinned v2.116 source retries GET/HEAD/OPTIONS for503/520/network max3 retries; live page advertises a different broader contract. Pool mode/prepared statement compatibility verified.",
+      "necessaryChange": "S06",
+      "falsifier": "Injected transient failure counts actual transport calls against whole-operation budget including SDK retries.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Idempotent writes",
+      "location": {
+        "file": "skills/supabase-engineer/references/operations-reliability.md",
+        "lines": [
+          20,
+          24
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "pg-retry",
+        "sdk-builder",
+        "sdk-retry",
+        "sdk-retry-common",
+        "sdk-postgrest-client",
+        "supabase-api-automatic-retries-in-supabase-js",
+        "supabase-database-connecting-to-postgres"
+      ],
+      "result": "verified",
+      "verification": "Application retry/idempotency/bounded budgets are sound but current SDK has default retry policy. Pinned v2.116 source retries GET/HEAD/OPTIONS for503/520/network max3 retries; live page advertises a different broader contract. Pool mode/prepared statement compatibility verified.",
+      "necessaryChange": "S06",
+      "falsifier": "Injected transient failure counts actual transport calls against whole-operation budget including SDK retries.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Queues and circuit breakers",
+      "location": {
+        "file": "skills/supabase-engineer/references/operations-reliability.md",
+        "lines": [
+          26,
+          28
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "pg-retry",
+        "sdk-builder",
+        "sdk-retry",
+        "sdk-retry-common",
+        "sdk-postgrest-client",
+        "supabase-api-automatic-retries-in-supabase-js",
+        "supabase-database-connecting-to-postgres"
+      ],
+      "result": "verified",
+      "verification": "Application retry/idempotency/bounded budgets are sound but current SDK has default retry policy. Pinned v2.116 source retries GET/HEAD/OPTIONS for503/520/network max3 retries; live page advertises a different broader contract. Pool mode/prepared statement compatibility verified.",
+      "necessaryChange": "S06",
+      "falsifier": "Injected transient failure counts actual transport calls against whole-operation budget including SDK retries.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Performance",
+      "location": {
+        "file": "skills/supabase-engineer/references/operations-reliability.md",
+        "lines": [
+          30,
+          35
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "pg-retry",
+        "sdk-builder",
+        "sdk-retry",
+        "sdk-retry-common",
+        "sdk-postgrest-client",
+        "supabase-api-automatic-retries-in-supabase-js",
+        "supabase-database-connecting-to-postgres"
+      ],
+      "result": "verified",
+      "verification": "Application retry/idempotency/bounded budgets are sound but current SDK has default retry policy. Pinned v2.116 source retries GET/HEAD/OPTIONS for503/520/network max3 retries; live page advertises a different broader contract. Pool mode/prepared statement compatibility verified.",
+      "necessaryChange": "S06",
+      "falsifier": "Injected transient failure counts actual transport calls against whole-operation budget including SDK retries.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Evidence",
+      "location": {
+        "file": "skills/supabase-engineer/references/operations-reliability.md",
+        "lines": [
+          37,
+          39
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "pg-retry",
+        "sdk-builder",
+        "sdk-retry",
+        "sdk-retry-common",
+        "sdk-postgrest-client",
+        "supabase-api-automatic-retries-in-supabase-js",
+        "supabase-database-connecting-to-postgres"
+      ],
+      "result": "verified",
+      "verification": "Application retry/idempotency/bounded budgets are sound but current SDK has default retry policy. Pinned v2.116 source retries GET/HEAD/OPTIONS for503/520/network max3 retries; live page advertises a different broader contract. Pool mode/prepared statement compatibility verified.",
+      "necessaryChange": "S06",
+      "falsifier": "Injected transient failure counts actual transport calls against whole-operation budget including SDK retries.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Realtime",
+      "location": {
+        "file": "skills/supabase-engineer/references/realtime.md",
+        "lines": [
+          1,
+          3
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-realtime-subscribing-to-database-changes",
+        "supabase-realtime-authorization",
+        "supabase-realtime-postgres-changes",
+        "supabase-realtime-presence"
+      ],
+      "result": "verified",
+      "verification": "Broadcast/private realtime.messages policies, Presence ephemeral state and Postgres Changes publication/grants/JWT/RLS supported. Authorization cached at channel join/newJWT; DELETE not filterable and RLS cannot check deleted row, old full payload still restricted to PK under RLS.",
+      "necessaryChange": "Add concrete lifecycle/delete limits when relevant; do not present generic post-change RLS as all-event guarantee.",
+      "falsifier": "Permission changes and delete events exercised on actual subscription, including reconnect and cleanup.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Choose the mechanism",
+      "location": {
+        "file": "skills/supabase-engineer/references/realtime.md",
+        "lines": [
+          5,
+          11
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-realtime-subscribing-to-database-changes",
+        "supabase-realtime-authorization",
+        "supabase-realtime-postgres-changes",
+        "supabase-realtime-presence"
+      ],
+      "result": "verified",
+      "verification": "Broadcast/private realtime.messages policies, Presence ephemeral state and Postgres Changes publication/grants/JWT/RLS supported. Authorization cached at channel join/newJWT; DELETE not filterable and RLS cannot check deleted row, old full payload still restricted to PK under RLS.",
+      "necessaryChange": "Add concrete lifecycle/delete limits when relevant; do not present generic post-change RLS as all-event guarantee.",
+      "falsifier": "Permission changes and delete events exercised on actual subscription, including reconnect and cleanup.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Authorization",
+      "location": {
+        "file": "skills/supabase-engineer/references/realtime.md",
+        "lines": [
+          13,
+          18
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-realtime-subscribing-to-database-changes",
+        "supabase-realtime-authorization",
+        "supabase-realtime-postgres-changes",
+        "supabase-realtime-presence"
+      ],
+      "result": "verified",
+      "verification": "Broadcast/private realtime.messages policies, Presence ephemeral state and Postgres Changes publication/grants/JWT/RLS supported. Authorization cached at channel join/newJWT; DELETE not filterable and RLS cannot check deleted row, old full payload still restricted to PK under RLS.",
+      "necessaryChange": "Add concrete lifecycle/delete limits when relevant; do not present generic post-change RLS as all-event guarantee.",
+      "falsifier": "Permission changes and delete events exercised on actual subscription, including reconnect and cleanup.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Evidence",
+      "location": {
+        "file": "skills/supabase-engineer/references/realtime.md",
+        "lines": [
+          20,
+          22
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-realtime-subscribing-to-database-changes",
+        "supabase-realtime-authorization",
+        "supabase-realtime-postgres-changes",
+        "supabase-realtime-presence"
+      ],
+      "result": "verified",
+      "verification": "Broadcast/private realtime.messages policies, Presence ephemeral state and Postgres Changes publication/grants/JWT/RLS supported. Authorization cached at channel join/newJWT; DELETE not filterable and RLS cannot check deleted row, old full payload still restricted to PK under RLS.",
+      "necessaryChange": "Add concrete lifecycle/delete limits when relevant; do not present generic post-change RLS as all-event guarantee.",
+      "falsifier": "Permission changes and delete events exercised on actual subscription, including reconnect and cleanup.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Row Level Security (RLS)",
+      "location": {
+        "file": "skills/supabase-engineer/references/rls.md",
+        "lines": [
+          1,
+          1
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-database-postgres-row-level-security",
+        "supabase-storage-security-access-control",
+        "supabase-api-securing-your-api",
+        "supabase-auth-managing-user-data"
+      ],
+      "result": "N/A",
+      "verification": "RLS/grants, auth.uid initplan, roles, USING/WITH CHECK, UPDATE SELECT policy, invoker views PG>=15, BYPASSRLS vs FORCE, trusted metadata and auth.users FK supported. Storage public select policy permits listing as well as reads unless operation narrowed.",
+      "necessaryChange": "Keep views PG>=15 explicit and example ownership conditional; operation-specific SELECT matters if list visibility differs.",
+      "falsifier": "Direct userJWT allow/deny queries, tied actor scopes, invoker views, grants and Storage list/download/upsert are independently exercised.",
+      "kinds": [
+        "heading"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Critical rules",
+      "location": {
+        "file": "skills/supabase-engineer/references/rls.md",
+        "lines": [
+          3,
+          13
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-database-postgres-row-level-security",
+        "supabase-storage-security-access-control",
+        "supabase-api-securing-your-api",
+        "supabase-auth-managing-user-data"
+      ],
+      "result": "verified",
+      "verification": "RLS/grants, auth.uid initplan, roles, USING/WITH CHECK, UPDATE SELECT policy, invoker views PG>=15, BYPASSRLS vs FORCE, trusted metadata and auth.users FK supported. Storage public select policy permits listing as well as reads unless operation narrowed.",
+      "necessaryChange": "Keep views PG>=15 explicit and example ownership conditional; operation-specific SELECT matters if list visibility differs.",
+      "falsifier": "Direct userJWT allow/deny queries, tied actor scopes, invoker views, grants and Storage list/download/upsert are independently exercised.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Policy templates",
+      "location": {
+        "file": "skills/supabase-engineer/references/rls.md",
+        "lines": [
+          15,
+          59
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-database-postgres-row-level-security",
+        "supabase-storage-security-access-control",
+        "supabase-api-securing-your-api",
+        "supabase-auth-managing-user-data"
+      ],
+      "result": "verified",
+      "verification": "RLS/grants, auth.uid initplan, roles, USING/WITH CHECK, UPDATE SELECT policy, invoker views PG>=15, BYPASSRLS vs FORCE, trusted metadata and auth.users FK supported. Storage public select policy permits listing as well as reads unless operation narrowed.",
+      "necessaryChange": "Keep views PG>=15 explicit and example ownership conditional; operation-specific SELECT matters if list visibility differs.",
+      "falsifier": "Direct userJWT allow/deny queries, tied actor scopes, invoker views, grants and Storage list/download/upsert are independently exercised.",
+      "kinds": [
+        "heading",
+        "code-example"
+      ]
+    },
+    {
+      "aspect": "Storage RLS",
+      "location": {
+        "file": "skills/supabase-engineer/references/rls.md",
+        "lines": [
+          61,
+          75
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-database-postgres-row-level-security",
+        "supabase-storage-security-access-control",
+        "supabase-api-securing-your-api",
+        "supabase-auth-managing-user-data"
+      ],
+      "result": "verified",
+      "verification": "RLS/grants, auth.uid initplan, roles, USING/WITH CHECK, UPDATE SELECT policy, invoker views PG>=15, BYPASSRLS vs FORCE, trusted metadata and auth.users FK supported. Storage public select policy permits listing as well as reads unless operation narrowed.",
+      "necessaryChange": "Keep views PG>=15 explicit and example ownership conditional; operation-specific SELECT matters if list visibility differs.",
+      "falsifier": "Direct userJWT allow/deny queries, tied actor scopes, invoker views, grants and Storage list/download/upsert are independently exercised.",
+      "kinds": [
+        "heading",
+        "code-example"
+      ]
+    },
+    {
+      "aspect": "Views",
+      "location": {
+        "file": "skills/supabase-engineer/references/rls.md",
+        "lines": [
+          77,
+          87
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-database-postgres-row-level-security",
+        "supabase-storage-security-access-control",
+        "supabase-api-securing-your-api",
+        "supabase-auth-managing-user-data"
+      ],
+      "result": "verified",
+      "verification": "RLS/grants, auth.uid initplan, roles, USING/WITH CHECK, UPDATE SELECT policy, invoker views PG>=15, BYPASSRLS vs FORCE, trusted metadata and auth.users FK supported. Storage public select policy permits listing as well as reads unless operation narrowed.",
+      "necessaryChange": "Keep views PG>=15 explicit and example ownership conditional; operation-specific SELECT matters if list visibility differs.",
+      "falsifier": "Direct userJWT allow/deny queries, tied actor scopes, invoker views, grants and Storage list/download/upsert are independently exercised.",
+      "kinds": [
+        "heading",
+        "code-example",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Policy coverage matrix",
+      "location": {
+        "file": "skills/supabase-engineer/references/rls.md",
+        "lines": [
+          89,
+          98
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-database-postgres-row-level-security",
+        "supabase-storage-security-access-control",
+        "supabase-api-securing-your-api",
+        "supabase-auth-managing-user-data"
+      ],
+      "result": "verified",
+      "verification": "RLS/grants, auth.uid initplan, roles, USING/WITH CHECK, UPDATE SELECT policy, invoker views PG>=15, BYPASSRLS vs FORCE, trusted metadata and auth.users FK supported. Storage public select policy permits listing as well as reads unless operation narrowed.",
+      "necessaryChange": "Keep views PG>=15 explicit and example ownership conditional; operation-specific SELECT matters if list visibility differs.",
+      "falsifier": "Direct userJWT allow/deny queries, tied actor scopes, invoker views, grants and Storage list/download/upsert are independently exercised.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim",
+        "contract-table"
+      ]
+    },
+    {
+      "aspect": "Review checklist",
+      "location": {
+        "file": "skills/supabase-engineer/references/rls.md",
+        "lines": [
+          100,
+          110
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-database-postgres-row-level-security",
+        "supabase-storage-security-access-control",
+        "supabase-api-securing-your-api",
+        "supabase-auth-managing-user-data"
+      ],
+      "result": "verified",
+      "verification": "RLS/grants, auth.uid initplan, roles, USING/WITH CHECK, UPDATE SELECT policy, invoker views PG>=15, BYPASSRLS vs FORCE, trusted metadata and auth.users FK supported. Storage public select policy permits listing as well as reads unless operation narrowed.",
+      "necessaryChange": "Keep views PG>=15 explicit and example ownership conditional; operation-specific SELECT matters if list visibility differs.",
+      "falsifier": "Direct userJWT allow/deny queries, tied actor scopes, invoker views, grants and Storage list/download/upsert are independently exercised.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Database test matrix",
+      "location": {
+        "file": "skills/supabase-engineer/references/rls.md",
+        "lines": [
+          112,
+          126
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-database-postgres-row-level-security",
+        "supabase-storage-security-access-control",
+        "supabase-api-securing-your-api",
+        "supabase-auth-managing-user-data"
+      ],
+      "result": "verified",
+      "verification": "RLS/grants, auth.uid initplan, roles, USING/WITH CHECK, UPDATE SELECT policy, invoker views PG>=15, BYPASSRLS vs FORCE, trusted metadata and auth.users FK supported. Storage public select policy permits listing as well as reads unless operation narrowed.",
+      "necessaryChange": "Keep views PG>=15 explicit and example ownership conditional; operation-specific SELECT matters if list visibility differs.",
+      "falsifier": "Direct userJWT allow/deny queries, tied actor scopes, invoker views, grants and Storage list/download/upsert are independently exercised.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Schema design rules",
+      "location": {
+        "file": "skills/supabase-engineer/references/rls.md",
+        "lines": [
+          128,
+          130
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-database-postgres-row-level-security",
+        "supabase-storage-security-access-control",
+        "supabase-api-securing-your-api",
+        "supabase-auth-managing-user-data"
+      ],
+      "result": "verified",
+      "verification": "RLS/grants, auth.uid initplan, roles, USING/WITH CHECK, UPDATE SELECT policy, invoker views PG>=15, BYPASSRLS vs FORCE, trusted metadata and auth.users FK supported. Storage public select policy permits listing as well as reads unless operation narrowed.",
+      "necessaryChange": "Keep views PG>=15 explicit and example ownership conditional; operation-specific SELECT matters if list visibility differs.",
+      "falsifier": "Direct userJWT allow/deny queries, tied actor scopes, invoker views, grants and Storage list/download/upsert are independently exercised.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Data API Grants and Privileges",
+      "location": {
+        "file": "skills/supabase-engineer/references/security-privileges.md",
+        "lines": [
+          1,
+          8
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-api-securing-your-api",
+        "supabase-database-postgres-roles",
+        "supabase-database-functions",
+        "supabase-getting-started-api-keys"
+      ],
+      "result": "verified",
+      "verification": "GRANT schema/table/sequence/function, role-switch distinction, default PUBLIC EXECUTE and elevated isolation supported; inspect real existing grants rather than assume new defaults.",
+      "necessaryChange": "none",
+      "falsifier": "Policy exists but actual direct role cannot operate or an unintended role retains EXECUTE/SELECT.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Data API grant pattern",
+      "location": {
+        "file": "skills/supabase-engineer/references/security-privileges.md",
+        "lines": [
+          10,
+          21
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-api-securing-your-api",
+        "supabase-database-postgres-roles",
+        "supabase-database-functions",
+        "supabase-getting-started-api-keys"
+      ],
+      "result": "verified",
+      "verification": "GRANT schema/table/sequence/function, role-switch distinction, default PUBLIC EXECUTE and elevated isolation supported; inspect real existing grants rather than assume new defaults.",
+      "necessaryChange": "none",
+      "falsifier": "Policy exists but actual direct role cannot operate or an unintended role retains EXECUTE/SELECT.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim",
+        "code-example"
+      ]
+    },
+    {
+      "aspect": "Custom roles",
+      "location": {
+        "file": "skills/supabase-engineer/references/security-privileges.md",
+        "lines": [
+          23,
+          25
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-api-securing-your-api",
+        "supabase-database-postgres-roles",
+        "supabase-database-functions",
+        "supabase-getting-started-api-keys"
+      ],
+      "result": "verified",
+      "verification": "GRANT schema/table/sequence/function, role-switch distinction, default PUBLIC EXECUTE and elevated isolation supported; inspect real existing grants rather than assume new defaults.",
+      "necessaryChange": "none",
+      "falsifier": "Policy exists but actual direct role cannot operate or an unintended role retains EXECUTE/SELECT.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Functions and elevated access",
+      "location": {
+        "file": "skills/supabase-engineer/references/security-privileges.md",
+        "lines": [
+          27,
+          32
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-api-securing-your-api",
+        "supabase-database-postgres-roles",
+        "supabase-database-functions",
+        "supabase-getting-started-api-keys"
+      ],
+      "result": "verified",
+      "verification": "GRANT schema/table/sequence/function, role-switch distinction, default PUBLIC EXECUTE and elevated isolation supported; inspect real existing grants rather than assume new defaults.",
+      "necessaryChange": "none",
+      "falsifier": "Policy exists but actual direct role cannot operate or an unintended role retains EXECUTE/SELECT.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Verification matrix",
+      "location": {
+        "file": "skills/supabase-engineer/references/security-privileges.md",
+        "lines": [
+          34,
+          44
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-api-securing-your-api",
+        "supabase-database-postgres-roles",
+        "supabase-database-functions",
+        "supabase-getting-started-api-keys"
+      ],
+      "result": "verified",
+      "verification": "GRANT schema/table/sequence/function, role-switch distinction, default PUBLIC EXECUTE and elevated isolation supported; inspect real existing grants rather than assume new defaults.",
+      "necessaryChange": "none",
+      "falsifier": "Policy exists but actual direct role cannot operate or an unintended role retains EXECUTE/SELECT.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Storage",
+      "location": {
+        "file": "skills/supabase-engineer/references/storage.md",
+        "lines": [
+          1,
+          1
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "sdk-storage-source",
+        "supabase-storage-security-access-control",
+        "supabase-storage-uploads-standard-uploads",
+        "supabase-storage-serving-downloads"
+      ],
+      "result": "N/A",
+      "verification": "upload/upsert/getPublicUrl/createSignedUrl/remove/list supported. getPublicUrl is synchronous URL construction for public bucket, not reachability proof. Signed result may contain data:null,error; baseline nested destructuring crashes.",
+      "necessaryChange": "S04",
+      "falsifier": "Denied/nonexistent signed URL yields controlled error, not TypeError; real public/private download and replacement checked separately.",
+      "kinds": [
+        "heading"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Upload",
+      "location": {
+        "file": "skills/supabase-engineer/references/storage.md",
+        "lines": [
+          3,
+          11
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "sdk-storage-source",
+        "supabase-storage-security-access-control",
+        "supabase-storage-uploads-standard-uploads",
+        "supabase-storage-serving-downloads"
+      ],
+      "result": "verified",
+      "verification": "upload/upsert/getPublicUrl/createSignedUrl/remove/list supported. getPublicUrl is synchronous URL construction for public bucket, not reachability proof. Signed result may contain data:null,error; baseline nested destructuring crashes.",
+      "necessaryChange": "S04",
+      "falsifier": "Denied/nonexistent signed URL yields controlled error, not TypeError; real public/private download and replacement checked separately.",
+      "kinds": [
+        "heading",
+        "code-example"
+      ]
+    },
+    {
+      "aspect": "Public URL",
+      "location": {
+        "file": "skills/supabase-engineer/references/storage.md",
+        "lines": [
+          13,
+          18
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "sdk-storage-source",
+        "supabase-storage-security-access-control",
+        "supabase-storage-uploads-standard-uploads",
+        "supabase-storage-serving-downloads"
+      ],
+      "result": "verified",
+      "verification": "upload/upsert/getPublicUrl/createSignedUrl/remove/list supported. getPublicUrl is synchronous URL construction for public bucket, not reachability proof. Signed result may contain data:null,error; baseline nested destructuring crashes.",
+      "necessaryChange": "S04",
+      "falsifier": "Denied/nonexistent signed URL yields controlled error, not TypeError; real public/private download and replacement checked separately.",
+      "kinds": [
+        "heading",
+        "code-example"
+      ]
+    },
+    {
+      "aspect": "Signed URL (private buckets)",
+      "location": {
+        "file": "skills/supabase-engineer/references/storage.md",
+        "lines": [
+          20,
+          25
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "sdk-storage-source",
+        "supabase-storage-security-access-control",
+        "supabase-storage-uploads-standard-uploads",
+        "supabase-storage-serving-downloads"
+      ],
+      "result": "correction-required",
+      "verification": "upload/upsert/getPublicUrl/createSignedUrl/remove/list supported. getPublicUrl is synchronous URL construction for public bucket, not reachability proof. Signed result may contain data:null,error; baseline nested destructuring crashes.",
+      "necessaryChange": "S04",
+      "falsifier": "Denied/nonexistent signed URL yields controlled error, not TypeError; real public/private download and replacement checked separately.",
+      "kinds": [
+        "heading",
+        "code-example"
+      ]
+    },
+    {
+      "aspect": "Delete + list",
+      "location": {
+        "file": "skills/supabase-engineer/references/storage.md",
+        "lines": [
+          27,
+          34
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "sdk-storage-source",
+        "supabase-storage-security-access-control",
+        "supabase-storage-uploads-standard-uploads",
+        "supabase-storage-serving-downloads"
+      ],
+      "result": "verified",
+      "verification": "upload/upsert/getPublicUrl/createSignedUrl/remove/list supported. getPublicUrl is synchronous URL construction for public bucket, not reachability proof. Signed result may contain data:null,error; baseline nested destructuring crashes.",
+      "necessaryChange": "S04",
+      "falsifier": "Denied/nonexistent signed URL yields controlled error, not TypeError; real public/private download and replacement checked separately.",
+      "kinds": [
+        "heading",
+        "code-example"
+      ]
+    },
+    {
+      "aspect": "Rules",
+      "location": {
+        "file": "skills/supabase-engineer/references/storage.md",
+        "lines": [
+          36,
+          43
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "sdk-storage-source",
+        "supabase-storage-security-access-control",
+        "supabase-storage-uploads-standard-uploads",
+        "supabase-storage-serving-downloads"
+      ],
+      "result": "verified",
+      "verification": "upload/upsert/getPublicUrl/createSignedUrl/remove/list supported. getPublicUrl is synchronous URL construction for public bucket, not reachability proof. Signed result may contain data:null,error; baseline nested destructuring crashes.",
+      "necessaryChange": "S04",
+      "falsifier": "Denied/nonexistent signed URL yields controlled error, not TypeError; real public/private download and replacement checked separately.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Troubleshooting",
+      "location": {
+        "file": "skills/supabase-engineer/references/troubleshooting.md",
+        "lines": [
+          1,
+          1
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-getting-started-api-keys",
+        "supabase-functions-auth",
+        "supabase-api-handling-errors-in-supabase-js",
+        "sdk-builder",
+        "supabase-database-postgres-row-level-security",
+        "supabase-database-connecting-to-postgres"
+      ],
+      "result": "N/A",
+      "verification": "Error taxonomy and verify-original-failure path sound: keys/JWT,42501 grants+RLS,empty updates, cardinality116,retrybudget,pool compatibility. Incident-specific codes/settings remain environment evidence.",
+      "necessaryChange": "none",
+      "falsifier": "Agent broadens privileges or declares success from 2xx/no affected row.",
+      "kinds": [
+        "heading"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Classify before changing credentials or policies",
+      "location": {
+        "file": "skills/supabase-engineer/references/troubleshooting.md",
+        "lines": [
+          3,
+          13
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-getting-started-api-keys",
+        "supabase-functions-auth",
+        "supabase-api-handling-errors-in-supabase-js",
+        "sdk-builder",
+        "supabase-database-postgres-row-level-security",
+        "supabase-database-connecting-to-postgres"
+      ],
+      "result": "verified",
+      "verification": "Error taxonomy and verify-original-failure path sound: keys/JWT,42501 grants+RLS,empty updates, cardinality116,retrybudget,pool compatibility. Incident-specific codes/settings remain environment evidence.",
+      "necessaryChange": "none",
+      "falsifier": "Agent broadens privileges or declares success from 2xx/no affected row.",
+      "kinds": [
+        "heading",
+        "contract-table"
+      ]
+    },
+    {
+      "aspect": "Triage workflow",
+      "location": {
+        "file": "skills/supabase-engineer/references/troubleshooting.md",
+        "lines": [
+          15,
+          23
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-getting-started-api-keys",
+        "supabase-functions-auth",
+        "supabase-api-handling-errors-in-supabase-js",
+        "sdk-builder",
+        "supabase-database-postgres-row-level-security",
+        "supabase-database-connecting-to-postgres"
+      ],
+      "result": "verified",
+      "verification": "Error taxonomy and verify-original-failure path sound: keys/JWT,42501 grants+RLS,empty updates, cardinality116,retrybudget,pool compatibility. Incident-specific codes/settings remain environment evidence.",
+      "necessaryChange": "none",
+      "falsifier": "Agent broadens privileges or declares success from 2xx/no affected row.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Vector Embeddings (pgvector)",
+      "location": {
+        "file": "skills/supabase-engineer/references/vector.md",
+        "lines": [
+          1,
+          1
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-ai-vector-columns",
+        "supabase-ai-semantic-search",
+        "supabase-ai-vector-indexes",
+        "supabase-ai-vector-indexes-hnsw-indexes",
+        "supabase-ai-vector-indexes-ivf-indexes",
+        "pgvector"
+      ],
+      "result": "N/A",
+      "verification": "vector/cosine_ops/<=>/ascending distance and RPC shape valid; fixed dimension/threshold are example assumptions. IVFFlat on newly empty table with arbitrary lists100 conflicts with training/data prerequisite and current generally preferred HNSW guidance.",
+      "necessaryChange": "S03,S04",
+      "falsifier": "Cold-table ANN build followed by dataset compare to exact search must meet accepted recall; dimensions follow embedding producer.",
+      "kinds": [
+        "heading"
+      ],
+      "reason": "Local ownership/authority/evidence rule or heading, not independent vendor API/default; evaluated against stable direct owners."
+    },
+    {
+      "aspect": "Setup",
+      "location": {
+        "file": "skills/supabase-engineer/references/vector.md",
+        "lines": [
+          3,
+          16
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-ai-vector-columns",
+        "supabase-ai-semantic-search",
+        "supabase-ai-vector-indexes",
+        "supabase-ai-vector-indexes-hnsw-indexes",
+        "supabase-ai-vector-indexes-ivf-indexes",
+        "pgvector"
+      ],
+      "result": "correction-required",
+      "verification": "vector/cosine_ops/<=>/ascending distance and RPC shape valid; fixed dimension/threshold are example assumptions. IVFFlat on newly empty table with arbitrary lists100 conflicts with training/data prerequisite and current generally preferred HNSW guidance.",
+      "necessaryChange": "S03",
+      "falsifier": "Cold-table ANN build followed by dataset compare to exact search must meet accepted recall; dimensions follow embedding producer.",
+      "kinds": [
+        "heading",
+        "code-example"
+      ]
+    },
+    {
+      "aspect": "Similarity search RPC",
+      "location": {
+        "file": "skills/supabase-engineer/references/vector.md",
+        "lines": [
+          18,
+          37
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-ai-vector-columns",
+        "supabase-ai-semantic-search",
+        "supabase-ai-vector-indexes",
+        "supabase-ai-vector-indexes-hnsw-indexes",
+        "supabase-ai-vector-indexes-ivf-indexes",
+        "pgvector"
+      ],
+      "result": "verified",
+      "verification": "vector/cosine_ops/<=>/ascending distance and RPC shape valid; fixed dimension/threshold are example assumptions. IVFFlat on newly empty table with arbitrary lists100 conflicts with training/data prerequisite and current generally preferred HNSW guidance.",
+      "necessaryChange": "S03,S04",
+      "falsifier": "Cold-table ANN build followed by dataset compare to exact search must meet accepted recall; dimensions follow embedding producer.",
+      "kinds": [
+        "heading",
+        "code-example"
+      ]
+    },
+    {
+      "aspect": "Usage",
+      "location": {
+        "file": "skills/supabase-engineer/references/vector.md",
+        "lines": [
+          39,
+          46
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-ai-vector-columns",
+        "supabase-ai-semantic-search",
+        "supabase-ai-vector-indexes",
+        "supabase-ai-vector-indexes-hnsw-indexes",
+        "supabase-ai-vector-indexes-ivf-indexes",
+        "pgvector"
+      ],
+      "result": "correction-required",
+      "verification": "vector/cosine_ops/<=>/ascending distance and RPC shape valid; fixed dimension/threshold are example assumptions. IVFFlat on newly empty table with arbitrary lists100 conflicts with training/data prerequisite and current generally preferred HNSW guidance.",
+      "necessaryChange": "S03,S04",
+      "falsifier": "Cold-table ANN build followed by dataset compare to exact search must meet accepted recall; dimensions follow embedding producer.",
+      "kinds": [
+        "heading",
+        "code-example"
+      ]
+    },
+    {
+      "aspect": "Webhooks and Auth Hooks",
+      "location": {
+        "file": "skills/supabase-engineer/references/webhooks.md",
+        "lines": [
+          1,
+          3
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-database-webhooks",
+        "supabase-database-extensions-pg_net",
+        "supabase-database-vault",
+        "supabase-auth-auth-hooks",
+        "supabase-auth-auth-hooks-send-email-hook",
+        "standardwebhooks-spec"
+      ],
+      "result": "verified",
+      "verification": "Database Webhooks pg_net asynchronous payload/history, no universal signature; Auth StandardWebhooks rawbody/base64/multiple signatures and bidirectional time tolerance supported. Auth-specific timeout/retry differs from generic webhook recommendations.",
+      "necessaryChange": "none",
+      "falsifier": "Valid raw signature passes; mutation/old/future/wrongkey fails; duplicate does not duplicate durable effects; replaycurl is only routing evidence.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Database Webhooks",
+      "location": {
+        "file": "skills/supabase-engineer/references/webhooks.md",
+        "lines": [
+          5,
+          12
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-database-webhooks",
+        "supabase-database-extensions-pg_net",
+        "supabase-database-vault",
+        "supabase-auth-auth-hooks",
+        "supabase-auth-auth-hooks-send-email-hook",
+        "standardwebhooks-spec"
+      ],
+      "result": "verified",
+      "verification": "Database Webhooks pg_net asynchronous payload/history, no universal signature; Auth StandardWebhooks rawbody/base64/multiple signatures and bidirectional time tolerance supported. Auth-specific timeout/retry differs from generic webhook recommendations.",
+      "necessaryChange": "none",
+      "falsifier": "Valid raw signature passes; mutation/old/future/wrongkey fails; duplicate does not duplicate durable effects; replaycurl is only routing evidence.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Auth HTTP Hooks",
+      "location": {
+        "file": "skills/supabase-engineer/references/webhooks.md",
+        "lines": [
+          14,
+          24
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-database-webhooks",
+        "supabase-database-extensions-pg_net",
+        "supabase-database-vault",
+        "supabase-auth-auth-hooks",
+        "supabase-auth-auth-hooks-send-email-hook",
+        "standardwebhooks-spec"
+      ],
+      "result": "verified",
+      "verification": "Database Webhooks pg_net asynchronous payload/history, no universal signature; Auth StandardWebhooks rawbody/base64/multiple signatures and bidirectional time tolerance supported. Auth-specific timeout/retry differs from generic webhook recommendations.",
+      "necessaryChange": "none",
+      "falsifier": "Valid raw signature passes; mutation/old/future/wrongkey fails; duplicate does not duplicate durable effects; replaycurl is only routing evidence.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "External-provider webhooks",
+      "location": {
+        "file": "skills/supabase-engineer/references/webhooks.md",
+        "lines": [
+          26,
+          28
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-database-webhooks",
+        "supabase-database-extensions-pg_net",
+        "supabase-database-vault",
+        "supabase-auth-auth-hooks",
+        "supabase-auth-auth-hooks-send-email-hook",
+        "standardwebhooks-spec"
+      ],
+      "result": "verified",
+      "verification": "Database Webhooks pg_net asynchronous payload/history, no universal signature; Auth StandardWebhooks rawbody/base64/multiple signatures and bidirectional time tolerance supported. Auth-specific timeout/retry differs from generic webhook recommendations.",
+      "necessaryChange": "none",
+      "falsifier": "Valid raw signature passes; mutation/old/future/wrongkey fails; duplicate does not duplicate durable effects; replaycurl is only routing evidence.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "Delivery and idempotency",
+      "location": {
+        "file": "skills/supabase-engineer/references/webhooks.md",
+        "lines": [
+          30,
+          34
+        ]
+      },
+      "versions": "supabase-js2.116.0, SSR0.12.7, CLI2.117.0 stable; hosted docs rolling; PostgreSQL deployment version must be inspected",
+      "officialSources": [
+        "supabase-database-webhooks",
+        "supabase-database-extensions-pg_net",
+        "supabase-database-vault",
+        "supabase-auth-auth-hooks",
+        "supabase-auth-auth-hooks-send-email-hook",
+        "standardwebhooks-spec"
+      ],
+      "result": "verified",
+      "verification": "Database Webhooks pg_net asynchronous payload/history, no universal signature; Auth StandardWebhooks rawbody/base64/multiple signatures and bidirectional time tolerance supported. Auth-specific timeout/retry differs from generic webhook recommendations.",
+      "necessaryChange": "none",
+      "falsifier": "Valid raw signature passes; mutation/old/future/wrongkey fails; duplicate does not duplicate durable effects; replaycurl is only routing evidence.",
+      "kinds": [
+        "heading",
+        "instruction-or-claim"
+      ]
+    },
+    {
+      "aspect": "fragments/overview.md complete surface",
+      "location": {
+        "file": "skills/supabase-engineer/fragments/overview.md",
+        "lines": [
+          1,
+          73
+        ]
+      },
+      "versions": "0.1.6",
+      "result": "verified",
+      "officialSources": [],
+      "verification": "Read complete source, mode/trigger/reference/interop/output contract; vendor assertions duplicate aspects in references above and inherit their result, including correction-required findings. This row verifies source coverage/parity, not blanket technical correctness.",
+      "technicalClaimsResult": "See complete reference aspect map and findings; no independent current claim for duplicate root/YAML.",
+      "emittedFragmentLines": [
+        38,
+        110
+      ],
+      "necessaryChange": "Propagate confirmed technical corrections through source and regenerate. Metadata/UI contain no independent vendor command.",
+      "falsifier": "Source/emitted drift, missing active reference, conflicting mode/owner/output contract, or unrequested behavior in future blind run."
+    },
+    {
+      "aspect": "skill.yaml complete surface",
+      "location": {
+        "file": "skills/supabase-engineer/skill.yaml",
+        "lines": [
+          1,
+          277
+        ]
+      },
+      "versions": "0.1.6",
+      "result": "verified",
+      "officialSources": [],
+      "verification": "Read complete source, mode/trigger/reference/interop/output contract; vendor assertions duplicate aspects in references above and inherit their result, including correction-required findings. This row verifies source coverage/parity, not blanket technical correctness.",
+      "technicalClaimsResult": "See complete reference aspect map and findings; no independent current claim for duplicate root/YAML.",
+      "emittedFragmentLines": null,
+      "necessaryChange": "Propagate confirmed technical corrections through source and regenerate. Metadata/UI contain no independent vendor command.",
+      "falsifier": "Source/emitted drift, missing active reference, conflicting mode/owner/output contract, or unrequested behavior in future blind run."
+    },
+    {
+      "aspect": "SKILL.md complete surface",
+      "location": {
+        "file": "skills/supabase-engineer/SKILL.md",
+        "lines": [
+          1,
+          220
+        ]
+      },
+      "versions": "0.1.6",
+      "result": "verified",
+      "officialSources": [],
+      "verification": "Read complete source, mode/trigger/reference/interop/output contract; vendor assertions duplicate aspects in references above and inherit their result, including correction-required findings. This row verifies source coverage/parity, not blanket technical correctness.",
+      "technicalClaimsResult": "See complete reference aspect map and findings; no independent current claim for duplicate root/YAML.",
+      "emittedFragmentLines": null,
+      "necessaryChange": "Propagate confirmed technical corrections through source and regenerate. Metadata/UI contain no independent vendor command.",
+      "falsifier": "Source/emitted drift, missing active reference, conflicting mode/owner/output contract, or unrequested behavior in future blind run."
+    },
+    {
+      "aspect": "agents/openai.yaml complete surface",
+      "location": {
+        "file": "skills/supabase-engineer/agents/openai.yaml",
+        "lines": [
+          1,
+          3
+        ]
+      },
+      "versions": "0.1.6",
+      "result": "verified",
+      "officialSources": [],
+      "verification": "Read complete source, mode/trigger/reference/interop/output contract; vendor assertions duplicate aspects in references above and inherit their result, including correction-required findings. This row verifies source coverage/parity, not blanket technical correctness.",
+      "technicalClaimsResult": "See complete reference aspect map and findings; no independent current claim for duplicate root/YAML.",
+      "emittedFragmentLines": null,
+      "necessaryChange": "Propagate confirmed technical corrections through source and regenerate. Metadata/UI contain no independent vendor command.",
+      "falsifier": "Source/emitted drift, missing active reference, conflicting mode/owner/output contract, or unrequested behavior in future blind run."
+    },
+    {
+      "aspect": "AGENTS.md complete surface",
+      "location": {
+        "file": "skills/supabase-engineer/AGENTS.md",
+        "lines": [
+          1,
+          32
+        ]
+      },
+      "versions": "0.1.6",
+      "result": "verified",
+      "officialSources": [],
+      "verification": "Read complete source, mode/trigger/reference/interop/output contract; vendor assertions duplicate aspects in references above and inherit their result, including correction-required findings. This row verifies source coverage/parity, not blanket technical correctness.",
+      "technicalClaimsResult": "See complete reference aspect map and findings; no independent current claim for duplicate root/YAML.",
+      "emittedFragmentLines": null,
+      "necessaryChange": "Propagate confirmed technical corrections through source and regenerate. Metadata/UI contain no independent vendor command.",
+      "falsifier": "Source/emitted drift, missing active reference, conflicting mode/owner/output contract, or unrequested behavior in future blind run."
+    }
+  ],
+  "officialSources": {
+    "cli-declarative-generate-doc": {
+      "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/docs/supabase/db/schema-declarative-generate.md",
+      "snapshot": "official-hono-supabase/cli-declarative-generate-doc.txt",
+      "retrievedAt": "2026-09-09T11:41:23.378833+00:00",
+      "sha256": "4a65ccfefbfee07ab2a5b4224ff83b28d2251fed0861c414273c502197a7f77a"
+    },
+    "cli-declarative-sync-doc": {
+      "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/docs/supabase/db/schema-declarative-sync.md",
+      "snapshot": "official-hono-supabase/cli-declarative-sync-doc.txt",
+      "retrievedAt": "2026-09-09T11:41:23.902599+00:00",
+      "sha256": "619e0c0c7a88ac5209543a7053f5d1b9718058d61a450a51a0a0cec2df7316e8"
+    },
+    "cli-diff-command": {
+      "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/diff/diff.command.ts",
+      "snapshot": "official-hono-supabase/cli-diff-command.txt",
+      "retrievedAt": "2026-09-09T11:41:24.234747+00:00",
+      "sha256": "963c6704e96d17b481ad8a24b5ef99bac1b551cb15910cc4c3810da1ab660153"
+    },
+    "cli-diff-doc": {
+      "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/docs/supabase/db/diff.md",
+      "snapshot": "official-hono-supabase/cli-diff-doc.txt",
+      "retrievedAt": "2026-09-09T11:41:23.035534+00:00",
+      "sha256": "34430ebb5e28a1c91e6d2beeeceead84822e19569e6aaaed32972d2d3da47610"
+    },
+    "cli-diff-handler": {
+      "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/diff/diff.handler.ts",
+      "snapshot": "official-hono-supabase/cli-diff-handler.txt",
+      "retrievedAt": "2026-09-09T11:41:25.318199+00:00",
+      "sha256": "8f52a9be13c35de0d54fe48efb1ad6248bc49056ff51431b1e5accc4064401e2"
+    },
+    "cli-generate-command": {
+      "url": "https://raw.githubusercontent.com/supabase/cli/v2.117.0/apps/cli/src/commands/db/schema/declarative/generate/generate.command.ts",
+      "snapshot": "official-hono-supabase/cli-generate-command.txt",
+      "retrievedAt": "2026-09-09T11:41:24.579962+00:00",
+      "sha256": "578d377f9240c3d99179bd694fa8879818213e4b52669d92b4196733b5a3f1f8"
+    },
+    "cli-release": {
+      "url": "https://api.github.com/repos/supabase/cli/releases/latest",
+      "snapshot": "official-hono-supabase/cli-release.txt",
+      "retrievedAt": "2026-09-09T11:35:35.241896+00:00",
+      "sha256": "a98453b7310cfb265d3dcaf8856863a5b4a5894410bdf0cb3f123cfaf4613d63"
+    },
+    "pg-errors": {
+      "url": "https://www.postgresql.org/docs/current/errcodes-appendix.html",
+      "snapshot": "official-hono-supabase/pg-errors.txt",
+      "retrievedAt": "2026-09-09T11:36:57.718657+00:00",
+      "sha256": "0ebcc58411118aa7849020aa23256112a205abe94d9b64fa6576f1baa3dda263"
+    },
+    "pg-function": {
+      "url": "https://www.postgresql.org/docs/current/sql-createfunction.html",
+      "snapshot": "official-hono-supabase/pg-function.txt",
+      "retrievedAt": "2026-09-09T11:36:57.571340+00:00",
+      "sha256": "ecdb16535bea7e5771c6a39c1123bca92ff8c2b2a9c1d8ebdb2834856c921686"
+    },
+    "pg-retry": {
+      "url": "https://www.postgresql.org/docs/current/mvcc-serialization-failure-handling.html",
+      "snapshot": "official-hono-supabase/pg-retry.txt",
+      "retrievedAt": "2026-09-09T11:36:57.506629+00:00",
+      "sha256": "e00499d69ddeaa7be0618b65cd48003c27cbbb4693ecd8e50f24bd911a904936"
+    },
+    "pg-sql-select": {
+      "url": "https://www.postgresql.org/docs/current/sql-select.html",
+      "snapshot": "official-hono-supabase/pg-sql-select.txt",
+      "retrievedAt": "2026-09-09T11:36:57.617842+00:00",
+      "sha256": "b09d4107b0cd6790f3ea21ce95f9d57007f2f34ed12fa91316bf25852d0d08b5"
+    },
+    "pgvector": {
+      "url": "https://raw.githubusercontent.com/pgvector/pgvector/master/README.md",
+      "snapshot": "official-hono-supabase/pgvector.txt",
+      "retrievedAt": "2026-09-09T11:35:41.380498+00:00",
+      "sha256": "54cb3a5f4344308476cb2378469ac77d10fbff415d1b5be66608bb386ce8f527"
+    },
+    "sdk-auth-source": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/auth-js/src/GoTrueClient.ts",
+      "snapshot": "official-hono-supabase/sdk-auth-source.txt",
+      "retrievedAt": "2026-09-09T12:00:06.640388+00:00",
+      "sha256": "8b9180b10d021280a1da03fb8108d7d7730092465ddf192a855d8584f6a124eb"
+    },
+    "sdk-builder": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/postgrest-js/src/PostgrestBuilder.ts",
+      "snapshot": "official-hono-supabase/sdk-builder.txt",
+      "retrievedAt": "2026-09-09T11:37:33.124979+00:00",
+      "sha256": "12a13c40d213a6ee9691b8441404193ecbb7628597c6c6159c46cb86fe787c4e"
+    },
+    "sdk-postgrest-client": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/postgrest-js/src/PostgrestClient.ts",
+      "snapshot": "official-hono-supabase/sdk-postgrest-client.txt",
+      "retrievedAt": "2026-09-09T11:37:33.631539+00:00",
+      "sha256": "acfe0e1647cac92a9b47d2f368e2c1ce62f3e3ff6f4b6d63fa3058db0f7b9e0e"
+    },
+    "sdk-postgrest-source": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/postgrest-js/src/PostgrestTransformBuilder.ts",
+      "snapshot": "official-hono-supabase/sdk-postgrest-source.txt",
+      "retrievedAt": "2026-09-09T11:36:57.225793+00:00",
+      "sha256": "01a57078ecf2c9d63d138d3b19c24753b608960b1d0bde75f942e74cee5350ec"
+    },
+    "sdk-retry": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/postgrest-js/src/fetchWithRetry.ts",
+      "snapshot": "official-hono-supabase/sdk-retry.txt",
+      "retrievedAt": "2026-09-09T11:37:52.753231+00:00",
+      "sha256": "6a6a43c649ed9446f05c0ed2ff9b0df53348a40d20343261b00a77dad6c65987"
+    },
+    "sdk-retry-common": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/postgrest-js/src/types/common/common.ts",
+      "snapshot": "official-hono-supabase/sdk-retry-common.txt",
+      "retrievedAt": "2026-09-09T11:38:01.607164+00:00",
+      "sha256": "b83315a6e0b6bd4887cff0807114d3afa437ce4ef7614a92297c095e3e80691b"
+    },
+    "sdk-storage-source": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase-js/v2.116.0/packages/core/storage-js/src/packages/StorageFileApi.ts",
+      "snapshot": "official-hono-supabase/sdk-storage-source.txt",
+      "retrievedAt": "2026-09-09T11:36:57.062799+00:00",
+      "sha256": "0f2d84813cd3c97cb1b90deda7e373c8643868ef14afa892110d545a1d511e18"
+    },
+    "ssr-changelog": {
+      "url": "https://raw.githubusercontent.com/supabase/ssr/v0.12.7/CHANGELOG.md",
+      "snapshot": "official-hono-supabase/ssr-changelog.txt",
+      "retrievedAt": "2026-09-09T11:35:41.951286+00:00",
+      "sha256": "8cc7159bfc46d89002d9324e99410a45dc2a1a61805394952582cc4ccd334e55"
+    },
+    "ssr-cookies": {
+      "url": "https://raw.githubusercontent.com/supabase/ssr/v0.12.7/src/cookies.ts",
+      "snapshot": "official-hono-supabase/ssr-cookies.txt",
+      "retrievedAt": "2026-09-09T11:35:41.673738+00:00",
+      "sha256": "dc2065b2e7fd9e7f8ba52024292f62004a5625f26fcf0669a5fe01ac4e5617c4"
+    },
+    "ssr-types": {
+      "url": "https://raw.githubusercontent.com/supabase/ssr/v0.12.7/src/types.ts",
+      "snapshot": "official-hono-supabase/ssr-types.txt",
+      "retrievedAt": "2026-09-09T11:35:41.641937+00:00",
+      "sha256": "6096b4a29dab0bba393b151e5447663464a589a480d198d9a97a0a5c7c550f62"
+    },
+    "standardwebhooks-spec": {
+      "url": "https://raw.githubusercontent.com/standard-webhooks/standard-webhooks/main/spec/standard-webhooks.md",
+      "snapshot": "official-hono-supabase/standardwebhooks-spec.txt",
+      "retrievedAt": "2026-09-09T11:36:57.394212+00:00",
+      "sha256": "47cf696ee08a583f6cddf2d02b13e544e1bd28435b8e418870e8b557b1ed4082"
+    },
+    "supabase-ai-semantic-search": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/ai/semantic-search.mdx",
+      "snapshot": "official-hono-supabase/supabase-ai-semantic-search.txt",
+      "retrievedAt": "2026-09-09T11:35:40.527868+00:00",
+      "sha256": "827eb837d6ef60b2c7afcb5c4173f3c635792b09349b1b653079aaa01e7712c7"
+    },
+    "supabase-ai-vector-columns": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/ai/vector-columns.mdx",
+      "snapshot": "official-hono-supabase/supabase-ai-vector-columns.txt",
+      "retrievedAt": "2026-09-09T11:35:40.174743+00:00",
+      "sha256": "ab7bf65224c1d9be3e17203ad6aa42dae4318a66d3a324f3769da9faa02fe6a6"
+    },
+    "supabase-ai-vector-indexes": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/ai/vector-indexes.mdx",
+      "snapshot": "official-hono-supabase/supabase-ai-vector-indexes.txt",
+      "retrievedAt": "2026-09-09T11:35:40.250192+00:00",
+      "sha256": "3c3dab77fc11bb2ee3bbeba1cfd3f92c2c67acdc72e256dcb652ef26a251b226"
+    },
+    "supabase-ai-vector-indexes-hnsw-indexes": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/ai/vector-indexes/hnsw-indexes.mdx",
+      "snapshot": "official-hono-supabase/supabase-ai-vector-indexes-hnsw-indexes.txt",
+      "retrievedAt": "2026-09-09T11:36:56.563938+00:00",
+      "sha256": "28e93837d625dcf26d67b3e7692e1639dd1887ed098a39fa1b1d5e45baa2cde9"
+    },
+    "supabase-ai-vector-indexes-ivf-indexes": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/ai/vector-indexes/ivf-indexes.mdx",
+      "snapshot": "official-hono-supabase/supabase-ai-vector-indexes-ivf-indexes.txt",
+      "retrievedAt": "2026-09-09T11:36:56.612349+00:00",
+      "sha256": "c87afc2071f7cf7b3d6d18180e823152293370c98821dff35def9b40d18ce116"
+    },
+    "supabase-api-automatic-retries-in-supabase-js": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/api/automatic-retries-in-supabase-js.mdx",
+      "snapshot": "official-hono-supabase/supabase-api-automatic-retries-in-supabase-js.txt",
+      "retrievedAt": "2026-09-09T11:36:55.964552+00:00",
+      "sha256": "3d3a4eefb72acb4c971e8f800366f9a26ab6d7fe030981b13dd92ad9a6402a5a"
+    },
+    "supabase-api-handling-errors-in-supabase-js": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/api/handling-errors-in-supabase-js.mdx",
+      "snapshot": "official-hono-supabase/supabase-api-handling-errors-in-supabase-js.txt",
+      "retrievedAt": "2026-09-09T11:36:56.191880+00:00",
+      "sha256": "abf029ef988b0dce062867b9fe54fb9505d3e6bffd196ce9c871e52a0ff8e11b"
+    },
+    "supabase-api-securing-your-api": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/api/securing-your-api.mdx",
+      "snapshot": "official-hono-supabase/supabase-api-securing-your-api.txt",
+      "retrievedAt": "2026-09-09T11:36:56.298994+00:00",
+      "sha256": "36dd87275b5b6b5cf89a9d58b580ab372bfbc3c86ce936d7a0df634bd7239047"
+    },
+    "supabase-auth-auth-hooks": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/auth/auth-hooks.mdx",
+      "snapshot": "official-hono-supabase/supabase-auth-auth-hooks.txt",
+      "retrievedAt": "2026-09-09T11:35:38.628976+00:00",
+      "sha256": "040a6656c06f12b2d11e3cf10b53562dd6d036ae8dfccdf3ea0127217d0781d9"
+    },
+    "supabase-auth-auth-hooks-send-email-hook": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/auth/auth-hooks/send-email-hook.mdx",
+      "snapshot": "official-hono-supabase/supabase-auth-auth-hooks-send-email-hook.txt",
+      "retrievedAt": "2026-09-09T11:35:38.917103+00:00",
+      "sha256": "5e32e9707746680abcc5715160a1cd9d6794ce2c83748064212d0b50ff41ac71"
+    },
+    "supabase-auth-jwts": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/auth/jwts.mdx",
+      "snapshot": "official-hono-supabase/supabase-auth-jwts.txt",
+      "retrievedAt": "2026-09-09T11:35:38.628927+00:00",
+      "sha256": "d75738498c31d82a0577e338c361fa85723e5ade31c8921730d8895dfc29a8c0"
+    },
+    "supabase-auth-managing-user-data": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/auth/managing-user-data.mdx",
+      "snapshot": "official-hono-supabase/supabase-auth-managing-user-data.txt",
+      "retrievedAt": "2026-09-09T11:35:38.548773+00:00",
+      "sha256": "24faed5a695f45e0f2c1feb4c402746ec2b934a5f9c239048392fa608e2950ed"
+    },
+    "supabase-auth-server-side-advanced-guide": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/auth/server-side/advanced-guide.mdx",
+      "snapshot": "official-hono-supabase/supabase-auth-server-side-advanced-guide.txt",
+      "retrievedAt": "2026-09-09T11:35:38.319201+00:00",
+      "sha256": "3f392b0394c8098d3dfa40b527fc96731dc153a763fff539eb6df9ae17f1ec8c"
+    },
+    "supabase-auth-server-side-creating-a-client": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/auth/server-side/creating-a-client.mdx",
+      "snapshot": "official-hono-supabase/supabase-auth-server-side-creating-a-client.txt",
+      "retrievedAt": "2026-09-09T11:35:38.836271+00:00",
+      "sha256": "d2e06c960f87a730fe02fa83f47dc2d646a079cdd0631e88ef98cf652d7f7e07"
+    },
+    "supabase-auth-server-side-migrating-to-ssr-from-auth-helpers": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/auth/server-side/migrating-to-ssr-from-auth-helpers.mdx",
+      "snapshot": "official-hono-supabase/supabase-auth-server-side-migrating-to-ssr-from-auth-helpers.txt",
+      "retrievedAt": "2026-09-09T11:35:38.409413+00:00",
+      "sha256": "cf46c44b9241bf5dfae9d4183c92bc59934f1ee4592508984bcada7c2bcd2283"
+    },
+    "supabase-auth-sessions": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/auth/sessions.mdx",
+      "snapshot": "official-hono-supabase/supabase-auth-sessions.txt",
+      "retrievedAt": "2026-09-09T11:35:38.500657+00:00",
+      "sha256": "3788d1eafe730ce0fa519c2479d56fd0abc065bb2fc8a51e4993800054a728f8"
+    },
+    "supabase-cli-getting-started": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/local-development/cli/getting-started.mdx",
+      "snapshot": "official-hono-supabase/supabase-cli-getting-started.txt",
+      "retrievedAt": "2026-09-09T11:40:15.228542+00:00",
+      "sha256": "f6e1674c384b4c259655274f5ba0e450707afee85742935cbc80eba4add3483c"
+    },
+    "supabase-database-connecting-to-postgres": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/connecting-to-postgres.mdx",
+      "snapshot": "official-hono-supabase/supabase-database-connecting-to-postgres.txt",
+      "retrievedAt": "2026-09-09T11:35:40.953652+00:00",
+      "sha256": "64a434040c8cf46a408118a4faae8e132cb0124f3f44ecca5b074b7326fa3779"
+    },
+    "supabase-database-extensions-pg_net": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/extensions/pg_net.mdx",
+      "snapshot": "official-hono-supabase/supabase-database-extensions-pg_net.txt",
+      "retrievedAt": "2026-09-09T11:35:39.199326+00:00",
+      "sha256": "978bd657fdde8d8a18bd59d4b5e2b2d4a3edbceb8f1ee86a0aeb88d658d660d7"
+    },
+    "supabase-database-functions": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/functions.mdx",
+      "snapshot": "official-hono-supabase/supabase-database-functions.txt",
+      "retrievedAt": "2026-09-09T11:36:56.307574+00:00",
+      "sha256": "461607ff1bf44cd88e7e5f4d48f59723e64c336f8fc6e649907b045ba9874e99"
+    },
+    "supabase-database-joins-and-nesting": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/joins-and-nesting.mdx",
+      "snapshot": "official-hono-supabase/supabase-database-joins-and-nesting.txt",
+      "retrievedAt": "2026-09-09T11:36:56.415255+00:00",
+      "sha256": "bbf1ddb88090d51375f66502ae94462043506e405dc6c53a62ba9fa2a1807bb3"
+    },
+    "supabase-database-postgres-roles": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/postgres/roles.mdx",
+      "snapshot": "official-hono-supabase/supabase-database-postgres-roles.txt",
+      "retrievedAt": "2026-09-09T11:35:37.881538+00:00",
+      "sha256": "36888ac5dbd0a9e2648634b3267063b2aa8b9f754c9ac6a2f5036256aff7bc49"
+    },
+    "supabase-database-postgres-row-level-security": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/postgres/row-level-security.mdx",
+      "snapshot": "official-hono-supabase/supabase-database-postgres-row-level-security.txt",
+      "retrievedAt": "2026-09-09T11:35:37.941248+00:00",
+      "sha256": "fe0736cfad9eb7dbae839677c73df0fb33f456ea0b416d9c0f4db1018af78356"
+    },
+    "supabase-database-postgres-triggers": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/postgres/triggers.mdx",
+      "snapshot": "official-hono-supabase/supabase-database-postgres-triggers.txt",
+      "retrievedAt": "2026-09-09T11:35:38.222660+00:00",
+      "sha256": "79c1abde3004262e86a52fd0de2dfe2772b07edeb95a1cedb84ef0813cc61a3e"
+    },
+    "supabase-database-vault": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/vault.mdx",
+      "snapshot": "official-hono-supabase/supabase-database-vault.txt",
+      "retrievedAt": "2026-09-09T11:35:39.028635+00:00",
+      "sha256": "40b26d1a5f3d1aea4117b04449542420ed2d08bf5cec3574884c15671f7828c5"
+    },
+    "supabase-database-webhooks": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/database/webhooks.mdx",
+      "snapshot": "official-hono-supabase/supabase-database-webhooks.txt",
+      "retrievedAt": "2026-09-09T11:35:38.841750+00:00",
+      "sha256": "06e516d842a9fca7918f47ae53271799388ced17dc910cb4f0954c5d98b2aa9f"
+    },
+    "supabase-functions-auth": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/functions/auth.mdx",
+      "snapshot": "official-hono-supabase/supabase-functions-auth.txt",
+      "retrievedAt": "2026-09-09T11:35:39.252618+00:00",
+      "sha256": "8dcc6baf373e8ea149c77cb831d419f16a432e41b0c52b55db797fe30db58891"
+    },
+    "supabase-functions-auth-headers": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/functions/auth-headers.mdx",
+      "snapshot": "official-hono-supabase/supabase-functions-auth-headers.txt",
+      "retrievedAt": "2026-09-09T11:40:15.780863+00:00",
+      "sha256": "043bc110866b7e1cf8660cfb605b04145045d543dabfa99990ec3c2b1a3e69dc"
+    },
+    "supabase-functions-background-tasks": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/functions/background-tasks.mdx",
+      "snapshot": "official-hono-supabase/supabase-functions-background-tasks.txt",
+      "retrievedAt": "2026-09-09T11:35:39.337525+00:00",
+      "sha256": "f03522b07dcc38cf897a03c29d695df73eacaac5f5b4f92b03c38287866a5aa5"
+    },
+    "supabase-functions-dependencies": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/functions/dependencies.mdx",
+      "snapshot": "official-hono-supabase/supabase-functions-dependencies.txt",
+      "retrievedAt": "2026-09-09T11:35:39.305747+00:00",
+      "sha256": "e90892c46a39bf329093a5f7b38e3dc5e79ce5be43ab9b4df8f483a14f79209e"
+    },
+    "supabase-functions-ephemeral-storage": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/functions/ephemeral-storage.mdx",
+      "snapshot": "official-hono-supabase/supabase-functions-ephemeral-storage.txt",
+      "retrievedAt": "2026-09-09T11:35:39.509023+00:00",
+      "sha256": "2684c592e5ddd4fdbe4f823a9042a64d695ca41056cd40f46ddeaeb4e98f9418"
+    },
+    "supabase-functions-limits": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/functions/limits.mdx",
+      "snapshot": "official-hono-supabase/supabase-functions-limits.txt",
+      "retrievedAt": "2026-09-09T11:35:39.508767+00:00",
+      "sha256": "b3f9b68ddb7fcdae2957c9f0ae549d43057bfad5530b01928d1fe9a64a798c47"
+    },
+    "supabase-getting-started-api-keys": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/getting-started/api-keys.mdx",
+      "snapshot": "official-hono-supabase/supabase-getting-started-api-keys.txt",
+      "retrievedAt": "2026-09-09T11:36:56.019959+00:00",
+      "sha256": "17bed83f79df3fc16b6eaacae370b70e2237e44cff2e073b3edc51549ecef301"
+    },
+    "supabase-js-release": {
+      "url": "https://api.github.com/repos/supabase/supabase-js/releases/latest",
+      "snapshot": "official-hono-supabase/supabase-js-release.txt",
+      "retrievedAt": "2026-09-09T11:35:35.225957+00:00",
+      "sha256": "5bf63d71f297121da72d1d3d7f13e7e246e4b55f8524755b8b16d41ca554e18d"
+    },
+    "supabase-local-development-declarative-database-schemas": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/local-development/declarative-database-schemas.mdx",
+      "snapshot": "official-hono-supabase/supabase-local-development-declarative-database-schemas.txt",
+      "retrievedAt": "2026-09-09T11:35:39.161659+00:00",
+      "sha256": "3bd0a24037532ca326d471697988a37b13d95b3f6ae3a5a70aeb091971b827f2"
+    },
+    "supabase-realtime-authorization": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/realtime/authorization.mdx",
+      "snapshot": "official-hono-supabase/supabase-realtime-authorization.txt",
+      "retrievedAt": "2026-09-09T11:35:39.588308+00:00",
+      "sha256": "1b9fefe25c6e1870ea242d877e5f6d66469305954097684e414316d345d55c70"
+    },
+    "supabase-realtime-postgres-changes": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/realtime/postgres-changes.mdx",
+      "snapshot": "official-hono-supabase/supabase-realtime-postgres-changes.txt",
+      "retrievedAt": "2026-09-09T11:35:40.432347+00:00",
+      "sha256": "c3928e6c7371f67dd911e202bcfe8e8891ef53613d13085fce83e2447edb8bf5"
+    },
+    "supabase-realtime-presence": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/realtime/presence.mdx",
+      "snapshot": "official-hono-supabase/supabase-realtime-presence.txt",
+      "retrievedAt": "2026-09-09T11:35:40.297995+00:00",
+      "sha256": "46265a84b17eb6969faecd500e252b3ca8c7f29705634a40cb59433d72b24896"
+    },
+    "supabase-realtime-subscribing-to-database-changes": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/realtime/subscribing-to-database-changes.mdx",
+      "snapshot": "official-hono-supabase/supabase-realtime-subscribing-to-database-changes.txt",
+      "retrievedAt": "2026-09-09T11:35:40.128186+00:00",
+      "sha256": "5322d6c71cae55c91969acf9f659b6334141458c5f6cf42164a8f1db30c1f9f8"
+    },
+    "supabase-storage-security-access-control": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/storage/security/access-control.mdx",
+      "snapshot": "official-hono-supabase/supabase-storage-security-access-control.txt",
+      "retrievedAt": "2026-09-09T11:35:39.866268+00:00",
+      "sha256": "61409c2e6db3cc5071050978b5f8f785da18915eb647f8f2c1bf3c66b5f6844e"
+    },
+    "supabase-storage-serving-downloads": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/storage/serving/downloads.mdx",
+      "snapshot": "official-hono-supabase/supabase-storage-serving-downloads.txt",
+      "retrievedAt": "2026-09-09T11:35:40.170774+00:00",
+      "sha256": "5b29a7faab81245bbc1db5d501fc636f71328b56ae13226ce250e23e21b17093"
+    },
+    "supabase-storage-uploads-standard-uploads": {
+      "url": "https://raw.githubusercontent.com/supabase/supabase/master/apps/docs/content/guides/storage/uploads/standard-uploads.mdx",
+      "snapshot": "official-hono-supabase/supabase-storage-uploads-standard-uploads.txt",
+      "retrievedAt": "2026-09-09T11:35:39.898178+00:00",
+      "sha256": "30e8880a493925816efbb06ea3e8bca34f79a8259faca0b21a0a4ab579e41594"
+    }
+  },
+  "coverageNote": "Each reference section maps its assertions and included code/examples to dated official source IDs resolved in officialSources. Contiguous location includes headings; local owner/evidence rules are N/A for vendor verification. Root/vendor duplicates inherit reference findings, not a separate technical PASS.",
+  "activeCoverageCounts": {
+    "references": 19,
+    "aspects": 110,
+    "sourceEmittedUiMaintenanceSurfaces": 5
+  },
+  "sourceDeltaDisposition": {
+    "current-stable": "Pinned release metadata and code checked; do not auto-upgrade installed projects.",
+    "prerelease-experimental": "CLI declarative sync opt-in and Auth PKCE flow options inspected only where owned workflow needs them; no invented stable availability.",
+    "not-applicable": "Hono JSX-specific XSS release item outside API skill scope; SDK added bucket lifecycle/versioning/MFA features do not by themselves expand this baseline task.",
+    "pending-boundaries": "Hosted deployment, real Auth refresh, Realtime/Storage/Edge delivery, alternative OS/runtime executions not observed by reviewer."
+  },
+  "finalBaselineReadback": "hono-supabase-final-baseline-readback.json"
+}

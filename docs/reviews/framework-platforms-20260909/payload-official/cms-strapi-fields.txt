@@ -1,0 +1,628 @@
+Content-type Builder | Strapi 5 Documentation
+Skip to main content
+CMS Cloud
+GitHub Contribution Program
+Ask AI
+Navigation◀
+Getting Started
+Quick Start Guide
+Project structure
+Installation
+Admin panel
+Content Manager
+Content Type Builder
+Deployment
+Billing portal
+Features
+API Tokens
+Admin tokens
+Audit Logs
+Content History
+Custom Fields
+Data Management
+Draft & Publish
+Email
+Internationalization (i18n)
+Media LibraryUpdatedThis content was recently updated.
+MCP server
+Preview
+Role-Based Access Control (RBAC)
+Releases
+Review Workflows
+Single Sign-On (SSO)
+Users & Permissions
+Strapi plugins
+AI
+AI for content managers
+AI for developers
+Docs MCP server
+Content APIs
+Content APIs Introduction
+Document concept
+REST API
+Strapi Client
+OpenAPI specification
+GraphQL API
+Document Service API
+Configurations
+Introduction
+Admin panel
+API calls
+CRON jobs
+Database
+Environment variables
+Features
+Middlewares
+Plugins and providers
+Server
+Guides
+Development
+Introduction
+Lifecycle functions
+Backend customization
+Admin panel customization
+Homepage customization
+Error handling
+strapi-utils
+Templates
+Testing
+TypeScript
+Introduction
+Configuration
+Development
+Guides
+Command Line Interface
+Strapi CLI
+Plugins development
+Marketplace
+Developing plugins
+Basics
+Admin Panel API
+Server API
+Guides
+Plugins extension
+Upgrades
+Upgrade tool reference
+v4 → v5
+Elegant ModeMarkdown ModeAI Mode
+Getting Started
+Content Type Builder
+On this page
+Content-type Builder
+Copy Markdown
+Page summary:
+The Content-type Builder is a tool for designing content types and components. This documentation gives an overview of the Content-type Builder and covers field options, relations, component usage, and shares data modeling tips.
+From the Content-type Builder, accessible via the main navigation of the admin panel, users can create and edit their content types.
+IDENTITY CARD
+Role & permission
+Minimum "Read" permission in Roles > Plugins - Content Type Builder.
+Environment
+Available in Development environment only.
+Overview​
+The Content-type Builder allows the creation and management of content-types, which can be:
+Collection types: content-types that can manage several entries.
+Single types: content-types that can only manage one entry.
+Components: content structure that can be used in multiple collection types and single types. Although they are technically not proper content-types because they cannot exist independently, components are also created and managed through the Content-type Builder, in the same way as collection and single types.
+All 3 are displayed as categories in the sub navigation of the Content-type Builder. In each category are listed all content-types and components that have already been created.
+Tip
+Click the search icon in the Content-type Builder sub navigation to find a specific collection type, single type, or component.
+In the Content-type Builder's sub navigation is also displayed a centralised Save button that applies for all content-types and components. Along with the display of statuses for both content-types/components and fields, this allows you to work on several content-types and components at the same time. The following statuses can be displayed:
+New or
+N indicates that a content-type/component or field is new and hasn't been saved yet,
+Modified or
+M indicates that a content-type/component or field has been modified since the last save,
+Deleted or
+D indicates that a content-type/component or field has been deleted but that it will only be confirmed once saved.
+Note
+Clicking on the ... button next to Save gives access to other options, such as Undo/Redo last change and Discard all changes. These options are also centralised, meaning that they apply to the last action(s) that was/were done on all content-types, components and fields since the last time you saved.
+Usage​
+Creating content-types​
+The Content-type Builder allows to create new content-types: single and collection types, but also components.
+Creating content-types with Strapi AI NewThis content is new.​
+GrowthThis feature is available with a Growth plan.
+When enabled, Strapi AI adds an assistant that helps you create or edit content types with natural language.
+To use Strapi AI with the Content-Type Builder, click on the button in the bottom right corner of the admin panel, and describe what you need:
+You can also use the button at the bottom of the chat window to import code from an existing Strapi or front-end application, import a Figma project, or attach an image to extract the content structure from a design.
+Tip
+The more precise your prompts, the more accurate your created schemas are likely to be.
+For example, the following prompt example works well when creating relations:
+Could you please generate a collection of dogs then also generate an owner collection and add relationship to dogs? An owner can have multiple dogs, but a dog can only have one owner.
+Strapi AI credits
+Strapi AI includes 1,000 credits per month on the Growth plan, and 10 free credits during the free trial. Strapi AI is not available on Enterprise plans.
+Lightweight actions use fewer credits, while more complex ones use more.
+You can check your credit usage in the Settings Overview of the admin panel.
+Notifications are sent when your usage reaches 80%, 90%, and 100% of your monthly allowance. Overages apply.
+Credits are shared across all users within the same project instance.
+When your credits run out, you can keep using Strapi AI, with overages billed monthly.
+For more information about Strapi AI, please refer to the dedicated support article.
+Creating content-types manually​
+Choose whether you want to create a collection type or a single type.
+In the Content-type Builder's category of the content-type you want to create, click on Create new collection/single type.
+In the content-type creation window, write the name of the new content-type in the Display name textbox.
+Check the API ID to make sure the automatically pre-filled values are correct. Collection type names are indeed automatically pluralized when displayed in the Content Manager. It is recommended to opt for singular names, but the API ID field allows to fix any pluralization mistake.
+(optional) In the Advanced Settings tab, configure the available settings for the new content-type:
+Setting nameInstructions
+Draft & publishTick the checkbox to allow entries of the content-type to be managed as draft versions, before they are published (see Draft & Publish).
+InternationalizationTick the checkbox to allow entries of the content-type to be translated into other locales.
+Click on the Continue button.
+Add and configure chosen fields for your content-type (see Configuring fields for content-types).
+Click on the Save button.
+Caution
+New content-types are only considered created once they have been saved. Saving is only possible if at least one field has been added and properly configured. If these steps have not been done, a content-type cannot be created, listed in its category in the Content-type Builder, and cannot be used in the Content Manager.
+New component​
+In the Components category of the Content-type Builder sub navigation, click on Create new component.
+In the component creation window, configure the basic settings of the new component:
+Write the name of the component in the Display name textbox.
+Select an available category, or enter in the textbox a new category name to create one.
+(optional) Choose an icon representing the new component. You can use the search to find an icon instead of scrolling through the list.
+Click on the Continue button.
+Add and configure chosen fields for your component (see Configuring fields for content-types).
+Click on the Save button.
+Editing content-types​
+The Content-type Builder allows to manage all existing content-types. For an chosen content-type or component to edit, the right side of the Content-type Builder interface displays all available editing and management options.
+Settings​
+Click on the Edit button of your content-type to access its settings.
+Edit the available settings of your choice:
+Basic settings
+Advanced settings
+Display name: Name of the content-type or component as it will be displayed in the admin panel.
+API ID (singular): Name of the content-type or component as it will be used in the API. It is automatically generated from the display name, but can be edited.
+API ID (plural): Plural name of the content-type or component as it will be used in the API. It is automatically generated from the display name, but can be edited.
+Type: Type of the content-type or component. It can be either a Collection type or a Single type.
+Draft & Publish: Enable the Draft & Publish feature for the content-type or component. It is disabled by default.
+Internationalization: Enable the Internationalization feature for the content-type or component. It is disabled by default.
+Click the Finish button in the dialog.
+Click the Save button in the Content-Type Builder navigation.
+Fields​
+From the table that lists the fields of your content-type, you can:
+Click on the button to access a field's basic and advanced settings to edit them
+Click on the Add another field buttons to create a new field for the selected content-type
+Click on the button and drag and drop any field to reorder the content-type's fields
+Click on the button to delete a field
+Caution
+Editing a field allows renaming it. However, keep in mind that regarding the database, renaming a field means creating a whole new field and deleting the former one. Although nothing is deleted from the database, the data that was associated with the former field name will not be accessible from the admin panel of your application anymore.
+Configuring content-types fields​
+Content-types are composed of one or several fields. Each field is designed to contain specific kind of data, filled up in the Content Manager (see Creating & Writing content).
+In the Content-type Builder, fields can be added at the creation of a new content-type or component, or afterward when a content-type or component is edited or updated.
+Note
+Depending on what content-type or component is being created or edited, not all fields -including components and dynamic zones- are always available.
+Text​
+The Text field displays a textbox that can contain small text. This field can be used for titles, descriptions, etc.
+Basic settings
+Advanced settings
+Condition
+Setting nameInstructions
+NameWrite the name of the Text field.
+TypeChoose between Short text (255 characters maximum) and Long text, to allow more or less space to fill up the Text field.
+Setting nameInstructions
+Default valueWrite the default value of the Text field.
+RegExp patternWrite a regular expression to make sure the value of the Text field matches a specific format.
+Private fieldTick to make the field private and prevent it from being found via the API.
+Enable localization for this field(if Internationalization is enabled for the content-type) Allow the field to have a different value per locale.
+Required fieldTick to prevent creating or saving an entry if the field is not filled in.
+Unique fieldTick to prevent another field to be identical to this one.
+Maximum lengthTick to define a maximum number of characters allowed.
+Minimum lengthTick to define a minimum number of characters allowed.
+Click the Apply condition button.
+Define the if part of the condition, based on a Boolean or Enumeration field of the same content-type (e.g. if
+boolean_field is
+true).
+Define the then part of the condition by choosing whether to hide or show the field you are configuring (e.g. then
+show carousel_media).
+Rich Text (Blocks)​
+The Rich Text (Blocks) field displays an editor with live rendering and various options to manage rich text. This field can be used for long written content, even including images and code.
+Basic settings
+Advanced settings
+Condition
+Setting nameInstructions
+NameWrite the name of the Rich Text (Blocks) field.
+Setting nameInstructions
+Private fieldTick to make the field private and prevent it from being found via the API.
+Required fieldTick to prevent creating or saving an entry if the field is not filled in.
+Enable localization for this field(if Internationalization is enabled for the content-type) Allow the field to have a different value per locale.
+Click the Apply condition button.
+Define the if part of the condition, based on a Boolean or Enumeration field of the same content-type (e.g. if
+boolean_field is
+true).
+Define the then part of the condition by choosing whether to hide or show the field you are configuring (e.g. then
+show carousel_media).
+React renderer
+If using the Blocks editor, we recommend that you also use the Strapi Blocks React Renderer to easily render the content in a React frontend.
+Number​
+The Number field displays a field for any kind of number: integer, decimal and float.
+Basic settings
+Advanced settings
+Condition
+Setting nameInstructions
+NameWrite the name of the Number field.
+Number formatChoose between integer, big integer, decimal and float.
+Setting nameInstructions
+Default valueWrite the default value of the Number field.
+Private fieldTick to make the field private and prevent it from being found via the API.
+Enable localization for this field(if Internationalization is enabled for the content-type) Allow the field to have a different value per locale.
+Required fieldTick to prevent creating or saving an entry if the field is not filled in.
+Unique fieldTick to prevent another field to be identical to this one.
+Maximum valueTick to define a maximum value allowed.
+Minimum valueTick to define a minimum value allowed.
+Click the Apply condition button.
+Define the if part of the condition, based on a Boolean or Enumeration field of the same content-type (e.g. if
+boolean_field is
+true).
+Define the then part of the condition by choosing whether to hide or show the field you are configuring (e.g. then
+show carousel_media).
+Date​
+The Date field can display a date (year, month, day), time (hour, minute, second) or datetime (year, month, day, hour, minute, and second) picker.
+Basic settings
+Advanced settings
+Condition
+Setting nameInstructions
+NameWrite the name of the Date field.
+TypeChoose between date, datetime and time
+Setting nameInstructions
+Default valueWrite the default value of the Date field.
+Private fieldTick to make the field private and prevent it from being found via the API.
+Enable localization for this field(if Internationalization is enabled for the content-type) Allow the field to have a different value per locale.
+Required fieldTick to prevent creating or saving an entry if the field is not filled in.
+Unique fieldTick to prevent another field to be identical to this one.
+Click the Apply condition button.
+Define the if part of the condition, based on a Boolean or Enumeration field of the same content-type (e.g. if
+boolean_field is
+true).
+Define the then part of the condition by choosing whether to hide or show the field you are configuring (e.g. then
+show carousel_media).
+Password​
+The Password field displays a password field that is encrypted.
+Basic settings
+Advanced settings
+Condition
+Setting nameInstructions
+NameWrite the name of the Password field.
+Setting nameInstructions
+Default valueWrite the default value of the Password field.
+Private fieldTick to make the field private and prevent it from being found via the API.
+Enable localization for this field(if Internationalization is enabled for the content-type) Allow the field to have a different value per locale.
+Required fieldTick to prevent creating or saving an entry if the field is not filled in.
+Maximum lengthTick to define a maximum number of characters allowed.
+Minimum lengthTick to define a minimum number of characters allowed.
+Click the Apply condition button.
+Define the if part of the condition, based on a Boolean or Enumeration field of the same content-type (e.g. if
+boolean_field is
+true).
+Define the then part of the condition by choosing whether to hide or show the field you are configuring (e.g. then
+show carousel_media).
+Media​
+The Media field allows to choose one or more media files (e.g. image, video) from those uploaded in the Media Library of the application.
+Basic settings
+Advanced settings
+Condition
+Setting nameInstructions
+NameWrite the name of the Media field.
+TypeChoose between Multiple media to allow multiple media uploads, and Single media to only allow one media upload.
+Setting nameInstructions
+Select allowed types of mediaClick on the drop-down list to untick media types not allowed for this field.
+Private fieldTick to make the field private and prevent it from being found via the API.
+Enable localization for this field(if Internationalization is enabled for the content-type) Allow the field to have a different value per locale.
+Required fieldTick to prevent creating or saving an entry if the field is not filled in.
+Unique fieldTick to prevent another field to be identical to this one.
+Click the Apply condition button.
+Define the if part of the condition, based on a Boolean or Enumeration field of the same content-type (e.g. if
+boolean_field is
+true).
+Define the then part of the condition by choosing whether to hide or show the field you are configuring (e.g. then
+show carousel_media).
+Relation​
+The Relation field allows to establish a relation with another content-type, that must be a collection type.
+There are 6 different types of relations:
+One way: Content-type A has one Content-type B
+One-to-one: Content-type A has and belong to one Content-type B
+One-to-many: Content-type A belongs to many Content-type B
+Many-to-one: Content-type B has many Content-type A
+Many-to-many: Content-type A has and belongs to many Content-type B
+Many way: Content-type A has many Content-type B
+Multi relations and single relations
+Relations where at least one side can reference several entries are called multi relations. In the Content-type Builder, this includes one-to-many, many-to-one, many-to-many, and many-way relations. These relations appear as multi-select fields in the Content Manager and return arrays from the REST, GraphQL, and Document Service APIs; while single relations (one-way and one-to-one relations) return a single linked entry (see Managing relations with API requests for more information).
+Basic settings
+Advanced settings
+Condition
+Configuring the basic settings of the Relation field consists in choosing with which existing content-type the relation should be established and the kind of relation. The edition window of the Relation field displays 2 grey boxes, each representing one of the content-types in relation. Between the grey boxes are displayed all possible relation types.
+Click on the 2nd grey box to define the content-type B. It must be an already created collection type.
+Click on the icon representing the relation to establish between the content-types.
+Choose the Field name of the content-type A, meaning the name that will be used for the field in the content-type A.
+(optional if disabled by the relation type) Choose the Field name of the content-type B.
+Setting nameInstructions
+Private fieldTick to make the field private and prevent it from being found via the API.
+Click the Apply condition button.
+Define the if part of the condition, based on a Boolean or Enumeration field of the same content-type (e.g. if
+boolean_field is
+true).
+Define the then part of the condition by choosing whether to hide or show the field you are configuring (e.g. then
+show carousel_media).
+Modeling nested page hierarchies
+To model a navigable tree of pages:
+Add a
+Page collection type with a "Slug" (UID) and (optionally) an "Order" (Integer) field to control sibling ordering.
+Create a Relation field from
+Page to
+Page and choose Many-to-one so each page can set its "Parent page". Strapi automatically provides the inverse "Children pages" relation.
+When reading data, populate
+children recursively to load the tree. Keep the recursion depth small to avoid large responses.
+Example
+Populate nested children for a page tree
+{
+populate: {
+children: {
+fields: ['title', 'slug'],
+populate: {
+children: {
+fields: ['title', 'slug'],
+},
+},
+},
+},
+}
+The same populate pattern works with GraphQL or the Document Service API (see Understanding populate guide).
+Boolean​
+The Boolean field displays a toggle button to manage boolean values (e.g. Yes or No, 1 or 0, True or False).
+Basic settings
+Advanced settings
+Condition
+Setting nameInstructions
+NameWrite the name of the Boolean field.
+Setting nameInstructions
+Default valueChoose the default value of the Boolean field: true, null or false.
+Private fieldTick to make the field private and prevent it from being found via the API.
+Enable localization for this field(if Internationalization is enabled for the content-type) Allow the field to have a different value per locale.
+Required fieldTick to prevent creating or saving an entry if the field is not filled in.
+Unique fieldTick to prevent another field to be identical to this one.
+Click the Apply condition button.
+Define the if part of the condition, based on a Boolean or Enumeration field of the same content-type (e.g. if
+boolean_field is
+true).
+Define the then part of the condition by choosing whether to hide or show the field you are configuring (e.g. then
+show carousel_media).
+JSON​
+The JSON field allows to configure data in a JSON format, to store JSON objects or arrays.
+Basic settings
+Advanced settings
+Condition
+Setting nameInstructions
+NameWrite the name of the JSON field.
+Setting nameInstructions
+Private fieldTick to make the field private and prevent it from being found via the API.
+Enable localization for this field(if Internationalization is enabled for the content-type) Allow the field to have a different value per locale.
+Required fieldTick to prevent creating or saving an entry if the field is not filled in.
+Click the Apply condition button.
+Define the if part of the condition, based on a Boolean or Enumeration field of the same content-type (e.g. if
+boolean_field is
+true).
+Define the then part of the condition by choosing whether to hide or show the field you are configuring (e.g. then
+show carousel_media).
+Email​
+The Email field displays an email address field with format validation to ensure the email address is valid.
+Basic settings
+Advanced settings
+Condition
+Setting nameInstructions
+NameWrite the name of the Email field.
+Setting nameInstructions
+Default valueWrite the default value of the Email field.
+Private fieldTick to make the field private and prevent it from being found via the API.
+Enable localization for this field(if Internationalization is enabled for the content-type) Allow the field to have a different value per locale.
+Required fieldTick to prevent creating or saving an entry if the field is not filled in.
+Unique fieldTick to prevent another field to be identical to this one.
+Maximum lengthTick to define a maximum number of characters allowed.
+Minimum lengthTick to define a minimum number of characters allowed.
+Click the Apply condition button.
+Define the if part of the condition, based on a Boolean or Enumeration field of the same content-type (e.g. if
+boolean_field is
+true).
+Define the then part of the condition by choosing whether to hide or show the field you are configuring (e.g. then
+show carousel_media).
+Password​
+The Password field displays a password field that is encrypted.
+Basic settings
+Advanced settings
+Condition
+Setting nameInstructions
+NameWrite the name of the Password field.
+Setting nameInstructions
+Default valueWrite the default value of the Password field.
+Private fieldTick to make the field private and prevent it from being found via the API.
+Enable localization for this field(if Internationalization is enabled for the content-type) Allow the field to have a different value per locale.
+Required fieldTick to prevent creating or saving an entry if the field is not filled in.
+Maximum lengthTick to define a maximum number of characters allowed.
+Minimum lengthTick to define a minimum number of characters allowed.
+Click the Apply condition button.
+Define the if part of the condition, based on a Boolean or Enumeration field of the same content-type (e.g. if
+boolean_field is
+true).
+Define the then part of the condition by choosing whether to hide or show the field you are configuring (e.g. then
+show carousel_media).
+Enumeration​
+The Enumeration field allows to configure a list of values displayed in a drop-down list.
+Basic settings
+Advanced settings
+Condition
+Setting nameInstructions
+NameWrite the name of the Enumeration field.
+ValuesWrite the values of the enumeration, one per line.
+Setting nameInstructions
+Default valueChoose the default value of the Enumeration field.
+Name override for GraphQLWrite a custom GraphQL schema type to override the default one for the field.
+Private fieldTick to make the field private and prevent it from being found via the API.
+Enable localization for this field(if Internationalization is enabled for the content-type) Allow the field to have a different value per locale.
+Required fieldTick to prevent creating or saving an entry if the field is not filled in.
+Click the Apply condition button.
+Define the if part of the condition, based on a Boolean or Enumeration field of the same content-type (e.g. if
+boolean_field is
+true).
+Define the then part of the condition by choosing whether to hide or show the field you are configuring (e.g. then
+show carousel_media).
+Caution
+Enumeration values should always have an alphabetical character preceding any number as it could otherwise cause the server to crash without notice when the GraphQL plugin is installed.
+UID​
+The UID field displays a field that sets a unique identifier, optionally based on an existing other field from the same content-type.
+Basic settings
+Advanced settings
+Condition
+Setting nameInstructions
+NameWrite the name of the UID field. It must not contain special characters or spaces.
+Attached fieldChoose what existing field to attach to the UID field. Choose None to not attach any specific field.
+Setting nameInstructions
+Default valueWrite the default value of the UID field.
+Private fieldTick to make the field private and prevent it from being found via the API.
+Required fieldTick to prevent creating or saving an entry if the field is not filled in.
+Maximum lengthTick to define a maximum number of characters allowed.
+Minimum lengthTick to define a minimum number of characters allowed.
+Click the Apply condition button.
+Define the if part of the condition, based on a Boolean or Enumeration field of the same content-type (e.g. if
+boolean_field is
+true).
+Define the then part of the condition by choosing whether to hide or show the field you are configuring (e.g. then
+show carousel_media).
+Tip
+The UID field can be used to create a slug based on the Attached field.
+Rich Text (Markdown)​
+The Rich Text (Markdown) field displays an editor with basic formatting options to manage rich text written in Markdown. This field can be used for long written content.
+Basic settings
+Advanced settings
+Condition
+Setting nameInstructions
+NameWrite the name of the Rich Text (Markdown) field.
+Setting nameInstructions
+Default valueWrite the default value of the Rich Text field.
+Private fieldTick to make the field private and prevent it from being found via the API.
+Enable localization for this field(if Internationalization plugin is enabled for the content-type) Allow the field to have a different value per locale.
+Required fieldTick to prevent creating or saving an entry if the field is not filled in.
+Maximum lengthTick to define a maximum number of characters allowed.
+Minimum lengthTick to define a minimum number of characters allowed.
+Click the Apply condition button.
+Define the if part of the condition, based on a Boolean or Enumeration field of the same content-type (e.g. if
+boolean_field is
+true).
+Define the then part of the condition by choosing whether to hide or show the field you are configuring (e.g. then
+show carousel_media).
+Components​
+Components are a combination of several fields. Components allow to create reusable sets of fields, that can be quickly added to content-types, dynamic zones but also nested into other components.
+When configuring a component through the Content-type Builder, it is possible to either:
+create a new component by clicking on Create a new component (see Creating a new component),
+or use an existing one by clicking on Use an existing component.
+Basic settings
+Advanced settings
+Condition
+Setting nameInstructions
+NameWrite the name of the component for the content-type.
+Select a componentWhen using an existing component only - Select from the drop-down list an existing component.
+TypeChoose between Repeatable component to be able to use several times the component for the content-type, or Single component to limit to only one time the use of the component.
+Setting nameInstructions
+Required fieldTick to prevent creating or saving an entry if the field is not filled in.
+Private fieldTick to make the field private and prevent it from being found via the API.
+Maximum valueFor repeatable components only - Tick to define a maximum number of characters allowed.
+Minimum valueFor repeatable components only - Tick to define a minimum number of characters allowed.
+Enable localization for this field(if Internationalization is enabled for the content-type) Allow the component to be translated per available locale.
+Click the Apply condition button.
+Define the if part of the condition, based on a Boolean or Enumeration field of the same content-type (e.g. if
+boolean_field is
+true).
+Define the then part of the condition by choosing whether to hide or show the field you are configuring (e.g. then
+show carousel_media).
+Dynamic zones​
+Dynamic zones are a combination of components that can be added to content-types. They allow a flexible content structure as once in the Content Manager, administrators have the choice of composing and rearranging the components of the dynamic zone how they want.
+Basic settings
+Advanced settings
+Condition
+Setting nameInstructions
+NameWrite the name of the dynamic zone for the content-type.
+Setting nameInstructions
+Required fieldTick to prevent creating or saving an entry if the field is not filled in.
+Maximum valueTick to define a maximum number of characters allowed.
+Minimum valueTick to define a minimum number of characters allowed.
+Enable localization for this field(if Internationalization is enabled for the content-type) Allow the dynamic zone to be translated per available locale.
+Click the Apply condition button.
+Define the if part of the condition, based on a Boolean or Enumeration field of the same content-type (e.g. if
+boolean_field is
+true).
+Define the then part of the condition by choosing whether to hide or show the field you are configuring (e.g. then
+show carousel_media).
+After configuring the settings of the dynamic zone, its components must be configured as well. It is possible to either choose an existing component or create a new one.
+Caution
+When using dynamic zones, different components cannot have the same field name with different types (or with enumeration fields, different values).
+Custom fields​
+Custom fields are a way to extend Strapi’s capabilities by adding new types of fields to content-types or components. Once installed (see Marketplace documentation), custom fields are listed in the Custom tab when selecting a field for a content-type.
+Each custom field type can have basic and advanced settings. The Marketplace lists available custom fields, and hosts dedicated documentation for each custom field, including specific settings.
+Deleting content-types​
+Content types and components can be deleted through the Content-type Builder. Deleting a content-type automatically deletes all entries from the Content Manager that were based on that content-type. The same goes for the deletion of a component, which is automatically deleted from every content-type or entry where it was used.
+In the Content-type Builder sub navigation, click on the name of the content-type or component to delete.
+In the edition interface of the chosen content-type or component, click on the Edit button on the right side of the content-type's or component's name.
+In the edition window, click on the Delete button.
+In the confirmation window, confirm the deletion.
+Click on the Save button in the Content-type Builder sub navigation.
+Caution
+Deleting a content-type only deletes what was created and available from the Content-type Builder, and by extent from the admin panel of your Strapi application. All the data that was created based on that content-type is however kept in the database. For more information, please refer to the related GitHub issue.
+Was this page helpful?
+Tags:
+admin panel
+content type builder
+content types
+component
+dynamic zone
+custom field
+Contribute to this page
+Previous
+Content Manager
+Next
+Deployment
+On this page▶
+Overview
+Usage
+Creating content-types
+Creating content-types with Strapi AI
+Creating content-types manually
+New component
+Editing content-types
+Settings
+Fields
+Configuring content-types fields
+Text
+Rich Text (Blocks)
+Number
+Date
+Password
+Media
+Relation
+Boolean
+JSON
+Email
+Password
+Enumeration
+UID
+Rich Text (Markdown)
+Components
+Dynamic zones
+Custom fields
+Deleting content-types
+Contribute to this page
+Back
+Strapi Docs AI Assistant
+To get back to elegant or markdown mode, click the in the upper right corner.To get back to elegant or markdown mode, tap Back in the upper left corner.
+No summary available for this page.
+Updates & Support
+What's new?
+Release notes
+FAQ
+Community & Support
+Usage information
+Additional resources
+v4 Docs
+Contributor Docs
+Strapi Design System
+v3 Docs (unsupported)
+Community
+Discord
+Twitter
+Stack Overflow
+Docs contribution program
+More
+Blog
+GitHub
+Strapi.io

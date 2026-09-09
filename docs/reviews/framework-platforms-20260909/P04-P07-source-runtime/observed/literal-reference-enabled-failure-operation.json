@@ -1,0 +1,7 @@
+{
+  "before": {
+    "parents": [],
+    "audit-log": []
+  },
+  "operationError": "P04_LITERAL_CONTROLLED_FAILURE"
+}

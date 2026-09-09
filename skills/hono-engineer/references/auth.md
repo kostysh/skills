@@ -8,8 +8,8 @@
 ## API keys (machine-to-machine)
 - Preserve the accepted API-key transport. When that contract uses Hono Bearer middleware, its documented wire shape is `Authorization: Bearer <key>`.
 - Apply the accepted storage, comparison, scope, limit, rotation, and revocation policy; Hono's middleware does not define those controls.
-- Hono’s Bearer middleware validates the configured token against its documented format and returns 400 when that configuration is malformed; credential mismatch behavior is a separate authentication path. Verify current official semantics for the installed version.
-- Token format regex (for debugging): `/[A-Za-z0-9._~+/-]+=*/`.
+- Distinguish middleware construction from request admission. With the documented Bearer defaults, a missing incoming header or a well-formed but mismatched credential produces 401; a malformed incoming `Authorization` header produces 400. Missing both `token` and `verifyToken` is a construction error, not an HTTP response.
+- The header parser validates the incoming wire value before comparing credentials. Do not diagnose 400 as validation of the configured token. Custom prefixes, header names, error hooks, and the installed implementation affect the observed result; inspect them and exercise each failure path separately. See the [official Bearer contract](https://hono.dev/docs/middleware/builtin/bearer-auth).
 
 ## JWT (user auth)
 - Configure issuer/audience and time-claim validation from the accepted token contract.

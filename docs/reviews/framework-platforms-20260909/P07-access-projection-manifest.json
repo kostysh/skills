@@ -1,0 +1,30 @@
+{
+  "kind": "literal source projection with TypeScript type annotation removal only; not blind agent behavior",
+  "source": "baseline-packages/payload/references/plugin-development.md",
+  "source_sha256": "6081759fc1f16b75de63cbb74dd30c28233dfb251323a2c8c63acfe65b25b9c5",
+  "lines": [
+    1052,
+    1078
+  ],
+  "adaptations": [
+    "Remove PluginOptions parameter type",
+    "Remove Config parameter and return type"
+  ],
+  "runtime": {
+    "node": "24.15.0",
+    "command": "node probe.mjs",
+    "exit": 0,
+    "cases": 18,
+    "booleanAndItems": 6,
+    "promiseAndItems": 9,
+    "initial_invocation_failure": "public .bin/node absent; exit127 before runtime. Retried system node after command -v.",
+    "limits": "No HTTP/DB evidence; literal callback output observation. No independent assessment yet."
+  },
+  "projection_sha256": "7f9e50de5f4e278d5331fa141f2e9f103ab264ab8dc4d19e93de9df913b268a1",
+  "files": {
+    "original.ts": "4f5765ee5932dfc3803aad11d465411b36aec1b80fe08a5f3f51436c17da6bfa",
+    "projection.mjs": "7f9e50de5f4e278d5331fa141f2e9f103ab264ab8dc4d19e93de9df913b268a1",
+    "probe.mjs": "6d7e90da2acd743b652ef1d0af2291a65579d6463c6003e64caabccf1af88961",
+    "observations.json": "4359a04b7b2df87696415fd055661013677d1e2a83eeba45fd28fc7a9f3c4ca1"
+  }
+}

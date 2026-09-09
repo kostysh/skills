@@ -1,0 +1,20 @@
+{
+  "images": [
+    {
+      "source": "public.ecr.aws/supabase/postgres:17.4.1.074",
+      "id": "sha256:284d32b2c3e2aca5eb1190c9452cc90509fc085e68ca374537b8e2811c9a8645",
+      "repoDigests": [
+        "public.ecr.aws/supabase/postgres@sha256:dc436b5b4ebeb0f3bdf6d8dda2b390cc094e14d24cd434d5fe02840459e67670"
+      ]
+    },
+    {
+      "source": "supabase/migra:3.0.1663481299",
+      "id": "sha256:2bee9943ccee9beca15dc9ffbeb5a6660a062fec98713b9a44d475de1b54652c",
+      "repoDigests": [
+        "supabase/migra@sha256:56fad6eaa05c408c8db8bd9cb042e12c818c74eb8a82bd57f13fa2a5ac2feb25"
+      ]
+    }
+  ],
+  "migraNativeAlias": "public.ecr.aws/supabase/migra:3.0.1663481299",
+  "registryFallback": "ECR rate exceeded; official Docker Hub supabase/migra same pinned version pulled. Local native ECR alias mapped to observed DockerHub image ID; ECR digest equivalence not independently claimed."
+}

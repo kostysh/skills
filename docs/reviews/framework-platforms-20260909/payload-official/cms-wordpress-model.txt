@@ -1,0 +1,525 @@
+WP_Post – Class | Developer.WordPress.org
+Skip to content
+Showcase
+Plugins
+Themes
+Hosting
+News
+Resources
+Learn WordPress
+Documentation
+Education
+Forums
+Developers
+Blocks
+Patterns
+Photos
+Openverse ↗︎
+WordPress.tv ↗︎
+About
+About WordPress
+Make WordPress
+Events
+Five for the Future
+Enterprise
+Gutenberg ↗︎
+Job Board ↗︎
+Swag ↗︎
+Get WordPress
+Search in WordPress.org
+Get WordPress
+WordPress Developer Resources
+WP_Post
+Developer Blog
+Code Reference
+WP-CLI Commands
+Developer Blog
+Code Reference
+WP-CLI Commands
+HomeReferenceClassesWP_Post
+Search
+class WP_Post {}
+In this article
+Table of Contents
+More Information
+Role of WP_Post
+Methods
+Source
+Changelog
+User Contributed Notes
+↑ Back to top
+Core class used to implement the WP_Post object.
+More Information
+Role of WP_Post
+The WP_Post class is used to contain post objects stored by the database and is returned by functions such as get_post.
+Methods
+NameDescription
+WP_Post::__constructConstructor.
+WP_Post::__getGetter.
+WP_Post::__issetIsset-er.
+WP_Post::filterApplies the provided context filter for the current post.
+WP_Post::get_instanceRetrieve WP_Post instance.
+WP_Post::to_arrayConvert object to array.
+Source
+#[AllowDynamicProperties]
+final class WP_Post {
+/**
+* Post ID.
+*
+* @since 3.5.0
+* @var int
+* @phpstan-var non-negative-int
+*/
+public $ID;
+/**
+* ID of post author.
+*
+* A numeric string, for compatibility reasons. May be an empty string for a
+* default post that has not yet been assigned an author.
+*
+* @since 3.5.0
+* @var string
+* @phpstan-var numeric-string|''
+*/
+public $post_author = '0';
+/**
+* The post's local publication time.
+*
+* @since 3.5.0
+* @var string
+*/
+public $post_date = '0000-00-00 00:00:00';
+/**
+* The post's GMT publication time.
+*
+* @since 3.5.0
+* @var string
+*/
+public $post_date_gmt = '0000-00-00 00:00:00';
+/**
+* The post's content.
+*
+* @since 3.5.0
+* @var string
+*/
+public $post_content = '';
+/**
+* The post's title.
+*
+* @since 3.5.0
+* @var string
+*/
+public $post_title = '';
+/**
+* The post's excerpt.
+*
+* @since 3.5.0
+* @var string
+*/
+public $post_excerpt = '';
+/**
+* The post's status.
+*
+* @since 3.5.0
+* @var string
+* @phpstan-var non-empty-string
+*/
+public $post_status = 'publish';
+/**
+* Whether comments are allowed.
+*
+* @since 3.5.0
+* @var string
+* @phpstan-var non-empty-string
+*/
+public $comment_status = 'open';
+/**
+* Whether pings are allowed.
+*
+* @since 3.5.0
+* @var string
+* @phpstan-var non-empty-string
+*/
+public $ping_status = 'open';
+/**
+* The post's password in plain text.
+*
+* @since 3.5.0
+* @var string
+*/
+public $post_password = '';
+/**
+* The post's slug.
+*
+* @since 3.5.0
+* @var string
+*/
+public $post_name = '';
+/**
+* URLs queued to be pinged.
+*
+* @since 3.5.0
+* @var string
+*/
+public $to_ping = '';
+/**
+* URLs that have been pinged.
+*
+* @since 3.5.0
+* @var string
+*/
+public $pinged = '';
+/**
+* The post's local modified time.
+*
+* @since 3.5.0
+* @var string
+*/
+public $post_modified = '0000-00-00 00:00:00';
+/**
+* The post's GMT modified time.
+*
+* @since 3.5.0
+* @var string
+*/
+public $post_modified_gmt = '0000-00-00 00:00:00';
+/**
+* A utility DB field for post content.
+*
+* @since 3.5.0
+* @var string
+*/
+public $post_content_filtered = '';
+/**
+* ID of a post's parent post.
+*
+* @since 3.5.0
+* @var int
+* @phpstan-var non-negative-int
+*/
+public $post_parent = 0;
+/**
+* The unique identifier for a post, not necessarily a URL, used as the feed GUID.
+*
+* @since 3.5.0
+* @var string
+*/
+public $guid = '';
+/**
+* A field used for ordering posts.
+*
+* @since 3.5.0
+* @var int
+*/
+public $menu_order = 0;
+/**
+* The post's type, like post or page.
+*
+* @since 3.5.0
+* @var string
+* @phpstan-var non-empty-string
+*/
+public $post_type = 'post';
+/**
+* An attachment's mime type.
+*
+* @since 3.5.0
+* @var string
+*/
+public $post_mime_type = '';
+/**
+* Cached comment count.
+*
+* A numeric string, for compatibility reasons.
+*
+* @since 3.5.0
+* @var string
+* @phpstan-var numeric-string
+*/
+public $comment_count = '0';
+/**
+* Stores the post object's sanitization level.
+*
+* Does not correspond to a DB field.
+*
+* The 'sample' value is set exclusively by get_sample_permalink() and is read during permalink previewing.
+*
+* @since 3.5.0
+* @var string|null
+* @phpstan-var 'raw'|'edit'|'db'|'display'|'attribute'|'js'|'sample'|null
+*/
+public $filter;
+/**
+* Retrieve WP_Post instance.
+*
+* @since 3.5.0
+*
+* @global wpdb $wpdb WordPress database abstraction object.
+*
+* @param int $post_id Post ID.
+* @return WP_Post|false Post object, false otherwise.
+*
+* @phpstan-param int|numeric-string $post_id
+*/
+public static function get_instance( $post_id ) {
+global $wpdb;
+$post_id = (int) $post_id;
+if ( $post_id <= 0 ) {
+return false;
+}
+$_post = wp_cache_get( $post_id, 'posts' );
+if ( ! ( $_post instanceof stdClass ) && ! ( $_post instanceof WP_Post ) ) {
+$_post = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->posts WHERE ID = %d LIMIT 1", $post_id ) );
+if ( ! $_post ) {
+return false;
+}
+$_post = sanitize_post( $_post, 'raw' );
+wp_cache_add( (int) $_post->ID, $_post, 'posts' );
+} elseif ( empty( $_post->filter ) || 'raw' !== $_post->filter ) {
+$_post = sanitize_post( $_post, 'raw' );
+}
+return new WP_Post( $_post );
+}
+/**
+* Constructor.
+*
+* @since 3.5.0
+*
+* @param object $post Post object.
+*/
+public function __construct( $post ) {
+foreach ( get_object_vars( $post ) as $key => $value ) {
+$this->$key = $value;
+}
+}
+/**
+* Isset-er.
+*
+* @since 3.5.0
+*
+* @param string $key Property to check if set.
+* @return bool
+*/
+public function __isset( $key ) {
+if ( 'ancestors' === $key ) {
+return true;
+}
+if ( 'page_template' === $key ) {
+return true;
+}
+if ( 'post_category' === $key ) {
+return true;
+}
+if ( 'tags_input' === $key ) {
+return true;
+}
+return metadata_exists( 'post', $this->ID, $key );
+}
+/**
+* Getter.
+*
+* @since 3.5.0
+*
+* @param string $key Key to get.
+* @return mixed
+*/
+public function __get( $key ) {
+if ( 'page_template' === $key && $this->__isset( $key ) ) {
+return get_post_meta( $this->ID, '_wp_page_template', true );
+}
+if ( 'post_category' === $key ) {
+if ( is_object_in_taxonomy( $this->post_type, 'category' ) ) {
+$terms = get_the_terms( $this, 'category' );
+}
+if ( empty( $terms ) || $terms instanceof WP_Error ) {
+return array();
+}
+return wp_list_pluck( $terms, 'term_id' );
+}
+if ( 'tags_input' === $key ) {
+if ( is_object_in_taxonomy( $this->post_type, 'post_tag' ) ) {
+$terms = get_the_terms( $this, 'post_tag' );
+}
+if ( empty( $terms ) || $terms instanceof WP_Error ) {
+return array();
+}
+return wp_list_pluck( $terms, 'name' );
+}
+// Rest of the values need filtering.
+if ( 'ancestors' === $key ) {
+$value = get_post_ancestors( $this );
+} else {
+$value = get_post_meta( $this->ID, $key, true );
+}
+if ( $this->filter ) {
+$value = sanitize_post_field( $key, $value, $this->ID, $this->filter );
+}
+return $value;
+}
+/**
+* Applies the provided context filter for the current post.
+*
+* If the requested filter was already applied, then it returns without any changes.
+*
+* If the 'raw' filter is supplied, then a new instance of the post is obtained and this method _may_ return false
+* in case the underlying post was deleted.
+*
+* @since 3.5.0
+*
+* @param string $filter Filter.
+* @return WP_Post|false
+*
+* @phpstan-param 'raw'|'edit'|'db'|'display'|'attribute'|'js' $filter
+* @phpstan-return (
+* $filter is 'raw' ? WP_Post|false : WP_Post
+* )
+*/
+public function filter( $filter ) {
+if ( $this->filter === $filter ) {
+return $this;
+}
+if ( 'raw' === $filter ) {
+return self::get_instance( $this->ID );
+}
+return sanitize_post( $this, $filter );
+}
+/**
+* Convert object to array.
+*
+* @since 3.5.0
+*
+* @return array<string, mixed> Object as array.
+*
+* @phpstan-return Data_Array
+*/
+public function to_array() {
+$post = get_object_vars( $this );
+foreach ( array( 'ancestors', 'page_template', 'post_category', 'tags_input' ) as $key ) {
+if ( $this->__isset( $key ) ) {
+$post[ $key ] = $this->__get( $key );
+}
+}
+/** @var Data_Array $post */
+return $post;
+}
+}
+View all references View on Trac View on GitHub
+Changelog
+VersionDescription
+3.5.0Introduced.
+User Contributed Notes
+Skip to note 6 content
+Priyanka Behera
+10 years ago
+You must log in to vote on the helpfulness of this noteVote results for this note: 7You must log in to vote on the helpfulness of this note
+Please Note: While the above method is fine for retrieving the post ID, you should not use the above method for displaying post_content and other filtered elements (such as post_title). You should instead use either the_content if you are in the loop, or apply_filters if outside the loop, so it would look like this
+$examplePost = get_post();
+echo $examplePost->post_content; // Don't do this
+echo apply_filters( 'the_content', $examplePost->post_content ); // Do this instead
+If you do not have any shortcodes in your post content, then no need to parse though the `the_content` filter.
+Aurovrata Venet 5 years ago
+Log in to add feedback
+Skip to note 7 content
+Priyanka Behera
+10 years ago
+You must log in to vote on the helpfulness of this noteVote results for this note: 4You must log in to vote on the helpfulness of this note
+To access the member functions of the post object, use this syntax.
+$examplePost = get_post();
+echo $examplePost->ID; // Display the post's ID
+Log in to add feedback
+Skip to note 8 content
+Lovro Hrust
+6 years ago
+You must log in to vote on the helpfulness of this noteVote results for this note: 1You must log in to vote on the helpfulness of this note
+I found a longer list of member variables for WP_Post object than documented above, at least for menu item WP_Post object and WordPress v5.5.1. Additional variables are:
+Member variable Variable type
+to_ping string
+pinged string
+post_content_filtered string
+guid string
+post_mime_type string
+filter string
+db_id integer
+menu_item_parent string
+object_id string
+object string
+type string
+type_label string
+url string
+title string
+url (string) and classes (string?) are still being used by twentytwenty theme at inc/template-tags.php of wordpress 6.0
+randompage 4 years ago
+Log in to add feedback
+Skip to note 9 content
+Aurovrata Venet
+1 year ago
+You must log in to vote on the helpfulness of this noteVote results for this note: 0You must log in to vote on the helpfulness of this note
+`
+WP_Post Object(
+[ID] => 4685
+[post_author] => 3
+[post_date] => 2010-07-01 00:00:00
+[post_date_gmt] => 2025-07-24 05:43:52
+[post_content] =>
+[post_title] => (PRESENTATION) Research, Analysis, and Design.
+[post_excerpt] =>
+[post_status] => publish
+[comment_status] => open
+[ping_status] => closed
+[post_password] =>
+[post_name] => presentation-research-analysis-and-design
+[to_ping] =>
+[pinged] =>
+[post_modified] => 2025-09-03 13:02:22
+[post_modified_gmt] => 2025-09-03 13:02:22
+[post_content_filtered] =>
+[guid] => https://example.com/?post_type=post&p=4685
+[menu_order] => 0
+[post_type] => post
+[post_mime_type] =>
+[post_parent] => 0
+[comment_count] => 0
+[filter] => raw
+[page_template] => default
+)
+`
+Log in to add feedback
+Skip to note 10 content
+jesus0903
+5 months ago
+You must log in to vote on the helpfulness of this noteVote results for this note: 0You must log in to vote on the helpfulness of this note
+Although “GUID” stands for Globally Unique Identifier, WordPress does not enforce a uniqueness constraint on the database level. In some cases—particularly when using plugins that publish posts without going through a draft state—multiple posts may share the same GUID value.
+You should not use the GUID as a unique key for querying posts. Instead, use the post ID to guarantee uniqueness.
+Log in to add feedback
+You must log in before being able to contribute a note or feedback.
+About
+News
+Hosting
+Privacy
+Showcase
+Themes
+Plugins
+Patterns
+Learn
+Documentation
+Developers
+WordPress.tv ↗
+Get Involved
+Events
+Donate ↗
+Swag ↗
+WordPress.com ↗
+Matt ↗
+bbPress ↗
+BuddyPress ↗
+Visit our X (formerly Twitter) account
+Visit our Bluesky account
+Visit our Mastodon account
+Visit our Threads account
+Visit our Facebook page
+Visit our Instagram account
+Visit our LinkedIn account
+Visit our TikTok account
+Visit our YouTube channel
+Visit our Tumblr account
+The WordPress® trademark is the intellectual property of the WordPress Foundation.

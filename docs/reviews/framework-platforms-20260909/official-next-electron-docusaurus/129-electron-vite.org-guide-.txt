@@ -1,0 +1,144 @@
+
+Getting Started ​
+
+NOTE
+
+This guide assumes that you are familiar with Electron and Vite. A good way to start learning more is to read the Electron Guide, and Vite Guide.
+
+Overview ​
+
+electron-vite is a build tool that aims to provide a faster and leaner development experience for Electron. It provides:
+
+
+A build command that bundles your code with Vite while seamlessly handling Electron's dual environment (Node.js and browser contexts).
+
+
+
+Provides a single configuration point for the main process, renderer processes, and preload scripts, with sensible defaults optimized for Electron.
+
+
+
+Features instant Hot Module Replacement(HMR) for renderer processes, plus hot reloading support for the main process and preload scripts.
+
+
+
+Advanced development capabilities including multi-threading support via simple import suffixes, optimized asset handling for the main process, isolated build mode for enhanced sandbox support, and V8 bytecode compilation to protect source code.
+
+
+electron-vite is fast, simple and powerful, designed to work out-of-the-box.
+
+Installation ​
+
+Pre-requisites
+
+Requires Node.js version 20.19+, 22.12+ and Vite version 5.0+
+sh
+npm i electron-vite -D
+
+Command Line Interface ​
+
+In a project where electron-vite is installed, you can use electron-vite binary directly with npx electron-vite or add the npm scripts to your package.json file like this:
+package.jsonjson
+{
+  "scripts": {
+    "start": "electron-vite preview", // start electron app to preview production build
+    "dev": "electron-vite dev", // start dev server and electron app
+    "prebuild": "electron-vite build" // build for production
+  }
+}
+
+You can specify additional CLI options like --outDir. For a full list of CLI options, run npx electron-vite -h in your project.
+
+Learn more about Command Line Interface.
+
+Configuring electron-vite ​
+
+When running electron-vite from the command line, electron-vite will automatically try to resolve a config file named electron.vite.config.js inside project root. The most basic config file looks like this:
+electron.vite.config.jsjs
+export default {
+  main: {
+    // vite config options
+  },
+  preload: {
+    // vite config options
+  },
+  renderer: {
+    // vite config options
+  }
+}
+
+Learn more about Config Reference.
+
+Electron entry point ​
+
+When using electron-vite to bundle your code, the entry point of the Electron application should be changed to the main process entry file in the output directory. The default outDir is out. Your package.json file should look something like this:
+package.jsonjson
+{
+  "name": "electron-app",
+  "version": "1.0.0",
+  "main": "./out/main/index.js"
+}
+
+Electron's working directory will be the output directory, not your source code directory. So you can exclude the source code when packaging Electron application.
+
+Learn more about Build for production.
+
+Scaffolding Your First electron-vite Project ​
+
+Run the following command in your command line:
+npmyarnpnpmsh
+npm create @quick-start/electron@latest
+sh
+yarn create @quick-start/electron
+sh
+pnpm create @quick-start/electron
+
+Then follow the prompts!
+
+✔ Project name: … <electron-app>
+✔ Select a framework: › vue
+✔ Add TypeScript? … No / Yes
+✔ Add Electron updater plugin? … No / Yes
+✔ Enable Electron download mirror proxy? … No / Yes
+
+Scaffolding project in ./<electron-app>...
+Done.
+
+You can also directly specify the project name and the template you want to use via additional command line options. For example, to scaffold an Electron + Vue project, run:
+npmyarnpnpmsh
+# npm 7+, extra double-dash is needed:
+npm create @quick-start/electron@latest my-app -- --template vue
+sh
+yarn create @quick-start/electron my-app --template vue
+sh
+pnpm create @quick-start/electron my-app --template vue
+
+Currently supported template presets include:
+
+JavaScriptTypeScript
+
+vanillavanilla-ts
+
+vuevue-ts
+
+reactreact-ts
+
+sveltesvelte-ts
+
+solidsolid-ts
+
+See create-electron for more details.
+
+Clone Template ​
+
+create-electron is a tool to quickly start a project from a basic template for popular frameworks. Also you can use a tool like degit to scaffold your project with the template electron-vite-boilerplate.
+sh
+npx degit alex8088/electron-vite-boilerplate electron-app
+cd electron-app
+
+npm install
+npm run dev
+
+Getting Help ​
+
+If you suspect you're running into a bug with the electron-vite, please check the GitHub issue tracker to see if any existing issues match your problem. If not, feel free to fill the bug report template and submit a new issue.

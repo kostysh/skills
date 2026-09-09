@@ -1,0 +1,14 @@
+{
+  "kind": "literal root hook body, complementary to authored Inventory semantic host",
+  "source": "baseline-packages/payload/SKILL.md",
+  "source_sha256": "d78623a1db9a7f93db5e8da14677b4ab2df20eaa4bbd90320c39afd96b47e817",
+  "lines": [
+    122,
+    133
+  ],
+  "adaptations": [
+    "Wrap unchanged hooks object property with export default object. No changes to hook body, collection name, data or req."
+  ],
+  "runtime": "pending",
+  "literal_sha256": "9dd7a713f02886572fc0065337b9788ec25b4d372cdc8e235e7dce3bf4ad6552"
+}

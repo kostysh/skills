@@ -1,0 +1,16 @@
+{
+  "at": "2026-09-09T16:20:13.120117+00:00",
+  "targets": {
+    "hono": {
+      "filesVerified": 42,
+      "aggregateNaming": "Author aggregate uses repository-relative keys; candidate-authoring-freeze uses package-relative keys. Byte hashes verified equal.",
+      "authorAggregate": "cbd6165787efb885fb01683f1101f771dbeaf845cbf391f5651352d1a0b3a415"
+    },
+    "supabase": {
+      "filesVerified": 32,
+      "aggregateNaming": "Author aggregate uses repository-relative keys; candidate-authoring-freeze uses package-relative keys. Byte hashes verified equal.",
+      "authorAggregate": "e196c461006edce9ddeaef1b3a80f3686921cd03524525a525544f73a7dcbe50"
+    }
+  },
+  "honoDocsContract": "18/18 pass after final author H/S edits"
+}

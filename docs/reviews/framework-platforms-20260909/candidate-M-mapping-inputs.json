@@ -1,0 +1,25 @@
+{
+  "frozenAt": "2026-09-09T16:16:44.334202+00:00",
+  "protocol": "protocol/M-mapping.json",
+  "changes": "Only target skill files replaced; app/task/neighbor inputs match original protocol. Private excluded infrastructure copied separately only when required, without content output.",
+  "files": {
+    "task.txt": "b46f7d1addb8f5c7309dd8ea4b74cbee8d1effcaa7ca64efe1859273b616b3b9",
+    "sources.json": "ba6b4bba276a77c869bbbe130d492a78fe46708f1f1b7ea6bd91d02091b1b24d",
+    "skills/payload/SKILL.md": "9a02717763b328222f840d34f3096ed54f115a3ea6f8a430f3a96f89dc3827b4",
+    "skills/payload-migration/SKILL.md": "2cb708e09561aca3353b144403ba2e961f2181d094439693ad957fb0a9390a6e",
+    "skills/payload-migration/agents/openai.yaml": "e1db640a3706e0d13e8250aa4f9a3930c72104fb5dbf4760672d395e5325b0b4",
+    "skills/payload-migration/references/payload-field-reference.md": "d6dbd6fbf642f48ce157470810efb31e53b88347ccd8ba72cd0c3f930248ebf6",
+    "skills/payload/agents/openai.yaml": "2dd7d1903a7b294cdf577504078c63216d8533e36b386fb9426688ac61292c35",
+    "skills/payload/references/advanced.md": "1619912f22f8c144a9ff13b06b3af3347d0f36b85da44f1bf644d5f3614853d2",
+    "skills/payload/references/collections.md": "a4128d09fdc6c6499956f1dc9f0b67fb366fe4b4b5657cd2030c429b770c3c7d",
+    "skills/payload/references/endpoints.md": "3eee32261c705391d3c9df2bfccd57939e16a82446562f5b812ae7ca9347b890",
+    "skills/payload/references/access-control.md": "e028a3a209ec0745445df296da3652afce8b984506b814b60c4526c67d010b66",
+    "skills/payload/references/hooks.md": "526ae0c7ec2e1f70807b9133de3e00bab78ec7fb6156af6a96081322dec71b25",
+    "skills/payload/references/field-type-guards.md": "be25a1e4334ef1f40d95ddd572a7c4e977e73b184e7951bcf82af928dd002b45",
+    "skills/payload/references/queries.md": "0109a26afc5eded0166888e0002f11f348ffa8efbf0dbe096a77537dfe8b10fb",
+    "skills/payload/references/plugin-development.md": "b29172167b1662b31a75489f72eeeb9635f6c20822b2a034fb70c5e5f3d0b7ec",
+    "skills/payload/references/fields.md": "a4249573ad5572f30ac4289cc7d63dbdd177bdb30f0c7d9eb1b136c90a25b669",
+    "skills/payload/references/adapters.md": "3e9937a6632eb3d181581b1b28454b4ca4860019e25d516d65c85c870fe1abae",
+    "skills/payload/references/access-control-advanced.md": "5f7e78ce95b774a6efd6ba5374004f0061d4e24818d15fae234488e94200b9c0"
+  }
+}

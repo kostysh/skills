@@ -1,0 +1,32 @@
+{
+  "at": "2026-09-09T16:29:02.129068+00:00",
+  "reviewScope": "candidate N/E/D consolidated early source findings",
+  "snapshotBefore": "candidate-snapshots/pre-ned-source-remediation",
+  "changes": [
+    {
+      "id": "E-C1",
+      "cause": "Outer package manager dispatch was conflated with inner Forge lifecycle. pnpm built-in publish shadows same-named package script.",
+      "fix": "Explicit run invocation at declaration and both release steps.",
+      "evidence": "E-publish-dispatch-coordinator-probe.json; real Forge boundary pending."
+    },
+    {
+      "id": "N-C1",
+      "cause": "Docker root COPY ownership followed by non-root runtime without writable .next.",
+      "fix": "Create cache and chown .next only after copies; preserve root ownership of other app assets.",
+      "evidence": "Paired actual non-root directory-write probe pending; no ISR-wide claim."
+    },
+    {
+      "id": "N-C2",
+      "cause": "Intrinsic ratio and CSS rendered size conflated.",
+      "fix": "Explicit actual intrinsic dimensions plus responsive CSS/sizes; fill parent contract.",
+      "evidence": "Official Image API source in reviewer manifest; source-only semantic correction."
+    },
+    {
+      "id": "D-C1",
+      "cause": "Globally unique slug used instead of final route identity.",
+      "fix": "Full route collision check with base/instance/version/locale; same slug allowed for different routes.",
+      "evidence": "Actual distinct-routes positive and duplicate-final-route negative pending."
+    }
+  ],
+  "claims": "Author remediation only, not independent PASS; complete current generation/maps and bounded reviewer readback required."
+}

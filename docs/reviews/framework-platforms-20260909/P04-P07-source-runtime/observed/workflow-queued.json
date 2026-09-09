@@ -1,0 +1,19 @@
+{
+  "id": 1,
+  "input": {
+    "userId": "synthetic-user-1"
+  },
+  "completedAt": null,
+  "totalTried": 0,
+  "hasError": false,
+  "error": null,
+  "log": [],
+  "workflowSlug": "onboardUser",
+  "taskSlug": null,
+  "queue": "default",
+  "waitUntil": null,
+  "processing": false,
+  "updatedAt": "2026-09-09T14:02:13.805Z",
+  "createdAt": "2026-09-09T14:02:13.804Z",
+  "taskStatus": {}
+}

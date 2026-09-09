@@ -1,0 +1,97 @@
+[
+  {
+    "mode": "default",
+    "outcome": "success",
+    "operation": {
+      "before": {
+        "parents": [],
+        "audit-log": []
+      },
+      "operationError": null
+    },
+    "observed": {
+      "parents": [
+        {
+          "id": 1,
+          "sourceKey": "literal-1",
+          "updatedAt": "2026-09-09T14:01:02.448Z",
+          "createdAt": "2026-09-09T14:01:02.447Z"
+        }
+      ],
+      "audit-log": [
+        {
+          "id": 1,
+          "docId": 1,
+          "updatedAt": "2026-09-09T14:01:02.451Z",
+          "createdAt": "2026-09-09T14:01:02.451Z"
+        }
+      ]
+    }
+  },
+  {
+    "mode": "default",
+    "outcome": "failure",
+    "operation": {
+      "before": {
+        "parents": [],
+        "audit-log": []
+      },
+      "operationError": "P04_LITERAL_CONTROLLED_FAILURE"
+    },
+    "observed": {
+      "parents": [
+        {
+          "id": 1,
+          "sourceKey": "literal-1",
+          "updatedAt": "2026-09-09T14:01:07.542Z",
+          "createdAt": "2026-09-09T14:01:07.541Z"
+        }
+      ],
+      "audit-log": []
+    }
+  },
+  {
+    "mode": "reference-enabled",
+    "outcome": "success",
+    "operation": {
+      "before": {
+        "parents": [],
+        "audit-log": []
+      },
+      "operationError": null
+    },
+    "observed": {
+      "parents": [
+        {
+          "id": 1,
+          "sourceKey": "literal-1",
+          "updatedAt": "2026-09-09T14:01:12.675Z",
+          "createdAt": "2026-09-09T14:01:12.675Z"
+        }
+      ],
+      "audit-log": [
+        {
+          "id": 1,
+          "docId": 1,
+          "updatedAt": "2026-09-09T14:01:12.679Z",
+          "createdAt": "2026-09-09T14:01:12.679Z"
+        }
+      ]
+    }
+  },
+  {
+    "mode": "reference-enabled",
+    "outcome": "failure",
+    "operation": {
+      "before": {
+        "parents": [],
+        "audit-log": []
+      },
+      "operationError": "P04_LITERAL_CONTROLLED_FAILURE"
+    },
+    "observed": {
+      "parents": [],
+      "audit-log": []
+    }
+  }
+]

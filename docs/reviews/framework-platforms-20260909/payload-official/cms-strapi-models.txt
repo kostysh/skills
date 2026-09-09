@@ -1,0 +1,832 @@
+Models | Strapi 5 Documentation
+Skip to main content
+CMS Cloud
+GitHub Contribution Program
+Ask AI
+Navigation◀
+Getting Started
+Quick Start Guide
+Project structure
+Installation
+Admin panel
+Content Manager
+Content Type Builder
+Deployment
+Billing portal
+Features
+API Tokens
+Admin tokens
+Audit Logs
+Content History
+Custom Fields
+Data Management
+Draft & Publish
+Email
+Internationalization (i18n)
+Media LibraryUpdatedThis content was recently updated.
+MCP server
+Preview
+Role-Based Access Control (RBAC)
+Releases
+Review Workflows
+Single Sign-On (SSO)
+Users & Permissions
+Strapi plugins
+AI
+AI for content managers
+AI for developers
+Docs MCP server
+Content APIs
+Content APIs Introduction
+Document concept
+REST API
+Strapi Client
+OpenAPI specification
+GraphQL API
+Document Service API
+Configurations
+Introduction
+Admin panel
+API calls
+CRON jobs
+Database
+Environment variables
+Features
+Middlewares
+Plugins and providers
+Server
+Guides
+Development
+Introduction
+Lifecycle functions
+Backend customization
+Overview
+Requests and Responses
+Routes
+Policies
+Middlewares
+Controllers
+Services
+Models
+Webhooks
+Guides
+Admin panel customization
+Homepage customization
+Error handling
+strapi-utils
+Templates
+Testing
+TypeScript
+Introduction
+Configuration
+Development
+Guides
+Command Line Interface
+Strapi CLI
+Plugins development
+Marketplace
+Developing plugins
+Basics
+Admin Panel API
+Server API
+Guides
+Plugins extension
+Upgrades
+Upgrade tool reference
+v4 → v5
+Elegant ModeMarkdown ModeAI Mode
+Development
+Backend customization
+Models
+On this page
+Models
+Copy Markdown
+Page summary:
+Models define Strapi’s content structure via content-types and reusable components. This documentation walks through creating these models in the Content-type Builder or CLI and managing schema files with optional lifecycle hooks.
+As Strapi is a headless Content Management System (CMS), creating a content structure for the content is one of the most important aspects of using the software. Models define a representation of the content structure.
+There are 2 different types of models in Strapi:
+content-types, which can be collection types or single types, depending on how many entries they manage,
+and components that are content structures re-usable in multiple content-types.
+If you are just starting out, it is convenient to generate some models with the Content-type Builder directly in the admin panel. The user interface takes over a lot of validation tasks and showcases all the options available to create the content's content structure. The generated model mappings can then be reviewed at the code level using this documentation.
+Model creation​
+Content-types and components models are created and stored differently.
+Content-types​
+Content-types in Strapi can be created:
+with the Content-type Builder in the admin panel,
+or with Strapi's interactive CLI
+strapi generate command.
+The content-types use the following files:
+schema.json for the model's schema definition. (generated automatically, when creating content-type with either method)
+lifecycles.js for lifecycle hooks. This file must be created manually.
+These models files are stored in
+./src/api/[api-name]/content-types/[content-type-name]/, and any JavaScript or JSON file found in these folders will be loaded as a content-type's model (see project structure).
+Note
+In TypeScript-enabled projects, schema typings can be generated using the
+ts:generate-types command.
+Components​
+Component models can't be created with CLI tools. Use the Content-type Builder or create them manually.
+Components models are stored in the
+./src/components folder. Every component has to be inside a subfolder, named after the category the component belongs to (see project structure).
+Components also accept an optional preview image, displayed in the dynamic zone picker
+instead of their icon (see Component preview images).
+Model schema​
+The
+schema.json file of a model consists of:
+settings, such as the kind of content-type the model represents or the table name in which the data should be stored,
+information, mostly used to display the model in the admin panel and access it through the REST and GraphQL APIs,
+attributes, which describe the content structure of the model,
+and options used to defined specific behaviors on the model.
+Model settings​
+General settings for the model can be configured with the following parameters:
+ParameterTypeDescription
+collectionNameStringDatabase table name in which the data should be stored
+kind
+Optional,
+only for content-typesStringDefines if the content-type is:
+a collection type (
+collectionType)
+or a single type (
+singleType)
+// ./src/api/[api-name]/content-types/restaurant/schema.json
+{
+"kind": "collectionType",
+"collectionName": "Restaurants_v1",
+}
+Model information​
+The
+info key in the model's schema describes information used to display the model in the admin panel and access it through the Content API. It includes the following parameters:
+ParameterTypeDescription
+displayNameStringDefault name to use in the admin panel
+singularNameStringSingular form of the content-type name.
+Used to generate the API routes and databases/tables collection.
+Should be kebab-case.
+pluralNameStringPlural form of the content-type name.
+Used to generate the API routes and databases/tables collection.
+Should be kebab-case.
+descriptionStringDescription of the model
+iconStringName of the Strapi icon used to represent the model in the admin panel
+previewStringPath or URL of an image used to represent a component in the admin panel.
+Components only. See Component preview images.
+Note
+This
+preview parameter is unrelated to the Preview feature.
+That feature previews front-end content, and uses the
+preview object of
+config/admin.
+./src/api/[api-name]/content-types/restaurant/schema.json
+"info": {
+"displayName": "Restaurant",
+"singularName": "restaurant",
+"pluralName": "restaurants",
+"description": ""
+},
+Component preview images​
+Components accept an optional
+preview parameter in their
+info object. It points to an image representing the component in the dynamic zone picker.
+The
+preview parameter accepts:
+A root-relative path to an image placed in the project's
+public directory, for instance
+/_component-screenshots/hero-section.png. The image is served by the
+public middleware, which does not serve paths starting with
+/uploads/.
+An absolute URL pointing to an external image host.
+Caution
+Media Library images are served from
+/uploads/, so they cannot be used as preview images. Commit the file to
+public instead.
+./src/components/sections/hero-section.json
+{
+"info": {
+"displayName": "Hero Section",
+"icon": "layout",
+"preview": "/_component-screenshots/hero-section.png"
+}
+}
+When
+preview is omitted, or when the image fails to load, the admin panel falls back to the component's
+icon.
+Note
+The
+preview parameter must be set manually in the component's schema file. The Content-type Builder cannot upload a preview image yet.
+Model attributes​
+The content structure of a model consists of a list of attributes. Each attribute has a
+type parameter, which describes its nature and defines the attribute as a simple piece of data or a more complex structure used by Strapi.
+Many types of attributes are available:
+scalar types (e.g. strings, dates, numbers, booleans, etc.),
+Strapi-specific types, such as:
+media for files uploaded through the Media library
+relation to describe a relation between content-types
+customField to describe custom fields and their specific keys
+component to define a component (i.e. a content structure usable in multiple content-types)
+dynamiczone to define a dynamic zone (i.e. a flexible space based on a list of components)
+and the
+locale and
+localizations types, only used by the Internationalization (i18n) plugin
+The
+type parameter of an attribute should be one of the following values:
+Type categoriesAvailable types
+String types
+string
+text
+richtext
+enumeration
+email
+password
+uid
+Date types
+date
+time
+datetime
+timestamp
+Number types
+integer
+biginteger
+float
+decimal
+Other generic types
+boolean
+json
+Special types unique to Strapi
+media
+relation
+customField
+component
+dynamiczone
+Internationalization (i18n)-related types
+Can only be used if the i18n is enabled on the content-type
+locale
+localizations
+Validations​
+Basic validations can be applied to attributes using the following parameters:
+ParameterTypeDescriptionDefault
+requiredBooleanIf
+true, adds a required validator for this property
+false
+maxIntegerChecks if the value is greater than or equal to the given maximum-
+minIntegerChecks if the value is less than or equal to the given minimum-
+minLengthIntegerMinimum number of characters for a field input value-
+maxLengthIntegerMaximum number of characters for a field input value-
+privateBooleanIf
+true, the attribute will be removed from the server response.
+💡 This is useful to hide sensitive data.
+false
+configurableBooleanIf
+false, the attribute isn't configurable from the Content-type Builder plugin.
+true
+./src/api/[api-name]/content-types/restaurant/schema.json
+{
+// ...
+"attributes": {
+"title": {
+"type": "string",
+"minLength": 3,
+"maxLength": 99,
+"unique": true
+},
+"description": {
+"default": "My description",
+"type": "text",
+"required": true
+},
+"slug": {
+"type": "uid",
+"targetField": "title"
+}
+// ...
+}
+}
+Database validations and settings​
+🚧 This API is considered experimental.
+These settings should be reserved to an advanced usage, as they might break some features. There are no plans to make these settings stable.
+Database validations and settings are custom options passed directly onto the
+tableBuilder Knex.js function during schema migrations. Database validations allow for an advanced degree of control for setting custom column settings. The following options are set in a
+column: {} object per attribute:
+ParameterTypeDescriptionDefault
+namestringChanges the name of the column in the database-
+defaultTostringSets the database
+defaultTo, typically used with
+notNullable-
+notNullablebooleanSets the database
+notNullable, ensures that columns cannot be null
+false
+unsignedbooleanOnly applies to number columns, removes the ability to go negative but doubles maximum length
+false
+uniquebooleanEnforces database-level uniqueness on published entries. Draft saves skip the check when Draft & Publish is enabled, so duplicates fail only at publish time.
+false
+typestringChanges the database type, if
+type has arguments, you should pass them in
+args-
+argsarrayArguments passed into the Knex.js function that changes things like
+type
+[]
+CautionDraft & Publish and
+unique
+When Draft & Publish is enabled, Strapi intentionally skips
+unique validations while an entry is saved as a draft. Duplicates therefore remain undetected until publication, at which point the database constraint triggers an error even though the UI previously displayed “Saved document” for the drafts.
+To avoid unexpected publication failures:
+disable Draft & Publish on content-types that must stay globally unique,
+or add custom validation (e.g. lifecycle hooks or middleware) that checks for draft duplicates before saving,
+or rely on automatically generated unique identifiers such as a
+uid field and document editorial conventions.
+./src/api/[api-name]/content-types/restaurant/schema.json
+{
+// ...
+"attributes": {
+"title": {
+"type": "string",
+"minLength": 3,
+"maxLength": 99,
+"unique": true,
+"column": {
+"unique": true // enforce database unique also
+}
+},
+"description": {
+"default": "My description",
+"type": "text",
+"required": true,
+"column": {
+"defaultTo": "My description", // set database level default
+"notNullable": true // enforce required at database level, even for drafts
+}
+},
+"rating": {
+"type": "decimal",
+"default": 0,
+"column": {
+"defaultTo": 0,
+"type": "decimal", // using the native decimal type but allowing for custom precision
+"args": [
+6,1 // using custom precision and scale
+]
+}
+}
+// ...
+}
+}
+uid type​
+The
+uid type is used to automatically prefill the field value in the admin panel with a unique identifier (UID) (e.g. slugs for articles) based on 2 optional parameters:
+targetField (string): If used, the value of the field defined as a target is used to auto-generate the UID.
+options (string): If used, the UID is generated based on a set of options passed to the underlying `uid` generator. The resulting
+uid must match the following regular expression pattern:
+/^[A-Za-z0-9-_.~]*$.
+Relations​
+Relations link content-types together. Strapi supports both single-entry relations (one-way and one-to-one) and multi relations where at least one side can point to several entries (one-to-many, many-to-one, many-to-many, and many-way). Multi relations are persisted as arrays in the database layer and are returned as arrays in the Content API responses.
+Relations are explicitly defined in the attributes of a model with
+type: 'relation' and accept the following additional parameters:
+ParameterDescription
+relationThe type of relation among these values:
+oneToOne
+oneToMany
+manyToOne
+manyToMany
+targetAccepts a string value as the name of the target content-type
+mappedBy and
+inversedBy
+OptionalIn bidirectional relations, the owning side declares the
+inversedBy key while the inversed side declares the
+mappedBy key
+One-to-one
+One-to-Many
+Many-to-One
+Many-to-Many
+One-to-One relationships are useful when one entry can be linked to only one other entry.
+They can be unidirectional or bidirectional. In unidirectional relationships, only one of the models can be queried with its linked item.Unidirectional use case example:
+A blog article belongs to a category.
+Querying an article can retrieve its category,
+but querying a category won't retrieve the owned article.
+./src/api/[api-name]/content-types/article/schema.json
+// …
+attributes: {
+category: {
+type: 'relation',
+relation: 'oneToOne',
+target: 'category',
+},
+},
+// …
+Bidirectional use case example:
+A blog article belongs to a category.
+Querying an article can retrieve its category,
+and querying a category also retrieves its owned article.
+./src/api/[api-name]/content-types/article/schema.json
+// …
+attributes: {
+category: {
+type: 'relation',
+relation: 'oneToOne',
+target: 'category',
+inversedBy: 'article',
+},
+},
+// …
+./src/api/[api-name]/content-types/category/schema.json
+// …
+attributes: {
+article: {
+type: 'relation',
+relation: 'oneToOne',
+target: 'article',
+mappedBy: 'category',
+},
+},
+// …
+One-to-Many relationships are useful when:
+an entry from a content-type A is linked to many entries of another content-type B,
+while an entry from content-type B is linked to only one entry of content-type A.
+One-to-many relationships are always bidirectional, and are usually defined with the corresponding Many-to-One relationship:Details
+Example:
+A person can own many plants, but a plant is owned by only one person.
+./src/api/[api-name]/content-types/plant/schema.json
+// …
+attributes: {
+owner: {
+type: 'relation',
+relation: 'manyToOne',
+target: 'api::person.person',
+inversedBy: 'plants',
+},
+},
+// …
+./src/api/person/models/schema.json
+// …
+attributes: {
+plants: {
+type: 'relation',
+relation: 'oneToMany',
+target: 'api::plant.plant',
+mappedBy: 'owner',
+},
+},
+// …
+Many-to-One relationships are useful to link many entries to one entry.
+They can be unidirectional or bidirectional. In unidirectional relationships, only one of the models can be queried with its linked item.Unidirectional use case example:
+A book can be written by many authors.
+./src/api/[api-name]/content-types/book/schema.json
+// …
+attributes: {
+author: {
+type: 'relation',
+relation: 'manyToOne',
+target: 'author',
+},
+},
+// …
+Bidirectional use case example:
+An article belongs to only one category but a category has many articles.
+./src/api/[api-name]/content-types/article/schema.json
+// …
+attributes: {
+author: {
+type: 'relation',
+relation: 'manyToOne',
+target: 'category',
+inversedBy: 'article',
+},
+},
+// …
+./src/api/[api-name]/content-types/category/schema.json
+// …
+attributes: {
+books: {
+type: 'relation',
+relation: 'oneToMany',
+target: 'article',
+mappedBy: 'category',
+},
+},
+// …
+Many-to-Many relationships are useful when:
+an entry from content-type A is linked to many entries of content-type B,
+and an entry from content-type B is also linked to many entries from content-type A.
+Many-to-many relationships can be unidirectional or bidirectional. In unidirectional relationships, only one of the models can be queried with its linked item.Unidirectional use case example:
+// …
+attributes: {
+categories: {
+type: 'relation',
+relation: 'manyToMany',
+target: 'category',
+},
+},
+// …
+Bidirectional use case example:
+An article can have many tags and a tag can be assigned to many articles.
+/src/api/[api-name]/content-types/article/schema.json
+// …
+attributes: {
+tags: {
+type: 'relation',
+relation: 'manyToMany',
+target: 'tag',
+inversedBy: 'articles',
+},
+},
+// …
+./src/api/[api-name]/content-types/tag/schema.json
+// …
+attributes: {
+articles: {
+type: 'relation',
+relation: 'manyToMany',
+target: 'article',
+mappedBy: 'tag',
+},
+},
+// …
+Custom fields​
+Custom fields extend Strapi’s capabilities by adding new types of fields to content-types. Custom fields are explicitly defined in the attributes of a model with
+type: customField.
+Custom fields' attributes also show the following specificities:
+a
+customField attribute whose value acts as a unique identifier to indicate which registered custom field should be used. Its value follows:
+either the
+plugin::plugin-name.field-name format if a plugin created the custom field
+or the
+global::field-name format for a custom field specific to the current Strapi application
+and additional parameters depending on what has been defined when registering the custom field (see custom fields documentation).
+./src/api/[apiName]/[content-type-name]/content-types/schema.json
+{
+// …
+"attributes": {
+"attributeName": { // attributeName would be replaced by the actual attribute name
+"type": "customField",
+"customField": "plugin::color-picker.color",
+"options": {
+"format": "hex"
+}
+}
+}
+// …
+}
+Components​
+Component fields create a relation between a content-type and a component structure. Components are explicitly defined in the attributes of a model with
+type: 'component' and accept the following additional parameters:
+ParameterTypeDescription
+repeatableBooleanCould be
+true or
+false depending on whether the component is repeatable or not
+componentStringDefine the corresponding component, following this format:
+<category>.<componentName>
+./src/api/[apiName]/restaurant/content-types/schema.json
+{
+"attributes": {
+"openinghours": {
+"type": "component",
+"repeatable": true,
+"component": "restaurant.openinghours"
+}
+}
+}
+These parameters are set on the attribute of the content-type using the component.
+Parameters set on the component itself, such as its preview image, belong to its own
+info object (see Component preview images).
+Dynamic zones​
+Dynamic zones create a flexible space in which to compose content, based on a mixed list of components.
+Dynamic zones are explicitly defined in the attributes of a model with
+type: 'dynamiczone'. They also accept a
+components array, where each component should be named following this format:
+<category>.<componentName>.
+./src/api/[api-name]/content-types/article/schema.json
+{
+"attributes": {
+"body": {
+"type": "dynamiczone",
+"components": ["article.slider", "article.content"]
+}
+}
+}
+Model options​
+The
+options key is used to define specific behaviors and accepts the following parameter:
+ParameterTypeDescription
+privateAttributesArray of stringsAllows treating a set of attributes as private, even if they're not actually defined as attributes in the model. It could be used to remove them from API responses timestamps.
+The
+privateAttributes defined in the model are merged with the
+privateAttributes defined in the global Strapi configuration.
+draftAndPublishBooleanEnables the draft and publish feature.
+Default value:
+true (
+false if the content-type is created from the interactive CLI).
+populateCreatorFieldsBooleanPopulates
+createdBy and
+updatedBy fields in responses returned by the REST API (see guide for more details).
+Default value:
+false.
+./src/api/[api-name]/content-types/restaurant/schema.json
+{
+"options": {
+"privateAttributes": ["id", "createdAt"],
+"draftAndPublish": true
+}
+}
+Plugin options​
+pluginOptions is an optional object allowing plugins to store configuration for a model or a specific attribute.
+KeyValueDescription
+i18n
+localized: trueEnables localization.
+content-manager
+visible: falseHides from Content Manager in the admin panel.
+content-type-builder
+visible: falseHides from Content-type Builder in the admin panel.
+./src/api/[api-name]/content-types/[content-type-name]/schema.json
+{
+"attributes": {
+"name": {
+"pluginOptions": {
+"i18n": {
+"localized": true
+}
+},
+"type": "string",
+"required": true
+},
+"slug": {
+"pluginOptions": {
+"i18n": {
+"localized": true
+}
+},
+"type": "uid",
+"targetField": "name",
+"required": true
+}
+// …additional attributes
+}
+}
+Lifecycle hooks​
+Lifecycle hooks are functions that get triggered when Strapi queries are called. They are triggered automatically when managing content through the administration panel or when developing custom code using
+queries·
+Lifecycle hooks can be customized declaratively or programmatically.
+Caution
+Lifecycles hooks are not triggered when using directly the knex library instead of Strapi functions.
+Document Service API: lifecycles and middlewares
+The Document Service API triggers various database lifecycle hooks based on which method is called. For a complete reference, see Document Service API: Lifecycle hooks. Bulk actions lifecycles (
+createMany,
+updateMany,
+deleteMany) will never be triggered by a Document Service API method. Document Service middlewares can be implemented too.
+Available lifecycle events​
+The following lifecycle events are available:
+beforeCreate
+beforeCreateMany
+afterCreate
+afterCreateMany
+beforeUpdate
+beforeUpdateMany
+afterUpdate
+afterUpdateMany
+beforeDelete
+beforeDeleteMany
+afterDelete
+afterDeleteMany
+beforeCount
+afterCount
+beforeFindOne
+afterFindOne
+beforeFindMany
+afterFindMany
+Hook
+event object​
+Lifecycle hooks are functions that take an
+event parameter, an object with the following keys:
+KeyTypeDescription
+actionStringLifecycle event that has been triggered (see list)
+modelArray of strings (uid)An array of uids of the content-types whose events will be listened to.
+If this argument is not supplied, events are listened on all content-types.
+paramsObjectAccepts the following parameters:
+data
+select
+where
+orderBy
+limit
+offset
+populate
+resultObjectOptional, only available with
+afterXXX events
+Contains the result of the action.
+stateObjectQuery state, can be used to share state between
+beforeXXX and
+afterXXX events of a query.
+Declarative and programmatic usage​
+To configure a content-type lifecycle hook, create a
+lifecycles.js file in the
+./src/api/[api-name]/content-types/[content-type-name]/ folder.
+Each event listener is called sequentially. They can be synchronous or asynchronous.
+JavaScript
+TypeScript
+./src/api/[api-name]/content-types/[content-type-name]/lifecycles.js
+module.exports = {
+beforeCreate(event) {
+const { data, where, select, populate } = event.params;
+// let's do a 20% discount everytime
+event.params.data.price = event.params.data.price * 0.8;
+},
+afterCreate(event) {
+const { result, params } = event;
+// do something to the result;
+},
+};
+./src/api/[api-name]/content-types/[content-type-name]/lifecycles.ts
+export default {
+beforeCreate(event) {
+const { data, where, select, populate } = event.params;
+// let's do a 20% discount everytime
+event.params.data.price = event.params.data.price * 0.8;
+},
+afterCreate(event) {
+const { result, params } = event;
+// do something to the result;
+},
+};
+Using the database layer API, it's also possible to register a subscriber and listen to events programmatically:
+./src/index.js
+module.exports = {
+async bootstrap({ strapi }) {
+// registering a subscriber
+strapi.db.lifecycles.subscribe({
+models: [], // optional;
+beforeCreate(event) {
+const { data, where, select, populate } = event.params;
+event.state = 'doStuffAfterWards';
+},
+afterCreate(event) {
+if (event.state === 'doStuffAfterWards') {
+}
+const { result, params } = event;
+// do something to the result
+},
+});
+// generic subscribe for generic handling
+strapi.db.lifecycles.subscribe((event) => {
+if (event.action === 'beforeCreate') {
+// do something
+}
+});
+}
+}
+Was this page helpful?
+Tags:
+admin panel
+backend customization
+backend server
+content-type
+Content-type Builder
+models
+model schema
+lifecycle hooks
+REST API
+Contribute to this page
+Previous
+Services
+Next
+Webhooks
+On this page▶
+Model creation
+Content-types
+Components
+Model schema
+Model settings
+Model information
+Component preview images
+Model attributes
+Validations
+Database validations and settings
+uid type
+Relations
+Custom fields
+Components
+Dynamic zones
+Model options
+Plugin options
+Lifecycle hooks
+Available lifecycle events
+Hook
+event object
+Declarative and programmatic usage
+Contribute to this page
+Back
+Strapi Docs AI Assistant
+To get back to elegant or markdown mode, click the in the upper right corner.To get back to elegant or markdown mode, tap Back in the upper left corner.
+No summary available for this page.
+Updates & Support
+What's new?
+Release notes
+FAQ
+Community & Support
+Usage information
+Additional resources
+v4 Docs
+Contributor Docs
+Strapi Design System
+v3 Docs (unsupported)
+Community
+Discord
+Twitter
+Stack Overflow
+Docs contribution program
+More
+Blog
+GitHub
+Strapi.io

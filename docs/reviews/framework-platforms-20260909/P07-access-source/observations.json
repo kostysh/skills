@@ -1,0 +1,527 @@
+{
+  "kind": "source callback projection, no HTTP/DB claim",
+  "observations": [
+    {
+      "name": "false",
+      "asyncResult": false,
+      "tenant": "alpha",
+      "ruleItems": [
+        {
+          "type": "boolean",
+          "value": false
+        },
+        {
+          "type": "object",
+          "value": {
+            "tenant": {
+              "equals": "alpha"
+            }
+          }
+        }
+      ],
+      "existingCalls": 1,
+      "forwardedId": null,
+      "forwardedData": null,
+      "identities": {
+        "fields": true,
+        "hooks": true,
+        "admin": true,
+        "update": true,
+        "untouched": true
+      }
+    },
+    {
+      "name": "false",
+      "asyncResult": false,
+      "tenant": "beta",
+      "ruleItems": [
+        {
+          "type": "boolean",
+          "value": false
+        },
+        {
+          "type": "object",
+          "value": {
+            "tenant": {
+              "equals": "beta"
+            }
+          }
+        }
+      ],
+      "existingCalls": 1,
+      "forwardedId": null,
+      "forwardedData": null,
+      "identities": {
+        "fields": true,
+        "hooks": true,
+        "admin": true,
+        "update": true,
+        "untouched": true
+      }
+    },
+    {
+      "name": "false",
+      "asyncResult": false,
+      "tenant": null,
+      "ruleItems": [
+        {
+          "type": "boolean",
+          "value": false
+        },
+        {
+          "type": "object",
+          "value": {
+            "tenant": {}
+          }
+        }
+      ],
+      "existingCalls": 1,
+      "forwardedId": null,
+      "forwardedData": null,
+      "identities": {
+        "fields": true,
+        "hooks": true,
+        "admin": true,
+        "update": true,
+        "untouched": true
+      }
+    },
+    {
+      "name": "false",
+      "asyncResult": true,
+      "tenant": "alpha",
+      "ruleItems": [
+        {
+          "type": "Promise",
+          "value": "[Promise]"
+        },
+        {
+          "type": "object",
+          "value": {
+            "tenant": {
+              "equals": "alpha"
+            }
+          }
+        }
+      ],
+      "existingCalls": 1,
+      "forwardedId": null,
+      "forwardedData": null,
+      "identities": {
+        "fields": true,
+        "hooks": true,
+        "admin": true,
+        "update": true,
+        "untouched": true
+      }
+    },
+    {
+      "name": "false",
+      "asyncResult": true,
+      "tenant": "beta",
+      "ruleItems": [
+        {
+          "type": "Promise",
+          "value": "[Promise]"
+        },
+        {
+          "type": "object",
+          "value": {
+            "tenant": {
+              "equals": "beta"
+            }
+          }
+        }
+      ],
+      "existingCalls": 1,
+      "forwardedId": null,
+      "forwardedData": null,
+      "identities": {
+        "fields": true,
+        "hooks": true,
+        "admin": true,
+        "update": true,
+        "untouched": true
+      }
+    },
+    {
+      "name": "false",
+      "asyncResult": true,
+      "tenant": null,
+      "ruleItems": [
+        {
+          "type": "Promise",
+          "value": "[Promise]"
+        },
+        {
+          "type": "object",
+          "value": {
+            "tenant": {}
+          }
+        }
+      ],
+      "existingCalls": 1,
+      "forwardedId": null,
+      "forwardedData": null,
+      "identities": {
+        "fields": true,
+        "hooks": true,
+        "admin": true,
+        "update": true,
+        "untouched": true
+      }
+    },
+    {
+      "name": "true",
+      "asyncResult": false,
+      "tenant": "alpha",
+      "ruleItems": [
+        {
+          "type": "boolean",
+          "value": true
+        },
+        {
+          "type": "object",
+          "value": {
+            "tenant": {
+              "equals": "alpha"
+            }
+          }
+        }
+      ],
+      "existingCalls": 1,
+      "forwardedId": null,
+      "forwardedData": null,
+      "identities": {
+        "fields": true,
+        "hooks": true,
+        "admin": true,
+        "update": true,
+        "untouched": true
+      }
+    },
+    {
+      "name": "true",
+      "asyncResult": false,
+      "tenant": "beta",
+      "ruleItems": [
+        {
+          "type": "boolean",
+          "value": true
+        },
+        {
+          "type": "object",
+          "value": {
+            "tenant": {
+              "equals": "beta"
+            }
+          }
+        }
+      ],
+      "existingCalls": 1,
+      "forwardedId": null,
+      "forwardedData": null,
+      "identities": {
+        "fields": true,
+        "hooks": true,
+        "admin": true,
+        "update": true,
+        "untouched": true
+      }
+    },
+    {
+      "name": "true",
+      "asyncResult": false,
+      "tenant": null,
+      "ruleItems": [
+        {
+          "type": "boolean",
+          "value": true
+        },
+        {
+          "type": "object",
+          "value": {
+            "tenant": {}
+          }
+        }
+      ],
+      "existingCalls": 1,
+      "forwardedId": null,
+      "forwardedData": null,
+      "identities": {
+        "fields": true,
+        "hooks": true,
+        "admin": true,
+        "update": true,
+        "untouched": true
+      }
+    },
+    {
+      "name": "true",
+      "asyncResult": true,
+      "tenant": "alpha",
+      "ruleItems": [
+        {
+          "type": "Promise",
+          "value": "[Promise]"
+        },
+        {
+          "type": "object",
+          "value": {
+            "tenant": {
+              "equals": "alpha"
+            }
+          }
+        }
+      ],
+      "existingCalls": 1,
+      "forwardedId": null,
+      "forwardedData": null,
+      "identities": {
+        "fields": true,
+        "hooks": true,
+        "admin": true,
+        "update": true,
+        "untouched": true
+      }
+    },
+    {
+      "name": "true",
+      "asyncResult": true,
+      "tenant": "beta",
+      "ruleItems": [
+        {
+          "type": "Promise",
+          "value": "[Promise]"
+        },
+        {
+          "type": "object",
+          "value": {
+            "tenant": {
+              "equals": "beta"
+            }
+          }
+        }
+      ],
+      "existingCalls": 1,
+      "forwardedId": null,
+      "forwardedData": null,
+      "identities": {
+        "fields": true,
+        "hooks": true,
+        "admin": true,
+        "update": true,
+        "untouched": true
+      }
+    },
+    {
+      "name": "true",
+      "asyncResult": true,
+      "tenant": null,
+      "ruleItems": [
+        {
+          "type": "Promise",
+          "value": "[Promise]"
+        },
+        {
+          "type": "object",
+          "value": {
+            "tenant": {}
+          }
+        }
+      ],
+      "existingCalls": 1,
+      "forwardedId": null,
+      "forwardedData": null,
+      "identities": {
+        "fields": true,
+        "hooks": true,
+        "admin": true,
+        "update": true,
+        "untouched": true
+      }
+    },
+    {
+      "name": "where",
+      "asyncResult": false,
+      "tenant": "alpha",
+      "ruleItems": [
+        {
+          "type": "object",
+          "value": {
+            "visible": {
+              "equals": true
+            }
+          }
+        },
+        {
+          "type": "object",
+          "value": {
+            "tenant": {
+              "equals": "alpha"
+            }
+          }
+        }
+      ],
+      "existingCalls": 1,
+      "forwardedId": null,
+      "forwardedData": null,
+      "identities": {
+        "fields": true,
+        "hooks": true,
+        "admin": true,
+        "update": true,
+        "untouched": true
+      }
+    },
+    {
+      "name": "where",
+      "asyncResult": false,
+      "tenant": "beta",
+      "ruleItems": [
+        {
+          "type": "object",
+          "value": {
+            "visible": {
+              "equals": true
+            }
+          }
+        },
+        {
+          "type": "object",
+          "value": {
+            "tenant": {
+              "equals": "beta"
+            }
+          }
+        }
+      ],
+      "existingCalls": 1,
+      "forwardedId": null,
+      "forwardedData": null,
+      "identities": {
+        "fields": true,
+        "hooks": true,
+        "admin": true,
+        "update": true,
+        "untouched": true
+      }
+    },
+    {
+      "name": "where",
+      "asyncResult": false,
+      "tenant": null,
+      "ruleItems": [
+        {
+          "type": "object",
+          "value": {
+            "visible": {
+              "equals": true
+            }
+          }
+        },
+        {
+          "type": "object",
+          "value": {
+            "tenant": {}
+          }
+        }
+      ],
+      "existingCalls": 1,
+      "forwardedId": null,
+      "forwardedData": null,
+      "identities": {
+        "fields": true,
+        "hooks": true,
+        "admin": true,
+        "update": true,
+        "untouched": true
+      }
+    },
+    {
+      "name": "where",
+      "asyncResult": true,
+      "tenant": "alpha",
+      "ruleItems": [
+        {
+          "type": "Promise",
+          "value": "[Promise]"
+        },
+        {
+          "type": "object",
+          "value": {
+            "tenant": {
+              "equals": "alpha"
+            }
+          }
+        }
+      ],
+      "existingCalls": 1,
+      "forwardedId": null,
+      "forwardedData": null,
+      "identities": {
+        "fields": true,
+        "hooks": true,
+        "admin": true,
+        "update": true,
+        "untouched": true
+      }
+    },
+    {
+      "name": "where",
+      "asyncResult": true,
+      "tenant": "beta",
+      "ruleItems": [
+        {
+          "type": "Promise",
+          "value": "[Promise]"
+        },
+        {
+          "type": "object",
+          "value": {
+            "tenant": {
+              "equals": "beta"
+            }
+          }
+        }
+      ],
+      "existingCalls": 1,
+      "forwardedId": null,
+      "forwardedData": null,
+      "identities": {
+        "fields": true,
+        "hooks": true,
+        "admin": true,
+        "update": true,
+        "untouched": true
+      }
+    },
+    {
+      "name": "where",
+      "asyncResult": true,
+      "tenant": null,
+      "ruleItems": [
+        {
+          "type": "Promise",
+          "value": "[Promise]"
+        },
+        {
+          "type": "object",
+          "value": {
+            "tenant": {}
+          }
+        }
+      ],
+      "existingCalls": 1,
+      "forwardedId": null,
+      "forwardedData": null,
+      "identities": {
+        "fields": true,
+        "hooks": true,
+        "admin": true,
+        "update": true,
+        "untouched": true
+      }
+    }
+  ]
+}

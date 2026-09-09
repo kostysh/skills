@@ -1,0 +1,59 @@
+{
+  "hono-engineer": {
+    "isolatedRoot": "/tmp/framework-platforms-20260909/author-compiled-hono-engineer-final/hono-engineer",
+    "matchedRuntimeFiles": {
+      "package.json": "243aaf9a2e4d79d012d94f3c8e8cb577bf45695e707ce21a7d4f23b49435defd",
+      "SKILL.md": "f961f660a0ee6cba0a7fd96ee6a94083a228238ab4c7c95be9d2805a467fc49b",
+      "test/docs-contract.test.mjs": "4b9b3943a31647a5b157c89a00df3c8a8e704091f3a7bd2416f850aa80b62281",
+      "agents/openai.yaml": "a0134d8b02c6cb344f83bd01f963979502b051cbd4cf714b1d4251b70e9142bc",
+      "references/wrangler.md": "9b891f3250af60e39e6d37cb24e14e148bc85260fe3ba5b219f82dc6ef536b71",
+      "references/workers-platform.md": "03d25c2243d4916a498be7d72b3f09bfd363a9591bb01172b81c530cec01c2a6",
+      "references/validation-openapi.md": "022cd75cc0db79a6b6e7508c0a5ca24d8d6c6e57a3532a0aa76aaa2fae8eb2ae",
+      "references/typing.md": "df16fa710a81168c348164644e55834282b388235216e93fa91585910c318537",
+      "references/supabase.md": "1f01fb82fa7ae84eee05cf8c296cd728f4c8beedacefa17f868d376cb591380d",
+      "references/security.md": "1425d8c8370e4628c74d2ecccf6db4dbc90954ec8668a48793be79f1454e74a2",
+      "references/routers.md": "3f8d4992ec22ded988ee4aa3bc0fbba8b38fabfe6177fc53e42adf3b8d22ad2a",
+      "references/rate-limiting.md": "f815aea19eca48ad8eef5266f685407123d4f5f76f7ccac5a7f2c7472d973379",
+      "references/pipelines.md": "152af85642de844722ba758b48ec0ff5456713d2dc151adc7880a7eb99ac0add",
+      "references/perf-security.md": "1afbc790af794e7e5602f204aed24854dc895e6ea8644625ec9dc1883423b47e",
+      "references/observability.md": "604d64c12a258189b17b3e259276094ff0e65046a4a6a65ef86ed886cbd13dd7",
+      "references/errors-logs.md": "314944e33e1e011e64347f5505f063eca50142767fceee59b5f13ea7e61c49ff",
+      "references/contracts-types.md": "6fe56f540454d6a8917e1cd5aabd88672cdb489c5cfffd05cde490810612a03b",
+      "references/caching.md": "d02f9fc9ee8691e122e3f9f8194b65fca5409257d9df6ae384c34d3e2cf59ddb",
+      "references/auth.md": "55ec126f059fb23da4c94ccab20ce456a848abd13d8ffcdfa222dd7b3183efc9",
+      "references/architecture.md": "470cc0825e23de0dad50dc92c7fbd3d5a177cad3aa9e7d0b2a937963fce4c0ea",
+      "references/framework-currency.md": "b5a086b156cfac1f2fe533b9113aa413d5bb1ddf6c1572558ff2e31850097571",
+      "references/high-risk-backend-contract.md": "f6d420ab9892541c0a0b84050c93754f3011d536dd755717d0f2944e68a09bc4"
+    },
+    "supportingCompileReport": "not byte-compared: output-specific report",
+    "result": "all emitted non-doc runtime/copy files equal current target"
+  },
+  "supabase-engineer": {
+    "isolatedRoot": "/tmp/framework-platforms-20260909/author-compiled-supabase-engineer/supabase-engineer",
+    "matchedRuntimeFiles": {
+      "SKILL.md": "92a16dcae032b615b7e620d75c468fcb722660e6e8c464f5b147b3e085c6b9f3",
+      "agents/openai.yaml": "f08b004b6312540db55f0be5991f16445925d7cf9a1d30f8558205946a975c8a",
+      "references/webhooks.md": "b98d93838d9aa328ed1937d0c1ed962840d7e308132ed156c63b87cf0e429be9",
+      "references/vector.md": "f85aa0b23763d5432867b40f3562e92ad8b57b92c1fa345ef9c59b30607a671f",
+      "references/troubleshooting.md": "63c61c836531e1d32432c70dc5ad1bb641728ff1d920d32c02d63b0339f2d8af",
+      "references/storage.md": "c82c523f012ae4eaa91de3025f8282c83e9d2499c59c8b998e70a704c4ad8bfc",
+      "references/security-privileges.md": "214a577902106b6eef3c558fe13daa9ff6f0217f2dd98ceca620652d469cf0c7",
+      "references/rls.md": "4b4f75f94aafe570784bb6d7741c96bfbcd33d5c09425048b8752b6832d96e7a",
+      "references/realtime.md": "4cd90caaeecd1abf9b18424a9b3fea97ba5daba02418d58568822871508532eb",
+      "references/operations-reliability.md": "f25f48f4657c49bd1bb06fa03d0b26de918db7772979b5615d264113328d9fb3",
+      "references/operations-release.md": "a43e1f4fab673d1809ce3eca49fa02f3e39f39aabf0b47ec7f3d5dd84194afa8",
+      "references/operations-observability.md": "5358f2e533f93db1fb56391e44a4dcfee66f3a58d0831ce02f675668fd0beed0",
+      "references/migrations-cli.md": "b22d7cd9f0c66e97130d02da7e5061478b83c81108d62e8d042c92dadaa82223",
+      "references/edge-functions.md": "8692826835d80ebf6cbc9ab69f42d258517c4fa8676e6374014f486eb183ddc3",
+      "references/high-risk-backend-contract.md": "24de22f8621fceed881c6e8821d836b23835da6e1f93bbe478fca065a98f745d",
+      "references/db-functions.md": "d1ea67c1ae3208a7d980af990b611c3b04978812e8bd9a769af3c64ff717d94e",
+      "references/database.md": "63d43eb9a1d9441ca67f73341d9b0fdf5d7514c5a76fc168e0357c55b89b4c09",
+      "references/data-handling.md": "dd76601cf580a5d95552eb0ffef049c207c8ab676f2e3fae7cba0972532f872b",
+      "references/client-setup.md": "0146449ca44cac32d43f3ccc8c68e7877762083d4f15c5982b400346a4ffed49",
+      "references/auth.md": "d955c7263ab57a9cf8e3801929a0232525aa9adf020554662ffd4fda73348942",
+      "references/architecture.md": "84c9bf4c2444d7680adcd79590220b30ed44d71fee456805b9b9f71c9909aa9d"
+    },
+    "supportingCompileReport": "not byte-compared: output-specific report",
+    "result": "all emitted non-doc runtime/copy files equal current target"
+  }
+}

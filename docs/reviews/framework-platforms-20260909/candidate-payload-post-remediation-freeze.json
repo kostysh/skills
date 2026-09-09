@@ -1,0 +1,25 @@
+{
+  "files": {
+    "skill.yaml": "c6daae7bf9012f46fbadff479cd09c476e7a6e1284f590def02dffbb5f080623",
+    "AGENTS.md": "160adcb8b9ac3f7f4b61341ba09b6b07ad8f0dc3cd7adadd7d86f25caee786bb",
+    "SKILL.md": "9a02717763b328222f840d34f3096ed54f115a3ea6f8a430f3a96f89dc3827b4",
+    "docs/compile-report.md": "d20506a5598d9c659248c0ebe2698fe88bb32ca3f144756a133202e73a72f711",
+    "docs/README.md": "f23913b5c511527b73b9c76d8a0697830607e2bcfd188a2dfba81ce14d3b12bb",
+    "fragments/overview.md": "ec0bdacf16c77a1ede3a3b87d82636aade0b41886ddb0d242ff5a5014538d4ff",
+    "agents/openai.yaml": "2dd7d1903a7b294cdf577504078c63216d8533e36b386fb9426688ac61292c35",
+    "references/access-control-advanced.md": "5fbfba4befe0477fb7d8a7e2dd1837b5b57ef9106a3596e6303466bc04298b70",
+    "references/adapters.md": "3e9937a6632eb3d181581b1b28454b4ca4860019e25d516d65c85c870fe1abae",
+    "references/fields.md": "a4249573ad5572f30ac4289cc7d63dbdd177bdb30f0c7d9eb1b136c90a25b669",
+    "references/plugin-development.md": "035e733302bea5039f5341938232b21a0fed469a5daf827083a4dbfec98a83b6",
+    "references/queries.md": "0109a26afc5eded0166888e0002f11f348ffa8efbf0dbe096a77537dfe8b10fb",
+    "references/field-type-guards.md": "be25a1e4334ef1f40d95ddd572a7c4e977e73b184e7951bcf82af928dd002b45",
+    "references/hooks.md": "526ae0c7ec2e1f70807b9133de3e00bab78ec7fb6156af6a96081322dec71b25",
+    "references/access-control.md": "e028a3a209ec0745445df296da3652afce8b984506b814b60c4526c67d010b66",
+    "references/endpoints.md": "3eee32261c705391d3c9df2bfccd57939e16a82446562f5b812ae7ca9347b890",
+    "references/collections.md": "a4128d09fdc6c6499956f1dc9f0b67fb366fe4b4b5657cd2030c429b770c3c7d",
+    "references/advanced.md": "1619912f22f8c144a9ff13b06b3af3347d0f36b85da44f1bf644d5f3614853d2",
+    "docs/logs/implementation-log-20260509-1.md": "9825ffcb9f7fe1589794769ff5b698f7f6660abb8639449520a354b161dd660b"
+  },
+  "aggregateSHA256": "0002f34a97eb7e80fd5040690565fe6ec7176722ef977d5e1895068d4d0a2ef4",
+  "RCA": "Payload-source-remediation-RCA.json"
+}

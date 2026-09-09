@@ -1,0 +1,17 @@
+{
+  "url": "https://api.github.com/repos/supabase/cli/releases/tags/v2.39.2",
+  "tag": "v2.39.2",
+  "published_at": "2025-08-23T13:14:37Z",
+  "assets": [
+    {
+      "name": "supabase_2.39.2_checksums.txt",
+      "url": "https://github.com/supabase/cli/releases/download/v2.39.2/supabase_2.39.2_checksums.txt",
+      "digest": "sha256:161deb4a4171b2aefb152f53d715230a136c63068fd14714efea9ed6b75f076d"
+    },
+    {
+      "name": "supabase_linux_amd64.tar.gz",
+      "url": "https://github.com/supabase/cli/releases/download/v2.39.2/supabase_linux_amd64.tar.gz",
+      "digest": "sha256:bd13b5afa5bdb06a254b8b24f63bc3ef679e1fb1bb245ee6e842d40955a7b2a5"
+    }
+  ]
+}

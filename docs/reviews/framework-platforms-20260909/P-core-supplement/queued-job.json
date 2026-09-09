@@ -1,0 +1,11 @@
+{
+  "id": 3,
+  "workflowSlug": "prepare-report",
+  "queue": "reports",
+  "input": {
+    "text": "  Quarter Report  ",
+    "requestKey": "report-001"
+  },
+  "completedAt": null,
+  "hasError": false
+}

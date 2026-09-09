@@ -1,0 +1,3479 @@
+{
+  "skill": "electron-engineer",
+  "base_revision": "d89d66f2c99bf8b9e84e5b4def54fa60192856a5",
+  "baseline_manifest": "baseline-snapshot.json",
+  "review_mode": "independent-baseline-source-audit",
+  "verified_date": "2026-09-09",
+  "release_channel": "stable unless aspect explicitly says experimental or existing-project branch",
+  "coverage_method": "All active baseline files read; equivalent claims grouped by aspect. File inventory preserves source/emitted/reference/asset identifiers and sections. Whole-file ranges describe occurrence search scope, not per-line execution. Historical records excluded from current technical authority.",
+  "technical_review_boundary": "Source-grounded inventory. Downloaded is not synonymous with verified. Every aspect supplies a substantive comparison; unavailable/soft404 sources are excluded as positive evidence. Product APIs/commands and blind agent behavior still require coordinator trials.",
+  "aspects": [
+    {
+      "id": "E01",
+      "aspect": "Installed tool/runtime/OS release matrix and stable vs experimental",
+      "source_files": [
+        "fragments/overview.md",
+        "SKILL.md",
+        "references/tooling-project-structure.md"
+      ],
+      "result": "correction-required",
+      "basis": "Electron44 stable меняет OS/native APIs; electron-vite5 Node^20.19||>=22.12, Vite5|6|7, SWC optional. Electron npm host engine>=22.12 отличается bundled Node.",
+      "required_change": "Добавить explicit installed/stable branch, no unsolicited upgrade, Electron44 macOS>=13/64-bit targets и43 compatibility when applicable.",
+      "version": "Electron44.3.0 stable;43 supported project branch; electron-vite5.0.0 stable/4 project branch; Forge7.11.2",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Official documentation/source comparison; no behavioral execution or product-runtime PASS from this row.",
+      "official_sources": [
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/electron-timelines",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/electron-timelines",
+          "file": "official-next-electron-docusaurus/094-www.electronjs.org-docs-latest-tutorial-electron-timelines.txt",
+          "retrieved_at": "2026-09-09T11:37:05.155313+00:00",
+          "status": "downloaded",
+          "text_sha256": "a7687c5a039473157b703d5769c575ac8715c5a67d4a3d1ca2c464c225d9f83d"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/electron-versioning",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/electron-versioning",
+          "file": "official-next-electron-docusaurus/095-www.electronjs.org-docs-latest-tutorial-electron-versioning.txt",
+          "retrieved_at": "2026-09-09T11:37:04.796221+00:00",
+          "status": "downloaded",
+          "text_sha256": "71a52760c5ea63d153e2c26d9d486ef6549722958779de41e8e21e7cd067bc2b"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/breaking-changes",
+          "final_url": "https://www.electronjs.org/docs/latest/breaking-changes",
+          "file": "official-next-electron-docusaurus/097-www.electronjs.org-docs-latest-breaking-changes.txt",
+          "retrieved_at": "2026-09-09T11:37:06.175261+00:00",
+          "status": "downloaded",
+          "text_sha256": "2d7d794a2f196c17fe6db83c73bd5c6ba71ff965e645f95402e5628e3d984e88"
+        },
+        {
+          "url": "https://releases.electronjs.org/releases/stable",
+          "final_url": "https://releases.electronjs.org/release?channel=stable",
+          "file": "official-next-electron-docusaurus/319-releases.electronjs.org-releases-stable.txt",
+          "retrieved_at": "2026-09-09T11:40:10.647983+00:00",
+          "status": "downloaded",
+          "text_sha256": "085995de50dd70d83f9b3ff68d2d065069828984b9a9a97639f4ddaf5d9de0f8"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/alex8088/electron-vite/v5.0.0/package.json",
+          "final_url": "https://raw.githubusercontent.com/alex8088/electron-vite/v5.0.0/package.json",
+          "file": "official-next-electron-docusaurus/322-raw.githubusercontent.com-alex8088-electron-vite-v5.0.0-package.json.txt",
+          "retrieved_at": "2026-09-09T11:40:09.853076+00:00",
+          "status": "downloaded",
+          "text_sha256": "76a61d3f06a16c4b0f7de7f0915e5c251de0060a75b3259ef3da2a5125b4ecca"
+        },
+        {
+          "url": "https://registry.npmjs.org/electron/latest",
+          "final_url": "https://registry.npmjs.org/electron/latest",
+          "file": "official-next-electron-docusaurus/344-registry.npmjs.org-electron-latest.txt",
+          "retrieved_at": "2026-09-09T11:40:12.041622+00:00",
+          "status": "downloaded",
+          "text_sha256": "e51218b506358ecf060a29dab0d92824967bc8fe65bc0a087f8c8da9cdbd0ba2"
+        },
+        {
+          "url": "https://registry.npmjs.org/electron-vite/latest",
+          "final_url": "https://registry.npmjs.org/electron-vite/latest",
+          "file": "official-next-electron-docusaurus/345-registry.npmjs.org-electron-vite-latest.txt",
+          "retrieved_at": "2026-09-09T11:40:12.141307+00:00",
+          "status": "downloaded",
+          "text_sha256": "0ffaee1ca093884494544b348eddbfe9682783f9f60f593fd55d5a799f1ccf4e"
+        },
+        {
+          "url": "https://registry.npmjs.org/@electron-forge%2fcli/latest",
+          "final_url": "https://registry.npmjs.org/@electron-forge%2fcli/latest",
+          "file": "official-next-electron-docusaurus/360-registry-electron-forge-cli-latest.json",
+          "retrieved_at": "2026-09-09T11:49:59.324884+00:00",
+          "status": "downloaded",
+          "text_sha256": "9b3bceba99c9bb3ef5a24759d5bacc28660950955ea8e4fa6d4d119b610f8d22"
+        }
+      ],
+      "source_occurrences": [
+        {
+          "file": "fragments/overview.md",
+          "line_start": 1,
+          "line_end": 74
+        },
+        {
+          "file": "SKILL.md",
+          "line_start": 1,
+          "line_end": 233
+        },
+        {
+          "file": "references/tooling-project-structure.md",
+          "line_start": 1,
+          "line_end": 115
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution."
+    },
+    {
+      "id": "E02",
+      "aspect": "Process model/lifecycle/single instance/window/session/utility ownership",
+      "source_files": [
+        "references/architecture.md"
+      ],
+      "result": "verified",
+      "basis": "Main/preload/renderer/utility boundaries, ready UI, requestSingleInstanceLock, open-file/open-url/activate, WebContentsView вместо BrowserView для новых compositions соответствуют APIs. Policies о минимальных capability — design constraints.",
+      "required_change": "Сохранить; точное выполнение зависит от установленной версии и задачи.",
+      "version": "Electron44.3.0 stable; electron-vite5.0.0; Forge7.11.2; existing43/4 branch",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Official documentation/source comparison; no behavioral execution or product-runtime PASS from this row.",
+      "official_sources": [
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/process-model",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/process-model",
+          "file": "official-next-electron-docusaurus/082-www.electronjs.org-docs-latest-tutorial-process-model.txt",
+          "retrieved_at": "2026-09-09T11:37:03.682408+00:00",
+          "status": "downloaded",
+          "text_sha256": "6c7f0ded3093e1e122f227a63e75986a1c2cb22dce07587d7b34bb96247aabd0"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/app",
+          "final_url": "https://www.electronjs.org/docs/latest/api/app",
+          "file": "official-next-electron-docusaurus/102-www.electronjs.org-docs-latest-api-app.txt",
+          "retrieved_at": "2026-09-09T11:37:05.791332+00:00",
+          "status": "downloaded",
+          "text_sha256": "d5f843124608f62952bb5cf37954b3149f6127303d63de42d196caa19bb47dab"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/browser-window",
+          "final_url": "https://www.electronjs.org/docs/latest/api/browser-window",
+          "file": "official-next-electron-docusaurus/103-www.electronjs.org-docs-latest-api-browser-window.txt",
+          "retrieved_at": "2026-09-09T11:37:05.895880+00:00",
+          "status": "downloaded",
+          "text_sha256": "2b98d57da5473fc8f8ddae5bdde33c59c9cc65735cadb2defedfa27ddab57d77"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/web-contents-view",
+          "final_url": "https://www.electronjs.org/docs/latest/api/web-contents-view",
+          "file": "official-next-electron-docusaurus/105-www.electronjs.org-docs-latest-api-web-contents-view.txt",
+          "retrieved_at": "2026-09-09T11:37:06.009408+00:00",
+          "status": "downloaded",
+          "text_sha256": "8f05a0cde96ea5d9f33dd1a0b6b8095b985dd7251afbc2389e6904f07a24c767"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/utility-process",
+          "final_url": "https://www.electronjs.org/docs/latest/api/utility-process",
+          "file": "official-next-electron-docusaurus/112-www.electronjs.org-docs-latest-api-utility-process.txt",
+          "retrieved_at": "2026-09-09T11:37:06.445332+00:00",
+          "status": "downloaded",
+          "text_sha256": "8c5e56c45b11ebd5b0151c5b4aac1dce9dc28e480522d96afebe8139fec7c189"
+        }
+      ],
+      "source_occurrences": [
+        {
+          "file": "references/architecture.md",
+          "line_start": 1,
+          "line_end": 135
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution."
+    },
+    {
+      "id": "E03",
+      "aspect": "Protocol scheme privileges vs handler/session registration timing",
+      "source_files": [
+        "references/architecture.md"
+      ],
+      "result": "correction-required",
+      "basis": "Только registerSchemesAsPrivileged before ready; обычные protocol methods/partition session требуют ready. Широкий bootstrap bullet register protocols before whenReady конфликтует с API.",
+      "required_change": "Сузить раннюю регистрацию до privileges; protocol.handle после ready и на правильной session; path traversal deny probe.",
+      "version": "Electron44.3.0 stable; electron-vite5.0.0; Forge7.11.2; existing43/4 branch",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Official documentation/source comparison; no behavioral execution or product-runtime PASS from this row.",
+      "official_sources": [
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/protocol",
+          "final_url": "https://www.electronjs.org/docs/latest/api/protocol",
+          "file": "official-next-electron-docusaurus/109-www.electronjs.org-docs-latest-api-protocol.txt",
+          "retrieved_at": "2026-09-09T11:37:06.427840+00:00",
+          "status": "downloaded",
+          "text_sha256": "450443c87cf527e600f33fd1b35a0a5116604d9114617e3270b2e1f1284b3d1d"
+        }
+      ],
+      "source_occurrences": [
+        {
+          "file": "references/architecture.md",
+          "line_start": 1,
+          "line_end": 135
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution."
+    },
+    {
+      "id": "E04",
+      "aspect": "Sandbox/contextIsolation/nodeIntegration/webviewTag/CSP/openExternal",
+      "source_files": [
+        "references/security-ipc-preload.md",
+        "references/renderer-integration.md"
+      ],
+      "result": "verified",
+      "basis": "secure BrowserWindow settings и narrow bridge соответствуют official security baseline; sandboxed preload имеет limited require, без полноценной Node environment. App content остаётся untrusted.",
+      "required_change": "Сохранить; точное выполнение зависит от установленной версии и задачи.",
+      "version": "Electron44.3.0 stable; electron-vite5.0.0; Forge7.11.2; existing43/4 branch",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Official documentation/source comparison; no behavioral execution or product-runtime PASS from this row.",
+      "official_sources": [
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/security",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/security",
+          "file": "official-next-electron-docusaurus/083-www.electronjs.org-docs-latest-tutorial-security.txt",
+          "retrieved_at": "2026-09-09T11:37:03.800134+00:00",
+          "status": "downloaded",
+          "text_sha256": "480a78f7f5684a6f4607a8644c920725778a616e579b7bd89a71fa7b4edaf927"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/sandbox",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/sandbox",
+          "file": "official-next-electron-docusaurus/084-www.electronjs.org-docs-latest-tutorial-sandbox.txt",
+          "retrieved_at": "2026-09-09T11:37:03.657489+00:00",
+          "status": "downloaded",
+          "text_sha256": "93a2d85766c21ef63503d48e570967a8573a1109122e8aec7ca130785a78d765"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/context-isolation",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/context-isolation",
+          "file": "official-next-electron-docusaurus/085-www.electronjs.org-docs-latest-tutorial-context-isolation.txt",
+          "retrieved_at": "2026-09-09T11:37:03.744388+00:00",
+          "status": "downloaded",
+          "text_sha256": "4ad2f817875e0e31f0259f72b40b6ba792498abceb8a4fee86d5b73aef6d74fd"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/browser-window",
+          "final_url": "https://www.electronjs.org/docs/latest/api/browser-window",
+          "file": "official-next-electron-docusaurus/103-www.electronjs.org-docs-latest-api-browser-window.txt",
+          "retrieved_at": "2026-09-09T11:37:05.895880+00:00",
+          "status": "downloaded",
+          "text_sha256": "2b98d57da5473fc8f8ddae5bdde33c59c9cc65735cadb2defedfa27ddab57d77"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/context-bridge",
+          "final_url": "https://www.electronjs.org/docs/latest/api/context-bridge",
+          "file": "official-next-electron-docusaurus/106-www.electronjs.org-docs-latest-api-context-bridge.txt",
+          "retrieved_at": "2026-09-09T11:37:06.194413+00:00",
+          "status": "downloaded",
+          "text_sha256": "e4c72343ab4a326d87b6d05fb98408b9ac7e2ecd77ac46e1dd162e7b2f375c4a"
+        }
+      ],
+      "source_occurrences": [
+        {
+          "file": "references/security-ipc-preload.md",
+          "line_start": 1,
+          "line_end": 207
+        },
+        {
+          "file": "references/renderer-integration.md",
+          "line_start": 1,
+          "line_end": 103
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution."
+    },
+    {
+      "id": "E05",
+      "aspect": "IPC handle/invoke schemas/results/sender/window/frame/session and contextBridge limits",
+      "source_files": [
+        "references/security-ipc-preload.md",
+        "references/typescript-in-electron.md"
+      ],
+      "result": "verified",
+      "basis": "Payload checks не заменяют senderFrame authority; raw ipcRenderer нельзя exposed across contextBridge, structured cloning ограничивает prototypes/symbols/native objects. contextBridge functions proxy и frozen copied data. Narrow facade supported.",
+      "required_change": "Сохранить; точное выполнение зависит от установленной версии и задачи.",
+      "version": "Electron44.3.0 stable; electron-vite5.0.0; Forge7.11.2; existing43/4 branch",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Official documentation/source comparison; no behavioral execution or product-runtime PASS from this row.",
+      "official_sources": [
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/security",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/security",
+          "file": "official-next-electron-docusaurus/083-www.electronjs.org-docs-latest-tutorial-security.txt",
+          "retrieved_at": "2026-09-09T11:37:03.800134+00:00",
+          "status": "downloaded",
+          "text_sha256": "480a78f7f5684a6f4607a8644c920725778a616e579b7bd89a71fa7b4edaf927"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/context-isolation",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/context-isolation",
+          "file": "official-next-electron-docusaurus/085-www.electronjs.org-docs-latest-tutorial-context-isolation.txt",
+          "retrieved_at": "2026-09-09T11:37:03.744388+00:00",
+          "status": "downloaded",
+          "text_sha256": "4ad2f817875e0e31f0259f72b40b6ba792498abceb8a4fee86d5b73aef6d74fd"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/ipc",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/ipc",
+          "file": "official-next-electron-docusaurus/086-www.electronjs.org-docs-latest-tutorial-ipc.txt",
+          "retrieved_at": "2026-09-09T11:37:04.571397+00:00",
+          "status": "downloaded",
+          "text_sha256": "f32b03f3b228280462de318f6b5aa33cfc44ff7ce67e0f31906b0c2d95dc6c1b"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/context-bridge",
+          "final_url": "https://www.electronjs.org/docs/latest/api/context-bridge",
+          "file": "official-next-electron-docusaurus/106-www.electronjs.org-docs-latest-api-context-bridge.txt",
+          "retrieved_at": "2026-09-09T11:37:06.194413+00:00",
+          "status": "downloaded",
+          "text_sha256": "e4c72343ab4a326d87b6d05fb98408b9ac7e2ecd77ac46e1dd162e7b2f375c4a"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/ipc-main",
+          "final_url": "https://www.electronjs.org/docs/latest/api/ipc-main",
+          "file": "official-next-electron-docusaurus/107-www.electronjs.org-docs-latest-api-ipc-main.txt",
+          "retrieved_at": "2026-09-09T11:37:06.174685+00:00",
+          "status": "downloaded",
+          "text_sha256": "32ca9d7b55bc29564efa1e3171cfe51ba73968ba2755a13f0c051a1a9b81354d"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/ipc-renderer",
+          "final_url": "https://www.electronjs.org/docs/latest/api/ipc-renderer",
+          "file": "official-next-electron-docusaurus/108-www.electronjs.org-docs-latest-api-ipc-renderer.txt",
+          "retrieved_at": "2026-09-09T11:37:06.214199+00:00",
+          "status": "downloaded",
+          "text_sha256": "b05d8ae8ea1202cd461cbc76b47aa655c9b3eb8bb029f9573b835c32ad7dd673"
+        }
+      ],
+      "source_occurrences": [
+        {
+          "file": "references/security-ipc-preload.md",
+          "line_start": 1,
+          "line_end": 207
+        },
+        {
+          "file": "references/typescript-in-electron.md",
+          "line_start": 1,
+          "line_end": 213
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution."
+    },
+    {
+      "id": "E06",
+      "aspect": "Navigation deprecated positional arguments and deny policy",
+      "source_files": [
+        "references/security-ipc-preload.md"
+      ],
+      "result": "correction-required",
+      "basis": "Current webContents API помечает positional url deprecated и даёт details.url; security tutorial всё ещё показывает old callback. Это deprecated, не removed. will-navigate не ловит программный loadURL и same-document.",
+      "required_change": "Новый sample details.url; сохранить старую version branch при необходимости, запреты проверять и на main-owned load paths; runtime probe resolving source discrepancy.",
+      "version": "Electron44.3.0 stable; electron-vite5.0.0; Forge7.11.2; existing43/4 branch",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Official documentation/source comparison; no behavioral execution or product-runtime PASS from this row.",
+      "official_sources": [
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/security",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/security",
+          "file": "official-next-electron-docusaurus/083-www.electronjs.org-docs-latest-tutorial-security.txt",
+          "retrieved_at": "2026-09-09T11:37:03.800134+00:00",
+          "status": "downloaded",
+          "text_sha256": "480a78f7f5684a6f4607a8644c920725778a616e579b7bd89a71fa7b4edaf927"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/web-contents",
+          "final_url": "https://www.electronjs.org/docs/latest/api/web-contents",
+          "file": "official-next-electron-docusaurus/104-www.electronjs.org-docs-latest-api-web-contents.txt",
+          "retrieved_at": "2026-09-09T11:37:05.855685+00:00",
+          "status": "downloaded",
+          "text_sha256": "32bc827dca016d9deec0e960137b1fceeaf3798a623025bed0d250747bb7e324"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/breaking-changes",
+          "final_url": "https://www.electronjs.org/docs/latest/breaking-changes",
+          "file": "official-next-electron-docusaurus/097-www.electronjs.org-docs-latest-breaking-changes.txt",
+          "retrieved_at": "2026-09-09T11:37:06.175261+00:00",
+          "status": "downloaded",
+          "text_sha256": "2d7d794a2f196c17fe6db83c73bd5c6ba71ff965e645f95402e5628e3d984e88"
+        }
+      ],
+      "source_occurrences": [
+        {
+          "file": "references/security-ipc-preload.md",
+          "line_start": 1,
+          "line_end": 207
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution."
+    },
+    {
+      "id": "E07",
+      "aspect": "Session permission check/request/device/display-media and cleanup",
+      "source_files": [
+        "references/security-ipc-preload.md",
+        "references/native-os-integration.md",
+        "references/testing-observability.md"
+      ],
+      "result": "correction-required",
+      "basis": "Для полного permission handling official требует check+request handlers. webContents в check nullable, subframes определять requestingOrigin/details. Baseline generic handler не фиксирует оба контура.",
+      "required_change": "Уточнить оба handlers/nullable/frame scope и display-media когда feature затронута; deny request не доказывает deny check.",
+      "version": "Electron44.3.0 stable; electron-vite5.0.0; Forge7.11.2; existing43/4 branch",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Official documentation/source comparison; no behavioral execution or product-runtime PASS from this row.",
+      "official_sources": [
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/session",
+          "final_url": "https://www.electronjs.org/docs/latest/api/session",
+          "file": "official-next-electron-docusaurus/110-www.electronjs.org-docs-latest-api-session.txt",
+          "retrieved_at": "2026-09-09T11:37:06.537040+00:00",
+          "status": "downloaded",
+          "text_sha256": "bb62164bdad51a0ec1edfd8b4a7fc584325f0d161f8dc401a6f3e1246eeb64cb"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/notification",
+          "final_url": "https://www.electronjs.org/docs/latest/api/notification",
+          "file": "official-next-electron-docusaurus/120-www.electronjs.org-docs-latest-api-notification.txt",
+          "retrieved_at": "2026-09-09T11:37:07.008942+00:00",
+          "status": "downloaded",
+          "text_sha256": "85275c148212d2a1302f8be2bf7b629cafe67bfdb9e87ada8ddffa02d70212eb"
+        }
+      ],
+      "source_occurrences": [
+        {
+          "file": "references/security-ipc-preload.md",
+          "line_start": 1,
+          "line_end": 207
+        },
+        {
+          "file": "references/native-os-integration.md",
+          "line_start": 1,
+          "line_end": 83
+        },
+        {
+          "file": "references/testing-observability.md",
+          "line_start": 1,
+          "line_end": 167
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution."
+    },
+    {
+      "id": "E08",
+      "aspect": "Electron-vite build/dev/preview/outDir/env/assets/externalization",
+      "source_files": [
+        "references/build-process.md",
+        "references/tooling-project-structure.md",
+        "references/typescript-in-electron.md"
+      ],
+      "result": "verified",
+      "basis": "dev/build/preview, outDir, sections main/preload/renderer, prefix-scoped env, assets and runtime dependencies подтверждены. v5 prefer build.externalizeDeps, старый plugin deprecated; baseline не содержит obsolete plugin call.",
+      "required_change": "Сохранить; точное выполнение зависит от установленной версии и задачи.",
+      "version": "Electron44.3.0 stable; electron-vite5.0.0; Forge7.11.2; existing43/4 branch",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Official documentation/source comparison; no behavioral execution or product-runtime PASS from this row.",
+      "official_sources": [
+        {
+          "url": "https://electron-vite.org/guide/",
+          "final_url": "https://electron-vite.org/guide/",
+          "file": "official-next-electron-docusaurus/129-electron-vite.org-guide-.txt",
+          "retrieved_at": "2026-09-09T11:37:08.262433+00:00",
+          "status": "downloaded",
+          "text_sha256": "ab8b420bca121dd2acf69a2ed3b34b337cc711c5099aefc63e292a461ff5884e"
+        },
+        {
+          "url": "https://electron-vite.org/guide/cli",
+          "final_url": "https://electron-vite.org/guide/cli",
+          "file": "official-next-electron-docusaurus/130-electron-vite.org-guide-cli.txt",
+          "retrieved_at": "2026-09-09T11:37:08.162305+00:00",
+          "status": "downloaded",
+          "text_sha256": "9c7214c95f6e8cb98c4ef63f5cc527f71d22ccc7d4dcc63a7a8f11d863b162b6"
+        },
+        {
+          "url": "https://electron-vite.org/guide/env-and-mode",
+          "final_url": "https://electron-vite.org/guide/env-and-mode",
+          "file": "official-next-electron-docusaurus/133-electron-vite.org-guide-env-and-mode.txt",
+          "retrieved_at": "2026-09-09T11:37:08.650007+00:00",
+          "status": "downloaded",
+          "text_sha256": "8e615736f3d7e190e24c03f1dee6e9c405f4a5c03d6ad01d40b137a6fcac65bb"
+        },
+        {
+          "url": "https://electron-vite.org/guide/dependency-handling",
+          "final_url": "https://electron-vite.org/guide/dependency-handling",
+          "file": "official-next-electron-docusaurus/134-electron-vite.org-guide-dependency-handling.txt",
+          "retrieved_at": "2026-09-09T11:37:08.669879+00:00",
+          "status": "downloaded",
+          "text_sha256": "e099178b35e4e21e6362a44ffaecaf48e332262d4bf1e7b8031dbae9f348e85e"
+        },
+        {
+          "url": "https://electron-vite.org/guide/distribution",
+          "final_url": "https://electron-vite.org/guide/distribution",
+          "file": "official-next-electron-docusaurus/137-electron-vite.org-guide-distribution.txt",
+          "retrieved_at": "2026-09-09T11:37:09.091081+00:00",
+          "status": "downloaded",
+          "text_sha256": "a7671c0225c069378f9ae5c303375362ee43d659552b8bd1361614b3c0d3dd16"
+        },
+        {
+          "url": "https://electron-vite.org/guide/build",
+          "final_url": "https://electron-vite.org/guide/build",
+          "file": "official-next-electron-docusaurus/139-electron-vite.org-guide-build.txt",
+          "retrieved_at": "2026-09-09T11:37:09.205904+00:00",
+          "status": "downloaded",
+          "text_sha256": "ea64081d994dbeddef36a0c0e3fe290eea619885975dc16127ed68230fd8912e"
+        },
+        {
+          "url": "https://electron-vite.org/guide/assets",
+          "final_url": "https://electron-vite.org/guide/assets",
+          "file": "official-next-electron-docusaurus/140-electron-vite.org-guide-assets.txt",
+          "retrieved_at": "2026-09-09T11:37:09.438329+00:00",
+          "status": "downloaded",
+          "text_sha256": "287960b4b258820273b31cfbe369a41092e089e9f83fef6a9ecba1bf50690be7"
+        },
+        {
+          "url": "https://electron-vite.org/config/",
+          "final_url": "https://electron-vite.org/config/",
+          "file": "official-next-electron-docusaurus/141-electron-vite.org-config-.txt",
+          "retrieved_at": "2026-09-09T11:37:09.643459+00:00",
+          "status": "downloaded",
+          "text_sha256": "d41747d6daabcce8ec133f637b6dc91dcca6720b3c8ba776ef1671d917e6beac"
+        },
+        {
+          "url": "https://electron-vite.org/guide/dev",
+          "final_url": "https://electron-vite.org/guide/dev",
+          "file": "official-next-electron-docusaurus/321-electron-vite.org-guide-dev.txt",
+          "retrieved_at": "2026-09-09T11:40:10.068295+00:00",
+          "status": "downloaded",
+          "text_sha256": "b43fc2568c167effd0558ee78b8b05b36e277bced677475c01af9d27d7f7b03f"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/alex8088/electron-vite/v5.0.0/package.json",
+          "final_url": "https://raw.githubusercontent.com/alex8088/electron-vite/v5.0.0/package.json",
+          "file": "official-next-electron-docusaurus/322-raw.githubusercontent.com-alex8088-electron-vite-v5.0.0-package.json.txt",
+          "retrieved_at": "2026-09-09T11:40:09.853076+00:00",
+          "status": "downloaded",
+          "text_sha256": "76a61d3f06a16c4b0f7de7f0915e5c251de0060a75b3259ef3da2a5125b4ecca"
+        }
+      ],
+      "source_occurrences": [
+        {
+          "file": "references/build-process.md",
+          "line_start": 1,
+          "line_end": 151
+        },
+        {
+          "file": "references/tooling-project-structure.md",
+          "line_start": 1,
+          "line_end": 115
+        },
+        {
+          "file": "references/typescript-in-electron.md",
+          "line_start": 1,
+          "line_end": 213
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution."
+    },
+    {
+      "id": "E09",
+      "aspect": "Isolated build release channel and sandboxed preload bundling",
+      "source_files": [
+        "references/build-process.md",
+        "references/tooling-project-structure.md",
+        "references/typescript-in-electron.md"
+      ],
+      "result": "correction-required",
+      "basis": "Full bundled CJS preload сохраняет sandbox; native ESM sandboxed preload unsupported. Isolated build официально experimental, baseline рекомендует без label.",
+      "required_change": "Пометить experimental и verify installed support; использовать только при реальном shared-chunk failure, не как universal default.",
+      "version": "Electron44.3.0 stable; electron-vite5.0.0; Forge7.11.2; existing43/4 branch",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Official documentation/source comparison; no behavioral execution or product-runtime PASS from this row.",
+      "official_sources": [
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/sandbox",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/sandbox",
+          "file": "official-next-electron-docusaurus/084-www.electronjs.org-docs-latest-tutorial-sandbox.txt",
+          "retrieved_at": "2026-09-09T11:37:03.657489+00:00",
+          "status": "downloaded",
+          "text_sha256": "93a2d85766c21ef63503d48e570967a8573a1109122e8aec7ca130785a78d765"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/esm",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/esm",
+          "file": "official-next-electron-docusaurus/087-www.electronjs.org-docs-latest-tutorial-esm.txt",
+          "retrieved_at": "2026-09-09T11:37:04.304274+00:00",
+          "status": "downloaded",
+          "text_sha256": "2bd5c3eeefbd967d935f9a450d7fbb08ceb62234656812001d99f46ff6d791ea"
+        },
+        {
+          "url": "https://electron-vite.org/guide/dependency-handling",
+          "final_url": "https://electron-vite.org/guide/dependency-handling",
+          "file": "official-next-electron-docusaurus/134-electron-vite.org-guide-dependency-handling.txt",
+          "retrieved_at": "2026-09-09T11:37:08.669879+00:00",
+          "status": "downloaded",
+          "text_sha256": "e099178b35e4e21e6362a44ffaecaf48e332262d4bf1e7b8031dbae9f348e85e"
+        },
+        {
+          "url": "https://electron-vite.org/guide/isolated-build",
+          "final_url": "https://electron-vite.org/guide/isolated-build",
+          "file": "official-next-electron-docusaurus/135-electron-vite.org-guide-isolated-build.txt",
+          "retrieved_at": "2026-09-09T11:37:08.637896+00:00",
+          "status": "downloaded",
+          "text_sha256": "d89217deb956e8c2bb110c1c20da9b239a8080d435958e637332e627df1b272b"
+        }
+      ],
+      "source_occurrences": [
+        {
+          "file": "references/build-process.md",
+          "line_start": 1,
+          "line_end": 151
+        },
+        {
+          "file": "references/tooling-project-structure.md",
+          "line_start": 1,
+          "line_end": 115
+        },
+        {
+          "file": "references/typescript-in-electron.md",
+          "line_start": 1,
+          "line_end": 213
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution."
+    },
+    {
+      "id": "E10",
+      "aspect": "Forge package/make/publish cascading and same-artifact evidence",
+      "source_files": [
+        "references/build-process.md",
+        "references/packaging-release-updates.md"
+      ],
+      "result": "correction-required",
+      "basis": "make по default перепаковывает; publish запускает package+make. Baseline pipeline smoke→make→publish и prebuild scripts меняют проверенный artifact после проверки.",
+      "required_change": "Freeze make artifacts, hash и verify их; publish --dry-run/--from-dry-run либо эквивалент без rebuild; --skip-package только осознанно; source build до формирования, не перед from-dry-run.",
+      "version": "Electron44.3.0 stable; electron-vite5.0.0; Forge7.11.2; existing43/4 branch",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Official documentation/source comparison; no behavioral execution or product-runtime PASS from this row.",
+      "official_sources": [
+        {
+          "url": "https://www.electronforge.io/cli",
+          "final_url": "https://www.electronforge.io/cli",
+          "file": "official-next-electron-docusaurus/142-www.electronforge.io-cli.txt",
+          "retrieved_at": "2026-09-09T11:37:09.521982+00:00",
+          "status": "downloaded",
+          "text_sha256": "e38b2433e7e38cf327033c0c2b70646ea81f520ef4980ee9458175e760dadfc7"
+        },
+        {
+          "url": "https://www.electronforge.io/core-concepts/build-lifecycle",
+          "final_url": "https://www.electronforge.io/core-concepts/build-lifecycle",
+          "file": "official-next-electron-docusaurus/315-www.electronforge.io-core-concepts-build-lifecycle.txt",
+          "retrieved_at": "2026-09-09T11:40:09.084919+00:00",
+          "status": "downloaded",
+          "text_sha256": "7b0f2ca45b7bd9a09b9cd74a208dcfd668a900786f079bb3c2ee670f3d610dd4"
+        }
+      ],
+      "source_occurrences": [
+        {
+          "file": "references/build-process.md",
+          "line_start": 1,
+          "line_end": 151
+        },
+        {
+          "file": "references/packaging-release-updates.md",
+          "line_start": 1,
+          "line_end": 133
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution."
+    },
+    {
+      "id": "E11",
+      "aspect": "pnpm install layout with Forge",
+      "source_files": [
+        "references/build-process.md",
+        "references/tooling-project-structure.md"
+      ],
+      "result": "correction-required",
+      "basis": "Forge package официально требует node-linker=hoisted для pnpm; default skill pnpm path не содержит настройки.",
+      "required_change": "Указать локальную compatibility настройку для Forge, проверить lockfile/install/runtime layout; не менять global pnpm.",
+      "version": "Electron44.3.0 stable; electron-vite5.0.0; Forge7.11.2; existing43/4 branch",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Official documentation/source comparison; no behavioral execution or product-runtime PASS from this row.",
+      "official_sources": [
+        {
+          "url": "https://www.electronforge.io/cli",
+          "final_url": "https://www.electronforge.io/cli",
+          "file": "official-next-electron-docusaurus/142-www.electronforge.io-cli.txt",
+          "retrieved_at": "2026-09-09T11:37:09.521982+00:00",
+          "status": "downloaded",
+          "text_sha256": "e38b2433e7e38cf327033c0c2b70646ea81f520ef4980ee9458175e760dadfc7"
+        }
+      ],
+      "source_occurrences": [
+        {
+          "file": "references/build-process.md",
+          "line_start": 1,
+          "line_end": 151
+        },
+        {
+          "file": "references/tooling-project-structure.md",
+          "line_start": 1,
+          "line_end": 115
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution."
+    },
+    {
+      "id": "E12",
+      "aspect": "ASAR/native unpack/rebuild/fuses/integrity/source exposure",
+      "source_files": [
+        "references/source-protection.md",
+        "references/build-process.md",
+        "references/packaging-release-updates.md",
+        "references/data-storage-native.md"
+      ],
+      "result": "verified",
+      "basis": "ASAR не encryption; native modules may need unpack; ABI rebuild targets Electron version/arch. Fuses/integrity ограничены platform/toolchain и требуют packaged proof. Signed bytes должны совпадать с final modified artifact.",
+      "required_change": "Сохранить; точное выполнение зависит от установленной версии и задачи.",
+      "version": "Electron44.3.0 stable; electron-vite5.0.0; Forge7.11.2; existing43/4 branch",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Official documentation/source comparison; no behavioral execution or product-runtime PASS from this row.",
+      "official_sources": [
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/using-native-node-modules",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/using-native-node-modules",
+          "file": "official-next-electron-docusaurus/088-www.electronjs.org-docs-latest-tutorial-using-native-node-modules.txt",
+          "retrieved_at": "2026-09-09T11:37:03.951340+00:00",
+          "status": "downloaded",
+          "text_sha256": "4ae89b6b407aa1cbe88187b65260cc0e704101b374cd95a49171a9844a27319c"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/asar-archives",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/asar-archives",
+          "file": "official-next-electron-docusaurus/089-www.electronjs.org-docs-latest-tutorial-asar-archives.txt",
+          "retrieved_at": "2026-09-09T11:37:04.380506+00:00",
+          "status": "downloaded",
+          "text_sha256": "772b290d86334cc3e63809f688e66be84255ae145c4f892a23b3b0edfd710ffd"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/asar-integrity",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/asar-integrity",
+          "file": "official-next-electron-docusaurus/090-www.electronjs.org-docs-latest-tutorial-asar-integrity.txt",
+          "retrieved_at": "2026-09-09T11:37:04.536570+00:00",
+          "status": "downloaded",
+          "text_sha256": "d3738fa15e2c6d96d8fb3c0f8786d4eb85615e8dda9a85ff7c94db7d1e3e0532"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/fuses",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/fuses",
+          "file": "official-next-electron-docusaurus/091-www.electronjs.org-docs-latest-tutorial-fuses.txt",
+          "retrieved_at": "2026-09-09T11:37:04.595651+00:00",
+          "status": "downloaded",
+          "text_sha256": "f2170f41d0c3157d7b0e136e3dd072e267a6b6cb63855a17a5ee0b7de3f3bc5f"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/application-distribution",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/application-distribution",
+          "file": "official-next-electron-docusaurus/101-www.electronjs.org-docs-latest-tutorial-application-distribution.txt",
+          "retrieved_at": "2026-09-09T11:37:05.420710+00:00",
+          "status": "downloaded",
+          "text_sha256": "f0b62d30765f31f2913a3d87a714561d8d6fc222cd7f35759eb60741cb61502e"
+        },
+        {
+          "url": "https://www.electronforge.io/config/plugins/auto-unpack-natives",
+          "final_url": "https://www.electronforge.io/config/plugins/auto-unpack-natives",
+          "file": "official-next-electron-docusaurus/318-www.electronforge.io-config-plugins-auto-unpack-natives.txt",
+          "retrieved_at": "2026-09-09T11:40:09.479576+00:00",
+          "status": "downloaded",
+          "text_sha256": "b2fb86e8360aff0925ba195b69b0b423b570c95c04a956ea1a218911521e8c11"
+        }
+      ],
+      "source_occurrences": [
+        {
+          "file": "references/source-protection.md",
+          "line_start": 1,
+          "line_end": 164
+        },
+        {
+          "file": "references/build-process.md",
+          "line_start": 1,
+          "line_end": 151
+        },
+        {
+          "file": "references/packaging-release-updates.md",
+          "line_start": 1,
+          "line_end": 133
+        },
+        {
+          "file": "references/data-storage-native.md",
+          "line_start": 1,
+          "line_end": 129
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution."
+    },
+    {
+      "id": "E13",
+      "aspect": "Bytecode/source maps/minification/SWC/source protection and platform caveats",
+      "source_files": [
+        "references/source-protection.md",
+        "references/build-process.md"
+      ],
+      "result": "verified",
+      "basis": "electron-vite bytecode production main/preload, not renderer; sandbox-preload conflicts; runtime-specific V8 output, arrow transform/protection limitations; private source maps и no-secret client guarantees correctly bounded. v5 build.bytecode replaces deprecated plugin when exact config is introduced.",
+      "required_change": "Сохранить; точное выполнение зависит от установленной версии и задачи.",
+      "version": "Electron44.3.0 stable; electron-vite5.0.0; Forge7.11.2; existing43/4 branch",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Official documentation/source comparison; no behavioral execution or product-runtime PASS from this row.",
+      "official_sources": [
+        {
+          "url": "https://electron-vite.org/guide/typescript",
+          "final_url": "https://electron-vite.org/guide/typescript",
+          "file": "official-next-electron-docusaurus/132-electron-vite.org-guide-typescript.txt",
+          "retrieved_at": "2026-09-09T11:37:08.181912+00:00",
+          "status": "downloaded",
+          "text_sha256": "4ba1df1b5ab310384757edc5d481b6360796355629488264a97289cbec8a36d0"
+        },
+        {
+          "url": "https://electron-vite.org/guide/source-code-protection",
+          "final_url": "https://electron-vite.org/guide/source-code-protection",
+          "file": "official-next-electron-docusaurus/136-electron-vite.org-guide-source-code-protection.txt",
+          "retrieved_at": "2026-09-09T11:37:08.906214+00:00",
+          "status": "downloaded",
+          "text_sha256": "30f307d2e98f362cb149d2394b982d7b21112cdaacb78b3043a229c102072691"
+        },
+        {
+          "url": "https://electron-vite.org/guide/migration",
+          "final_url": "https://electron-vite.org/guide/migration",
+          "file": "official-next-electron-docusaurus/138-electron-vite.org-guide-migration.txt",
+          "retrieved_at": "2026-09-09T11:37:09.194852+00:00",
+          "status": "downloaded",
+          "text_sha256": "027a1759f7e1ee0a0798ce6aecacca61867e600016fe24959fbfc6877c441acc"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/alex8088/electron-vite/v5.0.0/package.json",
+          "final_url": "https://raw.githubusercontent.com/alex8088/electron-vite/v5.0.0/package.json",
+          "file": "official-next-electron-docusaurus/322-raw.githubusercontent.com-alex8088-electron-vite-v5.0.0-package.json.txt",
+          "retrieved_at": "2026-09-09T11:40:09.853076+00:00",
+          "status": "downloaded",
+          "text_sha256": "76a61d3f06a16c4b0f7de7f0915e5c251de0060a75b3259ef3da2a5125b4ecca"
+        }
+      ],
+      "source_occurrences": [
+        {
+          "file": "references/source-protection.md",
+          "line_start": 1,
+          "line_end": 164
+        },
+        {
+          "file": "references/build-process.md",
+          "line_start": 1,
+          "line_end": 151
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution."
+    },
+    {
+      "id": "E14",
+      "aspect": "Signing/notarization/timestamp/CI makers and update channel/provenance",
+      "source_files": [
+        "references/packaging-release-updates.md"
+      ],
+      "result": "verified",
+      "basis": "mac signing/notarization and Windows signing are distinct target lanes; Forge package may sign/notarize before make. Linux built-in autoUpdater unavailable; target maker/update strategy determines support; local fake feed is not production update installation.",
+      "required_change": "Сохранить; точное выполнение зависит от установленной версии и задачи.",
+      "version": "Electron44.3.0 stable; electron-vite5.0.0; Forge7.11.2; existing43/4 branch",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Official documentation/source comparison; no behavioral execution or product-runtime PASS from this row.",
+      "official_sources": [
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/code-signing",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/code-signing",
+          "file": "official-next-electron-docusaurus/092-www.electronjs.org-docs-latest-tutorial-code-signing.txt",
+          "retrieved_at": "2026-09-09T11:37:05.087527+00:00",
+          "status": "downloaded",
+          "text_sha256": "0bf4a6f94a3691d1631c917a691b5dbd7e26bf1e02b1e14e392c48e788ef2192"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/updates",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/updates",
+          "file": "official-next-electron-docusaurus/093-www.electronjs.org-docs-latest-tutorial-updates.txt",
+          "retrieved_at": "2026-09-09T11:37:04.852386+00:00",
+          "status": "downloaded",
+          "text_sha256": "2cc7bcaf5907e8e09df4982d7073abb822501c1e85e7a2450b79dd0e3745d87f"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/application-distribution",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/application-distribution",
+          "file": "official-next-electron-docusaurus/101-www.electronjs.org-docs-latest-tutorial-application-distribution.txt",
+          "retrieved_at": "2026-09-09T11:37:05.420710+00:00",
+          "status": "downloaded",
+          "text_sha256": "f0b62d30765f31f2913a3d87a714561d8d6fc222cd7f35759eb60741cb61502e"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/auto-updater",
+          "final_url": "https://www.electronjs.org/docs/latest/api/auto-updater",
+          "file": "official-next-electron-docusaurus/113-www.electronjs.org-docs-latest-api-auto-updater.txt",
+          "retrieved_at": "2026-09-09T11:37:06.624297+00:00",
+          "status": "downloaded",
+          "text_sha256": "45600c5e85938c37c079a7d1d91a6f11c94c02875376a9f79b5448cc477a0a6c"
+        },
+        {
+          "url": "https://www.electronforge.io/config/configuration",
+          "final_url": "https://www.electronforge.io/config/configuration",
+          "file": "official-next-electron-docusaurus/143-www.electronforge.io-config-configuration.txt",
+          "retrieved_at": "2026-09-09T11:37:09.678599+00:00",
+          "status": "downloaded",
+          "text_sha256": "dad5b08a362aa0ee7a78c27da6ac467474792ee0d43d29faaf3bd655dd9d2c1c"
+        },
+        {
+          "url": "https://www.electronforge.io/guides/code-signing/code-signing-macos",
+          "final_url": "https://www.electronforge.io/guides/code-signing/code-signing-macos",
+          "file": "official-next-electron-docusaurus/146-www.electronforge.io-guides-code-signing-code-signing-macos.txt",
+          "retrieved_at": "2026-09-09T11:37:09.963017+00:00",
+          "status": "downloaded",
+          "text_sha256": "ef51596d8c5bda3e653576bc5614fc4c8955cf0f0e6b98762f0dd05c9a4f65c1"
+        },
+        {
+          "url": "https://www.electronforge.io/guides/code-signing/code-signing-windows",
+          "final_url": "https://www.electronforge.io/guides/code-signing/code-signing-windows",
+          "file": "official-next-electron-docusaurus/147-www.electronforge.io-guides-code-signing-code-signing-windows.txt",
+          "retrieved_at": "2026-09-09T11:37:10.037949+00:00",
+          "status": "downloaded",
+          "text_sha256": "e86834e8548d74f17f122ec7bc0383425b4778991e07b4445c5871d7b121b28f"
+        },
+        {
+          "url": "https://www.electronforge.io/core-concepts/build-lifecycle",
+          "final_url": "https://www.electronforge.io/core-concepts/build-lifecycle",
+          "file": "official-next-electron-docusaurus/315-www.electronforge.io-core-concepts-build-lifecycle.txt",
+          "retrieved_at": "2026-09-09T11:40:09.084919+00:00",
+          "status": "downloaded",
+          "text_sha256": "7b0f2ca45b7bd9a09b9cd74a208dcfd668a900786f079bb3c2ee670f3d610dd4"
+        },
+        {
+          "url": "https://www.electronforge.io/config/makers",
+          "final_url": "https://www.electronforge.io/config/makers",
+          "file": "official-next-electron-docusaurus/316-www.electronforge.io-config-makers.txt",
+          "retrieved_at": "2026-09-09T11:40:09.119350+00:00",
+          "status": "downloaded",
+          "text_sha256": "86fe1c3a2603185610a7fd3e435737fd7dcf12e19139c9882c583d8d8e3ac5ea"
+        },
+        {
+          "url": "https://www.electronforge.io/advanced/auto-update",
+          "final_url": "https://www.electronforge.io/advanced/auto-update",
+          "file": "official-next-electron-docusaurus/317-www.electronforge.io-advanced-auto-update.txt",
+          "retrieved_at": "2026-09-09T11:40:09.370301+00:00",
+          "status": "downloaded",
+          "text_sha256": "abed239a0408b6c42437a52f33a7dff654aa7daed9b8d218aa969838165bd1a3"
+        }
+      ],
+      "source_occurrences": [
+        {
+          "file": "references/packaging-release-updates.md",
+          "line_start": 1,
+          "line_end": 133
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution."
+    },
+    {
+      "id": "E15",
+      "aspect": "TS process aliases/moduleResolution/typechecks/shared declarations",
+      "source_files": [
+        "references/typescript-in-electron.md"
+      ],
+      "result": "verified",
+      "basis": "electron/main, electron/renderer, electron/common aliases official; aliases do not grant runtime capability; process config separation and explicit tsc separate from bundling appropriate. Exact TS NodeNext/bundler settings owner/version-dependent, not universal emitted defaults.",
+      "required_change": "Сохранить; точное выполнение зависит от установленной версии и задачи.",
+      "version": "Electron44.3.0 stable; electron-vite5.0.0; Forge7.11.2; existing43/4 branch",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Official documentation/source comparison; no behavioral execution or product-runtime PASS from this row.",
+      "official_sources": [
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/process-model",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/process-model",
+          "file": "official-next-electron-docusaurus/082-www.electronjs.org-docs-latest-tutorial-process-model.txt",
+          "retrieved_at": "2026-09-09T11:37:03.682408+00:00",
+          "status": "downloaded",
+          "text_sha256": "6c7f0ded3093e1e122f227a63e75986a1c2cb22dce07587d7b34bb96247aabd0"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/context-isolation",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/context-isolation",
+          "file": "official-next-electron-docusaurus/085-www.electronjs.org-docs-latest-tutorial-context-isolation.txt",
+          "retrieved_at": "2026-09-09T11:37:03.744388+00:00",
+          "status": "downloaded",
+          "text_sha256": "4ad2f817875e0e31f0259f72b40b6ba792498abceb8a4fee86d5b73aef6d74fd"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/esm",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/esm",
+          "file": "official-next-electron-docusaurus/087-www.electronjs.org-docs-latest-tutorial-esm.txt",
+          "retrieved_at": "2026-09-09T11:37:04.304274+00:00",
+          "status": "downloaded",
+          "text_sha256": "2bd5c3eeefbd967d935f9a450d7fbb08ceb62234656812001d99f46ff6d791ea"
+        },
+        {
+          "url": "https://electron-vite.org/guide/typescript",
+          "final_url": "https://electron-vite.org/guide/typescript",
+          "file": "official-next-electron-docusaurus/132-electron-vite.org-guide-typescript.txt",
+          "retrieved_at": "2026-09-09T11:37:08.181912+00:00",
+          "status": "downloaded",
+          "text_sha256": "4ba1df1b5ab310384757edc5d481b6360796355629488264a97289cbec8a36d0"
+        },
+        {
+          "url": "https://electron-vite.org/config/",
+          "final_url": "https://electron-vite.org/config/",
+          "file": "official-next-electron-docusaurus/141-electron-vite.org-config-.txt",
+          "retrieved_at": "2026-09-09T11:37:09.643459+00:00",
+          "status": "downloaded",
+          "text_sha256": "d41747d6daabcce8ec133f637b6dc91dcca6720b3c8ba776ef1671d917e6beac"
+        }
+      ],
+      "source_occurrences": [
+        {
+          "file": "references/typescript-in-electron.md",
+          "line_start": 1,
+          "line_end": 213
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution."
+    },
+    {
+      "id": "E16",
+      "aspect": "Decorators, emitDecoratorMetadata and electron-vite SWC option",
+      "source_files": [
+        "references/typescript-in-electron.md"
+      ],
+      "result": "verified",
+      "basis": "Current electron-vite supports optional @swc/core and SWC decorators metadata path; absence built-in Vite/esbuild metadata support remains relevant. No evidence to remove SWC as obsolete.",
+      "required_change": "Сохранить; точное выполнение зависит от установленной версии и задачи.",
+      "version": "Electron44.3.0 stable; electron-vite5.0.0; Forge7.11.2; existing43/4 branch",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Official documentation/source comparison; no behavioral execution or product-runtime PASS from this row.",
+      "official_sources": [
+        {
+          "url": "https://electron-vite.org/guide/typescript",
+          "final_url": "https://electron-vite.org/guide/typescript",
+          "file": "official-next-electron-docusaurus/132-electron-vite.org-guide-typescript.txt",
+          "retrieved_at": "2026-09-09T11:37:08.181912+00:00",
+          "status": "downloaded",
+          "text_sha256": "4ba1df1b5ab310384757edc5d481b6360796355629488264a97289cbec8a36d0"
+        },
+        {
+          "url": "https://raw.githubusercontent.com/alex8088/electron-vite/v5.0.0/package.json",
+          "final_url": "https://raw.githubusercontent.com/alex8088/electron-vite/v5.0.0/package.json",
+          "file": "official-next-electron-docusaurus/322-raw.githubusercontent.com-alex8088-electron-vite-v5.0.0-package.json.txt",
+          "retrieved_at": "2026-09-09T11:40:09.853076+00:00",
+          "status": "downloaded",
+          "text_sha256": "76a61d3f06a16c4b0f7de7f0915e5c251de0060a75b3259ef3da2a5125b4ecca"
+        }
+      ],
+      "source_occurrences": [
+        {
+          "file": "references/typescript-in-electron.md",
+          "line_start": 1,
+          "line_end": 213
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution."
+    },
+    {
+      "id": "E17",
+      "aspect": "App paths, safeStorage availability/weak Linux backend/session-only persistence",
+      "source_files": [
+        "references/data-storage-native.md"
+      ],
+      "result": "correction-required",
+      "basis": "getPath userData/sessionData/logs/crashDumps/temp valid; safeStorage platform-dependent and basic_text weak fallback. Current async encrypt/decrypt APIs preferred; baseline policy correct but no version choice.",
+      "required_change": "Keep session-only and backend validation; add async API branch/result shape only when feature needs it; do not promise universal vault.",
+      "version": "Electron44.3.0 stable; electron-vite5.0.0; Forge7.11.2; existing43/4 branch",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Official documentation/source comparison; no behavioral execution or product-runtime PASS from this row.",
+      "official_sources": [
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/app",
+          "final_url": "https://www.electronjs.org/docs/latest/api/app",
+          "file": "official-next-electron-docusaurus/102-www.electronjs.org-docs-latest-api-app.txt",
+          "retrieved_at": "2026-09-09T11:37:05.791332+00:00",
+          "status": "downloaded",
+          "text_sha256": "d5f843124608f62952bb5cf37954b3149f6127303d63de42d196caa19bb47dab"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/safe-storage",
+          "final_url": "https://www.electronjs.org/docs/latest/api/safe-storage",
+          "file": "official-next-electron-docusaurus/111-www.electronjs.org-docs-latest-api-safe-storage.txt",
+          "retrieved_at": "2026-09-09T11:37:06.428107+00:00",
+          "status": "downloaded",
+          "text_sha256": "762cce6183191d40b5d45368701ff8613d7dc5ba2f13fe2540f6ac8f089e70d0"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/breaking-changes",
+          "final_url": "https://www.electronjs.org/docs/latest/breaking-changes",
+          "file": "official-next-electron-docusaurus/097-www.electronjs.org-docs-latest-breaking-changes.txt",
+          "retrieved_at": "2026-09-09T11:37:06.175261+00:00",
+          "status": "downloaded",
+          "text_sha256": "2d7d794a2f196c17fe6db83c73bd5c6ba71ff965e645f95402e5628e3d984e88"
+        }
+      ],
+      "source_occurrences": [
+        {
+          "file": "references/data-storage-native.md",
+          "line_start": 1,
+          "line_end": 129
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution."
+    },
+    {
+      "id": "E18",
+      "aspect": "File imports/dialogs/native modules/local data migrations",
+      "source_files": [
+        "references/data-storage-native.md",
+        "references/native-os-integration.md"
+      ],
+      "result": "verified",
+      "basis": "Main-owned dialogs and cancellation/path validation, atomic app config and migration policies are task constraints; Electron ABI and ASAR checks are version-sensitive. No particular SQLite engine/transaction API is mandated, so library-specific SQL claims N/A.",
+      "required_change": "Сохранить; точное выполнение зависит от установленной версии и задачи.",
+      "version": "Electron44.3.0 stable; electron-vite5.0.0; Forge7.11.2; existing43/4 branch",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Official documentation/source comparison; no behavioral execution or product-runtime PASS from this row.",
+      "official_sources": [
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/using-native-node-modules",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/using-native-node-modules",
+          "file": "official-next-electron-docusaurus/088-www.electronjs.org-docs-latest-tutorial-using-native-node-modules.txt",
+          "retrieved_at": "2026-09-09T11:37:03.951340+00:00",
+          "status": "downloaded",
+          "text_sha256": "4ae89b6b407aa1cbe88187b65260cc0e704101b374cd95a49171a9844a27319c"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/asar-archives",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/asar-archives",
+          "file": "official-next-electron-docusaurus/089-www.electronjs.org-docs-latest-tutorial-asar-archives.txt",
+          "retrieved_at": "2026-09-09T11:37:04.380506+00:00",
+          "status": "downloaded",
+          "text_sha256": "772b290d86334cc3e63809f688e66be84255ae145c4f892a23b3b0edfd710ffd"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/app",
+          "final_url": "https://www.electronjs.org/docs/latest/api/app",
+          "file": "official-next-electron-docusaurus/102-www.electronjs.org-docs-latest-api-app.txt",
+          "retrieved_at": "2026-09-09T11:37:05.791332+00:00",
+          "status": "downloaded",
+          "text_sha256": "d5f843124608f62952bb5cf37954b3149f6127303d63de42d196caa19bb47dab"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/dialog",
+          "final_url": "https://www.electronjs.org/docs/latest/api/dialog",
+          "file": "official-next-electron-docusaurus/117-www.electronjs.org-docs-latest-api-dialog.txt",
+          "retrieved_at": "2026-09-09T11:37:06.867776+00:00",
+          "status": "downloaded",
+          "text_sha256": "ea78261d9a3c60664cd27e9c6847ebd1754413aa64fa93a27ed41bf73617f825"
+        }
+      ],
+      "source_occurrences": [
+        {
+          "file": "references/data-storage-native.md",
+          "line_start": 1,
+          "line_end": 129
+        },
+        {
+          "file": "references/native-os-integration.md",
+          "line_start": 1,
+          "line_end": 83
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution."
+    },
+    {
+      "id": "E19",
+      "aspect": "Native menu/tray/global shortcut/dialog/clipboard/notification/desktop capture/display/power/theme",
+      "source_files": [
+        "references/native-os-integration.md"
+      ],
+      "result": "correction-required",
+      "basis": "Named APIs owned by main are valid; Electron44 clipboard moved async/W3C and removed old renderer access; macOS42+ notifications require signing; capture/global shortcuts/Wayland require target-feature checks.",
+      "required_change": "Add version-aware current native API branch; report target OS tested; do not fabricate old sync clipboard on44 or cross-OS proof.",
+      "version": "Electron44.3.0 stable; electron-vite5.0.0; Forge7.11.2; existing43/4 branch",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Official documentation/source comparison; no behavioral execution or product-runtime PASS from this row.",
+      "official_sources": [
+        {
+          "url": "https://www.electronjs.org/docs/latest/breaking-changes",
+          "final_url": "https://www.electronjs.org/docs/latest/breaking-changes",
+          "file": "official-next-electron-docusaurus/097-www.electronjs.org-docs-latest-breaking-changes.txt",
+          "retrieved_at": "2026-09-09T11:37:06.175261+00:00",
+          "status": "downloaded",
+          "text_sha256": "2d7d794a2f196c17fe6db83c73bd5c6ba71ff965e645f95402e5628e3d984e88"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/menu",
+          "final_url": "https://www.electronjs.org/docs/latest/api/menu",
+          "file": "official-next-electron-docusaurus/114-www.electronjs.org-docs-latest-api-menu.txt",
+          "retrieved_at": "2026-09-09T11:37:06.631152+00:00",
+          "status": "downloaded",
+          "text_sha256": "09a505a9f1afedd24c757d638a34fe90d2010b65098f57417694376f2419d555"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/tray",
+          "final_url": "https://www.electronjs.org/docs/latest/api/tray",
+          "file": "official-next-electron-docusaurus/115-www.electronjs.org-docs-latest-api-tray.txt",
+          "retrieved_at": "2026-09-09T11:37:06.682966+00:00",
+          "status": "downloaded",
+          "text_sha256": "bce40679af31b43185f1aebbee53c2229a4edc82309d3ae9f96051ed8d40fc85"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/global-shortcut",
+          "final_url": "https://www.electronjs.org/docs/latest/api/global-shortcut",
+          "file": "official-next-electron-docusaurus/116-www.electronjs.org-docs-latest-api-global-shortcut.txt",
+          "retrieved_at": "2026-09-09T11:37:06.748842+00:00",
+          "status": "downloaded",
+          "text_sha256": "ecbbdd9fbdec45d05a7d9454ffac5682ec803790f8a52a9200015ed8325dcec1"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/dialog",
+          "final_url": "https://www.electronjs.org/docs/latest/api/dialog",
+          "file": "official-next-electron-docusaurus/117-www.electronjs.org-docs-latest-api-dialog.txt",
+          "retrieved_at": "2026-09-09T11:37:06.867776+00:00",
+          "status": "downloaded",
+          "text_sha256": "ea78261d9a3c60664cd27e9c6847ebd1754413aa64fa93a27ed41bf73617f825"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/clipboard",
+          "final_url": "https://www.electronjs.org/docs/latest/api/clipboard",
+          "file": "official-next-electron-docusaurus/118-www.electronjs.org-docs-latest-api-clipboard.txt",
+          "retrieved_at": "2026-09-09T11:37:06.854149+00:00",
+          "status": "downloaded",
+          "text_sha256": "cae35d14172cfc7bf558b950bcc3da48d6e7729427f186df479ee549baca79c4"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/download-item",
+          "final_url": "https://www.electronjs.org/docs/latest/api/download-item",
+          "file": "official-next-electron-docusaurus/119-www.electronjs.org-docs-latest-api-download-item.txt",
+          "retrieved_at": "2026-09-09T11:37:06.900292+00:00",
+          "status": "downloaded",
+          "text_sha256": "93f0c6a1b7614720bafd5ee2bd22beff44aeee52b63a79d8bcad1e7834a682f2"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/notification",
+          "final_url": "https://www.electronjs.org/docs/latest/api/notification",
+          "file": "official-next-electron-docusaurus/120-www.electronjs.org-docs-latest-api-notification.txt",
+          "retrieved_at": "2026-09-09T11:37:07.008942+00:00",
+          "status": "downloaded",
+          "text_sha256": "85275c148212d2a1302f8be2bf7b629cafe67bfdb9e87ada8ddffa02d70212eb"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/desktop-capturer",
+          "final_url": "https://www.electronjs.org/docs/latest/api/desktop-capturer",
+          "file": "official-next-electron-docusaurus/121-www.electronjs.org-docs-latest-api-desktop-capturer.txt",
+          "retrieved_at": "2026-09-09T11:37:07.100083+00:00",
+          "status": "downloaded",
+          "text_sha256": "b6887e7f820559ca4b11c71a02c98499643f415315ee3dd2203801bb5c1f4453"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/screen",
+          "final_url": "https://www.electronjs.org/docs/latest/api/screen",
+          "file": "official-next-electron-docusaurus/122-www.electronjs.org-docs-latest-api-screen.txt",
+          "retrieved_at": "2026-09-09T11:37:07.098310+00:00",
+          "status": "downloaded",
+          "text_sha256": "0739058991b0ab8e4c64eb7f171d0b7b0164408218a7459207d31ce8d8e2c177"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/power-monitor",
+          "final_url": "https://www.electronjs.org/docs/latest/api/power-monitor",
+          "file": "official-next-electron-docusaurus/123-www.electronjs.org-docs-latest-api-power-monitor.txt",
+          "retrieved_at": "2026-09-09T11:37:07.100361+00:00",
+          "status": "downloaded",
+          "text_sha256": "b2e80f668dfde40bd2d2deeb1563aa16929e21b25b93d729dacf8f0a70e20487"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/power-save-blocker",
+          "final_url": "https://www.electronjs.org/docs/latest/api/power-save-blocker",
+          "file": "official-next-electron-docusaurus/124-www.electronjs.org-docs-latest-api-power-save-blocker.txt",
+          "retrieved_at": "2026-09-09T11:37:07.207475+00:00",
+          "status": "downloaded",
+          "text_sha256": "576ef3bc071def837c7d46fd57f9c6a426269f0bf259c3806c79c760503ec8d0"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/native-theme",
+          "final_url": "https://www.electronjs.org/docs/latest/api/native-theme",
+          "file": "official-next-electron-docusaurus/125-www.electronjs.org-docs-latest-api-native-theme.txt",
+          "retrieved_at": "2026-09-09T11:37:07.300703+00:00",
+          "status": "downloaded",
+          "text_sha256": "2529ccbca8e0560e192555394bb00fd13f7340d6a1d617e745d4c0c99cc91bb2"
+        }
+      ],
+      "source_occurrences": [
+        {
+          "file": "references/native-os-integration.md",
+          "line_start": 1,
+          "line_end": 83
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution."
+    },
+    {
+      "id": "E20",
+      "aspect": "React renderer routing/state/forms/offline UI and browser-only dependencies",
+      "source_files": [
+        "references/renderer-integration.md"
+      ],
+      "result": "verified",
+      "basis": "Renderer framework remains browser-only with typed bridge; main owns privileged storage/lifecycle; server/query/UI state owner guidance matches process model. Framework/library selections remain project decisions, not mandatory Electron dependencies.",
+      "required_change": "Сохранить; точное выполнение зависит от установленной версии и задачи.",
+      "version": "Electron44.3.0 stable; electron-vite5.0.0; Forge7.11.2; existing43/4 branch",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Official documentation/source comparison; no behavioral execution or product-runtime PASS from this row.",
+      "official_sources": [
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/process-model",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/process-model",
+          "file": "official-next-electron-docusaurus/082-www.electronjs.org-docs-latest-tutorial-process-model.txt",
+          "retrieved_at": "2026-09-09T11:37:03.682408+00:00",
+          "status": "downloaded",
+          "text_sha256": "6c7f0ded3093e1e122f227a63e75986a1c2cb22dce07587d7b34bb96247aabd0"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/security",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/security",
+          "file": "official-next-electron-docusaurus/083-www.electronjs.org-docs-latest-tutorial-security.txt",
+          "retrieved_at": "2026-09-09T11:37:03.800134+00:00",
+          "status": "downloaded",
+          "text_sha256": "480a78f7f5684a6f4607a8644c920725778a616e579b7bd89a71fa7b4edaf927"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/context-isolation",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/context-isolation",
+          "file": "official-next-electron-docusaurus/085-www.electronjs.org-docs-latest-tutorial-context-isolation.txt",
+          "retrieved_at": "2026-09-09T11:37:03.744388+00:00",
+          "status": "downloaded",
+          "text_sha256": "4ad2f817875e0e31f0259f72b40b6ba792498abceb8a4fee86d5b73aef6d74fd"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/esm",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/esm",
+          "file": "official-next-electron-docusaurus/087-www.electronjs.org-docs-latest-tutorial-esm.txt",
+          "retrieved_at": "2026-09-09T11:37:04.304274+00:00",
+          "status": "downloaded",
+          "text_sha256": "2bd5c3eeefbd967d935f9a450d7fbb08ceb62234656812001d99f46ff6d791ea"
+        }
+      ],
+      "source_occurrences": [
+        {
+          "file": "references/renderer-integration.md",
+          "line_start": 1,
+          "line_end": 103
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution."
+    },
+    {
+      "id": "E21",
+      "aspect": "Playwright/WebdriverIO/Spectron and packaged runtime verification",
+      "source_files": [
+        "references/testing-observability.md"
+      ],
+      "result": "verified",
+      "basis": "Playwright Electron support experimental; WebdriverIO service is maintained third-party with official owner docs; Spectron deprecated. Mocks cover policy only; real main/preload/renderer and packaged lane remain separate.",
+      "required_change": "Сохранить; точное выполнение зависит от установленной версии и задачи.",
+      "version": "Electron44.3.0 stable; electron-vite5.0.0; Forge7.11.2; existing43/4 branch",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Official documentation/source comparison; no behavioral execution or product-runtime PASS from this row.",
+      "official_sources": [
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/automated-testing",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/automated-testing",
+          "file": "official-next-electron-docusaurus/099-www.electronjs.org-docs-latest-tutorial-automated-testing.txt",
+          "retrieved_at": "2026-09-09T11:37:05.392410+00:00",
+          "status": "downloaded",
+          "text_sha256": "85200a077ad1a29114970009ae6818cfd87769bcb478a06ca09d85adb895abd6"
+        },
+        {
+          "url": "https://playwright.dev/docs/api/class-electron",
+          "final_url": "https://playwright.dev/docs/api/class-electron",
+          "file": "official-next-electron-docusaurus/200-playwright.dev-docs-api-class-electron.txt",
+          "retrieved_at": "2026-09-09T11:37:15.009161+00:00",
+          "status": "downloaded",
+          "text_sha256": "beb31f9d184b1b7f1ae3222c79a1bf886d80201de02fa8230a07396f88e14748"
+        },
+        {
+          "url": "https://webdriver.io/docs/desktop-testing/electron/",
+          "final_url": "https://webdriver.io/docs/desktop-testing/electron/",
+          "file": "official-next-electron-docusaurus/201-webdriver.io-docs-desktop-testing-electron-.txt",
+          "retrieved_at": "2026-09-09T11:37:15.047882+00:00",
+          "status": "downloaded",
+          "text_sha256": "2441154ac529cc0251d894dc38cd54ec6b31d949e901e9ead7b623f43168cb9d"
+        }
+      ],
+      "source_occurrences": [
+        {
+          "file": "references/testing-observability.md",
+          "line_start": 1,
+          "line_end": 167
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution."
+    },
+    {
+      "id": "E22",
+      "aspect": "Main debugger/logging/crashReporter/netLog/contentTracing/performance",
+      "source_files": [
+        "references/testing-observability.md"
+      ],
+      "result": "verified",
+      "basis": "Main inspector vs renderer DevTools, crash reporter initialization, netLog and contentTracing APIs supported. Production remote debugging unsafe; logs/dumps sensitive. Performance metrics are design budgets, not guaranteed numerical claims.",
+      "required_change": "Сохранить; точное выполнение зависит от установленной версии и задачи.",
+      "version": "Electron44.3.0 stable; electron-vite5.0.0; Forge7.11.2; existing43/4 branch",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Official documentation/source comparison; no behavioral execution or product-runtime PASS from this row.",
+      "official_sources": [
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/performance",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/performance",
+          "file": "official-next-electron-docusaurus/098-www.electronjs.org-docs-latest-tutorial-performance.txt",
+          "retrieved_at": "2026-09-09T11:37:05.213864+00:00",
+          "status": "downloaded",
+          "text_sha256": "fe16f38d52d7be84a262929e8b84ce551588cc99ab9a031c6746f60e06fce30a"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/debugging-main-process",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/debugging-main-process",
+          "file": "official-next-electron-docusaurus/100-www.electronjs.org-docs-latest-tutorial-debugging-main-process.txt",
+          "retrieved_at": "2026-09-09T11:37:05.354767+00:00",
+          "status": "downloaded",
+          "text_sha256": "4bdb09d0f7a9f16fe16aab5a9ce34b83ef287ca2d4179a3845bd34045d6bb106"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/crash-reporter",
+          "final_url": "https://www.electronjs.org/docs/latest/api/crash-reporter",
+          "file": "official-next-electron-docusaurus/126-www.electronjs.org-docs-latest-api-crash-reporter.txt",
+          "retrieved_at": "2026-09-09T11:37:07.348520+00:00",
+          "status": "downloaded",
+          "text_sha256": "a1fd0085ac1ff009c71ce0ba9fe873c3c75aa9ae94224c048613cc664c9ab362"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/net-log",
+          "final_url": "https://www.electronjs.org/docs/latest/api/net-log",
+          "file": "official-next-electron-docusaurus/127-www.electronjs.org-docs-latest-api-net-log.txt",
+          "retrieved_at": "2026-09-09T11:37:07.712154+00:00",
+          "status": "downloaded",
+          "text_sha256": "bdae17ad3abf45a4313a19e418b7cc7db82ac7136a59451a9e61886aac21d2e6"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/api/content-tracing",
+          "final_url": "https://www.electronjs.org/docs/latest/api/content-tracing",
+          "file": "official-next-electron-docusaurus/128-www.electronjs.org-docs-latest-api-content-tracing.txt",
+          "retrieved_at": "2026-09-09T11:37:07.428850+00:00",
+          "status": "downloaded",
+          "text_sha256": "eec2eb26a7e29c4da08b7702f9e4598764b3cd9fc5f4cddb3585388adddd34bf"
+        }
+      ],
+      "source_occurrences": [
+        {
+          "file": "references/testing-observability.md",
+          "line_start": 1,
+          "line_end": 167
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution."
+    },
+    {
+      "id": "E23",
+      "aspect": "Review playbooks, output proof limits and direct owners",
+      "source_files": [
+        "references/review-playbooks.md",
+        "fragments/overview.md",
+        "SKILL.md"
+      ],
+      "result": "verified",
+      "basis": "Architecture/security/native/source/build/TS/runtime review selectors agree with owning Electron facets. Evidence limits preserve OS and real-package distinctions except E10 same-artifact sequence.",
+      "required_change": "Сохранить; точное выполнение зависит от установленной версии и задачи.",
+      "version": "Electron44.3.0 stable; electron-vite5.0.0; Forge7.11.2; existing43/4 branch",
+      "verified_date": "2026-09-09",
+      "evidence_boundary": "Official documentation/source comparison; no behavioral execution or product-runtime PASS from this row.",
+      "official_sources": [
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/process-model",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/process-model",
+          "file": "official-next-electron-docusaurus/082-www.electronjs.org-docs-latest-tutorial-process-model.txt",
+          "retrieved_at": "2026-09-09T11:37:03.682408+00:00",
+          "status": "downloaded",
+          "text_sha256": "6c7f0ded3093e1e122f227a63e75986a1c2cb22dce07587d7b34bb96247aabd0"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/security",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/security",
+          "file": "official-next-electron-docusaurus/083-www.electronjs.org-docs-latest-tutorial-security.txt",
+          "retrieved_at": "2026-09-09T11:37:03.800134+00:00",
+          "status": "downloaded",
+          "text_sha256": "480a78f7f5684a6f4607a8644c920725778a616e579b7bd89a71fa7b4edaf927"
+        },
+        {
+          "url": "https://www.electronjs.org/docs/latest/tutorial/automated-testing",
+          "final_url": "https://www.electronjs.org/docs/latest/tutorial/automated-testing",
+          "file": "official-next-electron-docusaurus/099-www.electronjs.org-docs-latest-tutorial-automated-testing.txt",
+          "retrieved_at": "2026-09-09T11:37:05.392410+00:00",
+          "status": "downloaded",
+          "text_sha256": "85200a077ad1a29114970009ae6818cfd87769bcb478a06ca09d85adb895abd6"
+        },
+        {
+          "url": "https://www.electronforge.io/core-concepts/build-lifecycle",
+          "final_url": "https://www.electronforge.io/core-concepts/build-lifecycle",
+          "file": "official-next-electron-docusaurus/315-www.electronforge.io-core-concepts-build-lifecycle.txt",
+          "retrieved_at": "2026-09-09T11:40:09.084919+00:00",
+          "status": "downloaded",
+          "text_sha256": "7b0f2ca45b7bd9a09b9cd74a208dcfd668a900786f079bb3c2ee670f3d610dd4"
+        }
+      ],
+      "source_occurrences": [
+        {
+          "file": "references/review-playbooks.md",
+          "line_start": 1,
+          "line_end": 209
+        },
+        {
+          "file": "fragments/overview.md",
+          "line_start": 1,
+          "line_end": 74
+        },
+        {
+          "file": "SKILL.md",
+          "line_start": 1,
+          "line_end": 233
+        }
+      ],
+      "falsifier": "Claim contradicts the version-matched official API or fails the corresponding frozen API/runtime case; source comparison never substitutes for that execution."
+    }
+  ],
+  "file_inventory": [
+    {
+      "file": "AGENTS.md",
+      "sha256": "d6db54b436419af0b655ecbc96f2359d8536e509937afd862631f5efd270ddce",
+      "line_count": 34,
+      "role": "metadata-or-maintenance",
+      "aspect_ids": [],
+      "technical_claim_identifiers": [
+        "SKILL.md",
+        "agents/*",
+        "docs/compile-report.md",
+        "fragments/*",
+        "node ../skill-source-compiler/scripts/skill-source-compiler.mjs check .",
+        "node ../skill-source-compiler/scripts/skill-source-compiler.mjs regenerate .",
+        "references/*",
+        "skill-source-compiler",
+        "skill.yaml"
+      ],
+      "sections": [
+        {
+          "line": 8,
+          "title": "AGENTS.md"
+        },
+        {
+          "line": 12,
+          "title": "Skill Type"
+        },
+        {
+          "line": 28,
+          "title": "Maintenance Rules"
+        }
+      ],
+      "assessment": "N/A: metadata, generation, loading and maintenance rules; technical root repetition covered by linked overview/reference aspects"
+    },
+    {
+      "file": "SKILL.md",
+      "sha256": "49cbaedf44923aa52942c26e9f32f704b750396dc91d4a293762ddaeec9eb7b2",
+      "line_count": 233,
+      "role": "emitted",
+      "aspect_ids": [
+        "E01",
+        "E23"
+      ],
+      "technical_claim_identifiers": [
+        "contextIsolation: false",
+        "contextIsolation: true",
+        "invoke(channel, payload)",
+        "ipcRenderer",
+        "localhost",
+        "node-engineer",
+        "nodeIntegration: false",
+        "nodeIntegration: true",
+        "react-spa-engineer",
+        "sandbox: true",
+        "typescript-engineer",
+        "webviewTag: false"
+      ],
+      "sections": [
+        {
+          "line": 13,
+          "title": "electron-engineer"
+        },
+        {
+          "line": 15,
+          "title": "Start here"
+        },
+        {
+          "line": 24,
+          "title": "When to use this skill"
+        },
+        {
+          "line": 33,
+          "title": "When NOT to use this skill"
+        },
+        {
+          "line": 40,
+          "title": "Overview"
+        },
+        {
+          "line": 48,
+          "title": "Default Architecture"
+        },
+        {
+          "line": 81,
+          "title": "Safe Defaults"
+        },
+        {
+          "line": 94,
+          "title": "Tooling Defaults"
+        },
+        {
+          "line": 98,
+          "title": "Reference Navigation"
+        },
+        {
+          "line": 117,
+          "title": "Workflow stages"
+        },
+        {
+          "line": 119,
+          "title": "Workflow stage: Frame outcome and risk"
+        },
+        {
+          "line": 133,
+          "title": "Workflow stage: Preserve Electron boundaries"
+        },
+        {
+          "line": 148,
+          "title": "Workflow stage: Verify and report"
+        },
+        {
+          "line": 162,
+          "title": "Interop priority"
+        },
+        {
+          "line": 170,
+          "title": "Gotchas"
+        },
+        {
+          "line": 181,
+          "title": "Policies"
+        },
+        {
+          "line": 183,
+          "title": "Security defaults"
+        },
+        {
+          "line": 186,
+          "title": "Release discipline"
+        },
+        {
+          "line": 189,
+          "title": "Source protection discipline"
+        },
+        {
+          "line": 192,
+          "title": "Retrieval and grounding budget"
+        },
+        {
+          "line": 195,
+          "title": "Output contract"
+        },
+        {
+          "line": 198,
+          "title": "Missing context and stop rules"
+        },
+        {
+          "line": 201,
+          "title": "Active normative surface"
+        },
+        {
+          "line": 204,
+          "title": "Compiler maintenance"
+        },
+        {
+          "line": 207,
+          "title": "Optional references"
+        },
+        {
+          "line": 221,
+          "title": "Portability rules"
+        },
+        {
+          "line": 228,
+          "title": "Portability checklist before finishing"
+        }
+      ],
+      "assessment": "covered by aspect IDs"
+    },
+    {
+      "file": "agents/openai.yaml",
+      "sha256": "9ccbb65808889c4fb29b3909b25aaa4e3032288030a750c9d246af691e146ed1",
+      "line_count": 4,
+      "role": "metadata-or-maintenance",
+      "aspect_ids": [],
+      "technical_claim_identifiers": [],
+      "sections": [],
+      "assessment": "N/A: metadata, generation, loading and maintenance rules; technical root repetition covered by linked overview/reference aspects"
+    },
+    {
+      "file": "docs/README.md",
+      "sha256": "a1de6509a62040ca41dff2378a64616a32f1b518eb57a6be8a8ea3b012db7335",
+      "line_count": 29,
+      "role": "supporting-history",
+      "aspect_ids": [],
+      "technical_claim_identifiers": [],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Документация `electron-engineer`"
+        },
+        {
+          "line": 5,
+          "title": "Issues"
+        },
+        {
+          "line": 11,
+          "title": "Implementation Plans"
+        },
+        {
+          "line": 17,
+          "title": "Implementation Logs"
+        }
+      ],
+      "assessment": "N/A: historical supporting record, not current technical authority"
+    },
+    {
+      "file": "docs/compile-report.md",
+      "sha256": "6bbad0e57235181aa559125ea7cc215f355df708616870ba4716b56f4e48ee08",
+      "line_count": 33,
+      "role": "supporting-history",
+      "aspect_ids": [],
+      "technical_claim_identifiers": [],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Compile report"
+        },
+        {
+          "line": 4,
+          "title": "Versions"
+        },
+        {
+          "line": 7,
+          "title": "Source files"
+        },
+        {
+          "line": 25,
+          "title": "Required references"
+        },
+        {
+          "line": 28,
+          "title": "Warnings"
+        },
+        {
+          "line": 31,
+          "title": "Notes"
+        }
+      ],
+      "assessment": "N/A: historical supporting record, not current technical authority"
+    },
+    {
+      "file": "docs/issues/implementation-plan-20260428-1.md",
+      "sha256": "256ef8ded8977f8b4ef1d7a6d99d9bb41ed6552663cca2d300260663ecedacda",
+      "line_count": 246,
+      "role": "supporting-history",
+      "aspect_ids": [],
+      "technical_claim_identifiers": [],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Implementation Plan"
+        },
+        {
+          "line": 3,
+          "title": "Language"
+        },
+        {
+          "line": 7,
+          "title": "Plan ID"
+        },
+        {
+          "line": 11,
+          "title": "Related Issue"
+        },
+        {
+          "line": 15,
+          "title": "Source Artifacts"
+        },
+        {
+          "line": 32,
+          "title": "Objective"
+        },
+        {
+          "line": 36,
+          "title": "Assumptions"
+        },
+        {
+          "line": 44,
+          "title": "Scope"
+        },
+        {
+          "line": 64,
+          "title": "Proposed Changes"
+        },
+        {
+          "line": 171,
+          "title": "Implementation Steps"
+        },
+        {
+          "line": 187,
+          "title": "Verification Plan"
+        },
+        {
+          "line": 203,
+          "title": "Risks and Side Effects"
+        },
+        {
+          "line": 216,
+          "title": "Rollback Plan"
+        },
+        {
+          "line": 226,
+          "title": "Independent Audit"
+        }
+      ],
+      "assessment": "N/A: historical supporting record, not current technical authority"
+    },
+    {
+      "file": "docs/issues/issue-20260428-1.md",
+      "sha256": "dfcdbbe2ff8e5ff5f07fd0736b9fb897ee0819199df0ac13fbeda2d5a843a562",
+      "line_count": 215,
+      "role": "supporting-history",
+      "aspect_ids": [],
+      "technical_claim_identifiers": [],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Issue"
+        },
+        {
+          "line": 3,
+          "title": "Language"
+        },
+        {
+          "line": 7,
+          "title": "Issue ID"
+        },
+        {
+          "line": 11,
+          "title": "Title"
+        },
+        {
+          "line": 15,
+          "title": "Skill"
+        },
+        {
+          "line": 19,
+          "title": "Context"
+        },
+        {
+          "line": 25,
+          "title": "Problem"
+        },
+        {
+          "line": 44,
+          "title": "Evidence"
+        },
+        {
+          "line": 62,
+          "title": "Impact"
+        },
+        {
+          "line": 75,
+          "title": "Scope"
+        },
+        {
+          "line": 100,
+          "title": "Proposed Resolution"
+        },
+        {
+          "line": 151,
+          "title": "Alternatives Considered"
+        },
+        {
+          "line": 165,
+          "title": "Destructive Side Effects"
+        },
+        {
+          "line": 181,
+          "title": "Verification"
+        },
+        {
+          "line": 194,
+          "title": "Independent Audit"
+        }
+      ],
+      "assessment": "N/A: historical supporting record, not current technical authority"
+    },
+    {
+      "file": "docs/logs/implementation-log-20260428-1.md",
+      "sha256": "9d4f2397e7381d2ab85a8138a92866efdd3070fff61d8ba807876094add853c8",
+      "line_count": 65,
+      "role": "supporting-history",
+      "aspect_ids": [],
+      "technical_claim_identifiers": [],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Implementation Log"
+        },
+        {
+          "line": 3,
+          "title": "Language"
+        },
+        {
+          "line": 7,
+          "title": "Log ID"
+        },
+        {
+          "line": 11,
+          "title": "Related Issue"
+        },
+        {
+          "line": 15,
+          "title": "Related Plan"
+        },
+        {
+          "line": 19,
+          "title": "Operator Request"
+        },
+        {
+          "line": 23,
+          "title": "Summary"
+        },
+        {
+          "line": 27,
+          "title": "Changes Made"
+        },
+        {
+          "line": 36,
+          "title": "Decisions"
+        },
+        {
+          "line": 43,
+          "title": "Verification Performed"
+        },
+        {
+          "line": 51,
+          "title": "Deviations From Plan"
+        },
+        {
+          "line": 55,
+          "title": "Side Effects"
+        },
+        {
+          "line": 59,
+          "title": "Follow-up"
+        },
+        {
+          "line": 63,
+          "title": "Final Status"
+        }
+      ],
+      "assessment": "N/A: historical supporting record, not current technical authority"
+    },
+    {
+      "file": "docs/logs/implementation-log-20260428-2.md",
+      "sha256": "d12c355b89918fc4ab34533f27e7aefc7dda24fec081c6567e5088038ff02340",
+      "line_count": 61,
+      "role": "supporting-history",
+      "aspect_ids": [],
+      "technical_claim_identifiers": [],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Implementation Log"
+        },
+        {
+          "line": 3,
+          "title": "Language"
+        },
+        {
+          "line": 7,
+          "title": "Log ID"
+        },
+        {
+          "line": 11,
+          "title": "Related Issue"
+        },
+        {
+          "line": 15,
+          "title": "Related Plan"
+        },
+        {
+          "line": 19,
+          "title": "Operator Request"
+        },
+        {
+          "line": 23,
+          "title": "Summary"
+        },
+        {
+          "line": 27,
+          "title": "Changes Made"
+        },
+        {
+          "line": 33,
+          "title": "Decisions"
+        },
+        {
+          "line": 39,
+          "title": "Verification Performed"
+        },
+        {
+          "line": 47,
+          "title": "Deviations From Plan"
+        },
+        {
+          "line": 51,
+          "title": "Side Effects"
+        },
+        {
+          "line": 55,
+          "title": "Follow-up"
+        },
+        {
+          "line": 59,
+          "title": "Final Status"
+        }
+      ],
+      "assessment": "N/A: historical supporting record, not current technical authority"
+    },
+    {
+      "file": "docs/logs/implementation-log-20260428-3.md",
+      "sha256": "2f510914c01cee0782c34a7b4a7bea958d670a8beb7e100f41ffd07998159eef",
+      "line_count": 65,
+      "role": "supporting-history",
+      "aspect_ids": [],
+      "technical_claim_identifiers": [],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Implementation Log"
+        },
+        {
+          "line": 3,
+          "title": "Language"
+        },
+        {
+          "line": 7,
+          "title": "Log ID"
+        },
+        {
+          "line": 11,
+          "title": "Related Issue"
+        },
+        {
+          "line": 15,
+          "title": "Related Plan"
+        },
+        {
+          "line": 19,
+          "title": "Operator Request"
+        },
+        {
+          "line": 23,
+          "title": "Summary"
+        },
+        {
+          "line": 27,
+          "title": "Changes Made"
+        },
+        {
+          "line": 35,
+          "title": "Decisions"
+        },
+        {
+          "line": 42,
+          "title": "Verification Performed"
+        },
+        {
+          "line": 51,
+          "title": "Deviations From Plan"
+        },
+        {
+          "line": 55,
+          "title": "Side Effects"
+        },
+        {
+          "line": 59,
+          "title": "Follow-up"
+        },
+        {
+          "line": 63,
+          "title": "Final Status"
+        }
+      ],
+      "assessment": "N/A: historical supporting record, not current technical authority"
+    },
+    {
+      "file": "docs/logs/implementation-log-20260428-4.md",
+      "sha256": "1a7ad5f1f85aa4effcb45ad7ceac1f5e022f6742d08ae3445b1a36bb31d5142c",
+      "line_count": 65,
+      "role": "supporting-history",
+      "aspect_ids": [],
+      "technical_claim_identifiers": [],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Implementation Log"
+        },
+        {
+          "line": 3,
+          "title": "Language"
+        },
+        {
+          "line": 7,
+          "title": "Log ID"
+        },
+        {
+          "line": 11,
+          "title": "Related Issue"
+        },
+        {
+          "line": 15,
+          "title": "Related Plan"
+        },
+        {
+          "line": 19,
+          "title": "Operator Request"
+        },
+        {
+          "line": 23,
+          "title": "Summary"
+        },
+        {
+          "line": 27,
+          "title": "Changes Made"
+        },
+        {
+          "line": 36,
+          "title": "Decisions"
+        },
+        {
+          "line": 43,
+          "title": "Verification Performed"
+        },
+        {
+          "line": 51,
+          "title": "Deviations From Plan"
+        },
+        {
+          "line": 55,
+          "title": "Side Effects"
+        },
+        {
+          "line": 59,
+          "title": "Follow-up"
+        },
+        {
+          "line": 63,
+          "title": "Final Status"
+        }
+      ],
+      "assessment": "N/A: historical supporting record, not current technical authority"
+    },
+    {
+      "file": "docs/logs/implementation-log-20260428-5.md",
+      "sha256": "813529f9961c96000e7ec761699b0a60f031ca3448ca7a737ce2992066692685",
+      "line_count": 76,
+      "role": "supporting-history",
+      "aspect_ids": [],
+      "technical_claim_identifiers": [],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Implementation Log"
+        },
+        {
+          "line": 3,
+          "title": "Language"
+        },
+        {
+          "line": 7,
+          "title": "Log ID"
+        },
+        {
+          "line": 11,
+          "title": "Related Issue"
+        },
+        {
+          "line": 15,
+          "title": "Related Plan"
+        },
+        {
+          "line": 19,
+          "title": "Operator Request"
+        },
+        {
+          "line": 23,
+          "title": "Summary"
+        },
+        {
+          "line": 27,
+          "title": "Changes Made"
+        },
+        {
+          "line": 43,
+          "title": "Decisions"
+        },
+        {
+          "line": 51,
+          "title": "Verification Performed"
+        },
+        {
+          "line": 61,
+          "title": "Deviations From Plan"
+        },
+        {
+          "line": 66,
+          "title": "Side Effects"
+        },
+        {
+          "line": 70,
+          "title": "Follow-up"
+        },
+        {
+          "line": 74,
+          "title": "Final Status"
+        }
+      ],
+      "assessment": "N/A: historical supporting record, not current technical authority"
+    },
+    {
+      "file": "docs/logs/implementation-log-20260428-6.md",
+      "sha256": "ed8db63de7d00c6447abbac2e11814d0b79001412383813cc1092371088d8fa0",
+      "line_count": 67,
+      "role": "supporting-history",
+      "aspect_ids": [],
+      "technical_claim_identifiers": [],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Implementation Log"
+        },
+        {
+          "line": 3,
+          "title": "Language"
+        },
+        {
+          "line": 7,
+          "title": "Log ID"
+        },
+        {
+          "line": 11,
+          "title": "Related Issue"
+        },
+        {
+          "line": 15,
+          "title": "Related Plan"
+        },
+        {
+          "line": 19,
+          "title": "Operator Request"
+        },
+        {
+          "line": 23,
+          "title": "Summary"
+        },
+        {
+          "line": 27,
+          "title": "Changes Made"
+        },
+        {
+          "line": 35,
+          "title": "Decisions"
+        },
+        {
+          "line": 42,
+          "title": "Verification Performed"
+        },
+        {
+          "line": 53,
+          "title": "Deviations From Plan"
+        },
+        {
+          "line": 57,
+          "title": "Side Effects"
+        },
+        {
+          "line": 61,
+          "title": "Follow-up"
+        },
+        {
+          "line": 65,
+          "title": "Final Status"
+        }
+      ],
+      "assessment": "N/A: historical supporting record, not current technical authority"
+    },
+    {
+      "file": "docs/logs/implementation-log-20260428-7.md",
+      "sha256": "54e01fe31f2d95bcc22bb79a5bb69ec9613c9912e22fc4c8c10276a656ca392f",
+      "line_count": 68,
+      "role": "supporting-history",
+      "aspect_ids": [],
+      "technical_claim_identifiers": [],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Implementation Log"
+        },
+        {
+          "line": 3,
+          "title": "Language"
+        },
+        {
+          "line": 7,
+          "title": "Log ID"
+        },
+        {
+          "line": 11,
+          "title": "Related Issue"
+        },
+        {
+          "line": 15,
+          "title": "Related Plan"
+        },
+        {
+          "line": 19,
+          "title": "Operator Request"
+        },
+        {
+          "line": 23,
+          "title": "Summary"
+        },
+        {
+          "line": 27,
+          "title": "Changes Made"
+        },
+        {
+          "line": 37,
+          "title": "Decisions"
+        },
+        {
+          "line": 44,
+          "title": "Verification Performed"
+        },
+        {
+          "line": 54,
+          "title": "Deviations From Plan"
+        },
+        {
+          "line": 58,
+          "title": "Side Effects"
+        },
+        {
+          "line": 62,
+          "title": "Follow-up"
+        },
+        {
+          "line": 66,
+          "title": "Final Status"
+        }
+      ],
+      "assessment": "N/A: historical supporting record, not current technical authority"
+    },
+    {
+      "file": "docs/logs/implementation-log-20260622-1.md",
+      "sha256": "b5a81850ff95a177f30c3af2ad4605041bdd58dba42ffd87acd82106e67d4134",
+      "line_count": 62,
+      "role": "supporting-history",
+      "aspect_ids": [],
+      "technical_claim_identifiers": [],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Implementation Log"
+        },
+        {
+          "line": 3,
+          "title": "Language"
+        },
+        {
+          "line": 7,
+          "title": "Log ID"
+        },
+        {
+          "line": 11,
+          "title": "Related Issue"
+        },
+        {
+          "line": 15,
+          "title": "Related Plan"
+        },
+        {
+          "line": 19,
+          "title": "Operator Request"
+        },
+        {
+          "line": 23,
+          "title": "Summary"
+        },
+        {
+          "line": 27,
+          "title": "Changes Made"
+        },
+        {
+          "line": 36,
+          "title": "Decisions"
+        },
+        {
+          "line": 41,
+          "title": "Verification Performed"
+        },
+        {
+          "line": 48,
+          "title": "Deviations From Plan"
+        },
+        {
+          "line": 52,
+          "title": "Side Effects"
+        },
+        {
+          "line": 56,
+          "title": "Follow-up"
+        },
+        {
+          "line": 60,
+          "title": "Final Status"
+        }
+      ],
+      "assessment": "N/A: historical supporting record, not current technical authority"
+    },
+    {
+      "file": "docs/logs/implementation-log-20260715-1.md",
+      "sha256": "a437b1b18de22c73dd8a57a0bc4065847694133f6b5ae08ac79a7e0ea00e4a4c",
+      "line_count": 25,
+      "role": "supporting-history",
+      "aspect_ids": [],
+      "technical_claim_identifiers": [],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Журнал реализации: ограничение описания electron-engineer"
+        },
+        {
+          "line": 6,
+          "title": "Результат"
+        },
+        {
+          "line": 12,
+          "title": "Проверка"
+        },
+        {
+          "line": 17,
+          "title": "Границы"
+        },
+        {
+          "line": 23,
+          "title": "Статус"
+        }
+      ],
+      "assessment": "N/A: historical supporting record, not current technical authority"
+    },
+    {
+      "file": "fragments/overview.md",
+      "sha256": "209ebb4dae0060e27be395b2f58bb56c28dcfdb07b51e63caed6c1a5a4fc9e57",
+      "line_count": 74,
+      "role": "source",
+      "aspect_ids": [
+        "E01",
+        "E23"
+      ],
+      "technical_claim_identifiers": [
+        "contextIsolation: true",
+        "ipcRenderer",
+        "localhost",
+        "nodeIntegration: false",
+        "sandbox: true",
+        "webviewTag: false"
+      ],
+      "sections": [
+        {
+          "line": 7,
+          "title": "Default Architecture"
+        },
+        {
+          "line": 40,
+          "title": "Safe Defaults"
+        },
+        {
+          "line": 53,
+          "title": "Tooling Defaults"
+        },
+        {
+          "line": 57,
+          "title": "Reference Navigation"
+        }
+      ],
+      "assessment": "covered by aspect IDs"
+    },
+    {
+      "file": "references/architecture.md",
+      "sha256": "2f403b1fefa9a9bf692330bcf902bac4272d2873dfeba727e04ee2509c8648aa",
+      "line_count": 135,
+      "role": "active-reference",
+      "aspect_ids": [
+        "E02",
+        "E03"
+      ],
+      "technical_claim_identifiers": [
+        "<webview>",
+        "BrowserView",
+        "BrowserWindow",
+        "MessagePort",
+        "WebContentsView",
+        "activate",
+        "app.whenReady()",
+        "app://bundle/",
+        "bypassCSP",
+        "child_process.fork",
+        "file://",
+        "iframe",
+        "open-file",
+        "open-url",
+        "protocol.registerSchemesAsPrivileged()",
+        "render-process-gone",
+        "requestSingleInstanceLock()",
+        "secure: true",
+        "session",
+        "standard: true",
+        "utilityProcess",
+        "webContents",
+        "webPreferences"
+      ],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Architecture"
+        },
+        {
+          "line": 5,
+          "title": "Trust Model"
+        },
+        {
+          "line": 18,
+          "title": "Main Process Shape"
+        },
+        {
+          "line": 31,
+          "title": "App Lifecycle and Activation"
+        },
+        {
+          "line": 46,
+          "title": "Window Ownership"
+        },
+        {
+          "line": 61,
+          "title": "Embedded Contexts"
+        },
+        {
+          "line": 73,
+          "title": "Sessions and Remote Content"
+        },
+        {
+          "line": 84,
+          "title": "Heavy Work Isolation"
+        },
+        {
+          "line": 99,
+          "title": "Custom Protocols"
+        },
+        {
+          "line": 114,
+          "title": "Crash Boundaries"
+        },
+        {
+          "line": 125,
+          "title": "Offline-First Shape"
+        }
+      ],
+      "assessment": "covered by aspect IDs"
+    },
+    {
+      "file": "references/build-process.md",
+      "sha256": "51d89e99bd66ba517e51d43def578d1b3b089a84a13b19298d7fbbbed01d412d",
+      "line_count": 151,
+      "role": "active-reference",
+      "aspect_ids": [
+        "E08",
+        "E09",
+        "E10",
+        "E11",
+        "E12",
+        "E13"
+      ],
+      "technical_claim_identifiers": [
+        "--noSandbox",
+        ".env",
+        "@electron-forge/plugin-vite",
+        "app.asar.unpacked",
+        "build",
+        "contextBridge",
+        "dev",
+        "dist",
+        "electron-forge make",
+        "electron-forge package",
+        "electron-forge publish",
+        "electron-vite",
+        "electron-vite build",
+        "electron-vite dev",
+        "localhost",
+        "main",
+        "make",
+        "nodeIntegration",
+        "npm run",
+        "out",
+        "outDir",
+        "package",
+        "package.json",
+        "pnpm",
+        "preload",
+        "preview",
+        "publish",
+        "renderer",
+        "vite build",
+        "yarn"
+      ],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Build Process"
+        },
+        {
+          "line": 5,
+          "title": "Canonical Stack"
+        },
+        {
+          "line": 20,
+          "title": "Command Contract"
+        },
+        {
+          "line": 48,
+          "title": "Pipeline"
+        },
+        {
+          "line": 67,
+          "title": "electron-vite Practices"
+        },
+        {
+          "line": 81,
+          "title": "electron-vite Anti-Patterns"
+        },
+        {
+          "line": 97,
+          "title": "Source Protection During Build"
+        },
+        {
+          "line": 110,
+          "title": "Forge Packaging and Distribution"
+        },
+        {
+          "line": 122,
+          "title": "CI Build Lanes"
+        },
+        {
+          "line": 137,
+          "title": "Verification"
+        }
+      ],
+      "assessment": "covered by aspect IDs"
+    },
+    {
+      "file": "references/data-storage-native.md",
+      "sha256": "4cb5757b54216bd7dd4f64778e0f74397817a41c544a19268f1e938ee26aeb08",
+      "line_count": 129,
+      "role": "active-reference",
+      "aspect_ids": [
+        "E12",
+        "E17",
+        "E18"
+      ],
+      "technical_claim_identifiers": [
+        "app.getPath(\"logs\")",
+        "app.getPath(\"userData\")",
+        "crashDumps",
+        "dialog.showOpenDialog",
+        "dialog.showSaveDialog",
+        "safeStorage",
+        "sessionData",
+        "temp"
+      ],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Data, Storage, and Native Integration"
+        },
+        {
+          "line": 5,
+          "title": "App Paths"
+        },
+        {
+          "line": 19,
+          "title": "Config Files"
+        },
+        {
+          "line": 31,
+          "title": "Secrets"
+        },
+        {
+          "line": 43,
+          "title": "File Access"
+        },
+        {
+          "line": 55,
+          "title": "SQLite and Local Databases"
+        },
+        {
+          "line": 69,
+          "title": "App Data Migrations"
+        },
+        {
+          "line": 86,
+          "title": "Embedded Local Backends"
+        },
+        {
+          "line": 102,
+          "title": "Native Modules"
+        },
+        {
+          "line": 116,
+          "title": "Diagnostics Export"
+        }
+      ],
+      "assessment": "covered by aspect IDs"
+    },
+    {
+      "file": "references/native-os-integration.md",
+      "sha256": "d78547367bcfd0a1dccbadd7480e8941fb98bc142c881b607ad38b64f6a4340b",
+      "line_count": 83,
+      "role": "active-reference",
+      "aspect_ids": [
+        "E07",
+        "E18",
+        "E19"
+      ],
+      "technical_claim_identifiers": [
+        "clipboard",
+        "fs",
+        "openWorkspace",
+        "screen",
+        "session",
+        "setThemePreference",
+        "shell",
+        "showSaveDialog",
+        "subscribeDownloadProgress"
+      ],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Native OS Integration"
+        },
+        {
+          "line": 5,
+          "title": "Ownership Model"
+        },
+        {
+          "line": 19,
+          "title": "Feature Decisions"
+        },
+        {
+          "line": 38,
+          "title": "Menus, Tray, and Launcher Behavior"
+        },
+        {
+          "line": 51,
+          "title": "File and Data Transfer"
+        },
+        {
+          "line": 62,
+          "title": "Permissions and Consent"
+        },
+        {
+          "line": 75,
+          "title": "Verification"
+        }
+      ],
+      "assessment": "covered by aspect IDs"
+    },
+    {
+      "file": "references/packaging-release-updates.md",
+      "sha256": "11310b87a8726e2159e8bdb450f69e07d6e62c2a81ac597a3e50318ca28d845b",
+      "line_count": 133,
+      "role": "active-reference",
+      "aspect_ids": [
+        "E10",
+        "E12",
+        "E14"
+      ],
+      "technical_claim_identifiers": [
+        "process.mas",
+        "process.windowsStore"
+      ],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Packaging, Release, and Updates"
+        },
+        {
+          "line": 5,
+          "title": "Packaging Baseline"
+        },
+        {
+          "line": 23,
+          "title": "Platform Targets"
+        },
+        {
+          "line": 33,
+          "title": "Store and Managed Distribution Targets"
+        },
+        {
+          "line": 48,
+          "title": "Signing and Notarization"
+        },
+        {
+          "line": 71,
+          "title": "Auto-Update Architecture"
+        },
+        {
+          "line": 96,
+          "title": "CI Lanes"
+        },
+        {
+          "line": 109,
+          "title": "Supply Chain"
+        },
+        {
+          "line": 123,
+          "title": "Electron Upgrade Releases"
+        }
+      ],
+      "assessment": "covered by aspect IDs"
+    },
+    {
+      "file": "references/renderer-integration.md",
+      "sha256": "6b0f11b08f6bd86c1c67d54b40247c9062b23a1904341c45ebbdcfc4e3525e32",
+      "line_count": 103,
+      "role": "active-reference",
+      "aspect_ids": [
+        "E04",
+        "E20"
+      ],
+      "technical_claim_identifiers": [
+        "app://",
+        "app://bundle",
+        "app://bundle/index.html",
+        "build",
+        "bypassCSP",
+        "dev",
+        "file://",
+        "localhost",
+        "preview",
+        "react-spa-engineer",
+        "window.desktop"
+      ],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Renderer Integration"
+        },
+        {
+          "line": 5,
+          "title": "Renderer Responsibilities"
+        },
+        {
+          "line": 26,
+          "title": "Dev vs Packaged Runtime"
+        },
+        {
+          "line": 39,
+          "title": "Routing"
+        },
+        {
+          "line": 49,
+          "title": "Custom Protocol Integration"
+        },
+        {
+          "line": 62,
+          "title": "CSP by Environment"
+        },
+        {
+          "line": 73,
+          "title": "Renderer Access to Desktop Capabilities"
+        },
+        {
+          "line": 85,
+          "title": "State and Persistence"
+        },
+        {
+          "line": 95,
+          "title": "Renderer Testing"
+        }
+      ],
+      "assessment": "covered by aspect IDs"
+    },
+    {
+      "file": "references/review-playbooks.md",
+      "sha256": "f5215ea6a813076ad6c44d0d0458f3f0f8afe9b0134d45b881a142a55519ec35",
+      "line_count": 209,
+      "role": "active-reference",
+      "aspect_ids": [
+        "E23"
+      ],
+      "technical_claim_identifiers": [
+        "<webview>",
+        "MessagePort",
+        "child_process.fork",
+        "clipboard",
+        "contextIsolation: false",
+        "data:",
+        "file:",
+        "file://",
+        "fs",
+        "https:",
+        "ipcRenderer",
+        "javascript:",
+        "mailto:",
+        "new URL",
+        "nodeIntegration: true",
+        "open-file",
+        "open-url",
+        "remote",
+        "requestSingleInstanceLock",
+        "screen",
+        "second-instance",
+        "session",
+        "shell",
+        "shell.openExternal",
+        "utilityProcess",
+        "webContents",
+        "webviewTag",
+        "will-attach-webview",
+        "will-navigate",
+        "window.open"
+      ],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Review Playbooks"
+        },
+        {
+          "line": 5,
+          "title": "Code Review Checklist"
+        },
+        {
+          "line": 37,
+          "title": "Migration Checklist"
+        },
+        {
+          "line": 54,
+          "title": "Release Readiness Checklist"
+        },
+        {
+          "line": 74,
+          "title": "Safe External URL Opening"
+        },
+        {
+          "line": 89,
+          "title": "Navigation Blocking"
+        },
+        {
+          "line": 100,
+          "title": "Secure Custom Protocol"
+        },
+        {
+          "line": 114,
+          "title": "Single Instance and Deep Links"
+        },
+        {
+          "line": 126,
+          "title": "Renderer Crash Recovery"
+        },
+        {
+          "line": 138,
+          "title": "Native Rebuild Troubleshooting"
+        },
+        {
+          "line": 152,
+          "title": "Native OS Integration Review"
+        },
+        {
+          "line": 164,
+          "title": "Session and Permission Review"
+        },
+        {
+          "line": 174,
+          "title": "Heavy Work and Utility Process Review"
+        },
+        {
+          "line": 186,
+          "title": "Data Migration Review"
+        },
+        {
+          "line": 197,
+          "title": "Embedded Local Backend Review"
+        }
+      ],
+      "assessment": "covered by aspect IDs"
+    },
+    {
+      "file": "references/security-ipc-preload.md",
+      "sha256": "1bccaeb09e9ea3c196d878aff88f8a6de0a338b681298842988072cd58134dfc",
+      "line_count": 207,
+      "role": "active-reference",
+      "aspect_ids": [
+        "E04",
+        "E05",
+        "E06",
+        "E07"
+      ],
+      "technical_claim_identifiers": [
+        "<webview>",
+        "MessagePort",
+        "WebContentsView",
+        "allowpopups",
+        "app://bundle",
+        "contextBridge",
+        "contextIsolation: false",
+        "data:",
+        "file:",
+        "file://",
+        "fs",
+        "https:",
+        "iframe",
+        "ipcMain.handle",
+        "ipcRenderer",
+        "ipcRenderer.invoke",
+        "javascript:",
+        "localStorage",
+        "mailto:",
+        "new URL",
+        "nodeIntegration: true",
+        "preload",
+        "sandbox: false",
+        "sessionStorage",
+        "setWindowOpenHandler",
+        "shell",
+        "shell.openExternal",
+        "system",
+        "webContents",
+        "will-attach-webview",
+        "will-navigate",
+        "window.electron.invoke(channel, payload)",
+        "window.electron.ipcRenderer"
+      ],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Security, IPC, and Preload"
+        },
+        {
+          "line": 5,
+          "title": "Security Baseline"
+        },
+        {
+          "line": 32,
+          "title": "Threat Model"
+        },
+        {
+          "line": 44,
+          "title": "Session Permissions and Cleanup"
+        },
+        {
+          "line": 69,
+          "title": "IPC Architecture"
+        },
+        {
+          "line": 89,
+          "title": "Contract Pattern"
+        },
+        {
+          "line": 109,
+          "title": "Sender Validation"
+        },
+        {
+          "line": 120,
+          "title": "Preload Design"
+        },
+        {
+          "line": 149,
+          "title": "Navigation and External URLs"
+        },
+        {
+          "line": 172,
+          "title": "Web Embeds"
+        },
+        {
+          "line": 191,
+          "title": "Review Red Flags"
+        }
+      ],
+      "assessment": "covered by aspect IDs"
+    },
+    {
+      "file": "references/source-protection.md",
+      "sha256": "8439e0ce6939ca2ea17e80be4ae740b2aa1ac58a2731f86c8fa97a6c4fd066d2",
+      "line_count": 164,
+      "role": "active-reference",
+      "aspect_ids": [
+        "E12",
+        "E13"
+      ],
+      "technical_claim_identifiers": [
+        ".env",
+        ".jsx",
+        ".map",
+        ".ts",
+        ".tsx",
+        "Function.prototype.toString",
+        "OnlyLoadAppFromAsar",
+        "app.asar",
+        "app.asar.unpacked",
+        "child_process.fork",
+        "resources/",
+        "utilityProcess"
+      ],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Source Protection"
+        },
+        {
+          "line": 5,
+          "title": "Goal and Boundary"
+        },
+        {
+          "line": 17,
+          "title": "Threat Model"
+        },
+        {
+          "line": 28,
+          "title": "Non-Negotiables"
+        },
+        {
+          "line": 36,
+          "title": "Protection Layers"
+        },
+        {
+          "line": 47,
+          "title": "Closed-Source Baseline"
+        },
+        {
+          "line": 63,
+          "title": "Protection Tiers"
+        },
+        {
+          "line": 72,
+          "title": "Minification and Obfuscation"
+        },
+        {
+          "line": 91,
+          "title": "Bytecode and Native/WASM Wrappers"
+        },
+        {
+          "line": 105,
+          "title": "Tooling Guidance"
+        },
+        {
+          "line": 116,
+          "title": "Business Logic Placement"
+        },
+        {
+          "line": 131,
+          "title": "Packaged Artifact Audit"
+        },
+        {
+          "line": 153,
+          "title": "Review Questions"
+        }
+      ],
+      "assessment": "covered by aspect IDs"
+    },
+    {
+      "file": "references/testing-observability.md",
+      "sha256": "0b6d6e43a6e9f32c93def5030687f03c3ec8ca014eafff218625328de81f7c69",
+      "line_count": 167,
+      "role": "active-reference",
+      "aspect_ids": [
+        "E07",
+        "E21",
+        "E22"
+      ],
+      "technical_claim_identifiers": [
+        "--noSandbox",
+        "BrowserWindow",
+        "ELECTRON_ENABLE_LOGGING",
+        "INVALID_PAYLOAD",
+        "MessagePort",
+        "UNAUTHORIZED",
+        "app://",
+        "contentTracing",
+        "data:",
+        "file:",
+        "invoke",
+        "ipcRenderer",
+        "javascript:",
+        "localhost",
+        "netLog",
+        "node-engineer",
+        "node:test",
+        "require",
+        "shell.openExternal",
+        "webContents"
+      ],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Testing and Observability"
+        },
+        {
+          "line": 5,
+          "title": "Test Pyramid"
+        },
+        {
+          "line": 20,
+          "title": "IPC and Preload Tests"
+        },
+        {
+          "line": 38,
+          "title": "E2E Tooling"
+        },
+        {
+          "line": 46,
+          "title": "Packaged Smoke Tests"
+        },
+        {
+          "line": 64,
+          "title": "Native and Permission Tests"
+        },
+        {
+          "line": 78,
+          "title": "Security Scenario Checks"
+        },
+        {
+          "line": 91,
+          "title": "Performance Budgets"
+        },
+        {
+          "line": 117,
+          "title": "Logging"
+        },
+        {
+          "line": 136,
+          "title": "Diagnostics Matrix"
+        },
+        {
+          "line": 153,
+          "title": "Crash Reporting and Debugging"
+        }
+      ],
+      "assessment": "covered by aspect IDs"
+    },
+    {
+      "file": "references/tooling-project-structure.md",
+      "sha256": "fa53e72f8a7a41cb3631fefc149e55fb8a4d7fc39d31e7adea8ad30d550f386b",
+      "line_count": 115,
+      "role": "active-reference",
+      "aspect_ids": [
+        "E01",
+        "E08",
+        "E09",
+        "E11"
+      ],
+      "technical_claim_identifiers": [
+        "electron-vite",
+        "main",
+        "preload",
+        "remote",
+        "renderer",
+        "shared",
+        "type",
+        "typescript-engineer"
+      ],
+      "sections": [
+        {
+          "line": 1,
+          "title": "Tooling and Project Structure"
+        },
+        {
+          "line": 5,
+          "title": "Tooling Baseline"
+        },
+        {
+          "line": 14,
+          "title": "Recommended Layout"
+        },
+        {
+          "line": 46,
+          "title": "TypeScript and Module Boundaries"
+        },
+        {
+          "line": 58,
+          "title": "Build Boundaries"
+        },
+        {
+          "line": 69,
+          "title": "Utility and Native Service Boundaries"
+        },
+        {
+          "line": 93,
+          "title": "Native Module Boundary"
+        },
+        {
+          "line": 105,
+          "title": "Upgrade Policy"
+        }
+      ],
+      "assessment": "covered by aspect IDs"
+    },
+    {
+      "file": "references/typescript-in-electron.md",
+      "sha256": "a6516798f4e45777e757aeb535a46da1588150bbbf0f94f2f92e1ba293c5d330",
+      "line_count": 213,
+      "role": "active-reference",
+      "aspect_ids": [
+        "E05",
+        "E08",
+        "E09",
+        "E15",
+        "E16"
+      ],
+      "technical_claim_identifiers": [
+        ".cjs",
+        ".d.ts",
+        ".mjs",
+        "@ts-expect-error",
+        "@types/node",
+        "DesktopApi",
+        "ImportMetaEnv",
+        "MAIN_VITE_",
+        "NodeNext",
+        "PRELOAD_VITE_",
+        "RENDERER_VITE_",
+        "VITE_",
+        "any",
+        "bundler",
+        "compilerOptions.types",
+        "contextBridge",
+        "declare global",
+        "declare module \"*\"",
+        "electron",
+        "electron-vite build",
+        "electron-vite dev",
+        "electron-vite/node",
+        "electron.vite.config.ts",
+        "electron/common",
+        "electron/main",
+        "electron/renderer",
+        "emitDecoratorMetadata",
+        "env.d.ts",
+        "forge.config.ts",
+        "fs",
+        "import",
+        "import.meta.env",
+        "invoke<T>",
+        "ipcRenderer",
+        "isolatedModules: true",
+        "lib",
+        "main",
+        "moduleResolution",
+        "node:*",
+        "nodeIntegration",
+        "package.json",
+        "paths",
+        "preload",
+        "ready",
+        "renderer",
+        "require",
+        "shared",
+        "shell",
+        "skipLibCheck",
+        "strict: true",
+        "tsc --noEmit",
+        "tsc --noEmit -p ...",
+        "type",
+        "types",
+        "typescript-engineer",
+        "utility",
+        "vite/client",
+        "window as any"
+      ],
+      "sections": [
+        {
+          "line": 1,
+          "title": "TypeScript in Electron"
+        },
+        {
+          "line": 5,
+          "title": "Goal"
+        },
+        {
+          "line": 17,
+          "title": "Process Type Ownership"
+        },
+        {
+          "line": 36,
+          "title": "tsconfig Strategy"
+        },
+        {
+          "line": 70,
+          "title": "electron-vite TypeScript Integration"
+        },
+        {
+          "line": 86,
+          "title": "Typed Preload, IPC, and Window API"
+        },
+        {
+          "line": 132,
+          "title": "Module Format and Runtime Output"
+        },
+        {
+          "line": 153,
+          "title": "Environment, Assets, and Native Types"
+        },
+        {
+          "line": 171,
+          "title": "Verification Gates"
+        },
+        {
+          "line": 187,
+          "title": "Review Red Flags"
+        },
+        {
+          "line": 204,
+          "title": "Official Docs to Check"
+        }
+      ],
+      "assessment": "covered by aspect IDs"
+    },
+    {
+      "file": "skill.yaml",
+      "sha256": "7970cd320fe04bb138f6ac9862ffdf28822c0e87445a93c389b3a5e59c590c64",
+      "line_count": 258,
+      "role": "source",
+      "aspect_ids": [],
+      "technical_claim_identifiers": [
+        "contextIsolation: false",
+        "invoke(channel, payload)",
+        "node-engineer",
+        "nodeIntegration: true",
+        "react-spa-engineer",
+        "typescript-engineer"
+      ],
+      "sections": [],
+      "assessment": "N/A: metadata, generation, loading and maintenance rules; technical root repetition covered by linked overview/reference aspects"
+    }
+  ],
+  "unverified_boundaries": [
+    "Baseline/candidate blind trials/catalog selection not executed by this reviewer.",
+    "Real runtime, consumer handoff and packaging/production UI probes remain with coordinator.",
+    "External publication and other OS capabilities are not verified."
+  ]
+}

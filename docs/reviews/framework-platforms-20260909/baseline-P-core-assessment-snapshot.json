@@ -1,0 +1,65 @@
+{
+  "kind": "independent read-only evidence re-evaluation; no runtime replay",
+  "assertions": [
+    "Posts parity anonymous",
+    "sync-notes anonymous",
+    "async-notes anonymous",
+    "open-notes anonymous",
+    "async-open-notes anonymous",
+    "closed-notes anonymous",
+    "async-closed-notes anonymous",
+    "Posts parity user-A",
+    "sync-notes user-A",
+    "async-notes user-A",
+    "open-notes user-A",
+    "async-open-notes user-A",
+    "closed-notes user-A",
+    "async-closed-notes user-A",
+    "Posts parity user-B",
+    "sync-notes user-B",
+    "async-notes user-B",
+    "open-notes user-B",
+    "async-open-notes user-B",
+    "closed-notes user-B",
+    "async-closed-notes user-B",
+    "Posts parity admin",
+    "sync-notes admin",
+    "async-notes admin",
+    "open-notes admin",
+    "async-open-notes admin",
+    "closed-notes admin",
+    "async-closed-notes admin",
+    "subtitle persisted public GET",
+    "six creates assigned server tenant",
+    "users delta three successful groups",
+    "job2 completed two real outputs",
+    "report values and total identity",
+    "60 final hashes",
+    "public trace hash"
+  ],
+  "status": "all listed checks matched",
+  "files": {
+    "/tmp/framework-platforms-20260909/trials/baseline/P-core/hash-manifest.json": "788854a17d67d81d4f3c8ef11ed5fccbb14fa4e01f05dca042998e561ebeffd9",
+    "/tmp/framework-platforms-20260909/trials/baseline/P-core/result.md": "30fa411f612b39c9365cb6339152511e984fc6eba4542c6dd7a620f3d938507e",
+    "/tmp/framework-platforms-20260909/trials/baseline/P-core/commands.jsonl": "209b8450095a117a37cef189aa922752ac05ca7f33c92cfe7d7687829ec6846c",
+    "docs/reviews/framework-platforms-20260909/protocol/P-core.json": "751fb817a579fdda4ace33e5a7ef345f21ba3666e7ef634906fd5692b28f1c54",
+    "docs/reviews/framework-platforms-20260909/raw-agent-traces/baseline_payload_core_executor.jsonl": "003b901838f61bb204808b18f500900e4c7502264f8bce6d4438208ba0b69a64"
+  },
+  "trace_entry": {
+    "agent": "/root/baseline_payload_core_executor",
+    "source_session_id": "01a08656-d1a4-7a23-8038-60119cf6073f",
+    "journal_sha256": "520483c55bb8eea47cd4ed7a9d829e645a4a42cf06ed79f258b81e91cc8a80bc",
+    "public_trace": "baseline_payload_core_executor.jsonl",
+    "public_trace_sha256": "003b901838f61bb204808b18f500900e4c7502264f8bce6d4438208ba0b69a64",
+    "tool_events": 120,
+    "public_task_messages": "baseline_payload_core_executor-task-messages.jsonl",
+    "task_messages_sha256": "25b83a7fc3186a79ff2dff00c5e80faf73111b54739aea23ab2a072e4d752bea",
+    "recorded_turn_settings": [
+      {
+        "turn_id": "01a08656-d230-70e2-95ad-240e7916474c",
+        "model": "gpt-6-astra",
+        "effort": "high"
+      }
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "case": "P04-P07-source-runtime",
+  "kind": "Coordinator literal source projections plus separately authored semantic atomicity host. No blind behavior claim.",
+  "frozen_at": "2026-09-09T13:59:32.099001+00:00",
+  "installed_versions": {
+    "payload": "3.88.0",
+    "@payloadcms/db-sqlite": "3.88.0",
+    "graphql": "16.11.0",
+    "tsx": "4.20.5",
+    "sharp": "0.34.3"
+  },
+  "commands": [
+    "npm run probe:atomic",
+    "npm run probe:literal",
+    "npm run probe:workflow"
+  ],
+  "source_manifests": [
+    "P04-literal-projection-manifest.json",
+    "P07-workflow-projection-manifest.json"
+  ],
+  "semantic_source_review": "P04-fixture-preparation-review.md",
+  "interpretation": "Matched default partial-persistence expectations is not atomicity PASS. Reference-enabled branch is already baseline adapters opt-in. Workflow process exit0 only means observation collected; persisted job/error/sideEffects determine source result.",
+  "inputs": {
+    "package-lock.json": "66b7ea04fd251101f4544a83d48927d0dd9352f1c5d880b2e95de875d33279ee",
+    "workflow.mjs": "826600939a2a97786ecdc6185efd8b50f4d982d6f812347e18fb29fdce3df18b",
+    "literal-workflow.mjs": "4025bd5995d635d9a7dca88cba13e961a56bb9070dfa00b53ff1105a50cd1b3d",
+    "literal.mjs": "fd731f0f446c88564c8220e0451c19707451c0c3566c778c73aa437883e073f9",
+    "literal-hook.mjs": "9dd7a713f02886572fc0065337b9788ec25b4d372cdc8e235e7dce3bf4ad6552",
+    "atomic.mjs": "cde7a6cfd49fbff8881465ee53891f0882ae9a01043e556bd9bc3a7a0681180f",
+    "package.json": "16254b32d9fb0255cfd11e80e8245ae5a7d84d34402780eb03dedb50a456996b"
+  }
+}

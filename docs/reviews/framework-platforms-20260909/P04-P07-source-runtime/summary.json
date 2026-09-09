@@ -1,0 +1,81 @@
+{
+  "kind": "Coordinator source probes, not blind behavior",
+  "commands_exit": [
+    0,
+    0,
+    0
+  ],
+  "semantic": [
+    {
+      "mode": "default",
+      "outcome": "success",
+      "stock": 8,
+      "orders": 1,
+      "audit": 1,
+      "transactionPresent": false
+    },
+    {
+      "mode": "default",
+      "outcome": "failure",
+      "stock": 8,
+      "orders": 1,
+      "audit": 0,
+      "transactionPresent": false
+    },
+    {
+      "mode": "reference-enabled",
+      "outcome": "success",
+      "stock": 8,
+      "orders": 1,
+      "audit": 1,
+      "transactionPresent": true
+    },
+    {
+      "mode": "reference-enabled",
+      "outcome": "failure",
+      "stock": 10,
+      "orders": 0,
+      "audit": 0,
+      "transactionPresent": true
+    }
+  ],
+  "literal": [
+    {
+      "mode": "default",
+      "outcome": "success",
+      "parents": 1,
+      "audit": 1
+    },
+    {
+      "mode": "default",
+      "outcome": "failure",
+      "parents": 1,
+      "audit": 0
+    },
+    {
+      "mode": "reference-enabled",
+      "outcome": "success",
+      "parents": 1,
+      "audit": 1
+    },
+    {
+      "mode": "reference-enabled",
+      "outcome": "failure",
+      "parents": 0,
+      "audit": 0
+    }
+  ],
+  "workflow": {
+    "jobs": 1,
+    "completed": 0,
+    "errored": 1,
+    "error": {
+      "name": "Error",
+      "cancelled": false,
+      "message": "job.runInlineTask is not a function",
+      "stack": "Error: job.runInlineTask is not a function\n    at runJob (/tmp/framework-platforms-20260909/fixtures/payload-atomic/node_modules/payload/src/queues/operations/runJobs/runJob/index.ts:73:13)\n    at async runSingleJob (/tmp/framework-platforms-20260909/fixtures/payload-atomic/node_modules/payload/src/queues/operations/runJobs/index.ts:422:24)\n    at async Promise.all (index 0)\n    at async runJobs (/tmp/framework-platforms-20260909/fixtures/payload-atomic/node_modules/payload/src/queues/operations/runJobs/index.ts:503:21)\n    at async Object.run (/tmp/framework-platforms-20260909/fixtures/payload-atomic/node_modules/payload/src/queues/localAPI.ts:304:12)\n    at async <anonymous> (/tmp/framework-platforms-20260909/fixtures/payload-atomic/workflow.mjs:28:18)"
+    },
+    "sideEffects": []
+  },
+  "limits": "Exit0 means probe collected data. Default transaction branch is partial; reference-enabled is already baseline positive guidance. Literal workflow persisted error is source failure. SQLite DB files remain temporary; full observed content rows archived from new processes."
+}

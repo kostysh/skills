@@ -1,0 +1,25 @@
+{
+  "checkedAt": "2026-09-09T14:09:34.277263+00:00",
+  "scope": "/tmp/framework-platforms-20260909/infrastructure/docker-proxy",
+  "startAndEndHashes": {
+    "proxy.mjs": "1f0d99e2cbbc9ca64c663fa901e3bc1cb80b1695ce57f22d3039c60a6d4cabfb",
+    "proxy.test.mjs": "febbb0ffa24f238fa6f9302b63dd36d5fa61b805222cd79fe59910bde3c109bf",
+    "package.json": "75016b34853ffa1dffee537177a2a1a3cfb323070944d393fb9afdef222151c0",
+    "README.md": "acbc203a2ed85dcad1ac83c9efdf5eb2652dcbc63def280e88fc77f46e7b771e",
+    "implementation-log.md": "36162d6466ac03e5224866904f30f501972a0616957432a61f806af6f7dc4009"
+  },
+  "snapshotUnchanged": true,
+  "independentTest": {
+    "command": "npm test",
+    "runtime": "v24.15.0",
+    "tests": 12,
+    "pass": 12,
+    "fail": 0,
+    "exitCode": 0,
+    "durationMs": 229.508815,
+    "boundary": "fake Unix HTTP daemon only"
+  },
+  "confirmedFindings": [],
+  "recommendation": "limited",
+  "reportSha256": "a9132a16950aa2403ac2499f1588d3ded70ab400b17fd6d12b6f3cdee006bc2b"
+}

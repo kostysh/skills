@@ -1,0 +1,118 @@
+
+
+On this page
+Electron Versioning
+
+A detailed look at our versioning policy and implementation.
+
+As of version 2.0.0, Electron follows the SemVer spec. The following command will install the most recent stable build of Electron:
+
+npm
+Yarn
+npm install --save-dev electron
+
+yarn add --dev electron
+
+To update an existing project to use the latest stable version:
+
+npm
+Yarn
+npm install --save-dev electron@latest
+
+yarn add --dev electron@latest
+
+SemVer​
+
+Below is a table explicitly mapping types of changes to their corresponding category of SemVer (e.g. Major, Minor, Patch).
+
+Major Version IncrementsMinor Version IncrementsPatch Version Increments
+Electron breaking API changesElectron non-breaking API changesElectron bug fixes
+Node.js major version updatesNode.js minor version updatesNode.js patch version updates
+Chromium version updatesfix-related Chromium patches
+
+For more information, see the Semantic Versioning 2.0.0 spec.
+
+Note that most Chromium updates will be considered breaking. Fixes that can be backported will likely be cherry-picked as patches.
+
+Stabilization branches​
+
+Stabilization branches are branches that run parallel to main, taking in only cherry-picked commits that are related to security or stability. These branches are never merged back to main.
+
+Since Electron 8, stabilization branches are always major version lines, and named against the following template $MAJOR-x-y e.g. 8-x-y. (Prior to that, we used minor version lines and named them as $MAJOR-$MINOR-x e.g. 2-0-x.)
+
+We allow for multiple stabilization branches to exist simultaneously, one for each supported version.
+
+tip
+For more details on which versions are supported, see our Electron Releases doc.
+
+Older lines will not be supported by the Electron project.
+
+Release cycle​
+
+Electron follows an 8-week regular release cycle where key milestones correspond to
+matching dates in the Chromium release cycle.
+
+Example​
+
+When Electron 41 hits its stable release, the release line for Electron 42 is branched off of main.
+Its first alpha release is created with all the changes contained on main:
+
+A bug fix comes into main that can be backported to the release branch. The patch is applied,
+and it is published in the next v42.0.0-alpha.2 release.
+
+The version of Chromium that powers Electron 42 hits Chrome's beta channel. The alpha line is
+promoted to beta.
+
+Beta releases continue weekly until Electron 42 is promoted to stable and the same cycle starts again
+with 43-x-y. Later, a zero-day exploit is revealed and a fix is applied to main. We backport the
+fix to the 42-x-y line and release 42.0.1.
+
+Backport request process​
+
+All supported release lines will accept external pull requests to backport
+fixes previously merged to main, though this may be on a case-by-case
+basis for some older supported lines. All contested decisions around release
+line backports will be resolved by the
+Releases Working Group
+as an agenda item at their weekly meeting the week the backport PR is raised.
+
+Feature flags​
+
+Feature flags are a common practice in Chromium, and are well-established in the web-development ecosystem. In the context of Electron, a feature flag or soft branch must have the following properties:
+
+it is enabled/disabled either at runtime, or build-time; we do not support the concept of a request-scoped feature flag
+
+it completely segments new and old code paths; refactoring old code to support a new feature violates the feature-flag contract
+
+feature flags are eventually removed after the feature is released
+
+Semantic commits​
+
+All pull requests must adhere to the Conventional Commits spec, which can be summarized as follows:
+
+Commits that would result in a SemVer major bump must start their body with BREAKING CHANGE:.
+
+Commits that would result in a SemVer minor bump must start with feat:.
+
+Commits that would result in a SemVer patch bump must start with fix:.
+
+The electron/electron repository also enforces squash merging, so you only need to make sure that your pull request has the correct title prefix.
+
+Versioned main branch​
+
+The main branch always corresponds to the major version above the current pre-release line.
+
+Unstable nightly releases of main are released under the electron-nightly
+package on npm.
+
+Release branches are never merged back to main.
+
+All package.json values are fixed at 0.0.0-development.
+
+Historical versioning (Electron 1.X)​
+
+Electron versions < 2.0 did not conform to the SemVer spec: major versions corresponded to end-user API changes, minor versions corresponded to Chromium major releases, and patch versions corresponded to new features and bug fixes. While convenient for developers merging features, it creates problems for developers of client-facing applications. The QA testing cycles of major apps like Slack, Teams, VS Code, and GitHub Desktop can be lengthy and stability is a highly desired outcome. There is a high risk in adopting new features while trying to absorb bug fixes.
+
+Here is an example of the 1.x strategy:
+
+An app developed with 1.8.1 cannot take the 1.8.3 bug fix without either absorbing the 1.8.2 feature, or by backporting the fix and maintaining a new release line.

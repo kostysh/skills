@@ -1,0 +1,57 @@
+{
+  "name": "tsx",
+  "version": "4.20.5",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "peerDependencies": null,
+  "main": null,
+  "types": null,
+  "exports": {
+    ".": "./dist/loader.mjs",
+    "./cjs": "./dist/cjs/index.cjs",
+    "./cli": "./dist/cli.mjs",
+    "./esm": "./dist/esm/index.mjs",
+    "./repl": "./dist/repl.mjs",
+    "./cjs/api": {
+      "import": {
+        "types": "./dist/cjs/api/index.d.mts",
+        "default": "./dist/cjs/api/index.mjs"
+      },
+      "require": {
+        "types": "./dist/cjs/api/index.d.cts",
+        "default": "./dist/cjs/api/index.cjs"
+      }
+    },
+    "./esm/api": {
+      "import": {
+        "types": "./dist/esm/api/index.d.mts",
+        "default": "./dist/esm/api/index.mjs"
+      },
+      "require": {
+        "types": "./dist/esm/api/index.d.cts",
+        "default": "./dist/esm/api/index.cjs"
+      }
+    },
+    "./preflight": "./dist/preflight.cjs",
+    "./patch-repl": "./dist/patch-repl.cjs",
+    "./package.json": "./package.json",
+    "./suppress-warnings": "./dist/suppress-warnings.cjs"
+  },
+  "bin": {
+    "tsx": "dist/cli.mjs"
+  },
+  "dist": {
+    "shasum": "856c8b2f114c50a9f4ae108126967a167f240dc7",
+    "tarball": "https://registry.npmjs.org/tsx/-/tsx-4.20.5.tgz",
+    "fileCount": 50,
+    "integrity": "sha512-+wKjMNU9w/EaQayHXb7WA7ZaHY6hN8WgfvHNQ3t1PnU91/7O8TcTnIhCDYTZwnt8JsO9IBqZ30Ln1r7pPF52Aw==",
+    "signatures": [
+      {
+        "sig": "MEQCIFpjEqJZulNj/UeWXj5rHkXPmqsPXFW7bgyV8UtQieUwAiBQw7imkgR8aWkNamqaaRvFVwwCEp5aaZvTAy3ncXN0rA==",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      }
+    ],
+    "unpackedSize": 432524
+  }
+}

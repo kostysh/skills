@@ -1,0 +1,41 @@
+{
+  "prepared_at": "2026-09-09T13:33:41.580271+00:00",
+  "scope": "legacy-v2 host only; original Media and manual unchanged; no npm/DB/runtime",
+  "official_payload_tag": "v2.32.3",
+  "runtime_claim": "source-compatible preparation; installation/typecheck/DB/HTTP unverified",
+  "chosen_adapter": {
+    "package": "@payloadcms/db-postgres",
+    "version": "0.8.10",
+    "peerPayload": "^2.0.0"
+  },
+  "files": {
+    ".gitignore": "9234ab1d8a54d0d49c6f13433d6199d7e3e7f9e048653dac63edb459d813aeea",
+    "HOST-SETUP.md": "4f9a7f2e4e2ec870dcca1f9e2f114498e447c13998692c8d248ea88dfd62ba8a",
+    "REQUIREMENTS.md": "95689d6e9ccb7113a3dbfb16982ece8f66927d0e3d43e7d976d96dbfb792d0b9",
+    "collections/Media.ts": "e7bad8ed5265f7133028a0c5926b6c015b0b315a2bf206c0c609670fe1d2ade9",
+    "package.json": "4d8ac641b41b6a55fa5c95326019f62320fb119ee9b8ba3aff8a19672dc18578",
+    "payload.config.ts": "52aa335f5b549d8ae893f4816c67ee937b972ffb2f940612a7e900b823e57f4a",
+    "scripts/seed-local.ts": "275de7633614eaac8d984110bbc39a8bfefef7fc52a5c744e2a9f9b2ca4e8aac",
+    "scripts/upload-smoke.mjs": "8e26cdb81e7a06bccde883f60524de73446c19916ec3b41646bb69dbab991b75",
+    "source/legacy-image.png": "025440465f3adbac4244dc58480cd88e506eedad0b8fb5309467ae0b638452f6",
+    "source/manual.txt": "cee9d92f106a6e1e8b0d15a8df2639ce51386249a5113bcab243deb609450fbf",
+    "src/server.ts": "ab08c5300f9bb234c071b71d5b77cdb885f9d3c243576bb60580de9b08bc4595",
+    "src/settings.ts": "54169ccee2df746eb21e798048c61ba598038df65e749840d602bb06d538e101",
+    "tsconfig.json": "b7e3d3c247322ac1c8539b7e54fcdb1e140ed306268c17a29df102bb2653e6a0"
+  },
+  "source_index_sha256": "c353c6b2f05d6eca136fafbc7242fba0a02a5436e9602bd48a0fa7db420e1645",
+  "checks": [
+    "all local JSON parses",
+    "challenged Media.ts unchanged",
+    "manual.txt unchanged",
+    "PNG generated as synthetic2x2 input",
+    "no credentials/env/lock invented"
+  ],
+  "pending": [
+    "root DB and private settings",
+    "package install and lock",
+    "installed peer/native dependency check",
+    "typecheck, seed and server/image smoke",
+    "freeze healthy host while manual upload remains failing"
+  ]
+}

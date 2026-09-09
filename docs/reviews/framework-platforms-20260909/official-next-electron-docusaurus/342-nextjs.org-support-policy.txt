@@ -1,0 +1,78 @@
+
+Support Policy
+
+Next.js publishes new versions to the canary channel daily. These pre-release builds undergo extensive internal testing before being promoted to a stable release. While we encourage you to experiment with the latest features on canary, we do not recommend serving production traffic from these versions.
+
+
+Once a major version is released, it enters the long-term support (LTS) phase.
+
+
+We highly encourage you to use the latest version of Next.js when possible and that you serve production applications with either the latest Active or Maintenance LTS release.
+
+
+Active LTS
+
+
+Under the LTS model, a major version of Next.js remains in Active LTS until the subsequent major version is released. During Active LTS, the release benefits from new features, regular bug fixes, performance improvements, and security patches.
+
+
+Being on an Active LTS version will ensure that you stay up to date with the latest developments, while still having a stable foundation for production environments.
+
+
+Maintenance LTS
+
+
+Upon release of a new major, the previous major transitions to Maintenance LTS. During the Maintenance LTS phase, Next.js commits to shipping only critical bug fixes and essential security updates. This limited scope of changes reduces the risk of introducing regressions while still keeping applications secure.
+
+
+Each major version will remain in Maintenance LTS for two years following the initial release.
+
+
+For Maintenance LTS versions, updates will land as semver-minor releases, even if they are breaking changes.
+
+
+In rare circumstances, depending on the severity of the underlying bug, we will patch versions of Next.js that are outside of our LTS policy.
+
+
+Supported Versions
+
+
+Major VersionRelease Date
+
+16.x (Active LTS)Oct. 21, 2025
+
+15.x (Maintenance LTS)Oct. 21, 2024
+
+
+Unsupported Versions
+
+
+Major VersionRelease Date
+
+14.xOct. 26, 2023
+
+13.xOct. 26, 2022
+
+12.xOct. 26, 2021
+
+11.xJun 15, 2021
+
+10.xOct. 27, 2020
+
+9.xJul. 7, 2019
+
+8.xFeb. 11, 2019
+
+7.xSept. 19, 2018
+
+6.xApr. 29, 2018
+
+5.xFeb. 5, 2018
+
+4.xOct. 9, 2017
+
+3.xAug. 8, 2017
+
+2.xMar. 27, 2017
+
+1.xOct. 25, 2016

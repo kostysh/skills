@@ -1,0 +1,70 @@
+[
+  {
+    "url": "https://developer.wordpress.org/rest-api/reference/posts/",
+    "file": "cms-wordpress-posts.txt",
+    "lines": 618
+  },
+  {
+    "url": "https://developer.wordpress.org/reference/classes/wp_post/",
+    "file": "cms-wordpress-model.txt",
+    "lines": 525
+  },
+  {
+    "url": "https://developer.wordpress.org/rest-api/reference/media/",
+    "file": "cms-wordpress-media.txt",
+    "lines": 584
+  },
+  {
+    "url": "https://www.advancedcustomfields.com/resources/repeater/",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "url": "https://www.advancedcustomfields.com/resources/group/",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "url": "https://www.advancedcustomfields.com/resources/flexible-content/",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "url": "https://www.contentful.com/developers/docs/concepts/data-model/",
+    "error": "HTTP Error 429: Too Many Requests"
+  },
+  {
+    "url": "https://www.contentful.com/developers/docs/concepts/rich-text/",
+    "error": "HTTP Error 429: Too Many Requests"
+  },
+  {
+    "url": "https://www.contentful.com/developers/docs/tutorials/general/setting-locales/",
+    "error": "HTTP Error 429: Too Many Requests"
+  },
+  {
+    "url": "https://www.contentful.com/developers/docs/concepts/links/",
+    "error": "HTTP Error 429: Too Many Requests"
+  },
+  {
+    "url": "https://docs.strapi.io/cms/backend-customization/models",
+    "file": "cms-strapi-models.txt",
+    "lines": 832
+  },
+  {
+    "url": "https://docs.strapi.io/cms/api/rest",
+    "file": "cms-strapi-rest.txt",
+    "lines": 582
+  },
+  {
+    "url": "https://docs.strapi.io/cms/features/content-type-builder",
+    "file": "cms-strapi-fields.txt",
+    "lines": 628
+  },
+  {
+    "url": "https://www.sanity.io/docs/apis-and-sdks/introduction-to-schemas",
+    "file": "cms-sanity-schema.txt",
+    "lines": 297
+  },
+  {
+    "url": "https://www.sanity.io/docs/developer-guides/beginners-guide-to-portable-text",
+    "file": "cms-sanity-portable.txt",
+    "lines": 299
+  }
+]

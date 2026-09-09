@@ -27,42 +27,38 @@ Standard package scripts:
     "dev": "electron-vite dev",
     "preview": "electron-vite preview --outDir=dist",
     "build": "electron-vite build --outDir=dist",
-    "package": "pnpm build && electron-forge package",
-    "make": "pnpm build && electron-forge make",
-    "publish": "pnpm build && electron-forge publish"
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish"
   }
 }
 ```
 
-Adapt the package-manager prefix to the repository (`pnpm`, `npm run`, `yarn`). Keep the semantic contract:
+Invoke declared scripts explicitly with the repository package manager (`pnpm run`, `npm run`, or `yarn run`). In particular, bare `pnpm publish` is the registry publisher, not the Forge `publish` script. Keep the semantic contract:
 
 - `dev` starts Electron with main/preload builds and renderer dev server.
 - `preview` builds main, preload, and renderer, then starts Electron against built output.
 - `build` creates production source bundles only.
 - `package` creates the platform app bundle from built output.
-- `make` creates distributable installers/archives.
-- `publish` uploads distributables after package/make prerequisites.
+- `make` normally runs package again, then creates installers/archives; `--skip-package` reuses an existing package only when intentionally verified.
+- `publish` normally runs package and make before upload. `--dry-run` saves prepared artifact state without upload; `--from-dry-run` publishes that saved state. Do not hide a prebuild or source-changing lifecycle hook in the latter path.
 
 If Forge output and electron-vite output directories conflict, set electron-vite `outDir` to a stable build directory such as `dist` and keep Forge output in its own `out` directory.
 
 ## Pipeline
 
-Use this order for production builds:
+Use this order when the release must publish the verified bytes:
 
-1. Install dependencies with the repo package manager and lockfile.
-2. Run lint, process-specific typecheck, and unit/contract tests; use [TypeScript in Electron](typescript-in-electron.md) for TypeScript boundaries and gates.
-3. Run `electron-vite build` for main, preload, and renderer.
-4. Run source-protection transforms configured in electron-vite, such as bytecode for selected main/preload modules, only when policy requires them.
-5. Audit built output for sourcemaps, raw source, dev artifacts, `.env` files, test fixtures, private keys, and readable business-critical modules.
-6. Run `electron-forge package` to produce a packaged app bundle.
-7. Verify ASAR, unpacked native modules, fuses, ASAR integrity, app metadata, icons, and platform-specific resources.
-8. Run packaged smoke tests against the packaged app, not only dev or preview mode.
-9. Run `electron-forge make` for target distributables.
-10. Sign, notarize, timestamp, checksum, SBOM, provenance, and release-note steps according to platform policy.
-11. Run release smoke checks on generated distributables when feasible.
-12. Run `electron-forge publish` only after artifacts and update metadata are verified.
+1. Install from the lockfile. For pnpm/Forge use project-local `node-linker=hoisted` as described in [Tooling](tooling-project-structure.md), then validate the dependency layout.
+2. Run applicable lint, process typecheck and tests. Run `pnpm build` (or the repository equivalent) once to produce main/preload/renderer source bundles, including authorized source-protection transforms. Inspect the output.
+3. Run the installed Forge publish dry-run path, e.g. `pnpm run publish --dry-run`. It performs package/make and saves state without upload. Review publisher/hooks for side effects and use only the authorized target/channel. This is a local preparation command, not upload permission.
+4. Perform signing/notarization at the lifecycle stage required by the selected packager/maker (Forge package can sign/notarize the app before make). All byte-changing transforms/signing must precede final hashes. Freeze the resulting package and distributables plus saved dry-run metadata; record hashes, target, versions and source revision.
+5. Audit ASAR, native modules, fuses/integrity, resources and exposure. Smoke-test the exact final app and installer/archive payload where applicable; verify signatures and update metadata. Checks must not alter the frozen artifact. Missing target credentials/runtime leaves that release claim unverified.
+6. Only with existing publication authority, recheck the saved hashes and run `pnpm run publish --from-dry-run` with no source build/prepublish transformation. Verify the published artifact/metadata against those hashes. If bytes change, repeat validation of the changed artifacts before upload.
 
-Do not skip `electron-vite build` before Forge package/make/publish. Forge package does not become the source bundler in this canonical stack.
+An equivalent immutable-artifact promotion flow is valid. Ordinary local package/make work can run a source build followed by package or make; do not confuse it with a frozen release. Running plain make after package smoke or plain publish after make may recreate the app and invalidate the earlier evidence. Use `--skip-package` only with an intentionally retained package; it alone does not make a later plain publish immutable. Verify flags and saved-state behavior with the installed Forge CLI.
+
+Sources: [Forge CLI](https://www.electronforge.io/cli), [build lifecycle](https://www.electronforge.io/core-concepts/build-lifecycle).
 
 ## electron-vite Practices
 
@@ -74,7 +70,7 @@ Use electron-vite as an Electron build tool, not as a renderer-only Vite wrapper
 - Do not use `nodeIntegration` as a workaround for build problems.
 - Use preload plus `contextBridge` for renderer capabilities.
 - Fully bundle preload dependencies when sandbox support requires a single preload bundle.
-- Use isolated builds for multi-entry preload or renderer scenarios when shared chunks would break sandbox, loading, or startup behavior.
+- Isolated builds are experimental: verify installed electron-vite support and use only for a demonstrated multi-entry shared-chunk loading problem. A fully bundled CJS preload preserves sandbox; native ESM preload is not supported in the sandbox.
 - Pin electron-vite and related plugins; review release notes before major upgrades.
 - Keep dev-only flags such as inspector, remote debugging, and renderer-only dev commands out of release scripts.
 
@@ -112,8 +108,8 @@ Use [Source Protection](source-protection.md) for the full threat model and audi
 Use Forge after the electron-vite source build:
 
 - `package` creates the OS app bundle.
-- `make` creates installers or distributable archives from the packaged app.
-- `publish` uploads generated artifacts through configured publishers.
+- `make` packages again by default; the command contract above owns intentional reuse.
+- `publish` normally packages/makes again; the frozen dry-run/from-dry-run flow above owns publishing verified bytes.
 
 Forge is also the place to wire platform makers, publishers, signing/notarization hooks, icons, native module rebuilds, and package lifecycle hooks. Keep custom logic small and documented; if source bundling logic grows, move it back to electron-vite config or a prebuild step rather than hiding it inside Forge hooks.
 
@@ -128,7 +124,7 @@ Recommended lanes:
 | PR | install, lint, typecheck, unit/IPC/preload/renderer tests, `electron-vite build` |
 | Nightly | PR lane plus `electron-forge package`, source exposure audit, packaged smoke |
 | Beta | signed prerelease package, `electron-forge make`, fake update feed, staged channel |
-| Stable | full build, package, make, signing/notarization/timestamping, checksums, SBOM, provenance, publish |
+| Stable | source build, prepared/signed dry-run artifacts, hashes/SBOM/provenance, exact-artifact smoke, authorized saved-state publication |
 | Hotfix | same release gates as stable, scoped to the patched branch |
 | Dry run | stable lane without public publish |
 

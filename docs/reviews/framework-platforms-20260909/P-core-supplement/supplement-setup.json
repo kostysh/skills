@@ -1,0 +1,16 @@
+{
+  "afterReset": {
+    "reports": [],
+    "jobs": []
+  },
+  "note": {
+    "id": 6,
+    "sourceKey": "assessor-only-hook-invocation",
+    "title": "Assessor local hook invocation",
+    "tenant": "alpha",
+    "visible": true,
+    "origin": "existing-note-hook",
+    "updatedAt": "2026-09-09T13:57:06.443Z",
+    "createdAt": "2026-09-09T13:57:06.443Z"
+  }
+}

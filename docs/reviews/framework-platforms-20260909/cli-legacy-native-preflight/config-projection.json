@@ -1,0 +1,14 @@
+{
+  "runId": "fp-cli-legacy-20260909",
+  "projectId": "fp-cli-legacy-20260909",
+  "images": [
+    "public.ecr.aws/supabase/postgres:17.4.1.074",
+    "public.ecr.aws/supabase/migra:3.0.1663481299"
+  ],
+  "hostNetworkImages": [
+    "public.ecr.aws/supabase/migra:3.0.1663481299"
+  ],
+  "configSha256": "5636e394ec3d130b4210a218535d105681d1125fac476f9f759be4d912a400f8",
+  "configMtime": "2026-09-09T14:28:33.556121+00:00",
+  "limitation": "Projection from the existing supervisor config; not an actual migra HostConfig/image-ID snapshot."
+}

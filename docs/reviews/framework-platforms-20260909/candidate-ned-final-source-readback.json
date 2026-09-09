@@ -1,0 +1,25 @@
+{
+  "reviewer": "final_ned_low",
+  "mode": "re-audit",
+  "assurance": "independent",
+  "at": "2026-09-09T16:42:57.415982+00:00",
+  "freeze": "candidate-ned-post-remediation-freeze.json",
+  "packages": {
+    "nextjs": {
+      "fileCount": 29,
+      "mismatches": [],
+      "sha256SortedPathNulHashLf": "e18693434a133810163c34701bd7490956a57dcc6ade5a130d0dcf0e47e79239"
+    },
+    "electron-engineer": {
+      "fileCount": 30,
+      "mismatches": [],
+      "sha256SortedPathNulHashLf": "f5199e9867db23951fb3207f09a4d3189a578897b3b633e6f06d436de6037af3"
+    },
+    "docusaurus-repo": {
+      "fileCount": 20,
+      "mismatches": [],
+      "sha256SortedPathNulHashLf": "75d7093a2c57ecdc5f2947211cfc5498989da6e03a55f5a25646921f4013dea3"
+    }
+  },
+  "frontmatterManifestMismatches": []
+}

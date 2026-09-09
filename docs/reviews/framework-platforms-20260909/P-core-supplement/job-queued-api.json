@@ -1,0 +1,23 @@
+{
+  "status": 200,
+  "job": {
+    "id": 3,
+    "input": {
+      "text": "  Quarter Report  ",
+      "requestKey": "report-001"
+    },
+    "completedAt": null,
+    "totalTried": 0,
+    "hasError": false,
+    "error": null,
+    "log": [],
+    "workflowSlug": "prepare-report",
+    "taskSlug": null,
+    "queue": "reports",
+    "waitUntil": null,
+    "processing": false,
+    "updatedAt": "2026-09-09T13:57:10.844Z",
+    "createdAt": "2026-09-09T13:57:10.843Z",
+    "taskStatus": {}
+  }
+}
