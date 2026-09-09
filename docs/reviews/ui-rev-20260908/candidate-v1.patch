@@ -1,0 +1,919 @@
+diff --git a/skills/agent-browser/SKILL.md b/skills/agent-browser/SKILL.md
+index d06a7b5..c695c17 100644
+--- a/skills/agent-browser/SKILL.md
++++ b/skills/agent-browser/SKILL.md
+@@ -5,9 +5,9 @@ description: Use agent-browser to navigate and interact with rendered web pages,
+   diagnostic checks. Verify the requested terminal state and report completed,
+   partial, or blocked; do not replace a formal project E2E suite.
+ metadata:
+-  source-version: 0.2.2
++  source-version: 0.2.3
+   skillforge-source-manifest: skill.yaml
+-  skillforge-source-hash: 45431af4c1588957b32bb42a5d6959d8b24ac09e51fc7e6344d8ca0cc786b2cc
++  skillforge-source-hash: da2b92d1360f2d5f5a36e9ff8545a3840db434c44641521d0bdadb7ed94f793a
+ allowed-tools: Bash(agent-browser:*)
+ ---
+ 
+@@ -134,7 +134,7 @@ Governing user, system, and project policies define authority; installed version
+ ### Browser evidence
+ Match evidence to the claim and report the target, expected and observed terminal state, relevant real or intercepted network mode, and exact limits of partial or blocked results.
+ 
+-## Optional references
++## Required active references
+ - [Cloudflare Access OTP](references/cloudflare-access-otp.md) — Read this before a browser flow protected by a human Cloudflare Access email OTP, especially when the application has a separate OTP or infrastructure credentials are also available.
+ 
+ ## Portability rules
+@@ -144,8 +144,7 @@ Match evidence to the claim and report the target, expected and observed termina
+ 
+ ## Portability checklist before finishing
+ 
+-- Run the skill-source-compiler check command after regeneration.
+-- Confirm the copied skill remains understandable when the CLI is unavailable, while clearly reporting execution as blocked or handed off.
++- Only when editing or packaging this skill itself, run compiler lint, regenerate, check, and an isolated compile; verify generated parity, local references, portability, and packaged files. These maintenance checks are not prerequisites for ordinary tasks performed with the skill.
+ 
+ ## Supporting and historical surface
+ 
+diff --git a/skills/agent-browser/docs/README.md b/skills/agent-browser/docs/README.md
+index 132eec8..f8e2f5d 100644
+--- a/skills/agent-browser/docs/README.md
++++ b/skills/agent-browser/docs/README.md
+@@ -16,3 +16,7 @@
+ - [logs/implementation-log-20260612-1.md](logs/implementation-log-20260612-1.md) — scenario-level SPA evidence и distinction между route-intercepted и live acceptance. Статус: author self-check; независимый verdict не зафиксирован.
+ - [logs/implementation-log-20260708-1.md](logs/implementation-log-20260708-1.md) — browser evidence guardrails и remediation traceability для SL-01. Статус: author self-check; независимый verdict не зафиксирован.
+ - [logs/implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — outcome-first workflow, version-matched CLI guidance и независимый capability re-audit. Статус: independent PASS; supporting-only delta audit PASS.
++
++## Ревизия UI-REV-v1
++
++- [Общий журнал UI-REV-v1](../../../docs/implementation-log-20260908-ui-revision.md) — исходный снимок, проверки и статус ревизии интерфейсной группы; supporting-запись репозитория.
+diff --git a/skills/agent-browser/docs/compile-report.md b/skills/agent-browser/docs/compile-report.md
+index 3a10daf..d93767f 100644
+--- a/skills/agent-browser/docs/compile-report.md
++++ b/skills/agent-browser/docs/compile-report.md
+@@ -2,7 +2,7 @@
+ Generated from `skill.yaml`.
+ 
+ ## Versions
+-- Skill source version: `0.2.2`
++- Skill source version: `0.2.3`
+ 
+ ## Source files
+ - `agents/openai.yaml`
+@@ -16,7 +16,7 @@ Generated from `skill.yaml`.
+ - `skill.yaml`
+ 
+ ## Required references
+-- none
++- `references/cloudflare-access-otp.md`
+ 
+ ## Warnings
+ - none
+diff --git a/skills/agent-browser/skill.yaml b/skills/agent-browser/skill.yaml
+index bfb9b17..1a3cda1 100644
+--- a/skills/agent-browser/skill.yaml
++++ b/skills/agent-browser/skill.yaml
+@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
+ kind: SkillSource
+ skill:
+   name: agent-browser
+-  source-version: 0.2.2
++  source-version: 0.2.3
+   recommended-skill-md-max-bytes: 20000
+   description: Use agent-browser to navigate and interact with rendered web pages, fill forms, take screenshots, extract data, and run browser smoke or diagnostic checks. Verify the requested terminal state and report completed, partial, or blocked; do not replace a formal project E2E suite.
+   allowedTools:
+@@ -14,7 +14,7 @@ references:
+     title: Cloudflare Access OTP
+     source: references/cloudflare-access-otp.md
+     target: references/cloudflare-access-otp.md
+-    required: false
++    required: true
+     trigger: Read this before a browser flow protected by a human Cloudflare Access email OTP, especially when the application has a separate OTP or infrastructure credentials are also available.
+ assets: []
+ copies:
+@@ -45,9 +45,9 @@ supporting:
+     description: Non-normative navigation for agent-browser maintenance records.
+ surfaces:
+   active:
+-    requiredReferences: []
+-    optionalReferences:
++    requiredReferences:
+       - ref-cloudflare-access-otp
++    optionalReferences: []
+   supportingGlobs:
+     - docs/*
+     - docs/logs/*
+@@ -129,5 +129,4 @@ sections:
+       - Do not reference machine-specific absolute paths or local files outside this skill folder.
+       - Keep the stable snapshot workflow and evidence contract inside this skill; external CLI guidance supplies only version-specific command details.
+     checklist:
+-      - Run the skill-source-compiler check command after regeneration.
+-      - Confirm the copied skill remains understandable when the CLI is unavailable, while clearly reporting execution as blocked or handed off.
++      - "Only when editing or packaging this skill itself, run compiler lint, regenerate, check, and an isolated compile; verify generated parity, local references, portability, and packaged files. These maintenance checks are not prerequisites for ordinary tasks performed with the skill."
+diff --git a/skills/frontend-design/SKILL.md b/skills/frontend-design/SKILL.md
+index 5f9113e..464bc23 100644
+--- a/skills/frontend-design/SKILL.md
++++ b/skills/frontend-design/SKILL.md
+@@ -6,9 +6,9 @@ description: Design and implement visually strong web interfaces and
+   Preserve authoritative behavior and existing systems, then verify rendered
+   results.
+ metadata:
+-  source-version: 0.2.1
++  source-version: 0.2.2
+   skillforge-source-manifest: skill.yaml
+-  skillforge-source-hash: a6443dc398b957f350e30e1e0fe2d45bdb31d386870ff31a0552e590e88d0df7
++  skillforge-source-hash: b0cd204ffae993d86c86d70922740c177ccb1d2038a71804827859cd104c14aa
+ ---
+ 
+ # frontend-design
+@@ -18,7 +18,7 @@ metadata:
+ 1. Confirm that visual direction, design strategy, or translating design into a rendered interface is material to the request.
+ 2. Name the requested deliverable as strategy-only, design-artifact, runtime-implementation, or a combination.
+ 3. Inspect the authoritative brief, existing runtime, design system, component inventory, and assets that can govern the work before making visual decisions.
+-4. Classify surface type, constraint profile, and primary visual engine; load only the optional references whose triggers match.
++4. Classify surface type, constraint profile, and primary visual engine; load only the references whose conditions match the task.
+ 5. Define the evidence required for the strongest honest completion status before building.
+ 
+ ## When to use this skill
+@@ -299,12 +299,14 @@ Match evidence to the requested deliverable and never use artifact-level or stru
+ ### Status contract
+ Report strategy-ready, artifact-ready, implemented-not-verified, verified, or blocked per deliverable; do not collapse several deliverables into the strongest status achieved by only one.
+ 
+-## Optional references
+-- [Anti Patterns](references/anti-patterns.md) — Read this when output feels generic, overdesigned, weakly grounded, or at risk of substrate-only closure.
++## Required active references
+ - [Surface Modes](references/surface-modes.md) — Read this when surface type or the design-system constraint profile is ambiguous.
+ - [Visual Engines](references/visual-engines.md) — Read this after classifying the surface when the primary visual engine is not already established.
+ - [Strategy To Implementation](references/strategy-to-implementation.md) — Read this for non-trivial strategy, system-constrained work, implementation handoff, or runtime completion claims.
+ 
++## Optional references
++- [Anti Patterns](references/anti-patterns.md) — Consult this when output feels generic, overdesigned, weakly grounded, or at risk of substrate-only closure.
++
+ ## Portability rules
+ 
+ - Do not reference machine-specific absolute paths or local files outside this skill folder.
+@@ -313,10 +315,7 @@ Report strategy-ready, artifact-ready, implemented-not-verified, verified, or bl
+ 
+ ## Portability checklist before finishing
+ 
+-- Run the packaged skill-source-compiler lint, regenerate, and check commands after source changes.
+-- Search the skill folder for absolute local paths before finishing.
+-- Confirm every active reference listed by SKILL.md exists inside this skill folder.
+-- Compile to an isolated directory and confirm the copied package retains the strategy, interop, and evidence contract.
++- Only when editing or packaging this skill itself, run compiler lint, regenerate, check, and an isolated compile; verify generated parity, local references, portability, and packaged files. These maintenance checks are not prerequisites for ordinary tasks performed with the skill.
+ 
+ ## Supporting and historical surface
+ 
+diff --git a/skills/frontend-design/docs/README.md b/skills/frontend-design/docs/README.md
+index 316d049..d824c37 100644
+--- a/skills/frontend-design/docs/README.md
++++ b/skills/frontend-design/docs/README.md
+@@ -9,3 +9,7 @@ Supporting maintenance documents are non-normative unless `SKILL.md` explicitly
+ - [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — сокращение описания до 300 code points; independent scoped PASS.
+ - [implementation-log-20260716-1.md](logs/implementation-log-20260716-1.md) — remediation сквозного strategy-to-implementation контракта и independent re-audit evidence.
+ - [forward-test-evidence-20260716-1.md](logs/forward-test-evidence-20260716-1.md) — blind forward-tests candidate `0.2.0`.
++
++## Ревизия UI-REV-v1
++
++- [Общий журнал UI-REV-v1](../../../docs/implementation-log-20260908-ui-revision.md) — исходный снимок, проверки и статус ревизии интерфейсной группы; supporting-запись репозитория.
+diff --git a/skills/frontend-design/docs/compile-report.md b/skills/frontend-design/docs/compile-report.md
+index c16250c..58fc4cd 100644
+--- a/skills/frontend-design/docs/compile-report.md
++++ b/skills/frontend-design/docs/compile-report.md
+@@ -2,7 +2,7 @@
+ Generated from `skill.yaml`.
+ 
+ ## Versions
+-- Skill source version: `0.2.1`
++- Skill source version: `0.2.2`
+ 
+ ## Source files
+ - `LICENSE.txt`
+@@ -21,7 +21,9 @@ Generated from `skill.yaml`.
+ - `skill.yaml`
+ 
+ ## Required references
+-- none
++- `references/surface-modes.md`
++- `references/visual-engines.md`
++- `references/strategy-to-implementation.md`
+ 
+ ## Warnings
+ - none
+diff --git a/skills/frontend-design/skill.yaml b/skills/frontend-design/skill.yaml
+index 71bcc84..297c33b 100644
+--- a/skills/frontend-design/skill.yaml
++++ b/skills/frontend-design/skill.yaml
+@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
+ kind: SkillSource
+ skill:
+   name: frontend-design
+-  source-version: 0.2.1
++  source-version: 0.2.2
+   recommended-skill-md-max-bytes: 20000
+   description: >-
+     Design and implement visually strong web interfaces and decision-complete
+@@ -17,24 +17,24 @@ references:
+     source: references/anti-patterns.md
+     target: references/anti-patterns.md
+     required: false
+-    trigger: Read this when output feels generic, overdesigned, weakly grounded, or at risk of substrate-only closure.
++    trigger: Consult this when output feels generic, overdesigned, weakly grounded, or at risk of substrate-only closure.
+   - id: ref-references-surface-modes
+     title: Surface Modes
+     source: references/surface-modes.md
+     target: references/surface-modes.md
+-    required: false
++    required: true
+     trigger: Read this when surface type or the design-system constraint profile is ambiguous.
+   - id: ref-references-visual-engines
+     title: Visual Engines
+     source: references/visual-engines.md
+     target: references/visual-engines.md
+-    required: false
++    required: true
+     trigger: Read this after classifying the surface when the primary visual engine is not already established.
+   - id: ref-strategy-to-implementation
+     title: Strategy To Implementation
+     source: references/strategy-to-implementation.md
+     target: references/strategy-to-implementation.md
+-    required: false
++    required: true
+     trigger: Read this for non-trivial strategy, system-constrained work, implementation handoff, or runtime completion claims.
+ assets: []
+ copies:
+@@ -73,12 +73,12 @@ supporting:
+     description: Non-normative blind peer-view inventory evidence for Aequitas-ADR/app#228.
+ surfaces:
+   active:
+-    requiredReferences: []
+-    optionalReferences:
+-      - ref-references-anti-patterns
++    requiredReferences:
+       - ref-references-surface-modes
+       - ref-references-visual-engines
+       - ref-strategy-to-implementation
++    optionalReferences:
++      - ref-references-anti-patterns
+   supportingGlobs:
+     - docs/*
+     - docs/forward-tests/*
+@@ -88,7 +88,7 @@ sections:
+     - Confirm that visual direction, design strategy, or translating design into a rendered interface is material to the request.
+     - Name the requested deliverable as strategy-only, design-artifact, runtime-implementation, or a combination.
+     - Inspect the authoritative brief, existing runtime, design system, component inventory, and assets that can govern the work before making visual decisions.
+-    - Classify surface type, constraint profile, and primary visual engine; load only the optional references whose triggers match.
++    - Classify surface type, constraint profile, and primary visual engine; load only the references whose conditions match the task.
+     - Define the evidence required for the strongest honest completion status before building.
+   whenToUse:
+     - Create or refine an implementation-ready visual and interaction strategy for a web interface.
+@@ -220,7 +220,4 @@ sections:
+       - Keep all mandatory frontend-design guidance inside this skill folder.
+       - Use relative links for local references, assets, scripts, tests, and supporting docs.
+     checklist:
+-      - Run the packaged skill-source-compiler lint, regenerate, and check commands after source changes.
+-      - Search the skill folder for absolute local paths before finishing.
+-      - Confirm every active reference listed by SKILL.md exists inside this skill folder.
+-      - Compile to an isolated directory and confirm the copied package retains the strategy, interop, and evidence contract.
++      - "Only when editing or packaging this skill itself, run compiler lint, regenerate, check, and an isolated compile; verify generated parity, local references, portability, and packaged files. These maintenance checks are not prerequisites for ordinary tasks performed with the skill."
+diff --git a/skills/react-components-engineer/SKILL.md b/skills/react-components-engineer/SKILL.md
+index d911817..153b6a6 100644
+--- a/skills/react-components-engineer/SKILL.md
++++ b/skills/react-components-engineer/SKILL.md
+@@ -9,9 +9,9 @@ compatibility: Portable documentation-only engineering skill. It ships no
+   runtime or test harness and requires repository evidence plus installed React
+   and framework versions for project-specific decisions.
+ metadata:
+-  source-version: 0.2.0
++  source-version: 0.2.1
+   skillforge-source-manifest: skill.yaml
+-  skillforge-source-hash: 2c04626f28953a33b303a8f18b71dbdca6a0f960e25d8dfc147cf61f1f54a58b
++  skillforge-source-hash: 7862d1acc89523e31e94af221d9d99fa77784491f173d3b0efe0eb2fac68b9b9
+ ---
+ 
+ # react-components-engineer
+@@ -44,7 +44,7 @@ Build React components that preserve their declared behavior in the rendering co
+ 
+ ## Capability and anti-claims
+ 
+-This skill succeeds when it identifies a concrete component-level failure path, selects a project-compatible React pattern, and reports a result whose status is supported by evidence from the relevant renderer or browser boundary.
++This skill succeeds when it implements an accepted component contract or provides a supported review or diagnosis. Preserve the public behavior, choose project-compatible patterns where needed, and match completion to the requested source or runtime claim; a clean review does not require finding a defect.
+ 
+ The instructions do not create runtime capability, choose a framework contract, grant authorization, prove accessibility or performance, or establish security by themselves. A hook, API import, wrapper, Storybook story, mock, typecheck, build, or generated file is bounded evidence and cannot close a broader behavior claim.
+ 
+@@ -61,7 +61,7 @@ The instructions do not create runtime capability, choose a framework contract,
+ | Server/client boundary | RSC or another server/client component boundary is real | Client props follow the framework serialization contract; sensitive fields are allowlisted on the server | Framework integration/build plus boundary behavior; security owner evidence for security claims |
+ | Transition or optimization | The feature exists and a measured interaction or duplicate-work path is in scope | Optimization APIs never carry semantic correctness; version and release-channel gates are satisfied | Observed transition or measurement matching the claim |
+ 
+-Exclude contexts that project evidence makes impossible. Do not add substrate to satisfy an inapplicable row.
++The evidence column applies to claims about runtime behavior in that context. A source-only review may assess the corresponding code invariant without exercising or claiming the runtime boundary. Exclude contexts that project evidence makes impossible; do not add substrate to satisfy an inapplicable row.
+ 
+ ## Version-sensitive API gates
+ 
+@@ -94,16 +94,16 @@ Validation:
+ 
+ ### Workflow stage: Select and apply the smallest supported pattern
+ 
+-Correct the applicable component failure without universal checklists or version-incompatible APIs.
++Implement or assess the component contract without inventing defects, universal checklists, or version-incompatible APIs.
+ 
+-1. Load the optional resilience reference only for the concrete risks in scope and apply its version and context gates.
++1. Load the conditional resilience reference only for the concrete risks in scope and apply its version and context gates.
+ 2. Prefer project-native and stable React or framework mechanisms; add a version-sensitive API only when the installed environment supports it and the component actually uses the corresponding feature.
+ 3. Preserve render purity, deterministic server/client output where hydration applies, symmetric Effect setup and cleanup, per-instance ownership, opaque-child contracts, correct DOM realm ownership, and explicit server/client data boundaries as applicable.
+ 4. Route framework, security, accessibility, visual, TypeScript, test-runner, and formal-review decisions to their owners while retaining component-semantics responsibility.
+ 
+ Validation:
+ 
+-- The change or finding addresses the observed failure path instead of merely adding a recommended API, wrapper, story, test file, or checklist item.
++- The result addresses the accepted component contract or supported failure path; a clean review need not invent a defect or add an API, wrapper, story, or checklist item.
+ - Stable projects receive no unsupported Canary or Experimental imports and no release-channel change without explicit authority.
+ 
+ ### Workflow stage: Verify and hand off the component result
+@@ -111,12 +111,12 @@ Validation:
+ Match the completion status to observed evidence and give the next consumer an actionable result.
+ 
+ 1. Run only applicable scenarios, using the existing project test stack and a real renderer or browser boundary when the claim depends on hydration, another document, visibility lifecycle, or server/client integration.
+-2. Classify the result as verified, partial, or blocked. Verified requires evidence that exercises the claimed behavior; an implemented change without that evidence is partial.
++2. Classify the result using the Evidence and status policy for the requested claim, distinguishing a source-level conclusion from runtime verification.
+ 3. Report mode, component contract, applicable contexts, change or findings, verification evidence, status, residual risks or blockers, anti-claims, and next owner.
+ 
+ Validation:
+ 
+-- Unavailable or lower-fidelity verification lowers the result status instead of being reported as completed.
++- Missing evidence lowers only the conclusion that depends on it; a completed source-level review does not imply runtime verification.
+ - The handoff does not imply framework support, accessibility, performance, or security assurance that was not established by the owning skill and evidence.
+ 
+ ## Interop priority
+@@ -148,9 +148,9 @@ Evaluate and verify only contexts that the component contract and project eviden
+ Prefer the installed stable React and framework mechanisms. Canary or Experimental APIs require existing project adoption or explicit operator authority and must retain their channel caveats.
+ 
+ ### Evidence and status policy
+-Report verified only when claim-matched behavior was exercised. Report partial when analysis or implementation is useful but the required boundary was not observed, and blocked when a missing authoritative decision or conflict prevents a safe result.
++Report verified when evidence establishes the requested claim. A source-only review or diagnosis may be complete from inspected code, including a clean result; name that boundary without implying runtime verification. A runtime behavior claim requires the relevant renderer or browser evidence. Report partial only for a requested conclusion whose evidence is missing, and block only decisions that depend on unresolved authority or conflict.
+ 
+-## Optional references
++## Required active references
+ - [React Component Resilience Patterns](references/bulletproof-patterns.md) — Read this when a concrete SSR, hydration, multi-instance, composition, portal, Effect lifecycle, transition, Activity, RSC, sensitive-data, or memoization risk is in scope and exact pattern or version caveats are needed.
+ 
+ ## Portability rules
+@@ -162,10 +162,7 @@ Report verified only when claim-matched behavior was exercised. Report partial w
+ 
+ ## Portability checklist before finishing
+ 
+-- Run the skill-source-compiler check command after regeneration.
+-- Search active instructions and declared files for absolute local dependencies before finishing.
+-- Confirm every active reference listed by SKILL.md exists inside this skill folder.
+-- Confirm a copied skill remains understandable without repository history, runtime files, or supporting logs.
++- Only when editing or packaging this skill itself, run compiler lint, regenerate, check, and an isolated compile; verify generated parity, local references, portability, and packaged files. These maintenance checks are not prerequisites for ordinary tasks performed with the skill.
+ 
+ ## Supporting and historical surface
+ 
+diff --git a/skills/react-components-engineer/docs/README.md b/skills/react-components-engineer/docs/README.md
+index f969e0b..5d22697 100644
+--- a/skills/react-components-engineer/docs/README.md
++++ b/skills/react-components-engineer/docs/README.md
+@@ -15,3 +15,7 @@
+ - [logs/implementation-log-20260708-1.md](logs/implementation-log-20260708-1.md) — сужение reusable-component guardrail и evidence traceability для SL-01 remediation. Статус: PASS.
+ - [logs/implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — сокращение описания до 300 code points. Статус: independent scoped PASS.
+ - [logs/implementation-log-20260715-2.md](logs/implementation-log-20260715-2.md) — capability-аудит, актуализация React guidance и устранение substrate-only completion path. Статус: independent PASS; все baseline P1/P2 закрыты.
++
++## Ревизия UI-REV-v1
++
++- [Общий журнал UI-REV-v1](../../../docs/implementation-log-20260908-ui-revision.md) — исходный снимок, проверки и статус ревизии интерфейсной группы; supporting-запись репозитория.
+diff --git a/skills/react-components-engineer/docs/compile-report.md b/skills/react-components-engineer/docs/compile-report.md
+index 3eae536..7bf2e15 100644
+--- a/skills/react-components-engineer/docs/compile-report.md
++++ b/skills/react-components-engineer/docs/compile-report.md
+@@ -2,7 +2,7 @@
+ Generated from `skill.yaml`.
+ 
+ ## Versions
+-- Skill source version: `0.2.0`
++- Skill source version: `0.2.1`
+ 
+ ## Source files
+ - `agents/openai.yaml`
+@@ -14,7 +14,7 @@ Generated from `skill.yaml`.
+ - `skill.yaml`
+ 
+ ## Required references
+-- none
++- `references/bulletproof-patterns.md`
+ 
+ ## Warnings
+ - none
+diff --git a/skills/react-components-engineer/fragments/overview.md b/skills/react-components-engineer/fragments/overview.md
+index 0b07dab..9ca421b 100644
+--- a/skills/react-components-engineer/fragments/overview.md
++++ b/skills/react-components-engineer/fragments/overview.md
+@@ -2,7 +2,7 @@ Build React components that preserve their declared behavior in the rendering co
+ 
+ ## Capability and anti-claims
+ 
+-This skill succeeds when it identifies a concrete component-level failure path, selects a project-compatible React pattern, and reports a result whose status is supported by evidence from the relevant renderer or browser boundary.
++This skill succeeds when it implements an accepted component contract or provides a supported review or diagnosis. Preserve the public behavior, choose project-compatible patterns where needed, and match completion to the requested source or runtime claim; a clean review does not require finding a defect.
+ 
+ The instructions do not create runtime capability, choose a framework contract, grant authorization, prove accessibility or performance, or establish security by themselves. A hook, API import, wrapper, Storybook story, mock, typecheck, build, or generated file is bounded evidence and cannot close a broader behavior claim.
+ 
+@@ -19,7 +19,7 @@ The instructions do not create runtime capability, choose a framework contract,
+ | Server/client boundary | RSC or another server/client component boundary is real | Client props follow the framework serialization contract; sensitive fields are allowlisted on the server | Framework integration/build plus boundary behavior; security owner evidence for security claims |
+ | Transition or optimization | The feature exists and a measured interaction or duplicate-work path is in scope | Optimization APIs never carry semantic correctness; version and release-channel gates are satisfied | Observed transition or measurement matching the claim |
+ 
+-Exclude contexts that project evidence makes impossible. Do not add substrate to satisfy an inapplicable row.
++The evidence column applies to claims about runtime behavior in that context. A source-only review may assess the corresponding code invariant without exercising or claiming the runtime boundary. Exclude contexts that project evidence makes impossible; do not add substrate to satisfy an inapplicable row.
+ 
+ ## Version-sensitive API gates
+ 
+diff --git a/skills/react-components-engineer/references/bulletproof-patterns.md b/skills/react-components-engineer/references/bulletproof-patterns.md
+index cf17fbf..b940d3b 100644
+--- a/skills/react-components-engineer/references/bulletproof-patterns.md
++++ b/skills/react-components-engineer/references/bulletproof-patterns.md
+@@ -1,6 +1,6 @@
+ # React Component Resilience Patterns
+ 
+-Load only the sections that match a concrete failure path. Installed project versions and matching official React or framework documentation outrank these examples. External links below are optional provenance, not portability dependencies.
++Load only the sections that match the component contract or a supported failure path. Installed project versions and matching official React or framework documentation outrank these examples. External links below are optional provenance, not portability dependencies.
+ 
+ ## 1. Render and Effect lifecycle
+ 
+@@ -179,4 +179,4 @@ For each material issue record:
+ - status: `verified`, `partial`, or `blocked`;
+ - residual risk and anti-claims.
+ 
+-Do not report `verified` when the relevant renderer, document, lifecycle, framework, measurement, or security boundary was not exercised.
++Apply the root Evidence and status policy: source-only review can finish with a clean, bounded conclusion. Do not claim runtime, renderer, document, lifecycle, framework, measurement, or security verification when that required boundary was not exercised.
+diff --git a/skills/react-components-engineer/skill.yaml b/skills/react-components-engineer/skill.yaml
+index 5c9bf39..831b549 100644
+--- a/skills/react-components-engineer/skill.yaml
++++ b/skills/react-components-engineer/skill.yaml
+@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
+ kind: SkillSource
+ skill:
+   name: react-components-engineer
+-  source-version: 0.2.0
++  source-version: 0.2.1
+   recommended-skill-md-max-bytes: 20000
+   description: >-
+     Build, harden, review, and diagnose reusable React components across SSR,
+@@ -20,7 +20,7 @@ references:
+     title: React Component Resilience Patterns
+     source: references/bulletproof-patterns.md
+     target: references/bulletproof-patterns.md
+-    required: false
++    required: true
+     trigger: Read this when a concrete SSR, hydration, multi-instance, composition, portal, Effect lifecycle, transition, Activity, RSC, sensitive-data, or memoization risk is in scope and exact pattern or version caveats are needed.
+ assets: []
+ copies:
+@@ -43,9 +43,9 @@ supporting:
+     description: Non-normative navigation for issues, plans, and implementation logs.
+ surfaces:
+   active:
+-    requiredReferences: []
+-    optionalReferences:
++    requiredReferences:
+       - ref-references-bulletproof-patterns
++    optionalReferences: []
+   supportingGlobs:
+     - docs/*
+     - docs/logs/*
+@@ -79,24 +79,24 @@ sections:
+         - Each selected resilience risk has a concrete failure path in the supplied component and contexts.
+     - id: stage-select-and-apply-pattern
+       title: Select and apply the smallest supported pattern
+-      goal: Correct the applicable component failure without universal checklists or version-incompatible APIs.
++      goal: Implement or assess the component contract without inventing defects, universal checklists, or version-incompatible APIs.
+       steps:
+-        - Load the optional resilience reference only for the concrete risks in scope and apply its version and context gates.
++        - Load the conditional resilience reference only for the concrete risks in scope and apply its version and context gates.
+         - Prefer project-native and stable React or framework mechanisms; add a version-sensitive API only when the installed environment supports it and the component actually uses the corresponding feature.
+         - Preserve render purity, deterministic server/client output where hydration applies, symmetric Effect setup and cleanup, per-instance ownership, opaque-child contracts, correct DOM realm ownership, and explicit server/client data boundaries as applicable.
+         - Route framework, security, accessibility, visual, TypeScript, test-runner, and formal-review decisions to their owners while retaining component-semantics responsibility.
+       validation:
+-        - The change or finding addresses the observed failure path instead of merely adding a recommended API, wrapper, story, test file, or checklist item.
++        - The result addresses the accepted component contract or supported failure path; a clean review need not invent a defect or add an API, wrapper, story, or checklist item.
+         - Stable projects receive no unsupported Canary or Experimental imports and no release-channel change without explicit authority.
+     - id: stage-verify-and-handoff
+       title: Verify and hand off the component result
+       goal: Match the completion status to observed evidence and give the next consumer an actionable result.
+       steps:
+         - Run only applicable scenarios, using the existing project test stack and a real renderer or browser boundary when the claim depends on hydration, another document, visibility lifecycle, or server/client integration.
+-        - Classify the result as verified, partial, or blocked. Verified requires evidence that exercises the claimed behavior; an implemented change without that evidence is partial.
++        - Classify the result using the Evidence and status policy for the requested claim, distinguishing a source-level conclusion from runtime verification.
+         - Report mode, component contract, applicable contexts, change or findings, verification evidence, status, residual risks or blockers, anti-claims, and next owner.
+       validation:
+-        - Unavailable or lower-fidelity verification lowers the result status instead of being reported as completed.
++        - Missing evidence lowers only the conclusion that depends on it; a completed source-level review does not imply runtime verification.
+         - The handoff does not imply framework support, accessibility, performance, or security assurance that was not established by the owning skill and evidence.
+   interop:
+     - id: interop-typescript
+@@ -160,7 +160,7 @@ sections:
+       text: Prefer the installed stable React and framework mechanisms. Canary or Experimental APIs require existing project adoption or explicit operator authority and must retain their channel caveats.
+     - id: policy-evidence-status
+       title: Evidence and status policy
+-      text: Report verified only when claim-matched behavior was exercised. Report partial when analysis or implementation is useful but the required boundary was not observed, and blocked when a missing authoritative decision or conflict prevents a safe result.
++      text: Report verified when evidence establishes the requested claim. A source-only review or diagnosis may be complete from inspected code, including a clean result; name that boundary without implying runtime verification. A runtime behavior claim requires the relevant renderer or browser evidence. Report partial only for a requested conclusion whose evidence is missing, and block only decisions that depend on unresolved authority or conflict.
+   portability:
+     required: true
+     rules:
+@@ -169,7 +169,4 @@ sections:
+       - Treat external documentation links as optional provenance; the local instructions must remain sufficient offline.
+       - Use relative links for local references, assets, scripts, tests, and supporting docs.
+     checklist:
+-      - Run the skill-source-compiler check command after regeneration.
+-      - Search active instructions and declared files for absolute local dependencies before finishing.
+-      - Confirm every active reference listed by SKILL.md exists inside this skill folder.
+-      - Confirm a copied skill remains understandable without repository history, runtime files, or supporting logs.
++      - "Only when editing or packaging this skill itself, run compiler lint, regenerate, check, and an isolated compile; verify generated parity, local references, portability, and packaged files. These maintenance checks are not prerequisites for ordinary tasks performed with the skill."
+diff --git a/skills/react-spa-engineer/SKILL.md b/skills/react-spa-engineer/SKILL.md
+index db57d05..b0a29b4 100644
+--- a/skills/react-spa-engineer/SKILL.md
++++ b/skills/react-spa-engineer/SKILL.md
+@@ -9,9 +9,9 @@ compatibility: Portable documentation-only engineering skill. It ships no
+   application runtime or test harness and requires repository evidence plus the
+   installed stack versions to make project-specific decisions.
+ metadata:
+-  source-version: 0.1.10
++  source-version: 0.1.11
+   skillforge-source-manifest: skill.yaml
+-  skillforge-source-hash: c111e42a7d0628eceb8bb939c268b836f4773ada83b68fae298f80cce8a1ab25
++  skillforge-source-hash: bd7cdba9739fa969085d725f04876ae1e7a0fa242be36c16bc1448a32c293a4f
+ ---
+ 
+ # react-spa-engineer
+@@ -22,7 +22,7 @@ metadata:
+ 2. Establish the observable SPA outcome, affected user flow, accepted product, API and security contracts, installed stack versions, existing project conventions, and available verification before choosing a change.
+ 3. Apply precedence in this order: operator and repository instructions; accepted product, API and security contracts; manifest, lockfile, configuration and existing code; official documentation matching the installed major version; then examples in this skill. For greenfield work use current stable versions.
+ 4. Stop as blocked when equal-authority sources conflict or a required backend, security, product, or compatibility decision has no owner-supplied answer. Do not invent the missing contract.
+-5. Load only the optional references triggered by the affected layers, then trace the flow across routing, API transport, TanStack Query, URL or Zustand state, forms, Dexie, and rendered UI as applicable.
++5. Load only the conditional references triggered by the affected layers, then trace the flow across routing, API transport, TanStack Query, URL or Zustand state, forms, Dexie, and rendered UI as applicable.
+ 6. When mutation status or outcome verification can outlive a child, portal, route, entity, or access context, read the data-fetching, state-management, persistence-architecture, and testing references and complete a mutation lifetime matrix before choosing the owner.
+ 7. Define claim-matched evidence before changing anything; files, configuration, generated routes, mocks, screenshots, typecheck, lint, build, or compiler success cannot prove a broader interactive or production capability by themselves.
+ 
+@@ -156,7 +156,7 @@ Preserve React, TypeScript, Vite, TanStack Query, Zustand, React Hook Form with
+ Copyable examples must match the stated major version and all active root invariants. Conceptual examples must be labeled and list the production obligations they omit.
+ 
+ ### Evidence ladder
+-Typecheck, lint, and build prove only their technical contours; local UI behavior needs component tests and browser inspection; material flows need successful Playwright scenarios and browser automation; persistence needs reload, migration, TTL and context-switch evidence; performance needs production profiling; auth and security need the real backend boundary and the owning reviewer.
++Match evidence to the requested boundary and preserve mandatory project checks. Typecheck, lint, and build prove their technical contours; interactive claims need observed browser scenarios using supported project tooling. Follow the testing reference for material-flow completion without runner-only or duplicate-run requirements. Persistence needs applicable reload, migration, TTL and context-switch evidence; performance needs measurement; auth and security need the real backend boundary and the owning reviewer.
+ 
+ ### Output contract
+ Report mode, observable outcome, changed or inspected surface, verification evidence, completed, partial or blocked status, blockers or residual risks, anti-claims, and the next owner.
+@@ -164,7 +164,7 @@ Report mode, observable outcome, changed or inspected surface, verification evid
+ ### Mutation lifetime contract
+ For mutation UI that crosses remount, navigation, entity, or access-context boundaries, define attempt and outcome-verification owners in a lifetime matrix and test the applicable combined cache, remount, context-switch, timer, late-response, and authoritative-reread failure path.
+ 
+-## Optional references
++## Required active references
+ - [Accessibility](references/accessibility.md) — Read this when implementing or assessing semantics, keyboard interaction, focus management, live announcements, dialogs, or custom composite widgets.
+ - [Component Architecture](references/component-architecture.md) — Read this when SPA feature layout, import boundaries, component ownership, composition, or public module entrypoints are in scope.
+ - [Data Fetching](references/data-fetching.md) — Read this when TanStack Query status, query keys, server reads, mutations, invalidation, retries, API transport, or recovery behavior is in scope.
+@@ -186,10 +186,7 @@ For mutation UI that crosses remount, navigation, entity, or access-context boun
+ 
+ ## Portability checklist before finishing
+ 
+-- Run skill-source-compiler lint, regenerate, and check after source changes.
+-- Compile to an isolated output directory and confirm references, UI metadata, and supporting evidence remain reachable.
+-- Search active instructions and declared assets for absolute local dependencies.
+-- Confirm the copied skill remains useful without repository history, prior sessions, or the application it was designed against.
++- Only when editing or packaging this skill itself, run compiler lint, regenerate, check, and an isolated compile; verify generated parity, local references, portability, and packaged files. These maintenance checks are not prerequisites for ordinary tasks performed with the skill.
+ 
+ ## Supporting and historical surface
+ 
+diff --git a/skills/react-spa-engineer/docs/README.md b/skills/react-spa-engineer/docs/README.md
+index 8d0c48b..1123b47 100644
+--- a/skills/react-spa-engineer/docs/README.md
++++ b/skills/react-spa-engineer/docs/README.md
+@@ -27,3 +27,7 @@
+ ## Обслуживание описания
+ 
+ - [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — описание сокращено до 300 code points; independent scoped PASS.
++
++## Ревизия UI-REV-v1
++
++- [Общий журнал UI-REV-v1](../../../docs/implementation-log-20260908-ui-revision.md) — исходный снимок, проверки и статус ревизии интерфейсной группы; supporting-запись репозитория.
+diff --git a/skills/react-spa-engineer/docs/compile-report.md b/skills/react-spa-engineer/docs/compile-report.md
+index e984a0f..f036b3f 100644
+--- a/skills/react-spa-engineer/docs/compile-report.md
++++ b/skills/react-spa-engineer/docs/compile-report.md
+@@ -2,7 +2,7 @@
+ Generated from `skill.yaml`.
+ 
+ ## Versions
+-- Skill source version: `0.1.10`
++- Skill source version: `0.1.11`
+ 
+ ## Source files
+ - `agents/openai.yaml`
+@@ -31,7 +31,17 @@ Generated from `skill.yaml`.
+ - `skill.yaml`
+ 
+ ## Required references
+-- none
++- `references/accessibility.md`
++- `references/component-architecture.md`
++- `references/data-fetching.md`
++- `references/forms-validation.md`
++- `references/indexeddb-persistence.md`
++- `references/performance.md`
++- `references/persistence-architecture.md`
++- `references/routing.md`
++- `references/state-management.md`
++- `references/testing.md`
++- `references/typescript-patterns.md`
+ 
+ ## Warnings
+ - none
+diff --git a/skills/react-spa-engineer/references/forms-validation.md b/skills/react-spa-engineer/references/forms-validation.md
+index 20ef185..bc82746 100644
+--- a/skills/react-spa-engineer/references/forms-validation.md
++++ b/skills/react-spa-engineer/references/forms-validation.md
+@@ -175,6 +175,7 @@ those behaviors.
+ - Schema tests prove the tested parsing and validation cases.
+ - Component tests prove local field, keyboard, error, and submission wiring.
+ - Mocked transport proves only the local client contract.
+-- A material data-entry flow requires Playwright and browser execution; real
+-  backend evidence is required for authorization, uniqueness, idempotency, and
+-  business-rule claims.
++- A material data-entry flow follows the material interactive flow gate in
++  `testing.md`; require observed browser behavior without a runner-only gate.
++  Real backend evidence remains required for authorization, uniqueness,
++  idempotency, and business-rule claims.
+diff --git a/skills/react-spa-engineer/references/testing.md b/skills/react-spa-engineer/references/testing.md
+index a021f23..be16665 100644
+--- a/skills/react-spa-engineer/references/testing.md
++++ b/skills/react-spa-engineer/references/testing.md
+@@ -1,8 +1,9 @@
+ # Testing React SPA
+ 
+-Use Vitest and Testing Library for local React behavior and Playwright for real
+-browser flows in the fixed stack. Repository commands and installed versions win
+-over generic setup examples. Use `typescript-test-engineer` for runner,
++Use supported repository tools and preserve its mandatory checks. For new test
++setup, Vitest with Testing Library and Playwright are the default local and
++browser tools; an existing equivalent runner is not a reason to migrate or
++repeat an already covered scenario. Use `typescript-test-engineer` for runner,
+ determinism, fixtures, mocks, and CI test-contour decisions.
+ 
+ Unless a block is explicitly labeled copyable, code blocks in this reference
+@@ -82,6 +83,7 @@ or screenshots.
+ 
+ ## Playwright setup
+ 
++Apply this section only when Playwright setup or maintenance is in scope.
+ First inspect whether the repository already has `@playwright/test`, a config,
+ browser installation, web server command, projects, and CI policy. Reuse them.
+ 
+@@ -127,12 +129,20 @@ For auth, onboarding, profile editing, business-data submission, protected
+ navigation, destructive confirmation, checkout, or a multi-step wizard, a
+ `completed` interactive claim requires:
+ 
+-1. Playwright scenarios for the affected happy path and meaningful failure/edge
+-   states;
+-2. a successful run of the command that covers those scenarios;
+-3. real browser automation of the affected flow;
+-4. a handoff naming scenarios, environment, command/result, browser result, and
+-   evidence limits.
++1. observed real-browser scenarios covering the affected happy path and
++   meaningful failure/edge states, using the supported project runner or browser
++   tooling appropriate to the requested claim;
++2. successful applicable mandatory project checks;
++3. a handoff naming the exact scenarios, snapshot, environment, commands/results,
++   real or simulated service boundary, and evidence limits.
++
++One run may satisfy overlapping browser evidence obligations; do not require a
++second runner or duplicate walkthrough without an uncovered boundary. A sampled
++walkthrough can complete a bounded local-flow task, but it does not create
++repeatable regression coverage or replace a required project E2E suite. When
++that suite or coverage is the deliverable, implement and run it with the owning
++test workflow. Supplied results support only the identified snapshot and
++scenarios; distinguish consuming them from performing a new run.
+ 
+ When the claim includes a real cookie session, CSRF recovery, server
+ authorization, provider, or durable data boundary, run against the corresponding
+diff --git a/skills/react-spa-engineer/skill.yaml b/skills/react-spa-engineer/skill.yaml
+index 770e4f0..3f30a06 100644
+--- a/skills/react-spa-engineer/skill.yaml
++++ b/skills/react-spa-engineer/skill.yaml
+@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
+ kind: SkillSource
+ skill:
+   name: react-spa-engineer
+-  source-version: 0.1.10
++  source-version: 0.1.11
+   recommended-skill-md-max-bytes: 20000
+   description: >-
+     Design, implement, review, and diagnose React SPAs using TypeScript, Vite,
+@@ -20,67 +20,67 @@ references:
+     title: Accessibility
+     source: references/accessibility.md
+     target: references/accessibility.md
+-    required: false
++    required: true
+     trigger: Read this when implementing or assessing semantics, keyboard interaction, focus management, live announcements, dialogs, or custom composite widgets.
+   - id: ref-references-component-architecture
+     title: Component Architecture
+     source: references/component-architecture.md
+     target: references/component-architecture.md
+-    required: false
++    required: true
+     trigger: Read this when SPA feature layout, import boundaries, component ownership, composition, or public module entrypoints are in scope.
+   - id: ref-references-data-fetching
+     title: Data Fetching
+     source: references/data-fetching.md
+     target: references/data-fetching.md
+-    required: false
++    required: true
+     trigger: Read this when TanStack Query status, query keys, server reads, mutations, invalidation, retries, API transport, or recovery behavior is in scope.
+   - id: ref-references-forms-validation
+     title: Forms & Validation
+     source: references/forms-validation.md
+     target: references/forms-validation.md
+-    required: false
++    required: true
+     trigger: Read this when React Hook Form, Zod, editable payloads, field arrays, client validation, or server field-error mapping is in scope.
+   - id: ref-references-indexeddb-persistence
+     title: IndexedDB Persistence
+     source: references/indexeddb-persistence.md
+     target: references/indexeddb-persistence.md
+-    required: false
++    required: true
+     trigger: Read this when Dexie schema versions, migrations, durable records, realtime persistence, cache TTL, or user and tenant cleanup is in scope.
+   - id: ref-references-performance
+     title: Performance
+     source: references/performance.md
+     target: references/performance.md
+-    required: false
++    required: true
+     trigger: Read this only when production build output, profiling, request waterfalls, bundle splitting, interaction latency, rendering cost, or measured list performance is in scope.
+   - id: ref-references-persistence-architecture
+     title: Persistence Architecture
+     source: references/persistence-architecture.md
+     target: references/persistence-architecture.md
+-    required: false
++    required: true
+     trigger: Read this when one flow crosses URL state, Zustand, TanStack Query, and Dexie, needs an explicit source-of-truth and invalidation map, or a mutation UI needs a lifetime matrix.
+   - id: ref-references-routing
+     title: Routing
+     source: references/routing.md
+     target: references/routing.md
+-    required: false
++    required: true
+     trigger: Read this when React Router route objects, navigation, URL state, loaders, route admission, or error boundaries are in scope.
+   - id: ref-references-state-management
+     title: State Management
+     source: references/state-management.md
+     target: references/state-management.md
+-    required: false
++    required: true
+     trigger: Read this when choosing between local React state, Context, Zustand, URL state, TanStack Query, and Dexie for a concrete value or mutation attempt status.
+   - id: ref-references-testing
+     title: Testing
+     source: references/testing.md
+     target: references/testing.md
+-    required: false
++    required: true
+     trigger: Read this when defining Vitest, Testing Library, Playwright, browser walkthrough, integration, end-to-end evidence, or mutation-lifetime falsifiers for an SPA claim.
+   - id: ref-references-typescript-patterns
+     title: TypeScript Patterns
+     source: references/typescript-patterns.md
+     target: references/typescript-patterns.md
+-    required: false
++    required: true
+     trigger: Read this when React-specific TypeScript props, hooks, events, generics, refs, or runtime-schema typing is in scope; use typescript-engineer for language and toolchain ownership.
+ assets: []
+ copies:
+@@ -131,8 +131,7 @@ supporting:
+     description: Non-normative blind mutation-lifetime design evidence for Aequitas-ADR/app#228.
+ surfaces:
+   active:
+-    requiredReferences: []
+-    optionalReferences:
++    requiredReferences:
+       - ref-references-accessibility
+       - ref-references-component-architecture
+       - ref-references-data-fetching
+@@ -144,6 +143,7 @@ surfaces:
+       - ref-references-state-management
+       - ref-references-testing
+       - ref-references-typescript-patterns
++    optionalReferences: []
+   supportingGlobs:
+     - docs/*
+     - docs/forward-tests/*
+@@ -154,7 +154,7 @@ sections:
+     - Establish the observable SPA outcome, affected user flow, accepted product, API and security contracts, installed stack versions, existing project conventions, and available verification before choosing a change.
+     - "Apply precedence in this order: operator and repository instructions; accepted product, API and security contracts; manifest, lockfile, configuration and existing code; official documentation matching the installed major version; then examples in this skill. For greenfield work use current stable versions."
+     - Stop as blocked when equal-authority sources conflict or a required backend, security, product, or compatibility decision has no owner-supplied answer. Do not invent the missing contract.
+-    - Load only the optional references triggered by the affected layers, then trace the flow across routing, API transport, TanStack Query, URL or Zustand state, forms, Dexie, and rendered UI as applicable.
++    - Load only the conditional references triggered by the affected layers, then trace the flow across routing, API transport, TanStack Query, URL or Zustand state, forms, Dexie, and rendered UI as applicable.
+     - When mutation status or outcome verification can outlive a child, portal, route, entity, or access context, read the data-fetching, state-management, persistence-architecture, and testing references and complete a mutation lifetime matrix before choosing the owner.
+     - Define claim-matched evidence before changing anything; files, configuration, generated routes, mocks, screenshots, typecheck, lint, build, or compiler success cannot prove a broader interactive or production capability by themselves.
+   whenToUse:
+@@ -261,7 +261,7 @@ sections:
+       text: Copyable examples must match the stated major version and all active root invariants. Conceptual examples must be labeled and list the production obligations they omit.
+     - id: policy-evidence-ladder
+       title: Evidence ladder
+-      text: Typecheck, lint, and build prove only their technical contours; local UI behavior needs component tests and browser inspection; material flows need successful Playwright scenarios and browser automation; persistence needs reload, migration, TTL and context-switch evidence; performance needs production profiling; auth and security need the real backend boundary and the owning reviewer.
++      text: Match evidence to the requested boundary and preserve mandatory project checks. Typecheck, lint, and build prove their technical contours; interactive claims need observed browser scenarios using supported project tooling. Follow the testing reference for material-flow completion without runner-only or duplicate-run requirements. Persistence needs applicable reload, migration, TTL and context-switch evidence; performance needs measurement; auth and security need the real backend boundary and the owning reviewer.
+     - id: policy-output-contract
+       title: Output contract
+       text: Report mode, observable outcome, changed or inspected surface, verification evidence, completed, partial or blocked status, blockers or residual risks, anti-claims, and the next owner.
+@@ -276,7 +276,4 @@ sections:
+       - Keep mandatory workflow and evidence rules in SKILL.md; keep conditional stack detail in reachable local references.
+       - Keep docs and implementation logs non-normative even when they are copied for maintenance traceability.
+     checklist:
+-      - Run skill-source-compiler lint, regenerate, and check after source changes.
+-      - Compile to an isolated output directory and confirm references, UI metadata, and supporting evidence remain reachable.
+-      - Search active instructions and declared assets for absolute local dependencies.
+-      - Confirm the copied skill remains useful without repository history, prior sessions, or the application it was designed against.
++      - "Only when editing or packaging this skill itself, run compiler lint, regenerate, check, and an isolated compile; verify generated parity, local references, portability, and packaged files. These maintenance checks are not prerequisites for ordinary tasks performed with the skill."
+diff --git a/skills/web-ui-reviewer/SKILL.md b/skills/web-ui-reviewer/SKILL.md
+index 7f98655..f57d505 100644
+--- a/skills/web-ui-reviewer/SKILL.md
++++ b/skills/web-ui-reviewer/SKILL.md
+@@ -5,9 +5,9 @@ description: Review web UI code and rendered states against project requirements
+   form, or frontend-performance audits that need scoped findings and evidence
+   limits; not implementation or conformance certification.
+ metadata:
+-  source-version: 0.2.3
++  source-version: 0.2.4
+   skillforge-source-manifest: skill.yaml
+-  skillforge-source-hash: 561f24e1ee5536e4d0209a03074b9ff7ee13a81c17042a84ff0cc9b41fcc99e7
++  skillforge-source-hash: 64c414507c7a2e09c4a363b9eb6987f7fb12585fa850a05b510ef01c65eceea5
+ ---
+ 
+ # web-ui-reviewer
+@@ -146,7 +146,7 @@ Require current browser or design-tool evidence for affected desktop and mobile
+ The portable reference is the reproducible baseline. A live upstream overlay may add non-conflicting guidance only when its URL and revision or retrieval date are reported; it never creates product authority or silently overrides project requirements.
+ 
+ ### Bounded remediation re-audit
+-On a new stable snapshot, re-audit fixed prior findings, the exact remediation delta, original UI failure states, current evidence, and adjacent states selected by a blast-radius check. Skip unchanged verified states; widen when the claim, UI authority, user-visible behavior, or material scope changed or blast radius is unbounded. Cosmetic edits do not close behavioral or accessibility findings.
++On a new stable snapshot, re-audit fixed prior findings, the exact remediation delta, original UI failure states, current evidence, and adjacent states selected by a blast-radius check. Skip unchanged verified states. Widen only when the delta changes claims, UI authority, behavior, or contracts outside the accepted remediation boundary, or when blast radius is unbounded; name the additional surface and reason. A behavior change that fixes the accepted finding is not by itself a widening trigger. Cosmetic edits do not close behavioral or accessibility findings.
+ 
+ ### Peer-view functional coverage
+ For module or journey completeness claims, compare applicable peer views and source-established standard capabilities before accepting polish; classify omissions as findings only with authority and preserve justified divergence or `N/A`.
+@@ -162,9 +162,7 @@ For module or journey completeness claims, compare applicable peer views and sou
+ 
+ ## Portability checklist before finishing
+ 
+-- Run the skill-source-compiler check command after regeneration.
+-- Search the skill folder for absolute local paths before finishing.
+-- Confirm every required reference listed by SKILL.md exists inside this skill folder.
++- Only when editing or packaging this skill itself, run compiler lint, regenerate, check, and an isolated compile; verify generated parity, local references, portability, and packaged files. These maintenance checks are not prerequisites for ordinary tasks performed with the skill.
+ 
+ ## Supporting and historical surface
+ 
+diff --git a/skills/web-ui-reviewer/docs/README.md b/skills/web-ui-reviewer/docs/README.md
+index ef2f3bd..8449b6a 100644
+--- a/skills/web-ui-reviewer/docs/README.md
++++ b/skills/web-ui-reviewer/docs/README.md
+@@ -23,3 +23,7 @@
+ - [logs/implementation-log-20260716-1.md](logs/implementation-log-20260716-1.md) — capability-first review, evidence-aware output contract, guidance authority/freshness и interop. Статус: independent PASS; final supporting-only delta подтверждён.
+ - [logs/implementation-log-20260727-1.md](logs/implementation-log-20260727-1.md) — bounded UI remediation re-audit и outcome-first status contract по #226. Статус: independent PASS.
+ - [logs/implementation-log-20260727-2.md](logs/implementation-log-20260727-2.md) — peer-view completeness review contract по #228.
++
++## Ревизия UI-REV-v1
++
++- [Общий журнал UI-REV-v1](../../../docs/implementation-log-20260908-ui-revision.md) — исходный снимок, проверки и статус ревизии интерфейсной группы; supporting-запись репозитория.
+diff --git a/skills/web-ui-reviewer/docs/compile-report.md b/skills/web-ui-reviewer/docs/compile-report.md
+index 74911b3..3f54ce5 100644
+--- a/skills/web-ui-reviewer/docs/compile-report.md
++++ b/skills/web-ui-reviewer/docs/compile-report.md
+@@ -2,7 +2,7 @@
+ Generated from `skill.yaml`.
+ 
+ ## Versions
+-- Skill source version: `0.2.3`
++- Skill source version: `0.2.4`
+ 
+ ## Source files
+ - `agents/openai.yaml`
+diff --git a/skills/web-ui-reviewer/skill.yaml b/skills/web-ui-reviewer/skill.yaml
+index 3ed7833..9788e91 100644
+--- a/skills/web-ui-reviewer/skill.yaml
++++ b/skills/web-ui-reviewer/skill.yaml
+@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
+ kind: SkillSource
+ skill:
+   name: web-ui-reviewer
+-  source-version: 0.2.3
++  source-version: 0.2.4
+   recommended-skill-md-max-bytes: 20000
+   description: Review web UI code and rendered states against project requirements and Web Interface Guidelines. Use for UI/UX, accessibility, design, content, form, or frontend-performance audits that need scoped findings and evidence limits; not implementation or conformance certification.
+ fragments:
+@@ -146,7 +146,7 @@ sections:
+       text: The portable reference is the reproducible baseline. A live upstream overlay may add non-conflicting guidance only when its URL and revision or retrieval date are reported; it never creates product authority or silently overrides project requirements.
+     - id: policy-bounded-remediation-reaudit
+       title: Bounded remediation re-audit
+-      text: On a new stable snapshot, re-audit fixed prior findings, the exact remediation delta, original UI failure states, current evidence, and adjacent states selected by a blast-radius check. Skip unchanged verified states; widen when the claim, UI authority, user-visible behavior, or material scope changed or blast radius is unbounded. Cosmetic edits do not close behavioral or accessibility findings.
++      text: On a new stable snapshot, re-audit fixed prior findings, the exact remediation delta, original UI failure states, current evidence, and adjacent states selected by a blast-radius check. Skip unchanged verified states. Widen only when the delta changes claims, UI authority, behavior, or contracts outside the accepted remediation boundary, or when blast radius is unbounded; name the additional surface and reason. A behavior change that fixes the accepted finding is not by itself a widening trigger. Cosmetic edits do not close behavioral or accessibility findings.
+     - id: policy-peer-view-functional-coverage
+       title: Peer-view functional coverage
+       text: For module or journey completeness claims, compare applicable peer views and source-established standard capabilities before accepting polish; classify omissions as findings only with authority and preserve justified divergence or `N/A`.
+@@ -157,6 +157,4 @@ sections:
+       - Keep all mandatory web-ui-reviewer guidance inside this skill folder.
+       - Use relative links for local references, assets, scripts, tests, and supporting docs.
+     checklist:
+-      - Run the skill-source-compiler check command after regeneration.
+-      - Search the skill folder for absolute local paths before finishing.
+-      - Confirm every required reference listed by SKILL.md exists inside this skill folder.
++      - "Only when editing or packaging this skill itself, run compiler lint, regenerate, check, and an isolated compile; verify generated parity, local references, portability, and packaged files. These maintenance checks are not prerequisites for ordinary tasks performed with the skill."

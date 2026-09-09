@@ -1,0 +1,74 @@
+[
+  {
+    "method": "GET",
+    "url": "http://127.0.0.1:43803/api/items?q=&page=1",
+    "payload": null,
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "http://127.0.0.1:43803/api/items?q=&page=2",
+    "payload": null,
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "http://127.0.0.1:43803/api/items/3",
+    "payload": null,
+    "status": 200
+  },
+  {
+    "method": "PATCH",
+    "url": "http://127.0.0.1:43803/api/items/3",
+    "payload": "{\"name\":\"Gamma updated\"}",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "http://127.0.0.1:43803/api/items?q=&page=1",
+    "payload": null,
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "http://127.0.0.1:43803/api/items?q=&page=2",
+    "payload": null,
+    "status": 200
+  },
+  {
+    "method": "POST",
+    "url": "http://127.0.0.1:43803/api/items",
+    "payload": "{\"name\":\"LongRequestVeryLongContinuousNameVeryLongContinuousNameVeryLongContinuousNameVeryLongContinuousNameVeryLongContinuousNameVeryLongContinuousNameVeryLongContinuousNameVeryLongContinuousNameVeryLongContinuousNameVeryLongContinuousNameVeryLongContinuousNameVeryLongContinuousName\"}",
+    "status": 201
+  },
+  {
+    "method": "GET",
+    "url": "http://127.0.0.1:43803/api/items?q=&page=2",
+    "payload": null,
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "http://127.0.0.1:43803/api/items/4",
+    "payload": null,
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "http://127.0.0.1:43803/api/items?q=&page=1",
+    "payload": null,
+    "status": 200
+  },
+  {
+    "method": "DELETE",
+    "url": "http://127.0.0.1:43803/api/items/4",
+    "payload": null,
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "http://127.0.0.1:43803/api/items?q=&page=2",
+    "payload": null,
+    "status": 200
+  }
+]

@@ -1,0 +1,45 @@
+--- a/src/Tooltip.js
++++ b/src/Tooltip.js
+@@ -1,9 +1,11 @@
+-import React,{useEffect,useRef,useState,forwardRef} from 'react';
++import React,{useEffect,useRef,useState,useId,forwardRef} from 'react';
+ const h=React.createElement;
+ export const Tooltip=forwardRef(function Tooltip({label,children},externalRef){
+  const [open,setOpen]=useState(false);
+- useEffect(()=>{const close=()=>setOpen(false);window.addEventListener('resize',close);return()=>window.removeEventListener('resize',()=>setOpen(false));},[]);
+- return h('span',{className:'tooltip-wrap'},h('button',{ref:externalRef,'aria-describedby':open?'tip':undefined,onFocus:()=>setOpen(true),onBlur:()=>setOpen(false),onMouseEnter:()=>setOpen(true),onMouseLeave:()=>setOpen(false)},children),open&&h('span',{role:'tooltip',id:'tip'},label));
++ const id=useId();
++ const wrapperRef=useRef(null);
++ useEffect(()=>{const view=wrapperRef.current?.ownerDocument.defaultView;if(!view)return;const close=()=>setOpen(false);view.addEventListener('resize',close);return()=>view.removeEventListener('resize',close);},[]);
++ return h('span',{className:'tooltip-wrap',ref:wrapperRef},h('button',{type:'button',ref:externalRef,'aria-describedby':open?id:undefined,onKeyDown:e=>{if(e.key==='Escape')setOpen(false)},onFocus:()=>setOpen(true),onBlur:()=>setOpen(false),onMouseEnter:()=>setOpen(true),onMouseLeave:()=>setOpen(false)},children),open&&h('span',{role:'tooltip',id},label));
+ });
+ export function ComponentDemo(){const [mounted,setMounted]=useState(true);const ref=useRef(null);
+  return h('main',null,h('h1',null,'Component laboratory'),h('button',{onClick:()=>setMounted(x=>!x)},mounted?'Unmount tooltips':'Mount tooltips'),h('button',{onClick:()=>ref.current?.focus()},'Focus first'),mounted&&h('section',null,h(Tooltip,{label:'First tip',ref},'First'),h(Tooltip,{label:'Second tip'},'Second')));
+--- a/src/main.jsx
++++ b/src/main.jsx
+@@ -11,14 +11,14 @@
+  const rows=useQuery({queryKey:['items',q,page],queryFn:()=>api('?q='+encodeURIComponent(q)+'&page='+page)});
+  const create=useMutation({mutationFn:()=>api('','POST',{name}),onSuccess:()=>{setName('');qc.invalidateQueries({queryKey:['items']});}});
+  const remove=useMutation({mutationFn:id=>api('/'+id,'DELETE'),onSuccess:()=>qc.invalidateQueries({queryKey:['items']})});
+- return <><h1>Requests</h1><label>Search <input value={q} onChange={e=>setParams({q:e.target.value,page:'1'})}/></label>
+- <form onSubmit={e=>{e.preventDefault();create.mutate();}}><label>New request <input value={name} required onChange={e=>setName(e.target.value)}/></label><button disabled={create.isPending}>Create</button></form>
+- {rows.isPending?<p>Loading</p>:rows.error?<p role="alert">{rows.error.message}</p>:<><table><thead><tr><th>Name</th><th>Actions</th></tr></thead><tbody>{rows.data.items.map(x=><tr key={x.id}><td><Link to={'/items/'+x.id}>{x.name}</Link></td><td><button onClick={()=>remove.mutate(x.id)}>Delete {x.name}</button></td></tr>)}</tbody></table><p>Page {page} of {rows.data.pages}; total {rows.data.total}</p><button disabled={page===1} onClick={()=>setParams({q,page:String(page-1)})}>Previous</button><button disabled={page===rows.data.pages} onClick={()=>setParams({q,page:String(page+1)})}>Next</button></>}
++ return <><h1>Requests</h1><label className="search-field">Search <input value={q} onChange={e=>setParams({q:e.target.value,page:'1'})}/></label>
++ <form aria-busy={create.isPending} onSubmit={e=>{e.preventDefault();create.mutate();}}><label>New request <input value={name} required onChange={e=>setName(e.target.value)}/></label><button disabled={create.isPending}>{create.isPending?'Creating…':'Create'}</button></form>
++ {rows.isPending?<p>Loading</p>:rows.error?<p role="alert">{rows.error.message}</p>:<><table><thead><tr><th>Name</th><th>Actions</th></tr></thead><tbody>{rows.data.items.length===0&&<tr><td colSpan={2}>No requests found</td></tr>}{rows.data.items.map(x=><tr key={x.id}><td><Link to={'/items/'+x.id}>{x.name}</Link></td><td><button onClick={()=>remove.mutate(x.id)}>Delete {x.name}</button></td></tr>)}</tbody></table><p>Page {page} of {rows.data.pages}; total {rows.data.total}</p><div className="pagination"><button disabled={page===1} onClick={()=>setParams({q,page:String(page-1)})}>Previous</button><button disabled={page===rows.data.pages} onClick={()=>setParams({q,page:String(page+1)})}>Next</button></div></>}
+  {create.error&&<p role="alert">{create.error.message}</p>}</>;
+ }
+ function Editor({item}){const qc=useQueryClient();const form=useForm({defaultValues:{name:item.name}});
+  const save=useMutation({mutationFn:data=>api('/'+item.id,'PATCH',data),onError:()=>form.reset(),onSuccess:data=>{form.reset({name:data.name});}});
+- return <><h1>Request {item.id}</h1><form onSubmit={form.handleSubmit(data=>save.mutate(data))}><label>Name <input {...form.register('name',{required:true})}/></label><button disabled={save.isPending}>Save</button></form>{save.error&&<p role="alert">{save.error.message}</p>}{save.isSuccess&&<p role="status">Saved</p>}<Link to="/">Back to requests</Link></>;
++ return <><h1>Request {item.id}</h1><form className="editor-form" aria-busy={save.isPending} onSubmit={form.handleSubmit(data=>save.mutate(data))}><label>Name <input aria-invalid={form.formState.errors.name?true:undefined} aria-describedby={form.formState.errors.name?'name-error':undefined} {...form.register('name',{required:true})}/>{form.formState.errors.name&&<span id="name-error" role="alert">Name is required</span>}</label><button disabled={save.isPending}>{save.isPending?'Saving…':'Save'}</button></form>{save.error&&<p role="alert">{save.error.message}</p>}{save.isSuccess&&<p role="status">Saved</p>}<Link to="/">Back to requests</Link></>;
+ }
+ function Detail(){const {id}=useParams();const item=useQuery({queryKey:['item',id],queryFn:()=>api('/'+id)});return item.isPending?<p>Loading</p>:item.error?<p role="alert">{item.error.message}</p>:<Editor key={id} item={item.data}/>;}
+ function App(){return <QueryClientProvider client={client}><BrowserRouter><header>REQUEST DESK</header><main><Routes><Route path="/" element={<List/>}/><Route path="/items/:id" element={<Detail/>}/></Routes></main></BrowserRouter></QueryClientProvider>;}
+--- a/src/style.css
++++ b/src/style.css
+@@ -1 +1,4 @@
+ :root{font-family:system-ui,sans-serif;color:#172c35;background:#f6f5ef;--accent:#125d60;--line:#bec9c7;--space:1rem;}*{box-sizing:border-box}body{margin:0}header{background:var(--accent);color:white;padding:1.3rem 6vw;letter-spacing:.15em;font-size:.8rem}main{max-width:62rem;margin:auto;padding:2rem}h1{font-weight:500;font-size:2rem}form{display:flex;gap:1rem;align-items:end;margin:1.5rem 0}label{display:block}input{display:block;padding:.65rem;border:1px solid var(--line);font:inherit;margin-top:.3rem}button{padding:.7rem 1rem;background:white;color:var(--accent);border:1px solid var(--accent);cursor:pointer}button:disabled{opacity:.5;cursor:default}a{color:var(--accent)}table{width:100%;border-collapse:collapse;margin:2rem 0}td,th{text-align:left;padding:.8rem;border-bottom:1px solid var(--line)}[role=alert]{color:#a02020}button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #ac5d00;outline-offset:3px}.tooltip-wrap{display:inline-block;margin:1rem;position:relative}[role=tooltip]{position:absolute;top:100%;left:0;background:#172c35;color:white;padding:.5rem;white-space:nowrap}@media(max-width:600px){main{padding:1rem}form{flex-direction:column;align-items:stretch}input{width:100%}}
++
++h1{overflow-wrap:anywhere}label{min-width:0}input{width:100%;min-width:0;max-width:32rem}form>label{flex:1;max-width:32rem}.search-field{max-width:32rem}.editor-form{max-width:32rem}button{font:inherit;overflow-wrap:anywhere}button:hover:not(:disabled){background:#eef4f2}a:hover{text-decoration-thickness:2px}td,th{overflow-wrap:anywhere}td:first-child,th:first-child{width:70%}td button{max-width:100%}.pagination{display:flex;flex-wrap:wrap;gap:var(--space)}[role=tooltip]{z-index:1;max-width:calc(100vw - 4rem);white-space:normal;overflow-wrap:anywhere}label [role=alert]{display:block;margin-top:.4rem}
++@media(max-width:600px){.search-field,.editor-form,form>label,input{max-width:none}td:first-child,th:first-child{width:auto}table{table-layout:fixed}td button{padding:.7rem .5rem}}

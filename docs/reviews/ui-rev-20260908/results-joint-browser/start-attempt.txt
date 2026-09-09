@@ -1,0 +1,7 @@
+Command: UI_REV_PORT=43788 npm start
+Working directory: /tmp/ui-rev-20260908/joint
+Result: exit 1
+WebSocket server error: Port 24678 is already in use
+Error: listen EADDRINUSE: address already in use 127.0.0.1:43788
+Node.js v24.15.0
+No server ownership established; did not stop or inspect another session/process.

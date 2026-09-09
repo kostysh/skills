@@ -1,0 +1,7 @@
+{
+  "http_status": 200,
+  "pid": 980004,
+  "cmd": "python3 -m http.server 43802 --bind 127.0.0.1 ",
+  "cwd": "/tmp/ui-rev-20260908/cleanup-sentinel",
+  "start": "20890132"
+}

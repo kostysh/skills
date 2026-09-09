@@ -1,0 +1,113 @@
+{
+  "setup": [
+    {
+      "command": "agent-browser --version",
+      "output": "agent-browser 0.27.3"
+    },
+    {
+      "command": "agent-browser skills get core --full",
+      "output": "Saved cli-guidance.txt; relevant snapshot/ref, session, wait, extraction and cleanup guidance loaded."
+    },
+    {
+      "command": "UI_REV_PORT=43784 npm start",
+      "output": "WebSocket server error: Port 24678 is already in use; UI_REV_URL=http://127.0.0.1:43784",
+      "session": 28009
+    },
+    {
+      "command": "agent-browser doctor --offline --quick",
+      "output": "6 pass, 0 warn, 0 fail; Chrome 152.0.7977.82"
+    }
+  ],
+  "browser": [
+    {
+      "chunk_id": "559c1f",
+      "wall_time_seconds": 0,
+      "exit_code": 1,
+      "original_token_count": 53,
+      "output": "✗ Socket directory '/run/user/1000/agent-browser' is not writable: Read-only file system (os error 30)\n✗ Socket directory '/run/user/1000/agent-browser' is not writable: Read-only file system (os error 30)\n"
+    },
+    {
+      "chunk_id": "05fc35",
+      "wall_time_seconds": 0.364827985,
+      "exit_code": 0,
+      "original_token_count": 11,
+      "output": "✓ Request desk\n  http://127.0.0.1:43784/\n"
+    },
+    {
+      "cmd": "agent-browser --session ui-rev-base-browser snapshot",
+      "chunk_id": "508e78",
+      "wall_time_seconds": 0.015952573,
+      "exit_code": 0,
+      "original_token_count": 256,
+      "output": "- generic [ref=e1] clickable [onclick]\n  - banner\n    - StaticText \"REQUEST DESK\"\n  - main\n    - heading \"Requests\" [level=1, ref=e2]\n    - LabelText\n      - StaticText \"Search\"\n      - textbox \"Search\" [ref=e5]\n    - form\n      - LabelText\n        - StaticText \"New request\"\n        - textbox \"New request\" [required, ref=e7]\n      - button \"Create\" [ref=e6]\n    - table\n      - rowgroup\n        - row\n          - columnheader \"Name\" [ref=e12]\n          - columnheader \"Actions\" [ref=e13]\n      - row\n        - cell \"Alpha\" [ref=e8]\n          - link \"Alpha\" [ref=e14]\n        - cell \"Delete Alpha\" [ref=e9]\n          - button \"Delete Alpha\" [ref=e15]\n            - StaticText \"Delete Alpha\"\n      - row\n        - cell \"Beta\" [ref=e10]\n          - link \"Beta\" [ref=e16]\n        - cell \"Delete Beta\" [ref=e11]\n          - button \"Delete Beta\" [ref=e17]\n            - StaticText \"Delete Beta\"\n    - paragraph\n      - StaticText \"Page 1 of 2; total 3\"\n    - button \"Previous\" [disabled, ref=e3]\n    - button \"Next\" [ref=e4]\n"
+    },
+    {
+      "cmd": "agent-browser --session ui-rev-base-browser fill @e7 \"Test UI-REV\"\nagent-browser --session ui-rev-base-browser click @e6\nagent-browser --session ui-rev-base-browser wait --load networkidle\nagent-browser --session ui-rev-base-browser snapshot",
+      "chunk_id": "e5384d",
+      "wall_time_seconds": 0.503140988,
+      "exit_code": 0,
+      "original_token_count": 262,
+      "output": "✓ Done\n✓ Done\n✓ Done\n- generic [ref=e1] clickable [onclick]\n  - banner\n    - StaticText \"REQUEST DESK\"\n  - main\n    - heading \"Requests\" [level=1, ref=e2]\n    - LabelText\n      - StaticText \"Search\"\n      - textbox \"Search\" [ref=e5]\n    - form\n      - LabelText\n        - StaticText \"New request\"\n        - textbox \"New request\" [required, ref=e7]\n      - button \"Create\" [ref=e6]\n    - table\n      - rowgroup\n        - row\n          - columnheader \"Name\" [ref=e12]\n          - columnheader \"Actions\" [ref=e13]\n      - row\n        - cell \"Alpha\" [ref=e8]\n          - link \"Alpha\" [ref=e14]\n        - cell \"Delete Alpha\" [ref=e9]\n          - button \"Delete Alpha\" [ref=e15]\n            - StaticText \"Delete Alpha\"\n      - row\n        - cell \"Beta\" [ref=e10]\n          - link \"Beta\" [ref=e16]\n        - cell \"Delete Beta\" [ref=e11]\n          - button \"Delete Beta\" [ref=e17]\n            - StaticText \"Delete Beta\"\n    - paragraph\n      - StaticText \"Page 1 of 2; total 4\"\n    - button \"Previous\" [disabled, ref=e3]\n    - button \"Next\" [ref=e4]\n"
+    },
+    {
+      "cmd": "agent-browser --session ui-rev-base-browser fill @e5 \"Test UI-REV\"\nagent-browser --session ui-rev-base-browser wait --load networkidle\nagent-browser --session ui-rev-base-browser snapshot",
+      "chunk_id": "a259e7",
+      "wall_time_seconds": 0.4743852,
+      "exit_code": 0,
+      "original_token_count": 232,
+      "output": "✓ Done\n✓ Done\n- generic [ref=e1] clickable [onclick]\n  - banner\n    - StaticText \"REQUEST DESK\"\n  - main\n    - heading \"Requests\" [level=1, ref=e2]\n    - LabelText\n      - StaticText \"Search\"\n      - textbox \"Search\" [ref=e5]: Test UI-REV\n        - StaticText \"Test UI-REV\"\n    - form\n      - LabelText\n        - StaticText \"New request\"\n        - textbox \"New request\" [required, ref=e7]\n      - button \"Create\" [ref=e6]\n    - table\n      - rowgroup\n        - row\n          - columnheader \"Name\" [ref=e10]\n          - columnheader \"Actions\" [ref=e11]\n      - row\n        - cell \"Test UI-REV\" [ref=e8]\n          - link \"Test UI-REV\" [ref=e12]\n        - cell \"Delete Test UI-REV\" [ref=e9]\n          - button \"Delete Test UI-REV\" [ref=e13]\n            - StaticText \"Delete Test UI-REV\"\n    - paragraph\n      - StaticText \"Page 1 of 1; total 1\"\n    - button \"Previous\" [disabled, ref=e3]\n    - button \"Next\" [disabled, ref=e4]\n"
+    },
+    {
+      "cmd": "agent-browser --session ui-rev-base-browser click @e12\nagent-browser --session ui-rev-base-browser wait --load networkidle\nagent-browser --session ui-rev-base-browser snapshot\nagent-browser --session ui-rev-base-browser get url",
+      "chunk_id": "a39dd9",
+      "wall_time_seconds": 0.483016614,
+      "exit_code": 0,
+      "original_token_count": 107,
+      "output": "✓ Done\n✓ Done\n- generic [ref=e1] clickable [onclick]\n  - banner\n    - StaticText \"REQUEST DESK\"\n  - main\n    - heading \"Request 4\" [level=1, ref=e2]\n      - StaticText \"Request 4\"\n    - form\n      - LabelText\n        - StaticText \"Name\"\n        - textbox \"Name\" [ref=e5]: Test UI-REV\n          - StaticText \"Test UI-REV\"\n      - button \"Save\" [ref=e4]\n    - link \"Back to requests\" [ref=e3]\nhttp://127.0.0.1:43784/items/4\n"
+    },
+    {
+      "cmd": "agent-browser --session ui-rev-base-browser reload\nagent-browser --session ui-rev-base-browser wait --load networkidle\nagent-browser --session ui-rev-base-browser snapshot\nagent-browser --session ui-rev-base-browser screenshot /tmp/ui-rev-20260908/results-baseline-browser/reloaded-test.png",
+      "chunk_id": "ac8e84",
+      "wall_time_seconds": 0.527047015,
+      "exit_code": 0,
+      "original_token_count": 127,
+      "output": "http://127.0.0.1:43784/items/4\n✓ Done\n- generic [ref=e1] clickable [onclick]\n  - banner\n    - StaticText \"REQUEST DESK\"\n  - main\n    - heading \"Request 4\" [level=1, ref=e2]\n      - StaticText \"Request 4\"\n    - form\n      - LabelText\n        - StaticText \"Name\"\n        - textbox \"Name\" [ref=e5]: Test UI-REV\n          - StaticText \"Test UI-REV\"\n      - button \"Save\" [ref=e4]\n    - link \"Back to requests\" [ref=e3]\n✓ Screenshot saved to /tmp/ui-rev-20260908/results-baseline-browser/reloaded-test.png\n"
+    },
+    {
+      "cmd": "agent-browser --session ui-rev-base-browser click @e3\nagent-browser --session ui-rev-base-browser wait --load networkidle\nagent-browser --session ui-rev-base-browser snapshot",
+      "chunk_id": "d684d4",
+      "wall_time_seconds": 0.486106771,
+      "exit_code": 0,
+      "original_token_count": 260,
+      "output": "✓ Done\n✓ Done\n- generic [ref=e1] clickable [onclick]\n  - banner\n    - StaticText \"REQUEST DESK\"\n  - main\n    - heading \"Requests\" [level=1, ref=e2]\n    - LabelText\n      - StaticText \"Search\"\n      - textbox \"Search\" [ref=e5]\n    - form\n      - LabelText\n        - StaticText \"New request\"\n        - textbox \"New request\" [required, ref=e7]\n      - button \"Create\" [ref=e6]\n    - table\n      - rowgroup\n        - row\n          - columnheader \"Name\" [ref=e12]\n          - columnheader \"Actions\" [ref=e13]\n      - row\n        - cell \"Alpha\" [ref=e8]\n          - link \"Alpha\" [ref=e14]\n        - cell \"Delete Alpha\" [ref=e9]\n          - button \"Delete Alpha\" [ref=e15]\n            - StaticText \"Delete Alpha\"\n      - row\n        - cell \"Beta\" [ref=e10]\n          - link \"Beta\" [ref=e16]\n        - cell \"Delete Beta\" [ref=e11]\n          - button \"Delete Beta\" [ref=e17]\n            - StaticText \"Delete Beta\"\n    - paragraph\n      - StaticText \"Page 1 of 2; total 4\"\n    - button \"Previous\" [disabled, ref=e3]\n    - button \"Next\" [ref=e4]\n"
+    },
+    {
+      "cmd": "agent-browser --session ui-rev-base-browser click @e4\nagent-browser --session ui-rev-base-browser wait --load networkidle\nagent-browser --session ui-rev-base-browser snapshot",
+      "chunk_id": "8256cc",
+      "wall_time_seconds": 0.51319562,
+      "exit_code": 0,
+      "original_token_count": 269,
+      "output": "✓ Done\n✓ Done\n- generic [ref=e1] clickable [onclick]\n  - banner\n    - StaticText \"REQUEST DESK\"\n  - main\n    - heading \"Requests\" [level=1, ref=e2]\n    - LabelText\n      - StaticText \"Search\"\n      - textbox \"Search\" [ref=e5]\n    - form\n      - LabelText\n        - StaticText \"New request\"\n        - textbox \"New request\" [required, ref=e7]\n      - button \"Create\" [ref=e6]\n    - table\n      - rowgroup\n        - row\n          - columnheader \"Name\" [ref=e12]\n          - columnheader \"Actions\" [ref=e13]\n      - row\n        - cell \"Gamma\" [ref=e8]\n          - link \"Gamma\" [ref=e14]\n        - cell \"Delete Gamma\" [ref=e9]\n          - button \"Delete Gamma\" [ref=e15]\n            - StaticText \"Delete Gamma\"\n      - row\n        - cell \"Test UI-REV\" [ref=e10]\n          - link \"Test UI-REV\" [ref=e16]\n        - cell \"Delete Test UI-REV\" [ref=e11]\n          - button \"Delete Test UI-REV\" [ref=e17]\n            - StaticText \"Delete Test UI-REV\"\n    - paragraph\n      - StaticText \"Page 2 of 2; total 4\"\n    - button \"Previous\" [ref=e3]\n    - button \"Next\" [disabled, ref=e4]\n"
+    },
+    {
+      "cmd": "agent-browser --session ui-rev-base-browser click @e17\nagent-browser --session ui-rev-base-browser wait --load networkidle\nagent-browser --session ui-rev-base-browser snapshot",
+      "chunk_id": "f62c28",
+      "wall_time_seconds": 0.48514279,
+      "exit_code": 0,
+      "original_token_count": 210,
+      "output": "✓ Done\n✓ Done\n- generic [ref=e1] clickable [onclick]\n  - banner\n    - StaticText \"REQUEST DESK\"\n  - main\n    - heading \"Requests\" [level=1, ref=e2]\n    - LabelText\n      - StaticText \"Search\"\n      - textbox \"Search\" [ref=e5]\n    - form\n      - LabelText\n        - StaticText \"New request\"\n        - textbox \"New request\" [required, ref=e7]\n      - button \"Create\" [ref=e6]\n    - table\n      - rowgroup\n        - row\n          - columnheader \"Name\" [ref=e10]\n          - columnheader \"Actions\" [ref=e11]\n      - row\n        - cell \"Gamma\" [ref=e8]\n          - link \"Gamma\" [ref=e12]\n        - cell \"Delete Gamma\" [ref=e9]\n          - button \"Delete Gamma\" [ref=e13]\n            - StaticText \"Delete Gamma\"\n    - paragraph\n      - StaticText \"Page 2 of 2; total 3\"\n    - button \"Previous\" [ref=e3]\n    - button \"Next\" [disabled, ref=e4]\n"
+    },
+    {
+      "cmd": "agent-browser --session ui-rev-base-browser click @e3\nagent-browser --session ui-rev-base-browser wait --load networkidle\nagent-browser --session ui-rev-base-browser snapshot\nagent-browser --session ui-rev-base-browser close",
+      "chunk_id": "1b0ec3",
+      "wall_time_seconds": 0.540619211,
+      "exit_code": 0,
+      "original_token_count": 265,
+      "output": "✓ Done\n✓ Done\n- generic [ref=e1] clickable [onclick]\n  - banner\n    - StaticText \"REQUEST DESK\"\n  - main\n    - heading \"Requests\" [level=1, ref=e2]\n    - LabelText\n      - StaticText \"Search\"\n      - textbox \"Search\" [ref=e5]\n    - form\n      - LabelText\n        - StaticText \"New request\"\n        - textbox \"New request\" [required, ref=e7]\n      - button \"Create\" [ref=e6]\n    - table\n      - rowgroup\n        - row\n          - columnheader \"Name\" [ref=e12]\n          - columnheader \"Actions\" [ref=e13]\n      - row\n        - cell \"Alpha\" [ref=e8]\n          - link \"Alpha\" [ref=e14]\n        - cell \"Delete Alpha\" [ref=e9]\n          - button \"Delete Alpha\" [ref=e15]\n            - StaticText \"Delete Alpha\"\n      - row\n        - cell \"Beta\" [ref=e10]\n          - link \"Beta\" [ref=e16]\n        - cell \"Delete Beta\" [ref=e11]\n          - button \"Delete Beta\" [ref=e17]\n            - StaticText \"Delete Beta\"\n    - paragraph\n      - StaticText \"Page 1 of 2; total 3\"\n    - button \"Previous\" [disabled, ref=e3]\n    - button \"Next\" [ref=e4]\n✓ Browser closed\n"
+    }
+  ],
+  "serverStop": {
+    "command": "write_stdin session 28009 Ctrl-C",
+    "exit_code": 130
+  }
+}

@@ -1,0 +1,254 @@
+[
+  {
+    "path": "frontend-design/LICENSE.txt",
+    "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+  },
+  {
+    "path": "frontend-design/SKILL.md",
+    "sha256": "52b2d1da1e9855a78306f0c2e261a50bff19db33335e9dbb8539b0bdc729fd9d"
+  },
+  {
+    "path": "frontend-design/agents/openai.yaml",
+    "sha256": "335c14dba7a084fce9706308173c338d0d18f0d105503b8658e8d8380ae3a3ca"
+  },
+  {
+    "path": "frontend-design/docs/README.md",
+    "sha256": "e5fb16c358c67d16b86581b581a660507c015e3952d179e8275ea21facda51db"
+  },
+  {
+    "path": "frontend-design/docs/compile-report.md",
+    "sha256": "ea7a72093ef79fd229294a92d40790c3259cbba07535cfb73bd8fae7c281094e"
+  },
+  {
+    "path": "frontend-design/docs/forward-tests/forward-test-evidence-20260727-1.md",
+    "sha256": "d660f0f0ea8e6a20a08cca5bfd81c3afe169c919d6d8ce0d7cbc8ea35d00e945"
+  },
+  {
+    "path": "frontend-design/docs/logs/forward-test-evidence-20260716-1.md",
+    "sha256": "3f77f833b840ec2b4ebc3c4ea9f2c26bcfc57275ae941be48facbcc519828a51"
+  },
+  {
+    "path": "frontend-design/docs/logs/implementation-log-20260715-1.md",
+    "sha256": "eadcfcd1bdf5af63079688889bf284a87bc65ec354849aea37baf8fd25c61d9b"
+  },
+  {
+    "path": "frontend-design/docs/logs/implementation-log-20260716-1.md",
+    "sha256": "1150943b60e90d3a590e4b5a56a185aef8c40079c51ceff5567f7a12955a512b"
+  },
+  {
+    "path": "frontend-design/docs/logs/implementation-log-20260727-1.md",
+    "sha256": "7c938945af2f16273fd429db122df88b2e552db5ee7d1598981a8318d63827f7"
+  },
+  {
+    "path": "frontend-design/references/anti-patterns.md",
+    "sha256": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449"
+  },
+  {
+    "path": "frontend-design/references/strategy-to-implementation.md",
+    "sha256": "3aa51b0aa8c04bd142b85f19a2dcdd6a6862f75b9ce4dbf6fa22213094337646"
+  },
+  {
+    "path": "frontend-design/references/surface-modes.md",
+    "sha256": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82"
+  },
+  {
+    "path": "frontend-design/references/visual-engines.md",
+    "sha256": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7"
+  },
+  {
+    "path": "react-components-engineer/SKILL.md",
+    "sha256": "54fec3b0548ca36ea157c32dcc3a3ec710b5ce0f7f0960fab7798ece27b83009"
+  },
+  {
+    "path": "react-components-engineer/agents/openai.yaml",
+    "sha256": "00053143793ac9ff6808e29f0548f0eb66f75ee2c1d6d14ac8fbeb66ae56a942"
+  },
+  {
+    "path": "react-components-engineer/docs/README.md",
+    "sha256": "2bc1241bc7d31353e71ab19900f21076475b95d43fd8928c6a6139e3a856705b"
+  },
+  {
+    "path": "react-components-engineer/docs/compile-report.md",
+    "sha256": "bc845cfab0283e72e2587d8442040f99fcd9231b523b45b02bd5ab5ae4679499"
+  },
+  {
+    "path": "react-components-engineer/docs/logs/implementation-log-20260715-1.md",
+    "sha256": "bab45d4c20e6ce0e48214dcbbaa4e6b7086b112546151948c2cc4fdbc58cf21b"
+  },
+  {
+    "path": "react-components-engineer/docs/logs/implementation-log-20260715-2.md",
+    "sha256": "ed08e7048e88990a3b34d69d6b5757ca952e468de772df76e6c6d482da38f2dc"
+  },
+  {
+    "path": "react-components-engineer/references/bulletproof-patterns.md",
+    "sha256": "31ee8c6f9044f908c682b2f7c47c5c9ab89781dcbd992309d8d772e12cb0b795"
+  },
+  {
+    "path": "react-spa-engineer/SKILL.md",
+    "sha256": "b466489e4b9e53008b3f1049c1ceefc24c52644c727242450bb7e22436f59c0d"
+  },
+  {
+    "path": "react-spa-engineer/agents/openai.yaml",
+    "sha256": "6f96183d241ae9618b96642b02a59c8c72079410607cbf5a4ee81af5f7c9ad6f"
+  },
+  {
+    "path": "react-spa-engineer/docs/README.md",
+    "sha256": "a0fcc285f4e6b83214a3242f368453e1f3d56b828febefac5c92fcb9b06c92fd"
+  },
+  {
+    "path": "react-spa-engineer/docs/compile-report.md",
+    "sha256": "9d477809504872f8c92676d235a28e11379a9bbc324fdcdd112a310868e3e65c"
+  },
+  {
+    "path": "react-spa-engineer/docs/forward-tests/forward-test-evidence-20260727-1.md",
+    "sha256": "f7d32a030f70b2ef8074116cec081fd8e03e94e57b131e405116380c1fd5b45c"
+  },
+  {
+    "path": "react-spa-engineer/docs/logs/forward-test-raw-20260713-1.md",
+    "sha256": "7da7b3bd2b74c30e994ac58dfdac93ca001dc7d8c030a43d83f031a970da96b5"
+  },
+  {
+    "path": "react-spa-engineer/docs/logs/implementation-log-20260612-1.md",
+    "sha256": "40eaf0cd2ddd2df6f7bd45e7304fc135f6334763d22b2c62a9e8318766e4adcf"
+  },
+  {
+    "path": "react-spa-engineer/docs/logs/implementation-log-20260612-2.md",
+    "sha256": "3ff9e92cbff762ddb31970ec0f135b111d191c9b53f0cdb06ee14b619ae13bff"
+  },
+  {
+    "path": "react-spa-engineer/docs/logs/implementation-log-20260622-1.md",
+    "sha256": "da0b84cdccb1f7e872e8f4851234a5afda5a69501fc5bd685fda539f6a0cc4ab"
+  },
+  {
+    "path": "react-spa-engineer/docs/logs/implementation-log-20260708-1.md",
+    "sha256": "37362e4c3be5721883b2e4d292a97ef07004bef8d8ec4ce8c9983891aa695e0f"
+  },
+  {
+    "path": "react-spa-engineer/docs/logs/implementation-log-20260713-1.md",
+    "sha256": "2677180216108e9bf97d73d172bc80a8cc5f714f0d4af91ff53f984d01ceb56b"
+  },
+  {
+    "path": "react-spa-engineer/docs/logs/implementation-log-20260715-1.md",
+    "sha256": "79721ad13e08a0ecdc38fa07249ff8d0e6e5ae5d7a7e6480e4a756252b4cb618"
+  },
+  {
+    "path": "react-spa-engineer/docs/logs/implementation-log-20260727-1.md",
+    "sha256": "3edea17789643075242a5d8c0e3519bf709d8f8f1ac426b85f47f577fecc2b00"
+  },
+  {
+    "path": "react-spa-engineer/references/accessibility.md",
+    "sha256": "bb96bfe1606533cd93aa03d4f871476d2ba4bc324029d696e15666b39dbccc0c"
+  },
+  {
+    "path": "react-spa-engineer/references/component-architecture.md",
+    "sha256": "d1620fb939eac5b8b428b03e5c2743fadf3f6565d3aa238ceb3a51cac1e17878"
+  },
+  {
+    "path": "react-spa-engineer/references/data-fetching.md",
+    "sha256": "db095fe2545dfce0d3de6b295bea674fa2b0015f204e8daf4bc0670b44d24292"
+  },
+  {
+    "path": "react-spa-engineer/references/forms-validation.md",
+    "sha256": "c159c64c11332e162be0cfdab4dda0f87ee3eee392832a5ec6d15f69c3c32997"
+  },
+  {
+    "path": "react-spa-engineer/references/indexeddb-persistence.md",
+    "sha256": "026de6cab4c1bafd59721c75797c13f3c15728d9c07c4837bdff86b203acb468"
+  },
+  {
+    "path": "react-spa-engineer/references/performance.md",
+    "sha256": "37d9d8d6c4f915c873a83aaa68679a556eab4c80a64a18a2f9d9fccae1ab87dc"
+  },
+  {
+    "path": "react-spa-engineer/references/persistence-architecture.md",
+    "sha256": "8b1a21dd865b6e30173d8a7383b81f38a867212f48d39aa0851bd97a9286f21d"
+  },
+  {
+    "path": "react-spa-engineer/references/routing.md",
+    "sha256": "68b5dd1c3af68cdcbadcf218ec83492eed4fb8c8581c82d781b5474a93564303"
+  },
+  {
+    "path": "react-spa-engineer/references/state-management.md",
+    "sha256": "509f6510f2c2d1eef5dbf97c7c3c9f33034de461dac12a3a65a4b976cb213dd1"
+  },
+  {
+    "path": "react-spa-engineer/references/testing.md",
+    "sha256": "7b64b06442e90e3dcd75eacfc3f29efe015b5aa36a73e12a51b11977aac8fa10"
+  },
+  {
+    "path": "react-spa-engineer/references/typescript-patterns.md",
+    "sha256": "27ac07e4bd683f123e80b774db4c134f0ca3233b47681e32e3b919249b3d91c4"
+  },
+  {
+    "path": "web-ui-reviewer/SKILL.md",
+    "sha256": "a8a9c3f8cb49a81e19bbce417388a45ea3bbcd7001f8eed53dbbf351065d60be"
+  },
+  {
+    "path": "web-ui-reviewer/agents/openai.yaml",
+    "sha256": "9ace29f02943bb6c4bef93fa5b75c9a823a93936e211eef8a77cc79edb150069"
+  },
+  {
+    "path": "web-ui-reviewer/docs/compile-report.md",
+    "sha256": "13a731abbd401e38bfe220bbf685efca609bc4390af008c9b4a814950ceb85be"
+  },
+  {
+    "path": "web-ui-reviewer/docs/forward-tests/forward-test-evidence-20260727-1.md",
+    "sha256": "a7f6ec2eef8e4d78525d0e483f78bbaaa9b1ca342387ee602d894fcaba5f49ab"
+  },
+  {
+    "path": "web-ui-reviewer/docs/logs/implementation-log-20260727-1.md",
+    "sha256": "d6321db4b5f5ebfb75ea1f97f2cb3a3c5da6cf6d9a3838c523bf41d122bbaabe"
+  },
+  {
+    "path": "web-ui-reviewer/docs/logs/implementation-log-20260727-2.md",
+    "sha256": "9858648789059dcb00fc0e9d201afcd019ebaf671e29c7285eecb04166d9e755"
+  },
+  {
+    "path": "web-ui-reviewer/evals/evals.json",
+    "sha256": "6e5c9ebf40fbc4c5d4baa4d9ba8ad7b8953350ac76ac3045b5c8e6e8cbbad86b"
+  },
+  {
+    "path": "web-ui-reviewer/evals/fixtures/module-workspace-input.md",
+    "sha256": "0e13357f23645ae605c0ec6f6b354831b5b1a60ffcdda27808e4222d9d61a500"
+  },
+  {
+    "path": "web-ui-reviewer/references/web-interface-guidelines.md",
+    "sha256": "b189f88ba4d37d8f296a602e777e4543138c4ccf9ce53eb8a5c3d3e03bc122f0"
+  },
+  {
+    "path": "agent-browser/SKILL.md",
+    "sha256": "3eece0db2af5d6f75dc48285d574b5f84a7aa743768b2c4d5fa6d3fde31a52d2"
+  },
+  {
+    "path": "agent-browser/agents/openai.yaml",
+    "sha256": "d430788f44a61bd7b9fc12b11e57f7230eb5020fc50af605563aa13f14b4b798"
+  },
+  {
+    "path": "agent-browser/docs/README.md",
+    "sha256": "063c816e12ae2eb4b85f696d447b31a2d814c84cb9ff221c900ff08190116cc6"
+  },
+  {
+    "path": "agent-browser/docs/compile-report.md",
+    "sha256": "a0ab661b67d84086572bedffb0a24c7ab4c2e0d64bf114a99eee98eeae16a349"
+  },
+  {
+    "path": "agent-browser/docs/logs/implementation-log-20260612-1.md",
+    "sha256": "eb6bdc46aeba47e82a6c00d9e92fa7b22fbd80198248cf34175aae47dddd3328"
+  },
+  {
+    "path": "agent-browser/docs/logs/implementation-log-20260708-1.md",
+    "sha256": "e4d3f8b885971c0bc50c0cc68c95908e8ff032efd9e6ab92350adb7621ed5780"
+  },
+  {
+    "path": "agent-browser/docs/logs/implementation-log-20260715-1.md",
+    "sha256": "5466015aa7161d75c4d2da7a73944cbc1b8a3bca129c6465954b2e08e60d51a8"
+  },
+  {
+    "path": "agent-browser/docs/logs/implementation-log-20260727-1.md",
+    "sha256": "f4e52c4f95ff5d1d8952f8ce688ffe754218a01213473426590b6e5083c0df61"
+  },
+  {
+    "path": "agent-browser/references/cloudflare-access-otp.md",
+    "sha256": "0e41b39ee811661c01e02fd2d37a903cc088188385a675282fb6c442c023a9fc"
+  }
+]

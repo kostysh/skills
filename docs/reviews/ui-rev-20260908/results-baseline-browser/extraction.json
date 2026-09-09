@@ -1,0 +1,12 @@
+{
+  "page1": [
+    "Alpha",
+    "Beta"
+  ],
+  "page2": [
+    "Gamma",
+    "Test UI-REV"
+  ],
+  "total": 4,
+  "lastPageNextDisabled": true
+}

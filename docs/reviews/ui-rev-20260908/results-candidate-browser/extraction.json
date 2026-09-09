@@ -1,0 +1,12 @@
+{
+  "target": "http://localhost:43787/",
+  "scope": "All request names via unfiltered rendered paginated list, before test-record cleanup",
+  "pages": [
+    {"page": 1, "of": 2, "total": 4, "names": ["Alpha", "Beta"]},
+    {"page": 2, "of": 2, "total": 4, "names": ["Gamma", "Test UI-REV"], "nextDisabled": true}
+  ],
+  "names": ["Alpha", "Beta", "Gamma", "Test UI-REV"],
+  "initialTotal": 3,
+  "afterCleanupTotal": 3,
+  "removedTestId": 4
+}

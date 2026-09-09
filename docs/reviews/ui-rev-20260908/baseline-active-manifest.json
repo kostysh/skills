@@ -1,0 +1,114 @@
+[
+  {
+    "path": "frontend-design/SKILL.md",
+    "sha256": "93d7e82ad4478bd672cb867e87e1296464590dc0ae7ac6242edbd4e5f50227aa"
+  },
+  {
+    "path": "frontend-design/agents/openai.yaml",
+    "sha256": "335c14dba7a084fce9706308173c338d0d18f0d105503b8658e8d8380ae3a3ca"
+  },
+  {
+    "path": "frontend-design/references/anti-patterns.md",
+    "sha256": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449"
+  },
+  {
+    "path": "frontend-design/references/strategy-to-implementation.md",
+    "sha256": "3aa51b0aa8c04bd142b85f19a2dcdd6a6862f75b9ce4dbf6fa22213094337646"
+  },
+  {
+    "path": "frontend-design/references/surface-modes.md",
+    "sha256": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82"
+  },
+  {
+    "path": "frontend-design/references/visual-engines.md",
+    "sha256": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7"
+  },
+  {
+    "path": "react-components-engineer/SKILL.md",
+    "sha256": "ca50811832a87d0664a7947e2a37cfd19d9f165eb27a7679928231586fdb06c8"
+  },
+  {
+    "path": "react-components-engineer/agents/openai.yaml",
+    "sha256": "00053143793ac9ff6808e29f0548f0eb66f75ee2c1d6d14ac8fbeb66ae56a942"
+  },
+  {
+    "path": "react-components-engineer/references/bulletproof-patterns.md",
+    "sha256": "5de84d2566167645c70c77626eb554fcb081586bda24a221a2541cd6c4a459e0"
+  },
+  {
+    "path": "react-spa-engineer/SKILL.md",
+    "sha256": "8cb4e7203d86e549effe57da500e5f01ff28a1f1093d0ba4a679060beba8117f"
+  },
+  {
+    "path": "react-spa-engineer/agents/openai.yaml",
+    "sha256": "6f96183d241ae9618b96642b02a59c8c72079410607cbf5a4ee81af5f7c9ad6f"
+  },
+  {
+    "path": "react-spa-engineer/references/accessibility.md",
+    "sha256": "bb96bfe1606533cd93aa03d4f871476d2ba4bc324029d696e15666b39dbccc0c"
+  },
+  {
+    "path": "react-spa-engineer/references/component-architecture.md",
+    "sha256": "d1620fb939eac5b8b428b03e5c2743fadf3f6565d3aa238ceb3a51cac1e17878"
+  },
+  {
+    "path": "react-spa-engineer/references/data-fetching.md",
+    "sha256": "db095fe2545dfce0d3de6b295bea674fa2b0015f204e8daf4bc0670b44d24292"
+  },
+  {
+    "path": "react-spa-engineer/references/forms-validation.md",
+    "sha256": "044afb2126e3adf87f67490f4832fdbba24edff7153111c95a5ee716860b54f4"
+  },
+  {
+    "path": "react-spa-engineer/references/indexeddb-persistence.md",
+    "sha256": "026de6cab4c1bafd59721c75797c13f3c15728d9c07c4837bdff86b203acb468"
+  },
+  {
+    "path": "react-spa-engineer/references/performance.md",
+    "sha256": "37d9d8d6c4f915c873a83aaa68679a556eab4c80a64a18a2f9d9fccae1ab87dc"
+  },
+  {
+    "path": "react-spa-engineer/references/persistence-architecture.md",
+    "sha256": "8b1a21dd865b6e30173d8a7383b81f38a867212f48d39aa0851bd97a9286f21d"
+  },
+  {
+    "path": "react-spa-engineer/references/routing.md",
+    "sha256": "68b5dd1c3af68cdcbadcf218ec83492eed4fb8c8581c82d781b5474a93564303"
+  },
+  {
+    "path": "react-spa-engineer/references/state-management.md",
+    "sha256": "509f6510f2c2d1eef5dbf97c7c3c9f33034de461dac12a3a65a4b976cb213dd1"
+  },
+  {
+    "path": "react-spa-engineer/references/testing.md",
+    "sha256": "47b931d50ac228217db6bb42f5d27335f72675984be187aebdf40c5717dc8ecc"
+  },
+  {
+    "path": "react-spa-engineer/references/typescript-patterns.md",
+    "sha256": "27ac07e4bd683f123e80b774db4c134f0ca3233b47681e32e3b919249b3d91c4"
+  },
+  {
+    "path": "web-ui-reviewer/SKILL.md",
+    "sha256": "5f5da6c7e7b2f91374bc47a3ff4b4c9aa9407fa830e0971f08eaae16c0ba2989"
+  },
+  {
+    "path": "web-ui-reviewer/agents/openai.yaml",
+    "sha256": "9ace29f02943bb6c4bef93fa5b75c9a823a93936e211eef8a77cc79edb150069"
+  },
+  {
+    "path": "web-ui-reviewer/references/web-interface-guidelines.md",
+    "sha256": "b189f88ba4d37d8f296a602e777e4543138c4ccf9ce53eb8a5c3d3e03bc122f0"
+  },
+  {
+    "path": "agent-browser/SKILL.md",
+    "sha256": "396da5fb11741f4f1ffb0d04e8d02240423175d25ccba2c29d43c3f0514439a2"
+  },
+  {
+    "path": "agent-browser/agents/openai.yaml",
+    "sha256": "d430788f44a61bd7b9fc12b11e57f7230eb5020fc50af605563aa13f14b4b798"
+  },
+  {
+    "path": "agent-browser/references/cloudflare-access-otp.md",
+    "sha256": "0e41b39ee811661c01e02fd2d37a903cc088188385a675282fb6c442c023a9fc"
+  }
+]

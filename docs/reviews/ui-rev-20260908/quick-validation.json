@@ -1,0 +1,27 @@
+[
+  {
+    "skill": "frontend-design",
+    "exit": 0,
+    "output": "Skill is valid!\n"
+  },
+  {
+    "skill": "react-components-engineer",
+    "exit": 1,
+    "output": "Unexpected key(s) in SKILL.md frontmatter: compatibility. Allowed properties are: allowed-tools, description, license, metadata, name\n"
+  },
+  {
+    "skill": "react-spa-engineer",
+    "exit": 1,
+    "output": "Unexpected key(s) in SKILL.md frontmatter: compatibility. Allowed properties are: allowed-tools, description, license, metadata, name\n"
+  },
+  {
+    "skill": "web-ui-reviewer",
+    "exit": 0,
+    "output": "Skill is valid!\n"
+  },
+  {
+    "skill": "agent-browser",
+    "exit": 0,
+    "output": "Skill is valid!\n"
+  }
+]

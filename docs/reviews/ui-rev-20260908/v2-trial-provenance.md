@@ -1,0 +1,7 @@
+# B v2: provenance и сравнение
+
+Свежий независимый executor /root/ui_browser_v2_execution, spawn fork_turns=none, model=gpt-6-astra; reasoning override не задавался. Actual serving model/settings executor не видит. Только active-copy agent-browser0.2.4 и pristine восьмифайловый fixture; manifest сохранён. Исходный B user task повторён: create Test UI-REV → find/open/reload → extract all paginated titles → delete-own/total3 → close own session/server. Изменены только path, port43801 и session ui-rev-browser-v2. Review diagnoses, RCA, expected cleanup method, criteria и sentinel не передавались. Shared filesystem — инструкционная, не sandbox-изоляция.
+
+Actual failure path воспроизведён: launcher CtrlC/exit130 оставляет listening node. Executor сам обнаружил остаток, атрибутировал собственный PID980862 и порт, завершил SIGTERM и проверил отсутствие node/esbuild и закрытый listener. Functional B полностью выполнен. Raw первичные browser/runtime troubleshooting не представлены полным непрерывным transcript; существенные успешные browser и cleanup команды/results сохранены. Полная telemetry не заявляется.
+
+Отдельный авторский sentinel PID980004/43802 был запущен до B2, сохранил exact PID/start/cmd/cwd и HTTP200 после cleanup B2. Затем автор завершил только sentinel, подтвердил PID absent/connection refused. Before/after/closed records сохранены. Это targeted evidence сохранения соседнего ресурса, не универсальная гарантия process management. Независимый bounded reviewer оценивает закрытие AB-CLEAN-01.

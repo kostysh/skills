@@ -1,0 +1,69 @@
+{
+  "hash_convention": "SHA256 sorted file-hash two-spaces skill-relative-path LF",
+  "neighbors_manifest_mismatches": [],
+  "rows": [
+    {
+      "skill": "frontend-design",
+      "version": "0.2.2",
+      "full_count": 17,
+      "full_sha256": "52f300f96d3f23d86ecdb7f273100c034fa9eb36d47bfbfa3ff3fc7eceb98fd2",
+      "skill_sha256": "52b2d1da1e9855a78306f0c2e261a50bff19db33335e9dbb8539b0bdc729fd9d"
+    },
+    {
+      "skill": "react-components-engineer",
+      "version": "0.2.1",
+      "full_count": 11,
+      "full_sha256": "8b013455a511d03c4aff7231ba41ebf0110bae1459d7c610661acd741d4b6aa5",
+      "skill_sha256": "54fec3b0548ca36ea157c32dcc3a3ec710b5ce0f7f0960fab7798ece27b83009"
+    },
+    {
+      "skill": "react-spa-engineer",
+      "version": "0.1.11",
+      "full_count": 27,
+      "full_sha256": "55362324c764133528c6681c9b83d922a1a2e44a2bb0e2b497239572b169ac73",
+      "skill_sha256": "b466489e4b9e53008b3f1049c1ceefc24c52644c727242450bb7e22436f59c0d"
+    },
+    {
+      "skill": "web-ui-reviewer",
+      "version": "0.2.4",
+      "full_count": 18,
+      "full_sha256": "60c396c1a7106342b65e61a43e21c71689721116929dd978fae521acd9608cd0",
+      "skill_sha256": "a8a9c3f8cb49a81e19bbce417388a45ea3bbcd7001f8eed53dbbf351065d60be"
+    },
+    {
+      "skill": "agent-browser",
+      "version": "0.2.3",
+      "full_count": 12,
+      "full_sha256": "1e6c3d9465edb8108c41669af2263755b07c8e0fe61e9a5cbd505a2767df1be3",
+      "skill_sha256": "3eece0db2af5d6f75dc48285d574b5f84a7aa743768b2c4d5fa6d3fde31a52d2"
+    },
+    {
+      "skill": "documentation",
+      "version": "0.2.1",
+      "full_count": 11,
+      "full_sha256": "101317a5b45fdc3a2de76f23881974f972068a21b4a09f7863b4cbc5e6fd8c64",
+      "skill_sha256": "4498e3ef26485edc0e63ee0fef18b371f81aa8daa694634484410c43003ae7be"
+    },
+    {
+      "skill": "typescript-engineer",
+      "version": "0.2.2",
+      "full_count": 22,
+      "full_sha256": "ae24f9ef144e95215118228c636224694320c91012f8a3440b63a098c723bdd1",
+      "skill_sha256": "8dccdca0e96b7c9f7caf51baaab9fb909df0bb01345a0ae7fac7c444bb597e86"
+    },
+    {
+      "skill": "node-engineer",
+      "version": "0.1.4",
+      "full_count": 16,
+      "full_sha256": "6c3d6df7848ed46acf0627c5da7c181153dd8435aa3810e282d1197adc4d6995",
+      "skill_sha256": "073a05ee05c1ef9db06d375ec9412fd2f8308a3d0ae2e028ed8df4f45eb55eef"
+    },
+    {
+      "skill": "cli-engineer",
+      "version": "0.2.1",
+      "full_count": 26,
+      "full_sha256": "71cdf688c56854b42bd6d8b0ccf0328cdbe7b3fb1e26dcb4a35f21a514f19544",
+      "skill_sha256": "c3bfd58accd178da66da372e023d1c56fdbd77677c190641a0d96cc4bf311b1a"
+    }
+  ]
+}
