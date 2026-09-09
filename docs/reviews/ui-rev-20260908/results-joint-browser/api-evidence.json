@@ -1,0 +1,58 @@
+[
+  {
+    "url": "http://127.0.0.1:43789/api/items?q=Alpha&page=1",
+    "method": "GET",
+    "postData": null,
+    "status": 200,
+    "content": {
+      "mimeType": "application/json",
+      "size": 238
+    }
+  },
+  {
+    "url": "http://127.0.0.1:43789/api/items/1",
+    "method": "GET",
+    "postData": null,
+    "status": 200,
+    "content": {
+      "mimeType": "application/json",
+      "size": 197
+    }
+  },
+  {
+    "url": "http://127.0.0.1:43789/api/items/1",
+    "method": "PATCH",
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{\"name\":\"Changed\"}"
+    },
+    "status": 503,
+    "content": {
+      "mimeType": "application/json",
+      "size": 236
+    }
+  },
+  {
+    "url": "http://127.0.0.1:43789/api/items/1",
+    "method": "PATCH",
+    "postData": {
+      "mimeType": "application/json",
+      "text": "{\"name\":\"Again\"}"
+    },
+    "status": 200,
+    "content": {
+      "mimeType": "application/json",
+      "size": 197
+    }
+  },
+  {
+    "url": "http://127.0.0.1:43789/api/items/1",
+    "method": "GET",
+    "postData": null,
+    "status": 200,
+    "content": {
+      "mimeType": "application/json",
+      "size": 197
+    }
+  }
+]

@@ -1,0 +1,96 @@
+[
+  {
+    "command": [
+      "agent-browser",
+      "--session",
+      "ui-rev-base-components",
+      "--args",
+      "--no-sandbox",
+      "open",
+      "http://127.0.0.1:43782/components"
+    ],
+    "stdin": null,
+    "stdout": "\u2713 Request desk\n  http://127.0.0.1:43782/components\n",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "command": [
+      "agent-browser",
+      "--session",
+      "ui-rev-base-components",
+      "--args",
+      "--no-sandbox",
+      "snapshot",
+      "-i"
+    ],
+    "stdin": null,
+    "stdout": "- heading \"Component laboratory\" [level=1, ref=e1]\n- button \"Unmount tooltips\" [ref=e2]\n- button \"Focus first\" [ref=e3]\n- button \"First\" [ref=e4]\n- button \"Second\" [ref=e5]\n",
+    "stderr": "\u26a0 --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.\n",
+    "exit": 0
+  },
+  {
+    "command": [
+      "agent-browser",
+      "--session",
+      "ui-rev-base-components",
+      "--args",
+      "--no-sandbox",
+      "find",
+      "role",
+      "button",
+      "click",
+      "--name",
+      "Focus first",
+      "--exact"
+    ],
+    "stdin": null,
+    "stdout": "\u2713 Done\n",
+    "stderr": "\u26a0 --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.\n",
+    "exit": 0
+  },
+  {
+    "command": [
+      "agent-browser",
+      "--session",
+      "ui-rev-base-components",
+      "--args",
+      "--no-sandbox",
+      "snapshot"
+    ],
+    "stdin": null,
+    "stdout": "- main\n  - heading \"Component laboratory\" [level=1, ref=e1]\n  - button \"Unmount tooltips\" [ref=e2]\n  - button \"Focus first\" [ref=e3]\n  - generic\n    - generic\n      - button \"First\" [ref=e4]\n      - tooltip \"First tip\"\n    - button \"Second\" [ref=e5]\n",
+    "stderr": "\u26a0 --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.\n",
+    "exit": 0
+  },
+  {
+    "command": [
+      "agent-browser",
+      "--session",
+      "ui-rev-base-components",
+      "--args",
+      "--no-sandbox",
+      "eval",
+      "--stdin"
+    ],
+    "stdin": "JSON.stringify({active:document.activeElement.textContent,description:document.getElementById(document.activeElement.getAttribute('aria-describedby'))?.textContent,...window.fixtureEvidence})",
+    "stdout": "\"{\\\"active\\\":\\\"First\\\",\\\"description\\\":\\\"First tip\\\",\\\"recoverable\\\":[],\\\"resizeListeners\\\":2}\"\n",
+    "stderr": "\u26a0 --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.\n",
+    "exit": 0
+  },
+  {
+    "command": [
+      "agent-browser",
+      "--session",
+      "ui-rev-base-components",
+      "--args",
+      "--no-sandbox",
+      "hover",
+      "button:has-text(\"Second\")"
+    ],
+    "stdin": null,
+    "stdout": "",
+    "stderr": "\u26a0 --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.\n\u2717 Element not found. Verify the selector is correct and the element exists in the DOM.\n",
+    "exit": 1
+  }
+]

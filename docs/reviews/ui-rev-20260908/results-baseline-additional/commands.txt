@@ -1,0 +1,5 @@
+Read additional.md; read supplied active SKILL.md for frontend-design, web-ui-reviewer, react-components-engineer. Read frontend strategy-to-implementation.md, visual-engines.md; web-interface-guidelines.md. Initial combined skill read was truncated; web-ui-reviewer was reread fully.
+rg --files fixture-base baseline-simple-component excluding node_modules/package-lock: found README, main.jsx, style.css, package.json, Tooltip.js, server.mjs, index.html, built files, Label.jsx.
+Read README.md, src/main.jsx, src/style.css, package.json, Label.jsx. No fixture files mutated.
+Python: assert Label.jsx exact original; replace one literal; write same file; assert exact expected result. PASS.
+Build/runtime not run: D1 strategy-only, W2 supplied synthetic delta and evidence, C1 source text replacement.

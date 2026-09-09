@@ -1,6 +1,6 @@
 # React Component Resilience Patterns
 
-Load only the sections that match a concrete failure path. Installed project versions and matching official React or framework documentation outrank these examples. External links below are optional provenance, not portability dependencies.
+Load only the sections that match the component contract or a supported failure path. Installed project versions and matching official React or framework documentation outrank these examples. External links below are optional provenance, not portability dependencies.
 
 ## 1. Render and Effect lifecycle
 
@@ -179,4 +179,4 @@ For each material issue record:
 - status: `verified`, `partial`, or `blocked`;
 - residual risk and anti-claims.
 
-Do not report `verified` when the relevant renderer, document, lifecycle, framework, measurement, or security boundary was not exercised.
+Apply the root Evidence and status policy: source-only review can finish with a clean, bounded conclusion. Do not claim runtime, renderer, document, lifecycle, framework, measurement, or security verification when that required boundary was not exercised.

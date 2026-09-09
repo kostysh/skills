@@ -1,0 +1,305 @@
+{
+  "base": "4aed5e89fa98edb46190eb2833b9b156005a782c",
+  "files": [
+    {
+      "path": "documentation/AGENTS.md",
+      "sha256": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf"
+    },
+    {
+      "path": "documentation/SKILL.md",
+      "sha256": "4498e3ef26485edc0e63ee0fef18b371f81aa8daa694634484410c43003ae7be"
+    },
+    {
+      "path": "documentation/docs/README.md",
+      "sha256": "bf5dbe031f6d0859fef5b82ed51e0a92e691103d36851e73bb39a22d2da5da27"
+    },
+    {
+      "path": "documentation/docs/compile-report.md",
+      "sha256": "6870835a7926c3f5a7da1a81306d257ec7ccfa7a03d90b59f5d66a6b0b262667"
+    },
+    {
+      "path": "documentation/docs/logs/implementation-log-20260708-1.md",
+      "sha256": "199c72a33c58819dc89cfe59a6ee752331e974154439cb886b5345cdc0dd06fd"
+    },
+    {
+      "path": "documentation/docs/logs/implementation-log-20260715-1.md",
+      "sha256": "fbce9452ee3b334353278bac2156ba4a93a62e8e6b39bb8e61942b79b3950422"
+    },
+    {
+      "path": "documentation/docs/logs/implementation-log-20260716-1.md",
+      "sha256": "b1bd7e79bfc0d1340438b7636b1f1de333f87e7700b09d882f7d9bd443251a44"
+    },
+    {
+      "path": "documentation/docs/logs/implementation-log-20260908-1.md",
+      "sha256": "6cd5b199d16331592c9fdf29142f7d32908654f7924c3ea0d840d3d1f757a7a2"
+    },
+    {
+      "path": "documentation/fragments/overview.md",
+      "sha256": "932b47f70643d50f0d62220db06092c8beae1804d6e205cdb23e6bdc52f2c8f0"
+    },
+    {
+      "path": "documentation/references/diataxis-guide.md",
+      "sha256": "2fd3a9fcbedd9fde5b4b4b06bd003b65d1b812b124299f1469a6420ed4e49d87"
+    },
+    {
+      "path": "documentation/skill.yaml",
+      "sha256": "e5d1c9bb80e80cc492331a27c4b393f1f54ffab3d5700e6bfd4d12eb0fee985e"
+    },
+    {
+      "path": "typescript-engineer/AGENTS.md",
+      "sha256": "b37db36f41f2fc677617fe96db9c5b6e0ca2ef6e365bf3059d4c0d0bcc1cc086"
+    },
+    {
+      "path": "typescript-engineer/SKILL.md",
+      "sha256": "8dccdca0e96b7c9f7caf51baaab9fb909df0bb01345a0ae7fac7c444bb597e86"
+    },
+    {
+      "path": "typescript-engineer/agents/openai.yaml",
+      "sha256": "372a72c8d2943c55ba133bbda5e0ed8f46cdfd8f8d4940418beefcbaf62484ab"
+    },
+    {
+      "path": "typescript-engineer/docs/README.md",
+      "sha256": "0b2342fbc323c4942b69c9e7c70aee0634131fb020678de9e6c4ebebe8794ce6"
+    },
+    {
+      "path": "typescript-engineer/docs/compile-report.md",
+      "sha256": "c0da71c1c7758fb212d6737f89cf7faf68147faf6fd9ab166b780e9174eee1f7"
+    },
+    {
+      "path": "typescript-engineer/docs/logs/forward-tests-core-20260710.md",
+      "sha256": "b609e8b003698dd70e74a65fa8e6289f5ebeb888500760576516ef41c270904b"
+    },
+    {
+      "path": "typescript-engineer/docs/logs/forward-tests-routing-20260710.md",
+      "sha256": "9a01150970b2533a344fad0ab9259aa687607f86961b4f8d57ee910baae401bb"
+    },
+    {
+      "path": "typescript-engineer/docs/logs/implementation-log-20260622-1.md",
+      "sha256": "d6e9995cd60c5a87ec7c4c8e7d0c44be14bcb8159d7349d078ba71072dcb55f0"
+    },
+    {
+      "path": "typescript-engineer/docs/logs/implementation-log-20260710-1.md",
+      "sha256": "09f72d7e8217960d5c2fc2f46159b944559d3c8964c00af0bdf03b0d496a3ecd"
+    },
+    {
+      "path": "typescript-engineer/docs/logs/implementation-log-20260715-1.md",
+      "sha256": "e1e7a6934bf3ebf6ffb74772dd0d4d8fdf907e63ac0c166358a9e325af1a2f9e"
+    },
+    {
+      "path": "typescript-engineer/docs/logs/implementation-log-20260908-1.md",
+      "sha256": "f136baabe069957b4206735955079cf07fb125c30b193f504b97086d6862fdea"
+    },
+    {
+      "path": "typescript-engineer/fragments/overview.md",
+      "sha256": "6ec81463560c773fec65a60ac0dd9408cd82814054b3e0bf62943b5560b5757b"
+    },
+    {
+      "path": "typescript-engineer/references/generics.md",
+      "sha256": "7201b89492c473093a6818db8bcf0b26e445d2f0689eb84916ff185503c3c4c4"
+    },
+    {
+      "path": "typescript-engineer/references/monorepo.md",
+      "sha256": "a725bf2737a1c0716b2c8f9f2a6d6d79cc0e14a401a06b7de5ed9744166fb5e4"
+    },
+    {
+      "path": "typescript-engineer/references/overloads.md",
+      "sha256": "39494766556c8c7aa46c2aa16aa20718aedcaf7a4ec8cf0a28443324d3c5936b"
+    },
+    {
+      "path": "typescript-engineer/references/patterns.md",
+      "sha256": "8636aec6c320d894a10ada0db3f452b7d31e9dc608d00a6e0a57e1b5c3aa1f57"
+    },
+    {
+      "path": "typescript-engineer/references/practices.md",
+      "sha256": "51f765dcd0f2e1732e00d83504a4a832f177437f96aeed0d992a634e949c827a"
+    },
+    {
+      "path": "typescript-engineer/references/runtime-derived-types.md",
+      "sha256": "1e1a327d0a2e59792ec25aa5c69bb2cd313273ef2a9d7730014700303e9e4aa0"
+    },
+    {
+      "path": "typescript-engineer/references/toolchain.md",
+      "sha256": "313bb758492c473f47b7d1670fd01ecb605512296ab98edcf36fe59914794771"
+    },
+    {
+      "path": "typescript-engineer/references/type-debugging.md",
+      "sha256": "2fb09da3deb9e434b50336644da63a6539503d30f05a0304fa7c9a78d7690304"
+    },
+    {
+      "path": "typescript-engineer/references/type-system.md",
+      "sha256": "451bec02f0fe0cad7a3967b6d4b8388e98600c4655be7fee51b971f1db0f40e9"
+    },
+    {
+      "path": "typescript-engineer/skill.yaml",
+      "sha256": "e4dd80ca098e46594ed798f0d4c06788139c7c99750ca0c037ac70b8dff82d1a"
+    },
+    {
+      "path": "node-engineer/AGENTS.md",
+      "sha256": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf"
+    },
+    {
+      "path": "node-engineer/SKILL.md",
+      "sha256": "073a05ee05c1ef9db06d375ec9412fd2f8308a3d0ae2e028ed8df4f45eb55eef"
+    },
+    {
+      "path": "node-engineer/agents/openai.yaml",
+      "sha256": "b41169df35aa53b56726f39c42a18008af7066d2a64269f1a8213d8309fe66df"
+    },
+    {
+      "path": "node-engineer/docs/README.md",
+      "sha256": "9adf9d13f7eadf582e6df4aee2b56c6c6e22837d760fc7ca6cd172b37fe9d247"
+    },
+    {
+      "path": "node-engineer/docs/compile-report.md",
+      "sha256": "0bb10d25d6bd98474b586f695609d635063b1415f973aea1fb1391afb64a647e"
+    },
+    {
+      "path": "node-engineer/docs/logs/implementation-log-20260622-1.md",
+      "sha256": "868845f987018c2d8fb363b3d73d048249d1e9f8cd653c054dc77d5aacede797"
+    },
+    {
+      "path": "node-engineer/docs/logs/implementation-log-20260713-1.md",
+      "sha256": "ba103099107acc04a9962b03a64dde24bfdeade7c96c3200e7d004b1eee74461"
+    },
+    {
+      "path": "node-engineer/docs/logs/implementation-log-20260715-1.md",
+      "sha256": "9b575ec4d0e3ae4502f55afde13885679a572f6ff383c35879b7834b34ad6842"
+    },
+    {
+      "path": "node-engineer/docs/logs/implementation-log-20260908-1.md",
+      "sha256": "c4ecc53504cbcf18089460a3df659657b40a372d7c4f07902787578e7dad7319"
+    },
+    {
+      "path": "node-engineer/docs/reviews/validation-20260713-1.md",
+      "sha256": "152619384cb2b6ec30024ac2812cef8a800f1b170233eae30700464343f4c911"
+    },
+    {
+      "path": "node-engineer/fragments/overview.md",
+      "sha256": "bc1db7bf987a7313b76677762b1b617f03c5a72584a4f15aed315c0c1cc074c8"
+    },
+    {
+      "path": "node-engineer/references/debugging-profiling.md",
+      "sha256": "f20e33fa2ce9d7cf1c3a9c26c1552fcff4df75bc7c2527e1d56f2298be3a1cd3"
+    },
+    {
+      "path": "node-engineer/references/operations.md",
+      "sha256": "d6f741c8a9f74c66d40c82516839a09c7f769d66d46fc89ea446f9f608e6fb95"
+    },
+    {
+      "path": "node-engineer/references/runtime-typescript.md",
+      "sha256": "c255ca59ea91b9144baf7a624ffb84a717aafdb83f90156fbc96eba2e7c22e58"
+    },
+    {
+      "path": "node-engineer/references/streams-caching.md",
+      "sha256": "1a24ea44947df1ed6826f86ffba0ae7f39670202467d9487e0570cc69b548d00"
+    },
+    {
+      "path": "node-engineer/skill.yaml",
+      "sha256": "3271468043dea4b336ef8eb91d9fedb57467ba83cb8687b3fb521a1fd6408dbc"
+    },
+    {
+      "path": "cli-engineer/AGENTS.md",
+      "sha256": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf"
+    },
+    {
+      "path": "cli-engineer/SKILL.md",
+      "sha256": "c3bfd58accd178da66da372e023d1c56fdbd77677c190641a0d96cc4bf311b1a"
+    },
+    {
+      "path": "cli-engineer/agents/openai.yaml",
+      "sha256": "6636d02bb369b94d4609f716f4d239112e45827f90e0b3925fe6cce2afefe713"
+    },
+    {
+      "path": "cli-engineer/docs/README.md",
+      "sha256": "a6ed799eb8a060ec2511f9090db76d3255e1fc4f7af9fc697b6b13b0a008fccf"
+    },
+    {
+      "path": "cli-engineer/docs/compile-report.md",
+      "sha256": "fe7dc79d26f0415a25cdc8650d6bf58a1e80de670904d2dada5f0e40b5572745"
+    },
+    {
+      "path": "cli-engineer/docs/forward-tests/forward-test-evidence-20260716-1.md",
+      "sha256": "7c403487b28a2c23d8f664d196f55d463491456cbcbda9aa92d09dff717c820a"
+    },
+    {
+      "path": "cli-engineer/docs/issues/implementation-plan-20260425-1.md",
+      "sha256": "5da3a2f9fda34b83bcddbdeddf537db82256deca0f7e4c359be46f308602f5f2"
+    },
+    {
+      "path": "cli-engineer/docs/issues/issue-20260425-1.md",
+      "sha256": "bec56825e46d920cb2c9a6f0591dcdccc540fab16efb36973fb155df00ac8125"
+    },
+    {
+      "path": "cli-engineer/docs/logs/implementation-log-20260425-1.md",
+      "sha256": "101723caeb82937ab15ca58618478dddc37cff3f96fe62cf89a6d35b729340d0"
+    },
+    {
+      "path": "cli-engineer/docs/logs/implementation-log-20260622-1.md",
+      "sha256": "f3bc7066b363ba729b17432b3816bb14641967b2f26fed18b245a0c399b6cbbb"
+    },
+    {
+      "path": "cli-engineer/docs/logs/implementation-log-20260702-1.md",
+      "sha256": "3d92f89c72aed789b146b1e2353595436796ff368564d360bc4baeee99ce39e4"
+    },
+    {
+      "path": "cli-engineer/docs/logs/implementation-log-20260715-1.md",
+      "sha256": "c41924501daf9040829e95ace6d434c9368568bee74ddb6af89695320784b62d"
+    },
+    {
+      "path": "cli-engineer/docs/logs/implementation-log-20260716-1.md",
+      "sha256": "7c6a89657875b61bb5566eabc08b31ec2dfd78f45e71ab0f491252fd559ec973"
+    },
+    {
+      "path": "cli-engineer/docs/logs/implementation-log-20260908-1.md",
+      "sha256": "fc9812491827ca95a5edb8510f27614453d31a918eda1920941e1e0d6cc4e9a3"
+    },
+    {
+      "path": "cli-engineer/evals/evals.json",
+      "sha256": "3a2ed37b10b00dfec768cd1df6224081dd09ac9d39c3503803eb31bb4b0442a1"
+    },
+    {
+      "path": "cli-engineer/evals/fixtures/existing-project.md",
+      "sha256": "bb991bffa77eb6b086d8f9ae6a0c7374ce6dabbd35d13c304a43751c03d95abf"
+    },
+    {
+      "path": "cli-engineer/evals/fixtures/release-project.md",
+      "sha256": "9e0c3495042ca510d364173bc5ee6bc8c23f3862f1c315df0a5addf668a37e08"
+    },
+    {
+      "path": "cli-engineer/evals/fixtures/service-project.md",
+      "sha256": "8306e83fa09740e221f2ac5d55519a5f1bfb082fecd31a1b8177fdc166179747"
+    },
+    {
+      "path": "cli-engineer/fragments/overview.md",
+      "sha256": "742ad6303157bfbcd6b979d9f9fc78dd27ad8ed516d9e88ed42ed785bff8dc05"
+    },
+    {
+      "path": "cli-engineer/references/architecture-and-layout.md",
+      "sha256": "b9146bb7ef055a0be35b979e399a0839159f185e24d523b6bbd6b5d40d60b187"
+    },
+    {
+      "path": "cli-engineer/references/clig-baseline.md",
+      "sha256": "04db969526870771fa235ab3c54baa3eed61e7c473ade9dfdd12bd610e6ce398"
+    },
+    {
+      "path": "cli-engineer/references/framework-selection.md",
+      "sha256": "404d236d1d93ac474ca34f16cff6320dc3811c5178562d4437f6e021030bccf9"
+    },
+    {
+      "path": "cli-engineer/references/service-backed-clis.md",
+      "sha256": "b6167536c12de7caddf6c23f57ab91b25550686bbfb7056ab658644ed0790a51"
+    },
+    {
+      "path": "cli-engineer/references/testing-and-release.md",
+      "sha256": "1242eed806eb5370a7877dff1e8b261256a6bea1063af15d09f3818c04495919"
+    },
+    {
+      "path": "cli-engineer/references/ux-and-security.md",
+      "sha256": "41ae8b7adb56b8878cf93bd73c2c2348c13dab0ea141d0867832e5d1008e9d84"
+    },
+    {
+      "path": "cli-engineer/skill.yaml",
+      "sha256": "4260b7ab5843a4e635f90e321978d118363a00167fb44c1ab4509d5d57635035"
+    }
+  ]
+}

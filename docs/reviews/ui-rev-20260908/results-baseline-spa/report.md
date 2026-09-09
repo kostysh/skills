@@ -1,0 +1,9 @@
+Редактирование исправлено в src/main.jsx: убран reset при ошибке; успешный PATCH обновляет detail Query cache и инвалидирует все list queries. Маршрут, API, архитектура и server failure mode сохранены.
+
+Actual browser result: completed для запрошенного локального walkthrough. agent-browser 0.27.3, session ui-rev-base-spa, http://127.0.0.1:43783. Alpha draft сохранился при первом PATCH 503. Пользовательский ввод исправлен на Alpha corrected, второй PATCH 200, Saved виден. Список показывает Alpha corrected; возврат в карточку и полная перезагрузка показывают Alpha corrected. Network log содержит реальные локальные PATCH 503/200 и GET после reload, без interception. Повторное settled detail return отдельно проверено get value. Browser raw log и команды приложены.
+
+npm run build: exit 0. Изменён только src/main.jsx; generated dist — build output в disposable копии. Unit/type scripts в package отсутствуют. Никакие runtime/package зависимости не добавлены. Server и browser session закрыты.
+
+Общий статус по supplied SPA gate: partial — успешных Playwright scenarios нет. Источник ограничения: baseline-active/react-spa-engineer/references/testing.md, Material interactive flow gate: “a completed interactive claim requires: 1. Playwright scenarios ... 2. a successful run of the command ...”. Browser walkthrough подтверждён; permanent E2E suite, production integration, auth/security, persistence после restart server не утверждаются.
+
+Технические ограничения/инциденты: sandbox runtime socket недоступен, изолированный XDG_RUNTIME_DIR использован; initial sandbox Chrome launch failed, persistent browser execution выполнен с одобренным require_escalated. Один semantic link locator не нашёл элемент; fresh snapshot/ref успешно выполнил переход. Первое snapshot сразу после URL change ещё отражало прошлую страницу; повторено после networkidle и verified value. Vite startup сообщил занятый HMR port 24678, HTTP/browser/build работали; чужой процесс не менялся.

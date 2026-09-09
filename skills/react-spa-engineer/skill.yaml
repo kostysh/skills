@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: react-spa-engineer
-  source-version: 0.1.10
+  source-version: 0.1.11
   recommended-skill-md-max-bytes: 20000
   description: >-
     Design, implement, review, and diagnose React SPAs using TypeScript, Vite,
@@ -20,67 +20,67 @@ references:
     title: Accessibility
     source: references/accessibility.md
     target: references/accessibility.md
-    required: false
+    required: true
     trigger: Read this when implementing or assessing semantics, keyboard interaction, focus management, live announcements, dialogs, or custom composite widgets.
   - id: ref-references-component-architecture
     title: Component Architecture
     source: references/component-architecture.md
     target: references/component-architecture.md
-    required: false
+    required: true
     trigger: Read this when SPA feature layout, import boundaries, component ownership, composition, or public module entrypoints are in scope.
   - id: ref-references-data-fetching
     title: Data Fetching
     source: references/data-fetching.md
     target: references/data-fetching.md
-    required: false
+    required: true
     trigger: Read this when TanStack Query status, query keys, server reads, mutations, invalidation, retries, API transport, or recovery behavior is in scope.
   - id: ref-references-forms-validation
     title: Forms & Validation
     source: references/forms-validation.md
     target: references/forms-validation.md
-    required: false
+    required: true
     trigger: Read this when React Hook Form, Zod, editable payloads, field arrays, client validation, or server field-error mapping is in scope.
   - id: ref-references-indexeddb-persistence
     title: IndexedDB Persistence
     source: references/indexeddb-persistence.md
     target: references/indexeddb-persistence.md
-    required: false
+    required: true
     trigger: Read this when Dexie schema versions, migrations, durable records, realtime persistence, cache TTL, or user and tenant cleanup is in scope.
   - id: ref-references-performance
     title: Performance
     source: references/performance.md
     target: references/performance.md
-    required: false
+    required: true
     trigger: Read this only when production build output, profiling, request waterfalls, bundle splitting, interaction latency, rendering cost, or measured list performance is in scope.
   - id: ref-references-persistence-architecture
     title: Persistence Architecture
     source: references/persistence-architecture.md
     target: references/persistence-architecture.md
-    required: false
+    required: true
     trigger: Read this when one flow crosses URL state, Zustand, TanStack Query, and Dexie, needs an explicit source-of-truth and invalidation map, or a mutation UI needs a lifetime matrix.
   - id: ref-references-routing
     title: Routing
     source: references/routing.md
     target: references/routing.md
-    required: false
+    required: true
     trigger: Read this when React Router route objects, navigation, URL state, loaders, route admission, or error boundaries are in scope.
   - id: ref-references-state-management
     title: State Management
     source: references/state-management.md
     target: references/state-management.md
-    required: false
+    required: true
     trigger: Read this when choosing between local React state, Context, Zustand, URL state, TanStack Query, and Dexie for a concrete value or mutation attempt status.
   - id: ref-references-testing
     title: Testing
     source: references/testing.md
     target: references/testing.md
-    required: false
+    required: true
     trigger: Read this when defining Vitest, Testing Library, Playwright, browser walkthrough, integration, end-to-end evidence, or mutation-lifetime falsifiers for an SPA claim.
   - id: ref-references-typescript-patterns
     title: TypeScript Patterns
     source: references/typescript-patterns.md
     target: references/typescript-patterns.md
-    required: false
+    required: true
     trigger: Read this when React-specific TypeScript props, hooks, events, generics, refs, or runtime-schema typing is in scope; use typescript-engineer for language and toolchain ownership.
 assets: []
 copies:
@@ -131,8 +131,7 @@ supporting:
     description: Non-normative blind mutation-lifetime design evidence for Aequitas-ADR/app#228.
 surfaces:
   active:
-    requiredReferences: []
-    optionalReferences:
+    requiredReferences:
       - ref-references-accessibility
       - ref-references-component-architecture
       - ref-references-data-fetching
@@ -144,6 +143,7 @@ surfaces:
       - ref-references-state-management
       - ref-references-testing
       - ref-references-typescript-patterns
+    optionalReferences: []
   supportingGlobs:
     - docs/*
     - docs/forward-tests/*
@@ -154,7 +154,7 @@ sections:
     - Establish the observable SPA outcome, affected user flow, accepted product, API and security contracts, installed stack versions, existing project conventions, and available verification before choosing a change.
     - "Apply precedence in this order: operator and repository instructions; accepted product, API and security contracts; manifest, lockfile, configuration and existing code; official documentation matching the installed major version; then examples in this skill. For greenfield work use current stable versions."
     - Stop as blocked when equal-authority sources conflict or a required backend, security, product, or compatibility decision has no owner-supplied answer. Do not invent the missing contract.
-    - Load only the optional references triggered by the affected layers, then trace the flow across routing, API transport, TanStack Query, URL or Zustand state, forms, Dexie, and rendered UI as applicable.
+    - Load only the conditional references triggered by the affected layers, then trace the flow across routing, API transport, TanStack Query, URL or Zustand state, forms, Dexie, and rendered UI as applicable.
     - When mutation status or outcome verification can outlive a child, portal, route, entity, or access context, read the data-fetching, state-management, persistence-architecture, and testing references and complete a mutation lifetime matrix before choosing the owner.
     - Define claim-matched evidence before changing anything; files, configuration, generated routes, mocks, screenshots, typecheck, lint, build, or compiler success cannot prove a broader interactive or production capability by themselves.
   whenToUse:
@@ -261,7 +261,7 @@ sections:
       text: Copyable examples must match the stated major version and all active root invariants. Conceptual examples must be labeled and list the production obligations they omit.
     - id: policy-evidence-ladder
       title: Evidence ladder
-      text: Typecheck, lint, and build prove only their technical contours; local UI behavior needs component tests and browser inspection; material flows need successful Playwright scenarios and browser automation; persistence needs reload, migration, TTL and context-switch evidence; performance needs production profiling; auth and security need the real backend boundary and the owning reviewer.
+      text: Match evidence to the requested boundary and preserve mandatory project checks. Typecheck, lint, and build prove their technical contours; interactive claims need observed browser scenarios using supported project tooling. Follow the testing reference for material-flow completion without runner-only or duplicate-run requirements. Persistence needs applicable reload, migration, TTL and context-switch evidence; performance needs measurement; auth and security need the real backend boundary and the owning reviewer.
     - id: policy-output-contract
       title: Output contract
       text: Report mode, observable outcome, changed or inspected surface, verification evidence, completed, partial or blocked status, blockers or residual risks, anti-claims, and the next owner.
@@ -276,7 +276,4 @@ sections:
       - Keep mandatory workflow and evidence rules in SKILL.md; keep conditional stack detail in reachable local references.
       - Keep docs and implementation logs non-normative even when they are copied for maintenance traceability.
     checklist:
-      - Run skill-source-compiler lint, regenerate, and check after source changes.
-      - Compile to an isolated output directory and confirm references, UI metadata, and supporting evidence remain reachable.
-      - Search active instructions and declared assets for absolute local dependencies.
-      - Confirm the copied skill remains useful without repository history, prior sessions, or the application it was designed against.
+      - "Only when editing or packaging this skill itself, run compiler lint, regenerate, check, and an isolated compile; verify generated parity, local references, portability, and packaged files. These maintenance checks are not prerequisites for ordinary tasks performed with the skill."

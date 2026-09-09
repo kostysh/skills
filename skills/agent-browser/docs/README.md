@@ -16,3 +16,7 @@
 - [logs/implementation-log-20260612-1.md](logs/implementation-log-20260612-1.md) — scenario-level SPA evidence и distinction между route-intercepted и live acceptance. Статус: author self-check; независимый verdict не зафиксирован.
 - [logs/implementation-log-20260708-1.md](logs/implementation-log-20260708-1.md) — browser evidence guardrails и remediation traceability для SL-01. Статус: author self-check; независимый verdict не зафиксирован.
 - [logs/implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — outcome-first workflow, version-matched CLI guidance и независимый capability re-audit. Статус: independent PASS; supporting-only delta audit PASS.
+
+## Ревизия UI-REV-v1
+
+- [Общий журнал UI-REV-v1](../../../docs/implementation-log-20260908-ui-revision.md) — исходный снимок, проверки и статус ревизии интерфейсной группы; supporting-запись репозитория.

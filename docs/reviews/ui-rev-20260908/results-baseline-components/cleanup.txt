@@ -1,0 +1,2 @@
+Browser session ui-rev-base-components closed by final browser check (exit 0).
+Own server exec session 40750 stopped using Ctrl-C via write_stdin; exit code 130 observed. Earlier /proc scan did not identify server because the process was outside that command's process view; it signalled no process.

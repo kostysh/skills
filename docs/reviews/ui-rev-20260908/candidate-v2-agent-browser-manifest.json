@@ -1,0 +1,14 @@
+{
+  "AGENTS.md": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf",
+  "SKILL.md": "0b4d4c303431541c52bb44e5452be8604585a0a366d19abcbbc884276bb36e9d",
+  "agents/openai.yaml": "d430788f44a61bd7b9fc12b11e57f7230eb5020fc50af605563aa13f14b4b798",
+  "docs/README.md": "063c816e12ae2eb4b85f696d447b31a2d814c84cb9ff221c900ff08190116cc6",
+  "docs/compile-report.md": "cf84b62e7912b63feb6728e8114e6b0e71d7734ebc8ca6dc1504add0ad1620f3",
+  "docs/logs/implementation-log-20260612-1.md": "eb6bdc46aeba47e82a6c00d9e92fa7b22fbd80198248cf34175aae47dddd3328",
+  "docs/logs/implementation-log-20260708-1.md": "e4d3f8b885971c0bc50c0cc68c95908e8ff032efd9e6ab92350adb7621ed5780",
+  "docs/logs/implementation-log-20260715-1.md": "5466015aa7161d75c4d2da7a73944cbc1b8a3bca129c6465954b2e08e60d51a8",
+  "docs/logs/implementation-log-20260727-1.md": "f4e52c4f95ff5d1d8952f8ce688ffe754218a01213473426590b6e5083c0df61",
+  "fragments/overview.md": "37309a946528098e56a848fd9ea51acd8880acbb10186b84cd57930963d03231",
+  "references/cloudflare-access-otp.md": "0e41b39ee811661c01e02fd2d37a903cc088188385a675282fb6c442c023a9fc",
+  "skill.yaml": "55f290ee0e7fc0fe4c41bfa37b6fa73196d5367a3bce57d0dfc11f1348b61d2a"
+}

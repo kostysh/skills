@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.2.1`
+- Skill source version: `0.2.2`
 
 ## Source files
 - `LICENSE.txt`
@@ -21,7 +21,9 @@ Generated from `skill.yaml`.
 - `skill.yaml`
 
 ## Required references
-- none
+- `references/surface-modes.md`
+- `references/visual-engines.md`
+- `references/strategy-to-implementation.md`
 
 ## Warnings
 - none

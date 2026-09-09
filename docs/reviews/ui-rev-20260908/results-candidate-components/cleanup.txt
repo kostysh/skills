@@ -1,0 +1,2 @@
+⚠ --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.
+✓ Browser closed

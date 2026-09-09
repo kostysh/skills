@@ -1,0 +1,58 @@
+[
+  {
+    "name": "frontend-design",
+    "description": "Design and implement visually strong web interfaces and decision-complete design strategies. Use for landing pages, product UI, dashboards, prototypes, redesigns, or translating accepted design into code. Preserve authoritative behavior and existing systems, then verify rendered results."
+  },
+  {
+    "name": "react-components-engineer",
+    "description": "Build, harden, review, and diagnose reusable React components across SSR, hydration, multiple instances, portals, Effects, opaque children, and server/client boundaries. Use for component-level runtime resilience; route app architecture, styling, test strategy, and security verdicts to their owners."
+  },
+  {
+    "name": "react-spa-engineer",
+    "description": "Design, implement, review, and diagnose React SPAs using TypeScript, Vite, TanStack Query, Zustand, React Hook Form with Zod, React Router, and Dexie. Use for routing, server/runtime state, forms, browser storage, performance, testing, or accessibility; exclude SSR, RSC, and Next.js architecture."
+  },
+  {
+    "name": "web-ui-reviewer",
+    "description": "Review web UI code and rendered states against project requirements and Web Interface Guidelines. Use for UI/UX, accessibility, design, content, form, or frontend-performance audits that need scoped findings and evidence limits; not implementation or conformance certification."
+  },
+  {
+    "name": "agent-browser",
+    "description": "Use agent-browser to navigate and interact with rendered web pages, fill forms, take screenshots, extract data, and run browser smoke or diagnostic checks. Verify the requested terminal state and report completed, partial, or blocked; do not replace a formal project E2E suite."
+  },
+  {
+    "name": "typescript-engineer",
+    "description": "Use for TypeScript language and type-system work, compiler diagnostics, type-safe APIs, tsconfig, and Biome/ESLint configuration. Ground explanations, review, diagnosis, and changes in repository and installed-version evidence; pair with runtime, framework, testing, validation, and domain owners."
+  },
+  {
+    "name": "typescript-test-engineer",
+    "description": "Design, implement, review, and diagnose TypeScript tests for Node, React, and edge projects. Use for test strategy, node:test or Vitest, deterministic fixtures and mocks, coverage, CI failures, hanging tests, and evidence quality; keep review and diagnosis read-only unless fixes are requested."
+  },
+  {
+    "name": "node-engineer",
+    "description": "Explain, design, review, diagnose, and implement Node.js runtime behavior using repo and version evidence. Use for TypeScript execution, ESM/CJS, streams, backpressure, shutdown, logging, profiling, dependencies, hangs, and open resources; keep diagnosis read-only unless fixes are requested."
+  },
+  {
+    "name": "cli-engineer",
+    "description": "Design, review, implement, verify, package, and release production-grade TypeScript CLIs and TUIs on Node.js. Use for Vite builds, node:test, command/help/output/error contracts, prompts, terminal UI, installability, service-backed commands, and release readiness."
+  },
+  {
+    "name": "documentation",
+    "description": "Create, review, restructure, and rewrite source-grounded technical documentation with Diataxis. Use for tutorials, how-to guides, reference, explanations, docs architecture, and audits of user-need fit, factual support, task completion, and maintainability."
+  },
+  {
+    "name": "playwright",
+    "description": "\"Use when the task requires automating a real browser from the terminal (navigation, form filling, snapshots, screenshots, data extraction, UI-flow debugging) via `playwright-cli` or the bundled wrapper script.\""
+  },
+  {
+    "name": "nextjs",
+    "description": "Build, review, and debug Next.js App Router apps using RSC, Server Actions, Route Handlers, async request APIs, metadata, image/font optimization, bundling, hydration, parallel routes, or self-hosting. Use for Next.js-specific and version-sensitive behavior, not generic React or TypeScript work."
+  },
+  {
+    "name": "shadcn",
+    "description": "\"Build and maintain shadcn/ui projects with Base UI defaults: inspect components.json, use current CLI/docs, add or update registry components safely, compose and theme them, and verify project behavior. Use for shadcn components, registries, presets, configuration, fixes, or debugging.\""
+  },
+  {
+    "name": "security-reviewer",
+    "description": "Perform bounded security review of code, CI, permissions, webhooks, secrets, data access, and config. Use for vulnerability review, exploitability triage, or scoped audits. Own threat modeling, confidence gating, attack paths, and findings—not scan orchestration, compliance, pentesting, or fixes."
+  }
+]

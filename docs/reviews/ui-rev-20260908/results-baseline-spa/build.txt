@@ -1,0 +1,27 @@
+npm notice run build
+npm notice run vite build
+vite v7.1.12 building for production...
+transforming...
+../fixture-base/node_modules/react-router/dist/development/index.mjs (11:0): Module level directives cause errors when bundled, "use client" in "../fixture-base/node_modules/react-router/dist/development/index.mjs" was ignored.
+../fixture-base/node_modules/@tanstack/react-query/build/modern/useQuery.js (1:0): Module level directives cause errors when bundled, "use client" in "../fixture-base/node_modules/@tanstack/react-query/build/modern/useQuery.js" was ignored.
+../fixture-base/node_modules/@tanstack/react-query/build/modern/useQueries.js (1:0): Module level directives cause errors when bundled, "use client" in "../fixture-base/node_modules/@tanstack/react-query/build/modern/useQueries.js" was ignored.
+../fixture-base/node_modules/@tanstack/react-query/build/modern/QueryClientProvider.js (1:0): Module level directives cause errors when bundled, "use client" in "../fixture-base/node_modules/@tanstack/react-query/build/modern/QueryClientProvider.js" was ignored.
+../fixture-base/node_modules/@tanstack/react-query/build/modern/HydrationBoundary.js (1:0): Module level directives cause errors when bundled, "use client" in "../fixture-base/node_modules/@tanstack/react-query/build/modern/HydrationBoundary.js" was ignored.
+../fixture-base/node_modules/@tanstack/react-query/build/modern/QueryErrorResetBoundary.js (1:0): Module level directives cause errors when bundled, "use client" in "../fixture-base/node_modules/@tanstack/react-query/build/modern/QueryErrorResetBoundary.js" was ignored.
+../fixture-base/node_modules/@tanstack/react-query/build/modern/useIsFetching.js (1:0): Module level directives cause errors when bundled, "use client" in "../fixture-base/node_modules/@tanstack/react-query/build/modern/useIsFetching.js" was ignored.
+../fixture-base/node_modules/@tanstack/react-query/build/modern/useMutationState.js (1:0): Module level directives cause errors when bundled, "use client" in "../fixture-base/node_modules/@tanstack/react-query/build/modern/useMutationState.js" was ignored.
+../fixture-base/node_modules/@tanstack/react-query/build/modern/useMutation.js (1:0): Module level directives cause errors when bundled, "use client" in "../fixture-base/node_modules/@tanstack/react-query/build/modern/useMutation.js" was ignored.
+../fixture-base/node_modules/@tanstack/react-query/build/modern/useInfiniteQuery.js (1:0): Module level directives cause errors when bundled, "use client" in "../fixture-base/node_modules/@tanstack/react-query/build/modern/useInfiniteQuery.js" was ignored.
+../fixture-base/node_modules/@tanstack/react-query/build/modern/IsRestoringProvider.js (1:0): Module level directives cause errors when bundled, "use client" in "../fixture-base/node_modules/@tanstack/react-query/build/modern/IsRestoringProvider.js" was ignored.
+../fixture-base/node_modules/@tanstack/react-query/build/modern/useSuspenseInfiniteQuery.js (1:0): Module level directives cause errors when bundled, "use client" in "../fixture-base/node_modules/@tanstack/react-query/build/modern/useSuspenseInfiniteQuery.js" was ignored.
+../fixture-base/node_modules/@tanstack/react-query/build/modern/useSuspenseQuery.js (1:0): Module level directives cause errors when bundled, "use client" in "../fixture-base/node_modules/@tanstack/react-query/build/modern/useSuspenseQuery.js" was ignored.
+../fixture-base/node_modules/@tanstack/react-query/build/modern/useSuspenseQueries.js (1:0): Module level directives cause errors when bundled, "use client" in "../fixture-base/node_modules/@tanstack/react-query/build/modern/useSuspenseQueries.js" was ignored.
+../fixture-base/node_modules/@tanstack/react-query/build/modern/errorBoundaryUtils.js (1:0): Module level directives cause errors when bundled, "use client" in "../fixture-base/node_modules/@tanstack/react-query/build/modern/errorBoundaryUtils.js" was ignored.
+../fixture-base/node_modules/@tanstack/react-query/build/modern/useBaseQuery.js (1:0): Module level directives cause errors when bundled, "use client" in "../fixture-base/node_modules/@tanstack/react-query/build/modern/useBaseQuery.js" was ignored.
+✓ 86 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.88 kB │ gzip:  0.45 kB
+dist/assets/index-DwIRGpZu.css    1.22 kB │ gzip:  0.62 kB
+dist/assets/index-lNz3EQ-g.js   290.73 kB │ gzip: 93.24 kB
+✓ built in 808ms

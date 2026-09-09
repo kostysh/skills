@@ -1,8 +1,9 @@
 # Testing React SPA
 
-Use Vitest and Testing Library for local React behavior and Playwright for real
-browser flows in the fixed stack. Repository commands and installed versions win
-over generic setup examples. Use `typescript-test-engineer` for runner,
+Use supported repository tools and preserve its mandatory checks. For new test
+setup, Vitest with Testing Library and Playwright are the default local and
+browser tools; an existing equivalent runner is not a reason to migrate or
+repeat an already covered scenario. Use `typescript-test-engineer` for runner,
 determinism, fixtures, mocks, and CI test-contour decisions.
 
 Unless a block is explicitly labeled copyable, code blocks in this reference
@@ -82,6 +83,7 @@ or screenshots.
 
 ## Playwright setup
 
+Apply this section only when Playwright setup or maintenance is in scope.
 First inspect whether the repository already has `@playwright/test`, a config,
 browser installation, web server command, projects, and CI policy. Reuse them.
 
@@ -127,12 +129,20 @@ For auth, onboarding, profile editing, business-data submission, protected
 navigation, destructive confirmation, checkout, or a multi-step wizard, a
 `completed` interactive claim requires:
 
-1. Playwright scenarios for the affected happy path and meaningful failure/edge
-   states;
-2. a successful run of the command that covers those scenarios;
-3. real browser automation of the affected flow;
-4. a handoff naming scenarios, environment, command/result, browser result, and
-   evidence limits.
+1. observed real-browser scenarios covering the affected happy path and
+   meaningful failure/edge states, using the supported project runner or browser
+   tooling appropriate to the requested claim;
+2. successful applicable mandatory project checks;
+3. a handoff naming the exact scenarios, snapshot, environment, commands/results,
+   real or simulated service boundary, and evidence limits.
+
+One run may satisfy overlapping browser evidence obligations; do not require a
+second runner or duplicate walkthrough without an uncovered boundary. A sampled
+walkthrough can complete a bounded local-flow task, but it does not create
+repeatable regression coverage or replace a required project E2E suite. When
+that suite or coverage is the deliverable, implement and run it with the owning
+test workflow. Supplied results support only the identified snapshot and
+scenarios; distinguish consuming them from performing a new run.
 
 When the claim includes a real cookie session, CSRF recovery, server
 authorization, provider, or durable data boundary, run against the corresponding

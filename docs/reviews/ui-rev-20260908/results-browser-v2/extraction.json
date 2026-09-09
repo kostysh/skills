@@ -1,0 +1,1 @@
+{"scope":"All rendered requests before deleting own test item","pages":[{"page":1,"names":["Alpha","Beta"]},{"page":2,"names":["Gamma","Test UI-REV"]}],"total":4,"lastPageNextDisabled":true,"afterCleanup":{"total":3,"names":["Alpha","Beta","Gamma"]}}

@@ -1,0 +1,11 @@
+--- /tmp/ui-rev-20260908/results-candidate-spa/main.before.jsx	2026-09-08 23:39:28.986080495 +0200
++++ /tmp/ui-rev-20260908/results-candidate-spa/main.after.jsx	2026-09-08 23:41:13.447423373 +0200
+@@ -17,7 +17,7 @@
+  {create.error&&<p role="alert">{create.error.message}</p>}</>;
+ }
+ function Editor({item}){const qc=useQueryClient();const form=useForm({defaultValues:{name:item.name}});
+- const save=useMutation({mutationFn:data=>api('/'+item.id,'PATCH',data),onError:()=>form.reset(),onSuccess:data=>{form.reset({name:data.name});}});
++ const save=useMutation({mutationFn:data=>api('/'+item.id,'PATCH',data),onSuccess:data=>{qc.setQueryData(['item',String(item.id)],data);qc.invalidateQueries({queryKey:['items']});form.reset({name:data.name});}});
+  return <><h1>Request {item.id}</h1><form onSubmit={form.handleSubmit(data=>save.mutate(data))}><label>Name <input {...form.register('name',{required:true})}/></label><button disabled={save.isPending}>Save</button></form>{save.error&&<p role="alert">{save.error.message}</p>}{save.isSuccess&&<p role="status">Saved</p>}<Link to="/">Back to requests</Link></>;
+ }
+ function Detail(){const {id}=useParams();const item=useQuery({queryKey:['item',id],queryFn:()=>api('/'+id)});return item.isPending?<p>Loading</p>:item.error?<p role="alert">{item.error.message}</p>:<Editor key={id} item={item.data}/>;}

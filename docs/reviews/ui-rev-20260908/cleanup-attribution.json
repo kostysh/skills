@@ -1,0 +1,38 @@
+[
+  {
+    "pid": 944289,
+    "cwd": "/tmp/ui-rev-20260908/baseline-components",
+    "start": 20713880,
+    "signal": "SIGTERM"
+  },
+  {
+    "pid": 944870,
+    "cwd": "/tmp/ui-rev-20260908/baseline-spa",
+    "start": 20716073,
+    "signal": "SIGTERM"
+  },
+  {
+    "pid": 949186,
+    "cwd": "/tmp/ui-rev-20260908/baseline-browser",
+    "start": 20727575,
+    "signal": "SIGTERM"
+  },
+  {
+    "pid": 958281,
+    "cwd": "/tmp/ui-rev-20260908/candidate-spa",
+    "start": 20789164,
+    "signal": "SIGTERM"
+  },
+  {
+    "pid": 963028,
+    "cwd": "/tmp/ui-rev-20260908/candidate-browser",
+    "start": 20807442,
+    "signal": "SIGTERM"
+  },
+  {
+    "pid": 965545,
+    "cwd": "/tmp/ui-rev-20260908/joint",
+    "start": 20829792,
+    "signal": "SIGTERM"
+  }
+]

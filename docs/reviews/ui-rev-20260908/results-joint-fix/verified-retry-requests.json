@@ -1,0 +1,56 @@
+[
+  {
+    "method": "PATCH",
+    "url": "http://127.0.0.1:43803/api/items/1",
+    "payload": "{\"name\":\"Changed\"}",
+    "status": 503
+  },
+  {
+    "method": "PATCH",
+    "url": "http://127.0.0.1:43803/api/items/1",
+    "payload": "{\"name\":\"Changed\"}",
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "http://127.0.0.1:43803/api/items?q=Alpha&page=1",
+    "payload": null,
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "http://127.0.0.1:43803/api/items?q=&page=1",
+    "payload": null,
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "http://127.0.0.1:43803/api/items?q=Alph&page=1",
+    "payload": null,
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "http://127.0.0.1:43803/api/items?q=Alph&page=1",
+    "payload": null,
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "http://127.0.0.1:43803/api/items?q=Changed&page=1",
+    "payload": null,
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "http://127.0.0.1:43803/api/items/1",
+    "payload": null,
+    "status": 200
+  },
+  {
+    "method": "GET",
+    "url": "http://127.0.0.1:43803/api/items/1",
+    "payload": null,
+    "status": 200
+  }
+]

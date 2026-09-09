@@ -27,3 +27,7 @@
 ## Обслуживание описания
 
 - [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — описание сокращено до 300 code points; independent scoped PASS.
+
+## Ревизия UI-REV-v1
+
+- [Общий журнал UI-REV-v1](../../../docs/implementation-log-20260908-ui-revision.md) — исходный снимок, проверки и статус ревизии интерфейсной группы; supporting-запись репозитория.

@@ -1,0 +1,4 @@
+npm notice run start
+npm notice run node server.mjs
+WebSocket server error: Port 24678 is already in use
+UI_REV_URL=http://127.0.0.1:43785

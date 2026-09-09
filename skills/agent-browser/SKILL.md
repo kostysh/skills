@@ -5,9 +5,9 @@ description: Use agent-browser to navigate and interact with rendered web pages,
   diagnostic checks. Verify the requested terminal state and report completed,
   partial, or blocked; do not replace a formal project E2E suite.
 metadata:
-  source-version: 0.2.2
+  source-version: 0.2.4
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 45431af4c1588957b32bb42a5d6959d8b24ac09e51fc7e6344d8ca0cc786b2cc
+  skillforge-source-hash: 0bed05eb297e3c33166f3a4c90e9a3e98f68e056fafa6d70ee2b4cdbea9db893
 allowed-tools: Bash(agent-browser:*)
 ---
 
@@ -107,7 +107,8 @@ Provide an evidence-bounded outcome instead of a command transcript.
 1. Report exactly one status: completed, partial, or blocked.
 2. Name the target and context, main actions, expected and observed terminal state, real or intercepted network mode when relevant, and any unverified scope.
 3. Do not expose credentials, tokens, cookies, or saved-state contents; report artifacts only when created.
-4. Close sessions and processes started for the task, or state what remains running and who owns it.
+4. Close task-owned sessions and processes and verify their actual termination, including any server child; Ctrl-C or launcher exit alone is not cleanup evidence. Confirm ownership before further termination actions.
+5. If termination cannot be completed or verified, report the running or unverified remainder and its owner without claiming successful cleanup.
 
 Validation:
 
@@ -134,7 +135,7 @@ Governing user, system, and project policies define authority; installed version
 ### Browser evidence
 Match evidence to the claim and report the target, expected and observed terminal state, relevant real or intercepted network mode, and exact limits of partial or blocked results.
 
-## Optional references
+## Required active references
 - [Cloudflare Access OTP](references/cloudflare-access-otp.md) — Read this before a browser flow protected by a human Cloudflare Access email OTP, especially when the application has a separate OTP or infrastructure credentials are also available.
 
 ## Portability rules
@@ -144,8 +145,7 @@ Match evidence to the claim and report the target, expected and observed termina
 
 ## Portability checklist before finishing
 
-- Run the skill-source-compiler check command after regeneration.
-- Confirm the copied skill remains understandable when the CLI is unavailable, while clearly reporting execution as blocked or handed off.
+- Only when editing or packaging this skill itself, run compiler lint, regenerate, check, and an isolated compile; verify generated parity, local references, portability, and packaged files. These maintenance checks are not prerequisites for ordinary tasks performed with the skill.
 
 ## Supporting and historical surface
 

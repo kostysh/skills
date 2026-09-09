@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.2.2`
+- Skill source version: `0.2.4`
 
 ## Source files
 - `agents/openai.yaml`
@@ -16,7 +16,7 @@ Generated from `skill.yaml`.
 - `skill.yaml`
 
 ## Required references
-- none
+- `references/cloudflare-access-otp.md`
 
 ## Warnings
 - none

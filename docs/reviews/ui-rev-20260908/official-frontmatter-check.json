@@ -1,0 +1,37 @@
+{
+  "source": "https://agentskills.io/specification",
+  "retrieved": "2026-09-08",
+  "purpose": "Resolve legacy quick_validate whitelist false positives without changing valid compatibility fields",
+  "results": [
+    {
+      "skill": "frontend-design",
+      "official_frontmatter_constraints": "pass",
+      "compatibility_length": 0,
+      "sha256": "52b2d1da1e9855a78306f0c2e261a50bff19db33335e9dbb8539b0bdc729fd9d"
+    },
+    {
+      "skill": "react-components-engineer",
+      "official_frontmatter_constraints": "pass",
+      "compatibility_length": 191,
+      "sha256": "54fec3b0548ca36ea157c32dcc3a3ec710b5ce0f7f0960fab7798ece27b83009"
+    },
+    {
+      "skill": "react-spa-engineer",
+      "official_frontmatter_constraints": "pass",
+      "compatibility_length": 197,
+      "sha256": "b466489e4b9e53008b3f1049c1ceefc24c52644c727242450bb7e22436f59c0d"
+    },
+    {
+      "skill": "web-ui-reviewer",
+      "official_frontmatter_constraints": "pass",
+      "compatibility_length": 0,
+      "sha256": "a8a9c3f8cb49a81e19bbce417388a45ea3bbcd7001f8eed53dbbf351065d60be"
+    },
+    {
+      "skill": "agent-browser",
+      "official_frontmatter_constraints": "pass",
+      "compatibility_length": 0,
+      "sha256": "3eece0db2af5d6f75dc48285d574b5f84a7aa743768b2c4d5fa6d3fde31a52d2"
+    }
+  ]
+}

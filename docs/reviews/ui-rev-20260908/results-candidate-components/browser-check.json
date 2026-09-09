@@ -1,0 +1,137 @@
+{
+  "checks": [
+    {
+      "name": "actual hydration: no recoverable errors",
+      "ok": true
+    },
+    {
+      "name": "two mounted instance listeners",
+      "ok": true
+    },
+    {
+      "name": "caller ref focuses first",
+      "ok": true
+    },
+    {
+      "name": "first focus opens correct tooltip",
+      "ok": true
+    },
+    {
+      "name": "instances open independently together",
+      "ok": true
+    },
+    {
+      "name": "unique tooltip ids",
+      "ok": true
+    },
+    {
+      "name": "First description resolves",
+      "ok": true
+    },
+    {
+      "name": "Second description resolves",
+      "ok": true
+    },
+    {
+      "name": "resize closes both",
+      "ok": true
+    },
+    {
+      "name": "open cycle 0",
+      "ok": true
+    },
+    {
+      "name": "close cycle 0",
+      "ok": true
+    },
+    {
+      "name": "unmount cleanup 0",
+      "ok": true
+    },
+    {
+      "name": "StrictMode remount balanced 0",
+      "ok": true
+    },
+    {
+      "name": "open cycle 1",
+      "ok": true
+    },
+    {
+      "name": "close cycle 1",
+      "ok": true
+    },
+    {
+      "name": "unmount cleanup 1",
+      "ok": true
+    },
+    {
+      "name": "StrictMode remount balanced 1",
+      "ok": true
+    },
+    {
+      "name": "open cycle 2",
+      "ok": true
+    },
+    {
+      "name": "close cycle 2",
+      "ok": true
+    },
+    {
+      "name": "unmount cleanup 2",
+      "ok": true
+    },
+    {
+      "name": "StrictMode remount balanced 2",
+      "ok": true
+    },
+    {
+      "name": "open cycle 3",
+      "ok": true
+    },
+    {
+      "name": "close cycle 3",
+      "ok": true
+    },
+    {
+      "name": "unmount cleanup 3",
+      "ok": true
+    },
+    {
+      "name": "StrictMode remount balanced 3",
+      "ok": true
+    },
+    {
+      "name": "open cycle 4",
+      "ok": true
+    },
+    {
+      "name": "close cycle 4",
+      "ok": true
+    },
+    {
+      "name": "unmount cleanup 4",
+      "ok": true
+    },
+    {
+      "name": "StrictMode remount balanced 4",
+      "ok": true
+    },
+    {
+      "name": "open before final unmount",
+      "ok": true
+    },
+    {
+      "name": "open unmount cleans all component nodes and resize handlers",
+      "ok": true
+    },
+    {
+      "name": "no hydration errors throughout",
+      "ok": true
+    }
+  ],
+  "evidence": {
+    "recoverable": [],
+    "resizeListeners": 0
+  },
+  "url": "http://127.0.0.1:43785/components"
+}

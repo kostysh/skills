@@ -1,0 +1,3 @@
+- heading "Component laboratory" [level=1, ref=e1]
+- button "Mount tooltips" [ref=e2]
+- button "Focus first" [ref=e3]

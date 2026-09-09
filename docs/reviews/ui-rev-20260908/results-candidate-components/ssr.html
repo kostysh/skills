@@ -1,0 +1,6 @@
+<!doctype html><html lang="en"><head>
+  <script type="module" src="/@vite/client"></script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Request desk</title></head><body><script>
+window.fixtureEvidence={recoverable:[],resizeListeners:0};
+(()=>{const add=window.addEventListener.bind(window),remove=window.removeEventListener.bind(window),listeners=new Set();window.addEventListener=(type,fn,opts)=>{if(type==='resize'){listeners.add(fn);window.fixtureEvidence.resizeListeners=listeners.size;}add(type,fn,opts);};window.removeEventListener=(type,fn,opts)=>{if(type==='resize'){listeners.delete(fn);window.fixtureEvidence.resizeListeners=listeners.size;}remove(type,fn,opts);};})();
+</script><div id="root"><main><h1>Component laboratory</h1><button>Unmount tooltips</button><button>Focus first</button><section><span class="tooltip-wrap"><button>First</button></span><span class="tooltip-wrap"><button>Second</button></span></section></main></div><script type="module" src="/src/main.jsx"></script></body></html>

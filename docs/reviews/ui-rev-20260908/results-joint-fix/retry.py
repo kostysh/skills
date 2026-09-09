@@ -1,0 +1,10 @@
+from ab import ab,D
+ab('network','har','start')
+ab('fill','input','');ab('click','button');ab('wait','--text','Name is required');ab('snapshot','-i');ab('screenshot',str(D/'verified-editor-required-desktop.png'))
+ab('fill','input','Changed');ab('press','Tab');ab('press','Enter');ab('wait','--text','Try again');ab('snapshot','-i');ab('get','value','input');ab('screenshot',str(D/'verified-error-desktop.png'))
+ab('click','button');ab('wait','--text','Saved');ab('snapshot','-i');ab('get','value','input');ab('screenshot',str(D/'verified-success-desktop.png'))
+ab('click','a');ab('wait','--text','Requests');ab('wait','--text','Changed');ab('snapshot','-i')
+ab('fill','input','Alpha');ab('wait','--text','No requests found');ab('snapshot','-i')
+ab('fill','input','');ab('press','Space');ab('press','Backspace');ab('wait','--text','Changed');ab('snapshot','-i')
+ab('click','a[href="/items/1"]');ab('wait','--text','Request 1');ab('snapshot','-i');ab('get','value','input');ab('reload');ab('wait','--text','Request 1');ab('snapshot','-i');ab('get','value','input')
+ab('network','har','stop',str(D/'verified-retry.har'))

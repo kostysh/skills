@@ -1,0 +1,130 @@
+[
+  {
+    "command": [
+      "agent-browser",
+      "--session",
+      "ui-rev-base-components",
+      "--args",
+      "--no-sandbox",
+      "open",
+      "http://127.0.0.1:43782/components"
+    ],
+    "stdin": null,
+    "stdout": "\u2713 Request desk\n  http://127.0.0.1:43782/components\n",
+    "stderr": "",
+    "exit": 0
+  },
+  {
+    "command": [
+      "agent-browser",
+      "--session",
+      "ui-rev-base-components",
+      "--args",
+      "--no-sandbox",
+      "snapshot",
+      "-i"
+    ],
+    "stdin": null,
+    "stdout": "- heading \"Component laboratory\" [level=1, ref=e1]\n- button \"Unmount tooltips\" [ref=e2]\n- button \"Focus first\" [ref=e3]\n- button \"First\" [ref=e4]\n- button \"Second\" [ref=e5]\n",
+    "stderr": "\u26a0 --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.\n",
+    "exit": 0
+  },
+  {
+    "command": [
+      "agent-browser",
+      "--session",
+      "ui-rev-base-components",
+      "--args",
+      "--no-sandbox",
+      "find",
+      "role",
+      "button",
+      "click",
+      "--name",
+      "Focus first",
+      "--exact"
+    ],
+    "stdin": null,
+    "stdout": "\u2713 Done\n",
+    "stderr": "\u26a0 --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.\n",
+    "exit": 0
+  },
+  {
+    "command": [
+      "agent-browser",
+      "--session",
+      "ui-rev-base-components",
+      "--args",
+      "--no-sandbox",
+      "snapshot"
+    ],
+    "stdin": null,
+    "stdout": "- main\n  - heading \"Component laboratory\" [level=1, ref=e1]\n  - button \"Unmount tooltips\" [ref=e2]\n  - button \"Focus first\" [ref=e3]\n  - generic\n    - generic\n      - button \"First\" [ref=e4]\n      - tooltip \"First tip\"\n    - button \"Second\" [ref=e5]\n",
+    "stderr": "\u26a0 --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.\n",
+    "exit": 0
+  },
+  {
+    "command": [
+      "agent-browser",
+      "--session",
+      "ui-rev-base-components",
+      "--args",
+      "--no-sandbox",
+      "eval",
+      "--stdin"
+    ],
+    "stdin": "JSON.stringify({active:document.activeElement.textContent,description:document.getElementById(document.activeElement.getAttribute('aria-describedby'))?.textContent,...window.fixtureEvidence})",
+    "stdout": "\"{\\\"active\\\":\\\"First\\\",\\\"description\\\":\\\"First tip\\\",\\\"recoverable\\\":[],\\\"resizeListeners\\\":2}\"\n",
+    "stderr": "\u26a0 --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.\n",
+    "exit": 0
+  },
+  {
+    "command": [
+      "agent-browser",
+      "--session",
+      "ui-rev-base-components",
+      "--args",
+      "--no-sandbox",
+      "find",
+      "role",
+      "button",
+      "hover",
+      "--name",
+      "Second",
+      "--exact"
+    ],
+    "stdin": null,
+    "stdout": "\u2713 Done\n",
+    "stderr": "\u26a0 --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.\n",
+    "exit": 0
+  },
+  {
+    "command": [
+      "agent-browser",
+      "--session",
+      "ui-rev-base-components",
+      "--args",
+      "--no-sandbox",
+      "snapshot"
+    ],
+    "stdin": null,
+    "stdout": "- main\n  - heading \"Component laboratory\" [level=1, ref=e1]\n  - button \"Unmount tooltips\" [ref=e2]\n  - button \"Focus first\" [ref=e3]\n  - generic\n    - generic\n      - button \"First\" [ref=e4]\n      - tooltip \"First tip\"\n    - generic\n      - button \"Second\" [ref=e5]\n      - tooltip \"Second tip\"\n",
+    "stderr": "\u26a0 --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.\n",
+    "exit": 0
+  },
+  {
+    "command": [
+      "agent-browser",
+      "--session",
+      "ui-rev-base-components",
+      "--args",
+      "--no-sandbox",
+      "eval",
+      "--stdin"
+    ],
+    "stdin": "(async()=>{\n const frame=()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));\n const assert=(x,m)=>{if(!x)throw Error(m)};\n const button=t=>[...document.querySelectorAll('button')].find(b=>b.textContent===t);\n const report=[];\n assert(window.fixtureEvidence.recoverable.length===0,'hydration errors');\n assert(document.activeElement===button('First'),'caller ref did not focus first');\n let tips=[...document.querySelectorAll('[role=tooltip]')];\n assert(tips.length===2,'two simultaneous tips');\n assert(new Set(tips.map(t=>t.id)).size===2,'duplicate IDs');\n for(const name of ['First','Second'])assert(document.getElementById(button(name).getAttribute('aria-describedby')).textContent===name+' tip','description ownership');\n report.push({stage:'two-open',tips:tips.map(t=>({id:t.id,text:t.textContent})),listeners:window.fixtureEvidence.resizeListeners});\n window.dispatchEvent(new Event('resize'));await frame();\n assert(document.querySelectorAll('[role=tooltip]').length===0,'resize close');\n for(let i=0;i<5;i++){\n   button('First').blur();button('First').focus();await frame();\n   assert(document.querySelector('[role=tooltip]')?.textContent==='First tip','focus reopen');\n   button('First').blur();await frame();\n   assert(!document.querySelector('[role=tooltip]'),'blur cleanup');\n   button('Second').dispatchEvent(new MouseEvent('mouseover',{bubbles:true}));await frame();\n   assert(document.querySelector('[role=tooltip]')?.textContent==='Second tip','hover reopen');\n   button('Second').dispatchEvent(new MouseEvent('mouseout',{bubbles:true,relatedTarget:document.body}));await frame();\n   assert(!document.querySelector('[role=tooltip]'),'mouseleave cleanup');\n   button('First').focus();await frame();\n   button('Unmount tooltips').click();await frame();\n   assert(window.fixtureEvidence.resizeListeners===0,'unmount listener leak');\n   assert(!document.querySelector('.tooltip-wrap')&&!document.querySelector('[role=tooltip]'),'unmount DOM leak');\n   button('Focus first').click();await frame();\n   window.dispatchEvent(new Event('resize'));await frame();\n   report.push({stage:'unmount',cycle:i,listeners:window.fixtureEvidence.resizeListeners,wrappers:document.querySelectorAll('.tooltip-wrap').length,tips:document.querySelectorAll('[role=tooltip]').length});\n   button('Mount tooltips').click();await frame();\n   assert(window.fixtureEvidence.resizeListeners===2,'StrictMode remount listener count');\n   assert(document.querySelectorAll('.tooltip-wrap').length===2,'remount instances');\n   button('Focus first').click();await frame();\n   assert(document.activeElement===button('First'),'ref after remount');\n }\n button('Unmount tooltips').click();await frame();\n assert(window.fixtureEvidence.resizeListeners===0,'final listener leak');\n assert(!document.querySelector('.tooltip-wrap')&&!document.querySelector('[role=tooltip]'),'final DOM leak');\n assert(!window.fixtureEvidence.recoverable.length,'late hydration errors');\n return JSON.stringify({status:'verified',report,final:{...window.fixtureEvidence,tips:document.querySelectorAll('[role=tooltip]').length,wrappers:document.querySelectorAll('.tooltip-wrap').length}});\n})()",
+    "stdout": "",
+    "stderr": "\u26a0 --args ignored: daemon already running. Use 'agent-browser close' first to restart with new options.\n\u2717 Evaluation error: Error: blur cleanup\n    at assert (<anonymous>:3:35)\n    at <anonymous>:19:4\n",
+    "exit": 1
+  }
+]

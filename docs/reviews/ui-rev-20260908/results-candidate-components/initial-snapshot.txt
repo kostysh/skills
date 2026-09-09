@@ -1,0 +1,5 @@
+- heading "Component laboratory" [level=1, ref=e1]
+- button "Unmount tooltips" [ref=e2]
+- button "Focus first" [ref=e3]
+- button "First" [ref=e4]
+- button "Second" [ref=e5]
