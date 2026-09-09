@@ -1,0 +1,11 @@
+✓ vite-app
+  http://127.0.0.1:43865/
+✓ Done
+- generic "PreferencesNotification settingsChoose where and how often you receive updates.Email address (requir" [ref=e1] clickable [onclick]
+  - heading "Notification settings" [level=1, ref=e2]
+  - textbox "Email address (required)" [required, ref=e4]
+  - switch "Enable notifications" [checked=true, ref=e5]
+  - radio "Daily A daily catch-up" [checked=true, ref=e6]
+  - radio "Weekly One weekly digest" [checked=false, ref=e7]
+  - button "Review changes" [ref=e3]
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/base-c2-evidence/desktop-initial.png

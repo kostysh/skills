@@ -1,0 +1,11 @@
+--- /tmp/design-tools-rev-20260909/joint-ui-review-project/src/App.tsx	2026-09-09 14:33:53.579729455 +0200
++++ /tmp/design-tools-rev-20260909/joint-controlled-project/src/App.tsx	2026-09-09 14:51:36.480952617 +0200
+@@ -122,7 +122,7 @@
+               </CardContent>
+             </Card>
+           )}
+-          <DialogContent showCloseButton={false} initialFocus={cancelRef} finalFocus={() => showResult ? resultRef.current : reviewRef.current} className="max-h-[calc(100svh-2rem)] gap-6 overflow-y-auto p-6 sm:max-w-[480px]">
++          <DialogContent showCloseButton={false} initialFocus={cancelRef} finalFocus={false} className="max-h-[calc(100svh-2rem)] gap-6 overflow-y-auto p-6 sm:max-w-[480px]">
+             <DialogHeader>
+               <DialogTitle className="text-[22px]">Review changes</DialogTitle>
+               <DialogDescription>Confirm these preferences for this local demo. No email will be sent.</DialogDescription>

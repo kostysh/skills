@@ -1,0 +1,56 @@
+{
+  "base": "base",
+  "results": [
+    {
+      "component": "field",
+      "base": "base",
+      "links": {
+        "docs": "https://ui.shadcn.com/docs/components/base/field",
+        "examples": "https://ui.shadcn.com/code/apps/v4/registry/bases/base/examples/field-example.tsx"
+      }
+    },
+    {
+      "component": "input",
+      "base": "base",
+      "links": {
+        "docs": "https://ui.shadcn.com/docs/components/base/input",
+        "examples": "https://ui.shadcn.com/code/apps/v4/registry/bases/base/examples/input-example.tsx"
+      }
+    },
+    {
+      "component": "switch",
+      "base": "base",
+      "links": {
+        "docs": "https://ui.shadcn.com/docs/components/base/switch",
+        "examples": "https://ui.shadcn.com/code/apps/v4/registry/bases/base/examples/switch-example.tsx",
+        "api": "https://base-ui.com/react/components/switch.md"
+      }
+    },
+    {
+      "component": "radio-group",
+      "base": "base",
+      "links": {
+        "docs": "https://ui.shadcn.com/docs/components/base/radio-group",
+        "examples": "https://ui.shadcn.com/code/apps/v4/registry/bases/base/examples/radio-group-example.tsx",
+        "api": "https://base-ui.com/react/components/radio-group.md"
+      }
+    },
+    {
+      "component": "card",
+      "base": "base",
+      "links": {
+        "docs": "https://ui.shadcn.com/docs/components/base/card",
+        "examples": "https://ui.shadcn.com/code/apps/v4/registry/bases/base/examples/card-example.tsx"
+      }
+    },
+    {
+      "component": "dialog",
+      "base": "base",
+      "links": {
+        "docs": "https://ui.shadcn.com/docs/components/base/dialog",
+        "examples": "https://ui.shadcn.com/code/apps/v4/registry/bases/base/examples/dialog-example.tsx",
+        "api": "https://base-ui.com/react/components/dialog.md"
+      }
+    }
+  ]
+}

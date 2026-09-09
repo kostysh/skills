@@ -1,0 +1,16 @@
+{
+  "files": [
+    {
+      "path": "comparison.json",
+      "sha256": "e79a90770096b7820d6cdafe91a1fefc1443646c30e95fd2e2dd63f4adee8cd2"
+    },
+    {
+      "path": "raw.json",
+      "sha256": "80f2e0cfbdd12be6800dbc13da60fcc81ffa277c5f19376139295843b41aa6f2"
+    },
+    {
+      "path": "result.md",
+      "sha256": "74728bba975c575996f0eaa29b4f17ff0068b212e690e6c640ba8f48b4063e6c"
+    }
+  ]
+}

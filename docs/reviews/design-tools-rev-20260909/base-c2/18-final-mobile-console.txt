@@ -1,0 +1,68 @@
+✓ Done
+true
+- generic "PreferencesNotification settingsChoose where and how often you receive updates.Email address (requir" [ref=e1] clickable [onclick]
+  - heading "Notification settings" [level=1, ref=e2]
+  - textbox "Email address (required)" [required, ref=e4]: trial@example.com
+  - switch "Enable notifications" [checked=false, ref=e5]
+  - radio "Daily A daily catch-up" [checked=false, disabled, ref=e6]
+  - radio "Weekly One weekly digest" [checked=true, disabled, ref=e7]
+  - button "Review changes" [ref=e3]
+"{\"status\":\"Settings appliedtrial@example.comNotifications off · Weekly preference saved\",\"focus\":\"Review changes \",\"viewport\":390,\"document\":390}"
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/base-c2-evidence/mobile-applied.png
+✓ Done
+true
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/base-c2-evidence/mobile-dark.png
+[debug] [vite] connecting...
+[debug] [vite] connected.
+[info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[AF7E193A02F8F0A60C52DF8F96FAC5FC] GET http://127.0.0.1:43865/ (Document) 200
+[242879.2] GET http://127.0.0.1:43865/@vite/client (Script) 200
+[242879.3] GET http://127.0.0.1:43865/src/main.tsx (Script) 200
+[242879.6] GET http://127.0.0.1:43865/@react-refresh (Script) 200
+[242879.7] GET http://127.0.0.1:43865/node_modules/.vite/deps/react.js?v=ce4f149b (Script) 200
+[242879.8] GET http://127.0.0.1:43865/node_modules/.vite/deps/react-dom_client.js?v=ce4f149b (Script) 200
+[242879.9] GET http://127.0.0.1:43865/src/index.css (Script) 200
+[242879.10] GET http://127.0.0.1:43865/src/App.tsx (Script) 200
+[242879.11] GET http://127.0.0.1:43865/src/components/theme-provider.tsx (Script) 200
+[242879.12] GET http://127.0.0.1:43865/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=ce4f149b (Script) 200
+[242879.13] GET http://127.0.0.1:43865/node_modules/.vite/deps/rolldown-runtime-DC62tzP2.js?v=ce4f149b (Script) 200
+[242879.14] GET http://127.0.0.1:43865/node_modules/.vite/deps/react-dom.js?v=ce4f149b (Script) 200
+[242879.15] GET http://127.0.0.1:43865/node_modules/.vite/deps/lucide-react.js?v=ce4f149b (Script) 200
+[242879.16] GET http://127.0.0.1:43865/src/components/ui/button.tsx (Script) 200
+[242879.17] GET http://127.0.0.1:43865/src/components/ui/input.tsx (Script) 200
+[242879.18] GET http://127.0.0.1:43865/src/components/ui/switch.tsx (Script) 200
+[242879.19] GET http://127.0.0.1:43865/src/components/ui/radio-group.tsx (Script) 200
+[242879.20] GET http://127.0.0.1:43865/src/components/ui/field.tsx (Script) 200
+[242879.21] GET http://127.0.0.1:43865/src/components/ui/dialog.tsx (Script) 200
+[242879.22] GET http://127.0.0.1:43865/node_modules/.pnpm/vite@8.2.2_@types+node@24.13.3_jiti@2.7.0/node_modules/vite/dist/client/env.mjs (Script) 200
+[242879.23] GET http://127.0.0.1:43865/node_modules/.vite/deps/@base-ui_react_button.js?v=ce4f149b (Script) 200
+[242879.24] GET http://127.0.0.1:43865/node_modules/.vite/deps/class-variance-authority.js?v=ce4f149b (Script) 200
+[242879.25] GET http://127.0.0.1:43865/node_modules/.vite/deps/cn.js?v=ce4f149b (Script) 200
+[242879.26] GET http://127.0.0.1:43865/node_modules/.vite/deps/@base-ui_react_input.js?v=ce4f149b (Script) 200
+[242879.27] GET http://127.0.0.1:43865/node_modules/.vite/deps/@base-ui_react_switch.js?v=ce4f149b (Script) 200
+[242879.28] GET http://127.0.0.1:43865/node_modules/.vite/deps/@base-ui_react_radio.js?v=ce4f149b (Script) 200
+[242879.29] GET http://127.0.0.1:43865/node_modules/.vite/deps/@base-ui_react_radio-group.js?v=ce4f149b (Script) 200
+[242879.30] GET http://127.0.0.1:43865/src/components/ui/label.tsx (Script) 200
+[242879.31] GET http://127.0.0.1:43865/src/components/ui/separator.tsx (Script) 200
+[242879.32] GET http://127.0.0.1:43865/node_modules/.vite/deps/@base-ui_react_dialog.js?v=ce4f149b (Script) 200
+[242879.34] GET http://127.0.0.1:43865/node_modules/.vite/deps/react_jsx-runtime.js?v=ce4f149b (Script) 200
+[242879.35] GET http://127.0.0.1:43865/node_modules/.vite/deps/useIsoLayoutEffect-BhOqfc3z.js?v=ce4f149b (Script) 200
+[242879.36] GET http://127.0.0.1:43865/node_modules/.vite/deps/useRenderElement-ByFUrQRf.js?v=ce4f149b (Script) 200
+[242879.37] GET http://127.0.0.1:43865/node_modules/.vite/deps/useTimeout-Bj7YlgUf.js?v=ce4f149b (Script) 200
+[242879.38] GET http://127.0.0.1:43865/node_modules/.vite/deps/createBaseUIEventDetails-CSZ50IZP.js?v=ce4f149b (Script) 200
+[242879.39] GET http://127.0.0.1:43865/node_modules/.vite/deps/shadowDom-CiirAI6y.js?v=ce4f149b (Script) 200
+[242879.40] GET http://127.0.0.1:43865/node_modules/.vite/deps/useRegisterFieldControl-DNvKXdqG.js?v=ce4f149b (Script) 200
+[242879.41] GET http://127.0.0.1:43865/node_modules/.vite/deps/LabelableContext-C46qsHts.js?v=ce4f149b (Script) 200
+[242879.42] GET http://127.0.0.1:43865/node_modules/.vite/deps/useLabelableId-D9FdrzZ5.js?v=ce4f149b (Script) 200
+[242879.43] GET http://127.0.0.1:43865/node_modules/.vite/deps/useButton-DBqfnzqA.js?v=ce4f149b (Script) 200
+[242879.44] GET http://127.0.0.1:43865/node_modules/.vite/deps/useBaseUiId-DadUXAgZ.js?v=ce4f149b (Script) 200
+[242879.45] GET http://127.0.0.1:43865/node_modules/.vite/deps/visuallyHidden-iOMhcLGc.js?v=ce4f149b (Script) 200
+[242879.46] GET http://127.0.0.1:43865/node_modules/.vite/deps/useAriaLabelledBy-Bi7CM2Oz.js?v=ce4f149b (Script) 200
+[242879.47] GET http://127.0.0.1:43865/node_modules/.vite/deps/CompositeRootContext-vOe1JRk8.js?v=ce4f149b (Script) 200
+[242879.48] GET http://127.0.0.1:43865/node_modules/.vite/deps/useOpenChangeComplete-BsfGlVKK.js?v=ce4f149b (Script) 200
+[242879.49] GET http://127.0.0.1:43865/node_modules/.vite/deps/RadioGroupContext-BaMTBnSO.js?v=ce4f149b (Script) 200
+[242879.50] GET http://127.0.0.1:43865/node_modules/.vite/deps/composite-BoR7AJST.js?v=ce4f149b (Script) 200
+[242879.51] GET http://127.0.0.1:43865/node_modules/.vite/deps/@base-ui_react_separator.js?v=ce4f149b (Script) 200
+[242879.52] GET http://127.0.0.1:43865/node_modules/.vite/deps/useOnMount-DBBGLIk8.js?v=ce4f149b (Script) 200
+[242879.57] GET http://127.0.0.1:43865/node_modules/.pnpm/@fontsource-variable+geist@5.3.0/node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2 (Font) 200
+[242879.58] GET http://127.0.0.1:43865/vite.svg (Other) 200

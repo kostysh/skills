@@ -1,0 +1,97 @@
+{
+  "project": {
+    "framework": "Vite",
+    "frameworkName": "vite",
+    "frameworkVersion": null,
+    "srcDirectory": true,
+    "rsc": false,
+    "typescript": true,
+    "tailwindVersion": "v4",
+    "tailwindConfig": null,
+    "tailwindCss": "src/index.css",
+    "importAlias": "~ui"
+  },
+  "config": {
+    "style": "base-nova",
+    "base": "base",
+    "rsc": false,
+    "typescript": true,
+    "iconLibrary": "lucide",
+    "rtl": false,
+    "menuColor": "default",
+    "menuAccent": "subtle",
+    "aliases": {
+      "components": "~ui/components",
+      "utils": "~ui/lib/utils",
+      "ui": "~ui/components/ui",
+      "lib": "~ui/lib",
+      "hooks": "~ui/hooks"
+    },
+    "resolvedPaths": {
+      "cwd": "/tmp/design-tools-rev-20260909/live-base-c2",
+      "tailwindConfig": null,
+      "tailwindCss": "/tmp/design-tools-rev-20260909/live-base-c2/src/index.css",
+      "utils": "/tmp/design-tools-rev-20260909/live-base-c2/src/lib/utils",
+      "components": "/tmp/design-tools-rev-20260909/live-base-c2/src/components",
+      "lib": "/tmp/design-tools-rev-20260909/live-base-c2/src/lib",
+      "hooks": "/tmp/design-tools-rev-20260909/live-base-c2/src/hooks",
+      "ui": "/tmp/design-tools-rev-20260909/live-base-c2/src/components/ui"
+    },
+    "registries": {
+      "@shadcn": "https://ui.shadcn.com/r/styles/{style}/{name}.json"
+    }
+  },
+  "preset": {
+    "code": "b2fA",
+    "fallbacks": [],
+    "values": {
+      "style": "nova",
+      "baseColor": "neutral",
+      "theme": "neutral",
+      "chartColor": "neutral",
+      "iconLibrary": "lucide",
+      "font": "geist",
+      "fontHeading": "inherit",
+      "radius": "default",
+      "menuAccent": "subtle",
+      "menuColor": "default"
+    }
+  },
+  "components": [
+    "button"
+  ],
+  "links": {
+    "docs": "https://ui.shadcn.com/docs",
+    "components": "https://ui.shadcn.com/docs/components/base/[component].md",
+    "ui": "https://ui.shadcn.com/code/apps/v4/registry/bases/base/ui/[component].tsx",
+    "examples": "https://ui.shadcn.com/code/apps/v4/registry/bases/base/examples/[component]-example.tsx",
+    "schema": "https://ui.shadcn.com/schema.json"
+  }
+}
+- Resolving items.
+┌ shadcn add input, field, switch, radio-group, dialog (dry run)
+│
+├ Files (8) +7 new, ~1 overwrite
+│ + src/components/ui/input.tsx        create
+│ + src/components/ui/switch.tsx       create
+│ + src/components/ui/radio-group.tsx  create
+│ + src/components/ui/label.tsx        create
+│ + src/components/ui/separator.tsx    create
+│ ~ src/components/ui/button.tsx       overwrite
+│ + src/components/ui/field.tsx        create
+│ + src/components/ui/dialog.tsx       create
+│
+├ Dependencies (1)
+│ + cn
+│
+⚠ 1 file will be overwritten.
+│
+│ 8 files, 1 dep
+│
+│ Run with --diff to view changes.
+│ Run with --view to view file contents.
+└ Run without --dry-run to apply.
+- Checking registry.
+✔ Checking registry.
+- Updating files.
+[?25l[2K[1G? The file button.tsx already exists. Would you like to overwrite? › (y/N)

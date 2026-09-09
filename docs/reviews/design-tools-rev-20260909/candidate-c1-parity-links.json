@@ -1,0 +1,152 @@
+{
+  "shadcn": {
+    "parity": [
+      {
+        "path": "SKILL.md",
+        "equal": true
+      },
+      {
+        "path": "references/customization.md",
+        "equal": true
+      },
+      {
+        "path": "references/cli.md",
+        "equal": true
+      },
+      {
+        "path": "references/rules/icons.md",
+        "equal": true
+      },
+      {
+        "path": "references/rules/styling.md",
+        "equal": true
+      },
+      {
+        "path": "references/rules/composition.md",
+        "equal": true
+      },
+      {
+        "path": "references/rules/forms.md",
+        "equal": true
+      },
+      {
+        "path": "agents/openai.yml",
+        "equal": true
+      }
+    ],
+    "links": [
+      {
+        "source": "SKILL.md",
+        "target": "references/cli.md",
+        "exists": true
+      },
+      {
+        "source": "SKILL.md",
+        "target": "references/rules/forms.md",
+        "exists": true
+      },
+      {
+        "source": "SKILL.md",
+        "target": "references/rules/composition.md",
+        "exists": true
+      },
+      {
+        "source": "SKILL.md",
+        "target": "references/rules/styling.md",
+        "exists": true
+      },
+      {
+        "source": "SKILL.md",
+        "target": "references/customization.md",
+        "exists": true
+      },
+      {
+        "source": "SKILL.md",
+        "target": "references/rules/icons.md",
+        "exists": true
+      },
+      {
+        "source": "SKILL.md",
+        "target": "references/cli.md",
+        "exists": true
+      },
+      {
+        "source": "SKILL.md",
+        "target": "references/customization.md",
+        "exists": true
+      },
+      {
+        "source": "SKILL.md",
+        "target": "references/rules/composition.md",
+        "exists": true
+      },
+      {
+        "source": "SKILL.md",
+        "target": "references/rules/forms.md",
+        "exists": true
+      },
+      {
+        "source": "SKILL.md",
+        "target": "references/rules/icons.md",
+        "exists": true
+      },
+      {
+        "source": "SKILL.md",
+        "target": "references/rules/styling.md",
+        "exists": true
+      },
+      {
+        "source": "references/customization.md",
+        "target": "cli.md",
+        "exists": true
+      }
+    ]
+  },
+  "pencil-dev": {
+    "parity": [
+      {
+        "path": "SKILL.md",
+        "equal": true
+      },
+      {
+        "path": "references/component-libraries.md",
+        "equal": true
+      },
+      {
+        "path": "references/unified-mcp-api.md",
+        "equal": true
+      },
+      {
+        "path": "agents/openai.yaml",
+        "equal": true
+      }
+    ],
+    "links": [
+      {
+        "source": "SKILL.md",
+        "target": "references/unified-mcp-api.md",
+        "exists": true
+      },
+      {
+        "source": "SKILL.md",
+        "target": "references/component-libraries.md",
+        "exists": true
+      },
+      {
+        "source": "SKILL.md",
+        "target": "references/unified-mcp-api.md",
+        "exists": true
+      },
+      {
+        "source": "SKILL.md",
+        "target": "references/component-libraries.md",
+        "exists": true
+      },
+      {
+        "source": "references/component-libraries.md",
+        "target": "unified-mcp-api.md",
+        "exists": true
+      }
+    ]
+  }
+}

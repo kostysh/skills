@@ -1,0 +1,70 @@
+{
+  "project": {
+    "framework": "Vite",
+    "frameworkName": "vite",
+    "frameworkVersion": null,
+    "srcDirectory": true,
+    "rsc": false,
+    "typescript": true,
+    "tailwindVersion": "v4",
+    "tailwindConfig": null,
+    "tailwindCss": "src/index.css",
+    "importAlias": "~ui"
+  },
+  "config": {
+    "style": "radix-nova",
+    "base": "radix",
+    "rsc": false,
+    "typescript": true,
+    "iconLibrary": "lucide",
+    "rtl": false,
+    "menuColor": "default",
+    "menuAccent": "subtle",
+    "aliases": {
+      "components": "~ui/components",
+      "utils": "~ui/lib/utils",
+      "ui": "~ui/components/ui",
+      "lib": "~ui/lib",
+      "hooks": "~ui/hooks"
+    },
+    "resolvedPaths": {
+      "cwd": "/tmp/design-tools-rev-20260909/live-c1",
+      "tailwindConfig": null,
+      "tailwindCss": "/tmp/design-tools-rev-20260909/live-c1/src/index.css",
+      "utils": "/tmp/design-tools-rev-20260909/live-c1/src/lib/utils",
+      "components": "/tmp/design-tools-rev-20260909/live-c1/src/components",
+      "lib": "/tmp/design-tools-rev-20260909/live-c1/src/lib",
+      "hooks": "/tmp/design-tools-rev-20260909/live-c1/src/hooks",
+      "ui": "/tmp/design-tools-rev-20260909/live-c1/src/components/ui"
+    },
+    "registries": {
+      "@shadcn": "https://ui.shadcn.com/r/styles/{style}/{name}.json"
+    }
+  },
+  "preset": {
+    "code": "b2fA",
+    "fallbacks": [],
+    "values": {
+      "style": "nova",
+      "baseColor": "neutral",
+      "theme": "neutral",
+      "chartColor": "neutral",
+      "iconLibrary": "lucide",
+      "font": "geist",
+      "fontHeading": "inherit",
+      "radius": "default",
+      "menuAccent": "subtle",
+      "menuColor": "default"
+    }
+  },
+  "components": [
+    "button"
+  ],
+  "links": {
+    "docs": "https://ui.shadcn.com/docs",
+    "components": "https://ui.shadcn.com/docs/components/radix/[component].md",
+    "ui": "https://ui.shadcn.com/code/apps/v4/registry/bases/radix/ui/[component].tsx",
+    "examples": "https://ui.shadcn.com/code/apps/v4/registry/bases/radix/examples/[component]-example.tsx",
+    "schema": "https://ui.shadcn.com/schema.json"
+  }
+}

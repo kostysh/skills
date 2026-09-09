@@ -1,0 +1,22 @@
+[
+  {
+    "key": "ArrowLeft",
+    "before": "\"{\\\"focus\\\":\\\"weekly\\\",\\\"weekly\\\":\\\"true\\\"}\"",
+    "after": "\"{\\\"focus\\\":\\\"daily\\\",\\\"weekly\\\":\\\"false\\\",\\\"events\\\":[{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"ArrowLeft\\\",\\\"target\\\":\\\"weekly\\\",\\\"time\\\":189278.6000000001,\\\"active\\\":\\\"weekly\\\",\\\"weekly\\\":\\\"true\\\"},{\\\"type\\\":\\\"focusin\\\",\\\"target\\\":\\\"daily\\\",\\\"time\\\":189279.1000000001,\\\"active\\\":\\\"daily\\\",\\\"weekly\\\":\\\"true\\\"},{\\\"type\\\":\\\"click\\\",\\\"target\\\":\\\"daily\\\",\\\"time\\\":189279.2000000002,\\\"active\\\":\\\"daily\\\",\\\"weekly\\\":\\\"true\\\"},{\\\"type\\\":\\\"click\\\",\\\"target\\\":\\\"\\\",\\\"time\\\":189285.2000000002,\\\"active\\\":\\\"daily\\\",\\\"weekly\\\":\\\"false\\\"},{\\\"type\\\":\\\"click\\\",\\\"target\\\":\\\"\\\",\\\"time\\\":189285.2999999998,\\\"active\\\":\\\"daily\\\",\\\"weekly\\\":\\\"false\\\"},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"ArrowLeft\\\",\\\"target\\\":\\\"daily\\\",\\\"time\\\":189286.2000000002,\\\"active\\\":\\\"daily\\\",\\\"weekly\\\":\\\"false\\\"}]}\""
+  },
+  {
+    "key": "ArrowRight",
+    "before": "\"{\\\"focus\\\":\\\"daily\\\",\\\"weekly\\\":\\\"false\\\"}\"",
+    "after": "\"{\\\"focus\\\":\\\"weekly\\\",\\\"weekly\\\":\\\"true\\\",\\\"events\\\":[{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"ArrowRight\\\",\\\"target\\\":\\\"daily\\\",\\\"time\\\":189291.7000000002,\\\"active\\\":\\\"daily\\\",\\\"weekly\\\":\\\"false\\\"},{\\\"type\\\":\\\"focusin\\\",\\\"target\\\":\\\"weekly\\\",\\\"time\\\":189291.8999999999,\\\"active\\\":\\\"weekly\\\",\\\"weekly\\\":\\\"false\\\"},{\\\"type\\\":\\\"click\\\",\\\"target\\\":\\\"weekly\\\",\\\"time\\\":189292,\\\"active\\\":\\\"weekly\\\",\\\"weekly\\\":\\\"false\\\"},{\\\"type\\\":\\\"click\\\",\\\"target\\\":\\\"\\\",\\\"time\\\":189297.5,\\\"active\\\":\\\"weekly\\\",\\\"weekly\\\":\\\"true\\\"},{\\\"type\\\":\\\"click\\\",\\\"target\\\":\\\"\\\",\\\"time\\\":189297.7000000002,\\\"active\\\":\\\"weekly\\\",\\\"weekly\\\":\\\"true\\\"},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"ArrowRight\\\",\\\"target\\\":\\\"weekly\\\",\\\"time\\\":189298.8999999999,\\\"active\\\":\\\"weekly\\\",\\\"weekly\\\":\\\"true\\\"}]}\""
+  },
+  {
+    "key": "ArrowLeft",
+    "before": "\"{\\\"focus\\\":\\\"weekly\\\",\\\"weekly\\\":\\\"true\\\"}\"",
+    "after": "\"{\\\"focus\\\":\\\"daily\\\",\\\"weekly\\\":\\\"false\\\",\\\"events\\\":[{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"ArrowLeft\\\",\\\"target\\\":\\\"weekly\\\",\\\"time\\\":189303.6000000001,\\\"active\\\":\\\"weekly\\\",\\\"weekly\\\":\\\"true\\\"},{\\\"type\\\":\\\"focusin\\\",\\\"target\\\":\\\"daily\\\",\\\"time\\\":189303.7000000002,\\\"active\\\":\\\"daily\\\",\\\"weekly\\\":\\\"true\\\"},{\\\"type\\\":\\\"click\\\",\\\"target\\\":\\\"daily\\\",\\\"time\\\":189303.7000000002,\\\"active\\\":\\\"daily\\\",\\\"weekly\\\":\\\"true\\\"},{\\\"type\\\":\\\"click\\\",\\\"target\\\":\\\"\\\",\\\"time\\\":189310.3999999999,\\\"active\\\":\\\"daily\\\",\\\"weekly\\\":\\\"false\\\"},{\\\"type\\\":\\\"click\\\",\\\"target\\\":\\\"\\\",\\\"time\\\":189310.6000000001,\\\"active\\\":\\\"daily\\\",\\\"weekly\\\":\\\"false\\\"},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"ArrowLeft\\\",\\\"target\\\":\\\"daily\\\",\\\"time\\\":189311.5,\\\"active\\\":\\\"daily\\\",\\\"weekly\\\":\\\"false\\\"}]}\""
+  },
+  {
+    "key": "ArrowRight",
+    "before": "\"{\\\"focus\\\":\\\"daily\\\",\\\"weekly\\\":\\\"false\\\"}\"",
+    "after": "\"{\\\"focus\\\":\\\"weekly\\\",\\\"weekly\\\":\\\"true\\\",\\\"events\\\":[{\\\"type\\\":\\\"keydown\\\",\\\"key\\\":\\\"ArrowRight\\\",\\\"target\\\":\\\"daily\\\",\\\"time\\\":189316,\\\"active\\\":\\\"daily\\\",\\\"weekly\\\":\\\"false\\\"},{\\\"type\\\":\\\"focusin\\\",\\\"target\\\":\\\"weekly\\\",\\\"time\\\":189316.2000000002,\\\"active\\\":\\\"weekly\\\",\\\"weekly\\\":\\\"false\\\"},{\\\"type\\\":\\\"click\\\",\\\"target\\\":\\\"weekly\\\",\\\"time\\\":189316.2000000002,\\\"active\\\":\\\"weekly\\\",\\\"weekly\\\":\\\"false\\\"},{\\\"type\\\":\\\"click\\\",\\\"target\\\":\\\"\\\",\\\"time\\\":189321.7999999998,\\\"active\\\":\\\"weekly\\\",\\\"weekly\\\":\\\"true\\\"},{\\\"type\\\":\\\"click\\\",\\\"target\\\":\\\"\\\",\\\"time\\\":189321.8999999999,\\\"active\\\":\\\"weekly\\\",\\\"weekly\\\":\\\"true\\\"},{\\\"type\\\":\\\"keyup\\\",\\\"key\\\":\\\"ArrowRight\\\",\\\"target\\\":\\\"weekly\\\",\\\"time\\\":189322.7999999998,\\\"active\\\":\\\"weekly\\\",\\\"weekly\\\":\\\"true\\\"}]}\""
+  }
+]

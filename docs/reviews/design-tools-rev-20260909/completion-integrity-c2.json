@@ -1,0 +1,9 @@
+{
+  "candidate": {
+    "checked": 41,
+    "mismatches": []
+  },
+  "head": "d89d66f2c99bf8b9e84e5b4def54fa60192856a5",
+  "diff_check_exit": 0,
+  "source_status": " M skills/pencil-dev/SKILL.md\n M skills/pencil-dev/docs/README.md\n M skills/pencil-dev/docs/compile-report.md\n M skills/pencil-dev/references/component-libraries.md\n M skills/pencil-dev/skill.yaml\n M skills/shadcn/SKILL.md\n M skills/shadcn/docs/README.md\n M skills/shadcn/docs/compile-report.md\n M skills/shadcn/skill.yaml\n?? docs/implementation-log-20260909-design-tools-revision.md\n?? docs/implementation-plan-20260909-design-tools-revision.md\n?? docs/reviews/design-tools-rev-20260909/\n"
+}

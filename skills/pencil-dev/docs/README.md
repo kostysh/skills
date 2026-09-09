@@ -17,3 +17,8 @@ Supporting documentation for `pencil-dev`. These files are not part of the activ
 - [implementation-log-20260708-1.md](logs/implementation-log-20260708-1.md) — `.lib.pen` stale-cache guardrail, size-warning cleanup, and evidence traceability.
 - [implementation-log-20260713-1.md](logs/implementation-log-20260713-1.md) — End-to-end capability review, current Pencil MCP remediation, forward-tests, live canary, and review evidence.
 - [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — сокращение описания до 300 code points; independent scoped PASS.
+
+## Ревизия инструментов дизайна и компонентов
+
+- [Общий план](../../../docs/implementation-plan-20260909-design-tools-revision.md)
+- [Общий журнал](../../../docs/implementation-log-20260909-design-tools-revision.md)

@@ -1,0 +1,90 @@
+[
+  {
+    "name": "shadcn",
+    "description": "Build and maintain shadcn/ui projects with Base UI defaults: inspect components.json, use current CLI/docs, add or update registry components safely, compose and theme them, and verify project behavior. Use for shadcn components, registries, presets, configuration, fixes, or debugging.",
+    "ui_metadata": {
+      "interface": {
+        "display_name": "shadcn/ui",
+        "short_description": "Builds and maintains shadcn/ui projects and components.",
+        "icon_small": "./assets/shadcn-small.png",
+        "icon_large": "./assets/shadcn.png",
+        "default_prompt": "Use $shadcn to add or update a component safely and verify it in the target project."
+      }
+    }
+  },
+  {
+    "name": "pencil-dev",
+    "description": "Create, inspect, iterate, validate, import, and export Pencil `.pen` designs through MCP connected to an open editor. Use for UI mockups, app screens, dashboards, web pages, marketing visuals, slide-like graphics, or existing design edits; keep `.pen` handling MCP-only.",
+    "ui_metadata": {
+      "interface": {
+        "display_name": "Pencil Dev",
+        "short_description": "Create, inspect, import, validate, or export Pencil designs",
+        "default_prompt": "Use $pencil-dev with the live Pencil MCP API to inspect, edit, import, validate, or export the intended open .pen design only as requested, and report evidence plus save status."
+      },
+      "dependencies": {
+        "tools": [
+          {
+            "type": "mcp",
+            "value": "pencil",
+            "description": "Required Pencil MCP tools for inspecting, editing, validating, and exporting open .pen designs."
+          }
+        ]
+      },
+      "policy": {
+        "allow_implicit_invocation": true
+      }
+    }
+  },
+  {
+    "name": "frontend-design",
+    "description": "Design and implement visually strong web interfaces and decision-complete design strategies. Use for landing pages, product UI, dashboards, prototypes, redesigns, or translating accepted design into code. Preserve authoritative behavior and existing systems, then verify rendered results.",
+    "ui_metadata": {
+      "interface": {
+        "display_name": "Frontend Design",
+        "short_description": "Design strong UI from strategy to browser evidence",
+        "default_prompt": "Use $frontend-design to ground a design strategy in authoritative sources, reuse the existing UI system, produce the requested deliverable, and report only the completion status supported by matching evidence."
+      }
+    }
+  },
+  {
+    "name": "react-components-engineer",
+    "description": "Build, harden, review, and diagnose reusable React components across SSR, hydration, multiple instances, portals, Effects, opaque children, and server/client boundaries. Use for component-level runtime resilience; route app architecture, styling, test strategy, and security verdicts to their owners.",
+    "ui_metadata": {
+      "interface": {
+        "display_name": "React Components Engineer",
+        "short_description": "Harden reusable React components with context- and version-aware runtime evidence"
+      }
+    }
+  },
+  {
+    "name": "react-spa-engineer",
+    "description": "Design, implement, review, and diagnose React SPAs using TypeScript, Vite, TanStack Query, Zustand, React Hook Form with Zod, React Router, and Dexie. Use for routing, server/runtime state, forms, browser storage, performance, testing, or accessibility; exclude SSR, RSC, and Next.js architecture.",
+    "ui_metadata": {
+      "interface": {
+        "display_name": "React Spa Engineer",
+        "short_description": "Build and verify integrated React SPA flows"
+      }
+    }
+  },
+  {
+    "name": "web-ui-reviewer",
+    "description": "Review web UI code and rendered states against project requirements and Web Interface Guidelines. Use for UI/UX, accessibility, design, content, form, or frontend-performance audits that need scoped findings and evidence limits; not implementation or conformance certification.",
+    "ui_metadata": {
+      "interface": {
+        "display_name": "Web UI Reviewer",
+        "short_description": "Review web UI with scoped evidence",
+        "default_prompt": "Use $web-ui-reviewer to audit this web interface and report scoped, actionable findings with evidence limits."
+      }
+    }
+  },
+  {
+    "name": "agent-browser",
+    "description": "Use agent-browser to navigate and interact with rendered web pages, fill forms, take screenshots, extract data, and run browser smoke or diagnostic checks. Verify the requested terminal state and report completed, partial, or blocked; do not replace a formal project E2E suite.",
+    "ui_metadata": {
+      "interface": {
+        "display_name": "Agent Browser",
+        "short_description": "Run browser flows with evidence-bounded outcomes"
+      }
+    }
+  }
+]

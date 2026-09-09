@@ -1,0 +1,15 @@
+{
+  "tool": "execute",
+  "args": {
+    "filePath": "/tmp/design-tools-rev-20260909/pencil-live-test.pen",
+    "input": "Update(\"KSPqv\",{placeholder:true,metadata:{type:\"screen\",state:\"confirmation\",device:\"desktop1440\",synthetic:true}});Update(\"Rn7JR\",{placeholder:true,metadata:{type:\"screen\",state:\"confirmation\",device:\"mobile390\",synthetic:true}});Update(\"F9YSQK\",{metadata:{type:\"screen\",state:\"applied\",device:\"desktop1440\",synthetic:true}});Update(\"ypajU\",{metadata:{type:\"screen\",state:\"applied\",device:\"mobile390\",synthetic:true}});Update(\"uIFPK\",{layout:\"none\"});Update(\"AjKvN\",{layout:\"none\"});Update(\"Y7aE6\",{x:480,y:286});Update(\"N6eSJ5\",{x:20,y:269.5});Move(\"uIFPK\",document);Update(\"uIFPK\",{name:\"A · Temporary dialog verification\",x:6400,y:1100,placeholder:true});"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "OK\n"
+      }
+    ]
+  }
+}

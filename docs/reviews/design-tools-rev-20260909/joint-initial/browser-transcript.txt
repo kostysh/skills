@@ -1,0 +1,891 @@
+agent-browser --session dtr-joint fill @e5 '' 
+✓ Done
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]
+  - switch "Enable notifications" [checked=true, ref=e6]
+  - radio "Daily" [checked=false, ref=e7]
+  - radio "Weekly" [checked=true, ref=e8]
+  - button "Review changes" [ref=e4]
+agent-browser --session dtr-joint find role button click --name Review\ changes 
+✓ Done
+agent-browser --session dtr-joint snapshot 
+- generic [ref=e1] clickable [onclick]
+  - main
+    - sectionheader
+      - paragraph
+        - StaticText "Account / Preferences"
+      - heading "Notifications" [level=1, ref=e3]
+      - paragraph
+        - StaticText "Make room for the updates you want."
+    - status
+    - heading "Email notifications" [level=2, ref=e2]
+    - StaticText "Choose what arrives in your inbox."
+    - form
+      - group
+        - LabelText
+          - StaticText "Email address"
+        - textbox "Email address" [required, ref=e5]: alex@example.test
+          - StaticText "alex@example.test"
+        - paragraph
+          - StaticText "Used only for this local prototype."
+        - alert
+          - StaticText "Enter a valid email address."
+      - group
+        - paragraph
+          - StaticText "Turn email updates on or off."
+        - switch "Enable notifications" [checked=true, ref=e6]
+      - group "Frequency"
+        - Legend
+          - StaticText "Frequency"
+        - radiogroup "Frequency"
+          - LabelText
+            - group
+              - radio "Daily" [checked=false, ref=e7]
+              - StaticText "Daily"
+          - LabelText
+            - group
+              - radio "Weekly" [checked=true, ref=e8]
+              - StaticText "Weekly"
+      - button "Review changes" [ref=e4]
+    - paragraph
+      - StaticText "Local demo · No email is sent. Reload resets preferences."
+agent-browser --session dtr-joint eval \(\{focused:document.activeElement.id\,invalid:document.activeElement.getAttribute\(\"aria-invalid\"\)\,described:document.activeElement.getAttribute\(\"aria-describedby\"\)\,dialog:\!\!document.querySelector\(\"\[role=dialog\]\"\)\}\) 
+{
+  "described": "email-help email-error",
+  "dialog": false,
+  "focused": "email",
+  "invalid": "true"
+}
+agent-browser --session dtr-joint screenshot /tmp/design-tools-rev-20260909/joint-evidence/desktop-required-error.png 
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/joint-evidence/desktop-required-error.png
+agent-browser --session dtr-joint focus @e5 
+✓ Done
+agent-browser --session dtr-joint press Control+a 
+✓ Done
+agent-browser --session dtr-joint press Backspace 
+✓ Done
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]
+  - switch "Enable notifications" [checked=true, ref=e6]
+  - radio "Daily" [checked=false, ref=e7]
+  - radio "Weekly" [checked=true, ref=e8]
+  - button "Review changes" [ref=e4]
+agent-browser --session dtr-joint press Enter 
+✓ Done
+agent-browser --session dtr-joint snapshot 
+- generic [ref=e1] clickable [onclick]
+  - main
+    - sectionheader
+      - paragraph
+        - StaticText "Account / Preferences"
+      - heading "Notifications" [level=1, ref=e3]
+      - paragraph
+        - StaticText "Make room for the updates you want."
+    - status
+    - heading "Email notifications" [level=2, ref=e2]
+    - StaticText "Choose what arrives in your inbox."
+    - form
+      - group
+        - LabelText
+          - StaticText "Email address"
+        - textbox "Email address" [required, ref=e5]
+        - paragraph
+          - StaticText "Used only for this local prototype."
+        - alert
+          - StaticText "Email address is required."
+      - group
+        - paragraph
+          - StaticText "Turn email updates on or off."
+        - switch "Enable notifications" [checked=true, ref=e6]
+      - group "Frequency"
+        - Legend
+          - StaticText "Frequency"
+        - radiogroup "Frequency"
+          - LabelText
+            - group
+              - radio "Daily" [checked=false, ref=e7]
+              - StaticText "Daily"
+          - LabelText
+            - group
+              - radio "Weekly" [checked=true, ref=e8]
+              - StaticText "Weekly"
+      - button "Review changes" [ref=e4]
+    - paragraph
+      - StaticText "Local demo · No email is sent. Reload resets preferences."
+agent-browser --session dtr-joint type @e5 invalid-email 
+✓ Done
+agent-browser --session dtr-joint press Enter 
+✓ Done
+agent-browser --session dtr-joint snapshot 
+- generic [ref=e1] clickable [onclick]
+  - main
+    - sectionheader
+      - paragraph
+        - StaticText "Account / Preferences"
+      - heading "Notifications" [level=1, ref=e3]
+      - paragraph
+        - StaticText "Make room for the updates you want."
+    - status
+    - heading "Email notifications" [level=2, ref=e2]
+    - StaticText "Choose what arrives in your inbox."
+    - form
+      - group
+        - LabelText
+          - StaticText "Email address"
+        - textbox "Email address" [required, ref=e5]: invalid-email
+          - StaticText "invalid-email"
+        - paragraph
+          - StaticText "Used only for this local prototype."
+        - alert
+          - StaticText "Enter a valid email address."
+      - group
+        - paragraph
+          - StaticText "Turn email updates on or off."
+        - switch "Enable notifications" [checked=true, ref=e6]
+      - group "Frequency"
+        - Legend
+          - StaticText "Frequency"
+        - radiogroup "Frequency"
+          - LabelText
+            - group
+              - radio "Daily" [checked=false, ref=e7]
+              - StaticText "Daily"
+          - LabelText
+            - group
+              - radio "Weekly" [checked=true, ref=e8]
+              - StaticText "Weekly"
+      - button "Review changes" [ref=e4]
+    - paragraph
+      - StaticText "Local demo · No email is sent. Reload resets preferences."
+agent-browser --session dtr-joint screenshot /tmp/design-tools-rev-20260909/joint-evidence/desktop-invalid-email.png 
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/joint-evidence/desktop-invalid-email.png
+agent-browser --session dtr-joint press Control+a 
+✓ Done
+agent-browser --session dtr-joint type @e5 alex@example.test 
+✓ Done
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]: alex@example.test
+  - switch "Enable notifications" [checked=true, ref=e6]
+  - radio "Daily" [checked=false, ref=e7]
+  - radio "Weekly" [checked=true, ref=e8]
+  - button "Review changes" [ref=e4]
+agent-browser --session dtr-joint focus @e6 
+✓ Done
+agent-browser --session dtr-joint press Space 
+✓ Done
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]: alex@example.test
+  - switch "Enable notifications" [checked=false, ref=e6]
+  - radio "Daily" [checked=false, disabled, ref=e7]
+  - radio "Weekly" [checked=true, disabled, ref=e8]
+  - button "Review changes" [ref=e4]
+agent-browser --session dtr-joint eval \(\{email:document.querySelector\(\"#email\"\).value\,switch:document.querySelector\(\"\[role=switch\]\"\).getAttribute\(\"aria-checked\"\)\,radios:Array.from\(document.querySelectorAll\(\"\[role=radio\]\"\)\).map\(x=\>\(\{id:x.id\,disabled:x.getAttribute\(\"aria-disabled\"\)\,nativeDisabled:x.disabled\,selected:x.getAttribute\(\"aria-checked\"\)\}\)\)\,thumb:getComputedStyle\(document.querySelector\(\"\[data-slot=switch-thumb\]\"\)\).transform\}\) 
+{
+  "email": "alex@example.test",
+  "radios": [
+    {
+      "disabled": "true",
+      "id": "base-ui-_r_6_",
+      "selected": "false"
+    },
+    {
+      "disabled": "true",
+      "id": "base-ui-_r_9_",
+      "selected": "true"
+    }
+  ],
+  "switch": "false",
+  "thumb": "none"
+}
+agent-browser --session dtr-joint screenshot /tmp/design-tools-rev-20260909/joint-evidence/desktop-off.png 
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/joint-evidence/desktop-off.png
+agent-browser --session dtr-joint press Tab 
+✓ Done
+agent-browser --session dtr-joint eval \(\{focus:document.activeElement.textContent\,tag:document.activeElement.tagName\}\) 
+{
+  "focus": "",
+  "tag": "SPAN"
+}
+agent-browser --session dtr-joint focus @e6 
+✓ Done
+agent-browser --session dtr-joint press Space 
+✓ Done
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]: alex@example.test
+  - switch "Enable notifications" [checked=true, ref=e6]
+  - radio "Daily" [checked=false, ref=e7]
+  - radio "Weekly" [checked=true, ref=e8]
+  - button "Review changes" [ref=e4]
+agent-browser --session dtr-joint focus @e8 
+✓ Done
+agent-browser --session dtr-joint press ArrowUp 
+✓ Done
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]: alex@example.test
+  - switch "Enable notifications" [checked=true, ref=e6]
+  - radio "Daily" [checked=true, ref=e7]
+  - radio "Weekly" [checked=false, ref=e8]
+  - button "Review changes" [disabled, ref=e4]
+agent-browser --session dtr-joint press ArrowDown 
+✓ Done
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]: alex@example.test
+  - switch "Enable notifications" [checked=true, ref=e6]
+  - radio "Daily" [checked=false, ref=e7]
+  - radio "Weekly" [checked=true, ref=e8]
+  - button "Review changes" [ref=e4]
+agent-browser --session dtr-joint find role button click --name Review\ changes 
+✓ Done
+agent-browser --session dtr-joint snapshot 
+- generic
+  - dialog "Review changes"
+    - heading "Review changes" [level=2, ref=e1]
+    - paragraph
+      - StaticText "Confirm these preferences for this local demo. No email will be sent."
+    - DescriptionList
+      - term "Email address"
+      - definition
+        - StaticText "alex@example.test"
+      - term "Notifications"
+      - definition
+        - StaticText "On"
+      - term "Frequency"
+      - definition
+        - StaticText "Weekly"
+    - paragraph
+      - StaticText "Frequency: Daily → Weekly"
+    - button "Cancel" [ref=e2]
+    - button "Confirm changes" [ref=e3]
+agent-browser --session dtr-joint eval \(\{focus:document.activeElement.textContent\,dialog:document.querySelector\(\"\[role=dialog\]\"\)\?.outerHTML.slice\(0\,700\)\}\) 
+{
+  "dialog": "<div data-open=\"\" id=\"_r_0_\" role=\"dialog\" tabindex=\"-1\" data-base-ui-focusable=\"\" data-slot=\"dialog-content\" class=\"fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 rounded-xl bg-popover text-sm text-popover-foreground ring-1 ring-foreground/10 duration-100 outline-none data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 max-h-[calc(100svh-2rem)] gap-6 overflow-y-auto p-6 sm:max-w-[480px]\" aria-labelledby=\"base-ui-_r_d_\" aria-describedby=\"base-ui-_r_e_\" style=\"--nested-dialogs: 0;\"><div data-slot=\"dialog-header\" class=\"flex flex-col gap-2\"><h2 id=\"base-ui-_r_d_\" ",
+  "focus": "Cancel"
+}
+agent-browser --session dtr-joint screenshot /tmp/design-tools-rev-20260909/joint-evidence/desktop-confirm.png 
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/joint-evidence/desktop-confirm.png
+agent-browser --session dtr-joint press Shift+Tab 
+✓ Done
+agent-browser --session dtr-joint eval \(\{focus:document.activeElement.textContent\,inDialog:\!\!document.activeElement.closest\(\"\[role=dialog\]\"\)\}\) 
+{
+  "focus": "",
+  "inDialog": false
+}
+agent-browser --session dtr-joint press Tab 
+✓ Done
+agent-browser --session dtr-joint eval \(\{focus:document.activeElement.textContent\,inDialog:\!\!document.activeElement.closest\(\"\[role=dialog\]\"\)\}\) 
+{
+  "focus": "Cancel",
+  "inDialog": true
+}
+agent-browser --session dtr-joint press Escape 
+✓ Done
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e6]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e8]: alex@example.test
+  - switch "Enable notifications" [checked=true, ref=e9]
+  - radio "Daily" [checked=false, ref=e10]
+  - radio "Weekly" [checked=true, ref=e11]
+  - button "Review changes" [ref=e7]
+- heading "Review changes" [level=2, ref=e3]
+- button "Cancel" [ref=e4]
+- button "Confirm changes" [ref=e5]
+agent-browser --session dtr-joint eval \(\{focus:document.activeElement.textContent\,dialog:\!\!document.querySelector\(\"\[role=dialog\]\"\)\}\) 
+{
+  "dialog": true,
+  "focus": "Confirm changes"
+}
+agent-browser --session dtr-joint press Enter 
+✓ Done
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Changes applied locally. Notifi" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e7]
+  - heading "Changes applied" [level=2, ref=e2]
+  - button "Edit preferences" [ref=e3]
+- heading "Review changes" [level=2, ref=e4]
+- button "Cancel" [ref=e5]
+- button "Confirm changes" [ref=e6]
+agent-browser --session dtr-joint find role button click --name Cancel 
+✓ Done
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Changes applied locally. Notifi" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e7]
+  - heading "Changes applied" [level=2, ref=e2]
+  - button "Edit preferences" [ref=e3]
+- heading "Review changes" [level=2, ref=e4]
+- button "Cancel" [ref=e5]
+- button "Confirm changes" [ref=e6]
+agent-browser --session dtr-joint eval \(\{focus:document.activeElement.textContent\,dialog:\!\!document.querySelector\(\"\[role=dialog\]\"\)\}\) 
+{
+  "dialog": true,
+  "focus": "Cancel"
+}
+agent-browser --session dtr-joint wait --fn \!document.querySelector\(\"\[role=dialog\]\"\) 
+true
+agent-browser --session dtr-joint snapshot 
+- generic [ref=e1] clickable [onclick]
+  - main
+    - sectionheader
+      - paragraph
+        - StaticText "Account / Preferences"
+      - heading "Notifications" [level=1, ref=e4]
+      - paragraph
+        - StaticText "Make room for the updates you want."
+    - status
+      - StaticText "Changes applied locally. Notifications on. Weekly frequency."
+    - heading "Changes applied" [level=2, ref=e2]
+    - StaticText "Your preferences are updated for this local demo."
+    - DescriptionList
+      - term "Email address"
+      - definition
+        - StaticText "alex@example.test"
+      - term "Notifications"
+      - definition
+        - StaticText "On"
+      - term "Frequency"
+      - definition
+        - StaticText "Weekly"
+    - button "Edit preferences" [ref=e3]
+    - paragraph
+      - StaticText "Local demo · No email is sent. Reload resets preferences."
+agent-browser --session dtr-joint eval \(\{focus:document.activeElement.textContent\,dialog:\!\!document.querySelector\(\"\[role=dialog\]\"\)\}\) 
+{
+  "dialog": false,
+  "focus": "Changes applied"
+}
+agent-browser --session dtr-joint screenshot /tmp/design-tools-rev-20260909/joint-evidence/desktop-applied-first.png 
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/joint-evidence/desktop-applied-first.png
+agent-browser --session dtr-joint open http://127.0.0.1:43866 
+✓ vite-app
+  http://127.0.0.1:43866/
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]: alex@example.test
+  - switch "Enable notifications" [checked=true, ref=e6]
+  - radio "Daily" [checked=false, ref=e7]
+  - radio "Weekly" [checked=true, ref=e8]
+  - button "Review changes" [ref=e4]
+agent-browser --session dtr-joint find role button click --name Review\ changes 
+✓ Done
+agent-browser --session dtr-joint wait --fn document.activeElement.textContent\ ===\ \"Cancel\" 
+true
+agent-browser --session dtr-joint press Shift+Tab 
+✓ Done
+agent-browser --session dtr-joint wait --fn document.activeElement.textContent\ ===\ \"Confirm\ changes\" 
+true
+agent-browser --session dtr-joint eval \(\{focus:document.activeElement.textContent\,inDialog:\!\!document.activeElement.closest\(\"\[role=dialog\]\"\)\}\) 
+{
+  "focus": "Confirm changes",
+  "inDialog": true
+}
+agent-browser --session dtr-joint press Tab 
+✓ Done
+agent-browser --session dtr-joint wait --fn document.activeElement.textContent\ ===\ \"Cancel\" 
+true
+agent-browser --session dtr-joint press Escape 
+✓ Done
+agent-browser --session dtr-joint wait --fn \!document.querySelector\(\"\[role=dialog\]\"\)\ \&\&\ document.activeElement.textContent\ ===\ \"Review\ changes\" 
+true
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]: alex@example.test
+  - switch "Enable notifications" [checked=true, ref=e6]
+  - radio "Daily" [checked=false, ref=e7]
+  - radio "Weekly" [checked=true, ref=e8]
+  - button "Review changes" [ref=e4]
+agent-browser --session dtr-joint press Enter 
+✓ Done
+agent-browser --session dtr-joint wait --fn document.activeElement.textContent\ ===\ \"Cancel\" 
+true
+agent-browser --session dtr-joint snapshot 
+- generic
+  - dialog "Review changes"
+    - heading "Review changes" [level=2, ref=e1]
+    - paragraph
+      - StaticText "Confirm these preferences for this local demo. No email will be sent."
+    - DescriptionList
+      - term "Email address"
+      - definition
+        - StaticText "alex@example.test"
+      - term "Notifications"
+      - definition
+        - StaticText "On"
+      - term "Frequency"
+      - definition
+        - StaticText "Weekly"
+    - paragraph
+      - StaticText "Frequency: Daily → Weekly"
+    - button "Cancel" [ref=e2]
+    - button "Confirm changes" [ref=e3]
+agent-browser --session dtr-joint press Enter 
+✓ Done
+agent-browser --session dtr-joint wait --fn \!document.querySelector\(\"\[role=dialog\]\"\)\ \&\&\ document.activeElement.textContent\ ===\ \"Review\ changes\" 
+true
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]: alex@example.test
+  - switch "Enable notifications" [checked=true, ref=e6]
+  - radio "Daily" [checked=false, ref=e7]
+  - radio "Weekly" [checked=true, ref=e8]
+  - button "Review changes" [ref=e4]
+agent-browser --session dtr-joint find role button click --name Review\ changes 
+✓ Done
+agent-browser --session dtr-joint wait --fn document.activeElement.textContent\ ===\ \"Cancel\" 
+true
+agent-browser --session dtr-joint press Tab 
+✓ Done
+agent-browser --session dtr-joint wait --fn document.activeElement.textContent\ ===\ \"Confirm\ changes\" 
+true
+agent-browser --session dtr-joint press Enter 
+✓ Done
+agent-browser --session dtr-joint wait --fn \!document.querySelector\(\"\[role=dialog\]\"\)\ \&\&\ document.activeElement.textContent\ ===\ \"Changes\ applied\" 
+true
+agent-browser --session dtr-joint snapshot 
+- generic [ref=e1] clickable [onclick]
+  - main
+    - sectionheader
+      - paragraph
+        - StaticText "Account / Preferences"
+      - heading "Notifications" [level=1, ref=e4]
+      - paragraph
+        - StaticText "Make room for the updates you want."
+    - status
+      - StaticText "Changes applied locally. Notifications on. Weekly frequency."
+    - heading "Changes applied" [level=2, ref=e2]
+    - StaticText "Your preferences are updated for this local demo."
+    - DescriptionList
+      - term "Email address"
+      - definition
+        - StaticText "alex@example.test"
+      - term "Notifications"
+      - definition
+        - StaticText "On"
+      - term "Frequency"
+      - definition
+        - StaticText "Weekly"
+    - button "Edit preferences" [ref=e3]
+    - paragraph
+      - StaticText "Local demo · No email is sent. Reload resets preferences."
+agent-browser --session dtr-joint screenshot /tmp/design-tools-rev-20260909/joint-evidence/desktop-applied.png 
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/joint-evidence/desktop-applied.png
+agent-browser --session dtr-joint set viewport 390 960 
+✓ Done
+agent-browser --session dtr-joint screenshot /tmp/design-tools-rev-20260909/joint-evidence/mobile-applied-weekly.png 
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/joint-evidence/mobile-applied-weekly.png
+agent-browser --session dtr-joint find role button click --name Edit\ preferences 
+✓ Done
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]: alex@example.test
+  - switch "Enable notifications" [checked=true, ref=e6]
+  - radio "Daily" [checked=false, ref=e7]
+  - radio "Weekly" [checked=true, ref=e8]
+  - button "Review changes" [disabled, ref=e4]
+agent-browser --session dtr-joint screenshot /tmp/design-tools-rev-20260909/joint-evidence/mobile-unchanged.png 
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/joint-evidence/mobile-unchanged.png
+agent-browser --session dtr-joint eval \(\{viewport:innerWidth\,width:document.documentElement.scrollWidth\,cardWidth:document.querySelector\(\"\[data-slot=card\]\"\).getBoundingClientRect\(\).width\}\) 
+{
+  "cardWidth": 358,
+  "viewport": 390,
+  "width": 390
+}
+agent-browser --session dtr-joint focus @e5 
+✓ Done
+agent-browser --session dtr-joint press Control+a 
+✓ Done
+agent-browser --session dtr-joint type @e5 sam@example.test 
+✓ Done
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]: sam@example.test
+  - switch "Enable notifications" [checked=true, ref=e6]
+  - radio "Daily" [checked=false, ref=e7]
+  - radio "Weekly" [checked=true, ref=e8]
+  - button "Review changes" [ref=e4]
+agent-browser --session dtr-joint screenshot /tmp/design-tools-rev-20260909/joint-evidence/mobile-edit.png 
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/joint-evidence/mobile-edit.png
+agent-browser --session dtr-joint find role switch click --name Enable\ notifications 
+✗ Element not found. Verify the selector is correct and the element exists in the DOM.
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]: sam@example.test
+  - switch "Enable notifications" [checked=true, ref=e6]
+  - radio "Daily" [checked=false, ref=e7]
+  - radio "Weekly" [checked=true, ref=e8]
+  - button "Review changes" [ref=e4]
+agent-browser --session dtr-joint screenshot /tmp/design-tools-rev-20260909/joint-evidence/mobile-off.png 
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/joint-evidence/mobile-off.png
+agent-browser --session dtr-joint press Tab 
+✓ Done
+agent-browser --session dtr-joint wait --fn document.activeElement.textContent\ ===\ \"Review\ changes\" 
+✗ Wait timed out after 25000ms
+agent-browser --session dtr-joint press Enter 
+✓ Done
+agent-browser --session dtr-joint wait --fn document.activeElement.textContent\ ===\ \"Cancel\" 
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]: sam@example.test
+  - switch "Enable notifications" [checked=false, ref=e6]
+  - radio "Daily" [checked=false, disabled, ref=e7]
+  - radio "Weekly" [checked=true, disabled, ref=e8]
+  - button "Review changes" [ref=e4]
+agent-browser --session dtr-joint click @e6 
+✓ Done
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]: sam@example.test
+  - switch "Enable notifications" [checked=true, ref=e6]
+  - radio "Daily" [checked=false, ref=e7]
+  - radio "Weekly" [checked=true, ref=e8]
+  - button "Review changes" [ref=e4]
+agent-browser --session dtr-joint screenshot /tmp/design-tools-rev-20260909/joint-evidence/mobile-off.png 
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/joint-evidence/mobile-off.png
+agent-browser --session dtr-joint press Tab 
+✓ Done
+agent-browser --session dtr-joint wait --fn document.activeElement.textContent\ ===\ \"Review\ changes\" 
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]: sam@example.test
+  - switch "Enable notifications" [checked=true, ref=e6]
+  - radio "Daily" [checked=false, ref=e7]
+  - radio "Weekly" [checked=true, ref=e8]
+  - button "Review changes" [ref=e4]
+agent-browser --session dtr-joint click @e6 
+✓ Done
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]: sam@example.test
+  - switch "Enable notifications" [checked=false, ref=e6]
+  - radio "Daily" [checked=false, disabled, ref=e7]
+  - radio "Weekly" [checked=true, disabled, ref=e8]
+  - button "Review changes" [ref=e4]
+agent-browser --session dtr-joint screenshot /tmp/design-tools-rev-20260909/joint-evidence/mobile-off.png 
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/joint-evidence/mobile-off.png
+agent-browser --session dtr-joint press Tab 
+✓ Done
+agent-browser --session dtr-joint wait --fn document.activeElement.textContent\ ===\ \"Review\ changes\" 
+agent-browser --session dtr-joint eval \(\{focus:document.activeElement.outerHTML\,radios:Array.from\(document.querySelectorAll\(\"\[role=radio\]\"\)\).map\(x=\>\(\{html:x.outerHTML.slice\(0\,600\)\,tabIndex:x.tabIndex\}\)\)\}\) 
+{
+  "focus": "<span data-checked=\"\" role=\"radio\" tabindex=\"0\" aria-checked=\"true\" data-composite-item-active=\"\" id=\"base-ui-_r_t_\" data-slot=\"radio-group-item\" class=\"group/radio-group-item peer relative flex aspect-square size-4 shrink-0 rounded-full border border-input outline-none group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 aria-invalid:aria-checked:border-primary dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:border-primary data-checked:bg-primary data-checked:text-primary-foreground group-has-[:focus-visible]/field-label:data-checked:border-primary dark:data-checked:bg-primary\" aria-labelledby=\"weekly-label\" data-disabled=\"\" aria-disabled=\"true\"><span data-checked=\"\" data-slot=\"radio-group-indicator\" class=\"flex size-4 items-center justify-center\" data-disabled=\"\"><span class=\"absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary-foreground\"></span></span></span>",
+  "radios": [
+    {
+      "html": "<span data-unchecked=\"\" role=\"radio\" tabindex=\"-1\" aria-checked=\"false\" id=\"base-ui-_r_q_\" data-slot=\"radio-group-item\" class=\"group/radio-group-item peer relative flex aspect-square size-4 shrink-0 rounded-full border border-input outline-none group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring",
+      "tabIndex": -1
+    },
+    {
+      "html": "<span data-checked=\"\" role=\"radio\" tabindex=\"0\" aria-checked=\"true\" data-composite-item-active=\"\" id=\"base-ui-_r_t_\" data-slot=\"radio-group-item\" class=\"group/radio-group-item peer relative flex aspect-square size-4 shrink-0 rounded-full border border-input outline-none group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invali",
+      "tabIndex": 0
+    }
+  ]
+}
+agent-browser --session dtr-joint press ArrowUp 
+✓ Done
+agent-browser --session dtr-joint press Space 
+✓ Done
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]: sam@example.test
+  - switch "Enable notifications" [checked=false, ref=e6]
+  - radio "Daily" [checked=false, disabled, ref=e7]
+  - radio "Weekly" [checked=true, disabled, ref=e8]
+  - button "Review changes" [ref=e4]
+agent-browser --session dtr-joint press Tab 
+✓ Done
+agent-browser --session dtr-joint wait --fn document.activeElement.textContent\ ===\ \"Review\ changes\" 
+true
+agent-browser --session dtr-joint press Enter 
+✓ Done
+agent-browser --session dtr-joint wait --fn document.activeElement.textContent\ ===\ \"Cancel\" 
+true
+agent-browser --session dtr-joint snapshot 
+- generic
+  - dialog "Review changes"
+    - heading "Review changes" [level=2, ref=e1]
+    - paragraph
+      - StaticText "Confirm these preferences for this local demo. No email will be sent."
+    - DescriptionList
+      - term "Email address"
+      - definition
+        - StaticText "sam@example.test"
+      - term "Notifications"
+      - definition
+        - StaticText "Off"
+      - term "Frequency"
+      - definition
+        - StaticText "Weekly (paused)"
+    - button "Cancel" [ref=e2]
+    - button "Confirm changes" [ref=e3]
+agent-browser --session dtr-joint screenshot /tmp/design-tools-rev-20260909/joint-evidence/mobile-confirm.png 
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/joint-evidence/mobile-confirm.png
+agent-browser --session dtr-joint eval \(\{viewport:innerWidth\,width:document.documentElement.scrollWidth\,dialogWidth:document.querySelector\(\"\[role=dialog\]\"\).getBoundingClientRect\(\).width\,actions:Array.from\(document.querySelectorAll\(\"\[role=dialog\]\ button\"\)\).map\(x=\>\(\{text:x.textContent\,width:x.getBoundingClientRect\(\).width\,y:x.getBoundingClientRect\(\).y\}\)\)\}\) 
+{
+  "actions": [
+    {
+      "text": "Cancel",
+      "width": 309.74371337890625,
+      "y": 577.6301879882812
+    },
+    {
+      "text": "Confirm changes",
+      "width": 309.74371337890625,
+      "y": 621.5938110351562
+    }
+  ],
+  "dialogWidth": 357.70404052734375,
+  "viewport": 390,
+  "width": 390
+}
+agent-browser --session dtr-joint press Escape 
+✓ Done
+agent-browser --session dtr-joint wait --fn \!document.querySelector\(\"\[role=dialog\]\"\)\ \&\&\ document.activeElement.textContent\ ===\ \"Review\ changes\" 
+true
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]: sam@example.test
+  - switch "Enable notifications" [checked=false, ref=e6]
+  - radio "Daily" [checked=false, disabled, ref=e7]
+  - radio "Weekly" [checked=true, disabled, ref=e8]
+  - button "Review changes" [ref=e4]
+agent-browser --session dtr-joint press Enter 
+✓ Done
+agent-browser --session dtr-joint wait --fn document.activeElement.textContent\ ===\ \"Cancel\" 
+true
+agent-browser --session dtr-joint find role button click --name Cancel 
+✓ Done
+agent-browser --session dtr-joint wait --fn \!document.querySelector\(\"\[role=dialog\]\"\)\ \&\&\ document.activeElement.textContent\ ===\ \"Review\ changes\" 
+true
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]: sam@example.test
+  - switch "Enable notifications" [checked=false, ref=e6]
+  - radio "Daily" [checked=false, disabled, ref=e7]
+  - radio "Weekly" [checked=true, disabled, ref=e8]
+  - button "Review changes" [ref=e4]
+agent-browser --session dtr-joint press Enter 
+✓ Done
+agent-browser --session dtr-joint wait --fn document.activeElement.textContent\ ===\ \"Cancel\" 
+true
+agent-browser --session dtr-joint find role button click --name Confirm\ changes 
+✓ Done
+agent-browser --session dtr-joint wait --fn \!document.querySelector\(\"\[role=dialog\]\"\)\ \&\&\ document.activeElement.textContent\ ===\ \"Changes\ applied\" 
+true
+agent-browser --session dtr-joint snapshot 
+- generic [ref=e1] clickable [onclick]
+  - main
+    - sectionheader
+      - paragraph
+        - StaticText "Account / Preferences"
+      - heading "Notifications" [level=1, ref=e4]
+      - paragraph
+        - StaticText "Make room for the updates you want."
+    - status
+      - StaticText "Changes applied locally. Notifications off. Weekly frequency."
+    - heading "Changes applied" [level=2, ref=e2]
+    - StaticText "Your preferences are updated for this local demo."
+    - DescriptionList
+      - term "Email address"
+      - definition
+        - StaticText "sam@example.test"
+      - term "Notifications"
+      - definition
+        - StaticText "Off"
+      - term "Frequency"
+      - definition
+        - StaticText "Weekly (paused)"
+    - button "Edit preferences" [ref=e3]
+    - paragraph
+      - StaticText "Local demo · No email is sent. Reload resets preferences."
+agent-browser --session dtr-joint screenshot /tmp/design-tools-rev-20260909/joint-evidence/mobile-applied.png 
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/joint-evidence/mobile-applied.png
+agent-browser --session dtr-joint errors 
+agent-browser --session dtr-joint network requests 
+[79415E4B29E69BC2BE939B7A48008743] GET http://127.0.0.1:43866/ (Document) 200
+[289009.2] GET http://127.0.0.1:43866/@vite/client (Script) 200
+[289009.3] GET http://127.0.0.1:43866/src/main.tsx (Script) 200
+[289009.6] GET http://127.0.0.1:43866/@react-refresh (Script) 200
+[289009.7] GET http://127.0.0.1:43866/node_modules/.vite/deps/react.js?v=b65a65a3 (Script) 200
+[289009.8] GET http://127.0.0.1:43866/node_modules/.vite/deps/react-dom_client.js?v=231635f2 (Script) 200
+[289009.9] GET http://127.0.0.1:43866/src/index.css (Script) 200
+[289009.10] GET http://127.0.0.1:43866/src/App.tsx (Script) 200
+[289009.11] GET http://127.0.0.1:43866/src/components/theme-provider.tsx (Script) 200
+[289009.12] GET http://127.0.0.1:43866/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=b65a65a3 (Script) 200
+[289009.13] GET http://127.0.0.1:43866/node_modules/.vite/deps/rolldown-runtime-DC62tzP2.js?v=f9888dba (Script) 200
+[289009.14] GET http://127.0.0.1:43866/node_modules/.vite/deps/react-dom.js?v=b65a65a3 (Script) 200
+[289009.15] GET http://127.0.0.1:43866/node_modules/.vite/deps/lucide-react.js?v=42c3ae19 (Script) 200
+[289009.16] GET http://127.0.0.1:43866/src/components/ui/button.tsx (Script) 200
+[289009.17] GET http://127.0.0.1:43866/src/components/ui/card.tsx (Script) 200
+[289009.18] GET http://127.0.0.1:43866/src/components/ui/dialog.tsx (Script) 200
+[289009.19] GET http://127.0.0.1:43866/src/components/ui/field.tsx (Script) 200
+[289009.20] GET http://127.0.0.1:43866/src/components/ui/input.tsx (Script) 200
+[289009.21] GET http://127.0.0.1:43866/src/components/ui/radio-group.tsx (Script) 200
+[289009.22] GET http://127.0.0.1:43866/src/components/ui/switch.tsx (Script) 200
+[289009.23] GET http://127.0.0.1:43866/node_modules/.vite/deps/@base-ui_react_button.js?v=9e33390c (Script) 200
+[289009.24] GET http://127.0.0.1:43866/node_modules/.vite/deps/class-variance-authority.js?v=7bbc6fa0 (Script) 200
+[289009.25] GET http://127.0.0.1:43866/node_modules/.vite/deps/cn.js?v=b46ddb64 (Script) 200
+[289009.26] GET http://127.0.0.1:43866/node_modules/.pnpm/vite@8.2.2_@types+node@24.13.3_jiti@2.7.0/node_modules/vite/dist/client/env.mjs (Script) 200
+[289009.27] GET http://127.0.0.1:43866/node_modules/.vite/deps/@base-ui_react_dialog.js?v=a920a53e (Script) 200
+[289009.28] GET http://127.0.0.1:43866/node_modules/.vite/deps/@base-ui_react_input.js?v=626c34e0 (Script) 200
+[289009.29] GET http://127.0.0.1:43866/src/components/ui/label.tsx (Script) 200
+[289009.30] GET http://127.0.0.1:43866/src/components/ui/separator.tsx (Script) 200
+[289009.31] GET http://127.0.0.1:43866/node_modules/.vite/deps/@base-ui_react_radio.js?v=78cec645 (Script) 200
+[289009.32] GET http://127.0.0.1:43866/node_modules/.vite/deps/@base-ui_react_radio-group.js?v=60578246 (Script) 200
+[289009.33] GET http://127.0.0.1:43866/node_modules/.vite/deps/@base-ui_react_switch.js?v=d144b7f1 (Script) 200
+[289009.34] GET http://127.0.0.1:43866/node_modules/.vite/deps/useRenderElement-ByFUrQRf.js?v=f9888dba (Script) 200
+[289009.35] GET http://127.0.0.1:43866/node_modules/.vite/deps/useButton-DBqfnzqA.js?v=f9888dba (Script) 200
+[289009.36] GET http://127.0.0.1:43866/node_modules/.vite/deps/react_jsx-runtime.js?v=b65a65a3 (Script) 200
+[289009.37] GET http://127.0.0.1:43866/node_modules/.vite/deps/useIsoLayoutEffect-BhOqfc3z.js?v=f9888dba (Script) 200
+[289009.38] GET http://127.0.0.1:43866/node_modules/.vite/deps/useTimeout-Bj7YlgUf.js?v=f9888dba (Script) 200
+[289009.39] GET http://127.0.0.1:43866/node_modules/.vite/deps/createBaseUIEventDetails-CSZ50IZP.js?v=f9888dba (Script) 200
+[289009.40] GET http://127.0.0.1:43866/node_modules/.vite/deps/shadowDom-CiirAI6y.js?v=f9888dba (Script) 200
+[289009.41] GET http://127.0.0.1:43866/node_modules/.vite/deps/useRegisterFieldControl-DNvKXdqG.js?v=f9888dba (Script) 200
+[289009.42] GET http://127.0.0.1:43866/node_modules/.vite/deps/LabelableContext-C46qsHts.js?v=f9888dba (Script) 200
+[289009.43] GET http://127.0.0.1:43866/node_modules/.vite/deps/useLabelableId-D9FdrzZ5.js?v=f9888dba (Script) 200
+[289009.44] GET http://127.0.0.1:43866/node_modules/.vite/deps/CompositeRootContext-vOe1JRk8.js?v=f9888dba (Script) 200
+[289009.45] GET http://127.0.0.1:43866/node_modules/.vite/deps/useOpenChangeComplete-BsfGlVKK.js?v=f9888dba (Script) 200
+[289009.46] GET http://127.0.0.1:43866/node_modules/.vite/deps/useBaseUiId-DadUXAgZ.js?v=f9888dba (Script) 200
+[289009.47] GET http://127.0.0.1:43866/node_modules/.vite/deps/visuallyHidden-iOMhcLGc.js?v=f9888dba (Script) 200
+[289009.48] GET http://127.0.0.1:43866/node_modules/.vite/deps/useAriaLabelledBy-Bi7CM2Oz.js?v=f9888dba (Script) 200
+[289009.49] GET http://127.0.0.1:43866/node_modules/.vite/deps/RadioGroupContext-BaMTBnSO.js?v=f9888dba (Script) 200
+[289009.50] GET http://127.0.0.1:43866/node_modules/.vite/deps/composite-BoR7AJST.js?v=f9888dba (Script) 200
+[289009.52] GET http://127.0.0.1:43866/node_modules/.vite/deps/@base-ui_react_separator.js?v=a54d7561 (Script) 200
+[289009.53] GET http://127.0.0.1:43866/node_modules/.vite/deps/useOnMount-DBBGLIk8.js?v=f9888dba (Script) 200
+[289009.58] GET http://127.0.0.1:43866/node_modules/.pnpm/@fontsource-variable+geist@5.3.0/node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2 (Font) 200
+[289009.59] GET http://127.0.0.1:43866/vite.svg (Other) 200
+[3D4ED10153452560B39F878EDC2DD7F4] GET http://127.0.0.1:43866/ (Document) 200
+[289009.61] GET http://127.0.0.1:43866/@vite/client (Script) 200
+[289009.62] GET http://127.0.0.1:43866/src/main.tsx (Script) 200
+[289009.65] GET http://127.0.0.1:43866/@react-refresh (Script) 200
+[289009.66] GET http://127.0.0.1:43866/node_modules/.vite/deps/react.js?v=b65a65a3 (Script) 200
+[289009.67] GET http://127.0.0.1:43866/node_modules/.vite/deps/react-dom_client.js?v=231635f2 (Script) 200
+[289009.68] GET http://127.0.0.1:43866/src/index.css (Script) 200
+[289009.69] GET http://127.0.0.1:43866/src/App.tsx (Script) 200
+[289009.70] GET http://127.0.0.1:43866/src/components/theme-provider.tsx (Script) 200
+[289009.71] GET http://127.0.0.1:43866/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=b65a65a3 (Script) 200
+[289009.72] GET http://127.0.0.1:43866/node_modules/.pnpm/vite@8.2.2_@types+node@24.13.3_jiti@2.7.0/node_modules/vite/dist/client/env.mjs (Script) 200
+[289009.73] GET http://127.0.0.1:43866/node_modules/.vite/deps/rolldown-runtime-DC62tzP2.js?v=f9888dba (Script) 200
+[289009.74] GET http://127.0.0.1:43866/node_modules/.vite/deps/lucide-react.js?v=42c3ae19 (Script) 200
+[289009.75] GET http://127.0.0.1:43866/src/components/ui/button.tsx (Script) 200
+[289009.76] GET http://127.0.0.1:43866/src/components/ui/card.tsx (Script) 200
+[289009.77] GET http://127.0.0.1:43866/src/components/ui/dialog.tsx (Script) 200
+[289009.78] GET http://127.0.0.1:43866/src/components/ui/field.tsx (Script) 200
+[289009.79] GET http://127.0.0.1:43866/src/components/ui/input.tsx (Script) 200
+[289009.80] GET http://127.0.0.1:43866/src/components/ui/radio-group.tsx (Script) 200
+[289009.81] GET http://127.0.0.1:43866/src/components/ui/switch.tsx (Script) 200
+[289009.83] GET http://127.0.0.1:43866/node_modules/.vite/deps/@base-ui_react_button.js?v=9e33390c (Script) 200
+[289009.84] GET http://127.0.0.1:43866/node_modules/.vite/deps/class-variance-authority.js?v=7bbc6fa0 (Script) 200
+[289009.85] GET http://127.0.0.1:43866/node_modules/.vite/deps/cn.js?v=b46ddb64 (Script) 200
+[289009.86] GET http://127.0.0.1:43866/node_modules/.vite/deps/@base-ui_react_dialog.js?v=a920a53e (Script) 200
+[289009.87] GET http://127.0.0.1:43866/src/components/ui/label.tsx (Script) 200
+[289009.88] GET http://127.0.0.1:43866/src/components/ui/separator.tsx (Script) 200
+[289009.89] GET http://127.0.0.1:43866/node_modules/.vite/deps/@base-ui_react_input.js?v=626c34e0 (Script) 200
+[289009.90] GET http://127.0.0.1:43866/node_modules/.vite/deps/@base-ui_react_radio.js?v=78cec645 (Script) 200
+[289009.91] GET http://127.0.0.1:43866/node_modules/.vite/deps/@base-ui_react_radio-group.js?v=60578246 (Script) 200
+[289009.92] GET http://127.0.0.1:43866/node_modules/.vite/deps/@base-ui_react_switch.js?v=d144b7f1 (Script) 200
+[289009.93] GET http://127.0.0.1:43866/node_modules/.vite/deps/useRenderElement-ByFUrQRf.js?v=f9888dba (Script) 200
+[289009.94] GET http://127.0.0.1:43866/node_modules/.vite/deps/useButton-DBqfnzqA.js?v=f9888dba (Script) 200
+[289009.95] GET http://127.0.0.1:43866/node_modules/.vite/deps/react_jsx-runtime.js?v=b65a65a3 (Script) 200
+[289009.96] GET http://127.0.0.1:43866/node_modules/.vite/deps/useIsoLayoutEffect-BhOqfc3z.js?v=f9888dba (Script) 200
+[289009.97] GET http://127.0.0.1:43866/node_modules/.vite/deps/useTimeout-Bj7YlgUf.js?v=f9888dba (Script) 200
+[289009.98] GET http://127.0.0.1:43866/node_modules/.vite/deps/createBaseUIEventDetails-CSZ50IZP.js?v=f9888dba (Script) 200
+[289009.99] GET http://127.0.0.1:43866/node_modules/.vite/deps/shadowDom-CiirAI6y.js?v=f9888dba (Script) 200
+[289009.100] GET http://127.0.0.1:43866/node_modules/.vite/deps/useRegisterFieldControl-DNvKXdqG.js?v=f9888dba (Script) 200
+[289009.101] GET http://127.0.0.1:43866/node_modules/.vite/deps/LabelableContext-C46qsHts.js?v=f9888dba (Script) 200
+[289009.102] GET http://127.0.0.1:43866/node_modules/.vite/deps/useLabelableId-D9FdrzZ5.js?v=f9888dba (Script) 200
+[289009.103] GET http://127.0.0.1:43866/node_modules/.vite/deps/CompositeRootContext-vOe1JRk8.js?v=f9888dba (Script) 200
+[289009.104] GET http://127.0.0.1:43866/node_modules/.vite/deps/useOpenChangeComplete-BsfGlVKK.js?v=f9888dba (Script) 200
+[289009.105] GET http://127.0.0.1:43866/node_modules/.vite/deps/useBaseUiId-DadUXAgZ.js?v=f9888dba (Script) 200
+[289009.106] GET http://127.0.0.1:43866/node_modules/.vite/deps/visuallyHidden-iOMhcLGc.js?v=f9888dba (Script) 200
+[289009.107] GET http://127.0.0.1:43866/node_modules/.vite/deps/useAriaLabelledBy-Bi7CM2Oz.js?v=f9888dba (Script) 200
+[289009.108] GET http://127.0.0.1:43866/node_modules/.vite/deps/RadioGroupContext-BaMTBnSO.js?v=f9888dba (Script) 200
+[289009.109] GET http://127.0.0.1:43866/node_modules/.vite/deps/@base-ui_react_separator.js?v=a54d7561 (Script) 200
+[289009.110] GET http://127.0.0.1:43866/node_modules/.vite/deps/composite-BoR7AJST.js?v=f9888dba (Script) 200
+[289009.111] GET http://127.0.0.1:43866/node_modules/.vite/deps/useOnMount-DBBGLIk8.js?v=f9888dba (Script) 200
+[289009.112] GET http://127.0.0.1:43866/node_modules/.vite/deps/react-dom.js?v=b65a65a3 (Script) 200
+[289009.117] GET http://127.0.0.1:43866/node_modules/.pnpm/@fontsource-variable+geist@5.3.0/node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2 (Font) 200
+agent-browser --session dtr-joint find role button click --name Edit\ preferences 
+✓ Done
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]: sam@example.test
+  - switch "Enable notifications" [checked=false, ref=e6]
+  - radio "Daily" [checked=false, disabled, ref=e7]
+  - radio "Weekly" [checked=true, disabled, ref=e8]
+  - button "Review changes" [disabled, ref=e4]
+agent-browser --session dtr-joint click @e6 
+✓ Done
+agent-browser --session dtr-joint snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]: sam@example.test
+  - switch "Enable notifications" [checked=true, ref=e6]
+  - radio "Daily" [checked=false, ref=e7]
+  - radio "Weekly" [checked=true, ref=e8]
+  - button "Review changes" [ref=e4]
+agent-browser --session dtr-joint find role button click --name Review\ changes 
+✓ Done
+agent-browser --session dtr-joint wait --fn \!\!document.querySelector\(\"\[role=dialog\]\"\)\ \&\&\ document.getAnimations\(\).every\(a=\>a.playState\ \!==\ \"running\"\) 
+true
+agent-browser --session dtr-joint screenshot /tmp/design-tools-rev-20260909/joint-evidence/mobile-confirm.png 
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/joint-evidence/mobile-confirm.png
+agent-browser --session dtr-joint eval \(\{dialogWidth:document.querySelector\(\"\[role=dialog\]\"\).getBoundingClientRect\(\).width\,opacity:getComputedStyle\(document.querySelector\(\"\[role=dialog\]\"\)\).opacity\}\) 
+{
+  "dialogWidth": 358,
+  "opacity": "1"
+}
+agent-browser --session dtr-joint press Escape 
+✓ Done
+agent-browser --session dtr-joint wait --fn \!document.querySelector\(\"\[role=dialog\]\"\) 
+true
+agent-browser --session dtr-joint close 
+✓ Browser closed

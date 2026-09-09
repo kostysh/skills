@@ -1,0 +1,15 @@
+{
+  "tool": "execute",
+  "args": {
+    "filePath": "/tmp/design-tools-rev-20260909/pencil-live-test.pen",
+    "input": "Print(Get(\"KSPqv\",{depth:1}));Get(\"Y7aE6\",(n,c)=>Print(n.id,n.name,c.bounds));"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "OK\n\n## Print output\n{\"type\":\"frame\",\"id\":\"KSPqv\",\"x\":3200,\"y\":1100,\"name\":\"A · desktop1440 · Confirm\",\"metadata\":{\"type\":\"screen\",\"state\":\"draft\",\"device\":\"desktop1440\",\"synthetic\":true},\"clip\":true,\"width\":1440,\"height\":1000,\"fill\":\"#FAFAFA\",\"layout\":\"none\",\"children\":[{\"type\":\"frame\",\"id\":\"fm2pH\",\"x\":64,\"y\":64,\"name\":\"Account navigation\",\"width\":1312,\"stroke\":\"#E4E4E7\",\"strokeWidth\":{\"bottom\":1},\"gap\":16,\"padding\":[0,0,16,0],\"alignItems\":\"center\",\"children\":\"...\"},{\"type\":\"frame\",\"id\":\"seTF6\",\"x\":400,\"y\":132,\"name\":\"Settings content\",\"width\":640,\"layout\":\"vertical\",\"gap\":24,\"children\":\"...\"},{\"type\":\"frame\",\"id\":\"uIFPK\",\"x\":0,\"y\":0,\"name\":\"Confirmation overlay\",\"width\":1440,\"height\":1000,\"fill\":\"#18181B66\",\"layout\":\"vertical\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"children\":\"...\"}]}  \nY7aE6 Review changes dialog {\"x\":480,\"y\":550,\"width\":480,\"height\":428}  \nqCFIa Dialog title {\"x\":24,\"y\":74,\"width\":432,\"height\":35}  \nLpWZp Dialog description {\"x\":24,\"y\":129,\"width\":432,\"height\":20}  \nc05zb Review values {\"x\":24,\"y\":169,\"width\":432,\"height\":187}  \nHvOm0 Email address review row {\"x\":16,\"y\":66,\"width\":400,\"height\":41}  \nYEaMD Email address review label {\"x\":0,\"y\":50,\"width\":400,\"height\":17}  \nt8j6v Email address review value {\"x\":0,\"y\":71,\"width\":400,\"height\":20}  \nCb4mK Email notifications review row {\"x\":16,\"y\":123,\"width\":400,\"height\":41}  \nteSMk Email notifications review label {\"x\":0,\"y\":50,\"width\":400,\"height\":17}  \np1IDLX Email notifications review value {\"x\":0,\"y\":71,\"width\":400,\"height\":20}  \nNkUvD Frequency review row {\"x\":16,\"y\":180,\"width\":400,\"height\":41}  \nxFOYl Frequency review label {\"x\":0,\"y\":50,\"width\":400,\"height\":17}  \nR6yDcP Frequency review value {\"x\":0,\"y\":71,\"width\":400,\"height\":20}  \nJ9WGhy Local confirmation note {\"x\":24,\"y\":376,\"width\":432,\"height\":17}  \nI6hLjV Dialog actions {\"x\":24,\"y\":413,\"width\":432,\"height\":41}  \nTP3vS Back button {\"x\":432,\"y\":50,\"width\":70,\"height\":41}  \nlJgzd Back label {\"x\":18,\"y\":62,\"width\":34,\"height\":17}  \nU0A5qN Apply changes button {\"x\":432,\"y\":50,\"width\":136,\"height\":41}  \nDAgoC Apply changes label {\"x\":18,\"y\":62,\"width\":100,\"height\":17}\n"
+      }
+    ]
+  }
+}

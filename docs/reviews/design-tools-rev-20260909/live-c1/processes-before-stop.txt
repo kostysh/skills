@@ -1,0 +1,7 @@
+  89454   11674 /bin/bash -lc pnpm dev --host 127.0.0.1 --port 43862 --strictPort > evidence/server.txt 2>&1
+  89517   89454 node /home/kostysh/.nvm/versions/node/v24.15.0/bin/pnpm dev --host 127.0.0.1 --port 43862 --strictPort
+  89567   89517 node /tmp/.pnpm-store/v11/links/@/pnpm/10.28.2/0258174c06562d978b174b36ee223ada6b57b3e4a027f536dcb022ed7fac4523/bin/../node_modules/pnpm/bin/pnpm.cjs dev --host 127.0.0.1 --port 43862 --strictPort
+  89600   89567 sh -c vite --host 127.0.0.1 --port 43862 --strictPort
+  89601   89600 node /tmp/design-tools-rev-20260909/live-c1/node_modules/.bin/../vite/bin/vite.js --host 127.0.0.1 --port 43862 --strictPort
+ 121420   11674 /bin/bash -lc agent-browser --session dtr-c1 fill @e4 reviewer@example.com && agent-browser --session dtr-c1 click @e3 && agent-browser --session dtr-c1 wait --fn 'document.querySelector("[role=dialog]")?.getAnimations().every(a=>a.playState === "finished")' && agent-browser --session dtr-c1 screenshot evidence/mobile-dialog-settled.png && agent-browser --session dtr-c1 close > evidence/browser-close.txt 2>&1 && agent-browser session list > evidence/browser-sessions-after.txt && ss -ltnp 'sport = :43862' > evidence/server-before-stop.txt && ps -eo pid,ppid,args | rg '43862|dtr-c1' > evidence/processes-before-stop.txt && cat evidence/browser-close.txt evidence/browser-sessions-after.txt evidence/server-before-stop.txt evidence/processes-before-stop.txt
+ 121575  121420 rg 43862|dtr-c1

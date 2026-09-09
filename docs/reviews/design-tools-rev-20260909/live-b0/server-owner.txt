@@ -1,0 +1,2 @@
+    PID    PPID COMMAND
+  62904   62903 node /tmp/design-tools-rev-20260909/live-b0/node_modules/.bin/../vite/bin/vite.js --host 127.0.0.1 --port 43861 --strictPort

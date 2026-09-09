@@ -1,0 +1,11 @@
+--- controlled/src/App.tsx
++++ fixed/src/App.tsx
+@@ -122,7 +122,7 @@
+               </CardContent>
+             </Card>
+           )}
+-          <DialogContent showCloseButton={false} initialFocus={cancelRef} finalFocus={false} className="max-h-[calc(100svh-2rem)] gap-6 overflow-y-auto p-6 sm:max-w-[480px]">
++          <DialogContent showCloseButton={false} initialFocus={cancelRef} finalFocus={() => showResult ? resultRef.current : reviewRef.current} className="max-h-[calc(100svh-2rem)] gap-6 overflow-y-auto p-6 sm:max-w-[480px]">
+             <DialogHeader>
+               <DialogTitle className="text-[22px]">Review changes</DialogTitle>
+               <DialogDescription>Confirm these preferences for this local demo. No email will be sent.</DialogDescription>

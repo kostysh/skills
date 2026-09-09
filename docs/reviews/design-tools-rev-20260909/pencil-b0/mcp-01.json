@@ -1,0 +1,12 @@
+{
+  "tool": "get_app_state",
+  "args": {},
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "# Current App State\n\nUse your best judgement based on the app state whether the user task relates to the canvas, the browser or both.\n\n## Canvas Editor\n\n- Currently active canvas editor: `/tmp/design-tools-rev-20260909/pencil-live-test.pen`\n- Selected nodes: No nodes are selected\n- Top-level nodes: `CR7qO` (frame): A · Reference library [user visible], `P1cmj` (frame): A · Existing overview [user visible], `bi8Au` (frame): Frame [outside viewport], `w15TUy` (frame): B · Reference library [outside viewport], `vczSV` (frame): B · Existing overview [outside viewport]\n- Reusable components: `CR7qO`: A · Reference library, `w15TUy`: B · Reference library\n\n## Integrated Browser\n\n- The integrated browser in the app is closed currently, use the `browser` tool to open it if you want to access a live website."
+      }
+    ]
+  }
+}

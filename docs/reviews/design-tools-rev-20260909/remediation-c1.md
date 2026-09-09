@@ -1,0 +1,21 @@
+# Remediation и исходные пути C1
+
+Owning baseline: baseline-independent-review.md. Candidate: candidate-c1-manifest.json. Active source revisions0.2.1, source→regenerate→isolated compile parity. Scope: два target skills, соседние hashes неизменны. Source checks/decision trials не являются полной live Pencil verification.
+
+| Finding | Исходный путь / invariant | Изменение / direct blast radius | Evidence / disposition |
+| --- | --- | --- | --- |
+| S-01 P2 | Обычная готовая app-задача упирается в compiler maintenance, которого нет | shadcn skill.yaml portability checklist → generated root: явный maintenance-only trigger, project checks сохранены | Additional D0 B0 запрашивает resolution compiler gate; C1 завершает по supplied project evidence. Actual maintenance lint/regenerate/check/compile выполнены. verified для instruction path; live standalone evidence собирается отдельно |
+| S-02 P3 | short metadata сужает existing projects до Base UI | agents/openai.yml short_description: shadcn projects/components | Matched catalog+metadata8/8 обоих snapshots; current Radix live fixture подтверждает execution отдельно. verified для metadata scope |
+| P-01 P1 | cleanup copied reference без ownership/refs может удалить existing/used state | skill.yaml gotcha→root: disposable task scaffolding/explicit authorized cleanup, pre-delete read nodes/refs, preserve outside-scope/uncertain connections, post-delete inventory/instances | Additional P6e B0/C1 оба сохраняют existing origin и убирают свой scratch. Source contradiction removed; реальный preservation node/refs trial deferred-by-trigger до подключения MCP. Не закрыт full live claim |
+| P-02 P2 | inventory/origin-only completion требует consumer usage | reference owns inspection/origin-only/requested usage; stage/policy reference that owner | P6a/P6b/P6d B0/C1 соблюдают explicit scope; C1 no contradictory completion condition. verified для source/decision path; real origins/instances deferred-by-trigger до MCP |
+| P-03 P2 | required reading одновременно optional в classification | skill.yaml required=true + requiredReferences, generated root/report единообразны | check/compile/parity links; P6f обе версии читают ref при library и не требуют при nonlibrary stipulated request. verified для retrieval classification/decision, не live mutation |
+
+Author self-check: author-self-check-c1.md. Manifest стабилен; docs/reviews находится вне target packages. Ничего в record не является independent verdict. Deferred live trigger — fresh get_app_state подтверждает отдельный тестовый document/filePath; затем реальные edit/component/instance/cleanup/readback/screenshot/PNG/save и joint. Полный group PASS до этого невозможен.
+
+Blind comparison author assessment: initial13 B0/C1 answers supported; additional3 B0: D0 FAIL (лишний gate), P6e/P6f PASS; C1 all3 PASS. Каталог+metadata8/8 до/после. Это bounded stipulated behavior sample и catalog selection, не general reliability или реальная Pencil execution.
+
+## C2 — уточнение authority оператора
+
+Оператор повторно установил Base UI-only целевой контур и потребовал отсутствие альтернативного имени в skill. Full-folder scan `skills/shadcn` уже даёт0: термин в skill не добавлялся. S-02 отозван как ошибочная интерпретация scope, исходное Base UI `short_description` восстановлено; shadcn0.2.2. Причина: reviewer/author приняли metadata ограничение за излишнее сужение, хотя прежний log уже фиксировал operator-owned Base UI boundary. Текущее явное указание устраняет неоднозначность. S-01 maintenance correction остаётся; Pencil0.2.1 неизменён. C1 reports сохраняются как исторические, не final C2 verdict.
+
+Первоначальные live runs проверяли установленную альтернативную библиотеку и не покрывали Base UI default. Подготовлен официальный Base UI fixture (CLI4.21.0, base-nova) для fresh B0/C2 с тем же ordinary brief/criteria, local brand variant/sentinel/alias и synthetic upstream focus-token delta; joint также переведён на отдельный Base UI fixture. Старые raw evidence/RCA не удалены и не переименованы в Base результаты. Текущий changelog https://ui.shadcn.com/docs/changelog/2026-07-base-ui-default (retrieved2026-09-09) поддерживает default Base, но не отменяет библиотеку вообще; operator scope имеет приоритет над внешней доступностью.

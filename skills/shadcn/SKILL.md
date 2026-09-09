@@ -6,9 +6,9 @@ description: "Build and maintain shadcn/ui projects with Base UI defaults:
   for shadcn components, registries, presets, configuration, fixes, or
   debugging."
 metadata:
-  source-version: 0.2.0
+  source-version: 0.2.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: b8dd2d26ad23f9f6dee0514fae50d6cd1173e43989abf4b69ea0c2bd05198461
+  skillforge-source-hash: 7180f90c3decbec46b70b43b576c5a7bae3ec9a6b64d3be09bb4d90b10c87293
 ---
 
 # shadcn
@@ -211,10 +211,7 @@ Compiler checks prove package structure, CLI output proves only that command, an
 
 ## Portability checklist before finishing
 
-- Regenerate and run the skill-source-compiler lint and check commands.
-- Resolve every local Markdown link in the emitted package.
-- Search the complete skill folder for forbidden terminology and absolute local dependencies.
-- Compile to an isolated directory and confirm the copied skill remains understandable and usable.
+- Only when editing or packaging this skill itself, run compiler lint, regenerate, check, and an isolated compile; verify generated parity, local links, and active instructions/assets for absolute local dependencies. These maintenance checks are not prerequisites for ordinary shadcn project tasks.
 
 ## Supporting and historical surface
 

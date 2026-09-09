@@ -1,0 +1,21 @@
+{
+  "src/App.tsx": "0a5cacbb934b782d671a6395e17996147165d76994acd18f1686bcc9aff95080",
+  "src/assets/react.svg": "35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5",
+  "src/components/theme-provider.tsx": "7e9140cbb4471cbcf20f9e6348406a0a9f5f00689982f6f6fae7a63f44d063e3",
+  "src/components/ui/button.tsx": "cf093b290ac4e742ee82059d41fc8a294f7598d7af8ed643efa12a98a4896bdd",
+  "src/components/ui/card.tsx": "8ad3a18d36bda0598dc0e9aa96ea22854944d5443ee4946f1d173815e115375f",
+  "src/components/ui/dialog.tsx": "ae89de4e8d12dafc3cf736b34dbb6c5d4fc7a2a2b0e0dd5daf57110a92f9a7a8",
+  "src/components/ui/field.tsx": "90cbc96b0de5c836ebb82a2997c45956e81f939566d5e91fc701af007849c92b",
+  "src/components/ui/input.tsx": "dab990dfefa0ba78854ab6602ad074270dba9d7d1262184d9bfbb62bd990903b",
+  "src/components/ui/label.tsx": "86232709f634da7f357a8aaec0e815f3f562604bb67202c88997fae97659b450",
+  "src/components/ui/radio-group.tsx": "f779542f2370b82fcbb91278fb94f7ad4af59d0f36512633492604b27da48e8d",
+  "src/components/ui/separator.tsx": "9a80ff8c110e0c55489509f4f82ebcc929c0174b59544047147b7134f86a54e7",
+  "src/components/ui/switch.tsx": "367ad27cfe2f4ce5648fd3941410d3c3504876ee23e4360a220f1e6cd05f5c2d",
+  "src/index.css": "9bde270cb8d0493a24091df8ae292e3a2b3484f91d738fa70a037866fe206d48",
+  "src/lib/utils.ts": "14300d758170c270c75b057f38fedb3793a5920ea872f0477e29fb131185e8a7",
+  "src/main.tsx": "36302f6e7cd3e4556ef482c8a623155b6b851d957679ab1b76d2b93099af9ca1",
+  "src/preserved-note.ts": "63342b08277a771a3f4643af89159820581459bed11554f6164206d0bfd1310b",
+  "package.json": "d0856aa82607a8ad4cb8ae714d572dcac114ed34bc622ea586810e360af12beb",
+  "pnpm-lock.yaml": "103b09b27a9fe99c4a98fade0861ebf111d8b4e8802e58b1fb7307448c10f6f5",
+  "components.json": "742073b3f86f3b0a503e4eef3a3dea2dad18745e33901318c9acc33ee6911694"
+}

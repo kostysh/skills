@@ -1,0 +1,4 @@
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess                                 
+LISTEN 0      511        127.0.0.1:43869      0.0.0.0:*    users:(("MainThread",pid=350643,fd=20))
+    PID    PPID COMMAND
+ 350643  350642 node /tmp/design-tools-rev-20260909/joint-base-project/node_modules/.bin/../vite/bin/vite.js --host 127.0.0.1 --port 43869 --strictPort

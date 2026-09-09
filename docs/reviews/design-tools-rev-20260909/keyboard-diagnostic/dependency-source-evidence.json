@@ -1,0 +1,138 @@
+{
+  "@radix-ui/react-radio-group": {
+    "lines": [
+      {
+        "line": 266,
+        "text": "var ARROW_KEYS = [\"ArrowUp\", \"ArrowDown\", \"ArrowLeft\", \"ArrowRight\"];"
+      },
+      {
+        "line": 384,
+        "text": "  const isArrowKeyPressedRef = React2.useRef(false);"
+      },
+      {
+        "line": 388,
+        "text": "        isArrowKeyPressedRef.current = true;"
+      },
+      {
+        "line": 391,
+        "text": "    const handleKeyUp = /* @__PURE__ */ __name(() => isArrowKeyPressedRef.current = false, \"handleKeyUp\");"
+      },
+      {
+        "line": 393,
+        "text": "    document.addEventListener(\"keyup\", handleKeyUp);"
+      },
+      {
+        "line": 396,
+        "text": "      document.removeEventListener(\"keyup\", handleKeyUp);"
+      },
+      {
+        "line": 412,
+        "text": "          onKeyDown: (0, import_primitive2.composeEventHandlers)(triggerProps.onKeyDown, (event) => {"
+      },
+      {
+        "line": 415,
+        "text": "          onFocus: (0, import_primitive2.composeEventHandlers)(triggerProps.onFocus, () => {"
+      },
+      {
+        "line": 416,
+        "text": "            if (isArrowKeyPressedRef.current) {"
+      }
+    ]
+  },
+  "@radix-ui/react-roving-focus": {
+    "lines": [
+      {
+        "line": 119,
+        "text": "      onFocusableItemAdd: React.useCallback("
+      },
+      {
+        "line": 123,
+        "text": "      onFocusableItemRemove: React.useCallback("
+      },
+      {
+        "line": 138,
+        "text": "          onFocus: (0, import_primitive.composeEventHandlers)(props.onFocus, (event) => {"
+      },
+      {
+        "line": 151,
+        "text": "                focusFirst(candidateNodes, preventScrollOnEntryFocus);"
+      },
+      {
+        "line": 179,
+        "text": "    const { onFocusableItemAdd, onFocusableItemRemove, currentTabStopId } = context;"
+      },
+      {
+        "line": 185,
+        "text": "      onFocusableItemAdd();"
+      },
+      {
+        "line": 186,
+        "text": "      return () => onFocusableItemRemove();"
+      },
+      {
+        "line": 187,
+        "text": "    }, [isHydrated, focusable, onFocusableItemAdd, onFocusableItemRemove]);"
+      },
+      {
+        "line": 192,
+        "text": "      onFocusableItemAdd();"
+      },
+      {
+        "line": 193,
+        "text": "      return () => onFocusableItemRemove();"
+      },
+      {
+        "line": 194,
+        "text": "    }, [isHydrated, focusable, onFocusableItemAdd, onFocusableItemRemove]);"
+      },
+      {
+        "line": 213,
+        "text": "            onFocus: (0, import_primitive.composeEventHandlers)(props.onFocus, () => context.onItemFocus(id)),"
+      },
+      {
+        "line": 214,
+        "text": "            onKeyDown: (0, import_primitive.composeEventHandlers)(props.onKeyDown, (event) => {"
+      },
+      {
+        "line": 232,
+        "text": "                setTimeout(() => focusFirst(candidateNodes));"
+      },
+      {
+        "line": 243,
+        "text": "  ArrowLeft: \"prev\","
+      },
+      {
+        "line": 244,
+        "text": "  ArrowUp: \"prev\","
+      },
+      {
+        "line": 245,
+        "text": "  ArrowRight: \"next\","
+      },
+      {
+        "line": 246,
+        "text": "  ArrowDown: \"next\","
+      },
+      {
+        "line": 254,
+        "text": "  return key === \"ArrowLeft\" ? \"ArrowRight\" : key === \"ArrowRight\" ? \"ArrowLeft\" : key;"
+      },
+      {
+        "line": 259,
+        "text": "  if (orientation === \"vertical\" && [\"ArrowLeft\", \"ArrowRight\"].includes(key)) return void 0;"
+      },
+      {
+        "line": 260,
+        "text": "  if (orientation === \"horizontal\" && [\"ArrowUp\", \"ArrowDown\"].includes(key)) return void 0;"
+      },
+      {
+        "line": 264,
+        "text": "function focusFirst(candidates, preventScroll = false) {"
+      },
+      {
+        "line": 272,
+        "text": "__name(focusFirst, \"focusFirst\");"
+      }
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "files": [
+    {
+      "path": "after.json",
+      "sha256": "b1d00747266dae8cae81b989109aea97139453b53c37bb0ed6e81cd8dc500d3f"
+    },
+    {
+      "path": "before.json",
+      "sha256": "570fefd8244d995ce8656a1a63424e0f23db7542b0a0c6e27e5708ecdb1a5311"
+    },
+    {
+      "path": "create.json",
+      "sha256": "14d3a81b183b7bf09eb44a02559ea34fe676f6ba7c97008d29711addc88428e7"
+    },
+    {
+      "path": "diagnose.json",
+      "sha256": "bfd998ddd45ba442479cd266e60e38533f21d48b4e67682713fa08c17de361cb"
+    },
+    {
+      "path": "fix.json",
+      "sha256": "74a1494a51f562bd0fb66aff69a11e09a0c0a3d876f2f6dd88fc7905164bab20"
+    },
+    {
+      "path": "predelete.json",
+      "sha256": "300bbee1578a67c1e5d54475e3862e614a792718a7ca5e604f3951703da369f8"
+    },
+    {
+      "path": "report.md",
+      "sha256": "19ca94845d9595c0c859c80060ffc9fbf1ea736d31aa68a13a8577e6675f0ebf"
+    },
+    {
+      "path": "state.json",
+      "sha256": "e7d4880eefcd9d7895566b829418897c1b0d479cb6c9cc5530d3b073e39fb1df"
+    }
+  ]
+}

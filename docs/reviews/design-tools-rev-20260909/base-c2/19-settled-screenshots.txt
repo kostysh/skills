@@ -1,0 +1,12 @@
+✓ Done
+true
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/base-c2-evidence/mobile-dark-dialog-settled.png
+✓ Done
+true
+✓ Done
+✓ Done
+true
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/base-c2-evidence/mobile-dialog-settled.png
+✓ Done
+true
+"{\"status\":\"Settings appliedtrial@example.comNotifications off · Weekly preference saved\",\"focus\":\"Review changes \"}"

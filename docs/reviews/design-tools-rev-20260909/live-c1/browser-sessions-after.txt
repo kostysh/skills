@@ -1,0 +1,2 @@
+Active sessions:
+  dtr-c1

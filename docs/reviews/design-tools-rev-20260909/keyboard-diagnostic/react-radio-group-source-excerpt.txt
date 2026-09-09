@@ -1,0 +1,37 @@
+384:   const isArrowKeyPressedRef = React2.useRef(false);
+385:   React2.useEffect(() => {
+386:     const handleKeyDown = /* @__PURE__ */ __name((event) => {
+387:       if (ARROW_KEYS.includes(event.key)) {
+388:         isArrowKeyPressedRef.current = true;
+389:       }
+390:     }, "handleKeyDown");
+391:     const handleKeyUp = /* @__PURE__ */ __name(() => isArrowKeyPressedRef.current = false, "handleKeyUp");
+392:     document.addEventListener("keydown", handleKeyDown);
+393:     document.addEventListener("keyup", handleKeyUp);
+394:     return () => {
+395:       document.removeEventListener("keydown", handleKeyDown);
+396:       document.removeEventListener("keyup", handleKeyUp);
+397:     };
+398:   }, []);
+399:   return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+400:     RovingFocusGroup.Item,
+401:     {
+402:       asChild: true,
+403:       ...rovingFocusGroupScope,
+404:       focusable: !disabled,
+405:       active: checked,
+406:       children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+407:         RadioTrigger,
+408:         {
+409:           ...radioScope,
+410:           ...triggerProps,
+411:           ref: composedRefs,
+412:           onKeyDown: (0, import_primitive2.composeEventHandlers)(triggerProps.onKeyDown, (event) => {
+413:             if (event.key === "Enter") event.preventDefault();
+414:           }),
+415:           onFocus: (0, import_primitive2.composeEventHandlers)(triggerProps.onFocus, () => {
+416:             if (isArrowKeyPressedRef.current) {
+417:               ref.current?.click();
+418:             }
+419:           })
+420:         }

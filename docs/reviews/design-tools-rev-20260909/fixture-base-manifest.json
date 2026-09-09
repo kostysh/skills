@@ -1,0 +1,94 @@
+[
+  {
+    "path": ".gitignore",
+    "sha256": "fe718e7babb14f3cbad2d97f08889b9ce5215ed3fe0e43b2b8cfbfb3b9b844e8"
+  },
+  {
+    "path": ".prettierignore",
+    "sha256": "61cdcfa5e23efb23b84bd054a15860c3a49ea24200da10c89ee30332f61c9570"
+  },
+  {
+    "path": ".prettierrc",
+    "sha256": "d51608bb6a349cb8fe4b9428d719c6f66770b9ce6e23a602bc56fa6055e54188"
+  },
+  {
+    "path": "README.md",
+    "sha256": "821a9696dddd5e3bd1dd4cc04aeba1ba9dfb527eac91028b4235659260ff21e1"
+  },
+  {
+    "path": "components.json",
+    "sha256": "742073b3f86f3b0a503e4eef3a3dea2dad18745e33901318c9acc33ee6911694"
+  },
+  {
+    "path": "eslint.config.js",
+    "sha256": "cf80a7510234dcd5ae594b30b44682b8b45ba13c0fcb5bf8928bea143802aa1c"
+  },
+  {
+    "path": "index.html",
+    "sha256": "f5ed80cea17c8985d4d40cf5936d0c94aa6f675cade574b7c720264e342589a9"
+  },
+  {
+    "path": "package.json",
+    "sha256": "d0856aa82607a8ad4cb8ae714d572dcac114ed34bc622ea586810e360af12beb"
+  },
+  {
+    "path": "pnpm-lock.yaml",
+    "sha256": "103b09b27a9fe99c4a98fade0861ebf111d8b4e8802e58b1fb7307448c10f6f5"
+  },
+  {
+    "path": "pnpm-workspace.yaml",
+    "sha256": "1e831b89d4d46e629c888d0ca10abc161e66a953e0778409facb96bcd828d9a0"
+  },
+  {
+    "path": "public/vite.svg",
+    "sha256": "4a748afd443918bb16591c834c401dae33e87861ab5dbad0811c3a3b4a9214fb"
+  },
+  {
+    "path": "src/App.tsx",
+    "sha256": "175c1bbcccb1b3169aa64d209ef09da9bed8b94a09b1b8ff447188d2d713a572"
+  },
+  {
+    "path": "src/assets/react.svg",
+    "sha256": "35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5"
+  },
+  {
+    "path": "src/components/theme-provider.tsx",
+    "sha256": "7e9140cbb4471cbcf20f9e6348406a0a9f5f00689982f6f6fae7a63f44d063e3"
+  },
+  {
+    "path": "src/components/ui/button.tsx",
+    "sha256": "cf093b290ac4e742ee82059d41fc8a294f7598d7af8ed643efa12a98a4896bdd"
+  },
+  {
+    "path": "src/index.css",
+    "sha256": "9bde270cb8d0493a24091df8ae292e3a2b3484f91d738fa70a037866fe206d48"
+  },
+  {
+    "path": "src/lib/utils.ts",
+    "sha256": "14300d758170c270c75b057f38fedb3793a5920ea872f0477e29fb131185e8a7"
+  },
+  {
+    "path": "src/main.tsx",
+    "sha256": "36302f6e7cd3e4556ef482c8a623155b6b851d957679ab1b76d2b93099af9ca1"
+  },
+  {
+    "path": "src/preserved-note.ts",
+    "sha256": "63342b08277a771a3f4643af89159820581459bed11554f6164206d0bfd1310b"
+  },
+  {
+    "path": "tsconfig.app.json",
+    "sha256": "1b10733ad1b7359a2b0b6f58a8bb3a13b95eabf0022b4320856eea0127e9588b"
+  },
+  {
+    "path": "tsconfig.json",
+    "sha256": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d"
+  },
+  {
+    "path": "tsconfig.node.json",
+    "sha256": "90a22c920cbc14624fb4658b58f15c875abf3234224f3933f211849c3ada3242"
+  },
+  {
+    "path": "vite.config.ts",
+    "sha256": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016"
+  }
+]

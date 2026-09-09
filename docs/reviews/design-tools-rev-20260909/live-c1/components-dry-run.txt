@@ -1,0 +1,23 @@
+- Resolving items.
+┌ shadcn add input, switch, radio-group, dialog, field (dry run)
+│
+├ Files (8) +7 new, ~1 overwrite
+│ + src/components/ui/input.tsx        create
+│ + src/components/ui/switch.tsx       create
+│ + src/components/ui/radio-group.tsx  create
+│ ~ src/components/ui/button.tsx       overwrite
+│ + src/components/ui/label.tsx        create
+│ + src/components/ui/separator.tsx    create
+│ + src/components/ui/dialog.tsx       create
+│ + src/components/ui/field.tsx        create
+│
+├ Dependencies (1)
+│ + cn
+│
+⚠ 1 file will be overwritten.
+│
+│ 8 files, 1 dep
+│
+│ Run with --diff to view changes.
+│ Run with --view to view file contents.
+└ Run without --dry-run to apply.

@@ -1,0 +1,210 @@
+[
+  {
+    "path": "exports/F9YSQK.png",
+    "sha256": "d42f0f5e68e775801a30dac21415035572986848c9bc12dc57843d8b7647ddd8"
+  },
+  {
+    "path": "exports/KSPqv.png",
+    "sha256": "b512080fb9ce2261ede9beaaffb0ca389dd1624922c1d7b3083717cb2d54948a"
+  },
+  {
+    "path": "exports/Rn7JR.png",
+    "sha256": "a93f6f0ae13c01e416103a938ac6fda1fe7be3c93ef4311325dcc31d0e888964"
+  },
+  {
+    "path": "exports/U5hcvC.png",
+    "sha256": "a51db968adabef5fb261f9ecddb26c6c5779c924bb8bef13561af4a7ec010ee0"
+  },
+  {
+    "path": "exports/YinY7.png",
+    "sha256": "c352ceee21ffa9ddca7a8c9344fb954f2b6d85cee3ce2947525fc3d302c8cac3"
+  },
+  {
+    "path": "exports/ypajU.png",
+    "sha256": "43860d96d11e3901e8fde39aebb655fe934bf0b693a2ab075c4503e8c5797adb"
+  },
+  {
+    "path": "handoff.md",
+    "sha256": "0ff98ea824b43eb3281bb21987b0f67b79fe7b0f8eed3b5cf757f58e7b179412"
+  },
+  {
+    "path": "mcp-01.json",
+    "sha256": "b38bda257945a2a5005daf16b0f876cf0ab8f90e5ad670eb05f3321f07dfa37e"
+  },
+  {
+    "path": "mcp-02.json",
+    "sha256": "6643313f1bb5bee63f9fc6f799a0ca8030479686a61e131d67e5ec92e678474e"
+  },
+  {
+    "path": "mcp-03.json",
+    "sha256": "9e48df47c52e32d796aff0c068f82c208e31cfd2e1c6ea47ed69eba254933c54"
+  },
+  {
+    "path": "mcp-04.json",
+    "sha256": "b855e0935a6a524897f1bbffc45370819316c01a3828a485cf65a2a6027c8b36"
+  },
+  {
+    "path": "mcp-05.json",
+    "sha256": "2e811d344b3153a5a08124390d67d1cb3deeb57e92de44f241ec8f384aa920b6"
+  },
+  {
+    "path": "mcp-06.json",
+    "sha256": "5464bba8a094a1f8fd9967ae003941e3bc68f671105b82ee502a4229e7eeab0f"
+  },
+  {
+    "path": "mcp-07.json",
+    "sha256": "788b0c118f3a0e151fd0611cad2162766ea56a5c3326e8b757bfdd81f27decad"
+  },
+  {
+    "path": "mcp-08.json",
+    "sha256": "418491d7e31d7a5335963ac0fd196879f885f35ff357da448b35f7a60061766b"
+  },
+  {
+    "path": "mcp-09.json",
+    "sha256": "8b4c79993c681dfb1892eebbe4cf5df863d35db37e40a47b9445d98a2df766d7"
+  },
+  {
+    "path": "mcp-10.json",
+    "sha256": "e99e2b7d87c2be8c797424035499edeef42ff74ee4ae1890df43f0a1c04807c2"
+  },
+  {
+    "path": "mcp-11.json",
+    "sha256": "02183db067b3bf9f7dab9754576478fb1e24c27440df26a0553e223cae9cde85"
+  },
+  {
+    "path": "mcp-12.json",
+    "sha256": "42119d17cbc238606cb9b7f21cb2095fa6bb9426dcc0af961ff03547302e1720"
+  },
+  {
+    "path": "mcp-13.json",
+    "sha256": "220bab38f1a4478f35c7786ea61c9d133a3623ab2d463ba971ba14507bc1d61b"
+  },
+  {
+    "path": "mcp-14.json",
+    "sha256": "af287836f46573dac6a3608f1dffb005f9b2e6d71c0fbc8280ecdaa0d02edbc9"
+  },
+  {
+    "path": "mcp-15.json",
+    "sha256": "468e0fcf5d58d1587348ad964bfa76e0aa8249768c5d6cc2dde2b81e5d1ac44c"
+  },
+  {
+    "path": "mcp-16.json",
+    "sha256": "83de2a6fc078ac9555eb012edfdc021abe3340248f089c5812bec0b8a483325a"
+  },
+  {
+    "path": "mcp-17.json",
+    "sha256": "633580632f364ecf1d0a75b9143ef53322fbe9896331e1fa0f5d449ce1861b57"
+  },
+  {
+    "path": "mcp-18.json",
+    "sha256": "cc2374bdf982114f9d969fc2ec9930f990832c31b0578a39fb6ea4aeacf132c5"
+  },
+  {
+    "path": "mcp-19.json",
+    "sha256": "4107db35fb10aab35fb16ba288326c03486cfe5cb765040a060e2a81a83dd414"
+  },
+  {
+    "path": "mcp-20.json",
+    "sha256": "782cfedfab48b57bfc5d134d8bc6dc04bad0a13808c218f2d612d2ca8ac47635"
+  },
+  {
+    "path": "mcp-21.json",
+    "sha256": "da7a8e9be8b981d03b9f63edf49a5ab8a6d25c9e76c11b7ba062df291b2a453d"
+  },
+  {
+    "path": "mcp-22.json",
+    "sha256": "cf1bd3962ba2386bf39163ebb3287a053a1394b940577a7441571897c82878ab"
+  },
+  {
+    "path": "mcp-23.json",
+    "sha256": "51182b5482148fb96b60cf773509290f930c67e2980b618cc0359a86a13657ac"
+  },
+  {
+    "path": "mcp-24.json",
+    "sha256": "77acd02586b3f2f4c21d62a52e6dea150379fa20622d8d9b4430d5e95d65478b"
+  },
+  {
+    "path": "mcp-25.json",
+    "sha256": "eb100cee20e5a30181dd3ee288e08ddbaad88216e14825d11e626682db452550"
+  },
+  {
+    "path": "mcp-26.json",
+    "sha256": "db1b62ddb5e856945e29b1d146ca9a78792ea317d620366bbb260bf5fb59382b"
+  },
+  {
+    "path": "mcp-27.json",
+    "sha256": "0f35e51034a488923e0f67d692272591f2b920b91652505936494de7b4189817"
+  },
+  {
+    "path": "mcp-28.json",
+    "sha256": "00a168ea529a15eb4dd7f26e6a13a5d2df077fc78ee05a7e3e336decd636f9e6"
+  },
+  {
+    "path": "result.md",
+    "sha256": "f9c085d2ac5e93844f3663517d6fb94c2e3736acb4c3034179083d7f6f543b8f"
+  },
+  {
+    "path": "screenshots/mcp-06-1.png",
+    "sha256": "e6e9fda4eced3e6ad8405a1b65e9773f81d3b248eedec406ab1902021199aa7b"
+  },
+  {
+    "path": "screenshots/mcp-07-1.png",
+    "sha256": "177b693d834769e3296929d233822fc4cfc0f2b2fb8890c1b5d1b419ef3bd48e"
+  },
+  {
+    "path": "screenshots/mcp-09-1.png",
+    "sha256": "09722bbcfc437d9694debf520db66c2eb5b682f5047c3adb0b8c63de2e22793f"
+  },
+  {
+    "path": "screenshots/mcp-09-2.png",
+    "sha256": "3ab305a1045c6e1cc5600389144f00f19b5d462f0f54682483c275891b7b8577"
+  },
+  {
+    "path": "screenshots/mcp-16-1.png",
+    "sha256": "0af084610b468652be3bca4537dfd238cbe3ad1b1397669c90f39a944c9d4567"
+  },
+  {
+    "path": "screenshots/mcp-16-2.png",
+    "sha256": "3ab305a1045c6e1cc5600389144f00f19b5d462f0f54682483c275891b7b8577"
+  },
+  {
+    "path": "screenshots/mcp-17-1.png",
+    "sha256": "0af084610b468652be3bca4537dfd238cbe3ad1b1397669c90f39a944c9d4567"
+  },
+  {
+    "path": "screenshots/mcp-17-2.png",
+    "sha256": "3ab305a1045c6e1cc5600389144f00f19b5d462f0f54682483c275891b7b8577"
+  },
+  {
+    "path": "screenshots/mcp-17-3.png",
+    "sha256": "524d684c5c01dd2e7dd4c0144c6fca16e0d72ac7a9eb1d6aae6ca3b41e19bc58"
+  },
+  {
+    "path": "screenshots/mcp-20-1.png",
+    "sha256": "0af084610b468652be3bca4537dfd238cbe3ad1b1397669c90f39a944c9d4567"
+  },
+  {
+    "path": "screenshots/mcp-20-2.png",
+    "sha256": "3ab305a1045c6e1cc5600389144f00f19b5d462f0f54682483c275891b7b8577"
+  },
+  {
+    "path": "screenshots/mcp-24-1.png",
+    "sha256": "8c4e05a4b5438527bda45f3b87806f97c29577f5c9fe42b65a586597a7171d80"
+  },
+  {
+    "path": "screenshots/mcp-27-1.png",
+    "sha256": "02c322f5ba5b2bf9ae6344b03dc403d96dd28516dd887d9650f14d994b664f36"
+  },
+  {
+    "path": "screenshots/mcp-27-2.png",
+    "sha256": "0f9fec2e30559276b547a421612f29faf2b7f295e65375793ffeb508daebaf86"
+  },
+  {
+    "path": "screenshots/mcp-27-3.png",
+    "sha256": "14e997ced28ee7f934e22f3061874442bb5d07c202e6818d10c38987aeb76605"
+  },
+  {
+    "path": "screenshots/mcp-28-1.png",
+    "sha256": "010986d455b7c68387a9940a3e9c9620ea8ee0675fed69872d7e83411257524a"
+  }
+]

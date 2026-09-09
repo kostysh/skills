@@ -1,0 +1,136 @@
+diff -ru /tmp/design-tools-rev-20260909/base-b0-evidence/before/src/App.tsx src/App.tsx
+--- /tmp/design-tools-rev-20260909/base-b0-evidence/before/src/App.tsx	2026-09-09 14:10:12.263303525 +0200
++++ src/App.tsx	2026-09-09 14:14:56.485601351 +0200
+@@ -1,20 +1,102 @@
++import { useRef, useState, type FormEvent } from "react"
++import { Bell, Check } from "lucide-react"
+ import { Button } from "~ui/components/ui/button"
++import { Input } from "~ui/components/ui/input"
++import { Switch } from "~ui/components/ui/switch"
++import { RadioGroup, RadioGroupItem } from "~ui/components/ui/radio-group"
++import { Field, FieldContent, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSet } from "~ui/components/ui/field"
++import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "~ui/components/ui/dialog"
++
++type Settings = { email: string; enabled: boolean; frequency: "daily" | "weekly" }
+ 
+ export function App() {
++  const [draft, setDraft] = useState<Settings>({ email: "", enabled: true, frequency: "daily" })
++  const [error, setError] = useState("")
++  const [pending, setPending] = useState<Settings | null>(null)
++  const [applied, setApplied] = useState<Settings | null>(null)
++  const [open, setOpen] = useState(false)
++  const emailRef = useRef<HTMLInputElement>(null)
++  const reviewRef = useRef<HTMLButtonElement>(null)
++  const cancelRef = useRef<HTMLButtonElement>(null)
++
++  function review(event: FormEvent<HTMLFormElement>) {
++    event.preventDefault()
++    if (!emailRef.current?.validity.valid) {
++      setError(draft.email.trim() ? "Enter a valid email address." : "Email is required.")
++      emailRef.current?.focus()
++      return
++    }
++    setError("")
++    setPending({ ...draft, email: draft.email.trim() })
++    setOpen(true)
++  }
++
+   return (
+-    <div className="flex min-h-svh p-6">
+-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
+-        <div>
+-          <h1 className="font-medium">Project ready!</h1>
+-          <p>You may now add components and start building.</p>
+-          <p>We&apos;ve already added the button component for you.</p>
+-          <Button className="mt-2">Button</Button>
+-        </div>
+-        <div className="font-mono text-xs text-muted-foreground">
+-          (Press <kbd>d</kbd> to toggle dark mode)
++    <main className="min-h-svh bg-muted/30 px-5 py-10 sm:py-20">
++      <div className="mx-auto max-w-xl">
++        <header className="mb-8">
++          <div className="mb-5 flex size-11 items-center justify-center rounded-xl border bg-background"><Bell aria-hidden="true" className="size-5" /></div>
++          <p className="mb-2 text-xs font-medium tracking-widest text-muted-foreground uppercase">Preferences</p>
++          <h1 className="text-3xl font-semibold tracking-tight">Notification settings</h1>
++          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">Choose where and how often you hear from us.</p>
++        </header>
++        <form noValidate onSubmit={review} className="rounded-2xl border bg-card p-5 shadow-sm sm:p-8">
++          <FieldGroup>
++            <Field data-invalid={!!error}>
++              <FieldLabel htmlFor="email">Email address <span className="font-normal text-muted-foreground">(required)</span></FieldLabel>
++              <Input ref={emailRef} id="email" name="email" type="email" autoComplete="email" required value={draft.email} onChange={(event) => { setDraft({ ...draft, email: event.target.value }); setError("") }} aria-invalid={!!error} aria-describedby={error ? "email-help email-error" : "email-help"} placeholder="you@example.com" className="h-11" />
++              <FieldDescription id="email-help">Your preferred address for notification updates.</FieldDescription>
++              {error && <FieldError id="email-error">{error}</FieldError>}
++            </Field>
++            <Field orientation="horizontal" className="border-y py-5">
++              <FieldContent>
++                <FieldLabel htmlFor="notifications">Notifications</FieldLabel>
++                <FieldDescription id="notifications-help">Receive updates at your chosen frequency.</FieldDescription>
++              </FieldContent>
++              <Switch id="notifications" checked={draft.enabled} onCheckedChange={(enabled) => setDraft({ ...draft, enabled })} aria-describedby="notifications-help" />
++            </Field>
++            <FieldSet>
++              <FieldLegend id="frequency-label" variant="label">Delivery frequency</FieldLegend>
++              <RadioGroup value={draft.frequency} onValueChange={(value) => { if (value === "daily" || value === "weekly") setDraft({ ...draft, frequency: value }) }} disabled={!draft.enabled} aria-labelledby="frequency-label" aria-describedby="frequency-help" className="grid gap-3 sm:grid-cols-2">
++                {(["daily", "weekly"] as const).map((frequency) => (
++                  <Field key={frequency} orientation="horizontal" data-disabled={!draft.enabled} className="rounded-lg border px-4 py-3">
++                    <RadioGroupItem id={frequency} value={frequency} />
++                    <FieldLabel htmlFor={frequency} className="py-1">{frequency === "daily" ? "Daily" : "Weekly"}</FieldLabel>
++                  </Field>
++                ))}
++              </RadioGroup>
++              <FieldDescription id="frequency-help">{draft.enabled ? "Choose one schedule for your updates." : "Turn notifications on to change the frequency."}</FieldDescription>
++            </FieldSet>
++            <Button ref={reviewRef} type="submit" variant="brand" size="lg" className="mt-2 h-11 w-full">Review changes</Button>
++          </FieldGroup>
++        </form>
++        <div role="status" aria-atomic="true" className="mt-5">
++          {applied && <section className="rounded-xl border bg-background p-5 text-sm">
++            <p className="mb-2 flex items-center gap-2 font-medium"><Check aria-hidden="true" className="size-4" />Settings applied</p>
++            <p className="break-words text-muted-foreground">{applied.email}</p>
++            <p className="mt-1 text-muted-foreground">Notifications {applied.enabled ? "on" : "off"} · {applied.enabled ? (applied.frequency === "daily" ? "Daily delivery" : "Weekly delivery") : `Delivery paused (${applied.frequency} preference retained)`}</p>
++          </section>}
+         </div>
++        <p className="mt-5 text-center text-xs text-muted-foreground">Demo settings stay in this page. No emails are sent.</p>
+       </div>
+-    </div>
++      <Dialog open={open} onOpenChange={setOpen}>
++        <DialogContent initialFocus={cancelRef} finalFocus={reviewRef} showCloseButton={false}>
++          <DialogHeader>
++            <DialogTitle>Review notification settings</DialogTitle>
++            <DialogDescription>Confirm to apply these preferences to this page.</DialogDescription>
++          </DialogHeader>
++          {pending && <dl className="grid gap-4 py-2">
++            <div><dt className="text-muted-foreground">Email address</dt><dd className="mt-1 break-words font-medium">{pending.email}</dd></div>
++            <div><dt className="text-muted-foreground">Notifications</dt><dd className="mt-1 font-medium">{pending.enabled ? "On" : "Off"}</dd></div>
++            <div><dt className="text-muted-foreground">Delivery frequency</dt><dd className="mt-1 font-medium">{pending.frequency === "daily" ? "Daily" : "Weekly"}{!pending.enabled && " (paused)"}</dd></div>
++          </dl>}
++          <DialogFooter>
++            <DialogClose render={<Button ref={cancelRef} variant="outline" />}>Cancel</DialogClose>
++            <Button onClick={() => { if (pending) { setApplied(pending); setOpen(false) } }}>Confirm</Button>
++          </DialogFooter>
++        </DialogContent>
++      </Dialog>
++    </main>
+   )
+ }
+ 
+diff -ru /tmp/design-tools-rev-20260909/base-b0-evidence/before/src/components/ui/button.tsx src/components/ui/button.tsx
+--- /tmp/design-tools-rev-20260909/base-b0-evidence/before/src/components/ui/button.tsx	2026-09-09 14:10:12.263480640 +0200
++++ src/components/ui/button.tsx	2026-09-09 14:14:56.485567086 +0200
+@@ -3,7 +3,7 @@
+ import { cn } from "cn"
+ 
+ const buttonVariants = cva(
+-  "group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
++  "group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+   {
+     variants: {
+       variant: {
+Only in src/components/ui: dialog.tsx
+Only in src/components/ui: field.tsx
+Only in src/components/ui: input.tsx
+Only in src/components/ui: label.tsx
+Only in src/components/ui: radio-group.tsx
+Only in src/components/ui: separator.tsx
+Only in src/components/ui: switch.tsx

@@ -1,0 +1,7 @@
+Installed command: pnpm exec shadcn add input field switch radio-group dialog
+Registry check succeeded.
+Interactive prompt: The file button.tsx already exists. Would you like to overwrite? (y/N)
+Answered: n
+Created 7 files: input.tsx, switch.tsx, radio-group.tsx, label.tsx, separator.tsx, field.tsx, dialog.tsx.
+Skipped existing button.tsx. CLI exited 0.
+Earlier attempt with -y was rejected by automatic review before execution due overwrite risk.

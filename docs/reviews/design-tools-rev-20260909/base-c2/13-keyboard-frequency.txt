@@ -1,0 +1,29 @@
+"<span data-checked=\"\" role=\"radio\" tabindex=\"0\" aria-checked=\"true\" data-composite-item-active=\"\" id=\"base-ui-_r_5_\" data-slot=\"radio-group-item\" class=\"group/radio-group-item peer relative flex aspect-square size-4 shrink-0 rounded-full border border-input outline-none group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 aria-invalid:aria-checked:border-primary dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:border-primary data-checked:bg-primary data-checked:text-primary-foreground group-has-[:focus-visible]/field-label:data-checked:border-primary dark:data-checked:bg-primary\" aria-labelledby=\"daily-label\" data-disabled=\"\" aria-disabled=\"true\"><span data-checked=\"\" data-slot=\"radio-group-indicator\" class=\"flex size-4 items-center justify-center\" data-disabled=\"\"><span class=\"absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary-foreground\"></span></span></span>"
+✓ Done
+"<button type=\"submit\" tabindex=\"0\" data-slot=\"button\" class=\"group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 [&amp;_svg:not([class*='size-'])]:size-4 bg-primary text-primary-foreground font-bold h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2\">Review changes <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-arrow-right\" aria-hidden=\"true\" data-icon=\"inline-end\"><path d=\"M5 12h14\"></path><path d=\"m12 5 7 7-7 7\"></path></svg></button>"
+- generic "PreferencesNotification settingsChoose where and how often you receive updates.Email address (requir" [ref=e1] clickable [onclick]
+  - heading "Notification settings" [level=1, ref=e2]
+  - textbox "Email address (required)" [required, ref=e4]: trial@example.com
+  - switch "Enable notifications" [checked=false, ref=e5]
+  - radio "Daily A daily catch-up" [checked=true, disabled, ref=e6]
+  - radio "Weekly One weekly digest" [checked=false, disabled, ref=e7]
+  - button "Review changes" [ref=e3]
+✓ Done
+- generic "PreferencesNotification settingsChoose where and how often you receive updates.Email address (requir" [ref=e1] clickable [onclick]
+  - heading "Notification settings" [level=1, ref=e2]
+  - textbox "Email address (required)" [required, ref=e4]: trial@example.com
+  - switch "Enable notifications" [checked=true, ref=e5]
+  - radio "Daily A daily catch-up" [checked=true, ref=e6]
+  - radio "Weekly One weekly digest" [checked=false, ref=e7]
+  - button "Review changes" [ref=e3]
+✓ Done
+✓ Done
+- generic "PreferencesNotification settingsChoose where and how often you receive updates.Email address (requir" [ref=e1] clickable [onclick]
+  - heading "Notification settings" [level=1, ref=e2]
+  - textbox "Email address (required)" [required, ref=e4]: trial@example.com
+  - switch "Enable notifications" [checked=true, ref=e5]
+  - radio "Daily A daily catch-up" [checked=false, ref=e6]
+  - radio "Weekly One weekly digest" [checked=true, ref=e7]
+  - button "Review changes" [ref=e3]
+✓ Done
+"<button type=\"submit\" tabindex=\"0\" data-slot=\"button\" class=\"group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&amp;_svg]:pointer-events-none [&amp;_svg]:shrink-0 [&amp;_svg:not([class*='size-'])]:size-4 bg-primary text-primary-foreground font-bold h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2\">Review changes <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-arrow-right\" aria-hidden=\"true\" data-icon=\"inline-end\"><path d=\"M5 12h14\"></path><path d=\"m12 5 7 7-7 7\"></path></svg></button>"

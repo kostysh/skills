@@ -1,0 +1,4 @@
+
+> fixture-base@0.0.1 typecheck /tmp/design-tools-rev-20260909/joint-base-project
+> tsc -b --pretty false
+

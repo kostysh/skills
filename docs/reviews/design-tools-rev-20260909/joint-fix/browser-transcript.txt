@@ -1,0 +1,178 @@
+agent-browser --session dtr-joint-fix open http://127.0.0.1:43869 
+✓ vite-app
+  http://127.0.0.1:43869/
+agent-browser --session dtr-joint-fix snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]: alex@example.test
+  - switch "Enable notifications" [checked=true, ref=e6]
+  - radio "Daily" [checked=false, ref=e7]
+  - radio "Weekly" [checked=true, ref=e8]
+  - button "Review changes" [ref=e4]
+agent-browser --session dtr-joint-fix focus @e4 
+✓ Done
+agent-browser --session dtr-joint-fix press Enter 
+✓ Done
+agent-browser --session dtr-joint-fix wait --fn document.activeElement.textContent\ ===\ \"Cancel\" 
+true
+agent-browser --session dtr-joint-fix eval \(\{stage:\"original-path-open\"\,focus:document.activeElement.textContent\,tag:document.activeElement.tagName\}\) 
+{
+  "focus": "Cancel",
+  "stage": "original-path-open",
+  "tag": "BUTTON"
+}
+agent-browser --session dtr-joint-fix press Escape 
+✓ Done
+agent-browser --session dtr-joint-fix wait --fn \!document.querySelector\(\"\[role=dialog\]\"\)\ \&\&\ document.activeElement.textContent\ ===\ \"Review\ changes\" 
+true
+agent-browser --session dtr-joint-fix eval \(\{stage:\"original-path-escape\"\,focus:document.activeElement.textContent\,tag:document.activeElement.tagName\,dialog:\!\!document.querySelector\(\"\[role=dialog\]\"\)\}\) 
+{
+  "dialog": false,
+  "focus": "Review changes",
+  "stage": "original-path-escape",
+  "tag": "BUTTON"
+}
+agent-browser --session dtr-joint-fix screenshot /tmp/design-tools-rev-20260909/joint-fix-evidence/escape-focus.png 
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/joint-fix-evidence/escape-focus.png
+agent-browser --session dtr-joint-fix press Enter 
+✓ Done
+agent-browser --session dtr-joint-fix wait --fn document.activeElement.textContent\ ===\ \"Cancel\" 
+true
+agent-browser --session dtr-joint-fix press Enter 
+✓ Done
+agent-browser --session dtr-joint-fix wait --fn \!document.querySelector\(\"\[role=dialog\]\"\)\ \&\&\ document.activeElement.textContent\ ===\ \"Review\ changes\" 
+true
+agent-browser --session dtr-joint-fix eval \(\{stage:\"cancel\"\,focus:document.activeElement.textContent\,tag:document.activeElement.tagName\}\) 
+{
+  "focus": "Review changes",
+  "stage": "cancel",
+  "tag": "BUTTON"
+}
+agent-browser --session dtr-joint-fix press Enter 
+✓ Done
+agent-browser --session dtr-joint-fix wait --fn document.activeElement.textContent\ ===\ \"Cancel\" 
+true
+agent-browser --session dtr-joint-fix press Tab 
+✓ Done
+agent-browser --session dtr-joint-fix wait --fn document.activeElement.textContent\ ===\ \"Confirm\ changes\" 
+true
+agent-browser --session dtr-joint-fix press Enter 
+✓ Done
+agent-browser --session dtr-joint-fix wait --fn \!document.querySelector\(\"\[role=dialog\]\"\)\ \&\&\ document.activeElement.textContent\ ===\ \"Changes\ applied\" 
+true
+agent-browser --session dtr-joint-fix eval \(\{stage:\"confirm\"\,focus:document.activeElement.textContent\,tag:document.activeElement.tagName\}\) 
+{
+  "focus": "Changes applied",
+  "stage": "confirm",
+  "tag": "H2"
+}
+agent-browser --session dtr-joint-fix snapshot 
+- generic [ref=e1] clickable [onclick]
+  - main
+    - sectionheader
+      - paragraph
+        - StaticText "Account / Preferences"
+      - heading "Notifications" [level=1, ref=e4]
+      - paragraph
+        - StaticText "Make room for the updates you want."
+    - status
+      - StaticText "Changes applied locally. Notifications on. Weekly frequency."
+    - heading "Changes applied" [level=2, ref=e2]
+    - StaticText "Your preferences are updated for this local demo."
+    - DescriptionList
+      - term "Email address"
+      - definition
+        - StaticText "alex@example.test"
+      - term "Notifications"
+      - definition
+        - StaticText "On"
+      - term "Frequency"
+      - definition
+        - StaticText "Weekly"
+    - button "Edit preferences" [ref=e3]
+    - paragraph
+      - StaticText "Local demo · No email is sent. Reload resets preferences."
+agent-browser --session dtr-joint-fix screenshot /tmp/design-tools-rev-20260909/joint-fix-evidence/confirm-result.png 
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/joint-fix-evidence/confirm-result.png
+agent-browser --session dtr-joint-fix press Tab 
+✓ Done
+agent-browser --session dtr-joint-fix wait --fn document.activeElement.textContent\ ===\ \"Edit\ preferences\" 
+true
+agent-browser --session dtr-joint-fix press Enter 
+✓ Done
+agent-browser --session dtr-joint-fix snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]: alex@example.test
+  - switch "Enable notifications" [checked=true, ref=e6]
+  - radio "Daily" [checked=false, ref=e7]
+  - radio "Weekly" [checked=true, ref=e8]
+  - button "Review changes" [disabled, ref=e4]
+agent-browser --session dtr-joint-fix focus @e8 
+✓ Done
+agent-browser --session dtr-joint-fix press ArrowUp 
+✓ Done
+agent-browser --session dtr-joint-fix snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]: alex@example.test
+  - switch "Enable notifications" [checked=true, ref=e6]
+  - radio "Daily" [checked=true, ref=e7]
+  - radio "Weekly" [checked=false, ref=e8]
+  - button "Review changes" [ref=e4]
+agent-browser --session dtr-joint-fix press Tab 
+✓ Done
+agent-browser --session dtr-joint-fix wait --fn document.activeElement.textContent\ ===\ \"Review\ changes\" 
+true
+agent-browser --session dtr-joint-fix press Enter 
+✓ Done
+agent-browser --session dtr-joint-fix wait --fn document.activeElement.textContent\ ===\ \"Cancel\" 
+true
+agent-browser --session dtr-joint-fix snapshot 
+- generic
+  - dialog "Review changes"
+    - heading "Review changes" [level=2, ref=e1]
+    - paragraph
+      - StaticText "Confirm these preferences for this local demo. No email will be sent."
+    - DescriptionList
+      - term "Email address"
+      - definition
+        - StaticText "alex@example.test"
+      - term "Notifications"
+      - definition
+        - StaticText "On"
+      - term "Frequency"
+      - definition
+        - StaticText "Daily"
+    - paragraph
+      - StaticText "Frequency: Weekly → Daily"
+    - button "Cancel" [ref=e2]
+    - button "Confirm changes" [ref=e3]
+agent-browser --session dtr-joint-fix press Enter 
+✓ Done
+agent-browser --session dtr-joint-fix wait --fn \!document.querySelector\(\"\[role=dialog\]\"\)\ \&\&\ document.activeElement.textContent\ ===\ \"Review\ changes\" 
+true
+agent-browser --session dtr-joint-fix eval \(\{stage:\"after-apply-edit-cancel\"\,focus:document.activeElement.textContent\,tag:document.activeElement.tagName\,dialog:\!\!document.querySelector\(\"\[role=dialog\]\"\)\}\) 
+{
+  "dialog": false,
+  "focus": "Review changes",
+  "stage": "after-apply-edit-cancel",
+  "tag": "BUTTON"
+}
+agent-browser --session dtr-joint-fix snapshot -i 
+- generic "Account / PreferencesNotificationsMake room for the updates you want.Email notificationsChoose what" [ref=e1] clickable [onclick]
+  - heading "Notifications" [level=1, ref=e3]
+  - heading "Email notifications" [level=2, ref=e2]
+  - textbox "Email address" [required, ref=e5]: alex@example.test
+  - switch "Enable notifications" [checked=true, ref=e6]
+  - radio "Daily" [checked=true, ref=e7]
+  - radio "Weekly" [checked=false, ref=e8]
+  - button "Review changes" [ref=e4]
+agent-browser --session dtr-joint-fix screenshot /tmp/design-tools-rev-20260909/joint-fix-evidence/after-apply-cancel.png 
+✓ Screenshot saved to /tmp/design-tools-rev-20260909/joint-fix-evidence/after-apply-cancel.png
+agent-browser --session dtr-joint-fix errors 
+agent-browser --session dtr-joint-fix close 
+✓ Browser closed

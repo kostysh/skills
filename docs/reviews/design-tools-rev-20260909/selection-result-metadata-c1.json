@@ -1,0 +1,50 @@
+[
+  {
+    "request_id": "S1",
+    "primary_skills": ["shadcn"],
+    "necessary_handoffs": [],
+    "ownership_rationale": "shadcn owns adding the official registry Dialog to the configured project while preserving its existing component variants."
+  },
+  {
+    "request_id": "S2",
+    "primary_skills": ["pencil-dev"],
+    "necessary_handoffs": [],
+    "ownership_rationale": "pencil-dev owns creating the reusable design and its connected instance in the open Pencil document and exporting the PNG through Pencil MCP."
+  },
+  {
+    "request_id": "S3",
+    "primary_skills": ["frontend-design"],
+    "necessary_handoffs": [],
+    "ownership_rationale": "frontend-design owns the requested dashboard design strategy, including art direction, typography and hierarchy, without requiring implementation."
+  },
+  {
+    "request_id": "S4",
+    "primary_skills": ["react-components-engineer"],
+    "necessary_handoffs": [],
+    "ownership_rationale": "react-components-engineer owns reusable React component lifecycle cleanup and ref behavior, independently of any UI library."
+  },
+  {
+    "request_id": "S5",
+    "primary_skills": ["react-spa-engineer"],
+    "necessary_handoffs": [],
+    "ownership_rationale": "react-spa-engineer owns integrating form validation, pending state and retry with the settings flow's SPA runtime state."
+  },
+  {
+    "request_id": "S6",
+    "primary_skills": ["web-ui-reviewer"],
+    "necessary_handoffs": [],
+    "ownership_rationale": "web-ui-reviewer owns a scoped read-only UX and accessibility assessment with findings and evidence limits."
+  },
+  {
+    "request_id": "S7",
+    "primary_skills": ["agent-browser"],
+    "necessary_handoffs": [],
+    "ownership_rationale": "agent-browser owns opening the rendered site, submitting its form and checking the requested visible terminal state."
+  },
+  {
+    "request_id": "S8",
+    "primary_skills": ["pencil-dev"],
+    "necessary_handoffs": ["frontend-design", "shadcn", "agent-browser"],
+    "ownership_rationale": "pencil-dev owns the Pencil screen, frontend-design translates the accepted design into the web interface, shadcn owns its UI component integration, and agent-browser verifies the rendered browser result."
+  }
+]

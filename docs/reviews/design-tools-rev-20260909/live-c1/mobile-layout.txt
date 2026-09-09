@@ -1,0 +1,1 @@
+"{\"viewport\":390,\"documentWidth\":390,\"status\":\"Settings applied for this session.Last applied: reviewer@example.com. Notifications on. Delivery: weekly.\"}"

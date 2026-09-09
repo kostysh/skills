@@ -1,0 +1,21 @@
+214:             onKeyDown: (0, import_primitive.composeEventHandlers)(props.onKeyDown, (event) => {
+215:               if (event.key === "Tab" && event.shiftKey) {
+216:                 context.onItemShiftTab();
+217:                 return;
+218:               }
+219:               if (event.target !== event.currentTarget) return;
+220:               const focusIntent = getFocusIntent(event, context.orientation, context.dir);
+221:               if (focusIntent !== void 0) {
+222:                 if (event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) return;
+223:                 event.preventDefault();
+224:                 const items = getItems().filter((item) => item.focusable);
+225:                 let candidateNodes = items.map((item) => item.ref.current);
+226:                 if (focusIntent === "last") candidateNodes.reverse();
+227:                 else if (focusIntent === "prev" || focusIntent === "next") {
+228:                   if (focusIntent === "prev") candidateNodes.reverse();
+229:                   const currentIndex = candidateNodes.indexOf(event.currentTarget);
+230:                   candidateNodes = context.loop ? wrapArray(candidateNodes, currentIndex + 1) : candidateNodes.slice(currentIndex + 1);
+231:                 }
+232:                 setTimeout(() => focusFirst(candidateNodes));
+233:               }
+234:             }),

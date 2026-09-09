@@ -1,0 +1,15 @@
+{
+  "tool": "execute",
+  "args": {
+    "filePath": "/tmp/design-tools-rev-20260909/pencil-live-test.pen",
+    "input": "Move(\"uIFPK\",\"KSPqv\");Update(\"uIFPK\",{name:\"Confirmation overlay\",x:0,y:0,placeholder:false});Move(\"AjKvN\",document);Update(\"AjKvN\",{name:\"A · Temporary mobile dialog verification\",x:6400,y:2300,placeholder:true});"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "OK\n"
+      }
+    ]
+  }
+}

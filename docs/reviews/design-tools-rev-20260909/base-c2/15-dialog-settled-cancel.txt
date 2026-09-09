@@ -1,0 +1,23 @@
+true
+"{\"focus\":\"Review changes \",\"dialogs\":0,\"status\":\"\"}"
+- generic "PreferencesNotification settingsChoose where and how often you receive updates.Email address (requir" [ref=e1] clickable [onclick]
+  - heading "Notification settings" [level=1, ref=e2]
+  - textbox "Email address (required)" [required, ref=e4]: trial@example.com
+  - switch "Enable notifications" [checked=true, ref=e5]
+  - radio "Daily A daily catch-up" [checked=false, ref=e6]
+  - radio "Weekly One weekly digest" [checked=true, ref=e7]
+  - button "Review changes" [ref=e3]
+✓ Done
+true
+- generic "PreferencesNotification settingsChoose where and how often you receive updates.Email address (requir" [ref=e1] clickable [onclick]
+- heading "Review notification settings" [level=2, ref=e2]
+- button "Cancel" [ref=e3]
+- button "Confirm" [ref=e4]
+✓ Done
+true
+✓ Done
+true
+"{\"focus\":\"Cancel\",\"inDialog\":true}"
+✓ Done
+true
+"{\"focus\":\"Review changes \",\"email\":\"trial@example.com\",\"status\":\"\"}"

@@ -1,0 +1,4 @@
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess                                 
+LISTEN 0      10         127.0.0.1:35691      0.0.0.0:*    users:(("chrome",pid=242738,fd=87))    
+LISTEN 0      511        127.0.0.1:43865      0.0.0.0:*    users:(("MainThread",pid=240622,fd=21))
+✓ Browser closed

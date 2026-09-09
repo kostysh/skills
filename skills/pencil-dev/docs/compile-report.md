@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.2.0`
+- Skill source version: `0.2.1`
 
 ## Source files
 - `agents/openai.yaml`
@@ -18,6 +18,7 @@ Generated from `skill.yaml`.
 
 ## Required references
 - `references/unified-mcp-api.md`
+- `references/component-libraries.md`
 
 ## Warnings
 - none

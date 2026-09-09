@@ -1,0 +1,13 @@
+{
+  "kind": "explicitly controlled fixture defect, separate from blind skill trials",
+  "authority": "accepted plan allows controlled focus defect if no natural application finding; initial implementation and independent UI checks had no supported defect",
+  "file": "src/App.tsx",
+  "before_sha256": "0a5cacbb934b782d671a6395e17996147165d76994acd18f1686bcc9aff95080",
+  "after_sha256": "19e033b13f67a14452c5b3667bd088611de48a1f4dfcb89ae377ca74fd73cb19",
+  "replacement": {
+    "from": "finalFocus={() => showResult ? resultRef.current : reviewRef.current}",
+    "to": "finalFocus={false}"
+  },
+  "api_basis": "official Base UI Dialog.Popup finalFocus=false does not move focus; actual failure requires browser observation",
+  "skill_sources_changed": false
+}

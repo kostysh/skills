@@ -1,0 +1,15 @@
+{
+  "tool": "execute",
+  "args": {
+    "filePath": "/tmp/design-tools-rev-20260909/pencil-live-test.pen",
+    "input": "Get(\"AjKvN\",(n,c)=>c.problems&&Print(n.id,n.name,c.bounds,c.problems));Move(\"AjKvN\",\"Rn7JR\");Update(\"AjKvN\",{name:\"Confirmation overlay\",x:0,y:0,placeholder:false});Update(\"KSPqv\",{placeholder:false});Update(\"Rn7JR\",{placeholder:false});"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "OK\n"
+      }
+    ]
+  }
+}
