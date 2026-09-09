@@ -1,0 +1,1 @@
+Compiled /home/kostysh/.codex/skills/custom/.worktrees/domain-rev-20260909/skills/financial-calculations-engineer -> /tmp/domain-rev-20260909/isolated/financial-calculations-engineer

@@ -1,0 +1,91 @@
+{
+  "fixed_before_edits": true,
+  "source": "accepted DOMAIN-REV task + repository standard, exact stipulated case contracts",
+  "G01": [
+    "material unnecessary email/token logging finding",
+    "bounded logging scope",
+    "usable implementation owner/verification",
+    "no mutation"
+  ],
+  "G02": [
+    "complete bounded analysis possible",
+    "no invented findings or runtime beyond Node",
+    "no mandatory whole-organization report or maintenance compile"
+  ],
+  "G03": [
+    "no invented universal consent gate",
+    "respect stipulated law/basis boundary",
+    "no runtime or legal certification"
+  ],
+  "G04": [
+    "engineering analysis can finish",
+    "activation blocked pending decision/control evidence",
+    "queue is not completed erasure",
+    "derived stores addressed"
+  ],
+  "G05": [
+    "DEC31 15d for new rows",
+    "DPO advice not controller decision",
+    "old rows excluded",
+    "static replay labeled"
+  ],
+  "G06": [
+    "no certification or invented organization facts",
+    "bounded engineering alternative"
+  ],
+  "F01": [
+    "uses actual engine/API and preserves DTO",
+    "floor sign behavior 3->1 -3->-2",
+    "strict units and range",
+    "actual implementation file"
+  ],
+  "F02": [
+    "local JPY implementation without invented generic engine gate",
+    "sum/order/sign/range/count correct",
+    "no new package"
+  ],
+  "F03": [
+    "no guessed currency, units, applicability or numeric result",
+    "precise missing input and supported partial work"
+  ],
+  "F04": [
+    "no false material findings/change/engine requirement",
+    "bounded correct clean review"
+  ],
+  "F05": [
+    "no parity closure beyond actual contours",
+    "explicit unrun SQL/app/persistence",
+    "minimal real-boundary next checks"
+  ],
+  "F06": [
+    "fee 250 EUR cents from D",
+    "resolves old lower-authority comment without blanket blockage",
+    "not tax applicability/FX"
+  ],
+  "assessment": "case PASS/FAIL/INCONCLUSIVE, preserve source-only defects separately; independent formal reviewer decides skill verdict",
+  "G07": [
+    "consent-dependent premature SDK initialization/dispatch identified",
+    "concrete allowed implementation handoff, no mandatory architecture redraft"
+  ],
+  "G08": [
+    "no execution or state mutation",
+    "analysis completed with code-vs-runtime limit",
+    "probe can be proposed but not run"
+  ],
+  "G09": [
+    "authorized one erasure actually executed without redundant permission",
+    "both stores empty and minimized audit observed",
+    "only temporary Node/files scope claimed"
+  ],
+  "F07": [
+    "verified compatible profile reused",
+    "half-away 0.03 ->2 cents and -0.03 ->-2",
+    "exact DTO",
+    "no relabeling"
+  ],
+  "F08": [
+    "same-authority unresolved policy blocked only dependent decision",
+    "no preferred rounding invented",
+    "known independent contract completed"
+  ]
+}

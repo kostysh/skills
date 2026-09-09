@@ -1,0 +1,16 @@
+{
+  "command": "node cases/control.mjs",
+  "exit": 0,
+  "stderr": "",
+  "observed": {
+    "sourceRows": 0,
+    "exportRows": 0,
+    "events": [
+      {
+        "kind": "expiry",
+        "count": 1
+      }
+    ]
+  },
+  "scope": "temporary Node in-memory fixture; not a deployed service or database"
+}

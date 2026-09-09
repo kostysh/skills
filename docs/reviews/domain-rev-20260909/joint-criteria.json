@@ -1,0 +1,75 @@
+{
+  "id": "J01",
+  "fixed_before_candidate_edits": true,
+  "owners": "GDPR and finance independently produce constraints; actual spec consumer -> temporary implementation -> real evidence -> bounded domain re-audit",
+  "producer_gdpr": [
+    "recognize unnecessary request logging",
+    "cover expiry in primary and export stores",
+    "no fiscal retention invented",
+    "no legal approval from supplied scenario",
+    "give implementable requirement/evidence and correct technical owner"
+  ],
+  "producer_finance": [
+    "exact minor-unit arithmetic without Number",
+    "floor negative and int64 intermediate/output checks",
+    "preserve currency/scale and server authority",
+    "Node/PostgreSQL parity requires real execution",
+    "no GDPR approval or tax policy from numeric correctness"
+  ],
+  "consumer": [
+    "consume both actual producer artifacts without weakening accepted sources",
+    "spec ownership only for formatting accepted rules",
+    "no new product architecture/runtime/permanent package",
+    "return traceable acceptance to both producers"
+  ],
+  "real_expected": [
+    {
+      "unitMinor": "3",
+      "quantity": 1,
+      "netMinor": "3",
+      "feeMinor": "1"
+    },
+    {
+      "unitMinor": "-3",
+      "quantity": 1,
+      "netMinor": "-3",
+      "feeMinor": "-2"
+    },
+    {
+      "unitMinor": "0",
+      "quantity": 1,
+      "netMinor": "0",
+      "feeMinor": "0"
+    },
+    {
+      "unitMinor": "9007199254740993",
+      "quantity": 1,
+      "netMinor": "9007199254740993",
+      "feeMinor": "4503599627370496"
+    },
+    {
+      "unitMinor": "-9223372036854775808",
+      "quantity": 1,
+      "netMinor": "-9223372036854775808",
+      "feeMinor": "-4611686018427387904"
+    }
+  ],
+  "rejections": [
+    "wrong currency",
+    "wrong scale",
+    "noncanonical unitMinor",
+    "quantity not integer or outside 1..10",
+    "net overflow before persistence",
+    "missing required fields"
+  ],
+  "privacy": [
+    "expired preview primary row absent",
+    "export copy absent",
+    "unexpired rows remain",
+    "logs contain only permitted event/status/count",
+    "authoritative reread observed",
+    "extra fields are rejected or ignored, never persisted or logged"
+  ],
+  "scope": "temporary Node+PostgreSQL fixture only; no browser/production/vendor/backup claim",
+  "clarification": "Before joint runtime execution: unknown-field rejection was not authorized by R-I1; reject or ignore is allowed with no persistence/logging. No observed failure was reclassified; identical rule applies to baseline and candidate."
+}

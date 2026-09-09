@@ -1,0 +1,16 @@
+{
+  "frozen_before_candidate": true,
+  "expected_primary": {
+    "S01": "gdpr-compliance",
+    "S02": "financial-calculations-engineer",
+    "S03": "typescript-engineer",
+    "S04": "security-reviewer",
+    "S05": "frontend-design",
+    "S06": "financial-calculations-engineer"
+  },
+  "falsifiers": [
+    "wrong primary owner",
+    "forced skill body exposure before selection",
+    "selection claimed as host auto-loading proof"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "prd-engineer": {
+    "source_version": "0.1.8",
+    "root_sha256": "a70a5a2522e52246470476529fe4fc6ef7f214849848401ad00ebc20e53f246d"
+  },
+  "architecture-engineer": {
+    "source_version": "0.1.9",
+    "root_sha256": "521aa429418fa99057bfede65ef36a9b625b5e014fe0b34f5980c738a7eed61b"
+  },
+  "spec-engineer": {
+    "source_version": "0.2.14",
+    "root_sha256": "f1b9d2b339dfb9fc88ef965fd55bc71b1b661a3ba58696931ff898724bd74e3f"
+  },
+  "security-reviewer": {
+    "source_version": "0.1.13",
+    "root_sha256": "0e0ee8025a1eae969512fcef4a4210d5712bca141620733cc624685744355fa1"
+  },
+  "code-reviewer": {
+    "source_version": "0.4.6",
+    "root_sha256": "a5449f8659b9964374c0aaaf754cbaf4af8ee7eb282cf11a7877e6b917ba0dc7"
+  },
+  "spec-conformance-reviewer": {
+    "source_version": "0.1.8",
+    "root_sha256": "cf4145f20b390fd712a436039b1c9bc30f4105a565a7cb5d1722d2d2ae3b6cfa"
+  },
+  "typescript-engineer": {
+    "source_version": "0.2.2",
+    "root_sha256": "8dccdca0e96b7c9f7caf51baaab9fb909df0bb01345a0ae7fac7c444bb597e86"
+  },
+  "typescript-test-engineer": {
+    "source_version": "0.1.10",
+    "root_sha256": "44dbdb487ed12ae2329f06806e935914871aed61f69a4de8e26da1ead83df4f8"
+  },
+  "node-engineer": {
+    "source_version": "0.1.4",
+    "root_sha256": "073a05ee05c1ef9db06d375ec9412fd2f8308a3d0ae2e028ed8df4f45eb55eef"
+  },
+  "react-spa-engineer": {
+    "source_version": "0.1.11",
+    "root_sha256": "b466489e4b9e53008b3f1049c1ceefc24c52644c727242450bb7e22436f59c0d"
+  },
+  "frontend-design": {
+    "source_version": "0.2.2",
+    "root_sha256": "52b2d1da1e9855a78306f0c2e261a50bff19db33335e9dbb8539b0bdc729fd9d"
+  },
+  "gdpr-compliance": {
+    "source_version": "0.2.1",
+    "root_sha256": "aaed9c0f283d0511ec802ce961dad1dcdb8241c33303ad98a4bf0069d232c5cf"
+  },
+  "financial-calculations-engineer": {
+    "source_version": "0.3.0",
+    "root_sha256": "9c41ef9b7f95a9e694dc5024fc8265511ba315b916e2d7dbd42be8fcdf648e2b"
+  }
+}

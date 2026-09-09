@@ -1,0 +1,357 @@
+[
+  {
+    "label": "environment PostgreSQL",
+    "expected": "18.4 (Debian 18.4-1.pgdg13+1)",
+    "actual": "18.4 (Debian 18.4-1.pgdg13+1)"
+  },
+  {
+    "label": "E1 Node 1",
+    "expected": {
+      "id": 1,
+      "subjectKey": "synthetic-1",
+      "netMinor": "0",
+      "feeMinor": "0",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 1,
+      "feeMinor": "0",
+      "netMinor": "0",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-1"
+    }
+  },
+  {
+    "label": "E1 Node read 1",
+    "expected": {
+      "id": 1,
+      "subjectKey": "synthetic-1",
+      "netMinor": "0",
+      "feeMinor": "0",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 1,
+      "feeMinor": "0",
+      "netMinor": "0",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-1"
+    }
+  },
+  {
+    "label": "E1 SQL 1",
+    "expected": {
+      "id": 1,
+      "subjectKey": "synthetic-1",
+      "netMinor": "0",
+      "feeMinor": "0",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 1,
+      "feeMinor": "0",
+      "netMinor": "0",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-1"
+    }
+  },
+  {
+    "label": "E1 SQL read 1",
+    "expected": {
+      "id": 1,
+      "subjectKey": "synthetic-1",
+      "netMinor": "0",
+      "feeMinor": "0",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 1,
+      "feeMinor": "0",
+      "netMinor": "0",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-1"
+    }
+  },
+  {
+    "label": "E1 Node 2",
+    "expected": {
+      "id": 2,
+      "subjectKey": "synthetic-2",
+      "netMinor": "3",
+      "feeMinor": "1",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 2,
+      "feeMinor": "1",
+      "netMinor": "3",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-2"
+    }
+  },
+  {
+    "label": "E1 Node read 2",
+    "expected": {
+      "id": 2,
+      "subjectKey": "synthetic-2",
+      "netMinor": "3",
+      "feeMinor": "1",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 2,
+      "feeMinor": "1",
+      "netMinor": "3",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-2"
+    }
+  },
+  {
+    "label": "E1 SQL 2",
+    "expected": {
+      "id": 2,
+      "subjectKey": "synthetic-2",
+      "netMinor": "3",
+      "feeMinor": "1",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 2,
+      "feeMinor": "1",
+      "netMinor": "3",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-2"
+    }
+  },
+  {
+    "label": "E1 SQL read 2",
+    "expected": {
+      "id": 2,
+      "subjectKey": "synthetic-2",
+      "netMinor": "3",
+      "feeMinor": "1",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 2,
+      "feeMinor": "1",
+      "netMinor": "3",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-2"
+    }
+  },
+  {
+    "label": "E1 Node 3",
+    "expected": {
+      "id": 3,
+      "subjectKey": "synthetic-3",
+      "netMinor": "-3",
+      "feeMinor": "-2",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 3,
+      "feeMinor": "-2",
+      "netMinor": "-3",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-3"
+    }
+  },
+  {
+    "label": "E1 Node read 3",
+    "expected": {
+      "id": 3,
+      "subjectKey": "synthetic-3",
+      "netMinor": "-3",
+      "feeMinor": "-2",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 3,
+      "feeMinor": "-2",
+      "netMinor": "-3",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-3"
+    }
+  },
+  {
+    "label": "E1 SQL 3",
+    "expected": {
+      "id": 3,
+      "subjectKey": "synthetic-3",
+      "netMinor": "-3",
+      "feeMinor": "-2",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 3,
+      "feeMinor": "-2",
+      "netMinor": "-3",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-3"
+    }
+  },
+  {
+    "label": "E1 SQL read 3",
+    "expected": {
+      "id": 3,
+      "subjectKey": "synthetic-3",
+      "netMinor": "-3",
+      "feeMinor": "-2",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 3,
+      "feeMinor": "-2",
+      "netMinor": "-3",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-3"
+    }
+  },
+  {
+    "label": "E1 Node 4",
+    "expected": {
+      "id": 4,
+      "subjectKey": "synthetic-4",
+      "netMinor": "-4",
+      "feeMinor": "-2",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 4,
+      "feeMinor": "-2",
+      "netMinor": "-4",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-4"
+    }
+  },
+  {
+    "label": "E1 Node read 4",
+    "expected": {
+      "id": 4,
+      "subjectKey": "synthetic-4",
+      "netMinor": "-4",
+      "feeMinor": "-2",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 4,
+      "feeMinor": "-2",
+      "netMinor": "-4",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-4"
+    }
+  },
+  {
+    "label": "E1 SQL 4",
+    "expected": {
+      "id": 4,
+      "subjectKey": "synthetic-4",
+      "netMinor": "-4",
+      "feeMinor": "-2",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 4,
+      "feeMinor": "-2",
+      "netMinor": "-4",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-4"
+    }
+  },
+  {
+    "label": "E1 SQL read 4",
+    "expected": {
+      "id": 4,
+      "subjectKey": "synthetic-4",
+      "netMinor": "-4",
+      "feeMinor": "-2",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 4,
+      "feeMinor": "-2",
+      "netMinor": "-4",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-4"
+    }
+  },
+  {
+    "label": "E1 Node 5",
+    "expected": {
+      "id": 5,
+      "subjectKey": "synthetic-5",
+      "netMinor": "9007199254740993",
+      "feeMinor": "4503599627370496",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 5,
+      "feeMinor": "4503599627370496",
+      "netMinor": "9007199254740993",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-5"
+    }
+  },
+  {
+    "label": "E1 Node read 5",
+    "expected": {
+      "id": 5,
+      "subjectKey": "synthetic-5",
+      "netMinor": "9007199254740993",
+      "feeMinor": "4503599627370496",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 5,
+      "feeMinor": "4503599627370496",
+      "netMinor": "9007199254740993",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-5"
+    }
+  },
+  {
+    "label": "E1 SQL 5",
+    "expected": {
+      "id": 5,
+      "subjectKey": "synthetic-5",
+      "netMinor": "9007199254740993",
+      "feeMinor": "4503599627370496",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 5,
+      "feeMinor": "4503599627370496",
+      "netMinor": "9007199254740993",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-5"
+    }
+  },
+  {
+    "label": "E1 SQL read 5",
+    "expected": {
+      "id": 5,
+      "subjectKey": "synthetic-5",
+      "netMinor": "9007199254740993",
+      "feeMinor": "4503599627370496",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 5,
+      "feeMinor": "4503599627370496",
+      "netMinor": "9007199254740993",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-5"
+    }
+  },
+  {
+    "label": "E1 Node 6",
+    "expected": {
+      "id": 6,
+      "subjectKey": "synthetic-6",
+      "netMinor": "9223372036854775807",
+      "feeMinor": "4611686018427387903",
+      "expiresAt": 200
+    }
+  }
+]

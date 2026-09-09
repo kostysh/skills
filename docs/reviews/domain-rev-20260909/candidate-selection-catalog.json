@@ -1,0 +1,30 @@
+[
+  {
+    "name": "gdpr-compliance",
+    "description": "Audit architecture, specs, plans, or systems for EU GDPR risks involving collection, inference, storage, logging, transfer, profiling, retention, deletion, or sharing of personal data. Produce controls, findings, evidence gaps, and handoffs\u2014not legal advice, certification, or policy prose."
+  },
+  {
+    "name": "financial-calculations-engineer",
+    "description": "Design, implement, and review EUR-first money arithmetic and cross-layer parity using accepted currency, scale, and rounding rules. Use verified project APIs or a local formula for VAT/IVA, rates, allocation, and units; never invent FX, tax, or accounting policy."
+  },
+  {
+    "name": "security-reviewer",
+    "description": "Perform bounded security review of code, CI, permissions, webhooks, secrets, data access, and config. Use for vulnerability review, exploitability triage, or scoped audits. Own threat modeling, confidence gating, attack paths, and findings\u2014not scan orchestration, compliance, pentesting, or fixes."
+  },
+  {
+    "name": "typescript-engineer",
+    "description": "Use for TypeScript language and type-system work, compiler diagnostics, type-safe APIs, tsconfig, and Biome/ESLint configuration. Ground explanations, review, diagnosis, and changes in repository and installed-version evidence; pair with runtime, framework, testing, validation, and domain owners."
+  },
+  {
+    "name": "frontend-design",
+    "description": "Design and implement visually strong web interfaces and decision-complete design strategies. Use for landing pages, product UI, dashboards, prototypes, redesigns, or translating accepted design into code. Preserve authoritative behavior and existing systems, then verify rendered results."
+  },
+  {
+    "name": "documentation",
+    "description": "Create, review, restructure, and rewrite source-grounded technical documentation with Diataxis. Use for tutorials, how-to guides, reference, explanations, docs architecture, and audits of user-need fit, factual support, task completion, and maintainability."
+  },
+  {
+    "name": "spec-engineer",
+    "description": "Create concise, falsifiable software specs for AI coding agents. Use to turn ideas, tickets, APIs, domain rules, migrations, workflows, or function behavior into implementation-ready Markdown with observable requirements, acceptance evidence, anti-claims, source authority, and handoff readiness."
+  }
+]

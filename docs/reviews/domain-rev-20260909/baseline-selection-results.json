@@ -1,0 +1,40 @@
+{
+  "results": [
+    {
+      "id": "S01",
+      "primary": "gdpr-compliance",
+      "helpers": [],
+      "reason": "The requested findings concern personal data in logs and verification of minimization, directly covered by the privacy audit scope."
+    },
+    {
+      "id": "S02",
+      "primary": "financial-calculations-engineer",
+      "helpers": [],
+      "reason": "Exact EUR-cent allocation, rounding and preservation of the total are deterministic money arithmetic under an accepted contract."
+    },
+    {
+      "id": "S03",
+      "primary": "typescript-engineer",
+      "helpers": [],
+      "reason": "Conditional-type distribution over a union is TypeScript type-system behavior without a monetary domain concern."
+    },
+    {
+      "id": "S04",
+      "primary": "security-reviewer",
+      "helpers": [],
+      "reason": "Webhook signature verification, threats and exploitability fall directly within security review; the payload has no personal data."
+    },
+    {
+      "id": "S05",
+      "primary": "frontend-design",
+      "helpers": [],
+      "reason": "Landing-page card layout and typography are visual interface design and implementation work."
+    },
+    {
+      "id": "S06",
+      "primary": "financial-calculations-engineer",
+      "helpers": [],
+      "reason": "Cross-layer monetary parity and rounding are explicitly covered; authoritative JPY code and scale satisfy the catalog condition for a non-EUR currency."
+    }
+  ]
+}

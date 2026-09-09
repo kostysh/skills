@@ -1,0 +1,14 @@
+[
+  {
+    "name": "F01-contract",
+    "status": "PASS"
+  },
+  {
+    "name": "F02-contract",
+    "status": "PASS"
+  },
+  {
+    "name": "F07-contract",
+    "status": "PASS"
+  }
+]

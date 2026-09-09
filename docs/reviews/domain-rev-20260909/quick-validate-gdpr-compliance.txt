@@ -1,0 +1,2 @@
+exit=1
+Unexpected key(s) in SKILL.md frontmatter: compatibility. Allowed properties are: allowed-tools, description, license, metadata, name

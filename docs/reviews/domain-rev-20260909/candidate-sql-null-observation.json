@@ -1,0 +1,9 @@
+{
+  "scope": "read-only synthetic SQL helper boundary check against PREVIEW-1 non-null input contract",
+  "sql": "select * from domain_rev_candidate.calc(NULL,1); select * from domain_rev_candidate.calc('1',NULL);",
+  "exit": 0,
+  "stdout": "|\n|\n",
+  "stderr": "",
+  "expected": "reject invalid null arguments",
+  "actual": "rows of null n/f returned"
+}

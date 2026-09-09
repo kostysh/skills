@@ -1,0 +1,188 @@
+
+> @kostysh/skills@ test:ci /home/kostysh/.codex/skills/custom/.worktrees/domain-rev-20260909
+> pnpm -r --filter './skills/*' --if-present test
+
+Scope: 5 of 6 workspace projects
+
+> @kostysh/code-reviewer@0.1.0 test /home/kostysh/.codex/skills/custom/.worktrees/domain-rev-20260909/skills/code-reviewer
+> node --test test/docs-contract.test.mjs
+
+✔ bundled review template preserves the outcome-first output contract (2.915315ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 34.091743
+
+> @kostysh/hono-engineer@0.1.0 test /home/kostysh/.codex/skills/custom/.worktrees/domain-rev-20260909/skills/hono-engineer
+> node --test test/docs-contract.test.mjs
+
+✔ root contract requires authoritative inputs, current compatibility, and bounded output (4.904598ms)
+✔ latest-oriented currency guidance is optional, reachable, and active/package surfaces do not pin Hono (2.795729ms)
+✔ optional references inherit root precedence and cannot create foreign policy (0.474388ms)
+✔ Workers guidance uses current Hono execution context and bounded delivery claims (0.488615ms)
+✔ scoped Context variables do not rely on unsafe global augmentation (0.575178ms)
+✔ middleware hooks are separate from the canonical chain (0.549299ms)
+✔ response runtime validation is not conflated with contract tests or static typing (0.640622ms)
+✔ request validation documents missing Content-Type semantics and explicit rejection (0.870888ms)
+✔ contract publication preserves OpenAPI, Hono RPC, and internal route choices (0.652173ms)
+✔ RPC guidance covers global responses and strict TypeScript compatibility (0.582963ms)
+✔ Hono csrf middleware and application token reissue remain distinct (0.557715ms)
+✔ JWT and JWK examples constrain algorithms without blanket kid guidance (0.511107ms)
+✔ cross-domain defaults remain project-owned or explicitly illustrative (0.738928ms)
+✔ active examples contain framework facts or owner placeholders, not project defaults (0.874233ms)
+✔ Workers environment, compatibility, and Cache API caveats are explicit (0.513902ms)
+✔ interop routes specialized decisions to producible owners (0.432679ms)
+✔ structural tests and schema presence cannot close production readiness (0.420936ms)
+✔ prior auth-admission and protected-lifecycle guardrails remain reachable (1.284159ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 51.298302
+
+> @kostysh/security-reviewer@0.1.0 test /home/kostysh/.codex/skills/custom/.worktrees/domain-rev-20260909/skills/security-reviewer
+> node --experimental-strip-types --test test/docs-contract.test.ts
+
+✔ source contract exposes one required methodology and optional domain references (5.390317ms)
+✔ TypeScript contract test runs directly with Node type stripping (0.964014ms)
+✔ generated root has one activation and interop surface (1.017415ms)
+✔ review basis and status contract prevent false closure (0.754568ms)
+✔ partial snippets cannot become findings through symbol-name inference (0.564587ms)
+✔ review ownership stays read-only and leaves merge decisions to code-reviewer (0.600837ms)
+✔ re-audit escalates a recurring related finding before another point fix (0.603291ms)
+✔ re-audit is finding-bounded and reports a plain-language outcome first (0.557935ms)
+✔ standards control fulfillment always routes to spec-conformance-reviewer (1.011062ms)
+✔ early-use workflow exposes the bounded auth-admission checkpoint (0.577151ms)
+✔ api auth reference keeps the auth-admission checklist narrow and complete (0.622327ms)
+✔ domain handoff keeps Hono-specific admission facts with hono-engineer (0.370831ms)
+✔ early-use workflow exposes the bounded policy-governance admission checkpoint (0.516597ms)
+✔ policy-governance admission reference keeps the checkpoint bounded and reportable (0.526967ms)
+✔ policy-governance examples cover external invocation and active-policy activation (0.682552ms)
+✔ policy-governance admission boundaries stay separated from route and release checks (0.942773ms)
+✔ workflow exposes the data-access construction checkpoint (0.506629ms)
+✔ data-access injection reference requires trace before reporting PostgREST findings (0.94645ms)
+✔ data-access documentation fixture preserves unsafe and safer examples without claiming behavioral proof (1.055837ms)
+✔ data-access guidance is reachable from related references (0.641934ms)
+✔ browser storage and telemetry checks use exposure and confidence gates (0.774485ms)
+✔ CSRF guidance follows the selected pattern and requires behavioral evidence (0.435514ms)
+✔ GitHub Actions findings require actual untrusted execution reachability (0.329503ms)
+✔ specialized signals and cross-layer discovery preserve the common review boundary (0.37527ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 83.090003
+
+> @kostysh/skill-source-compiler-cli@0.2.5 pretest /home/kostysh/.codex/skills/custom/.worktrees/domain-rev-20260909/skills/skill-source-compiler
+> pnpm run build
+
+
+> @kostysh/skill-source-compiler-cli@0.2.5 build /home/kostysh/.codex/skills/custom/.worktrees/domain-rev-20260909/skills/skill-source-compiler
+> vite build && chmod +x scripts/skill-source-compiler.mjs
+
+vite v8.0.3 building client environment for production...
+[2Ktransforming...✓ 162 modules transformed.
+rendering chunks...
+computing gzip size...
+scripts/skill-source-compiler.mjs  381.73 kB │ gzip: 85.86 kB │ map: 871.62 kB
+
+✓ built in 83ms
+
+> @kostysh/skill-source-compiler-cli@0.2.5 test /home/kostysh/.codex/skills/custom/.worktrees/domain-rev-20260909/skills/skill-source-compiler
+> node --experimental-strip-types --test test/*.test.ts
+
+✔ checkCompiledSkill rejects invalid folders (14.480934ms)
+✔ checkCompiledSkill accepts source bundles without active references (13.743749ms)
+✔ regenerateSourceBundle preserves overview fragments that start with a level-two heading (3.418146ms)
+✔ checkCompiledSkill accepts compiled skills without reference links (3.385425ms)
+✔ checkCompiledSkill still rejects missing linked references (1.978062ms)
+✔ checkCompiledSkill checks source bundles without scanning unrelated dev files (41.004559ms)
+✔ checkCompiledSkill reports source bundle generated output drift (28.145844ms)
+✔ checkCompiledSkill rejects source bundles with missing compiler-owned output (22.857169ms)
+✔ checkCompiledSkill rejects missing documented package files (15.051593ms)
+✔ checkCompiledSkill requires compile reports for compiler-tagged packages (10.315885ms)
+✔ checkCompiledSkill rejects non-whitelisted absolute POSIX paths (9.798396ms)
+✔ containsAbsolutePath detects portable-path violations without flagging URLs (0.198024ms)
+✔ built CLI exposes help, command help, and version (140.150727ms)
+✔ built CLI regenerates a source bundle in place (81.114977ms)
+✔ built CLI rejects dangerous compile overlap (71.039608ms)
+✔ built CLI preserves an existing output target (56.041846ms)
+✔ built CLI lint, compile, and check succeed for the self-hosted bundle (185.199778ms)
+✔ isolated emitted CLI completes the documented maintenance flow (427.440001ms)
+✔ built CLI compile-all processes direct child bundles (73.36673ms)
+✔ built CLI rejects dangerous compile-all overlap before writes (75.219986ms)
+✔ built CLI surfaces a warning when generated SKILL.md exceeds the recommended size (71.230919ms)
+✔ built CLI propagates the recommended skill description length warning (332.32002ms)
+✔ built CLI returns usage error for unknown command (31.931747ms)
+✔ compileSourceBundle generates a valid skill bundle (54.478549ms)
+✔ compileSourceBundle warns when generated SKILL.md exceeds the recommended size (22.653014ms)
+✔ compileSourceBundle rejects output overlap before deleting the source bundle (23.559488ms)
+✔ compileSourceBundle rejects descendant output overlap (20.849862ms)
+✔ compileSourceBundle preserves an existing output target by default (6.897227ms)
+✔ compileAllSourceBundles preflights overlap before writing any child output (17.463766ms)
+✔ regenerateSourceBundle refreshes generated files without copying source-owned files (14.412455ms)
+✔ regenerateSourceBundle rejects non-same-path in-place copy targets (14.777596ms)
+✔ compileAllSourceBundles skips direct child directories without skill.yaml (19.241901ms)
+✔ compileAllSourceBundles rejects duplicate output targets before writing (30.962212ms)
+✔ compileAllSourceBundles preflights existing targets before writing any bundle (26.24561ms)
+✔ compileSourceBundle rejects portable-path violations before writing output (13.408125ms)
+✔ lintSourceBundle accepts the example source bundle (30.977431ms)
+✔ lintSourceBundle accepts source bundles without active references (5.472953ms)
+✔ lintSourceBundle warns only above 300 Unicode code points (3.382268ms)
+✔ lintSourceBundle counts combining marks separately and accepts descriptions above 1024 code points (3.510731ms)
+✔ lintSourceBundle reports duplicate ids (12.625695ms)
+✔ lintSourceBundle requires package.json when commands are documented (13.320519ms)
+✔ lintSourceBundle rejects unresolved scaffold markers in active guidance (1.784946ms)
+✔ lintSourceBundle rejects non-whitelisted absolute POSIX paths (19.850993ms)
+✔ lintSourceBundle requires one consistent active surface per reference (37.714476ms)
+ℹ tests 44
+ℹ suites 0
+ℹ pass 44
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2565.959975
+
+> @kostysh/typescript-test-engineer@0.1.0 test /home/kostysh/.codex/skills/custom/.worktrees/domain-rev-20260909/skills/typescript-test-engineer
+> node --test test/docs-contract.test.mjs
+
+✔ skill separates design, implementation, review, and diagnose mutation boundaries (5.308011ms)
+✔ hanging-test guidance preserves diagnose-only read-only behavior across references (1.026272ms)
+✔ skill defines behavior authority and blocked readiness instead of implementation-as-oracle (0.544721ms)
+✔ skill publishes decision-complete outputs for every mode (0.50754ms)
+✔ references are conditional and browser handoff is not a mandatory local wrapper (0.775597ms)
+✔ TDD is explicit opt-in and does not authorize destructive history recreation (0.639881ms)
+✔ interop assigns formal review, remediation, browser smoke, and domain authority (0.556413ms)
+✔ Node and Cloudflare defaults follow current supported paths (0.374829ms)
+✔ Node module mocking follows pinned runtime API and deterministic cleanup (0.593803ms)
+✔ React guidance distinguishes supported async waitFor and browser evidence levels (0.867932ms)
+✔ React global fetch example restores the stub between tests (0.608331ms)
+✔ React mutation guidance requires the combined lifetime falsifier (0.510956ms)
+✔ UI metadata matches the activation contract (0.68163ms)
+✔ structural checks cannot close a broader behavioral claim (0.486931ms)
+✔ conditional references do not invent an unsourced coverage closure gate (0.571811ms)
+✔ replay and rate-limit tests must prove the named risk (1.049596ms)
+✔ state-changing work uses the negative matrix with explicit relevance (0.53392ms)
+✔ skill requires negative fail-closed tests for sourced forbidden behavior (1.077919ms)
+✔ anti-patterns require contract suites for production state-changing doubles (0.326798ms)
+✔ fixtures declare provenance and cannot prove skipped upstream behavior (0.929178ms)
+✔ React async guidance cleans owned state and supports cache-hit without a request (0.363187ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 49.933701

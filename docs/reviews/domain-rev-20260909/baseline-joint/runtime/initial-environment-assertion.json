@@ -1,0 +1,7 @@
+[
+  {
+    "label": "environment PostgreSQL",
+    "expected": "18.4",
+    "actual": "18.4 (Debian 18.4-1.pgdg13+1)"
+  }
+]

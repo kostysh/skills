@@ -1,0 +1,15 @@
+{
+  "time_utc": "2026-09-09T12:22:31.601042+00:00",
+  "target_files": 33,
+  "hash_mismatches": [],
+  "manifest_sha256": "5354de2ff05fc1117ea991c09ec1db1f92dc274499c2ecad2f72ddb4a765496e",
+  "git_diff_check_exit": 0,
+  "tracked_changed_files": 21,
+  "changed_targets_only": true,
+  "main_checkout_clean": true,
+  "worktree_status": " M skills/financial-calculations-engineer/SKILL.md\n M skills/financial-calculations-engineer/docs/README.md\n M skills/financial-calculations-engineer/docs/compile-report.md\n M skills/financial-calculations-engineer/fragments/overview.md\n M skills/financial-calculations-engineer/references/browser.md\n M skills/financial-calculations-engineer/references/database-sql.md\n M skills/financial-calculations-engineer/references/money-library-usage.md\n M skills/financial-calculations-engineer/references/parity-testing.md\n M skills/financial-calculations-engineer/references/server-backend.md\n M skills/financial-calculations-engineer/references/vat-iva.md\n M skills/financial-calculations-engineer/skill.yaml\n M skills/gdpr-compliance/SKILL.md\n M skills/gdpr-compliance/assets/templates/gdpr-architecture-audit.md\n M skills/gdpr-compliance/assets/templates/gdpr-finding.yaml\n M skills/gdpr-compliance/docs/README.md\n M skills/gdpr-compliance/docs/compile-report.md\n M skills/gdpr-compliance/fragments/overview.md\n M skills/gdpr-compliance/references/audit-methodology.md\n M skills/gdpr-compliance/references/control-catalog.md\n M skills/gdpr-compliance/references/implementation-evidence.md\n M skills/gdpr-compliance/skill.yaml\n?? docs/implementation-log-20260909-cross-domain-revision.md\n?? docs/reviews/domain-rev-20260909/\n",
+  "head": "d89d66f2c99bf8b9e84e5b4def54fa60192856a5",
+  "branch": "codex/domain-rev-20260909",
+  "upstream": "none configured",
+  "ahead_behind_base": "0\t0"
+}

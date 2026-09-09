@@ -1,0 +1,38 @@
+[
+  {
+    "skill": "gdpr-compliance",
+    "command": "lint",
+    "exit": 1
+  },
+  {
+    "skill": "gdpr-compliance",
+    "command": "check",
+    "exit": 0
+  },
+  {
+    "skill": "gdpr-compliance",
+    "command": "compile",
+    "exit": 0
+  },
+  {
+    "skill": "financial-calculations-engineer",
+    "command": "lint",
+    "exit": 0
+  },
+  {
+    "skill": "financial-calculations-engineer",
+    "command": "check",
+    "exit": 0
+  },
+  {
+    "skill": "financial-calculations-engineer",
+    "command": "compile",
+    "exit": 0
+  },
+  {
+    "skill": "gdpr-compliance",
+    "command": "lint retry after test:ci build completed",
+    "exit": 0,
+    "first_attempt": "concurrent owning-package build briefly removed emitted compiler entrypoint; no source defect"
+  }
+]

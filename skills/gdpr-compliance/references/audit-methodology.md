@@ -26,6 +26,8 @@ If sources conflict, report the conflict and apply authority only to the claim i
 
 ### 2. Define audit scope
 
+Match discovery to the requested boundary and material data flows. A short flow and stated unknowns can be sufficient for a narrow review; the inventory below is not a demand to audit unrelated organisational systems. Report a discovered dependency without silently expanding the assignment.
+
 State:
 
 - target system, feature, workflow, integration, or release;
@@ -106,7 +108,7 @@ Look for:
 - breach detection, triage, containment, notification routing, and evidence preservation;
 - migration/rollback plan for privacy-sensitive data model changes.
 
-Common architecture gap: a system includes "central analytics pipeline" but does not define consent gating, event minimisation, regional storage, retention, vendor terms, or deletion of user-linked events.
+Common architecture gap: a system includes "central analytics pipeline" but does not establish applicable basis/gating, event minimisation, regional storage, retention, vendor terms, or deletion of user-linked events.
 
 #### Specification and tickets
 
@@ -182,7 +184,7 @@ Do not treat anonymised data as personal data when anonymisation is robust and i
 
 Prefer concrete phrasing:
 
-- "P1: Optional analytics events can be emitted before consent state is loaded."
+- "P1: Consent-dependent analytics events can be emitted before the required consent state is loaded."
 - "P0: The architecture sends health data to a third-party model provider without documented Article 9 exception, transfer mechanism, or retention boundary."
 - "P1: Account erasure does not propagate to search indexes or support attachments."
 - "P2: PRD acceptance criteria for export can pass without including profile-derived data."
@@ -196,11 +198,28 @@ Avoid weak phrasing:
 
 ## Handoff shape
 
-For downstream architecture/spec work, hand off constraints such as:
+Name the recipient able to produce the next requested output: requirements owner for a product decision, architect for an unresolved system boundary, spec author for accepted behavior detail, or implementation/testing owner for a specified correction. Security reviewers supply findings and review evidence, not patches. Do not force every local correction through new PRD/architecture/spec artifacts.
 
-- "No analytics SDK or event dispatch may run until consent state permits that purpose."
+Pass the source-backed constraint and finding, affected scope, unresolved owner decisions, requested output, and observable acceptance evidence. The technical owner returns the changed boundary and actual observations; re-assess those findings and direct regressions, preserving other evidence limits. A patch, queue entry, or test label alone cannot close a control.
+
+Examples below apply only when their stated control and processing scope apply:
+
+- "For the purpose requiring consent under C6, no analytics SDK or event dispatch may run until valid consent permits that purpose."
 - "Retention expiry must remove or irreversibly anonymise identifiers in event store, search index, and derived profile table."
 - "Article 15 access must cover personal data in the assessed stores, including relevant inferred data; Article 20 portability must be specified separately and only for data and processing within its applicability conditions."
 - "Support tool may display only the minimum fields needed for the support workflow and must log human access without exposing full payloads."
 
-These are not implementation tickets. They are constraints and acceptance obligations.
+These constraints and acceptance obligations inform the assigned consumer; they neither authorize implementation nor supply an unresolved product or legal decision.
+
+### Severity model
+
+Use these priorities for audit findings:
+
+| Severity | Meaning |
+| --- | --- |
+| P0 Critical | Block launch or continued processing until the obligation is resolved or authoritatively shown not to apply. Use for processing without a documented basis, uncontrolled special/criminal data, unresolved required DPIA or prior consultation, uncontrolled transfers, serious rights/security gaps, or breach-readiness failures that create high risk. Risk acceptance alone never clears P0. |
+| P1 High | Must be fixed before production or before affected processing expands. Use for missing required consent/withdrawal, retention/deletion gaps, vendor/subprocessor gaps, hidden logs/analytics personal data, missing rights implementation, or weak access boundaries for sensitive data. |
+| P2 Medium | Track and resolve within an explicit safe constraint before material scale. Use for incomplete low-risk evidence, unclear ownership, weak acceptance, partial minimisation, or unverified behavior that does not require a production block; otherwise use P1. |
+| P3 Low | Improves auditability, maintainability, or review quality. Use for documentation alignment, naming clarity, reporting shape, or low-risk evidence improvements. |
+
+Severity should follow risk to people, processing scale, data sensitivity, reversibility, invisibility, legal/operational exposure, and whether personal-data processing would continue without a valid control.

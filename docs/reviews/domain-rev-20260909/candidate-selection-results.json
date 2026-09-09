@@ -1,0 +1,38 @@
+[
+  {
+    "id": "S01",
+    "primary": "gdpr-compliance",
+    "helper": null,
+    "reason": "Запрошены инженерные privacy-findings для персональных данных в логах и проверка минимизации; это прямо входит в область GDPR-аудита."
+  },
+  {
+    "id": "S02",
+    "primary": "financial-calculations-engineer",
+    "helper": null,
+    "reason": "Распределение EUR-центов с точным округлением и сохранением суммы относится к денежной арифметике и allocation по принятому контракту."
+  },
+  {
+    "id": "S03",
+    "primary": "typescript-engineer",
+    "helper": null,
+    "reason": "Ошибка распределения условного типа по union относится к системе типов TypeScript; предметный денежный навык не требуется."
+  },
+  {
+    "id": "S04",
+    "primary": "security-reviewer",
+    "helper": null,
+    "reason": "Проверка подписи webhook, угроз и exploitability прямо соответствует security-review; оснований для privacy-аудита в запросе нет."
+  },
+  {
+    "id": "S05",
+    "primary": "frontend-design",
+    "helper": null,
+    "reason": "Изменение визуальной сетки и типографики лендинга относится к дизайну и реализации веб-интерфейсов."
+  },
+  {
+    "id": "S06",
+    "primary": "financial-calculations-engineer",
+    "helper": null,
+    "reason": "Согласованность денежных сумм между слоями с утвержденными валютой, scale и округлением входит в cross-layer parity; EUR-first не исключает JPY при принятых правилах."
+  }
+]

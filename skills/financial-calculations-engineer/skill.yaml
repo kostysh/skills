@@ -3,13 +3,13 @@ kind: SkillSource
 
 skill:
   name: financial-calculations-engineer
-  source-version: 0.3.0
+  source-version: 0.3.1
   recommended-skill-md-max-bytes: 20000
   description: >-
-    Design, implement, and review deterministic money arithmetic and cross-layer
-    parity. Keep EUR as default; use discovered currency engines only with
-    authoritative code and scale. Cover VAT/IVA, rates, allocation, parsing,
-    formatting, and ledger amounts; never invent FX, tax, or accounting policy.
+    Design, implement, and review EUR-first money arithmetic and cross-layer
+    parity using accepted currency, scale, and rounding rules. Use verified
+    project APIs or a local formula for VAT/IVA, rates, allocation, and units;
+    never invent FX, tax, or accounting policy.
 
 fragments:
   overview: fragments/overview.md
@@ -19,37 +19,37 @@ references:
     title: Browser boundaries
     source: references/browser.md
     target: references/browser.md
-    required: false
+    required: true
     trigger: Read this when browser input, preview, state, serialization, or formatting is in scope.
   - id: ref-database-sql
     title: Database and SQL conformance
     source: references/database-sql.md
     target: references/database-sql.md
-    required: false
+    required: true
     trigger: Read this when PostgreSQL storage, SQL formulas, allocation, or database parity is in scope.
   - id: ref-money-library-usage
     title: Canonical money engine
     source: references/money-library-usage.md
     target: references/money-library-usage.md
-    required: false
+    required: true
     trigger: Read this when discovering or using a money library, and for every non-EUR engine task.
   - id: ref-parity-testing
     title: Cross-layer parity evidence
     source: references/parity-testing.md
     target: references/parity-testing.md
-    required: false
+    required: true
     trigger: Read this before claiming parity or designing fixtures across two or more runtime contours.
   - id: ref-server-backend
     title: Server and backend boundaries
     source: references/server-backend.md
     target: references/server-backend.md
-    required: false
+    required: true
     trigger: Read this when DTOs, JSON serialization, server calculation, persistence, or backend configuration is in scope.
   - id: ref-vat-iva
     title: VAT and IVA arithmetic
     source: references/vat-iva.md
     target: references/vat-iva.md
-    required: false
+    required: true
     trigger: Read this when an accepted source requires forward VAT/IVA, reverse VAT/scorporo, or residual-minor-unit handling.
 
 assets: []
@@ -80,8 +80,7 @@ supporting:
 
 surfaces:
   active:
-    requiredReferences: []
-    optionalReferences:
+    requiredReferences:
       - ref-browser
       - ref-database-sql
       - ref-money-library-usage
@@ -97,9 +96,9 @@ sections:
     - Classify the request as design, implementation/remediation, or review-only and confirm whether mutations are authorized.
     - Obtain the accepted business, legal, tax, tariff, or accounting source for every material financial rule before choosing arithmetic.
     - Define the calculation contract, including currency code, minor-unit scale, units, rates, formulas, rounding and fixation points, negative flows, ranges, errors, and residual allocation.
-    - Use the built-in EUR facade by default; non-EUR requires authoritative code/scale and a verified generic engine.
+    - Establish the currency and scale from the accepted contract; EUR is the default supported profile, never a fallback for unidentified currency.
     - Discover the target repository's canonical money engine and the actual runtime contours affected; do not assume a package name or path.
-    - Load only the optional references whose triggers match the task.
+    - Read the required local references only when their stated task conditions apply.
     - Report evidence per real contour and reserve full verification for boundaries that were actually exercised.
   whenToUse:
     - Designing, implementing, or reviewing deterministic money representation, arithmetic, rounding, VAT/IVA, rates, allocation, scorporo, parsing, or formatting, with EUR as default.
@@ -123,7 +122,8 @@ sections:
         - Treat EUR with two minor-unit digits as the built-in/default profile only when the contract is EUR; do not use that scale as a fallback for another or unidentified currency.
         - Treat a three-uppercase-letter code and scale `0..20` only as structural engine inputs, never as proof of ISO 4217 identity or current minor-unit metadata.
         - For FX, require authoritative currencies, rate provenance/time/direction, spread or fees, rounding/fixation, and an implemented conversion boundary; otherwise report unsupported conversion.
-        - If a material rule is missing, conflicting, expired, or lower-authority than another source, stop the risky path and return the exact authority question instead of choosing a policy.
+        - When applicability, effective period, and source precedence resolve a discrepancy, treat outdated code or examples as a conformance gap and perform the authorized review or correction.
+        - Stop only the calculation or handoff that depends on missing authority or an unresolved conflict; return the exact owner decision needed and complete independently supported analysis.
       validation:
         - Every material financial decision traces to an accepted source instead of a skill example or utility behavior.
         - Currency code, scale, unit-bearing fields, and formulas are unambiguous.
@@ -133,15 +133,15 @@ sections:
       goal: Reuse verified project behavior without turning one repository layout or utility test suite into universal capability.
       steps:
         - Inspect the target repository for an established money engine, its manifest, public exports, version, configuration model, behavioral docs, and tests; verify APIs before using the mapping reference.
-        - Distinguish the EUR facade (`MoneyCents`, EUR boundary APIs, top-level arithmetic) from `createCurrencyEngine`; use the facade for EUR and one separate engine for an authorized non-EUR code/scale.
-        - Treat the factory as a local constructor, not a plugin registry, discovery service, ISO catalog, or FX provider.
+        - Use the discovered public API when it satisfies the accepted contract, preserving existing types and DTOs. Apply the example profiles in the money-library reference only when that public contract actually matches; do not add a facade, wrapper, or migration to match example names.
+        - An available engine constructor or compatibility profile is not currency authority, a currency registry, or an FX provider.
         - If no canonical engine exists, do not create a shared package automatically; keep one domain-specific formula with its owning module or route a genuinely shared boundary to architecture ownership.
-        - If a non-EUR task lacks both an authoritative code/scale and a verified generic engine contract, stop that path; never fall back to EUR cents or silently reuse another engine.
+        - For a local formula without an engine, enforce the same accepted code, scale, units, rounding, and range directly in its owning module. Missing currency authority blocks the dependent path; missing example API names do not.
         - Add a primitive to the canonical engine only when it is reusable financial behavior or a shared cross-contour boundary; keep one-off tariff or product formulas with the authoritative domain owner while composing engine primitives.
         - Inventory applicable contours separately, such as library unit, PostgreSQL, backend/domain integration, browser bundle, application UI, persistence, and external ledger integration.
         - Treat library availability, unit tests, generated fixtures, schemas, and wrappers as substrate for broader application or parity claims until the corresponding real contour is exercised.
       validation:
-        - The chosen EUR facade or generic engine and API are present in the target repository, and generic engine definition matches the accepted code/scale; otherwise the path has a deterministic fallback or stop.
+        - The chosen project API or local formula preserves the accepted financial contract; no undocumented profile or absent package is assumed.
         - Every claimed contour has a named runtime boundary and consumer.
         - Shared-library changes are justified by current reuse or a protected boundary.
     - id: stage-implement
@@ -149,16 +149,16 @@ sections:
       goal: Preserve the accepted financial contract with explicit units and identical numeric semantics at every affected boundary.
       steps:
         - Keep canonical amounts as integer minor units; cents specialize EUR, while another currency uses its authorized engine scale. Name any higher-precision intermediate separately.
-        - "For EUR, preserve the compatible facade and `{ currency: 'EUR', amountCents }`; for another currency, use `CurrencyAmount<TCode>` and `{ currency, minorUnitDigits, amountMinorUnits }` through the verified engine profile."
+        - Preserve the accepted amount and DTO representation. Currency, scale, and units may be explicit values or unambiguous fixed contract semantics; never reinterpret them or impose an example wire shape.
         - Preserve currency code and scale across browser, server, persistence, and integration contracts; reject mixed-currency or mixed-scale arithmetic and DTOs before calculation.
-        - Use explicit rounding modes only at accepted fixation points, and preserve sign symmetry, reversals, refunds, zero values, and deterministic remainder ordering.
+        - Apply the accepted rounding, fixation, sign, refund, reversal, and remainder rules. Test sign symmetry only when the named mode and operation promise it; a directed rounding mode need not be symmetric, and reversing a fixed amount can differ from calculating a new negative amount.
         - Use the public strict parsers and serializers when available; do not replace boundary validation with `BigInt(untrustedString)` or let one unitless string mean either integer minor units or human-entered major units.
-        - Pass only `locale` through `FormatOptions`; take currency from the EUR facade or immutable engine definition, and reject arbitrary relabeling or EUR-as-USD/JPY formatting without a real conversion.
+        - Use the verified formatter contract and preserve the amount's currency and scale; changing presentation must not relabel an amount or imply an unperformed conversion.
         - Recompute or validate authoritative amounts on the server; browser previews and submitted totals are not persistence authority by themselves.
-        - Match PostgreSQL denominator, rate, range, overflow, rounding, error, and tie-break behavior to the canonical engine; use widened exact intermediates when bigint multiplication can overflow.
-        - Preserve full signed int64 for verified `postgresql`/`nodejs` profiles, permit widened `roundDiv` numerators with result checks, and keep DTO range checks independent of math mode when promised.
+        - Match PostgreSQL denominator, rate, range, overflow, rounding, error, and tie-break behavior to the accepted contract and its owning numeric implementation; use widened exact intermediates when bigint multiplication can overflow.
+        - Preserve the verified range, widened-intermediate, parser, and output-check guarantees; example profile details live in the money-library reference.
         - Reject empty or all-zero weighted allocations before any zero-total fast path when the engine contract does.
-        - Configure process-global locale/math/compatibility/resources at bootstrap and reset them between tests; keep them distinct from immutable engine code/scale.
+        - Respect the discovered configuration model. If the library has process-global settings, configure them at bootstrap and restore test changes; do not introduce globals into an instance-scoped or stateless implementation.
       validation:
         - No canonical money arithmetic uses binary floating point or formatted strings.
         - Boundary schemas preserve currency and scale without reinterpretation, relabeling, or mixed-contract arithmetic.
@@ -173,6 +173,7 @@ sections:
         - Record an evidence matrix with `contour`, fixture or source identity, command or artifact, observed result, and status `verified`, `not-run`, `not-applicable`, or `blocked`.
         - Classify the overall result as `verified` only when every applicable claimed contour is verified; otherwise report `partial` when useful work exists or `blocked` when authority or a required boundary is unavailable.
         - Report the authoritative calculation contract, affected contours, implementation or review outcome, evidence matrix, anti-claims, and residual risk.
+        - For a handoff, name the next owner and requested output, pass accepted rules and unresolved decisions without substituting library behavior for authority, and state which observations must return for bounded numeric re-check.
       validation:
         - Green package or browser-bundle tests are not reported as SQL, application wiring, persistence, or end-to-end parity evidence.
         - The final status follows the evidence matrix without substrate-only closure.
@@ -181,6 +182,10 @@ sections:
       domain: tax applicability, tariff policy, accounting recognition, ledger accounts, and posting lifecycle
       winner: Accepted legal, accounting, product, or financial specification
       rationale: This skill implements and checks supplied financial rules; it does not invent them. Use `spec-engineer` to make accepted rules executable, not to create authority.
+    - id: interop-design-handoff
+      domain: accepted product requirements, architecture ownership, and implementation-ready specification
+      winner: prd-engineer, architecture-engineer, or spec-engineer according to the remaining decision
+      rationale: Supply the accepted calculation contract and evidence limits. Product owns policy scope, architecture owns genuinely shared boundaries, and spec formalizes accepted behavior; do not require new design artifacts for an already specified local correction.
     - id: interop-typescript
       domain: TypeScript types, compiler behavior, and language-level APIs
       winner: typescript-engineer
@@ -220,13 +225,13 @@ sections:
       text: Do not accept a generic money string that could mean integer minor units or human-entered major units; encode currency, scale, unit, and parser contract.
     - id: gotcha-sql-example
       priority: high
-      text: Do not copy illustrative integer SQL until denominator, rate, overflow, range, rounding, error, and tie-break semantics are proven against the canonical engine.
+      text: Do not copy illustrative integer SQL until denominator, rate, overflow, range, rounding, error, and tie-break semantics match the accepted contract and its owning numeric implementation.
     - id: gotcha-substrate-parity
       priority: high
       text: Do not call package unit tests, browser-bundle tests, fixtures, schemas, or mocks cross-layer parity unless the claimed real contours executed the same fixtures.
     - id: gotcha-global-config
       priority: high
-      text: Do not change process-global locale, compatibility, resource, or math settings per request or confuse them with immutable per-engine code/scale; configure globals once at bootstrap and isolate tests.
+      text: If the discovered library has process-global settings, do not change them per request or confuse them with per-engine currency/scale; preserve its actual configuration and test-isolation contract.
     - id: gotcha-browser-authority
       priority: high
       text: Do not persist a browser preview or client-submitted total as authoritative without server-side recomputation or contract validation.
@@ -239,16 +244,16 @@ sections:
       text: Require accepted, traceable financial rules before choosing formulas or defaults; utility APIs define arithmetic behavior, not business or legal authority.
     - id: policy-explicit-units
       title: Explicit-units policy
-      text: Every persisted or transported amount and rate must carry unambiguous currency, minor-unit scale, and unit semantics in its schema, name, or discriminants; EUR cents remain the built-in specialization, and conversions occur only at authoritative named boundaries.
+      text: Every persisted or transported amount and rate must carry unambiguous currency, minor-unit scale, and unit semantics in its schema, name, or discriminants; cents specialize EUR, and conversions occur only at authoritative named boundaries.
     - id: policy-currency-profile
       title: Currency-profile policy
-      text: Use the compatible top-level facade for EUR and a separately created verified engine for another authorized code/scale; reject missing or conflicting scale, mixed currency/scale, manual relabeling, and unsupported FX.
+      text: Use the accepted currency/scale through the discovered public API or an authorized local formula; reject missing authority, mixed currency/scale, manual relabeling, and unsupported FX. Example profiles do not require a new engine or DTO.
     - id: policy-rounding-fixation
       title: Rounding and fixation policy
       text: Rounding mode, precision, fixation points, and residual allocation are part of the accepted contract and must match across every affected contour.
     - id: policy-engine-discovery
       title: Canonical-engine discovery policy
-      text: Verify the target repository's current public EUR facade, generic engine profile, and tests at invocation time; a relative path or API table in this skill is guidance, not proof that the engine, currency registry, or conversion capability exists.
+      text: Verify the target repository's current public numeric contract and tests; the money-library reference owns conditional example profiles. A path or API table is not proof of an available engine, currency registry, or conversion capability.
     - id: policy-parity-claim
       title: Parity-claim policy
       text: Claim parity only for the exact fixture identity and real contours that executed successfully; missing SQL, backend, browser, persistence, or application evidence remains explicit.
@@ -259,10 +264,10 @@ sections:
     required: true
     rules:
       - Do not require a machine-specific path, repository layout, external local file, or package name to understand or execute the core workflow.
-      - Discover project financial authorities and the canonical money engine from the target repository; stop or route deterministically when they are absent.
+      - Discover project financial authorities and any canonical money engine; missing authority limits the dependent decision, while a sufficient local formula follows the explicit no-engine path.
       - Keep all mandatory calculation, evidence, fallback, and reporting rules inside this skill folder.
       - Treat formulas, rates, paths, API names, and project profiles as examples until verified against the target source.
     checklist:
-      - Confirm the generated SKILL links every optional reference with its precise load trigger.
+      - Confirm the generated SKILL links every conditionally required reference with its precise load trigger.
       - Confirm copied-skill use has a deterministic discovery, fallback, or blocked path when no project money engine exists.
       - Confirm no active instruction requires an absolute local path or external repository state.

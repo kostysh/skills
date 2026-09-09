@@ -1,0 +1,7 @@
+{
+  "id": "R-I1-count-clarification",
+  "kind": "synthetic fixture input clarification by scenario author",
+  "decision": "removed count counts primary preview rows removed by the successful purge call; export rows do not add to it. Before expiry or when already absent, count=0. On failure the call throws and has no successful count; after rollback retry counts the rows actually removed by that successful retry.",
+  "scope": "Temporary J01 fixture only, no real product or business/legal policy. Same clarification applies to both baseline and candidate. Original comparison criteria unchanged; the numerical/privacy contract and test oracle are not weakened.",
+  "reason": "Candidate consumer returned the previously underspecified count unit. Baseline consumer had explicitly chosen this same local technical mapping; its recorded runtime already implements it. Clarification supports completion of both handoff chains, not a blind first-response improvement claim."
+}
