@@ -1,0 +1,16 @@
+[
+  {
+    "variant": "baseline",
+    "G08_state_unchanged": true,
+    "G09_people_empty": true,
+    "G09_exports_empty": true,
+    "G09_audit_exact_once": true
+  },
+  {
+    "variant": "candidate",
+    "G08_state_unchanged": true,
+    "G09_people_empty": true,
+    "G09_exports_empty": true,
+    "G09_audit_exact_once": true
+  }
+]

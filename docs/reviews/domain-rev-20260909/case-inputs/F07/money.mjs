@@ -1,0 +1,2 @@
+export function parseEurToCents(s){if(typeof s!=='string'||! /^-?(0|[1-9][0-9]*)(\.[0-9]{1,2})?$/.test(s))throw new Error('FORMAT');const neg=s.startsWith('-');const [a,b='']=s.replace(/^-/,'').split('.');const v=BigInt(a)*100n+BigInt(b.padEnd(2,'0'));return neg?-v:v;}
+export function mulRatePpm(a,r){const x=a*r;let q=x/1000000n;const rem=x%1000000n;if((rem<0n?-rem:rem)*2n>=1000000n)q+=x<0n?-1n:1n;if(q<-(2n**63n)||q>2n**63n-1n)throw new Error('RANGE');return q;}

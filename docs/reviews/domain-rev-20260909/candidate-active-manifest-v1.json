@@ -1,0 +1,18 @@
+{
+  "financial-calculations-engineer/SKILL.md": "a8b86fa481a66d016020bb1eecd951ebe04f29a5d2a2ae9182dc0d4eb42f1688",
+  "financial-calculations-engineer/agents/openai.yaml": "4da3f3bff93560df92c578996a9d14ed73b9e7cd712fff8b24b4e1ce6bf811a9",
+  "financial-calculations-engineer/references/browser.md": "18417de9467220e1d78efa75109999daac767ca21325dbe244dfeca3c59bb8de",
+  "financial-calculations-engineer/references/database-sql.md": "a727775f7d386c03c80824c82638e48c968796d40632e907f457df6eb09626a8",
+  "financial-calculations-engineer/references/money-library-usage.md": "4343fd3a3e9e8cac8f81c6b21d62a2fffb838cc40823e191cdf0ece839ffaa0a",
+  "financial-calculations-engineer/references/parity-testing.md": "d44c5851f0984186620a238d3dd38bb5856a983f582b46d318debceb6fe6f576",
+  "financial-calculations-engineer/references/server-backend.md": "b1380337d84c5f49252ea41319880897400bacdb0137d14b9eb669cebf8ff3bf",
+  "financial-calculations-engineer/references/vat-iva.md": "018bb80be5b2016c737976df63548955051b1d10db407b13d8b8504f361506cc",
+  "gdpr-compliance/SKILL.md": "aeb3e447b48341d2fb15d90ebe8e8b6091b000b1670ffbc49c3904ad756d934c",
+  "gdpr-compliance/agents/openai.yaml": "c17ae6395df96fbe8dacc0839bbd44169d296202868a8ca8cbbec11755d3dfb5",
+  "gdpr-compliance/assets/templates/gdpr-architecture-audit.md": "f240b8468ef99ca71fc0e86bf5ba55d2c9700833afa4d5a51a17025035a1aa95",
+  "gdpr-compliance/assets/templates/gdpr-finding.yaml": "695035885b13e42d0c8d3c7957ce6b5fc38007efa8942326df3aa14e46ed75e2",
+  "gdpr-compliance/assets/templates/processing-map.yaml": "8d6f6da984efb7b9b87da2754ba7f64a6618ece3f921d449605661ce85e93ea9",
+  "gdpr-compliance/references/audit-methodology.md": "ad34e7789ecb54f573921e0d87bab06c202bd46caa00d4b641dbc95499746ed2",
+  "gdpr-compliance/references/control-catalog.md": "9e4aa17f1e6207211ae8890ae417c8474362986e7d63ffdb98e81eb4080bd295",
+  "gdpr-compliance/references/implementation-evidence.md": "8fda9a04060ed0969f7c6b5293f6687656600ac74fa53bf34e7f012d8a4c619f"
+}

@@ -14,3 +14,7 @@ This directory is non-normative. Active skill behavior is defined by `SKILL.md` 
 ## Issues
 
 No issues are currently open for this skill.
+
+## Ревизия сквозных предметных требований
+
+- [Общий журнал ревизии 09.09.2026](../../../docs/implementation-log-20260909-cross-domain-revision.md) — исходная оценка, исправления и проверка двух скиллов.

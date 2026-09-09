@@ -1,0 +1,27 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: MAX-sql
++ actual - expected
+
+  {
++   feeMinor: '4611686018427387904',
+-   feeMinor: '4611686018427387903',
+    netMinor: '9223372036854775807'
+  }
+
+    at record (file:///tmp/domain-rev-20260909/candidate/joint/runtime/run.mjs:6:44)
+    at file:///tmp/domain-rev-20260909/candidate/joint/runtime/run.mjs:11:333
+    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)
+    at async node:internal/modules/esm/loader:639:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: { netMinor: '9223372036854775807', feeMinor: '4611686018427387904' },
+  expected: { netMinor: '9223372036854775807', feeMinor: '4611686018427387903' },
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.15.0

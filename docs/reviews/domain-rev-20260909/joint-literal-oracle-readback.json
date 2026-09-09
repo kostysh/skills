@@ -1,0 +1,282 @@
+[
+  {
+    "variant": "baseline",
+    "contour": "Node",
+    "literal_expected": {
+      "unitMinor": "3",
+      "quantity": 1,
+      "netMinor": "3",
+      "feeMinor": "1"
+    },
+    "matching_observations": [
+      "E1 Node 2"
+    ],
+    "status": "PASS"
+  },
+  {
+    "variant": "baseline",
+    "contour": "Node",
+    "literal_expected": {
+      "unitMinor": "-3",
+      "quantity": 1,
+      "netMinor": "-3",
+      "feeMinor": "-2"
+    },
+    "matching_observations": [
+      "E1 Node 3"
+    ],
+    "status": "PASS"
+  },
+  {
+    "variant": "baseline",
+    "contour": "Node",
+    "literal_expected": {
+      "unitMinor": "0",
+      "quantity": 1,
+      "netMinor": "0",
+      "feeMinor": "0"
+    },
+    "matching_observations": [
+      "E1 Node 1"
+    ],
+    "status": "PASS"
+  },
+  {
+    "variant": "baseline",
+    "contour": "Node",
+    "literal_expected": {
+      "unitMinor": "9007199254740993",
+      "quantity": 1,
+      "netMinor": "9007199254740993",
+      "feeMinor": "4503599627370496"
+    },
+    "matching_observations": [
+      "E1 Node 5"
+    ],
+    "status": "PASS"
+  },
+  {
+    "variant": "baseline",
+    "contour": "Node",
+    "literal_expected": {
+      "unitMinor": "-9223372036854775808",
+      "quantity": 1,
+      "netMinor": "-9223372036854775808",
+      "feeMinor": "-4611686018427387904"
+    },
+    "matching_observations": [
+      "E1 Node 7"
+    ],
+    "status": "PASS"
+  },
+  {
+    "variant": "baseline",
+    "contour": "SQL",
+    "literal_expected": {
+      "unitMinor": "3",
+      "quantity": 1,
+      "netMinor": "3",
+      "feeMinor": "1"
+    },
+    "matching_observations": [
+      "E1 SQL 2"
+    ],
+    "status": "PASS"
+  },
+  {
+    "variant": "baseline",
+    "contour": "SQL",
+    "literal_expected": {
+      "unitMinor": "-3",
+      "quantity": 1,
+      "netMinor": "-3",
+      "feeMinor": "-2"
+    },
+    "matching_observations": [
+      "E1 SQL 3"
+    ],
+    "status": "PASS"
+  },
+  {
+    "variant": "baseline",
+    "contour": "SQL",
+    "literal_expected": {
+      "unitMinor": "0",
+      "quantity": 1,
+      "netMinor": "0",
+      "feeMinor": "0"
+    },
+    "matching_observations": [
+      "E1 SQL 1"
+    ],
+    "status": "PASS"
+  },
+  {
+    "variant": "baseline",
+    "contour": "SQL",
+    "literal_expected": {
+      "unitMinor": "9007199254740993",
+      "quantity": 1,
+      "netMinor": "9007199254740993",
+      "feeMinor": "4503599627370496"
+    },
+    "matching_observations": [
+      "E1 SQL 5"
+    ],
+    "status": "PASS"
+  },
+  {
+    "variant": "baseline",
+    "contour": "SQL",
+    "literal_expected": {
+      "unitMinor": "-9223372036854775808",
+      "quantity": 1,
+      "netMinor": "-9223372036854775808",
+      "feeMinor": "-4611686018427387904"
+    },
+    "matching_observations": [
+      "E1 SQL 7"
+    ],
+    "status": "PASS"
+  },
+  {
+    "variant": "candidate",
+    "contour": "Node",
+    "literal_expected": {
+      "unitMinor": "3",
+      "quantity": 1,
+      "netMinor": "3",
+      "feeMinor": "1"
+    },
+    "matching_observations": [
+      "P1-node"
+    ],
+    "status": "PASS"
+  },
+  {
+    "variant": "candidate",
+    "contour": "Node",
+    "literal_expected": {
+      "unitMinor": "-3",
+      "quantity": 1,
+      "netMinor": "-3",
+      "feeMinor": "-2"
+    },
+    "matching_observations": [
+      "N1-node"
+    ],
+    "status": "PASS"
+  },
+  {
+    "variant": "candidate",
+    "contour": "Node",
+    "literal_expected": {
+      "unitMinor": "0",
+      "quantity": 1,
+      "netMinor": "0",
+      "feeMinor": "0"
+    },
+    "matching_observations": [
+      "N0-node"
+    ],
+    "status": "PASS"
+  },
+  {
+    "variant": "candidate",
+    "contour": "Node",
+    "literal_expected": {
+      "unitMinor": "9007199254740993",
+      "quantity": 1,
+      "netMinor": "9007199254740993",
+      "feeMinor": "4503599627370496"
+    },
+    "matching_observations": [
+      "EXACT-node"
+    ],
+    "status": "PASS"
+  },
+  {
+    "variant": "candidate",
+    "contour": "Node",
+    "literal_expected": {
+      "unitMinor": "-9223372036854775808",
+      "quantity": 1,
+      "netMinor": "-9223372036854775808",
+      "feeMinor": "-4611686018427387904"
+    },
+    "matching_observations": [
+      "MIN-node"
+    ],
+    "status": "PASS"
+  },
+  {
+    "variant": "candidate",
+    "contour": "SQL",
+    "literal_expected": {
+      "unitMinor": "3",
+      "quantity": 1,
+      "netMinor": "3",
+      "feeMinor": "1"
+    },
+    "matching_observations": [
+      "P1-sql"
+    ],
+    "status": "PASS"
+  },
+  {
+    "variant": "candidate",
+    "contour": "SQL",
+    "literal_expected": {
+      "unitMinor": "-3",
+      "quantity": 1,
+      "netMinor": "-3",
+      "feeMinor": "-2"
+    },
+    "matching_observations": [
+      "N1-sql"
+    ],
+    "status": "PASS"
+  },
+  {
+    "variant": "candidate",
+    "contour": "SQL",
+    "literal_expected": {
+      "unitMinor": "0",
+      "quantity": 1,
+      "netMinor": "0",
+      "feeMinor": "0"
+    },
+    "matching_observations": [
+      "N0-sql"
+    ],
+    "status": "PASS"
+  },
+  {
+    "variant": "candidate",
+    "contour": "SQL",
+    "literal_expected": {
+      "unitMinor": "9007199254740993",
+      "quantity": 1,
+      "netMinor": "9007199254740993",
+      "feeMinor": "4503599627370496"
+    },
+    "matching_observations": [
+      "EXACT-sql"
+    ],
+    "status": "PASS"
+  },
+  {
+    "variant": "candidate",
+    "contour": "SQL",
+    "literal_expected": {
+      "unitMinor": "-9223372036854775808",
+      "quantity": 1,
+      "netMinor": "-9223372036854775808",
+      "feeMinor": "-4611686018427387904"
+    },
+    "matching_observations": [
+      "MIN-sql"
+    ],
+    "status": "PASS"
+  }
+]

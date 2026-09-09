@@ -1,0 +1,29 @@
+{
+  "time_utc": "2026-09-09T12:21:43.471320+00:00",
+  "container": "codex-domain-rev-20260909",
+  "container_id": "8378fd56f8e696a31bd0502d794919c0c5d22604488f8d082abff7836625c69a",
+  "image": "postgres:18.4",
+  "network": "none",
+  "evidence_copy": "all baseline/candidate joint files byte-for-byte verified before removal",
+  "action": "docker rm -f exact owned container ID",
+  "exit": 0,
+  "readback": "docker ps -a --filter exact ID returned no containers",
+  "temporary_files": "Removed /tmp/domain-rev-20260909 after durable evidence and frozen trial copies were saved; independent final reviews complete",
+  "worktree": "retained for acceptance",
+  "other_resources": "not changed",
+  "temporary_tree_absent": true,
+  "cleanup_completed_utc": "2026-09-09T12:24:02.392458+00:00",
+  "additional_owned_temporary_files_removed": [
+    "domain-final-gdpr-review.md",
+    "domain-final-finance-review.md",
+    "domain-final-finance-source-review.md",
+    "domain-final-gdpr-source-review.md",
+    "domain-rev-gdpr-baseline-report.md",
+    "domain-rev-finance-baseline-report.md",
+    "domain-rev-edit.py",
+    "domain-rev-joint.py",
+    "domain-rev-morecases.py",
+    "domain-rev-cases.py",
+    "domain-rev-prepare.py"
+  ]
+}

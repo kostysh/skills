@@ -1,0 +1,10 @@
+{
+  "case-inputs/F01/CONTRACT.md": true,
+  "case-inputs/F01/money.mjs": true,
+  "case-inputs/F01/package.json": true,
+  "case-inputs/F02/CONTRACT.md": true,
+  "case-inputs/F02/package.json": true,
+  "case-inputs/F04/amount.mjs": true,
+  "case-inputs/control-observation.json": true,
+  "case-inputs/control.mjs": true
+}

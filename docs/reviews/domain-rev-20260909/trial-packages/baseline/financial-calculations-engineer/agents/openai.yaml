@@ -1,0 +1,3 @@
+interface:
+  display_name: "Financial Calculations Engineer"
+  short_description: "Build EUR-first money math with explicit currency and scale"

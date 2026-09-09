@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.3.0`
+- Skill source version: `0.3.1`
 
 ## Source files
 - `agents/openai.yaml`
@@ -20,7 +20,12 @@ Generated from `skill.yaml`.
 - `skill.yaml`
 
 ## Required references
-- none
+- `references/browser.md`
+- `references/database-sql.md`
+- `references/money-library-usage.md`
+- `references/parity-testing.md`
+- `references/server-backend.md`
+- `references/vat-iva.md`
 
 ## Warnings
 - none

@@ -1,0 +1,15 @@
+{
+  "people": [
+    {
+      "id": "synthetic-1",
+      "contact": "person@example.invalid"
+    }
+  ],
+  "exports": [
+    {
+      "id": "synthetic-1",
+      "contact": "person@example.invalid"
+    }
+  ],
+  "audit": []
+}

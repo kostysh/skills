@@ -7,3 +7,7 @@ Supporting maintenance documents are non-normative unless `SKILL.md` explicitly 
 - [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — сокращение описания до 300 code points; independent scoped PASS.
 - [implementation-log-20260716-1.md](logs/implementation-log-20260716-1.md) — capability-first review, authority boundaries, cross-layer evidence и portability remediation.
 - [implementation-log-20260716-2.md](logs/implementation-log-20260716-2.md) — актуализация EUR-first facade и generic currency-engine contract.
+
+## Ревизия сквозных предметных требований
+
+- [Общий журнал ревизии 09.09.2026](../../../docs/implementation-log-20260909-cross-domain-revision.md) — исходная оценка, исправления и проверка двух скиллов.

@@ -1,0 +1,2019 @@
+[
+  {
+    "label": "environment PostgreSQL",
+    "expected": "18.4 (Debian 18.4-1.pgdg13+1)",
+    "actual": "18.4 (Debian 18.4-1.pgdg13+1)"
+  },
+  {
+    "label": "E1 Node 1",
+    "expected": {
+      "id": 1,
+      "subjectKey": "synthetic-1",
+      "netMinor": "0",
+      "feeMinor": "0",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 1,
+      "feeMinor": "0",
+      "netMinor": "0",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-1"
+    }
+  },
+  {
+    "label": "E1 Node read 1",
+    "expected": {
+      "id": 1,
+      "subjectKey": "synthetic-1",
+      "netMinor": "0",
+      "feeMinor": "0",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 1,
+      "feeMinor": "0",
+      "netMinor": "0",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-1"
+    }
+  },
+  {
+    "label": "E1 SQL 1",
+    "expected": {
+      "id": 1,
+      "subjectKey": "synthetic-1",
+      "netMinor": "0",
+      "feeMinor": "0",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 1,
+      "feeMinor": "0",
+      "netMinor": "0",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-1"
+    }
+  },
+  {
+    "label": "E1 SQL read 1",
+    "expected": {
+      "id": 1,
+      "subjectKey": "synthetic-1",
+      "netMinor": "0",
+      "feeMinor": "0",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 1,
+      "feeMinor": "0",
+      "netMinor": "0",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-1"
+    }
+  },
+  {
+    "label": "E1 Node 2",
+    "expected": {
+      "id": 2,
+      "subjectKey": "synthetic-2",
+      "netMinor": "3",
+      "feeMinor": "1",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 2,
+      "feeMinor": "1",
+      "netMinor": "3",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-2"
+    }
+  },
+  {
+    "label": "E1 Node read 2",
+    "expected": {
+      "id": 2,
+      "subjectKey": "synthetic-2",
+      "netMinor": "3",
+      "feeMinor": "1",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 2,
+      "feeMinor": "1",
+      "netMinor": "3",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-2"
+    }
+  },
+  {
+    "label": "E1 SQL 2",
+    "expected": {
+      "id": 2,
+      "subjectKey": "synthetic-2",
+      "netMinor": "3",
+      "feeMinor": "1",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 2,
+      "feeMinor": "1",
+      "netMinor": "3",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-2"
+    }
+  },
+  {
+    "label": "E1 SQL read 2",
+    "expected": {
+      "id": 2,
+      "subjectKey": "synthetic-2",
+      "netMinor": "3",
+      "feeMinor": "1",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 2,
+      "feeMinor": "1",
+      "netMinor": "3",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-2"
+    }
+  },
+  {
+    "label": "E1 Node 3",
+    "expected": {
+      "id": 3,
+      "subjectKey": "synthetic-3",
+      "netMinor": "-3",
+      "feeMinor": "-2",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 3,
+      "feeMinor": "-2",
+      "netMinor": "-3",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-3"
+    }
+  },
+  {
+    "label": "E1 Node read 3",
+    "expected": {
+      "id": 3,
+      "subjectKey": "synthetic-3",
+      "netMinor": "-3",
+      "feeMinor": "-2",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 3,
+      "feeMinor": "-2",
+      "netMinor": "-3",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-3"
+    }
+  },
+  {
+    "label": "E1 SQL 3",
+    "expected": {
+      "id": 3,
+      "subjectKey": "synthetic-3",
+      "netMinor": "-3",
+      "feeMinor": "-2",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 3,
+      "feeMinor": "-2",
+      "netMinor": "-3",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-3"
+    }
+  },
+  {
+    "label": "E1 SQL read 3",
+    "expected": {
+      "id": 3,
+      "subjectKey": "synthetic-3",
+      "netMinor": "-3",
+      "feeMinor": "-2",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 3,
+      "feeMinor": "-2",
+      "netMinor": "-3",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-3"
+    }
+  },
+  {
+    "label": "E1 Node 4",
+    "expected": {
+      "id": 4,
+      "subjectKey": "synthetic-4",
+      "netMinor": "-4",
+      "feeMinor": "-2",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 4,
+      "feeMinor": "-2",
+      "netMinor": "-4",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-4"
+    }
+  },
+  {
+    "label": "E1 Node read 4",
+    "expected": {
+      "id": 4,
+      "subjectKey": "synthetic-4",
+      "netMinor": "-4",
+      "feeMinor": "-2",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 4,
+      "feeMinor": "-2",
+      "netMinor": "-4",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-4"
+    }
+  },
+  {
+    "label": "E1 SQL 4",
+    "expected": {
+      "id": 4,
+      "subjectKey": "synthetic-4",
+      "netMinor": "-4",
+      "feeMinor": "-2",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 4,
+      "feeMinor": "-2",
+      "netMinor": "-4",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-4"
+    }
+  },
+  {
+    "label": "E1 SQL read 4",
+    "expected": {
+      "id": 4,
+      "subjectKey": "synthetic-4",
+      "netMinor": "-4",
+      "feeMinor": "-2",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 4,
+      "feeMinor": "-2",
+      "netMinor": "-4",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-4"
+    }
+  },
+  {
+    "label": "E1 Node 5",
+    "expected": {
+      "id": 5,
+      "subjectKey": "synthetic-5",
+      "netMinor": "9007199254740993",
+      "feeMinor": "4503599627370496",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 5,
+      "feeMinor": "4503599627370496",
+      "netMinor": "9007199254740993",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-5"
+    }
+  },
+  {
+    "label": "E1 Node read 5",
+    "expected": {
+      "id": 5,
+      "subjectKey": "synthetic-5",
+      "netMinor": "9007199254740993",
+      "feeMinor": "4503599627370496",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 5,
+      "feeMinor": "4503599627370496",
+      "netMinor": "9007199254740993",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-5"
+    }
+  },
+  {
+    "label": "E1 SQL 5",
+    "expected": {
+      "id": 5,
+      "subjectKey": "synthetic-5",
+      "netMinor": "9007199254740993",
+      "feeMinor": "4503599627370496",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 5,
+      "feeMinor": "4503599627370496",
+      "netMinor": "9007199254740993",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-5"
+    }
+  },
+  {
+    "label": "E1 SQL read 5",
+    "expected": {
+      "id": 5,
+      "subjectKey": "synthetic-5",
+      "netMinor": "9007199254740993",
+      "feeMinor": "4503599627370496",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 5,
+      "feeMinor": "4503599627370496",
+      "netMinor": "9007199254740993",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-5"
+    }
+  },
+  {
+    "label": "E1 Node 6",
+    "expected": {
+      "id": 6,
+      "subjectKey": "synthetic-6",
+      "netMinor": "9223372036854775807",
+      "feeMinor": "4611686018427387903",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 6,
+      "feeMinor": "4611686018427387903",
+      "netMinor": "9223372036854775807",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-6"
+    }
+  },
+  {
+    "label": "E1 Node read 6",
+    "expected": {
+      "id": 6,
+      "subjectKey": "synthetic-6",
+      "netMinor": "9223372036854775807",
+      "feeMinor": "4611686018427387903",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 6,
+      "feeMinor": "4611686018427387903",
+      "netMinor": "9223372036854775807",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-6"
+    }
+  },
+  {
+    "label": "E1 SQL 6",
+    "expected": {
+      "id": 6,
+      "subjectKey": "synthetic-6",
+      "netMinor": "9223372036854775807",
+      "feeMinor": "4611686018427387903",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 6,
+      "feeMinor": "4611686018427387903",
+      "netMinor": "9223372036854775807",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-6"
+    }
+  },
+  {
+    "label": "E1 SQL read 6",
+    "expected": {
+      "id": 6,
+      "subjectKey": "synthetic-6",
+      "netMinor": "9223372036854775807",
+      "feeMinor": "4611686018427387903",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 6,
+      "feeMinor": "4611686018427387903",
+      "netMinor": "9223372036854775807",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-6"
+    }
+  },
+  {
+    "label": "E1 Node 7",
+    "expected": {
+      "id": 7,
+      "subjectKey": "synthetic-7",
+      "netMinor": "-9223372036854775808",
+      "feeMinor": "-4611686018427387904",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 7,
+      "feeMinor": "-4611686018427387904",
+      "netMinor": "-9223372036854775808",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-7"
+    }
+  },
+  {
+    "label": "E1 Node read 7",
+    "expected": {
+      "id": 7,
+      "subjectKey": "synthetic-7",
+      "netMinor": "-9223372036854775808",
+      "feeMinor": "-4611686018427387904",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 7,
+      "feeMinor": "-4611686018427387904",
+      "netMinor": "-9223372036854775808",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-7"
+    }
+  },
+  {
+    "label": "E1 SQL 7",
+    "expected": {
+      "id": 7,
+      "subjectKey": "synthetic-7",
+      "netMinor": "-9223372036854775808",
+      "feeMinor": "-4611686018427387904",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 7,
+      "feeMinor": "-4611686018427387904",
+      "netMinor": "-9223372036854775808",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-7"
+    }
+  },
+  {
+    "label": "E1 SQL read 7",
+    "expected": {
+      "id": 7,
+      "subjectKey": "synthetic-7",
+      "netMinor": "-9223372036854775808",
+      "feeMinor": "-4611686018427387904",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 7,
+      "feeMinor": "-4611686018427387904",
+      "netMinor": "-9223372036854775808",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-7"
+    }
+  },
+  {
+    "label": "E1 Node 8",
+    "expected": {
+      "id": 8,
+      "subjectKey": "synthetic-8",
+      "netMinor": "9223372036854775800",
+      "feeMinor": "4611686018427387900",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 8,
+      "feeMinor": "4611686018427387900",
+      "netMinor": "9223372036854775800",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-8"
+    }
+  },
+  {
+    "label": "E1 Node read 8",
+    "expected": {
+      "id": 8,
+      "subjectKey": "synthetic-8",
+      "netMinor": "9223372036854775800",
+      "feeMinor": "4611686018427387900",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 8,
+      "feeMinor": "4611686018427387900",
+      "netMinor": "9223372036854775800",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-8"
+    }
+  },
+  {
+    "label": "E1 SQL 8",
+    "expected": {
+      "id": 8,
+      "subjectKey": "synthetic-8",
+      "netMinor": "9223372036854775800",
+      "feeMinor": "4611686018427387900",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 8,
+      "feeMinor": "4611686018427387900",
+      "netMinor": "9223372036854775800",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-8"
+    }
+  },
+  {
+    "label": "E1 SQL read 8",
+    "expected": {
+      "id": 8,
+      "subjectKey": "synthetic-8",
+      "netMinor": "9223372036854775800",
+      "feeMinor": "4611686018427387900",
+      "expiresAt": 200
+    },
+    "actual": {
+      "id": 8,
+      "feeMinor": "4611686018427387900",
+      "netMinor": "9223372036854775800",
+      "expiresAt": 200,
+      "subjectKey": "synthetic-8"
+    }
+  },
+  {
+    "label": "E1 Node rejection 9",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E1 Node absent 9",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E1 SQL rejection 9",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E1 SQL absent 9",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E1 Node rejection 10",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E1 Node absent 10",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E1 SQL rejection 10",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E1 SQL absent 10",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 Node 101 unitMinor=\"9223372036854775808\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent Node 101",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 SQL 101 unitMinor=\"9223372036854775808\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent SQL 101",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 Node 102 unitMinor=\"-9223372036854775809\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent Node 102",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 SQL 102 unitMinor=\"-9223372036854775809\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent SQL 102",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 Node 103 unitMinor=\"+1\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent Node 103",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 SQL 103 unitMinor=\"+1\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent SQL 103",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 Node 104 unitMinor=\"01\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent Node 104",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 SQL 104 unitMinor=\"01\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent SQL 104",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 Node 105 unitMinor=\"-0\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent Node 105",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 SQL 105 unitMinor=\"-0\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent SQL 105",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 Node 106 unitMinor=\"1.0\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent Node 106",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 SQL 106 unitMinor=\"1.0\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent SQL 106",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 Node 107 unitMinor=\"1e2\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent Node 107",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 SQL 107 unitMinor=\"1e2\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent SQL 107",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 Node 108 unitMinor=\" 1\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent Node 108",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 SQL 108 unitMinor=\" 1\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent SQL 108",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 Node 109 unitMinor=\"\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent Node 109",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 SQL 109 unitMinor=\"\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent SQL 109",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 Node 110 unitMinor=1",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent Node 110",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 SQL 110 unitMinor=1",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent SQL 110",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 Node 111 unitMinor=null",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent Node 111",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 SQL 111 unitMinor=null",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent SQL 111",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 Node 112 unitMinor=undefined",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent Node 112",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 SQL 112 unitMinor=undefined",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent SQL 112",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 Node 113 currency=\"USD\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent Node 113",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 SQL 113 currency=\"USD\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent SQL 113",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 Node 114 scale=3",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent Node 114",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 SQL 114 scale=3",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent SQL 114",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 Node 115 scale=\"2\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent Node 115",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 SQL 115 scale=\"2\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent SQL 115",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 Node 116 quantity=0",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent Node 116",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 SQL 116 quantity=0",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent SQL 116",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 Node 117 quantity=11",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent Node 117",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 SQL 117 quantity=11",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent SQL 117",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 Node 118 quantity=1.5",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent Node 118",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 SQL 118 quantity=1.5",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent SQL 118",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 Node 119 quantity=\"1\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent Node 119",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E2 SQL 119 quantity=\"1\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E2 absent SQL 119",
+    "expected": {
+      "row": null,
+      "export": null
+    },
+    "actual": {
+      "row": null,
+      "export": null
+    }
+  },
+  {
+    "label": "E3 120 id=0",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 120",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E3 121 id=1.5",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 121",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E3 122 id=\"5\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 122",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E3 123 id=9007199254740992",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 123",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E3 124 subjectKey=\"PAYLOAD_MARKER\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 124",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E3 125 subjectKey=1",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 125",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E3 126 expiresAt=100",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 126",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E3 127 expiresAt=99",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 127",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E3 128 expiresAt=100.5",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 128",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E3 129 expiresAt=\"200\"",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 129",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E3 130 expiresAt=9007199254740992",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 130",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E3 131 id=null",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 131",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E3 132 id=undefined",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 132",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E3 133 subjectKey=null",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 133",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E3 134 subjectKey=undefined",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 134",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E3 135 unitMinor=null",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 135",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E3 136 unitMinor=undefined",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 136",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E3 137 currency=null",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 137",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E3 138 currency=undefined",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 138",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E3 139 scale=null",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 139",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E3 140 scale=undefined",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 140",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E3 141 quantity=null",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 141",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E3 142 quantity=undefined",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 142",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E3 143 expiresAt=null",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 143",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E3 144 expiresAt=undefined",
+    "expected": true,
+    "actual": true
+  },
+  {
+    "label": "E3 global absence 144",
+    "expected": {
+      "rows": 0,
+      "exports": 0
+    },
+    "actual": {
+      "rows": 0,
+      "exports": 0
+    }
+  },
+  {
+    "label": "E4 preview 145",
+    "expected": {
+      "row": {
+        "id": 145,
+        "subjectKey": "synthetic-145",
+        "netMinor": "9007199254740993",
+        "feeMinor": "4503599627370496",
+        "expiresAt": 200
+      },
+      "reread": {
+        "id": 145,
+        "subjectKey": "synthetic-145",
+        "netMinor": "9007199254740993",
+        "feeMinor": "4503599627370496",
+        "expiresAt": 200
+      }
+    },
+    "actual": {
+      "row": {
+        "id": 145,
+        "subjectKey": "synthetic-145",
+        "netMinor": "9007199254740993",
+        "feeMinor": "4503599627370496",
+        "expiresAt": 200
+      },
+      "reread": {
+        "id": 145,
+        "feeMinor": "4503599627370496",
+        "netMinor": "9007199254740993",
+        "expiresAt": 200,
+        "subjectKey": "synthetic-145"
+      }
+    }
+  },
+  {
+    "label": "E4 export 145",
+    "expected": {
+      "id": 145,
+      "subjectKey": "synthetic-145",
+      "feeMinor": "4503599627370496"
+    },
+    "actual": {
+      "id": 145,
+      "feeMinor": "4503599627370496",
+      "subjectKey": "synthetic-145"
+    }
+  },
+  {
+    "label": "E4 stored 145",
+    "expected": {
+      "row": {
+        "id": 145,
+        "subjectKey": "synthetic-145",
+        "netMinor": "9007199254740993",
+        "feeMinor": "4503599627370496",
+        "expiresAt": 200
+      },
+      "export": {
+        "id": 145,
+        "subjectKey": "synthetic-145",
+        "feeMinor": "4503599627370496"
+      }
+    },
+    "actual": {
+      "row": {
+        "id": 145,
+        "feeMinor": "4503599627370496",
+        "netMinor": "9007199254740993",
+        "expiresAt": 200,
+        "subjectKey": "synthetic-145"
+      },
+      "export": {
+        "id": 145,
+        "feeMinor": "4503599627370496",
+        "subjectKey": "synthetic-145"
+      }
+    }
+  },
+  {
+    "label": "E4 preview 146",
+    "expected": {
+      "row": {
+        "id": 146,
+        "subjectKey": "synthetic-146",
+        "netMinor": "-3",
+        "feeMinor": "-2",
+        "expiresAt": 200
+      },
+      "reread": {
+        "id": 146,
+        "subjectKey": "synthetic-146",
+        "netMinor": "-3",
+        "feeMinor": "-2",
+        "expiresAt": 200
+      }
+    },
+    "actual": {
+      "row": {
+        "id": 146,
+        "subjectKey": "synthetic-146",
+        "netMinor": "-3",
+        "feeMinor": "-2",
+        "expiresAt": 200
+      },
+      "reread": {
+        "id": 146,
+        "feeMinor": "-2",
+        "netMinor": "-3",
+        "expiresAt": 200,
+        "subjectKey": "synthetic-146"
+      }
+    }
+  },
+  {
+    "label": "E4 export 146",
+    "expected": {
+      "id": 146,
+      "subjectKey": "synthetic-146",
+      "feeMinor": "-2"
+    },
+    "actual": {
+      "id": 146,
+      "feeMinor": "-2",
+      "subjectKey": "synthetic-146"
+    }
+  },
+  {
+    "label": "E4 stored 146",
+    "expected": {
+      "row": {
+        "id": 146,
+        "subjectKey": "synthetic-146",
+        "netMinor": "-3",
+        "feeMinor": "-2",
+        "expiresAt": 200
+      },
+      "export": {
+        "id": 146,
+        "subjectKey": "synthetic-146",
+        "feeMinor": "-2"
+      }
+    },
+    "actual": {
+      "row": {
+        "id": 146,
+        "feeMinor": "-2",
+        "netMinor": "-3",
+        "expiresAt": 200,
+        "subjectKey": "synthetic-146"
+      },
+      "export": {
+        "id": 146,
+        "feeMinor": "-2",
+        "subjectKey": "synthetic-146"
+      }
+    }
+  },
+  {
+    "label": "E4 physical columns",
+    "expected": {
+      "previews": [
+        "id",
+        "subjectKey",
+        "netMinor",
+        "feeMinor",
+        "expiresAt"
+      ],
+      "exports": [
+        "id",
+        "subjectKey",
+        "feeMinor"
+      ]
+    },
+    "actual": {
+      "exports": [
+        "id",
+        "subjectKey",
+        "feeMinor"
+      ],
+      "previews": [
+        "id",
+        "subjectKey",
+        "netMinor",
+        "feeMinor",
+        "expiresAt"
+      ]
+    }
+  },
+  {
+    "label": "E5 before count",
+    "expected": {
+      "count": 0,
+      "reread": []
+    },
+    "actual": {
+      "count": 0,
+      "reread": []
+    }
+  },
+  {
+    "label": "E5 before copies",
+    "expected": {
+      "row": {
+        "id": 500,
+        "subjectKey": "synthetic-500",
+        "netMinor": "3",
+        "feeMinor": "1",
+        "expiresAt": 200
+      },
+      "export": {
+        "id": 500,
+        "subjectKey": "synthetic-500",
+        "feeMinor": "1"
+      }
+    },
+    "actual": {
+      "row": {
+        "id": 500,
+        "feeMinor": "1",
+        "netMinor": "3",
+        "expiresAt": 200,
+        "subjectKey": "synthetic-500"
+      },
+      "export": {
+        "id": 500,
+        "feeMinor": "1",
+        "subjectKey": "synthetic-500"
+      }
+    }
+  },
+  {
+    "label": "E5 boundary",
+    "expected": {
+      "count": 1,
+      "reread": [
+        {
+          "id": 500,
+          "row": null,
+          "export": null
+        }
+      ]
+    },
+    "actual": {
+      "count": 1,
+      "reread": [
+        {
+          "id": 500,
+          "row": null,
+          "export": null
+        }
+      ]
+    }
+  },
+  {
+    "label": "E5 future preserved",
+    "expected": {
+      "row": {
+        "id": 501,
+        "subjectKey": "synthetic-501",
+        "netMinor": "3",
+        "feeMinor": "1",
+        "expiresAt": 300
+      },
+      "export": {
+        "id": 501,
+        "subjectKey": "synthetic-501",
+        "feeMinor": "1"
+      }
+    },
+    "actual": {
+      "row": {
+        "id": 501,
+        "feeMinor": "1",
+        "netMinor": "3",
+        "expiresAt": 300,
+        "subjectKey": "synthetic-501"
+      },
+      "export": {
+        "id": 501,
+        "feeMinor": "1",
+        "subjectKey": "synthetic-501"
+      }
+    }
+  },
+  {
+    "label": "E5 repeat",
+    "expected": {
+      "count": 0,
+      "reread": []
+    },
+    "actual": {
+      "count": 0,
+      "reread": []
+    }
+  },
+  {
+    "label": "E6 real failure",
+    "expected": "storage failure",
+    "actual": "storage failure"
+  },
+  {
+    "label": "E6 rollback copies",
+    "expected": {
+      "row": {
+        "id": 502,
+        "subjectKey": "synthetic-502",
+        "netMinor": "3",
+        "feeMinor": "1",
+        "expiresAt": 210
+      },
+      "export": {
+        "id": 502,
+        "subjectKey": "synthetic-502",
+        "feeMinor": "1"
+      }
+    },
+    "actual": {
+      "row": {
+        "id": 502,
+        "feeMinor": "1",
+        "netMinor": "3",
+        "expiresAt": 210,
+        "subjectKey": "synthetic-502"
+      },
+      "export": {
+        "id": 502,
+        "feeMinor": "1",
+        "subjectKey": "synthetic-502"
+      }
+    }
+  },
+  {
+    "label": "E6 recovery",
+    "expected": {
+      "count": 1,
+      "reread": [
+        {
+          "id": 502,
+          "row": null,
+          "export": null
+        }
+      ]
+    },
+    "actual": {
+      "count": 1,
+      "reread": [
+        {
+          "id": 502,
+          "row": null,
+          "export": null
+        }
+      ]
+    }
+  },
+  {
+    "label": "E6 future preserved",
+    "expected": {
+      "row": {
+        "id": 501,
+        "subjectKey": "synthetic-501",
+        "netMinor": "3",
+        "feeMinor": "1",
+        "expiresAt": 300
+      },
+      "export": {
+        "id": 501,
+        "subjectKey": "synthetic-501",
+        "feeMinor": "1"
+      }
+    },
+    "actual": {
+      "row": {
+        "id": 501,
+        "feeMinor": "1",
+        "netMinor": "3",
+        "expiresAt": 300,
+        "subjectKey": "synthetic-501"
+      },
+      "export": {
+        "id": 501,
+        "feeMinor": "1",
+        "subjectKey": "synthetic-501"
+      }
+    }
+  },
+  {
+    "label": "E3 E4 E5 E6 logger payload marker absent",
+    "expected": false,
+    "actual": false
+  },
+  {
+    "label": "E6 logger failure observed",
+    "expected": true,
+    "actual": true
+  }
+]

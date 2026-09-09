@@ -1,0 +1,17 @@
+[
+  {
+    "command": "lint",
+    "exit": 0,
+    "output": "OK skills/gdpr-compliance\n"
+  },
+  {
+    "command": "check",
+    "exit": 0,
+    "output": "OK skills/gdpr-compliance\n"
+  },
+  {
+    "command": "compile",
+    "exit": 0,
+    "output": "Compiled skills/gdpr-compliance -> /tmp/domain-rev-20260909/isolated-final/gdpr-compliance\n"
+  }
+]

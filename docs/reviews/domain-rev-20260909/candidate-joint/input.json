@@ -1,0 +1,15 @@
+{
+  "title": "Учебный сервис предварительного расчёта",
+  "authority": {
+    "R-F1": "Владелец утвердил contract PREVIEW-1: EUR, scale 2, unitMinor canonical signed decimal int64, quantity integer 1..10. net=unitMinor*quantity, fee=floor(net/2), обе суммы signed int64. Это commercial fee учебного preview, не налог и не бухгалтерская проводка. В серверном Node и PostgreSQL расчёт должен совпадать. Не использовать Number для арифметики minor units. Ошибки входа и переполнения должны отклоняться до записи.",
+    "R-D1": "Учебный контролёр утвердил purpose/basis для временного preview и удаления данных. Синтетические subjectKey относятся к пользователям примера; передача третьим сторонам, cookies, analytics, operational accounts и backups отсутствуют в этом ограниченном fixture. Это заданные факты кейса, не реальное юридическое заключение.",
+    "R-D2": "Сохраняем row {id,subjectKey,netMinor,feeMinor,expiresAt} и экспортную копию {id,subjectKey,feeMinor}; при now>=expiresAt удаляем обе записи. В логах только event, status, count. Сейчас это учебный prototype; операции с production и реальными данными не разрешены.",
+    "R-I1": "Действующая граница preview(request, now) -> persisted row + reread; purge(now) -> removed count + reread. Запрос содержит id (положительное безопасное целое), subjectKey (строка synthetic-N), unitMinor, currency, scale, quantity, expiresAt (безопасное целое, больше now); поля и единицы должны сохраниться. Стек Node HTTP/service + PostgreSQL 18.4, без frontend и внешних интеграций. Можно реализовать минимальную временную проверку, общий пакет или постоянный runtime не нужен."
+  },
+  "prototype": {
+    "preview": "function preview(request){const net=Number(request.unitMinor)*request.quantity; const fee=Math.round(net/2); logger.info(request); return db.insert({...request,netMinor:String(net),feeMinor:String(fee)});}",
+    "export": "function exportPreview(row){return db.insertExport({id:row.id,subjectKey:row.subjectKey,feeMinor:row.feeMinor});}",
+    "purge": "function purge(now){return db.deleteRowsWhereExpiresAtLTE(now);} // export copy is maintained separately"
+  },
+  "request": "Проверь принадлежащие твоему предмету ограничения prototype по принятым источникам. Передай следующему владельцу конкретные исправления/инварианты и требуемые свидетельства. В этом шаге только анализ и handoff, код не менять. Не выбирай отсутствующую налоговую или правовую политику; не выдавай анализ за выполненные runtime-контроли."
+}

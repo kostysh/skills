@@ -1,11 +1,11 @@
-Guide finance-oriented work from accepted rules to reproducible integer minor-unit arithmetic and evidence at the real runtime boundaries.
+Apply accepted financial rules through exact arithmetic and real-boundary evidence.
 
 ## Capability boundary
 
 Own:
 
-- EUR amount representation through the built-in/default facade;
-- non-EUR amount representation through a discovered immutable currency engine only when code and minor-unit scale are authoritative;
+- EUR amount representation through the accepted project contract;
+- non-EUR amount representation when code and minor-unit scale are authoritative, using a verified API or an authorized local formula;
 - rate encoding and arithmetic;
 - rounding, fixation, allocation, and residual invariants;
 - numeric conformance across the project money engine, PostgreSQL, backend, and browser when those contours are in scope.
@@ -22,19 +22,8 @@ Those rules must come from an accepted source. A `22%` example cannot authorize 
 
 ## Core invariants
 
-- Represent canonical amounts as integer minor units in domain state and persistence unless an accepted contract explicitly names a different precision for a specific intermediate; cents are the EUR specialization.
-- Keep EUR on its first-class compatible facade. For another currency, preserve the immutable engine's code and `minorUnitDigits` in every amount and boundary DTO.
-- Keep amount, rate, percentage, weight, and display string as distinct types or schemas.
-- Never use binary floating point for canonical financial arithmetic.
-- Make rounding mode, precision, fixation point, sign behavior, and remainder ordering explicit.
-- Treat negative amounts, refunds, reversals, zero values, bounds, overflow, and invalid inputs as first-class cases.
-- Fail closed on currency or scale mismatch; never manually relabel an amount or imply FX conversion from formatting or engine construction.
-- Convert and format only at authoritative named boundaries; never calculate from formatted output.
-- Prefer the established project money engine after verifying its current public API.
-- Require literal expected fixtures and real-contour evidence for parity claims.
+Use exact integer minor units with explicit currency, scale, amount/rate units, rounding/fixation, sign and allocation rules. Preserve the accepted API and DTO contract; profile examples are conditional. The workflow below owns implementation and verification requirements, including local formulas when no engine exists.
 
 ## Completion boundary
 
-Library source, package tests, a browser bundle, SQL text, migrations, DTO schemas, mocks, and fixture files may be necessary substrate. None proves application wiring, persistence, real PostgreSQL execution, or another broader runtime contour that did not execute.
-
-A complete result states which financial authority was applied, what calculation contract was implemented, which contours actually ran, and what remains unverified or unavailable.
+Report the applied authority, calculation contract, executed contours, and evidence gaps. Source, unit tests, SQL text, schemas, and mocks cannot prove an unexecuted runtime boundary.

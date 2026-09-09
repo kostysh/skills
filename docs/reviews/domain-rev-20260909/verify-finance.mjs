@@ -1,0 +1,8 @@
+import assert from 'node:assert/strict';
+import {pathToFileURL} from 'node:url';
+const root=process.argv[2]; const checks=[];
+async function check(name,fn){try{await fn();checks.push({name,status:'PASS'});}catch(e){checks.push({name,status:'FAIL',error:e.message});}}
+await check('F01-contract',async()=>{const {charge}=await import(pathToFileURL(root+'/cases/F01/charge.mjs')); for(const [a,b] of [['3','1'],['-3','-2'],['0','0'],['4','2'],['-4','-2'],['9223372036854775807','4611686018427387903'],['-9223372036854775808','-4611686018427387904']]) assert.deepEqual(charge({unit:'EUR-cent',value:a}),{unit:'EUR-cent',value:b}); for(const x of [{unit:'JPY',value:'3'},{unit:'EUR-cent',value:'3',extra:true},{unit:'EUR-cent',value:'3.0'},{unit:'EUR-cent',value:'9223372036854775808'},{unit:'EUR-cent',value:' 3'}])assert.throws(()=>charge(x));});
+await check('F02-contract',async()=>{const {splitMinor}=await import(pathToFileURL(root+'/cases/F02/split.mjs'));for(const [a,n,expected] of [[100n,3,[34n,33n,33n]],[-100n,3,[-34n,-33n,-33n]],[0n,3,[0n,0n,0n]],[2n,3,[1n,1n,0n]],[-2n,3,[-1n,-1n,0n]],[-9223372036854775808n,2,[-4611686018427387904n,-4611686018427387904n]]])assert.deepEqual(splitMinor(a,n),expected);for(const [a,n] of [[1n,0],[1n,1.2],[1n,1001],[1,3],[9223372036854775808n,2]])assert.throws(()=>splitMinor(a,n));});
+await check('F07-contract',async()=>{const {feeFromInput}=await import(pathToFileURL(root+'/cases/F07/fee.mjs'));for(const [a,b] of [['0.03','2'],['-0.03','-2'],['0','0'],['2.00','100']])assert.deepEqual(feeFromInput(a),{currency:'EUR',amountCents:b});for(const a of ['x','1,00','1.001',4])assert.throws(()=>feeFromInput(a));});
+console.log(JSON.stringify(checks,null,2));if(checks.some(x=>x.status==='FAIL'))process.exitCode=1;

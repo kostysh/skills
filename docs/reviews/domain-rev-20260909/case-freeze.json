@@ -1,0 +1,23 @@
+{
+  "files": {
+    "baseline-active-manifest.json": "58fcfc7cd127b7a8049840e2e41e7c8751ce3c5b3580588d237f7b049121e6dd",
+    "baseline-versions.json": "cddde1781729100e6ad4921570e3865a1c0e59ba024d3631ea2cad6a5f96f91e",
+    "case-inputs/F01/CONTRACT.md": "daa075cb795bd41554fe6ba98147160b10611915359430fbae7b62dc1144ed80",
+    "case-inputs/F01/money.mjs": "50d8ebb538b2bcebfaf3273570e0abf80b33ab0b22f1b2e5a6d8bd840db6f0c3",
+    "case-inputs/F01/package.json": "9f8db1d2f2084d0ffc90b38513c6e9c8a3893f3669e97d1252ba297dadbd87e2",
+    "case-inputs/F02/CONTRACT.md": "5deb5254862a598476c0b585e508da7ea98c24c4bc10aede224b2ec1f267495b",
+    "case-inputs/F02/package.json": "0d89e7c5f5fba4717997d59983d18afa6ec2bc324f31b8d6c2ad6e99b5ec9ac1",
+    "case-inputs/F04/amount.mjs": "dcd41245e0592cf4197ac500fe86b85c99eacba53b67a70f7668067daf9f11f6",
+    "case-inputs/control-observation.json": "f13e4096dc0588f1dabe37dfd2167b955db86b4d2f5129ad5b942d996549f9e5",
+    "case-inputs/control.mjs": "a15f743c8235204ab56a8917b49d48a6d6c52fee48bb7c0ef435e0ad2f7b9561",
+    "control-observation-provenance.json": "840c00bb3d6f6c9037055ef6415857a1f9ad8220d07de091a7b731b83c29a326",
+    "execution-criteria.json": "332319dbdf8d540006b908f0fcef42d16c22f5d37a2004ce6452915aa8da15b4",
+    "finance-cases.json": "5f69429e9491cc0780ab4371baa498e1496f6a18d673227694538536a76ecf89",
+    "gdpr-cases.json": "9526f4604ad78e6c9e434c7a04f3f21496c0d9ebaa67ee641f9180b5196537c2",
+    "selection-criteria.json": "0394c887af56da8f4eaa6961a0befb084812fe0639027bbad9d57388e3d29b57",
+    "selection-inputs.json": "f2ec09a8a1fd5e2d264c6c6cb0eb70fcdba0de93b74ffb708d5243dc9ff2b005",
+    "verify-finance.mjs": "eb54d4fce6ee3e9a4f518c9bca1b707ed09a20e0696eeecea4cf14c992ef9bd3"
+  },
+  "purpose": "immutable baseline/candidate inputs and closed criteria before candidate edits",
+  "no_candidate_edits": true
+}

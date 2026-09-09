@@ -1,0 +1,4 @@
+NOTICE:  drop cascades to 3 other objects
+DETAIL:  drop cascades to table domain_rev_candidate.preview
+drop cascades to table domain_rev_candidate.export
+drop cascades to function domain_rev_candidate.calc(text,integer)

@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.2.1`
+- Skill source version: `0.2.2`
 
 ## Source files
 - `agents/openai.yaml`
@@ -24,6 +24,7 @@ Generated from `skill.yaml`.
 ## Required references
 - `references/audit-methodology.md`
 - `references/control-catalog.md`
+- `references/implementation-evidence.md`
 
 ## Warnings
 - none

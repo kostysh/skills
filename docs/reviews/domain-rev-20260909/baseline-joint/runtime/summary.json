@@ -1,0 +1,6 @@
+{
+  "status": "verified",
+  "checks": 185,
+  "node": "v24.15.0",
+  "scope": "temporary direct Node service and real PostgreSQL 18.4; no HTTP deployment"
+}

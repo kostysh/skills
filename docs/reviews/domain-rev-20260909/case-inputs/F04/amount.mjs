@@ -1,0 +1,1 @@
+export function split(total,count){if(typeof total!=='bigint'||total<-(2n**63n)||total>2n**63n-1n)throw new Error('AMOUNT');if(!Number.isInteger(count)||count<1||count>1000)throw new Error('COUNT');const sign=total<0n?-1n:1n;const a=total<0n?-total:total;const n=BigInt(count);return Array.from({length:count},(_,i)=>(a/n+(BigInt(i)<a%n?1n:0n))*sign);}
