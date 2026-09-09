@@ -175,6 +175,7 @@ those behaviors.
 - Schema tests prove the tested parsing and validation cases.
 - Component tests prove local field, keyboard, error, and submission wiring.
 - Mocked transport proves only the local client contract.
-- A material data-entry flow requires Playwright and browser execution; real
-  backend evidence is required for authorization, uniqueness, idempotency, and
-  business-rule claims.
+- A material data-entry flow follows the material interactive flow gate in
+  `testing.md`; require observed browser behavior without a runner-only gate.
+  Real backend evidence remains required for authorization, uniqueness,
+  idempotency, and business-rule claims.

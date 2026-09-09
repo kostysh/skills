@@ -9,9 +9,9 @@ compatibility: Portable documentation-only engineering skill. It ships no
   application runtime or test harness and requires repository evidence plus the
   installed stack versions to make project-specific decisions.
 metadata:
-  source-version: 0.1.10
+  source-version: 0.1.11
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: c111e42a7d0628eceb8bb939c268b836f4773ada83b68fae298f80cce8a1ab25
+  skillforge-source-hash: bd7cdba9739fa969085d725f04876ae1e7a0fa242be36c16bc1448a32c293a4f
 ---
 
 # react-spa-engineer
@@ -22,7 +22,7 @@ metadata:
 2. Establish the observable SPA outcome, affected user flow, accepted product, API and security contracts, installed stack versions, existing project conventions, and available verification before choosing a change.
 3. Apply precedence in this order: operator and repository instructions; accepted product, API and security contracts; manifest, lockfile, configuration and existing code; official documentation matching the installed major version; then examples in this skill. For greenfield work use current stable versions.
 4. Stop as blocked when equal-authority sources conflict or a required backend, security, product, or compatibility decision has no owner-supplied answer. Do not invent the missing contract.
-5. Load only the optional references triggered by the affected layers, then trace the flow across routing, API transport, TanStack Query, URL or Zustand state, forms, Dexie, and rendered UI as applicable.
+5. Load only the conditional references triggered by the affected layers, then trace the flow across routing, API transport, TanStack Query, URL or Zustand state, forms, Dexie, and rendered UI as applicable.
 6. When mutation status or outcome verification can outlive a child, portal, route, entity, or access context, read the data-fetching, state-management, persistence-architecture, and testing references and complete a mutation lifetime matrix before choosing the owner.
 7. Define claim-matched evidence before changing anything; files, configuration, generated routes, mocks, screenshots, typecheck, lint, build, or compiler success cannot prove a broader interactive or production capability by themselves.
 
@@ -156,7 +156,7 @@ Preserve React, TypeScript, Vite, TanStack Query, Zustand, React Hook Form with 
 Copyable examples must match the stated major version and all active root invariants. Conceptual examples must be labeled and list the production obligations they omit.
 
 ### Evidence ladder
-Typecheck, lint, and build prove only their technical contours; local UI behavior needs component tests and browser inspection; material flows need successful Playwright scenarios and browser automation; persistence needs reload, migration, TTL and context-switch evidence; performance needs production profiling; auth and security need the real backend boundary and the owning reviewer.
+Match evidence to the requested boundary and preserve mandatory project checks. Typecheck, lint, and build prove their technical contours; interactive claims need observed browser scenarios using supported project tooling. Follow the testing reference for material-flow completion without runner-only or duplicate-run requirements. Persistence needs applicable reload, migration, TTL and context-switch evidence; performance needs measurement; auth and security need the real backend boundary and the owning reviewer.
 
 ### Output contract
 Report mode, observable outcome, changed or inspected surface, verification evidence, completed, partial or blocked status, blockers or residual risks, anti-claims, and the next owner.
@@ -164,7 +164,7 @@ Report mode, observable outcome, changed or inspected surface, verification evid
 ### Mutation lifetime contract
 For mutation UI that crosses remount, navigation, entity, or access-context boundaries, define attempt and outcome-verification owners in a lifetime matrix and test the applicable combined cache, remount, context-switch, timer, late-response, and authoritative-reread failure path.
 
-## Optional references
+## Required active references
 - [Accessibility](references/accessibility.md) — Read this when implementing or assessing semantics, keyboard interaction, focus management, live announcements, dialogs, or custom composite widgets.
 - [Component Architecture](references/component-architecture.md) — Read this when SPA feature layout, import boundaries, component ownership, composition, or public module entrypoints are in scope.
 - [Data Fetching](references/data-fetching.md) — Read this when TanStack Query status, query keys, server reads, mutations, invalidation, retries, API transport, or recovery behavior is in scope.
@@ -186,10 +186,7 @@ For mutation UI that crosses remount, navigation, entity, or access-context boun
 
 ## Portability checklist before finishing
 
-- Run skill-source-compiler lint, regenerate, and check after source changes.
-- Compile to an isolated output directory and confirm references, UI metadata, and supporting evidence remain reachable.
-- Search active instructions and declared assets for absolute local dependencies.
-- Confirm the copied skill remains useful without repository history, prior sessions, or the application it was designed against.
+- Only when editing or packaging this skill itself, run compiler lint, regenerate, check, and an isolated compile; verify generated parity, local references, portability, and packaged files. These maintenance checks are not prerequisites for ordinary tasks performed with the skill.
 
 ## Supporting and historical surface
 

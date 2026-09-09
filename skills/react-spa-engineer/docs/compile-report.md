@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.10`
+- Skill source version: `0.1.11`
 
 ## Source files
 - `agents/openai.yaml`
@@ -31,7 +31,17 @@ Generated from `skill.yaml`.
 - `skill.yaml`
 
 ## Required references
-- none
+- `references/accessibility.md`
+- `references/component-architecture.md`
+- `references/data-fetching.md`
+- `references/forms-validation.md`
+- `references/indexeddb-persistence.md`
+- `references/performance.md`
+- `references/persistence-architecture.md`
+- `references/routing.md`
+- `references/state-management.md`
+- `references/testing.md`
+- `references/typescript-patterns.md`
 
 ## Warnings
 - none
