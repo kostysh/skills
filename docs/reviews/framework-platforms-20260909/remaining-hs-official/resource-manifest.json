@@ -20,8 +20,10 @@
   {
     "file": "docker-api.yaml",
     "url": "https://raw.githubusercontent.com/moby/moby/v28.5.2/docs/api/v1.51.yaml",
-    "sha256": "2afceffc4138e3f4a030140c14f27d4118cec99024695f53d4884c79f3a10138",
-    "checkedAt": "2026-09-09T13:19:26.956216+00:00"
+    "sha256": "4cf404eac5037452d2e1d77b2165166a99d8bcec2185175eba4dc7dc20bdd74a",
+    "checkedAt": "2026-09-09T13:19:26.956216+00:00",
+    "upstreamSha256": "2afceffc4138e3f4a030140c14f27d4118cec99024695f53d4884c79f3a10138",
+    "sanitization": "Removed three upstream Docker Swarm credential examples flagged by GitHub secret scanning."
   },
   {
     "file": "current-shadow-layer.ts",
