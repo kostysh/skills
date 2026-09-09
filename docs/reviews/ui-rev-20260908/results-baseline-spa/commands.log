@@ -1,0 +1,38 @@
+agent-browser --session ui-rev-base-spa click @e14 
+agent-browser --session ui-rev-base-spa snapshot -i 
+agent-browser --session ui-rev-base-spa open http://127.0.0.1:43783 
+agent-browser --session ui-rev-base-spa snapshot -i 
+agent-browser --session ui-rev-base-spa click @e14 
+agent-browser --session ui-rev-base-spa snapshot -i 
+agent-browser --session ui-rev-base-spa snapshot -i 
+agent-browser --session ui-rev-base-spa fill @e5 Alpha\ draft 
+agent-browser --session ui-rev-base-spa find role button click --name Save 
+agent-browser --session ui-rev-base-spa wait --text Try\ again:\ temporary\ save\ error 
+agent-browser --session ui-rev-base-spa snapshot 
+agent-browser --session ui-rev-base-spa fill @e5 Alpha\ corrected 
+agent-browser --session ui-rev-base-spa find role button click --name Save 
+agent-browser --session ui-rev-base-spa wait --text Saved 
+agent-browser --session ui-rev-base-spa snapshot 
+agent-browser --session ui-rev-base-spa find role link click --name Back\ to\ requests 
+agent-browser --session ui-rev-base-spa wait --text Alpha\ corrected 
+agent-browser --session ui-rev-base-spa snapshot -i 
+agent-browser --session ui-rev-base-spa snapshot -i 
+agent-browser --session ui-rev-base-spa click @e3 
+agent-browser --session ui-rev-base-spa wait --url http://127.0.0.1:43783/ 
+agent-browser --session ui-rev-base-spa snapshot -i 
+agent-browser --session ui-rev-base-spa click @e14 
+agent-browser --session ui-rev-base-spa wait --url http://127.0.0.1:43783/items/1 
+agent-browser --session ui-rev-base-spa snapshot -i 
+agent-browser --session ui-rev-base-spa reload 
+agent-browser --session ui-rev-base-spa wait --load networkidle 
+agent-browser --session ui-rev-base-spa snapshot -i 
+agent-browser --session ui-rev-base-spa get url 
+agent-browser --session ui-rev-base-spa network requests 
+agent-browser --session ui-rev-base-spa click @e3 
+agent-browser --session ui-rev-base-spa wait --load networkidle 
+agent-browser --session ui-rev-base-spa snapshot -i 
+agent-browser --session ui-rev-base-spa click @e14 
+agent-browser --session ui-rev-base-spa wait --load networkidle 
+agent-browser --session ui-rev-base-spa snapshot -i 
+agent-browser --session ui-rev-base-spa get value @e5 
+agent-browser --session ui-rev-base-spa close 

@@ -1,0 +1,43 @@
+agent-browser --session ui-rev-candidate-spa open http://127.0.0.1:43786 
+agent-browser --session ui-rev-candidate-spa snapshot 
+agent-browser --session ui-rev-candidate-spa network har start 
+agent-browser --session ui-rev-candidate-spa click @e14 
+agent-browser --session ui-rev-candidate-spa snapshot 
+agent-browser --session ui-rev-candidate-spa open http://127.0.0.1:43786 
+agent-browser --session ui-rev-candidate-spa snapshot 
+agent-browser --session ui-rev-candidate-spa click @e14 
+agent-browser --session ui-rev-candidate-spa snapshot 
+agent-browser --session ui-rev-candidate-spa open http://127.0.0.1:43786 
+agent-browser --session ui-rev-candidate-spa snapshot 
+agent-browser --session ui-rev-candidate-spa click @e14 
+agent-browser --session ui-rev-candidate-spa snapshot 
+agent-browser --session ui-rev-candidate-spa open http://127.0.0.1:43786 
+agent-browser --session ui-rev-candidate-spa snapshot 
+agent-browser --session ui-rev-candidate-spa click @e14 
+agent-browser --session ui-rev-candidate-spa wait --text Request\ 1 
+agent-browser --session ui-rev-candidate-spa snapshot 
+agent-browser --session ui-rev-candidate-spa fill @e5 Alpha\ failed\ draft 
+agent-browser --session ui-rev-candidate-spa click @e4 
+agent-browser --session ui-rev-candidate-spa wait --text Try\ again:\ temporary\ save\ error 
+agent-browser --session ui-rev-candidate-spa snapshot 
+agent-browser --session ui-rev-candidate-spa get value @e5 
+agent-browser --session ui-rev-candidate-spa fill @e5 Alpha\ corrected\ saved 
+agent-browser --session ui-rev-candidate-spa click @e4 
+agent-browser --session ui-rev-candidate-spa wait --text Saved 
+agent-browser --session ui-rev-candidate-spa snapshot 
+agent-browser --session ui-rev-candidate-spa get value @e5 
+agent-browser --session ui-rev-candidate-spa click @e3 
+agent-browser --session ui-rev-candidate-spa wait --text Alpha\ corrected\ saved 
+agent-browser --session ui-rev-candidate-spa snapshot 
+agent-browser --session ui-rev-candidate-spa click @e14 
+agent-browser --session ui-rev-candidate-spa wait --text Request\ 1 
+agent-browser --session ui-rev-candidate-spa snapshot 
+agent-browser --session ui-rev-candidate-spa get value @e5 
+agent-browser --session ui-rev-candidate-spa reload 
+agent-browser --session ui-rev-candidate-spa wait --text Request\ 1 
+agent-browser --session ui-rev-candidate-spa snapshot 
+agent-browser --session ui-rev-candidate-spa get value @e5 
+agent-browser --session ui-rev-candidate-spa get url 
+agent-browser --session ui-rev-candidate-spa network requests 
+agent-browser --session ui-rev-candidate-spa network har stop /tmp/ui-rev-20260908/results-candidate-spa/requests.har 
+agent-browser --session ui-rev-candidate-spa close 
