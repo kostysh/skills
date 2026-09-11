@@ -1,4 +1,0 @@
-interface:
-  display_name: "Skill Reviewer"
-  short_description: "Evidence-backed reviews of agent skills"
-  default_prompt: "Use $skill-reviewer to review this skill package, state assurance and evidence limits, and issue a supported verdict without edits."

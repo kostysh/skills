@@ -1,4 +1,0 @@
-interface:
-  display_name: "Docusaurus Repo"
-  short_description: "Build and maintain Docusaurus documentation sites"
-  default_prompt: "Use $docusaurus-repo to bootstrap, structure, govern, and maintain a Docusaurus documentation repository."
