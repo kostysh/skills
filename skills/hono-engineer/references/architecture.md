@@ -1,5 +1,7 @@
 # Architecture & Boundaries
 
+The project-composition restrictions below govern real application work. For a standalone teaching example, use the [Illustrative example boundary](../SKILL.md#illustrative-example-boundary); its sample wiring does not become project architecture.
+
 ## Route composition
 - Preserve the existing compatible composition. Use `app.route()` or factory helpers only when they fit the accepted project boundary and preserve the required Hono type flow.
 - Do not introduce controller classes, module grouping, directory layout, or helper layers from this reference.

@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: documentation
-  source-version: 0.2.1
+  source-version: 0.2.2
   recommended-skill-md-max-bytes: 20000
   description: >-
     Create, review, restructure, and rewrite source-grounded technical
@@ -194,7 +194,4 @@ sections:
       - Use relative links for local references, assets, scripts, tests, and supporting docs.
       - Treat external methodology links as optional provenance, never as a runtime dependency.
     checklist:
-      - Run the owning skill-source-compiler lint, regenerate, and check workflow after source changes.
-      - Search the active skill and declared files for absolute filesystem dependencies before finishing.
-      - Confirm every active reference listed by SKILL.md exists inside this skill folder.
-      - Compile to an isolated directory and confirm the copied package retains the authority, evidence, status, and interop contracts.
+      - Only when changing or packaging this skill itself, run the owning skill-source-compiler lint, regenerate, and check workflow as applicable; inspect active dependencies and reference reachability, then compile to an isolated directory and read back the copied package's authority, evidence, status, and interop contracts. These maintenance checks are not prerequisites for ordinary documentation work; compiler availability does not determine a document's review status.

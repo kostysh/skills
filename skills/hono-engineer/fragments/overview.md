@@ -2,11 +2,13 @@
 
 Guide Hono-specific routing, middleware, Context, contract integration, and verification decisions inside an existing or greenfield API. The capability is an observable HTTP or runtime behavior with evidence at the boundary claimed by the task.
 
+For a standalone teaching request, the outcome is a self-contained explanation and example under the Illustrative example boundary policy, not an application implementation or readiness claim.
+
 This documentation does not ship a Hono runtime, make an endpoint production-ready by itself, or replace security, data, runtime, architecture, and testing authorities. Compiler success, route/schema presence, mocks, `app.request()`, and structural docs tests are substrate or bounded evidence, not universal runtime proof.
 
 ## Minimum inputs and readiness
 
-Before implementation, derive or obtain:
+Before implementing a real application change, derive or obtain:
 
 - the authoritative request and externally observable behavior, including error and recovery behavior;
 - the current app factory or entrypoint, route composition, middleware/error hooks, and project conventions;
@@ -22,7 +24,7 @@ Recommendations track the latest official stable Hono guidance rather than a pin
 
 ## Hono baseline decisions
 
-- Preserve the existing compatible app composition. In greenfield work, do not select structure without authority; use typed factories or `app.route()` only when the accepted composition needs them. Capture chained route return types when Hono RPC or typed test clients consume them.
+- Preserve the existing compatible app composition. In greenfield application work, do not select structure without authority; use typed factories or `app.route()` only when the accepted composition needs them. Capture chained route return types when Hono RPC or typed test clients consume them.
 - Treat middleware order as behavior. Preserve the compatible project-owned global and route-group composition; register `app.onError()` and `notFound()` as hooks, not middleware positions.
 - Keep route handlers focused on the accepted HTTP boundary when that fits the project architecture; do not introduce a new service/domain layering scheme during a narrow Hono change.
 - Keep request-scoped state in Hono Context or explicit parameters, never module-level mutable state.

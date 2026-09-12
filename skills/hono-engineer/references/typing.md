@@ -2,9 +2,11 @@
 
 Keep the type guarantee aligned with where the middleware actually runs. Type declarations do not execute middleware or prove that a value exists at runtime.
 
+Project-owned placeholders and composition restrictions below concern real application integration. A standalone teaching example may use the [Illustrative example boundary](../SKILL.md#illustrative-example-boundary), while preserving the same setter-before-consumer and scoped-versus-global type guarantees.
+
 ## Scoped variables: prefer generics and middleware inference
 
-Use `Variables` generics or `createMiddleware<Env>()` when only a route group or subset of handlers receives the value. Keep the consuming handlers inside that typed composition. First inspect the existing registration seam; this reference does not choose a new app, router, mount, path, or handler layout.
+Use `Variables` generics or `createMiddleware<Env>()` when only a route group or subset of handlers receives the value. Keep the consuming handlers inside that typed composition. For real application work, first inspect the existing registration seam; this reference does not choose a new app, router, mount, path, or handler layout.
 
 ```ts
 import { createMiddleware } from 'hono/factory'
@@ -28,7 +30,7 @@ declare module 'hono' {
 }
 ```
 
-`projectValue` and `ProjectValue` stand for a project-owned key and type. Register the project-owned setter through the existing global composition before every consumer; do not add `app.use()`, a new root app, or route wiring until that composition seam is authoritative.
+`projectValue` and `ProjectValue` stand for a project-owned key and type. For real application work, register the project-owned setter through the existing global composition before every consumer; do not add `app.use()`, a new root app, or route wiring until that composition seam is authoritative.
 
 Notes:
 - `c.get()` and `c.var` both rely on the declared Context variable types; neither proves that the setter ran.

@@ -41,3 +41,7 @@
 
 - [Принятый общий план](../../../docs/plans/implementation-plan-20260909-1.md).
 - [Общий implementation log](../../../docs/logs/implementation-log-20260909-1.md) — авторские изменения; candidate и независимая приёмка ещё не завершены.
+
+## ASTRA-3-SKILLS-v2
+
+- [Журнал исправления P2-01](logs/implementation-log-20260912-1.md) — source-only критерии и реализация; результаты проверок и независимого аудита см. в журнале. Журнал не входит в emitted package.

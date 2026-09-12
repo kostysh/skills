@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: skill-reviewer
-  source-version: 0.2.5
+  source-version: 0.2.6
   recommended-skill-md-max-bytes: 22000
   description: >-
     Review agent skills for capability, instruction quality, triggers, contracts,

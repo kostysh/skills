@@ -16,3 +16,4 @@
 - [logs/implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — сокращение описания до 300 code points. Статус: independent scoped PASS.
 - [logs/implementation-log-20260716-1.md](logs/implementation-log-20260716-1.md) — source-grounded documentation workflow, authority/evidence/status contracts и полный independent re-audit. Статус: PASS.
 - [logs/implementation-log-20260908-1.md](logs/implementation-log-20260908-1.md) — interop и обнаружение DOCX/PDF-владельца; авторская реализация, независимая приёмка в общем контуре.
+- [logs/implementation-log-20260912-1.md](logs/implementation-log-20260912-1.md) — ASTRA-3-SKILLS-v2, source-only журнал исправления P2-02; результаты проверок и независимого аудита см. в журнале. Не входит в emitted package.
