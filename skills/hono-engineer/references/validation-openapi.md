@@ -1,5 +1,7 @@
 # Validation & API Contracts
 
+Project-contract requirements below apply to real application integration. For a standalone teaching request, use the [Illustrative example boundary](../SKILL.md#illustrative-example-boundary), keeping sample values distinct from a project's accepted wire contract.
+
 ## Project-owned validation
 - Preserve the project's accepted validator and wire-error contract. Hono's built-in `validator()` and companion validators such as Zod or Valibot are integration choices, not mandatory migrations.
 - Preserve the project's schema location and publication boundary; this reference does not introduce a directory layout.
@@ -7,9 +9,9 @@
 
 ## New route contract checklist
 
-Before implementing a requested route, obtain the consumed request parts, success/failure wire behavior, admission contract, real consumers, and required evidence. Validate only the untrusted parts the accepted contract consumes. If a public schema, status/body, admission policy, or publication surface is not owned, use a placeholder or stop rather than completing the route with a conventional default.
+Before implementing a real application route, obtain the consumed request parts, success/failure wire behavior, admission contract, real consumers, and required evidence. Validate only the untrusted parts the accepted contract consumes. If a public schema, status/body, admission policy, or publication surface is not owned, use a placeholder or stop rather than completing the route with a conventional default.
 
-The placeholder must cover the complete unresolved boundary. If the consumed request part is unknown, do not select `json`, `form`, or another validator target. If the success status, media type, or body is unknown, do not show `c.json()`, `c.text()`, `c.body()`, or an executable partial route and hide only one argument behind a placeholder. Stop for the missing contract or delegate the whole boundary to an opaque owner-supplied handler such as `projectRouteHandler`. Do not show even opaque handler/router wiring when the existing app composition seam is unknown: choosing `app.route()`, a mount path, or chained route layout would itself assign architecture.
+For that application integration, the placeholder must cover the complete unresolved boundary. If the consumed request part is unknown, do not select `json`, `form`, or another validator target. If the success status, media type, or body is unknown, do not show `c.json()`, `c.text()`, `c.body()`, or an executable partial route and hide only one argument behind a placeholder. Stop for the missing contract or delegate the whole boundary to an opaque owner-supplied handler such as `projectRouteHandler`. Do not show even opaque handler/router wiring when the existing app composition seam is unknown: choosing `app.route()`, a mount path, or chained route layout would itself assign architecture.
 
 Do not require Zod, OpenAPI, and Hono RPC simultaneously. Preserve the project's chosen contract mechanism unless the request changes it.
 
@@ -19,7 +21,7 @@ Do not require Zod, OpenAPI, and Hono RPC simultaneously. Preserve the project's
 - Read validated values via `c.req.valid('<part>')`.
 - You can chain multiple validators on the same route (param + query + body).
 - For `json`/`form`, a missing or incompatible `Content-Type` means Hono does not parse the body and the validator callback receives `{}`. Explicitly reject that value when the accepted contract requires a media-type or body error; do not rely on an automatic parse failure.
-- If the accepted contract does not define the rejection status, media type, and body, do not infer `400`, `415`, text, or a JSON envelope. Show an owner-supplied failure placeholder and report that contract authority is missing.
+- For real application work, if the accepted contract does not define the rejection status, media type, and body, do not infer `400`, `415`, text, or a JSON envelope. Show an owner-supplied failure placeholder and report that contract authority is missing.
 - For `header`, use lowercase header names.
 
 Built-in validator API-shape example:
@@ -32,7 +34,7 @@ const projectJsonValidator = validator('json', (value, c) => {
 })
 ```
 
-The three `project*` symbols are owner-supplied placeholders; the example defines no route, schema library, status, media type, or response body. Use this API-shape example only after the accepted contract has selected the `json` request part. When it has not, keep even the validator target behind an owner-supplied integration boundary.
+The three `project*` symbols are owner-supplied placeholders; the example defines no route, schema library, status, media type, or response body. For real application integration, use this API-shape example only after the accepted contract has selected the `json` request part. When it has not, keep even the validator target behind an owner-supplied integration boundary. A standalone teaching example can instead supply illustrative values under the root policy.
 
 ## OpenAPI integration
 - When OpenAPI is the accepted contract, use helpers compatible with the project's validator/schema stack to derive or maintain the specification.

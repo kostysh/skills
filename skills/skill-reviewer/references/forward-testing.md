@@ -32,6 +32,8 @@ Obtain any required action/delegation authority from the operator/environment, r
 
 Choose the smallest set covering material risks and include sufficient/correct cases to detect unnecessary rejection. Useful families are owned and adjacent requests, authoritative and missing/conflicting inputs, substrate-only overclaims, unsafe or recovery paths, interop/dependencies, and minimal non-behavioral changes. Historical before/after artifacts can be useful if prior conclusions remain outside the executor's context except where the requested re-audit itself requires them.
 
+For changes to instruction economy or completion, select only the relevant contrasts: an ordinary authorized task versus a genuinely missing material decision; a task needing several authorized actions versus a legitimate checkpoint; relevant conditional reading versus an unrelated prerequisite. Preserve a justified exact sequence and a small self-contained skill as controls when those distinctions are in scope. For a model-specific claim, use declared executors and comparable evidence; an unknown executor limits that claim rather than requiring guessed capabilities. These are conditional case choices, not a fixed suite for every review.
+
 Separate two claims:
 
 - **Selection/activation:** present the realistic request and candidate catalog description/available metadata alongside fixed relevant neighboring entries. Do not force the tested skill or expose its body before the selection decision. Observe both owned and adjacent requests; record this as a catalog selection trial, not proof of every host's loading mechanism.

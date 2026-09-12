@@ -6,9 +6,9 @@ description: Build, change, and diagnose Hono API services. Use for Hono
   testing, security, data, or architecture skills when those domains determine
   correctness.
 metadata:
-  source-version: 0.1.8
+  source-version: 0.1.9
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: d427501f938a7e07c41247a3aa22180ce93fcf3b78098ac29ebd7d3a23d75d00
+  skillforge-source-hash: 9196ac40d503a78f31f3bed94095af3564a1c2a4cefe6502241d141a1b3683fb
 ---
 
 # hono-engineer
@@ -21,8 +21,8 @@ metadata:
 4. For a version-sensitive API or platform decision, read Framework Currency and check current official sources; treat the installed project version as a compatibility constraint rather than silently upgrading it.
 5. Apply precedence in this order: authoritative requirements, compatible existing project conventions, then verified Hono/runtime facts. This skill supplies no fallback product or project policy. Stop or limit the claim when equal-authority inputs conflict or required runtime evidence is unavailable.
 6. Treat optional references as conditional integration guidance: they cannot establish a new architecture, security, data, error, logging, or operational policy without an accepted project contract or the owning skill.
-7. When any public/runtime choice is unknown—including success or failure status, headers, media type, body, schema stack, path/layout, middleware, limit, timeout, retry, config format, binding, dependency, data source, or observability setting—use an explicitly named owner-supplied placeholder or stop for authority; an assumption or greenfield label does not grant authority.
-8. Make an owner-supplied placeholder cover the whole unresolved boundary. A placeholder for only one argument does not authorize adjacent choices: for example, `c.json(value, projectStatus)` still selects JSON media and a body shape. When the request part or response contract is unknown, stop or delegate the complete route/response to an opaque owner-supplied handler instead of showing an executable partial handler. If the existing Hono composition seam is also unknown, show no handler/router wiring at all: even `app.route(...)` would choose a mount and composition contract.
+7. For real application work, when any public/runtime choice is unknown—including success or failure status, headers, media type, body, schema stack, path/layout, middleware, limit, timeout, retry, config format, binding, dependency, data source, or observability setting—use an explicitly named owner-supplied placeholder or stop for authority; an assumption or greenfield label does not grant authority. For standalone teaching requests, apply the Illustrative example boundary policy instead of application-readiness prerequisites.
+8. Within that real application boundary, make an owner-supplied placeholder cover the whole unresolved boundary. A placeholder for only one argument does not authorize adjacent choices: for example, `c.json(value, projectStatus)` still selects JSON media and a body shape. When the request part or response contract is unknown, stop or delegate the complete route/response to an opaque owner-supplied handler instead of showing an executable partial handler. If the existing Hono composition seam is also unknown, show no handler/router wiring at all: even `app.route(...)` would choose a mount and composition contract.
 9. Define the observable HTTP/runtime behavior and the evidence boundary before editing; schema, route, compiler, mock, or docs-test existence is not completion.
 10. When the high-risk backend trigger applies, read High-risk Backend Contract, consume the owning specification's `HRB-*` matrix when available, and do not report the Hono boundary complete until every applicable Hono-owned row has an exact contract and executable evidence.
 
@@ -42,11 +42,13 @@ metadata:
 
 Guide Hono-specific routing, middleware, Context, contract integration, and verification decisions inside an existing or greenfield API. The capability is an observable HTTP or runtime behavior with evidence at the boundary claimed by the task.
 
+For a standalone teaching request, the outcome is a self-contained explanation and example under the Illustrative example boundary policy, not an application implementation or readiness claim.
+
 This documentation does not ship a Hono runtime, make an endpoint production-ready by itself, or replace security, data, runtime, architecture, and testing authorities. Compiler success, route/schema presence, mocks, `app.request()`, and structural docs tests are substrate or bounded evidence, not universal runtime proof.
 
 ## Minimum inputs and readiness
 
-Before implementation, derive or obtain:
+Before implementing a real application change, derive or obtain:
 
 - the authoritative request and externally observable behavior, including error and recovery behavior;
 - the current app factory or entrypoint, route composition, middleware/error hooks, and project conventions;
@@ -62,7 +64,7 @@ Recommendations track the latest official stable Hono guidance rather than a pin
 
 ## Hono baseline decisions
 
-- Preserve the existing compatible app composition. In greenfield work, do not select structure without authority; use typed factories or `app.route()` only when the accepted composition needs them. Capture chained route return types when Hono RPC or typed test clients consume them.
+- Preserve the existing compatible app composition. In greenfield application work, do not select structure without authority; use typed factories or `app.route()` only when the accepted composition needs them. Capture chained route return types when Hono RPC or typed test clients consume them.
 - Treat middleware order as behavior. Preserve the compatible project-owned global and route-group composition; register `app.onError()` and `notFound()` as hooks, not middleware positions.
 - Keep route handlers focused on the accepted HTTP boundary when that fits the project architecture; do not introduce a new service/domain layering scheme during a narrow Hono change.
 - Keep request-scoped state in Hono Context or explicit parameters, never module-level mutable state.
@@ -169,9 +171,12 @@ Validation:
 - **high** — Contract tests validate only exercised responses. Claim runtime response validation only when production code validates the emitted payload and failure behavior is tested.
 - **high** — Do not rely on remembered Hono, adapter, or runtime APIs for version-sensitive work; verify latest official guidance and reconcile it with installed project versions.
 - **high** — Do not let predictable validation or service failures escape as raw internal errors. Map only safe, contract-approved details before the response leaves Hono.
-- **high** — An illustrative snippet must classify every concrete choice as authoritative input, verified framework fact, or owner-supplied placeholder. The placeholder must encapsulate the entire unknown boundary; wrapping only a status, schema, or dependency while selecting a media type, body, request part, or handler flow remains unauthorized. Even when a composition seam is supplied, show only the source-supplied composition primitives; do not add illustrative route methods, mounts, exports, or handlers merely to demonstrate ordering. The snippet must not decide unknown success/failure wire behavior, schema/tool stack, layout, middleware, limits, timeouts, retry, config, bindings, dependencies, data, security, or observability policy.
+- **high** — A snippet intended for a real application must preserve its accepted contract and whole-boundary placeholders; calling it illustrative does not authorize unknown project choices. Standalone teaching examples follow the Illustrative example boundary policy.
 
 ## Policies
+
+### Illustrative example boundary
+For a standalone teaching request, choose the minimum demonstration values, app/route composition, handlers, and middleware needed to show the requested Hono mechanism. Label those choices as illustrative and use verified framework APIs; do not require the learner to supply a production path, response, or architecture before giving a self-contained example. This exception does not choose a real application's contracts: an integration snippet, implementation request, or real authorization decision still needs its accepted project inputs. Relabeling that work as an example does not supply missing authority.
 
 ### Source and compatibility precedence
 Authoritative requirements and compatible project conventions precede verified framework facts. No greenfield label supplies missing authority. When inputs conflict or latest guidance is incompatible with installed versions, stop the affected decision, surface the gap, and continue independent authorized work without inventing a migration or policy decision.

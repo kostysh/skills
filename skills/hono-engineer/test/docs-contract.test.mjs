@@ -72,8 +72,11 @@ test('optional references inherit root precedence and cannot create foreign poli
   assert.match(skill, /an assumption or greenfield label does not grant authority/i);
   assert.match(
     skill,
-    /show only the source-supplied composition primitives; do not add illustrative route methods, mounts, exports, or handlers/i,
+    /For real application work, when any public\/runtime choice is unknown/i,
   );
+  assert.match(skill, /### Illustrative example boundary/);
+  assert.match(skill, /For a standalone teaching request, choose the minimum demonstration values/i);
+  assert.match(skill, /Relabeling that work as an example does not supply missing authority/i);
   assert.doesNotMatch(skill, /then this skill's greenfield defaults/);
 });
 
@@ -106,6 +109,7 @@ test('scoped Context variables do not rely on unsafe global augmentation', async
   assert.match(typing, /createMiddleware<ProjectScopedEnv>/);
   assert.match(typing, /owner-supplied whole-boundary placeholders/);
   assert.match(typing, /does not choose a new app, router, mount, path, or handler layout/);
+  assert.match(typing, /\[Illustrative example boundary\]\(\.\.\/SKILL\.md#illustrative-example-boundary\)/);
   assert.doesNotMatch(typing, /^\s*(?:const app = new Hono|app\.(?:use|get|post|route)\()/m);
 });
 
@@ -146,6 +150,8 @@ test('request validation documents missing Content-Type semantics and explicit r
   assert.match(validation, /do not rely on an automatic parse failure/);
   assert.match(validation, /do not infer `400`, `415`, text, or a JSON envelope/);
   assert.match(validation, /projectValidationFailure\(c\)/);
+  assert.match(validation, /For real application integration, use this API-shape example only after the accepted contract/);
+  assert.match(validation, /\[Illustrative example boundary\]\(\.\.\/SKILL\.md#illustrative-example-boundary\)/);
   assert.match(
     validation,
     /defines no route, schema library, status, media type, or response body/,
@@ -237,7 +243,7 @@ test('cross-domain defaults remain project-owned or explicitly illustrative', as
   assert.match(observability, /Preserve the accepted logging schema and transport/);
   assert.match(perf, /Hono does not require these mechanisms/);
   assert.match(pipelines, /Hono ordering consequences after a concern is selected/);
-  assert.match(pipelines, /Do not synthesize a complete pipeline from this table/);
+  assert.match(pipelines, /For real application work, do not synthesize a complete pipeline from this table/);
   assert.match(rateLimit, /Preserve the project-owned quota model/);
   assert.match(security, /`security-reviewer` or the project security\/platform owner decides/);
   assert.match(supabase, /Use `supabase-engineer` to establish/);

@@ -5,11 +5,11 @@ description: Create, review, restructure, and rewrite source-grounded technical
   explanations, docs architecture, and audits of user-need fit, factual support,
   task completion, and maintainability.
 metadata:
-  source-version: 0.2.1
+  source-version: 0.2.2
   tags: documentation, technical-writing, diataxis, tutorials, how-to, reference,
     explanation
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 707cfce9fa20523bbcf4813819fb6f30accb3af5736e3d57909e000eee7fa4c6
+  skillforge-source-hash: a87cfb73f3ec493e5de69127714d570b77bedc92e9f02dc377f388ca213150ca
 ---
 
 # documentation
@@ -249,10 +249,7 @@ Before creating persistent documentation, identify the audience and repository l
 
 ## Portability checklist before finishing
 
-- Run the owning skill-source-compiler lint, regenerate, and check workflow after source changes.
-- Search the active skill and declared files for absolute filesystem dependencies before finishing.
-- Confirm every active reference listed by SKILL.md exists inside this skill folder.
-- Compile to an isolated directory and confirm the copied package retains the authority, evidence, status, and interop contracts.
+- Only when changing or packaging this skill itself, run the owning skill-source-compiler lint, regenerate, and check workflow as applicable; inspect active dependencies and reference reachability, then compile to an isolated directory and read back the copied package's authority, evidence, status, and interop contracts. These maintenance checks are not prerequisites for ordinary documentation work; compiler availability does not determine a document's review status.
 
 ## Supporting and historical surface
 

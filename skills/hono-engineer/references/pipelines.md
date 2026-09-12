@@ -2,6 +2,8 @@
 
 Preserve the compatible project-owned global chain. Add route-group middleware only for the accepted endpoint behavior; this reference illustrates ordering constraints, not a mandatory security or architecture policy.
 
+For standalone teaching requests, apply the [Illustrative example boundary](../SKILL.md#illustrative-example-boundary) to demonstrate the selected mechanism without inventing a real endpoint's policy.
+
 ## Hono ordering consequences after a concern is selected
 
 | Accepted concern | Hono-specific consequence |
@@ -16,4 +18,4 @@ Preserve the compatible project-owned global chain. Add route-group middleware o
 | Protected long-lived response | Opening admission is insufficient only when the accepted security contract requires later permission changes to take effect; implement its revalidation/invalidation and abort cleanup. |
 | Post-response work on Workers | `c.executionCtx.waitUntil()` is best-effort, not durable delivery; use the platform/architecture owner's accepted durable boundary when loss changes behavior. |
 
-Do not synthesize a complete pipeline from this table. If the authoritative endpoint contract has not selected a concern, omit it or stop for the owning decision.
+For real application work, do not synthesize a complete pipeline from this table. If the authoritative endpoint contract has not selected a concern, omit it or stop for the owning decision.

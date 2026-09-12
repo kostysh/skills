@@ -50,6 +50,17 @@ Use these lenses without making every row a separate report:
 - **Instruction integrity:** outcomes, side effects, validation and stop rules are coherent; each normative decision has one canonical location. Examples illustrate sourced rules. Conditional detail is reachable without compulsory unrelated reading.
 - **Evidence integrity:** identify the least-real result that could pass a criterion. File existence, metadata, mocks, logs or a happy path cannot close a broader claim. Structural, unit, contract and real-boundary evidence support only their actual scope. Label inference/conflict; say “not found in the reviewed scope” rather than proving absence elsewhere.
 
+### Instruction economy and completion
+
+Within the reviewed surface, check whether instructions support the requested outcome or obstruct a valid path to it:
+
+- **Decision freedom:** a fixed sequence or mandatory owner decision needs a correctness, safety, permission, or fragile-tooling reason. Where several safe approaches satisfy the task, prefer outcome, constraints, and a verification criterion. Preserve justified sequences; specificity alone is not a defect.
+- **Context relevance:** keep shared decisions and navigation in the root of a multi-workflow skill; load substantial mode-specific detail only when its condition applies. Identify the unrelated reading or dependency an ordinary task would actually incur. A small self-contained skill needs no artificial router or references, and length alone proves no failure.
+- **Executor fit:** use declared target models and available task evidence when judging whether older scaffolding or constraints remain necessary. Do not infer model capabilities from a name, hard-code model-version folklore, or demand a model matrix without a relevant claim. If the executor is unknown, retain model-independent requirements and limit model-specific conclusions without blocking supported review.
+- **Completion:** trace the requested result through necessary authorized actions to its final check. Flag a rule that stops at an intermediate artifact, requests the same permission again, or blocks independent work without an applicable missing decision or checkpoint. Preserve real authority boundaries and user-owned stops; persistence does not authorize broader work.
+
+Apply the existing evidence and severity rules below. These lenses are not a mandatory new report template or a reason to add checks unrelated to the current claim.
+
 Select checks that can detect the changed failure path. Read back the emitted/rendered surface when packaging or markup affects what the executor receives. Reuse applicable evidence from the same snapshot or a justified unchanged boundary; do not rerun it merely because a formal verdict is requested. Read forward-testing when judging or collecting evidence for material instruction behavior. After required checks pass, extend verification only for a new change, failure, or concrete unresolved concern. No artificial runtime or permanent harness is required for prose-only skills.
 
 ## Findings and severity
