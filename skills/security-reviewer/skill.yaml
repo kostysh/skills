@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "security-reviewer"
-  source-version: "0.1.13"
+  source-version: "0.1.14"
   recommended-skill-md-max-bytes: 36000
   description: "Perform bounded security review of code, CI, permissions, webhooks, secrets, data access, and config. Use for vulnerability review, exploitability triage, or scoped audits. Own threat modeling, confidence gating, attack paths, and findings—not scan orchestration, compliance, pentesting, or fixes."
 fragments:
@@ -139,14 +139,15 @@ sections:
       goal: "Find exploitable weaknesses with confidence gating and line-referenced evidence."
       steps:
         - "Identify reviewed surfaces, stack, trust boundaries, identities, secrets, privileged actions, and sensitive sinks."
+        - "Within each selected boundary, compare the primary path with discovered sibling or alternate paths that reach the same operation, and compare upstream guarantees with downstream assumptions; stop each hypothesis after it is proved, refuted, or reduced to one decisive missing fact."
         - "Apply the bounded auth-admission checkpoint when route admission, replay, idempotency, or pre-auth resource use changes."
         - "Apply the bounded policy-governance admission checkpoint only when external invocation, admission/approval executable capability, policy activation, active-scope selection, governance/audit preconditions, fail-closed gates, or security-relevant replay/idempotency controls change."
         - "Apply the data-access construction checkpoint when backend code reads or writes a database, constructs REST/PostgREST filters, uses Supabase clients, calls RPC, uses query builders, touches storage keys, or reaches service-role clients."
-        - "Trace attacker-controlled input or identity to a missing control or sensitive sink."
+        - "Trace the lower-trust actor or principal from starting authority across the boundary to the protected action or resource and observable result; for agent actions, distinguish generic authorization from intent/action binding."
         - "Check surrounding mitigations, framework defaults, and deployment constraints before reporting."
-        - "Classify confidence and severity; keep unresolved stack or runtime facts in needs verification rather than promoting them to findings."
+        - "Classify confidence and severity from demonstrated impact and preconditions; keep only source-grounded hypotheses with one decisive unresolved fact in needs verification, without severity."
       validation:
-        - "Reported findings have confirmed attacker control, reachability, impact, evidence, and fix direction."
+        - "Reported findings name the violated security invariant, lower-trust actor, starting authority, protected action or resource, affected principal or resource, observable impact, evidence, enforcement point, and minimal regression case."
         - "Backend/database audits name whether raw SQL, REST/PostgREST construction, SDK query builders, RPC, and service-role paths were inspected; database security is not claimed complete when server-side data-access construction was out of scope."
         - "Policy-governance findings state the relevant actor/control path or security-relevant operator/control-plane impact, including replay semantics and authority binding when those decide executable capability."
         - "Low-confidence, theoretical, test-only, comment-only, or mitigated patterns are not reported by default."
@@ -156,6 +157,7 @@ sections:
       steps:
         - "Start with one plain-language outcome sentence before security status, severity, confidence, or verdict terminology."
         - "Report the review basis, confirmed findings, needs verification, inspected and uninspected surfaces, residual risk, and evidence limits."
+        - "For each needs-verification item, name the concrete hypothesis, exact decisive unknown, minimal safe resolution step, and owner or evidence; omit severity and drop refuted hypotheses."
         - "In targeted mode, report findings or no confirmed findings in reviewed scope without issuing PASS."
         - "In formal mode, use FAIL only for confirmed in-scope findings, PASS (scoped) only for a complete named security-review scope, INCOMPLETE for missing mandatory coverage/evidence, and BLOCKED for an unavailable or unstable basis."
         - "Do not issue an overall merge recommendation; hand confirmed security blockers and residual risk to code-reviewer when merge guidance is requested."

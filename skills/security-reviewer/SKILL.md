@@ -5,9 +5,9 @@ description: Perform bounded security review of code, CI, permissions, webhooks,
   triage, or scoped audits. Own threat modeling, confidence gating, attack
   paths, and findings—not scan orchestration, compliance, pentesting, or fixes.
 metadata:
-  source-version: 0.1.13
+  source-version: 0.1.14
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 5cba140885619e1e6e118ac7c58e5fdaa99269488cb81199bcf762f6c3efe6ad
+  skillforge-source-hash: 6147bfb4626f3ec2e770e0f1282ff77679fd12c447c86adbf707a776ff6f65c0
 ---
 
 # security-reviewer
@@ -47,7 +47,7 @@ Find exploitable security weaknesses without turning every suspicious pattern in
 ## Non-Negotiables
 
 - Research before reporting. Do not flag issues from pattern matching alone.
-- Trace attacker-controlled input, identity, or code execution path to the sink or missing control.
+- Trace the lower-trust actor or principal from starting authority across the boundary to the protected action or resource, affected principal or resource, and observable result. Express the violated invariant through the existing `Impact` and `Evidence` fields; for agent actions, check generic authorization and intent/action binding separately.
 - Check surrounding code for mitigations, validation, framework defaults, and trust boundaries.
 - Distinguish attacker-controlled data from server-controlled config, constants, and operator-managed settings.
 - For auth/RBAC/RLS reviews, inspect both HTTP/API admission + service logic and direct data-access paths such as PostgREST, RPC, RLS helpers/policies, storage, and service-role store methods; do not accept API-only evidence as proof of database-path safety.
@@ -125,9 +125,9 @@ Adjust the threat model explicitly if the code is internal-only or requires trus
    - sensitive sinks
 10. Trace the attack path:
    - entry point
-   - attacker-controlled value
+   - lower-trust actor, controlled value, and starting authority
    - execution or authorization mechanism
-   - impact
+   - protected action or resource, affected principal or resource, and observable impact
 11. Verify mitigations:
    - validation or sanitization
    - framework escaping or parameterization
@@ -153,17 +153,19 @@ Adjust the threat model explicitly if the code is internal-only or requires trus
 | Level | Criteria | Action |
 |---|---|---|
 | HIGH | attacker control, reachability, and impact are confirmed | report as a finding |
-| MEDIUM | a meaningful issue exists but one link still needs verification | keep in "needs verification" |
+| MEDIUM | a source-grounded hypothesis has one decisive trust-boundary or mitigation fact unresolved | keep in "needs verification" with the exact unknown and resolution path, but no severity |
 | LOW | theoretical, best-practice only, or clearly mitigated elsewhere | do not report |
 
 ## Severity Levels
 
 | Severity | Use for |
 |---|---|
-| Critical | direct compromise, auth bypass, repo or production takeover, secret exfiltration, destructive write impact |
+| Critical | demonstrated broad repo/production takeover, high-value secret exfiltration, or destructive cross-boundary impact with practical preconditions; never infer from the bug-class label alone |
 | High | exploitable with clear path and significant confidentiality, integrity, or availability impact |
 | Medium | real weakness with narrower preconditions or reduced blast radius |
 | Low | defense-in-depth only; usually do not report unless explicitly requested |
+
+A crash is not remote code execution without evidence of code execution, and an authorization bypass is not automatically Critical without demonstrated affected authority, resources, and blast radius.
 
 ## Default Brevity Mode
 
@@ -187,9 +189,9 @@ Unless the user explicitly asks for a formal audit or report:
   - issue
   - impact
   - evidence
-  - fix direction
+  - fix direction naming where the invariant should be enforced and the minimal regression case
   - what still needs runtime or infrastructure verification if uncertainty remains
-- If useful, add a short "needs verification" section for medium-confidence items.
+- If useful, add a short "needs verification" section only for concrete source-grounded hypotheses. Each item names the exact decisive unknown, minimal safe resolution step, and owner or evidence; it has no severity. Drop refuted hypotheses.
 - Add a short "reviewed and cleared" section when it helps show what high-risk areas were inspected and rejected.
 - In formal audit mode, add stable finding IDs and a short executive summary.
 - Include the review basis, coverage, uninspected surfaces, residual risk, evidence limits, and the status defined by `references/methodology.md`.
@@ -240,16 +242,17 @@ Validation:
 Find exploitable weaknesses with confidence gating and line-referenced evidence.
 
 1. Identify reviewed surfaces, stack, trust boundaries, identities, secrets, privileged actions, and sensitive sinks.
-2. Apply the bounded auth-admission checkpoint when route admission, replay, idempotency, or pre-auth resource use changes.
-3. Apply the bounded policy-governance admission checkpoint only when external invocation, admission/approval executable capability, policy activation, active-scope selection, governance/audit preconditions, fail-closed gates, or security-relevant replay/idempotency controls change.
-4. Apply the data-access construction checkpoint when backend code reads or writes a database, constructs REST/PostgREST filters, uses Supabase clients, calls RPC, uses query builders, touches storage keys, or reaches service-role clients.
-5. Trace attacker-controlled input or identity to a missing control or sensitive sink.
-6. Check surrounding mitigations, framework defaults, and deployment constraints before reporting.
-7. Classify confidence and severity; keep unresolved stack or runtime facts in needs verification rather than promoting them to findings.
+2. Within each selected boundary, compare the primary path with discovered sibling or alternate paths that reach the same operation, and compare upstream guarantees with downstream assumptions; stop each hypothesis after it is proved, refuted, or reduced to one decisive missing fact.
+3. Apply the bounded auth-admission checkpoint when route admission, replay, idempotency, or pre-auth resource use changes.
+4. Apply the bounded policy-governance admission checkpoint only when external invocation, admission/approval executable capability, policy activation, active-scope selection, governance/audit preconditions, fail-closed gates, or security-relevant replay/idempotency controls change.
+5. Apply the data-access construction checkpoint when backend code reads or writes a database, constructs REST/PostgREST filters, uses Supabase clients, calls RPC, uses query builders, touches storage keys, or reaches service-role clients.
+6. Trace the lower-trust actor or principal from starting authority across the boundary to the protected action or resource and observable result; for agent actions, distinguish generic authorization from intent/action binding.
+7. Check surrounding mitigations, framework defaults, and deployment constraints before reporting.
+8. Classify confidence and severity from demonstrated impact and preconditions; keep only source-grounded hypotheses with one decisive unresolved fact in needs verification, without severity.
 
 Validation:
 
-- Reported findings have confirmed attacker control, reachability, impact, evidence, and fix direction.
+- Reported findings name the violated security invariant, lower-trust actor, starting authority, protected action or resource, affected principal or resource, observable impact, evidence, enforcement point, and minimal regression case.
 - Backend/database audits name whether raw SQL, REST/PostgREST construction, SDK query builders, RPC, and service-role paths were inspected; database security is not claimed complete when server-side data-access construction was out of scope.
 - Policy-governance findings state the relevant actor/control path or security-relevant operator/control-plane impact, including replay semantics and authority binding when those decide executable capability.
 - Low-confidence, theoretical, test-only, comment-only, or mitigated patterns are not reported by default.
@@ -260,9 +263,10 @@ Return a security result whose status, coverage, and downstream ownership cannot
 
 1. Start with one plain-language outcome sentence before security status, severity, confidence, or verdict terminology.
 2. Report the review basis, confirmed findings, needs verification, inspected and uninspected surfaces, residual risk, and evidence limits.
-3. In targeted mode, report findings or no confirmed findings in reviewed scope without issuing PASS.
-4. In formal mode, use FAIL only for confirmed in-scope findings, PASS (scoped) only for a complete named security-review scope, INCOMPLETE for missing mandatory coverage/evidence, and BLOCKED for an unavailable or unstable basis.
-5. Do not issue an overall merge recommendation; hand confirmed security blockers and residual risk to code-reviewer when merge guidance is requested.
+3. For each needs-verification item, name the concrete hypothesis, exact decisive unknown, minimal safe resolution step, and owner or evidence; omit severity and drop refuted hypotheses.
+4. In targeted mode, report findings or no confirmed findings in reviewed scope without issuing PASS.
+5. In formal mode, use FAIL only for confirmed in-scope findings, PASS (scoped) only for a complete named security-review scope, INCOMPLETE for missing mandatory coverage/evidence, and BLOCKED for an unavailable or unstable basis.
+6. Do not issue an overall merge recommendation; hand confirmed security blockers and residual risk to code-reviewer when merge guidance is requested.
 
 Validation:
 

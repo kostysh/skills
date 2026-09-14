@@ -31,6 +31,8 @@ An expected behavior correction within the accepted findings and remediation bou
 
 ## Review Standard
 
+For each candidate, state the security invariant as a concrete boundary claim: the lower-trust actor or principal and starting authority, the protected action or resource, the boundary that should constrain it, the affected principal or resource, and the observable result. For agent actions, evaluate generic authorization and intent/action binding separately: a principal may be allowed to perform an action without having intentionally requested or approved the exact action that attacker-controlled content caused.
+
 Report only findings that survive all of these checks:
 
 1. **Attacker control**: the attacker controls input, identity, trigger, or reachable code path.
@@ -45,6 +47,8 @@ If any link is weak, downgrade the concern.
 Do not infer helper, middleware, client, role, or credential semantics from names such as `requireUser`, `adminClient`, `safeQuery`, or `validated`. Absence of a control in a supplied snippet or diff is not proof that the control is absent from the reachable path unless the supplied scope establishes the path is complete or surrounding definitions were inspected. Keep the item in `needs verification` when unseen middleware, client construction, schema, policy, or downstream authorization can decide exploitability.
 
 For policy-governance admission surfaces, security-relevant operator/control-plane impact can satisfy the impact side of a finding only when the review explicitly states the actor and control path.
+
+Fix direction should name the source boundary where the invariant must be enforced and the smallest regression case that would fail if the weakness returned. Keep these details in the existing `Impact`, `Evidence`, and `Next` fields; do not add a separate invariant field.
 
 ## Surface Discovery
 
@@ -64,6 +68,8 @@ Before finalizing a review or audit, identify which of these surfaces are in sco
 - policy-governance admission gates for external invocation, executable approval capability, policy activation, active-scope selection, governance/audit persistence preconditions, fail-closed decisions, stored `allowed` replay, conflict replay, authority binding, or security-relevant replay/idempotency controls
 
 Inspect frontend and backend when both are in the agreed scope or participate in the trust/attack path needed for a conclusion. The existence of an unrelated stack does not expand a complete bounded review. Missing cross-layer evidence limits the dependent conclusion; retain independently supported findings and state what remains unverified.
+
+Within each selected boundary, compare the primary path with discovered sibling, legacy, batch, retry, background, error, and fallback paths that can reach the same operation. Compare upstream guarantees such as authentication, tenant scope, normalization, freshness, or approval with the assumptions made by each downstream consumer. Inspect only paths that can affect the selected boundary. Stop each hypothesis after it is proved, refuted, or reduced to one exact decisive missing fact; this is a per-hypothesis stop rule, not permission to skip the remaining agreed scope.
 
 ## Audit Order Template
 
@@ -85,23 +91,33 @@ For an explicit formal audit, use this order unless the user gives a narrower sc
 | Level | Meaning | Action |
 |---|---|---|
 | HIGH | full exploit chain or missing control is demonstrated from the reviewed code | report |
-| MEDIUM | strong signal, but one trust-boundary or mitigation question is unresolved | "needs verification" only |
+| MEDIUM | a source-grounded hypothesis has one decisive trust-boundary or mitigation fact unresolved | "needs verification" only; name the exact unknown and resolution path, with no severity |
 | LOW | theoretical, cosmetic, or obviously mitigated | do not report |
+
+Assign severity only to confirmed findings and base it on demonstrated impact, affected authority or resources, blast radius, and practical preconditions. Do not infer remote code execution from a crash, and do not make an authorization bypass Critical without demonstrating the authority and resources exposed.
 
 ## Evidence Checklist
 
 For every reported finding, prove:
 
-- where attacker-controlled data comes from
-- where it reaches a dangerous sink or missing permission check
+- which lower-trust actor or principal acts, what starting authority it has, and where attacker-controlled data or identity comes from
+- which protected action or resource is reached across which boundary, and which principal or resource is affected
 - why framework defaults do not already make it safe
 - which middleware, helper, client construction, schema, policy, and downstream guard definitions were inspected when their behavior decides the path
-- what attacker outcome becomes possible
+- which applicable sibling or alternate paths and upstream-guarantee/downstream-assumption pair were compared
+- what observable attacker outcome becomes possible
 - what assumption still depends on runtime, edge, or deployment config if the repo does not show it
+- where the invariant should be enforced and which minimal regression case would detect its return
 
-Source-text tests, source-grep checks, and absence/presence string checks are not security evidence by themselves. Use behavioral tests, sentinel payloads, negative API tests, or runtime traces that exercise the control.
+Source-text tests, source-grep checks, and absence/presence string checks are not security evidence by themselves. When a runtime claim needs confirmation, use behavioral tests, sentinel payloads, negative API tests, or runtime traces that exercise the control.
 
 Tests, fixtures, generated reports, and compiler success can prove their own structural or exercised contract only. They do not establish complete security review behavior or a real production boundary unless the tested path reaches that boundary under the claimed conditions.
+
+### Minimal safe reproduction
+
+Run a reproduction only when it resolves a concrete uncertainty. Prefer an existing test or a small isolated fixture, dummy data, unchanged target source, and the minimum observable effect; stop as soon as the boundary result is established. Before executing target-controlled code, consider credential exposure, environment contents, external network access, and shared writable resources, and do not run the check when those risks cannot be bounded safely.
+
+A local proof of concept is not mandatory for every finding: a complete source trace is sufficient for the claims it actually proves. If decisive behavior requires an unavailable safe environment, keep the hypothesis in `needs verification` with the exact blocker and owner-observed or local resolution step; do not build sandbox infrastructure as part of an ordinary review.
 
 ## Common False Positives
 
@@ -120,7 +136,8 @@ Do not flag these without stronger context:
 
 - If a protection may live at the edge, reverse proxy, platform config, or runtime environment, say `not visible in reviewed code; verify at runtime/config`.
 - If the project intentionally deviates from a best practice, check whether the deviation still leaves an exploit path. Report the exploit path, not the policy disagreement.
-- If you cannot confirm exploitability because a stack-specific detail is missing, keep it in `needs verification` and hand off through `references/domain-handoffs.md`.
+- Use `needs verification` only for a concrete source-grounded hypothesis. Name the exact decisive unknown fact, the minimal safe way to resolve it, and the owner or evidence source; do not assign severity. Drop a hypothesis when source or observed behavior refutes it rather than parking it there.
+- If the decisive unknown is a stack-specific fact, hand it off through `references/domain-handoffs.md` without weakening independently supported findings.
 
 ## Status and Ownership Contract
 
@@ -157,7 +174,7 @@ Evidence: attacker input -> vulnerable path -> effect
 Next: the safest remediation or investigation direction
 
 Needs verification
-- unresolved fact and the owner/evidence that can close it
+- source-grounded hypothesis — Unknown: one decisive fact. Resolve: minimal safe check and owner/evidence.
 
 Result: confirmed findings | no confirmed findings in reviewed scope
 Evidence limits: untested or unavailable boundary
@@ -181,7 +198,7 @@ Evidence: attacker input -> vulnerable path -> effect
 Next: the safest remediation or investigation direction
 
 Needs verification
-- `path/to/file.ts:99` What remains unclear and what to verify
+- `path/to/file.ts:99` Source-grounded hypothesis — Unknown: one decisive fact. Resolve: minimal safe check and owner/evidence. No severity.
 
 Reviewed and cleared
 - Only surfaces cleared by named code, configuration, behavioral, or boundary evidence
