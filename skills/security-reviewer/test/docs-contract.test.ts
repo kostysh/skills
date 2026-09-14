@@ -13,7 +13,7 @@ const countMatches = (text: string, pattern: RegExp) => [...text.matchAll(patter
 test('source contract exposes one required methodology and optional domain references', async () => {
   const manifest = await readSkillFile('skill.yaml');
 
-  assert.match(manifest, /source-version: "0\.1\.13"/);
+  assert.match(manifest, /source-version: "0\.1\.14"/);
   assert.match(manifest, /requiredReferences:\n\s+- "ref-methodology"\n\s+optionalReferences:/);
   assert.match(manifest, /id: "ref-api-auth-input"[\s\S]*?required: false/);
   assert.match(manifest, /id: "ref-github-actions"[\s\S]*?required: false/);
@@ -418,4 +418,32 @@ test('specialized signals and cross-layer discovery preserve the common review b
   assert.match(rls, /missing test alone is not a finding/);
   assert.match(methodology, /unrelated stack does not expand a complete bounded review/);
   assert.match(handoffs, /limit only the dependent conclusion/);
+});
+
+test('findings trace a violated invariant across bounded sibling paths', async () => {
+  const [skill, methodology] = await Promise.all([
+    readSkillFile('SKILL.md'),
+    readSkillFile('references/methodology.md'),
+  ]);
+
+  assert.match(skill, /generic authorization from intent\/action binding/);
+  assert.match(skill, /sibling or alternate paths that reach the same operation/);
+  assert.match(methodology, /lower-trust actor or principal and starting authority/);
+  assert.match(methodology, /upstream guarantees[\s\S]*downstream consumer/);
+  assert.match(methodology, /per-hypothesis stop rule/);
+  assert.match(methodology, /where the invariant should be enforced/);
+});
+
+test('uncertainty, severity, and reproduction remain evidence-calibrated', async () => {
+  const [skill, methodology] = await Promise.all([
+    readSkillFile('SKILL.md'),
+    readSkillFile('references/methodology.md'),
+  ]);
+
+  assert.match(skill, /omit severity and drop refuted hypotheses/);
+  assert.match(methodology, /exact decisive unknown fact/);
+  assert.match(methodology, /Do not infer remote code execution from a crash/);
+  assert.match(methodology, /Run a reproduction only when it resolves a concrete uncertainty/);
+  assert.match(methodology, /local proof of concept is not mandatory for every finding/);
+  assert.match(methodology, /do not build sandbox infrastructure as part of an ordinary review/);
 });

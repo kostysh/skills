@@ -34,5 +34,6 @@
 | [logs/implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) | Direct operator request | Independent scoped PASS |
 | [logs/implementation-log-20260727-1.md](logs/implementation-log-20260727-1.md) | Aequitas-ADR/app#226 | Independent PASS; bounded attack-path re-audit |
 | [logs/implementation-log-20260907-1.md](logs/implementation-log-20260907-1.md) | Группа 2 общего плана | Author verification; independent review pending |
+| [logs/implementation-log-20260914-1.md](logs/implementation-log-20260914-1.md) | Direct operator request | Independent PASS; 2 bounded blind forward-tests |
 
 Журнал ревизии 2026-09-07 и её evidence — source-only supporting records; они не являются обязательной зависимостью emitted-пакета.

@@ -10,7 +10,7 @@ Find exploitable security weaknesses without turning every suspicious pattern in
 ## Non-Negotiables
 
 - Research before reporting. Do not flag issues from pattern matching alone.
-- Trace attacker-controlled input, identity, or code execution path to the sink or missing control.
+- Trace the lower-trust actor or principal from starting authority across the boundary to the protected action or resource, affected principal or resource, and observable result. Express the violated invariant through the existing `Impact` and `Evidence` fields; for agent actions, check generic authorization and intent/action binding separately.
 - Check surrounding code for mitigations, validation, framework defaults, and trust boundaries.
 - Distinguish attacker-controlled data from server-controlled config, constants, and operator-managed settings.
 - For auth/RBAC/RLS reviews, inspect both HTTP/API admission + service logic and direct data-access paths such as PostgREST, RPC, RLS helpers/policies, storage, and service-role store methods; do not accept API-only evidence as proof of database-path safety.
@@ -88,9 +88,9 @@ Adjust the threat model explicitly if the code is internal-only or requires trus
    - sensitive sinks
 10. Trace the attack path:
    - entry point
-   - attacker-controlled value
+   - lower-trust actor, controlled value, and starting authority
    - execution or authorization mechanism
-   - impact
+   - protected action or resource, affected principal or resource, and observable impact
 11. Verify mitigations:
    - validation or sanitization
    - framework escaping or parameterization
@@ -116,17 +116,19 @@ Adjust the threat model explicitly if the code is internal-only or requires trus
 | Level | Criteria | Action |
 |---|---|---|
 | HIGH | attacker control, reachability, and impact are confirmed | report as a finding |
-| MEDIUM | a meaningful issue exists but one link still needs verification | keep in "needs verification" |
+| MEDIUM | a source-grounded hypothesis has one decisive trust-boundary or mitigation fact unresolved | keep in "needs verification" with the exact unknown and resolution path, but no severity |
 | LOW | theoretical, best-practice only, or clearly mitigated elsewhere | do not report |
 
 ## Severity Levels
 
 | Severity | Use for |
 |---|---|
-| Critical | direct compromise, auth bypass, repo or production takeover, secret exfiltration, destructive write impact |
+| Critical | demonstrated broad repo/production takeover, high-value secret exfiltration, or destructive cross-boundary impact with practical preconditions; never infer from the bug-class label alone |
 | High | exploitable with clear path and significant confidentiality, integrity, or availability impact |
 | Medium | real weakness with narrower preconditions or reduced blast radius |
 | Low | defense-in-depth only; usually do not report unless explicitly requested |
+
+A crash is not remote code execution without evidence of code execution, and an authorization bypass is not automatically Critical without demonstrated affected authority, resources, and blast radius.
 
 ## Default Brevity Mode
 
@@ -150,9 +152,9 @@ Unless the user explicitly asks for a formal audit or report:
   - issue
   - impact
   - evidence
-  - fix direction
+  - fix direction naming where the invariant should be enforced and the minimal regression case
   - what still needs runtime or infrastructure verification if uncertainty remains
-- If useful, add a short "needs verification" section for medium-confidence items.
+- If useful, add a short "needs verification" section only for concrete source-grounded hypotheses. Each item names the exact decisive unknown, minimal safe resolution step, and owner or evidence; it has no severity. Drop refuted hypotheses.
 - Add a short "reviewed and cleared" section when it helps show what high-risk areas were inspected and rejected.
 - In formal audit mode, add stable finding IDs and a short executive summary.
 - Include the review basis, coverage, uninspected surfaces, residual risk, evidence limits, and the status defined by `references/methodology.md`.
