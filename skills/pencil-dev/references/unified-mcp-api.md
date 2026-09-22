@@ -10,8 +10,11 @@ changing that result.
 
 ## Discover and bind the target
 
-1. Inspect the available Pencil MCP surface. The current consolidated surface
-   exposes `get_app_state`, `execute`, `browser`, `get_style`, and `read_skill`.
+1. Inspect the available Pencil MCP surface. The standard consolidated surface
+   exposes `get_app_state`, `execute`, `get_style`, and `read_skill`; `browser`
+   is desktop-conditional, and `spawn_agents` may be exposed only by a server
+   started with its dedicated enable flag. Do not assume a conditional tool is
+   callable or that its presence grants delegation authority.
 2. Call `get_app_state` with its current live signature. Confirm the intended
    active canvas file, selection, and top-level context, then capture its
    `filePath`.
@@ -19,8 +22,10 @@ changing that result.
    require it. Never infer a target from a prior task, cached selection, or
    remembered node ID.
 4. If `read_skill` is available, read its root plus `pen-schema.md` and
-   `execute.md` before the first mutation, or again when a property, operation,
-   or error contract is uncertain.
+   `execute.md` before the first mutation. Read any task-specific reference
+   linked by those files before its operation, especially `generate.md` before
+   `Generate`; re-read when a property, operation, or error contract is
+   uncertain.
 5. Re-read app state after the operator switches, opens, reloads, or reopens a
    document, and whenever a node is missing or no longer matches expectations.
    Pencil is collaborative; re-read instead of recreating or overwriting
@@ -41,7 +46,7 @@ advertises them.
 | Current schema and provider guidance | `read_skill` |
 | Read nodes or variables | `execute` with `Get`, `GetVariables`, and `Print` |
 | Create or change nodes | `execute` with `Insert`, `Copy`, `Update`, `Replace`, `Move`, or `Delete` |
-| Generate images or SVG | `execute` with `Generate` |
+| Generate or transform in-document imagery or vector artwork | `execute` with `Generate`; read current `generate.md` first |
 | Set variables and themes | `execute` with `SetVariables` |
 | Find safe root placement | `execute` with `FindEmptySpace` |
 | Inspect bounds or clipping | `execute` with a `Get` visitor and `ctx.bounds` / `ctx.problems` |
@@ -117,15 +122,21 @@ advertises them.
 - Follow the current `.pen` schema rather than CSS assumptions. Unsupported
   values such as margins, percentage dimensions, or undocumented alignment
   modes must be redesigned with supported layout primitives.
-- Images are fills, not `image` nodes. `Generate` with `ai` or `svg` is
-  asynchronous. For SVG, the runtime keeps the target frame
-  `placeholder: true` while generation is running and clears it on completion;
-  poll only occasionally with
-  `Print(Get(nodeId, {depth: 0}).placeholder)`. Do not clear that flag manually,
-  screenshot early, or issue duplicate generation merely because the initiating
-  call returned first. After the flag becomes false, verify the generated
-  content; retry `Generate` only when the flag cleared but the target is still
-  empty.
+- Read the current provider `generate.md` before every `Generate` workflow and
+  use only the types and signatures it advertises. The reviewed API includes
+  new-image types (`ai`, `stock`), frame-producing vector types (`svg`,
+  `vectorize-image`), and existing-image transforms (`remove-background`,
+  `replace-background`). Images remain fills rather than `image` nodes.
+- Every current `Generate` type is asynchronous. For frame-producing types,
+  poll the target frame's runtime-owned `placeholder` occasionally. For
+  fill-producing types, poll the image fill URL until the documented pending
+  value is replaced. Do not screenshot, export, duplicate, or retry pending
+  work merely because the initiating call returned.
+- Existing-image transforms must use an image URL read from the current
+  document. When a transform returns an asset URL, apply it with `Update` in the
+  same successful `execute` call as required by the live contract; do not carry
+  that transient URL into a later call or invent one. Retry only after the
+  documented completion signal proves the prior generation failed.
 
 ## Browser bridge
 

@@ -2,15 +2,18 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.2.1`
+- Skill source version: `0.2.2`
 
 ## Source files
 - `agents/openai.yaml`
 - `docs/forward-tests/forward-test-evidence-20260727-1.md`
 - `docs/forward-tests/forward-test-evidence-20260822-1.md`
+- `docs/forward-tests/forward-test-evidence-20260922-1.md`
+- `docs/forward-tests/forward-test-evidence-20260922-2.md`
 - `docs/logs/implementation-log-20260715-1.md`
 - `docs/logs/implementation-log-20260727-1.md`
 - `docs/logs/implementation-log-20260822-1.md`
+- `docs/logs/implementation-log-20260922-1.md`
 - `fragments/overview.md`
 - `references/component-libraries.md`
 - `references/unified-mcp-api.md`
