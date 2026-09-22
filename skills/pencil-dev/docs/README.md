@@ -4,6 +4,9 @@ Supporting documentation for `pencil-dev`. These files are not part of the activ
 
 ## Implementation Logs
 
+- [forward-test-evidence-20260922-2.md](forward-tests/forward-test-evidence-20260922-2.md) — terminal blind A-E routing and decision-behavior evidence for `pencil-dev` `0.2.2`.
+- [forward-test-evidence-20260922-1.md](forward-tests/forward-test-evidence-20260922-1.md) — superseded initial A-D run retained as remediation history.
+- [implementation-log-20260922-1.md](logs/implementation-log-20260922-1.md) — ревизия обновлённого pen.dev MCP API и актуализация `Generate` guidance.
 - [implementation-log-20260822-1.md](logs/implementation-log-20260822-1.md) — migration to the consolidated Pencil MCP API, live canary, blind tests, and independent audit evidence.
 - [forward-test-evidence-20260822-1.md](forward-tests/forward-test-evidence-20260822-1.md) — blind behavioral cases for `pencil-dev` candidate `0.2.0`.
 - [implementation-log-20260727-1.md](logs/implementation-log-20260727-1.md) — peer-view inventory и library/module/runtime role boundary по #228.

@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: pencil-dev
-  source-version: 0.2.1
+  source-version: 0.2.2
   recommended-skill-md-max-bytes: 18000
   description: >-
     Create, inspect, iterate, validate, import, and export Pencil `.pen` designs
@@ -30,6 +30,18 @@ copies:
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
 supporting:
+  - id: supporting-forward-test-evidence-20260922-2
+    source: docs/forward-tests/forward-test-evidence-20260922-2.md
+    target: docs/forward-tests/forward-test-evidence-20260922-2.md
+    description: Terminal blind routing and decision-behavior evidence for the pen.dev 2026-09 MCP API revision.
+  - id: supporting-forward-test-evidence-20260922-1
+    source: docs/forward-tests/forward-test-evidence-20260922-1.md
+    target: docs/forward-tests/forward-test-evidence-20260922-1.md
+    description: Blind behavioral evidence for the pen.dev 2026-09 MCP API revision.
+  - id: supporting-implementation-log-20260922-1
+    source: docs/logs/implementation-log-20260922-1.md
+    target: docs/logs/implementation-log-20260922-1.md
+    description: Non-normative log for the pen.dev 2026-09 MCP API revision.
   - id: supporting-implementation-log-20260822-1
     source: docs/logs/implementation-log-20260822-1.md
     target: docs/logs/implementation-log-20260822-1.md
@@ -81,7 +93,7 @@ sections:
     - Producing visual mockups for websites, app screens, dashboards, slides, posters, banners, or marketing assets when MCP can operate on the open design.
   whenNotToUse:
     - The user only wants frontend code changes and no Pencil design artifact.
-    - The task is generic raster image generation or photo editing; use an image generation/editing workflow instead.
+    - The task only needs a standalone bitmap outside an open `.pen`; use imagegen.
     - The task requires manual JSON surgery, raw `.pen` parsing, filesystem patching, or text-editor edits inside `.pen` files.
     - The task can only be performed by Pencil CLI, CLI interactive mode, CLI agent mode, headless generation, or path-based export without an open MCP-connected editor.
     - Pencil MCP cannot see an open Pencil desktop/IDE document and the operator cannot restore that bridge in the current session.

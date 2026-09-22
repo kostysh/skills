@@ -5,9 +5,9 @@ description: Create, inspect, iterate, validate, import, and export Pencil
   app screens, dashboards, web pages, marketing visuals, slide-like graphics, or
   existing design edits; keep `.pen` handling MCP-only.
 metadata:
-  source-version: 0.2.1
+  source-version: 0.2.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: f22dbf5b03096a975f2693dcb749cab0d0c3aaf27804efea1bede9ed0ee41534
+  skillforge-source-hash: 514d34f66f9cc66dc6ab210901719d7130378a2fec3d783bdbb7d478b3dc7848
 ---
 
 # pencil-dev
@@ -37,7 +37,7 @@ metadata:
 ## When NOT to use this skill
 
 - The user only wants frontend code changes and no Pencil design artifact.
-- The task is generic raster image generation or photo editing; use an image generation/editing workflow instead.
+- The task only needs a standalone bitmap outside an open `.pen`; use imagegen.
 - The task requires manual JSON surgery, raw `.pen` parsing, filesystem patching, or text-editor edits inside `.pen` files.
 - The task can only be performed by Pencil CLI, CLI interactive mode, CLI agent mode, headless generation, or path-based export without an open MCP-connected editor.
 - Pencil MCP cannot see an open Pencil desktop/IDE document and the operator cannot restore that bridge in the current session.
