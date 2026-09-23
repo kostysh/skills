@@ -36,6 +36,16 @@ Use the smallest structure that preserves these sections:
 Project conventions may rename sections or add frontmatter, but must not weaken
 the information contract.
 
+The main text must stand without the matrix: show a few complete, consequential
+chains from decision and action through late discovery, correction, and any
+recurrence; explain why the expected control did not prevent or detect them.
+State observed operator interventions, waiting, and rework with measurement
+limits. Give separate verdicts for the delivered result, development process,
+and implementation/effectiveness of prevention. Include material justified
+stops, authorized scope decisions, rejected findings, and unknown causes where
+they change the interpretation. The matrix preserves atomic evidence and
+counts; it does not replace this explanation.
+
 Each problem row contains:
 
 - stable problem ID and short title;
@@ -88,6 +98,14 @@ Required reconciliation:
 - source, observation, duplicate, rejected, problem, severity, status,
   recommendation, and step totals agree between report and matrix.
 
+If an operator separately requests analysis of a named session still active
+after the original cutoff, add a clearly labeled supplemental cohort with a
+fixed timestamp, source prefixes or equivalent integrity boundary, and an
+explicitly unknown terminal result. Keep the original session denominator and
+audit counts visible and unchanged; give new observations and counts separately
+or show the arithmetic between cohorts. Do not silently turn a snapshot into
+the final outcome of the active work.
+
 ## Recommendations
 
 In full mode, keep detailed proposals outside the compact problem matrix and
@@ -104,6 +122,17 @@ fields needed to understand and act on the bounded recommendation:
 - expected effect and approximate complexity;
 - acceptance and effectiveness evidence;
 - current disposition.
+
+Before accepting a high-severity problem, recurrence after operator correction,
+or `no_action` with partial prevention, ask what concrete action before the next
+comparable failure would stop it. If work remains, name the owner, change
+location, exact residual after verified fixes, a negative acceptance case that
+would reject an insufficient correction, and an effectiveness check on a later
+comparable task. If no new work is justified, identify the already verified
+control and why it covers that failure path; a written rule, closed issue, audit
+`PASS`, or absence of another case is insufficient. Do not reimplement a fixed
+occurrence or merge different mechanisms merely because they share a symptom.
+A future check can test a concrete measure but cannot replace the measure.
 
 Classify recommendations by owning surface, for example:
 
@@ -176,6 +205,13 @@ Report acceptance requires:
 - reconciled report/matrix mappings and counts;
 - concrete prevention for all critical and high problems or explicit blockers;
 - independent completeness/causality/deduplication review when required.
+
+For that independent review, supply the stable source perimeter and require
+attempts to falsify the major causal chains, contested `no_action` decisions,
+and sufficiency of residual steps, including repeated failures after
+correction. Reconciled arithmetic and links are necessary but not a substitute.
+A material later change to the report, mappings, or recommendations makes the
+earlier `PASS` historical for its own snapshot.
 
 Task creation needs explicit action/target approval distinct from report
 acceptance. Reuse existing approval within that scope; do not ask again merely

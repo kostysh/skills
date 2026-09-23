@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: retrospective-analysis
-  source-version: 0.1.1
+  source-version: 0.1.2
   recommended-skill-md-max-bytes: 18000
   description: >-
     Conduct evidence-backed retrospectives of completed work. Use targeted mode
@@ -60,6 +60,10 @@ supporting:
     source: docs/logs/implementation-log-20260727-1.md
     target: docs/logs/implementation-log-20260727-1.md
     description: Non-normative implementation, forward-test, and review evidence.
+  - id: supporting-log-20260923-1
+    source: docs/logs/implementation-log-20260923-1.md
+    target: docs/logs/implementation-log-20260923-1.md
+    description: Non-normative evidence for causal-report and remediation refinement.
 
 surfaces:
   active:
@@ -114,6 +118,7 @@ sections:
         - Treat analyzers and summaries as navigation aids; verify semantic conclusions against primary artifacts.
         - Mark unavailable or inaccessible source classes explicitly and reduce or block the completeness claim when they could change the verdict.
         - In full mode, give every discovered source or atomic observation an explicit disposition; do not leave silent samples or undispositioned evidence.
+        - If an explicitly named active session is added after the original cutoff, freeze its own source snapshot and terminal limit; retain the original source denominator and audit counts as a separate cohort.
       validation:
         - The source universe is closed for the stated scope or the result is explicitly limited.
         - Every failed audit in scope is listed.
@@ -122,15 +127,18 @@ sections:
       title: Extract observations and establish causality
       goal: Turn evidence into falsifiable problems rather than anecdotes or audit transcription.
       steps:
+        - In full mode, after bounding sources but before grouping problems, trace material operator interventions, stops, and requests to retain a working rule. For each episode compare the prior decision and authority, the agent's response, its next applicable action, recurrence after correction, and observed operator work or delay. Preserve authorized limited scope and justified stops as counterexamples.
         - Extract atomic observations with exact evidence pointers and separate fact, inference, and uncertainty.
-        - For each accepted problem, trace symptom, immediate cause, systemic root cause, prevention failure, late-detection reason, and consequence; mark unsupported links unknown instead of inventing causes or controls.
+        - For each accepted problem, trace symptom, immediate cause, systemic root cause, prevention failure, late-detection reason, and consequence; mark unsupported links unknown instead of inventing causes or controls. For recurrence, test the historical rule/skill text, availability, actual reading, conflicting instructions, decision point, and earlier check that should have caught the defect.
         - Verify every audit finding against the primary artifact; classify false positives, weak criteria, or overly broad prescriptions as audit-method findings instead of artifact defects.
+        - Identify material defects first detected by independent audit and why author self-check missed them; do not equate finding occurrences with unique defects.
         - Classify contributing owners such as skill weakness, method ambiguity, skill misuse, missing project rule, missing automated check, implementation or test defect, document-code drift, tool limit, or audit defect only when evidence supports that link.
         - Reject the inference that every repeated symptom has one root cause or that every audit finding implies a skill change.
       validation:
         - Symptoms and consequences are not presented as root causes.
         - Each root cause explains its occurrences and prevention gap.
         - Rejected observations retain a reason and evidence.
+        - A recorded rule or promise is not treated as prevention when the next applicable action repeats the failure; unknown internal mechanisms remain unknown.
     - id: stage-history-dedup
       title: Verify prior fixes and deduplicate root problems
       goal: Avoid reopening completed work while preserving unresolved systemic prevention.
@@ -151,6 +159,7 @@ sections:
         - Follow the mode/output contract in the report/remediation reference. A targeted answer keeps evidence, causality limits, prior-fix status, and a proportionate recommendation concise; it does not require a matrix or a project task hierarchy.
         - For full mode, read the report/remediation reference and produce the required report, matrix, appendices, reconciled counts, and statistics.
         - Tie each active recommendation to evidence-backed root problems and distinguish project rules, skills or methods, tests or tools, runtime or domain work, and audit-method changes.
+        - "Challenge every high-severity problem, recurrence after operator correction, and no-action proposal with partial prevention: which concrete action could stop the next comparable failure before it happens? Require a verified reason when no new action is needed."
         - Apply the complexity gate before recommending automation or a new workflow.
         - For full mode or an explicitly requested plan, map active recommendations into numbered steps; keep project task semantics with delivery-planner. Otherwise provide only the supported recommendation and next owner. Exclude verified completed or inactive work from new tasks.
         - Task creation needs its own action/target authorization; reuse it if already given. Without it, finish the requested analysis or plan and stop only the external mutation.
@@ -158,11 +167,12 @@ sections:
         - Full-mode observation, problem, recommendation, and plan-step mappings reconcile; targeted output makes no full-completeness claim.
         - Every critical or high problem has concrete prevention or an explicit blocker.
         - Any requested plan contains only residual work and can be assigned by step number.
+        - A rule's existence or a promise to check the next task does not substitute for a needed residual change.
     - id: stage-review-effectiveness
       title: Independently review and define effectiveness
       goal: Protect completeness and causality without mistaking documents or tasks for changed behavior.
       steps:
-        - Run an independent review of the stable full-retro snapshot when the runtime and operator permit it; give the reviewer explicit source hierarchy and full scoped artifact set without prior conversational conclusions.
+        - Run an independent review of the stable full-retro snapshot when the runtime and operator permit it; give the reviewer explicit source hierarchy and full scoped artifact set without prior conversational conclusions. Ask the reviewer to try to falsify material causal chains, no-action decisions, and step sufficiency, not just counts or links.
         - If independent delegation is required but not authorized or available, stop before an accepted completeness verdict and request the missing authority; do not simulate independence.
         - Correct substantive findings and repeat only the affected audit surface unless root-cause, scope, or mappings changed materially.
         - Define a future effectiveness check on the next comparable work; issue creation, rule text, script presence, and audit PASS are implementation evidence, not effectiveness by themselves.
