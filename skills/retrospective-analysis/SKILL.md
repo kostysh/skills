@@ -8,9 +8,9 @@ compatibility: Portable documentation-only skill. It consumes available evidence
   and project rules; it has no required CLI, tracker, runtime, or repository
   layout.
 metadata:
-  source-version: 0.1.1
+  source-version: 0.1.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 8d8fb0c346e9ed942e2f01f8a72f2e3a2a6f7dfb5a268465629e969008ac8d27
+  skillforge-source-hash: 6e47ccbff9a54eb25329ca13d45c60f11eab189484faf2088f9cbdaa190c7c67
 ---
 
 # retrospective-analysis
@@ -65,6 +65,7 @@ Know what was inspected, unavailable, excluded, and authoritative before causal 
 3. Treat analyzers and summaries as navigation aids; verify semantic conclusions against primary artifacts.
 4. Mark unavailable or inaccessible source classes explicitly and reduce or block the completeness claim when they could change the verdict.
 5. In full mode, give every discovered source or atomic observation an explicit disposition; do not leave silent samples or undispositioned evidence.
+6. If an explicitly named active session is added after the original cutoff, freeze its own source snapshot and terminal limit; retain the original source denominator and audit counts as a separate cohort.
 
 Validation:
 
@@ -76,17 +77,20 @@ Validation:
 
 Turn evidence into falsifiable problems rather than anecdotes or audit transcription.
 
-1. Extract atomic observations with exact evidence pointers and separate fact, inference, and uncertainty.
-2. For each accepted problem, trace symptom, immediate cause, systemic root cause, prevention failure, late-detection reason, and consequence; mark unsupported links unknown instead of inventing causes or controls.
-3. Verify every audit finding against the primary artifact; classify false positives, weak criteria, or overly broad prescriptions as audit-method findings instead of artifact defects.
-4. Classify contributing owners such as skill weakness, method ambiguity, skill misuse, missing project rule, missing automated check, implementation or test defect, document-code drift, tool limit, or audit defect only when evidence supports that link.
-5. Reject the inference that every repeated symptom has one root cause or that every audit finding implies a skill change.
+1. In full mode, after bounding sources but before grouping problems, trace material operator interventions, stops, and requests to retain a working rule. For each episode compare the prior decision and authority, the agent's response, its next applicable action, recurrence after correction, and observed operator work or delay. Preserve authorized limited scope and justified stops as counterexamples.
+2. Extract atomic observations with exact evidence pointers and separate fact, inference, and uncertainty.
+3. For each accepted problem, trace symptom, immediate cause, systemic root cause, prevention failure, late-detection reason, and consequence; mark unsupported links unknown instead of inventing causes or controls. For recurrence, test the historical rule/skill text, availability, actual reading, conflicting instructions, decision point, and earlier check that should have caught the defect.
+4. Verify every audit finding against the primary artifact; classify false positives, weak criteria, or overly broad prescriptions as audit-method findings instead of artifact defects.
+5. Identify material defects first detected by independent audit and why author self-check missed them; do not equate finding occurrences with unique defects.
+6. Classify contributing owners such as skill weakness, method ambiguity, skill misuse, missing project rule, missing automated check, implementation or test defect, document-code drift, tool limit, or audit defect only when evidence supports that link.
+7. Reject the inference that every repeated symptom has one root cause or that every audit finding implies a skill change.
 
 Validation:
 
 - Symptoms and consequences are not presented as root causes.
 - Each root cause explains its occurrences and prevention gap.
 - Rejected observations retain a reason and evidence.
+- A recorded rule or promise is not treated as prevention when the next applicable action repeats the failure; unknown internal mechanisms remain unknown.
 
 ### Workflow stage: Verify prior fixes and deduplicate root problems
 
@@ -111,21 +115,23 @@ Deliver a usable causal account and residual recommendations, with full reconcil
 1. Follow the mode/output contract in the report/remediation reference. A targeted answer keeps evidence, causality limits, prior-fix status, and a proportionate recommendation concise; it does not require a matrix or a project task hierarchy.
 2. For full mode, read the report/remediation reference and produce the required report, matrix, appendices, reconciled counts, and statistics.
 3. Tie each active recommendation to evidence-backed root problems and distinguish project rules, skills or methods, tests or tools, runtime or domain work, and audit-method changes.
-4. Apply the complexity gate before recommending automation or a new workflow.
-5. For full mode or an explicitly requested plan, map active recommendations into numbered steps; keep project task semantics with delivery-planner. Otherwise provide only the supported recommendation and next owner. Exclude verified completed or inactive work from new tasks.
-6. Task creation needs its own action/target authorization; reuse it if already given. Without it, finish the requested analysis or plan and stop only the external mutation.
+4. Challenge every high-severity problem, recurrence after operator correction, and no-action proposal with partial prevention: which concrete action could stop the next comparable failure before it happens? Require a verified reason when no new action is needed.
+5. Apply the complexity gate before recommending automation or a new workflow.
+6. For full mode or an explicitly requested plan, map active recommendations into numbered steps; keep project task semantics with delivery-planner. Otherwise provide only the supported recommendation and next owner. Exclude verified completed or inactive work from new tasks.
+7. Task creation needs its own action/target authorization; reuse it if already given. Without it, finish the requested analysis or plan and stop only the external mutation.
 
 Validation:
 
 - Full-mode observation, problem, recommendation, and plan-step mappings reconcile; targeted output makes no full-completeness claim.
 - Every critical or high problem has concrete prevention or an explicit blocker.
 - Any requested plan contains only residual work and can be assigned by step number.
+- A rule's existence or a promise to check the next task does not substitute for a needed residual change.
 
 ### Workflow stage: Independently review and define effectiveness
 
 Protect completeness and causality without mistaking documents or tasks for changed behavior.
 
-1. Run an independent review of the stable full-retro snapshot when the runtime and operator permit it; give the reviewer explicit source hierarchy and full scoped artifact set without prior conversational conclusions.
+1. Run an independent review of the stable full-retro snapshot when the runtime and operator permit it; give the reviewer explicit source hierarchy and full scoped artifact set without prior conversational conclusions. Ask the reviewer to try to falsify material causal chains, no-action decisions, and step sufficiency, not just counts or links.
 2. If independent delegation is required but not authorized or available, stop before an accepted completeness verdict and request the missing authority; do not simulate independence.
 3. Correct substantive findings and repeat only the affected audit surface unless root-cause, scope, or mappings changed materially.
 4. Define a future effectiveness check on the next comparable work; issue creation, rule text, script presence, and audit PASS are implementation evidence, not effectiveness by themselves.

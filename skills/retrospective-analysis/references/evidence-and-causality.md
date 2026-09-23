@@ -59,6 +59,24 @@ attempt, or control. Keep these fields:
 An observation must not combine several causes merely because they appeared in
 one audit paragraph or session episode.
 
+## Operator interventions before problem grouping
+
+In full mode, after closing the source boundary and before starting from an
+existing problem list, inspect direct operator interventions, stops, and
+requests to remember or retain a working rule. Select material episodes by
+their effect on the outcome, repeated behavior, acceptance, or operator work;
+this is not a mandatory record for every message. For each selected episode,
+reconstruct the prior decision and authority, what the agent said or saved,
+the first next action where the instruction applied, any recurrence after
+correction, and observable rework, waiting, or manual checking. Distinguish
+measured intervals from operator estimates and do not infer token or monetary
+cost from frustration or event counts.
+
+Keep counterexamples in the same pass: an authorized limited scope is not
+unilateral narrowing, and a justified safety, authority, or tool stop is not
+automatically a process failure. A later discovery that the agreed result was
+unfit for its promised acceptance may still be a separate problem.
+
 ## Full-mode independent streams
 
 Run three analytical streams or passes:
@@ -91,6 +109,16 @@ The systemic root must explain the occurrences and point to a preventive control
 “Agent error”, “missed requirement”, “test failed”, and “audit found it” are
 usually symptoms or immediate causes, not sufficient roots.
 
+For a repeated failure, compare the rule or skill revision effective at each
+decision, whether it was available and actually read, conflicting instructions,
+the exact choice of action or tool, and the check that should have caught the
+failure before audit, CI, stage, or the operator did. A current rule does not
+prove historical availability; historical reading does not prove application.
+“The agent applied an existing rule inconsistently” describes recurrence but
+does not by itself explain the mechanism. If the traces cannot distinguish
+memory loss, interpretation, tool availability, or deliberate bypass, record
+the mechanism as `unknown` and limit the remedy to what the evidence supports.
+
 Possible contributing classes include weak or absent skill instruction, ambiguous
 method, incorrect skill application, missing project rule, absent automated
 check, implementation or test defect, document/code drift, tool limitation, and
@@ -107,6 +135,12 @@ For every finding:
   over-prescriptive;
 - trace when the defect entered and why prior controls missed it;
 - record the remediation and whether it changed the root or only the occurrence.
+
+For material valid findings, identify whether the independent auditor was the
+first to detect the defect. Compare the author's self-check and its actual
+oracle or scope with the finding's falsifier; do not infer a missing self-check
+merely from a later audit failure. Count audit findings as occurrences, not
+unique bugs, and preserve duplicates and false positives.
 
 Do not assume every valid artifact defect is caused by the skill used to create
 it. Conversely, repeated findings across artifacts may support a skill or
