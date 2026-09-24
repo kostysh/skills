@@ -69,6 +69,41 @@ Local branch preparation, commits, rebases, worktrees, and push policy belong to
 
 Use draft PR if tests are not complete or the user wants early review. Do not mark ready without user intent.
 
+### Issue closing references
+
+When a linked issue still needs a separate acceptance step after this PR merges, use a
+neutral reference such as `Refs OWNER/REPO#N` in the PR description. A sentence
+saying "do not close yet" or "close after cleanup" does not cancel a closing
+keyword such as `Closes`, `Fixes`, or `Resolves`.
+
+After creating or editing that PR or its issue links, and immediately before an
+authorized merge, read GitHub's current closing references:
+
+```bash
+gh pr view PR --repo OWNER/REPO --json number,url,baseRefName,closingIssuesReferences
+```
+
+Compare the referenced issue by its full host/repository and number, or by
+its node ID; a bare issue number can identify a different repository. Check
+the issue owner's actual acceptance evidence and authorization for closure.
+`gh-utility` reports GitHub state; it does not define when the separate
+acceptance is complete.
+
+If the PR would close an issue whose required acceptance is still open, stop
+the merge. Remove a closing keyword from the PR description if it caused the
+link; remove a manual link only within the available authority. Read the
+closing references again before continuing. If the source of the link, the
+acceptance state, or the read result is unknown, report the specific blocker
+for this merge. A failed read is not an empty reference list.
+
+Once all required acceptance steps are complete and closure is authorized,
+`Closes` is allowed. This check applies to the relevant issue and PR, not
+every unrelated PR or an issue with only the same number. Re-read after a
+change to the PR's base or links. An empty PR closing-reference list is not a
+universal guarantee: a closing keyword in a commit message or other
+automation may have separate effects. Route a known such risk to its owner
+without claiming this PR readback inspected it.
+
 ### Update PR
 
 ```bash
@@ -84,6 +119,9 @@ Check three independent dimensions:
 1. Mergeability: `mergeable`, `mergeStateStatus`, conflicts.
 2. Review state: `reviewDecision`, unresolved review threads.
 3. CI state: `gh pr checks`, failed/pending/human-gated checks.
+
+When a related issue has a separate acceptance step, apply
+[Issue closing references](#issue-closing-references) before merge as well.
 
 ```bash
 gh pr view 123 --repo OWNER/REPO --json mergeable,mergeStateStatus,reviewDecision,isDraft

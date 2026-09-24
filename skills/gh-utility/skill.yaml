@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: gh-utility
-  source-version: 1.2.2
+  source-version: 1.2.3
   recommended-skill-md-max-bytes: 16000
   description: >-
     Use when GitHub CLI (`gh`) is required for repos, issues, PRs, Actions, releases,
@@ -144,6 +144,10 @@ copies:
     description: Skill license.
 
 supporting:
+  - id: supporting-implementation-log-20260924-1
+    source: docs/logs/implementation-log-20260924-1.md
+    target: docs/logs/implementation-log-20260924-1.md
+    description: Non-normative evidence for issue-closing reference guidance.
   - id: supporting-implementation-log-20260715-1
     source: docs/logs/implementation-log-20260715-1.md
     target: docs/logs/implementation-log-20260715-1.md
