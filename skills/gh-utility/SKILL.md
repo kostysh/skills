@@ -9,9 +9,9 @@ compatibility: Requires GitHub CLI gh and network access to the relevant GitHub
   host. Command families, flags, and JSON fields that may vary by version must
   be checked against installed help.
 metadata:
-  source-version: 1.2.2
+  source-version: 1.2.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: eae189b12f051d519ad050b48c0964c8a09e9751d7f76069e31aad901b53661a
+  skillforge-source-hash: 8fc49689ccd50764e7a541d370830411b7ef60f0b688ea09e5be55c12cec2b36
 ---
 
 # gh-utility

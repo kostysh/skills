@@ -71,6 +71,11 @@ bots are not technical failures; report them separately.
 Before an authorized merge, refresh all three evidence dimensions. Merge strategy is a repository
 or operator decision, not something `gh-utility` invents.
 
+For a PR tied to an issue with separate acceptance, also apply the
+[Issue closing references](repo-issue-pr-playbook.md#issue-closing-references)
+check on the current PR before merge. Do not treat prose that delays closure
+as a change to GitHub's actual closing references.
+
 ```bash
 gh pr merge 123 --repo OWNER/REPO --squash
 ```
