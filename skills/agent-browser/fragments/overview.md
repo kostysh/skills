@@ -10,6 +10,10 @@ agent-browser skills get core --full
 
 The stable interaction loop is:
 
+Apply [Guidance and authority](#guidance-and-authority) before the first `open`
+and at each route or identity transition. The loop does not choose an authorized
+browser environment for you.
+
 ```bash
 agent-browser open <url>
 agent-browser snapshot -i

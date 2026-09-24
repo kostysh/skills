@@ -5,9 +5,9 @@ description: Use agent-browser to navigate and interact with rendered web pages,
   diagnostic checks. Verify the requested terminal state and report completed,
   partial, or blocked; do not replace a formal project E2E suite.
 metadata:
-  source-version: 0.2.4
+  source-version: 0.2.5
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 0bed05eb297e3c33166f3a4c90e9a3e98f68e056fafa6d70ee2b4cdbea9db893
+  skillforge-source-hash: 723a2d0e23f15a6aef15cbf444c8cd4fd34e780824fa2c1590ad3b90a97c622f
 allowed-tools: Bash(agent-browser:*)
 ---
 
@@ -17,8 +17,9 @@ allowed-tools: Bash(agent-browser:*)
 
 1. Identify the target, requested user-visible result, expected terminal state, and any material limit on external side effects or extraction scope.
 2. Run `agent-browser --version` and load the installed CLI's version-matched guidance with `agent-browser skills get core --full`; if unavailable, use `agent-browser --help`.
-3. Read `references/cloudflare-access-otp.md` before a human Cloudflare Access email-OTP flow; keep that browser identity gate separate from application authentication and infrastructure credentials.
-4. Follow the snapshot loop, verify the requested result, and report exactly one status: completed, partial, or blocked.
+3. Before the first open and when the target, entrypoint, browser, session, profile, or authentication state changes, apply `Guidance and authority` to the browser environment actually selected.
+4. Read `references/cloudflare-access-otp.md` before a human Cloudflare Access email-OTP flow; keep that browser identity gate separate from application authentication and infrastructure credentials.
+5. Follow the snapshot loop, verify the requested result, and report exactly one status: completed, partial, or blocked.
 
 ## When to use this skill
 
@@ -44,6 +45,10 @@ agent-browser skills get core --full
 ```
 
 The stable interaction loop is:
+
+Apply [Guidance and authority](#guidance-and-authority) before the first `open`
+and at each route or identity transition. The loop does not choose an authorized
+browser environment for you.
 
 ```bash
 agent-browser open <url>
@@ -89,7 +94,7 @@ and recordings as potentially sensitive.
 
 Reach the requested observable result through the rendered page without confusing CLI activity with task completion.
 
-1. Apply the governing user, system, and project policies; this skill does not grant authority for additional external side effects.
+1. Apply the governing user, system, and project policies, then the `Guidance and authority` browser-environment check before opening or changing route or identity; this skill does not grant authority for additional external side effects.
 2. Use the installed CLI guidance for command syntax. If the runtime fails, use its help or `agent-browser doctor --offline --quick`; use mutating repair commands only when already authorized, and never add Playwright to the target project merely to prepare agent-browser.
 3. Open the target, snapshot before using refs, interact, wait for the expected condition, and re-snapshot after navigation or material page changes.
 4. Verify the final URL, visible state, or extracted values that establish the requested result; use console, page-error, network, screenshot, or trace evidence only when relevant.
@@ -130,7 +135,7 @@ Validation:
 ## Policies
 
 ### Guidance and authority
-Governing user, system, and project policies define authority; installed version-matched CLI guidance defines command syntax; this skill does not widen either boundary.
+Governing user, system, and project policies define authority; installed version-matched CLI guidance defines command syntax, not permission. Before the first open and whenever the target, entrypoint, browser, session, profile, or authentication state changes, compare the browser environment actually selected, its identity, and its owner with current permissions and prohibitions. Include selection through flags and applicable configuration without reading secrets. Continue in the same task-owned authorized isolated session when it remains valid; changing pages or completing a separate application login alone does not require another browser or renewed approval. CLI capability, permission to run a tool command, or an instruction to log in independently does not authorize another profile, and the tool name alone does not prove isolation. Do not make an unverified transition: keep an available authorized path or name the concrete blocker for the dependent action, while continuing independent authorized work. An explicit permission for another specific environment applies only within its scope and subject to stricter governing rules. This skill widens no authority.
 
 ### Browser evidence
 Match evidence to the claim and report the target, expected and observed terminal state, relevant real or intercepted network mode, and exact limits of partial or blocked results.
