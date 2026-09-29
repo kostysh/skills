@@ -1,0 +1,17 @@
+{
+  "algorithm": "sha256",
+  "path_base": "skill folder",
+  "scope": "all declared source and generated package files plus maintenance AGENTS.md; new supporting evidence assessed separately",
+  "files": {
+    "AGENTS.md": "8619fd5bbd55d5e25ccba55ea87ce3c828727ff8dfd8c44a0da87b4d2d5078ed",
+    "SKILL.md": "4924b0b0c98cfb73df2181758aa4ac370a7038bb8703765f6e18dbf096fb12a9",
+    "docs/README.md": "bbfd3dfda4faedcb1a7d7d6b7ccaaaf0f05f8c8cf6e7e7f0b4312466c7e77579",
+    "docs/compile-report.md": "139fab214ddfa8a997d4d37d52668de6f9bbc85fec9e01fbfad8d81a68cfe983",
+    "docs/logs/implementation-log-20260710-1.md": "5067e79f7fa8361b29889775c9243d90e983c7862932cbc241ba174ef9200e97",
+    "docs/logs/implementation-log-20260713-1.md": "a743b04f4818e0a3d043f082e80c10be4015f677c30fabcbf83367953088520d",
+    "docs/logs/implementation-log-20260715-1.md": "4458fbb45dd6267445f9811d9bd08bc28a637defb93f1fba3f8691c847587d59",
+    "docs/logs/implementation-log-20260727-1.md": "7eb403d08bbad12ff85d4bce3efd57fc4a67a02eb586420a55e9934c7bfd2b86",
+    "fragments/overview.md": "ff09b023e48246aeb6e9b642bbf9be47f26a0c63d66693773511b33bd0479399",
+    "skill.yaml": "14bf1a4c99bf12b06cb36cc83cda57d0f0e9646436681bc5a01ff34bf25e88a0"
+  }
+}

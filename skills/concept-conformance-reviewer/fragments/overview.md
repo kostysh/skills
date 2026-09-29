@@ -38,7 +38,7 @@ For assessable or limited reviews:
 - `medium` — the capability is partially protected or evidenced, but ambiguity or a material gap still permits misleading implementation or closure;
 - `high` — acceptance can pass without the reviewed claim, a broader capability or invariant closure relies on substrate that does not prove it, evidence is insufficient for that broader claim, or the target contradicts the concept.
 
-Choose the first matching primary decision: `request authority/evidence` for blocked review basis; `reject` for concept contradiction or no legitimate contribution; `split` for mixed substrate and capability closure; `downscope` when only a narrower claim is supportable; `rewrite` for remaining repairable acceptance/spec defects; `request authority/evidence` when the remaining blocker is closure evidence alone; `proceed as substrate` for honest support scope; otherwise `proceed` only for assessable + low with no required correction. Report lower-priority defects as secondary findings.
+Choose the first matching primary decision: `request authority/evidence` for blocked review basis; `reject` for concept contradiction or no legitimate contribution; `split` for mixed substrate and capability closure; `downscope` when only a narrower claim is supportable; `rewrite` for remaining repairable acceptance/spec defects; `request authority/evidence` when the remaining blocker is closure evidence alone or a material unverified architectural premise in either mode; `proceed as substrate` for honest support scope; otherwise `proceed` only for assessable + low with no required correction. Report lower-priority defects as secondary findings.
 
 Also return exactly one mode outcome:
 
@@ -48,6 +48,8 @@ Also return exactly one mode outcome:
 `Claim-not-ready` and `claim-not-demonstrated` refer only to the reviewed claim boundary. `Proceed` covers capability and invariant claims; `proceed as substrate` covers substrate. Design-time proceed establishes concept readiness, not permission to implement or publish. Preserve existing operator authorization and checkpoints; the review verdict neither grants new authority nor requires approval already given. Invariant and substrate outcomes never claim a new or owner capability.
 
 ### Output contract
+
+Start with a plain-language outcome.
 
 For `blocked / not assessable`, return only the attempted mode, blocked status and outcome, missing, insufficient, or unresolved review-basis input, primary decision `request authority/evidence`, and next owner or artifact. Do not add classification or fake-risk.
 

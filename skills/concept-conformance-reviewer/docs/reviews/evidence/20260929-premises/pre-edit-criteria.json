@@ -1,0 +1,12 @@
+{
+  "algorithm": "sha256",
+  "fixed_before_candidate_edits": true,
+  "files": {
+    "criteria.md": "34607e8bc8e6d930c7935b8ba6f459f3d470ef61b9a2b55537c0281751f4c27a",
+    "cases/01.md": "0dfe0c9c9c469b984c54aa837f5b4b8860a30c42b909b24050ae239e06ee214a",
+    "cases/02.md": "6eac2d7536415155cb1e4bf25863844a5f2530367b2a4a5e12d1c0bc2fec6ba6",
+    "cases/03.md": "ffae55f07fe085aa59b2b2f3c320e37a8516d342bd3028db6309afb9fbab1100",
+    "cases/04.md": "557126a99f182f3e8e2944592a1a96b66d1f6252fdb01924434e9575bfacfaf5",
+    "cases/05.md": "7a7c7a65ea732eb5c35ac55ae06016996661ba2e85df96fe0885a62e8ed49c8a"
+  }
+}

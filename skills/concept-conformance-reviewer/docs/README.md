@@ -10,3 +10,4 @@
 - `docs/logs/implementation-log-20260727-1.md` — bounded remediation re-audit и outcome-first contract по #226; independent PASS.
 
 - [implementation-log-20260907-1](logs/implementation-log-20260907-1.md) — G4, readiness и authority; [independent bounded PASS](reviews/evidence/g4/final-audit.md), C-B01 закрыт.
+- [implementation-log-20260929-1](logs/implementation-log-20260929-1.md) — актуальность архитектурных оснований и граница повторного аудита; [критерии проверки](reviews/evidence/20260929-premises/criteria.md).

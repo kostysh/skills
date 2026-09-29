@@ -9,9 +9,9 @@ compatibility: Portable documentation-only review skill. Use before
   specification, planning, implementation, or closure when concept alignment and
   real capability are more important than local artifact compliance.
 metadata:
-  source-version: 0.2.4
+  source-version: 0.2.6
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: acc9101f5884edbe205855ba2ffab33fd0cea9fa1ba835fc8e8565eb5e5fdd4b
+  skillforge-source-hash: ffe841bdd9f11e8b36804c64bd51549986d96b12490bfe6901f7ae8480c1058e
 ---
 
 # concept-conformance-reviewer
@@ -80,7 +80,7 @@ For assessable or limited reviews:
 - `medium` — the capability is partially protected or evidenced, but ambiguity or a material gap still permits misleading implementation or closure;
 - `high` — acceptance can pass without the reviewed claim, a broader capability or invariant closure relies on substrate that does not prove it, evidence is insufficient for that broader claim, or the target contradicts the concept.
 
-Choose the first matching primary decision: `request authority/evidence` for blocked review basis; `reject` for concept contradiction or no legitimate contribution; `split` for mixed substrate and capability closure; `downscope` when only a narrower claim is supportable; `rewrite` for remaining repairable acceptance/spec defects; `request authority/evidence` when the remaining blocker is closure evidence alone; `proceed as substrate` for honest support scope; otherwise `proceed` only for assessable + low with no required correction. Report lower-priority defects as secondary findings.
+Choose the first matching primary decision: `request authority/evidence` for blocked review basis; `reject` for concept contradiction or no legitimate contribution; `split` for mixed substrate and capability closure; `downscope` when only a narrower claim is supportable; `rewrite` for remaining repairable acceptance/spec defects; `request authority/evidence` when the remaining blocker is closure evidence alone or a material unverified architectural premise in either mode; `proceed as substrate` for honest support scope; otherwise `proceed` only for assessable + low with no required correction. Report lower-priority defects as secondary findings.
 
 Also return exactly one mode outcome:
 
@@ -90,6 +90,8 @@ Also return exactly one mode outcome:
 `Claim-not-ready` and `claim-not-demonstrated` refer only to the reviewed claim boundary. `Proceed` covers capability and invariant claims; `proceed as substrate` covers substrate. Design-time proceed establishes concept readiness, not permission to implement or publish. Preserve existing operator authorization and checkpoints; the review verdict neither grants new authority nor requires approval already given. Invariant and substrate outcomes never claim a new or owner capability.
 
 ### Output contract
+
+Start with a plain-language outcome.
 
 For `blocked / not assessable`, return only the attempted mode, blocked status and outcome, missing, insufficient, or unresolved review-basis input, primary decision `request authority/evidence`, and next owner or artifact. Do not add classification or fake-risk.
 
@@ -146,6 +148,9 @@ Detect concept drift, missing behavior, and misleading completion claims.
 2. Separate real behavior from enabling artifacts and separate proof from the behavior it proves.
 3. Identify behavior that remains simulated, manually mediated, unintegrated, non-durable, unprotected, or outside the reviewed evidence scope.
 4. Check whether local correctness or artifact completeness can coexist with failure of the higher-level capability.
+5. When a material change to technology, a shared module, or responsibility allocation affects a prohibition or exception, check whether its premises still justify it. Limit this check to affected decisions; changed conditions call for revalidation, not automatic rejection of the constraint.
+6. Require a current rationale for an affected bypass or duplication of an existing responsibility; repetition across documents and a prior PASS do not supply it. Distinguish responsibility ownership from physical topology; separate databases or files managed through a shared storage module do not by themselves duplicate a storage layer.
+7. If a material affected premise remains unverified, withhold readiness or demonstrated status for the dependent claim, record the changed premise and evidence gap, and route the question to the architecture owner for current justification or a decision. Do not revoke or supersede an ADR, mandate reuse, or stop supported review of unrelated claims.
 
 Validation:
 
@@ -203,32 +208,14 @@ Validation:
 
 ## Policies
 
-### Capability-first policy
-Judge completion by behavior at the declared actor and boundary, not artifact volume.
-
-### Review basis and concept authority policy
-Require a review target, capability claim, and concept source sufficient to define the claim boundary. Apply supplied or repository-defined precedence first; lower-authority disagreement is drift, while a missing or insufficient input or an unresolved equal- or unknown-authority conflict requires blocked / not assessable without classification or fake-risk.
-
-### Claim-relative classification policy
-Classify delivered behavior, capability-preserving invariants, enabling substrate, and verification evidence relative to the named actor and claim boundary. The same artifact may be capability at one boundary and substrate at another.
-
 ### Honest substrate policy
 Substrate may proceed when its claim is limited, its owner capability or invariant is named, and acceptance does not imply broader completion.
-
-### Evidence integrity policy
-Closure requires current boundary evidence; record simulated, intercepted, stale, partial, or unreviewed paths as gaps.
 
 ### Anti-claims policy
 Every non-trivial review must state the important behavior that remains unavailable, simulated, manually mediated, outside scope, or only weakly evidenced.
 
-### Acceptance integrity policy
-Acceptance passing without claimed capability is defective; route behavior-level proof to spec-engineer.
-
-### Output completeness policy
-Start with a plain-language outcome. If blocked, return attempted mode, blocked status/outcome, missing or unresolved input, authority/evidence request, and next owner. Otherwise return mode, status/outcome, concept source, claim, classification, criteria or evidence gaps, anti-claims, fake-risk, decision, and next owner.
-
 ### Bounded remediation re-audit
-Re-audit fixed findings on a new stable snapshot against correction evidence, original failure paths, and adjacent regression surface. Skip unchanged verified scope and cosmetic-only proof; widen for changed claim, authority, acceptance, or scope, or unbounded blast radius.
+Re-audit fixed findings on a new stable snapshot against correction evidence, original failure paths, and adjacent regression surface. Skip unchanged verified decisions only when their relevant premises also remain unchanged; changed premises bring affected unchanged text into scope. Widen for changed claim, authority, acceptance, or scope, or unbounded blast radius; exclude unrelated decisions and cosmetic-only proof.
 
 ## Portability rules
 
