@@ -1,0 +1,37 @@
+{
+  "scope": "Source/generated checks and isolated package parity; not behavioral or independent approval",
+  "checks": [
+    {
+      "label": "source check",
+      "chunk_id": "7a7b14",
+      "wall_time_seconds": 0.019333958,
+      "exit_code": 0,
+      "original_token_count": 9,
+      "output": "OK ../concept-conformance-reviewer\n"
+    },
+    {
+      "label": "isolated compile",
+      "chunk_id": "17691f",
+      "wall_time_seconds": 0.017110557,
+      "exit_code": 0,
+      "original_token_count": 104,
+      "output": "Compiled ../concept-conformance-reviewer -> /tmp/concept-premises-20260929-3vJXdi/emitted/concept-conformance-reviewer\nWarnings:\n- Generated SKILL.md is 21374 bytes, above the recommended maximum 20000 bytes. Move detailed guidance into references/* and keep SKILL.md focused on activation, workflow, and navigation. Raise skill.recommended-skill-md-max-bytes only when references cannot reasonably reduce the size.\n"
+    },
+    {
+      "label": "emitted check",
+      "chunk_id": "c02317",
+      "wall_time_seconds": 0.002864341,
+      "exit_code": 0,
+      "original_token_count": 20,
+      "output": "OK /tmp/concept-premises-20260929-3vJXdi/emitted/concept-conformance-reviewer\n"
+    },
+    {
+      "label": "byte parity and isolated inputs",
+      "chunk_id": "fe1b25",
+      "wall_time_seconds": 0.000014658,
+      "exit_code": 0,
+      "original_token_count": 40,
+      "output": "{\"emitted_files\": 7, \"byte_mismatches\": []}\nSix isolated trial input folders prepared; no executors started\nActive root bytes: 21374\nBaseline root bytes: 20179\n"
+    }
+  ]
+}

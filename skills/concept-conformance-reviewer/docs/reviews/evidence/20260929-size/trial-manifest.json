@@ -1,0 +1,202 @@
+{
+  "algorithm": "sha256",
+  "path_base": "individual trial folder",
+  "records": [
+    {
+      "run": "c01",
+      "executor": "/root/size_trial_01",
+      "context": "fork_turns:none",
+      "model_and_reasoning": "inherited; no overrides; runtime metadata not observed",
+      "files": {
+        "SKILL.md": "4924b0b0c98cfb73df2181758aa4ac370a7038bb8703765f6e18dbf096fb12a9",
+        "input.md": "0dfe0c9c9c469b984c54aa837f5b4b8860a30c42b909b24050ae239e06ee214a",
+        "output.md": "cf0055cedf8cc7cc4644312a86322f262f20c214b551c42e1aca492e0d7ebc38"
+      },
+      "observed_files": [
+        "SKILL.md",
+        "input.md",
+        "output.md"
+      ]
+    },
+    {
+      "run": "c02",
+      "executor": "/root/size_trial_02",
+      "context": "fork_turns:none",
+      "model_and_reasoning": "inherited; no overrides; runtime metadata not observed",
+      "files": {
+        "SKILL.md": "4924b0b0c98cfb73df2181758aa4ac370a7038bb8703765f6e18dbf096fb12a9",
+        "input.md": "6eac2d7536415155cb1e4bf25863844a5f2530367b2a4a5e12d1c0bc2fec6ba6",
+        "output.md": "b40a752ca92e1fe884babc3f07f8c4d30c66030aa66e453b615681cc834f37c8"
+      },
+      "observed_files": [
+        "SKILL.md",
+        "input.md",
+        "output.md"
+      ]
+    },
+    {
+      "run": "c03b",
+      "executor": "/root/size_trial_03",
+      "context": "fork_turns:none",
+      "model_and_reasoning": "inherited; no overrides; runtime metadata not observed",
+      "files": {
+        "SKILL.md": "4924b0b0c98cfb73df2181758aa4ac370a7038bb8703765f6e18dbf096fb12a9",
+        "input.md": "7716008172117e9f235204caf90172d0b4e5dc77d8dec763b8e75e133fea2a0f",
+        "output.md": "69502add936b5fd6e8a34873b835f00ddd9dc2458ddfcfd052dea5bb12629d36"
+      },
+      "observed_files": [
+        "SKILL.md",
+        "input.md",
+        "output.md"
+      ]
+    },
+    {
+      "run": "c04",
+      "executor": "/root/size_trial_04",
+      "context": "fork_turns:none",
+      "model_and_reasoning": "inherited; no overrides; runtime metadata not observed",
+      "files": {
+        "SKILL.md": "4924b0b0c98cfb73df2181758aa4ac370a7038bb8703765f6e18dbf096fb12a9",
+        "input.md": "557126a99f182f3e8e2944592a1a96b66d1f6252fdb01924434e9575bfacfaf5",
+        "output.md": "80a2d1520b2cdac683cf2d1bac309d419b6a84098b1eeeff05e7aedd537418b3"
+      },
+      "observed_files": [
+        "SKILL.md",
+        "input.md",
+        "output.md"
+      ]
+    },
+    {
+      "run": "c05",
+      "executor": "/root/size_trial_05",
+      "context": "fork_turns:none",
+      "model_and_reasoning": "inherited; no overrides; runtime metadata not observed",
+      "files": {
+        "SKILL.md": "4924b0b0c98cfb73df2181758aa4ac370a7038bb8703765f6e18dbf096fb12a9",
+        "input.md": "7a7c7a65ea732eb5c35ac55ae06016996661ba2e85df96fe0885a62e8ed49c8a",
+        "output.md": "40cbb30ca7ff4ee507b81a7222f552b1f5cb0dedc74142fda652a4d7622f004a"
+      },
+      "observed_files": [
+        "SKILL.md",
+        "input.md",
+        "output.md"
+      ]
+    },
+    {
+      "run": "b06",
+      "executor": "/root/size_trial_06",
+      "context": "fork_turns:none",
+      "model_and_reasoning": "inherited; no overrides; runtime metadata not observed",
+      "files": {
+        "SKILL.md": "a4c7a9c2267ddff7ed6129b36b037d9f4daacbe7206cd88cc1d5070108018183",
+        "input.md": "661da3688751ea572d54b72bd4e0c87ec3b27e13c112ba2874671620ed629744",
+        "output.md": "720b25085eec737c9a2853566db8ec5a68bd84ca89e925a31961c75c4d768303"
+      },
+      "observed_files": [
+        "SKILL.md",
+        "input.md",
+        "output.md"
+      ]
+    },
+    {
+      "run": "c06",
+      "executor": "/root/size_trial_07",
+      "context": "fork_turns:none",
+      "model_and_reasoning": "inherited; no overrides; runtime metadata not observed",
+      "files": {
+        "SKILL.md": "4924b0b0c98cfb73df2181758aa4ac370a7038bb8703765f6e18dbf096fb12a9",
+        "input.md": "661da3688751ea572d54b72bd4e0c87ec3b27e13c112ba2874671620ed629744",
+        "output.md": "a7ae4e646939957aecf2f627429ac1d8194dd88ecb93e4f3708aafb2b4321844"
+      },
+      "observed_files": [
+        "SKILL.md",
+        "input.md",
+        "output.md"
+      ]
+    },
+    {
+      "run": "b07",
+      "executor": "/root/size_trial_08",
+      "context": "fork_turns:none",
+      "model_and_reasoning": "inherited; no overrides; runtime metadata not observed",
+      "files": {
+        "SKILL.md": "a4c7a9c2267ddff7ed6129b36b037d9f4daacbe7206cd88cc1d5070108018183",
+        "input.md": "087eee167e9d46e6d8b7bc112a360749f78cb9596b95bd58cdfa1d584aba4c5a",
+        "output.md": "6ae1db571fe4d974e8d62dee7350d8ceea7dac5f3da7d085c5298b3d7a274c59"
+      },
+      "observed_files": [
+        "SKILL.md",
+        "input.md",
+        "output.md"
+      ]
+    },
+    {
+      "run": "c07",
+      "executor": "/root/size_trial_09",
+      "context": "fork_turns:none",
+      "model_and_reasoning": "inherited; no overrides; runtime metadata not observed",
+      "files": {
+        "SKILL.md": "4924b0b0c98cfb73df2181758aa4ac370a7038bb8703765f6e18dbf096fb12a9",
+        "input.md": "087eee167e9d46e6d8b7bc112a360749f78cb9596b95bd58cdfa1d584aba4c5a",
+        "output.md": "251024acd265233ffebbfe44b6aad29253c2052bddc2e053dedf5c1c0f88d058"
+      },
+      "observed_files": [
+        "SKILL.md",
+        "input.md",
+        "output.md"
+      ]
+    }
+  ],
+  "reused_baseline": [
+    {
+      "case": "01",
+      "baseline_version": "0.2.5",
+      "output_path": "../20260929-premises/outputs/c01.md",
+      "files": {
+        "SKILL.md": "a4c7a9c2267ddff7ed6129b36b037d9f4daacbe7206cd88cc1d5070108018183",
+        "input.md": "0dfe0c9c9c469b984c54aa837f5b4b8860a30c42b909b24050ae239e06ee214a",
+        "output.md": "855d6a7338e35373891709ef2f2daf2e01ee9cb52fe3f605c0f39c73e07deabf"
+      }
+    },
+    {
+      "case": "02",
+      "baseline_version": "0.2.5",
+      "output_path": "../20260929-premises/outputs/c02.md",
+      "files": {
+        "SKILL.md": "a4c7a9c2267ddff7ed6129b36b037d9f4daacbe7206cd88cc1d5070108018183",
+        "input.md": "6eac2d7536415155cb1e4bf25863844a5f2530367b2a4a5e12d1c0bc2fec6ba6",
+        "output.md": "e6e5dbea4678c9d7ca7bbcfb73ef7ed6373b1d95a1902e20d0411f2e1335d57c"
+      }
+    },
+    {
+      "case": "03b",
+      "baseline_version": "0.2.5",
+      "output_path": "../20260929-premises/outputs/c03b.md",
+      "files": {
+        "SKILL.md": "a4c7a9c2267ddff7ed6129b36b037d9f4daacbe7206cd88cc1d5070108018183",
+        "input.md": "7716008172117e9f235204caf90172d0b4e5dc77d8dec763b8e75e133fea2a0f",
+        "output.md": "125ce4d6b6a86bacde043f2f65159e460ab020c2b47668eb873d16ef657fc594"
+      }
+    },
+    {
+      "case": "04",
+      "baseline_version": "0.2.5",
+      "output_path": "../20260929-premises/outputs/c04.md",
+      "files": {
+        "SKILL.md": "a4c7a9c2267ddff7ed6129b36b037d9f4daacbe7206cd88cc1d5070108018183",
+        "input.md": "557126a99f182f3e8e2944592a1a96b66d1f6252fdb01924434e9575bfacfaf5",
+        "output.md": "16a8d1bc72618c975440a889bdc6e8153e7dec27238f5bd19d36f1a96e5470f6"
+      }
+    },
+    {
+      "case": "05",
+      "baseline_version": "0.2.5",
+      "output_path": "../20260929-premises/outputs/c05.md",
+      "files": {
+        "SKILL.md": "a4c7a9c2267ddff7ed6129b36b037d9f4daacbe7206cd88cc1d5070108018183",
+        "input.md": "7a7c7a65ea732eb5c35ac55ae06016996661ba2e85df96fe0885a62e8ed49c8a",
+        "output.md": "6c35cab5df087474489e3f5227bc50689607f5224db5ba2b50129f0d22f4314e"
+      }
+    }
+  ]
+}

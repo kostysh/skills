@@ -1,0 +1,244 @@
+{
+  "reviewer": "/root/independent_review",
+  "algorithm": "sha256",
+  "path_base": "relative to each declared folder",
+  "checks": {
+    "candidate": {
+      "file_count": 10,
+      "hashes": {
+        "skill.yaml": "14bf1a4c99bf12b06cb36cc83cda57d0f0e9646436681bc5a01ff34bf25e88a0",
+        "SKILL.md": "4924b0b0c98cfb73df2181758aa4ac370a7038bb8703765f6e18dbf096fb12a9",
+        "AGENTS.md": "8619fd5bbd55d5e25ccba55ea87ce3c828727ff8dfd8c44a0da87b4d2d5078ed",
+        "fragments/overview.md": "ff09b023e48246aeb6e9b642bbf9be47f26a0c63d66693773511b33bd0479399",
+        "docs/compile-report.md": "139fab214ddfa8a997d4d37d52668de6f9bbc85fec9e01fbfad8d81a68cfe983",
+        "docs/README.md": "bbfd3dfda4faedcb1a7d7d6b7ccaaaf0f05f8c8cf6e7e7f0b4312466c7e77579",
+        "docs/logs/implementation-log-20260727-1.md": "7eb403d08bbad12ff85d4bce3efd57fc4a67a02eb586420a55e9934c7bfd2b86",
+        "docs/logs/implementation-log-20260715-1.md": "4458fbb45dd6267445f9811d9bd08bc28a637defb93f1fba3f8691c847587d59",
+        "docs/logs/implementation-log-20260713-1.md": "a743b04f4818e0a3d043f082e80c10be4015f677c30fabcbf83367953088520d",
+        "docs/logs/implementation-log-20260710-1.md": "5067e79f7fa8361b29889775c9243d90e983c7862932cbc241ba174ef9200e97"
+      },
+      "manifest_equal": true,
+      "archive_equal": true,
+      "archive_sha256": "648463094c7667bfdfd3ba070d6d598f1ec4e9f9e6b3cdf21529a863b93f3089",
+      "manifest_sha256": "15dd4e4475a63bd2bc89410254ab98ac08072c7be4ebaad120c75b28448fd48b"
+    },
+    "baseline": {
+      "file_count": 10,
+      "hashes": {
+        "skill.yaml": "2dbb155d04d4ad0d291cd5daea96617ca7d52ef8fd6c5e4cf69bda56fcaaeaa4",
+        "SKILL.md": "a4c7a9c2267ddff7ed6129b36b037d9f4daacbe7206cd88cc1d5070108018183",
+        "AGENTS.md": "8619fd5bbd55d5e25ccba55ea87ce3c828727ff8dfd8c44a0da87b4d2d5078ed",
+        "fragments/overview.md": "fee7f5434f6e8b267ec23652b87a61280a239b36c77e6e2d9f3e32f1f4eb1584",
+        "docs/compile-report.md": "5d6fb1c2b7ee40458bbae5d942ed898d556bfe76563e0e2a0ab6fa674dc9ee8c",
+        "docs/README.md": "bbfd3dfda4faedcb1a7d7d6b7ccaaaf0f05f8c8cf6e7e7f0b4312466c7e77579",
+        "docs/logs/implementation-log-20260727-1.md": "7eb403d08bbad12ff85d4bce3efd57fc4a67a02eb586420a55e9934c7bfd2b86",
+        "docs/logs/implementation-log-20260715-1.md": "4458fbb45dd6267445f9811d9bd08bc28a637defb93f1fba3f8691c847587d59",
+        "docs/logs/implementation-log-20260713-1.md": "a743b04f4818e0a3d043f082e80c10be4015f677c30fabcbf83367953088520d",
+        "docs/logs/implementation-log-20260710-1.md": "5067e79f7fa8361b29889775c9243d90e983c7862932cbc241ba174ef9200e97"
+      },
+      "manifest_equal": true,
+      "archive_equal": true,
+      "archive_sha256": "6c3852073222f3106dc45b8f161eb047957cc2b78c313551236ec7bb7cd85ba0",
+      "manifest_sha256": "861c8429062dccfea99c89c39e3f4cd0400cc7d129a29a88df1f09c31797ce3b"
+    },
+    "baseline_equals_prior_reviewed_candidate": true,
+    "exact_delta": {
+      "removed_blocks": [
+        {
+          "id": "policy-capability-first",
+          "title": "Capability-first policy",
+          "text": "Judge completion by behavior at the declared actor and boundary, not artifact volume."
+        },
+        {
+          "id": "policy-source-authority",
+          "title": "Review basis and concept authority policy",
+          "text": "Require a review target, capability claim, and concept source sufficient to define the claim boundary. Apply supplied or repository-defined precedence first; lower-authority disagreement is drift, while a missing or insufficient input or an unresolved equal- or unknown-authority conflict requires blocked / not assessable without classification or fake-risk."
+        },
+        {
+          "id": "policy-claim-relative-classification",
+          "title": "Claim-relative classification policy",
+          "text": "Classify delivered behavior, capability-preserving invariants, enabling substrate, and verification evidence relative to the named actor and claim boundary. The same artifact may be capability at one boundary and substrate at another."
+        },
+        {
+          "id": "policy-evidence-integrity",
+          "title": "Evidence integrity policy",
+          "text": "Closure requires current boundary evidence; record simulated, intercepted, stale, partial, or unreviewed paths as gaps."
+        },
+        {
+          "id": "policy-acceptance-integrity",
+          "title": "Acceptance integrity policy",
+          "text": "Acceptance passing without claimed capability is defective; route behavior-level proof to spec-engineer."
+        },
+        {
+          "id": "policy-output-completeness",
+          "title": "Output completeness policy",
+          "text": "Start with a plain-language outcome. If blocked, return attempted mode, blocked status/outcome, missing or unresolved input, authority/evidence request, and next owner. Otherwise return mode, status/outcome, concept source, claim, classification, criteria or evidence gaps, anti-claims, fake-risk, decision, and next owner."
+        }
+      ],
+      "source_matches_prediction": true,
+      "root_matches_prediction": true,
+      "fragment_matches_prediction": true,
+      "candidate_root_bytes": 19968,
+      "baseline_root_bytes": 21374,
+      "threshold": 20000,
+      "threshold_unchanged": true,
+      "compile_report_warnings": "- none"
+    },
+    "criteria": {
+      "manifest_sha256": "ffcc3a4ed4d30b04571f9a7086f09912660bd4608ba908c6914919d35323c7e6",
+      "mismatches": [],
+      "reused_mismatches": []
+    },
+    "trial_manifest_sha256": "13cfcb2364937eb85f44cde988b0bef0e1627b4dc283f6108720018969e2c285",
+    "trials": [
+      {
+        "run": "c01",
+        "observed_files": [
+          "SKILL.md",
+          "input.md",
+          "output.md"
+        ],
+        "manifest_equal": true,
+        "durable_output_matches": true
+      },
+      {
+        "run": "c02",
+        "observed_files": [
+          "SKILL.md",
+          "input.md",
+          "output.md"
+        ],
+        "manifest_equal": true,
+        "durable_output_matches": true
+      },
+      {
+        "run": "c03b",
+        "observed_files": [
+          "SKILL.md",
+          "input.md",
+          "output.md"
+        ],
+        "manifest_equal": true,
+        "durable_output_matches": true
+      },
+      {
+        "run": "c04",
+        "observed_files": [
+          "SKILL.md",
+          "input.md",
+          "output.md"
+        ],
+        "manifest_equal": true,
+        "durable_output_matches": true
+      },
+      {
+        "run": "c05",
+        "observed_files": [
+          "SKILL.md",
+          "input.md",
+          "output.md"
+        ],
+        "manifest_equal": true,
+        "durable_output_matches": true
+      },
+      {
+        "run": "b06",
+        "observed_files": [
+          "SKILL.md",
+          "input.md",
+          "output.md"
+        ],
+        "manifest_equal": true,
+        "durable_output_matches": true
+      },
+      {
+        "run": "c06",
+        "observed_files": [
+          "SKILL.md",
+          "input.md",
+          "output.md"
+        ],
+        "manifest_equal": true,
+        "durable_output_matches": true
+      },
+      {
+        "run": "b07",
+        "observed_files": [
+          "SKILL.md",
+          "input.md",
+          "output.md"
+        ],
+        "manifest_equal": true,
+        "durable_output_matches": true
+      },
+      {
+        "run": "c07",
+        "observed_files": [
+          "SKILL.md",
+          "input.md",
+          "output.md"
+        ],
+        "manifest_equal": true,
+        "durable_output_matches": true
+      }
+    ],
+    "reused_baseline": [
+      {
+        "case": "01",
+        "version": "0.2.5",
+        "skill_matches_baseline": true,
+        "input_matches_candidate": true,
+        "output_matches": true
+      },
+      {
+        "case": "02",
+        "version": "0.2.5",
+        "skill_matches_baseline": true,
+        "input_matches_candidate": true,
+        "output_matches": true
+      },
+      {
+        "case": "03b",
+        "version": "0.2.5",
+        "skill_matches_baseline": true,
+        "input_matches_candidate": true,
+        "output_matches": true
+      },
+      {
+        "case": "04",
+        "version": "0.2.5",
+        "skill_matches_baseline": true,
+        "input_matches_candidate": true,
+        "output_matches": true
+      },
+      {
+        "case": "05",
+        "version": "0.2.5",
+        "skill_matches_baseline": true,
+        "input_matches_candidate": true,
+        "output_matches": true
+      }
+    ],
+    "new_pairs_same_input": {
+      "06": true,
+      "07": true
+    },
+    "emitted": {
+      "count": 7,
+      "mismatches": []
+    },
+    "working_package_mismatches": [],
+    "git_diff_check": {
+      "command": "git diff --check -- skills/concept-conformance-reviewer",
+      "exit_code": 0,
+      "evidence": "independent command result 6b999e; empty output"
+    },
+    "structural_results_sha256": "079050b9c1b11869c6a1693f3a14e33e7efbf068078561b3dd58acb806ad08e5"
+  },
+  "limits": [
+    "Hash equality and exact text transformation are structural evidence; semantic preservation assessed separately in report.",
+    "Fresh contexts and assigned settings rely on coordinator execution record; full runtime tool events were not independently observed.",
+    "File inventories do not prove absence of actions outside inspected paths.",
+    "No natural activation, external domain runtime, universal behavioral equivalence or model performance claim."
+  ]
+}

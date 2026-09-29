@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: concept-conformance-reviewer
-  source-version: 0.2.4
+  source-version: 0.2.6
   recommended-skill-md-max-bytes: 20000
   description: >-
     Review features, specs, plans, acceptance criteria, implementations, and closure
@@ -104,6 +104,9 @@ sections:
         - Separate real behavior from enabling artifacts and separate proof from the behavior it proves.
         - Identify behavior that remains simulated, manually mediated, unintegrated, non-durable, unprotected, or outside the reviewed evidence scope.
         - Check whether local correctness or artifact completeness can coexist with failure of the higher-level capability.
+        - When a material change to technology, a shared module, or responsibility allocation affects a prohibition or exception, check whether its premises still justify it. Limit this check to affected decisions; changed conditions call for revalidation, not automatic rejection of the constraint.
+        - Require a current rationale for an affected bypass or duplication of an existing responsibility; repetition across documents and a prior PASS do not supply it. Distinguish responsibility ownership from physical topology; separate databases or files managed through a shared storage module do not by themselves duplicate a storage layer.
+        - If a material affected premise remains unverified, withhold readiness or demonstrated status for the dependent claim, record the changed premise and evidence gap, and route the question to the architecture owner for current justification or a decision. Do not revoke or supersede an ADR, mandate reuse, or stop supported review of unrelated claims.
       validation:
         - Every material alignment or drift conclusion points to the concept, reviewed artifact, acceptance, or evidence that supports it.
         - Evidence is not called capability, and substrate is not dismissed when it has an explicit owner capability or invariant.
@@ -181,33 +184,15 @@ sections:
       priority: high
       text: Design-time acceptance can make future capability falsifiable, but it cannot prove that the capability already exists.
   policies:
-    - id: policy-capability-first
-      title: Capability-first policy
-      text: Judge completion by behavior at the declared actor and boundary, not artifact volume.
-    - id: policy-source-authority
-      title: Review basis and concept authority policy
-      text: Require a review target, capability claim, and concept source sufficient to define the claim boundary. Apply supplied or repository-defined precedence first; lower-authority disagreement is drift, while a missing or insufficient input or an unresolved equal- or unknown-authority conflict requires blocked / not assessable without classification or fake-risk.
-    - id: policy-claim-relative-classification
-      title: Claim-relative classification policy
-      text: Classify delivered behavior, capability-preserving invariants, enabling substrate, and verification evidence relative to the named actor and claim boundary. The same artifact may be capability at one boundary and substrate at another.
     - id: policy-honest-substrate
       title: Honest substrate policy
       text: Substrate may proceed when its claim is limited, its owner capability or invariant is named, and acceptance does not imply broader completion.
-    - id: policy-evidence-integrity
-      title: Evidence integrity policy
-      text: Closure requires current boundary evidence; record simulated, intercepted, stale, partial, or unreviewed paths as gaps.
     - id: policy-anti-claims
       title: Anti-claims policy
       text: Every non-trivial review must state the important behavior that remains unavailable, simulated, manually mediated, outside scope, or only weakly evidenced.
-    - id: policy-acceptance-integrity
-      title: Acceptance integrity policy
-      text: Acceptance passing without claimed capability is defective; route behavior-level proof to spec-engineer.
-    - id: policy-output-completeness
-      title: Output completeness policy
-      text: Start with a plain-language outcome. If blocked, return attempted mode, blocked status/outcome, missing or unresolved input, authority/evidence request, and next owner. Otherwise return mode, status/outcome, concept source, claim, classification, criteria or evidence gaps, anti-claims, fake-risk, decision, and next owner.
     - id: policy-bounded-remediation-reaudit
       title: Bounded remediation re-audit
-      text: Re-audit fixed findings on a new stable snapshot against correction evidence, original failure paths, and adjacent regression surface. Skip unchanged verified scope and cosmetic-only proof; widen for changed claim, authority, acceptance, or scope, or unbounded blast radius.
+      text: Re-audit fixed findings on a new stable snapshot against correction evidence, original failure paths, and adjacent regression surface. Skip unchanged verified decisions only when their relevant premises also remain unchanged; changed premises bring affected unchanged text into scope. Widen for changed claim, authority, acceptance, or scope, or unbounded blast radius; exclude unrelated decisions and cosmetic-only proof.
   portability:
     required: true
     rules:

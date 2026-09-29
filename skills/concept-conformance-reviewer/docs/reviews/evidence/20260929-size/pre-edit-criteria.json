@@ -1,0 +1,18 @@
+{
+  "algorithm": "sha256",
+  "fixed_before_candidate_edits": true,
+  "files": {
+    "criteria.md": "f6522c9814f48c8b5cfcb186e2d5e9e7e53f8d6dcef51fc54ee44ed4e86d0e36",
+    "cases/01.md": "0dfe0c9c9c469b984c54aa837f5b4b8860a30c42b909b24050ae239e06ee214a",
+    "cases/02.md": "6eac2d7536415155cb1e4bf25863844a5f2530367b2a4a5e12d1c0bc2fec6ba6",
+    "cases/03b.md": "7716008172117e9f235204caf90172d0b4e5dc77d8dec763b8e75e133fea2a0f",
+    "cases/04.md": "557126a99f182f3e8e2944592a1a96b66d1f6252fdb01924434e9575bfacfaf5",
+    "cases/05.md": "7a7c7a65ea732eb5c35ac55ae06016996661ba2e85df96fe0885a62e8ed49c8a",
+    "cases/06.md": "661da3688751ea572d54b72bd4e0c87ec3b27e13c112ba2874671620ed629744",
+    "cases/07.md": "087eee167e9d46e6d8b7bc112a360749f78cb9596b95bd58cdfa1d584aba4c5a"
+  },
+  "reused_criteria": {
+    "criteria.md": "34607e8bc8e6d930c7935b8ba6f459f3d470ef61b9a2b55537c0281751f4c27a",
+    "erratum-03b.md": "14d4e60ce550a8bbb7917ebbf922a317cc0cab9b41755eacc3d403d7077b7e2f"
+  }
+}

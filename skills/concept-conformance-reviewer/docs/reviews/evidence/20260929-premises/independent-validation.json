@@ -1,0 +1,149 @@
+{
+  "reviewer": "/root/independent_review",
+  "algorithm": "sha256",
+  "path_base": "relative to each declared folder",
+  "checks": {
+    "candidate": {
+      "snapshot_files": 10,
+      "snapshot_hashes": {
+        "SKILL.md": "a4c7a9c2267ddff7ed6129b36b037d9f4daacbe7206cd88cc1d5070108018183",
+        "skill.yaml": "2dbb155d04d4ad0d291cd5daea96617ca7d52ef8fd6c5e4cf69bda56fcaaeaa4",
+        "AGENTS.md": "8619fd5bbd55d5e25ccba55ea87ce3c828727ff8dfd8c44a0da87b4d2d5078ed",
+        "docs/README.md": "bbfd3dfda4faedcb1a7d7d6b7ccaaaf0f05f8c8cf6e7e7f0b4312466c7e77579",
+        "docs/compile-report.md": "5d6fb1c2b7ee40458bbae5d942ed898d556bfe76563e0e2a0ab6fa674dc9ee8c",
+        "fragments/overview.md": "fee7f5434f6e8b267ec23652b87a61280a239b36c77e6e2d9f3e32f1f4eb1584",
+        "docs/logs/implementation-log-20260727-1.md": "7eb403d08bbad12ff85d4bce3efd57fc4a67a02eb586420a55e9934c7bfd2b86",
+        "docs/logs/implementation-log-20260715-1.md": "4458fbb45dd6267445f9811d9bd08bc28a637defb93f1fba3f8691c847587d59",
+        "docs/logs/implementation-log-20260713-1.md": "a743b04f4818e0a3d043f082e80c10be4015f677c30fabcbf83367953088520d",
+        "docs/logs/implementation-log-20260710-1.md": "5067e79f7fa8361b29889775c9243d90e983c7862932cbc241ba174ef9200e97"
+      },
+      "snapshot_manifest_mismatches": [],
+      "archive_files": 10,
+      "archive_snapshot_equal": true,
+      "archive_sha256": "6c3852073222f3106dc45b8f161eb047957cc2b78c313551236ec7bb7cd85ba0",
+      "manifest_sha256": "861c8429062dccfea99c89c39e3f4cd0400cc7d129a29a88df1f09c31797ce3b"
+    },
+    "baseline": {
+      "snapshot_files": 10,
+      "snapshot_hashes": {
+        "SKILL.md": "dfb0381067312e2e10cff4e846f631387856db864887da814f9a1f2350b95b6f",
+        "skill.yaml": "4ee935b8fc6778cee14a6fc199c3af3f35f70b49c783e8b72835f68a63036abf",
+        "AGENTS.md": "8619fd5bbd55d5e25ccba55ea87ce3c828727ff8dfd8c44a0da87b4d2d5078ed",
+        "docs/README.md": "8572013d30d3492b167ff048769e47ef9d4f93fae0ce3f61e4e310e062a4a948",
+        "docs/compile-report.md": "9e63f899561d3aec9d1cea7b1139d36abce02da099742ebd6ad810d572a8abc3",
+        "fragments/overview.md": "65ab0e3402f2648fd17a7ec455c82c06a6f934dd3842e78a89e7ec2ab48fe179",
+        "docs/logs/implementation-log-20260727-1.md": "7eb403d08bbad12ff85d4bce3efd57fc4a67a02eb586420a55e9934c7bfd2b86",
+        "docs/logs/implementation-log-20260715-1.md": "4458fbb45dd6267445f9811d9bd08bc28a637defb93f1fba3f8691c847587d59",
+        "docs/logs/implementation-log-20260713-1.md": "a743b04f4818e0a3d043f082e80c10be4015f677c30fabcbf83367953088520d",
+        "docs/logs/implementation-log-20260710-1.md": "5067e79f7fa8361b29889775c9243d90e983c7862932cbc241ba174ef9200e97"
+      },
+      "snapshot_manifest_mismatches": [],
+      "archive_files": 10,
+      "archive_snapshot_equal": true,
+      "archive_sha256": "b10fa9b5875129f06644ef37f3deaf873972f30188c68a75657ac4f0300488be",
+      "manifest_sha256": "a0dd6726e7461bd13d33d5624a0ec6461e90a3b570c9cdad67b78cbc34a447bf"
+    },
+    "full_saved_baseline": {
+      "file_count": 21,
+      "mismatches": []
+    },
+    "pre-edit-criteria.json": {
+      "manifest_sha256": "95a22b5a84af5be4cc0d285d6197b99a9a8cca637f13beb6ff4fc5220616ab17",
+      "mismatches": []
+    },
+    "pre-run-03b.json": {
+      "manifest_sha256": "5ea175ca1dc32b75d816345985e4ff10ea2c84b358dc973c0597b4548d8aba3f",
+      "mismatches": []
+    },
+    "trial_manifest_sha256": "f42c6dbcb4716038a91ec1b0f756e7888e30655c7ad3968ef87a0eb00dbe8b7d",
+    "trials": [
+      {
+        "run": "b01",
+        "files": [
+          "SKILL.md",
+          "input.md",
+          "output.md"
+        ],
+        "mismatches": [],
+        "durable_output_matches": true
+      },
+      {
+        "run": "c01",
+        "files": [
+          "SKILL.md",
+          "input.md",
+          "output.md"
+        ],
+        "mismatches": [],
+        "durable_output_matches": true
+      },
+      {
+        "run": "c02",
+        "files": [
+          "SKILL.md",
+          "input.md",
+          "output.md"
+        ],
+        "mismatches": [],
+        "durable_output_matches": true
+      },
+      {
+        "run": "c03",
+        "files": [
+          "SKILL.md",
+          "input.md",
+          "output.md"
+        ],
+        "mismatches": [],
+        "durable_output_matches": true
+      },
+      {
+        "run": "c04",
+        "files": [
+          "SKILL.md",
+          "input.md",
+          "output.md"
+        ],
+        "mismatches": [],
+        "durable_output_matches": true
+      },
+      {
+        "run": "c05",
+        "files": [
+          "SKILL.md",
+          "input.md",
+          "output.md"
+        ],
+        "mismatches": [],
+        "durable_output_matches": true
+      },
+      {
+        "run": "c03b",
+        "files": [
+          "SKILL.md",
+          "input.md",
+          "output.md"
+        ],
+        "mismatches": [],
+        "durable_output_matches": true
+      }
+    ],
+    "emitted_parity": {
+      "count": 7,
+      "mismatches": []
+    },
+    "current_working_package": {
+      "mismatches": []
+    },
+    "git_diff_check": {
+      "command": "git diff --check -- skills/concept-conformance-reviewer",
+      "exit_code": 0,
+      "evidence": "independent command result 869001; output empty"
+    }
+  },
+  "limits": [
+    "Fresh context and assigned settings rely on coordinator execution record; full runtime tool events were not independently observed.",
+    "Observed file inventories and hashes do not prove absence of actions outside inspected paths.",
+    "No natural activation, external domain runtime, universal reliability, or comparative improvement claim."
+  ]
+}

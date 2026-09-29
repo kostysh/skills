@@ -1,0 +1,29 @@
+{
+  "scope": "0.2.6 structure and exact instruction delta; not behavioral approval",
+  "checks": [
+    {
+      "label": "source check",
+      "chunk_id": "c33e74",
+      "wall_time_seconds": 0.1330717,
+      "exit_code": 0,
+      "original_token_count": 9,
+      "output": "OK ../concept-conformance-reviewer\n"
+    },
+    {
+      "label": "isolated compile",
+      "chunk_id": "a50ebc",
+      "wall_time_seconds": 0.154477454,
+      "exit_code": 0,
+      "original_token_count": 29,
+      "output": "Compiled ../concept-conformance-reviewer -> /tmp/concept-size-20260929-XRSsTM/emitted/concept-conformance-reviewer\n"
+    },
+    {
+      "label": "instruction delta and diff check",
+      "chunk_id": "7df180",
+      "wall_time_seconds": 0.000018364,
+      "exit_code": 0,
+      "original_token_count": 38,
+      "output": "Readback: only six duplicate policy blocks removed; output sentence moved verbatim; all other instructions byte-identical after metadata normalization\n"
+    }
+  ]
+}
