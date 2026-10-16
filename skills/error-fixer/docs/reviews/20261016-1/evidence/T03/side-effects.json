@@ -1,0 +1,13 @@
+{
+  "changed": [
+    "project/src/catalog.mjs",
+    "project/test/catalog.test.mjs"
+  ],
+  "added": [
+    "project/.npm-cache/_logs/2026-10-16T13_26_01_752Z-debug-0.log",
+    "project/.npm-cache/_logs/2026-10-16T13_26_19_651Z-debug-0.log",
+    "project/.npm-cache/_logs/2026-10-16T13_26_31_626Z-debug-0.log",
+    "project/.npm-cache/_update-notifier-last-checked"
+  ],
+  "deleted": []
+}

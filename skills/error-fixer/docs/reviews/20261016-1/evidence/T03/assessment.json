@@ -1,0 +1,6 @@
+{
+  "result": "PASS",
+  "evidence": "Initial smoke 2/2; added real local file save/reload tests fail 2 cases with exit1 before source change; serializer retains pinned with one-line repair; all 4/4 pass exit0, including unpin, other card/title/order, unknown id and legacy input.",
+  "side_effects": "Only source/test changed; declared project-local npm cache added; temporary catalogs removed by test cleanup; fixture/history unchanged.",
+  "limit": "Synthetic supplied prior attempts; actual trial crosses local persistence boundary but no UI/service/production boundary."
+}

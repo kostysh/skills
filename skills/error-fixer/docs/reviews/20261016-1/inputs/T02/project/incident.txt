@@ -1,0 +1,7 @@
+Operator supplied report, 2026-10-16 08:14 UTC:
+A production document request returned an error page.
+The log excerpt supplied by the operator reads:
+TypeError: Cannot read properties of undefined (reading 'trim')
+    at documentTitle (adapter.mjs:2:25)
+The deployment hash and the full request/response were not captured.
+No person has confirmed recovery.

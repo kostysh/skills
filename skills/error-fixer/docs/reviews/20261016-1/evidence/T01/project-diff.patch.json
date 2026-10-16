@@ -1,0 +1,6 @@
+{
+  "original_name": "project-diff.patch",
+  "sha256": "78310cccb2d8e9082ca3c93f03f67a61cc193582bb3c6802ccec440d67282d62",
+  "encoding": "utf-8",
+  "text": "--- before/src/preview.mjs\n+++ after/src/preview.mjs\n@@ -1,5 +1,5 @@\n export function previewReady(items) {\n   return items\n-    .filter(item => item.ready && item.id)\n+    .filter(item => item.ready)\n     .map(item => ({ id: item.id, title: item.title }));\n }\n--- before/test/preview.test.mjs\n+++ after/test/preview.test.mjs\n@@ -1,5 +1,6 @@\n import test from 'node:test';\n import assert from 'node:assert/strict';\n+import { readFileSync } from 'node:fs';\n import { previewReady } from '../src/preview.mjs';\n \n test('shows ready items in their input order', () => {\n@@ -14,3 +15,14 @@\n test('empty queue has empty preview', () => {\n   assert.deepEqual(previewReady([]), []);\n });\n+\n+test('sample retains the ready zero identifier without changing its input', () => {\n+  const input = JSON.parse(readFileSync(new URL('../fixture/sample.json', import.meta.url), 'utf8'));\n+  const original = structuredClone(input);\n+\n+  assert.deepEqual(previewReady(input), [\n+    { id: 0, title: 'First imported item' },\n+    { id: 7, title: 'Already loaded' }\n+  ]);\n+  assert.deepEqual(input, original);\n+});\n"
+}

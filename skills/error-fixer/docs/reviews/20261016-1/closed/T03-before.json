@@ -1,0 +1,12 @@
+{
+  "executor-prompt.txt": "1dd369125e7000f80e09368428ae33dd49b20b7b5f4beaff3865325d64b5f938",
+  "project/README.md": "a61923dbfb54a07bfaa42ecd38cf4b114787c3b29e48dac6d33887a1cf7b1cc8",
+  "project/attempts.md": "744a774c498bdc84f2b5d26ce5f8f647810f2645675b3eea88b5e9df82891aff",
+  "project/fixture/catalog.json": "c1ffa5c0464dc1dbaef19ba17bd3f2b383ad46ffd7c35eed6d06dd9bb1ad3991",
+  "project/package.json": "430f45fd1e3827efe0aba6fdf1be5a64b76e0c3362ce37e3bb3de8b96e730432",
+  "project/src/catalog.mjs": "92c8be95084318fe6dffd93fc71f5c733abfd335e4870dd6786c653160ebfcaf",
+  "project/test/catalog.test.mjs": "6a45eae3808cedb55b2f76befc6e5a421c44c303f16c66929a87f2fffe2b6d1d",
+  "skill/SKILL.md": "3bf15fa4275fbff74a109c5806e37bd6abdf770b5f67b81d54d68b79c8643604",
+  "skill/agents/openai.yaml": "b2d5c695e87cc8ed0e4ee1067d358b7d8a033430ff292bdb8294efa6a3ed66a5",
+  "task.md": "c53362d49cd8f058e01ecb9b825e2d4fd178a9dca2da0a74950ef2fb8fcaec33"
+}

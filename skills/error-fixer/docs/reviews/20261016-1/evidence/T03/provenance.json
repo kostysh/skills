@@ -1,0 +1,22 @@
+{
+  "agent_path": "/root/skill_auditor/execution_c",
+  "runtime_session_id": "01a144e3-7d5b-7c51-a821-43b65fd26784",
+  "session_path": "/home/kostysh/.codex/sessions/2026/10/16/rollout-2026-10-16T15-25-21-01a144e3-7d5b-7c51-a821-43b65fd26784.jsonl",
+  "assigned": "fresh context fork_turns=none; no model or effort override",
+  "observed_turn_context": {
+    "model": "gpt-6-astra",
+    "effort": "max",
+    "collaboration_mode": {
+      "mode": "default",
+      "settings": {
+        "model": "gpt-6-astra",
+        "reasoning_effort": "max",
+        "developer_instructions": null
+      }
+    }
+  },
+  "exposure": "ordinary task, allowed raw inputs, active trial skill; no rubric or other runs",
+  "isolation": "shared filesystem instruction boundary; not a hard sandbox",
+  "capture": "tool calls and results plus assistant outward messages; reasoning/private instructions omitted",
+  "captured_at_utc": "2026-10-16T13:27:48.600358+00:00"
+}
