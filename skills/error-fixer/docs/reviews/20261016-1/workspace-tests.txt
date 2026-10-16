@@ -1,0 +1,176 @@
+
+> @kostysh/skills@ test:ci /home/kostysh/.codex/skills/custom/.worktrees/error-fixer-import
+> pnpm -r --filter './skills/*' --if-present test
+
+Scope: 5 of 6 workspace projects
+skills/code-reviewer test$ node --test test/docs-contract.test.mjs
+skills/hono-engineer test$ node --test test/docs-contract.test.mjs
+skills/security-reviewer test$ node --experimental-strip-types --test test/docs-contract.test.ts
+skills/skill-source-compiler pretest$ pnpm run build
+skills/code-reviewer test: ✔ bundled review template preserves the outcome-first output contract (7.876841ms)
+skills/hono-engineer test: ✔ root contract requires authoritative inputs, current compatibility, and bounded output (8.45786ms)
+skills/hono-engineer test: ✔ latest-oriented currency guidance is optional, reachable, and active/package surfaces do not pin Hono (2.625376ms)
+skills/hono-engineer test: ✔ optional references inherit root precedence and cannot create foreign policy (0.495227ms)
+skills/hono-engineer test: ✔ Workers guidance uses current Hono execution context and bounded delivery claims (0.527268ms)
+skills/code-reviewer test: ℹ tests 1
+skills/code-reviewer test: ℹ suites 0
+skills/code-reviewer test: ℹ pass 1
+skills/code-reviewer test: ℹ fail 0
+skills/code-reviewer test: ℹ cancelled 0
+skills/code-reviewer test: ℹ skipped 0
+skills/code-reviewer test: ℹ todo 0
+skills/code-reviewer test: ℹ duration_ms 45.804795
+skills/hono-engineer test: ✔ scoped Context variables do not rely on unsafe global augmentation (0.330215ms)
+skills/hono-engineer test: ✔ middleware hooks are separate from the canonical chain (0.367606ms)
+skills/hono-engineer test: ✔ response runtime validation is not conflated with contract tests or static typing (2.328435ms)
+skills/code-reviewer test: Done
+skills/hono-engineer test: ✔ request validation documents missing Content-Type semantics and explicit rejection (0.61835ms)
+skills/hono-engineer test: ✔ contract publication preserves OpenAPI, Hono RPC, and internal route choices (0.513121ms)
+skills/hono-engineer test: ✔ RPC guidance covers global responses and strict TypeScript compatibility (0.440193ms)
+skills/hono-engineer test: ✔ Hono csrf middleware and application token reissue remain distinct (0.47033ms)
+skills/typescript-test-engineer test$ node --test test/docs-contract.test.mjs
+skills/hono-engineer test: ✔ JWT and JWK examples constrain algorithms without blanket kid guidance (0.739699ms)
+skills/hono-engineer test: ✔ cross-domain defaults remain project-owned or explicitly illustrative (0.715574ms)
+skills/hono-engineer test: ✔ active examples contain framework facts or owner placeholders, not project defaults (0.637997ms)
+skills/hono-engineer test: ✔ Workers environment, compatibility, and Cache API caveats are explicit (0.48112ms)
+skills/hono-engineer test: ✔ interop routes specialized decisions to producible owners (0.918007ms)
+skills/hono-engineer test: ✔ structural tests and schema presence cannot close production readiness (0.421968ms)
+skills/hono-engineer test: ✔ prior auth-admission and protected-lifecycle guardrails remain reachable (0.342007ms)
+skills/security-reviewer test: ✔ source contract exposes one required methodology and optional domain references (4.825309ms)
+skills/security-reviewer test: ✔ TypeScript contract test runs directly with Node type stripping (0.620694ms)
+skills/security-reviewer test: ✔ generated root has one activation and interop surface (0.689895ms)
+skills/security-reviewer test: ✔ review basis and status contract prevent false closure (0.586059ms)
+skills/security-reviewer test: ✔ partial snippets cannot become findings through symbol-name inference (0.520265ms)
+skills/security-reviewer test: ✔ review ownership stays read-only and leaves merge decisions to code-reviewer (0.455522ms)
+skills/security-reviewer test: ✔ re-audit escalates a recurring related finding before another point fix (0.524993ms)
+skills/hono-engineer test: ℹ tests 18
+skills/hono-engineer test: ℹ suites 0
+skills/hono-engineer test: ℹ pass 18
+skills/hono-engineer test: ℹ fail 0
+skills/hono-engineer test: ℹ cancelled 0
+skills/hono-engineer test: ℹ skipped 0
+skills/hono-engineer test: ℹ todo 0
+skills/hono-engineer test: ℹ duration_ms 63.959309
+skills/security-reviewer test: ✔ re-audit is finding-bounded and reports a plain-language outcome first (1.154755ms)
+skills/security-reviewer test: ✔ standards control fulfillment always routes to spec-conformance-reviewer (0.553067ms)
+skills/security-reviewer test: ✔ early-use workflow exposes the bounded auth-admission checkpoint (0.436907ms)
+skills/security-reviewer test: ✔ api auth reference keeps the auth-admission checklist narrow and complete (0.357486ms)
+skills/security-reviewer test: ✔ domain handoff keeps Hono-specific admission facts with hono-engineer (0.325956ms)
+skills/security-reviewer test: ✔ early-use workflow exposes the bounded policy-governance admission checkpoint (0.314004ms)
+skills/security-reviewer test: ✔ policy-governance admission reference keeps the checkpoint bounded and reportable (0.407281ms)
+skills/security-reviewer test: ✔ policy-governance examples cover external invocation and active-policy activation (0.392973ms)
+skills/security-reviewer test: ✔ policy-governance admission boundaries stay separated from route and release checks (0.615966ms)
+skills/hono-engineer test: Done
+skills/security-reviewer test: ✔ workflow exposes the data-access construction checkpoint (0.492051ms)
+skills/security-reviewer test: ✔ data-access injection reference requires trace before reporting PostgREST findings (0.60773ms)
+skills/security-reviewer test: ✔ data-access documentation fixture preserves unsafe and safer examples without claiming behavioral proof (1.004811ms)
+skills/security-reviewer test: ✔ data-access guidance is reachable from related references (0.507801ms)
+skills/security-reviewer test: ✔ browser storage and telemetry checks use exposure and confidence gates (0.383125ms)
+skills/security-reviewer test: ✔ CSRF guidance follows the selected pattern and requires behavioral evidence (0.308433ms)
+skills/security-reviewer test: ✔ GitHub Actions findings require actual untrusted execution reachability (0.194989ms)
+skills/security-reviewer test: ✔ specialized signals and cross-layer discovery preserve the common review boundary (0.306369ms)
+skills/security-reviewer test: ✔ findings trace a violated invariant across bounded sibling paths (0.346576ms)
+skills/security-reviewer test: ✔ uncertainty, severity, and reproduction remain evidence-calibrated (0.307572ms)
+skills/security-reviewer test: ℹ tests 26
+skills/security-reviewer test: ℹ suites 0
+skills/security-reviewer test: ℹ pass 26
+skills/security-reviewer test: ℹ fail 0
+skills/security-reviewer test: ℹ cancelled 0
+skills/security-reviewer test: ℹ skipped 0
+skills/security-reviewer test: ℹ todo 0
+skills/security-reviewer test: ℹ duration_ms 81.235223
+skills/security-reviewer test: Done
+skills/typescript-test-engineer test: ✔ skill separates design, implementation, review, and diagnose mutation boundaries (4.468483ms)
+skills/typescript-test-engineer test: ✔ hanging-test guidance preserves diagnose-only read-only behavior across references (0.842153ms)
+skills/typescript-test-engineer test: ✔ skill defines behavior authority and blocked readiness instead of implementation-as-oracle (0.881848ms)
+skills/typescript-test-engineer test: ✔ skill publishes decision-complete outputs for every mode (0.499334ms)
+skills/typescript-test-engineer test: ✔ references are conditional and browser handoff is not a mandatory local wrapper (1.327612ms)
+skills/typescript-test-engineer test: ✔ TDD is explicit opt-in and does not authorize destructive history recreation (0.668184ms)
+skills/typescript-test-engineer test: ✔ interop assigns formal review, remediation, browser smoke, and domain authority (0.556904ms)
+skills/typescript-test-engineer test: ✔ Node and Cloudflare defaults follow current supported paths (0.69281ms)
+skills/typescript-test-engineer test: ✔ Node module mocking follows pinned runtime API and deterministic cleanup (0.89365ms)
+skills/typescript-test-engineer test: ✔ React guidance distinguishes supported async waitFor and browser evidence levels (1.361917ms)
+skills/typescript-test-engineer test: ✔ React global fetch example restores the stub between tests (0.600806ms)
+skills/typescript-test-engineer test: ✔ React mutation guidance requires the combined lifetime falsifier (1.557337ms)
+skills/typescript-test-engineer test: ✔ UI metadata matches the activation contract (0.382033ms)
+skills/typescript-test-engineer test: ✔ structural checks cannot close a broader behavioral claim (0.484597ms)
+skills/typescript-test-engineer test: ✔ conditional references do not invent an unsourced coverage closure gate (0.665469ms)
+skills/typescript-test-engineer test: ✔ replay and rate-limit tests must prove the named risk (0.457496ms)
+skills/typescript-test-engineer test: ✔ state-changing work uses the negative matrix with explicit relevance (0.542056ms)
+skills/typescript-test-engineer test: ✔ skill requires negative fail-closed tests for sourced forbidden behavior (0.422269ms)
+skills/typescript-test-engineer test: ✔ anti-patterns require contract suites for production state-changing doubles (0.642806ms)
+skills/typescript-test-engineer test: ✔ fixtures declare provenance and cannot prove skipped upstream behavior (0.982599ms)
+skills/typescript-test-engineer test: ✔ React async guidance cleans owned state and supports cache-hit without a request (0.434822ms)
+skills/typescript-test-engineer test: ℹ tests 21
+skills/typescript-test-engineer test: ℹ suites 0
+skills/typescript-test-engineer test: ℹ pass 21
+skills/typescript-test-engineer test: ℹ fail 0
+skills/typescript-test-engineer test: ℹ cancelled 0
+skills/typescript-test-engineer test: ℹ skipped 0
+skills/typescript-test-engineer test: ℹ todo 0
+skills/typescript-test-engineer test: ℹ duration_ms 64.129922
+skills/typescript-test-engineer test: Done
+skills/skill-source-compiler pretest: > @kostysh/skill-source-compiler-cli@0.2.5 build /home/kostysh/.codex/skills/custom/.worktrees/error-fixer-import/skills/skill-source-compiler
+skills/skill-source-compiler pretest: > vite build && chmod +x scripts/skill-source-compiler.mjs
+skills/skill-source-compiler pretest: vite v8.0.3 building client environment for production...
+skills/skill-source-compiler pretest: [2K
+skills/skill-source-compiler pretest: transforming...✓ 162 modules transformed.
+skills/skill-source-compiler pretest: rendering chunks...
+skills/skill-source-compiler pretest: computing gzip size...
+skills/skill-source-compiler pretest: scripts/skill-source-compiler.mjs  381.73 kB │ gzip: 85.86 kB │ map: 871.62 kB
+skills/skill-source-compiler pretest: ✓ built in 55ms
+skills/skill-source-compiler pretest: Done
+skills/skill-source-compiler test$ node --experimental-strip-types --test test/*.test.ts
+skills/skill-source-compiler test: ✔ checkCompiledSkill rejects invalid folders (10.219604ms)
+skills/skill-source-compiler test: ✔ checkCompiledSkill accepts source bundles without active references (17.96183ms)
+skills/skill-source-compiler test: ✔ regenerateSourceBundle preserves overview fragments that start with a level-two heading (3.987393ms)
+skills/skill-source-compiler test: ✔ checkCompiledSkill accepts compiled skills without reference links (4.971235ms)
+skills/skill-source-compiler test: ✔ checkCompiledSkill still rejects missing linked references (1.751915ms)
+skills/skill-source-compiler test: ✔ checkCompiledSkill checks source bundles without scanning unrelated dev files (44.07914ms)
+skills/skill-source-compiler test: ✔ checkCompiledSkill reports source bundle generated output drift (30.253995ms)
+skills/skill-source-compiler test: ✔ checkCompiledSkill rejects source bundles with missing compiler-owned output (23.481153ms)
+skills/skill-source-compiler test: ✔ checkCompiledSkill rejects missing documented package files (15.347445ms)
+skills/skill-source-compiler test: ✔ checkCompiledSkill requires compile reports for compiler-tagged packages (11.113284ms)
+skills/skill-source-compiler test: ✔ checkCompiledSkill rejects non-whitelisted absolute POSIX paths (14.242113ms)
+skills/skill-source-compiler test: ✔ containsAbsolutePath detects portable-path violations without flagging URLs (0.226789ms)
+skills/skill-source-compiler test: ✔ built CLI exposes help, command help, and version (177.762816ms)
+skills/skill-source-compiler test: ✔ built CLI regenerates a source bundle in place (88.090201ms)
+skills/skill-source-compiler test: ✔ built CLI rejects dangerous compile overlap (80.29277ms)
+skills/skill-source-compiler test: ✔ built CLI preserves an existing output target (73.365264ms)
+skills/skill-source-compiler test: ✔ built CLI lint, compile, and check succeed for the self-hosted bundle (187.555612ms)
+skills/skill-source-compiler test: ✔ isolated emitted CLI completes the documented maintenance flow (453.562561ms)
+skills/skill-source-compiler test: ✔ built CLI compile-all processes direct child bundles (88.817046ms)
+skills/skill-source-compiler test: ✔ built CLI rejects dangerous compile-all overlap before writes (70.712866ms)
+skills/skill-source-compiler test: ✔ built CLI surfaces a warning when generated SKILL.md exceeds the recommended size (68.284202ms)
+skills/skill-source-compiler test: ✔ built CLI propagates the recommended skill description length warning (333.690714ms)
+skills/skill-source-compiler test: ✔ built CLI returns usage error for unknown command (39.404837ms)
+skills/skill-source-compiler test: ✔ compileSourceBundle generates a valid skill bundle (59.63568ms)
+skills/skill-source-compiler test: ✔ compileSourceBundle warns when generated SKILL.md exceeds the recommended size (34.396302ms)
+skills/skill-source-compiler test: ✔ compileSourceBundle rejects output overlap before deleting the source bundle (24.715206ms)
+skills/skill-source-compiler test: ✔ compileSourceBundle rejects descendant output overlap (21.781978ms)
+skills/skill-source-compiler test: ✔ compileSourceBundle preserves an existing output target by default (9.337946ms)
+skills/skill-source-compiler test: ✔ compileAllSourceBundles preflights overlap before writing any child output (24.738702ms)
+skills/skill-source-compiler test: ✔ regenerateSourceBundle refreshes generated files without copying source-owned files (25.521613ms)
+skills/skill-source-compiler test: ✔ regenerateSourceBundle rejects non-same-path in-place copy targets (18.8494ms)
+skills/skill-source-compiler test: ✔ compileAllSourceBundles skips direct child directories without skill.yaml (21.565608ms)
+skills/skill-source-compiler test: ✔ compileAllSourceBundles rejects duplicate output targets before writing (39.673655ms)
+skills/skill-source-compiler test: ✔ compileAllSourceBundles preflights existing targets before writing any bundle (31.224712ms)
+skills/skill-source-compiler test: ✔ compileSourceBundle rejects portable-path violations before writing output (14.936888ms)
+skills/skill-source-compiler test: ✔ lintSourceBundle accepts the example source bundle (32.096361ms)
+skills/skill-source-compiler test: ✔ lintSourceBundle accepts source bundles without active references (6.974635ms)
+skills/skill-source-compiler test: ✔ lintSourceBundle warns only above 300 Unicode code points (4.95818ms)
+skills/skill-source-compiler test: ✔ lintSourceBundle counts combining marks separately and accepts descriptions above 1024 code points (4.568583ms)
+skills/skill-source-compiler test: ✔ lintSourceBundle reports duplicate ids (21.240944ms)
+skills/skill-source-compiler test: ✔ lintSourceBundle requires package.json when commands are documented (13.157292ms)
+skills/skill-source-compiler test: ✔ lintSourceBundle rejects unresolved scaffold markers in active guidance (2.810708ms)
+skills/skill-source-compiler test: ✔ lintSourceBundle rejects non-whitelisted absolute POSIX paths (26.030184ms)
+skills/skill-source-compiler test: ✔ lintSourceBundle requires one consistent active surface per reference (34.055718ms)
+skills/skill-source-compiler test: ℹ tests 44
+skills/skill-source-compiler test: ℹ suites 0
+skills/skill-source-compiler test: ℹ pass 44
+skills/skill-source-compiler test: ℹ fail 0
+skills/skill-source-compiler test: ℹ cancelled 0
+skills/skill-source-compiler test: ℹ skipped 0
+skills/skill-source-compiler test: ℹ todo 0
+skills/skill-source-compiler test: ℹ duration_ms 1827.483075
+skills/skill-source-compiler test: Done

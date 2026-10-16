@@ -1,0 +1,4 @@
+interface:
+  display_name: "Error Fixer"
+  short_description: "Diagnose defects and verify authorized repairs"
+  default_prompt: "Use $error-fixer to investigate this software failure and verify any authorized repair."

@@ -1,0 +1,28 @@
+---
+name: error-fixer
+description: Diagnoses and fixes software defects. Use when investigating errors, crashes, failing tests, regressions, unexpected behavior, or unsuccessful fixes.
+---
+
+# Error Fixer
+
+Restore the project's intended behavior; do not merely make checks pass. Scale investigation to uncertainty and impact.
+
+## Workflow
+
+1. **Establish the contract.** Read relevant requirements and context. State expected versus actual behavior; distinguish defects in the implementation, tests, or environment. Do not assume the failing check defines correct behavior.
+
+2. **Reproduce and isolate.** Preserve baseline evidence and seek the smallest faithful reproducer in a safe environment. For intermittent failures, control triggering conditions where possible; a successful rerun is not proof. If reproduction is unavailable, identify missing evidence.
+
+3. **Test the diagnosis.** Trace the causal mechanism to a violated contract. Separate facts from hypotheses; use discriminating experiments to challenge the explanation before adopting a permanent fix. Keep experimental changes isolated and reversible.
+
+4. **Guard and repair.** Add or refine a regression check; establish that it fails for the original reason before the fix when feasible. Make the smallest coherent correction that restores the contract. Preserve unrelated behavior and others' work. Never weaken checks, hide failures, or remove required behavior merely to manufacture success.
+
+5. **Verify behavior.** Run the regression check after the fix; test affected contracts and relevant boundary cases. Inspect related instances of the same defect without expanding into unrelated cleanup. Run focused checks first, then required acceptance checks. Ask: could these checks pass while the intended behavior remains broken?
+
+## Reassess instead of stacking patches
+
+When a fix fails or another error appears, classify its relationship to the original defect before further edits. Revise contradicted hypotheses rather than adding speculative patches. Keep temporary mitigation distinct from a confirmed fix.
+
+## Completion
+
+Briefly report the cause and supporting evidence, correction, actual verification results, and remaining uncertainty. State verification gaps explicitly; do not present an untested change as a confirmed fix.

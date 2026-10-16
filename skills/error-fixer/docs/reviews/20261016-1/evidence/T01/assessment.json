@@ -1,0 +1,6 @@
+{
+  "result": "PASS",
+  "evidence": "Initial existing suite 2/2; regression fails on missing id=0 with exit1; one-line filter repair; same suite 3/3 with exit0; sample before [7], after [0,7].",
+  "side_effects": "Only source/test changed; declared project-local npm cache added; all other input files unchanged.",
+  "limit": "Local function boundary only; UI and remote services not exercised."
+}
