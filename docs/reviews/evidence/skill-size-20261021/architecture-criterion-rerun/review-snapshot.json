@@ -1,0 +1,26 @@
+{
+  "algorithm": "SHA256 compact sorted-key JSON relative evidence path -> file SHA256",
+  "files": {
+    "criterion-change.md": "1335b83fca45973aba7629bd9473f857c7334452322417755d09f979a5069bdb",
+    "criterion-delta.json": "1dbae631d68a56acecc1179e407d8254a0d0e467075d72ca720c70ebfaa7d1a7",
+    "criterion-preflight.md": "bfb1f2ad1115d264f0b22ceb87d216ef18de66b80471677d17a1627b071b206c",
+    "dispatch.json": "f73351bc7d5e0b29bb5e19f646d8a665b2e17aef813ea3521f3a69b941cff779",
+    "inputs.json": "44795cf8f6a4b6c1bdb71f249869ab2dc9dbe821e5b551fd1fd8f80c3d34c77c",
+    "pre-run-freeze.json": "fe3756d9e6533c92c4c2cc11fcc1864c1bfcf40deb34c2b550fa3f959a0d84b0",
+    "preparation-checks.json": "913111d513383914a9faad55ec2c147b64ca65db69cdab2ca9a14ecb7ccb9403",
+    "results.json": "0c592b141dbcb9e825cdbf57743cc8137de52a8884ed5e4ea719715c8bcbb81c",
+    "rubric-v2.md": "208a7bd0952dc408c9efef85d91467d8dd7b345e675e059015c4f3ac6e29ea96",
+    "run-mapping.json": "86e0e7cbf8e9f61691190131cc5dfb0c626607378dca820e524b245a0109fb5e",
+    "runs/u61/case/sources.md": "c0b6b8c6187ee0c9dcc9993255ca153a87f89ba63b8ea1261b0361b9eb7cb661",
+    "runs/u61/case/task.md": "2dcfa06f3a7c0cdfda80cbfdd704d929656a085cb7f04a7c9d4173a5d23bc77c",
+    "runs/u61/evidence/execution.json": "5c341ae19d630c5948d17618259da69e40093342fd987a5fe2e08c93bd0a118e",
+    "runs/u61/evidence/result.md": "a5aa9359326d6c48a8f6c854211f961c35b2ff8d074936c1a94e5c4fa122ef93",
+    "runs/z08/case/sources.md": "c0b6b8c6187ee0c9dcc9993255ca153a87f89ba63b8ea1261b0361b9eb7cb661",
+    "runs/z08/case/task.md": "2dcfa06f3a7c0cdfda80cbfdd704d929656a085cb7f04a7c9d4173a5d23bc77c",
+    "runs/z08/evidence/execution.json": "67677ad5153717da8f81eecc959b80f16b2fdda079c4154ebc19c870cc401f0b",
+    "runs/z08/evidence/result.md": "181e5ca3695cbc9932733b18805e1cb44dfb9655a5fccc44dbfd3daeb8cf0d50",
+    "skill-invariants.json": "1a28fa9b7e6ebf5c6f23082b8ae1b04bb5301b61060513cded4b13c193af5305"
+  },
+  "aggregate": "c95e171828be2e9500c159f6768bb80ced555dc86cd96e9a453957c6fc723a0f",
+  "excluded": "mutable supporting README/log status; snapshot itself and future assessment/status additions; all criteria, raw inputs/outputs, dispatch, checks and invariants included"
+}

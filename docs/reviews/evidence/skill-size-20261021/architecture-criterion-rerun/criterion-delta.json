@@ -1,0 +1,15 @@
+{
+  "prior_rubric_sha256": "46dc4134e0ac3d1e4ffbe5b4a45a3806d4a263c0eabe181b84fe79bad67b64c4",
+  "rubric_v2_sha256": "208a7bd0952dc408c9efef85d91467d8dd7b345e675e059015c4f3ac6e29ea96",
+  "changes": [
+    {
+      "old": "route exact DTO/behavior detail to spec-engineer with an appropriate draft/blocked handoff and expected output",
+      "new": "route exact DTO/behavior detail to spec-engineer with a named next owner, expected output, and readiness tied to that owner's ability to produce that output without an unstated architecture choice. In this supplied case A-4 already accepts the architecture and contract owner; exact DTO members are the spec-owner's expected output. A ready handoff to that owner is valid. Any draft/blocked handoff must identify a source-backed missing input or architecture choice preventing that owner's work; do not block it solely because exact DTO members remain to be specified. Implementation must wait for DTO agreement"
+    },
+    {
+      "old": "Missing detail blocks only its dependent handoff, not all supported analysis.",
+      "new": "Missing detail blocks only work that requires it as an input; it does not block the named owner's authorized work to produce that detail or the supported analysis."
+    }
+  ],
+  "only_other_change": "Rubric heading labels v2; other closed criteria unchanged."
+}

@@ -1,0 +1,81 @@
+{
+  "read_files": [
+    {
+      "path": "case/task.md",
+      "sha256": "2dcfa06f3a7c0cdfda80cbfdd704d929656a085cb7f04a7c9d4173a5d23bc77c"
+    },
+    {
+      "path": "case/sources.md",
+      "sha256": "c0b6b8c6187ee0c9dcc9993255ca153a87f89ba63b8ea1261b0361b9eb7cb661"
+    },
+    {
+      "path": "skill/SKILL.md",
+      "sha256": "0ed5c6fe6529a1191ee57c9f47c8369137ee30dc55df021ba43d8054269e8e20"
+    },
+    {
+      "path": "skill/references/methodology.md",
+      "sha256": "d1e03ecc93166eb8e203e353ac92c96db382a5adfeb6883a8d0f2869ca9629cb"
+    },
+    {
+      "path": "skill/references/artifact-templates.md",
+      "sha256": "730a69850982ecd542875d92d50f3e4ee3678c5ed199bbaa6343715756fd9cba"
+    },
+    {
+      "path": "skill/assets/templates/architecture-check.md",
+      "sha256": "f47434b4264220ed5c9ab66e74c60f8e50d5c31cb03cba3ee02b459bcf1e3206"
+    },
+    {
+      "path": "skill/assets/templates/architecture-handoff-item.yaml",
+      "sha256": "c7e32bc01e779ace8863a56e6b185d3e78821b5fd0f287d866f6ef18a88c44cc"
+    }
+  ],
+  "commands_and_actions": [
+    {
+      "command": "python3 - <<'PY'\nfrom pathlib import Path\nimport hashlib\nroot = Path('/tmp/skill-eval-20261021-9f2/runs/u61')\nfor rel in ['case/task.md','case/sources.md','skill/SKILL.md']:\n    data = (root / rel).read_bytes()\n    print(f'FILE {rel} SHA256 {hashlib.sha256(data).hexdigest()}')\n    print(data.decode())\nPY",
+      "cwd": ".",
+      "action": "Чтение перечисленных case/ и skill/ файлов и вычисление SHA256 их фактических байтов.",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 - <<'PY'\nfrom pathlib import Path\nimport hashlib\nroot = Path('/tmp/skill-eval-20261021-9f2/runs/u61')\nfor rel in ['skill/references/methodology.md','skill/references/artifact-templates.md']:\n    data = (root / rel).read_bytes()\n    print(f'FILE {rel} SHA256 {hashlib.sha256(data).hexdigest()}')\n    print(data.decode())\nPY",
+      "cwd": ".",
+      "action": "Чтение перечисленных case/ и skill/ файлов и вычисление SHA256 их фактических байтов.",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 - <<'PY'\nfrom pathlib import Path\nimport hashlib\nroot = Path('/tmp/skill-eval-20261021-9f2/runs/u61')\nfor rel in ['skill/assets/templates/architecture-check.md','skill/assets/templates/architecture-handoff-item.yaml']:\n    data = (root / rel).read_bytes()\n    print(f'FILE {rel} SHA256 {hashlib.sha256(data).hexdigest()}')\n    print(data.decode())\nPY",
+      "cwd": ".",
+      "action": "Чтение перечисленных case/ и skill/ файлов и вычисление SHA256 их фактических байтов.",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 -c 'from pathlib import Path\nimport json\nimport shlex\nimport sys\n\nroot = Path(\"/tmp/skill-eval-20261021-9f2/runs/u61\")\nresult = \"# Архитектурная оценка Local Catalog Preview\\n\\nДостаточно соединить существующие `CsvParser → PreviewView`. Новое архитектурное решение не требуется: P-7 определяет поведение, A-4 уже определяет границы и путь записи.\\n\\n- **Масштаб:** компонентный; локальное соединение в одном процессе.\\n- **Риск:** низкий в принятой границе. Владение каталогом, хранение и топология не меняются; точный внутренний DTO ещё требует согласования.\\n- **Основание:** [P-7, A-4 и доступная граница](../case/sources.md). Это принятые синтетические источники, а не наблюдение работающего приложения.\\n\\n## Достаточная форма решения\\n\\nПри открытии preview результат `CsvParser` — неизменяемый список нормализованных строк — передаётся в существующий `PreviewView`. Состояние просмотра остаётся в памяти текущего открытия по A-4. Просмотр не вызывает запись в каталог (R1); отмена оставляет каталог неизменным (R2). Подтверждение использует существующий `ApplyImport`, которому принадлежит `CatalogStore` (R3).\\n\\nПрямое соединение соответствует P-7 и A-4. Дополнительные слои, БД, очереди, сервисы, registry и framework не обоснованы. Сравнение системных паттернов, ADR и отдельный ASR-регистр для этого изменения избыточны. Основное последствие — необходимость согласовать внутренний контракт `preview-core`; сигнатура API и DTO members здесь не назначаются.\\n\\nУверенность высокая в соответствии этой формы принятым источникам. Исполнимость конкретного контракта и фактическое поведение ещё не проверены.\\n\\n## Передача следующему владельцу\\n\\n```yaml\\narchitecture_handoff_item:\\n  id: AHI-001\\n  kind: spec_candidate\\n  status: ready\\n  blockers: []\\n  title: \\\"Согласование контракта preview-core\\\"\\n  linked_prd: [P-7/R1, P-7/R2, P-7/R3]\\n  linked_decision: [A-4]\\n  architectural_intent: \\\"Соединить CsvParser с PreviewView в существующей архитектуре.\\\"\\n  constraints:\\n    - \\\"CsvParser передаёт неизменяемый список нормализованных строк.\\\"\\n    - \\\"Состояние preview хранится только в памяти текущего открытия.\\\"\\n    - \\\"Просмотр и отмена не изменяют каталог.\\\"\\n    - \\\"Подтверждение использует существующий ApplyImport; новый путь записи не вводится.\\\"\\n  next_stage_owner: \\\"spec-owner модуля preview-core\\\"\\n  expected_next_output:\\n    - \\\"Согласованный внутренний DTO-контракт и краткая спецификация preview, отмены и подтверждения с картой проверки R1–R3.\\\"\\n  required_validation:\\n    - \\\"После реализации: при просмотре сравнить каталог до и после; изменений нет.\\\"\\n    - \\\"После реализации: при отмене сравнить каталог до открытия и после отмены; изменений нет.\\\"\\n    - \\\"После реализации: подтвердить вызов существующего ApplyImport и отсутствие нового пути записи.\\\"\\n  not_prescribed:\\n    - \\\"DTO members и точная сигнатура API до согласования spec-owner.\\\"\\n    - \\\"Имена файлов, классов и функций; устройство локального соединения.\\\"\\n```\\n\\n`ready` относится к работе spec-owner: у него достаточно основания согласовать контракт. Реализация зависит от этого согласования. Отсутствие DTO members не блокирует данную архитектурную оценку.\\n\\nПересмотр архитектуры нужен, если согласование потребует изменить владение каталогом, путь записи, жизненный цикл состояния или границы A-4. Расширение продукта возвращается владельцу P-7.\\n\\nПроверки выше — обязательства для последующей реализации. В рамках этой оценки runtime-проверки не выполнялись; рабочий preview не доказан. Результат ограничен анализом и передачей, без реализации и публикации.\\n\"\nread_files = [[\"case/task.md\",\"2dcfa06f3a7c0cdfda80cbfdd704d929656a085cb7f04a7c9d4173a5d23bc77c\"],[\"case/sources.md\",\"c0b6b8c6187ee0c9dcc9993255ca153a87f89ba63b8ea1261b0361b9eb7cb661\"],[\"skill/SKILL.md\",\"0ed5c6fe6529a1191ee57c9f47c8369137ee30dc55df021ba43d8054269e8e20\"],[\"skill/references/methodology.md\",\"d1e03ecc93166eb8e203e353ac92c96db382a5adfeb6883a8d0f2869ca9629cb\"],[\"skill/references/artifact-templates.md\",\"730a69850982ecd542875d92d50f3e4ee3678c5ed199bbaa6343715756fd9cba\"],[\"skill/assets/templates/architecture-check.md\",\"f47434b4264220ed5c9ab66e74c60f8e50d5c31cb03cba3ee02b459bcf1e3206\"],[\"skill/assets/templates/architecture-handoff-item.yaml\",\"c7e32bc01e779ace8863a56e6b185d3e78821b5fd0f287d866f6ef18a88c44cc\"]] \nprior_commands = [\"python3 - <<'\"'\"'PY'\"'\"'\\nfrom pathlib import Path\\nimport hashlib\\nroot = Path('\"'\"'/tmp/skill-eval-20261021-9f2/runs/u61'\"'\"')\\nfor rel in ['\"'\"'case/task.md'\"'\"','\"'\"'case/sources.md'\"'\"','\"'\"'skill/SKILL.md'\"'\"']:\\n    data = (root / rel).read_bytes()\\n    print(f'\"'\"'FILE {rel} SHA256 {hashlib.sha256(data).hexdigest()}'\"'\"')\\n    print(data.decode())\\nPY\",\"python3 - <<'\"'\"'PY'\"'\"'\\nfrom pathlib import Path\\nimport hashlib\\nroot = Path('\"'\"'/tmp/skill-eval-20261021-9f2/runs/u61'\"'\"')\\nfor rel in ['\"'\"'skill/references/methodology.md'\"'\"','\"'\"'skill/references/artifact-templates.md'\"'\"']:\\n    data = (root / rel).read_bytes()\\n    print(f'\"'\"'FILE {rel} SHA256 {hashlib.sha256(data).hexdigest()}'\"'\"')\\n    print(data.decode())\\nPY\",\"python3 - <<'\"'\"'PY'\"'\"'\\nfrom pathlib import Path\\nimport hashlib\\nroot = Path('\"'\"'/tmp/skill-eval-20261021-9f2/runs/u61'\"'\"')\\nfor rel in ['\"'\"'skill/assets/templates/architecture-check.md'\"'\"','\"'\"'skill/assets/templates/architecture-handoff-item.yaml'\"'\"']:\\n    data = (root / rel).read_bytes()\\n    print(f'\"'\"'FILE {rel} SHA256 {hashlib.sha256(data).hexdigest()}'\"'\"')\\n    print(data.decode())\\nPY\"]\nresult_path = root / '\"'\"'evidence/result.md'\"'\"'\nexecution_path = root / '\"'\"'evidence/execution.json'\"'\"'\nresult_path.write_text(result, encoding='\"'\"'utf-8'\"'\"')\nexecution = {\n    \"read_files\": [{\"path\": path, \"sha256\": digest} for path, digest in read_files],\n    \"commands_and_actions\": [\n        {\"command\": command, \"cwd\": \".\", \"action\": \"Чтение перечисленных case/ и skill/ файлов и вычисление SHA256 их фактических байтов.\", \"exit_code\": 0}\n        for command in prior_commands\n    ] + [\n        {\"command\": shlex.join(sys.orig_argv), \"cwd\": \".\", \"action\": \"Запись русского результата и execution.json; проверка существования обоих evidence-файлов.\"}\n    ],\n    \"written_files\": [\"evidence/result.md\", \"evidence/execution.json\"],\n    \"context_limits\": [\n        \"Разрешено читать только case/ и skill/ данного запуска; других источников проекта нет.\",\n        \"Не использованы родительские и соседние папки, репозиторий, память, история чатов, другие скилы, сеть, Git, внешние сервисы и делегирование.\",\n        \"implementation-discipline упомянут назначенным скилом, но отдельный скил не загружен из-за прямого запрета читать другие скилы. Scope-and-simplicity gate применён по тексту назначенного SKILL.md.\",\n        \"Данные описывают синтетический offline проект. Код и runtime недоступны; A-4 принят как архитектурный источник, без проверки текущей реализации.\",\n        \"Точные DTO members не заданы. Их согласование передано spec-owner preview-core; API не придуман.\",\n        \"Pattern catalog не загружен: прямой существующий путь достаточен, значимого сравнения паттернов нет.\"\n    ],\n    \"side_effects\": [\n        \"Созданы или перезаписаны только evidence/result.md и evidence/execution.json.\",\n        \"case/ и skill/ не изменены.\",\n        \"evidence/execution.json записан первоначально и затем дополнен результатами проверки существования файлов.\",\n        \"Реализация и публикация не выполнялись. Других запрошенных действий с внешним состоянием нет.\"\n    ]\n}\nexecution_path.write_text(json.dumps(execution, ensure_ascii=False, indent=2) + '\"'\"'\\n'\"'\"', encoding='\"'\"'utf-8'\"'\"')\nverification = {\n    \"method\": \"Path.is_file(); без чтения содержимого evidence/\",\n    \"result_exists\": result_path.is_file(),\n    \"execution_exists\": execution_path.is_file()\n}\nassert verification[\"result_exists\"] and verification[\"execution_exists\"]\nexecution[\"verification\"] = verification\nexecution[\"commands_and_actions\"][-1][\"existence_check_completed\"] = True\nexecution_path.write_text(json.dumps(execution, ensure_ascii=False, indent=2) + '\"'\"'\\n'\"'\"', encoding='\"'\"'utf-8'\"'\"')\nassert result_path.is_file() and execution_path.is_file()\nprint(json.dumps(verification, ensure_ascii=False))\n'",
+      "cwd": ".",
+      "action": "Запись русского результата и execution.json; проверка существования обоих evidence-файлов.",
+      "existence_check_completed": true
+    }
+  ],
+  "written_files": [
+    "evidence/result.md",
+    "evidence/execution.json"
+  ],
+  "context_limits": [
+    "Разрешено читать только case/ и skill/ данного запуска; других источников проекта нет.",
+    "Не использованы родительские и соседние папки, репозиторий, память, история чатов, другие скилы, сеть, Git, внешние сервисы и делегирование.",
+    "implementation-discipline упомянут назначенным скилом, но отдельный скил не загружен из-за прямого запрета читать другие скилы. Scope-and-simplicity gate применён по тексту назначенного SKILL.md.",
+    "Данные описывают синтетический offline проект. Код и runtime недоступны; A-4 принят как архитектурный источник, без проверки текущей реализации.",
+    "Точные DTO members не заданы. Их согласование передано spec-owner preview-core; API не придуман.",
+    "Pattern catalog не загружен: прямой существующий путь достаточен, значимого сравнения паттернов нет."
+  ],
+  "side_effects": [
+    "Созданы или перезаписаны только evidence/result.md и evidence/execution.json.",
+    "case/ и skill/ не изменены.",
+    "evidence/execution.json записан первоначально и затем дополнен результатами проверки существования файлов.",
+    "Реализация и публикация не выполнялись. Других запрошенных действий с внешним состоянием нет."
+  ],
+  "verification": {
+    "method": "Path.is_file(); без чтения содержимого evidence/",
+    "result_exists": true,
+    "execution_exists": true
+  }
+}

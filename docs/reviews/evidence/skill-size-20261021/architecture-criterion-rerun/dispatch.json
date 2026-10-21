@@ -1,0 +1,27 @@
+{
+  "recorded_at_utc": "2026-10-21T14:39:36.376921+00:00",
+  "preflight_report_sha256": "bfb1f2ad1115d264f0b22ceb87d216ef18de66b80471677d17a1627b071b206c",
+  "sequence": "preflight PASS received and archived; both spawn calls returned canonical names before this record; no outputs assessed yet",
+  "settings": "model/reasoning overrides omitted in both actual calls; runtime model/settings independently unobserved",
+  "runs": {
+    "u61": {
+      "tool": "collaboration.spawn_agent",
+      "arguments": {
+        "task_name": "arch_run_u61",
+        "fork_turns": "none",
+        "message": "Выполни одно задание в рабочей папке /tmp/skill-eval-20261021-9f2/runs/u61. Прочитай case/task.md, case/sources.md и skill/SKILL.md; загрузи необходимые локальные references/templates по назначенному скилу. Следуй task.md. Сохрани результат на русском в evidence/result.md.\n\nРазрешено читать только case/ и skill/ внутри указанной папки; писать только evidence/result.md и evidence/execution.json. Не читай родительские/соседние папки, репозиторий, память, историю чатов или другие скилы. Не используй сеть, Git, внешние сервисы и делегирование. Доступные источники описывают синтетический offline проект. Выполняй анализ в пределах предоставленных фактов, без реализации или публикации.\n\nВ evidence/execution.json сохрани список реально прочитанных файлов с относительными путями и SHA256, фактически выполненные команды/действия и записанные файлы, ограничения доступного контекста и фактические side effects. Не подменяй выполнение самооценкой PASS/FAIL. Перед окончанием проверь существование обоих evidence файлов. Финальное сообщение — пути к ним и краткий результат."
+      },
+      "canonical_agent_name": "/root/arch_run_u61"
+    },
+    "z08": {
+      "tool": "collaboration.spawn_agent",
+      "arguments": {
+        "task_name": "arch_run_z08",
+        "fork_turns": "none",
+        "message": "Выполни одно задание в рабочей папке /tmp/skill-eval-20261021-9f2/runs/z08. Прочитай case/task.md, case/sources.md и skill/SKILL.md; загрузи необходимые локальные references/templates по назначенному скилу. Следуй task.md. Сохрани результат на русском в evidence/result.md.\n\nРазрешено читать только case/ и skill/ внутри указанной папки; писать только evidence/result.md и evidence/execution.json. Не читай родительские/соседние папки, репозиторий, память, историю чатов или другие скилы. Не используй сеть, Git, внешние сервисы и делегирование. Доступные источники описывают синтетический offline проект. Выполняй анализ в пределах предоставленных фактов, без реализации или публикации.\n\nВ evidence/execution.json сохрани список реально прочитанных файлов с относительными путями и SHA256, фактически выполненные команды/действия и записанные файлы, ограничения доступного контекста и фактические side effects. Не подменяй выполнение самооценкой PASS/FAIL. Перед окончанием проверь существование обоих evidence файлов. Финальное сообщение — пути к ним и краткий результат."
+      },
+      "canonical_agent_name": "/root/arch_run_z08"
+    }
+  },
+  "isolation": "instruction-based on shared filesystem; no hard sandbox or complete external-access audit claim"
+}

@@ -16,3 +16,7 @@ Supporting evidence для прямого поручения оператора;
 [Полные outputs и execution records](results.json): delivery baseline/candidate — **PASS/PASS**; architecture baseline/candidate — **INCONCLUSIVE/INCONCLUSIVE** по неизменённой rubric. Architecture rubric требует draft/blocked handoff, тогда как owning source допускает ready для spec-owner при blocked implementation; оба outputs корректно разделяют эти границы. Это ограничивает trial score, не устанавливает регрессию и не превращено в «4/4 PASS». Прямое сопоставление требований и независимый bounded verdict сохранены отдельно от trial score.
 
 Проверенный active/source snapshot не включает новые supporting statuses/reports. Следующий этап — разрешённые scoped commits, PR, exact-head CI, merge и local sync; review сам по себе не доказывает их выполнение.
+
+## Дополнение: исправление архитектурного критерия
+
+[Критерий v2 и новые пробы](architecture-criterion-rerun/README.md), [журнал](architecture-criterion-rerun/implementation-log-20261021-1.md), [независимая оценка](architecture-criterion-rerun/independent-review.md): baseline u61 — **PASS**, candidate z08 — **PASS**, independent re-audit — **PASS**. Это новые исполнения после исправления ошибочного критерия готовности следующего владельца. Исторические r17/k44 и их INCONCLUSIVE выше сохраняются; весь каталог skills/ неизменён.

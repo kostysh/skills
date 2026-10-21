@@ -1,0 +1,61 @@
+{
+  "archived_at_utc": "2026-10-21T14:42:01.737362+00:00",
+  "pre_run_aggregate": "8598200cfb06807b8e701ed1f944b7d3fea3e8d9ae451694f3ec1d301289c313",
+  "runs": {
+    "u61": {
+      "variant": "baseline",
+      "ref": "ce19ba418e1671167254c260e4617564335489ae",
+      "files": {
+        "case/task.md": {
+          "archive": "runs/u61/case/task.md",
+          "sha256": "2dcfa06f3a7c0cdfda80cbfdd704d929656a085cb7f04a7c9d4173a5d23bc77c",
+          "bytes": 550
+        },
+        "case/sources.md": {
+          "archive": "runs/u61/case/sources.md",
+          "sha256": "c0b6b8c6187ee0c9dcc9993255ca153a87f89ba63b8ea1261b0361b9eb7cb661",
+          "bytes": 2584
+        },
+        "evidence/result.md": {
+          "archive": "runs/u61/evidence/result.md",
+          "sha256": "a5aa9359326d6c48a8f6c854211f961c35b2ff8d074936c1a94e5c4fa122ef93",
+          "bytes": 5525
+        },
+        "evidence/execution.json": {
+          "archive": "runs/u61/evidence/execution.json",
+          "sha256": "5c341ae19d630c5948d17618259da69e40093342fd987a5fe2e08c93bd0a118e",
+          "bytes": 16749
+        }
+      }
+    },
+    "z08": {
+      "variant": "candidate",
+      "ref": "273b6148fd9df629368f6de29812b0849369140a",
+      "files": {
+        "case/task.md": {
+          "archive": "runs/z08/case/task.md",
+          "sha256": "2dcfa06f3a7c0cdfda80cbfdd704d929656a085cb7f04a7c9d4173a5d23bc77c",
+          "bytes": 550
+        },
+        "case/sources.md": {
+          "archive": "runs/z08/case/sources.md",
+          "sha256": "c0b6b8c6187ee0c9dcc9993255ca153a87f89ba63b8ea1261b0361b9eb7cb661",
+          "bytes": 2584
+        },
+        "evidence/result.md": {
+          "archive": "runs/z08/evidence/result.md",
+          "sha256": "181e5ca3695cbc9932733b18805e1cb44dfb9655a5fccc44dbfd3daeb8cf0d50",
+          "bytes": 5089
+        },
+        "evidence/execution.json": {
+          "archive": "runs/z08/evidence/execution.json",
+          "sha256": "67677ad5153717da8f81eecc959b80f16b2fdda079c4154ebc19c870cc401f0b",
+          "bytes": 5030
+        }
+      }
+    }
+  },
+  "raw_outputs": "verbatim; no author PASS/FAIL assigned",
+  "inputs_and_active_packages": "unchanged from preflight",
+  "limits": "executor execution records are self-reported, not a complete independent tool-event audit; instruction-based isolation; forced invocation synthetic case"
+}

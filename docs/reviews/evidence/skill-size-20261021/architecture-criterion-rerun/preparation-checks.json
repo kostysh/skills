@@ -1,0 +1,18 @@
+{
+  "checks": "preparation only; no behavioral result",
+  "frozen_aggregate": "8598200cfb06807b8e701ed1f944b7d3fea3e8d9ae451694f3ec1d301289c313",
+  "architecture_files_preserved": 40,
+  "prior_records_preserved": 13,
+  "active_packages": {
+    "u61": 15,
+    "z08": 15
+  },
+  "only_active_package_difference": [
+    "SKILL.md"
+  ],
+  "paired_inputs_equal_to_original": true,
+  "all_skills_diff_exit": 0,
+  "json_and_markdown_checks": "pass",
+  "regeneration": "not applicable: all skills remain unchanged",
+  "suite": "existing suite not rerun locally for evidence-only preparation; exact-head Actions will run repository test:ci"
+}
