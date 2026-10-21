@@ -1,0 +1,17 @@
+# Повтор архитектурных проб после исправления критерия
+
+Прямое поручение оператора: исправить критерий, повторить baseline/candidate architecture-engineer, получить независимую оценку, сохранить результаты и интегрировать; сам скил не менять. Отдельные issue и plan не создавались.
+
+Результат для maintainer: сопоставимые новые outputs с корректной оценкой готовности следующего владельца, независимый verdict и сохранённая история. Защищаемый инвариант — побайтно прежний каталог skills/ и прежние raw inputs/outputs. Это supporting evidence, не новая функциональность или baseline-аудит скила.
+
+Ремедиация: ошибочное смешение expected output спецификатора с входом реализации → [criterion change](criterion-change.md), [точный delta](criterion-delta.json) → две новые пробы → независимая оценка. Самый узкий falsifier: необоснованная блокировка spec-owner из-за ещё не определённого DTO либо готовность реализации без согласованного DTO.
+
+Используется чистый прежний worktree `.worktrees/trim-skill-size-warnings`, новая ветка `codex/fix-architecture-trial-criterion` от `273b6148fd9df629368f6de29812b0849369140a`. Временные trial copies создаются вне репозитория. Состав active packages воспроизводит прошлые 15 файлов: root, required references, assets, UI metadata; source/supporting history и межскиловые зависимости исключены как в прежних пробах. Полный пакет скила не переиздаётся.
+
+Автор критериев/root знает варианты и rubric. Независимый assessor проверяет критерий до запусков и raw outputs после. Каждый executor получит только собственный opaque run, исходный task/sources и active skill в fresh context; без model/reasoning override. Изоляция instruction-based на shared filesystem, не hard sandbox; естественная активация, универсальная надёжность и runtime CSV preview не проверяются. Состав/хеши закреплены в [pre-run freeze](pre-run-freeze.json), [mapping](run-mapping.json), [skill invariants](skill-invariants.json).
+
+[Независимый criterion preflight](criterion-preflight.md) — PASS, findings отсутствуют. После него выполнены два fresh executor без overrides; [фактические dispatch arguments](dispatch.json) и [raw outputs/metadata](results.json) сохранены. [Итоговый independent re-audit](independent-review.md) — **PASS**, findings P1/P2/P3 отсутствуют. Baseline u61 — PASS, candidate z08 — PASS по C1–C8; ложной блокировки spec-owner и ложной coding readiness нет. Старые r17/k44 сохраняют INCONCLUSIVE по rubric v1.
+
+Проверки: [19-file frozen evidence scope](review-snapshot.json), пять pre-run hashes и criterion delta, identical raw inputs, 15-file active package каждой версии и все 40 target files, весь skills tree и 13 исторических records подтверждены; [raw независимые checks](independent-checks.json). JSON разобраны, новые локальные Markdown links разрешаются. Regenerate и локальная runtime suite неприменимы к неизменённому скилу: изменены только supporting records; обязательные Actions запустят repository test:ci на публикуемом head. Runtime и межскиловое исполнение не заявлены; self-reported execution metadata не доказывают отсутствие всех внешних действий.
+
+Завершены correction и независимая оценка новых проб. Git/CI integration разрешена поручением и следует после этих gates; точные commit/PR/CI/merge состояния проверяются отдельно в интеграционном handoff. Runtime/code/skills не меняются; rollback ограничен коммитом supporting records. Родительский README получает только ссылку на новое дополнение; прежние records и их оценки сохраняются.

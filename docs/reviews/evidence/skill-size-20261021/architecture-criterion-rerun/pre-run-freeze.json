@@ -1,0 +1,13 @@
+{
+  "algorithm": "SHA256 compact sorted-key JSON relative evidence path -> file SHA256",
+  "files": {
+    "criterion-delta.json": "1dbae631d68a56acecc1179e407d8254a0d0e467075d72ca720c70ebfaa7d1a7",
+    "inputs.json": "44795cf8f6a4b6c1bdb71f249869ab2dc9dbe821e5b551fd1fd8f80c3d34c77c",
+    "rubric-v2.md": "208a7bd0952dc408c9efef85d91467d8dd7b345e675e059015c4f3ac6e29ea96",
+    "run-mapping.json": "86e0e7cbf8e9f61691190131cc5dfb0c626607378dca820e524b245a0109fb5e",
+    "skill-invariants.json": "1a28fa9b7e6ebf5c6f23082b8ae1b04bb5301b61060513cded4b13c193af5305"
+  },
+  "aggregate": "8598200cfb06807b8e701ed1f944b7d3fea3e8d9ae451694f3ec1d301289c313",
+  "scope": "corrected closed rubric, identical raw inputs, fixed two active packages and full skill/old-evidence preservation; outputs and later review/status records excluded",
+  "preparation_started_at_utc": "2026-10-21 14:30:12 UTC"
+}

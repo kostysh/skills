@@ -1,0 +1,362 @@
+{
+  "checked_at_utc": "2026-10-21T14:45:17.874534+00:00",
+  "scope_root": "/home/kostysh/.codex/skills/custom/.worktrees/trim-skill-size-warnings/docs/reviews/evidence/skill-size-20261021/architecture-criterion-rerun",
+  "write_boundary": "/tmp/skill-eval-20261021-9f2/assessment",
+  "algorithm": "SHA256 compact sorted-key JSON relative evidence path -> file SHA256",
+  "review_snapshot": {
+    "file_count": 19,
+    "declared_file_hashes": {
+      "criterion-change.md": "1335b83fca45973aba7629bd9473f857c7334452322417755d09f979a5069bdb",
+      "criterion-delta.json": "1dbae631d68a56acecc1179e407d8254a0d0e467075d72ca720c70ebfaa7d1a7",
+      "criterion-preflight.md": "bfb1f2ad1115d264f0b22ceb87d216ef18de66b80471677d17a1627b071b206c",
+      "dispatch.json": "f73351bc7d5e0b29bb5e19f646d8a665b2e17aef813ea3521f3a69b941cff779",
+      "inputs.json": "44795cf8f6a4b6c1bdb71f249869ab2dc9dbe821e5b551fd1fd8f80c3d34c77c",
+      "pre-run-freeze.json": "fe3756d9e6533c92c4c2cc11fcc1864c1bfcf40deb34c2b550fa3f959a0d84b0",
+      "preparation-checks.json": "913111d513383914a9faad55ec2c147b64ca65db69cdab2ca9a14ecb7ccb9403",
+      "results.json": "0c592b141dbcb9e825cdbf57743cc8137de52a8884ed5e4ea719715c8bcbb81c",
+      "rubric-v2.md": "208a7bd0952dc408c9efef85d91467d8dd7b345e675e059015c4f3ac6e29ea96",
+      "run-mapping.json": "86e0e7cbf8e9f61691190131cc5dfb0c626607378dca820e524b245a0109fb5e",
+      "runs/u61/case/sources.md": "c0b6b8c6187ee0c9dcc9993255ca153a87f89ba63b8ea1261b0361b9eb7cb661",
+      "runs/u61/case/task.md": "2dcfa06f3a7c0cdfda80cbfdd704d929656a085cb7f04a7c9d4173a5d23bc77c",
+      "runs/u61/evidence/execution.json": "5c341ae19d630c5948d17618259da69e40093342fd987a5fe2e08c93bd0a118e",
+      "runs/u61/evidence/result.md": "a5aa9359326d6c48a8f6c854211f961c35b2ff8d074936c1a94e5c4fa122ef93",
+      "runs/z08/case/sources.md": "c0b6b8c6187ee0c9dcc9993255ca153a87f89ba63b8ea1261b0361b9eb7cb661",
+      "runs/z08/case/task.md": "2dcfa06f3a7c0cdfda80cbfdd704d929656a085cb7f04a7c9d4173a5d23bc77c",
+      "runs/z08/evidence/execution.json": "67677ad5153717da8f81eecc959b80f16b2fdda079c4154ebc19c870cc401f0b",
+      "runs/z08/evidence/result.md": "181e5ca3695cbc9932733b18805e1cb44dfb9655a5fccc44dbfd3daeb8cf0d50",
+      "skill-invariants.json": "1a28fa9b7e6ebf5c6f23082b8ae1b04bb5301b61060513cded4b13c193af5305"
+    },
+    "actual_file_hashes": {
+      "criterion-change.md": "1335b83fca45973aba7629bd9473f857c7334452322417755d09f979a5069bdb",
+      "criterion-delta.json": "1dbae631d68a56acecc1179e407d8254a0d0e467075d72ca720c70ebfaa7d1a7",
+      "criterion-preflight.md": "bfb1f2ad1115d264f0b22ceb87d216ef18de66b80471677d17a1627b071b206c",
+      "dispatch.json": "f73351bc7d5e0b29bb5e19f646d8a665b2e17aef813ea3521f3a69b941cff779",
+      "inputs.json": "44795cf8f6a4b6c1bdb71f249869ab2dc9dbe821e5b551fd1fd8f80c3d34c77c",
+      "pre-run-freeze.json": "fe3756d9e6533c92c4c2cc11fcc1864c1bfcf40deb34c2b550fa3f959a0d84b0",
+      "preparation-checks.json": "913111d513383914a9faad55ec2c147b64ca65db69cdab2ca9a14ecb7ccb9403",
+      "results.json": "0c592b141dbcb9e825cdbf57743cc8137de52a8884ed5e4ea719715c8bcbb81c",
+      "rubric-v2.md": "208a7bd0952dc408c9efef85d91467d8dd7b345e675e059015c4f3ac6e29ea96",
+      "run-mapping.json": "86e0e7cbf8e9f61691190131cc5dfb0c626607378dca820e524b245a0109fb5e",
+      "runs/u61/case/sources.md": "c0b6b8c6187ee0c9dcc9993255ca153a87f89ba63b8ea1261b0361b9eb7cb661",
+      "runs/u61/case/task.md": "2dcfa06f3a7c0cdfda80cbfdd704d929656a085cb7f04a7c9d4173a5d23bc77c",
+      "runs/u61/evidence/execution.json": "5c341ae19d630c5948d17618259da69e40093342fd987a5fe2e08c93bd0a118e",
+      "runs/u61/evidence/result.md": "a5aa9359326d6c48a8f6c854211f961c35b2ff8d074936c1a94e5c4fa122ef93",
+      "runs/z08/case/sources.md": "c0b6b8c6187ee0c9dcc9993255ca153a87f89ba63b8ea1261b0361b9eb7cb661",
+      "runs/z08/case/task.md": "2dcfa06f3a7c0cdfda80cbfdd704d929656a085cb7f04a7c9d4173a5d23bc77c",
+      "runs/z08/evidence/execution.json": "67677ad5153717da8f81eecc959b80f16b2fdda079c4154ebc19c870cc401f0b",
+      "runs/z08/evidence/result.md": "181e5ca3695cbc9932733b18805e1cb44dfb9655a5fccc44dbfd3daeb8cf0d50",
+      "skill-invariants.json": "1a28fa9b7e6ebf5c6f23082b8ae1b04bb5301b61060513cded4b13c193af5305"
+    },
+    "files_match": true,
+    "declared_aggregate": "c95e171828be2e9500c159f6768bb80ced555dc86cd96e9a453957c6fc723a0f",
+    "actual_aggregate": "c95e171828be2e9500c159f6768bb80ced555dc86cd96e9a453957c6fc723a0f",
+    "aggregate_match": true,
+    "snapshot_json_sha256": "34974662eab724263d174cddc19f28a177ccb2071c22cbe5ebb69747c8f2af45",
+    "exclusions": "mutable supporting README/log status; snapshot itself and future assessment/status additions; all criteria, raw inputs/outputs, dispatch, checks and invariants included"
+  },
+  "pre_run_freeze": {
+    "count": 5,
+    "actual_aggregate": "8598200cfb06807b8e701ed1f944b7d3fea3e8d9ae451694f3ec1d301289c313",
+    "aggregate_match": true,
+    "file_hashes_match": true
+  },
+  "criterion_integrity": {
+    "v1_hash_matches": true,
+    "v2_hash": "208a7bd0952dc408c9efef85d91467d8dd7b345e675e059015c4f3ac6e29ea96",
+    "v2_hash_matches": true,
+    "exact_two_declared_replacements_and_heading": true,
+    "preflight_verbatim": true
+  },
+  "original_inputs_unchanged": true,
+  "dispatch": {
+    "preflight_hash_match": true,
+    "fork_turns": {
+      "u61": "none",
+      "z08": "none"
+    },
+    "overrides_omitted": true,
+    "same_prompt_except_owned_run_path": true,
+    "observation_limit": "Persisted dispatch arguments; actual runtime model/settings and complete tool events are not independently observed."
+  },
+  "runs": {
+    "u61": {
+      "variant": "baseline",
+      "ref": "ce19ba418e1671167254c260e4617564335489ae",
+      "package_count": 15,
+      "package_hashes_match_mapping": true,
+      "package_matches_ref": true,
+      "package_aggregate": "3c50fd016f79be4a57e17ced6cade82d835628d144cd20275f12b61da7823400",
+      "raw_copy_checks": {
+        "case/task.md": {
+          "original_sha256": "2dcfa06f3a7c0cdfda80cbfdd704d929656a085cb7f04a7c9d4173a5d23bc77c",
+          "archive_sha256": "2dcfa06f3a7c0cdfda80cbfdd704d929656a085cb7f04a7c9d4173a5d23bc77c",
+          "declared_sha256": "2dcfa06f3a7c0cdfda80cbfdd704d929656a085cb7f04a7c9d4173a5d23bc77c",
+          "original_archive_identical": true,
+          "declared_hash_and_size_match": true
+        },
+        "case/sources.md": {
+          "original_sha256": "c0b6b8c6187ee0c9dcc9993255ca153a87f89ba63b8ea1261b0361b9eb7cb661",
+          "archive_sha256": "c0b6b8c6187ee0c9dcc9993255ca153a87f89ba63b8ea1261b0361b9eb7cb661",
+          "declared_sha256": "c0b6b8c6187ee0c9dcc9993255ca153a87f89ba63b8ea1261b0361b9eb7cb661",
+          "original_archive_identical": true,
+          "declared_hash_and_size_match": true
+        },
+        "evidence/result.md": {
+          "original_sha256": "a5aa9359326d6c48a8f6c854211f961c35b2ff8d074936c1a94e5c4fa122ef93",
+          "archive_sha256": "a5aa9359326d6c48a8f6c854211f961c35b2ff8d074936c1a94e5c4fa122ef93",
+          "declared_sha256": "a5aa9359326d6c48a8f6c854211f961c35b2ff8d074936c1a94e5c4fa122ef93",
+          "original_archive_identical": true,
+          "declared_hash_and_size_match": true
+        },
+        "evidence/execution.json": {
+          "original_sha256": "5c341ae19d630c5948d17618259da69e40093342fd987a5fe2e08c93bd0a118e",
+          "archive_sha256": "5c341ae19d630c5948d17618259da69e40093342fd987a5fe2e08c93bd0a118e",
+          "declared_sha256": "5c341ae19d630c5948d17618259da69e40093342fd987a5fe2e08c93bd0a118e",
+          "original_archive_identical": true,
+          "declared_hash_and_size_match": true
+        }
+      },
+      "case_hashes_match_original_inputs": true,
+      "metadata_declared_read_count": 7,
+      "metadata_declared_reads_checked": {
+        "case/task.md": {
+          "reported_sha256": "2dcfa06f3a7c0cdfda80cbfdd704d929656a085cb7f04a7c9d4173a5d23bc77c",
+          "actual_sha256": "2dcfa06f3a7c0cdfda80cbfdd704d929656a085cb7f04a7c9d4173a5d23bc77c",
+          "hash_match": true
+        },
+        "case/sources.md": {
+          "reported_sha256": "c0b6b8c6187ee0c9dcc9993255ca153a87f89ba63b8ea1261b0361b9eb7cb661",
+          "actual_sha256": "c0b6b8c6187ee0c9dcc9993255ca153a87f89ba63b8ea1261b0361b9eb7cb661",
+          "hash_match": true
+        },
+        "skill/SKILL.md": {
+          "reported_sha256": "0ed5c6fe6529a1191ee57c9f47c8369137ee30dc55df021ba43d8054269e8e20",
+          "actual_sha256": "0ed5c6fe6529a1191ee57c9f47c8369137ee30dc55df021ba43d8054269e8e20",
+          "hash_match": true
+        },
+        "skill/references/methodology.md": {
+          "reported_sha256": "d1e03ecc93166eb8e203e353ac92c96db382a5adfeb6883a8d0f2869ca9629cb",
+          "actual_sha256": "d1e03ecc93166eb8e203e353ac92c96db382a5adfeb6883a8d0f2869ca9629cb",
+          "hash_match": true
+        },
+        "skill/references/artifact-templates.md": {
+          "reported_sha256": "730a69850982ecd542875d92d50f3e4ee3678c5ed199bbaa6343715756fd9cba",
+          "actual_sha256": "730a69850982ecd542875d92d50f3e4ee3678c5ed199bbaa6343715756fd9cba",
+          "hash_match": true
+        },
+        "skill/assets/templates/architecture-check.md": {
+          "reported_sha256": "f47434b4264220ed5c9ab66e74c60f8e50d5c31cb03cba3ee02b459bcf1e3206",
+          "actual_sha256": "f47434b4264220ed5c9ab66e74c60f8e50d5c31cb03cba3ee02b459bcf1e3206",
+          "hash_match": true
+        },
+        "skill/assets/templates/architecture-handoff-item.yaml": {
+          "reported_sha256": "c7e32bc01e779ace8863a56e6b185d3e78821b5fd0f287d866f6ef18a88c44cc",
+          "actual_sha256": "c7e32bc01e779ace8863a56e6b185d3e78821b5fd0f287d866f6ef18a88c44cc",
+          "hash_match": true
+        }
+      },
+      "declared_written_files": [
+        "evidence/result.md",
+        "evidence/execution.json"
+      ],
+      "metadata_evidence_limit": "Executor self-report; consistency with supplied files and persisted state is checked, not exhaustive event history or access absence.",
+      "persisted_run_file_count": 19,
+      "unexpected_persisted_run_files": [],
+      "missing_expected_run_files": [],
+      "persisted_run_manifest": {
+        "evidence/execution.json": "5c341ae19d630c5948d17618259da69e40093342fd987a5fe2e08c93bd0a118e",
+        "evidence/result.md": "a5aa9359326d6c48a8f6c854211f961c35b2ff8d074936c1a94e5c4fa122ef93",
+        "case/task.md": "2dcfa06f3a7c0cdfda80cbfdd704d929656a085cb7f04a7c9d4173a5d23bc77c",
+        "case/sources.md": "c0b6b8c6187ee0c9dcc9993255ca153a87f89ba63b8ea1261b0361b9eb7cb661",
+        "skill/SKILL.md": "0ed5c6fe6529a1191ee57c9f47c8369137ee30dc55df021ba43d8054269e8e20",
+        "skill/references/pattern-catalog.md": "87e1143448cdbaa05d49d77c2be2384c3db40832e954efb02342e6f6529e3784",
+        "skill/references/methodology.md": "d1e03ecc93166eb8e203e353ac92c96db382a5adfeb6883a8d0f2869ca9629cb",
+        "skill/references/artifact-templates.md": "730a69850982ecd542875d92d50f3e4ee3678c5ed199bbaa6343715756fd9cba",
+        "skill/agents/openai.yaml": "3420b7777dd1e4ba70e2f1bc7d35332f84601dee6cdc74a107979581a1f7e982",
+        "skill/assets/templates/spike-brief.md": "4a180513a811e4fae1e5321c139050d40cc0497b31fc26a83b567c37a9a1e2e9",
+        "skill/assets/templates/quality-scenario.md": "1eae6f37d48e7508b693c35e91a953e5b28243f3dd54fa02581090186a84f425",
+        "skill/assets/templates/pattern-decision.md": "04812c6e25accd03f52d0cb01d16dbe7223469a51796fc99379f4db1d1bff329",
+        "skill/assets/templates/asr-record.yaml": "78c6a2843059b69941f0b5323a09fa87fb14af20c587e498ba547f8233752a0f",
+        "skill/assets/templates/architecture-handoff-register.yaml": "ad1a3e7e537c3166e9ec60ceeb94492ec6bc3cbc2dc246f48c86e93764f14d7f",
+        "skill/assets/templates/architecture-handoff-item.yaml": "c7e32bc01e779ace8863a56e6b185d3e78821b5fd0f287d866f6ef18a88c44cc",
+        "skill/assets/templates/architecture-delta.md": "c565071dfa8e1c55757780f3fd14c850b290fb5634f8bed460ae06d814f56f58",
+        "skill/assets/templates/architecture-check.md": "f47434b4264220ed5c9ab66e74c60f8e50d5c31cb03cba3ee02b459bcf1e3206",
+        "skill/assets/templates/architecture-brief.md": "023a831cffe60c35834e9b2d22e0e7d7c14b2588f91540b5b5fb4ba6cf40751d",
+        "skill/assets/templates/adr.md": "109d60b90093b5d212e0105cc33a74b588209d6d36150eb3bb0add3d7c36463f"
+      },
+      "result_line_count": 50,
+      "result_utf8_and_final_newline": true,
+      "result_source_link_resolves": true
+    },
+    "z08": {
+      "variant": "candidate",
+      "ref": "273b6148fd9df629368f6de29812b0849369140a",
+      "package_count": 15,
+      "package_hashes_match_mapping": true,
+      "package_matches_ref": true,
+      "package_aggregate": "947f79742d3338b09fe3f16c536d5f8b0d4deaa67cadfa855c6f7057b38eaaaa",
+      "raw_copy_checks": {
+        "case/task.md": {
+          "original_sha256": "2dcfa06f3a7c0cdfda80cbfdd704d929656a085cb7f04a7c9d4173a5d23bc77c",
+          "archive_sha256": "2dcfa06f3a7c0cdfda80cbfdd704d929656a085cb7f04a7c9d4173a5d23bc77c",
+          "declared_sha256": "2dcfa06f3a7c0cdfda80cbfdd704d929656a085cb7f04a7c9d4173a5d23bc77c",
+          "original_archive_identical": true,
+          "declared_hash_and_size_match": true
+        },
+        "case/sources.md": {
+          "original_sha256": "c0b6b8c6187ee0c9dcc9993255ca153a87f89ba63b8ea1261b0361b9eb7cb661",
+          "archive_sha256": "c0b6b8c6187ee0c9dcc9993255ca153a87f89ba63b8ea1261b0361b9eb7cb661",
+          "declared_sha256": "c0b6b8c6187ee0c9dcc9993255ca153a87f89ba63b8ea1261b0361b9eb7cb661",
+          "original_archive_identical": true,
+          "declared_hash_and_size_match": true
+        },
+        "evidence/result.md": {
+          "original_sha256": "181e5ca3695cbc9932733b18805e1cb44dfb9655a5fccc44dbfd3daeb8cf0d50",
+          "archive_sha256": "181e5ca3695cbc9932733b18805e1cb44dfb9655a5fccc44dbfd3daeb8cf0d50",
+          "declared_sha256": "181e5ca3695cbc9932733b18805e1cb44dfb9655a5fccc44dbfd3daeb8cf0d50",
+          "original_archive_identical": true,
+          "declared_hash_and_size_match": true
+        },
+        "evidence/execution.json": {
+          "original_sha256": "67677ad5153717da8f81eecc959b80f16b2fdda079c4154ebc19c870cc401f0b",
+          "archive_sha256": "67677ad5153717da8f81eecc959b80f16b2fdda079c4154ebc19c870cc401f0b",
+          "declared_sha256": "67677ad5153717da8f81eecc959b80f16b2fdda079c4154ebc19c870cc401f0b",
+          "original_archive_identical": true,
+          "declared_hash_and_size_match": true
+        }
+      },
+      "case_hashes_match_original_inputs": true,
+      "metadata_declared_read_count": 7,
+      "metadata_declared_reads_checked": {
+        "case/task.md": {
+          "reported_sha256": "2dcfa06f3a7c0cdfda80cbfdd704d929656a085cb7f04a7c9d4173a5d23bc77c",
+          "actual_sha256": "2dcfa06f3a7c0cdfda80cbfdd704d929656a085cb7f04a7c9d4173a5d23bc77c",
+          "hash_match": true
+        },
+        "case/sources.md": {
+          "reported_sha256": "c0b6b8c6187ee0c9dcc9993255ca153a87f89ba63b8ea1261b0361b9eb7cb661",
+          "actual_sha256": "c0b6b8c6187ee0c9dcc9993255ca153a87f89ba63b8ea1261b0361b9eb7cb661",
+          "hash_match": true
+        },
+        "skill/SKILL.md": {
+          "reported_sha256": "d8051ab60169057cc41838e86704cc46310e96d5125816f097c4ffee41c02bdd",
+          "actual_sha256": "d8051ab60169057cc41838e86704cc46310e96d5125816f097c4ffee41c02bdd",
+          "hash_match": true
+        },
+        "skill/references/methodology.md": {
+          "reported_sha256": "d1e03ecc93166eb8e203e353ac92c96db382a5adfeb6883a8d0f2869ca9629cb",
+          "actual_sha256": "d1e03ecc93166eb8e203e353ac92c96db382a5adfeb6883a8d0f2869ca9629cb",
+          "hash_match": true
+        },
+        "skill/references/artifact-templates.md": {
+          "reported_sha256": "730a69850982ecd542875d92d50f3e4ee3678c5ed199bbaa6343715756fd9cba",
+          "actual_sha256": "730a69850982ecd542875d92d50f3e4ee3678c5ed199bbaa6343715756fd9cba",
+          "hash_match": true
+        },
+        "skill/assets/templates/architecture-check.md": {
+          "reported_sha256": "f47434b4264220ed5c9ab66e74c60f8e50d5c31cb03cba3ee02b459bcf1e3206",
+          "actual_sha256": "f47434b4264220ed5c9ab66e74c60f8e50d5c31cb03cba3ee02b459bcf1e3206",
+          "hash_match": true
+        },
+        "skill/assets/templates/architecture-handoff-item.yaml": {
+          "reported_sha256": "c7e32bc01e779ace8863a56e6b185d3e78821b5fd0f287d866f6ef18a88c44cc",
+          "actual_sha256": "c7e32bc01e779ace8863a56e6b185d3e78821b5fd0f287d866f6ef18a88c44cc",
+          "hash_match": true
+        }
+      },
+      "declared_written_files": [
+        "evidence/result.md",
+        "evidence/execution.json"
+      ],
+      "metadata_evidence_limit": "Executor self-report; consistency with supplied files and persisted state is checked, not exhaustive event history or access absence.",
+      "persisted_run_file_count": 19,
+      "unexpected_persisted_run_files": [],
+      "missing_expected_run_files": [],
+      "persisted_run_manifest": {
+        "evidence/execution.json": "67677ad5153717da8f81eecc959b80f16b2fdda079c4154ebc19c870cc401f0b",
+        "evidence/result.md": "181e5ca3695cbc9932733b18805e1cb44dfb9655a5fccc44dbfd3daeb8cf0d50",
+        "case/task.md": "2dcfa06f3a7c0cdfda80cbfdd704d929656a085cb7f04a7c9d4173a5d23bc77c",
+        "case/sources.md": "c0b6b8c6187ee0c9dcc9993255ca153a87f89ba63b8ea1261b0361b9eb7cb661",
+        "skill/SKILL.md": "d8051ab60169057cc41838e86704cc46310e96d5125816f097c4ffee41c02bdd",
+        "skill/references/pattern-catalog.md": "87e1143448cdbaa05d49d77c2be2384c3db40832e954efb02342e6f6529e3784",
+        "skill/references/methodology.md": "d1e03ecc93166eb8e203e353ac92c96db382a5adfeb6883a8d0f2869ca9629cb",
+        "skill/references/artifact-templates.md": "730a69850982ecd542875d92d50f3e4ee3678c5ed199bbaa6343715756fd9cba",
+        "skill/agents/openai.yaml": "3420b7777dd1e4ba70e2f1bc7d35332f84601dee6cdc74a107979581a1f7e982",
+        "skill/assets/templates/spike-brief.md": "4a180513a811e4fae1e5321c139050d40cc0497b31fc26a83b567c37a9a1e2e9",
+        "skill/assets/templates/quality-scenario.md": "1eae6f37d48e7508b693c35e91a953e5b28243f3dd54fa02581090186a84f425",
+        "skill/assets/templates/pattern-decision.md": "04812c6e25accd03f52d0cb01d16dbe7223469a51796fc99379f4db1d1bff329",
+        "skill/assets/templates/asr-record.yaml": "78c6a2843059b69941f0b5323a09fa87fb14af20c587e498ba547f8233752a0f",
+        "skill/assets/templates/architecture-handoff-register.yaml": "ad1a3e7e537c3166e9ec60ceeb94492ec6bc3cbc2dc246f48c86e93764f14d7f",
+        "skill/assets/templates/architecture-handoff-item.yaml": "c7e32bc01e779ace8863a56e6b185d3e78821b5fd0f287d866f6ef18a88c44cc",
+        "skill/assets/templates/architecture-delta.md": "c565071dfa8e1c55757780f3fd14c850b290fb5634f8bed460ae06d814f56f58",
+        "skill/assets/templates/architecture-check.md": "f47434b4264220ed5c9ab66e74c60f8e50d5c31cb03cba3ee02b459bcf1e3206",
+        "skill/assets/templates/architecture-brief.md": "023a831cffe60c35834e9b2d22e0e7d7c14b2588f91540b5b5fb4ba6cf40751d",
+        "skill/assets/templates/adr.md": "109d60b90093b5d212e0105cc33a74b588209d6d36150eb3bb0add3d7c36463f"
+      },
+      "result_line_count": 47,
+      "result_utf8_and_final_newline": true,
+      "result_source_link_resolves": true
+    }
+  },
+  "only_differing_active_file": [
+    "SKILL.md"
+  ],
+  "preservation": {
+    "task_base_commit": "273b6148fd9df629368f6de29812b0849369140a",
+    "head": "273b6148fd9df629368f6de29812b0849369140a",
+    "full_architecture_count": 40,
+    "full_architecture_matches_manifest": true,
+    "all_skills_tree_oid": "08b4d43340801332654a240f540627960ee794d1",
+    "all_skills_tree_matches": true,
+    "candidate_architecture_tree_matches": true,
+    "baseline_architecture_tree_matches": true,
+    "tracked_skills_delta": [],
+    "untracked_skills": [],
+    "prior_record_count": 13,
+    "prior_record_hashes_actual": {
+      "docs/reviews/evidence/skill-size-20261021/author-self-check.json": "546477bb1efa8031bd01b860a37b8a74a423b6a3948e78af99b6dcb366bda472",
+      "docs/reviews/evidence/skill-size-20261021/candidate-tests.txt": "2322f924d2c55a242177f57c6cdf30481d3c0f954c2c0ea3e37bb3eea3ac9946",
+      "docs/reviews/evidence/skill-size-20261021/checks.json": "0915f381b6b611aef9bf2fd4bc93d92cd91b9d874e4e075249990945b44fd57f",
+      "docs/reviews/evidence/skill-size-20261021/independent-checks.json": "8535f12eb5d25147f790ac6943fd8595360bcdd6653feb80e89262eec301c4d8",
+      "docs/reviews/evidence/skill-size-20261021/independent-review.md": "4999d0e0e3b8b880081a9f56cfe626635370723b6a11be36341d0fea502ef134",
+      "docs/reviews/evidence/skill-size-20261021/independent-trial-integrity.json": "77f45a2a61823660c4877660e2329052393bdcac90f6966e49f40a3621e52681",
+      "docs/reviews/evidence/skill-size-20261021/independent-verification.json": "558d61dc1dd9db6b1f5a38afeeddfdca084eb017d567a74e5459851caad1dc78",
+      "docs/reviews/evidence/skill-size-20261021/input-manifest.json": "24c38298cbdf75ef45e86fa3fab9a7f80b8f956210bc28aa834aea8d4d69face",
+      "docs/reviews/evidence/skill-size-20261021/inputs.json": "e22b2b9c694e21195b828bba76e40f9197f89ee1b63f43509434af5d8442974c",
+      "docs/reviews/evidence/skill-size-20261021/results.json": "afd2e0dd6404633464971c046ee1506429eb68016f0170880843d8ff7cdbd835",
+      "docs/reviews/evidence/skill-size-20261021/run-mapping.json": "28f30c11b50a9bad6ef350010b7490e4356d1a3dc7d6cac3111777f8a82ac838",
+      "docs/reviews/evidence/skill-size-20261021/snapshot.json": "eecd58cfb12ebeb4451c1b0cc085f991fbe32db30a30648e9b15348018a660c5",
+      "docs/reviews/evidence/skill-size-20261021/structural-commands.json": "90728575a9d1aa54d0711d96fcfeef289c093d4b3a68deedd3f2a7419c3ff527"
+    },
+    "prior_records_match": true
+  },
+  "json_parse": {
+    "paths": [
+      "criterion-delta.json",
+      "dispatch.json",
+      "inputs.json",
+      "pre-run-freeze.json",
+      "preparation-checks.json",
+      "results.json",
+      "run-mapping.json",
+      "runs/u61/evidence/execution.json",
+      "runs/z08/evidence/execution.json",
+      "skill-invariants.json"
+    ],
+    "all_parse": true
+  },
+  "owning_policy_sha256": {
+    "AGENTS.md": "352814c81ff9696f7202205acd4855d642c01df69a0d8d030e96999687d148bd",
+    "docs/skill-standard.md": "cb7fe13fe8c65144b9ae5fdef6d9b9f598fbc1a05523e674a0282aec942a8f67",
+    "skills/skill-reviewer/SKILL.md": "071db084f6c706180dd1e8bc6a89b86aaae4de281eb875fdb353b92f5e42165c",
+    "skills/skill-reviewer/references/methodology.md": "d755ad7b797012a6340ed8a6844cbb73725b87a05482eb60c8c83f145466a93c",
+    "skills/skill-reviewer/references/forward-testing.md": "2ebf990103b57b14aa4e71cf6027725f2ab43633926a46e9859b0f857161d1a9"
+  },
+  "commands_used": [
+    "Python standard library: pathlib read_bytes/read_text, hashlib SHA256, json parsing/canonical encoding, read-only manifest enumeration; output JSON written only into assessor-owned /tmp assessment",
+    "git show <fixed-ref>:skills/architecture-engineer/<active-path>",
+    "git rev-parse HEAD and <fixed-ref>:<tree-path>",
+    "git diff --name-only <task-base> -- skills/",
+    "git ls-files --others --exclude-standard -- skills/"
+  ]
+}

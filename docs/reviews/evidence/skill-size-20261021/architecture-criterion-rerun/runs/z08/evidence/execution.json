@@ -1,0 +1,93 @@
+{
+  "working_directory": "/tmp/skill-eval-20261021-9f2/runs/z08",
+  "read_files": [
+    {
+      "path": "case/task.md",
+      "sha256": "2dcfa06f3a7c0cdfda80cbfdd704d929656a085cb7f04a7c9d4173a5d23bc77c"
+    },
+    {
+      "path": "case/sources.md",
+      "sha256": "c0b6b8c6187ee0c9dcc9993255ca153a87f89ba63b8ea1261b0361b9eb7cb661"
+    },
+    {
+      "path": "skill/SKILL.md",
+      "sha256": "d8051ab60169057cc41838e86704cc46310e96d5125816f097c4ffee41c02bdd"
+    },
+    {
+      "path": "skill/references/methodology.md",
+      "sha256": "d1e03ecc93166eb8e203e353ac92c96db382a5adfeb6883a8d0f2869ca9629cb"
+    },
+    {
+      "path": "skill/references/artifact-templates.md",
+      "sha256": "730a69850982ecd542875d92d50f3e4ee3678c5ed199bbaa6343715756fd9cba"
+    },
+    {
+      "path": "skill/assets/templates/architecture-check.md",
+      "sha256": "f47434b4264220ed5c9ab66e74c60f8e50d5c31cb03cba3ee02b459bcf1e3206"
+    },
+    {
+      "path": "skill/assets/templates/architecture-handoff-item.yaml",
+      "sha256": "c7e32bc01e779ace8863a56e6b185d3e78821b5fd0f287d866f6ef18a88c44cc"
+    }
+  ],
+  "performed_commands_and_actions": [
+    {
+      "sequence": 1,
+      "tool": "exec_command",
+      "shell": "bash",
+      "program": "python3 через stdin",
+      "action": "Прочитаны целиком case/task.md, case/sources.md, skill/SKILL.md; для каждого вычислен SHA256 и выведен текст.",
+      "exit_code": 0
+    },
+    {
+      "sequence": 2,
+      "tool": "exec_command",
+      "shell": "bash",
+      "program": "python3 через stdin",
+      "action": "Прочитаны целиком skill/references/methodology.md, skill/references/artifact-templates.md, skill/assets/templates/architecture-check.md, skill/assets/templates/architecture-handoff-item.yaml; вычислен SHA256 и выведен текст. Вывод tool частично усечён в разделе routed handoff методологии.",
+      "exit_code": 0
+    },
+    {
+      "sequence": 3,
+      "tool": "exec_command",
+      "shell": "bash",
+      "program": "python3 через stdin",
+      "action": "Повторно прочитан skill/references/methodology.md; полностью выведен раздел Produce routed architecture handoff до Review and revisit, чтобы восстановить усечённый контекст.",
+      "exit_code": 0
+    },
+    {
+      "sequence": 4,
+      "action": "Проанализированы P-7/R1–R3, A-4, достаточность прямого соединения, граница неизвестного DTO и готовность передачи spec-owner; выбран короткий architecture check и один handoff без архитектурного расширения."
+    },
+    {
+      "sequence": 5,
+      "tool": "exec_command",
+      "shell": "bash",
+      "program": "python3 через stdin",
+      "action": "Записаны evidence/result.md и evidence/execution.json через Path.write_text; затем проверено наличие обоих файлов через Path.is_file и получены размеры через Path.stat."
+    }
+  ],
+  "written_files": [
+    "evidence/result.md",
+    "evidence/execution.json"
+  ],
+  "context_limits": [
+    "Доступ ограничен case/ и skill/ этого запуска; иных файлов проекта, репозитория, памяти и истории не читалось.",
+    "P-7 и A-4 приняты как авторитетные описания synthetic offline case, а не как runtime evidence.",
+    "Реализация, тесты и runtime отсутствуют в предоставленном контексте; R1–R3 фактически не проверялись.",
+    "DTO members и подпись API не утверждены; их определение оставлено spec-owner preview-core.",
+    "Внешний implementation-discipline, упомянутый в skill/SKILL.md, не загружался: за пределами разрешённых case/ и skill/. Использованы доступные в назначенном скиле проверки scope, простоты и falsifier.",
+    "Pattern catalog не загружался: значимого выбора между паттернами нет. Другие шаблоны не требовались."
+  ],
+  "actual_side_effects": [
+    "Созданы или перезаписаны только evidence/result.md и evidence/execution.json.",
+    "Не выполнялись реализация, публикация, Git, сеть, внешние сервисы, делегирование или запуск проекта."
+  ],
+  "existence_verification": {
+    "method": "Path.is_file после записи обоих файлов; Path.stat для размера",
+    "paths": [
+      "evidence/result.md",
+      "evidence/execution.json"
+    ]
+  }
+}
