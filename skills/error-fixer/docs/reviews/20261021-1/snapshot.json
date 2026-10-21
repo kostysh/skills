@@ -1,0 +1,35 @@
+{
+  "skill": "error-fixer",
+  "base_commit": "0bd4d8d92a9488e5595faa2045353733ec0b5fca",
+  "hash_algorithm": "sha256; aggregate over UTF-8 compact JSON path-to-sha256 mapping sorted by relative POSIX path",
+  "candidate_aggregate": "10e437c1d15e0e77f48c466dddec1fcd8d80aaf57aaaf23ea4fea42883196890",
+  "baseline_aggregate": "50ceaaea98ff833cc4132dc3e8727978043258303d9301223decd0bb3d220bbe",
+  "candidate_files": {
+    "SKILL.md": "5def84d77084d9581c0ce7619502366cd4ac99f5c8f55ae559b0d97d6956de27",
+    "agents/openai.yaml": "b2d5c695e87cc8ed0e4ee1067d358b7d8a033430ff292bdb8294efa6a3ed66a5",
+    "AGENTS.md": "54224f946972e23571154b0e07a543e7b1912a874b4e46d786d8a4c8b5dea819",
+    "fragments/overview.md": "c68fb3b1f6646d1310c21c9842361c72acf91a97b5eaf578ca0ed08aa251f2c1",
+    "skill.yaml": "b9a9d8aa44668c26a33f7717aa969d5ba5affd9efc46a2684da9849773d11ef8"
+  },
+  "baseline_files": {
+    "AGENTS.md": "54224f946972e23571154b0e07a543e7b1912a874b4e46d786d8a4c8b5dea819",
+    "SKILL.md": "3bf15fa4275fbff74a109c5806e37bd6abdf770b5f67b81d54d68b79c8643604",
+    "agents/openai.yaml": "b2d5c695e87cc8ed0e4ee1067d358b7d8a033430ff292bdb8294efa6a3ed66a5",
+    "fragments/overview.md": "c68fb3b1f6646d1310c21c9842361c72acf91a97b5eaf578ca0ed08aa251f2c1",
+    "skill.yaml": "a34d38f32214f052db435704f7969ea8b8603c7ed21ae7a071d6c71dcd17b4d8"
+  },
+  "trial_active_files": {
+    "SKILL.md": "5def84d77084d9581c0ce7619502366cd4ac99f5c8f55ae559b0d97d6956de27",
+    "agents/openai.yaml": "b2d5c695e87cc8ed0e4ee1067d358b7d8a033430ff292bdb8294efa6a3ed66a5"
+  },
+  "file_count": 5,
+  "trial_copy_excludes": [
+    "skill.yaml",
+    "fragments/",
+    "AGENTS.md",
+    "docs/",
+    "test/",
+    "package.json"
+  ],
+  "trial_isolation": "fresh agent context; instructed access scope on a shared filesystem, not a hard sandbox"
+}

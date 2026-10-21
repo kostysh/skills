@@ -1,0 +1,21 @@
+{
+  "baseline": "0bd4d8d92a9488e5595faa2045353733ec0b5fca",
+  "environment": {
+    "node": "v24.15.0",
+    "pnpm": "10.28.2",
+    "install": "pnpm install --frozen-lockfile --store-dir /tmp/skill-repairs-pnpm-store",
+    "installation_exit": 0,
+    "isolation": "new worktree node_modules; task-specific XDG data/cache and pnpm store",
+    "warning": "pnpm ignored esbuild build script; tests below completed successfully"
+  },
+  "candidate_suite": {
+    "command": "pnpm test:ci",
+    "exit": 0,
+    "tests": 110,
+    "passed": 110,
+    "failed": 0,
+    "stdout_stderr": "candidate-tests.log",
+    "timing": "after all four active candidates were frozen"
+  },
+  "limits": "Local Node 24 run; GitHub workflow selects Node 22 and remains a separate required observation before merge."
+}

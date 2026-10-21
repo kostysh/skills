@@ -1,0 +1,216 @@
+{
+  "structural": [
+    {
+      "skill": "error-fixer",
+      "command": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "lint",
+        "skills/error-fixer"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/error-fixer/compiler-lint.log",
+      "output": "OK skills/error-fixer\n"
+    },
+    {
+      "skill": "error-fixer",
+      "command": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "regenerate",
+        "skills/error-fixer"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/error-fixer/compiler-regenerate.log",
+      "output": "Regenerated /home/kostysh/.codex/skills/custom/.worktrees/evidence-aware-skill-repairs/skills/error-fixer\n"
+    },
+    {
+      "skill": "error-fixer",
+      "command": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "skills/error-fixer"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/error-fixer/compiler-check.log",
+      "output": "OK skills/error-fixer\n"
+    },
+    {
+      "skill": "error-fixer",
+      "command": [
+        "python3",
+        "/home/kostysh/.codex/skills/.system/skill-creator/scripts/quick_validate.py",
+        "skills/error-fixer"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/error-fixer/creator-validation.log",
+      "output": "Skill is valid!\n"
+    },
+    {
+      "skill": "error-fixer",
+      "command": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "/tmp/skill-repairs-20261021/emitted-candidate/error-fixer"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/error-fixer/emitted-check.log",
+      "output": "OK /tmp/skill-repairs-20261021/emitted-candidate/error-fixer\n"
+    }
+  ],
+  "author_fixture_qa": [
+    {
+      "skill": "error-fixer",
+      "case": "01",
+      "phase": "baseline",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exit": 1,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/error-fixer-01-test-baseline.log",
+      "output": "✖ catalog reader preserves the accepted inspection contract (0.558014ms)\nℹ tests 1\nℹ suites 0\nℹ pass 0\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 50.696048\n\n✖ failing tests:\n\ntest at test/reader.test.mjs:5:1\n✖ catalog reader preserves the accepted inspection contract (0.558014ms)\n  Error: catalog_assurance_failed\n      at readCatalog (file:///tmp/skill-repairs-20261021/author-fixture-qa/error-fixer/01/src/reader.mjs:3:82)\n      at TestContext.<anonymous> (file:///tmp/skill-repairs-20261021/author-fixture-qa/error-fixer/01/test/reader.test.mjs:6:16)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1201:25)\n      at Test.start (node:internal/test_runner/test:1096:17)\n      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)\nnpm notice run test\nnpm notice run node --test\n"
+    },
+    {
+      "skill": "error-fixer",
+      "case": "01",
+      "phase": "baseline",
+      "command": [
+        "npm",
+        "run",
+        "smoke"
+      ],
+      "exit": 1,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/error-fixer-01-smoke-baseline.log",
+      "output": "npm notice run smoke\nnpm notice run node scripts/smoke.mjs\nfile:///tmp/skill-repairs-20261021/author-fixture-qa/error-fixer/01/src/reader.mjs:3\n  if (result.principal !== 'catalog_owner' || !result.readOnlyTransaction) throw new Error('catalog_assurance_failed');\n                                                                                 ^\n\nError: catalog_assurance_failed\n    at readCatalog (file:///tmp/skill-repairs-20261021/author-fixture-qa/error-fixer/01/src/reader.mjs:3:82)\n    at file:///tmp/skill-repairs-20261021/author-fixture-qa/error-fixer/01/scripts/smoke.mjs:3:43\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at async node:internal/modules/esm/loader:639:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)\n\nNode.js v24.15.0\n"
+    },
+    {
+      "skill": "error-fixer",
+      "case": "01",
+      "phase": "fixture-control",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/error-fixer-01-test-control.log",
+      "output": "✔ catalog reader preserves the accepted inspection contract (0.558815ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 48.594117\nnpm notice run test\nnpm notice run node --test\n"
+    },
+    {
+      "skill": "error-fixer",
+      "case": "01",
+      "phase": "fixture-control",
+      "command": [
+        "npm",
+        "run",
+        "smoke"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/error-fixer-01-smoke-control.log",
+      "output": "{\"objectCount\":12}\nnpm notice run smoke\nnpm notice run node scripts/smoke.mjs\n"
+    },
+    {
+      "skill": "error-fixer",
+      "case": "02",
+      "phase": "baseline",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exit": 1,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/error-fixer-02-test-baseline.log",
+      "output": "✖ catalog reader preserves the accepted inspection contract (0.499384ms)\nℹ tests 1\nℹ suites 0\nℹ pass 0\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 47.978304\n\n✖ failing tests:\n\ntest at test/reader.test.mjs:5:1\n✖ catalog reader preserves the accepted inspection contract (0.499384ms)\n  Error: catalog_assurance_failed\n      at readCatalog (file:///tmp/skill-repairs-20261021/author-fixture-qa/error-fixer/02/src/reader.mjs:3:82)\n      at TestContext.<anonymous> (file:///tmp/skill-repairs-20261021/author-fixture-qa/error-fixer/02/test/reader.test.mjs:6:16)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1201:25)\n      at Test.start (node:internal/test_runner/test:1096:17)\n      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)\nnpm notice run test\nnpm notice run node --test\n"
+    },
+    {
+      "skill": "error-fixer",
+      "case": "02",
+      "phase": "baseline",
+      "command": [
+        "npm",
+        "run",
+        "smoke"
+      ],
+      "exit": 1,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/error-fixer-02-smoke-baseline.log",
+      "output": "npm notice run smoke\nnpm notice run node scripts/smoke.mjs\nfile:///tmp/skill-repairs-20261021/author-fixture-qa/error-fixer/02/src/reader.mjs:3\n  if (result.principal !== 'catalog_owner' || !result.readOnlyTransaction) throw new Error('catalog_assurance_failed');\n                                                                                 ^\n\nError: catalog_assurance_failed\n    at readCatalog (file:///tmp/skill-repairs-20261021/author-fixture-qa/error-fixer/02/src/reader.mjs:3:82)\n    at file:///tmp/skill-repairs-20261021/author-fixture-qa/error-fixer/02/scripts/smoke.mjs:3:43\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at async node:internal/modules/esm/loader:639:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)\n\nNode.js v24.15.0\n"
+    },
+    {
+      "skill": "error-fixer",
+      "case": "02",
+      "phase": "fixture-control",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/error-fixer-02-test-control.log",
+      "output": "✔ catalog reader preserves the accepted inspection contract (0.495515ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 51.930078\nnpm notice run test\nnpm notice run node --test\n"
+    },
+    {
+      "skill": "error-fixer",
+      "case": "02",
+      "phase": "fixture-control",
+      "command": [
+        "npm",
+        "run",
+        "smoke"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/error-fixer-02-smoke-control.log",
+      "output": "{\"objectCount\":12}\nnpm notice run smoke\nnpm notice run node scripts/smoke.mjs\n"
+    },
+    {
+      "skill": "error-fixer",
+      "case": "03",
+      "phase": "baseline",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exit": 1,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/error-fixer-03-test-baseline.log",
+      "output": "✖ extracts opaque tokens (1.153068ms)\n✔ rejects invalid headers (0.345543ms)\nℹ tests 2\nℹ suites 0\nℹ pass 1\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 55.43546\n\n✖ failing tests:\n\ntest at test/token.test.mjs:4:1\n✖ extracts opaque tokens (1.153068ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  'YQ' !== 'YQ=='\n  \n      at TestContext.<anonymous> (file:///tmp/skill-repairs-20261021/author-fixture-qa/error-fixer/03/test/token.test.mjs:6:10)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1201:25)\n      at Test.start (node:internal/test_runner/test:1096:17)\n      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 'YQ',\n    expected: 'YQ==',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\nnpm notice run test\nnpm notice run node --test\n"
+    },
+    {
+      "skill": "error-fixer",
+      "case": "03",
+      "phase": "baseline",
+      "command": [
+        "npm",
+        "run",
+        "smoke"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/error-fixer-03-smoke-baseline.log",
+      "output": "YQ\nnpm notice run smoke\nnpm notice run node scripts/smoke.mjs\n"
+    },
+    {
+      "skill": "error-fixer",
+      "case": "03",
+      "phase": "fixture-control",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/error-fixer-03-test-control.log",
+      "output": "✔ extracts opaque tokens (0.492481ms)\n✔ rejects invalid headers (0.428389ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 49.459081\nnpm notice run test\nnpm notice run node --test\n"
+    },
+    {
+      "skill": "error-fixer",
+      "case": "03",
+      "phase": "fixture-control",
+      "command": [
+        "npm",
+        "run",
+        "smoke"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/error-fixer-03-smoke-control.log",
+      "output": "YQ==\nnpm notice run smoke\nnpm notice run node scripts/smoke.mjs\n"
+    }
+  ],
+  "limits": "Author preparation and structural checks only; not independent behavioral approval."
+}

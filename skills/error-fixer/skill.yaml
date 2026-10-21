@@ -62,9 +62,12 @@ sections:
       goal: Establish a causal explanation for the violated contract.
       steps:
         - Trace the mechanism from trigger to failure. Separate facts from hypotheses and use discriminating experiments to challenge the explanation before adopting a permanent fix.
+        - Before selecting a correction, check available related fixes, working implementations, and results of prior attempts, bounded to the current failure; inspect any explicitly identified predecessor. Read the actual change or diff and its verification evidence, and compare the conditions behind its result with the current conditions.
+        - Reuse, adapt, or reject that prior solution against the current contract. For rejection, briefly state the concrete incompatibility or new evidence; if no applicable predecessor is available, continue causal diagnosis without blocking on history.
         - If the original environment is unavailable, inspected code and authoritative inputs may still justify a bounded local correction. A plausible adjacent hypothesis alone does not; leave the unreplayed environment explicitly unverified.
       validation:
         - The proposed correction addresses an evidenced cause or violated contract, with a check that could falsify it.
+        - The choice accounts for relevant prior results without treating history as authority over the current contract.
     - id: guard-repair
       title: Guard and repair
       goal: Restore the intended behavior within the authorized repair scope.

@@ -1,0 +1,156 @@
+{
+  "frozenAt": "2026-10-21T11:47:17.232319+00:00",
+  "baselineCommit": "0bd4d8d92a9488e5595faa2045353733ec0b5fca",
+  "skill": "error-fixer",
+  "inputsDigest": "d8e608a7c3d17621ae9f2cf53dc62b3a1f4b547657a6cb03b0093d3778f7e9d0",
+  "inputs": [
+    {
+      "path": "cases/01/project/README.md",
+      "sha256": "3991247a6fcec9a33550afc171fc54964ed28cb013538fae37b68dbce88530c5"
+    },
+    {
+      "path": "cases/01/project/captures/last-run.json",
+      "sha256": "0a78671a7988b2a2341e90af62aa58c9a6f28c97db8f58c4413919cc09764147"
+    },
+    {
+      "path": "cases/01/project/history/C17/change.patch",
+      "sha256": "90379dad7bde5ecde1491029b8c79b970d4657c2d8cb00aa039b35054f256ed6"
+    },
+    {
+      "path": "cases/01/project/history/C17/result.json",
+      "sha256": "e8baeb47a6a0da8dbfda2658aec0e240d088cadf2815aac9b84c8e0842f8b963"
+    },
+    {
+      "path": "cases/01/project/package.json",
+      "sha256": "b5c075d73f3464007346484d67bb95b9211c6b4e5143bed1e3c564c428a4f77f"
+    },
+    {
+      "path": "cases/01/project/scripts/smoke.mjs",
+      "sha256": "dc92976266dccfa3cce312ec968403f14ec818741fc42f69b439b39421f95c93"
+    },
+    {
+      "path": "cases/01/project/src/inspect-catalog.mjs",
+      "sha256": "7417748271c0319346bc66adc575d27345c37245725e8824ade157ed762fcaf1"
+    },
+    {
+      "path": "cases/01/project/src/platform.mjs",
+      "sha256": "9e8675045f0573cff5a987f5b367ec909e6a90d48ba397df26212ef6e71d4689"
+    },
+    {
+      "path": "cases/01/project/src/reader.mjs",
+      "sha256": "74d8c76d4c4d0655030c899714bee0c31f9dac78c4d42ee9c9da3fca879286e8"
+    },
+    {
+      "path": "cases/01/project/test/reader.test.mjs",
+      "sha256": "58eb10a7a3f96cf017c5a5fd41d84d5f138744e9ff5a3ad752e4b13ada25d4ac"
+    },
+    {
+      "path": "cases/01/task.md",
+      "sha256": "076da866c7cf530f5e87a5ba08e64cd275894ab08a1644ec0bdfec0d37cff42c"
+    },
+    {
+      "path": "cases/02/project/CONTRACT.md",
+      "sha256": "46ac39e70c621f583f8bba7bd2e82021168a2da25ba2ac56d00bfbdb3d56cda5"
+    },
+    {
+      "path": "cases/02/project/README.md",
+      "sha256": "3991247a6fcec9a33550afc171fc54964ed28cb013538fae37b68dbce88530c5"
+    },
+    {
+      "path": "cases/02/project/api-config.json",
+      "sha256": "ae121a89f47a7823b6fee0c71a19599efd530d85a2184bcd0712aa29ad56167e"
+    },
+    {
+      "path": "cases/02/project/captures/last-run.json",
+      "sha256": "94819439c56a9dc2cd4778ee360baaa40d1761927f2a532c82ee0d46452f7dc3"
+    },
+    {
+      "path": "cases/02/project/history/C17/change.patch",
+      "sha256": "90379dad7bde5ecde1491029b8c79b970d4657c2d8cb00aa039b35054f256ed6"
+    },
+    {
+      "path": "cases/02/project/history/C17/result.json",
+      "sha256": "711c9e69f720f8a5b77ce1a8687f119f0f23528893f9bf357bed2a4e2cbe5122"
+    },
+    {
+      "path": "cases/02/project/package.json",
+      "sha256": "4a646b9bd614d19ea16b2e243aaf4f78af68e1492dc3510808dd0685fb0b5d69"
+    },
+    {
+      "path": "cases/02/project/scripts/smoke.mjs",
+      "sha256": "dc92976266dccfa3cce312ec968403f14ec818741fc42f69b439b39421f95c93"
+    },
+    {
+      "path": "cases/02/project/src/platform.mjs",
+      "sha256": "9f9fdcf5fb3ff1300ff1c649ef98fd5f2ae988834bfbfa31f15d2477efd0176f"
+    },
+    {
+      "path": "cases/02/project/src/reader.mjs",
+      "sha256": "74d8c76d4c4d0655030c899714bee0c31f9dac78c4d42ee9c9da3fca879286e8"
+    },
+    {
+      "path": "cases/02/project/test/reader.test.mjs",
+      "sha256": "58eb10a7a3f96cf017c5a5fd41d84d5f138744e9ff5a3ad752e4b13ada25d4ac"
+    },
+    {
+      "path": "cases/02/task.md",
+      "sha256": "4c83bd6c35ddf854b6ff67dad2bf050c88bc261893ac9182b9557ff56f305472"
+    },
+    {
+      "path": "cases/03/project/README.md",
+      "sha256": "0f0fbe79307231d47bc43b19da7f9ab6dcc60e41fabb6c4c0b3d9d08deb386dc"
+    },
+    {
+      "path": "cases/03/project/captures/report.json",
+      "sha256": "2a8a12ec65b524612bfc6068386ebd7b1cc5bae35a8bdf99419afe58908a5037"
+    },
+    {
+      "path": "cases/03/project/package.json",
+      "sha256": "f9a9e492baf73713cbdd20d29950725f4c49f1c7a6ca25502a7759df79e2b2a6"
+    },
+    {
+      "path": "cases/03/project/scripts/smoke.mjs",
+      "sha256": "de5ec7b642c44b73210599f28c3b282b358f37e38c63295d63cf42fc8a97af6a"
+    },
+    {
+      "path": "cases/03/project/src/token.mjs",
+      "sha256": "59ebb1bb835f0f29aa11f1f9afa3869e69570b21645316b18b4e408ca49c5526"
+    },
+    {
+      "path": "cases/03/project/test/token.test.mjs",
+      "sha256": "7dd6004ab77a3ea80a968f129342ebf9aeb85a0c4e2782aeb5dbe123cc6af8c7"
+    },
+    {
+      "path": "cases/03/task.md",
+      "sha256": "ac05d8cc2a50d6aec9a806ac2b58576ac0659df7f745e2882acf5c41f9e744db"
+    },
+    {
+      "path": "rubric.md",
+      "sha256": "a9fa84a5c338d53ffae6c1b17cbfb1721a1fc4037c4a2d41e5040307d4a98632"
+    }
+  ],
+  "baselineFiles": [
+    {
+      "path": "skills/error-fixer/skill.yaml",
+      "sha256": "a34d38f32214f052db435704f7969ea8b8603c7ed21ae7a071d6c71dcd17b4d8"
+    },
+    {
+      "path": "skills/error-fixer/SKILL.md",
+      "sha256": "3bf15fa4275fbff74a109c5806e37bd6abdf770b5f67b81d54d68b79c8643604"
+    },
+    {
+      "path": "skills/error-fixer/docs/compile-report.md",
+      "sha256": "ec614f9a6d3d617feac95e89d413ceb118990373e8bd445ca24675bf8940bf93"
+    },
+    {
+      "path": "skills/error-fixer/fragments/overview.md",
+      "sha256": "c68fb3b1f6646d1310c21c9842361c72acf91a97b5eaf578ca0ed08aa251f2c1"
+    },
+    {
+      "path": "skills/error-fixer/agents/openai.yaml",
+      "sha256": "b2d5c695e87cc8ed0e4ee1067d358b7d8a033430ff292bdb8294efa6a3ed66a5"
+    }
+  ],
+  "exposure": "Author-only fixture QA was run in disposable copies; executors must receive only their case and selected active skill. Rubric, QA controls, author request and sibling cases remain outside trial exposure.",
+  "qaResults": "../author-fixture-qa/results.json"
+}
