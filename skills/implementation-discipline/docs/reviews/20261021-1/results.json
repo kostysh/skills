@@ -1,0 +1,462 @@
+{
+  "01": {
+    "executor": "/root/trial_discipline_01",
+    "context": "fresh fork_turns=none; inherited model; no settings override; instructed shared-filesystem isolation, not a hard sandbox",
+    "before_files": {
+      "project/README.md": "3991247a6fcec9a33550afc171fc54964ed28cb013538fae37b68dbce88530c5",
+      "project/captures/api.json": "388d957a698a7b4e0e517e5d022eb7349a441c55e12868323574366e6de40954",
+      "project/captures/direct.json": "aed1ac5003e8a86b2154cfc32aade0f309eb47a7556839a047ec708fede119d5",
+      "project/deployment.json": "dea1db083e63ade5b2832470b85436b9ec712e7c2ba0f90b03fea14f0fce5c32",
+      "project/package.json": "9740c3e6b9af391eb2486eded3d15eee2fd1e39a5f6fddd3d127d56304d28f03",
+      "project/scripts/smoke.mjs": "dc92976266dccfa3cce312ec968403f14ec818741fc42f69b439b39421f95c93",
+      "project/src/platform.mjs": "9e8675045f0573cff5a987f5b367ec909e6a90d48ba397df26212ef6e71d4689",
+      "project/src/reader.mjs": "74d8c76d4c4d0655030c899714bee0c31f9dac78c4d42ee9c9da3fca879286e8",
+      "project/test/reader.test.mjs": "ed3917b9e13853e74a4e50b1840858b100bfeadb11a5c656f6fde519744eeae3",
+      "task.md": "979361e8d278424b03731ab14c9446c06cccbd38f9e8779939c9f9639c7a6324"
+    },
+    "changes": {
+      "project/src/reader.mjs": {
+        "before_sha256": "74d8c76d4c4d0655030c899714bee0c31f9dac78c4d42ee9c9da3fca879286e8",
+        "after_sha256": "bba94a8efa3d6e067bd46bc3e46fabd0014f10e52f00b5dc6fdd8d3972a0a338",
+        "unified_diff": "--- before/project/src/reader.mjs\n+++ after/project/src/reader.mjs\n@@ -1,5 +1,5 @@\n export function readCatalog(query) {\n-  const result = query({ query: 'SELECT catalog_snapshot', readOnly: true });\n+  const result = query({ query: 'BEGIN READ ONLY; SELECT catalog_snapshot; COMMIT', readOnly: false });\n   if (result.principal !== 'catalog_owner' || !result.readOnlyTransaction) throw new Error('catalog_assurance_failed');\n   return result.objectCount;\n }\n"
+      },
+      "project/test/reader.test.mjs": {
+        "before_sha256": "ed3917b9e13853e74a4e50b1840858b100bfeadb11a5c656f6fde519744eeae3",
+        "after_sha256": "429e0f81ce26cd1ebbb22f0d01eb467d0d0ebf7c27761479a111bc77d8aa9fb1",
+        "unified_diff": "--- before/project/test/reader.test.mjs\n+++ after/project/test/reader.test.mjs\n@@ -1,7 +1,7 @@\n import test from 'node:test';\n import assert from 'node:assert/strict';\n import { readCatalog } from '../src/reader.mjs';\n-import { directQuery } from '../src/platform.mjs';\n-test('catalog SQL returns complete schema', () => {\n-  assert.equal(readCatalog(({query}) => directQuery(`BEGIN READ ONLY; ${query}; COMMIT`)), 12);\n+import { managementQuery } from '../src/platform.mjs';\n+test('management catalog query uses catalog_owner and a read-only transaction', () => {\n+  assert.equal(readCatalog(managementQuery), 12);\n });\n"
+      }
+    },
+    "evidence": {
+      "after-smoke.exit-code": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "after-smoke.stderr": {
+        "sha256": "d393c51eacf896f4c9190b6319e7ce227f1857deb052d27de60c6015c095c822",
+        "text": "npm notice run smoke\nnpm notice run node scripts/smoke.mjs\n"
+      },
+      "after-smoke.stdout": {
+        "sha256": "ac089ef26f8b2983c7070da94045741f9a4fc146ddaf1033fb8df13597029113",
+        "text": "{\"objectCount\":12}\n"
+      },
+      "after-test.exit-code": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "after-test.stderr": {
+        "sha256": "e7c873552c2268c8f9bdea21074be61bf7d09b36faf04dbcedd3813634de1853",
+        "text": "npm notice run test\nnpm notice run node --test\n"
+      },
+      "after-test.stdout": {
+        "sha256": "a072d435c5202405879abed1c1d68fe8b31ae66f175e91c1fdf4bd3516dbefde",
+        "text": "✔ management catalog query uses catalog_owner and a read-only transaction (0.568133ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 46.545377\n"
+      },
+      "before-smoke.exit-code": {
+        "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "text": "1\n"
+      },
+      "before-smoke.stderr": {
+        "sha256": "376511f73645a929bbae5fba5600d3f696da8675cbcb0124a62fbec53bc3b829",
+        "text": "npm notice run smoke\nnpm notice run node scripts/smoke.mjs\nfile:///tmp/skill-trial-runs/implementation-discipline-01/case/project/src/reader.mjs:3\n  if (result.principal !== 'catalog_owner' || !result.readOnlyTransaction) throw new Error('catalog_assurance_failed');\n                                                                                 ^\n\nError: catalog_assurance_failed\n    at readCatalog (file:///tmp/skill-trial-runs/implementation-discipline-01/case/project/src/reader.mjs:3:82)\n    at file:///tmp/skill-trial-runs/implementation-discipline-01/case/project/scripts/smoke.mjs:3:43\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at async node:internal/modules/esm/loader:639:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)\n\nNode.js v24.15.0\n"
+      },
+      "before-smoke.stdout": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "before-test.exit-code": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "before-test.stderr": {
+        "sha256": "e7c873552c2268c8f9bdea21074be61bf7d09b36faf04dbcedd3813634de1853",
+        "text": "npm notice run test\nnpm notice run node --test\n"
+      },
+      "before-test.stdout": {
+        "sha256": "700a2f6810e9485322345712f01341c47edb21cc8d110b39102d8451328d1872",
+        "text": "✔ catalog SQL returns complete schema (0.61392ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 46.031737\n"
+      },
+      "implementation.md": {
+        "sha256": "7a7648a1a9e9d6882949c26888141f8e8dfe9135c88e721147fe684be3076e65",
+        "text": "# Локальное исправление catalog checker\n\nРежим: implementation/remediation. Источник задания: `case/task.md`.\n\n## Граница результата до изменения\n\n- Потребитель: штатная команда `npm run smoke`, которая вызывает `readCatalog(managementQuery)` согласно `project/deployment.json`.\n- Наблюдаемый результат: команда возвращает `{\"objectCount\":12}` без `catalog_assurance_failed`; запрос исполняется от `catalog_owner` внутри транзакции только для чтения.\n- Принятый контракт: `project/README.md`; нельзя менять роли, grants, `src/platform.mjs` или сам контракт.\n- Разрешённый объём: локальное исправление `src/reader.mjs` и регрессионная проверка в существующем `test/reader.test.mjs`. Сеть, commit и делегирование запрещены.\n- Граница подтверждения: локальный адаптер и сохранённое API-поведение. Даже успешный smoke не доказывает обращение к реальному облачному сервису.\n- Исходное свидетельство: `captures/api.json` показывает `metadata_observer`, `readOnlyTransaction: false`, `objectCount: 0`; код `managementQuery` выбирает principal по флагу `readOnly`, а режим транзакции определяет по SQL.\n- Причина: `reader.mjs` передаёт `readOnly: true` и SQL без `BEGIN READ ONLY`. Текущий тест подменяет транспорт на `directQuery` и сам добавляет SQL-транзакцию, поэтому не проверяет штатные условия.\n- Простейшее исправление: сохранить существующий `managementQuery`; передать `readOnly: false` для `catalog_owner` и явно обернуть единственный SELECT в `BEGIN READ ONLY; ...; COMMIT`.\n- Опровергающая проверка: штатный `npm run smoke` до и после изменения; регрессионный тест через тот же `managementQuery`, без обёртки, меняющей SQL или principal. Оба инварианта проверяет существующий guard в `readCatalog`.\n- Запись/хранение/reload неприменимы: это чтение каталога без изменения данных; проверяем границу consumer → запрос → локальный адаптер → результат.\n\n## Проверки\n\nФактические stdout, stderr и exit codes команд сохраняются в отдельных файлах evidence.\n\n| Проверка | До исправления | После исправления | Файлы доказательств |\n| --- | --- | --- | --- |\n| Исходный `npm test` | exit 0; маскировал сбой другой транспортной обёрткой | — | `before-test.*` |\n| Регрессионный `npm test` через `managementQuery` | exit 1; `catalog_assurance_failed` | exit 0; 1 тест прошёл | `regression-red-test.*`, `after-test.*` |\n| Штатный `npm run smoke` | exit 1; `catalog_assurance_failed` | exit 0; `{\"objectCount\":12}` | `before-smoke.*`, `after-smoke.*` |\n| `sha256sum --check .../evidence/protected.sha256` | Исходные hashes сохранены до правок | exit 0; все 7 защищённых файлов совпали | `protected.sha256`, `protected-check.*` |\n\nКоманды запускались из `case/project/`. Среда из исходного stack trace: Node.js v24.15.0. Суффиксы файлов: `.stdout`, `.stderr`, `.exit-code`.\n\n## Итоговый объём и ограничения\n\n- `src/reader.mjs`: изменена одна строка запроса; `readOnly: false` сохраняет `catalog_owner`, а `BEGIN READ ONLY; ...; COMMIT` задаёт SQL-транзакцию только для чтения. Guard, проверяющий оба инварианта, сохранён.\n- `test/reader.test.mjs`: тест теперь вызывает штатный `managementQuery` напрямую и не добавляет транзакцию за проверяемый код. Исходные версии обоих изменённых файлов сохранены в evidence как `reader.before.mjs` и `reader-test.before.mjs`.\n- Защищённые адаптер, контракт, deployment, штатный скрипт, captures и package.json не изменены. Новые production-концепции, зависимости и конфигурация не добавлены. Несогласованных дополнений нет.\n- Подтверждён локальный штатный путь по модели сохранённого API-поведения. Облачный вызов, реальная видимость каталога и фактический запрет записи сервером не проверялись; сеть запрещена заданием.\n- Commit, сетевые обращения и делегирование не выполнялись. Неразрешённых решений для локального исправления нет.\n"
+      },
+      "protected-check.exit-code": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "protected-check.stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "protected-check.stdout": {
+        "sha256": "7a3232ccd2d59f42398b873a1c96d85c84730e4b43bc5f2fb48212d51ae4aafc",
+        "text": "src/platform.mjs: OK\nREADME.md: OK\ndeployment.json: OK\nscripts/smoke.mjs: OK\ncaptures/api.json: OK\ncaptures/direct.json: OK\npackage.json: OK\n"
+      },
+      "protected.sha256": {
+        "sha256": "cfdefd4c93475fcd6b859053a604d2c0faa2e88a2d0785d255b2b4aabbec5e49",
+        "text": "9e8675045f0573cff5a987f5b367ec909e6a90d48ba397df26212ef6e71d4689  src/platform.mjs\n3991247a6fcec9a33550afc171fc54964ed28cb013538fae37b68dbce88530c5  README.md\ndea1db083e63ade5b2832470b85436b9ec712e7c2ba0f90b03fea14f0fce5c32  deployment.json\ndc92976266dccfa3cce312ec968403f14ec818741fc42f69b439b39421f95c93  scripts/smoke.mjs\n388d957a698a7b4e0e517e5d022eb7349a441c55e12868323574366e6de40954  captures/api.json\naed1ac5003e8a86b2154cfc32aade0f309eb47a7556839a047ec708fede119d5  captures/direct.json\n9740c3e6b9af391eb2486eded3d15eee2fd1e39a5f6fddd3d127d56304d28f03  package.json\n"
+      },
+      "reader-test.before.mjs": {
+        "sha256": "ed3917b9e13853e74a4e50b1840858b100bfeadb11a5c656f6fde519744eeae3",
+        "text": "import test from 'node:test';\nimport assert from 'node:assert/strict';\nimport { readCatalog } from '../src/reader.mjs';\nimport { directQuery } from '../src/platform.mjs';\ntest('catalog SQL returns complete schema', () => {\n  assert.equal(readCatalog(({query}) => directQuery(`BEGIN READ ONLY; ${query}; COMMIT`)), 12);\n});\n"
+      },
+      "reader.before.mjs": {
+        "sha256": "74d8c76d4c4d0655030c899714bee0c31f9dac78c4d42ee9c9da3fca879286e8",
+        "text": "export function readCatalog(query) {\n  const result = query({ query: 'SELECT catalog_snapshot', readOnly: true });\n  if (result.principal !== 'catalog_owner' || !result.readOnlyTransaction) throw new Error('catalog_assurance_failed');\n  return result.objectCount;\n}\n"
+      },
+      "regression-red-test.exit-code": {
+        "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "text": "1\n"
+      },
+      "regression-red-test.stderr": {
+        "sha256": "e7c873552c2268c8f9bdea21074be61bf7d09b36faf04dbcedd3813634de1853",
+        "text": "npm notice run test\nnpm notice run node --test\n"
+      },
+      "regression-red-test.stdout": {
+        "sha256": "722175286423857e5efd84e8ac6d0fb8e598151c234da371f73b9c4924f54c21",
+        "text": "✖ management catalog query uses catalog_owner and a read-only transaction (0.579635ms)\nℹ tests 1\nℹ suites 0\nℹ pass 0\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 47.077232\n\n✖ failing tests:\n\ntest at test/reader.test.mjs:5:1\n✖ management catalog query uses catalog_owner and a read-only transaction (0.579635ms)\n  Error: catalog_assurance_failed\n      at readCatalog (file:///tmp/skill-trial-runs/implementation-discipline-01/case/project/src/reader.mjs:3:82)\n      at TestContext.<anonymous> (file:///tmp/skill-trial-runs/implementation-discipline-01/case/project/test/reader.test.mjs:6:16)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1201:25)\n      at Test.start (node:internal/test_runner/test:1096:17)\n      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)\n"
+      },
+      "result.md": {
+        "sha256": "08a56bb0322fe8e6807768b209a3a6543527355ee13af632ed8099fcd4fc56e9",
+        "text": "Исправлен catalog checker. Запрос сохраняет `catalog_owner` через `readOnly: false` и явно открывает SQL-транзакцию `BEGIN READ ONLY`. Адаптер и принятый контракт не изменены.\n\nТест теперь использует штатный `managementQuery`. До исправления он и smoke воспроизводили `catalog_assurance_failed`; после исправления `npm test` и `npm run smoke` завершились с кодом 0. Smoke вернул `{\"objectCount\":12}`.\n\nПодтверждён только локальный путь через модель сохранённых API-ответов. Облачный вызов и реальный запрет записи сервером не проверялись. Сети и commit не было.\n\n[Отчёт и журналы проверок](/tmp/skill-trial-runs/implementation-discipline-01/evidence/implementation.md).\n"
+      }
+    },
+    "excluded_generated_or_binary_evidence_paths": []
+  },
+  "02": {
+    "executor": "/root/trial_discipline_02",
+    "context": "fresh fork_turns=none; inherited model; no settings override; instructed shared-filesystem isolation, not a hard sandbox",
+    "before_files": {
+      "project/.ci/prepare-job.json": "28008555eab8043efb23d262f91fd88f77e8fe267f5c3810ad0f8b0bc73ee9b6",
+      "project/README.md": "f584fbda4cf882e84b0e9b0af15fb6326d9253a60540384b6bf01f1b371147cb",
+      "project/captures/ci.stderr.txt": "215d7637b52b9684ddb42099ea462738801dbb02ad60e2ac817f5497e9ba1e48",
+      "project/node_modules/build-kit/index.mjs": "fd875cf328ae23cd6a5505ae1700945a013227024576184d25d85b3b2d9a9020",
+      "project/node_modules/build-kit/package.json": "209019a57bc6cec4b33cccfefbc0d3d1cc5a6be2fd0b072079fe09e8392f9a41",
+      "project/package-lock.json": "f0e3b5f0a8229ca44cdab102918c198711d62fed5a2c783d2fa1fd38a7b83365",
+      "project/package.json": "ac9d9b38e106dfcc2bf95f709a76db06ba0e35d82c31104149c0fa998481c39c",
+      "project/scripts/job.mjs": "d75efe32a0ca98f9d13f2bf4acf0276de08f7d77ffaed158a6f6a2e28ba45e69",
+      "project/scripts/prepare.mjs": "a8a9c1358222cafdd2f3c534469fb948b551401a57f025783f3f73db913210d9",
+      "project/test/prepare.test.mjs": "81ac50a7fb93f394e7b14060638d800386da66936d47accda7ce57836212b664",
+      "project/vendor/build-kit/index.mjs": "fd875cf328ae23cd6a5505ae1700945a013227024576184d25d85b3b2d9a9020",
+      "project/vendor/build-kit/package.json": "209019a57bc6cec4b33cccfefbc0d3d1cc5a6be2fd0b072079fe09e8392f9a41",
+      "task.md": "10f66f03e9dd194d55fac050fe9ba63bddfba60de311838e028900d8126d4e5c"
+    },
+    "changes": {
+      "project/.ci/prepare-job.json": {
+        "before_sha256": "28008555eab8043efb23d262f91fd88f77e8fe267f5c3810ad0f8b0bc73ee9b6",
+        "after_sha256": "8f6e4f8ed04610ec968d8d4a678a1288f153845df1fe8ac7bc68dde50368affb",
+        "unified_diff": "--- before/project/.ci/prepare-job.json\n+++ after/project/.ci/prepare-job.json\n@@ -1 +1 @@\n-{\"commands\":[[\"node\",\"scripts/prepare.mjs\"]]}\n+{\"commands\":[[\"npm\",\"ci\",\"--offline\"]]}\n"
+      },
+      "project/scripts/job.mjs": {
+        "before_sha256": "d75efe32a0ca98f9d13f2bf4acf0276de08f7d77ffaed158a6f6a2e28ba45e69",
+        "after_sha256": "67bb71bbe76dbeddb95591165f7db1347dff6ac2fafc97a7a2ecef8408ad2c79",
+        "unified_diff": "--- before/project/scripts/job.mjs\n+++ after/project/scripts/job.mjs\n@@ -2,6 +2,7 @@\n import { join, resolve } from 'node:path';\n import { tmpdir } from 'node:os';\n import { spawnSync } from 'node:child_process';\n+import assert from 'node:assert/strict';\n const source = resolve('.');\n const scratch = await mkdtemp(join(tmpdir(), 'clean-prepare-'));\n try {\n@@ -15,4 +16,7 @@\n     process.stderr.write(result.stderr ?? '');\n     if (result.status !== 0) { process.exitCode = result.status ?? 1; break; }\n   }\n+  if (process.exitCode === undefined) {\n+    assert.deepEqual(JSON.parse(await readFile(join(project, 'out/prepared.json'), 'utf8')), {candidate:'candidate-19', formatVersion:1});\n+  }\n } finally { await rm(scratch, {recursive:true, force:true}); }\n"
+      },
+      "project/test/prepare.test.mjs": {
+        "before_sha256": "81ac50a7fb93f394e7b14060638d800386da66936d47accda7ce57836212b664",
+        "after_sha256": "19bc564743847ae28c4c2cb30d6035619ec3ede3c84399d01b1c4013a451e394",
+        "unified_diff": "--- before/project/test/prepare.test.mjs\n+++ after/project/test/prepare.test.mjs\n@@ -7,3 +7,7 @@\n  assert.equal(run.status, 0, run.stderr);\n  assert.deepEqual(JSON.parse(readFileSync('out/prepared.json')), {candidate:'candidate-19', formatVersion:1});\n });\n+test('prepare job writes candidate metadata from a clean checkout', () => {\n+ const run = spawnSync(process.execPath, ['scripts/job.mjs'], {encoding:'utf8'});\n+ assert.equal(run.status, 0, run.stdout + run.stderr);\n+});\n"
+      }
+    },
+    "evidence": {
+      "baseline-ci-prepare.exit-code.txt": {
+        "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "text": "1\n"
+      },
+      "baseline-ci-prepare.stderr.txt": {
+        "sha256": "3edb4465690d0263fd5bd9f1e654e2cfd0afca012e3e80ffa609a13e7c74ce33",
+        "text": "npm notice run prepare-job@1.0.0 ci:prepare\nnpm notice run node scripts/job.mjs\nnode:internal/modules/package_json_reader:301\n  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);\n        ^\n\nError [ERR_MODULE_NOT_FOUND]: Cannot find package 'build-kit' imported from /tmp/clean-prepare-H6YdAF/project/scripts/prepare.mjs\n    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)\n    at packageResolve (node:internal/modules/esm/resolve:764:81)\n    at moduleResolve (node:internal/modules/esm/resolve:855:18)\n    at defaultResolve (node:internal/modules/esm/resolve:988:11)\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:697:20)\n    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:714:38)\n    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:746:52)\n    at #resolve (node:internal/modules/esm/loader:679:17)\n    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:599:35)\n    at ModuleJob.syncLink (node:internal/modules/esm/module_job:162:33) {\n  code: 'ERR_MODULE_NOT_FOUND'\n}\n\nNode.js v24.15.0\n"
+      },
+      "baseline-ci-prepare.stdout.txt": {
+        "sha256": "8c5e2ad1ac9e703dc2af78a502911d7187df436bb975dd786c9e06335f60839d",
+        "text": "{\"cwd\":\"/tmp/clean-prepare-H6YdAF/project\",\"command\":[\"node\",\"scripts/prepare.mjs\"],\"initialState\":\"clean checkout\"}\n"
+      },
+      "baseline-source-sha256.json": {
+        "sha256": "eef7f3cd5cd7be23507d17256772876d3e085a660eed96a069b74122c3b9174f",
+        "text": "{\n  \".ci/prepare-job.json\": \"28008555eab8043efb23d262f91fd88f77e8fe267f5c3810ad0f8b0bc73ee9b6\",\n  \"README.md\": \"f584fbda4cf882e84b0e9b0af15fb6326d9253a60540384b6bf01f1b371147cb\",\n  \"captures/ci.stderr.txt\": \"215d7637b52b9684ddb42099ea462738801dbb02ad60e2ac817f5497e9ba1e48\",\n  \"package-lock.json\": \"f0e3b5f0a8229ca44cdab102918c198711d62fed5a2c783d2fa1fd38a7b83365\",\n  \"package.json\": \"ac9d9b38e106dfcc2bf95f709a76db06ba0e35d82c31104149c0fa998481c39c\",\n  \"scripts/job.mjs\": \"d75efe32a0ca98f9d13f2bf4acf0276de08f7d77ffaed158a6f6a2e28ba45e69\",\n  \"scripts/prepare.mjs\": \"a8a9c1358222cafdd2f3c534469fb948b551401a57f025783f3f73db913210d9\",\n  \"test/prepare.test.mjs\": \"81ac50a7fb93f394e7b14060638d800386da66936d47accda7ce57836212b664\",\n  \"vendor/build-kit/index.mjs\": \"fd875cf328ae23cd6a5505ae1700945a013227024576184d25d85b3b2d9a9020\",\n  \"vendor/build-kit/package.json\": \"209019a57bc6cec4b33cccfefbc0d3d1cc5a6be2fd0b072079fe09e8392f9a41\"\n}\n"
+      },
+      "baseline-test.exit-code.txt": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "baseline-test.stderr.txt": {
+        "sha256": "a4713bef55ddb7206158ad9752eb7c3bd1a4e07c0b9293e5ba47dc09170a21c5",
+        "text": "npm notice run prepare-job@1.0.0 test\nnpm notice run node --test\n"
+      },
+      "baseline-test.stdout.txt": {
+        "sha256": "958ecab6a79339cf572a839107b78cdb4c9ec4e80b83082e8cac5147b8037c5b",
+        "text": "✔ prepare writes candidate metadata in developer directory (24.710045ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 71.294647\n"
+      },
+      "before/.ci/prepare-job.json": {
+        "sha256": "28008555eab8043efb23d262f91fd88f77e8fe267f5c3810ad0f8b0bc73ee9b6",
+        "text": "{\"commands\":[[\"node\",\"scripts/prepare.mjs\"]]}\n"
+      },
+      "before/scripts/job.mjs": {
+        "sha256": "d75efe32a0ca98f9d13f2bf4acf0276de08f7d77ffaed158a6f6a2e28ba45e69",
+        "text": "import { cp, mkdtemp, readFile, rm } from 'node:fs/promises';\nimport { join, resolve } from 'node:path';\nimport { tmpdir } from 'node:os';\nimport { spawnSync } from 'node:child_process';\nconst source = resolve('.');\nconst scratch = await mkdtemp(join(tmpdir(), 'clean-prepare-'));\ntry {\n  const project = join(scratch, 'project');\n  await cp(source, project, {recursive: true, filter: p => !/(^|\\/)(node_modules|out|\\.git)(\\/|$)/.test(p.slice(source.length))});\n  const job = JSON.parse(await readFile(join(project, '.ci/prepare-job.json'), 'utf8'));\n  for (const command of job.commands) {\n    console.log(JSON.stringify({cwd: project, command, initialState: 'clean checkout'}));\n    const result = spawnSync(command[0], command.slice(1), {cwd: project, encoding:'utf8', env: {...process.env, npm_config_cache: join(scratch,'cache')}});\n    process.stdout.write(result.stdout ?? '');\n    process.stderr.write(result.stderr ?? '');\n    if (result.status !== 0) { process.exitCode = result.status ?? 1; break; }\n  }\n} finally { await rm(scratch, {recursive:true, force:true}); }\n"
+      },
+      "before/test/prepare.test.mjs": {
+        "sha256": "81ac50a7fb93f394e7b14060638d800386da66936d47accda7ce57836212b664",
+        "text": "import test from 'node:test';\nimport assert from 'node:assert/strict';\nimport { spawnSync } from 'node:child_process';\nimport { readFileSync } from 'node:fs';\ntest('prepare writes candidate metadata in developer directory', () => {\n const run = spawnSync(process.execPath, ['scripts/prepare.mjs'], {encoding:'utf8'});\n assert.equal(run.status, 0, run.stderr);\n assert.deepEqual(JSON.parse(readFileSync('out/prepared.json')), {candidate:'candidate-19', formatVersion:1});\n});\n"
+      },
+      "changes.diff": {
+        "sha256": "42a4c45e62049b7bd0b3685b0dda773aae001f3f9eabb200256572f1036c6bbb",
+        "text": "--- before/.ci/prepare-job.json\n+++ after/.ci/prepare-job.json\n@@ -1 +1 @@\n-{\"commands\":[[\"node\",\"scripts/prepare.mjs\"]]}\n+{\"commands\":[[\"npm\",\"ci\",\"--offline\"]]}\n--- before/scripts/job.mjs\n+++ after/scripts/job.mjs\n@@ -2,6 +2,7 @@\n import { join, resolve } from 'node:path';\n import { tmpdir } from 'node:os';\n import { spawnSync } from 'node:child_process';\n+import assert from 'node:assert/strict';\n const source = resolve('.');\n const scratch = await mkdtemp(join(tmpdir(), 'clean-prepare-'));\n try {\n@@ -15,4 +16,7 @@\n     process.stderr.write(result.stderr ?? '');\n     if (result.status !== 0) { process.exitCode = result.status ?? 1; break; }\n   }\n+  if (process.exitCode === undefined) {\n+    assert.deepEqual(JSON.parse(await readFile(join(project, 'out/prepared.json'), 'utf8')), {candidate:'candidate-19', formatVersion:1});\n+  }\n } finally { await rm(scratch, {recursive:true, force:true}); }\n--- before/test/prepare.test.mjs\n+++ after/test/prepare.test.mjs\n@@ -7,3 +7,7 @@\n  assert.equal(run.status, 0, run.stderr);\n  assert.deepEqual(JSON.parse(readFileSync('out/prepared.json')), {candidate:'candidate-19', formatVersion:1});\n });\n+test('prepare job writes candidate metadata from a clean checkout', () => {\n+ const run = spawnSync(process.execPath, ['scripts/job.mjs'], {encoding:'utf8'});\n+ assert.equal(run.status, 0, run.stdout + run.stderr);\n+});\n"
+      },
+      "developer-prepared.json": {
+        "sha256": "b3a2b4d2172052d2652dea1181ea8c7af27866c4fc3f7cb63c17150ed4a91b07",
+        "text": "{\"candidate\":\"candidate-19\",\"formatVersion\":1}\n"
+      },
+      "final-ci-prepare.exit-code.txt": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "final-ci-prepare.stderr.txt": {
+        "sha256": "2dcbe2b698f95363139128f121446f533360a3c1953483518714c43df29916f5",
+        "text": "npm notice run prepare-job@1.0.0 ci:prepare\nnpm notice run node scripts/job.mjs\nnpm notice run prepare-job@1.0.0 prepare\nnpm notice run node scripts/prepare.mjs\n"
+      },
+      "final-ci-prepare.stdout.txt": {
+        "sha256": "64dd64a3480b97b4737bdb07572c6e2c492fb780d00bcfe6aa9781892adf7014",
+        "text": "{\"cwd\":\"/tmp/clean-prepare-a4xAEW/project\",\"command\":[\"npm\",\"ci\",\"--offline\"],\"initialState\":\"clean checkout\"}\nprepared candidate-19\n\nadded 1 package, and audited 3 packages in 180ms\n\nfound 0 vulnerabilities\n"
+      },
+      "final-source-sha256.json": {
+        "sha256": "2c2645a6d342240f860615cce94bb44efe1b0b2c09f7c2ca8c40bcab2bc15112",
+        "text": "{\n  \".ci/prepare-job.json\": \"8f6e4f8ed04610ec968d8d4a678a1288f153845df1fe8ac7bc68dde50368affb\",\n  \"README.md\": \"f584fbda4cf882e84b0e9b0af15fb6326d9253a60540384b6bf01f1b371147cb\",\n  \"captures/ci.stderr.txt\": \"215d7637b52b9684ddb42099ea462738801dbb02ad60e2ac817f5497e9ba1e48\",\n  \"package-lock.json\": \"f0e3b5f0a8229ca44cdab102918c198711d62fed5a2c783d2fa1fd38a7b83365\",\n  \"package.json\": \"ac9d9b38e106dfcc2bf95f709a76db06ba0e35d82c31104149c0fa998481c39c\",\n  \"scripts/job.mjs\": \"67bb71bbe76dbeddb95591165f7db1347dff6ac2fafc97a7a2ecef8408ad2c79\",\n  \"scripts/prepare.mjs\": \"a8a9c1358222cafdd2f3c534469fb948b551401a57f025783f3f73db913210d9\",\n  \"test/prepare.test.mjs\": \"19bc564743847ae28c4c2cb30d6035619ec3ede3c84399d01b1c4013a451e394\",\n  \"vendor/build-kit/index.mjs\": \"fd875cf328ae23cd6a5505ae1700945a013227024576184d25d85b3b2d9a9020\",\n  \"vendor/build-kit/package.json\": \"209019a57bc6cec4b33cccfefbc0d3d1cc5a6be2fd0b072079fe09e8392f9a41\"\n}\n"
+      },
+      "final-test.exit-code.txt": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "final-test.stderr.txt": {
+        "sha256": "a4713bef55ddb7206158ad9752eb7c3bd1a4e07c0b9293e5ba47dc09170a21c5",
+        "text": "npm notice run prepare-job@1.0.0 test\nnpm notice run node --test\n"
+      },
+      "final-test.stdout.txt": {
+        "sha256": "b516b1d8f2cbeec505c2e8424ea0a819dbfec79fd24502981a19c4be998c2f02",
+        "text": "✔ prepare writes candidate metadata in developer directory (25.583454ms)\n✔ prepare job writes candidate metadata from a clean checkout (269.934844ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 347.744985\n"
+      },
+      "node-version.exit-code.txt": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "node-version.stderr.txt": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "node-version.stdout.txt": {
+        "sha256": "c642a0de246dcdc6c51318fe449646fc5067b981a8d09e9ccdb8141a5756339a",
+        "text": "v24.15.0\n"
+      },
+      "npm-version.exit-code.txt": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "npm-version.stderr.txt": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "npm-version.stdout.txt": {
+        "sha256": "3ff126c75050b6f2b69c7ca88bd8a0e76d36646db66f52245e32be93d09273aa",
+        "text": "12.0.1\n"
+      },
+      "regression-red.exit-code.txt": {
+        "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "text": "1\n"
+      },
+      "regression-red.stderr.txt": {
+        "sha256": "a4713bef55ddb7206158ad9752eb7c3bd1a4e07c0b9293e5ba47dc09170a21c5",
+        "text": "npm notice run prepare-job@1.0.0 test\nnpm notice run node --test\n"
+      },
+      "regression-red.stdout.txt": {
+        "sha256": "d5479ed0c8ee10679efe9ea44f58adad2940a1fdf1788ec59d1deb517257df9c",
+        "text": "✔ prepare writes candidate metadata in developer directory (27.342834ms)\n✖ prepare job writes candidate metadata from a clean checkout (51.127523ms)\nℹ tests 2\nℹ suites 0\nℹ pass 1\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 127.386618\n\n✖ failing tests:\n\ntest at test/prepare.test.mjs:10:1\n✖ prepare job writes candidate metadata from a clean checkout (51.127523ms)\n  AssertionError [ERR_ASSERTION]: {\"cwd\":\"/tmp/clean-prepare-JZFZ8J/project\",\"command\":[\"node\",\"scripts/prepare.mjs\"],\"initialState\":\"clean checkout\"}\n  node:internal/modules/package_json_reader:301\n    throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);\n          ^\n  \n  Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'build-kit' imported from /tmp/clean-prepare-JZFZ8J/project/scripts/prepare.mjs\n      at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)\n      at packageResolve (node:internal/modules/esm/resolve:764:81)\n      at moduleResolve (node:internal/modules/esm/resolve:855:18)\n      at defaultResolve (node:internal/modules/esm/resolve:988:11)\n      at #cachedDefaultResolve (node:internal/modules/esm/loader:697:20)\n      at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:714:38)\n      at ModuleLoader.resolveSync (node:internal/modules/esm/loader:746:52)\n      at #resolve (node:internal/modules/esm/loader:679:17)\n      at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:599:35)\n      at ModuleJob.syncLink (node:internal/modules/esm/module_job:162:33) {\n    code: 'ERR_MODULE_NOT_FOUND'\n  }\n  \n  Node.js v24.15.0\n  \n  \n  1 !== 0\n  \n      at TestContext.<anonymous> (file:///tmp/skill-trial-runs/implementation-discipline-02/case/project/test/prepare.test.mjs:12:9)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1201:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)\n      at Test.postRun (node:internal/test_runner/test:1330:19)\n      at Test.run (node:internal/test_runner/test:1258:12)\n      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: 1,\n    expected: 0,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n"
+      },
+      "result.md": {
+        "sha256": "46073ec03c6937347877c9eac45a06beabfd5eaf1e0fa192c20c33a5620bbb46",
+        "text": "Исправлено: prepare job выполняет `npm ci --offline`, который устанавливает зависимости и запускает существующий lifecycle `prepare`.\n\n- Ошибка `ERR_MODULE_NOT_FOUND` воспроизведена до исправления.\n- После исправления `npm test`: 2/2; `npm run ci:prepare`: exit 0. Проверено содержимое `out/prepared.json` в чистом каталоге: `candidate-19`, `formatVersion: 1`.\n- Изменены только `.ci/prepare-job.json`, существующий проверочный runner и связанный тест. Dependency contract и реализация `prepare` сохранены побайтно.\n\nДоказан локальный запуск по условиям CI. Внешний CI не запускался. [Отчёт и сохранённые результаты проверок](/tmp/skill-trial-runs/implementation-discipline-02/evidence/work-log.md).\n"
+      },
+      "scope-check.exit-code.txt": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "scope-check.stderr.txt": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "scope-check.stdout.txt": {
+        "sha256": "cec6b8f41b7d88b66d81d6f7ab4bc4673e8b3ca1d47fda0464912581c244e16c",
+        "text": "{\n  \"changedSourceFiles\": [\n    \".ci/prepare-job.json\",\n    \"scripts/job.mjs\",\n    \"test/prepare.test.mjs\"\n  ],\n  \"dependencyContract\": \"byte-identical\",\n  \"prepareImplementation\": \"byte-identical\",\n  \"generatedDeveloperArtifact\": \"copied to evidence then removed\"\n}\n"
+      },
+      "work-log.md": {
+        "sha256": "aac124e2a7206b7cb4ce3a6870e8c7a36f7c02f7ae5f42161051166999a2d451",
+        "text": "# Implementation record\n\nTask mode: implementation/remediation.\n\nOutcome: the prepare job runs from a clean checkout with Node.js >=22 and npm, and writes out/prepared.json containing {\"candidate\":\"candidate-19\",\"formatVersion\":1} through the declared locked build-kit development dependency.\nActor/consumer: the CI controller executes .ci/prepare-job.json commands; downstream consumers read the prepared candidate metadata.\nAuthority: case/task.md permits local startup configuration and associated verification changes; project/README.md requires npm ci --offline and preservation of dependency/lock versions.\nMutation boundary: project startup configuration and associated checks, generated files from declared local commands; evidence is stored separately. No package contract changes, vendoring, prepare implementation rewrite, network, commit, external services, or delegation.\nFailure witness: captures/ci.stderr.txt records ERR_MODULE_NOT_FOUND for build-kit from scripts/prepare.mjs. The job runs node scripts/prepare.mjs before any dependency installation. The developer test assumes installed dependencies; scripts/job.mjs explicitly copies into a fresh temporary checkout without node_modules.\nSimplest existing primitive: the project's frozen offline installation command, npm ci --offline, before dependency use. The package already has an npm prepare lifecycle script.\nFalsifying check: reproduce npm run ci:prepare from the clean-checkout runner, then check the produced artifact before runner cleanup. Preserve the existing local test and dependency/lock bytes. A successful installed-directory test alone does not establish clean-checkout behavior.\nClaim boundary: local reproduction of the documented controller behavior; no remote CI execution is authorized or claimed.\n\n## Baseline and implementation decision\n\nNode v24.15.0 and npm 12.0.1 satisfy the documented environment. npm test passed (1 test); npm run ci:prepare failed with exit 1 and the same ERR_MODULE_NOT_FOUND for build-kit as the capture. Full streams and exit codes are retained separately.\n\nUse npm ci --offline as the job command: the existing package.json prepare lifecycle invokes scripts/prepare.mjs after installation, so a second direct prepare command is unnecessary. Strengthen the existing clean-checkout runner with artifact readback before its existing cleanup; add a regression test that invokes this runner. No new runner or production test seam is needed.\n\n## Verification and terminal result\n\nThe new clean-checkout regression failed before the configuration fix with ERR_MODULE_NOT_FOUND (npm test exit 1; existing developer-directory test still passed). After replacing the job command with npm ci --offline, npm test passed both tests (exit 0) and npm run ci:prepare passed (exit 0). The latter installed the local locked dependency in a fresh temporary project and ran the existing prepare lifecycle; the existing runner now read back and asserted the artifact before its finally cleanup. The runner uses a fresh npm cache and excludes both node_modules and out from its copy.\n\nOnly .ci/prepare-job.json, scripts/job.mjs, and test/prepare.test.mjs changed. package.json, package-lock.json, vendor files, and scripts/prepare.mjs are byte-identical to baseline. No unauthorized additions or material unresolved decisions. The local developer artifact was retained in evidence and removed from the project after verification. Full stdout/stderr and exit codes are stored for baseline, regression-red, final checks, and the source-scope check.\n\nEvidence limit: no external CI was run; the proven boundary is the documented local CI-controller replay on Node v24.15.0/npm 12.0.1 with local dependencies and offline installation. No stronger deployment claim is made.\n"
+      }
+    },
+    "excluded_generated_or_binary_evidence_paths": []
+  },
+  "03": {
+    "executor": "/root/trial_discipline_03",
+    "context": "fresh fork_turns=none; inherited model; no settings override; instructed shared-filesystem isolation, not a hard sandbox",
+    "before_files": {
+      "project/README.md": "5c53f320302d26fd8f6a808be18dedada14c87c8b45ffcbfffc83128fc9b29e6",
+      "project/package.json": "8995df09e6f214e2f3f81ac09edfd28cceb5791b6103e24831384fc5294b3cbc",
+      "project/src/label.mjs": "13d360322662244fb1a6cd4efa1306b86a913b2cfff4ae7192b3600896a4104c",
+      "project/test/label.test.mjs": "4925db7a7186321febc2a75fda400ac5a4bd56c1db27c4d60b5d1aab1affa080",
+      "task.md": "da743104f9a5e1766389282ced60d153a37d0f0d94449cc863018c5cfd0fe06e"
+    },
+    "changes": {
+      "project/src/label.mjs": {
+        "before_sha256": "13d360322662244fb1a6cd4efa1306b86a913b2cfff4ae7192b3600896a4104c",
+        "after_sha256": "d2cbdf21e41e96c4e8d371bf3e7c323edaa7cb4fd46d17a2348dc798da824386",
+        "unified_diff": "--- before/project/src/label.mjs\n+++ after/project/src/label.mjs\n@@ -1 +1 @@\n-export const normalizeLabel = value => value.replace(/^ +| +$/g, '').replace(/ +/, ' ');\n+export const normalizeLabel = value => value.replace(/^ +| +$/g, '').replace(/ +/g, ' ');\n"
+      }
+    },
+    "evidence": {
+      "after.exit-code": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "after.stderr": {
+        "sha256": "e7c873552c2268c8f9bdea21074be61bf7d09b36faf04dbcedd3813634de1853",
+        "text": "npm notice run test\nnpm notice run node --test\n"
+      },
+      "after.stdout": {
+        "sha256": "b0cc70fc30c5d0c3516cd6d9ac1e21169d19aba4b71bca4b2cd094339881beaf",
+        "text": "✔ normalizes label spaces (0.546511ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 44.467697\n"
+      },
+      "before.exit-code": {
+        "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "text": "1\n"
+      },
+      "before.stderr": {
+        "sha256": "e7c873552c2268c8f9bdea21074be61bf7d09b36faf04dbcedd3813634de1853",
+        "text": "npm notice run test\nnpm notice run node --test\n"
+      },
+      "before.stdout": {
+        "sha256": "77e83232b2e49c4206caafaecf4a1075fe2c34302a11c699394dd1cf4bd203b5",
+        "text": "✖ normalizes label spaces (1.071212ms)\nℹ tests 1\nℹ suites 0\nℹ pass 0\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 44.549581\n\n✖ failing tests:\n\ntest at test/label.test.mjs:4:1\n✖ normalizes label spaces (1.071212ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  + actual - expected\n  \n  + 'west hall   group'\n  - 'west hall group'\n               ^\n  \n      at TestContext.<anonymous> (file:///tmp/skill-trial-runs/implementation-discipline-03/case/project/test/label.test.mjs:5:9)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1201:25)\n      at Test.start (node:internal/test_runner/test:1096:17)\n      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 'west hall   group',\n    expected: 'west hall group',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n"
+      },
+      "result.md": {
+        "sha256": "6dfcf81d7e9ccc55106a79fb465a302f5c1d4a66a0bd2393fdac155de122ae9f",
+        "text": "Исправлено: `normalizeLabel` схлопывает все серии ASCII-пробелов. В [label.mjs](/tmp/skill-trial-runs/implementation-discipline-03/case/project/src/label.mjs:1) добавлен только флаг `g`; табуляции сохраняются.\n\n`npm test`: до исправления — ошибка, exit 1; после — PASS, exit 0. Существующий тест проверяет исходный пример и сохранение контракта. stdout/stderr и коды выхода сохранены в [evidence](/tmp/skill-trial-runs/implementation-discipline-03/evidence). Дополнительные проверки не требовались для этой чистой локальной функции.\n"
+      },
+      "scope.md": {
+        "sha256": "f83bd033c6c5a3140d473ba1ddd1aef2c6b9692d6dca8b75f19e704999c09b4d",
+        "text": "# Граница задачи\n\nРежим: implementation/remediation. Источник полномочий: case/task.md; контракт: project/README.md.\n\nРезультат: normalizeLabel удаляет ASCII-пробелы с краёв строки и схлопывает каждую внутреннюю серию ASCII-пробелов до одного. Остальные символы, включая табуляции, сохраняются.\n\nПотребитель: локальный CLI-форматтер. Проверяемая граница: чистая локальная строковая функция; хранения состояния, сетевых и зависящих от вызывающего субъекта переходов нет.\n\nРазрешённое изменение: исправление normalizeLabel в project/. Отчёт и фактические результаты команд находятся в evidence/. Commit, внешние сервисы и делегирование не разрешены.\n\nСвидетель ошибки: существующий test/label.test.mjs вызывает normalizeLabel('  west   hall   group  ') и ожидает 'west hall group'. В src/label.mjs второй replace использует / +/ без флага g и обрабатывает только первую серию.\n\nПрямое решение после воспроизведения: добавить g ко второму регулярному выражению. Новые зависимости, абстракции, инфраструктура и изменения контракта не требуются.\n\nФальсифицирующая проверка: штатный npm test до и после исправления. Существующий тест покрывает исходный свидетель, строку без пробелов, табуляцию и строку только из пробелов; новый тест не требуется.\n"
+      }
+    },
+    "excluded_generated_or_binary_evidence_paths": []
+  },
+  "04": {
+    "executor": "/root/trial_discipline_04",
+    "context": "fresh fork_turns=none; inherited model; no settings override; instructed shared-filesystem isolation, not a hard sandbox",
+    "before_files": {
+      "project/README.md": "0230346a7cd18ca836ec7467738859c346ff53bc025ac2048485de037f8cbbb4",
+      "project/captures/event.json": "9c20d26dd6b86c719481fd04970692f71b9fa8769ff9f80155e16f56b05d0249",
+      "project/captures/provider-check.txt": "d30838cb8246ab8b4ee10cbfa5aa208814f546b8f4dfec4618919d728341eebb",
+      "project/contracts/provider-v3.md": "1ab237642775c295b2fd44d3003123dcfb9b9e4ee8cac80a8eabb418547fe3a5",
+      "project/package.json": "e35f0e796eee4e7f78d8124c16d1fd071b2e4eb4d7cb9cfcf078d41f563ff4f7",
+      "project/scripts/replay.mjs": "2b81cbc8775653aa2370187ddb6095ec5a3245373531a0210f30a01dd2322e4c",
+      "project/src/decode.mjs": "e02f6394a5b2321f355bb341bbbc2b6b04299c5f5f5dd4cc5c074c40a04ce242",
+      "project/test/decode.test.mjs": "84f9cfff63a2562a3b9cefefea57c520ea99f8a3a823a6adb6eca1369cd465b7",
+      "task.md": "0703f603a8af9f09869cfe7aab9a7880a9bc37b69628233c46a119842ee4f0dc"
+    },
+    "changes": {
+      "project/src/decode.mjs": {
+        "before_sha256": "e02f6394a5b2321f355bb341bbbc2b6b04299c5f5f5dd4cc5c074c40a04ce242",
+        "after_sha256": "6cb5fdd1d243e0c6e3185792ffeb7b4f4bf050b5c6de2e92bb9cd576f23c6dc4",
+        "unified_diff": "--- before/project/src/decode.mjs\n+++ after/project/src/decode.mjs\n@@ -1,3 +1,3 @@\n export function decode(event) {\n- return {eventId: event.id, recipientId: event.user.id};\n+ return {eventId: event.id, recipientId: event.subject.id};\n }\n"
+      }
+    },
+    "evidence": {
+      "after-replay.json": {
+        "sha256": "f7062f4b2a34c4573a2988317642ac9967a6f2dbdf4443dc8235f88a0050757a",
+        "text": "{\n  \"command\": [\n    \"npm\",\n    \"run\",\n    \"replay\"\n  ],\n  \"cwd\": \"/tmp/skill-trial-runs/implementation-discipline-04/case/project\",\n  \"exit_code\": 0\n}\n"
+      },
+      "after-replay.stderr.txt": {
+        "sha256": "36693f8368f0a3896bab19193a907c2a18bd0744d6919d28707fc2e27fadf024",
+        "text": "npm notice run replay\nnpm notice run node scripts/replay.mjs\n"
+      },
+      "after-replay.stdout.txt": {
+        "sha256": "0355a05c72350f892c6b700b4ce9e67cd61f394cab23fa5502d542bda8c8b653",
+        "text": "{\"eventId\":\"evt-23\",\"recipientId\":\"recipient-9\"}\n"
+      },
+      "after-test.json": {
+        "sha256": "61272db5f555f081f948134e9f94f0aeccdac2ef155d7870427838bcfe5a1ca0",
+        "text": "{\n  \"command\": [\n    \"npm\",\n    \"test\"\n  ],\n  \"cwd\": \"/tmp/skill-trial-runs/implementation-discipline-04/case/project\",\n  \"exit_code\": 0\n}\n"
+      },
+      "after-test.stderr.txt": {
+        "sha256": "e7c873552c2268c8f9bdea21074be61bf7d09b36faf04dbcedd3813634de1853",
+        "text": "npm notice run test\nnpm notice run node --test\n"
+      },
+      "after-test.stdout.txt": {
+        "sha256": "82b541ece332c2bfd92c69f181eda81f08c86638cd3a100d392db6270b28de37",
+        "text": "✔ decodes provider v3 captured event (0.89571ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 47.275685\n"
+      },
+      "before-replay.json": {
+        "sha256": "8319d0fc1756e5b81cff0da05d3a06008a6fdb56ac802f83ed96bf3721523561",
+        "text": "{\n  \"command\": [\n    \"npm\",\n    \"run\",\n    \"replay\"\n  ],\n  \"cwd\": \"/tmp/skill-trial-runs/implementation-discipline-04/case/project\",\n  \"exit_code\": 1\n}\n"
+      },
+      "before-replay.stderr.txt": {
+        "sha256": "2bf5f785c0001f6c7192d7321761103be0fb0d5cda89b54366bb21888b3c3b8d",
+        "text": "npm notice run replay\nnpm notice run node scripts/replay.mjs\nfile:///tmp/skill-trial-runs/implementation-discipline-04/case/project/src/decode.mjs:2\n return {eventId: event.id, recipientId: event.user.id};\n                                                    ^\n\nTypeError: Cannot read properties of undefined (reading 'id')\n    at decode (file:///tmp/skill-trial-runs/implementation-discipline-04/case/project/src/decode.mjs:2:53)\n    at file:///tmp/skill-trial-runs/implementation-discipline-04/case/project/scripts/replay.mjs:3:28\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at async node:internal/modules/esm/loader:639:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)\n\nNode.js v24.15.0\n"
+      },
+      "before-replay.stdout.txt": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "before-test.json": {
+        "sha256": "1a73bae81307dfff8046383b03a690b836ad32c7d8a9f80fc511a5928bfcbc04",
+        "text": "{\n  \"command\": [\n    \"npm\",\n    \"test\"\n  ],\n  \"cwd\": \"/tmp/skill-trial-runs/implementation-discipline-04/case/project\",\n  \"exit_code\": 1\n}\n"
+      },
+      "before-test.stderr.txt": {
+        "sha256": "e7c873552c2268c8f9bdea21074be61bf7d09b36faf04dbcedd3813634de1853",
+        "text": "npm notice run test\nnpm notice run node --test\n"
+      },
+      "before-test.stdout.txt": {
+        "sha256": "5c1e0f86da9941da1bf321a6f14e28c39d1c20fd9443e8cec55512833e662090",
+        "text": "✖ decodes provider v3 captured event (0.55098ms)\nℹ tests 1\nℹ suites 0\nℹ pass 0\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 52.221367\n\n✖ failing tests:\n\ntest at test/decode.test.mjs:5:1\n✖ decodes provider v3 captured event (0.55098ms)\n  TypeError: Cannot read properties of undefined (reading 'id')\n      at decode (file:///tmp/skill-trial-runs/implementation-discipline-04/case/project/src/decode.mjs:2:53)\n      at TestContext.<anonymous> (file:///tmp/skill-trial-runs/implementation-discipline-04/case/project/test/decode.test.mjs:6:19)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1201:25)\n      at Test.start (node:internal/test_runner/test:1096:17)\n      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)\n"
+      },
+      "change.diff": {
+        "sha256": "e175504529c3f2bb50fd89d8f6211ca4d6070fe2b09f5d7b41a5ddd3af255700",
+        "text": "--- project/src/decode.mjs (before)\n+++ project/src/decode.mjs (after)\n@@ -1,3 +1,3 @@\n export function decode(event) {\n- return {eventId: event.id, recipientId: event.user.id};\n+ return {eventId: event.id, recipientId: event.subject.id};\n }\n"
+      },
+      "environment-node.json": {
+        "sha256": "6b9e49d849b3455b6992349726f39e85235f3d9e6a23d64d44d2d6cae426d5fd",
+        "text": "{\n  \"command\": [\n    \"node\",\n    \"--version\"\n  ],\n  \"cwd\": \"/tmp/skill-trial-runs/implementation-discipline-04/case/project\",\n  \"exit_code\": 0\n}\n"
+      },
+      "environment-node.stderr.txt": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "environment-node.stdout.txt": {
+        "sha256": "c642a0de246dcdc6c51318fe449646fc5067b981a8d09e9ccdb8141a5756339a",
+        "text": "v24.15.0\n"
+      },
+      "environment-npm.json": {
+        "sha256": "4ed91c856d7df02ed3441d276584489217fcbf1aafe6fe36f1d9063c7ad8657f",
+        "text": "{\n  \"command\": [\n    \"npm\",\n    \"--version\"\n  ],\n  \"cwd\": \"/tmp/skill-trial-runs/implementation-discipline-04/case/project\",\n  \"exit_code\": 0\n}\n"
+      },
+      "environment-npm.stderr.txt": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "environment-npm.stdout.txt": {
+        "sha256": "3ff126c75050b6f2b69c7ca88bd8a0e76d36646db66f52245e32be93d09273aa",
+        "text": "12.0.1\n"
+      },
+      "implementation-log.md": {
+        "sha256": "97b06c709f02e1212da856567cb964989a5ac90abcb21c2d15ddee77328fbff2",
+        "text": "# Локальное исправление декодера\n\nРежим: implementation/remediation.\n\nРезультат: локальный обработчик возвращает `{eventId: \"evt-23\", recipientId: \"recipient-9\"}` для сохранённого `recipient.confirmed` без исключения.\nПотребитель: локальный ingest-код, вызывающий `decode(event)`.\nГраница утверждения: декодирование принятого payload по provider v3; регистрация события, доставка провайдера и развёрнутая интеграция вне этой проверки.\nПолномочия: `case/task.md`, `project/README.md` разрешают локальное исправление и локальные проверки. Публикация, обращения к провайдеру и commit запрещены.\nИсточник поведения: `project/contracts/provider-v3.md`, accepted integration contract revision 3. `subject.id` — получатель, `actor.id` — оператор.\nСвидетельство: `project/captures/event.json` содержит `subject.id` и `actor.id`, но не `user`; `src/decode.mjs` обращается к `event.user.id`.\nМинимальное решение: заменить один доступ к полю на `event.subject.id`, сохранив форму результата и структуру функции.\nПроверка, опровергающая исправление: существующий `npm test` проверяет точный результат сохранённого payload; `npm run replay` исполняет локальный путь чтения payload и декодирования.\nНовых требований, зависимостей, абстракций, fallback-веток и внешних действий не требуется.\n\nПоследняя проверка провайдера из `captures/provider-check.txt`: 2026-10-20T12:00:00Z, `connect ECONNREFUSED`; доставка не наблюдалась. Проверка в текущей задаче не повторяется.\n\n## Результат\n\nДо исправления обе команды завершились с кодом 1 и `TypeError: Cannot read properties of undefined (reading 'id')` на `event.user.id`.\nИзменён только `project/src/decode.mjs`: `event.user.id` заменён на `event.subject.id`.\nПосле исправления `npm test` завершился с кодом 0: 1 тест прошёл. `npm run replay` завершился с кодом 0 и вывел `{\"eventId\":\"evt-23\",\"recipientId\":\"recipient-9\"}`.\nПроверки использовали тот же сохранённый payload и те же локальные entrypoints до и после изменения; новые тесты не нужны, существующий тест обнаружил дефект и проверил точные идентификаторы.\nСреда: Node.js v24.15.0, npm 12.0.1.\nstdout, stderr и exit codes сохранены отдельно для каждой команды в evidence.\nДоставка провайдера, регистрация событий и развёрнутая интеграция не проверены. Локальный replay не является подтверждением доставки провайдера. Для этого требуется отдельное разрешение и доступный sandbox.\nНеразрешённых добавлений нет. Сеть, публикация, commit и delegation не использованы.\n"
+      },
+      "result.md": {
+        "sha256": "15af1ec0037e38e7cccae87eea48148c018e2e071748bffd2ee4d8575fac6674",
+        "text": "Локальный обработчик исправлен. В [decode.mjs](/tmp/skill-trial-runs/implementation-discipline-04/case/project/src/decode.mjs:2) заменён `event.user.id` на `event.subject.id` согласно принятому контракту. Это единственное изменение в проекте.\n\n- `npm test`: до исправления — падение, exit 1; после — 1 тест прошёл, exit 0.\n- `npm run replay`: до — `TypeError`, exit 1; после — `{\"eventId\":\"evt-23\",\"recipientId\":\"recipient-9\"}`, exit 0.\n\nПодтверждено локальное декодирование сохранённого payload. Доставка провайдера и развёрнутая интеграция не проверены. Последняя сохранённая проверка провайдера от 20 октября завершилась `ECONNREFUSED`; новых обращений не было.\n\nstdout, stderr, exit codes и [журнал исправления](/tmp/skill-trial-runs/implementation-discipline-04/evidence/implementation-log.md) сохранены в evidence. Публикация и commit не выполнялись.\n"
+      },
+      "source-after.mjs": {
+        "sha256": "6cb5fdd1d243e0c6e3185792ffeb7b4f4bf050b5c6de2e92bb9cd576f23c6dc4",
+        "text": "export function decode(event) {\n return {eventId: event.id, recipientId: event.subject.id};\n}\n"
+      }
+    },
+    "excluded_generated_or_binary_evidence_paths": []
+  }
+}

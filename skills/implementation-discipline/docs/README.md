@@ -18,6 +18,8 @@
 
 ## Logs
 
+- [logs/implementation-log-20261021-1.md](logs/implementation-log-20261021-1.md) - существенные условия проверки и реальные границы вывода; независимый PASS, 4/4 слепых случаев.
+- [Проверки 2026-10-21](reviews/20261021-1/README.md): исходные данные, результаты, снимок и независимый отчёт.
 - [logs/implementation-log-20260429-1.md](logs/implementation-log-20260429-1.md) - portable repeated-validation heuristic for adjacent observable cases.
 - [logs/implementation-log-20260810-1.md](logs/implementation-log-20260810-1.md) - T02 source-premise review, minimal remediation, gates и independent change PASS.
 - [logs/forward-test-evidence-20260810-1.md](logs/forward-test-evidence-20260810-1.md) - T02 baseline history и raw candidate A1/A2/B/C/D/E evidence.
