@@ -7,7 +7,7 @@ description: Perform read-only review of PRs, diffs, and local branch changes.
 metadata:
   source-version: 0.4.6
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 72faf03a8b5215232c2f1fd6169b72e541a3b774ede4e80e189838d4e399ef28
+  skillforge-source-hash: 51c479059eb6483e48d5c5c9f357d1603412809b849ae62d47675c25a5381a46
 ---
 
 # code-reviewer
@@ -170,7 +170,7 @@ Required when the stated condition applies:
 - `references/spec-pass.md` - linked issue, acceptance criteria, contract, ADR, migration note, or other normative source
 - `references/domain-routing.md` - changed behavior needing specialized authority
 - `references/policy-admission-merge-risk.md` - bounded pass for policy/admission merge-risk paths
-- `references/runtime-gate-deployed-path.md` - deployed-path and identity-binding pass for runtime-gating changes
+- `references/runtime-gate-deployed-path.md` - independent external-contract checks and deployed-path pass for runtime-gating changes
 - `references/complexity-only.md` - explicit complexity-only or complexity add-on request
 
 ## Workflow stages
@@ -210,7 +210,7 @@ Every review states the target, applicable base, snapshot, scope accounting, act
 - [Domain Routing](references/domain-routing.md) — Read this when changed code needs specialized framework, platform, security, privacy, financial, skill-package, or other domain authority.
 - [Methodology](references/methodology.md) — Read this for a broad, formal, high-risk, or large review that needs the full pass order and completeness audit.
 - [Policy Admission Merge Risk](references/policy-admission-merge-risk.md) — Read this when changed files or linked review intent touch policy gates, admission-before-side-effect flow, decision or audit persistence, active scope, idempotency, replay, or freshness checks.
-- [Runtime Gate Deployed Path](references/runtime-gate-deployed-path.md) — Read this when changed files or linked review intent touch runtime gates that authorize execution through a shipped lifecycle, production construction path, deployed dependency wiring, request or tick path, invocation boundary, idempotency lock scope, or deployment/cell identity binding.
+- [Runtime Gate Deployed Path](references/runtime-gate-deployed-path.md) — Read this when changed behavior depends on external-contract states, types, identity, or transitions, or touches runtime gates through a shipped lifecycle, production construction, deployed wiring, invocation boundary, idempotency locks, or deployment/cell identity binding.
 - [Spec Pass](references/spec-pass.md) — Read this when a linked issue, acceptance criteria, contract, ADR, migration note, or other normative source exists.
 - [Complexity-only Review](references/complexity-only.md) — Read this only when the user explicitly asks to review for over-engineering, simplification, unnecessary dependencies, dead flexibility, or what can be deleted.
 

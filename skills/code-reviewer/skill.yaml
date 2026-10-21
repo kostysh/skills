@@ -47,7 +47,7 @@ references:
     source: references/runtime-gate-deployed-path.md
     target: references/runtime-gate-deployed-path.md
     required: true
-    trigger: Read this when changed files or linked review intent touch runtime gates that authorize execution through a shipped lifecycle, production construction path, deployed dependency wiring, request or tick path, invocation boundary, idempotency lock scope, or deployment/cell identity binding.
+    trigger: Read this when changed behavior depends on external-contract states, types, identity, or transitions, or touches runtime gates through a shipped lifecycle, production construction, deployed wiring, invocation boundary, idempotency locks, or deployment/cell identity binding.
   - id: ref-references-severity-confidence
     title: Severity Confidence
     source: references/severity-confidence.md

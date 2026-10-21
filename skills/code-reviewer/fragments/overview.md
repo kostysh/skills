@@ -128,5 +128,5 @@ Required when the stated condition applies:
 - `references/spec-pass.md` - linked issue, acceptance criteria, contract, ADR, migration note, or other normative source
 - `references/domain-routing.md` - changed behavior needing specialized authority
 - `references/policy-admission-merge-risk.md` - bounded pass for policy/admission merge-risk paths
-- `references/runtime-gate-deployed-path.md` - deployed-path and identity-binding pass for runtime-gating changes
+- `references/runtime-gate-deployed-path.md` - independent external-contract checks and deployed-path pass for runtime-gating changes
 - `references/complexity-only.md` - explicit complexity-only or complexity add-on request

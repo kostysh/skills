@@ -1,0 +1,655 @@
+{
+  "21": {
+    "executor": "/root/trial_code_21",
+    "context": "fresh fork_turns=none; inherited model; no settings override; instructed shared-filesystem isolation, not a hard sandbox",
+    "before_files": {
+      "after/package.json": "927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f",
+      "after/src/admission.mjs": "4e574394186317ecca553755b311aca8027d97c754037cfd63bd5c495047988c",
+      "after/src/runner.mjs": "49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d",
+      "after/test/admission.test.mjs": "99391cfe0745429bae49c16435bf713a414dd1096ea9c41f0908e7a11a0428c3",
+      "before/package.json": "927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f",
+      "before/src/admission.mjs": "d7168c59aaab1bd1854158b8ff6db0471aa0c73841f96d113b39a31f0911fec4",
+      "before/src/runner.mjs": "49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d",
+      "before/test/admission.test.mjs": "99391cfe0745429bae49c16435bf713a414dd1096ea9c41f0908e7a11a0428c3",
+      "change-notes.md": "16e1c5814a0759029fdcdca1133582b90a7d6f4152961dde99f803811e05a373",
+      "change.diff": "385469b67507ecf86eb98e113c0f373446e1a0f270ef6f3b22cac06667d3d512",
+      "docs/authority.md": "88c96283f8a4e98bbdcaf50785687171fbfc77585ef9f2821f2144bfaa90944c",
+      "docs/batchline-api.md": "8087b7db807e17e7ecb48f69c9a608258f3fdbbbcdf99943481c2652a3837537",
+      "docs/execution-policy.md": "86a1462e2e1994f12a3c53dc4ac7078ae681b8016a4bb43a7441042b00eaa333",
+      "evidence/author-test-result.txt": "e27e698fcb5c6a56c528012e77f6df03766b21182fbbd43efb916bdb938ace24",
+      "evidence/capture-record.md": "b202cd50601d554d5638eb936d5c9cd35a90efbaa64a5748529360d64145ebfe",
+      "evidence/observation-01.json": "d85dbf5a069abec5843ec2da7d5cd8e6293b327e3cc4bf3dba44dc943af6862d",
+      "task.md": "cec0f49e06d9af55a4e9b0aee21439ba08d3414c5740301660f12ed9cf9c0e4d"
+    },
+    "changes": {},
+    "evidence": {
+      "author-suite.command.json": {
+        "sha256": "104e9119704b760684b410bd552e8092b3677eb11953f6e0489bc34b3e9b5be8",
+        "text": "{\n  \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-21/case/after\",\n  \"argv\": [\n    \"node\",\n    \"--test\",\n    \"test/admission.test.mjs\"\n  ]\n}\n"
+      },
+      "author-suite.exit-code": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "author-suite.stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "author-suite.stdout": {
+        "sha256": "38aff1d3d2b7fb5843697af67bfc1c26cb1c8d63f4107bb2743ff1f6b19b88c7",
+        "text": "✔ queued sequence (0.696956ms)\n✔ running sequence (0.813407ms)\n✔ finished sequence (0.130126ms)\n✔ skipped sequence (0.125127ms)\n✔ failed (0.077927ms)\n✔ cancelled (0.082906ms)\n✔ terminal without conclusion (0.077938ms)\n✔ unfinished with conclusion (0.065243ms)\n✔ unknown state (0.07955ms)\n✔ run binding (0.192654ms)\n✔ attempt binding (0.220978ms)\n✔ empty inventory (0.122482ms)\nℹ tests 12\nℹ suites 0\nℹ pass 12\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 47.007551\n"
+      },
+      "capture_check.py": {
+        "sha256": "ebf2c107c184be11b895762786365f47b1b322df4d488c09096ed793638d248d",
+        "text": "from pathlib import Path\nimport json, subprocess, sys\nroot = Path('/tmp/skill-trial-runs/code-reviewer-21/evidence')\nname, cwd, *argv = sys.argv[1:]\nresult = subprocess.run(argv, cwd=cwd, capture_output=True)\n(root / f'{name}.stdout').write_bytes(result.stdout)\n(root / f'{name}.stderr').write_bytes(result.stderr)\n(root / f'{name}.exit-code').write_text(f'{result.returncode}\\n')\n(root / f'{name}.command.json').write_text(json.dumps({'cwd': cwd, 'argv': argv}, indent=2) + '\\n')\nprint(json.dumps({'check': name, 'exit_code': result.returncode}))\nsys.stdout.flush()\nsys.stdout.buffer.write(result.stdout)\nsys.stdout.flush()\nsys.stderr.buffer.write(result.stderr)\nsys.exit(result.returncode)\n"
+      },
+      "full-diff.command.json": {
+        "sha256": "d40a8f9973bca963df427a1506374fa4e6e80322766e7a0a3c6fdf3e3b58d0d3",
+        "text": "{\n  \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-21/case\",\n  \"argv\": [\n    \"diff\",\n    \"-ru\",\n    \"before\",\n    \"after\"\n  ]\n}\n"
+      },
+      "full-diff.exit-code": {
+        "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "text": "1\n"
+      },
+      "full-diff.stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "full-diff.stdout": {
+        "sha256": "f94c8d6bb2ddfd12001f3ae49af70c0bc8547a02601b8719982cbb9c1a502349",
+        "text": "diff -ru before/src/admission.mjs after/src/admission.mjs\n--- before/src/admission.mjs\t2026-10-21 13:46:35.461942155 +0200\n+++ after/src/admission.mjs\t2026-10-21 13:46:35.462075526 +0200\n@@ -3,6 +3,6 @@\n   if (!Array.isArray(snapshot.jobs) || snapshot.jobs.length === 0) return false;\n   return snapshot.jobs.every(job => Array.isArray(job.steps) && job.steps.length > 0 && job.steps.every(step => {\n     if (step.status === 'completed') return ['success', 'skipped'].includes(step.conclusion);\n-    return step.conclusion === null;\n+    return [\"queued\", \"running\"].includes(step.status) && step.conclusion === null;\n   }));\n }\n"
+      },
+      "pending-contract.command.json": {
+        "sha256": "01cd3aac07d4be287ea568b7bdf04fc89a0cc453d25e5f2a96a76558533deeb1",
+        "text": "{\n  \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-21/evidence\",\n  \"argv\": [\n    \"node\",\n    \"--test\",\n    \"pending-contract.test.mjs\"\n  ]\n}\n"
+      },
+      "pending-contract.exit-code": {
+        "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "text": "1\n"
+      },
+      "pending-contract.stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "pending-contract.stdout": {
+        "sha256": "a53df8f16bee8881ac85858d8dae7ec73a44c74af0b748fa23da4e2fb9c71946",
+        "text": "{\"label\":\"before\",\"result\":{\"admitted\":true,\"commandCalls\":1},\"observedCommandCalls\":1}\n{\"label\":\"after\",\"result\":{\"admitted\":false,\"commandCalls\":0},\"observedCommandCalls\":0}\n✔ before: EP-17 R-2 dispatches the saved Batchline 2.3 pending inventory once (1.358666ms)\n✖ after: EP-17 R-2 dispatches the saved Batchline 2.3 pending inventory once (0.700664ms)\nℹ tests 2\nℹ suites 0\nℹ pass 1\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 42.302133\n\n✖ failing tests:\n\ntest at pending-contract.test.mjs:9:3\n✖ after: EP-17 R-2 dispatches the saved Batchline 2.3 pending inventory once (0.700664ms)\n  AssertionError [ERR_ASSERTION]: EP-17 R-2 requires exactly one command invocation\n  \n  0 !== 1\n  \n      at TestContext.<anonymous> (file:///tmp/skill-trial-runs/code-reviewer-21/evidence/pending-contract.test.mjs:13:12)\n      at async Test.run (node:internal/test_runner/test:1208:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: 0,\n    expected: 1,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n"
+      },
+      "pending-contract.test.mjs": {
+        "sha256": "1ae8456b3d1380b5b836f1901d2a85b5eeeff4dfd4570131fe04d3372a4d24f6",
+        "text": "import test from 'node:test';\nimport assert from 'node:assert/strict';\nimport { readFile } from 'node:fs/promises';\nimport { runPhase as before } from '../case/before/src/runner.mjs';\nimport { runPhase as after } from '../case/after/src/runner.mjs';\nconst inventory = JSON.parse(await readFile(new URL('../case/evidence/observation-01.json', import.meta.url), 'utf8'));\nconst expected = { runId: 'r-382', attempt: 3 };\nfor (const [label, runPhase] of [['before', before], ['after', after]]) {\n  test(`${label}: EP-17 R-2 dispatches the saved Batchline 2.3 pending inventory once`, async () => {\n    let calls = 0;\n    const result = await runPhase(async () => structuredClone(inventory), expected, async () => { calls++; });\n    console.log(JSON.stringify({ label, result, observedCommandCalls: calls }));\n    assert.equal(calls, 1, 'EP-17 R-2 requires exactly one command invocation');\n    assert.deepEqual(result, { admitted: true, commandCalls: 1 });\n  });\n}\n"
+      },
+      "result.md": {
+        "sha256": "c1fac6899cb2f1a8aa112344e712beca3f2b5bbe51a67d881586b8f4ad942459",
+        "text": "Изменение блокирует обязательный запуск для допустимого состояния `pending`; перед слиянием нужна правка.\n\n[blocking] [admission.mjs:6](/tmp/skill-trial-runs/code-reviewer-21/case/after/src/admission.mjs:6) — из разрешённых состояний исключён `pending`.\n\nПочему: [Batchline API 2.3](/tmp/skill-trial-runs/code-reviewer-21/case/docs/batchline-api.md) определяет `pending` с `conclusion: null` как незавершённое состояние. [EP-17 R-2](/tmp/skill-trial-runs/code-reviewer-21/case/docs/execution-policy.md) требует вызвать команду один раз для такой инвентаризации при совпадении run ID и attempt. Новый список содержит только `queued` и `running`, поэтому `runPhase` возвращает отказ до вызова команды.\n\nДоказательство: сохранённый синтетический ответ `observation-01.json` содержит успешный завершённый шаг и `pending`. Проверка через настоящий `runPhase` дала `before: admitted=true, calls=1`, `after: admitted=false, calls=0`. [Проверка регрессии](/tmp/skill-trial-runs/code-reviewer-21/evidence/pending-contract.stdout) завершилась с кодом 1. Авторские 12 тестов проходят, но `pending` не проверяют.\n\nИсправление: включить `pending` в явный список незавершённых состояний, сохранить проверку `conclusion === null` и отказ неизвестным состояниям; добавить регрессионный тест через `runPhase`.\n\nReview basis: [after/](/tmp/skill-trial-runs/code-reviewer-21/case/after) относительно [before/](/tmp/skill-trial-runs/code-reviewer-21/case/before); SHA-256 всего case `a190c48bc3fc3485a714aa4e2f9e826529052f9226380c313d83ffa0ae27f14e`, начальный и конечный снимки совпали.\n\nScope: проверен единственный изменённый файл `src/admission.mjs`, обе версии `runner.mjs`, тестов и `package.json`, все предоставленные источники и наблюдения. Недоступных файлов нет.\n\nEvidence: Node v24.15.0; авторские тесты — 12/12, exit 0; дополнительный сценарий — база проходит, изменение падает, exit 1. Полное сравнение каталогов подтверждает один изменённый файл; exit 1 у `diff` означает наличие различий. Фактические stdout/stderr и exit codes сохранены в [evidence/](/tmp/skill-trial-runs/code-reviewer-21/evidence).\n\nLimits: проверена локальная граница `admit → runPhase → command` со счётчиком вызовов. Наблюдение синтетическое; транспорт и бизнес-поведение команды исключены условиями задачи. Причины незаписанных исторических инцидентов не установлены.\n\nRecommendation: request changes\n"
+      },
+      "runtime-version.command.json": {
+        "sha256": "3511ea3ac3d72c77a663bb6b28ac65b4892dfb0cf483e828b9da3a4162029865",
+        "text": "{\n  \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-21/evidence\",\n  \"argv\": [\n    \"node\",\n    \"--version\"\n  ]\n}\n"
+      },
+      "runtime-version.exit-code": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "runtime-version.stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "runtime-version.stdout": {
+        "sha256": "c642a0de246dcdc6c51318fe449646fc5067b981a8d09e9ccdb8141a5756339a",
+        "text": "v24.15.0\n"
+      },
+      "snapshot-end.command.json": {
+        "sha256": "6b9abbf2ac070b0b83d7a9d96a878ccd7a2f8f26fc5d02b423c068d344535100",
+        "text": "{\n  \"argv\": [\n    \"python3\",\n    \"/tmp/skill-trial-runs/code-reviewer-21/evidence/verify-snapshot.py\"\n  ],\n  \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-21/evidence\"\n}\n"
+      },
+      "snapshot-end.exit-code": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "snapshot-end.json": {
+        "sha256": "924fe6285042ec39a502bdb7e865e36c6e72fa4e2ac6ca686b08bb80e98579e8",
+        "text": "{\n  \"snapshot\": \"a190c48bc3fc3485a714aa4e2f9e826529052f9226380c313d83ffa0ae27f14e\",\n  \"files\": {\n    \"after/package.json\": \"927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f\",\n    \"after/src/admission.mjs\": \"4e574394186317ecca553755b311aca8027d97c754037cfd63bd5c495047988c\",\n    \"after/src/runner.mjs\": \"49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d\",\n    \"after/test/admission.test.mjs\": \"99391cfe0745429bae49c16435bf713a414dd1096ea9c41f0908e7a11a0428c3\",\n    \"before/package.json\": \"927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f\",\n    \"before/src/admission.mjs\": \"d7168c59aaab1bd1854158b8ff6db0471aa0c73841f96d113b39a31f0911fec4\",\n    \"before/src/runner.mjs\": \"49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d\",\n    \"before/test/admission.test.mjs\": \"99391cfe0745429bae49c16435bf713a414dd1096ea9c41f0908e7a11a0428c3\",\n    \"change-notes.md\": \"16e1c5814a0759029fdcdca1133582b90a7d6f4152961dde99f803811e05a373\",\n    \"change.diff\": \"385469b67507ecf86eb98e113c0f373446e1a0f270ef6f3b22cac06667d3d512\",\n    \"docs/authority.md\": \"88c96283f8a4e98bbdcaf50785687171fbfc77585ef9f2821f2144bfaa90944c\",\n    \"docs/batchline-api.md\": \"8087b7db807e17e7ecb48f69c9a608258f3fdbbbcdf99943481c2652a3837537\",\n    \"docs/execution-policy.md\": \"86a1462e2e1994f12a3c53dc4ac7078ae681b8016a4bb43a7441042b00eaa333\",\n    \"evidence/author-test-result.txt\": \"e27e698fcb5c6a56c528012e77f6df03766b21182fbbd43efb916bdb938ace24\",\n    \"evidence/capture-record.md\": \"b202cd50601d554d5638eb936d5c9cd35a90efbaa64a5748529360d64145ebfe\",\n    \"evidence/observation-01.json\": \"d85dbf5a069abec5843ec2da7d5cd8e6293b327e3cc4bf3dba44dc943af6862d\",\n    \"task.md\": \"cec0f49e06d9af55a4e9b0aee21439ba08d3414c5740301660f12ed9cf9c0e4d\"\n  }\n}\n"
+      },
+      "snapshot-end.stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "snapshot-end.stdout": {
+        "sha256": "9f6699148bd1bbf1503a459f5a9e6791d4e075ac118b2f171c2c19cc84c01ac0",
+        "text": "Case snapshot: a190c48bc3fc3485a714aa4e2f9e826529052f9226380c313d83ffa0ae27f14e\nFiles: 17\nReviewed inputs unchanged.\n"
+      },
+      "snapshot-start.exit-code": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "snapshot-start.json": {
+        "sha256": "52a098cd0dd91f12f6334a4d7dcb2fb39561dd62201caccdd7575fdf0c511309",
+        "text": "{\n  \"algorithm\": \"sha256(json.dumps(path_to_sha256, sort_keys=True, separators=(comma,colon)))\",\n  \"snapshot\": \"a190c48bc3fc3485a714aa4e2f9e826529052f9226380c313d83ffa0ae27f14e\",\n  \"files\": {\n    \"after/package.json\": \"927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f\",\n    \"after/src/admission.mjs\": \"4e574394186317ecca553755b311aca8027d97c754037cfd63bd5c495047988c\",\n    \"after/src/runner.mjs\": \"49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d\",\n    \"after/test/admission.test.mjs\": \"99391cfe0745429bae49c16435bf713a414dd1096ea9c41f0908e7a11a0428c3\",\n    \"before/package.json\": \"927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f\",\n    \"before/src/admission.mjs\": \"d7168c59aaab1bd1854158b8ff6db0471aa0c73841f96d113b39a31f0911fec4\",\n    \"before/src/runner.mjs\": \"49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d\",\n    \"before/test/admission.test.mjs\": \"99391cfe0745429bae49c16435bf713a414dd1096ea9c41f0908e7a11a0428c3\",\n    \"change-notes.md\": \"16e1c5814a0759029fdcdca1133582b90a7d6f4152961dde99f803811e05a373\",\n    \"change.diff\": \"385469b67507ecf86eb98e113c0f373446e1a0f270ef6f3b22cac06667d3d512\",\n    \"docs/authority.md\": \"88c96283f8a4e98bbdcaf50785687171fbfc77585ef9f2821f2144bfaa90944c\",\n    \"docs/batchline-api.md\": \"8087b7db807e17e7ecb48f69c9a608258f3fdbbbcdf99943481c2652a3837537\",\n    \"docs/execution-policy.md\": \"86a1462e2e1994f12a3c53dc4ac7078ae681b8016a4bb43a7441042b00eaa333\",\n    \"evidence/author-test-result.txt\": \"e27e698fcb5c6a56c528012e77f6df03766b21182fbbd43efb916bdb938ace24\",\n    \"evidence/capture-record.md\": \"b202cd50601d554d5638eb936d5c9cd35a90efbaa64a5748529360d64145ebfe\",\n    \"evidence/observation-01.json\": \"d85dbf5a069abec5843ec2da7d5cd8e6293b327e3cc4bf3dba44dc943af6862d\",\n    \"task.md\": \"cec0f49e06d9af55a4e9b0aee21439ba08d3414c5740301660f12ed9cf9c0e4d\"\n  }\n}\n"
+      },
+      "snapshot-start.stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "snapshot-start.stdout": {
+        "sha256": "4e38248ebc5983eaf5e7d17ac6e940e66820424800b45e8a149e50945c49755d",
+        "text": "Case snapshot: a190c48bc3fc3485a714aa4e2f9e826529052f9226380c313d83ffa0ae27f14e\nFiles: 17\n"
+      },
+      "verify-snapshot.py": {
+        "sha256": "afe19a9eff8247ddd0847a52d1130f5b708601584b42de88dbaf2d676a813a36",
+        "text": "from pathlib import Path\nimport hashlib, json\ncase = Path('/tmp/skill-trial-runs/code-reviewer-21/case')\nevidence = Path('/tmp/skill-trial-runs/code-reviewer-21/evidence')\nfiles = {str(path.relative_to(case)): hashlib.sha256(path.read_bytes()).hexdigest() for path in sorted(case.rglob('*')) if path.is_file()}\nsnapshot = hashlib.sha256(json.dumps(files, sort_keys=True, separators=(',', ':')).encode()).hexdigest()\ninitial = json.loads((evidence / 'snapshot-start.json').read_text())\n(evidence / 'snapshot-end.json').write_text(json.dumps({'snapshot': snapshot, 'files': files}, indent=2) + '\\n')\nprint(f'Case snapshot: {snapshot}')\nprint(f'Files: {len(files)}')\nassert files == initial['files'], 'Reviewed files changed'\nassert snapshot == initial['snapshot'], 'Snapshot identity changed'\nprint('Reviewed inputs unchanged.')\n"
+      }
+    },
+    "excluded_generated_or_binary_evidence_paths": []
+  },
+  "22": {
+    "executor": "/root/trial_code_22",
+    "context": "fresh fork_turns=none; inherited model; no settings override; instructed shared-filesystem isolation, not a hard sandbox",
+    "before_files": {
+      "after/package.json": "927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f",
+      "after/src/admission.mjs": "db4b951719970e6a626537795f586972cd14a746a78ba3e00f51fd2f2cff6236",
+      "after/src/runner.mjs": "49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d",
+      "after/test/admission.test.mjs": "c87b9376f12538a6d6a3c90f45103f9c473f76e931ccff193a99b24c0cde33f2",
+      "before/package.json": "927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f",
+      "before/src/admission.mjs": "d7168c59aaab1bd1854158b8ff6db0471aa0c73841f96d113b39a31f0911fec4",
+      "before/src/runner.mjs": "49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d",
+      "before/test/admission.test.mjs": "c87b9376f12538a6d6a3c90f45103f9c473f76e931ccff193a99b24c0cde33f2",
+      "change-notes.md": "16e1c5814a0759029fdcdca1133582b90a7d6f4152961dde99f803811e05a373",
+      "change.diff": "ddb8ee18a4f0a59812f9a6962b37af798bd039225b46f80741cd62bfd2ded5a5",
+      "docs/authority.md": "88c96283f8a4e98bbdcaf50785687171fbfc77585ef9f2821f2144bfaa90944c",
+      "docs/batchline-api.md": "8087b7db807e17e7ecb48f69c9a608258f3fdbbbcdf99943481c2652a3837537",
+      "docs/execution-policy.md": "86a1462e2e1994f12a3c53dc4ac7078ae681b8016a4bb43a7441042b00eaa333",
+      "evidence/author-test-result.txt": "52f0c283a7d0e0624d717f84c39e06942cc5804de1f6d74666dfd5d17f98b794",
+      "evidence/capture-record.md": "b202cd50601d554d5638eb936d5c9cd35a90efbaa64a5748529360d64145ebfe",
+      "evidence/observation-01.json": "d85dbf5a069abec5843ec2da7d5cd8e6293b327e3cc4bf3dba44dc943af6862d",
+      "task.md": "cec0f49e06d9af55a4e9b0aee21439ba08d3414c5740301660f12ed9cf9c0e4d"
+    },
+    "changes": {},
+    "evidence": {
+      "full-diff.command.json": {
+        "sha256": "ea518d5f00a20dd9b26ddced08b53eb8b01389927cd9470ca30d77e10aaeb8c1",
+        "text": "{\n  \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-22/case\",\n  \"command\": [\n    \"diff\",\n    \"-ru\",\n    \"before\",\n    \"after\"\n  ]\n}\n"
+      },
+      "full-diff.exitcode": {
+        "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "text": "1\n"
+      },
+      "full-diff.stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "full-diff.stdout": {
+        "sha256": "ec1149dce5e7a8a134bfb49a5ba7f7dc49591fb2e968cdd8b538f059d14c244c",
+        "text": "diff -ru before/src/admission.mjs after/src/admission.mjs\n--- before/src/admission.mjs\t2026-10-21 13:46:35.539759981 +0200\n+++ after/src/admission.mjs\t2026-10-21 13:46:35.540102548 +0200\n@@ -3,6 +3,6 @@\n   if (!Array.isArray(snapshot.jobs) || snapshot.jobs.length === 0) return false;\n   return snapshot.jobs.every(job => Array.isArray(job.steps) && job.steps.length > 0 && job.steps.every(step => {\n     if (step.status === 'completed') return ['success', 'skipped'].includes(step.conclusion);\n-    return step.conclusion === null;\n+    return [\"queued\", \"running\", \"pending\"].includes(step.status) && step.conclusion === null;\n   }));\n }\n"
+      },
+      "node-version.command.json": {
+        "sha256": "0e6065cfb2419ec56068d2c501cf433987450c79126a30b37d8659fa61d0579e",
+        "text": "{\n  \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-22/case\",\n  \"command\": [\n    \"node\",\n    \"--version\"\n  ]\n}\n"
+      },
+      "node-version.exitcode": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "node-version.stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "node-version.stdout": {
+        "sha256": "c642a0de246dcdc6c51318fe449646fc5067b981a8d09e9ccdb8141a5756339a",
+        "text": "v24.15.0\n"
+      },
+      "npm-cache/_logs/2026-10-21T11_57_00_098Z-debug-0.log": {
+        "sha256": "97ae12ddc69c9f9f4038c92dd9f7b022ebc9f672d0b139030c3f1569a1a882c6",
+        "text": "0 verbose cli /home/kostysh/.nvm/versions/node/v24.15.0/bin/node /home/kostysh/.nvm/versions/node/v24.15.0/bin/npm\n1 info using npm@12.0.1\n2 info using node@v24.15.0\n3 silly config load:file:/home/kostysh/.nvm/versions/node/v24.15.0/lib/node_modules/npm/npmrc\n4 silly config load:file:/tmp/skill-trial-runs/code-reviewer-22/case/after/.npmrc\n5 silly config load:file:/home/kostysh/.npmrc\n6 silly config load:file:/home/kostysh/.nvm/versions/node/v24.15.0/etc/npmrc\n7 verbose title npm test\n8 verbose argv \"test\"\n9 verbose logfile logs-max:10 dir:/tmp/skill-trial-runs/code-reviewer-22/evidence/npm-cache/_logs/2026-10-21T11_57_00_098Z-\n10 verbose logfile /tmp/skill-trial-runs/code-reviewer-22/evidence/npm-cache/_logs/2026-10-21T11_57_00_098Z-debug-0.log\n11 silly logfile done cleaning log files\n12 notice run test\n13 notice run node --test test/*.test.mjs\n14 verbose cwd /tmp/skill-trial-runs/code-reviewer-22/case/after\n15 verbose os Linux 7.0.0-38-generic\n16 verbose node v24.15.0\n17 verbose npm  v12.0.1\n18 verbose exit 0\n19 info ok\n"
+      },
+      "npm-cache/_update-notifier-last-checked": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "package-tests.command.json": {
+        "sha256": "72e197315e27fd799d5cd7c00608808daa7cf36efd4f72e1a1bbe95b576994a1",
+        "text": "{\n  \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-22/case/after\",\n  \"command\": [\n    \"env\",\n    \"npm_config_cache=/tmp/skill-trial-runs/code-reviewer-22/evidence/npm-cache\",\n    \"npm\",\n    \"test\"\n  ]\n}\n"
+      },
+      "package-tests.exitcode": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "package-tests.stderr": {
+        "sha256": "8b76dbceee71a5fa4499d0bdb039e3fcb079cdb9b601511afcf3b02c73bc6561",
+        "text": "npm notice run test\nnpm notice run node --test test/*.test.mjs\n"
+      },
+      "package-tests.stdout": {
+        "sha256": "e25e59868ae55b3df56c5ecdd6a9aef93149c31ad29dd626f1b65133dffe77f0",
+        "text": "✔ queued sequence (0.71546ms)\n✔ running sequence (0.598599ms)\n✔ finished sequence (0.098366ms)\n✔ skipped sequence (0.059082ms)\n✔ failed (0.081484ms)\n✔ cancelled (0.060996ms)\n✔ terminal without conclusion (0.050636ms)\n✔ unfinished with conclusion (0.046578ms)\n✔ unknown state (0.087475ms)\n✔ run binding (0.158609ms)\n✔ attempt binding (0.075211ms)\n✔ empty inventory (0.05329ms)\n✔ provider capture (3.758632ms)\nℹ tests 13\nℹ suites 0\nℹ pass 13\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 35.384247\n"
+      },
+      "result.md": {
+        "sha256": "b54bd55888e8e526e6ada98c679b011e4aea12bc5a5afef0f433dbbbe7affbc7",
+        "text": "Изменение корректно ограничивает незавершённые шаги состояниями Batchline 2.3 и сохраняет требуемый допуск `pending`; локальную границу admission/dispatch можно принять.\n\nNo findings.\n\nReview basis: [after](/tmp/skill-trial-runs/code-reviewer-22/case/after) относительно [before](/tmp/skill-trial-runs/code-reviewer-22/case/before); SHA-256 всех входных файлов `2b8cbd93c2936a1fe722ab4cbaccea9c08dc352f6dd7e369edb517789a9c671f`. Начальный и конечный снимки совпали.\n\nScope: просмотрен единственный изменённый файл `src/admission.mjs`, обе версии `runner.mjs`, тестов и `package.json`, весь diff, проектные и провайдерские источники, предоставленные наблюдения. Недоступных файлов нет.\n\nEvidence: `npm test` — 13/13, exit 0, Node v24.15.0. Тесты проходят через `runPhase → admit → command` и проверяют число вызовов команды: один при допуске, ноль при отказе. Проверены допустимые состояния, сохранённый ответ с `pending`, отрицательные исходы, неизвестное состояние, несовпадение run/attempt и пустой inventory. Набор состояний независимо сверён с Batchline API 2.3 и EP-17 revision 4. [Фактический вывод тестов](/tmp/skill-trial-runs/code-reviewer-22/evidence/package-tests.stdout); stdout, stderr, команды и exit codes сохранены в [evidence](/tmp/skill-trial-runs/code-reviewer-22/evidence). Полный diff подтвердил изменение одной строки; его exit 1 означает наличие различий.\n\nLimits: наблюдение синтетическое. Получение ответа по сети и бизнес-поведение команды не проверены и прямо исключены из границы приёмки. Вывод относится к локальному admission/dispatch, а не к реальному развёртыванию.\n\nRecommendation: approve\n"
+      },
+      "run_check.py": {
+        "sha256": "affbb2e23de119d7c7c52d3f880a7bca9d76f9877c095a2324187b569149ffd4",
+        "text": "import json, subprocess, sys\nfrom pathlib import Path\nroot=Path(__file__).resolve().parent\nname, cwd, *command=sys.argv[1:]\nr=subprocess.run(command,cwd=cwd,capture_output=True,text=True)\n(root/(name+'.stdout')).write_text(r.stdout)\n(root/(name+'.stderr')).write_text(r.stderr)\n(root/(name+'.exitcode')).write_text(str(r.returncode)+'\\n')\n(root/(name+'.command.json')).write_text(json.dumps({'cwd':cwd,'command':command},ensure_ascii=False,indent=2)+'\\n')\nsys.stdout.write(r.stdout)\nsys.stderr.write(r.stderr)\nprint('Exit code: '+str(r.returncode))\nsys.exit(r.returncode)\n"
+      },
+      "snapshot-compare.command.json": {
+        "sha256": "d12266691ee4dc96b78aa1d106e38b05700ed16b710b1236aa472157e0b9eb5d",
+        "text": "{\n  \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-22/evidence\",\n  \"command\": [\n    \"diff\",\n    \"-u\",\n    \"snapshot-start.stdout\",\n    \"snapshot-end.stdout\"\n  ]\n}\n"
+      },
+      "snapshot-compare.exitcode": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "snapshot-compare.stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "snapshot-compare.stdout": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "snapshot-end.command.json": {
+        "sha256": "ba24260771d82871193705837b4753c92443c289419a9e6348d28662df95d133",
+        "text": "{\n  \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-22/case\",\n  \"command\": [\n    \"python3\",\n    \"/tmp/skill-trial-runs/code-reviewer-22/evidence/snapshot.py\"\n  ]\n}\n"
+      },
+      "snapshot-end.exitcode": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "snapshot-end.stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "snapshot-end.stdout": {
+        "sha256": "876bd8daa3f7618497ddf0c1fa55e2b301b0c46780688979c8856f81e26f2e11",
+        "text": "{\n  \"aggregate_sha256\": \"2b8cbd93c2936a1fe722ab4cbaccea9c08dc352f6dd7e369edb517789a9c671f\",\n  \"files\": {\n    \"after/package.json\": \"927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f\",\n    \"after/src/admission.mjs\": \"db4b951719970e6a626537795f586972cd14a746a78ba3e00f51fd2f2cff6236\",\n    \"after/src/runner.mjs\": \"49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d\",\n    \"after/test/admission.test.mjs\": \"c87b9376f12538a6d6a3c90f45103f9c473f76e931ccff193a99b24c0cde33f2\",\n    \"before/package.json\": \"927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f\",\n    \"before/src/admission.mjs\": \"d7168c59aaab1bd1854158b8ff6db0471aa0c73841f96d113b39a31f0911fec4\",\n    \"before/src/runner.mjs\": \"49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d\",\n    \"before/test/admission.test.mjs\": \"c87b9376f12538a6d6a3c90f45103f9c473f76e931ccff193a99b24c0cde33f2\",\n    \"change-notes.md\": \"16e1c5814a0759029fdcdca1133582b90a7d6f4152961dde99f803811e05a373\",\n    \"change.diff\": \"ddb8ee18a4f0a59812f9a6962b37af798bd039225b46f80741cd62bfd2ded5a5\",\n    \"docs/authority.md\": \"88c96283f8a4e98bbdcaf50785687171fbfc77585ef9f2821f2144bfaa90944c\",\n    \"docs/batchline-api.md\": \"8087b7db807e17e7ecb48f69c9a608258f3fdbbbcdf99943481c2652a3837537\",\n    \"docs/execution-policy.md\": \"86a1462e2e1994f12a3c53dc4ac7078ae681b8016a4bb43a7441042b00eaa333\",\n    \"evidence/author-test-result.txt\": \"52f0c283a7d0e0624d717f84c39e06942cc5804de1f6d74666dfd5d17f98b794\",\n    \"evidence/capture-record.md\": \"b202cd50601d554d5638eb936d5c9cd35a90efbaa64a5748529360d64145ebfe\",\n    \"evidence/observation-01.json\": \"d85dbf5a069abec5843ec2da7d5cd8e6293b327e3cc4bf3dba44dc943af6862d\",\n    \"task.md\": \"cec0f49e06d9af55a4e9b0aee21439ba08d3414c5740301660f12ed9cf9c0e4d\"\n  }\n}\n"
+      },
+      "snapshot-start.command.json": {
+        "sha256": "ba24260771d82871193705837b4753c92443c289419a9e6348d28662df95d133",
+        "text": "{\n  \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-22/case\",\n  \"command\": [\n    \"python3\",\n    \"/tmp/skill-trial-runs/code-reviewer-22/evidence/snapshot.py\"\n  ]\n}\n"
+      },
+      "snapshot-start.exitcode": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "snapshot-start.stderr": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "snapshot-start.stdout": {
+        "sha256": "876bd8daa3f7618497ddf0c1fa55e2b301b0c46780688979c8856f81e26f2e11",
+        "text": "{\n  \"aggregate_sha256\": \"2b8cbd93c2936a1fe722ab4cbaccea9c08dc352f6dd7e369edb517789a9c671f\",\n  \"files\": {\n    \"after/package.json\": \"927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f\",\n    \"after/src/admission.mjs\": \"db4b951719970e6a626537795f586972cd14a746a78ba3e00f51fd2f2cff6236\",\n    \"after/src/runner.mjs\": \"49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d\",\n    \"after/test/admission.test.mjs\": \"c87b9376f12538a6d6a3c90f45103f9c473f76e931ccff193a99b24c0cde33f2\",\n    \"before/package.json\": \"927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f\",\n    \"before/src/admission.mjs\": \"d7168c59aaab1bd1854158b8ff6db0471aa0c73841f96d113b39a31f0911fec4\",\n    \"before/src/runner.mjs\": \"49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d\",\n    \"before/test/admission.test.mjs\": \"c87b9376f12538a6d6a3c90f45103f9c473f76e931ccff193a99b24c0cde33f2\",\n    \"change-notes.md\": \"16e1c5814a0759029fdcdca1133582b90a7d6f4152961dde99f803811e05a373\",\n    \"change.diff\": \"ddb8ee18a4f0a59812f9a6962b37af798bd039225b46f80741cd62bfd2ded5a5\",\n    \"docs/authority.md\": \"88c96283f8a4e98bbdcaf50785687171fbfc77585ef9f2821f2144bfaa90944c\",\n    \"docs/batchline-api.md\": \"8087b7db807e17e7ecb48f69c9a608258f3fdbbbcdf99943481c2652a3837537\",\n    \"docs/execution-policy.md\": \"86a1462e2e1994f12a3c53dc4ac7078ae681b8016a4bb43a7441042b00eaa333\",\n    \"evidence/author-test-result.txt\": \"52f0c283a7d0e0624d717f84c39e06942cc5804de1f6d74666dfd5d17f98b794\",\n    \"evidence/capture-record.md\": \"b202cd50601d554d5638eb936d5c9cd35a90efbaa64a5748529360d64145ebfe\",\n    \"evidence/observation-01.json\": \"d85dbf5a069abec5843ec2da7d5cd8e6293b327e3cc4bf3dba44dc943af6862d\",\n    \"task.md\": \"cec0f49e06d9af55a4e9b0aee21439ba08d3414c5740301660f12ed9cf9c0e4d\"\n  }\n}\n"
+      },
+      "snapshot.py": {
+        "sha256": "036079b0c479addc09e7953bba1c4f5ed02866d8dc54f4d4d0ec2d0026a81840",
+        "text": "import hashlib, json\nfrom pathlib import Path\nroot=Path('/tmp/skill-trial-runs/code-reviewer-22/case')\nfiles={str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(root.rglob('*')) if p.is_file()}\nidentity=hashlib.sha256(json.dumps(files,sort_keys=True,separators=(',',':')).encode()).hexdigest()\nprint(json.dumps({'aggregate_sha256':identity,'files':files},indent=2))\n"
+      }
+    },
+    "excluded_generated_or_binary_evidence_paths": []
+  },
+  "23": {
+    "executor": "/root/trial_code_23",
+    "context": "fresh fork_turns=none; inherited model; no settings override; instructed shared-filesystem isolation, not a hard sandbox",
+    "before_files": {
+      "after/package.json": "927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f",
+      "after/src/admission.mjs": "4e574394186317ecca553755b311aca8027d97c754037cfd63bd5c495047988c",
+      "after/src/runner.mjs": "49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d",
+      "after/test/admission.test.mjs": "99391cfe0745429bae49c16435bf713a414dd1096ea9c41f0908e7a11a0428c3",
+      "before/package.json": "927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f",
+      "before/src/admission.mjs": "d7168c59aaab1bd1854158b8ff6db0471aa0c73841f96d113b39a31f0911fec4",
+      "before/src/runner.mjs": "49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d",
+      "before/test/admission.test.mjs": "99391cfe0745429bae49c16435bf713a414dd1096ea9c41f0908e7a11a0428c3",
+      "change-notes.md": "16e1c5814a0759029fdcdca1133582b90a7d6f4152961dde99f803811e05a373",
+      "change.diff": "385469b67507ecf86eb98e113c0f373446e1a0f270ef6f3b22cac06667d3d512",
+      "docs/authority.md": "88c96283f8a4e98bbdcaf50785687171fbfc77585ef9f2821f2144bfaa90944c",
+      "docs/batchline-api.md": "4c5f763c028bdd4a5c3f0bcf42f66939051e82af179938e87a97c6bdcf82aaf8",
+      "docs/execution-policy.md": "86a1462e2e1994f12a3c53dc4ac7078ae681b8016a4bb43a7441042b00eaa333",
+      "evidence/author-test-result.txt": "5e6091a58679e95601a1243e2523f51e277df4662de13aa3a6a478734f4077d7",
+      "evidence/capture-record.md": "46288db0fd5a2a78675330d622f735abb94078b2e8457c971bb3387b44b46363",
+      "evidence/observation-01.json": "5896beb823c438517d62358447ecba9e8cec79ab4db70d4800cf2a582d25aec9",
+      "task.md": "cec0f49e06d9af55a4e9b0aee21439ba08d3414c5740301660f12ed9cf9c0e4d"
+    },
+    "changes": {},
+    "evidence": {
+      "check-snapshot.py": {
+        "sha256": "3dc5ee5377637ccd7c6a5c01c6ef9496cb6572aad9bc0d69c59851c0db117401",
+        "text": "import hashlib, json\nfrom pathlib import Path\ncase = Path('/tmp/skill-trial-runs/code-reviewer-23/case')\nevidence = Path('/tmp/skill-trial-runs/code-reviewer-23/evidence')\nstart = json.loads((evidence/'snapshot-start.json').read_text())\nfiles = {str(p.relative_to(case)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(case.rglob('*')) if p.is_file()}\naggregate = hashlib.sha256(''.join(f'{k}\\0{v}\\n' for k, v in files.items()).encode()).hexdigest()\nend = {'case': str(case), 'aggregate_sha256': aggregate, 'files': files}\n(evidence/'snapshot-end.json').write_text(json.dumps(end, indent=2)+'\\n')\nassert files == start['files'], 'Reviewed inputs changed during review'\nassert aggregate == start['aggregate_sha256'], 'Aggregate snapshot mismatch'\nbefore = {p.relative_to(case/'before'): p.read_bytes() for p in (case/'before').rglob('*') if p.is_file()}\nafter = {p.relative_to(case/'after'): p.read_bytes() for p in (case/'after').rglob('*') if p.is_file()}\nchanged = [str(p) for p in sorted(before.keys()|after.keys()) if before.get(p) != after.get(p)]\nassert changed == ['src/admission.mjs'], changed\nprint(json.dumps({'snapshot_stable': True, 'aggregate_sha256': aggregate, 'changed_files': changed, 'reviewed_changed_files': changed, 'all_case_files': len(files)}, indent=2))\n"
+      },
+      "dispatch-probes.json": {
+        "sha256": "0663a056cb85f93cc0a5359bf0c740fd5a468193acbb15fccf22c3223cbdb976",
+        "text": "{\n  \"command\": [\n    \"node\",\n    \"/tmp/skill-trial-runs/code-reviewer-23/evidence/dispatch-probes.mjs\"\n  ],\n  \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-23/evidence\",\n  \"exit_code\": 0,\n  \"elapsed_seconds\": 0.024127960205078125,\n  \"stdout\": \"dispatch-probes.stdout.txt\",\n  \"stderr\": \"dispatch-probes.stderr.txt\"\n}\n"
+      },
+      "dispatch-probes.mjs": {
+        "sha256": "a02ddbc4110047b807c4d6ac45c9fd11c3048b8a9d24a3dc36abb3cde41c0312",
+        "text": "import assert from 'node:assert/strict';\nimport { readFile } from 'node:fs/promises';\nimport { runPhase } from '../case/after/src/runner.mjs';\nconst expected = { runId: 'r-382', attempt: 3 };\nconst make = (steps) => ({ run_id: 'r-382', attempt: 3, jobs: [{ steps }] });\nconst step = (status, conclusion) => ({ status, conclusion });\nconst checks = [\n  ['completed_success_and_skipped', make([step('completed', 'success'), step('completed', 'skipped')]), true],\n  ['completed_failure_in_mixed_inventory', make([step('completed', 'success'), step('completed', 'failure')]), false],\n  ['completed_cancelled', make([step('completed', 'cancelled')]), false],\n  ['completed_null', make([step('completed', null)]), false],\n  ['allowlisted_unfinished_nonnull', make([step('queued', 'success')]), false],\n  ['nonallowlisted_state_behavior_only', make([step('probe_state_not_in_contract', null)]), false],\n  ['wrong_run_id', { ...make([step('completed', 'success')]), run_id: 'r-383' }, false],\n  ['wrong_attempt', { ...make([step('completed', 'success')]), attempt: 2 }, false],\n  ['empty_jobs', { run_id: 'r-382', attempt: 3, jobs: [] }, false],\n  ['empty_steps', make([]), false],\n  ['missing_steps', { run_id: 'r-382', attempt: 3, jobs: [{}] }, false],\n];\nfor (const [name, body, admitted] of checks) {\n  let reads = 0;\n  let calls = 0;\n  const result = await runPhase(async () => { reads++; return body; }, expected, async () => { calls++; });\n  assert.deepEqual(result, { admitted, commandCalls: admitted ? 1 : 0 });\n  assert.equal(reads, 1);\n  assert.equal(calls, admitted ? 1 : 0);\n  console.log(JSON.stringify({ name, result, reads, calls, assertion: 'PASS' }));\n}\nconst projection = JSON.parse(await readFile(new URL('../case/evidence/observation-01.json', import.meta.url), 'utf8'));\nlet projectionCalls = 0;\nconst projectionResult = await runPhase(async () => projection, expected, async () => { projectionCalls++; });\nassert.deepEqual(projectionResult, { admitted: false, commandCalls: 0 });\nassert.equal(projectionCalls, 0);\nconsole.log(JSON.stringify({ name: 'saved_job_only_projection', result: projectionResult, calls: projectionCalls, assertion: 'PASS', limit: 'Projection lacks archived step payloads and is not the incident response. This result does not identify an improper refusal or its historical cause.' }));\nconsole.log('Provider-recognized unfinished states remain unknown; generated probe_state_not_in_contract is a behavior probe, not a provider-state claim.');\n"
+      },
+      "dispatch-probes.stderr.txt": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "dispatch-probes.stdout.txt": {
+        "sha256": "ad8840ef6f632736cbf5de10c63ad7fe37e7769d1223ee5e995bda8240884b83",
+        "text": "{\"name\":\"completed_success_and_skipped\",\"result\":{\"admitted\":true,\"commandCalls\":1},\"reads\":1,\"calls\":1,\"assertion\":\"PASS\"}\n{\"name\":\"completed_failure_in_mixed_inventory\",\"result\":{\"admitted\":false,\"commandCalls\":0},\"reads\":1,\"calls\":0,\"assertion\":\"PASS\"}\n{\"name\":\"completed_cancelled\",\"result\":{\"admitted\":false,\"commandCalls\":0},\"reads\":1,\"calls\":0,\"assertion\":\"PASS\"}\n{\"name\":\"completed_null\",\"result\":{\"admitted\":false,\"commandCalls\":0},\"reads\":1,\"calls\":0,\"assertion\":\"PASS\"}\n{\"name\":\"allowlisted_unfinished_nonnull\",\"result\":{\"admitted\":false,\"commandCalls\":0},\"reads\":1,\"calls\":0,\"assertion\":\"PASS\"}\n{\"name\":\"nonallowlisted_state_behavior_only\",\"result\":{\"admitted\":false,\"commandCalls\":0},\"reads\":1,\"calls\":0,\"assertion\":\"PASS\"}\n{\"name\":\"wrong_run_id\",\"result\":{\"admitted\":false,\"commandCalls\":0},\"reads\":1,\"calls\":0,\"assertion\":\"PASS\"}\n{\"name\":\"wrong_attempt\",\"result\":{\"admitted\":false,\"commandCalls\":0},\"reads\":1,\"calls\":0,\"assertion\":\"PASS\"}\n{\"name\":\"empty_jobs\",\"result\":{\"admitted\":false,\"commandCalls\":0},\"reads\":1,\"calls\":0,\"assertion\":\"PASS\"}\n{\"name\":\"empty_steps\",\"result\":{\"admitted\":false,\"commandCalls\":0},\"reads\":1,\"calls\":0,\"assertion\":\"PASS\"}\n{\"name\":\"missing_steps\",\"result\":{\"admitted\":false,\"commandCalls\":0},\"reads\":1,\"calls\":0,\"assertion\":\"PASS\"}\n{\"name\":\"saved_job_only_projection\",\"result\":{\"admitted\":false,\"commandCalls\":0},\"calls\":0,\"assertion\":\"PASS\",\"limit\":\"Projection lacks archived step payloads and is not the incident response. This result does not identify an improper refusal or its historical cause.\"}\nProvider-recognized unfinished states remain unknown; generated probe_state_not_in_contract is a behavior probe, not a provider-state claim.\n"
+      },
+      "npm-cache/_logs/2026-10-21T11_58_13_690Z-debug-0.log": {
+        "sha256": "07e335c308ab5367390d4cfb3d2228b32711fc7c73289c2ed0dd825ee4075fc1",
+        "text": "0 verbose cli /home/kostysh/.nvm/versions/node/v24.15.0/bin/node /home/kostysh/.nvm/versions/node/v24.15.0/bin/npm\n1 info using npm@12.0.1\n2 info using node@v24.15.0\n3 silly config load:file:/home/kostysh/.nvm/versions/node/v24.15.0/lib/node_modules/npm/npmrc\n4 silly config load:file:/tmp/skill-trial-runs/code-reviewer-23/case/after/.npmrc\n5 silly config load:file:/home/kostysh/.npmrc\n6 silly config load:file:/home/kostysh/.nvm/versions/node/v24.15.0/etc/npmrc\n7 verbose title npm test\n8 verbose argv \"test\"\n9 verbose logfile logs-max:10 dir:/tmp/skill-trial-runs/code-reviewer-23/evidence/npm-cache/_logs/2026-10-21T11_58_13_690Z-\n10 verbose logfile /tmp/skill-trial-runs/code-reviewer-23/evidence/npm-cache/_logs/2026-10-21T11_58_13_690Z-debug-0.log\n11 silly logfile done cleaning log files\n12 notice run test\n13 notice run node --test test/*.test.mjs\n14 verbose cwd /tmp/skill-trial-runs/code-reviewer-23/case/after\n15 verbose os Linux 7.0.0-38-generic\n16 verbose node v24.15.0\n17 verbose npm  v12.0.1\n18 verbose exit 0\n19 info ok\n"
+      },
+      "result.md": {
+        "sha256": "3ce012ff10427cc1a00cd770c734cf1f4efad93d1ad659b5a28397dcbdb29c1a",
+        "text": "Изменение ограничивает незавершённые шаги значениями `queued/running`, но доступные источники не позволяют подтвердить корректность этого списка.\n\nNo findings.\n\n[Контракт Batchline API 2.3](/tmp/skill-trial-runs/code-reviewer-23/case/docs/batchline-api.md) не содержит домен состояний шагов. Авторские тесты не подтверждают его независимо. [Сохранённое наблюдение](/tmp/skill-trial-runs/code-reviewer-23/case/evidence/observation-01.json) содержит статус job без шагов; [описание захвата](/tmp/skill-trial-runs/code-reviewer-23/case/evidence/capture-record.md) прямо исключает восстановление ответа, полученного runner. Поэтому нельзя ни доказать ошибочный отказ допустимому шагу, ни установить причину исторического отказа. Для окончательной рекомендации нужен применимый контракт состояний шагов.\n\nReview basis: [after](/tmp/skill-trial-runs/code-reviewer-23/case/after) относительно [before](/tmp/skill-trial-runs/code-reviewer-23/case/before); SHA-256 всех 17 файлов case: `2beda32cadc47a8f6628d8a466edbfc3d49604bd91a71d23c9a603478fb88d3b`. Начальный и конечный снимки совпали.\nScope: изучен 1/1 изменённый файл — [src/admission.mjs:6](/tmp/skill-trial-runs/code-reviewer-23/case/after/src/admission.mjs:6), обе версии runner, тестов и package.json, diff, проектные источники и сохранённые наблюдения. Граница: локальные admission → runPhase → вызов команды.\nEvidence: `npm test` — 12/12; дополнительные проверки dispatch — 12/12. Подтверждены единственный вызов для успешных/пропущенных завершённых шагов и отсутствие вызова на проверенных отказах. Exit codes — 0; фактические [stdout тестов](/tmp/skill-trial-runs/code-reviewer-23/evidence/supplied-tests.stdout.txt), [stdout проверок](/tmp/skill-trial-runs/code-reviewer-23/evidence/dispatch-probes.stdout.txt), stderr и метаданные сохранены в evidence.\nLimits: полнота и допустимость списка незавершённых состояний не установлены; исходный ответ инцидента отсутствует. Данные синтетические. Транспорт и бизнес-поведение команды исключены утверждённой границей проверки.\nRecommendation: limited\n"
+      },
+      "runtime-versions.json": {
+        "sha256": "72f8ebcbfd951b3cd38ba10442e687cbc4d18de4d2c7614b4ac450bdb841811e",
+        "text": "{\n  \"command\": [\n    \"node\",\n    \"--version\"\n  ],\n  \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-23/case/after\",\n  \"exit_code\": 0,\n  \"elapsed_seconds\": 0.0036597251892089844,\n  \"stdout\": \"runtime-versions.stdout.txt\",\n  \"stderr\": \"runtime-versions.stderr.txt\"\n}\n"
+      },
+      "runtime-versions.stderr.txt": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "runtime-versions.stdout.txt": {
+        "sha256": "c642a0de246dcdc6c51318fe449646fc5067b981a8d09e9ccdb8141a5756339a",
+        "text": "v24.15.0\n"
+      },
+      "snapshot-check.json": {
+        "sha256": "24cdbb3c5eedf204e1dbe68a3834dc04cf62b2d5b63f32c01cf3152371d9bb8f",
+        "text": "{\n  \"command\": [\n    \"python3\",\n    \"/tmp/skill-trial-runs/code-reviewer-23/evidence/check-snapshot.py\"\n  ],\n  \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-23/evidence\",\n  \"exit_code\": 0,\n  \"stdout\": \"snapshot-check.stdout.txt\",\n  \"stderr\": \"snapshot-check.stderr.txt\"\n}\n"
+      },
+      "snapshot-check.stderr.txt": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "snapshot-check.stdout.txt": {
+        "sha256": "9cbb1851abcaa35aac8f42590d35bee9a0ebb4911ac264e25d58a0a6c96a0e66",
+        "text": "{\n  \"snapshot_stable\": true,\n  \"aggregate_sha256\": \"2beda32cadc47a8f6628d8a466edbfc3d49604bd91a71d23c9a603478fb88d3b\",\n  \"changed_files\": [\n    \"src/admission.mjs\"\n  ],\n  \"reviewed_changed_files\": [\n    \"src/admission.mjs\"\n  ],\n  \"all_case_files\": 17\n}\n"
+      },
+      "snapshot-end.json": {
+        "sha256": "5359e516b1524e79d67e0dfd83b3c906158cf7d1dcaacef3205049968e70d81c",
+        "text": "{\n  \"case\": \"/tmp/skill-trial-runs/code-reviewer-23/case\",\n  \"aggregate_sha256\": \"2beda32cadc47a8f6628d8a466edbfc3d49604bd91a71d23c9a603478fb88d3b\",\n  \"files\": {\n    \"after/package.json\": \"927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f\",\n    \"after/src/admission.mjs\": \"4e574394186317ecca553755b311aca8027d97c754037cfd63bd5c495047988c\",\n    \"after/src/runner.mjs\": \"49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d\",\n    \"after/test/admission.test.mjs\": \"99391cfe0745429bae49c16435bf713a414dd1096ea9c41f0908e7a11a0428c3\",\n    \"before/package.json\": \"927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f\",\n    \"before/src/admission.mjs\": \"d7168c59aaab1bd1854158b8ff6db0471aa0c73841f96d113b39a31f0911fec4\",\n    \"before/src/runner.mjs\": \"49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d\",\n    \"before/test/admission.test.mjs\": \"99391cfe0745429bae49c16435bf713a414dd1096ea9c41f0908e7a11a0428c3\",\n    \"change-notes.md\": \"16e1c5814a0759029fdcdca1133582b90a7d6f4152961dde99f803811e05a373\",\n    \"change.diff\": \"385469b67507ecf86eb98e113c0f373446e1a0f270ef6f3b22cac06667d3d512\",\n    \"docs/authority.md\": \"88c96283f8a4e98bbdcaf50785687171fbfc77585ef9f2821f2144bfaa90944c\",\n    \"docs/batchline-api.md\": \"4c5f763c028bdd4a5c3f0bcf42f66939051e82af179938e87a97c6bdcf82aaf8\",\n    \"docs/execution-policy.md\": \"86a1462e2e1994f12a3c53dc4ac7078ae681b8016a4bb43a7441042b00eaa333\",\n    \"evidence/author-test-result.txt\": \"5e6091a58679e95601a1243e2523f51e277df4662de13aa3a6a478734f4077d7\",\n    \"evidence/capture-record.md\": \"46288db0fd5a2a78675330d622f735abb94078b2e8457c971bb3387b44b46363\",\n    \"evidence/observation-01.json\": \"5896beb823c438517d62358447ecba9e8cec79ab4db70d4800cf2a582d25aec9\",\n    \"task.md\": \"cec0f49e06d9af55a4e9b0aee21439ba08d3414c5740301660f12ed9cf9c0e4d\"\n  }\n}\n"
+      },
+      "snapshot-start.json": {
+        "sha256": "5359e516b1524e79d67e0dfd83b3c906158cf7d1dcaacef3205049968e70d81c",
+        "text": "{\n  \"case\": \"/tmp/skill-trial-runs/code-reviewer-23/case\",\n  \"aggregate_sha256\": \"2beda32cadc47a8f6628d8a466edbfc3d49604bd91a71d23c9a603478fb88d3b\",\n  \"files\": {\n    \"after/package.json\": \"927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f\",\n    \"after/src/admission.mjs\": \"4e574394186317ecca553755b311aca8027d97c754037cfd63bd5c495047988c\",\n    \"after/src/runner.mjs\": \"49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d\",\n    \"after/test/admission.test.mjs\": \"99391cfe0745429bae49c16435bf713a414dd1096ea9c41f0908e7a11a0428c3\",\n    \"before/package.json\": \"927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f\",\n    \"before/src/admission.mjs\": \"d7168c59aaab1bd1854158b8ff6db0471aa0c73841f96d113b39a31f0911fec4\",\n    \"before/src/runner.mjs\": \"49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d\",\n    \"before/test/admission.test.mjs\": \"99391cfe0745429bae49c16435bf713a414dd1096ea9c41f0908e7a11a0428c3\",\n    \"change-notes.md\": \"16e1c5814a0759029fdcdca1133582b90a7d6f4152961dde99f803811e05a373\",\n    \"change.diff\": \"385469b67507ecf86eb98e113c0f373446e1a0f270ef6f3b22cac06667d3d512\",\n    \"docs/authority.md\": \"88c96283f8a4e98bbdcaf50785687171fbfc77585ef9f2821f2144bfaa90944c\",\n    \"docs/batchline-api.md\": \"4c5f763c028bdd4a5c3f0bcf42f66939051e82af179938e87a97c6bdcf82aaf8\",\n    \"docs/execution-policy.md\": \"86a1462e2e1994f12a3c53dc4ac7078ae681b8016a4bb43a7441042b00eaa333\",\n    \"evidence/author-test-result.txt\": \"5e6091a58679e95601a1243e2523f51e277df4662de13aa3a6a478734f4077d7\",\n    \"evidence/capture-record.md\": \"46288db0fd5a2a78675330d622f735abb94078b2e8457c971bb3387b44b46363\",\n    \"evidence/observation-01.json\": \"5896beb823c438517d62358447ecba9e8cec79ab4db70d4800cf2a582d25aec9\",\n    \"task.md\": \"cec0f49e06d9af55a4e9b0aee21439ba08d3414c5740301660f12ed9cf9c0e4d\"\n  }\n}\n"
+      },
+      "supplied-tests.json": {
+        "sha256": "e57a2b271a81de3df0d38f36d9ed11dea9b2779516a983c0804b5a7189131fb0",
+        "text": "{\n  \"command\": [\n    \"npm\",\n    \"test\"\n  ],\n  \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-23/case/after\",\n  \"exit_code\": 0,\n  \"elapsed_seconds\": 0.14783954620361328,\n  \"stdout\": \"supplied-tests.stdout.txt\",\n  \"stderr\": \"supplied-tests.stderr.txt\"\n}\n"
+      },
+      "supplied-tests.stderr.txt": {
+        "sha256": "8b76dbceee71a5fa4499d0bdb039e3fcb079cdb9b601511afcf3b02c73bc6561",
+        "text": "npm notice run test\nnpm notice run node --test test/*.test.mjs\n"
+      },
+      "supplied-tests.stdout.txt": {
+        "sha256": "b6ae82158c35f08c6c136b8eeb0d376dd7abe22d8bfffa27ad37b8f0d0c99173",
+        "text": "✔ queued sequence (0.689512ms)\n✔ running sequence (0.72623ms)\n✔ finished sequence (0.120668ms)\n✔ skipped sequence (0.078989ms)\n✔ failed (0.18045ms)\n✔ cancelled (0.077296ms)\n✔ terminal without conclusion (0.06863ms)\n✔ unfinished with conclusion (0.057478ms)\n✔ unknown state (0.092354ms)\n✔ run binding (3.398963ms)\n✔ attempt binding (0.213292ms)\n✔ empty inventory (0.130837ms)\nℹ tests 12\nℹ suites 0\nℹ pass 12\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 49.844573\n"
+      }
+    },
+    "excluded_generated_or_binary_evidence_paths": []
+  },
+  "24": {
+    "executor": "/root/trial_code_24",
+    "context": "fresh fork_turns=none; inherited model; no settings override; instructed shared-filesystem isolation, not a hard sandbox",
+    "before_files": {
+      "after/package.json": "927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f",
+      "after/src/format.mjs": "8dab0724db22435aadfe5a063e4a2c2f8aae80ef8c5e6434f8759674d1d9252c",
+      "after/test/format.test.mjs": "e78f80cf898136c5f44584449a3f41f258d324a81ccc66e39878f19e41a89dce",
+      "before/package.json": "927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f",
+      "before/src/format.mjs": "3afb6f18b64edd28ae6618969df16dfdf038bc875f0782f82f25219662df9fa5",
+      "before/test/format.test.mjs": "e78f80cf898136c5f44584449a3f41f258d324a81ccc66e39878f19e41a89dce",
+      "change.diff": "fb3032b8ab0801931ba7a41cd96437b284de965e2c6b9dc439bda1c8afcdb591",
+      "docs/format-contract.md": "747e9a074397d305f35d5214ce66d38cf0cc6cb00118d0c952761e74e87e0235",
+      "evidence/author-test-result.txt": "5d850a87044a232976cd8661b85221fd26ad23cc1804a3831bf4b03ecb152b6c",
+      "evidence/capture-record.md": "448110d3436eac8d626445aca19a7d4d8488f23400efec23fb92df6db981d6a0",
+      "task.md": "cec0f49e06d9af55a4e9b0aee21439ba08d3414c5740301660f12ed9cf9c0e4d"
+    },
+    "changes": {},
+    "evidence": {
+      "diff-actual.command.json": {
+        "sha256": "f7c145cad8c5a734d6bbfbe4ebf0332df85abef8def95f7a80c638b42e2938dd",
+        "text": "{\n  \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-24/case\",\n  \"argv\": [\n    \"diff\",\n    \"-ru\",\n    \"before\",\n    \"after\"\n  ]\n}\n"
+      },
+      "diff-actual.exit-code.txt": {
+        "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "text": "1\n"
+      },
+      "diff-actual.stderr.txt": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "diff-actual.stdout.txt": {
+        "sha256": "e33b3555f5a9bd00b02990b7b4645a54625d4ced18c649376f0462e828ddce5a",
+        "text": "diff -ru before/src/format.mjs after/src/format.mjs\n--- before/src/format.mjs\t2026-10-21 13:46:35.688748879 +0200\n+++ after/src/format.mjs\t2026-10-21 13:46:35.688964717 +0200\n@@ -1,3 +1,3 @@\n export function formatCount(value) {\n-  return String(value) + ' items';\n+  return `${value} items`;\n }\n"
+      },
+      "inputs.command.json": {
+        "sha256": "c9e40f47950ba1276eb8ac5f232f72cd20db999e725ab2869a45b555873e0739",
+        "text": "{\n  \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-24/case\",\n  \"argv\": [\n    \"python3\",\n    \"-c\",\n    \"from pathlib import Path; paths=[\\\"change.diff\\\", \\\"before/package.json\\\", \\\"before/src/format.mjs\\\", \\\"before/test/format.test.mjs\\\", \\\"after/package.json\\\", \\\"after/src/format.mjs\\\", \\\"after/test/format.test.mjs\\\", \\\"docs/format-contract.md\\\", \\\"evidence/author-test-result.txt\\\", \\\"evidence/capture-record.md\\\"]; [(print(\\\"FILE \\\" + str(p)), print(\\\"\\\".join(str(i) + \\\": \\\" + line for i,line in enumerate(Path(p).read_text().splitlines(keepends=True),1)))) for p in paths]\"\n  ]\n}\n"
+      },
+      "inputs.exit-code.txt": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "inputs.stderr.txt": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "inputs.stdout.txt": {
+        "sha256": "c27c2e49488dff8a44d98e8a2518beaff612364ca58c9d4668d27768ed6d4bfa",
+        "text": "FILE change.diff\n1: --- a/src/format.mjs\n2: +++ b/src/format.mjs\n3: @@ -1,3 +1,3 @@\n4:  export function formatCount(value) {\n5: -  return String(value) + ' items';\n6: +  return `${value} items`;\n7:  }\n\nFILE before/package.json\n1: {\n2:   \"type\": \"module\",\n3:   \"scripts\": {\n4:     \"test\": \"node --test test/*.test.mjs\"\n5:   }\n6: }\n\nFILE before/src/format.mjs\n1: export function formatCount(value) {\n2:   return String(value) + ' items';\n3: }\n\nFILE before/test/format.test.mjs\n1: import test from 'node:test';\n2: import assert from 'node:assert/strict';\n3: import { formatCount } from '../src/format.mjs';\n4: test('nonnegative integer labels', () => { for (const n of [0, 1, 8, 1000]) assert.equal(formatCount(n), String(n) + ' items'); });\n\nFILE after/package.json\n1: {\n2:   \"type\": \"module\",\n3:   \"scripts\": {\n4:     \"test\": \"node --test test/*.test.mjs\"\n5:   }\n6: }\n\nFILE after/src/format.mjs\n1: export function formatCount(value) {\n2:   return `${value} items`;\n3: }\n\nFILE after/test/format.test.mjs\n1: import test from 'node:test';\n2: import assert from 'node:assert/strict';\n3: import { formatCount } from '../src/format.mjs';\n4: test('nonnegative integer labels', () => { for (const n of [0, 1, 8, 1000]) assert.equal(formatCount(n), String(n) + ' items'); });\n\nFILE docs/format-contract.md\n1: # Count label contract revision 1\n2: Owner: UI maintainer. Approved and current. formatCount receives a nonnegative safe integer and returns its decimal representation followed by the literal ` items`. Only source readability changes are requested. There is no external API, authorization, persistence or deployment behavior on this path.\n\nFILE evidence/author-test-result.txt\n1: ✔ nonnegative integer labels (0.550921ms)\n2: ℹ tests 1\n3: ℹ suites 0\n4: ℹ pass 1\n5: ℹ fail 0\n6: ℹ cancelled 0\n7: ℹ skipped 0\n8: ℹ todo 0\n9: ℹ duration_ms 39.293269\n\nFILE evidence/capture-record.md\n1: Synthetic offline case. There is no applicable platform observation: this diff is a pure label formatting change. The complete input domain and output are owned by docs/format-contract.md.\n\n"
+      },
+      "node-version.command.json": {
+        "sha256": "23b6417b4f82ef681c1297cdfc8e514cd75905e9a960dfbebcb2735b58f3c605",
+        "text": "{\n  \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-24/evidence\",\n  \"argv\": [\n    \"node\",\n    \"--version\"\n  ]\n}\n"
+      },
+      "node-version.exit-code.txt": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "node-version.stderr.txt": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "node-version.stdout.txt": {
+        "sha256": "c642a0de246dcdc6c51318fe449646fc5067b981a8d09e9ccdb8141a5756339a",
+        "text": "v24.15.0\n"
+      },
+      "result.md": {
+        "sha256": "85e9bdb5fb51ae608eed1b324f4c8aee95f1798dbd0d7309c400624828236767",
+        "text": "Замену конкатенации шаблонной строкой можно принять: для неотрицательных безопасных целых чисел результат сохраняется.\n\nNo findings.\n\nReview basis: [after](/tmp/skill-trial-runs/code-reviewer-24/case/after) относительно [before](/tmp/skill-trial-runs/code-reviewer-24/case/before); SHA-256 всего case: `5b5137d69d660cc81f4c48f48d99c1b2e3984ea329eb90dcbf5b12b141dc2f1f`. Начальный и конечный снимки совпадают.\n\nScope: единственный изменённый файл — [format.mjs](/tmp/skill-trial-runs/code-reviewer-24/case/after/src/format.mjs:2), прочитан полностью. Проверены обе версии, тесты, package.json, контракт и предоставленные материалы evidence. Исключений нет.\n\nEvidence: полный diff подтверждён; `node --test test/format.test.mjs` — 1/1 PASS, Node v24.15.0, exit 0. `diff` завершился с ожидаемым exit 1 из-за изменения; сравнение снимков — exit 0. Фактические stdout, stderr и коды сохранены в [evidence](/tmp/skill-trial-runs/code-reviewer-24/evidence).\n\nLimits: тест выполнен для 0, 1, 8 и 1000; остальные допустимые значения оценены по семантике преобразования числа в строку. Входы вне контракта не оценивались.\n\nRecommendation: approve\n"
+      },
+      "run-check.py": {
+        "sha256": "7eb0eb82f240cbe68928dfc716060fa23bc7f255b02d9c91f83d33ba536346e4",
+        "text": "import json, subprocess, sys\nfrom pathlib import Path\nroot = Path(__file__).resolve().parent\nlabel, cwd, *command = sys.argv[1:]\nresult = subprocess.run(command, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)\n(root / (label + \".stdout.txt\")).write_bytes(result.stdout)\n(root / (label + \".stderr.txt\")).write_bytes(result.stderr)\n(root / (label + \".exit-code.txt\")).write_text(str(result.returncode) + \"\\n\")\n(root / (label + \".command.json\")).write_text(json.dumps({\"cwd\": cwd, \"argv\": command}, ensure_ascii=False, indent=2) + \"\\n\")\nsys.stdout.buffer.write(result.stdout)\nsys.stderr.buffer.write(result.stderr)\nprint(\"CHECK_EXIT_CODE=\" + str(result.returncode), flush=True)\nsys.exit(result.returncode)\n"
+      },
+      "snapshot-compare.command.json": {
+        "sha256": "5e1bd3c5458d67bd4695c3223e13d914642219a456d42c05d5fa661d58cb3684",
+        "text": "{\n  \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-24/evidence\",\n  \"argv\": [\n    \"cmp\",\n    \"snapshot-start.stdout.txt\",\n    \"snapshot-end.stdout.txt\"\n  ]\n}\n"
+      },
+      "snapshot-compare.exit-code.txt": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "snapshot-compare.stderr.txt": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "snapshot-compare.stdout.txt": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "snapshot-end.command.json": {
+        "sha256": "7e3b8c67986b3d144bd529a18c3dea576e4a8b266ed33f641c8e01a8eebdfcdd",
+        "text": "{\n  \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-24/evidence\",\n  \"argv\": [\n    \"python3\",\n    \"/tmp/skill-trial-runs/code-reviewer-24/evidence/snapshot.py\"\n  ]\n}\n"
+      },
+      "snapshot-end.exit-code.txt": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "snapshot-end.stderr.txt": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "snapshot-end.stdout.txt": {
+        "sha256": "2cd370b2b72d08f9ca07329804f8dc086e7ea26c79dd178859860dd126c5fdf9",
+        "text": "{\n  \"aggregate_sha256\": \"5b5137d69d660cc81f4c48f48d99c1b2e3984ea329eb90dcbf5b12b141dc2f1f\",\n  \"files\": [\n    {\n      \"path\": \"after/package.json\",\n      \"sha256\": \"927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f\"\n    },\n    {\n      \"path\": \"after/src/format.mjs\",\n      \"sha256\": \"8dab0724db22435aadfe5a063e4a2c2f8aae80ef8c5e6434f8759674d1d9252c\"\n    },\n    {\n      \"path\": \"after/test/format.test.mjs\",\n      \"sha256\": \"e78f80cf898136c5f44584449a3f41f258d324a81ccc66e39878f19e41a89dce\"\n    },\n    {\n      \"path\": \"before/package.json\",\n      \"sha256\": \"927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f\"\n    },\n    {\n      \"path\": \"before/src/format.mjs\",\n      \"sha256\": \"3afb6f18b64edd28ae6618969df16dfdf038bc875f0782f82f25219662df9fa5\"\n    },\n    {\n      \"path\": \"before/test/format.test.mjs\",\n      \"sha256\": \"e78f80cf898136c5f44584449a3f41f258d324a81ccc66e39878f19e41a89dce\"\n    },\n    {\n      \"path\": \"change.diff\",\n      \"sha256\": \"fb3032b8ab0801931ba7a41cd96437b284de965e2c6b9dc439bda1c8afcdb591\"\n    },\n    {\n      \"path\": \"docs/format-contract.md\",\n      \"sha256\": \"747e9a074397d305f35d5214ce66d38cf0cc6cb00118d0c952761e74e87e0235\"\n    },\n    {\n      \"path\": \"evidence/author-test-result.txt\",\n      \"sha256\": \"5d850a87044a232976cd8661b85221fd26ad23cc1804a3831bf4b03ecb152b6c\"\n    },\n    {\n      \"path\": \"evidence/capture-record.md\",\n      \"sha256\": \"448110d3436eac8d626445aca19a7d4d8488f23400efec23fb92df6db981d6a0\"\n    },\n    {\n      \"path\": \"task.md\",\n      \"sha256\": \"cec0f49e06d9af55a4e9b0aee21439ba08d3414c5740301660f12ed9cf9c0e4d\"\n    }\n  ]\n}\n"
+      },
+      "snapshot-start.command.json": {
+        "sha256": "7e3b8c67986b3d144bd529a18c3dea576e4a8b266ed33f641c8e01a8eebdfcdd",
+        "text": "{\n  \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-24/evidence\",\n  \"argv\": [\n    \"python3\",\n    \"/tmp/skill-trial-runs/code-reviewer-24/evidence/snapshot.py\"\n  ]\n}\n"
+      },
+      "snapshot-start.exit-code.txt": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "snapshot-start.stderr.txt": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "snapshot-start.stdout.txt": {
+        "sha256": "2cd370b2b72d08f9ca07329804f8dc086e7ea26c79dd178859860dd126c5fdf9",
+        "text": "{\n  \"aggregate_sha256\": \"5b5137d69d660cc81f4c48f48d99c1b2e3984ea329eb90dcbf5b12b141dc2f1f\",\n  \"files\": [\n    {\n      \"path\": \"after/package.json\",\n      \"sha256\": \"927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f\"\n    },\n    {\n      \"path\": \"after/src/format.mjs\",\n      \"sha256\": \"8dab0724db22435aadfe5a063e4a2c2f8aae80ef8c5e6434f8759674d1d9252c\"\n    },\n    {\n      \"path\": \"after/test/format.test.mjs\",\n      \"sha256\": \"e78f80cf898136c5f44584449a3f41f258d324a81ccc66e39878f19e41a89dce\"\n    },\n    {\n      \"path\": \"before/package.json\",\n      \"sha256\": \"927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f\"\n    },\n    {\n      \"path\": \"before/src/format.mjs\",\n      \"sha256\": \"3afb6f18b64edd28ae6618969df16dfdf038bc875f0782f82f25219662df9fa5\"\n    },\n    {\n      \"path\": \"before/test/format.test.mjs\",\n      \"sha256\": \"e78f80cf898136c5f44584449a3f41f258d324a81ccc66e39878f19e41a89dce\"\n    },\n    {\n      \"path\": \"change.diff\",\n      \"sha256\": \"fb3032b8ab0801931ba7a41cd96437b284de965e2c6b9dc439bda1c8afcdb591\"\n    },\n    {\n      \"path\": \"docs/format-contract.md\",\n      \"sha256\": \"747e9a074397d305f35d5214ce66d38cf0cc6cb00118d0c952761e74e87e0235\"\n    },\n    {\n      \"path\": \"evidence/author-test-result.txt\",\n      \"sha256\": \"5d850a87044a232976cd8661b85221fd26ad23cc1804a3831bf4b03ecb152b6c\"\n    },\n    {\n      \"path\": \"evidence/capture-record.md\",\n      \"sha256\": \"448110d3436eac8d626445aca19a7d4d8488f23400efec23fb92df6db981d6a0\"\n    },\n    {\n      \"path\": \"task.md\",\n      \"sha256\": \"cec0f49e06d9af55a4e9b0aee21439ba08d3414c5740301660f12ed9cf9c0e4d\"\n    }\n  ]\n}\n"
+      },
+      "snapshot.py": {
+        "sha256": "63517acb2cb7f3c0c3ebd5d1f101b9e939ca3bf01a186a92ce6b82552cd361df",
+        "text": "import hashlib, json\nfrom pathlib import Path\nroot = Path(\"/tmp/skill-trial-runs/code-reviewer-24/case\")\nmanifest = [{\"path\": str(p.relative_to(root)), \"sha256\": hashlib.sha256(p.read_bytes()).hexdigest()} for p in sorted(root.rglob(\"*\")) if p.is_file()]\nencoded = json.dumps(manifest, sort_keys=True, separators=(\",\", \":\")).encode()\nprint(json.dumps({\"aggregate_sha256\": hashlib.sha256(encoded).hexdigest(), \"files\": manifest}, indent=2))\n"
+      },
+      "tests-after.command.json": {
+        "sha256": "85ee1c4941409a30b2cb768e3e7478b93a23dbe311293792da845092c84d29a1",
+        "text": "{\n  \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-24/case/after\",\n  \"argv\": [\n    \"node\",\n    \"--test\",\n    \"test/format.test.mjs\"\n  ]\n}\n"
+      },
+      "tests-after.exit-code.txt": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "tests-after.stderr.txt": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "tests-after.stdout.txt": {
+        "sha256": "15c1fe638cde52edbc6ecefb87504c5dcf39bd533938d3f61ffb7f60e68527db",
+        "text": "✔ nonnegative integer labels (0.624448ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 39.894307\n"
+      }
+    },
+    "excluded_generated_or_binary_evidence_paths": []
+  },
+  "25": {
+    "executor": "/root/trial_code_25",
+    "context": "fresh fork_turns=none; inherited model; no settings override; instructed shared-filesystem isolation, not a hard sandbox",
+    "before_files": {
+      "after/package.json": "927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f",
+      "after/src/card.mjs": "51d24b67852f1bc1ff6c80d9a2ca8fcb4971171a046cf4e1c969727119e764a4",
+      "after/test/card.test.mjs": "03520042f51a224b091167ed136413a793ba58365e4c44207324b4fbe7638ac5",
+      "before/package.json": "927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f",
+      "before/src/card.mjs": "207d9de091b6949dc51a45d46d230b4361ea2100f4a052c62d25d00c39436159",
+      "before/test/card.test.mjs": "03520042f51a224b091167ed136413a793ba58365e4c44207324b4fbe7638ac5",
+      "change.diff": "c6f65c97baf8183b8fa7d782536de6916e39baccda6775f98656cf0813b62c88",
+      "docs/batchline-api.md": "9e8905917acdc47a1fe9b20413b83eb71e0feb00fbb6221716add4a43b654f65",
+      "docs/card-contract.md": "b2e3dac208e92e5dee7e63cae55beb71dd2597fa579e3234242f506ee6550241",
+      "evidence/author-test-result.txt": "b580f0c10007d80be6f468cd5642e622b02939dac5018435ffb702bc50a946ee",
+      "evidence/capture-record.md": "ba4638d30ecad78044835194d5b4ce98c36740dcdce97ddd7dbba9fb65619740",
+      "evidence/observation-01.json": "442754ce6556c7d53fdd2f32f925aff1a6624e4b27476371dce7b45b4093914b",
+      "task.md": "cec0f49e06d9af55a4e9b0aee21439ba08d3414c5740301660f12ed9cf9c0e4d"
+    },
+    "changes": {},
+    "evidence": {
+      "after-tests.exit-code.txt": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "after-tests.stderr.txt": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "after-tests.stdout.txt": {
+        "sha256": "22ebb3d87b0be4ba8f23ecfa9d75de9937f72a9b892803040705756c4ccbd11b",
+        "text": "✔ run card (0.453435ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 44.793081\n"
+      },
+      "before-tests.exit-code.txt": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "before-tests.stderr.txt": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "before-tests.stdout.txt": {
+        "sha256": "9de8469b5fd513b573d8569e293f6efbfa2583725fd01bbb64c7b17b10e31d2d",
+        "text": "✔ run card (0.46122ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 41.504124\n"
+      },
+      "checks.json": {
+        "sha256": "c711eac008e83c6db31b22631e7e0d6d1b799c1aea9ba9900c2ec475675df5d0",
+        "text": "[\n  {\n    \"name\": \"node-version\",\n    \"command\": [\n      \"node\",\n      \"--version\"\n    ],\n    \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-25\",\n    \"exit_code\": 0\n  },\n  {\n    \"name\": \"full-diff\",\n    \"command\": [\n      \"diff\",\n      \"-ru\",\n      \"before\",\n      \"after\"\n    ],\n    \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-25/case\",\n    \"exit_code\": 1\n  },\n  {\n    \"name\": \"before-tests\",\n    \"command\": [\n      \"node\",\n      \"--test\",\n      \"test/card.test.mjs\"\n    ],\n    \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-25/case/before\",\n    \"exit_code\": 0\n  },\n  {\n    \"name\": \"after-tests\",\n    \"command\": [\n      \"node\",\n      \"--test\",\n      \"test/card.test.mjs\"\n    ],\n    \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-25/case/after\",\n    \"exit_code\": 0\n  },\n  {\n    \"name\": \"contract-repro\",\n    \"command\": [\n      \"node\",\n      \"--test\",\n      \"repro.test.mjs\"\n    ],\n    \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-25/evidence\",\n    \"exit_code\": 1\n  },\n  {\n    \"name\": \"snapshot-check\",\n    \"command\": [\n      \"python3\",\n      \"/tmp/skill-trial-runs/code-reviewer-25/evidence/verify-snapshot.py\"\n    ],\n    \"cwd\": \"/tmp/skill-trial-runs/code-reviewer-25/evidence\",\n    \"exit_code\": 0\n  }\n]\n"
+      },
+      "contract-repro.exit-code.txt": {
+        "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "text": "1\n"
+      },
+      "contract-repro.stderr.txt": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "contract-repro.stdout.txt": {
+        "sha256": "8b12719d86f846994bdaddca0dfa95e0ff577a8e28f3c1d744e9c2ec6c9b1a43",
+        "text": "✔ before: unmodified captured Batchline object preserves run_id (0.504302ms)\n✔ before: ordinary provider string ID preserves run_id (0.091222ms)\n✖ after: unmodified captured Batchline object preserves run_id (0.157817ms)\n✖ after: ordinary provider string ID preserves run_id (0.057378ms)\nℹ tests 4\nℹ suites 0\nℹ pass 2\nℹ fail 2\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 43.996568\n\n✖ failing tests:\n\ntest at repro.test.mjs:9:3\n✖ after: unmodified captured Batchline object preserves run_id (0.157817ms)\n  TypeError: invalid run_id\n      at renderRun (file:///tmp/skill-trial-runs/code-reviewer-25/case/after/src/card.mjs:2:48)\n      at TestContext.<anonymous> (file:///tmp/skill-trial-runs/code-reviewer-25/evidence/repro.test.mjs:10:18)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1201:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)\n      at Test.postRun (node:internal/test_runner/test:1330:19)\n      at Test.run (node:internal/test_runner/test:1258:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)\n\ntest at repro.test.mjs:12:3\n✖ after: ordinary provider string ID preserves run_id (0.057378ms)\n  TypeError: invalid run_id\n      at renderRun (file:///tmp/skill-trial-runs/code-reviewer-25/case/after/src/card.mjs:2:48)\n      at TestContext.<anonymous> (file:///tmp/skill-trial-runs/code-reviewer-25/evidence/repro.test.mjs:13:18)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1201:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)\n      at Test.postRun (node:internal/test_runner/test:1330:19)\n      at Test.run (node:internal/test_runner/test:1258:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7)\n"
+      },
+      "full-diff.exit-code.txt": {
+        "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "text": "1\n"
+      },
+      "full-diff.stderr.txt": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "full-diff.stdout.txt": {
+        "sha256": "ef696f6044ffbdc2227afe7f1a180ae90fb8074e131d74dc433a20d703616df9",
+        "text": "diff -ru before/src/card.mjs after/src/card.mjs\n--- before/src/card.mjs\t2026-10-21 13:46:35.758316583 +0200\n+++ after/src/card.mjs\t2026-10-21 13:46:35.758430097 +0200\n@@ -1,3 +1,4 @@\n export function renderRun(raw) {\n-  return `Run ${String(raw.run_id)}`;\n+  if (!Number.isSafeInteger(raw.run_id)) throw new TypeError('invalid run_id');\n+  return `Run ${raw.run_id}`;\n }\n"
+      },
+      "node-version.exit-code.txt": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "node-version.stderr.txt": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "node-version.stdout.txt": {
+        "sha256": "c642a0de246dcdc6c51318fe449646fc5067b981a8d09e9ccdb8141a5756339a",
+        "text": "v24.15.0\n"
+      },
+      "repro.test.mjs": {
+        "sha256": "e95f75535bdd817ccada96fe80fa79895c75545bda9cddc47167c4c91feb1686",
+        "text": "import test from 'node:test';\nimport assert from 'node:assert/strict';\nimport { readFileSync } from 'node:fs';\nimport { renderRun as before } from '../case/before/src/card.mjs';\nimport { renderRun as after } from '../case/after/src/card.mjs';\n\nconst captured = JSON.parse(readFileSync(new URL('../case/evidence/observation-01.json', import.meta.url), 'utf8'));\nfor (const [label, renderRun] of [['before', before], ['after', after]]) {\n  test(`${label}: unmodified captured Batchline object preserves run_id`, () => {\n    assert.equal(renderRun(captured), 'Run 98123045981230459812');\n  });\n  test(`${label}: ordinary provider string ID preserves run_id`, () => {\n    assert.equal(renderRun({ run_id: '87' }), 'Run 87');\n  });\n}\n"
+      },
+      "result.md": {
+        "sha256": "bd565378e59a175e1f33b9ce45d03cd973c57b4eac26e3b946d7a30c53d083b0",
+        "text": "Изменение ломает отображение корректных строковых ID Batchline; принимать его нельзя.\n\n[blocking] [card.mjs:2](/tmp/skill-trial-runs/code-reviewer-25/case/after/src/card.mjs:2) — `Number.isSafeInteger` отклоняет все допустимые строковые ID. По [RC-8](/tmp/skill-trial-runs/code-reviewer-25/case/docs/card-contract.md) адаптер получает объект без преобразований, а [Batchline 2.3](/tmp/skill-trial-runs/code-reviewer-25/case/docs/batchline-api.md) определяет `run_id` как строку, в том числе длиннее безопасного целого JavaScript. На сохранённом объекте с ID `\"98123045981230459812\"` базовая версия возвращает правильный текст, новая выбрасывает `TypeError: invalid run_id`; то же происходит с `\"87\"`. Существующий зелёный тест использует число `87`, поэтому пропускает регрессию. Исправление: сохранить строковый контракт без преобразования в `Number` и проверить обычный и длинный строковые ID.\n\nReview basis: `after/` против `before/`; SHA-256 всего case `38572810ff659cf570be954cdfdd1d8fa6da46e20c0a8d1f008af8884d64d78b`, до и после совпадает.\nScope: единственный изменённый файл `src/card.mjs` прочитан полностью; также проверены тесты, package.json обеих версий, оба контракта и предоставленные наблюдения. Исключений нет.\nEvidence: штатный тест проходит в обеих версиях, exit 0. Дополнительные 4 проверки: 2 проходят на базе, 2 падают на новой версии, exit 1. Фактические stdout/stderr и коды завершения сохранены в [evidence](/tmp/skill-trial-runs/code-reviewer-25/evidence/checks.json).\nLimits: проверена локальная граница адаптера на синтетических данных; живой API и UI не проверялись. Решения допуска и внешние действия вне заданной границы.\nRecommendation: request changes\n"
+      },
+      "run-checks.py": {
+        "sha256": "b9ce459c26e30e256d95401e65085fcb8a8f6124a426f610c7f6a85b252d6c86",
+        "text": "from pathlib import Path\nimport json\nimport subprocess\n\nroot = Path('/tmp/skill-trial-runs/code-reviewer-25')\nevidence = root / 'evidence'\nchecks = [\n    ('node-version', ['node', '--version'], root),\n    ('full-diff', ['diff', '-ru', 'before', 'after'], root / 'case'),\n    ('before-tests', ['node', '--test', 'test/card.test.mjs'], root / 'case/before'),\n    ('after-tests', ['node', '--test', 'test/card.test.mjs'], root / 'case/after'),\n    ('contract-repro', ['node', '--test', 'repro.test.mjs'], evidence),\n]\nrecords = []\nfor name, command, cwd in checks:\n    result = subprocess.run(command, cwd=cwd, capture_output=True)\n    (evidence / f'{name}.stdout.txt').write_bytes(result.stdout)\n    (evidence / f'{name}.stderr.txt').write_bytes(result.stderr)\n    (evidence / f'{name}.exit-code.txt').write_text(str(result.returncode) + '\\n')\n    record = {'name': name, 'command': command, 'cwd': str(cwd), 'exit_code': result.returncode}\n    records.append(record)\n    print(json.dumps(record))\n    print(result.stdout.decode(errors='replace'), end='')\n    print(result.stderr.decode(errors='replace'), end='')\n(evidence / 'checks.json').write_text(json.dumps(records, indent=2) + '\\n')\n"
+      },
+      "snapshot-check.exit-code.txt": {
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "text": "0\n"
+      },
+      "snapshot-check.stderr.txt": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text": ""
+      },
+      "snapshot-check.stdout.txt": {
+        "sha256": "857e617ec693dd14bdcc4b92c8af56079ee155d65dc17608f9aac668497e039c",
+        "text": "{\"start\": \"38572810ff659cf570be954cdfdd1d8fa6da46e20c0a8d1f008af8884d64d78b\", \"end\": \"38572810ff659cf570be954cdfdd1d8fa6da46e20c0a8d1f008af8884d64d78b\", \"unchanged\": true}\n"
+      },
+      "snapshot-end.json": {
+        "sha256": "bbbf01f78ded3140afee631eecd800375c46f247efd2dc4c41ce832c31461599",
+        "text": "{\n  \"root\": \"/tmp/skill-trial-runs/code-reviewer-25/case\",\n  \"algorithm\": \"sha256(canonical JSON relative-path/file-sha256 map)\",\n  \"snapshot\": \"38572810ff659cf570be954cdfdd1d8fa6da46e20c0a8d1f008af8884d64d78b\",\n  \"files\": {\n    \"after/package.json\": \"927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f\",\n    \"after/src/card.mjs\": \"51d24b67852f1bc1ff6c80d9a2ca8fcb4971171a046cf4e1c969727119e764a4\",\n    \"after/test/card.test.mjs\": \"03520042f51a224b091167ed136413a793ba58365e4c44207324b4fbe7638ac5\",\n    \"before/package.json\": \"927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f\",\n    \"before/src/card.mjs\": \"207d9de091b6949dc51a45d46d230b4361ea2100f4a052c62d25d00c39436159\",\n    \"before/test/card.test.mjs\": \"03520042f51a224b091167ed136413a793ba58365e4c44207324b4fbe7638ac5\",\n    \"change.diff\": \"c6f65c97baf8183b8fa7d782536de6916e39baccda6775f98656cf0813b62c88\",\n    \"docs/batchline-api.md\": \"9e8905917acdc47a1fe9b20413b83eb71e0feb00fbb6221716add4a43b654f65\",\n    \"docs/card-contract.md\": \"b2e3dac208e92e5dee7e63cae55beb71dd2597fa579e3234242f506ee6550241\",\n    \"evidence/author-test-result.txt\": \"b580f0c10007d80be6f468cd5642e622b02939dac5018435ffb702bc50a946ee\",\n    \"evidence/capture-record.md\": \"ba4638d30ecad78044835194d5b4ce98c36740dcdce97ddd7dbba9fb65619740\",\n    \"evidence/observation-01.json\": \"442754ce6556c7d53fdd2f32f925aff1a6624e4b27476371dce7b45b4093914b\",\n    \"task.md\": \"cec0f49e06d9af55a4e9b0aee21439ba08d3414c5740301660f12ed9cf9c0e4d\"\n  }\n}\n"
+      },
+      "snapshot-start.json": {
+        "sha256": "bbbf01f78ded3140afee631eecd800375c46f247efd2dc4c41ce832c31461599",
+        "text": "{\n  \"root\": \"/tmp/skill-trial-runs/code-reviewer-25/case\",\n  \"algorithm\": \"sha256(canonical JSON relative-path/file-sha256 map)\",\n  \"snapshot\": \"38572810ff659cf570be954cdfdd1d8fa6da46e20c0a8d1f008af8884d64d78b\",\n  \"files\": {\n    \"after/package.json\": \"927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f\",\n    \"after/src/card.mjs\": \"51d24b67852f1bc1ff6c80d9a2ca8fcb4971171a046cf4e1c969727119e764a4\",\n    \"after/test/card.test.mjs\": \"03520042f51a224b091167ed136413a793ba58365e4c44207324b4fbe7638ac5\",\n    \"before/package.json\": \"927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f\",\n    \"before/src/card.mjs\": \"207d9de091b6949dc51a45d46d230b4361ea2100f4a052c62d25d00c39436159\",\n    \"before/test/card.test.mjs\": \"03520042f51a224b091167ed136413a793ba58365e4c44207324b4fbe7638ac5\",\n    \"change.diff\": \"c6f65c97baf8183b8fa7d782536de6916e39baccda6775f98656cf0813b62c88\",\n    \"docs/batchline-api.md\": \"9e8905917acdc47a1fe9b20413b83eb71e0feb00fbb6221716add4a43b654f65\",\n    \"docs/card-contract.md\": \"b2e3dac208e92e5dee7e63cae55beb71dd2597fa579e3234242f506ee6550241\",\n    \"evidence/author-test-result.txt\": \"b580f0c10007d80be6f468cd5642e622b02939dac5018435ffb702bc50a946ee\",\n    \"evidence/capture-record.md\": \"ba4638d30ecad78044835194d5b4ce98c36740dcdce97ddd7dbba9fb65619740\",\n    \"evidence/observation-01.json\": \"442754ce6556c7d53fdd2f32f925aff1a6624e4b27476371dce7b45b4093914b\",\n    \"task.md\": \"cec0f49e06d9af55a4e9b0aee21439ba08d3414c5740301660f12ed9cf9c0e4d\"\n  }\n}\n"
+      },
+      "verify-snapshot.py": {
+        "sha256": "c8f1eb95b3510326135851a4ace922ac7024d42f951dbcb899327d207cfe4884",
+        "text": "from pathlib import Path\nimport hashlib\nimport json\n\nroot = Path('/tmp/skill-trial-runs/code-reviewer-25/case')\nevidence = Path('/tmp/skill-trial-runs/code-reviewer-25/evidence')\nstart = json.loads((evidence / 'snapshot-start.json').read_text())\nmanifest = {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(root.rglob('*')) if p.is_file()}\nencoded = json.dumps(manifest, sort_keys=True, separators=(',', ':')).encode()\nend = {'root': str(root), 'algorithm': start['algorithm'], 'snapshot': hashlib.sha256(encoded).hexdigest(), 'files': manifest}\n(evidence / 'snapshot-end.json').write_text(json.dumps(end, indent=2) + '\\n')\nprint(json.dumps({'start': start['snapshot'], 'end': end['snapshot'], 'unchanged': start == end}))\nassert start == end, 'Reviewed case changed during review'\n"
+      }
+    },
+    "excluded_generated_or_binary_evidence_paths": []
+  }
+}
