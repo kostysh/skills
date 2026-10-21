@@ -1,0 +1,64 @@
+{
+  "base_commit": "ce19ba418e1671167254c260e4617564335489ae",
+  "author_readiness": "ready-to-regenerate",
+  "outcome": "Two generated SKILL.md files fit their unchanged byte limits while retaining every source-authorized requirement.",
+  "consumer": "Agent reading architecture or planning instructions; maintainer accepting generated package.",
+  "scope": "Three prose fragments and two content patch versions; no workflow/policy/stop/routing owner/reference/asset/runtime/permission/limit changes.",
+  "self_check": "Repeated summaries consolidated; all role boundaries, planning scopes, authority/readiness, permitted output and missing-input routes retained. Structural source equality protects all other fields. Existing methodology remains the canonical detailed method. No new section, reference, abstraction, tool or gate.",
+  "verification": "Source/body equality outside exact recorded chunks, requirement mapping, unchanged limits, compiler lint/regenerate/check and isolated parity, creator validation, existing test:ci, frozen paired cases prepared before edits, independent change audit.",
+  "exposure": "Root authors candidate and fixed cases/rubric; four fresh executors see one opaque active package and identical per-skill raw task only. Reviewer assesses outputs and rubric independently. Shared filesystem instruction isolation, not hard sandbox.",
+  "changes": [
+    {
+      "skill": "architecture-engineer",
+      "file": "fragments/overview.md",
+      "old": "Architecture is the decision layer between product input and downstream specifications, delivery planning, domain work, and implementation evidence.\n\nThe architecture agent owns the shape of the system and the reasoning behind it. It does not normally own sprint or task decomposition.\n\n",
+      "new": "Architecture is the decision layer from product input to downstream specifications, delivery planning, domain work, and implementation evidence. The agent owns system shape and rationale, not normally sprint or task decomposition.\n\n",
+      "retained": [
+        "architecture as decision layer",
+        "product input and downstream specs/delivery/domain/implementation evidence",
+        "system shape and rationale ownership",
+        "normally excludes sprint/task decomposition"
+      ]
+    },
+    {
+      "skill": "delivery-planner",
+      "file": "fragments/overview.md",
+      "old": "Delivery planning bridges accepted product/architecture context and executable implementation work.\n\nThe main purpose is architecture-to-task decomposition: take accepted architecture handoff items, constraints, boundaries, contracts, risks, and validation obligations, then produce right-sized tasks that downstream agents can safely execute.\n\nThe skill supports multiple planning scopes:\n\n- whole project;\n- feature or epic;\n- module, service, bounded context, package, adapter, or subsystem;\n- integration or provider flow;\n- one architecture handoff item;\n- backlog audit or repair.\n\nDefault output is one compact Markdown Delivery Plan. Heavy YAML registers are not the default path.\n\nTreat the workflow as a small set of planning decisions, not a form the agent must fill in mechanically. A useful plan may be short when scope is narrow and authority is already clear.\n\nThe skill does not produce PRDs, architecture decisions, ADRs, ASR records, implementation-ready specs, code, CI changes, or merge decisions.\n",
+      "new": "Turn accepted product/architecture context—handoff items, constraints, boundaries, contracts, risks, and validation obligations—into right-sized tasks downstream agents can safely execute.\n\nScopes: whole project; feature or epic; module, service, bounded context, package, adapter, or subsystem; integration or provider flow; one architecture handoff item; backlog audit or repair.\n\nDefault to one compact Markdown Delivery Plan, not heavy YAML registers. Use planning decisions, not mechanical forms; plans may be short when scope is narrow and authority clear.\n\nDo not produce PRDs, architecture decisions, ADRs, ASR records, implementation-ready specs, code, CI changes, or merge decisions.\n",
+      "retained": [
+        "accepted product/architecture authority",
+        "handoff items, constraints, boundaries, contracts, risks, validation obligations",
+        "right-sized tasks for safe downstream agent execution",
+        "all six original scope entries and all module/service synonyms",
+        "one compact Markdown Delivery Plan by default",
+        "heavy YAML registers not default",
+        "planning decisions rather than mechanical forms",
+        "narrow scope and clear authority allow short plans",
+        "all eight excluded artifact/action kinds"
+      ]
+    },
+    {
+      "skill": "delivery-planner",
+      "file": "fragments/final-checks.md",
+      "old": "- Missing architecture decisions are routed to `architecture-engineer`.\n- Missing product intent is routed to `prd-engineer`.\n- Missing behavior/verification detail is routed to `spec-engineer`.\n",
+      "new": "- For missing inputs, route architecture decisions to `architecture-engineer`, product intent to `prd-engineer`, and behavior/verification detail to `spec-engineer`.\n",
+      "retained": [
+        "missing architecture decisions -> architecture-engineer",
+        "missing product intent -> prd-engineer",
+        "missing behavior/verification detail -> spec-engineer"
+      ]
+    }
+  ],
+  "versions": {
+    "architecture-engineer": {
+      "before": "0.1.10",
+      "after": "0.1.11",
+      "unchanged_limit": 26000
+    },
+    "delivery-planner": {
+      "before": "0.2.14",
+      "after": "0.2.15",
+      "unchanged_limit": 23500
+    }
+  }
+}

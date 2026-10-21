@@ -1,0 +1,166 @@
+{
+  "r17": {
+    "skill": "architecture-engineer",
+    "variant": "baseline",
+    "active_count": 15,
+    "active_surface_inventory_exact": true,
+    "extra_files": [],
+    "mismatches": [],
+    "execution_metadata_keys": [
+      "task",
+      "input_files",
+      "runtime_facts",
+      "limits",
+      "checks_performed",
+      "checks_not_performed",
+      "created_files"
+    ],
+    "result_sha256": "6622f7f2be5f44763dd1045eeecb44b76c078716b66ca22247aa30ae9aee8a71",
+    "input_read_count": 7,
+    "recorded_read_hashes_match_actual": true,
+    "runtime_facts": {
+      "observed_working_directory": "/tmp/skill-size-20261021/runs/r17",
+      "python_version_used_for_artifact_creation": "3.14.4",
+      "case_inventory_observed": [
+        "case/task.md",
+        "case/sources.md"
+      ],
+      "project_runtime_executed": false,
+      "architecture_runtime_facts": "Сведения об одном процессе, компонентах и памяти получены из принятого A-4; runtime не наблюдался."
+    },
+    "limits": [
+      "Чтение ограничено собственным run; память, сеть, основной репозиторий, соседние runs и rubric не использовались.",
+      "Точные DTO members и API signatures не предоставлены; совместимость не проверена.",
+      "Executable project code, tests и runtime в case не предоставлены.",
+      "Внешний implementation-discipline, упомянутый назначенным skill, не загружен: его нет в собственном run, внешнее чтение запрещено. Доступный scope-and-simplicity gate выполнен по тексту назначенного skill.",
+      "Код, case, skill и Git-состояние не изменялись; делегирования и публикации не было."
+    ]
+  },
+  "k44": {
+    "skill": "architecture-engineer",
+    "variant": "candidate",
+    "active_count": 15,
+    "active_surface_inventory_exact": true,
+    "extra_files": [],
+    "mismatches": [],
+    "execution_metadata_keys": [
+      "run_directory",
+      "task",
+      "input_files_read",
+      "runtime_facts",
+      "limits",
+      "checks_performed",
+      "checks_not_performed",
+      "created_files",
+      "result_sha256",
+      "artifact_verification"
+    ],
+    "result_sha256": "82815bc3ced5adcb62b926a493ad740aa9d37253c4e52b2d24e6f415f26a2c95",
+    "input_read_count": 7,
+    "recorded_read_hashes_match_actual": true,
+    "runtime_facts": {
+      "context": "synthetic offline case",
+      "architecture_authority": "case/sources.md: принятое описание A-4, не runtime-наблюдение",
+      "project_runtime_exercised": false,
+      "project_code_inspected": false,
+      "network_used": false,
+      "memory_used": false,
+      "delegation_used": false,
+      "artifact_writer": "python3 3.14.4"
+    },
+    "limits": [
+      "Использованы только входы собственного run-каталога.",
+      "DTO members и API signature отсутствуют в принятом контракте; переданы spec-owner до реализации.",
+      "Код, тесты и runtime проекта не запускались; архитектурные источники не доказывают работающий preview.",
+      "Реализация, Git-операции и публикация не выполнялись."
+    ]
+  },
+  "s26": {
+    "skill": "delivery-planner",
+    "variant": "baseline",
+    "active_count": 7,
+    "active_surface_inventory_exact": true,
+    "extra_files": [],
+    "mismatches": [],
+    "execution_metadata_keys": [
+      "run_directory",
+      "recorded_at_utc",
+      "inputs_read",
+      "runtime_facts",
+      "limits",
+      "created_files"
+    ],
+    "result_sha256": "4b35001866866ccee4c3f36bbdf3ff499f23058e3258114ea5de5216aa92e4b8",
+    "input_read_count": 7,
+    "recorded_read_hashes_match_actual": true,
+    "runtime_facts": {
+      "observed_working_directory": "/tmp/skill-size-20261021/runs/s26",
+      "python_version": "3.14.4",
+      "shell_commands_completed": [
+        "pwd and run-local file inventory with rg",
+        "read task, sources, assigned skill, methodology, output templates, module template and planning patterns",
+        "read methodology lines 330-520 to recover truncated tool output",
+        "create evidence directory and write result.md and execution.json",
+        "calculate SHA256 for the seven input files and result.md",
+        "shorten result.md; parse execution.json; verify recorded input SHA256 and update result SHA256"
+      ],
+      "context": "synthetic offline planning inputs supplied by case/task.md and case/sources.md",
+      "implementation_or_runtime_verification_performed": false,
+      "network_used": false,
+      "delegation_used": false,
+      "artifact_checks": {
+        "input_sha256_match": true,
+        "result_written_utf8": true,
+        "execution_json_parsed": true,
+        "result_words": 756,
+        "result_bytes": 9017
+      }
+    },
+    "limits": [
+      "No files outside this run directory were intentionally inspected as task inputs.",
+      "No repository, code, API, runtime or existing tests were supplied or inspected.",
+      "Only the assigned skill and its bundled references/assets were used; external implementation-discipline skill was not loaded under the run input boundary.",
+      "No product or architecture open question was resolved by the planner.",
+      "No code implementation, tests, CI, publication, Git operation or independent agent review was performed.",
+      "The first methodology tool output was truncated; the missing end was subsequently read explicitly."
+    ]
+  },
+  "m83": {
+    "skill": "delivery-planner",
+    "variant": "candidate",
+    "active_count": 7,
+    "active_surface_inventory_exact": true,
+    "extra_files": [],
+    "mismatches": [],
+    "execution_metadata_keys": [
+      "recorded_at_utc",
+      "run_directory",
+      "task_result",
+      "inputs_read",
+      "runtime_facts",
+      "limits",
+      "checks_performed",
+      "created_files"
+    ],
+    "result_sha256": "747f1804a287ddfb001cc0e299420ca16166cd518d024b003a11c8c2dae894cc",
+    "input_read_count": 7,
+    "recorded_read_hashes_match_actual": true,
+    "runtime_facts": {
+      "python_for_evidence_record": "3.14.4",
+      "application_runtime_executed": false,
+      "application_tests_executed": false,
+      "project_facts_basis": "Only synthetic case/sources.md; existing CsvParser, PreviewView, ApplyImport and CatalogStore were not inspected in code or runtime.",
+      "result_read_back": true,
+      "result_lines": 45,
+      "result_words_by_whitespace": 1080
+    },
+    "limits": [
+      "Offline synthetic planning only; no implementation or release-readiness evidence.",
+      "No files outside this run directory, memory, network, main repository, neighbouring runs, rubric or other history were consulted.",
+      "Only the assigned skill and its listed references/template were loaded; external skills such as implementation-discipline were not loaded under the input boundary. Their routing names in the result are planned owner routes, not executed skill workflows.",
+      "Canonical contract schemas and locators, concrete API details, application code and an executable application verification contour were not supplied in the read case inputs.",
+      "No subagents, Git operations, publication, CI, application code, separate PRD/ADR/spec artifacts, or writes to case/skill were performed.",
+      "The plan uses source-asserted accepted decisions; no new product or architecture decision was made."
+    ]
+  }
+}

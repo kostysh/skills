@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: delivery-planner
-  source-version: 0.2.14
+  source-version: 0.2.15
   recommended-skill-md-max-bytes: 23500
   description: >-
     Turn accepted product scope and architecture handoff into right-sized executable

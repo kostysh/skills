@@ -1,0 +1,16 @@
+{
+  "base_commit": "ce19ba418e1671167254c260e4617564335489ae",
+  "freeze_before_candidate": true,
+  "cases": {
+    "architecture-engineer": {
+      "sources.md": "c0b6b8c6187ee0c9dcc9993255ca153a87f89ba63b8ea1261b0361b9eb7cb661",
+      "task.md": "2dcfa06f3a7c0cdfda80cbfdd704d929656a085cb7f04a7c9d4173a5d23bc77c",
+      "rubric.md": "46dc4134e0ac3d1e4ffbe5b4a45a3806d4a263c0eabe181b84fe79bad67b64c4"
+    },
+    "delivery-planner": {
+      "sources.md": "2317773a5e2b430bb74a4e6022a29b2fd423253aad0b2253634acdd5bb3471c0",
+      "task.md": "353ff767a95cc0f1c8be44c167680469d372ace2a95e640c8ebaba47d381b77c",
+      "rubric.md": "2d6f132c5148eba788ba402a29f8fb9bf15fc2c701818c390f9dd5447cb25fef"
+    }
+  }
+}

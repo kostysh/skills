@@ -1,0 +1,81 @@
+[
+  {
+    "command": [
+      "node",
+      "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+      "check",
+      "skills/architecture-engineer"
+    ],
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "281958",
+      "wall_time_seconds": 0.028159662,
+      "exit_code": 0,
+      "original_token_count": 8,
+      "output": "OK skills/architecture-engineer\n"
+    }
+  },
+  {
+    "command": [
+      "node",
+      "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+      "check",
+      "skills/delivery-planner"
+    ],
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "3aa981",
+      "wall_time_seconds": 0.027328843,
+      "exit_code": 0,
+      "original_token_count": 7,
+      "output": "OK skills/delivery-planner\n"
+    }
+  },
+  {
+    "command": [
+      "node",
+      "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+      "check",
+      "/tmp/skill-size-20261021/emitted-final/architecture-engineer"
+    ],
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "5355c3",
+      "wall_time_seconds": 0.003008821,
+      "exit_code": 0,
+      "original_token_count": 16,
+      "output": "OK /tmp/skill-size-20261021/emitted-final/architecture-engineer\n"
+    }
+  },
+  {
+    "command": [
+      "node",
+      "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+      "check",
+      "/tmp/skill-size-20261021/emitted-final/delivery-planner"
+    ],
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "5cce0d",
+      "wall_time_seconds": 0.006031249,
+      "exit_code": 0,
+      "original_token_count": 15,
+      "output": "OK /tmp/skill-size-20261021/emitted-final/delivery-planner\n"
+    }
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "status": "fulfilled",
+    "value": {
+      "chunk_id": "ba6eca",
+      "wall_time_seconds": 0.214453031,
+      "exit_code": 0,
+      "original_token_count": 0,
+      "output": ""
+    }
+  }
+]
