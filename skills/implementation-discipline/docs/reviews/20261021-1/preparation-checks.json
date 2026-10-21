@@ -1,0 +1,252 @@
+{
+  "structural": [
+    {
+      "skill": "implementation-discipline",
+      "command": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "lint",
+        "skills/implementation-discipline"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/implementation-discipline/compiler-lint.log",
+      "output": "OK skills/implementation-discipline\n"
+    },
+    {
+      "skill": "implementation-discipline",
+      "command": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "regenerate",
+        "skills/implementation-discipline"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/implementation-discipline/compiler-regenerate.log",
+      "output": "Regenerated /home/kostysh/.codex/skills/custom/.worktrees/evidence-aware-skill-repairs/skills/implementation-discipline\n"
+    },
+    {
+      "skill": "implementation-discipline",
+      "command": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "skills/implementation-discipline"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/implementation-discipline/compiler-check.log",
+      "output": "OK skills/implementation-discipline\n"
+    },
+    {
+      "skill": "implementation-discipline",
+      "command": [
+        "python3",
+        "/home/kostysh/.codex/skills/.system/skill-creator/scripts/quick_validate.py",
+        "skills/implementation-discipline"
+      ],
+      "exit": 1,
+      "log": "/tmp/skill-repairs-20261021/implementation-discipline/creator-validation.log",
+      "output": "Unexpected key(s) in SKILL.md frontmatter: compatibility. Allowed properties are: allowed-tools, description, license, metadata, name\n"
+    },
+    {
+      "skill": "implementation-discipline",
+      "command": [
+        "python3",
+        "/home/kostysh/.codex/skills/.system/skill-creator/scripts/quick_validate.py",
+        "/tmp/skill-repairs-20261021/implementation-discipline/baseline"
+      ],
+      "exit": 1,
+      "log": "/tmp/skill-repairs-20261021/implementation-discipline/creator-validation-baseline.log",
+      "classification": "pre-existing validator compatibility-key mismatch; exact diagnostic matches candidate",
+      "output": "Unexpected key(s) in SKILL.md frontmatter: compatibility. Allowed properties are: allowed-tools, description, license, metadata, name\n"
+    },
+    {
+      "skill": "implementation-discipline",
+      "command": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "/tmp/skill-repairs-20261021/emitted-candidate/implementation-discipline"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/implementation-discipline/emitted-check.log",
+      "output": "OK /tmp/skill-repairs-20261021/emitted-candidate/implementation-discipline\n"
+    }
+  ],
+  "author_fixture_qa": [
+    {
+      "skill": "implementation-discipline",
+      "case": "01",
+      "phase": "baseline",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/implementation-discipline-01-test-baseline.log",
+      "output": "✔ catalog SQL returns complete schema (0.553245ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 47.998883\nnpm notice run test\nnpm notice run node --test\n"
+    },
+    {
+      "skill": "implementation-discipline",
+      "case": "01",
+      "phase": "baseline",
+      "command": [
+        "npm",
+        "run",
+        "smoke"
+      ],
+      "exit": 1,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/implementation-discipline-01-smoke-baseline.log",
+      "output": "npm notice run smoke\nnpm notice run node scripts/smoke.mjs\nfile:///tmp/skill-repairs-20261021/author-fixture-qa/implementation-discipline/01/src/reader.mjs:3\n  if (result.principal !== 'catalog_owner' || !result.readOnlyTransaction) throw new Error('catalog_assurance_failed');\n                                                                                 ^\n\nError: catalog_assurance_failed\n    at readCatalog (file:///tmp/skill-repairs-20261021/author-fixture-qa/implementation-discipline/01/src/reader.mjs:3:82)\n    at file:///tmp/skill-repairs-20261021/author-fixture-qa/implementation-discipline/01/scripts/smoke.mjs:3:43\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at async node:internal/modules/esm/loader:639:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)\n\nNode.js v24.15.0\n"
+    },
+    {
+      "skill": "implementation-discipline",
+      "case": "01",
+      "phase": "fixture-control",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/implementation-discipline-01-test-control.log",
+      "output": "✔ catalog SQL returns complete schema (0.56083ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 48.741686\nnpm notice run test\nnpm notice run node --test\n"
+    },
+    {
+      "skill": "implementation-discipline",
+      "case": "01",
+      "phase": "fixture-control",
+      "command": [
+        "npm",
+        "run",
+        "smoke"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/implementation-discipline-01-smoke-control.log",
+      "output": "{\"objectCount\":12}\nnpm notice run smoke\nnpm notice run node scripts/smoke.mjs\n"
+    },
+    {
+      "skill": "implementation-discipline",
+      "case": "02",
+      "phase": "baseline",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/implementation-discipline-02-test-baseline.log",
+      "output": "✔ prepare writes candidate metadata in developer directory (28.805419ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 80.992703\nnpm notice run prepare-job@1.0.0 test\nnpm notice run node --test\n"
+    },
+    {
+      "skill": "implementation-discipline",
+      "case": "02",
+      "phase": "baseline",
+      "command": [
+        "npm",
+        "run",
+        "ci:prepare"
+      ],
+      "exit": 1,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/implementation-discipline-02-ci-prepare-baseline.log",
+      "output": "{\"cwd\":\"/tmp/clean-prepare-D8Kxu3/project\",\"command\":[\"node\",\"scripts/prepare.mjs\"],\"initialState\":\"clean checkout\"}\nnpm notice run prepare-job@1.0.0 ci:prepare\nnpm notice run node scripts/job.mjs\nnode:internal/modules/package_json_reader:301\n  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);\n        ^\n\nError [ERR_MODULE_NOT_FOUND]: Cannot find package 'build-kit' imported from /tmp/clean-prepare-D8Kxu3/project/scripts/prepare.mjs\n    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)\n    at packageResolve (node:internal/modules/esm/resolve:764:81)\n    at moduleResolve (node:internal/modules/esm/resolve:855:18)\n    at defaultResolve (node:internal/modules/esm/resolve:988:11)\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:697:20)\n    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:714:38)\n    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:746:52)\n    at #resolve (node:internal/modules/esm/loader:679:17)\n    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:599:35)\n    at ModuleJob.syncLink (node:internal/modules/esm/module_job:162:33) {\n  code: 'ERR_MODULE_NOT_FOUND'\n}\n\nNode.js v24.15.0\n"
+    },
+    {
+      "skill": "implementation-discipline",
+      "case": "02",
+      "phase": "fixture-control",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/implementation-discipline-02-test-control.log",
+      "output": "✔ prepare writes candidate metadata in developer directory (23.706999ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 66.97171\nnpm notice run prepare-job@1.0.0 test\nnpm notice run node --test\n"
+    },
+    {
+      "skill": "implementation-discipline",
+      "case": "02",
+      "phase": "fixture-control",
+      "command": [
+        "npm",
+        "run",
+        "ci:prepare"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/implementation-discipline-02-ci-prepare-control.log",
+      "output": "{\"cwd\":\"/tmp/clean-prepare-INsBOR/project\",\"command\":[\"npm\",\"ci\",\"--offline\"],\"initialState\":\"clean checkout\"}\nprepared candidate-19\n\nadded 1 package, and audited 3 packages in 212ms\n\nfound 0 vulnerabilities\n{\"cwd\":\"/tmp/clean-prepare-INsBOR/project\",\"command\":[\"node\",\"scripts/prepare.mjs\"],\"initialState\":\"clean checkout\"}\nprepared candidate-19\nnpm notice run prepare-job@1.0.0 ci:prepare\nnpm notice run node scripts/job.mjs\nnpm notice run prepare-job@1.0.0 prepare\nnpm notice run node scripts/prepare.mjs\n"
+    },
+    {
+      "skill": "implementation-discipline",
+      "case": "03",
+      "phase": "baseline",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exit": 1,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/implementation-discipline-03-test-baseline.log",
+      "output": "✖ normalizes label spaces (0.834046ms)\nℹ tests 1\nℹ suites 0\nℹ pass 0\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 42.558126\n\n✖ failing tests:\n\ntest at test/label.test.mjs:4:1\n✖ normalizes label spaces (0.834046ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  + actual - expected\n  \n  + 'west hall   group'\n  - 'west hall group'\n               ^\n  \n      at TestContext.<anonymous> (file:///tmp/skill-repairs-20261021/author-fixture-qa/implementation-discipline/03/test/label.test.mjs:5:9)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1201:25)\n      at Test.start (node:internal/test_runner/test:1096:17)\n      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 'west hall   group',\n    expected: 'west hall group',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\nnpm notice run test\nnpm notice run node --test\n"
+    },
+    {
+      "skill": "implementation-discipline",
+      "case": "03",
+      "phase": "fixture-control",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/implementation-discipline-03-test-control.log",
+      "output": "✔ normalizes label spaces (0.523569ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 40.779506\nnpm notice run test\nnpm notice run node --test\n"
+    },
+    {
+      "skill": "implementation-discipline",
+      "case": "04",
+      "phase": "baseline",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exit": 1,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/implementation-discipline-04-test-baseline.log",
+      "output": "✖ decodes provider v3 captured event (0.453286ms)\nℹ tests 1\nℹ suites 0\nℹ pass 0\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 47.095086\n\n✖ failing tests:\n\ntest at test/decode.test.mjs:5:1\n✖ decodes provider v3 captured event (0.453286ms)\n  TypeError: Cannot read properties of undefined (reading 'id')\n      at decode (file:///tmp/skill-repairs-20261021/author-fixture-qa/implementation-discipline/04/src/decode.mjs:2:53)\n      at TestContext.<anonymous> (file:///tmp/skill-repairs-20261021/author-fixture-qa/implementation-discipline/04/test/decode.test.mjs:6:19)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1201:25)\n      at Test.start (node:internal/test_runner/test:1096:17)\n      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)\nnpm notice run test\nnpm notice run node --test\n"
+    },
+    {
+      "skill": "implementation-discipline",
+      "case": "04",
+      "phase": "baseline",
+      "command": [
+        "npm",
+        "run",
+        "replay"
+      ],
+      "exit": 1,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/implementation-discipline-04-replay-baseline.log",
+      "output": "npm notice run replay\nnpm notice run node scripts/replay.mjs\nfile:///tmp/skill-repairs-20261021/author-fixture-qa/implementation-discipline/04/src/decode.mjs:2\n return {eventId: event.id, recipientId: event.user.id};\n                                                    ^\n\nTypeError: Cannot read properties of undefined (reading 'id')\n    at decode (file:///tmp/skill-repairs-20261021/author-fixture-qa/implementation-discipline/04/src/decode.mjs:2:53)\n    at file:///tmp/skill-repairs-20261021/author-fixture-qa/implementation-discipline/04/scripts/replay.mjs:3:28\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at async node:internal/modules/esm/loader:639:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)\n\nNode.js v24.15.0\n"
+    },
+    {
+      "skill": "implementation-discipline",
+      "case": "04",
+      "phase": "fixture-control",
+      "command": [
+        "npm",
+        "test"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/implementation-discipline-04-test-control.log",
+      "output": "✔ decodes provider v3 captured event (0.890903ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 53.016901\nnpm notice run test\nnpm notice run node --test\n"
+    },
+    {
+      "skill": "implementation-discipline",
+      "case": "04",
+      "phase": "fixture-control",
+      "command": [
+        "npm",
+        "run",
+        "replay"
+      ],
+      "exit": 0,
+      "log": "/tmp/skill-repairs-20261021/author-fixture-qa/implementation-discipline-04-replay-control.log",
+      "output": "{\"eventId\":\"evt-23\",\"recipientId\":\"recipient-9\"}\nnpm notice run replay\nnpm notice run node scripts/replay.mjs\n"
+    }
+  ],
+  "limits": "Author preparation and structural checks only; not independent behavioral approval."
+}

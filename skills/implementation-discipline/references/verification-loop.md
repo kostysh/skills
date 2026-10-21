@@ -12,6 +12,10 @@ Examples:
 - “Add validation” → name the rejected inputs and verify the observable rejection behavior.
 - “Refactor safely” → identify and run the checks that protect unchanged behavior.
 
+Before choosing the check or claiming a fix, compare its conditions with actual execution where they can change the result: identity and permissions, initial dependency state, entrypoint and caller, material versions, and lifecycle phase. A material difference needs evidence through the affected boundary under those conditions, or a bounded conclusion that names the remaining confirmation. Record this in the existing verification evidence; no separate matrix or full-environment reproduction is implied.
+
+Distinguish installation or transition from operation of an already installed system. An installed working directory does not prove a clean prepare, and direct access does not prove a caller whose identity or permissions differ. Select only the conditions relevant to the claim; a sufficient narrow check remains valid for simple local logic.
+
 Do not add extra abstractions merely to create a test seam when the behavior can be checked directly with existing project conventions. If the proposed verification contour is larger than the source-authorized change, revisit the claim and design before adding a runner, harness, instrumentation, background process, or production seam. Mark an edge unproven when necessary instead of manufacturing runtime scope for test convenience.
 
 ## Use proportional evidence

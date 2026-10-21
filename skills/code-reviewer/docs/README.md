@@ -4,6 +4,7 @@
 
 ## Review Evidence
 
+- [Проверки 2026-10-21](reviews/20261021-1/README.md): исходные данные, результаты, снимок и независимый отчёт.
 - [Blind forward-test evidence — 2026-07-10](forward-test-evidence-20260710.md) — raw prompts/artifacts, evaluator identities, exact outputs, rubrics and evidence limits for the `0.4.0` remediation.
 
 ## Issues
@@ -21,6 +22,8 @@
 | [issues/implementation-plan-20260428-1.md](issues/implementation-plan-20260428-1.md) | [issues/issue-20260428-1.md](issues/issue-20260428-1.md) | Implemented |
 
 ## Implementation Logs
+
+- [2026-10-21 — независимая модель и допустимые сценарии](logs/implementation-log-20261021-1.md) — независимый PASS; 5/5 слепых случаев.
 
 | Log | Related issue | Status |
 | --- | --- | --- |

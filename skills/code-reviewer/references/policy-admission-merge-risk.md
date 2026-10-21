@@ -42,7 +42,7 @@ Before reporting a finding, confirm:
 
 - the path is reachable from the changed behavior under review
 - the owning contract or demonstrated protected invariant requires the behavior being enforced
-- surrounding code does not already fail closed, serialize access, or reject stale state
+- surrounding code does not already prevent the alleged wrong outcome; a fail-closed guard does not clear an improper-refusal concern
 - the failure can affect a real action, persisted decision, audit trail, or merge-critical invariant
 - the proposed fix direction is bounded to the reviewed behavior
 
@@ -73,6 +73,6 @@ Ask:
 1. Did the changed files or linked intent actually trigger this pass?
 2. Is the finding grounded in a reachable path, not an architecture theory?
 3. Have nearby guards, transactions, constraints, retries, and tests been checked?
-4. Would the issue matter at runtime as a wrong side effect, stale admission, corrupted decision, missing audit, replay conflict, or active-scope race?
+4. Would the issue matter at runtime as required work wrongly refused, a wrong side effect, stale admission, corrupted decision, missing audit, replay conflict, or active-scope race?
 
 If the answer is not yes for all four, do not emit it as a finding.

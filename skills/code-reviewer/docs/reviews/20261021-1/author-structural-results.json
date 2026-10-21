@@ -1,0 +1,31 @@
+{
+  "observed_commands": [
+    {
+      "command": "node skills/skill-source-compiler/scripts/skill-source-compiler.mjs lint skills/code-reviewer",
+      "exit_code": 0,
+      "stdout": "OK skills/code-reviewer\n"
+    },
+    {
+      "command": "node skills/skill-source-compiler/scripts/skill-source-compiler.mjs regenerate skills/code-reviewer",
+      "exit_code": 0,
+      "stdout": "Regenerated /home/kostysh/.codex/skills/custom/.worktrees/evidence-aware-skill-repairs/skills/code-reviewer\n"
+    },
+    {
+      "command": "node skills/skill-source-compiler/scripts/skill-source-compiler.mjs check skills/code-reviewer",
+      "exit_code": 0,
+      "stdout": "OK skills/code-reviewer\n"
+    }
+  ],
+  "compiler_warnings": [],
+  "emitted_readback": "Source hash and conditional reference routing read back; required references reachable; compile-report warnings none.",
+  "diff_check": "git diff --check -- skills/code-reviewer skills/spec-conformance-reviewer exit 0",
+  "limits": "Structural checks only; independent skill review/trials pending.",
+  "owning_package_test": {
+    "command": "env XDG_DATA_HOME=/tmp/skill-repairs-pnpm-data XDG_CACHE_HOME=/tmp/skill-repairs-pnpm-cache pnpm --filter @kostysh/code-reviewer test",
+    "exit_code": 0,
+    "tests": 1,
+    "passed": 1,
+    "failed": 0,
+    "test_name": "bundled review template preserves the outcome-first output contract"
+  }
+}

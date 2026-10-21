@@ -1,0 +1,24 @@
+{
+  "git_head": "0bd4d8d92a9488e5595faa2045353733ec0b5fca",
+  "saved_before_candidate": true,
+  "files": {
+    "skills/code-reviewer/AGENTS.md": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf",
+    "skills/code-reviewer/SKILL.md": "a5449f8659b9964374c0aaaf754cbaf4af8ee7eb282cf11a7877e6b917ba0dc7",
+    "skills/code-reviewer/agents/openai.yaml": "04ffae6319cbefd3d74507e3be353bae081e22b65bdbc8c003c646ff4e72279a",
+    "skills/code-reviewer/assets/fixtures/policy-admission-review.md": "1a474f2391e00f7c0cd5c86de4d6b1b0b27ecce618aef203c2e8cba49fa54f2b",
+    "skills/code-reviewer/assets/fixtures/runtime-gate-deployed-path-review.md": "16936898bf81546b8a974d790fd0efa8d081ebef4c9eb458dc3bcc29a6d28646",
+    "skills/code-reviewer/assets/pr-review-template.md": "4184dd312f9c24a13845e9b57f3f28773c5468399f6c56a5cff2392275d2e1d6",
+    "skills/code-reviewer/assets/review-checklist.md": "98c7ca18eb8d5bf30e7f142ddea8f122b88ad3e7f3da5fed2d48d0d735aa788a",
+    "skills/code-reviewer/fragments/overview.md": "a9951fe992193c2e97f836f0d247f1602407f73335c2b7c511f6633a3ed4d8b8",
+    "skills/code-reviewer/references/complexity-only.md": "b058c376f2e41582006c96fad4de174d48ca02b5631e323ad5444431b89aabf4",
+    "skills/code-reviewer/references/diff-completeness.md": "078d87a26c1eecd8b9e746ef3793fcfcca41e81a1838fbe96146a24fca8b4e29",
+    "skills/code-reviewer/references/domain-routing.md": "6ae9f975e69c60368e099317906439c66ffc7972e711d7481231b2770ab082b8",
+    "skills/code-reviewer/references/findings-format.md": "0815275a744293999e9817db75b7fa19b83cf12bfac44c4c8340c53c8cdf9ea1",
+    "skills/code-reviewer/references/methodology.md": "eb130938d322428e8b638e58445943756e319956df2051e6cb1bd5beab462d45",
+    "skills/code-reviewer/references/policy-admission-merge-risk.md": "b749fc90c4a4adc1d60b636b38b4ef193de3afda007d595cbec4c0a97271f716",
+    "skills/code-reviewer/references/runtime-gate-deployed-path.md": "3024c304cbad164ffe1e0c5c6ae58d033c9080d2ece5560c0f3dfc45c0597d79",
+    "skills/code-reviewer/references/severity-confidence.md": "0cede58ece812426647e84e3c5b1a2a4e6ce75073c71e70d7dcb14b806e7bcb4",
+    "skills/code-reviewer/references/spec-pass.md": "567e83c62d6abc78df4ed7ec613bb32c859ae6f0eeff52b85d183baf102a2fc0",
+    "skills/code-reviewer/skill.yaml": "8fb5fee1ff9e5ec7048e23cc89962e214ad321ab4b1a20d7460f910c8f69edb6"
+  }
+}

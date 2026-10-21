@@ -1,13 +1,14 @@
-# Runtime-gate Deployed-path Pass
+# Runtime-gate and External-contract Pass
 
-Use this reference when changed files or linked review intent touch runtime gates that authorize execution through a shipped lifecycle.
+Use this reference when changed behavior depends on external-contract assumptions or touches runtime gates that authorize execution through a shipped lifecycle.
 
-This pass is not a full compliance audit or threat model. It is a bounded code-review pass for concrete merge risks where isolated gate logic can look correct while the deployed runtime path bypasses the gate or binds the wrong runtime identity.
+This is a bounded code-review pass, not a full compliance audit or threat model. A green fixture can preserve the author's mistaken model; a gate can reject required work as well as admit forbidden work.
 
 ## Trigger Signals
 
 Run the pass when the diff or linked intent includes any of these surfaces:
 
+- external states, types, identity, or transitions whose interpretation can change the reviewed behavior
 - gates that authorize provider calls, model calls, webhook dispatch, queue publishes, job enqueues, payments, notifications, background ticks, or other side effects
 - production construction, app composition, dependency injection, service factories, lifecycle registration, route registration, worker boot, schedulers, or tick loops that wire a gate
 - request, tick, job, queue, router, model, provider, or handler paths that should call a gate before invocation
@@ -17,7 +18,15 @@ Run the pass when the diff or linked intent includes any of these surfaces:
 - release, deployment, tenant, region, cell, environment, or runtime identity binding used by integration code
 - tests that claim to prove runtime-gate enforcement
 
-Do not run it for unrelated diffs just because the repository has a runtime gate elsewhere.
+Do not run it for unrelated diffs just because the repository has an external integration or runtime gate elsewhere. For an external-contract change without a gate, apply the decision-model and evidence checks to the touched consumer; gate-specific probes apply only when triggered.
+
+## Independently Check the Decision Model
+
+Identify material assumptions about states, types, identity, and transitions before accepting the author's tests as evidence. Check those assumptions against the applicable primary contract or real-platform observations, including their version, input path, and capture limits. Author-written fixtures and assertions are not independent confirmation of the model, even when green.
+
+For a touched gate, check both required refusals and a required admissible scenario through the changed path. Establish what must pass from the owning contract or demonstrated invariant; a platform-supported state is not automatically permitted by product policy. A proven rejection of required work is a regression even when no forbidden action can bypass the gate.
+
+Separate platform facts, author assumptions, and missing evidence. Tie a concern to reachable changed behavior and its consequence; if the source or observation cannot establish that link, retain a question or evidence limit. A supported counterexample does not establish the cause of an unrecorded historical response.
 
 ## Required Review Block: Tested Path Equals Deployed Path
 
@@ -74,6 +83,8 @@ Do not classify identity binding as a security vulnerability unless `security-re
 
 ## Missing-test Findings
 
+These criteria govern a standalone missing-test finding; they do not exclude a confirmed behavioral regression in the decision model.
+
 A missing deployed-path test may block the merge when all of these are true:
 
 - the diff changes a runtime gate or its deployed construction, lifecycle wiring, invocation boundary, idempotency lock scope, or identity binding
@@ -88,10 +99,10 @@ Do not require broad end-to-end tests when a narrower integration test can exerc
 Before reporting a finding, confirm:
 
 - the changed files or linked review intent trigger this pass
-- the bypass, miswire, early invocation, lock-scope gap, missing deployed-path test, or identity-binding problem is reachable through the shipped lifecycle
+- the contract mismatch, improper refusal, bypass, miswire, early invocation, lock-scope gap, missing deployed-path test, or identity-binding problem is reachable through the shipped execution path
 - surrounding construction code, guards, feature flags, dependency injection, locks, retries, and tests do not already mitigate it
-- the impact is a real runtime issue: wrong side effect, denied work invoked, allowed work in the wrong identity, duplicate execution, missing audit, or gate bypass
-- the fix direction is bounded to deployed-path wiring, gate placement, identity source, lock scope, or test coverage
+- the impact is a real runtime issue: required work rejected or processed incorrectly, wrong side effect, denied work invoked, allowed work in the wrong identity, duplicate execution, missing audit, or gate bypass
+- the fix direction is bounded to contract interpretation, gate decisions, deployed-path wiring, identity source, lock scope, or relevant test coverage
 
 If any point cannot be verified, downgrade the concern to an open question or omit it.
 
@@ -107,9 +118,9 @@ If any point cannot be verified, downgrade the concern to an open question or om
 
 Ask:
 
-1. Did the changed files or linked intent actually touch a runtime gate in a shipped lifecycle?
+1. Did the changed files or linked intent actually trigger an external-contract or runtime-gate check?
 2. Is the finding grounded in the deployed construction or execution path, not only an architecture theory?
-3. Have production wiring, invocation boundaries, idempotency locks, identity sources, and deployed-path tests been checked?
-4. Would the issue matter at runtime as a gate bypass, invocation after deny, wrong deployment/cell identity, duplicate execution, missing audit, or missing deployed-path coverage?
+3. Have the applicable contract assumptions, guards, wiring, identity sources, and tests been checked independently of the author's model?
+4. Would the issue matter at runtime as required work rejected or processed incorrectly, a gate bypass, invocation after deny, wrong deployment/cell identity, duplicate execution, missing audit, or missing deployed-path coverage?
 
 If the answer is not yes for all four, do not emit it as a finding.

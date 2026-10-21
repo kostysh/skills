@@ -1,0 +1,36 @@
+{
+  "skill": "implementation-discipline",
+  "base_commit": "0bd4d8d92a9488e5595faa2045353733ec0b5fca",
+  "hash_algorithm": "sha256; aggregate over UTF-8 compact JSON path-to-sha256 mapping sorted by relative POSIX path",
+  "candidate_aggregate": "592310e51cc434562345535fe63748e9bfaed853a28d8d29d1c4fe55329d51ba",
+  "baseline_aggregate": "89ad82a397fe2bc656a3e5e813dffb0037632fb774868a433950d5b937e65ded",
+  "candidate_files": {
+    "SKILL.md": "756624dde807f5d84e5e4172abf094a39cd807dcd3103a01cc98e547d1cb5d90",
+    "references/core-principles.md": "fa8a312bb8f580a1224f049f2480605d474b399f14627a55c292b28bbcec5cde",
+    "references/verification-loop.md": "659c14086b1829585a006de89a1456a4eb0c15b5aa0f3673a335093ab5d0767e",
+    "AGENTS.md": "8619fd5bbd55d5e25ccba55ea87ce3c828727ff8dfd8c44a0da87b4d2d5078ed",
+    "skill.yaml": "7f06206f20973b55100828317232fabe2ea20a0142a1ff5c60c0d8866f60979f"
+  },
+  "baseline_files": {
+    "AGENTS.md": "8619fd5bbd55d5e25ccba55ea87ce3c828727ff8dfd8c44a0da87b4d2d5078ed",
+    "SKILL.md": "756624dde807f5d84e5e4172abf094a39cd807dcd3103a01cc98e547d1cb5d90",
+    "references/core-principles.md": "fa8a312bb8f580a1224f049f2480605d474b399f14627a55c292b28bbcec5cde",
+    "references/verification-loop.md": "9329bcfef1a58afea7ff94c6df71b00d860a86d789ddd381bc903553ee56300c",
+    "skill.yaml": "7f06206f20973b55100828317232fabe2ea20a0142a1ff5c60c0d8866f60979f"
+  },
+  "trial_active_files": {
+    "SKILL.md": "756624dde807f5d84e5e4172abf094a39cd807dcd3103a01cc98e547d1cb5d90",
+    "references/core-principles.md": "fa8a312bb8f580a1224f049f2480605d474b399f14627a55c292b28bbcec5cde",
+    "references/verification-loop.md": "659c14086b1829585a006de89a1456a4eb0c15b5aa0f3673a335093ab5d0767e"
+  },
+  "file_count": 5,
+  "trial_copy_excludes": [
+    "skill.yaml",
+    "fragments/",
+    "AGENTS.md",
+    "docs/",
+    "test/",
+    "package.json"
+  ],
+  "trial_isolation": "fresh agent context; instructed access scope on a shared filesystem, not a hard sandbox"
+}

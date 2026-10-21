@@ -1,0 +1,282 @@
+{
+  "31": {
+    "after/package.json": {
+      "sha256": "927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f",
+      "text": "{\n  \"type\": \"module\",\n  \"scripts\": {\n    \"test\": \"node --test test/*.test.mjs\"\n  }\n}\n"
+    },
+    "after/src/admission.mjs": {
+      "sha256": "4e574394186317ecca553755b311aca8027d97c754037cfd63bd5c495047988c",
+      "text": "export function admit(snapshot, expected) {\n  if (!snapshot || snapshot.run_id !== expected.runId || snapshot.attempt !== expected.attempt) return false;\n  if (!Array.isArray(snapshot.jobs) || snapshot.jobs.length === 0) return false;\n  return snapshot.jobs.every(job => Array.isArray(job.steps) && job.steps.length > 0 && job.steps.every(step => {\n    if (step.status === 'completed') return ['success', 'skipped'].includes(step.conclusion);\n    return [\"queued\", \"running\"].includes(step.status) && step.conclusion === null;\n  }));\n}\n"
+    },
+    "after/src/runner.mjs": {
+      "sha256": "49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d",
+      "text": "import { admit } from './admission.mjs';\nexport async function runPhase(readSnapshot, expected, command) {\n  const snapshot = await readSnapshot();\n  if (!admit(snapshot, expected)) return { admitted: false, commandCalls: 0 };\n  await command();\n  return { admitted: true, commandCalls: 1 };\n}\n"
+    },
+    "after/test/admission.test.mjs": {
+      "sha256": "99391cfe0745429bae49c16435bf713a414dd1096ea9c41f0908e7a11a0428c3",
+      "text": "import test from 'node:test';\nimport assert from 'node:assert/strict';\nimport { runPhase } from '../src/runner.mjs';\nconst expected = { runId: 'r-382', attempt: 3 };\nconst make = (status, conclusion) => ({ run_id: 'r-382', attempt: 3, jobs: [{ steps: [{ status, conclusion }] }] });\nasync function check(body, admitted) { let calls = 0; const result = await runPhase(async () => body, expected, async () => { calls++; }); assert.equal(result.admitted, admitted); assert.equal(calls, admitted ? 1 : 0); }\ntest('queued sequence', async () => check(make('queued', null), true));\ntest('running sequence', async () => check(make('running', null), true));\ntest('finished sequence', async () => check(make('completed', 'success'), true));\ntest('skipped sequence', async () => check(make('completed', 'skipped'), true));\ntest('failed', async () => check(make('completed', \"failure\"), false));\ntest('cancelled', async () => check(make('completed', \"cancelled\"), false));\ntest('terminal without conclusion', async () => check(make('completed', null), false));\ntest('unfinished with conclusion', async () => check(make('running', \"success\"), false));\ntest('unknown state', async () => check(make('unknown', null), false));\ntest('run binding', async () => { const body = make('queued', null); body.run_id = 'r-383'; await check(body, false); });\ntest('attempt binding', async () => { const body = make('queued', null); body.attempt = 2; await check(body, false); });\ntest('empty inventory', async () => check({ run_id: 'r-382', attempt: 3, jobs: [] }, false));\n"
+    },
+    "before/package.json": {
+      "sha256": "927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f",
+      "text": "{\n  \"type\": \"module\",\n  \"scripts\": {\n    \"test\": \"node --test test/*.test.mjs\"\n  }\n}\n"
+    },
+    "before/src/admission.mjs": {
+      "sha256": "d7168c59aaab1bd1854158b8ff6db0471aa0c73841f96d113b39a31f0911fec4",
+      "text": "export function admit(snapshot, expected) {\n  if (!snapshot || snapshot.run_id !== expected.runId || snapshot.attempt !== expected.attempt) return false;\n  if (!Array.isArray(snapshot.jobs) || snapshot.jobs.length === 0) return false;\n  return snapshot.jobs.every(job => Array.isArray(job.steps) && job.steps.length > 0 && job.steps.every(step => {\n    if (step.status === 'completed') return ['success', 'skipped'].includes(step.conclusion);\n    return step.conclusion === null;\n  }));\n}\n"
+    },
+    "before/src/runner.mjs": {
+      "sha256": "49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d",
+      "text": "import { admit } from './admission.mjs';\nexport async function runPhase(readSnapshot, expected, command) {\n  const snapshot = await readSnapshot();\n  if (!admit(snapshot, expected)) return { admitted: false, commandCalls: 0 };\n  await command();\n  return { admitted: true, commandCalls: 1 };\n}\n"
+    },
+    "before/test/admission.test.mjs": {
+      "sha256": "99391cfe0745429bae49c16435bf713a414dd1096ea9c41f0908e7a11a0428c3",
+      "text": "import test from 'node:test';\nimport assert from 'node:assert/strict';\nimport { runPhase } from '../src/runner.mjs';\nconst expected = { runId: 'r-382', attempt: 3 };\nconst make = (status, conclusion) => ({ run_id: 'r-382', attempt: 3, jobs: [{ steps: [{ status, conclusion }] }] });\nasync function check(body, admitted) { let calls = 0; const result = await runPhase(async () => body, expected, async () => { calls++; }); assert.equal(result.admitted, admitted); assert.equal(calls, admitted ? 1 : 0); }\ntest('queued sequence', async () => check(make('queued', null), true));\ntest('running sequence', async () => check(make('running', null), true));\ntest('finished sequence', async () => check(make('completed', 'success'), true));\ntest('skipped sequence', async () => check(make('completed', 'skipped'), true));\ntest('failed', async () => check(make('completed', \"failure\"), false));\ntest('cancelled', async () => check(make('completed', \"cancelled\"), false));\ntest('terminal without conclusion', async () => check(make('completed', null), false));\ntest('unfinished with conclusion', async () => check(make('running', \"success\"), false));\ntest('unknown state', async () => check(make('unknown', null), false));\ntest('run binding', async () => { const body = make('queued', null); body.run_id = 'r-383'; await check(body, false); });\ntest('attempt binding', async () => { const body = make('queued', null); body.attempt = 2; await check(body, false); });\ntest('empty inventory', async () => check({ run_id: 'r-382', attempt: 3, jobs: [] }, false));\n"
+    },
+    "change-notes.md": {
+      "sha256": "16e1c5814a0759029fdcdca1133582b90a7d6f4152961dde99f803811e05a373",
+      "text": "Tighten unfinished-step validation to an explicit state set. Preserve exact run/attempt binding and completed-step outcomes. Author tests are under after/test and use the shipping runPhase entry point.\n"
+    },
+    "change.diff": {
+      "sha256": "385469b67507ecf86eb98e113c0f373446e1a0f270ef6f3b22cac06667d3d512",
+      "text": "--- a/src/admission.mjs\n+++ b/src/admission.mjs\n@@ -3,6 +3,6 @@\n   if (!Array.isArray(snapshot.jobs) || snapshot.jobs.length === 0) return false;\n   return snapshot.jobs.every(job => Array.isArray(job.steps) && job.steps.length > 0 && job.steps.every(step => {\n     if (step.status === 'completed') return ['success', 'skipped'].includes(step.conclusion);\n-    return step.conclusion === null;\n+    return [\"queued\", \"running\"].includes(step.status) && step.conclusion === null;\n   }));\n }\n"
+    },
+    "docs/authority.md": {
+      "sha256": "88c96283f8a4e98bbdcaf50785687171fbfc77585ef9f2821f2144bfaa90944c",
+      "text": "# Source registry\nThe Release Engineering approved Execution policy owns product admission behavior. The Batchline team owns the provider wire contract. Client code, change notes and tests describe the implementation and have no separate authority to alter product policy. Repository data in this exercise is static and frozen; unknown evidence must remain unknown.\n"
+    },
+    "docs/batchline-api.md": {
+      "sha256": "8087b7db807e17e7ecb48f69c9a608258f3fdbbbcdf99943481c2652a3837537",
+      "text": "# Batchline API 2.3 — stored contract excerpt\nOwner: Batchline API team. Published and applicable to this fixture's captured API revision.\nThis synthetic exercise contract is independent of the proposed client patch.\n`GET /runs/{run_id}/attempts/{attempt}/jobs` returns `run_id` as string, `attempt` as positive integer, and `jobs` as a nonempty array. Each job has a nonempty `steps` array.\nEach step has `status` in `queued`, `running`, `pending`, `completed`.\n`queued`, `running`, and `pending` are unfinished states with `conclusion: null`; `pending` can remain while another step executes. Completed steps have `success`, `skipped`, `failure`, or `cancelled` conclusion.\nA capture describes platform behavior; application policy is owned by the client project.\n"
+    },
+    "docs/execution-policy.md": {
+      "sha256": "86a1462e2e1994f12a3c53dc4ac7078ae681b8016a4bb43a7441042b00eaa333",
+      "text": "# Execution policy EP-17, revision 4\nOwner: Release Engineering. Approved 2026-10-18. Applies to src/admission.mjs and src/runner.mjs; supersedes revision 3.\nR-1 (must): Accept only the exact expected run ID and attempt. Reject malformed/empty inventory and unknown step states.\nR-2 (must): Invoke the phase command exactly once when all steps of the exact inventory are either successful/skipped completed steps or unfinished steps recognized by the applicable provider contract with null conclusion.\nR-3 (must): Invoke no command when any step has failed/cancelled, a completed step lacks a terminal conclusion, or an unfinished step has a nonnull conclusion.\nThe reviewed enforcement boundary is the local admission function and its runPhase command dispatch. Transport acquisition and the command's own business behavior are outside this patch and acceptance boundary.\n"
+    },
+    "evidence/author-test-result.txt": {
+      "sha256": "c0a7a53998f394ab7955a9957b6efff376c89778d5bd1230e0a09377a1ec6c42",
+      "text": "✔ queued sequence (0.678502ms)\n✔ running sequence (0.638176ms)\n✔ finished sequence (0.098707ms)\n✔ skipped sequence (0.074841ms)\n✔ failed (0.076575ms)\n✔ cancelled (0.077556ms)\n✔ terminal without conclusion (0.088387ms)\n✔ unfinished with conclusion (0.060695ms)\n✔ unknown state (0.076795ms)\n✔ run binding (0.162647ms)\n✔ attempt binding (0.091102ms)\n✔ empty inventory (0.078779ms)\nℹ tests 12\nℹ suites 0\nℹ pass 12\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 46.769851\n"
+    },
+    "evidence/capture-record.md": {
+      "sha256": "b202cd50601d554d5638eb936d5c9cd35a90efbaa64a5748529360d64145ebfe",
+      "text": "Capture: synthetic raw GET /runs/r-382/attempts/3/jobs response for Batchline API 2.3. Observation belongs to the same revision, project and input envelope as the current adapter. It is raw platform data supplied independently of the client tests. It does not establish product admission policy or reproduce any unrecorded historical incident.\n"
+    },
+    "evidence/observation-01.json": {
+      "sha256": "d85dbf5a069abec5843ec2da7d5cd8e6293b327e3cc4bf3dba44dc943af6862d",
+      "text": "{\n  \"run_id\": \"r-382\",\n  \"attempt\": 3,\n  \"jobs\": [\n    {\n      \"name\": \"compute\",\n      \"steps\": [\n        {\n          \"name\": \"prepare\",\n          \"status\": \"completed\",\n          \"conclusion\": \"success\"\n        },\n        {\n          \"name\": \"check\",\n          \"status\": \"pending\",\n          \"conclusion\": null\n        }\n      ]\n    }\n  ]\n}\n"
+    },
+    "task.md": {
+      "sha256": "cfc523b634513f841848b7c0dce8d5ce0181acd2e6e45ef5b53eb2e4ccd75f35",
+      "text": "Use $spec-conformance-reviewer to review the proposed change in this folder. Read task inputs, report supported findings and the requested review outcome; do not implement fixes.\nScope: before/ is the base, after/ is the complete proposed implementation, change.diff records the change. docs/ contains the available project and provider sources. evidence/ contains synthetic saved platform observations supplied as raw task data. These are synthetic files for an offline exercise, not claims about a real deployed service.\nReview the local module/dispatch boundary described by the project source. You may inspect or execute the supplied code and tests read-only; any extra scratch checks must stay in a separate temporary directory. Use only this case folder, your supplied skill package, and ordinary local runtime tools; no network, other case folders, author logs, or assessment criteria. Record actual check coverage and evidence limits. Answer in Russian.\n"
+    }
+  },
+  "32": {
+    "after/package.json": {
+      "sha256": "927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f",
+      "text": "{\n  \"type\": \"module\",\n  \"scripts\": {\n    \"test\": \"node --test test/*.test.mjs\"\n  }\n}\n"
+    },
+    "after/src/admission.mjs": {
+      "sha256": "4e574394186317ecca553755b311aca8027d97c754037cfd63bd5c495047988c",
+      "text": "export function admit(snapshot, expected) {\n  if (!snapshot || snapshot.run_id !== expected.runId || snapshot.attempt !== expected.attempt) return false;\n  if (!Array.isArray(snapshot.jobs) || snapshot.jobs.length === 0) return false;\n  return snapshot.jobs.every(job => Array.isArray(job.steps) && job.steps.length > 0 && job.steps.every(step => {\n    if (step.status === 'completed') return ['success', 'skipped'].includes(step.conclusion);\n    return [\"queued\", \"running\"].includes(step.status) && step.conclusion === null;\n  }));\n}\n"
+    },
+    "after/src/runner.mjs": {
+      "sha256": "49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d",
+      "text": "import { admit } from './admission.mjs';\nexport async function runPhase(readSnapshot, expected, command) {\n  const snapshot = await readSnapshot();\n  if (!admit(snapshot, expected)) return { admitted: false, commandCalls: 0 };\n  await command();\n  return { admitted: true, commandCalls: 1 };\n}\n"
+    },
+    "after/test/admission.test.mjs": {
+      "sha256": "d77eccbd7b20d6481d216a0b43eba5338601dc6068c5be7c18c6b4a7a8d38ee6",
+      "text": "import test from 'node:test';\nimport assert from 'node:assert/strict';\nimport { runPhase } from '../src/runner.mjs';\nconst expected = { runId: 'r-382', attempt: 3 };\nconst make = (status, conclusion) => ({ run_id: 'r-382', attempt: 3, jobs: [{ steps: [{ status, conclusion }] }] });\nasync function check(body, admitted) { let calls = 0; const result = await runPhase(async () => body, expected, async () => { calls++; }); assert.equal(result.admitted, admitted); assert.equal(calls, admitted ? 1 : 0); }\ntest('queued sequence', async () => check(make('queued', null), true));\ntest('running sequence', async () => check(make('running', null), true));\ntest('finished sequence', async () => check(make('completed', 'success'), true));\ntest('skipped sequence', async () => check(make('completed', 'skipped'), true));\ntest('failed', async () => check(make('completed', \"failure\"), false));\ntest('cancelled', async () => check(make('completed', \"cancelled\"), false));\ntest('terminal without conclusion', async () => check(make('completed', null), false));\ntest('unfinished with conclusion', async () => check(make('running', \"success\"), false));\ntest('unknown state', async () => check(make('unknown', null), false));\ntest('run binding', async () => { const body = make('queued', null); body.run_id = 'r-383'; await check(body, false); });\ntest('attempt binding', async () => { const body = make('queued', null); body.attempt = 2; await check(body, false); });\ntest('empty inventory', async () => check({ run_id: 'r-382', attempt: 3, jobs: [] }, false));\ntest('provider capture', async () => { const { readFile } = await import('node:fs/promises'); await check(JSON.parse(await readFile(new URL('../../evidence/observation-01.json', import.meta.url))), false); });\n"
+    },
+    "before/package.json": {
+      "sha256": "927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f",
+      "text": "{\n  \"type\": \"module\",\n  \"scripts\": {\n    \"test\": \"node --test test/*.test.mjs\"\n  }\n}\n"
+    },
+    "before/src/admission.mjs": {
+      "sha256": "d7168c59aaab1bd1854158b8ff6db0471aa0c73841f96d113b39a31f0911fec4",
+      "text": "export function admit(snapshot, expected) {\n  if (!snapshot || snapshot.run_id !== expected.runId || snapshot.attempt !== expected.attempt) return false;\n  if (!Array.isArray(snapshot.jobs) || snapshot.jobs.length === 0) return false;\n  return snapshot.jobs.every(job => Array.isArray(job.steps) && job.steps.length > 0 && job.steps.every(step => {\n    if (step.status === 'completed') return ['success', 'skipped'].includes(step.conclusion);\n    return step.conclusion === null;\n  }));\n}\n"
+    },
+    "before/src/runner.mjs": {
+      "sha256": "49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d",
+      "text": "import { admit } from './admission.mjs';\nexport async function runPhase(readSnapshot, expected, command) {\n  const snapshot = await readSnapshot();\n  if (!admit(snapshot, expected)) return { admitted: false, commandCalls: 0 };\n  await command();\n  return { admitted: true, commandCalls: 1 };\n}\n"
+    },
+    "before/test/admission.test.mjs": {
+      "sha256": "d77eccbd7b20d6481d216a0b43eba5338601dc6068c5be7c18c6b4a7a8d38ee6",
+      "text": "import test from 'node:test';\nimport assert from 'node:assert/strict';\nimport { runPhase } from '../src/runner.mjs';\nconst expected = { runId: 'r-382', attempt: 3 };\nconst make = (status, conclusion) => ({ run_id: 'r-382', attempt: 3, jobs: [{ steps: [{ status, conclusion }] }] });\nasync function check(body, admitted) { let calls = 0; const result = await runPhase(async () => body, expected, async () => { calls++; }); assert.equal(result.admitted, admitted); assert.equal(calls, admitted ? 1 : 0); }\ntest('queued sequence', async () => check(make('queued', null), true));\ntest('running sequence', async () => check(make('running', null), true));\ntest('finished sequence', async () => check(make('completed', 'success'), true));\ntest('skipped sequence', async () => check(make('completed', 'skipped'), true));\ntest('failed', async () => check(make('completed', \"failure\"), false));\ntest('cancelled', async () => check(make('completed', \"cancelled\"), false));\ntest('terminal without conclusion', async () => check(make('completed', null), false));\ntest('unfinished with conclusion', async () => check(make('running', \"success\"), false));\ntest('unknown state', async () => check(make('unknown', null), false));\ntest('run binding', async () => { const body = make('queued', null); body.run_id = 'r-383'; await check(body, false); });\ntest('attempt binding', async () => { const body = make('queued', null); body.attempt = 2; await check(body, false); });\ntest('empty inventory', async () => check({ run_id: 'r-382', attempt: 3, jobs: [] }, false));\ntest('provider capture', async () => { const { readFile } = await import('node:fs/promises'); await check(JSON.parse(await readFile(new URL('../../evidence/observation-01.json', import.meta.url))), false); });\n"
+    },
+    "change-notes.md": {
+      "sha256": "16e1c5814a0759029fdcdca1133582b90a7d6f4152961dde99f803811e05a373",
+      "text": "Tighten unfinished-step validation to an explicit state set. Preserve exact run/attempt binding and completed-step outcomes. Author tests are under after/test and use the shipping runPhase entry point.\n"
+    },
+    "change.diff": {
+      "sha256": "385469b67507ecf86eb98e113c0f373446e1a0f270ef6f3b22cac06667d3d512",
+      "text": "--- a/src/admission.mjs\n+++ b/src/admission.mjs\n@@ -3,6 +3,6 @@\n   if (!Array.isArray(snapshot.jobs) || snapshot.jobs.length === 0) return false;\n   return snapshot.jobs.every(job => Array.isArray(job.steps) && job.steps.length > 0 && job.steps.every(step => {\n     if (step.status === 'completed') return ['success', 'skipped'].includes(step.conclusion);\n-    return step.conclusion === null;\n+    return [\"queued\", \"running\"].includes(step.status) && step.conclusion === null;\n   }));\n }\n"
+    },
+    "docs/authority.md": {
+      "sha256": "88c96283f8a4e98bbdcaf50785687171fbfc77585ef9f2821f2144bfaa90944c",
+      "text": "# Source registry\nThe Release Engineering approved Execution policy owns product admission behavior. The Batchline team owns the provider wire contract. Client code, change notes and tests describe the implementation and have no separate authority to alter product policy. Repository data in this exercise is static and frozen; unknown evidence must remain unknown.\n"
+    },
+    "docs/batchline-api.md": {
+      "sha256": "8087b7db807e17e7ecb48f69c9a608258f3fdbbbcdf99943481c2652a3837537",
+      "text": "# Batchline API 2.3 — stored contract excerpt\nOwner: Batchline API team. Published and applicable to this fixture's captured API revision.\nThis synthetic exercise contract is independent of the proposed client patch.\n`GET /runs/{run_id}/attempts/{attempt}/jobs` returns `run_id` as string, `attempt` as positive integer, and `jobs` as a nonempty array. Each job has a nonempty `steps` array.\nEach step has `status` in `queued`, `running`, `pending`, `completed`.\n`queued`, `running`, and `pending` are unfinished states with `conclusion: null`; `pending` can remain while another step executes. Completed steps have `success`, `skipped`, `failure`, or `cancelled` conclusion.\nA capture describes platform behavior; application policy is owned by the client project.\n"
+    },
+    "docs/execution-policy.md": {
+      "sha256": "a3ebcfea4e28a5315bad25f5a9bf99afe0343b22d18797aad3043d7ab9a656bc",
+      "text": "# Execution policy EP-17, revision 5\nOwner: Release Engineering. Approved 2026-10-18. Applies to src/admission.mjs and src/runner.mjs; supersedes revision 4.\nR-1 (must): Accept only the exact expected run ID and attempt. Reject malformed/empty inventory and unknown step states.\nR-2 (must): Invoke the phase command exactly once only when each step is completed with success/skipped, or is queued/running with null conclusion. The product intentionally holds commands while any step is pending; this is a capacity policy even though Batchline recognizes pending as unfinished.\nR-3 (must): Invoke no command for pending, failure/cancelled conclusions, completed without terminal conclusion, or unfinished with nonnull conclusion.\nThe reviewed enforcement boundary is the local admission function and its runPhase command dispatch. Transport acquisition and the command's own business behavior are outside this patch and acceptance boundary.\n"
+    },
+    "evidence/author-test-result.txt": {
+      "sha256": "f65ab2ff4e3f259e2e5efc4051549711a6cae8af1b0e37e2bd93dd79ad26f33d",
+      "text": "✔ queued sequence (0.689542ms)\n✔ running sequence (3.690351ms)\n✔ finished sequence (0.118925ms)\n✔ skipped sequence (0.079611ms)\n✔ failed (0.076004ms)\n✔ cancelled (0.079911ms)\n✔ terminal without conclusion (0.09548ms)\n✔ unfinished with conclusion (0.067097ms)\n✔ unknown state (0.080833ms)\n✔ run binding (0.163169ms)\n✔ attempt binding (0.101983ms)\n✔ empty inventory (0.076534ms)\n✔ provider capture (5.535256ms)\nℹ tests 13\nℹ suites 0\nℹ pass 13\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 48.425078\n"
+    },
+    "evidence/capture-record.md": {
+      "sha256": "b202cd50601d554d5638eb936d5c9cd35a90efbaa64a5748529360d64145ebfe",
+      "text": "Capture: synthetic raw GET /runs/r-382/attempts/3/jobs response for Batchline API 2.3. Observation belongs to the same revision, project and input envelope as the current adapter. It is raw platform data supplied independently of the client tests. It does not establish product admission policy or reproduce any unrecorded historical incident.\n"
+    },
+    "evidence/observation-01.json": {
+      "sha256": "d85dbf5a069abec5843ec2da7d5cd8e6293b327e3cc4bf3dba44dc943af6862d",
+      "text": "{\n  \"run_id\": \"r-382\",\n  \"attempt\": 3,\n  \"jobs\": [\n    {\n      \"name\": \"compute\",\n      \"steps\": [\n        {\n          \"name\": \"prepare\",\n          \"status\": \"completed\",\n          \"conclusion\": \"success\"\n        },\n        {\n          \"name\": \"check\",\n          \"status\": \"pending\",\n          \"conclusion\": null\n        }\n      ]\n    }\n  ]\n}\n"
+    },
+    "task.md": {
+      "sha256": "cfc523b634513f841848b7c0dce8d5ce0181acd2e6e45ef5b53eb2e4ccd75f35",
+      "text": "Use $spec-conformance-reviewer to review the proposed change in this folder. Read task inputs, report supported findings and the requested review outcome; do not implement fixes.\nScope: before/ is the base, after/ is the complete proposed implementation, change.diff records the change. docs/ contains the available project and provider sources. evidence/ contains synthetic saved platform observations supplied as raw task data. These are synthetic files for an offline exercise, not claims about a real deployed service.\nReview the local module/dispatch boundary described by the project source. You may inspect or execute the supplied code and tests read-only; any extra scratch checks must stay in a separate temporary directory. Use only this case folder, your supplied skill package, and ordinary local runtime tools; no network, other case folders, author logs, or assessment criteria. Record actual check coverage and evidence limits. Answer in Russian.\n"
+    }
+  },
+  "33": {
+    "after/package.json": {
+      "sha256": "927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f",
+      "text": "{\n  \"type\": \"module\",\n  \"scripts\": {\n    \"test\": \"node --test test/*.test.mjs\"\n  }\n}\n"
+    },
+    "after/src/admission.mjs": {
+      "sha256": "4e574394186317ecca553755b311aca8027d97c754037cfd63bd5c495047988c",
+      "text": "export function admit(snapshot, expected) {\n  if (!snapshot || snapshot.run_id !== expected.runId || snapshot.attempt !== expected.attempt) return false;\n  if (!Array.isArray(snapshot.jobs) || snapshot.jobs.length === 0) return false;\n  return snapshot.jobs.every(job => Array.isArray(job.steps) && job.steps.length > 0 && job.steps.every(step => {\n    if (step.status === 'completed') return ['success', 'skipped'].includes(step.conclusion);\n    return [\"queued\", \"running\"].includes(step.status) && step.conclusion === null;\n  }));\n}\n"
+    },
+    "after/src/runner.mjs": {
+      "sha256": "49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d",
+      "text": "import { admit } from './admission.mjs';\nexport async function runPhase(readSnapshot, expected, command) {\n  const snapshot = await readSnapshot();\n  if (!admit(snapshot, expected)) return { admitted: false, commandCalls: 0 };\n  await command();\n  return { admitted: true, commandCalls: 1 };\n}\n"
+    },
+    "after/test/admission.test.mjs": {
+      "sha256": "99391cfe0745429bae49c16435bf713a414dd1096ea9c41f0908e7a11a0428c3",
+      "text": "import test from 'node:test';\nimport assert from 'node:assert/strict';\nimport { runPhase } from '../src/runner.mjs';\nconst expected = { runId: 'r-382', attempt: 3 };\nconst make = (status, conclusion) => ({ run_id: 'r-382', attempt: 3, jobs: [{ steps: [{ status, conclusion }] }] });\nasync function check(body, admitted) { let calls = 0; const result = await runPhase(async () => body, expected, async () => { calls++; }); assert.equal(result.admitted, admitted); assert.equal(calls, admitted ? 1 : 0); }\ntest('queued sequence', async () => check(make('queued', null), true));\ntest('running sequence', async () => check(make('running', null), true));\ntest('finished sequence', async () => check(make('completed', 'success'), true));\ntest('skipped sequence', async () => check(make('completed', 'skipped'), true));\ntest('failed', async () => check(make('completed', \"failure\"), false));\ntest('cancelled', async () => check(make('completed', \"cancelled\"), false));\ntest('terminal without conclusion', async () => check(make('completed', null), false));\ntest('unfinished with conclusion', async () => check(make('running', \"success\"), false));\ntest('unknown state', async () => check(make('unknown', null), false));\ntest('run binding', async () => { const body = make('queued', null); body.run_id = 'r-383'; await check(body, false); });\ntest('attempt binding', async () => { const body = make('queued', null); body.attempt = 2; await check(body, false); });\ntest('empty inventory', async () => check({ run_id: 'r-382', attempt: 3, jobs: [] }, false));\n"
+    },
+    "before/package.json": {
+      "sha256": "927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f",
+      "text": "{\n  \"type\": \"module\",\n  \"scripts\": {\n    \"test\": \"node --test test/*.test.mjs\"\n  }\n}\n"
+    },
+    "before/src/admission.mjs": {
+      "sha256": "d7168c59aaab1bd1854158b8ff6db0471aa0c73841f96d113b39a31f0911fec4",
+      "text": "export function admit(snapshot, expected) {\n  if (!snapshot || snapshot.run_id !== expected.runId || snapshot.attempt !== expected.attempt) return false;\n  if (!Array.isArray(snapshot.jobs) || snapshot.jobs.length === 0) return false;\n  return snapshot.jobs.every(job => Array.isArray(job.steps) && job.steps.length > 0 && job.steps.every(step => {\n    if (step.status === 'completed') return ['success', 'skipped'].includes(step.conclusion);\n    return step.conclusion === null;\n  }));\n}\n"
+    },
+    "before/src/runner.mjs": {
+      "sha256": "49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d",
+      "text": "import { admit } from './admission.mjs';\nexport async function runPhase(readSnapshot, expected, command) {\n  const snapshot = await readSnapshot();\n  if (!admit(snapshot, expected)) return { admitted: false, commandCalls: 0 };\n  await command();\n  return { admitted: true, commandCalls: 1 };\n}\n"
+    },
+    "before/test/admission.test.mjs": {
+      "sha256": "99391cfe0745429bae49c16435bf713a414dd1096ea9c41f0908e7a11a0428c3",
+      "text": "import test from 'node:test';\nimport assert from 'node:assert/strict';\nimport { runPhase } from '../src/runner.mjs';\nconst expected = { runId: 'r-382', attempt: 3 };\nconst make = (status, conclusion) => ({ run_id: 'r-382', attempt: 3, jobs: [{ steps: [{ status, conclusion }] }] });\nasync function check(body, admitted) { let calls = 0; const result = await runPhase(async () => body, expected, async () => { calls++; }); assert.equal(result.admitted, admitted); assert.equal(calls, admitted ? 1 : 0); }\ntest('queued sequence', async () => check(make('queued', null), true));\ntest('running sequence', async () => check(make('running', null), true));\ntest('finished sequence', async () => check(make('completed', 'success'), true));\ntest('skipped sequence', async () => check(make('completed', 'skipped'), true));\ntest('failed', async () => check(make('completed', \"failure\"), false));\ntest('cancelled', async () => check(make('completed', \"cancelled\"), false));\ntest('terminal without conclusion', async () => check(make('completed', null), false));\ntest('unfinished with conclusion', async () => check(make('running', \"success\"), false));\ntest('unknown state', async () => check(make('unknown', null), false));\ntest('run binding', async () => { const body = make('queued', null); body.run_id = 'r-383'; await check(body, false); });\ntest('attempt binding', async () => { const body = make('queued', null); body.attempt = 2; await check(body, false); });\ntest('empty inventory', async () => check({ run_id: 'r-382', attempt: 3, jobs: [] }, false));\n"
+    },
+    "change-notes.md": {
+      "sha256": "16e1c5814a0759029fdcdca1133582b90a7d6f4152961dde99f803811e05a373",
+      "text": "Tighten unfinished-step validation to an explicit state set. Preserve exact run/attempt binding and completed-step outcomes. Author tests are under after/test and use the shipping runPhase entry point.\n"
+    },
+    "change.diff": {
+      "sha256": "385469b67507ecf86eb98e113c0f373446e1a0f270ef6f3b22cac06667d3d512",
+      "text": "--- a/src/admission.mjs\n+++ b/src/admission.mjs\n@@ -3,6 +3,6 @@\n   if (!Array.isArray(snapshot.jobs) || snapshot.jobs.length === 0) return false;\n   return snapshot.jobs.every(job => Array.isArray(job.steps) && job.steps.length > 0 && job.steps.every(step => {\n     if (step.status === 'completed') return ['success', 'skipped'].includes(step.conclusion);\n-    return step.conclusion === null;\n+    return [\"queued\", \"running\"].includes(step.status) && step.conclusion === null;\n   }));\n }\n"
+    },
+    "docs/authority.md": {
+      "sha256": "88c96283f8a4e98bbdcaf50785687171fbfc77585ef9f2821f2144bfaa90944c",
+      "text": "# Source registry\nThe Release Engineering approved Execution policy owns product admission behavior. The Batchline team owns the provider wire contract. Client code, change notes and tests describe the implementation and have no separate authority to alter product policy. Repository data in this exercise is static and frozen; unknown evidence must remain unknown.\n"
+    },
+    "docs/batchline-api.md": {
+      "sha256": "8087b7db807e17e7ecb48f69c9a608258f3fdbbbcdf99943481c2652a3837537",
+      "text": "# Batchline API 2.3 — stored contract excerpt\nOwner: Batchline API team. Published and applicable to this fixture's captured API revision.\nThis synthetic exercise contract is independent of the proposed client patch.\n`GET /runs/{run_id}/attempts/{attempt}/jobs` returns `run_id` as string, `attempt` as positive integer, and `jobs` as a nonempty array. Each job has a nonempty `steps` array.\nEach step has `status` in `queued`, `running`, `pending`, `completed`.\n`queued`, `running`, and `pending` are unfinished states with `conclusion: null`; `pending` can remain while another step executes. Completed steps have `success`, `skipped`, `failure`, or `cancelled` conclusion.\nA capture describes platform behavior; application policy is owned by the client project.\n"
+    },
+    "docs/source-record.md": {
+      "sha256": "c616bbc58e5d6759cd8dd5e842c083726fdf40650afd633aec8be371710d6745",
+      "text": "# Available source record\nThe approved Execution policy is referenced by the change request but its text was not included in this export and is unavailable in the offline exercise. The client author says queued/running should be the only accepted unfinished states. No product-owner approval or delegated requirement authority is recorded for that statement. The Batchline API contract remains available for wire facts only.\n"
+    },
+    "evidence/author-test-result.txt": {
+      "sha256": "26d70d28201912885b582ab1dd512ac7525874bb16b83f37400a50ddcac610c7",
+      "text": "✔ queued sequence (0.724819ms)\n✔ running sequence (3.775592ms)\n✔ finished sequence (0.217611ms)\n✔ skipped sequence (0.150134ms)\n✔ failed (0.152007ms)\n✔ cancelled (0.154351ms)\n✔ terminal without conclusion (0.122111ms)\n✔ unfinished with conclusion (0.11642ms)\n✔ unknown state (0.072807ms)\n✔ run binding (0.156816ms)\n✔ attempt binding (0.10606ms)\n✔ empty inventory (0.076936ms)\nℹ tests 12\nℹ suites 0\nℹ pass 12\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 48.550174\n"
+    },
+    "evidence/capture-record.md": {
+      "sha256": "b202cd50601d554d5638eb936d5c9cd35a90efbaa64a5748529360d64145ebfe",
+      "text": "Capture: synthetic raw GET /runs/r-382/attempts/3/jobs response for Batchline API 2.3. Observation belongs to the same revision, project and input envelope as the current adapter. It is raw platform data supplied independently of the client tests. It does not establish product admission policy or reproduce any unrecorded historical incident.\n"
+    },
+    "evidence/observation-01.json": {
+      "sha256": "d85dbf5a069abec5843ec2da7d5cd8e6293b327e3cc4bf3dba44dc943af6862d",
+      "text": "{\n  \"run_id\": \"r-382\",\n  \"attempt\": 3,\n  \"jobs\": [\n    {\n      \"name\": \"compute\",\n      \"steps\": [\n        {\n          \"name\": \"prepare\",\n          \"status\": \"completed\",\n          \"conclusion\": \"success\"\n        },\n        {\n          \"name\": \"check\",\n          \"status\": \"pending\",\n          \"conclusion\": null\n        }\n      ]\n    }\n  ]\n}\n"
+    },
+    "task.md": {
+      "sha256": "cfc523b634513f841848b7c0dce8d5ce0181acd2e6e45ef5b53eb2e4ccd75f35",
+      "text": "Use $spec-conformance-reviewer to review the proposed change in this folder. Read task inputs, report supported findings and the requested review outcome; do not implement fixes.\nScope: before/ is the base, after/ is the complete proposed implementation, change.diff records the change. docs/ contains the available project and provider sources. evidence/ contains synthetic saved platform observations supplied as raw task data. These are synthetic files for an offline exercise, not claims about a real deployed service.\nReview the local module/dispatch boundary described by the project source. You may inspect or execute the supplied code and tests read-only; any extra scratch checks must stay in a separate temporary directory. Use only this case folder, your supplied skill package, and ordinary local runtime tools; no network, other case folders, author logs, or assessment criteria. Record actual check coverage and evidence limits. Answer in Russian.\n"
+    }
+  },
+  "34": {
+    "after/package.json": {
+      "sha256": "927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f",
+      "text": "{\n  \"type\": \"module\",\n  \"scripts\": {\n    \"test\": \"node --test test/*.test.mjs\"\n  }\n}\n"
+    },
+    "after/src/admission.mjs": {
+      "sha256": "db4b951719970e6a626537795f586972cd14a746a78ba3e00f51fd2f2cff6236",
+      "text": "export function admit(snapshot, expected) {\n  if (!snapshot || snapshot.run_id !== expected.runId || snapshot.attempt !== expected.attempt) return false;\n  if (!Array.isArray(snapshot.jobs) || snapshot.jobs.length === 0) return false;\n  return snapshot.jobs.every(job => Array.isArray(job.steps) && job.steps.length > 0 && job.steps.every(step => {\n    if (step.status === 'completed') return ['success', 'skipped'].includes(step.conclusion);\n    return [\"queued\", \"running\", \"pending\"].includes(step.status) && step.conclusion === null;\n  }));\n}\n"
+    },
+    "after/src/runner.mjs": {
+      "sha256": "49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d",
+      "text": "import { admit } from './admission.mjs';\nexport async function runPhase(readSnapshot, expected, command) {\n  const snapshot = await readSnapshot();\n  if (!admit(snapshot, expected)) return { admitted: false, commandCalls: 0 };\n  await command();\n  return { admitted: true, commandCalls: 1 };\n}\n"
+    },
+    "after/test/admission.test.mjs": {
+      "sha256": "c87b9376f12538a6d6a3c90f45103f9c473f76e931ccff193a99b24c0cde33f2",
+      "text": "import test from 'node:test';\nimport assert from 'node:assert/strict';\nimport { runPhase } from '../src/runner.mjs';\nconst expected = { runId: 'r-382', attempt: 3 };\nconst make = (status, conclusion) => ({ run_id: 'r-382', attempt: 3, jobs: [{ steps: [{ status, conclusion }] }] });\nasync function check(body, admitted) { let calls = 0; const result = await runPhase(async () => body, expected, async () => { calls++; }); assert.equal(result.admitted, admitted); assert.equal(calls, admitted ? 1 : 0); }\ntest('queued sequence', async () => check(make('queued', null), true));\ntest('running sequence', async () => check(make('running', null), true));\ntest('finished sequence', async () => check(make('completed', 'success'), true));\ntest('skipped sequence', async () => check(make('completed', 'skipped'), true));\ntest('failed', async () => check(make('completed', \"failure\"), false));\ntest('cancelled', async () => check(make('completed', \"cancelled\"), false));\ntest('terminal without conclusion', async () => check(make('completed', null), false));\ntest('unfinished with conclusion', async () => check(make('running', \"success\"), false));\ntest('unknown state', async () => check(make('unknown', null), false));\ntest('run binding', async () => { const body = make('queued', null); body.run_id = 'r-383'; await check(body, false); });\ntest('attempt binding', async () => { const body = make('queued', null); body.attempt = 2; await check(body, false); });\ntest('empty inventory', async () => check({ run_id: 'r-382', attempt: 3, jobs: [] }, false));\ntest('provider capture', async () => { const { readFile } = await import('node:fs/promises'); await check(JSON.parse(await readFile(new URL('../../evidence/observation-01.json', import.meta.url))), true); });\n"
+    },
+    "before/package.json": {
+      "sha256": "927e166e8e367313700f919a6054bfc4f7b31a0e5421764ab4fed32bdbfbe50f",
+      "text": "{\n  \"type\": \"module\",\n  \"scripts\": {\n    \"test\": \"node --test test/*.test.mjs\"\n  }\n}\n"
+    },
+    "before/src/admission.mjs": {
+      "sha256": "d7168c59aaab1bd1854158b8ff6db0471aa0c73841f96d113b39a31f0911fec4",
+      "text": "export function admit(snapshot, expected) {\n  if (!snapshot || snapshot.run_id !== expected.runId || snapshot.attempt !== expected.attempt) return false;\n  if (!Array.isArray(snapshot.jobs) || snapshot.jobs.length === 0) return false;\n  return snapshot.jobs.every(job => Array.isArray(job.steps) && job.steps.length > 0 && job.steps.every(step => {\n    if (step.status === 'completed') return ['success', 'skipped'].includes(step.conclusion);\n    return step.conclusion === null;\n  }));\n}\n"
+    },
+    "before/src/runner.mjs": {
+      "sha256": "49c63cb3204346a4b9413581c27c9310721d6dc64c2aa50b12577a5b9a1b017d",
+      "text": "import { admit } from './admission.mjs';\nexport async function runPhase(readSnapshot, expected, command) {\n  const snapshot = await readSnapshot();\n  if (!admit(snapshot, expected)) return { admitted: false, commandCalls: 0 };\n  await command();\n  return { admitted: true, commandCalls: 1 };\n}\n"
+    },
+    "before/test/admission.test.mjs": {
+      "sha256": "c87b9376f12538a6d6a3c90f45103f9c473f76e931ccff193a99b24c0cde33f2",
+      "text": "import test from 'node:test';\nimport assert from 'node:assert/strict';\nimport { runPhase } from '../src/runner.mjs';\nconst expected = { runId: 'r-382', attempt: 3 };\nconst make = (status, conclusion) => ({ run_id: 'r-382', attempt: 3, jobs: [{ steps: [{ status, conclusion }] }] });\nasync function check(body, admitted) { let calls = 0; const result = await runPhase(async () => body, expected, async () => { calls++; }); assert.equal(result.admitted, admitted); assert.equal(calls, admitted ? 1 : 0); }\ntest('queued sequence', async () => check(make('queued', null), true));\ntest('running sequence', async () => check(make('running', null), true));\ntest('finished sequence', async () => check(make('completed', 'success'), true));\ntest('skipped sequence', async () => check(make('completed', 'skipped'), true));\ntest('failed', async () => check(make('completed', \"failure\"), false));\ntest('cancelled', async () => check(make('completed', \"cancelled\"), false));\ntest('terminal without conclusion', async () => check(make('completed', null), false));\ntest('unfinished with conclusion', async () => check(make('running', \"success\"), false));\ntest('unknown state', async () => check(make('unknown', null), false));\ntest('run binding', async () => { const body = make('queued', null); body.run_id = 'r-383'; await check(body, false); });\ntest('attempt binding', async () => { const body = make('queued', null); body.attempt = 2; await check(body, false); });\ntest('empty inventory', async () => check({ run_id: 'r-382', attempt: 3, jobs: [] }, false));\ntest('provider capture', async () => { const { readFile } = await import('node:fs/promises'); await check(JSON.parse(await readFile(new URL('../../evidence/observation-01.json', import.meta.url))), true); });\n"
+    },
+    "change-notes.md": {
+      "sha256": "16e1c5814a0759029fdcdca1133582b90a7d6f4152961dde99f803811e05a373",
+      "text": "Tighten unfinished-step validation to an explicit state set. Preserve exact run/attempt binding and completed-step outcomes. Author tests are under after/test and use the shipping runPhase entry point.\n"
+    },
+    "change.diff": {
+      "sha256": "ddb8ee18a4f0a59812f9a6962b37af798bd039225b46f80741cd62bfd2ded5a5",
+      "text": "--- a/src/admission.mjs\n+++ b/src/admission.mjs\n@@ -3,6 +3,6 @@\n   if (!Array.isArray(snapshot.jobs) || snapshot.jobs.length === 0) return false;\n   return snapshot.jobs.every(job => Array.isArray(job.steps) && job.steps.length > 0 && job.steps.every(step => {\n     if (step.status === 'completed') return ['success', 'skipped'].includes(step.conclusion);\n-    return step.conclusion === null;\n+    return [\"queued\", \"running\", \"pending\"].includes(step.status) && step.conclusion === null;\n   }));\n }\n"
+    },
+    "docs/authority.md": {
+      "sha256": "88c96283f8a4e98bbdcaf50785687171fbfc77585ef9f2821f2144bfaa90944c",
+      "text": "# Source registry\nThe Release Engineering approved Execution policy owns product admission behavior. The Batchline team owns the provider wire contract. Client code, change notes and tests describe the implementation and have no separate authority to alter product policy. Repository data in this exercise is static and frozen; unknown evidence must remain unknown.\n"
+    },
+    "docs/batchline-api.md": {
+      "sha256": "8087b7db807e17e7ecb48f69c9a608258f3fdbbbcdf99943481c2652a3837537",
+      "text": "# Batchline API 2.3 — stored contract excerpt\nOwner: Batchline API team. Published and applicable to this fixture's captured API revision.\nThis synthetic exercise contract is independent of the proposed client patch.\n`GET /runs/{run_id}/attempts/{attempt}/jobs` returns `run_id` as string, `attempt` as positive integer, and `jobs` as a nonempty array. Each job has a nonempty `steps` array.\nEach step has `status` in `queued`, `running`, `pending`, `completed`.\n`queued`, `running`, and `pending` are unfinished states with `conclusion: null`; `pending` can remain while another step executes. Completed steps have `success`, `skipped`, `failure`, or `cancelled` conclusion.\nA capture describes platform behavior; application policy is owned by the client project.\n"
+    },
+    "docs/execution-policy.md": {
+      "sha256": "86a1462e2e1994f12a3c53dc4ac7078ae681b8016a4bb43a7441042b00eaa333",
+      "text": "# Execution policy EP-17, revision 4\nOwner: Release Engineering. Approved 2026-10-18. Applies to src/admission.mjs and src/runner.mjs; supersedes revision 3.\nR-1 (must): Accept only the exact expected run ID and attempt. Reject malformed/empty inventory and unknown step states.\nR-2 (must): Invoke the phase command exactly once when all steps of the exact inventory are either successful/skipped completed steps or unfinished steps recognized by the applicable provider contract with null conclusion.\nR-3 (must): Invoke no command when any step has failed/cancelled, a completed step lacks a terminal conclusion, or an unfinished step has a nonnull conclusion.\nThe reviewed enforcement boundary is the local admission function and its runPhase command dispatch. Transport acquisition and the command's own business behavior are outside this patch and acceptance boundary.\n"
+    },
+    "evidence/author-test-result.txt": {
+      "sha256": "a5ee7bfce171ec2f95caaba34da8b2f3628c3873eda761e1707d3d288f35f9f3",
+      "text": "✔ queued sequence (0.729358ms)\n✔ running sequence (0.964392ms)\n✔ finished sequence (0.101632ms)\n✔ skipped sequence (0.076715ms)\n✔ failed (0.076785ms)\n✔ cancelled (0.077737ms)\n✔ terminal without conclusion (0.077316ms)\n✔ unfinished with conclusion (0.05818ms)\n✔ unknown state (0.075733ms)\n✔ run binding (0.171424ms)\n✔ attempt binding (0.08482ms)\n✔ empty inventory (0.067697ms)\n✔ provider capture (4.724804ms)\nℹ tests 13\nℹ suites 0\nℹ pass 13\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 45.724967\n"
+    },
+    "evidence/capture-record.md": {
+      "sha256": "b202cd50601d554d5638eb936d5c9cd35a90efbaa64a5748529360d64145ebfe",
+      "text": "Capture: synthetic raw GET /runs/r-382/attempts/3/jobs response for Batchline API 2.3. Observation belongs to the same revision, project and input envelope as the current adapter. It is raw platform data supplied independently of the client tests. It does not establish product admission policy or reproduce any unrecorded historical incident.\n"
+    },
+    "evidence/observation-01.json": {
+      "sha256": "d85dbf5a069abec5843ec2da7d5cd8e6293b327e3cc4bf3dba44dc943af6862d",
+      "text": "{\n  \"run_id\": \"r-382\",\n  \"attempt\": 3,\n  \"jobs\": [\n    {\n      \"name\": \"compute\",\n      \"steps\": [\n        {\n          \"name\": \"prepare\",\n          \"status\": \"completed\",\n          \"conclusion\": \"success\"\n        },\n        {\n          \"name\": \"check\",\n          \"status\": \"pending\",\n          \"conclusion\": null\n        }\n      ]\n    }\n  ]\n}\n"
+    },
+    "task.md": {
+      "sha256": "cfc523b634513f841848b7c0dce8d5ce0181acd2e6e45ef5b53eb2e4ccd75f35",
+      "text": "Use $spec-conformance-reviewer to review the proposed change in this folder. Read task inputs, report supported findings and the requested review outcome; do not implement fixes.\nScope: before/ is the base, after/ is the complete proposed implementation, change.diff records the change. docs/ contains the available project and provider sources. evidence/ contains synthetic saved platform observations supplied as raw task data. These are synthetic files for an offline exercise, not claims about a real deployed service.\nReview the local module/dispatch boundary described by the project source. You may inspect or execute the supplied code and tests read-only; any extra scratch checks must stay in a separate temporary directory. Use only this case folder, your supplied skill package, and ordinary local runtime tools; no network, other case folders, author logs, or assessment criteria. Record actual check coverage and evidence limits. Answer in Russian.\n"
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "skill": "spec-conformance-reviewer",
+  "base_commit": "0bd4d8d92a9488e5595faa2045353733ec0b5fca",
+  "hash_algorithm": "sha256; aggregate over UTF-8 compact JSON path-to-sha256 mapping sorted by relative POSIX path",
+  "candidate_aggregate": "f93fb54b2b18b438a64e8deee0cca9bcd026b2dcd2125cc47c857974c04bf786",
+  "baseline_aggregate": "d1d8833f05eaf1180a2d8ecc57a7b3441ee2cce6e86dbe7ea427dcac83cee71f",
+  "candidate_files": {
+    "SKILL.md": "cf4145f20b390fd712a436039b1c9bc30f4105a565a7cb5d1722d2d2ae3b6cfa",
+    "agents/openai.yaml": "cfb46dd79b7c1dbea6f21726d24c55d1ecde761ced9005f103ffb30629c88b2b",
+    "assets/fixtures/consultant-admission-policy.md": "acc3607c90becff03a87356f0e43e094bb023e28ea1e80af64dbd4577c514b53",
+    "references/methodology.md": "a568814539648a7850c9342be8bab3fdbe50fb699276c33a4887abbd3211fe45",
+    "references/policy-admission-matrix.md": "cfe2cd85876b46cdd71fd982b15bdbe3cff16e4dc95da48ca53a2c3b28578689",
+    "references/reporting.md": "75c49ef2eb6fc501952112b3e3c47dad83ebc7da4f996ba7e0d11e588795bc25",
+    "AGENTS.md": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf",
+    "fragments/overview.md": "9489cacf692d63107339feab97bcc187617ed9834102e8c3f5b74d22b5035640",
+    "skill.yaml": "c44fb98b5cc41466dc0bc93e1b9312e259478689988f08b41ff726125b06c988"
+  },
+  "baseline_files": {
+    "AGENTS.md": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf",
+    "SKILL.md": "cf4145f20b390fd712a436039b1c9bc30f4105a565a7cb5d1722d2d2ae3b6cfa",
+    "agents/openai.yaml": "cfb46dd79b7c1dbea6f21726d24c55d1ecde761ced9005f103ffb30629c88b2b",
+    "assets/fixtures/consultant-admission-policy.md": "acc3607c90becff03a87356f0e43e094bb023e28ea1e80af64dbd4577c514b53",
+    "fragments/overview.md": "9489cacf692d63107339feab97bcc187617ed9834102e8c3f5b74d22b5035640",
+    "references/methodology.md": "a166d34182463fddba81ca4db49eb7401f8a177f4a09369969ce9355be74e816",
+    "references/policy-admission-matrix.md": "cfe2cd85876b46cdd71fd982b15bdbe3cff16e4dc95da48ca53a2c3b28578689",
+    "references/reporting.md": "75c49ef2eb6fc501952112b3e3c47dad83ebc7da4f996ba7e0d11e588795bc25",
+    "skill.yaml": "c44fb98b5cc41466dc0bc93e1b9312e259478689988f08b41ff726125b06c988"
+  },
+  "trial_active_files": {
+    "SKILL.md": "cf4145f20b390fd712a436039b1c9bc30f4105a565a7cb5d1722d2d2ae3b6cfa",
+    "agents/openai.yaml": "cfb46dd79b7c1dbea6f21726d24c55d1ecde761ced9005f103ffb30629c88b2b",
+    "assets/fixtures/consultant-admission-policy.md": "acc3607c90becff03a87356f0e43e094bb023e28ea1e80af64dbd4577c514b53",
+    "references/methodology.md": "a568814539648a7850c9342be8bab3fdbe50fb699276c33a4887abbd3211fe45",
+    "references/policy-admission-matrix.md": "cfe2cd85876b46cdd71fd982b15bdbe3cff16e4dc95da48ca53a2c3b28578689",
+    "references/reporting.md": "75c49ef2eb6fc501952112b3e3c47dad83ebc7da4f996ba7e0d11e588795bc25"
+  },
+  "file_count": 9,
+  "trial_copy_excludes": [
+    "skill.yaml",
+    "fragments/",
+    "AGENTS.md",
+    "docs/",
+    "test/",
+    "package.json"
+  ],
+  "trial_isolation": "fresh agent context; instructed access scope on a shared filesystem, not a hard sandbox"
+}

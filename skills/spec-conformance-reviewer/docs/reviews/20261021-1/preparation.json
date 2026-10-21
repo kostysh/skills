@@ -1,0 +1,15 @@
+{
+  "baseline": "0bd4d8d92a9488e5595faa2045353733ec0b5fca",
+  "frozen_at_utc": "2026-10-21T11:47:19.305997+00:00",
+  "candidate_edited": false,
+  "input_manifest_sha256": "b8cec874b55516ffa427730b527b5fc9d3cc643e527de80346f8a30c3af337fb",
+  "rubric_sha256": "c8146918c6d4794e1144bdc199122bab00a263420a67c7d67a1cefe038957c1d",
+  "raw_inputs": 68,
+  "cases": [
+    "31",
+    "32",
+    "33",
+    "34"
+  ],
+  "pre_edit_task_refinement": "Root removed an instructional hint from task.md before candidate edits and all trials; rubric unchanged."
+}

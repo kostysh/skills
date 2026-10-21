@@ -32,6 +32,8 @@ Collect the available sources before reading code:
 
 Do not infer authority from an artifact's format. A contract, ticket, test, or generated document is normative only for the behavior or contract dimension it is declared to own.
 
+Derive expected behavior independently from its owning sources before comparing implementation and tests. Keep normative requirements, platform facts, author assumptions, and evidence gaps distinct. A provider contract or saved response can establish wire types, states, or transitions; it does not by itself authorize product behavior. Fixtures and a state model derived by the implementation author do not replace the accepted requirement, even when their tests pass.
+
 If critical normative inputs are missing, limit the verdict and list the blocked surfaces.
 
 ## Implementation Inputs
@@ -122,6 +124,8 @@ Build a policy/admission matrix only when the normative sources mention at least
 
 This matrix is a requirement-extraction aid, not a universal checklist. Each row must cite a requirement basis before it can support a non-compliance finding.
 
+For a touched gate, derive the required admissible scenario together with mandatory refusals from those sources. Trace both through the actual decision path: passing negative checks alone cannot establish the full contract. Check whether implementation adds a state, type, identity, or transition restriction that blocks accepted behavior, including when fixtures label that refusal correct. Do not require admission of every platform-supported state; an applicable product requirement may intentionally exclude it.
+
 For triggered reviews, consider this bounded row catalog:
 
 - explicit allow
@@ -151,7 +155,7 @@ Write one paragraph that states:
 
 ### 2. Extract Atomic Requirements
 
-Turn the sources into testable requirements. For each requirement, capture:
+Turn the owning sources into testable requirements without taking the implementation's predicates or fixture expectations as the requirement model. For each requirement, capture:
 
 - `requirement_id`
 - `source`
@@ -162,6 +166,7 @@ Turn the sources into testable requirements. For each requirement, capture:
 - derivation basis and confidence when origin is `derived`
 - preconditions
 - expected behavior
+- required admissible scenario when relevant
 - negative scenario or failure behavior when relevant
 - required side effects or invariants
 
@@ -230,7 +235,7 @@ Check both directions:
 - requirement to implementation
 - implementation back to requirement basis
 
-This is where you catch unspecified behavior, contract drift, hidden defaults, and silent fallback paths.
+This is where you catch unspecified behavior, contract drift, hidden defaults, silent fallback paths, and extra implementation restrictions that contradict required behavior.
 
 ### 6. Evaluate the Requirement Categories
 
@@ -288,6 +293,8 @@ Do not report a serious finding until you can explain:
 For `cannot_determine`, cite the authoritative requirement and the exact unavailable surface instead of inventing implementation evidence. Missing proof is a verification gap, not a confirmed violation.
 
 Weak evidence includes comments, TODOs, function names, or tests whose asserts do not prove the requirement.
+
+A reachable refusal that contradicts a source-backed required admissible scenario is `not_fulfilled` even when required denial paths pass. If the requirement meaning is unresolved, use `ambiguous_spec`; if the relevant enforcement or platform evidence is incomplete, use `cannot_determine`. Missing data alone does not prove an improper refusal, and a platform observation alone does not establish an obligation to admit it.
 
 ## Ambiguity and Missing Evidence
 

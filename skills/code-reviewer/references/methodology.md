@@ -49,9 +49,9 @@ Only report findings grounded in reachable changed behavior and surrounding code
 
 ## Conditional Runtime-gate Deployed-path Pass
 
-Use this pass only when the changed files or linked review intent touch runtime gates that authorize execution through a shipped lifecycle. For detailed probes, load `references/runtime-gate-deployed-path.md`.
+Use this pass only when changed behavior depends on external-contract assumptions or touches runtime gates that authorize execution through a shipped lifecycle. Load `references/runtime-gate-deployed-path.md` for the independent model check and applicable deployed-path probes.
 
-Ask:
+For a touched runtime gate, ask:
 
 - Does the production construction path instantiate the gated component with the gate enabled and wired to the expected policy or admission dependency?
 - Does the actual request, tick, job, or lifecycle path call the gate before provider invocation, enqueue, external side effect, or durable allow decision?

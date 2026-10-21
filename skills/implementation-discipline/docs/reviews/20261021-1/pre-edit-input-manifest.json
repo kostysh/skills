@@ -1,0 +1,184 @@
+{
+  "frozenAt": "2026-10-21T11:47:17.242055+00:00",
+  "baselineCommit": "0bd4d8d92a9488e5595faa2045353733ec0b5fca",
+  "skill": "implementation-discipline",
+  "inputsDigest": "6d77bf69fff68039708adc5bd8c5110af40d5c9489ad927149cda5e00033e334",
+  "inputs": [
+    {
+      "path": "cases/01/project/README.md",
+      "sha256": "3991247a6fcec9a33550afc171fc54964ed28cb013538fae37b68dbce88530c5"
+    },
+    {
+      "path": "cases/01/project/captures/api.json",
+      "sha256": "388d957a698a7b4e0e517e5d022eb7349a441c55e12868323574366e6de40954"
+    },
+    {
+      "path": "cases/01/project/captures/direct.json",
+      "sha256": "aed1ac5003e8a86b2154cfc32aade0f309eb47a7556839a047ec708fede119d5"
+    },
+    {
+      "path": "cases/01/project/deployment.json",
+      "sha256": "dea1db083e63ade5b2832470b85436b9ec712e7c2ba0f90b03fea14f0fce5c32"
+    },
+    {
+      "path": "cases/01/project/package.json",
+      "sha256": "9740c3e6b9af391eb2486eded3d15eee2fd1e39a5f6fddd3d127d56304d28f03"
+    },
+    {
+      "path": "cases/01/project/scripts/smoke.mjs",
+      "sha256": "dc92976266dccfa3cce312ec968403f14ec818741fc42f69b439b39421f95c93"
+    },
+    {
+      "path": "cases/01/project/src/platform.mjs",
+      "sha256": "9e8675045f0573cff5a987f5b367ec909e6a90d48ba397df26212ef6e71d4689"
+    },
+    {
+      "path": "cases/01/project/src/reader.mjs",
+      "sha256": "74d8c76d4c4d0655030c899714bee0c31f9dac78c4d42ee9c9da3fca879286e8"
+    },
+    {
+      "path": "cases/01/project/test/reader.test.mjs",
+      "sha256": "ed3917b9e13853e74a4e50b1840858b100bfeadb11a5c656f6fde519744eeae3"
+    },
+    {
+      "path": "cases/01/task.md",
+      "sha256": "979361e8d278424b03731ab14c9446c06cccbd38f9e8779939c9f9639c7a6324"
+    },
+    {
+      "path": "cases/02/project/.ci/prepare-job.json",
+      "sha256": "28008555eab8043efb23d262f91fd88f77e8fe267f5c3810ad0f8b0bc73ee9b6"
+    },
+    {
+      "path": "cases/02/project/README.md",
+      "sha256": "f584fbda4cf882e84b0e9b0af15fb6326d9253a60540384b6bf01f1b371147cb"
+    },
+    {
+      "path": "cases/02/project/captures/ci.stderr.txt",
+      "sha256": "215d7637b52b9684ddb42099ea462738801dbb02ad60e2ac817f5497e9ba1e48"
+    },
+    {
+      "path": "cases/02/project/node_modules/build-kit/index.mjs",
+      "sha256": "fd875cf328ae23cd6a5505ae1700945a013227024576184d25d85b3b2d9a9020"
+    },
+    {
+      "path": "cases/02/project/node_modules/build-kit/package.json",
+      "sha256": "209019a57bc6cec4b33cccfefbc0d3d1cc5a6be2fd0b072079fe09e8392f9a41"
+    },
+    {
+      "path": "cases/02/project/package-lock.json",
+      "sha256": "f0e3b5f0a8229ca44cdab102918c198711d62fed5a2c783d2fa1fd38a7b83365"
+    },
+    {
+      "path": "cases/02/project/package.json",
+      "sha256": "ac9d9b38e106dfcc2bf95f709a76db06ba0e35d82c31104149c0fa998481c39c"
+    },
+    {
+      "path": "cases/02/project/scripts/job.mjs",
+      "sha256": "d75efe32a0ca98f9d13f2bf4acf0276de08f7d77ffaed158a6f6a2e28ba45e69"
+    },
+    {
+      "path": "cases/02/project/scripts/prepare.mjs",
+      "sha256": "a8a9c1358222cafdd2f3c534469fb948b551401a57f025783f3f73db913210d9"
+    },
+    {
+      "path": "cases/02/project/test/prepare.test.mjs",
+      "sha256": "81ac50a7fb93f394e7b14060638d800386da66936d47accda7ce57836212b664"
+    },
+    {
+      "path": "cases/02/project/vendor/build-kit/index.mjs",
+      "sha256": "fd875cf328ae23cd6a5505ae1700945a013227024576184d25d85b3b2d9a9020"
+    },
+    {
+      "path": "cases/02/project/vendor/build-kit/package.json",
+      "sha256": "209019a57bc6cec4b33cccfefbc0d3d1cc5a6be2fd0b072079fe09e8392f9a41"
+    },
+    {
+      "path": "cases/02/task.md",
+      "sha256": "10f66f03e9dd194d55fac050fe9ba63bddfba60de311838e028900d8126d4e5c"
+    },
+    {
+      "path": "cases/03/project/README.md",
+      "sha256": "5c53f320302d26fd8f6a808be18dedada14c87c8b45ffcbfffc83128fc9b29e6"
+    },
+    {
+      "path": "cases/03/project/package.json",
+      "sha256": "8995df09e6f214e2f3f81ac09edfd28cceb5791b6103e24831384fc5294b3cbc"
+    },
+    {
+      "path": "cases/03/project/src/label.mjs",
+      "sha256": "13d360322662244fb1a6cd4efa1306b86a913b2cfff4ae7192b3600896a4104c"
+    },
+    {
+      "path": "cases/03/project/test/label.test.mjs",
+      "sha256": "4925db7a7186321febc2a75fda400ac5a4bd56c1db27c4d60b5d1aab1affa080"
+    },
+    {
+      "path": "cases/03/task.md",
+      "sha256": "da743104f9a5e1766389282ced60d153a37d0f0d94449cc863018c5cfd0fe06e"
+    },
+    {
+      "path": "cases/04/project/README.md",
+      "sha256": "0230346a7cd18ca836ec7467738859c346ff53bc025ac2048485de037f8cbbb4"
+    },
+    {
+      "path": "cases/04/project/captures/event.json",
+      "sha256": "9c20d26dd6b86c719481fd04970692f71b9fa8769ff9f80155e16f56b05d0249"
+    },
+    {
+      "path": "cases/04/project/captures/provider-check.txt",
+      "sha256": "d30838cb8246ab8b4ee10cbfa5aa208814f546b8f4dfec4618919d728341eebb"
+    },
+    {
+      "path": "cases/04/project/contracts/provider-v3.md",
+      "sha256": "1ab237642775c295b2fd44d3003123dcfb9b9e4ee8cac80a8eabb418547fe3a5"
+    },
+    {
+      "path": "cases/04/project/package.json",
+      "sha256": "e35f0e796eee4e7f78d8124c16d1fd071b2e4eb4d7cb9cfcf078d41f563ff4f7"
+    },
+    {
+      "path": "cases/04/project/scripts/replay.mjs",
+      "sha256": "2b81cbc8775653aa2370187ddb6095ec5a3245373531a0210f30a01dd2322e4c"
+    },
+    {
+      "path": "cases/04/project/src/decode.mjs",
+      "sha256": "e02f6394a5b2321f355bb341bbbc2b6b04299c5f5f5dd4cc5c074c40a04ce242"
+    },
+    {
+      "path": "cases/04/project/test/decode.test.mjs",
+      "sha256": "84f9cfff63a2562a3b9cefefea57c520ea99f8a3a823a6adb6eca1369cd465b7"
+    },
+    {
+      "path": "cases/04/task.md",
+      "sha256": "0703f603a8af9f09869cfe7aab9a7880a9bc37b69628233c46a119842ee4f0dc"
+    },
+    {
+      "path": "rubric.md",
+      "sha256": "1e7de5f30ca8dc8674529ede410b0f33919b962f53746ee577b559cbabeef74c"
+    }
+  ],
+  "baselineFiles": [
+    {
+      "path": "skills/implementation-discipline/skill.yaml",
+      "sha256": "7f06206f20973b55100828317232fabe2ea20a0142a1ff5c60c0d8866f60979f"
+    },
+    {
+      "path": "skills/implementation-discipline/SKILL.md",
+      "sha256": "756624dde807f5d84e5e4172abf094a39cd807dcd3103a01cc98e547d1cb5d90"
+    },
+    {
+      "path": "skills/implementation-discipline/docs/compile-report.md",
+      "sha256": "d78390e078d707a76f3588c70d9447d341847e6aab1d502250b2edad6ab316e1"
+    },
+    {
+      "path": "skills/implementation-discipline/references/core-principles.md",
+      "sha256": "fa8a312bb8f580a1224f049f2480605d474b399f14627a55c292b28bbcec5cde"
+    },
+    {
+      "path": "skills/implementation-discipline/references/verification-loop.md",
+      "sha256": "9329bcfef1a58afea7ff94c6df71b00d860a86d789ddd381bc903553ee56300c"
+    }
+  ],
+  "exposure": "Author-only fixture QA was run in disposable copies; executors must receive only their case and selected active skill. Rubric, QA controls, author request and sibling cases remain outside trial exposure.",
+  "qaResults": "../author-fixture-qa/results.json"
+}

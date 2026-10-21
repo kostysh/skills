@@ -6,7 +6,7 @@ description: "Diagnose and fix software defects: errors, crashes, failing tests,
 metadata:
   source-version: 0.1.0
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 9a98e8b0c5c3bec8e35c6939c980705897ebea2794eb7d4c398c8853f774dc52
+  skillforge-source-hash: 00da0822c6829dff1cfad3883db5b1a673577d37de90fa3ed2f87cc64ccd68bf
 ---
 
 # error-fixer
@@ -71,11 +71,14 @@ Validation:
 Establish a causal explanation for the violated contract.
 
 1. Trace the mechanism from trigger to failure. Separate facts from hypotheses and use discriminating experiments to challenge the explanation before adopting a permanent fix.
-2. If the original environment is unavailable, inspected code and authoritative inputs may still justify a bounded local correction. A plausible adjacent hypothesis alone does not; leave the unreplayed environment explicitly unverified.
+2. Before selecting a correction, check available related fixes, working implementations, and results of prior attempts, bounded to the current failure; inspect any explicitly identified predecessor. Read the actual change or diff and its verification evidence, and compare the conditions behind its result with the current conditions.
+3. Reuse, adapt, or reject that prior solution against the current contract. For rejection, briefly state the concrete incompatibility or new evidence; if no applicable predecessor is available, continue causal diagnosis without blocking on history.
+4. If the original environment is unavailable, inspected code and authoritative inputs may still justify a bounded local correction. A plausible adjacent hypothesis alone does not; leave the unreplayed environment explicitly unverified.
 
 Validation:
 
 - The proposed correction addresses an evidenced cause or violated contract, with a check that could falsify it.
+- The choice accounts for relevant prior results without treating history as authority over the current contract.
 
 ### Workflow stage: Guard and repair
 
