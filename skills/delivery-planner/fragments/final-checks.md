@@ -6,9 +6,7 @@
 - Product authority/handoff and architecture handoff item readiness are explicit; no dependent task is more ready than its inputs.
 - Architecture handoff is treated as accepted constraints and obligations, not redesigned.
 - Every in-scope product requirement and architecture obligation has a task, specialist route, spike, or explicit not-applicable rationale.
-- Missing architecture decisions are routed to `architecture-engineer`.
-- Missing product intent is routed to `prd-engineer`.
-- Missing behavior/verification detail is routed to `spec-engineer`.
+- For missing inputs, route architecture decisions to `architecture-engineer`, product intent to `prd-engineer`, and behavior/verification detail to `spec-engineer`.
 - Decomposition uses vertical slices for project/feature planning and module increments for module/service planning.
 - Every task has one primary goal, source trace, dependencies, risk, handoff status, blockers, next owner, expected output or evidence, and unblock or return route.
 - `ready for coding` is used only when the coding owner can act without inventing source-owned decisions and has concrete verification and review evidence.

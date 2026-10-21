@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: architecture-engineer
-  source-version: 0.1.10
+  source-version: 0.1.11
   recommended-skill-md-max-bytes: 26000
   description: >-
     Design or revise architecture for AI-agent-driven development. Use when

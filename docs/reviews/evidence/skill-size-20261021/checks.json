@@ -1,0 +1,33 @@
+{
+  "base_commit": "ce19ba418e1671167254c260e4617564335489ae",
+  "checks": [
+    {
+      "skill": "architecture-engineer",
+      "before_bytes": 26032,
+      "after_bytes": 25977,
+      "saved_bytes": 55,
+      "unchanged_limit": 26000,
+      "warnings": [],
+      "all_other_source_and_body_content_preserved": true,
+      "isolated_package_equal": true
+    },
+    {
+      "skill": "delivery-planner",
+      "before_bytes": 23842,
+      "after_bytes": 23493,
+      "saved_bytes": 349,
+      "unchanged_limit": 23500,
+      "warnings": [],
+      "all_other_source_and_body_content_preserved": true,
+      "isolated_package_equal": true
+    }
+  ],
+  "creator_validations": 37,
+  "test_ci": {
+    "command": "pnpm test:ci",
+    "exit": 0,
+    "node": "v24.15.0",
+    "raw": "candidate-tests.txt"
+  },
+  "limits": "Local structure/parity and existing suite; paired synthetic behavioral probes and independent review are separate."
+}

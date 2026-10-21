@@ -1,0 +1,44 @@
+{
+  "base_commit": "ce19ba418e1671167254c260e4617564335489ae",
+  "file_count": 30,
+  "candidate_aggregate": "fe6cdd26ec69ad75acb06c4fe85da1a253d7cc67e5e01567826b56c9ac350fa2",
+  "baseline_aggregate": "d7233afdf70ef47963933ea40b4f730ed3c14b788575bd39504aae000086a12f",
+  "candidate_manifest_match": true,
+  "baseline_manifest_match": true,
+  "aggregate_match": true,
+  "changed_hashed_paths": [
+    "skills/architecture-engineer/SKILL.md",
+    "skills/architecture-engineer/docs/compile-report.md",
+    "skills/architecture-engineer/fragments/overview.md",
+    "skills/architecture-engineer/skill.yaml",
+    "skills/delivery-planner/SKILL.md",
+    "skills/delivery-planner/docs/compile-report.md",
+    "skills/delivery-planner/fragments/final-checks.md",
+    "skills/delivery-planner/fragments/overview.md",
+    "skills/delivery-planner/skill.yaml"
+  ],
+  "skills": {
+    "architecture-engineer": {
+      "before_bytes": 26032,
+      "after_bytes": 25977,
+      "limit": 26000,
+      "limit_unchanged": true,
+      "source_yaml_only_version_changed": true,
+      "emitted_body_only_declared_fragments_changed": true,
+      "emitted_final_file_count": 25,
+      "emitted_final_all_files_equal_to_source_package": true,
+      "emitted_mismatch": []
+    },
+    "delivery-planner": {
+      "before_bytes": 23842,
+      "after_bytes": 23493,
+      "limit": 23500,
+      "limit_unchanged": true,
+      "source_yaml_only_version_changed": true,
+      "emitted_body_only_declared_fragments_changed": true,
+      "emitted_final_file_count": 21,
+      "emitted_final_all_files_equal_to_source_package": true,
+      "emitted_mismatch": []
+    }
+  }
+}

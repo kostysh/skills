@@ -6,9 +6,9 @@ description: Turn accepted product scope and architecture handoff into
   routing gaps to owning skills. Produce one Delivery Plan, not rigid workflow
   registers.
 metadata:
-  source-version: 0.2.14
+  source-version: 0.2.15
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 6b184fd321090d831ab28c4bb7bd434cf4388fb8aea6f255730442376aad8c1a
+  skillforge-source-hash: 158fb4982893d00faa945e22c6896363239d07273cf0438f8028c3fa93033554
 ---
 
 # delivery-planner
@@ -48,24 +48,13 @@ metadata:
 
 ## Overview
 
-Delivery planning bridges accepted product/architecture context and executable implementation work.
+Turn accepted product/architecture context—handoff items, constraints, boundaries, contracts, risks, and validation obligations—into right-sized tasks downstream agents can safely execute.
 
-The main purpose is architecture-to-task decomposition: take accepted architecture handoff items, constraints, boundaries, contracts, risks, and validation obligations, then produce right-sized tasks that downstream agents can safely execute.
+Scopes: whole project; feature or epic; module, service, bounded context, package, adapter, or subsystem; integration or provider flow; one architecture handoff item; backlog audit or repair.
 
-The skill supports multiple planning scopes:
+Default to one compact Markdown Delivery Plan, not heavy YAML registers. Use planning decisions, not mechanical forms; plans may be short when scope is narrow and authority clear.
 
-- whole project;
-- feature or epic;
-- module, service, bounded context, package, adapter, or subsystem;
-- integration or provider flow;
-- one architecture handoff item;
-- backlog audit or repair.
-
-Default output is one compact Markdown Delivery Plan. Heavy YAML registers are not the default path.
-
-Treat the workflow as a small set of planning decisions, not a form the agent must fill in mechanically. A useful plan may be short when scope is narrow and authority is already clear.
-
-The skill does not produce PRDs, architecture decisions, ADRs, ASR records, implementation-ready specs, code, CI changes, or merge decisions.
+Do not produce PRDs, architecture decisions, ADRs, ASR records, implementation-ready specs, code, CI changes, or merge decisions.
 
 ## Workflow stages
 
@@ -259,9 +248,7 @@ Use the user's working language unless repository rules differ. Start with a con
 - Product authority/handoff and architecture handoff item readiness are explicit; no dependent task is more ready than its inputs.
 - Architecture handoff is treated as accepted constraints and obligations, not redesigned.
 - Every in-scope product requirement and architecture obligation has a task, specialist route, spike, or explicit not-applicable rationale.
-- Missing architecture decisions are routed to `architecture-engineer`.
-- Missing product intent is routed to `prd-engineer`.
-- Missing behavior/verification detail is routed to `spec-engineer`.
+- For missing inputs, route architecture decisions to `architecture-engineer`, product intent to `prd-engineer`, and behavior/verification detail to `spec-engineer`.
 - Decomposition uses vertical slices for project/feature planning and module increments for module/service planning.
 - Every task has one primary goal, source trace, dependencies, risk, handoff status, blockers, next owner, expected output or evidence, and unblock or return route.
 - `ready for coding` is used only when the coding owner can act without inventing source-owned decisions and has concrete verification and review evidence.

@@ -5,9 +5,9 @@ description: Design or revise architecture for AI-agent-driven development. Use
   findings require architectural requirements, boundaries, patterns, trade-offs,
   quality scenarios, spikes, ADRs, or handoff—not implementation backlogs.
 metadata:
-  source-version: 0.1.10
+  source-version: 0.1.11
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 0ff4e0d849ea6eba3fb0fc68eb0583adf36c9a6ce23483e901592803245f1966
+  skillforge-source-hash: e2a14012e9f7271315614231fd94ce2447589686ef100230f090bd7a3f20f519
 ---
 
 # architecture-engineer
@@ -51,9 +51,7 @@ metadata:
 
 ## Overview
 
-Architecture is the decision layer between product input and downstream specifications, delivery planning, domain work, and implementation evidence.
-
-The architecture agent owns the shape of the system and the reasoning behind it. It does not normally own sprint or task decomposition.
+Architecture is the decision layer from product input to downstream specifications, delivery planning, domain work, and implementation evidence. The agent owns system shape and rationale, not normally sprint or task decomposition.
 
 ### Capability and substrate
 
