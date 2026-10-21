@@ -1,0 +1,6 @@
+{
+  "command": "python3 skill-creator/scripts/quick_validate.py skills/spec-conformance-reviewer",
+  "exit": 0,
+  "stdout": "Skill is valid!\n",
+  "boundary": "frontmatter and scaffold structure only"
+}

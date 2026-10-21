@@ -1,0 +1,24 @@
+{
+  "observed_commands": [
+    {
+      "command": "node skills/skill-source-compiler/scripts/skill-source-compiler.mjs lint skills/spec-conformance-reviewer",
+      "exit_code": 0,
+      "stdout": "OK skills/spec-conformance-reviewer\n"
+    },
+    {
+      "command": "node skills/skill-source-compiler/scripts/skill-source-compiler.mjs regenerate skills/spec-conformance-reviewer",
+      "exit_code": 0,
+      "stdout": "Regenerated /home/kostysh/.codex/skills/custom/.worktrees/evidence-aware-skill-repairs/skills/spec-conformance-reviewer\n"
+    },
+    {
+      "command": "node skills/skill-source-compiler/scripts/skill-source-compiler.mjs check skills/spec-conformance-reviewer",
+      "exit_code": 0,
+      "stdout": "OK skills/spec-conformance-reviewer\n"
+    }
+  ],
+  "compiler_warnings": [],
+  "emitted_readback": "Source hash and conditional reference routing read back; required references reachable; compile-report warnings none.",
+  "diff_check": "git diff --check -- skills/code-reviewer skills/spec-conformance-reviewer exit 0",
+  "limits": "Structural checks only; independent skill review/trials pending.",
+  "owning_package_test": "Not applicable: documentation-only skill has no package test command."
+}

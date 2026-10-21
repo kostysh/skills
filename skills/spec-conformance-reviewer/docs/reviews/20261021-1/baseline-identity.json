@@ -1,0 +1,15 @@
+{
+  "git_head": "0bd4d8d92a9488e5595faa2045353733ec0b5fca",
+  "saved_before_candidate": true,
+  "files": {
+    "skills/spec-conformance-reviewer/AGENTS.md": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf",
+    "skills/spec-conformance-reviewer/SKILL.md": "cf4145f20b390fd712a436039b1c9bc30f4105a565a7cb5d1722d2d2ae3b6cfa",
+    "skills/spec-conformance-reviewer/agents/openai.yaml": "cfb46dd79b7c1dbea6f21726d24c55d1ecde761ced9005f103ffb30629c88b2b",
+    "skills/spec-conformance-reviewer/assets/fixtures/consultant-admission-policy.md": "acc3607c90becff03a87356f0e43e094bb023e28ea1e80af64dbd4577c514b53",
+    "skills/spec-conformance-reviewer/fragments/overview.md": "9489cacf692d63107339feab97bcc187617ed9834102e8c3f5b74d22b5035640",
+    "skills/spec-conformance-reviewer/references/methodology.md": "a166d34182463fddba81ca4db49eb7401f8a177f4a09369969ce9355be74e816",
+    "skills/spec-conformance-reviewer/references/policy-admission-matrix.md": "cfe2cd85876b46cdd71fd982b15bdbe3cff16e4dc95da48ca53a2c3b28578689",
+    "skills/spec-conformance-reviewer/references/reporting.md": "75c49ef2eb6fc501952112b3e3c47dad83ebc7da4f996ba7e0d11e588795bc25",
+    "skills/spec-conformance-reviewer/skill.yaml": "c44fb98b5cc41466dc0bc93e1b9312e259478689988f08b41ff726125b06c988"
+  }
+}

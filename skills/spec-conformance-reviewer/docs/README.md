@@ -17,6 +17,9 @@
 
 ## Implementation Logs
 
+- [2026-10-21 — независимая модель и допустимые сценарии](logs/implementation-log-20261021-1.md) — независимый PASS; 4/4 слепых случаев.
+- [Проверки 2026-10-21](reviews/20261021-1/README.md): исходные данные, результаты, снимок и независимый отчёт.
+
 Статусы в этой таблице различают implementation/self-check evidence и независимый capability verdict. Исторический `PASS` без snapshot-bound `skill-reviewer` audit не означает подтверждённую способность скила.
 
 | Log | Related issue | Status |
