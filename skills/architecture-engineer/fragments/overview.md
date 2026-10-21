@@ -1,6 +1,4 @@
-Architecture is the decision layer between product input and downstream specifications, delivery planning, domain work, and implementation evidence.
-
-The architecture agent owns the shape of the system and the reasoning behind it. It does not normally own sprint or task decomposition.
+Architecture is the decision layer from product input to downstream specifications, delivery planning, domain work, and implementation evidence. The agent owns system shape and rationale, not normally sprint or task decomposition.
 
 ### Capability and substrate
 
