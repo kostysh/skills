@@ -3,16 +3,13 @@ kind: SkillSource
 
 skill:
   name: architecture-engineer
-  source-version: 0.1.9
+  source-version: 0.1.10
   recommended-skill-md-max-bytes: 26000
   description: >-
     Design or revise architecture for AI-agent-driven development. Use when
     product scope, features, integrations, data, security, deployment, or findings
     require architectural requirements, boundaries, patterns, trade-offs, quality
     scenarios, spikes, ADRs, or handoff—not implementation backlogs.
-  compatibility: >-
-    Portable documentation-only skill. It ships artifact templates but no
-    runtime; all mandatory architecture guidance lives in this folder.
 
 fragments:
   overview: fragments/overview.md
@@ -385,6 +382,7 @@ sections:
   portability:
     required: true
     rules:
+      - "Portable documentation-only skill. It ships artifact templates but no runtime; all mandatory architecture guidance lives in this folder."
       - Do not reference machine-specific absolute paths or local files outside this skill folder.
       - Keep all mandatory architecture-engineer guidance inside this skill folder.
       - Treat external standards, examples, and repository docs as optional context unless the current task supplies them.

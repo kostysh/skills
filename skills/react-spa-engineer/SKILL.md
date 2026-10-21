@@ -5,13 +5,10 @@ description: Design, implement, review, and diagnose React SPAs using
   Router, and Dexie. Use for routing, server/runtime state, forms, browser
   storage, performance, testing, or accessibility; exclude SSR, RSC, and Next.js
   architecture.
-compatibility: Portable documentation-only engineering skill. It ships no
-  application runtime or test harness and requires repository evidence plus the
-  installed stack versions to make project-specific decisions.
 metadata:
-  source-version: 0.1.11
+  source-version: 0.1.12
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: bd7cdba9739fa969085d725f04876ae1e7a0fa242be36c16bc1448a32c293a4f
+  skillforge-source-hash: edb78e577121535ee3007db3770b3cc474e069b30930a4bb63e1eafb690b0f00
 ---
 
 # react-spa-engineer
@@ -179,6 +176,7 @@ For mutation UI that crosses remount, navigation, entity, or access-context boun
 
 ## Portability rules
 
+- Portable documentation-only engineering skill. It ships no application runtime or test harness and requires repository evidence plus the installed stack versions to make project-specific decisions.
 - Do not reference machine-specific absolute paths or require files outside this skill folder to understand the portable contract.
 - Treat repository layout, commands, installed versions, API contracts, and acceptance gates as discovered project context rather than portable constants.
 - Keep mandatory workflow and evidence rules in SKILL.md; keep conditional stack detail in reachable local references.

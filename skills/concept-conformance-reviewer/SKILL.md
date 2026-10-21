@@ -5,13 +5,10 @@ description: Review features, specs, plans, acceptance criteria,
   concept. Use when scaffolding, APIs, mocks, tests, evidence, or docs may be
   mistaken for observable capability; not for ordinary spec, code, security, or
   domain review.
-compatibility: Portable documentation-only review skill. Use before
-  specification, planning, implementation, or closure when concept alignment and
-  real capability are more important than local artifact compliance.
 metadata:
-  source-version: 0.2.6
+  source-version: 0.2.7
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: ffe841bdd9f11e8b36804c64bd51549986d96b12490bfe6901f7ae8480c1058e
+  skillforge-source-hash: 4085368a051462c59c8d4cf05fb6d0258c6b345a9679186cf055a1abaf351de4
 ---
 
 # concept-conformance-reviewer
@@ -219,6 +216,7 @@ Re-audit fixed findings on a new stable snapshot against correction evidence, or
 
 ## Portability rules
 
+- Portable documentation-only review skill. Use before specification, planning, implementation, or closure when concept alignment and real capability are more important than local artifact compliance.
 - Do not reference machine-specific paths or external repository state.
 - Keep all mandatory concept-conformance-reviewer guidance inside this skill folder.
 - Use this skill as a review discipline; it does not prescribe framework-specific implementation or replace owning authoring, planning, review, security, or domain skills.

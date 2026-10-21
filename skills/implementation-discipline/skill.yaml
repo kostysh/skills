@@ -3,16 +3,13 @@ kind: SkillSource
 
 skill:
   name: implementation-discipline
-  source-version: 0.2.7
+  source-version: 0.2.8
   recommended-skill-md-max-bytes: 18500
   description: >-
     Use when implementing, refactoring, reviewing code, or authoring, revising,
     and reviewing PRDs, architecture, software specs, and delivery plans to keep
     scope source-authorized, minimize conceptual surface, and require
     proportional evidence.
-  compatibility: >-
-    Portable documentation-only skill. Use alongside language, framework, and
-    review skills; it does not replace domain-specific engineering guidance.
 
 references:
   - id: ref-core-principles
@@ -243,6 +240,7 @@ sections:
   portability:
     required: true
     rules:
+      - "Portable documentation-only skill. Use alongside language, framework, and review skills; it does not replace domain-specific engineering guidance."
       - Do not reference machine-specific paths or external repository state.
       - Keep all required implementation-discipline guidance inside this skill folder.
       - Treat examples as behavioral patterns, not as framework-specific rules.

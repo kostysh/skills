@@ -5,13 +5,10 @@ description: Compile structured skill source bundles into portable Agent Skills
   skills that need explicit active references, outcome-first instruction
   structure, supporting docs, and portability rules.
 license: Apache-2.0
-compatibility: Designed for skills-compatible agents that can read Markdown
-  files and copy local files inside the skill folder. The packaged CLI at
-  scripts/skill-source-compiler.mjs requires Node.js >= 22.22.0.
 metadata:
-  source-version: 0.2.10
+  source-version: 0.2.11
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 9b90b65fabc0ee22e03134a3f2534034411c5ec395f0cbb4f342166b66e781f0
+  skillforge-source-hash: c2f603131792b868e9578910d8e05cd228c999b8b4b88d6cd1ffa9d5671ba77e
 ---
 
 # skill-source-compiler
@@ -252,6 +249,7 @@ Report target readiness as ready-to-regenerate or blocked, then actual actions, 
 
 ## Portability rules
 
+- Designed for skills-compatible agents that can read Markdown files and copy local files inside the skill folder. The packaged CLI at scripts/skill-source-compiler.mjs requires Node.js >= 22.22.0.
 - Do not emit absolute local dependencies or machine-specific environment assumptions in active instructions or declared assets; URLs and explicit web-route/example syntax are not filesystem dependencies.
 - Keep the local method and mandatory references inside the folder. Declare tool, service, expertise, and current-source dependencies with their triggers and the conclusions unavailable without them; a missing dependency does not erase independent supported work.
 - Keep all mandatory templates, scripts, and references inside the emitted skill directory.

@@ -5,13 +5,10 @@ description: Build, harden, review, and diagnose reusable React components
   and server/client boundaries. Use for component-level runtime resilience;
   route app architecture, styling, test strategy, and security verdicts to their
   owners.
-compatibility: Portable documentation-only engineering skill. It ships no
-  runtime or test harness and requires repository evidence plus installed React
-  and framework versions for project-specific decisions.
 metadata:
-  source-version: 0.2.1
+  source-version: 0.2.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 7862d1acc89523e31e94af221d9d99fa77784491f173d3b0efe0eb2fac68b9b9
+  skillforge-source-hash: 333c529b446540f2add1c60ab1a5d0159fbb9bb8e3b9806e25bcfeff0ba5d37b
 ---
 
 # react-components-engineer
@@ -155,6 +152,7 @@ Report verified when evidence establishes the requested claim. A source-only rev
 
 ## Portability rules
 
+- Portable documentation-only engineering skill. It ships no runtime or test harness and requires repository evidence plus installed React and framework versions for project-specific decisions.
 - Do not reference machine-specific absolute paths or local files outside this skill folder.
 - Keep all mandatory react-components-engineer guidance inside this skill folder.
 - Treat external documentation links as optional provenance; the local instructions must remain sufficient offline.

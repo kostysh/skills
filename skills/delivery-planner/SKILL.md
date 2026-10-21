@@ -5,12 +5,10 @@ description: Turn accepted product scope and architecture handoff into
   service, or integration planning, sequencing, risk-aware breakdown, and
   routing gaps to owning skills. Produce one Delivery Plan, not rigid workflow
   registers.
-compatibility: Portable documentation-only skill. All mandatory
-  delivery-planning guidance lives in this folder.
 metadata:
-  source-version: 0.2.13
+  source-version: 0.2.14
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: c657ef4c5c518d4273502114fd3adaf0c4732ccfe8e7fbdeabd0da6780710168
+  skillforge-source-hash: 6b184fd321090d831ab28c4bb7bd434cf4388fb8aea6f255730442376aad8c1a
 ---
 
 # delivery-planner
@@ -231,6 +229,7 @@ Use the user's working language unless repository rules differ. Start with a con
 
 ## Portability rules
 
+- Portable documentation-only skill. All mandatory delivery-planning guidance lives in this folder.
 - Do not reference machine-specific absolute paths or local files outside this skill folder.
 - Keep all mandatory delivery-planner guidance inside this skill folder.
 - Treat repository docs, external standards, and domain examples as optional context unless supplied by the current task.

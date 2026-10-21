@@ -44,3 +44,7 @@
 ## Ревизия 2026-09-07
 
 - [logs/implementation-log-20260907-1.md](logs/implementation-log-20260907-1.md) — группа 1 принятой ревизии: authority и evidence. Новый журнал — source-only supporting record, не обязательная зависимость emitted-пакета.
+
+## Совместимость frontmatter — 2026-10-21
+
+- [Удаление compatibility через исходник](logs/implementation-log-20261021-2.md) — сохранение текста в инструкциях; результаты и независимая оценка связаны с общим журналом.

@@ -36,3 +36,7 @@ Maintenance records:
 | [implementation-log-20260907-1](logs/implementation-log-20260907-1.md) | Independent bounded PASS | G3: действующий owner, самостоятельные docs/tooling/skills outcomes и conditional references. |
 
 - [G3 independent PASS и evidence](reviews/evidence/g3/README.md) — actual spec handoff, source/standalone/support; P3 и procedural limits сохранены.
+
+## Совместимость frontmatter — 2026-10-21
+
+- [Удаление compatibility через исходник](logs/implementation-log-20261021-1.md) — сохранение текста в инструкциях; результаты и независимая оценка связаны с общим журналом.

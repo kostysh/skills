@@ -4,13 +4,10 @@ description: Conduct evidence-backed retrospectives of completed work. Use
   targeted mode for one incident and full evidentiary mode for slices, projects,
   major sessions, or incidents; verify causality, deduplication, prior fixes,
   remediation plans, and approved task handoff.
-compatibility: Portable documentation-only skill. It consumes available evidence
-  and project rules; it has no required CLI, tracker, runtime, or repository
-  layout.
 metadata:
-  source-version: 0.1.2
+  source-version: 0.1.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 6e47ccbff9a54eb25329ca13d45c60f11eab189484faf2088f9cbdaa190c7c67
+  skillforge-source-hash: f8f1f5e7dbfbd6ac49bbcf922672b98eb6f95ac829efb4fd6f4748c0254fd722
 ---
 
 # retrospective-analysis
@@ -183,6 +180,7 @@ Documents, rules, skills, scripts, tasks, and green CI show implemented substrat
 
 ## Portability rules
 
+- Portable documentation-only skill. It consumes available evidence and project rules; it has no required CLI, tracker, runtime, or repository layout.
 - Do not depend on a specific agent runtime, session-store layout, repository path, branch name, tracker, or CI provider.
 - Keep all mandatory retrospective guidance inside this skill folder.
 - Use relative links for active references and supporting files.

@@ -3,17 +3,13 @@ kind: SkillSource
 
 skill:
   name: retrospective-analysis
-  source-version: 0.1.2
+  source-version: 0.1.3
   recommended-skill-md-max-bytes: 18000
   description: >-
     Conduct evidence-backed retrospectives of completed work. Use targeted mode
     for one incident and full evidentiary mode for slices, projects, major
     sessions, or incidents; verify causality, deduplication, prior fixes,
     remediation plans, and approved task handoff.
-  compatibility: >-
-    Portable documentation-only skill. It consumes available evidence and
-    project rules; it has no required CLI, tracker, runtime, or repository
-    layout.
 
 references:
   - id: ref-evidence-causality
@@ -239,6 +235,7 @@ sections:
   portability:
     required: true
     rules:
+      - "Portable documentation-only skill. It consumes available evidence and project rules; it has no required CLI, tracker, runtime, or repository layout."
       - Do not depend on a specific agent runtime, session-store layout, repository path, branch name, tracker, or CI provider.
       - Keep all mandatory retrospective guidance inside this skill folder.
       - Use relative links for active references and supporting files.

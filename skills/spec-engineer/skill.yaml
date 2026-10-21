@@ -3,17 +3,13 @@ kind: SkillSource
 
 skill:
   name: spec-engineer
-  source-version: 0.2.14
+  source-version: 0.2.15
   recommended-skill-md-max-bytes: 28000
   description: >-
     Create concise, falsifiable software specs for AI coding agents. Use to turn
     ideas, tickets, APIs, domain rules, migrations, workflows, or function behavior
     into implementation-ready Markdown with observable requirements, acceptance
     evidence, anti-claims, source authority, and handoff readiness.
-  compatibility: >-
-    Portable, self-contained documentation-only skill. It ships no runtime and
-    keeps all method instructions required to create specifications inside this
-    folder.
 
 fragments:
   overview: fragments/overview.md
@@ -406,6 +402,7 @@ sections:
   portability:
     required: true
     rules:
+      - "Portable, self-contained documentation-only skill. It ships no runtime and keeps all method instructions required to create specifications inside this folder."
       - Do not reference machine-specific absolute paths or local files outside this skill folder.
       - Keep all mandatory spec-engineer guidance inside this skill folder.
       - Use relative links for local references and supporting docs.

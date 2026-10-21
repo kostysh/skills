@@ -5,13 +5,10 @@ description: Create concise, falsifiable software specs for AI coding agents.
   function behavior into implementation-ready Markdown with observable
   requirements, acceptance evidence, anti-claims, source authority, and handoff
   readiness.
-compatibility: Portable, self-contained documentation-only skill. It ships no
-  runtime and keeps all method instructions required to create specifications
-  inside this folder.
 metadata:
-  source-version: 0.2.14
+  source-version: 0.2.15
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 5bbd12b6c736cc6533aed518a693928564e151edc6f16db97dcd616721e588a6
+  skillforge-source-hash: 46b9751e60ad5a38cf15da90d4d2bc2d397aa3c5a89638225d5c3a875004b0da
 ---
 
 # spec-engineer
@@ -274,6 +271,7 @@ release readiness.
 
 ## Portability rules
 
+- Portable, self-contained documentation-only skill. It ships no runtime and keeps all method instructions required to create specifications inside this folder.
 - Do not reference machine-specific absolute paths or local files outside this skill folder.
 - Keep all mandatory spec-engineer guidance inside this skill folder.
 - Use relative links for local references and supporting docs.

@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `1.2.3`
+- Skill source version: `1.2.4`
 
 ## Source files
 - `LICENSE`

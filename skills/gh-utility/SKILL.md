@@ -5,13 +5,10 @@ description: Use when GitHub CLI (`gh`) is required for repos, issues, PRs,
   API access, or `gh skill` commands. Keep targets explicit and verify changes;
   route Git history, review, CI fixes, security, and skill authoring elsewhere.
 license: MIT
-compatibility: Requires GitHub CLI gh and network access to the relevant GitHub
-  host. Command families, flags, and JSON fields that may vary by version must
-  be checked against installed help.
 metadata:
-  source-version: 1.2.3
+  source-version: 1.2.4
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 8fc49689ccd50764e7a541d370830411b7ef60f0b688ea09e5be55c12cec2b36
+  skillforge-source-hash: 89883ea0eb867339080be0293551b0a67327c1987cbfddd31d13c2a37d6bbc44
 ---
 
 # gh-utility
@@ -140,6 +137,7 @@ Report command output and fresh post-action reads honestly; help, dry-run, or va
 
 ## Portability rules
 
+- Requires GitHub CLI gh and network access to the relevant GitHub host. Command families, flags, and JSON fields that may vary by version must be checked against installed help.
 - Keep mandatory guidance, references, assets, license, and UI metadata inside this skill folder.
 - Use only relative local links and explicit GitHub host or repository selectors.
 - Do not depend on Node.js, package metadata, proxy CLIs, or files outside the skill folder.

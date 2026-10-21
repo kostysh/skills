@@ -1,0 +1,17 @@
+{
+  "new_links_checked": 50,
+  "new_links_all_resolve": true,
+  "preexisting_broken_links_outside_delta": [
+    {
+      "path": "skills/payload/docs/README.md",
+      "link": "../../../../docs/logs/implementation-log-20260909-1.md",
+      "present_in_base": true
+    },
+    {
+      "path": "skills/payload-migration/docs/README.md",
+      "link": "../../../../docs/logs/implementation-log-20260909-1.md",
+      "present_in_base": true
+    }
+  ],
+  "reason": "Existing links preserved under operator instruction to preserve unrelated content; no relation to compatibility metadata."
+}

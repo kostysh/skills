@@ -5,13 +5,10 @@ description: Review agent skills for capability, instruction quality, triggers,
   re-audit, or self-review; report assurance and P1/P2/P3 findings with PASS,
   FAIL, BLOCKED, or PROVISIONAL. Does not edit skills or review ordinary app
   code.
-compatibility: Portable documentation-only review skill. It ships no runtime or
-  test package and requires only access to the skill artifacts and available
-  validation evidence.
 metadata:
-  source-version: 0.2.6
+  source-version: 0.2.7
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 798c93c235dcd870eb8e78ac13bec00942086a2c54be6e4426ee89b71cfb6dde
+  skillforge-source-hash: 36a99b620a3d90a77155ffcea30de988e726300ddb0e07721a9ba8fe2d9e0945
 ---
 
 # skill-reviewer
@@ -104,6 +101,7 @@ Forward-testing owns case preparation, exposure, execution and assessment. It su
 
 ## Portability rules
 
+- Portable documentation-only review skill. It ships no runtime or test package and requires only access to the skill artifacts and available validation evidence.
 - Keep mandatory review and verdict guidance inside this folder; discover repository rules and commands from the target context.
 - Declare tools, external facts, and specialized expertise needed for particular claims; unavailable dependencies limit those claims, not the entire local method.
 - Keep runtime-specific session or log discovery with the invoking agent unless the target explicitly owns that runtime.

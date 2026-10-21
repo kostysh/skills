@@ -3,16 +3,13 @@ kind: SkillSource
 
 skill:
   name: delivery-planner
-  source-version: 0.2.13
+  source-version: 0.2.14
   recommended-skill-md-max-bytes: 23500
   description: >-
     Turn accepted product scope and architecture handoff into right-sized executable
     work for AI agents. Use for project, feature, module, service, or integration
     planning, sequencing, risk-aware breakdown, and routing gaps to owning skills.
     Produce one Delivery Plan, not rigid workflow registers.
-  compatibility: >-
-    Portable documentation-only skill. All mandatory delivery-planning guidance
-    lives in this folder.
 
 fragments:
   overview: fragments/overview.md
@@ -292,6 +289,7 @@ sections:
   portability:
     required: true
     rules:
+      - "Portable documentation-only skill. All mandatory delivery-planning guidance lives in this folder."
       - Do not reference machine-specific absolute paths or local files outside this skill folder.
       - Keep all mandatory delivery-planner guidance inside this skill folder.
       - Treat repository docs, external standards, and domain examples as optional context unless supplied by the current task.

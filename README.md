@@ -25,3 +25,7 @@ Reports, plans, and logs are supporting records; they do not override active rul
 - [Принятый план](docs/plans/implementation-plan-20260907-2.md) — четыре группы, отдельный коммит каждого скила.
 - [Аудит плана](docs/reviews/audit-implementation-plan-20260907-2.md) — PASS.
 - [Исходные версии](docs/reviews/evidence/skills-revision/README.md) — snapshot и внешнее основание.
+
+## Совместимость frontmatter — 2026-10-21
+
+- [Журнал удаления compatibility](docs/reviews/implementation-log-20261021-remove-compatibility.md) — 14 source bundles, сохранение инструкций, проверки и независимый аудит.
