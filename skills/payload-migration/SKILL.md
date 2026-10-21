@@ -4,13 +4,10 @@ description: Migrate WordPress, Contentful, Strapi, Sanity, Webflow or CSV/JSON
   content into Payload. Analyze exports, design schemas, map fields, relations,
   media, rich text and locales; execute authorized imports, recover reruns and
   reconcile results. Use payload for target runtime mechanics.
-compatibility: Portable documentation-only migration skill. Execution needs the
-  supplied source, installed Payload environment and operation authority; no
-  bundled importer or universal source CMS converter is claimed.
 metadata:
-  source-version: 0.1.2
+  source-version: 0.1.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: c41fe7a14d0c6c8d1b1a8e653d0db669090e16a4690d27b0691a98d389986458
+  skillforge-source-hash: 564d9d92a5497015432366b96000b975bcb71f313e7c0d517c0d5d1df7e4d7b8
 ---
 
 # payload-migration
@@ -164,6 +161,7 @@ Distinguish schema design, import planning, generated scripts, and verified migr
 
 ## Portability rules
 
+- Portable documentation-only migration skill. Execution needs the supplied source, installed Payload environment and operation authority; no bundled importer or universal source CMS converter is claimed.
 - Do not reference machine-specific absolute paths or local files outside this skill folder.
 - Keep all mandatory migration guidance inside this skill folder through SKILL.md and local references.
 - Use relative links for local references, assets, scripts, tests, and supporting docs.

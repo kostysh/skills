@@ -39,3 +39,7 @@
 | --- | --- |
 | [compile-report.md](compile-report.md) | Generated compile report for the current emitted skill surface. |
 | [issues/design-notes.md](issues/design-notes.md) | Historical design notes for generated skill source bundles. |
+
+## Совместимость frontmatter — 2026-10-21
+
+- [Удаление compatibility через исходник](logs/implementation-log-20261021-1.md) — сохранение текста в инструкциях; результаты и независимая оценка связаны с общим журналом.

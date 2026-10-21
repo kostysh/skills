@@ -4,13 +4,10 @@ description: Use when implementing, refactoring, reviewing code, or authoring,
   revising, and reviewing PRDs, architecture, software specs, and delivery plans
   to keep scope source-authorized, minimize conceptual surface, and require
   proportional evidence.
-compatibility: Portable documentation-only skill. Use alongside language,
-  framework, and review skills; it does not replace domain-specific engineering
-  guidance.
 metadata:
-  source-version: 0.2.7
+  source-version: 0.2.8
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: fceae840b2538b2d5454fdd89ec42493530524e25e668718174b9d628baa3318
+  skillforge-source-hash: ac3ad18d168bcd56794ce57d51c03ddb40caa858c2a8c9a8158a52079f72ce0c
 ---
 
 # implementation-discipline
@@ -184,6 +181,7 @@ Start with a concise result in plain, understandable language. Report outcome, e
 
 ## Portability rules
 
+- Portable documentation-only skill. Use alongside language, framework, and review skills; it does not replace domain-specific engineering guidance.
 - Do not reference machine-specific paths or external repository state.
 - Keep all required implementation-discipline guidance inside this skill folder.
 - Treat examples as behavioral patterns, not as framework-specific rules.

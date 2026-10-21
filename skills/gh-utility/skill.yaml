@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: gh-utility
-  source-version: 1.2.3
+  source-version: 1.2.4
   recommended-skill-md-max-bytes: 16000
   description: >-
     Use when GitHub CLI (`gh`) is required for repos, issues, PRs, Actions, releases,
@@ -11,9 +11,6 @@ skill:
     skill` commands. Keep targets explicit and verify changes; route Git history,
     review, CI fixes, security, and skill authoring elsewhere.
   license: MIT
-  compatibility: >-
-    Requires GitHub CLI gh and network access to the relevant GitHub host. Command families,
-    flags, and JSON fields that may vary by version must be checked against installed help.
 
 fragments:
   overview: fragments/overview.md
@@ -270,6 +267,7 @@ sections:
   portability:
     required: true
     rules:
+      - "Requires GitHub CLI gh and network access to the relevant GitHub host. Command families, flags, and JSON fields that may vary by version must be checked against installed help."
       - Keep mandatory guidance, references, assets, license, and UI metadata inside this skill folder.
       - Use only relative local links and explicit GitHub host or repository selectors.
       - Do not depend on Node.js, package metadata, proxy CLIs, or files outside the skill folder.

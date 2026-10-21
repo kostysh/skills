@@ -23,3 +23,7 @@ This directory contains supporting maintenance material only. The normative skil
 - `docs/logs/implementation-log-20260907-1.md` — исправление stop predicate и условной классификации references; source-only журнал, independent PASS; ограничения отражены в отчёте.
 
 - [G3 independent PASS и evidence](reviews/evidence/g3/README.md) — остановка, conditional references и реальные spec consumers; ограничения сравнений сохранены.
+
+## Совместимость frontmatter — 2026-10-21
+
+- [Удаление compatibility через исходник](logs/implementation-log-20261021-1.md) — сохранение текста в инструкциях; результаты и независимая оценка связаны с общим журналом.

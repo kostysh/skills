@@ -28,3 +28,7 @@ This directory contains supporting maintenance material only. The normative skil
 - `docs/logs/implementation-log-20260907-1.md` — ревизия G3: conditional reference, provider scope и canonical stop contract; журнал только в source bundle.
 
 - [G3 independent PASS и evidence](reviews/evidence/g3/README.md) — source/readback/stop boundaries, actual architecture и delivery handoffs; ограничения сохранены.
+
+## Совместимость frontmatter — 2026-10-21
+
+- [Удаление compatibility через исходник](logs/implementation-log-20261021-1.md) — сохранение текста в инструкциях; результаты и независимая оценка связаны с общим журналом.

@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.2.7`
+- Skill source version: `0.2.8`
 
 ## Source files
 - `docs/README.md`

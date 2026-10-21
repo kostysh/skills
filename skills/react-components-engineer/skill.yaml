@@ -2,17 +2,13 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: react-components-engineer
-  source-version: 0.2.1
+  source-version: 0.2.2
   recommended-skill-md-max-bytes: 20000
   description: >-
     Build, harden, review, and diagnose reusable React components across SSR,
     hydration, multiple instances, portals, Effects, opaque children, and
     server/client boundaries. Use for component-level runtime resilience; route
     app architecture, styling, test strategy, and security verdicts to their owners.
-  compatibility: >-
-    Portable documentation-only engineering skill. It ships no runtime or test
-    harness and requires repository evidence plus installed React and framework
-    versions for project-specific decisions.
 fragments:
   overview: fragments/overview.md
 references:
@@ -164,6 +160,7 @@ sections:
   portability:
     required: true
     rules:
+      - "Portable documentation-only engineering skill. It ships no runtime or test harness and requires repository evidence plus installed React and framework versions for project-specific decisions."
       - Do not reference machine-specific absolute paths or local files outside this skill folder.
       - Keep all mandatory react-components-engineer guidance inside this skill folder.
       - Treat external documentation links as optional provenance; the local instructions must remain sufficient offline.

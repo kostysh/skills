@@ -5,13 +5,10 @@ description: "Use when working with Payload CMS projects: payload.config.ts,
   Local/REST/GraphQL APIs, adapters, endpoints, jobs, plugins, and
   Payload-specific validation, security, relationship, transaction, or hook
   behavior."
-compatibility: Portable documentation-only skill based on the upstream
-  payloadcms/skills Payload guidance. Use alongside framework, TypeScript,
-  testing, and security skills for non-Payload concerns.
 metadata:
-  source-version: 0.1.1
+  source-version: 0.1.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 8fa4577124b1528d35c68a13ec2a567bcb89c51be01d14c55c3ca78191899e6c
+  skillforge-source-hash: e3871f6ac431335bd150f0081447bf2eac4005e895fecd404cc3a5657b22010c
 ---
 
 # payload
@@ -293,6 +290,7 @@ Final reports must distinguish implemented Payload behavior from supporting conf
 
 ## Portability rules
 
+- Portable documentation-only skill based on the upstream payloadcms/skills Payload guidance. Use alongside framework, TypeScript, testing, and security skills for non-Payload concerns.
 - Do not reference machine-specific absolute paths or local files outside this skill folder.
 - Keep all mandatory Payload guidance inside this skill folder through SKILL.md and local references.
 - Use relative links for local references, assets, scripts, tests, and supporting docs.

@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: skill-source-compiler
-  source-version: 0.2.10
+  source-version: 0.2.11
   recommended-skill-md-max-bytes: 20000
   description: >-
     Compile structured skill source bundles into portable Agent Skills folders.
@@ -11,10 +11,6 @@ skill:
     that need explicit active references, outcome-first instruction structure,
     supporting docs, and portability rules.
   license: Apache-2.0
-  compatibility: >-
-    Designed for skills-compatible agents that can read Markdown files and copy
-    local files inside the skill folder. The packaged CLI at
-    scripts/skill-source-compiler.mjs requires Node.js >= 22.22.0.
 
 fragments:
   overview: fragments/overview.md
@@ -327,6 +323,7 @@ sections:
   portability:
     required: true
     rules:
+      - "Designed for skills-compatible agents that can read Markdown files and copy local files inside the skill folder. The packaged CLI at scripts/skill-source-compiler.mjs requires Node.js >= 22.22.0."
       - Do not emit absolute local dependencies or machine-specific environment assumptions in active instructions or declared assets; URLs and explicit web-route/example syntax are not filesystem dependencies.
       - Keep the local method and mandatory references inside the folder. Declare tool, service, expertise, and current-source dependencies with their triggers and the conclusions unavailable without them; a missing dependency does not erase independent supported work.
       - Keep all mandatory templates, scripts, and references inside the emitted skill directory.

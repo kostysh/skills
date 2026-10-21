@@ -33,3 +33,7 @@
 - [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — сокращение описания до 300 code points; independent scoped PASS.
 
 - [implementation-log-20260907-1.md](logs/implementation-log-20260907-1.md) — source-only журнал G2 (не входит в emitted package): авторизация, release/Projects inputs и условные обязательные ссылки; независимый gate открыт.
+
+## Совместимость frontmatter — 2026-10-21
+
+- [Удаление compatibility через исходник](logs/implementation-log-20261021-1.md) — сохранение текста в инструкциях; результаты и независимая оценка связаны с общим журналом.

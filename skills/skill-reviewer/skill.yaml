@@ -3,17 +3,13 @@ kind: SkillSource
 
 skill:
   name: skill-reviewer
-  source-version: 0.2.6
+  source-version: 0.2.7
   recommended-skill-md-max-bytes: 22000
   description: >-
     Review agent skills for capability, instruction quality, triggers, contracts,
     portability, and evidence. Use for baseline, change, remediation re-audit,
     or self-review; report assurance and P1/P2/P3 findings with PASS, FAIL,
     BLOCKED, or PROVISIONAL. Does not edit skills or review ordinary app code.
-  compatibility: >-
-    Portable documentation-only review skill. It ships no runtime or test
-    package and requires only access to the skill artifacts and available
-    validation evidence.
 
 fragments:
   overview: fragments/overview.md
@@ -160,6 +156,7 @@ sections:
   portability:
     required: true
     rules:
+      - "Portable documentation-only review skill. It ships no runtime or test package and requires only access to the skill artifacts and available validation evidence."
       - Keep mandatory review and verdict guidance inside this folder; discover repository rules and commands from the target context.
       - Declare tools, external facts, and specialized expertise needed for particular claims; unavailable dependencies limit those claims, not the entire local method.
       - Keep runtime-specific session or log discovery with the invoking agent unless the target explicitly owns that runtime.

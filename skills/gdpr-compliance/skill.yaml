@@ -3,17 +3,13 @@ kind: SkillSource
 
 skill:
   name: gdpr-compliance
-  source-version: 0.2.2
+  source-version: 0.2.3
   recommended-skill-md-max-bytes: 24000
   description: >-
     Audit architecture, specs, plans, or systems for EU GDPR risks involving
     collection, inference, storage, logging, transfer, profiling, retention,
     deletion, or sharing of personal data. Produce controls, findings, evidence
     gaps, and handoffs—not legal advice, certification, or policy prose.
-  compatibility: >-
-    Portable documentation-only skill. It ships active audit references and
-    artifact templates, but no runtime. All mandatory GDPR architecture audit
-    guidance lives inside this folder.
 
 fragments:
   overview: fragments/overview.md
@@ -267,6 +263,7 @@ sections:
   portability:
     required: true
     rules:
+      - "Portable documentation-only skill. It ships active audit references and artifact templates, but no runtime. All mandatory GDPR architecture audit guidance lives inside this folder."
       - Do not reference machine-specific absolute paths or local files outside this skill folder.
       - Keep all mandatory gdpr-compliance guidance inside this skill folder.
       - Use relative links for local references, assets, and supporting docs.

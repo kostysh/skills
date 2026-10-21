@@ -4,12 +4,10 @@ description: Design or revise architecture for AI-agent-driven development. Use
   when product scope, features, integrations, data, security, deployment, or
   findings require architectural requirements, boundaries, patterns, trade-offs,
   quality scenarios, spikes, ADRs, or handoff—not implementation backlogs.
-compatibility: Portable documentation-only skill. It ships artifact templates
-  but no runtime; all mandatory architecture guidance lives in this folder.
 metadata:
-  source-version: 0.1.9
+  source-version: 0.1.10
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: b594a778ae91c43643c1361a5f27b7d244a6b6bceda9a427c23d92af5a4a53b7
+  skillforge-source-hash: 0ff4e0d849ea6eba3fb0fc68eb0583adf36c9a6ce23483e901592803245f1966
 ---
 
 # architecture-engineer
@@ -314,6 +312,7 @@ Return the smallest complete, risk-fit subset defined by the rigor table. Every 
 
 ## Portability rules
 
+- Portable documentation-only skill. It ships artifact templates but no runtime; all mandatory architecture guidance lives in this folder.
 - Do not reference machine-specific absolute paths or local files outside this skill folder.
 - Keep all mandatory architecture-engineer guidance inside this skill folder.
 - Treat external standards, examples, and repository docs as optional context unless the current task supplies them.

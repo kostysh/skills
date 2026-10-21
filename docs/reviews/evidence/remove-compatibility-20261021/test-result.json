@@ -1,0 +1,7 @@
+{
+  "command": "pnpm test:ci",
+  "exit": 0,
+  "node": "v24.15.0",
+  "pnpm": "10.28.2",
+  "raw": "candidate-tests.txt"
+}

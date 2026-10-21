@@ -12,3 +12,7 @@ No issues have been created for this skill.
 - [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — описание сокращено до 300 code points; independent scoped PASS.
 
 - [Framework/platform implementation log (2026-09-09)](../../../../docs/logs/implementation-log-20260909-1.md) — общий supporting record; не runtime-зависимость скилла.
+
+## Совместимость frontmatter — 2026-10-21
+
+- [Удаление compatibility через исходник](logs/implementation-log-20261021-1.md) — сохранение текста в инструкциях; результаты и независимая оценка связаны с общим журналом.

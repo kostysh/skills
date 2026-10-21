@@ -4,13 +4,10 @@ description: Audit architecture, specs, plans, or systems for EU GDPR risks
   involving collection, inference, storage, logging, transfer, profiling,
   retention, deletion, or sharing of personal data. Produce controls, findings,
   evidence gaps, and handoffs—not legal advice, certification, or policy prose.
-compatibility: Portable documentation-only skill. It ships active audit
-  references and artifact templates, but no runtime. All mandatory GDPR
-  architecture audit guidance lives inside this folder.
 metadata:
-  source-version: 0.2.2
+  source-version: 0.2.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 8eb250e433a1386278b63550ca489747d60b3a23fcbab4c141e685a32aa5310a
+  skillforge-source-hash: 498ba3d381834a281f2cd19dd93327744842e08f0ef15bc3aaf5dfefc9e218ef
 ---
 
 # gdpr-compliance
@@ -240,6 +237,7 @@ Return right-sized findings or a broad audit with scope, source currentness and 
 
 ## Portability rules
 
+- Portable documentation-only skill. It ships active audit references and artifact templates, but no runtime. All mandatory GDPR architecture audit guidance lives inside this folder.
 - Do not reference machine-specific absolute paths or local files outside this skill folder.
 - Keep all mandatory gdpr-compliance guidance inside this skill folder.
 - Use relative links for local references, assets, and supporting docs.
