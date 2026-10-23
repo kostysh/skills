@@ -11,10 +11,10 @@ export async function chooseMode(
 ): Promise<'install' | 'update'> {
   return select(
     {
-      message: 'Что сделать?',
+      message: 'What would you like to do?',
       choices: [
-        { name: 'Установка', value: 'install' as const },
-        { name: 'Обновление', value: 'update' as const },
+        { name: 'Install', value: 'install' as const },
+        { name: 'Update', value: 'update' as const },
       ],
     },
     context,
@@ -26,7 +26,7 @@ export async function chooseInstallation(
 ): Promise<{ names: string[]; target: Target; path: string }> {
   const names = await checkbox(
     {
-      message: 'Выберите скилы (пробел — выбор, Enter — продолжить)',
+      message: 'Select skills (Space to select, Enter to continue)',
       required: true,
       pageSize: 12,
       choices: catalog.skills.map((skill) => ({
@@ -39,14 +39,14 @@ export async function chooseInstallation(
   );
   const target = await select<Target>(
     {
-      message: 'Куда установить?',
+      message: 'Where should skills be installed?',
       choices: [
         { name: 'Codex', value: 'codex' },
         { name: 'Claude Code', value: 'claude-code' },
         { name: 'OpenCode', value: 'opencode' },
         { name: 'Pi', value: 'pi' },
-        { name: 'Универсальный', value: 'universal' },
-        { name: 'Пользовательский путь (например, каталог проекта)', value: 'custom' },
+        { name: 'Universal', value: 'universal' },
+        { name: 'Custom path (for example, a project directory)', value: 'custom' },
       ],
     },
     context,
@@ -57,7 +57,7 @@ export async function chooseInstallation(
           target,
           await input(
             {
-              message: 'Путь установки (относительный — от каталога запуска)',
+              message: 'Installation path (relative to the current directory)',
               default: target === 'custom' ? '.agents/skills' : join(homedir(), '.agents/skills'),
               required: true,
             },

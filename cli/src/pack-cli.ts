@@ -39,4 +39,4 @@ const catalog = await packSkills(
   values.release,
   previous,
 );
-console.log(`Упаковано скилов: ${catalog.skills.length}; каталог: ${resolve(values.out)}`);
+console.log(`Skills packed: ${catalog.skills.length}; output: ${resolve(values.out)}`);

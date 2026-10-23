@@ -21,6 +21,11 @@ void test('built CLI validates arguments before any I/O and implements public he
     });
     assert.equal(result.status, 0, result.stderr);
     assert.equal(result.stderr, '');
+    if (args[0] === '--help') {
+      assert.match(result.stdout, /install and update skills/);
+      assert.match(result.stdout, /interactive menu/);
+      assert.doesNotMatch(result.stdout, /[А-Яа-яЁё]/);
+    }
   }
   for (const args of [
     [],
@@ -37,7 +42,8 @@ void test('built CLI validates arguments before any I/O and implements public he
     });
     assert.equal(result.status, 2, result.stderr);
     assert.equal(result.stdout, '');
-    assert.doesNotMatch(result.stderr, /Проверка каталога/);
+    assert.doesNotMatch(result.stderr, /Checking the skills catalog/);
+    assert.doesNotMatch(result.stderr, /[А-Яа-яЁё]/);
   }
 });
 
@@ -58,14 +64,16 @@ void test('built CLI runs install, reload/no-update, custom project path and upg
     });
   const installed = run(['install', 'example', '--target', 'custom', '--path', '.agents/skills']);
   assert.equal(installed.status, 0, installed.stderr);
-  assert.match(installed.stdout, /example@1.0.0/);
+  assert.match(installed.stdout, /Installed example@1.0.0/);
+  assert.match(installed.stderr, /Checking the skills catalog/);
+  assert.match(installed.stderr, /Installation path:/);
   assert.equal(
     (await new Installer(root).read()).installations[0]?.path,
     join(root, '.agents/skills'),
   );
   const unchanged = run(['update']);
   assert.equal(unchanged.status, 0, unchanged.stderr);
-  assert.equal(unchanged.stdout, 'Все up to date\n');
+  assert.equal(unchanged.stdout, 'All up to date\n');
   await writeFile(fixture, JSON.stringify({ catalog: next.catalog, out: next.out }));
   const upgraded = run(['update']);
   assert.equal(upgraded.status, 0, upgraded.stderr);
@@ -73,6 +81,10 @@ void test('built CLI runs install, reload/no-update, custom project path and upg
   await writeFile(join(root, '.agents/skills/example/SKILL.md'), 'my changes');
   const conflict = run(['update']);
   assert.equal(conflict.status, 1);
+  assert.match(
+    conflict.stderr,
+    /Conflict: directory is not managed by this CLI or has local changes/,
+  );
   assert.doesNotMatch(conflict.stdout, /up to date/);
   assert.equal(await readFile(join(root, '.agents/skills/example/SKILL.md'), 'utf8'), 'my changes');
 });

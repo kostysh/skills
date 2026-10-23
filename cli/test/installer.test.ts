@@ -69,7 +69,7 @@ void test('network, digest failure and corrupt state preserve installed files; f
   );
   assert.equal(await readFile(join(foreign, 'example/sentinel'), 'utf8'), 'keep');
   await writeFile(installer.file, 'broken');
-  await assert.rejects(installer.update(next.catalog), /Повреждённый/);
+  await assert.rejects(installer.update(next.catalog), /Invalid configuration/);
   assert.equal(await readFile(installer.file, 'utf8'), 'broken');
 });
 
@@ -94,7 +94,7 @@ void test('state-write failure rolls back files and concurrent invocation cannot
   await rm(installer.file, { recursive: true });
   await writeFile(installer.file, original);
   await installer.locked(async () => {
-    await assert.rejects(installer.update(next.catalog), /блокировку/);
+    await assert.rejects(installer.update(next.catalog), /acquire lock/);
   });
 });
 
@@ -132,7 +132,7 @@ void test('paths, presets and symlinks fail closed', async (t) => {
         join(root, 'link'),
         'custom',
       ),
-      /без символических/,
+      /without symbolic/,
     );
   }
   assert.equal(sha256('a').length, 64);

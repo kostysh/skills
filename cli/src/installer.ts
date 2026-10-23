@@ -29,11 +29,11 @@ export class Installer {
   async read(): Promise<Config> {
     if (!(await exists(this.file))) return emptyConfig();
     if ((await lstat(this.file)).isSymbolicLink())
-      throw new Error('Конфиг не должен быть символической ссылкой.');
+      throw new Error('The configuration file must not be a symbolic link.');
     try {
       return configSchema.parse(JSON.parse(await readFile(this.file, 'utf8')));
     } catch {
-      throw new Error(`Повреждённый конфиг: ${this.file}. Файл сохранён без изменений.`);
+      throw new Error(`Invalid configuration: ${this.file}. The file has been left unchanged.`);
     }
   }
   async locked<T>(run: () => Promise<T>): Promise<T> {
@@ -41,7 +41,7 @@ export class Installer {
     const lock = join(this.state, 'setup.lock');
     const handle = await open(lock, 'wx', 0o600).catch(() => {
       throw new Error(
-        `Не удалось получить блокировку ${lock}. Если CLI завершился аварийно, убедитесь, что он не запущен, и удалите этот lock-файл.`,
+        `Could not acquire lock ${lock}. If a previous CLI process crashed, make sure no CLI process is running before removing this lock file.`,
       );
     });
     try {
@@ -55,10 +55,10 @@ export class Installer {
   async install(catalog: Catalog, names: string[], path: string, target: Target): Promise<Result> {
     const skills = [...new Set(names)].map((name) => {
       const skill = catalog.skills.find((item) => item.name === name);
-      if (!skill) throw new Error(`Неизвестный скил: ${name}`);
+      if (!skill) throw new Error(`Unknown skill: ${name}`);
       return skill;
     });
-    if (!skills.length) throw new Error('Выберите хотя бы один скил.');
+    if (!skills.length) throw new Error('Select at least one skill.');
     return this.locked(async () => {
       const config = await this.read();
       const canonical = await directory(path);
@@ -77,19 +77,19 @@ export class Installer {
     return this.locked(async () => {
       const config = await this.read();
       if (!config.installations.length)
-        throw new Error('Установки не найдены. Сначала выполните установку.');
+        throw new Error('No installations found. Install skills first.');
       const tasks: { installation: Config['installations'][number]; skill: Skill }[] = [];
       const errors: string[] = [];
       for (const installation of config.installations)
         for (const installed of installation.skills) {
           const available = catalog.skills.find((s) => s.name === installed.name);
           if (!available) {
-            errors.push(`${installed.name}: скил отсутствует в каталоге.`);
+            errors.push(`${installed.name}: skill is missing from the catalog.`);
             continue;
           }
           if (semver.lt(available.version, installed.version)) {
             errors.push(
-              `${installed.name}: каталог старее установленной версии; понижение запрещено.`,
+              `${installed.name}: catalog version is older than the installed version; downgrades are not allowed.`,
             );
             continue;
           }
@@ -113,15 +113,15 @@ export class Installer {
         const previous = installation.skills.find((s) => s.name === skill.name);
         const present = await exists(path);
         if (previous?.version === skill.version && previous.contentHash !== skill.contentHash)
-          throw new Error('Содержимое опубликованной версии изменилось.');
+          throw new Error('The contents of a published version have changed.');
         if (present) {
           if (!previous || (await fingerprint(path)) !== previous.contentHash)
-            throw new Error('Конфликт: чужой каталог или локальные изменения.');
+            throw new Error('Conflict: directory is not managed by this CLI or has local changes.');
           if (semver.gt(previous.version, skill.version))
-            throw new Error('Понижение версии запрещено.');
+            throw new Error('Downgrades are not allowed.');
           if (previous.version === skill.version) {
             if (previous.contentHash !== skill.contentHash)
-              throw new Error('Содержимое опубликованной версии изменилось.');
+              throw new Error('The contents of a published version have changed.');
             continue;
           }
         }
@@ -140,7 +140,7 @@ export class Installer {
             (await exists(path)) !== present ||
             (present && (await fingerprint(path)) !== previous?.contentHash)
           )
-            throw new Error('Каталог изменился во время загрузки.');
+            throw new Error('Directory changed during download.');
           if (present) {
             await rename(path, backup);
             movedOld = true;
@@ -171,10 +171,9 @@ export class Installer {
             if (movedOld) await rename(backup, path);
           } catch {
             retain = true;
-            throw new Error(
-              `Не удалось восстановить ${path}. Резервная копия сохранена в ${work}`,
-              { cause: error },
-            );
+            throw new Error(`Could not restore ${path}. Backup preserved at ${work}`, {
+              cause: error,
+            });
           }
           throw error;
         } finally {

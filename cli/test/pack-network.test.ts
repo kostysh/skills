@@ -25,7 +25,7 @@ void test('pack is deterministic, excludes development files and binds a version
   await writeFile(join(root, 'source-1.0.0/example/references/method.md'), 'changed');
   await assert.rejects(
     packSkills(join(root, 'source-1.0.0'), join(root, 'bad'), 'skills-bad', second),
-    /без повышения версии/,
+    /without a version bump/,
   );
   await writeFile(
     join(root, 'source-1.0.0/example/SKILL.md'),
@@ -33,7 +33,7 @@ void test('pack is deterministic, excludes development files and binds a version
   );
   await assert.rejects(
     packSkills(join(root, 'source-1.0.0'), join(root, 'missing'), 'skills-bad', second),
-    /отсутствует рабочая ссылка/,
+    /missing runtime link/,
   );
 });
 
@@ -76,7 +76,7 @@ void test('release discovery ignores CLI and pre-releases, pins one catalog and 
     latestCatalog(async (url) =>
       url.includes('api.github.com') ? get(url) : Buffer.from(JSON.stringify(changed)),
     ),
-    /другой релиз/,
+    /different release/,
   );
 });
 
@@ -139,7 +139,7 @@ void test('active references require literal resources and shell commands transi
   await writeFile(reference, 'Read `assets/missing.md` before proceeding.\n');
   await assert.rejects(
     packSkills(source, join(root, 'missing-asset'), 'skills-test'),
-    /references\/method.md: отсутствует ресурс assets\/missing.md/,
+    /references\/method.md: missing resource assets\/missing.md/,
   );
   await writeFile(join(folder, 'assets/missing.md'), 'Required working resource');
   for (const language of ['sh', 'bash', 'console', '']) {
@@ -208,7 +208,7 @@ void test('release pin rejects normalized and encoded dot-segments to another re
           ),
         ),
       ),
-      /другой релиз/,
+      /different release/,
     );
   }
 });
@@ -241,7 +241,7 @@ void test('resource paths normalize dot prefixes and examples do not hide requir
     await writeFile(reference, instruction);
     await assert.rejects(
       packSkills(source, join(root, `negative-${index}`), 'skills-test'),
-      /отсутствует ресурс/,
+      /missing resource/,
       instruction,
     );
   }
@@ -271,5 +271,5 @@ void test('resource paths normalize dot prefixes and examples do not hide requir
   );
   // A reference-relative path may not escape the skill folder.
   await writeFile(reference, 'Read `../../assets/missing.md` before proceeding.');
-  await assert.rejects(packSkills(source, join(root, 'escape'), 'skills-test'), /путь/i);
+  await assert.rejects(packSkills(source, join(root, 'escape'), 'skills-test'), /path/i);
 });

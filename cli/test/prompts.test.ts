@@ -6,7 +6,10 @@ import { sha256 } from '../src/model.ts';
 import { chooseInstallation, chooseMode } from '../src/prompts.ts';
 
 void test('arrow keys choose update; Ctrl-C cancels', async () => {
-  const { answer, events } = await render((_config, context) => chooseMode(context), {});
+  const { answer, events, getScreen } = await render((_config, context) => chooseMode(context), {});
+  assert.match(getScreen(), /What would you like to do\?/);
+  assert.match(getScreen(), /Install/);
+  assert.match(getScreen(), /Update/);
   events.keypress('down');
   events.keypress('enter');
   assert.equal(await answer, 'update');
@@ -17,7 +20,7 @@ void test('arrow keys choose update; Ctrl-C cancels', async () => {
 void test('space selects checkbox, Enter advances, custom project path is resolved', async (t) => {
   const skill = {
     name: 'example',
-    description: 'Example',
+    description: 'Пример описания скила',
     version: '1.0.0',
     sha256: sha256(''),
     contentHash: sha256(''),
@@ -38,13 +41,15 @@ void test('space selects checkbox, Enter advances, custom project path is resolv
     for (let n = 0; n < 100 && !getScreen().includes(text); n++) await setTimeout(5);
     assert.ok(getScreen().includes(text), getScreen());
   }
+  await screen('Select skills');
+  assert.match(getScreen(), /Пример описания скила/);
   events.keypress('space');
   events.keypress('enter');
-  await screen('Куда установить');
-  assert.match(getScreen(), /Куда установить/);
+  await screen('Where should skills be installed');
+  assert.match(getScreen(), /Where should skills be installed/);
   for (let i = 0; i < 5; i++) events.keypress('down');
   events.keypress('enter');
-  await screen('Путь установки');
+  await screen('Installation path');
   events.keypress('enter');
   const result = await answer;
   assert.equal(result.target, 'custom');

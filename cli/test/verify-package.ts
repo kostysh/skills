@@ -65,11 +65,11 @@ try {
       project,
       isolatedEnv,
     ),
-    /Установлен/,
+    /Installed/,
   );
   assert.equal(
     command(process.execPath, [bin, 'update'], project, isolatedEnv),
-    'Все up to date\n',
+    'All up to date\n',
   );
   const invalid = spawnSync(process.execPath, [bin, '--unknown'], {
     cwd: project,
@@ -83,7 +83,7 @@ try {
     pkg.version,
   );
   console.log(
-    'Проверены tarball, чистая установка, npx, pnpx/dlx, успешная установка/обновление и ошибка. HTTP — release-shaped fixture; публичный npm-релиз ещё не проверен.',
+    'Verified tarball contents, clean installation, npx, pnpx/dlx, install/update and failure paths. HTTP uses a release-shaped fixture; this check does not verify an npm publication.',
   );
 } finally {
   await rm(root, { recursive: true, force: true });
