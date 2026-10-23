@@ -1,6 +1,6 @@
 {
   "name": "@kostysh/skills",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "\u0418\u043d\u0442\u0435\u0440\u0430\u043a\u0442\u0438\u0432\u043d\u0430\u044f \u0443\u0441\u0442\u0430\u043d\u043e\u0432\u043a\u0430 \u0438 \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u0435 \u0441\u043a\u0438\u043b\u043e\u0432 kostysh/skills",
   "type": "module",
   "bin": {

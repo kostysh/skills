@@ -53,7 +53,7 @@ jobs:
       - name: Publish verified tarball using OIDC
         shell: bash
         run: |
-          packages=(npm-package/*.tgz)
+          packages=(./npm-package/*.tgz)
           test "${#packages[@]}" -eq 1
           npm publish "${packages[0]}" --access public
       - uses: pnpm/action-setup@v5
