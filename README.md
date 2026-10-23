@@ -29,3 +29,10 @@ Reports, plans, and logs are supporting records; they do not override active rul
 ## Совместимость frontmatter — 2026-10-21
 
 - [Журнал удаления compatibility](docs/reviews/implementation-log-20261021-remove-compatibility.md) — 14 source bundles, сохранение инструкций, проверки и независимый аудит.
+
+## CLI installer
+
+[CLI documentation](cli/README.md) — interactive installation, project paths,
+updates, packaging and release setup for `@kostysh/skills`.
+
+[CLI implementation record](cli/docs/implementation-log-20261023-1.md).

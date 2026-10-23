@@ -1,0 +1,73 @@
+name: Publish CLI
+on:
+  push:
+    tags: ['cli-v*']
+permissions:
+  contents: read
+concurrency:
+  group: publish-cli
+  cancel-in-progress: false
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Verify release version
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: node --input-type=module -e "import p from './cli/package.json' with {type:'json'}; if (process.env.RELEASE_TAG !== 'cli-v' + p.version) process.exit(1)"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @kostysh/skills format:check
+      - run: pnpm --filter @kostysh/skills lint
+      - run: pnpm --filter @kostysh/skills test:ci
+      - run: pnpm --filter @kostysh/skills verify:package
+      - name: Require a published skill catalog
+        run: node --input-type=module -e "import { latestCatalog } from './cli/src/network.ts'; await latestCatalog()"
+      - run: npm pack ./cli --ignore-scripts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: npm-package
+          path: kostysh-skills-*.tgz
+          if-no-files-found: error
+  publish:
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: npm-package
+          path: npm-package
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+      - run: npm install --global npm@11
+      - name: Publish verified tarball using OIDC
+        shell: bash
+        run: |
+          packages=(npm-package/*.tgz)
+          test "${#packages[@]}" -eq 1
+          npm publish "${packages[0]}" --access public
+      - uses: pnpm/action-setup@v5
+        with:
+          version: 10.28.2
+      - name: Verify published version and real install/update
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+          HOME: ${{ runner.temp }}/kskills-smoke-home
+        shell: bash
+        run: |
+          mkdir -p "$HOME"
+          version="${RELEASE_TAG#cli-v}"
+          test "$(npm view "@kostysh/skills@$version" version)" = "$version"
+          test "$(npx --yes "@kostysh/skills@$version" --version)" = "$version"
+          npx --yes "@kostysh/skills@$version" install implementation-discipline --target custom --path "$RUNNER_TEMP/kskills-smoke-skills"
+          pnpm dlx "@kostysh/skills@$version" update

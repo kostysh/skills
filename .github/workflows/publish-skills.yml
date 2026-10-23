@@ -1,0 +1,47 @@
+name: Publish skills
+on:
+  push:
+    tags: ['skills-*']
+permissions:
+  contents: read
+concurrency:
+  group: publish-skills
+  cancel-in-progress: false
+jobs:
+  pack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Package already-built skills and verify version history
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: pnpm --filter @kostysh/skills pack:skills --out ../skills-release --release "$RELEASE_TAG" --previous-latest
+      - uses: actions/upload-artifact@v4
+        with:
+          name: skills-release
+          path: skills-release/*
+          if-no-files-found: error
+  publish:
+    needs: pack
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: skills-release
+          path: skills-release
+      - name: Publish complete release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          gh release create "$RELEASE_TAG" --verify-tag --draft --title "$RELEASE_TAG" --notes "Готовые скилы и каталог для @kostysh/skills."
+          gh release upload "$RELEASE_TAG" skills-release/*
+          gh release edit "$RELEASE_TAG" --draft=false
