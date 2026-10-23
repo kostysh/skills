@@ -67,7 +67,16 @@ jobs:
         run: |
           mkdir -p "$HOME"
           version="${RELEASE_TAG#cli-v}"
-          test "$(npm view "@kostysh/skills@$version" version)" = "$version"
+          for attempt in {1..30}; do
+            if test "$(npm view "@kostysh/skills@$version" version --prefer-online --fetch-retries=0 --fetch-timeout=10000)" = "$version"; then
+              break
+            fi
+            if test "$attempt" -eq 30; then
+              echo "Published version $version is not available in the registry." >&2
+              exit 1
+            fi
+            sleep 10
+          done
           test "$(npx --yes "@kostysh/skills@$version" --version)" = "$version"
           npx --yes "@kostysh/skills@$version" install implementation-discipline --target custom --path "$RUNNER_TEMP/kskills-smoke-skills"
           pnpm dlx "@kostysh/skills@$version" update
