@@ -303,3 +303,35 @@ security и документация/ограниченное соответст
 `9e5f2ec246a45609ea82b41840bc8fcfd079fe93ae0ddaaf6283094820d9195b`.
 Локально workspace format:check, CLI lint/typecheck, build, 16 тестов и
 verify:package — PASS. Эти результаты не заменяют реальный OIDC-выпуск.
+
+### Публикация 0.1.1 и ожидание registry — 2026-10-24
+
+[PR #32](https://github.com/kostysh/skills/pull/32) интегрирован коммитом
+`f4cf1cdc0fdb40ef2405079f1c53227356455417`. CI на Linux/macOS/Windows
+для ветки, PR и master — PASS. Тег `cli-v0.1.1` указывает на этот коммит.
+[Workflow выпуска](https://github.com/kostysh/skills/actions/runs/40036971016)
+успешно опубликовал `@kostysh/skills@0.1.1` через OIDC и подписал provenance
+([transparency log](https://search.sigstore.dev/?logIndex=3428702610)).
+
+Проверка сразу после публикации получила 404: npm явно сообщил
+«Your package is being processed and may take a few minutes to become available».
+Запрос выполнялся примерно через секунду после ответа publish. Последующий
+независимый запрос публичного registry подтвердил `0.1.1`, тег latest и
+provenance attestation. Выпуск состоялся; исторический workflow остаётся
+красным из-за преждевременного readback, а не из-за отказа OIDC.
+
+Следующее исправление ограничено ожиданием доступности версии в существующем
+post-publish шаге: до 30 проверок с паузой 10 секунд, сетевой таймаут каждой
+проверки 10 секунд, без внутренних fetch-retries. Непоявившаяся версия
+завершает шаг ошибкой; проверки npx, реальной установки и pnpm dlx сохранены.
+Повторной загрузки уже опубликованной версии нет; версия CLI остаётся 0.1.1.
+
+Проверка опубликованной 0.1.1: чистая установка из npm, npx/pnpx, установка
+всех 37 скилов с проверкой contentHash, update без новых версий и сохранность
+конфига при неизвестном скиле — PASS. npm audit signatures подтвердил одну
+registry signature и одну provenance attestation. Точный исправленный
+post-publish блок также выполнен против публичного registry — PASS.
+Для цикла проверены немедленная/отложенная готовность и исчерпание 30 попыток.
+Независимые аудиты ожидания: простота PASS, затем code/CLI, security и
+документация/ограниченное соответствие PASS. RD-1 (точность времени) исправлено.
+Проверенный patch: `2f480eeb73bce2ddaf277278568db2c8e40349c8ee238378151f2df0aaa1135a`.
