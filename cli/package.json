@@ -1,0 +1,46 @@
+{
+  "name": "@kostysh/skills",
+  "version": "0.1.0",
+  "description": "\u0418\u043d\u0442\u0435\u0440\u0430\u043a\u0442\u0438\u0432\u043d\u0430\u044f \u0443\u0441\u0442\u0430\u043d\u043e\u0432\u043a\u0430 \u0438 \u043e\u0431\u043d\u043e\u0432\u043b\u0435\u043d\u0438\u0435 \u0441\u043a\u0438\u043b\u043e\u0432 kostysh/skills",
+  "type": "module",
+  "bin": {
+    "kskills": "dist/cli.mjs"
+  },
+  "files": [
+    "dist/cli.mjs",
+    "dist/cli.mjs.map"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kostysh/skills.git",
+    "directory": "cli"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc --noEmit",
+    "format": "biome format --write src test package.json tsconfig.json vite.config.ts",
+    "format:check": "biome check --formatter-enabled=true --linter-enabled=false --assist-enabled=false src test package.json tsconfig.json vite.config.ts",
+    "lint": "biome lint src test package.json tsconfig.json vite.config.ts && eslint src test vite.config.ts && pnpm typecheck",
+    "test": "node --test test/*.test.ts",
+    "test:ci": "pnpm test",
+    "pack:skills": "node src/pack-cli.ts",
+    "verify:package": "node test/verify-package.ts",
+    "pretest": "pnpm build"
+  },
+  "devDependencies": {
+    "@inquirer/testing": "^3.0.0",
+    "@types/semver": "^7.7.0",
+    "vite": "^8.0.3",
+    "yaml": "^2.8.1",
+    "@inquirer/prompts": "^8.0.0",
+    "semver": "^7.7.0",
+    "tar": "^7.5.0",
+    "zod": "^4.3.6"
+  }
+}

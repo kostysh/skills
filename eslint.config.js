@@ -1,9 +1,9 @@
-import js from '@eslint/js';
-import tsParser from '@typescript-eslint/parser';
-import tsPlugin from '@typescript-eslint/eslint-plugin';
-import globals from 'globals';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import js from '@eslint/js';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
+import globals from 'globals';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -33,7 +33,14 @@ export default [
     },
   },
   {
-    files: ['skills/*/src/**/*.ts', 'skills/*/test/**/*.ts', 'skills/*/vite.config.ts'],
+    files: [
+      'skills/*/src/**/*.ts',
+      'skills/*/test/**/*.ts',
+      'skills/*/vite.config.ts',
+      'cli/src/**/*.ts',
+      'cli/test/**/*.ts',
+      'cli/vite.config.ts',
+    ],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
