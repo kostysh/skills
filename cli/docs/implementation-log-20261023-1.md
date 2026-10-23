@@ -220,3 +220,46 @@ production CLI, installer и разрешённый канал загрузки 
 Регрессией служит тот же процессный install/update test и весь CLI suite;
 native Windows CI должен пройти их заново. Лог:
 `/tmp/kskills-pr31-windows-second-failure.log`.
+
+### Нативный CI после исправлений
+
+На `f161a49c7476cf9cbd52cf6ff30bbf2b3be034f8` pull_request run
+[`39984745367`](https://github.com/kostysh/skills/actions/runs/39984745367)
+завершился успешно. Во всех трёх jobs прошли format:check, lint/typecheck,
+build + 16 tests и verify:package с реальной установкой локального tarball.
+
+| ОС | CI job | Результат |
+| --- | --- | --- |
+| Linux | [120520896096](https://github.com/kostysh/skills/actions/runs/39984745367/job/120520896096) | PASS |
+| macOS | [120520895787](https://github.com/kostysh/skills/actions/runs/39984745367/job/120520895787) | PASS |
+| Windows | [120520896224](https://github.com/kostysh/skills/actions/runs/39984745367/job/120520896224) | PASS |
+
+Workspace tests также прошли: pull_request run `39984745314`.
+C1 (CRLF checkout) и C2 (Windows --import path) исправлены и проверены
+на исходных CI failure paths; локальные 16 tests, lint/typecheck и
+format:check после C2 также PASS. Простота C1 отдельно
+[PASS](reviews/ci-simplicity-c1.md); итоговый bounded audit C1+C2 ожидается.
+
+R-THREE-OS теперь подтверждён для указанного коммита; R-LIVE остаётся
+открытым: HTTP fixtures и локальный tarball не подтверждают опубликованную
+установку npm/GitHub Release. Публикация npm, теги и слияние не выполнялись.
+
+### Независимый аудит исправлений CI
+
+Итоговый snapshot C1+C2:
+`8e42e63d85103fa87064789e915d30905c36e3ce66da83752406dacdb062273f`,
+[manifest 51 файла](reviews/manifest-ci-final.json). Сначала получен
+[PASS простоты](reviews/ci-simplicity-final.md), затем
+[PASS кода](reviews/ci-code-spec-final.md),
+[PASS безопасности (scoped)](reviews/ci-security-final.md) и
+[PASS документации](reviews/ci-documentation-final.md).
+Все четыре файла delta рассмотрены; неизменённая реализация сохраняет
+прежнее покрытие. C1/C2 закрыты, новых findings нет. Code/spec и docs
+reviewers независимо прочитали актуальные GitHub CI результаты.
+
+Отчёты сохранены побайтно. После snapshot добавлены только эти результаты
+и копии отчётов/manifest. Финальный отчётный коммит не меняет исполнимые
+файлы, конфигурацию или руководства; CI на актуальном head PR проверяется
+повторно после push, его конечное состояние доступно в PR #31.
+Общее conformance остаётся ограничено R-LIVE; успешный CI не завершает
+публичный выпуск и не отменяет запрет оператора на npm-публикацию.
