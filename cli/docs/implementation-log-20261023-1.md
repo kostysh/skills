@@ -208,3 +208,15 @@ Linux/macOS и workspace tests прошли. Windows остановился на
 Исходный failure log: `/tmp/kskills-pr31-windows-first-failure.log`;
 контрольный checkout: `/tmp/kskills-pr31-eol-p9ilk82m`.
 Нативный CI трёх ОС и независимое delta-review ожидают повторной проверки.
+
+Следующий push run `39984243452` на `bcdb8297f284f4db6e90a343f3a34bb67df5edd2`
+подтвердил исправление checkout: Windows прошёл format/lint/typecheck,
+15 из 16 тестов. Process install/update test остановился с
+`ERR_UNSUPPORTED_ESM_URL_SCHEME`: его `--import` получал Windows-путь
+`D:\...` вместо URL модуля. Исправлен только тестовый preload в
+`process.test.ts`: передаётся `new URL(...).href`, как уже делается для
+NODE_OPTIONS в package smoke. Проверены все места передачи --import;
+production CLI, installer и разрешённый канал загрузки не менялись.
+Регрессией служит тот же процессный install/update test и весь CLI suite;
+native Windows CI должен пройти их заново. Лог:
+`/tmp/kskills-pr31-windows-second-failure.log`.

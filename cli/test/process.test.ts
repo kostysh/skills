@@ -49,7 +49,7 @@ void test('built CLI runs install, reload/no-update, custom project path and upg
   const fixture = join(root, 'fixture.json');
   await writeFile(fixture, JSON.stringify({ catalog: first.catalog, out: first.out }));
   const env = { ...process.env, HOME: root, USERPROFILE: root, KSKILLS_TEST_FIXTURE: fixture };
-  const preload = fileURLToPath(new URL('./http-fixture.ts', import.meta.url));
+  const preload = new URL('./http-fixture.ts', import.meta.url).href;
   const run = (args: string[]) =>
     spawnSync(process.execPath, ['--import', preload, binary, ...args], {
       cwd: root,
