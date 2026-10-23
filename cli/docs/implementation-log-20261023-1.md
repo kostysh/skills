@@ -190,3 +190,21 @@ R-THREE-OS и R-LIVE остаются `cannot_determine`: macOS/Windows,
 При проверке индекса обнаружена лишняя пустая строка в конце CLI README;
 она удалена до push. Это форматное изменение: инструкции и исполнимый
 пример восстановления не изменились, новое поведенческое ревью не требуется.
+
+### CI: окончания строк Windows
+
+Первый коммит PR #31 — `6ae886651550752d704212599c88ba3281760a9b`.
+Linux/macOS и workspace tests прошли. Windows остановился на
+`format:check`: checkout с `core.autocrlf=true` записал CRLF вместо
+ожидаемых Biome LF. Witness: push run `39983180641`, job `120515483214`;
+то же произошло в pull_request run `39983293049`.
+
+Исправление ограничено `.gitattributes`: `cli/** text=auto eol=lf`.
+Оно фиксирует LF для текстов CLI при checkout, сохраняет автоопределение
+бинарных файлов и не меняет скилы или правила для остальных каталогов.
+Код CLI, проверка форматирования и порог проверок не меняются.
+Отдельный checkout с `core.autocrlf=true` воспроизвёл исходный отказ;
+после применения атрибута проверяются LF и успешный `format:check`.
+Исходный failure log: `/tmp/kskills-pr31-windows-first-failure.log`;
+контрольный checkout: `/tmp/kskills-pr31-eol-p9ilk82m`.
+Нативный CI трёх ОС и независимое delta-review ожидают повторной проверки.
