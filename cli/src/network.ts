@@ -13,15 +13,15 @@ export const download = async (
     headers: { 'User-Agent': '@kostysh/skills', Accept: 'application/vnd.github+json' },
   });
   if (!response.ok)
-    throw new Error(`Загрузка не удалась: HTTP ${response.status} (${new URL(url).hostname}).`);
+    throw new Error(`Download failed: HTTP ${response.status} (${new URL(url).hostname}).`);
   const chunks: Buffer[] = [];
   let size = 0;
-  if (!response.body) throw new Error('Пустой ответ сервера.');
+  if (!response.body) throw new Error('Empty server response.');
   for await (const value of response.body) {
     const chunk: unknown = value;
-    if (!(chunk instanceof Uint8Array)) throw new Error('Неверный формат ответа.');
+    if (!(chunk instanceof Uint8Array)) throw new Error('Invalid response format.');
     size += chunk.byteLength;
-    if (size > limit) throw new Error('Ответ превышает допустимый размер.');
+    if (size > limit) throw new Error('Response exceeds the size limit.');
     chunks.push(Buffer.from(chunk));
   }
   return Buffer.concat(chunks);
@@ -46,8 +46,7 @@ export async function latestCatalog(get: Download = download): Promise<Catalog> 
     );
     releases.push(...batch);
     if (batch.length < 100) break;
-    if (page === 10)
-      throw new Error('Слишком много релизов: невозможно надёжно выбрать последний.');
+    if (page === 10) throw new Error('Too many releases to reliably select the latest one.');
   }
   const release = releases
     .filter(
@@ -55,13 +54,13 @@ export async function latestCatalog(get: Download = download): Promise<Catalog> 
         /^skills-[a-zA-Z0-9._-]+$/.test(r.tag_name) && !r.draft && !r.prerelease && r.published_at,
     )
     .sort((a, b) => (b.published_at ?? '').localeCompare(a.published_at ?? ''))[0];
-  if (!release) throw new NoReleaseError('Стабильный релиз скилов ещё не опубликован.');
+  if (!release) throw new NoReleaseError('No stable skills release has been published yet.');
   const base = `https://github.com/${repository}/releases/download/${release.tag_name}/`;
   const catalog = catalogSchema.parse(JSON.parse((await get(`${base}catalog.json`)).toString()));
   if (
     catalog.release !== release.tag_name ||
     catalog.skills.some((s) => !isPublishedUrl(s.url) || !new URL(s.url).href.startsWith(base))
   )
-    throw new Error('Каталог содержит ссылки на другой релиз.');
+    throw new Error('Catalog contains links to a different release.');
   return catalog;
 }

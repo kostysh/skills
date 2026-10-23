@@ -81,7 +81,7 @@ export function destination(
     pi: '.pi/agent/skills',
   };
   const path = defaults[target];
-  if (!path) throw new Error('Для пользовательского или универсального пути нужен --path.');
+  if (!path) throw new Error('The custom and universal targets require --path.');
   return resolve(home, path);
 }
 export function safeRelative(path: string): void {
@@ -103,7 +103,7 @@ export function safeRelative(path: string): void {
           /^(con|prn|aux|nul|com[0-9]|lpt[0-9])(?:\.|$)/i.test(part),
       )
   ) {
-    throw new Error(`Небезопасный путь архива: ${path}`);
+    throw new Error(`Unsafe archive path: ${path}`);
   }
 }
 export function isPublishedUrl(value: string): boolean {

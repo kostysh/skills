@@ -1,38 +1,104 @@
 # Skills
 
-Portable AI-agent skills maintained as a pnpm workspace. Runnable skill folders live under `skills/`; development source and generated outputs follow each skill's maintenance contract.
+Focused workflows for AI coding agents: plan a feature, build it, review the
+result, and maintain the project. Each skill includes instructions and the
+references, scripts, or templates needed for its work.
 
-## Maintenance
+Use the **`@kostysh/skills` CLI** to choose skills, install them for your agent
+or a single project, and update them later.
 
-- [Repository instructions](AGENTS.md) — authority, workflow, independent gates, and record locations.
-- [Skill standard](docs/skill-standard.md) — normative repository quality requirements.
-- [Issue template](docs/templates/ISSUE_TEMPLATE.md), [plan template](docs/templates/IMPLEMENTATION_PLAN_TEMPLATE.md), and [implementation log template](docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md) — supporting record formats.
-- `skill-creator` — skill authoring; `skill-source-compiler` — source bundles and generation; `skill-reviewer` — independent skill review.
+[Browse the skills](skills/) · [CLI guide](cli/README.md) ·
+[npm package](https://www.npmjs.com/package/@kostysh/skills) ·
+[Skill releases](https://github.com/kostysh/skills/releases?q=skills-&expanded=true)
 
-The repository standard is maintenance policy. Each shipped skill keeps its own core method local and does not require this checkout to run.
+## Get started
 
-## Current methodology work
+Requires **Node.js 24 or later**. Run either command:
 
-- [Source report](docs/reviews/review-20260907-skill-methodology.md) — preserved proposal.
-- [Accepted three-task plan](docs/plans/implementation-plan-20260907-1.md).
-- [Independent plan audit](docs/reviews/audit-implementation-plan-20260907-1.md).
-- [Implementation record](docs/reviews/implementation-log-20260907-1.md).
+```sh
+npx @kostysh/skills
+```
 
-Reports, plans, and logs are supporting records; they do not override active rules.
+```sh
+pnpx @kostysh/skills
+```
 
-## Ревизия десяти скилов
+Choose **Install**, select skills, then choose an agent or **Custom path**.
+Use the arrow keys to move, **Space** to toggle skills, and **Enter** to confirm.
+Press **Ctrl-C** to cancel. The CLI shows the destination before installation.
 
-- [Принятый план](docs/plans/implementation-plan-20260907-2.md) — четыре группы, отдельный коммит каждого скила.
-- [Аудит плана](docs/reviews/audit-implementation-plan-20260907-2.md) — PASS.
-- [Исходные версии](docs/reviews/evidence/skills-revision/README.md) — snapshot и внешнее основание.
+To install skills only in your current project, choose **Custom path** and enter
+a relative directory such as `.agents/skills` or `.claude/skills`.
 
-## Совместимость frontmatter — 2026-10-21
+## Find a skill
 
-- [Журнал удаления compatibility](docs/reviews/implementation-log-20261021-remove-compatibility.md) — 14 source bundles, сохранение инструкций, проверки и независимый аудит.
+| Work | Skills |
+| --- | --- |
+| Requirements and planning | [prd-engineer](skills/prd-engineer/), [requirements-approval](skills/requirements-approval/), [architecture-engineer](skills/architecture-engineer/), [spec-engineer](skills/spec-engineer/), [delivery-planner](skills/delivery-planner/) |
+| Application development | [typescript-engineer](skills/typescript-engineer/), [node-engineer](skills/node-engineer/), [hono-engineer](skills/hono-engineer/), [react-spa-engineer](skills/react-spa-engineer/), [react-components-engineer](skills/react-components-engineer/), [nextjs](skills/nextjs/), [shadcn](skills/shadcn/), [payload](skills/payload/), [payload-migration](skills/payload-migration/), [supabase-engineer](skills/supabase-engineer/), [financial-calculations-engineer](skills/financial-calculations-engineer/) |
+| Design | [frontend-design](skills/frontend-design/), [pencil-dev](skills/pencil-dev/) |
+| Tools and delivery | [cli-engineer](skills/cli-engineer/), [electron-engineer](skills/electron-engineer/), [git-engineer](skills/git-engineer/), [gh-utility](skills/gh-utility/), [docusaurus-repo](skills/docusaurus-repo/), [agent-browser](skills/agent-browser/) |
+| Reviews | [code-reviewer](skills/code-reviewer/), [security-reviewer](skills/security-reviewer/), [web-ui-reviewer](skills/web-ui-reviewer/), [spec-conformance-reviewer](skills/spec-conformance-reviewer/), [concept-conformance-reviewer](skills/concept-conformance-reviewer/), [gdpr-compliance](skills/gdpr-compliance/) |
+| Testing and maintenance | [typescript-test-engineer](skills/typescript-test-engineer/), [error-fixer](skills/error-fixer/), [implementation-discipline](skills/implementation-discipline/), [retrospective-analysis](skills/retrospective-analysis/) |
+| Documentation and skills | [documentation](skills/documentation/), [skill-source-compiler](skills/skill-source-compiler/), [skill-reviewer](skills/skill-reviewer/) |
 
-## CLI installer
+Open a skill to read its scope and prerequisites. Some workflows require tools
+or connected services; the installer installs skill files, and you configure
+those tools separately.
 
-[CLI documentation](cli/README.md) — interactive installation, project paths,
-updates, packaging and release setup for `@kostysh/skills`.
+## Install from the command line
 
-[CLI implementation record](cli/docs/implementation-log-20261023-1.md).
+Install one or more skills for your agent:
+
+```sh
+npx @kostysh/skills install code-reviewer typescript-test-engineer --target codex
+```
+
+Install in the current project:
+
+```sh
+npx @kostysh/skills install code-reviewer --target custom --path .claude/skills
+```
+
+| Target | Default directory |
+| --- | --- |
+| `codex` | `~/.agents/skills` |
+| `claude-code` | `~/.claude/skills` |
+| `opencode` | `~/.config/opencode/skills` |
+| `pi` | `~/.pi/agent/skills` |
+| `universal` | Enter a path; the menu suggests `~/.agents/skills` |
+| `custom` | Enter a path; the menu suggests `.agents/skills` in the current project |
+
+`--path` overrides any preset. Non-interactive `custom` and `universal` installs
+require it. Relative paths resolve from the directory where you run the CLI.
+
+The CLI downloads the selected skills from a stable GitHub skills release and
+checks their SHA-256 hashes. It installs runtime instructions and resources;
+development docs, tests, and source bundles are excluded. The npm package
+contains the installer; skills are downloaded when you select them.
+
+## Keep skills up to date
+
+```sh
+npx @kostysh/skills update
+```
+
+This checks all installations recorded in `~/.kskills/setup.json`. It updates
+skills with newer versions and restores missing managed skill directories.
+If a skill's destination contains local changes or an unmanaged directory, the
+CLI preserves it and reports a conflict. The [CLI guide](cli/README.md) covers
+errors and recovery.
+
+For command syntax and exit codes:
+
+```sh
+npx @kostysh/skills --help
+```
+
+## For maintainers
+
+This is a pnpm workspace. Runnable skills live in [`skills/`](skills/); each
+skill declares its maintenance source. Start with the [repository instructions](AGENTS.md)
+and [skill standard](docs/skill-standard.md). Record templates are in
+[`docs/templates/`](docs/templates/). CLI development and release instructions
+are in the [CLI guide](cli/README.md#development-and-releases).

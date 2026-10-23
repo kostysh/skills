@@ -1,66 +1,96 @@
 # @kostysh/skills
 
-Установка и обновление скилов из `kostysh/skills`. Нужен Node.js 24+.
+Install and update skills from `kostysh/skills`. Requires Node.js 24 or later.
+The CLI interface is English; skill descriptions and files keep their original
+language.
 
 ```sh
 npx @kostysh/skills
 pnpx @kostysh/skills
 ```
 
-В меню: стрелки — перемещение, пробел — выбор скилов, Enter — продолжение,
-Ctrl-C — отмена. После выбора скилов выберите агент или «Пользовательский путь».
-Для установки в текущий проект используйте, например, `.agents/skills`.
-Путь считается от каталога запуска, в конфиг записывается абсолютный путь.
+In the menu, use the arrow keys to move, Space to select skills, Enter to
+continue, and Ctrl-C to cancel. Choose Install, select skills, then choose an
+agent or Custom path. For a project installation, enter a directory such as
+`.agents/skills`. Relative paths resolve from the current directory; the
+configuration records absolute paths.
+
+## Commands and destinations
 
 ```sh
 npx @kostysh/skills install code-reviewer --target codex
 npx @kostysh/skills install code-reviewer --target custom --path .claude/skills
 npx @kostysh/skills update
+npx @kostysh/skills --help
+npx @kostysh/skills --version
 ```
 
-Обновление проверяет все установки в `~/.kskills/setup.json`. Локальные изменения
-и чужие каталоги сохраняются; конфликт возвращает ненулевой код. Старый каталог
-сохраняется до записи нового конфига. После аварийного завершения может остаться
-`~/.kskills/setup.lock`: удаляйте его только после проверки, что другой CLI не
-работает. Каталоги `.kskills-*` внутри пути установки могут содержать резервную
-копию после аварии; сохраняйте её до проверки установки и конфига.
+You can install several skills by listing their names after `install`.
 
-Коды завершения: 0 — успех, 1 — ошибка или частичный результат, 2 — неверные
-аргументы, 130 — отмена диалога. Диалоги и диагностика идут в stderr, результат —
-в stdout. Универсальный и пользовательский режимы без диалога требуют `--path`.
+| Target | Default directory |
+| --- | --- |
+| `codex` | `~/.agents/skills` |
+| `claude-code` | `~/.claude/skills` |
+| `opencode` | `~/.config/opencode/skills` |
+| `pi` | `~/.pi/agent/skills` |
+| `universal` | Enter a path; the menu suggests `~/.agents/skills` |
+| `custom` | Enter a path; the menu suggests `.agents/skills` |
 
-## Восстановление после аварии
+`--path` overrides any preset. Non-interactive `universal` and `custom` installs
+require `--path`. Without a terminal, provide a complete `install` command or
+use `update`.
 
-Обычная ошибка вызывает откат. При принудительном завершении процесса между
-заменой скила и записью конфига новая копия может не совпадать с конфигом.
-Повторный `update` тогда сообщает о конфликте. Для ручного восстановления:
+Updates check every installation in `~/.kskills/setup.json`. If a skill's
+destination contains local changes or an unmanaged directory, the CLI preserves
+it and reports a conflict with a nonzero exit code. Missing managed skill
+directories are restored from the catalog.
+When all checks succeed and no changes are needed, the CLI prints `All up to date`.
+Without a saved installation, run `install` first.
 
-1. Завершите все процессы CLI. Скопируйте `~/.kskills/setup.json`, каталог
-   проблемного скила и все `.kskills-*` из места установки в отдельное место.
-   Пока не удаляйте lock и резервные копии.
-2. В конфиге найдите установку по `path` и скил по `name`. Его `contentHash`
-   описывает последнюю сохранённую копию. Для сравнения сохраните следующий
-   скрипт как `recovery-hash.mjs` вне каталогов скилов. Он только читает файлы
-   и требует Node.js 24+; исходники CLI и npm-зависимости не нужны.
+Exit codes: 0 for success, 1 for an error or partial result, 2 for invalid
+arguments, and 130 for cancellation. Prompts and diagnostics go to stderr;
+results go to stdout.
+
+The previous skill directory is kept until the new configuration is saved.
+After a crash, `~/.kskills/setup.lock` may remain: remove it only after checking
+that no other CLI process is running. Directories named `.kskills-*` inside an
+installation path may contain a backup; keep them until the installed files
+and configuration have been checked.
+
+## Recovery after a crash
+
+An ordinary error rolls back the change. A forced process termination between
+replacing a skill and saving the configuration can leave the new copy out of
+sync with the configuration. A subsequent `update` reports a conflict. To
+recover manually:
+
+1. Stop all CLI processes. Copy `~/.kskills/setup.json`, the affected skill
+   directory, and every `.kskills-*` directory from the installation to a
+   separate backup location. Keep the lock and original backups for now.
+2. Find the installation by `path` and the skill by `name` in the configuration.
+   Its `contentHash` identifies the last recorded copy. To compare copies, save
+   the following script as `recovery-hash.mjs` outside the skill directories.
+   It only reads files and requires Node.js 24 or later, with no CLI source or
+   npm dependencies.
 
 ```js
 import { createHash } from 'node:crypto';
 import { lstat, readdir, readFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 
-if (!process.argv[2]) throw new Error('Укажите путь к каталогу скила');
+if (!process.argv[2]) throw new Error('Provide the skill directory path');
 const root = resolve(process.argv[2]);
 const hash = (data) => createHash('sha256').update(data).digest('hex');
 const files = [];
 async function walk(path = '') {
   const stat = await lstat(join(root, path));
-  if (stat.isSymbolicLink()) throw new Error(`Символическая ссылка: ${path}`);
+  if (stat.isSymbolicLink()) throw new Error(`Symbolic link: ${path}`);
   if (stat.isFile() && path) files.push(path);
   else if (stat.isDirectory()) {
     for (const name of await readdir(join(root, path))) {
       await walk(path ? `${path}/${name}` : name);
     }
-  } else throw new Error(`Необычный тип файла: ${path}`);
+  } else throw new Error(`Unsupported file type: ${path}`);
 }
 await walk();
 const entries = [];
@@ -68,52 +98,54 @@ for (const file of files.sort()) entries.push([file, hash(await readFile(join(ro
 console.log(hash(JSON.stringify(entries)));
 ```
 
-3. Выполните `node recovery-hash.mjs "/абсолютный/путь/к/скилу"`, затем
-   ту же команду для каждого `.kskills-*/old` в этой установке. Сравните
-   результаты с `contentHash` нужного скила из конфига.
-4. Если установленная копия совпадает с конфигом, восстанавливать её не нужно.
-   Если она отсутствует или отличается, а **ровно одна** копия `old` совпадает
-   с конфигом, переместите текущий каталог скила в отдельный новый каталог
-   карантина. Затем переместите совпавший `old` на исходный путь скила.
-   Не объединяйте каталоги и не перезаписывайте существующие файлы. Повторно
-   вычислите отпечаток восстановленного скила: он должен совпасть с конфигом.
-5. Только после согласования всех установок с конфигом и проверки отсутствия
-   работающего CLI удалите `~/.kskills/setup.lock` и запустите `update`.
-   Сохраните карантин и резервные копии до успешной проверки результата.
+3. Run `node recovery-hash.mjs "/absolute/path/to/skill"`, then run it for
+   each `.kskills-*/old` directory in this installation. Compare the results
+   with the affected skill's `contentHash` in the configuration.
+4. If the installed copy matches the configuration, leave it in place. If it
+   is missing or differs, and **exactly one** `old` copy matches the
+   configuration, move the current skill directory to a new, separate
+   quarantine directory, if present. Then move the matching `old` directory to
+   the original skill path. Do not merge directories or overwrite existing
+   files. Compute the restored skill's hash again; it must match the configuration.
+5. Only after every installation agrees with the configuration and no CLI
+   process is running, remove `~/.kskills/setup.lock` and run `update`. Keep
+   quarantine copies and backups until you have verified the result.
 
-Если записи скила в конфиге нет, совпадений нет или их несколько, остановите
-восстановление и сохраните все копии для разбора. Не подбирайте версию или
-`contentHash` вручную и не удаляйте отличающуюся копию: она может содержать
-пользовательские изменения. Описанная процедура восстанавливает записанную
-версию; она не восстанавливает потерянный или повреждённый конфиг.
+If the configuration has no record of the skill, no copies match, or multiple
+copies match, stop recovery and preserve all copies for investigation. Do not
+guess a version or `contentHash`, and do not delete a differing copy: it may
+contain local changes. This procedure restores the recorded version; it does
+not recover a lost or damaged configuration.
 
-## Разработка и выпуск
+## Development and releases
 
-Из корня workspace:
+From the workspace root:
 
 ```sh
 pnpm --filter @kostysh/skills test
 pnpm --filter @kostysh/skills lint
 pnpm --filter @kostysh/skills verify:package
-pnpm --filter @kostysh/skills pack:skills --out ../skills-release --release skills-20261023
+pnpm --filter @kostysh/skills pack:skills --out ../skills-release --release skills-YYYYMMDD --previous-latest
 ```
 
-Упаковщик читает готовые `SKILL.md` и рабочие файлы; компилятор скилов не нужен.
-`docs/`, исходники, тесты и служебные инструкции не включаются. Рабочие шаблоны
-в `assets/`, в том числе `AGENTS.md`, сохраняются. История contentHash в каталоге
-не позволяет повторно выпустить версию с другим содержимым. При ручной упаковке
-передайте `--previous <catalog.json>` или `--previous-latest`, чтобы проверить
-ранее опубликованные версии; release workflow делает это автоматически.
+The packer reads built `SKILL.md` files and runtime resources; it does not run
+the skill compiler. It excludes development docs, source bundles, tests, and
+maintenance instructions. Runtime templates in `assets/`, including `AGENTS.md`,
+are preserved. The catalog's contentHash history prevents reusing a version
+with different contents. For manual packaging, use `--previous <catalog.json>`
+or `--previous-latest` to check published versions; the release workflow does
+this automatically. Replace `YYYYMMDD` with the release date and use an empty
+output directory.
 
-Два независимых workflow: теги `skills-*` публикуют архивы с каталогом в GitHub
-Releases; `cli-v<version>` публикует только CLI в публичный npm. CLI выбирает
-стабильный релиз скилов по времени публикации, игнорируя CLI и prerelease-релизы.
-Тег CLI должен совпасть с версией пакета. Теги и публикация требуют команды
-оператора. До первого публичного релиза обычные команды npx/pnpx недоступны.
+Two independent workflows handle releases: `skills-*` tags publish skill archives
+and a catalog to GitHub Releases; `cli-v<version>` tags publish only the CLI to
+public npm. The CLI selects the stable skills release with the latest publication
+time, ignoring CLI releases and prereleases. The CLI tag must match the package
+version. Tags and publication require an operator command.
 
-Владелец npm должен зарегистрировать пакет при необходимости и настроить Trusted
-Publisher для `kostysh/skills`, workflow `publish-cli.yml`, разрешив `npm publish`.
-Используется npm OIDC; постоянный npm-токен не нужен. Сначала требуется релиз
-скилов; после npm-публикации отдельно проверяются обе команды и настоящая
-установка/обновление из опубликованных архивов. Успешный локальный smoke с
-HTTP-фикстурой не доказывает публичный выпуск.
+The npm owner must register the package if needed and configure a Trusted
+Publisher for `kostysh/skills`, workflow `publish-cli.yml`, allowing `npm publish`.
+Publication uses npm OIDC and needs no permanent npm token. Publish a skills
+release first. After npm publication, verify both launchers and a real
+installation/update from the published archives. A successful local smoke check
+with an HTTP fixture does not verify public publication.

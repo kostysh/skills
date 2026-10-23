@@ -8,7 +8,8 @@ import type { Skill } from './model.ts';
 import { safeRelative, sha256 } from './model.ts';
 
 export async function extract(bytes: Buffer, target: string, skill: Skill): Promise<void> {
-  if (sha256(bytes) !== skill.sha256) throw new Error('SHA-256 архива не совпадает с каталогом.');
+  if (sha256(bytes) !== skill.sha256)
+    throw new Error('Archive SHA-256 does not match the catalog.');
   const unpacked = gunzipSync(bytes, { maxOutputLength: 64 * 1024 * 1024 });
   const archive = join(dirname(target), `${randomUUID()}.tar`);
   try {
@@ -24,13 +25,13 @@ export async function extract(bytes: Buffer, target: string, skill: Skill): Prom
           const name = entry.path.replace(/\/$/, '');
           safeRelative(name);
           if (entry.type !== 'File' && entry.type !== 'Directory')
-            throw new Error(`Запрещённый тип: ${entry.type}`);
+            throw new Error(`Unsupported archive entry type: ${entry.type}`);
           const key = name.toLowerCase();
-          if (names.has(key)) throw new Error(`Повторный путь: ${name}`);
+          if (names.has(key)) throw new Error(`Duplicate archive path: ${name}`);
           names.add(key);
           size += entry.size;
           if (size > 64 * 1024 * 1024 || names.size > 10_000)
-            throw new Error('Архив слишком велик.');
+            throw new Error('Archive is too large.');
         } catch (error) {
           invalid = error as Error;
         }
@@ -40,7 +41,7 @@ export async function extract(bytes: Buffer, target: string, skill: Skill): Prom
     await tar.x({ cwd: target, file: archive, strict: true, preservePaths: false });
     await readFile(join(target, 'SKILL.md'));
     if ((await fingerprint(target)) !== skill.contentHash)
-      throw new Error('Содержимое скила не совпадает с каталогом.');
+      throw new Error('Skill contents do not match the catalog.');
   } finally {
     await rm(archive, { force: true });
   }

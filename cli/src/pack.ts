@@ -57,7 +57,7 @@ async function checkLinks(root: string, files: string[]): Promise<void> {
       if (rel.split('/').includes('docs')) continue;
       safeRelative(rel);
       if (!included.has(rel) && !files.some((f) => f.startsWith(`${rel}/`)))
-        throw new Error(`${file}: отсутствует рабочая ссылка ${target}`);
+        throw new Error(`${file}: missing runtime link ${target}`);
     }
     for (const match of prose.matchAll(/`([^`]+)`/g)) {
       const clause =
@@ -83,7 +83,7 @@ async function checkLinks(root: string, files: string[]): Promise<void> {
       const normalized = relative(root, resolve(base, resource)).split(sep).join('/');
       safeRelative(normalized);
       if (!included.has(normalized) && !files.some((f) => f.startsWith(`${normalized}/`)))
-        throw new Error(`${file}: отсутствует ресурс ${resource}`);
+        throw new Error(`${file}: missing resource ${resource}`);
     }
   }
 }
@@ -94,9 +94,9 @@ export async function packSkills(
   previous?: Catalog,
 ): Promise<Catalog> {
   if (!/^skills-[a-zA-Z0-9._-]+$/.test(release))
-    throw new Error('Тег должен начинаться с skills-.');
+    throw new Error('Release tag must start with skills-.');
   await mkdir(output, { recursive: true });
-  if ((await readdir(output)).length) throw new Error('Каталог выпуска должен быть пустым.');
+  if ((await readdir(output)).length) throw new Error('Release directory must be empty.');
   const skills: Skill[] = [];
   const history = new Map((previous?.versions ?? []).map((s) => [`${s.name}@${s.version}`, s]));
   for (const skill of previous?.skills ?? []) history.set(`${skill.name}@${skill.version}`, skill);
@@ -105,9 +105,9 @@ export async function packSkills(
     if (!(await lstat(folder)).isDirectory()) continue;
     const text = await readFile(join(folder, 'SKILL.md'), 'utf8');
     const match = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/.exec(text);
-    if (!match?.[1]) throw new Error(`${name}: отсутствует frontmatter.`);
+    if (!match?.[1]) throw new Error(`${name}: missing frontmatter.`);
     const meta = frontmatterSchema.parse(parse(match[1]));
-    if (meta.name !== name) throw new Error(`${name}: имя не совпадает с SKILL.md.`);
+    if (meta.name !== name) throw new Error(`${name}: name does not match SKILL.md.`);
     const files = ['SKILL.md'];
     for (const dir of ['references', 'assets', 'scripts', 'agents']) {
       const entry = join(folder, dir);
@@ -125,7 +125,7 @@ export async function packSkills(
     const contentHash = await fingerprint(folder, selected);
     const key = `${name}@${meta.metadata['source-version']}`;
     if (history.has(key) && history.get(key)?.contentHash !== contentHash)
-      throw new Error(`${key}: содержимое изменилось без повышения версии.`);
+      throw new Error(`${key}: contents changed without a version bump.`);
     const archiveName = `${name}-${meta.metadata['source-version']}.tgz`;
     await tar.c(
       {
@@ -149,7 +149,7 @@ export async function packSkills(
     skills.push(skill);
     history.set(key, { name, version: skill.version, contentHash });
   }
-  if (!skills.length) throw new Error('Скилы не найдены.');
+  if (!skills.length) throw new Error('No skills found.');
   const catalog = catalogSchema.parse({
     schemaVersion: 1,
     release,

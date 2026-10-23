@@ -14,9 +14,9 @@ export async function exists(path: string): Promise<boolean> {
 }
 export async function regularFiles(root: string, prefix = ''): Promise<string[]> {
   const info = await lstat(join(root, prefix));
-  if (info.isSymbolicLink()) throw new Error(`Символическая ссылка недопустима: ${prefix || root}`);
+  if (info.isSymbolicLink()) throw new Error(`Symbolic links are not allowed: ${prefix || root}`);
   if (info.isFile()) return [prefix];
-  if (!info.isDirectory()) throw new Error(`Необычный тип файла: ${prefix}`);
+  if (!info.isDirectory()) throw new Error(`Unsupported file type: ${prefix}`);
   const result: string[] = [];
   for (const name of (await readdir(join(root, prefix))).sort())
     result.push(...(await regularFiles(root, prefix ? `${prefix}/${name}` : name)));
@@ -49,6 +49,6 @@ export async function directory(path: string): Promise<string> {
     });
   const stat = await lstat(absolute);
   if (!stat.isDirectory() || stat.isSymbolicLink())
-    throw new Error(`Нужен каталог без символических ссылок: ${absolute}`);
+    throw new Error(`Expected a directory without symbolic links: ${absolute}`);
   return realpath(absolute);
 }
