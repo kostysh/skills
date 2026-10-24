@@ -29,6 +29,7 @@ export async function chooseInstallation(
       message: 'Select skills (Space to select, Enter to continue)',
       required: true,
       pageSize: 12,
+      loop: false,
       choices: catalog.skills.map((skill) => ({
         name: `${skill.name} (${skill.version})`,
         value: skill.name,

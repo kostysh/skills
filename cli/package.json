@@ -1,6 +1,6 @@
 {
   "name": "@kostysh/skills",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Interactive installer and updater for kostysh/skills",
   "type": "module",
   "bin": {

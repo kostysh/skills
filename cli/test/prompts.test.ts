@@ -56,3 +56,49 @@ void test('space selects checkbox, Enter advances, custom project path is resolv
   assert.deepEqual(result.names, ['example']);
   assert.match(result.path, /\.agents[/\\]skills$/);
 });
+
+void test('skills list stops at both ends across pages and preserves selections', async (t) => {
+  const skills = Array.from({ length: 15 }, (_, index) => {
+    const name = `skill-${String(index + 1).padStart(2, '0')}`;
+    return {
+      name,
+      description: `Description for ${name}`,
+      version: '1.0.0',
+      sha256: sha256(''),
+      contentHash: sha256(''),
+      url: `https://github.com/kostysh/skills/releases/download/skills-test/${name}.tgz`,
+    };
+  });
+  const { answer, events, getScreen, nextRender } = await render((_config, context) => {
+    assert.ok(context?.output);
+    Object.defineProperty(context.output, 'end', { value: () => context.output });
+    return chooseInstallation(
+      { schemaVersion: 1, release: 'skills-test', skills, versions: [] },
+      context,
+    );
+  }, {});
+  t.after(() => events.keypress({ name: 'c', ctrl: true }));
+  void answer.catch(() => undefined);
+
+  assert.match(getScreen(), /Description for skill-01/);
+  assert.doesNotMatch(getScreen(), /skill-15/);
+  events.keypress('up');
+  assert.match(getScreen(), /Description for skill-01/);
+  events.keypress('space');
+  for (let index = 0; index < skills.length + 2; index++) events.keypress('down');
+  assert.match(getScreen(), /Description for skill-15/);
+  assert.doesNotMatch(getScreen(), /skill-01/);
+  events.keypress('up');
+  assert.match(getScreen(), /Description for skill-14/);
+  events.keypress('down');
+  events.keypress('down');
+  assert.match(getScreen(), /Description for skill-15/);
+  events.keypress('space');
+  events.keypress('enter');
+  await nextRender();
+  assert.match(getScreen(), /Where should skills be installed/);
+  events.keypress('enter');
+  const result = await answer;
+  assert.deepEqual(result.names, ['skill-01', 'skill-15']);
+  assert.equal(result.target, 'codex');
+});
