@@ -18,6 +18,7 @@
 
 | Log | Related issue | Status |
 | --- | --- | --- |
+| [logs/implementation-log-20261107-1.md](logs/implementation-log-20261107-1.md) | Прямое поручение оператора | 4/4 blind cases; instruction review and [public-record re-audit](reviews/review-20261107-public-records.md) PASS |
 | [logs/implementation-log-20260425-1.md](logs/implementation-log-20260425-1.md) | [issues/issue-20260425-1.md](issues/issue-20260425-1.md) | PASS |
 | [logs/implementation-log-20260429-1.md](logs/implementation-log-20260429-1.md) | None | PASS |
 | [logs/implementation-log-20260601-1.md](logs/implementation-log-20260601-1.md) | None | PASS |
@@ -25,14 +26,15 @@
 | [logs/implementation-log-20260622-1.md](logs/implementation-log-20260622-1.md) | Direct operator request | PASS |
 | [logs/implementation-log-20260708-1.md](logs/implementation-log-20260708-1.md) | Direct operator request | PASS |
 | [logs/implementation-log-20260710-1.md](logs/implementation-log-20260710-1.md) | Direct operator request | PASS |
-| [logs/implementation-log-20260727-1.md](logs/implementation-log-20260727-1.md) | `Aequitas-ADR/app#228` | На ревью |
-| [logs/implementation-log-20260820-1.md](logs/implementation-log-20260820-1.md) | `Aequitas-ADR/app#377` | PASS |
+| [logs/implementation-log-20260727-1.md](logs/implementation-log-20260727-1.md) | Историческая работа | На ревью |
+| [logs/implementation-log-20260820-1.md](logs/implementation-log-20260820-1.md) | Историческая работа | PASS |
 | [logs/implementation-log-20260907-1.md](logs/implementation-log-20260907-1.md) | `TTE-B1`, G4 | Independent bounded PASS TTE-B1; [evidence](reviews/evidence/g4/README.md) |
 
 ## Forward Tests
 
 | Evidence | Snapshot | Status |
 | --- | --- | --- |
+| [forward-tests/20261107-async/trial-assessment.md](forward-tests/20261107-async/trial-assessment.md) | Local `0.1.11`, [hashes](forward-tests/20261107-async/snapshot.json) | 4/4 sampled blind cases PASS; [instruction review](reviews/review-20261107-async.md) and [public-record re-audit](reviews/review-20261107-public-records.md) PASS |
 | [logs/forward-tests-20260710.md](logs/forward-tests-20260710.md) | `f601c74a...0ec35df` | 13/13 sampled cases PASS |
 | [forward-tests/forward-test-evidence-20260727-1.md](forward-tests/forward-test-evidence-20260727-1.md) | initial candidate `0.1.8` | Blind FAIL after independent review |
 | [forward-tests/forward-test-evidence-20260727-2.md](forward-tests/forward-test-evidence-20260727-2.md) | uncommitted P1 remediation candidate | Output PASS; snapshot identity incomplete |

@@ -374,6 +374,10 @@ If no coverage command or closure gate exists, do not invent one. Report that co
 
 ## Anti-Pattern 8: Never-Resolving Promises in Tests
 
+Use the shared [async lifecycle rules](testing.md#async-completion-time-concurrency-and-cleanup)
+for cancellation, joining participants, independent deadlines, and failure-safe
+cleanup. Resolving the deferred is not necessarily completion of its consumers.
+
 **The violation:**
 ```typescript
 // X BAD: Promise never settles, test leaves pending async work
@@ -385,7 +389,7 @@ apiMock.getCurrent.mockImplementation(() => new Promise(() => undefined));
 - Can stall coverage runs or produce late flaky failures
 - Hides real UI lifecycle behavior
 
-**The fix:**
+**The fix (body excerpt; register teardown before the action so failure also settles the deferred and awaits its consumers):**
 ```typescript
 // OK GOOD: controlled deferred promise
 const deferred = createDeferred<TermsResponse>();
@@ -419,7 +423,7 @@ await waitFor(async () => {
 ```
 
 **Why this is wrong:**
-- Testing Library supports promise-returning callbacks, but a rejected promise causes a retry after it settles.
+- Testing Library supports promise-returning callbacks; see the [shared completion rules](testing.md#completion-and-causal-order) for pending, rejection, and timeout semantics.
 - A side effect inside the callback may therefore execute multiple times and hide idempotency or race defects.
 - Mixing the action and assertion obscures which operation is allowed to repeat.
 
@@ -433,7 +437,9 @@ await waitFor(async () => {
 });
 ```
 
-Prefer a synchronous observable assertion when one exists. Use an async callback when the observation itself is asynchronous, ensure it rejects until the condition is satisfied, and keep retryable callbacks free of mutations or other repeated side effects.
+Prefer a synchronous observable assertion when one exists. An async read-only
+observation remains valid; follow the shared completion rules instead of banning
+async callbacks or repeating the command to obtain a passing read.
 
 ## Anti-Pattern 10: Acting Before UI Is Ready
 

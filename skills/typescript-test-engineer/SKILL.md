@@ -6,9 +6,9 @@ description: Design, implement, review, and diagnose TypeScript tests for Node,
   evidence quality; keep review and diagnosis read-only unless fixes are
   requested.
 metadata:
-  source-version: 0.1.10
+  source-version: 0.1.11
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: def38e5e9ac0fc80e17f7ca866db0ecaef5190fd782d8aa0d6b9cd5f00752d06
+  skillforge-source-hash: 9e564071d9410154d920f72d80c207c8b8747ed5b3fa9ec7942af34c75b4d6b6
 ---
 
 # typescript-test-engineer
@@ -19,7 +19,7 @@ metadata:
 2. Resolve expected behavior from explicit user decisions, accepted specifications or acceptance criteria, and repository contracts; treat current implementation and existing tests as evidence, not authority when sources conflict.
 3. Follow the repository test runner and existing conventions before applying defaults.
 4. For React mutation UI that crosses child or portal remount, entity, route, or access context, read the React reference and require its identity matrix plus one combined lifetime falsifier instead of isolated happy paths.
-5. Keep tests deterministic, behavior-focused, isolated from real network calls, and warning-clean.
+5. Keep tests deterministic, behavior-focused, isolated from uncontrolled network calls, and warning-clean; retain each real boundary whose invariant is under test.
 6. Use the smallest check that proves the behavior, but do not replace high-risk boundary verification with a tiny self-check.
 7. If expected behavior remains missing or contradictory after repository inspection, stop with a blocked or limited result instead of inventing assertions.
 8. Report mode-specific outputs, exact validation evidence, and any unverified production boundary before claiming completion.
@@ -65,7 +65,7 @@ This skill does not define framework, platform, security, money, persistence, or
 - Fixtures must preserve relevant production invariants rather than invent convenient roles, sessions, tenants, profiles, readiness, or status combinations.
 - In-memory stores and mocks can prove API flow but cannot prove persistence, RLS, RPC, provider authorization, service-role safety, or other unexercised boundaries.
 - For state-changing doubles, use a shared contract suite when the double reimplements production state transitions or authorization behavior.
-- For event-driven tests, subscribe or create the listener promise before triggering the action that may emit the event.
+- Async, time-sensitive, and concurrent tests require explicit completion, control of the relevant time and causal order, and failure-safe cleanup; elapsed time alone is not readiness evidence.
 - For hanging tests in diagnose mode, isolate the repro, inspect handles, identify the cause and evidence limits, and recommend remediation without editing. Only when fixes are explicitly authorized may implementation repair teardown where the resource is created, stress-rerun the isolated case, and run the full relevant suite.
 
 ## Test-evidence selection
@@ -107,7 +107,7 @@ Add repeated shuffle, soak, or nightly stability contours only when the reposito
 - Fix warnings introduced by the current change. For pre-existing or upstream-blocked warnings, record the exact warning, ownership, blocker, and next evidence instead of silently broadening the mutation scope.
 - Use the repository coverage command when it exists. Coverage is a signal about exercised code, not proof of assertion quality or real-boundary behavior.
 - When normal tests pass but coverage fails, diagnose by rerunning the exact coverage command, comparing flags and environment, and isolating under instrumentation. Recommend the root-cause fix without editing; only an explicitly authorized implementation may apply it before changing thresholds or timeouts.
-- When timeout changes are explicitly authorized and justified, centralize integration timeouts in runner configuration or repository scripts; never use increases to hide unresolved async work, open handles, or long polling.
+- After diagnosis, when timeout changes are explicitly authorized and justified by the environment, centralize integration timeouts in runner configuration or repository scripts; never use increases or retries to hide a race, unresolved async work, open handles, or long polling.
 
 ## TDD opt-in
 
@@ -115,7 +115,7 @@ Use TDD only when the user explicitly requests it. Then read `references/tdd.md`
 
 ## Conditional references
 
-- `references/testing.md` — read the relevant section for Node, edge, integration, E2E, databases, coverage, events, mocks, or hanging tests.
+- `references/testing.md` — read the relevant section for Node, edge, integration, E2E, databases, coverage, or mocks. Read **Async completion, time, concurrency, and cleanup** for any async, time, concurrency, polling, or cleanup decision, including diagnosis.
 - `references/testing-anti-patterns.md` — read when writing or reviewing mocks, fixtures, test doubles, or test utilities.
 - `references/react-vitest.md` — read for React, Vitest, Testing Library, DOM environments, Browser Mode, and async UI tests.
 - `references/tdd.md` — read only after explicit TDD opt-in.
@@ -231,11 +231,13 @@ For API validation, form validation, loading indicators, route naming migration,
 ### Mutation UI lifetime falsifier
 For React mutations whose status or verification can outlive a child, portal, route, entity, or access context, require a sourced lifetime matrix and one applicable combined pre-populated-cache, remount, reread-failure, context-switch, timer, late-response, and teardown scenario.
 
+## Required active references
+- [Testing](references/testing.md) — Read the relevant section for Node, edge, integration, E2E, database, coverage, or hanging-test work; read Async completion, time, concurrency, and cleanup for any async, time, concurrency, polling, or cleanup decision.
+
 ## Optional references
 - [React Vitest](references/react-vitest.md) — Read this for React tests using Vitest, Testing Library, jsdom, happy-dom, or Browser Mode.
 - [Tdd](references/tdd.md) — Read this only when the user explicitly requests TDD.
 - [Testing Anti Patterns](references/testing-anti-patterns.md) — Read this when writing or reviewing mocks, fixtures, test doubles, or test utilities.
-- [Testing](references/testing.md) — Read only the relevant section for Node, edge, integration, E2E, database, coverage, event, or hanging-test work.
 
 ## Portability rules
 

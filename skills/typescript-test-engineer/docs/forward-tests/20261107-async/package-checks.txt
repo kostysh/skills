@@ -1,0 +1,157 @@
+PUBLIC EVIDENCE EXPORT: machine-local paths normalized to portable aliases; command semantics, hashes, results and truncation limits retained.
+
+COMMAND: node <repository>/skills/skill-source-compiler/scripts/skill-source-compiler.mjs compile <repository>/skills/typescript-test-engineer --out-dir <package-output>
+Compiled <repository>/skills/typescript-test-engineer -> <package-output>/typescript-test-engineer
+EXIT: 0
+
+COMMAND: node <repository>/skills/skill-source-compiler/scripts/skill-source-compiler.mjs check <package-output>/typescript-test-engineer
+OK <package-output>/typescript-test-engineer
+EXIT: 0
+
+COMMAND: node --test test/docs-contract.test.mjs
+✔ skill separates design, implementation, review, and diagnose mutation boundaries (11.537208ms)
+✔ hanging-test guidance preserves diagnose-only read-only behavior across references (3.37935ms)
+✔ skill defines behavior authority and blocked readiness instead of implementation-as-oracle (0.897718ms)
+✔ skill publishes decision-complete outputs for every mode (1.129386ms)
+✔ references are conditional and browser handoff is not a mandatory local wrapper (1.23188ms)
+✔ TDD is explicit opt-in and does not authorize destructive history recreation (0.826433ms)
+✔ interop assigns formal review, remediation, browser smoke, and domain authority (0.804021ms)
+✔ Node and Cloudflare defaults follow current supported paths (0.826303ms)
+✔ Node module mocking follows pinned runtime API and deterministic cleanup (1.016112ms)
+✔ React guidance distinguishes supported async waitFor and browser evidence levels (1.413072ms)
+✔ React global fetch example restores the stub between tests (0.774515ms)
+✔ React mutation guidance requires the combined lifetime falsifier (1.654759ms)
+✔ UI metadata matches the activation contract (1.140377ms)
+✔ structural checks cannot close a broader behavioral claim (1.014018ms)
+✔ conditional references do not invent an unsourced coverage closure gate (1.485279ms)
+✔ replay and rate-limit tests must prove the named risk (1.814512ms)
+✔ state-changing work uses the negative matrix with explicit relevance (0.866068ms)
+✔ skill requires negative fail-closed tests for sourced forbidden behavior (0.956799ms)
+✔ anti-patterns require contract suites for production state-changing doubles (0.752472ms)
+✔ fixtures declare provenance and cannot prove skipped upstream behavior (0.891967ms)
+✔ React async guidance cleans owned state and supports cache-hit without a request (0.647626ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 88.788927
+EXIT: 0
+
+PARITY: 14 instruction, metadata, test and eval files are byte-identical in the independent package. All four references and all five eval inputs are present.
+LOCAL LINKS: all Markdown links/anchors in emitted root and references resolve.
+SNAPSHOT: 18 files; sha256 80289a1c105eaf6da157fd235494877a771eb03bab93de5ded843089fbee1ad7. Independent review and agent trials have not run.
+Temporary emitted package removed after checks.
+
+FINAL CANDIDATE: source readback corrected the root blanket network isolation rule after the first package check. Recheck changed generated surface and update snapshot.
+COMMAND: node <repository>/skills/skill-source-compiler/scripts/skill-source-compiler.mjs compile <repository>/skills/typescript-test-engineer --out-dir <package-output>
+Compiled <repository>/skills/typescript-test-engineer -> <package-output>/typescript-test-engineer
+EXIT: 0
+
+COMMAND: node <repository>/skills/skill-source-compiler/scripts/skill-source-compiler.mjs check <package-output>/typescript-test-engineer
+OK <package-output>/typescript-test-engineer
+EXIT: 0
+
+COMMAND: node --test test/docs-contract.test.mjs
+✔ skill separates design, implementation, review, and diagnose mutation boundaries (7.662339ms)
+✔ hanging-test guidance preserves diagnose-only read-only behavior across references (2.182517ms)
+✔ skill defines behavior authority and blocked readiness instead of implementation-as-oracle (0.769084ms)
+✔ skill publishes decision-complete outputs for every mode (4.009833ms)
+✔ references are conditional and browser handoff is not a mandatory local wrapper (1.292644ms)
+✔ TDD is explicit opt-in and does not authorize destructive history recreation (0.951359ms)
+✔ interop assigns formal review, remediation, browser smoke, and domain authority (0.782068ms)
+✔ Node and Cloudflare defaults follow current supported paths (0.822265ms)
+✔ Node module mocking follows pinned runtime API and deterministic cleanup (1.211502ms)
+✔ React guidance distinguishes supported async waitFor and browser evidence levels (1.260774ms)
+✔ React global fetch example restores the stub between tests (0.685756ms)
+✔ React mutation guidance requires the combined lifetime falsifier (1.323112ms)
+✔ UI metadata matches the activation contract (1.097255ms)
+✔ structural checks cannot close a broader behavioral claim (0.666701ms)
+✔ conditional references do not invent an unsourced coverage closure gate (1.322ms)
+✔ replay and rate-limit tests must prove the named risk (1.793351ms)
+✔ state-changing work uses the negative matrix with explicit relevance (1.259182ms)
+✔ skill requires negative fail-closed tests for sourced forbidden behavior (1.145407ms)
+✔ anti-patterns require contract suites for production state-changing doubles (0.971908ms)
+✔ fixtures declare provenance and cannot prove skipped upstream behavior (0.868502ms)
+✔ React async guidance cleans owned state and supports cache-hit without a request (1.195451ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 92.676618
+EXIT: 0
+
+FINAL PARITY: 14 instruction/metadata/test/eval files byte-identical.
+FINAL SNAPSHOT: 18 files; sha256 4542d7a277d7a2c335643470c033cd01229912b4ebf760f17c57ada4cd2a2c41.
+Temporary emitted package removed. No independent review/trial was run.
+
+PUBLIC-RECORD DELTA CHECK: supporting evidence only; instruction snapshot unchanged.
+COMMAND: node <repository>/skills/skill-source-compiler/scripts/skill-source-compiler.mjs lint <repository>/skills/typescript-test-engineer
+OK <repository>/skills/typescript-test-engineer
+EXIT: 0
+COMMAND: node <repository>/skills/skill-source-compiler/scripts/skill-source-compiler.mjs check <repository>/skills/typescript-test-engineer
+OK <repository>/skills/typescript-test-engineer
+EXIT: 0
+COMMAND: node <repository>/skills/skill-source-compiler/scripts/skill-source-compiler.mjs compile <repository>/skills/typescript-test-engineer --out-dir <package-output>
+Compiled <repository>/skills/typescript-test-engineer -> <package-output>/typescript-test-engineer
+EXIT: 0
+COMMAND: node <repository>/skills/skill-source-compiler/scripts/skill-source-compiler.mjs check <package-output>/typescript-test-engineer
+OK <package-output>/typescript-test-engineer
+EXIT: 0
+TARGETED CONTENT CHECK: remediated source provenance was not found in the emitted copy; current-task records contain no machine paths/session identifiers. This does not audit unrelated historical records copied by the compiler.
+Temporary package removed. Checks are structural/content checks, not a behavioral verdict.
+
+FINAL METADATA DELTA CHECK: supporting descriptions and generated source-hash only; original instruction body retained.
+COMMAND: node <repository>/skills/skill-source-compiler/scripts/skill-source-compiler.mjs lint <repository>/skills/typescript-test-engineer
+OK <repository>/skills/typescript-test-engineer
+EXIT: 0
+COMMAND: node <repository>/skills/skill-source-compiler/scripts/skill-source-compiler.mjs check <repository>/skills/typescript-test-engineer
+OK <repository>/skills/typescript-test-engineer
+EXIT: 0
+COMMAND: pnpm --filter @kostysh/typescript-test-engineer test (temporary tool-cache aliases)
+
+> @kostysh/typescript-test-engineer@0.1.0 test <repository>/skills/typescript-test-engineer
+> node --test test/docs-contract.test.mjs
+
+✔ skill separates design, implementation, review, and diagnose mutation boundaries (6.059177ms)
+✔ hanging-test guidance preserves diagnose-only read-only behavior across references (1.966415ms)
+✔ skill defines behavior authority and blocked readiness instead of implementation-as-oracle (0.533849ms)
+✔ skill publishes decision-complete outputs for every mode (0.652223ms)
+✔ references are conditional and browser handoff is not a mandatory local wrapper (0.954433ms)
+✔ TDD is explicit opt-in and does not authorize destructive history recreation (0.77788ms)
+✔ interop assigns formal review, remediation, browser smoke, and domain authority (0.594453ms)
+✔ Node and Cloudflare defaults follow current supported paths (0.608229ms)
+✔ Node module mocking follows pinned runtime API and deterministic cleanup (2.677177ms)
+✔ React guidance distinguishes supported async waitFor and browser evidence levels (2.710481ms)
+✔ React global fetch example restores the stub between tests (0.962469ms)
+✔ React mutation guidance requires the combined lifetime falsifier (1.176593ms)
+✔ UI metadata matches the activation contract (1.437335ms)
+✔ structural checks cannot close a broader behavioral claim (1.131478ms)
+✔ conditional references do not invent an unsourced coverage closure gate (1.43971ms)
+✔ replay and rate-limit tests must prove the named risk (1.091181ms)
+✔ state-changing work uses the negative matrix with explicit relevance (1.124224ms)
+✔ skill requires negative fail-closed tests for sourced forbidden behavior (0.90527ms)
+✔ anti-patterns require contract suites for production state-changing doubles (0.66717ms)
+✔ fixtures declare provenance and cannot prove skipped upstream behavior (0.644427ms)
+✔ React async guidance cleans owned state and supports cache-hit without a request (0.425333ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 72.674915
+EXIT: 0
+COMMAND: node <repository>/skills/skill-source-compiler/scripts/skill-source-compiler.mjs compile <repository>/skills/typescript-test-engineer --out-dir <package-output>
+Compiled <repository>/skills/typescript-test-engineer -> <package-output>/typescript-test-engineer
+EXIT: 0
+COMMAND: node <repository>/skills/skill-source-compiler/scripts/skill-source-compiler.mjs check <package-output>/typescript-test-engineer
+OK <package-output>/typescript-test-engineer
+EXIT: 0
+Generated root parity confirmed; temporary package removed. These are structural/package checks; public-record re-audit remains separate.

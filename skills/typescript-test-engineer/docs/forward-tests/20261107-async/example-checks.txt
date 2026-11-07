@@ -1,0 +1,50 @@
+PUBLIC EVIDENCE EXPORT: machine-local paths normalized to portable aliases; command semantics, hashes, results and truncation limits retained.
+
+Author-run examples; not behavioral agent trials. Node v24.21.0.
+events: sha256=273085721206b5d19154c44ccc9ced53c9885ba01e6deca808a4bdc8f258d701 (exact fenced block)
+server: sha256=161eb016624c4cff46e4a76e1542b1548cdbdc6c2d091a536cd8aaf391647829 (exact fenced block)
+
+COMMAND: node --unhandled-rejections=strict --test --test-timeout=5000 <events.test.ts> <server.test.ts>
+✔ settles event waits when failStart=false (1.561313ms)
+✔ settles event waits when failStart=true (0.488124ms)
+✔ serves requests without leaking handles (24.488118ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 134.312124
+EXIT: 0
+
+NEGATIVE: replace the response assertion with assert.fail("intentional assertion failure after response").
+COMMAND: node --unhandled-rejections=strict --test --test-timeout=5000 <server-negative.test.ts>
+✖ serves requests without leaking handles (24.95436ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 132.790316
+
+✖ failing tests:
+
+test at <example-workspace>/server-negative.test.ts:6:1
+✖ serves requests without leaking handles (24.95436ms)
+  AssertionError [ERR_ASSERTION]: intentional assertion failure after response
+      at TestContext.<anonymous> (<example-workspace>/server-negative.test.ts:25:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'fail',
+    diff: 'simple'
+  }
+EXIT: 1 (expected 1)
+ASSESSMENT: 3 positive tests passed; startup rejection settled both event waits with no listeners; intentional server assertion failure exited with code 1 before either deadline. This checks local examples, not external DB/timer-runner behavior or agent decisions. Temporary extraction files removed.

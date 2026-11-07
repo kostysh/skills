@@ -2,6 +2,12 @@
 
 **Mode boundary:** Any instruction here to edit, install, patch, tune configuration, or change policy is executable only in explicitly authorized implementation/fix mode. In design, review, or diagnose mode, keep repository files and external state unchanged and report the step as a plan or recommendation; safe diagnostic commands may still run within the user's stated boundary.
 
+## Navigation
+
+- [Async completion, time, concurrency, and cleanup](#async-completion-time-concurrency-and-cleanup): required for async/time/concurrency decisions, including polling and diagnosis.
+- Runner, integration, E2E, databases, and mocking: use the relevant sections for the exercised boundary and pinned runtime.
+- Hanging tests and coverage runbooks: diagnose the cause before proposing timeout or runner changes.
+
 ## Structure
 - Unit: `test/unit/*.test.ts` (or your repo's equivalent)
 - Integration: `test/integration/*.test.ts` (or your repo's equivalent)
@@ -146,18 +152,18 @@ Notes:
 ## Patterns
 - Unit tests: pure helpers (env parsing, redaction, small utilities).
 - Unit tests for error-mapping helpers are mandatory when logic branches on status/problem codes (do not rely only on integration tests for these paths).
-- Integration: use a local app factory or HTTP harness with mocked config/env and in-memory deps.
+- Integration: for API flow, use a local app factory or HTTP harness with test config and isolated deps; retain the real boundary when its invariant is the claim.
 - Edge runtime tests: use the repository harness. For Cloudflare Workers without one, prefer the current Workers Vitest integration for local runtime unit and integration tests.
 - Formal E2E: use the repository-defined deployed or black-box harness; do not relabel a local runtime integration test as deployed E2E.
 
 ## Integration test specifics
-- Scope: HTTP pipeline + middleware + routing + error mapping, without real network calls.
+- Scope: HTTP pipeline + middleware + routing + error mapping, without uncontrolled network calls. When the claim is a database, locking, security, or provider invariant, retain that real boundary in a dedicated test environment; a stub cannot establish it.
 - Use a local app factory or server harness and provide explicit test env/config; avoid globals.
-- Stub external IO via DI or module mocks; never hit real third-party services.
+- Stub unrelated external IO via DI or module mocks; use authorized test instances/sandboxes for an external boundary under test.
 - If the project uses a standard error contract (Problem Details or similar), assert key fields (status, type, title, requestId).
 - Keep data setup minimal and local; reset in-memory state between tests.
 - Assume tests run in parallel; avoid shared global state and order dependencies.
-- Prefer deterministic inputs (freeze time, seed RNG, and stabilize IDs when needed).
+- Prefer deterministic inputs (control the relevant time source as below, seed RNG, and stabilize IDs when needed).
 - For larger synthetic data sets, prefer `@faker-js/faker` over hand-rolled random object generation, and seed it when reproducibility matters.
 
 ## E2E test specifics
@@ -247,64 +253,169 @@ describe("GET /v1/profile", () => {
 ## Result interpretation
 - A failing test should point to the observable behavior that regressed. If the name is unclear, rename it.
 - Assertion errors: read the expected vs actual diff first; fix the behavior or the assertion, not both.
-- Timeouts/hangs: reduce shared global state, avoid real timers/IO, and tune runner-level timeout settings first (Vitest config or `node --test --test-timeout=...`); use per-test timeout overrides only as rare exceptions with rationale.
+- Timeouts/hangs: first inspect missed completion signals, subscription order, lock/barrier cycles, frozen deadlines, shared state, and leaked resources. Preserve timers/IO that own the tested invariant. Only after diagnosis may an authorized environment-based adjustment centralize runner-level timeouts; a larger timeout or retry does not fix a race or leak. Use per-test overrides only as rare exceptions with rationale.
 - Skips/TODOs: use sparingly; always leave a short reason in the test name or comment.
 
-## Event timing operational check
+## Async completion, time, concurrency, and cleanup
 
-Apply this check whenever a test waits on events from:
-- `EventEmitter`
-- streams
-- child processes
-- WebSocket/message APIs
-- any helper built on `once()`, `on()`, or listener callbacks
+Read this section before choosing or assessing an async/time/concurrency technique.
+Its goal is control of the significant conditions of a scenario, not control of
+every OS schedule. The mode boundary above still applies: a recommended fix
+does not authorize editing code, the runner, timeouts, or the tested contract.
 
-Core rule:
-- create the listener or `once(...)` promise **before** the act step that may emit the event.
+### Completion and causal order
 
-Why this matters:
-- events can fire synchronously or earlier than the test expects;
-- if the listener is attached after the emission, the event is lost;
-- the test may then hang or fail intermittently.
+- Await or return the Promises for work and assertions on which the test depends,
+  including setup, hooks, async matchers, and teardown. A fire-and-forget assertion
+  can run after the test has already passed.
+- For events from emitters, streams, child processes, or message APIs, create
+  listener Promises **before** the action that can emit. Register all relevant
+  waits before the first await when multiple events can arrive in one turn.
+  If emission happens during construction, inspect existing subscription seams;
+  do not invent a production test hook without authority.
+- Do not infer readiness from arbitrary `sleep`, a fixed number of event-loop
+  turns, or a longer pause. `flushPromises` may settle known local Promise work;
+  it does not prove completion of external I/O. A blind retry is not a fix.
+- Prefer an existing condition-aware wait. If no direct completion signal exists,
+  bounded polling of a side-effect-free observation is valid. Execute the command
+  once outside the retried callback. For Testing Library `waitFor`, a throw or
+  rejection requests another attempt; returning `false` does not. An async
+  callback is supported: it is not called again while its Promise is pending,
+  and is retried only after rejection, within the wait's timeout. Await the wait
+  itself and keep a functioning outer deadline if a read can stay pending.
 
-Correct pattern:
+This standalone Node example covers synchronous events and cancellation of
+waits when startup throws. The failure case is intentional; it proves listener
+cleanup, not an application or external-process guarantee. Use APIs supported by
+the target's pinned Node version.
 
 ```ts
+import assert from "node:assert/strict";
 import { EventEmitter, once } from "node:events";
 import { it } from "node:test";
-import assert from "node:assert/strict";
 
-it("waits for ready before asserting", async () => {
-  const emitter = new EventEmitter();
-
-  const readyPromise = once(emitter, "ready");
-
-  startWorkThatEventuallyEmitsReady(emitter);
-
-  const [payload] = await readyPromise;
-  assert.equal(payload.status, "ok");
-});
+for (const failStart of [false, true]) {
+  it(`settles event waits when failStart=${failStart}`, async () => {
+    const emitter = new EventEmitter();
+    const controller = new AbortController();
+    const ready = once(emitter, "ready", { signal: controller.signal });
+    const finished = once(emitter, "finished", { signal: controller.signal });
+    // Attach rejection handlers before startup or cancellation can fail.
+    const settled = Promise.allSettled([ready, finished]);
+    try {
+      if (failStart) throw new Error("startup failed");
+      emitter.emit("ready", { status: "ok" });
+      emitter.emit("finished");
+      const [payload] = await ready;
+      await finished;
+      assert.equal(payload.status, "ok");
+    } catch (error) {
+      if (!failStart) throw error;
+      assert.match(String(error), /startup failed/);
+    } finally {
+      controller.abort();
+      const outcomes = await settled;
+      assert.deepEqual(outcomes.map(r => r.status),
+        failStart ? ["rejected", "rejected"] : ["fulfilled", "fulfilled"]);
+      assert.equal(emitter.listenerCount("ready"), 0);
+      assert.equal(emitter.listenerCount("finished"), 0);
+      assert.equal(emitter.listenerCount("error"), 0);
+    }
+  });
+}
 ```
 
-Broken pattern:
+### Choose the time source
 
-```ts
-import { EventEmitter, once } from "node:events";
+Distinguish these sources before mocking:
 
-it("races the event emission", async () => {
-  const emitter = new EventEmitter();
+| Source | What to control or preserve |
+| --- | --- |
+| Business clock | Use the existing test seam or narrowly mock the date API actually consumed by the decision. |
+| Execution timers | Control timers when retry, debounce, timeout, or scheduling behavior is the subject. Keep driver and network timers real by default. |
+| Database/external-process clock | JavaScript date mocks do not control PostgreSQL `clock_timestamp()` or another process. Exercise that real source when its behavior is claimed, or explicitly leave the guarantee unproven. |
 
-  startWorkThatEventuallyEmitsReady(emitter);
+Use one coherent reference time for fixtures, the operation, and timestamp-bearing
+identifiers where their relationship matters. Preserve before/at/after boundary
+assertions according to the contract, including equality semantics. Advance the
+relevant source or supply boundary data; do not wait out a real TTL or enlarge a
+fixture's validity margin to postpone aging. When the clock itself is the tested
+external boundary, keep it real and test the contract through that source; a
+stubbed application-clock result cannot close the external-clock claim.
 
-  const [payload] = await once(emitter, "ready");
-});
-```
+Mock the minimum source needed. Do not freeze the whole timer system for a date
+comparison, impose a universal Clock API, or add a library/production hook just
+for test convenience. Check runner APIs against the installed version before
+using them. For retry/debounce with Promise work in timer callbacks, use supported
+asynchronous advancement (for example, await Vitest `vi.advanceTimersByTimeAsync`)
+and await the resulting observable completion. Setting system time is not timer
+advancement; ticking synchronously is not proof that async effects finished.
 
-Operational checklist:
-1. Put the event subscription in Arrange, not after the action.
-2. If the event may fire during constructor/setup code, expose a seam that lets the test subscribe first.
-3. Do not paper over ordering bugs with `setTimeout(...)` sleeps.
-4. When a hang appears around `once(...)`, inspect subscription order before increasing timeouts.
+### Select reachable concurrent phases
+
+`Promise.all` awaits results but does not establish a significant overlap. If the
+claim depends on a race, name the relevant phases and use an existing event,
+controlled deferred, or local barrier to reach them. Select important orders by
+risk; exhaustive permutations are not required.
+
+For atomicity or serialization claims, keep real independent operations and
+transactions, separate database connections, and the actual guard/row lock.
+A mock that serializes requests for the system cannot prove its protection.
+Check the wait graph before using a barrier: every participant must be able to
+arrive without a resource held by a waiting participant. If A holds the row lock
+while waiting for B at a barrier, and B needs that lock to arrive, the test has
+created a cycle. Move synchronization to a reachable phase, such as before lock
+acquisition, while keeping the real guard. If the existing boundary cannot expose
+the needed phase, report that evidence limit rather than adding sleep or silently
+serializing the test.
+
+Example scenario, not a universal harness: both independent requests reach a
+pre-lock phase; release them to compete for the last resource; await their public
+outcomes and read authoritative final state. Assert the contract's success and
+conflict counts and stored remaining count. Allow either permitted winner unless
+identity is a contract condition. Report which phase/order was controlled: one
+schedule does not cover all races.
+
+### Bound waiting and clean up on every exit
+
+Use the runner deadline or a suitable existing bounded helper with useful phase
+or participant diagnostics. It must still expire under business-clock mocking;
+do not use a frozen timer or `Date.now()` loop as the only watchdog. A new timeout
+wrapper around every await is unnecessary. A timeout reports missing completion,
+not readiness, and does not itself stop work.
+
+Register owned cleanup before fallible actions, using hooks or `try/finally`.
+Handle participant rejections promptly. On success, failure, or cancellation,
+release barriers and request cancellation through supported APIs, including
+resource closure if that is how the resource stops work. Await all started work
+and finish disposing its clients, servers, connections, or processes in the
+resource's supported lifecycle order.
+`Promise.all` with early rejection and `Promise.race` do not cancel other
+participants; `Promise.allSettled` observes them but cannot unblock a deferred.
+Settle or cancel every owned deferred and listener wait so it can terminate;
+do not leave hidden unhandled rejections. Restore clocks, mocks, listeners and
+globals even if assertions fail. Keep shared clock/global replacements away from
+parallel tests, using scoped injection or the runner's isolation/serial policy.
+If work cannot be cancelled or joined, retain the independent deadline and
+report the cleanup limitation instead of claiming a clean exit.
+
+For UI-specific DOM/cache disposal use [React Vitest](react-vitest.md#async-stability-checklist).
+For mock-specific examples see [Testing Anti-Patterns](testing-anti-patterns.md#anti-pattern-8-never-resolving-promises-in-tests).
+
+### API provenance and compatibility
+
+The method above is local and usable without network access. These primary
+sources explain patterns or APIs; verify compatibility with the target's pinned
+version when selecting a concrete API. If matching evidence is unavailable,
+retain the local method and state the unverified API limit rather than migrating
+the runner or inventing compatibility.
+
+- [Fowler: asynchronous behavior, time, resource leaks](https://martinfowler.com/articles/nonDeterminism.html).
+- [Playwright: waitForTimeout](https://playwright.dev/docs/api/class-page#page-wait-for-timeout).
+- [Node 24.21.0: awaiting multiple events](https://nodejs.org/download/release/v24.21.0/docs/api/events.html#caveats-when-awaiting-multiple-events).
+- [Vitest dates](https://vitest.dev/guide/mocking/dates), [timers](https://vitest.dev/guide/mocking/timers), [async advancement](https://vitest.dev/api/vi.html#vi-advancetimersbytimeasync).
+- [Testing Library: waitFor](https://testing-library.com/docs/dom-testing-library/api-async/#waitfor).
+- [PostgreSQL: concurrent isolation tests and blocking steps](https://raw.githubusercontent.com/postgres/postgres/master/src/test/isolation/README).
 
 ## CI lint/format policy
 
@@ -431,20 +542,31 @@ Close the resource in the same scope that created it.
 Good:
 
 ```ts
+import assert from "node:assert/strict";
 import { once } from "node:events";
+import { createServer } from "node:http";
 import { it } from "node:test";
 
 it("serves requests without leaking handles", async (t) => {
-  const server = await startServer({ port: 0 });
+  const server = createServer((_req, res) => res.end("ok"));
   const id = setInterval(() => {}, 1000);
 
   t.after(async () => {
     clearInterval(id);
-    server.close();
-    await once(server, "close");
+    if (server.listening) {
+      await new Promise<void>((resolve, reject) => {
+        server.close(error => error ? reject(error) : resolve());
+      });
+    }
   });
 
-  // test body
+  const listening = once(server, "listening");
+  server.listen(0, "127.0.0.1");
+  await listening;
+  const address = server.address();
+  assert.ok(address && typeof address !== "string");
+  const response = await fetch(`http://127.0.0.1:${address.port}`);
+  assert.equal(await response.text(), "ok");
 });
 ```
 
@@ -471,6 +593,7 @@ If tests touch a database, design the tests so they leave no residue.
 
 - Prefer a dedicated test database per run (or per worker) with a clean schema.
 - Use transactions in `beforeEach` and roll back in `afterEach` when supported.
+- For concurrency/serialization tests, keep independent participant connections and transactions; a shared outer rollback must not collapse or serialize the race. Follow the async section's reachable-phase and cleanup rules.
 - If transactions are not possible, truncate or delete test rows by a per-test marker.
 - Avoid sharing state across tests; make each test independent and order-agnostic.
 - If using migrations/fixtures, keep them minimal and deterministic.
@@ -481,7 +604,7 @@ Use the built-in `node:test` mocking APIs instead of ad-hoc stubs.
 - Mocking guidance from Node.js:
   - **Own code**: mock in unit tests to isolate the unit; consider keeping real in integration tests to increase coverage.
   - **External code (npm deps)**: mock in unit tests; in integration tests, mock if heavy/fragile.
-  - **External systems (DBs, HTTP APIs)**: mock for unit/integration to avoid flakiness; avoid mocking in E2E.
+  - **External systems (DBs, HTTP APIs)**: mock unrelated boundaries in unit/integration tests; keep a real dedicated test boundary when its persistence, clock, authorization, atomicity, or serialization is the claim. Avoid mocking the claimed boundary in E2E.
 
 - `mock.fn()` creates spies/mocks for functions and provides call history.
 - `mock.module()` replaces ESM/CJS/JSON/builtin modules.

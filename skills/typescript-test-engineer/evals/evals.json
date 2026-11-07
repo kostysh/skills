@@ -13,6 +13,59 @@
         "Asserts that A data and status cannot leak or repopulate B, an older completion cannot settle a newer attempt, and reread failure remains visible and recoverable",
         "Settles deferred work, restores timers and globals, and names the evidence boundary instead of claiming backend or browser coverage"
       ]
+    },
+    {
+      "id": 2,
+      "prompt": "Use the supplied environment notes to design the smallest sufficient local correction. Do not edit files.",
+      "expected_output": "A causal event subscription and coherent controlled application time preserve TTL boundaries and distinguish the real PostgreSQL clock.",
+      "files": ["evals/fixtures/environment-input.md"],
+      "expectations": [
+        "Registers both event promises before start and awaits work/assertions without sleep, event-loop counts, or flushPromises as external completion",
+        "Aligns fixture, operation and timestamp ID time without extending validity; retains before, at and after expiry assertions from the supplied contract",
+        "Mocks only the necessary application clock; does not freeze driver/network timers or invent a universal Clock API",
+        "States that Date.now mocking does not control clock_timestamp and retains a real DB-source check or explicitly limits that guarantee",
+        "Bounds waiting, removes listeners and settles outstanding waits on failure; respects design-only authority"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Review the supplied reservation test designs and recommend the smallest sufficient scenario. Do not edit files.",
+      "expected_output": "A reachable phased race keeps real independent transactions and the row lock, accepts either valid winner, and checks public results plus final state.",
+      "files": ["evals/fixtures/reservation-input.md"],
+      "expectations": [
+        "Explains that Promise.all awaits results without establishing the required overlap",
+        "Identifies the lock-holder/barrier/waiting-second cycle and chooses phases reachable before lock acquisition without a pause",
+        "Preserves real separate transactions and the tested protection rather than a serializing mock or production test hook",
+        "Checks exactly one success, the contract conflict, and the authoritative remaining count; does not require a named winner",
+        "Selects material orderings by risk, limits the coverage claim, and releases/cancels/awaits participants on failure"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Use the supplied timer and observation notes to design sufficient changes. Do not edit files.",
+      "expected_output": "Async timer advancement and explicit completion are used for the local debounce, while bounded async read-only polling remains valid for the worker.",
+      "files": ["evals/fixtures/observation-input.md"],
+      "expectations": [
+        "Uses the supplied supported async timer-advance API and awaits the completion effect rather than assuming synchronous tick completion",
+        "Retains the pre-debounce and at-boundary behavior checks where relevant and restores owned timer state on failure",
+        "Accepts the sufficient bounded async waitFor observation with real worker timers and does not require a new library or completion event",
+        "Explains rejection/throw retry semantics, that falsy return alone is insufficient, and pending callback is not retried until rejection",
+        "Keeps submitJob outside retryable observation, preserves the one-job assertion, and identifies evidence/cleanup limits"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Diagnose the supplied test from its code and facts only. Do not edit files or change settings.",
+      "expected_output": "A bounded read-only diagnosis identifies surviving participant work, fake-timer deadline failure and skipped cleanup, and recommends failure-path verification without mutating the project.",
+      "files": ["evals/fixtures/lifecycle-input.md"],
+      "expectations": [
+        "Preserves diagnosis-only authority and does not claim runtime reproduction from synthetic input",
+        "Explains that Promise.all early rejection and Promise.race do not cancel other work or the deadline",
+        "Recommends handling rejections promptly, releasing/aborting the gate, then awaiting participants and closing owned resources even on failure/cancellation",
+        "Requires an independent functioning runner/helper deadline under business-clock mocking without adding a timeout wrapper to every await",
+        "Restores clocks, mocks and listeners in failure-safe cleanup; prevents shared fake-clock interference with concurrent tests",
+        "Diagnoses before any authorized centralized timeout tuning; rejects sleep, blind retry or fixture TTL extension as a fix"
+      ]
     }
   ]
 }

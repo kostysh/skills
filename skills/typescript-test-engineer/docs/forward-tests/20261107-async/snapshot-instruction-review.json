@@ -1,0 +1,30 @@
+{
+  "baseline_head": "ba51a6bd604e9d19a10113131f5abf4d5eacbcc9",
+  "branch": "codex/typescript-test-async-determinism",
+  "source_version": "0.1.11",
+  "scope": "Complete source/active/metadata/test/eval surface and compile report; supporting docs and evidence are outside this immutable behavioral snapshot.",
+  "algorithm": "sha256",
+  "aggregate_encoding": "Sorted relative paths, NUL, file sha256 hex, newline; UTF-8",
+  "file_count": 18,
+  "aggregate_sha256": "4542d7a277d7a2c335643470c033cd01229912b4ebf760f17c57ada4cd2a2c41",
+  "files": {
+    "AGENTS.md": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf",
+    "SKILL.md": "899dd6f956e7e9872a14f943864112bba366b17d71b9d484152119cf1feab86d",
+    "agents/openai.yaml": "9fc7def9a8ab00f4acd2d5dfd8c166e5fcd853de375a8d620b24660ea1512a04",
+    "docs/compile-report.md": "416a2702b592e0beb983296ba11ff792484c68d6e32dba6142032e420d55c404",
+    "evals/evals.json": "8fc5aa6463f8fa910f19895e1fbf1c546beef5460d72ce0566a19f03e8e6f5d3",
+    "evals/fixtures/environment-input.md": "cc6ffff1112d08c12312c8dd731ab329ff9972f0de2fad90b1f6c093ea88829e",
+    "evals/fixtures/lifecycle-input.md": "be6b909483491ca6d15fb679659a1e11c45ec8b303e4beebbcc18f12223f2a86",
+    "evals/fixtures/mutation-lifetime-input.md": "e77be1de41b434a8e0602a075cadf3c209eb9ca1b7da11d5575b9b898fd3aac4",
+    "evals/fixtures/observation-input.md": "55ff589a1a716b8cf478dd763b0f1dcc25ce4f47b15229d6d0214c44037afa83",
+    "evals/fixtures/reservation-input.md": "d395bf83d8112f7488a50d51ca4fd676aa72cf1d14eb667d07a79d358c47ab66",
+    "fragments/overview.md": "fb469730d50547002867739da163ea71cb66d2df0e05871febf2adcab8a7527c",
+    "package.json": "d913481eee790ffacc5b3b4eda07a6100aaa2dd302d934796af3c739bc98057a",
+    "references/react-vitest.md": "f618f7263f74cae448445f3059c1fc6ed9bfb597bc7abc937aacc4e503d01db6",
+    "references/tdd.md": "029f55af01dd0a9efb77e71693c3503a89bdd8a75367454e02a93712ed18b957",
+    "references/testing-anti-patterns.md": "2d3b7f8804950eab0d67aadc4ec4301518c1e0b7838ff77b794487e50b7281ca",
+    "references/testing.md": "7452d2904f2740622df10fc23de4b86c962b3f7dd812b285e7268d57e591232d",
+    "skill.yaml": "34d92b131f53577ab868f72b90748ae65611ddc8c9e6f99e8e1dd4d92f9d8531",
+    "test/docs-contract.test.mjs": "8d8045992128140d56708eb9c0caab81b970d8873925883204b8efccdfc695c9"
+  }
+}

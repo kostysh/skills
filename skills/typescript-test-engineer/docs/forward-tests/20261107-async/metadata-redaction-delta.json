@@ -1,0 +1,17 @@
+{
+  "from_snapshot": "4542d7a277d7a2c335643470c033cd01229912b4ebf760f17c57ada4cd2a2c41",
+  "from_manifest": "snapshot-instruction-review.json",
+  "to_snapshot": "9e6cd7b52ff27a1ced3723e8f6f59525905eed359f6b2340c7ec1de19a9c3847",
+  "to_manifest": "snapshot.json",
+  "changed_instruction_snapshot_files": [
+    "SKILL.md",
+    "skill.yaml"
+  ],
+  "source_delta": "Four supporting-entry descriptions only; external project/ticket provenance replaced by generic maintenance descriptions. The prior manifest was reconstructed in memory using the public repository baseline and its hash matched the original snapshot.",
+  "source_version": "0.1.11; same unreleased local change",
+  "generated_delta": "Only metadata.skillforge-source-hash changed; generated instructions equal byte-for-byte after excluding that hash line.",
+  "unchanged": "Active fragments/references, test code, eval inputs and closed criteria.",
+  "record_delta": "Whole touched-file provenance cleanup, portable export aliases, sequential event/call IDs, recursive removal of nested execution IDs, corrected relative anchor, and bounded evidence wording.",
+  "nested_execution_ids_removed": 21,
+  "trial_evidence_reuse": "Original four trials stay tied to from_snapshot; no instruction decision changed. Requires independent bounded delta approval."
+}

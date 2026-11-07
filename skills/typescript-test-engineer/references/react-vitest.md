@@ -59,6 +59,7 @@ import '@testing-library/jest-dom/vitest';
 - Prefer `findBy*`/`waitFor` for async UI updates.
 
 ## Async stability checklist
+- Read [Async completion, time, concurrency, and cleanup](testing.md#async-completion-time-concurrency-and-cleanup) for the shared completion, clock, retry, deadline, and failure-safe teardown rules; this checklist adds UI-specific observations and disposal.
 - Prefer synchronous observable assertions inside `waitFor` because their retry semantics are easier to read.
 - Async `waitFor` callbacks are supported when the condition itself requires an async read; they are retried only after the returned promise rejects. Do not perform repeated side effects inside either sync or async callbacks.
 - Do not use never-settling mock promises (`new Promise(() => {})`) without explicit resolve/reject path.
@@ -67,8 +68,11 @@ import '@testing-library/jest-dom/vitest';
 - Prefer async locators such as `findBy*` when an element must appear; use `waitFor` only around a causal observable, not as a generic retry wrapper.
 - Wait for the observable caused by the action: the intended UI or router state, the specific request/response, or the relevant Query/cache state. Do not substitute an unrelated HTTP call, spinner, or visual change.
 - When a valid cache hit performs no HTTP request, assert the no-request branch together with the cached state and its consumer-visible result; do not wait for traffic that the contract forbids.
-- In deterministic teardown, unmount or clean the rendered DOM, clear or dispose the test-owned Query cache/client, remove listeners, restore real timers and stubbed globals, and resolve or reject every deferred promise.
+- In deterministic teardown, unmount or clean the rendered DOM, clear or dispose the test-owned Query cache/client, remove listeners, restore real timers and stubbed globals, and resolve or reject every deferred promise. Register this cleanup before rendering; cancel and await owned async work even when an assertion fails.
 - Do not use `sleep`, arbitrary retry, or a longer timeout to compensate for missing ownership or cleanup.
+
+Body excerpt below: it assumes the failure-safe cleanup above is already
+registered, including a settle path if the disabled-state assertion fails.
 
 ```ts
 const deferred = createDeferred<TermsResponse>();
@@ -135,7 +139,7 @@ describe('Profile', () => {
 ## Mocking and timers
 - Use `vi.fn()` / `vi.spyOn()` for mocks and spies.
 - Use `vi.stubGlobal()` for global APIs such as `fetch` and restore them with `vi.unstubAllGlobals()` in `afterEach`, or enable the repository's `unstubGlobals` policy.
-- Use `vi.useFakeTimers()` + `vi.setSystemTime()` for time-based UI; always `vi.useRealTimers()` after.
+- Choose the minimum clock/timer substitution from the shared async section. A date comparison does not by itself need all timers frozen. When retry/debounce/timeout scheduling is tested, use the pinned runner's fake-timer API and await supported async advancement, such as `vi.advanceTimersByTimeAsync`, plus the observable effect. Restore timer state on every exit and isolate it from concurrent tests.
 - Prefer mocking at the boundary (API clients, fetch) rather than internal component functions.
 
 ## Combined mutation-lifetime falsifier
@@ -194,8 +198,8 @@ success from outcome-verification success in both the assertions and test name.
 If `test:coverage` hangs while normal tests pass:
 - Run exact package coverage command with a shell timeout (example: `timeout 900 pnpm -C packages/client test:coverage`).
 - Isolate suspect suites under coverage config (not unit-only config).
-- Check recently changed tests for unresolved promises, async-in-`waitFor`, and actions fired before controls are enabled.
-- In diagnose mode, report the proven cause and recommend any timeout/configuration change without applying it. Only when fixes are explicitly authorized may implementation tune the active Vitest config (`testTimeout`, and when needed `hookTimeout`/`teardownTimeout`); keep values centralized.
+- Check recently changed tests for unresolved promises, repeated side effects or never-settling reads inside `waitFor`, and actions fired before controls are enabled. An async callback alone is not a defect.
+- In diagnose mode, report the proven cause and recommend any timeout/configuration change without applying it. Only when fixes are explicitly authorized may implementation tune the active Vitest config (`testTimeout`, and when needed `hookTimeout`/`teardownTimeout`) after diagnosis justifies an environment adjustment; keep values centralized. Increasing timeout or retry does not repair a race or leak.
 - Use explicit per-test timeout only as a rare exception with a documented rationale.
 
 ## Coverage

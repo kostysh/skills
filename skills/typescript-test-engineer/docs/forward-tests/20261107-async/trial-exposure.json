@@ -1,0 +1,77 @@
+{
+  "source_snapshot": "4542d7a277d7a2c335643470c033cd01229912b4ebf760f17c57ada4cd2a2c41",
+  "root": "<trial-root>",
+  "included_skill_files": [
+    "SKILL.md",
+    "agents/openai.yaml",
+    "references/react-vitest.md",
+    "references/tdd.md",
+    "references/testing-anti-patterns.md",
+    "references/testing.md"
+  ],
+  "excluded": [
+    "source bundle",
+    "evals/criteria",
+    "docs/history/results",
+    "maintenance AGENTS.md",
+    "tests"
+  ],
+  "isolation": "Documented filesystem exposure limits, not a hard security sandbox.",
+  "cases": {
+    "2": {
+      "directory": "case-2",
+      "input_source": "evals/fixtures/environment-input.md",
+      "files": {
+        "request.md": "cc6ffff1112d08c12312c8dd731ab329ff9972f0de2fad90b1f6c093ea88829e",
+        "skill/typescript-test-engineer/SKILL.md": "899dd6f956e7e9872a14f943864112bba366b17d71b9d484152119cf1feab86d",
+        "skill/typescript-test-engineer/agents/openai.yaml": "9fc7def9a8ab00f4acd2d5dfd8c166e5fcd853de375a8d620b24660ea1512a04",
+        "skill/typescript-test-engineer/references/react-vitest.md": "f618f7263f74cae448445f3059c1fc6ed9bfb597bc7abc937aacc4e503d01db6",
+        "skill/typescript-test-engineer/references/tdd.md": "029f55af01dd0a9efb77e71693c3503a89bdd8a75367454e02a93712ed18b957",
+        "skill/typescript-test-engineer/references/testing-anti-patterns.md": "2d3b7f8804950eab0d67aadc4ec4301518c1e0b7838ff77b794487e50b7281ca",
+        "skill/typescript-test-engineer/references/testing.md": "7452d2904f2740622df10fc23de4b86c962b3f7dd812b285e7268d57e591232d"
+      }
+    },
+    "3": {
+      "directory": "case-3",
+      "input_source": "evals/fixtures/reservation-input.md",
+      "files": {
+        "request.md": "d395bf83d8112f7488a50d51ca4fd676aa72cf1d14eb667d07a79d358c47ab66",
+        "skill/typescript-test-engineer/SKILL.md": "899dd6f956e7e9872a14f943864112bba366b17d71b9d484152119cf1feab86d",
+        "skill/typescript-test-engineer/agents/openai.yaml": "9fc7def9a8ab00f4acd2d5dfd8c166e5fcd853de375a8d620b24660ea1512a04",
+        "skill/typescript-test-engineer/references/react-vitest.md": "f618f7263f74cae448445f3059c1fc6ed9bfb597bc7abc937aacc4e503d01db6",
+        "skill/typescript-test-engineer/references/tdd.md": "029f55af01dd0a9efb77e71693c3503a89bdd8a75367454e02a93712ed18b957",
+        "skill/typescript-test-engineer/references/testing-anti-patterns.md": "2d3b7f8804950eab0d67aadc4ec4301518c1e0b7838ff77b794487e50b7281ca",
+        "skill/typescript-test-engineer/references/testing.md": "7452d2904f2740622df10fc23de4b86c962b3f7dd812b285e7268d57e591232d"
+      }
+    },
+    "4": {
+      "directory": "case-4",
+      "input_source": "evals/fixtures/observation-input.md",
+      "files": {
+        "request.md": "55ff589a1a716b8cf478dd763b0f1dcc25ce4f47b15229d6d0214c44037afa83",
+        "skill/typescript-test-engineer/SKILL.md": "899dd6f956e7e9872a14f943864112bba366b17d71b9d484152119cf1feab86d",
+        "skill/typescript-test-engineer/agents/openai.yaml": "9fc7def9a8ab00f4acd2d5dfd8c166e5fcd853de375a8d620b24660ea1512a04",
+        "skill/typescript-test-engineer/references/react-vitest.md": "f618f7263f74cae448445f3059c1fc6ed9bfb597bc7abc937aacc4e503d01db6",
+        "skill/typescript-test-engineer/references/tdd.md": "029f55af01dd0a9efb77e71693c3503a89bdd8a75367454e02a93712ed18b957",
+        "skill/typescript-test-engineer/references/testing-anti-patterns.md": "2d3b7f8804950eab0d67aadc4ec4301518c1e0b7838ff77b794487e50b7281ca",
+        "skill/typescript-test-engineer/references/testing.md": "7452d2904f2740622df10fc23de4b86c962b3f7dd812b285e7268d57e591232d"
+      }
+    },
+    "5": {
+      "directory": "case-5",
+      "input_source": "evals/fixtures/lifecycle-input.md",
+      "files": {
+        "request.md": "be6b909483491ca6d15fb679659a1e11c45ec8b303e4beebbcc18f12223f2a86",
+        "skill/typescript-test-engineer/SKILL.md": "899dd6f956e7e9872a14f943864112bba366b17d71b9d484152119cf1feab86d",
+        "skill/typescript-test-engineer/agents/openai.yaml": "9fc7def9a8ab00f4acd2d5dfd8c166e5fcd853de375a8d620b24660ea1512a04",
+        "skill/typescript-test-engineer/references/react-vitest.md": "f618f7263f74cae448445f3059c1fc6ed9bfb597bc7abc937aacc4e503d01db6",
+        "skill/typescript-test-engineer/references/tdd.md": "029f55af01dd0a9efb77e71693c3503a89bdd8a75367454e02a93712ed18b957",
+        "skill/typescript-test-engineer/references/testing-anti-patterns.md": "2d3b7f8804950eab0d67aadc4ec4301518c1e0b7838ff77b794487e50b7281ca",
+        "skill/typescript-test-engineer/references/testing.md": "7452d2904f2740622df10fc23de4b86c962b3f7dd812b285e7268d57e591232d"
+      }
+    }
+  },
+  "export_normalization": "Workspace paths use portable aliases; input and active-file hashes refer to the original supplied bytes.",
+  "source_snapshot_manifest": "snapshot-instruction-review.json",
+  "current_metadata_delta": "metadata-redaction-delta.json"
+}
