@@ -1,0 +1,183 @@
+FILE: finalize-evidence.py
+import difflib
+import hashlib
+import json
+import pathlib
+
+root = pathlib.Path(__file__).resolve().parent
+project = root.parent / 'live-project'
+before = (root / 'before/App.tsx').read_text()
+after = (project / 'src/App.tsx').read_text()
+diff = ''.join(difflib.unified_diff(before.splitlines(keepends=True), after.splitlines(keepends=True), fromfile='a/src/App.tsx', tofile='b/src/App.tsx'))
+(root / 'final.diff').write_text(diff)
+before_manifest = json.loads((root / 'before-manifest.json').read_text())
+after_manifest = {name: hashlib.sha256((project / name).read_bytes()).hexdigest() for name in before_manifest}
+changed = [name for name in before_manifest if before_manifest[name] != after_manifest[name]]
+snapshot = {'changed_original_files': changed, 'source_sha256': after_manifest, 'screenshots': sorted(p.name for p in root.glob('*.png'))}
+(root / 'final-snapshot.json').write_text(json.dumps(snapshot, indent=2)+'\n')
+records = [json.loads(line) for line in (root / 'commands.jsonl').read_text().splitlines()]
+transcript = ['# Реально выполненные команды\n\nПолные stdout/stderr и exit codes. Канонический журнал: commands.jsonl. Этот читаемый экспорт содержит команды до его генерации.\n']
+for index, record in enumerate(records, 1):
+    transcript.append(f'\n## {index}. {record["started"]}\n\nCWD: {record["cwd"]}\n\nExit code: {record["exit_code"]}\n\n```sh\n{record["command"]}\n```\n\n```text\n{record["output"]}\n```\n')
+(root / 'commands.md').write_text(''.join(transcript))
+print(json.dumps({'changed_original_files':changed,'app_sha256':after_manifest['src/App.tsx'],'recorded_commands_before_export':len(records),'screenshots':len(snapshot['screenshots']),'diff_path':str(root/'final.diff')},indent=2))
+print(diff)
+
+
+FILE: start-preview.py
+import json
+import os
+import pathlib
+import subprocess
+
+root = pathlib.Path(__file__).resolve().parent
+project = root.parent / 'live-project'
+env = os.environ.copy()
+env.update(pnpm_config_pm_on_fail='ignore', pnpm_config_manage_package_manager_versions='false', pnpm_config_verify_deps_before_run='false')
+command = ['pnpm', 'preview', '--host', '127.0.0.1', '--port', '4317', '--strictPort']
+with (root / 'preview-server.log').open('w') as log:
+    child = subprocess.Popen(command, cwd=project, env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+record = {'pid': child.pid, 'pgid': child.pid, 'command': command, 'cwd': str(project), 'mode': 'preview'}
+(root / 'server-process.json').write_text(json.dumps(record, indent=2) + '\n')
+print(json.dumps(record, indent=2))
+
+
+FILE: stop-server.py
+import json
+import os
+import pathlib
+import signal
+import socket
+import time
+
+root = pathlib.Path(__file__).resolve().parent
+server = json.loads((root / 'server-process.json').read_text())
+pid = server['pid']
+entry = pathlib.Path(f'/proc/{pid}')
+if entry.exists():
+    cwd = os.readlink(entry / 'cwd')
+    command = (entry / 'cmdline').read_bytes().replace(b'\0', b' ').decode()
+    assert cwd == server['cwd'], (cwd, server['cwd'])
+    assert ('pnpm ' + server.get('mode', 'dev')) in command and '--port 4317' in command, command
+    assert os.getpgid(pid) == server['pgid']
+    print(f'Sending SIGTERM to verified task-owned server group {server["pgid"]}')
+    os.killpg(server['pgid'], signal.SIGTERM)
+time.sleep(1)
+before = json.loads((root / 'processes-before-cleanup.json').read_text())
+remaining = []
+for attempt in range(20):
+    remaining = []
+    for prior in before:
+        proc = pathlib.Path(f'/proc/{prior["pid"]}')
+        if proc.exists():
+            try:
+                status = (proc / 'stat').read_text().split(') ', 1)[1].split()[0]
+                command = (proc / 'cmdline').read_bytes().replace(b'\0', b' ').decode()
+                remaining.append({'pid': prior['pid'], 'state': status, 'command': command})
+            except FileNotFoundError:
+                pass
+    if not remaining:
+        break
+    time.sleep(0.25)
+sock = socket.socket()
+sock.settimeout(1)
+port_open = sock.connect_ex(('127.0.0.1', 4317)) == 0
+sock.close()
+result = {'recorded_processes_remaining': remaining, 'port_4317_open': port_open}
+(root / 'cleanup-check.json').write_text(json.dumps(result, indent=2)+'\n')
+print(json.dumps(result, indent=2))
+raise SystemExit(1 if remaining or port_open else 0)
+
+
+FILE: process-evidence.py
+import json
+import os
+import pathlib
+import re
+import sys
+
+root = pathlib.Path(__file__).resolve().parent
+server = json.loads((root / 'server-process.json').read_text())
+processes = {}
+for entry in pathlib.Path('/proc').iterdir():
+    if not entry.name.isdigit():
+        continue
+    try:
+        command = (entry / 'cmdline').read_bytes().replace(b'\0', b' ').decode().strip()
+        status = (entry / 'stat').read_text().split(') ', 1)[1].split()
+        processes[int(entry.name)] = {'pid': int(entry.name), 'ppid': int(status[1]), 'pgid': int(status[2]), 'state': status[0], 'command': command}
+    except (FileNotFoundError, ProcessLookupError, PermissionError):
+        pass
+owned = {pid for pid, p in processes.items() if p['pgid'] == server['pgid'] or '/tmp/webux-live-a-profile' in p['command']}
+browser_roots = [pid for pid in owned if '/tmp/webux-live-a-profile' in processes[pid]['command']]
+for pid in browser_roots:
+    for match in re.finditer(r'--crashpad-handler-pid=(\d+)', processes[pid]['command']):
+        handler = int(match.group(1))
+        if handler in processes:
+            owned.add(handler)
+    parent = processes.get(processes[pid]['ppid'])
+    if parent and 'agent-browser' in parent['command']:
+        owned.add(parent['pid'])
+changed = True
+while changed:
+    descendants = {pid for pid, p in processes.items() if p['ppid'] in owned}
+    changed = not descendants.issubset(owned)
+    owned |= descendants
+record = [processes[pid] for pid in sorted(owned)]
+(root / sys.argv[1]).write_text(json.dumps(record, indent=2) + '\n')
+print(json.dumps(record, indent=2))
+
+
+FILE: start-server.py
+import json
+import os
+import pathlib
+import subprocess
+
+root = pathlib.Path(__file__).resolve().parent
+project = root.parent / 'live-project'
+env = os.environ.copy()
+env.update(pnpm_config_pm_on_fail='ignore', pnpm_config_manage_package_manager_versions='false', pnpm_config_verify_deps_before_run='false')
+command = ['pnpm', 'dev', '--host', '127.0.0.1', '--port', '4317', '--strictPort']
+with (root / 'server.log').open('w') as log:
+    child = subprocess.Popen(command, cwd=project, env=env, stdout=log, stderr=subprocess.STDOUT, start_new_session=True)
+record = {'pid': child.pid, 'pgid': child.pid, 'command': command, 'cwd': str(project)}
+(root / 'server-process.json').write_text(json.dumps(record, indent=2) + '\n')
+print(json.dumps(record, indent=2))
+
+
+FILE: browser.py
+import os
+import pathlib
+import subprocess
+import sys
+
+root = pathlib.Path(__file__).resolve().parent
+env = {key: value for key, value in os.environ.items() if not key.startswith('AGENT_BROWSER_')}
+for key in ['HTTP_PROXY', 'HTTPS_PROXY', 'ALL_PROXY', 'http_proxy', 'https_proxy', 'all_proxy']:
+    env.pop(key, None)
+env['NO_PROXY'] = '127.0.0.1,localhost'
+command = ['agent-browser', '--config', str(root / 'browser-config.json'), '--session', 'webux-live-a', '--profile', '/tmp/webux-live-a-profile', '--color-scheme', 'light', '--hide-scrollbars', 'false', *sys.argv[1:]]
+raise SystemExit(subprocess.call(command, env=env))
+
+
+FILE: run-command.py
+import datetime
+import json
+import pathlib
+import subprocess
+import sys
+import time
+
+root = pathlib.Path(__file__).resolve().parent
+command = sys.argv[1]
+workdir = sys.argv[2] if len(sys.argv) > 2 else '/tmp/web-ux-20261107-xaye7ceb/baseline/live-project'
+started = datetime.datetime.now(datetime.timezone.utc).isoformat()
+start = time.monotonic()
+result = subprocess.run(command, cwd=workdir, shell=True, executable='/bin/bash', text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+record = {'started': started, 'cwd': workdir, 'command': command, 'exit_code': result.returncode, 'duration_seconds': round(time.monotonic() - start, 3), 'output': result.stdout}
+with (root / 'commands.jsonl').open('a') as log:
+    log.write(json.dumps(record, ensure_ascii=False) + '\n')
+print(result.stdout, end='')
+print(f'\n[exit_code={result.returncode}]')
+sys.exit(result.returncode)

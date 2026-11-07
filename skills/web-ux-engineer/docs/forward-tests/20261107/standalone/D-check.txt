@@ -1,0 +1,9 @@
+D: exact single-string replacement verified.
+File: /tmp/web-ux-20261107-xaye7ceb/standalone/project/src/App.tsx
+Updated line: 85
+Original occurrences before: 1
+Original occurrences after: 0
+Replacement occurrences after: 1
+Byte comparison: after == before.replace(old, new, 1).
+Only App.tsx was written in project by this operation.
+No build, lint, browser, or backend check was run; verification covers the requested source-text change.

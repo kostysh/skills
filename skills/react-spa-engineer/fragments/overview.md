@@ -2,6 +2,11 @@ Build and assess integrated client-side React SPA flows on this fixed stack:
 
 `React | TypeScript | Vite | TanStack Query | Zustand | React Hook Form + Zod | React Router | Dexie`
 
+Task-flow interaction choices and scenario UX audits belong to `web-ux-engineer`;
+visual expression belongs to `frontend-design`, and UI-rule/accessibility review
+to `web-ui-reviewer`. Keep the integration and evidence obligations below even
+when one of those skills leads or is unavailable.
+
 ## Cross-layer ownership
 
 | Concern | Owner in this skill's architecture |

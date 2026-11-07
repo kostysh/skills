@@ -2,13 +2,13 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: react-spa-engineer
-  source-version: 0.1.12
+  source-version: 0.1.13
   recommended-skill-md-max-bytes: 20000
   description: >-
-    Design, implement, review, and diagnose React SPAs using TypeScript, Vite,
-    TanStack Query, Zustand, React Hook Form with Zod, React Router, and Dexie. Use
-    for routing, server/runtime state, forms, browser storage, performance, testing,
-    or accessibility; exclude SSR, RSC, and Next.js architecture.
+    Build, review, and diagnose React SPAs with TypeScript, Vite, TanStack Query,
+    Zustand, React Hook Form, Zod, React Router, and Dexie. Own app integration
+    and runtime correctness; route UX choices, visual direction, and formal UI
+    audits to their owners. Excludes SSR/RSC/Next.js.
 fragments:
   overview: fragments/overview.md
 references:
@@ -160,7 +160,7 @@ sections:
   whenNotToUse:
     - SSR, React Server Components, Next.js server patterns, or non-SPA architecture are the primary concern.
     - The work is solely reusable component correctness without app-level integration; use react-components-engineer.
-    - The work is solely visual design, TypeScript language/tooling, test-runner behavior, formal code review, accessibility audit, or security review; route that primary decision to the owning skill.
+    - The work is solely task-flow interaction design or UX audit, visual design, TypeScript language/tooling, test-runner behavior, formal code review, accessibility audit, or security review; route that primary decision to the owning skill.
   workflow:
     - id: stage-establish-spa-basis
       title: Establish the SPA basis
@@ -196,6 +196,10 @@ sections:
         - Type, lint, build, mock, route, screenshot, and generated-file evidence is not presented as proof of unexercised interactive, persistence, performance, auth, security, or production behavior.
         - The handoff does not require the consumer to invent a missing contract or reinterpret the result status.
   interop:
+    - id: interop-ux
+      domain: task-flow interaction choices, continuity, recovery, and scenario UX audit
+      winner: web-ux-engineer
+      rationale: Consume the chosen interaction and supply integration constraints; retain ownership of routing, data, forms, state, mutation lifetime, accessibility mechanics, and runtime verification.
     - id: interop-typescript
       domain: TypeScript language, compiler, tsconfig, module resolution, Biome and ESLint ownership
       winner: typescript-engineer
@@ -209,11 +213,11 @@ sections:
       winner: react-components-engineer
       rationale: react-components-engineer owns reusable component hardening; react-spa-engineer owns integration into routes, data, forms, state, and persistence.
     - id: interop-design
-      domain: visual hierarchy, interaction design, styling, responsive composition, and design-system presentation
+      domain: visual hierarchy, styling, motion, responsive composition, and design-system presentation
       winner: frontend-design
       rationale: frontend-design owns visual decisions; react-spa-engineer preserves the SPA behavior and stack integration.
     - id: interop-ui-review
-      domain: formal UX and accessibility review
+      domain: review of UI implementation, interface rules, and accessibility
       winner: web-ui-reviewer
       rationale: web-ui-reviewer owns the audit verdict; react-spa-engineer implements or integrates accepted client corrections.
     - id: interop-code-review
@@ -249,6 +253,9 @@ sections:
       priority: high
       text: Do not keep mutation progress or outcome verification only inside a child or portal that may unmount; choose an owner from the required lifetime and fence old-context work on access change.
   policies:
+    - id: policy-interop-lead
+      title: Proportional collaboration
+      text: Honor an explicitly selected skill within its supported scope. In mixed work choose the lead by the requested result and consult another skill for a concrete decision only. Missing neighbors do not block supported local work; preserve evidence limits without cycling handoffs or loading every specialist.
     - id: policy-fixed-stack
       title: Fixed stack contract
       text: Preserve React, TypeScript, Vite, TanStack Query, Zustand, React Hook Form with Zod, React Router, and Dexie. Do not introduce a competing framework or state, form, routing, query, or persistence library without an explicit operator decision.

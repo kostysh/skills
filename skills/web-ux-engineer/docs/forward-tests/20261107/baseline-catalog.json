@@ -1,0 +1,28 @@
+[
+  {
+    "name": "frontend-design",
+    "description": "Design and implement visually strong web interfaces and decision-complete design strategies. Use for landing pages, product UI, dashboards, prototypes, redesigns, or translating accepted design into code. Preserve authoritative behavior and existing systems, then verify rendered results.",
+    "interface": {
+      "display_name": "Frontend Design",
+      "short_description": "Design strong UI from strategy to browser evidence",
+      "default_prompt": "Use $frontend-design to ground a design strategy in authoritative sources, reuse the existing UI system, produce the requested deliverable, and report only the completion status supported by matching evidence."
+    }
+  },
+  {
+    "name": "web-ui-reviewer",
+    "description": "Review web UI code and rendered states against project requirements and Web Interface Guidelines. Use for UI/UX, accessibility, design, content, form, or frontend-performance audits that need scoped findings and evidence limits; not implementation or conformance certification.",
+    "interface": {
+      "display_name": "Web UI Reviewer",
+      "short_description": "Review web UI with scoped evidence",
+      "default_prompt": "Use $web-ui-reviewer to audit this web interface and report scoped, actionable findings with evidence limits."
+    }
+  },
+  {
+    "name": "react-spa-engineer",
+    "description": "Design, implement, review, and diagnose React SPAs using TypeScript, Vite, TanStack Query, Zustand, React Hook Form with Zod, React Router, and Dexie. Use for routing, server/runtime state, forms, browser storage, performance, testing, or accessibility; exclude SSR, RSC, and Next.js architecture.",
+    "interface": {
+      "display_name": "React Spa Engineer",
+      "short_description": "Build and verify integrated React SPA flows"
+    }
+  }
+]

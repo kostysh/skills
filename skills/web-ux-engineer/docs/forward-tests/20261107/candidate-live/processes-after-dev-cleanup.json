@@ -1,0 +1,15 @@
+{
+  "previous_owned_processes_still_present": [
+    {
+      "pid": 134675,
+      "args": "sh -c vite --host 127.0.0.1 --port 4318 --strictPort ",
+      "state": "State:\tS (sleeping)"
+    },
+    {
+      "pid": 134676,
+      "args": "node /tmp/web-ux-20261107-xaye7ceb/candidate/live-project/node_modules/.bin/../.pnpm/vite@8.2.2_@types+node@24.13.3_jiti@2.7.0/node_modules/vite/bin/vite.js --host 127.0.0.1 --port 4318 --strictPort ",
+      "state": "State:\tS (sleeping)"
+    }
+  ],
+  "port4318_connect_ex": 0
+}

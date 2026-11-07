@@ -1,8 +1,9 @@
 # Accessibility for React SPA
 
-Use this reference for implementation guidance. Use `web-ui-reviewer` for a
-formal accessibility or UX verdict and `react-components-engineer` when a
-reusable composite component itself is the primary artifact.
+Use this reference for implementation guidance. Use `web-ui-reviewer` for
+UI implementation and accessibility review, `web-ux-engineer` for a task-flow
+UX audit, and `react-components-engineer` when a reusable composite component
+itself is the primary artifact. Retain the implementation checks below.
 
 Unless a block is explicitly labeled copyable, code blocks in this reference
 are conceptual and omit project composition, styling, and verification wiring.

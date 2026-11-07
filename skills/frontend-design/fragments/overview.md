@@ -1,5 +1,3 @@
-Use this skill when the quality of the work depends on art direction, hierarchy, restraint, imagery, typography, and motion rather than component count alone.
-
 Goal: produce deliberate, current interfaces and implementation-ready design
 strategies whose claims match the evidence. Prefer one clear idea, strong
 hierarchy, rigorous spacing, and only the imagery or motion the selected surface
@@ -16,20 +14,10 @@ Before designing or building, establish:
 - `visual engine`: one primary engine and, only when useful, one supporting engine
 - `visual thesis`: one sentence describing mood, material, energy, and the dominant visual idea
 - `content and state plan`: content order plus the relevant loading, empty, error, success, permission, responsive, and long-content states
-- `interaction thesis`: only the transitions or motion that materially improve presence, hierarchy, feedback, or affordance
+- `interaction thesis`: the visual expression of accepted behavior through transitions or motion that materially improve presence, hierarchy, feedback, or affordance; task-flow choices belong to `web-ux-engineer`
 - `reuse and evidence plan`: existing components/assets to reuse and the rendered checks required for the requested completion claim
 
 Each section gets one job, one dominant visual idea, and one primary takeaway or action.
-
-For non-trivial strategy, system-constrained work, implementation handoff, or
-runtime completion, read `references/strategy-to-implementation.md`.
-
-Load references only when needed:
-
-- `references/strategy-to-implementation.md` for readiness, strategy handoff, implementation mapping, evidence, and status rules
-- `references/surface-modes.md` for surface type and constraint-profile rules
-- `references/visual-engines.md` for choosing an `image-led`, `type-led`, `grid-led`, `product-led`, or `data-led` direction
-- `references/anti-patterns.md` for common failure patterns and anti-AI-slop guidance
 
 ## Cross-Mode Defaults
 

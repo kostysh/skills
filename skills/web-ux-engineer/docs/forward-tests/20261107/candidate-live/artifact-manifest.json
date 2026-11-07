@@ -1,0 +1,62 @@
+[
+  {
+    "path": "/tmp/web-ux-20261107-xaye7ceb/candidate/live-results/final.diff",
+    "bytes": 5439,
+    "sha256": "67c938bca344a326e8bf270b1ceb022ad2b492cb6c30b54e70811980c9fe3621"
+  },
+  {
+    "path": "/tmp/web-ux-20261107-xaye7ceb/candidate/live-project/src/App.tsx",
+    "bytes": 8268,
+    "sha256": "5e7ed6e3604d9aa0f80f0e0eb68f41a64f5ffd1712c2efc427ef296c609ed1a6"
+  },
+  {
+    "path": "/tmp/web-ux-20261107-xaye7ceb/candidate/live-results/screenshots/01-initial-desktop.png",
+    "bytes": 58754,
+    "sha256": "1738ad641b07f703b554137a9331e14684b3d3f352a788dec1d53ac61363b5cb"
+  },
+  {
+    "path": "/tmp/web-ux-20261107-xaye7ceb/candidate/live-results/screenshots/02-initial-restored-keyboard.png",
+    "bytes": 63428,
+    "sha256": "1ab0e73c31f1bed1fb6c89a8a3ee92d0298ec2dbb74fe5a53a46fea53c63f198"
+  },
+  {
+    "path": "/tmp/web-ux-20261107-xaye7ceb/candidate/live-results/screenshots/03-applied-desktop.png",
+    "bytes": 75635,
+    "sha256": "65f4b53bb59b9dc973c2c11b073884e5067fb0210cd9486266116ba7615291bb"
+  },
+  {
+    "path": "/tmp/web-ux-20261107-xaye7ceb/candidate/live-results/screenshots/04-restored-narrow.png",
+    "bytes": 73736,
+    "sha256": "87dd75cf363c8d7d6d877debdeda2146341cfa0f2eb13d1b09811e22823e6627"
+  },
+  {
+    "path": "/tmp/web-ux-20261107-xaye7ceb/candidate/live-results/screenshots/05-confirmation-narrow.png",
+    "bytes": 52338,
+    "sha256": "1f050499d60350b0c99ac66292daaf0ac998986e5a9a1e1f471c1d42770d786e"
+  },
+  {
+    "path": "/tmp/web-ux-20261107-xaye7ceb/candidate/live-results/screenshots/06-confirmation-narrow-settled.png",
+    "bytes": 43116,
+    "sha256": "79d8e64d58656618670902e938a447179c655ba4eecea02d9c88ea58656c05e3"
+  },
+  {
+    "path": "/tmp/web-ux-20261107-xaye7ceb/candidate/live-results/screenshots/07-latest-applied-restored-narrow.png",
+    "bytes": 70423,
+    "sha256": "ab528362233cdedef2a1c32936dfd6b1c91b1653f2cf6f538d78ce429eea3991"
+  },
+  {
+    "path": "/tmp/web-ux-20261107-xaye7ceb/candidate/live-results/screenshots/08-preview-packaged-font-narrow-form.png",
+    "bytes": 55970,
+    "sha256": "e0ee59b0985d60632f54b4507be9999f49e28895b3516dceaafee303d9f238e7"
+  },
+  {
+    "path": "/tmp/web-ux-20261107-xaye7ceb/candidate/live-results/screenshots/09-preview-packaged-font-narrow-dialog.png",
+    "bytes": 36290,
+    "sha256": "2dadbaa9d231cfcf2a97199772d38bc5246405e2fb7cb747aa03e5e8c810fdbc"
+  },
+  {
+    "path": "/tmp/web-ux-20261107-xaye7ceb/candidate/live-results/screenshots/10-preview-packaged-font-narrow-form-settled.png",
+    "bytes": 56802,
+    "sha256": "ffaa8162c31a58ccd7d20a216b4febdcb1661a56b80c3e54df643c580a503f12"
+  }
+]

@@ -1,0 +1,32 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "frontend-design/LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+    "frontend-design/SKILL.md": "705b679a3ee09e5765f1ce336a00c71fdfbbf93974d22e2308053369f49869b4",
+    "frontend-design/agents/openai.yaml": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+    "frontend-design/references/anti-patterns.md": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+    "frontend-design/references/strategy-to-implementation.md": "ef884923fbb5e95e646700be7dfbfaae760b45390530248e558a937c9c1b45c1",
+    "frontend-design/references/surface-modes.md": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+    "frontend-design/references/visual-engines.md": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7",
+    "react-spa-engineer/SKILL.md": "8f2aa777e134f8fd72d20e753e3ba02a550e46ac91a0ff68b0ac55a128053eaa",
+    "react-spa-engineer/agents/openai.yaml": "bc31e3c34c4307ae3267abfa68d7cd5eddf52e49b3801419fc1daa80baaf5417",
+    "react-spa-engineer/references/accessibility.md": "bb96bfe1606533cd93aa03d4f871476d2ba4bc324029d696e15666b39dbccc0c",
+    "react-spa-engineer/references/component-architecture.md": "d1620fb939eac5b8b428b03e5c2743fadf3f6565d3aa238ceb3a51cac1e17878",
+    "react-spa-engineer/references/data-fetching.md": "db095fe2545dfce0d3de6b295bea674fa2b0015f204e8daf4bc0670b44d24292",
+    "react-spa-engineer/references/forms-validation.md": "c159c64c11332e162be0cfdab4dda0f87ee3eee392832a5ec6d15f69c3c32997",
+    "react-spa-engineer/references/indexeddb-persistence.md": "026de6cab4c1bafd59721c75797c13f3c15728d9c07c4837bdff86b203acb468",
+    "react-spa-engineer/references/performance.md": "37d9d8d6c4f915c873a83aaa68679a556eab4c80a64a18a2f9d9fccae1ab87dc",
+    "react-spa-engineer/references/persistence-architecture.md": "8b1a21dd865b6e30173d8a7383b81f38a867212f48d39aa0851bd97a9286f21d",
+    "react-spa-engineer/references/routing.md": "68b5dd1c3af68cdcbadcf218ec83492eed4fb8c8581c82d781b5474a93564303",
+    "react-spa-engineer/references/state-management.md": "509f6510f2c2d1eef5dbf97c7c3c9f33034de461dac12a3a65a4b976cb213dd1",
+    "react-spa-engineer/references/testing.md": "7b64b06442e90e3dcd75eacfc3f29efe015b5aa36a73e12a51b11977aac8fa10",
+    "react-spa-engineer/references/typescript-patterns.md": "27ac07e4bd683f123e80b774db4c134f0ca3233b47681e32e3b919249b3d91c4",
+    "web-ui-reviewer/SKILL.md": "7a55235c62083903788578c74f26267843849f8424b3b93d21c6453398a8e324",
+    "web-ui-reviewer/agents/openai.yaml": "5edf64ef909bf216945723e6d3d2435a1c23f34ae48df157bde652f4085e230b",
+    "web-ui-reviewer/evals/evals.json": "6e5c9ebf40fbc4c5d4baa4d9ba8ad7b8953350ac76ac3045b5c8e6e8cbbad86b",
+    "web-ui-reviewer/evals/fixtures/module-workspace-input.md": "0e13357f23645ae605c0ec6f6b354831b5b1a60ffcdda27808e4222d9d61a500",
+    "web-ui-reviewer/references/web-interface-guidelines.md": "b189f88ba4d37d8f296a602e777e4543138c4ccf9ce53eb8a5c3d3e03bc122f0",
+    "web-ux-engineer/SKILL.md": "08a45621a582da14565b67407dd87494f88ca6f71330c015bbeba6d28214dbea",
+    "web-ux-engineer/agents/openai.yaml": "725f2bc1ce78f271048df1547a0840b9d06c08637308067a70844cf8a50ccf92"
+  }
+}

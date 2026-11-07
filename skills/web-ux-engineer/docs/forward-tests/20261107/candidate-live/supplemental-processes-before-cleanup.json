@@ -1,0 +1,21 @@
+{
+  "daemon_pid": 148437,
+  "processes": [
+    {
+      "pid": 148320,
+      "args": "sh -c vite preview --host 127.0.0.1 --port 4318 --strictPort "
+    },
+    {
+      "pid": 148321,
+      "args": "node /tmp/web-ux-20261107-xaye7ceb/candidate/live-project/node_modules/.bin/../.pnpm/vite@8.2.2_@types+node@24.13.3_jiti@2.7.0/node_modules/vite/bin/vite.js preview --host 127.0.0.1 --port 4318 --strictPort "
+    },
+    {
+      "pid": 148479,
+      "args": "/opt/google/chrome/chrome_crashpad_handler --monitor-self --monitor-self-annotation=ptype=crashpad-handler --user-stream-region=4,65568 --database=/tmp/webux-live-b-config/google-chrome/Crash Reports --url=https://clients2.google.com/cr/report --annotation=channel= --annotation=lsb-release=Ubuntu 26.04.1 LTS --annotation=plat=Linux --annotation=prod=Chrome_Linux --annotation=ver=157.0.8103.38 --initial-client-fd=7 --shared-client-connection "
+    },
+    {
+      "pid": 148481,
+      "args": "/opt/google/chrome/chrome_crashpad_handler --no-periodic-tasks --monitor-self-annotation=ptype=crashpad-handler --database=/tmp/webux-live-b-config/google-chrome/Crash Reports --url=https://clients2.google.com/cr/report --annotation=channel= --annotation=lsb-release=Ubuntu 26.04.1 LTS --annotation=plat=Linux --annotation=prod=Chrome_Linux --annotation=ver=157.0.8103.38 --initial-client-fd=4 --shared-client-connection "
+    }
+  ]
+}

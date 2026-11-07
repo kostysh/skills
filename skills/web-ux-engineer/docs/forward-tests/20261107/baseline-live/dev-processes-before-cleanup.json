@@ -1,0 +1,135 @@
+[
+  {
+    "pid": 127590,
+    "ppid": 8540,
+    "pgid": 127590,
+    "state": "S",
+    "command": "node /home/kostysh/.nvm/versions/node/v24.15.0/bin/pnpm dev --host 127.0.0.1 --port 4317 --strictPort"
+  },
+  {
+    "pid": 127603,
+    "ppid": 127590,
+    "pgid": 127590,
+    "state": "S",
+    "command": "sh -c vite --host 127.0.0.1 --port 4317 --strictPort"
+  },
+  {
+    "pid": 127604,
+    "ppid": 127603,
+    "pgid": 127590,
+    "state": "S",
+    "command": "node /tmp/web-ux-20261107-xaye7ceb/baseline/live-project/node_modules/.bin/../.pnpm/vite@8.2.2_@types+node@24.13.3_jiti@2.7.0/node_modules/vite/bin/vite.js --host 127.0.0.1 --port 4317 --strictPort"
+  },
+  {
+    "pid": 127746,
+    "ppid": 8540,
+    "pgid": 127746,
+    "state": "S",
+    "command": "/home/kostysh/.nvm/versions/node/v24.15.0/lib/node_modules/agent-browser/bin/agent-browser-linux-x64"
+  },
+  {
+    "pid": 127781,
+    "ppid": 127746,
+    "pgid": 127781,
+    "state": "S",
+    "command": "/opt/google/chrome/chrome --remote-debugging-port=0 --no-first-run --no-default-browser-check --disable-background-networking --disable-backgrounding-occluded-windows --disable-component-update --disable-default-apps --disable-hang-monitor --disable-popup-blocking --disable-prompt-on-repost --disable-sync --disable-features=Translate --enable-features=NetworkService,NetworkServiceInProcess --metrics-recording-only --password-store=basic --use-mock-keychain --headless=new --enable-unsafe-swiftshader --user-data-dir=/tmp/webux-live-a-profile --window-size=1280,720 --noerrdialogs --ozone-platform=headless --ozone-override-screen-size=800,600 --use-angle=swiftshader-webgl"
+  },
+  {
+    "pid": 127785,
+    "ppid": 127781,
+    "pgid": 127781,
+    "state": "S",
+    "command": "cat"
+  },
+  {
+    "pid": 127786,
+    "ppid": 127781,
+    "pgid": 127781,
+    "state": "S",
+    "command": "cat"
+  },
+  {
+    "pid": 127788,
+    "ppid": 8540,
+    "pgid": 127787,
+    "state": "S",
+    "command": "/opt/google/chrome/chrome_crashpad_handler --monitor-self --monitor-self-annotation=ptype=crashpad-handler --user-stream-region=4,65568 --database=/home/kostysh/.config/google-chrome/Crash Reports --url=https://clients2.google.com/cr/report --annotation=channel= --annotation=lsb-release=Ubuntu 26.04.1 LTS --annotation=plat=Linux --annotation=prod=Chrome_Linux --annotation=ver=157.0.8103.38 --initial-client-fd=7 --shared-client-connection"
+  },
+  {
+    "pid": 127796,
+    "ppid": 127781,
+    "pgid": 127781,
+    "state": "S",
+    "command": "/opt/google/chrome/chrome --type=zygote --no-zygote-sandbox --headless=new --crashpad-handler-pid=127788 --enable-crash-reporter=, --noerrdialogs --user-data-dir=/tmp/webux-live-a-profile --change-stack-guard-on-fork=enable --no-first-run --ozone-platform=headless --ozone-override-screen-size=800,600 --use-angle=swiftshader-webgl"
+  },
+  {
+    "pid": 127797,
+    "ppid": 127781,
+    "pgid": 127781,
+    "state": "S",
+    "command": "/opt/google/chrome/chrome --type=zygote --headless=new --crashpad-handler-pid=127788 --enable-crash-reporter=, --noerrdialogs --user-data-dir=/tmp/webux-live-a-profile --change-stack-guard-on-fork=enable --no-first-run --ozone-platform=headless --ozone-override-screen-size=800,600 --use-angle=swiftshader-webgl"
+  },
+  {
+    "pid": 127799,
+    "ppid": 127797,
+    "pgid": 127781,
+    "state": "S",
+    "command": "/opt/google/chrome/chrome --type=zygote --headless=new --crashpad-handler-pid=127788 --enable-crash-reporter=, --noerrdialogs --user-data-dir=/tmp/webux-live-a-profile --change-stack-guard-on-fork=enable --no-first-run --ozone-platform=headless --ozone-override-screen-size=800,600 --use-angle=swiftshader-webgl"
+  },
+  {
+    "pid": 127829,
+    "ppid": 127796,
+    "pgid": 127781,
+    "state": "S",
+    "command": "/opt/google/chrome/chrome --type=gpu-process --gpu-recent-crash-count=0 --headless=new --ozone-platform=headless --use-angle=swiftshader-webgl --enable-unsafe-swiftshader --crashpad-handler-pid=127788 --enable-crash-reporter=, --noerrdialogs --user-data-dir=/tmp/webux-live-a-profile --change-stack-guard-on-fork=enable --gpu-preferences=YAAAAAAAAAAgAAACAAAAAAAAAAAAAGAASAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAwAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAMAAAAAQAAAAAAAAAAAAAACAAAAAAAAAAIAAAAAAAAAA== --shared-files --field-trial-handle=3,i,10045413813455046487,4859072534764456380,262144 --enable-features=NetworkService,NetworkServiceInProcess --disable-features=PaintHolding,Translate --variations-seed-version --pseudonymization-salt-handle=7,i,1544438548086429402,4089072056787121988,4 --trace-process-track-uuid=3190708988185955192"
+  },
+  {
+    "pid": 127847,
+    "ppid": 127781,
+    "pgid": 127781,
+    "state": "S",
+    "command": "/opt/google/chrome/chrome --type=utility --utility-sub-type=network.mojom.NetworkService --lang=en-US --service-sandbox-type=none --use-angle=swiftshader-webgl --crashpad-handler-pid=127788 --enable-crash-reporter=, --noerrdialogs --user-data-dir=/tmp/webux-live-a-profile --change-stack-guard-on-fork=enable --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,10045413813455046487,4859072534764456380,262144 --enable-features=NetworkService,NetworkServiceInProcess --disable-features=PaintHolding,Translate --variations-seed-version --pseudonymization-salt-handle=7,i,1544438548086429402,4089072056787121988,4 --trace-process-track-uuid=3190708989122997041"
+  },
+  {
+    "pid": 127871,
+    "ppid": 127799,
+    "pgid": 127781,
+    "state": "S",
+    "command": "/opt/google/chrome/chrome --type=utility --utility-sub-type=storage.mojom.StorageService --lang=en-US --service-sandbox-type=utility --use-angle=swiftshader-webgl --crashpad-handler-pid=127788 --enable-crash-reporter=, --noerrdialogs --user-data-dir=/tmp/webux-live-a-profile --change-stack-guard-on-fork=enable --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,10045413813455046487,4859072534764456380,262144 --enable-features=NetworkService,NetworkServiceInProcess --disable-features=PaintHolding,Translate --variations-seed-version --pseudonymization-salt-handle=7,i,1544438548086429402,4089072056787121988,4 --trace-process-track-uuid=3190708990060038890"
+  },
+  {
+    "pid": 127885,
+    "ppid": 127799,
+    "pgid": 127781,
+    "state": "S",
+    "command": "/opt/google/chrome/chrome --type=renderer --top-chrome-webui --crashpad-handler-pid=127788 --enable-crash-reporter=, --noerrdialogs --user-data-dir=/tmp/webux-live-a-profile --change-stack-guard-on-fork=enable --remote-debugging-port=0 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=5 --launch-time-ticks=58569852539 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,10045413813455046487,4859072534764456380,262144 --enable-features=NetworkService,NetworkServiceInProcess --disable-features=PaintHolding,Translate --variations-seed-version --pseudonymization-salt-handle=7,i,1544438548086429402,4089072056787121988,4 --trace-process-track-uuid=3190708990997080739"
+  },
+  {
+    "pid": 127896,
+    "ppid": 127799,
+    "pgid": 127781,
+    "state": "S",
+    "command": "/opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=127788 --enable-crash-reporter=, --noerrdialogs --user-data-dir=/tmp/webux-live-a-profile --change-stack-guard-on-fork=enable --remote-debugging-port=0 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=7 --launch-time-ticks=58569866971 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,10045413813455046487,4859072534764456380,262144 --enable-features=NetworkService,NetworkServiceInProcess --disable-features=PaintHolding,Translate --variations-seed-version --pseudonymization-salt-handle=7,i,1544438548086429402,4089072056787121988,4 --trace-process-track-uuid=3190708992871164437"
+  },
+  {
+    "pid": 127897,
+    "ppid": 127799,
+    "pgid": 127781,
+    "state": "S",
+    "command": "/opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=127788 --enable-crash-reporter=, --noerrdialogs --user-data-dir=/tmp/webux-live-a-profile --ntp-process --change-stack-guard-on-fork=enable --remote-debugging-port=0 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=6 --launch-time-ticks=58569868304 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,10045413813455046487,4859072534764456380,262144 --enable-features=NetworkService,NetworkServiceInProcess --disable-features=PaintHolding,Translate --variations-seed-version --pseudonymization-salt-handle=7,i,1544438548086429402,4089072056787121988,4 --trace-process-track-uuid=3190708991934122588"
+  },
+  {
+    "pid": 127938,
+    "ppid": 127799,
+    "pgid": 127781,
+    "state": "S",
+    "command": "/opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=127788 --enable-crash-reporter=, --noerrdialogs --user-data-dir=/tmp/webux-live-a-profile --change-stack-guard-on-fork=enable --remote-debugging-port=0 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=8 --launch-time-ticks=58569903676 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,10045413813455046487,4859072534764456380,262144 --enable-features=NetworkService,NetworkServiceInProcess --disable-features=PaintHolding,Translate --variations-seed-version --pseudonymization-salt-handle=7,i,1544438548086429402,4089072056787121988,4 --trace-process-track-uuid=3190708993808206286"
+  },
+  {
+    "pid": 127989,
+    "ppid": 127799,
+    "pgid": 127781,
+    "state": "S",
+    "command": "/opt/google/chrome/chrome --type=renderer --crashpad-handler-pid=127788 --enable-crash-reporter=, --noerrdialogs --user-data-dir=/tmp/webux-live-a-profile --change-stack-guard-on-fork=enable --remote-debugging-port=0 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=12 --launch-time-ticks=58569988978 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,10045413813455046487,4859072534764456380,262144 --enable-features=NetworkService,NetworkServiceInProcess --disable-features=PaintHolding,Translate --variations-seed-version --pseudonymization-salt-handle=7,i,1544438548086429402,4089072056787121988,4 --trace-process-track-uuid=3190708997556373682"
+  }
+]

@@ -35,3 +35,8 @@
 ## Совместимость frontmatter — 2026-10-21
 
 - [Удаление compatibility через исходник](logs/implementation-log-20261021-1.md) — сохранение текста в инструкциях; результаты и независимая оценка связаны с общим журналом.
+
+## Согласование web-ux-engineer — 2026-11-07
+
+- [Принятый план v2](../../web-ux-engineer/docs/issues/implementation-plan-20261107-1.md).
+- [Общий журнал реализации и проверок](../../web-ux-engineer/docs/logs/implementation-log-20261107-1.md).

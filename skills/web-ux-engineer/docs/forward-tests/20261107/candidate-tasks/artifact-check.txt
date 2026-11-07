@@ -1,0 +1,3 @@
+Report sections present: A, B, C, D, E, F, G, H.
+D evidence artifacts present: before, after, diff, initial-diff note, verification.
+Used skills and actually read files are listed in tasks-output.md.

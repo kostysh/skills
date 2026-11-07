@@ -2,13 +2,13 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: frontend-design
-  source-version: 0.2.2
+  source-version: 0.2.4
   recommended-skill-md-max-bytes: 20000
   description: >-
-    Design and implement visually strong web interfaces and decision-complete
-    design strategies. Use for landing pages, product UI, dashboards,
-    prototypes, redesigns, or translating accepted design into code. Preserve
-    authoritative behavior and existing systems, then verify rendered results.
+    Design and implement visual strategies for web interfaces: landing pages,
+    product UI, dashboards, and redesigns. Own composition, typography, styling,
+    and motion; express accepted interactions and verify rendered results.
+    Route task-flow choices and UX audits to web-ux-engineer.
 fragments:
   overview: fragments/overview.md
 references:
@@ -47,6 +47,14 @@ copies:
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
 supporting:
+  - id: supporting-implementation-log-20261107-1
+    source: docs/logs/implementation-log-20261107-1.md
+    target: docs/logs/implementation-log-20261107-1.md
+    description: Non-normative size-warning and example-lint remediation record.
+  - id: supporting-remediation-evidence-20261107-1
+    source: docs/forward-tests/remediation-evidence-20261107-1.json
+    target: docs/forward-tests/remediation-evidence-20261107-1.json
+    description: Non-normative before-and-after evidence for navigation deduplication and the example lint fix.
   - id: supporting-docs-readme
     source: docs/README.md
     target: docs/README.md
@@ -91,12 +99,13 @@ sections:
     - Classify surface type, constraint profile, and primary visual engine; load only the references whose conditions match the task.
     - Define the evidence required for the strongest honest completion status before building.
   whenToUse:
-    - Create or refine an implementation-ready visual and interaction strategy for a web interface.
+    - Create or refine an implementation-ready visual strategy and the visual expression of accepted interactions.
     - Visually strong landing pages, marketing websites, hero sections, or branded surfaces
     - Product UI, dashboards, workspaces, admin surfaces, or app redesigns that need better hierarchy and visual discipline
     - Translate an accepted design, mockup, or visual direction into React, HTML/CSS, or another component-based UI
     - Prototypes, demo UI, and secondary web formats such as poster-like artifacts or game UI mock surfaces
   whenNotToUse:
+    - Choosing or auditing a user-task flow is the primary result; use web-ux-engineer for interaction choices and scenario continuity.
     - Pure frontend architecture, state management, routing, or data-fetching work with no design direction requirement
     - Pure component API lookup or design-system component selection; use `shadcn` for that
     - Reusable React component correctness/hardening work where the core problem is rendering behavior, SSR, portals, or future React semantics; use `react-components-engineer`
@@ -151,6 +160,10 @@ sections:
         - Status, evidence, unrun checks, and anti-claims are consistent.
         - Source, mockups, stories, screenshots, or compiler success alone cannot close an integrated runtime claim.
   interop:
+    - id: interop-ux
+      domain: task-flow interaction choices, continuity, recovery, and scenario UX audit
+      winner: web-ux-engineer
+      rationale: Consume the accepted interaction and express it visually; retain local state, accessibility, peer-view completeness, and rendered-evidence checks.
     - id: interop-product-authority
       domain: product behavior, actors, actions, states, validation, and copy authority
       winner: The relevant product or specification skill and accepted project sources
@@ -201,6 +214,9 @@ sections:
       priority: medium
       text: Do not approve a design artifact from a stale export or a runtime implementation from an outdated mockup when current source and rendered behavior disagree.
   policies:
+    - id: policy-interop-lead
+      title: Proportional collaboration
+      text: Honor an explicitly selected skill within its supported scope. In mixed work choose the lead by the requested result and consult another skill for a concrete decision only. Missing neighbors do not block supported local work; preserve evidence limits without cycling handoffs or loading every specialist.
     - id: policy-source-authority
       title: Source-authority policy
       text: Resolve product behavior, design-system constraints, runtime behavior, and visual inspiration from their named authorities; stop rather than silently resolve equal-authority conflicts.

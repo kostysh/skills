@@ -1,0 +1,9 @@
+Source verification: exact one-string replacement confirmed.
+Changed lines: 1 removed, 1 added.
+Old text occurrences: 0.
+New text occurrences: 1.
+Location: project/src/App.tsx:85.
+Before SHA-256: 91aedd9fa677873cedb0e0584c8f01e5f649a2b740879362926ae234126590e2
+After SHA-256: 4dab6706ec0065f23c9db487b3cc1a5ad4669aeb417ba98ab8e01a265df3073b
+Runtime/browser checks: not run; the verified claim is the requested source-text replacement.
+Project lint/build/typecheck: not run; no executable logic, types, dependencies, or JSX structure changed.

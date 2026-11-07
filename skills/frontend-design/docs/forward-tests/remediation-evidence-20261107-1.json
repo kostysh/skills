@@ -1,0 +1,813 @@
+{
+  "id": "FRONTEND-LINT-20261107-followup",
+  "baseline": {
+    "base": "bf0796d4b08703797ecaccbe342639884a4e094f",
+    "files": {
+      "skills/frontend-design/skill.yaml": "c98baaa2bc4d5f0ecdc518e3cf4aee709a60ea2bcddfb5d5e15215b6eca38058",
+      "skills/frontend-design/AGENTS.md": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf",
+      "skills/frontend-design/LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "skills/frontend-design/SKILL.md": "705b679a3ee09e5765f1ce336a00c71fdfbbf93974d22e2308053369f49869b4",
+      "skills/frontend-design/docs/compile-report.md": "cbb8e58921fde434e7e49855a32d03a1961bbb594a915cebd6eca4cd478a2701",
+      "skills/frontend-design/docs/README.md": "c51213e5f9c8d2ab589ce1f91227441838e9b3257b99b4cecf2da953256ed38b",
+      "skills/frontend-design/fragments/overview.md": "bb9d637071235e370b562a643aacf1c6eb1919766f04f97738355ec5d6356d57",
+      "skills/frontend-design/agents/openai.yaml": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+      "skills/frontend-design/references/anti-patterns.md": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+      "skills/frontend-design/references/surface-modes.md": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+      "skills/frontend-design/references/visual-engines.md": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7",
+      "skills/frontend-design/references/strategy-to-implementation.md": "ef884923fbb5e95e646700be7dfbfaae760b45390530248e558a937c9c1b45c1",
+      "skills/frontend-design/docs/logs/implementation-log-20260727-1.md": "7c938945af2f16273fd429db122df88b2e552db5ee7d1598981a8318d63827f7",
+      "skills/frontend-design/docs/logs/forward-test-evidence-20260716-1.md": "3f77f833b840ec2b4ebc3c4ea9f2c26bcfc57275ae941be48facbcc519828a51",
+      "skills/frontend-design/docs/logs/implementation-log-20260716-1.md": "1150943b60e90d3a590e4b5a56a185aef8c40079c51ceff5567f7a12955a512b",
+      "skills/frontend-design/docs/logs/implementation-log-20260715-1.md": "eadcfcd1bdf5af63079688889bf284a87bc65ec354849aea37baf8fd25c61d9b",
+      "skills/frontend-design/docs/forward-tests/forward-test-evidence-20260727-1.md": "d660f0f0ea8e6a20a08cca5bfd81c3afe169c919d6d8ce0d7cbc8ea35d00e945",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/tsconfig.node.json": "90a22c920cbc14624fb4658b58f15c875abf3234224f3933f211849c3ada3242",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/package.json": "4a0547303b1178da8779875ba3f3724229734ffdadaffadeace86b58a9e68750",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/eslint.config.js": "cf80a7510234dcd5ae594b30b44682b8b45ba13c0fcb5bf8928bea143802aa1c",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/pnpm-lock.yaml": "45fa824b7163da3ab36f08aed2bd6183cf33ebdb88a32a83c4b957e999718e98",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/index.html": "f5ed80cea17c8985d4d40cf5936d0c94aa6f675cade574b7c720264e342589a9",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/tsconfig.app.json": "1b10733ad1b7359a2b0b6f58a8bb3a13b95eabf0022b4320856eea0127e9588b",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/pnpm-workspace.yaml": "1e831b89d4d46e629c888d0ca10abc161e66a953e0778409facb96bcd828d9a0",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/src/main.tsx": "36302f6e7cd3e4556ef482c8a623155b6b851d957679ab1b76d2b93099af9ca1",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/src/index.css": "9bde270cb8d0493a24091df8ae292e3a2b3484f91d738fa70a037866fe206d48",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/src/App.tsx": "91aedd9fa677873cedb0e0584c8f01e5f649a2b740879362926ae234126590e2",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/src/preserved-note.ts": "63342b08277a771a3f4643af89159820581459bed11554f6164206d0bfd1310b",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/src/assets/react.svg": "35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/src/components/theme-provider.tsx": "7e9140cbb4471cbcf20f9e6348406a0a9f5f00689982f6f6fae7a63f44d063e3",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/src/lib/utils.ts": "14300d758170c270c75b057f38fedb3793a5920ea872f0477e29fb131185e8a7",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/src/components/ui/input.tsx": "75418e030b2a54dd017ac0f4588db4bbdbabca7525e88bbc9d84cb3e18bcb905",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/src/components/ui/dialog.tsx": "84015448e1deacfc38d29ea767c2a62f28c6b61d9a84fce933087c2c7fc9b4e8",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/src/components/ui/label.tsx": "b823de7355666bd6a6a2cf88a6630e436d021b38fdbef5b749fac0921b86f44d",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/src/components/ui/radio-group.tsx": "e36464d09f7339a1803610f5a016d7822aaa7ecab306230e6fc7c329ec799df9",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/src/components/ui/field.tsx": "90cbc96b0de5c836ebb82a2997c45956e81f939566d5e91fc701af007849c92b",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/src/components/ui/button.tsx": "e40545ad9ba22289fd807d5720712a4a183c6377d8754b319ac755d7ded24c8b",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/src/components/ui/switch.tsx": "33647da0cc420551224ecf63921f9cad51fd681d69657af12eb26700a07231cb",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/src/components/ui/separator.tsx": "b5b5460e5337c2d5f361c1512001615b2e5eacb38c7449a4418bb9ddb47c4bba"
+    }
+  },
+  "criteria": "# Критерии исправления, до изменения исходников\n\nОператор просит устранить advisory размера frontend-design и ошибку lint учебного примера. Не повышать лимит 20000 B; не отключать ESLint-правило и не менять runtime Button. Сохранить независимые результаты прежнего плана как исторические, явно отметить новый delta.\n\nSkill: SKILL.md < 20000 UTF-8 B без size warning. Локальные обязательные/optional references и их точные triggers сохранены. Поведение scope, authoritative sources, peer-view completeness, UX interop, accessibility, reduced motion, evidence/status остаётся доступным. Для упрощения сохранить baseline и одинаковые случаи; свежие исполнители не читают rubric/историю. Случай1: не объявлять overview-only strategy-ready, сохранить search/detail/history и reuse; не придумать бизнес-правила; прочитать triggered strategy reference. Случай2: implemented-not-verified, не verified по build/story; назвать missing browser/mobile/states/focus evidence; не требовать новый продукт/все навыки. PASS/FAIL/INCONCLUSIVE по фактическому ответу, не метрикам размера.\n\nLint: воспроизвести прежний failure в disposable copy; экспорт buttonVariants не имеет потребителей во всём project, внутреннее использование сохраняется. После точечного исправления полный объявленный lint и build должны пройти; config/deps/JSX/классы/props не меняются. Отдельный runtime/browser прогон не требуется для удаления неиспользуемого экспорта при неизменной реализации, если build/consumer search подтверждают границы.\n\nФинальный scope: frontend-design source-first, его генерация/упаковка, button.tsx, supporting log/evidence. Независимый bounded review исправлений; без commit/push/установки/публикации.\n",
+  "inputs": "Используй предоставленный frontend-design для двух независимых запросов. Не изменяй код и не выполняй браузерные проверки. Дай практический ответ заказчику, не оценивай скил. Общий ответ — до 450 слов; отдельно перечисли реально прочитанные файлы.\n\n1. Нужна визуальная стратегия системного рабочего модуля для диспетчеров. Принятый стандарт требует search, detail и history; существующая библиотека содержит эти компоненты, соседние модули реализуют все три. В текущем модуле есть только overview-таблица. Продуктовый сценарий уже принят. Выбран data-led подход, нужно сохранить существующие tokens. Достаточно ли улучшить композицию overview для передачи готовой стратегии разработчику? Определи результат и следующий шаг по доступной информации.\n\n2. Разработчик сообщил, что принятый экран реализован. Он дал исходники, успешный build и Storybook screenshot для desktop. Browser walkthrough недоступен; mobile, состояния error/loading, клавиатура и фокус не наблюдались. Какие завершённость и следующий шаг допустимы для runtime-implementation? Никаких новых продуктовых требований не добавляй.\n",
+  "baseline_lint": {
+    "command": [
+      "pnpm",
+      "lint"
+    ],
+    "cwd": "/tmp/web-ux-followup-20261107-uzl7ojz8/fixture",
+    "exit_code": 1,
+    "stdout": "\n/tmp/web-ux-followup-20261107-uzl7ojz8/fixture/src/components/ui/button.tsx\n  67:18  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components\n\n✖ 1 problem (1 error, 0 warnings)\n\n[ELIFECYCLE] Command failed with exit code 1.\n",
+    "stderr": "$ eslint .\n"
+  },
+  "author_selfcheck": "ready-to-regenerate",
+  "baseline_skill_bytes": 20685,
+  "results": {
+    "baseline-lint.json": {
+      "command": [
+        "pnpm",
+        "lint"
+      ],
+      "cwd": "/tmp/web-ux-followup-20261107-uzl7ojz8/fixture",
+      "exit_code": 1,
+      "stdout": "\n/tmp/web-ux-followup-20261107-uzl7ojz8/fixture/src/components/ui/button.tsx\n  67:18  error  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components\n\n✖ 1 problem (1 error, 0 warnings)\n\n[ELIFECYCLE] Command failed with exit code 1.\n",
+      "stderr": "$ eslint .\n"
+    },
+    "candidate-build.json": {
+      "command": [
+        "pnpm",
+        "build"
+      ],
+      "cwd": "/tmp/web-ux-followup-20261107-uzl7ojz8/fixture",
+      "exit_code": 0,
+      "stdout": "vite v8.2.2 building client environment for production...\ntransforming...\n✓ 1960 modules transformed.\nrendering chunks...\ncomputing gzip size...\ndist/index.html                                              0.45 kB │ gzip:  0.29 kB\ndist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2    7.42 kB\ndist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2      8.00 kB\ndist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2       15.08 kB\ndist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2      16.51 kB\ndist/assets/geist-latin-wght-normal-BgDaEnEv.woff2          29.40 kB\ndist/assets/index-DZRSrmZ3.css                              46.18 kB │ gzip:  8.37 kB\ndist/assets/index-DMYpNe-V.js                              297.76 kB │ gzip: 95.47 kB\n\n✓ built in 162ms\n",
+      "stderr": "$ tsc -b && vite build\n(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - `__dirname` (vite.config.ts:11:27). Use `import.meta.dirname` instead\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n"
+    },
+    "candidate-lint.json": {
+      "command": [
+        "pnpm",
+        "lint"
+      ],
+      "cwd": "/tmp/web-ux-followup-20261107-uzl7ojz8/fixture",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "$ eslint .\n"
+    },
+    "compiler.json": [
+      {
+        "command": [
+          "node",
+          "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+          "lint",
+          "/home/kostysh/.codex/skills/custom/skills/frontend-design"
+        ],
+        "exit_code": 0,
+        "stdout": "OK /home/kostysh/.codex/skills/custom/skills/frontend-design\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "node",
+          "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+          "regenerate",
+          "/home/kostysh/.codex/skills/custom/skills/frontend-design"
+        ],
+        "exit_code": 0,
+        "stdout": "Regenerated /home/kostysh/.codex/skills/custom/skills/frontend-design\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "node",
+          "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+          "check",
+          "/home/kostysh/.codex/skills/custom/skills/frontend-design"
+        ],
+        "exit_code": 0,
+        "stdout": "OK /home/kostysh/.codex/skills/custom/skills/frontend-design\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "node",
+          "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+          "compile",
+          "/home/kostysh/.codex/skills/custom/skills/frontend-design",
+          "--out-dir",
+          "/tmp/web-ux-followup-20261107-uzl7ojz8/isolated-skills"
+        ],
+        "exit_code": 0,
+        "stdout": "Compiled /home/kostysh/.codex/skills/custom/skills/frontend-design -> /tmp/web-ux-followup-20261107-uzl7ojz8/isolated-skills/frontend-design\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "node",
+          "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+          "check",
+          "/tmp/web-ux-followup-20261107-uzl7ojz8/isolated-skills/frontend-design"
+        ],
+        "exit_code": 0,
+        "stdout": "OK /tmp/web-ux-followup-20261107-uzl7ojz8/isolated-skills/frontend-design\n",
+        "stderr": ""
+      }
+    ],
+    "followup.diff": "--- baseline/frontend-design/skill.yaml\n+++ candidate/frontend-design/skill.yaml\n@@ -2,7 +2,7 @@\n kind: SkillSource\n skill:\n   name: frontend-design\n-  source-version: 0.2.3\n+  source-version: 0.2.4\n   recommended-skill-md-max-bytes: 20000\n   description: >-\n     Design and implement visual strategies for web interfaces: landing pages,\n@@ -47,6 +47,14 @@\n     target: agents/openai.yaml\n     description: Portable copy of agents/openai.yaml.\n supporting:\n+  - id: supporting-implementation-log-20261107-1\n+    source: docs/logs/implementation-log-20261107-1.md\n+    target: docs/logs/implementation-log-20261107-1.md\n+    description: Non-normative size-warning and example-lint remediation record.\n+  - id: supporting-remediation-evidence-20261107-1\n+    source: docs/forward-tests/remediation-evidence-20261107-1.json\n+    target: docs/forward-tests/remediation-evidence-20261107-1.json\n+    description: Non-normative before-and-after evidence for navigation deduplication and the example lint fix.\n   - id: supporting-docs-readme\n     source: docs/README.md\n     target: docs/README.md\n--- baseline/frontend-design/fragments/overview.md\n+++ candidate/frontend-design/fragments/overview.md\n@@ -1,5 +1,3 @@\n-Use this skill when the quality of the work depends on art direction, hierarchy, restraint, imagery, typography, and motion rather than component count alone.\n-\n Goal: produce deliberate, current interfaces and implementation-ready design\n strategies whose claims match the evidence. Prefer one clear idea, strong\n hierarchy, rigorous spacing, and only the imagery or motion the selected surface\n@@ -20,16 +18,6 @@\n - `reuse and evidence plan`: existing components/assets to reuse and the rendered checks required for the requested completion claim\n \n Each section gets one job, one dominant visual idea, and one primary takeaway or action.\n-\n-For non-trivial strategy, system-constrained work, implementation handoff, or\n-runtime completion, read `references/strategy-to-implementation.md`.\n-\n-Load references only when needed:\n-\n-- `references/strategy-to-implementation.md` for readiness, strategy handoff, implementation mapping, evidence, and status rules\n-- `references/surface-modes.md` for surface type and constraint-profile rules\n-- `references/visual-engines.md` for choosing an `image-led`, `type-led`, `grid-led`, `product-led`, or `data-led` direction\n-- `references/anti-patterns.md` for common failure patterns and anti-AI-slop guidance\n \n ## Cross-Mode Defaults\n \n--- baseline/frontend-design/SKILL.md\n+++ candidate/frontend-design/SKILL.md\n@@ -5,9 +5,9 @@\n   styling, and motion; express accepted interactions and verify rendered\n   results. Route task-flow choices and UX audits to web-ux-engineer.\"\n metadata:\n-  source-version: 0.2.3\n+  source-version: 0.2.4\n   skillforge-source-manifest: skill.yaml\n-  skillforge-source-hash: 117bac8cfea0fe13c5af25f29f81638f78f1cc210a05ce30e07e30acd8a39a61\n+  skillforge-source-hash: a084e96b522d3a5327ac12637ac9481884730dfecb998ecc33404b90dbdb245d\n ---\n \n # frontend-design\n@@ -37,8 +37,6 @@\n - Formal guidelines-based review of an implemented interface without design or remediation work; use `web-ui-reviewer`\n \n ## Overview\n-\n-Use this skill when the quality of the work depends on art direction, hierarchy, restraint, imagery, typography, and motion rather than component count alone.\n \n Goal: produce deliberate, current interfaces and implementation-ready design\n strategies whose claims match the evidence. Prefer one clear idea, strong\n@@ -60,16 +58,6 @@\n - `reuse and evidence plan`: existing components/assets to reuse and the rendered checks required for the requested completion claim\n \n Each section gets one job, one dominant visual idea, and one primary takeaway or action.\n-\n-For non-trivial strategy, system-constrained work, implementation handoff, or\n-runtime completion, read `references/strategy-to-implementation.md`.\n-\n-Load references only when needed:\n-\n-- `references/strategy-to-implementation.md` for readiness, strategy handoff, implementation mapping, evidence, and status rules\n-- `references/surface-modes.md` for surface type and constraint-profile rules\n-- `references/visual-engines.md` for choosing an `image-led`, `type-led`, `grid-led`, `product-led`, or `data-led` direction\n-- `references/anti-patterns.md` for common failure patterns and anti-AI-slop guidance\n \n ## Cross-Mode Defaults\n \n--- baseline/docs/reviews/design-tools-rev-20260909/live-b0/project/src/components/ui/button.tsx\n+++ candidate/docs/reviews/design-tools-rev-20260909/live-b0/project/src/components/ui/button.tsx\n@@ -64,4 +64,4 @@\n   )\n }\n \n-export { Button, buttonVariants }\n+export { Button }\n",
+    "pack.json": {
+      "command": [
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "pack:skills",
+        "--root",
+        "/tmp/web-ux-followup-20261107-uzl7ojz8/isolated-skills",
+        "--out",
+        "/tmp/web-ux-followup-20261107-uzl7ojz8/packed",
+        "--release",
+        "skills-web-ux-engineer-followup-local"
+      ],
+      "cwd": "/tmp/web-ux-20261107-xaye7ceb/pack-workspace",
+      "exit_code": 0,
+      "stdout": "Skills packed: 1; output: /tmp/web-ux-followup-20261107-uzl7ojz8/packed\n",
+      "stderr": "$ node src/pack-cli.ts --root /tmp/web-ux-followup-20261107-uzl7ojz8/isolated-skills --out /tmp/web-ux-followup-20261107-uzl7ojz8/packed --release skills-web-ux-engineer-followup-local\n"
+    },
+    "packer-source-parity.json": [
+      {
+        "path": "cli/README.md",
+        "match": true,
+        "sha256": "5cee5dfe5a6b0aeff594dad38f61714d06720997f68befc16ae5137c91de816a"
+      },
+      {
+        "path": "cli/docs/implementation-log-20261023-1.md",
+        "match": true,
+        "sha256": "89240242e60dbceaf3f4f8082899e1481140c789f8af4a581e3c7a1ed5280625"
+      },
+      {
+        "path": "cli/docs/reviews/ci-code-spec-final.md",
+        "match": true,
+        "sha256": "b5f44901cc2df6d55a14838cb536bc12f29f7ac90f3204296c87ce17a2bbd59d"
+      },
+      {
+        "path": "cli/docs/reviews/ci-documentation-final.md",
+        "match": true,
+        "sha256": "bf7791057c0c3816a5b9339fae26f20cb7ee1f43c40e7721379505e77cfab1ce"
+      },
+      {
+        "path": "cli/docs/reviews/ci-security-final.md",
+        "match": true,
+        "sha256": "9870c90cfc10565f750b8a7b74dd41bacb7cbdf677be335a3a002e0929677450"
+      },
+      {
+        "path": "cli/docs/reviews/ci-simplicity-c1.md",
+        "match": true,
+        "sha256": "e5258a1f5deead2e2859456706e0d5a0ece2c7fcf4625b6d5b96a62ab5acfedd"
+      },
+      {
+        "path": "cli/docs/reviews/ci-simplicity-final.md",
+        "match": true,
+        "sha256": "07bd58b63afa36241296af5341d96df4ed0ae8b93cc288d04d43eb5d43f25030"
+      },
+      {
+        "path": "cli/docs/reviews/code-spec-r2.md",
+        "match": true,
+        "sha256": "b9419cbf7ff4e2286a71a4741102b2f858762d640a5d4560b388f465e0809e08"
+      },
+      {
+        "path": "cli/docs/reviews/code-spec-r3.md",
+        "match": true,
+        "sha256": "13883fc993121e15ee2e30e170b33fce6b467f57b45cc39bbb1f19fed5748c4d"
+      },
+      {
+        "path": "cli/docs/reviews/documentation-r2.md",
+        "match": true,
+        "sha256": "bdf0f598133b4cccd0197a187298bca526a0c47a6274f568deeb070d25169eff"
+      },
+      {
+        "path": "cli/docs/reviews/documentation-r3.md",
+        "match": true,
+        "sha256": "3f2ddfc61a1886f398ee62385efc6c107f858b2657da6c7fc61e7b5bfbd2b3e7"
+      },
+      {
+        "path": "cli/docs/reviews/implementation-r1.md",
+        "match": true,
+        "sha256": "1ba9ca2a5aee829de845e56cdbc8b93fb826daf9a6a55204102696bf611e9a46"
+      },
+      {
+        "path": "cli/docs/reviews/manifest-ci-final.json",
+        "match": true,
+        "sha256": "f77a3ec2d3577b754859181c586223971dd5181243ffb0a05d6bd4e472e2f247"
+      },
+      {
+        "path": "cli/docs/reviews/manifest-r2.json",
+        "match": true,
+        "sha256": "b5ad40d7f3d5525a18e9ff10601ef2a79c5bcf2ef27ff5e32d4ce81c4db0aa1c"
+      },
+      {
+        "path": "cli/docs/reviews/manifest-r3.json",
+        "match": true,
+        "sha256": "341f09f4c24957aeba2ef3675af21700a50e2d22809b8b77608058e34f15b4cb"
+      },
+      {
+        "path": "cli/docs/reviews/security-r2.md",
+        "match": true,
+        "sha256": "321754a5ab65ce1a509a877a330cce637746e9a119ff5410fb020615761eeabd"
+      },
+      {
+        "path": "cli/docs/reviews/security-r3.md",
+        "match": true,
+        "sha256": "352ed38017a6c4320a896240e56c55f546701a711747ec76cafd3d4c3918205d"
+      },
+      {
+        "path": "cli/docs/reviews/simplicity-r2.md",
+        "match": true,
+        "sha256": "d84dd3a9f56959525e36100b009ed38ab930627bbdeb719c79aad0569bd7dfc3"
+      },
+      {
+        "path": "cli/docs/reviews/simplicity-r3.md",
+        "match": true,
+        "sha256": "9d942e614bb59093d78451c636a68d9090b44eb3efc2c4886b2e51c0165d0878"
+      },
+      {
+        "path": "cli/package.json",
+        "match": true,
+        "sha256": "1f3127bb702f46b2fe88f50a984bb457c7048d14a943a3c70a1597b1efa677cd"
+      },
+      {
+        "path": "cli/src/archive.ts",
+        "match": true,
+        "sha256": "e9e7563cc1cd792b58b75fb80afd942ace0ce9847ded0c840f3d19a80bdf9919"
+      },
+      {
+        "path": "cli/src/cli.ts",
+        "match": true,
+        "sha256": "72422403897bd87cf96d9f4ce6cd36244b42782f11edf9131f18d915af9f5362"
+      },
+      {
+        "path": "cli/src/files.ts",
+        "match": true,
+        "sha256": "7c7d085d9e768cf09430910c7a306659e001d8620b6ae9ee8e0adc9e7916e39e"
+      },
+      {
+        "path": "cli/src/installer.ts",
+        "match": true,
+        "sha256": "f95de43a5ad1179559c5e907bdeb9177db638556f8718fe3c75a5ca4400a9035"
+      },
+      {
+        "path": "cli/src/model.ts",
+        "match": true,
+        "sha256": "a675087e0179c8dde853b6853e5c2d700a18d73c6675831a0639bf2e26ba85f0"
+      },
+      {
+        "path": "cli/src/network.ts",
+        "match": true,
+        "sha256": "070a3be897e1c80c0de5bd13fc3bc23d4f295071d886e41e3270511bf77a6a72"
+      },
+      {
+        "path": "cli/src/pack-cli.ts",
+        "match": true,
+        "sha256": "49dd74bcbcf75443fb7fedf67cc829ddaf7802ebb96ddac691b3d3a63cc16066"
+      },
+      {
+        "path": "cli/src/pack.ts",
+        "match": true,
+        "sha256": "146e284a71c4fc22eccb2d1831abd69d85ee3ba2e83ab70385ce343b10d0ed16"
+      },
+      {
+        "path": "cli/src/prompts.ts",
+        "match": true,
+        "sha256": "d81ce59da42c6faf9208a0e51ad8cc53ab77f7d0a346577d882e0cbd50249100"
+      },
+      {
+        "path": "cli/test/crash-fixture.ts",
+        "match": true,
+        "sha256": "bbc0e69bfc170fb8cb4f08df12e60cbd9049d9424221dad749db43531a03eedb"
+      },
+      {
+        "path": "cli/test/helpers.ts",
+        "match": true,
+        "sha256": "25bb0a32e71e9710869fd2012af0cb1b82f5450b355353b75e74944a41ce6f89"
+      },
+      {
+        "path": "cli/test/http-fixture.ts",
+        "match": true,
+        "sha256": "24874608523fe78966cf38cb08f8a2b186fd9bcd1f9764f0e9c0e0a6487a1e75"
+      },
+      {
+        "path": "cli/test/installer.test.ts",
+        "match": true,
+        "sha256": "c01926ae8e4732631b30574b49555a94f4fa70ef8994ae4d923e25b1f8cc259c"
+      },
+      {
+        "path": "cli/test/pack-network.test.ts",
+        "match": true,
+        "sha256": "6f13a44bfdc0da37b76a53a5c22797e28b06e548f43d3b16a089f96fcdf940be"
+      },
+      {
+        "path": "cli/test/process.test.ts",
+        "match": true,
+        "sha256": "44e2267f62e9ce1842cdf9dea76cc98355a095cb48553306f5a6a3de22f5f80b"
+      },
+      {
+        "path": "cli/test/prompts.test.ts",
+        "match": true,
+        "sha256": "ff5e9cec5c1152b878612134a29910cabc30f7f8ac4f9dc2fef2982ae212c95e"
+      },
+      {
+        "path": "cli/test/recovery.test.ts",
+        "match": true,
+        "sha256": "d458cf1405ae8c87df4401da428f816852cfd06ee23cd24a1d98a0de6066a20e"
+      },
+      {
+        "path": "cli/test/verify-package.ts",
+        "match": true,
+        "sha256": "293d6177ea6cc6e94c2381164ea0eac97791ff53f9536c82826c932a8e964113"
+      },
+      {
+        "path": "cli/tsconfig.json",
+        "match": true,
+        "sha256": "f250be823869d53d536789c22f054fb10ffdd021f70e3520044bc586c30c4df5"
+      },
+      {
+        "path": "cli/vite.config.ts",
+        "match": true,
+        "sha256": "0a1c1049d8e447d3c0f06d4b23c301844daa0978a7a7fc2fe69ced8cda217acd"
+      },
+      {
+        "path": "package.json",
+        "match": true,
+        "sha256": "7db3008539ada70197bf1d70690a6548eae9ea8a64f660d37a7d92d3ccb34fc9"
+      },
+      {
+        "path": "pnpm-lock.yaml",
+        "match": true,
+        "sha256": "937a5d54fc9fa6b2dc77c468a16c374c8811f77fb7801ed6879a2907eec8b16c"
+      },
+      {
+        "path": "pnpm-workspace.yaml",
+        "match": true,
+        "sha256": "f6b49ae3a60c84aa016a10dcd5e9f115b2cd1ea7cca24cb1fe79d12c08dae40c"
+      }
+    ],
+    "parity.json": {
+      "baseline_bytes": 20685,
+      "candidate_bytes": 19923,
+      "bytes_removed": 762,
+      "reference_triggers_unchanged": true,
+      "sections_unchanged": true,
+      "metadata_unchanged": true,
+      "threshold": 20000,
+      "local_isolated_parity_files": [
+        "LICENSE.txt",
+        "SKILL.md",
+        "agents/openai.yaml",
+        "docs/README.md",
+        "docs/compile-report.md",
+        "docs/forward-tests/forward-test-evidence-20260727-1.md",
+        "docs/forward-tests/remediation-evidence-20261107-1.json",
+        "docs/logs/forward-test-evidence-20260716-1.md",
+        "docs/logs/implementation-log-20260715-1.md",
+        "docs/logs/implementation-log-20260716-1.md",
+        "docs/logs/implementation-log-20260727-1.md",
+        "docs/logs/implementation-log-20261107-1.md",
+        "references/anti-patterns.md",
+        "references/strategy-to-implementation.md",
+        "references/surface-modes.md",
+        "references/visual-engines.md"
+      ],
+      "archive": "/tmp/web-ux-followup-20261107-uzl7ojz8/packed/frontend-design-0.2.4.tgz",
+      "archive_sha256": "cdb0f944d4354ef3809f725983521c080d4efff5103060b1c54eb4cfe7e37e6d",
+      "archive_members": [
+        {
+          "path": "SKILL.md",
+          "sha256": "8b6cbe076ff9d7a8ae0a2efaffe5de451299a08c565d9c4d409d71f334775dee",
+          "bytes": 19923
+        },
+        {
+          "path": "agents/openai.yaml",
+          "sha256": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+          "bytes": 275
+        },
+        {
+          "path": "references/anti-patterns.md",
+          "sha256": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+          "bytes": 2323
+        },
+        {
+          "path": "references/strategy-to-implementation.md",
+          "sha256": "ef884923fbb5e95e646700be7dfbfaae760b45390530248e558a937c9c1b45c1",
+          "bytes": 7771
+        },
+        {
+          "path": "references/surface-modes.md",
+          "sha256": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+          "bytes": 3217
+        },
+        {
+          "path": "references/visual-engines.md",
+          "sha256": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7",
+          "bytes": 2583
+        }
+      ],
+      "fixture_changed_files": [
+        "docs/reviews/design-tools-rev-20260909/live-b0/project/src/components/ui/button.tsx"
+      ],
+      "fixture_source_copy_parity": true,
+      "fixture_exact_unused_export_delta": true,
+      "verification_correction": "First archive assertion expected 7 files including LICENSE.txt and failed. Inspected repository cli/src/pack.ts:111-125: only SKILL.md and references/assets/scripts/agents are selected. Correct expectation is 6 actual files. Packer and archive were unchanged."
+    },
+    "trial-a.md": "Применён `frontend-design`.\n\n1. Улучшить только overview недостаточно. Нужен результат `strategy-only`: визуальная стратегия всего принятого рабочего модуля, по которой разработчик сможет реализовать экран без новых продуктовых решений. Передавать текущую композицию как `strategy-ready` преждевременно.\n\nПо предоставленным данным обязательное покрытие такое:\n\n| Возможность | Основание | Компоненты | Текущий модуль | Решение |\n| --- | --- | --- | --- | --- |\n| Search | Принятый стандарт и соседние модули | Есть | Отсутствует | Использовать существующие |\n| Detail | Принятый стандарт и соседние модули | Есть | Отсутствует | Использовать существующие |\n| History | Принятый стандарт и соседние модули | Есть | Отсутствует | Использовать существующие |\n\nНаличие компонентов в библиотеке не означает наличие этих возможностей в модуле. Здесь их нельзя исключить как неприменимые: они уже требуются стандартом. Отсутствие в текущем runtime не отменяет требование.\n\nСледующий шаг — дополнить стратегию всеми тремя возможностями. Сопоставить принятый сценарий с конкретными компонентами, их вариантами, состояниями и расположением; проверить актуальные контракты библиотеки и принятые решения соседних модулей. Затем описать адаптацию к размерам экрана и будущую проверку реализации.\n\nВизуальная основа уже определена: продуктовый модуль с ограничениями существующей системы, подход `data-led`, сохранённые tokens. Предлагаемая композиция — плотная, читаемая рабочая поверхность с ясной иерархией данных, статусов и принятых действий. Выражение переходов должно следовать принятому сценарию. Пересогласовывать сценарий или создавать новые примитивы по имеющимся данным не требуется.\n\nСтатус `strategy-ready` допустим после завершения этого контракта. Он подтверждает готовность стратегии для разработчика, но не работу модуля в приложении.\n\n2. Допустимый статус — `implemented-not-verified`. Исходники и успешный build подтверждают наличие собираемой реализации; desktop screenshot из Storybook показывает только изображённое состояние компонента. Эти сведения не подтверждают принятый экран в реальном пути приложения.\n\nСледующий шаг — получить доступ к текущей реализации и выполнить соразмерные проверки: принятый сценарий на desktop и mobile, предусмотренные loading/error, управление клавиатурой и видимый фокус. Проверить другие состояния только в пределах принятого экрана; reduced motion — при наличии соответствующей анимации, console/network — где они существенны для результата.\n\nПока browser walkthrough недоступен, перечислить эти проверки как невыполненные и сохранить `implemented-not-verified`. Статус `verified` возможен после успешной проверки интегрированного экрана. Новые продуктовые требования для этого не нужны.\n\nРеально прочитанные файлы:\n\n- [cases.md](/tmp/web-ux-followup-20261107-uzl7ojz8/inputs/cases.md)\n- [frontend-design/SKILL.md](/tmp/web-ux-followup-20261107-uzl7ojz8/trial-a/frontend-design/SKILL.md)\n- [strategy-to-implementation.md](/tmp/web-ux-followup-20261107-uzl7ojz8/trial-a/frontend-design/references/strategy-to-implementation.md)\n",
+    "trial-b.md": "1. **Улучшить только overview недостаточно.** Запрошен результат `strategy-only` для разработчика всего рабочего модуля. Принятый стандарт требует search, detail и history. Их отсутствие в текущем модуле не отменяет требования. Передавать композицию overview как `strategy-ready` нельзя.\n\nПо данным запроса:\n\n| Возможность | Основание и повторное использование | Текущее состояние |\n| --- | --- | --- |\n| Search | Принятый стандарт; компонент библиотеки; соседние модули | Отсутствует |\n| Detail | Принятый стандарт; компонент библиотеки; соседние модули | Отсутствует |\n| History | Принятый стандарт; компонент библиотеки; соседние модули | Отсутствует |\n\nСледующий шаг — дополнить стратегию всеми тремя возможностями, опираясь на принятый сценарий и существующие компоненты. Для каждой зафиксировать место в композиции, визуальное выражение принятых переходов, значимые состояния и компонент, который их обслуживает. Конкретные компоненты и их варианты нужно сверить перед окончательной передачей: здесь известно об их наличии, но их контракты не представлены.\n\nВизуальное направление уже определено: `product/app`, `system-constrained`, `data-led`. Рабочие данные задают иерархию; плотность остаётся читаемой; существующие tokens сохраняются. Стратегия должна охватывать responsive-композицию и план проверки полного принятого сценария. Переосмысливать продуктовый сценарий не требуется.\n\nРезультат можно назвать `strategy-ready`, когда разработчик сможет реализовать весь предусмотренный модуль без самостоятельного изобретения визуальных решений, состояний и правил повторного использования. Это готовность стратегии, а не доказательство работающего модуля.\n\n2. **Допустимый статус — `implemented-not-verified`.** По предоставленным данным реализация существует. Успешный build подтверждает сборку; Storybook screenshot подтверждает только показанный desktop-вид и состояние. Они не доказывают выполнение принятого сценария в приложении.\n\nСледующий шаг — получить проверку текущего интегрированного экрана на типичных desktop и mobile размерах, пройти принятые взаимодействия, существующие loading/error состояния, управление клавиатурой и фокус. Если есть движение, проверить предусмотренное reduced-motion поведение; console/network проверить там, где это существенно для сценария.\n\nПока browser walkthrough недоступен, сохранить `implemented-not-verified` и явно перечислить отсутствующие наблюдения. `verified` допустим после успешных проверок. Это проверка принятой реализации, без добавления продуктовых требований. В рамках этого ответа код и браузер не проверялись.\n\n**Реально прочитанные файлы:**\n\n- `/tmp/web-ux-followup-20261107-uzl7ojz8/inputs/cases.md`\n- `/tmp/web-ux-followup-20261107-uzl7ojz8/trial-b/frontend-design/SKILL.md`\n- `/tmp/web-ux-followup-20261107-uzl7ojz8/trial-b/frontend-design/references/strategy-to-implementation.md`\n\n",
+    "review-isolated.json": {
+      "commands": [
+        {
+          "command": [
+            "node",
+            "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+            "check",
+            "/tmp/web-ux-followup-20261107-uzl7ojz8/review-source/skills/frontend-design"
+          ],
+          "exit_code": 0,
+          "stdout": "OK /tmp/web-ux-followup-20261107-uzl7ojz8/review-source/skills/frontend-design\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "node",
+            "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+            "compile",
+            "/tmp/web-ux-followup-20261107-uzl7ojz8/review-source/skills/frontend-design",
+            "--out-dir",
+            "/tmp/web-ux-followup-20261107-uzl7ojz8/review-isolated-skills"
+          ],
+          "exit_code": 0,
+          "stdout": "Compiled /tmp/web-ux-followup-20261107-uzl7ojz8/review-source/skills/frontend-design -> /tmp/web-ux-followup-20261107-uzl7ojz8/review-isolated-skills/frontend-design\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "node",
+            "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+            "check",
+            "/tmp/web-ux-followup-20261107-uzl7ojz8/review-isolated-skills/frontend-design"
+          ],
+          "exit_code": 0,
+          "stdout": "OK /tmp/web-ux-followup-20261107-uzl7ojz8/review-isolated-skills/frontend-design\n",
+          "stderr": ""
+        }
+      ],
+      "matching_files": [
+        "LICENSE.txt",
+        "SKILL.md",
+        "agents/openai.yaml",
+        "references/strategy-to-implementation.md",
+        "references/visual-engines.md",
+        "references/surface-modes.md",
+        "references/anti-patterns.md",
+        "docs/README.md",
+        "docs/compile-report.md",
+        "docs/forward-tests/forward-test-evidence-20260727-1.md",
+        "docs/forward-tests/remediation-evidence-20261107-1.json",
+        "docs/logs/implementation-log-20260727-1.md",
+        "docs/logs/forward-test-evidence-20260716-1.md",
+        "docs/logs/implementation-log-20260716-1.md",
+        "docs/logs/implementation-log-20260715-1.md",
+        "docs/logs/implementation-log-20261107-1.md"
+      ]
+    },
+    "current-state.json": {
+      "base": "bf0796d4b08703797ecaccbe342639884a4e094f",
+      "prior_snapshot_files": 43,
+      "changed_prior_review_paths": [
+        "skills/frontend-design/SKILL.md",
+        "skills/frontend-design/docs/compile-report.md",
+        "skills/frontend-design/fragments/overview.md",
+        "skills/frontend-design/skill.yaml"
+      ],
+      "fixture_baseline_files": 25
+    },
+    "git-diff-check.json": {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "final-checks.json": [
+      {
+        "command": [
+          "node",
+          "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+          "check",
+          "skills/web-ux-engineer"
+        ],
+        "exit_code": 0,
+        "stdout": "OK skills/web-ux-engineer\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "node",
+          "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+          "check",
+          "skills/frontend-design"
+        ],
+        "exit_code": 0,
+        "stdout": "OK skills/frontend-design\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "node",
+          "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+          "check",
+          "skills/web-ui-reviewer"
+        ],
+        "exit_code": 0,
+        "stdout": "OK skills/web-ui-reviewer\n",
+        "stderr": ""
+      },
+      {
+        "command": [
+          "node",
+          "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+          "check",
+          "skills/react-spa-engineer"
+        ],
+        "exit_code": 0,
+        "stdout": "OK skills/react-spa-engineer\n",
+        "stderr": ""
+      }
+    ],
+    "release-preflight.json": {
+      "command": [
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "pack:skills",
+        "--root",
+        "/home/kostysh/.codex/skills/custom/skills",
+        "--out",
+        "/tmp/web-ux-followup-20261107-uzl7ojz8/release-preflight",
+        "--release",
+        "skills-20261107-2",
+        "--previous-latest"
+      ],
+      "exit_code": 0,
+      "stdout": "Skills packed: 38; output: /tmp/web-ux-followup-20261107-uzl7ojz8/release-preflight\n",
+      "stderr": "$ node src/pack-cli.ts --root /home/kostysh/.codex/skills/custom/skills --out /tmp/web-ux-followup-20261107-uzl7ojz8/release-preflight --release skills-20261107-2 --previous-latest\n"
+    },
+    "staged-check.json": {
+      "full_staged_check": {
+        "exit_code": 2,
+        "stdout": "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/final.diff:5: trailing whitespace.\n+ \nskills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/final.diff:8: trailing whitespace.\n+ \nskills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/final.diff:28: trailing whitespace.\n+ \nskills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/final.diff:51: trailing whitespace.\n+ \nskills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/final.diff:86: trailing whitespace.\n+ \nskills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-final.diff:11: trailing whitespace.\n+ \nskills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-final.diff:11: new blank line at EOF.\nskills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/commands.json:943: new blank line at EOF.\nskills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/final-cleanup-command.json:12: new blank line at EOF.\nskills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/final.diff:5: trailing whitespace.\n+ \nskills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/final.diff:8: trailing whitespace.\n+ \nskills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/final.diff:28: trailing whitespace.\n+ \nskills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/final.diff:51: trailing whitespace.\n+ \nskills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/implementation.patch:6: trailing whitespace.\n+ \nskills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/summary.md:73: new blank line at EOF.\nskills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/supplemental-commands.json:91: new blank line at EOF.\nskills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/supplemental-commands.md:302: new blank line at EOF.\nskills/web-ux-engineer/docs/forward-tests/20261107/candidate-tasks/D.diff:11: trailing whitespace.\n+ \nskills/web-ux-engineer/docs/forward-tests/20261107/candidate-tasks/D.diff:11: new blank line at EOF.\nskills/web-ux-engineer/docs/forward-tests/20261107/standalone/D.diff:11: trailing whitespace.\n+ \nskills/web-ux-engineer/docs/forward-tests/20261107/standalone/D.diff:11: new blank line at EOF.\nskills/web-ux-engineer/docs/forward-tests/20261107/standalone/task.md:32: new blank line at EOF.\n"
+      },
+      "raw_evidence_exceptions": [
+        "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/final.diff",
+        "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-final.diff",
+        "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/commands.json",
+        "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/final-cleanup-command.json",
+        "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/final.diff",
+        "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/implementation.patch",
+        "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/summary.md",
+        "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/supplemental-commands.json",
+        "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/supplemental-commands.md",
+        "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-tasks/D.diff",
+        "skills/web-ux-engineer/docs/forward-tests/20261107/standalone/D.diff",
+        "skills/web-ux-engineer/docs/forward-tests/20261107/standalone/task.md"
+      ],
+      "each_exception_matches_previously_independently_reviewed_frozen_bytes": true,
+      "source_and_other_files_check": {
+        "command": [
+          "git",
+          "diff",
+          "--cached",
+          "--check",
+          "--",
+          ".",
+          ":(exclude)skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/final.diff",
+          ":(exclude)skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-final.diff",
+          ":(exclude)skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/commands.json",
+          ":(exclude)skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/final-cleanup-command.json",
+          ":(exclude)skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/final.diff",
+          ":(exclude)skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/implementation.patch",
+          ":(exclude)skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/summary.md",
+          ":(exclude)skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/supplemental-commands.json",
+          ":(exclude)skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/supplemental-commands.md",
+          ":(exclude)skills/web-ux-engineer/docs/forward-tests/20261107/candidate-tasks/D.diff",
+          ":(exclude)skills/web-ux-engineer/docs/forward-tests/20261107/standalone/D.diff",
+          ":(exclude)skills/web-ux-engineer/docs/forward-tests/20261107/standalone/task.md"
+        ],
+        "exit_code": 0,
+        "stdout": ""
+      },
+      "staged_file_count": 141
+    }
+  },
+  "exposure": {
+    "criteria_owner": "/root; saved before candidate changes",
+    "executors": {
+      "baseline": "/root/size_trial_a",
+      "candidate": "/root/size_trial_b"
+    },
+    "fresh_context": true,
+    "fork_turns": "none",
+    "same_cases": true,
+    "tools_and_settings": "inherited host settings; identical task and tool limits; no independent runtime model identification",
+    "allowed_reads": "cases.md and assigned active root/references/agents only",
+    "denied_reads": "rubric, historical reports, other trial, unrelated skills",
+    "isolation": "instructions on shared filesystem, not OS sandbox",
+    "reported_reads": [
+      "cases.md",
+      "assigned SKILL.md",
+      "assigned references/strategy-to-implementation.md"
+    ],
+    "metrics": "no comparable token/time/cost measurement"
+  },
+  "author_assessment": {
+    "case1": {
+      "baseline": "PASS",
+      "candidate": "PASS",
+      "basis": "both preserve source-required search/detail/history and reuse, reject overview-only strategy-ready and read triggered strategy reference"
+    },
+    "case2": {
+      "baseline": "PASS",
+      "candidate": "PASS",
+      "basis": "both report implemented-not-verified and missing current browser/mobile/loading/error/keyboard/focus evidence without new product rules"
+    },
+    "limits": "two forced-execution synthetic cases; no broad reliability or UX advantage claim"
+  },
+  "baseline_source": {
+    "SKILL.md": "---\nname: frontend-design\ndescription: \"Design and implement visual strategies for web interfaces: landing\n  pages, product UI, dashboards, and redesigns. Own composition, typography,\n  styling, and motion; express accepted interactions and verify rendered\n  results. Route task-flow choices and UX audits to web-ux-engineer.\"\nmetadata:\n  source-version: 0.2.3\n  skillforge-source-manifest: skill.yaml\n  skillforge-source-hash: 117bac8cfea0fe13c5af25f29f81638f78f1cc210a05ce30e07e30acd8a39a61\n---\n\n# frontend-design\n\n## Start here\n\n1. Confirm that visual direction, design strategy, or translating design into a rendered interface is material to the request.\n2. Name the requested deliverable as strategy-only, design-artifact, runtime-implementation, or a combination.\n3. Inspect the authoritative brief, existing runtime, design system, component inventory, and assets that can govern the work before making visual decisions.\n4. Classify surface type, constraint profile, and primary visual engine; load only the references whose conditions match the task.\n5. Define the evidence required for the strongest honest completion status before building.\n\n## When to use this skill\n\n- Create or refine an implementation-ready visual strategy and the visual expression of accepted interactions.\n- Visually strong landing pages, marketing websites, hero sections, or branded surfaces\n- Product UI, dashboards, workspaces, admin surfaces, or app redesigns that need better hierarchy and visual discipline\n- Translate an accepted design, mockup, or visual direction into React, HTML/CSS, or another component-based UI\n- Prototypes, demo UI, and secondary web formats such as poster-like artifacts or game UI mock surfaces\n\n## When NOT to use this skill\n\n- Choosing or auditing a user-task flow is the primary result; use web-ux-engineer for interaction choices and scenario continuity.\n- Pure frontend architecture, state management, routing, or data-fetching work with no design direction requirement\n- Pure component API lookup or design-system component selection; use `shadcn` for that\n- Reusable React component correctness/hardening work where the core problem is rendering behavior, SSR, portals, or future React semantics; use `react-components-engineer`\n- Formal guidelines-based review of an implemented interface without design or remediation work; use `web-ui-reviewer`\n\n## Overview\n\nUse this skill when the quality of the work depends on art direction, hierarchy, restraint, imagery, typography, and motion rather than component count alone.\n\nGoal: produce deliberate, current interfaces and implementation-ready design\nstrategies whose claims match the evidence. Prefer one clear idea, strong\nhierarchy, rigorous spacing, and only the imagery or motion the selected surface\nneeds.\n\n## Working Model\n\nBefore designing or building, establish:\n\n- `deliverable`: `strategy-only`, `design-artifact`, or `runtime-implementation`\n- `source hierarchy`: the brief, product behavior, existing runtime, design system, and assets that govern decisions\n- `surface type`: `brand/landing`, `product/app`, or `secondary format`\n- `constraint profile`: `greenfield` or `system-constrained`\n- `visual engine`: one primary engine and, only when useful, one supporting engine\n- `visual thesis`: one sentence describing mood, material, energy, and the dominant visual idea\n- `content and state plan`: content order plus the relevant loading, empty, error, success, permission, responsive, and long-content states\n- `interaction thesis`: the visual expression of accepted behavior through transitions or motion that materially improve presence, hierarchy, feedback, or affordance; task-flow choices belong to `web-ux-engineer`\n- `reuse and evidence plan`: existing components/assets to reuse and the rendered checks required for the requested completion claim\n\nEach section gets one job, one dominant visual idea, and one primary takeaway or action.\n\nFor non-trivial strategy, system-constrained work, implementation handoff, or\nruntime completion, read `references/strategy-to-implementation.md`.\n\nLoad references only when needed:\n\n- `references/strategy-to-implementation.md` for readiness, strategy handoff, implementation mapping, evidence, and status rules\n- `references/surface-modes.md` for surface type and constraint-profile rules\n- `references/visual-engines.md` for choosing an `image-led`, `type-led`, `grid-led`, `product-led`, or `data-led` direction\n- `references/anti-patterns.md` for common failure patterns and anti-AI-slop guidance\n\n## Cross-Mode Defaults\n\n- Start with composition, not components.\n- Keep copy short enough to scan in seconds.\n- Use whitespace, alignment, scale, cropping, and contrast before adding chrome.\n- In greenfield work, limit the system to two typefaces and one accent color by default; in system-constrained work, preserve the accepted token system.\n- Use expressive typography when the brief allows it; avoid safe, overused default choices that flatten the page.\n- Default to cardless layouts. Use sections, columns, dividers, lists, and media blocks instead.\n- Build atmosphere with backgrounds, texture, depth, overlays, or pattern only when they reinforce hierarchy and mood.\n- Avoid AI-slop aesthetics: generic SaaS card stacks, weak branding, filler gradients, predictable component mosaics, and cookie-cutter visual language.\n\n## Mode Application\n\nFor landing work, use a concise hero-support-detail-CTA sequence and one\ndominant first-screen composition. The anchor may be imagery, expressive type,\nproduct proof, data, or grid structure; do not force imagery into a non-image\nengine. Count persistent headers against the initial viewport budget.\n\nFor product work, lead with the working surface, navigation, secondary context,\nand one clear action or state accent. Prefer dense but readable layout over\nmarketing heroes, decorative backgrounds, or card mosaics.\n\nWhen imagery is selected, make it carry narrative meaning, crop it around the\ncomposition, and keep text away from visual or typographic clutter. Read\n`references/surface-modes.md` and `references/visual-engines.md` for the full\nmode and engine guidance.\n\n## Copy\n\n- Write in product language, not design commentary.\n- Let the headline carry the meaning.\n- Supporting copy should usually be one short sentence.\n- Cut repetition between sections.\n- Do not include prompt language or design commentary in the UI.\n- Give every section one responsibility: explain, prove, deepen, or convert.\n\nIf deleting 30 percent of the copy improves the page, keep deleting.\n\n## Utility Copy For Product UI\n\nWhen the work is a dashboard, app surface, admin tool, or operational workspace, default to utility copy over marketing copy.\n\n- Prioritize orientation, status, and action over promise, mood, or brand voice.\n- Start with the working surface itself: KPIs, charts, filters, tables, status, or task context. Do not introduce a hero section unless the user explicitly asks for one.\n- Section headings should say what the area is or what the user can do there.\n- Good: `Selected KPIs`, `Plan status`, `Search metrics`, `Top segments`, `Last sync`\n- Avoid aspirational hero lines, metaphors, campaign-style language, and executive-summary banners on product surfaces unless specifically requested.\n- Supporting text should explain scope, behavior, freshness, or decision value in one sentence.\n- If a sentence could appear in a homepage hero or ad, rewrite it until it sounds like product UI.\n- If a section does not help someone operate, monitor, or decide, remove it.\n- Litmus check: if an operator scans only headings, labels, and numbers, can they understand the page immediately?\n\n## Motion\n\nUse motion to create presence and hierarchy, not noise.\n\nChoose only the motions the brief and surface can justify. A visually led\nlanding page may use several coordinated motions; a routine product surface may\nneed one transition or none.\n\nPossible roles include:\n\n- one entrance sequence in the hero\n- one scroll-linked, sticky, or depth effect\n- one hover, reveal, or layout transition that sharpens affordance\n\nUse the existing project motion stack. Prefer CSS for simple state changes and,\nwhen a React motion dependency is already installed or explicitly approved,\nverify its current package and framework API before use. Motion for React is\nappropriate for:\n\n- section reveals\n- shared layout transitions\n- scroll-linked opacity, translate, or scale shifts\n- sticky storytelling\n- carousels that advance narrative rather than filling space\n- menus, drawers, and modal presence effects\n\nMotion rules:\n\n- observable when it is part of the intended experience\n- smooth on mobile\n- fast and restrained\n- consistent across the page\n- removed if ornamental only\n- non-essential transform, parallax, or autoplay behavior is disabled or replaced when the user prefers reduced motion\n\n## Guardrails\n\nAccepted product behavior, accessibility constraints, and an existing design\nsystem take precedence over the aesthetic defaults below.\n\n- No cards by default.\n- No hero cards by default.\n- No boxed or center-column hero when the brief calls for full bleed.\n- No more than one dominant idea per section.\n- No section should need many tiny UI devices to explain itself.\n- No headline should overpower the brand on branded pages.\n- No filler copy.\n- No split-screen hero unless text sits on a calm, unified side.\n- No more than two typefaces without a clear reason.\n- No more than one accent color unless the product already has a strong system.\n- No generic AI-slop styling: safe default fonts, generic purple-on-white gradients, predictable SaaS block stacks, or interchangeable component soup.\n\n## Reject These Failures\n\n- Generic SaaS card grid as the first impression\n- Beautiful image with weak brand presence\n- Strong headline with no clear action\n- Busy imagery behind text\n- Sections that repeat the same mood statement\n- Carousel with no narrative purpose\n- App UI made of stacked cards instead of layout\n- “Creative” styling that breaks the existing design system or framework conventions\n\n## Final Review Loop\n\nBefore finishing the requested deliverable, verify:\n\n- first-screen hierarchy is obvious\n- each section has one dominant idea\n- card use is necessary rather than habitual\n- copy is compressed to the shortest useful version\n- motion improves meaning, hierarchy, or affordance\n- desktop and mobile viewport composition both hold up\n- contrast, tap targets, focus states, and reduced-motion behavior are acceptable\n\nFor a runtime implementation, these checks must come from the current rendered\ninterface at representative viewports and relevant states. If rendered checks\ncannot run, report `implemented-not-verified`; do not imply runtime completion.\nFor strategy-only or design-artifact work, report the corresponding scoped\nstatus and the runtime evidence still outstanding.\n\n## Workflow stages\n\n### Workflow stage: Establish the design basis\n\nPrevent visual work from inventing product behavior or bypassing the current UI system.\n\n1. Name the deliverable and its downstream consumer.\n2. Inspect the user brief, accepted product or UX sources, current runtime, design-system tokens, reusable components, Storybook or equivalent examples, and available assets that govern the task.\n3. Record source precedence when multiple inputs govern the same decision.\n4. Before visual direction or polish for non-trivial module UI, inventory applicable peer capabilities, record reuse, justified divergence, or `N/A`, and keep library, mockup, and runtime roles distinct.\n5. Separate missing visual inspiration, which may be resolved with a labeled thesis, from missing product behavior, which must not be invented.\n6. Stop the affected path as blocked when equal-authority sources conflict or a required product decision is absent.\n\nValidation:\n\n- Product behavior and design-system constraints have traceable owners.\n- Applicable peer-view capabilities have an explicit disposition before visual direction or polish can hide a functional gap.\n- The agent has not invented actions, states, permissions, backend truth, validation, or copy authority.\n\n### Workflow stage: Write a proportional design strategy\n\nGive implementation a clear visual, state, reuse, and evidence contract without unnecessary process artifacts.\n\n1. Classify surface type separately from the greenfield or system-constrained profile, then select one primary visual engine.\n2. State the capability, consumer, anti-claims, visual thesis, content and state plan, interaction thesis, responsive intent, reuse plan, and evidence plan.\n3. For complex operational UI, map material states to their existing component or owner; keep small changes inline when a matrix would add no clarity.\n4. Apply mode-specific composition, typography, imagery, copy, and motion guidance from the overview and matching references.\n\nValidation:\n\n- A downstream implementer can act without inventing visual intent, product behavior, material states, or component ownership.\n- Strategy-only output names the runtime evidence it still does not provide.\n\n### Workflow stage: Translate the strategy into the requested artifact or implementation\n\nPreserve the accepted strategy and current system while producing the requested surface.\n\n1. Reuse existing tokens, components, patterns, and assets before introducing screen-local primitives or styling.\n2. Resolve design-artifact and runtime-component conflicts by source authority instead of copying either blindly.\n3. Route design-tool mechanics, framework architecture, component APIs, and browser execution to their owning skills while preserving the visual contract.\n4. Implement responsive behavior, material states, content extremes, and reduced-motion behavior as part of the surface rather than as a later polish pass.\n\nValidation:\n\n- The result traces to the strategy and does not create an unapproved parallel design or component system.\n- Any custom component or visual-system exception has a concrete gap and owner.\n\n### Workflow stage: Verify the deliverable and report an honest status\n\nMatch completion claims to current artifact or runtime evidence.\n\n1. For strategy-only work, verify contract completeness and report strategy-ready without a runtime claim.\n2. For design artifacts, inspect the current artifact and read back required exports or screenshots before reporting artifact-ready.\n3. For runtime implementation, inspect the current rendered interface at representative desktop and mobile viewports, relevant states and interactions, keyboard and focus behavior, reduced-motion behavior when applicable, and console or network state when applicable.\n4. Use `agent-browser` for interactive diagnostics and terminal-state evidence or `playwright` for reproducible scripted evidence; require both only when they prove distinct needed conditions.\n5. Report implemented-not-verified when required rendered evidence is missing or failed; use verified only when the requested runtime path and proportionate checks pass.\n\nValidation:\n\n- Status, evidence, unrun checks, and anti-claims are consistent.\n- Source, mockups, stories, screenshots, or compiler success alone cannot close an integrated runtime claim.\n\n## Interop priority\n\n- **task-flow interaction choices, continuity, recovery, and scenario UX audit:** web-ux-engineer. Consume the accepted interaction and express it visually; retain local state, accessibility, peer-view completeness, and rendered-evidence checks.\n- **product behavior, actors, actions, states, validation, and copy authority:** The relevant product or specification skill and accepted project sources. frontend-design expresses authoritative behavior visually but must not invent or override it.\n- **application architecture, state, routing, data, testing, and runtime accessibility mechanics:** The relevant framework skill such as react-spa-engineer. frontend-design owns visual strategy and rendered expression, not framework correctness.\n- **reusable React component correctness, SSR, hydration, portals, and lifecycle behavior:** react-components-engineer. Visual intent must adapt to component correctness rather than weaken it.\n- **shadcn registry discovery, component selection, and registry-aware implementation:** shadcn. frontend-design supplies page-level direction while shadcn owns component-system mechanics.\n- **durable .pen inspection, editing, validation, screenshots, and exports:** pencil-dev. frontend-design defines strategy and frames; pencil-dev owns Pencil MCP mechanics.\n- **interactive browser diagnostics, screenshots, and terminal-state checks:** agent-browser. frontend-design defines evidence conditions while agent-browser executes exploratory browser verification.\n- **reproducible scripted browser scenarios and visual, network, or console evidence:** playwright. frontend-design defines evidence conditions while playwright owns repeatable browser automation.\n- **guidelines-based web UI and accessibility review:** web-ui-reviewer. frontend-design performs design self-checks; web-ui-reviewer owns the review contract, and a separate reviewer context is still required when the verdict must be independent.\n\n## Gotchas\n\n- **high** — Do not turn missing product behavior, controls, states, permissions, or copy authority into a visual-design decision.\n- **high** — A strategy, mockup, export, screenshot, Storybook story, component catalog, or source inspection is not integrated runtime evidence.\n- **high** — In system-constrained work, inspect the current runtime component and design-system surface before introducing new primitives or one-off styling.\n- **high** — Do not add motion to satisfy a quota; use only motion that improves hierarchy, continuity, feedback, or affordance and provide reduced behavior for non-essential physical motion.\n- **medium** — Do not approve a design artifact from a stale export or a runtime implementation from an outdated mockup when current source and rendered behavior disagree.\n\n## Policies\n\n### Proportional collaboration\nHonor an explicitly selected skill within its supported scope. In mixed work choose the lead by the requested result and consult another skill for a concrete decision only. Missing neighbors do not block supported local work; preserve evidence limits without cycling handoffs or loading every specialist.\n\n### Source-authority policy\nResolve product behavior, design-system constraints, runtime behavior, and visual inspiration from their named authorities; stop rather than silently resolve equal-authority conflicts.\n\n### System-constraint precedence\nAccepted product behavior, accessibility constraints, and the existing design system override generic aesthetic defaults unless the user explicitly authorizes a system change.\n\n### Capability-evidence policy\nMatch evidence to the requested deliverable and never use artifact-level or structural evidence to claim an integrated runtime capability.\n\n### Status contract\nReport strategy-ready, artifact-ready, implemented-not-verified, verified, or blocked per deliverable; do not collapse several deliverables into the strongest status achieved by only one.\n\n## Required active references\n- [Surface Modes](references/surface-modes.md) — Read this when surface type or the design-system constraint profile is ambiguous.\n- [Visual Engines](references/visual-engines.md) — Read this after classifying the surface when the primary visual engine is not already established.\n- [Strategy To Implementation](references/strategy-to-implementation.md) — Read this for non-trivial strategy, system-constrained work, implementation handoff, or runtime completion claims.\n\n## Optional references\n- [Anti Patterns](references/anti-patterns.md) — Consult this when output feels generic, overdesigned, weakly grounded, or at risk of substrate-only closure.\n\n## Portability rules\n\n- Do not reference machine-specific absolute paths or local files outside this skill folder.\n- Keep all mandatory frontend-design guidance inside this skill folder.\n- Use relative links for local references, assets, scripts, tests, and supporting docs.\n\n## Portability checklist before finishing\n\n- Only when editing or packaging this skill itself, run compiler lint, regenerate, check, and an isolated compile; verify generated parity, local references, portability, and packaged files. These maintenance checks are not prerequisites for ordinary tasks performed with the skill.\n\n## Supporting and historical surface\n\n- `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.\n- Supporting glob: `docs/*`\n- Supporting glob: `docs/forward-tests/*`\n- Supporting glob: `docs/logs/*`\n",
+    "LICENSE.txt": "\n                                 Apache License\n                           Version 2.0, January 2004\n                        http://www.apache.org/licenses/\n\n   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\n\n   1. Definitions.\n\n      \"License\" shall mean the terms and conditions for use, reproduction,\n      and distribution as defined by Sections 1 through 9 of this document.\n\n      \"Licensor\" shall mean the copyright owner or entity authorized by\n      the copyright owner that is granting the License.\n\n      \"Legal Entity\" shall mean the union of the acting entity and all\n      other entities that control, are controlled by, or are under common\n      control with that entity. For the purposes of this definition,\n      \"control\" means (i) the power, direct or indirect, to cause the\n      direction or management of such entity, whether by contract or\n      otherwise, or (ii) ownership of fifty percent (50%) or more of the\n      outstanding shares, or (iii) beneficial ownership of such entity.\n\n      \"You\" (or \"Your\") shall mean an individual or Legal Entity\n      exercising permissions granted by this License.\n\n      \"Source\" form shall mean the preferred form for making modifications,\n      including but not limited to software source code, documentation\n      source, and configuration files.\n\n      \"Object\" form shall mean any form resulting from mechanical\n      transformation or translation of a Source form, including but\n      not limited to compiled object code, generated documentation,\n      and conversions to other media types.\n\n      \"Work\" shall mean the work of authorship, whether in Source or\n      Object form, made available under the License, as indicated by a\n      copyright notice that is included in or attached to the work\n      (an example is provided in the Appendix below).\n\n      \"Derivative Works\" shall mean any work, whether in Source or Object\n      form, that is based on (or derived from) the Work and for which the\n      editorial revisions, annotations, elaborations, or other modifications\n      represent, as a whole, an original work of authorship. For the purposes\n      of this License, Derivative Works shall not include works that remain\n      separable from, or merely link (or bind by name) to the interfaces of,\n      the Work and Derivative Works thereof.\n\n      \"Contribution\" shall mean any work of authorship, including\n      the original version of the Work and any modifications or additions\n      to that Work or Derivative Works thereof, that is intentionally\n      submitted to Licensor for inclusion in the Work by the copyright owner\n      or by an individual or Legal Entity authorized to submit on behalf of\n      the copyright owner. For the purposes of this definition, \"submitted\"\n      means any form of electronic, verbal, or written communication sent\n      to the Licensor or its representatives, including but not limited to\n      communication on electronic mailing lists, source code control systems,\n      and issue tracking systems that are managed by, or on behalf of, the\n      Licensor for the purpose of discussing and improving the Work, but\n      excluding communication that is conspicuously marked or otherwise\n      designated in writing by the copyright owner as \"Not a Contribution.\"\n\n      \"Contributor\" shall mean Licensor and any individual or Legal Entity\n      on behalf of whom a Contribution has been received by Licensor and\n      subsequently incorporated within the Work.\n\n   2. Grant of Copyright License. Subject to the terms and conditions of\n      this License, each Contributor hereby grants to You a perpetual,\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n      copyright license to reproduce, prepare Derivative Works of,\n      publicly display, publicly perform, sublicense, and distribute the\n      Work and such Derivative Works in Source or Object form.\n\n   3. Grant of Patent License. Subject to the terms and conditions of\n      this License, each Contributor hereby grants to You a perpetual,\n      worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n      (except as stated in this section) patent license to make, have made,\n      use, offer to sell, sell, import, and otherwise transfer the Work,\n      where such license applies only to those patent claims licensable\n      by such Contributor that are necessarily infringed by their\n      Contribution(s) alone or by combination of their Contribution(s)\n      with the Work to which such Contribution(s) was submitted. If You\n      institute patent litigation against any entity (including a\n      cross-claim or counterclaim in a lawsuit) alleging that the Work\n      or a Contribution incorporated within the Work constitutes direct\n      or contributory patent infringement, then any patent licenses\n      granted to You under this License for that Work shall terminate\n      as of the date such litigation is filed.\n\n   4. Redistribution. You may reproduce and distribute copies of the\n      Work or Derivative Works thereof in any medium, with or without\n      modifications, and in Source or Object form, provided that You\n      meet the following conditions:\n\n      (a) You must give any other recipients of the Work or\n          Derivative Works a copy of this License; and\n\n      (b) You must cause any modified files to carry prominent notices\n          stating that You changed the files; and\n\n      (c) You must retain, in the Source form of any Derivative Works\n          that You distribute, all copyright, patent, trademark, and\n          attribution notices from the Source form of the Work,\n          excluding those notices that do not pertain to any part of\n          the Derivative Works; and\n\n      (d) If the Work includes a \"NOTICE\" text file as part of its\n          distribution, then any Derivative Works that You distribute must\n          include a readable copy of the attribution notices contained\n          within such NOTICE file, excluding those notices that do not\n          pertain to any part of the Derivative Works, in at least one\n          of the following places: within a NOTICE text file distributed\n          as part of the Derivative Works; within the Source form or\n          documentation, if provided along with the Derivative Works; or,\n          within a display generated by the Derivative Works, if and\n          wherever such third-party notices normally appear. The contents\n          of the NOTICE file are for informational purposes only and\n          do not modify the License. You may add Your own attribution\n          notices within Derivative Works that You distribute, alongside\n          or as an addendum to the NOTICE text from the Work, provided\n          that such additional attribution notices cannot be construed\n          as modifying the License.\n\n      You may add Your own copyright statement to Your modifications and\n      may provide additional or different license terms and conditions\n      for use, reproduction, or distribution of Your modifications, or\n      for any such Derivative Works as a whole, provided Your use,\n      reproduction, and distribution of the Work otherwise complies with\n      the conditions stated in this License.\n\n   5. Submission of Contributions. Unless You explicitly state otherwise,\n      any Contribution intentionally submitted for inclusion in the Work\n      by You to the Licensor shall be under the terms and conditions of\n      this License, without any additional terms or conditions.\n      Notwithstanding the above, nothing herein shall supersede or modify\n      the terms of any separate license agreement you may have executed\n      with Licensor regarding such Contributions.\n\n   6. Trademarks. This License does not grant permission to use the trade\n      names, trademarks, service marks, or product names of the Licensor,\n      except as required for reasonable and customary use in describing the\n      origin of the Work and reproducing the content of the NOTICE file.\n\n   7. Disclaimer of Warranty. Unless required by applicable law or\n      agreed to in writing, Licensor provides the Work (and each\n      Contributor provides its Contributions) on an \"AS IS\" BASIS,\n      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or\n      implied, including, without limitation, any warranties or conditions\n      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A\n      PARTICULAR PURPOSE. You are solely responsible for determining the\n      appropriateness of using or redistributing the Work and assume any\n      risks associated with Your exercise of permissions under this License.\n\n   8. Limitation of Liability. In no event and under no legal theory,\n      whether in tort (including negligence), contract, or otherwise,\n      unless required by applicable law (such as deliberate and grossly\n      negligent acts) or agreed to in writing, shall any Contributor be\n      liable to You for damages, including any direct, indirect, special,\n      incidental, or consequential damages of any character arising as a\n      result of this License or out of the use or inability to use the\n      Work (including but not limited to damages for loss of goodwill,\n      work stoppage, computer failure or malfunction, or any and all\n      other commercial damages or losses), even if such Contributor\n      has been advised of the possibility of such damages.\n\n   9. Accepting Warranty or Additional Liability. While redistributing\n      the Work or Derivative Works thereof, You may choose to offer,\n      and charge a fee for, acceptance of support, warranty, indemnity,\n      or other liability obligations and/or rights consistent with this\n      License. However, in accepting such obligations, You may act only\n      on Your own behalf and on Your sole responsibility, not on behalf\n      of any other Contributor, and only if You agree to indemnify,\n      defend, and hold each Contributor harmless for any liability\n      incurred by, or claims asserted against, such Contributor by reason\n      of your accepting any such warranty or additional liability.\n\n   END OF TERMS AND CONDITIONS\n",
+    "AGENTS.md": "---\nskill-maintenance-type: generated\nsource-of-truth: skill.yaml\nmaintenance-mode: regenerate\npreferred-maintainer-skill: skill-source-compiler\n---\n\n# AGENTS.md\n\nThis file is maintenance guidance for agents editing this skill. It is not part of the runtime skill contract.\n\n## Skill Type\n\nThis is a generated documentation skill.\n\nPrimary source of truth:\n\n- `skill.yaml`\n- `fragments/*`\n- `references/*`\n- `assets/*`\n\nGenerated output:\n\n- `SKILL.md`\n- `docs/compile-report.md`\n\n## Maintenance Rules\n\n- Use the `skill-source-compiler` skill when maintaining this skill.\n- Update the source bundle first and regenerate instead of hand-editing generated files.\n- Keep the skill portable: no absolute paths and no required files outside this skill folder.\n",
+    "skill.yaml": "apiVersion: skillforge/v1alpha1\nkind: SkillSource\nskill:\n  name: frontend-design\n  source-version: 0.2.3\n  recommended-skill-md-max-bytes: 20000\n  description: >-\n    Design and implement visual strategies for web interfaces: landing pages,\n    product UI, dashboards, and redesigns. Own composition, typography, styling,\n    and motion; express accepted interactions and verify rendered results.\n    Route task-flow choices and UX audits to web-ux-engineer.\nfragments:\n  overview: fragments/overview.md\nreferences:\n  - id: ref-references-anti-patterns\n    title: Anti Patterns\n    source: references/anti-patterns.md\n    target: references/anti-patterns.md\n    required: false\n    trigger: Consult this when output feels generic, overdesigned, weakly grounded, or at risk of substrate-only closure.\n  - id: ref-references-surface-modes\n    title: Surface Modes\n    source: references/surface-modes.md\n    target: references/surface-modes.md\n    required: true\n    trigger: Read this when surface type or the design-system constraint profile is ambiguous.\n  - id: ref-references-visual-engines\n    title: Visual Engines\n    source: references/visual-engines.md\n    target: references/visual-engines.md\n    required: true\n    trigger: Read this after classifying the surface when the primary visual engine is not already established.\n  - id: ref-strategy-to-implementation\n    title: Strategy To Implementation\n    source: references/strategy-to-implementation.md\n    target: references/strategy-to-implementation.md\n    required: true\n    trigger: Read this for non-trivial strategy, system-constrained work, implementation handoff, or runtime completion claims.\nassets: []\ncopies:\n  - id: copy-license\n    source: LICENSE.txt\n    target: LICENSE.txt\n    description: Portable copy of LICENSE.txt.\n  - id: copy-agents-openai\n    source: agents/openai.yaml\n    target: agents/openai.yaml\n    description: Portable copy of agents/openai.yaml.\nsupporting:\n  - id: supporting-docs-readme\n    source: docs/README.md\n    target: docs/README.md\n    description: Non-normative maintenance navigation.\n  - id: supporting-implementation-log-20260715-1\n    source: docs/logs/implementation-log-20260715-1.md\n    target: docs/logs/implementation-log-20260715-1.md\n    description: Non-normative log for the skill description length update.\n  - id: supporting-implementation-log-20260716-1\n    source: docs/logs/implementation-log-20260716-1.md\n    target: docs/logs/implementation-log-20260716-1.md\n    description: Non-normative implementation and review evidence for the 0.2.0 strategy-to-runtime contract.\n  - id: supporting-forward-test-evidence-20260716-1\n    source: docs/logs/forward-test-evidence-20260716-1.md\n    target: docs/logs/forward-test-evidence-20260716-1.md\n    description: Non-normative blind forward-test evidence for the 0.2.0 candidate.\n  - id: supporting-implementation-log-20260727-1\n    source: docs/logs/implementation-log-20260727-1.md\n    target: docs/logs/implementation-log-20260727-1.md\n    description: Non-normative implementation and review evidence for Aequitas-ADR/app#228.\n  - id: supporting-forward-test-evidence-20260727-1\n    source: docs/forward-tests/forward-test-evidence-20260727-1.md\n    target: docs/forward-tests/forward-test-evidence-20260727-1.md\n    description: Non-normative blind peer-view inventory evidence for Aequitas-ADR/app#228.\nsurfaces:\n  active:\n    requiredReferences:\n      - ref-references-surface-modes\n      - ref-references-visual-engines\n      - ref-strategy-to-implementation\n    optionalReferences:\n      - ref-references-anti-patterns\n  supportingGlobs:\n    - docs/*\n    - docs/forward-tests/*\n    - docs/logs/*\nsections:\n  startHere:\n    - Confirm that visual direction, design strategy, or translating design into a rendered interface is material to the request.\n    - Name the requested deliverable as strategy-only, design-artifact, runtime-implementation, or a combination.\n    - Inspect the authoritative brief, existing runtime, design system, component inventory, and assets that can govern the work before making visual decisions.\n    - Classify surface type, constraint profile, and primary visual engine; load only the references whose conditions match the task.\n    - Define the evidence required for the strongest honest completion status before building.\n  whenToUse:\n    - Create or refine an implementation-ready visual strategy and the visual expression of accepted interactions.\n    - Visually strong landing pages, marketing websites, hero sections, or branded surfaces\n    - Product UI, dashboards, workspaces, admin surfaces, or app redesigns that need better hierarchy and visual discipline\n    - Translate an accepted design, mockup, or visual direction into React, HTML/CSS, or another component-based UI\n    - Prototypes, demo UI, and secondary web formats such as poster-like artifacts or game UI mock surfaces\n  whenNotToUse:\n    - Choosing or auditing a user-task flow is the primary result; use web-ux-engineer for interaction choices and scenario continuity.\n    - Pure frontend architecture, state management, routing, or data-fetching work with no design direction requirement\n    - Pure component API lookup or design-system component selection; use `shadcn` for that\n    - Reusable React component correctness/hardening work where the core problem is rendering behavior, SSR, portals, or future React semantics; use `react-components-engineer`\n    - Formal guidelines-based review of an implemented interface without design or remediation work; use `web-ui-reviewer`\n  workflow:\n    - id: stage-establish-basis\n      title: Establish the design basis\n      goal: Prevent visual work from inventing product behavior or bypassing the current UI system.\n      steps:\n        - Name the deliverable and its downstream consumer.\n        - Inspect the user brief, accepted product or UX sources, current runtime, design-system tokens, reusable components, Storybook or equivalent examples, and available assets that govern the task.\n        - Record source precedence when multiple inputs govern the same decision.\n        - Before visual direction or polish for non-trivial module UI, inventory applicable peer capabilities, record reuse, justified divergence, or `N/A`, and keep library, mockup, and runtime roles distinct.\n        - Separate missing visual inspiration, which may be resolved with a labeled thesis, from missing product behavior, which must not be invented.\n        - Stop the affected path as blocked when equal-authority sources conflict or a required product decision is absent.\n      validation:\n        - Product behavior and design-system constraints have traceable owners.\n        - Applicable peer-view capabilities have an explicit disposition before visual direction or polish can hide a functional gap.\n        - The agent has not invented actions, states, permissions, backend truth, validation, or copy authority.\n    - id: stage-write-strategy\n      title: Write a proportional design strategy\n      goal: Give implementation a clear visual, state, reuse, and evidence contract without unnecessary process artifacts.\n      steps:\n        - Classify surface type separately from the greenfield or system-constrained profile, then select one primary visual engine.\n        - State the capability, consumer, anti-claims, visual thesis, content and state plan, interaction thesis, responsive intent, reuse plan, and evidence plan.\n        - For complex operational UI, map material states to their existing component or owner; keep small changes inline when a matrix would add no clarity.\n        - Apply mode-specific composition, typography, imagery, copy, and motion guidance from the overview and matching references.\n      validation:\n        - A downstream implementer can act without inventing visual intent, product behavior, material states, or component ownership.\n        - Strategy-only output names the runtime evidence it still does not provide.\n    - id: stage-translate-or-build\n      title: Translate the strategy into the requested artifact or implementation\n      goal: Preserve the accepted strategy and current system while producing the requested surface.\n      steps:\n        - Reuse existing tokens, components, patterns, and assets before introducing screen-local primitives or styling.\n        - Resolve design-artifact and runtime-component conflicts by source authority instead of copying either blindly.\n        - Route design-tool mechanics, framework architecture, component APIs, and browser execution to their owning skills while preserving the visual contract.\n        - Implement responsive behavior, material states, content extremes, and reduced-motion behavior as part of the surface rather than as a later polish pass.\n      validation:\n        - The result traces to the strategy and does not create an unapproved parallel design or component system.\n        - Any custom component or visual-system exception has a concrete gap and owner.\n    - id: stage-verify-and-report\n      title: Verify the deliverable and report an honest status\n      goal: Match completion claims to current artifact or runtime evidence.\n      steps:\n        - For strategy-only work, verify contract completeness and report strategy-ready without a runtime claim.\n        - For design artifacts, inspect the current artifact and read back required exports or screenshots before reporting artifact-ready.\n        - For runtime implementation, inspect the current rendered interface at representative desktop and mobile viewports, relevant states and interactions, keyboard and focus behavior, reduced-motion behavior when applicable, and console or network state when applicable.\n        - Use `agent-browser` for interactive diagnostics and terminal-state evidence or `playwright` for reproducible scripted evidence; require both only when they prove distinct needed conditions.\n        - Report implemented-not-verified when required rendered evidence is missing or failed; use verified only when the requested runtime path and proportionate checks pass.\n      validation:\n        - Status, evidence, unrun checks, and anti-claims are consistent.\n        - Source, mockups, stories, screenshots, or compiler success alone cannot close an integrated runtime claim.\n  interop:\n    - id: interop-ux\n      domain: task-flow interaction choices, continuity, recovery, and scenario UX audit\n      winner: web-ux-engineer\n      rationale: Consume the accepted interaction and express it visually; retain local state, accessibility, peer-view completeness, and rendered-evidence checks.\n    - id: interop-product-authority\n      domain: product behavior, actors, actions, states, validation, and copy authority\n      winner: The relevant product or specification skill and accepted project sources\n      rationale: frontend-design expresses authoritative behavior visually but must not invent or override it.\n    - id: interop-framework\n      domain: application architecture, state, routing, data, testing, and runtime accessibility mechanics\n      winner: The relevant framework skill such as react-spa-engineer\n      rationale: frontend-design owns visual strategy and rendered expression, not framework correctness.\n    - id: interop-component-correctness\n      domain: reusable React component correctness, SSR, hydration, portals, and lifecycle behavior\n      winner: react-components-engineer\n      rationale: Visual intent must adapt to component correctness rather than weaken it.\n    - id: interop-shadcn\n      domain: shadcn registry discovery, component selection, and registry-aware implementation\n      winner: shadcn\n      rationale: frontend-design supplies page-level direction while shadcn owns component-system mechanics.\n    - id: interop-pencil\n      domain: durable .pen inspection, editing, validation, screenshots, and exports\n      winner: pencil-dev\n      rationale: frontend-design defines strategy and frames; pencil-dev owns Pencil MCP mechanics.\n    - id: interop-browser\n      domain: interactive browser diagnostics, screenshots, and terminal-state checks\n      winner: agent-browser\n      rationale: frontend-design defines evidence conditions while agent-browser executes exploratory browser verification.\n    - id: interop-playwright\n      domain: reproducible scripted browser scenarios and visual, network, or console evidence\n      winner: playwright\n      rationale: frontend-design defines evidence conditions while playwright owns repeatable browser automation.\n    - id: interop-ui-review\n      domain: guidelines-based web UI and accessibility review\n      winner: web-ui-reviewer\n      rationale: frontend-design performs design self-checks; web-ui-reviewer owns the review contract, and a separate reviewer context is still required when the verdict must be independent.\n  commands: []\n  gotchas:\n    - id: gotcha-authority-invention\n      priority: high\n      text: Do not turn missing product behavior, controls, states, permissions, or copy authority into a visual-design decision.\n    - id: gotcha-runtime-substrate\n      priority: high\n      text: A strategy, mockup, export, screenshot, Storybook story, component catalog, or source inspection is not integrated runtime evidence.\n    - id: gotcha-system-grounding\n      priority: high\n      text: In system-constrained work, inspect the current runtime component and design-system surface before introducing new primitives or one-off styling.\n    - id: gotcha-motion-quota\n      priority: high\n      text: Do not add motion to satisfy a quota; use only motion that improves hierarchy, continuity, feedback, or affordance and provide reduced behavior for non-essential physical motion.\n    - id: gotcha-stale-artifact\n      priority: medium\n      text: Do not approve a design artifact from a stale export or a runtime implementation from an outdated mockup when current source and rendered behavior disagree.\n  policies:\n    - id: policy-interop-lead\n      title: Proportional collaboration\n      text: Honor an explicitly selected skill within its supported scope. In mixed work choose the lead by the requested result and consult another skill for a concrete decision only. Missing neighbors do not block supported local work; preserve evidence limits without cycling handoffs or loading every specialist.\n    - id: policy-source-authority\n      title: Source-authority policy\n      text: Resolve product behavior, design-system constraints, runtime behavior, and visual inspiration from their named authorities; stop rather than silently resolve equal-authority conflicts.\n    - id: policy-system-constraint-precedence\n      title: System-constraint precedence\n      text: Accepted product behavior, accessibility constraints, and the existing design system override generic aesthetic defaults unless the user explicitly authorizes a system change.\n    - id: policy-capability-evidence\n      title: Capability-evidence policy\n      text: Match evidence to the requested deliverable and never use artifact-level or structural evidence to claim an integrated runtime capability.\n    - id: policy-status-contract\n      title: Status contract\n      text: Report strategy-ready, artifact-ready, implemented-not-verified, verified, or blocked per deliverable; do not collapse several deliverables into the strongest status achieved by only one.\n  portability:\n    required: true\n    rules:\n      - Do not reference machine-specific absolute paths or local files outside this skill folder.\n      - Keep all mandatory frontend-design guidance inside this skill folder.\n      - Use relative links for local references, assets, scripts, tests, and supporting docs.\n    checklist:\n      - \"Only when editing or packaging this skill itself, run compiler lint, regenerate, check, and an isolated compile; verify generated parity, local references, portability, and packaged files. These maintenance checks are not prerequisites for ordinary tasks performed with the skill.\"\n",
+    "references/strategy-to-implementation.md": "# Strategy To Implementation\n\nRead this reference for non-trivial design strategy, implementation from an\naccepted design, system-constrained UI work, or any handoff that may be mistaken\nfor delivered runtime capability.\n\n## Choose The Deliverable\n\nName the requested deliverable before making visual decisions:\n\n- `strategy-only`: a decision-complete visual strategy expressing accepted interactions for a\n  downstream implementer;\n- `design-artifact`: a mockup, prototype, screenshot set, or design-tool file;\n- `runtime-implementation`: code running in the intended application path.\n\nOne request may include more than one deliverable. Track each independently.\nFor mixed UX and visual work, choose the lead from the requested result. Consume\naccepted interaction decisions and consult `web-ux-engineer` only for a concrete\nscenario question; its absence does not block supported visual work.\nA strategy can be complete for its downstream consumer while remaining\nsubstrate for an end-user runtime claim.\n\n## Establish Readiness And Authority\n\nInspect the smallest authoritative set that can govern the work:\n\n1. user brief and accepted product or UX requirements;\n2. existing application behavior and architecture constraints;\n3. design-system tokens, component inventory, Storybook or equivalent runtime\n   examples, and accepted design artifacts;\n4. available content, brand assets, imagery, and copy constraints;\n5. representative viewport, accessibility, performance, and browser targets.\n\nRecord the source hierarchy when more than one source can govern the same\ndecision. Do not silently choose between equal-authority conflicts. Ask the\nowner or return `blocked` for the affected decision.\n\nMissing visual inspiration can be resolved with a clearly labeled thesis.\nMissing product behavior cannot: do not invent actors, actions, states,\npermissions, backend truth, validation, or success criteria to complete a\nlayout.\n\nFor `system-constrained` work, inspect the actual reusable component surface\nbefore proposing new primitives or one-off styling. A mockup or old screenshot\ndoes not override current runtime behavior by itself.\n\n## Inventory peer views before visual direction\n\nFor a non-trivial product or module surface, inspect the applicable peer views\nand accepted standard UX before choosing the visual thesis. Use a compact\ninventory when prose could hide an omission:\n\n| Capability or view | Authority and peer evidence | Library representation | Module/runtime state | Disposition |\n| --- | --- | --- | --- | --- |\n| Source-established search, detail, history, or another recurring capability | Accepted requirement, pattern, or peer view | Reusable component, token, or no library owner | Present, absent, or conflicting | Reuse, justified divergence, or `N/A` with authority |\n\nSearch, detail, and history are named falsifiers, not universal features. Mark\nthem `N/A` when accepted scope makes them irrelevant; do not invent them from a\ngeneric checklist. When accepted sources or relevant peer views establish one\nof them, an unrecorded omission blocks visual polish and implementation-ready\nstatus.\n\nKeep these roles separate:\n\n1. accepted product and UX sources own required behavior and journey coverage;\n2. an accepted reusable design or component library owns reusable primitives,\n   variants, and tokens within its scope;\n3. a module mockup is a directional representation that consumes those inputs;\n4. the runtime is current implementation evidence and behavior, not automatic\n   authority to erase an accepted requirement.\n\nResolve conflicts by source authority. Do not copy a mockup into runtime, copy\nruntime gaps into a mockup, or expand a library merely because one\nrepresentation is visually available.\n\n## Write The Strategy Contract\n\nKeep the contract proportional for small changes, but cover every field needed\nby the downstream consumer:\n\n- `capability and consumer`: what user outcome or downstream decision this\n  design enables;\n- `anti-claims`: what the strategy, artifact, or implementation does not prove;\n- `source hierarchy`: which inputs govern behavior, system constraints, and\n  visual direction;\n- `surface classification`: surface type, constraint profile, and primary\n  visual engine;\n- `visual thesis`: mood, material, energy, hierarchy, and dominant idea;\n- `content and state plan`: information order plus relevant loading, empty,\n  error, success, permission, long-content, and responsive states;\n- `interaction thesis`: visual transitions or motion that express the accepted\n  interaction and improve hierarchy, continuity, feedback, or affordance;\n  `web-ux-engineer` owns material task-flow choices, not visual motion;\n- `reuse plan`: existing tokens, components, patterns, assets, and any justified\n  exception with its owner;\n- `evidence plan`: rendered viewports, states, interactions, and accessibility\n  checks required for the strongest completion claim.\n\nFor complex operational UI, use a compact state-to-owner matrix when prose\nwould hide missing states or component ownership. Do not create a matrix for a\nsmall visual adjustment that remains clear without one.\n\n## Translate Strategy Into Implementation\n\n- Map each material state and interaction to an existing component or an\n  explicitly justified gap before writing screen-level styling.\n- Preserve product and runtime semantics when a design artifact disagrees with\n  the implemented component contract; resolve the artifact or record the gap\n  instead of copying it blindly.\n- Keep responsive behavior and content extremes in the implementation plan, not\n  as a cleanup pass after desktop styling.\n- Use framework and component-system skills for code-level architecture,\n  lifecycle, accessibility mechanics, and component APIs. `frontend-design`\n  owns the visual strategy and whether the rendered result expresses it.\n- Route durable `.pen` creation, inspection, editing, and export mechanics to\n  `pencil-dev`; the design artifact still follows this strategy contract.\n\n## Verify The Observable Result\n\nMatch evidence to the deliverable:\n\n| Deliverable | Minimum honest evidence |\n| --- | --- |\n| `strategy-only` | Complete contract, resolved authority, implementable state/reuse plan, and named runtime evidence still required. |\n| `design-artifact` | Current artifact inspection and export/readback for the required frames or states; no runtime claim. |\n| `runtime-implementation` | Current rendered checks at representative desktop and mobile viewports, relevant states and interactions, keyboard/focus behavior, reduced-motion behavior when motion exists, and console/network inspection when applicable. |\n\nUse `agent-browser` for interactive exploration, diagnostics, screenshots, and\nterminal-state checks. Use `playwright` when the evidence must be repeatable as\na scripted browser scenario. Do not require both without a concrete reason.\n\nA screenshot proves only the pixels and state it shows. Source inspection,\ncomponent stories, mocks, and design-tool exports do not prove the integrated\nruntime path.\n\n## Report Status\n\nChoose the strongest status supported by current evidence:\n\n- `strategy-ready`: the design strategy is decision-complete for its consumer;\n- `artifact-ready`: the requested design artifact passed artifact-level checks;\n- `implemented-not-verified`: implementation exists, but required rendered\n  evidence is missing or failed;\n- `verified`: the requested runtime implementation and proportionate rendered\n  checks passed;\n- `blocked`: an unresolved authoritative input or required boundary prevents a\n  safe result.\n\nReport the deliverable, status, evidence obtained, checks not run, and remaining\nanti-claims. Do not collapse several deliverables into `verified` when only one\nhas reached that status.\n",
+    "references/visual-engines.md": "# Visual Engines\n\nUse this reference after choosing a surface mode. Pick one primary engine and optionally one secondary engine. Do not combine multiple engines with equal weight.\n\n## `image-led`\n\nUse when the page needs narrative realism, place, product desirability, editorial tone, or lifestyle atmosphere.\n\nBest for:\n\n- brands\n- venues\n- editorial storytelling\n- hospitality\n- fashion\n- product launches with strong photography\n\nGuidance:\n\n- lead with one dominant image\n- reserve calm tonal space for text\n- crop decisively\n- use texture and overlays only to support the image\n\n## `type-led`\n\nUse when the brand, message, or voice should carry the page more than imagery.\n\nBest for:\n\n- strong brand systems\n- editorial brands\n- manifesto-style pages\n- posters\n- minimalist launches\n\nGuidance:\n\n- make scale and spacing do the heavy lifting\n- pick typography with character\n- keep color disciplined\n- avoid decorative clutter that competes with the text system\n\n## `grid-led`\n\nUse when the layout itself should communicate discipline, rhythm, or structure.\n\nBest for:\n\n- portfolios\n- magazines\n- editorial systems\n- exhibition pages\n- more conceptual brand work\n\nGuidance:\n\n- establish a strong alignment logic\n- use asymmetry deliberately, not randomly\n- let spacing and proportion create interest\n- keep modules few and distinct\n\n## `product-led`\n\nUse when product screenshots, workflows, interactions, or interface states are the narrative anchor.\n\nBest for:\n\n- SaaS pages\n- app launches\n- feature storytelling\n- redesign showcases\n\nGuidance:\n\n- make the product the proof\n- avoid turning screenshots into floating dashboard clutter\n- show one decisive workflow or state before showing variety\n- keep supporting copy short and concrete\n\n## `data-led`\n\nUse when the work is primarily about metrics, scanning, comparison, operations, or monitoring.\n\nBest for:\n\n- dashboards\n- admin tools\n- analytics surfaces\n- operator consoles\n\nGuidance:\n\n- emphasize hierarchy, labels, and grouping\n- keep accents scarce and meaningful\n- remove decoration that slows scanning\n- prefer layout over wrapper cards\n\n## Selection Rules\n\n- If imagery is essential to meaning, choose `image-led`.\n- If wording and brand voice must dominate, choose `type-led`.\n- If structure itself should create the visual identity, choose `grid-led`.\n- If screenshots or workflows prove the value, choose `product-led`.\n- If operators need to scan, compare, and act, choose `data-led`.\n\nIf two engines seem equally important, choose the one that should dominate the first screen and use the other only as support.\n",
+    "references/surface-modes.md": "# Surface Classification\n\nUse this reference when the surface type or the degree of design-system\nconstraint is ambiguous.\n\nClassify two independent dimensions:\n\n- `surface type`: `brand/landing`, `product/app`, or `secondary format`;\n- `constraint profile`: `greenfield` or `system-constrained`.\n\nA product app with an existing design system is therefore `product/app` plus\n`system-constrained`, not one or the other. If an existing brief says\n`system-constrained UI`, interpret it as the `system-constrained` profile and\nstill name the surface type.\n\n## `brand/landing`\n\nUse for branded landing pages, marketing pages, campaigns, launches, editorial brand storytelling, and hero-first surfaces.\n\nDefault priorities:\n\n- first-screen brand recognition\n- one dominant visual anchor\n- sparse copy\n- clear CTA\n- atmosphere and recall\n\nDefault composition:\n\n- full-bleed or near-full-bleed hero\n- narrow text/action column\n- visual-first hierarchy\n- short support and detail sections\n\nAvoid:\n\n- generic feature-card grids as the opening move\n- overly dense nav, badges, pills, or trust-strip clutter\n- weak imagery carrying no narrative weight\n\n## `product/app`\n\nUse for dashboards, workspaces, admin tools, internal tools, product surfaces, and operational UIs.\n\nDefault priorities:\n\n- orientation\n- scanning speed\n- clarity of status and action\n- restrained styling\n- dense but readable layout\n\nDefault composition:\n\n- working surface first\n- navigation second\n- secondary context third\n- one accent for action or state\n\nAvoid:\n\n- homepage-style hero sections unless explicitly requested\n- decorative gradients behind everyday productivity UI\n- cards used as default wrappers for every region\n\n## Constraint Profile: `greenfield`\n\nUse when no accepted design system, component language, or runtime visual\nbaseline governs the work.\n\nRules:\n\n- establish the smallest coherent token and component language the requested\n  surface needs;\n- do not build a speculative design-system platform before the surface proves\n  repeated needs;\n- record choices that a downstream implementer must preserve.\n\n## Constraint Profile: `system-constrained`\n\nUse when the project already has an active design system or component framework such as shadcn.\n\nDefault priorities:\n\n- preserve tokens, spacing logic, component language, and interaction patterns\n- improve hierarchy, composition, and copy within the system\n- keep custom styling additive and minimal\n\nRules:\n\n- inspect the current tokens, reusable components, Storybook or equivalent\n  runtime examples before new visual decisions;\n- use theme tokens, component props, and supported overrides first\n- do not introduce a parallel visual system without approval\n- do not fight the framework’s information density model\n\n## `secondary format`\n\nUse for poster-like sections, prototypes, demo UI, exhibit surfaces, or game UI mock pages that still live in a web/frontend context.\n\nDefault priorities:\n\n- one big idea\n- dramatic hierarchy\n- memorable visual treatment\n- clear readability despite stylization\n\nRules:\n\n- keep the same composition discipline as landing work\n- let mood support the content, not replace it\n- preserve usability when the surface still implies interaction\n",
+    "references/anti-patterns.md": "# Anti-Patterns\n\nUse this reference when the output feels generic, overdesigned, or mismatched to the brief.\n\n## AI-slop defaults to reject\n\n- generic purple or blue gradients with no brand reason\n- interchangeable SaaS card mosaics\n- safe default font stacks that flatten the tone\n- arbitrary glassmorphism or glow effects with no hierarchy benefit\n- filler icons, badges, pills, and stat chips\n- too many parallel accent colors\n- decorative shadows trying to replace composition\n\n## Landing page failures\n\n- image exists, but the brand is still weak\n- hero copy is long enough to become a document\n- multiple competing visual anchors in the first screen\n- support sections repeat the same claim in different wording\n- dashboard mockups floating in space with no narrative role\n\n## Product UI failures\n\n- every panel wrapped in a card by habit\n- marketing copy on operational surfaces\n- decorative backgrounds behind routine tables, filters, or forms\n- low-information chrome crowding out the actual work surface\n- visual density with no grouping logic\n- controls, states, or copy invented without an authoritative product source\n- new screen-level primitives created before inspecting the existing component inventory\n\n## Strategy and handoff failures\n\n- a visual thesis with no content/state plan or downstream consumer\n- treating a mockup, Storybook story, screenshot, or component catalog as integrated runtime capability\n- copying an accepted-looking design artifact when it conflicts with the current runtime component contract\n- declaring success from a stale export that was not read back after the source changed\n- omitting mobile, error, loading, permission, or long-content states that materially affect the implementation\n- reporting implementation as verified when rendered browser checks did not run\n\n## Motion failures\n\n- motion appears everywhere but changes nothing\n- transitions are too slow for product work\n- scroll effects reduce readability\n- hover effects exist only as decoration\n\n## Recovery moves\n\n- remove one third of the copy\n- remove half of the decorative wrappers\n- reduce the accent system to one dominant accent\n- re-establish one dominant idea for the first viewport\n- replace generic components with stronger composition\n- check whether the design still works with most shadows removed\n",
+    "agents/openai.yaml": "interface:\n  display_name: \"Frontend Design\"\n  short_description: \"Design and implement visual strategy for web UI\"\n  default_prompt: \"Use $frontend-design to express accepted behavior through a grounded visual strategy, reuse the UI system, and verify the rendered result.\"\n",
+    "fragments/overview.md": "Use this skill when the quality of the work depends on art direction, hierarchy, restraint, imagery, typography, and motion rather than component count alone.\n\nGoal: produce deliberate, current interfaces and implementation-ready design\nstrategies whose claims match the evidence. Prefer one clear idea, strong\nhierarchy, rigorous spacing, and only the imagery or motion the selected surface\nneeds.\n\n## Working Model\n\nBefore designing or building, establish:\n\n- `deliverable`: `strategy-only`, `design-artifact`, or `runtime-implementation`\n- `source hierarchy`: the brief, product behavior, existing runtime, design system, and assets that govern decisions\n- `surface type`: `brand/landing`, `product/app`, or `secondary format`\n- `constraint profile`: `greenfield` or `system-constrained`\n- `visual engine`: one primary engine and, only when useful, one supporting engine\n- `visual thesis`: one sentence describing mood, material, energy, and the dominant visual idea\n- `content and state plan`: content order plus the relevant loading, empty, error, success, permission, responsive, and long-content states\n- `interaction thesis`: the visual expression of accepted behavior through transitions or motion that materially improve presence, hierarchy, feedback, or affordance; task-flow choices belong to `web-ux-engineer`\n- `reuse and evidence plan`: existing components/assets to reuse and the rendered checks required for the requested completion claim\n\nEach section gets one job, one dominant visual idea, and one primary takeaway or action.\n\nFor non-trivial strategy, system-constrained work, implementation handoff, or\nruntime completion, read `references/strategy-to-implementation.md`.\n\nLoad references only when needed:\n\n- `references/strategy-to-implementation.md` for readiness, strategy handoff, implementation mapping, evidence, and status rules\n- `references/surface-modes.md` for surface type and constraint-profile rules\n- `references/visual-engines.md` for choosing an `image-led`, `type-led`, `grid-led`, `product-led`, or `data-led` direction\n- `references/anti-patterns.md` for common failure patterns and anti-AI-slop guidance\n\n## Cross-Mode Defaults\n\n- Start with composition, not components.\n- Keep copy short enough to scan in seconds.\n- Use whitespace, alignment, scale, cropping, and contrast before adding chrome.\n- In greenfield work, limit the system to two typefaces and one accent color by default; in system-constrained work, preserve the accepted token system.\n- Use expressive typography when the brief allows it; avoid safe, overused default choices that flatten the page.\n- Default to cardless layouts. Use sections, columns, dividers, lists, and media blocks instead.\n- Build atmosphere with backgrounds, texture, depth, overlays, or pattern only when they reinforce hierarchy and mood.\n- Avoid AI-slop aesthetics: generic SaaS card stacks, weak branding, filler gradients, predictable component mosaics, and cookie-cutter visual language.\n\n## Mode Application\n\nFor landing work, use a concise hero-support-detail-CTA sequence and one\ndominant first-screen composition. The anchor may be imagery, expressive type,\nproduct proof, data, or grid structure; do not force imagery into a non-image\nengine. Count persistent headers against the initial viewport budget.\n\nFor product work, lead with the working surface, navigation, secondary context,\nand one clear action or state accent. Prefer dense but readable layout over\nmarketing heroes, decorative backgrounds, or card mosaics.\n\nWhen imagery is selected, make it carry narrative meaning, crop it around the\ncomposition, and keep text away from visual or typographic clutter. Read\n`references/surface-modes.md` and `references/visual-engines.md` for the full\nmode and engine guidance.\n\n## Copy\n\n- Write in product language, not design commentary.\n- Let the headline carry the meaning.\n- Supporting copy should usually be one short sentence.\n- Cut repetition between sections.\n- Do not include prompt language or design commentary in the UI.\n- Give every section one responsibility: explain, prove, deepen, or convert.\n\nIf deleting 30 percent of the copy improves the page, keep deleting.\n\n## Utility Copy For Product UI\n\nWhen the work is a dashboard, app surface, admin tool, or operational workspace, default to utility copy over marketing copy.\n\n- Prioritize orientation, status, and action over promise, mood, or brand voice.\n- Start with the working surface itself: KPIs, charts, filters, tables, status, or task context. Do not introduce a hero section unless the user explicitly asks for one.\n- Section headings should say what the area is or what the user can do there.\n- Good: `Selected KPIs`, `Plan status`, `Search metrics`, `Top segments`, `Last sync`\n- Avoid aspirational hero lines, metaphors, campaign-style language, and executive-summary banners on product surfaces unless specifically requested.\n- Supporting text should explain scope, behavior, freshness, or decision value in one sentence.\n- If a sentence could appear in a homepage hero or ad, rewrite it until it sounds like product UI.\n- If a section does not help someone operate, monitor, or decide, remove it.\n- Litmus check: if an operator scans only headings, labels, and numbers, can they understand the page immediately?\n\n## Motion\n\nUse motion to create presence and hierarchy, not noise.\n\nChoose only the motions the brief and surface can justify. A visually led\nlanding page may use several coordinated motions; a routine product surface may\nneed one transition or none.\n\nPossible roles include:\n\n- one entrance sequence in the hero\n- one scroll-linked, sticky, or depth effect\n- one hover, reveal, or layout transition that sharpens affordance\n\nUse the existing project motion stack. Prefer CSS for simple state changes and,\nwhen a React motion dependency is already installed or explicitly approved,\nverify its current package and framework API before use. Motion for React is\nappropriate for:\n\n- section reveals\n- shared layout transitions\n- scroll-linked opacity, translate, or scale shifts\n- sticky storytelling\n- carousels that advance narrative rather than filling space\n- menus, drawers, and modal presence effects\n\nMotion rules:\n\n- observable when it is part of the intended experience\n- smooth on mobile\n- fast and restrained\n- consistent across the page\n- removed if ornamental only\n- non-essential transform, parallax, or autoplay behavior is disabled or replaced when the user prefers reduced motion\n\n## Guardrails\n\nAccepted product behavior, accessibility constraints, and an existing design\nsystem take precedence over the aesthetic defaults below.\n\n- No cards by default.\n- No hero cards by default.\n- No boxed or center-column hero when the brief calls for full bleed.\n- No more than one dominant idea per section.\n- No section should need many tiny UI devices to explain itself.\n- No headline should overpower the brand on branded pages.\n- No filler copy.\n- No split-screen hero unless text sits on a calm, unified side.\n- No more than two typefaces without a clear reason.\n- No more than one accent color unless the product already has a strong system.\n- No generic AI-slop styling: safe default fonts, generic purple-on-white gradients, predictable SaaS block stacks, or interchangeable component soup.\n\n## Reject These Failures\n\n- Generic SaaS card grid as the first impression\n- Beautiful image with weak brand presence\n- Strong headline with no clear action\n- Busy imagery behind text\n- Sections that repeat the same mood statement\n- Carousel with no narrative purpose\n- App UI made of stacked cards instead of layout\n- “Creative” styling that breaks the existing design system or framework conventions\n\n## Final Review Loop\n\nBefore finishing the requested deliverable, verify:\n\n- first-screen hierarchy is obvious\n- each section has one dominant idea\n- card use is necessary rather than habitual\n- copy is compressed to the shortest useful version\n- motion improves meaning, hierarchy, or affordance\n- desktop and mobile viewport composition both hold up\n- contrast, tap targets, focus states, and reduced-motion behavior are acceptable\n\nFor a runtime implementation, these checks must come from the current rendered\ninterface at representative viewports and relevant states. If rendered checks\ncannot run, report `implemented-not-verified`; do not imply runtime completion.\nFor strategy-only or design-artifact work, report the corresponding scoped\nstatus and the runtime evidence still outstanding.\n"
+  },
+  "snapshot": {
+    "id": "FRONTEND-LINT-20261107-followup",
+    "base": "bf0796d4b08703797ecaccbe342639884a4e094f",
+    "files": {
+      "skills/frontend-design/skill.yaml": "dd1647cc03d0fd682f256c8199efaf7f200abedf6ce93b9863a98b3793369abb",
+      "skills/frontend-design/AGENTS.md": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf",
+      "skills/frontend-design/LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "skills/frontend-design/SKILL.md": "8b6cbe076ff9d7a8ae0a2efaffe5de451299a08c565d9c4d409d71f334775dee",
+      "skills/frontend-design/fragments/overview.md": "cf90ef5d8130687645eb6f9ba7491452c44cc8648cf5a8e5c757dc4418fa5ae7",
+      "skills/frontend-design/agents/openai.yaml": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+      "skills/frontend-design/references/anti-patterns.md": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+      "skills/frontend-design/references/surface-modes.md": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+      "skills/frontend-design/references/visual-engines.md": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7",
+      "skills/frontend-design/references/strategy-to-implementation.md": "ef884923fbb5e95e646700be7dfbfaae760b45390530248e558a937c9c1b45c1",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e"
+    },
+    "aggregate_sha256": "8ea84c1e41769d4f9e48de8e533f3a6b2626f23f8412365ff584dafa3aced239",
+    "algorithm": "SHA-256 per file bytes; aggregate SHA-256 JSON(files, sort_keys=True, separators=(comma,colon))"
+  },
+  "independent_review": "# Независимый bounded delta review — размер и lint\n\nОба заявленных исправления подтверждены. **Verdict: PASS. Assurance: independent.** Нерешённых P1/P2 нет; формальных P3-находок нет. Рекомендация для единственной строки кода — `approve` в указанной ниже области. Публикация, commit или push этим заключением не разрешаются.\n\nАудитор: `/root/implementation_review`, 2026-11-07. Аудитор не автор и не исполнитель исправлений. Target не изменялся; единственная запись аудитора — этот отчёт.\n\n## Основание и снимок\n\nЭто ограниченный review delta после независимого PASS `WEB-UX-20261107-final`, aggregate `51e0db921c318a5b9282be7df790c470687964fbadb2ae4894a613df326f25fc`. Предыдущий полный аудит четырёх скилов и browser trials не повторялись. Ранее принятые неизменённые области исключены из повторной оценки.\n\nНовый запрос оператора «исправляй» относится к size warning `frontend-design` и исходной ошибке lint учебного примера. Он отдельно разрешает точечное изменение исторического fixture, ранее исключённого из плана. Старые свидетельства остаются историческими; новое исправление не приписывается прежнему PASS.\n\nРежим `skill-reviewer`: bounded `change` для сокращения `frontend-design` 0.2.3 → 0.2.4 с проверкой закрытия двух известных ограничений. Для строки `button.tsx` применён узкий `code-reviewer`, без общего аудита приложения. Основания — текущие `AGENTS.md`, Skill standard, принятый scope follow-up, фиксированные критерии и методики этих двух скилов.\n\n- Frozen target: `/tmp/web-ux-followup-20261107-uzl7ojz8/review-source`.\n- Снимок: `FRONTEND-LINT-20261107-followup`.\n- Source/active/fixture aggregate: `8ea84c1e41769d4f9e48de8e533f3a6b2626f23f8412365ff584dafa3aced239`, 11 файлов.\n- Алгоритм: SHA-256 байтов файлов; пути относительно корня репозитория; aggregate — SHA-256 UTF-8 JSON карты с `sort_keys=True, separators=(comma,colon)`.\n- Полная [карта frozen source](../review-filemap.json): 49 файлов. Хэши совпали до содержательной оценки и перед заключением.\n- Baseline скила — `/tmp/web-ux-followup-20261107-uzl7ojz8/baseline/frontend-design`, именно принятая 0.2.3 с новым interop. Её десять source/active файлов независимо сопоставлены с предыдущим frozen PASS: совпадают. Git HEAD не использован как ошибочная база для этой части.\n- База fixture — `bf0796d4b08703797ecaccbe342639884a4e094f`. Все 25 исходных файлов сверены с этой базой; изменён только `src/components/ui/button.tsx`.\n\nУчтены манифест, fragment, root, compile report, UI/references, новый журнал и evidence JSON, navigation-записи и единственная строка экспорта. Ненормативные ссылки и сохранённый прежний отчёт не вводят новых инструкций. Compiler, CLI, лимит размера, ESLint config, зависимости и runtime-тело компонента в изменение не входят.\n\n## Сокращение скила\n\nСамостоятельный подсчёт подтвердил **20 685 → 19 923 UTF-8 байт**, сокращение на **762 байта**, при прежней рекомендации **20 000**. В сохранённых `lint → regenerate → check` и изолированных `compile → check` нет предупреждения размера; generated compile report содержит `Warnings: none`.\n\nУдалённые фрагменты действительно повторяли существующие решения: вводную применимости и навигацию по references. Условия чтения остались в сгенерированном `Required active references` / `Optional references`; `Start here` направляет к ним. `references`, `surfaces`, `sections`, `assets`, `copies` в манифесте совпадают с baseline. Description, UI и все четыре reference-файла совпадают побайтово. Полнота peer views, источники полномочий, UX interop, доступность, reduced motion и evidence/status контракты не удалены. Повышения лимита или переноса обязательных правил в supporting нет.\n\nПроверены сырые ответы двух свежих исполнителей на одинаковые запросы, а не только авторская оценка:\n\n- **Случай 1: PASS для baseline и candidate.** Оба сохраняют обязательные search/detail/history и reuse, не объявляют полировку overview готовой стратегией и не пересогласовывают уже принятый продуктовый сценарий. Оба сообщают чтение `strategy-to-implementation.md`, требуемого для этого входа.\n- **Случай 2: PASS для baseline и candidate.** Оба выбирают `implemented-not-verified`, отличают build/Storybook от интегрированного runtime и называют недостающие browser/mobile/state/keyboard/focus наблюдения. Не вводят новый продукт или обязательную загрузку всех соседей.\n\nАктивные файлы `trial-a` и `trial-b` независимо сопоставлены с соответствующими baseline и frozen candidate: расхождений нет. Повтор selection-проб не нужен: description, UI и канонические условия применимости не изменены. Эти два случая проверяют риск потери доступа к reference и ложного завершения после удаления повтора; они не доказывают универсальную эквивалентность любой будущей задачи.\n\n## Закрытие lint и узкий code review\n\n**No findings.** Единственное изменение:\n\n```diff\n-export { Button, buttonVariants }\n+export { Button }\n```\n\nПоиск по всему frozen project обнаружил `buttonVariants` только в собственном файле: декларация, `VariantProps` и построение className. Потребители модуля — `App.tsx` и `dialog.tsx` — импортируют только `Button`; namespace/re-export потребителей helper не найдено. Это private fixture, а не объявленный внешний API-пакет.\n\nПобайтовое сравнение подтвердило: текущий `button.tsx` равен исходному после ровно этой замены. Props, типы, JSX, классы и тело `Button` сохранены. Сопоставление всех 25 файлов с точной временной копией, на которой выполнялись проверки, также не выявило расхождений.\n\nСохранён оригинальный failure: объявленный `pnpm lint` → exit 1, единственная ошибка `react-refresh/only-export-components` на `button.tsx:67:18`. После изменения тот же полный `pnpm lint` → exit 0 с пустым stdout и без диагностики; `pnpm build` (`tsc -b && vite build`) → exit 0. ESLint-правило и зависимости не ослаблены. Таким образом, закрыт именно первоначальный failure path, а не соседний обход.\n\nReview basis: одна строка экспорта в `docs/reviews/design-tools-rev-20260909/live-b0/project/src/components/ui/button.tsx`; база `bf0796d4b08703797ecaccbe342639884a4e094f`; snapshot `8ea84c1e41769d4f9e48de8e533f3a6b2626f23f8412365ff584dafa3aced239`.\n\nScope: весь diff этой строки, окружающий компонент, потребители и package/ESLint contracts; общий app audit и другие historical fixtures исключены.\n\nEvidence: исходный failure, поиск потребителей, точное сравнение до/после, паритет тестируемой копии, успешные полные lint/build.\n\nLimits: Fast Refresh в браузере и общая UX/a11y-корректность приложения заново не проверялись и не заявляются. Для удаления неиспользуемого экспорта при неизменном runtime этого не требует заявленный результат.\n\nRecommendation: approve.\n\n## Генерация, архив и пределы доказательств\n\nВсе **16 файлов** из frozen isolated generation совпали с source-поверхностью. Реальный `frontend-design-0.2.4.tgz` прочитан без изменения target: шесть members — `SKILL.md`, UI и четыре references — побайтово совпадают с изолированной генерацией. SHA-256 архива `cdb0f944d4354ef3809f725983521c080d4efff5103060b1c54eb4cfe7e37e6d` совпадает с каталогом. Сохранённая команда вызывает репозиторный `pack:skills` и завершается с exit 0; provenance содержит 43 совпадающих файла CLI/workspace. Отсутствие LICENSE в архиве соответствует прежнему составу и действующему упаковщику; авторская ошибка первоначального ожидания семи файлов записана отдельно и не скрывает изменение пакета.\n\nАвторский `ready-to-regenerate`, оценки проб и green compiler не заменяют этот независимый verdict. Аудитор самостоятельно проверил изменённые инструкции, критерии, фактические ответы, исходники, хэши и архив. Команды lint/build/compiler/packer повторно не запускались: их сохранённые результаты привязаны к побайтово совпадающей копии, а конкретного незакрытого пути, требующего повтора, не найдено. Пишущие проверки и новые browser trials не выполнялись.\n\nИзоляция trial-исполнителей — инструктивная на общей ФС, не OS sandbox. Полного независимого аудита всех чтений нет; fresh context, доступные inputs и reported reads зафиксированы. Модель/настройки наследовались без независимой runtime-идентификации. Сопоставимых token/time/cost измерений нет. Сокращение байтов не принято за улучшение UX или общей надёжности.\n\nVite build сохраняет advisory о будущем `configLoader: native` и неизменённом `__dirname`. Он не является первоначальной lint-ошибкой или предупреждением размера скила; его устранение не входит в этот delta. Вывод «все предупреждения среды устранены» не поддержан, а вывод «два запрошенных ограничения закрыты» поддержан.\n\n**Итог: PASS, independent; P1/P2/P3 — отсутствуют в проверенной области.** Следующий владелец — координатор: административно сохранить этот результат в уже объявленном supporting. Такое добавление сохраняет verdict с указанным снимком и отдельной записью delta; изменение активных инструкций, кода или интерпретации доказательств требует соответствующего re-review.\n",
+  "final_snapshot": {
+    "id": "WEB-UX-20261107-followup-final",
+    "base": "bf0796d4b08703797ecaccbe342639884a4e094f",
+    "algorithm": "SHA-256 per file bytes; aggregate SHA-256 JSON(files, sort_keys=True, separators=(comma,colon))",
+    "file_count": 44,
+    "files": {
+      "skills/web-ux-engineer/AGENTS.md": "ed6a11422c0b94d508df6ff0b3bbcd19c6643dda08f9818b709cf19e7bfaee0c",
+      "skills/web-ux-engineer/SKILL.md": "bc5bd84ea445ba3ce596dca6a74c66091d1430a59be7ca253c575ad947cc491d",
+      "skills/web-ux-engineer/agents/openai.yaml": "725f2bc1ce78f271048df1547a0840b9d06c08637308067a70844cf8a50ccf92",
+      "skills/web-ux-engineer/docs/compile-report.md": "7b5481780a76b3eb6bae6dd7eeea560a6440fed436cb961fdecaebbc829d4629",
+      "skills/web-ux-engineer/skill.yaml": "091e65e0bd236cf626bc06f6d7e4b9d2b212b76099898021b0346a5e3bfafe9d",
+      "skills/frontend-design/AGENTS.md": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf",
+      "skills/frontend-design/LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "skills/frontend-design/SKILL.md": "8b6cbe076ff9d7a8ae0a2efaffe5de451299a08c565d9c4d409d71f334775dee",
+      "skills/frontend-design/agents/openai.yaml": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+      "skills/frontend-design/docs/compile-report.md": "e74f0d7a22a47f019de8878eac446ee280db383a6553b22499ec192ad4450b83",
+      "skills/frontend-design/fragments/overview.md": "cf90ef5d8130687645eb6f9ba7491452c44cc8648cf5a8e5c757dc4418fa5ae7",
+      "skills/frontend-design/references/anti-patterns.md": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+      "skills/frontend-design/references/strategy-to-implementation.md": "ef884923fbb5e95e646700be7dfbfaae760b45390530248e558a937c9c1b45c1",
+      "skills/frontend-design/references/surface-modes.md": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+      "skills/frontend-design/references/visual-engines.md": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7",
+      "skills/frontend-design/skill.yaml": "dd1647cc03d0fd682f256c8199efaf7f200abedf6ce93b9863a98b3793369abb",
+      "skills/web-ui-reviewer/AGENTS.md": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf",
+      "skills/web-ui-reviewer/SKILL.md": "7a55235c62083903788578c74f26267843849f8424b3b93d21c6453398a8e324",
+      "skills/web-ui-reviewer/agents/openai.yaml": "5edf64ef909bf216945723e6d3d2435a1c23f34ae48df157bde652f4085e230b",
+      "skills/web-ui-reviewer/docs/compile-report.md": "c49a0014846d8be596c14d178afb6432b496806289fa31bbb8503948839b21c2",
+      "skills/web-ui-reviewer/evals/evals.json": "6e5c9ebf40fbc4c5d4baa4d9ba8ad7b8953350ac76ac3045b5c8e6e8cbbad86b",
+      "skills/web-ui-reviewer/evals/fixtures/module-workspace-input.md": "0e13357f23645ae605c0ec6f6b354831b5b1a60ffcdda27808e4222d9d61a500",
+      "skills/web-ui-reviewer/fragments/overview.md": "951862f03a4fbc07c55f964f95d9d65f262f2a7664aebcc26f1c0e89038739bd",
+      "skills/web-ui-reviewer/references/web-interface-guidelines.md": "b189f88ba4d37d8f296a602e777e4543138c4ccf9ce53eb8a5c3d3e03bc122f0",
+      "skills/web-ui-reviewer/skill.yaml": "5ef4c9f902eb953e3274e91b1bedb8f9884cafcc359124a34e98a5d86b9cf9a1",
+      "skills/react-spa-engineer/AGENTS.md": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf",
+      "skills/react-spa-engineer/SKILL.md": "8f2aa777e134f8fd72d20e753e3ba02a550e46ac91a0ff68b0ac55a128053eaa",
+      "skills/react-spa-engineer/agents/openai.yaml": "bc31e3c34c4307ae3267abfa68d7cd5eddf52e49b3801419fc1daa80baaf5417",
+      "skills/react-spa-engineer/docs/compile-report.md": "2be5a70eb5bc15e3e6d03cac65cc5832c363c9f27699c8fe079e64bb88e59268",
+      "skills/react-spa-engineer/fragments/overview.md": "8f4403b2935ce7840db42e10dc1e3f957e3320a91b05d4bb3ae0fc1bacbf89b6",
+      "skills/react-spa-engineer/references/accessibility.md": "44aef5b0309b2cc08ad061ef5d7dd4edf9727eaf7e56851b867c144ce6738361",
+      "skills/react-spa-engineer/references/component-architecture.md": "d1620fb939eac5b8b428b03e5c2743fadf3f6565d3aa238ceb3a51cac1e17878",
+      "skills/react-spa-engineer/references/data-fetching.md": "db095fe2545dfce0d3de6b295bea674fa2b0015f204e8daf4bc0670b44d24292",
+      "skills/react-spa-engineer/references/forms-validation.md": "c159c64c11332e162be0cfdab4dda0f87ee3eee392832a5ec6d15f69c3c32997",
+      "skills/react-spa-engineer/references/indexeddb-persistence.md": "026de6cab4c1bafd59721c75797c13f3c15728d9c07c4837bdff86b203acb468",
+      "skills/react-spa-engineer/references/performance.md": "37d9d8d6c4f915c873a83aaa68679a556eab4c80a64a18a2f9d9fccae1ab87dc",
+      "skills/react-spa-engineer/references/persistence-architecture.md": "8b1a21dd865b6e30173d8a7383b81f38a867212f48d39aa0851bd97a9286f21d",
+      "skills/react-spa-engineer/references/routing.md": "68b5dd1c3af68cdcbadcf218ec83492eed4fb8c8581c82d781b5474a93564303",
+      "skills/react-spa-engineer/references/state-management.md": "509f6510f2c2d1eef5dbf97c7c3c9f33034de461dac12a3a65a4b976cb213dd1",
+      "skills/react-spa-engineer/references/testing.md": "7b64b06442e90e3dcd75eacfc3f29efe015b5aa36a73e12a51b11977aac8fa10",
+      "skills/react-spa-engineer/references/typescript-patterns.md": "27ac07e4bd683f123e80b774db4c134f0ca3233b47681e32e3b919249b3d91c4",
+      "skills/react-spa-engineer/skill.yaml": "529187594bba49026bb78e0664bc52778014b054fb2efe3c54ba26d4be0426e4",
+      "README.md": "e37d3f99e271aca7a45b6bb5f3dbcb2ed1235f43c87c045153dff8d952dc1a75",
+      "docs/reviews/design-tools-rev-20260909/live-b0/project/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e"
+    },
+    "aggregate_sha256": "d072661d33024284b68c59bca1a5dfacfe9d3f63731f6e59d35f207f3a413162"
+  },
+  "review_filemap": {
+    "AGENTS.md": "352814c81ff9696f7202205acd4855d642c01df69a0d8d030e96999687d148bd",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/eslint.config.js": "cf80a7510234dcd5ae594b30b44682b8b45ba13c0fcb5bf8928bea143802aa1c",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/index.html": "f5ed80cea17c8985d4d40cf5936d0c94aa6f675cade574b7c720264e342589a9",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/package.json": "4a0547303b1178da8779875ba3f3724229734ffdadaffadeace86b58a9e68750",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/pnpm-lock.yaml": "45fa824b7163da3ab36f08aed2bd6183cf33ebdb88a32a83c4b957e999718e98",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/pnpm-workspace.yaml": "1e831b89d4d46e629c888d0ca10abc161e66a953e0778409facb96bcd828d9a0",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/src/App.tsx": "91aedd9fa677873cedb0e0584c8f01e5f649a2b740879362926ae234126590e2",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/src/assets/react.svg": "35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/src/components/theme-provider.tsx": "7e9140cbb4471cbcf20f9e6348406a0a9f5f00689982f6f6fae7a63f44d063e3",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/src/components/ui/dialog.tsx": "84015448e1deacfc38d29ea767c2a62f28c6b61d9a84fce933087c2c7fc9b4e8",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/src/components/ui/field.tsx": "90cbc96b0de5c836ebb82a2997c45956e81f939566d5e91fc701af007849c92b",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/src/components/ui/input.tsx": "75418e030b2a54dd017ac0f4588db4bbdbabca7525e88bbc9d84cb3e18bcb905",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/src/components/ui/label.tsx": "b823de7355666bd6a6a2cf88a6630e436d021b38fdbef5b749fac0921b86f44d",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/src/components/ui/radio-group.tsx": "e36464d09f7339a1803610f5a016d7822aaa7ecab306230e6fc7c329ec799df9",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/src/components/ui/separator.tsx": "b5b5460e5337c2d5f361c1512001615b2e5eacb38c7449a4418bb9ddb47c4bba",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/src/components/ui/switch.tsx": "33647da0cc420551224ecf63921f9cad51fd681d69657af12eb26700a07231cb",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/src/index.css": "9bde270cb8d0493a24091df8ae292e3a2b3484f91d738fa70a037866fe206d48",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/src/lib/utils.ts": "14300d758170c270c75b057f38fedb3793a5920ea872f0477e29fb131185e8a7",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/src/main.tsx": "36302f6e7cd3e4556ef482c8a623155b6b851d957679ab1b76d2b93099af9ca1",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/src/preserved-note.ts": "63342b08277a771a3f4643af89159820581459bed11554f6164206d0bfd1310b",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/tsconfig.app.json": "1b10733ad1b7359a2b0b6f58a8bb3a13b95eabf0022b4320856eea0127e9588b",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/tsconfig.node.json": "90a22c920cbc14624fb4658b58f15c875abf3234224f3933f211849c3ada3242",
+    "docs/reviews/design-tools-rev-20260909/live-b0/project/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+    "docs/skill-standard.md": "cb7fe13fe8c65144b9ae5fdef6d9b9f598fbc1a05523e674a0282aec942a8f67",
+    "skills/frontend-design/AGENTS.md": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf",
+    "skills/frontend-design/LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+    "skills/frontend-design/SKILL.md": "8b6cbe076ff9d7a8ae0a2efaffe5de451299a08c565d9c4d409d71f334775dee",
+    "skills/frontend-design/agents/openai.yaml": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+    "skills/frontend-design/docs/README.md": "40d28dd56525abb4514a6eb6a2f4c092c4d712ada67be12559e20aa36c52c83a",
+    "skills/frontend-design/docs/compile-report.md": "e74f0d7a22a47f019de8878eac446ee280db383a6553b22499ec192ad4450b83",
+    "skills/frontend-design/docs/forward-tests/forward-test-evidence-20260727-1.md": "d660f0f0ea8e6a20a08cca5bfd81c3afe169c919d6d8ce0d7cbc8ea35d00e945",
+    "skills/frontend-design/docs/forward-tests/remediation-evidence-20261107-1.json": "6400fc5eb4a4a8727f08ae42c3ff35705d723484a08a0fab3a82a3c0d1b12f4c",
+    "skills/frontend-design/docs/logs/forward-test-evidence-20260716-1.md": "3f77f833b840ec2b4ebc3c4ea9f2c26bcfc57275ae941be48facbcc519828a51",
+    "skills/frontend-design/docs/logs/implementation-log-20260715-1.md": "eadcfcd1bdf5af63079688889bf284a87bc65ec354849aea37baf8fd25c61d9b",
+    "skills/frontend-design/docs/logs/implementation-log-20260716-1.md": "1150943b60e90d3a590e4b5a56a185aef8c40079c51ceff5567f7a12955a512b",
+    "skills/frontend-design/docs/logs/implementation-log-20260727-1.md": "7c938945af2f16273fd429db122df88b2e552db5ee7d1598981a8318d63827f7",
+    "skills/frontend-design/docs/logs/implementation-log-20261107-1.md": "8f1f7d36a588cd25fb5173af6182644e6db79b48213fe6dc428c443f99f9c3fc",
+    "skills/frontend-design/fragments/overview.md": "cf90ef5d8130687645eb6f9ba7491452c44cc8648cf5a8e5c757dc4418fa5ae7",
+    "skills/frontend-design/references/anti-patterns.md": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+    "skills/frontend-design/references/strategy-to-implementation.md": "ef884923fbb5e95e646700be7dfbfaae760b45390530248e558a937c9c1b45c1",
+    "skills/frontend-design/references/surface-modes.md": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+    "skills/frontend-design/references/visual-engines.md": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7",
+    "skills/frontend-design/skill.yaml": "dd1647cc03d0fd682f256c8199efaf7f200abedf6ce93b9863a98b3793369abb",
+    "skills/web-ux-engineer/docs/README.md": "3ba84efc8c8299809404879d1ebd065843ff28902f7d7be2d30d3270853e0335",
+    "skills/web-ux-engineer/docs/issues/implementation-plan-20261107-1.md": "6a2c06b07a0ee0472f854d054d7b1b77be3457c76e12af6980d6ace497705021",
+    "skills/web-ux-engineer/docs/logs/implementation-log-20261107-1.md": "9be8fe03f3da10e5a2035001f6e74f2019a455c99dcaa6bad8865ec345f0369e"
+  }
+}

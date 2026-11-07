@@ -1,14 +1,13 @@
 ---
 name: frontend-design
-description: Design and implement visually strong web interfaces and
-  decision-complete design strategies. Use for landing pages, product UI,
-  dashboards, prototypes, redesigns, or translating accepted design into code.
-  Preserve authoritative behavior and existing systems, then verify rendered
-  results.
+description: "Design and implement visual strategies for web interfaces: landing
+  pages, product UI, dashboards, and redesigns. Own composition, typography,
+  styling, and motion; express accepted interactions and verify rendered
+  results. Route task-flow choices and UX audits to web-ux-engineer."
 metadata:
-  source-version: 0.2.2
+  source-version: 0.2.4
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: b0cd204ffae993d86c86d70922740c177ccb1d2038a71804827859cd104c14aa
+  skillforge-source-hash: a084e96b522d3a5327ac12637ac9481884730dfecb998ecc33404b90dbdb245d
 ---
 
 # frontend-design
@@ -23,7 +22,7 @@ metadata:
 
 ## When to use this skill
 
-- Create or refine an implementation-ready visual and interaction strategy for a web interface.
+- Create or refine an implementation-ready visual strategy and the visual expression of accepted interactions.
 - Visually strong landing pages, marketing websites, hero sections, or branded surfaces
 - Product UI, dashboards, workspaces, admin surfaces, or app redesigns that need better hierarchy and visual discipline
 - Translate an accepted design, mockup, or visual direction into React, HTML/CSS, or another component-based UI
@@ -31,14 +30,13 @@ metadata:
 
 ## When NOT to use this skill
 
+- Choosing or auditing a user-task flow is the primary result; use web-ux-engineer for interaction choices and scenario continuity.
 - Pure frontend architecture, state management, routing, or data-fetching work with no design direction requirement
 - Pure component API lookup or design-system component selection; use `shadcn` for that
 - Reusable React component correctness/hardening work where the core problem is rendering behavior, SSR, portals, or future React semantics; use `react-components-engineer`
 - Formal guidelines-based review of an implemented interface without design or remediation work; use `web-ui-reviewer`
 
 ## Overview
-
-Use this skill when the quality of the work depends on art direction, hierarchy, restraint, imagery, typography, and motion rather than component count alone.
 
 Goal: produce deliberate, current interfaces and implementation-ready design
 strategies whose claims match the evidence. Prefer one clear idea, strong
@@ -56,20 +54,10 @@ Before designing or building, establish:
 - `visual engine`: one primary engine and, only when useful, one supporting engine
 - `visual thesis`: one sentence describing mood, material, energy, and the dominant visual idea
 - `content and state plan`: content order plus the relevant loading, empty, error, success, permission, responsive, and long-content states
-- `interaction thesis`: only the transitions or motion that materially improve presence, hierarchy, feedback, or affordance
+- `interaction thesis`: the visual expression of accepted behavior through transitions or motion that materially improve presence, hierarchy, feedback, or affordance; task-flow choices belong to `web-ux-engineer`
 - `reuse and evidence plan`: existing components/assets to reuse and the rendered checks required for the requested completion claim
 
 Each section gets one job, one dominant visual idea, and one primary takeaway or action.
-
-For non-trivial strategy, system-constrained work, implementation handoff, or
-runtime completion, read `references/strategy-to-implementation.md`.
-
-Load references only when needed:
-
-- `references/strategy-to-implementation.md` for readiness, strategy handoff, implementation mapping, evidence, and status rules
-- `references/surface-modes.md` for surface type and constraint-profile rules
-- `references/visual-engines.md` for choosing an `image-led`, `type-led`, `grid-led`, `product-led`, or `data-led` direction
-- `references/anti-patterns.md` for common failure patterns and anti-AI-slop guidance
 
 ## Cross-Mode Defaults
 
@@ -268,6 +256,7 @@ Validation:
 
 ## Interop priority
 
+- **task-flow interaction choices, continuity, recovery, and scenario UX audit:** web-ux-engineer. Consume the accepted interaction and express it visually; retain local state, accessibility, peer-view completeness, and rendered-evidence checks.
 - **product behavior, actors, actions, states, validation, and copy authority:** The relevant product or specification skill and accepted project sources. frontend-design expresses authoritative behavior visually but must not invent or override it.
 - **application architecture, state, routing, data, testing, and runtime accessibility mechanics:** The relevant framework skill such as react-spa-engineer. frontend-design owns visual strategy and rendered expression, not framework correctness.
 - **reusable React component correctness, SSR, hydration, portals, and lifecycle behavior:** react-components-engineer. Visual intent must adapt to component correctness rather than weaken it.
@@ -286,6 +275,9 @@ Validation:
 - **medium** — Do not approve a design artifact from a stale export or a runtime implementation from an outdated mockup when current source and rendered behavior disagree.
 
 ## Policies
+
+### Proportional collaboration
+Honor an explicitly selected skill within its supported scope. In mixed work choose the lead by the requested result and consult another skill for a concrete decision only. Missing neighbors do not block supported local work; preserve evidence limits without cycling handoffs or loading every specialist.
 
 ### Source-authority policy
 Resolve product behavior, design-system constraints, runtime behavior, and visual inspiration from their named authorities; stop rather than silently resolve equal-authority conflicts.

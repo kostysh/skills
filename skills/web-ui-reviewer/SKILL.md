@@ -1,13 +1,13 @@
 ---
 name: web-ui-reviewer
-description: Review web UI code and rendered states against project requirements
-  and Web Interface Guidelines. Use for UI/UX, accessibility, design, content,
-  form, or frontend-performance audits that need scoped findings and evidence
-  limits; not implementation or conformance certification.
+description: "Review web UI implementation against project rules and Web
+  Interface Guidelines: accessibility, rendered states, forms, content, and
+  measured performance. Deliver scoped findings; route task-flow UX audits to
+  web-ux-engineer. No implementation or conformance certification."
 metadata:
-  source-version: 0.2.4
+  source-version: 0.2.5
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 64c414507c7a2e09c4a363b9eb6987f7fb12585fa850a05b510ef01c65eceea5
+  skillforge-source-hash: f652870e8ccd6b0030c0aafcc43023d54eb96112741eb39a0673e88397d7752b
 ---
 
 # web-ui-reviewer
@@ -30,6 +30,7 @@ metadata:
 
 ## When NOT to use this skill
 
+- The primary result is a task-flow UX audit of interaction choices and scenario continuity; web-ux-engineer leads, while this skill retains supported UI-rule and accessibility checks.
 - The task is not a web UI, UX, accessibility, design, typography, form, content handling, or frontend performance review.
 - The task is implementation work rather than review; use the relevant frontend or framework skill.
 - The task is a security-first audit; use security-reviewer.
@@ -37,7 +38,7 @@ metadata:
 
 ## Capability and anti-claims
 
-Review HTML, CSS, JavaScript, framework code, screenshots, and rendered web states to produce scoped UI findings and handoffs. This skill does not implement fixes, certify WCAG or legal conformance, prove performance without measurement, or prove visual and interaction behavior from code alone.
+Review HTML, CSS, JavaScript, framework code, screenshots, and rendered web states to produce scoped findings about UI implementation and handoffs. `web-ux-engineer` leads task-flow UX audits; this skill keeps its own interaction, accessibility, and applicable-view completeness checks. This skill does not implement fixes, certify WCAG or legal conformance, prove performance without measurement, or prove visual and interaction behavior from code alone.
 
 ## Inputs and authority
 
@@ -122,6 +123,7 @@ Validation:
 
 ## Interop priority
 
+- **task-flow interaction choices, continuity, recovery, and scenario UX audit:** web-ux-engineer. Supply implementation-level UI findings and consume scenario context; preserve read-only scope, peer-view completeness, accessibility, and evidence limits.
 - **formal diff scope, finding severity, merge guidance, and overall code-review verdict:** code-reviewer. web-ui-reviewer supplies UI-domain findings; code-reviewer owns the formal code-review process and merge conclusion.
 - **navigating a live UI, collecting current screenshots, exercising interactions, and recording viewport or state evidence:** agent-browser or playwright. Browser skills collect runtime evidence; web-ui-reviewer decides what UI evidence is required and interprets it within the bounded review.
 - **visual direction, component implementation, framework behavior, and test changes:** frontend-design and the relevant frontend or framework skill. web-ui-reviewer remains read-only and hands supported findings to the implementation owner.
@@ -135,6 +137,9 @@ Validation:
 - **high** — Do not require search, detail, history, or another peer capability from a generic checklist; require accepted authority, and do not return no-material-findings when that authority exposes an unaddressed omission.
 
 ## Policies
+
+### Proportional collaboration
+Honor an explicitly selected skill within its supported scope. In mixed work choose the lead by the requested result and consult another skill for a concrete decision only. Missing neighbors do not block supported local work; preserve evidence limits without cycling handoffs or loading every specialist.
 
 ### Result status
 Use findings when at least one defect is supported; no-material-findings only when evidence is sufficient for the bounded claim; limited when useful review occurred but missing evidence prevents that conclusion; blocked when no defensible review can be performed.

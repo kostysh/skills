@@ -1,3 +1,4 @@
 interface:
-  display_name: "React Spa Engineer"
+  display_name: "React SPA Engineer"
   short_description: "Build and verify integrated React SPA flows"
+  default_prompt: "Use $react-spa-engineer to implement or assess this React SPA flow across routing, data, forms, and state, preserving the accepted interaction and verifying runtime behavior."

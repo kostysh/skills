@@ -1,0 +1,549 @@
+{
+  "source_generation_commands": [
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "lint",
+        "/home/kostysh/.codex/skills/custom/skills/web-ux-engineer"
+      ],
+      "exit": 0,
+      "output": "OK /home/kostysh/.codex/skills/custom/skills/web-ux-engineer\n"
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "regenerate",
+        "/home/kostysh/.codex/skills/custom/skills/web-ux-engineer"
+      ],
+      "exit": 0,
+      "output": "Regenerated /home/kostysh/.codex/skills/custom/skills/web-ux-engineer\n"
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "/home/kostysh/.codex/skills/custom/skills/web-ux-engineer"
+      ],
+      "exit": 0,
+      "output": "OK /home/kostysh/.codex/skills/custom/skills/web-ux-engineer\n"
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "lint",
+        "/home/kostysh/.codex/skills/custom/skills/frontend-design"
+      ],
+      "exit": 0,
+      "output": "OK /home/kostysh/.codex/skills/custom/skills/frontend-design\n"
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "regenerate",
+        "/home/kostysh/.codex/skills/custom/skills/frontend-design"
+      ],
+      "exit": 0,
+      "output": "Regenerated /home/kostysh/.codex/skills/custom/skills/frontend-design\nWarnings:\n- Generated SKILL.md is 20685 bytes, above the recommended maximum 20000 bytes. Move detailed guidance into references/* and keep SKILL.md focused on activation, workflow, and navigation. Raise skill.recommended-skill-md-max-bytes only when references cannot reasonably reduce the size.\n"
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "/home/kostysh/.codex/skills/custom/skills/frontend-design"
+      ],
+      "exit": 0,
+      "output": "OK /home/kostysh/.codex/skills/custom/skills/frontend-design\n"
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "lint",
+        "/home/kostysh/.codex/skills/custom/skills/web-ui-reviewer"
+      ],
+      "exit": 0,
+      "output": "OK /home/kostysh/.codex/skills/custom/skills/web-ui-reviewer\n"
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "regenerate",
+        "/home/kostysh/.codex/skills/custom/skills/web-ui-reviewer"
+      ],
+      "exit": 0,
+      "output": "Regenerated /home/kostysh/.codex/skills/custom/skills/web-ui-reviewer\n"
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "/home/kostysh/.codex/skills/custom/skills/web-ui-reviewer"
+      ],
+      "exit": 0,
+      "output": "OK /home/kostysh/.codex/skills/custom/skills/web-ui-reviewer\n"
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "lint",
+        "/home/kostysh/.codex/skills/custom/skills/react-spa-engineer"
+      ],
+      "exit": 0,
+      "output": "OK /home/kostysh/.codex/skills/custom/skills/react-spa-engineer\n"
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "regenerate",
+        "/home/kostysh/.codex/skills/custom/skills/react-spa-engineer"
+      ],
+      "exit": 0,
+      "output": "Regenerated /home/kostysh/.codex/skills/custom/skills/react-spa-engineer\n"
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "/home/kostysh/.codex/skills/custom/skills/react-spa-engineer"
+      ],
+      "exit": 0,
+      "output": "OK /home/kostysh/.codex/skills/custom/skills/react-spa-engineer\n"
+    },
+    {
+      "command": [
+        "python3",
+        "/home/kostysh/.codex/skills/.system/skill-creator/scripts/quick_validate.py",
+        "/home/kostysh/.codex/skills/custom/skills/web-ux-engineer"
+      ],
+      "exit": 0,
+      "output": "Skill is valid!\n"
+    }
+  ],
+  "trial_to_final_parity": {
+    "web-ux-engineer": [
+      {
+        "file": "SKILL.md",
+        "delta": "compiler source-hash only"
+      }
+    ],
+    "frontend-design": [],
+    "web-ui-reviewer": [],
+    "react-spa-engineer": [
+      {
+        "file": "references/accessibility.md",
+        "delta": "ownership introduction; tested separately in reference-delta"
+      }
+    ]
+  },
+  "source_readiness": "ready-to-regenerate",
+  "new_root_words": 947,
+  "final_isolated_compile": [
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "compile",
+        "/tmp/web-ux-20261107-xaye7ceb/review-source/skills/web-ux-engineer",
+        "--out-dir",
+        "/tmp/web-ux-20261107-xaye7ceb/review-compiled"
+      ],
+      "exit": 0,
+      "output": "Compiled /tmp/web-ux-20261107-xaye7ceb/review-source/skills/web-ux-engineer -> /tmp/web-ux-20261107-xaye7ceb/review-compiled/web-ux-engineer\n"
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "/tmp/web-ux-20261107-xaye7ceb/review-compiled/web-ux-engineer"
+      ],
+      "exit": 0,
+      "output": "OK /tmp/web-ux-20261107-xaye7ceb/review-compiled/web-ux-engineer\n"
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "compile",
+        "/tmp/web-ux-20261107-xaye7ceb/review-source/skills/frontend-design",
+        "--out-dir",
+        "/tmp/web-ux-20261107-xaye7ceb/review-compiled"
+      ],
+      "exit": 0,
+      "output": "Compiled /tmp/web-ux-20261107-xaye7ceb/review-source/skills/frontend-design -> /tmp/web-ux-20261107-xaye7ceb/review-compiled/frontend-design\nWarnings:\n- Generated SKILL.md is 20685 bytes, above the recommended maximum 20000 bytes. Move detailed guidance into references/* and keep SKILL.md focused on activation, workflow, and navigation. Raise skill.recommended-skill-md-max-bytes only when references cannot reasonably reduce the size.\n"
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "/tmp/web-ux-20261107-xaye7ceb/review-compiled/frontend-design"
+      ],
+      "exit": 0,
+      "output": "OK /tmp/web-ux-20261107-xaye7ceb/review-compiled/frontend-design\n"
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "compile",
+        "/tmp/web-ux-20261107-xaye7ceb/review-source/skills/web-ui-reviewer",
+        "--out-dir",
+        "/tmp/web-ux-20261107-xaye7ceb/review-compiled"
+      ],
+      "exit": 0,
+      "output": "Compiled /tmp/web-ux-20261107-xaye7ceb/review-source/skills/web-ui-reviewer -> /tmp/web-ux-20261107-xaye7ceb/review-compiled/web-ui-reviewer\n"
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "/tmp/web-ux-20261107-xaye7ceb/review-compiled/web-ui-reviewer"
+      ],
+      "exit": 0,
+      "output": "OK /tmp/web-ux-20261107-xaye7ceb/review-compiled/web-ui-reviewer\n"
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "compile",
+        "/tmp/web-ux-20261107-xaye7ceb/review-source/skills/react-spa-engineer",
+        "--out-dir",
+        "/tmp/web-ux-20261107-xaye7ceb/review-compiled"
+      ],
+      "exit": 0,
+      "output": "Compiled /tmp/web-ux-20261107-xaye7ceb/review-source/skills/react-spa-engineer -> /tmp/web-ux-20261107-xaye7ceb/review-compiled/react-spa-engineer\n"
+    },
+    {
+      "command": [
+        "node",
+        "/home/kostysh/.codex/skills/custom/skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "/tmp/web-ux-20261107-xaye7ceb/review-compiled/react-spa-engineer"
+      ],
+      "exit": 0,
+      "output": "OK /tmp/web-ux-20261107-xaye7ceb/review-compiled/react-spa-engineer\n"
+    }
+  ],
+  "final_package_readback": {
+    "command_exit": 0,
+    "archives": [
+      {
+        "name": "frontend-design",
+        "version": "0.2.3",
+        "archive_sha256": "50b0a97fbdd048fff3fda04b8350c034efcd4dc209a202d2c5f7501a9b726acd",
+        "files": [
+          "SKILL.md",
+          "agents/openai.yaml",
+          "references/anti-patterns.md",
+          "references/strategy-to-implementation.md",
+          "references/surface-modes.md",
+          "references/visual-engines.md"
+        ],
+        "readback_equal": true
+      },
+      {
+        "name": "react-spa-engineer",
+        "version": "0.1.13",
+        "archive_sha256": "798eb2fcb67e8ac75e464ff29dc825d82bf102ac5fb9e56b5d058878dd797072",
+        "files": [
+          "SKILL.md",
+          "agents/openai.yaml",
+          "references/accessibility.md",
+          "references/component-architecture.md",
+          "references/data-fetching.md",
+          "references/forms-validation.md",
+          "references/indexeddb-persistence.md",
+          "references/performance.md",
+          "references/persistence-architecture.md",
+          "references/routing.md",
+          "references/state-management.md",
+          "references/testing.md",
+          "references/typescript-patterns.md"
+        ],
+        "readback_equal": true
+      },
+      {
+        "name": "web-ui-reviewer",
+        "version": "0.2.5",
+        "archive_sha256": "4f910a921bbce97cda01377baccdd4615812bbd59927bac178623b0f44478bad",
+        "files": [
+          "SKILL.md",
+          "agents/openai.yaml",
+          "references/web-interface-guidelines.md"
+        ],
+        "readback_equal": true
+      },
+      {
+        "name": "web-ux-engineer",
+        "version": "0.1.0",
+        "archive_sha256": "23a6185634e98deb5c04d047014a479fe4a88e3132d0073067d53e24a30a934c",
+        "files": [
+          "SKILL.md",
+          "agents/openai.yaml"
+        ],
+        "readback_equal": true
+      }
+    ],
+    "release": "skills-web-ux-engineer-local",
+    "publication": false
+  },
+  "frozen_file_manifest": {
+    "algorithm": "sha256",
+    "files": {
+      "AGENTS.md": "352814c81ff9696f7202205acd4855d642c01df69a0d8d030e96999687d148bd",
+      "README.md": "e37d3f99e271aca7a45b6bb5f3dbcb2ed1235f43c87c045153dff8d952dc1a75",
+      "docs/skill-standard.md": "cb7fe13fe8c65144b9ae5fdef6d9b9f598fbc1a05523e674a0282aec942a8f67",
+      "skills/frontend-design/AGENTS.md": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf",
+      "skills/frontend-design/LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "skills/frontend-design/SKILL.md": "705b679a3ee09e5765f1ce336a00c71fdfbbf93974d22e2308053369f49869b4",
+      "skills/frontend-design/agents/openai.yaml": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+      "skills/frontend-design/docs/README.md": "c51213e5f9c8d2ab589ce1f91227441838e9b3257b99b4cecf2da953256ed38b",
+      "skills/frontend-design/docs/compile-report.md": "cbb8e58921fde434e7e49855a32d03a1961bbb594a915cebd6eca4cd478a2701",
+      "skills/frontend-design/docs/forward-tests/forward-test-evidence-20260727-1.md": "d660f0f0ea8e6a20a08cca5bfd81c3afe169c919d6d8ce0d7cbc8ea35d00e945",
+      "skills/frontend-design/docs/logs/forward-test-evidence-20260716-1.md": "3f77f833b840ec2b4ebc3c4ea9f2c26bcfc57275ae941be48facbcc519828a51",
+      "skills/frontend-design/docs/logs/implementation-log-20260715-1.md": "eadcfcd1bdf5af63079688889bf284a87bc65ec354849aea37baf8fd25c61d9b",
+      "skills/frontend-design/docs/logs/implementation-log-20260716-1.md": "1150943b60e90d3a590e4b5a56a185aef8c40079c51ceff5567f7a12955a512b",
+      "skills/frontend-design/docs/logs/implementation-log-20260727-1.md": "7c938945af2f16273fd429db122df88b2e552db5ee7d1598981a8318d63827f7",
+      "skills/frontend-design/fragments/overview.md": "bb9d637071235e370b562a643aacf1c6eb1919766f04f97738355ec5d6356d57",
+      "skills/frontend-design/references/anti-patterns.md": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+      "skills/frontend-design/references/strategy-to-implementation.md": "ef884923fbb5e95e646700be7dfbfaae760b45390530248e558a937c9c1b45c1",
+      "skills/frontend-design/references/surface-modes.md": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+      "skills/frontend-design/references/visual-engines.md": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7",
+      "skills/frontend-design/skill.yaml": "c98baaa2bc4d5f0ecdc518e3cf4aee709a60ea2bcddfb5d5e15215b6eca38058",
+      "skills/react-spa-engineer/AGENTS.md": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf",
+      "skills/react-spa-engineer/SKILL.md": "8f2aa777e134f8fd72d20e753e3ba02a550e46ac91a0ff68b0ac55a128053eaa",
+      "skills/react-spa-engineer/agents/openai.yaml": "bc31e3c34c4307ae3267abfa68d7cd5eddf52e49b3801419fc1daa80baaf5417",
+      "skills/react-spa-engineer/docs/README.md": "6db4b01889dd98e5f526f8debd139e229e63dde57ad72504beb77d31046c073d",
+      "skills/react-spa-engineer/docs/compile-report.md": "2be5a70eb5bc15e3e6d03cac65cc5832c363c9f27699c8fe079e64bb88e59268",
+      "skills/react-spa-engineer/docs/forward-tests/forward-test-evidence-20260727-1.md": "f7d32a030f70b2ef8074116cec081fd8e03e94e57b131e405116380c1fd5b45c",
+      "skills/react-spa-engineer/docs/logs/forward-test-raw-20260713-1.md": "7da7b3bd2b74c30e994ac58dfdac93ca001dc7d8c030a43d83f031a970da96b5",
+      "skills/react-spa-engineer/docs/logs/implementation-log-20260612-1.md": "40eaf0cd2ddd2df6f7bd45e7304fc135f6334763d22b2c62a9e8318766e4adcf",
+      "skills/react-spa-engineer/docs/logs/implementation-log-20260612-2.md": "3ff9e92cbff762ddb31970ec0f135b111d191c9b53f0cdb06ee14b619ae13bff",
+      "skills/react-spa-engineer/docs/logs/implementation-log-20260622-1.md": "da0b84cdccb1f7e872e8f4851234a5afda5a69501fc5bd685fda539f6a0cc4ab",
+      "skills/react-spa-engineer/docs/logs/implementation-log-20260708-1.md": "37362e4c3be5721883b2e4d292a97ef07004bef8d8ec4ce8c9983891aa695e0f",
+      "skills/react-spa-engineer/docs/logs/implementation-log-20260713-1.md": "2677180216108e9bf97d73d172bc80a8cc5f714f0d4af91ff53f984d01ceb56b",
+      "skills/react-spa-engineer/docs/logs/implementation-log-20260715-1.md": "79721ad13e08a0ecdc38fa07249ff8d0e6e5ae5d7a7e6480e4a756252b4cb618",
+      "skills/react-spa-engineer/docs/logs/implementation-log-20260727-1.md": "3edea17789643075242a5d8c0e3519bf709d8f8f1ac426b85f47f577fecc2b00",
+      "skills/react-spa-engineer/docs/logs/implementation-log-20261021-1.md": "0840d51df8e623c0ac477d49aed4a140fb7337df62d65c398257a511bac33b04",
+      "skills/react-spa-engineer/fragments/overview.md": "8f4403b2935ce7840db42e10dc1e3f957e3320a91b05d4bb3ae0fc1bacbf89b6",
+      "skills/react-spa-engineer/references/accessibility.md": "44aef5b0309b2cc08ad061ef5d7dd4edf9727eaf7e56851b867c144ce6738361",
+      "skills/react-spa-engineer/references/component-architecture.md": "d1620fb939eac5b8b428b03e5c2743fadf3f6565d3aa238ceb3a51cac1e17878",
+      "skills/react-spa-engineer/references/data-fetching.md": "db095fe2545dfce0d3de6b295bea674fa2b0015f204e8daf4bc0670b44d24292",
+      "skills/react-spa-engineer/references/forms-validation.md": "c159c64c11332e162be0cfdab4dda0f87ee3eee392832a5ec6d15f69c3c32997",
+      "skills/react-spa-engineer/references/indexeddb-persistence.md": "026de6cab4c1bafd59721c75797c13f3c15728d9c07c4837bdff86b203acb468",
+      "skills/react-spa-engineer/references/performance.md": "37d9d8d6c4f915c873a83aaa68679a556eab4c80a64a18a2f9d9fccae1ab87dc",
+      "skills/react-spa-engineer/references/persistence-architecture.md": "8b1a21dd865b6e30173d8a7383b81f38a867212f48d39aa0851bd97a9286f21d",
+      "skills/react-spa-engineer/references/routing.md": "68b5dd1c3af68cdcbadcf218ec83492eed4fb8c8581c82d781b5474a93564303",
+      "skills/react-spa-engineer/references/state-management.md": "509f6510f2c2d1eef5dbf97c7c3c9f33034de461dac12a3a65a4b976cb213dd1",
+      "skills/react-spa-engineer/references/testing.md": "7b64b06442e90e3dcd75eacfc3f29efe015b5aa36a73e12a51b11977aac8fa10",
+      "skills/react-spa-engineer/references/typescript-patterns.md": "27ac07e4bd683f123e80b774db4c134f0ca3233b47681e32e3b919249b3d91c4",
+      "skills/react-spa-engineer/skill.yaml": "529187594bba49026bb78e0664bc52778014b054fb2efe3c54ba26d4be0426e4",
+      "skills/web-ui-reviewer/AGENTS.md": "800f40efdcc1041acc17a8ada7b0c60c4e41f1d19825b626c81cff5378884cbf",
+      "skills/web-ui-reviewer/SKILL.md": "7a55235c62083903788578c74f26267843849f8424b3b93d21c6453398a8e324",
+      "skills/web-ui-reviewer/agents/openai.yaml": "5edf64ef909bf216945723e6d3d2435a1c23f34ae48df157bde652f4085e230b",
+      "skills/web-ui-reviewer/docs/README.md": "06b8970e028cdaa7918f072d2fccc7072baf8a2b39cbd3c7f31ae1d353b3954e",
+      "skills/web-ui-reviewer/docs/compile-report.md": "c49a0014846d8be596c14d178afb6432b496806289fa31bbb8503948839b21c2",
+      "skills/web-ui-reviewer/docs/forward-tests/forward-test-20260716-1.md": "a57209dc275698c01e2064aa9da9406369b7f7cf72386a36165f4948ede2fb03",
+      "skills/web-ui-reviewer/docs/forward-tests/forward-test-evidence-20260727-1.md": "a7f6ec2eef8e4d78525d0e483f78bbaaa9b1ca342387ee602d894fcaba5f49ab",
+      "skills/web-ui-reviewer/docs/logs/implementation-log-20260612-1.md": "0961e7237b2e245ada7de725ec7556aae26b5402c5b86985456d859c55ebfa34",
+      "skills/web-ui-reviewer/docs/logs/implementation-log-20260622-1.md": "8a9026bfeec31257cdf0b5506658bac04c5fc38a90d6371601a8bfb50e2c4a96",
+      "skills/web-ui-reviewer/docs/logs/implementation-log-20260708-1.md": "4922ddbd2c6ec414cc680e60c9062ccf1bd84d6ccec5bf9368de0203c9f56779",
+      "skills/web-ui-reviewer/docs/logs/implementation-log-20260716-1.md": "17297773ccc048f56e518b029d8327b68189d238747f4137230325ba1a22e1fd",
+      "skills/web-ui-reviewer/docs/logs/implementation-log-20260727-1.md": "d6321db4b5f5ebfb75ea1f97f2cb3a3c5da6cf6d9a3838c523bf41d122bbaabe",
+      "skills/web-ui-reviewer/docs/logs/implementation-log-20260727-2.md": "9858648789059dcb00fc0e9d201afcd019ebaf671e29c7285eecb04166d9e755",
+      "skills/web-ui-reviewer/evals/evals.json": "6e5c9ebf40fbc4c5d4baa4d9ba8ad7b8953350ac76ac3045b5c8e6e8cbbad86b",
+      "skills/web-ui-reviewer/evals/fixtures/module-workspace-input.md": "0e13357f23645ae605c0ec6f6b354831b5b1a60ffcdda27808e4222d9d61a500",
+      "skills/web-ui-reviewer/fragments/overview.md": "951862f03a4fbc07c55f964f95d9d65f262f2a7664aebcc26f1c0e89038739bd",
+      "skills/web-ui-reviewer/references/web-interface-guidelines.md": "b189f88ba4d37d8f296a602e777e4543138c4ccf9ce53eb8a5c3d3e03bc122f0",
+      "skills/web-ui-reviewer/skill.yaml": "5ef4c9f902eb953e3274e91b1bedb8f9884cafcc359124a34e98a5d86b9cf9a1",
+      "skills/web-ux-engineer/AGENTS.md": "ed6a11422c0b94d508df6ff0b3bbcd19c6643dda08f9818b709cf19e7bfaee0c",
+      "skills/web-ux-engineer/SKILL.md": "bc5bd84ea445ba3ce596dca6a74c66091d1430a59be7ca253c575ad947cc491d",
+      "skills/web-ux-engineer/agents/openai.yaml": "725f2bc1ce78f271048df1547a0840b9d06c08637308067a70844cf8a50ccf92",
+      "skills/web-ux-engineer/docs/README.md": "e01ce2ecee7eaf28c7a3df612382da591259dac0d68d8624c21c7b961dbdb935",
+      "skills/web-ux-engineer/docs/compile-report.md": "7b5481780a76b3eb6bae6dd7eeea560a6440fed436cb961fdecaebbc829d4629",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/README.md": "5fa5980cc8a80d3e884840d9b188ba55bfdb9271e20d902a7b50ef3539e81f5f",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/assessment.md": "968eaed652819cc19af3dbee852cf7abaaabc4ce3d9523c4cc3950e7228fab5f",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-catalog.json": "689e2bf911933d88ea884f74c37fd31f5f7031c041ef89b26dfe9d41e286e54d",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/01-before-desktop.png": "2f1142eaa20100bac717cb576e351ecb59e23e93f488b56153934f7a416313c7",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/02-after-desktop-clean.png": "7eb8b2fc425ef2bdb82edd5002df5f948db669aa96d12459c8f9eecf15424767",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/03-invalid-email.png": "403635c5712f078328a8428c8bedc798628a6a495ac3f0ff19ff20aa06e4ec11",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/04-dirty-keyboard-focus.png": "acb1179193c1b2a2d29f9b00d172f418ecee6850fe91ee702058b3ae9f825e9e",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/05-reset-initial.png": "321105d41f76e0df625c0716de87f41d5cf96ab7ee3d243cd75e2e10fdf8d0eb",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/06-review-keyboard.png": "8d7eea4f4f0fc67674ea310f9be089b29e8458664c4821f6aa05b981f2a67b6b",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/07-first-applied.png": "672453fba7e6d5bdb709113a670cd8dc6b623e8dc920c5451b237eccf83f0131",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/08-reset-first-applied.png": "142445ecc76986ac1cce036a23f41cc3cbca85265e684755436fc0b51f452d67",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/09-second-applied.png": "0bdd5713b80a364d807caa738423d4a0e1cc0ba0019ef544da47b720421514a2",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/10-mobile-dirty.png": "11a37cc88b379331cfb7969a99c348f97d6ecbc3746629244f6dbdfed47b80f6",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/11-mobile-review.png": "6feb3d732500a4246e54526eb0939346e3aa29166cd350620d87402fb4ad03e8",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/12-mobile-review-fixed.png": "7f0f0800829844f9bfc5ae8c6dea42c6c0d204357ea31c12ef4e2d9c3dcff658",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/13-mobile-reset-second.png": "c29d9e847f2e483b1c21d2c53736f5cb865c1c695bb1c70cdb3f8ef1bacad4b1",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/14-mobile-review-final.png": "7d22febd4bdbf51e3cb7e6cb5f83b3a103ae33d09aed951694f856c95349edce",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/15-mobile-long-applied.png": "7aa6dbe50a9ff14117f400418e9a6f5c5e7b6ca318d83c1dd1e3d207e24bf019",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/16-mobile-final-restored.png": "fdcc8bd51a687e9e78e1022bf375eda6e0b098b7de8d44179cf3415d2d7aef42",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/17-short-viewport-dialog.png": "83ab0d406bcc651df3b2d23f402139cb9a5d6a09a56cae39680b90bfaf5d6c6b",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/18-desktop-final.png": "91a6b9ffd5e136ee3d30d042ce62c498fc9a31939c63c3c0720845e2adcc811a",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/19-preview-mobile-form.png": "cb7394654486d4e2b100aedc8343bc4c68039715cc17bb53f778fe7f000187a0",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/20-preview-mobile-dialog.png": "aa6a68312b286cf97f5e3d21c4e5161ad7f53dfdda3d1d6af621fdbda7826fc9",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/app-final.txt": "5620ea58f384d6249b96431bc077a2877184e1c6f86ac8c0982dea4c9e0b86e8",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/before-manifest.json": "2b2a17723032c102923bd6028d142d18ce884b6259e36ac289e19791bf86f31e",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/browser-config.json": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/cleanup-check.json": "9546f948653d9abd8a8ed6139a02d398e6dcd286c5d49fdaf87f2de8d4de4ca0",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/commands.jsonl": "cacb09f86cf15f4c294441a2492b3caf8e800abb0565c0cadb3f4cc298e97ac8",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/design-basis.md": "e7ba86ccdc3949e7323aff32f668201e6152def5cf3e8a99b3e91824c3e95d5e",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/dev-cleanup-check.json": "9546f948653d9abd8a8ed6139a02d398e6dcd286c5d49fdaf87f2de8d4de4ca0",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/dev-processes-after-cleanup.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/dev-processes-before-cleanup.json": "5feeea9960c926301d8452d726963686f10bc0921fdbda542a5e45c5cb3b2129",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/dev-server-process.json": "42d07215b1b4f27d26a8df5c4af29831cbdd400ff419b9d0eacec2c9276b78b2",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/dev-server.log": "15c5142c71840b31a09c47eb96608f2e4cfd1090527b7ffb081b0ec57b533637",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/final-snapshot.json": "bee93761e2cdf236b6037bc0c3f891405609a53387b785a554f39eee6c38fbc7",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/final.diff": "9d9a462e246688c9aa798f9fd61a09dadfa95dab43d38b72b1feb7e67a26d810",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/helper-sources.txt": "f15742c1d9f893b2d29ed8be97a9ae9cb0ffe9b02fea51a0a025ce0c76e64fe7",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/preview-server.log": "7f76b08172a5ba475f699a494a5e77555488211819c84cc0a40045b0fe7cfd66",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/processes-after-cleanup.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/processes-before-cleanup.json": "56d006c5c96d6d9ee7656cb70a7238fe154e07675969a286c6927371cc4b84f5",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/result.md": "c3f499f3b656589f0a5596be8844e8f6608b45841cf2df6f40266b0299de3e06",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/server-process.json": "fca25ff7abe53b2d764189cb4ce59cb4b322f5d1eab4a3db0c18008c05489b12",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/server.log": "15c5142c71840b31a09c47eb96608f2e4cfd1090527b7ffb081b0ec57b533637",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-selection-output.md": "ae3c20bb6f2bbeabc31e0e33f5cd42a07ebbcc7c1c306558dee12dd0cc445db3",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-App-lint.log": "9be826e193488471ca7f25cf55cd1935bc9622b514f9ecdf225e00023db1330f",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-App.after.tsx": "4dab6706ec0065f23c9db487b3cc1a5ad4669aeb417ba98ab8e01a265df3073b",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-App.before.tsx": "91aedd9fa677873cedb0e0584c8f01e5f649a2b740879362926ae234126590e2",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-after-checks-integrity.log": "069e4a14c2dca8f5a3068743ebfb4c0351e5d84916b6b246ec1f751927723e88",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-automatically-hashed-files.txt": "bda8fa083dab2dd1fa5c17b01c9f10785b7a630a627d1cc9217555354ff990a6",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-exact-replacement-check.log": "e9b2d5c23349dbd7aa07f1b8d2896362afead91acdc55211e88eb175e18d0f0e",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-final.diff": "e378575efd88f7db9252d0f7743c401903a410088429451335cf33392a4c015c",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-initial-git-diff.log": "08e6f1dbfc50f025f375a68bce7c87f8ea07e774ec5a8f2b8460c1ebc0fd021f",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-initial-status.txt": "c4dfc721cc7f91d3ec67d99446d3c46f79c764fc96d6f9ba52e69cc669d686c1",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-initial.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-lint-fallback.log": "602ecfbf75e74833e6f43b6f4af4d63b6453962bbf23f3386f4c477fa692f95d",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-lint.log": "b661ff00d2fd422c6b1a16e5986aed8469fb8ab559aaad0a8701d4fde9e84aa3",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-project-after.sha256.json": "6b53b1e933a1d678842e027b3e6f29ee3ca3a3bd19f8e43c1674e9d1dffe9d22",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-project-before.sha256.json": "dcfbda24806567aee8f449f56f7f6c0764390a732bc58d85ddeb2a94b79ee986",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/final-artifact-check.log": "b23cb2570a6fde0c9ffe8ff2102c31e99cc859905df878dc2ce4b91151510a6c",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/read-files.md": "63d0c3fc910ffaeff9404058c317beb9f6cdcbe1df985f4dcb2d89c8837965d5",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/tasks-output.md": "7e77de43bc2094c7d3a0febcdc936ef03b5a068ab2bf08632b01574d656b862a",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/baseline.json": "9433e010f45fb77d7e4ff6619ab75941577be1acc4f81e16ce71a61c6da2d8d0",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-active.json": "eb0121fa2dc7690b2ae2bff2ff1dc3952b5ec915d7269d65087a506617db638c",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-catalog.json": "a14ebf12a154a1effd8712e70ce82cc865137bbf149a79c678f96cac204882a9",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/app-final.txt": "5e7ed6e3604d9aa0f80f0e0eb68f41a64f5ffd1712c2efc427ef296c609ed1a6",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/artifact-manifest.json": "f60e88793baa17302a05d808bfe1416f3e59a931736c38fbae41a17ba1b588da",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/browser-config.json": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/commands.json": "2a1bdf303b1d41d8ee041bf67de49e5cfbe9b1346e8169fd29c0337a5d65361e",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/dev-server-final-cleanup.json": "20cb7b682f7158b08847dbce973be33cf488768c8242c3bce8ce549dc36450fa",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/final-cleanup-command.json": "fbec5d91384b55ec80fede18821789b042a766121276e4c93b911c3564215620",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/final-cleanup.json": "c2d2f6ceb7ee53bc328d8dd6fd094718d418897f4828bc5ffd137dc1d25deb60",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/final.diff": "67c938bca344a326e8bf270b1ceb022ad2b492cb6c30b54e70811980c9fe3621",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/implementation.patch": "84b699f6cf55765af6c5f1f3f8aa145ef882d1f5fe63d07ea07dbbda7ed486c3",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/processes-after-dev-cleanup.json": "32540f70f7aa9320e3f17123eb333e8a8e61321234f80c1bbe36bae013fb0fed",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/processes-before-cleanup.json": "7a4548951bb0032cd4456394b96b3ea6f0981139205fa0a3147c03cb4cbaa57f",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/screenshots/01-initial-desktop.png": "1738ad641b07f703b554137a9331e14684b3d3f352a788dec1d53ac61363b5cb",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/screenshots/02-initial-restored-keyboard.png": "1ab0e73c31f1bed1fb6c89a8a3ee92d0298ec2dbb74fe5a53a46fea53c63f198",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/screenshots/03-applied-desktop.png": "65f4b53bb59b9dc973c2c11b073884e5067fb0210cd9486266116ba7615291bb",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/screenshots/04-restored-narrow.png": "87dd75cf363c8d7d6d877debdeda2146341cfa0f2eb13d1b09811e22823e6627",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/screenshots/05-confirmation-narrow.png": "1f050499d60350b0c99ac66292daaf0ac998986e5a9a1e1f471c1d42770d786e",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/screenshots/06-confirmation-narrow-settled.png": "79d8e64d58656618670902e938a447179c655ba4eecea02d9c88ea58656c05e3",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/screenshots/07-latest-applied-restored-narrow.png": "ab528362233cdedef2a1c32936dfd6b1c91b1653f2cf6f538d78ce429eea3991",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/screenshots/08-preview-packaged-font-narrow-form.png": "e0ee59b0985d60632f54b4507be9999f49e28895b3516dceaafee303d9f238e7",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/screenshots/09-preview-packaged-font-narrow-dialog.png": "2dadbaa9d231cfcf2a97199772d38bc5246405e2fb7cb747aa03e5e8c810fdbc",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/screenshots/10-preview-packaged-font-narrow-form-settled.png": "ffaa8162c31a58ccd7d20a216b4febdcb1661a56b80c3e54df643c580a503f12",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/summary.md": "df72ba7fa134fa6de5b76d8e5d424994c72def10cd94a562c34110ffa50b5d4c",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/supplemental-commands.json": "a8ebc80090eead7456a8b60136a9e5aac80e1bc5234126246112608cff2c31b0",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/supplemental-commands.md": "917dbcd171bcf7a1b8e59c58568e5901e9eb86e0b8cf98aedd0b63d289ca3ca9",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/supplemental-final-cleanup.json": "3c7fa3e7b306d18d7b2610fbcb1676ced6ae3577eabb5c6646e6da34095624d6",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-live/supplemental-processes-before-cleanup.json": "a6683fa86ce6f3f649885c168f64c54c0b8b35e0536abf1ad3e042f08b0c4125",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-selection-output.md": "4901e60b1d037e423b3605b692aa5571b8320e2328d5b8c805ed1026e9a54983",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-tasks/D.after.tsx": "4dab6706ec0065f23c9db487b3cc1a5ad4669aeb417ba98ab8e01a265df3073b",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-tasks/D.before.tsx": "91aedd9fa677873cedb0e0584c8f01e5f649a2b740879362926ae234126590e2",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-tasks/D.diff": "cd6665ff2ebe0db56fc8e7cda242c0c43cb4a3705a085acc4001ce9b193fda44",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-tasks/D.initial-diff.txt": "dc425b9f515cbdf94c143819d9310924965b5af79d50bfc330174b5391ad5972",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-tasks/D.verification.txt": "ae86b406391af691d4c18a496b1721799561fc81af5c73bd5c1e6e98179cb03e",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-tasks/artifact-check.txt": "21390daefa03d4dbf3dbaf785db32932f8fc03e0c849d0c4b30276a0148a44ab",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/candidate-tasks/tasks-output.md": "0ff0c4dc26ad4557113615c3650c844d3dba6ff799e1fdefb878431793adfb2e",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/cleanup.json": "33c646359454b6bf6da3f28450f42fca1e540489bb32f1252620902009cd0007",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/compiler-1.json": "d62e7eb1b0fa2c78d27b6fa7395626d798f53ea9cd786a3a181fba68ac04163a",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/compiler-2.json": "3491a405edae8885e1615f5c586103b753f59f850335c86a9dd81598692e1674",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/criteria.md": "5b55db9705a93475ccc636205b81412cb2bdb81265c9f911ad5607e20a1d17f8",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/exposure.json": "9f920c5599f34da8ffc24d89ec8234030c2767bb162cad96303bb5a26a8ce0e5",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/final-checks.json": "5b83e97b4d4628557102828021a610d2abcf34906bebe5342751eac85dd4efca",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/live-side-effects.json": "65562c2913640ceb66c3649134418126f2afb15f14c0d1881692159cd835152b",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/live.md": "1fc201745af242b8178cba22de36a3fbcf6e39c539449fc03f0426df98962d90",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/neighbor-invariants.json": "88062a9bd7d90770af2845fb5a7fc59ea66b9bead304e3996f5737ab679fa627",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/package-readback.json": "754042c692cbc4a524f2cae30a6f06ce3f152d350d2c1f10fe3e0811c9096106",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/quick-validate.txt": "1888956dd0e54e34d4c12deadede2a0c3c9be4a38195f3102402a4ace056d61e",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/reference-delta/output.md": "c6845abddd88b817860ff9124c2e3955a945d5eff2e4ddf423323531106e5c80",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/reference-delta/tasks.md": "e1028a92c5973ead6484c7ccf18017beb7f235dcabe75842ff723a5d1f59077e",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/selection.md": "770316170f3bd4df636e52cae72ee0b95e8edd0db36eceae2c8345bd40c1fffe",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/snapshot.json": "74d26a6812f6c1816541999f43381df793bfc3014e533373a85174a898f52f7c",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/standalone/D-check.txt": "8caabb7b87c30ff5421ca94bd96d920e9823cf3c1f8c8d5fd7b9d3dade0296c3",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/standalone/D.diff": "f5a812bee62b7702048326d369eed4c82116ab3b0ab9758d65677d0ab8d8412e",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/standalone/output.md": "afec6cf15124862da7b44a039c2cb59e368b5b35f4d90046e876f79f19c1fac4",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/standalone/task.md": "061550686210d45bbddf721c38c4b7550c3299325e4f8e42485a139d5e7f6096",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/task-side-effects.json": "6912e00113aa0b02d19c003bae6b030123b87abf52a7b5315ad448b402d74469",
+      "skills/web-ux-engineer/docs/forward-tests/20261107/tasks.md": "5ee6d567d5b775f07f4781876bd0865e26d4024db0e58bce8efae86c4b91d47d",
+      "skills/web-ux-engineer/docs/issues/implementation-plan-20261107-1.md": "6a2c06b07a0ee0472f854d054d7b1b77be3457c76e12af6980d6ace497705021",
+      "skills/web-ux-engineer/docs/logs/implementation-log-20261107-1.md": "6df3305b88807dafd18bf7753c228311157f51a0cb63f21deab9f91cddedeaff",
+      "skills/web-ux-engineer/skill.yaml": "091e65e0bd236cf626bc06f6d7e4b9d2b212b76099898021b0346a5e3bfafe9d"
+    }
+  },
+  "new_source_whitespace_checks": [
+    {
+      "file": "skills/web-ux-engineer/SKILL.md",
+      "exit": 1,
+      "output": "",
+      "interpretation": "no-index may return 1 for added content; empty diagnostic output means no whitespace errors"
+    },
+    {
+      "file": "skills/web-ux-engineer/skill.yaml",
+      "exit": 1,
+      "output": "",
+      "interpretation": "no-index may return 1 for added content; empty diagnostic output means no whitespace errors"
+    },
+    {
+      "file": "skills/web-ux-engineer/AGENTS.md",
+      "exit": 1,
+      "output": "",
+      "interpretation": "no-index may return 1 for added content; empty diagnostic output means no whitespace errors"
+    },
+    {
+      "file": "skills/web-ux-engineer/agents/openai.yaml",
+      "exit": 1,
+      "output": "",
+      "interpretation": "no-index may return 1 for added content; empty diagnostic output means no whitespace errors"
+    },
+    {
+      "file": "skills/web-ux-engineer/docs/README.md",
+      "exit": 1,
+      "output": "",
+      "interpretation": "no-index may return 1 for added content; empty diagnostic output means no whitespace errors"
+    }
+  ],
+  "neighbor_diff": "diff --git a/README.md b/README.md\nindex e4f7bdd..17f428e 100644\n--- a/README.md\n+++ b/README.md\n@@ -36,7 +36,7 @@ a relative directory such as `.agents/skills` or `.claude/skills`.\n | --- | --- |\n | Requirements and planning | [prd-engineer](skills/prd-engineer/), [requirements-approval](skills/requirements-approval/), [architecture-engineer](skills/architecture-engineer/), [spec-engineer](skills/spec-engineer/), [delivery-planner](skills/delivery-planner/) |\n | Application development | [typescript-engineer](skills/typescript-engineer/), [node-engineer](skills/node-engineer/), [hono-engineer](skills/hono-engineer/), [react-spa-engineer](skills/react-spa-engineer/), [react-components-engineer](skills/react-components-engineer/), [nextjs](skills/nextjs/), [shadcn](skills/shadcn/), [payload](skills/payload/), [payload-migration](skills/payload-migration/), [supabase-engineer](skills/supabase-engineer/), [financial-calculations-engineer](skills/financial-calculations-engineer/) |\n-| Design | [frontend-design](skills/frontend-design/), [pencil-dev](skills/pencil-dev/) |\n+| Design | [web-ux-engineer](skills/web-ux-engineer/), [frontend-design](skills/frontend-design/), [pencil-dev](skills/pencil-dev/) |\n | Tools and delivery | [cli-engineer](skills/cli-engineer/), [electron-engineer](skills/electron-engineer/), [git-engineer](skills/git-engineer/), [gh-utility](skills/gh-utility/), [docusaurus-repo](skills/docusaurus-repo/), [agent-browser](skills/agent-browser/) |\n | Reviews | [code-reviewer](skills/code-reviewer/), [security-reviewer](skills/security-reviewer/), [web-ui-reviewer](skills/web-ui-reviewer/), [spec-conformance-reviewer](skills/spec-conformance-reviewer/), [concept-conformance-reviewer](skills/concept-conformance-reviewer/), [gdpr-compliance](skills/gdpr-compliance/) |\n | Testing and maintenance | [typescript-test-engineer](skills/typescript-test-engineer/), [error-fixer](skills/error-fixer/), [implementation-discipline](skills/implementation-discipline/), [retrospective-analysis](skills/retrospective-analysis/) |\ndiff --git a/skills/frontend-design/SKILL.md b/skills/frontend-design/SKILL.md\nindex 464bc23..b9755b4 100644\n--- a/skills/frontend-design/SKILL.md\n+++ b/skills/frontend-design/SKILL.md\n@@ -1,14 +1,13 @@\n ---\n name: frontend-design\n-description: Design and implement visually strong web interfaces and\n-  decision-complete design strategies. Use for landing pages, product UI,\n-  dashboards, prototypes, redesigns, or translating accepted design into code.\n-  Preserve authoritative behavior and existing systems, then verify rendered\n-  results.\n+description: \"Design and implement visual strategies for web interfaces: landing\n+  pages, product UI, dashboards, and redesigns. Own composition, typography,\n+  styling, and motion; express accepted interactions and verify rendered\n+  results. Route task-flow choices and UX audits to web-ux-engineer.\"\n metadata:\n-  source-version: 0.2.2\n+  source-version: 0.2.3\n   skillforge-source-manifest: skill.yaml\n-  skillforge-source-hash: b0cd204ffae993d86c86d70922740c177ccb1d2038a71804827859cd104c14aa\n+  skillforge-source-hash: 117bac8cfea0fe13c5af25f29f81638f78f1cc210a05ce30e07e30acd8a39a61\n ---\n \n # frontend-design\n@@ -23,7 +22,7 @@ metadata:\n \n ## When to use this skill\n \n-- Create or refine an implementation-ready visual and interaction strategy for a web interface.\n+- Create or refine an implementation-ready visual strategy and the visual expression of accepted interactions.\n - Visually strong landing pages, marketing websites, hero sections, or branded surfaces\n - Product UI, dashboards, workspaces, admin surfaces, or app redesigns that need better hierarchy and visual discipline\n - Translate an accepted design, mockup, or visual direction into React, HTML/CSS, or another component-based UI\n@@ -31,6 +30,7 @@ metadata:\n \n ## When NOT to use this skill\n \n+- Choosing or auditing a user-task flow is the primary result; use web-ux-engineer for interaction choices and scenario continuity.\n - Pure frontend architecture, state management, routing, or data-fetching work with no design direction requirement\n - Pure component API lookup or design-system component selection; use `shadcn` for that\n - Reusable React component correctness/hardening work where the core problem is rendering behavior, SSR, portals, or future React semantics; use `react-components-engineer`\n@@ -56,7 +56,7 @@ Before designing or building, establish:\n - `visual engine`: one primary engine and, only when useful, one supporting engine\n - `visual thesis`: one sentence describing mood, material, energy, and the dominant visual idea\n - `content and state plan`: content order plus the relevant loading, empty, error, success, permission, responsive, and long-content states\n-- `interaction thesis`: only the transitions or motion that materially improve presence, hierarchy, feedback, or affordance\n+- `interaction thesis`: the visual expression of accepted behavior through transitions or motion that materially improve presence, hierarchy, feedback, or affordance; task-flow choices belong to `web-ux-engineer`\n - `reuse and evidence plan`: existing components/assets to reuse and the rendered checks required for the requested completion claim\n \n Each section gets one job, one dominant visual idea, and one primary takeaway or action.\n@@ -268,6 +268,7 @@ Validation:\n \n ## Interop priority\n \n+- **task-flow interaction choices, continuity, recovery, and scenario UX audit:** web-ux-engineer. Consume the accepted interaction and express it visually; retain local state, accessibility, peer-view completeness, and rendered-evidence checks.\n - **product behavior, actors, actions, states, validation, and copy authority:** The relevant product or specification skill and accepted project sources. frontend-design expresses authoritative behavior visually but must not invent or override it.\n - **application architecture, state, routing, data, testing, and runtime accessibility mechanics:** The relevant framework skill such as react-spa-engineer. frontend-design owns visual strategy and rendered expression, not framework correctness.\n - **reusable React component correctness, SSR, hydration, portals, and lifecycle behavior:** react-components-engineer. Visual intent must adapt to component correctness rather than weaken it.\n@@ -287,6 +288,9 @@ Validation:\n \n ## Policies\n \n+### Proportional collaboration\n+Honor an explicitly selected skill within its supported scope. In mixed work choose the lead by the requested result and consult another skill for a concrete decision only. Missing neighbors do not block supported local work; preserve evidence limits without cycling handoffs or loading every specialist.\n+\n ### Source-authority policy\n Resolve product behavior, design-system constraints, runtime behavior, and visual inspiration from their named authorities; stop rather than silently resolve equal-authority conflicts.\n \ndiff --git a/skills/frontend-design/agents/openai.yaml b/skills/frontend-design/agents/openai.yaml\nindex 79c0c4a..b0155ab 100644\n--- a/skills/frontend-design/agents/openai.yaml\n+++ b/skills/frontend-design/agents/openai.yaml\n@@ -1,4 +1,4 @@\n interface:\n   display_name: \"Frontend Design\"\n-  short_description: \"Design strong UI from strategy to browser evidence\"\n-  default_prompt: \"Use $frontend-design to ground a design strategy in authoritative sources, reuse the existing UI system, produce the requested deliverable, and report only the completion status supported by matching evidence.\"\n+  short_description: \"Design and implement visual strategy for web UI\"\n+  default_prompt: \"Use $frontend-design to express accepted behavior through a grounded visual strategy, reuse the UI system, and verify the rendered result.\"\ndiff --git a/skills/frontend-design/docs/README.md b/skills/frontend-design/docs/README.md\nindex d824c37..12df8b4 100644\n--- a/skills/frontend-design/docs/README.md\n+++ b/skills/frontend-design/docs/README.md\n@@ -13,3 +13,8 @@ Supporting maintenance documents are non-normative unless `SKILL.md` explicitly\n ## Ревизия UI-REV-v1\n \n - [Общий журнал UI-REV-v1](../../../docs/implementation-log-20260908-ui-revision.md) — исходный снимок, проверки и статус ревизии интерфейсной группы; supporting-запись репозитория.\n+\n+## Согласование web-ux-engineer — 2026-11-07\n+\n+- [Принятый план v2](../../web-ux-engineer/docs/issues/implementation-plan-20261107-1.md).\n+- [Общий журнал реализации и проверок](../../web-ux-engineer/docs/logs/implementation-log-20261107-1.md).\ndiff --git a/skills/frontend-design/docs/compile-report.md b/skills/frontend-design/docs/compile-report.md\nindex 58fc4cd..bd62c07 100644\n--- a/skills/frontend-design/docs/compile-report.md\n+++ b/skills/frontend-design/docs/compile-report.md\n@@ -2,7 +2,7 @@\n Generated from `skill.yaml`.\n \n ## Versions\n-- Skill source version: `0.2.2`\n+- Skill source version: `0.2.3`\n \n ## Source files\n - `LICENSE.txt`\n@@ -26,7 +26,7 @@ Generated from `skill.yaml`.\n - `references/strategy-to-implementation.md`\n \n ## Warnings\n-- none\n+- Generated SKILL.md is 20685 bytes, above the recommended maximum 20000 bytes. Move detailed guidance into references/* and keep SKILL.md focused on activation, workflow, and navigation. Raise skill.recommended-skill-md-max-bytes only when references cannot reasonably reduce the size.\n \n ## Notes\n - This document is supporting output only.\ndiff --git a/skills/frontend-design/fragments/overview.md b/skills/frontend-design/fragments/overview.md\nindex d731f0c..e6fade1 100644\n--- a/skills/frontend-design/fragments/overview.md\n+++ b/skills/frontend-design/fragments/overview.md\n@@ -16,7 +16,7 @@ Before designing or building, establish:\n - `visual engine`: one primary engine and, only when useful, one supporting engine\n - `visual thesis`: one sentence describing mood, material, energy, and the dominant visual idea\n - `content and state plan`: content order plus the relevant loading, empty, error, success, permission, responsive, and long-content states\n-- `interaction thesis`: only the transitions or motion that materially improve presence, hierarchy, feedback, or affordance\n+- `interaction thesis`: the visual expression of accepted behavior through transitions or motion that materially improve presence, hierarchy, feedback, or affordance; task-flow choices belong to `web-ux-engineer`\n - `reuse and evidence plan`: existing components/assets to reuse and the rendered checks required for the requested completion claim\n \n Each section gets one job, one dominant visual idea, and one primary takeaway or action.\ndiff --git a/skills/frontend-design/references/strategy-to-implementation.md b/skills/frontend-design/references/strategy-to-implementation.md\nindex deab43c..74d4370 100644\n--- a/skills/frontend-design/references/strategy-to-implementation.md\n+++ b/skills/frontend-design/references/strategy-to-implementation.md\n@@ -8,12 +8,15 @@ for delivered runtime capability.\n \n Name the requested deliverable before making visual decisions:\n \n-- `strategy-only`: a decision-complete visual and interaction strategy for a\n+- `strategy-only`: a decision-complete visual strategy expressing accepted interactions for a\n   downstream implementer;\n - `design-artifact`: a mockup, prototype, screenshot set, or design-tool file;\n - `runtime-implementation`: code running in the intended application path.\n \n One request may include more than one deliverable. Track each independently.\n+For mixed UX and visual work, choose the lead from the requested result. Consume\n+accepted interaction decisions and consult `web-ux-engineer` only for a concrete\n+scenario question; its absence does not block supported visual work.\n A strategy can be complete for its downstream consumer while remaining\n substrate for an end-user runtime claim.\n \n@@ -85,8 +88,9 @@ by the downstream consumer:\n - `visual thesis`: mood, material, energy, hierarchy, and dominant idea;\n - `content and state plan`: information order plus relevant loading, empty,\n   error, success, permission, long-content, and responsive states;\n-- `interaction thesis`: only the transitions or motion that improve hierarchy,\n-  continuity, feedback, or affordance;\n+- `interaction thesis`: visual transitions or motion that express the accepted\n+  interaction and improve hierarchy, continuity, feedback, or affordance;\n+  `web-ux-engineer` owns material task-flow choices, not visual motion;\n - `reuse plan`: existing tokens, components, patterns, assets, and any justified\n   exception with its owner;\n - `evidence plan`: rendered viewports, states, interactions, and accessibility\ndiff --git a/skills/frontend-design/skill.yaml b/skills/frontend-design/skill.yaml\nindex 297c33b..b2b3a28 100644\n--- a/skills/frontend-design/skill.yaml\n+++ b/skills/frontend-design/skill.yaml\n@@ -2,13 +2,13 @@ apiVersion: skillforge/v1alpha1\n kind: SkillSource\n skill:\n   name: frontend-design\n-  source-version: 0.2.2\n+  source-version: 0.2.3\n   recommended-skill-md-max-bytes: 20000\n   description: >-\n-    Design and implement visually strong web interfaces and decision-complete\n-    design strategies. Use for landing pages, product UI, dashboards,\n-    prototypes, redesigns, or translating accepted design into code. Preserve\n-    authoritative behavior and existing systems, then verify rendered results.\n+    Design and implement visual strategies for web interfaces: landing pages,\n+    product UI, dashboards, and redesigns. Own composition, typography, styling,\n+    and motion; express accepted interactions and verify rendered results.\n+    Route task-flow choices and UX audits to web-ux-engineer.\n fragments:\n   overview: fragments/overview.md\n references:\n@@ -91,12 +91,13 @@ sections:\n     - Classify surface type, constraint profile, and primary visual engine; load only the references whose conditions match the task.\n     - Define the evidence required for the strongest honest completion status before building.\n   whenToUse:\n-    - Create or refine an implementation-ready visual and interaction strategy for a web interface.\n+    - Create or refine an implementation-ready visual strategy and the visual expression of accepted interactions.\n     - Visually strong landing pages, marketing websites, hero sections, or branded surfaces\n     - Product UI, dashboards, workspaces, admin surfaces, or app redesigns that need better hierarchy and visual discipline\n     - Translate an accepted design, mockup, or visual direction into React, HTML/CSS, or another component-based UI\n     - Prototypes, demo UI, and secondary web formats such as poster-like artifacts or game UI mock surfaces\n   whenNotToUse:\n+    - Choosing or auditing a user-task flow is the primary result; use web-ux-engineer for interaction choices and scenario continuity.\n     - Pure frontend architecture, state management, routing, or data-fetching work with no design direction requirement\n     - Pure component API lookup or design-system component selection; use `shadcn` for that\n     - Reusable React component correctness/hardening work where the core problem is rendering behavior, SSR, portals, or future React semantics; use `react-components-engineer`\n@@ -151,6 +152,10 @@ sections:\n         - Status, evidence, unrun checks, and anti-claims are consistent.\n         - Source, mockups, stories, screenshots, or compiler success alone cannot close an integrated runtime claim.\n   interop:\n+    - id: interop-ux\n+      domain: task-flow interaction choices, continuity, recovery, and scenario UX audit\n+      winner: web-ux-engineer\n+      rationale: Consume the accepted interaction and express it visually; retain local state, accessibility, peer-view completeness, and rendered-evidence checks.\n     - id: interop-product-authority\n       domain: product behavior, actors, actions, states, validation, and copy authority\n       winner: The relevant product or specification skill and accepted project sources\n@@ -201,6 +206,9 @@ sections:\n       priority: medium\n       text: Do not approve a design artifact from a stale export or a runtime implementation from an outdated mockup when current source and rendered behavior disagree.\n   policies:\n+    - id: policy-interop-lead\n+      title: Proportional collaboration\n+      text: Honor an explicitly selected skill within its supported scope. In mixed work choose the lead by the requested result and consult another skill for a concrete decision only. Missing neighbors do not block supported local work; preserve evidence limits without cycling handoffs or loading every specialist.\n     - id: policy-source-authority\n       title: Source-authority policy\n       text: Resolve product behavior, design-system constraints, runtime behavior, and visual inspiration from their named authorities; stop rather than silently resolve equal-authority conflicts.\ndiff --git a/skills/react-spa-engineer/SKILL.md b/skills/react-spa-engineer/SKILL.md\nindex 0e2757f..0ef6aa9 100644\n--- a/skills/react-spa-engineer/SKILL.md\n+++ b/skills/react-spa-engineer/SKILL.md\n@@ -1,14 +1,13 @@\n ---\n name: react-spa-engineer\n-description: Design, implement, review, and diagnose React SPAs using\n-  TypeScript, Vite, TanStack Query, Zustand, React Hook Form with Zod, React\n-  Router, and Dexie. Use for routing, server/runtime state, forms, browser\n-  storage, performance, testing, or accessibility; exclude SSR, RSC, and Next.js\n-  architecture.\n+description: Build, review, and diagnose React SPAs with TypeScript, Vite,\n+  TanStack Query, Zustand, React Hook Form, Zod, React Router, and Dexie. Own\n+  app integration and runtime correctness; route UX choices, visual direction,\n+  and formal UI audits to their owners. Excludes SSR/RSC/Next.js.\n metadata:\n-  source-version: 0.1.12\n+  source-version: 0.1.13\n   skillforge-source-manifest: skill.yaml\n-  skillforge-source-hash: edb78e577121535ee3007db3770b3cc474e069b30930a4bb63e1eafb690b0f00\n+  skillforge-source-hash: dfa136734d437f8d8cec5293c7bd44a2245fbe31bf153b01c68ad43608ed809d\n ---\n \n # react-spa-engineer\n@@ -33,7 +32,7 @@ metadata:\n \n - SSR, React Server Components, Next.js server patterns, or non-SPA architecture are the primary concern.\n - The work is solely reusable component correctness without app-level integration; use react-components-engineer.\n-- The work is solely visual design, TypeScript language/tooling, test-runner behavior, formal code review, accessibility audit, or security review; route that primary decision to the owning skill.\n+- The work is solely task-flow interaction design or UX audit, visual design, TypeScript language/tooling, test-runner behavior, formal code review, accessibility audit, or security review; route that primary decision to the owning skill.\n \n ## Overview\n \n@@ -41,6 +40,11 @@ Build and assess integrated client-side React SPA flows on this fixed stack:\n \n `React | TypeScript | Vite | TanStack Query | Zustand | React Hook Form + Zod | React Router | Dexie`\n \n+Task-flow interaction choices and scenario UX audits belong to `web-ux-engineer`;\n+visual expression belongs to `frontend-design`, and UI-rule/accessibility review\n+to `web-ui-reviewer`. Keep the integration and evidence obligations below even\n+when one of those skills leads or is unavailable.\n+\n ## Cross-layer ownership\n \n | Concern | Owner in this skill's architecture |\n@@ -126,11 +130,12 @@ Validation:\n \n ## Interop priority\n \n+- **task-flow interaction choices, continuity, recovery, and scenario UX audit:** web-ux-engineer. Consume the chosen interaction and supply integration constraints; retain ownership of routing, data, forms, state, mutation lifetime, accessibility mechanics, and runtime verification.\n - **TypeScript language, compiler, tsconfig, module resolution, Biome and ESLint ownership:** typescript-engineer. react-spa-engineer owns React SPA integration; typescript-engineer owns language and toolchain correctness using repository and installed-version evidence.\n - **TypeScript test strategy, Vitest or Playwright runner behavior, fixtures, mocks, determinism, and CI test contours:** typescript-test-engineer. react-spa-engineer defines the SPA behavior and evidence boundary; typescript-test-engineer owns test design and runner correctness.\n - **reusable React component correctness across rendering contexts, portals, multiple instances, and component API boundaries:** react-components-engineer. react-components-engineer owns reusable component hardening; react-spa-engineer owns integration into routes, data, forms, state, and persistence.\n-- **visual hierarchy, interaction design, styling, responsive composition, and design-system presentation:** frontend-design. frontend-design owns visual decisions; react-spa-engineer preserves the SPA behavior and stack integration.\n-- **formal UX and accessibility review:** web-ui-reviewer. web-ui-reviewer owns the audit verdict; react-spa-engineer implements or integrates accepted client corrections.\n+- **visual hierarchy, styling, motion, responsive composition, and design-system presentation:** frontend-design. frontend-design owns visual decisions; react-spa-engineer preserves the SPA behavior and stack integration.\n+- **review of UI implementation, interface rules, and accessibility:** web-ui-reviewer. web-ui-reviewer owns the audit verdict; react-spa-engineer implements or integrates accepted client corrections.\n - **formal code-review findings, severity, merge guidance, and review output:** code-reviewer. code-reviewer owns the formal verdict; react-spa-engineer supplies React SPA domain analysis and implements authorized remediation.\n - **auth, CSRF, sensitive browser persistence, exploitability, and security verdicts:** security-reviewer. security-reviewer owns exploitability and security findings; react-spa-engineer owns only the client integration of accepted API and security contracts.\n - **real browser navigation, interaction, screenshots, traces, and walkthrough execution:** Playwright or the available browser-automation skill. Browser tooling supplies execution evidence; react-spa-engineer defines which SPA scenario and boundary the evidence must cover.\n@@ -146,6 +151,9 @@ Validation:\n \n ## Policies\n \n+### Proportional collaboration\n+Honor an explicitly selected skill within its supported scope. In mixed work choose the lead by the requested result and consult another skill for a concrete decision only. Missing neighbors do not block supported local work; preserve evidence limits without cycling handoffs or loading every specialist.\n+\n ### Fixed stack contract\n Preserve React, TypeScript, Vite, TanStack Query, Zustand, React Hook Form with Zod, React Router, and Dexie. Do not introduce a competing framework or state, form, routing, query, or persistence library without an explicit operator decision.\n \ndiff --git a/skills/react-spa-engineer/agents/openai.yaml b/skills/react-spa-engineer/agents/openai.yaml\nindex a57e9db..93f8df5 100644\n--- a/skills/react-spa-engineer/agents/openai.yaml\n+++ b/skills/react-spa-engineer/agents/openai.yaml\n@@ -1,3 +1,4 @@\n interface:\n-  display_name: \"React Spa Engineer\"\n+  display_name: \"React SPA Engineer\"\n   short_description: \"Build and verify integrated React SPA flows\"\n+  default_prompt: \"Use $react-spa-engineer to implement or assess this React SPA flow across routing, data, forms, and state, preserving the accepted interaction and verifying runtime behavior.\"\ndiff --git a/skills/react-spa-engineer/docs/README.md b/skills/react-spa-engineer/docs/README.md\nindex 15be956..06f0fdc 100644\n--- a/skills/react-spa-engineer/docs/README.md\n+++ b/skills/react-spa-engineer/docs/README.md\n@@ -35,3 +35,8 @@\n ## Совместимость frontmatter — 2026-10-21\n \n - [Удаление compatibility через исходник](logs/implementation-log-20261021-1.md) — сохранение текста в инструкциях; результаты и независимая оценка связаны с общим журналом.\n+\n+## Согласование web-ux-engineer — 2026-11-07\n+\n+- [Принятый план v2](../../web-ux-engineer/docs/issues/implementation-plan-20261107-1.md).\n+- [Общий журнал реализации и проверок](../../web-ux-engineer/docs/logs/implementation-log-20261107-1.md).\ndiff --git a/skills/react-spa-engineer/docs/compile-report.md b/skills/react-spa-engineer/docs/compile-report.md\nindex 4a18f1d..2109010 100644\n--- a/skills/react-spa-engineer/docs/compile-report.md\n+++ b/skills/react-spa-engineer/docs/compile-report.md\n@@ -2,7 +2,7 @@\n Generated from `skill.yaml`.\n \n ## Versions\n-- Skill source version: `0.1.12`\n+- Skill source version: `0.1.13`\n \n ## Source files\n - `agents/openai.yaml`\ndiff --git a/skills/react-spa-engineer/fragments/overview.md b/skills/react-spa-engineer/fragments/overview.md\nindex e2334c2..4603e5a 100644\n--- a/skills/react-spa-engineer/fragments/overview.md\n+++ b/skills/react-spa-engineer/fragments/overview.md\n@@ -2,6 +2,11 @@ Build and assess integrated client-side React SPA flows on this fixed stack:\n \n `React | TypeScript | Vite | TanStack Query | Zustand | React Hook Form + Zod | React Router | Dexie`\n \n+Task-flow interaction choices and scenario UX audits belong to `web-ux-engineer`;\n+visual expression belongs to `frontend-design`, and UI-rule/accessibility review\n+to `web-ui-reviewer`. Keep the integration and evidence obligations below even\n+when one of those skills leads or is unavailable.\n+\n ## Cross-layer ownership\n \n | Concern | Owner in this skill's architecture |\ndiff --git a/skills/react-spa-engineer/references/accessibility.md b/skills/react-spa-engineer/references/accessibility.md\nindex fbb3bcd..8364fb4 100644\n--- a/skills/react-spa-engineer/references/accessibility.md\n+++ b/skills/react-spa-engineer/references/accessibility.md\n@@ -1,8 +1,9 @@\n # Accessibility for React SPA\n \n-Use this reference for implementation guidance. Use `web-ui-reviewer` for a\n-formal accessibility or UX verdict and `react-components-engineer` when a\n-reusable composite component itself is the primary artifact.\n+Use this reference for implementation guidance. Use `web-ui-reviewer` for\n+UI implementation and accessibility review, `web-ux-engineer` for a task-flow\n+UX audit, and `react-components-engineer` when a reusable composite component\n+itself is the primary artifact. Retain the implementation checks below.\n \n Unless a block is explicitly labeled copyable, code blocks in this reference\n are conceptual and omit project composition, styling, and verification wiring.\ndiff --git a/skills/react-spa-engineer/skill.yaml b/skills/react-spa-engineer/skill.yaml\nindex 033e2c1..d8c7b0c 100644\n--- a/skills/react-spa-engineer/skill.yaml\n+++ b/skills/react-spa-engineer/skill.yaml\n@@ -2,13 +2,13 @@ apiVersion: skillforge/v1alpha1\n kind: SkillSource\n skill:\n   name: react-spa-engineer\n-  source-version: 0.1.12\n+  source-version: 0.1.13\n   recommended-skill-md-max-bytes: 20000\n   description: >-\n-    Design, implement, review, and diagnose React SPAs using TypeScript, Vite,\n-    TanStack Query, Zustand, React Hook Form with Zod, React Router, and Dexie. Use\n-    for routing, server/runtime state, forms, browser storage, performance, testing,\n-    or accessibility; exclude SSR, RSC, and Next.js architecture.\n+    Build, review, and diagnose React SPAs with TypeScript, Vite, TanStack Query,\n+    Zustand, React Hook Form, Zod, React Router, and Dexie. Own app integration\n+    and runtime correctness; route UX choices, visual direction, and formal UI\n+    audits to their owners. Excludes SSR/RSC/Next.js.\n fragments:\n   overview: fragments/overview.md\n references:\n@@ -160,7 +160,7 @@ sections:\n   whenNotToUse:\n     - SSR, React Server Components, Next.js server patterns, or non-SPA architecture are the primary concern.\n     - The work is solely reusable component correctness without app-level integration; use react-components-engineer.\n-    - The work is solely visual design, TypeScript language/tooling, test-runner behavior, formal code review, accessibility audit, or security review; route that primary decision to the owning skill.\n+    - The work is solely task-flow interaction design or UX audit, visual design, TypeScript language/tooling, test-runner behavior, formal code review, accessibility audit, or security review; route that primary decision to the owning skill.\n   workflow:\n     - id: stage-establish-spa-basis\n       title: Establish the SPA basis\n@@ -196,6 +196,10 @@ sections:\n         - Type, lint, build, mock, route, screenshot, and generated-file evidence is not presented as proof of unexercised interactive, persistence, performance, auth, security, or production behavior.\n         - The handoff does not require the consumer to invent a missing contract or reinterpret the result status.\n   interop:\n+    - id: interop-ux\n+      domain: task-flow interaction choices, continuity, recovery, and scenario UX audit\n+      winner: web-ux-engineer\n+      rationale: Consume the chosen interaction and supply integration constraints; retain ownership of routing, data, forms, state, mutation lifetime, accessibility mechanics, and runtime verification.\n     - id: interop-typescript\n       domain: TypeScript language, compiler, tsconfig, module resolution, Biome and ESLint ownership\n       winner: typescript-engineer\n@@ -209,11 +213,11 @@ sections:\n       winner: react-components-engineer\n       rationale: react-components-engineer owns reusable component hardening; react-spa-engineer owns integration into routes, data, forms, state, and persistence.\n     - id: interop-design\n-      domain: visual hierarchy, interaction design, styling, responsive composition, and design-system presentation\n+      domain: visual hierarchy, styling, motion, responsive composition, and design-system presentation\n       winner: frontend-design\n       rationale: frontend-design owns visual decisions; react-spa-engineer preserves the SPA behavior and stack integration.\n     - id: interop-ui-review\n-      domain: formal UX and accessibility review\n+      domain: review of UI implementation, interface rules, and accessibility\n       winner: web-ui-reviewer\n       rationale: web-ui-reviewer owns the audit verdict; react-spa-engineer implements or integrates accepted client corrections.\n     - id: interop-code-review\n@@ -249,6 +253,9 @@ sections:\n       priority: high\n       text: Do not keep mutation progress or outcome verification only inside a child or portal that may unmount; choose an owner from the required lifetime and fence old-context work on access change.\n   policies:\n+    - id: policy-interop-lead\n+      title: Proportional collaboration\n+      text: Honor an explicitly selected skill within its supported scope. In mixed work choose the lead by the requested result and consult another skill for a concrete decision only. Missing neighbors do not block supported local work; preserve evidence limits without cycling handoffs or loading every specialist.\n     - id: policy-fixed-stack\n       title: Fixed stack contract\n       text: Preserve React, TypeScript, Vite, TanStack Query, Zustand, React Hook Form with Zod, React Router, and Dexie. Do not introduce a competing framework or state, form, routing, query, or persistence library without an explicit operator decision.\ndiff --git a/skills/web-ui-reviewer/SKILL.md b/skills/web-ui-reviewer/SKILL.md\nindex f57d505..be0f655 100644\n--- a/skills/web-ui-reviewer/SKILL.md\n+++ b/skills/web-ui-reviewer/SKILL.md\n@@ -1,13 +1,13 @@\n ---\n name: web-ui-reviewer\n-description: Review web UI code and rendered states against project requirements\n-  and Web Interface Guidelines. Use for UI/UX, accessibility, design, content,\n-  form, or frontend-performance audits that need scoped findings and evidence\n-  limits; not implementation or conformance certification.\n+description: \"Review web UI implementation against project rules and Web\n+  Interface Guidelines: accessibility, rendered states, forms, content, and\n+  measured performance. Deliver scoped findings; route task-flow UX audits to\n+  web-ux-engineer. No implementation or conformance certification.\"\n metadata:\n-  source-version: 0.2.4\n+  source-version: 0.2.5\n   skillforge-source-manifest: skill.yaml\n-  skillforge-source-hash: 64c414507c7a2e09c4a363b9eb6987f7fb12585fa850a05b510ef01c65eceea5\n+  skillforge-source-hash: f652870e8ccd6b0030c0aafcc43023d54eb96112741eb39a0673e88397d7752b\n ---\n \n # web-ui-reviewer\n@@ -30,6 +30,7 @@ metadata:\n \n ## When NOT to use this skill\n \n+- The primary result is a task-flow UX audit of interaction choices and scenario continuity; web-ux-engineer leads, while this skill retains supported UI-rule and accessibility checks.\n - The task is not a web UI, UX, accessibility, design, typography, form, content handling, or frontend performance review.\n - The task is implementation work rather than review; use the relevant frontend or framework skill.\n - The task is a security-first audit; use security-reviewer.\n@@ -37,7 +38,7 @@ metadata:\n \n ## Capability and anti-claims\n \n-Review HTML, CSS, JavaScript, framework code, screenshots, and rendered web states to produce scoped UI findings and handoffs. This skill does not implement fixes, certify WCAG or legal conformance, prove performance without measurement, or prove visual and interaction behavior from code alone.\n+Review HTML, CSS, JavaScript, framework code, screenshots, and rendered web states to produce scoped findings about UI implementation and handoffs. `web-ux-engineer` leads task-flow UX audits; this skill keeps its own interaction, accessibility, and applicable-view completeness checks. This skill does not implement fixes, certify WCAG or legal conformance, prove performance without measurement, or prove visual and interaction behavior from code alone.\n \n ## Inputs and authority\n \n@@ -122,6 +123,7 @@ Validation:\n \n ## Interop priority\n \n+- **task-flow interaction choices, continuity, recovery, and scenario UX audit:** web-ux-engineer. Supply implementation-level UI findings and consume scenario context; preserve read-only scope, peer-view completeness, accessibility, and evidence limits.\n - **formal diff scope, finding severity, merge guidance, and overall code-review verdict:** code-reviewer. web-ui-reviewer supplies UI-domain findings; code-reviewer owns the formal code-review process and merge conclusion.\n - **navigating a live UI, collecting current screenshots, exercising interactions, and recording viewport or state evidence:** agent-browser or playwright. Browser skills collect runtime evidence; web-ui-reviewer decides what UI evidence is required and interprets it within the bounded review.\n - **visual direction, component implementation, framework behavior, and test changes:** frontend-design and the relevant frontend or framework skill. web-ui-reviewer remains read-only and hands supported findings to the implementation owner.\n@@ -136,6 +138,9 @@ Validation:\n \n ## Policies\n \n+### Proportional collaboration\n+Honor an explicitly selected skill within its supported scope. In mixed work choose the lead by the requested result and consult another skill for a concrete decision only. Missing neighbors do not block supported local work; preserve evidence limits without cycling handoffs or loading every specialist.\n+\n ### Result status\n Use findings when at least one defect is supported; no-material-findings only when evidence is sufficient for the bounded claim; limited when useful review occurred but missing evidence prevents that conclusion; blocked when no defensible review can be performed.\n \ndiff --git a/skills/web-ui-reviewer/agents/openai.yaml b/skills/web-ui-reviewer/agents/openai.yaml\nindex 0cd7891..58a586d 100644\n--- a/skills/web-ui-reviewer/agents/openai.yaml\n+++ b/skills/web-ui-reviewer/agents/openai.yaml\n@@ -1,4 +1,4 @@\n interface:\n   display_name: \"Web UI Reviewer\"\n-  short_description: \"Review web UI with scoped evidence\"\n-  default_prompt: \"Use $web-ui-reviewer to audit this web interface and report scoped, actionable findings with evidence limits.\"\n+  short_description: \"Review UI implementation and accessibility\"\n+  default_prompt: \"Use $web-ui-reviewer to review this UI implementation against applicable interface and accessibility rules, with scoped findings and evidence limits.\"\ndiff --git a/skills/web-ui-reviewer/docs/README.md b/skills/web-ui-reviewer/docs/README.md\nindex 8449b6a..1bfc400 100644\n--- a/skills/web-ui-reviewer/docs/README.md\n+++ b/skills/web-ui-reviewer/docs/README.md\n@@ -8,7 +8,7 @@\n \n ## Implementation Plans\n \n-- Нет отдельных планов.\n+- [План web-ux-engineer v2](../../web-ux-engineer/docs/issues/implementation-plan-20261107-1.md) — общий план согласования владельцев.\n \n ## Forward Tests\n \n@@ -27,3 +27,8 @@\n ## Ревизия UI-REV-v1\n \n - [Общий журнал UI-REV-v1](../../../docs/implementation-log-20260908-ui-revision.md) — исходный снимок, проверки и статус ревизии интерфейсной группы; supporting-запись репозитория.\n+\n+## Согласование web-ux-engineer — 2026-11-07\n+\n+- [Принятый план v2](../../web-ux-engineer/docs/issues/implementation-plan-20261107-1.md).\n+- [Общий журнал реализации и проверок](../../web-ux-engineer/docs/logs/implementation-log-20261107-1.md).\ndiff --git a/skills/web-ui-reviewer/docs/compile-report.md b/skills/web-ui-reviewer/docs/compile-report.md\nindex 3f54ce5..c5722c8 100644\n--- a/skills/web-ui-reviewer/docs/compile-report.md\n+++ b/skills/web-ui-reviewer/docs/compile-report.md\n@@ -2,10 +2,11 @@\n Generated from `skill.yaml`.\n \n ## Versions\n-- Skill source version: `0.2.4`\n+- Skill source version: `0.2.5`\n \n ## Source files\n - `agents/openai.yaml`\n+- `docs/README.md`\n - `docs/forward-tests/forward-test-evidence-20260727-1.md`\n - `docs/logs/implementation-log-20260727-1.md`\n - `docs/logs/implementation-log-20260727-2.md`\ndiff --git a/skills/web-ui-reviewer/fragments/overview.md b/skills/web-ui-reviewer/fragments/overview.md\nindex 9626e6c..9818f15 100644\n--- a/skills/web-ui-reviewer/fragments/overview.md\n+++ b/skills/web-ui-reviewer/fragments/overview.md\n@@ -1,6 +1,6 @@\n ## Capability and anti-claims\n \n-Review HTML, CSS, JavaScript, framework code, screenshots, and rendered web states to produce scoped UI findings and handoffs. This skill does not implement fixes, certify WCAG or legal conformance, prove performance without measurement, or prove visual and interaction behavior from code alone.\n+Review HTML, CSS, JavaScript, framework code, screenshots, and rendered web states to produce scoped findings about UI implementation and handoffs. `web-ux-engineer` leads task-flow UX audits; this skill keeps its own interaction, accessibility, and applicable-view completeness checks. This skill does not implement fixes, certify WCAG or legal conformance, prove performance without measurement, or prove visual and interaction behavior from code alone.\n \n ## Inputs and authority\n \ndiff --git a/skills/web-ui-reviewer/skill.yaml b/skills/web-ui-reviewer/skill.yaml\nindex 9788e91..b1e6d4c 100644\n--- a/skills/web-ui-reviewer/skill.yaml\n+++ b/skills/web-ui-reviewer/skill.yaml\n@@ -2,9 +2,13 @@ apiVersion: skillforge/v1alpha1\n kind: SkillSource\n skill:\n   name: web-ui-reviewer\n-  source-version: 0.2.4\n+  source-version: 0.2.5\n   recommended-skill-md-max-bytes: 20000\n-  description: Review web UI code and rendered states against project requirements and Web Interface Guidelines. Use for UI/UX, accessibility, design, content, form, or frontend-performance audits that need scoped findings and evidence limits; not implementation or conformance certification.\n+  description: >-\n+    Review web UI implementation against project rules and Web Interface Guidelines:\n+    accessibility, rendered states, forms, content, and measured performance.\n+    Deliver scoped findings; route task-flow UX audits to web-ux-engineer.\n+    No implementation or conformance certification.\n fragments:\n   overview: fragments/overview.md\n references:\n@@ -29,6 +33,10 @@ copies:\n     target: evals/fixtures/module-workspace-input.md\n     description: Neutral module, peer-view, library, and runtime evidence bundle.\n supporting:\n+  - id: supporting-docs-readme\n+    source: docs/README.md\n+    target: docs/README.md\n+    description: Non-normative maintenance navigation.\n   - id: supporting-implementation-log-20260727-1\n     source: docs/logs/implementation-log-20260727-1.md\n     target: docs/logs/implementation-log-20260727-1.md\n@@ -64,6 +72,7 @@ sections:\n     - Provide a scoped UI-domain assessment inside a broader code or product review.\n     - Re-audit prior UI findings after remediation without repeating unchanged verified screens or states.\n   whenNotToUse:\n+    - The primary result is a task-flow UX audit of interaction choices and scenario continuity; web-ux-engineer leads, while this skill retains supported UI-rule and accessibility checks.\n     - The task is not a web UI, UX, accessibility, design, typography, form, content handling, or frontend performance review.\n     - The task is implementation work rather than review; use the relevant frontend or framework skill.\n     - The task is a security-first audit; use security-reviewer.\n@@ -104,6 +113,10 @@ sections:\n         - No-material-findings appears only when evidence is sufficient for the explicitly bounded claim.\n         - Limited and blocked results name the missing evidence or authority needed to strengthen the result.\n   interop:\n+    - id: interop-ux\n+      domain: task-flow interaction choices, continuity, recovery, and scenario UX audit\n+      winner: web-ux-engineer\n+      rationale: Supply implementation-level UI findings and consume scenario context; preserve read-only scope, peer-view completeness, accessibility, and evidence limits.\n     - id: interop-code-review\n       domain: formal diff scope, finding severity, merge guidance, and overall code-review verdict\n       winner: code-reviewer\n@@ -135,6 +148,9 @@ sections:\n       priority: high\n       text: Do not require search, detail, history, or another peer capability from a generic checklist; require accepted authority, and do not return no-material-findings when that authority exposes an unaddressed omission.\n   policies:\n+    - id: policy-interop-lead\n+      title: Proportional collaboration\n+      text: Honor an explicitly selected skill within its supported scope. In mixed work choose the lead by the requested result and consult another skill for a concrete decision only. Missing neighbors do not block supported local work; preserve evidence limits without cycling handoffs or loading every specialist.\n     - id: policy-result-status\n       title: Result status\n       text: Use findings when at least one defect is supported; no-material-findings only when evidence is sufficient for the bounded claim; limited when useful review occurred but missing evidence prevents that conclusion; blocked when no defensible review can be performed.\n",
+  "independent_review": {
+    "verdict": "PASS",
+    "assurance": "independent",
+    "auditor": "/root/implementation_review",
+    "original_sha256": "20cef7810f42600a91e5bd93118d4be9fcbb786c6d3d2977d2c32cf579387c24",
+    "original_markdown": "# Независимый аудит web-ux-engineer v2\n\n**Verdict: PASS. Assurance: independent.** В указанном ниже стабильном снимке не установлены нерешённые P1/P2. Формальных P3-находок нет. Проверенные инструкции, упаковка и поведенческие свидетельства достаточны для локальной приёмки по принятому плану v2. Этот вывод не разрешает commit, push, установку или публикацию.\n\nАудитор: отдельный агент `/root/implementation_review`, 2026-11-07. Аудитор не создавал и не исправлял целевые скилы. Авторская оценка `assessment.md` и авторский `ready-to-regenerate` не использованы как независимое одобрение.\n\n## Объём и воспроизводимый снимок\n\nРежимы: `baseline` для всего нового `web-ux-engineer`; `change` для пересечений `frontend-design`, `web-ui-reviewer` и `react-spa-engineer`. Рассмотрены исходные манифесты, maintenance-правила, затронутые fragments/references, сгенерированные инструкции, UI-метаданные, supporting-инвентаризация, принятый план, журнал, фактические архивы и относящиеся к изменению свидетельства. Остальные скилы, общий рефакторинг соседей и качество учебного приложения за пределами приёмочных проб не входят в заключение.\n\nОснования: `AGENTS.md`, `docs/skill-standard.md`, принятый `skills/web-ux-engineer/docs/issues/implementation-plan-20261107-1.md`; процедура и verdict — `skill-reviewer` 0.2.7, `references/methodology.md` и `references/forward-testing.md`.\n\n- Frozen source: `/tmp/web-ux-20261107-xaye7ceb/review-source`.\n- Снимок: `WEB-UX-20261107-final`, база Git `bf0796d4b08703797ecaccbe342639884a4e094f`.\n- Source/active scope: 43 файла; aggregate SHA-256 `51e0db921c318a5b9282be7df790c470687964fbadb2ae4894a613df326f25fc`.\n- Алгоритм: SHA-256 байтов каждого файла; пути относительно корня репозитория; aggregate — SHA-256 UTF-8 сериализации `JSON(files, sort_keys=True, separators=(comma,colon))`.\n- Полная карта frozen source: [review-file-manifest.json](review-file-manifest.json), 193 файла, включая свидетельства. Все хэши совпали в начале и при завершении проверки; лишних файлов не найдено.\n- Все 63 файла `baseline-source` побайтово совпали с указанной Git-базой. Изменения соседей сопоставлены с реальными файлами и [neighbor-diff.patch](neighbor-diff.patch).\n\nПотребитель нового скила — агент, который реализует разрешённое изменение веб-сценария либо выдаёт пригодный владельцу продукта или разработчику UX-аудит. Проверяемая способность — выбор взаимодействия, выполнение разрешённой работы и честная проверка результата. Исходники, генерация и архивы служат носителями этой способности. Они сами по себе не доказывают удобство для аудитории, работу backend, рост конверсии или полное соответствие WCAG.\n\nДействия аудитора: чтение, SHA-256, сравнение файлов и архивных members без распаковки, проверка сохранённых результатов команд, просмотр фактических ответов и browser records, визуальный просмотр четырёх итоговых изображений. Target не изменялся. Compiler, упаковка и browser trials повторно не запускались. Единственная запись аудитора — этот отчёт.\n\n## Инструкции и границы ответственности\n\nНовый скил соответствует заявленному контракту: отдельные `implement`/`audit`, явный read-only для аудита, минимальный полезный вход, локальное ограничение решения при отсутствии бизнес-правила или API-гарантии. Метод доводит запрос до реализации или доказательной находки и проверки. Формат находки содержит место, условие, свидетельство, последствие, изменение и проверку.\n\nИнструкции охватывают выбор страницы, диалога и изменения на месте; контекст списка, формы, ввод, отмену, восстановление, клавиатуру, фокус и узкую компоновку. Timeout не превращается в подтверждённый отказ или разрешение повтора. Нет обязательных autosave, offline, черновиков, нового хранения либо сокращения плотности и числа шагов. Статусы аудита согласованы с `web-ui-reviewer`; `completed` для реализации требует проверки заявленного результата.\n\nИсточник нового скила — `skill.yaml`, версия 0.1.0. `SKILL.md` содержит 947 слов и самодостаточный локальный метод. Обязательных внешних файлов, runtime, scripts, references или assets не добавлено. Supporting-файлы явно ненормативны и не загружаются для обычной UX-задачи. Все 122 объявленные supporting-записи существуют; необъявленных supporting-файлов, кроме результата генерации `compile-report.md`, не найдено.\n\nУ соседей изменены владельцы решений и метаданные; сохранены защищённые обязанности:\n\n| Скил | Проверенный результат изменения |\n| --- | --- |\n| `frontend-design` 0.2.3 | Визуальная стратегия выражает принятое взаимодействие. Полнота применимых peer views, источник продуктовых правил, состояния, доступность и rendered evidence сохранены в root и `strategy-to-implementation.md`. |\n| `web-ui-reviewer` 0.2.5 | Сценарный UX-аудит направляется новому владельцу. Проверки реализации, доступности, source-established search/detail/history и доказательные границы остаются у UI-reviewer; аудит не разрешает правки. |\n| `react-spa-engineer` 0.1.13 | Сохранены владельцы routing/data/forms/state, mutation lifetime, attempt/entity/access identities, fencing, ошибка авторитетного чтения и комбинированные проверки. Введение accessibility reference согласовано с root; техническое содержимое ниже него не изменено. |\n\nПравила совместной работы допускают конкретный вклад соседей, сохраняют поддержку явно выбранного скила и не требуют загрузки всей группы или циклической передачи. Указание нового владельца не снимает локальные проверки с соседей. Описания всех четырёх скилов согласованы с UI; длина descriptions — 273–279 символов. Новый скил добавлен в Design корневого README; записи четырёх скилов связаны с общим планом и журналом.\n\nПоиск машинных абсолютных путей в активных root/UI/reference-поверхностях не дал совпадений. Исторические `/tmp`-пути в raw evidence не приняты за зависимости обычного исполнения.\n\n## Генерация и фактическая упаковка\n\nИз сохранённых command/output/exit-записей подтверждены `lint → regenerate → check`, отдельные `compile → check` для четырёх пакетов и `quick_validate.py` нового скила. У аудитора нет оснований повторять эти проверки: все файлы из `review-compiled` независимо сопоставлены с frozen source, расхождений нет. `git diff --check` зафиксирован с exit 0; отдельные no-index проверки новых исходников имеют пустую диагностику whitespace.\n\nФактические архивы из `review-pack` прочитаны непосредственно. Все 24 файла четырёх архивов побайтово совпали с изолированной генерацией; версии, descriptions и SHA-256 соответствуют `catalog.json`.\n\n| Архив | Файлов | SHA-256 |\n| --- | ---: | --- |\n| `web-ux-engineer-0.1.0.tgz` | 2 | `23a6185634e98deb5c04d047014a479fe4a88e3132d0073067d53e24a30a934c` |\n| `frontend-design-0.2.3.tgz` | 6 | `50b0a97fbdd048fff3fda04b8350c034efcd4dc209a202d2c5f7501a9b726acd` |\n| `web-ui-reviewer-0.2.5.tgz` | 3 | `4f910a921bbce97cda01377baccdd4615812bbd59927bac178623b0f44478bad` |\n| `react-spa-engineer-0.1.13.tgz` | 13 | `798eb2fcb67e8ac75e464ff29dc825d82bf102ac5fb9e56b5d058878dd797072` |\n\nНовый архив содержит только `SKILL.md` и `agents/openai.yaml`. Манифест, maintenance `AGENTS.md`, supporting-документы, compiler report и учебное приложение в него не попали. Записи упаковки называют репозиторный `pack:skills`; 40 файлов исходника CLI во временном workspace, а также workspace manifests и lockfile независимо сопоставлены с репозиторием, расхождений нет. Публикация не выполнялась и не выводится из release URLs каталога.\n\nПредупреждение размера `frontend-design` — 20 685 B при рекомендации 20 000 B — сохранено. Само превышение не устанавливает неправильного решения или материального препятствия исполнению; оснований превратить его в P1/P2 либо расширить этот change review до общего сокращения скила нет.\n\n## Независимая оценка поведенческих свидетельств\n\nКритерии взяты из принятого плана и `docs/forward-tests/20261107/criteria.md`, а не выведены из ожидаемого verdict кандидата. По `exposure.json` они зафиксированы до авторинга; исполнители получали свежий контекст без rubric и ответов. Результаты ниже основаны на самих ответах, diff, состояниях и tool records, а не только на итоговых сообщениях исполнителей.\n\n| Семейство | Оценка аудитора | Опора и наблюдение |\n| --- | --- | --- |\n| Каталог, 6 запросов | PASS | Candidate выбирает `web-ux-engineer` для 1/2/6, visual/UI-rule/Query-Router остаются у соответствующих соседей. В смешанном запросе один ведущий и конкретные вклады. Baseline выбирает доступных старых владельцев; это не объявляется его дефектом. |\n| A — контекст и ошибка SPA | PASS | Comparative candidate и отдельный standalone находят потерю ввода, риск сброса списка при remount и ложный отказ при timeout; ограничивают freshness GET, безопасный повтор и runtime-утверждения. Есть исправления и falsifying checks, правок аудируемого кода нет. |\n| B/C — корректная плотность и ограниченное свидетельство | PASS | 12 нужных колонок не названы дефектом; соответствие отсутствующего экрана не выдумано. Для C дано полезное заключение по явно заданному отсутствию имён, без общего `blocked` или сертификации. |\n| D/E — пропорциональность и недостающие права | PASS | D — ровно одна требуемая строковая замена; before/after самостоятельно сравнены. E — полезные подписи и основа сценария при отдельном незакрытом решении о ролях; права, API и хранение не придуманы. |\n| F — React lifetime | PASS | Candidate сохраняет lifetime matrix, access/entity/attempt/verification identities, видимую ошибку reread, fencing и комбинированный путь cache/remount/context/timer/late-response. Реальный backend не заявлен. |\n| G/H — совместимость полноты | PASS | Source-established search/detail/history нельзя заменить красивым overview. UI audit остаётся read-only; frontend не объявляет неполную стратегию готовой. Соседи выполняют поддержанную часть без нового скила. |\n| Standalone A–E | PASS | Входы побайтово соответствуют A–E исходного задания. Отдельный исполнитель использует только новый root и локальный учебный проект; сохраняет полезные решения и пределы без соседних файлов, браузера и backend. |\n| Поздний React reference delta | PASS | Свежий исполнитель читает root и исправленное введение reference: task-flow audit → UX owner, UI/a11y → UI owner; технический вклад React сохраняется. Это forced execution, не новая проверка каталога. |\n| Live, baseline и candidate | PASS в общем заданном объёме | Реальные diff и браузерные состояния подтверждают отмену трёх значений до первого Confirm и после смены applied, Cancel/Escape без потери draft, фокус, клавиатуру, валидацию и narrow layout. Session state не объявлено серверным сохранением. |\n\nКлючевые raw-опоры живой проверки: candidate `commands.json`, записи 29/33, 44–57, 63/70/73, 75–77; `supplemental-commands.json`, записи 2/4/6. Baseline `commands.jsonl`, записи 42/52/59/80/88/94/120/145/164, 179/183/185/188/189. Нумерация — с нуля. Они показывают фактические значения, activeElement, результат применения, возврат, размеры и cleanup. Неуспешный candidate batch 75 сохранён; последующий 76 дожидается закрытия dialog и подтверждает нужное состояние. Успех группы команд не подменяет эти отдельные наблюдения.\n\nВизуально просмотрены candidate screenshots 09/10 и baseline 19/20. Эти итоговые narrow-изображения соответствуют DOM-геометрии и состояниям с загруженным Geist. Ранний dev 403 шрифта не скрыт. Дополнительный production-preview подтвердил font HTTP 200 и narrow form/dialog без изменения исходников; он принят только как environment-guided закрытие этого пробела.\n\nОбе учебные реализации имеют успешные build и локальный ESLint `App.tsx`; общий lint падает на исходном неизменённом `ui/button.tsx`. Это открытое ограничение учебной среды, а не подтверждённая регрессия изменённого пути. Свидетельства показывают изменение только временного `App.tsx`, отсутствие новых runtime-зависимостей, backend и хранения и завершённую очистку собственных процессов.\n\nРанний candidate active и финальный пакет независимо сравнены. У нового root отличается только compiler source-hash после supporting-инвентаризации. У React отличается только введение `references/accessibility.md`, которое имеет отдельную bounded-пробу. Остальные активные файлы совпадают. Поэтому раннее поведенческое свидетельство применимо к финальному снимку в явно описанных границах; старый хэш не выдаётся за новый.\n\n## Пределы и решение о приёмке\n\nСвидетельства достаточны для заявленного bounded skill review, но не доказывают универсальную надёжность. Это небольшие синтетические выборки, не пользовательское исследование, сертификация доступности, реальная API-интеграция или проверка всех браузеров. Сам аудитор не повторял browser trials. Сохранённые raw records и состояния позволяют проверить исследованные пути без такого повтора.\n\nИзоляция исполнителей была инструктивной на общей файловой системе. Полного независимого OS-аудита всех их чтений нет. Свежий контекст, исключение rubric/history и списки реально прочитанных файлов зафиксированы; это ограничение слепоты не скрывается и не превращается в утверждение о жёстком sandbox. Назначенные модель и настройки наследовались; независимая runtime-идентификация и сопоставимые token/time/cost отсутствуют.\n\nBaseline/candidate получили общую задачу и критерии, но использовали разные browser sequences и дополнительные проверки. Поэтому сравнительное превосходство UX, полноты тестирования или затрат не установлено. Отдельный guided preview не назван новым blind design run. Выбор из каталога не доказывает механизм автоматической активации каждого host.\n\nP1/P2 не установлены ни по исходникам, ни по установленной поверхности, ни по доступным failure paths. Снимок стабилен; применимые структурные проверки и реальные архивы согласованы; обязательные поведенческие семейства подтверждены в пределах плана. Это основание для **PASS с independent assurance**, а не только для структурного или авторского одобрения.\n\nСледующий владелец — координатор реализации: добавить этот отчёт в уже объявленную supporting-запись и зафиксировать завершение. Чисто административное добавление результата может сохранить этот verdict с исходным снимком и отдельным указанием delta. Любое изменение активных инструкций, relevant source/UI либо интерпретации свидетельств потребует соответствующего renewed review. Этот отчёт не покрывает будущий изменённый хэш автоматически.\n"
+  },
+  "administrative_delta": {
+    "files": [
+      "docs/logs/implementation-log-20261107-1.md",
+      "docs/forward-tests/20261107/final-checks.json"
+    ],
+    "scope": "Store the issued independent report and the already reviewed final command records. No active instruction, source manifest, UI or evidence interpretation changes."
+  }
+}

@@ -1,6 +1,6 @@
 ## Capability and anti-claims
 
-Review HTML, CSS, JavaScript, framework code, screenshots, and rendered web states to produce scoped UI findings and handoffs. This skill does not implement fixes, certify WCAG or legal conformance, prove performance without measurement, or prove visual and interaction behavior from code alone.
+Review HTML, CSS, JavaScript, framework code, screenshots, and rendered web states to produce scoped findings about UI implementation and handoffs. `web-ux-engineer` leads task-flow UX audits; this skill keeps its own interaction, accessibility, and applicable-view completeness checks. This skill does not implement fixes, certify WCAG or legal conformance, prove performance without measurement, or prove visual and interaction behavior from code alone.
 
 ## Inputs and authority
 

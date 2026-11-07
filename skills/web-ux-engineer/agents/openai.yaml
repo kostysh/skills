@@ -1,0 +1,4 @@
+interface:
+  display_name: "Web UX Engineer"
+  short_description: "Implement and audit web user flows"
+  default_prompt: "Use $web-ux-engineer to improve or audit this user flow, choose a suitable interaction, and verify the supported result."

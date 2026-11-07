@@ -1,0 +1,16 @@
+{
+  "baseline": {
+    "changed_files": [
+      "src/App.tsx"
+    ],
+    "exact_requested_replacement": true,
+    "other_source_files_equal": true
+  },
+  "candidate": {
+    "changed_files": [
+      "src/App.tsx"
+    ],
+    "exact_requested_replacement": true,
+    "other_source_files_equal": true
+  }
+}

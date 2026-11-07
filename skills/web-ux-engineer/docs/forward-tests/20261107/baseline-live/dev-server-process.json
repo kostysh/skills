@@ -1,0 +1,14 @@
+{
+  "pid": 127590,
+  "pgid": 127590,
+  "command": [
+    "pnpm",
+    "dev",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "4317",
+    "--strictPort"
+  ],
+  "cwd": "/tmp/web-ux-20261107-xaye7ceb/baseline/live-project"
+}

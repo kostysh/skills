@@ -4,6 +4,7 @@ Supporting maintenance documents are non-normative unless `SKILL.md` explicitly 
 
 ## Журналы реализации
 
+- [implementation-log-20261107-1.md](logs/implementation-log-20261107-1.md) — исправление предупреждения размера и lint учебного примера после реализации web-ux-engineer.
 - [implementation-log-20260727-1.md](logs/implementation-log-20260727-1.md) — inventory peer-view capabilities и разделение library/mockup/runtime по #228.
 - [forward-test-evidence-20260727-1.md](forward-tests/forward-test-evidence-20260727-1.md) — blind проверка module completeness для candidate `0.2.1`.
 - [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — сокращение описания до 300 code points; independent scoped PASS.
@@ -13,3 +14,8 @@ Supporting maintenance documents are non-normative unless `SKILL.md` explicitly 
 ## Ревизия UI-REV-v1
 
 - [Общий журнал UI-REV-v1](../../../docs/implementation-log-20260908-ui-revision.md) — исходный снимок, проверки и статус ревизии интерфейсной группы; supporting-запись репозитория.
+
+## Согласование web-ux-engineer — 2026-11-07
+
+- [Принятый план v2](../../web-ux-engineer/docs/issues/implementation-plan-20261107-1.md).
+- [Общий журнал реализации и проверок](../../web-ux-engineer/docs/logs/implementation-log-20261107-1.md).
