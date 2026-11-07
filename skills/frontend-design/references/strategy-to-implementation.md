@@ -8,12 +8,15 @@ for delivered runtime capability.
 
 Name the requested deliverable before making visual decisions:
 
-- `strategy-only`: a decision-complete visual and interaction strategy for a
+- `strategy-only`: a decision-complete visual strategy expressing accepted interactions for a
   downstream implementer;
 - `design-artifact`: a mockup, prototype, screenshot set, or design-tool file;
 - `runtime-implementation`: code running in the intended application path.
 
 One request may include more than one deliverable. Track each independently.
+For mixed UX and visual work, choose the lead from the requested result. Consume
+accepted interaction decisions and consult `web-ux-engineer` only for a concrete
+scenario question; its absence does not block supported visual work.
 A strategy can be complete for its downstream consumer while remaining
 substrate for an end-user runtime claim.
 
@@ -85,8 +88,9 @@ by the downstream consumer:
 - `visual thesis`: mood, material, energy, hierarchy, and dominant idea;
 - `content and state plan`: information order plus relevant loading, empty,
   error, success, permission, long-content, and responsive states;
-- `interaction thesis`: only the transitions or motion that improve hierarchy,
-  continuity, feedback, or affordance;
+- `interaction thesis`: visual transitions or motion that express the accepted
+  interaction and improve hierarchy, continuity, feedback, or affordance;
+  `web-ux-engineer` owns material task-flow choices, not visual motion;
 - `reuse plan`: existing tokens, components, patterns, assets, and any justified
   exception with its owner;
 - `evidence plan`: rendered viewports, states, interactions, and accessibility

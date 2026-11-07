@@ -1,0 +1,25 @@
+{
+  "frontend-design": {
+    "reference_declarations_unchanged": true,
+    "active_classification_unchanged": true,
+    "changed_references": [
+      "references/strategy-to-implementation.md"
+    ],
+    "protected_contracts": "Source diff preserves peer-view completeness, accessibility, authoritative sources and runtime evidence; react mutation-lifetime workflow, policy and references unchanged."
+  },
+  "web-ui-reviewer": {
+    "reference_declarations_unchanged": true,
+    "active_classification_unchanged": true,
+    "changed_references": [],
+    "protected_contracts": "Source diff preserves peer-view completeness, accessibility, authoritative sources and runtime evidence; react mutation-lifetime workflow, policy and references unchanged."
+  },
+  "react-spa-engineer": {
+    "reference_declarations_unchanged": true,
+    "active_classification_unchanged": true,
+    "changed_references": [
+      "references/accessibility.md"
+    ],
+    "protected_contracts": "Source diff preserves peer-view completeness, accessibility, authoritative sources and runtime evidence; react mutation-lifetime workflow, policy and references unchanged.",
+    "delta": "Only the introductory ownership sentence changes: web-ui-reviewer owns UI/a11y review, web-ux-engineer owns task-flow UX audit. Implementation checks below the introduction remain byte-identical."
+  }
+}

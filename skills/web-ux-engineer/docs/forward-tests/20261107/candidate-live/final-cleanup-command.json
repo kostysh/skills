@@ -1,0 +1,12 @@
+{
+  "command": "python - <<'PY'\nfrom pathlib import Path\nimport json, socket, os, hashlib\nresults=Path('/tmp/web-ux-20261107-xaye7ceb/candidate/live-results')\nowned=json.loads((results/'processes-before-cleanup.json').read_text())\npids=sorted({row['pid'] for row in owned}|{137787,137829,137831})\npresent=[]\nfor pid in pids:\n    p=Path('/proc')/str(pid)\n    if p.exists():\n        try:\n            present.append({'pid':pid,'args':(p/'cmdline').read_bytes().replace(b'\\0',b' ').decode(errors='replace')})\n        except OSError: pass\nmatches=[]\nfor p in Path('/proc').iterdir():\n    if not p.name.isdigit() or int(p.name)==os.getpid(): continue\n    try:\n        raw=(p/'cmdline').read_bytes().split(b'\\0')\n        executable=Path(raw[0].decode(errors='replace')).name\n        if executable not in {'chrome','chrome_crashpad_handler','node','agent-browser','sh'}: continue\n        args=b' '.join(raw).decode(errors='replace')\n        if '/tmp/webux-live-b-profile' in args or '/tmp/webux-live-b-config' in args or (('vite' in args) and '--port 4318' in args):\n            matches.append({'pid':int(p.name),'args':args})\n    except OSError: pass\nsock=socket.socket(); port=sock.connect_ex(('127.0.0.1',4318));sock.close()\nevidence={'known_owned_pids_still_present':present,'owned_profile_or_server_matches':matches,'browser_pidfile_exists':Path('/tmp/webux-live-b-runtime/agent-browser/webux-live-b.pid').exists(),'port4318_connect_ex':port}\nprint(json.dumps(evidence,indent=2))\n(results/'final-cleanup.json').write_text(json.dumps(evidence,indent=2)+'\\n')\npaths=[results/'final.diff',Path('/tmp/web-ux-20261107-xaye7ceb/candidate/live-project/src/App.tsx'),*sorted((results/'screenshots').glob('*.png'))]\nmanifest=[{'path':str(p),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in paths]\n(results/'artifact-manifest.json').write_text(json.dumps(manifest,indent=2)+'\\n')\nprint('Verified artifacts:',len(manifest))\nassert not present and not matches and port != 0 and not evidence['browser_pidfile_exists']\nPY",
+  "sandbox_permissions": "require_escalated",
+  "result": {
+    "chunk_id": "160511",
+    "wall_time_seconds": 0.000049444,
+    "exit_code": 0,
+    "original_token_count": 43,
+    "output": "{\n  \"known_owned_pids_still_present\": [],\n  \"owned_profile_or_server_matches\": [],\n  \"browser_pidfile_exists\": false,\n  \"port4318_connect_ex\": 111\n}\nVerified artifacts: 9\n"
+  }
+}
+

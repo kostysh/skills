@@ -1,0 +1,15 @@
+{
+  "pid": 148870,
+  "pgid": 148870,
+  "command": [
+    "pnpm",
+    "preview",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "4317",
+    "--strictPort"
+  ],
+  "cwd": "/tmp/web-ux-20261107-xaye7ceb/baseline/live-project",
+  "mode": "preview"
+}

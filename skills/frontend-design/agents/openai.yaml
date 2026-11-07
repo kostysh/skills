@@ -1,4 +1,4 @@
 interface:
   display_name: "Frontend Design"
-  short_description: "Design strong UI from strategy to browser evidence"
-  default_prompt: "Use $frontend-design to ground a design strategy in authoritative sources, reuse the existing UI system, produce the requested deliverable, and report only the completion status supported by matching evidence."
+  short_description: "Design and implement visual strategy for web UI"
+  default_prompt: "Use $frontend-design to express accepted behavior through a grounded visual strategy, reuse the UI system, and verify the rendered result."

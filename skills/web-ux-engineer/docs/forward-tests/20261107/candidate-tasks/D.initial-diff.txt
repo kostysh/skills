@@ -1,0 +1,1 @@
+Initial Git diff unavailable: candidate/project is not a Git repository. The exact pre-edit source is saved in D.before.tsx. No baseline against repository history was read or inferred.

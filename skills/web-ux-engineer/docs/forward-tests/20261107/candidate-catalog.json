@@ -1,0 +1,38 @@
+[
+  {
+    "name": "web-ux-engineer",
+    "description": "Design, implement, and audit user flows in web apps and SPAs. Use for interaction choices, forms, feedback, navigation context, and recovery. Deliver verified changes or evidence-backed UX findings; route visual direction, UI-rule audits, and framework mechanics to their owners.",
+    "interface": {
+      "display_name": "Web UX Engineer",
+      "short_description": "Implement and audit web user flows",
+      "default_prompt": "Use $web-ux-engineer to improve or audit this user flow, choose a suitable interaction, and verify the supported result."
+    }
+  },
+  {
+    "name": "frontend-design",
+    "description": "Design and implement visual strategies for web interfaces: landing pages, product UI, dashboards, and redesigns. Own composition, typography, styling, and motion; express accepted interactions and verify rendered results. Route task-flow choices and UX audits to web-ux-engineer.",
+    "interface": {
+      "display_name": "Frontend Design",
+      "short_description": "Design and implement visual strategy for web UI",
+      "default_prompt": "Use $frontend-design to express accepted behavior through a grounded visual strategy, reuse the UI system, and verify the rendered result."
+    }
+  },
+  {
+    "name": "web-ui-reviewer",
+    "description": "Review web UI implementation against project rules and Web Interface Guidelines: accessibility, rendered states, forms, content, and measured performance. Deliver scoped findings; route task-flow UX audits to web-ux-engineer. No implementation or conformance certification.",
+    "interface": {
+      "display_name": "Web UI Reviewer",
+      "short_description": "Review UI implementation and accessibility",
+      "default_prompt": "Use $web-ui-reviewer to review this UI implementation against applicable interface and accessibility rules, with scoped findings and evidence limits."
+    }
+  },
+  {
+    "name": "react-spa-engineer",
+    "description": "Build, review, and diagnose React SPAs with TypeScript, Vite, TanStack Query, Zustand, React Hook Form, Zod, React Router, and Dexie. Own app integration and runtime correctness; route UX choices, visual direction, and formal UI audits to their owners. Excludes SSR/RSC/Next.js.",
+    "interface": {
+      "display_name": "React SPA Engineer",
+      "short_description": "Build and verify integrated React SPA flows",
+      "default_prompt": "Use $react-spa-engineer to implement or assess this React SPA flow across routing, data, forms, and state, preserving the accepted interaction and verifying runtime behavior."
+    }
+  }
+]

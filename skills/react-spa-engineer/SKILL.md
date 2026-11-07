@@ -1,14 +1,13 @@
 ---
 name: react-spa-engineer
-description: Design, implement, review, and diagnose React SPAs using
-  TypeScript, Vite, TanStack Query, Zustand, React Hook Form with Zod, React
-  Router, and Dexie. Use for routing, server/runtime state, forms, browser
-  storage, performance, testing, or accessibility; exclude SSR, RSC, and Next.js
-  architecture.
+description: Build, review, and diagnose React SPAs with TypeScript, Vite,
+  TanStack Query, Zustand, React Hook Form, Zod, React Router, and Dexie. Own
+  app integration and runtime correctness; route UX choices, visual direction,
+  and formal UI audits to their owners. Excludes SSR/RSC/Next.js.
 metadata:
-  source-version: 0.1.12
+  source-version: 0.1.13
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: edb78e577121535ee3007db3770b3cc474e069b30930a4bb63e1eafb690b0f00
+  skillforge-source-hash: dfa136734d437f8d8cec5293c7bd44a2245fbe31bf153b01c68ad43608ed809d
 ---
 
 # react-spa-engineer
@@ -33,13 +32,18 @@ metadata:
 
 - SSR, React Server Components, Next.js server patterns, or non-SPA architecture are the primary concern.
 - The work is solely reusable component correctness without app-level integration; use react-components-engineer.
-- The work is solely visual design, TypeScript language/tooling, test-runner behavior, formal code review, accessibility audit, or security review; route that primary decision to the owning skill.
+- The work is solely task-flow interaction design or UX audit, visual design, TypeScript language/tooling, test-runner behavior, formal code review, accessibility audit, or security review; route that primary decision to the owning skill.
 
 ## Overview
 
 Build and assess integrated client-side React SPA flows on this fixed stack:
 
 `React | TypeScript | Vite | TanStack Query | Zustand | React Hook Form + Zod | React Router | Dexie`
+
+Task-flow interaction choices and scenario UX audits belong to `web-ux-engineer`;
+visual expression belongs to `frontend-design`, and UI-rule/accessibility review
+to `web-ui-reviewer`. Keep the integration and evidence obligations below even
+when one of those skills leads or is unavailable.
 
 ## Cross-layer ownership
 
@@ -126,11 +130,12 @@ Validation:
 
 ## Interop priority
 
+- **task-flow interaction choices, continuity, recovery, and scenario UX audit:** web-ux-engineer. Consume the chosen interaction and supply integration constraints; retain ownership of routing, data, forms, state, mutation lifetime, accessibility mechanics, and runtime verification.
 - **TypeScript language, compiler, tsconfig, module resolution, Biome and ESLint ownership:** typescript-engineer. react-spa-engineer owns React SPA integration; typescript-engineer owns language and toolchain correctness using repository and installed-version evidence.
 - **TypeScript test strategy, Vitest or Playwright runner behavior, fixtures, mocks, determinism, and CI test contours:** typescript-test-engineer. react-spa-engineer defines the SPA behavior and evidence boundary; typescript-test-engineer owns test design and runner correctness.
 - **reusable React component correctness across rendering contexts, portals, multiple instances, and component API boundaries:** react-components-engineer. react-components-engineer owns reusable component hardening; react-spa-engineer owns integration into routes, data, forms, state, and persistence.
-- **visual hierarchy, interaction design, styling, responsive composition, and design-system presentation:** frontend-design. frontend-design owns visual decisions; react-spa-engineer preserves the SPA behavior and stack integration.
-- **formal UX and accessibility review:** web-ui-reviewer. web-ui-reviewer owns the audit verdict; react-spa-engineer implements or integrates accepted client corrections.
+- **visual hierarchy, styling, motion, responsive composition, and design-system presentation:** frontend-design. frontend-design owns visual decisions; react-spa-engineer preserves the SPA behavior and stack integration.
+- **review of UI implementation, interface rules, and accessibility:** web-ui-reviewer. web-ui-reviewer owns the audit verdict; react-spa-engineer implements or integrates accepted client corrections.
 - **formal code-review findings, severity, merge guidance, and review output:** code-reviewer. code-reviewer owns the formal verdict; react-spa-engineer supplies React SPA domain analysis and implements authorized remediation.
 - **auth, CSRF, sensitive browser persistence, exploitability, and security verdicts:** security-reviewer. security-reviewer owns exploitability and security findings; react-spa-engineer owns only the client integration of accepted API and security contracts.
 - **real browser navigation, interaction, screenshots, traces, and walkthrough execution:** Playwright or the available browser-automation skill. Browser tooling supplies execution evidence; react-spa-engineer defines which SPA scenario and boundary the evidence must cover.
@@ -145,6 +150,9 @@ Validation:
 - **high** — Do not keep mutation progress or outcome verification only inside a child or portal that may unmount; choose an owner from the required lifetime and fence old-context work on access change.
 
 ## Policies
+
+### Proportional collaboration
+Honor an explicitly selected skill within its supported scope. In mixed work choose the lead by the requested result and consult another skill for a concrete decision only. Missing neighbors do not block supported local work; preserve evidence limits without cycling handoffs or loading every specialist.
 
 ### Fixed stack contract
 Preserve React, TypeScript, Vite, TanStack Query, Zustand, React Hook Form with Zod, React Router, and Dexie. Do not introduce a competing framework or state, form, routing, query, or persistence library without an explicit operator decision.

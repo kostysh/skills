@@ -1,0 +1,65 @@
+{
+  "command": "pnpm --filter @kostysh/skills pack:skills --root <compiled-2> --out <packed-1> --release skills-web-ux-engineer-local",
+  "workspace": "pack-workspace (byte-identical CLI source and frozen lockfile)",
+  "exit": 0,
+  "source_cli_equal": true,
+  "catalog_and_archives": [
+    {
+      "name": "frontend-design",
+      "version": "0.2.3",
+      "archive_sha256": "50b0a97fbdd048fff3fda04b8350c034efcd4dc209a202d2c5f7501a9b726acd",
+      "files": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "references/anti-patterns.md",
+        "references/strategy-to-implementation.md",
+        "references/surface-modes.md",
+        "references/visual-engines.md"
+      ],
+      "readback_equal": true
+    },
+    {
+      "name": "react-spa-engineer",
+      "version": "0.1.13",
+      "archive_sha256": "595c6fc904b3953b5aca8381f512c02b51d52f520422edbc8e59be16a94a3f0f",
+      "files": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "references/accessibility.md",
+        "references/component-architecture.md",
+        "references/data-fetching.md",
+        "references/forms-validation.md",
+        "references/indexeddb-persistence.md",
+        "references/performance.md",
+        "references/persistence-architecture.md",
+        "references/routing.md",
+        "references/state-management.md",
+        "references/testing.md",
+        "references/typescript-patterns.md"
+      ],
+      "readback_equal": true
+    },
+    {
+      "name": "web-ui-reviewer",
+      "version": "0.2.5",
+      "archive_sha256": "4f910a921bbce97cda01377baccdd4615812bbd59927bac178623b0f44478bad",
+      "files": [
+        "SKILL.md",
+        "agents/openai.yaml",
+        "references/web-interface-guidelines.md"
+      ],
+      "readback_equal": true
+    },
+    {
+      "name": "web-ux-engineer",
+      "version": "0.1.0",
+      "archive_sha256": "6d034614ac25042c079239500b5fa90ad0fd0687d7cc4bfa05cf9767258f57fa",
+      "files": [
+        "SKILL.md",
+        "agents/openai.yaml"
+      ],
+      "readback_equal": true
+    }
+  ],
+  "limitations": "Local packaging only; generated release URLs were not published or contacted."
+}

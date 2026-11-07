@@ -1,0 +1,11 @@
+--- project/src/App.tsx.before
++++ project/src/App.tsx.after
+@@ -82,7 +82,7 @@
+         {applied && <section className="rounded-xl border bg-muted/50 p-5">
+           <h2 className="font-semibold">Settings applied</h2>
+           <p className="mt-2 break-words text-sm leading-relaxed">Email: {applied.email}. Notifications: {applied.enabled ? "On" : "Off"}. Frequency: {applied.frequency === "daily" ? "Daily" : "Weekly"}{applied.enabled ? "." : " (paused)."}</p>
+-          <p className="mt-2 text-xs text-muted-foreground">Saved for this session. No email is sent.</p>
++          <p className="mt-2 text-xs text-muted-foreground">Applied until reload. No email is sent.</p>
+         </section>}
+       </div>
+ 

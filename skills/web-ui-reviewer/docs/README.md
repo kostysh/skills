@@ -8,7 +8,7 @@
 
 ## Implementation Plans
 
-- Нет отдельных планов.
+- [План web-ux-engineer v2](../../web-ux-engineer/docs/issues/implementation-plan-20261107-1.md) — общий план согласования владельцев.
 
 ## Forward Tests
 
@@ -27,3 +27,8 @@
 ## Ревизия UI-REV-v1
 
 - [Общий журнал UI-REV-v1](../../../docs/implementation-log-20260908-ui-revision.md) — исходный снимок, проверки и статус ревизии интерфейсной группы; supporting-запись репозитория.
+
+## Согласование web-ux-engineer — 2026-11-07
+
+- [Принятый план v2](../../web-ux-engineer/docs/issues/implementation-plan-20261107-1.md).
+- [Общий журнал реализации и проверок](../../web-ux-engineer/docs/logs/implementation-log-20261107-1.md).

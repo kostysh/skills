@@ -1,0 +1,47 @@
+*** Begin Patch
+*** Update File: /tmp/web-ux-20261107-xaye7ceb/candidate/live-project/src/App.tsx
+@@
+ type Settings = { email: string; enabled: boolean; frequency: "daily" | "weekly" }
++const initialSettings: Settings = { email: "", enabled: true, frequency: "daily" }
+ 
+ export default function App() {
+-  const [draft, setDraft] = useState<Settings>({ email: "", enabled: true, frequency: "daily" })
++  const [draft, setDraft] = useState<Settings>(initialSettings)
+@@
+   const [error, setError] = useState("")
++  const [notice, setNotice] = useState("")
+@@
+   const cancelRef = useRef<HTMLButtonElement>(null)
++  const baseline = applied ?? initialSettings
++  const hasChanges = draft.email !== baseline.email || draft.enabled !== baseline.enabled || draft.frequency !== baseline.frequency
++
++  function discardChanges() {
++    setDraft({ ...baseline })
++    setError("")
++    setNotice(applied ? "Changes discarded. Your last applied settings are restored." : "Changes discarded. Initial settings are restored.")
++    emailRef.current?.focus()
++  }
+@@
+   function review(event: SubmitEvent<HTMLFormElement>) {
+     event.preventDefault()
++    setNotice("")
+@@
+-              onChange={(event) => { setDraft({ ...draft, email: event.target.value }); setError("") }} />
++              onChange={(event) => { setDraft({ ...draft, email: event.target.value }); setError(""); setNotice("") }} />
+@@
+-            <Switch id="notifications" checked={draft.enabled} onCheckedChange={(enabled) => setDraft({ ...draft, enabled })} aria-describedby="notifications-help" />
++            <Switch id="notifications" checked={draft.enabled} onCheckedChange={(enabled) => { setDraft({ ...draft, enabled }); setNotice("") }} aria-describedby="notifications-help" />
+@@
+-              onValueChange={(frequency) => { if (frequency === "daily" || frequency === "weekly") setDraft({ ...draft, frequency }) }}>
++              onValueChange={(frequency) => { if (frequency === "daily" || frequency === "weekly") { setDraft({ ...draft, frequency }); setNotice("") } }}>
+@@
+           <div className="flex flex-col gap-3 border-t pt-6 sm:items-end">
+-            <Button ref={reviewRef} variant="brand" type="submit" aria-haspopup="dialog" className="h-11 px-5">Review changes</Button>
++            <div className="flex flex-col gap-3 sm:flex-row">
++              <Button variant="outline" type="button" disabled={!hasChanges && !error} aria-describedby="discard-help" onClick={discardChanges} className="h-11 px-5">Discard changes</Button>
++              <Button ref={reviewRef} variant="brand" type="submit" aria-haspopup="dialog" className="h-11 px-5">Review changes</Button>
++            </div>
++            <p id="discard-help" className="text-xs leading-relaxed text-muted-foreground">{applied ? "Discard restores your last applied settings." : "Discard restores the initial settings."}</p>
+             <p className="text-xs leading-relaxed text-muted-foreground">Changes apply after confirmation. This demo keeps settings only until you reload.</p>
++            <p role="status" aria-atomic="true" className="text-sm leading-relaxed">{notice}</p>
+*** End Patch

@@ -1,0 +1,85 @@
+{
+  "case_author_and_assessor": "root (authored candidate, self-assessment; independent reviewer pending)",
+  "executor_settings": "fresh collaboration agents with fork_turns=none; model and reasoning inherited, no override; runtime model/token metadata not exposed; no timing/cost comparison",
+  "access_boundary": "instructional allowlist on shared filesystem, not hard OS sandbox",
+  "runs": [
+    {
+      "agent": "/root/catalogue_a",
+      "type": "catalogue selection",
+      "inputs": [
+        "selection.md",
+        "baseline-catalog.json"
+      ],
+      "skill_bodies": "not supplied; forbidden"
+    },
+    {
+      "agent": "/root/catalogue_b",
+      "type": "catalogue selection",
+      "inputs": [
+        "selection.md",
+        "candidate-catalog.json"
+      ],
+      "skill_bodies": "not supplied; forbidden"
+    },
+    {
+      "agent": "/root/execution_a",
+      "type": "execution A-H",
+      "inputs": [
+        "tasks.md"
+      ],
+      "skills": "baseline 3; chosen for A-E, explicitly assigned for F-H"
+    },
+    {
+      "agent": "/root/execution_b",
+      "type": "execution A-H",
+      "inputs": [
+        "tasks.md"
+      ],
+      "skills": "web-ux-engineer only for A-E; explicitly assigned neighbor only for F-H"
+    },
+    {
+      "agent": "/root/live_a",
+      "type": "live implementation",
+      "inputs": [
+        "live.md"
+      ],
+      "skills": "frontend-design; baseline neighbors if concretely needed; same agent-browser"
+    },
+    {
+      "agent": "/root/live_b",
+      "type": "live implementation",
+      "inputs": [
+        "live.md"
+      ],
+      "skills": "web-ux-engineer; candidate neighbors only if concretely needed; same agent-browser"
+    },
+    {
+      "agent": "/root/standalone_execution",
+      "type": "standalone A-E execution",
+      "inputs": [
+        "standalone/task.md (exact A-E excerpt of tasks.md)"
+      ],
+      "skills": "web-ux-engineer only; no neighboring skill files, browser or backend allowed"
+    },
+    {
+      "agent": "/root/reference_delta",
+      "type": "bounded forced reference execution",
+      "inputs": [
+        "reference-delta/tasks.md (original selection requests 1 and 4)"
+      ],
+      "skills": "react-spa-engineer root and corrected accessibility reference only",
+      "criterion": "unchanged owner criteria from original rubric"
+    }
+  ],
+  "criteria_fixed_before_source_edits": true,
+  "excluded": "rubric/control, sibling results, repository history/supporting records, historical fixture answers",
+  "scopes": "selection != forced execution; synthetic code facts != observed browser/backend; live fixture has no backend or durable storage",
+  "environment_assistance": [
+    "pnpm process flags supplied to live executor to avoid host store/auto-install",
+    "live_a was told exec_command session_id preserves a long-running server; socket/profile may need task-scoped escalation. Same hint will be supplied to live_b.",
+    "After both executors independently reported dev-server font 403 from shared node_modules symlinks, coordinator requested a bounded production-preview font/narrow-layout readback without source/config/dependency changes. This supplemental verification is environment-guided, not a fresh blind design run; original dev evidence is retained."
+  ],
+  "baseline_fixture": "repository docs/reviews/design-tools-rev-20260909/live-b0/project at bf0796d4; copied into two independent live-project directories, frozen-lock dependencies supplied; original unchanged",
+  "portability_followup_reason": "The comparative A-H executor also reads neighboring skills for F-H. The trial remains blind to rubric/answers, but its final combined answer alone cannot prove complete neighbor isolation for A-E. A fresh standalone A-E execution uses the same fixed criteria and prevents that exposure.",
+  "post_trial_source_delta": "React references/accessibility.md introductory ownership sentence corrected after comparative trials began; tested trial copies remain frozen. Candidate source root/catalog and all technical checks unchanged. Final reviewer must assess this explicit delta; no claim that the early trial hash covers it."
+}

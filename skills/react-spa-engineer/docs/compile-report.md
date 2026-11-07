@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.12`
+- Skill source version: `0.1.13`
 
 ## Source files
 - `agents/openai.yaml`

@@ -1,0 +1,18 @@
+{
+  "baseline": {
+    "changed_original_files": [
+      "src/App.tsx"
+    ],
+    "app_sha256": "5620ea58f384d6249b96431bc077a2877184e1c6f86ac8c0982dea4c9e0b86e8",
+    "other_original_files_unchanged": true,
+    "screenshots_retained": 20
+  },
+  "candidate": {
+    "changed_original_files": [
+      "src/App.tsx"
+    ],
+    "app_sha256": "5e7ed6e3604d9aa0f80f0e0eb68f41a64f5ffd1712c2efc427ef296c609ed1a6",
+    "other_original_files_unchanged": true,
+    "screenshots_retained": 10
+  }
+}
