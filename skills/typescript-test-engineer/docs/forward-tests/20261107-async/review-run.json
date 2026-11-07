@@ -1,0 +1,32 @@
+{
+  "assigned_settings": "Inherited model/effort; fork_turns=none, no override requested.",
+  "recorded_model": "gpt-6.1-sol",
+  "recorded_effort": "max",
+  "model_note": "Observed session metadata, not independent provider attestation.",
+  "review_mode": "change",
+  "assurance": "independent",
+  "verdict": "PASS",
+  "reviewed_snapshot": "4542d7a277d7a2c335643470c033cd01229912b4ebf760f17c57ada4cd2a2c41",
+  "reviewed_file_count": 18,
+  "report": "../../reviews/review-20261107-async.md",
+  "findings": [],
+  "author_followup": "Public records redaction plus four supporting descriptions; generated instruction body unchanged. Original trials/review remain tied to their original snapshot.",
+  "reviewer": "independent-reviewer",
+  "delivery_record_review": "PASS; independent bounded re-audit of public records and metadata delta",
+  "instruction_snapshot_manifest": "snapshot-instruction-review.json",
+  "current_snapshot": "9e6cd7b52ff27a1ced3723e8f6f59525905eed359f6b2340c7ec1de19a9c3847",
+  "metadata_delta": "metadata-redaction-delta.json",
+  "public_report_export_sha256": "9206fb43d2142153970cfe104068cee62817bdb34f8915aa7c953a5afc6b3f61",
+  "public_records_review": {
+    "reviewer": "independent-public-record-reviewer",
+    "mode": "re-audit",
+    "assurance": "independent",
+    "verdict": "PASS",
+    "report": "../../reviews/review-20261107-public-records.md",
+    "report_sha256": "4fbc17ff2f9dd8824199b921327ba5591ec4a7df4647de720fcd9c0c11094981",
+    "reviewed_full_file_count": 33,
+    "reviewed_records_aggregate_sha256": "a54ceed404a7918ebca75101c8a9992a96af4bfc51f502d128a2fb7f47f26693",
+    "source_snapshot": "9e6cd7b52ff27a1ced3723e8f6f59525905eed359f6b2340c7ec1de19a9c3847",
+    "administrative_followup": "Only pending statuses, links and result metadata changed after verdict; outside the reviewed records aggregate; final content scan required."
+  }
+}

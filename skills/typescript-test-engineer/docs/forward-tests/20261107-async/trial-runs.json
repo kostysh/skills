@@ -1,0 +1,50 @@
+{
+  "source_snapshot": "4542d7a277d7a2c335643470c033cd01229912b4ebf760f17c57ada4cd2a2c41",
+  "assigned_settings": "Inherited model and reasoning settings; no override requested; fork_turns=none on all four spawn calls.",
+  "context_limit": "Task-isolated active-surface copies; instruction-scoped filesystem access, not a security sandbox. Prior parent conversation and assessor criteria not supplied.",
+  "cases": {
+    "2": {
+      "recorded_model": "gpt-6.1-sol",
+      "recorded_effort": "max",
+      "model_note": "Observed session metadata, not independent provider attestation.",
+      "tool_event_count": 8,
+      "trial_files_unchanged": true,
+      "raw_output": "case-2-output.md",
+      "raw_tools": "case-2-tool-events.jsonl",
+      "executor": "executor-2"
+    },
+    "3": {
+      "recorded_model": "gpt-6.1-sol",
+      "recorded_effort": "max",
+      "model_note": "Observed session metadata, not independent provider attestation.",
+      "tool_event_count": 6,
+      "trial_files_unchanged": true,
+      "raw_output": "case-3-output.md",
+      "raw_tools": "case-3-tool-events.jsonl",
+      "executor": "executor-3"
+    },
+    "4": {
+      "recorded_model": "gpt-6.1-sol",
+      "recorded_effort": "max",
+      "model_note": "Observed session metadata, not independent provider attestation.",
+      "tool_event_count": 6,
+      "trial_files_unchanged": true,
+      "raw_output": "case-4-output.md",
+      "raw_tools": "case-4-tool-events.jsonl",
+      "executor": "executor-4"
+    },
+    "5": {
+      "recorded_model": "gpt-6.1-sol",
+      "recorded_effort": "max",
+      "model_note": "Observed session metadata, not independent provider attestation.",
+      "tool_event_count": 6,
+      "trial_files_unchanged": true,
+      "raw_output": "case-5-output.md",
+      "raw_tools": "case-5-tool-events.jsonl",
+      "executor": "executor-5"
+    }
+  },
+  "evidence_export": "Normalized public export: local paths and session identifiers removed; tool order, decisions, command results and limits retained.",
+  "source_snapshot_manifest": "snapshot-instruction-review.json",
+  "current_metadata_delta": "metadata-redaction-delta.json"
+}

@@ -94,7 +94,15 @@ test('references are conditional and browser handoff is not a mandatory local wr
   const skill = await readSkillFile('SKILL.md');
 
   assert.match(skill, /## Optional references/);
-  assert.doesNotMatch(skill, /## Required active references/);
+  assert.match(skill, /## Required active references/);
+  const requiredReferences = skill
+    .split('## Required active references')[1]
+    .split('## Optional references')[0];
+  assert.match(requiredReferences, /Testing.*references\/testing\.md/);
+  assert.doesNotMatch(
+    requiredReferences,
+    /references\/(?:react-vitest|testing-anti-patterns|tdd)\.md/,
+  );
   assert.match(skill, /React Vitest.*references\/react-vitest\.md/);
   assert.match(skill, /Tdd.*references\/tdd\.md/);
   assert.match(skill, /Testing Anti Patterns.*references\/testing-anti-patterns\.md/);

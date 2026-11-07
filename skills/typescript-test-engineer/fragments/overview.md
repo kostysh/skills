@@ -25,7 +25,7 @@ This skill does not define framework, platform, security, money, persistence, or
 - Fixtures must preserve relevant production invariants rather than invent convenient roles, sessions, tenants, profiles, readiness, or status combinations.
 - In-memory stores and mocks can prove API flow but cannot prove persistence, RLS, RPC, provider authorization, service-role safety, or other unexercised boundaries.
 - For state-changing doubles, use a shared contract suite when the double reimplements production state transitions or authorization behavior.
-- For event-driven tests, subscribe or create the listener promise before triggering the action that may emit the event.
+- Async, time-sensitive, and concurrent tests require explicit completion, control of the relevant time and causal order, and failure-safe cleanup; elapsed time alone is not readiness evidence.
 - For hanging tests in diagnose mode, isolate the repro, inspect handles, identify the cause and evidence limits, and recommend remediation without editing. Only when fixes are explicitly authorized may implementation repair teardown where the resource is created, stress-rerun the isolated case, and run the full relevant suite.
 
 ## Test-evidence selection
@@ -67,7 +67,7 @@ Add repeated shuffle, soak, or nightly stability contours only when the reposito
 - Fix warnings introduced by the current change. For pre-existing or upstream-blocked warnings, record the exact warning, ownership, blocker, and next evidence instead of silently broadening the mutation scope.
 - Use the repository coverage command when it exists. Coverage is a signal about exercised code, not proof of assertion quality or real-boundary behavior.
 - When normal tests pass but coverage fails, diagnose by rerunning the exact coverage command, comparing flags and environment, and isolating under instrumentation. Recommend the root-cause fix without editing; only an explicitly authorized implementation may apply it before changing thresholds or timeouts.
-- When timeout changes are explicitly authorized and justified, centralize integration timeouts in runner configuration or repository scripts; never use increases to hide unresolved async work, open handles, or long polling.
+- After diagnosis, when timeout changes are explicitly authorized and justified by the environment, centralize integration timeouts in runner configuration or repository scripts; never use increases or retries to hide a race, unresolved async work, open handles, or long polling.
 
 ## TDD opt-in
 
@@ -75,7 +75,7 @@ Use TDD only when the user explicitly requests it. Then read `references/tdd.md`
 
 ## Conditional references
 
-- `references/testing.md` — read the relevant section for Node, edge, integration, E2E, databases, coverage, events, mocks, or hanging tests.
+- `references/testing.md` — read the relevant section for Node, edge, integration, E2E, databases, coverage, or mocks. Read **Async completion, time, concurrency, and cleanup** for any async, time, concurrency, polling, or cleanup decision, including diagnosis.
 - `references/testing-anti-patterns.md` — read when writing or reviewing mocks, fixtures, test doubles, or test utilities.
 - `references/react-vitest.md` — read for React, Vitest, Testing Library, DOM environments, Browser Mode, and async UI tests.
 - `references/tdd.md` — read only after explicit TDD opt-in.
