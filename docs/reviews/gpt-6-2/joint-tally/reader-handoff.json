@@ -1,0 +1,29 @@
+{
+  "writerSkill": "documentation 0.2.3",
+  "site": "Docusaurus 3.10.2, ru, static production build on loopback",
+  "reader": "separate fresh gpt-6.2-sol, medium; only desk.txt with the home URL",
+  "firstLink": {
+    "from": "/",
+    "renderedHref": "/assets/files/engineering-tally-fixture-1.0.0.tar-0874052a201d7c970b71ff5d3a501eb0.gz/",
+    "httpStatus": 404,
+    "onDiskHashedFile": true,
+    "unrewrittenDownloadAvailable": true,
+    "renderedIndexSHA256": "9a69a8d70c53723b4dedf02320471bd6c6a8f528f5a67a63e06bca65bf7282ef"
+  },
+  "guideFromWriter": "03863912c0990e634dab36d3dac8b870397dca00ce5254e213a7e8e4d6caaf12",
+  "companionFromWriter": "281c52f6e86b0a7a5dfeac0b80997357dc9565ef2a600b5cbd0b986bb4538386",
+  "guideLoadedInBuild": "03863912c0990e634dab36d3dac8b870397dca00ce5254e213a7e8e4d6caaf12",
+  "companionLoadedInBuild": "281c52f6e86b0a7a5dfeac0b80997357dc9565ef2a600b5cbd0b986bb4538386",
+  "offeredCLI": "7c9f8bff28fee4cb4acd9dfec592b15e688cf040990a001d66a8d1ba73bce0cc",
+  "downloadedCLI": "7c9f8bff28fee4cb4acd9dfec592b15e688cf040990a001d66a8d1ba73bce0cc",
+  "stableRoutes": {
+    "home": "/",
+    "guide": "/spravochnik/guide/",
+    "intake": "/spravochnik/desk-intake/",
+    "download": "/downloads/engineering-tally-fixture-1.0.0.tar.gz"
+  },
+  "readerResult": "a8b877",
+  "signedAssessor": "ddaef49469a9b348fd209c6be01d2137986f075dc4c5185ed7875a82aedf40a3",
+  "rawArchive": "5170c662cc6fdba285b0e9a76ab8918a1a3d223f2e600e1a585be92180ecabd5",
+  "builtSiteArchive": "53f5d1bb1f687a40097b2684cd12fd91ecb96b6ae74e828861ce739fa8976c72"
+}
