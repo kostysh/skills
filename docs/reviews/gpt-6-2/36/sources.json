@@ -1,0 +1,212 @@
+{
+  "checked": "2026-11-19 Europe/Rome",
+  "publisherChannels": {
+    "payload-1": "1.15.12",
+    "payload-2": "2.32.3",
+    "internal-debug": "3.81.0-internal-debug.1a0f4d0",
+    "internal": "4.0.0-internal.5d2e3d1",
+    "canary": "4.0.0-canary.20261118",
+    "beta": "4.0.0-beta.10",
+    "latest": "3.94.0"
+  },
+  "manifests": {
+    "next": {
+      "name": "@payloadcms/next",
+      "version": "3.94.0",
+      "peerDependencies": {
+        "graphql": "^16.8.1",
+        "next": ">=15.2.9 <15.3.0 || >=15.3.9 <15.4.0 || >=15.4.11 <15.5.0 || >=16.4.5 <17.0.0",
+        "payload": "workspace:*"
+      },
+      "engines": {
+        "node": "^22.23.5 || ^24.22.3 || >=26.13.1"
+      }
+    },
+    "p3": {
+      "name": "payload",
+      "version": "3.94.0",
+      "peerDependencies": {
+        "graphql": "^16.8.1"
+      },
+      "engines": {
+        "node": "^22.23.5 || ^24.22.3 || >=26.13.1"
+      }
+    },
+    "p2": {
+      "name": "payload",
+      "version": "2.32.3",
+      "engines": {
+        "node": ">=14"
+      }
+    },
+    "beta": {
+      "name": "payload",
+      "engines": {
+        "node": "^24.22.3 || >=26.13.1"
+      },
+      "peerDependencies": {
+        "graphql": "^16.8.1"
+      },
+      "version": "4.0.0-beta.10"
+    },
+    "v3nextNpm": {
+      "name": "@payloadcms/next",
+      "engines": {
+        "node": "^22.23.5 || ^24.22.3 || >=26.13.1"
+      },
+      "peerDependencies": {
+        "next": ">=15.2.9 <15.3.0 || >=15.3.9 <15.4.0 || >=15.4.11 <15.5.0 || >=16.4.5 <17.0.0",
+        "graphql": "^16.8.1",
+        "payload": "3.94.0"
+      },
+      "version": "3.94.0"
+    },
+    "v388nextNpm": {
+      "name": "@payloadcms/next",
+      "engines": {
+        "node": "^18.20.2 || >=20.9.0"
+      },
+      "peerDependencies": {
+        "next": ">=15.2.9 <15.3.0 || >=15.3.9 <15.4.0 || >=15.4.11 <15.5.0 || >=16.2.6 <17.0.0",
+        "graphql": "^16.8.1",
+        "payload": "3.88.0"
+      },
+      "version": "3.88.0"
+    },
+    "sqliteRegistry": {
+      "name": "@payloadcms/db-sqlite",
+      "peerDependencies": {
+        "payload": "3.94.0"
+      },
+      "version": "3.94.0"
+    },
+    "pluginTemplate": {
+      "name": "plugin",
+      "version": "1.0.0",
+      "peerDependencies": {
+        "payload": "^3.93.0"
+      },
+      "engines": {
+        "node": "^22.23.5 || ^24.22.3 || >=26.13.1",
+        "pnpm": "^9 || ^10 || ^11"
+      }
+    }
+  },
+  "http": {
+    "tags": {
+      "httpStatus": 200,
+      "url": "https://registry.npmjs.org/-/package/payload/dist-tags",
+      "sha256": "aff5256e8ee9f6f1d121cbd6c4691e01d7397e9ca519b27d26512bd1687cdf10"
+    },
+    "release": {
+      "httpStatus": 200,
+      "url": "https://api.github.com/repos/payloadcms/payload/releases/tags/v3.94.0",
+      "sha256": "f225087539933c0fc4a3a4691c0434b91f0eba84033b8481dcaaa46da57b504d"
+    },
+    "p3": {
+      "httpStatus": 200,
+      "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.94.0/packages/payload/package.json",
+      "sha256": "18b546f75e7e1c607571cffdc40087730f74649f6c4fa780c0e1d99a23e0fe01"
+    },
+    "next": {
+      "httpStatus": 200,
+      "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.94.0/packages/next/package.json",
+      "sha256": "25a75010230f122ab6e19fae6f0f0f2d978d2cfedff25451ccbad20ea5b865fc"
+    },
+    "sqlite": {
+      "httpStatus": 200,
+      "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.94.0/packages/db-sqlite/src/index.ts",
+      "sha256": "aaa8249da4df74992e60cbed524f45fdf0f6edf072af1443267a17c05f3fca28"
+    },
+    "p2": {
+      "httpStatus": 200,
+      "url": "https://raw.githubusercontent.com/payloadcms/payload/v2.32.3/packages/payload/package.json",
+      "sha256": "d898d5c5f7ca506506d10c7fb156e6b30d8be75a28fa62f010bcb72d2542a49f"
+    },
+    "sqlitepkg": {
+      "httpStatus": 200,
+      "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.94.0/packages/db-sqlite/package.json",
+      "sha256": "5c40b1100f207d74c1cb7491c835c01565e8559b604554bd079d5b1051921930"
+    },
+    "localAccess": {
+      "httpStatus": 200,
+      "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.94.0/docs/local-api/access-control.mdx",
+      "sha256": "52ea45e330adc4252b1f8599fb766561e3e60b5ce42fc8d7ba876a407eedad65"
+    },
+    "slug": {
+      "httpStatus": 200,
+      "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.94.0/packages/payload/src/fields/baseFields/slug/index.ts",
+      "sha256": "e7974da6e3b59a6b8ed802d86d980ac710541859006469f7dc2d4b0dfd6dfb31"
+    },
+    "rest": {
+      "httpStatus": 200,
+      "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.94.0/docs/rest-api/overview.mdx",
+      "sha256": "de661dd28b1f8e429c73a5ea719037c43a37b4c9cb7a7a940e1232977d05115b"
+    },
+    "hooks": {
+      "httpStatus": 200,
+      "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.94.0/docs/hooks/context.mdx",
+      "sha256": "87f8755a53c1d3b153e22a8b9e25161419cba811cfbcc051ce4d6143b67afb82"
+    },
+    "v2migration": {
+      "httpStatus": 200,
+      "url": "https://payloadcms.com/docs/migration-guide/overview",
+      "sha256": "c8a4d6c2c47546eb89758570b3a1cfcf2db44294e96a74fb4f30ef4bddfda082"
+    },
+    "openai": {
+      "httpStatus": 200,
+      "url": "https://developers.openai.com/api/docs/guides/latest-model?model=gpt-6.2-astra",
+      "sha256": "95c717d1e9e915b1e8560861403d0e9cf3844b9193cca82fc6d89d14bc90c5d6"
+    },
+    "pluginTemplate": {
+      "httpStatus": 200,
+      "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.94.0/templates/plugin/package.json",
+      "sha256": "696e3a0157cbb2d72299f0eeffc6a7ef8f918fb2d05ce31b0873b69911e046b1"
+    },
+    "beta": {
+      "httpStatus": 200,
+      "url": "https://registry.npmjs.org/payload/4.0.0-beta.10",
+      "sha256": "cb67282166a553ab6a2ddde0b5b910a4e7ea70e03a41c6dd196d2c858860b4aa"
+    },
+    "sqliteRegistry": {
+      "httpStatus": 200,
+      "url": "https://registry.npmjs.org/@payloadcms%2fdb-sqlite/3.94.0",
+      "sha256": "13da2ef093a7dde23ab6f6b76dcc7ff394df1a87f2d66f4514e61142fcb353d1"
+    },
+    "v2init": {
+      "httpStatus": 200,
+      "url": "https://raw.githubusercontent.com/payloadcms/payload/v2.32.3/packages/payload/src/index.ts",
+      "sha256": "383323659c23b214b7b26800396c208ecfb7bd53757e447f4f75c0935ffb357e"
+    },
+    "v3find": {
+      "httpStatus": 200,
+      "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.94.0/packages/payload/src/collections/operations/local/find.ts",
+      "sha256": "ff52b0259c8de589367de1bee23ef795028092af887c1d0a27d26fc92985ca5f"
+    },
+    "createReq": {
+      "httpStatus": 200,
+      "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.94.0/packages/payload/src/utilities/createLocalReq.ts",
+      "sha256": "0c9b50fed879a6de8f0e54fbe8d46155b3ed61b11bda4f2a99ee2d65eb184a61"
+    },
+    "v3nextNpm": {
+      "httpStatus": 200,
+      "url": "https://registry.npmjs.org/@payloadcms%2fnext/3.94.0",
+      "sha256": "65272c5ff59e06cf0118a8a4cea123cc021b8d52c0d5318f3346942e9d5e7f79"
+    },
+    "v388nextNpm": {
+      "httpStatus": 200,
+      "url": "https://registry.npmjs.org/@payloadcms%2fnext/3.88.0",
+      "sha256": "116068719f7a427c209cb1c2b00abac9f084ed54f4b0cc776b5b4f78c940af5b"
+    },
+    "hookOperations": {
+      "httpStatus": 200,
+      "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.94.0/packages/payload/src/collections/operations/updateByID.ts",
+      "sha256": "15bd0c201f066bed34bfefe515a0a7ea19c7ee8cf6f192855f7474ceaca68d94"
+    },
+    "v3guards": {
+      "httpStatus": 200,
+      "url": "https://raw.githubusercontent.com/payloadcms/payload/v3.94.0/packages/payload/src/fields/config/types.ts",
+      "sha256": "dda65ff77245aff880a23ca0da89b27992c7c9a07d47dba5eb13aff7de5602f0"
+    }
+  }
+}

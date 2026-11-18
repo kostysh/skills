@@ -1,0 +1,56 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -9 +9 @@
+-  source-version: 0.1.2
++  source-version: 0.1.3
+@@ -11 +11 @@
+-  skillforge-source-hash: e3871f6ac431335bd150f0081447bf2eac4005e895fecd404cc3a5657b22010c
++  skillforge-source-hash: 04c6f843ceb054b4dcf70d01e78037459ce928f593eaa8d860100157ecc2668f
+@@ -41,7 +41,7 @@
+-The API examples target Payload **3.88.0 stable**, checked **2026-09-09**. **4.0.0-canary.33** is a separate prerelease, not an upgrade instruction. Inspect the installed `payload`, all `@payloadcms/*`, Node, Next/React and database/storage packages and the lockfile. Keep Payload packages on matching versions; check exact peer ranges before choosing a new fixture. In 3.88.0, `@payloadcms/next` accepts Next `>=15.2.9 <15.3.0 || >=15.3.9 <15.4.0 || >=15.4.11 <15.5.0 || >=16.2.6 <17.0.0`; the engine range alone does not prove the whole application compatible. Recheck these current facts for another version using installed exports and official tagged sources.
+-
+-For an existing v2 application, keep its Express/local initialization, adapter versions, schema and declared commands. Use the official version-matched v2 source and the 2→3 guide only when an upgrade is requested. Do not transplant v3 Web Request handlers, Next routes, storage plugins or experimental fields into v2. If the exact source is unavailable, continue version-independent investigation and identify the affected unknown.
+-
+-Minimum context is the requested behavior, relevant config/source, version and execution authority. Stronger runtime claims additionally need the actual adapter/environment and meaningful checks. Reference examples are independent integration fragments: collection slugs, generated user fields, application helpers, credentials, db/editor and imports must match the host. They are not complete standalone applications.
+-
+-Sources: [installation](https://payloadcms.com/docs/getting-started/installation), [3.88.0 peers](https://github.com/payloadcms/payload/blob/v3.88.0/packages/next/package.json), [2→3 guide](https://payloadcms.com/docs/migration-guide/overview).
++Start with the installed `payload`, database adapter, Node, and, for a Next.js app, `@payloadcms/next`, Next, and React. Use the lockfile and the published manifests for that release. The examples use Payload v3. The November 2026 reference release is **3.94.0 stable**. The v4 beta channel and the Express-based v2 line have their own entry points and version contracts. Use a prerelease or migrate a major version when the task calls for it.
++
++For **3.94.0**, the published Next adapter peers with Payload 3.94.0. Its supported Next 16 interval is `>=16.4.5 <17.0.0`. The manifest also lists separate Next 15 patch intervals. Both core and the Next adapter declare Node `^22.23.5 || ^24.22.3 || >=26.13.1`. Verify the installed release before choosing an image. Some reference examples retain their explicitly marked 3.88.0 source. [Published adapter](https://registry.npmjs.org/@payloadcms%2fnext/3.94.0) · [Tagged core](https://github.com/payloadcms/payload/blob/v3.94.0/packages/payload/package.json)
++
++For an existing v2 application, keep its Express or standalone Local API initialization, adapter, schema, and project commands. Use the matching tag for v2 behavior. Use the migration guide when an upgrade is requested. If a version fact is unavailable, continue tasks that do not require it. [v2.32.3 initialization](https://github.com/payloadcms/payload/blob/v2.32.3/packages/payload/src/index.ts) · [2→3 guide](https://payloadcms.com/docs/migration-guide/overview)
++
++Reference examples are integration fragments. Match the collection slugs, generated user fields, helpers, database, editor, and imports to the host.
+@@ -244 +244 @@
+-2. For config and collection changes, prefer checks that load Payload config or generate Payload types.
++2. Use a config load or type generation for schema claims. For access, hook, or delivered-data changes, exercise the operation and compare the observed records or side effects with the expected outcome.
+@@ -253,2 +253,2 @@
+-- **source CMS extraction, mapping, authorized import, rerun, and reconciliation:** payload-migration. payload-migration owns the migration result; this skill supplies target schema, Local API, access, adapter, and transaction mechanics without taking over source semantics.
+-- **Next.js routing, React Server Components, Server Actions, metadata, images, fonts, bundling, or self-hosting:** nextjs. Payload v3 integrates with Next.js; nextjs owns frontend routing/cache/rendering and returns actual page readback. Existing v2 projects retain their installed Express architecture.
++- **source CMS extraction, mapping, authorized import, rerun, and reconciliation:** payload-migration. Supply the target version and adapter, accepted fields, source keys and relationship IDs, and a read through the intended caller when needed for reconciliation. payload-migration owns mapping, execution, retries, and reconciliation.
++- **Next.js routing, React Server Components, Server Actions, metadata, images, fonts, bundling, or self-hosting:** nextjs. Payload owns the CMS read for the intended caller. nextjs owns v3 page routing, caching, and rendering. For a page claim, follow the actual document value through the route and a fresh request. Existing v2 projects retain their Express entry point.
+--- a/references/adapters.md
++++ b/references/adapters.md
+@@ -52 +52 @@
+-Payload can wrap database operations in transactions when the adapter supports and enables them. SQLite defaults to disabled; keep the explicit opt-in above. Pass the same `req` and await nested operations to share the transaction. Access enforcement remains a separate option; database rollback cannot undo email or storage side effects.
++Payload can wrap database operations in transactions when the adapter supports and enables them. In [3.94.0, SQLite opens real transactions when transactionOptions is enabled](https://github.com/payloadcms/payload/blob/v3.94.0/packages/db-sqlite/src/index.ts). Use the explicit opt-in above when the workflow requires rollback. Pass the same `req` and await nested operations to share the transaction. Access enforcement remains a separate option; database rollback cannot undo email or storage side effects.
+--- a/references/advanced.md
++++ b/references/advanced.md
+@@ -401 +401 @@
+-- **[Lexical Types](https://github.com/payloadcms/payload/blob/v3.88.0/packages/richtext-lexical/src/exports/server/index.ts)** - Lexical editor configuration
++- **[Lexical Types](https://github.com/payloadcms/payload/blob/v3.88.0/packages/richtext-lexical/src/lexical/config/types.ts)** - Lexical editor configuration
+--- a/references/endpoints.md
++++ b/references/endpoints.md
+@@ -106 +106 @@
+-Sources: [REST endpoints](https://payloadcms.com/docs/rest-api/overview#custom-endpoints), [Local API access](https://payloadcms.com/docs/local-api/access-control), [3.88.0 request helper](https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/utilities/addDataAndFileToRequest.ts).
++[3.94.0 REST endpoints](https://github.com/payloadcms/payload/blob/v3.94.0/docs/rest-api/overview.mdx#custom-endpoints) · [Local API access](https://github.com/payloadcms/payload/blob/v3.94.0/docs/local-api/access-control.mdx) · [Request helper](https://github.com/payloadcms/payload/blob/v3.94.0/packages/payload/src/utilities/addDataAndFileToRequest.ts)
+--- a/references/fields.md
++++ b/references/fields.md
+@@ -45 +45 @@
+-`slugField` is experimental in 3.88.0. Use it only when the installed export and the project permit experimental helpers; preserve an existing text+hook slug implementation on older versions.
++`slugField` is marked experimental in the [3.94.0 source](https://github.com/payloadcms/payload/blob/v3.94.0/packages/payload/src/fields/baseFields/slug/index.ts). Use it only when the installed export and the project permit experimental helpers; preserve an existing text+hook slug implementation on older versions.
+--- a/references/queries.md
++++ b/references/queries.md
+@@ -3 +3 @@
+-Version-scoped query fragments across Local API, REST and GraphQL. Top-level Local API examples assume explicitly authorized server work; for caller requests supply req/user and overrideAccess:false.
++Top-level Local API examples assume authorized server work. A caller-scoped operation uses `overrideAccess: false` with the authenticated `user` or an existing Payload `req` carrying that user. For a list, compare the expected and returned record identities. A collection access constraint and the application's `where` filter can each narrow the result. To establish what a REST caller receives, use the actual HTTP route and that caller's credentials. [3.94.0 Local API access](https://github.com/payloadcms/payload/blob/v3.94.0/docs/local-api/access-control.mdx) · [Request context](https://github.com/payloadcms/payload/blob/v3.94.0/packages/payload/src/utilities/createLocalReq.ts)

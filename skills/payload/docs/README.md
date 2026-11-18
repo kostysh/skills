@@ -15,3 +15,5 @@ No issues have been created for this skill.
 ## Совместимость frontmatter — 2026-10-21
 
 - [Удаление compatibility через исходник](logs/implementation-log-20261021-1.md) — сохранение текста в инструкциях; результаты и независимая оценка связаны с общим журналом.
+
+- [Обновление Payload и проверка прав читателя — 2026-11-19](logs/implementation-log-20261119-1.md).

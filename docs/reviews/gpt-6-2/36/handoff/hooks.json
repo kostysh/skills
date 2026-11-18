@@ -1,0 +1,50 @@
+{
+  "versions": {
+    "node": "24.22.3",
+    "payload": "3.94.0",
+    "sqliteAdapter": "3.94.0"
+  },
+  "probeSHA256": "9d55803d3d8e34325ea5f661a602c4ae54eb5d22c68d914876f29764d8bf3daf",
+  "results": [
+    {
+      "mode": "default",
+      "hookEvents": [
+        {
+          "code": "READY",
+          "transactionIDPresent": false
+        },
+        {
+          "code": "DEFER",
+          "transactionIDPresent": false
+        }
+      ],
+      "letters": [
+        "READY",
+        "DEFER"
+      ],
+      "receipts": [
+        "READY",
+        "DEFER"
+      ]
+    },
+    {
+      "mode": "enabled",
+      "hookEvents": [
+        {
+          "code": "READY",
+          "transactionIDPresent": true
+        },
+        {
+          "code": "DEFER",
+          "transactionIDPresent": true
+        }
+      ],
+      "letters": [
+        "READY"
+      ],
+      "receipts": [
+        "READY"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "seed": {
+    "actor": {
+      "id": 1,
+      "desk": "east",
+      "collection": "operators"
+    },
+    "stored": [
+      {
+        "id": 1,
+        "sourceKey": "LOCAL-01",
+        "section": 1,
+        "desk": "east",
+        "state": "issued"
+      },
+      {
+        "id": 2,
+        "sourceKey": "PROBE-DRAFT",
+        "section": 1,
+        "desk": "east",
+        "state": "draft"
+      },
+      {
+        "id": 3,
+        "sourceKey": "PROBE-WEST",
+        "section": 1,
+        "desk": "west",
+        "state": "issued"
+      }
+    ],
+    "visible": [
+      {
+        "id": 1,
+        "sourceKey": "LOCAL-01",
+        "title": "Местная запись",
+        "desk": "east",
+        "state": "issued",
+        "section": 1
+      }
+    ]
+  },
+  "route": "/dossiers/reed",
+  "before": {
+    "http": 200,
+    "title": "Местная запись",
+    "sourceKey": "LOCAL-01",
+    "id": "1",
+    "originalControls": true
+  },
+  "controls": {
+    "cedar": {
+      "reader": 404,
+      "page": 404
+    },
+    "amber": {
+      "reader": 404,
+      "page": 404
+    }
+  },
+  "write": {
+    "id": 1,
+    "sourceKey": "LOCAL-01",
+    "title": "Перечитанная запись"
+  },
+  "roleReadAfter": [
+    {
+      "id": 1,
+      "sourceKey": "LOCAL-01",
+      "title": "Перечитанная запись",
+      "desk": "east",
+      "state": "issued",
+      "section": 1
+    }
+  ],
+  "secondRequest": {
+    "http": 200,
+    "title": "Перечитанная запись",
+    "sourceKey": "LOCAL-01",
+    "id": "1",
+    "originalControls": true
+  },
+  "node": "v24.22.3",
+  "versions": {
+    "payload": "3.94.0",
+    "@payloadcms/db-sqlite": "3.94.0",
+    "graphql": "16.11.0",
+    "next": "16.4.6",
+    "react": "19.3.0"
+  }
+}

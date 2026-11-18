@@ -1,0 +1,44 @@
+{
+  "ordinary": {
+    "reader": "east",
+    "boundary": "Payload Local API / SQLite",
+    "cards": [
+      {
+        "id": 1,
+        "sourceKey": "M3",
+        "title": "Реестр",
+        "shelf": "main"
+      },
+      {
+        "id": 2,
+        "sourceKey": "M4",
+        "title": "Перечень",
+        "shelf": "annex"
+      }
+    ]
+  },
+  "boundary": {
+    "reader": "east",
+    "boundary": "Payload Local API / SQLite",
+    "cards": [
+      {
+        "id": 1,
+        "sourceKey": "S7",
+        "title": "Доставка",
+        "shelf": "main"
+      }
+    ]
+  },
+  "holdout": {
+    "reader": "east",
+    "boundary": "Payload Local API / SQLite",
+    "cards": [
+      {
+        "id": 1,
+        "sourceKey": "J2",
+        "title": "Пересчёт",
+        "shelf": "main"
+      }
+    ]
+  }
+}

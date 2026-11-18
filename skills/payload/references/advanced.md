@@ -398,6 +398,6 @@ For complete TypeScript type definitions and signatures, reference these files f
 
 ### Rich Text & Plugins
 
-- **[Lexical Types](https://github.com/payloadcms/payload/blob/v3.88.0/packages/richtext-lexical/src/exports/server/index.ts)** - Lexical editor configuration
+- **[Lexical Types](https://github.com/payloadcms/payload/blob/v3.88.0/packages/richtext-lexical/src/lexical/config/types.ts)** - Lexical editor configuration
 
 For another installed release, use that exact tag/installed exported definitions; these links pin the reviewed 3.88.0 source. Localization completeness must be read per locale with fallback disabled.

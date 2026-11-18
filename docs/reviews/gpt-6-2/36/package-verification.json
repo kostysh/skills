@@ -1,0 +1,67 @@
+{
+  "baselineArchiveSHA256": "fa221f43955d0c2ae3619348a6227272cec87f093bf16dc7b0f388dc90478f12",
+  "candidateArchiveSHA256": "0f6bcd509744a022b7f5ced07773fa9fb9e7b6f6184274fc7f3b4c92d99067aa",
+  "catalog": {
+    "name": "payload",
+    "description": "Use when working with Payload CMS projects: payload.config.ts, collections, globals, fields, hooks, access control, Payload Local/REST/GraphQL APIs, adapters, endpoints, jobs, plugins, and Payload-specific validation, security, relationship, transaction, or hook behavior.",
+    "version": "0.1.3",
+    "url": "https://github.com/kostysh/skills/releases/download/skills-row36-local/payload-0.1.3.tgz",
+    "sha256": "0f6bcd509744a022b7f5ced07773fa9fb9e7b6f6184274fc7f3b4c92d99067aa",
+    "contentHash": "a36cd1143b87a37dc5681f953826b61cbdfca345634c219de9d6a78301b3de9b"
+  },
+  "previousCatalogSHA256": "6a27eb907f0335ff4ac1778192f37b368d18c2e5cbea6611e4a61b956a95c749",
+  "checks": [
+    "compiler lint",
+    "regenerate",
+    "check source",
+    "compile separately",
+    "check separate folder",
+    "pack:skills using previous catalog",
+    "13 source, separate compile and archive file digests and Unix modes",
+    "isolated patch replay A→B, A→C, C→final"
+  ],
+  "activeFiles": {
+    "SKILL.md": "fa9a71970e0aac1edf086fb573764e992edb352063f55af550109a72aa122297",
+    "agents/openai.yaml": "2dd7d1903a7b294cdf577504078c63216d8533e36b386fb9426688ac61292c35",
+    "references/access-control-advanced.md": "5fbfba4befe0477fb7d8a7e2dd1837b5b57ef9106a3596e6303466bc04298b70",
+    "references/access-control.md": "e028a3a209ec0745445df296da3652afce8b984506b814b60c4526c67d010b66",
+    "references/adapters.md": "1544af3658eb6b56cdd515544b3fcbf15f717ba2a4d536cfa50f10b631c74ec6",
+    "references/advanced.md": "dbfe02052a7243c86e3a6e3cf8fc6533cc0440ed2eb564d7ffa14faa377e89d9",
+    "references/collections.md": "a4128d09fdc6c6499956f1dc9f0b67fb366fe4b4b5657cd2030c429b770c3c7d",
+    "references/endpoints.md": "ae0a1eac3af272fbd4c4c5d4001686d943bce36ec8c355a024690ffe1910eda3",
+    "references/field-type-guards.md": "be25a1e4334ef1f40d95ddd572a7c4e977e73b184e7951bcf82af928dd002b45",
+    "references/fields.md": "30ef4f26726ca3fc275d9199f5babe35d85f3e3d2c47fdd4e5d07517fee44b74",
+    "references/hooks.md": "526ae0c7ec2e1f70807b9133de3e00bab78ec7fb6156af6a96081322dec71b25",
+    "references/plugin-development.md": "035e733302bea5039f5341938232b21a0fed469a5daf827083a4dbfec98a83b6",
+    "references/queries.md": "2c680ca4482a99c9ca221dc5fa292da0d49629498864478935ed0fd9c054033b"
+  },
+  "activeModes": {
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "references/access-control-advanced.md": "0644",
+    "references/access-control.md": "0644",
+    "references/adapters.md": "0644",
+    "references/advanced.md": "0644",
+    "references/collections.md": "0644",
+    "references/endpoints.md": "0644",
+    "references/field-type-guards.md": "0644",
+    "references/fields.md": "0644",
+    "references/hooks.md": "0644",
+    "references/plugin-development.md": "0644",
+    "references/queries.md": "0644"
+  },
+  "copiesOfSupportingLogsPresent": true,
+  "CToFinalDifferent": [
+    "SKILL.md",
+    "references/adapters.md",
+    "references/advanced.md",
+    "references/endpoints.md",
+    "references/fields.md",
+    "references/queries.md"
+  ],
+  "beforeLinkCorrection": "0fb416af796f682b3d0affca34f6f31ca1b103d8a9186d81ab668381b6c722ec",
+  "firstArchiveDelta": [
+    "references/advanced.md"
+  ],
+  "published": false
+}

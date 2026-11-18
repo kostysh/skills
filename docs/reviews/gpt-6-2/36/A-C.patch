@@ -1,0 +1,5 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -24 +24 @@
+-7. Treat config, docs, wrappers, or generated types as substrate until the requested Payload behavior is compiled, tested, or otherwise exercised.
++7. Verify the requested behavior through the caller's Payload interface. For access claims, report the acting user, how access was enforced, and any separate query filter.

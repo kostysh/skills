@@ -1,0 +1,10 @@
+{
+  "name": "revision-cms-local-toolchain",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@payloadcms/db-sqlite": "3.94.0",
+    "payload": "3.94.0",
+    "graphql": "16.11.0"
+  }
+}

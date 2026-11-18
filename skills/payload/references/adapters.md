@@ -49,7 +49,7 @@ export default buildConfig({
 
 ## Transactions
 
-Payload can wrap database operations in transactions when the adapter supports and enables them. SQLite defaults to disabled; keep the explicit opt-in above. Pass the same `req` and await nested operations to share the transaction. Access enforcement remains a separate option; database rollback cannot undo email or storage side effects.
+Payload can wrap database operations in transactions when the adapter supports and enables them. In [3.94.0, SQLite opens real transactions when transactionOptions is enabled](https://github.com/payloadcms/payload/blob/v3.94.0/packages/db-sqlite/src/index.ts). Use the explicit opt-in above when the workflow requires rollback. Pass the same `req` and await nested operations to share the transaction. Access enforcement remains a separate option; database rollback cannot undo email or storage side effects.
 
 ```ts
 import type { CollectionAfterChangeHook } from 'payload'

@@ -1,6 +1,6 @@
 # Payload Querying Reference
 
-Version-scoped query fragments across Local API, REST and GraphQL. Top-level Local API examples assume explicitly authorized server work; for caller requests supply req/user and overrideAccess:false.
+Top-level Local API examples assume authorized server work. A caller-scoped operation uses `overrideAccess: false` with the authenticated `user` or an existing Payload `req` carrying that user. For a list, compare the expected and returned record identities. A collection access constraint and the application's `where` filter can each narrow the result. To establish what a REST caller receives, use the actual HTTP route and that caller's credentials. [3.94.0 Local API access](https://github.com/payloadcms/payload/blob/v3.94.0/docs/local-api/access-control.mdx) · [Request context](https://github.com/payloadcms/payload/blob/v3.94.0/packages/payload/src/utilities/createLocalReq.ts)
 
 ## Query Operators
 

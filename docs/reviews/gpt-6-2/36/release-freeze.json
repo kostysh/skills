@@ -1,0 +1,46 @@
+{
+  "date": "2026-11-18T23:26:33.553124+00:00",
+  "method": "frozen independent criteria before editing active version-specific guidance",
+  "inputFiles": {
+    "cases/transfer.md": "0eed2d887c646a6fea61618db31716f974c5b5b68772cab304e459284762685d",
+    "fixture/transfer/distribution/LOCK.json": "d75cd40bea81dc3a8beeafcc263e79bfe1a15a822cba32f67518ab523efc755e",
+    "fixture/transfer/distribution/cms.mjs": "707837e0033211ba845b53de1a9adeeea493db50f90f2e4ecdb463b3ab5779fd",
+    "fixture/transfer/distribution/contract.md": "54661babe475805b3732cf4b588fdc9410801a4f58116e13e3e622600b5e9954",
+    "fixture/transfer/distribution/desk.mjs": "5c7a29f4dfd3ccde397b05a7eec6b41e42e4e028f9c04b9a7dd5cf3fbe49904d",
+    "fixture/transfer/distribution/package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+    "fixture/transfer/distribution/seed.json": "644d9ee07b9aad3d13e74783376d9533480fe06eeb42755fcb0f39a217a82a35",
+    "fixture/transfer/platform/beta.json": "2a75768c9d5bf5e5d008d9ba43b7a20e6ff247b3d5a1b1a1f90763b047b30101",
+    "fixture/transfer/platform/channels.json": "aff5256e8ee9f6f1d121cbd6c4691e01d7397e9ca519b27d26512bd1687cdf10",
+    "fixture/transfer/platform/legacy-entry.ts": "383323659c23b214b7b26800396c208ecfb7bd53757e447f4f75c0935ffb357e",
+    "fixture/transfer/platform/p2.json": "3bdbd9509504e49c4ab2eb1f3cdc1d05f42596d294235eba834f2e904bc86192",
+    "fixture/transfer/platform/p3.json": "3646057c8695fa5e86aeb81f581baec36146b0c0384712cbd4aa9175657b4e5d",
+    "fixture/transfer/platform/proposal.md": "ba6dd429e562a836a417b2a3b1903eb82b38b0c56e2b04d2cb3da55f8665b9c3",
+    "fixture/transfer/platform/sqliteRegistry.json": "70e1df3976ee90e6b4155e00edc43ab2b50043d68e88121dea7b09ec06ce2be9",
+    "fixture/transfer/platform/v388nextNpm.json": "5322382495673375dcab2ed501d415ab845f9b837c55d84bea6db0db7384f914",
+    "fixture/transfer/platform/v3nextNpm.json": "1d1ce2950189176e89b970724f10eaed29dd2e3104008eb292255ed3f2722591",
+    "fixture/transfer/runbook.md": "bc36bb6a0ea6afa87af4ea44540e7bc4ce46eb7f5fb14de2556a5ab0cb84eecb",
+    "rubric.md": "274429ba24043d90f4b9145b708a0c0e3d91482059e9ef094c73227fbf303fef"
+  },
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "archiveSha256": "0f6bcd509744a022b7f5ced07773fa9fb9e7b6f6184274fc7f3b4c92d99067aa",
+  "archiveFiles": {
+    "SKILL.md": "fa9a71970e0aac1edf086fb573764e992edb352063f55af550109a72aa122297",
+    "agents/openai.yaml": "2dd7d1903a7b294cdf577504078c63216d8533e36b386fb9426688ac61292c35",
+    "references/access-control-advanced.md": "5fbfba4befe0477fb7d8a7e2dd1837b5b57ef9106a3596e6303466bc04298b70",
+    "references/access-control.md": "e028a3a209ec0745445df296da3652afce8b984506b814b60c4526c67d010b66",
+    "references/adapters.md": "1544af3658eb6b56cdd515544b3fcbf15f717ba2a4d536cfa50f10b631c74ec6",
+    "references/advanced.md": "dbfe02052a7243c86e3a6e3cf8fc6533cc0440ed2eb564d7ffa14faa377e89d9",
+    "references/collections.md": "a4128d09fdc6c6499956f1dc9f0b67fb366fe4b4b5657cd2030c429b770c3c7d",
+    "references/endpoints.md": "ae0a1eac3af272fbd4c4c5d4001686d943bce36ec8c355a024690ffe1910eda3",
+    "references/field-type-guards.md": "be25a1e4334ef1f40d95ddd572a7c4e977e73b184e7951bcf82af928dd002b45",
+    "references/fields.md": "30ef4f26726ca3fc275d9199f5babe35d85f3e3d2c47fdd4e5d07517fee44b74",
+    "references/hooks.md": "526ae0c7ec2e1f70807b9133de3e00bab78ec7fb6156af6a96081322dec71b25",
+    "references/plugin-development.md": "035e733302bea5039f5341938232b21a0fed469a5daf827083a4dbfec98a83b6",
+    "references/queries.md": "2c680ca4482a99c9ca221dc5fa292da0d49629498864478935ed0fd9c054033b"
+  },
+  "firstArchive": "0fb416af796f682b3d0affca34f6f31ca1b103d8a9186d81ab668381b6c722ec",
+  "deltaFromFirstExtract": [
+    "references/advanced.md"
+  ]
+}
