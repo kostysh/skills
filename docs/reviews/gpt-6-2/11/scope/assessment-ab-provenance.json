@@ -1,0 +1,116 @@
+{
+  "rawSignedAnswerSha256": "1c903f7242ce5a4f3fb624aafc273426f69401211a2ffd090d67230d1bd9d421",
+  "rawEventsSha256": "e14f1d7e67c77fed0ba83bcd08182ca0395793955700b590c390766308997b57",
+  "rawDispatchSha256": "b9d4c618eb812be54f4585993a621dd2237d7524c40c34983b0058b152301886",
+  "criteriaSha256": "20b7326fdb986e245527488ee11bffed380920fbd006330add53dcbd80ca16d9",
+  "issuedModel": "gpt-6.2-sol",
+  "issuedReasoning": "high",
+  "sandbox": "read-only",
+  "longTermMemoryFeature": "disabled",
+  "exposedFilesSha256": {
+    "criteria.md": "20b7326fdb986e245527488ee11bffed380920fbd006330add53dcbd80ca16d9",
+    "43c926/actions.json": "9d2dbb20bee4ab03d23a2808ef1fbce438d785cc2aa9215c3a973203aa72b275",
+    "43c926/observer.json": "a15ab679b74b071cb598fff5614f493aeec223162c788decf2105a78bc9a0a0e",
+    "43c926/answer.md": "d5b7d65c2e346cc58099e765ca82ccb37ca82b570ea0b81f627534a3c209a468",
+    "43c926/task.md": "793fe228ef064c8d63e87d658bac1020f5d2bf0888eb77812a2bcdfce9e03941",
+    "8a4302/actions.json": "cdde21519e19f548733dd37249d6b9e60fec70e2fb69c4002b7a88c83dd86acf",
+    "8a4302/observer.json": "3c765afef932ac929120a904b9c55f0332a2b15a3c1768ee82e87a55a83622a0",
+    "8a4302/answer.md": "8e23b03cd132896e83ecda561ee7daf3eec9556f9baa98e6c272575cb6266c52",
+    "8a4302/task.md": "3d837029fffb315754a2e07912bf2ee0ad0e80be383f4eb2a4efd169064c3153",
+    "1bcfc5/actions.json": "375b1f77c57d7a8bababc41ae02824ce765ac2a287986f9de156e79947b1426f",
+    "1bcfc5/observer.json": "5b7bde76f52c50a2737d69ec4119214b3eb2a689a25282323b5c513008afe6e9",
+    "1bcfc5/answer.md": "7b5f208d0b5d8446f90e686e73552f4ea3d1b5354d3d16befb56d61c47424b1f",
+    "1bcfc5/task.md": "e7689a59d0516992bde797dee3e2b9b2ce276a404d1605d799a2a979eed5c576",
+    "89f103/actions.json": "5eb2886674be8abf3ac3d361241206e11e39f4f58d9f4ee7eeab0b6be685a2ad",
+    "89f103/observer.json": "360481903c32b7927048c06c1dcb2a1e49944fbeae121c15d9c4eeb3c70b67a6",
+    "89f103/answer.md": "37776139258e7cdb6710fb987141c8401df3e466143920a0a09721da187e3ac2",
+    "89f103/task.md": "e7689a59d0516992bde797dee3e2b9b2ce276a404d1605d799a2a979eed5c576",
+    "89f103/before/materials/report-status-v4.json": "3a599fb7415fa86d7d76d9ff5bd80bb7ccdb46a654b95e58f9d6458f55a8a049",
+    "89f103/before/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "89f103/before/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "89f103/before/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "89f103/before/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "89f103/before/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "89f103/after/materials/report-status-v4.json": "3a599fb7415fa86d7d76d9ff5bd80bb7ccdb46a654b95e58f9d6458f55a8a049",
+    "89f103/after/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "89f103/after/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "89f103/after/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "89f103/after/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "89f103/after/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "1bcfc5/before/materials/report-status-v4.json": "3a599fb7415fa86d7d76d9ff5bd80bb7ccdb46a654b95e58f9d6458f55a8a049",
+    "1bcfc5/before/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "1bcfc5/before/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "1bcfc5/before/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "1bcfc5/before/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "1bcfc5/before/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "1bcfc5/after/materials/report-status-v4.json": "3a599fb7415fa86d7d76d9ff5bd80bb7ccdb46a654b95e58f9d6458f55a8a049",
+    "1bcfc5/after/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "1bcfc5/after/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "1bcfc5/after/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "1bcfc5/after/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "1bcfc5/after/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "8a4302/before/materials/report-status-v4.json": "94479bbb69a14ebf861b1a6354cbc224a36b76661e7bc346755effca641ec36f",
+    "8a4302/before/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "8a4302/before/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "8a4302/before/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "8a4302/before/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "8a4302/before/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "8a4302/after/materials/report-status-v4.json": "94479bbb69a14ebf861b1a6354cbc224a36b76661e7bc346755effca641ec36f",
+    "8a4302/after/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "8a4302/after/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "8a4302/after/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "8a4302/after/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "8a4302/after/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "43c926/before/materials/report-status-v4.json": "94479bbb69a14ebf861b1a6354cbc224a36b76661e7bc346755effca641ec36f",
+    "43c926/before/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "43c926/before/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "43c926/before/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "43c926/before/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "43c926/before/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "43c926/after/materials/report-status-v4.json": "94479bbb69a14ebf861b1a6354cbc224a36b76661e7bc346755effca641ec36f",
+    "43c926/after/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "43c926/after/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "43c926/after/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "43c926/after/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "43c926/after/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da"
+  },
+  "observableOperations": [
+    {
+      "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git'\"'\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'wc -lc criteria.md */{task.md,answer.md,observer.json,actions.json} */before/materials/* */after/materials/*'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'for code in 1bcfc5 43c926 89f103 8a4302; do diff -ru \"$code/before\" \"$code/after\"; done'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'cat criteria.md'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'ls -la'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'head -v -n 200 1bcfc5/before/materials/* && for code in 43c926 89f103 8a4302; do diff -ru 1bcfc5/before \"$code/before\"; done'",
+      "exit": 1
+    },
+    {
+      "command": "/bin/bash -lc 'for code in 1bcfc5 43c926 89f103 8a4302; do head -v -n 200 \"$code\"/{task.md,answer.md,actions.json,observer.json}; done'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"find . -type l -print && python3 -B -c 'from pathlib import Path; import stat; codes=[\\\"1bcfc5\\\",\\\"43c926\\\",\\\"89f103\\\",\\\"8a4302\\\"]; snap=lambda d: {str(p.relative_to(d)): (stat.S_IMODE(p.stat().st_mode), p.read_bytes()) for p in d.rglob(\\\"*\\\") if p.is_file()}; print(*[(c,len(snap(Path(c,\\\"before\\\"))),len(snap(Path(c,\\\"after\\\"))),snap(Path(c,\\\"before\\\"))==snap(Path(c,\\\"after\\\"))) for c in codes],sep=\\\"\\\\n\\\")'\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"python3 -B -c 'from pathlib import Path; import hashlib,json; cases=sorted(p for p in Path(\\\".\\\").iterdir() if p.is_dir()); print(\\\"code answer_size_and_hash candidate policy resource owner_read_source owner_read_effective\\\"); exec(\\\"for p in cases:\\\\n b=(p / \\\\\\\"answer.md\\\\\\\").read_bytes()\\\\n o=json.loads((p / \\\\\\\"observer.json\\\\\\\").read_bytes())\\\\n s=json.loads((p / \\\\\\\"before/materials/report-status-v4.json\\\\\\\").read_bytes())\\\\n e=json.loads((p / \\\\\\\"before/materials/north-20-effective.json\\\\\\\").read_bytes())\\\\n print(p.name, len(b)==o[\\\\\\\"normalizedAnswerBytes\\\\\\\"] and hashlib.sha256(b).hexdigest()==o[\\\\\\\"normalizedAnswerSha256\\\\\\\"], s[\\\\\\\"build\\\\\\\"]==e[\\\\\\\"build\\\\\\\"]==\\\\\\\"north-20\\\\\\\", s[\\\\\\\"id\\\\\\\"]==e[\\\\\\\"policy\\\\\\\"]==\\\\\\\"report-status-v4\\\\\\\", s[\\\\\\\"resource\\\\\\\"] in e, repr(s[\\\\\\\"owner\\\\\\\"][\\\\\\\"read\\\\\\\"]), repr(e[s[\\\\\\\"resource\\\\\\\"]][\\\\\\\"owner\\\\\\\"][\\\\\\\"read\\\\\\\"]))\\\")'\"",
+      "exit": 0
+    }
+  ],
+  "exit": 0
+}

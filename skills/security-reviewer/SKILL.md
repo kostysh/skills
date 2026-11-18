@@ -5,9 +5,9 @@ description: Perform bounded security review of code, CI, permissions, webhooks,
   triage, or scoped audits. Own threat modeling, confidence gating, attack
   paths, and findings—not scan orchestration, compliance, pentesting, or fixes.
 metadata:
-  source-version: 0.1.14
+  source-version: 0.1.15
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 6147bfb4626f3ec2e770e0f1282ff77679fd12c447c86adbf707a776ff6f65c0
+  skillforge-source-hash: a12fd8db8b9dd7f396649024b02cb2176def7b37a0a2256296c0335701bd6246
 ---
 
 # security-reviewer
@@ -298,7 +298,7 @@ Validation:
 ## Gotchas
 
 - **high** — A PASS on an old diff is not evidence for a changed implementation. If files or behavior changed after the audit, perform a delta review on the new scope before reporting PASS.
-- **high** — Do not use FAIL merely because the target, coverage, runtime facts, or evidence are missing; use INCOMPLETE or BLOCKED according to the status contract.
+- **high** — Classify gaps in evidence or the review basis using the formal status contract.
 - **high** — Do not issue an overall merge recommendation from security-reviewer, especially from MEDIUM-confidence or needs-verification items; route merge guidance to code-reviewer.
 - **high** — PASS is always scoped to the recorded snapshot and named coverage; it is not proof of whole-system security, standards compliance, penetration testing, or exhaustive scanning.
 - **high** — Review screenshots, status-site evidence, history payloads, logs, and problem responses for secrets, raw provider payloads, tokens, cookies, OTP, and unnecessary PII; code-only security review is insufficient for evidence-bearing changes.

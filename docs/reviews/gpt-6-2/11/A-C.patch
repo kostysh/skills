@@ -1,0 +1,5 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -301 +301 @@
+-- **high** — Do not use FAIL merely because the target, coverage, runtime facts, or evidence are missing; use INCOMPLETE or BLOCKED according to the status contract.
++- **high** — Classify gaps in evidence or the review basis using the formal status contract.

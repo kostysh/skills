@@ -1,0 +1,188 @@
+{
+  "rawSignedAnswerSha256": "d9f70560987af5145271c49a6ca7d70de80d4ba5e10b06da15dc5db5de880983",
+  "rawEventsSha256": "d244c3d45d6814f9fa977fa46379401dbc722d58841fb60d8ecb6d8ce73166ed",
+  "rawDispatchSha256": "337ddb2deab487bd1ac78984cee48cb70f144478574c4ebdef467e90d196bad3",
+  "criteriaSha256": "20b7326fdb986e245527488ee11bffed380920fbd006330add53dcbd80ca16d9",
+  "issuedModel": "gpt-6.2-sol",
+  "issuedReasoning": "high",
+  "sandbox": "read-only",
+  "longTermMemoryFeature": "disabled",
+  "exposedFilesSha256": {
+    "criteria.md": "20b7326fdb986e245527488ee11bffed380920fbd006330add53dcbd80ca16d9",
+    "9eb338/actions.json": "9d2dbb20bee4ab03d23a2808ef1fbce438d785cc2aa9215c3a973203aa72b275",
+    "9eb338/observer.json": "a15ab679b74b071cb598fff5614f493aeec223162c788decf2105a78bc9a0a0e",
+    "9eb338/answer.md": "d5b7d65c2e346cc58099e765ca82ccb37ca82b570ea0b81f627534a3c209a468",
+    "9eb338/task.md": "793fe228ef064c8d63e87d658bac1020f5d2bf0888eb77812a2bcdfce9e03941",
+    "16f27b/actions.json": "8a418afbee2603ffb280b8abe60910cb350e7591ad39bc156e11233ff54656ab",
+    "16f27b/observer.json": "8f41b0e1ae8a18c7e1df10ecf71c9e6a21e4283c4cc70ad8246cd9e512a6186d",
+    "16f27b/answer.md": "4b2cdf48c527d8d8671dcd23f01d666651b69a5e72f62c713d1bec34b3793ee6",
+    "16f27b/task.md": "793fe228ef064c8d63e87d658bac1020f5d2bf0888eb77812a2bcdfce9e03941",
+    "b3cada/actions.json": "cdde21519e19f548733dd37249d6b9e60fec70e2fb69c4002b7a88c83dd86acf",
+    "b3cada/observer.json": "3c765afef932ac929120a904b9c55f0332a2b15a3c1768ee82e87a55a83622a0",
+    "b3cada/answer.md": "8e23b03cd132896e83ecda561ee7daf3eec9556f9baa98e6c272575cb6266c52",
+    "b3cada/task.md": "3d837029fffb315754a2e07912bf2ee0ad0e80be383f4eb2a4efd169064c3153",
+    "8cb998/actions.json": "6381fe7f93707a26ab3e6ef28c836c5ec5d59ea6498a766b44482e6745fe74d6",
+    "8cb998/observer.json": "289c3717472e9a0938f6811229139975a6dfcc945e2b7187e7769eee885c2c18",
+    "8cb998/answer.md": "07c98b4c50ef101d751f269a5007994e2da6ee96cdc1abfc2d34df7ec1e3058f",
+    "8cb998/task.md": "e7689a59d0516992bde797dee3e2b9b2ce276a404d1605d799a2a979eed5c576",
+    "4aaea2/actions.json": "6098a69cfc87ce8953a492cfc20740b614506023c1d3d082341646249631dd00",
+    "4aaea2/observer.json": "c14a5e235b4465e464da20c5d20f9eb7d9c118c39c906bfc6862c594ce6ea4c5",
+    "4aaea2/answer.md": "962b48756a5a7d0dabd63808b4bc47c0a6481fbd38c5e047c4511e3f9c4649c2",
+    "4aaea2/task.md": "3d837029fffb315754a2e07912bf2ee0ad0e80be383f4eb2a4efd169064c3153",
+    "d6ab61/actions.json": "f6a7789dd64e08f3a00d4cb03c75f299da9effdb4cc077095f361ef5428b2b54",
+    "d6ab61/observer.json": "a5a7e63eb30ef603bbc4fd6561084f7466a5b37ab49c26e43641feb6b3fa11b0",
+    "d6ab61/answer.md": "e89efee6e924703e8c75648f575ac070d1db895726b34585ea67565431de9b48",
+    "d6ab61/task.md": "e7689a59d0516992bde797dee3e2b9b2ce276a404d1605d799a2a979eed5c576",
+    "d6ab61/before/materials/report-status-v4.json": "94479bbb69a14ebf861b1a6354cbc224a36b76661e7bc346755effca641ec36f",
+    "d6ab61/before/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "d6ab61/before/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "d6ab61/before/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "d6ab61/before/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "d6ab61/before/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "d6ab61/after/materials/report-status-v4.json": "94479bbb69a14ebf861b1a6354cbc224a36b76661e7bc346755effca641ec36f",
+    "d6ab61/after/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "d6ab61/after/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "d6ab61/after/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "d6ab61/after/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "d6ab61/after/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "4aaea2/before/materials/report-status-v4.json": "94479bbb69a14ebf861b1a6354cbc224a36b76661e7bc346755effca641ec36f",
+    "4aaea2/before/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "4aaea2/before/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "4aaea2/before/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "4aaea2/before/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "4aaea2/before/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "4aaea2/after/materials/report-status-v4.json": "94479bbb69a14ebf861b1a6354cbc224a36b76661e7bc346755effca641ec36f",
+    "4aaea2/after/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "4aaea2/after/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "4aaea2/after/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "4aaea2/after/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "4aaea2/after/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "8cb998/before/materials/report-status-v4.json": "94479bbb69a14ebf861b1a6354cbc224a36b76661e7bc346755effca641ec36f",
+    "8cb998/before/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "8cb998/before/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "8cb998/before/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "8cb998/before/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "8cb998/before/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "8cb998/after/materials/report-status-v4.json": "94479bbb69a14ebf861b1a6354cbc224a36b76661e7bc346755effca641ec36f",
+    "8cb998/after/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "8cb998/after/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "8cb998/after/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "8cb998/after/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "8cb998/after/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "b3cada/before/materials/report-status-v4.json": "94479bbb69a14ebf861b1a6354cbc224a36b76661e7bc346755effca641ec36f",
+    "b3cada/before/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "b3cada/before/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "b3cada/before/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "b3cada/before/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "b3cada/before/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "b3cada/after/materials/report-status-v4.json": "94479bbb69a14ebf861b1a6354cbc224a36b76661e7bc346755effca641ec36f",
+    "b3cada/after/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "b3cada/after/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "b3cada/after/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "b3cada/after/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "b3cada/after/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "16f27b/before/materials/report-status-v4.json": "94479bbb69a14ebf861b1a6354cbc224a36b76661e7bc346755effca641ec36f",
+    "16f27b/before/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "16f27b/before/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "16f27b/before/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "16f27b/before/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "16f27b/before/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "16f27b/after/materials/report-status-v4.json": "94479bbb69a14ebf861b1a6354cbc224a36b76661e7bc346755effca641ec36f",
+    "16f27b/after/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "16f27b/after/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "16f27b/after/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "16f27b/after/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "16f27b/after/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "9eb338/before/materials/report-status-v4.json": "94479bbb69a14ebf861b1a6354cbc224a36b76661e7bc346755effca641ec36f",
+    "9eb338/before/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "9eb338/before/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "9eb338/before/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "9eb338/before/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "9eb338/before/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "9eb338/after/materials/report-status-v4.json": "94479bbb69a14ebf861b1a6354cbc224a36b76661e7bc346755effca641ec36f",
+    "9eb338/after/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "9eb338/after/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "9eb338/after/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "9eb338/after/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "9eb338/after/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da"
+  },
+  "observableOperations": [
+    {
+      "command": "/bin/bash -lc 'ls -la'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'wc -l */{task.md,answer.md,observer.json,actions.json} */before/materials/*'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'find . -type l'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'cat criteria.md'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"for f in 9eb338/{task.md,answer.md,actions.json,observer.json}; do\n  printf '\\\\n%s\\\\n' \\\"\"'$f\"\n  cat \"$f\"\ndone'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"for f in d6ab61/{task.md,answer.md,actions.json,observer.json}; do\n  printf '\\\\n%s\\\\n' \\\"\"'$f\"\n  cat \"$f\"\ndone'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"for f in b3cada/{task.md,answer.md,actions.json,observer.json}; do\n  printf '\\\\n%s\\\\n' \\\"\"'$f\"\n  cat \"$f\"\ndone'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"for f in 4aaea2/{task.md,answer.md,actions.json,observer.json}; do\n  printf '\\\\n%s\\\\n' \\\"\"'$f\"\n  cat \"$f\"\ndone'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"for f in 8cb998/{task.md,answer.md,actions.json,observer.json}; do\n  printf '\\\\n%s\\\\n' \\\"\"'$f\"\n  cat \"$f\"\ndone'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"for f in 16f27b/{task.md,answer.md,actions.json,observer.json}; do\n  printf '\\\\n%s\\\\n' \\\"\"'$f\"\n  cat \"$f\"\ndone'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"for f in 8cb998/before/materials/*; do\n  printf '\\\\n%s\\\\n' \\\"\"'$f\"\n  nl -ba \"$f\"\ndone'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"for f in 9eb338/before/materials/*; do\n  printf '\\\\n%s\\\\n' \\\"\"'$f\"\n  nl -ba \"$f\"\ndone'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"for f in 16f27b/before/materials/*; do\n  printf '\\\\n%s\\\\n' \\\"\"'$f\"\n  nl -ba \"$f\"\ndone'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"for f in 4aaea2/before/materials/*; do\n  printf '\\\\n%s\\\\n' \\\"\"'$f\"\n  nl -ba \"$f\"\ndone'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"for f in b3cada/before/materials/*; do\n  printf '\\\\n%s\\\\n' \\\"\"'$f\"\n  nl -ba \"$f\"\ndone'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"for f in d6ab61/before/materials/*; do\n  printf '\\\\n%s\\\\n' \\\"\"'$f\"\n  nl -ba \"$f\"\ndone'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba criteria.md\nfind . -maxdepth 4 -type d'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"python3 -B - <<'PY'\nfrom pathlib import Path\nimport hashlib\nimport json\nimport stat\n\nfor case in sorted(p for p in Path('.').iterdir() if p.is_dir()):\n    before, after = (case / name for name in ('before', 'after'))\n    def scan(root):\n        return {\n            path.relative_to(root).as_posix(): (\n                stat.S_IMODE(path.stat().st_mode),\n                hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None,\n            )\n            for path in sorted(root.rglob('*'))\n        }\n    a, b = scan(before), scan(after)\n    observer = json.loads((case / 'observer.json').read_text())\n    actions = json.loads((case / 'actions.json').read_text())\n    answer = (case / 'answer.md').read_bytes()\n    document_paths = [name for name, (_, digest) in a.items() if digest is not None]\n    print(case, 'documents', len(document_paths), 'before-after: ', a == b,\n          'observer file list:', document_paths == observer['suppliedRoleFiles'],\n          'answer bytes/hash:', len(answer) == observer['normalizedAnswerBytes'] and hashlib.sha256(answer).hexdigest() == observer['normalizedAnswerSha256'],\n          'observer unchanged:', observer['allInputsAndModesUnchanged'],\n          'changes:', observer['changedPaths'], actions['changed'],\n          'read operations:', len(actions['operations']),\n          'all exits zero:', observer['exit'] == 0 and all(item['exit'] == 0 for item in actions['operations']))\n    for name in sorted(a.keys() | b.keys()):\n        if a.get(name) \"'!= b.get(name):\n            print('\"'DIFFERENCE', name, a.get(name), b.get(name))\nPY\"",
+      "exit": 0
+    }
+  ],
+  "exit": 0
+}

@@ -1,0 +1,72 @@
+{
+  "rawSignedAnswerSha256": "45d3bd3e2e112a989c6f872f032346bc3f8ea80c80fa81d1820b89b610c74068",
+  "rawEventsSha256": "6e8db1ca16c4e6c17f2af4756fde5397feeb048c1c27c681a0c3bff7a2fd261a",
+  "rawDispatchSha256": "8b8238090d541ccd1c52a68b1eb5d30bfdd8801c56e66a82f66324e547cfc21f",
+  "criteriaSha256": "533f20cf1428a788c40fbed8d91601f9b799114db1eccd1f414e514d0ebc0808",
+  "issuedModel": "gpt-6.2-sol",
+  "issuedReasoning": "high",
+  "sandbox": "read-only",
+  "longTermMemoryFeature": "disabled",
+  "exposedFilesSha256": {
+    "criteria.md": "533f20cf1428a788c40fbed8d91601f9b799114db1eccd1f414e514d0ebc0808",
+    "09ce15/actions.json": "8203d0781fcb0047029b3783fddbc459e46ec61d632c37c647fe74ef37277636",
+    "09ce15/observer.json": "e031b1f6b25f925fda1a35489ae2ff3ff67b3125a4d72d7da532fa17b0d2dd46",
+    "09ce15/answer.md": "e99e397ba38b22053ed88785260df86cd1ef6ed96a2d8f917f25b98e2ec809d8",
+    "09ce15/task.md": "75d4d6edf55f20f7f269b18fa9f4f0a1e3746232ebcdd10c6f330bedd3342a00",
+    "56550b/actions.json": "144c2920e7b9da1eafebe63109e4fb8f2b02728bccf789dfa9cb1a52c8717817",
+    "56550b/observer.json": "dfeb1041aad887c26c1091788116e65b1213592dfa748cff72d51531ed0de9ec",
+    "56550b/answer.md": "91b694bc058ade47a4ec1f6a78d90c5b4290836bb3c7d33e6b827d2c9ad82497",
+    "56550b/task.md": "75d4d6edf55f20f7f269b18fa9f4f0a1e3746232ebcdd10c6f330bedd3342a00",
+    "56550b/before/materials/lake-shifts.json": "37ce2caa170f4e3c29e1b1258bbe424f340b244ad7243f48829ef1645b7fd696",
+    "56550b/before/materials/lake-help.json": "0edd2c98aa1ecac2bcc0561ca84364d8209d07fa439f239d4ce8cd397eab1eea",
+    "56550b/before/materials/index.json": "2aea24d80ced716ba61755b1352256fdaae2d9464d5c885bcd9ebf58c9ecf018",
+    "56550b/before/materials/request.md": "f2b134fdf134d8fc2cbb0844f6a8b7b99fff9a2cbd21921b9ccb6cb19f62a918",
+    "56550b/before/materials/selection.md": "a238724067aa99ac638ada7a609bdf37edbeca5c1089c3e419cbfbfc0403fb22",
+    "56550b/before/materials/lake-help-base.json": "f874a102e2a239aa29f164aacd10ca4834412157320cf8c610462381faccf8b6",
+    "56550b/after/materials/lake-shifts.json": "37ce2caa170f4e3c29e1b1258bbe424f340b244ad7243f48829ef1645b7fd696",
+    "56550b/after/materials/lake-help.json": "0edd2c98aa1ecac2bcc0561ca84364d8209d07fa439f239d4ce8cd397eab1eea",
+    "56550b/after/materials/index.json": "2aea24d80ced716ba61755b1352256fdaae2d9464d5c885bcd9ebf58c9ecf018",
+    "56550b/after/materials/request.md": "f2b134fdf134d8fc2cbb0844f6a8b7b99fff9a2cbd21921b9ccb6cb19f62a918",
+    "56550b/after/materials/selection.md": "a238724067aa99ac638ada7a609bdf37edbeca5c1089c3e419cbfbfc0403fb22",
+    "56550b/after/materials/lake-help-base.json": "f874a102e2a239aa29f164aacd10ca4834412157320cf8c610462381faccf8b6",
+    "09ce15/before/materials/lake-shifts.json": "37ce2caa170f4e3c29e1b1258bbe424f340b244ad7243f48829ef1645b7fd696",
+    "09ce15/before/materials/lake-help.json": "0edd2c98aa1ecac2bcc0561ca84364d8209d07fa439f239d4ce8cd397eab1eea",
+    "09ce15/before/materials/index.json": "2aea24d80ced716ba61755b1352256fdaae2d9464d5c885bcd9ebf58c9ecf018",
+    "09ce15/before/materials/request.md": "f2b134fdf134d8fc2cbb0844f6a8b7b99fff9a2cbd21921b9ccb6cb19f62a918",
+    "09ce15/before/materials/selection.md": "a238724067aa99ac638ada7a609bdf37edbeca5c1089c3e419cbfbfc0403fb22",
+    "09ce15/before/materials/lake-help-base.json": "f874a102e2a239aa29f164aacd10ca4834412157320cf8c610462381faccf8b6",
+    "09ce15/after/materials/lake-shifts.json": "37ce2caa170f4e3c29e1b1258bbe424f340b244ad7243f48829ef1645b7fd696",
+    "09ce15/after/materials/lake-help.json": "0edd2c98aa1ecac2bcc0561ca84364d8209d07fa439f239d4ce8cd397eab1eea",
+    "09ce15/after/materials/index.json": "2aea24d80ced716ba61755b1352256fdaae2d9464d5c885bcd9ebf58c9ecf018",
+    "09ce15/after/materials/request.md": "f2b134fdf134d8fc2cbb0844f6a8b7b99fff9a2cbd21921b9ccb6cb19f62a918",
+    "09ce15/after/materials/selection.md": "a238724067aa99ac638ada7a609bdf37edbeca5c1089c3e419cbfbfc0403fb22",
+    "09ce15/after/materials/lake-help-base.json": "f874a102e2a239aa29f164aacd10ca4834412157320cf8c610462381faccf8b6"
+  },
+  "observableOperations": [
+    {
+      "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git'\"'\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'cat criteria.md'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'wc -l 09ce15/{task.md,answer.md,observer.json,actions.json} 09ce15/{before,after}/materials/* && cat 09ce15/task.md 09ce15/answer.md 09ce15/observer.json 09ce15/actions.json'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'wc -l 56550b/{task.md,answer.md,observer.json,actions.json} 56550b/{before,after}/materials/* && cat 56550b/task.md 56550b/answer.md 56550b/observer.json 56550b/actions.json'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"python3 -B - 09ce15 <<'PY'\nimport hashlib\nimport json\nimport stat\nimport sys\nfrom pathlib import Path\n\ncase = Path(sys.argv[1])\nbefore = case / 'before'\nafter = case / 'after'\nobserver = json.loads((case / 'observer.json').read_text())\ndef records(directory):\n    return {\n        path.relative_to(directory).as_posix(): (stat.S_IMODE(path.stat().st_mode), path.read_bytes())\n        for path in directory.rglob('*') if path.is_file()\n    }\nb = records(before)\na = records(after)\nprint('Material inventory matches observer:', sorted(b) == sorted(observer['suppliedRoleFiles']))\nprint('Byte and mode equality:', b == a)\nfor name, (mode, data) in sorted(b.items()):\n    print(name, f'{mode:04o}')\n    print(data.decode().rstrip())\nanswer = (case / 'answer.md').read_bytes()\nfor normalized in (answer, answer.rstrip(b'\\\\n')):\n    digest = hashlib.sha256(normalized).hexdigest()\n    if (len(normalized), digest) == (observer['normalizedAnswerBytes'], observer['normalizedAnswerSha256']):\n        print('Answer matches observer length and digest:', len(normalized))\n        break\nelse:\n    print('Answer did not match observer length and digest under checked normalizations:', len(answer))\nPY\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"python3 -B - 56550b <<'PY'\nimport hashlib\nimport json\nimport stat\nimport sys\nfrom pathlib import Path\n\ncase = Path(sys.argv[1])\nbefore = case / 'before'\nafter = case / 'after'\nobserver = json.loads((case / 'observer.json').read_text())\ndef records(directory):\n    return {\n        path.relative_to(directory).as_posix(): (stat.S_IMODE(path.stat().st_mode), path.read_bytes())\n        for path in directory.rglob('*') if path.is_file()\n    }\nb = records(before)\na = records(after)\nprint('Material inventory matches observer:', sorted(b) == sorted(observer['suppliedRoleFiles']))\nprint('Byte and mode equality:', b == a)\nfor name, (mode, data) in sorted(b.items()):\n    print(name, f'{mode:04o}')\n    print(data.decode().rstrip())\nanswer = (case / 'answer.md').read_bytes()\nfor normalized in (answer, answer.rstrip(b'\\\\n')):\n    digest = hashlib.sha256(normalized).hexdigest()\n    if (len(normalized), digest) == (observer['normalizedAnswerBytes'], observer['normalizedAnswerSha256']):\n        print('Answer matches observer length and digest:', len(normalized))\n        break\nelse:\n    print('Answer did not match observer length and digest under checked normalizations:', len(answer))\nPY\"",
+      "exit": 0
+    }
+  ],
+  "exit": 0
+}
