@@ -1,0 +1,55 @@
+{
+  "input": [
+    {
+      "id": "station-7",
+      "title": "North",
+      "pinned": false
+    },
+    {
+      "id": "station-7",
+      "title": "South",
+      "pinned": false
+    },
+    {
+      "id": "station-8",
+      "title": "East",
+      "pinned": true
+    }
+  ],
+  "writeExit": 0,
+  "afterWrite": [
+    {
+      "id": "station-7",
+      "title": "North",
+      "pinned": true
+    },
+    {
+      "id": "station-7",
+      "title": "South",
+      "pinned": true
+    },
+    {
+      "id": "station-8",
+      "title": "East",
+      "pinned": true
+    }
+  ],
+  "readInNewProcess": [
+    {
+      "id": "station-7",
+      "title": "North",
+      "pinned": true
+    },
+    {
+      "id": "station-7",
+      "title": "South",
+      "pinned": true
+    },
+    {
+      "id": "station-8",
+      "title": "East",
+      "pinned": true
+    }
+  ],
+  "acceptedCommandTests": "✔ smoke: pinned card is visible immediately (0.891323ms)\n✔ unknown card is rejected (0.292612ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 40.322282\n"
+}

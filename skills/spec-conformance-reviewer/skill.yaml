@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: spec-conformance-reviewer
-  source-version: 0.1.8
+  source-version: 0.1.9
   recommended-skill-md-max-bytes: 20000
   description: >-
     Review code against authoritative specs, contracts, ADRs, tickets, PRDs, RFCs,
@@ -41,6 +41,10 @@ copies:
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
 supporting:
+  - id: supporting-implementation-log-20261119-1
+    source: docs/logs/implementation-log-20261119-1.md
+    target: docs/logs/implementation-log-20261119-1.md
+    description: Non-normative record for the GPT-6.2 conformance-review study.
   - id: supporting-implementation-log-20260727-1
     source: docs/logs/implementation-log-20260727-1.md
     target: docs/logs/implementation-log-20260727-1.md

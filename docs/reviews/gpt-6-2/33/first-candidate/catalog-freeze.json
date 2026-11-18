@@ -1,0 +1,22 @@
+{
+  "frozenAtUtc": "2026-11-18T23:26:52.800423+00:00",
+  "release": "spec-conformance-reviewer-0.1.9.tgz",
+  "archiveSha256": "ae5a7eac9966e18fbbed4524a9c03231d0e10fa4cbc44ea18a5613d939087fec",
+  "members": {
+    "SKILL.md": "bcc38f5534f4dac94c1c40e4b945794e7e363eefb26e32bb928ccd5ed49cf341",
+    "agents/openai.yaml": "cfb46dd79b7c1dbea6f21726d24c55d1ecde761ced9005f103ffb30629c88b2b",
+    "assets/fixtures/consultant-admission-policy.md": "acc3607c90becff03a87356f0e43e094bb023e28ea1e80af64dbd4577c514b53",
+    "references/methodology.md": "a568814539648a7850c9342be8bab3fdbe50fb699276c33a4887abbd3211fe45",
+    "references/policy-admission-matrix.md": "cfe2cd85876b46cdd71fd982b15bdbe3cff16e4dc95da48ca53a2c3b28578689",
+    "references/reporting.md": "75c49ef2eb6fc501952112b3e3c47dad83ebc7da4f996ba7e0d11e588795bc25"
+  },
+  "intake": {
+    "17/catalog-review.md": "e8a0c8078ffe58b422122acd5a5d58307fb80d9034aa2892b181bc036466ae74",
+    "17/catalog.bundle": "c8189d9e0fd248a5101b5fb7adb689660064afd60fd61d1fcfcb155f13b15337",
+    "23/catalog-handoff.md": "a84fd2c9b6718d8564a2d6d28d1434ad76e65bbefd75ee9f6c072a620549bb57",
+    "24/catalog-review.md": "2b283e6d3d6fbf83468d0622c0693328696d50e5c4b7e93c5abb724166469bcf",
+    "24/catalog-verification.json": "49dfc7846a4451a4432317deb0902fbd99c39d80c9df91d14cf48b7c44a5b7d7"
+  },
+  "taskSha256": "b084d1efa01e5c27d9fe61761ae23aaddbf9202fa4630ffb1e4c66c55ccae867",
+  "criteria": "Отдельная сессия читает полученные документы 17/23/24, извлекает R1/R2 из того же Git bundle, связывает каждое обязательство README с проверкой. Приёмка проверяет pin/unpin и сохранение соседней карты после закрытия и нового чтения. Отделены источник требований, собственные операции и чужие свидетельства. Полномочия только на заключение."
+}

@@ -1,0 +1,6 @@
+{
+  "signedAB": "f28ad513b366c2379bfe5ebd2f622c856bbd774751421c6738e3730aa89fce36",
+  "selected": "- Check what each test demonstrates.",
+  "observed": "All four subjects checked the real persistence boundary. Both sample builds passed their tests. The accepted positive case and its explicitly limited positive counterpart are recorded separately from the rejected write-loss case.",
+  "selectedAt": "2026-11-18T23:20:02.699412+00:00"
+}
