@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: spec-engineer
-  source-version: 0.2.15
+  source-version: 0.2.16
   recommended-skill-md-max-bytes: 28000
   description: >-
     Create concise, falsifiable software specs for AI coding agents. Use to turn
@@ -59,6 +59,10 @@ copies:
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
 supporting:
+  - id: supporting-implementation-log-20261118-1
+    source: docs/logs/implementation-log-20261118-1.md
+    target: docs/logs/implementation-log-20261118-1.md
+    description: Non-normative record of the architecture routing revision and its verification.
   - id: supporting-implementation-log-20260822-1
     source: docs/logs/implementation-log-20260822-1.md
     target: docs/logs/implementation-log-20260822-1.md
@@ -310,7 +314,7 @@ sections:
       text: Do not specify implementation mechanisms such as a specific database, cache, queue, framework, or algorithm unless they are real constraints, externally visible compatibility requirements, or explicitly requested decisions.
     - id: gotcha-no-architecture-invention
       priority: high
-      text: Do not turn missing architecture decisions into spec requirements; route public contracts, data model, security boundary, tenancy, integration topology, deployment, rollback, or selected pattern changes to architecture.
+      text: Route unresolved architecture decisions to the architecture owner.
     - id: gotcha-test-default
       priority: medium
       text: Do not use tests as the default verification answer when inspection, analysis, contract validation, simulation, or conformance suites prove the claim more directly.

@@ -32,3 +32,7 @@ This directory contains supporting maintenance material only. The normative skil
 ## Совместимость frontmatter — 2026-10-21
 
 - [Удаление compatibility через исходник](logs/implementation-log-20261021-1.md) — сохранение текста в инструкциях; результаты и независимая оценка связаны с общим журналом.
+
+## Ревизия GPT‑6.2 — 2026-11-18
+
+- [Передача архитектурных решений владельцу](logs/implementation-log-20261118-1.md) — редакция 0.2.16, слепые испытания и передача спецификаций.

@@ -1,0 +1,1 @@
+../../joint-cabinet/products/architecture-handoff.md

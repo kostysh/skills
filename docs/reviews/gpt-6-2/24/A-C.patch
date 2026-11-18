@@ -1,0 +1,5 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -163 +163 @@
+-3. Treat mocks, snapshots, schemas, routes, files, tests, logs, and screenshots according to what they prove; none proves a broader runtime claim by existence alone.
++3. Tie each artifact to the user outcome it demonstrates.

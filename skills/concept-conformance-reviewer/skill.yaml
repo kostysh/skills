@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: concept-conformance-reviewer
-  source-version: 0.2.7
+  source-version: 0.2.8
   recommended-skill-md-max-bytes: 20000
   description: >-
     Review features, specs, plans, acceptance criteria, implementations, and closure
@@ -18,6 +18,10 @@ references: []
 assets: []
 copies: []
 supporting:
+  - id: supporting-implementation-log-20261118-1
+    source: docs/logs/implementation-log-20261118-1.md
+    target: docs/logs/implementation-log-20261118-1.md
+    description: Non-normative record of the artifact evidence instruction revision.
   - id: supporting-implementation-log-20260727-1
     source: docs/logs/implementation-log-20260727-1.md
     target: docs/logs/implementation-log-20260727-1.md
@@ -112,7 +116,7 @@ sections:
       steps:
         - In design-time mode, find the least-real implementation that could satisfy each criterion and propose behavior-level replacements for exploitable criteria.
         - In closure-time mode, trace the claimed actor, entry point, behavior, state or effect, feedback, and continuity through current production-shaped evidence.
-        - Treat mocks, snapshots, schemas, routes, files, tests, logs, and screenshots according to what they prove; none proves a broader runtime claim by existence alone.
+        - Tie each artifact to the user outcome it demonstrates.
         - Record missing, stale, intercepted, simulated, partial, or out-of-scope evidence as an evidence gap rather than assuming success.
       validation:
         - Design-time conclusions do not claim that unimplemented behavior already exists.

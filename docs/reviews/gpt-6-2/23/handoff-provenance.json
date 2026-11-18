@@ -1,0 +1,274 @@
+{
+  "package": "spec-engineer@0.2.16",
+  "archiveSha256": "a1499d1f9d9f7548911c24899c80636fe275ec10e0aa779e6d961149afc12f0a",
+  "jointRecords": [
+    {
+      "case": "cabinet",
+      "archiveSha256": "a1499d1f9d9f7548911c24899c80636fe275ec10e0aa779e6d961149afc12f0a",
+      "releaseMembersPresentBeforeAndAfter": {
+        "SKILL.md": "469a41e8364517667fb7772327bcce9c4450374feb27b6cfc0ba753e6bc0c149",
+        "agents/openai.yaml": "a25ee17018d4c53dbdbc738ead78156d313ff5d3a36b8ee61a47f74cf695ddca",
+        "references/anti-patterns.md": "f2b1abe4258e5eebef9871fad4e75866a59bfe1e56e5178ca763995f631d78d9",
+        "references/discovery-techniques.md": "388cc2f8a0640fad87426dc7d227bc1793b2f72fd7d167d6059d692fa329496e",
+        "references/example-spec.md": "7e85b5649053603e31caf615e1a3a9cdecfa791d27cb4213f53d1689bef6693c",
+        "references/high-risk-backend-contract.md": "3b885a1a4ce4f96ccc32455c2c849a8fd5d7e1334896f10772e4e0129ac643c0",
+        "references/methodology.md": "9fda82639b2fd162b0fb1ac35351c2f9306a5edda987dfe74f70a9157145d5b9",
+        "references/spec-patterns.md": "9aed51da2697bdc162a9a3b97603edf79e0810b289e5134e4a2375f9f8c3afb2"
+      },
+      "sourceInputsSha256": {
+        "architecture-handoff.md": "88590992721d226d11dc614538a0512e02f9125bb13623064aab44a490059a01",
+        "companion/implementation-discipline/SKILL.md": "fde9d3f957856e325f2e2a725598f8a0984c90dccb1720ef862a3316a5c30729",
+        "companion/implementation-discipline/references/core-principles.md": "fa8a312bb8f580a1224f049f2480605d474b399f14627a55c292b28bbcec5cde",
+        "companion/implementation-discipline/references/verification-loop.md": "659c14086b1829585a006de89a1456a4eb0c15b5aa0f3673a335093ab5d0767e",
+        "decision-intake.md": "b30ccc0677e998fe46befd2605035bd9bf4651950a4d6e4543f62e3efc99e3cd",
+        "lab/captures.csv": "4675ff54ecdce92d90abcd8c1f6af0efe987c65fa4ae6ea45151ccd587bfc16e",
+        "lab/events.csv": "f3428e0a4a988e63f0fca3dbf6eddccaa8e0d9c9379d2dd4d4bba813d1ca0869",
+        "lab/mail.csv": "219fb6f1b86e3a77349f269a180662e51e7baab8482a7a30a0ce6a1e0af951ed",
+        "lab/request.md": "df4909cdbeadce11c703e42bf6d1438efc56a18cad02dc95942c1d77c58f7d37",
+        "owner-scenario-condition.md": "e58cd49b056294863041c92e92e348eb7f68edbe97740b4b1800760af261d559",
+        "product-draft.md": "cbde84dc9574af18a9727755a4e43cf74422fb8fddbdbe6c1c16f32589b0e7b7",
+        "report-draft.md": "24379268c335dae167388ee26569924e9672314f566e2979ee9e2fcfe2db54b8",
+        "team-note.md": "4da36f0b60ac31992c503a6a4f85d558491ddb4e84f7e6b2a0613d92fba42221"
+      },
+      "sourceReads": {
+        "product-draft.md": {
+          "inputSha256": "cbde84dc9574af18a9727755a4e43cf74422fb8fddbdbe6c1c16f32589b0e7b7",
+          "namedInCommand": true,
+          "sourceTextObservedInOutput": true,
+          "completeSourceTextAppearsInCommandOutput": true
+        },
+        "architecture-handoff.md": {
+          "inputSha256": "88590992721d226d11dc614538a0512e02f9125bb13623064aab44a490059a01",
+          "namedInCommand": true,
+          "sourceTextObservedInOutput": true,
+          "completeSourceTextAppearsInCommandOutput": true
+        },
+        "owner-scenario-condition.md": {
+          "inputSha256": "e58cd49b056294863041c92e92e348eb7f68edbe97740b4b1800760af261d559",
+          "namedInCommand": true,
+          "sourceTextObservedInOutput": true,
+          "completeSourceTextAppearsInCommandOutput": true
+        }
+      },
+      "subject": {
+        "thread": "01a1f0cb-e513-7701-9d29-b6d0f1e17aef",
+        "model": "gpt-6.2-sol",
+        "reasoning": "model_reasoning_effort=\"medium\"",
+        "sandbox": "workspace-write",
+        "memoryFeatureDisabled": true,
+        "exit": 0,
+        "completionObserved": true,
+        "inputFileContentAndModesUnchanged": true,
+        "added": [
+          "specification.md"
+        ]
+      },
+      "eventsOriginalSha256": "e3730fe6fc8b596258961f8fd1d12f1a207b3eb50f83d3c094313c65850c92b3",
+      "answerOriginalSha256": "50d56296a90553503e5c203409551ebdc159b3ab37cb5a6b17beb59a77976e21",
+      "artifact": "cabinet/specification.md",
+      "artifactSha256": "c2b702b82bd6ca78c4770f77d31a815ece57db51c16108dcd341d20a2024172b",
+      "taskSha256": "1f5d3169bc4c254cfdf67184bac26651954879a5b8babe26a678f53782d221f7"
+    },
+    {
+      "case": "http-first",
+      "archiveSha256": "a1499d1f9d9f7548911c24899c80636fe275ec10e0aa779e6d961149afc12f0a",
+      "releaseMembersPresentBeforeAndAfter": {
+        "SKILL.md": "469a41e8364517667fb7772327bcce9c4450374feb27b6cfc0ba753e6bc0c149",
+        "agents/openai.yaml": "a25ee17018d4c53dbdbc738ead78156d313ff5d3a36b8ee61a47f74cf695ddca",
+        "references/anti-patterns.md": "f2b1abe4258e5eebef9871fad4e75866a59bfe1e56e5178ca763995f631d78d9",
+        "references/discovery-techniques.md": "388cc2f8a0640fad87426dc7d227bc1793b2f72fd7d167d6059d692fa329496e",
+        "references/example-spec.md": "7e85b5649053603e31caf615e1a3a9cdecfa791d27cb4213f53d1689bef6693c",
+        "references/high-risk-backend-contract.md": "3b885a1a4ce4f96ccc32455c2c849a8fd5d7e1334896f10772e4e0129ac643c0",
+        "references/methodology.md": "9fda82639b2fd162b0fb1ac35351c2f9306a5edda987dfe74f70a9157145d5b9",
+        "references/spec-patterns.md": "9aed51da2697bdc162a9a3b97603edf79e0810b289e5134e4a2375f9f8c3afb2"
+      },
+      "sourceInputsSha256": {
+        "companion/implementation-discipline/SKILL.md": "fde9d3f957856e325f2e2a725598f8a0984c90dccb1720ef862a3316a5c30729",
+        "companion/implementation-discipline/references/core-principles.md": "fa8a312bb8f580a1224f049f2480605d474b399f14627a55c292b28bbcec5cde",
+        "companion/implementation-discipline/references/verification-loop.md": "659c14086b1829585a006de89a1456a4eb0c15b5aa0f3673a335093ab5d0767e",
+        "readback/contract.md": "eda17b33988955d015de712f81f59885ee863775c8a3bce0e7d4f154d1e4482e",
+        "readback/title-readback.json": "2769d161d7dc827a24bf4b2d5373b1f0e6176606dcb759e2b5f2331891309ebe",
+        "sources/case.md": "e365261501f0d5a0b018389bf473b5a7e1769215f3694178fc7e956cf88ca959",
+        "sources/documents.json": "e6608361b7b1718ab19546e5bf732abf860565f4e718d2baae2769720799e5a5",
+        "sources/web-contract.md": "3ccc0e9198fa48e5824f537165be42201964aa87ec2fdc570fbc9313da1745ce"
+      },
+      "sourceReads": {
+        "sources/web-contract.md": {
+          "inputSha256": "3ccc0e9198fa48e5824f537165be42201964aa87ec2fdc570fbc9313da1745ce",
+          "namedInCommand": true,
+          "sourceTextObservedInOutput": true,
+          "completeSourceTextAppearsInCommandOutput": true
+        },
+        "sources/documents.json": {
+          "inputSha256": "e6608361b7b1718ab19546e5bf732abf860565f4e718d2baae2769720799e5a5",
+          "namedInCommand": true,
+          "sourceTextObservedInOutput": true,
+          "completeSourceTextAppearsInCommandOutput": true
+        },
+        "readback/contract.md": {
+          "inputSha256": "eda17b33988955d015de712f81f59885ee863775c8a3bce0e7d4f154d1e4482e",
+          "namedInCommand": true,
+          "sourceTextObservedInOutput": true,
+          "completeSourceTextAppearsInCommandOutput": true
+        },
+        "readback/title-readback.json": {
+          "inputSha256": "2769d161d7dc827a24bf4b2d5373b1f0e6176606dcb759e2b5f2331891309ebe",
+          "namedInCommand": true,
+          "sourceTextObservedInOutput": true,
+          "completeSourceTextAppearsInCommandOutput": true
+        }
+      },
+      "subject": {
+        "thread": "01a1f0cb-fd56-7311-b030-3f8595b174f5",
+        "model": "gpt-6.2-sol",
+        "reasoning": "model_reasoning_effort=\"medium\"",
+        "sandbox": "workspace-write",
+        "memoryFeatureDisabled": true,
+        "exit": 0,
+        "completionObserved": true,
+        "inputFileContentAndModesUnchanged": true,
+        "added": [
+          "specification.md"
+        ]
+      },
+      "eventsOriginalSha256": "77eea18a4eda6beb50a62a31b69888de225b9492737f6b05c02ed47c80a48ae3",
+      "answerOriginalSha256": "3c69d3708440ea25982c640919aa343c1d5d7ab6b87ea99f07a0e6d0174060d2",
+      "artifact": "document-access/first-specification.md",
+      "artifactSha256": "01e3248f0fabae9d78837affc62566666b548bc7c44626d81ec0a8064cb374bd",
+      "taskSha256": "300fc690a073bf13737eeaa37c87155e74bbe75302dcee7a62e81861ae32cf25"
+    },
+    {
+      "case": "http",
+      "archiveSha256": "a1499d1f9d9f7548911c24899c80636fe275ec10e0aa779e6d961149afc12f0a",
+      "releaseMembersPresentBeforeAndAfter": {
+        "SKILL.md": "469a41e8364517667fb7772327bcce9c4450374feb27b6cfc0ba753e6bc0c149",
+        "agents/openai.yaml": "a25ee17018d4c53dbdbc738ead78156d313ff5d3a36b8ee61a47f74cf695ddca",
+        "references/anti-patterns.md": "f2b1abe4258e5eebef9871fad4e75866a59bfe1e56e5178ca763995f631d78d9",
+        "references/discovery-techniques.md": "388cc2f8a0640fad87426dc7d227bc1793b2f72fd7d167d6059d692fa329496e",
+        "references/example-spec.md": "7e85b5649053603e31caf615e1a3a9cdecfa791d27cb4213f53d1689bef6693c",
+        "references/high-risk-backend-contract.md": "3b885a1a4ce4f96ccc32455c2c849a8fd5d7e1334896f10772e4e0129ac643c0",
+        "references/methodology.md": "9fda82639b2fd162b0fb1ac35351c2f9306a5edda987dfe74f70a9157145d5b9",
+        "references/spec-patterns.md": "9aed51da2697bdc162a9a3b97603edf79e0810b289e5134e4a2375f9f8c3afb2"
+      },
+      "sourceInputsSha256": {
+        "companion/implementation-discipline/SKILL.md": "fde9d3f957856e325f2e2a725598f8a0984c90dccb1720ef862a3316a5c30729",
+        "companion/implementation-discipline/references/core-principles.md": "fa8a312bb8f580a1224f049f2480605d474b399f14627a55c292b28bbcec5cde",
+        "companion/implementation-discipline/references/verification-loop.md": "659c14086b1829585a006de89a1456a4eb0c15b5aa0f3673a335093ab5d0767e",
+        "public/desk-client.mjs": "9a503a945b80991f7b6706ed0ff5df6f895562b0fdec9ca28bc7c6df0bc507c5",
+        "readback/availability.md": "b994907034c35682fdc38bb0ccd8794bb2f95424c76e51ed2c718891f877d9dd",
+        "readback/contract.md": "eda17b33988955d015de712f81f59885ee863775c8a3bce0e7d4f154d1e4482e",
+        "readback/public-client.tar.gz": "4c7f0ae8dcb48d68625efed986c80deb0f1bd66a29b7121a7a8083ea1964c692",
+        "readback/title-readback.json": "2769d161d7dc827a24bf4b2d5373b1f0e6176606dcb759e2b5f2331891309ebe",
+        "sources/case.md": "e365261501f0d5a0b018389bf473b5a7e1769215f3694178fc7e956cf88ca959",
+        "sources/documents.json": "e6608361b7b1718ab19546e5bf732abf860565f4e718d2baae2769720799e5a5",
+        "sources/web-contract.md": "3ccc0e9198fa48e5824f537165be42201964aa87ec2fdc570fbc9313da1745ce"
+      },
+      "sourceReads": {
+        "sources/web-contract.md": {
+          "inputSha256": "3ccc0e9198fa48e5824f537165be42201964aa87ec2fdc570fbc9313da1745ce",
+          "namedInCommand": true,
+          "sourceTextObservedInOutput": true,
+          "completeSourceTextAppearsInCommandOutput": true
+        },
+        "sources/documents.json": {
+          "inputSha256": "e6608361b7b1718ab19546e5bf732abf860565f4e718d2baae2769720799e5a5",
+          "namedInCommand": true,
+          "sourceTextObservedInOutput": true,
+          "completeSourceTextAppearsInCommandOutput": true
+        },
+        "readback/contract.md": {
+          "inputSha256": "eda17b33988955d015de712f81f59885ee863775c8a3bce0e7d4f154d1e4482e",
+          "namedInCommand": true,
+          "sourceTextObservedInOutput": true,
+          "completeSourceTextAppearsInCommandOutput": true
+        },
+        "readback/title-readback.json": {
+          "inputSha256": "2769d161d7dc827a24bf4b2d5373b1f0e6176606dcb759e2b5f2331891309ebe",
+          "namedInCommand": true,
+          "sourceTextObservedInOutput": true,
+          "completeSourceTextAppearsInCommandOutput": true
+        },
+        "public/desk-client.mjs": {
+          "inputSha256": "9a503a945b80991f7b6706ed0ff5df6f895562b0fdec9ca28bc7c6df0bc507c5",
+          "namedInCommand": true,
+          "sourceTextObservedInOutput": true,
+          "completeSourceTextAppearsInCommandOutput": true
+        },
+        "readback/availability.md": {
+          "inputSha256": "b994907034c35682fdc38bb0ccd8794bb2f95424c76e51ed2c718891f877d9dd",
+          "namedInCommand": true,
+          "sourceTextObservedInOutput": true,
+          "completeSourceTextAppearsInCommandOutput": true
+        }
+      },
+      "subject": {
+        "thread": "01a1f0d0-55d4-7ec1-8caf-2c231e5f451e",
+        "model": "gpt-6.2-sol",
+        "reasoning": "model_reasoning_effort=\"medium\"",
+        "sandbox": "workspace-write",
+        "memoryFeatureDisabled": true,
+        "exit": 0,
+        "completionObserved": true,
+        "inputFileContentAndModesUnchanged": true,
+        "added": [
+          "specification.md"
+        ]
+      },
+      "eventsOriginalSha256": "6e76328cdfa38f681d7831416f38c2d126e67458787646d1c19f376455943e5e",
+      "answerOriginalSha256": "a709d5b708491f85386328ab55c4def37880cd55aa70da7a8315ed14a513e118",
+      "artifact": "document-access/specification.md",
+      "artifactSha256": "d319c49b83390a130fbd6cbc1d62b236a81698e43de1496a8cfcea44a3cb55bb",
+      "taskSha256": "756a2433a956fb903c4744c79c3ed8c4a68f907e88d9dbd0c77c4e3d42a667b8"
+    }
+  ],
+  "cabinetOwnerConditionBinding": {
+    "syntheticOwnerInputSha256": "e58cd49b056294863041c92e92e348eb7f68edbe97740b4b1800760af261d559",
+    "productDraftBound": "cbde84dc9574af18a9727755a4e43cf74422fb8fddbdbe6c1c16f32589b0e7b7",
+    "architectureOutputSha256": "88590992721d226d11dc614538a0512e02f9125bb13623064aab44a490059a01",
+    "readback": "PRD 0.3 assigns Q-17 to the in-app notice and excludes email. Q-18 is open. Earlier approval was draft-only. This separate synthetic owner condition now authorizes only the Q-17 spec; its two local implementation parcels may start only after the notification contract is agreed."
+  },
+  "cabinetStaged32": {
+    "exactSpecSha256": "c2b702b82bd6ca78c4770f77d31a815ece57db51c16108dcd341d20a2024172b",
+    "stagedInputManifest": {
+      "architecture-handoff.md": "88590992721d226d11dc614538a0512e02f9125bb13623064aab44a490059a01",
+      "companion/implementation-discipline/SKILL.md": "fde9d3f957856e325f2e2a725598f8a0984c90dccb1720ef862a3316a5c30729",
+      "companion/implementation-discipline/references/core-principles.md": "fa8a312bb8f580a1224f049f2480605d474b399f14627a55c292b28bbcec5cde",
+      "companion/implementation-discipline/references/verification-loop.md": "659c14086b1829585a006de89a1456a4eb0c15b5aa0f3673a335093ab5d0767e",
+      "decision-intake.md": "b30ccc0677e998fe46befd2605035bd9bf4651950a4d6e4543f62e3efc99e3cd",
+      "lab/captures.csv": "4675ff54ecdce92d90abcd8c1f6af0efe987c65fa4ae6ea45151ccd587bfc16e",
+      "lab/events.csv": "f3428e0a4a988e63f0fca3dbf6eddccaa8e0d9c9379d2dd4d4bba813d1ca0869",
+      "lab/mail.csv": "219fb6f1b86e3a77349f269a180662e51e7baab8482a7a30a0ce6a1e0af951ed",
+      "lab/request.md": "df4909cdbeadce11c703e42bf6d1438efc56a18cad02dc95942c1d77c58f7d37",
+      "owner-scenario-condition.md": "e58cd49b056294863041c92e92e348eb7f68edbe97740b4b1800760af261d559",
+      "product-draft.md": "cbde84dc9574af18a9727755a4e43cf74422fb8fddbdbe6c1c16f32589b0e7b7",
+      "report-draft.md": "24379268c335dae167388ee26569924e9672314f566e2979ee9e2fcfe2db54b8",
+      "specification.md": "c2b702b82bd6ca78c4770f77d31a815ece57db51c16108dcd341d20a2024172b",
+      "team-note.md": "4da36f0b60ac31992c503a6a4f85d558491ddb4e84f7e6b2a0613d92fba42221"
+    },
+    "status": "exact input prepared; consumer execution belongs to 32"
+  },
+  "httpInputProvenance": {
+    "webOwnerArchiveSha256": "2c72b7cdc5060573e32b82ac624c4861bca29b2042b11ae21d325ed8b0c7c574",
+    "roleReadbackSha256": "2769d161d7dc827a24bf4b2d5373b1f0e6176606dcb759e2b5f2331891309ebe",
+    "standOperatorArchiveSha256": "8f3afe7149eb8cdc4127774d9e50711c5e15a6e0a35de16254e0a45fde196e79",
+    "publicClientArchiveSha256": "4c7f0ae8dcb48d68625efed986c80deb0f1bd66a29b7121a7a8083ea1964c692"
+  },
+  "httpPrimaryTransfer28": {
+    "file": "document-access/handoff-28.tar.gz",
+    "sha256": "72a56350199a20c4af41f8c0ba2added869fcecc56a2d9b1f2c78d1b085e8ce7",
+    "membersSha256": {
+      "specification.md": "d319c49b83390a130fbd6cbc1d62b236a81698e43de1496a8cfcea44a3cb55bb",
+      "sources/case.md": "e365261501f0d5a0b018389bf473b5a7e1769215f3694178fc7e956cf88ca959",
+      "sources/documents.json": "e6608361b7b1718ab19546e5bf732abf860565f4e718d2baae2769720799e5a5",
+      "sources/web-contract.md": "3ccc0e9198fa48e5824f537165be42201964aa87ec2fdc570fbc9313da1745ce",
+      "readback/availability.md": "b994907034c35682fdc38bb0ccd8794bb2f95424c76e51ed2c718891f877d9dd",
+      "readback/contract.md": "eda17b33988955d015de712f81f59885ee863775c8a3bce0e7d4f154d1e4482e",
+      "readback/title-readback.json": "2769d161d7dc827a24bf4b2d5373b1f0e6176606dcb759e2b5f2331891309ebe",
+      "public/desk-client.mjs": "9a503a945b80991f7b6706ed0ff5df6f895562b0fdec9ca28bc7c6df0bc507c5",
+      "readback/public-client.tar.gz": "4c7f0ae8dcb48d68625efed986c80deb0f1bd66a29b7121a7a8083ea1964c692"
+    },
+    "status": "exact input prepared; normal handler/API execution belongs to 28 and role readback to 21"
+  },
+  "recordArchive": "original-handoff-records.tar.gz",
+  "recordArchiveSha256": "219963682e118b333fc219eeff8cc9938ee699fa91e40cb3e6bbd15d1e62506b"
+}

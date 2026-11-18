@@ -1,0 +1,25 @@
+{
+  "method": "Один и тот же npm test в расходных копиях исходного пропуска. После теста удалён собственный scratch. Общий рабочий каталог полностью удалён по выходе из опыта. Менялся только адрес TMPDIR для относительной области хранения.",
+  "cases": {
+    "outside-scratch": {
+      "node": "v24.15.0",
+      "testExit": 0,
+      "testStdout": "✔ visible desk name serializes (0.479837ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 39.602505\n",
+      "testStderr": "npm notice run test\nnpm notice run node --test test.mjs\n",
+      "residualCount": 403,
+      "residualFirstComponents": {
+        "node-compile-cache": 403
+      },
+      "originalHashesAndModesUnchanged": true
+    },
+    "inside-scratch": {
+      "node": "v24.15.0",
+      "testExit": 0,
+      "testStdout": "✔ visible desk name serializes (0.466612ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 38.77957\n",
+      "testStderr": "npm notice run test\nnpm notice run node --test test.mjs\n",
+      "residualCount": 0,
+      "residualFirstComponents": {},
+      "originalHashesAndModesUnchanged": true
+    }
+  }
+}
