@@ -6,9 +6,9 @@ description: Turn accepted product scope and architecture handoff into
   routing gaps to owning skills. Produce one Delivery Plan, not rigid workflow
   registers.
 metadata:
-  source-version: 0.2.15
+  source-version: 0.2.16
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 158fb4982893d00faa945e22c6896363239d07273cf0438f8028c3fa93033554
+  skillforge-source-hash: fe357b98b47aa73ec799cd32cd5c4556e5acac117fb916cbc7b75e001bfc68d0
 ---
 
 # delivery-planner
@@ -26,7 +26,7 @@ metadata:
 9. Produce one compact Markdown Delivery Plan by default; do not output YAML or multiple registers unless explicitly requested.
 10. Route product gaps to prd-engineer, architecture gaps to architecture-engineer, and behavior/specification gaps to spec-engineer.
 11. Sequence work to expose architectural, integration, migration, rollback, security, data, tenancy, and operability risk early.
-12. Distinguish parallel implementation from independent acceptance; type dependency edges and require shared acceptance for same-record or shared-race evidence.
+12. Plan independent starts and shared acceptance.
 13. Reject tasks whose acceptance can pass through scaffold, metadata, docs, mocks, or wrappers without real observable or verifiable behavior.
 14. Reject future-only support tasks unless they name the owner slice/module increment, the evidence they unlock, and the trigger that makes them necessary.
 

@@ -1,0 +1,191 @@
+{
+  "requirements": {
+    "receipt": "trace/requirements",
+    "sessionId": "01a1f076-2205-7d31-8542-a2e156c28715",
+    "model": "gpt-6.2-sol",
+    "effortArgument": "model_reasoning_effort=\"medium\"",
+    "completionEvent": "turn.completed",
+    "rawEventsSha256": "0f02a2fe52a3009a9ca3b5e19b797a0dfc72c6002ab649b81eec380161c2f485",
+    "archive": "requirements-approval-0.2.4.tgz",
+    "archiveSha256": "39340ad09def674e19dc51e682f7e35b56669887273383b736137f63612d2e97",
+    "membersMatchedBeforeAndAfter": {
+      "SKILL.md": "d43739b15d3e0bfefeeb39bab23b9db808e24d2cc4211e6fec526ca2a4c59992",
+      "agents/openai.yaml": "51f2514d7b21571f74146747eb34933f8a0c76416e8999ce5bb82b4ace00b152"
+    },
+    "nameAndVersion": [
+      "name: requirements-approval",
+      "source-version: 0.2.4"
+    ],
+    "returned": "decision-intake.md",
+    "outputSha256": "b30ccc0677e998fe46befd2605035bd9bf4651950a4d6e4543f62e3efc99e3cd",
+    "changed": [
+      "decision-intake.md"
+    ],
+    "receivedUneditedFrom": {}
+  },
+  "product": {
+    "receipt": "trace/product",
+    "sessionId": "01a1f086-4302-74b3-8b49-fe2811ec10f5",
+    "model": "gpt-6.2-sol",
+    "effortArgument": "model_reasoning_effort=\"medium\"",
+    "completionEvent": "turn.completed",
+    "rawEventsSha256": "ef8d1df83a6c4779c89af3f959436134bc96ba9a943492a346e9e2ed3fd92f96",
+    "archive": "prd-engineer-0.1.9.tar.gz",
+    "archiveSha256": "cd8d532dfb84b5aee800e680cfa22071ff916f6c9c41a121bff3f3777c321347",
+    "membersMatchedBeforeAndAfter": {
+      "SKILL.md": "dca1feb4cc607b7c93490a5ba1dcb9a604e825f59bd7dec59571d5a593da1d9a",
+      "agents/openai.yaml": "eab726e197d945488aff0c681ad059775a0b0e47035495b310d437b4434b0662",
+      "references/prd-template.md": "2387759726520e2cbff865dcd7c84f48e101f02f2f9550231f17a8728e9f3f27"
+    },
+    "nameAndVersion": [
+      "name: prd-engineer",
+      "source-version: 0.1.9"
+    ],
+    "returned": "product-draft.md",
+    "outputSha256": "cbde84dc9574af18a9727755a4e43cf74422fb8fddbdbe6c1c16f32589b0e7b7",
+    "changed": [
+      "product-draft.md"
+    ],
+    "receivedUneditedFrom": {
+      "decision-intake.md": {
+        "producer": "requirements",
+        "sha256": "b30ccc0677e998fe46befd2605035bd9bf4651950a4d6e4543f62e3efc99e3cd"
+      }
+    }
+  },
+  "architecture": {
+    "receipt": "trace/architecture",
+    "sessionId": "01a1f088-b0d6-7493-83f3-ad771ea1783a",
+    "model": "gpt-6.2-sol",
+    "effortArgument": "model_reasoning_effort=\"medium\"",
+    "completionEvent": "turn.completed",
+    "rawEventsSha256": "8724d4314e63c7d5c5d27bf00eeefe07484fd36bb2c577c43681564826338e58",
+    "archive": "architecture-engineer-0.1.13.tgz",
+    "archiveSha256": "0fb823fdd95a99e27c64e89dc87c86dce99e7f894bac222107f2d4c67fd3375d",
+    "membersMatchedBeforeAndAfter": {
+      "SKILL.md": "b0b942a046fb2f24859d6e2ef98ba708402fdd6fe3016c53f0c27b5f22a2dd28",
+      "agents/openai.yaml": "3420b7777dd1e4ba70e2f1bc7d35332f84601dee6cdc74a107979581a1f7e982",
+      "assets/templates/adr.md": "109d60b90093b5d212e0105cc33a74b588209d6d36150eb3bb0add3d7c36463f",
+      "assets/templates/architecture-brief.md": "023a831cffe60c35834e9b2d22e0e7d7c14b2588f91540b5b5fb4ba6cf40751d",
+      "assets/templates/architecture-check.md": "f47434b4264220ed5c9ab66e74c60f8e50d5c31cb03cba3ee02b459bcf1e3206",
+      "assets/templates/architecture-delta.md": "c565071dfa8e1c55757780f3fd14c850b290fb5634f8bed460ae06d814f56f58",
+      "assets/templates/architecture-handoff-item.yaml": "c7e32bc01e779ace8863a56e6b185d3e78821b5fd0f287d866f6ef18a88c44cc",
+      "assets/templates/architecture-handoff-register.yaml": "ad1a3e7e537c3166e9ec60ceeb94492ec6bc3cbc2dc246f48c86e93764f14d7f",
+      "assets/templates/asr-record.yaml": "78c6a2843059b69941f0b5323a09fa87fb14af20c587e498ba547f8233752a0f",
+      "assets/templates/pattern-decision.md": "04812c6e25accd03f52d0cb01d16dbe7223469a51796fc99379f4db1d1bff329",
+      "assets/templates/quality-scenario.md": "1eae6f37d48e7508b693c35e91a953e5b28243f3dd54fa02581090186a84f425",
+      "assets/templates/spike-brief.md": "4a180513a811e4fae1e5321c139050d40cc0497b31fc26a83b567c37a9a1e2e9",
+      "references/artifact-templates.md": "730a69850982ecd542875d92d50f3e4ee3678c5ed199bbaa6343715756fd9cba",
+      "references/methodology.md": "76483e2cc369594d7b8ed9ac438eb4958ae8a8b8ac3bfc9bf9088e2d3bb34795",
+      "references/pattern-catalog.md": "87e1143448cdbaa05d49d77c2be2384c3db40832e954efb02342e6f6529e3784"
+    },
+    "nameAndVersion": [
+      "name: architecture-engineer",
+      "source-version: 0.1.13"
+    ],
+    "returned": "architecture-handoff.md",
+    "outputSha256": "88590992721d226d11dc614538a0512e02f9125bb13623064aab44a490059a01",
+    "changed": [
+      "architecture-handoff.md"
+    ],
+    "receivedUneditedFrom": {
+      "product-draft.md": {
+        "producer": "product",
+        "sha256": "cbde84dc9574af18a9727755a4e43cf74422fb8fddbdbe6c1c16f32589b0e7b7"
+      },
+      "decision-intake.md": {
+        "producer": "requirements",
+        "sha256": "b30ccc0677e998fe46befd2605035bd9bf4651950a4d6e4543f62e3efc99e3cd"
+      }
+    }
+  },
+  "spec": {
+    "receipt": "trace/spec",
+    "sessionId": "01a1f0cb-e513-7701-9d29-b6d0f1e17aef",
+    "model": "gpt-6.2-sol",
+    "effortArgument": "model_reasoning_effort=\"medium\"",
+    "completionEvent": "turn.completed",
+    "rawEventsSha256": "e3730fe6fc8b596258961f8fd1d12f1a207b3eb50f83d3c094313c65850c92b3",
+    "archive": "spec-engineer-0.2.16.tgz",
+    "archiveSha256": "a1499d1f9d9f7548911c24899c80636fe275ec10e0aa779e6d961149afc12f0a",
+    "membersMatchedBeforeAndAfter": {
+      "SKILL.md": "469a41e8364517667fb7772327bcce9c4450374feb27b6cfc0ba753e6bc0c149",
+      "agents/openai.yaml": "a25ee17018d4c53dbdbc738ead78156d313ff5d3a36b8ee61a47f74cf695ddca",
+      "references/anti-patterns.md": "f2b1abe4258e5eebef9871fad4e75866a59bfe1e56e5178ca763995f631d78d9",
+      "references/discovery-techniques.md": "388cc2f8a0640fad87426dc7d227bc1793b2f72fd7d167d6059d692fa329496e",
+      "references/example-spec.md": "7e85b5649053603e31caf615e1a3a9cdecfa791d27cb4213f53d1689bef6693c",
+      "references/high-risk-backend-contract.md": "3b885a1a4ce4f96ccc32455c2c849a8fd5d7e1334896f10772e4e0129ac643c0",
+      "references/methodology.md": "9fda82639b2fd162b0fb1ac35351c2f9306a5edda987dfe74f70a9157145d5b9",
+      "references/spec-patterns.md": "9aed51da2697bdc162a9a3b97603edf79e0810b289e5134e4a2375f9f8c3afb2"
+    },
+    "nameAndVersion": [
+      "name: spec-engineer",
+      "source-version: 0.2.16"
+    ],
+    "returned": "specification.md",
+    "outputSha256": "c2b702b82bd6ca78c4770f77d31a815ece57db51c16108dcd341d20a2024172b",
+    "changed": [
+      "specification.md"
+    ],
+    "receivedUneditedFrom": {
+      "architecture-handoff.md": {
+        "producer": "architecture",
+        "sha256": "88590992721d226d11dc614538a0512e02f9125bb13623064aab44a490059a01"
+      },
+      "product-draft.md": {
+        "producer": "product",
+        "sha256": "cbde84dc9574af18a9727755a4e43cf74422fb8fddbdbe6c1c16f32589b0e7b7"
+      },
+      "decision-intake.md": {
+        "producer": "requirements",
+        "sha256": "b30ccc0677e998fe46befd2605035bd9bf4651950a4d6e4543f62e3efc99e3cd"
+      }
+    }
+  },
+  "planning": {
+    "receipt": "trace/planning",
+    "sessionId": "01a1f0f2-0553-7771-8bb8-8f0bb937f25b",
+    "model": "gpt-6.2-sol",
+    "effortArgument": "model_reasoning_effort=\"medium\"",
+    "completionEvent": "turn.completed",
+    "rawEventsSha256": "72c1c6cd585511a4bd8c5d7d7ae1e617a4289f8fba3352c94617602128b0b619",
+    "archive": "delivery-planner-0.2.16.tgz",
+    "archiveSha256": "4fcad1793235414a0f8fa8fee5765d79dbd4a5fc174b08c68af591ce28b22bd4",
+    "membersMatchedBeforeAndAfter": {
+      "SKILL.md": "aed7848b53bd5ede75a41b00b398d54ccd6fbc3ab951dd8596f6d6c0d56446ff",
+      "agents/openai.yaml": "15fa04bbb796d07672569a8d5256c9f837537b013f2d8844d258c5a49d74fd66",
+      "assets/templates/delivery-plan.md": "aae6b0fd1b3201d3d4aea55c63e732fe35262f25dbb7a4746f12d857ec0ba98e",
+      "assets/templates/module-delivery-plan.md": "423919593149a3844f8e7ed4a81a1cfbe8544cb3097f7bcd7f2d6ed491fe4c5f",
+      "references/methodology.md": "2124a1bdef941a96bc0885dc3977f4b3a3973520bb751e69c5dff49b892a8779",
+      "references/output-templates.md": "6bbf1fba9540fe59b8f0117b91bdf9ae6f8f4f91e664414b24496e56bb9754ac",
+      "references/planning-patterns.md": "e700a1166fa22808b16762de4ff37be946943a31096f133d9a0790ce470e4bca"
+    },
+    "nameAndVersion": [
+      "name: delivery-planner",
+      "source-version: 0.2.16"
+    ],
+    "returned": "jobs.md",
+    "outputSha256": "2080f3e83ff7416ec0c7cf66cf99c543a0d0adc33fe526f80f3bf243cf4ffa50",
+    "changed": [
+      "jobs.md"
+    ],
+    "receivedUneditedFrom": {
+      "specification.md": {
+        "producer": "spec",
+        "sha256": "c2b702b82bd6ca78c4770f77d31a815ece57db51c16108dcd341d20a2024172b"
+      },
+      "architecture-handoff.md": {
+        "producer": "architecture",
+        "sha256": "88590992721d226d11dc614538a0512e02f9125bb13623064aab44a490059a01"
+      },
+      "product-draft.md": {
+        "producer": "product",
+        "sha256": "cbde84dc9574af18a9727755a4e43cf74422fb8fddbdbe6c1c16f32589b0e7b7"
+      },
+      "decision-intake.md": {
+        "producer": "requirements",
+        "sha256": "b30ccc0677e998fe46befd2605035bd9bf4651950a4d6e4543f62e3efc99e3cd"
+      }
+    }
+  }
+}

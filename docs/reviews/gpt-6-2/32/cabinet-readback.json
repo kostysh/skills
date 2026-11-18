@@ -1,0 +1,118 @@
+{
+  "subject": {
+    "sessionId": "01a1f0f2-0553-7771-8bb8-8f0bb937f25b",
+    "rawEventsSha256": "72c1c6cd585511a4bd8c5d7d7ae1e617a4289f8fba3352c94617602128b0b619",
+    "assignmentSha256": "e4e24316e3d2141975478dca3e39579ed379494312616da8edf01251c84d6972",
+    "transportedReleaseSha256": "4fcad1793235414a0f8fa8fee5765d79dbd4a5fc174b08c68af591ce28b22bd4",
+    "allSevenReleasedMemberBytesEqualInputAndOutput": true,
+    "terminalEvent": "turn.completed",
+    "onlyChange": [
+      "jobs.md"
+    ],
+    "jobsSha256": "2080f3e83ff7416ec0c7cf66cf99c543a0d0adc33fe526f80f3bf243cf4ffa50",
+    "receiverCopyByteIdentical": true,
+    "unchangedInputContentAndModes": true,
+    "actualSourceReads": {
+      "architecture-handoff.md": {
+        "sha256": "88590992721d226d11dc614538a0512e02f9125bb13623064aab44a490059a01",
+        "namedInReadCommand": true,
+        "fullTextReturnedByOneCommand": true
+      },
+      "companion/implementation-discipline/SKILL.md": {
+        "sha256": "fde9d3f957856e325f2e2a725598f8a0984c90dccb1720ef862a3316a5c30729",
+        "namedInReadCommand": true,
+        "fullTextReturnedByOneCommand": true
+      },
+      "companion/implementation-discipline/references/core-principles.md": {
+        "sha256": "fa8a312bb8f580a1224f049f2480605d474b399f14627a55c292b28bbcec5cde",
+        "namedInReadCommand": true,
+        "fullTextReturnedByOneCommand": true
+      },
+      "companion/implementation-discipline/references/verification-loop.md": {
+        "sha256": "659c14086b1829585a006de89a1456a4eb0c15b5aa0f3673a335093ab5d0767e",
+        "namedInReadCommand": true,
+        "fullTextReturnedByOneCommand": true
+      },
+      "decision-intake.md": {
+        "sha256": "b30ccc0677e998fe46befd2605035bd9bf4651950a4d6e4543f62e3efc99e3cd",
+        "namedInReadCommand": true,
+        "fullTextReturnedByOneCommand": true
+      },
+      "lab/captures.csv": {
+        "sha256": "4675ff54ecdce92d90abcd8c1f6af0efe987c65fa4ae6ea45151ccd587bfc16e",
+        "namedInReadCommand": true,
+        "fullTextReturnedByOneCommand": true
+      },
+      "lab/events.csv": {
+        "sha256": "f3428e0a4a988e63f0fca3dbf6eddccaa8e0d9c9379d2dd4d4bba813d1ca0869",
+        "namedInReadCommand": true,
+        "fullTextReturnedByOneCommand": true
+      },
+      "lab/mail.csv": {
+        "sha256": "219fb6f1b86e3a77349f269a180662e51e7baab8482a7a30a0ce6a1e0af951ed",
+        "namedInReadCommand": true,
+        "fullTextReturnedByOneCommand": true
+      },
+      "lab/request.md": {
+        "sha256": "df4909cdbeadce11c703e42bf6d1438efc56a18cad02dc95942c1d77c58f7d37",
+        "namedInReadCommand": true,
+        "fullTextReturnedByOneCommand": true
+      },
+      "owner-scenario-condition.md": {
+        "sha256": "e58cd49b056294863041c92e92e348eb7f68edbe97740b4b1800760af261d559",
+        "namedInReadCommand": true,
+        "fullTextReturnedByOneCommand": true
+      },
+      "product-draft.md": {
+        "sha256": "cbde84dc9574af18a9727755a4e43cf74422fb8fddbdbe6c1c16f32589b0e7b7",
+        "namedInReadCommand": true,
+        "fullTextReturnedByOneCommand": true
+      },
+      "report-draft.md": {
+        "sha256": "24379268c335dae167388ee26569924e9672314f566e2979ee9e2fcfe2db54b8",
+        "namedInReadCommand": true,
+        "fullTextReturnedByOneCommand": true
+      },
+      "specification.md": {
+        "sha256": "c2b702b82bd6ca78c4770f77d31a815ece57db51c16108dcd341d20a2024172b",
+        "namedInReadCommand": true,
+        "fullTextReturnedByOneCommand": true
+      },
+      "team-note.md": {
+        "sha256": "4da36f0b60ac31992c503a6a4f85d558491ddb4e84f7e6b2a0613d92fba42221",
+        "namedInReadCommand": true,
+        "fullTextReturnedByOneCommand": true
+      }
+    }
+  },
+  "assessors": {
+    "initial": {
+      "sessionId": "01a1f0f4-be27-7a30-a385-bcd633380993",
+      "signedAssessmentSha256": "2fb3c6cd0a42ff6ac5221672f26254a93ea1d1a3a93cc2ef27fd70e1a43abba2",
+      "rawEventsSha256": "3e1d507210c8fd4a69c59a8adff510c5c20240619425923b0544e2d641e3fe80",
+      "issuedFiles": 17,
+      "assignedModel": "gpt-6.2-sol",
+      "assignedEffort": "model_reasoning_effort=\"high\"",
+      "sandbox": "read-only",
+      "longTermMemoryDisabled": true
+    },
+    "provenance": {
+      "sessionId": "01a1f0f7-306c-7a53-89ff-72b143717809",
+      "signedAssessmentSha256": "bb99618369d609b980c172d3f5ba2a2c6c194e44399572e2bcd9f938a980f06f",
+      "rawEventsSha256": "7f0fa79fb29d66327c8e4fc92c1fd89bd7e5ae930cc75d5ed8ec11a9ed464b0e",
+      "issuedFiles": 53,
+      "assignedModel": "gpt-6.2-sol",
+      "assignedEffort": "model_reasoning_effort=\"high\"",
+      "sandbox": "read-only",
+      "longTermMemoryDisabled": true
+    }
+  },
+  "criteria": {
+    "jointCriteriaBeforeParticipantsSha256": "6770bcc1cfaf07fcb60169a6e30db3334ab20fab5143ca2327bce6415ca0fb93",
+    "case32CriterionCopiedFromOriginal": "item 5; header applies to all links",
+    "scoringInstructionDate": "after participant output, applied original conditions in owner-scenario-condition.md and lab/request.md; content identical in both scorer packets",
+    "assessorInstructionSha256": "161ed2e16754085840e1c542a3fc19876d12f7502a3f435c2c77555adc9eedb3"
+  },
+  "rawArchiveSha256": "db2a827a1f65ceb264ab98221d6ee7da808148de02a75beec4dca3796b6d7542",
+  "receiver": "Exact inputs and original jobs.md prepared for 38; its use belongs to the next owner."
+}

@@ -1,0 +1,70 @@
+{
+  "A/B": {
+    "sessionId": "01a1f0ee-8822-7f43-815f-0e9a0b156b43",
+    "signedRawReportSha256": "662233d9ac63a312dc716bc127e9c7443b589b3d3b34cc72dbdf679d57d8793a",
+    "rawEventsSha256": "05626f0ba1ea75a91525fa0bbec7057a3704f8ef97c849953b3c2ae8b5fb323d",
+    "readOnly": true,
+    "memoryFeatureDisabled": true,
+    "assignedModel": "gpt-6.2-sol",
+    "assignedEffort": "model_reasoning_effort=\"high\"",
+    "issuedFiles": 45,
+    "packetPathsAndHashes": "assessors/scorer-ab/dispatch.json",
+    "actualScopes": "observed commands stayed inside the assigned folder; the temporary namespace was not a filesystem read jail",
+    "assessedToPublishedCodes": [
+      {
+        "assessed": "4b8163",
+        "published": "4b8163"
+      },
+      {
+        "assessed": "be63d4",
+        "published": "be63d4"
+      },
+      {
+        "assessed": "04505a",
+        "published": "04505a"
+      },
+      {
+        "assessed": "650af0",
+        "published": "650af0"
+      }
+    ]
+  },
+  "confirmation": {
+    "sessionId": "01a1f0f4-f0e3-78a3-bd33-baad765e4081",
+    "signedRawReportSha256": "af4cfddf0a7dc0c0b57933f4b54a3fed8e43fb2cc910ee1e94589e9f7b0bf3b9",
+    "rawEventsSha256": "12dde3c393fe2f45eb998d66e938856f49c20bae1cb428fd86bc5f05a7ba6bd3",
+    "readOnly": true,
+    "memoryFeatureDisabled": true,
+    "assignedModel": "gpt-6.2-sol",
+    "assignedEffort": "model_reasoning_effort=\"high\"",
+    "issuedFiles": 67,
+    "packetPathsAndHashes": "assessors/scorer-confirm/dispatch.json",
+    "actualScopes": "observed commands stayed inside the assigned folder; the temporary namespace was not a filesystem read jail",
+    "assessedToPublishedCodes": [
+      {
+        "assessed": "2ab9d0",
+        "published": "2ab9d0"
+      },
+      {
+        "assessed": "4648eb",
+        "published": "4648eb"
+      },
+      {
+        "assessed": "8a1e7d",
+        "published": "04505a"
+      },
+      {
+        "assessed": "4cdeca",
+        "published": "4cdeca"
+      },
+      {
+        "assessed": "99be49",
+        "published": "99be49"
+      },
+      {
+        "assessed": "720a47",
+        "published": "4b8163"
+      }
+    ]
+  }
+}
