@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: implementation-discipline
-  source-version: 0.2.8
+  source-version: 0.2.9
   recommended-skill-md-max-bytes: 18500
   description: >-
     Use when implementing, refactoring, reviewing code, or authoring, revising,
@@ -64,7 +64,7 @@ sections:
     - Confirm that the task involves implementation, code review, or non-trivial authoring, revision, or review of a PRD, architecture, software specification, or delivery plan.
     - Classify the task as implementation/remediation, code-review-only, or design/authoring; code-review-only is read-only, and design/authoring never authorizes code or runtime mutations.
     - Before scope, design shape, acceptance, verification depth, or process depth, record the observable outcome or invariant, actor or consumer and claim boundary, source-authorized scope and non-goals, permitted outputs or mutations, simplest direct or existing primitive, and narrowest falsifying check.
-    - For non-trivial work, relate the local change to the project purpose only far enough to reject misleading framing or narrow the work; project purpose does not authorize unrequested expansion.
+    - For non-trivial work, check [project-purpose fit](#project-purpose-fit-policy).
     - Prefer the direct or existing path with the least conceptual surface that satisfies current correctness, security, compatibility, and source requirements.
     - Pass the complexity exception gate before adding a new concept, and repeat the scope-and-simplicity gate after any material delta that adds a boundary, lifecycle, output, or verification contour.
     - Change only the authorized surface, run proportional verification, report evidence and remaining risk, then stop.
@@ -94,7 +94,6 @@ sections:
         - When switching tasks, start from the new task source and carry only a compact `source / scope / state / next action` handoff; conclusions or scope from the previous task do not authorize the new one.
         - State constraints and assumptions that materially affect the design; stop and ask only when no safe conservative interpretation exists.
         - For feature, runtime, product, agent, or system-capability claims, separate observable behavior from substrate and state important anti-claims; if the acceptance criteria can pass without the claimed behavior, narrow the claim or surface the specification defect before implementation.
-        - For non-trivial local work, use project purpose to check whether the request advances the intended flow; use that context to narrow or reject the local task, never to add unrequested work.
         - When implementing an accepted audit or review, read the remediation-matrix section in `references/verification-loop.md` and keep each accepted finding tied to a change, evidence, and status.
       validation:
         - The requested behavior, protected constraints, task mode, and mutation authority are explicit.
@@ -215,7 +214,7 @@ sections:
       text: Derived artifacts, risk, evidence, audits, and adjacent defects do not expand scope. Use the established decision owner and primary accepted source under the outcome workflow; preserve customer approval where applicable without inventing it elsewhere. Non-product authority cannot silently change product scope or behavior. Missing or conflicting authority blocks only the affected work.
     - id: policy-project-purpose-fit
       title: Project-purpose fit policy
-      text: Project purpose may show that a local task is misleading, insufficient, or unnecessary and may therefore narrow or reject it. It never grants authority to expand the requested scope.
+      text: Keep agreed scope. Flag concrete conflicts with project purpose. Bring material new evidence for a scope change to the decision owner.
     - id: policy-surgical-diff
       title: Surgical-diff policy
       text: Every changed hunk should trace to the requested outcome or a protected constraint; unrelated cleanup belongs in another change set.
