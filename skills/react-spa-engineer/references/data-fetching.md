@@ -20,9 +20,8 @@ UI -> feature Query adapters/options -> shared/api contracts -> shared/api trans
   attachment, response parsing, cancellation, and typed transport errors.
 - TanStack Query owns server reads, mutations, retries, invalidation, and
   in-memory server-state lifecycle.
-- React Router loaders may call `ensureQueryData` or prefetch Query options when
-  route timing matters; Router actions/fetchers are not a second project-server
-  mutation path in this skill's architecture.
+- React Router loaders may use the same Query options as the screen when route
+  timing matters. This architecture assigns project-server mutations to Query.
 - Components, routes, Zustand stores, and presentational hooks do not call
   project transport directly.
 
@@ -125,6 +124,11 @@ const updateOrder = useMutation({
   reread. When the accepted behavior requires verification, do not present
   terminal success until that verification resolves; expose reread failure and
   recovery without falling back to stale cache as if it were authoritative.
+- In v5, `invalidateQueries` normally refetches active matches and resolves
+  even after a refetch error. If confirmation requires a fresh read, request
+  the specific record with a freshness policy that fetches, await it, and
+  handle its error. An inactive query, paused fetch, or fresh cache hit can
+  leave the write unverified.
 
 ## Retry and recovery
 
@@ -157,8 +161,13 @@ const orderDetailOptions = (access: Access, orderId: string) => ({
 });
 
 const orderLoader = ({ params }: LoaderFunctionArgs) =>
-  queryClient.ensureQueryData(orderDetailOptions(accessFromSession(), params.orderId!));
+  queryClient.query({ ...orderDetailOptions(accessFromSession(), params.orderId!), staleTime: 0 });
 ```
+
+TanStack Query 5.108 supports `queryClient.query(options)`. A stale read
+fetches and propagates errors. With `staleTime: 'static'` it reuses an existing
+value. For an earlier installed v5 without this method, choose `fetchQuery`
+for a freshness-aware read or `ensureQueryData` for cache-first entry.
 
 This pattern remains conceptual until `accessFromSession`, route parameter
 validation, API types, and error behavior are supplied by the project. Those

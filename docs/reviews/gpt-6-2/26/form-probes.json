@@ -1,0 +1,13 @@
+{
+  "node": "v24.15.0",
+  "firstError": "Enter a valid email address",
+  "corrected": {
+    "email": "team@example.test",
+    "password": "sufficient",
+    "terms": true
+  },
+  "zustandAfterSet": {
+    "open": true
+  },
+  "runtime": "node form control + actual resolver; no rendered field"
+}

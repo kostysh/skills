@@ -1,0 +1,35 @@
+{
+  "node": "v24.15.0",
+  "results": [
+    {
+      "line": "mainline",
+      "version": "5.108.0",
+      "hasQuery": true,
+      "inactiveReads": 0,
+      "defaultSettled": {
+        "state": "error",
+        "reads": 1
+      },
+      "throwOnErrorRefetchRejected": true,
+      "cacheFirstValue": "previous",
+      "cacheFirstReads": 0,
+      "explicitStaleReadRejected": true,
+      "totalReads": 3
+    },
+    {
+      "line": "maintenance",
+      "version": "5.90.1",
+      "hasQuery": false,
+      "inactiveReads": 0,
+      "defaultSettled": {
+        "state": "error",
+        "reads": 1
+      },
+      "throwOnErrorRefetchRejected": true,
+      "cacheFirstValue": "previous",
+      "cacheFirstReads": 0,
+      "explicitStaleReadRejected": true,
+      "totalReads": 3
+    }
+  ]
+}

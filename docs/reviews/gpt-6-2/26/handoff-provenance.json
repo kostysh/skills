@@ -1,0 +1,347 @@
+{
+  "archiveSha256": "1de3fc4e816441efa641bf9d81a1b453347b8a4a118eff8279f5ebf9ab8d127c",
+  "archiveMembers": {
+    "README.md": "1f500a0aa0807baaa07e0a507d814f169d3534bb6559473e1cc2c7ae9f095a01",
+    "lineage.json": "152912e5114ea1225f0bff93ae207237b5e186f3845835c9b776943b58c1f2b9",
+    "observations/closed-during.png": "f590cde1824908a1d13038971daec8a14570fd102f5a65edf22503f1e37deaeb",
+    "observations/reopened.png": "a8bed8073a10229a7408fdf3ab76c449dd8e3f19eb10c528d90986c692e76c8a",
+    "observations/route.json": "01d4d27f16881a8d7036c3a26169c865347602db81d912216e0ed6143582f3d9",
+    "observations/saved.png": "6eed7d0df6f54158c3898bb8dc3ec360af5e2c506fb33a1346166eef611f2029",
+    "observations/write-failed.png": "192fc0f83f19a9ec623a500d33c9cd406d77985727241618a6b34004663f9973",
+    "project/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+    "project/dist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2": "2317fa4bb293c9c0b110e18315d529235c47a0ddd3338cea3d8c7955e927899e",
+    "project/dist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2": "6894439694946a589d157ece003086960a6a4013d74a813dab7602efdb3d8c09",
+    "project/dist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2": "824f485b5d26e2f2da3c2b236132ece1bc8e4e43373452950bb0e40548b4313f",
+    "project/dist/assets/geist-latin-wght-normal-BgDaEnEv.woff2": "19f9c92546aa300c312235e3125af1b81394d8db9a4bc4a425cd5b641d2d54e1",
+    "project/dist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2": "8fa40e5d248247735eb97a0bd593b8852440430600d6ba01364c31fe0abc1fe1",
+    "project/dist/assets/index-BbT2wSLy.js": "31c1f7b77946325e18645cd2e0cf5dbc5c5faaf621329f0066b649efe02f8ff9",
+    "project/dist/assets/index-Cjq7RuI-.css": "d58d07de9259d89f5f78f772451387011278e2760815aa1460472afb19a08971",
+    "project/dist/index.html": "a85232e3d9508fdbc650e8adfdc954d6db600b30f08c1e0f208baf89b97a4fee",
+    "project/eslint.config.js": "cf80a7510234dcd5ae594b30b44682b8b45ba13c0fcb5bf8928bea143802aa1c",
+    "project/index.html": "f5ed80cea17c8985d4d40cf5936d0c94aa6f675cade574b7c720264e342589a9",
+    "project/package.json": "9eaf15c5b77077c69c5259996dd5d4e45fa15394874924c4531c75e93d613421",
+    "project/pnpm-lock.yaml": "c96d1706ba1c4b79c27dd567a956f7dbac521ff6ce60c1dd7b998f469a7bca7c",
+    "project/pnpm-workspace.yaml": "1e831b89d4d46e629c888d0ca10abc161e66a953e0778409facb96bcd828d9a0",
+    "project/src/App.tsx": "74e70bf60903b8c277264fc456c73f9031890b30e8265eee2b91f215405d35e6",
+    "project/src/assets/react.svg": "35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5",
+    "project/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+    "project/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+    "project/src/components/theme-provider.tsx": "7e9140cbb4471cbcf20f9e6348406a0a9f5f00689982f6f6fae7a63f44d063e3",
+    "project/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+    "project/src/components/ui/dialog.tsx": "84015448e1deacfc38d29ea767c2a62f28c6b61d9a84fce933087c2c7fc9b4e8",
+    "project/src/components/ui/field.tsx": "90cbc96b0de5c836ebb82a2997c45956e81f939566d5e91fc701af007849c92b",
+    "project/src/components/ui/input.tsx": "75418e030b2a54dd017ac0f4588db4bbdbabca7525e88bbc9d84cb3e18bcb905",
+    "project/src/components/ui/label.tsx": "b823de7355666bd6a6a2cf88a6630e436d021b38fdbef5b749fac0921b86f44d",
+    "project/src/components/ui/radio-group.tsx": "e36464d09f7339a1803610f5a016d7822aaa7ecab306230e6fc7c329ec799df9",
+    "project/src/components/ui/separator.tsx": "b5b5460e5337c2d5f361c1512001615b2e5eacb38c7449a4418bb9ddb47c4bba",
+    "project/src/components/ui/switch.tsx": "33647da0cc420551224ecf63921f9cad51fd681d69657af12eb26700a07231cb",
+    "project/src/index.css": "9bde270cb8d0493a24091df8ae292e3a2b3484f91d738fa70a037866fe206d48",
+    "project/src/lib/utils.ts": "14300d758170c270c75b057f38fedb3793a5920ea872f0477e29fb131185e8a7",
+    "project/src/main.tsx": "2d13456bf6657d8ff69c557be5a50c0e9fa67d655e0707878a9258a0d12b85e5",
+    "project/src/notification-api.ts": "2aded38371cffad17817db3830d00ecb7ee8f6e56d055158281eaff749daa5bc",
+    "project/src/notification-query.ts": "f8ec9db3ebfa01a6456d587b6d45bd8736eb566d7feb62377b883a988465624d",
+    "project/src/preserved-note.ts": "63342b08277a771a3f4643af89159820581459bed11554f6164206d0bfd1310b",
+    "project/tsconfig.app.json": "1b10733ad1b7359a2b0b6f58a8bb3a13b95eabf0022b4320856eea0127e9588b",
+    "project/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+    "project/tsconfig.node.json": "90a22c920cbc14624fb4658b58f15c875abf3234224f3933f211849c3ada3242",
+    "project/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+    "replay/package-lock.json": "fba19ac3ffc1b1a9bffd88b6544392e8745d24ab73c22652761aab6937222230",
+    "replay/package.json": "94541062390d22cb9d112f7c35060d22a1f46a61f6c542e80bce08f055304b30",
+    "replay/verify.mjs": "7db383e6df1b57727d104707970f2be9fb8a824c918a05906b27c6fd4269eeb5",
+    "server.mjs": "665d9f946cf9a5240cb51afd2581f8053e290bad4ac0196902daab5e7b1efe58"
+  },
+  "acceptedInputs": {
+    "upstream19": {
+      "archive": "notification-form.tar.gz",
+      "sha256": "02e15da84009fd1765b3e6595ae65ec5caa4cb0a89ec3f350e5f24046eff2420",
+      "inputs": {
+        "project/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "project/eslint.config.js": "cf80a7510234dcd5ae594b30b44682b8b45ba13c0fcb5bf8928bea143802aa1c",
+        "project/index.html": "f5ed80cea17c8985d4d40cf5936d0c94aa6f675cade574b7c720264e342589a9",
+        "project/package.json": "4a0547303b1178da8779875ba3f3724229734ffdadaffadeace86b58a9e68750",
+        "project/pnpm-lock.yaml": "45fa824b7163da3ab36f08aed2bd6183cf33ebdb88a32a83c4b957e999718e98",
+        "project/pnpm-workspace.yaml": "1e831b89d4d46e629c888d0ca10abc161e66a953e0778409facb96bcd828d9a0",
+        "project/src/App.tsx": "8dd1bddc8fad1c5cf652fb4327b4cd2d0b9b19cd573cdf8c4c80845914425643",
+        "project/src/assets/react.svg": "35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5",
+        "project/src/components/theme-provider.tsx": "7e9140cbb4471cbcf20f9e6348406a0a9f5f00689982f6f6fae7a63f44d063e3",
+        "project/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+        "project/src/components/ui/dialog.tsx": "84015448e1deacfc38d29ea767c2a62f28c6b61d9a84fce933087c2c7fc9b4e8",
+        "project/src/components/ui/field.tsx": "90cbc96b0de5c836ebb82a2997c45956e81f939566d5e91fc701af007849c92b",
+        "project/src/components/ui/input.tsx": "75418e030b2a54dd017ac0f4588db4bbdbabca7525e88bbc9d84cb3e18bcb905",
+        "project/src/components/ui/label.tsx": "b823de7355666bd6a6a2cf88a6630e436d021b38fdbef5b749fac0921b86f44d",
+        "project/src/components/ui/radio-group.tsx": "e36464d09f7339a1803610f5a016d7822aaa7ecab306230e6fc7c329ec799df9",
+        "project/src/components/ui/separator.tsx": "b5b5460e5337c2d5f361c1512001615b2e5eacb38c7449a4418bb9ddb47c4bba",
+        "project/src/components/ui/switch.tsx": "33647da0cc420551224ecf63921f9cad51fd681d69657af12eb26700a07231cb",
+        "project/src/index.css": "9bde270cb8d0493a24091df8ae292e3a2b3484f91d738fa70a037866fe206d48",
+        "project/src/lib/utils.ts": "14300d758170c270c75b057f38fedb3793a5920ea872f0477e29fb131185e8a7",
+        "project/src/main.tsx": "36302f6e7cd3e4556ef482c8a623155b6b851d957679ab1b76d2b93099af9ca1",
+        "project/src/preserved-note.ts": "63342b08277a771a3f4643af89159820581459bed11554f6164206d0bfd1310b",
+        "project/tsconfig.app.json": "1b10733ad1b7359a2b0b6f58a8bb3a13b95eabf0022b4320856eea0127e9588b",
+        "project/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+        "project/tsconfig.node.json": "90a22c920cbc14624fb4658b58f15c875abf3234224f3933f211849c3ada3242",
+        "project/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016"
+      }
+    },
+    "upstream18": {
+      "Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+      "Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f"
+    },
+    "upstream19DesignerNoteSha256": "e14c0837be5de434ed4c99d0ba4bf83477144c6d1f3f24704bc2e6e21f4649c7",
+    "input09": "700197e603e10ad47bd53f2e216cd1629ee64cfc8d563381ba1aa8cc5a0ba3dc",
+    "input16": "8ffc700923b300b69c262c5b2958c46a323c44febfa766df9d6d99b6ac48d738",
+    "unchanged19Files": [
+      "project/components.json",
+      "project/eslint.config.js",
+      "project/index.html",
+      "project/pnpm-workspace.yaml",
+      "project/src/assets/react.svg",
+      "project/src/components/theme-provider.tsx",
+      "project/src/components/ui/button.tsx",
+      "project/src/components/ui/dialog.tsx",
+      "project/src/components/ui/field.tsx",
+      "project/src/components/ui/input.tsx",
+      "project/src/components/ui/label.tsx",
+      "project/src/components/ui/radio-group.tsx",
+      "project/src/components/ui/separator.tsx",
+      "project/src/components/ui/switch.tsx",
+      "project/src/index.css",
+      "project/src/lib/utils.ts",
+      "project/src/preserved-note.ts",
+      "project/tsconfig.app.json",
+      "project/tsconfig.json",
+      "project/tsconfig.node.json",
+      "project/vite.config.ts"
+    ],
+    "modified19Files": [
+      "project/package.json",
+      "project/pnpm-lock.yaml",
+      "project/src/App.tsx",
+      "project/src/main.tsx"
+    ],
+    "newProjectFiles": [
+      "project/src/components/Tooltip.d.ts",
+      "project/src/components/Tooltip.js",
+      "project/src/notification-api.ts",
+      "project/src/notification-query.ts"
+    ],
+    "installed": {
+      "react": "19.2.8",
+      "react-dom": "19.2.8",
+      "react-router": "8.5.2",
+      "@tanstack/react-query": "5.108.0",
+      "vite": "8.2.2",
+      "typescript": "6.0.3",
+      "shadcn": "4.21.0",
+      "radix-ui": "1.6.7"
+    },
+    "productionFiles": {
+      "project/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+      "project/eslint.config.js": "cf80a7510234dcd5ae594b30b44682b8b45ba13c0fcb5bf8928bea143802aa1c",
+      "project/index.html": "f5ed80cea17c8985d4d40cf5936d0c94aa6f675cade574b7c720264e342589a9",
+      "project/package.json": "9eaf15c5b77077c69c5259996dd5d4e45fa15394874924c4531c75e93d613421",
+      "project/pnpm-lock.yaml": "c96d1706ba1c4b79c27dd567a956f7dbac521ff6ce60c1dd7b998f469a7bca7c",
+      "project/pnpm-workspace.yaml": "1e831b89d4d46e629c888d0ca10abc161e66a953e0778409facb96bcd828d9a0",
+      "project/src/App.tsx": "74e70bf60903b8c277264fc456c73f9031890b30e8265eee2b91f215405d35e6",
+      "project/src/assets/react.svg": "35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5",
+      "project/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+      "project/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+      "project/src/components/theme-provider.tsx": "7e9140cbb4471cbcf20f9e6348406a0a9f5f00689982f6f6fae7a63f44d063e3",
+      "project/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+      "project/src/components/ui/dialog.tsx": "84015448e1deacfc38d29ea767c2a62f28c6b61d9a84fce933087c2c7fc9b4e8",
+      "project/src/components/ui/field.tsx": "90cbc96b0de5c836ebb82a2997c45956e81f939566d5e91fc701af007849c92b",
+      "project/src/components/ui/input.tsx": "75418e030b2a54dd017ac0f4588db4bbdbabca7525e88bbc9d84cb3e18bcb905",
+      "project/src/components/ui/label.tsx": "b823de7355666bd6a6a2cf88a6630e436d021b38fdbef5b749fac0921b86f44d",
+      "project/src/components/ui/radio-group.tsx": "e36464d09f7339a1803610f5a016d7822aaa7ecab306230e6fc7c329ec799df9",
+      "project/src/components/ui/separator.tsx": "b5b5460e5337c2d5f361c1512001615b2e5eacb38c7449a4418bb9ddb47c4bba",
+      "project/src/components/ui/switch.tsx": "33647da0cc420551224ecf63921f9cad51fd681d69657af12eb26700a07231cb",
+      "project/src/index.css": "9bde270cb8d0493a24091df8ae292e3a2b3484f91d738fa70a037866fe206d48",
+      "project/src/lib/utils.ts": "14300d758170c270c75b057f38fedb3793a5920ea872f0477e29fb131185e8a7",
+      "project/src/main.tsx": "2d13456bf6657d8ff69c557be5a50c0e9fa67d655e0707878a9258a0d12b85e5",
+      "project/src/notification-api.ts": "2aded38371cffad17817db3830d00ecb7ee8f6e56d055158281eaff749daa5bc",
+      "project/src/notification-query.ts": "f8ec9db3ebfa01a6456d587b6d45bd8736eb566d7feb62377b883a988465624d",
+      "project/src/preserved-note.ts": "63342b08277a771a3f4643af89159820581459bed11554f6164206d0bfd1310b",
+      "project/tsconfig.app.json": "1b10733ad1b7359a2b0b6f58a8bb3a13b95eabf0022b4320856eea0127e9588b",
+      "project/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+      "project/tsconfig.node.json": "90a22c920cbc14624fb4658b58f15c875abf3234224f3933f211849c3ada3242",
+      "project/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016"
+    },
+    "compiledDist": {
+      "assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2": "2317fa4bb293c9c0b110e18315d529235c47a0ddd3338cea3d8c7955e927899e",
+      "assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2": "6894439694946a589d157ece003086960a6a4013d74a813dab7602efdb3d8c09",
+      "assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2": "824f485b5d26e2f2da3c2b236132ece1bc8e4e43373452950bb0e40548b4313f",
+      "assets/geist-latin-wght-normal-BgDaEnEv.woff2": "19f9c92546aa300c312235e3125af1b81394d8db9a4bc4a425cd5b641d2d54e1",
+      "assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2": "8fa40e5d248247735eb97a0bd593b8852440430600d6ba01364c31fe0abc1fe1",
+      "assets/index-BbT2wSLy.js": "31c1f7b77946325e18645cd2e0cf5dbc5c5faaf621329f0066b649efe02f8ff9",
+      "assets/index-Cjq7RuI-.css": "d58d07de9259d89f5f78f772451387011278e2760815aa1460472afb19a08971",
+      "index.html": "a85232e3d9508fdbc650e8adfdc954d6db600b30f08c1e0f208baf89b97a4fee"
+    }
+  },
+  "input25": {
+    "id": "ade887",
+    "variant": "C",
+    "role": "web-ui-reviewer",
+    "viewport": [
+      390,
+      844
+    ],
+    "inputBuild": "index-BN2oHnqM.js",
+    "rawSubjectAnswerSha256": "a994bb91cabf962a5158ba68082a2245b5a1450baf7cf87d6c49ba88da8607e3",
+    "rawGraderSha256": "7fbc23224af6d6a64cf3888155ac42df941401b3f6e2e31e074537c8a231500d",
+    "rawBrowserLogs": {
+      "20e27174-cbde-4449-938d-65605ff1b31c.json": {
+        "sha256": "98020a80acdefda8474118abe2ba92e1232f44fa9a1ce6621213ee0d9b157309",
+        "statusObservations": []
+      },
+      "8ba7653e-aa5a-4cec-8347-30b3873784bb.json": {
+        "sha256": "d6018192c64381729b1caa273625eaa6bd6bb00d6bf58ff4aca280451bc1c20e",
+        "statusObservations": [
+          {
+            "width": 390,
+            "status": [
+              "Applying changes…"
+            ],
+            "focus": {
+              "id": null,
+              "text": "Applying changes…"
+            },
+            "focusPaint": {
+              "tag": "DIV",
+              "role": "status",
+              "outline": "oklch(0.205 0 0) solid 2px"
+            },
+            "applyDurationMs": null
+          },
+          {
+            "width": 390,
+            "status": [
+              "Applying changes…"
+            ],
+            "focus": {
+              "id": null,
+              "text": "Applying changes…"
+            },
+            "focusPaint": {
+              "tag": "DIV",
+              "role": "status",
+              "outline": "oklch(0.205 0 0) solid 2px"
+            },
+            "applyDurationMs": null
+          },
+          {
+            "width": 390,
+            "status": [
+              "Settings applied\n\nEmail: duty@example.com. Notifications: On. Frequency: Daily.\n\nSaved for this session. No email is sent."
+            ],
+            "focus": {
+              "id": null,
+              "text": "Settings applied\n\nEmail: duty@example.com. Notifications: On. Frequenc"
+            },
+            "focusPaint": {
+              "tag": "DIV",
+              "role": "status",
+              "outline": "oklch(0.205 0 0) solid 2px"
+            },
+            "applyDurationMs": 1602.7999999970198
+          }
+        ]
+      },
+      "9bfd0760-7788-41bb-9b09-ba765a3afabe.json": {
+        "sha256": "85fdaf352ceeb7eceb264bca8f6b54cb4864860be02d8c6775055399b722bd5b",
+        "statusObservations": [
+          {
+            "width": 390,
+            "status": [
+              "Applying changes…"
+            ],
+            "focus": {
+              "id": null,
+              "text": "Applying changes…"
+            },
+            "focusPaint": {
+              "tag": "DIV",
+              "role": "status",
+              "outline": "oklch(0.205 0 0) solid 2px"
+            },
+            "applyDurationMs": null
+          },
+          {
+            "width": 390,
+            "status": [
+              "Settings applied\n\nEmail: duty@example.com. Notifications: On. Frequency: Daily.\n\nSaved for this session. No email is sent."
+            ],
+            "focus": {
+              "id": null,
+              "text": "Settings applied\n\nEmail: duty@example.com. Notifications: On. Frequenc"
+            },
+            "focusPaint": {
+              "tag": "DIV",
+              "role": "status",
+              "outline": "oklch(0.205 0 0) solid 2px"
+            },
+            "applyDurationMs": 1602.9000000059605
+          }
+        ]
+      },
+      "aa1febc2-c5d9-4f31-959f-4ea67b8b940e.json": {
+        "sha256": "16816490b6f9d8c0fb7a69de301c351b15d6640450a725315e5854f5705ec07c",
+        "statusObservations": [
+          {
+            "width": 390,
+            "status": [
+              "Applying changes…"
+            ],
+            "focus": {
+              "id": null,
+              "text": "Applying changes…"
+            },
+            "focusPaint": {
+              "tag": "DIV",
+              "role": "status",
+              "outline": "oklch(0.205 0 0) solid 2px"
+            },
+            "applyDurationMs": null
+          }
+        ]
+      }
+    }
+  },
+  "rebuild": {
+    "deskFilesMatchOriginal": {
+      "index.html": "a6484fd79aa51f743ac5972e5a483f9c63b47b468048d032303e0e4582483212",
+      "assets/index-C4C7156G.css": "6420644c4c33cd70736487489121239d47edb4673558da936376b752b3777f3f",
+      "assets/index-BQOvA7od.js": "85a0aecc5234bc99dd823709e2747e40c96c9155c136ec9e6a3efb55c770fb6a"
+    },
+    "notificationCleanOutputByteIdentical": {
+      "index.html": "a85232e3d9508fdbc650e8adfdc954d6db600b30f08c1e0f208baf89b97a4fee",
+      "assets/index-Cjq7RuI-.css": "d58d07de9259d89f5f78f772451387011278e2760815aa1460472afb19a08971",
+      "assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2": "8fa40e5d248247735eb97a0bd593b8852440430600d6ba01364c31fe0abc1fe1",
+      "assets/geist-latin-wght-normal-BgDaEnEv.woff2": "19f9c92546aa300c312235e3125af1b81394d8db9a4bc4a425cd5b641d2d54e1",
+      "assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2": "824f485b5d26e2f2da3c2b236132ece1bc8e4e43373452950bb0e40548b4313f",
+      "assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2": "6894439694946a589d157ece003086960a6a4013d74a813dab7602efdb3d8c09",
+      "assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2": "2317fa4bb293c9c0b110e18315d529235c47a0ddd3338cea3d8c7955e927899e",
+      "assets/index-BbT2wSLy.js": "31c1f7b77946325e18645cd2e0cf5dbc5c5faaf621329f0066b649efe02f8ff9"
+    },
+    "notificationBuildOverPriorDist": {
+      "index.html": "b530384b12c13f17aef3023048aefd5d883015cd1e69e0311f897db3f357434e",
+      "assets/index-D8OTvLCn.css": "97184203749ddf0a8e7facd16e56aeed8720cc24f00208d5d0e6b2f9af555fc4",
+      "assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2": "8fa40e5d248247735eb97a0bd593b8852440430600d6ba01364c31fe0abc1fe1",
+      "assets/geist-latin-wght-normal-BgDaEnEv.woff2": "19f9c92546aa300c312235e3125af1b81394d8db9a4bc4a425cd5b641d2d54e1",
+      "assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2": "824f485b5d26e2f2da3c2b236132ece1bc8e4e43373452950bb0e40548b4313f",
+      "assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2": "6894439694946a589d157ece003086960a6a4013d74a813dab7602efdb3d8c09",
+      "assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2": "2317fa4bb293c9c0b110e18315d529235c47a0ddd3338cea3d8c7955e927899e",
+      "assets/index-MNSwwnrf.js": "31c1f7b77946325e18645cd2e0cf5dbc5c5faaf621329f0066b649efe02f8ff9"
+    },
+    "routeEvidenceFromShippedAssets": "01d4d27f16881a8d7036c3a26169c865347602db81d912216e0ed6143582f3d9",
+    "routeEvidenceFromBuildOverPriorDist": "01d4d27f16881a8d7036c3a26169c865347602db81d912216e0ed6143582f3d9",
+    "frozenInstallExit": 0,
+    "productionBuildExit": 0,
+    "eslintExit": 0,
+    "replayExit": 0,
+    "focusSupplement": {
+      "patchSha256": "63190a26ca8ce3886368ebc412976c8025b3ea8f04555e9aa95b918d607a881b",
+      "archiveSha256": "6574826a6ede3efa62ea390d61086d2f064d47b9083f9e35b6e68997cfaf74e1",
+      "rawRouteSha256": "5e17828bfad00da104fa18be6e602a75f64ac1275387dd2efa7f1bfa669e3c67",
+      "replayExit": 0
+    }
+  }
+}
