@@ -1,0 +1,62 @@
+{
+  "observed": {
+    "compiler_runtime": "0.2.5",
+    "compiler_skill": "0.2.12",
+    "node": "v24.15.0",
+    "pack_script": "@kostysh/skills@0.1.3 pack:skills",
+    "installer": "package production only; registry install, live release and activation are outside this row",
+    "previous_catalog_sha256": "6a27eb907f0335ff4ac1778192f37b368d18c2e5cbea6611e4a61b956a95c749",
+    "baseline_package_sha256": "bf2363cb987e9c04a119700a63923473bb2d22aae8a38de0a343427dacf7818a",
+    "candidate_package_sha256": "1babdba177058490fce6b432c3d8b56aaa410fbbe5196649666bf2909f090e86",
+    "candidate_version": "0.1.12",
+    "candidate_files": {
+      "SKILL.md": "6381fdefc37cf55718aeed4f3f603f1c7f2bf859d45be06480de1d9a8d6ac122",
+      "agents/openai.yaml": "3420b7777dd1e4ba70e2f1bc7d35332f84601dee6cdc74a107979581a1f7e982",
+      "assets/templates/adr.md": "109d60b90093b5d212e0105cc33a74b588209d6d36150eb3bb0add3d7c36463f",
+      "assets/templates/architecture-brief.md": "023a831cffe60c35834e9b2d22e0e7d7c14b2588f91540b5b5fb4ba6cf40751d",
+      "assets/templates/architecture-check.md": "f47434b4264220ed5c9ab66e74c60f8e50d5c31cb03cba3ee02b459bcf1e3206",
+      "assets/templates/architecture-delta.md": "c565071dfa8e1c55757780f3fd14c850b290fb5634f8bed460ae06d814f56f58",
+      "assets/templates/architecture-handoff-item.yaml": "c7e32bc01e779ace8863a56e6b185d3e78821b5fd0f287d866f6ef18a88c44cc",
+      "assets/templates/architecture-handoff-register.yaml": "ad1a3e7e537c3166e9ec60ceeb94492ec6bc3cbc2dc246f48c86e93764f14d7f",
+      "assets/templates/asr-record.yaml": "78c6a2843059b69941f0b5323a09fa87fb14af20c587e498ba547f8233752a0f",
+      "assets/templates/pattern-decision.md": "04812c6e25accd03f52d0cb01d16dbe7223469a51796fc99379f4db1d1bff329",
+      "assets/templates/quality-scenario.md": "1eae6f37d48e7508b693c35e91a953e5b28243f3dd54fa02581090186a84f425",
+      "assets/templates/spike-brief.md": "4a180513a811e4fae1e5321c139050d40cc0497b31fc26a83b567c37a9a1e2e9",
+      "references/artifact-templates.md": "730a69850982ecd542875d92d50f3e4ee3678c5ed199bbaa6343715756fd9cba",
+      "references/methodology.md": "d1e03ecc93166eb8e203e353ac92c96db382a5adfeb6883a8d0f2869ca9629cb",
+      "references/pattern-catalog.md": "87e1143448cdbaa05d49d77c2be2384c3db40832e954efb02342e6f6529e3784"
+    },
+    "candidate_modes": {
+      "SKILL.md": "0644",
+      "agents/openai.yaml": "0644",
+      "assets/templates/adr.md": "0644",
+      "assets/templates/architecture-brief.md": "0644",
+      "assets/templates/architecture-check.md": "0644",
+      "assets/templates/architecture-delta.md": "0644",
+      "assets/templates/architecture-handoff-item.yaml": "0644",
+      "assets/templates/architecture-handoff-register.yaml": "0644",
+      "assets/templates/asr-record.yaml": "0644",
+      "assets/templates/pattern-decision.md": "0644",
+      "assets/templates/quality-scenario.md": "0644",
+      "assets/templates/spike-brief.md": "0644",
+      "references/artifact-templates.md": "0644",
+      "references/methodology.md": "0644",
+      "references/pattern-catalog.md": "0644"
+    },
+    "active_file_count": 15,
+    "active_files_match_source_and_out_of_place_compile": true,
+    "supporting_log_compiled": true,
+    "archive_excludes_supporting_docs": true,
+    "linked_journal_navigation_in_compile": true,
+    "trial_and_release_only_different_fields": [
+      "source-version",
+      "skillforge-source-hash"
+    ],
+    "root_sha256": {
+      "A": "d8051ab60169057cc41838e86704cc46310e96d5125816f097c4ffee41c02bdd",
+      "B": "5339db796e94ab4585a60845668d2e0d817cb2b4fb1762e02bbf7301896ee43f",
+      "C": "9d10f3328c44d2b5cfba557d79585fe73e6f8bb4a21930e610d5b08214a1f11e",
+      "shipped": "6381fdefc37cf55718aeed4f3f603f1c7f2bf859d45be06480de1d9a8d6ac122"
+    }
+  }
+}

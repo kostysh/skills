@@ -1,0 +1,24 @@
+{
+  "distinct_subject_sessions": 19,
+  "distinct_high_assessors": 6,
+  "all_distinct_sessions": 25,
+  "exact_primary_PRD_sha256_in_all_subjects": "0ad7a0914a8b6a9465160496a60422e1ad23687241f53aaecf502e6285fd38ff",
+  "all_subjects": "Sol/medium, memories disabled, exit 0, real work product; only architecture-note.md added",
+  "K12_subjects_with_identical_task_and_nonskill_case_input": [
+    "dc960a",
+    "82f7cd",
+    "84915b",
+    "b9e43d",
+    "d33ec1",
+    "e4835a"
+  ],
+  "historical_and_current_assessor_limits": "Local read audits; the execution sandbox allows other host reads.",
+  "transport_variants_verified": [
+    "D72",
+    "K12"
+  ],
+  "final_source_compiled_and_archive_file_parity": 15,
+  "final_release_archive_sha256": "0fb823fdd95a99e27c64e89dc87c86dce99e7f894bac222107f2d4c67fd3375d",
+  "final_supporting_log_verified_in_fresh_compile": "f233a6e595de56b8ece3da54df44caf0c0895f1f9204ca58fb45d0b5a5dedd78",
+  "research_and_log_link_paths_checked": 177
+}

@@ -219,6 +219,8 @@ Goal: avoid false confidence.
 
 Use quality scenarios for known quality attributes. Use spikes for unknown feasibility.
 
+If operating load or performance targets are unknown, define a repeatable trial that varies a relevant input, such as the spacing of the same events. Measure what the affected actor observes and the behavior that distinguishes the options. State which result keeps the direct path or warrants testing an alternative. Label trial values as experimental and leave production targets with their owner.
+
 Quality scenario shape:
 
 ```md

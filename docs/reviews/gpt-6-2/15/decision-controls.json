@@ -1,0 +1,63 @@
+{
+  "scope": "Mechanical counterexamples to the lab eligibility claim; these are analyst controls, not subject or assessor outputs.",
+  "controls": [
+    {
+      "run": "D41",
+      "scope": "supplied lab records",
+      "spread_ms": 15,
+      "latency_ms": {
+        "f71/e14": 310,
+        "f72/e21": 760,
+        "f73/e33": 1230
+      },
+      "finding": [],
+      "injected_claim": "common can be recommended for this lab run",
+      "check": "accept"
+    },
+    {
+      "run": "D72",
+      "scope": "supplied lab records",
+      "spread_ms": 10,
+      "latency_ms": {
+        "h81/e70": 440,
+        "h82/e68": 830,
+        "h83/e46": null
+      },
+      "finding": [
+        "recipient observation missing"
+      ],
+      "injected_claim": "common can be recommended because 3 edge acknowledgements and a third badge in D70 complete the sample",
+      "check": "reject"
+    },
+    {
+      "run": "D93",
+      "scope": "supplied lab records",
+      "spread_ms": 10,
+      "latency_ms": {
+        "m91/e26": 510,
+        "m92/e48": 785,
+        "m93/e62": 1900
+      },
+      "finding": [
+        "observed response outside local limit"
+      ],
+      "injected_claim": "all three badges observed makes common sufficient",
+      "check": "reject"
+    },
+    {
+      "run": "S94",
+      "scope": "supplied lab records",
+      "spread_ms": 7000,
+      "latency_ms": {
+        "m91/e26": 600,
+        "m92/e48": 600,
+        "m93/e62": 600
+      },
+      "finding": [
+        "wrong stimulus"
+      ],
+      "injected_claim": "all three fast badges in separate establish suitability under the requested burst",
+      "check": "reject"
+    }
+  ]
+}

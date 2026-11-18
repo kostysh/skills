@@ -1,0 +1,295 @@
+{
+  "ab": {
+    "signed": {
+      "exit": 0,
+      "sha256": "4536e6c2fa0e521ef1421421deaa3939ecca3daa4e57fc636142a782ede3ca0c",
+      "events_sha256": "42c3d5d0af2abfb1b90a4ce166ae293f1f9a88ffc923222c22e32269610247b2"
+    },
+    "public_assessment_sha256": "cb068e6371913c6e5e4d0c78c890542fd4b83dabae1c3d066d29571bfb6c4104",
+    "model": "gpt-6.2-sol",
+    "reasoning": "high",
+    "ephemeral": true,
+    "read_only": true,
+    "memories_disabled": true,
+    "criteria_sha256": "e0f72e279f413fab92fe9f7e593f6fe55e95f9e263abf3227b18a87420ea5622",
+    "packet_file_count": 35,
+    "packet_filename_set": [
+      "actions.json",
+      "answer.md",
+      "architecture-note.md",
+      "criteria.md",
+      "decision-intake.md",
+      "engineering.md",
+      "events.csv",
+      "observer.json",
+      "product-output.md",
+      "report-draft.md",
+      "task.md",
+      "team-note.md"
+    ],
+    "labels_and_controls": {
+      "82f7cd": "82f7cd",
+      "d33ec1": "d33ec1"
+    },
+    "commands": [
+      {
+        "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'nl -ba criteria.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"for f in d33ec1/{task.md,answer.md,actions.json,observer.json}; do awk 'FNR == 1 {print FILENAME} {printf \\\"%4d %s\\\\n\\\", FNR, \"'$0}'\"' \\\"\"'$f\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"for f in 82f7cd/{task.md,answer.md,actions.json,observer.json}; do awk 'FNR == 1 {print FILENAME} {printf \\\"%4d %s\\\\n\\\", FNR, \"'$0}'\"' \\\"\"'$f\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'nl -ba 82f7cd/after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'rg --files --hidden --no-ignore'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"for f in 82f7cd/before/{intake/*,draft/*.md,draft/materials/*.md}; do awk 'FNR == 1 {print FILENAME} {printf \\\"%4d %s\\\\n\\\", FNR, \"'$0}'\"' \\\"\"'$f\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'nl -ba d33ec1/after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"sed -n '1,38p' d33ec1/after/architecture-note.md\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"python -B - <<'PY'\nfrom pathlib import Path\nimport csv, hashlib, json, re\n\ndef sha(path):\n    return hashlib.sha256(path.read_bytes()).hexdigest()\n\nfor case in sorted(path for path in Path('.').iterdir() if (path / 'task.md').is_file()):\n    before, after = case / 'before', case / 'after'\n    old = {str(p.relative_to(before)): p for p in before.rglob('*') if p.is_file()}\n    new = {str(p.relative_to(after)): p for p in after.rglob('*') if p.is_file()}\n    observer = json.loads((case / 'observer.json').read_text())\n    actions = json.loads((case / 'actions.json').read_text())\n    changed = sorted(set(old) \"'^ set(new) | {p for p in set(old) & set(new) if sha(old[p]) != sha(new[p])})\n    print(case, '\"'before', len(old), 'after', len(new), 'changed', changed)\n    print('changed-path agreement', changed == actions['changed'] == observer['all_changed_paths'])\n    expected = observer['unchanged_record_sha256']\n    print('unchanged hashes', set(expected) == set(old), all(sha(old[p]) == sha(new[p]) == h for p,h in expected.items()))\n    note = after / 'architecture-note.md'\n    print('artifact hash', sha(note) == observer['work_product_sha256'])\n    groups = {}\n    with (before / 'intake/events.csv').open(newline='') as handle:\n        for row in csv.DictReader(handle):\n            key = '/'.join(row[k] for k in ('session', 'report', 'employee'))\n            groups.setdefault(key, {})[row['event']] = int(row['t_ms'])\n    results = {key: events['accepted'] - events['ready'] for key, events in groups.items()}\n    kinds = sorted({kind for events in groups.values() for kind in events})\n    print('event timing and kinds', results, kinds, results == observer['raw_input_readback']['ready_to_HTTP_accepted_ms'], kinds == observer['raw_input_readback']['recorded_kinds'])\n    unresolved = []\n    for path, _, fragment in (link.partition('#') for link in re.findall(r'\\\\]\\\\(([\"'^)]+)'\"\\\\)', note.read_text())):\n        target = after / path\n        if not target.is_file() or (fragment and fragment not in [line.lstrip('# ').lower().replace(' ', '-') for line in target.read_text().splitlines() if line.startswith('#')]):\n            unresolved.append(path)\n    print('unresolved links', unresolved)\nPY\"",
+        "exit": 0
+      }
+    ]
+  },
+  "confirm": {
+    "signed": {
+      "exit": 0,
+      "sha256": "23513aa5e73d592e187cdee1a49e6e29a6710892f2f3a21407f04b671f4ba092",
+      "events_sha256": "6447ff2e034b33849022105a242ddd33caad8977314b0f17830b18d5d6cfa415"
+    },
+    "public_assessment_sha256": "67289a22b36b1a9ad47cd37cb82025b90ce430d90aac1e7c0e74354b4e62e216",
+    "model": "gpt-6.2-sol",
+    "reasoning": "high",
+    "ephemeral": true,
+    "read_only": true,
+    "memories_disabled": true,
+    "criteria_sha256": "e0f72e279f413fab92fe9f7e593f6fe55e95f9e263abf3227b18a87420ea5622",
+    "packet_file_count": 120,
+    "packet_filename_set": [
+      "actions.json",
+      "answer.md",
+      "architecture-note.md",
+      "criteria.md",
+      "decision-intake.md",
+      "engineering.md",
+      "events.csv",
+      "observer.json",
+      "product-output.md",
+      "report-draft.md",
+      "task.md",
+      "team-note.md",
+      "windows.csv"
+    ],
+    "labels_and_controls": {
+      "554914": "d33ec1",
+      "031af5": "031af5",
+      "b9e43d": "b9e43d",
+      "e4835a": "e4835a",
+      "766c77": "earlier-dc960a",
+      "84915b": "84915b",
+      "15b2d1": "15b2d1"
+    },
+    "commands": [
+      {
+        "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'cat criteria.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'wc -cl criteria.md */task.md */answer.md */observer.json */actions.json */after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"for file in */task.md; do rg -n '\"'^'\"' \\\"\"'$file\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"for file in */observer.json */answer.md; do rg --with-filename -n '\"'^'\"' \\\"\"'$file\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"for file in */before/intake/engineering.md */before/intake/*.csv; do rg --with-filename -n '\"'^'\"' \\\"\"'$file\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"for file in */actions.json; do rg --with-filename -n '\"'^.{0,320}$'\"' \\\"\"'$file\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'for file in */before/draft/product-output.md */before/draft/materials/*.md; do sha256sum \"$file\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"for file in 031af5/before/intake/* 554914/before/intake/* 031af5/before/draft/product-output.md 031af5/before/draft/materials/*.md; do rg --with-filename -n '\"'^'\"' \\\"\"'$file\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"python -B - <<'PY'\nfrom pathlib import Path\nfrom hashlib import sha256\nimport json\nroot = Path('.')\nfor case in sorted(root.glob('*/observer.json')):\n    base = case.parent\n    obs = json.loads(case.read_text())\n    act = json.loads((base/'actions.json').read_text())\n    def files(snapshot):\n        return {str(p.relative_to(base/snapshot)): sha256(p.read_bytes()).hexdigest() for p in (base/snapshot).rglob('*') if p.is_file()}\n    before, after = files('before'), files('after')\n    changed = sorted(k for k in before.keys() | after.keys() if before.get(k) \"'!= after.get(k))\n    print(base, '\"'paths:', changed, 'hashes match:', obs['work_product_sha256'] == after.get('architecture-note.md') and all(before.get(k)==v==after.get(k) for k,v in obs['unchanged_record_sha256'].items()), 'observer/actions agree:', changed==obs['all_changed_paths']==act['changed'])\n    for i,op in enumerate(act['operations'],1):\n        if 'command' in op:\n            command = op['command'].splitlines()[0]\n            print(i, op['exit'], command[:240], len(op['command']))\n        else:\n            print(i, {k:op[k] for k in op if k\"'!='\"'patch'})\nPY\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'nl -ba 031af5/after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'nl -ba 15b2d1/after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'nl -ba 554914/after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'nl -ba 766c77/after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'nl -ba 84915b/after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'nl -ba b9e43d/after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'nl -ba e4835a/after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'nl -ba criteria.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"nl -ba 15b2d1/after/architecture-note.md | sed -n '1,26p'; nl -ba 031af5/after/architecture-note.md | sed -n '43,55p'; for file in 84915b/answer.md b9e43d/answer.md e4835a/answer.md; do rg --with-filename -n '\"'^'\"' \\\"\"'$file\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"python -B - <<'PY'\nfrom pathlib import Path\nfrom hashlib import sha256\nimport csv, json\nfor base in sorted(Path('.').glob('*/before')):\n    obs = json.loads((base.parent/'observer.json').read_text())\n    with (base/'intake'/('events.csv' if (base/'intake/events.csv').is_file() else 'windows.csv')).open() as src:\n        reader = csv.DictReader(src)\n        rows = list(reader)\n    if 'event' in reader.fieldnames:\n        time = {}\n        for row in rows:\n            group = '/'.join(row[k] for k in ['session', 'report', 'employee'])\n            time.setdefault(group,{})[row['event']] = int(row['t_ms'])\n        evidence = {k: v['accepted']-v['ready'] for k,v in time.items()}\n        assert evidence == obs['raw_input_readback']['ready_to_HTTP_accepted_ms']\n    else:\n        assert rows == obs['raw_input_readback']['rows']\n        evidence = [(row['minute'], row['report_completions'], row['server_list_median_ms']) for row in rows]\n    print(base.parent, evidence, 'mail export:', obs['supplied_mail_export'])\n    print('input records', [sha256(p.read_bytes()).hexdigest()[:12] for p in sorted(base.rglob('*')) if p.is_file()])\nPY\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"python -B - <<'PY'\nfrom pathlib import Path\nimport json\nfor p in sorted(Path('.').glob('*/actions.json')):\n    print(p)\n    for op in json.loads(p.read_text())['operations']:\n        cmd = op.get('command', '')\n        if '\\\\n' in cmd and len(cmd) < 2500:\n            print(cmd)\n        if len(cmd) >= 2500:\n            print(cmd.splitlines()[0], '|', cmd.splitlines()[-1])\nPY\"",
+        "exit": 0
+      }
+    ]
+  },
+  "route": {
+    "signed": {
+      "exit": 0,
+      "sha256": "9fb646fc098524e3daa6c06fbce0750769c4b58695c2f1ebd349529e377273d1",
+      "events_sha256": "0c87e20955239e273b904e5e1c6017d0cc029f9572e50b98b19b244a0fad9169"
+    },
+    "public_assessment_sha256": "7c39de1231949d43bbcddca66313178d3e3094c644fd63e669fb797dbb0ed1d9",
+    "model": "gpt-6.2-sol",
+    "reasoning": "high",
+    "ephemeral": true,
+    "read_only": true,
+    "memories_disabled": true,
+    "criteria_sha256": "4d60f76969b946f9ae25c26fea43ad85006c68d6fc573de2ec534b6dd30dde10",
+    "packet_file_count": 43,
+    "packet_filename_set": [
+      "actions.json",
+      "answer.md",
+      "architecture-note.md",
+      "captures.csv",
+      "criteria.md",
+      "decision-intake.md",
+      "events.csv",
+      "mail.csv",
+      "observer.json",
+      "product-output.md",
+      "report-draft.md",
+      "request.md",
+      "task.md",
+      "team-note.md"
+    ],
+    "labels_and_controls": {
+      "e01524": "e01524",
+      "ed1261": "ed1261"
+    },
+    "commands": [
+      {
+        "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'wc -l criteria.md */task.md */answer.md */actions.json */observer.json */after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'cat criteria.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'cat e01524/task.md ed1261/task.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'cat e01524/after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'cat ed1261/after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'cat ed1261/answer.md ed1261/observer.json ed1261/actions.json'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'cat e01524/answer.md e01524/observer.json e01524/actions.json'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'ls -la; find . -type d -print'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'nl -ba e01524/after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"for f in e01524/before/draft/product-output.md e01524/before/draft/materials/*.md; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; nl -ba \"$f\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"for f in e01524/before/lab/* ed1261/before/lab/*; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; nl -ba \"$f\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"python3 -B - <<'PY'\nfrom pathlib import Path\nimport csv\nimport hashlib\nimport json\nimport re\ndef digest(path):\n    return hashlib.sha256(path.read_bytes()).hexdigest()\ndef rows(path):\n    with path.open(newline='') as file:\n        return list(csv.DictReader(file))\nfor case in sorted(p for p in Path('.').iterdir() if p.is_dir()):\n    before = case / 'before'\n    after = case / 'after'\n    observer = json.loads((case / 'observer.json').read_text())\n    actions = json.loads((case / 'actions.json').read_text())\n    bmap = {str(p.relative_to(before)): digest(p) for p in before.rglob('*') if p.is_file()}\n    amap = {str(p.relative_to(after)): digest(p) for p in after.rglob('*') if p.is_file()}\n    diff = sorted(k for k in bmap.keys() | amap.keys() if bmap.get(k) \"'!= amap.get(k))\n    note = after / observer['\"'work_product']\n    links = sorted(set(re.findall(r'\\\\]\\\\(([\"'^)]+)'\"\\\\)', note.read_text())))\n    print(case.name, 'input files:', len(bmap), 'hash match:', bmap == observer['unchanged_input_record_sha256'])\n    print('changed:', diff, 'lists agree:', diff == observer['all_changed_paths'] == actions['changed'],\n          'note hash and size agree:', digest(note) == observer['work_product_sha256'] and note.stat().st_size == observer['work_product_bytes'])\n    print('relative links:', len(links), 'absent in copy:', [link for link in links if not (after / link).is_file()])\n    events = rows(before / 'lab/events.csv')\n    mail = rows(before / 'lab/mail.csv')\n    summary = {}\n    for c in rows(before / 'lab/captures.csv'):\n        run = c['run']\n        grouped = {}\n        for e in events:\n            if e['run'] == run:\n                grouped.setdefault((e['report'], e['employee']), {})[e['event']] = int(e['ts_ms'])\n        ready = [g['ready'] for g in grouped.values()]\n        delays = {'/'.join(k): g['badge'] - g['ready'] if 'badge' in g else None for k, g in grouped.items()}\n        count = sum(m['run'] == run and m['reason'] == 'report_ready' and (m['report'], m['employee']) in grouped for m in mail)\n        summary[run] = dict(profile=c['profile'], window_ends_ms=int(c['end_ms']),\n            ready_spread_ms=max(ready)-min(ready), recipient_badge_delays_ms=delays,\n            matched_report_ready_letters=count, mail_export=c['mail_export'])\n        print(run, 'last deadline:', max(ready)+1500, summary[run])\n    print('observer calculations agree:', summary == observer['same_run_calculations'])\n    print('operation classes:', [x.get('type','read/check') for x in actions['operations']])\nPY\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"rg -n '\"'^(#|'\"\\\\*\\\\*Отложить|Решение по каналу|\\\\| D72|\\\\| H-)|служеб|запуск' ed1261/after/architecture-note.md criteria.md\"",
+        "exit": 0
+      }
+    ]
+  }
+}

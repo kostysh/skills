@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: architecture-engineer
-  source-version: 0.1.11
+  source-version: 0.1.13
   recommended-skill-md-max-bytes: 26000
   description: >-
     Design or revise architecture for AI-agent-driven development. Use when
@@ -84,6 +84,10 @@ copies:
     description: Portable copy of agents/openai.yaml.
 
 supporting:
+  - id: supporting-implementation-log-20261118-1
+    source: docs/logs/implementation-log-20261118-1.md
+    target: docs/logs/implementation-log-20261118-1.md
+    description: Non-normative log for the feasibility spike instruction comparison.
   - id: supporting-implementation-log-20260817-1
     source: docs/logs/implementation-log-20260817-1.md
     target: docs/logs/implementation-log-20260817-1.md
@@ -231,7 +235,7 @@ sections:
       goal: Avoid false confidence for high-risk or weak-evidence decisions.
       steps:
         - Use quality scenarios for known quality attributes such as latency, availability, recoverability, security, privacy, consistency, or operability.
-        - Use spikes for unknown feasibility and keep each spike tied to a decision it will unblock.
+        - Tie each feasibility spike to the decision it unblocks.
         - Do not write a final ADR before a necessary spike produces evidence.
       validation:
         - High-risk ASR has at least one scenario or explicit validation path.

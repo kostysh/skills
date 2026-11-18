@@ -1,0 +1,205 @@
+{
+  "variant": "B",
+  "case": "meeting",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nИспользуйте предоставленный локальный SKILL.md architecture-engineer и при необходимости companion/implementation-discipline. Подготовьте в architecture-note.md рабочую записку по предложениям к встрече «Кабинет 1». Продуктовый вход с историей находится в draft/, письмо инженера и его приложение — в intake/. Автор спецификации и планировщик хотят понять, какую позицию может занять команда и как они смогут проверить основание выбора. Сейчас поручена работа с этими материалами и запиской.\n",
+  "input_file_sha256": {
+    "SKILL.md": "5339db796e94ab4585a60845668d2e0d817cb2b4fb1762e02bbf7301896ee43f",
+    "agents/openai.yaml": "3420b7777dd1e4ba70e2f1bc7d35332f84601dee6cdc74a107979581a1f7e982",
+    "assets/templates/adr.md": "109d60b90093b5d212e0105cc33a74b588209d6d36150eb3bb0add3d7c36463f",
+    "assets/templates/architecture-brief.md": "023a831cffe60c35834e9b2d22e0e7d7c14b2588f91540b5b5fb4ba6cf40751d",
+    "assets/templates/architecture-check.md": "f47434b4264220ed5c9ab66e74c60f8e50d5c31cb03cba3ee02b459bcf1e3206",
+    "assets/templates/architecture-delta.md": "c565071dfa8e1c55757780f3fd14c850b290fb5634f8bed460ae06d814f56f58",
+    "assets/templates/architecture-handoff-item.yaml": "c7e32bc01e779ace8863a56e6b185d3e78821b5fd0f287d866f6ef18a88c44cc",
+    "assets/templates/architecture-handoff-register.yaml": "ad1a3e7e537c3166e9ec60ceeb94492ec6bc3cbc2dc246f48c86e93764f14d7f",
+    "assets/templates/asr-record.yaml": "78c6a2843059b69941f0b5323a09fa87fb14af20c587e498ba547f8233752a0f",
+    "assets/templates/pattern-decision.md": "04812c6e25accd03f52d0cb01d16dbe7223469a51796fc99379f4db1d1bff329",
+    "assets/templates/quality-scenario.md": "1eae6f37d48e7508b693c35e91a953e5b28243f3dd54fa02581090186a84f425",
+    "assets/templates/spike-brief.md": "4a180513a811e4fae1e5321c139050d40cc0497b31fc26a83b567c37a9a1e2e9",
+    "companion/implementation-discipline/SKILL.md": "fde9d3f957856e325f2e2a725598f8a0984c90dccb1720ef862a3316a5c30729",
+    "companion/implementation-discipline/references/core-principles.md": "fa8a312bb8f580a1224f049f2480605d474b399f14627a55c292b28bbcec5cde",
+    "companion/implementation-discipline/references/verification-loop.md": "659c14086b1829585a006de89a1456a4eb0c15b5aa0f3673a335093ab5d0767e",
+    "draft/materials/decision-intake.md": "e8e3b2c3d64a10719161e30ab8c16056677e41dfc9723352a29580d29fc1f6cc",
+    "draft/materials/report-draft.md": "24379268c335dae167388ee26569924e9672314f566e2979ee9e2fcfe2db54b8",
+    "draft/materials/team-note.md": "4da36f0b60ac31992c503a6a4f85d558491ddb4e84f7e6b2a0613d92fba42221",
+    "draft/product-output.md": "0ad7a0914a8b6a9465160496a60422e1ad23687241f53aaecf502e6285fd38ff",
+    "intake/engineering.md": "416b5c73f40e635bd651786429a598beb39ec0301143979da63172d66f949cd5",
+    "intake/events.csv": "cbfa009bb204a94760f9ed3f5fd9b623fa7cb0f55ff37bdfb3867361f83e57ac",
+    "references/artifact-templates.md": "730a69850982ecd542875d92d50f3e4ee3678c5ed199bbaa6343715756fd9cba",
+    "references/methodology.md": "d1e03ecc93166eb8e203e353ac92c96db382a5adfeb6883a8d0f2869ca9629cb",
+    "references/pattern-catalog.md": "87e1143448cdbaa05d49d77c2be2384c3db40832e954efb02342e6f6529e3784"
+  },
+  "raw_events_sha256": "693d280b57f93c677deb6cad08e02aa3f43dd1eae31aead123d0e36090bd24a6",
+  "raw_events_bytes": 168734,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Прочитаю локальный навык architecture-engineer и материалы к «Кабинету 1». В записке свяжу возможную позицию команды с основаниями, которые смогут проверить автор спецификации и планировщик."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat SKILL.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"rg -n '\"'^'\"' draft intake/engineering.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'wc -l intake/events.csv && head -n 8 intake/events.csv && ls -la'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "В материалах есть отдельное решение заказчика по каналу уведомления. Журнал показа фиксирует приём HTTP-вызова. Применю локальный implementation-discipline, чтобы связать эти источники с тем, что команда сможет предложить на встрече."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'rg --files --hidden --no-ignore -g AGENTS.md -g README.md -g CONTRIBUTING.md && git status --short'",
+      "exit_code": 1,
+      "status": "failed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat companion/implementation-discipline/SKILL.md companion/implementation-discipline/references/{core-principles,verification-loop}.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat references/methodology.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat references/artifact-templates.md references/pattern-catalog.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat references/methodology.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'git status --short'",
+      "exit_code": 128,
+      "status": "failed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat companion/implementation-discipline/references/{core-principles,verification-loop}.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python - <<'PY'\nimport csv\nfrom collections import defaultdict\npairs = defaultdict(dict)\nwith open('intake/events.csv', newline='') as source:\n    for row in csv.DictReader(source):\n        pairs[row['session'], row['report'], row['employee']][row['event']] = int(row['t_ms'])\nfor key, pair in pairs.items():\n    print(*key, pair['ready'], pair['accepted'], pair['accepted'] - pair['ready'])\nPY\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "file_change",
+      "changes": [
+        {
+          "path": "{project}/architecture-note.md",
+          "kind": "add"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\npath = Path('architecture-note.md')\nnote = path.read_text()\nnote = note.replace('[Q-17, строка таблицы](draft/materials/decision-intake.md#)', '[Q-17, строка таблицы](draft/materials/decision-intake.md)')\nnote = note.replace('Владелец продукта должен одобрить конкретную редакцию для запуска спецификации и разработки. Прежнее одобрение подготовки текста даёт основание для обсуждения.', 'Правило одобрения гласит: «Для запуска спецификации и разработки требуется его одобрение конкретной редакции по текущим решениям». Здесь речь о владельце продукта. Прежнее одобрение подготовки текста даёт основание для обсуждения.')\nnote = note.replace('например \"'`accepted` без уведомления.'\"', 'например \"'`accepted` без уведомления у нужного сотрудника или отправка email о готовности.'\"')\nnote = note.replace('Применить те же профиль, пользовательскую точку наблюдения и критерии. Если оба варианта не проходят или данные неполны, оставить эксплуатационное решение открытым.', 'Применить те же профиль, условия прогона, пользовательскую точку наблюдения и критерии. Если обработчик устраняет выявленное ограничение и проходит проверку, оценить подтверждённый выигрыш вместе с условиями эксплуатации и восстановления перед выбором. Если оба варианта не проходят или данные неполны, оставить эксплуатационное решение открытым.')\npath.write_text(note)\nPY\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python - <<'PY'\nimport csv\nimport re\nfrom collections import defaultdict\nfrom pathlib import Path\n\nnote = Path('architecture-note.md').read_text()\nlinks = re.findall(r'\\\\]\\\\(([\"'^)]+)'\"\\\\)', note)\nfor link in links:\n    target, _, anchor = link.partition('#')\n    source = Path(target)\n    assert source.is_file(), link\n    if anchor:\n        headings = re.findall(r'\"'^#+ (.+)$'\"', source.read_text(), re.M)\n        assert anchor in [heading.lower().replace(' ', '-') for heading in headings], link\n\npairs = defaultdict(dict)\nwith open('intake/events.csv', newline='') as source:\n    for row in csv.DictReader(source):\n        pairs[row['session'], row['report'], row['employee']][row['event']] = int(row['t_ms'])\nfor (_, report, employee), pair in pairs.items():\n    ready, accepted = pair['ready'], pair['accepted']\n    numbers = [f'{value:,}'.replace(',', ' ') for value in (ready, accepted, accepted - ready)]\n    assert f'| \"'`{report}` / `{employee}` | '\"' + ' | '.join(numbers) + ' |' in note\nfor row in ('H1', 'H2', 'H3'):\n    assert note.count(f'**{row} ·') == 1\nassert 'Для запуска спецификации и разработки требуется его одобрение конкретной редакции по текущим решениям' in Path('draft/materials/report-draft.md').read_text()\nprint(f'Проверены ссылки ({len(links)}), обе пары замеров, цитата и статусы передачи.')\nPY\nls -l architecture-note.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Подготовил [записку к встрече «Кабинет 1»]({project}/architecture-note.md). Предлагаю сначала проверить публикацию уведомления в существующем модуле кабинета. Решение для эксплуатации пока открыто.\n\nПересчитал оба замера из журнала. 13 и 16 мс — это время от готовности отчёта до приёма HTTP-вызова. Для выбора записка описывает опыт с замером до появления уведомления у сотрудника. Опыт ещё не запускали.\n\nАвтору спецификации записка даёт основание для проверки канала по Q-17. Для запуска спецификации требуется одобрение конкретной редакции PRD. Планировщик уже может подготовить задание на опыт, а запуск назначает начальник лаборатории."
+    }
+  ],
+  "changed_file_contents": {
+    "architecture-note.md": "# «Кабинет 1» — позиция команды к встрече\n\nПредлагаем взять публикацию признака готовности в существующем модуле кабинета за базовый вариант для проверки (D1, статус `proposed`). Она использует текущую границу кабинета и сохраняет один путь публикации. Эксплуатационный выбор пока открыт. Журнал даёт два замера до приёма HTTP-вызова, а команде нужно проверить путь до появления уведомления у сотрудника. К фоновому обработчику стоит вернуться, если проверка выявит конкретное ограничение базового пути, которое обработчик способен устранить. [Письмо инженера](intake/engineering.md) · [Журнал показа](intake/events.csv)\n\n## Что даёт продуктовый вход\n\n| Основание | Значение для архитектуры и передачи |\n| --- | --- |\n| **ASR-1 · R2 / Q-17.** `source_statement`, явное решение уполномоченного заказчика: «Только в кабинете, email не нужен». | После готовности отчёта уведомление предназначено сотруднику в его кабинете. Отправка email о готовности нарушит решение даже при наличии уведомления в кабинете. Это ограничение на канал и получателя действует при сравнении обоих вариантов. Уверенность в содержании ответа высокая в пределах предоставленной истории. [Q-17, строка таблицы](draft/materials/decision-intake.md) · [R2 и приёмка](draft/product-output.md#требования-и-приёмка) |\n| **R1 и статус PRD.** Доступ к готовому отчёту в своём кабинете указан в редакции 0.2. | Для обсуждения проверяем уведомление вместе с доступом к соответствующему отчёту. Q-17 решён по содержанию и уже отражён в 0.2. Запись `partial` описывает состояние передачи в истории. Редакция 0.2 имеет статус `non-authoritative / draft-only`. Правило одобрения гласит: «Для запуска спецификации и разработки требуется его одобрение конкретной редакции по текущим решениям». Здесь речь о владельце продукта. Прежнее одобрение подготовки текста даёт основание для обсуждения. [Редакция 0.2](draft/product-output.md) · [Правило одобрения](draft/materials/report-draft.md) |\n| **Q-18.** Срок хранения и дата ответа открыты, решение за заказчиком. | 90 дней — предложение поддержки. Зависящие от срока правила доступности и хранения ждут решения Q-18. Обсуждение канала и проверка появления уведомления могут идти независимо. [Q-18](draft/materials/decision-intake.md) · [Заметка поддержки](draft/materials/team-note.md) |\n| **Задержка появления уведомления.** Цель и правило оценки — `TBD`, по управлению PRD. | Владелец продукта через PRD определяет допустимую задержку и правило её оценки, включая условия применения. Распределение боевых событий тоже неизвестно. До появления этих входов команда может описать опыт и получить ограниченные наблюдения. Вывод о пригодности к эксплуатации ждёт обоих входов. [Письмо инженера](intake/engineering.md) |\n\n## Что показывает журнал\n\nВ сеансе `K12` для каждой пары «отчёт, сотрудник» вычитаем `ready` из `accepted`. Шкала общая в пределах этого сеанса. `ready` ставит завершающий модуль отчётов, `accepted` — HTTP-обработчик по окончании приёма вызова. [Письмо инженера](intake/engineering.md) · [Исходные строки CSV](intake/events.csv)\n\n| Отчёт / сотрудник | `ready`, мс | `accepted`, мс | Разница, мс |\n| --- | ---: | ---: | ---: |\n| `f71` / `e14` | 910 | 923 | 13 |\n| `f72` / `e20` | 4 990 | 5 006 | 16 |\n\nДва интервала описывают только этот участок ручного показа. В журнале нет отметок появления уведомления, открытия отчёта или проверки email. Вызов может получить `accepted`, а уведомление так и не появится. По этим данным нельзя оценить задержку для сотрудника, установить целевое значение, судить о работе под боевой нагрузкой или сравнить варианты.\n\n## D1 · Публикация готовности на границе модуля кабинета\n\nВыбор затрагивает компоненты отчётов и кабинета. Риск базового предложения средний: сбой публикации может оставить сотрудника без уведомления после готовности отчёта. Выделенный обработчик добавляет отдельный жизненный цикл и вопросы эксплуатации. Топология и условия эксплуатации в материалах не описаны.\n\n| Кандидат | Пригодность, цена и обратимость |\n| --- | --- |\n| Публикация в модуле кабинета | Архитектурно совместима с ASR-1. Из двух предложений вводит меньше компонентов и служит первым предметом проверки. Нужно выяснить, как сбой или задержка публикации отражаются на появлении уведомления и готовности отчёта. Изменить предварительную позицию после опыта можно до закрепления отдельного процесса. |\n| Выделенный фоновый обработчик | Может отделить обработку публикации от пути готовности, если проверка выявит влияние нагрузки или отказов на этот путь. Добавляет отдельный отказ и задержку между приёмом и обработкой. Если его придётся сравнивать, нужно показать, как наблюдаются сбои, пропуски, повторы и восстановление. Цена эксплуатации, пригодность для команды и выигрыш пока неизвестны. |\n\nУверенность в выборе базового варианта **для проверки** средняя. Для эксплуатации уверенность пока низкая. Владение отчётом и канал уведомления сохраняются в обоих вариантах. `not_prescribed` — формат события, схема хранения, способ измерения имеющимися средствами, устройство фоновой обработки. [Описание вариантов](intake/engineering.md)\n\n## E1 · Ограниченный опыт для D1\n\n**Вопрос.** Укладывается ли обычная публикация в согласованный критерий появления уведомления при согласованном профиле событий? Начальник лаборатории разрешил подготовить описание опыта. Он отдельно назначает сроки и запуск. Инженер кабинета снимает замеры. [Письмо инженера](intake/engineering.md)\n\n**Сценарий и критерий.** В контролируемом сеансе модуль отчётов фиксирует `ready`. Инженер сопоставляет его с первым наблюдаемым появлением уведомления о том же отчёте в обычном интерфейсе нужного сотрудника. Сопоставление ведётся по сеансу, отчёту и сотруднику на общей шкале или с проверенной синхронизацией часов. Инженер фиксирует способ и разрешение наблюдения, включая интервал обновления или опроса, если он есть. Сотрудник должен иметь возможность открыть соответствующий отчёт. Для того же события отдельно проверяется отсутствие отправки email по доступному проверяемому следу отправки. При отсутствии такого следа проверка канала остаётся неполной. `accepted` можно сохранить для диагностики промежуточного этапа.\n\n**Данные и границы вывода.** До опыта с выводом для эксплуатации зафиксировать целевую задержку и правило оценки из PRD, обоснованный профиль событий, объём выборки и окно наблюдения. В результат включить все `ready`, в том числе публикации с ошибками и случаи, где уведомление не появилось в окне. Для каждого случая сохранить исходные отметки, исход и условия прогона. Фальсификатор базового варианта — нарушение согласованного критерия задержки или наблюдаемого поведения, например `accepted` без уведомления у нужного сотрудника или отправка email о готовности. При отсутствии цели или обоснованного профиля инженер может описать наблюдения для указанных условий, а пригодность к эксплуатации остаётся открытой.\n\n**Решение по результатам.** Если базовый путь проходит критерии в обоснованных условиях, команда получает основание предложить его для эксплуатации. Если он не проходит, сначала локализовать ограничение. Сравнить обработчик во втором прогоне только при объяснимой связи с этим ограничением. Применить те же профиль, условия прогона, пользовательскую точку наблюдения и критерии. Если обработчик устраняет выявленное ограничение и проходит проверку, оценить подтверждённый выигрыш вместе с условиями эксплуатации и восстановления перед выбором. Если оба варианта не проходят или данные неполны, оставить эксплуатационное решение открытым. Архитектор пересматривает D1 по итогам E1, при изменении согласованной метрики или при решении Q-18, если оно меняет границы доступности отчёта.\n\n## Передача\n\n| Связь и статус | Следующий владелец, результат и проверка |\n| --- | --- |\n| **H1 · R2 / Q-17 → ASR-1 → D1.** `blocked` для рабочей спецификации. Нужно одобрение конкретной редакции PRD. Зависимые от варианта детали также ждут решения D1. | **Автор спецификации (`spec-engineer`)** получает ограничение на канал и сценарий проверки. После одобрения PRD ожидаются требования и карта проверок для уведомления в кабинете и отсутствия email по тому же событию. Для обсуждения уже можно проверить трассу от Q-17 к R2 и к наблюдаемому результату. Зависимые от срока критерии ждут Q-18. |\n| **H2 · D1 → E1.** `ready` для подготовки задания на опыт, блокеров для описания нет. | **Планировщик (`delivery-planner`)** готовит ограниченное задание для начальника лаборатории. В задании указаны исполнитель замеров — инженер кабинета, сценарий и критерии E1, состав исходных данных, условия запуска и маршрут возврата результатов архитектору. Проверка задания — возможность воспроизвести сопоставление `ready` с наблюдением в кабинете и определить границы вывода. |\n| **H3 · E1 → D1.** `blocked` для прогона до назначения запуска начальником лаборатории. Для вывода по эксплуатации также нужны согласованный критерий PRD и обоснованный профиль событий. | **Инженер кабинета** после назначения запуска выполняет измерения. Он возвращает архитектору исходные данные, условия, результаты проверки и ограничения вывода. Архитектор сверяет их с E1 перед пересмотром D1. |\n"
+  },
+  "final_response": "Подготовил [записку к встрече «Кабинет 1»]({project}/architecture-note.md). Предлагаю сначала проверить публикацию уведомления в существующем модуле кабинета. Решение для эксплуатации пока открыто.\n\nПересчитал оба замера из журнала. 13 и 16 мс — это время от готовности отчёта до приёма HTTP-вызова. Для выбора записка описывает опыт с замером до появления уведомления у сотрудника. Опыт ещё не запускали.\n\nАвтору спецификации записка даёт основание для проверки канала по Q-17. Для запуска спецификации требуется одобрение конкретной редакции PRD. Планировщик уже может подготовить задание на опыт, а запуск назначает начальник лаборатории.",
+  "input_file_modes": {
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "assets/templates/adr.md": "0644",
+    "assets/templates/architecture-brief.md": "0644",
+    "assets/templates/architecture-check.md": "0644",
+    "assets/templates/architecture-delta.md": "0644",
+    "assets/templates/architecture-handoff-item.yaml": "0644",
+    "assets/templates/architecture-handoff-register.yaml": "0644",
+    "assets/templates/asr-record.yaml": "0644",
+    "assets/templates/pattern-decision.md": "0644",
+    "assets/templates/quality-scenario.md": "0644",
+    "assets/templates/spike-brief.md": "0644",
+    "companion/implementation-discipline/SKILL.md": "0644",
+    "companion/implementation-discipline/references/core-principles.md": "0644",
+    "companion/implementation-discipline/references/verification-loop.md": "0644",
+    "draft/materials/decision-intake.md": "0644",
+    "draft/materials/report-draft.md": "0644",
+    "draft/materials/team-note.md": "0644",
+    "draft/product-output.md": "0644",
+    "intake/engineering.md": "0664",
+    "intake/events.csv": "0664",
+    "references/artifact-templates.md": "0644",
+    "references/methodology.md": "0644",
+    "references/pattern-catalog.md": "0644"
+  },
+  "changed_file_modes": {
+    "architecture-note.md": "0664"
+  },
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "work_product_sha256": "473c8048891f87e697f212b1a492b81a7fda926ba24e9788438da662ffba96de",
+    "unchanged_record_sha256": {
+      "intake/engineering.md": "416b5c73f40e635bd651786429a598beb39ec0301143979da63172d66f949cd5",
+      "intake/events.csv": "cbfa009bb204a94760f9ed3f5fd9b623fa7cb0f55ff37bdfb3867361f83e57ac",
+      "draft/product-output.md": "0ad7a0914a8b6a9465160496a60422e1ad23687241f53aaecf502e6285fd38ff",
+      "draft/materials/decision-intake.md": "e8e3b2c3d64a10719161e30ab8c16056677e41dfc9723352a29580d29fc1f6cc",
+      "draft/materials/report-draft.md": "24379268c335dae167388ee26569924e9672314f566e2979ee9e2fcfe2db54b8",
+      "draft/materials/team-note.md": "4da36f0b60ac31992c503a6a4f85d558491ddb4e84f7e6b2a0613d92fba42221"
+    },
+    "raw_input_readback": {
+      "correlation": "session, report, employee",
+      "ready_to_HTTP_accepted_ms": {
+        "K12/f71/e14": 13,
+        "K12/f72/e20": 16
+      },
+      "recorded_kinds": [
+        "accepted",
+        "ready"
+      ]
+    },
+    "all_changed_paths": [
+      "architecture-note.md"
+    ],
+    "supplied_mail_export": false
+  }
+}

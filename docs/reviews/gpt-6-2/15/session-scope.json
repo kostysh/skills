@@ -1,0 +1,354 @@
+{
+  "limits": "Per-session workdir and memory feature were controlled. Host reads are allowed by the filesystem. Completed command text, file changes and input hashes are retained in public receipts. The candidate regex is only an aid for examination, not an isolation guarantee.",
+  "subject_assignments": {
+    "1aeb87": {
+      "session": "01a1f04b-f4d6-73d0-9542-e94d26bd405a",
+      "flags": {
+        "model": "gpt-6.2-sol",
+        "reasoning": "medium",
+        "sandbox": "workspace-write",
+        "ephemeral": true,
+        "memories_disabled": true
+      },
+      "completed_operation_types": [
+        "command_execution"
+      ],
+      "command_count": 9,
+      "nonzero_command_exits": [
+        1
+      ],
+      "outside_path_or_network_command_candidates": [],
+      "event_sha256": "3291fb22df55ca7150d418efd35b22bcb2dd0e188ab8ab3c60d141f9b55aa62b",
+      "skill": "B",
+      "case": "boundary",
+      "series": "ab",
+      "final_state": {
+        "exit": 0,
+        "changed": [
+          "architecture-note.md"
+        ]
+      },
+      "delivered_file_count": 26
+    },
+    "0093e6": {
+      "session": "01a1f04b-f4d7-76e1-bba9-9957dbaa8104",
+      "flags": {
+        "model": "gpt-6.2-sol",
+        "reasoning": "medium",
+        "sandbox": "workspace-write",
+        "ephemeral": true,
+        "memories_disabled": true
+      },
+      "completed_operation_types": [
+        "command_execution"
+      ],
+      "command_count": 13,
+      "nonzero_command_exits": [],
+      "outside_path_or_network_command_candidates": [],
+      "event_sha256": "d836792a18a2c7313cd57898c146460e4377a5b92d07f64644619c84b9bed9ac",
+      "skill": "A",
+      "case": "boundary",
+      "series": "ab",
+      "final_state": {
+        "exit": 0,
+        "changed": [
+          "architecture-note.md"
+        ]
+      },
+      "delivered_file_count": 26
+    },
+    "1164de": {
+      "session": "01a1f04d-f22d-7ea2-9b32-e579271acec2",
+      "flags": {
+        "model": "gpt-6.2-sol",
+        "reasoning": "medium",
+        "sandbox": "workspace-write",
+        "ephemeral": true,
+        "memories_disabled": true
+      },
+      "completed_operation_types": [
+        "command_execution"
+      ],
+      "command_count": 12,
+      "nonzero_command_exits": [
+        128
+      ],
+      "outside_path_or_network_command_candidates": [],
+      "event_sha256": "699ddefad519828378305429c4a2efb3fb6c8188c0904a53b03943d8b114b66d",
+      "skill": "A",
+      "case": "ordinary",
+      "series": "ab",
+      "final_state": {
+        "exit": 0,
+        "changed": [
+          "architecture-note.md"
+        ]
+      },
+      "delivered_file_count": 26
+    },
+    "daf25e": {
+      "session": "01a1f04e-103d-7903-b87e-bd05e62453b1",
+      "flags": {
+        "model": "gpt-6.2-sol",
+        "reasoning": "medium",
+        "sandbox": "workspace-write",
+        "ephemeral": true,
+        "memories_disabled": true
+      },
+      "completed_operation_types": [
+        "command_execution",
+        "file_change"
+      ],
+      "command_count": 10,
+      "nonzero_command_exits": [
+        128,
+        1
+      ],
+      "outside_path_or_network_command_candidates": [],
+      "event_sha256": "a59b611cbdd87b39c5cfdb8b0c07b9dbbfc3fdda22dac17bc2248412638436f3",
+      "skill": "B",
+      "case": "ordinary",
+      "series": "ab",
+      "final_state": {
+        "exit": 0,
+        "changed": [
+          "architecture-note.md"
+        ]
+      },
+      "delivered_file_count": 26
+    },
+    "891b3d": {
+      "session": "01a1f053-9690-7a40-9a4a-e8faaa438104",
+      "flags": {
+        "model": "gpt-6.2-sol",
+        "reasoning": "medium",
+        "sandbox": "workspace-write",
+        "ephemeral": true,
+        "memories_disabled": true
+      },
+      "completed_operation_types": [
+        "command_execution",
+        "file_change"
+      ],
+      "command_count": 12,
+      "nonzero_command_exits": [
+        1
+      ],
+      "outside_path_or_network_command_candidates": [],
+      "event_sha256": "8a670c81a36b2ef0cad8cdb9fa6bed00e668044012eec34d4fd4d97d31e7b92a",
+      "skill": "C",
+      "case": "holdout",
+      "series": "confirm",
+      "final_state": {
+        "exit": 0,
+        "changed": [
+          "architecture-note.md"
+        ]
+      },
+      "delivered_file_count": 26
+    },
+    "bedd40": {
+      "session": "01a1f053-9690-7c81-a3c2-56ed9fa07b98",
+      "flags": {
+        "model": "gpt-6.2-sol",
+        "reasoning": "medium",
+        "sandbox": "workspace-write",
+        "ephemeral": true,
+        "memories_disabled": true
+      },
+      "completed_operation_types": [
+        "command_execution",
+        "file_change"
+      ],
+      "command_count": 16,
+      "nonzero_command_exits": [
+        1
+      ],
+      "outside_path_or_network_command_candidates": [],
+      "event_sha256": "4eedb1a7d24bed5b4d9dad5c7b6d8a1c2284c81210d576ff8186cd7b4f9836bb",
+      "skill": "A",
+      "case": "holdout",
+      "series": "confirm",
+      "final_state": {
+        "exit": 0,
+        "changed": [
+          "architecture-note.md"
+        ]
+      },
+      "delivered_file_count": 26
+    },
+    "56a3ca": {
+      "session": "01a1f055-c07c-7cb1-86cd-932d8301586f",
+      "flags": {
+        "model": "gpt-6.2-sol",
+        "reasoning": "medium",
+        "sandbox": "workspace-write",
+        "ephemeral": true,
+        "memories_disabled": true
+      },
+      "completed_operation_types": [
+        "command_execution"
+      ],
+      "command_count": 12,
+      "nonzero_command_exits": [
+        1
+      ],
+      "outside_path_or_network_command_candidates": [],
+      "event_sha256": "a10dd429b26a5ebad8c93f39b0c735c902fcacd65c152b26d6f6d1572c312b0d",
+      "skill": "C",
+      "case": "ordinary",
+      "series": "confirm",
+      "final_state": {
+        "exit": 0,
+        "changed": [
+          "architecture-note.md"
+        ]
+      },
+      "delivered_file_count": 26
+    },
+    "0537da": {
+      "session": "01a1f055-f49b-77a0-9eae-4bc286d13964",
+      "flags": {
+        "model": "gpt-6.2-sol",
+        "reasoning": "medium",
+        "sandbox": "workspace-write",
+        "ephemeral": true,
+        "memories_disabled": true
+      },
+      "completed_operation_types": [
+        "command_execution",
+        "file_change"
+      ],
+      "command_count": 17,
+      "nonzero_command_exits": [
+        128
+      ],
+      "outside_path_or_network_command_candidates": [],
+      "event_sha256": "4a86751de50f53f846bbd4ccd133d44cadb179dd06ecaf1390522a8c62b60c02",
+      "skill": "C",
+      "case": "boundary",
+      "series": "confirm",
+      "final_state": {
+        "exit": 0,
+        "changed": [
+          "architecture-note.md"
+        ]
+      },
+      "delivered_file_count": 26
+    },
+    "da7257": {
+      "session": "01a1f055-4bdd-7332-85ec-42d934f66fc1",
+      "flags": {
+        "model": "gpt-6.2-sol",
+        "reasoning": "medium",
+        "sandbox": "workspace-write",
+        "ephemeral": true,
+        "memories_disabled": true
+      },
+      "completed_operation_types": [
+        "command_execution"
+      ],
+      "command_count": 15,
+      "nonzero_command_exits": [
+        128
+      ],
+      "outside_path_or_network_command_candidates": [],
+      "event_sha256": "6f359f7de7ede401bb06a35a21bcaa1480d7bbd7c200149750a9fe2edaf596fc",
+      "skill": "release",
+      "case": "boundary",
+      "series": "release",
+      "final_state": {
+        "exit": 0,
+        "changed": [
+          "architecture-note.md"
+        ]
+      },
+      "delivered_file_count": 26
+    },
+    "dc960a": {
+      "session": "01a1f057-6cb8-7773-9319-8052d91112ed",
+      "flags": {
+        "model": "gpt-6.2-sol",
+        "reasoning": "medium",
+        "sandbox": "workspace-write",
+        "ephemeral": true,
+        "memories_disabled": true
+      },
+      "completed_operation_types": [
+        "command_execution",
+        "file_change"
+      ],
+      "command_count": 9,
+      "nonzero_command_exits": [
+        1
+      ],
+      "outside_path_or_network_command_candidates": [],
+      "event_sha256": "86848068c76035e5cadd536d356617c3abadf3786a54b2b70859a2d7267067d5",
+      "skill": "release",
+      "case": "meeting",
+      "series": "open-load",
+      "final_state": {
+        "exit": 0,
+        "changed": [
+          "architecture-note.md"
+        ]
+      },
+      "delivered_file_count": 24
+    }
+  },
+  "assessor_assignments": {
+    "ab": {
+      "session": "01a1f050-8470-7b42-ae50-9f559bb56d17",
+      "flags": {
+        "model": "gpt-6.2-sol",
+        "reasoning": "high",
+        "sandbox": "read-only",
+        "ephemeral": true,
+        "memories_disabled": true
+      },
+      "completed_operation_types": [
+        "command_execution"
+      ],
+      "command_count": 18,
+      "nonzero_command_exits": [],
+      "outside_path_or_network_command_candidates": [],
+      "event_sha256": "7d9d893c071c819490fea998e773bc29778523c787c282d5cfc57af32b3c971d"
+    },
+    "confirm": {
+      "session": "01a1f059-37df-7271-a581-27a3c265bb23",
+      "flags": {
+        "model": "gpt-6.2-sol",
+        "reasoning": "high",
+        "sandbox": "read-only",
+        "ephemeral": true,
+        "memories_disabled": true
+      },
+      "completed_operation_types": [
+        "command_execution"
+      ],
+      "command_count": 17,
+      "nonzero_command_exits": [
+        1
+      ],
+      "outside_path_or_network_command_candidates": [],
+      "event_sha256": "96365a58cc89b58bcea95d68741d77fe9385b80a36f6c206971f2e867037dccc"
+    },
+    "open-load": {
+      "session": "01a1f05a-36e2-7481-b49e-460de7014697",
+      "flags": {
+        "model": "gpt-6.2-sol",
+        "reasoning": "high",
+        "sandbox": "read-only",
+        "ephemeral": true,
+        "memories_disabled": true
+      },
+      "completed_operation_types": [
+        "command_execution"
+      ],
+      "command_count": 8,
+      "nonzero_command_exits": [],
+      "outside_path_or_network_command_candidates": [],
+      "event_sha256": "c5e040e018d0f69dace744a4a13e62b69374320b90f9a98f205ba6ebd060db70"
+    }
+  }
+}

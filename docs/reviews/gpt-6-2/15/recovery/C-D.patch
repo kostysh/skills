@@ -1,0 +1,5 @@
+--- a/references/methodology.md
++++ b/references/methodology.md
+@@ -220,0 +221,2 @@
++
++If operating load or performance targets are unknown, define a repeatable trial that varies a relevant input, such as the spacing of the same events. Measure what the affected actor observes and the behavior that distinguishes the options. State which result keeps the direct path or warrants testing an alternative. Label trial values as experimental and leave production targets with their owner.
