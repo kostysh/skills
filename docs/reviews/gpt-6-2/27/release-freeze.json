@@ -1,0 +1,32 @@
+{
+  "frozenAt": "2026-11-18T22:55:55.562566+00:00",
+  "previousConfirmation": "3376ffee693ae22797c14bc11add42dc0c0cf09534afde26e777b7ba61c45e0b",
+  "rule": "Verify each claimed outcome. When first-load acceptance covers server-rendered content and interactivity, state in the final answer which expected content the original HTTP HTML contained or lacked and what the hydrated control did.",
+  "newCase": "First document has Dispatch queue while an operational browser shows Linen docket and the counter works.",
+  "rules": {
+    "strictRubric": "75b770adb6ce2b77af043a9da54ab61c717e43100603c7817f0cf4ec57aec6bc",
+    "newPage": "7dc75630eeae781cce737ce6f0e7b46593695adf2b950c451a97a5d49ffa2997"
+  },
+  "fixtures": {
+    "cases/boundary.md": "22bf2223752d919e7eb1e7dfa226cd2e82997e0d1d256d33444eabf098863234",
+    "cases/linen.md": "22bf2223752d919e7eb1e7dfa226cd2e82997e0d1d256d33444eabf098863234",
+    "cases/ordinary.md": "22bf2223752d919e7eb1e7dfa226cd2e82997e0d1d256d33444eabf098863234",
+    "fixture/boundary/README.md": "bb34a5e336caef5a6f9714824b3d949f3397d4f891cb4d198e4f188cc169ce1a",
+    "fixture/boundary/build.json": "f0b3ed4ec1edfb9c4f9be94645a27ec8f4029234e3a9549cc12f691ced5d16e0",
+    "fixture/boundary/contract.md": "213f0e6b3bca5687365024e3a7564699817e56466222786c3f2bf24cdb92da78",
+    "fixture/boundary/inspect.mjs": "cad8974160d6ee5ce5084c95131a42c19279998376f13382ec9ba572fbf1b712",
+    "fixture/boundary/route.txt": "f3650d88c810778a4a4a3c266126dd2ce4fd0e97f36eab6539ef6585121869c5",
+    "fixture/linen/README.md": "bb34a5e336caef5a6f9714824b3d949f3397d4f891cb4d198e4f188cc169ce1a",
+    "fixture/linen/build.json": "f0b3ed4ec1edfb9c4f9be94645a27ec8f4029234e3a9549cc12f691ced5d16e0",
+    "fixture/linen/contract.md": "497846927472f9988815ce2f4d2b9f38910f69f0578e79d54d13ff0369b6820a",
+    "fixture/linen/inspect.mjs": "cad8974160d6ee5ce5084c95131a42c19279998376f13382ec9ba572fbf1b712",
+    "fixture/linen/route.txt": "2b06aa4632d193a3c9582c0be8e1ba65702500134af853a534f7f2066babbce8",
+    "fixture/ordinary/README.md": "bb34a5e336caef5a6f9714824b3d949f3397d4f891cb4d198e4f188cc169ce1a",
+    "fixture/ordinary/build.json": "f0b3ed4ec1edfb9c4f9be94645a27ec8f4029234e3a9549cc12f691ced5d16e0",
+    "fixture/ordinary/contract.md": "a4187d6a39a278afdf4fa27632813a71525b9d8ad2b8aa7c53a285f0be250523",
+    "fixture/ordinary/inspect.mjs": "cad8974160d6ee5ce5084c95131a42c19279998376f13382ec9ba572fbf1b712",
+    "fixture/ordinary/route.txt": "5ebdf57fbcd940d91cd8e76fdbd11a90c4358407b9dff95442ba46cfb5d93ee6",
+    "rubric.md": "75b770adb6ce2b77af043a9da54ab61c717e43100603c7817f0cf4ec57aec6bc"
+  },
+  "design": "Fresh release Amber, Cedar and Linen. Controlled C on Linen. Previously sealed C/Cedar as blinded repeated control. Independent grade distinguishes what appeared in final from what a separate observer obtained."
+}

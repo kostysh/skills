@@ -128,10 +128,10 @@ Native packages may already be automatically externalized by the installed Next 
 
 ## Bundle Analysis
 
-Analyze bundle size with the built-in analyzer (Next.js 16.1+):
+Check the installed Next CLI help. Next.js 16.4 exposes the Turbopack analyzer as `next analyze`. Earlier 16.x versions may expose it as `next experimental-analyze` (introduced in 16.1).
 
 ```bash
-next experimental-analyze
+next analyze
 ```
 
 This opens an interactive UI to:
@@ -142,7 +142,7 @@ This opens an interactive UI to:
 Save output for comparison:
 
 ```bash
-next experimental-analyze --output
+next analyze --output
 # Output saved to .next/diagnostics/analyze
 ```
 

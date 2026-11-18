@@ -1,0 +1,6 @@
+{
+  "signedAB": "74a4b0e8be248b3080ca21cdc00e70f30214a52c138a63a866ae87d2bce60804",
+  "selected": "1. Verify each claimed outcome. For interactive routes, report the server response and the hydrated interaction.",
+  "finding": "Both original and omission blocked Cedar correctly and exercised its behavior. Neither closed both evidence boundaries in the recipient report. Ordinary cases succeeded with both. Treat C as remediation, with the scope limited to routes making both claims.",
+  "selectedAt": "2026-11-18T22:26:04.134315+00:00"
+}

@@ -145,7 +145,7 @@ module.exports = {
 
 A Redis/S3 get/set sketch is not a working shared cache handler. Choose an existing maintained handler or implement the installed Next `cacheHandler` API, including tag/path invalidation semantics, metadata/lifetimes, serialization, failures and concurrency. `cacheHandlers` for Cache Components is a different interface; do not swap these configuration keys.
 
-All instances need coherent invalidation, compatible cache namespaces/build identity and consistent Server Action encryption keys where used. Sharing stored values alone cannot guarantee freshness. See the version-matched [cacheHandler API](https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheHandler) and [self-hosting guide](https://nextjs.org/docs/app/guides/self-hosting).
+All instances need coherent invalidation, compatible cache namespaces/build identity and consistent Server Action encryption keys where used. Sharing stored values alone cannot guarantee freshness. See the version-matched [cacheHandler API](https://nextjs.org/docs/app/api-reference/config/next-config-js/incrementalCacheHandlerPath) and [self-hosting guide](https://nextjs.org/docs/app/guides/self-hosting).
 
 Before claiming multi-instance correctness, cache an old value on instance B, mutate and invalidate through authorized instance A, then read B according to the selected immediate or SWR contract and repeat after reload. Include denied mutation and failure behavior. A local build, single-instance success, or equal initial pages does not prove this boundary.
 

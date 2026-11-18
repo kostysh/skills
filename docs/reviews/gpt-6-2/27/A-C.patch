@@ -1,0 +1,5 @@
+--- a/SKILL.md
++++ c/SKILL.md
+@@ -129 +129 @@
+-1. Run existing validation that exercises the changed route, build, type surface, or browser behavior.
++1. Verify each claimed outcome. For interactive routes, report the server response and the hydrated interaction.

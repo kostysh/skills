@@ -1,0 +1,102 @@
+{
+  "source": "Next 16.4.6 package installed from the route lock with Node 24.22.3",
+  "commands": [
+    {
+      "args": [
+        "node",
+        "node_modules/.bin/next",
+        "--version"
+      ],
+      "exit": 0,
+      "output": "Next.js v16.4.6\n"
+    },
+    {
+      "args": [
+        "node",
+        "node_modules/.bin/next",
+        "build",
+        "--help"
+      ],
+      "exit": 0,
+      "output": "Usage: next build [directory] [options]\n\nCreates an optimized production build of your application. The output displays\ninformation about each route.\n\nArguments:\n  [directory]                              A directory on which to build the application. If no directory is provided, the current directory will be used.\n\nOptions:\n  --analyze                                Analyze bundle output. Only compatible with Turbopack.\n  -d, --debug                              Enables a more verbose build output.\n  --debug-prerender                        Enables debug mode for prerendering. Not for production use!\n  --no-mangling                            Disables mangling.\n  --profile                                Enables production profiling for React.\n  --experimental-app-only                  Builds only App Router routes.\n  --turbo                                  Builds using Turbopack.\n  --turbopack                              Builds using Turbopack.\n  --webpack                                Builds using webpack.\n  --experimental-build-mode [mode]         Uses an experimental build mode. (choices: \"compile\", \"generate\", \"generate-env\", default: \"default\")\n  --experimental-debug-memory-usage        Enables memory profiling features to debug memory consumption.\n  --experimental-upload-trace, <traceUrl>  Reports a subset of the debugging trace to a remote HTTP URL. Includes sensitive data.\n  --experimental-next-config-strip-types   Use Node.js native TypeScript resolution for next.config.(ts|mts)\n  --debug-build-paths <patterns>           Comma-separated glob patterns or explicit paths for selective builds. Use \"!\" prefix to exclude. Examples: \"app/*\", \"app/page.tsx\", \"app/**/page.tsx\", \"app/**,!app/[slug]/**\"\n  --experimental-cpu-prof                  Enable CPU profiling. Profile is saved to .next-profiles/ on exit.\n  --internal-trace [level]                 Enable Turbopack tracing. \"all\" (default) enables turbo-tasks level tracing, \"overview\" enables overview tracing. (choices: \"all\", \"overview\", preset: \"all\")\n  -h, --help                               Displays this message.\n"
+    },
+    {
+      "args": [
+        "node",
+        "node_modules/.bin/next",
+        "analyze",
+        "--help"
+      ],
+      "exit": 0,
+      "output": "Usage: next analyze|experimental-analyze [options] [command] [directory]\n\nAnalyze production bundle output with an interactive web ui. Does not produce\nan application build. Only compatible with Turbopack.\n\nArguments:\n  [directory]                   A directory on which to analyze the\n                                application. If no directory is provided, the\n                                current directory will be used.\n\nOptions:\n  -v, --version                 Outputs the Next.js version.\n  --no-mangling                 Disables mangling.\n  --profile                     Enables production profiling for React.\n  --experimental-app-only       Analyzes only App Router routes.\n  --snapshot <name>             Save a named snapshot, replacing an existing\n                                capture with that name.\n  -o, --output                  Only write analysis files to disk. Does not\n                                start the server.\n  --port <port>                 Specify a port number to serve the analyzer on.\n                                (default: 4000, env: PORT)\n  -h, --help                    Displays this message.\n\nCommands:\n  export [options] [directory]  Stream a saved analyzer graph as JSON Lines\n                                without building or serving.\n"
+    },
+    {
+      "args": [
+        "node",
+        "node_modules/.bin/next",
+        "experimental-analyze",
+        "--help"
+      ],
+      "exit": 0,
+      "output": "Usage: next analyze|experimental-analyze [options] [command] [directory]\n\nAnalyze production bundle output with an interactive web ui. Does not produce\nan application build. Only compatible with Turbopack.\n\nArguments:\n  [directory]                   A directory on which to analyze the\n                                application. If no directory is provided, the\n                                current directory will be used.\n\nOptions:\n  -v, --version                 Outputs the Next.js version.\n  --no-mangling                 Disables mangling.\n  --profile                     Enables production profiling for React.\n  --experimental-app-only       Analyzes only App Router routes.\n  --snapshot <name>             Save a named snapshot, replacing an existing\n                                capture with that name.\n  -o, --output                  Only write analysis files to disk. Does not\n                                start the server.\n  --port <port>                 Specify a port number to serve the analyzer on.\n                                (default: 4000, env: PORT)\n  -h, --help                    Displays this message.\n\nCommands:\n  export [options] [directory]  Stream a saved analyzer graph as JSON Lines\n                                without building or serving.\n"
+    },
+    {
+      "args": [
+        "node",
+        "node_modules/.bin/next",
+        "analyze",
+        "--output"
+      ],
+      "exit": 0,
+      "output": "\u2713 Running next.config.mjs took 16ms\n  Analyzing a production build...\n\u2713 Analyze completed in 1020ms. Results written to {project}/.next/diagnostics/analyze.\nTo explore the analyze results interactively, run `next analyze` without `--output`.\n"
+    }
+  ],
+  "analysisFileCount": 50,
+  "analysisFileSample": [
+    ".next/diagnostics/analyze/404.html",
+    ".next/diagnostics/analyze/__next.__PAGE__.txt",
+    ".next/diagnostics/analyze/__next._full.txt",
+    ".next/diagnostics/analyze/__next._tree.txt",
+    ".next/diagnostics/analyze/_next/static/HXklLiVSkDhUiou88A9LT/_buildManifest.js",
+    ".next/diagnostics/analyze/_next/static/HXklLiVSkDhUiou88A9LT/_clientMiddlewareManifest.js",
+    ".next/diagnostics/analyze/_next/static/HXklLiVSkDhUiou88A9LT/_ssgManifest.js",
+    ".next/diagnostics/analyze/_next/static/chunks/076ve6u5x1p78.js"
+  ],
+  "moduleExportTypes": {
+    "next/headers": {
+      "cookies": "function",
+      "headers": "function",
+      "draftMode": "function"
+    },
+    "next/server": {
+      "after": "function",
+      "connection": "function",
+      "NextRequest": "function",
+      "NextResponse": "function",
+      "userAgent": "function"
+    },
+    "next/cache": {
+      "cacheLife": "function",
+      "cacheTag": "function",
+      "revalidateTag": "function",
+      "updateTag": "function"
+    },
+    "next/navigation": {
+      "useParams": "function",
+      "usePathname": "function",
+      "useRouter": "function",
+      "useSearchParams": "function",
+      "useSelectedLayoutSegment": "function",
+      "useSelectedLayoutSegments": "function"
+    },
+    "next/link": {
+      "useLinkStatus": "function"
+    },
+    "next/web-vitals": {
+      "useReportWebVitals": "function"
+    },
+    "next/og": {
+      "ImageResponse": "function"
+    }
+  }
+}

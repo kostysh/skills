@@ -21,7 +21,7 @@ Reference: https://nextjs.org/docs/app/api-reference/functions
 
 | Function | Purpose | Reference |
 |----------|---------|-----------|
-| `cookies` | Read/write cookies | [Docs](https://nextjs.org/docs/app/api-reference/functions/cookies) |
+| `cookies` | Read incoming cookies in Server Components. Write outgoing cookies in Server Functions or Route Handlers | [Docs](https://nextjs.org/docs/app/api-reference/functions/cookies) |
 | `headers` | Read request headers | [Docs](https://nextjs.org/docs/app/api-reference/functions/headers) |
 | `draftMode` | Enable preview of unpublished CMS content | [Docs](https://nextjs.org/docs/app/api-reference/functions/draft-mode) |
 | `after` | Run code after response finishes streaming | [Docs](https://nextjs.org/docs/app/api-reference/functions/after) |

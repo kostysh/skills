@@ -66,8 +66,8 @@ export async function getCachedData() {
 }
 ```
 
-Requires `cacheComponents: true` in `next.config.ts`.
+Check the effective `next.config`. In 16.4, `create-next-app` enables Cache Components for new apps. Existing 16.x apps retain their configured mode. When adopting the 16.4 model, set `cacheComponents: true` and `partialPrefetching: true`. An app migrating from the earlier Cache Components model can explicitly set the latter to `false` during migration. [Next.js 16.4](https://nextjs.org/blog/next-16-4) · [Configuration](https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheComponents)
 
-Cache Components is an opt-in stable Next 16 model, not an automatic migration for Next 15 or legacy caching. Read cookies/headers and other request-time APIs outside a cached scope and pass permitted values explicitly; do not share user-private data through public cache keys. Use `cacheLife`/`cacheTag` from `next/cache` to establish lifetime/tags. [Data Patterns](data-patterns.md) owns mutation freshness and `updateTag` versus `revalidateTag`; an unavailable optional cache specialist does not block this local method.
+For ordinary `'use cache'`, read request-time values such as cookies and headers outside the cached scope. Pass only values appropriate for its caching and access policy. Use `cacheLife` and `cacheTag` from `next/cache` for lifetime and tags. [Data Patterns](data-patterns.md) covers mutation freshness.
 
 Reference: https://nextjs.org/docs/app/api-reference/directives/use-cache

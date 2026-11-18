@@ -1,0 +1,55 @@
+{
+  "node": "v24.22.3",
+  "next": "16.4.6",
+  "lockSHA256": "3fc2759e2532d2d29486d4f285544fece7867db1772ac16345656501593e9535",
+  "disabled": {
+    "buildExit": 0,
+    "routeBuildOutput": [
+      "├ ƒ /api/desk",
+      "└ ƒ /api/info"
+    ],
+    "staticGETInPrerenderManifest": false,
+    "staticGET": {
+      "queue": "public-desk"
+    },
+    "requestGET": [
+      {
+        "desk": "amber",
+        "theme": "dark"
+      },
+      {
+        "desk": "reed",
+        "theme": "light"
+      }
+    ]
+  },
+  "enabled": {
+    "buildExit": 0,
+    "routeBuildOutput": [
+      "├ ƒ /api/desk",
+      "└ ○ /api/info"
+    ],
+    "staticGETInPrerenderManifest": true,
+    "staticGET": {
+      "queue": "public-desk"
+    },
+    "requestGET": [
+      {
+        "desk": "amber",
+        "theme": "dark"
+      },
+      {
+        "desk": "reed",
+        "theme": "light"
+      }
+    ]
+  },
+  "enabledWithRuntimeExport": {
+    "buildExit": 1,
+    "relevantOutput": [
+      "./app/api/info/route.js:1:14",
+      "Error: Route segment config \"runtime\" is not compatible with `nextConfig.cacheComponents`. Please remove it.",
+      "\u001b[31m\u001b[1m>\u001b[0m \u001b[90m1 |\u001b[0m \u001b[36mexport\u001b[0m \u001b[36mconst\u001b[0m runtime = \u001b[32m'nodejs'\u001b[0m;"
+    ]
+  }
+}
