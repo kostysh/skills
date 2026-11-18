@@ -1,0 +1,54 @@
+{
+  "method": "Статический разбор заданного правила и четырёх входных строк владельцем 11, 18.11.2026.",
+  "package": "security-reviewer@0.1.14",
+  "baselineArchiveSha256": "3446bc9a5527ee022b962b52affbc1ebe6d11f5b961b8650ceaf007d4d62f4af",
+  "sourceFiles": {
+    "case.md": {
+      "sha256": "e365261501f0d5a0b018389bf473b5a7e1769215f3694178fc7e956cf88ca959",
+      "mode": "0664"
+    },
+    "documents.json": {
+      "sha256": "e6608361b7b1718ab19546e5bf732abf860565f4e718d2baae2769720799e5a5",
+      "mode": "0664"
+    }
+  },
+  "sourceBytesAndModesUnchanged": true,
+  "documentIds": [
+    "amber",
+    "birch",
+    "cedar",
+    "dune"
+  ],
+  "roleReadExpectations": {
+    "worker-a": {
+      "visible": [
+        "amber",
+        "cedar"
+      ],
+      "outsideScope": [
+        "birch",
+        "dune"
+      ]
+    },
+    "worker-b": {
+      "visible": [
+        "birch",
+        "dune"
+      ],
+      "outsideScope": [
+        "amber",
+        "cedar"
+      ]
+    },
+    "support": {
+      "visible": [
+        "birch",
+        "cedar"
+      ],
+      "outsideScope": [
+        "amber",
+        "dune"
+      ]
+    }
+  }
+}
