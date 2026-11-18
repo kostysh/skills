@@ -37,6 +37,30 @@ void test('pack is deterministic, excludes development files and binds a version
   );
 });
 
+void test('the archive preserves root license files and binds them to the skill version', async (t) => {
+  const root = await sandbox();
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const original = await release(root);
+  const source = join(root, 'source-1.0.0');
+  const folder = join(source, 'example');
+  const licenses = { LICENSE: 'License notice\n', 'LICENSE.txt': 'Additional terms\n' };
+  for (const [name, text] of Object.entries(licenses)) await writeFile(join(folder, name), text);
+
+  const output = join(root, 'with-licenses');
+  const catalog = await packSkills(source, output, 'skills-test');
+  const skill = catalog.skills[0];
+  assert.ok(skill);
+  const installed = join(root, 'installed');
+  await mkdir(installed);
+  await extract(await readFile(join(output, 'example-1.0.0.tgz')), installed, skill);
+  for (const [name, text] of Object.entries(licenses))
+    assert.equal(await readFile(join(installed, name), 'utf8'), text);
+  await assert.rejects(
+    packSkills(source, join(root, 'same-version'), 'skills-test', original.catalog),
+    /without a version bump/,
+  );
+});
+
 void test('release discovery ignores CLI and pre-releases, pins one catalog and rejects cross-release URLs', async (t) => {
   const root = await sandbox();
   t.after(() => rm(root, { recursive: true, force: true }));
