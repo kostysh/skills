@@ -1,0 +1,7 @@
+{
+  "pids.events": "max 14",
+  "pids.max": "170",
+  "pids.peak": "170",
+  "pids.current": "17",
+  "nproc": "32"
+}

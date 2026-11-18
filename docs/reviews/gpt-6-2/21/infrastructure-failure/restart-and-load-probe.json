@@ -1,0 +1,174 @@
+{
+  "restart": "GHCRTS=-N2, same DB and sessions; no policy/data changes",
+  "first_restart_log_path": {
+    "writePermission": false,
+    "corrected": true
+  },
+  "workload": "three simultaneous assigned readers, twice",
+  "pids_events_after": "max 14",
+  "outputs": [
+    {
+      "session": "worker-a",
+      "effectiveDatabaseRole": "desk_employee",
+      "identityStatus": 200,
+      "records": {
+        "amber": {
+          "status": 200,
+          "data": [
+            {
+              "id": "amber"
+            }
+          ],
+          "error": null
+        },
+        "birch": {
+          "status": 200,
+          "data": [],
+          "error": null
+        },
+        "missing": {
+          "status": 200,
+          "data": [],
+          "error": null
+        }
+      },
+      "requestId": "26d4b2c351e94c"
+    },
+    {
+      "session": "worker-b",
+      "effectiveDatabaseRole": "desk_employee",
+      "identityStatus": 200,
+      "records": {
+        "amber": {
+          "status": 200,
+          "data": [],
+          "error": null
+        },
+        "birch": {
+          "status": 200,
+          "data": [
+            {
+              "id": "birch"
+            }
+          ],
+          "error": null
+        },
+        "missing": {
+          "status": 200,
+          "data": [],
+          "error": null
+        }
+      },
+      "requestId": "9154158cde2840"
+    },
+    {
+      "session": "support",
+      "effectiveDatabaseRole": "desk_support",
+      "identityStatus": 200,
+      "records": {
+        "amber": {
+          "status": 200,
+          "data": [],
+          "error": null
+        },
+        "birch": {
+          "status": 200,
+          "data": [
+            {
+              "id": "birch"
+            }
+          ],
+          "error": null
+        },
+        "missing": {
+          "status": 200,
+          "data": [],
+          "error": null
+        }
+      },
+      "requestId": "90409318bfe140"
+    },
+    {
+      "session": "worker-a",
+      "effectiveDatabaseRole": "desk_employee",
+      "identityStatus": 200,
+      "records": {
+        "amber": {
+          "status": 200,
+          "data": [
+            {
+              "id": "amber"
+            }
+          ],
+          "error": null
+        },
+        "birch": {
+          "status": 200,
+          "data": [],
+          "error": null
+        },
+        "missing": {
+          "status": 200,
+          "data": [],
+          "error": null
+        }
+      },
+      "requestId": "a5acebed32964d"
+    },
+    {
+      "session": "worker-b",
+      "effectiveDatabaseRole": "desk_employee",
+      "identityStatus": 200,
+      "records": {
+        "amber": {
+          "status": 200,
+          "data": [],
+          "error": null
+        },
+        "birch": {
+          "status": 200,
+          "data": [
+            {
+              "id": "birch"
+            }
+          ],
+          "error": null
+        },
+        "missing": {
+          "status": 200,
+          "data": [],
+          "error": null
+        }
+      },
+      "requestId": "aae565cf7b354e"
+    },
+    {
+      "session": "support",
+      "effectiveDatabaseRole": "desk_support",
+      "identityStatus": 200,
+      "records": {
+        "amber": {
+          "status": 200,
+          "data": [],
+          "error": null
+        },
+        "birch": {
+          "status": 200,
+          "data": [
+            {
+              "id": "birch"
+            }
+          ],
+          "error": null
+        },
+        "missing": {
+          "status": 200,
+          "data": [],
+          "error": null
+        }
+      },
+      "requestId": "00a02501409744"
+    }
+  ],
+  "passed": true
+}

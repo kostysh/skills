@@ -1,0 +1,17 @@
+{
+  "contract": "PREVIEW-1",
+  "fixtureSha256": "9c57942cd805e7917fd9bea3555f2e3db7a3ec153d0f317e8f622de313259195",
+  "nodeSha256": "e7393975b00609375cee7a6c0e6d1cdca0e55cf80c4910b8b927234dcd0867ce",
+  "postgresReceiptSha256": "883b3b948e1072b8ba8827f306a872fc1d677000ab46d225810e9cfdf97f499c",
+  "review": "row 22 compared each of 14 Node and SQL outcomes with fixed expected literals and independently compared all final reader rows/exports and attempts",
+  "server": "18.4",
+  "readBackRows": 6,
+  "readBackExports": 6,
+  "rejectsBeforeInsert": 8,
+  "readerIsSeparateConnection": true,
+  "naiveDivisionControl": {
+    "net": "9223372036854775807",
+    "floor_exact_half": "4611686018427387903",
+    "floor_default_division": "4611686018427387904"
+  }
+}

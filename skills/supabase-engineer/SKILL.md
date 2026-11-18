@@ -5,9 +5,9 @@ description: Build, review, debug, and operate Supabase across schema, Data API,
   for Supabase design, implementation, boundary verification, CLI/MCP workflows,
   or incidents; pair with domain owners where they determine correctness.
 metadata:
-  source-version: 0.1.7
+  source-version: 0.1.8
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 48134d5279ab302ba7972ca7253ff7b2a60b6826b290d450d9d729445855e2d2
+  skillforge-source-hash: 715995265b5b37a6295d0208684210643039e9beb9d15150066276c0a0c7b378
 ---
 
 # supabase-engineer
@@ -60,7 +60,7 @@ Use `completed` only when the requested outcome is implemented or answered and t
 - Use `getClaims()` to verify identity for protected pages/data, `getUser()` when a fresh Auth-server user record or session-state confirmation is required, and `getSession()` only when raw tokens/session metadata are needed. Never authorize from the unverified user object returned by `getSession()`.
 - Enable RLS on every table in an exposed schema and add policies matching the real ownership model. Storage authorization is enforced through policies on `storage.objects`.
 - Treat Data API grants and RLS as separate controls: grants decide whether `anon` or `authenticated` can attempt an operation; RLS decides which rows are accessible.
-- For ordinary user work, use a user JWT with RLS or a security-checked RPC. Test direct Data API, RPC, or Storage allow and deny behavior with a publishable key plus user JWT where that is the production boundary.
+- For ordinary user work, use a user JWT with RLS or a security-checked RPC. Verify allowed and denied operations directly as the intended Data API, RPC, or Storage caller.
 - Authorization data must come from trusted database state or trusted claims such as `app_metadata`; `user_metadata` is user-editable. Account for JWT claim freshness when permissions can change before token refresh.
 - Prefer `security invoker`; treat every `security definer` function as a privileged API, revoke default `PUBLIC` execute access, grant only intended roles, fix `search_path`, and test bypass behavior.
 - On PostgreSQL >=15, use `security_invoker = true` for exposed views that must obey caller RLS semantics; for older Postgres versions, revoke access or keep the view outside exposed schemas.
@@ -187,8 +187,9 @@ Report:
 - [Data Handling](references/data-handling.md) — Read this when you need PII, retention, redaction.
 - [Database](references/database.md) — Read this when you need Database CRUD, relationships, pagination.
 - [Db Functions](references/db-functions.md) — Read this when you need database functions, triggers, security-definer RPCs, and helper-function authorization.
+- [High-risk Backend Contract](references/high-risk-backend-contract.md) — Read this for high-risk Supabase-backed commands or reads involving a public API, persistent state, authorization, concurrency, money, external resources, or required audit evidence.
 - [Edge Functions](references/edge-functions.md) — Read this when you need Edge Functions (Deno).
-- [Migrations Cli](references/migrations-cli.md) — Read this before creating, diffing, replaying, or deploying database changes with the Supabase CLI.
+- [Migrations Cli](references/migrations-cli.md) — Read this before selecting a migration target or inspecting, generating, replaying, or deploying migrations with the Supabase CLI.
 - [Operations Observability](references/operations-observability.md) — Read this when you need Observability + debug bundles.
 - [Operations Release](references/operations-release.md) — Read this when you need CI, deploy, multi-env, upgrades, runbooks.
 - [Operations Reliability](references/operations-reliability.md) — Read this when you need Reliability, rate limits, performance.
@@ -199,9 +200,6 @@ Report:
 - [Troubleshooting](references/troubleshooting.md) — Read this when you need Common errors + fixes.
 - [Vector](references/vector.md) — Read this when you need Vector embeddings (pgvector).
 - [Webhooks](references/webhooks.md) — Read this before authenticating or testing Database Webhooks, Auth HTTP Hooks, or external-provider webhooks.
-
-## Optional references
-- [High-risk Backend Contract](references/high-risk-backend-contract.md) — Read this for high-risk Supabase-backed commands or reads involving a public API, persistent state, authorization, concurrency, money, external resources, or required audit evidence.
 
 ## Portability rules
 

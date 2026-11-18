@@ -1,0 +1,36 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -8 +8 @@
+-  source-version: 0.1.7
++  source-version: 0.1.8
+@@ -10 +10 @@
+-  skillforge-source-hash: 48134d5279ab302ba7972ca7253ff7b2a60b6826b290d450d9d729445855e2d2
++  skillforge-source-hash: 715995265b5b37a6295d0208684210643039e9beb9d15150066276c0a0c7b378
+@@ -189,0 +190 @@
++- [High-risk Backend Contract](references/high-risk-backend-contract.md) — Read this for high-risk Supabase-backed commands or reads involving a public API, persistent state, authorization, concurrency, money, external resources, or required audit evidence.
+@@ -191 +192 @@
+-- [Migrations Cli](references/migrations-cli.md) — Read this before creating, diffing, replaying, or deploying database changes with the Supabase CLI.
++- [Migrations Cli](references/migrations-cli.md) — Read this before selecting a migration target or inspecting, generating, replaying, or deploying migrations with the Supabase CLI.
+@@ -203,3 +203,0 @@
+-## Optional references
+-- [High-risk Backend Contract](references/high-risk-backend-contract.md) — Read this for high-risk Supabase-backed commands or reads involving a public API, persistent state, authorization, concurrency, money, external resources, or required audit evidence.
+-
+--- a/references/migrations-cli.md
++++ b/references/migrations-cli.md
+@@ -6 +6 @@
+-2. Run `supabase --version` and discover relevant commands with `supabase <group> <command> --help`.
++2. Run `supabase --version` and read the exact command's help. An unsupported command on older releases can print parent help and exit successfully.
+@@ -7,0 +8,2 @@
++
++Check the target before inspecting history. In CLI `2.76.10`, `migration list` defaults to the linked project and `--local` selects the local database. In `3.2.0`, `migration list` defaults to local and `--remote` selects a remote target. Match the project and address to the authorized environment.
+@@ -14,0 +17 @@
++- In CLI `3.2.0`, `db schema declarative sync --no-apply` generates the migration. Both `--apply` and the global `--yes` also apply it to the local database. Use the form that matches the authorized operation.
+@@ -27,2 +30,2 @@
+-- Use the installed CLI's explicit local target, such as `supabase migration up --local`, to apply pending local migrations without resetting data.
+-- `supabase db reset --local` is destructive. Verify that existing authorization covers resetting this exact disposable database; ask only when that permission or target is missing.
++- Use the installed CLI's local form of `migration up` to apply pending migrations without resetting data.
++- `db reset` destroys data on its selected target. Verify that existing authorization covers resetting this exact disposable database. Ask only when the permission or target is missing.
+--- a/references/rls.md
++++ b/references/rls.md
+@@ -11,0 +12 @@
++- For a filtered collection read, compare the returned IDs for a known visible row and a known hidden row under the same session. A successful empty array can mean either that RLS hid the row or that the ID is absent. Verify an application's HTTP mapping through its own route when that mapping is part of the claim.

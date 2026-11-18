@@ -22,7 +22,7 @@ Use `completed` only when the requested outcome is implemented or answered and t
 - Use `getClaims()` to verify identity for protected pages/data, `getUser()` when a fresh Auth-server user record or session-state confirmation is required, and `getSession()` only when raw tokens/session metadata are needed. Never authorize from the unverified user object returned by `getSession()`.
 - Enable RLS on every table in an exposed schema and add policies matching the real ownership model. Storage authorization is enforced through policies on `storage.objects`.
 - Treat Data API grants and RLS as separate controls: grants decide whether `anon` or `authenticated` can attempt an operation; RLS decides which rows are accessible.
-- For ordinary user work, use a user JWT with RLS or a security-checked RPC. Test direct Data API, RPC, or Storage allow and deny behavior with a publishable key plus user JWT where that is the production boundary.
+- For ordinary user work, use a user JWT with RLS or a security-checked RPC. Verify allowed and denied operations directly as the intended Data API, RPC, or Storage caller.
 - Authorization data must come from trusted database state or trusted claims such as `app_metadata`; `user_metadata` is user-editable. Account for JWT claim freshness when permissions can change before token refresh.
 - Prefer `security invoker`; treat every `security definer` function as a privileged API, revoke default `PUBLIC` execute access, grant only intended roles, fix `search_path`, and test bypass behavior.
 - On PostgreSQL >=15, use `security_invoker = true` for exposed views that must obey caller RLS semantics; for older Postgres versions, revoke access or keep the view outside exposed schemas.

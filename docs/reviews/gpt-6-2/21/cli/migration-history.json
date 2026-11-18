@@ -1,0 +1,35 @@
+{
+  "purpose": "Read a manually registered synthetic migration on the verified loopback of a new independent --network none container. The CLI is not asked to apply migrations. No remote project, no host mount.",
+  "image": "postgres@sha256:3a82e1f56c8f0f5616a11103ac3d47e632c3938698946a7ad26da0df1334744a",
+  "port": 54322,
+  "probes": [
+    {
+      "version": "2.76.10",
+      "command": "supabase migration list --local",
+      "binarySha256": "21e95a382b35ccd7bcc82cd02d1b73c9e2c0d4965c7e5125a33e75af484afd94",
+      "exit": 0,
+      "stdout": "\n  \n   Local          | Remote         | Time (UTC)          \n  ----------------|----------------|---------------------\n   20261118000100 | 20261118000100 | 2026-11-18 00:01:00 \n\n",
+      "stderr": "Connecting to local database...\n"
+    },
+    {
+      "version": "3.2.0",
+      "command": "supabase migration list",
+      "binarySha256": "0ed73393ce16dc967c1cafe824929bd97c8d11de0a5bc41e174710858860d1fe",
+      "exit": 0,
+      "stdout": "\n  \n   Local            | Local DB         | Time (UTC)            \n  ------------------|------------------|-----------------------\n   `20261118000100` | `20261118000100` | `2026-11-18 00:01:00` \n\n",
+      "stderr": "Target: local stack (127.0.0.1:54322)\n"
+    }
+  ],
+  "server": "PostgreSQL 18.4 (Debian 18.4-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+  "historyBefore": "20261118000100/document_receipt/CREATE TABLE public.document_receipt(id INTEGER PRIMARY KEY);",
+  "historyAfter": "20261118000100/document_receipt/CREATE TABLE public.document_receipt(id INTEGER PRIMARY KEY);",
+  "containerGone": true,
+  "immediateInspectionAfterStop": false,
+  "cleanupReadback": {
+    "checkedAt": "2026-11-18T22:10:18+00:00",
+    "labelMatchedExactName": true,
+    "destroyEventObserved": true,
+    "inspectionExit": 1,
+    "message": "Error response from daemon: No such container: {owned-container}"
+  }
+}

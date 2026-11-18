@@ -1,0 +1,283 @@
+{
+  "contract": "PREVIEW-1",
+  "authoritySha256": "c8f5691b582ae8694bc7727024d001b8196b8a71dc157300fab9c894bac01d5b",
+  "now": 2100000000,
+  "cases": [
+    {
+      "case": "positive-odd",
+      "request": {
+        "id": 1,
+        "subjectKey": "synthetic-1",
+        "unitMinor": "5",
+        "currency": "EUR",
+        "scale": 2,
+        "quantity": 3,
+        "expiresAt": 2100000061
+      },
+      "expected": {
+        "row": {
+          "id": 1,
+          "subjectKey": "synthetic-1",
+          "netMinor": "15",
+          "feeMinor": "7",
+          "expiresAt": 2100000061
+        },
+        "export": {
+          "id": 1,
+          "subjectKey": "synthetic-1",
+          "feeMinor": "7"
+        }
+      }
+    },
+    {
+      "case": "negative-odd",
+      "request": {
+        "id": 2,
+        "subjectKey": "synthetic-2",
+        "unitMinor": "-5",
+        "currency": "EUR",
+        "scale": 2,
+        "quantity": 3,
+        "expiresAt": 2100000062
+      },
+      "expected": {
+        "row": {
+          "id": 2,
+          "subjectKey": "synthetic-2",
+          "netMinor": "-15",
+          "feeMinor": "-8",
+          "expiresAt": 2100000062
+        },
+        "export": {
+          "id": 2,
+          "subjectKey": "synthetic-2",
+          "feeMinor": "-8"
+        }
+      }
+    },
+    {
+      "case": "beyond-double",
+      "request": {
+        "id": 3,
+        "subjectKey": "synthetic-3",
+        "unitMinor": "9007199254740993",
+        "currency": "EUR",
+        "scale": 2,
+        "quantity": 1,
+        "expiresAt": 2100000063
+      },
+      "expected": {
+        "row": {
+          "id": 3,
+          "subjectKey": "synthetic-3",
+          "netMinor": "9007199254740993",
+          "feeMinor": "4503599627370496",
+          "expiresAt": 2100000063
+        },
+        "export": {
+          "id": 3,
+          "subjectKey": "synthetic-3",
+          "feeMinor": "4503599627370496"
+        }
+      }
+    },
+    {
+      "case": "int64-min",
+      "request": {
+        "id": 4,
+        "subjectKey": "synthetic-4",
+        "unitMinor": "-9223372036854775808",
+        "currency": "EUR",
+        "scale": 2,
+        "quantity": 1,
+        "expiresAt": 2100000064
+      },
+      "expected": {
+        "row": {
+          "id": 4,
+          "subjectKey": "synthetic-4",
+          "netMinor": "-9223372036854775808",
+          "feeMinor": "-4611686018427387904",
+          "expiresAt": 2100000064
+        },
+        "export": {
+          "id": 4,
+          "subjectKey": "synthetic-4",
+          "feeMinor": "-4611686018427387904"
+        }
+      }
+    },
+    {
+      "case": "int64-max",
+      "request": {
+        "id": 5,
+        "subjectKey": "synthetic-5",
+        "unitMinor": "9223372036854775807",
+        "currency": "EUR",
+        "scale": 2,
+        "quantity": 1,
+        "expiresAt": 2100000065
+      },
+      "expected": {
+        "row": {
+          "id": 5,
+          "subjectKey": "synthetic-5",
+          "netMinor": "9223372036854775807",
+          "feeMinor": "4611686018427387903",
+          "expiresAt": 2100000065
+        },
+        "export": {
+          "id": 5,
+          "subjectKey": "synthetic-5",
+          "feeMinor": "4611686018427387903"
+        }
+      }
+    },
+    {
+      "case": "zero",
+      "request": {
+        "id": 6,
+        "subjectKey": "synthetic-6",
+        "unitMinor": "0",
+        "currency": "EUR",
+        "scale": 2,
+        "quantity": 10,
+        "expiresAt": 2100000066
+      },
+      "expected": {
+        "row": {
+          "id": 6,
+          "subjectKey": "synthetic-6",
+          "netMinor": "0",
+          "feeMinor": "0",
+          "expiresAt": 2100000066
+        },
+        "export": {
+          "id": 6,
+          "subjectKey": "synthetic-6",
+          "feeMinor": "0"
+        }
+      }
+    },
+    {
+      "case": "positive-net-overflow",
+      "request": {
+        "id": 101,
+        "subjectKey": "synthetic-101",
+        "unitMinor": "9223372036854775807",
+        "currency": "EUR",
+        "scale": 2,
+        "quantity": 2,
+        "expiresAt": 2100000161
+      },
+      "expected": {
+        "error": "range"
+      }
+    },
+    {
+      "case": "negative-net-overflow",
+      "request": {
+        "id": 102,
+        "subjectKey": "synthetic-102",
+        "unitMinor": "-9223372036854775808",
+        "currency": "EUR",
+        "scale": 2,
+        "quantity": 2,
+        "expiresAt": 2100000162
+      },
+      "expected": {
+        "error": "range"
+      }
+    },
+    {
+      "case": "unit-out-of-int64",
+      "request": {
+        "id": 103,
+        "subjectKey": "synthetic-103",
+        "unitMinor": "9223372036854775808",
+        "currency": "EUR",
+        "scale": 2,
+        "quantity": 1,
+        "expiresAt": 2100000163
+      },
+      "expected": {
+        "error": "range"
+      }
+    },
+    {
+      "case": "noncanonical-input",
+      "request": {
+        "id": 104,
+        "subjectKey": "synthetic-104",
+        "unitMinor": "05",
+        "currency": "EUR",
+        "scale": 2,
+        "quantity": 1,
+        "expiresAt": 2100000164
+      },
+      "expected": {
+        "error": "input"
+      }
+    },
+    {
+      "case": "wrong-currency",
+      "request": {
+        "id": 105,
+        "subjectKey": "synthetic-105",
+        "unitMinor": "5",
+        "currency": "USD",
+        "scale": 2,
+        "quantity": 1,
+        "expiresAt": 2100000165
+      },
+      "expected": {
+        "error": "input"
+      }
+    },
+    {
+      "case": "wrong-units",
+      "request": {
+        "id": 106,
+        "subjectKey": "synthetic-106",
+        "unitMinor": "5",
+        "currency": "EUR",
+        "scale": 3,
+        "quantity": 1,
+        "expiresAt": 2100000166
+      },
+      "expected": {
+        "error": "input"
+      }
+    },
+    {
+      "case": "zero-quantity",
+      "request": {
+        "id": 107,
+        "subjectKey": "synthetic-107",
+        "unitMinor": "5",
+        "currency": "EUR",
+        "scale": 2,
+        "quantity": 0,
+        "expiresAt": 2100000167
+      },
+      "expected": {
+        "error": "input"
+      }
+    },
+    {
+      "case": "expired",
+      "request": {
+        "id": 108,
+        "subjectKey": "synthetic-108",
+        "unitMinor": "5",
+        "currency": "EUR",
+        "scale": 2,
+        "quantity": 1,
+        "expiresAt": 2100000000
+      },
+      "expected": {
+        "error": "input"
+      }
+    }
+  ]
+}
