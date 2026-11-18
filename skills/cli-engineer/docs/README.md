@@ -23,8 +23,8 @@
 | [logs/implementation-log-20260702-1.md](logs/implementation-log-20260702-1.md) | Direct operator request | PASS |
 | [logs/implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) | Direct operator request | Independent scoped PASS |
 | [logs/implementation-log-20260716-1.md](logs/implementation-log-20260716-1.md) | Direct operator request | Independent PASS |
-
 | [logs/implementation-log-20260908-1.md](logs/implementation-log-20260908-1.md) | FOUR-SKILLS-20260908-v2 | Авторские исправления; независимая приёмка в общем журнале |
+| [logs/implementation-log-20261118-1.md](logs/implementation-log-20261118-1.md) | План от 18 ноября, пункт 29 | Установленная команда Tally и проверка правил для GPT‑6.2 Sol |
 
 ## Forward-test evidence
 

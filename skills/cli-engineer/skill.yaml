@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: cli-engineer
-  source-version: 0.2.1
+  source-version: 0.2.2
   recommended-skill-md-max-bytes: 20000
   description: >-
     Design, review, implement, verify, package, and release production-grade
@@ -71,6 +71,10 @@ copies:
     target: evals/fixtures/service-project.md
     description: Neutral fixture for service-boundary readiness claims.
 supporting:
+  - id: supporting-implementation-log-20261118-1
+    source: docs/logs/implementation-log-20261118-1.md
+    target: docs/logs/implementation-log-20261118-1.md
+    description: Non-normative record of the installed CLI verification study.
   - id: supporting-implementation-log-20260908-1
     source: docs/logs/implementation-log-20260908-1.md
     target: docs/logs/implementation-log-20260908-1.md
@@ -219,7 +223,7 @@ sections:
   gotchas:
     - id: gotcha-substrate-readiness
       priority: high
-      text: A Vite build, package scripts, green tests, help output, mock, or stub proves only its exercised boundary; none alone proves the representative installed CLI job or real service integration.
+      text: Verify the user’s job through the installed CLI.
     - id: gotcha-release-authority
       priority: high
       text: A request to prepare, review, configure, or make a CLI release-ready does not authorize npm publication, Git tags or pushes, GitHub releases, or trusted-publisher configuration.

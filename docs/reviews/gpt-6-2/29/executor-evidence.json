@@ -1,0 +1,761 @@
+[
+  {
+    "case": "ordinary",
+    "role": "A",
+    "code": "8fbd07",
+    "record": "record-717b0d989d",
+    "input_sha256": {
+      "SKILL.md": "c3bfd58accd178da66da372e023d1c56fdbd77677c190641a0d96cc4bf311b1a",
+      "agents/openai.yaml": "6636d02bb369b94d4609f716f4d239112e45827f90e0b3925fe6cce2afefe713",
+      "build/summary.md": "409864d9e38e8b20169916a51800547a755c8e46f586cd5fbc8093369b221225",
+      "references/architecture-and-layout.md": "b9146bb7ef055a0be35b979e399a0839159f185e24d523b6bbd6b5d40d60b187",
+      "references/clig-baseline.md": "04db969526870771fa235ab3c54baa3eed61e7c473ade9dfdd12bd610e6ce398",
+      "references/framework-selection.md": "404d236d1d93ac474ca34f16cff6320dc3811c5178562d4437f6e021030bccf9",
+      "references/service-backed-clis.md": "b6167536c12de7caddf6c23f57ab91b25550686bbfb7056ab658644ed0790a51",
+      "references/testing-and-release.md": "1242eed806eb5370a7877dff1e8b261256a6bea1063af15d09f3818c04495919",
+      "references/ux-and-security.md": "41ae8b7adb56b8878cf93bd73c2c2348c13dab0ea141d0867832e5d1008e9d84",
+      "release/contract.md": "b5c4b8267e987d2274fc9a9ebebb7de1f207f4bd903be080cb965a7eff641e68",
+      "release/engineering-tally-fixture-1.0.0.tgz": "43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b"
+    },
+    "model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"medium\"",
+    "isolated": {
+      "fresh": true,
+      "sandbox": "workspace-write",
+      "memories": "disabled",
+      "host_filesystem_read": "possible"
+    },
+    "root_exposure": [
+      {
+        "event": "item_2",
+        "raw_line_sha256": "439a285b74090ebd411d6819f2e6b23f469d908c684981f3e05adb71819d8860",
+        "command": "/bin/bash -lc 'cat SKILL.md'"
+      }
+    ],
+    "web_searches": [],
+    "independent_installed_reads": {
+      "archiveSha256": "43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b",
+      "successful": true,
+      "invocations": [
+        {
+          "arguments": [
+            "--help"
+          ],
+          "exit": 0,
+          "stdout": "tally 1.0.0\nUsage: tally sum <numbers...> [--json]\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "--version"
+          ],
+          "exit": 0,
+          "stdout": "1.0.0\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "sum",
+            "2",
+            "3",
+            "--json"
+          ],
+          "exit": 0,
+          "stdout": "{\"total\":5}\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "sum",
+            "bad",
+            "--json"
+          ],
+          "exit": 2,
+          "stdout": "",
+          "stderr": "Invalid number\n"
+        }
+      ]
+    },
+    "original_receipt_sha256": {
+      "answer.md": "4608dd2fe56e8949804ad2231b9b9bd6e138dbb8a9fd2b5794cf225f46cc11f7",
+      "result.json": "2a0934027d87b31530da5802be5cce77114d60f3dc8238e296d94bf8b4031e12",
+      "dispatch.json": "0e78276cf08887e75a6b1e029732c008072ee5dd7f91c5b93a6b64edfc795122",
+      "observer.json": "c34acfd72132f54551988cf0a1fa90b3abed45002e7f014e2d466e21121dbf37",
+      "events.jsonl": "8b9fc1c52eec31d9538045aa4016968782c79d5b9e1c5d58cd709942e2fa4247",
+      "task.md": "5c04ef5f65cd904428a174d00c21b39fc65e3fb0f04ad513e076e7fd85dfa371"
+    },
+    "authorized_change_check": true,
+    "observed_commands": [
+      "/bin/bash -lc \"ls -la && rg --files --hidden -g '\"'!.git'\"'\"",
+      "/bin/bash -lc 'cat SKILL.md'",
+      "/bin/bash -lc 'cat release/contract.md build/summary.md && sha256sum release/* build/* && tar -tvzf release/engineering-tally-fixture-1.0.0.tgz'",
+      "/bin/bash -lc 'cat references/testing-and-release.md references/ux-and-security.md references/architecture-and-layout.md'",
+      "/bin/bash -lc 'archive=release/engineering-tally-fixture-1.0.0.tgz\nfor member in package/package.json package/README.md package/dist/cli.js package/dist/legacy.js; do\n  tar -xOzf \"$archive\" \"$member\"\ndone\nnode --version\nnpm --version\nuname -sm'",
+      "/bin/bash -lc \"python3 - <<'PY'\nimport os\nfrom pathlib import Path\nimport subprocess\nfrom tempfile import TemporaryDirectory\nimport tarfile\n\nroot = Path.cwd()\narchive = root / \\\"release/engineering-tally-fixture-1.0.0.tgz\\\"\nwith TemporaryDirectory(prefix=\\\".tally-check.\\\", dir=root) as temp:\n    check = Path(temp)\n    consumer = check / \\\"consumer\\\"\n    run = check / \\\"run\\\"\n    tmp = check / \\\"tmp\\\"\n    for directory in (consumer, run, tmp):\n        directory.mkdir()\n    user_config = check / \\\"user.npmrc\\\"\n    global_config = check / \\\"global.npmrc\\\"\n    user_config.touch()\n    global_config.touch()\n    (consumer / \\\"package.json\\\").write_text('{\\\"private\\\":true}')\n    env = {\\\"PATH\\\": os.environ[\\\"PATH\\\"], \\\"TMPDIR\\\": str(tmp)}\n    installed = subprocess.run([\n        \\\"npm\\\", \\\"install\\\", \\\"--offline\\\", \\\"--no-audit\\\", \\\"--no-fund\\\",\n        \\\"--cache\\\", check / \\\"cache\\\", \\\"--userconfig\\\", user_config,\n        \\\"--globalconfig\\\", global_config, archive,\n    ], cwd=consumer, env=env, stdin=subprocess.DEVNULL, capture_output=True, timeout=30)\n    print(f\\\"npm install | exit={installed.returncode} stdout={installed.stdout\"'!r} stderr={installed.stderr!r}\", flush=True)\n    installed.check_returncode()\n    bin_path = consumer / \"node_modules/.bin/tally\"\n    print(f\"bin -> {os.readlink(bin_path)}\")\n    with tarfile.open(archive) as packed:\n        entry_matches = bin_path.read_bytes() == packed.extractfile(\"package/dist/cli.js\").read()\n    print(f\"Installed entry matches the tarball: {entry_matches}\")\n    expected = [\n        ([\"--help\"], 0, b\"tally 1.0.0'\"\\\\nUsage: tally sum <numbers...> [--json]\\\\n\\\", b\\\"\\\"),\n        ([\\\"--version\\\"], 0, b\\\"1.0.0\\\\n\\\", b\\\"\\\"),\n        ([\\\"sum\\\", \\\"2\\\", \\\"3\\\", \\\"--json\\\"], 0, b'{\\\"total\\\":5}\\\\n', b\\\"\\\"),\n        ([\\\"sum\\\", \\\"2\\\", \\\"bad\\\", \\\"--json\\\"], 2, b\\\"\\\", b\\\"Invalid number\\\\n\\\"),\n    ]\n    all_passed = entry_matches\n    for args, exit_code, stdout, stderr in expected:\n        result = subprocess.run([bin_path, *args], cwd=run, env=env,\n                                stdin=subprocess.DEVNULL, capture_output=True, timeout=10)\n        actual = (result.returncode, result.stdout, result.stderr)\n        passed = actual == (exit_code, stdout, stderr)\n        all_passed &= passed\n        print(f'tally {\\\" \\\".join(args)} | exit={actual[0]} stdout={actual[1]\"'!r} stderr={actual[2]!r} | {\"PASS\" if passed else \"FAIL\"}'\"')\n    remaining = list(run.iterdir())\n    print(f\\\"Run directory after checks: {remaining\"'!r}\")\nassert not check.exists()\nprint(\"Temporary installation removed.\")\nraise SystemExit(0 if all_passed and not remaining else 1)\nPY'",
+      "/bin/bash -lc \"sha256sum -c <<'EOF'\nb5c4b8267e987d2274fc9a9ebebb7de1f207f4bd903be080cb965a7eff641e68  release/contract.md\n43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b  release/engineering-tally-fixture-1.0.0.tgz\n409864d9e38e8b20169916a51800547a755c8e46f586cd5fbc8093369b221225  build/summary.md\nEOF\nrg --files --hidden -g '\"'!.git'\"'\""
+    ]
+  },
+  {
+    "case": "boundary",
+    "role": "B",
+    "code": "8f7ea7",
+    "record": "record-c401985f5d",
+    "input_sha256": {
+      "SKILL.md": "5f6233270137a53c53008c8a11ef616a5c2d630c58d2e6d3cf054edf31bbf706",
+      "agents/openai.yaml": "6636d02bb369b94d4609f716f4d239112e45827f90e0b3925fe6cce2afefe713",
+      "build/summary.md": "409864d9e38e8b20169916a51800547a755c8e46f586cd5fbc8093369b221225",
+      "references/architecture-and-layout.md": "b9146bb7ef055a0be35b979e399a0839159f185e24d523b6bbd6b5d40d60b187",
+      "references/clig-baseline.md": "04db969526870771fa235ab3c54baa3eed61e7c473ade9dfdd12bd610e6ce398",
+      "references/framework-selection.md": "404d236d1d93ac474ca34f16cff6320dc3811c5178562d4437f6e021030bccf9",
+      "references/service-backed-clis.md": "b6167536c12de7caddf6c23f57ab91b25550686bbfb7056ab658644ed0790a51",
+      "references/testing-and-release.md": "1242eed806eb5370a7877dff1e8b261256a6bea1063af15d09f3818c04495919",
+      "references/ux-and-security.md": "41ae8b7adb56b8878cf93bd73c2c2348c13dab0ea141d0867832e5d1008e9d84",
+      "release/contract.md": "674f0e5b03ac695993d2fc5a6e0345c24c3afc3fecb9174fae7093e75dd4fbd6",
+      "release/engineering-tally-fixture-1.2.0.tgz": "5becc89e02f8be1fb87533130e0ddb46c69a20cfefabcae64e02603757b2638a"
+    },
+    "model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"medium\"",
+    "isolated": {
+      "fresh": true,
+      "sandbox": "workspace-write",
+      "memories": "disabled",
+      "host_filesystem_read": "possible"
+    },
+    "root_exposure": [
+      {
+        "event": "item_2",
+        "raw_line_sha256": "ff0140ab2ca11e7b1840522b45e4dfeb67c196bb76b5be2d6ea1a2ea5f55c4d3",
+        "command": "/bin/bash -lc 'cat SKILL.md release/contract.md build/summary.md'"
+      }
+    ],
+    "web_searches": [],
+    "independent_installed_reads": {
+      "archiveSha256": "5becc89e02f8be1fb87533130e0ddb46c69a20cfefabcae64e02603757b2638a",
+      "successful": true,
+      "invocations": [
+        {
+          "arguments": [
+            "--help"
+          ],
+          "exit": 0,
+          "stdout": "tally 1.2.0\nUsage: tally sum <numbers...> [--json]\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "--version"
+          ],
+          "exit": 0,
+          "stdout": "1.2.0\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "sum",
+            "2",
+            "3",
+            "--json"
+          ],
+          "exit": 0,
+          "stdout": "Calculating\n{\"total\":5}\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "sum",
+            "bad",
+            "--json"
+          ],
+          "exit": 2,
+          "stdout": "",
+          "stderr": "Invalid number\n"
+        }
+      ]
+    },
+    "original_receipt_sha256": {
+      "answer.md": "fe7799f6952d2ee4c4d361583ab5a72c31a20532534dd6aaab1660fd0bbb7b34",
+      "result.json": "55ecbdcfff89936dcbed4b1157fd274a8fbfdc1f3dec0e0b63663b5309e38fe5",
+      "dispatch.json": "fa5e7aa5cda2099e99903c93edc582c8a082256e2109d2d4ac87c748753f6dbc",
+      "observer.json": "a1076cea5313107d20d186f2d1badda140d2b6a0f23f2568add24af33278a2f8",
+      "events.jsonl": "1ada3b96af38918e4d8ef1b26a08d82ac7fb4ecbec9f0d1e43a3f1d0d86492c6",
+      "task.md": "5c04ef5f65cd904428a174d00c21b39fc65e3fb0f04ad513e076e7fd85dfa371"
+    },
+    "authorized_change_check": true,
+    "observed_commands": [
+      "/bin/bash -lc \"ls -la\nrg --files --hidden -g '\"'!.git'\"'\"",
+      "/bin/bash -lc 'cat SKILL.md release/contract.md build/summary.md'",
+      "/bin/bash -lc 'cat references/testing-and-release.md references/ux-and-security.md\nsha256sum SKILL.md release/* build/*\ntar -tvzf release/engineering-tally-fixture-1.2.0.tgz\nnode --version\nnpm --version'",
+      "/bin/bash -lc 'archive=release/engineering-tally-fixture-1.2.0.tgz\nfor member in package/package.json package/README.md package/dist/entry.js package/dist/cli.js package/dist/legacy.js; do\n  tar -xOzf \"$archive\" \"$member\"\ndone\nuname -sm\ncommand -v node npm python3 unshare'",
+      "/bin/bash -lc \"python3 - <<'PY'\nimport hashlib\nimport json\nimport os\nfrom pathlib import Path\nimport shutil\nimport subprocess\nimport tempfile\n\nroot = Path.cwd()\narchive = root / 'release/engineering-tally-fixture-1.2.0.tgz'\ninputs = [p for dirname in ('release', 'build', 'references', 'agents') for p in (root / dirname).rglob('*') if p.is_file()]\ninputs.append(root / 'SKILL.md')\ndigests = {p: hashlib.sha256(p.read_bytes()).hexdigest() for p in inputs}\nnode = shutil.which('node')\nnpm = shutil.which('npm')\nwith tempfile.TemporaryDirectory(prefix='.tally-review-', dir=root) as work:\n    scratch = Path(work)\n    project = scratch / 'project'\n    consumer = scratch / 'consumer'\n    home = scratch / 'home'\n    for directory in (project, consumer, home):\n        directory.mkdir()\n    (project / 'package.json').write_text('{\\\"name\\\":\\\"tally-release-review\\\",\\\"version\\\":\\\"1.0.0\\\",\\\"private\\\":true}\\\\n')\n    env = {\n        'PATH': os.pathsep.join([str(Path(node).parent), '/usr/bin', '/bin']),\n        'HOME': str(home),\n        'TMPDIR': str(scratch),\n        'CI': '1',\n        'NO_COLOR': '1',\n        'LC_ALL': 'C',\n        'npm_config_cache': str(scratch / 'npm-cache'),\n        'npm_config_userconfig': str(scratch / 'user.npmrc'),\n        'npm_config_globalconfig': str(scratch / 'global.npmrc'),\n    }\n\n    def run(command, cwd):\n        result = subprocess.run(command, cwd=cwd, env=env, stdin=subprocess.DEVNULL, capture_output=True, text=True, timeout=30)\n        print(json.dumps(dict(command=command, exit=result.returncode, stdout=result.stdout, stderr=result.stderr)), flush=True)\n        return result\n\n    install = run([npm, 'install', '--offline', '--no-audit', '--no-fund', str(archive)], project)\n    install.check_returncode()\n    binpath = project / 'node_modules/.bin/tally'\n    installed = project / 'node_modules/engineering-tally-fixture'\n    manifest = json.loads((installed / 'package.json').read_text())\n    target = installed / manifest['bin']['tally']\n    assert binpath.resolve(strict=True) == target\n    print(f'Installed bin resolves to {target.relative_to(project)}')\n    before = sorted(scratch.rglob('*'))\n    for args in (['--help'], ['--version'], ['sum', '2', '3', '--json'], ['sum', 'bad', '3', '--json']):\n        run([str(binpath), *args], consumer)\n    assert before == sorted(scratch.rglob('*'))\n\nassert not scratch.exists()\nassert all(hashlib.sha256(p.read_bytes()).hexdigest() == digest for p, digest in digests.items())\nprint(f'Temporary install removed and {len(digests)} input files unchanged')\nPY\""
+    ]
+  },
+  {
+    "case": "boundary",
+    "role": "A",
+    "code": "0e136d",
+    "record": "record-8534286382",
+    "input_sha256": {
+      "SKILL.md": "c3bfd58accd178da66da372e023d1c56fdbd77677c190641a0d96cc4bf311b1a",
+      "agents/openai.yaml": "6636d02bb369b94d4609f716f4d239112e45827f90e0b3925fe6cce2afefe713",
+      "build/summary.md": "409864d9e38e8b20169916a51800547a755c8e46f586cd5fbc8093369b221225",
+      "references/architecture-and-layout.md": "b9146bb7ef055a0be35b979e399a0839159f185e24d523b6bbd6b5d40d60b187",
+      "references/clig-baseline.md": "04db969526870771fa235ab3c54baa3eed61e7c473ade9dfdd12bd610e6ce398",
+      "references/framework-selection.md": "404d236d1d93ac474ca34f16cff6320dc3811c5178562d4437f6e021030bccf9",
+      "references/service-backed-clis.md": "b6167536c12de7caddf6c23f57ab91b25550686bbfb7056ab658644ed0790a51",
+      "references/testing-and-release.md": "1242eed806eb5370a7877dff1e8b261256a6bea1063af15d09f3818c04495919",
+      "references/ux-and-security.md": "41ae8b7adb56b8878cf93bd73c2c2348c13dab0ea141d0867832e5d1008e9d84",
+      "release/contract.md": "674f0e5b03ac695993d2fc5a6e0345c24c3afc3fecb9174fae7093e75dd4fbd6",
+      "release/engineering-tally-fixture-1.2.0.tgz": "5becc89e02f8be1fb87533130e0ddb46c69a20cfefabcae64e02603757b2638a"
+    },
+    "model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"medium\"",
+    "isolated": {
+      "fresh": true,
+      "sandbox": "workspace-write",
+      "memories": "disabled",
+      "host_filesystem_read": "possible"
+    },
+    "root_exposure": [
+      {
+        "event": "item_2",
+        "raw_line_sha256": "439a285b74090ebd411d6819f2e6b23f469d908c684981f3e05adb71819d8860",
+        "command": "/bin/bash -lc 'cat SKILL.md'"
+      }
+    ],
+    "web_searches": [],
+    "independent_installed_reads": {
+      "archiveSha256": "5becc89e02f8be1fb87533130e0ddb46c69a20cfefabcae64e02603757b2638a",
+      "successful": true,
+      "invocations": [
+        {
+          "arguments": [
+            "--help"
+          ],
+          "exit": 0,
+          "stdout": "tally 1.2.0\nUsage: tally sum <numbers...> [--json]\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "--version"
+          ],
+          "exit": 0,
+          "stdout": "1.2.0\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "sum",
+            "2",
+            "3",
+            "--json"
+          ],
+          "exit": 0,
+          "stdout": "Calculating\n{\"total\":5}\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "sum",
+            "bad",
+            "--json"
+          ],
+          "exit": 2,
+          "stdout": "",
+          "stderr": "Invalid number\n"
+        }
+      ]
+    },
+    "original_receipt_sha256": {
+      "answer.md": "f150da2b1d6fdae369f42a436ef43a1d5ba19f80529fb039819f222f55cc2d76",
+      "result.json": "6fb8e18b19f95fcd787621da4c6cff14c0a192b15f397eb19c129696bfefd5ff",
+      "dispatch.json": "52a485d7cb417818bd8141b5be9eea2bf81381b4d3a9ee79140ab02e49f04f86",
+      "observer.json": "166825c69c4b8a172e1a718001f53015d74602094c9e2250b160278565723402",
+      "events.jsonl": "e0578d182307ffdbfcfa714b5a0d86b0fbb7f2ca930bdcfb7199672432eb2ba7",
+      "task.md": "5c04ef5f65cd904428a174d00c21b39fc65e3fb0f04ad513e076e7fd85dfa371"
+    },
+    "authorized_change_check": true,
+    "observed_commands": [
+      "/bin/bash -lc \"pwd; rg --files --hidden -g '\"'!.git/**'\"'; ls -la\"",
+      "/bin/bash -lc 'cat SKILL.md'",
+      "/bin/bash -lc 'cat release/contract.md build/summary.md; tar -tvzf release/engineering-tally-fixture-1.2.0.tgz; sha256sum release/* build/*'",
+      "/bin/bash -lc 'cat references/testing-and-release.md references/architecture-and-layout.md references/ux-and-security.md'",
+      "/bin/bash -lc 'tar -xOzf release/engineering-tally-fixture-1.2.0.tgz package/package.json package/README.md package/dist/entry.js package/dist/legacy.js package/dist/cli.js; uname -sm; node --version; npm --version'",
+      "/bin/bash -lc \"python3 - <<'PY'\nfrom pathlib import Path\nimport hashlib\nimport json\nimport os\nimport subprocess\nimport tempfile\n\nroot = Path.cwd()\narchive = root / 'release/engineering-tally-fixture-1.2.0.tgz'\ninputs = [archive, root / 'release/contract.md', root / 'build/summary.md']\ndef hashes():\n    return {str(path.relative_to(root)): hashlib.sha256(path.read_bytes()).hexdigest() for path in inputs}\n\nbefore = hashes()\nwith tempfile.TemporaryDirectory(prefix='.tally-review-', dir=root) as tmp:\n    work = Path(tmp)\n    project = work / 'consumer'\n    project.mkdir()\n    (project / 'package.json').write_text(json.dumps({'name': 'tally-review', 'private': True}))\n    home = work / 'home'\n    home.mkdir()\n    npmrc = work / 'empty-npmrc'\n    npmrc.touch()\n    env = {'PATH': os.environ['PATH'], 'HOME': str(home), 'TMPDIR': tmp, 'CI': '1',\n           'npm_config_cache': str(work / 'npm-cache'), 'npm_config_userconfig': str(npmrc),\n           'npm_config_globalconfig': str(npmrc)}\n\n    def run(command):\n        process = subprocess.run(command, cwd=project, env=env, stdin=subprocess.DEVNULL,\n                                 capture_output=True, timeout=20)\n        print(json.dumps({'command': command, 'exit': process.returncode,\n                          'stdout': process.stdout.decode(), 'stderr': process.stderr.decode()}))\n        return process.returncode, process.stdout, process.stderr\n\n    status, _, _ = run(['npm', 'install', '--offline', '--no-audit', '--no-fund', str(archive)])\n    if status:\n        raise SystemExit(status)\n\n    bin_path = project / 'node_modules/.bin/tally'\n    installed = project / 'node_modules/engineering-tally-fixture'\n    manifest = json.loads((installed / 'package.json').read_bytes())\n    target = installed / manifest['bin']['tally']\n    assert bin_path.resolve() == target\n    print(json.dumps({'bin': 'node_modules/.bin/tally', 'target': str(target.relative_to(project)),\n                      'version': manifest['version']}))\n\n    def snapshot():\n        return {str(path.relative_to(work)): (\n                    ('link', os.readlink(path)) if path.is_symlink() else\n                    ('file', hashlib.sha256(path.read_bytes()).hexdigest()) if path.is_file() else ('dir',)\n                ) for path in work.rglob('*')}\n\n    previous_tree = snapshot()\n    cases = [\n        (['--help'], (0, b'tally 1.2.0\\\\nUsage: tally sum <numbers...> [--json]\\\\n', b'')),\n        (['--version'], (0, b'1.2.0\\\\n', b'')),\n        (['sum', '2', '3', '--json'], (0, b'{\\\"total\\\":5}\\\\n', b'')),\n        (['sum', '2', 'bad', '--json'], (2, b'', b'Invalid number\\\\n')),\n    ]\n    for args, expected in cases:\n        print('contract_match=' + str(run(['./node_modules/.bin/tally', *args]) == expected))\n    print('local_tree_unchanged_after_cli=' + str(previous_tree == snapshot()))\n\nprint('temporary_installation_removed=' + str(not work.exists()))\nassert before == hashes()\nprint('inputs_unchanged=' + json.dumps(hashes()))\nPY\"",
+      "/bin/bash -lc \"python3 - <<'PY'\nfrom pathlib import Path\nimport hashlib\nimport json\nimport os\nimport subprocess\nimport tempfile\n\nroot = Path.cwd()\narchive = root / 'release/engineering-tally-fixture-1.2.0.tgz'\ninputs = [archive, root / 'release/contract.md', root / 'build/summary.md']\ndef hashes():\n    return {str(path.relative_to(root)): hashlib.sha256(path.read_bytes()).hexdigest() for path in inputs}\n\nbefore = hashes()\nwith tempfile.TemporaryDirectory(prefix='.tally-review-', dir=root) as tmp:\n    work = Path(tmp)\n    project = work / 'consumer'\n    project.mkdir()\n    (project / 'package.json').write_text(json.dumps({'name': 'tally-review', 'private': True}))\n    home = work / 'home'\n    home.mkdir()\n    user_npmrc = work / 'user-npmrc'\n    global_npmrc = work / 'global-npmrc'\n    user_npmrc.touch()\n    global_npmrc.touch()\n    env = {'PATH': os.environ['PATH'], 'HOME': str(home), 'TMPDIR': tmp, 'CI': '1',\n           'npm_config_cache': str(work / 'npm-cache'), 'npm_config_userconfig': str(user_npmrc),\n           'npm_config_globalconfig': str(global_npmrc)}\n\n    def run(command):\n        process = subprocess.run(command, cwd=project, env=env, stdin=subprocess.DEVNULL,\n                                 capture_output=True, timeout=20)\n        print(json.dumps({'command': command, 'exit': process.returncode,\n                          'stdout': process.stdout.decode(), 'stderr': process.stderr.decode()}))\n        return process.returncode, process.stdout, process.stderr\n\n    status, _, _ = run(['npm', 'install', '--offline', '--no-audit', '--no-fund', str(archive)])\n    if status:\n        raise SystemExit(status)\n\n    bin_path = project / 'node_modules/.bin/tally'\n    installed = project / 'node_modules/engineering-tally-fixture'\n    manifest = json.loads((installed / 'package.json').read_bytes())\n    target = installed / manifest['bin']['tally']\n    assert bin_path.resolve() == target\n    print(json.dumps({'bin': 'node_modules/.bin/tally', 'target': str(target.relative_to(project)),\n                      'version': manifest['version']}))\n\n    def snapshot():\n        return {str(path.relative_to(work)): (\n                    ('link', os.readlink(path)) if path.is_symlink() else\n                    ('file', hashlib.sha256(path.read_bytes()).hexdigest()) if path.is_file() else ('dir',)\n                ) for path in work.rglob('*')}\n\n    previous_tree = snapshot()\n    cases = [\n        (['--help'], (0, b'tally 1.2.0\\\\nUsage: tally sum <numbers...> [--json]\\\\n', b'')),\n        (['--version'], (0, b'1.2.0\\\\n', b'')),\n        (['sum', '2', '3', '--json'], (0, b'{\\\"total\\\":5}\\\\n', b'')),\n        (['sum', '2', 'bad', '--json'], (2, b'', b'Invalid number\\\\n')),\n    ]\n    for args, expected in cases:\n        print('contract_match=' + str(run(['./node_modules/.bin/tally', *args]) == expected))\n    print('local_tree_unchanged_after_cli=' + str(previous_tree == snapshot()))\n\nprint('temporary_installation_removed=' + str(not work.exists()))\nassert before == hashes()\nprint('inputs_unchanged=' + json.dumps(hashes()))\nPY\""
+    ]
+  },
+  {
+    "case": "ordinary",
+    "role": "B",
+    "code": "3eb3e8",
+    "record": "record-bcd14410fc",
+    "input_sha256": {
+      "SKILL.md": "5f6233270137a53c53008c8a11ef616a5c2d630c58d2e6d3cf054edf31bbf706",
+      "agents/openai.yaml": "6636d02bb369b94d4609f716f4d239112e45827f90e0b3925fe6cce2afefe713",
+      "build/summary.md": "409864d9e38e8b20169916a51800547a755c8e46f586cd5fbc8093369b221225",
+      "references/architecture-and-layout.md": "b9146bb7ef055a0be35b979e399a0839159f185e24d523b6bbd6b5d40d60b187",
+      "references/clig-baseline.md": "04db969526870771fa235ab3c54baa3eed61e7c473ade9dfdd12bd610e6ce398",
+      "references/framework-selection.md": "404d236d1d93ac474ca34f16cff6320dc3811c5178562d4437f6e021030bccf9",
+      "references/service-backed-clis.md": "b6167536c12de7caddf6c23f57ab91b25550686bbfb7056ab658644ed0790a51",
+      "references/testing-and-release.md": "1242eed806eb5370a7877dff1e8b261256a6bea1063af15d09f3818c04495919",
+      "references/ux-and-security.md": "41ae8b7adb56b8878cf93bd73c2c2348c13dab0ea141d0867832e5d1008e9d84",
+      "release/contract.md": "b5c4b8267e987d2274fc9a9ebebb7de1f207f4bd903be080cb965a7eff641e68",
+      "release/engineering-tally-fixture-1.0.0.tgz": "43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b"
+    },
+    "model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"medium\"",
+    "isolated": {
+      "fresh": true,
+      "sandbox": "workspace-write",
+      "memories": "disabled",
+      "host_filesystem_read": "possible"
+    },
+    "root_exposure": [
+      {
+        "event": "item_2",
+        "raw_line_sha256": "0fad50ae051a5ed06af24610a2017b7755d8d551a889584c0aa024705d28ba0a",
+        "command": "/bin/bash -lc 'cat SKILL.md'"
+      }
+    ],
+    "web_searches": [],
+    "independent_installed_reads": {
+      "archiveSha256": "43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b",
+      "successful": true,
+      "invocations": [
+        {
+          "arguments": [
+            "--help"
+          ],
+          "exit": 0,
+          "stdout": "tally 1.0.0\nUsage: tally sum <numbers...> [--json]\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "--version"
+          ],
+          "exit": 0,
+          "stdout": "1.0.0\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "sum",
+            "2",
+            "3",
+            "--json"
+          ],
+          "exit": 0,
+          "stdout": "{\"total\":5}\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "sum",
+            "bad",
+            "--json"
+          ],
+          "exit": 2,
+          "stdout": "",
+          "stderr": "Invalid number\n"
+        }
+      ]
+    },
+    "original_receipt_sha256": {
+      "answer.md": "c206381d8f793dbe0bcaca67797c6137d8d769ec2370d4cd851de3cf35bed0e7",
+      "result.json": "90cf91440123470e381566104cfa485777acc5a2565b8c883dcceb5d665c5fc3",
+      "dispatch.json": "3b68db96a31f4fc0115178a7ef6a39295e9d03de24a0eb44582361aa741bc2b9",
+      "observer.json": "4c8f9aa1d6052b71a518dada07bfcbe925c46ee28023df7677c205d55b7351b2",
+      "events.jsonl": "737ebc2b06d2fb03a1ded4c275eb57239ac70ba0fa2b3718b26585679837f6f0",
+      "task.md": "5c04ef5f65cd904428a174d00c21b39fc65e3fb0f04ad513e076e7fd85dfa371"
+    },
+    "authorized_change_check": true,
+    "observed_commands": [
+      "/bin/bash -lc \"pwd; rg --files --hidden -g '\"'!.git'\"' ; ls -la\"",
+      "/bin/bash -lc 'cat SKILL.md'",
+      "/bin/bash -lc 'cat release/contract.md build/summary.md; sha256sum release/* build/* SKILL.md; tar -tvzf release/*.tgz'",
+      "/bin/bash -lc 'cat references/testing-and-release.md references/ux-and-security.md'",
+      "/bin/bash -lc 'find . -type f -print0 | sort -z | xargs -0 sha256sum'",
+      "/bin/bash -lc 'for member in package/package.json package/README.md package/dist/cli.js package/dist/legacy.js; do tar -xOzf release/engineering-tally-fixture-1.0.0.tgz \"$member\"; done; node --version; npm --version; uname -sm'",
+      "/bin/bash -lc \"python3 - <<'PY'\nimport hashlib\nimport json\nimport os\nfrom pathlib import Path\nimport shutil\nimport stat\nimport subprocess\nimport tarfile\nimport tempfile\n\nroot = Path.cwd()\narchive = root / \\\"release/engineering-tally-fixture-1.0.0.tgz\\\"\ndef input_digests():\n    return {\n        path.relative_to(root).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()\n        for path in sorted(root.rglob(\\\"*\\\"))\n        if path.is_file()\n    }\n\ndef run(command, cwd, env):\n    result = subprocess.run(command, cwd=cwd, env=env, stdin=subprocess.DEVNULL,\n                            capture_output=True, timeout=30)\n    print(json.dumps({\\\"command\\\": command, \\\"exit\\\": result.returncode,\n                      \\\"stdout\\\": result.stdout.decode(errors=\\\"replace\\\"),\n                      \\\"stderr\\\": result.stderr.decode(errors=\\\"replace\\\")}, ensure_ascii=False))\n    return result\n\ndef directory_snapshot(directory):\n    snapshot = {}\n    for path in sorted(directory.rglob(\\\"*\\\")):\n        metadata = path.lstat()\n        content = None\n        if path.is_symlink():\n            content = os.readlink(path)\n        elif path.is_file():\n            content = hashlib.sha256(path.read_bytes()).hexdigest()\n        snapshot[str(path.relative_to(directory))] = (\n            stat.S_IMODE(metadata.st_mode), metadata.st_mtime_ns, content\n        )\n    return snapshot\n\nbefore = input_digests()\nwith tempfile.TemporaryDirectory(prefix=\\\".tally-verify-\\\", dir=root) as temporary:\n    scratch = Path(temporary)\n    project = scratch / \\\"consumer\\\"\n    project.mkdir()\n    work = scratch / \\\"run\\\"\n    work.mkdir()\n    home = scratch / \\\"home\\\"\n    home.mkdir()\n    tmp = scratch / \\\"tmp\\\"\n    tmp.mkdir()\n    (project / \\\"package.json\\\").write_text('{\\\"name\\\":\\\"tally-consumer-check\\\",\\\"version\\\":\\\"1.0.0\\\",\\\"private\\\":true}\\\\n')\n    tools = [shutil.which(name) for name in (\\\"npm\\\", \\\"node\\\")]\n    assert all(tools)\n    path = os.pathsep.join(dict.fromkeys([*(str(Path(tool).parent) for tool in tools), \\\"/usr/bin\\\", \\\"/bin\\\"]))\n    env = {\\\"HOME\\\": str(home), \\\"TMPDIR\\\": str(tmp), \\\"PATH\\\": path, \\\"LC_ALL\\\": \\\"C\\\",\n           \\\"npm_config_userconfig\\\": str(scratch / \\\"user.npmrc\\\"),\n           \\\"npm_config_globalconfig\\\": str(scratch / \\\"global.npmrc\\\"),\n           \\\"npm_config_cache\\\": str(scratch / \\\"cache\\\")}\n    install = run([\\\"npm\\\", \\\"install\\\", \\\"--offline\\\", \\\"--no-audit\\\", \\\"--no-fund\\\", str(archive)], project, env)\n    assert install.returncode == 0, \\\"Offline installation failed\\\"\n    installed = project / \\\"node_modules/engineering-tally-fixture\\\"\n    bin_dir = project / \\\"node_modules/.bin\\\"\n    env[\\\"PATH\\\"] = str(bin_dir) + os.pathsep + env[\\\"PATH\\\"]\n    resolved = Path(shutil.which(\\\"tally\\\", path=env[\\\"PATH\\\"]))\n    print(\\\"Resolved bin:\\\", resolved.relative_to(scratch), \\\"->\\\", resolved.resolve().relative_to(scratch))\n    assert resolved == bin_dir / \\\"tally\\\"\n    assert resolved.resolve() == installed / \\\"dist/cli.js\\\"\n    with tarfile.open(archive) as package:\n        for name in (\\\"package.json\\\", \\\"dist/cli.js\\\", \\\"dist/legacy.js\\\", \\\"README.md\\\"):\n            assert package.extractfile(\\\"package/\\\" + name).read() == (installed / name).read_bytes()\n    cli_before = directory_snapshot(scratch)\n    checks = [\n        ([\\\"--help\\\"], 0, b\\\"tally 1.0.0\\\\nUsage: tally sum <numbers...> [--json]\\\\n\\\", b\\\"\\\"),\n        ([\\\"--version\\\"], 0, b\\\"1.0.0\\\\n\\\", b\\\"\\\"),\n        ([\\\"sum\\\", \\\"2\\\", \\\"3\\\", \\\"--json\\\"], 0, b'{\\\"total\\\":5}\\\\n', b\\\"\\\"),\n        ([\\\"sum\\\", \\\"2\\\", \\\"bad\\\", \\\"--json\\\"], 2, b\\\"\\\", b\\\"Invalid number\\\\n\\\"),\n    ]\n    passed = []\n    for args, code, stdout, stderr in checks:\n        result = run([\\\"tally\\\", *args], work, env)\n        passed.append((result.returncode, result.stdout, result.stderr) == (code, stdout, stderr))\n    print(\\\"Command checks:\\\", passed)\n    print(\\\"CLI filesystem side effects:\\\", cli_before \"'!= directory_snapshot(scratch))\n    assert all(passed)\n    assert cli_before == directory_snapshot(scratch)\n\nassert input_digests() == before\nprint(\"Temporary installation removed. All input digests unchanged.\")\nPY'"
+    ]
+  },
+  {
+    "case": "boundary",
+    "role": "C",
+    "code": "6ad3a9",
+    "record": "record-8b8ef2a850",
+    "input_sha256": {
+      "SKILL.md": "ec4b0c979606598123ddb2ccb5e82274a5c6d8aaaf1f6eb67ad3d0f7d8de72e9",
+      "agents/openai.yaml": "6636d02bb369b94d4609f716f4d239112e45827f90e0b3925fe6cce2afefe713",
+      "build/summary.md": "409864d9e38e8b20169916a51800547a755c8e46f586cd5fbc8093369b221225",
+      "references/architecture-and-layout.md": "b9146bb7ef055a0be35b979e399a0839159f185e24d523b6bbd6b5d40d60b187",
+      "references/clig-baseline.md": "04db969526870771fa235ab3c54baa3eed61e7c473ade9dfdd12bd610e6ce398",
+      "references/framework-selection.md": "404d236d1d93ac474ca34f16cff6320dc3811c5178562d4437f6e021030bccf9",
+      "references/service-backed-clis.md": "b6167536c12de7caddf6c23f57ab91b25550686bbfb7056ab658644ed0790a51",
+      "references/testing-and-release.md": "1242eed806eb5370a7877dff1e8b261256a6bea1063af15d09f3818c04495919",
+      "references/ux-and-security.md": "41ae8b7adb56b8878cf93bd73c2c2348c13dab0ea141d0867832e5d1008e9d84",
+      "release/contract.md": "674f0e5b03ac695993d2fc5a6e0345c24c3afc3fecb9174fae7093e75dd4fbd6",
+      "release/engineering-tally-fixture-1.2.0.tgz": "5becc89e02f8be1fb87533130e0ddb46c69a20cfefabcae64e02603757b2638a"
+    },
+    "model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"medium\"",
+    "isolated": {
+      "fresh": true,
+      "sandbox": "workspace-write",
+      "memories": "disabled",
+      "host_filesystem_read": "possible"
+    },
+    "root_exposure": [
+      {
+        "event": "item_2",
+        "raw_line_sha256": "f40503b0b6691290b98a539856351c9e273e0115cd1e1c14b7fab8cca25fd181",
+        "command": "/bin/bash -lc 'cat SKILL.md release/contract.md build/summary.md'"
+      }
+    ],
+    "web_searches": [],
+    "independent_installed_reads": {
+      "archiveSha256": "5becc89e02f8be1fb87533130e0ddb46c69a20cfefabcae64e02603757b2638a",
+      "successful": true,
+      "invocations": [
+        {
+          "arguments": [
+            "--help"
+          ],
+          "exit": 0,
+          "stdout": "tally 1.2.0\nUsage: tally sum <numbers...> [--json]\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "--version"
+          ],
+          "exit": 0,
+          "stdout": "1.2.0\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "sum",
+            "2",
+            "3",
+            "--json"
+          ],
+          "exit": 0,
+          "stdout": "Calculating\n{\"total\":5}\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "sum",
+            "bad",
+            "--json"
+          ],
+          "exit": 2,
+          "stdout": "",
+          "stderr": "Invalid number\n"
+        }
+      ]
+    },
+    "original_receipt_sha256": {
+      "answer.md": "a175937e32e033b909981f428966853f742a437c4bf0c14c7ad46e229c3c3291",
+      "result.json": "b290172590a01af64244b4c80a3003ce9e5a6df841521c57741c1dd21281998e",
+      "dispatch.json": "0a6626e1189d51006b2d3434f18d17a3e2a6f454fdead7e18df60307ca90c5c3",
+      "observer.json": "d0bfb143ecff88395920edb63e116d8010bbd408ed8e9e573ad7e6be6759f13e",
+      "events.jsonl": "a41e7a14273b2a42959f318aa45d4a6683500198623db04ed2468c1c3976c8e6",
+      "task.md": "5c04ef5f65cd904428a174d00c21b39fc65e3fb0f04ad513e076e7fd85dfa371"
+    },
+    "authorized_change_check": true,
+    "observed_commands": [
+      "/bin/bash -lc \"pwd; rg --files --hidden -g '\"'!.git/**'\"'\"",
+      "/bin/bash -lc 'cat SKILL.md release/contract.md build/summary.md'",
+      "/bin/bash -lc 'ls -la; ls -la release build; tar -tvzf release/engineering-tally-fixture-1.2.0.tgz; sha256sum release/*.tgz'",
+      "/bin/bash -lc 'cat references/testing-and-release.md references/ux-and-security.md'",
+      "/bin/bash -lc 'tar -xOzf release/engineering-tally-fixture-1.2.0.tgz package/package.json package/dist/cli.js package/dist/entry.js package/dist/legacy.js package/README.md; node --version; npm --version; uname -sm'",
+      "/bin/bash -lc \"python3 - <<'PY'\nimport hashlib\nimport os\nfrom pathlib import Path\nimport shutil\nimport subprocess\nimport tempfile\n\nroot = Path.cwd()\narchive = root / 'release/engineering-tally-fixture-1.2.0.tgz'\ninputs = [archive, root / 'release/contract.md', root / 'build/summary.md', root / 'SKILL.md']\ndef hashes():\n    return {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in inputs}\n\ndef run(label, args, cwd, env):\n    result = subprocess.run(args, cwd=cwd, env=env, stdin=subprocess.DEVNULL, capture_output=True, timeout=20)\n    print(f'{label}\\\\n  exit={result.returncode}\\\\n  stdout={result.stdout\"'!r}'\"\\\\n  stderr={result.stderr\"'!r}'\"', flush=True)\n    return result\n\nbefore = hashes()\nwith tempfile.TemporaryDirectory(prefix='.tally-review-', dir=root) as temp:\n    base = Path(temp)\n    install = base / 'install'\n    run_dir = base / 'run'\n    install.mkdir()\n    run_dir.mkdir()\n    (install / 'package.json').write_text('{\\\"name\\\":\\\"tally-review\\\",\\\"version\\\":\\\"0.0.0\\\",\\\"private\\\":true}\\\\n')\n    for name in ('user.npmrc', 'global.npmrc'):\n        (base / name).touch()\n    env = {'PATH': os.environ['PATH'], 'LC_ALL': 'C', 'CI': '1', 'NO_COLOR': '1', 'TMPDIR': str(base)}\n    npm = shutil.which('npm', path=env['PATH'])\n    result = run('npm install --offline --no-audit --no-fund <release archive>', [\n        npm, 'install', '--offline', '--no-audit', '--no-fund', '--cache', str(base / 'cache'),\n        '--userconfig', str(base / 'user.npmrc'), '--globalconfig', str(base / 'global.npmrc'), str(archive),\n    ], install, env)\n    assert result.returncode == 0\n    bin_dir = install / 'node_modules/.bin'\n    env['PATH'] = str(bin_dir) + os.pathsep + env['PATH']\n    tally = shutil.which('tally', path=env['PATH'])\n    expected_entry = install / 'node_modules/engineering-tally-fixture/dist/entry.js'\n    assert tally == str(bin_dir / 'tally') and Path(tally).resolve() == expected_entry\n    print(f'Installed bin points to {os.readlink(tally)}')\n    for args in (['--help'], ['--version'], ['sum', '2', '3', '--json'], ['sum', '2', 'bad', '--json']):\n        run('tally ' + ' '.join(args), [tally, *args], run_dir, env)\n    print(f'Working directory after CLI runs: {list(run_dir.iterdir())}')\nassert not base.exists()\nassert hashes() == before\nprint('Temporary installation removed. Input SHA-256 hashes unchanged.')\nPY\""
+    ]
+  },
+  {
+    "case": "holdout",
+    "role": "C",
+    "code": "8ae3fc",
+    "record": "record-265ad49c1c",
+    "input_sha256": {
+      "SKILL.md": "ec4b0c979606598123ddb2ccb5e82274a5c6d8aaaf1f6eb67ad3d0f7d8de72e9",
+      "agents/openai.yaml": "6636d02bb369b94d4609f716f4d239112e45827f90e0b3925fe6cce2afefe713",
+      "build/summary.md": "409864d9e38e8b20169916a51800547a755c8e46f586cd5fbc8093369b221225",
+      "references/architecture-and-layout.md": "b9146bb7ef055a0be35b979e399a0839159f185e24d523b6bbd6b5d40d60b187",
+      "references/clig-baseline.md": "04db969526870771fa235ab3c54baa3eed61e7c473ade9dfdd12bd610e6ce398",
+      "references/framework-selection.md": "404d236d1d93ac474ca34f16cff6320dc3811c5178562d4437f6e021030bccf9",
+      "references/service-backed-clis.md": "b6167536c12de7caddf6c23f57ab91b25550686bbfb7056ab658644ed0790a51",
+      "references/testing-and-release.md": "1242eed806eb5370a7877dff1e8b261256a6bea1063af15d09f3818c04495919",
+      "references/ux-and-security.md": "41ae8b7adb56b8878cf93bd73c2c2348c13dab0ea141d0867832e5d1008e9d84",
+      "release/contract.md": "9d534877c33120a9ec5da7253a7a34dd8d772f99f072acc0b50c0d586c6e34ef",
+      "release/engineering-tally-fixture-1.2.1.tgz": "a30df8923106a0fe06b0977dc259e91b79c1187f29f2acd0c5e407852bb449f6"
+    },
+    "model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"medium\"",
+    "isolated": {
+      "fresh": true,
+      "sandbox": "workspace-write",
+      "memories": "disabled",
+      "host_filesystem_read": "possible"
+    },
+    "root_exposure": [
+      {
+        "event": "item_1",
+        "raw_line_sha256": "5c8325ac4619d78f8cb2ba0cc66ce96bd597d989847b34ff071a3b83f3b511cd",
+        "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git'\"' && cat SKILL.md\""
+      }
+    ],
+    "web_searches": [],
+    "independent_installed_reads": {
+      "archiveSha256": "a30df8923106a0fe06b0977dc259e91b79c1187f29f2acd0c5e407852bb449f6",
+      "successful": true,
+      "invocations": [
+        {
+          "arguments": [
+            "--help"
+          ],
+          "exit": 0,
+          "stdout": "tally 1.2.1\nUsage: tally sum <numbers...> [--json]\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "--version"
+          ],
+          "exit": 0,
+          "stdout": "1.2.1\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "sum",
+            "2",
+            "3",
+            "--json"
+          ],
+          "exit": 0,
+          "stdout": "{\"total\":5}\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "sum",
+            "bad",
+            "--json"
+          ],
+          "exit": 0,
+          "stdout": "Invalid number\n",
+          "stderr": ""
+        }
+      ]
+    },
+    "original_receipt_sha256": {
+      "answer.md": "b4ac4e5c029656715d8e67454de61efaa961fc64b0230dc7508e9aadd4470406",
+      "result.json": "ac24462e8a2cd09436491ce8c334a4466000aae2af2566fa7b34b2fce81c6ab7",
+      "dispatch.json": "e4e90089ce3f32b497358456fb554c4ce5e830c9d5ac8eb7f26aaa5f839e5827",
+      "observer.json": "fe198a580a2d0e19ab6ba79550f3a4fda1912a35374a1ee80a127d97d23f8bfd",
+      "events.jsonl": "c1a286b00e556c58c714ab54203bd36c4c1cd5e860ddd56bc8f03b07fc7310a4",
+      "task.md": "5c04ef5f65cd904428a174d00c21b39fc65e3fb0f04ad513e076e7fd85dfa371"
+    },
+    "authorized_change_check": true,
+    "observed_commands": [
+      "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git'\"' && cat SKILL.md\"",
+      "/bin/bash -lc 'cat references/testing-and-release.md references/service-backed-clis.md references/ux-and-security.md'",
+      "/bin/bash -lc 'cat release/contract.md build/summary.md && sha256sum release/* build/* && tar -tvzf release/engineering-tally-fixture-1.2.1.tgz && node --version && npm --version && uname -sm'",
+      "/bin/bash -lc 'tar -xOzf release/engineering-tally-fixture-1.2.1.tgz package/package.json package/dist/cli.js package/dist/legacy.js package/README.md && command -v node npm python3'",
+      "/bin/bash -lc \"python3 - <<'PY'\nimport hashlib\nimport os\nfrom pathlib import Path\nimport shutil\nimport subprocess\nimport tempfile\n\nroot = Path.cwd()\narchive = root / 'release/engineering-tally-fixture-1.2.1.tgz'\ninputs = (archive, root / 'release/contract.md', root / 'build/summary.md', root / 'SKILL.md')\nbefore = {p: hashlib.sha256(p.read_bytes()).hexdigest() for p in inputs}\nwith tempfile.TemporaryDirectory(prefix='.tally-review-', dir=root) as directory:\n    sandbox = Path(directory)\n    consumer = sandbox / 'consumer'\n    run = sandbox / 'run'\n    home = sandbox / 'home'\n    for path in (consumer, run, home):\n        path.mkdir()\n    (consumer / 'package.json').write_text('{\\\"name\\\":\\\"local-tally-check\\\",\\\"version\\\":\\\"1.0.0\\\",\\\"private\\\":true}\\\\n')\n    path = os.pathsep.join(dict.fromkeys((str(Path(shutil.which('node')).parent), str(Path(shutil.which('npm')).parent), '/usr/bin', '/bin')))\n    env = {'PATH': path, 'HOME': str(home), 'TMPDIR': str(sandbox), 'XDG_CONFIG_HOME': str(home / '.config'),\n           'XDG_CACHE_HOME': str(home / '.cache'), 'CI': 'true', 'NO_COLOR': '1', 'LANG': 'C'}\n    def invoke(args, cwd, env):\n        p = subprocess.run(args, cwd=cwd, env=env, stdin=subprocess.DEVNULL, capture_output=True, timeout=20)\n        print(f'{args\"'!r}: exit={p.returncode}, stdout={p.stdout!r}, stderr={p.stderr!r}'\"', flush=True)\n        return p\n    installation = invoke(['npm','install','--offline','--no-audit','--no-fund','--cache',str(sandbox / 'cache'), str(archive)], consumer, env)\n    if installation.returncode == 0:\n        bin_dir = consumer / 'node_modules/.bin'\n        env['PATH'] = str(bin_dir) + os.pathsep + env['PATH']\n        resolved = Path(shutil.which('tally', path=env['PATH']))\n        print('Resolved bin:', resolved.relative_to(sandbox), '->', resolved.resolve().relative_to(sandbox))\n        assert resolved == bin_dir / 'tally'\n        assert resolved.resolve() == consumer / 'node_modules/engineering-tally-fixture/dist/cli.js'\n        print('Run directory before:', list(run.iterdir()))\n        for args in (['--help'], ['--version'], ['sum','2','3','--json'], ['sum','2','bad','--json']):\n            invoke(['tally', *args], run, env)\n        print('Run directory after:', list(run.iterdir()))\nprint('Temporary installation removed:', not sandbox.exists())\nprint('Input hashes unchanged:', all(hashlib.sha256(p.read_bytes()).hexdigest() == digest for p, digest in before.items()))\nPY\""
+    ]
+  },
+  {
+    "case": "holdout",
+    "role": "A",
+    "code": "34f1cc",
+    "record": "record-3baa0d6ee7",
+    "input_sha256": {
+      "SKILL.md": "c3bfd58accd178da66da372e023d1c56fdbd77677c190641a0d96cc4bf311b1a",
+      "agents/openai.yaml": "6636d02bb369b94d4609f716f4d239112e45827f90e0b3925fe6cce2afefe713",
+      "build/summary.md": "409864d9e38e8b20169916a51800547a755c8e46f586cd5fbc8093369b221225",
+      "references/architecture-and-layout.md": "b9146bb7ef055a0be35b979e399a0839159f185e24d523b6bbd6b5d40d60b187",
+      "references/clig-baseline.md": "04db969526870771fa235ab3c54baa3eed61e7c473ade9dfdd12bd610e6ce398",
+      "references/framework-selection.md": "404d236d1d93ac474ca34f16cff6320dc3811c5178562d4437f6e021030bccf9",
+      "references/service-backed-clis.md": "b6167536c12de7caddf6c23f57ab91b25550686bbfb7056ab658644ed0790a51",
+      "references/testing-and-release.md": "1242eed806eb5370a7877dff1e8b261256a6bea1063af15d09f3818c04495919",
+      "references/ux-and-security.md": "41ae8b7adb56b8878cf93bd73c2c2348c13dab0ea141d0867832e5d1008e9d84",
+      "release/contract.md": "9d534877c33120a9ec5da7253a7a34dd8d772f99f072acc0b50c0d586c6e34ef",
+      "release/engineering-tally-fixture-1.2.1.tgz": "a30df8923106a0fe06b0977dc259e91b79c1187f29f2acd0c5e407852bb449f6"
+    },
+    "model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"medium\"",
+    "isolated": {
+      "fresh": true,
+      "sandbox": "workspace-write",
+      "memories": "disabled",
+      "host_filesystem_read": "possible"
+    },
+    "root_exposure": [
+      {
+        "event": "item_1",
+        "raw_line_sha256": "359e00e2a69774cd1eeb82bf4b22def8d7c42cbf284ccf89a4bc1a83d9671f80",
+        "command": "/bin/bash -lc \"pwd; rg --files --hidden -g '\"'!.git/**'\"'; cat SKILL.md\""
+      }
+    ],
+    "web_searches": [],
+    "independent_installed_reads": {
+      "archiveSha256": "a30df8923106a0fe06b0977dc259e91b79c1187f29f2acd0c5e407852bb449f6",
+      "successful": true,
+      "invocations": [
+        {
+          "arguments": [
+            "--help"
+          ],
+          "exit": 0,
+          "stdout": "tally 1.2.1\nUsage: tally sum <numbers...> [--json]\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "--version"
+          ],
+          "exit": 0,
+          "stdout": "1.2.1\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "sum",
+            "2",
+            "3",
+            "--json"
+          ],
+          "exit": 0,
+          "stdout": "{\"total\":5}\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "sum",
+            "bad",
+            "--json"
+          ],
+          "exit": 0,
+          "stdout": "Invalid number\n",
+          "stderr": ""
+        }
+      ]
+    },
+    "original_receipt_sha256": {
+      "answer.md": "96602542b1c0935ae28461cd7975b3d933464badafcab734889b42d0945b33cd",
+      "result.json": "e4000df312bc1675db46d57d98069e068f3eda88dc4e71250b05ee15334a7390",
+      "dispatch.json": "470ee32ccabff1a5a776b618eda83f2d78b7bc60adb135cf2f21ad31ca0a7e96",
+      "observer.json": "d86583430b2b272f8bbb2ddf60f85a899413b44a26b0d3981cd4c1ad340a2d1d",
+      "events.jsonl": "c6dfee33cbe755707a4c1d4f33db2bc5424697de3e2ba7b45bfc726630edc966",
+      "task.md": "5c04ef5f65cd904428a174d00c21b39fc65e3fb0f04ad513e076e7fd85dfa371"
+    },
+    "authorized_change_check": true,
+    "observed_commands": [
+      "/bin/bash -lc \"pwd; rg --files --hidden -g '\"'!.git/**'\"'; cat SKILL.md\"",
+      "/bin/bash -lc 'cat release/contract.md build/summary.md; tar -tvzf release/engineering-tally-fixture-1.2.1.tgz; sha256sum release/*.tgz; node -v; npm -v; uname -sm; cat references/testing-and-release.md references/ux-and-security.md'",
+      "/bin/bash -lc 'for member in package/package.json package/dist/cli.js package/dist/legacy.js package/README.md; do tar -xOzf release/engineering-tally-fixture-1.2.1.tgz \"$member\"; done; ls -la'",
+      "/bin/bash -lc \"python3 - <<'PY'\nimport hashlib\nimport os\nfrom pathlib import Path\nimport subprocess\nimport tempfile\n\nroot = Path.cwd()\narchive = root / 'release/engineering-tally-fixture-1.2.1.tgz'\ninputs = [archive, root / 'release/contract.md', root / 'build/summary.md', root / 'SKILL.md']\ndef hashes():\n    return {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in inputs}\n\nbefore = hashes()\nwith tempfile.TemporaryDirectory(prefix='.tally-review-', dir=root) as work:\n    work = Path(work)\n    home = work / 'home'\n    home.mkdir()\n    app = work / 'consumer'\n    app.mkdir()\n    env = {'PATH': os.environ['PATH'], 'HOME': str(home), 'TMPDIR': str(work),\n           'NPM_CONFIG_USERCONFIG': '/dev/null', 'NPM_CONFIG_GLOBALCONFIG': '/dev/null',\n           'NPM_CONFIG_CACHE': str(work / 'npm-cache'), 'LC_ALL': 'C', 'CI': '1'}\n    def run(args):\n        result = subprocess.run(args, cwd=app, env=env, stdin=subprocess.DEVNULL,\n                                capture_output=True, timeout=30)\n        print(args, 'exit=', result.returncode, 'stdout=', repr(result.stdout),\n              'stderr=', repr(result.stderr), flush=True)\n        return result\n    run(['npm', 'install', '--offline', '--no-audit', '--no-fund', str(archive)]).check_returncode()\n    bin_path = app / 'node_modules/.bin/tally'\n    print('installed bin', os.readlink(bin_path))\n    env['PATH'] = str(bin_path.parent) + os.pathsep + env['PATH']\n    def snapshot():\n        return {str(p.relative_to(app)): (p.lstat().st_mode, p.lstat().st_mtime_ns, p.lstat().st_size)\n                for p in app.rglob('*')}\n    installed = snapshot()\n    for args in (['--help'], ['--version'], ['sum', '2', '3', '--json'],\n                 ['sum', '2', 'bad', '--json']):\n        run(['tally', *args])\n    print('installation tree unchanged after invocations:', installed == snapshot())\nprint('temporary directory removed:', not work.exists())\nprint('input hashes unchanged:', before == hashes())\nPY\"",
+      "/bin/bash -lc \"python3 - <<'PY'\nimport hashlib\nimport os\nfrom pathlib import Path\nimport subprocess\nimport tempfile\n\nroot = Path.cwd()\narchive = root / 'release/engineering-tally-fixture-1.2.1.tgz'\ninputs = [archive, root / 'release/contract.md', root / 'build/summary.md', root / 'SKILL.md']\ndef hashes():\n    return {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in inputs}\n\nbefore = hashes()\nwith tempfile.TemporaryDirectory(prefix='.tally-review-', dir=root) as work:\n    work = Path(work)\n    home = work / 'home'\n    home.mkdir()\n    app = work / 'consumer'\n    app.mkdir()\n    env = {'PATH': os.environ['PATH'], 'HOME': str(home), 'TMPDIR': str(work),\n           'NPM_CONFIG_USERCONFIG': str(work / 'user.npmrc'),\n           'NPM_CONFIG_GLOBALCONFIG': str(work / 'global.npmrc'),\n           'NPM_CONFIG_CACHE': str(work / 'npm-cache'), 'LC_ALL': 'C', 'CI': '1'}\n    def run(args):\n        result = subprocess.run(args, cwd=app, env=env, stdin=subprocess.DEVNULL,\n                                capture_output=True, timeout=30)\n        print(args, 'exit=', result.returncode, 'stdout=', repr(result.stdout),\n              'stderr=', repr(result.stderr), flush=True)\n        return result\n    run(['npm', 'install', '--offline', '--no-audit', '--no-fund', str(archive)]).check_returncode()\n    bin_path = app / 'node_modules/.bin/tally'\n    print('installed bin', os.readlink(bin_path))\n    env['PATH'] = str(bin_path.parent) + os.pathsep + env['PATH']\n    def snapshot():\n        return {str(p.relative_to(app)): (p.lstat().st_mode, p.lstat().st_mtime_ns, p.lstat().st_size)\n                for p in app.rglob('*')}\n    installed = snapshot()\n    for args in (['--help'], ['--version'], ['sum', '2', '3', '--json'],\n                 ['sum', '2', 'bad', '--json']):\n        run(['tally', *args])\n    print('installation tree unchanged after invocations:', installed == snapshot())\nprint('temporary directory removed:', not work.exists())\nprint('input hashes unchanged:', before == hashes())\nPY\""
+    ]
+  },
+  {
+    "case": "ordinary",
+    "role": "C",
+    "code": "66d3ac",
+    "record": "record-e62572378c",
+    "input_sha256": {
+      "SKILL.md": "ec4b0c979606598123ddb2ccb5e82274a5c6d8aaaf1f6eb67ad3d0f7d8de72e9",
+      "agents/openai.yaml": "6636d02bb369b94d4609f716f4d239112e45827f90e0b3925fe6cce2afefe713",
+      "build/summary.md": "409864d9e38e8b20169916a51800547a755c8e46f586cd5fbc8093369b221225",
+      "references/architecture-and-layout.md": "b9146bb7ef055a0be35b979e399a0839159f185e24d523b6bbd6b5d40d60b187",
+      "references/clig-baseline.md": "04db969526870771fa235ab3c54baa3eed61e7c473ade9dfdd12bd610e6ce398",
+      "references/framework-selection.md": "404d236d1d93ac474ca34f16cff6320dc3811c5178562d4437f6e021030bccf9",
+      "references/service-backed-clis.md": "b6167536c12de7caddf6c23f57ab91b25550686bbfb7056ab658644ed0790a51",
+      "references/testing-and-release.md": "1242eed806eb5370a7877dff1e8b261256a6bea1063af15d09f3818c04495919",
+      "references/ux-and-security.md": "41ae8b7adb56b8878cf93bd73c2c2348c13dab0ea141d0867832e5d1008e9d84",
+      "release/contract.md": "b5c4b8267e987d2274fc9a9ebebb7de1f207f4bd903be080cb965a7eff641e68",
+      "release/engineering-tally-fixture-1.0.0.tgz": "43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b"
+    },
+    "model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"medium\"",
+    "isolated": {
+      "fresh": true,
+      "sandbox": "workspace-write",
+      "memories": "disabled",
+      "host_filesystem_read": "possible"
+    },
+    "root_exposure": [
+      {
+        "event": "item_1",
+        "raw_line_sha256": "61bbb0c64cef93ff858fceca791f9da479e7eac0918652ad755faac7ee23e3ce",
+        "command": "/bin/bash -lc \"ls -la && rg --files --hidden -g '\"'!.git/**'\"' && cat SKILL.md\""
+      }
+    ],
+    "web_searches": [],
+    "independent_installed_reads": {
+      "archiveSha256": "43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b",
+      "successful": true,
+      "invocations": [
+        {
+          "arguments": [
+            "--help"
+          ],
+          "exit": 0,
+          "stdout": "tally 1.0.0\nUsage: tally sum <numbers...> [--json]\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "--version"
+          ],
+          "exit": 0,
+          "stdout": "1.0.0\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "sum",
+            "2",
+            "3",
+            "--json"
+          ],
+          "exit": 0,
+          "stdout": "{\"total\":5}\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "sum",
+            "bad",
+            "--json"
+          ],
+          "exit": 2,
+          "stdout": "",
+          "stderr": "Invalid number\n"
+        }
+      ]
+    },
+    "original_receipt_sha256": {
+      "answer.md": "430aa84e806d4500f003b5d16ed9b97ec74f9bc849669d525cb042c430e40019",
+      "result.json": "3f77cafc573e1f54f8fb644fd9637ca65bd763574fd6af672f124e6d5fc41df6",
+      "dispatch.json": "9b3fd7a1e5e1007f552b7c1a69cefe19f52bee59e83ea764f7034c2762b9928e",
+      "observer.json": "d075922074f97c6fe87b7eee6409b8063d77e81d86f00c3bab11c7059f6cdb03",
+      "events.jsonl": "200edeb6f94aef5b3b5cdf74e4f99b1c00469e0ed2f7af4b198d7c53480bb130",
+      "task.md": "5c04ef5f65cd904428a174d00c21b39fc65e3fb0f04ad513e076e7fd85dfa371"
+    },
+    "authorized_change_check": true,
+    "observed_commands": [
+      "/bin/bash -lc \"ls -la && rg --files --hidden -g '\"'!.git/**'\"' && cat SKILL.md\"",
+      "/bin/bash -lc 'cat release/contract.md build/summary.md references/testing-and-release.md'",
+      "/bin/bash -lc 'tar -tvzf release/*.tgz && sha256sum SKILL.md release/* build/* && node --version && npm --version && uname -sm'",
+      "/bin/bash -lc 'for entry in package.json README.md dist/cli.js dist/legacy.js; do\n  tar -xOzf release/engineering-tally-fixture-1.0.0.tgz \"package/$entry\" || exit\ndone\ncat references/clig-baseline.md references/ux-and-security.md'",
+      "/bin/bash -lc 'set -eu\nworkspace=\"$PWD\"\nscratch=\"$(mktemp -d \"$workspace/.tally-review.XXXXXX\")\"\ntrap '\"'cd \\\"\"'$workspace\"; find \"$scratch\" -depth -delete; test ! -e \"$scratch\" && printf \"Temporary installation removed'\"\\\\n\\\"' EXIT\nmkdir \\\"\"'$scratch/consumer\" \"$scratch/cache\" \"$scratch/home\" \"$scratch/run\"\ncd \"$scratch/consumer\"\nprintf '\"'{\\\"name\\\":\\\"tally-release-check\\\",\\\"version\\\":\\\"0.0.0\\\",\\\"private\\\":true}\\\\n' > package.json\nenv -i PATH=\\\"\"'$PATH\" HOME=\"$scratch/home\" npm install --offline --no-audit --no-fund --cache \"$scratch/cache\" --userconfig \"$scratch/user.npmrc\" --globalconfig \"$scratch/global.npmrc\" \"$workspace/release/engineering-tally-fixture-1.0.0.tgz\"\ninstalled=\"$scratch/consumer/node_modules/engineering-tally-fixture\"\ncmp \"$installed/package.json\" <(tar -xOzf \"$workspace/release/engineering-tally-fixture-1.0.0.tgz\" package/package.json)\ncmp \"$installed/dist/cli.js\" <(tar -xOzf \"$workspace/release/engineering-tally-fixture-1.0.0.tgz\" package/dist/cli.js)\ncd \"$scratch/run\"\nexport PATH=\"$scratch/consumer/node_modules/.bin:$PATH\"\nbin=\"$(command -v tally)\"\nprintf '\"'Resolved bin: %s\\\\n' \\\"\"'$bin\"\nreadlink \"$bin\"\ntest \"$(readlink -f \"$bin\")\" = \"$installed/dist/cli.js\"\nfor scenario in help version success invalid; do\n  case \"$scenario\" in\n    help) set -- --help ;;\n    version) set -- --version ;;\n    success) set -- sum 2 3 --json ;;\n    invalid) set -- sum bad 3 --json ;;\n  esac\n  status=0\n  env -i PATH=\"$PATH\" HOME=\"$scratch/home\" \"$bin\" \"$@\" </dev/null >\"$scratch/stdout\" 2>\"$scratch/stderr\" || status=$?\n  node -e '\"'const fs = require(\\\"node:fs\\\"); const [status, stdout, stderr, ...args] = process.argv.slice(1); console.log(JSON.stringify({command:[\\\"tally\\\", ...args].join(\\\" \\\"),status:Number(status),stdout:fs.readFileSync(stdout,\\\"utf8\\\"),stderr:fs.readFileSync(stderr,\\\"utf8\\\")}));' \\\"\"'$status\" \"$scratch/stdout\" \"$scratch/stderr\" \"$@\"\ndone\nprintf '\"'Runtime-created files in command working directory and isolated user directory:\\\\n'\nfind \\\"\"'$scratch/run\" \"$scratch/home\" -mindepth 1 -print\ncd \"$workspace\"\nsha256sum SKILL.md release/* build/*'"
+    ]
+  }
+]

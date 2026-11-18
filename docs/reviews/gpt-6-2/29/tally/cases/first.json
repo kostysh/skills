@@ -1,0 +1,304 @@
+{
+  "subject": "gpt-6.2-sol medium",
+  "ephemeral": true,
+  "memory_disabled": true,
+  "sandbox": "workspace-write",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПримени скил, поставленный в текущем каталоге: прочитай ./SKILL.md целиком. Сопровождающий передаёт исходники Tally в product/, принятый договор, результаты предыдущей проверки в runtime-observations.json и дополнительный процессный тест. Для команды, которая будет ставить пакет локально и обрабатывать данные без терминала, исправь обнаруженные несоответствия и подготовь рабочий npm-архив версии проекта. Сверь сведения для читателя в поставляемом пакете. Используй принятый набор инструментов и тесты из проекта. Доступна копия его объявленных dev-зависимостей для Linux x64: распакуй dev-dependencies.tgz в product/ перед выполнением штатных команд. Сеть, публикация и Git для этого задания не разрешены. Расходные локальные сборки и установки разрешены. Положи готовый npm-архив в delivery/, сохрани исправленные исходники в product/ и сообщи получателю реальные команды и результаты, границы проверки и SHA-256 поставки. Вспомогательные временные файлы можешь создавать в рабочем каталоге.",
+  "answer": "Подготовил и проверил [npm-архив engineering-tally-fixture 1.0.0]({project}/delivery/engineering-tally-fixture-1.0.0.tgz). Исправленные исходники сохранены в `product/`.\n\n**SHA-256** `8c13c0d5a93ffe152e34cd80beb0bb0c4b23434fadc7ab979c34b503278adc59`\n\nКоманда `tally` запускает актуальную сборку. `sum --json` выводит в stdout один объект JSON. Ошибки идут в stderr с кодом `2` и пустым stdout. Пустые аргументы отклоняются, а переполнение суммы возвращает ошибку вместо `{\"total\":null}`. `--version` берёт версию из манифеста. README в архиве содержит проверенные команды установки, запуска и удаления.\n\nИз каталога своего npm-проекта выполните:\n\n```sh\nnpm install --offline --no-audit --no-fund /path/to/engineering-tally-fixture-1.0.0.tgz\n./node_modules/.bin/tally sum 8 -2 1.5 --json\n```\n\nОжидаемый stdout — `{\"total\":7.5}` с переводом строки. Код завершения — `0`, stderr пуст.\n\nПосле распаковки `dev-dependencies.tgz` в `product/` прошли `npm run typecheck`, `npm run build` и `npm test` — **3 из 3 тестов**, включая дополнительный процессный. `npm pack --dry-run --json` и проверка готового архива подтвердили состав поставки: `README.md`, `package.json` и `dist/cli.js`.\n\nВ чистом npm-проекте проверил офлайн-установку и удаление архива. Через установленную команду с перенаправленным stdin прошли 11 проверок, включая `--help`, `--version`, обычную сумму, JSON и ошибочные входные данные. Проверка ограничена Linux x64, Node.js 24.15.0 и npm 12.0.1. Сеть, публикация и Git не использовались.",
+  "observer": {
+    "received_package": "8c13c0d5a93ffe152e34cd80beb0bb0c4b23434fadc7ab979c34b503278adc59",
+    "input_archive": "498f2a4811c4b7169479e2a3fa0a68a8b09ee5a743d61c5c8fcbaab170304d7b",
+    "operator_observation_env": "Node.js 24.15.0, npm 12.0.1, Linux x64; stdin closed, stdout/stderr separate",
+    "subject_byte_and_mode_readback": [
+      {
+        "file": "AGENTS.md",
+        "before": "b556d9fc3d9a07cdffb5d0610f06dad5c46f1fd8036098ec89c97e611a57c214",
+        "after": "b556d9fc3d9a07cdffb5d0610f06dad5c46f1fd8036098ec89c97e611a57c214",
+        "received_mode": "0644",
+        "returned_mode": "0644"
+      },
+      {
+        "file": "README.md",
+        "before": "ccb6923c0d945a522d0fdec002da558a5d4d2e2e9fb795a8d4491fed2195d01b",
+        "after": "794f86787ba80655a2b376cf82a98eeee19517cd3d9bc3b8d3eef0810392e0ed",
+        "received_mode": "0644",
+        "returned_mode": "0644"
+      },
+      {
+        "file": "accepted.md",
+        "before": "d902373d5a39862f8066a9e9f63f70372076da296b52c8c1ddec95404325da77",
+        "after": "d902373d5a39862f8066a9e9f63f70372076da296b52c8c1ddec95404325da77",
+        "received_mode": "0644",
+        "returned_mode": "0644"
+      },
+      {
+        "file": "dist/cli.js",
+        "before": "1f6796ddabf7e3d8fcc8780eff35fb31be659633bdda06bf366e0a387b987f90",
+        "after": "dc1c3cf637420aacdde9003931a5f39a3d0fba6951a1b266abf43aeb634fdd90",
+        "received_mode": "0644",
+        "returned_mode": "0644"
+      },
+      {
+        "file": "dist/legacy.js",
+        "before": "3c3fad4ba160873d0ab1df465324c3633093e582a5de089ff50248b4749f0902",
+        "after": null,
+        "received_mode": "0644",
+        "returned_mode": null
+      },
+      {
+        "file": "package.json",
+        "before": "718fbb03d4ce95b498dd3e1f2bc9f3c8d50c28b805da6619006649ab3200815e",
+        "after": "b35fcd90e82f383f68c598d09dfb49d13ffa28e8fcded5e755a5a7eee1ab9e2f",
+        "received_mode": "0644",
+        "returned_mode": "0644"
+      },
+      {
+        "file": "src/cli.ts",
+        "before": "cb0097e7add8a977f998d8d2e0d3ae12b9f7a519ee800d71341d57f5d96b8a1b",
+        "after": "85920a364381d13a31f89b57ebb804a674f247217770093000379feba00f8000",
+        "received_mode": "0644",
+        "returned_mode": "0644"
+      },
+      {
+        "file": "test/cli.test.ts",
+        "before": "51076f0b746864e2b338de31a4d8aa8f9c0caeec741307300c03160fc148018e",
+        "after": "51076f0b746864e2b338de31a4d8aa8f9c0caeec741307300c03160fc148018e",
+        "received_mode": "0644",
+        "returned_mode": "0644"
+      },
+      {
+        "file": "test/handoff.test.ts",
+        "before": "bb8b6a5de84e0c93c736e12475b23a45c1bc4dbc4eb14277c5239847759354f9",
+        "after": "bb8b6a5de84e0c93c736e12475b23a45c1bc4dbc4eb14277c5239847759354f9",
+        "received_mode": "0644",
+        "returned_mode": "0644"
+      },
+      {
+        "file": "tsconfig.json",
+        "before": "d2984c34bd95977f2dc693263e4135d923250d767c00fba7360573c9ee883753",
+        "after": "d2984c34bd95977f2dc693263e4135d923250d767c00fba7360573c9ee883753",
+        "received_mode": "0644",
+        "returned_mode": "0644"
+      }
+    ],
+    "install": {
+      "argv": [
+        "npm",
+        "install",
+        "--offline",
+        "--no-audit",
+        "--no-fund",
+        "./received-package.tgz"
+      ],
+      "exit": 0,
+      "stdout": "\nadded 1 package in 177ms\n",
+      "stderr": ""
+    },
+    "resolved_bin": "node_modules/engineering-tally-fixture/dist/cli.js",
+    "installed_invocations": [
+      {
+        "argv": [
+          "./node_modules/.bin/tally",
+          "--help"
+        ],
+        "exit": 0,
+        "stdout": "tally 1.0.0\nUsage: tally sum <numbers...> [--json]\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "./node_modules/.bin/tally",
+          "--version"
+        ],
+        "exit": 0,
+        "stdout": "1.0.0\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "./node_modules/.bin/tally",
+          "sum",
+          "2",
+          "3",
+          "--json"
+        ],
+        "exit": 0,
+        "stdout": "{\"total\":5}\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "./node_modules/.bin/tally",
+          "sum",
+          "bad",
+          "--json"
+        ],
+        "exit": 2,
+        "stdout": "",
+        "stderr": "Invalid number\n"
+      },
+      {
+        "argv": [
+          "./node_modules/.bin/tally",
+          "sum",
+          "8",
+          "-2",
+          "1.5",
+          "--json"
+        ],
+        "exit": 0,
+        "stdout": "{\"total\":7.5}\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "./node_modules/.bin/tally",
+          "sum",
+          " ",
+          "--json"
+        ],
+        "exit": 2,
+        "stdout": "",
+        "stderr": "Invalid number\n"
+      },
+      {
+        "argv": [
+          "./node_modules/.bin/tally",
+          "sum",
+          "1e308",
+          "1e308",
+          "--json"
+        ],
+        "exit": 2,
+        "stdout": "",
+        "stderr": "Invalid number: sum is outside the finite range\n"
+      }
+    ]
+  },
+  "events": [
+    {
+      "id": "item_1",
+      "command": "/bin/bash -lc \"cat ./SKILL.md && ls -la && rg --files --hidden -g '\"'!.git/**'\"' -g '\"'!*.tgz'\"'\"",
+      "status": 0,
+      "output": "[Результат чтения руководства скрыт от оценщика.]",
+      "raw_event_sha256": "77d3ed12192e931261ef5d6ea1c420a60eca3720ac15b1c8fb42b006ed0e0324"
+    },
+    {
+      "id": "item_2",
+      "command": "/bin/bash -lc 'cat references/testing-and-release.md references/ux-and-security.md && cat product/src/cli.ts product/test/cli.test.ts product/test/handoff.test.ts'",
+      "status": 0,
+      "output": "[Результат чтения руководства скрыт от оценщика.]",
+      "raw_event_sha256": "23e1ad90118d3aaef6e438e64074dcfb014c8f8ae01eb1855463377d2d779fef"
+    },
+    {
+      "id": "item_3",
+      "command": "/bin/bash -lc 'cat product/AGENTS.md product/accepted.md runtime-observations.json product/package.json product/README.md product/tsconfig.json && ls -la product && node --version && npm --version'",
+      "status": 0,
+      "output": "This CLI deliberately uses tsc for build and tsx for existing tests. Preserve this toolchain. No tooling migration, publication or Git writes. CLI behavior: JSON stdout must contain one JSON object; errors go to stderr with exit2; no prompts when input is piped.\nMaintainer accepted: sum finite numbers, one JSON object {total}, invalid number stderr + exit2, help/version, noninteractive. No network or telemetry. Preserve tsc/tsx. No release or Git writes.\n{\n  \"input_archive\": \"../05/tally-compiler-handoff.tar.gz\",\n  \"input_sha256\": \"6168dfdbc4452fbce829d94ac55b26889beb827120dd0d3db651a4503921914b\",\n  \"compiler_record\": \"../05/tally-compiler-handoff.json\",\n  \"compiled_entry\": \"dist/cli.js\",\n  \"entry_sha256\": \"1f6796ddabf7e3d8fcc8780eff35fb31be659633bdda06bf366e0a387b987f90\",\n  \"package_type\": \"module\",\n  \"node\": {\n    \"argv\": [\n      \"node\",\n      \"--version\"\n    ],\n    \"exit\": 0,\n    \"stdout\": \"v24.15.0\\n\",\n    \"stderr\": \"\",\n    \"stdout_hex\": \"7632342e31352e300a\",\n    \"stderr_hex\": \"\"\n  },\n  \"valid_invocation\": {\n    \"argv\": [\n      \"node\",\n      \"dist/cli.js\",\n      \"sum\",\n      \"2\",\n      \"3\",\n      \"--json\"\n    ],\n    \"exit\": 0,\n    \"stdout\": \"Calculating\\n{\\\"total\\\":5}\\n\",\n    \"stderr\": \"\",\n    \"stdout_hex\": \"43616c63756c6174696e670a7b22746f74616c223a357d0a\",\n    \"stderr_hex\": \"\"\n  },\n  \"invalid_invocation\": {\n    \"argv\": [\n      \"node\",\n      \"dist/cli.js\",\n      \"sum\",\n      \"bad\",\n      \"--json\"\n    ],\n    \"exit\": 2,\n    \"stdout\": \"\",\n    \"stderr\": \"Invalid number\\n\",\n    \"stdout_hex\": \"\",\n    \"stderr_hex\": \"496e76616c6964206e756d6265720a\"\n  },\n  \"observed_contract\": \"В accepted.md для sum --json требуется один объект JSON. На переданном dist/cli.js при валидных аргументах сырые байты начинаются с Calculating и перевода строки.\",\n  \"next_consumer\": {\n    \"test_owner\": \"16 typescript-test-engineer\",\n    \"cli_owner\": \"29 cli-engineer\",\n    \"input\": \"Тот же архив 05 с принятым контрактом, test/cli.test.ts и испущенным dist/cli.js.\",\n    \"manifest_bin\": \"dist/legacy.js\",\n    \"installed_bin_exercised_here\": false\n  }\n}\n{\n  \"name\": \"engineering-tally-fixture\",\n  \"version\": \"1.0.0\",\n  \"type\": \"module\",\n  \"bin\": {\n    \"tally\": \"dist/legacy.js\"\n  },\n  \"files\": [\n    \"dist\"\n  ],\n  \"scripts\": {\n    \"typecheck\": \"tsc -p tsconfig.json --noEmit\",\n    \"build\": \"tsc -p tsconfig.json\",\n    \"test\": \"tsx --test test/*.test.ts\"\n  },\n  \"devDependencies\": {\n    \"typescript\": \"5.9.3\",\n    \"tsx\": \"4.20.5\",\n    \"@types/node\": \"24.0.0\"\n  }\n}\n# Tally\nUse `tally add 2 3 --output=json`.\n{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"module\": \"NodeNext\",\n    \"moduleResolution\": \"NodeNext\",\n    \"strict\": true,\n    \"skipLibCheck\": true,\n    \"outDir\": \"dist\",\n    \"rootDir\": \"src\"\n  },\n  \"include\": [\n    \"src/**/*.ts\"\n  ]\n}\ntotal 20\ndrwxrwxr-x 5 kostysh kostysh 200 Nov 18 23:48 .\ndrwxrwxr-x 9 kostysh kostysh 240 Nov 18 23:48 ..\n-rw-r--r-- 1 kostysh kostysh 263 Jan  1  1970 AGENTS.md\n-rw-r--r-- 1 kostysh kostysh  43 Jan  1  1970 README.md\n-rw-r--r-- 1 kostysh kostysh 196 Jan  1  1970 accepted.md\ndrwxrwxr-x 2 kostysh kostysh  80 Nov 18 23:48 dist\n-rw-r--r-- 1 kostysh kostysh 410 Jan  1  1970 package.json\ndrwxrwxr-x 2 kostysh kostysh  60 Nov 18 23:48 src\ndrwxrwxr-x 2 kostysh kostysh  80 Nov 18 23:48 test\n-rw-r--r-- 1 kostysh kostysh 244 Jan  1  1970 tsconfig.json\nv24.15.0\n12.0.1\n",
+      "raw_event_sha256": "3f55b9ac5c97c9e5572ce04086c593c49b8297304d0f7bbe46756d611fc44a9b"
+    },
+    {
+      "id": "item_4",
+      "command": "/bin/bash -lc 'tar -tzf dev-dependencies.tgz | head -30'",
+      "status": 0,
+      "output": "node_modules/\nnode_modules/.package-lock.json\nnode_modules/.bin/\nnode_modules/.bin/tsserver\nnode_modules/.bin/tsc\nnode_modules/.bin/tsx\nnode_modules/.bin/esbuild\nnode_modules/undici-types/\nnode_modules/undici-types/websocket.d.ts\nnode_modules/undici-types/webidl.d.ts\nnode_modules/undici-types/utility.d.ts\nnode_modules/undici-types/util.d.ts\nnode_modules/undici-types/retry-handler.d.ts\nnode_modules/undici-types/retry-agent.d.ts\nnode_modules/undici-types/readable.d.ts\nnode_modules/undici-types/proxy-agent.d.ts\nnode_modules/undici-types/pool.d.ts\nnode_modules/undici-types/pool-stats.d.ts\nnode_modules/undici-types/patch.d.ts\nnode_modules/undici-types/mock-pool.d.ts\nnode_modules/undici-types/mock-interceptor.d.ts\nnode_modules/undici-types/mock-errors.d.ts\nnode_modules/undici-types/mock-client.d.ts\nnode_modules/undici-types/mock-call-history.d.ts\nnode_modules/undici-types/mock-agent.d.ts\nnode_modules/undici-types/interceptors.d.ts\nnode_modules/undici-types/index.d.ts\nnode_modules/undici-types/header.d.ts\nnode_modules/undici-types/handlers.d.ts\nnode_modules/undici-types/h2c-client.d.ts\ntar: stdout: write error\n",
+      "raw_event_sha256": "016050ae5b7bad07e3634f7baa87b52640a8a4c844fc4c93316f39d6c68dc1fd"
+    },
+    {
+      "id": "item_5",
+      "command": "/bin/bash -lc 'tar -xzf dev-dependencies.tgz -C product && sha256sum product/dist/cli.js && cat product/dist/legacy.js && mkdir -p .work/npm-cache .work/tmp delivery && export npm_config_cache=\"$PWD/.work/npm-cache\" npm_config_offline=true npm_config_audit=false npm_config_fund=false TMPDIR=\"$PWD/.work/tmp\" && cd product && npm test'",
+      "status": 1,
+      "output": "1f6796ddabf7e3d8fcc8780eff35fb31be659633bdda06bf366e0a387b987f90  product/dist/cli.js\n#!/usr/bin/env node\nconsole.log('legacy tally0.1');\nnpm notice run engineering-tally-fixture@1.0.0 test\nnpm notice run tsx --test test/*.test.ts\n✖ JSON is one object without narration (22.836507ms)\n✔ invalid input uses stderr and exit2 (23.045432ms)\n✖ compiled sum separates JSON results from invalid input errors (41.342133ms)\nℹ tests 3\nℹ suites 0\nℹ pass 1\nℹ fail 2\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 180.460244\n\n✖ failing tests:\n\ntest at test/cli.test.ts:1:176\n✖ JSON is one object without narration (22.836507ms)\n  SyntaxError: Unexpected token 'C', \"Calculatin\"... is not valid JSON\n      at JSON.parse (<anonymous>)\n      at TestContext.<anonymous> ({project}/product/test/cli.test.ts:5:195)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1201:25)\n      at Test.start (node:internal/test_runner/test:1096:17)\n      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)\n\ntest at test/handoff.test.ts:1:213\n✖ compiled sum separates JSON results from invalid input errors (41.342133ms)\n  SyntaxError: Unexpected token 'C', \"Calculatin\"... is not valid JSON\n      at JSON.parse (<anonymous>)\n      at TestContext.<anonymous> ({project}/product/test/handoff.test.ts:21:25)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1201:25)\n      at Test.start (node:internal/test_runner/test:1096:17)\n      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)\nnpm notice\nnpm notice New minor version of npm available! 12.0.1 -> 12.2.3\nnpm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.3\nnpm notice To update run: npm install -g npm@12.2.3\nnpm notice\n",
+      "raw_event_sha256": "3e69e1e629e813cdb3f9b0111e2dfea522b0b9e0c16b22e5016bcef0b1271abd"
+    },
+    {
+      "id": "item_7",
+      "type": "file_change",
+      "changes": [
+        {
+          "path": "{project}/product/README.md",
+          "kind": "update"
+        },
+        {
+          "path": "{project}/product/dist/legacy.js",
+          "kind": "delete"
+        },
+        {
+          "path": "{project}/product/package.json",
+          "kind": "update"
+        },
+        {
+          "path": "{project}/product/src/cli.ts",
+          "kind": "update"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "id": "item_8",
+      "command": "/bin/bash -lc 'export npm_config_cache=\"$PWD/.work/npm-cache\" npm_config_offline=true npm_config_audit=false npm_config_fund=false npm_config_update_notifier=false TMPDIR=\"$PWD/.work/tmp\" && cd product && npm run typecheck && npm run build && npm test && npm pack --dry-run --json && npm pack --pack-destination ../delivery && tar -tzvf ../delivery/engineering-tally-fixture-1.0.0.tgz'",
+      "status": 0,
+      "output": "npm notice run engineering-tally-fixture@1.0.0 typecheck\nnpm notice run tsc -p tsconfig.json --noEmit\nnpm notice run engineering-tally-fixture@1.0.0 build\nnpm notice run tsc -p tsconfig.json\nnpm notice run engineering-tally-fixture@1.0.0 test\nnpm notice run tsx --test test/*.test.ts\n✔ JSON is one object without narration (23.616842ms)\n✔ invalid input uses stderr and exit2 (17.078328ms)\n✔ compiled sum separates JSON results from invalid input errors (38.795842ms)\nℹ tests 3\nℹ suites 0\nℹ pass 3\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 151.780676\n{\n  \"engineering-tally-fixture\": {\n    \"id\": \"engineering-tally-fixture@1.0.0\",\n    \"name\": \"engineering-tally-fixture\",\n    \"version\": \"1.0.0\",\n    \"size\": 1442,\n    \"unpackedSize\": 2814,\n    \"shasum\": \"0e911635232e2b1922fbc423280e1cec67eec131\",\n    \"integrity\": \"sha512-kC3n3UyGQFHhYUW7zbPfuIV9gw/Io1kX4T82cy3Nn8LXPkFzudeb93KQZQgX+pdVV75MoukfneQGRRT803OCJQ==\",\n    \"filename\": \"engineering-tally-fixture-1.0.0.tgz\",\n    \"files\": [\n      {\n        \"path\": \"README.md\",\n        \"size\": 1148,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"dist/cli.js\",\n        \"size\": 1252,\n        \"mode\": 420\n      },\n      {\n        \"path\": \"package.json\",\n        \"size\": 414,\n        \"mode\": 420\n      }\n    ],\n    \"entryCount\": 3,\n    \"bundled\": []\n  }\n}\nnpm notice\nnpm notice 📦  engineering-tally-fixture@1.0.0\nnpm notice Tarball Contents\nnpm notice 1.1kB README.md\nnpm notice 1.3kB dist/cli.js\nnpm notice 414B package.json\nnpm notice Tarball Details\nnpm notice name: engineering-tally-fixture\nnpm notice version: 1.0.0\nnpm notice filename: engineering-tally-fixture-1.0.0.tgz\nnpm notice package size: 1.4 kB\nnpm notice unpacked size: 2.8 kB\nnpm notice shasum: 0e911635232e2b1922fbc423280e1cec67eec131\nnpm notice integrity: sha512-kC3n3UyGQFHhY[...]eQGRRT803OCJQ==\nnpm notice total files: 3\nnpm notice\nengineering-tally-fixture-1.0.0.tgz\n-rw-r--r-- 0/0            1252 1985-10-26 09:15 package/dist/cli.js\n-rw-r--r-- 0/0             414 1985-10-26 09:15 package/package.json\n-rw-r--r-- 0/0            1148 1985-10-26 09:15 package/README.md\n",
+      "raw_event_sha256": "29a031066d38239c14bff2b86b5c82d3dbc2ba63f8e533d6a516a634ba7d2653"
+    },
+    {
+      "id": "item_9",
+      "command": "/bin/bash -lc 'set -eu\nexport npm_config_cache=\"$PWD/.work/npm-cache\" npm_config_offline=true npm_config_audit=false npm_config_fund=false npm_config_update_notifier=false TMPDIR=\"$PWD/.work/tmp\"\narchive=\"$PWD/delivery/engineering-tally-fixture-1.0.0.tgz\"\ntar -xOzf \"$archive\" package/README.md | cmp product/README.md -\ntar -xOzf \"$archive\" package/dist/cli.js | cmp product/dist/cli.js -\ntar -xOzf \"$archive\" package/package.json | cmp product/package.json -\nconsumer_dir=$(mktemp -d \"$PWD/.work/install.XXXXXX\")\ncd \"$consumer_dir\"\nnpm init -y\nnpm install --offline --no-audit --no-fund \"$archive\"\nreadlink ./node_modules/.bin/tally\nnode --input-type=module <<'\"'NODE'\nimport assert from 'node:assert/strict';\nimport { spawnSync } from 'node:child_process';\nimport { readFileSync, readdirSync, realpathSync } from 'node:fs';\nimport { resolve } from 'node:path';\n\nconst packagePath = 'node_modules/engineering-tally-fixture';\nconst manifest = JSON.parse(readFileSync(\"'`${packagePath}/package.json`, '\"'utf8'));\nassert.equal(manifest.version, '1.0.0');\nassert.equal(manifest.bin.tally, 'dist/cli.js');\nassert.equal(realpathSync('./node_modules/.bin/tally'), resolve(packagePath, manifest.bin.tally));\nconst listFiles = () => readdirSync('.', { recursive: true }).sort();\nconst before = listFiles();\nfor (const [args, status, stdout, stderr] of [\n  [['--help'], 0, 'tally 1.0.0\\\\nUsage: tally sum <numbers...> [--json]\\\\n', ''],\n  [['sum', '--help'], 0, 'tally 1.0.0\\\\nUsage: tally sum <numbers...> [--json]\\\\n', ''],\n  [['--version'], 0, '1.0.0\\\\n', ''],\n  [['sum', '8', '-2', '1.5', '--json'], 0, '{\\\"total\\\":7.5}\\\\n', ''],\n  [['sum', '2', '3'], 0, '5\\\\n', ''],\n  [['sum', '8', 'bad', '1.5', '--json'], 2, '', 'Invalid number\\\\n'],\n  [['sum', '--json'], 2, '', 'Invalid number\\\\n'],\n  [['sum', ' ', '--json'], 2, '', 'Invalid number\\\\n'],\n  [['sum', 'Infinity', '--json'], 2, '', 'Invalid number\\\\n'],\n  [['sum', '1e308', '1e308', '--json'], 2, '', 'Invalid number: sum is outside the finite range\\\\n'],\n  [['add', '2', '3', '--output=json'], 2, '', 'Unknown command\\\\n'],\n]) {\n  const result = spawnSync('./node_modules/.bin/tally', args, {\n    encoding: 'utf8', input: 'ignored stdin\\\\n', timeout: 5000,\n  });\n  assert.ifError(result.error);\n  assert.equal(result.signal, null);\n  const observed = { args, status: result.status, stdout: result.stdout, stderr: result.stderr };\n  console.log(JSON.stringify(observed));\n  assert.deepEqual(observed, { args, status, stdout, stderr });\n}\nassert.deepEqual(listFiles(), before);\nconsole.log(\"'`Installed-command checks passed on ${process.platform}/${process.arch} with Node.js ${process.version}`);\nNODE\nnpm uninstall --offline --no-audit --no-fund engineering-tally-fixture\ntest ! -e ./node_modules/.bin/tally\ntest ! -e ./node_modules/engineering-tally-fixture\ncd ../..\nsha256sum delivery/engineering-tally-fixture-1.0.0.tgz\nls -l delivery'",
+      "status": 0,
+      "output": "Wrote to {project}/.work/install.shaSd3/package.json:\n\n{\n  \"name\": \"install.shasd3\",\n  \"version\": \"1.0.0\",\n  \"description\": \"\",\n  \"main\": \"index.js\",\n  \"scripts\": {\n    \"test\": \"echo \\\"Error: no test specified\\\" && exit 1\"\n  },\n  \"keywords\": [],\n  \"type\": \"commonjs\"\n}\n\n\n\nadded 1 package in 169ms\n../engineering-tally-fixture/dist/cli.js\n{\"args\":[\"--help\"],\"status\":0,\"stdout\":\"tally 1.0.0\\nUsage: tally sum <numbers...> [--json]\\n\",\"stderr\":\"\"}\n{\"args\":[\"sum\",\"--help\"],\"status\":0,\"stdout\":\"tally 1.0.0\\nUsage: tally sum <numbers...> [--json]\\n\",\"stderr\":\"\"}\n{\"args\":[\"--version\"],\"status\":0,\"stdout\":\"1.0.0\\n\",\"stderr\":\"\"}\n{\"args\":[\"sum\",\"8\",\"-2\",\"1.5\",\"--json\"],\"status\":0,\"stdout\":\"{\\\"total\\\":7.5}\\n\",\"stderr\":\"\"}\n{\"args\":[\"sum\",\"2\",\"3\"],\"status\":0,\"stdout\":\"5\\n\",\"stderr\":\"\"}\n{\"args\":[\"sum\",\"8\",\"bad\",\"1.5\",\"--json\"],\"status\":2,\"stdout\":\"\",\"stderr\":\"Invalid number\\n\"}\n{\"args\":[\"sum\",\"--json\"],\"status\":2,\"stdout\":\"\",\"stderr\":\"Invalid number\\n\"}\n{\"args\":[\"sum\",\" \",\"--json\"],\"status\":2,\"stdout\":\"\",\"stderr\":\"Invalid number\\n\"}\n{\"args\":[\"sum\",\"Infinity\",\"--json\"],\"status\":2,\"stdout\":\"\",\"stderr\":\"Invalid number\\n\"}\n{\"args\":[\"sum\",\"1e308\",\"1e308\",\"--json\"],\"status\":2,\"stdout\":\"\",\"stderr\":\"Invalid number: sum is outside the finite range\\n\"}\n{\"args\":[\"add\",\"2\",\"3\",\"--output=json\"],\"status\":2,\"stdout\":\"\",\"stderr\":\"Unknown command\\n\"}\nInstalled-command checks passed on linux/x64 with Node.js v24.15.0\n\nremoved 1 package in 146ms\n8c13c0d5a93ffe152e34cd80beb0bb0c4b23434fadc7ab979c34b503278adc59  delivery/engineering-tally-fixture-1.0.0.tgz\ntotal 4\n-rw-rw-r-- 1 kostysh kostysh 1442 Nov 18 23:49 engineering-tally-fixture-1.0.0.tgz\n",
+      "raw_event_sha256": "178a4f8ae942d81faad0a161b0f1da7b454d01eea075719ec1e8849381775534"
+    }
+  ],
+  "initial": {
+    "SKILL.md": "2f582a0924fd0c0852a48eaccfdfa45eafa36b2486a3f8a3320ab912895efbbf",
+    "agents/openai.yaml": "6636d02bb369b94d4609f716f4d239112e45827f90e0b3925fe6cce2afefe713",
+    "dev-dependencies.tgz": "2138190a05b4e826c2a165fadb9d99377240cc5165bddee22d50ecaaf3b7e629",
+    "product/AGENTS.md": "b556d9fc3d9a07cdffb5d0610f06dad5c46f1fd8036098ec89c97e611a57c214",
+    "product/README.md": "ccb6923c0d945a522d0fdec002da558a5d4d2e2e9fb795a8d4491fed2195d01b",
+    "product/accepted.md": "d902373d5a39862f8066a9e9f63f70372076da296b52c8c1ddec95404325da77",
+    "product/dist/cli.js": "1f6796ddabf7e3d8fcc8780eff35fb31be659633bdda06bf366e0a387b987f90",
+    "product/dist/legacy.js": "3c3fad4ba160873d0ab1df465324c3633093e582a5de089ff50248b4749f0902",
+    "product/package.json": "718fbb03d4ce95b498dd3e1f2bc9f3c8d50c28b805da6619006649ab3200815e",
+    "product/src/cli.ts": "cb0097e7add8a977f998d8d2e0d3ae12b9f7a519ee800d71341d57f5d96b8a1b",
+    "product/test/cli.test.ts": "51076f0b746864e2b338de31a4d8aa8f9c0caeec741307300c03160fc148018e",
+    "product/test/handoff.test.ts": "bb8b6a5de84e0c93c736e12475b23a45c1bc4dbc4eb14277c5239847759354f9",
+    "product/tsconfig.json": "d2984c34bd95977f2dc693263e4135d923250d767c00fba7360573c9ee883753",
+    "references/architecture-and-layout.md": "b9146bb7ef055a0be35b979e399a0839159f185e24d523b6bbd6b5d40d60b187",
+    "references/clig-baseline.md": "04db969526870771fa235ab3c54baa3eed61e7c473ade9dfdd12bd610e6ce398",
+    "references/framework-selection.md": "404d236d1d93ac474ca34f16cff6320dc3811c5178562d4437f6e021030bccf9",
+    "references/service-backed-clis.md": "b6167536c12de7caddf6c23f57ab91b25550686bbfb7056ab658644ed0790a51",
+    "references/testing-and-release.md": "1242eed806eb5370a7877dff1e8b261256a6bea1063af15d09f3818c04495919",
+    "references/ux-and-security.md": "41ae8b7adb56b8878cf93bd73c2c2348c13dab0ea141d0867832e5d1008e9d84",
+    "runtime-observations.json": "262dce2d97b1747c75f81d9591102ea1acbc25504927c732edfdac7c11d155a5"
+  },
+  "initial_file_modes": {
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "dev-dependencies.tgz": "0664",
+    "product/AGENTS.md": "0644",
+    "product/README.md": "0644",
+    "product/accepted.md": "0644",
+    "product/dist/cli.js": "0644",
+    "product/dist/legacy.js": "0644",
+    "product/package.json": "0644",
+    "product/src/cli.ts": "0644",
+    "product/test/cli.test.ts": "0644",
+    "product/test/handoff.test.ts": "0644",
+    "product/tsconfig.json": "0644",
+    "references/architecture-and-layout.md": "0644",
+    "references/clig-baseline.md": "0644",
+    "references/framework-selection.md": "0644",
+    "references/service-backed-clis.md": "0644",
+    "references/testing-and-release.md": "0644",
+    "references/ux-and-security.md": "0644",
+    "runtime-observations.json": "0664"
+  },
+  "raw_events_sha256": "11247685f8b65cd1986f4520b060dcc14b14b6963203a1fba75b55521731d0ee",
+  "raw_dispatch_sha256": "981d0da0a63140442087a5ce2a4cdf6eaa38c9dc53d12615f29b127cccc8523c",
+  "raw_result_sha256": "f44e854a803d0dc3ccf97d0270b2f1cba82be1edabb4cdb1f4da4a9f980ff79a",
+  "extracted_env": "Nine data files received read/write by owner and read by others. Upstream archive retains group write, as recorded separately.",
+  "read_exact_change": {
+    "event": "item_1",
+    "raw_line_sha256": "77d3ed12192e931261ef5d6ea1c420a60eca3720ac15b1c8fb42b006ed0e0324"
+  }
+}

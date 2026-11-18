@@ -1,0 +1,148 @@
+{
+  "variant": "B",
+  "case": "boundary",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПримени руководство из ./SKILL.md к прикреплённому кандидату Tally. Смене нужно заключение о готовности к внутренней выдаче в рамках договора release/contract.md. В release/ лежит ровно тот файл, который получит дежурный, а в build/ — сведения о сборке. Можно автономно использовать расходную локальную установку. Сохрани входные материалы. Заключение напиши в ответе. Публикацию или изменения продукта владелец не поручал.\n",
+  "input_file_sha256": {
+    "SKILL.md": "5f6233270137a53c53008c8a11ef616a5c2d630c58d2e6d3cf054edf31bbf706",
+    "agents/openai.yaml": "6636d02bb369b94d4609f716f4d239112e45827f90e0b3925fe6cce2afefe713",
+    "build/summary.md": "409864d9e38e8b20169916a51800547a755c8e46f586cd5fbc8093369b221225",
+    "references/architecture-and-layout.md": "b9146bb7ef055a0be35b979e399a0839159f185e24d523b6bbd6b5d40d60b187",
+    "references/clig-baseline.md": "04db969526870771fa235ab3c54baa3eed61e7c473ade9dfdd12bd610e6ce398",
+    "references/framework-selection.md": "404d236d1d93ac474ca34f16cff6320dc3811c5178562d4437f6e021030bccf9",
+    "references/service-backed-clis.md": "b6167536c12de7caddf6c23f57ab91b25550686bbfb7056ab658644ed0790a51",
+    "references/testing-and-release.md": "1242eed806eb5370a7877dff1e8b261256a6bea1063af15d09f3818c04495919",
+    "references/ux-and-security.md": "41ae8b7adb56b8878cf93bd73c2c2348c13dab0ea141d0867832e5d1008e9d84",
+    "release/contract.md": "674f0e5b03ac695993d2fc5a6e0345c24c3afc3fecb9174fae7093e75dd4fbd6",
+    "release/engineering-tally-fixture-1.2.0.tgz": "5becc89e02f8be1fb87533130e0ddb46c69a20cfefabcae64e02603757b2638a"
+  },
+  "raw_events_sha256": "1ada3b96af38918e4d8ef1b26a08d82ac7fb4ecbec9f0d1e43a3f1d0d86492c6",
+  "raw_events_bytes": 54864,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Применю руководство из `./SKILL.md` и сверю кандидат Tally с договором выдачи. Проверки проведу в текущем каталоге, сохранив входные материалы."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"ls -la\nrg --files --hidden -g '\"'!.git'\"'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat SKILL.md release/contract.md build/summary.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat references/testing-and-release.md references/ux-and-security.md\nsha256sum SKILL.md release/* build/*\ntar -tvzf release/engineering-tally-fixture-1.2.0.tgz\nnode --version\nnpm --version'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'archive=release/engineering-tally-fixture-1.2.0.tgz\nfor member in package/package.json package/README.md package/dist/entry.js package/dist/cli.js package/dist/legacy.js; do\n  tar -xOzf \"$archive\" \"$member\"\ndone\nuname -sm\ncommand -v node npm python3 unshare'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python3 - <<'PY'\nimport hashlib\nimport json\nimport os\nfrom pathlib import Path\nimport shutil\nimport subprocess\nimport tempfile\n\nroot = Path.cwd()\narchive = root / 'release/engineering-tally-fixture-1.2.0.tgz'\ninputs = [p for dirname in ('release', 'build', 'references', 'agents') for p in (root / dirname).rglob('*') if p.is_file()]\ninputs.append(root / 'SKILL.md')\ndigests = {p: hashlib.sha256(p.read_bytes()).hexdigest() for p in inputs}\nnode = shutil.which('node')\nnpm = shutil.which('npm')\nwith tempfile.TemporaryDirectory(prefix='.tally-review-', dir=root) as work:\n    scratch = Path(work)\n    project = scratch / 'project'\n    consumer = scratch / 'consumer'\n    home = scratch / 'home'\n    for directory in (project, consumer, home):\n        directory.mkdir()\n    (project / 'package.json').write_text('{\\\"name\\\":\\\"tally-release-review\\\",\\\"version\\\":\\\"1.0.0\\\",\\\"private\\\":true}\\\\n')\n    env = {\n        'PATH': os.pathsep.join([str(Path(node).parent), '/usr/bin', '/bin']),\n        'HOME': str(home),\n        'TMPDIR': str(scratch),\n        'CI': '1',\n        'NO_COLOR': '1',\n        'LC_ALL': 'C',\n        'npm_config_cache': str(scratch / 'npm-cache'),\n        'npm_config_userconfig': str(scratch / 'user.npmrc'),\n        'npm_config_globalconfig': str(scratch / 'global.npmrc'),\n    }\n\n    def run(command, cwd):\n        result = subprocess.run(command, cwd=cwd, env=env, stdin=subprocess.DEVNULL, capture_output=True, text=True, timeout=30)\n        print(json.dumps(dict(command=command, exit=result.returncode, stdout=result.stdout, stderr=result.stderr)), flush=True)\n        return result\n\n    install = run([npm, 'install', '--offline', '--no-audit', '--no-fund', str(archive)], project)\n    install.check_returncode()\n    binpath = project / 'node_modules/.bin/tally'\n    installed = project / 'node_modules/engineering-tally-fixture'\n    manifest = json.loads((installed / 'package.json').read_text())\n    target = installed / manifest['bin']['tally']\n    assert binpath.resolve(strict=True) == target\n    print(f'Installed bin resolves to {target.relative_to(project)}')\n    before = sorted(scratch.rglob('*'))\n    for args in (['--help'], ['--version'], ['sum', '2', '3', '--json'], ['sum', 'bad', '3', '--json']):\n        run([str(binpath), *args], consumer)\n    assert before == sorted(scratch.rglob('*'))\n\nassert not scratch.exists()\nassert all(hashlib.sha256(p.read_bytes()).hexdigest() == digest for p, digest in digests.items())\nprint(f'Temporary install removed and {len(digests)} input files unchanged')\nPY\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "**Tally 1.2.0 не готов к внутренней выдаче.** Установленная команда `tally sum 2 3 --json` печатает `Calculating` в `stdout` перед `{\"total\":5}`. По договору `stdout` должен содержать только JSON. [Договор выдачи]({project}/release/contract.md)\n\nПроверил выданный архив на Linux x86_64 с Node.js 24.15.0 и npm 12.0.1. Чистая установка через `npm install --offline` прошла. Все команды запускал из отдельного рабочего каталога через установленный `tally`, который по `package.json#bin` ведёт в `dist/entry.js`. [Проверенный архив]({project}/release/engineering-tally-fixture-1.2.0.tgz)\n\n| Команда | Код | `stdout` | `stderr` |\n|---|---:|---|---|\n| `tally --help` | 0 | Версия и строка использования `sum` | Пусто |\n| `tally --version` | 0 | `1.2.0` | Пусто |\n| `tally sum 2 3 --json` | 0 | `Calculating`, затем `{\"total\":5}` на новой строке | Пусто |\n| `tally sum bad 3 --json` | 2 | Пусто | `Invalid number` |\n\nЛишнюю строку печатает `dist/entry.js` до загрузки `dist/cli.js`. Это блокирующий дефект поставки. В сводке сборки указано, что сборка Vite и модульные тесты арифметики прошли, а установленную команду в сборочном задании не запускали. [Сводка сборки]({project}/build/summary.md)\n\nДля повторного допуска смене нужно устранить лишний вывод в режиме `--json` и повторить проверку нового архива после чистой офлайн-установки. Входные материалы сохранены, временная установка удалена. Изменений продукта и публикации не было."
+    }
+  ],
+  "changed_file_contents": {},
+  "final_response": "**Tally 1.2.0 не готов к внутренней выдаче.** Установленная команда `tally sum 2 3 --json` печатает `Calculating` в `stdout` перед `{\"total\":5}`. По договору `stdout` должен содержать только JSON. [Договор выдачи]({project}/release/contract.md)\n\nПроверил выданный архив на Linux x86_64 с Node.js 24.15.0 и npm 12.0.1. Чистая установка через `npm install --offline` прошла. Все команды запускал из отдельного рабочего каталога через установленный `tally`, который по `package.json#bin` ведёт в `dist/entry.js`. [Проверенный архив]({project}/release/engineering-tally-fixture-1.2.0.tgz)\n\n| Команда | Код | `stdout` | `stderr` |\n|---|---:|---|---|\n| `tally --help` | 0 | Версия и строка использования `sum` | Пусто |\n| `tally --version` | 0 | `1.2.0` | Пусто |\n| `tally sum 2 3 --json` | 0 | `Calculating`, затем `{\"total\":5}` на новой строке | Пусто |\n| `tally sum bad 3 --json` | 2 | Пусто | `Invalid number` |\n\nЛишнюю строку печатает `dist/entry.js` до загрузки `dist/cli.js`. Это блокирующий дефект поставки. В сводке сборки указано, что сборка Vite и модульные тесты арифметики прошли, а установленную команду в сборочном задании не запускали. [Сводка сборки]({project}/build/summary.md)\n\nДля повторного допуска смене нужно устранить лишний вывод в режиме `--json` и повторить проверку нового архива после чистой офлайн-установки. Входные материалы сохранены, временная установка удалена. Изменений продукта и публикации не было.",
+  "input_file_modes": {
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "build/summary.md": "0664",
+    "references/architecture-and-layout.md": "0644",
+    "references/clig-baseline.md": "0644",
+    "references/framework-selection.md": "0644",
+    "references/service-backed-clis.md": "0644",
+    "references/testing-and-release.md": "0644",
+    "references/ux-and-security.md": "0644",
+    "release/contract.md": "0664",
+    "release/engineering-tally-fixture-1.2.0.tgz": "0664"
+  },
+  "changed_file_modes": {},
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "independentNewInstallation": {
+      "archiveSha256": "5becc89e02f8be1fb87533130e0ddb46c69a20cfefabcae64e02603757b2638a",
+      "successful": true,
+      "invocations": [
+        {
+          "arguments": [
+            "--help"
+          ],
+          "exit": 0,
+          "stdout": "tally 1.2.0\nUsage: tally sum <numbers...> [--json]\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "--version"
+          ],
+          "exit": 0,
+          "stdout": "1.2.0\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "sum",
+            "2",
+            "3",
+            "--json"
+          ],
+          "exit": 0,
+          "stdout": "Calculating\n{\"total\":5}\n",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "sum",
+            "bad",
+            "--json"
+          ],
+          "exit": 2,
+          "stdout": "",
+          "stderr": "Invalid number\n"
+        }
+      ]
+    },
+    "subjectRuns": [
+      {
+        "command": "/bin/bash -lc 'cat references/testing-and-release.md references/ux-and-security.md\nsha256sum SKILL.md release/* build/*\ntar -tvzf release/engineering-tally-fixture-1.2.0.tgz\nnode --version\nnpm --version'",
+        "exit": 0,
+        "output": ", support `-` for stdin/stdout\n\nDo not mix decorative human output into machine-facing modes.\n\n## Help And Discoverability\n\nEvery user-facing command should support `--help`.\n\nHelp should include:\n\n- one-line purpose\n- concise default help when required inputs are missing, unless the command is intentionally interactive-first and still offers a non-interactive path\n- the shortest path to success\n- 2-4 high-value examples\n- important flags only\n- references to config/env behavior when it matters\n- support and documentation links where users can continue\n\nAvoid turning help into a dump of every internal option with no prioritization.\n\nFor multi-command tools, prefer:\n\n- `mytool help`\n- `mytool help subcommand`\n- `mytool subcommand --help`\n\nFor long-lived CLIs, also provide:\n\n- versioned web docs\n- terminal-discoverable docs via help output\n- walkthroughs or tutorials when workflows are more important than individual flags\n- man pages or offline docs only when the user environment and surface area justify them\n\n## Shell Completion\n\nFor CLIs with many subcommands, flags, or dynamic operands, provide opt-in shell completion when it materially improves discovery.\n\n- generate completion candidates from the same command, option, and value metadata used by parsing, validation, and help\n- expose an explicit command such as `completion <shell>` and document each supported shell; Bash, Zsh, Fish, and PowerShell outputs are different contracts\n- write only candidates or the requested completion script to `stdout`; write warnings and diagnostics to `stderr`\n- keep setup explicit and reversible\n- never modify `.bashrc`, `.zshrc`, PowerShell profiles, or other shell startup files from npm lifecycle scripts\n- add contract tests that compare completion-visible commands and flags with the parser/help model\n\nDo not add completion to a small command merely to satisfy a checklist.\n\nOptional provenance: [Node.js CLI Apps Best Practices — shell completion](https://github.com/lirantal/nodejs-cli-apps-best-practices#37-provide-shell-completion).\n\n## Interactive Rules\n\n- prompts only when `stdin` is interactive\n- `--no-input` should disable all prompts and interactive behavior\n- TUI only when both the product need and terminal conditions justify it\n- destructive actions should confirm unless a deliberate bypass flag is present\n- interruption via Ctrl-C should exit cleanly and predictably\n- spinners and live progress must degrade safely in non-TTY and CI environments\n- if prompting is impossible in non-interactive mode, fail with a clear instruction about the required flag, file, or stdin path\n- password prompts should disable echo\n\nInteractive UI is an enhancement layer, not the only product surface.\n\n## Protected Command Option Contracts\n\nA command is protected when it can trigger deploy, rollback, release, infra mutation, an external executor or subprocess, network mutation, persistence mutation, or another comparable protected side effect.\n\nFor ordinary read, list, search, or inspect commands, an unknown flag is usually a command-contract and automation compatibility problem. For protected commands, an unknown flag, removed flag, or prohibited legacy flag is a side-effect safety problem.\n\nProtected commands must:\n\n- define an explicit per-action allowlist of accepted options\n- reject unknown flags before work starts\n- reject removed or prohibited legacy flags before work starts\n- keep deprecated-but-supported flags only as explicit aliases with a warning, a migration path, and tests until removal\n- fail before service calls, executor invocation, subprocess spawning, network mutation, filesystem mutation, or persistence mutation\n\nThis is a command contract, not a parser-library requirement. Implement it with the parser and architecture the target repo already uses, but make the fail-before-side-effects boundary testable.\n\nA protected CLI without strict option allowlists and pre-side-effect validation tests is a blocker in review.\n\n## Color And Formatting\n\n- use color only when the terminal supports it\n- on a compatible current Active LTS baseline, consider `node:util.styleText` before adding a color dependency; use a dependency only when the existing stack or richer requirement justifies it\n- honor `NO_COLOR` and explicit no-color flags\n- allow an explicit force-color path only when the renderer can handle it safely\n- do not rely on color as the only signal for status\n- keep table and line output readable in narrow terminals\n\n## Telemetry And Updates\n\n- new telemetry and analytics collection must be explicit opt-in\n- any inherited opt-out telemetry must be transparent, documented, and easy to disable before it is preserved\n- never block startup on analytics\n- update notifications should be lazy, infrequent, and respectful of TTY\n- do not surprise users with network traffic on every command invocation\n- prefer docs instrumentation, download metrics, and direct user feedback before background telemetry\n\n## Security Rules\n\n### Secrets\n\n- do not require secrets via argv when a provider-supported safer channel exists\n- follow the provider's established safe convention first; standard environment variables or documented user config are valid when the ecosystem expects them\n- prefer files with safe permissions, stdin, keychain, secret managers, or IPC when the provider and threat model support them better than environment variables\n- document the leak surface of every supported secret source and reserve token flags for authorized one-off tests when no safer supported route exists\n- when the CLI exposes `doctor --json` or equivalent health output, report whether auth is present and its source category without printing the secret value\n- never echo secrets back to the terminal\n- redact secrets from logs, error output, and debug traces\n\n### Subprocess safety\n\n- prefer structured argument APIs over shell-interpolated command strings\n- never concatenate untrusted input into shell commands\n- pass user-controlled operands after a `--` terminator when the child command supports it\n- validate proxyable flags and subcommands with allowlists before invoking external tools\n- allowlist external commands when the CLI proxies or shells out\n- quote and escape only through well-understood APIs, not ad hoc string templates\n\n### Filesystem safety\n\n- treat user-provided paths as untrusted\n- validate overwrite behavior for destructive commands\n- use safe temp directories and deterministic cleanup\n- guard against path traversal if the CLI writes files based on user input\n\n### Plugin and extension safety\n\n- plugins are a trust boundary, not a convenience detail\n- define who may install or load plugins\n- verify where plugins come from and how they are updated\n- never imply sandboxing if there is none\n\n### Supply chain\n\n- keep dependency count low\n- prefer maintained, well-understood packages\n- review major upgrades intentionally\n- lock dependency versions through the repo's package manager workflow\n- prefer trusted publishing and provenance for releases\n\n## Anti-patterns\n\n- Rich TUI as the only way to access core operations\n- Prompt-only UX with no flag or stdin fallback\n- Catch-all implicit subcommands that block future expansion\n- Prefix abbreviations that are convenient today but unstable tomorrow\n- Printing progress bars or spinners into non-TTY pipelines\n- Human prose mixed into `--json` output\n- One generic exit code for every failure\n- Startup network calls before command selection\n- Update checks or telemetry that slow down every invocation\n- Shelling out with unsanitized user input\n- Letting unknown, removed, or prohibited legacy flags reach a protected side effect\n- Logging raw tokens, credentials, or secret file contents\n- Treating help text as an afterthought instead of a contract\n5f6233270137a53c53008c8a11ef616a5c2d630c58d2e6d3cf054edf31bbf706  SKILL.md\n674f0e5b03ac695993d2fc5a6e0345c24c3afc3fecb9174fae7093e75dd4fbd6  release/contract.md\n5becc89e02f8be1fb87533130e0ddb46c69a20cfefabcae64e02603757b2638a  release/engineering-tally-fixture-1.2.0.tgz\n409864d9e38e8b20169916a51800547a755c8e46f586cd5fbc8093369b221225  build/summary.md\n-rwxr-xr-x 0/0             754 1985-10-26 09:15 package/dist/cli.js\n-rwxr-xr-x 0/0             213 1985-10-26 09:15 package/dist/entry.js\n-rwxr-xr-x 0/0              52 1985-10-26 09:15 package/dist/legacy.js\n-rw-r--r-- 0/0             409 1985-10-26 09:15 package/package.json\n-rw-r--r-- 0/0              86 1985-10-26 09:15 package/README.md\nv24.15.0\n12.0.1\n",
+        "eventSha256": "393610d534008cf22e21d3afaffac5120935c5b09f2a6e4de26d8bfc6962e5f6"
+      },
+      {
+        "command": "/bin/bash -lc 'archive=release/engineering-tally-fixture-1.2.0.tgz\nfor member in package/package.json package/README.md package/dist/entry.js package/dist/cli.js package/dist/legacy.js; do\n  tar -xOzf \"$archive\" \"$member\"\ndone\nuname -sm\ncommand -v node npm python3 unshare'",
+        "exit": 0,
+        "output": "{\n  \"name\": \"engineering-tally-fixture\",\n  \"version\": \"1.2.0\",\n  \"type\": \"module\",\n  \"bin\": {\n    \"tally\": \"dist/entry.js\"\n  },\n  \"files\": [\n    \"dist\"\n  ],\n  \"scripts\": {\n    \"typecheck\": \"tsc -p tsconfig.json --noEmit\",\n    \"build\": \"tsc -p tsconfig.json\",\n    \"test\": \"tsx --test test/*.test.ts\"\n  },\n  \"devDependencies\": {\n    \"typescript\": \"5.9.3\",\n    \"tsx\": \"4.20.5\",\n    \"@types/node\": \"24.0.0\"\n  }\n}\nOffline evaluation package for Tally. The operator handbook is maintained separately.\n#!/usr/bin/env node\nif (process.argv[2] === \"sum\" && process.argv.slice(3).filter(value => value !== \"--json\").every(value => Number.isFinite(Number(value)))) console.log(\"Calculating\");\nawait import(\"./cli.js\");\n#!/usr/bin/env node\nconst args = process.argv.slice(2);\nif (args.includes('--help')) {\n    console.log('tally 1.2.0\\nUsage: tally sum <numbers...> [--json]');\n}\nelse if (args.includes('--version')) {\n    console.log('1.2.0');\n}\nelse if (args[0] === 'sum') {\n    const json = args.includes('--json');\n    const values = args.slice(1).filter(x => x !== '--json').map(Number);\n    if (values.length === 0 || values.some(x => !Number.isFinite(x))) {\n        console.error('Invalid number');\n        process.exitCode = 2;\n    }\n    else {\n        const total = values.reduce((a, b) => a + b, 0);\n        console.log(json ? JSON.stringify({ total }) : String(total));\n    }\n}\nelse {\n    console.error('Unknown command');\n    process.exitCode = 2;\n}\nexport {};\n#!/usr/bin/env node\nconsole.log('legacy tally0.1');\nLinux x86_64\n{home}/.nvm/versions/node/v24.15.0/bin/node\n{home}/.nvm/versions/node/v24.15.0/bin/npm\n/usr/bin/python3\n/usr/bin/unshare\n",
+        "eventSha256": "30cdc461c848c874a9f1c534a854f02bcf7b35c6f214599fbeaf77574898e241"
+      },
+      {
+        "command": "/bin/bash -lc \"python3 - <<'PY'\nimport hashlib\nimport json\nimport os\nfrom pathlib import Path\nimport shutil\nimport subprocess\nimport tempfile\n\nroot = Path.cwd()\narchive = root / 'release/engineering-tally-fixture-1.2.0.tgz'\ninputs = [p for dirname in ('release', 'build', 'references', 'agents') for p in (root / dirname).rglob('*') if p.is_file()]\ninputs.append(root / 'SKILL.md')\ndigests = {p: hashlib.sha256(p.read_bytes()).hexdigest() for p in inputs}\nnode = shutil.which('node')\nnpm = shutil.which('npm')\nwith tempfile.TemporaryDirectory(prefix='.tally-review-', dir=root) as work:\n    scratch = Path(work)\n    project = scratch / 'project'\n    consumer = scratch / 'consumer'\n    home = scratch / 'home'\n    for directory in (project, consumer, home):\n        directory.mkdir()\n    (project / 'package.json').write_text('{\\\"name\\\":\\\"tally-release-review\\\",\\\"version\\\":\\\"1.0.0\\\",\\\"private\\\":true}\\\\n')\n    env = {\n        'PATH': os.pathsep.join([str(Path(node).parent), '/usr/bin', '/bin']),\n        'HOME': str(home),\n        'TMPDIR': str(scratch),\n        'CI': '1',\n        'NO_COLOR': '1',\n        'LC_ALL': 'C',\n        'npm_config_cache': str(scratch / 'npm-cache'),\n        'npm_config_userconfig': str(scratch / 'user.npmrc'),\n        'npm_config_globalconfig': str(scratch / 'global.npmrc'),\n    }\n\n    def run(command, cwd):\n        result = subprocess.run(command, cwd=cwd, env=env, stdin=subprocess.DEVNULL, capture_output=True, text=True, timeout=30)\n        print(json.dumps(dict(command=command, exit=result.returncode, stdout=result.stdout, stderr=result.stderr)), flush=True)\n        return result\n\n    install = run([npm, 'install', '--offline', '--no-audit', '--no-fund', str(archive)], project)\n    install.check_returncode()\n    binpath = project / 'node_modules/.bin/tally'\n    installed = project / 'node_modules/engineering-tally-fixture'\n    manifest = json.loads((installed / 'package.json').read_text())\n    target = installed / manifest['bin']['tally']\n    assert binpath.resolve(strict=True) == target\n    print(f'Installed bin resolves to {target.relative_to(project)}')\n    before = sorted(scratch.rglob('*'))\n    for args in (['--help'], ['--version'], ['sum', '2', '3', '--json'], ['sum', 'bad', '3', '--json']):\n        run([str(binpath), *args], consumer)\n    assert before == sorted(scratch.rglob('*'))\n\nassert not scratch.exists()\nassert all(hashlib.sha256(p.read_bytes()).hexdigest() == digest for p, digest in digests.items())\nprint(f'Temporary install removed and {len(digests)} input files unchanged')\nPY\"",
+        "exit": 0,
+        "output": "{\"command\": [\"{home}/.nvm/versions/node/v24.15.0/bin/npm\", \"install\", \"--offline\", \"--no-audit\", \"--no-fund\", \"./release/engineering-tally-fixture-1.2.0.tgz\"], \"exit\": 0, \"stdout\": \"\\nadded 1 package in 173ms\\n\", \"stderr\": \"\"}\nInstalled bin resolves to node_modules/engineering-tally-fixture/dist/entry.js\n{\"command\": [\"./.tally-review-l888nvuy/project/node_modules/.bin/tally\", \"--help\"], \"exit\": 0, \"stdout\": \"tally 1.2.0\\nUsage: tally sum <numbers...> [--json]\\n\", \"stderr\": \"\"}\n{\"command\": [\"./.tally-review-l888nvuy/project/node_modules/.bin/tally\", \"--version\"], \"exit\": 0, \"stdout\": \"1.2.0\\n\", \"stderr\": \"\"}\n{\"command\": [\"./.tally-review-l888nvuy/project/node_modules/.bin/tally\", \"sum\", \"2\", \"3\", \"--json\"], \"exit\": 0, \"stdout\": \"Calculating\\n{\\\"total\\\":5}\\n\", \"stderr\": \"\"}\n{\"command\": [\"./.tally-review-l888nvuy/project/node_modules/.bin/tally\", \"sum\", \"bad\", \"3\", \"--json\"], \"exit\": 2, \"stdout\": \"\", \"stderr\": \"Invalid number\\n\"}\nTemporary install removed and 11 input files unchanged\n",
+        "eventSha256": "0bde485a7949c1a05358e9ef21b507ed7361f323dfc0d35812cb7c2c132245ad"
+      }
+    ],
+    "unchangedInitialFilesAndModes": true,
+    "changedPaths": []
+  }
+}
