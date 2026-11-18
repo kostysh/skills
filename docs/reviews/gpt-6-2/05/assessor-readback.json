@@ -1,0 +1,223 @@
+{
+  "publication": "У каждой переданной копии сопоставлены SHA-256 и mode всех файлов приложения с реальным исходным fixture и состоянием рабочего проекта. Критерии и ключ назначений в проект не копировались. В публичной записи одного исключённого прогона адрес хостовой памяти обезличен, SHA исходных событий сохранён.",
+  "initial_language_presentation": {
+    "records": [
+      "842b29",
+      "6ff52d"
+    ],
+    "actual_modes": [
+      "0775",
+      "0775"
+    ],
+    "initial_packet_modes": [
+      "0775",
+      "0664"
+    ],
+    "cause": "assessor.py copied after project files using copyfile; copytree preserved original before modes. Reissued using copy2 and verified all copied bytes and file modes."
+  },
+  "exact_package_stdout": {
+    "record": "8ca7cb",
+    "output_lines": [
+      {
+        "command_event_id": "item_8",
+        "raw_event_line_sha256_without_newline": "d5e3f2ab29ea400634b71d2fecbe2c68469cf20bacb8c8cfaeaa084d6b21ba28",
+        "actual_stdout_line": "OK: 2,000 labels through readParcel and forChute, 7 rejected values, and 3 CLI cases"
+      }
+    ]
+  },
+  "scope_exception": {
+    "code": "842b29",
+    "public_path": "{host-memory}/MEMORY.md",
+    "command_exit": 1,
+    "visible_matches": 0,
+    "included_in_clean_comparison": false,
+    "clean_repetition": "dae343"
+  },
+  "reissued_scorer_views": {
+    "imports": {
+      "4b4db5": {
+        "anonymized_id": "09f87b",
+        "readback_before_files": 17,
+        "readback_after_files": 17,
+        "before_bytes_and_modes_sha256": "d4550e415970fe415956094a50104d8548e9775e27d1f6c247372fd1893a52e3",
+        "after_bytes_and_modes_sha256": "c000d5ac4644d43bac7d8bcfd9337806d210c7d020cc52e9f2ab8e368d227e50",
+        "actual_before_after_modes": [
+          "0775",
+          "0775"
+        ],
+        "scorer_before_after_modes": [
+          "0775",
+          "0775"
+        ]
+      },
+      "0aa5bc": {
+        "anonymized_id": "5c4c76",
+        "readback_before_files": 17,
+        "readback_after_files": 17,
+        "before_bytes_and_modes_sha256": "cc088ce427a63f35af42e4ee7225dc7575a2aed2085d724388dfd7223cf2347a",
+        "after_bytes_and_modes_sha256": "f8d364b7d560fecd70880a7cbf5d8353faa62296a1b886ede350d6fbd7a360e4",
+        "actual_before_after_modes": [
+          "0775",
+          "0775"
+        ],
+        "scorer_before_after_modes": [
+          "0775",
+          "0775"
+        ]
+      },
+      "305c82": {
+        "anonymized_id": "2cfe07",
+        "readback_before_files": 17,
+        "readback_after_files": 17,
+        "before_bytes_and_modes_sha256": "d4550e415970fe415956094a50104d8548e9775e27d1f6c247372fd1893a52e3",
+        "after_bytes_and_modes_sha256": "c000d5ac4644d43bac7d8bcfd9337806d210c7d020cc52e9f2ab8e368d227e50",
+        "actual_before_after_modes": [
+          "0775",
+          "0775"
+        ],
+        "scorer_before_after_modes": [
+          "0775",
+          "0775"
+        ]
+      },
+      "62ec49": {
+        "anonymized_id": "a499dd",
+        "readback_before_files": 17,
+        "readback_after_files": 17,
+        "before_bytes_and_modes_sha256": "d4550e415970fe415956094a50104d8548e9775e27d1f6c247372fd1893a52e3",
+        "after_bytes_and_modes_sha256": "c000d5ac4644d43bac7d8bcfd9337806d210c7d020cc52e9f2ab8e368d227e50",
+        "actual_before_after_modes": [
+          "0775",
+          "0775"
+        ],
+        "scorer_before_after_modes": [
+          "0775",
+          "0775"
+        ]
+      },
+      "7ca14d": {
+        "anonymized_id": "67094e",
+        "readback_before_files": 17,
+        "readback_after_files": 18,
+        "before_bytes_and_modes_sha256": "149d462b7762e38645b5c9c1f1faf918f2c842d25fa49a56c99d71dcceff54ac",
+        "after_bytes_and_modes_sha256": "aa6b8d675f12eec931aacfd7c4f446327b0a3c0fa6f4c72c7d3b0435668c0516",
+        "actual_before_after_modes": [
+          "0775",
+          "0775"
+        ],
+        "scorer_before_after_modes": [
+          "0775",
+          "0775"
+        ]
+      },
+      "df7670": {
+        "anonymized_id": "f27847",
+        "readback_before_files": 17,
+        "readback_after_files": 17,
+        "before_bytes_and_modes_sha256": "149d462b7762e38645b5c9c1f1faf918f2c842d25fa49a56c99d71dcceff54ac",
+        "after_bytes_and_modes_sha256": "cd827710afd24aaa49bcb3dbcc73a8a12b055adfdb1e745b08073dbc384f1295",
+        "actual_before_after_modes": [
+          "0775",
+          "0775"
+        ],
+        "scorer_before_after_modes": [
+          "0775",
+          "0775"
+        ]
+      },
+      "afebc3": {
+        "anonymized_id": "a3cf6a",
+        "readback_before_files": 17,
+        "readback_after_files": 17,
+        "before_bytes_and_modes_sha256": "cc088ce427a63f35af42e4ee7225dc7575a2aed2085d724388dfd7223cf2347a",
+        "after_bytes_and_modes_sha256": "f8d364b7d560fecd70880a7cbf5d8353faa62296a1b886ede350d6fbd7a360e4",
+        "actual_before_after_modes": [
+          "0775",
+          "0775"
+        ],
+        "scorer_before_after_modes": [
+          "0775",
+          "0775"
+        ]
+      },
+      "8ca7cb": {
+        "anonymized_id": "b60a90",
+        "readback_before_files": 17,
+        "readback_after_files": 17,
+        "before_bytes_and_modes_sha256": "149d462b7762e38645b5c9c1f1faf918f2c842d25fa49a56c99d71dcceff54ac",
+        "after_bytes_and_modes_sha256": "cd827710afd24aaa49bcb3dbcc73a8a12b055adfdb1e745b08073dbc384f1295",
+        "actual_before_after_modes": [
+          "0775",
+          "0775"
+        ],
+        "scorer_before_after_modes": [
+          "0775",
+          "0775"
+        ]
+      },
+      "7d6c9f": {
+        "anonymized_id": "2705a2",
+        "readback_before_files": 17,
+        "readback_after_files": 17,
+        "before_bytes_and_modes_sha256": "149d462b7762e38645b5c9c1f1faf918f2c842d25fa49a56c99d71dcceff54ac",
+        "after_bytes_and_modes_sha256": "cd827710afd24aaa49bcb3dbcc73a8a12b055adfdb1e745b08073dbc384f1295",
+        "actual_before_after_modes": [
+          "0775",
+          "0775"
+        ],
+        "scorer_before_after_modes": [
+          "0775",
+          "0775"
+        ]
+      },
+      "b9b08f": {
+        "anonymized_id": "169d75",
+        "readback_before_files": 17,
+        "readback_after_files": 17,
+        "before_bytes_and_modes_sha256": "149d462b7762e38645b5c9c1f1faf918f2c842d25fa49a56c99d71dcceff54ac",
+        "after_bytes_and_modes_sha256": "cd827710afd24aaa49bcb3dbcc73a8a12b055adfdb1e745b08073dbc384f1295",
+        "actual_before_after_modes": [
+          "0775",
+          "0775"
+        ],
+        "scorer_before_after_modes": [
+          "0775",
+          "0775"
+        ]
+      }
+    },
+    "language": {
+      "dae343": {
+        "anonymized_id": "a5d633",
+        "readback_before_files": 14,
+        "readback_after_files": 14,
+        "before_bytes_and_modes_sha256": "1d9748a0ca01806bda200b4aecc615ca6bdb75e76a701fad187c1c76dee67a66",
+        "after_bytes_and_modes_sha256": "1d9748a0ca01806bda200b4aecc615ca6bdb75e76a701fad187c1c76dee67a66",
+        "actual_before_after_modes": [
+          "0775",
+          "0775"
+        ],
+        "scorer_before_after_modes": [
+          "0775",
+          "0775"
+        ]
+      },
+      "6ff52d": {
+        "anonymized_id": "8aa0aa",
+        "readback_before_files": 14,
+        "readback_after_files": 14,
+        "before_bytes_and_modes_sha256": "1d9748a0ca01806bda200b4aecc615ca6bdb75e76a701fad187c1c76dee67a66",
+        "after_bytes_and_modes_sha256": "1d9748a0ca01806bda200b4aecc615ca6bdb75e76a701fad187c1c76dee67a66",
+        "actual_before_after_modes": [
+          "0775",
+          "0775"
+        ],
+        "scorer_before_after_modes": [
+          "0775",
+          "0775"
+        ]
+      }
+    }
+  },
+  "corrected_assessor_source_sha256": "8f63b5495fcfeeba2491a56e8ab5d56c2e0b3ebc770f50d819d1c75db5ebcde0"
+}

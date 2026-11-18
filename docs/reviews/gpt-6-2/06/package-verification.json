@@ -1,0 +1,29 @@
+{
+  "base_package": "node-engineer-0.1.4.tgz",
+  "working_version": "node-engineer-0.1.5.tgz",
+  "package_sha256": "611248149580902200c08415349d7dc62608a12f4d4819607333956a224bbe8c",
+  "release_files": {
+    "SKILL.md": "e8e692ea4bed1734516a1e7c0f7d86962cdaa517cce73d432597d896bcb79f22",
+    "agents/openai.yaml": "b41169df35aa53b56726f39c42a18008af7066d2a64269f1a8213d8309fe66df",
+    "references/debugging-profiling.md": "ec45142c48bcc4b2a69ecfaed0e128f52260f190c051c5220ac9ce1df5209812",
+    "references/operations.md": "d6f741c8a9f74c66d40c82516839a09c7f769d66d46fc89ea446f9f608e6fb95",
+    "references/runtime-typescript.md": "b5022d4736dbd8cc315ba089a207ecc95545a6233f72ab8638d81bdf3f602900",
+    "references/streams-caching.md": "1a24ea44947df1ed6826f86ffba0ae7f39670202467d9487e0570cc69b548d00"
+  },
+  "inspection_command": "pnpm --dir cli run pack:skills --root <isolated-skills> --out <new-directory> --release skills-20261118-06",
+  "published": false,
+  "all_files_match_source": true,
+  "base_package_sha256": "a74d1e9e34258f8b28cfa6bfffaa5d69e8501c4a5d0d07fdb0ba9c966e77a291",
+  "controlled_C_file_sha256": {
+    "SKILL.md": "073a05ee05c1ef9db06d375ec9412fd2f8308a3d0ae2e028ed8df4f45eb55eef",
+    "agents/openai.yaml": "b41169df35aa53b56726f39c42a18008af7066d2a64269f1a8213d8309fe66df",
+    "references/debugging-profiling.md": "ec45142c48bcc4b2a69ecfaed0e128f52260f190c051c5220ac9ce1df5209812",
+    "references/operations.md": "d6f741c8a9f74c66d40c82516839a09c7f769d66d46fc89ea446f9f608e6fb95",
+    "references/runtime-typescript.md": "c255ca59ea91b9144baf7a624ffb84a717aafdb83f90156fbc96eba2e7c22e58",
+    "references/streams-caching.md": "1a24ea44947df1ed6826f86ffba0ae7f39670202467d9487e0570cc69b548d00"
+  },
+  "C_to_release_changed_files": [
+    "SKILL.md",
+    "references/runtime-typescript.md"
+  ]
+}

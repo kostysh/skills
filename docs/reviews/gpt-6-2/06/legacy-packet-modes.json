@@ -1,0 +1,66 @@
+{
+  "629438": {
+    "original_code": "7c4950",
+    "scope": "toolchain/node",
+    "before_after_file_count": 5,
+    "before_after_bytes_and_modes_match": true,
+    "evidence": {
+      "stable_input": {
+        "sha256": "e5207b0c9f178fe6b5caf8f5bab550b9f589a3f8e0e802165340e8bbf7f90927",
+        "mode": "0755"
+      },
+      "actual_after": {
+        "sha256": "e5207b0c9f178fe6b5caf8f5bab550b9f589a3f8e0e802165340e8bbf7f90927",
+        "mode": "0755"
+      },
+      "original_before": {
+        "sha256": "e5207b0c9f178fe6b5caf8f5bab550b9f589a3f8e0e802165340e8bbf7f90927",
+        "mode": "0755"
+      },
+      "original_after": {
+        "sha256": "e5207b0c9f178fe6b5caf8f5bab550b9f589a3f8e0e802165340e8bbf7f90927",
+        "mode": "0664"
+      },
+      "regrade_before": {
+        "sha256": "e5207b0c9f178fe6b5caf8f5bab550b9f589a3f8e0e802165340e8bbf7f90927",
+        "mode": "0755"
+      },
+      "regrade_after": {
+        "sha256": "e5207b0c9f178fe6b5caf8f5bab550b9f589a3f8e0e802165340e8bbf7f90927",
+        "mode": "0755"
+      }
+    }
+  },
+  "65ca54": {
+    "original_code": "161c95",
+    "scope": "toolchain/node",
+    "before_after_file_count": 5,
+    "before_after_bytes_and_modes_match": true,
+    "evidence": {
+      "stable_input": {
+        "sha256": "e5207b0c9f178fe6b5caf8f5bab550b9f589a3f8e0e802165340e8bbf7f90927",
+        "mode": "0755"
+      },
+      "actual_after": {
+        "sha256": "e5207b0c9f178fe6b5caf8f5bab550b9f589a3f8e0e802165340e8bbf7f90927",
+        "mode": "0755"
+      },
+      "original_before": {
+        "sha256": "e5207b0c9f178fe6b5caf8f5bab550b9f589a3f8e0e802165340e8bbf7f90927",
+        "mode": "0755"
+      },
+      "original_after": {
+        "sha256": "e5207b0c9f178fe6b5caf8f5bab550b9f589a3f8e0e802165340e8bbf7f90927",
+        "mode": "0664"
+      },
+      "regrade_before": {
+        "sha256": "e5207b0c9f178fe6b5caf8f5bab550b9f589a3f8e0e802165340e8bbf7f90927",
+        "mode": "0755"
+      },
+      "regrade_after": {
+        "sha256": "e5207b0c9f178fe6b5caf8f5bab550b9f589a3f8e0e802165340e8bbf7f90927",
+        "mode": "0755"
+      }
+    }
+  }
+}

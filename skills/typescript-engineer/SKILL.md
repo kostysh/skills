@@ -6,9 +6,9 @@ description: Use for TypeScript language and type-system work, compiler
   installed-version evidence; pair with runtime, framework, testing, validation,
   and domain owners.
 metadata:
-  source-version: 0.2.2
+  source-version: 0.2.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 65219add1388c1bcc026b886ce7b96f155535b53d0f6204641c3f6b3aa0453d5
+  skillforge-source-hash: f67115e5fda3e72e67b911cedb4c59763b34cf33873e8a0e10b647c09b063766
 ---
 
 # typescript-engineer

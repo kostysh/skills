@@ -1,0 +1,199 @@
+{
+  "date": "2026-11-18",
+  "checkout_manifest_ranges": {
+    "typescript": "^5.9.3",
+    "@biomejs/biome": "^2.4.9",
+    "eslint": "^10.1.0",
+    "@typescript-eslint/parser": "^8.57.2",
+    "@typescript-eslint/eslint-plugin": "^8.57.2"
+  },
+  "installed": {
+    "typescript": {
+      "version": "5.9.3",
+      "peerDependencies": {}
+    },
+    "@biomejs/biome": {
+      "version": "2.4.9",
+      "peerDependencies": {}
+    },
+    "eslint": {
+      "version": "10.1.0",
+      "peerDependencies": {}
+    },
+    "@typescript-eslint/parser": {
+      "version": "8.57.2",
+      "peerDependencies": {
+        "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0",
+        "typescript": ">=4.8.4 <6.0.0"
+      }
+    },
+    "@typescript-eslint/eslint-plugin": {
+      "version": "8.57.2",
+      "peerDependencies": {
+        "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0",
+        "typescript": ">=4.8.4 <6.0.0"
+      }
+    }
+  },
+  "registry_latest": {
+    "typescript": {
+      "version": "7.0.2",
+      "peerDependencies": {}
+    },
+    "@biomejs/biome": {
+      "version": "2.6.8",
+      "peerDependencies": {}
+    },
+    "eslint": {
+      "version": "10.15.0",
+      "peerDependencies": {}
+    },
+    "@typescript-eslint/parser": {
+      "version": "8.73.0",
+      "peerDependencies": {
+        "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0",
+        "typescript": ">=4.8.4 <6.1.0"
+      }
+    },
+    "@typescript-eslint/eslint-plugin": {
+      "version": "8.73.0",
+      "peerDependencies": {
+        "eslint": "^8.57.0 || ^9.0.0 || ^10.0.0",
+        "typescript": ">=4.8.4 <6.1.0"
+      }
+    }
+  },
+  "sources": {
+    "typescript": "https://registry.npmjs.org/typescript/latest",
+    "@biomejs/biome": "https://registry.npmjs.org/@biomejs%2Fbiome/latest",
+    "eslint": "https://registry.npmjs.org/eslint/latest",
+    "@typescript-eslint/parser": "https://registry.npmjs.org/@typescript-eslint%2Fparser/latest",
+    "@typescript-eslint/eslint-plugin": "https://registry.npmjs.org/@typescript-eslint%2Feslint-plugin/latest"
+  },
+  "probe_environment": {
+    "typescript": "5.9.3",
+    "@biomejs/biome": "2.4.9",
+    "eslint": "10.1.0",
+    "@typescript-eslint/parser": "8.57.2",
+    "@typescript-eslint/eslint-plugin": "8.57.2"
+  },
+  "node": {
+    "argv": [
+      "node",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "v24.15.0\n",
+    "stderr": ""
+  },
+  "literal_widening": {
+    "argv": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "--strict",
+      "--target",
+      "es2022",
+      "--noEmit",
+      "literals/wide.ts"
+    ],
+    "exit": 2,
+    "stdout": "literals/wide.ts(2,7): error TS2322: Type 'number' is not assignable to type '3000'.\nliterals/wide.ts(3,7): error TS2322: Type 'string' is not assignable to type '\"localhost\"'.\n",
+    "stderr": ""
+  },
+  "accepted_and_alias_in_compiler": {
+    "argv": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "-p",
+      "tsconfig.json"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "native_direct": {
+    "argv": [
+      "node",
+      "loader/direct.ts"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "native_alias": {
+    "argv": [
+      "node",
+      "loader/alias.ts"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "node:internal/modules/esm/resolve:297\n  return new ERR_PACKAGE_IMPORT_NOT_DEFINED(\n         ^\n\nTypeError [ERR_PACKAGE_IMPORT_NOT_DEFINED]: Package import specifier \"#readout\" is not defined in package ./package.json imported from ./loader/alias.ts\n    at importNotDefined (node:internal/modules/esm/resolve:297:10)\n    at packageImportsResolve (node:internal/modules/esm/resolve:747:9)\n    at moduleResolve (node:internal/modules/esm/resolve:844:16)\n    at defaultResolve (node:internal/modules/esm/resolve:988:11)\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:697:20)\n    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:714:38)\n    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:746:52)\n    at #resolve (node:internal/modules/esm/loader:679:17)\n    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:599:35)\n    at ModuleJob.syncLink (node:internal/modules/esm/module_job:162:33) {\n  code: 'ERR_PACKAGE_IMPORT_NOT_DEFINED'\n}\n\nNode.js v24.15.0\n"
+  },
+  "biome_rule": {
+    "argv": [
+      "node_modules/.bin/biome",
+      "explain",
+      "noFloatingPromises"
+    ],
+    "exit": 0,
+    "stdout": "Summary\n\n- Name: noFloatingPromises\n- Fix: unsafe\n- Default severity: info\n- Available from version: 2.0.0\n- Diagnostic category: lint/nursery/noFloatingPromises\n\nDomains\n\n- Name: types\n- The rule is recommended for this domain\n\n\nDescription\n\n Require Promise-like statements to be handled appropriately.\n\n A \"floating\" `Promise` is one that is created without any code set up to\n handle any errors it might throw. Floating Promises can lead to several\n issues, including improperly sequenced operations, unhandled Promise\n rejections, and other unintended consequences.\n\n This rule will report Promise-valued statements that are not treated in\n one of the following ways:\n - Calling its `.then()` method with two arguments\n - Calling its `.catch()` method with one argument\n - `await`-ing it\n - `return`-ing it\n - `void`-ing it\n\nExamples\n\nInvalid\n\n ```ts,expect_diagnostic,file=async-fn.ts\n async function returnsPromise(): Promise<string> {\n   return 'value';\n }\n returnsPromise().then(() => {});\n ```\n\n ```ts,expect_diagnostic,file=async-fn2.ts\n const returnsPromise = async (): Promise<string> => {\n   return 'value';\n }\n async function returnsPromiseInAsyncFunction() {\n   returnsPromise().then(() => {});\n }\n ```\n\n ```js,expect_diagnostic,file=new-promise.js\n const promise = new Promise((resolve) => resolve('value'));\n promise.then(() => { }).finally(() => { });\n ```\n\n ```js,expect_diagnostic,file=promise-all.js\n Promise.all([p1, p2, p3])\n ```\n\n ```ts,expect_diagnostic,file=async-method.ts\n class Api {\n   async returnsPromise(): Promise<string> {\n     return 'value';\n   }\n   async someMethod() {\n     this.returnsPromise();\n   }\n }\n ```\n\n ```ts,expect_diagnostic,file=async-super-method.ts\n class Parent {\n   async returnsPromise(): Promise<string> {\n     return 'value';\n   }\n }\n\n class Child extends Parent {\n   async someMethod() {\n     this.returnsPromise();\n   }\n }\n ```\n\n ```ts,expect_diagnostic,file=async-method2.ts\n class Api {\n   async returnsPromise(): Promise<string> {\n     return 'value';\n   }\n }\n const api = new Api();\n api.returnsPromise().then(() => {}).finally(() => {});\n ```\n\n ```ts,expect_diagnostic,file=async-object-method.ts\n const obj = {\n   async returnsPromise(): Promise<string> {\n     return 'value';\n   },\n };\n\n obj.returnsPromise();\n ```\n\n ```ts,expect_diagnostic,file=async-prop.ts\n type Props = {\n   returnsPromise: () => Promise<void>;\n };\n\n async function testCallingReturnsPromise(props: Props) {\n   props.returnsPromise();\n }\n ```\n\nValid\n\n ```ts,file=valid-examples.ts\n async function returnsPromise(): Promise<string> {\n   return 'value';\n }\n\n await returnsPromise();\n\n void returnsPromise();\n\n // Calling .then() with two arguments\n returnsPromise().then(\n   () => {},\n   () => {},\n );\n\n // Calling .catch() with one argument\n returnsPromise().catch(() => {});\n\n await Promise.all([p1, p2, p3])\n\n class Api {\n   async returnsPromise(): Promise<string> {\n     return 'value';\n   }\n   async someMethod() {\n     await this.returnsPromise();\n   }\n }\n\n type Props = {\n   returnsPromise: () => Promise<void>;\n };\n\n async function testCallingReturnsPromise(props: Props) {\n   return props.returnsPromise();\n }\n ```\n\n\n",
+    "stderr": ""
+  },
+  "biome_rejects": {
+    "argv": [
+      "node_modules/.bin/biome",
+      "lint",
+      "lint/floating.ts"
+    ],
+    "exit": 1,
+    "stdout": "Checked 1 file in 112ms. No fixes applied.\nFound 1 error.\n",
+    "stderr": "lint/floating.ts:2:1 lint/nursery/noFloatingPromises ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n  × A \"floating\" Promise was found, meaning it is not properly handled and could lead to ignored errors or unexpected behavior.\n  \n    1 │ async function flush(): Promise<void> {}\n  > 2 │ flush();\n      │ ^^^^^^^^\n    3 │ export {};\n    4 │ \n  \n  i This happens when a Promise is not awaited, lacks a `.catch` or `.then` rejection handler, or is not explicitly ignored using the `void` operator.\n  \n  i This rule belongs to the nursery group, which means it is not yet stable and may change in the future. Visit https://biomejs.dev/linter/#nursery for more information.\n  \n\nlint ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n  × Some errors were emitted while running checks.\n  \n\n"
+  },
+  "biome_accepts": {
+    "argv": [
+      "node_modules/.bin/biome",
+      "lint",
+      "lint/handled.ts"
+    ],
+    "exit": 0,
+    "stdout": "Checked 1 file in 160ms. No fixes applied.\n",
+    "stderr": ""
+  },
+  "eslint_rejects": {
+    "argv": [
+      "node_modules/.bin/eslint",
+      "lint/floating.ts"
+    ],
+    "exit": 1,
+    "stdout": "\n./lint/floating.ts\n  2:1  error  Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator  @typescript-eslint/no-floating-promises\n\n✖ 1 problem (1 error, 0 warnings)\n\n",
+    "stderr": ""
+  },
+  "eslint_accepts": {
+    "argv": [
+      "node_modules/.bin/eslint",
+      "lint/handled.ts"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "checkout_effective_eslint": {
+    "argv": [
+      "node_modules/.bin/eslint",
+      "--print-config",
+      "cli/src/cli.ts"
+    ],
+    "exit": 0,
+    "parser": "typescript-eslint/parser@8.57.2",
+    "projectService": true,
+    "rule": [
+      2
+    ]
+  },
+  "compiler_cli_flags": {
+    "--showConfig": true,
+    "--explainFiles": true
+  },
+  "reproducibility": "Распаковать toolchain-probes.tar.gz в отдельный каталог, установить зафиксированные прямые devDependencies (npm install --ignore-scripts --no-audit --no-fund --package-lock=false), выполнить команды из этой записи на Node 24.15.0.",
+  "probe_archive_sha256": "e11f30b5ce0eb062bc411c1b66c1b1ff59acfdacf556657625e46877405f249e"
+}

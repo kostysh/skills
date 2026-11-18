@@ -9,7 +9,7 @@ Derive types from runtime data instead of duplicating shape by hand.
 - [Single Source of Truth](#single-source-of-truth)
 - [`as const` and `typeof`](#as-const-and-typeof)
 - [Arrays and `[number]`](#arrays-and-number)
-- [`satisfies` Without Widening](#satisfies-without-widening)
+- [Inference with `satisfies`](#inference-with-satisfies)
 - [`const` Type Parameters](#const-type-parameters)
 - [Pitfalls](#pitfalls)
 
@@ -111,9 +111,9 @@ type ArrayElement = typeof array[number];
 
 ---
 
-## `satisfies` Without Widening
+## Inference with `satisfies`
 
-Use `satisfies` when you need shape validation but want to keep property literals:
+Use `satisfies` to check a shape while keeping the expression's inferred type. A mutable property checked against `string` can widen to `string`. A contextual literal union can retain its specific value:
 
 ```typescript
 type RouteConfig = {

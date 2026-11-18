@@ -1,0 +1,13 @@
+--- C/SKILL.md
++++ Release/SKILL.md
+@@ -9 +9 @@
+-  source-version: 0.1.4
++  source-version: 0.1.5
+@@ -11 +11 @@
+-  skillforge-source-hash: 1c56be18b04e592e74ce4b65aab1ed63f96886a7e3d14a2a9bdb7edfe9b5ded8
++  skillforge-source-hash: f328ffd0313896e31f7e7e765d7a473f31a385e4e2b9a6819a71023cdfc0409c
+--- C/references/runtime-typescript.md
++++ Release/references/runtime-typescript.md
+@@ -24 +24 @@
+-- Node `22.6` through `22.17` requires `--experimental-strip-types`; type stripping is enabled by default from `22.18`.
++- In Node 22.6 through 22.17, enable built-in TypeScript explicitly. `--experimental-strip-types` selects stripping alone. From 22.7, `--experimental-transform-types` also enables stripping. Node 22.18 enables stripping by default.

@@ -377,19 +377,21 @@ const config = {
 config.port.toFixed(2); // Compile error: port is string | number.
 ```
 
-### Solution: satisfies Validates Without Widening
+### Checking inferred property types with `satisfies`
 
 ```typescript
-// satisfies checks conformance but preserves literal types
+// Each property keeps its inferred type.
 const config = {
   port: 3000,
   host: "localhost"
 } satisfies Record<string, string | number>;
 
-// TypeScript knows port is number, host is string
+// The mutable properties widen to number and string.
 config.port.toFixed(2);      // OK - port is number
 config.host.toUpperCase();   // OK - host is string
 ```
+
+For a contract that requires the literal types `3000` and `"localhost"`, use `as const satisfies` on this object when readonly properties are appropriate.
 
 ### Practical Use Cases
 
@@ -416,7 +418,7 @@ const routes = {
   login: { path: "/login", method: "POST", handler: () => {} }
 } satisfies Record<string, RouteConfig>;
 
-// TypeScript preserves literal types for each route
+// The contextual method union retains the specific method literal.
 routes.home.method; // "GET" (not "GET" | "POST")
 ```
 

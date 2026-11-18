@@ -1,0 +1,56 @@
+{
+  "input_archive": "../05/tally-compiler-handoff.tar.gz",
+  "input_sha256": "6168dfdbc4452fbce829d94ac55b26889beb827120dd0d3db651a4503921914b",
+  "compiler_record": "../05/tally-compiler-handoff.json",
+  "compiled_entry": "dist/cli.js",
+  "entry_sha256": "1f6796ddabf7e3d8fcc8780eff35fb31be659633bdda06bf366e0a387b987f90",
+  "package_type": "module",
+  "node": {
+    "argv": [
+      "node",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "v24.15.0\n",
+    "stderr": "",
+    "stdout_hex": "7632342e31352e300a",
+    "stderr_hex": ""
+  },
+  "valid_invocation": {
+    "argv": [
+      "node",
+      "dist/cli.js",
+      "sum",
+      "2",
+      "3",
+      "--json"
+    ],
+    "exit": 0,
+    "stdout": "Calculating\n{\"total\":5}\n",
+    "stderr": "",
+    "stdout_hex": "43616c63756c6174696e670a7b22746f74616c223a357d0a",
+    "stderr_hex": ""
+  },
+  "invalid_invocation": {
+    "argv": [
+      "node",
+      "dist/cli.js",
+      "sum",
+      "bad",
+      "--json"
+    ],
+    "exit": 2,
+    "stdout": "",
+    "stderr": "Invalid number\n",
+    "stdout_hex": "",
+    "stderr_hex": "496e76616c6964206e756d6265720a"
+  },
+  "observed_contract": "В accepted.md для sum --json требуется один объект JSON. На переданном dist/cli.js при валидных аргументах сырые байты начинаются с Calculating и перевода строки.",
+  "next_consumer": {
+    "test_owner": "16 typescript-test-engineer",
+    "cli_owner": "29 cli-engineer",
+    "input": "Тот же архив 05 с принятым контрактом, test/cli.test.ts и испущенным dist/cli.js.",
+    "manifest_bin": "dist/legacy.js",
+    "installed_bin_exercised_here": false
+  }
+}

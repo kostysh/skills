@@ -6,6 +6,7 @@
 
 | Log | Related issue | Status |
 | --- | --- | --- |
+| [logs/implementation-log-20261118-1.md](logs/implementation-log-20261118-1.md) | Ревизия GPT‑6.2, пункт 05 | Схема, вывод литералов и запуск TypeScript |
 | [logs/implementation-log-20260908-1.md](logs/implementation-log-20260908-1.md) | Принятый FOUR-SKILLS план | Авторские проверки; независимая приёмка ожидается |
 | [logs/implementation-log-20260710-1.md](logs/implementation-log-20260710-1.md) | Direct operator request | PASS — independent re-audit `e0980d16…` |
 | [logs/implementation-log-20260622-1.md](logs/implementation-log-20260622-1.md) | Direct operator request | Superseded — structural checks only, not an independent capability PASS |

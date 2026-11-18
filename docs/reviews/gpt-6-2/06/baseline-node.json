@@ -1,0 +1,137 @@
+{
+  "boundary": {
+    "node": {
+      "argv": [
+        "node",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "v24.15.0\n",
+      "stderr": ""
+    },
+    "locate": {
+      "argv": [
+        "npm",
+        "--silent",
+        "run",
+        "locate"
+      ],
+      "exit": 0,
+      "stdout": "src/codec.mts\n",
+      "stderr": ""
+    },
+    "process": {
+      "argv": [
+        "npm",
+        "--silent",
+        "start",
+        "--",
+        "5"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": "ERR_REQUIRE_ASYNC_MODULE\n"
+    },
+    "drain": {
+      "argv": [
+        "npm",
+        "--silent",
+        "run",
+        "drain"
+      ],
+      "exit": 1,
+      "stdout": "ready\n",
+      "stderr": "ERR_REQUIRE_ASYNC_MODULE\n{\"sent\":\"SIGTERM\",\"exit\":1,\"signal\":null,\"deadline\":false}\n"
+    }
+  },
+  "holdout": {
+    "node": {
+      "argv": [
+        "node",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "v24.15.0\n",
+      "stderr": ""
+    },
+    "locate": {
+      "argv": [
+        "npm",
+        "--silent",
+        "run",
+        "locate"
+      ],
+      "exit": 0,
+      "stdout": "release/codec.cjs\n",
+      "stderr": ""
+    },
+    "process": {
+      "argv": [
+        "npm",
+        "--silent",
+        "start",
+        "--",
+        "5"
+      ],
+      "exit": 0,
+      "stdout": "{\"items\":5}\n",
+      "stderr": ""
+    },
+    "drain": {
+      "argv": [
+        "npm",
+        "--silent",
+        "run",
+        "drain"
+      ],
+      "exit": 7,
+      "stdout": "ready\n",
+      "stderr": "ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX\n{\"sent\":\"SIGTERM\",\"exit\":7,\"signal\":null,\"deadline\":false}\n"
+    }
+  },
+  "ordinary": {
+    "node": {
+      "argv": [
+        "node",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "v24.15.0\n",
+      "stderr": ""
+    },
+    "locate": {
+      "argv": [
+        "npm",
+        "--silent",
+        "run",
+        "locate"
+      ],
+      "exit": 0,
+      "stdout": "src/codec.mts\n",
+      "stderr": ""
+    },
+    "process": {
+      "argv": [
+        "npm",
+        "--silent",
+        "start",
+        "--",
+        "5"
+      ],
+      "exit": 0,
+      "stdout": "{\"items\":5}\n",
+      "stderr": ""
+    },
+    "drain": {
+      "argv": [
+        "npm",
+        "--silent",
+        "run",
+        "drain"
+      ],
+      "exit": 0,
+      "stdout": "ready\n{\"items\":5}\n",
+      "stderr": "{\"sent\":\"SIGTERM\",\"exit\":0,\"signal\":null,\"deadline\":false}\n"
+    }
+  }
+}

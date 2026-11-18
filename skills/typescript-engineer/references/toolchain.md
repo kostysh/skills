@@ -59,7 +59,7 @@ Typical directions:
 | JavaScript emitted for modern Node | a matching Node mode such as `NodeNext` or a version-frozen Node mode supported by the installed TypeScript | `node-engineer` confirms runtime mode, package type, and import extensions |
 | Application fully processed by a bundler | `moduleResolution: "bundler"` with a compatible `module` setting | framework/bundler owner confirms the produced runtime behavior |
 | Published library with externalized imports or declarations | model downstream consumers, not only the author's bundler | build and consumer/declaration evidence |
-| Source `.ts` executed by Node | compiler options must reflect the runtime mode, but Node ignores many `tsconfig` transforms | `node-engineer` owns type stripping and runtime import semantics |
+| Source `.ts` executed by Node’s built-in type stripping | model Node’s module rules in the compiler; the built-in loader ignores `tsconfig.json`, including `paths` | `node-engineer` owns type stripping and runtime import semantics |
 
 Do not assume `paths` rewrites runtime imports. TypeScript path mapping describes resolution to the compiler; the runtime or bundler needs a compatible mechanism.
 

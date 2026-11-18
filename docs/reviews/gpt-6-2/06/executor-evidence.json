@@ -1,0 +1,328 @@
+{
+  "scope": "Сверены выданные файлы и зарегистрированные действия пользовательских процессов. Общее хранилище хоста технически доступно на чтение. Доступ к чужим установкам, рубрикам или ответам в событиях не обнаружен. Граница относится к наблюдаемым действиям; среда исполнения модели не аттестована независимо.",
+  "runs": {
+    "e423d9": {
+      "stage": "ab",
+      "case": "ordinary",
+      "role": "B",
+      "assigned_model": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"medium\"",
+      "sandbox": "workspace-write",
+      "package_files": 6,
+      "task_input_file_count": 16,
+      "event_lines": 22,
+      "completed_event_types": {
+        "agent_message": 3,
+        "command_execution": 8
+      },
+      "commands": 8,
+      "observed_normal_exit": true,
+      "file_changes": [],
+      "raw_events_sha256": "c0277b3cd3b448e184a046d6620826d6e90b5b51bfa20e750973f5f7fd981016",
+      "observed_external_urls": [],
+      "observed_web_actions": [],
+      "notes": null
+    },
+    "400a01": {
+      "stage": "ab",
+      "case": "boundary",
+      "role": "B",
+      "assigned_model": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"medium\"",
+      "sandbox": "workspace-write",
+      "package_files": 6,
+      "task_input_file_count": 17,
+      "event_lines": 19,
+      "completed_event_types": {
+        "agent_message": 2,
+        "command_execution": 7
+      },
+      "commands": 7,
+      "observed_normal_exit": true,
+      "file_changes": [],
+      "raw_events_sha256": "808597ba2a2fe778405f09b75fc5e84c6d7cf8736e6c97d7ceb28c47a592f95b",
+      "observed_external_urls": [],
+      "observed_web_actions": [],
+      "notes": null
+    },
+    "8bc4bf": {
+      "stage": "ab",
+      "case": "boundary",
+      "role": "A",
+      "assigned_model": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"medium\"",
+      "sandbox": "workspace-write",
+      "package_files": 6,
+      "task_input_file_count": 17,
+      "event_lines": 17,
+      "completed_event_types": {
+        "agent_message": 2,
+        "command_execution": 6
+      },
+      "commands": 6,
+      "observed_normal_exit": true,
+      "file_changes": [],
+      "raw_events_sha256": "ce599dcf4c1b482068f4a363dc7608a59f1f02f25d05eb1fbe7d92a621b7812c",
+      "observed_external_urls": [],
+      "observed_web_actions": [],
+      "notes": null
+    },
+    "0bd85c": {
+      "stage": "ab",
+      "case": "ordinary",
+      "role": "A",
+      "assigned_model": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"medium\"",
+      "sandbox": "workspace-write",
+      "package_files": 6,
+      "task_input_file_count": 16,
+      "event_lines": 15,
+      "completed_event_types": {
+        "agent_message": 2,
+        "command_execution": 5
+      },
+      "commands": 5,
+      "observed_normal_exit": true,
+      "file_changes": [],
+      "raw_events_sha256": "acc6bcf5e2897c1e3e8bd99942dd61910827d3c85ec3ea13c28c07c83f2bc160",
+      "observed_external_urls": [],
+      "observed_web_actions": [],
+      "notes": null
+    },
+    "c54f78": {
+      "stage": "paired",
+      "case": "boundary",
+      "role": "A",
+      "assigned_model": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"medium\"",
+      "sandbox": "workspace-write",
+      "package_files": 6,
+      "task_input_file_count": 17,
+      "event_lines": 19,
+      "completed_event_types": {
+        "agent_message": 2,
+        "command_execution": 7
+      },
+      "commands": 7,
+      "observed_normal_exit": true,
+      "file_changes": [],
+      "raw_events_sha256": "1b25d883d3d4996f9142924aa88c869f5ad8dd693101a73e28d5bdbd59ad9269",
+      "observed_external_urls": [],
+      "observed_web_actions": [],
+      "notes": null
+    },
+    "87e34b": {
+      "stage": "paired",
+      "case": "boundary",
+      "role": "B",
+      "assigned_model": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"medium\"",
+      "sandbox": "workspace-write",
+      "package_files": 6,
+      "task_input_file_count": 17,
+      "event_lines": 15,
+      "completed_event_types": {
+        "agent_message": 2,
+        "command_execution": 5
+      },
+      "commands": 5,
+      "observed_normal_exit": true,
+      "file_changes": [],
+      "raw_events_sha256": "b77960e64ba6323f6eb58a2a9b868e793340245b0ebea48c9befdb61efe19054",
+      "observed_external_urls": [],
+      "observed_web_actions": [],
+      "notes": null
+    },
+    "ab1dfc": {
+      "stage": "confirm",
+      "case": "holdout",
+      "role": "C",
+      "assigned_model": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"medium\"",
+      "sandbox": "workspace-write",
+      "package_files": 6,
+      "task_input_file_count": 17,
+      "event_lines": 26,
+      "completed_event_types": {
+        "agent_message": 3,
+        "command_execution": 10
+      },
+      "commands": 10,
+      "observed_normal_exit": true,
+      "file_changes": [],
+      "raw_events_sha256": "eb9a2c3b192d895b28279cf20460a293a4d3181c6eaf6c467777353e55dcbd46",
+      "observed_external_urls": [],
+      "observed_web_actions": [],
+      "notes": null
+    },
+    "ec62be": {
+      "stage": "confirm",
+      "case": "boundary",
+      "role": "C",
+      "assigned_model": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"medium\"",
+      "sandbox": "workspace-write",
+      "package_files": 6,
+      "task_input_file_count": 17,
+      "event_lines": 21,
+      "completed_event_types": {
+        "agent_message": 2,
+        "command_execution": 8
+      },
+      "commands": 8,
+      "observed_normal_exit": true,
+      "file_changes": [],
+      "raw_events_sha256": "5917bda3ed7a213ed0e47acb7d14baeafc1f5edfd07a1e89423e2a84c7e81904",
+      "observed_external_urls": [],
+      "observed_web_actions": [],
+      "notes": null
+    },
+    "dcf12e": {
+      "stage": "confirm",
+      "case": "ordinary",
+      "role": "C",
+      "assigned_model": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"medium\"",
+      "sandbox": "workspace-write",
+      "package_files": 6,
+      "task_input_file_count": 16,
+      "event_lines": 26,
+      "completed_event_types": {
+        "agent_message": 3,
+        "command_execution": 10
+      },
+      "commands": 10,
+      "observed_normal_exit": true,
+      "file_changes": [],
+      "raw_events_sha256": "dda145125301b743d99cac39541837f0bfd7204ee59248882aff66889307a869",
+      "observed_external_urls": [],
+      "observed_web_actions": [],
+      "notes": null
+    },
+    "520bc5": {
+      "stage": "confirm",
+      "case": "holdout",
+      "role": "A",
+      "assigned_model": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"medium\"",
+      "sandbox": "workspace-write",
+      "package_files": 6,
+      "task_input_file_count": 17,
+      "event_lines": 26,
+      "completed_event_types": {
+        "agent_message": 3,
+        "command_execution": 10
+      },
+      "commands": 10,
+      "observed_normal_exit": true,
+      "file_changes": [],
+      "raw_events_sha256": "ee315b73fd6c5f5ca6af51fa8c96e263a3cea3ad221c52003433618773835147",
+      "observed_external_urls": [],
+      "observed_web_actions": [],
+      "notes": null
+    },
+    "a51112": {
+      "stage": "release",
+      "case": "holdout",
+      "role": "release",
+      "assigned_model": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"medium\"",
+      "sandbox": "workspace-write",
+      "package_files": 6,
+      "task_input_file_count": 17,
+      "event_lines": 22,
+      "completed_event_types": {
+        "agent_message": 3,
+        "command_execution": 8
+      },
+      "commands": 8,
+      "observed_normal_exit": true,
+      "file_changes": [],
+      "raw_events_sha256": "c95b68e8324906f7f44ba167d3287b6425c55cd1b5eb5bd77487871d6239eff3",
+      "observed_external_urls": [],
+      "observed_web_actions": [],
+      "notes": null
+    },
+    "7c4950": {
+      "stage": "legacy",
+      "case": "legacy",
+      "role": "release",
+      "assigned_model": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"medium\"",
+      "sandbox": "workspace-write",
+      "package_files": 6,
+      "task_input_file_count": 11,
+      "event_lines": 19,
+      "completed_event_types": {
+        "agent_message": 2,
+        "command_execution": 6,
+        "web_search": 1
+      },
+      "commands": 6,
+      "observed_normal_exit": true,
+      "file_changes": [],
+      "raw_events_sha256": "d76bd5c162b55601a3f65850e806eb733d77704f241a895962df5c80f1950405",
+      "observed_external_urls": [],
+      "observed_web_actions": [
+        {
+          "query": "'Implies `--experimental-strip-types`' in https://nodejs.org/download/release/v22.17.1/docs/api/cli.html",
+          "action": {
+            "type": "find_in_page",
+            "url": "https://nodejs.org/download/release/v22.17.1/docs/api/cli.html",
+            "pattern": "Implies `--experimental-strip-types`"
+          },
+          "result_domains": [
+            "nodejs.org"
+          ]
+        }
+      ],
+      "notes": "Consultation of public documentation."
+    },
+    "161c95": {
+      "stage": "legacy",
+      "case": "legacy",
+      "role": "A",
+      "assigned_model": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"medium\"",
+      "sandbox": "workspace-write",
+      "package_files": 6,
+      "task_input_file_count": 11,
+      "event_lines": 25,
+      "completed_event_types": {
+        "agent_message": 2,
+        "command_execution": 8,
+        "web_search": 2
+      },
+      "commands": 8,
+      "observed_normal_exit": true,
+      "file_changes": [],
+      "raw_events_sha256": "919e84f46d983a035f681e213fa8136f6441f7d5c7e631cff407f9bb165d3250",
+      "observed_external_urls": [
+        "https://nodejs.org/dist/v22.17.1/node-v22.17.1-linux-x64.tar.xz"
+      ],
+      "observed_web_actions": [
+        {
+          "query": "https://nodejs.org/download/release/v22.17.1/docs/api/cli.html#--experimental-transform-types",
+          "action": {
+            "type": "open_page",
+            "url": "https://nodejs.org/download/release/v22.17.1/docs/api/cli.html#--experimental-transform-types"
+          },
+          "result_domains": [
+            "nodejs.org"
+          ]
+        },
+        {
+          "query": "'Implies `--experimental-strip-types`'",
+          "action": {
+            "type": "find_in_page",
+            "pattern": "Implies `--experimental-strip-types`"
+          },
+          "result_domains": [
+            "nodejs.org"
+          ]
+        }
+      ],
+      "notes": "Прочитаны официальные данные Node для проверки происхождения старого бинарного файла. Запрос не передавал файлы рабочей копии."
+    }
+  }
+}

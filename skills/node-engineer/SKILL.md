@@ -6,9 +6,9 @@ description: Explain, design, review, diagnose, and implement Node.js runtime
   hangs, and open resources; keep diagnosis read-only unless fixes are
   requested.
 metadata:
-  source-version: 0.1.4
+  source-version: 0.1.5
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 1c56be18b04e592e74ce4b65aab1ed63f96886a7e3d14a2a9bdb7edfe9b5ded8
+  skillforge-source-hash: f328ffd0313896e31f7e7e765d7a473f31a385e4e2b9a6819a71023cdfc0409c
 ---
 
 # node-engineer
