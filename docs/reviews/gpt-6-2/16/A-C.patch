@@ -1,0 +1,5 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -22 +22 @@
+-5. Keep tests deterministic, behavior-focused, isolated from uncontrolled network calls, and warning-clean; retain each real boundary whose invariant is under test.
++5. Keep tests deterministic, behavior-focused, isolated from uncontrolled network calls, and warning-clean. Exercise the boundary under test.

@@ -18,6 +18,7 @@
 
 | Log | Related issue | Status |
 | --- | --- | --- |
+| [logs/implementation-log-20261118-1.md](logs/implementation-log-20261118-1.md) | Строка 16 общего плана | Проверка границы теста, Node, Vitest и передача Tally владельцу CLI |
 | [logs/implementation-log-20261107-1.md](logs/implementation-log-20261107-1.md) | Прямое поручение оператора | 4/4 blind cases; instruction review and [public-record re-audit](reviews/review-20261107-public-records.md) PASS |
 | [logs/implementation-log-20260425-1.md](logs/implementation-log-20260425-1.md) | [issues/issue-20260425-1.md](issues/issue-20260425-1.md) | PASS |
 | [logs/implementation-log-20260429-1.md](logs/implementation-log-20260429-1.md) | None | PASS |

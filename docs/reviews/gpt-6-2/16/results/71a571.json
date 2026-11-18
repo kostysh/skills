@@ -1,0 +1,153 @@
+{
+  "variant": "A",
+  "case": "holdout",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПримени руководство в ./SKILL.md. Сотруднику важен результат сохранения подписи, когда он в следующий раз запускает программу. По контракту project/ добавь воспроизводимую проверку в project/test/contract.test.ts и запусти штатный тест. Рабочий код и прежние тесты оставь как есть.\n",
+  "input_file_sha256": {
+    "SKILL.md": "17dcb75c007706d03c41330ca16b49a6e8b26fb16a74628008fea1573ab752b4",
+    "agents/openai.yaml": "9fc7def9a8ab00f4acd2d5dfd8c166e5fcd853de375a8d620b24660ea1512a04",
+    "project/README.md": "067fa7cb270aa3b420f690c9144a2fbbbdd1a03f5fe42c703488391272e59088",
+    "project/package.json": "1591d2db0eaf5b500d098ac78a081e14c35add01786826302793d9a085fa79eb",
+    "project/src/badge.ts": "05846ede8ea6041e77b4d983e17135cd4917dd3272a34a6a1f161b16b659fdaf",
+    "project/src/display.ts": "7e563118004b7bff0cd2b655aede736d244b942f7922492d657ca0bf4a96de3d",
+    "project/test/display.test.ts": "2f45dc53fd8772bbff8b0f4a5338f7979607239b81ef9c996ea1daf2a8b20c5d",
+    "references/react-vitest.md": "f618f7263f74cae448445f3059c1fc6ed9bfb597bc7abc937aacc4e503d01db6",
+    "references/tdd.md": "029f55af01dd0a9efb77e71693c3503a89bdd8a75367454e02a93712ed18b957",
+    "references/testing-anti-patterns.md": "2d3b7f8804950eab0d67aadc4ec4301518c1e0b7838ff77b794487e50b7281ca",
+    "references/testing.md": "7452d2904f2740622df10fc23de4b86c962b3f7dd812b285e7268d57e591232d"
+  },
+  "raw_events_sha256": "aff0af801197aa9971aa83be618a827cb4b1f12d08ba0dcd2ac8bd6fdc392618",
+  "raw_events_bytes": 94587,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Применю руководство из `./SKILL.md`, изучу контракт проекта и добавлю проверку подписи при повторном запуске. Затем запущу штатный тест."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"pwd; rg --files --hidden -g '\"'!.git'\"'; cat ./SKILL.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"sed -n '125,175p' SKILL.md; cat references/testing.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'git status --short; cat project/README.md project/package.json project/src/*.ts project/test/display.test.ts; node --version; npm --version'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"rg -n '\"'^##'\"' references/testing.md; sed -n '110,128p' SKILL.md; sha256sum project/README.md project/package.json project/src/*.ts project/test/display.test.ts\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"sed -n '253,419p' references/testing.md; sed -n '653,678p' references/testing.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"rg -n '\"'^#|fixture|cleanup'\"' references/testing-anti-patterns.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "file_change",
+      "changes": [
+        {
+          "path": "{project}/project/test/contract.test.ts",
+          "kind": "add"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'npm_config_logs_max=0 npm test'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'sha256sum project/README.md project/package.json project/src/*.ts project/test/display.test.ts; rg --files --hidden project'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Добавил [контрактный тест]({project}/project/test/contract.test.ts). Один процесс сохраняет подпись в выбранный файл, а следующий выводит её с переводом строки. Для отсутствующего файла тест проверяет вывод `Default` с переводом строки. Все три запуска должны завершиться с кодом `0`. Временные файлы удаляются после теста.\n\nШтатный `npm test` в `project/` прошёл на Node.js 24.15.0. Оба теста прошли без предупреждений. Рабочий код и прежний тест остались без изменений."
+    }
+  ],
+  "changed_file_contents": {
+    "project/test/contract.test.ts": "import assert from 'node:assert/strict';\nimport { spawnSync } from 'node:child_process';\nimport { mkdtempSync, rmSync } from 'node:fs';\nimport { join } from 'node:path';\nimport test from 'node:test';\nimport { fileURLToPath } from 'node:url';\n\nconst badge = fileURLToPath(new URL('../src/badge.ts', import.meta.url));\n\ntest('a new badge process shows the label saved to the selected file', (t) => {\n  const workspace = mkdtempSync(fileURLToPath(new URL('./badge-contract-', import.meta.url)));\n  t.after(() => rmSync(workspace, { recursive: true, force: true }));\n\n  const savedFile = join(workspace, 'saved.json');\n  const missingFile = join(workspace, 'missing.json');\n  const label = 'Night shift';\n\n  function runBadge(file: string, operation: 'set' | 'show', ...args: string[]) {\n    const result = spawnSync(process.execPath, [badge, file, operation, ...args], {\n      cwd: workspace,\n      encoding: 'utf8',\n      timeout: 5_000,\n    });\n    assert.ifError(result.error);\n    assert.equal(result.status, 0, `${operation} ${file}: ${result.stderr}`);\n    return result.stdout;\n  }\n\n  runBadge(savedFile, 'set', label);\n  assert.equal(runBadge(savedFile, 'show'), `${label}\\n`);\n  assert.equal(runBadge(missingFile, 'show'), 'Default\\n');\n});\n"
+  },
+  "final_response": "Добавил [контрактный тест]({project}/project/test/contract.test.ts). Один процесс сохраняет подпись в выбранный файл, а следующий выводит её с переводом строки. Для отсутствующего файла тест проверяет вывод `Default` с переводом строки. Все три запуска должны завершиться с кодом `0`. Временные файлы удаляются после теста.\n\nШтатный `npm test` в `project/` прошёл на Node.js 24.15.0. Оба теста прошли без предупреждений. Рабочий код и прежний тест остались без изменений.",
+  "input_file_modes": {
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "project/README.md": "0664",
+    "project/package.json": "0664",
+    "project/src/badge.ts": "0664",
+    "project/src/display.ts": "0664",
+    "project/test/display.test.ts": "0664",
+    "references/react-vitest.md": "0644",
+    "references/tdd.md": "0644",
+    "references/testing-anti-patterns.md": "0644",
+    "references/testing.md": "0644"
+  },
+  "changed_file_modes": {
+    "project/test/contract.test.ts": "0664"
+  },
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "subjectExit": 0,
+    "newFiles": [
+      "project/test/contract.test.ts"
+    ],
+    "changesToOriginals": [],
+    "testSha256": "d671469bd101cb680698f03803b83f1bc63d2c92ce5d499c186f8cb7e4599013",
+    "independentRuns": {
+      "initial": {
+        "cmd": [
+          "node",
+          "--test",
+          "test/contract.test.ts"
+        ],
+        "exit": 0,
+        "stdout": "✔ a new badge process shows the label saved to the selected file (131.989775ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 194.50731\n",
+        "stderr": ""
+      },
+      "negative": {
+        "cmd": [
+          "node",
+          "--test",
+          "test/contract.test.ts"
+        ],
+        "exit": 1,
+        "stdout": "✖ a new badge process shows the label saved to the selected file (83.928842ms)\nℹ tests 1\nℹ suites 0\nℹ pass 0\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 144.123867\n\n✖ failing tests:\n\ntest at test/contract.test.ts:10:1\n✖ a new badge process shows the label saved to the selected file (83.928842ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  + actual - expected\n  \n  + 'Default\\n'\n  - 'Night shift\\n'\n  \n      at TestContext.<anonymous> (file://./test/contract.test.ts:30:10)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1201:25)\n      at Test.start (node:internal/test_runner/test:1096:17)\n      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 'Default\\n',\n    expected: 'Night shift\\n',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n",
+        "stderr": ""
+      },
+      "equivalent": {
+        "cmd": [
+          "node",
+          "--test",
+          "test/contract.test.ts"
+        ],
+        "exit": 0,
+        "stdout": "✔ a new badge process shows the label saved to the selected file (130.672956ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 191.236068\n",
+        "stderr": ""
+      }
+    }
+  }
+}

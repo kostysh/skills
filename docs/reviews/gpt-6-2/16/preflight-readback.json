@@ -1,0 +1,138 @@
+{
+  "purpose": "Full old-suite command output collected by the owner after blind grading. Separate from all earlier decisions.",
+  "runtime": "v24.15.0",
+  "cases": {
+    "ordinary": {
+      "initial": {
+        "argv": [
+          "npm",
+          "test",
+          "--silent"
+        ],
+        "exit": 0,
+        "existing_test_files": {
+          "test/counter.test.ts": "7f7680a1daaceaa55e2b0b68ae3422e40ccf64afcc784b487fc7599e92de9c15"
+        },
+        "touched_product_sha256": "b056f39148f0033d1f809d97a838dde8d7298855661e43d5aca2964e0707e4b5",
+        "stdout": "\u2714 counts values (0.482511ms)\n\u2139 tests 1\n\u2139 suites 0\n\u2139 pass 1\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 61.308745\n",
+        "stderr": ""
+      },
+      "negative": {
+        "argv": [
+          "npm",
+          "test",
+          "--silent"
+        ],
+        "exit": 0,
+        "existing_test_files": {
+          "test/counter.test.ts": "7f7680a1daaceaa55e2b0b68ae3422e40ccf64afcc784b487fc7599e92de9c15"
+        },
+        "touched_product_sha256": "bdb1920a2bb23b0b2b0011e3dd387389d9c0db2b540e5c803c8a22948b875917",
+        "stdout": "\u2714 counts values (0.508261ms)\n\u2139 tests 1\n\u2139 suites 0\n\u2139 pass 1\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 61.767541\n",
+        "stderr": ""
+      },
+      "equivalent": {
+        "argv": [
+          "npm",
+          "test",
+          "--silent"
+        ],
+        "exit": 0,
+        "existing_test_files": {
+          "test/counter.test.ts": "7f7680a1daaceaa55e2b0b68ae3422e40ccf64afcc784b487fc7599e92de9c15"
+        },
+        "touched_product_sha256": "e14a269ffb42706db128ffecf3af905b1a30fb3c8ca1405aa90aeb956911e8b3",
+        "stdout": "\u2714 counts values (0.475108ms)\n\u2139 tests 1\n\u2139 suites 0\n\u2139 pass 1\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 66.272455\n",
+        "stderr": ""
+      }
+    },
+    "boundary": {
+      "initial": {
+        "argv": [
+          "npm",
+          "test",
+          "--silent"
+        ],
+        "exit": 0,
+        "existing_test_files": {
+          "test/valid.test.ts": "13d0e9e27bf053abf0cd35327ccc1eea836ed920a0381d24646d4dfb2bb175bf"
+        },
+        "touched_product_sha256": "ea6e9bd3ee27625343a565e8839d94de078715b877a1a3b787e0d4a16f590776",
+        "stdout": "\u2714 valid integer (0.498312ms)\n\u2139 tests 1\n\u2139 suites 0\n\u2139 pass 1\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 64.214325\n",
+        "stderr": ""
+      },
+      "negative": {
+        "argv": [
+          "npm",
+          "test",
+          "--silent"
+        ],
+        "exit": 0,
+        "existing_test_files": {
+          "test/valid.test.ts": "13d0e9e27bf053abf0cd35327ccc1eea836ed920a0381d24646d4dfb2bb175bf"
+        },
+        "touched_product_sha256": "faec52a1b815c77e7ee63840c75979328d24c1f8d7c0f488f78900ac5be738d6",
+        "stdout": "\u2714 valid integer (0.502089ms)\n\u2139 tests 1\n\u2139 suites 0\n\u2139 pass 1\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 66.329702\n",
+        "stderr": ""
+      },
+      "equivalent": {
+        "argv": [
+          "npm",
+          "test",
+          "--silent"
+        ],
+        "exit": 0,
+        "existing_test_files": {
+          "test/valid.test.ts": "13d0e9e27bf053abf0cd35327ccc1eea836ed920a0381d24646d4dfb2bb175bf"
+        },
+        "touched_product_sha256": "169010cabf5c280b144fc8f5c5445b529855bc7ffe62a8cc4a95b2d2a0e763ce",
+        "stdout": "\u2714 valid integer (0.490276ms)\n\u2139 tests 1\n\u2139 suites 0\n\u2139 pass 1\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 66.543677\n",
+        "stderr": ""
+      }
+    },
+    "holdout": {
+      "initial": {
+        "argv": [
+          "npm",
+          "test",
+          "--silent"
+        ],
+        "exit": 0,
+        "existing_test_files": {
+          "test/display.test.ts": "2f45dc53fd8772bbff8b0f4a5338f7979607239b81ef9c996ea1daf2a8b20c5d"
+        },
+        "touched_product_sha256": "05846ede8ea6041e77b4d983e17135cd4917dd3272a34a6a1f161b16b659fdaf",
+        "stdout": "\u2714 display line (0.408051ms)\n\u2139 tests 1\n\u2139 suites 0\n\u2139 pass 1\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 51.512032\n",
+        "stderr": ""
+      },
+      "negative": {
+        "argv": [
+          "npm",
+          "test",
+          "--silent"
+        ],
+        "exit": 0,
+        "existing_test_files": {
+          "test/display.test.ts": "2f45dc53fd8772bbff8b0f4a5338f7979607239b81ef9c996ea1daf2a8b20c5d"
+        },
+        "touched_product_sha256": "3876028f2ff4e5b0c9110e81d36ffb695d7c7601cb4923d5896ec96dd48cf2cf",
+        "stdout": "\u2714 display line (0.404224ms)\n\u2139 tests 1\n\u2139 suites 0\n\u2139 pass 1\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 57.966218\n",
+        "stderr": ""
+      },
+      "equivalent": {
+        "argv": [
+          "npm",
+          "test",
+          "--silent"
+        ],
+        "exit": 0,
+        "existing_test_files": {
+          "test/display.test.ts": "2f45dc53fd8772bbff8b0f4a5338f7979607239b81ef9c996ea1daf2a8b20c5d"
+        },
+        "touched_product_sha256": "d5c0a0de5995f3a0a8abee881d0a03e8698079383290510981f8c30f7e51f9dc",
+        "stdout": "\u2714 display line (0.360311ms)\n\u2139 tests 1\n\u2139 suites 0\n\u2139 pass 1\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 64.087756\n",
+        "stderr": ""
+      }
+    }
+  }
+}

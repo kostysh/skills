@@ -174,7 +174,7 @@ Notes:
 - Prefer a small number of high-signal scenarios over many brittle ones.
 - Avoid mocks in E2E; use real external systems or dedicated test instances/sandboxes with deterministic data.
 - For edge runtimes, distinguish local dev harness behavior from deployed runtime; verify both when it matters.
-- For Cloudflare Workers, use `@cloudflare/vitest-pool-workers` for current local runtime unit/integration coverage when repository policy does not select another harness. Treat `unstable_dev` only as a legacy migration case and follow current Cloudflare migration guidance rather than starting new suites on it.
+- For Cloudflare Workers without a project harness, use `@cloudflare/vitest-plugin` for local runtime tests. Check its Vitest peer range against the project runner. Keep a working `@cloudflare/vitest-pool-workers` harness on a compatible Vitest version unless migration is requested. Treat `unstable_dev` only as a legacy migration case. [Cloudflare setup](https://developers.cloudflare.com/workers/testing/vitest-integration/write-your-first-test/).
 
 ## Writing tests (examples)
 Use Arrange-Act-Assert and keep assertions focused on behavior.
