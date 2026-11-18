@@ -1,0 +1,11 @@
+--- C1/SKILL.md
++++ Release2/SKILL.md
+@@ -8 +8 @@
+-  source-version: 0.2.5
++  source-version: 0.2.7
+@@ -10 +10 @@
+-  skillforge-source-hash: 723a2d0e23f15a6aef15cbf444c8cd4fd34e780824fa2c1590ad3b90a97c622f
++  skillforge-source-hash: ce93153d63d2290d4629a85dbc64753ab6bc0abac47ee2d12b7d3fdc4f90b525
+@@ -94 +94 @@
+-2. Use the installed CLI guidance for command syntax. If the runtime fails, use its help or `agent-browser doctor --offline --quick`; use mutating repair commands only when already authorized, and never add Playwright to the target project merely to prepare agent-browser.
++2. Use the installed CLI help for runtime errors. Before running `agent-browser doctor`, check its help and your authority for its side effects. Even `--offline --quick` can remove stale daemon files across the selected socket directory. Run repairs only within existing permissions. Keep Playwright installation out of the target project when preparing agent-browser.

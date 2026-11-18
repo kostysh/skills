@@ -1,0 +1,9 @@
+--- A/SKILL.md
++++ B/SKILL.md
+@@ -77,4 +76,0 @@
+-A screenshot, snapshot, trace, successful command, or healthy runtime is useful
+-evidence only when it supports the requested result. It is not completion by
+-itself.
+-
+@@ -131 +126,0 @@
+-- **high** — A successful command, snapshot, screenshot, trace, or intercepted response does not prove the requested user-visible result by itself.

@@ -1,0 +1,115 @@
+{
+  "observed": "2026-11-18",
+  "commands": [
+    {
+      "argv": [
+        "agent-browser",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout_sha256": "bdde08bd40927f2cbdf3eb78eaa6863867b8978855fcf901b808e44560caae22",
+      "bytes": 21,
+      "selected_help_lines": [
+        "agent-browser 0.27.3"
+      ]
+    },
+    {
+      "argv": [
+        "google-chrome",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout_sha256": "20cd862bb5018f27c7f276c546b765891e151e678df8cf69e428cd970c9cd626",
+      "bytes": 29,
+      "selected_help_lines": [
+        "Google Chrome 158.0.8127.36 "
+      ]
+    },
+    {
+      "argv": [
+        "agent-browser",
+        "skills",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout_sha256": "d5918aeae9df914a1b18947680b37ca1c449502212604c8b31e190a1258b74d8",
+      "bytes": 1027,
+      "selected_help_lines": [
+        "  get <name> [name...]       Output a skill's full content",
+        "  get <name> --full          Include references and templates",
+        "  agent-browser skills get core --full",
+        "  agent-browser skills get electron --full"
+      ]
+    },
+    {
+      "argv": [
+        "agent-browser",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout_sha256": "43b1351bddb5f453bc3d0638020469fad2f91afdc78473fe87f29264d720e56a",
+      "bytes": 18807,
+      "selected_help_lines": [
+        "  --profile <name|path>      Chrome profile name (e.g., Default) to reuse login state,",
+        "  --session-name <name>      Auto-save/restore cookies and localStorage by name",
+        "  --auto-connect             Connect to a running Chrome to reuse its auth state",
+        "                             Tip: agent-browser --auto-connect state save ./auth.json",
+        "  --session <name>           Isolated session (or AGENT_BROWSER_SESSION env)",
+        "  --executable-path <path>   Custom browser executable (or AGENT_BROWSER_EXECUTABLE_PATH)",
+        "  --allowed-domains <list>   Restrict navigation domains (or AGENT_BROWSER_ALLOWED_DOMAINS)",
+        "  --config <path>            Use a custom config file (or AGENT_BROWSER_CONFIG env)",
+        "    3. Environment variables             Override config file values",
+        "  Use --config <path> to load a specific config file instead of the defaults.",
+        "  AGENT_BROWSER_ALLOWED_DOMAINS  Comma-separated allowed domain patterns",
+        "  agent-browser --auto-connect snapshot  # Auto-discover running Chrome",
+        "  agent-browser --session-name myapp open example.com  # Auto-save/restore state"
+      ]
+    },
+    {
+      "argv": [
+        "agent-browser",
+        "doctor",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout_sha256": "3f465af9c4c88f1f07bd0597220e33aedd0405a1d108d7b026283691841b90fe",
+      "bytes": 874,
+      "selected_help_lines": [
+        "Auto-cleans stale daemon socket/pid/version sidecar files. Destructive",
+        "encryption key) are gated behind --fix.",
+        "  --offline            Skip network probes",
+        "  --quick              Skip the live headless launch test",
+        "  --fix                Also run destructive repairs",
+        "  agent-browser doctor --offline --quick",
+        "  agent-browser doctor --fix"
+      ]
+    },
+    {
+      "argv": [
+        "agent-browser",
+        "skills",
+        "get",
+        "core",
+        "--full"
+      ],
+      "exit": 0,
+      "stdout_sha256": "f01ee80ed64c5644dd36a4e4043d27a88a48592ecc730d2cf4a2ee61573cde6e",
+      "bytes": 76929,
+      "selected_help_lines": [
+        "## The core loop",
+        "agent-browser snapshot -i       # 4. Re-snapshot after any page change",
+        "**stale the moment the page changes** — after clicks that navigate, form",
+        "agent-browser get url                     # current URL",
+        "agent-browser get url  # Should be dashboard, not login",
+        "    URL=$(agent-browser get url)",
+        "agent-browser get url             # Get current URL",
+        "        CURRENT_URL=$(agent-browser get url)",
+        "# FINAL_URL=$(agent-browser get url)",
+        "URL=$(agent-browser get url)",
+        "agent-browser get url"
+      ]
+    }
+  ],
+  "release": "0.43.0 (published documentation, not the tested executable)",
+  "installed_source": "https://github.com/vercel-labs/agent-browser/blob/v0.27.3/cli/src/doctor/daemon.rs"
+}

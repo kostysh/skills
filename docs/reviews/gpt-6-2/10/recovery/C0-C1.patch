@@ -1,0 +1,5 @@
+--- C0/SKILL.md
++++ C1/SKILL.md
+@@ -95 +95 @@
+-3. Open the target, snapshot before using refs, interact, wait for the expected condition, and re-snapshot after navigation or material page changes.
++3. Open the target, snapshot before using refs, interact, wait for the expected condition, and re-snapshot after navigation or material page changes. Wait for a state change to succeed before issuing a dependent action, or use a batch that stops on error (such as `batch --bail`). After a failure, re-snapshot before proceeding.

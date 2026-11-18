@@ -1,0 +1,162 @@
+{
+  "A/tooling/agent-browser/SKILL.md": {
+    "size": 10504,
+    "sha256": "ff4e608752d4563707448d22896326b8860987c0bcc717b51bbc1e577c8f2d9e"
+  },
+  "A/tooling/agent-browser/agents/openai.yaml": {
+    "size": 115,
+    "sha256": "d430788f44a61bd7b9fc12b11e57f7230eb5020fc50af605563aa13f14b4b798"
+  },
+  "A/tooling/agent-browser/references/cloudflare-access-otp.md": {
+    "size": 4314,
+    "sha256": "0e41b39ee811661c01e02fd2d37a903cc088188385a675282fb6c442c023a9fc"
+  },
+  "B/tooling/agent-browser/SKILL.md": {
+    "size": 10188,
+    "sha256": "6c4ff08999c12c7d7821e3f68b3b46788ecdacf6ed2aa54e49fa90adbc0bb87a"
+  },
+  "B/tooling/agent-browser/agents/openai.yaml": {
+    "size": 115,
+    "sha256": "d430788f44a61bd7b9fc12b11e57f7230eb5020fc50af605563aa13f14b4b798"
+  },
+  "B/tooling/agent-browser/references/cloudflare-access-otp.md": {
+    "size": 4314,
+    "sha256": "0e41b39ee811661c01e02fd2d37a903cc088188385a675282fb6c442c023a9fc"
+  },
+  "cases/boundary.md": {
+    "size": 818,
+    "sha256": "cc6a6058400120cf9ea0e07d40b4591e7390f7c79672da0c07cabb9f461a6e6c"
+  },
+  "cases/holdout.md": {
+    "size": 1105,
+    "sha256": "56be78382a70af0fec1c197f528b81c16f433c3aea978ac213aebe064be7dab7"
+  },
+  "cases/ordinary.md": {
+    "size": 642,
+    "sha256": "ff536775ce5f0759e621eb2345865aec3d9c733d4f440618cbbf27adc2e4eeae"
+  },
+  "fixture/boundary/PREVIEW.md": {
+    "size": 1959,
+    "sha256": "c9222e88368db84b5a3d00e00dc2526c8605c6a78f17a334b65c5ed7192acc59"
+  },
+  "fixture/boundary/dist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2": {
+    "size": 7420,
+    "sha256": "2317fa4bb293c9c0b110e18315d529235c47a0ddd3338cea3d8c7955e927899e"
+  },
+  "fixture/boundary/dist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2": {
+    "size": 15084,
+    "sha256": "6894439694946a589d157ece003086960a6a4013d74a813dab7602efdb3d8c09"
+  },
+  "fixture/boundary/dist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2": {
+    "size": 16512,
+    "sha256": "824f485b5d26e2f2da3c2b236132ece1bc8e4e43373452950bb0e40548b4313f"
+  },
+  "fixture/boundary/dist/assets/geist-latin-wght-normal-BgDaEnEv.woff2": {
+    "size": 29400,
+    "sha256": "19f9c92546aa300c312235e3125af1b81394d8db9a4bc4a425cd5b641d2d54e1"
+  },
+  "fixture/boundary/dist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2": {
+    "size": 8004,
+    "sha256": "8fa40e5d248247735eb97a0bd593b8852440430600d6ba01364c31fe0abc1fe1"
+  },
+  "fixture/boundary/dist/assets/index-3cXjFJlU.js": {
+    "size": 298050,
+    "sha256": "85f6b0ddbac345b94f065b54fb6127e8d7135db0bd6e553a0789fd2e4d9b7bc6"
+  },
+  "fixture/boundary/dist/assets/index-Cseenm7H.css": {
+    "size": 50384,
+    "sha256": "473d7e4b0d0120f66977be7e3574f8c70ced765a08cf234ba872c37de25443b7"
+  },
+  "fixture/boundary/dist/index.html": {
+    "size": 455,
+    "sha256": "bd2c68a668ff0121d32fbae1a862995ea00ffe0de5141169273f8a6b68935146"
+  },
+  "fixture/boundary/lab.py": {
+    "size": 5167,
+    "sha256": "5dde6e5054b2243ece2328b81db7fd711963643a2f495afe211f1089378e3a6c"
+  },
+  "fixture/holdout/PREVIEW.md": {
+    "size": 1959,
+    "sha256": "c9222e88368db84b5a3d00e00dc2526c8605c6a78f17a334b65c5ed7192acc59"
+  },
+  "fixture/holdout/dist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2": {
+    "size": 7420,
+    "sha256": "2317fa4bb293c9c0b110e18315d529235c47a0ddd3338cea3d8c7955e927899e"
+  },
+  "fixture/holdout/dist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2": {
+    "size": 15084,
+    "sha256": "6894439694946a589d157ece003086960a6a4013d74a813dab7602efdb3d8c09"
+  },
+  "fixture/holdout/dist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2": {
+    "size": 16512,
+    "sha256": "824f485b5d26e2f2da3c2b236132ece1bc8e4e43373452950bb0e40548b4313f"
+  },
+  "fixture/holdout/dist/assets/geist-latin-wght-normal-BgDaEnEv.woff2": {
+    "size": 29400,
+    "sha256": "19f9c92546aa300c312235e3125af1b81394d8db9a4bc4a425cd5b641d2d54e1"
+  },
+  "fixture/holdout/dist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2": {
+    "size": 8004,
+    "sha256": "8fa40e5d248247735eb97a0bd593b8852440430600d6ba01364c31fe0abc1fe1"
+  },
+  "fixture/holdout/dist/assets/index-3cXjFJlU.js": {
+    "size": 298050,
+    "sha256": "85f6b0ddbac345b94f065b54fb6127e8d7135db0bd6e553a0789fd2e4d9b7bc6"
+  },
+  "fixture/holdout/dist/assets/index-Cseenm7H.css": {
+    "size": 50384,
+    "sha256": "473d7e4b0d0120f66977be7e3574f8c70ced765a08cf234ba872c37de25443b7"
+  },
+  "fixture/holdout/dist/index.html": {
+    "size": 455,
+    "sha256": "bd2c68a668ff0121d32fbae1a862995ea00ffe0de5141169273f8a6b68935146"
+  },
+  "fixture/holdout/lab.py": {
+    "size": 5167,
+    "sha256": "5dde6e5054b2243ece2328b81db7fd711963643a2f495afe211f1089378e3a6c"
+  },
+  "fixture/ordinary/PREVIEW.md": {
+    "size": 1959,
+    "sha256": "c9222e88368db84b5a3d00e00dc2526c8605c6a78f17a334b65c5ed7192acc59"
+  },
+  "fixture/ordinary/dist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2": {
+    "size": 7420,
+    "sha256": "2317fa4bb293c9c0b110e18315d529235c47a0ddd3338cea3d8c7955e927899e"
+  },
+  "fixture/ordinary/dist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2": {
+    "size": 15084,
+    "sha256": "6894439694946a589d157ece003086960a6a4013d74a813dab7602efdb3d8c09"
+  },
+  "fixture/ordinary/dist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2": {
+    "size": 16512,
+    "sha256": "824f485b5d26e2f2da3c2b236132ece1bc8e4e43373452950bb0e40548b4313f"
+  },
+  "fixture/ordinary/dist/assets/geist-latin-wght-normal-BgDaEnEv.woff2": {
+    "size": 29400,
+    "sha256": "19f9c92546aa300c312235e3125af1b81394d8db9a4bc4a425cd5b641d2d54e1"
+  },
+  "fixture/ordinary/dist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2": {
+    "size": 8004,
+    "sha256": "8fa40e5d248247735eb97a0bd593b8852440430600d6ba01364c31fe0abc1fe1"
+  },
+  "fixture/ordinary/dist/assets/index-3cXjFJlU.js": {
+    "size": 298050,
+    "sha256": "85f6b0ddbac345b94f065b54fb6127e8d7135db0bd6e553a0789fd2e4d9b7bc6"
+  },
+  "fixture/ordinary/dist/assets/index-Cseenm7H.css": {
+    "size": 50384,
+    "sha256": "473d7e4b0d0120f66977be7e3574f8c70ced765a08cf234ba872c37de25443b7"
+  },
+  "fixture/ordinary/dist/index.html": {
+    "size": 455,
+    "sha256": "bd2c68a668ff0121d32fbae1a862995ea00ffe0de5141169273f8a6b68935146"
+  },
+  "fixture/ordinary/lab.py": {
+    "size": 5167,
+    "sha256": "5dde6e5054b2243ece2328b81db7fd711963643a2f495afe211f1089378e3a6c"
+  },
+  "rubric.md": {
+    "size": 4309,
+    "sha256": "d85722733bb2a4ad8c64579a7c06889fe59e2dfeb18a2cd1f258819ef7ebb89a"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "model": "gpt-6.2-sol",
+  "reasoning": "model_reasoning_effort=\"high\"",
+  "sandbox": "read-only",
+  "long_term_memory_feature": "disabled",
+  "raw_grade_sha256": "cbe33c17d17a5e859919e0fa6b708c2ddd32edcb82f430240adb25b3f10c6345",
+  "raw_evaluator_events_sha256": "3ef814bcea88e70d49d468b9c1a4e4d5517f7a29b37464d3d1aada7f9c1b3a4c",
+  "public_grade_sha256": "23d9b4fd25eb619810efea9f3e01dea359b67f1395d28c3ec66a62e32d530ad2",
+  "packet_files": 176,
+  "packet_manifest_sha256": "fc4f1aa34adb9cc7c56520d9d0f8cfabec6a8ac657d177509b3dc619c7e75502",
+  "blind_access": "Only work product, neutral assignments, precommitted criteria, original task, final answer, recorded actions and evidence supplied in packet. No assignment key or candidate instruction files. Shared host outside read-only directory physically readable; operations reviewed for scope.",
+  "observed_access": [
+    {
+      "command": "/bin/bash -lc 'rg --files --hidden --no-ignore .'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c 'nl -ba criteria.md'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c 'wc -lc */task.md */answer.md */observer.json */actions.json */after/browser-record.jsonl */before/lab.py */after/lab.py */before/PREVIEW.md */after/PREVIEW.md'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c \"rg -n '\"'^'\"' 03e2b2/before/PREVIEW.md 03e2b2/before/lab.py\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c \"rg -n '\"'^'\"' */task.md */answer.md */actions.json\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c \"python3 -c 'import glob,json; from pathlib import Path; files=sorted(glob.glob(\\\"*/observer.json\\\")); print(\\\"observer\\\"); [print(f,[(k,type(v).__name__,len(v) if isinstance(v,(list,dict)) else v) for k,v in json.loads(Path(f).read_text()).items()]) for f in files]; print(\\\"browser record\\\"); [print(f,[list(json.loads(x)) for x in Path(f).read_text().splitlines()][:4]) for f in sorted(glob.glob(\\\"*/after/browser-record.jsonl\\\"))]'\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c \"python3 - 03e2b2 39f413 5e81c2 b24536 <<'PY'\nimport json,sys\nfrom pathlib import Path\nfor code in sys.argv[1:]:\n p=Path(code)/'after/browser-record.jsonl'\n print('\\\\n',code)\n recent=None\n for i,line in enumerate(p.read_text().splitlines(),1):\n  e=json.loads(line)\n  if e['kind']\"'!='\"'browser':\n   print(i,{k:v for k,v in e.items() if k\"'!='\"'time_ns'})\n   continue\n  ns=e['start_ns']\n  dt=0 if recent is None else (ns-recent)/10**6\n  recent=e['time_ns']\n  print(i, e['exit'], f'{dt:.1f}ms after previous, {(e[\\\"time_ns\\\"]-ns)/10**6:.1f}ms runtime',e['args'])\n  out=e.get('output')\n  if out:\n   print(out.rstrip())\n  elif 'output_bytes' in e: print('omitted',e['output_bytes'])\nPY\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c \"python3 - 157770 24b617 6ed361 <<'PY'\nimport json,sys\nfrom pathlib import Path\nfor code in sys.argv[1:]:\n p=Path(code)/'after/browser-record.jsonl'\n print('\\\\n',code)\n recent=None\n for i,line in enumerate(p.read_text().splitlines(),1):\n  e=json.loads(line)\n  if e['kind']\"'!='\"'browser':\n   print(i,{k:v for k,v in e.items() if k\"'!='\"'time_ns'})\n   continue\n  ns=e['start_ns']\n  dt=0 if recent is None else (ns-recent)/10**6\n  recent=e['time_ns']\n  print(i, e['exit'], f'{dt:.1f}ms after previous, {(e[\\\"time_ns\\\"]-ns)/10**6:.1f}ms runtime',e['args'])\n  out=e.get('output')\n  if out:\n   print(out.rstrip())\n  elif 'output_bytes' in e: print('omitted',e['output_bytes'])\nPY\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c \"python3 - <<'PY'\nimport hashlib as h, json, re, shlex\nfrom pathlib import Path\nfor p in sorted(Path('.').glob('*/observer.json')):\n d=json.loads(p.read_text())\n if p.parent.name=='157770': print('OBSERVER STRUCTURE',[(list(x),list(x.values())[:2]) for x in d['actual_events'][:3]])\n f=p.parent/'after/browser-record.jsonl'\n def tree(root): return {str(q.relative_to(root)):h.sha256(q.read_bytes()).hexdigest() for q in root.rglob('*') if q.is_file()}\n b=tree(p.parent/'before'); a=tree(p.parent/'after')\n print('\\\\n',p.parent.name,'tree change',sorted(k for k in (a.keys()|b.keys()) if a.get(k)\"'!=b.get(k)),'\"'matching journal',h.sha256(f.read_bytes()).hexdigest()==d['browser_record_sha256'])\n for i,line in enumerate(f.read_text().splitlines(),1):\n  e=json.loads(line)\n  if e['kind']\"'!='\"'browser': print(i,e['kind'],e.get('url',e.get('observed'))); continue\n  out=e.get('output','')\n  assert 'output' not in e or h.sha256(out.encode()).hexdigest()==e['output_sha256']\n  keys=' | '.join(t.strip() for t in out.splitlines() if re.search(r'dialog |heading \\\"Settings applied\\\"|Email: |textbox |radio \\\"Daily\\\"|radio \\\"Weekly\\\"|switch |button \\\"(?:Cancel|Confirm|Applying)|\"'^✓|''^true$|''^false$|''^Error|''^Settings applied$|focus|@example'\"\\\\.test|\"'^agent-browser ['\"\\\\d]',t,re.I))\n  print(f'{i:2d}',e['exit'],shlex.join(e['args']),'->',keys[:1450] or (f'{e[\\\"output_bytes\\\"]} bytes unpreserved' if 'output_bytes' in e else out[:340].strip()))\nPY\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c \"python3 - <<'PY'\nimport json,re\nfrom pathlib import Path\nfor p in sorted(Path('.').glob('*/observer.json')):\n d=json.loads(p.read_text())\n f=p.parent/'after/browser-record.jsonl'\n raw=[json.loads(line) for line in f.read_text().splitlines()]\n preserved=[e for e in raw if 'output_bytes' not in e]\n print(p.parent.name, len(preserved), 'observer events',len(d['actual_events']))\n for o,e in zip(d['actual_events'],preserved,strict=True):\n  if e['kind']\"'!='\"'browser':\n   assert o==e,(p,o,e)\n   continue\n  assert (o['args'],o['runtime_exit'],o['stdout_sha256'])==(e['args'],e['exit'],e['output_sha256']), (p,o,e)\n  assert all(line in e['output'].splitlines() for line in o['observed_lines']), (p,o,e)\n js=next((p.parent/'before/dist/assets').glob('index-*.js')).read_text()\n if p.parent.name in ('03e2b2','157770'):\n  for term in ('Settings applied','This demo keeps settings','Applying…','localStorage','sessionStorage','fetch('):\n   hits=list(re.finditer(re.escape(term),js))\n   print(' ',term,len(hits))\n   if len(hits)==1 and term not in ('fetch(',):\n    hit=hits[0]; print(js[hit.start()-175:hit.end()+175])\n if p.parent.name=='157770':\n  for i in (15,17,18,19,24,25,26):\n   e=raw[i-1]\n   print(i,e['args'],e['exit'])\n   print(e['output'] if i\"'!=26 else '\"'\\\\n'.join(e['output'].splitlines()[-11:]))\nPY\"",
+      "exit": 1
+    },
+    {
+      "command": "/bin/bash -c \"python3 - <<'PY'\nimport json,re\nfrom pathlib import Path\nfor p in sorted(Path('.').glob('*/observer.json')):\n d=json.loads(p.read_text())\n raw=[json.loads(line) for line in (p.parent/'after/browser-record.jsonl').read_text().splitlines()]\n def same(o,e):\n  if e['kind']\"'!='\"'browser': return o==e\n  if 'output' not in e or 'args' not in o: return False\n  return ((o['args'],o['runtime_exit'],o['stdout_sha256'])==(e['args'],e['exit'],e['output_sha256'])\n          and all(line in e['output'].splitlines() for line in o['observed_lines']))\n i=0\n omissions=[]\n for n,e in enumerate(raw,1):\n  if i<len(d['actual_events']) and same(d['actual_events'][i],e): i+=1\n  else: omissions.append((n,e.get('args',e['kind'])))\n print(p.parent.name, i,len(d['actual_events']), 'omitted:',omissions)\n if i<len(d['actual_events']): print(d['actual_events'][i])\n if p.parent.name=='157770':\n  for n in (15,17,18,19,24,25,26):\n   e=raw[n-1]\n   print(n,e['args'],e['exit'])\n   print(e['output'] if n\"'!=26 else '\"'\\\\n'.join(e['output'].splitlines()[-11:]))\n if p.parent.name=='03e2b2':\n  js=next((p.parent/'before/dist/assets').glob('index-*.js')).read_text()\n  for term in ('This demo keeps settings','localStorage','setTimeout'):\n   hit=list(re.finditer(re.escape(term),js))[-1]\n   print(term,js[hit.start()-300:hit.end()+150])\nPY\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c \"python3 - <<'PY'\nfrom pathlib import Path\ns=next(Path('157770/before/dist/assets').glob('index-*.js')).read_text()\ni=s.index('Applying changes…')\nprint(s[i-460:i+1150])\ni=s.index('Applying…')\nprint(s[i-2450:i+65])\nPY\"",
+      "exit": 0
+    }
+  ]
+}

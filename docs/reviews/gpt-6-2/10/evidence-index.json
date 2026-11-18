@@ -1,0 +1,169 @@
+{
+  "performed": "2026-11-18",
+  "independent_executions": 16,
+  "independent_assessors": 5,
+  "executions": {
+    "ab": [
+      {
+        "variant": "B",
+        "case": "ordinary",
+        "code": "1f267f",
+        "public_record": "results/1f267f.json",
+        "sha256": "1623f3369666f031a83a56713bb488757b7f53c0515fd9d377b9fd288b02a7be"
+      },
+      {
+        "variant": "A",
+        "case": "ordinary",
+        "code": "5bc846",
+        "public_record": "results/5bc846.json",
+        "sha256": "43b37ce2a628cb90141c11a6a87511be0fda8ce7071a7852d2a240b349739b56"
+      },
+      {
+        "variant": "A",
+        "case": "boundary",
+        "code": "761870",
+        "public_record": "results/761870.json",
+        "sha256": "a631dd7d9ec346199da08bb6e35c9af94a9dab8bd9b4e08379073def5730ce5e"
+      },
+      {
+        "variant": "B",
+        "case": "boundary",
+        "code": "1aa046",
+        "public_record": "results/1aa046.json",
+        "sha256": "ff449d67ba4012e3c7376b8b2887d25327e19d96f168be4d108fe3bf9037cbdc"
+      }
+    ],
+    "confirm": [
+      {
+        "variant": "C",
+        "case": "holdout",
+        "code": "157770",
+        "public_record": "results/157770.json",
+        "sha256": "6025310d6e226f4f394f99d4c2db56e3d0a5ee13f42ac4055a6b85e7f54e9ca6"
+      },
+      {
+        "variant": "A",
+        "case": "holdout",
+        "code": "6ed361",
+        "public_record": "results/6ed361.json",
+        "sha256": "a0a9bcdd4e11edc20fb56a12a6ac73b177ba6b8b988ee27f75d8a7fd378065ae"
+      },
+      {
+        "variant": "C",
+        "case": "ordinary",
+        "code": "5e81c2",
+        "public_record": "results/5e81c2.json",
+        "sha256": "5741ad9c308a25f5caca51a89e5a084d163f4dfd4e19782c3dd73c5927093524"
+      },
+      {
+        "variant": "C",
+        "case": "boundary",
+        "code": "03e2b2",
+        "public_record": "results/03e2b2.json",
+        "sha256": "40b9fd9cb2bbede0834084784a4303a43fe947106cf840dfc7de2d48bcf72e20"
+      }
+    ],
+    "release": [
+      {
+        "variant": "Release",
+        "case": "holdout",
+        "code": "24b617",
+        "public_record": "results/24b617.json",
+        "sha256": "7d2d0c16c77887eb72f8cae273e69eba4ab301bda44dbd88db0dbabe0bf495fa"
+      }
+    ],
+    "diagnostic": [
+      {
+        "variant": "Release",
+        "case": "diagnosis",
+        "code": "07032f",
+        "public_record": "results/07032f.json",
+        "sha256": "0c80503ff4b535f15c070fbe3379aa1329bd4120f79779ae27333d267c0e5897"
+      },
+      {
+        "variant": "A",
+        "case": "diagnosis",
+        "code": "ce8697",
+        "public_record": "results/ce8697.json",
+        "sha256": "0d10a9f8e9a71a1d619dfd0ff8d169e4d45972e12035dfda6ca98f08e30264a1"
+      }
+    ],
+    "recovery": [
+      {
+        "variant": "C1",
+        "case": "single",
+        "code": "092f7b",
+        "public_record": "results/092f7b.json",
+        "sha256": "d9de67c7bfecd43de21240d089eabc70dffe010641189e609f6ececa92532575"
+      },
+      {
+        "variant": "C0",
+        "case": "single",
+        "code": "bd7f22",
+        "public_record": "results/bd7f22.json",
+        "sha256": "fc9bd8293d06c3f2aaabdec00faec66cf69b2f04160b99557a25e4566a0cfd6e"
+      },
+      {
+        "variant": "Release2",
+        "case": "original",
+        "code": "13b300",
+        "public_record": "results/13b300.json",
+        "sha256": "d54e2b62920d23c3c2d32464bff2b6d758ccebe2d14f237633e9b03a94b8333d"
+      },
+      {
+        "variant": "C1",
+        "case": "original",
+        "code": "b41a87",
+        "public_record": "results/b41a87.json",
+        "sha256": "9ed6b3f567f933d7ea19d03447e20178947d160f1c8da904f0609b402d83bcd3"
+      },
+      {
+        "variant": "Release2",
+        "case": "single",
+        "code": "13cc99",
+        "public_record": "results/13cc99.json",
+        "sha256": "fefc7e758f4a6646d5662bb0785d2cd80b77150464d687d4d142da5a2ea89a00"
+      }
+    ]
+  },
+  "assessments": [
+    {
+      "report": "assessor-round1.md",
+      "access_provenance": "assessor-round1-seal.json",
+      "raw_signed_sha256": "09166d1babb224cd7297aff7ce1fd1737c5b41e2567fbdc4a56d6679cd42bf1d"
+    },
+    {
+      "report": "assessor-round2.md",
+      "access_provenance": "assessor-round2-seal.json",
+      "raw_signed_sha256": "cbe33c17d17a5e859919e0fa6b708c2ddd32edcb82f430240adb25b3f10c6345"
+    },
+    {
+      "report": "assessor-diagnostic.md",
+      "access_provenance": "assessor-diagnostic-seal.json",
+      "raw_signed_sha256": "457c508d553a3dbe5b0fbb9576f954ba2c703a75b4ea5cf7628f7afcf5ac2d03"
+    },
+    {
+      "report": "assessor-recovery.md",
+      "access_provenance": "assessor-recovery-seal.json",
+      "raw_signed_sha256": "d6c3cb68f7469b23bfe76af9709586c91c89d1cf8746769471608815a188fb14"
+    },
+    {
+      "report": "assessor-queue.md",
+      "access_provenance": "assessor-queue-seal.json",
+      "raw_signed_sha256": "ad6286c7044a67a64b4f19894a85c30d62548d2f53bc34c56cea73e471258507"
+    }
+  ],
+  "relabelled_prior_controls": {
+    "confirm": {
+      "39f413": "761870",
+      "b24536": "5bc846"
+    },
+    "recovery": {
+      "952212": "6ed361",
+      "badb99": "157770"
+    },
+    "queue": {
+      "cf5ea8": "157770"
+    }
+  }
+}

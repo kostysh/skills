@@ -1,0 +1,7 @@
+{
+  "result": "157770",
+  "raw_jsonl_sha256": "97565716d76fb52574798ddea40b0c51d16d08f2d1ef394d8b6212c5574a55db",
+  "raw_event_line_sha256": "c0d1e270eb39a9c8d9572106e1ebd9b16dfde12546769ec7a85756aaac96b036",
+  "original_terminal_transcript_excerpt": "agent-browser> fill @e4 update@example.test\nfind role radio click --name Weekly\nfind role button click --name 'Review changes'\nsnapshot\n✓ Done\n[exit 0]\nagent-browser> ✗ Element not found. Verify the selector is correct and the element exists in the DOM.\n[exit 1]\nagent-browser> ✓ Done\n[exit 0]\nagent-browser> - generic\n  - dialog \"Review your changes\"\n    - heading \"Review your changes\" [level=2, ref=e1]\n    - paragraph\n      - StaticText \"Confirm to apply these notification settings for this session.\"\n    - DescriptionList\n      - term \"Email address\"\n      - definition\n        - StaticText \"update@example.test\"\n      - term \"Email notifications\"\n      - definition\n        - StaticText \"On\"\n      - term \"Delivery frequency\"\n      - definition\n        - StaticText \"Daily\"\n    - button \"Cancel\" [ref=e2]\n    - button \"Confirm\" [ref=e3]\n[exit 0]\n",
+  "evidence": "All four input lines are echoed before the first outcome, then the CLI reports the failed radio action followed by the successful Review action. No later Confirm occurred in this incorrect draft."
+}

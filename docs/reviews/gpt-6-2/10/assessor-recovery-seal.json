@@ -1,0 +1,70 @@
+{
+  "model": "gpt-6.2-sol",
+  "reasoning": "model_reasoning_effort=\"high\"",
+  "sandbox": "read-only",
+  "long_term_memory_feature": "disabled",
+  "raw_grade_sha256": "d6c3cb68f7469b23bfe76af9709586c91c89d1cf8746769471608815a188fb14",
+  "raw_evaluator_events_sha256": "4cdde01cbecf5f00624edfa632414c5d3b7dd58e16a034ef04b63425f6adb9c0",
+  "public_grade_sha256": "a2084ab312ebf43d682e5bf44dcf70431a9f44a45a7a6b48638f1fa94f14d695",
+  "packet_files": 176,
+  "packet_manifest_sha256": "86ea996773c8aabf22ad20261caf86717e57f76ccb68b1b68bf4c9ad25ee44bb",
+  "blind_access": "Only work product, neutral assignments, precommitted criteria, original task, final answer, recorded actions and evidence supplied in packet. No assignment key or candidate instruction files. Shared host outside read-only directory physically readable; operations reviewed for scope.",
+  "observed_access": [
+    {
+      "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba criteria.md'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'wc -l */task.md */answer.md */observer.json */actions.json */after/browser-record.jsonl */before/PREVIEW.md */before/lab.py'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"rg -n '\"'^'\"' */task.md\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"sed -n '1,165p' 092f7b/observer.json\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"rg -n '\"'^'\"' */answer.md */actions.json\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"cat 092f7b/before/PREVIEW.md && nl -ba 092f7b/before/lab.py && rg -n '\"'^'\"' 092f7b/after/browser-record.jsonl\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"python3 -B - <<'PY'\nimport json, re\nfrom pathlib import Path\nfor p in sorted(Path('.').glob('*/after/browser-record.jsonl')):\n print('\\\\n', p)\n base=None\n for n,line in enumerate(p.read_text().splitlines(),1):\n  x=json.loads(line)\n  if x['kind']\"'!='\"'browser': print(n,{k:v for k,v in x.items() if k\"'!='\"'time_ns'}); continue\n  base=base or x['start_ns']\n  out=[s.strip() for s in x.get('output','').splitlines() if not (x['args'][0].startswith('snapshot') and not re.search('radio \\\"|textbox|switch \\\"|button \\\"|dialog \\\"|Settings applied|StaticText \\\"(?:[a-z]+@|On\\\"|Off\\\"|Weekly\\\"|Daily\\\"|Email:|Saved)',s))]\n  if x['args'][0]=='snapshot': out=[s for s in out if not re.search('StaticText \\\"(?:Weekly|Daily)\\\"',s) or '[checked=' not in ' '.join(out)]\n  print(f\\\"{n} {((x['start_ns']-base)/1e9):.3f}+{(x['time_ns']-x['start_ns'])/1e6:.0f}ms {x['exit']} {x['args']} | {' | '.join(out)}\\\")\nPY\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"python3 -B - <<'PY'\nfrom pathlib import Path\nimport json, hashlib\nfor p in sorted(Path('.').glob('*/observer.json')):\n o=json.loads(p.read_text())\n b=p.parent/'before'; a=p.parent/'after'; raw=a/'browser-record.jsonl'\n both=lambda folder: {f.relative_to(folder):hashlib.sha256(f.read_bytes()).hexdigest() for f in folder.rglob('*') if f.is_file()}\n bfiles,afiles=both(b),both(a)\n print(p, [(str(k), 'new' if k not in bfiles else 'missing' if k not in afiles else 'diff') for k in set(bfiles)|set(afiles) if bfiles.get(k)\"'!=afiles.get(k)], '\"'hash matches:', hashlib.sha256(raw.read_bytes()).hexdigest()==o.get('browser_record_sha256'))\n print({k:v for k,v in o.items() if k\"'!='\"'actual_events'})\nPY\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"nl -ba badb99/observer.json | sed -n '190,315p'\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"python3 -B - <<'PY'\nfrom pathlib import Path\np=Path('badb99/before/dist/assets/index-3cXjFJlU.js')\ns=p.read_text()\nfor word in ['Applying…','Settings applied','Review your changes','No email is sent.']:\n i=s.find(word)\n print(word,i)\n if i\"'!=-1: print(s[max(0,i-650):i+400])\ni=s.find('\"'Review your changes')\nprint(s[i-2800:i-1200])\nPY\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"python3 -B - <<'PY'\nfrom pathlib import Path\nfrom hashlib import sha256\nimport json\nfor p in sorted(Path('.').glob('*/observer.json')):\n o=json.loads(p.read_text())\n b=[json.loads(l) for l in (p.parent/'after'/'browser-record.jsonl').read_text().splitlines()]\n start=o['actual_events'][0]\n stop=o['actual_events'][-1]\n idx=iter(b[1:-1])\n missing=[]\n for ce in o['actual_events'][1:-1]:\n  match=next((e for e in idx if e['args']==ce['args'] and e['exit']==ce['runtime_exit'] and e['output_sha256']==ce['stdout_sha256'] and all(line in e.get('output','').splitlines() for line in ce.get('observed_lines',[]))),None)\n  if not match: missing.append(ce['args'])\n valid=all(sha256(e['output'].encode()).hexdigest()==e['output_sha256'] for e in b if 'output' in e)\n print(p, \\\"start_match\\\", start==b[0], \\\"stop_match\\\",stop==b[-1],\\\"missing\\\",missing,\\\"stdout hashes\\\",valid)\nPY\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"python3 -B - <<'PY'\nfrom pathlib import Path\nfrom hashlib import sha256\nfor p in sorted(Path('.').glob('*/before/dist/assets/*.js')):\n s=p.read_text()\n j=s.find('Your preferred address for notification emails.')\n m=s.rfind('setTimeout',0,j)\n print(p, sha256(p.read_bytes()).hexdigest()[:12])\n if p.parts[0]=='badb99': print(s[m-1100:m+400])\nPY\nfind . -type l -print\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"python3 -B - <<'PY'\nfrom pathlib import Path\nimport json\np=Path('badb99/after/browser-record.jsonl')\nevents=[json.loads(l) for l in p.read_text().splitlines()]\nprint((events[15]['start_ns']-events[14]['time_ns'])/1e6)\nfor name in ['13b300','952212','b41a87','badb99']:\n p=Path(name)/'after'/'browser-record.jsonl'\n b=[json.loads(l) for l in p.read_text().splitlines()]\n print(name, [(i,e['args'],e['exit'],len(e.get('output',''))) for i,e in enumerate(b,1) if 'click @e2' in e.get('args',[]) or any('click --name Cancel' in a for a in e.get('args',[]))])\nPY\"",
+      "exit": 0
+    }
+  ]
+}

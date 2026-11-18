@@ -1,0 +1,35 @@
+[
+  {
+    "stop_on_error": false,
+    "command": [
+      "batch",
+      "find role radio click --name Weekly",
+      "find role button click --name 'Review changes'",
+      "snapshot"
+    ],
+    "exit": 1,
+    "actual_stdout": "✗ Element not found. Verify the selector is correct and the element exists in the DOM.\n\n✓ Done\n\n- generic\n  - dialog \"Review your changes\"\n    - heading \"Review your changes\" [level=2, ref=e1]\n    - paragraph\n      - StaticText \"Confirm to apply these notification settings for this session.\"\n    - DescriptionList\n      - term \"Email address\"\n      - definition\n        - StaticText \"reports@example.test\"\n      - term \"Email notifications\"\n      - definition\n        - StaticText \"On\"\n      - term \"Delivery frequency\"\n      - definition\n        - StaticText \"Daily\"\n    - button \"Cancel\" [ref=e2]\n    - button \"Confirm\" [ref=e3]\n",
+    "separate_DOM_read": {
+      "email": "reports@example.test",
+      "review": true,
+      "selected": "daily"
+    }
+  },
+  {
+    "stop_on_error": true,
+    "command": [
+      "batch",
+      "--bail",
+      "find role radio click --name Weekly",
+      "find role button click --name 'Review changes'",
+      "snapshot"
+    ],
+    "exit": 1,
+    "actual_stdout": "✗ Element not found. Verify the selector is correct and the element exists in the DOM.\n",
+    "separate_DOM_read": {
+      "email": "reports@example.test",
+      "review": false,
+      "selected": "daily"
+    }
+  }
+]

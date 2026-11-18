@@ -38,10 +38,6 @@ relevant subcommand help.
 - Diagnosis: browser requests, responses, console, and page errors are evidence;
   another domain owner must establish backend or provider root cause.
 
-A screenshot, snapshot, trace, successful command, or healthy runtime is useful
-evidence only when it supports the requested result. It is not completion by
-itself.
-
 ## Setup boundary
 
 Agent-browser owns its browser runtime. Do not install Playwright packages in the
