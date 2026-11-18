@@ -1,0 +1,106 @@
+--- a/src/catalog.mjs
++++ b/src/catalog.mjs
+@@ -11,7 +11,7 @@
+ }
+ 
+ export function saveCatalog(path, cards) {
+-  const records = cards.map(({ id, title }) => ({ id, title }));
++  const records = cards.map(({ id, title, pinned }) => ({ id, title, pinned }));
+   writeFileSync(path, JSON.stringify(records, null, 2));
+ }
+ 
+--- a/test/catalog.test.mjs
++++ b/test/catalog.test.mjs
+@@ -1,6 +1,26 @@
+ import test from 'node:test';
+ import assert from 'node:assert/strict';
+-import { setPinned, pinnedTitles } from '../src/catalog.mjs';
++import { execFileSync } from 'node:child_process';
++import { copyFileSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
++import { join } from 'node:path';
++import { fileURLToPath } from 'node:url';
++import { loadCatalog, setPinned, pinnedTitles } from '../src/catalog.mjs';
++
++const productDir = fileURLToPath(new URL('../', import.meta.url));
++
++function workFile(t) {
++  const dir = mkdtempSync(join(productDir, '.catalog-test-'));
++  t.after(() => rmSync(dir, { recursive: true }));
++  return join(dir, 'work.json');
++}
++
++function runNode(...args) {
++  return execFileSync(process.execPath, args, {
++    cwd: productDir,
++    stdio: ['ignore', 'pipe', 'pipe'],
++    encoding: 'utf8',
++  });
++}
+ 
+ test('smoke: pinned card is visible immediately', () => {
+   const cards = [{ id: 'a', title: 'Alpha', pinned: false }, { id: 'b', title: 'Beta', pinned: false }];
+@@ -10,3 +30,64 @@
+ test('unknown card is rejected', () => {
+   assert.throws(() => setPinned([], 'missing', true), /Unknown card/);
+ });
++
++test('desk pin keeps Alpha and Beta pinned after reopening the fixture copy', (t) => {
++  const path = workFile(t);
++  copyFileSync(join(productDir, 'fixture', 'catalog.json'), path);
++  const listPins = () => JSON.parse(runNode('desk.mjs', path, 'pins'));
++
++  assert.deepEqual(listPins(), ['Beta']);
++  assert.deepEqual(JSON.parse(runNode('desk.mjs', path, 'pin', 'a')), ['Alpha', 'Beta']);
++  assert.deepEqual(listPins(), ['Alpha', 'Beta']);
++  assert.deepEqual(JSON.parse(readFileSync(path, 'utf8')), [
++    { id: 'a', title: 'Alpha', pinned: true },
++    { id: 'b', title: 'Beta', pinned: true },
++  ]);
++});
++
++test('unpin saves false and preserves the other cards after reopening', (t) => {
++  const path = workFile(t);
++  const initial = [
++    { id: 'a', title: 'Alpha', pinned: true },
++    { id: 'b', title: 'Beta', pinned: true },
++    { id: 'c', title: 'Gamma', pinned: false },
++  ];
++  const expected = [{ ...initial[0], pinned: false }, ...initial.slice(1)];
++  writeFileSync(path, JSON.stringify(initial));
++
++  runNode('--input-type=module', '-e', `
++    import { loadCatalog, saveCatalog, setPinned } from './src/catalog.mjs';
++    const path = process.argv[1];
++    saveCatalog(path, setPinned(loadCatalog(path), 'a', false));
++  `, path);
++  const reopened = runNode('--input-type=module', '-e', `
++    import { loadCatalog } from './src/catalog.mjs';
++    console.log(JSON.stringify(loadCatalog(process.argv[1])));
++  `, path);
++
++  assert.deepEqual(JSON.parse(reopened), expected);
++  assert.deepEqual(JSON.parse(readFileSync(path, 'utf8')), expected);
++});
++
++test('desk can pin a legacy card without a pinned field', (t) => {
++  const path = workFile(t);
++  const alpha = { id: 'a', title: 'Alpha' };
++  const beta = { id: 'b', title: 'Beta', pinned: true };
++  writeFileSync(path, JSON.stringify([alpha, beta]));
++
++  assert.deepEqual(loadCatalog(path), [{ ...alpha, pinned: false }, beta]);
++  runNode('desk.mjs', path, 'pin', 'a');
++  assert.deepEqual(JSON.parse(runNode('desk.mjs', path, 'pins')), ['Alpha', 'Beta']);
++});
++
++test('desk rejects an unknown id without writing the fixture copy', (t) => {
++  const path = workFile(t);
++  copyFileSync(join(productDir, 'fixture', 'catalog.json'), path);
++  const before = readFileSync(path);
++
++  assert.throws(() => runNode('desk.mjs', path, 'pin', 'missing'), {
++    status: 1,
++    stderr: /Error: Unknown card: missing/,
++  });
++  assert.deepEqual(readFileSync(path), before);
++});

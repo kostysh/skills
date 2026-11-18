@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: error-fixer
-  source-version: 0.1.0
+  source-version: 0.1.1
   recommended-skill-md-max-bytes: 10000
   description: >-
     Diagnose and fix software defects: errors, crashes, failing tests,
@@ -75,7 +75,7 @@ sections:
         - For an authorized repair, add or refine a regression check proportionate to the defect, using existing checks when sufficient. Establish that it fails for the original reason before the fix when feasible; otherwise state the evidence limit.
         - Make the smallest coherent correction. Preserve unrelated behavior and others' work. Do not weaken checks, hide failures, or remove required behavior merely to manufacture success; correct a faulty check only against the authoritative contract.
       validation:
-        - The change has a causal basis and a meaningful regression check; diagnosis-only work stops before this repair stage.
+        - The change has a causal basis and a meaningful regression check. Keep diagnosis read-only.
     - id: verify-behavior
       title: Verify behavior
       goal: Show whether the correction restores the reported behavior and affected contracts.

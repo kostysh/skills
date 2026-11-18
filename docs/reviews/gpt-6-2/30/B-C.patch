@@ -1,0 +1,5 @@
+--- b/SKILL.md
++++ c/SKILL.md
+@@ -92 +92 @@
+-- The change has a causal basis and a meaningful regression check.
++- The change has a causal basis and a meaningful regression check. Keep diagnosis read-only.

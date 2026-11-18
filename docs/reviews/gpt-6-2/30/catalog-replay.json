@@ -1,0 +1,524 @@
+{
+  "R2": {
+    "pin": {
+      "seed": [
+        {
+          "id": "a",
+          "title": "Alpha",
+          "pinned": false
+        },
+        {
+          "id": "b",
+          "title": "Beta",
+          "pinned": true
+        }
+      ],
+      "firstReader": {
+        "argv": [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import {loadCatalog,pinnedTitles} from './src/catalog.mjs';\nconst cards = loadCatalog(process.argv[1]);\nconsole.log(JSON.stringify({cards, titles: pinnedTitles(cards)}));",
+          "case.json"
+        ],
+        "pid": 64,
+        "exit": 0,
+        "stdout": "{\"cards\":[{\"id\":\"a\",\"title\":\"Alpha\",\"pinned\":false},{\"id\":\"b\",\"title\":\"Beta\",\"pinned\":true}],\"titles\":[\"Beta\"]}\n",
+        "stderr": ""
+      },
+      "writer": {
+        "argv": [
+          "node",
+          "desk.mjs",
+          "case.json",
+          "pin",
+          "a"
+        ],
+        "pid": 71,
+        "exit": 0,
+        "stdout": "[\"Alpha\",\"Beta\"]\n",
+        "stderr": ""
+      },
+      "disk": [
+        {
+          "id": "a",
+          "title": "Alpha"
+        },
+        {
+          "id": "b",
+          "title": "Beta"
+        }
+      ],
+      "newModuleReader": {
+        "argv": [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import {loadCatalog,pinnedTitles} from './src/catalog.mjs';\nconst cards = loadCatalog(process.argv[1]);\nconsole.log(JSON.stringify({cards, titles: pinnedTitles(cards)}));",
+          "case.json"
+        ],
+        "pid": 78,
+        "exit": 0,
+        "stdout": "{\"cards\":[{\"id\":\"a\",\"title\":\"Alpha\",\"pinned\":false},{\"id\":\"b\",\"title\":\"Beta\",\"pinned\":false}],\"titles\":[]}\n",
+        "stderr": ""
+      },
+      "newCliReader": {
+        "argv": [
+          "node",
+          "desk.mjs",
+          "case.json",
+          "pins"
+        ],
+        "pid": 85,
+        "exit": 0,
+        "stdout": "[]\n",
+        "stderr": ""
+      }
+    },
+    "unpin": {
+      "seed": [
+        {
+          "id": "a",
+          "title": "Alpha",
+          "pinned": true
+        },
+        {
+          "id": "b",
+          "title": "Beta",
+          "pinned": true
+        }
+      ],
+      "firstReader": {
+        "argv": [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import {loadCatalog,pinnedTitles} from './src/catalog.mjs';\nconst cards = loadCatalog(process.argv[1]);\nconsole.log(JSON.stringify({cards, titles: pinnedTitles(cards)}));",
+          "case.json"
+        ],
+        "pid": 92,
+        "exit": 0,
+        "stdout": "{\"cards\":[{\"id\":\"a\",\"title\":\"Alpha\",\"pinned\":true},{\"id\":\"b\",\"title\":\"Beta\",\"pinned\":true}],\"titles\":[\"Alpha\",\"Beta\"]}\n",
+        "stderr": ""
+      },
+      "writer": {
+        "argv": [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import {loadCatalog,setPinned,saveCatalog,pinnedTitles} from './src/catalog.mjs';\nconst path = process.argv[1];\nconst changed = setPinned(loadCatalog(path), 'a', false);\nsaveCatalog(path, changed);\nconsole.log(JSON.stringify(pinnedTitles(changed)));",
+          "case.json"
+        ],
+        "pid": 99,
+        "exit": 0,
+        "stdout": "[\"Beta\"]\n",
+        "stderr": ""
+      },
+      "disk": [
+        {
+          "id": "a",
+          "title": "Alpha"
+        },
+        {
+          "id": "b",
+          "title": "Beta"
+        }
+      ],
+      "newModuleReader": {
+        "argv": [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import {loadCatalog,pinnedTitles} from './src/catalog.mjs';\nconst cards = loadCatalog(process.argv[1]);\nconsole.log(JSON.stringify({cards, titles: pinnedTitles(cards)}));",
+          "case.json"
+        ],
+        "pid": 106,
+        "exit": 0,
+        "stdout": "{\"cards\":[{\"id\":\"a\",\"title\":\"Alpha\",\"pinned\":false},{\"id\":\"b\",\"title\":\"Beta\",\"pinned\":false}],\"titles\":[]}\n",
+        "stderr": ""
+      },
+      "newCliReader": {
+        "argv": [
+          "node",
+          "desk.mjs",
+          "case.json",
+          "pins"
+        ],
+        "pid": 113,
+        "exit": 0,
+        "stdout": "[]\n",
+        "stderr": ""
+      }
+    },
+    "legacy-pin": {
+      "seed": [
+        {
+          "id": "a",
+          "title": "Alpha"
+        },
+        {
+          "id": "b",
+          "title": "Beta",
+          "pinned": true
+        }
+      ],
+      "firstReader": {
+        "argv": [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import {loadCatalog,pinnedTitles} from './src/catalog.mjs';\nconst cards = loadCatalog(process.argv[1]);\nconsole.log(JSON.stringify({cards, titles: pinnedTitles(cards)}));",
+          "case.json"
+        ],
+        "pid": 120,
+        "exit": 0,
+        "stdout": "{\"cards\":[{\"id\":\"a\",\"title\":\"Alpha\",\"pinned\":false},{\"id\":\"b\",\"title\":\"Beta\",\"pinned\":true}],\"titles\":[\"Beta\"]}\n",
+        "stderr": ""
+      },
+      "writer": {
+        "argv": [
+          "node",
+          "desk.mjs",
+          "case.json",
+          "pin",
+          "a"
+        ],
+        "pid": 127,
+        "exit": 0,
+        "stdout": "[\"Alpha\",\"Beta\"]\n",
+        "stderr": ""
+      },
+      "disk": [
+        {
+          "id": "a",
+          "title": "Alpha"
+        },
+        {
+          "id": "b",
+          "title": "Beta"
+        }
+      ],
+      "newModuleReader": {
+        "argv": [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import {loadCatalog,pinnedTitles} from './src/catalog.mjs';\nconst cards = loadCatalog(process.argv[1]);\nconsole.log(JSON.stringify({cards, titles: pinnedTitles(cards)}));",
+          "case.json"
+        ],
+        "pid": 134,
+        "exit": 0,
+        "stdout": "{\"cards\":[{\"id\":\"a\",\"title\":\"Alpha\",\"pinned\":false},{\"id\":\"b\",\"title\":\"Beta\",\"pinned\":false}],\"titles\":[]}\n",
+        "stderr": ""
+      },
+      "newCliReader": {
+        "argv": [
+          "node",
+          "desk.mjs",
+          "case.json",
+          "pins"
+        ],
+        "pid": 141,
+        "exit": 0,
+        "stdout": "[]\n",
+        "stderr": ""
+      }
+    },
+    "missing": {
+      "command": {
+        "argv": [
+          "node",
+          "desk.mjs",
+          "case.json",
+          "pin",
+          "missing"
+        ],
+        "pid": 148,
+        "exit": 1,
+        "stdout": "",
+        "stderr": "file://<work>/R2/src/catalog.mjs:9\n  if (!cards.some(card => card.id === id)) throw new Error(`Unknown card: ${id}`);\n                                                 ^\n\nError: Unknown card: missing\n    at setPinned (file://<work>/R2/src/catalog.mjs:9:50)\n    at file://<work>/R2/desk.mjs:5:19\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at async node:internal/modules/esm/loader:639:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)\n\nNode.js v24.15.0\n"
+      },
+      "fileBefore": "e29eb59bb35c765f7fe63f27ad0b5e71f19cf4c23cdcc4ff7250aa5c4bd27853",
+      "fileAfter": "e29eb59bb35c765f7fe63f27ad0b5e71f19cf4c23cdcc4ff7250aa5c4bd27853"
+    },
+    "packageTest": {
+      "argv": [
+        "npm",
+        "test"
+      ],
+      "pid": 155,
+      "exit": 0,
+      "stdout": "✔ smoke: pinned card is visible immediately (0.78346ms)\n✔ unknown card is rejected (0.24368ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 33.978708\n",
+      "stderr": "npm notice run test\nnpm notice run node --test test/*.test.mjs\n"
+    }
+  },
+  "correctedR2": {
+    "pin": {
+      "seed": [
+        {
+          "id": "a",
+          "title": "Alpha",
+          "pinned": false
+        },
+        {
+          "id": "b",
+          "title": "Beta",
+          "pinned": true
+        }
+      ],
+      "firstReader": {
+        "argv": [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import {loadCatalog,pinnedTitles} from './src/catalog.mjs';\nconst cards = loadCatalog(process.argv[1]);\nconsole.log(JSON.stringify({cards, titles: pinnedTitles(cards)}));",
+          "case.json"
+        ],
+        "pid": 181,
+        "exit": 0,
+        "stdout": "{\"cards\":[{\"id\":\"a\",\"title\":\"Alpha\",\"pinned\":false},{\"id\":\"b\",\"title\":\"Beta\",\"pinned\":true}],\"titles\":[\"Beta\"]}\n",
+        "stderr": ""
+      },
+      "writer": {
+        "argv": [
+          "node",
+          "desk.mjs",
+          "case.json",
+          "pin",
+          "a"
+        ],
+        "pid": 188,
+        "exit": 0,
+        "stdout": "[\"Alpha\",\"Beta\"]\n",
+        "stderr": ""
+      },
+      "disk": [
+        {
+          "id": "a",
+          "title": "Alpha",
+          "pinned": true
+        },
+        {
+          "id": "b",
+          "title": "Beta",
+          "pinned": true
+        }
+      ],
+      "newModuleReader": {
+        "argv": [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import {loadCatalog,pinnedTitles} from './src/catalog.mjs';\nconst cards = loadCatalog(process.argv[1]);\nconsole.log(JSON.stringify({cards, titles: pinnedTitles(cards)}));",
+          "case.json"
+        ],
+        "pid": 195,
+        "exit": 0,
+        "stdout": "{\"cards\":[{\"id\":\"a\",\"title\":\"Alpha\",\"pinned\":true},{\"id\":\"b\",\"title\":\"Beta\",\"pinned\":true}],\"titles\":[\"Alpha\",\"Beta\"]}\n",
+        "stderr": ""
+      },
+      "newCliReader": {
+        "argv": [
+          "node",
+          "desk.mjs",
+          "case.json",
+          "pins"
+        ],
+        "pid": 202,
+        "exit": 0,
+        "stdout": "[\"Alpha\",\"Beta\"]\n",
+        "stderr": ""
+      }
+    },
+    "unpin": {
+      "seed": [
+        {
+          "id": "a",
+          "title": "Alpha",
+          "pinned": true
+        },
+        {
+          "id": "b",
+          "title": "Beta",
+          "pinned": true
+        }
+      ],
+      "firstReader": {
+        "argv": [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import {loadCatalog,pinnedTitles} from './src/catalog.mjs';\nconst cards = loadCatalog(process.argv[1]);\nconsole.log(JSON.stringify({cards, titles: pinnedTitles(cards)}));",
+          "case.json"
+        ],
+        "pid": 209,
+        "exit": 0,
+        "stdout": "{\"cards\":[{\"id\":\"a\",\"title\":\"Alpha\",\"pinned\":true},{\"id\":\"b\",\"title\":\"Beta\",\"pinned\":true}],\"titles\":[\"Alpha\",\"Beta\"]}\n",
+        "stderr": ""
+      },
+      "writer": {
+        "argv": [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import {loadCatalog,setPinned,saveCatalog,pinnedTitles} from './src/catalog.mjs';\nconst path = process.argv[1];\nconst changed = setPinned(loadCatalog(path), 'a', false);\nsaveCatalog(path, changed);\nconsole.log(JSON.stringify(pinnedTitles(changed)));",
+          "case.json"
+        ],
+        "pid": 216,
+        "exit": 0,
+        "stdout": "[\"Beta\"]\n",
+        "stderr": ""
+      },
+      "disk": [
+        {
+          "id": "a",
+          "title": "Alpha",
+          "pinned": false
+        },
+        {
+          "id": "b",
+          "title": "Beta",
+          "pinned": true
+        }
+      ],
+      "newModuleReader": {
+        "argv": [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import {loadCatalog,pinnedTitles} from './src/catalog.mjs';\nconst cards = loadCatalog(process.argv[1]);\nconsole.log(JSON.stringify({cards, titles: pinnedTitles(cards)}));",
+          "case.json"
+        ],
+        "pid": 223,
+        "exit": 0,
+        "stdout": "{\"cards\":[{\"id\":\"a\",\"title\":\"Alpha\",\"pinned\":false},{\"id\":\"b\",\"title\":\"Beta\",\"pinned\":true}],\"titles\":[\"Beta\"]}\n",
+        "stderr": ""
+      },
+      "newCliReader": {
+        "argv": [
+          "node",
+          "desk.mjs",
+          "case.json",
+          "pins"
+        ],
+        "pid": 230,
+        "exit": 0,
+        "stdout": "[\"Beta\"]\n",
+        "stderr": ""
+      }
+    },
+    "legacy-pin": {
+      "seed": [
+        {
+          "id": "a",
+          "title": "Alpha"
+        },
+        {
+          "id": "b",
+          "title": "Beta",
+          "pinned": true
+        }
+      ],
+      "firstReader": {
+        "argv": [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import {loadCatalog,pinnedTitles} from './src/catalog.mjs';\nconst cards = loadCatalog(process.argv[1]);\nconsole.log(JSON.stringify({cards, titles: pinnedTitles(cards)}));",
+          "case.json"
+        ],
+        "pid": 237,
+        "exit": 0,
+        "stdout": "{\"cards\":[{\"id\":\"a\",\"title\":\"Alpha\",\"pinned\":false},{\"id\":\"b\",\"title\":\"Beta\",\"pinned\":true}],\"titles\":[\"Beta\"]}\n",
+        "stderr": ""
+      },
+      "writer": {
+        "argv": [
+          "node",
+          "desk.mjs",
+          "case.json",
+          "pin",
+          "a"
+        ],
+        "pid": 244,
+        "exit": 0,
+        "stdout": "[\"Alpha\",\"Beta\"]\n",
+        "stderr": ""
+      },
+      "disk": [
+        {
+          "id": "a",
+          "title": "Alpha",
+          "pinned": true
+        },
+        {
+          "id": "b",
+          "title": "Beta",
+          "pinned": true
+        }
+      ],
+      "newModuleReader": {
+        "argv": [
+          "node",
+          "--input-type=module",
+          "-e",
+          "import {loadCatalog,pinnedTitles} from './src/catalog.mjs';\nconst cards = loadCatalog(process.argv[1]);\nconsole.log(JSON.stringify({cards, titles: pinnedTitles(cards)}));",
+          "case.json"
+        ],
+        "pid": 251,
+        "exit": 0,
+        "stdout": "{\"cards\":[{\"id\":\"a\",\"title\":\"Alpha\",\"pinned\":true},{\"id\":\"b\",\"title\":\"Beta\",\"pinned\":true}],\"titles\":[\"Alpha\",\"Beta\"]}\n",
+        "stderr": ""
+      },
+      "newCliReader": {
+        "argv": [
+          "node",
+          "desk.mjs",
+          "case.json",
+          "pins"
+        ],
+        "pid": 258,
+        "exit": 0,
+        "stdout": "[\"Alpha\",\"Beta\"]\n",
+        "stderr": ""
+      }
+    },
+    "missing": {
+      "command": {
+        "argv": [
+          "node",
+          "desk.mjs",
+          "case.json",
+          "pin",
+          "missing"
+        ],
+        "pid": 265,
+        "exit": 1,
+        "stdout": "",
+        "stderr": "file://<work>/correctedR2/src/catalog.mjs:9\n  if (!cards.some(card => card.id === id)) throw new Error(`Unknown card: ${id}`);\n                                                 ^\n\nError: Unknown card: missing\n    at setPinned (file://<work>/correctedR2/src/catalog.mjs:9:50)\n    at file://<work>/correctedR2/desk.mjs:5:19\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at async node:internal/modules/esm/loader:639:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)\n\nNode.js v24.15.0\n"
+      },
+      "fileBefore": "e29eb59bb35c765f7fe63f27ad0b5e71f19cf4c23cdcc4ff7250aa5c4bd27853",
+      "fileAfter": "e29eb59bb35c765f7fe63f27ad0b5e71f19cf4c23cdcc4ff7250aa5c4bd27853"
+    },
+    "packageTest": {
+      "argv": [
+        "npm",
+        "test"
+      ],
+      "pid": 272,
+      "exit": 0,
+      "stdout": "✔ smoke: pinned card is visible immediately (0.718347ms)\n✔ unknown card is rejected (0.207402ms)\n✔ desk pin keeps Alpha and Beta pinned after reopening the fixture copy (56.390075ms)\n✔ unpin saves false and preserves the other cards after reopening (41.467144ms)\n✔ desk can pin a legacy card without a pinned field (41.751441ms)\n✔ desk rejects an unknown id without writing the fixture copy (18.100553ms)\nℹ tests 6\nℹ suites 0\nℹ pass 6\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 195.0642\n",
+      "stderr": "npm notice run test\nnpm notice run node --test test/*.test.mjs\n"
+    }
+  },
+  "returnedRegressionOnOriginalWriter": {
+    "argv": [
+      "npm",
+      "test"
+    ],
+    "pid": 353,
+    "exit": 1,
+    "stdout": "✔ smoke: pinned card is visible immediately (0.713217ms)\n✔ unknown card is rejected (0.220957ms)\n✖ desk pin keeps Alpha and Beta pinned after reopening the fixture copy (66.576578ms)\n✖ unpin saves false and preserves the other cards after reopening (46.151303ms)\n✖ desk can pin a legacy card without a pinned field (39.271677ms)\n✔ desk rejects an unknown id without writing the fixture copy (20.942722ms)\nℹ tests 6\nℹ suites 0\nℹ pass 3\nℹ fail 3\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 215.457414\n\n✖ failing tests:\n\ntest at test/catalog.test.mjs:34:1\n✖ desk pin keeps Alpha and Beta pinned after reopening the fixture copy (66.576578ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n  + actual - expected\n  \n  + []\n  - [\n  -   'Alpha',\n  -   'Beta'\n  - ]\n  \n      at TestContext.<anonymous> (file://<work>/original-with-returned-tests/test/catalog.test.mjs:41:10)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1201:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)\n      at Test.postRun (node:internal/test_runner/test:1330:19)\n      at Test.run (node:internal/test_runner/test:1258:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: [],\n    expected: [ 'Alpha', 'Beta' ],\n    operator: 'deepStrictEqual',\n    diff: 'simple'\n  }\n\ntest at test/catalog.test.mjs:48:1\n✖ unpin saves false and preserves the other cards after reopening (46.151303ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n  + actual - expected\n  ... Skipped lines\n  \n    [\n      {\n        id: 'a',\n        pinned: false,\n        title: 'Alpha'\n  ...\n        id: 'b',\n  +     pinned: false,\n  -     pinned: true,\n        title: 'Beta'\n      },\n      {\n        id: 'c',\n        pinned: false,\n  \n      at TestContext.<anonymous> (file://<work>/original-with-returned-tests/test/catalog.test.mjs:68:10)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1201:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)\n      at Test.postRun (node:internal/test_runner/test:1330:19)\n      at Test.run (node:internal/test_runner/test:1258:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: [ { id: 'a', title: 'Alpha', pinned: false }, { id: 'b', title: 'Beta', pinned: false }, { id: 'c', title: 'Gamma', pinned: false } ],\n    expected: [ { id: 'a', title: 'Alpha', pinned: false }, { id: 'b', title: 'Beta', pinned: true }, { id: 'c', title: 'Gamma', pinned: false } ],\n    operator: 'deepStrictEqual',\n    diff: 'simple'\n  }\n\ntest at test/catalog.test.mjs:72:1\n✖ desk can pin a legacy card without a pinned field (39.271677ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n  + actual - expected\n  \n  + []\n  - [\n  -   'Alpha',\n  -   'Beta'\n  - ]\n  \n      at TestContext.<anonymous> (file://<work>/original-with-returned-tests/test/catalog.test.mjs:80:10)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1201:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:831:18)\n      at Test.postRun (node:internal/test_runner/test:1330:19)\n      at Test.run (node:internal/test_runner/test:1258:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: [],\n    expected: [ 'Alpha', 'Beta' ],\n    operator: 'deepStrictEqual',\n    diff: 'simple'\n  }\n",
+    "stderr": "npm notice run test\nnpm notice run node --test test/*.test.mjs\n"
+  }
+}
