@@ -55,7 +55,7 @@ Derive an optional scope from repository policy and established history. Do not 
 1. Record the starting branch and `HEAD`, then inspect `git status --porcelain=v2 --branch` and the current index.
 2. Select the intended paths or hunks explicitly. Avoid broad staging when unrelated changes exist.
 3. Inspect `git diff --cached --name-status` and the staged diff before committing. The staged delta must match the requested change.
-4. Preserve unrelated staged, unstaged, and untracked work. Do not reset, restore, clean, or stash it merely to obtain a clean status.
+4. Preserve unrelated staged changes, unstaged edits, and untracked files.
 5. Include tracked generated or synchronized artifacts when repository policy, source/generated parity, release behavior, or the requested change requires them. Exclude dependencies, caches, and incidental build output unless they are intentionally tracked and required.
 6. Split commits when changes have independent purposes, rollback boundaries, or validation evidence. Do not split mechanically by file class when the files jointly implement one outcome.
 7. Run the applicable repository checks unless the operator explicitly accepts the gap.

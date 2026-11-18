@@ -1,0 +1,202 @@
+{
+  "method": "Fresh independent Codex exec sessions; model, reasoning, feature flag and sandbox are verified in launch argv; no back-end attestation. Neutral per-run directories. Observer checks full Git paths and git-remote location in each fresh project before the model starts. Shared host filesystem permits reads, so access claims concern visible operations. Normal Git configuration resolution is part of the common environment. The selected rule is partially repeated in the unchanged skill and host guidance. The same frozen criteria and cases are used for all roles.",
+  "baseline_archive_sha256": "eb7bc521b8d914c19d7d762401f1eaa03dfa972adc80ec95ec19c0afaab41ae8",
+  "frozen_inputs_manifest_sha256": "1b2e4b3d0c73b83f291fbbc3dda9375273c4f25973bbe5c2380d72e6ef0458bf",
+  "result_git_archive": {
+    "name": "result-git.tar.gz",
+    "size_bytes": 64530,
+    "sha256": "8d187b507a239a795f8f93c4d3246a3dfc91d9bddd138ee37048794cbcc9bbd6",
+    "all_9_independent_readbacks_equal_observer": true
+  },
+  "trials": {
+    "12cd7e": {
+      "variant": "A",
+      "case": "boundary",
+      "configured_model": "gpt-6.2-sol",
+      "configured_reasoning": "medium",
+      "cli_memory_flag": [
+        "--disable",
+        "memories"
+      ],
+      "sandbox": "workspace-write",
+      "ephemeral": true,
+      "command_events": 6,
+      "source_event_stream_sha256": "2b8127a86c480133f968b436745bde24ccffd2c70db2064a2f4c06f5c2bc3d41",
+      "source_dispatch_sha256": "8946ee7bae3fe9e316ca1937ec7db9fa333b71dd9dec66239b66e6bc4ead1162",
+      "source_answer_sha256": "f4ee9f130c36b00133a675489d7980382915754a8c1c98f44f828e5cbf342971",
+      "source_observer_sha256": "ece4391ac157b9352cf024c4f038da5cae5b71a562fc90540404255a41d29e93",
+      "created_commit": "2b027d7e04ed81b42c485ad576e6a1492e310048",
+      "generic_changed_files": [],
+      "local_skill_read_issued": true,
+      "substantive_operations": "see the complete public operation trace in results/12cd7e.json"
+    },
+    "38dc7d": {
+      "variant": "A",
+      "case": "ordinary",
+      "configured_model": "gpt-6.2-sol",
+      "configured_reasoning": "medium",
+      "cli_memory_flag": [
+        "--disable",
+        "memories"
+      ],
+      "sandbox": "workspace-write",
+      "ephemeral": true,
+      "command_events": 6,
+      "source_event_stream_sha256": "39e5279a13418b3d24c15b858cfe5305c9672fb71411250703bae9b8eaf083c0",
+      "source_dispatch_sha256": "b5495693134476fbcfd8464c8a54618f90ec05112bba1b9a7d68041a38158c95",
+      "source_answer_sha256": "5bab44de5c5597b6e2884176d341368520a85abcc7459e8880ee360eb9de69bc",
+      "source_observer_sha256": "f99e3a792f6c8efbd29e658d11b236fa54633e45deda54d66a83b99b7e710f1b",
+      "created_commit": "65b71a43e49d0322d10d7569705494002ee504b1",
+      "generic_changed_files": [],
+      "local_skill_read_issued": true,
+      "substantive_operations": "see the complete public operation trace in results/38dc7d.json"
+    },
+    "45f425": {
+      "variant": "Release",
+      "case": "holdout",
+      "configured_model": "gpt-6.2-sol",
+      "configured_reasoning": "medium",
+      "cli_memory_flag": [
+        "--disable",
+        "memories"
+      ],
+      "sandbox": "workspace-write",
+      "ephemeral": true,
+      "command_events": 7,
+      "source_event_stream_sha256": "be81f9f120156b8227433ad8e09cd50a833cff7350a9e17b39e558ec504d9f7a",
+      "source_dispatch_sha256": "a86554d3c49911eba7cef75c3d71c10dda9c649c4642e1b436a5e4286cddc077",
+      "source_answer_sha256": "5638f15a7b93f7f8b2e4eb2f8363479a9961af28f5b8e6d9a6f6056f4b34878d",
+      "source_observer_sha256": "6611d02544e8e5fcd640e5df75164479b90a4c6b7b727740ab89d172a4d19257",
+      "created_commit": "197f3b14ff2ab53f7a786f285c995987932195df",
+      "generic_changed_files": [],
+      "local_skill_read_issued": true,
+      "substantive_operations": "see the complete public operation trace in results/45f425.json"
+    },
+    "4ad449": {
+      "variant": "A",
+      "case": "holdout",
+      "configured_model": "gpt-6.2-sol",
+      "configured_reasoning": "medium",
+      "cli_memory_flag": [
+        "--disable",
+        "memories"
+      ],
+      "sandbox": "workspace-write",
+      "ephemeral": true,
+      "command_events": 5,
+      "source_event_stream_sha256": "c776483b28e92222c83d7f16ba535bba5b938d5d4d14cb48e5af000752eb26b9",
+      "source_dispatch_sha256": "395b0c1153ea8c4fed0c6aa7f07d332b20fa06a42434cb516332cd6ca01dfe41",
+      "source_answer_sha256": "7c8521c63e632ebf518d346a94af71f609bcb27f5fc5987e424ded40c515f9f7",
+      "source_observer_sha256": "b006e89cbafe698cb364ae5713f89b7aca25c24eaca9e8222ce95de67eef6cab",
+      "created_commit": "adcb02d7ee7da9a758b2747df0ad947a23825b6d",
+      "generic_changed_files": [],
+      "local_skill_read_issued": true,
+      "substantive_operations": "see the complete public operation trace in results/4ad449.json"
+    },
+    "4f4021": {
+      "variant": "B",
+      "case": "boundary",
+      "configured_model": "gpt-6.2-sol",
+      "configured_reasoning": "medium",
+      "cli_memory_flag": [
+        "--disable",
+        "memories"
+      ],
+      "sandbox": "workspace-write",
+      "ephemeral": true,
+      "command_events": 6,
+      "source_event_stream_sha256": "4eff4b63661107201c46edfffea8690721d6d0e99b1ef7c3d00572159244c6c5",
+      "source_dispatch_sha256": "1f74bf8a5f276c0f1ff2d4c5cb937a3fe647893e5a538ba40708d1a258b3e49d",
+      "source_answer_sha256": "b177a802493d847c491c86a615cf5ea37c33679d1b039139eda1d1b144864828",
+      "source_observer_sha256": "e0189039052bfb26a31b4461d5e6f0b95e46419c7d1f0d9d6600e18f411f8b69",
+      "created_commit": "8b347bb4e8983ae972799564f4122c3eac2868e0",
+      "generic_changed_files": [],
+      "local_skill_read_issued": true,
+      "substantive_operations": "see the complete public operation trace in results/4f4021.json"
+    },
+    "5b42ec": {
+      "variant": "C",
+      "case": "holdout",
+      "configured_model": "gpt-6.2-sol",
+      "configured_reasoning": "medium",
+      "cli_memory_flag": [
+        "--disable",
+        "memories"
+      ],
+      "sandbox": "workspace-write",
+      "ephemeral": true,
+      "command_events": 8,
+      "source_event_stream_sha256": "d7d9ae4de487b4df248bdd7d69e71d8f2d0131272d198d504ee7d5dce33bcc65",
+      "source_dispatch_sha256": "1ed9138e4ab85899a4ff2a5e3996af2318a29cbb7c4223e28b7fd84a8beedbd6",
+      "source_answer_sha256": "94d3cc79d38945007a1d6d31f6957e87c0ac71f469597bc151e578d590e1aa87",
+      "source_observer_sha256": "31cc2b0fc6afa1c194cc41e004d807dff97c835d08b2df4fb93d6ad2a019f743",
+      "created_commit": "1a3c175ce1f7db240cd1768fb4436f544eb41d46",
+      "generic_changed_files": [],
+      "local_skill_read_issued": true,
+      "substantive_operations": "see the complete public operation trace in results/5b42ec.json"
+    },
+    "a72a32": {
+      "variant": "C",
+      "case": "ordinary",
+      "configured_model": "gpt-6.2-sol",
+      "configured_reasoning": "medium",
+      "cli_memory_flag": [
+        "--disable",
+        "memories"
+      ],
+      "sandbox": "workspace-write",
+      "ephemeral": true,
+      "command_events": 9,
+      "source_event_stream_sha256": "39406d45aaac945e85386b4c7f65ae5f602bf3bf4fbd02e1aec1cc83c3499235",
+      "source_dispatch_sha256": "5c57591e87fa69695846873361e95aafc5e428797824994eb3f314a37f1395e1",
+      "source_answer_sha256": "41e6c7cf949eee65370bd25cfa36d3dde048114729658e65304284f7fb450bb5",
+      "source_observer_sha256": "02fd4db58605938a0183861b102245aaf6eb5d5fd972786023a54797aabd9f9b",
+      "created_commit": "7fb7470c8e23fe2df1ffe1244947c6a33ec3349c",
+      "generic_changed_files": [],
+      "local_skill_read_issued": true,
+      "substantive_operations": "see the complete public operation trace in results/a72a32.json"
+    },
+    "ae3820": {
+      "variant": "C",
+      "case": "boundary",
+      "configured_model": "gpt-6.2-sol",
+      "configured_reasoning": "medium",
+      "cli_memory_flag": [
+        "--disable",
+        "memories"
+      ],
+      "sandbox": "workspace-write",
+      "ephemeral": true,
+      "command_events": 8,
+      "source_event_stream_sha256": "88ba72de6ccd69aca8d37673d24ac6b942a7544e3f3d9abd2fdd6abc47370851",
+      "source_dispatch_sha256": "f2c5f0759de1f9fc3f78144caba4d263b69cca0bef2ecb68eb6a0ccfcd539264",
+      "source_answer_sha256": "75da6eccec3d3c50246e590bc2a9341dec6082466deb11d4dabf759d8e3d0414",
+      "source_observer_sha256": "1e0f3e75e89dd52b6851a17b37b882728cc855ff7d7acf176795decd733b14a0",
+      "created_commit": "e78d7b2132f65a6a88c0924c83e4e0bff034de26",
+      "generic_changed_files": [],
+      "local_skill_read_issued": true,
+      "substantive_operations": "see the complete public operation trace in results/ae3820.json"
+    },
+    "eaec82": {
+      "variant": "B",
+      "case": "ordinary",
+      "configured_model": "gpt-6.2-sol",
+      "configured_reasoning": "medium",
+      "cli_memory_flag": [
+        "--disable",
+        "memories"
+      ],
+      "sandbox": "workspace-write",
+      "ephemeral": true,
+      "command_events": 10,
+      "source_event_stream_sha256": "85dc3997738ca2cbf21390eced421bf9674f5f5e0e5d2b41d6a5f3bbfbb5531b",
+      "source_dispatch_sha256": "752a61cbc7cd7fc7626d598c3240a6d8af6467906fcde3e68830251a91fb4861",
+      "source_answer_sha256": "476f210c89d29f01a0b3eaf5d16fb2ee7dd96d3317cfed7c5f552123e8224f27",
+      "source_observer_sha256": "afb75383f78dfe22068d65cb1c8492533d197101889b803bb00c69188b744dcc",
+      "created_commit": "5a2410bd76887317b65b1beb05c788ff0c12f097",
+      "generic_changed_files": [],
+      "local_skill_read_issued": true,
+      "substantive_operations": "see the complete public operation trace in results/eaec82.json"
+    }
+  }
+}

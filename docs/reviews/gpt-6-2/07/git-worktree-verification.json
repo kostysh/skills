@@ -1,0 +1,301 @@
+{
+  "date": "2026-11-18",
+  "isolated": true,
+  "worktree_claims": "Real Git 2.53.0. Named existing branch rejected by -b, named new branch and linked worktree created, separate dirty worktree preserved, clean linked worktree moved, main move refused. -B semantics and linked worktrees containing submodules are checked against CLI/manual only.",
+  "git_help_and_operations": [
+    {
+      "cwd": "desk",
+      "argv": [
+        "git",
+        "--version"
+      ],
+      "exit": 0,
+      "output": "git version 2.53.0"
+    },
+    {
+      "cwd": "desk",
+      "argv": [
+        "git",
+        "init",
+        "--quiet",
+        "--template=",
+        "--initial-branch=trunk"
+      ],
+      "exit": 0,
+      "output": ""
+    },
+    {
+      "cwd": "desk",
+      "argv": [
+        "git",
+        "worktree",
+        "add",
+        "-h"
+      ],
+      "exit": 129,
+      "output": "usage: git worktree add [-f] [--detach] [--checkout] [--lock [--reason <string>]]\n                        [--orphan] [(-b | -B) <new-branch>] <path> [<commit-ish>]\n\n    -f, --[no-]force      checkout <branch> even if already checked out in other worktree\n    -b <branch>           create a new branch\n    -B <branch>           create or reset a branch\n    --[no-]orphan         create unborn branch\n    -d, --[no-]detach     detach HEAD at named commit\n    --[no-]checkout       populate the new working tree\n    --[no-]lock           keep the new working tree locked\n    --[no-]reason <string>\n                          reason for locking\n    -q, --[no-]quiet      suppress progress reporting\n    --[no-]track          set up tracking mode (see git-branch(1))\n    --[no-]guess-remote   try to match the new branch name with a remote-tracking branch\n    --[no-]relative-paths use relative paths for worktrees"
+    },
+    {
+      "cwd": "desk",
+      "argv": [
+        "git",
+        "worktree",
+        "list",
+        "-h"
+      ],
+      "exit": 129,
+      "output": "usage: git worktree list [-v | --porcelain [-z]]\n\n    --[no-]porcelain      machine-readable output\n    -v, --[no-]verbose    show extended annotations and reasons, if available\n    --[no-]expire <expiry-date>\n                          add 'prunable' annotation to worktrees older than <time>\n    -z                    terminate records with a NUL character"
+    },
+    {
+      "cwd": "desk",
+      "argv": [
+        "git",
+        "worktree",
+        "move",
+        "-h"
+      ],
+      "exit": 129,
+      "output": "usage: git worktree move <worktree> <new-path>\n\n    -f, --[no-]force      force move even if worktree is dirty or locked\n    --[no-]relative-paths use relative paths for worktrees"
+    },
+    {
+      "cwd": "desk",
+      "argv": [
+        "git",
+        "commit",
+        "-h"
+      ],
+      "exit": 129,
+      "output": "usage: git commit [-a | --interactive | --patch] [-s] [-v] [-u[<mode>]] [--amend]\n                  [--dry-run] [(-c | -C | --squash) <commit> | --fixup [(amend|reword):]<commit>]\n                  [-F <file> | -m <msg>] [--reset-author] [--allow-empty]\n                  [--allow-empty-message] [--no-verify] [-e] [--author=<author>]\n                  [--date=<date>] [--cleanup=<mode>] [--[no-]status]\n                  [-i | -o] [--pathspec-from-file=<file> [--pathspec-file-nul]]\n                  [(--trailer <token>[(=|:)<value>])...] [-S[<keyid>]]\n                  [--] [<pathspec>...]\n\n    -q, --[no-]quiet      suppress summary after successful commit\n    -v, --[no-]verbose    show diff in commit message template\n\nCommit message options\n    -F, --[no-]file <file>\n                          read message from file\n    --[no-]author <author>\n                          override author for commit\n    --[no-]date <date>    override date for commit\n    -m, --[no-]message <message>\n                          commit message\n    -c, --[no-]reedit-message <commit>\n                          reuse and edit message from specified commit\n    -C, --[no-]reuse-message <commit>\n                          reuse message from specified commit\n    --[no-]fixup [(amend|reword):]commit\n                          use autosquash formatted message to fixup or amend/reword specified commit\n    --[no-]squash <commit>\n                          use autosquash formatted message to squash specified commit\n    --[no-]reset-author   the commit is authored by me now (used with -C/-c/--amend)\n    --trailer <trailer>   add custom trailer(s)\n    -s, --[no-]signoff    add a Signed-off-by trailer\n    -t, --[no-]template <file>\n                          use specified template file\n    -e, --[no-]edit       force edit of commit\n    --[no-]cleanup <mode> how to strip spaces and #comments from message\n    --[no-]status         include status in commit message template\n    -S, --[no-]gpg-sign[=<key-id>]\n                          GPG sign commit\n\nCommit contents options\n    -a, --[no-]all        commit all changed files\n    -i, --[no-]include    add specified files to index for commit\n    --[no-]interactive    interactively add files\n    -p, --[no-]patch      interactively add changes\n    -U, --unified <n>     generate diffs with <n> lines context\n    --inter-hunk-context <n>\n                          show context between diff hunks up to the specified number of lines\n    -o, --[no-]only       commit only specified files\n    -n, --no-verify       bypass pre-commit and commit-msg hooks\n    --verify              opposite of --no-verify\n    --[no-]dry-run        show what would be committed\n    --[no-]short          show status concisely\n    --[no-]branch         show branch information\n    --[no-]ahead-behind   compute full ahead/behind values\n    --[no-]porcelain      machine-readable output\n    --[no-]long           show status in long format (default)\n    -z, --[no-]null       terminate entries with NUL\n    --[no-]amend          amend previous commit\n    --no-post-rewrite     bypass post-rewrite hook\n    --post-rewrite        opposite of --no-post-rewrite\n    -u, --[no-]untracked-files[=<mode>]\n                          show untracked files, optional modes: all, normal, no. (Default: all)\n    --[no-]pathspec-from-file <file>\n                          read pathspec from file\n    --[no-]pathspec-file-nul\n                          with --pathspec-from-file, pathspec elements are separated with NUL character"
+    },
+    {
+      "cwd": "desk",
+      "argv": [
+        "git",
+        "config",
+        "user.name",
+        "Fixture Editor"
+      ],
+      "exit": 0,
+      "output": ""
+    },
+    {
+      "cwd": "desk",
+      "argv": [
+        "git",
+        "config",
+        "user.email",
+        "editor@example.invalid"
+      ],
+      "exit": 0,
+      "output": ""
+    },
+    {
+      "cwd": "desk",
+      "argv": [
+        "git",
+        "config",
+        "commit.gpgsign",
+        "false"
+      ],
+      "exit": 0,
+      "output": ""
+    },
+    {
+      "cwd": "desk",
+      "argv": [
+        "git",
+        "add",
+        "--",
+        ".gitignore",
+        "notes"
+      ],
+      "exit": 0,
+      "output": ""
+    },
+    {
+      "cwd": "desk",
+      "argv": [
+        "git",
+        "commit",
+        "--quiet",
+        "-m",
+        "docs: 📝 open handbook"
+      ],
+      "exit": 0,
+      "output": ""
+    },
+    {
+      "cwd": "desk",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit": 0,
+      "output": "b3771f57b2d341a9561cc84dee0411758f31824b"
+    },
+    {
+      "cwd": "desk",
+      "argv": [
+        "git",
+        "check-ignore",
+        ".worktrees"
+      ],
+      "exit": 0,
+      "output": ".worktrees"
+    },
+    {
+      "cwd": "desk",
+      "argv": [
+        "git",
+        "worktree",
+        "add",
+        ".worktrees/editorial",
+        "-b",
+        "editorial",
+        "trunk"
+      ],
+      "exit": 0,
+      "output": "Preparing worktree (new branch 'editorial')\nHEAD is now at b3771f5 docs: 📝 open handbook"
+    },
+    {
+      "cwd": "desk/.worktrees/editorial",
+      "argv": [
+        "git",
+        "status",
+        "--porcelain=v2",
+        "--branch"
+      ],
+      "exit": 0,
+      "output": "# branch.oid b3771f57b2d341a9561cc84dee0411758f31824b\n# branch.head editorial\n1 .M N... 100644 100644 100644 5762c898d8ddba75afbf884e696fe01bc50485a5 5762c898d8ddba75afbf884e696fe01bc50485a5 notes"
+    },
+    {
+      "cwd": "desk",
+      "argv": [
+        "git",
+        "rev-parse",
+        "refs/heads/editorial"
+      ],
+      "exit": 0,
+      "output": "b3771f57b2d341a9561cc84dee0411758f31824b"
+    },
+    {
+      "cwd": "desk",
+      "argv": [
+        "git",
+        "worktree",
+        "list",
+        "--porcelain",
+        "-z"
+      ],
+      "exit": 0,
+      "output": "worktree (project)/desk\u0000HEAD b3771f57b2d341a9561cc84dee0411758f31824b\u0000branch refs/heads/trunk\u0000\u0000worktree (project)/desk/.worktrees/editorial\u0000HEAD b3771f57b2d341a9561cc84dee0411758f31824b\u0000branch refs/heads/editorial\u0000\u0000"
+    },
+    {
+      "cwd": "desk",
+      "argv": [
+        "git",
+        "worktree",
+        "add",
+        "-b",
+        "editorial",
+        ".worktrees/existing",
+        "trunk"
+      ],
+      "exit": 255,
+      "output": "Preparing worktree (new branch 'editorial')\nfatal: a branch named 'editorial' already exists"
+    },
+    {
+      "cwd": "desk",
+      "argv": [
+        "git",
+        "rev-parse",
+        "refs/heads/editorial"
+      ],
+      "exit": 0,
+      "output": "b3771f57b2d341a9561cc84dee0411758f31824b"
+    },
+    {
+      "cwd": "desk",
+      "argv": [
+        "git",
+        "worktree",
+        "add",
+        "--quiet",
+        "--relative-paths",
+        "-b",
+        "transfer",
+        ".worktrees/clean",
+        "trunk"
+      ],
+      "exit": 0,
+      "output": ""
+    },
+    {
+      "cwd": "desk",
+      "argv": [
+        "git",
+        "worktree",
+        "move",
+        ".worktrees/clean",
+        ".worktrees/moved"
+      ],
+      "exit": 0,
+      "output": ""
+    },
+    {
+      "cwd": "desk/.worktrees/moved",
+      "argv": [
+        "git",
+        "branch",
+        "--show-current"
+      ],
+      "exit": 0,
+      "output": "transfer"
+    },
+    {
+      "cwd": "desk/.worktrees/moved",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit": 0,
+      "output": "b3771f57b2d341a9561cc84dee0411758f31824b"
+    },
+    {
+      "cwd": "desk/.worktrees/moved",
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "exit": 0,
+      "output": ""
+    },
+    {
+      "cwd": "desk",
+      "argv": [
+        "git",
+        "worktree",
+        "list",
+        "--porcelain",
+        "-z"
+      ],
+      "exit": 0,
+      "output": "worktree (project)/desk\u0000HEAD b3771f57b2d341a9561cc84dee0411758f31824b\u0000branch refs/heads/trunk\u0000\u0000worktree (project)/desk/.worktrees/editorial\u0000HEAD b3771f57b2d341a9561cc84dee0411758f31824b\u0000branch refs/heads/editorial\u0000\u0000worktree (project)/desk/.worktrees/moved\u0000HEAD b3771f57b2d341a9561cc84dee0411758f31824b\u0000branch refs/heads/transfer\u0000\u0000"
+    },
+    {
+      "cwd": "desk",
+      "argv": [
+        "git",
+        "worktree",
+        "move",
+        ".",
+        "../desk-moved"
+      ],
+      "exit": 128,
+      "output": "fatal: '.' is a main working tree"
+    }
+  ]
+}

@@ -1,0 +1,567 @@
+{
+  "variant": "A",
+  "case": "holdout",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПримени выданный скил из tooling/git-engineer/SKILL.md. Для проекта «Вечерний выпуск» создай один локальный коммит в ветке `editions/night`. В него должна войти подготовленная в индексе редакция `guide/night.md`. Следующее предложение в рабочем файле оставили для будущего выпуска. Другие материалы относятся к соседней редакторской работе. Сообщи, какой коммит получился.\n",
+  "input_file_sha256": {
+    "annex/README.md": "cb8cdb92118b2df2b52bba248af5ba09ffed923614c34be23a2f654b733b1d28",
+    "annex/copydesk.md": "e1b246ea06f148d9f572f9ee4ede2115c31c94a4619fc51f7fae6cf1719bcd20",
+    "annex/desk-card.tmp": "768c895204dc477ee139d40a59150ed8090bb802b79e5e0bf9d21169a81ae5b6",
+    "annex/edition.txt": "a274a60dd7a18e3c54dab15941811cafc1dfdfd792e24b7e5d8775b361190e50",
+    "annex/guide/desk.md": "9b201a3fcb3eb7981971bf7a5b5fd00bafe9e4f4205ba1b2f069171bbba86c82",
+    "annex/guide/night.md": "462c6c6e3c80331bdda28d0b4eeaa31266866c76dc1c13c301010b66cb5208e1",
+    "annex/guide/transfers.md": "b30d151de5866aaea92415184038a0e6739760239a307f0a8a3b6d796f54bffe",
+    "desk/README.md": "cb8cdb92118b2df2b52bba248af5ba09ffed923614c34be23a2f654b733b1d28",
+    "desk/copydesk.md": "dafc433a3de2a3c86f33bf1fc0a35337a46491fc25b6885e1e6840841ba92689",
+    "desk/guide/desk.md": "9b201a3fcb3eb7981971bf7a5b5fd00bafe9e4f4205ba1b2f069171bbba86c82",
+    "desk/guide/night.md": "030b6e5e955e62fa2c0cb7e0d7091dbc82d842180a033b5c7e74722cce0417a0",
+    "desk/guide/transfers.md": "b30d151de5866aaea92415184038a0e6739760239a307f0a8a3b6d796f54bffe",
+    "desk/margin.tmp": "f5dce139fe151b1c57945d06e5c1f93b689bc4c9b7d2e20051ac17978154a04d",
+    "tooling/git-engineer/SKILL.md": "3d6503387ad0cb8ade3d50d6d4b317d7f37e6cc1a7cff14e8beefad02b06ecc7",
+    "tooling/git-engineer/agents/openai.yaml": "004eb840aa4b557d7ec581f040ab0a76b6d2c16037ab02e1d9b42d2adba3a354",
+    "tooling/git-engineer/references/worktrees.md": "23868090f2f37c07a94acf8cb48cef068888e2b980b24d402d8096a42b2a240c"
+  },
+  "raw_events_sha256": "c776483b28e92222c83d7f16ba535bba5b938d5d4d14cb48e5af000752eb26b9",
+  "raw_events_bytes": 36124,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Применю скил `git-engineer` из текущего каталога. Сначала проверю ветку и индекс, чтобы в коммит вошла только подготовленная редакция `guide/night.md`."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"pwd; git status --short --branch; rg --files --hidden -g AGENTS.md -g SKILL.md -g '\"'!.git'\"'; cat tooling/git-engineer/SKILL.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"ls -la; rg --files --hidden -g '\"'!.git/**'\"' -g '\"'!tooling/**'\"' | head -100; find . -name .git -print\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat desk/README.md annex/README.md annex/.git\nfor repo in desk annex mirror; do\n  git -C \"$repo\" rev-parse --show-toplevel --absolute-git-dir --is-bare-repository\n  GIT_OPTIONAL_LOCKS=0 git -C \"$repo\" status --porcelain=v2 --branch\n  git -C \"$repo\" log -4 --format='\"'%h %s'\n  git -C \\\"\"'$repo\" remote -v\ndone\nrg --files --hidden -g '\"'AGENTS.md' -g 'CONTRIBUTING*' -g '\"'!**/.git/**'\"'\ngit -C desk config --local --list --show-origin\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'git -C desk worktree list --porcelain\ngit -C desk branch -vv\ngit -C desk diff --cached --no-ext-diff\ngit -C desk diff --no-ext-diff -- guide/night.md copydesk.md\ngit -C desk diff --cached --check -- guide/night.md\ngit -C desk config --show-origin --get core.hooksPath\nls -la desk/.git/hooks desk/.git\nls -ld desk/.git/objects desk/.git/refs/heads/editions\ncat annex/edition.txt\ngit -C desk ls-files --stage\ngit -C annex ls-files --stage'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Ветка `editions/night` открыта в `desk`. В её индексе также есть правка `copydesk.md`. Для коммита использую временный индекс с подготовленной версией `guide/night.md`, чтобы сохранить обе редакторские работы."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'set -eu\nexport GIT_OPTIONAL_LOCKS=0\nfor marker in MERGE_HEAD CHERRY_PICK_HEAD REVERT_HEAD rebase-apply rebase-merge sequencer; do\n  test ! -e \"$(git rev-parse --git-path \"$marker\")\"\ndone\nstarting_head=$(git rev-parse HEAD)\ntest \"$starting_head\" = d104213f763c3494df0ad2b5af9364e270f4cf75\ntest \"$(git symbolic-ref HEAD)\" = refs/heads/editions/night\nnight_blob=$(git rev-parse :guide/night.md)\ntest \"$night_blob\" = 57aa62ce4db99308d50aea9da0286f18a1a380f2\npreserved_files() {\n  sha256sum .git/index .git/worktrees/annex/index guide/night.md copydesk.md margin.tmp ../annex/guide/night.md ../annex/copydesk.md ../annex/desk-card.tmp\n  git for-each-ref --format='\"'%(refname) %(objectname)' refs/heads/copydesk refs/heads/trunk refs/remotes\n}\nbefore=\"'$(preserved_files)\ntemp_dir=$(mktemp -d \"$PWD/.night-commit.XXXXXXXX\")\ncleanup() {\n  if test -f \"$temp_dir/index\"; then unlink \"$temp_dir/index\"; fi\n  rmdir \"$temp_dir\"\n}\ntrap cleanup EXIT\n(\n  export GIT_INDEX_FILE=\"$temp_dir/index\"\n  git read-tree \"$starting_head\"\n  git update-index --cacheinfo \"100644,$night_blob,guide/night.md\"\n  test \"$(git diff --cached --name-only)\" = guide/night.md\n  git diff --cached --check\n  git commit -m '\"'docs: 📝 update the evening desk location'\n)\ncleanup\ntrap - EXIT\ntest \\\"\"'$(preserved_files)\" = \"$before\"\ntest \"$(git symbolic-ref HEAD)\" = refs/heads/editions/night\ntest \"$(git rev-parse HEAD''^)\" = \"$starting_head\"\ntest \"$(git rev-parse HEAD:guide/night.md)\" = \"$night_blob\"\ntest \"$(git diff-tree --no-commit-id --name-only -r HEAD)\" = guide/night.md\ngit show --format=fuller --name-status HEAD\ngit status --short --branch\ngit -C ../annex status --short --branch'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "В ветке `editions/night` создан и проверен один локальный коммит `adcb02d7ee7da9a758b2747df0ad947a23825b6d` — `docs: 📝 update the evening desk location`.\n\nВ коммит вошла только подготовленная в индексе редакция `guide/night.md`. Предложение для будущего выпуска осталось в рабочем файле. Соседние редакторские изменения сохранены.\n\nСтатус — `verified`."
+    }
+  ],
+  "changed_file_contents": {},
+  "final_response": "В ветке `editions/night` создан и проверен один локальный коммит `adcb02d7ee7da9a758b2747df0ad947a23825b6d` — `docs: 📝 update the evening desk location`.\n\nВ коммит вошла только подготовленная в индексе редакция `guide/night.md`. Предложение для будущего выпуска осталось в рабочем файле. Соседние редакторские изменения сохранены.\n\nСтатус — `verified`.",
+  "input_file_modes": {
+    "annex/README.md": "0664",
+    "annex/copydesk.md": "0664",
+    "annex/desk-card.tmp": "0664",
+    "annex/edition.txt": "0664",
+    "annex/guide/desk.md": "0664",
+    "annex/guide/night.md": "0664",
+    "annex/guide/transfers.md": "0664",
+    "desk/README.md": "0664",
+    "desk/copydesk.md": "0664",
+    "desk/guide/desk.md": "0664",
+    "desk/guide/night.md": "0664",
+    "desk/guide/transfers.md": "0664",
+    "desk/margin.tmp": "0664",
+    "tooling/git-engineer/SKILL.md": "0644",
+    "tooling/git-engineer/agents/openai.yaml": "0644",
+    "tooling/git-engineer/references/worktrees.md": "0644"
+  },
+  "changed_file_modes": {},
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "method": "GIT_OPTIONAL_LOCKS=0; freshly read both worktrees, branch refs and local bare remote. Before equals independent original. Physical paths are reported relative to the new project. The file contents and actor names are synthetic.",
+    "before": {
+      "git": "git version 2.53.0",
+      "remote_refs": {
+        "refs/heads/copydesk/updates": "1ac6544f1638d9ad955249831d7b0138a7e56753",
+        "refs/heads/editions/night": "d104213f763c3494df0ad2b5af9364e270f4cf75",
+        "refs/heads/trunk": "d104213f763c3494df0ad2b5af9364e270f4cf75"
+      },
+      "local_refs": {
+        "refs/heads/copydesk/updates": "1ac6544f1638d9ad955249831d7b0138a7e56753",
+        "refs/heads/editions/night": "d104213f763c3494df0ad2b5af9364e270f4cf75",
+        "refs/heads/trunk": "d104213f763c3494df0ad2b5af9364e270f4cf75",
+        "refs/remotes/origin/copydesk/updates": "1ac6544f1638d9ad955249831d7b0138a7e56753",
+        "refs/remotes/origin/editions/night": "d104213f763c3494df0ad2b5af9364e270f4cf75",
+        "refs/remotes/origin/trunk": "d104213f763c3494df0ad2b5af9364e270f4cf75"
+      },
+      "checkout": {
+        "desk": {
+          "branch": "refs/heads/editions/night",
+          "head": "d104213f763c3494df0ad2b5af9364e270f4cf75",
+          "parents": [],
+          "head_tree": {
+            "README.md": {
+              "mode": "100644",
+              "oid": "039a0cc5c029680003b713c8cb73eedf06fc386a"
+            },
+            "copydesk.md": {
+              "mode": "100644",
+              "oid": "b3db8b0c143682787ecdf959cc4f81c66a1e6ca9"
+            },
+            "guide/desk.md": {
+              "mode": "100644",
+              "oid": "cffc22ab8ece7cca9690ce888ea12813eccd4c24"
+            },
+            "guide/night.md": {
+              "mode": "100644",
+              "oid": "d4cd431b31f41cb38ae46c023b6bd7943fc0a9ba"
+            },
+            "guide/transfers.md": {
+              "mode": "100644",
+              "oid": "4ae85323cddab67aa66b28fae23e29cde0007130"
+            }
+          },
+          "index": {
+            "README.md": {
+              "mode": "100644",
+              "oid": "039a0cc5c029680003b713c8cb73eedf06fc386a",
+              "stage": "0"
+            },
+            "copydesk.md": {
+              "mode": "100644",
+              "oid": "4c5e196170b571cfe275d7647c28a877f77b3d34",
+              "stage": "0"
+            },
+            "guide/desk.md": {
+              "mode": "100644",
+              "oid": "cffc22ab8ece7cca9690ce888ea12813eccd4c24",
+              "stage": "0"
+            },
+            "guide/night.md": {
+              "mode": "100644",
+              "oid": "57aa62ce4db99308d50aea9da0286f18a1a380f2",
+              "stage": "0"
+            },
+            "guide/transfers.md": {
+              "mode": "100644",
+              "oid": "4ae85323cddab67aa66b28fae23e29cde0007130",
+              "stage": "0"
+            }
+          },
+          "files": {
+            "README.md": {
+              "mode": "0664",
+              "oid": "039a0cc5c029680003b713c8cb73eedf06fc386a",
+              "sha256": "cb8cdb92118b2df2b52bba248af5ba09ffed923614c34be23a2f654b733b1d28"
+            },
+            "copydesk.md": {
+              "mode": "0664",
+              "oid": "2591ac060d545d80fff768c8907db59c48fc3033",
+              "sha256": "dafc433a3de2a3c86f33bf1fc0a35337a46491fc25b6885e1e6840841ba92689"
+            },
+            "guide/desk.md": {
+              "mode": "0664",
+              "oid": "cffc22ab8ece7cca9690ce888ea12813eccd4c24",
+              "sha256": "9b201a3fcb3eb7981971bf7a5b5fd00bafe9e4f4205ba1b2f069171bbba86c82"
+            },
+            "guide/night.md": {
+              "mode": "0664",
+              "oid": "0693746b511ca9230005f2968749a9cf8bc47397",
+              "sha256": "030b6e5e955e62fa2c0cb7e0d7091dbc82d842180a033b5c7e74722cce0417a0"
+            },
+            "guide/transfers.md": {
+              "mode": "0664",
+              "oid": "4ae85323cddab67aa66b28fae23e29cde0007130",
+              "sha256": "b30d151de5866aaea92415184038a0e6739760239a307f0a8a3b6d796f54bffe"
+            },
+            "margin.tmp": {
+              "mode": "0664",
+              "oid": "3f21083a08f4d594534e895794ffc39f48f29c2d",
+              "sha256": "f5dce139fe151b1c57945d06e5c1f93b689bc4c9b7d2e20051ac17978154a04d"
+            }
+          },
+          "status": [
+            "MM copydesk.md",
+            "MM guide/night.md",
+            "?? margin.tmp"
+          ],
+          "git_dir": "desk/.git",
+          "git_common_dir": "desk/.git",
+          "origin": "../mirror/.git",
+          "worktrees": [
+            "annex",
+            "desk"
+          ]
+        },
+        "annex": {
+          "branch": "refs/heads/copydesk/updates",
+          "head": "1ac6544f1638d9ad955249831d7b0138a7e56753",
+          "parents": [
+            "d104213f763c3494df0ad2b5af9364e270f4cf75"
+          ],
+          "head_tree": {
+            "README.md": {
+              "mode": "100644",
+              "oid": "039a0cc5c029680003b713c8cb73eedf06fc386a"
+            },
+            "copydesk.md": {
+              "mode": "100644",
+              "oid": "b3db8b0c143682787ecdf959cc4f81c66a1e6ca9"
+            },
+            "edition.txt": {
+              "mode": "100644",
+              "oid": "9425b8dc6b53d5bbe418ffe94882d25e8bfae3e8"
+            },
+            "guide/desk.md": {
+              "mode": "100644",
+              "oid": "cffc22ab8ece7cca9690ce888ea12813eccd4c24"
+            },
+            "guide/night.md": {
+              "mode": "100644",
+              "oid": "d4cd431b31f41cb38ae46c023b6bd7943fc0a9ba"
+            },
+            "guide/transfers.md": {
+              "mode": "100644",
+              "oid": "4ae85323cddab67aa66b28fae23e29cde0007130"
+            }
+          },
+          "index": {
+            "README.md": {
+              "mode": "100644",
+              "oid": "039a0cc5c029680003b713c8cb73eedf06fc386a",
+              "stage": "0"
+            },
+            "copydesk.md": {
+              "mode": "100644",
+              "oid": "bd2c99b823849f70bb14448c4748aceb30617a05",
+              "stage": "0"
+            },
+            "edition.txt": {
+              "mode": "100644",
+              "oid": "9425b8dc6b53d5bbe418ffe94882d25e8bfae3e8",
+              "stage": "0"
+            },
+            "guide/desk.md": {
+              "mode": "100644",
+              "oid": "cffc22ab8ece7cca9690ce888ea12813eccd4c24",
+              "stage": "0"
+            },
+            "guide/night.md": {
+              "mode": "100644",
+              "oid": "d4cd431b31f41cb38ae46c023b6bd7943fc0a9ba",
+              "stage": "0"
+            },
+            "guide/transfers.md": {
+              "mode": "100644",
+              "oid": "4ae85323cddab67aa66b28fae23e29cde0007130",
+              "stage": "0"
+            }
+          },
+          "files": {
+            "README.md": {
+              "mode": "0664",
+              "oid": "039a0cc5c029680003b713c8cb73eedf06fc386a",
+              "sha256": "cb8cdb92118b2df2b52bba248af5ba09ffed923614c34be23a2f654b733b1d28"
+            },
+            "copydesk.md": {
+              "mode": "0664",
+              "oid": "02f2840a2a60ddcb9a1cbbd696db38ff062812f1",
+              "sha256": "e1b246ea06f148d9f572f9ee4ede2115c31c94a4619fc51f7fae6cf1719bcd20"
+            },
+            "desk-card.tmp": {
+              "mode": "0664",
+              "oid": "62411b302484b933eb6d1aafdc16076fc771ba3e",
+              "sha256": "768c895204dc477ee139d40a59150ed8090bb802b79e5e0bf9d21169a81ae5b6"
+            },
+            "edition.txt": {
+              "mode": "0664",
+              "oid": "9425b8dc6b53d5bbe418ffe94882d25e8bfae3e8",
+              "sha256": "a274a60dd7a18e3c54dab15941811cafc1dfdfd792e24b7e5d8775b361190e50"
+            },
+            "guide/desk.md": {
+              "mode": "0664",
+              "oid": "cffc22ab8ece7cca9690ce888ea12813eccd4c24",
+              "sha256": "9b201a3fcb3eb7981971bf7a5b5fd00bafe9e4f4205ba1b2f069171bbba86c82"
+            },
+            "guide/night.md": {
+              "mode": "0664",
+              "oid": "db617e18cff894cfb2c74e95fccce8920fdd7fb0",
+              "sha256": "462c6c6e3c80331bdda28d0b4eeaa31266866c76dc1c13c301010b66cb5208e1"
+            },
+            "guide/transfers.md": {
+              "mode": "0664",
+              "oid": "4ae85323cddab67aa66b28fae23e29cde0007130",
+              "sha256": "b30d151de5866aaea92415184038a0e6739760239a307f0a8a3b6d796f54bffe"
+            }
+          },
+          "status": [
+            "MM copydesk.md",
+            " M guide/night.md",
+            "?? desk-card.tmp"
+          ],
+          "git_dir": "desk/.git/worktrees/annex",
+          "git_common_dir": "desk/.git",
+          "origin": "../mirror/.git",
+          "worktrees": [
+            "annex",
+            "desk"
+          ]
+        }
+      }
+    },
+    "after": {
+      "git": "git version 2.53.0",
+      "remote_refs": {
+        "refs/heads/copydesk/updates": "1ac6544f1638d9ad955249831d7b0138a7e56753",
+        "refs/heads/editions/night": "d104213f763c3494df0ad2b5af9364e270f4cf75",
+        "refs/heads/trunk": "d104213f763c3494df0ad2b5af9364e270f4cf75"
+      },
+      "local_refs": {
+        "refs/heads/copydesk/updates": "1ac6544f1638d9ad955249831d7b0138a7e56753",
+        "refs/heads/editions/night": "adcb02d7ee7da9a758b2747df0ad947a23825b6d",
+        "refs/heads/trunk": "d104213f763c3494df0ad2b5af9364e270f4cf75",
+        "refs/remotes/origin/copydesk/updates": "1ac6544f1638d9ad955249831d7b0138a7e56753",
+        "refs/remotes/origin/editions/night": "d104213f763c3494df0ad2b5af9364e270f4cf75",
+        "refs/remotes/origin/trunk": "d104213f763c3494df0ad2b5af9364e270f4cf75"
+      },
+      "checkout": {
+        "desk": {
+          "branch": "refs/heads/editions/night",
+          "head": "adcb02d7ee7da9a758b2747df0ad947a23825b6d",
+          "parents": [
+            "d104213f763c3494df0ad2b5af9364e270f4cf75"
+          ],
+          "head_tree": {
+            "README.md": {
+              "mode": "100644",
+              "oid": "039a0cc5c029680003b713c8cb73eedf06fc386a"
+            },
+            "copydesk.md": {
+              "mode": "100644",
+              "oid": "b3db8b0c143682787ecdf959cc4f81c66a1e6ca9"
+            },
+            "guide/desk.md": {
+              "mode": "100644",
+              "oid": "cffc22ab8ece7cca9690ce888ea12813eccd4c24"
+            },
+            "guide/night.md": {
+              "mode": "100644",
+              "oid": "57aa62ce4db99308d50aea9da0286f18a1a380f2"
+            },
+            "guide/transfers.md": {
+              "mode": "100644",
+              "oid": "4ae85323cddab67aa66b28fae23e29cde0007130"
+            }
+          },
+          "index": {
+            "README.md": {
+              "mode": "100644",
+              "oid": "039a0cc5c029680003b713c8cb73eedf06fc386a",
+              "stage": "0"
+            },
+            "copydesk.md": {
+              "mode": "100644",
+              "oid": "4c5e196170b571cfe275d7647c28a877f77b3d34",
+              "stage": "0"
+            },
+            "guide/desk.md": {
+              "mode": "100644",
+              "oid": "cffc22ab8ece7cca9690ce888ea12813eccd4c24",
+              "stage": "0"
+            },
+            "guide/night.md": {
+              "mode": "100644",
+              "oid": "57aa62ce4db99308d50aea9da0286f18a1a380f2",
+              "stage": "0"
+            },
+            "guide/transfers.md": {
+              "mode": "100644",
+              "oid": "4ae85323cddab67aa66b28fae23e29cde0007130",
+              "stage": "0"
+            }
+          },
+          "files": {
+            "README.md": {
+              "mode": "0664",
+              "oid": "039a0cc5c029680003b713c8cb73eedf06fc386a",
+              "sha256": "cb8cdb92118b2df2b52bba248af5ba09ffed923614c34be23a2f654b733b1d28"
+            },
+            "copydesk.md": {
+              "mode": "0664",
+              "oid": "2591ac060d545d80fff768c8907db59c48fc3033",
+              "sha256": "dafc433a3de2a3c86f33bf1fc0a35337a46491fc25b6885e1e6840841ba92689"
+            },
+            "guide/desk.md": {
+              "mode": "0664",
+              "oid": "cffc22ab8ece7cca9690ce888ea12813eccd4c24",
+              "sha256": "9b201a3fcb3eb7981971bf7a5b5fd00bafe9e4f4205ba1b2f069171bbba86c82"
+            },
+            "guide/night.md": {
+              "mode": "0664",
+              "oid": "0693746b511ca9230005f2968749a9cf8bc47397",
+              "sha256": "030b6e5e955e62fa2c0cb7e0d7091dbc82d842180a033b5c7e74722cce0417a0"
+            },
+            "guide/transfers.md": {
+              "mode": "0664",
+              "oid": "4ae85323cddab67aa66b28fae23e29cde0007130",
+              "sha256": "b30d151de5866aaea92415184038a0e6739760239a307f0a8a3b6d796f54bffe"
+            },
+            "margin.tmp": {
+              "mode": "0664",
+              "oid": "3f21083a08f4d594534e895794ffc39f48f29c2d",
+              "sha256": "f5dce139fe151b1c57945d06e5c1f93b689bc4c9b7d2e20051ac17978154a04d"
+            }
+          },
+          "status": [
+            "MM copydesk.md",
+            " M guide/night.md",
+            "?? margin.tmp"
+          ],
+          "git_dir": "desk/.git",
+          "git_common_dir": "desk/.git",
+          "origin": "../mirror/.git",
+          "worktrees": [
+            "annex",
+            "desk"
+          ]
+        },
+        "annex": {
+          "branch": "refs/heads/copydesk/updates",
+          "head": "1ac6544f1638d9ad955249831d7b0138a7e56753",
+          "parents": [
+            "d104213f763c3494df0ad2b5af9364e270f4cf75"
+          ],
+          "head_tree": {
+            "README.md": {
+              "mode": "100644",
+              "oid": "039a0cc5c029680003b713c8cb73eedf06fc386a"
+            },
+            "copydesk.md": {
+              "mode": "100644",
+              "oid": "b3db8b0c143682787ecdf959cc4f81c66a1e6ca9"
+            },
+            "edition.txt": {
+              "mode": "100644",
+              "oid": "9425b8dc6b53d5bbe418ffe94882d25e8bfae3e8"
+            },
+            "guide/desk.md": {
+              "mode": "100644",
+              "oid": "cffc22ab8ece7cca9690ce888ea12813eccd4c24"
+            },
+            "guide/night.md": {
+              "mode": "100644",
+              "oid": "d4cd431b31f41cb38ae46c023b6bd7943fc0a9ba"
+            },
+            "guide/transfers.md": {
+              "mode": "100644",
+              "oid": "4ae85323cddab67aa66b28fae23e29cde0007130"
+            }
+          },
+          "index": {
+            "README.md": {
+              "mode": "100644",
+              "oid": "039a0cc5c029680003b713c8cb73eedf06fc386a",
+              "stage": "0"
+            },
+            "copydesk.md": {
+              "mode": "100644",
+              "oid": "bd2c99b823849f70bb14448c4748aceb30617a05",
+              "stage": "0"
+            },
+            "edition.txt": {
+              "mode": "100644",
+              "oid": "9425b8dc6b53d5bbe418ffe94882d25e8bfae3e8",
+              "stage": "0"
+            },
+            "guide/desk.md": {
+              "mode": "100644",
+              "oid": "cffc22ab8ece7cca9690ce888ea12813eccd4c24",
+              "stage": "0"
+            },
+            "guide/night.md": {
+              "mode": "100644",
+              "oid": "d4cd431b31f41cb38ae46c023b6bd7943fc0a9ba",
+              "stage": "0"
+            },
+            "guide/transfers.md": {
+              "mode": "100644",
+              "oid": "4ae85323cddab67aa66b28fae23e29cde0007130",
+              "stage": "0"
+            }
+          },
+          "files": {
+            "README.md": {
+              "mode": "0664",
+              "oid": "039a0cc5c029680003b713c8cb73eedf06fc386a",
+              "sha256": "cb8cdb92118b2df2b52bba248af5ba09ffed923614c34be23a2f654b733b1d28"
+            },
+            "copydesk.md": {
+              "mode": "0664",
+              "oid": "02f2840a2a60ddcb9a1cbbd696db38ff062812f1",
+              "sha256": "e1b246ea06f148d9f572f9ee4ede2115c31c94a4619fc51f7fae6cf1719bcd20"
+            },
+            "desk-card.tmp": {
+              "mode": "0664",
+              "oid": "62411b302484b933eb6d1aafdc16076fc771ba3e",
+              "sha256": "768c895204dc477ee139d40a59150ed8090bb802b79e5e0bf9d21169a81ae5b6"
+            },
+            "edition.txt": {
+              "mode": "0664",
+              "oid": "9425b8dc6b53d5bbe418ffe94882d25e8bfae3e8",
+              "sha256": "a274a60dd7a18e3c54dab15941811cafc1dfdfd792e24b7e5d8775b361190e50"
+            },
+            "guide/desk.md": {
+              "mode": "0664",
+              "oid": "cffc22ab8ece7cca9690ce888ea12813eccd4c24",
+              "sha256": "9b201a3fcb3eb7981971bf7a5b5fd00bafe9e4f4205ba1b2f069171bbba86c82"
+            },
+            "guide/night.md": {
+              "mode": "0664",
+              "oid": "db617e18cff894cfb2c74e95fccce8920fdd7fb0",
+              "sha256": "462c6c6e3c80331bdda28d0b4eeaa31266866c76dc1c13c301010b66cb5208e1"
+            },
+            "guide/transfers.md": {
+              "mode": "0664",
+              "oid": "4ae85323cddab67aa66b28fae23e29cde0007130",
+              "sha256": "b30d151de5866aaea92415184038a0e6739760239a307f0a8a3b6d796f54bffe"
+            }
+          },
+          "status": [
+            "MM copydesk.md",
+            " M guide/night.md",
+            "?? desk-card.tmp"
+          ],
+          "git_dir": "desk/.git/worktrees/annex",
+          "git_common_dir": "desk/.git",
+          "origin": "../mirror/.git",
+          "worktrees": [
+            "annex",
+            "desk"
+          ]
+        }
+      }
+    }
+  },
+  "terminal_git_event_output": {
+    "source_jsonl_line": 14,
+    "source_line_sha256": "180be32aa73be0176930dcda5f1bf61e5a648f292c4d0cdfc421143bd79856d7",
+    "output_sha256": "925bf5573f15b29aec51106b02bc62d7b545b94c5a9eefac7e89038e4f627e9d",
+    "exit": 0,
+    "output": "[editions/night adcb02d] docs: 📝 update the evening desk location\n 1 file changed, 1 insertion(+)\ncommit adcb02d7ee7da9a758b2747df0ad947a23825b6d\nAuthor:     Fixture Editor <editor@example.invalid>\nAuthorDate: Wed Nov 18 21:04:23 2026 +0100\nCommit:     Fixture Editor <editor@example.invalid>\nCommitDate: Wed Nov 18 21:04:23 2026 +0100\n\n    docs: 📝 update the evening desk location\n\nM\tguide/night.md\n## editions/night\nMM copydesk.md\n M guide/night.md\n?? margin.tmp\n## copydesk/updates\nMM copydesk.md\n M guide/night.md\n?? desk-card.tmp\n"
+  }
+}

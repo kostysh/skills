@@ -1,0 +1,65 @@
+{
+  "compiler": "skill-source-compiler 0.2.12",
+  "checks": {
+    "lint_source": 0,
+    "regenerate_source": 0,
+    "check_working_tree": 0,
+    "out_of_place_compile": 0,
+    "check_compiled": 0,
+    "pack": 0,
+    "patch_reconstruction": true
+  },
+  "pack_command": "pnpm --filter @kostysh/skills pack:skills --root <compiled> --out <empty> --release skills-row07-local --previous <baseline-catalog>",
+  "package_contract": "cli/src/pack-cli.ts and cli/README.md; --help is unsupported",
+  "archive": {
+    "filename": "git-engineer-0.2.2.tgz",
+    "bytes": 8575,
+    "sha256": "b17e018e6951421c9a47f4ea55f063a7e236d4e641c124408a4a72779138a4ce"
+  },
+  "catalog_entry": {
+    "name": "git-engineer",
+    "description": "Use for repository-aware Git staging, commits, branches, worktrees, merge, rebase, cherry-pick, and safe pushes. Preserve unrelated work, apply Conventional Commits with emoji by default, and verify exact refs. Route GitHub resources, code review, and CI remediation to their owning skills.",
+    "version": "0.2.2",
+    "url": "https://github.com/kostysh/skills/releases/download/skills-row07-local/git-engineer-0.2.2.tgz",
+    "sha256": "b17e018e6951421c9a47f4ea55f063a7e236d4e641c124408a4a72779138a4ce",
+    "contentHash": "caafd0dcbb9c2c365c146f8b4db1527675b59c3f1c38e8fbc3f9d4482e2daeca"
+  },
+  "extracted_files_sha256": {
+    "A": {
+      "SKILL.md": "3d6503387ad0cb8ade3d50d6d4b317d7f37e6cc1a7cff14e8beefad02b06ecc7",
+      "agents/openai.yaml": "004eb840aa4b557d7ec581f040ab0a76b6d2c16037ab02e1d9b42d2adba3a354",
+      "references/worktrees.md": "23868090f2f37c07a94acf8cb48cef068888e2b980b24d402d8096a42b2a240c"
+    },
+    "B": {
+      "SKILL.md": "af7e510258beb2c21c82bd239cdc75d59e451c03826196e5c689bf639a278e38",
+      "agents/openai.yaml": "004eb840aa4b557d7ec581f040ab0a76b6d2c16037ab02e1d9b42d2adba3a354",
+      "references/worktrees.md": "23868090f2f37c07a94acf8cb48cef068888e2b980b24d402d8096a42b2a240c"
+    },
+    "C": {
+      "SKILL.md": "76418c53c8b556c5175cc4578e90a77bd404b575e848837b7f4d81ece7529331",
+      "agents/openai.yaml": "004eb840aa4b557d7ec581f040ab0a76b6d2c16037ab02e1d9b42d2adba3a354",
+      "references/worktrees.md": "23868090f2f37c07a94acf8cb48cef068888e2b980b24d402d8096a42b2a240c"
+    },
+    "Release": {
+      "SKILL.md": "97df9a919c5035179b85f3315bd92a08b9fad48290c0e8c9b834a3b825308e94",
+      "agents/openai.yaml": "004eb840aa4b557d7ec581f040ab0a76b6d2c16037ab02e1d9b42d2adba3a354",
+      "references/worktrees.md": "23868090f2f37c07a94acf8cb48cef068888e2b980b24d402d8096a42b2a240c"
+    }
+  },
+  "byte_sizes": {
+    "A": 25408,
+    "B": 25273,
+    "C": 25348,
+    "Release": 25348
+  },
+  "release_vs_controlled_candidate": "SKILL.md frontmatter source-version and skillforge-source-hash only; rest of SKILL.md and other two files byte-identical",
+  "sources": {
+    "skills/git-engineer/skill.yaml": "9d097534ffd769a20b98b730061beecdd90df8fde84d572ad68d70788d15b8e3",
+    "skills/git-engineer/fragments/overview.md": "0064f99d845cfd8f99383a26d6b831c7d21a280187c6b7d092f4a6ca33618bf9",
+    "skills/git-engineer/SKILL.md": "97df9a919c5035179b85f3315bd92a08b9fad48290c0e8c9b834a3b825308e94",
+    "skills/git-engineer/docs/compile-report.md": "1d01a9d67ea3064ca83b8e445719a25ded19be6cfa8962cd6e7284687f7ccabc",
+    "skills/git-engineer/references/worktrees.md": "23868090f2f37c07a94acf8cb48cef068888e2b980b24d402d8096a42b2a240c",
+    "skills/git-engineer/agents/openai.yaml": "004eb840aa4b557d7ec581f040ab0a76b6d2c16037ab02e1d9b42d2adba3a354"
+  },
+  "catalog_url_status": "The local packer constructed this catalog URL. The archive is supplied in this evidence directory."
+}
