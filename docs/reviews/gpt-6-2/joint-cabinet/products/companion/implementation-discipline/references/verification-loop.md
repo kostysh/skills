@@ -1,0 +1,104 @@
+# Verification loop
+
+Read this reference before implementing multi-step changes or when deciding how to prove that a change worked.
+
+## Define proof before expanding the solution
+
+Translate the requested behavior or preserved invariant into the narrowest check that would fail if the implementation were wrong.
+
+Examples:
+
+- “Fix the bug” → reproduce the failure or make a focused regression test fail, then make it pass.
+- “Add validation” → name the rejected inputs and verify the observable rejection behavior.
+- “Refactor safely” → identify and run the checks that protect unchanged behavior.
+
+Before choosing the check or claiming a fix, compare its conditions with actual execution where they can change the result: identity and permissions, initial dependency state, entrypoint and caller, material versions, and lifecycle phase. A material difference needs evidence through the affected boundary under those conditions, or a bounded conclusion that names the remaining confirmation. Record this in the existing verification evidence; no separate matrix or full-environment reproduction is implied.
+
+Distinguish installation or transition from operation of an already installed system. An installed working directory does not prove a clean prepare, and direct access does not prove a caller whose identity or permissions differ. Select only the conditions relevant to the claim; a sufficient narrow check remains valid for simple local logic.
+
+Do not add extra abstractions merely to create a test seam when the behavior can be checked directly with existing project conventions. If the proposed verification contour is larger than the source-authorized change, revisit the claim and design before adding a runner, harness, instrumentation, background process, or production seam. Mark an edge unproven when necessary instead of manufacturing runtime scope for test convenience.
+
+## Use proportional evidence
+
+For a multi-step change, keep the loop short:
+
+1. make one concrete change;
+2. run the narrowest meaningful verification;
+3. continue only when the result is understood.
+
+A focused unit test, smoke command, or local self-check is sufficient for low-risk logic when it would fail on the relevant regression. Security, privacy, money, data loss, auth, accessibility, release, migration, and production-wiring paths require stronger project or domain evidence at the real boundary.
+
+If the intended check cannot run, use the next-best static or behavioral check and report exactly what remains unproven. Tests, mocks, schemas, wrappers, logs, and documentation prove only their own boundary; they do not prove a broader runtime capability.
+
+## Trace material cross-layer claims from producer to reload
+
+For a material claim whose value or state crosses layers, map the shortest real
+path before choosing tests:
+
+```text
+producer/input -> normalization -> canonical persistence -> public projection/readback -> DTO/consumer -> authoritative reload
+```
+
+For every applicable transition, name the actor, type, or source dimensions that
+can change the result, the owner of the transition, and an observation that would
+falsify it. At least one production-equivalent round trip must cross all
+applicable transitions. A mapper, mock, schema, or mid-chain fixture proves only
+the segment it exercises and cannot close the full claim.
+
+For a defect fix, replay the original witness from the earliest affected producer
+when available: the same actor and input through the write, authoritative reread,
+and reload, with red before the fix and green after it. If the original environment
+is unavailable but inspected code and accepted inputs establish the cause or
+violated contract, an authorized bounded correction may use a meaningful local
+regression check. Record its provenance and leave the original deployed path and
+skipped transitions explicitly unverified. Do not change code from an unsupported
+adjacent hypothesis or claim that a local fixture reproduced the unavailable path.
+A newly accepted behavior clarification supplies requirement authority; it does
+not assert that a prior runtime defect was observed.
+
+Do not force this contour onto a genuinely single-layer change. Mark
+non-applicable transitions with a reason and keep evidence proportional to the
+declared boundary.
+
+## Handle failure inside an already-authorized CI contour
+
+When exact operator and repository authority already covers the correction, the necessary Git mutations, and monitoring a mandatory CI check, a failure stays in the same task, branch, and pull request. Establish the root cause, make the smallest source-authorized fix, run the replacement check, and read its terminal result. Do not use a blind rerun as remediation.
+
+This rule does not create authority. Stop before the missing mutation, publication, or monitoring action when it was not authorized. Also stop when the fix would change accepted scope or cross a material product, public-contract, data, security, privacy, deployment, or operational boundary that needs a separate decision.
+
+## Accepted-audit remediation matrix
+
+Use this section only when implementing accepted findings or recommendations from an audit or review. Track each item as:
+
+```text
+finding/recommendation -> root invariant/original failure path -> owning source/owner -> affected surfaces/direct blast radius -> exact change -> falsifier/closure evidence -> status
+```
+
+Before handing remediation back to an auditor or reviewer, the author must resolve
+the full direct blast radius of every accepted finding, run its falsifier or
+closure evidence, and give each row an honest terminal disposition. A row that is
+only `implemented` is unfinished and prohibits the handoff. The handoff packet
+must preserve the prior report and identify the prior and current stable
+snapshots, exact remediation delta, original failure paths, direct blast radius,
+closure evidence, and justified exclusions.
+
+This matrix does not choose targeted versus full review, select the reviewer, or
+define widening triggers. Those decisions remain with the applicable independent
+review skill or repository audit lifecycle.
+
+Allowed statuses:
+
+- `implemented` — the change exists but the agreed evidence has not passed.
+- `verified` — the change exists and the named evidence passed.
+- `blocked-by-compatibility` — implementation would violate a required compatibility boundary.
+- `deferred-by-trigger` — the item applies only when a concrete trigger occurs; name the current ceiling, trigger, and evidence required then.
+- `not-applicable` — the item does not apply, with a reason.
+
+Match the overall claim to unresolved status in this order:
+
+1. any `blocked-by-compatibility` → blocked and incomplete;
+2. otherwise any `deferred-by-trigger` → partial and deferred;
+3. otherwise any `implemented` → implemented but unverified;
+4. all applicable items `verified` → fixed and verified.
+
+Report `not-applicable` items separately as justified exclusions, not as fixes. Do not treat a populated matrix as closure evidence by itself.
