@@ -1,0 +1,8 @@
+{
+  "when": "2026-11-18T22:43:37.597864+00:00",
+  "reason": "The first assignment requested post-confirmation. The precommitted joint rubric and recipient include both sides of confirmation. Now the recipient explicitly asks for the paired outcomes; correct Enter text in the browser driver. Product and rubric are identical.",
+  "task": "ab35b427cf6bf871840cd91e25378ea45add7e0f5babced4e322dc390e9dd5a8",
+  "rubric": "947153cc17b1352ef4c53e994d1c90051931a8eeac2f683a404bc7c7b1cc64aa",
+  "driver": "b2ae091bd70ff7ed3733cde4c8a1a1c094f4344e8f8bc7f952f2956ad9618e3f",
+  "confirmedSameArchive": "ae0f50652bf114c53a0389d44765d49d629ba3252184a007674691678ee8c1bb"
+}
