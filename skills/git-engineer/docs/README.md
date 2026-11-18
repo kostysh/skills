@@ -11,6 +11,6 @@ This directory contains supporting maintenance material only. The normative skil
 - `docs/logs/forward-test-evidence-20260716-1.md` - blind commit, policy, conflict, push, routing, and worktree evidence for skill 0.2.0.
 
 - [implementation-log-20260907-1](logs/implementation-log-20260907-1.md) — CI fallback и условно обязательная worktree-reference.
-- [implementation-log-20261118-1](logs/implementation-log-20261118-1.md) — коммит в заданной ветке с сохранением индексов и рабочих копий двух редакторов.
+- [implementation-log-20261118-1](logs/implementation-log-20261118-1.md) — коммит в заданной ветке с сохранением индексов и рабочих копий двух редакторов. [Запись в репозитории](https://github.com/kostysh/skills/blob/4568a98ba2310e17e2f9b1c4c0dbf1a09b3fa407/skills/git-engineer/docs/logs/implementation-log-20261118-1.md)
 
 Журнал ревизии 2026-09-07 и её evidence — source-only supporting records; они не являются обязательной зависимостью emitted-пакета.
