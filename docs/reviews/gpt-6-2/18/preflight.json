@@ -1,0 +1,403 @@
+{
+  "ordinary": {
+    "chrome": null,
+    "app": {
+      "dist/index.html": "5f3375ea6baf80f106117687cf8fa1c7a8b71bef90160f7ae8c5ba95fdc14556",
+      "dist/view.mjs": "9cf13ab9d1e7ec85f347c237073a776f6aa4e4c7fec559c0f24409cfedd66769",
+      "dist/runtime.js": "72df0e0adf9d8a2b4292eeb804661ad26292d2460cf1ec04535b63e40c2c40f2",
+      "dist/boot.mjs": "4efa75444790dcd1955c61ae95a3dad618d7eef843f2d7661f122a38e744fbc0"
+    },
+    "exit": 0,
+    "observations": [
+      {
+        "links": [
+          {
+            "button": "Operations",
+            "description": "Operations notes"
+          },
+          {
+            "button": "Planning",
+            "description": "Planning notes"
+          }
+        ],
+        "topics": [
+          "Operations",
+          "Planning"
+        ],
+        "deliveries": {},
+        "hydration": []
+      },
+      {
+        "links": [
+          {
+            "button": "Operations",
+            "description": null
+          },
+          {
+            "button": "Planning",
+            "description": null
+          }
+        ],
+        "topics": [
+          "Operations",
+          "Planning"
+        ],
+        "deliveries": {
+          "Operations": 1,
+          "Planning": 1
+        },
+        "hydration": []
+      },
+      {
+        "links": [
+          {
+            "button": "Operations",
+            "description": null
+          }
+        ],
+        "topics": [
+          "Operations"
+        ],
+        "deliveries": {
+          "Operations": 1,
+          "Planning": 1
+        },
+        "hydration": []
+      },
+      {
+        "links": [
+          {
+            "button": "Operations",
+            "description": null
+          }
+        ],
+        "topics": [
+          "Operations"
+        ],
+        "deliveries": {
+          "Operations": 2,
+          "Planning": 1
+        },
+        "hydration": []
+      },
+      {
+        "links": [
+          {
+            "button": "Operations",
+            "description": null
+          },
+          {
+            "button": "Planning",
+            "description": null
+          }
+        ],
+        "topics": [
+          "Operations",
+          "Planning"
+        ],
+        "deliveries": {
+          "Operations": 2,
+          "Planning": 1
+        },
+        "hydration": []
+      },
+      {
+        "links": [
+          {
+            "button": "Operations",
+            "description": null
+          },
+          {
+            "button": "Planning",
+            "description": null
+          }
+        ],
+        "topics": [
+          "Operations",
+          "Planning"
+        ],
+        "deliveries": {
+          "Operations": 3,
+          "Planning": 2
+        },
+        "hydration": []
+      }
+    ],
+    "traceSha256": "45fc10dceaf35203fedd951c2866ef64aec58bea3231da0fec9235fd05b17bb7"
+  },
+  "boundary": {
+    "chrome": null,
+    "app": {
+      "dist/index.html": "5f3375ea6baf80f106117687cf8fa1c7a8b71bef90160f7ae8c5ba95fdc14556",
+      "dist/view.mjs": "c3270656396434b97cfc679f176f0b37be4dff38af50bcc6f7556762956447ad",
+      "dist/runtime.js": "72df0e0adf9d8a2b4292eeb804661ad26292d2460cf1ec04535b63e40c2c40f2",
+      "dist/boot.mjs": "4efa75444790dcd1955c61ae95a3dad618d7eef843f2d7661f122a38e744fbc0"
+    },
+    "exit": 0,
+    "observations": [
+      {
+        "links": [
+          {
+            "button": "Operations",
+            "description": "Operations notes"
+          },
+          {
+            "button": "Planning",
+            "description": "Operations notes"
+          }
+        ],
+        "topics": [
+          "Operations",
+          "Planning"
+        ],
+        "deliveries": {},
+        "hydration": []
+      },
+      {
+        "links": [
+          {
+            "button": "Operations",
+            "description": null
+          },
+          {
+            "button": "Planning",
+            "description": null
+          }
+        ],
+        "topics": [
+          "Operations",
+          "Planning"
+        ],
+        "deliveries": {
+          "Operations": 1,
+          "Planning": 1
+        },
+        "hydration": []
+      },
+      {
+        "links": [
+          {
+            "button": "Operations",
+            "description": null
+          }
+        ],
+        "topics": [
+          "Operations",
+          "Planning"
+        ],
+        "deliveries": {
+          "Operations": 1,
+          "Planning": 1
+        },
+        "hydration": []
+      },
+      {
+        "links": [
+          {
+            "button": "Operations",
+            "description": null
+          }
+        ],
+        "topics": [
+          "Operations",
+          "Planning"
+        ],
+        "deliveries": {
+          "Operations": 2,
+          "Planning": 2
+        },
+        "hydration": []
+      },
+      {
+        "links": [
+          {
+            "button": "Operations",
+            "description": null
+          },
+          {
+            "button": "Planning",
+            "description": null
+          }
+        ],
+        "topics": [
+          "Operations",
+          "Planning",
+          "Planning"
+        ],
+        "deliveries": {
+          "Operations": 2,
+          "Planning": 2
+        },
+        "hydration": []
+      },
+      {
+        "links": [
+          {
+            "button": "Operations",
+            "description": null
+          },
+          {
+            "button": "Planning",
+            "description": null
+          }
+        ],
+        "topics": [
+          "Operations",
+          "Planning",
+          "Planning"
+        ],
+        "deliveries": {
+          "Operations": 3,
+          "Planning": 4
+        },
+        "hydration": []
+      }
+    ],
+    "traceSha256": "c3d5cf15d29ab7ff415928eb0845bf51adc989e68a91e9f654e6d9abed5837f5"
+  },
+  "holdout": {
+    "chrome": null,
+    "app": {
+      "dist/index.html": "5f3375ea6baf80f106117687cf8fa1c7a8b71bef90160f7ae8c5ba95fdc14556",
+      "dist/view.mjs": "e018cc33f2383296b56aecd3973ea8b99db763b21992bf7257d47f58f568f81f",
+      "dist/runtime.js": "72df0e0adf9d8a2b4292eeb804661ad26292d2460cf1ec04535b63e40c2c40f2",
+      "dist/boot.mjs": "4efa75444790dcd1955c61ae95a3dad618d7eef843f2d7661f122a38e744fbc0"
+    },
+    "exit": 0,
+    "observations": [
+      {
+        "links": [
+          {
+            "button": "Operations",
+            "description": "Operations notes"
+          },
+          {
+            "button": "Planning",
+            "description": "Planning notes"
+          }
+        ],
+        "topics": [
+          "Operations",
+          "Planning"
+        ],
+        "deliveries": {},
+        "hydration": []
+      },
+      {
+        "links": [
+          {
+            "button": "Operations",
+            "description": "Operations notes"
+          },
+          {
+            "button": "Roster",
+            "description": "Roster notes"
+          }
+        ],
+        "topics": [
+          "Operations",
+          "Planning"
+        ],
+        "deliveries": {},
+        "hydration": []
+      },
+      {
+        "links": [
+          {
+            "button": "Operations",
+            "description": null
+          },
+          {
+            "button": "Roster",
+            "description": null
+          }
+        ],
+        "topics": [
+          "Operations",
+          "Planning"
+        ],
+        "deliveries": {
+          "Operations": 1,
+          "Planning": 1
+        },
+        "hydration": []
+      },
+      {
+        "links": [
+          {
+            "button": "Operations",
+            "description": null
+          }
+        ],
+        "topics": [
+          "Operations"
+        ],
+        "deliveries": {
+          "Operations": 1,
+          "Planning": 1
+        },
+        "hydration": []
+      },
+      {
+        "links": [
+          {
+            "button": "Operations",
+            "description": null
+          }
+        ],
+        "topics": [
+          "Operations"
+        ],
+        "deliveries": {
+          "Operations": 2,
+          "Planning": 1
+        },
+        "hydration": []
+      },
+      {
+        "links": [
+          {
+            "button": "Operations",
+            "description": null
+          },
+          {
+            "button": "Roster",
+            "description": null
+          }
+        ],
+        "topics": [
+          "Operations",
+          "Roster"
+        ],
+        "deliveries": {
+          "Operations": 2,
+          "Planning": 1
+        },
+        "hydration": []
+      },
+      {
+        "links": [
+          {
+            "button": "Operations",
+            "description": null
+          },
+          {
+            "button": "Roster",
+            "description": null
+          }
+        ],
+        "topics": [
+          "Operations",
+          "Roster"
+        ],
+        "deliveries": {
+          "Operations": 3,
+          "Planning": 1,
+          "Roster": 1
+        },
+        "hydration": []
+      }
+    ],
+    "traceSha256": "2f53b64480c5ad1c5281b1a9e807b0b3e4d22d727d040609f1539bfa7adab851"
+  }
+}

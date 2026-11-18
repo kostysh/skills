@@ -1,0 +1,273 @@
+{
+  "acceptedSnapshot": "f4865ff5cdcf58e12de72f6b4b05b0297bf5f3b9",
+  "baselineFiles": {
+    "SKILL.md": {
+      "sha256": "90a8eec48d9e8ff113568a3b537ee0ed6b6b90eb76aae82f9303b766d1df726a",
+      "mode": "0644"
+    },
+    "agents/openai.yaml": {
+      "sha256": "00053143793ac9ff6808e29f0548f0eb66f75ee2c1d6d14ac8fbeb66ae56a942",
+      "mode": "0644"
+    },
+    "references/bulletproof-patterns.md": {
+      "sha256": "31ee8c6f9044f908c682b2f7c47c5c9ab89781dcbd992309d8d772e12cb0b795",
+      "mode": "0644"
+    }
+  },
+  "researchBundleSha256": "0e6d13dee60680138edfd82c8f95a89e522d054dd1762f3a4632a7a8e96f0761",
+  "baselineBytes": 27286,
+  "patchReplay": {
+    "A/B": {
+      "diffSha256": "448e09e8fb9b194eaea64eaf5c3a88ffb8997da164c12b458b58c719f56a90af",
+      "deliveredBytes": 27086,
+      "changed": [
+        "SKILL.md"
+      ],
+      "resultingFiles": {
+        "SKILL.md": "74532d24b46b333eef1f98ed81a5cc67d7e18201f2664dcd98cdaae309f0a459",
+        "agents/openai.yaml": "00053143793ac9ff6808e29f0548f0eb66f75ee2c1d6d14ac8fbeb66ae56a942",
+        "references/bulletproof-patterns.md": "31ee8c6f9044f908c682b2f7c47c5c9ab89781dcbd992309d8d772e12cb0b795"
+      }
+    },
+    "A/C": {
+      "diffSha256": "7ab4c9f1dc2c7fd5d116e844fb09a474474be807d91cba12c68798379648d0a5",
+      "deliveredBytes": 27159,
+      "changed": [
+        "SKILL.md"
+      ],
+      "resultingFiles": {
+        "SKILL.md": "5b9c88b0cd8f74dd6537e21ec81b9d9b32ae5636caed2451f1b7f6bb4259adfd",
+        "agents/openai.yaml": "00053143793ac9ff6808e29f0548f0eb66f75ee2c1d6d14ac8fbeb66ae56a942",
+        "references/bulletproof-patterns.md": "31ee8c6f9044f908c682b2f7c47c5c9ab89781dcbd992309d8d772e12cb0b795"
+      }
+    },
+    "C/archive": {
+      "diffSha256": "d47af9b6475489d4036306a46f19520b7afeaddb574043b48784fc531edbe2f3",
+      "deliveredBytes": 27100,
+      "changed": [
+        "SKILL.md",
+        "references/bulletproof-patterns.md"
+      ],
+      "resultingFiles": {
+        "SKILL.md": "f0fc2d98ba0a4834c87dba4ada43bb9e1be889d3dc145a5a4664a180021901f7",
+        "references/bulletproof-patterns.md": "009936bd16f15772408acf422a1a3aac10a8a122887a9d2f04076f75c563a59e",
+        "agents/openai.yaml": "00053143793ac9ff6808e29f0548f0eb66f75ee2c1d6d14ac8fbeb66ae56a942"
+      }
+    }
+  },
+  "executions": [
+    {
+      "label": "aae6a7",
+      "role": "A",
+      "case": "ordinary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "sandbox": "workspace-write",
+      "longTermMemories": "disabled",
+      "inputRootSha256": "90a8eec48d9e8ff113568a3b537ee0ed6b6b90eb76aae82f9303b766d1df726a",
+      "rawDispatchSha256": "05737a02907be09acfdda0113112c810000e097d03b7b9b2afc4690de54a3a4a",
+      "rawAnswerSha256": "8f0e584ba56859feeff02c62da09e7abc6c7a3290bffb6a8eeecdbcc5f9ffdd0",
+      "rawEventsSha256": "2646acfc0e7a1c59ac3bcef81a7128d7a28d1576ea84f898a0c6b4afeaac06ea",
+      "rawResultSha256": "63ec54ea2bea0d17dd5dffcf496c99d4d15dee91551f7e67adcb9a7004719c85",
+      "readWitness": {
+        "ruleOrAdjacentAnchor": "Do not assume one global window, document, DOM id",
+        "eventId": "item_1",
+        "outputSha256": "5525af0dc4687591839dbd3b889441c3f56d95c9c791a4dd1ba9720627589320"
+      },
+      "countRealVisits": 1,
+      "sourceBytesAndUnixModesPreserved": true,
+      "outputChanges": "only visit JSON and PNG",
+      "webToolUses": 0
+    },
+    {
+      "label": "b9f87e",
+      "role": "A",
+      "case": "boundary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "sandbox": "workspace-write",
+      "longTermMemories": "disabled",
+      "inputRootSha256": "90a8eec48d9e8ff113568a3b537ee0ed6b6b90eb76aae82f9303b766d1df726a",
+      "rawDispatchSha256": "ee05feef451b72a99b95846127d644563b74dcf744902afebec4b38e8f485b01",
+      "rawAnswerSha256": "684529f0a57a2736fe1a2fb9973f242c5b6e6fafabfd5722dd4da9eae206aea7",
+      "rawEventsSha256": "83933236f67dff56a5a99097cedee9c9385aa655f77a172c830e37732bf4ece1",
+      "rawResultSha256": "e5da291e6f88e9ee0d45c9c1a3779f92789b6648101ad17c966067bbea1b7c64",
+      "readWitness": {
+        "ruleOrAdjacentAnchor": "Do not assume one global window, document, DOM id",
+        "eventId": "item_1",
+        "outputSha256": "7ecfa40b460c5ab493219f3d166c7ab3c83fc00f9a65568ae0e7c47e83b30b95"
+      },
+      "countRealVisits": 1,
+      "sourceBytesAndUnixModesPreserved": true,
+      "outputChanges": "only visit JSON and PNG",
+      "webToolUses": 0
+    },
+    {
+      "label": "93d6ac",
+      "role": "B",
+      "case": "boundary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "sandbox": "workspace-write",
+      "longTermMemories": "disabled",
+      "inputRootSha256": "74532d24b46b333eef1f98ed81a5cc67d7e18201f2664dcd98cdaae309f0a459",
+      "rawDispatchSha256": "319eaabf3ec4804469f3c160ddc473f0b916ec53a29fa87260d01e4b1de578fd",
+      "rawAnswerSha256": "9808f97eaaf3b7accca8dae0dc619292cbad3fc53416e316421f7552025c1904",
+      "rawEventsSha256": "4e95e68d3740ef4e3cb8428b5ac11badf6a2d03525e44885827dd94865473433",
+      "rawResultSha256": "0999a856564f6531d27e821a71ab62a51cefbcb44d0873091298502a7372a917",
+      "readWitness": {
+        "ruleOrAdjacentAnchor": "Use useId for component-owned DOM and accessibility relationships",
+        "eventId": "item_1",
+        "outputSha256": "66a32a6e318921987cd1d93ef7640baf6266f5bf2ec4b9b8a463a3ed3bc36952",
+        "baselinePhraseAbsentBetweenIntactNeighbours": true
+      },
+      "countRealVisits": 2,
+      "sourceBytesAndUnixModesPreserved": true,
+      "outputChanges": "only visit JSON and PNG",
+      "webToolUses": 0
+    },
+    {
+      "label": "d23243",
+      "role": "B",
+      "case": "ordinary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "sandbox": "workspace-write",
+      "longTermMemories": "disabled",
+      "inputRootSha256": "74532d24b46b333eef1f98ed81a5cc67d7e18201f2664dcd98cdaae309f0a459",
+      "rawDispatchSha256": "2adb1f068af897f052548d70c02d13efa8d44ed4b6e204a1b2434502a61d5e3c",
+      "rawAnswerSha256": "b83e6270b99a6779dffbbafe9224ebfac54535edc804f815df3d2205821bcdb4",
+      "rawEventsSha256": "b77f3a22bcf5bb0a9fd5e30f9a00ed3105ecd387acd82a006513422f12092da7",
+      "rawResultSha256": "de266da552a6e7988324b57c74bbb9ec4d93dfab7bbfaf20274c8f2b07cccf75",
+      "readWitness": {
+        "ruleOrAdjacentAnchor": "Use useId for component-owned DOM and accessibility relationships",
+        "eventId": "item_2",
+        "outputSha256": "74532d24b46b333eef1f98ed81a5cc67d7e18201f2664dcd98cdaae309f0a459",
+        "baselinePhraseAbsentBetweenIntactNeighbours": true
+      },
+      "countRealVisits": 1,
+      "sourceBytesAndUnixModesPreserved": true,
+      "outputChanges": "only visit JSON and PNG",
+      "webToolUses": 0
+    },
+    {
+      "label": "4dec36",
+      "role": "C",
+      "case": "holdout",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "sandbox": "workspace-write",
+      "longTermMemories": "disabled",
+      "inputRootSha256": "5b9c88b0cd8f74dd6537e21ec81b9d9b32ae5636caed2451f1b7f6bb4259adfd",
+      "rawDispatchSha256": "b9c4c7bb6678f6aca5af521f66c2ab736a229ed53b09d264eb598e1ff3777822",
+      "rawAnswerSha256": "2f6a973cbea9694a3dfaff364cd1df2eabdb3521b6460070a63f73d1958b3292",
+      "rawEventsSha256": "78719d747745b6eac5f743a66d191ae9ef15e0ef71dc2605226e107a8d33bac7",
+      "rawResultSha256": "71a32a422dec59c6837568c6ce6cab5bb0fb340075b8e7703547960b8d16d8de",
+      "readWitness": {
+        "ruleOrAdjacentAnchor": "Keep DOM ownership per instance and clean up its Effects.",
+        "eventId": "item_2",
+        "outputSha256": "316c5d62daca07604f2ea5e08e3a597c417a8819c8c632b712fb404240f85b1f"
+      },
+      "countRealVisits": 1,
+      "sourceBytesAndUnixModesPreserved": true,
+      "outputChanges": "only visit JSON and PNG",
+      "webToolUses": 0
+    },
+    {
+      "label": "f65235",
+      "role": "C",
+      "case": "ordinary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "sandbox": "workspace-write",
+      "longTermMemories": "disabled",
+      "inputRootSha256": "5b9c88b0cd8f74dd6537e21ec81b9d9b32ae5636caed2451f1b7f6bb4259adfd",
+      "rawDispatchSha256": "cae4777d2aec9cdac4c2ef5ec136f7fc3d4dad9943a6dc0ec405ffb3b3753b2c",
+      "rawAnswerSha256": "3a2075752785bdc659cfe03f7b2dccc86eb251db3de410c9f47b6f09950c46f1",
+      "rawEventsSha256": "7aa822c6e1b82ce5189ab3f805ffc18005010069e15b64be625fca543e3f600d",
+      "rawResultSha256": "ab2389931c66a7483aea17bdcae23982e6d5ab67585a64a006e12b7519ef2932",
+      "readWitness": {
+        "ruleOrAdjacentAnchor": "Keep DOM ownership per instance and clean up its Effects.",
+        "eventId": "item_1",
+        "outputSha256": "a4ac37c4f7c2353d8c8b56266d5684a48a56a58c7c85da6609f347020310ff49"
+      },
+      "countRealVisits": 1,
+      "sourceBytesAndUnixModesPreserved": true,
+      "outputChanges": "only visit JSON and PNG",
+      "webToolUses": 0
+    },
+    {
+      "label": "7a0117",
+      "role": "C",
+      "case": "boundary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "sandbox": "workspace-write",
+      "longTermMemories": "disabled",
+      "inputRootSha256": "5b9c88b0cd8f74dd6537e21ec81b9d9b32ae5636caed2451f1b7f6bb4259adfd",
+      "rawDispatchSha256": "7f1310aaa13fbd1970e441a2a14dce5a32eefd4eaa5ebdb1716149489d7be1be",
+      "rawAnswerSha256": "9148d5830ea2f43a40704530326076f3df9e0b47f1d86c33eed94c21f7c07b32",
+      "rawEventsSha256": "0f52fca096996ddd6d9bb2704bdf8026aa11c0cbcc37fa391c770b032c2adf71",
+      "rawResultSha256": "9ea63c0e82d23d55fd8c1a135cf57d9fc475183d5a392f454a6f7129576b86ab",
+      "readWitness": {
+        "ruleOrAdjacentAnchor": "Keep DOM ownership per instance and clean up its Effects.",
+        "eventId": "item_4",
+        "outputSha256": "5b9c88b0cd8f74dd6537e21ec81b9d9b32ae5636caed2451f1b7f6bb4259adfd"
+      },
+      "countRealVisits": 2,
+      "sourceBytesAndUnixModesPreserved": true,
+      "outputChanges": "only visit JSON and PNG",
+      "webToolUses": 0
+    },
+    {
+      "label": "46fa6b",
+      "role": "A",
+      "case": "holdout",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "sandbox": "workspace-write",
+      "longTermMemories": "disabled",
+      "inputRootSha256": "90a8eec48d9e8ff113568a3b537ee0ed6b6b90eb76aae82f9303b766d1df726a",
+      "rawDispatchSha256": "ad3628c55107deca0e4535e9759ff37d0d8fdff61648bdf10d9b404950bb071a",
+      "rawAnswerSha256": "6c8ce99b24a6a84d10a529d1954f92a639ba705df6568b347eeaffb0cc77b77d",
+      "rawEventsSha256": "da5940f59bf6c2b9b4dd49045986ab6a5dfa49b2fc94ac147e6ab66e76075aef",
+      "rawResultSha256": "87e5544d4b990dc8329b6fa8258ea1f9fc8dd743a092a8b1e952af9f2172f0e3",
+      "readWitness": {
+        "ruleOrAdjacentAnchor": "Do not assume one global window, document, DOM id",
+        "eventId": "item_1",
+        "outputSha256": "7d945fc79b106a2ae28d90c1f3b75346f948149178a00cef8bf10c7be9d92a1b"
+      },
+      "countRealVisits": 1,
+      "sourceBytesAndUnixModesPreserved": true,
+      "outputChanges": "only visit JSON and PNG",
+      "webToolUses": 0
+    },
+    {
+      "label": "6fe94e",
+      "role": "release",
+      "case": "boundary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "sandbox": "workspace-write",
+      "longTermMemories": "disabled",
+      "inputRootSha256": "f0fc2d98ba0a4834c87dba4ada43bb9e1be889d3dc145a5a4664a180021901f7",
+      "rawDispatchSha256": "e4e39eb25ca4fdc61a2bcf60a7fe5300dc063b3064810e1ddcf0fdb7fc8b3c97",
+      "rawAnswerSha256": "4d02d8a512fe084f9ffaefaf45b8facef64f10b74be7e37932606b5e2a64c55c",
+      "rawEventsSha256": "18f6dce09b37b033a5019a9851e34eae41dd9384411232174a892274459c92ca",
+      "rawResultSha256": "023f0bc69a20867256e15cbd89a48540d7e83b941b28c1863250dce65c13e0fe",
+      "readWitness": {
+        "ruleOrAdjacentAnchor": "Keep DOM ownership per instance and clean up its Effects.",
+        "eventId": "item_3",
+        "outputSha256": "f0fc2d98ba0a4834c87dba4ada43bb9e1be889d3dc145a5a4664a180021901f7"
+      },
+      "countRealVisits": 1,
+      "sourceBytesAndUnixModesPreserved": true,
+      "outputChanges": "only visit JSON and PNG",
+      "webToolUses": 0
+    }
+  ],
+  "rawBrowserArchive": "browser-visits.tar.gz",
+  "rawBrowserArchiveSha256": "373687b6bdde636391c22de9cc26fc63c2b93cf2d33cf129b9eb378f88be60d3",
+  "scope": "All input byte hashes and Unix modes matched the dispatch and final snapshot. Complete file access was technically possible. Observed completed commands refer to the assigned project, documented browser and system tools. Three git status requests reported no repository; grading was independent of them.",
+  "allFrozenInputFilesVerifiedByHash": true
+}

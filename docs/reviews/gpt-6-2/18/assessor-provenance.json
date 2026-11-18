@@ -1,0 +1,207 @@
+{
+  "ab": {
+    "model": "gpt-6.2-sol",
+    "reasoning": "high",
+    "sandbox": "read-only",
+    "longTermMemory": "disabled",
+    "gradedExit": 0,
+    "signedTextSha256": "0936988076269ca1bb03a6dc3ee5dcb4cd90b9c499b497e6222cf35797a0b218",
+    "rawEventsSha256": "82da29e080d8a9360ff4e37eb62e607e35776817948d52ae8b3afe42a993a010",
+    "rawDispatchSha256": "c303541ec0e9206e07fcfac57d3a547402cb5a3d928dc74251364d3932ce2f8f",
+    "frozenCriteriaSha256": "f7fb20dcbda1b74ddcecff8a8e174c7b4266b3d5732cef5b27f74c1a54390229",
+    "deliveredFiles": {
+      "criteria.md": "f7fb20dcbda1b74ddcecff8a8e174c7b4266b3d5732cef5b27f74c1a54390229",
+      "d23243/observations.json": "cb6d381ad8eb25f2556f540bce42d0ab3a86193fba027d9457c336c615a14427",
+      "d23243/actions.json": "39bf378c0a309dcf661eb0554fe2b0472af440bbe15cab4d8a2826640d8e82a7",
+      "d23243/answer.md": "51fb23c9ff225841b6bd7d31111ef24961a59a0df1548bdfe944bfbaff4c7866",
+      "d23243/assignment.md": "94bf4e5e218db309652d7204c8adeae8895fda32b65276466c20902e4a590c91",
+      "93d6ac/observations.json": "b7b430807da7f9001dac1c178239fcb582ff1e742cc73f2e1013fbde083634c8",
+      "93d6ac/actions.json": "7d979c142757dc054ed2e23dffa8ff7656fd65a3f7d1557c38620300c03ce16d",
+      "93d6ac/answer.md": "8b7be6b0cb87418d6a733a09a25aa6f99ea93dc6afc7202bf867a76300ae37f4",
+      "93d6ac/assignment.md": "dbe79b89601882f1b6e5bf789d82242dc1b996f76db5ae504609c426d7a0ca20",
+      "b9f87e/observations.json": "a3ee8ef3a9bd0ba40a8d6af35ad54a4161c1127e4e5a06b985eb0151b59d1382",
+      "b9f87e/actions.json": "ec983a3cad4609af0a1e2a3ea4686a9ae0efde806f21a0e5f7f496bd0f2155aa",
+      "b9f87e/answer.md": "2c4fcff262f37c0fc47de93e0537a4e08ab8a7197cbd5e13b5b92d0b7babbf9e",
+      "b9f87e/assignment.md": "dbe79b89601882f1b6e5bf789d82242dc1b996f76db5ae504609c426d7a0ca20",
+      "aae6a7/observations.json": "fbb5f03ac9fad98b1f4a06329aa5b60cf7dd598ecbde9d02e457b07d3b7e3da8",
+      "aae6a7/actions.json": "17dab6a8c6170e1f333dc90d7eab445c99ee07174fae6916279589c770ea211b",
+      "aae6a7/answer.md": "71c3bd63a74b859b904587daa17c070711a6e69cd6c9cfc3603962c1c7cf9af9",
+      "aae6a7/assignment.md": "94bf4e5e218db309652d7204c8adeae8895fda32b65276466c20902e4a590c91",
+      "aae6a7/product/index.html": "5f3375ea6baf80f106117687cf8fa1c7a8b71bef90160f7ae8c5ba95fdc14556",
+      "aae6a7/product/boot.mjs": "4efa75444790dcd1955c61ae95a3dad618d7eef843f2d7661f122a38e744fbc0",
+      "aae6a7/product/view.mjs": "9cf13ab9d1e7ec85f347c237073a776f6aa4e4c7fec559c0f24409cfedd66769",
+      "b9f87e/product/index.html": "5f3375ea6baf80f106117687cf8fa1c7a8b71bef90160f7ae8c5ba95fdc14556",
+      "b9f87e/product/boot.mjs": "4efa75444790dcd1955c61ae95a3dad618d7eef843f2d7661f122a38e744fbc0",
+      "b9f87e/product/view.mjs": "c3270656396434b97cfc679f176f0b37be4dff38af50bcc6f7556762956447ad",
+      "93d6ac/product/index.html": "5f3375ea6baf80f106117687cf8fa1c7a8b71bef90160f7ae8c5ba95fdc14556",
+      "93d6ac/product/boot.mjs": "4efa75444790dcd1955c61ae95a3dad618d7eef843f2d7661f122a38e744fbc0",
+      "93d6ac/product/view.mjs": "c3270656396434b97cfc679f176f0b37be4dff38af50bcc6f7556762956447ad",
+      "d23243/product/index.html": "5f3375ea6baf80f106117687cf8fa1c7a8b71bef90160f7ae8c5ba95fdc14556",
+      "d23243/product/boot.mjs": "4efa75444790dcd1955c61ae95a3dad618d7eef843f2d7661f122a38e744fbc0",
+      "d23243/product/view.mjs": "9cf13ab9d1e7ec85f347c237073a776f6aa4e4c7fec559c0f24409cfedd66769"
+    },
+    "packetVerifiedAgainstDispatch": true,
+    "neutralKeyForReadback": [
+      {
+        "role": "A",
+        "case": "ordinary",
+        "label": "aae6a7"
+      },
+      {
+        "role": "A",
+        "case": "boundary",
+        "label": "b9f87e"
+      },
+      {
+        "role": "B",
+        "case": "boundary",
+        "label": "93d6ac"
+      },
+      {
+        "role": "B",
+        "case": "ordinary",
+        "label": "d23243"
+      }
+    ],
+    "operations": [
+      "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+      "/bin/bash -lc 'cat criteria.md'",
+      "/bin/bash -lc 'ls -la . aae6a7 d23243 93d6ac b9f87e'",
+      "/bin/bash -lc \"rg -n '\"'^'\"' --glob 'observations.json' --glob 'actions.json'\"",
+      "/bin/bash -lc \"rg -n '\"'^'\"' --glob 'assignment.md' --glob 'answer.md'\"",
+      "/bin/bash -lc \"rg -n 'useId|useEffect|unbind|function |script|hydrateRoot|Ro[st]|Planning' --glob '*.mjs' --glob 'index.html'\"",
+      "/bin/bash -lc \"rg -n '\"'^'\"' --glob 'actions.json'\"",
+      "/bin/bash -lc \"python -B - <<'PY'\nimport json\nfrom pathlib import Path\nfor f in sorted(Path('.').glob('*/observations.json')):\n d=json.loads(f.read_text());print(f)\n for k,v in d.items():\n  if isinstance(v,list) and v and isinstance(v[0],dict):\n   print(k, len(v))\n   for x in v:\n    for a,b in x.items():\n     if isinstance(b,list) and len(b)>4: print(a,len(b),'fields',list(b[0]) if isinstance(b[0],dict) else str(b[0])[:350])\n     else: print(a,str(b)[:800])\n  else: print(k,v)\nPY\"",
+      "/bin/bash -lc \"rg -n '\"'^'\"' aae6a7/product/view.mjs 93d6ac/product/view.mjs aae6a7/product/boot.mjs d23243/product/view.mjs b9f87e/product/view.mjs\"",
+      "/bin/bash -lc \"python -B - <<'PY'\nimport json\nfrom pathlib import Path\nfor f in sorted(Path('.').glob('*/observations.json')):\n print(f)\n for v in json.loads(f.read_text())['realBrowserVisits']:\n  o={a['index']:a for a in v['observed']}\n  print(v['file'])\n  for i,a in enumerate(v['actions'],1):\n   row=o.get(i,{}); p=row.get('diagnostics'); state=''\n   if p and a.get('target')=='text=Read diagnostics':\n    state=' | '+', '.join(x['button']+'='+str(x.get('description') or '-') for x in p['links'])+' | '+','.join(p['topics'])+' | '+str(p['deliveries'])+' | '+str(p['hydration'])\n   print(i,a.get('target',a['op']).removeprefix('text='),a.get('width',''), row.get('width', '-'),state)\nPY\"",
+      "/bin/bash -lc 'nl -ba criteria.md'",
+      "/bin/bash -lc \"rg -n 'rawTraceSha256|sourceAndModePreserved|changedFinal|executorExit|\\\"file\\\"|\\\"index\\\": (3|4|5|6|8|9|10|11|12|13|15|16|17|18|19|20|21|22|23|25|27),' --glob 'observations.json'\"",
+      "/bin/bash -lc \"python -B - <<'PY'\nimport hashlib, json\nfrom pathlib import Path\nfor f in sorted(Path('.').glob('*/observations.json')):\n d=json.loads(f.read_text())\n print(f.parent.name, [(p.name,hashlib.sha256(p.read_bytes()).hexdigest()==d['productSha256']['dist/'+p.name]) for p in sorted((f.parent/'product').iterdir())], d['sourceAndModePreserved'], len(d['changedFinal']))\nPY\""
+    ],
+    "observedWebToolCalls": 0,
+    "variantToLabelKeyInPacket": false,
+    "mappingAppliedByCoordinatorAfterScorerSignature": true
+  },
+  "confirm": {
+    "model": "gpt-6.2-sol",
+    "reasoning": "high",
+    "sandbox": "read-only",
+    "longTermMemory": "disabled",
+    "gradedExit": 0,
+    "signedTextSha256": "956a1f11c2a232a305ca61dc188b6e33872a9c0deaccfc27490c33724d537d7c",
+    "rawEventsSha256": "9a6f15479e078538dae4e0a306aa69e109dc51ec970920c8ec6d902de3fdc74b",
+    "rawDispatchSha256": "e51e52800ebc83c804fbf7578e61611aa8b9e8d637a1f43b1192fd7f31bedaa3",
+    "frozenCriteriaSha256": "f7fb20dcbda1b74ddcecff8a8e174c7b4266b3d5732cef5b27f74c1a54390229",
+    "deliveredFiles": {
+      "criteria.md": "f7fb20dcbda1b74ddcecff8a8e174c7b4266b3d5732cef5b27f74c1a54390229",
+      "4dec36/observations.json": "689dbbc7e3c88d12ba4db88f32e60820f45b13c1da0168ec4f36a17e27c408df",
+      "4dec36/actions.json": "abe01a62afdaeba273c76c4d7dbfa3e13d105caead743db8422e9e1cca24121f",
+      "4dec36/answer.md": "062df34c54bb9cecdf9b8ddbb06a52b6c48c53f0735048c77736c02b7da5df21",
+      "4dec36/assignment.md": "57e1238a0e93830b80d676d9084e89d91b3890d1cba416600247cce18f47e8d2",
+      "f65235/observations.json": "d37f78c93c91a4d7665f1dc8dd0fabc6458218ee94f5d116a2c07a1dd95edcd5",
+      "f65235/actions.json": "6fcd1912af758ea26beaf8878d93d527812b840d72ee17948404a0aa0c62dc35",
+      "f65235/answer.md": "fed9bd365f3c144e9efadc55db27bee85d9bf21894f6a79bef678db0acf53a19",
+      "f65235/assignment.md": "94bf4e5e218db309652d7204c8adeae8895fda32b65276466c20902e4a590c91",
+      "a9cdb2/observations.json": "a3ee8ef3a9bd0ba40a8d6af35ad54a4161c1127e4e5a06b985eb0151b59d1382",
+      "a9cdb2/actions.json": "ec983a3cad4609af0a1e2a3ea4686a9ae0efde806f21a0e5f7f496bd0f2155aa",
+      "a9cdb2/answer.md": "2c4fcff262f37c0fc47de93e0537a4e08ab8a7197cbd5e13b5b92d0b7babbf9e",
+      "a9cdb2/assignment.md": "dbe79b89601882f1b6e5bf789d82242dc1b996f76db5ae504609c426d7a0ca20",
+      "46fa6b/observations.json": "ced4a8df3cbb717874a6606f86d18de83ad55df0e87dfa4975925a11da6e1fee",
+      "46fa6b/actions.json": "f2f719c4138c147a145f6f8c9b4ae820486bb2d87a4b9055ce8ec3456ccbd898",
+      "46fa6b/answer.md": "84783a49de6c18d92b0c9e9034051766eefe5288e941e80041089318a76ec764",
+      "46fa6b/assignment.md": "57e1238a0e93830b80d676d9084e89d91b3890d1cba416600247cce18f47e8d2",
+      "a345c1/observations.json": "fbb5f03ac9fad98b1f4a06329aa5b60cf7dd598ecbde9d02e457b07d3b7e3da8",
+      "a345c1/actions.json": "17dab6a8c6170e1f333dc90d7eab445c99ee07174fae6916279589c770ea211b",
+      "a345c1/answer.md": "71c3bd63a74b859b904587daa17c070711a6e69cd6c9cfc3603962c1c7cf9af9",
+      "a345c1/assignment.md": "94bf4e5e218db309652d7204c8adeae8895fda32b65276466c20902e4a590c91",
+      "7a0117/observations.json": "ada629e550cd148860f2f64fd0bd6b18884f2b2a5a269026b2930b723341cdf6",
+      "7a0117/actions.json": "3f247b2d5ff0ea1108f60b3f89ffb836c77f4b1ac7bd9d1f7f1e135d8017c2a4",
+      "7a0117/answer.md": "a5fe5b82c8c3f080cf4a443750f593f5972de49bc38fe3651b09c18090f46aa6",
+      "7a0117/assignment.md": "dbe79b89601882f1b6e5bf789d82242dc1b996f76db5ae504609c426d7a0ca20",
+      "6fe94e/observations.json": "7786c959f42f119b2e4a840cbfded41a646aa8c86630f91c7de34d56e7f493ad",
+      "6fe94e/actions.json": "c9f5f174f6028118c9dc6c5fc7dbdea30bb175e276e66246ffaa18332ba961ef",
+      "6fe94e/answer.md": "bc081d0c1ca04be664fed2ccf05f2f7e4b17a01c09b107fb4df984678282973f",
+      "6fe94e/assignment.md": "dbe79b89601882f1b6e5bf789d82242dc1b996f76db5ae504609c426d7a0ca20",
+      "6fe94e/product/index.html": "5f3375ea6baf80f106117687cf8fa1c7a8b71bef90160f7ae8c5ba95fdc14556",
+      "6fe94e/product/boot.mjs": "4efa75444790dcd1955c61ae95a3dad618d7eef843f2d7661f122a38e744fbc0",
+      "6fe94e/product/view.mjs": "c3270656396434b97cfc679f176f0b37be4dff38af50bcc6f7556762956447ad",
+      "7a0117/product/index.html": "5f3375ea6baf80f106117687cf8fa1c7a8b71bef90160f7ae8c5ba95fdc14556",
+      "7a0117/product/boot.mjs": "4efa75444790dcd1955c61ae95a3dad618d7eef843f2d7661f122a38e744fbc0",
+      "7a0117/product/view.mjs": "c3270656396434b97cfc679f176f0b37be4dff38af50bcc6f7556762956447ad",
+      "a345c1/product/index.html": "5f3375ea6baf80f106117687cf8fa1c7a8b71bef90160f7ae8c5ba95fdc14556",
+      "a345c1/product/boot.mjs": "4efa75444790dcd1955c61ae95a3dad618d7eef843f2d7661f122a38e744fbc0",
+      "a345c1/product/view.mjs": "9cf13ab9d1e7ec85f347c237073a776f6aa4e4c7fec559c0f24409cfedd66769",
+      "46fa6b/product/index.html": "5f3375ea6baf80f106117687cf8fa1c7a8b71bef90160f7ae8c5ba95fdc14556",
+      "46fa6b/product/boot.mjs": "4efa75444790dcd1955c61ae95a3dad618d7eef843f2d7661f122a38e744fbc0",
+      "46fa6b/product/view.mjs": "e018cc33f2383296b56aecd3973ea8b99db763b21992bf7257d47f58f568f81f",
+      "a9cdb2/product/index.html": "5f3375ea6baf80f106117687cf8fa1c7a8b71bef90160f7ae8c5ba95fdc14556",
+      "a9cdb2/product/boot.mjs": "4efa75444790dcd1955c61ae95a3dad618d7eef843f2d7661f122a38e744fbc0",
+      "a9cdb2/product/view.mjs": "c3270656396434b97cfc679f176f0b37be4dff38af50bcc6f7556762956447ad",
+      "f65235/product/index.html": "5f3375ea6baf80f106117687cf8fa1c7a8b71bef90160f7ae8c5ba95fdc14556",
+      "f65235/product/boot.mjs": "4efa75444790dcd1955c61ae95a3dad618d7eef843f2d7661f122a38e744fbc0",
+      "f65235/product/view.mjs": "9cf13ab9d1e7ec85f347c237073a776f6aa4e4c7fec559c0f24409cfedd66769",
+      "4dec36/product/index.html": "5f3375ea6baf80f106117687cf8fa1c7a8b71bef90160f7ae8c5ba95fdc14556",
+      "4dec36/product/boot.mjs": "4efa75444790dcd1955c61ae95a3dad618d7eef843f2d7661f122a38e744fbc0",
+      "4dec36/product/view.mjs": "e018cc33f2383296b56aecd3973ea8b99db763b21992bf7257d47f58f568f81f"
+    },
+    "packetVerifiedAgainstDispatch": true,
+    "neutralKeyForReadback": [
+      {
+        "role": "release",
+        "case": "boundary",
+        "label": "6fe94e"
+      },
+      {
+        "role": "C",
+        "case": "boundary",
+        "label": "7a0117"
+      },
+      {
+        "role": "A",
+        "case": "ordinary",
+        "label": "a345c1",
+        "original_label": "aae6a7"
+      },
+      {
+        "role": "A",
+        "case": "holdout",
+        "label": "46fa6b"
+      },
+      {
+        "role": "A",
+        "case": "boundary",
+        "label": "a9cdb2",
+        "original_label": "b9f87e"
+      },
+      {
+        "role": "C",
+        "case": "ordinary",
+        "label": "f65235"
+      },
+      {
+        "role": "C",
+        "case": "holdout",
+        "label": "4dec36"
+      }
+    ],
+    "operations": [
+      "/bin/bash -lc \"rg --files --hidden -g '\"'!.git/**'\"'\"",
+      "/bin/bash -lc 'cat criteria.md'",
+      "/bin/bash -lc \"rg -n '\"'^'\"' */assignment.md */answer.md\"",
+      "/bin/bash -lc \"rg --files --hidden -g '\"'!.git/**'\"' -0 | sort -z | xargs -0 wc -l\"",
+      "/bin/bash -lc \"rg -n '\"'^'\"' */actions.json\"",
+      "/bin/bash -lc \"rg -n '\"'^'\"' */product/boot.mjs */product/view.mjs\"",
+      "/bin/bash -lc \"python -B - <<'PY'\nimport json\nfrom pathlib import Path\nfor p in sorted(Path('.').glob('*/observations.json')):\n d=json.loads(p.read_text()); print(p, type(d).__name__,list(d) if isinstance(d,dict) else len(d))\n for k,v in d.items():\n  print(k, (list(v) if isinstance(v,dict) else str(v)[:160] if not isinstance(v,list) else (len(v), list(v[0]) if v and isinstance(v[0],dict) else str(v[:1])[:120])))\nPY\"",
+      "/bin/bash -lc \"sed -n '1,210p' 46fa6b/observations.json\"",
+      "/bin/bash -lc \"python -B - <<'PY'\nfrom pathlib import Path\nimport hashlib,json\nfor p in sorted(Path('.').glob('*/observations.json')):\n d=json.loads(p.read_text()); print('\\\\n',p.parent,'source/mode:',d['sourceAndModePreserved'],'changes:',d['changedFinal'],'exit:',d['executorExit']); print('hashes:',{k:hashlib.sha256((p.parent/'product'/Path(k).name).read_bytes()).hexdigest()==v if (p.parent/'product'/Path(k).name).exists() else 'absent' for k,v in d['productSha256'].items()})\n for run in d['realBrowserVisits']:\n  print(run['file'],len(run['actions']),run['error']); print('ops:', ' → '.join(a.get('target','').removeprefix('text=') or str(a.get('width',a['op'])) for a in run['actions'])); prev={}\n  for o in run['observed']:\n   if o['action'].get('target') \"'!= '\"'text=Read diagnostics': continue\n   q=o['diagnostics']; cur=q['deliveries']; diff={k:v-prev.get(k,0) for k,v in cur.items() if v\"'!=prev.get(k,0)}; prev=cur\n   print(f\"#{o['\"'index']:2d} {o['width']:4d}\\\", ' / '.join(f\\\"{l['button']}:{l.get('description','MISSING')}\\\" for l in q['links']), ' :: ', q['topics'], cur, 'delta',diff, 'hydration',q['hydration'])\nPY\"",
+      "/bin/bash -lc \"rg -n 'const id=|return unbind|return \\\\(\\\\)=>\\\\{\\\\}|\\\\},\\\\[' */product/view.mjs\"",
+      "/bin/bash -lc \"rg -n 'visible|page|DOM|chrome|independent|before|after|check|status|error|source' --glob '*.json' --glob '\"'!*/actions.json'\"' | head -85\"",
+      "/bin/bash -lc \"python -B - <<'PY'\nfrom pathlib import Path\nimport json,re\nfor p in sorted(Path('.').glob('*/actions.json')):\n d=json.loads(p.read_text()); print(p)\n for i,a in enumerate(d,1):\n  c=a['command']; m=re.search(r'node visit\\\\.mjs',c); print(i,a['exit'],c[:m.start()+len(m[0])] if m else c.splitlines()[0][:150])\nPY\"",
+      "/bin/bash -lc \"python -B - <<'PY'\nfrom pathlib import Path\nimport json, re\nfor p in sorted(Path('.').glob('*/actions.json')):\n d=json.loads(p.read_text()); r=json.loads(p.with_name('observations.json').read_text()); print(p.parent)\n invocations=[a for a in d if 'node visit.mjs' in a['command']]\n assert len(invocations)==len(r['realBrowserVisits'])\n for a,v in zip(invocations,r['realBrowserVisits']):\n  cmd=a['command'].replace(chr(92),'')\n  ops=[json.loads(s) for s in re.findall(r'\\\\{\\\"op\\\"\\\\s*:\\\\s*\\\"[\"'^\"]+\"[''^{}]*'\"\\\\}',cmd)]\n  print('steps', len(ops), 'matches',ops==v['actions'],'exit',a['exit'],'all snapshots correspond to the actions',all(v['actions'][o['index']-1]==o['action'] for o in v['observed']))\n  print('run reference present in answer', v['file'] in p.with_name('answer.md').read_text())\nPY\"",
+      "/bin/bash -lc \"python -B - <<'PY'\nfrom pathlib import Path\nimport json, re\nfor p in sorted(Path('.').glob('*/actions.json')):\n obs=json.loads(p.with_name('observations.json').read_text()); commands=json.loads(p.read_text()); runs=[a for a in commands if 'node visit.mjs' in a['command']]; ops=[[json.loads(s) for s in re.findall(r'\\\\{\\\"op\\\"\\\\s*:\\\\s*\\\"[\"'^\"]+\"[''^{}]*'\"\\\\}',a['command'].replace(chr(92),''))] for a in runs]\n print(p.parent, [(len(v['actions']),[i for i,a in enumerate(ops,1) if a==v['actions']]) for v in obs['realBrowserVisits']])\nPY\nls -la\""
+    ],
+    "observedWebToolCalls": 0,
+    "variantToLabelKeyInPacket": false,
+    "mappingAppliedByCoordinatorAfterScorerSignature": true
+  }
+}

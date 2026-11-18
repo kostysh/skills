@@ -1,0 +1,262 @@
+{
+  "chrome": "Chrome/158.0.8127.36",
+  "observations": [
+    {
+      "stage": "hydrated",
+      "state": {
+        "evidence": {
+          "recoverable": [],
+          "live": [
+            1,
+            2
+          ],
+          "delivered": [],
+          "retainedButton": true
+        },
+        "buttons": [
+          {
+            "name": "First",
+            "id": null,
+            "description": null
+          },
+          {
+            "name": "Second",
+            "id": null,
+            "description": null
+          }
+        ],
+        "focus": "Component laboratoryUnmount tooltipsFocus firstFirstSecond",
+        "tips": []
+      },
+      "accessible": [
+        {
+          "name": "First",
+          "description": null
+        },
+        {
+          "name": "Second",
+          "description": null
+        }
+      ]
+    },
+    {
+      "stage": "both open with caller ref",
+      "state": {
+        "evidence": {
+          "recoverable": [],
+          "live": [
+            1,
+            2
+          ],
+          "delivered": [],
+          "retainedButton": true
+        },
+        "buttons": [
+          {
+            "name": "First",
+            "id": "_R_c_",
+            "description": "First tip"
+          },
+          {
+            "name": "Second",
+            "id": "_R_k_",
+            "description": "Second tip"
+          }
+        ],
+        "focus": "First",
+        "tips": [
+          {
+            "id": "_R_c_",
+            "text": "First tip"
+          },
+          {
+            "id": "_R_k_",
+            "text": "Second tip"
+          }
+        ]
+      },
+      "accessible": [
+        {
+          "name": "First",
+          "description": "First tip"
+        },
+        {
+          "name": "Second",
+          "description": "Second tip"
+        }
+      ]
+    },
+    {
+      "stage": "resize closes both",
+      "state": {
+        "evidence": {
+          "recoverable": [],
+          "live": [
+            1,
+            2
+          ],
+          "delivered": [
+            1,
+            2
+          ],
+          "retainedButton": true
+        },
+        "buttons": [
+          {
+            "name": "First",
+            "id": null,
+            "description": null
+          },
+          {
+            "name": "Second",
+            "id": null,
+            "description": null
+          }
+        ],
+        "focus": "First",
+        "tips": []
+      },
+      "accessible": [
+        {
+          "name": "First",
+          "description": null
+        },
+        {
+          "name": "Second",
+          "description": null
+        }
+      ]
+    },
+    {
+      "stage": "resize with both removed",
+      "state": {
+        "evidence": {
+          "recoverable": [],
+          "live": [],
+          "delivered": [
+            1,
+            2
+          ],
+          "retainedButton": false
+        },
+        "buttons": [],
+        "focus": "Mount tooltips",
+        "tips": []
+      },
+      "accessible": []
+    },
+    {
+      "stage": "both open after remount",
+      "state": {
+        "evidence": {
+          "recoverable": [],
+          "live": [
+            3,
+            4
+          ],
+          "delivered": [
+            1,
+            2
+          ],
+          "retainedButton": false
+        },
+        "buttons": [
+          {
+            "name": "First",
+            "id": "_r_0_",
+            "description": "First tip"
+          },
+          {
+            "name": "Second",
+            "id": "_r_1_",
+            "description": "Second tip"
+          }
+        ],
+        "focus": "First",
+        "tips": [
+          {
+            "id": "_r_0_",
+            "text": "First tip"
+          },
+          {
+            "id": "_r_1_",
+            "text": "Second tip"
+          }
+        ]
+      },
+      "accessible": [
+        {
+          "name": "First",
+          "description": "First tip"
+        },
+        {
+          "name": "Second",
+          "description": "Second tip"
+        }
+      ]
+    },
+    {
+      "stage": "resize after remount",
+      "state": {
+        "evidence": {
+          "recoverable": [],
+          "live": [
+            3,
+            4
+          ],
+          "delivered": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "retainedButton": false
+        },
+        "buttons": [
+          {
+            "name": "First",
+            "id": null,
+            "description": null
+          },
+          {
+            "name": "Second",
+            "id": null,
+            "description": null
+          }
+        ],
+        "focus": "First",
+        "tips": []
+      },
+      "accessible": [
+        {
+          "name": "First",
+          "description": null
+        },
+        {
+          "name": "Second",
+          "description": null
+        }
+      ]
+    },
+    {
+      "stage": "final unmount",
+      "state": {
+        "evidence": {
+          "recoverable": [],
+          "live": [],
+          "delivered": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "retainedButton": false
+        },
+        "buttons": [],
+        "focus": "Mount tooltips",
+        "tips": []
+      },
+      "accessible": []
+    }
+  ]
+}

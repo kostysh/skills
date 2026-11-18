@@ -27,9 +27,9 @@ The evidence column applies to claims about runtime behavior in that context. A 
 | --- | --- | --- |
 | `useId` | Installed React supports it and a component-owned DOM relationship needs an ID | Not for list keys, data identity, cache keys, or async Server Components; multiple roots require owner-coordinated `identifierPrefix` |
 | `cache` | React Server Components are actually used | Request-scoped memoization and shared snapshots only; it is not a concurrency-correctness primitive and framework caching policy still wins |
-| `startTransition` | A non-urgent state update is appropriate | It does not create a View Transition and must not control text inputs; pending UI requires the matching transition API |
+| `startTransition` | A non-urgent state update is appropriate | Marks the update as non-blocking. Keep text input updates urgent. Use `useTransition` for pending state |
 | `<Activity>` | The installed stable React version exposes it and the component uses retained hidden UI | Hidden mode destroys Effects and later recreates them while preserving state; verify any globally scoped DOM or CSS behavior separately |
-| `<ViewTransition>` | The project already uses a React channel that exposes it | Canary/Experimental feature; requires a real `<ViewTransition>` boundary and transition-driven update, never a release-channel upgrade by default |
+| `<ViewTransition>` | Stable since React 19.3, or an earlier installed prerelease that exports it | Observe the requested animation under a participating boundary and a transition-driven update in a supporting browser |
 | Experimental taint APIs | The project already uses a compatible Experimental RSC environment | Optional defense-in-depth after authorization, DTO allowlisting, and isolation; never security closure |
 | `useMemo`, `memo`, `useCallback` | Profiling or a concrete dependency-identity need justifies them | Performance hints only; correctness must survive cache discard or re-render |
 

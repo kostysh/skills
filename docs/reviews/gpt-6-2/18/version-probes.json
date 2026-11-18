@@ -1,0 +1,92 @@
+{
+  "19.2.8": {
+    "chrome": "Chrome/158.0.8127.36",
+    "before": {
+      "version": "19.2.8",
+      "activity": "symbol",
+      "viewTransition": "undefined",
+      "native": "function",
+      "starts": 0,
+      "entries": 0,
+      "effects": [
+        "setup"
+      ],
+      "hydration": [],
+      "fragmentAPI": "undefined",
+      "firstNodeStillPresent": true,
+      "text": null
+    },
+    "after": {
+      "version": "19.2.8",
+      "activity": "symbol",
+      "viewTransition": "undefined",
+      "native": "function",
+      "starts": 0,
+      "entries": 0,
+      "effects": [
+        "setup"
+      ],
+      "hydration": [],
+      "fragmentAPI": "undefined",
+      "firstNodeStillPresent": true,
+      "text": "Schedule is open"
+    },
+    "ssr": "<!doctype html><html lang=\"en\"><meta charset=\"utf-8\"><title>Schedule</title><div id=\"root\"><main><h1>Schedule</h1><button>Toggle schedule</button><span>Information</span></main></div><script type=\"module\" src=\"./boot.js\"></script></html>",
+    "build": "development",
+    "serverPackage": "react-dom@19.2.8",
+    "codeSha256": {
+      "view.mjs": "94e41ba07c7dd6d503f2702e75ec58d12cc91bf7cf7094bbaa3c0b080b3a984f",
+      "build.mjs": "5764c4a9390edfc8561c093e4b2abfd3411da04973db34f3df54bbbd97946d37",
+      "boot.mjs": "ee4681b2415010d3e8b12aca07f6a347ec2eb0e0eade8ce677a5d49bb160d005",
+      "dist/boot.js": "47ad9afa3995ca3c1c2a22ffaf36a3c593222989229e96599c300185164e6349",
+      "visit.mjs": "91aafd0300d1338d3aac54636878e0643fb3dba35265017232ded5db8297a7b0"
+    }
+  },
+  "19.3.0": {
+    "chrome": "Chrome/158.0.8127.36",
+    "before": {
+      "version": "19.3.0",
+      "activity": "symbol",
+      "viewTransition": "symbol",
+      "native": "function",
+      "starts": 0,
+      "entries": 0,
+      "effects": [
+        "setup",
+        "cleanup",
+        "setup"
+      ],
+      "hydration": [],
+      "fragmentAPI": "function",
+      "firstNodeStillPresent": true,
+      "text": null
+    },
+    "after": {
+      "version": "19.3.0",
+      "activity": "symbol",
+      "viewTransition": "symbol",
+      "native": "function",
+      "starts": 1,
+      "entries": 1,
+      "effects": [
+        "setup",
+        "cleanup",
+        "setup"
+      ],
+      "hydration": [],
+      "fragmentAPI": "function",
+      "firstNodeStillPresent": true,
+      "text": "Schedule is open"
+    },
+    "ssr": "<!doctype html><html lang=\"en\"><meta charset=\"utf-8\"><title>Schedule</title><div id=\"root\"><main><h1>Schedule</h1><button>Toggle schedule</button><span>Information</span></main></div><script type=\"module\" src=\"./boot.js\"></script></html>",
+    "build": "development",
+    "serverPackage": "react-dom@19.3.0",
+    "codeSha256": {
+      "view.mjs": "94e41ba07c7dd6d503f2702e75ec58d12cc91bf7cf7094bbaa3c0b080b3a984f",
+      "build.mjs": "5764c4a9390edfc8561c093e4b2abfd3411da04973db34f3df54bbbd97946d37",
+      "boot.mjs": "ee4681b2415010d3e8b12aca07f6a347ec2eb0e0eade8ce677a5d49bb160d005",
+      "dist/boot.js": "0aeff4964924cd18a783a956c52f63e5921ad59aa1b270da0b5e5fdd9f195d5e",
+      "visit.mjs": "91aafd0300d1338d3aac54636878e0643fb3dba35265017232ded5db8297a7b0"
+    }
+  }
+}
