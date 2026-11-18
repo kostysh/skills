@@ -1,0 +1,8 @@
+--- C/references/forward-testing.md
++++ D/references/forward-testing.md
+@@ -23 +23 @@
+-Use fresh, unexposed contexts for blind trials and keep cued runs as guided evidence. The assessor needs the rubric and is not the role from which it is hidden.
++Use fresh, unexposed contexts for blind trials and keep cued runs as guided evidence. Give the assessor the rubric. Count comparison scores as blinded only when the version key stayed hidden from the assessor until all scores were recorded.
+@@ -50 +50 @@
+-3. If B consistently succeeds on both cases, choose the shortest positive instruction that preserves the required action (C). Compare C with A on the same cases, then test the fixed C on the reserved case. Retain the shorter wording when both checks support it. If A is already minimal, record that C equals A. Keep binding obligations and material exceptions.
++3. If B consistently succeeds on both cases, choose the shortest positive instruction (C) that preserves the required action, binding obligations and material exceptions. If A already meets that minimum, record C = A. In both cases, compare the fixed C with A on the original cases, then test C on the reserved case. Accept C when both checks support it.

@@ -20,7 +20,7 @@ When testing this reviewer or another evaluation method, the candidate's own ver
 
 ## Preserve blindness and authority
 
-Use fresh, unexposed contexts for blind trials and keep cued runs as guided evidence. The assessor needs the rubric and is not the role from which it is hidden.
+Use fresh, unexposed contexts for blind trials and keep cued runs as guided evidence. Give the assessor the rubric. Count comparison scores as blinded only when the version key stayed hidden from the assessor until all scores were recorded.
 
 Isolate the executor's task files from answer keys, prior audits, remediation logs, revealing filenames and neighboring runs. A skill may ship supporting history: constrain access or make a documented trial copy containing the relevant active surface. Record included/excluded files and check that removing history did not remove governing instructions or behavior. Audit the full shipped package separately when claiming package parity. Do not present instructional access limits on a shared filesystem as a hard sandbox.
 
@@ -47,7 +47,7 @@ When deciding whether one instruction is needed or can be shortened, test its ef
 
 1. Freeze the full materials an executor receives with the rule (A) and with only that rule removed (B). Trace equivalent cues in the task, governing instructions, metadata, references and generated copies. If an independent requirement or a copy derived from the rule still supplies it, success in B shows at most that this occurrence is redundant in that setting. To test unaided behavior, withhold equivalent cues where the setting permits it. For portability, test the complete package under the target environment’s actual rules.
 2. Before editing, fix the criteria from accepted requirements, an ordinary case and one that exposes a wrong decision. Reserve a different case until the wording has been chosen. Run A and B on the first two cases in fresh contexts with the same inputs, tools and executor settings. Give an assessor who does not know the version key the criteria and shuffled, anonymously coded actions and outputs. Reveal the key after the assessor records a judgment for each case.
-3. If B consistently succeeds on both cases, choose the shortest positive instruction that preserves the required action (C). Compare C with A on the same cases, then test the fixed C on the reserved case. Retain the shorter wording when both checks support it. If A is already minimal, record that C equals A. Keep binding obligations and material exceptions.
+3. If B consistently succeeds on both cases, choose the shortest positive instruction (C) that preserves the required action, binding obligations and material exceptions. If A already meets that minimum, record C = A. In both cases, compare the fixed C with A on the original cases, then test C on the reserved case. Accept C when both checks support it.
 4. If A succeeds and B fails, retain the detail that prevented the error and recheck that path after any edit. If A fails, correct the defect, test the original failure and a fresh case, and also test minimal C if B consistently succeeds. Investigate mixed results against a specific explanation before deciding whether to keep the rule.
 
 ## Assessment and evidence

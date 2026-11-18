@@ -1,0 +1,12 @@
+--- C1/references/forward-testing.md
++++ D/references/forward-testing.md
+@@ -43,0 +44,9 @@
++## Contribution of one rule
++
++When deciding whether one instruction is needed or can be shortened, test its effect on an observable decision.
++
++1. Freeze the full materials an executor receives with the rule (A) and with only that rule removed (B). Trace equivalent cues in the task, governing instructions, metadata, references and generated copies. If an independent requirement or a copy derived from the rule still supplies it, success in B shows at most that this occurrence is redundant in that setting. To test unaided behavior, withhold equivalent cues where the setting permits it. For portability, test the complete package under the target environment’s actual rules.
++2. Before editing, fix the criteria from accepted requirements, an ordinary case and one that exposes a wrong decision. Reserve a different case until the wording has been chosen. Run A and B on the first two cases in fresh contexts with the same inputs, tools and executor settings. Give an assessor who does not know the version key the criteria and shuffled, anonymously coded actions and outputs. Reveal the key after the assessor records a judgment for each case.
++3. If B consistently succeeds on both cases, choose the shortest positive instruction (C) that preserves the required action, binding obligations and material exceptions. If A already meets that minimum, record C = A. In both cases, compare the fixed C with A on the original cases, then test C on the reserved case. Accept C when both checks support it.
++4. If A succeeds and B fails, retain the detail that prevented the error and recheck that path after any edit. If A fails, correct the defect, test the original failure and a fresh case, and also test minimal C if B consistently succeeds. Investigate mixed results against a specific explanation before deciding whether to keep the rule.
++
