@@ -1,0 +1,211 @@
+{
+  "executor": "gpt-6.2-sol",
+  "reasoning": "medium",
+  "separateSessions": 8,
+  "memoriesInEveryDispatch": true,
+  "scopeReview": "Participants received one task, installation and application in a fresh working directory. Host reads remained technically possible. Audited operations contain no neighboring result, assignment key or external service. Two baseline runs wrote temporary files outside the allowed paths; the independent grades retain the failures.",
+  "receipts": [
+    {
+      "code": "74c0fc",
+      "arm": "B",
+      "case": "boundary",
+      "eventStreamSha256": "8fe50c8026d4df7ddd18b35dd049cdcdb74100fe4e6cf0163adc4c4ed7205d7b",
+      "toolOrMessageEvents": 19,
+      "assignedEntrySha256": "6c8128400b24b2b5baf07e16e782a1c068b1b0113f1aeb592a8a5c8a5fea1876",
+      "skillRead": [
+        {
+          "command": "/bin/bash -lc 'cat SKILL.md'",
+          "rawEventLine": 9,
+          "rawEventLineSha256": "02a8a5045b50c676b405a056ca2cdbe827ac5cfdbe08ffd51b9f383bd206f584",
+          "receivedRuleOrContext": "## Gotchas through ## Policies with the old bullet absent",
+          "oldBulletInResponse": false,
+          "candidateBulletInResponse": false,
+          "hasSurroundingSections": true
+        }
+      ],
+      "sharedHostReadRestriction": "process could read host files; observed commands/URL accesses reviewed. No assignment key or neighboring runs observed.",
+      "temporaryWrites": "see commands and independent assessment"
+    },
+    {
+      "code": "bf10fe",
+      "arm": "A",
+      "case": "ordinary",
+      "eventStreamSha256": "9665330739911fc23ac5743629aae410b4602f8d837be44ae55d17d96abf873a",
+      "toolOrMessageEvents": 20,
+      "assignedEntrySha256": "8b6cbe076ff9d7a8ae0a2efaffe5de451299a08c565d9c4d409d71f334775dee",
+      "skillRead": [
+        {
+          "command": "/bin/bash -lc 'cat SKILL.md BROWSER.md product-brief.md'",
+          "rawEventLine": 7,
+          "rawEventLineSha256": "215a56e24a244d98caec12d43a1bfa30a788e33f2b37475707c139ed22240f5b",
+          "receivedRuleOrContext": "- **medium** — Do not approve a design artifact from a stale export or a runtime implementation from an outdated mockup when current source and rendered behavior disagree.",
+          "oldBulletInResponse": true,
+          "candidateBulletInResponse": false,
+          "hasSurroundingSections": true
+        }
+      ],
+      "sharedHostReadRestriction": "process could read host files; observed commands/URL accesses reviewed. No assignment key or neighboring runs observed.",
+      "temporaryWrites": "see commands and independent assessment"
+    },
+    {
+      "code": "d46ed3",
+      "arm": "A",
+      "case": "boundary",
+      "eventStreamSha256": "1f63e348cf6ac5b179fd015a4cc2c6b6b481e2ac57128568f4a90d9422e80f31",
+      "toolOrMessageEvents": 22,
+      "assignedEntrySha256": "8b6cbe076ff9d7a8ae0a2efaffe5de451299a08c565d9c4d409d71f334775dee",
+      "skillRead": [
+        {
+          "command": "/bin/bash -lc \"ls -la && rg --files --hidden -g '\"'!.git'\"' && cat SKILL.md product-brief.md BROWSER.md\"",
+          "rawEventLine": 5,
+          "rawEventLineSha256": "5bb8037f2d3ddd5104a30e8d08d592017a08eee3b700c6257b2d5891f0a20cb0",
+          "receivedRuleOrContext": "- **medium** — Do not approve a design artifact from a stale export or a runtime implementation from an outdated mockup when current source and rendered behavior disagree.",
+          "oldBulletInResponse": true,
+          "candidateBulletInResponse": false,
+          "hasSurroundingSections": true
+        }
+      ],
+      "sharedHostReadRestriction": "process could read host files; observed commands/URL accesses reviewed. No assignment key or neighboring runs observed.",
+      "temporaryWrites": "A boundary wrote and executed a temporary copy of the browser driver outside visits/. Both independent scorers marked criterion 4 FAIL."
+    },
+    {
+      "code": "302a93",
+      "arm": "B",
+      "case": "ordinary",
+      "eventStreamSha256": "36e2584c2caafe84f90b5d3c6e9e11300b990a21e1e98a3edcc9bc69a3ec266b",
+      "toolOrMessageEvents": 19,
+      "assignedEntrySha256": "6c8128400b24b2b5baf07e16e782a1c068b1b0113f1aeb592a8a5c8a5fea1876",
+      "skillRead": [
+        {
+          "command": "/bin/bash -lc \"pwd; rg --files --hidden -g '\"'!.git'\"'; cat SKILL.md product-brief.md BROWSER.md\"",
+          "rawEventLine": 5,
+          "rawEventLineSha256": "924e132643e85216a7f4e5689cbf827f91ec7f80513379d14fa6b1c7a486e124",
+          "receivedRuleOrContext": "## Gotchas through ## Policies with the old bullet absent",
+          "oldBulletInResponse": false,
+          "candidateBulletInResponse": false,
+          "hasSurroundingSections": true
+        }
+      ],
+      "sharedHostReadRestriction": "process could read host files; observed commands/URL accesses reviewed. No assignment key or neighboring runs observed.",
+      "temporaryWrites": "see commands and independent assessment"
+    },
+    {
+      "code": "9299f7",
+      "arm": "A",
+      "case": "holdout",
+      "eventStreamSha256": "8727744a11eaa0b24b56e22572af6d2eecb4f6016ebaaa394bf55f4eea8ddfb4",
+      "toolOrMessageEvents": 19,
+      "assignedEntrySha256": "8b6cbe076ff9d7a8ae0a2efaffe5de451299a08c565d9c4d409d71f334775dee",
+      "skillRead": [
+        {
+          "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git/**'\"' && cat SKILL.md product-brief.md BROWSER.md\"",
+          "rawEventLine": 5,
+          "rawEventLineSha256": "ac1fca68ef979d204e1aaf0c0c5b2099e4f2a556d5eeee049631e3bb1eb19a27",
+          "receivedRuleOrContext": "- **medium** — Do not approve a design artifact from a stale export or a runtime implementation from an outdated mockup when current source and rendered behavior disagree.",
+          "oldBulletInResponse": true,
+          "candidateBulletInResponse": false,
+          "hasSurroundingSections": true
+        }
+      ],
+      "sharedHostReadRestriction": "process could read host files; observed commands/URL accesses reviewed. No assignment key or neighboring runs observed.",
+      "temporaryWrites": "A holdout wrote then removed three temporary logs in the workspace root. Confirmation scorer marked criterion 4 FAIL."
+    },
+    {
+      "code": "38fd52",
+      "arm": "C",
+      "case": "ordinary",
+      "eventStreamSha256": "4b3a5cbda5304b300f013e7e42572bba90bd61dd5db6105d81e165310ff421fb",
+      "toolOrMessageEvents": 23,
+      "assignedEntrySha256": "8dc4a1e3694af4d665738260731c657ea809a2b1bbb6a5619d9b5d185ed71627",
+      "skillRead": [
+        {
+          "command": "/bin/bash -lc 'cat SKILL.md product-brief.md BROWSER.md'",
+          "rawEventLine": 7,
+          "rawEventLineSha256": "cecc86ff209d784da36dbe08fead5103189e18f08dde23a5757bc31e446cd6d4",
+          "receivedRuleOrContext": "- **medium** — Verify the result in the current artifact or rendered interface.",
+          "oldBulletInResponse": false,
+          "candidateBulletInResponse": true,
+          "hasSurroundingSections": true
+        }
+      ],
+      "sharedHostReadRestriction": "process could read host files; observed commands/URL accesses reviewed. No assignment key or neighboring runs observed.",
+      "temporaryWrites": "see commands and independent assessment"
+    },
+    {
+      "code": "bcb1d3",
+      "arm": "C",
+      "case": "boundary",
+      "eventStreamSha256": "9613016297240d70cc95409bbcdaa894e7eb5661f5bfba70d8c078663fd90ec0",
+      "toolOrMessageEvents": 23,
+      "assignedEntrySha256": "8dc4a1e3694af4d665738260731c657ea809a2b1bbb6a5619d9b5d185ed71627",
+      "skillRead": [
+        {
+          "command": "/bin/bash -lc 'cat SKILL.md product-brief.md BROWSER.md'",
+          "rawEventLine": 5,
+          "rawEventLineSha256": "8cce3286707bb9553bdbb927dbbedaf59a860d41d338227392094a02caedab57",
+          "receivedRuleOrContext": "- **medium** — Verify the result in the current artifact or rendered interface.",
+          "oldBulletInResponse": false,
+          "candidateBulletInResponse": true,
+          "hasSurroundingSections": true
+        }
+      ],
+      "sharedHostReadRestriction": "process could read host files; observed commands/URL accesses reviewed. No assignment key or neighboring runs observed.",
+      "temporaryWrites": "see commands and independent assessment"
+    },
+    {
+      "code": "d87d97",
+      "arm": "C",
+      "case": "holdout",
+      "eventStreamSha256": "f9e9ea9bc8f663b62bebf080e21476ff8bcb66f7c45184ab1ac3e3f0e5f8b9c6",
+      "toolOrMessageEvents": 24,
+      "assignedEntrySha256": "8dc4a1e3694af4d665738260731c657ea809a2b1bbb6a5619d9b5d185ed71627",
+      "skillRead": [
+        {
+          "command": "/bin/bash -lc 'cat SKILL.md'",
+          "rawEventLine": 7,
+          "rawEventLineSha256": "8c8047b28144ff2756b9b2312b353bc70218e79d42397c14824ccfc8e4c7d209",
+          "receivedRuleOrContext": "- **medium** — Verify the result in the current artifact or rendered interface.",
+          "oldBulletInResponse": false,
+          "candidateBulletInResponse": true,
+          "hasSurroundingSections": true
+        }
+      ],
+      "sharedHostReadRestriction": "process could read host files; observed commands/URL accesses reviewed. No assignment key or neighboring runs observed.",
+      "temporaryWrites": "see commands and independent assessment"
+    }
+  ],
+  "archive": {
+    "name": "browser-records.tar.gz",
+    "sha256": "fad2e333b31df7d7164d95db45d491237789df241866af2fded7ccf17b4f6b5e",
+    "members": 120,
+    "independentOriginalPngs": 64,
+    "actualParticipantVisits": 47
+  },
+  "confirmationImages": {
+    "location": "visuals/",
+    "count": 6
+  },
+  "portableReplayOnHoldout": {
+    "code": "d87d97",
+    "realChromeWidths": [
+      320,
+      1180
+    ],
+    "allStateAndGeometryValuesMatch": true,
+    "identicalCaptureHashes": 7,
+    "captureHashesCompared": 8,
+    "differentCapture": "1180-invalid.png",
+    "primarySha256": "17814cc0b25cb75d7bf3cf8fb4a4cde00165b29c912035d8bfbbf275e57098b4",
+    "replaySha256": "af52a7a235669eea401ec40916d62b9bdbcad624b5d7325c56a9b1c4135bf22b",
+    "pixelDifference": {
+      "count": 22,
+      "boundingBox": [
+        335,
+        213,
+        336,
+        235
+      ],
+      "interpretation": "A 1 × 22 px line at the focused email field is consistent with its blinking caret."
+    }
+  }
+}

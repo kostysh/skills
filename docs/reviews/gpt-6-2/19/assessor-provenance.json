@@ -1,0 +1,626 @@
+{
+  "ab": {
+    "signed": {
+      "exit": 0,
+      "sha256": "565a35172dd43f722f30060dd6319033ab270cf84d6159549795f8bc4e92b729",
+      "events_sha256": "41feec2835398c78665402b832d8e48eefc9d3d0fb8f003a08ffe8c902f819b2"
+    },
+    "rawAnswerBytes": 7170,
+    "publishedReport": "assessment-ab.md",
+    "editorialOnly": "Private locators replaced by durable dossier links; the original report SHA is retained.",
+    "session": [
+      "codex",
+      "exec",
+      "--disable",
+      "memories",
+      "--ephemeral",
+      "--skip-git-repo-check",
+      "--sandbox",
+      "read-only",
+      "--model",
+      "gpt-6.2-sol",
+      "-c",
+      "model_reasoning_effort=\"high\"",
+      "--cd",
+      "{packet}",
+      "--json",
+      "--output-last-message",
+      "{scorer}/grades.md",
+      "-"
+    ],
+    "instructions": "Ты независимый оценщик. Работай только в текущем каталоге. Используй закрытые до опыта критерии criteria.md, выданные по нейтральным кодам задания, материалы до/после, реальные ответы, операции и независимые проверки, если они приложены. Сопоставь действия и наблюдаемое состояние каждого случая с критериями. Зачти эквивалентное решение. Для каждого кода зафиксируй необходимые аспекты, PASS/FAIL/INCONCLUSIVE по ним и общий исход с конкретными основаниями. Оцени заявленные возможности в пределах фактической среды. Не обращайся к другим каталогам и не пытайся определить неизвестное соответствие редакций. Ничего не изменяй. Выдай таблицу и основание каждого результата по-русски в финальном ответе. Подпиши его как независимый оценщик.",
+    "packetReadme": "Каталоги под нейтральными кодами содержат исходное и возвращённое оформление, фактические операции участника и отдельное чтение в Chrome. browser-screens содержит исходный вид получившейся формы, ошибку, положение клавиатурного фокуса и форму после отмены на обеих согласованных ширинах. При оценке визуальных критериев открой изображения. В отчёте отделяй измерения и операции участника от независимого просмотра.\n",
+    "signedBeforeUnmaskingByAssessor": true,
+    "access": "Separate ephemeral, read-only Sol high, memories disabled. The key, skill bodies and other evaluator output were absent from the packet. Command audit limited to observed access.",
+    "imageEvidence": {
+      "originalPngsDelivered": 32,
+      "directlyAttachedPngs": [],
+      "imageAssemblyEventLines": [
+        36,
+        37,
+        38,
+        39
+      ]
+    },
+    "neutralToOriginalCode": {
+      "74c0fc": "74c0fc",
+      "bf10fe": "bf10fe",
+      "d46ed3": "d46ed3",
+      "302a93": "302a93"
+    },
+    "sourceFileSha256": {
+      "readme.md": "d41751f983a9625befdf44e5faf2e32061012fffe5d096cc34b5bbe4914d2dd4",
+      "criteria.md": "ff313ed40bc2f9dd3792fd43c0f27ff221edd2be2b09ea4c6413d13493b6c2d7",
+      "bf10fe/actions.json": "02b59a4aad2a33e12c7c0e6cf27bd05a37e326bede9ae03875ba34a2f32b5f05",
+      "bf10fe/browser-readback.json": "1f807dad80441f1c32f490de3a16257894c9ec08aee8a0fac24bd9ea43d25c0b",
+      "bf10fe/answer.md": "32c8c58bc7f8e49ecc074e6af1a7e0ddb8381152f9f6b2ab6a76dbdecd0f29fa",
+      "bf10fe/task.md": "2fb45b5cdfb588d36fddbe78c523ec96fca005bb0d00aad23e3cb49cf74f63ec",
+      "d46ed3/actions.json": "f4a476e28ac7614926dceea0c03ee1f34dfcb7c6427a6dd16f889036f23c770b",
+      "d46ed3/browser-readback.json": "8fb06e0e971be6eaacdcf26f7be332b9ff8415f0d05eb386f707f3b6743eb72a",
+      "d46ed3/answer.md": "522ed21966aa4bdfbede7395bd69b8c83fd766117defc3b943b76a4c3257ea62",
+      "d46ed3/task.md": "2fb45b5cdfb588d36fddbe78c523ec96fca005bb0d00aad23e3cb49cf74f63ec",
+      "302a93/actions.json": "2d248d947b597b74de4460fd217fc910e4056228e297a7df646603cffbd58cde",
+      "302a93/browser-readback.json": "0cc9ff8668bc17f3e464f56b99fedcead36dde8ab75c714cc9a46a2e96844b2e",
+      "302a93/answer.md": "b86c2efccb8d5695dac8235b4468a06b7bcbd0575dea08dcfbb12371aadf974f",
+      "302a93/task.md": "2fb45b5cdfb588d36fddbe78c523ec96fca005bb0d00aad23e3cb49cf74f63ec",
+      "74c0fc/actions.json": "bbbbad313701539f141674be7c8d82c15db293d05f35b5f44249a33afff21096",
+      "74c0fc/browser-readback.json": "64845260a54d5068bc9c00eb05d43774614973b04b6bfd2c4974270e35e85ee2",
+      "74c0fc/answer.md": "449a541f6a2c7aead8a2364de92884de704e7dd14868d589330d9e934d9d04fe",
+      "74c0fc/task.md": "2fb45b5cdfb588d36fddbe78c523ec96fca005bb0d00aad23e3cb49cf74f63ec",
+      "74c0fc/browser-screens/390-initial.png": "d2e488b28c3ddcffb6ed457817c232fb8deb18c9de26be219079dacb10296fb3",
+      "74c0fc/browser-screens/390-keyboard.png": "100a5d533dab880a8336ed954cbaf18d53fe6f3288b706f7fce4ec3b7ac0ef6a",
+      "74c0fc/browser-screens/390-invalid.png": "8b89dabe4e53ea41db51fdfea64ad9dd6239e0d0360fa9a2338779fa94bdd5b6",
+      "74c0fc/browser-screens/390-closed.png": "d2b31a5b9f730b97679567ef8e5256c00ccfa079c49c5c6e52cef8db5bcce9d5",
+      "74c0fc/browser-screens/1180-initial.png": "882e57304f8ad34b1818b4ee12772b44b040d181d7ed13ee0b6036c5361748ff",
+      "74c0fc/browser-screens/1180-keyboard.png": "8ff9565760a7491e26404fdacff5d8d65dcd8f7888d2a14f08e1ac2415335043",
+      "74c0fc/browser-screens/1180-invalid.png": "3b9d0c52478df16901706908793467d585701f1fc614cb9f5b3a71f804b19bbc",
+      "74c0fc/browser-screens/1180-closed.png": "eb416dbc3f989f0d1e28e85a42e26a870fd7d2e44c37dedf8d8ad0a66a3d5bb8",
+      "74c0fc/after/product-brief.md": "067b3144dd0cea9f49d5a576a86dbbd0c89b41f3aee8d0f2fbbe1ae22be05c57",
+      "74c0fc/before/product-brief.md": "067b3144dd0cea9f49d5a576a86dbbd0c89b41f3aee8d0f2fbbe1ae22be05c57",
+      "74c0fc/before/dist/form.js": "315db0c2a06498a219574556f5976b10351489edde2c58326ed7cfb28ec3e455",
+      "74c0fc/before/dist/tokens.css": "f3e9136a70660445bdf9506b2b08ad7f65724783306cc4e4b873b1576dd5e5db",
+      "74c0fc/before/dist/presentation.css": "af1c84fcedaabe8e62a3755ae3f3ba8ddc4b120bfa60dd0a1783b35cde02d925",
+      "74c0fc/before/dist/index.html": "74f93d687ef020f2403a3837cdc6d9b3d4cc02bfe7e72feeb1e40ed80cd744f2",
+      "74c0fc/after/dist/form.js": "315db0c2a06498a219574556f5976b10351489edde2c58326ed7cfb28ec3e455",
+      "74c0fc/after/dist/tokens.css": "f3e9136a70660445bdf9506b2b08ad7f65724783306cc4e4b873b1576dd5e5db",
+      "74c0fc/after/dist/presentation.css": "86ffaba70822a5cb38cd4113fc08e70dad5e09c0a8a0f08f6323af10880797af",
+      "74c0fc/after/dist/index.html": "74f93d687ef020f2403a3837cdc6d9b3d4cc02bfe7e72feeb1e40ed80cd744f2",
+      "302a93/browser-screens/390-initial.png": "94ef7234eaea6675775cbc4b7c2ca0d10650e59f78c3d28acc423f43e7d291bc",
+      "302a93/browser-screens/390-keyboard.png": "97981f290b3c2db9c9c2eba77ed2b72b9271be2120381d293089bff4718c5098",
+      "302a93/browser-screens/390-invalid.png": "fffa23dad837d07a8c3c11b47995d99a8e4e20151a2e167a6f3fdaaa7858f6d4",
+      "302a93/browser-screens/390-closed.png": "ad24daad12d0b5d83fb898dcf95061acdbf5dd2a88ff8b12d88f53d5fda87d47",
+      "302a93/browser-screens/1180-initial.png": "9d84f3b89e23d5fe87aff7c95f8f5445a6c61b4fcf209ef9cf7b5b282911d364",
+      "302a93/browser-screens/1180-keyboard.png": "66b92ebf311b60e52fb8528edfa3c894dc94c30bf602c8d3d2984c2f58def0b4",
+      "302a93/browser-screens/1180-invalid.png": "7946dbcfed8f893ccbffc3db29c8e30f0e64b877dce2b174d6a2ae33fca351ff",
+      "302a93/browser-screens/1180-closed.png": "b3f418a2c755d71576d2f54697661dc1979b6689d8c5f46e8c06deb68dbe9225",
+      "302a93/after/product-brief.md": "b522c49f8e9a3e936253416565060fc064bcc812c483a551be3fe4d4a91cd16c",
+      "302a93/before/product-brief.md": "b522c49f8e9a3e936253416565060fc064bcc812c483a551be3fe4d4a91cd16c",
+      "302a93/before/dist/form.js": "315db0c2a06498a219574556f5976b10351489edde2c58326ed7cfb28ec3e455",
+      "302a93/before/dist/tokens.css": "f3e9136a70660445bdf9506b2b08ad7f65724783306cc4e4b873b1576dd5e5db",
+      "302a93/before/dist/presentation.css": "af1c84fcedaabe8e62a3755ae3f3ba8ddc4b120bfa60dd0a1783b35cde02d925",
+      "302a93/before/dist/index.html": "d7a1b7144a7b1a6368b0a4137a4ff44376b0edbe2b814627b5d63e8043522d81",
+      "302a93/after/dist/form.js": "315db0c2a06498a219574556f5976b10351489edde2c58326ed7cfb28ec3e455",
+      "302a93/after/dist/tokens.css": "f3e9136a70660445bdf9506b2b08ad7f65724783306cc4e4b873b1576dd5e5db",
+      "302a93/after/dist/presentation.css": "9fcb681fb938e83b950f7d3fceeb23441122c533f3f5914d972c20813b1160f2",
+      "302a93/after/dist/index.html": "d7a1b7144a7b1a6368b0a4137a4ff44376b0edbe2b814627b5d63e8043522d81",
+      "d46ed3/browser-screens/390-initial.png": "9980b7c6b86f640d106167b5720a03e0b161907f8f531d52edb0c1649465c093",
+      "d46ed3/browser-screens/390-keyboard.png": "53c26cc1f7c3482fd66674ab96f0741b976cc026b159dfbe01c5e46348577233",
+      "d46ed3/browser-screens/390-invalid.png": "8f65654782c208a41e285bf0364a53753d04ac943f01f07bd3db4fde2124ef6f",
+      "d46ed3/browser-screens/390-closed.png": "e8e0404c28989c074db8b0d8064c6353d9016cb326aa4d9a533ba5a683765eb7",
+      "d46ed3/browser-screens/1180-initial.png": "5097385099847b0755bbea8b4692e92ca509d9eaec1953f583869dcdf15f37c1",
+      "d46ed3/browser-screens/1180-keyboard.png": "deb2c83d8d2e1f6d48f8009b318ba5a3d04105590e65af8f28bae59b9cb66081",
+      "d46ed3/browser-screens/1180-invalid.png": "7cafdb756cc88c99c6a01ac3b3f14ee1819d34eae512fa6a29d91ce2e7ab1aa5",
+      "d46ed3/browser-screens/1180-closed.png": "6ccbdf3b8f0751a72bfaf33aef2ce0bd6fc6078cdaa1f1f6070e1725c223648b",
+      "d46ed3/after/product-brief.md": "067b3144dd0cea9f49d5a576a86dbbd0c89b41f3aee8d0f2fbbe1ae22be05c57",
+      "d46ed3/before/product-brief.md": "067b3144dd0cea9f49d5a576a86dbbd0c89b41f3aee8d0f2fbbe1ae22be05c57",
+      "d46ed3/before/dist/form.js": "315db0c2a06498a219574556f5976b10351489edde2c58326ed7cfb28ec3e455",
+      "d46ed3/before/dist/tokens.css": "f3e9136a70660445bdf9506b2b08ad7f65724783306cc4e4b873b1576dd5e5db",
+      "d46ed3/before/dist/presentation.css": "af1c84fcedaabe8e62a3755ae3f3ba8ddc4b120bfa60dd0a1783b35cde02d925",
+      "d46ed3/before/dist/index.html": "74f93d687ef020f2403a3837cdc6d9b3d4cc02bfe7e72feeb1e40ed80cd744f2",
+      "d46ed3/after/dist/form.js": "315db0c2a06498a219574556f5976b10351489edde2c58326ed7cfb28ec3e455",
+      "d46ed3/after/dist/tokens.css": "f3e9136a70660445bdf9506b2b08ad7f65724783306cc4e4b873b1576dd5e5db",
+      "d46ed3/after/dist/presentation.css": "31d8a31843d87fd2ddc05f5933f4d8cc3715709f52fb573844183254ae4760ab",
+      "d46ed3/after/dist/index.html": "74f93d687ef020f2403a3837cdc6d9b3d4cc02bfe7e72feeb1e40ed80cd744f2",
+      "bf10fe/browser-screens/390-initial.png": "9f53296921c8582bf6e619e1e40c3ef5db611ea33a0c4b5b3dad7d699e5e21e7",
+      "bf10fe/browser-screens/390-keyboard.png": "2e51fb974e359c4dbe2ae9fe8f54212e0b5a78516c2905c9bc67891364347545",
+      "bf10fe/browser-screens/390-invalid.png": "7796196a23a3d8e8b79be6bceed250b096fcde98051ab83d3d634a3818489a85",
+      "bf10fe/browser-screens/390-closed.png": "5d5530a6f8a55ee4c1db0f317c49402ae29381ba978538c3d4aad94423bf3bf5",
+      "bf10fe/browser-screens/1180-initial.png": "832447e45bdbc4dc79d1c8df6abed1e78aa8f7ef556d71f3b0deb1048f944575",
+      "bf10fe/browser-screens/1180-keyboard.png": "2937f8b4f1a47a1856d607bc4652826d492d06e3e5858a8e698d0d2009b2645f",
+      "bf10fe/browser-screens/1180-invalid.png": "9e852f932fe31330caeefc9a45adfefc970e680dd6c251ffc547907f7c927159",
+      "bf10fe/browser-screens/1180-closed.png": "dbc24003061808fa862effe2c1d6b18dabbe5322901ea9a8e65abe45843a4164",
+      "bf10fe/after/product-brief.md": "b522c49f8e9a3e936253416565060fc064bcc812c483a551be3fe4d4a91cd16c",
+      "bf10fe/before/product-brief.md": "b522c49f8e9a3e936253416565060fc064bcc812c483a551be3fe4d4a91cd16c",
+      "bf10fe/before/dist/form.js": "315db0c2a06498a219574556f5976b10351489edde2c58326ed7cfb28ec3e455",
+      "bf10fe/before/dist/tokens.css": "f3e9136a70660445bdf9506b2b08ad7f65724783306cc4e4b873b1576dd5e5db",
+      "bf10fe/before/dist/presentation.css": "af1c84fcedaabe8e62a3755ae3f3ba8ddc4b120bfa60dd0a1783b35cde02d925",
+      "bf10fe/before/dist/index.html": "d7a1b7144a7b1a6368b0a4137a4ff44376b0edbe2b814627b5d63e8043522d81",
+      "bf10fe/after/dist/form.js": "315db0c2a06498a219574556f5976b10351489edde2c58326ed7cfb28ec3e455",
+      "bf10fe/after/dist/tokens.css": "f3e9136a70660445bdf9506b2b08ad7f65724783306cc4e4b873b1576dd5e5db",
+      "bf10fe/after/dist/presentation.css": "36827f4f79c839e25a7468431456f7b4516b91b7aee2c840278824366f661041",
+      "bf10fe/after/dist/index.html": "d7a1b7144a7b1a6368b0a4137a4ff44376b0edbe2b814627b5d63e8043522d81"
+    },
+    "operations": [
+      {
+        "eventLine": 5,
+        "eventLineSha256": "155ec1f4def8d92235bed8cdde819142562d1f61d99284542bfbef7262683485",
+        "command": "/bin/bash -lc 'ls -la'",
+        "exit": 0
+      },
+      {
+        "eventLine": 7,
+        "eventLineSha256": "d4ed86816e849a1e72bfa4a7e3b24326b17b8b0d548eb195a1150a03c0af4948",
+        "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 9,
+        "eventLineSha256": "e3729d3250566db88c35dcd34e16cfe531ffbb4e6adf0ee11ef27514a4170d27",
+        "command": "/bin/bash -lc 'cat criteria.md readme.md'",
+        "exit": 0
+      },
+      {
+        "eventLine": 11,
+        "eventLineSha256": "d278294d1220703424a558c0d3bdd83b9296ad77f65347182635117bc63c7cb6",
+        "command": "/bin/bash -lc 'wc -l */actions.json */browser-readback.json */before/product-brief.md */after/dist/*'",
+        "exit": 0
+      },
+      {
+        "eventLine": 13,
+        "eventLineSha256": "389b8ef2c92fed8b37c036b32db37a808c412c17d90c200051e364bda37e48a9",
+        "command": "/bin/bash -lc \"rg -n '\"'^'\"' */task.md */answer.md\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 16,
+        "eventLineSha256": "4715b3ca3619601ae54a1edea8adcf72bd1d87932c3905ccb4e8e59ef67e6e38",
+        "command": "/bin/bash -lc 'for code in 302a93 74c0fc bf10fe d46ed3; do diff -qr \"$code/before\" \"$code/after\"; done'",
+        "exit": 1
+      },
+      {
+        "eventLine": 17,
+        "eventLineSha256": "8db73724e58f46c348b1074ce2b4eee1011a0bdbc82743f9310cc88ed529efda",
+        "command": "/bin/bash -lc \"rg -n '\"'^'\"' */before/product-brief.md */actions.json\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 19,
+        "eventLineSha256": "40d803780b2ac8fde3b36fb808003997a8ed55cd249b324e3877fb348532fc46",
+        "command": "/bin/bash -lc \"for code in 302a93 74c0fc bf10fe d46ed3; do jq 'keys' \\\"\"'$code/browser-readback.json\"; done'",
+        "exit": 0
+      },
+      {
+        "eventLine": 21,
+        "eventLineSha256": "a925f2ff066119181a78ac038752036cec4b9781fba42820720a6e51c596850f",
+        "command": "/bin/bash -lc \"jq '.independentRenders | type, (if type==\\\"object\\\" then keys else (.[0]|keys) end)' 302a93/browser-readback.json && sed -n '1,205p' 302a93/browser-readback.json\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 23,
+        "eventLineSha256": "23cb7dbc316b97eff824b1942ba7df531eadbd02a7cdbc8469d38bda6164df5e",
+        "command": "/bin/bash -lc \"rg -n '\"'^'\"' */before/product-brief.md */before/dist/index.html */before/dist/form.js */before/dist/tokens.css\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 25,
+        "eventLineSha256": "7f4e118e1c170e738ed3002200c1f81b92f2f35a36c9383ae0002d994abebfaa",
+        "command": "/bin/bash -lc \"for code in 302a93 74c0fc bf10fe d46ed3; do jq -r '[.changedPreviousFiles,.newPaths,.cssSha256]|@json' \\\"\"'$code/browser-readback.json\"; sha256sum \"$code/after/dist/presentation.css\"; done'",
+        "exit": 0
+      },
+      {
+        "eventLine": 27,
+        "eventLineSha256": "0cb000207051ad6fd54e61046fbd0c0262b422b5c6c981c14109672c510f418c",
+        "command": "/bin/bash -lc \"python3 - <<'PY'\nimport json\nfrom pathlib import Path\nfor path in sorted(Path('.').glob('*/actions.json')):\n d=json.loads(path.read_text()); print(path, 'visits:',len(d['studentVisitHashes']))\n for i,x in enumerate(d['operations'],1):\n  c=x.get('command',''); print(i,x.get('exit'),(c[:195] + ' [...]') if len(c)>195 else c or x.get('change'))\nPY\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 29,
+        "eventLineSha256": "0859efc6aefbe17a2aa30b9e25b6de890000b37c28e01a18bebb007e77c2cb5a",
+        "command": "/bin/bash -lc \"python3 - <<'PY'\nfrom pathlib import Path\nfrom hashlib import sha256\nimport json\nfor path in sorted(Path('.').glob('*/browser-readback.json')):\n d=json.loads(path.read_text()); print(path)\n for frame in d['independentRenders']:\n  print('exit',frame['exit'],'error',frame['error'], 'captures match', all(sha256((path.parent/'browser-screens'/fn).read_bytes()).hexdigest()==expected for fn,expected in frame['captures'].items()))\n  for name,p in frame['points'].items():\n   print(name,p['width'],p['page'],p['excursions'],p['clippedButtons'], p['focus'], [list(v.values()) for v in p['actions']], p['messages'],[(f['id'],f['value'],f['invalid']) for f in p['fields']],p['dialog'])\nPY\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 31,
+        "eventLineSha256": "f2dc59c70797077f413699664c2eb1b003364f7a20b2b6d132ecb3098babd396",
+        "command": "/bin/bash -lc \"python3 -c 'from PIL import Image; print(Image.__version__)' && file */browser-screens/*\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 36,
+        "eventLineSha256": "3cc9a7205d864f12cf28398274c22431f9903a4382065c2f61fb5b9c0863813b",
+        "command": "/bin/bash -lc \"python3 - 302a93 <<'PY'\nfrom PIL import Image,ImageDraw\nfrom pathlib import Path\nfrom io import BytesIO\nimport base64,sys\nroot=Path(sys.argv[1])/'browser-screens'\nout=Image.new('RGB',(1084,1030),'white')\ndraw=ImageDraw.Draw(out)\nout2=Image.new('RGB',(1030,800),'white')\ndraw2=ImageDraw.Draw(out2)\nfor k,state in enumerate(('initial','keyboard','invalid','closed')):\n  y=(k//2)*515\n  x=(k%2)*542\n  for width in (390,1180):\n    im=Image.open(root/f'{width}-{state}.png')\n    if width == 390:\n      a=im.crop((0,0,390,554)).resize((343,487))\n      out.paste(a,(x,y+23))\n      draw.text((x+5,y+4),f'{sys.argv[1]}   {state}   390 px',fill='black')\n    else:\n      a=im.crop((235,0,945,551)).resize((485,376))\n      # Place the two widths below their labels in separate images.\n      out2.paste(a,(k%2*542,k//2*399+22))\n      draw2.text((k%2*542+5,k//2*399+4),f'{sys.argv[1]}   {state}   1180 px',fill='black')\nfor sheet in (out.crop((0,0,885,1030)),out2):\n  buf=BytesIO()\n  sheet.quantize(64).save(buf,format='PNG',optimize=True)\n  print(base64.b64encode(buf.getvalue()).decode())\nPY\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 37,
+        "eventLineSha256": "e13ed4aeed4a2c57ed1a85b4a78007c245ada439892c8a28284e4df2db958ce7",
+        "command": "/bin/bash -lc \"python3 - bf10fe <<'PY'\nfrom PIL import Image,ImageDraw\nfrom pathlib import Path\nfrom io import BytesIO\nimport base64,sys\nroot=Path(sys.argv[1])/'browser-screens'\nout=Image.new('RGB',(1084,1030),'white')\ndraw=ImageDraw.Draw(out)\nout2=Image.new('RGB',(1030,800),'white')\ndraw2=ImageDraw.Draw(out2)\nfor k,state in enumerate(('initial','keyboard','invalid','closed')):\n  y=(k//2)*515\n  x=(k%2)*542\n  for width in (390,1180):\n    im=Image.open(root/f'{width}-{state}.png')\n    if width == 390:\n      a=im.crop((0,0,390,554)).resize((343,487))\n      out.paste(a,(x,y+23))\n      draw.text((x+5,y+4),f'{sys.argv[1]}   {state}   390 px',fill='black')\n    else:\n      a=im.crop((235,0,945,551)).resize((485,376))\n      # Place the two widths below their labels in separate images.\n      out2.paste(a,(k%2*542,k//2*399+22))\n      draw2.text((k%2*542+5,k//2*399+4),f'{sys.argv[1]}   {state}   1180 px',fill='black')\nfor sheet in (out.crop((0,0,885,1030)),out2):\n  buf=BytesIO()\n  sheet.quantize(64).save(buf,format='PNG',optimize=True)\n  print(base64.b64encode(buf.getvalue()).decode())\nPY\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 38,
+        "eventLineSha256": "deb6c8c9d3733f9db49991ef5cc8102ef25e3deab8bba50de96765c53d99cdd3",
+        "command": "/bin/bash -lc \"python3 - d46ed3 <<'PY'\nfrom PIL import Image,ImageDraw\nfrom pathlib import Path\nfrom io import BytesIO\nimport base64,sys\nroot=Path(sys.argv[1])/'browser-screens'\nout=Image.new('RGB',(1084,1030),'white')\ndraw=ImageDraw.Draw(out)\nout2=Image.new('RGB',(1030,800),'white')\ndraw2=ImageDraw.Draw(out2)\nfor k,state in enumerate(('initial','keyboard','invalid','closed')):\n  y=(k//2)*515\n  x=(k%2)*542\n  for width in (390,1180):\n    im=Image.open(root/f'{width}-{state}.png')\n    if width == 390:\n      a=im.crop((0,0,390,554)).resize((343,487))\n      out.paste(a,(x,y+23))\n      draw.text((x+5,y+4),f'{sys.argv[1]}   {state}   390 px',fill='black')\n    else:\n      a=im.crop((235,0,945,551)).resize((485,376))\n      # Place the two widths below their labels in separate images.\n      out2.paste(a,(k%2*542,k//2*399+22))\n      draw2.text((k%2*542+5,k//2*399+4),f'{sys.argv[1]}   {state}   1180 px',fill='black')\nfor sheet in (out.crop((0,0,885,1030)),out2):\n  buf=BytesIO()\n  sheet.quantize(64).save(buf,format='PNG',optimize=True)\n  print(base64.b64encode(buf.getvalue()).decode())\nPY\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 39,
+        "eventLineSha256": "5718c218e8f9e175db9a0746df1fba61a4abbf711d669fb2d12048707a89c183",
+        "command": "/bin/bash -lc \"python3 - 74c0fc <<'PY'\nfrom PIL import Image,ImageDraw\nfrom pathlib import Path\nfrom io import BytesIO\nimport base64,sys\nroot=Path(sys.argv[1])/'browser-screens'\nout=Image.new('RGB',(1084,1030),'white')\ndraw=ImageDraw.Draw(out)\nout2=Image.new('RGB',(1030,800),'white')\ndraw2=ImageDraw.Draw(out2)\nfor k,state in enumerate(('initial','keyboard','invalid','closed')):\n  y=(k//2)*515\n  x=(k%2)*542\n  for width in (390,1180):\n    im=Image.open(root/f'{width}-{state}.png')\n    if width == 390:\n      a=im.crop((0,0,390,554)).resize((343,487))\n      out.paste(a,(x,y+23))\n      draw.text((x+5,y+4),f'{sys.argv[1]}   {state}   390 px',fill='black')\n    else:\n      a=im.crop((235,0,945,551)).resize((485,376))\n      # Place the two widths below their labels in separate images.\n      out2.paste(a,(k%2*542,k//2*399+22))\n      draw2.text((k%2*542+5,k//2*399+4),f'{sys.argv[1]}   {state}   1180 px',fill='black')\nfor sheet in (out.crop((0,0,885,1030)),out2):\n  buf=BytesIO()\n  sheet.quantize(64).save(buf,format='PNG',optimize=True)\n  print(base64.b64encode(buf.getvalue()).decode())\nPY\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 43,
+        "eventLineSha256": "cba0efe717deb8688eb72171a7c4ed6a708f3c226317bd97fd7a2d6ca57c6016",
+        "command": "/bin/bash -lc \"jq -r '.operations | to_entries[] | select(.key>=7) | \\\"\\\\(.key+1) exit=\\\\(.value.exit)\\\\n\\\\(.value.command)\\\"' bf10fe/actions.json\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 44,
+        "eventLineSha256": "35bcdb65c354e65dddf5dba77961b4ff9159664cbdca8ca42aaf0a4284550d3e",
+        "command": "/bin/bash -lc \"jq -r '.operations | to_entries[] | select(.key>=7) | \\\"\\\\(.key+1) exit=\\\\(.value.exit)\\\\n\\\\(.value.command)\\\"' 74c0fc/actions.json\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 46,
+        "eventLineSha256": "3d487c6b359616965a68c9eeb31c5422e05be18d8e64a408c1bb0feffd75b893",
+        "command": "/bin/bash -lc \"rg -n 'Weekly|skip|select|opened|#rate|position|text-overflow|nowrap|overflow|clip' */browser-readback.json */after/dist/presentation.css */before/dist/presentation.css */actions.json -o --max-columns 120\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 48,
+        "eventLineSha256": "8dc55ef1f231c60b75719daecfcff722be38ee25e6a268cba03e82f26a490410",
+        "command": "/bin/bash -lc 'nl -ba criteria.md && nl -ba readme.md'",
+        "exit": 0
+      },
+      {
+        "eventLine": 50,
+        "eventLineSha256": "ec41cb139df0769c19220da51d642702e87e63b38f3856f81079148593d7ce01",
+        "command": "/bin/bash -lc \"rg -n 'TemporaryDirectory|studentVisitHashes|Rendered layout and interaction checks passed|Both widths|a10d|closed|\\\\.actions \\\\{' */actions.json */browser-readback.json */after/dist/presentation.css -o\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 52,
+        "eventLineSha256": "dea6ec365fde99123aa73e59dd6865659011ecc88e5b21d64aacc45efaaa02eb",
+        "command": "/bin/bash -lc \"node - <<'JS'\nconst assert = require('node:assert/strict');\nconst fs = require('node:fs');\nconst vm = require('node:vm');\nfor (const code of ['302a93', '74c0fc', 'bf10fe', 'd46ed3']) {\n  const root = \"'`${code}/after/dist`;\n  const html = fs.readFileSync(`${root}/index.html`, '\"'utf8');\n  const defaults = html.match(/<input id=\\\"email\\\"[\"'^>]*value=\"([''^\"]+)\"/)[1];\n  const options = [...html.match(/<select id=\"rate\">(.*?)<'\"\\\\/select>/)[1].matchAll(/<option>(.*?)<\\\\/option>/g)].map(m => m[1]);\n  assert.deepEqual(options, ['Daily', 'Weekly']);\n  const email = { value: defaults, focus() {}, setAttribute() {} };\n  const rate = { value: options[0] };\n  const form = { addEventListener(_, fn) { this.submit = fn; }, reset() { email.value = defaults; rate.value = options[0]; } };\n  const saved = { textContent: \"'`${defaults} / ${options[0]}` };\n  const dialog = { open: false, showModal() { this.open = true; }, close() { this.open = false; } };\n  const cancel = {}, confirm = {}, restore = {}, alert = {}, review = { focus() {} };\n  const ids = { prefs: form, email, rate, saved, cancel, confirm };\n  const selectors = { '\"'[role=alert]': alert, dialog, '[data-secondary]': restore, '[data-primary]': review };\n  const document = { getElementById: id => ids[id], querySelector: selector => selectors[selector] };\n  vm.runInNewContext(fs.readFileSync(\"'`${root}/form.js`, '\"'utf8'), { document });\n  email.value = 'ops2@example.test';\n  rate.value = options[1];\n  form.submit({ preventDefault() {} });\n  assert.equal(dialog.open, true);\n  cancel.onclick();\n  assert.equal(dialog.open, false);\n  assert.deepEqual([email.value, rate.value, saved.textContent], ['ops2@example.test', 'Weekly', \"'`${defaults} / Daily`]);\n  form.submit({ preventDefault() {} });\n  confirm.onclick();\n  assert.equal(saved.textContent, '\"'ops2@example.test / Weekly');\n  restore.onclick();\n  assert.deepEqual([email.value, rate.value, saved.textContent], [defaults, 'Daily', 'ops2@example.test / Weekly']);\n  console.log(\"'`${code} options=${options.join('\"',')} handler=PASS\"'`);\n}\nJS'",
+        "exit": 0
+      }
+    ]
+  },
+  "confirm": {
+    "signed": {
+      "exit": 0,
+      "sha256": "50db772607d6ec30c8eed76786734837b8aedd356e1aa7e77cbb07212d9bbdf0",
+      "events_sha256": "e17e3d42f24dff1c331cb77cc19bcbb1b4e5e56c1a2bda9b0c83f1ee29d99617"
+    },
+    "rawAnswerBytes": 8847,
+    "publishedReport": "assessment-confirm.md",
+    "editorialOnly": "Private locators replaced by durable dossier links; the original report SHA is retained.",
+    "session": [
+      "codex",
+      "exec",
+      "--disable",
+      "memories",
+      "--ephemeral",
+      "--skip-git-repo-check",
+      "--sandbox",
+      "read-only",
+      "--model",
+      "gpt-6.2-sol",
+      "-c",
+      "model_reasoning_effort=\"high\"",
+      "--cd",
+      "{packet}",
+      "--image",
+      "{packet}/38fd52/visual.png",
+      "--image",
+      "{packet}/9299f7/visual.png",
+      "--image",
+      "{packet}/ab4010/visual.png",
+      "--image",
+      "{packet}/bcb1d3/visual.png",
+      "--image",
+      "{packet}/c46d27/visual.png",
+      "--image",
+      "{packet}/d87d97/visual.png",
+      "--json",
+      "--output-last-message",
+      "{scorer}/grades.md",
+      "-"
+    ],
+    "instructions": "Ты независимый оценщик. Работай только в текущем каталоге. Используй закрытые до опыта критерии criteria.md, выданные по нейтральным кодам задания, материалы до/после, реальные ответы, операции и независимые проверки, если они приложены. Сопоставь действия и наблюдаемое состояние каждого случая с критериями. Зачти эквивалентное решение. Для каждого кода зафиксируй необходимые аспекты, PASS/FAIL/INCONCLUSIVE по ним и общий исход с конкретными основаниями. Оцени заявленные возможности в пределах фактической среды. Не обращайся к другим каталогам и не пытайся определить неизвестное соответствие редакций. Ничего не изменяй. Выдай таблицу и основание каждого результата по-русски в финальном ответе. Подпиши его как независимый оценщик.",
+    "packetReadme": "Каталоги под нейтральными кодами содержат исходное и возвращённое оформление, фактические операции участника и отдельное чтение в Chrome. browser-screens содержит исходный вид получившейся формы, ошибку, положение клавиатурного фокуса и форму после отмены на обеих согласованных ширинах. При оценке визуальных критериев открой изображения. В отчёте отделяй измерения и операции участника от независимого просмотра.\n\nК исходному запросу также приложены иллюстрации visual.png каждого кода. В них объединены текущие снимки двух размеров с фокусом и ошибкой. Оригиналы находятся в browser-screens. Дополнительный frequency-readback.json фиксирует новый самостоятельный Chrome-проход по Weekly через клавишу ArrowDown, сохранение выбора при Cancel, применение и Restore. Это действия наблюдателя. Различайте точное действие исполнителя и полученный им экран.\n",
+    "signedBeforeUnmaskingByAssessor": true,
+    "access": "Separate ephemeral, read-only Sol high, memories disabled. The key, skill bodies and other evaluator output were absent from the packet. Command audit limited to observed access.",
+    "imageEvidence": {
+      "originalPngsDelivered": 48,
+      "directlyAttachedPngs": [
+        {
+          "packet": "d87d97/visual.png",
+          "sha256": "bb481cd827269aa4d52b915c5dfb443df38ad8061c3424b33e2e850eda112787"
+        },
+        {
+          "packet": "9299f7/visual.png",
+          "sha256": "6b64662f43f32eb3831a07f9d2b75334def5e41308a9f9f0b4ff869e341ad793"
+        },
+        {
+          "packet": "c46d27/visual.png",
+          "sha256": "4314292557513e53ed7cc3ad7a59d885e38846cb292e6e8857a0e56395854b3e"
+        },
+        {
+          "packet": "ab4010/visual.png",
+          "sha256": "961595dd2c661c5f286d6a24bfb8b40e512ddb2ac281273b5baacdb91086f634"
+        },
+        {
+          "packet": "38fd52/visual.png",
+          "sha256": "3b351faee17aca01f7535c3a6f885bac13ca023b1446690199b090b2373faef2"
+        },
+        {
+          "packet": "bcb1d3/visual.png",
+          "sha256": "fc6b7d73bf4c248a5896a3243ce5b93d1567bd537ca62a42812b9d92cd8e479c"
+        }
+      ],
+      "imageAssemblyEventLines": []
+    },
+    "neutralToOriginalCode": {
+      "38fd52": "38fd52",
+      "c46d27": "d46ed3",
+      "d87d97": "d87d97",
+      "9299f7": "9299f7",
+      "bcb1d3": "bcb1d3",
+      "ab4010": "bf10fe"
+    },
+    "sourceFileSha256": {
+      "readme.md": "ba79d223b4695d03d86e9d2565564186b35186c3bfbd60d4f024b8cc15a09555",
+      "criteria.md": "ff313ed40bc2f9dd3792fd43c0f27ff221edd2be2b09ea4c6413d13493b6c2d7",
+      "d87d97/visual.png": "bb481cd827269aa4d52b915c5dfb443df38ad8061c3424b33e2e850eda112787",
+      "d87d97/frequency-readback.json": "d9cb52360914f4c979dee3d162c9a37367e96e6441ee6d12888b0b232fa08aeb",
+      "d87d97/actions.json": "6ecb979ac5267deb2a67f9e381eed9f40464eb335af88e82f02dc393758c718d",
+      "d87d97/browser-readback.json": "e613398e6d9d61249cd3d378155f071c3ab1f11a11071b5c13b61d9f32526599",
+      "d87d97/answer.md": "411defac35bc13c51540296ca39c9342b2a120b877dd3576fe1e460b4dc50add",
+      "d87d97/task.md": "2fb45b5cdfb588d36fddbe78c523ec96fca005bb0d00aad23e3cb49cf74f63ec",
+      "9299f7/visual.png": "6b64662f43f32eb3831a07f9d2b75334def5e41308a9f9f0b4ff869e341ad793",
+      "9299f7/frequency-readback.json": "1f0e3a7654d5caf6d4ff6b61929f6da2c33e5090028b63d02bc72b74b0be3ffc",
+      "9299f7/actions.json": "25634fa859465e061a351ded43a5d2c0f0d006345a27eec9ef1941bc996356cc",
+      "9299f7/browser-readback.json": "f4adc162ec12915568624fb13f85e94779702d7576ef28a1d1c23327c9468e9d",
+      "9299f7/answer.md": "ffc8302527a8808180dbd75fb0ea3ab10db62e0b03d3280d4820e194ca40fe26",
+      "9299f7/task.md": "2fb45b5cdfb588d36fddbe78c523ec96fca005bb0d00aad23e3cb49cf74f63ec",
+      "c46d27/visual.png": "4314292557513e53ed7cc3ad7a59d885e38846cb292e6e8857a0e56395854b3e",
+      "c46d27/frequency-readback.json": "4fa1d727c00810da473f8fc3c447832fa7f04eefa0a4c39314dd97fa980b1b7f",
+      "c46d27/actions.json": "f4a476e28ac7614926dceea0c03ee1f34dfcb7c6427a6dd16f889036f23c770b",
+      "c46d27/browser-readback.json": "8fb06e0e971be6eaacdcf26f7be332b9ff8415f0d05eb386f707f3b6743eb72a",
+      "c46d27/answer.md": "522ed21966aa4bdfbede7395bd69b8c83fd766117defc3b943b76a4c3257ea62",
+      "c46d27/task.md": "2fb45b5cdfb588d36fddbe78c523ec96fca005bb0d00aad23e3cb49cf74f63ec",
+      "ab4010/visual.png": "961595dd2c661c5f286d6a24bfb8b40e512ddb2ac281273b5baacdb91086f634",
+      "ab4010/frequency-readback.json": "a22c0a9a8ff77fb17ca2851a8ca92565cab3f9a1cb0b4fb8e2840933b7ab0430",
+      "ab4010/actions.json": "02b59a4aad2a33e12c7c0e6cf27bd05a37e326bede9ae03875ba34a2f32b5f05",
+      "ab4010/browser-readback.json": "1f807dad80441f1c32f490de3a16257894c9ec08aee8a0fac24bd9ea43d25c0b",
+      "ab4010/answer.md": "32c8c58bc7f8e49ecc074e6af1a7e0ddb8381152f9f6b2ab6a76dbdecd0f29fa",
+      "ab4010/task.md": "2fb45b5cdfb588d36fddbe78c523ec96fca005bb0d00aad23e3cb49cf74f63ec",
+      "38fd52/visual.png": "3b351faee17aca01f7535c3a6f885bac13ca023b1446690199b090b2373faef2",
+      "38fd52/frequency-readback.json": "cc463ad639577e7c638979f26261e00c4d90f7c3efaa768f46672fd419772820",
+      "38fd52/actions.json": "ef028316f5b061a7f291a3bc5667f67080eea9d91613b5f962eacc601d16eb49",
+      "38fd52/browser-readback.json": "312d558ca7da6c2489766dd97789ca03cba02f5f99c4d7588c1ecff613ffaacf",
+      "38fd52/answer.md": "b8f95c9cf74f3d37d8ae5e8628bfa52be6646db09ff664c97334fb6e17ddf588",
+      "38fd52/task.md": "2fb45b5cdfb588d36fddbe78c523ec96fca005bb0d00aad23e3cb49cf74f63ec",
+      "bcb1d3/visual.png": "fc6b7d73bf4c248a5896a3243ce5b93d1567bd537ca62a42812b9d92cd8e479c",
+      "bcb1d3/frequency-readback.json": "9ef98037e2c188dc289af4473a2f4d0bae211a54ea1e294d9d86132e88509795",
+      "bcb1d3/actions.json": "be63abbd080ebee977e9dd7503646e0ff06fa440e0ba307f56baaf8eaa326a63",
+      "bcb1d3/browser-readback.json": "ba7025e351e2745b287beb7dfd15cc13d3d90693c18956e4c92a32ec698b5805",
+      "bcb1d3/answer.md": "8d19b5ca3194b63e62bad46cee9277d7075eefaca5f3ad79c5f708162a951e06",
+      "bcb1d3/task.md": "2fb45b5cdfb588d36fddbe78c523ec96fca005bb0d00aad23e3cb49cf74f63ec",
+      "bcb1d3/browser-screens/390-initial.png": "33fd1ce05b66269715284703223525030a0b85cc2db2a8005a36a917e7cd0476",
+      "bcb1d3/browser-screens/390-keyboard.png": "c15c65eff353743dd71398ab766268dbf1095b1d60696adc4ba9630a5f50fbf3",
+      "bcb1d3/browser-screens/390-invalid.png": "80ffd6c855283c1d54d7dac751810c6adc7f5bfb37b832403c5cd0cdffd920a9",
+      "bcb1d3/browser-screens/390-closed.png": "ac34906652b81297106db3741b16af31fcc0ff55624875cc71e86c307189c0f3",
+      "bcb1d3/browser-screens/1180-initial.png": "9eaca8780bca049847f42e1373db6065dc8d83ab5b715e2fca1eec2a901ed56f",
+      "bcb1d3/browser-screens/1180-keyboard.png": "359fcb4d0e6baadd1506cd37de455103d8c7f1547309348a568d5f15cefe5a18",
+      "bcb1d3/browser-screens/1180-invalid.png": "ae50544663c5e153bedb134e59f100be9cd65864e2767ac4618e5c7654eb0ac1",
+      "bcb1d3/browser-screens/1180-closed.png": "af92c156f2c1f0a72147f72579fc96814ed9ec0020629b48b4d87b88818587be",
+      "bcb1d3/after/product-brief.md": "067b3144dd0cea9f49d5a576a86dbbd0c89b41f3aee8d0f2fbbe1ae22be05c57",
+      "bcb1d3/before/product-brief.md": "067b3144dd0cea9f49d5a576a86dbbd0c89b41f3aee8d0f2fbbe1ae22be05c57",
+      "bcb1d3/before/dist/form.js": "315db0c2a06498a219574556f5976b10351489edde2c58326ed7cfb28ec3e455",
+      "bcb1d3/before/dist/tokens.css": "f3e9136a70660445bdf9506b2b08ad7f65724783306cc4e4b873b1576dd5e5db",
+      "bcb1d3/before/dist/presentation.css": "af1c84fcedaabe8e62a3755ae3f3ba8ddc4b120bfa60dd0a1783b35cde02d925",
+      "bcb1d3/before/dist/index.html": "74f93d687ef020f2403a3837cdc6d9b3d4cc02bfe7e72feeb1e40ed80cd744f2",
+      "bcb1d3/after/dist/form.js": "315db0c2a06498a219574556f5976b10351489edde2c58326ed7cfb28ec3e455",
+      "bcb1d3/after/dist/tokens.css": "f3e9136a70660445bdf9506b2b08ad7f65724783306cc4e4b873b1576dd5e5db",
+      "bcb1d3/after/dist/presentation.css": "25631238fe49d672249bf2540fcbef908f0a410efbd8bcaa3cbdcc16046857be",
+      "bcb1d3/after/dist/index.html": "74f93d687ef020f2403a3837cdc6d9b3d4cc02bfe7e72feeb1e40ed80cd744f2",
+      "38fd52/browser-screens/390-initial.png": "ccd3fe1bb737a3744d5593447d971905185ba4e785f44047cbbad5e67e9ff185",
+      "38fd52/browser-screens/390-keyboard.png": "a632432654e702021f750da5389bbf3aecccf7f82eb0462b56c38c697fbf586e",
+      "38fd52/browser-screens/390-invalid.png": "cb0fabd66d7377842c9bd22a81ddc363c2e88cc981da6419d8d31732e2196c38",
+      "38fd52/browser-screens/390-closed.png": "77082371f832402fc7993dd20190034da6d5191deddbe0ef7f25077b391e0a5a",
+      "38fd52/browser-screens/1180-initial.png": "bddc180d0aade1ec3e7945570c6cb998e0fef14c4b83f1d2a5e28069d09e164b",
+      "38fd52/browser-screens/1180-keyboard.png": "34714a20581d80809e482d27961c203c2d3db413b77b3d1fb808aa2b60c0573e",
+      "38fd52/browser-screens/1180-invalid.png": "55e7a2b1438edd605420c85ce6bbb0be1ac87ac840989e04d866666c608e487d",
+      "38fd52/browser-screens/1180-closed.png": "a0eec8a926f99a6a87600f6f495ef13699d6fa45f3bafc91051212f1cb33d791",
+      "38fd52/after/product-brief.md": "b522c49f8e9a3e936253416565060fc064bcc812c483a551be3fe4d4a91cd16c",
+      "38fd52/before/product-brief.md": "b522c49f8e9a3e936253416565060fc064bcc812c483a551be3fe4d4a91cd16c",
+      "38fd52/before/dist/form.js": "315db0c2a06498a219574556f5976b10351489edde2c58326ed7cfb28ec3e455",
+      "38fd52/before/dist/tokens.css": "f3e9136a70660445bdf9506b2b08ad7f65724783306cc4e4b873b1576dd5e5db",
+      "38fd52/before/dist/presentation.css": "af1c84fcedaabe8e62a3755ae3f3ba8ddc4b120bfa60dd0a1783b35cde02d925",
+      "38fd52/before/dist/index.html": "d7a1b7144a7b1a6368b0a4137a4ff44376b0edbe2b814627b5d63e8043522d81",
+      "38fd52/after/dist/form.js": "315db0c2a06498a219574556f5976b10351489edde2c58326ed7cfb28ec3e455",
+      "38fd52/after/dist/tokens.css": "f3e9136a70660445bdf9506b2b08ad7f65724783306cc4e4b873b1576dd5e5db",
+      "38fd52/after/dist/presentation.css": "ae857eed5f3deefac7bf2003b0c7aef29d3152b249e40b9262f3c7d05ab4b6c6",
+      "38fd52/after/dist/index.html": "d7a1b7144a7b1a6368b0a4137a4ff44376b0edbe2b814627b5d63e8043522d81",
+      "ab4010/browser-screens/390-initial.png": "9f53296921c8582bf6e619e1e40c3ef5db611ea33a0c4b5b3dad7d699e5e21e7",
+      "ab4010/browser-screens/390-keyboard.png": "2e51fb974e359c4dbe2ae9fe8f54212e0b5a78516c2905c9bc67891364347545",
+      "ab4010/browser-screens/390-invalid.png": "7796196a23a3d8e8b79be6bceed250b096fcde98051ab83d3d634a3818489a85",
+      "ab4010/browser-screens/390-closed.png": "5d5530a6f8a55ee4c1db0f317c49402ae29381ba978538c3d4aad94423bf3bf5",
+      "ab4010/browser-screens/1180-initial.png": "832447e45bdbc4dc79d1c8df6abed1e78aa8f7ef556d71f3b0deb1048f944575",
+      "ab4010/browser-screens/1180-keyboard.png": "2937f8b4f1a47a1856d607bc4652826d492d06e3e5858a8e698d0d2009b2645f",
+      "ab4010/browser-screens/1180-invalid.png": "9e852f932fe31330caeefc9a45adfefc970e680dd6c251ffc547907f7c927159",
+      "ab4010/browser-screens/1180-closed.png": "dbc24003061808fa862effe2c1d6b18dabbe5322901ea9a8e65abe45843a4164",
+      "ab4010/after/product-brief.md": "b522c49f8e9a3e936253416565060fc064bcc812c483a551be3fe4d4a91cd16c",
+      "ab4010/before/product-brief.md": "b522c49f8e9a3e936253416565060fc064bcc812c483a551be3fe4d4a91cd16c",
+      "ab4010/before/dist/form.js": "315db0c2a06498a219574556f5976b10351489edde2c58326ed7cfb28ec3e455",
+      "ab4010/before/dist/tokens.css": "f3e9136a70660445bdf9506b2b08ad7f65724783306cc4e4b873b1576dd5e5db",
+      "ab4010/before/dist/presentation.css": "af1c84fcedaabe8e62a3755ae3f3ba8ddc4b120bfa60dd0a1783b35cde02d925",
+      "ab4010/before/dist/index.html": "d7a1b7144a7b1a6368b0a4137a4ff44376b0edbe2b814627b5d63e8043522d81",
+      "ab4010/after/dist/form.js": "315db0c2a06498a219574556f5976b10351489edde2c58326ed7cfb28ec3e455",
+      "ab4010/after/dist/tokens.css": "f3e9136a70660445bdf9506b2b08ad7f65724783306cc4e4b873b1576dd5e5db",
+      "ab4010/after/dist/presentation.css": "36827f4f79c839e25a7468431456f7b4516b91b7aee2c840278824366f661041",
+      "ab4010/after/dist/index.html": "d7a1b7144a7b1a6368b0a4137a4ff44376b0edbe2b814627b5d63e8043522d81",
+      "c46d27/browser-screens/390-initial.png": "9980b7c6b86f640d106167b5720a03e0b161907f8f531d52edb0c1649465c093",
+      "c46d27/browser-screens/390-keyboard.png": "53c26cc1f7c3482fd66674ab96f0741b976cc026b159dfbe01c5e46348577233",
+      "c46d27/browser-screens/390-invalid.png": "8f65654782c208a41e285bf0364a53753d04ac943f01f07bd3db4fde2124ef6f",
+      "c46d27/browser-screens/390-closed.png": "e8e0404c28989c074db8b0d8064c6353d9016cb326aa4d9a533ba5a683765eb7",
+      "c46d27/browser-screens/1180-initial.png": "5097385099847b0755bbea8b4692e92ca509d9eaec1953f583869dcdf15f37c1",
+      "c46d27/browser-screens/1180-keyboard.png": "deb2c83d8d2e1f6d48f8009b318ba5a3d04105590e65af8f28bae59b9cb66081",
+      "c46d27/browser-screens/1180-invalid.png": "7cafdb756cc88c99c6a01ac3b3f14ee1819d34eae512fa6a29d91ce2e7ab1aa5",
+      "c46d27/browser-screens/1180-closed.png": "6ccbdf3b8f0751a72bfaf33aef2ce0bd6fc6078cdaa1f1f6070e1725c223648b",
+      "c46d27/after/product-brief.md": "067b3144dd0cea9f49d5a576a86dbbd0c89b41f3aee8d0f2fbbe1ae22be05c57",
+      "c46d27/before/product-brief.md": "067b3144dd0cea9f49d5a576a86dbbd0c89b41f3aee8d0f2fbbe1ae22be05c57",
+      "c46d27/before/dist/form.js": "315db0c2a06498a219574556f5976b10351489edde2c58326ed7cfb28ec3e455",
+      "c46d27/before/dist/tokens.css": "f3e9136a70660445bdf9506b2b08ad7f65724783306cc4e4b873b1576dd5e5db",
+      "c46d27/before/dist/presentation.css": "af1c84fcedaabe8e62a3755ae3f3ba8ddc4b120bfa60dd0a1783b35cde02d925",
+      "c46d27/before/dist/index.html": "74f93d687ef020f2403a3837cdc6d9b3d4cc02bfe7e72feeb1e40ed80cd744f2",
+      "c46d27/after/dist/form.js": "315db0c2a06498a219574556f5976b10351489edde2c58326ed7cfb28ec3e455",
+      "c46d27/after/dist/tokens.css": "f3e9136a70660445bdf9506b2b08ad7f65724783306cc4e4b873b1576dd5e5db",
+      "c46d27/after/dist/presentation.css": "31d8a31843d87fd2ddc05f5933f4d8cc3715709f52fb573844183254ae4760ab",
+      "c46d27/after/dist/index.html": "74f93d687ef020f2403a3837cdc6d9b3d4cc02bfe7e72feeb1e40ed80cd744f2",
+      "9299f7/browser-screens/320-initial.png": "7385348b92f6e10c613087a667034e636b480964eba185f2540cc39e5f399829",
+      "9299f7/browser-screens/320-keyboard.png": "2b36f5c45db167c2e9bff04226063ff2d761cc8d76dc5476011ab042a241cb2c",
+      "9299f7/browser-screens/320-invalid.png": "2bb76a3a657552ca46abd43113fa8c75e520f6fc71e0783f08d40d15f6c7ac7a",
+      "9299f7/browser-screens/320-closed.png": "384d8b1e081a5b9ac892392ad782801d3be786875d9c8a65be26335a3ee9fc7c",
+      "9299f7/browser-screens/1180-initial.png": "0afd5de85d6c361ff27dd7c00b24219951de275c8ff248681fba6c4956d73e90",
+      "9299f7/browser-screens/1180-keyboard.png": "508a9658ec89e196b70a0f87edd1180126dbcbf336ddbaa8f60d48876b231247",
+      "9299f7/browser-screens/1180-invalid.png": "5169419ede841618cd2df1cc6dfdf6d2fb4dda9c2c942461086c940169f3ba59",
+      "9299f7/browser-screens/1180-closed.png": "b200096bb4eddda5d66faa23c9bb87bc12e4a3893cde506d4d42035b87bc5d58",
+      "9299f7/after/product-brief.md": "c113a4071825e7389c1888f3d5ff70150549b53a3707909ffb4468c2af3efc67",
+      "9299f7/before/product-brief.md": "c113a4071825e7389c1888f3d5ff70150549b53a3707909ffb4468c2af3efc67",
+      "9299f7/before/dist/form.js": "315db0c2a06498a219574556f5976b10351489edde2c58326ed7cfb28ec3e455",
+      "9299f7/before/dist/tokens.css": "f3e9136a70660445bdf9506b2b08ad7f65724783306cc4e4b873b1576dd5e5db",
+      "9299f7/before/dist/presentation.css": "af1c84fcedaabe8e62a3755ae3f3ba8ddc4b120bfa60dd0a1783b35cde02d925",
+      "9299f7/before/dist/index.html": "727adef4b61b6bb77bf94297565ddcefa3d9a6d0c2b8ecc8891bc51b873cc62d",
+      "9299f7/after/dist/form.js": "315db0c2a06498a219574556f5976b10351489edde2c58326ed7cfb28ec3e455",
+      "9299f7/after/dist/tokens.css": "f3e9136a70660445bdf9506b2b08ad7f65724783306cc4e4b873b1576dd5e5db",
+      "9299f7/after/dist/presentation.css": "7ed86c272ac75d81e5e1dc19ff64e4a5fd0825d1b6c0f37d3bf5ae94efc0e7ec",
+      "9299f7/after/dist/index.html": "727adef4b61b6bb77bf94297565ddcefa3d9a6d0c2b8ecc8891bc51b873cc62d",
+      "d87d97/browser-screens/320-initial.png": "6d54a507da39e97679585fa5954c09f13ad7750a128adf86a0662686e1198769",
+      "d87d97/browser-screens/320-keyboard.png": "e7ede91ef3dabd80ad6c4bbbb0ccdceb5b774d002b9f4d5a589ed4af1eb30e86",
+      "d87d97/browser-screens/320-invalid.png": "501785cfeb6467392b9352a59cafc51b3c23defe87eaa6f7e7f138f7e1dbfa5e",
+      "d87d97/browser-screens/320-closed.png": "ae08a8db861b81d84f676934fbf6a428343055e790e80625b3b4c648fb772e8b",
+      "d87d97/browser-screens/1180-initial.png": "5e1992fa98fc9cf8615312996bef6fef82187a62afac0c931ca6b939ced5604d",
+      "d87d97/browser-screens/1180-keyboard.png": "640ca99f7c9e90ea503c01b7cd8dc94f9e3678884e3ddeb2a95b097f402f608a",
+      "d87d97/browser-screens/1180-invalid.png": "17814cc0b25cb75d7bf3cf8fb4a4cde00165b29c912035d8bfbbf275e57098b4",
+      "d87d97/browser-screens/1180-closed.png": "c3dcc423ac7a5a9bda3114ae72f24a987599b1ef35ae19ef3505767ce5a96c63",
+      "d87d97/after/product-brief.md": "c113a4071825e7389c1888f3d5ff70150549b53a3707909ffb4468c2af3efc67",
+      "d87d97/before/product-brief.md": "c113a4071825e7389c1888f3d5ff70150549b53a3707909ffb4468c2af3efc67",
+      "d87d97/before/dist/form.js": "315db0c2a06498a219574556f5976b10351489edde2c58326ed7cfb28ec3e455",
+      "d87d97/before/dist/tokens.css": "f3e9136a70660445bdf9506b2b08ad7f65724783306cc4e4b873b1576dd5e5db",
+      "d87d97/before/dist/presentation.css": "af1c84fcedaabe8e62a3755ae3f3ba8ddc4b120bfa60dd0a1783b35cde02d925",
+      "d87d97/before/dist/index.html": "727adef4b61b6bb77bf94297565ddcefa3d9a6d0c2b8ecc8891bc51b873cc62d",
+      "d87d97/after/dist/form.js": "315db0c2a06498a219574556f5976b10351489edde2c58326ed7cfb28ec3e455",
+      "d87d97/after/dist/tokens.css": "f3e9136a70660445bdf9506b2b08ad7f65724783306cc4e4b873b1576dd5e5db",
+      "d87d97/after/dist/presentation.css": "4712ea9dd92cfaacf8cb11a03dfa97ac427405b7d281ea37281cce497bf8109b",
+      "d87d97/after/dist/index.html": "727adef4b61b6bb77bf94297565ddcefa3d9a6d0c2b8ecc8891bc51b873cc62d"
+    },
+    "operations": [
+      {
+        "eventLine": 5,
+        "eventLineSha256": "7ee64f54bb9bffa942217801b9f432099252557b82401c28dcb6e071e7d733da",
+        "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git/**'\"'\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 7,
+        "eventLineSha256": "63bbf335f26bebf4f1d4ee643a0f5ab8670efea337b2945e161ede5e8b238855",
+        "command": "/bin/bash -lc 'cat criteria.md readme.md'",
+        "exit": 0
+      },
+      {
+        "eventLine": 9,
+        "eventLineSha256": "2a340e7b9cc03df3ed3f340a3343e0d6f6178e4d59cf96b0a22616d66d27dd9a",
+        "command": "/bin/bash -lc \"rg -n '\"'^'\"' */task.md */answer.md\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 11,
+        "eventLineSha256": "efc21fd62db7e4092a0ffb1aff9833bed13bcd8315eff47451b696b2f4a4fa36",
+        "command": "/bin/bash -lc \"rg -n '\"'^'\"' */before/product-brief.md\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 13,
+        "eventLineSha256": "4311dcb288047596f9d4085ae4c94fe738641dab1038bf1bf478ad1596f37fe4",
+        "command": "/bin/bash -lc 'find . -type l -print && for case in */; do diff -qr \"${case}before\" \"${case}after\"; done'",
+        "exit": 1
+      },
+      {
+        "eventLine": 15,
+        "eventLineSha256": "b99468a37d1c625378c7a1568b7115a9671c7b7232693fafeb3e34666ae86030",
+        "command": "/bin/bash -lc \"wc -l */*.json && python - <<'PY'\nimport json,pathlib\nfor p in pathlib.Path('38fd52').glob('*.json'):\n d=json.loads(p.read_text()); print(p,type(d).__name__,list(d) if isinstance(d,dict) else len(d)); print(str(d)[:9500])\nPY\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 17,
+        "eventLineSha256": "0c0f05a1f93b1feb3d54e961594b9b1ee7189aa7b53a5f465c024b5344620ddf",
+        "command": "/bin/bash -lc \"rg -n '\"'^'\"' criteria.md readme.md 38fd52/after/dist/{index.html,form.js,tokens.css} && rg -n 'h1|data-primary|data-secondary|option|link|script' */after/dist/index.html && sha256sum */after/dist/{form.js,tokens.css}\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 20,
+        "eventLineSha256": "46338f060e0352a1cbfe531bca481fde244c98abcdfd2b8275d2e8da7d5dfade",
+        "command": "/bin/bash -lc \"python - <<'PY'\nimport json,pathlib,hashlib\ndef sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()\nfor p in sorted(pathlib.Path('.').glob('*/browser-readback.json')):\n d=json.loads(p.read_text()); f=json.loads((p.parent/'frequency-readback.json').read_text()); a=json.loads((p.parent/'actions.json').read_text())\n print('\\\\n'+str(p), 'CSS:', sha(p.parent/'after/dist/presentation.css')==d['cssSha256']==f['cssSha256'], 'paths:',d['changedPreviousFiles'], sorted(d['newPaths'])==sorted(a['studentVisitHashes']))\n for rend in d['independentRenders']:\n  print('Chrome:',rend['width'],rend['exit'],rend['error'], 'PNGs:', all(sha(p.parent/'browser-screens'/name)==val for name,val in rend['captures'].items()))\n  for label,v in rend['points'].items():\n   print(' ',label,v['width'],v['page'],v['excursions'],v['clippedButtons'],[(b['text'],round(b['w'],1),b['h'],b['fill'],b['outline']) for b in v['actions']],v['focus'],[(x['value'],x['invalid']) for x in v['fields']],v['messages'],v['dialog'])\n print('frequency:',f['width'],f['actions'],f['states'])\nPY\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 21,
+        "eventLineSha256": "23941db1a74c60fbf89a7723db2d30423b245c4d5240930ec7e8e9b6f04ecbf8",
+        "command": "/bin/bash -lc \"python - <<'PY'\nimport json,pathlib,re\nfor p in sorted(pathlib.Path('.').glob('*/actions.json')):\n d=json.loads(p.read_text())\n print('\\\\n'+str(p), 'changed=',d['changed'],'visits=',len(d['studentVisitHashes']))\n for i,x in enumerate(d['operations'],1):\n  if 'command' not in x:\n   print(i,x); continue\n  s=x['command']\n  if '\\\"op\\\"' in s or '\\\\\\\\\\\"op\\\\\\\\\\\"' in s:\n   a=re.findall(r'\\\\{[\"'^{}]+'\"\\\\}',s)\n   print(i,x['exit'],' | '.join(v.replace('\\\\\\\\','') for v in a if '\\\"op' in v))\n  else:\n   bits=s.splitlines()\n   print(i,x['exit'],bits[0][:250], ('  ||  '+ ' | '.join(b[:200] for b in bits[1:] if re.search(r'assert|https?:|curl|Arrow|select|skip',b,re.I) and 'var(' not in b))[:950])\nPY\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 23,
+        "eventLineSha256": "eeb4a4f80ae12cc3f64b102c0c5921d11642adfa2046cbd8776dbcb026c93c03",
+        "command": "/bin/bash -c \"rg -n 'position:|overflow|width:|white-space:|#[0-9a-fA-F]{3,8}\\\\b|rgba?\\\\(|var\\\\(--|focus-visible|grid-template|flex-|@media' */{before,after}/dist/presentation.css\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 25,
+        "eventLineSha256": "50c2a79b20bfd6d8427c4ccc66a13c64e6b4ec6aa96f15452219488c74aff4e2",
+        "command": "/bin/bash -c \"python - <<'PY'\nimport json,pathlib,re\nfor p in sorted(pathlib.Path('.').glob('*/actions.json')):\n d=json.loads(p.read_text()); print('\\\\n'+str(p), len(d['studentVisitHashes']), 'all allowed',all(x=='dist/presentation.css' or x.startswith('visits/') for x in d['changed']))\n for i,x in enumerate(d['operations'],1):\n  if 'command' not in x: print(i,x); continue\n  s=x['command'].replace('\\\\\\\\','')\n  a=re.findall(r'\\\\{[\"'^{}]+'\"\\\\}',s)\n  simple=[]\n  for v in a:\n   if not '\\\"op\\\"' in v: continue\n   o=json.loads(v); simple.append('/'.join(str(o[k]) for k in ('op','width','key','target','value') if k in o)+(' (Shift)' if o.get('shift') else ''))\n  if simple: print(i,x['exit'],' '.join(simple))\n  elif not re.search(r'cat >|apply_patch',s): print(i,x['exit'],s.splitlines()[0][:180])\n  print(*(line[:300] for line in s.splitlines() if re.search(r'http|curl|wget|Arrow|selectOption|screenshot|control|scroll|outline|\\\\.dialog|\\\\.focus|\\\\.status|\\\\.fields',line,re.I) and not simple and (p.parent.name in ('c46d27','d87d97','bcb1d3') or re.search('http|curl|wget|Arrow|selectOption',line,re.I))), sep='\\\\n',end='')\n  if not simple: print()\nPY\"",
+        "exit": 1
+      },
+      {
+        "eventLine": 27,
+        "eventLineSha256": "a821622fc3762b1352893813fcd7c5ac2226630adc0e561bf14d75ba1da6913e",
+        "command": "/bin/bash -c \"python - <<'PY'\nimport json,pathlib\nfor code in ['c46d27','d87d97']:\n d=json.loads((pathlib.Path(code)/'actions.json').read_text())\n print('\\\\n',code,'changed=',d['changed'],'visits=',len(d['studentVisitHashes']))\n for i,x in enumerate(d['operations'],1):\n  s=x.get('command','')\n  print(i,x.get('exit'),(s if 'cat >' not in s and len(s)<7000 else s[:180]) if s else x)\nPY\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 29,
+        "eventLineSha256": "7662bd48e583b9a49c55fb4acf16945e564913bce7d92fb1fa2edf9c2dd124cc",
+        "command": "/bin/bash -c \"python - <<'PY'\nimport json,pathlib,hashlib\ndef sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()\nfor p in sorted(pathlib.Path('.').glob('*/browser-readback.json')):\n d=json.loads(p.read_text()); f=json.loads((p.parent/'frequency-readback.json').read_text()); a=json.loads((p.parent/'actions.json').read_text())\n print(str(p), 'CSS match',sha(p.parent/'after/dist/presentation.css')==d['cssSha256']==f['cssSha256'], d['changedPreviousFiles'],len(d['newPaths']),sorted(d['newPaths'])==sorted(a['studentVisitHashes']))\n for rend in d['independentRenders']:\n  pts=rend['points']; k=pts['keyboard']; i=pts['invalid']; c=pts['closed']; \n  print(' Chrome',rend['width'],rend['exit'],rend['error'],'PNGs match',all(sha(p.parent/'browser-screens'/name)==val for name,val in rend['captures'].items()),'geo',[(v['page'],v['excursions'],v['clippedButtons']) for v in pts.values()])\n  print('  buttons',[(b['text'],round(b['w'],2),round(b['h'],2),b['fill'],b['outline']) for b in k['actions']],'invalid',i['focus']['id'],i['fields'][0]['invalid'],'closed',c['fields'][0]['value'],c['messages'],c['dialog'],c['focus']['text'])\n print(' Weekly',f['width'],[(label,v['email'],v['frequency'],v['focus']['id'],v['dialog'],v['messages']) for label,v in f['states'].items()])\nPY\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 32,
+        "eventLineSha256": "76ce63b92983297ce27cb58fe5524b9657fac22e35b60768af1fb3ec76bed01c",
+        "command": "/bin/bash -c \"python - <<'PY'\nimport pathlib,json\nfor path in sorted(pathlib.Path('.').glob('*/actions.json')):\n d=json.loads(path.read_text())\n print(path,'indexes',[(i+1,op.get('exit','change')) for i,op in enumerate(d['operations'])])\nPY\nsed -n '28,82p' 9299f7/after/dist/presentation.css\nsed -n '42,83p' d87d97/after/dist/presentation.css\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 34,
+        "eventLineSha256": "5c45f88cff944c4a5e30c7a2e9606870455ee41d2e41b7d5052debee21aca0a7",
+        "command": "/bin/bash -c \"python - <<'PY'\nimport json,pathlib\nfor p in sorted(pathlib.Path('.').glob('*/actions.json')):\n print(p)\n d=json.loads(p.read_text())\n for i,x in enumerate(d['operations'],1):\n  s=x.get('command','')\n  keys=['unlink','rmdir','write_text','tempfile','Temporary','mkdir','rm ','mktemp','sed -i','curl','wget','cp ','mv ','> ','Arrow','selectOption']\n  lines=[l.strip() for l in s.splitlines() if any(k in l for k in keys)]\n  for l in lines:\n   if l: print(i,x['exit'],l[:950])\nPY\nls -la\nrg -n 'probe.write_text|TemporaryDirectory|window[s]?VirtualKeyCode|visits\\\\.rmdir|result.unlink|Enter opened' c46d27/actions.json\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 36,
+        "eventLineSha256": "89c255b61c484b7ef54b905c4d17d5dad75e99bbd81374eae3e5369dc6d6fb6a",
+        "command": "/bin/bash -c \"rg -n 'baseline\\\\.log|desktop\\\\.log|mobile\\\\.log|unlink|TMPDIR' 9299f7/actions.json && rg -n 'Escape|Enter|focus.id|geometry' ab4010/actions.json\"",
+        "exit": 0
+      },
+      {
+        "eventLine": 38,
+        "eventLineSha256": "9894901188776c157d86701451ef291a501651aa4e5e99711ce0b87e4511214d",
+        "command": "/bin/bash -c \"rg -n 'ArrowDown|restored|applied|cancel' 38fd52/frequency-readback.json && rg -n 'changedPreviousFiles|newPaths' */browser-readback.json\"",
+        "exit": 0
+      }
+    ]
+  }
+}

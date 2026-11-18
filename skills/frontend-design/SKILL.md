@@ -5,9 +5,9 @@ description: "Design and implement visual strategies for web interfaces: landing
   styling, and motion; express accepted interactions and verify rendered
   results. Route task-flow choices and UX audits to web-ux-engineer."
 metadata:
-  source-version: 0.2.4
+  source-version: 0.2.5
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: a084e96b522d3a5327ac12637ac9481884730dfecb998ecc33404b90dbdb245d
+  skillforge-source-hash: 5b866708098c8463ecc61d0fe0f934584827b5e1e8e5090ac04999ad9eb427b2
 ---
 
 # frontend-design
@@ -272,7 +272,7 @@ Validation:
 - **high** — A strategy, mockup, export, screenshot, Storybook story, component catalog, or source inspection is not integrated runtime evidence.
 - **high** — In system-constrained work, inspect the current runtime component and design-system surface before introducing new primitives or one-off styling.
 - **high** — Do not add motion to satisfy a quota; use only motion that improves hierarchy, continuity, feedback, or affordance and provide reduced behavior for non-essential physical motion.
-- **medium** — Do not approve a design artifact from a stale export or a runtime implementation from an outdated mockup when current source and rendered behavior disagree.
+- **medium** — Verify the result in the current artifact or rendered interface.
 
 ## Policies
 

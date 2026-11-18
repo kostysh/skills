@@ -1,0 +1,726 @@
+{
+  "variant": "C",
+  "case": "holdout",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПримени поставленный ./SKILL.md. По переданному product-brief.md доведи визуальное оформление работающей формы до состояния, пригодного дежурному. Работай с dist/presentation.css, оставив текущие взаимодействия и утверждённые тексты. Ссылку на прежний экран положили для контекста. В конце дай владельцу краткий результат с наблюдением из работающей формы. Местный браузер описан в BROWSER.md.\n",
+  "input_file_sha256": {
+    "BROWSER.md": "3b1794a22e3c8c43ced555cb1b99cbee4659e4742211107f41be5d70820a99f8",
+    "LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+    "SKILL.md": "8dc4a1e3694af4d665738260731c657ea809a2b1bbb6a5619d9b5d185ed71627",
+    "agents/openai.yaml": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+    "design/previous.svg": "4e0d1d7d46e124e6dcaf433a313a74e2d97f8a2f25a2f275b6085e56ff0b5f65",
+    "dist/form.js": "315db0c2a06498a219574556f5976b10351489edde2c58326ed7cfb28ec3e455",
+    "dist/index.html": "727adef4b61b6bb77bf94297565ddcefa3d9a6d0c2b8ecc8891bc51b873cc62d",
+    "dist/presentation.css": "af1c84fcedaabe8e62a3755ae3f3ba8ddc4b120bfa60dd0a1783b35cde02d925",
+    "dist/tokens.css": "f3e9136a70660445bdf9506b2b08ad7f65724783306cc4e4b873b1576dd5e5db",
+    "product-brief.md": "c113a4071825e7389c1888f3d5ff70150549b53a3707909ffb4468c2af3efc67",
+    "references/anti-patterns.md": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+    "references/strategy-to-implementation.md": "ef884923fbb5e95e646700be7dfbfaae760b45390530248e558a937c9c1b45c1",
+    "references/surface-modes.md": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+    "references/visual-engines.md": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7",
+    "visit.mjs": "ffc622f5a26e0d544c5945153d8eed975f8dcc2c20704911c772c25e8f113ca5"
+  },
+  "raw_events_sha256": "f9e9ea9bc8f663b62bebf080e21476ff8bcb66f7c45184ab1ac3e3f0e5f8b9c6",
+  "raw_events_bytes": 79029,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Прочитаю `SKILL.md`, продуктовый бриф и `BROWSER.md`, затем проверю форму до и после правок в `dist/presentation.css`."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"ls -la && rg --files --hidden -g '\"'!.git'\"'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat SKILL.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat product-brief.md BROWSER.md && cat dist/index.html dist/presentation.css dist/tokens.css'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'command -v google-chrome; command -v chromium; command -v node; sha256sum dist/index.html dist/form.js dist/tokens.css'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat references/strategy-to-implementation.md references/visual-engines.md && head -c 1800 design/previous.svg'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'TMPDIR=\"$PWD\" node visit.mjs '\"'[{\\\"op\\\":\\\"width\\\",\\\"width\\\":320,\\\"height\\\":640},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"look\\\"}]' | awk '/\"'^Browser |''^visits'\"\\\\//'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "В Chrome на 320 px форма выходит за край экрана, обе подписи обрезаются, а фокус на основной кнопке не виден. На узком экране расположу кнопки друг под другом и выделю основную утверждённым цветом."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"cat > dist/presentation.css <<'EOF'\n.sheet {\n  width: min(42rem, calc(100% - 2 * var(--gap)));\n  margin: clamp(1rem, 5vw, 3rem) auto;\n  padding: clamp(1rem, 4vw, 2rem);\n  border-radius: var(--radius);\n  background: var(--paper);\n  line-height: 1.5;\n}\n\n.sheet h1 {\n  margin: 0 0 0.5rem;\n  font-size: clamp(1.5rem, 4vw, 1.875rem);\n  line-height: 1.2;\n}\n\n.sheet h1 + p {\n  margin: 0 0 1.5rem;\n  color: var(--subtle);\n}\n\n.sheet label {\n  display: block;\n  margin: var(--gap) 0 0.375rem;\n  font-weight: 600;\n}\n\n.sheet input,\n.sheet select {\n  display: block;\n  width: 100%;\n  min-height: 44px;\n  padding: 0.5rem 0.75rem;\n  border: 1px solid var(--line);\n  border-radius: var(--radius);\n  background: var(--paper);\n  color: var(--ink);\n}\n\n.sheet input[aria-invalid=\\\"true\\\"] {\n  border-color: var(--danger);\n}\n\n.sheet [role=\\\"alert\\\"] {\n  margin: var(--gap) 0 0;\n  padding-inline-start: 0.75rem;\n  border-inline-start: 3px solid var(--danger);\n  color: var(--danger);\n  font-weight: 600;\n}\n\n.actions {\n  display: grid;\n  gap: 0.75rem;\n  margin-top: 1.5rem;\n}\n\n.sheet button {\n  min-height: 44px;\n  padding: 0.625rem 1rem;\n  border: 1px solid var(--accent);\n  border-radius: var(--radius);\n  background: var(--paper);\n  color: var(--accent);\n  font-weight: 600;\n  line-height: 1.35;\n}\n\n.sheet button[data-primary],\n.sheet button#confirm {\n  background: var(--accent);\n  color: var(--paper);\n}\n\n.sheet :is(input, select, button):focus-visible {\n  outline: 3px solid var(--accent);\n  outline-offset: 3px;\n}\n\n.sheet [role=\\\"status\\\"] {\n  margin: 1.5rem 0 0;\n  padding-top: var(--gap);\n  border-top: 1px solid var(--line);\n  color: var(--subtle);\n  overflow-wrap: anywhere;\n}\n\n.sheet dialog {\n  width: min(30rem, calc(100% - 2 * var(--gap)));\n  max-width: none;\n  padding: clamp(1rem, 4vw, 1.5rem);\n  border: 1px solid var(--line);\n  border-radius: var(--radius);\n  background: var(--paper);\n  color: var(--ink);\n}\n\n.sheet dialog h2 {\n  margin: 0;\n  font-size: 1.25rem;\n  line-height: 1.25;\n}\n\n@media (min-width: 36rem) {\n  .actions {\n    grid-template-columns: minmax(0, 1fr) auto;\n  }\n}\nEOF\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'set -o pipefail; TMPDIR=\"$PWD\" node visit.mjs '\"'[{\\\"op\\\":\\\"width\\\",\\\"width\\\":320,\\\"height\\\":640},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Enter\\\"},{\\\"op\\\":\\\"look\\\"}]' | awk '/\"'^Browser |''^visits'\"\\\\//'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'set -o pipefail; TMPDIR=\"$PWD\" node visit.mjs '\"'[{\\\"op\\\":\\\"width\\\",\\\"width\\\":1180,\\\"height\\\":800},{\\\"op\\\":\\\"fill\\\",\\\"target\\\":\\\"#email\\\",\\\"value\\\":\\\"duty@example.test\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Enter\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Escape\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Enter\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"#cancel\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Enter\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Enter\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"[data-secondary]\\\"},{\\\"op\\\":\\\"look\\\"}]' | awk '/\"'^Browser |''^visits'\"\\\\//'\"",
+      "exit_code": 1,
+      "status": "failed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'set -o pipefail; TMPDIR=\"$PWD\" node visit.mjs '\"'[{\\\"op\\\":\\\"width\\\",\\\"width\\\":320,\\\"height\\\":640},{\\\"op\\\":\\\"fill\\\",\\\"target\\\":\\\"#email\\\",\\\"value\\\":\\\"invalid\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Enter\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"look\\\"}]' | awk '/\"'^Browser |''^visits'\"\\\\//'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"node --input-type=commonjs <<'EOF'\nconst fs = require('node:fs');\nfor (const file of fs.readdirSync('visits').filter(x=>x.endsWith('.json'))) {\n const {timeline}=JSON.parse(fs.readFileSync('visits/'+file));\n console.log(file);\n for (const {action,state:s} of timeline.slice(1)) {\n  const btns=s.geometry.elements.filter(e=>e.tag==='BUTTON').map(e=>[e.w,e.h,e.scroll,e.client,e.outline]);\n  console.log(action.op, action.key||'', s.geometry.page, s.focus, s.dialog.length, s.status,btns);\n }\n}\nEOF\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'set -o pipefail; TMPDIR=\"$PWD\" node visit.mjs '\"'[{\\\"op\\\":\\\"width\\\",\\\"width\\\":320,\\\"height\\\":640},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"[data-primary]\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"look\\\"}]' | awk '/\"'^Browser |''^visits'\"\\\\//'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'set -o pipefail; TMPDIR=\"$PWD\" node visit.mjs '\"'[{\\\"op\\\":\\\"width\\\",\\\"width\\\":320,\\\"height\\\":640},{\\\"op\\\":\\\"fill\\\",\\\"target\\\":\\\"#email\\\",\\\"value\\\":\\\"invalid\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"[data-primary]\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"look\\\"}]' | awk '/\"'^Browser |''^visits'\"\\\\//'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'set -o pipefail; TMPDIR=\"$PWD\" node visit.mjs '\"'[{\\\"op\\\":\\\"width\\\",\\\"width\\\":1180,\\\"height\\\":800},{\\\"op\\\":\\\"fill\\\",\\\"target\\\":\\\"#email\\\",\\\"value\\\":\\\"duty@example.test\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"[data-primary]\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Escape\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"[data-primary]\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"#cancel\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"[data-primary]\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"#confirm\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"[data-secondary]\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\",\\\"shift\\\":true},{\\\"op\\\":\\\"look\\\"}]' | awk '/\"'^Browser |''^visits'\"\\\\//'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"node --input-type=commonjs <<'EOF'\nconst {readFileSync}=require('node:fs');\nconst assert=require('node:assert/strict');\nfunction read(id){const r=JSON.parse(readFileSync('visits/'+id+'.json'));assert.equal(r.error,null);return r.timeline.slice(1).map(x=>x.state);}\nconst mobile=read('2ebb139d-dddf-44c4-98f3-530a047cac5c');\nconst desktop=read('c2bf192b-eb09-4039-8cf5-fd04eadf55f7');\nfor(const s of [...mobile,...desktop]){\n assert.equal(s.geometry.page,s.width);\n for (const e of s.geometry.elements){\n  assert(e.scroll<=e.client+1 && e.x>=0 && e.x+e.w<=s.width,JSON.stringify(e));\n }\n}\nassert.equal(mobile[2].fields[0].invalid,'true');\nassert.equal(mobile[2].focus.id,'email');\nassert.match(mobile[2].status[1]??mobile[2].status[0],/Enter a complete email address/);\nassert.equal(mobile.at(-1).geometry.elements.find(e=>e.text.startsWith('Review departmental')).outline,'solid 3px');\nassert.equal(desktop[2].dialog.length,1);\nassert.equal(desktop[3].dialog.length,0);\nassert.match(desktop[5].focus.text,/Review departmental/);\nassert.equal(desktop[7].status[0],'duty@example.test / Daily');\nassert.equal(desktop[8].fields[0].value,'ops@example.test');\nconsole.log('Layout, validation, keyboard focus, modal and restore checks passed.');\nEOF\nsha256sum dist/index.html dist/form.js dist/tokens.css\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "file_change",
+      "changes": [
+        {
+          "path": "{project}/dist/presentation.css",
+          "kind": "update"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'set -o pipefail; TMPDIR=\"$PWD\" node visit.mjs '\"'[{\\\"op\\\":\\\"width\\\",\\\"width\\\":320,\\\"height\\\":640},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"[data-primary]\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"look\\\"}]' | awk '/\"'^Browser |''^visits'\"\\\\//'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'set -o pipefail; TMPDIR=\"$PWD\" node visit.mjs '\"'[{\\\"op\\\":\\\"width\\\",\\\"width\\\":320,\\\"height\\\":640},{\\\"op\\\":\\\"fill\\\",\\\"target\\\":\\\"#email\\\",\\\"value\\\":\\\"invalid\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\" \\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"look\\\"}]' | awk '/\"'^Browser |''^visits'\"\\\\//'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'set -o pipefail; TMPDIR=\"$PWD\" node visit.mjs '\"'[{\\\"op\\\":\\\"width\\\",\\\"width\\\":1180,\\\"height\\\":800},{\\\"op\\\":\\\"fill\\\",\\\"target\\\":\\\"#email\\\",\\\"value\\\":\\\"duty@example.test\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"[data-primary]\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Escape\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"[data-primary]\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"#cancel\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"[data-primary]\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"#confirm\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"[data-secondary]\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\",\\\"shift\\\":true},{\\\"op\\\":\\\"look\\\"}]' | awk '/\"'^Browser |''^visits'\"\\\\//'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"node - visits/958f94e3-7100-4bad-9c8d-90379df4b846.json visits/9e20a69b-6dc2-4777-9864-1c85e3b14727.json visits/b164ab19-afee-4e02-ae75-081bde9c9de3.json <<'EOF'\nconst {readFileSync}=require('node:fs');\nconst assert=require('node:assert/strict');\nfunction read(path){const r=JSON.parse(readFileSync(path));assert.equal(r.error,null);return r.timeline.slice(1).map(x=>x.state);}\nconst [mobile,desktop,dialog]=process.argv.slice(2).map(read);\nfor(const s of [...mobile,...desktop,...dialog]){\n assert(s.geometry.page<=s.width);\n for (const e of s.geometry.elements){\n  assert(e.scroll<=e.client+1 && e.x>=0 && e.x+e.w<=s.geometry.page,JSON.stringify(e));\n }\n}\nassert.equal(mobile[4].fields[0].invalid,'true');\nassert.equal(mobile[4].focus.id,'email');\nassert(mobile[4].status.some(x=>x.startsWith('Enter a complete email address')));\nassert.equal(mobile.at(-1).geometry.elements.find(e=>e.text.startsWith('Review departmental')).outline,'solid 3px');\nassert.equal(desktop[2].dialog.length,1);\nassert.equal(desktop[3].dialog.length,0);\nassert.match(desktop[5].focus.text,/Review departmental/);\nassert.equal(desktop[7].status[0],'duty@example.test / Daily');\nassert.equal(desktop[8].fields[0].value,'ops@example.test');\nassert.equal(dialog.at(-1).focus.id,'confirm');\nconsole.log('Layout, validation, keyboard focus, modal and restore checks passed.');\nEOF\"",
+      "exit_code": 1,
+      "status": "failed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"node - visits/958f94e3-7100-4bad-9c8d-90379df4b846.json visits/9e20a69b-6dc2-4777-9864-1c85e3b14727.json visits/b164ab19-afee-4e02-ae75-081bde9c9de3.json <<'EOF'\nconst {readFileSync}=require('node:fs');\nconst assert=require('node:assert/strict');\nfunction read(path){const r=JSON.parse(readFileSync(path));assert.equal(r.error,null);return r.timeline.slice(1).map(x=>x.state);}\nconst [mobile,desktop,dialog]=process.argv.slice(2).map(read);\nfor(const s of [...mobile,...desktop,...dialog]){\n assert(s.geometry.page<=s.width);\n for (const e of s.geometry.elements){\n  assert(e.scroll<=e.client+1 && e.x>=0 && e.x+e.w<=s.geometry.page,JSON.stringify(e));\n }\n}\nconst primary=s=>s.geometry.elements.find(e=>e.tag==='BUTTON' && e.text.startsWith('Review departmental'));\nassert.equal(mobile[4].fields[0].invalid,'true');\nassert.equal(mobile[4].focus.id,'email');\nassert(mobile[4].status.some(x=>x.startsWith('Enter a complete email address')));\nassert.equal(primary(mobile.at(-1)).outline,'solid 3px');\nassert.equal(primary(desktop.at(-1)).outline,'solid 3px');\nassert.equal(desktop[2].dialog.length,1);\nassert.equal(desktop[3].dialog.length,0);\nassert.match(desktop[5].focus.text,/Review departmental/);\nassert.equal(desktop[7].status[0],'duty@example.test / Daily');\nassert.equal(desktop[8].fields[0].value,'ops@example.test');\nassert.equal(dialog.at(-1).focus.id,'confirm');\nfunction contrast(hex) {\n const [r,g,b]=hex.match(/../g).map(x=>(parseInt(x,16)/255+0.055)/1.055).map(x=>x**2.4);\n return +(1.05/(0.2126*r+0.7152*g+0.0722*b+0.05)).toFixed(2);\n}\nconsole.log('Layout, validation, keyboard focus, modal and restore checks passed.');\nconsole.log('Contrast against white:', [contrast('245578'),contrast('8e2d28')]);\nEOF\nsha256sum dist/index.html dist/form.js dist/tokens.css\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Обновил [dist/presentation.css]({project}/dist/presentation.css). На узком экране кнопки стоят друг под другом, на настольном — рядом. Основное действие выделено утверждённым цветом. Тексты и логика формы сохранены.\n\nПроверил в локальном Chrome на 320 и 1180 px. На 320 px обе подписи и сообщение об ошибке видны целиком без горизонтальной прокрутки. После отправки неверного адреса фокус возвращается в поле, а при переходе Tab к основной кнопке видна чёткая рамка. [Снимок формы на 320 px]({project}/visits/958f94e3-7100-4bad-9c8d-90379df4b846.png)"
+    }
+  ],
+  "changed_file_contents": {
+    "dist/presentation.css": ".sheet {\n  width: min(42rem, calc(100% - 2 * var(--gap)));\n  margin: clamp(1rem, 5vw, 3rem) auto;\n  padding: clamp(1rem, 4vw, 2rem);\n  border-radius: var(--radius);\n  background: var(--paper);\n  line-height: 1.5;\n}\n\n.sheet h1 {\n  margin: 0 0 0.5rem;\n  font-size: clamp(1.5rem, 4vw, 1.875rem);\n  line-height: 1.2;\n}\n\n.sheet h1 + p {\n  margin: 0 0 1.5rem;\n  color: var(--subtle);\n}\n\n.sheet label {\n  display: block;\n  margin: var(--gap) 0 0.375rem;\n  font-weight: 600;\n}\n\n.sheet input,\n.sheet select {\n  display: block;\n  width: 100%;\n  min-height: 44px;\n  padding: 0.5rem 0.75rem;\n  border: 1px solid var(--line);\n  border-radius: var(--radius);\n  background: var(--paper);\n  color: var(--ink);\n}\n\n.sheet input[aria-invalid=\"true\"] {\n  border-color: var(--danger);\n}\n\n.sheet [role=\"alert\"] {\n  margin: var(--gap) 0 0;\n  padding-inline-start: 0.75rem;\n  border-inline-start: 3px solid var(--danger);\n  color: var(--danger);\n  font-weight: 600;\n}\n\n.actions {\n  display: grid;\n  gap: 0.75rem;\n  margin-top: 1.5rem;\n}\n\n.sheet button {\n  min-height: 44px;\n  padding: 0.625rem 1rem;\n  border: 1px solid var(--accent);\n  border-radius: var(--radius);\n  background: var(--paper);\n  color: var(--accent);\n  font-weight: 600;\n  line-height: 1.35;\n}\n\n.actions button {\n  text-wrap: balance;\n}\n\n.sheet button[data-primary],\n.sheet button#confirm {\n  background: var(--accent);\n  color: var(--paper);\n}\n\n.sheet :is(input, select, button):focus-visible {\n  outline: 3px solid var(--accent);\n  outline-offset: 3px;\n}\n\n.sheet [role=\"status\"] {\n  margin: 1.5rem 0 0;\n  padding-top: var(--gap);\n  border-top: 1px solid var(--line);\n  color: var(--subtle);\n  overflow-wrap: anywhere;\n}\n\n.sheet dialog {\n  width: min(30rem, calc(100% - 2 * var(--gap)));\n  max-width: none;\n  padding: clamp(1rem, 4vw, 1.5rem);\n  border: 1px solid var(--line);\n  border-radius: var(--radius);\n  background: var(--paper);\n  color: var(--ink);\n}\n\n.sheet dialog h2 {\n  margin: 0;\n  font-size: 1.25rem;\n  line-height: 1.25;\n}\n\n.sheet dialog button + button {\n  margin-inline-start: 0.5rem;\n}\n\n@media (min-width: 36rem) {\n  .actions {\n    grid-template-columns: minmax(0, 1fr) auto;\n  }\n}\n",
+    "visits/097c45b2-3a07-480d-ab60-02cccf0ebfcc.json": {
+      "sha256": "2fd0d706ddb0b5223f87a599d451e96da597f62ab5617a5cd12898156a75d275",
+      "bytes": 25192,
+      "archiveMember": "d87d97/participant/097c45b2-3a07-480d-ab60-02cccf0ebfcc.json"
+    },
+    "visits/097c45b2-3a07-480d-ab60-02cccf0ebfcc.png": {
+      "sha256": "81aa4d449b94187dbe2e9a8c4194b1b6d07020cbe2537835db5df26268425bda",
+      "bytes": 27120,
+      "representation": "SHA-256 of participant PNG at end of run; independent PNGs of the returned CSS are included"
+    },
+    "visits/144364cd-d470-409d-bebc-6392428711ad.json": {
+      "sha256": "11b17a04d2a6974d166e086c9b139994efa8e57897f3774b139e0a2e539446e6",
+      "bytes": 34543,
+      "archiveMember": "d87d97/participant/144364cd-d470-409d-bebc-6392428711ad.json"
+    },
+    "visits/144364cd-d470-409d-bebc-6392428711ad.png": {
+      "sha256": "01165c7161901dad54590273e99706f8a923c8844a09a4b0c3544e07d60e1d98",
+      "bytes": 44196,
+      "representation": "SHA-256 of participant PNG at end of run; independent PNGs of the returned CSS are included"
+    },
+    "visits/2ebb139d-dddf-44c4-98f3-530a047cac5c.json": {
+      "sha256": "510d7e8a940103fcc3c9592fd927b27d68ebdbcf62a31c815f2dbc0e6564dd47",
+      "bytes": 32608,
+      "archiveMember": "d87d97/participant/2ebb139d-dddf-44c4-98f3-530a047cac5c.json"
+    },
+    "visits/2ebb139d-dddf-44c4-98f3-530a047cac5c.png": {
+      "sha256": "5f664581d25eb6b421d850c28e1fcb609613d12f82d49aede4d8100887be5cbf",
+      "bytes": 40778,
+      "representation": "SHA-256 of participant PNG at end of run; independent PNGs of the returned CSS are included"
+    },
+    "visits/7a51e052-ce5f-4a20-b145-17562c388a09.json": {
+      "sha256": "819916bd41e8bc40687c6bf4fbdca613db5edde6224a2d4c3da18016f7ba0afd",
+      "bytes": 23695,
+      "archiveMember": "d87d97/participant/7a51e052-ce5f-4a20-b145-17562c388a09.json"
+    },
+    "visits/7a51e052-ce5f-4a20-b145-17562c388a09.png": {
+      "sha256": "1ac555bda5c3fce332ae2fcfacb2bd4a697565f4d5605e73aac954730fa585a1",
+      "bytes": 40028,
+      "representation": "SHA-256 of participant PNG at end of run; independent PNGs of the returned CSS are included"
+    },
+    "visits/958f94e3-7100-4bad-9c8d-90379df4b846.json": {
+      "sha256": "112d5e4b0e49b00ba84397e1afa21671627f08e4ce1c1935cb81ff49b2cffd35",
+      "bytes": 40998,
+      "archiveMember": "d87d97/participant/958f94e3-7100-4bad-9c8d-90379df4b846.json"
+    },
+    "visits/958f94e3-7100-4bad-9c8d-90379df4b846.png": {
+      "sha256": "115569fcf469c5439f781ff093e4c0feca75be5632d0608a446d529335430415",
+      "bytes": 40311,
+      "representation": "SHA-256 of participant PNG at end of run; independent PNGs of the returned CSS are included"
+    },
+    "visits/9e20a69b-6dc2-4777-9864-1c85e3b14727.json": {
+      "sha256": "1386f64af417bb850cf0dd13ec2d1813263f342d0e581b55243b17dce4a58aec",
+      "bytes": 53804,
+      "archiveMember": "d87d97/participant/9e20a69b-6dc2-4777-9864-1c85e3b14727.json"
+    },
+    "visits/9e20a69b-6dc2-4777-9864-1c85e3b14727.png": {
+      "sha256": "4b13f3a4db62a5b1693071a9e667f384d8982a3d8e1e2817b84d265eed272f3e",
+      "bytes": 44730,
+      "representation": "SHA-256 of participant PNG at end of run; independent PNGs of the returned CSS are included"
+    },
+    "visits/b164ab19-afee-4e02-ae75-081bde9c9de3.json": {
+      "sha256": "97fce74957135c3488762faa1a0852fc7229a7a5881ff4aff57e242bb6d4da56",
+      "bytes": 23695,
+      "archiveMember": "d87d97/participant/b164ab19-afee-4e02-ae75-081bde9c9de3.json"
+    },
+    "visits/b164ab19-afee-4e02-ae75-081bde9c9de3.png": {
+      "sha256": "236a54589fd599534c7db40c951e0acb46f3d125c77c29f822884bc8d0bbdc5f",
+      "bytes": 40357,
+      "representation": "SHA-256 of participant PNG at end of run; independent PNGs of the returned CSS are included"
+    },
+    "visits/c2bf192b-eb09-4039-8cf5-fd04eadf55f7.json": {
+      "sha256": "2d9059edbf5bf5bdd0015cb1addd71368897dc19f2ef2eeebae92b73986ff383",
+      "bytes": 53804,
+      "archiveMember": "d87d97/participant/c2bf192b-eb09-4039-8cf5-fd04eadf55f7.json"
+    },
+    "visits/c2bf192b-eb09-4039-8cf5-fd04eadf55f7.png": {
+      "sha256": "972be1f683e3b6b1d04105a677b1769419042762ced9a4a0ebadd52c490c23af",
+      "bytes": 44245,
+      "representation": "SHA-256 of participant PNG at end of run; independent PNGs of the returned CSS are included"
+    },
+    "visits/cef191e7-5134-491b-9b7d-2e338e246dc6.json": {
+      "sha256": "b97b34711ac85cc04be233ddb90ce5370568cdea736b41bbb017c1504d5f9a96",
+      "bytes": 29666,
+      "archiveMember": "d87d97/participant/cef191e7-5134-491b-9b7d-2e338e246dc6.json"
+    },
+    "visits/cef191e7-5134-491b-9b7d-2e338e246dc6.png": {
+      "sha256": "8e41a561ab2e4b7ba33d5d7f4e7bc990d8434a3a1ef2cb5f170c379f562ba276",
+      "bytes": 38626,
+      "representation": "SHA-256 of participant PNG at end of run; independent PNGs of the returned CSS are included"
+    },
+    "visits/f28f0a79-4b34-43f4-be32-34abfb6a6de9.json": {
+      "sha256": "e8c650e34127eded881456ff42f0b263201eb845641dd9fc95b3c8b53662bc9a",
+      "bytes": 38070,
+      "archiveMember": "d87d97/participant/f28f0a79-4b34-43f4-be32-34abfb6a6de9.json"
+    },
+    "visits/f28f0a79-4b34-43f4-be32-34abfb6a6de9.png": {
+      "sha256": "b1e5ce53d1cc7446377bd3abca6dab58b0eb456194047f905f19555626c9bac1",
+      "bytes": 35892,
+      "representation": "SHA-256 of participant PNG at end of run; independent PNGs of the returned CSS are included"
+    }
+  },
+  "final_response": "Обновил [dist/presentation.css]({project}/dist/presentation.css). На узком экране кнопки стоят друг под другом, на настольном — рядом. Основное действие выделено утверждённым цветом. Тексты и логика формы сохранены.\n\nПроверил в локальном Chrome на 320 и 1180 px. На 320 px обе подписи и сообщение об ошибке видны целиком без горизонтальной прокрутки. После отправки неверного адреса фокус возвращается в поле, а при переходе Tab к основной кнопке видна чёткая рамка. [Снимок формы на 320 px]({project}/visits/958f94e3-7100-4bad-9c8d-90379df4b846.png)",
+  "input_file_modes": {
+    "BROWSER.md": "0664",
+    "LICENSE.txt": "0644",
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "design/previous.svg": "0664",
+    "dist/form.js": "0664",
+    "dist/index.html": "0664",
+    "dist/presentation.css": "0664",
+    "dist/tokens.css": "0664",
+    "product-brief.md": "0664",
+    "references/anti-patterns.md": "0644",
+    "references/strategy-to-implementation.md": "0644",
+    "references/surface-modes.md": "0644",
+    "references/visual-engines.md": "0644",
+    "visit.mjs": "0664"
+  },
+  "changed_file_modes": {
+    "dist/presentation.css": "0664",
+    "visits/097c45b2-3a07-480d-ab60-02cccf0ebfcc.json": "0664",
+    "visits/097c45b2-3a07-480d-ab60-02cccf0ebfcc.png": "0664",
+    "visits/144364cd-d470-409d-bebc-6392428711ad.json": "0664",
+    "visits/144364cd-d470-409d-bebc-6392428711ad.png": "0664",
+    "visits/2ebb139d-dddf-44c4-98f3-530a047cac5c.json": "0664",
+    "visits/2ebb139d-dddf-44c4-98f3-530a047cac5c.png": "0664",
+    "visits/7a51e052-ce5f-4a20-b145-17562c388a09.json": "0664",
+    "visits/7a51e052-ce5f-4a20-b145-17562c388a09.png": "0664",
+    "visits/958f94e3-7100-4bad-9c8d-90379df4b846.json": "0664",
+    "visits/958f94e3-7100-4bad-9c8d-90379df4b846.png": "0664",
+    "visits/9e20a69b-6dc2-4777-9864-1c85e3b14727.json": "0664",
+    "visits/9e20a69b-6dc2-4777-9864-1c85e3b14727.png": "0664",
+    "visits/b164ab19-afee-4e02-ae75-081bde9c9de3.json": "0664",
+    "visits/b164ab19-afee-4e02-ae75-081bde9c9de3.png": "0664",
+    "visits/c2bf192b-eb09-4039-8cf5-fd04eadf55f7.json": "0664",
+    "visits/c2bf192b-eb09-4039-8cf5-fd04eadf55f7.png": "0664",
+    "visits/cef191e7-5134-491b-9b7d-2e338e246dc6.json": "0664",
+    "visits/cef191e7-5134-491b-9b7d-2e338e246dc6.png": "0664",
+    "visits/f28f0a79-4b34-43f4-be32-34abfb6a6de9.json": "0664",
+    "visits/f28f0a79-4b34-43f4-be32-34abfb6a6de9.png": "0664"
+  },
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "cssSha256": "4712ea9dd92cfaacf8cb11a03dfa97ac427405b7d281ea37281cce497bf8109b",
+    "changedPreviousFiles": [
+      "dist/presentation.css"
+    ],
+    "newPaths": [
+      "visits/097c45b2-3a07-480d-ab60-02cccf0ebfcc.json",
+      "visits/097c45b2-3a07-480d-ab60-02cccf0ebfcc.png",
+      "visits/144364cd-d470-409d-bebc-6392428711ad.json",
+      "visits/144364cd-d470-409d-bebc-6392428711ad.png",
+      "visits/2ebb139d-dddf-44c4-98f3-530a047cac5c.json",
+      "visits/2ebb139d-dddf-44c4-98f3-530a047cac5c.png",
+      "visits/7a51e052-ce5f-4a20-b145-17562c388a09.json",
+      "visits/7a51e052-ce5f-4a20-b145-17562c388a09.png",
+      "visits/958f94e3-7100-4bad-9c8d-90379df4b846.json",
+      "visits/958f94e3-7100-4bad-9c8d-90379df4b846.png",
+      "visits/9e20a69b-6dc2-4777-9864-1c85e3b14727.json",
+      "visits/9e20a69b-6dc2-4777-9864-1c85e3b14727.png",
+      "visits/b164ab19-afee-4e02-ae75-081bde9c9de3.json",
+      "visits/b164ab19-afee-4e02-ae75-081bde9c9de3.png",
+      "visits/c2bf192b-eb09-4039-8cf5-fd04eadf55f7.json",
+      "visits/c2bf192b-eb09-4039-8cf5-fd04eadf55f7.png",
+      "visits/cef191e7-5134-491b-9b7d-2e338e246dc6.json",
+      "visits/cef191e7-5134-491b-9b7d-2e338e246dc6.png",
+      "visits/f28f0a79-4b34-43f4-be32-34abfb6a6de9.json",
+      "visits/f28f0a79-4b34-43f4-be32-34abfb6a6de9.png"
+    ],
+    "independentRenders": [
+      {
+        "width": 320,
+        "exit": 0,
+        "error": null,
+        "points": {
+          "initial": {
+            "width": 320,
+            "page": 320,
+            "excursions": [],
+            "clippedButtons": [],
+            "actions": [
+              {
+                "text": "Review departmental contact settings before saving",
+                "ink": "rgb(255, 255, 255)",
+                "fill": "rgb(36, 85, 120)",
+                "outline": "none 3px",
+                "weight": "600",
+                "w": 256,
+                "h": 86.78125
+              },
+              {
+                "text": "Restore saved values",
+                "ink": "rgb(36, 85, 120)",
+                "fill": "rgb(255, 255, 255)",
+                "outline": "none 3px",
+                "weight": "600",
+                "w": 256,
+                "h": 44
+              }
+            ],
+            "focus": {
+              "id": null,
+              "text": ""
+            },
+            "messages": [
+              "ops@example.test / Daily"
+            ],
+            "fields": [
+              {
+                "id": "email",
+                "role": "email",
+                "value": "ops@example.test",
+                "checked": null,
+                "invalid": null
+              }
+            ],
+            "dialog": []
+          },
+          "keyboard": {
+            "width": 320,
+            "page": 320,
+            "excursions": [],
+            "clippedButtons": [],
+            "actions": [
+              {
+                "text": "Review departmental contact settings before saving",
+                "ink": "rgb(255, 255, 255)",
+                "fill": "rgb(36, 85, 120)",
+                "outline": "solid 3px",
+                "weight": "600",
+                "w": 256,
+                "h": 86.78125
+              },
+              {
+                "text": "Restore saved values",
+                "ink": "rgb(36, 85, 120)",
+                "fill": "rgb(255, 255, 255)",
+                "outline": "none 3px",
+                "weight": "600",
+                "w": 256,
+                "h": 44
+              }
+            ],
+            "focus": {
+              "id": null,
+              "text": "Review departmental contact settings before saving"
+            },
+            "messages": [
+              "ops@example.test / Daily"
+            ],
+            "fields": [
+              {
+                "id": "email",
+                "role": "email",
+                "value": "ops@example.test",
+                "checked": null,
+                "invalid": null
+              }
+            ],
+            "dialog": []
+          },
+          "invalid": {
+            "width": 320,
+            "page": 320,
+            "excursions": [],
+            "clippedButtons": [],
+            "actions": [
+              {
+                "text": "Review departmental contact settings before saving",
+                "ink": "rgb(255, 255, 255)",
+                "fill": "rgb(36, 85, 120)",
+                "outline": "none 3px",
+                "weight": "600",
+                "w": 256,
+                "h": 86.78125
+              },
+              {
+                "text": "Restore saved values",
+                "ink": "rgb(36, 85, 120)",
+                "fill": "rgb(255, 255, 255)",
+                "outline": "none 3px",
+                "weight": "600",
+                "w": 256,
+                "h": 44
+              }
+            ],
+            "focus": {
+              "id": "email",
+              "text": ""
+            },
+            "messages": [
+              "Enter a complete email address before reviewing these settings.",
+              "ops@example.test / Daily"
+            ],
+            "fields": [
+              {
+                "id": "email",
+                "role": "email",
+                "value": "oops",
+                "checked": null,
+                "invalid": "true"
+              }
+            ],
+            "dialog": []
+          },
+          "closed": {
+            "width": 320,
+            "page": 320,
+            "excursions": [],
+            "clippedButtons": [],
+            "actions": [
+              {
+                "text": "Review departmental contact settings before saving",
+                "ink": "rgb(255, 255, 255)",
+                "fill": "rgb(36, 85, 120)",
+                "outline": "none 3px",
+                "weight": "600",
+                "w": 256,
+                "h": 86.78125
+              },
+              {
+                "text": "Restore saved values",
+                "ink": "rgb(36, 85, 120)",
+                "fill": "rgb(255, 255, 255)",
+                "outline": "none 3px",
+                "weight": "600",
+                "w": 256,
+                "h": 44
+              }
+            ],
+            "focus": {
+              "id": null,
+              "text": "Review departmental contact settings before saving"
+            },
+            "messages": [
+              "ops@example.test / Daily"
+            ],
+            "fields": [
+              {
+                "id": "email",
+                "role": "email",
+                "value": "ops2@example.test",
+                "checked": null,
+                "invalid": "false"
+              }
+            ],
+            "dialog": []
+          }
+        },
+        "finalPngSha256": "ae08a8db861b81d84f676934fbf6a428343055e790e80625b3b4c648fb772e8b",
+        "captures": {
+          "320-initial.png": "6d54a507da39e97679585fa5954c09f13ad7750a128adf86a0662686e1198769",
+          "320-keyboard.png": "e7ede91ef3dabd80ad6c4bbbb0ccdceb5b774d002b9f4d5a589ed4af1eb30e86",
+          "320-invalid.png": "501785cfeb6467392b9352a59cafc51b3c23defe87eaa6f7e7f138f7e1dbfa5e",
+          "320-closed.png": "ae08a8db861b81d84f676934fbf6a428343055e790e80625b3b4c648fb772e8b"
+        }
+      },
+      {
+        "width": 1180,
+        "exit": 0,
+        "error": null,
+        "points": {
+          "initial": {
+            "width": 1180,
+            "page": 1180,
+            "excursions": [],
+            "clippedButtons": [],
+            "actions": [
+              {
+                "text": "Review departmental contact settings before saving",
+                "ink": "rgb(255, 255, 255)",
+                "fill": "rgb(36, 85, 120)",
+                "outline": "none 3px",
+                "weight": "600",
+                "w": 398.4375,
+                "h": 65.1875
+              },
+              {
+                "text": "Restore saved values",
+                "ink": "rgb(36, 85, 120)",
+                "fill": "rgb(255, 255, 255)",
+                "outline": "none 3px",
+                "weight": "600",
+                "w": 197.5625,
+                "h": 65.1875
+              }
+            ],
+            "focus": {
+              "id": null,
+              "text": ""
+            },
+            "messages": [
+              "ops@example.test / Daily"
+            ],
+            "fields": [
+              {
+                "id": "email",
+                "role": "email",
+                "value": "ops@example.test",
+                "checked": null,
+                "invalid": null
+              }
+            ],
+            "dialog": []
+          },
+          "keyboard": {
+            "width": 1180,
+            "page": 1180,
+            "excursions": [],
+            "clippedButtons": [],
+            "actions": [
+              {
+                "text": "Review departmental contact settings before saving",
+                "ink": "rgb(255, 255, 255)",
+                "fill": "rgb(36, 85, 120)",
+                "outline": "solid 3px",
+                "weight": "600",
+                "w": 398.4375,
+                "h": 65.1875
+              },
+              {
+                "text": "Restore saved values",
+                "ink": "rgb(36, 85, 120)",
+                "fill": "rgb(255, 255, 255)",
+                "outline": "none 3px",
+                "weight": "600",
+                "w": 197.5625,
+                "h": 65.1875
+              }
+            ],
+            "focus": {
+              "id": null,
+              "text": "Review departmental contact settings before saving"
+            },
+            "messages": [
+              "ops@example.test / Daily"
+            ],
+            "fields": [
+              {
+                "id": "email",
+                "role": "email",
+                "value": "ops@example.test",
+                "checked": null,
+                "invalid": null
+              }
+            ],
+            "dialog": []
+          },
+          "invalid": {
+            "width": 1180,
+            "page": 1180,
+            "excursions": [],
+            "clippedButtons": [],
+            "actions": [
+              {
+                "text": "Review departmental contact settings before saving",
+                "ink": "rgb(255, 255, 255)",
+                "fill": "rgb(36, 85, 120)",
+                "outline": "none 3px",
+                "weight": "600",
+                "w": 398.4375,
+                "h": 65.1875
+              },
+              {
+                "text": "Restore saved values",
+                "ink": "rgb(36, 85, 120)",
+                "fill": "rgb(255, 255, 255)",
+                "outline": "none 3px",
+                "weight": "600",
+                "w": 197.5625,
+                "h": 65.1875
+              }
+            ],
+            "focus": {
+              "id": "email",
+              "text": ""
+            },
+            "messages": [
+              "Enter a complete email address before reviewing these settings.",
+              "ops@example.test / Daily"
+            ],
+            "fields": [
+              {
+                "id": "email",
+                "role": "email",
+                "value": "oops",
+                "checked": null,
+                "invalid": "true"
+              }
+            ],
+            "dialog": []
+          },
+          "closed": {
+            "width": 1180,
+            "page": 1180,
+            "excursions": [],
+            "clippedButtons": [],
+            "actions": [
+              {
+                "text": "Review departmental contact settings before saving",
+                "ink": "rgb(255, 255, 255)",
+                "fill": "rgb(36, 85, 120)",
+                "outline": "none 3px",
+                "weight": "600",
+                "w": 398.4375,
+                "h": 65.1875
+              },
+              {
+                "text": "Restore saved values",
+                "ink": "rgb(36, 85, 120)",
+                "fill": "rgb(255, 255, 255)",
+                "outline": "none 3px",
+                "weight": "600",
+                "w": 197.5625,
+                "h": 65.1875
+              }
+            ],
+            "focus": {
+              "id": null,
+              "text": "Review departmental contact settings before saving"
+            },
+            "messages": [
+              "ops@example.test / Daily"
+            ],
+            "fields": [
+              {
+                "id": "email",
+                "role": "email",
+                "value": "ops2@example.test",
+                "checked": null,
+                "invalid": "false"
+              }
+            ],
+            "dialog": []
+          }
+        },
+        "finalPngSha256": "c3dcc423ac7a5a9bda3114ae72f24a987599b1ef35ae19ef3505767ce5a96c63",
+        "captures": {
+          "1180-initial.png": "5e1992fa98fc9cf8615312996bef6fef82187a62afac0c931ca6b939ced5604d",
+          "1180-keyboard.png": "640ca99f7c9e90ea503c01b7cd8dc94f9e3678884e3ddeb2a95b097f402f608a",
+          "1180-invalid.png": "17814cc0b25cb75d7bf3cf8fb4a4cde00165b29c912035d8bfbbf275e57098b4",
+          "1180-closed.png": "c3dcc423ac7a5a9bda3114ae72f24a987599b1ef35ae19ef3505767ce5a96c63"
+        }
+      }
+    ]
+  },
+  "supplementary_browser_evidence": {
+    "archive": "../browser-records.tar.gz",
+    "independentPngDirectory": "d87d97/observer/",
+    "weeklyReadback": "d87d97/weekly.json"
+  }
+}
