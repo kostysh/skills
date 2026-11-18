@@ -1,0 +1,33 @@
+{
+  "basis": "Independent finding at 850a105. Substitution of the machine-specific Node location alone reproduces each portable record byte for byte. Raw hashes are preserved in the original evaluation receipts.",
+  "archiveSHA256": "e8d4652ec36e10322992b7feb830b8ceb23e840ee2c9674eeefeb9889dd21b6d",
+  "records": [
+    {
+      "code": "2ae56f",
+      "member": "2ae56f/events.jsonl",
+      "originalSHA256": "22e09f4687a33e88420c9402e5feb42a980b5f8144704ed8a186094c092ffc2e",
+      "portableSHA256": "44c16a96d076ecb6d3d616af2ebb2885e64d003e5ee8ef8aa632ed645ddaa54b",
+      "occurrences": 1,
+      "portableToken": "{node-24.15.0}",
+      "originalLocation": "~/.nvm/versions/node/v24.15.0/bin/node"
+    },
+    {
+      "code": "904be8",
+      "member": "904be8/events.jsonl",
+      "originalSHA256": "75dc0e8ab0e632da27674eb144dfac87af74f966ee1585cb711a59d8416ed86a",
+      "portableSHA256": "666165ec1a7fb2e6dfb922d0365d9be0fe6561678f0c692394691691956067c0",
+      "occurrences": 1,
+      "portableToken": "{node-24.15.0}",
+      "originalLocation": "~/.nvm/versions/node/v24.15.0/bin/node"
+    },
+    {
+      "code": "4e5934",
+      "member": "4e5934/events.jsonl",
+      "originalSHA256": "9b39d11d6704b3fa94cb310c28db5d07537f33968d4eb76991e303a846adadad",
+      "portableSHA256": "118b0586b146d9135afdec1cee96812526b3ebda3e55f0e1a2c4c95c74e2bb28",
+      "occurrences": 1,
+      "portableToken": "{node-24.15.0}",
+      "originalLocation": "~/.nvm/versions/node/v24.15.0/bin/node"
+    }
+  ]
+}
