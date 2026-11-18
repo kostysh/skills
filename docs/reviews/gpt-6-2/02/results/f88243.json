@@ -1,0 +1,138 @@
+{
+  "variant": "A",
+  "case": "ordinary",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nИспользуй локальный skill-source-compiler из tooling/skill-source-compiler. В source/desk-index лежит принятый исходник карточек. Обнови его производные файлы на месте, а готовый комплект для следующей смены положи в delivery. Манифест, фрагменты и справочник уже согласованы и должны сохранить своё содержимое.\n\nВ ответе дай результат сборки и проверки. Для нашей памятки дежурного укажи, какие поля объекта skill обязательно задаёт автор такого манифеста, какой ориентир объёма SKILL.md действует здесь и что происходит при его превышении.\n",
+  "input_file_sha256": {
+    "source/desk-index/SKILL.md": "ec9d1f71b07239e8683257cbec01b93c4481e9690f531c754a89ba3bb136ae39",
+    "source/desk-index/docs/compile-report.md": "60d7549d23e8b02992f9640d5e49cde9e59762f3f34a0bcdc5a74fa69c1ee0a2",
+    "source/desk-index/fragments/overview.md": "1ba326fd8aa88ff26a121638dc9ea491ec794e45d5d635c8f73fe265d5aa67fb",
+    "source/desk-index/references/entries.md": "ef7b600da8c9a94c7fd60b042c4796403cc13888283244cb844a50e897c063c6",
+    "source/desk-index/skill.yaml": "87a6153cba74f10ec6eb0e143281aa5bb95d1f6d73691fb6b6636d0de1fed470",
+    "tooling/skill-source-compiler/SKILL.md": "7500a5750a3286cd0675f402b1be05e13c98b8bf7abd59ee1125f48268e308d0",
+    "tooling/skill-source-compiler/assets/source-template.yaml": "39cc78cc1b921e54ece551823160b4e88dae65d5cd92f0a4d8a1ac015c37c2aa",
+    "tooling/skill-source-compiler/references/authoring-guidelines.md": "ed832f7cf421e9620fd99f937bb0b44e331208ae4b3e7dabe5cf0351f5fa38c4",
+    "tooling/skill-source-compiler/references/conflict-resolution.md": "725d28087139dcd42643a56bb4cf00a2a21a5b04a052a27c2f0e9b49c900800e",
+    "tooling/skill-source-compiler/references/maintenance.md": "b12863faf30124bcfdd25139961bc06f78981202d20cb0390c484c1a0d3b4fe9",
+    "tooling/skill-source-compiler/references/output-structure.md": "ea5fdab5f3054b8011c763e5ae674fab0579e2623f9df88008664dc4ab398005",
+    "tooling/skill-source-compiler/references/source-language.md": "8164f90ead2e42d389c93d23e45e28d664adef14421b1f14cb4008c37f730044",
+    "tooling/skill-source-compiler/scripts/skill-source-compiler.mjs": "474821e6e53371e58e47248464a6b01260ceae989fd2319c25b5f2b9a2026163",
+    "tooling/skill-source-compiler/scripts/skill-source-compiler.mjs.map": "0655b7c82a679e5371abcb7c3a876484cca1314307afe6001241febedece6ab4"
+  },
+  "raw_events_sha256": "53b17c450bf00c59c9450808dfcd54b88ff9369702fa6162e23d204bc1ba8ba8",
+  "raw_events_bytes": 100125,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Использую локальный skill-source-compiler. Сначала прочитаю правила сборки и проверю состав исходника и каталога delivery."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git/**'\"' && git status --short\"",
+      "exit_code": 128,
+      "status": "failed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'ls -la && cat tooling/skill-source-compiler/SKILL.md tooling/skill-source-compiler/references/{source-language,output-structure,maintenance}.md && cat source/desk-index/{skill.yaml,SKILL.md,docs/compile-report.md,fragments/overview.md,references/entries.md}'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"node --version && ls -l tooling/skill-source-compiler/scripts && rg -n --max-columns 230 'recommended-skill-md-max-bytes|node:|child_process|fetch\\\\(|https|process\\\\.env|sourceMappingURL|skill\\\\.name|skill\\\\.description|function (main|lint|compile|regenerate|check)' tooling/skill-source-compiler/scripts/skill-source-compiler.mjs && cat tooling/skill-source-compiler/assets/source-template.yaml\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"sed -n '10035,10250p;10565,10645p;10870,11080p' tooling/skill-source-compiler/scripts/skill-source-compiler.mjs\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"rg -n --max-columns 250 'eval\\\\(|new Function|\"'^import|'\"\\\\b(exec|spawn|unlink|symlink|readlink|realpath|writeFile|rm|cp|mkdir)\\\\(|Buffer\\\\.from|base64|process\\\\[|globalThis|\\\\.env|constructor\\\\[|charCode|defineProperty' tooling/skill-source-compiler/scripts/skill-source-compiler.mjs && sed -n '10250,10365p;10515,10568p;10643,10870p' tooling/skill-source-compiler/scripts/skill-source-compiler.mjs\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'node tooling/skill-source-compiler/scripts/skill-source-compiler.mjs --help && node tooling/skill-source-compiler/scripts/skill-source-compiler.mjs lint source/desk-index && find source tooling -type l -print && test ! -e delivery && test ! -L delivery'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'set -e\ncompiler=tooling/skill-source-compiler/scripts/skill-source-compiler.mjs\nbefore=$(sha256sum source/desk-index/skill.yaml source/desk-index/fragments/overview.md source/desk-index/references/entries.md)\nnode \"$compiler\" regenerate source/desk-index\nnode \"$compiler\" compile source/desk-index --out-dir delivery\nnode \"$compiler\" check source/desk-index\nnode \"$compiler\" check delivery/desk-index\nsha256sum --check <<< \"$before\"\nfor file in SKILL.md docs/compile-report.md references/entries.md; do\n  cmp \"source/desk-index/$file\" \"delivery/desk-index/$file\"\ndone\nfind delivery -type f -print | sort\nwc -lc delivery/desk-index/SKILL.md\ncat delivery/desk-index/SKILL.md delivery/desk-index/docs/compile-report.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Комплект `desk-index` версии `1.4.2` собран в [delivery/desk-index]({project}/delivery/desk-index). В `source/desk-index` обновлены `SKILL.md` и `docs/compile-report.md`.\n\n`lint` исходника и `check` обоих каталогов прошли без предупреждений. Контрольные суммы манифеста, фрагмента и справочника совпали до и после сборки. Все три файла комплекта побайтово совпадают с соответствующими файлами в `source/desk-index`.\n\n**Для памятки дежурного**\n\n- В объекте `skill` схема CLI требует `name`, `description` и `source-version`. Руководство для авторов также требует явно указать `recommended-skill-md-max-bytes`. Если поле опущено, CLI подставляет `20 000` байт. [Правила манифеста]({project}/tooling/skill-source-compiler/references/source-language.md), [схема CLI]({project}/tooling/skill-source-compiler/scripts/skill-source-compiler.mjs:10142)\n- Для `desk-index` ориентир составляет **4 096 байт UTF‑8**. Собранный `SKILL.md` занимает **1 382 байта**. При превышении `compile` и `regenerate` продолжают сборку, выводят предупреждение и записывают его в `docs/compile-report.md`. [Отчёт сборки]({project}/delivery/desk-index/docs/compile-report.md)"
+    }
+  ],
+  "changed_file_contents": {
+    "delivery/desk-index/SKILL.md": "---\nname: desk-index\ndescription: Prepare catalogue transfer labels for desk index cards.\nmetadata:\n  source-version: 1.4.2\n  skillforge-source-manifest: skill.yaml\n  skillforge-source-hash: 655afa087cb441e0ccf6604058bb3ac27c37a48b8fb0759365f564168db3fcf1\n---\n\n# desk-index\n\n## Start here\n\n1. Read the catalogue card and its recorded shelf mark.\n\n## When to use this skill\n\n- An operator needs the label for a catalogue transfer.\n\n## When NOT to use this skill\n\n- The operator asks for a new acquisition decision.\n\n## Overview\n\nThe catalogue desk uses the primary shelf mark to direct transfers between reading rooms. Keep the catalogue number exactly as printed.\n\n## Workflow stages\n\n### Workflow stage: Prepare the transfer label\n\nGive the receiving desk a usable label.\n\n1. Copy the primary shelf mark and catalogue number to the receiving label.\n\nValidation:\n\n- Match the catalogue number and shelf mark against the card.\n\n## Required active references\n- [Entry examples](references/entries.md) — Read when the card has more than one shelf or label.\n\n## Portability rules\n\n- Use the entries supplied with the skill.\n\n## Portability checklist before finishing\n\n- Confirm the entry examples can be read from this folder.\n\n## Supporting and historical surface\n\n- `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.\n- Supporting glob: `docs/*`\n",
+    "delivery/desk-index/docs/compile-report.md": "# Compile report\nGenerated from `skill.yaml`.\n\n## Versions\n- Skill source version: `1.4.2`\n\n## Source files\n- `fragments/overview.md`\n- `references/entries.md`\n- `skill.yaml`\n\n## Required references\n- `references/entries.md`\n\n## Warnings\n- none\n\n## Notes\n- This document is supporting output only.\n- It does not override `SKILL.md`.",
+    "delivery/desk-index/references/entries.md": "# Entries\n\nA card may list a primary shelf mark and an exhibition mark. Preserve the primary mark for a transfer.\n",
+    "source/desk-index/SKILL.md": "---\nname: desk-index\ndescription: Prepare catalogue transfer labels for desk index cards.\nmetadata:\n  source-version: 1.4.2\n  skillforge-source-manifest: skill.yaml\n  skillforge-source-hash: 655afa087cb441e0ccf6604058bb3ac27c37a48b8fb0759365f564168db3fcf1\n---\n\n# desk-index\n\n## Start here\n\n1. Read the catalogue card and its recorded shelf mark.\n\n## When to use this skill\n\n- An operator needs the label for a catalogue transfer.\n\n## When NOT to use this skill\n\n- The operator asks for a new acquisition decision.\n\n## Overview\n\nThe catalogue desk uses the primary shelf mark to direct transfers between reading rooms. Keep the catalogue number exactly as printed.\n\n## Workflow stages\n\n### Workflow stage: Prepare the transfer label\n\nGive the receiving desk a usable label.\n\n1. Copy the primary shelf mark and catalogue number to the receiving label.\n\nValidation:\n\n- Match the catalogue number and shelf mark against the card.\n\n## Required active references\n- [Entry examples](references/entries.md) — Read when the card has more than one shelf or label.\n\n## Portability rules\n\n- Use the entries supplied with the skill.\n\n## Portability checklist before finishing\n\n- Confirm the entry examples can be read from this folder.\n\n## Supporting and historical surface\n\n- `docs/*` and `docs/issues/*` are non-normative unless explicitly promoted by this file.\n- Supporting glob: `docs/*`\n",
+    "source/desk-index/docs/compile-report.md": "# Compile report\nGenerated from `skill.yaml`.\n\n## Versions\n- Skill source version: `1.4.2`\n\n## Source files\n- `fragments/overview.md`\n- `references/entries.md`\n- `skill.yaml`\n\n## Required references\n- `references/entries.md`\n\n## Warnings\n- none\n\n## Notes\n- This document is supporting output only.\n- It does not override `SKILL.md`."
+  },
+  "final_response": "Комплект `desk-index` версии `1.4.2` собран в [delivery/desk-index]({project}/delivery/desk-index). В `source/desk-index` обновлены `SKILL.md` и `docs/compile-report.md`.\n\n`lint` исходника и `check` обоих каталогов прошли без предупреждений. Контрольные суммы манифеста, фрагмента и справочника совпали до и после сборки. Все три файла комплекта побайтово совпадают с соответствующими файлами в `source/desk-index`.\n\n**Для памятки дежурного**\n\n- В объекте `skill` схема CLI требует `name`, `description` и `source-version`. Руководство для авторов также требует явно указать `recommended-skill-md-max-bytes`. Если поле опущено, CLI подставляет `20 000` байт. [Правила манифеста]({project}/tooling/skill-source-compiler/references/source-language.md), [схема CLI]({project}/tooling/skill-source-compiler/scripts/skill-source-compiler.mjs:10142)\n- Для `desk-index` ориентир составляет **4 096 байт UTF‑8**. Собранный `SKILL.md` занимает **1 382 байта**. При превышении `compile` и `regenerate` продолжают сборку, выводят предупреждение и записывают его в `docs/compile-report.md`. [Отчёт сборки]({project}/delivery/desk-index/docs/compile-report.md)",
+  "independent_work_product_readback": {
+    "case": "ordinary",
+    "expected_state_difference": {
+      "missing": [],
+      "changed": [],
+      "extra": []
+    },
+    "protected_tool_files_difference": {
+      "missing": [],
+      "changed": [],
+      "extra": []
+    },
+    "targets": {
+      "desk-index": {
+        "protected_source_difference": {
+          "missing": [],
+          "changed": [],
+          "extra": []
+        },
+        "source_check": {
+          "exit": 0,
+          "message": "OK {work}/source/desk-index"
+        },
+        "output_exists": true,
+        "source_render_difference": {
+          "missing": [],
+          "changed": [],
+          "extra": []
+        },
+        "out_of_place_difference": {
+          "missing": [],
+          "changed": [],
+          "extra": []
+        },
+        "output_check": {
+          "exit": 0,
+          "message": "OK {work}/delivery/desk-index"
+        },
+        "nested_destination_on_disposable_copy": {
+          "command": {
+            "exit": 1,
+            "message": "Output directory {work}/desk-index/preview/desk-index overlaps source bundle {work}/desk-index. Use an independent output directory for compile/compile-all, or use regenerate for in-place updates."
+          },
+          "source_bytes_identical": true,
+          "directories_identical": true,
+          "sha256_before": "6da9004d15b07bd8e0331fe083a477f5f31df1042fd74431b8b78d6dcd97fb40",
+          "sha256_after": "6da9004d15b07bd8e0331fe083a477f5f31df1042fd74431b8b78d6dcd97fb40"
+        }
+      }
+    }
+  }
+}

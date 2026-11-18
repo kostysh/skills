@@ -1,0 +1,208 @@
+{
+  "project_file_delta": [],
+  "working_data_byte_equal": true,
+  "reported_ids": [
+    {
+      "number": "P-041",
+      "native_section": "paper",
+      "commands": [
+        {
+          "args": [
+            "desk.py",
+            "--book",
+            "probe-book.json",
+            "show",
+            "P-041"
+          ],
+          "exit": 0,
+          "stdout": [
+            "P-041\tready"
+          ],
+          "stderr": []
+        },
+        {
+          "args": [
+            "desk.py",
+            "--book",
+            "probe-book.json",
+            "collect",
+            "P-041"
+          ],
+          "exit": 0,
+          "stdout": [
+            "P-041\tcollected"
+          ],
+          "stderr": []
+        },
+        {
+          "args": [
+            "desk.py",
+            "--book",
+            "probe-book.json",
+            "show",
+            "P-041"
+          ],
+          "exit": 0,
+          "stdout": [
+            "P-041\tready"
+          ],
+          "stderr": []
+        }
+      ],
+      "changed_values": []
+    },
+    {
+      "number": "A-209",
+      "native_section": "app",
+      "commands": [
+        {
+          "args": [
+            "desk.py",
+            "--book",
+            "probe-book.json",
+            "show",
+            "A-209"
+          ],
+          "exit": 0,
+          "stdout": [
+            "A-209\tready"
+          ],
+          "stderr": []
+        },
+        {
+          "args": [
+            "desk.py",
+            "--book",
+            "probe-book.json",
+            "collect",
+            "A-209"
+          ],
+          "exit": 0,
+          "stdout": [
+            "A-209\tcollected"
+          ],
+          "stderr": []
+        },
+        {
+          "args": [
+            "desk.py",
+            "--book",
+            "probe-book.json",
+            "show",
+            "A-209"
+          ],
+          "exit": 0,
+          "stdout": [
+            "A-209\tcollected"
+          ],
+          "stderr": []
+        }
+      ],
+      "changed_values": [
+        "$.reservations[1].app.state"
+      ]
+    }
+  ],
+  "independent_data": [
+    {
+      "number": "P-930",
+      "native_section": "paper",
+      "commands": [
+        {
+          "args": [
+            "desk.py",
+            "--book",
+            "probe-book.json",
+            "show",
+            "P-930"
+          ],
+          "exit": 0,
+          "stdout": [
+            "P-930\tready"
+          ],
+          "stderr": []
+        },
+        {
+          "args": [
+            "desk.py",
+            "--book",
+            "probe-book.json",
+            "collect",
+            "P-930"
+          ],
+          "exit": 0,
+          "stdout": [
+            "P-930\tcollected"
+          ],
+          "stderr": []
+        },
+        {
+          "args": [
+            "desk.py",
+            "--book",
+            "probe-book.json",
+            "show",
+            "P-930"
+          ],
+          "exit": 0,
+          "stdout": [
+            "P-930\tready"
+          ],
+          "stderr": []
+        }
+      ],
+      "changed_values": []
+    },
+    {
+      "number": "A-810",
+      "native_section": "app",
+      "commands": [
+        {
+          "args": [
+            "desk.py",
+            "--book",
+            "probe-book.json",
+            "show",
+            "A-810"
+          ],
+          "exit": 0,
+          "stdout": [
+            "A-810\tready"
+          ],
+          "stderr": []
+        },
+        {
+          "args": [
+            "desk.py",
+            "--book",
+            "probe-book.json",
+            "collect",
+            "A-810"
+          ],
+          "exit": 0,
+          "stdout": [
+            "A-810\tcollected"
+          ],
+          "stderr": []
+        },
+        {
+          "args": [
+            "desk.py",
+            "--book",
+            "probe-book.json",
+            "show",
+            "A-810"
+          ],
+          "exit": 0,
+          "stdout": [
+            "A-810\tcollected"
+          ],
+          "stderr": []
+        }
+      ],
+      "changed_values": [
+        "$.reservations[1].app.state"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+--- A/tooling/skill-source-compiler/references/maintenance.md
++++ C/tooling/skill-source-compiler/references/maintenance.md
+@@ -26 +25,0 @@
+-- add `skill.recommended-skill-md-max-bytes` in `skill.yaml`
+--- A/tooling/skill-source-compiler/references/source-language.md
++++ C/tooling/skill-source-compiler/references/source-language.md
+@@ -9,3 +9 @@
+-- `skill`
+-- `skill.source-version`
+-- `skill.recommended-skill-md-max-bytes`
++- `skill` with `name`, `source-version`, and `description`
+@@ -45,2 +43 @@
+-- `skill.recommended-skill-md-max-bytes` defines the recommended maximum UTF-8 size for the generated `SKILL.md`
+-- compile should emit a warning, not a hard error, when the generated `SKILL.md` exceeds this limit
++- Generation warns when the UTF-8 size of `SKILL.md` exceeds `20000` bytes by default. Set `skill.recommended-skill-md-max-bytes` to a positive integer to use a different threshold.

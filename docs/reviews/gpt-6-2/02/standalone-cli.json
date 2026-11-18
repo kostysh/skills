@@ -1,0 +1,283 @@
+{
+  "archive_sha256": "fd7d0c7a2e0768afe429461d289e7f66e9d65755b6aa1ebbb32fdb9a525d581b",
+  "archive_bytes": 271051,
+  "manifest_source_version": "0.2.12",
+  "runtime_package_version": "0.2.5",
+  "node": "v24.15.0",
+  "previous_version_in_catalog": true,
+  "release_files": {
+    "SKILL.md": "fac8feb6ac1a897afa57bb5cd8d86c631c4b662a27fc3428dc914ff956d3d64c",
+    "assets/source-template.yaml": "39cc78cc1b921e54ece551823160b4e88dae65d5cd92f0a4d8a1ac015c37c2aa",
+    "references/authoring-guidelines.md": "ed832f7cf421e9620fd99f937bb0b44e331208ae4b3e7dabe5cf0351f5fa38c4",
+    "references/conflict-resolution.md": "725d28087139dcd42643a56bb4cf00a2a21a5b04a052a27c2f0e9b49c900800e",
+    "references/maintenance.md": "af75fbc0f6923a40ddb76b559b75571ae76856c57a120b20c69b3c67cd67c962",
+    "references/output-structure.md": "ea5fdab5f3054b8011c763e5ae674fab0579e2623f9df88008664dc4ab398005",
+    "references/source-language.md": "d1d51825a32d8f837633ebf83025c1384a5289cc57ce6015f537e33e34b3ce37",
+    "scripts/skill-source-compiler.mjs": "474821e6e53371e58e47248464a6b01260ceae989fd2319c25b5f2b9a2026163",
+    "scripts/skill-source-compiler.mjs.map": "0655b7c82a679e5371abcb7c3a876484cca1314307afe6001241febedece6ab4"
+  },
+  "trial_to_release_changed_files": [
+    "SKILL.md"
+  ],
+  "compiler_emission_files": {
+    "SKILL.md": "fac8feb6ac1a897afa57bb5cd8d86c631c4b662a27fc3428dc914ff956d3d64c",
+    "assets/source-template.yaml": "39cc78cc1b921e54ece551823160b4e88dae65d5cd92f0a4d8a1ac015c37c2aa",
+    "docs/compile-report.md": "227858753f16105ad83d7845fd116844b3220e727731405875155d72e51a22fb",
+    "docs/issues/design-notes.md": "33d64c810278f558dc57b6ea2c5c66d659103b1c6c5646d7afd8d53dac1f555f",
+    "docs/logs/implementation-log-20260710-1.md": "cc72f3c83ede5cc63e541a3011e3c1304a7bb2b2dbc9518ed32f533700615468",
+    "docs/logs/implementation-log-20260713-1.md": "03a46402e5502f933cfaca1d0310d3982971452c7a05b339f1192de796aa37af",
+    "docs/logs/implementation-log-20260715-1.md": "4f1de1edcc4a3d068c46dec8cea0117bee88fb321bed16795fc661e6a2fbcb2f",
+    "references/authoring-guidelines.md": "ed832f7cf421e9620fd99f937bb0b44e331208ae4b3e7dabe5cf0351f5fa38c4",
+    "references/conflict-resolution.md": "725d28087139dcd42643a56bb4cf00a2a21a5b04a052a27c2f0e9b49c900800e",
+    "references/maintenance.md": "af75fbc0f6923a40ddb76b559b75571ae76856c57a120b20c69b3c67cd67c962",
+    "references/output-structure.md": "ea5fdab5f3054b8011c763e5ae674fab0579e2623f9df88008664dc4ab398005",
+    "references/source-language.md": "d1d51825a32d8f837633ebf83025c1384a5289cc57ce6015f537e33e34b3ce37",
+    "scripts/skill-source-compiler.mjs": "474821e6e53371e58e47248464a6b01260ceae989fd2319c25b5f2b9a2026163"
+  },
+  "protected_source_files": 49,
+  "regeneration_restored_full_snapshot": true,
+  "invalid_output_dir_created": false,
+  "source_before_nested_output_sha256": "ac67da68ce7412b4f8f0583b7edd131925dcc7134549fbae4efd144aba1c6d87",
+  "source_after_nested_output_sha256": "ac67da68ce7412b4f8f0583b7edd131925dcc7134549fbae4efd144aba1c6d87",
+  "number_source_files_checked": 51,
+  "directories_checked_before_and_after": 9,
+  "existing_destination_preserved": true,
+  "detached_reference_changed_despite_green_check": true,
+  "actual_commands": {
+    "version": {
+      "argv": [
+        "node",
+        "{scratch}/installed/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "0.2.5",
+      "stderr": ""
+    },
+    "help": {
+      "argv": [
+        "node",
+        "{scratch}/installed/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout": "skill-source-compiler CLI v0.2.5\n\nShipped commands:\n  help [command]                                  Show global help or command-local help.\n  lint <source-dir>                               Validate a source bundle without writing output files.\n  compile <source-dir> --out-dir <skills-dir>    Compile one source bundle into an independent output directory.\n  compile-all <sources-root> --out-dir <skills-dir> Compile direct child directories that contain skill.yaml into distinct paths under an independent output directory.\n  regenerate <source-dir>                         Regenerate compiler-owned files inside a source bundle.\n  check <skill-dir>                               Validate a compiled skill folder or generated source bundle.\n\nExit codes:\n  0 success\n  1 command completed but found validation/runtime problems\n  2 usage error\n  3 unexpected internal failure\n\nRun `skill-source-compiler help <command>` for command-local examples.",
+      "stderr": ""
+    },
+    "local_help": [
+      {
+        "argv": [
+          "node",
+          "{scratch}/installed/skill-source-compiler/scripts/skill-source-compiler.mjs",
+          "help",
+          "help"
+        ],
+        "exit": 0,
+        "stdout": "help - Show global help or command-local help.\n\nUsage:\n  node scripts/skill-source-compiler.mjs --help\n  node scripts/skill-source-compiler.mjs help <command>\n\nSupported commands:\n  - check\n  - compile\n  - compile-all\n  - lint\n  - regenerate",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "node",
+          "{scratch}/installed/skill-source-compiler/scripts/skill-source-compiler.mjs",
+          "help",
+          "lint"
+        ],
+        "exit": 0,
+        "stdout": "lint - Validate a source bundle without writing output files.\n\nUsage:\n  node scripts/skill-source-compiler.mjs lint <source-dir>\n\nExit codes:\n  0 success\n  1 command found validation issues\n  2 usage error\n  3 unexpected internal failure",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "node",
+          "{scratch}/installed/skill-source-compiler/scripts/skill-source-compiler.mjs",
+          "help",
+          "compile"
+        ],
+        "exit": 0,
+        "stdout": "compile - Compile one source bundle into an independent output directory.\n\nUsage:\n  node scripts/skill-source-compiler.mjs compile <source-dir> --out-dir <skills-dir>\n\nExit codes:\n  0 success\n  1 source validation or file-system failure\n  2 usage error\n  3 unexpected internal failure",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "node",
+          "{scratch}/installed/skill-source-compiler/scripts/skill-source-compiler.mjs",
+          "help",
+          "compile-all"
+        ],
+        "exit": 0,
+        "stdout": "compile-all - Compile direct child directories that contain skill.yaml into distinct paths under an independent output directory.\n\nUsage:\n  node scripts/skill-source-compiler.mjs compile-all <sources-root> --out-dir <skills-dir>\n\nExit codes:\n  0 success\n  1 source validation or file-system failure\n  2 usage error\n  3 unexpected internal failure",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "node",
+          "{scratch}/installed/skill-source-compiler/scripts/skill-source-compiler.mjs",
+          "help",
+          "regenerate"
+        ],
+        "exit": 0,
+        "stdout": "regenerate - Regenerate compiler-owned files inside a source bundle.\n\nUsage:\n  node scripts/skill-source-compiler.mjs regenerate <source-dir>\n\nExit codes:\n  0 success\n  1 source validation or file-system failure\n  2 usage error\n  3 unexpected internal failure",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "node",
+          "{scratch}/installed/skill-source-compiler/scripts/skill-source-compiler.mjs",
+          "help",
+          "check"
+        ],
+        "exit": 0,
+        "stdout": "check - Validate a compiled skill folder or generated source bundle.\n\nUsage:\n  node scripts/skill-source-compiler.mjs check <skill-dir>\n\nExit codes:\n  0 success\n  1 command found validation issues\n  2 usage error\n  3 unexpected internal failure",
+        "stderr": ""
+      }
+    ],
+    "usage_error": {
+      "argv": [
+        "node",
+        "{scratch}/installed/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "no-such-command"
+      ],
+      "exit": 2,
+      "stdout": "",
+      "stderr": "Unknown command: no-such-command\nRun `skill-source-compiler --help` for usage."
+    },
+    "release_folder_without_compile_report": {
+      "argv": [
+        "node",
+        "{scratch}/installed/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "{scratch}/installed/skill-source-compiler"
+      ],
+      "exit": 1,
+      "stdout": "FAIL {scratch}/installed/skill-source-compiler\n[error] missing-compile-report: Compiler-tagged skill package is missing docs/compile-report.md.",
+      "stderr": ""
+    },
+    "lint_source": {
+      "argv": [
+        "node",
+        "{scratch}/installed/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "lint",
+        "{scratch}/source/skill-source-compiler"
+      ],
+      "exit": 0,
+      "stdout": "OK {scratch}/source/skill-source-compiler",
+      "stderr": ""
+    },
+    "source_before_drift": {
+      "argv": [
+        "node",
+        "{scratch}/installed/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "{scratch}/source/skill-source-compiler"
+      ],
+      "exit": 0,
+      "stdout": "OK {scratch}/source/skill-source-compiler",
+      "stderr": ""
+    },
+    "independent_compile": {
+      "argv": [
+        "node",
+        "{scratch}/installed/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "compile",
+        "{scratch}/source/skill-source-compiler",
+        "--out-dir",
+        "{scratch}/compiler-output"
+      ],
+      "exit": 0,
+      "stdout": "Compiled {scratch}/source/skill-source-compiler -> {scratch}/compiler-output/skill-source-compiler",
+      "stderr": ""
+    },
+    "check_emitted": {
+      "argv": [
+        "node",
+        "{scratch}/installed/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "{scratch}/compiler-output/skill-source-compiler"
+      ],
+      "exit": 0,
+      "stdout": "OK {scratch}/compiler-output/skill-source-compiler",
+      "stderr": ""
+    },
+    "source_after_induced_drift": {
+      "argv": [
+        "node",
+        "{scratch}/installed/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "{scratch}/source/skill-source-compiler"
+      ],
+      "exit": 1,
+      "stdout": "FAIL {scratch}/source/skill-source-compiler\n[error] generated-skill-drift: SKILL.md does not match the current source bundle render.\n[error] compile-report-drift: docs/compile-report.md does not match the current source bundle render.",
+      "stderr": ""
+    },
+    "regenerate": {
+      "argv": [
+        "node",
+        "{scratch}/installed/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "regenerate",
+        "{scratch}/source/skill-source-compiler"
+      ],
+      "exit": 0,
+      "stdout": "Regenerated {scratch}/source/skill-source-compiler",
+      "stderr": ""
+    },
+    "source_after_regeneration": {
+      "argv": [
+        "node",
+        "{scratch}/installed/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "{scratch}/source/skill-source-compiler"
+      ],
+      "exit": 0,
+      "stdout": "OK {scratch}/source/skill-source-compiler",
+      "stderr": ""
+    },
+    "nested_output": {
+      "argv": [
+        "node",
+        "{scratch}/installed/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "compile",
+        "{scratch}/source/skill-source-compiler",
+        "--out-dir",
+        "{scratch}/source/skill-source-compiler/preview"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": "Output directory {scratch}/source/skill-source-compiler/preview/skill-source-compiler overlaps source bundle {scratch}/source/skill-source-compiler. Use an independent output directory for compile/compile-all, or use regenerate for in-place updates."
+    },
+    "existing_target": {
+      "argv": [
+        "node",
+        "{scratch}/installed/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "compile",
+        "{scratch}/source/skill-source-compiler",
+        "--out-dir",
+        "{scratch}/compiler-output"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": "Output directory already exists: {scratch}/compiler-output/skill-source-compiler. Choose a new output root or remove a known disposable target explicitly before compiling."
+    },
+    "structurally_valid_detached_content_change": {
+      "argv": [
+        "node",
+        "{scratch}/installed/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "{scratch}/detached/skill-source-compiler"
+      ],
+      "exit": 0,
+      "stdout": "OK {scratch}/detached/skill-source-compiler",
+      "stderr": ""
+    },
+    "validate_frontmatter": {
+      "argv": [
+        "python3",
+        "{system-skill-creator}/scripts/quick_validate.py",
+        "{scratch}/installed/skill-source-compiler"
+      ],
+      "exit": 0,
+      "stdout": "Skill is valid!",
+      "stderr": ""
+    }
+  }
+}

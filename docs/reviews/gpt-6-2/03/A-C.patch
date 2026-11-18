@@ -1,0 +1,12 @@
+--- A/SKILL.md
++++ C/SKILL.md
+@@ -20 +20 @@
+-4. For non-trivial work, relate the local change to the project purpose only far enough to reject misleading framing or narrow the work; project purpose does not authorize unrequested expansion.
++4. For non-trivial work, check [project-purpose fit](#project-purpose-fit-policy).
+@@ -55,2 +55 @@
+-12. For non-trivial local work, use project purpose to check whether the request advances the intended flow; use that context to narrow or reject the local task, never to add unrequested work.
+-13. When implementing an accepted audit or review, read the remediation-matrix section in `references/verification-loop.md` and keep each accepted finding tied to a change, evidence, and status.
++12. When implementing an accepted audit or review, read the remediation-matrix section in `references/verification-loop.md` and keep each accepted finding tied to a change, evidence, and status.
+@@ -155 +154 @@
+-Project purpose may show that a local task is misleading, insufficient, or unnecessary and may therefore narrow or reject it. It never grants authority to expand the requested scope.
++Keep agreed scope. Flag concrete conflicts with project purpose. Bring material new evidence for a scope change to the decision owner.
