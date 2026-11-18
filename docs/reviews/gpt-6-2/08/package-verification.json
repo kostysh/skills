@@ -1,0 +1,151 @@
+{
+  "generated_utc": "2026-11-18T20:08:30.024665+00:00",
+  "candidate_archive": "gh-utility-1.2.5.tgz",
+  "candidate_sha256": "5745c3e0c8e1ed96726ea2f4ffcaccf9b62b0b3b40b4870dba85805da71815f4",
+  "compiler_build": "d4f60df",
+  "packer_verified_source_commit": "0ad5d5236b2749c45cef01aec322d8062f525238",
+  "original_archive_sha256": "eaceadfeade08f0f3ba107824fb5689278e82d17fe32dd9e0e3c4a288440019d",
+  "actual_files_sha256": {
+    "LICENSE": "1126322e2cc8d165adc4c792eeb195717de2bcc7b39be1ce77959d78e87ef685",
+    "SKILL.md": "8d7f35f5eac2d15421dad009d4793499a3b5aff4d0743ce218aedc45fab610ee",
+    "agents/openai.yaml": "cf65eaf5836119c1b7933f671a300b7de89af334a01831f25a3dbfb1741293a3",
+    "assets/gh_task_report_template.md": "7ea29f802149aa8156c14769d9987609267f8d4af1fd759bcf25241abbf0c72b",
+    "assets/issue_template.md": "78d8533585dcdce9d3daab9f84b3dca0ce64da9dcd57cbf7aaccc2af1b5ba96d",
+    "assets/pr_body_template.md": "3cee4963ecb761ee653e31cd3e2f5f47b59661717c04fc36ac925fca5ae10cbd",
+    "assets/pr_comment_triage_template.md": "4e78f459f60bce15369709c67b2d9fdcdc416241de36ba7f881c100c61ea5f07",
+    "assets/project_fields_template.yaml": "96de81ea9f251498afba024d3142f7be1845437218a4c12ace0b701c8c90ba80",
+    "assets/release_notes_template.md": "48d006ce83dee1e8622f0a83cf3f065895ccfafc2c26ec9e883677ce33b90cca",
+    "assets/repo_batch_template.csv": "c6c8fb089ec1f69e9deb5d525c39c875e70b60d1090ab0c4fc59d50bf50617a9",
+    "assets/workflow_dispatch_inputs.json": "76844ff6d2d7b30c35c203946bba05c83a7a927612d25a0da9158d9137db56fc",
+    "references/admin-security-playbook.md": "7bcdafe3222136cfd253c9e8d8a79480e9441fe6ff9ac99a540d4a5f4833ad09",
+    "references/api-search-and-url-routing.md": "8eca02d52663ea418d1b874c7eafaec537391240210e15996f69f65a5a5cc3ac",
+    "references/auth-and-scopes.md": "c95295d65ebcc7d83a2597a837e2b9a21d922f15515b73bd60888e9a39fab99a",
+    "references/bulk-operations.md": "d1769b7e796581b37e0e04961149c7028ecd48034bf62f02a62b204e283261ab",
+    "references/codespaces-and-dev-envs.md": "e7fd2e36b122bd0673f8dd2841593a1b7973d9aacd21f72d12a88d7824d1db95",
+    "references/command-map.md": "86d2666b0e81c434567288ca3454955205522e53d165dccc03dea97aab7ec4d2",
+    "references/gh-skill-management.md": "9f51b99f330891be023f3bbb698c5af2dc22c765881ae24a37cf874945227c8f",
+    "references/pr-ci-review-loop.md": "816b87903560ee68fd71efefa6957ff627c9e9edcda71cc1b03a1c44bf0dee77",
+    "references/projects-playbook.md": "9a26e45b5c5e831583d9ab420e0c347b7a255e831618a76a618d82f5671858ff",
+    "references/release-playbook.md": "f1c699973dd581cbf8bbcd86aa8ea0f861472059d897442fa3443ec1f8a6e729",
+    "references/repo-issue-pr-playbook.md": "0b68f1a4fd527561f9cbb9eccb239bfffb3219d9b8d5b12815fa4011288ea4dd",
+    "references/safety-rules.md": "ce30c3bde85b8a4920d71ae2b78ebffee25b66bd00155d4603b434f12ae9a068",
+    "references/troubleshooting.md": "2c8642f29f78f97e60ae433d8d4d15a3cde763be752aa3e164f12aaa97388fd0"
+  },
+  "compiler_only_files": [
+    "docs/README.md",
+    "docs/compile-report.md",
+    "docs/logs/implementation-log-20260713-1.md",
+    "docs/logs/implementation-log-20260715-1.md",
+    "docs/logs/implementation-log-20260924-1.md",
+    "docs/research-basis.md"
+  ],
+  "controlled_C_to_release_delta": [
+    "LICENSE",
+    "SKILL.md",
+    "references/api-search-and-url-routing.md"
+  ],
+  "files_match_source": true,
+  "patch_replay": [
+    "A-B",
+    "A-C",
+    "B-C",
+    "C-Release"
+  ],
+  "checks": [
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "lint",
+        "skills/gh-utility"
+      ],
+      "exit": 0,
+      "stdout": "OK skills/gh-utility\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "skills/gh-utility"
+      ],
+      "exit": 0,
+      "stdout": "OK skills/gh-utility\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "{home}/.codex/skills/.system/skill-creator/scripts/quick_validate.py",
+        "skills/gh-utility"
+      ],
+      "exit": 0,
+      "stdout": "Skill is valid!\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "regenerate",
+        "skills/gh-utility"
+      ],
+      "exit": 0,
+      "captured": "Completed in original preparation before pnpm cache failure; generated files persisted."
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "compile",
+        "skills/gh-utility",
+        "--out-dir",
+        "{row_temp}/isolated-compilation"
+      ],
+      "exit": 0,
+      "captured": "Completed in original preparation; isolated output verified byte-for-byte against archive."
+    },
+    {
+      "argv": [
+        "pnpm",
+        "--dir",
+        "cli",
+        "run",
+        "pack:skills",
+        "--root",
+        "{row_temp}/package-root",
+        "--out",
+        "{row_temp}/candidate-pack",
+        "--release",
+        "skills-20261118-08",
+        "--previous",
+        "{study_temp}/base-pack/catalog.json"
+      ],
+      "exit": 1,
+      "stderr": "[ERROR] unable to open database file",
+      "environment": "workspace-write sandbox"
+    },
+    {
+      "argv": [
+        "pnpm",
+        "--dir",
+        "cli",
+        "run",
+        "pack:skills",
+        "--root",
+        "{row_temp}/package-root",
+        "--out",
+        "{row_temp}/candidate-pack",
+        "--release",
+        "skills-20261118-08",
+        "--previous",
+        "{study_temp}/base-pack/catalog.json"
+      ],
+      "exit": 0,
+      "stdout": "Skills packed: 1; output: {row_temp}/candidate-pack",
+      "environment": "authorized pnpm invocation with cache database accessible"
+    }
+  ],
+  "published": false
+}

@@ -9,9 +9,9 @@ Translate the URL directly to the corresponding native `gh` command.
 | URL form | Preferred route |
 |---|---|
 | `https://github.com/OWNER/REPO` | `gh repo view OWNER/REPO` |
-| `https://github.com/OWNER/REPO/pull/123` | `gh pr view 123 --repo OWNER/REPO`; `gh pr checks 123` |
+| `https://github.com/OWNER/REPO/pull/123` | `gh pr view 123 --repo OWNER/REPO`. For checks, use `gh pr checks 123 --repo OWNER/REPO`. |
 | `https://github.com/OWNER/REPO/issues/45` | `gh issue view 45 --repo OWNER/REPO --comments` |
-| `https://github.com/OWNER/REPO/actions/runs/ID` | `gh run view ID --repo OWNER/REPO --log-failed` |
+| `https://github.com/OWNER/REPO/actions/runs/ID` | `gh run view ID --repo OWNER/REPO`. For a specific attempt, add `--attempt N`. |
 | `https://github.com/OWNER/REPO/releases/tag/TAG` | `gh release view TAG --repo OWNER/REPO` |
 | GitHub blob/tree URL or raw file URL | shallow clone with `gh repo clone`, then local read |
 | `api.github.com/repos/...` | `gh api -X GET repos/...` |

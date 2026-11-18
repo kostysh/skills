@@ -1,0 +1,217 @@
+{
+  "variant": "A",
+  "case": "pr-checks",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПримени руководство guide/gh-utility/SKILL.md из текущего каталога. Для PR из handoff.md проверь на GitHub общее количество записей проверок. Сгруппируй их по событию GitHub (push и pull_request), назови количество и результаты для каждого события. Сохрани исходное состояние, нужны только открытые метаданные по этому PR и ответ в чате.\n",
+  "input_file_sha256": {
+    "guide/gh-utility/SKILL.md": "1271666c97f13652d9e431db2e70304b17ade73c91b9f8ddda0ae851aa13d129",
+    "guide/gh-utility/agents/openai.yaml": "cf65eaf5836119c1b7933f671a300b7de89af334a01831f25a3dbfb1741293a3",
+    "guide/gh-utility/assets/gh_task_report_template.md": "7ea29f802149aa8156c14769d9987609267f8d4af1fd759bcf25241abbf0c72b",
+    "guide/gh-utility/assets/issue_template.md": "78d8533585dcdce9d3daab9f84b3dca0ce64da9dcd57cbf7aaccc2af1b5ba96d",
+    "guide/gh-utility/assets/pr_body_template.md": "3cee4963ecb761ee653e31cd3e2f5f47b59661717c04fc36ac925fca5ae10cbd",
+    "guide/gh-utility/assets/pr_comment_triage_template.md": "4e78f459f60bce15369709c67b2d9fdcdc416241de36ba7f881c100c61ea5f07",
+    "guide/gh-utility/assets/project_fields_template.yaml": "96de81ea9f251498afba024d3142f7be1845437218a4c12ace0b701c8c90ba80",
+    "guide/gh-utility/assets/release_notes_template.md": "48d006ce83dee1e8622f0a83cf3f065895ccfafc2c26ec9e883677ce33b90cca",
+    "guide/gh-utility/assets/repo_batch_template.csv": "c6c8fb089ec1f69e9deb5d525c39c875e70b60d1090ab0c4fc59d50bf50617a9",
+    "guide/gh-utility/assets/workflow_dispatch_inputs.json": "76844ff6d2d7b30c35c203946bba05c83a7a927612d25a0da9158d9137db56fc",
+    "guide/gh-utility/references/admin-security-playbook.md": "7bcdafe3222136cfd253c9e8d8a79480e9441fe6ff9ac99a540d4a5f4833ad09",
+    "guide/gh-utility/references/api-search-and-url-routing.md": "d1e3b072a383bc935ff73ebedf3b6b50eeb07ac34e85f9db9e2cad1e644c7c43",
+    "guide/gh-utility/references/auth-and-scopes.md": "c95295d65ebcc7d83a2597a837e2b9a21d922f15515b73bd60888e9a39fab99a",
+    "guide/gh-utility/references/bulk-operations.md": "d1769b7e796581b37e0e04961149c7028ecd48034bf62f02a62b204e283261ab",
+    "guide/gh-utility/references/codespaces-and-dev-envs.md": "e7fd2e36b122bd0673f8dd2841593a1b7973d9aacd21f72d12a88d7824d1db95",
+    "guide/gh-utility/references/command-map.md": "86d2666b0e81c434567288ca3454955205522e53d165dccc03dea97aab7ec4d2",
+    "guide/gh-utility/references/gh-skill-management.md": "9f51b99f330891be023f3bbb698c5af2dc22c765881ae24a37cf874945227c8f",
+    "guide/gh-utility/references/pr-ci-review-loop.md": "816b87903560ee68fd71efefa6957ff627c9e9edcda71cc1b03a1c44bf0dee77",
+    "guide/gh-utility/references/projects-playbook.md": "9a26e45b5c5e831583d9ab420e0c347b7a255e831618a76a618d82f5671858ff",
+    "guide/gh-utility/references/release-playbook.md": "f1c699973dd581cbf8bbcd86aa8ea0f861472059d897442fa3443ec1f8a6e729",
+    "guide/gh-utility/references/repo-issue-pr-playbook.md": "0b68f1a4fd527561f9cbb9eccb239bfffb3219d9b8d5b12815fa4011288ea4dd",
+    "guide/gh-utility/references/safety-rules.md": "ce30c3bde85b8a4920d71ae2b78ebffee25b66bd00155d4603b434f12ae9a068",
+    "guide/gh-utility/references/troubleshooting.md": "2c8642f29f78f97e60ae433d8d4d15a3cde763be752aa3e164f12aaa97388fd0",
+    "handoff.md": "1a5291ca06fb7fc79a48a3681b38792680b59b1d6829df0f3b8f0473323a2341"
+  },
+  "raw_events_sha256": "57d01b5bdfddbc3829a70beb95468094a79f1bf810eb89c16127d22776026b59",
+  "raw_events_bytes": 43652,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Применю руководство `guide/gh-utility/SKILL.md`, найду PR в `handoff.md` и сверю открытые данные проверок на GitHub."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat guide/gh-utility/SKILL.md handoff.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat guide/gh-utility/references/{api-search-and-url-routing,repo-issue-pr-playbook,pr-ci-review-loop,command-map}.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'command -v gh && gh --version'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'gh pr checks --help && gh run view --help'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "web_search"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'GH_PROMPT_DISABLED=1 gh pr checks 35 --repo github.com/kostysh/skills --json name,state,event,link,workflow'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "В GitHub для [PR `kostysh/skills#35`](https://github.com/kostysh/skills/pull/35/checks) **8 записей проверок. Все завершились успешно (`SUCCESS`).**\n\n| Событие | Записей | Результаты |\n|---|---:|---|\n| `push` | 4 | Успешны `test` и `cli` на Ubuntu, macOS и Windows |\n| `pull_request` | 4 | Успешны `test` и `cli` на Ubuntu, macOS и Windows |\n\nДанные получены через `gh pr checks`. Изменений в GitHub и рабочем каталоге не вносил."
+    }
+  ],
+  "changed_file_contents": {},
+  "final_response": "В GitHub для [PR `kostysh/skills#35`](https://github.com/kostysh/skills/pull/35/checks) **8 записей проверок. Все завершились успешно (`SUCCESS`).**\n\n| Событие | Записей | Результаты |\n|---|---:|---|\n| `push` | 4 | Успешны `test` и `cli` на Ubuntu, macOS и Windows |\n| `pull_request` | 4 | Успешны `test` и `cli` на Ubuntu, macOS и Windows |\n\nДанные получены через `gh pr checks`. Изменений в GitHub и рабочем каталоге не вносил.",
+  "input_file_modes": {
+    "guide/gh-utility/SKILL.md": "0644",
+    "guide/gh-utility/agents/openai.yaml": "0644",
+    "guide/gh-utility/assets/gh_task_report_template.md": "0644",
+    "guide/gh-utility/assets/issue_template.md": "0644",
+    "guide/gh-utility/assets/pr_body_template.md": "0644",
+    "guide/gh-utility/assets/pr_comment_triage_template.md": "0644",
+    "guide/gh-utility/assets/project_fields_template.yaml": "0644",
+    "guide/gh-utility/assets/release_notes_template.md": "0644",
+    "guide/gh-utility/assets/repo_batch_template.csv": "0644",
+    "guide/gh-utility/assets/workflow_dispatch_inputs.json": "0644",
+    "guide/gh-utility/references/admin-security-playbook.md": "0644",
+    "guide/gh-utility/references/api-search-and-url-routing.md": "0644",
+    "guide/gh-utility/references/auth-and-scopes.md": "0644",
+    "guide/gh-utility/references/bulk-operations.md": "0644",
+    "guide/gh-utility/references/codespaces-and-dev-envs.md": "0644",
+    "guide/gh-utility/references/command-map.md": "0644",
+    "guide/gh-utility/references/gh-skill-management.md": "0644",
+    "guide/gh-utility/references/pr-ci-review-loop.md": "0644",
+    "guide/gh-utility/references/projects-playbook.md": "0644",
+    "guide/gh-utility/references/release-playbook.md": "0644",
+    "guide/gh-utility/references/repo-issue-pr-playbook.md": "0644",
+    "guide/gh-utility/references/safety-rules.md": "0644",
+    "guide/gh-utility/references/troubleshooting.md": "0644",
+    "handoff.md": "0664"
+  },
+  "changed_file_modes": {},
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "executor_native_and_other_network_commands": [
+      {
+        "event_line": 17,
+        "command": "/bin/bash -lc 'GH_PROMPT_DISABLED=1 gh pr checks 35 --repo github.com/kostysh/skills --json name,state,event,link,workflow'",
+        "shell_exit": 0,
+        "grouped_shell": false,
+        "stdout_and_stderr_bytes": 1376,
+        "stdout_and_stderr_sha256": "b22825af4606ab3053794b8f8ea7d15bf642ab762ae274a167e4cc01f4150c57",
+        "metadata_extracted_from_event": [
+          [
+            {
+              "event": "pull_request",
+              "name": "cli (ubuntu-latest)",
+              "state": "SUCCESS",
+              "workflow": "CLI checks"
+            },
+            {
+              "event": "pull_request",
+              "name": "test",
+              "state": "SUCCESS",
+              "workflow": "test"
+            },
+            {
+              "event": "pull_request",
+              "name": "cli (macos-latest)",
+              "state": "SUCCESS",
+              "workflow": "CLI checks"
+            },
+            {
+              "event": "pull_request",
+              "name": "cli (windows-latest)",
+              "state": "SUCCESS",
+              "workflow": "CLI checks"
+            },
+            {
+              "event": "push",
+              "name": "cli (ubuntu-latest)",
+              "state": "SUCCESS",
+              "workflow": "CLI checks"
+            },
+            {
+              "event": "push",
+              "name": "test",
+              "state": "SUCCESS",
+              "workflow": "test"
+            },
+            {
+              "event": "push",
+              "name": "cli (macos-latest)",
+              "state": "SUCCESS",
+              "workflow": "CLI checks"
+            },
+            {
+              "event": "push",
+              "name": "cli (windows-latest)",
+              "state": "SUCCESS",
+              "workflow": "CLI checks"
+            }
+          ]
+        ]
+      }
+    ],
+    "executor_opened_local_skill": true,
+    "confirmed_on_neutral_copy": {
+      "sha_and_mode_inventory_equal_to_capture": true,
+      "changed_paths": []
+    },
+    "independent_public_readback_at_observation": [
+      {
+        "argv": [
+          "gh",
+          "pr",
+          "checks",
+          "35",
+          "--repo",
+          "github.com/kostysh/skills",
+          "--json",
+          "event,state",
+          "--jq",
+          "group_by(.event)|map({event:.[0].event,count:length,states:(map(.state)|unique)})"
+        ],
+        "exit": 0,
+        "stdout": "[{\"count\":4,\"event\":\"pull_request\",\"states\":[\"SUCCESS\"]},{\"count\":4,\"event\":\"push\",\"states\":[\"SUCCESS\"]}]\n",
+        "stderr": ""
+      }
+    ],
+    "scope": "Separate observer requests confirm reference values only. Executor commands and their outputs are identified above. For grouped shell operations only the final shell exit is known. Text of manuals, credentials and logs are excluded.",
+    "web_tool_events_from_primary_record": [
+      {
+        "event_line": 15,
+        "raw_line_sha256": "b54060c966f3678f9f1e2d8f5cb15139ad6234b0be3cdb7f81b44ff90c63de55",
+        "action": "open_page",
+        "url": "https://github.com/kostysh/skills/pull/35/checks",
+        "result_public_urls": [
+          "https://github.com/kostysh/skills/pull/35/checks"
+        ],
+        "result_error_titles": []
+      }
+    ]
+  }
+}
