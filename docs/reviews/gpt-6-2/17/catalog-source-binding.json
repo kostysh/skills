@@ -1,0 +1,23 @@
+{
+  "historicArchive": "skills/error-fixer/docs/reviews/20261016-1",
+  "historicalPatchSha256": "011d639335e67073d23a6f277bb06dca1b5bdee9ea302aa653bb0ea0743dbb88",
+  "initialSourceSha256": "92c8be95084318fe6dffd93fc71f5c733abfd335e4870dd6786c653160ebfcaf",
+  "correctedSourceSha256": "47d76d1e7a3f3f3705ce84c8f7b4adc19e6266ab5cfc223dabfbd41ce25fadf5",
+  "base": "b0244bdcba9416a0a4f40a4f898b21fd6c6990f3",
+  "head": "6e78cc7e2b99e267f0e87f4ad186b2ad318b1478",
+  "bundleSha256": "c8189d9e0fd248a5101b5fb7adb689660064afd60fd61d1fcfcb155f13b15337",
+  "preflightSha256": "da77e8c6c39fe9bc06a9e00d81d35163d5a9dd9095906bf2ca6064e78915031b",
+  "historySha256": "744a774c498bdc84f2b5d26ce5f8f647810f2645675b3eea88b5e9df82891aff",
+  "direction": "Controlled R1 to R2 regression derived from historical incident, not an original historical commit pair",
+  "ownerReview": {
+    "file": "catalog-review.md",
+    "sha256": "e8a0c8078ffe58b422122acd5a5d58307fb80d9034aa2892b181bc036466ae74",
+    "evidenceFile": "t03-verification.json",
+    "evidenceSha256": "cefb58fa7296f1cc0f4f01bab796db0785125491362c242a8c7672c7bfccbf81",
+    "consumers": [
+      "24",
+      "33",
+      "30"
+    ]
+  }
+}

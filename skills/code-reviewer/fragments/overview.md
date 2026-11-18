@@ -21,7 +21,7 @@ The mode determines which passes apply; common snapshot, read-only, evidence, an
 
 - Read `references/diff-completeness.md`, `references/findings-format.md`, and `references/severity-confidence.md` on every review. Other references are required only when their triggers match.
 - Keep review read-only. If the user also requests fixes, treat implementation as a separate phase and mark the review stale after any mutation.
-- Account for the full requested scope. For diff review, recover truncated hunks from the files when possible; list unavailable files explicitly and retain supported partial findings under `limited`.
+- Review available changes and name any coverage gaps.
 - Separate report scope from research scope:
   - report only on the diff or files under review
   - research the wider codebase when needed to confirm or clear a concern

@@ -1,0 +1,215 @@
+{
+  "comparisons": [
+    {
+      "comparison": "catalog/P11",
+      "base_content_sha256": "51be0feb8b31de09e6ec642a6f637982e58fa75af50d35839d2bfcab1718825a",
+      "head_content_sha256": "6f1bce900be353e56fe4c01d63d2e86d875aae95f0f5637e811a3076fa972c97",
+      "changed": [
+        {
+          "path": "src/catalog.mjs",
+          "patch_status": "available",
+          "base_sha256": "92c8be95084318fe6dffd93fc71f5c733abfd335e4870dd6786c653160ebfcaf",
+          "head_sha256": "47d76d1e7a3f3f3705ce84c8f7b4adc19e6266ab5cfc223dabfbd41ce25fadf5"
+        },
+        {
+          "path": "test/catalog.test.mjs",
+          "patch_status": "available",
+          "base_sha256": "6a45eae3808cedb55b2f76befc6e5a421c44c303f16c66929a87f2fffe2b6d1d",
+          "head_sha256": "c826f79120ffdf090f77b679027b122b58e1bb5b8320fac6c95e6582e10a5316"
+        }
+      ]
+    },
+    {
+      "comparison": "shelf/R12",
+      "base_content_sha256": "ee85508fc71d4d60787799912a05d1a0d003eac6a4cce921ea99b5a26e7ec06f",
+      "head_content_sha256": "a6fdce88cb5fbd97274fbd1be98ee8d9fb3c2715828c87a98af3396c3258eb48",
+      "changed": [
+        {
+          "path": "package.json",
+          "patch_status": "omitted",
+          "base_sha256": "4a4dc48616dded744fbf6aedbceda42f11f79f27db4cad660cfc257e47af52af",
+          "head_sha256": "075857140723d645c783b1273f61b898c4025b00553accdc2c432f8164f4cd9c"
+        },
+        {
+          "path": "src/catalog.mjs",
+          "patch_status": "available",
+          "base_sha256": "47d76d1e7a3f3f3705ce84c8f7b4adc19e6266ab5cfc223dabfbd41ce25fadf5",
+          "head_sha256": "92c8be95084318fe6dffd93fc71f5c733abfd335e4870dd6786c653160ebfcaf"
+        }
+      ]
+    },
+    {
+      "comparison": "desk/F09",
+      "base_content_sha256": "0fae493a58eca710d5852dc48e8bd96ba1a03acb09a40ff12c741551bd4128a3",
+      "head_content_sha256": "031181e799f8aff58bfb03866789a5ccc54e5b50b8bf6837f0927ab188e3b407",
+      "changed": [
+        {
+          "path": "paging.mjs",
+          "patch_status": "truncated",
+          "base_sha256": "b18f0b934c91c510d929e78760feba8ac569fedf339077d169255f7263f1a493",
+          "head_sha256": "b5cdbed39a624f3b17890d36084bc4940be3159f379d2b50e280510679e6afa4"
+        },
+        {
+          "path": "read.mjs",
+          "patch_status": "available",
+          "base_sha256": "7c21962f5a71ba7d9a5f760f9f1016b08d81cb7cdd51026fff8665f2fa25069c",
+          "head_sha256": "cf9dc174ff061f30d8bc8c1a8b475534f0155ad7e44d13aa269df0bc44850737"
+        }
+      ]
+    }
+  ],
+  "measured": {
+    "ordinary-before": {
+      "tests": 0,
+      "userPath": 1,
+      "observed": {
+        "initial": [
+          {
+            "id": "a",
+            "title": "Alpha",
+            "pinned": false
+          },
+          {
+            "id": "b",
+            "title": "Beta",
+            "pinned": true
+          }
+        ],
+        "immediate": [
+          "Alpha"
+        ],
+        "disk": [
+          {
+            "id": "a",
+            "title": "Alpha"
+          },
+          {
+            "id": "b",
+            "title": "Beta"
+          }
+        ],
+        "after": []
+      }
+    },
+    "ordinary-after": {
+      "tests": 0,
+      "userPath": 0,
+      "observed": {
+        "initial": [
+          {
+            "id": "a",
+            "title": "Alpha",
+            "pinned": false
+          },
+          {
+            "id": "b",
+            "title": "Beta",
+            "pinned": true
+          }
+        ],
+        "immediate": [
+          "Alpha"
+        ],
+        "disk": [
+          {
+            "id": "a",
+            "title": "Alpha",
+            "pinned": true
+          },
+          {
+            "id": "b",
+            "title": "Beta",
+            "pinned": false
+          }
+        ],
+        "after": [
+          "Alpha"
+        ]
+      }
+    },
+    "boundary-before": {
+      "tests": 0,
+      "userPath": 0,
+      "observed": {
+        "initial": [
+          {
+            "id": "a",
+            "title": "Alpha",
+            "pinned": false
+          },
+          {
+            "id": "b",
+            "title": "Beta",
+            "pinned": true
+          }
+        ],
+        "immediate": [
+          "Alpha"
+        ],
+        "disk": [
+          {
+            "id": "a",
+            "title": "Alpha",
+            "pinned": true
+          },
+          {
+            "id": "b",
+            "title": "Beta",
+            "pinned": false
+          }
+        ],
+        "after": [
+          "Alpha"
+        ]
+      }
+    },
+    "boundary-after": {
+      "tests": 0,
+      "userPath": 1,
+      "observed": {
+        "initial": [
+          {
+            "id": "a",
+            "title": "Alpha",
+            "pinned": false
+          },
+          {
+            "id": "b",
+            "title": "Beta",
+            "pinned": true
+          }
+        ],
+        "immediate": [
+          "Alpha"
+        ],
+        "disk": [
+          {
+            "id": "a",
+            "title": "Alpha"
+          },
+          {
+            "id": "b",
+            "title": "Beta"
+          }
+        ],
+        "after": []
+      }
+    },
+    "holdout-before": {
+      "tests": 0,
+      "userPath": 0,
+      "observed": [
+        "A",
+        "B"
+      ]
+    },
+    "holdout-after": {
+      "tests": 0,
+      "userPath": 1,
+      "observed": [
+        "C",
+        "D"
+      ]
+    }
+  }
+}

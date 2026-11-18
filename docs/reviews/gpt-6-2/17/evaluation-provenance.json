@@ -1,0 +1,186 @@
+{
+  "frozenAt": "2026-11-18T20:49:08.920933+00:00",
+  "initialMaterialsSha256": "39027ddbfaf3b2a3408975a3a2d6d65a0d22b5c4c454beeec0601d7915166a3b",
+  "initialFileCount": 69,
+  "frozenHoldoutMatchesInputs": true,
+  "studyParticipants": [
+    {
+      "series": "ab",
+      "code": "d1ca41",
+      "variant": "A",
+      "case": "boundary",
+      "session": "01a1f06e-3a24-7a62-8aaf-8ce3aff0ccb3",
+      "primaryAnswerSha256": "09c00af080ce511cb5df7cdeb42c6dc1670a6641fcbc681f48befed5347105a9",
+      "primaryEventsSha256": "8546c018cff3d8d11b545dc3544696790aee65866efda7f919c0e5df65b87811",
+      "publicRecordSha256": "90db96b1040415336994a77946fe7860136547dfc077082738b3e58a34a29719",
+      "inputFileCount": 25,
+      "checksWithCapturedOutput": 1
+    },
+    {
+      "series": "ab",
+      "code": "1de9a6",
+      "variant": "B",
+      "case": "ordinary",
+      "session": "01a1f06e-f0d2-75d1-b406-d7596ffeb15a",
+      "primaryAnswerSha256": "4d58b2eda907446daaf298258280171071bb64c1fed7fc9b2cbcdec5942de599",
+      "primaryEventsSha256": "66641eb10d6abf6ec9aa65c4876f18e81415bb658dd439e8791b7351e113ebd5",
+      "publicRecordSha256": "25c8d01d63349a89e7b061c535a468d58a345fdf0d6e779ea01b5285c5765a68",
+      "inputFileCount": 27,
+      "checksWithCapturedOutput": 1
+    },
+    {
+      "series": "ab",
+      "code": "6ad14f",
+      "variant": "B",
+      "case": "boundary",
+      "session": "01a1f06f-753f-7e42-8527-c71fe48d910f",
+      "primaryAnswerSha256": "a78a2e3153648f3ec86094cf09e0cea2cb21609708e77c17f062f35da22b677b",
+      "primaryEventsSha256": "3b71a64dc299ac49898e7fc35781c9db1052dceb86b093f893eae8bc6b267209",
+      "publicRecordSha256": "d8beac5423bcb6a80b0492c9553b256f1eb5365997c444b0526d50ba40cdaf21",
+      "inputFileCount": 25,
+      "checksWithCapturedOutput": 1
+    },
+    {
+      "series": "ab",
+      "code": "eb0aaf",
+      "variant": "A",
+      "case": "ordinary",
+      "session": "01a1f070-0896-7033-9965-a1f380b1d78a",
+      "primaryAnswerSha256": "91efe203b34c0b13d0a80f471e77fa3768226c653b4847702d022fdbb9a12c5e",
+      "primaryEventsSha256": "8df6e49c0d17e1b2f11610b1fdae5b9a79b972f7eb59eca76bb3e8fc8716be43",
+      "publicRecordSha256": "2e4b38f71518c9a7e71a258b8e4b7e781f2e9a7f369d1d5ec3fd5be37e6f99c7",
+      "inputFileCount": 27,
+      "checksWithCapturedOutput": 1
+    },
+    {
+      "series": "confirm",
+      "code": "bb6730",
+      "variant": "C",
+      "case": "boundary",
+      "session": "01a1f076-71d2-7233-981a-1bf74736dc35",
+      "primaryAnswerSha256": "16409ad6347b66e5240a803892e93250ba35934f3165916aaef0b6a06a466058",
+      "primaryEventsSha256": "a0f4d733857fa3d218fb55c30925f707d10f24fca958cd961dd2b533e7293c70",
+      "publicRecordSha256": "81f0560f5289e6453a8dd156bf32cef7e2d9a27a5258657d96e4a0fb1e60d941",
+      "inputFileCount": 25,
+      "checksWithCapturedOutput": 1
+    },
+    {
+      "series": "confirm",
+      "code": "567e8b",
+      "variant": "C",
+      "case": "ordinary",
+      "session": "01a1f078-62d5-7c11-87a9-129ea9ada5f6",
+      "primaryAnswerSha256": "7d4acbb6f22320a275a61f4dc48745065558b40254db9fab6577fffbe828fdc3",
+      "primaryEventsSha256": "0fada27184fbd3466780f0a53ffa08712b714d054fb5b21f7015628ce56c81ba",
+      "publicRecordSha256": "eecee64686c3ba5e8fafb0d85f28bb4e015d71cc00f353a1909e7b4a2cad8ba3",
+      "inputFileCount": 27,
+      "checksWithCapturedOutput": 1
+    },
+    {
+      "series": "confirm",
+      "code": "5ae84c",
+      "variant": "A",
+      "case": "holdout",
+      "session": "01a1f078-f84c-7761-af82-c1792773fb0a",
+      "primaryAnswerSha256": "a987a1e1b484a4be776fe45abff18dfadeb8201e0fdc20acaa77333101b02a1a",
+      "primaryEventsSha256": "f29c477425ac64f48a4a96b6f1a2a2424264560e7411cc46741ece0dcceedabd",
+      "publicRecordSha256": "97822fa1466fd590de84e028972c6956d41bc301a3e344181e95a52b1b41b8dd",
+      "inputFileCount": 27,
+      "checksWithCapturedOutput": 2
+    },
+    {
+      "series": "confirm",
+      "code": "17da6f",
+      "variant": "C",
+      "case": "holdout",
+      "session": "01a1f077-495b-7ae3-9262-9990f35310a4",
+      "primaryAnswerSha256": "cebd73ae420cd1632e26b18c976260e28c4afe1652c39bde76738c117eeb2edc",
+      "primaryEventsSha256": "7e43d5e1987399217750024d810bcb8260f25ae7c861424ce33a5dda8e717445",
+      "publicRecordSha256": "ab64c7cf3908c8ed379a13b5c80b916207e44644e4e46cb5c6279e8bb978d4a1",
+      "inputFileCount": 27,
+      "checksWithCapturedOutput": 1
+    }
+  ],
+  "assessors": [
+    {
+      "series": "ab",
+      "session": "01a1f072-b99b-7ba1-ac15-ff4eebec24e8",
+      "model": "gpt-6.2-sol",
+      "reasoning": "high",
+      "mode": "read-only",
+      "memoryDisabled": true,
+      "rubricSha256": "dafb1e9a70c9c6802fcad738b51797636ddcbb7f06bb18f636e401e90311bc6c",
+      "instruction": "Ты независимый оценщик. Работай только в текущем каталоге. Используй закрытые до опыта критерии criteria.md, выданные по нейтральным кодам задания, материалы до/после, реальные ответы, операции и независимые проверки, если они приложены. Сопоставь действия и наблюдаемое состояние каждого случая с критериями. Зачти эквивалентное решение. Для каждого кода зафиксируй необходимые аспекты, PASS/FAIL/INCONCLUSIVE по ним и общий исход с конкретными основаниями. Оцени заявленные возможности в пределах фактической среды. Не обращайся к другим каталогам и не пытайся определить неизвестное соответствие редакций. Ничего не изменяй. Выдай таблицу и основание каждого результата по-русски в финальном ответе. Подпиши его как независимый оценщик.",
+      "inputFileCount": 105,
+      "exactInputsArchiveDirectory": "ab",
+      "inPacket": [
+        "d1ca41",
+        "1de9a6",
+        "6ad14f",
+        "eb0aaf"
+      ],
+      "originalResult": {
+        "exit": 0,
+        "sha256": "d781e5fee029c651a5014fb3a3b1eeff01d3bd7b68fd0b4af5c7db7ff791b9b1",
+        "events_sha256": "b7d30696089bddd8d2aebb2d4693f195ff3f0858ef2aedff8dd35f982d7d90df"
+      },
+      "portableGradeSha256": "d781e5fee029c651a5014fb3a3b1eeff01d3bd7b68fd0b4af5c7db7ff791b9b1",
+      "reusedControls": {},
+      "localCommandCount": 12
+    },
+    {
+      "series": "confirm",
+      "session": "01a1f07a-bb17-7d01-b2a9-8403325808a6",
+      "model": "gpt-6.2-sol",
+      "reasoning": "high",
+      "mode": "read-only",
+      "memoryDisabled": true,
+      "rubricSha256": "dafb1e9a70c9c6802fcad738b51797636ddcbb7f06bb18f636e401e90311bc6c",
+      "instruction": "Ты независимый оценщик. Работай только в текущем каталоге. Используй закрытые до опыта критерии criteria.md, выданные по нейтральным кодам задания, материалы до/после, реальные ответы, операции и независимые проверки, если они приложены. Сопоставь действия и наблюдаемое состояние каждого случая с критериями. Зачти эквивалентное решение. Для каждого кода зафиксируй необходимые аспекты, PASS/FAIL/INCONCLUSIVE по ним и общий исход с конкретными основаниями. Оцени заявленные возможности в пределах фактической среды. Не обращайся к другим каталогам и не пытайся определить неизвестное соответствие редакций. Ничего не изменяй. Выдай таблицу и основание каждого результата по-русски в финальном ответе. Подпиши его как независимый оценщик.",
+      "inputFileCount": 161,
+      "exactInputsArchiveDirectory": "confirm",
+      "inPacket": [
+        "bb6730",
+        "a7ad41",
+        "f14eea",
+        "567e8b",
+        "5ae84c",
+        "17da6f"
+      ],
+      "originalResult": {
+        "exit": 0,
+        "sha256": "1bcffa0fabaa61f8ee6882b2fd88f82cded36748db107e5e4cf60ca30a87979f",
+        "events_sha256": "17fe86d514ad11986e3ac12a31ddf7ac82ad35f64e3fb65877b549566085a748"
+      },
+      "portableGradeSha256": "2f053b4b65ea7e058cacc332ab4c3fe12d3b9187313d2125a88e73a8f2f28cdb",
+      "reusedControls": {
+        "a7ad41": "d1ca41",
+        "f14eea": "eb0aaf"
+      },
+      "localCommandCount": 19
+    }
+  ],
+  "candidateDecision": {
+    "signedInitialAssessmentSha256": "d781e5fee029c651a5014fb3a3b1eeff01d3bd7b68fd0b4af5c7db7ff791b9b1",
+    "A": "2/2",
+    "B": "2/2",
+    "C": "Review available changes and name any coverage gaps."
+  },
+  "originalDecisionSha256": "34154fa8212475f588962d8529f448a556b84f2ad6de42f6493849b06dabb72c",
+  "normalizationReceiptSha256": "2440ebbdeb332a7ebe8dfa6a27d9e79ca392792572a76b5d6b46ef4f70ca5b93",
+  "exactAssessmentInputsArchiveSha256": "cd0617fffe524d93e5bf0caa37b8041ca822bc9a5bbcead548ac2be05f1b26de",
+  "studyC": {
+    "sourceInstructionSha256": "f3b7ca494fda58fa1710f038bf9b1b881f11f23fb197de59e42915975598c32f",
+    "itemLengths": {
+      "A": 19433,
+      "B": 19233,
+      "C": 19288
+    },
+    "frozenConfirmCases": {
+      "holdout": "cd3b2a58d2cefa36399336aa0ff45034871a3460a48ca5a9117a6ba0e6f5f62f",
+      "manifest": "8ad32f64f46554b514a58fc53938487b62d42ca3a5c93e8bccb887fa44427696",
+      "criterion": "dafb1e9a70c9c6802fcad738b51797636ddcbb7f06bb18f636e401e90311bc6c"
+    },
+    "releaseSha256": "24ae65b749c0986948de7bf9b18381cc4ab295e3b95ef86903c98a9675771a44"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "archive": "code-reviewer-0.4.7.tgz",
+  "archiveSha256": "24ae65b749c0986948de7bf9b18381cc4ab295e3b95ef86903c98a9675771a44",
+  "distinctFromStudyAndScorers": true,
+  "participants": [
+    {
+      "trial": "release-boundary",
+      "publicRecord": "results/release-boundary.json",
+      "session": "01a1f099-96e2-79d1-84aa-aac357f6beb8",
+      "responseSha256": "dfc64d49b10b1d2f192457753b26dd881834c82c079d0ecec409a6ac574af251",
+      "inputSha256": "be765c089ce25deebaab64043a1477ca909bf25b282acd21e7ececb63daca8b7",
+      "publicRecordSha256": "a10a1f1fabd85ba1b8b033b0ad5d5c78d080a1bd296f35389ea58819b7d12c73",
+      "exit": 0,
+      "allDeliveredMembersAndFixtureUnchanged": true
+    },
+    {
+      "trial": "pr35-consumer",
+      "publicRecord": "results/pr35-consumer.json",
+      "session": "01a1f09a-3251-7cd0-b79b-b9a3716a8d02",
+      "responseSha256": "5fd2135c4119e8c6564616c0f4917e6ff3cb5dc965ac1008ef691ddc929a9cc1",
+      "inputSha256": "1549360b37604d55dfc08bc7d54864408d0b3aa4bb00972d6c2f2d8a569e59a1",
+      "publicRecordSha256": "53d9f8fd1aca7fc54d62a79b2ec5ce12ef23cd2a10e7b851feaaa4a5c67ed303",
+      "exit": 0,
+      "allDeliveredMembersAndFixtureUnchanged": true
+    }
+  ]
+}
