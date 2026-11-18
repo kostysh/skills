@@ -1,0 +1,32 @@
+{
+  "security": {
+    "version": "0.1.15",
+    "release": "5cdc31eb72a87f4ffe3150ccd83837f95e46cf86811a18f8bc7cd9b3fca87b1f",
+    "primaryFile": "739330902aa88f8cb4f12688ba65fa25f358fdacf28d8654e3b800db88a3eed1",
+    "receipt": "14e796d607963e285267e770908cb3d20dbf64abd8c3e1628f4e18b17a836608"
+  },
+  "privacy": {
+    "version": "0.2.4",
+    "release": "9940231f1da84373ec1f49055c99fe000fdf86e77066bee89c19b2b49172a9db",
+    "model": "gpt-6.2-sol",
+    "effort": "model_reasoning_effort=\"medium\"",
+    "session": "01a1f095-65b3-7892-90f6-ea0ea99438cb",
+    "receivedSecurity": "739330902aa88f8cb4f12688ba65fa25f358fdacf28d8654e3b800db88a3eed1",
+    "changedOnly": [
+      "privacy-handoff.md"
+    ],
+    "allExistingBytesAndModesMatch": true,
+    "primaryFile": "c317a431de79fada06bf7c0f2c9b468f1673f1f5546c97cbc7a84833d446dbb7",
+    "rawEvents": "1bdeab53a5d2002238c1124cc5022afcbc4d61dd2738b4a7e177f955a6492a50"
+  },
+  "inputsFor21": {
+    "privacy-handoff.md": "c317a431de79fada06bf7c0f2c9b468f1673f1f5546c97cbc7a84833d446dbb7",
+    "role-observation.json": "3dd5f7c9f451716fff6bd1bd109c9d182250de125e1c5fd47a69fae1cb5fccbd",
+    "security-handoff.md": "739330902aa88f8cb4f12688ba65fa25f358fdacf28d8654e3b800db88a3eed1",
+    "security-session-receipt.json": "14e796d607963e285267e770908cb3d20dbf64abd8c3e1628f4e18b17a836608",
+    "sources/case.md": "e365261501f0d5a0b018389bf473b5a7e1769215f3694178fc7e956cf88ca959",
+    "sources/documents.json": "e6608361b7b1718ab19546e5bf732abf860565f4e718d2baae2769720799e5a5",
+    "sources/web-contract.md": "3ccc0e9198fa48e5824f537165be42201964aa87ec2fdc570fbc9313da1745ce"
+  },
+  "consumerArchive": "2c72b7cdc5060573e32b82ac624c4861bca29b2042b11ae21d325ed8b0c7c574"
+}
