@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: documentation
-  source-version: 0.2.2
+  source-version: 0.2.3
   recommended-skill-md-max-bytes: 20000
   description: >-
     Create, review, restructure, and rewrite source-grounded technical
@@ -43,6 +43,10 @@ supporting:
     source: docs/logs/implementation-log-20260908-1.md
     target: docs/logs/implementation-log-20260908-1.md
     description: Non-normative interop and format-owner discovery evidence.
+  - id: supporting-implementation-log-20261118-1
+    source: docs/logs/implementation-log-20261118-1.md
+    target: docs/logs/implementation-log-20261118-1.md
+    description: Non-normative evidence for checking the supported reader interface and version-scoped workarounds.
 surfaces:
   active:
     requiredReferences: []
@@ -164,9 +168,9 @@ sections:
     - id: gotcha-factual-assumption
       priority: high
       text: Do not turn missing product behavior, version, defaults, commands, errors, or rationale into a writing assumption.
-    - id: gotcha-substrate-closure
+    - id: gotcha-reader-entry-point
       priority: high
-      text: Formatting, lint, generated pages, link checks, and a green docs build are useful evidence but cannot by themselves verify the documented behavior.
+      text: Test the reader's supported entry point for success and relevant errors. If it fails, tell the reader what must change for that path to work. Offer a tested workaround when it fits the task and state its limits.
     - id: gotcha-taxonomy-project
       priority: medium
       text: Do not create empty tutorial, how-to, reference, and explanation trees or initiate a corpus-wide reorganization merely to mirror the Diataxis diagram.

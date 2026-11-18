@@ -1,0 +1,566 @@
+{
+  "isolation": "Ephemeral processes, neutral working directories, memories disabled. Host file reading is possible. Explicit scope and reviewed actual operations distinguish a blind comparison from OS-level isolation. Participants could use tools and local temporary installation directories.",
+  "records": {
+    "5035a2": {
+      "case": "ordinary",
+      "role": "A",
+      "stage": "ab",
+      "id": "01a1f082-fcc3-7ce2-b4ef-95326f60a9fc",
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeatureDisabled": true,
+      "sandbox": "workspace-write",
+      "exit": 0,
+      "answerSha256": "e2920a674b633dbdc8f1998b97f62e84c252c19631faffe2df2825e3942c2f50",
+      "rawEventsSha256": "c3020f4d3fe315630a4450ed74ccb25d93884620eaf41b12cbcab7300e2d3b17",
+      "completedTurnUsage": [
+        {
+          "input_tokens": 224919,
+          "cached_input_tokens": 208384,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1744,
+          "reasoning_output_tokens": 163
+        }
+      ],
+      "commandEvents": 6,
+      "webSearchEvents": 0,
+      "outsideResearchOrPersonalPathSignals": [],
+      "changedOriginalsIncludingModes": [],
+      "outputGuideSha256": "c329a903bbd3b9974836a30a3c55f5075d27d131cda1da4a8f4a162a59c2fdf7"
+    },
+    "46ceec": {
+      "case": "boundary",
+      "role": "B",
+      "stage": "ab",
+      "id": "01a1f083-d5ce-7ea3-8c10-2fdbec6a9ff9",
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeatureDisabled": true,
+      "sandbox": "workspace-write",
+      "exit": 0,
+      "answerSha256": "4f9afce83272a3abf7e09d5fba9691d5d7ba4f38d70271a028f9bf74dc6b20c0",
+      "rawEventsSha256": "03783b9457164df525126b76fd7499873d6e6281ee73595a0981837ebfbcc4d9",
+      "completedTurnUsage": [
+        {
+          "input_tokens": 235338,
+          "cached_input_tokens": 216576,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 2112,
+          "reasoning_output_tokens": 254
+        }
+      ],
+      "commandEvents": 5,
+      "webSearchEvents": 0,
+      "outsideResearchOrPersonalPathSignals": [],
+      "changedOriginalsIncludingModes": [],
+      "outputGuideSha256": "32b25837b92379f996907ed1e9b0c18825ecac09ea3812f6f3b44906ff64d58c"
+    },
+    "f34026": {
+      "case": "ordinary",
+      "role": "B",
+      "stage": "ab",
+      "id": "01a1f085-0446-7391-9f4e-2a9772db0100",
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeatureDisabled": true,
+      "sandbox": "workspace-write",
+      "exit": 0,
+      "answerSha256": "de6d79142239aaed21760d916c7727d8493b8ed25a7b5f64a275cda44275a737",
+      "rawEventsSha256": "0d619a06c7c621f62ac25548f6ed6e6e757d31860cb0dc2db5a6bf40227e8ded",
+      "completedTurnUsage": [
+        {
+          "input_tokens": 168523,
+          "cached_input_tokens": 152576,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1087,
+          "reasoning_output_tokens": 88
+        }
+      ],
+      "commandEvents": 5,
+      "webSearchEvents": 0,
+      "outsideResearchOrPersonalPathSignals": [],
+      "changedOriginalsIncludingModes": [],
+      "outputGuideSha256": "d25a583e8e84882841794a6426cd3754cfeace9c088bca3405237f8c80582140"
+    },
+    "ef7f6e": {
+      "case": "boundary",
+      "role": "A",
+      "stage": "ab",
+      "id": "01a1f085-99e5-7b00-82a0-68595dbb718b",
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeatureDisabled": true,
+      "sandbox": "workspace-write",
+      "exit": 0,
+      "answerSha256": "a01d079943c32f32248a30c64534067a8da3966600c5c80ab53e41c9a18d9bda",
+      "rawEventsSha256": "e3de7deae73f95135354d73a5fa1fd9cd8f58ac4bd13b2551f0ac56c3be176f3",
+      "completedTurnUsage": [
+        {
+          "input_tokens": 231077,
+          "cached_input_tokens": 213504,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1676,
+          "reasoning_output_tokens": 104
+        }
+      ],
+      "commandEvents": 6,
+      "webSearchEvents": 0,
+      "outsideResearchOrPersonalPathSignals": [],
+      "changedOriginalsIncludingModes": [],
+      "outputGuideSha256": "718e4d98876350faf177fcc5b5f7b2e90e89dba94ad7be51ce1645756e6178f1"
+    },
+    "d71b1c": {
+      "case": "boundary",
+      "role": "C",
+      "stage": "confirm",
+      "id": "01a1f08b-5baf-7e71-84e0-a3d760235b1e",
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeatureDisabled": true,
+      "sandbox": "workspace-write",
+      "exit": 0,
+      "answerSha256": "ce691627816735548415d7d985e584fe4378e560ec1076fb07aa1540c846c674",
+      "rawEventsSha256": "3e8a10b57a35b9c376c865a00d2f92bf1879e9eef38ebff3b24ea824731f0df4",
+      "completedTurnUsage": [
+        {
+          "input_tokens": 199880,
+          "cached_input_tokens": 182912,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1758,
+          "reasoning_output_tokens": 145
+        }
+      ],
+      "commandEvents": 6,
+      "webSearchEvents": 0,
+      "outsideResearchOrPersonalPathSignals": [],
+      "changedOriginalsIncludingModes": [],
+      "outputGuideSha256": "7a23382e387923de7fd50470d354b440f36472da5b3a5c7ec26002a9078a605c"
+    },
+    "480e9c": {
+      "case": "holdout",
+      "role": "C",
+      "stage": "confirm",
+      "id": "01a1f08c-32e1-71a3-9dc8-b0fb588a2fa2",
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeatureDisabled": true,
+      "sandbox": "workspace-write",
+      "exit": 0,
+      "answerSha256": "5488d9a8aa8ed5902b3b9e976ebc90e8586e4cad751e1c70dbcb36e8501f5e9f",
+      "rawEventsSha256": "59c9909551b1980ded3d6155ab0f379920cbbf0a5524df3cf644536a11b4f31a",
+      "completedTurnUsage": [
+        {
+          "input_tokens": 234958,
+          "cached_input_tokens": 216832,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 2135,
+          "reasoning_output_tokens": 107
+        }
+      ],
+      "commandEvents": 6,
+      "webSearchEvents": 0,
+      "outsideResearchOrPersonalPathSignals": [],
+      "changedOriginalsIncludingModes": [],
+      "outputGuideSha256": "3ebcc1d180dd5406949ecbb6519f1da68a83985648d0fd61fce0ef342b5cb1d1"
+    },
+    "5c1ae6": {
+      "case": "ordinary",
+      "role": "C",
+      "stage": "confirm",
+      "id": "01a1f08d-28e7-7960-91c2-bc3e2f53f4aa",
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeatureDisabled": true,
+      "sandbox": "workspace-write",
+      "exit": 0,
+      "answerSha256": "6701149dd54847965f685022dea658d394a0f4cc3e2bfa7dcf15d3b581113454",
+      "rawEventsSha256": "80c24e3c4f6f89f389ec8797abc2d6efa9dd8fae3ee5fc143d295a9617d2c21b",
+      "completedTurnUsage": [
+        {
+          "input_tokens": 231152,
+          "cached_input_tokens": 213760,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1603,
+          "reasoning_output_tokens": 74
+        }
+      ],
+      "commandEvents": 6,
+      "webSearchEvents": 0,
+      "outsideResearchOrPersonalPathSignals": [],
+      "changedOriginalsIncludingModes": [],
+      "outputGuideSha256": "d9cdc207f8c30d77ff46f0e4f1723577aa8c90fc78d4bfbaf21b822e7e113aad"
+    },
+    "b8b08c": {
+      "case": "holdout",
+      "role": "A",
+      "stage": "confirm",
+      "id": "01a1f08e-01c0-7e83-ada0-1eee9e5ceda2",
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeatureDisabled": true,
+      "sandbox": "workspace-write",
+      "exit": 0,
+      "answerSha256": "12654c90b29abd0792aee8c326049382f761bb2ba937cc210142243a7d419345",
+      "rawEventsSha256": "46977296f95f4a5bc7e9439751f3cdb5856b7074751e59f63fa9e9f46420a358",
+      "completedTurnUsage": [
+        {
+          "input_tokens": 231280,
+          "cached_input_tokens": 213760,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 2062,
+          "reasoning_output_tokens": 105
+        }
+      ],
+      "commandEvents": 5,
+      "webSearchEvents": 0,
+      "outsideResearchOrPersonalPathSignals": [],
+      "changedOriginalsIncludingModes": [],
+      "outputGuideSha256": "058cfa19638040cd92fc1a14d372cb419972b084e4ffeaba960416ecb11b1883"
+    },
+    "7f363b": {
+      "case": "exception",
+      "role": "C",
+      "stage": "pair",
+      "id": "01a1f09d-8590-7ac2-bfb3-b920a672e4d8",
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeatureDisabled": true,
+      "sandbox": "workspace-write",
+      "exit": 0,
+      "answerSha256": "7aeeb453dc37e8b9668fb2edbb0416af1e191edbf23a3f6992dea03dcef4e969",
+      "rawEventsSha256": "4f82e311343583ff763d8101951e7669a01da19aaf31c55220cc5d52fe20743d",
+      "completedTurnUsage": [
+        {
+          "input_tokens": 169172,
+          "cached_input_tokens": 152576,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1463,
+          "reasoning_output_tokens": 138
+        }
+      ],
+      "commandEvents": 6,
+      "webSearchEvents": 0,
+      "outsideResearchOrPersonalPathSignals": [],
+      "changedOriginalsIncludingModes": [],
+      "outputGuideSha256": "a0b4df01d55b52f834b24ef53596bc403bb3a725c2bf719f7c64166249c3608f"
+    },
+    "ce8f1b": {
+      "case": "public",
+      "role": "C",
+      "stage": "pair",
+      "id": "01a1f09e-30c7-75d0-90d7-ebe5605b7642",
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeatureDisabled": true,
+      "sandbox": "workspace-write",
+      "exit": 0,
+      "answerSha256": "ab390f44cb3072852758d215d6fe29f9cab6511959f4c23cc0b3402229ff941c",
+      "rawEventsSha256": "21f774a2778905115349fa004cfc3c2c6a99e1a63e97be51218702274c3673a5",
+      "completedTurnUsage": [
+        {
+          "input_tokens": 231547,
+          "cached_input_tokens": 199296,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1712,
+          "reasoning_output_tokens": 231
+        }
+      ],
+      "commandEvents": 6,
+      "webSearchEvents": 0,
+      "outsideResearchOrPersonalPathSignals": [],
+      "changedOriginalsIncludingModes": [],
+      "outputGuideSha256": "9a5a754ffc5aadb93a98f273d111f8fd3b0ccb9c46544db1a443b754448cfdf0"
+    },
+    "da66d4": {
+      "case": "public",
+      "role": "release",
+      "stage": "final",
+      "id": "01a1f0a2-842a-78a2-ad32-c1062756630d",
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeatureDisabled": true,
+      "sandbox": "workspace-write",
+      "exit": 0,
+      "answerSha256": "8995a7405a66de2f964986a86c666ece5358b8bd2c13d59c0353d399a0352730",
+      "rawEventsSha256": "ae729be8dd19df9e03eb46b5a935bd4efc0447a80421f3680e6b5918695d7e49",
+      "completedTurnUsage": [
+        {
+          "input_tokens": 209910,
+          "cached_input_tokens": 190336,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1427,
+          "reasoning_output_tokens": 55
+        }
+      ],
+      "commandEvents": 6,
+      "webSearchEvents": 0,
+      "outsideResearchOrPersonalPathSignals": [],
+      "changedOriginalsIncludingModes": [],
+      "outputGuideSha256": "3f839cff25e30397762bed965f5b7abb2f770d71201c2e58356f41ddffe382f1",
+      "exactReleaseFilesProvided": true
+    },
+    "d4260f": {
+      "case": "boundary",
+      "role": "release",
+      "stage": "final",
+      "id": "01a1f0a2-8429-72d1-8600-1235e430d81a",
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeatureDisabled": true,
+      "sandbox": "workspace-write",
+      "exit": 0,
+      "answerSha256": "6e14b9d34416cc3351db0115cbe1fe0b0a0743ca98911671e7c8773a67e699b6",
+      "rawEventsSha256": "2c699d213cade930d2aef5b2f7f9141737fa93bfac0d7cef8c2c5140e15bca86",
+      "completedTurnUsage": [
+        {
+          "input_tokens": 241200,
+          "cached_input_tokens": 222208,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1862,
+          "reasoning_output_tokens": 55
+        }
+      ],
+      "commandEvents": 6,
+      "webSearchEvents": 0,
+      "outsideResearchOrPersonalPathSignals": [],
+      "changedOriginalsIncludingModes": [],
+      "outputGuideSha256": "5c4100513200eccb4e633bfd920ad026cbc8c0534fa83193a0957d7cb12d03d0",
+      "exactReleaseFilesProvided": true
+    },
+    "7389ce": {
+      "case": "exception",
+      "role": "release",
+      "stage": "final",
+      "id": "01a1f0a3-32aa-70e0-860e-8c9d43c5c959",
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeatureDisabled": true,
+      "sandbox": "workspace-write",
+      "exit": 0,
+      "answerSha256": "e3fb0e7eba8e38e2fa2f091e1efe2686095dfd11bf43eec4cad64f40d9c954ad",
+      "rawEventsSha256": "52b7bd75cd9a1fbd25820426d260f3a6577a9b44856d48899345f6dfa55e7b51",
+      "completedTurnUsage": [
+        {
+          "input_tokens": 353045,
+          "cached_input_tokens": 315136,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 2791,
+          "reasoning_output_tokens": 336
+        }
+      ],
+      "commandEvents": 7,
+      "webSearchEvents": 0,
+      "outsideResearchOrPersonalPathSignals": [],
+      "changedOriginalsIncludingModes": [],
+      "outputGuideSha256": "e1717294c304717c4a6e59ef35dacab6ff653e18f3659266f04bf812bf133c1b",
+      "exactReleaseFilesProvided": true
+    },
+    "52ff2f": {
+      "case": "ordinary",
+      "role": "release",
+      "stage": "final",
+      "id": "01a1f0a3-5b16-72f0-abd2-f4971bd05034",
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeatureDisabled": true,
+      "sandbox": "workspace-write",
+      "exit": 0,
+      "answerSha256": "3903e51a79211c2a4c5a8df1a0f64d1453cbc0700e8b560ea2108efde693c3a1",
+      "rawEventsSha256": "f421028803736df102cd6036d1e22340051312a3a093851d7a0180a1e10d9944",
+      "completedTurnUsage": [
+        {
+          "input_tokens": 199465,
+          "cached_input_tokens": 182656,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1395,
+          "reasoning_output_tokens": 161
+        }
+      ],
+      "commandEvents": 6,
+      "webSearchEvents": 0,
+      "outsideResearchOrPersonalPathSignals": [],
+      "changedOriginalsIncludingModes": [],
+      "outputGuideSha256": "84789a39bd84c373740eb3fd3c5b1f9bb2f17b6fdd18c49013f6ee626918ab47",
+      "exactReleaseFilesProvided": true
+    },
+    "ee8342": {
+      "case": "holdout",
+      "role": "release",
+      "stage": "final",
+      "id": "01a1f0a4-05f2-70e2-a413-cfc57eda2828",
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeatureDisabled": true,
+      "sandbox": "workspace-write",
+      "exit": 0,
+      "answerSha256": "979da0e1b7dde6d87f67f142ad0be4848eed167b47645999d26092ed6493b5dd",
+      "rawEventsSha256": "d332758636f42fb5a326478070234b6541c72f28742f6ea9bfda2985efa74579",
+      "completedTurnUsage": [
+        {
+          "input_tokens": 231325,
+          "cached_input_tokens": 198656,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 2025,
+          "reasoning_output_tokens": 97
+        }
+      ],
+      "commandEvents": 6,
+      "webSearchEvents": 0,
+      "outsideResearchOrPersonalPathSignals": [],
+      "changedOriginalsIncludingModes": [],
+      "outputGuideSha256": "fbcdee6ffe63b6d91cd262956974dcb4f9705327b49ba2b03e12206a802b6bf2",
+      "exactReleaseFilesProvided": true
+    },
+    "f8f969": {
+      "case": "partial",
+      "role": "release",
+      "stage": "fresh",
+      "id": "01a1f0a7-8355-7551-9dab-891eb20834f6",
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeatureDisabled": true,
+      "sandbox": "workspace-write",
+      "exit": 0,
+      "answerSha256": "adfa4502067baadffb4238d0f4ac59ad027858a6a2d27cbb5baaef20753b1156",
+      "rawEventsSha256": "169f3e1e26479f624385899850df9fdb1775d9350d0704478dc6de79f62bbff5",
+      "completedTurnUsage": [
+        {
+          "input_tokens": 231882,
+          "cached_input_tokens": 184192,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 2047,
+          "reasoning_output_tokens": 223
+        }
+      ],
+      "commandEvents": 6,
+      "webSearchEvents": 0,
+      "outsideResearchOrPersonalPathSignals": [],
+      "changedOriginalsIncludingModes": [],
+      "outputGuideSha256": "30674c2531174f57c6159b9a673a732a7e9d3a427f95802c6a85ec3f3ee10321",
+      "exactReleaseFilesProvided": true
+    },
+    "4b204c": {
+      "case": "holdout",
+      "role": "reader",
+      "stage": "reader",
+      "id": "01a1f0a4-ef41-7fc2-8043-0184d277c64c",
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeatureDisabled": true,
+      "sandbox": "workspace-write",
+      "exit": 0,
+      "answerSha256": "e0ac37f4c1b7f84b76190924284fe9f9193e5dfa8ac70b484e154d01ab0aa712",
+      "rawEventsSha256": "ad2c7764b220fabdd9b3433f76f44260b56265fbdd13dad73299f6cfc2098082",
+      "completedTurnUsage": [
+        {
+          "input_tokens": 150747,
+          "cached_input_tokens": 138752,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1514,
+          "reasoning_output_tokens": 154
+        }
+      ],
+      "commandEvents": 8,
+      "webSearchEvents": 0,
+      "outsideResearchOrPersonalPathSignals": [],
+      "changedOriginalsIncludingModes": [],
+      "authorLabel": "ee8342",
+      "receivedGuideSha256": "fbcdee6ffe63b6d91cd262956974dcb4f9705327b49ba2b03e12206a802b6bf2",
+      "receivedTallySha256": "b67a76bc3dd46c43e26070c0dee7841942ffe20e853b08e37774a751fa4600e5"
+    },
+    "08f87e": {
+      "case": "exception",
+      "role": "reader",
+      "stage": "reader",
+      "id": "01a1f0a4-6a5c-7850-8766-05d74bb390e8",
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeatureDisabled": true,
+      "sandbox": "workspace-write",
+      "exit": 0,
+      "answerSha256": "48851395b254077341d90d0325960de94349542aced84ab1202e73abf9ac3d38",
+      "rawEventsSha256": "c9610c7da29f2cb3f793cd36be07c5dbe1459a5f842a25835f54ac67ef486bed",
+      "completedTurnUsage": [
+        {
+          "input_tokens": 150254,
+          "cached_input_tokens": 138240,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1193,
+          "reasoning_output_tokens": 108
+        }
+      ],
+      "commandEvents": 6,
+      "webSearchEvents": 0,
+      "outsideResearchOrPersonalPathSignals": [],
+      "changedOriginalsIncludingModes": [],
+      "authorLabel": "7389ce",
+      "receivedGuideSha256": "e1717294c304717c4a6e59ef35dacab6ff653e18f3659266f04bf812bf133c1b",
+      "receivedTallySha256": "fc945d08751947095e3e8ea2e7575d8efdfec67f1779ac357362f0c77c751a4b"
+    },
+    "1a459e": {
+      "case": "ordinary",
+      "role": "reader",
+      "stage": "reader",
+      "id": "01a1f0a4-0899-7bb2-ae0c-4fb118a9bf51",
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeatureDisabled": true,
+      "sandbox": "workspace-write",
+      "exit": 0,
+      "answerSha256": "93c24965cdd774e3f52efd7ee3f66f76ea6b55db26dd6018c8fcc656212f7a01",
+      "rawEventsSha256": "5ec93500acddba20db8d9dbfb6f72d6f277fdb0400370fb9e218e45561ff538f",
+      "completedTurnUsage": [
+        {
+          "input_tokens": 176211,
+          "cached_input_tokens": 152960,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1273,
+          "reasoning_output_tokens": 52
+        }
+      ],
+      "commandEvents": 8,
+      "webSearchEvents": 0,
+      "outsideResearchOrPersonalPathSignals": [],
+      "changedOriginalsIncludingModes": [],
+      "authorLabel": "52ff2f",
+      "receivedGuideSha256": "84789a39bd84c373740eb3fd3c5b1f9bb2f17b6fdd18c49013f6ee626918ab47",
+      "receivedTallySha256": "43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b"
+    },
+    "69f8d7": {
+      "case": "public",
+      "role": "reader",
+      "stage": "reader",
+      "id": "01a1f0a3-3593-7021-88f2-737a4454bb9e",
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeatureDisabled": true,
+      "sandbox": "workspace-write",
+      "exit": 0,
+      "answerSha256": "f69fc53e668526f885cf6e88dce8217c2586641b606523e4645acc44851ea2cb",
+      "rawEventsSha256": "6a0a13117ed18c4ea052dd7f0cca68cb7c58d7b90f7296bd60ec7c5d5dc2e396",
+      "completedTurnUsage": [
+        {
+          "input_tokens": 124300,
+          "cached_input_tokens": 98304,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1389,
+          "reasoning_output_tokens": 258
+        }
+      ],
+      "commandEvents": 5,
+      "webSearchEvents": 0,
+      "outsideResearchOrPersonalPathSignals": [],
+      "changedOriginalsIncludingModes": [],
+      "authorLabel": "da66d4",
+      "receivedGuideSha256": "3f839cff25e30397762bed965f5b7abb2f770d71201c2e58356f41ddffe382f1",
+      "receivedTallySha256": "fc945d08751947095e3e8ea2e7575d8efdfec67f1779ac357362f0c77c751a4b"
+    }
+  },
+  "infraBeforeModel": {
+    "attempts": 2,
+    "exit": 1,
+    "rawEventBytes": 0,
+    "answerBytes": 0,
+    "reason": "Host sandbox prevented starting the Codex in-process app server (read-only filesystem). Retained separately outside the experiment; new participant workspaces used after authorized host startup."
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "frozenAt": "2026-11-18T21:14:21.451683+00:00",
+  "acceptedSnapshot": "dcd5736c491cf429ba22bf7bc767dccdf912e94e",
+  "archive": "documentation-0.2.2.tgz",
+  "archiveSha256": "d2411403d3f1b0a31b83bb60ab0dac730e49c88dffd3d95113a9ac95b59bb699",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "files": {
+    "A/SKILL.md": "62840325a7575be737e9d123ee6ed9b90481b374c1f78b1fe5069b98f484e283",
+    "A/references/diataxis-guide.md": "2fd3a9fcbedd9fde5b4b4b06bd003b65d1b812b124299f1469a6420ed4e49d87",
+    "A-B.patch": "268cff0eff14dde30f3307e8655acfe60f8024475b86dff30d2b54e957f31291",
+    "B/SKILL.md": "f0ddca3b977581c3565e843ab24b2c274e701591bb8da727568a1b833054458c",
+    "B/references/diataxis-guide.md": "2fd3a9fcbedd9fde5b4b4b06bd003b65d1b812b124299f1469a6420ed4e49d87",
+    "cases/boundary.md": "e5aea1bd89ce1121eeed9786aacf7811abdbe060000691ff10e59554e7c262d6",
+    "cases/holdout.md": "e5aea1bd89ce1121eeed9786aacf7811abdbe060000691ff10e59554e7c262d6",
+    "cases/ordinary.md": "e5aea1bd89ce1121eeed9786aacf7811abdbe060000691ff10e59554e7c262d6",
+    "fixture/boundary/ci/summary.md": "f5d6a2cb4d693cc2e51a1bba6d41629b2c8e4ab30200543f3988c556d86477f7",
+    "fixture/boundary/release/desk.md": "a1367e9d7611551176d9f83d15052bbe91a5ba00d8ac8220af68c84e7f88f8e3",
+    "fixture/boundary/release/engineering-tally-fixture-1.0.1.tgz": "fc945d08751947095e3e8ea2e7575d8efdfec67f1779ac357362f0c77c751a4b",
+    "fixture/holdout/ci/summary.md": "f5d6a2cb4d693cc2e51a1bba6d41629b2c8e4ab30200543f3988c556d86477f7",
+    "fixture/holdout/release/desk.md": "a1367e9d7611551176d9f83d15052bbe91a5ba00d8ac8220af68c84e7f88f8e3",
+    "fixture/holdout/release/engineering-tally-fixture-1.1.0.tgz": "b67a76bc3dd46c43e26070c0dee7841942ffe20e853b08e37774a751fa4600e5",
+    "fixture/ordinary/ci/summary.md": "f5d6a2cb4d693cc2e51a1bba6d41629b2c8e4ab30200543f3988c556d86477f7",
+    "fixture/ordinary/release/desk.md": "a1367e9d7611551176d9f83d15052bbe91a5ba00d8ac8220af68c84e7f88f8e3",
+    "fixture/ordinary/release/engineering-tally-fixture-1.0.0.tgz": "43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b",
+    "rubric.md": "4f5d4e477f2c518f76a662557001fc9ae2dbcc7e1088c60979a658e574dfc365"
+  }
+}

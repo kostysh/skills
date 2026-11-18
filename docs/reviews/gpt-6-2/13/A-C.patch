@@ -1,0 +1,5 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -222 +222 @@
+-- **high** — Formatting, lint, generated pages, link checks, and a green docs build are useful evidence but cannot by themselves verify the documented behavior.
++- **high** — Verify success and failure through the reader's supported entry point. Identify any tested workaround separately.

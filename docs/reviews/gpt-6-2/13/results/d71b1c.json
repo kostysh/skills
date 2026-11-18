@@ -1,0 +1,139 @@
+{
+  "variant": "C",
+  "case": "boundary",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nИспользуй локальное руководство из ./SKILL.md. Для дежурного оператора напиши на русском короткий guide.md по приложенному выпуску Tally. На чистой машине с Node и npm он хочет установить локальный пакет и получить машиночитаемую сумму 2 и 3. Ему также нужно распознать случай с некорректным числом. Укажи в ответе, что удалось проверить в этой среде. Работай локально, сеть и публикация не входят в задачу.\n",
+  "input_file_sha256": {
+    "SKILL.md": "70d6cab477795a76fd63b01f7b1c95af145f2aae220624504f3a10b3ad07906e",
+    "ci/summary.md": "f5d6a2cb4d693cc2e51a1bba6d41629b2c8e4ab30200543f3988c556d86477f7",
+    "references/diataxis-guide.md": "2fd3a9fcbedd9fde5b4b4b06bd003b65d1b812b124299f1469a6420ed4e49d87",
+    "release/desk.md": "a1367e9d7611551176d9f83d15052bbe91a5ba00d8ac8220af68c84e7f88f8e3",
+    "release/engineering-tally-fixture-1.0.1.tgz": "fc945d08751947095e3e8ea2e7575d8efdfec67f1779ac357362f0c77c751a4b"
+  },
+  "raw_events_sha256": "3e8a10b57a35b9c376c865a00d2f92bf1879e9eef38ebff3b24ea824731f0df4",
+  "raw_events_bytes": 33677,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Изучу локальное руководство `SKILL.md` и выпуск Tally, затем проверю установку и оба сценария для `guide.md`."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"ls -la && rg --files --hidden -g '\"'!.git'\"' && cat ./SKILL.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat release/desk.md ci/summary.md && tar -tvzf release/engineering-tally-fixture-1.0.1.tgz'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"node --version && npm --version && uname -sm && rg --files --hidden -g 'AGENTS.md' -g '\"'!**/.git/**'\"' \"",
+      "exit_code": 1,
+      "status": "failed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'tar -xzOf release/engineering-tally-fixture-1.0.1.tgz package/package.json package/dist/cli.js package/dist/legacy.js package/README.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'set -eu\ncheck_dir=$(mktemp -d ./.tally-check.XXXXXX)\ncp release/engineering-tally-fixture-1.0.1.tgz \"$check_dir/\"\ncd \"$check_dir\"\nexport npm_config_cache=\"$PWD/.npm-cache\"\nnpm install --offline --no-audit --no-fund --ignore-scripts ./engineering-tally-fixture-1.0.1.tgz\nreadlink node_modules/.bin/tally\nrun_case() {\n  label=$1\n  shift\n  status=0\n  \"$@\" > \"$label.stdout\" 2> \"$label.stderr\" || status=$?\n  printf '\"'%s\\\\n' \\\"\"'$status\" > \"$label.status\"\n  printf '\"'%s exit=%s stdout=<%s> stderr=<%s>\\\\n' \\\"\"'$label\" \"$status\" \"$(cat \"$label.stdout\")\" \"$(cat \"$label.stderr\")\"\n}\nrun_case bin-sum ./node_modules/.bin/tally sum 2 3 --json\nrun_case bin-invalid ./node_modules/.bin/tally sum 2 abc --json\nrun_case direct-version node ./node_modules/engineering-tally-fixture/dist/cli.js --version\nrun_case direct-sum node ./node_modules/engineering-tally-fixture/dist/cli.js sum 2 3 --json\nrun_case direct-invalid node ./node_modules/engineering-tally-fixture/dist/cli.js sum 2 abc --json\ntest \"$(cat direct-version.stdout)\" = 1.0.1\ntest \"$(cat direct-sum.status)\" = 0\nnode -e '\"'const assert = require(\\\"node:assert/strict\\\"); const fs = require(\\\"node:fs\\\"); assert.deepEqual(JSON.parse(fs.readFileSync(\\\"direct-sum.stdout\\\", \\\"utf8\\\")), { total: 5 });'\ntest \"'! -s direct-sum.stderr\ntest \"$(cat direct-invalid.status)\" = 2\ntest ! -s direct-invalid.stdout\ntest \"$(cat direct-invalid.stderr)\" = '\"'Invalid number'\nprintf 'check directory: %s\\\\n' \\\"\"'$check_dir\"'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Пакет установился из архива. Команда `tally` в выпуске 1.0.1 запускает старый файл и в обоих случаях возвращает код `0`. Прямой запуск CLI из установленного пакета дал JSON с суммой и код `2` для некорректного числа. Укажу этот проверенный обход в инструкции."
+    },
+    {
+      "type": "file_change",
+      "changes": [
+        {
+          "path": "{project}/guide.md",
+          "kind": "add"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python3 - <<'PY'\nfrom pathlib import Path\nimport json\nimport os\nimport re\nimport shutil\nimport subprocess\nimport tempfile\n\ncommands = re.findall(r'\"'```sh'\"\\\\n(.*?)\\\\n\"'```'\"', Path('guide.md').read_text(), re.S)\nassert len(commands) == 3\nwith tempfile.TemporaryDirectory(prefix='.guide-check.', dir='.') as directory:\n    folder = Path(directory).resolve()\n    archive = Path('release/engineering-tally-fixture-1.0.1.tgz')\n    shutil.copyfile(archive, folder / archive.name)\n    env = {**os.environ, 'npm_config_cache': str(folder / '.npm-cache')}\n    install, success, invalid = [\n        subprocess.run(['sh', '-c', command], cwd=folder, env=env, check=True, capture_output=True, text=True)\n        for command in commands\n    ]\n    assert json.loads(success.stdout) == {'total': 5}\n    assert success.stderr == ''\n    assert (invalid.stdout, invalid.stderr) == ('2\\\\n', 'Invalid number\\\\n')\n    print('All three guide command blocks passed in a fresh folder.')\nshutil.rmtree('./.tally-check.hXYZ7c')\nPY\nls -la\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Написал и проверил [guide.md]({project}/guide.md) для дежурного оператора.\n\nНа Linux x86_64 с Node.js 24.15.0 и npm 12.0.1 пакет Tally 1.0.1 установился из архива в пустую папку без доступа к сети. Команда `tally` запускает старый файл и в обоих сценариях печатает `legacy tally0.1` с кодом `0`.\n\nВ инструкции указан проверенный обход через прямой запуск CLI. Для `2 3` он выдаёт `{\"total\":5}` в stdout и код `0`. Для `2 abc` он пишет `Invalid number` в stderr, оставляет stdout пустым и возвращает код `2`."
+    }
+  ],
+  "changed_file_contents": {
+    "guide.md": "# Tally 1.0.1. Сложение чисел\n\nВ Linux с установленными Node.js и npm откройте терминал в новой папке, куда вы положили архив `engineering-tally-fixture-1.0.1.tgz`. Установите пакет из архива.\n\n```sh\nnpm install --offline --no-audit --no-fund --ignore-scripts ./engineering-tally-fixture-1.0.1.tgz\n```\n\nВ этом выпуске команда `tally` запускает старый файл и печатает `legacy tally0.1`. Чтобы получить результат, запустите CLI напрямую через Node.js.\n\n```sh\nnode ./node_modules/engineering-tally-fixture/dist/cli.js sum 2 3 --json\n```\n\nПри успехе команда записывает JSON `{\"total\":5}` в stdout и завершается с кодом `0`.\n\nЧтобы проверить обработку некорректного числа, передайте `abc` и выведите код завершения.\n\n```sh\nstatus=0\nnode ./node_modules/engineering-tally-fixture/dist/cli.js sum 2 abc --json || status=$?\nprintf '%s\\n' \"$status\"\n```\n\nКоманда Node.js завершается с кодом `2`, пишет `Invalid number` в stderr и оставляет stdout пустым. Последняя строка примера печатает сохранённый код `2`.\n"
+  },
+  "final_response": "Написал и проверил [guide.md]({project}/guide.md) для дежурного оператора.\n\nНа Linux x86_64 с Node.js 24.15.0 и npm 12.0.1 пакет Tally 1.0.1 установился из архива в пустую папку без доступа к сети. Команда `tally` запускает старый файл и в обоих сценариях печатает `legacy tally0.1` с кодом `0`.\n\nВ инструкции указан проверенный обход через прямой запуск CLI. Для `2 3` он выдаёт `{\"total\":5}` в stdout и код `0`. Для `2 abc` он пишет `Invalid number` в stderr, оставляет stdout пустым и возвращает код `2`.",
+  "input_file_modes": {
+    "SKILL.md": "0644",
+    "ci/summary.md": "0664",
+    "references/diataxis-guide.md": "0644",
+    "release/desk.md": "0664",
+    "release/engineering-tally-fixture-1.0.1.tgz": "0664"
+  },
+  "changed_file_modes": {
+    "guide.md": "0664"
+  },
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "exit": 0,
+    "changedOriginals": [],
+    "changedFinal": [
+      "guide.md"
+    ],
+    "guideSha256": "7a23382e387923de7fd50470d354b440f36472da5b3a5c7ec26002a9078a605c",
+    "normalEntryObservations": [
+      {
+        "eventSha256": "b40dc4b40f3aa0882c88281bec406304fa54d59636f209b44424c251193e8ddd",
+        "exit": 0,
+        "resultExcerpts": [
+          "Дежурному выдают вложенный архив. Рабочая среда Linux, установлены Node и npm, доступ к сети закрыт. В старой пересылке для программы был указан tally sum 2 3 --json. Оператор работает в новой пустой папке, получает архив и эту инструкцию."
+        ]
+      },
+      {
+        "eventSha256": "06c427f027a640627d21329b12e11f3466831e88af2b55e9cc744522ab3e60af",
+        "exit": 0,
+        "resultExcerpts": [
+          "    console.log('tally 1.0.1\\nUsage: tally sum <numbers...> [--json]');",
+          "    console.log('1.0.1');",
+          "    const json = args.includes('--json');",
+          "    const values = args.slice(1).filter(x => x !== '--json').map(Number);",
+          "        console.error('Invalid number');",
+          "console.log('legacy tally0.1');",
+          "  \"version\": \"1.0.1\","
+        ]
+      },
+      {
+        "eventSha256": "b4aec0f389f96504de395a44041c8d446b6be29a746c1d63fa6c8f46ad3b492f",
+        "exit": 0,
+        "resultExcerpts": [
+          "bin-sum exit=0 stdout=<legacy tally0.1> stderr=<>",
+          "bin-invalid exit=0 stdout=<legacy tally0.1> stderr=<>",
+          "direct-version exit=0 stdout=<1.0.1> stderr=<>",
+          "direct-sum exit=0 stdout=<{\"total\":5}> stderr=<>",
+          "direct-invalid exit=2 stdout=<> stderr=<Invalid number>"
+        ]
+      },
+      {
+        "eventSha256": "7d748873030471a88a8ae8afe74616b8c1ec0a445be6be10c23702147648fab0",
+        "exit": 0,
+        "resultExcerpts": []
+      }
+    ]
+  }
+}

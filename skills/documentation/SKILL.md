@@ -5,11 +5,11 @@ description: Create, review, restructure, and rewrite source-grounded technical
   explanations, docs architecture, and audits of user-need fit, factual support,
   task completion, and maintainability.
 metadata:
-  source-version: 0.2.2
+  source-version: 0.2.3
   tags: documentation, technical-writing, diataxis, tutorials, how-to, reference,
     explanation
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: a87cfb73f3ec493e5de69127714d570b77bedc92e9f02dc377f388ca213150ca
+  skillforge-source-hash: 4f3c6af8435473999b7ddde6f20e7dd6e9ea350fc314965865510f6f6dc6247c
 ---
 
 # documentation
@@ -219,7 +219,7 @@ Validation:
 
 - **high** — Diataxis can improve fit, flow, and information architecture, but it does not establish accuracy, completeness, consistency, or executable correctness.
 - **high** — Do not turn missing product behavior, version, defaults, commands, errors, or rationale into a writing assumption.
-- **high** — Formatting, lint, generated pages, link checks, and a green docs build are useful evidence but cannot by themselves verify the documented behavior.
+- **high** — Test the reader's supported entry point for success and relevant errors. If it fails, tell the reader what must change for that path to work. Offer a tested workaround when it fits the task and state its limits.
 - **medium** — Do not create empty tutorial, how-to, reference, and explanation trees or initiate a corpus-wide reorganization merely to mirror the Diataxis diagram.
 - **high** — Do not draft persistent project prose in the wrong language with the intent to translate it later; select the audience and language before the first draft.
 

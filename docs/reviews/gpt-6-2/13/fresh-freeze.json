@@ -1,0 +1,37 @@
+{
+  "frozenAt": "2026-11-18T21:54:15.408081+00:00",
+  "finalInstructionArchiveAlreadySealed": "c5ce5b858c774af34eb005a0078b9622bb836e97759195bf51bcf5d281b58293",
+  "existingCodeOwner": "05, emitted dist/cli.js; candidate from 29 is a separate joint check",
+  "originalSourceArchiveSha256": "6168dfdbc4452fbce829d94ac55b26889beb827120dd0d3db651a4503921914b",
+  "unchangedCompiledHandlerSha256": "1f6796ddabf7e3d8fcc8780eff35fb31be659633bdda06bf366e0a387b987f90",
+  "singleSyntheticDistributionChange": "Use the existing compiled Tally handler as installed bin in a new study package 1.0.2; no prepared guide, product code unchanged.",
+  "packageSha256": "e320ce5e7d03aa8763cb02539537fa8b057fec20364fd206fb33bea637b8e775",
+  "taskSha256": "2e643e33634b6542e243d73694693601eec7653a42d975f7378c1fdc934511c7",
+  "criteriaSha256": "cf80ed81f3514a2d26e458ecedfcef76116e2b033412cb091b2623e3dc0f8671",
+  "observationsBeforeWorker": [
+    {
+      "argv": [
+        "./node_modules/.bin/tally",
+        "sum",
+        "2",
+        "3",
+        "--json"
+      ],
+      "stdout": "Calculating\n{\"total\":5}\n",
+      "stderr": "",
+      "exit": 0
+    },
+    {
+      "argv": [
+        "./node_modules/.bin/tally",
+        "sum",
+        "2",
+        "bad",
+        "--json"
+      ],
+      "stdout": "",
+      "stderr": "Invalid number\n",
+      "exit": 2
+    }
+  ]
+}
