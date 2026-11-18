@@ -1,0 +1,11 @@
+Exact replacement verification: OK
+Old text occurrences before: 1; after: 0
+New text occurrences after: 1
+All App.tsx bytes outside the authorized replacement are unchanged: OK
+Project files fingerprinted (excluding node_modules, .git, dist): 25
+Changed project files: ['src/App.tsx']
+Other fingerprinted project files unchanged: OK
+Initial diff: empty against the captured starting snapshot; no Git repository is present.
+Final diff: D-final.diff (captured starting snapshot to final file).
+SHA256 before: 91aedd9fa677873cedb0e0584c8f01e5f649a2b740879362926ae234126590e2
+SHA256 after: 4dab6706ec0065f23c9db487b3cc1a5ad4669aeb417ba98ab8e01a265df3073b

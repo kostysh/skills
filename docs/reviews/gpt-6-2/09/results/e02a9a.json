@@ -1,0 +1,978 @@
+{
+  "variant": "C",
+  "case": "boundary",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nИспользуй выданный в tooling/web-ux-engineer локальный скил для UX-аудита собранного Notification settings (инструмент браузера описан в BROWSER.md). Пользователь меняет частоту, исправляет ошибку в адресе, нажимает Confirm, а затем Cancel, пока в окне видно обработку. Поддержке нужен точный ответ, что окажется в форме и в результате, и какую правку интерфейса обоснованно поставить в очередь. Воспроизведи его обращение на работающем экране. Исходники и настройки приложения менять нельзя.\n",
+  "input_file_sha256": {
+    "BROWSER.md": "50510221aaec46c8b8b05a5c9710db88af38b8212e639c290aad9d32b71f7768",
+    "dist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2": "2317fa4bb293c9c0b110e18315d529235c47a0ddd3338cea3d8c7955e927899e",
+    "dist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2": "6894439694946a589d157ece003086960a6a4013d74a813dab7602efdb3d8c09",
+    "dist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2": "824f485b5d26e2f2da3c2b236132ece1bc8e4e43373452950bb0e40548b4313f",
+    "dist/assets/geist-latin-wght-normal-BgDaEnEv.woff2": "19f9c92546aa300c312235e3125af1b81394d8db9a4bc4a425cd5b641d2d54e1",
+    "dist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2": "8fa40e5d248247735eb97a0bd593b8852440430600d6ba01364c31fe0abc1fe1",
+    "dist/assets/index-3cXjFJlU.js": "85f6b0ddbac345b94f065b54fb6127e8d7135db0bd6e553a0789fd2e4d9b7bc6",
+    "dist/assets/index-Cseenm7H.css": "473d7e4b0d0120f66977be7e3574f8c70ced765a08cf234ba872c37de25443b7",
+    "dist/index.html": "bd2c68a668ff0121d32fbae1a862995ea00ffe0de5141169273f8a6b68935146",
+    "tooling/web-ux-engineer/SKILL.md": "38bb42e0420ca6401241e177098da216cb3aaa880f011a0eb1c9a3ba79f30b48",
+    "tooling/web-ux-engineer/agents/openai.yaml": "725f2bc1ce78f271048df1547a0840b9d06c08637308067a70844cf8a50ccf92",
+    "visit.mjs": "e958ade4ed576e71594b0461f0c3cd8c40078dd436dc8ef2f59b801bcdb1b853"
+  },
+  "raw_events_sha256": "9ef97b697a3d1971d1de912e37555d70cf40b65339314208f69e7e98c7014863",
+  "raw_events_bytes": 44680,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Использую локальный скил `web-ux-engineer`. Проверю сценарий на работающем экране и зафиксирую, что происходит с формой и результатом после Cancel."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"pwd; rg --files --hidden -g '\"'!.git'\"'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat tooling/web-ux-engineer/SKILL.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat BROWSER.md; cat visit.mjs; ls -la'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'TMPDIR=\"$PWD\" node visit.mjs '\"'[{\\\"op\\\":\\\"look\\\"}]'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'set -o pipefail\nTMPDIR=\"$PWD\" node visit.mjs '\"'[{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"#weekly\\\"},{\\\"op\\\":\\\"fill\\\",\\\"target\\\":\\\"#email\\\",\\\"value\\\":\\\"alex@example\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Review changes\\\"},{\\\"op\\\":\\\"fill\\\",\\\"target\\\":\\\"#email\\\",\\\"value\\\":\\\"alex@example.com\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Review changes\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Confirm\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Cancel\\\"},{\\\"op\\\":\\\"wait\\\",\\\"ms\\\":2050}]' | python -c 'import json,sys; \nfor l in sys.stdin:\n if not l.startswith(\\\"[\\\"): print(l.strip()); continue\n for t in json.loads(l):\n  s=t[\\\"state\\\"];print(t[\\\"action\\\"],[(f[\\\"id\\\"],f[\\\"value\\\"],f[\\\"checked\\\"],f[\\\"invalid\\\"]) for f in s[\\\"fields\\\"] if f[\\\"id\\\"]],s[\\\"dialog\\\"],s[\\\"status\\\"],s[\\\"focus\\\"]);print(s[\\\"page\\\"])'\"",
+      "exit_code": 1,
+      "status": "failed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'set -o pipefail\nTMPDIR=\"$PWD\" node visit.mjs '\"'[{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"#weekly\\\"},{\\\"op\\\":\\\"fill\\\",\\\"target\\\":\\\"#email\\\",\\\"value\\\":\\\"alex.example.com\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Review changes\\\"},{\\\"op\\\":\\\"fill\\\",\\\"target\\\":\\\"#email\\\",\\\"value\\\":\\\"alex@example.com\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Review changes\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Confirm\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Cancel\\\"},{\\\"op\\\":\\\"wait\\\",\\\"ms\\\":2050}]' | python -c 'import json,sys\nfor l in sys.stdin:\n if not l.startswith(\\\"[\\\"): print(l.strip()); continue\n for t in json.loads(l):\n  s=t[\\\"state\\\"];print(t[\\\"action\\\"],[(f[\\\"id\\\"],f[\\\"value\\\"],f[\\\"checked\\\"],f[\\\"invalid\\\"]) for f in s[\\\"fields\\\"] if f[\\\"id\\\"]],s[\\\"dialog\\\"],s[\\\"status\\\"],s[\\\"focus\\\"]);print(s[\\\"page\\\"])'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "После Cancel окно закрылось, а статус Applying changes… остался. Затем экран показал Settings applied. Проверю, как Cancel ведёт себя до Confirm, чтобы точнее сформулировать правку."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'set -o pipefail\nTMPDIR=\"$PWD\" node visit.mjs '\"'[{\\\"op\\\":\\\"width\\\",\\\"width\\\":390,\\\"height\\\":844},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"#weekly\\\"},{\\\"op\\\":\\\"fill\\\",\\\"target\\\":\\\"#email\\\",\\\"value\\\":\\\"alex@example.com\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Review changes\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Cancel\\\"},{\\\"op\\\":\\\"wait\\\",\\\"ms\\\":2050},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Review changes\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Confirm\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Escape\\\"},{\\\"op\\\":\\\"wait\\\",\\\"ms\\\":2050}]' | python -c 'import json,sys\nfor l in sys.stdin:\n if not l.startswith(\\\"[\\\"): print(l.strip()); continue\n for t in json.loads(l):\n  s=t[\\\"state\\\"]; print(t[\\\"action\\\"],bool(s[\\\"dialog\\\"]),s[\\\"status\\\"],s[\\\"focus\\\"],[(f[\\\"id\\\"], f[\\\"value\\\"],f[\\\"checked\\\"]) for f in s[\\\"fields\\\"] if f[\\\"id\\\"] in (\\\"email\\\",\\\"weekly\\\")])'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "В **Notification settings** нажатие **Cancel** во время **Applying…** закрывает окно, а применение настроек продолжается. В форме остаются исправленный адрес `alex@example.com`, частота **Weekly** и включённые уведомления. После обработки экран показывает **Settings applied** с теми же значениями. В демо настройки действуют до перезагрузки страницы. Письмо не отправляется. [Запись прогона]({project}/visits/f788bf86-8c1f-4431-8fae-5103561c9335.json)\n\nВоспроизвёл сценарий в Chrome. Переключил **Daily** на **Weekly**, ввёл адрес без `@`, получил ошибку при **Review changes**, исправил адрес и нажал **Confirm**. Нажал **Cancel**, пока окно показывало **Applying…**. В отдельном прогоне **Cancel** до **Confirm** закрыл окно и сохранил введённые значения в форме. Статус применения при этом не появился. [Контрольный прогон]({project}/visits/68c6e8ff-2536-4428-8fae-5103561c881c.json)\n\n**Правка в очередь.** До подтверждения оставить **Cancel**. Во время обработки заменить его на **Close** и добавить пояснение «Настройки продолжат применяться после закрытия окна». Сейчас одна и та же надпись может создать впечатление, что уже запущенное применение отменено.\n\n**Критерий приёмки.** До **Confirm** кнопка **Cancel** возвращает к заполненной форме без запуска применения. После **Confirm** кнопка **Close** закрывает окно, статус обработки остаётся видимым на странице, а по завершении появляется **Settings applied** с подтверждёнными значениями."
+    }
+  ],
+  "changed_file_contents": {
+    "visits/68c6e8ff-2536-4428-8c02-28aac6f6b1cf.json": "{\n  \"actions\": [\n    {\n      \"op\": \"width\",\n      \"width\": 390,\n      \"height\": 844\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"#weekly\"\n    },\n    {\n      \"op\": \"fill\",\n      \"target\": \"#email\",\n      \"value\": \"alex@example.com\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Review changes\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Cancel\"\n    },\n    {\n      \"op\": \"wait\",\n      \"ms\": 2050\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Review changes\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Confirm\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Escape\"\n    },\n    {\n      \"op\": \"wait\",\n      \"ms\": 2050\n    }\n  ],\n  \"requested\": [\n    {\n      \"op\": \"width\",\n      \"width\": 390,\n      \"height\": 844\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"#weekly\"\n    },\n    {\n      \"op\": \"fill\",\n      \"target\": \"#email\",\n      \"value\": \"alex@example.com\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Review changes\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Cancel\"\n    },\n    {\n      \"op\": \"wait\",\n      \"ms\": 2050\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Review changes\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Confirm\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Escape\"\n    },\n    {\n      \"op\": \"wait\",\n      \"ms\": 2050\n    }\n  ],\n  \"timeline\": [\n    {\n      \"action\": {\n        \"op\": \"open\"\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 780,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"width\",\n        \"width\": 390,\n        \"height\": 844\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"#weekly\"\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": \"weekly\",\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"fill\",\n        \"target\": \"#email\",\n        \"value\": \"alex@example.com\"\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"alex@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": \"email\",\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"text=Review changes\"\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\\nReview your changes\\nConfirm to apply these notification settings for this session.\\nEmail address\\nalex@example.com\\nEmail notifications\\nOn\\nDelivery frequency\\nWeekly\\nCancel\\nConfirm\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"alex@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [\n          \"Review your changes\\n\\nConfirm to apply these notification settings for this session.\\n\\nEmail address\\nalex@example.com\\nEmail notifications\\nOn\\nDelivery frequency\\nWeekly\\nCancel\\nConfirm\"\n        ],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Cancel\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"text=Cancel\"\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"alex@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Review changes\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"wait\",\n        \"ms\": 2050\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"alex@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Review changes\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"text=Review changes\"\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\\nReview your changes\\nConfirm to apply these notification settings for this session.\\nEmail address\\nalex@example.com\\nEmail notifications\\nOn\\nDelivery frequency\\nWeekly\\nCancel\\nConfirm\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"alex@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [\n          \"Review your changes\\n\\nConfirm to apply these notification settings for this session.\\n\\nEmail address\\nalex@example.com\\nEmail notifications\\nOn\\nDelivery frequency\\nWeekly\\nCancel\\nConfirm\"\n        ],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Cancel\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"text=Confirm\"\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\\nApplying changes…\\nReview your changes\\nConfirm to apply these notification settings for this session.\\nEmail address\\nalex@example.com\\nEmail notifications\\nOn\\nDelivery frequency\\nWeekly\\nCancel\\nApplying…\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"alex@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [\n          \"Review your changes\\n\\nConfirm to apply these notification settings for this session.\\n\\nEmail address\\nalex@example.com\\nEmail notifications\\nOn\\nDelivery frequency\\nWeekly\\nCancel\\nApplying…\"\n        ],\n        \"status\": [\n          \"Applying changes…\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Escape\"\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\\nApplying changes…\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"alex@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"Applying changes…\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"wait\",\n        \"ms\": 2050\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\\nSettings applied\\nEmail: alex@example.com. Notifications: On. Frequency: Weekly.\\nSaved for this session. No email is sent.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"alex@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"Settings applied\\n\\nEmail: alex@example.com. Notifications: On. Frequency: Weekly.\\n\\nSaved for this session. No email is sent.\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    }\n  ],\n  \"error\": null,\n  \"screenSha256\": \"7b20962fe599439dd45ff7637e4f539fb4bc8d6044b281481ce20dc422b2808a\"\n}\n",
+    "visits/68c6e8ff-2536-4428-8c02-28aac6f6b1cf.png": {
+      "bytes": 46568,
+      "sha256": "7b20962fe599439dd45ff7637e4f539fb4bc8d6044b281481ce20dc422b2808a",
+      "representation": "digest of full file retained in the run receipt"
+    },
+    "visits/7883d1fb-5174-4d9c-b276-1fdf98e1e102.json": "{\n  \"actions\": [\n    {\n      \"op\": \"click\",\n      \"target\": \"#weekly\"\n    },\n    {\n      \"op\": \"fill\",\n      \"target\": \"#email\",\n      \"value\": \"alex@example\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Review changes\"\n    }\n  ],\n  \"requested\": [\n    {\n      \"op\": \"click\",\n      \"target\": \"#weekly\"\n    },\n    {\n      \"op\": \"fill\",\n      \"target\": \"#email\",\n      \"value\": \"alex@example\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Review changes\"\n    },\n    {\n      \"op\": \"fill\",\n      \"target\": \"#email\",\n      \"value\": \"alex@example.com\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Review changes\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Confirm\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Cancel\"\n    },\n    {\n      \"op\": \"wait\",\n      \"ms\": 2050\n    }\n  ],\n  \"timeline\": [\n    {\n      \"action\": {\n        \"op\": \"open\"\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 780,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"#weekly\"\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 780,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": \"weekly\",\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"fill\",\n        \"target\": \"#email\",\n        \"value\": \"alex@example\"\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 780,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"alex@example\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": \"email\",\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"text=Review changes\"\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 780,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\\nReview your changes\\nConfirm to apply these notification settings for this session.\\nEmail address\\nalex@example\\nEmail notifications\\nOn\\nDelivery frequency\\nWeekly\\nCancel\\nConfirm\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"alex@example\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [\n          \"Review your changes\\n\\nConfirm to apply these notification settings for this session.\\n\\nEmail address\\nalex@example\\nEmail notifications\\nOn\\nDelivery frequency\\nWeekly\\nCancel\\nConfirm\"\n        ],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Cancel\"\n        }\n      }\n    }\n  ],\n  \"error\": \"Error: Error: Control is covered: #email\\n    at element (<anonymous>:10:65)\\n    at <anonymous>:13:3\",\n  \"screenSha256\": \"fd3956493e4ef6e0fc8a2b70d2e327e5d02c7cdf92558824a3dfce546bdfd396\"\n}\n",
+    "visits/7883d1fb-5174-4d9c-b276-1fdf98e1e102.png": {
+      "bytes": 44480,
+      "sha256": "fd3956493e4ef6e0fc8a2b70d2e327e5d02c7cdf92558824a3dfce546bdfd396",
+      "representation": "digest of full file retained in the run receipt"
+    },
+    "visits/cfa2ab1f-26a9-43a4-80b2-bcf6ae106cdd.json": "{\n  \"actions\": [\n    {\n      \"op\": \"look\"\n    }\n  ],\n  \"requested\": [\n    {\n      \"op\": \"look\"\n    }\n  ],\n  \"timeline\": [\n    {\n      \"action\": {\n        \"op\": \"open\"\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 780,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"look\"\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 780,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    }\n  ],\n  \"error\": null,\n  \"screenSha256\": \"58f8b4a9c0cf97085684782fa26fcd5b5fdc2478fd1eeb6f85dff2a3ba370404\"\n}\n",
+    "visits/cfa2ab1f-26a9-43a4-80b2-bcf6ae106cdd.png": {
+      "bytes": 27219,
+      "sha256": "58f8b4a9c0cf97085684782fa26fcd5b5fdc2478fd1eeb6f85dff2a3ba370404",
+      "representation": "digest of full file retained in the run receipt"
+    },
+    "visits/f788bf86-8c1f-4431-8fae-5103561c9335.json": "{\n  \"actions\": [\n    {\n      \"op\": \"click\",\n      \"target\": \"#weekly\"\n    },\n    {\n      \"op\": \"fill\",\n      \"target\": \"#email\",\n      \"value\": \"alex.example.com\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Review changes\"\n    },\n    {\n      \"op\": \"fill\",\n      \"target\": \"#email\",\n      \"value\": \"alex@example.com\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Review changes\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Confirm\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Cancel\"\n    },\n    {\n      \"op\": \"wait\",\n      \"ms\": 2050\n    }\n  ],\n  \"requested\": [\n    {\n      \"op\": \"click\",\n      \"target\": \"#weekly\"\n    },\n    {\n      \"op\": \"fill\",\n      \"target\": \"#email\",\n      \"value\": \"alex.example.com\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Review changes\"\n    },\n    {\n      \"op\": \"fill\",\n      \"target\": \"#email\",\n      \"value\": \"alex@example.com\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Review changes\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Confirm\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Cancel\"\n    },\n    {\n      \"op\": \"wait\",\n      \"ms\": 2050\n    }\n  ],\n  \"timeline\": [\n    {\n      \"action\": {\n        \"op\": \"open\"\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 780,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"#weekly\"\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 780,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": \"weekly\",\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"fill\",\n        \"target\": \"#email\",\n        \"value\": \"alex.example.com\"\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 780,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"alex.example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": \"email\",\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"text=Review changes\"\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 780,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEnter a valid email address.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"alex.example.com\",\n            \"checked\": null,\n            \"invalid\": \"true\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"Enter a valid email address.\",\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": \"email\",\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"fill\",\n        \"target\": \"#email\",\n        \"value\": \"alex@example.com\"\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 780,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"alex@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": \"email\",\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"text=Review changes\"\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 780,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\\nReview your changes\\nConfirm to apply these notification settings for this session.\\nEmail address\\nalex@example.com\\nEmail notifications\\nOn\\nDelivery frequency\\nWeekly\\nCancel\\nConfirm\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"alex@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [\n          \"Review your changes\\n\\nConfirm to apply these notification settings for this session.\\n\\nEmail address\\nalex@example.com\\nEmail notifications\\nOn\\nDelivery frequency\\nWeekly\\nCancel\\nConfirm\"\n        ],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Cancel\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"text=Confirm\"\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 780,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\\nApplying changes…\\nReview your changes\\nConfirm to apply these notification settings for this session.\\nEmail address\\nalex@example.com\\nEmail notifications\\nOn\\nDelivery frequency\\nWeekly\\nCancel\\nApplying…\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"alex@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [\n          \"Review your changes\\n\\nConfirm to apply these notification settings for this session.\\n\\nEmail address\\nalex@example.com\\nEmail notifications\\nOn\\nDelivery frequency\\nWeekly\\nCancel\\nApplying…\"\n        ],\n        \"status\": [\n          \"Applying changes…\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"text=Cancel\"\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 780,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\\nApplying changes…\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"alex@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"Applying changes…\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"wait\",\n        \"ms\": 2050\n      },\n      \"state\": {\n        \"heading\": \"Notification settings\",\n        \"width\": 780,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\\nSettings applied\\nEmail: alex@example.com. Notifications: On. Frequency: Weekly.\\nSaved for this session. No email is sent.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"alex@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"Settings applied\\n\\nEmail: alex@example.com. Notifications: On. Frequency: Weekly.\\n\\nSaved for this session. No email is sent.\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    }\n  ],\n  \"error\": null,\n  \"screenSha256\": \"5425a17e7e63562dec82de2b302ffd6469827f4a158e6ee9453e9bf0388e78e3\"\n}\n",
+    "visits/f788bf86-8c1f-4431-8fae-5103561c9335.png": {
+      "bytes": 30455,
+      "sha256": "5425a17e7e63562dec82de2b302ffd6469827f4a158e6ee9453e9bf0388e78e3",
+      "representation": "digest of full file retained in the run receipt"
+    }
+  },
+  "final_response": "В **Notification settings** нажатие **Cancel** во время **Applying…** закрывает окно, а применение настроек продолжается. В форме остаются исправленный адрес `alex@example.com`, частота **Weekly** и включённые уведомления. После обработки экран показывает **Settings applied** с теми же значениями. В демо настройки действуют до перезагрузки страницы. Письмо не отправляется. [Запись прогона]({project}/visits/f788bf86-8c1f-4431-8fae-5103561c9335.json)\n\nВоспроизвёл сценарий в Chrome. Переключил **Daily** на **Weekly**, ввёл адрес без `@`, получил ошибку при **Review changes**, исправил адрес и нажал **Confirm**. Нажал **Cancel**, пока окно показывало **Applying…**. В отдельном прогоне **Cancel** до **Confirm** закрыл окно и сохранил введённые значения в форме. Статус применения при этом не появился. [Контрольный прогон]({project}/visits/68c6e8ff-2536-4428-8fae-5103561c881c.json)\n\n**Правка в очередь.** До подтверждения оставить **Cancel**. Во время обработки заменить его на **Close** и добавить пояснение «Настройки продолжат применяться после закрытия окна». Сейчас одна и та же надпись может создать впечатление, что уже запущенное применение отменено.\n\n**Критерий приёмки.** До **Confirm** кнопка **Cancel** возвращает к заполненной форме без запуска применения. После **Confirm** кнопка **Close** закрывает окно, статус обработки остаётся видимым на странице, а по завершении появляется **Settings applied** с подтверждёнными значениями.",
+  "input_file_modes": {
+    "BROWSER.md": "0664",
+    "dist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2": "0664",
+    "dist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2": "0664",
+    "dist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2": "0664",
+    "dist/assets/geist-latin-wght-normal-BgDaEnEv.woff2": "0664",
+    "dist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2": "0664",
+    "dist/assets/index-3cXjFJlU.js": "0664",
+    "dist/assets/index-Cseenm7H.css": "0664",
+    "dist/index.html": "0664",
+    "tooling/web-ux-engineer/SKILL.md": "0644",
+    "tooling/web-ux-engineer/agents/openai.yaml": "0644",
+    "visit.mjs": "0664"
+  },
+  "changed_file_modes": {
+    "visits/68c6e8ff-2536-4428-8c02-28aac6f6b1cf.json": "0664",
+    "visits/68c6e8ff-2536-4428-8c02-28aac6f6b1cf.png": "0664",
+    "visits/7883d1fb-5174-4d9c-b276-1fdf98e1e102.json": "0664",
+    "visits/7883d1fb-5174-4d9c-b276-1fdf98e1e102.png": "0664",
+    "visits/cfa2ab1f-26a9-43a4-80b2-bcf6ae106cdd.json": "0664",
+    "visits/cfa2ab1f-26a9-43a4-80b2-bcf6ae106cdd.png": "0664",
+    "visits/f788bf86-8c1f-4431-8fae-5103561c9335.json": "0664",
+    "visits/f788bf86-8c1f-4431-8fae-5103561c9335.png": "0664"
+  },
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "executor_evidence": [
+      {
+        "file": "visits/68c6e8ff-2536-4428-8c02-28aac6f6b1cf.json",
+        "trace_sha256": "a63fac50a69dede2496537c2b6a63e4ebc803ed40409b637734cdfa084e22865",
+        "chrome_screen_sha256": "7b20962fe599439dd45ff7637e4f539fb4bc8d6044b281481ce20dc422b2808a",
+        "observed_raw_event_sha256": [
+          "6d4d0b0204d305226ec9ccda2f956ab1cd640d38ae7be2c0496eb022a455e371"
+        ],
+        "driver_error": null,
+        "timeline": [
+          {
+            "action": {
+              "op": "open"
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 780,
+              "email": "",
+              "email_invalid": "false",
+              "frequency": "daily",
+              "notifications": "true",
+              "dialog": [],
+              "status": [
+                ""
+              ],
+              "focus": {
+                "id": null,
+                "text": ""
+              }
+            }
+          },
+          {
+            "action": {
+              "op": "width",
+              "width": 390,
+              "height": 844
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 390,
+              "email": "",
+              "email_invalid": "false",
+              "frequency": "daily",
+              "notifications": "true",
+              "dialog": [],
+              "status": [
+                ""
+              ],
+              "focus": {
+                "id": null,
+                "text": ""
+              }
+            }
+          },
+          {
+            "action": {
+              "op": "click",
+              "target": "#weekly"
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 390,
+              "email": "",
+              "email_invalid": "false",
+              "frequency": "weekly",
+              "notifications": "true",
+              "dialog": [],
+              "status": [
+                ""
+              ],
+              "focus": {
+                "id": "weekly",
+                "text": ""
+              }
+            }
+          },
+          {
+            "action": {
+              "op": "fill",
+              "target": "#email",
+              "value": "alex@example.com"
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 390,
+              "email": "alex@example.com",
+              "email_invalid": "false",
+              "frequency": "weekly",
+              "notifications": "true",
+              "dialog": [],
+              "status": [
+                ""
+              ],
+              "focus": {
+                "id": "email",
+                "text": ""
+              }
+            }
+          },
+          {
+            "action": {
+              "op": "click",
+              "target": "text=Review changes"
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 390,
+              "email": "alex@example.com",
+              "email_invalid": "false",
+              "frequency": "weekly",
+              "notifications": "true",
+              "dialog": [
+                "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nalex@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm"
+              ],
+              "status": [
+                ""
+              ],
+              "focus": {
+                "id": null,
+                "text": "Cancel"
+              }
+            }
+          },
+          {
+            "action": {
+              "op": "click",
+              "target": "text=Cancel"
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 390,
+              "email": "alex@example.com",
+              "email_invalid": "false",
+              "frequency": "weekly",
+              "notifications": "true",
+              "dialog": [],
+              "status": [
+                ""
+              ],
+              "focus": {
+                "id": null,
+                "text": "Review changes"
+              }
+            }
+          },
+          {
+            "action": {
+              "op": "wait",
+              "ms": 2050
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 390,
+              "email": "alex@example.com",
+              "email_invalid": "false",
+              "frequency": "weekly",
+              "notifications": "true",
+              "dialog": [],
+              "status": [
+                ""
+              ],
+              "focus": {
+                "id": null,
+                "text": "Review changes"
+              }
+            }
+          },
+          {
+            "action": {
+              "op": "click",
+              "target": "text=Review changes"
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 390,
+              "email": "alex@example.com",
+              "email_invalid": "false",
+              "frequency": "weekly",
+              "notifications": "true",
+              "dialog": [
+                "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nalex@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm"
+              ],
+              "status": [
+                ""
+              ],
+              "focus": {
+                "id": null,
+                "text": "Cancel"
+              }
+            }
+          },
+          {
+            "action": {
+              "op": "click",
+              "target": "text=Confirm"
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 390,
+              "email": "alex@example.com",
+              "email_invalid": "false",
+              "frequency": "weekly",
+              "notifications": "true",
+              "dialog": [
+                "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nalex@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nApplying…"
+              ],
+              "status": [
+                "Applying changes…"
+              ],
+              "focus": {
+                "id": null,
+                "text": ""
+              }
+            }
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Escape"
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 390,
+              "email": "alex@example.com",
+              "email_invalid": "false",
+              "frequency": "weekly",
+              "notifications": "true",
+              "dialog": [],
+              "status": [
+                "Applying changes…"
+              ],
+              "focus": {
+                "id": null,
+                "text": ""
+              }
+            }
+          },
+          {
+            "action": {
+              "op": "wait",
+              "ms": 2050
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 390,
+              "email": "alex@example.com",
+              "email_invalid": "false",
+              "frequency": "weekly",
+              "notifications": "true",
+              "dialog": [],
+              "status": [
+                "Settings applied\n\nEmail: alex@example.com. Notifications: On. Frequency: Weekly.\n\nSaved for this session. No email is sent."
+              ],
+              "focus": {
+                "id": null,
+                "text": ""
+              }
+            }
+          }
+        ]
+      },
+      {
+        "file": "visits/7883d1fb-5174-4d9c-b276-1fdf98e1e102.json",
+        "trace_sha256": "528a1c00825e67344bdfe063190ffcc5af30ce4c25109a6ca89c61d3ccd1bcb4",
+        "chrome_screen_sha256": "fd3956493e4ef6e0fc8a2b70d2e327e5d02c7cdf92558824a3dfce546bdfd396",
+        "observed_raw_event_sha256": [
+          "cb6af7c0238a84f29c606fb44e33a69cc53b45613246c83a5424807d425e5ad2"
+        ],
+        "driver_error": "Error: Error: Control is covered: #email\n    at element (<anonymous>:10:65)\n    at <anonymous>:13:3",
+        "timeline": [
+          {
+            "action": {
+              "op": "open"
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 780,
+              "email": "",
+              "email_invalid": "false",
+              "frequency": "daily",
+              "notifications": "true",
+              "dialog": [],
+              "status": [
+                ""
+              ],
+              "focus": {
+                "id": null,
+                "text": ""
+              }
+            }
+          },
+          {
+            "action": {
+              "op": "click",
+              "target": "#weekly"
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 780,
+              "email": "",
+              "email_invalid": "false",
+              "frequency": "weekly",
+              "notifications": "true",
+              "dialog": [],
+              "status": [
+                ""
+              ],
+              "focus": {
+                "id": "weekly",
+                "text": ""
+              }
+            }
+          },
+          {
+            "action": {
+              "op": "fill",
+              "target": "#email",
+              "value": "alex@example"
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 780,
+              "email": "alex@example",
+              "email_invalid": "false",
+              "frequency": "weekly",
+              "notifications": "true",
+              "dialog": [],
+              "status": [
+                ""
+              ],
+              "focus": {
+                "id": "email",
+                "text": ""
+              }
+            }
+          },
+          {
+            "action": {
+              "op": "click",
+              "target": "text=Review changes"
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 780,
+              "email": "alex@example",
+              "email_invalid": "false",
+              "frequency": "weekly",
+              "notifications": "true",
+              "dialog": [
+                "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nalex@example\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm"
+              ],
+              "status": [
+                ""
+              ],
+              "focus": {
+                "id": null,
+                "text": "Cancel"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "file": "visits/cfa2ab1f-26a9-43a4-80b2-bcf6ae106cdd.json",
+        "trace_sha256": "c22ae69c0ae7a087b17acdfe53817d40a98e14f164251abc05d2516141c24b93",
+        "chrome_screen_sha256": "58f8b4a9c0cf97085684782fa26fcd5b5fdc2478fd1eeb6f85dff2a3ba370404",
+        "observed_raw_event_sha256": [
+          "aea693385b8723e64a1bb911c06ba9f42b009d92620fc5029309710edf50b49b"
+        ],
+        "driver_error": null,
+        "timeline": [
+          {
+            "action": {
+              "op": "open"
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 780,
+              "email": "",
+              "email_invalid": "false",
+              "frequency": "daily",
+              "notifications": "true",
+              "dialog": [],
+              "status": [
+                ""
+              ],
+              "focus": {
+                "id": null,
+                "text": ""
+              }
+            }
+          },
+          {
+            "action": {
+              "op": "look"
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 780,
+              "email": "",
+              "email_invalid": "false",
+              "frequency": "daily",
+              "notifications": "true",
+              "dialog": [],
+              "status": [
+                ""
+              ],
+              "focus": {
+                "id": null,
+                "text": ""
+              }
+            }
+          }
+        ]
+      },
+      {
+        "file": "visits/f788bf86-8c1f-4431-8fae-5103561c9335.json",
+        "trace_sha256": "81fbb83686f8f82f40b2a867a8626ed2a5035256b60981ded579d8e282b434e8",
+        "chrome_screen_sha256": "5425a17e7e63562dec82de2b302ffd6469827f4a158e6ee9453e9bf0388e78e3",
+        "observed_raw_event_sha256": [
+          "d2b558b74be0fba7d6a7fd911b2637274147e0306007d4366b0dc320d4db9e24"
+        ],
+        "driver_error": null,
+        "timeline": [
+          {
+            "action": {
+              "op": "open"
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 780,
+              "email": "",
+              "email_invalid": "false",
+              "frequency": "daily",
+              "notifications": "true",
+              "dialog": [],
+              "status": [
+                ""
+              ],
+              "focus": {
+                "id": null,
+                "text": ""
+              }
+            }
+          },
+          {
+            "action": {
+              "op": "click",
+              "target": "#weekly"
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 780,
+              "email": "",
+              "email_invalid": "false",
+              "frequency": "weekly",
+              "notifications": "true",
+              "dialog": [],
+              "status": [
+                ""
+              ],
+              "focus": {
+                "id": "weekly",
+                "text": ""
+              }
+            }
+          },
+          {
+            "action": {
+              "op": "fill",
+              "target": "#email",
+              "value": "alex.example.com"
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 780,
+              "email": "alex.example.com",
+              "email_invalid": "false",
+              "frequency": "weekly",
+              "notifications": "true",
+              "dialog": [],
+              "status": [
+                ""
+              ],
+              "focus": {
+                "id": "email",
+                "text": ""
+              }
+            }
+          },
+          {
+            "action": {
+              "op": "click",
+              "target": "text=Review changes"
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 780,
+              "email": "alex.example.com",
+              "email_invalid": "true",
+              "frequency": "weekly",
+              "notifications": "true",
+              "dialog": [],
+              "status": [
+                "Enter a valid email address.",
+                ""
+              ],
+              "focus": {
+                "id": "email",
+                "text": ""
+              }
+            }
+          },
+          {
+            "action": {
+              "op": "fill",
+              "target": "#email",
+              "value": "alex@example.com"
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 780,
+              "email": "alex@example.com",
+              "email_invalid": "false",
+              "frequency": "weekly",
+              "notifications": "true",
+              "dialog": [],
+              "status": [
+                ""
+              ],
+              "focus": {
+                "id": "email",
+                "text": ""
+              }
+            }
+          },
+          {
+            "action": {
+              "op": "click",
+              "target": "text=Review changes"
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 780,
+              "email": "alex@example.com",
+              "email_invalid": "false",
+              "frequency": "weekly",
+              "notifications": "true",
+              "dialog": [
+                "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nalex@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm"
+              ],
+              "status": [
+                ""
+              ],
+              "focus": {
+                "id": null,
+                "text": "Cancel"
+              }
+            }
+          },
+          {
+            "action": {
+              "op": "click",
+              "target": "text=Confirm"
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 780,
+              "email": "alex@example.com",
+              "email_invalid": "false",
+              "frequency": "weekly",
+              "notifications": "true",
+              "dialog": [
+                "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nalex@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nApplying…"
+              ],
+              "status": [
+                "Applying changes…"
+              ],
+              "focus": {
+                "id": null,
+                "text": ""
+              }
+            }
+          },
+          {
+            "action": {
+              "op": "click",
+              "target": "text=Cancel"
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 780,
+              "email": "alex@example.com",
+              "email_invalid": "false",
+              "frequency": "weekly",
+              "notifications": "true",
+              "dialog": [],
+              "status": [
+                "Applying changes…"
+              ],
+              "focus": {
+                "id": null,
+                "text": ""
+              }
+            }
+          },
+          {
+            "action": {
+              "op": "wait",
+              "ms": 2050
+            },
+            "screen": {
+              "heading": "Notification settings",
+              "width": 780,
+              "email": "alex@example.com",
+              "email_invalid": "false",
+              "frequency": "weekly",
+              "notifications": "true",
+              "dialog": [],
+              "status": [
+                "Settings applied\n\nEmail: alex@example.com. Notifications: On. Frequency: Weekly.\n\nSaved for this session. No email is sent."
+              ],
+              "focus": {
+                "id": null,
+                "text": ""
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "independent_screen_readback": {
+      "source": "A separate Chrome profile, normal form controls, unchanged copied work product. This reference is not evidence that an executor took the same actions.",
+      "timeline": [
+        {
+          "action": {
+            "op": "open"
+          },
+          "screen": {
+            "heading": "Notification settings",
+            "width": 780,
+            "email": "",
+            "email_invalid": "false",
+            "frequency": "daily",
+            "notifications": "true",
+            "dialog": [],
+            "status": [
+              ""
+            ],
+            "focus": {
+              "id": null,
+              "text": ""
+            }
+          }
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "#weekly"
+          },
+          "screen": {
+            "heading": "Notification settings",
+            "width": 780,
+            "email": "",
+            "email_invalid": "false",
+            "frequency": "weekly",
+            "notifications": "true",
+            "dialog": [],
+            "status": [
+              ""
+            ],
+            "focus": {
+              "id": "weekly",
+              "text": ""
+            }
+          }
+        },
+        {
+          "action": {
+            "op": "fill",
+            "target": "#email",
+            "value": "misspelled"
+          },
+          "screen": {
+            "heading": "Notification settings",
+            "width": 780,
+            "email": "misspelled",
+            "email_invalid": "false",
+            "frequency": "weekly",
+            "notifications": "true",
+            "dialog": [],
+            "status": [
+              ""
+            ],
+            "focus": {
+              "id": "email",
+              "text": ""
+            }
+          }
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "text=Review changes"
+          },
+          "screen": {
+            "heading": "Notification settings",
+            "width": 780,
+            "email": "misspelled",
+            "email_invalid": "true",
+            "frequency": "weekly",
+            "notifications": "true",
+            "dialog": [],
+            "status": [
+              "Enter a valid email address.",
+              ""
+            ],
+            "focus": {
+              "id": "email",
+              "text": ""
+            }
+          }
+        },
+        {
+          "action": {
+            "op": "fill",
+            "target": "#email",
+            "value": "edited@example.test"
+          },
+          "screen": {
+            "heading": "Notification settings",
+            "width": 780,
+            "email": "edited@example.test",
+            "email_invalid": "false",
+            "frequency": "weekly",
+            "notifications": "true",
+            "dialog": [],
+            "status": [
+              ""
+            ],
+            "focus": {
+              "id": "email",
+              "text": ""
+            }
+          }
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "text=Review changes"
+          },
+          "screen": {
+            "heading": "Notification settings",
+            "width": 780,
+            "email": "edited@example.test",
+            "email_invalid": "false",
+            "frequency": "weekly",
+            "notifications": "true",
+            "dialog": [
+              "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nedited@example.test\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm"
+            ],
+            "status": [
+              ""
+            ],
+            "focus": {
+              "id": null,
+              "text": "Cancel"
+            }
+          }
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "text=Confirm"
+          },
+          "screen": {
+            "heading": "Notification settings",
+            "width": 780,
+            "email": "edited@example.test",
+            "email_invalid": "false",
+            "frequency": "weekly",
+            "notifications": "true",
+            "dialog": [
+              "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nedited@example.test\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nApplying…"
+            ],
+            "status": [
+              "Applying changes…"
+            ],
+            "focus": {
+              "id": null,
+              "text": ""
+            }
+          }
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "text=Cancel"
+          },
+          "screen": {
+            "heading": "Notification settings",
+            "width": 780,
+            "email": "edited@example.test",
+            "email_invalid": "false",
+            "frequency": "weekly",
+            "notifications": "true",
+            "dialog": [],
+            "status": [
+              "Applying changes…"
+            ],
+            "focus": {
+              "id": null,
+              "text": ""
+            }
+          }
+        },
+        {
+          "action": {
+            "op": "wait",
+            "ms": 2100
+          },
+          "screen": {
+            "heading": "Notification settings",
+            "width": 780,
+            "email": "edited@example.test",
+            "email_invalid": "false",
+            "frequency": "weekly",
+            "notifications": "true",
+            "dialog": [],
+            "status": [
+              "Settings applied\n\nEmail: edited@example.test. Notifications: On. Frequency: Weekly.\n\nSaved for this session. No email is sent."
+            ],
+            "focus": {
+              "id": null,
+              "text": ""
+            }
+          }
+        }
+      ]
+    },
+    "protected_input_changes": [],
+    "other_output_files": [],
+    "raw_events_sha256": "9ef97b697a3d1971d1de912e37555d70cf40b65339314208f69e7e98c7014863"
+  }
+}

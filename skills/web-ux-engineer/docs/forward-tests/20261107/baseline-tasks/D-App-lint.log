@@ -1,0 +1,5 @@
+$ npm exec --offline -- eslint src/App.tsx
+npm notice run fixture@0.0.1 npx
+npm notice run 'eslint' src/App.tsx
+
+Exit code: 0

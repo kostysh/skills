@@ -1,0 +1,5 @@
+$ pnpm lint
+[ERROR] unable to open database file
+For help, run: pnpm help run
+
+Exit code: 1

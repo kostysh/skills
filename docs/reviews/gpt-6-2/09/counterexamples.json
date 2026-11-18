@@ -1,0 +1,170 @@
+{
+  "source": "Author controls using a fresh rendered Chrome for each form. The model trials and blind assessors are separate.",
+  "cases": [
+    {
+      "case": "ordinary",
+      "trace_sha256": "1f30804979f869ae35467566412fc5c399847c1a36fd5adb079804006aefc9be",
+      "wrong": "Cancel before confirmation discards the draft or replaces the applied set.",
+      "observations": [
+        {
+          "step": 3,
+          "action": {
+            "op": "click",
+            "target": "text=Confirm"
+          },
+          "dialog": false,
+          "email": "first@example.test",
+          "selected": "daily",
+          "status": [
+            "Settings applied\n\nEmail: first@example.test. Notifications: On. Frequency: Daily.\n\nSaved for this session. No email is sent."
+          ]
+        },
+        {
+          "step": 6,
+          "action": {
+            "op": "click",
+            "target": "text=Review changes"
+          },
+          "dialog": false,
+          "email": "misspelled",
+          "selected": "weekly",
+          "status": [
+            "Enter a valid email address.",
+            "Settings applied\n\nEmail: first@example.test. Notifications: On. Frequency: Daily.\n\nSaved for this session. No email is sent."
+          ]
+        },
+        {
+          "step": 9,
+          "action": {
+            "op": "click",
+            "target": "text=Cancel"
+          },
+          "dialog": false,
+          "email": "edited@example.test",
+          "selected": "weekly",
+          "status": [
+            "Settings applied\n\nEmail: first@example.test. Notifications: On. Frequency: Daily.\n\nSaved for this session. No email is sent."
+          ]
+        },
+        {
+          "step": 11,
+          "action": {
+            "op": "click",
+            "target": "text=Confirm"
+          },
+          "dialog": false,
+          "email": "edited@example.test",
+          "selected": "weekly",
+          "status": [
+            "Settings applied\n\nEmail: edited@example.test. Notifications: On. Frequency: Weekly.\n\nSaved for this session. No email is sent."
+          ]
+        }
+      ]
+    },
+    {
+      "case": "boundary",
+      "trace_sha256": "bf0d05eea746c8e85f4c3bcea852b7bb38fbebf2501d45a7d73fe14b38e35a7e",
+      "wrong": "Closing the processing dialog undoes the accepted local operation.",
+      "observations": [
+        {
+          "step": 6,
+          "action": {
+            "op": "click",
+            "target": "text=Confirm"
+          },
+          "dialog": true,
+          "email": "edited@example.test",
+          "selected": "weekly",
+          "status": [
+            "Applying changes\u2026"
+          ]
+        },
+        {
+          "step": 7,
+          "action": {
+            "op": "click",
+            "target": "text=Cancel"
+          },
+          "dialog": false,
+          "email": "edited@example.test",
+          "selected": "weekly",
+          "status": [
+            "Applying changes\u2026"
+          ]
+        },
+        {
+          "step": 8,
+          "action": {
+            "op": "wait",
+            "ms": 2100
+          },
+          "dialog": false,
+          "email": "edited@example.test",
+          "selected": "weekly",
+          "status": [
+            "Settings applied\n\nEmail: edited@example.test. Notifications: On. Frequency: Weekly.\n\nSaved for this session. No email is sent."
+          ]
+        }
+      ]
+    },
+    {
+      "case": "holdout",
+      "trace_sha256": "cddd050d9840a1c2c63dd9db5e6b01f013ae7be9dc5ce440a8cdb69cec998261",
+      "wrong": "Closing a processing dialog can never cancel its operation.",
+      "observations": [
+        {
+          "step": 6,
+          "action": {
+            "op": "click",
+            "target": "text=Confirm"
+          },
+          "dialog": true,
+          "email": "edited@example.test",
+          "selected": "weekly",
+          "status": [
+            "Applying changes\u2026"
+          ]
+        },
+        {
+          "step": 7,
+          "action": {
+            "op": "key",
+            "key": "Escape"
+          },
+          "dialog": false,
+          "email": "edited@example.test",
+          "selected": "weekly",
+          "status": [
+            "Request cancelled. Review your changes to try again."
+          ]
+        },
+        {
+          "step": 8,
+          "action": {
+            "op": "wait",
+            "ms": 2100
+          },
+          "dialog": false,
+          "email": "edited@example.test",
+          "selected": "weekly",
+          "status": [
+            "Request cancelled. Review your changes to try again."
+          ]
+        },
+        {
+          "step": 11,
+          "action": {
+            "op": "wait",
+            "ms": 2100
+          },
+          "dialog": false,
+          "email": "edited@example.test",
+          "selected": "weekly",
+          "status": [
+            "Settings applied\n\nEmail: edited@example.test. Notifications: On. Frequency: Weekly.\n\nSaved for this session. No email is sent."
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -45 +45 @@
+-2. For applicable SPA transitions, trace loading, empty, error, confirmed success, unknown operation outcome, interruption, and return. Preserve useful input and list context.
++2. For applicable SPA transitions, trace loading, empty, error, confirmed success, unknown operation outcome, interruption, and return. Preserve useful input and list context. Check whether dismissal cancels pending work.
