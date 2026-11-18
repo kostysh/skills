@@ -1,0 +1,26 @@
+[
+  {
+    "id": "amber",
+    "owner": "worker-a",
+    "title": "Апрель",
+    "supportConsent": false
+  },
+  {
+    "id": "birch",
+    "owner": "worker-b",
+    "title": "Май",
+    "supportConsent": true
+  },
+  {
+    "id": "cedar",
+    "owner": "worker-a",
+    "title": "Июнь",
+    "supportConsent": true
+  },
+  {
+    "id": "dune",
+    "owner": "worker-b",
+    "title": "Июль",
+    "supportConsent": false
+  }
+]
