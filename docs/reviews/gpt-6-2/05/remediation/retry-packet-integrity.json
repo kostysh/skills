@@ -1,0 +1,35 @@
+{
+  "615c22": {
+    "durable_record": "b7c2c8",
+    "original_fixture_files": 150,
+    "final_project_files": 150,
+    "before_bytes_and_modes_sha256": "cc5089fd55ee565ff1de1ec9f7ccd2185c479d0bb3ff2770487dca37d82ed94d",
+    "after_bytes_and_modes_sha256": "ca25f2481bb9c21866b1e3eeba624f8911e7802af46e7ada961ef9a37f4d2d19",
+    "matched_actual_projects": true,
+    "raw_executor_events_sha256": "0531f257a0b069f0e55cb940283db1f5de8dcd712302acdb09ca7216b99b130f",
+    "local_skill_read": true,
+    "conditional_reference_read_via_command": true
+  },
+  "0fffdb": {
+    "durable_record": "edc617",
+    "original_fixture_files": 150,
+    "final_project_files": 150,
+    "before_bytes_and_modes_sha256": "cc5089fd55ee565ff1de1ec9f7ccd2185c479d0bb3ff2770487dca37d82ed94d",
+    "after_bytes_and_modes_sha256": "ada3ca748aa48037c10cfa5fe9d9d4e2860779747c37153b7867059f013942c2",
+    "matched_actual_projects": true,
+    "raw_executor_events_sha256": "020ffcf2300718aa3805b5d1d43e3327d5b14e627b0995e7979edbdb1815d2d5",
+    "local_skill_read": true,
+    "conditional_reference_read_via_command": true
+  },
+  "3a6239": {
+    "durable_record": "3a6239",
+    "original_fixture_files": 150,
+    "final_project_files": 150,
+    "before_bytes_and_modes_sha256": "cc5089fd55ee565ff1de1ec9f7ccd2185c479d0bb3ff2770487dca37d82ed94d",
+    "after_bytes_and_modes_sha256": "ada3ca748aa48037c10cfa5fe9d9d4e2860779747c37153b7867059f013942c2",
+    "matched_actual_projects": true,
+    "raw_executor_events_sha256": "7e73cce70ecf4074bccd557766b426445dddd53c0c1fb44766bf0607f5880517",
+    "local_skill_read": true,
+    "conditional_reference_read_via_command": true
+  }
+}

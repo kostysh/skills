@@ -1,0 +1,46 @@
+{
+  "b866d8": {
+    "durable_record": "b866d8",
+    "original_fixture_files": 149,
+    "final_project_files": 149,
+    "before_bytes_and_modes_sha256": "af9777a01f8910b4fedfd02125b795fffa8d33cb18ca99093c249ad5b6be740b",
+    "after_bytes_and_modes_sha256": "f51587ec528ba3c5e4fa932a1df28738a960ec4abe5985cd027000a449d94564",
+    "matched_actual_projects": true,
+    "raw_executor_events_sha256": "d2c391d6add4b5dc07e0be301e984d354a7da7af42e9e666c6022f204297200b",
+    "local_skill_read": true,
+    "conditional_reference_read_via_command": true
+  },
+  "e49fbe": {
+    "durable_record": "e49fbe",
+    "original_fixture_files": 149,
+    "final_project_files": 149,
+    "before_bytes_and_modes_sha256": "faf779e814cfb6db410805d03c7021c9312f2cd3e9d929f44ad7e7ddc4b33a1a",
+    "after_bytes_and_modes_sha256": "586e7c2750213d3863b6a0b83840e9be0cb6c31c18771a6bb0830ba5953a3c64",
+    "matched_actual_projects": true,
+    "raw_executor_events_sha256": "5c42277dc10555b989070ef931188b34950104a3bc7226561cc7af33dbf75689",
+    "local_skill_read": true,
+    "conditional_reference_read_via_command": true
+  },
+  "14e1fd": {
+    "durable_record": "14e1fd",
+    "original_fixture_files": 149,
+    "final_project_files": 149,
+    "before_bytes_and_modes_sha256": "faf779e814cfb6db410805d03c7021c9312f2cd3e9d929f44ad7e7ddc4b33a1a",
+    "after_bytes_and_modes_sha256": "586e7c2750213d3863b6a0b83840e9be0cb6c31c18771a6bb0830ba5953a3c64",
+    "matched_actual_projects": true,
+    "raw_executor_events_sha256": "0e3a3ea69c5dfce086f68ac104f6c9b6b12f0d18b268ef93919732ae9dba991e",
+    "local_skill_read": true,
+    "conditional_reference_read_via_command": true
+  },
+  "bc080c": {
+    "durable_record": "bc080c",
+    "original_fixture_files": 149,
+    "final_project_files": 149,
+    "before_bytes_and_modes_sha256": "af9777a01f8910b4fedfd02125b795fffa8d33cb18ca99093c249ad5b6be740b",
+    "after_bytes_and_modes_sha256": "f51587ec528ba3c5e4fa932a1df28738a960ec4abe5985cd027000a449d94564",
+    "matched_actual_projects": true,
+    "raw_executor_events_sha256": "ca4d4c720b50746ecacbe068221a6ccbee95d2da0f89b9b96ba200fd66f74c3d",
+    "local_skill_read": true,
+    "conditional_reference_read_via_command": true
+  }
+}

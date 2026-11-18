@@ -1,0 +1,122 @@
+{
+  "prior_observer_sha256": "b78267a2615ee8c063cf2b047c2699b056611b8b1b0b4f5260fe655826cf1af1",
+  "manual_source": "import { labelSchema } from \"./protocol.ts\";\n\ntype Parsed = { zone: \"north\" | \"south\"; position: number };\n\nexport function readParcel(raw: unknown): Parsed | null {\n  const decoded = labelSchema.decode(raw);\n  if (!decoded.ok) return null;\n  return decoded.value;\n}\n",
+  "original_observer_package": {
+    "argv": [
+      "npm",
+      "run",
+      "typecheck"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "npm notice run routing-labels@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p modules/import/tsconfig.json --noEmit\n"
+  },
+  "original_observer_assertions": {
+    "argv": [
+      "npm",
+      "run",
+      "typecheck"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "npm notice run routing-labels@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p modules/import/tsconfig.json --noEmit\n"
+  },
+  "original_public_results": [
+    {
+      "argv": [
+        "node",
+        "tools/read.mjs",
+        "\"N-042\""
+      ],
+      "exit": 0,
+      "stdout": "{\"zone\":\"north\",\"position\":42}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "tools/read.mjs",
+        "\"S-007\""
+      ],
+      "exit": 0,
+      "stdout": "{\"zone\":\"south\",\"position\":7}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "tools/read.mjs",
+        "\"X-123\""
+      ],
+      "exit": 0,
+      "stdout": "null\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "tools/read.mjs",
+        "\"N-9\""
+      ],
+      "exit": 0,
+      "stdout": "null\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "tools/read.mjs",
+        "{\"deferred\":true}"
+      ],
+      "exit": 0,
+      "stdout": "null\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "tools/read.mjs",
+        "false"
+      ],
+      "exit": 0,
+      "stdout": "null\n",
+      "stderr": ""
+    }
+  ],
+  "original_substitution": {
+    "input": "\"N-042\"",
+    "replace": "position: Number(match[2])",
+    "with": "position: Number(match[2]) + 5",
+    "result": {
+      "argv": [
+        "node",
+        "tools/read.mjs",
+        "\"N-042\""
+      ],
+      "exit": 0,
+      "stdout": "{\"zone\":\"north\",\"position\":47}\n",
+      "stderr": ""
+    }
+  },
+  "injected_consumer": "import { readParcel } from \"./public.ts\";\nexport function wasScanned(raw: unknown) { return readParcel(raw)?.scanned; }\n",
+  "manual_after_schema_change": {
+    "argv": [
+      "npm",
+      "run",
+      "typecheck"
+    ],
+    "exit": 2,
+    "stdout": "modules/import/src/probe-later.ts(2,68): error TS2339: Property 'scanned' does not exist on type 'Parsed'.\n",
+    "stderr": "npm notice run routing-labels@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p modules/import/tsconfig.json --noEmit\n"
+  },
+  "derived_after_schema_change": {
+    "argv": [
+      "npm",
+      "run",
+      "typecheck"
+    ],
+    "exit": 0,
+    "stdout": "",
+    "stderr": "npm notice run routing-labels@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p modules/import/tsconfig.json --noEmit\n"
+  }
+}

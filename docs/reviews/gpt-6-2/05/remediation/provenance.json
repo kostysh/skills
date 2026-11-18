@@ -1,0 +1,336 @@
+{
+  "workers": {
+    "b866d8": {
+      "role": "B",
+      "case": "ordinary",
+      "assigned_model": "gpt-6.2-sol",
+      "assigned_reasoning": "medium",
+      "memories_feature_disabled": true,
+      "local_shell_out_of_scope_paths_found": false,
+      "completed_event_types": {
+        "agent_message": 2,
+        "command_execution": 8,
+        "file_change": 1
+      },
+      "external_tool_actions": [],
+      "session": "ephemeral, workspace-write",
+      "exit": 0,
+      "read_local_primary_skill": true,
+      "read_patterns": true,
+      "input_files": 160,
+      "changed_paths": [
+        "src/public.ts"
+      ],
+      "raw_events_sha256": "d2c391d6add4b5dc07e0be301e984d354a7da7af42e9e666c6022f204297200b",
+      "raw_events_bytes": 56398,
+      "delivered_result": "results/b866d8.json"
+    },
+    "e49fbe": {
+      "role": "B",
+      "case": "boundary",
+      "assigned_model": "gpt-6.2-sol",
+      "assigned_reasoning": "medium",
+      "memories_feature_disabled": true,
+      "local_shell_out_of_scope_paths_found": false,
+      "completed_event_types": {
+        "agent_message": 2,
+        "command_execution": 7,
+        "file_change": 1
+      },
+      "external_tool_actions": [],
+      "session": "ephemeral, workspace-write",
+      "exit": 0,
+      "read_local_primary_skill": true,
+      "read_patterns": true,
+      "input_files": 160,
+      "changed_paths": [
+        "src/public.ts"
+      ],
+      "raw_events_sha256": "5c42277dc10555b989070ef931188b34950104a3bc7226561cc7af33dbf75689",
+      "raw_events_bytes": 78244,
+      "delivered_result": "results/e49fbe.json"
+    },
+    "14e1fd": {
+      "role": "A",
+      "case": "boundary",
+      "assigned_model": "gpt-6.2-sol",
+      "assigned_reasoning": "medium",
+      "memories_feature_disabled": true,
+      "local_shell_out_of_scope_paths_found": false,
+      "completed_event_types": {
+        "agent_message": 2,
+        "command_execution": 8,
+        "file_change": 1
+      },
+      "external_tool_actions": [],
+      "session": "ephemeral, workspace-write",
+      "exit": 0,
+      "read_local_primary_skill": true,
+      "read_patterns": true,
+      "input_files": 160,
+      "changed_paths": [
+        "src/public.ts"
+      ],
+      "raw_events_sha256": "0e3a3ea69c5dfce086f68ac104f6c9b6b12f0d18b268ef93919732ae9dba991e",
+      "raw_events_bytes": 63148,
+      "delivered_result": "results/14e1fd.json"
+    },
+    "bc080c": {
+      "role": "A",
+      "case": "ordinary",
+      "assigned_model": "gpt-6.2-sol",
+      "assigned_reasoning": "medium",
+      "memories_feature_disabled": true,
+      "local_shell_out_of_scope_paths_found": false,
+      "completed_event_types": {
+        "agent_message": 3,
+        "command_execution": 6,
+        "file_change": 1
+      },
+      "external_tool_actions": [],
+      "session": "ephemeral, workspace-write",
+      "exit": 0,
+      "read_local_primary_skill": true,
+      "read_patterns": true,
+      "input_files": 160,
+      "changed_paths": [
+        "src/public.ts"
+      ],
+      "raw_events_sha256": "ca4d4c720b50746ecacbe068221a6ccbee95d2da0f89b9b96ba200fd66f74c3d",
+      "raw_events_bytes": 58067,
+      "delivered_result": "results/bc080c.json"
+    },
+    "ab9b24": {
+      "role": "A",
+      "case": "holdout",
+      "assigned_model": "gpt-6.2-sol",
+      "assigned_reasoning": "medium",
+      "memories_feature_disabled": true,
+      "local_shell_out_of_scope_paths_found": false,
+      "completed_event_types": {
+        "agent_message": 2,
+        "command_execution": 9,
+        "file_change": 1
+      },
+      "external_tool_actions": [],
+      "session": "ephemeral, workspace-write",
+      "exit": 0,
+      "read_local_primary_skill": true,
+      "read_patterns": true,
+      "input_files": 161,
+      "changed_paths": [
+        "src/public.ts"
+      ],
+      "raw_events_sha256": "b4134a4a4e6250d5ba78e4741c6990fecf81ea0f0808394055874d66b6f4c3ca",
+      "raw_events_bytes": 65470,
+      "delivered_result": "results/ab9b24.json"
+    },
+    "285abf": {
+      "role": "C",
+      "case": "ordinary",
+      "assigned_model": "gpt-6.2-sol",
+      "assigned_reasoning": "medium",
+      "memories_feature_disabled": true,
+      "local_shell_out_of_scope_paths_found": false,
+      "completed_event_types": {
+        "agent_message": 2,
+        "command_execution": 9,
+        "file_change": 1
+      },
+      "external_tool_actions": [],
+      "session": "ephemeral, workspace-write",
+      "exit": 0,
+      "read_local_primary_skill": true,
+      "read_patterns": true,
+      "input_files": 160,
+      "changed_paths": [
+        "src/public.ts"
+      ],
+      "raw_events_sha256": "e8e6918632215457763be5ce20a98dfff3482a3cd6ce5342c1dd9007033ccb73",
+      "raw_events_bytes": 52519,
+      "delivered_result": "results/285abf.json"
+    },
+    "edc617": {
+      "role": "C",
+      "case": "holdout",
+      "assigned_model": "gpt-6.2-sol",
+      "assigned_reasoning": "medium",
+      "memories_feature_disabled": true,
+      "local_shell_out_of_scope_paths_found": false,
+      "completed_event_types": {
+        "agent_message": 2,
+        "command_execution": 10,
+        "file_change": 1
+      },
+      "external_tool_actions": [],
+      "session": "ephemeral, workspace-write",
+      "exit": 0,
+      "read_local_primary_skill": true,
+      "read_patterns": true,
+      "input_files": 161,
+      "changed_paths": [
+        "src/public.ts"
+      ],
+      "raw_events_sha256": "020ffcf2300718aa3805b5d1d43e3327d5b14e627b0995e7979edbdb1815d2d5",
+      "raw_events_bytes": 56329,
+      "delivered_result": "results/edc617.json"
+    },
+    "e5db24": {
+      "role": "C",
+      "case": "boundary",
+      "assigned_model": "gpt-6.2-sol",
+      "assigned_reasoning": "medium",
+      "memories_feature_disabled": true,
+      "local_shell_out_of_scope_paths_found": false,
+      "completed_event_types": {
+        "agent_message": 2,
+        "command_execution": 7,
+        "file_change": 1
+      },
+      "external_tool_actions": [],
+      "session": "ephemeral, workspace-write",
+      "exit": 0,
+      "read_local_primary_skill": true,
+      "read_patterns": true,
+      "input_files": 160,
+      "changed_paths": [
+        "src/public.ts"
+      ],
+      "raw_events_sha256": "c765266d24edb00a34d8baac731ac5afdafaa648f2c188d3d5ffbde16fc6e474",
+      "raw_events_bytes": 63640,
+      "delivered_result": "results/e5db24.json"
+    },
+    "b7c2c8": {
+      "role": "Release",
+      "case": "holdout",
+      "assigned_model": "gpt-6.2-sol",
+      "assigned_reasoning": "medium",
+      "memories_feature_disabled": true,
+      "local_shell_out_of_scope_paths_found": false,
+      "completed_event_types": {
+        "agent_message": 3,
+        "command_execution": 8,
+        "web_search": 1,
+        "file_change": 1
+      },
+      "external_tool_actions": [
+        {
+          "type": "web_search",
+          "query": "Valibot official documentation InferInput InferOutput safeParse valibot",
+          "action": "search",
+          "result_domains": [
+            "github.com",
+            "jsr.io",
+            "valibot.dev",
+            "valibot.org",
+            "www.npmjs.com",
+            "www.reddit.com"
+          ]
+        }
+      ],
+      "session": "ephemeral, workspace-write",
+      "exit": 0,
+      "read_local_primary_skill": true,
+      "read_patterns": true,
+      "input_files": 161,
+      "changed_paths": [
+        "src/public.ts"
+      ],
+      "raw_events_sha256": "0531f257a0b069f0e55cb940283db1f5de8dcd712302acdb09ca7216b99b130f",
+      "raw_events_bytes": 78286,
+      "delivered_result": "results/b7c2c8.json"
+    },
+    "969f5f": {
+      "role": "Release",
+      "case": "boundary",
+      "assigned_model": "gpt-6.2-sol",
+      "assigned_reasoning": "medium",
+      "memories_feature_disabled": true,
+      "local_shell_out_of_scope_paths_found": false,
+      "completed_event_types": {
+        "agent_message": 2,
+        "command_execution": 9,
+        "file_change": 1
+      },
+      "external_tool_actions": [],
+      "session": "ephemeral, workspace-write",
+      "exit": 0,
+      "read_local_primary_skill": true,
+      "read_patterns": true,
+      "input_files": 160,
+      "changed_paths": [
+        "src/public.ts"
+      ],
+      "raw_events_sha256": "a986840aa150579361b896e37a357c7df1c9ec8c2bc2736edcf424c53dea4efa",
+      "raw_events_bytes": 65088,
+      "delivered_result": "results/969f5f.json"
+    },
+    "3a6239": {
+      "role": "Release",
+      "case": "holdout",
+      "assigned_model": "gpt-6.2-sol",
+      "assigned_reasoning": "medium",
+      "memories_feature_disabled": true,
+      "local_shell_out_of_scope_paths_found": false,
+      "completed_event_types": {
+        "agent_message": 2,
+        "command_execution": 7,
+        "file_change": 1
+      },
+      "external_tool_actions": [],
+      "session": "ephemeral, workspace-write",
+      "exit": 0,
+      "read_local_primary_skill": true,
+      "read_patterns": true,
+      "input_files": 161,
+      "changed_paths": [
+        "src/public.ts"
+      ],
+      "raw_events_sha256": "7e73cce70ecf4074bccd557766b426445dddd53c0c1fb44766bf0607f5880517",
+      "raw_events_bytes": 64688,
+      "delivered_result": "results/3a6239.json"
+    }
+  },
+  "scorers": {
+    "ab": {
+      "session": "fresh read-only, randomized labels, received external criteria, work products, actions and observations",
+      "model": "gpt-6.2-sol",
+      "reasoning": "high",
+      "memory_disabled": true,
+      "raw_scorer_events_sha256": "a68497d4f9535414db8171e5f0fb654a2e8bedd8c5304dffd7ac5cde7651ca4f",
+      "signed_output_sha256": "a9435af12cf2078db0258098e74309fa7c4beb088deaca6a45d4d4db492bf3f2",
+      "published_markdown": "assessment-ab.md",
+      "published_markdown_sha256": "f248928cb5c4d7a5fe514cace58eec4a04bdfce963a65fcc1c0b180e92d9b65d",
+      "exit": 0,
+      "private_host_or_neighbor_access_in_recorded_commands": false,
+      "web_search_events": []
+    },
+    "confirm": {
+      "session": "fresh read-only, randomized labels, received external criteria, work products, actions and observations",
+      "model": "gpt-6.2-sol",
+      "reasoning": "high",
+      "memory_disabled": true,
+      "raw_scorer_events_sha256": "b1d5a8ac061d20248e6e0f38ede143d695a36dffc605f801ce7679acbda56e04",
+      "signed_output_sha256": "65f322a38ca45f879859b83f4f194495196d9b0840c615b431abd4005900e545",
+      "published_markdown": "assessment-confirm.md",
+      "published_markdown_sha256": "172e4f8bd443eea6ca587ed28fa72e2cbc390cf5320163d42e970ccb386af757",
+      "exit": 0,
+      "private_host_or_neighbor_access_in_recorded_commands": false,
+      "web_search_events": []
+    },
+    "retry": {
+      "session": "fresh read-only, randomized labels, received external criteria, work products, actions and observations",
+      "model": "gpt-6.2-sol",
+      "reasoning": "high",
+      "memory_disabled": true,
+      "raw_scorer_events_sha256": "61876fb47b308c4ad3d94e13fff3442dfbad015d8869389abcc044e9b226b568",
+      "signed_output_sha256": "c94ef17ec6b6c9971213fd8b4a0b6c2ff205a149ff7e8ef868ccd84736e0fa03",
+      "published_markdown": "assessment-retry.md",
+      "published_markdown_sha256": "6ca73d8921e6b3d3f3e7c561f32defb60d012f1f253e37dd23c20e10e89ad5fb",
+      "exit": 0,
+      "private_host_or_neighbor_access_in_recorded_commands": false,
+      "web_search_events": []
+    }
+  },
+  "boundary": "Источники, формы будущих схем, эталоны, рубрика и ключи хранились вне проекта каждого исполнителя. У оценщиков были только рубрика и перемешанные работы без инструкции вариантов и ключа. Публичные ссылки на первичные результаты нормализованы; сохранены исходные SHA. Среда технически допускает чтение других каталогов, просмотрены типы событий всех рабочих сессий, команды и выданный файловый состав. Поля external_tool_actions отдельно учитывают web_search."
+}

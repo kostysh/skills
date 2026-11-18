@@ -1,0 +1,1199 @@
+{
+  "ordinary": {
+    "raw": {
+      "initial_package": {
+        "argv": [
+          "npm",
+          "run",
+          "typecheck"
+        ],
+        "exit": 2,
+        "stdout": "src/consumer.ts(1,26): error TS2305: Module '\"./public.ts\"' has no exported member 'Reading'.\n",
+        "stderr": "npm notice run meter-journal@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p tsconfig.json\n"
+      }
+    },
+    "api": {
+      "phenotype": {
+        "initial_package": true,
+        "initial_runtime": true,
+        "initial_type_contract": true,
+        "revised_consumer_typecheck": true,
+        "revised_type_contract": true,
+        "revised_runtime": true,
+        "revised_client_runtime": true,
+        "revised_request": true
+      },
+      "initial_package": {
+        "argv": [
+          "npm",
+          "run",
+          "typecheck"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": "npm notice run meter-journal@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p tsconfig.json\n"
+      },
+      "initial_public_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "changed_schema_consumer": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.revision.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "changed_type_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "runtime_examples": {
+        "before": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "{\"station\":\"w3\",\"level\":\"007\"}"
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"station\":\"W3\",\"level\":7},\"display\":\"W3/7\"}\n",
+          "stderr": ""
+        },
+        "after": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "{\"station\":\"w3\",\"level\":\"007\"}"
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"station\":\"W3\",\"level\":7,\"padded\":true},\"display\":\"W3/7\"}\n",
+          "stderr": ""
+        }
+      }
+    },
+    "inferred": {
+      "phenotype": {
+        "initial_package": true,
+        "initial_runtime": true,
+        "initial_type_contract": true,
+        "revised_consumer_typecheck": true,
+        "revised_type_contract": true,
+        "revised_runtime": true,
+        "revised_client_runtime": true,
+        "revised_request": true
+      },
+      "initial_package": {
+        "argv": [
+          "npm",
+          "run",
+          "typecheck"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": "npm notice run meter-journal@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p tsconfig.json\n"
+      },
+      "initial_public_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "changed_schema_consumer": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.revision.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "changed_type_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "runtime_examples": {
+        "before": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "{\"station\":\"w3\",\"level\":\"007\"}"
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"station\":\"W3\",\"level\":7},\"display\":\"W3/7\"}\n",
+          "stderr": ""
+        },
+        "after": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "{\"station\":\"w3\",\"level\":\"007\"}"
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"station\":\"W3\",\"level\":7,\"padded\":true},\"display\":\"W3/7\"}\n",
+          "stderr": ""
+        }
+      }
+    },
+    "manual": {
+      "phenotype": {
+        "initial_package": true,
+        "initial_runtime": true,
+        "initial_type_contract": true,
+        "revised_consumer_typecheck": false,
+        "revised_type_contract": false,
+        "revised_runtime": true,
+        "revised_client_runtime": true,
+        "revised_request": true
+      },
+      "initial_package": {
+        "argv": [
+          "npm",
+          "run",
+          "typecheck"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": "npm notice run meter-journal@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p tsconfig.json\n"
+      },
+      "initial_public_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "changed_schema_consumer": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.revision.json"
+        ],
+        "exit": 2,
+        "stdout": "src/revision-client.ts(2,74): error TS2339: Property 'padded' does not exist on type 'Reading'.\nsrc/revision-client.ts(5,42): error TS2339: Property 'padded' does not exist on type 'Reading'.\n",
+        "stderr": ""
+      },
+      "changed_type_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 2,
+        "stdout": "src/contract-external.ts(11,7): error TS2741: Property 'padded' is missing in type 'Reading' but required in type '{ station: string; level: number; padded: boolean; }'.\nsrc/contract-external.ts(14,7): error TS2322: Type 'Reading | null' is not assignable to type '{ station: string; level: number; padded: boolean; } | null'.\n  Property 'padded' is missing in type 'Reading' but required in type '{ station: string; level: number; padded: boolean; }'.\n",
+        "stderr": ""
+      },
+      "runtime_examples": {
+        "before": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "{\"station\":\"w3\",\"level\":\"007\"}"
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"station\":\"W3\",\"level\":7},\"display\":\"W3/7\"}\n",
+          "stderr": ""
+        },
+        "after": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "{\"station\":\"w3\",\"level\":\"007\"}"
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"station\":\"W3\",\"level\":7,\"padded\":true},\"display\":\"W3/7\"}\n",
+          "stderr": ""
+        }
+      }
+    },
+    "wire-output": {
+      "phenotype": {
+        "initial_package": false,
+        "initial_runtime": true,
+        "initial_type_contract": false,
+        "revised_consumer_typecheck": false,
+        "revised_type_contract": false,
+        "revised_runtime": true,
+        "revised_client_runtime": true,
+        "revised_request": true
+      },
+      "initial_package": {
+        "argv": [
+          "npm",
+          "run",
+          "typecheck"
+        ],
+        "exit": 2,
+        "stdout": "src/consumer.ts(4,40): error TS2551: Property 'toFixed' does not exist on type 'string'. Did you mean 'fixed'?\nsrc/public.ts(6,27): error TS2322: Type '{ station: string; level: number; }' is not assignable to type '{ station: string; level: string; }'.\n  Types of property 'level' are incompatible.\n    Type 'number' is not assignable to type 'string'.\n",
+        "stderr": "npm notice run meter-journal@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p tsconfig.json\n"
+      },
+      "initial_public_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 2,
+        "stdout": "src/consumer.ts(4,40): error TS2551: Property 'toFixed' does not exist on type 'string'. Did you mean 'fixed'?\nsrc/contract-external.ts(11,7): error TS2322: Type '{ station: string; level: string; }' is not assignable to type '{ station: string; level: number; }'.\n  Types of property 'level' are incompatible.\n    Type 'string' is not assignable to type 'number'.\nsrc/contract-external.ts(12,7): error TS2322: Type '{ station: string; level: number; }' is not assignable to type '{ station: string; level: string; }'.\n  Types of property 'level' are incompatible.\n    Type 'number' is not assignable to type 'string'.\nsrc/contract-external.ts(14,7): error TS2322: Type '{ station: string; level: string; } | null' is not assignable to type '{ station: string; level: number; } | null'.\n  Type '{ station: string; level: string; }' is not assignable to type '{ station: string; level: number; }'.\n    Types of property 'level' are incompatible.\n      Type 'string' is not assignable to type 'number'.\nsrc/contract-external.ts(15,7): error TS2322: Type '{ station: string; level: number; }' is not assignable to type '{ station: string; level: string; }'.\n  Types of property 'level' are incompatible.\n    Type 'number' is not assignable to type 'string'.\nsrc/public.ts(6,27): error TS2322: Type '{ station: string; level: number; }' is not assignable to type '{ station: string; level: string; }'.\n  Types of property 'level' are incompatible.\n    Type 'number' is not assignable to type 'string'.\n",
+        "stderr": ""
+      },
+      "changed_schema_consumer": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.revision.json"
+        ],
+        "exit": 2,
+        "stdout": "src/consumer.ts(4,40): error TS2551: Property 'toFixed' does not exist on type 'string'. Did you mean 'fixed'?\nsrc/public.ts(6,27): error TS2322: Type '{ station: string; level: number; padded: boolean; }' is not assignable to type '{ station: string; level: string; }'.\n  Types of property 'level' are incompatible.\n    Type 'number' is not assignable to type 'string'.\nsrc/revision-client.ts(2,74): error TS2339: Property 'padded' does not exist on type '{ station: string; level: string; }'.\nsrc/revision-client.ts(5,42): error TS2339: Property 'padded' does not exist on type '{ station: string; level: string; }'.\n",
+        "stderr": ""
+      },
+      "changed_type_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 2,
+        "stdout": "src/consumer.ts(4,40): error TS2551: Property 'toFixed' does not exist on type 'string'. Did you mean 'fixed'?\nsrc/contract-external.ts(11,7): error TS2741: Property 'padded' is missing in type '{ station: string; level: string; }' but required in type '{ station: string; level: number; padded: boolean; }'.\nsrc/contract-external.ts(12,7): error TS2322: Type '{ station: string; level: number; padded: boolean; }' is not assignable to type '{ station: string; level: string; }'.\n  Types of property 'level' are incompatible.\n    Type 'number' is not assignable to type 'string'.\nsrc/contract-external.ts(14,7): error TS2322: Type '{ station: string; level: string; } | null' is not assignable to type '{ station: string; level: number; padded: boolean; } | null'.\n  Property 'padded' is missing in type '{ station: string; level: string; }' but required in type '{ station: string; level: number; padded: boolean; }'.\nsrc/contract-external.ts(15,7): error TS2322: Type '{ station: string; level: number; padded: boolean; }' is not assignable to type '{ station: string; level: string; }'.\n  Types of property 'level' are incompatible.\n    Type 'number' is not assignable to type 'string'.\nsrc/public.ts(6,27): error TS2322: Type '{ station: string; level: number; padded: boolean; }' is not assignable to type '{ station: string; level: string; }'.\n  Types of property 'level' are incompatible.\n    Type 'number' is not assignable to type 'string'.\n",
+        "stderr": ""
+      },
+      "runtime_examples": {
+        "before": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "{\"station\":\"w3\",\"level\":\"007\"}"
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"station\":\"W3\",\"level\":7},\"display\":\"W3/7\"}\n",
+          "stderr": ""
+        },
+        "after": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "{\"station\":\"w3\",\"level\":\"007\"}"
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"station\":\"W3\",\"level\":7,\"padded\":true},\"display\":\"W3/7\"}\n",
+          "stderr": ""
+        }
+      }
+    },
+    "any": {
+      "phenotype": {
+        "initial_package": true,
+        "initial_runtime": true,
+        "initial_type_contract": false,
+        "revised_consumer_typecheck": true,
+        "revised_type_contract": false,
+        "revised_runtime": true,
+        "revised_client_runtime": true,
+        "revised_request": true
+      },
+      "initial_package": {
+        "argv": [
+          "npm",
+          "run",
+          "typecheck"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": "npm notice run meter-journal@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p tsconfig.json\n"
+      },
+      "initial_public_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 2,
+        "stdout": "src/contract-external.ts(17,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(18,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(19,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(20,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(21,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(22,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(23,1): error TS2578: Unused '@ts-expect-error' directive.\n",
+        "stderr": ""
+      },
+      "changed_schema_consumer": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.revision.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "changed_type_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 2,
+        "stdout": "src/contract-external.ts(17,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(18,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(19,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(20,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(21,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(22,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(23,1): error TS2578: Unused '@ts-expect-error' directive.\n",
+        "stderr": ""
+      },
+      "runtime_examples": {
+        "before": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "{\"station\":\"w3\",\"level\":\"007\"}"
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"station\":\"W3\",\"level\":7},\"display\":\"W3/7\"}\n",
+          "stderr": ""
+        },
+        "after": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "{\"station\":\"w3\",\"level\":\"007\"}"
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"station\":\"W3\",\"level\":7,\"padded\":true},\"display\":\"W3/7\"}\n",
+          "stderr": ""
+        }
+      }
+    }
+  },
+  "boundary": {
+    "raw": {
+      "initial_package": {
+        "argv": [
+          "npm",
+          "run",
+          "typecheck"
+        ],
+        "exit": 2,
+        "stdout": "src/consumer.ts(1,26): error TS2305: Module '\"./public.ts\"' has no exported member 'Parcel'.\n",
+        "stderr": "npm notice run sorting-chutes@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p tsconfig.json\n"
+      }
+    },
+    "api": {
+      "phenotype": {
+        "initial_package": true,
+        "initial_runtime": true,
+        "initial_type_contract": true,
+        "revised_consumer_typecheck": true,
+        "revised_type_contract": true,
+        "revised_runtime": true,
+        "revised_client_runtime": true,
+        "revised_request": true
+      },
+      "initial_package": {
+        "argv": [
+          "npm",
+          "run",
+          "typecheck"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": "npm notice run sorting-chutes@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p tsconfig.json\n"
+      },
+      "initial_public_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "changed_schema_consumer": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.revision.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "changed_type_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "runtime_examples": {
+        "before": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "\"N-042\""
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"zone\":\"north\",\"position\":42},\"display\":\"north:42\"}\n",
+          "stderr": ""
+        },
+        "after": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "\"N-042\""
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"zone\":\"north\",\"position\":42,\"scanned\":true},\"display\":\"north:42\"}\n",
+          "stderr": ""
+        }
+      }
+    },
+    "inferred": {
+      "phenotype": {
+        "initial_package": true,
+        "initial_runtime": true,
+        "initial_type_contract": true,
+        "revised_consumer_typecheck": true,
+        "revised_type_contract": true,
+        "revised_runtime": true,
+        "revised_client_runtime": true,
+        "revised_request": true
+      },
+      "initial_package": {
+        "argv": [
+          "npm",
+          "run",
+          "typecheck"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": "npm notice run sorting-chutes@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p tsconfig.json\n"
+      },
+      "initial_public_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "changed_schema_consumer": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.revision.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "changed_type_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "runtime_examples": {
+        "before": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "\"N-042\""
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"zone\":\"north\",\"position\":42},\"display\":\"north:42\"}\n",
+          "stderr": ""
+        },
+        "after": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "\"N-042\""
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"zone\":\"north\",\"position\":42,\"scanned\":true},\"display\":\"north:42\"}\n",
+          "stderr": ""
+        }
+      }
+    },
+    "manual": {
+      "phenotype": {
+        "initial_package": true,
+        "initial_runtime": true,
+        "initial_type_contract": true,
+        "revised_consumer_typecheck": false,
+        "revised_type_contract": false,
+        "revised_runtime": true,
+        "revised_client_runtime": true,
+        "revised_request": true
+      },
+      "initial_package": {
+        "argv": [
+          "npm",
+          "run",
+          "typecheck"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": "npm notice run sorting-chutes@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p tsconfig.json\n"
+      },
+      "initial_public_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "changed_schema_consumer": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.revision.json"
+        ],
+        "exit": 2,
+        "stdout": "src/revision-client.ts(2,73): error TS2339: Property 'scanned' does not exist on type 'Parcel'.\nsrc/revision-client.ts(5,42): error TS2339: Property 'scanned' does not exist on type 'Parcel'.\n",
+        "stderr": ""
+      },
+      "changed_type_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 2,
+        "stdout": "src/contract-external.ts(11,7): error TS2741: Property 'scanned' is missing in type 'Parcel' but required in type '{ zone: \"north\" | \"south\"; position: number; scanned: boolean; }'.\nsrc/contract-external.ts(14,7): error TS2322: Type 'Parcel | null' is not assignable to type '{ zone: \"north\" | \"south\"; position: number; scanned: boolean; } | null'.\n  Property 'scanned' is missing in type 'Parcel' but required in type '{ zone: \"north\" | \"south\"; position: number; scanned: boolean; }'.\n",
+        "stderr": ""
+      },
+      "runtime_examples": {
+        "before": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "\"N-042\""
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"zone\":\"north\",\"position\":42},\"display\":\"north:42\"}\n",
+          "stderr": ""
+        },
+        "after": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "\"N-042\""
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"zone\":\"north\",\"position\":42,\"scanned\":true},\"display\":\"north:42\"}\n",
+          "stderr": ""
+        }
+      }
+    },
+    "wire-output": {
+      "phenotype": {
+        "initial_package": false,
+        "initial_runtime": true,
+        "initial_type_contract": false,
+        "revised_consumer_typecheck": false,
+        "revised_type_contract": false,
+        "revised_runtime": true,
+        "revised_client_runtime": true,
+        "revised_request": true
+      },
+      "initial_package": {
+        "argv": [
+          "npm",
+          "run",
+          "typecheck"
+        ],
+        "exit": 2,
+        "stdout": "src/consumer.ts(4,14): error TS2339: Property 'zone' does not exist on type 'string'.\nsrc/consumer.ts(4,31): error TS2339: Property 'position' does not exist on type 'string'.\nsrc/public.ts(6,27): error TS2322: Type '{ zone: \"north\" | \"south\"; position: number; }' is not assignable to type 'string'.\n",
+        "stderr": "npm notice run sorting-chutes@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p tsconfig.json\n"
+      },
+      "initial_public_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 2,
+        "stdout": "src/consumer.ts(4,14): error TS2339: Property 'zone' does not exist on type 'string'.\nsrc/consumer.ts(4,31): error TS2339: Property 'position' does not exist on type 'string'.\nsrc/contract-external.ts(11,7): error TS2322: Type 'string' is not assignable to type '{ zone: \"north\" | \"south\"; position: number; }'.\nsrc/contract-external.ts(12,7): error TS2322: Type '{ zone: \"north\" | \"south\"; position: number; }' is not assignable to type 'string'.\nsrc/contract-external.ts(14,7): error TS2322: Type 'string | null' is not assignable to type '{ zone: \"north\" | \"south\"; position: number; } | null'.\n  Type 'string' is not assignable to type '{ zone: \"north\" | \"south\"; position: number; }'.\nsrc/contract-external.ts(15,7): error TS2322: Type '{ zone: \"north\" | \"south\"; position: number; }' is not assignable to type 'string'.\nsrc/contract-external.ts(23,1): error TS2578: Unused '@ts-expect-error' directive.\nsrc/public.ts(6,27): error TS2322: Type '{ zone: \"north\" | \"south\"; position: number; }' is not assignable to type 'string'.\n",
+        "stderr": ""
+      },
+      "changed_schema_consumer": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.revision.json"
+        ],
+        "exit": 2,
+        "stdout": "src/consumer.ts(4,14): error TS2339: Property 'zone' does not exist on type 'string'.\nsrc/consumer.ts(4,31): error TS2339: Property 'position' does not exist on type 'string'.\nsrc/public.ts(6,27): error TS2322: Type '{ zone: \"north\" | \"south\"; position: number; scanned: boolean; }' is not assignable to type 'string'.\nsrc/revision-client.ts(2,73): error TS2339: Property 'scanned' does not exist on type 'string'.\nsrc/revision-client.ts(5,42): error TS2339: Property 'scanned' does not exist on type 'string'.\n",
+        "stderr": ""
+      },
+      "changed_type_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 2,
+        "stdout": "src/consumer.ts(4,14): error TS2339: Property 'zone' does not exist on type 'string'.\nsrc/consumer.ts(4,31): error TS2339: Property 'position' does not exist on type 'string'.\nsrc/contract-external.ts(11,7): error TS2322: Type 'string' is not assignable to type '{ zone: \"north\" | \"south\"; position: number; scanned: boolean; }'.\nsrc/contract-external.ts(12,7): error TS2322: Type '{ zone: \"north\" | \"south\"; position: number; scanned: boolean; }' is not assignable to type 'string'.\nsrc/contract-external.ts(14,7): error TS2322: Type 'string | null' is not assignable to type '{ zone: \"north\" | \"south\"; position: number; scanned: boolean; } | null'.\n  Type 'string' is not assignable to type '{ zone: \"north\" | \"south\"; position: number; scanned: boolean; }'.\nsrc/contract-external.ts(15,7): error TS2322: Type '{ zone: \"north\" | \"south\"; position: number; scanned: boolean; }' is not assignable to type 'string'.\nsrc/contract-external.ts(23,1): error TS2578: Unused '@ts-expect-error' directive.\nsrc/public.ts(6,27): error TS2322: Type '{ zone: \"north\" | \"south\"; position: number; scanned: boolean; }' is not assignable to type 'string'.\n",
+        "stderr": ""
+      },
+      "runtime_examples": {
+        "before": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "\"N-042\""
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"zone\":\"north\",\"position\":42},\"display\":\"north:42\"}\n",
+          "stderr": ""
+        },
+        "after": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "\"N-042\""
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"zone\":\"north\",\"position\":42,\"scanned\":true},\"display\":\"north:42\"}\n",
+          "stderr": ""
+        }
+      }
+    },
+    "any": {
+      "phenotype": {
+        "initial_package": true,
+        "initial_runtime": true,
+        "initial_type_contract": false,
+        "revised_consumer_typecheck": true,
+        "revised_type_contract": false,
+        "revised_runtime": true,
+        "revised_client_runtime": true,
+        "revised_request": true
+      },
+      "initial_package": {
+        "argv": [
+          "npm",
+          "run",
+          "typecheck"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": "npm notice run sorting-chutes@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p tsconfig.json\n"
+      },
+      "initial_public_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 2,
+        "stdout": "src/contract-external.ts(17,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(18,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(19,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(20,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(21,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(22,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(23,1): error TS2578: Unused '@ts-expect-error' directive.\n",
+        "stderr": ""
+      },
+      "changed_schema_consumer": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.revision.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "changed_type_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 2,
+        "stdout": "src/contract-external.ts(17,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(18,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(19,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(20,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(21,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(22,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(23,1): error TS2578: Unused '@ts-expect-error' directive.\n",
+        "stderr": ""
+      },
+      "runtime_examples": {
+        "before": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "\"N-042\""
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"zone\":\"north\",\"position\":42},\"display\":\"north:42\"}\n",
+          "stderr": ""
+        },
+        "after": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "\"N-042\""
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"zone\":\"north\",\"position\":42,\"scanned\":true},\"display\":\"north:42\"}\n",
+          "stderr": ""
+        }
+      }
+    }
+  },
+  "holdout": {
+    "raw": {
+      "initial_package": {
+        "argv": [
+          "npm",
+          "run",
+          "typecheck"
+        ],
+        "exit": 2,
+        "stdout": "src/consumer.ts(1,27): error TS2305: Module '\"./public.ts\"' has no exported member 'Period'.\nsrc/templates.ts(1,15): error TS2305: Module '\"./public.ts\"' has no exported member 'PeriodRequest'.\n",
+        "stderr": "npm notice run staff-calendar@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p tsconfig.json\n"
+      }
+    },
+    "api": {
+      "phenotype": {
+        "initial_package": true,
+        "initial_runtime": true,
+        "initial_type_contract": true,
+        "revised_consumer_typecheck": true,
+        "revised_type_contract": true,
+        "revised_runtime": true,
+        "revised_client_runtime": true,
+        "revised_request": true
+      },
+      "initial_package": {
+        "argv": [
+          "npm",
+          "run",
+          "typecheck"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": "npm notice run staff-calendar@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p tsconfig.json\n"
+      },
+      "initial_public_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "changed_schema_consumer": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.revision.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "changed_type_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "runtime_examples": {
+        "before": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "{\"day\":\"2026-05-03\"}"
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"midnight\":\"2026-05-03T00:00:00.000Z\",\"shifts\":1},\"display\":\"2026-05-03T00:00:00.000Z/1\"}\n",
+          "stderr": ""
+        },
+        "after": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "{\"day\":\"2026-05-03\"}"
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"midnight\":\"2026-05-03T00:00:00.000Z\",\"shifts\":1,\"roster\":\"standard\"},\"display\":\"2026-05-03T00:00:00.000Z/1\"}\n",
+          "stderr": ""
+        }
+      }
+    },
+    "inferred": {
+      "phenotype": {
+        "initial_package": true,
+        "initial_runtime": true,
+        "initial_type_contract": true,
+        "revised_consumer_typecheck": true,
+        "revised_type_contract": true,
+        "revised_runtime": true,
+        "revised_client_runtime": true,
+        "revised_request": true
+      },
+      "initial_package": {
+        "argv": [
+          "npm",
+          "run",
+          "typecheck"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": "npm notice run staff-calendar@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p tsconfig.json\n"
+      },
+      "initial_public_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "changed_schema_consumer": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.revision.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "changed_type_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "runtime_examples": {
+        "before": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "{\"day\":\"2026-05-03\"}"
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"midnight\":\"2026-05-03T00:00:00.000Z\",\"shifts\":1},\"display\":\"2026-05-03T00:00:00.000Z/1\"}\n",
+          "stderr": ""
+        },
+        "after": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "{\"day\":\"2026-05-03\"}"
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"midnight\":\"2026-05-03T00:00:00.000Z\",\"shifts\":1,\"roster\":\"standard\"},\"display\":\"2026-05-03T00:00:00.000Z/1\"}\n",
+          "stderr": ""
+        }
+      }
+    },
+    "manual": {
+      "phenotype": {
+        "initial_package": true,
+        "initial_runtime": true,
+        "initial_type_contract": true,
+        "revised_consumer_typecheck": false,
+        "revised_type_contract": false,
+        "revised_runtime": true,
+        "revised_client_runtime": true,
+        "revised_request": true
+      },
+      "initial_package": {
+        "argv": [
+          "npm",
+          "run",
+          "typecheck"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": "npm notice run staff-calendar@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p tsconfig.json\n"
+      },
+      "initial_public_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "changed_schema_consumer": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.revision.json"
+        ],
+        "exit": 2,
+        "stdout": "src/revision-client.ts(2,88): error TS2339: Property 'roster' does not exist on type 'Period'.\nsrc/revision-client.ts(5,42): error TS2339: Property 'roster' does not exist on type 'Period'.\nsrc/revision-client.ts(8,67): error TS2353: Object literal may only specify known properties, and 'desk' does not exist in type 'PeriodRequest'.\n",
+        "stderr": ""
+      },
+      "changed_type_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 2,
+        "stdout": "src/contract-external.ts(11,7): error TS2741: Property 'roster' is missing in type 'Period' but required in type '{ midnight: Date; shifts: number; roster: \"standard\" | \"reserve\"; }'.\nsrc/contract-external.ts(14,7): error TS2322: Type 'Period | null' is not assignable to type '{ midnight: Date; shifts: number; roster: \"standard\" | \"reserve\"; } | null'.\n  Property 'roster' is missing in type 'Period' but required in type '{ midnight: Date; shifts: number; roster: \"standard\" | \"reserve\"; }'.\n",
+        "stderr": ""
+      },
+      "runtime_examples": {
+        "before": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "{\"day\":\"2026-05-03\"}"
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"midnight\":\"2026-05-03T00:00:00.000Z\",\"shifts\":1},\"display\":\"2026-05-03T00:00:00.000Z/1\"}\n",
+          "stderr": ""
+        },
+        "after": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "{\"day\":\"2026-05-03\"}"
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"midnight\":\"2026-05-03T00:00:00.000Z\",\"shifts\":1,\"roster\":\"standard\"},\"display\":\"2026-05-03T00:00:00.000Z/1\"}\n",
+          "stderr": ""
+        }
+      }
+    },
+    "wire-output": {
+      "phenotype": {
+        "initial_package": false,
+        "initial_runtime": true,
+        "initial_type_contract": false,
+        "revised_consumer_typecheck": false,
+        "revised_type_contract": false,
+        "revised_runtime": true,
+        "revised_client_runtime": true,
+        "revised_request": true
+      },
+      "initial_package": {
+        "argv": [
+          "npm",
+          "run",
+          "typecheck"
+        ],
+        "exit": 2,
+        "stdout": "src/consumer.ts(4,14): error TS2339: Property 'midnight' does not exist on type '{ day: string; shifts?: number | undefined; }'.\nsrc/consumer.ts(4,45): error TS18048: 'row.shifts' is possibly 'undefined'.\nsrc/public.ts(7,27): error TS2741: Property 'day' is missing in type '{ midnight: Date; shifts: number; }' but required in type '{ day: string; shifts?: number | undefined; }'.\n",
+        "stderr": "npm notice run staff-calendar@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p tsconfig.json\n"
+      },
+      "initial_public_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 2,
+        "stdout": "src/consumer.ts(4,14): error TS2339: Property 'midnight' does not exist on type '{ day: string; shifts?: number | undefined; }'.\nsrc/consumer.ts(4,45): error TS18048: 'row.shifts' is possibly 'undefined'.\nsrc/contract-external.ts(11,7): error TS2741: Property 'midnight' is missing in type '{ day: string; shifts?: number | undefined; }' but required in type '{ midnight: Date; shifts: number; }'.\nsrc/contract-external.ts(12,7): error TS2741: Property 'day' is missing in type '{ midnight: Date; shifts: number; }' but required in type '{ day: string; shifts?: number | undefined; }'.\nsrc/contract-external.ts(14,7): error TS2322: Type '{ day: string; shifts?: number | undefined; } | null' is not assignable to type '{ midnight: Date; shifts: number; } | null'.\n  Property 'midnight' is missing in type '{ day: string; shifts?: number | undefined; }' but required in type '{ midnight: Date; shifts: number; }'.\nsrc/contract-external.ts(15,7): error TS2741: Property 'day' is missing in type '{ midnight: Date; shifts: number; }' but required in type '{ day: string; shifts?: number | undefined; }'.\nsrc/public.ts(7,27): error TS2741: Property 'day' is missing in type '{ midnight: Date; shifts: number; }' but required in type '{ day: string; shifts?: number | undefined; }'.\n",
+        "stderr": ""
+      },
+      "changed_schema_consumer": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.revision.json"
+        ],
+        "exit": 2,
+        "stdout": "src/consumer.ts(4,14): error TS2339: Property 'midnight' does not exist on type '{ day: string; desk?: \"standard\" | \"reserve\" | undefined; shifts?: number | undefined; }'.\nsrc/consumer.ts(4,45): error TS18048: 'row.shifts' is possibly 'undefined'.\nsrc/public.ts(7,27): error TS2741: Property 'day' is missing in type '{ midnight: Date; shifts: number; roster: \"standard\" | \"reserve\"; }' but required in type '{ day: string; desk?: \"standard\" | \"reserve\" | undefined; shifts?: number | undefined; }'.\nsrc/revision-client.ts(2,88): error TS2339: Property 'roster' does not exist on type '{ day: string; desk?: \"standard\" | \"reserve\" | undefined; shifts?: number | undefined; }'.\nsrc/revision-client.ts(5,42): error TS2339: Property 'roster' does not exist on type '{ day: string; desk?: \"standard\" | \"reserve\" | undefined; shifts?: number | undefined; }'.\n",
+        "stderr": ""
+      },
+      "changed_type_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 2,
+        "stdout": "src/consumer.ts(4,14): error TS2339: Property 'midnight' does not exist on type '{ day: string; desk?: \"standard\" | \"reserve\" | undefined; shifts?: number | undefined; }'.\nsrc/consumer.ts(4,45): error TS18048: 'row.shifts' is possibly 'undefined'.\nsrc/contract-external.ts(11,7): error TS2739: Type '{ day: string; desk?: \"standard\" | \"reserve\" | undefined; shifts?: number | undefined; }' is missing the following properties from type '{ midnight: Date; shifts: number; roster: \"standard\" | \"reserve\"; }': midnight, roster\nsrc/contract-external.ts(12,7): error TS2741: Property 'day' is missing in type '{ midnight: Date; shifts: number; roster: \"standard\" | \"reserve\"; }' but required in type '{ day: string; desk?: \"standard\" | \"reserve\" | undefined; shifts?: number | undefined; }'.\nsrc/contract-external.ts(14,7): error TS2322: Type '{ day: string; desk?: \"standard\" | \"reserve\" | undefined; shifts?: number | undefined; } | null' is not assignable to type '{ midnight: Date; shifts: number; roster: \"standard\" | \"reserve\"; } | null'.\n  Type '{ day: string; desk?: \"standard\" | \"reserve\" | undefined; shifts?: number | undefined; }' is missing the following properties from type '{ midnight: Date; shifts: number; roster: \"standard\" | \"reserve\"; }': midnight, roster\nsrc/contract-external.ts(15,7): error TS2741: Property 'day' is missing in type '{ midnight: Date; shifts: number; roster: \"standard\" | \"reserve\"; }' but required in type '{ day: string; desk?: \"standard\" | \"reserve\" | undefined; shifts?: number | undefined; }'.\nsrc/public.ts(7,27): error TS2741: Property 'day' is missing in type '{ midnight: Date; shifts: number; roster: \"standard\" | \"reserve\"; }' but required in type '{ day: string; desk?: \"standard\" | \"reserve\" | undefined; shifts?: number | undefined; }'.\n",
+        "stderr": ""
+      },
+      "runtime_examples": {
+        "before": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "{\"day\":\"2026-05-03\"}"
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"midnight\":\"2026-05-03T00:00:00.000Z\",\"shifts\":1},\"display\":\"2026-05-03T00:00:00.000Z/1\"}\n",
+          "stderr": ""
+        },
+        "after": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "{\"day\":\"2026-05-03\"}"
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"midnight\":\"2026-05-03T00:00:00.000Z\",\"shifts\":1,\"roster\":\"standard\"},\"display\":\"2026-05-03T00:00:00.000Z/1\"}\n",
+          "stderr": ""
+        }
+      }
+    },
+    "any": {
+      "phenotype": {
+        "initial_package": true,
+        "initial_runtime": true,
+        "initial_type_contract": false,
+        "revised_consumer_typecheck": true,
+        "revised_type_contract": false,
+        "revised_runtime": true,
+        "revised_client_runtime": true,
+        "revised_request": true
+      },
+      "initial_package": {
+        "argv": [
+          "npm",
+          "run",
+          "typecheck"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": "npm notice run staff-calendar@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p tsconfig.json\n"
+      },
+      "initial_public_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 2,
+        "stdout": "src/contract-external.ts(17,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(18,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(19,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(20,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(21,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(22,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(23,1): error TS2578: Unused '@ts-expect-error' directive.\n",
+        "stderr": ""
+      },
+      "changed_schema_consumer": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.revision.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "changed_type_contract": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 2,
+        "stdout": "src/contract-external.ts(17,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(18,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(19,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(20,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(21,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(22,7): error TS2322: Type 'true' is not assignable to type 'false'.\nsrc/contract-external.ts(23,1): error TS2578: Unused '@ts-expect-error' directive.\n",
+        "stderr": ""
+      },
+      "runtime_examples": {
+        "before": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "{\"day\":\"2026-05-03\"}"
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"midnight\":\"2026-05-03T00:00:00.000Z\",\"shifts\":1},\"display\":\"2026-05-03T00:00:00.000Z/1\"}\n",
+          "stderr": ""
+        },
+        "after": {
+          "argv": [
+            "node",
+            "tools/read.mjs",
+            "{\"day\":\"2026-05-03\"}"
+          ],
+          "exit": 0,
+          "stdout": "{\"value\":{\"midnight\":\"2026-05-03T00:00:00.000Z\",\"shifts\":1,\"roster\":\"standard\"},\"display\":\"2026-05-03T00:00:00.000Z/1\"}\n",
+          "stderr": ""
+        }
+      }
+    }
+  }
+}

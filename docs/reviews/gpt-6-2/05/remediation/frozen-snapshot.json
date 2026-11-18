@@ -1,0 +1,75 @@
+{
+  "hash_algorithm": "SHA-256",
+  "inputs_archive": "fe855c0ea34a30bc7559ddf2b5532cacebb4ed50df92c45da4d12e34e0e5f281",
+  "rubric": "f9e4ae5382066145452720d0c688211d1aad55dd3d3f26a40cb8e60c1b23af80",
+  "preflight": "c678633c026cdf71e70f0dccf3c6eecc2527569f84616d734657c761f0b8e4e7",
+  "archive_excludes_npm_bytes": "restore-dependencies.py restores the complete pinned packages and verifies every file digest and mode before use. Research copies physically include both dependencies.",
+  "dependency_versions": {
+    "typescript": "5.9.3",
+    "valibot": "1.2.0"
+  },
+  "instruction_views": {
+    "A": {
+      ".agents/skills/typescript-engineer/SKILL.md": "8dccdca0e96b7c9f7caf51baaab9fb909df0bb01345a0ae7fac7c444bb597e86",
+      ".agents/skills/typescript-engineer/agents/openai.yaml": "372a72c8d2943c55ba133bbda5e0ed8f46cdfd8f8d4940418beefcbaf62484ab",
+      ".agents/skills/typescript-engineer/references/generics.md": "7201b89492c473093a6818db8bcf0b26e445d2f0689eb84916ff185503c3c4c4",
+      ".agents/skills/typescript-engineer/references/monorepo.md": "a725bf2737a1c0716b2c8f9f2a6d6d79cc0e14a401a06b7de5ed9744166fb5e4",
+      ".agents/skills/typescript-engineer/references/overloads.md": "39494766556c8c7aa46c2aa16aa20718aedcaf7a4ec8cf0a28443324d3c5936b",
+      ".agents/skills/typescript-engineer/references/patterns.md": "8636aec6c320d894a10ada0db3f452b7d31e9dc608d00a6e0a57e1b5c3aa1f57",
+      ".agents/skills/typescript-engineer/references/practices.md": "51f765dcd0f2e1732e00d83504a4a832f177437f96aeed0d992a634e949c827a",
+      ".agents/skills/typescript-engineer/references/runtime-derived-types.md": "1e1a327d0a2e59792ec25aa5c69bb2cd313273ef2a9d7730014700303e9e4aa0",
+      ".agents/skills/typescript-engineer/references/toolchain.md": "313bb758492c473f47b7d1670fd01ecb605512296ab98edcf36fe59914794771",
+      ".agents/skills/typescript-engineer/references/type-debugging.md": "2fb09da3deb9e434b50336644da63a6539503d30f05a0304fa7c9a78d7690304",
+      ".agents/skills/typescript-engineer/references/type-system.md": "451bec02f0fe0cad7a3967b6d4b8388e98600c4655be7fee51b971f1db0f40e9"
+    },
+    "B": {
+      ".agents/skills/typescript-engineer/SKILL.md": "8dccdca0e96b7c9f7caf51baaab9fb909df0bb01345a0ae7fac7c444bb597e86",
+      ".agents/skills/typescript-engineer/agents/openai.yaml": "372a72c8d2943c55ba133bbda5e0ed8f46cdfd8f8d4940418beefcbaf62484ab",
+      ".agents/skills/typescript-engineer/references/generics.md": "7201b89492c473093a6818db8bcf0b26e445d2f0689eb84916ff185503c3c4c4",
+      ".agents/skills/typescript-engineer/references/monorepo.md": "a725bf2737a1c0716b2c8f9f2a6d6d79cc0e14a401a06b7de5ed9744166fb5e4",
+      ".agents/skills/typescript-engineer/references/overloads.md": "39494766556c8c7aa46c2aa16aa20718aedcaf7a4ec8cf0a28443324d3c5936b",
+      ".agents/skills/typescript-engineer/references/patterns.md": "efce51345dcbc85667f4da16dbe26c4de16003fea08f98d808de5ef40ea26312",
+      ".agents/skills/typescript-engineer/references/practices.md": "51f765dcd0f2e1732e00d83504a4a832f177437f96aeed0d992a634e949c827a",
+      ".agents/skills/typescript-engineer/references/runtime-derived-types.md": "1e1a327d0a2e59792ec25aa5c69bb2cd313273ef2a9d7730014700303e9e4aa0",
+      ".agents/skills/typescript-engineer/references/toolchain.md": "313bb758492c473f47b7d1670fd01ecb605512296ab98edcf36fe59914794771",
+      ".agents/skills/typescript-engineer/references/type-debugging.md": "2fb09da3deb9e434b50336644da63a6539503d30f05a0304fa7c9a78d7690304",
+      ".agents/skills/typescript-engineer/references/type-system.md": "451bec02f0fe0cad7a3967b6d4b8388e98600c4655be7fee51b971f1db0f40e9"
+    },
+    "C": {
+      ".agents/skills/typescript-engineer/SKILL.md": "8dccdca0e96b7c9f7caf51baaab9fb909df0bb01345a0ae7fac7c444bb597e86",
+      ".agents/skills/typescript-engineer/agents/openai.yaml": "372a72c8d2943c55ba133bbda5e0ed8f46cdfd8f8d4940418beefcbaf62484ab",
+      ".agents/skills/typescript-engineer/references/generics.md": "7201b89492c473093a6818db8bcf0b26e445d2f0689eb84916ff185503c3c4c4",
+      ".agents/skills/typescript-engineer/references/monorepo.md": "a725bf2737a1c0716b2c8f9f2a6d6d79cc0e14a401a06b7de5ed9744166fb5e4",
+      ".agents/skills/typescript-engineer/references/overloads.md": "39494766556c8c7aa46c2aa16aa20718aedcaf7a4ec8cf0a28443324d3c5936b",
+      ".agents/skills/typescript-engineer/references/patterns.md": "ad0135c65606afcaaaf97807020234dc7ab2cd570e9ad5e77eb3c8f3f9ff617e",
+      ".agents/skills/typescript-engineer/references/practices.md": "51f765dcd0f2e1732e00d83504a4a832f177437f96aeed0d992a634e949c827a",
+      ".agents/skills/typescript-engineer/references/runtime-derived-types.md": "1e1a327d0a2e59792ec25aa5c69bb2cd313273ef2a9d7730014700303e9e4aa0",
+      ".agents/skills/typescript-engineer/references/toolchain.md": "313bb758492c473f47b7d1670fd01ecb605512296ab98edcf36fe59914794771",
+      ".agents/skills/typescript-engineer/references/type-debugging.md": "2fb09da3deb9e434b50336644da63a6539503d30f05a0304fa7c9a78d7690304",
+      ".agents/skills/typescript-engineer/references/type-system.md": "451bec02f0fe0cad7a3967b6d4b8388e98600c4655be7fee51b971f1db0f40e9"
+    },
+    "Release": {
+      ".agents/skills/typescript-engineer/SKILL.md": "4c2662d674d2e81c1aedc57590c91a189ba3596d17ad61148ec0caf4a154e8e6",
+      ".agents/skills/typescript-engineer/agents/openai.yaml": "372a72c8d2943c55ba133bbda5e0ed8f46cdfd8f8d4940418beefcbaf62484ab",
+      ".agents/skills/typescript-engineer/references/generics.md": "7201b89492c473093a6818db8bcf0b26e445d2f0689eb84916ff185503c3c4c4",
+      ".agents/skills/typescript-engineer/references/monorepo.md": "a725bf2737a1c0716b2c8f9f2a6d6d79cc0e14a401a06b7de5ed9744166fb5e4",
+      ".agents/skills/typescript-engineer/references/overloads.md": "39494766556c8c7aa46c2aa16aa20718aedcaf7a4ec8cf0a28443324d3c5936b",
+      ".agents/skills/typescript-engineer/references/patterns.md": "ad0135c65606afcaaaf97807020234dc7ab2cd570e9ad5e77eb3c8f3f9ff617e",
+      ".agents/skills/typescript-engineer/references/practices.md": "51f765dcd0f2e1732e00d83504a4a832f177437f96aeed0d992a634e949c827a",
+      ".agents/skills/typescript-engineer/references/runtime-derived-types.md": "fec7e83b236187d5b0a4d6130d57ec87389b727ec6034d173e2af42b7640bcaa",
+      ".agents/skills/typescript-engineer/references/toolchain.md": "3fc58bef11612eef5d35f6c25c05194b581f6ef66a01571c33e91831e8bcbe21",
+      ".agents/skills/typescript-engineer/references/type-debugging.md": "2fb09da3deb9e434b50336644da63a6539503d30f05a0304fa7c9a78d7690304",
+      ".agents/skills/typescript-engineer/references/type-system.md": "6f0548c1cb2cf0133a2610d53037a1ccd6e8368c919af7ffd9c1449996c24c57"
+    }
+  },
+  "case_prompts": {
+    "ordinary": "a3585785226ad385552d15988c485b9744b646548c4cc252e5716ce23e81b760",
+    "boundary": "869b6470943db81d07a73a60f6c25e07ed14beffef0487852e06e42c14df3969",
+    "holdout": "17802bf82b01288bd7c96ecaaef453b822f794a3c2e6f69ce3b535029052f857"
+  },
+  "initial_public_source": {
+    "ordinary": "export function readMeter(raw: unknown): unknown {\n  return raw;\n}\n",
+    "boundary": "export function readLabel(raw: unknown): unknown {\n  return raw;\n}\n",
+    "holdout": "export function readPeriod(raw: unknown): unknown {\n  return raw;\n}\n"
+  }
+}
