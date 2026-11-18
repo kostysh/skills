@@ -1,0 +1,152 @@
+{
+  "subjects": [
+    {
+      "code": "6f3ca1",
+      "case": "final",
+      "variant": "archive",
+      "archiveSha256": "acfe3316ceed37bb4e7fcc6e47c223d26a4fb0e36472c3716e313ca85c0dffdc",
+      "allEightDeliveredFileHashesMatch": true,
+      "visibleTextEventHashes": {
+        "Apply the accepted financial rule to its stated scope.": "095bf49ccc45fc6fecd4f9c34a8aa72b043d8cbaf72ab49ea5cc0c0d28cd21fa",
+        "fromMinorUnits(cents)": "8d2aa6bced84062b963cc54c14b144b8528146748e21536121eca3be0f2204f3",
+        "division can round a large quotient": "8d2aa6bced84062b963cc54c14b144b8528146748e21536121eca3be0f2204f3"
+      },
+      "rawEventsSha256": "e9c0dbc113e87367c0872feac34cf341bfdb250a1eda69333ef0314d098726a2",
+      "responseSha256": "eb1e67cd64aa7ad4cfa3f484f2f44269913cfd78482708354e38bf32c0e63bd8",
+      "allInitialBytesAndModesUnchanged": true,
+      "processExit": 0,
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoriesDisabled": true
+    },
+    {
+      "code": "a921e7",
+      "case": "holdout",
+      "variant": "intermediate",
+      "archiveSha256": "3e243dd771fb7fb537df1801fb65f3c62822be9cd6d272c66baabbacdc75644d",
+      "allEightDeliveredFileHashesMatch": true,
+      "visibleTextEventHashes": {
+        "Apply the accepted financial rule to its stated scope.": "4e57958891958720109e20742737f37c686c78d72f7fba47a37d37b34b10201e",
+        "fromMinorUnits(cents)": "a06e8347fccb1be26d9093ad07d01aa147a4eec3c62fc626371267540519dd72"
+      },
+      "rawEventsSha256": "b764043ad4f7b505bd01449aa014f333b41536d6e3db4a1801db491b4339f1a1",
+      "responseSha256": "2202bafd86ca1c614e3c8897cf536d7eac6f86ca548875d2b8b694bb09c9f076",
+      "allInitialBytesAndModesUnchanged": true,
+      "processExit": 0,
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoriesDisabled": true
+    }
+  ],
+  "scorer": {
+    "signedRawSha256": "6c60924a2bbc3b7d66284bd28ad730d05bf4989371ea34f1a03064610e2ddc19",
+    "rawEventsSha256": "4d0a2914a3aaa32fea78d8e3d10bed5d0f7a1c75f197384d6582373bbbbf2acc",
+    "model": "gpt-6.2-sol",
+    "reasoning": "high",
+    "sandbox": "read-only",
+    "memoriesDisabled": true,
+    "assignmentRevealedAfterScoring": [
+      {
+        "role": "archive",
+        "case": "final",
+        "label": "6f3ca1"
+      },
+      {
+        "role": "A",
+        "case": "holdout",
+        "label": "71eb04",
+        "original_label": "691c42"
+      },
+      {
+        "role": "intermediate",
+        "case": "holdout",
+        "label": "a921e7"
+      }
+    ],
+    "issuedFileHashes": {
+      "criteria.md": "46f4613469fcc94d49402c511ba9ba4376374bafd4747637b8c67c9006a985da",
+      "a921e7/actions.json": "259a0a6066192c186ac487557ef107bc5e10c8f39e22592183cc27450bb92d3b",
+      "a921e7/observer.json": "7eeb4a971b31e863c6a4c6f4b7f3cb702aede6488c73195bffc25f6929037ac9",
+      "a921e7/answer.md": "e98cb4f59cb4134ba990da07ba801662c842c075a53e3871bf92d815df717f1f",
+      "a921e7/task.md": "edd50a25978515e7bfc97e71e07445e0290d2775d743a7b0d801b865f7e8de14",
+      "71eb04/actions.json": "b6ce02fc50d4132ba671c2d2f4800564bb183005b2370b6863c1c0c672af5345",
+      "71eb04/observer.json": "03f4a503632ddd0304a98cfa72ad8b88bf19eba05f62e0f8a0a15de5ff870c15",
+      "71eb04/answer.md": "b7ac2228ff9afdcb0e2453fd699aa2518f2c7f4a58b5b4529ab9e62b7f0df2fe",
+      "71eb04/task.md": "edd50a25978515e7bfc97e71e07445e0290d2775d743a7b0d801b865f7e8de14",
+      "6f3ca1/actions.json": "8ccd1fef071f863e9333f00b6dab077f9f6a3b5f3ebe595360a93c2c995324ab",
+      "6f3ca1/observer.json": "87f02fa6379d6963a8892b08c1ecf054d0b60599144e39c04cbbf8e7ccff3a88",
+      "6f3ca1/answer.md": "1ec50497059426dc313cd9d425683d965e606546a914b9e5323b4ef56db7061d",
+      "6f3ca1/task.md": "1fe62384cc52d1c8192c10cbe35838f3c731bf4fccfbd56c6473dcaaf6c1c2f5",
+      "6f3ca1/after/settlement.json": "0c79b627ae3acf5ae47a49a0e697b1c5ba5d9cb960ac6ae24d23a13684893c28",
+      "6f3ca1/after/fees.sql": "493b32191fc9ca38dc3e46cd95983907337137abd630326746265b78920736b9",
+      "6f3ca1/before/work/sql-contract.md": "415a0ca0d44b0a465b9880ec886f2f5c9f786c289ae28a346e315265dad91f5b",
+      "6f3ca1/before/work/batch.json": "40588d928cdb929fbdb08bf40681b732b30086d804645ccecf7cebe2b2d37db1",
+      "6f3ca1/before/work/r48.md": "968639b61fc17696adce652c623d254d52687be6c88d6db9b8c607857e8d03bb",
+      "6f3ca1/before/work/lib/package.json": "9f8db1d2f2084d0ffc90b38513c6e9c8a3893f3669e97d1252ba297dadbd87e2",
+      "6f3ca1/before/work/lib/money.mjs": "50d8ebb538b2bcebfaf3273570e0abf80b33ab0b22f1b2e5a6d8bd840db6f0c3",
+      "6f3ca1/before/work/lib/CONTRACT.md": "daa075cb795bd41554fe6ba98147160b10611915359430fbae7b62dc1144ed80",
+      "6f3ca1/after/work/sql-contract.md": "415a0ca0d44b0a465b9880ec886f2f5c9f786c289ae28a346e315265dad91f5b",
+      "6f3ca1/after/work/batch.json": "40588d928cdb929fbdb08bf40681b732b30086d804645ccecf7cebe2b2d37db1",
+      "6f3ca1/after/work/r48.md": "968639b61fc17696adce652c623d254d52687be6c88d6db9b8c607857e8d03bb",
+      "6f3ca1/after/work/lib/package.json": "9f8db1d2f2084d0ffc90b38513c6e9c8a3893f3669e97d1252ba297dadbd87e2",
+      "6f3ca1/after/work/lib/money.mjs": "50d8ebb538b2bcebfaf3273570e0abf80b33ab0b22f1b2e5a6d8bd840db6f0c3",
+      "6f3ca1/after/work/lib/CONTRACT.md": "daa075cb795bd41554fe6ba98147160b10611915359430fbae7b62dc1144ed80",
+      "71eb04/after/settlement.json": "5c7fe434099591a088a6dceb05bf20fde229ded8fcea230b366d02b3d2ac7182",
+      "71eb04/before/work/training.md": "59014b4b7fb7468f98eb323dba6e65aea29c67de025ab4f55c7c7c5571c5c041",
+      "71eb04/before/work/register.md": "5606be7c5d554df61d7d5609332c88070c84c7bd38301b5d5802929a90959d9f",
+      "71eb04/before/work/owner.md": "de5200acd65bb2e665df45414ad089534d005bde761c63272f37f373bdaa7bf9",
+      "71eb04/before/work/rows.json": "1e806396d2e223fb4525755c99f4d1bbb2ae2eb8ebb43518b0f3ad964688ffdc",
+      "71eb04/before/work/lib/money.mjs": "50d8ebb538b2bcebfaf3273570e0abf80b33ab0b22f1b2e5a6d8bd840db6f0c3",
+      "71eb04/before/work/lib/package.json": "9f8db1d2f2084d0ffc90b38513c6e9c8a3893f3669e97d1252ba297dadbd87e2",
+      "71eb04/before/work/lib/CONTRACT.md": "daa075cb795bd41554fe6ba98147160b10611915359430fbae7b62dc1144ed80",
+      "71eb04/after/work/training.md": "59014b4b7fb7468f98eb323dba6e65aea29c67de025ab4f55c7c7c5571c5c041",
+      "71eb04/after/work/register.md": "5606be7c5d554df61d7d5609332c88070c84c7bd38301b5d5802929a90959d9f",
+      "71eb04/after/work/owner.md": "de5200acd65bb2e665df45414ad089534d005bde761c63272f37f373bdaa7bf9",
+      "71eb04/after/work/rows.json": "1e806396d2e223fb4525755c99f4d1bbb2ae2eb8ebb43518b0f3ad964688ffdc",
+      "71eb04/after/work/lib/money.mjs": "50d8ebb538b2bcebfaf3273570e0abf80b33ab0b22f1b2e5a6d8bd840db6f0c3",
+      "71eb04/after/work/lib/package.json": "9f8db1d2f2084d0ffc90b38513c6e9c8a3893f3669e97d1252ba297dadbd87e2",
+      "71eb04/after/work/lib/CONTRACT.md": "daa075cb795bd41554fe6ba98147160b10611915359430fbae7b62dc1144ed80",
+      "a921e7/after/settlement.json": "2ec6e50efc91a61a0d3f39608ae503406407f134be7a529388100d04e4d396ec",
+      "a921e7/before/work/training.md": "59014b4b7fb7468f98eb323dba6e65aea29c67de025ab4f55c7c7c5571c5c041",
+      "a921e7/before/work/register.md": "5606be7c5d554df61d7d5609332c88070c84c7bd38301b5d5802929a90959d9f",
+      "a921e7/before/work/owner.md": "de5200acd65bb2e665df45414ad089534d005bde761c63272f37f373bdaa7bf9",
+      "a921e7/before/work/rows.json": "1e806396d2e223fb4525755c99f4d1bbb2ae2eb8ebb43518b0f3ad964688ffdc",
+      "a921e7/before/work/lib/money.mjs": "50d8ebb538b2bcebfaf3273570e0abf80b33ab0b22f1b2e5a6d8bd840db6f0c3",
+      "a921e7/before/work/lib/package.json": "9f8db1d2f2084d0ffc90b38513c6e9c8a3893f3669e97d1252ba297dadbd87e2",
+      "a921e7/before/work/lib/CONTRACT.md": "daa075cb795bd41554fe6ba98147160b10611915359430fbae7b62dc1144ed80",
+      "a921e7/after/work/training.md": "59014b4b7fb7468f98eb323dba6e65aea29c67de025ab4f55c7c7c5571c5c041",
+      "a921e7/after/work/register.md": "5606be7c5d554df61d7d5609332c88070c84c7bd38301b5d5802929a90959d9f",
+      "a921e7/after/work/owner.md": "de5200acd65bb2e665df45414ad089534d005bde761c63272f37f373bdaa7bf9",
+      "a921e7/after/work/rows.json": "1e806396d2e223fb4525755c99f4d1bbb2ae2eb8ebb43518b0f3ad964688ffdc",
+      "a921e7/after/work/lib/money.mjs": "50d8ebb538b2bcebfaf3273570e0abf80b33ab0b22f1b2e5a6d8bd840db6f0c3",
+      "a921e7/after/work/lib/package.json": "9f8db1d2f2084d0ffc90b38513c6e9c8a3893f3669e97d1252ba297dadbd87e2",
+      "a921e7/after/work/lib/CONTRACT.md": "daa075cb795bd41554fe6ba98147160b10611915359430fbae7b62dc1144ed80"
+    }
+  },
+  "allScorerPackets": [
+    {
+      "signedRawSha256": "0578944a9d6cc6bb510579f8099123901ce6dde7224bd79a440c17186a19b4ef",
+      "matchingDifferentialMarkersInIssuedFiles": [],
+      "webEvents": 0,
+      "outsideAbsoluteReadDetected": false
+    },
+    {
+      "signedRawSha256": "4f046d5c628d6b50a5b0dd8df7bce5bc94836d546c64360c0f0e3cf98ab0b4c3",
+      "matchingDifferentialMarkersInIssuedFiles": [],
+      "webEvents": 0,
+      "outsideAbsoluteReadDetected": false
+    },
+    {
+      "signedRawSha256": "64310008da1743f28ceed3f10039f4b780f13d7ae3349392671e55e0d70ad8ad",
+      "matchingDifferentialMarkersInIssuedFiles": [],
+      "webEvents": 0,
+      "outsideAbsoluteReadDetected": false
+    },
+    {
+      "signedRawSha256": "6c60924a2bbc3b7d66284bd28ad730d05bf4989371ea34f1a03064610e2ddc19",
+      "matchingDifferentialMarkersInIssuedFiles": [],
+      "webEvents": 0,
+      "outsideAbsoluteReadDetected": false
+    }
+  ]
+}

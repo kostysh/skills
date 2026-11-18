@@ -1,0 +1,17 @@
+{
+  "ordinary": {
+    "stdout": "{\"id\":\"AR\",\"net\":\"5\",\"fee\":\"3\"}\n{\"id\":\"AV\",\"net\":\"-5\",\"fee\":\"-3\"}\n{\"id\":\"AZ\",\"net\":\"9007199254740993\",\"fee\":\"4503599627370497\"}\n",
+    "stderr": "",
+    "exit": 0
+  },
+  "boundary": {
+    "stdout": "{\"id\":\"BR\",\"net\":\"153\",\"fee\":null}\n{\"id\":\"BS\",\"net\":\"-30\",\"fee\":null}\n",
+    "stderr": "",
+    "exit": 0
+  },
+  "holdout": {
+    "stdout": "{\"id\":\"CR\",\"net\":\"-3\",\"fee\":\"-1\"}\n{\"id\":\"CS\",\"net\":\"38\",\"fee\":\"3\"}\n{\"id\":\"CT\",\"net\":\"22\",\"fee\":null}\n",
+    "stderr": "",
+    "exit": 0
+  }
+}

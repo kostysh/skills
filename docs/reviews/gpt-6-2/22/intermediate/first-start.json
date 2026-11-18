@@ -1,0 +1,7 @@
+{
+  "exit": 1,
+  "eventBytes": 0,
+  "taskOutputBytes": 0,
+  "stderrSha256": "fce7f65f3d6ce2c2fb4ce963fd4b5ad9a3db41e33b308cc97d33381918b5763c",
+  "reason": "Unable to initialize local Codex app-server, read-only file system. No model or output. A fresh authorized launch used the same extracted archive and case in another workspace."
+}

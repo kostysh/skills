@@ -1,0 +1,145 @@
+{
+  "checks": [
+    {
+      "command": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "0.2.5\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "lint",
+        "skills/financial-calculations-engineer"
+      ],
+      "exit": 0,
+      "stdout": "OK skills/financial-calculations-engineer\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "regenerate",
+        "skills/financial-calculations-engineer"
+      ],
+      "exit": 0,
+      "stdout": "Regenerated {repo}/skills/financial-calculations-engineer\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "skills/financial-calculations-engineer"
+      ],
+      "exit": 0,
+      "stdout": "OK skills/financial-calculations-engineer\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "compile",
+        "skills/financial-calculations-engineer",
+        "--out-dir",
+        "{staging}/compiled"
+      ],
+      "exit": 0,
+      "stdout": "Compiled skills/financial-calculations-engineer -> {staging}/compiled/financial-calculations-engineer\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "{staging}/compiled/financial-calculations-engineer"
+      ],
+      "exit": 0,
+      "stdout": "OK {staging}/compiled/financial-calculations-engineer\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "{system-skills}/skill-creator/scripts/quick_validate.py",
+        "skills/financial-calculations-engineer"
+      ],
+      "exit": 0,
+      "stdout": "Skill is valid!\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "10.28.2\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "pack:skills",
+        "--root",
+        "{staging}/compiled",
+        "--out",
+        "{staging}/packed",
+        "--release",
+        "skills-20261118-22",
+        "--previous",
+        "{study}/base-pack/catalog.json"
+      ],
+      "exit": 0,
+      "stdout": "\n> @kostysh/skills@0.1.3 pack:skills {repo}/cli\n> node src/pack-cli.ts --root {staging}/compiled --out {staging}/packed --release skills-20261118-22 --previous {study}/base-pack/catalog.json\n\nSkills packed: 1; output: {staging}/packed\n",
+      "stderr": ""
+    }
+  ],
+  "researchAIsBaselineArchive": true,
+  "releaseAndSourceAgreeOnAll8Files": true,
+  "shippedSupportingDocs": false,
+  "baseline": {
+    "archiveSha256": "f212657246eacd480ba353d876e62c8d5fbfe0c9b25831fb92c9c0827c7aa91f",
+    "files": {
+      "SKILL.md": "a8b86fa481a66d016020bb1eecd951ebe04f29a5d2a2ae9182dc0d4eb42f1688",
+      "agents/openai.yaml": "4da3f3bff93560df92c578996a9d14ed73b9e7cd712fff8b24b4e1ce6bf811a9",
+      "references/browser.md": "18417de9467220e1d78efa75109999daac767ca21325dbe244dfeca3c59bb8de",
+      "references/database-sql.md": "a727775f7d386c03c80824c82638e48c968796d40632e907f457df6eb09626a8",
+      "references/money-library-usage.md": "4343fd3a3e9e8cac8f81c6b21d62a2fffb838cc40823e191cdf0ece839ffaa0a",
+      "references/parity-testing.md": "d44c5851f0984186620a238d3dd38bb5856a983f582b46d318debceb6fe6f576",
+      "references/server-backend.md": "b1380337d84c5f49252ea41319880897400bacdb0137d14b9eb669cebf8ff3bf",
+      "references/vat-iva.md": "018bb80be5b2016c737976df63548955051b1d10db407b13d8b8504f361506cc"
+    }
+  },
+  "release": {
+    "archiveSha256": "3e243dd771fb7fb537df1801fb65f3c62822be9cd6d272c66baabbacdc75644d",
+    "files": {
+      "SKILL.md": "5c23543debfc9fc66aa3c885bf088573d4a87c25120c5c0ba8689d60fa3eb407",
+      "agents/openai.yaml": "4da3f3bff93560df92c578996a9d14ed73b9e7cd712fff8b24b4e1ce6bf811a9",
+      "references/browser.md": "18417de9467220e1d78efa75109999daac767ca21325dbe244dfeca3c59bb8de",
+      "references/database-sql.md": "a727775f7d386c03c80824c82638e48c968796d40632e907f457df6eb09626a8",
+      "references/money-library-usage.md": "aaa0efa537858b30c5dd54765e65bf8cdc3979e81a445f39811e68d8b3d6b52c",
+      "references/parity-testing.md": "d44c5851f0984186620a238d3dd38bb5856a983f582b46d318debceb6fe6f576",
+      "references/server-backend.md": "b1380337d84c5f49252ea41319880897400bacdb0137d14b9eb669cebf8ff3bf",
+      "references/vat-iva.md": "018bb80be5b2016c737976df63548955051b1d10db407b13d8b8504f361506cc"
+    }
+  },
+  "changedRuntimePaths": [
+    "SKILL.md",
+    "references/money-library-usage.md"
+  ],
+  "compilerIncludesNewSupportingLog": true
+}
