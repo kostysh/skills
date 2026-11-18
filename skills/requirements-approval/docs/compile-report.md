@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.2.3`
+- Skill source version: `0.2.4`
 
 ## Source files
 - `agents/openai.yaml`
@@ -15,6 +15,7 @@ Generated from `skill.yaml`.
 - `docs/logs/implementation-log-20260716-1.md`
 - `docs/logs/implementation-log-20260727-1.md`
 - `docs/logs/implementation-log-20260728-1.md`
+- `docs/logs/implementation-log-20261118-1.md`
 - `evals/evals.json`
 - `evals/fixtures/authorized-handoff-input.md`
 - `evals/fixtures/closure-input.md`
@@ -29,7 +30,7 @@ Generated from `skill.yaml`.
 - none
 
 ## Warnings
-- Generated SKILL.md is 15002 bytes, above the recommended maximum 15000 bytes. Move detailed guidance into references/* and keep SKILL.md focused on activation, workflow, and navigation. Raise skill.recommended-skill-md-max-bytes only when references cannot reasonably reduce the size.
+- none
 
 ## Notes
 - This document is supporting output only.

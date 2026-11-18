@@ -1,0 +1,14 @@
+{
+  "frozenAt": "2026-11-18T21:00:49.772190+00:00",
+  "files": {
+    "fixture/event/letter.md": "71e203bafff6fe2027fc23c8fffab1cf72e88f9ca92cdc2ace0bd2363d4ef24e",
+    "fixture/event/register.md": "20924f23320228a6ad91f57803d879a2bc10f72f3d5149da1d808681c6083a14",
+    "rubric.md": "de014aa80783c45594df079e30f22fe204a48101a0ccf2eff5b172780bdf8e2a",
+    "task.md": "75427610d2db9ce69a03b08114a6b9083706109c7668fd21ec1c1dc974dbdadf"
+  },
+  "reviewQuestion": "Does the release ask for the unrelated missing photo?",
+  "packages": {
+    "requirements-approval-0.2.3.tgz": "af8e6edda2830557bf88c10312216b00ac4e180641419e73e31a6b738a45fcbc",
+    "requirements-approval-0.2.4.tgz": "39340ad09def674e19dc51e682f7e35b56669887273383b736137f63612d2e97"
+  }
+}

@@ -1,0 +1,78 @@
+[
+  {
+    "argv": [
+      "gh",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "gh version 2.96.0 (2026-07-02)\nhttps://github.com/cli/cli/releases/tag/v2.96.0\n"
+  },
+  {
+    "argv": [
+      "gh",
+      "project",
+      "view",
+      "--help"
+    ],
+    "exit": 0,
+    "stdout": "View a project\n\nFor more information about output formatting flags, see `gh help formatting`.\n\nUSAGE\n  gh project view [<number>] [flags]\n\nFLAGS\n      --format string     Output format: {json}\n  -q, --jq expression     Filter JSON output using a jq expression\n      --owner string      Login of the owner. Use \"@me\" for the current user.\n  -t, --template string   Format JSON output using a Go template; see \"gh help formatting\"\n  -w, --web               Open a project in the browser\n\nINHERITED FLAGS\n  --help   Show help for command\n\nEXAMPLES\n  # View the current user's project \"1\"\n  $ gh project view 1\n  \n  # Open user monalisa's project \"1\" in the browser\n  $ gh project view 1 --owner monalisa --web\n\nLEARN MORE\n  Use `gh <command> <subcommand> --help` for more information about a command.\n  Read the manual at https://cli.github.com/manual\n  Learn about exit codes using `gh help exit-codes`\n  Learn about accessibility experiences using `gh help accessibility`\n\n"
+  },
+  {
+    "argv": [
+      "gh",
+      "project",
+      "field-list",
+      "--help"
+    ],
+    "exit": 0,
+    "stdout": "List the fields in a project\n\nFor more information about output formatting flags, see `gh help formatting`.\n\nUSAGE\n  gh project field-list [<number>] [flags]\n\nFLAGS\n      --format string     Output format: {json}\n  -q, --jq expression     Filter JSON output using a jq expression\n  -L, --limit int         Maximum number of fields to fetch (default 30)\n      --owner string      Login of the owner. Use \"@me\" for the current user.\n  -t, --template string   Format JSON output using a Go template; see \"gh help formatting\"\n\nINHERITED FLAGS\n  --help   Show help for command\n\nEXAMPLES\n  # List fields in the current user's project \"1\"\n  $ gh project field-list 1 --owner \"@me\"\n\nLEARN MORE\n  Use `gh <command> <subcommand> --help` for more information about a command.\n  Read the manual at https://cli.github.com/manual\n  Learn about exit codes using `gh help exit-codes`\n  Learn about accessibility experiences using `gh help accessibility`\n\n"
+  },
+  {
+    "argv": [
+      "gh",
+      "project",
+      "item-list",
+      "--help"
+    ],
+    "exit": 0,
+    "stdout": "List the items in a project.\n\nIf supported by the API host (github.com and GHES 3.20+), the --query option can\nbe used to perform advanced search. For the full syntax, see:\nhttps://docs.github.com/en/issues/planning-and-tracking-with-projects/customizing-views-in-your-project/filtering-projects\n\nFor more information about output formatting flags, see `gh help formatting`.\n\nUSAGE\n  gh project item-list [<number>] [flags]\n\nFLAGS\n      --format string     Output format: {json}\n  -q, --jq expression     Filter JSON output using a jq expression\n  -L, --limit int         Maximum number of items to fetch (default 30)\n      --owner string      Login of the owner. Use \"@me\" for the current user\n      --query string      Filter items using the Projects filter syntax, e.g. \"assignee:octocat -status:Done\"\n  -t, --template string   Format JSON output using a Go template; see \"gh help formatting\"\n\nINHERITED FLAGS\n  --help   Show help for command\n\nEXAMPLES\n  # List the items in the current users's project \"1\"\n  $ gh project item-list 1 --owner \"@me\"\n  \n  # List items assigned to a specific user\n  $ gh project item-list 1 --owner \"@me\" --query \"assignee:monalisa\"\n  \n  # List open issues assigned to yourself\n  $ gh project item-list 1 --owner \"@me\" --query \"assignee:@me is:issue is:open\"\n  \n  # List items with the \"bug\" label that are not done\n  $ gh project item-list 1 --owner \"@me\" --query \"label:bug -status:Done\"\n\nLEARN MORE\n  Use `gh <command> <subcommand> --help` for more information about a command.\n  Read the manual at https://cli.github.com/manual\n  Learn about exit codes using `gh help exit-codes`\n  Learn about accessibility experiences using `gh help accessibility`\n\n"
+  },
+  {
+    "argv": [
+      "gh",
+      "project",
+      "item-edit",
+      "--help"
+    ],
+    "exit": 0,
+    "stdout": "Edit either a draft issue or a project item. Both usages require the ID of the item to edit.\n\nFor non-draft issues, the ID of the project is also required, and only a single field value can be updated per invocation.\n\nRemove project item field value using `--clear` flag.\n\nFor more information about output formatting flags, see `gh help formatting`.\n\nUSAGE\n  gh project item-edit [flags]\n\nFLAGS\n      --body string                      Body of the draft issue item\n      --clear                            Remove field value\n      --date string                      Date value for the field (YYYY-MM-DD)\n      --field-id string                  ID of the field to update\n      --format string                    Output format: {json}\n      --id string                        ID of the item to edit\n      --iteration-id string              ID of the iteration value to set on the field\n  -q, --jq expression                    Filter JSON output using a jq expression\n      --number float                     Number value for the field\n      --project-id string                ID of the project to which the field belongs to\n      --single-select-option-id string   ID of the single select option value to set on the field\n  -t, --template string                  Format JSON output using a Go template; see \"gh help formatting\"\n      --text string                      Text value for the field\n      --title string                     Title of the draft issue item\n\nINHERITED FLAGS\n  --help   Show help for command\n\nEXAMPLES\n  # Edit an item's text field value\n  $ gh project item-edit --id <item-id> --field-id <field-id> --project-id <project-id> --text \"new text\"\n  \n  # Clear an item's field value\n  $ gh project item-edit --id <item-id> --field-id <field-id> --project-id <project-id> --clear\n\nLEARN MORE\n  Use `gh <command> <subcommand> --help` for more information about a command.\n  Read the manual at https://cli.github.com/manual\n  Learn about exit codes using `gh help exit-codes`\n  Learn about accessibility experiences using `gh help accessibility`\n\n"
+  },
+  {
+    "argv": [
+      "gh",
+      "issue",
+      "view",
+      "--help"
+    ],
+    "exit": 0,
+    "stdout": "Display the title, body, and other information about an issue.\n\nWith `--web` flag, open the issue in a web browser instead.\n\nFor more information about output formatting flags, see `gh help formatting`.\n\nUSAGE\n  gh issue view {<number> | <url>} [flags]\n\nFLAGS\n  -c, --comments          View issue comments\n  -q, --jq expression     Filter JSON output using a jq expression\n      --json fields       Output JSON with the specified fields\n  -t, --template string   Format JSON output using a Go template; see \"gh help formatting\"\n  -w, --web               Open an issue in the browser\n\nINHERITED FLAGS\n      --help                     Show help for command\n  -R, --repo [HOST/]OWNER/REPO   Select another repository using the [HOST/]OWNER/REPO format\n\nJSON FIELDS\n  assignees, author, blockedBy, blocking, body, closed, closedAt,\n  closedByPullRequestsReferences, comments, createdAt, id, isPinned, issueType,\n  labels, milestone, number, parent, projectCards, projectItems, reactionGroups,\n  state, stateReason, subIssues, subIssuesSummary, title, updatedAt, url\n\nLEARN MORE\n  Use `gh <command> <subcommand> --help` for more information about a command.\n  Read the manual at https://cli.github.com/manual\n  Learn about exit codes using `gh help exit-codes`\n  Learn about accessibility experiences using `gh help accessibility`\n\n"
+  },
+  {
+    "argv": [
+      "gh",
+      "issue",
+      "comment",
+      "--help"
+    ],
+    "exit": 0,
+    "stdout": "Add a comment to a GitHub issue.\n\nWithout the body text supplied through flags, the command will interactively\nprompt for the comment text.\n\n\nUSAGE\n  gh issue comment {<number> | <url>} [flags]\n\nFLAGS\n  -b, --body text        The comment body text\n  -F, --body-file file   Read body text from file (use \"-\" to read from standard input)\n      --create-if-none   Create a new comment if no comments are found. Can be used only with --edit-last\n      --delete-last      Delete the last comment of the current user\n      --edit-last        Edit the last comment of the current user\n  -e, --editor           Skip prompts and open the text editor to write the body in\n  -w, --web              Open the web browser to write the comment\n      --yes              Skip the delete confirmation prompt when --delete-last is provided\n\nINHERITED FLAGS\n      --help                     Show help for command\n  -R, --repo [HOST/]OWNER/REPO   Select another repository using the [HOST/]OWNER/REPO format\n\nEXAMPLES\n  $ gh issue comment 12 --body \"Hi from GitHub CLI\"\n\nLEARN MORE\n  Use `gh <command> <subcommand> --help` for more information about a command.\n  Read the manual at https://cli.github.com/manual\n  Learn about exit codes using `gh help exit-codes`\n  Learn about accessibility experiences using `gh help accessibility`\n\n"
+  },
+  {
+    "argv": [
+      "codex",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "codex-cli 0.170.0\n"
+  }
+]

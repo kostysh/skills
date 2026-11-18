@@ -1,0 +1,24 @@
+{
+  "executorSessionId": "01a1f076-2205-7d31-8542-a2e156c28715",
+  "assignedModel": "gpt-6.2-sol",
+  "assignedEffort": "medium",
+  "installedArchive": "requirements-approval-0.2.4.tgz",
+  "installedArchiveSha256": "39340ad09def674e19dc51e682f7e35b56669887273383b736137f63612d2e97",
+  "installedFilesVerifiedAgainstInput": {
+    "SKILL.md": "d43739b15d3e0bfefeeb39bab23b9db808e24d2cc4211e6fec526ca2a4c59992",
+    "agents/openai.yaml": "51f2514d7b21571f74146747eb34933f8a0c76416e8999ce5bb82b4ace00b152"
+  },
+  "previousProductOutputSha256": "0ad7a0914a8b6a9465160496a60422e1ad23687241f53aaecf502e6285fd38ff",
+  "previousInputCopiedFromFrozen04Artifact": true,
+  "suppliedMessagesSha256": "379e99072dced3a978932b6ed0396e4ccc8c63f126927da55ea824bdb402ff2d",
+  "currentOutput": {
+    "exit": 0,
+    "onlyAdded": "decision-intake.md",
+    "changedInputs": [],
+    "sourceSha256": "b30ccc0677e998fe46befd2605035bd9bf4651950a4d6e4543f62e3efc99e3cd",
+    "receiptSha256": "b30ccc0677e998fe46befd2605035bd9bf4651950a4d6e4543f62e3efc99e3cd",
+    "forwardedSha256": "b30ccc0677e998fe46befd2605035bd9bf4651950a4d6e4543f62e3efc99e3cd",
+    "bytes": 4557,
+    "inputModesPreserved": true
+  }
+}

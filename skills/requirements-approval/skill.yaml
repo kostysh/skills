@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: requirements-approval
-  source-version: 0.2.3
+  source-version: 0.2.4
   recommended-skill-md-max-bytes: 15000
   description: >-
     Coordinate customer-owned requirements decisions: triage open questions,
@@ -49,6 +49,10 @@ supporting:
     source: docs/README.md
     target: docs/README.md
     description: Navigation for supporting implementation and forward-test evidence.
+  - id: supporting-implementation-log-20261118-1
+    source: docs/logs/implementation-log-20261118-1.md
+    target: docs/logs/implementation-log-20261118-1.md
+    description: Supporting record for the missing-attachment decision and its verification.
   - id: supporting-implementation-log-20260728-1
     source: docs/logs/implementation-log-20260728-1.md
     target: docs/logs/implementation-log-20260728-1.md
@@ -140,7 +144,7 @@ sections:
         - Read the exact supplied messages through gmail or equivalent exported data without changing mailbox state.
         - Verify sender/thread identity, the question codes discussed, the named decision owner's authority, and whether the reply is current or superseded.
         - Read the related approval-item history and authoritative project sources; stop acceptance on unresolved equal-authority conflicts.
-        - If a necessary attachment is unavailable, request that specific attachment and block only the dependent question while continuing independent items.
+        - Request missing attachments by name and advance independent questions.
         - Classify each reply per question as complete, partial, non-answer, or authority-conflict.
         - Convert answers into traced obligations for document owners; do not invent product, architecture, specification, or plan decisions.
       validation:
