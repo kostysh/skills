@@ -1,0 +1,133 @@
+{
+  "score-ab": {
+    "model": "gpt-6.2-sol",
+    "reasoning": "high",
+    "ephemeral": true,
+    "sandbox": "read-only",
+    "criteria_sha256": "d2b38f07340c055e5157df7f3e8b229434a818e959833354f5f97afb9b39386d",
+    "issued_packet_files": 39,
+    "issued_packet_inventory_sha256": "ac29d0b76afa204b5ac7b6f2b37271518ba97dd4bef658ed2d17c52dceebd677",
+    "packet_included_variant_key": false,
+    "packet_included_skill_installation": false,
+    "assessment_exit": 0,
+    "raw_signed_assessment_sha256": "5dc1e17d33aca3f0dfe74448de52e54f369dc903167329b159c755d4f0ff97bf",
+    "assessment_events_sha256": "b16aa2880b864accdd4d66f102633217709435a1560c50977abdb392993b46e4",
+    "public_report": "assessment-ab.md",
+    "public_report_sha256": "200dc2844d63298f43195f14da3376ffe45f04ff512fc21c0107beb5a7c7b8e7",
+    "completed_tool_actions": [
+      {
+        "type": "command_execution",
+        "exit": 0,
+        "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\""
+      },
+      {
+        "type": "command_execution",
+        "exit": 0,
+        "command": "/bin/bash -lc 'cat criteria.md'"
+      },
+      {
+        "type": "command_execution",
+        "exit": 0,
+        "command": "/bin/bash -lc 'wc -l */*.md */*.json */before/materials/* */after/materials/*'"
+      },
+      {
+        "type": "command_execution",
+        "exit": 0,
+        "command": "/bin/bash -lc 'for f in 95a3fc/task.md 95a3fc/answer.md 95a3fc/actions.json 95a3fc/observer.json 95a3fc/before/materials/* $(rg --files 95a3fc/after -g '\"'\"'!**/materials/**'\"'); do printf '\\\\n%s\\\\n' \\\"\"'$f\"; cat -- \"$f\"; done'"
+      },
+      {
+        "type": "command_execution",
+        "exit": 0,
+        "command": "/bin/bash -lc 'for f in 1bf03a/task.md 1bf03a/answer.md 1bf03a/actions.json 1bf03a/observer.json 1bf03a/before/materials/* $(rg --files 1bf03a/after -g '\"'\"'!**/materials/**'\"'); do printf '\\\\n%s\\\\n' \\\"\"'$f\"; cat -- \"$f\"; done'"
+      },
+      {
+        "type": "command_execution",
+        "exit": 0,
+        "command": "/bin/bash -lc 'for f in 1a3016/task.md 1a3016/answer.md 1a3016/actions.json 1a3016/observer.json 1a3016/before/materials/* $(rg --files 1a3016/after -g '\"'\"'!**/materials/**'\"'); do printf '\\\\n%s\\\\n' \\\"\"'$f\"; cat -- \"$f\"; done'"
+      },
+      {
+        "type": "command_execution",
+        "exit": 0,
+        "command": "/bin/bash -lc 'for f in bd9575/task.md bd9575/answer.md bd9575/actions.json bd9575/observer.json bd9575/before/materials/* $(rg --files bd9575/after -g '\"'\"'!**/materials/**'\"'); do printf '\\\\n%s\\\\n' \\\"\"'$f\"; cat -- \"$f\"; done'"
+      },
+      {
+        "type": "command_execution",
+        "exit": 0,
+        "command": "/bin/bash -lc \"for code in 1a3016 95a3fc 1bf03a bd9575; do printf '%s\\\\n' \\\"\"'$code\"; diff -qr -- \"$code/before/materials\" \"$code/after/materials\" || exit; done'"
+      },
+      {
+        "type": "command_execution",
+        "exit": 0,
+        "command": "/bin/bash -lc \"python3 -B - <<'PY'\nfrom pathlib import Path\nimport hashlib\nimport json\nfor case in sorted(Path('.').glob('*/observer.json')):\n    observation = json.loads(case.read_text())\n    output = observation['requested_output']\n    artifact = case.parent / ('answer.md' if output == 'chat response' else f'after/{output}')\n    data = artifact.read_bytes()\n    digest = hashlib.sha256(data).hexdigest()\n    print(case.parent, artifact, len(data), digest, 'matches observer:', (len(data), digest) == (observation['readback_bytes'], observation['readback_sha256']))\nPY\""
+      }
+    ]
+  },
+  "score-confirm": {
+    "model": "gpt-6.2-sol",
+    "reasoning": "high",
+    "ephemeral": true,
+    "sandbox": "read-only",
+    "criteria_sha256": "d2b38f07340c055e5157df7f3e8b229434a818e959833354f5f97afb9b39386d",
+    "issued_packet_files": 67,
+    "issued_packet_inventory_sha256": "5066a04087e04eddc3b8aa1326bb705f0f4f5573894c98fafd5622d09944863a",
+    "packet_included_variant_key": false,
+    "packet_included_skill_installation": false,
+    "assessment_exit": 0,
+    "raw_signed_assessment_sha256": "6af12ac9c7d8eb56caafc49dfd1f77dc4028e95595bc39026420a3bf9adb7a36",
+    "assessment_events_sha256": "54397f84facbd12e85eb0fafa5481d6b9d6678ea155c1b656f3dd75fbfb16bfc",
+    "public_report": "assessment-confirm.md",
+    "public_report_sha256": "ec9f277072c72b36a836b9d7dddb7883d7f150dbbc9d2ddae62c31ead72ed0fd",
+    "completed_tool_actions": [
+      {
+        "type": "command_execution",
+        "exit": 0,
+        "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\""
+      },
+      {
+        "type": "command_execution",
+        "exit": 0,
+        "command": "/bin/bash -lc 'cat criteria.md'"
+      },
+      {
+        "type": "command_execution",
+        "exit": 0,
+        "command": "/bin/bash -lc 'wc -lc criteria.md */{task.md,answer.md,actions.json,observer.json}'"
+      },
+      {
+        "type": "command_execution",
+        "exit": 0,
+        "command": "/bin/bash -lc 'for case_id in 8305ba a6aaf3; do for case_file in \"$case_id\"/{task.md,answer.md,observer.json,actions.json,before/materials/*,after/materials/*} \"$case_id\"/after/*.md; do if [ -f \"$case_file\" ]; then rg -n '\"'\"'^'\"' \\\"\"'$case_file\" --with-filename; fi; done; done'"
+      },
+      {
+        "type": "command_execution",
+        "exit": 0,
+        "command": "/bin/bash -lc 'for case_id in 454afc 9e396b; do for case_file in \"$case_id\"/{task.md,answer.md,observer.json,actions.json,before/materials/*,after/materials/*} \"$case_id\"/after/*.md; do if [ -f \"$case_file\" ]; then rg -n '\"'\"'^'\"' \\\"\"'$case_file\" --with-filename; fi; done; done'"
+      },
+      {
+        "type": "command_execution",
+        "exit": 0,
+        "command": "/bin/bash -lc 'for case_id in 721013 95f7c4 addfb6; do for case_file in \"$case_id\"/{task.md,answer.md,observer.json,actions.json,before/materials/*,after/materials/*} \"$case_id\"/after/*.md; do if [ -f \"$case_file\" ]; then rg -n '\"'\"'^'\"' \\\"\"'$case_file\" --with-filename; fi; done; done'"
+      },
+      {
+        "type": "command_execution",
+        "exit": 0,
+        "command": "/bin/bash -lc \"python -B - <<'PY'\nimport json\nfrom pathlib import Path\nfor log in sorted(Path('.').glob('*/actions.json')):\n    print(log)\n    for op in json.loads(log.read_text())['operations']:\n        command = op.get('command')\n        if command is None:\n            print(op)\n        else:\n            print('exit', op.get('exit'), command.replace('\\\\\\\\n','\\\\\\\\n').split('\\\\\\\\n',1)[0][:750])\nPY\""
+      },
+      {
+        "type": "command_execution",
+        "exit": 0,
+        "command": "/bin/bash -lc \"python -B - <<'PY'\nimport hashlib\nimport json\nfrom pathlib import Path\nfor task in sorted(Path('.').glob('*/task.md')):\n    root = task.parent\n    before = {p.name: p.read_bytes() for p in (root / 'before/materials').iterdir()}\n    after = {p.name: p.read_bytes() for p in (root / 'after/materials').iterdir()}\n    observer = json.loads((root / 'observer.json').read_text())\n    actions = json.loads((root / 'actions.json').read_text())\n    target = observer['requested_output']\n    artifact = root / ('answer.md' if target == 'chat response' else 'after/' + target)\n    content = artifact.read_bytes()\n    view = observer['assessor_packet_view']\n    digest = hashlib.sha256(content).hexdigest()\n    print(root, 'sources_unchanged', before == after,\n          'changes', actions['changed'], observer['all_project_paths_changed'],\n          'view_match', (len(content), digest) == (view['bytes'], view['sha256']),\n          'original_match', (len(content), digest) == (observer['readback_bytes'], observer['readback_sha256']),\n          'recorded_normalization', not view['equal_to_original'])\nPY\""
+      },
+      {
+        "type": "command_execution",
+        "exit": 0,
+        "command": "/bin/bash -lc \"rg --files --hidden --no-ignore -g '\"'!.git/**'\"' -g '\"'!.git'\"'\""
+      },
+      {
+        "type": "command_execution",
+        "exit": 0,
+        "command": "/bin/bash -lc \"python -B - <<'PY'\nimport json\nfrom pathlib import Path\nops = json.loads(Path('9e396b/actions.json').read_text())['operations']\nfor op in ops[-2:]:\n    print(op['exit'], op['command'][-690:])\nfor code in ('721013','95f7c4','addfb6'):\n    root = Path(code)\n    o = json.loads((root / 'observer.json').read_text())\n    print(code, o['delivered_readable'], o['assessor_packet_view'])\n    for source in ('decision-intake.md', 'report-draft.md', 'team-note.md'):\n        lines = (root / 'before' / 'materials' / source).read_text().splitlines()\n        if source == 'decision-intake.md':\n            lines = [lines[i-1] for i in (5,6,12,14)]\n        print(source, '\\\\n'.join(lines))\nPY\""
+      }
+    ]
+  }
+}

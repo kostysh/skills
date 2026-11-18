@@ -6,9 +6,9 @@ description: Create, refine, and review PRDs, product specs, feature and AI
   evaluation; or audit ambiguity, missing evidence, weak acceptance, and scope
   risk.
 metadata:
-  source-version: 0.1.8
+  source-version: 0.1.9
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 6fd4432d95d86bf91e6d285107711c7eb9bf27012a41658ce0a4ed22fb444da1
+  skillforge-source-hash: cb4a79501f99872f69f02e933ff090178edcab56a751394e8194840515cde7a4
 ---
 
 # prd-engineer
@@ -97,7 +97,7 @@ Prevent a polished draft from masquerading as authoritative product input.
 1. Separate product-source precedence from approval or canonical status of the current PRD version.
 2. Apply known precedence; block handoff when equal or unknown authority conflicts could change users, scope, metrics, acceptance, constraints, or the target handoff.
 3. Use `authoritative` only when the operator or repository process approves or canonicalizes the current content and version; input authority or prior approval does not transfer.
-4. Keep generated or materially refined output `non-authoritative` until that resulting version is explicitly authorized.
+4. Otherwise mark the current version `non-authoritative`.
 5. Treat outcome- or handoff-changing gaps as blockers; give other assumptions or TBDs an owner or decision trigger.
 
 Validation:

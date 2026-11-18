@@ -1,0 +1,25 @@
+{
+  "case": "G5 A1/A2 · Q-17 and Q-18",
+  "age_of_upstream_input": "historical observed answer, not a new row-14 trial",
+  "source_snapshot": "d4f60df7a8051280c3986d9b4e1dac46b6722c0d",
+  "upstream_excerpt": "docs/reviews/g5-20260908/candidate-v2/candidate-product-trials.md, section A2",
+  "source_material_sha256": {
+    "decision-intake.md": "e8e3b2c3d64a10719161e30ab8c16056677e41dfc9723352a29580d29fc1f6cc",
+    "report-draft.md": "24379268c335dae167388ee26569924e9672314f566e2979ee9e2fcfe2db54b8",
+    "team-note.md": "4da36f0b60ac31992c503a6a4f85d558491ddb4e84f7e6b2a0613d92fba42221"
+  },
+  "product_author_skill": "prd-engineer 0.1.9",
+  "actual_skill_archive_sha256": "cd8d532dfb84b5aee800e680cfa22071ff916f6c9c41a121bff3f3777c321347",
+  "executor": "gpt-6.2-sol / medium",
+  "actual_final_answer_sha256": "bfca12c3e6a9c2d87edf3072c0aa245b22f2432b7d8b115881968d2655c74f4a",
+  "transport": "In the complete observed response, replace each temporary absolute subject project prefix with \".\". The other bytes and the input files are unchanged. This matches the confirmation assessor’s view.",
+  "substitutions": 5,
+  "portable_output_sha256": "0ad7a0914a8b6a9465160496a60422e1ad23687241f53aaecf502e6285fd38ff",
+  "receipt": "results/addfb6.json",
+  "user_visible_file": "handoff/product-output.md",
+  "actual_project_changed": [],
+  "portable_output_file": "product-output.md inside handoff-inputs.tar.gz",
+  "handoff_archive_sha256": "cd9fe8e1678fb65be26a5c6d1889e8a948d4d74c93a023c0fbc122d3b5ab1a2b",
+  "readable_preview_sha256": "3d05f72280be94025cf2be076976633da2d9be862c3363f3337f7b3f38a74221",
+  "readable_preview_transport": "The readable Markdown preview replaces one two-space Markdown hard line break with a backslash hard line break. The complete archive and neutral scorer view retain those original bytes."
+}

@@ -1,0 +1,5 @@
+--- A/SKILL.md
++++ C/SKILL.md
+@@ -100 +100 @@
+-4. Keep generated or materially refined output `non-authoritative` until that resulting version is explicitly authorized.
++4. Otherwise mark the current version `non-authoritative`.
