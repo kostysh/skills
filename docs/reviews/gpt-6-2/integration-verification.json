@@ -1,0 +1,933 @@
+{
+  "gitSnapshot": "1491f923c8c35aa01c193eaa8db86854cd63a51a",
+  "runtimeTestSnapshot": "0ec614b526b0b047517ee17cd83aa27787506c84",
+  "acceptanceDelta": [
+    "docs/reviews/gpt-6-2/31/independent-audit.md",
+    "docs/reviews/gpt-6-2/34/independent-audit.md",
+    "docs/reviews/gpt-6-2/37/independent-audit.md",
+    "docs/reviews/gpt-6-2/38/independent-audit.md",
+    "docs/reviews/implementation-log-20261118-1.md"
+  ],
+  "baselineTag": "gpt6.1",
+  "dateUTC": "2026-11-19T00:58:09.023241+00:00",
+  "nodeVersion": "v24.15.0",
+  "pnpmVersion": "10.28.2",
+  "previousRelease": {
+    "tag": "skills-20261107-2",
+    "catalogSHA256": "405faa964e82c8b79a188ffae73e447786bd6fb6d0560ab1ecc32af93ee37499"
+  },
+  "checks": [
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "install",
+        "--frozen-lockfile",
+        "--store-dir",
+        "{pnpm-store}"
+      ],
+      "exit": 0,
+      "durationSeconds": 0.41,
+      "logSHA256": "a0116cc7e74ec5f9dc9c921705331cd6ab6e3a8ce2b914d541e479c729c95131"
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "format:check"
+      ],
+      "exit": 0,
+      "durationSeconds": 0.23,
+      "logSHA256": "7e4a7aafc14e750c255be4d8219b2fe2c76b6ca7d0ce4ece6d681fbaecd31d70"
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "lint"
+      ],
+      "exit": 0,
+      "durationSeconds": 2.35,
+      "logSHA256": "5e33ba3a5e1eb41fb2c856e89d431ff54b3886ce578070d15974dcab35b3993c"
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "test:ci"
+      ],
+      "exit": 0,
+      "durationSeconds": 2.24,
+      "logSHA256": "8538a7dd8bdc98a691a8489bb111d8c9bbdbc8a75fb57b3c2a4d72249e68bb49"
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "verify:package"
+      ],
+      "exit": 0,
+      "durationSeconds": 1.63,
+      "logSHA256": "494edf99151471f8c493eabd2fcbd82e855147a2540c1706645aee3e858bc976"
+    },
+    {
+      "command": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "pack:skills",
+        "--out",
+        "{verification}/dist",
+        "--release",
+        "skills-local-review",
+        "--previous",
+        "{previous-published-catalog}"
+      ],
+      "exit": 0,
+      "durationSeconds": 0.44,
+      "logSHA256": "b249c2447133bc6cf56181988d16af9c0226c121c9fc561f6c55c891cc1d0ba6"
+    }
+  ],
+  "workspaceTestSummary": [
+    "skills/code-reviewer test: ℹ tests 1",
+    "skills/code-reviewer test: ℹ pass 1",
+    "skills/code-reviewer test: ℹ fail 0",
+    "skills/code-reviewer test: ℹ skipped 0",
+    "skills/hono-engineer test: ℹ tests 18",
+    "skills/hono-engineer test: ℹ pass 18",
+    "skills/hono-engineer test: ℹ fail 0",
+    "skills/hono-engineer test: ℹ skipped 0",
+    "skills/security-reviewer test: ℹ tests 26",
+    "skills/security-reviewer test: ℹ pass 26",
+    "skills/security-reviewer test: ℹ fail 0",
+    "skills/security-reviewer test: ℹ skipped 0",
+    "skills/typescript-test-engineer test: ℹ tests 21",
+    "skills/typescript-test-engineer test: ℹ pass 21",
+    "skills/typescript-test-engineer test: ℹ fail 0",
+    "skills/typescript-test-engineer test: ℹ skipped 0",
+    "cli test: ℹ tests 18",
+    "cli test: ℹ pass 18",
+    "cli test: ℹ fail 0",
+    "cli test: ℹ skipped 0",
+    "skills/skill-source-compiler test: ℹ tests 44",
+    "skills/skill-source-compiler test: ℹ pass 44",
+    "skills/skill-source-compiler test: ℹ fail 0",
+    "skills/skill-source-compiler test: ℹ skipped 0"
+  ],
+  "subjectSettings": {
+    "rows": 38,
+    "distinctEventStreams": 473,
+    "effortCounts": {
+      "low": 0,
+      "medium": 473
+    },
+    "perRow": {
+      "00": 8,
+      "01": 23,
+      "02": 9,
+      "03": 9,
+      "04": 9,
+      "05": 24,
+      "06": 13,
+      "07": 9,
+      "08": 13,
+      "09": 9,
+      "10": 16,
+      "11": 21,
+      "12": 10,
+      "13": 20,
+      "14": 11,
+      "15": 19,
+      "16": 12,
+      "17": 10,
+      "18": 10,
+      "19": 8,
+      "21": 10,
+      "22": 14,
+      "23": 8,
+      "24": 10,
+      "25": 8,
+      "26": 9,
+      "27": 13,
+      "28": 16,
+      "29": 8,
+      "30": 10,
+      "31": 16,
+      "32": 8,
+      "33": 14,
+      "34": 19,
+      "35": 8,
+      "36": 10,
+      "37": 8,
+      "38": 21
+    },
+    "scope": "Machine-readable subject receipts in results/ and the error-fixer study registry. Duplicate event hashes count once. Other delivery trials and graders are outside this count."
+  },
+  "archives": {
+    "agent-browser": {
+      "row": "10",
+      "tagVersion": "0.2.5",
+      "version": "0.2.7",
+      "archiveSHA256": "98a91802fb72376a3136ba813679cd9ee23110661ec6c099607d534589655064",
+      "contentHash": "f98f6324afe5812bbea5369f5a890dbb748c97b8fa392e8c9461dd0686c05252",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/10/agent-browser-0.2.7.tar.gz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "architecture-engineer": {
+      "row": "15",
+      "tagVersion": "0.1.11",
+      "version": "0.1.13",
+      "archiveSHA256": "0fb823fdd95a99e27c64e89dc87c86dce99e7f894bac222107f2d4c67fd3375d",
+      "contentHash": "7bab16939a3ec8bf7a853d61c7a5183e32fe4d60c03772e5d5b132a47a5ee353",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/15/recovery/architecture-engineer-0.1.13.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "cli-engineer": {
+      "row": "29",
+      "tagVersion": "0.2.1",
+      "version": "0.2.2",
+      "archiveSHA256": "c7734e1f452692c65c0f913670d30cd6d82dc9677b4002e1001f830565df146e",
+      "contentHash": "e7cb760c6f6c6e8c8756f4a9c9b3d92603adc964a6c2970fc56eee737d789595",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/29/cli-engineer-0.2.2.tgz",
+        "docs/reviews/gpt-6-2/29/cli-engineer-0.2.2.tar.gz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "code-reviewer": {
+      "row": "17",
+      "tagVersion": "0.4.6",
+      "version": "0.4.7",
+      "archiveSHA256": "24ae65b749c0986948de7bf9b18381cc4ab295e3b95ef86903c98a9675771a44",
+      "contentHash": "b68fcb9a63ee727a850285f2fc3f4e150ca82f642df097dd15b0c26c729e5c40",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/17/code-reviewer-0.4.7.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "concept-conformance-reviewer": {
+      "row": "24",
+      "tagVersion": "0.2.7",
+      "version": "0.2.8",
+      "archiveSHA256": "55d34f2832ec2fb548b09d8c52dd715208725bf25d64a93b6999c9eba9e0a584",
+      "contentHash": "d51e10e9a4b8b0a96aab5885ab9918262616b2303849a456186e3a609212fc82",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/24/concept-conformance-reviewer-0.2.8.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "delivery-planner": {
+      "row": "32",
+      "tagVersion": "0.2.15",
+      "version": "0.2.16",
+      "archiveSHA256": "4fcad1793235414a0f8fa8fee5765d79dbd4a5fc174b08c68af591ce28b22bd4",
+      "contentHash": "04492e69f670057ed87d23d74847c098fd09a31627d989cd6c1b686bc99b7c77",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/32/delivery-planner-0.2.16.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "documentation": {
+      "row": "13",
+      "tagVersion": "0.2.2",
+      "version": "0.2.3",
+      "archiveSHA256": "c5ce5b858c774af34eb005a0078b9622bb836e97759195bf51bcf5d281b58293",
+      "contentHash": "65871107254b00229f6437dbad9d6c6fe28155a1d74094c300b0755fe0c22546",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/13/documentation-0.2.3.tar.gz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "docusaurus-repo": {
+      "row": "31",
+      "tagVersion": "0.1.3",
+      "version": "0.1.4",
+      "archiveSHA256": "d46687ca9be394fa7d23af94604e1ddd0a939446d088c7c95d0595f13285f1aa",
+      "contentHash": "527d249389545958cf09f74e5ce6ec283e7aea92c557b8b75a81e315fea945cc",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/31/docusaurus-repo-0.1.4.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "electron-engineer": {
+      "row": "35",
+      "tagVersion": "0.1.11",
+      "version": "0.1.12",
+      "archiveSHA256": "170e382eba8a4716428fe92055db6729d7c4fb9227d37edde70d22c045570aea",
+      "contentHash": "8a9d2c1a51491580f284f232c25be3de95a454c2b9979f4ad44611b8943f22f1",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/35/electron-engineer-0.1.12.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "error-fixer": {
+      "row": "30",
+      "tagVersion": "0.1.0",
+      "version": "0.1.1",
+      "archiveSHA256": "b1fa9ec92a49959eda9c648347b67691a051a10091d37c263e80f2d84548b627",
+      "contentHash": "92379ac7867d0e0f65ed396d9133f3ebcc68b56b58da98d881ef348ed3cf2388",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/30/error-fixer-0.1.1.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "financial-calculations-engineer": {
+      "row": "22",
+      "tagVersion": "0.3.1",
+      "version": "0.3.2",
+      "archiveSHA256": "acfe3316ceed37bb4e7fcc6e47c223d26a4fb0e36472c3716e313ca85c0dffdc",
+      "contentHash": "e0bbbd1a35d1cc0ae75f7b7a70d2383437505394f19aa4dffea0d400b2be8a70",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/22/financial-calculations-engineer-0.3.2.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "frontend-design": {
+      "row": "19",
+      "tagVersion": "0.2.4",
+      "version": "0.2.5",
+      "archiveSHA256": "ae0f50652bf114c53a0389d44765d49d629ba3252184a007674691678ee8c1bb",
+      "contentHash": "c061fe6a881333bb4fb465fe57d58b4015adea417655a941af1ffd213045dbab",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/19/frontend-design-0.2.5.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "gdpr-compliance": {
+      "row": "12",
+      "tagVersion": "0.2.3",
+      "version": "0.2.4",
+      "archiveSHA256": "9940231f1da84373ec1f49055c99fe000fdf86e77066bee89c19b2b49172a9db",
+      "contentHash": "14b4484614bc47fe6cdac619ba5597733ca6a05b6b718d5b50d0eaa15b4fba3f",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/12/gdpr-compliance-0.2.4.tar.gz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "gh-utility": {
+      "row": "08",
+      "tagVersion": "1.2.4",
+      "version": "1.2.5",
+      "archiveSHA256": "5745c3e0c8e1ed96726ea2f4ffcaccf9b62b0b3b40b4870dba85805da71815f4",
+      "contentHash": "086b4559ac119f9307a1f1e2b829bf2a34e9fb4159fb85f590dc4459706246c0",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/08/gh-utility-1.2.5.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "git-engineer": {
+      "row": "07",
+      "tagVersion": "0.2.1",
+      "version": "0.2.2",
+      "archiveSHA256": "b17e018e6951421c9a47f4ea55f063a7e236d4e641c124408a4a72779138a4ce",
+      "contentHash": "caafd0dcbb9c2c365c146f8b4db1527675b59c3f1c38e8fbc3f9d4482e2daeca",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/07/git-engineer-0.2.2.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "hono-engineer": {
+      "row": "28",
+      "tagVersion": "0.1.9",
+      "version": "0.1.10",
+      "archiveSHA256": "ce278c2e4c80c1409c5d560757c64ab486809bc74215649bf8a30a799a1c7da6",
+      "contentHash": "7d74883eaeb49ed477239ed08d75f7821f46fdc6745a2fdd3b810fb796113b0a",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/28/hono-engineer-0.1.10.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "implementation-discipline": {
+      "row": "03",
+      "tagVersion": "0.2.8",
+      "version": "0.2.9",
+      "archiveSHA256": "c77f957aa6b77ac85b6dfcc801546e684f37036de75a61f4a7e220b9cd3851d1",
+      "contentHash": "67b11688357cb21ea5a26b9dad94c1a47ac6b169ddf620dcffe54bdbe95406a8",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/03/implementation-discipline-0.2.9.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "nextjs": {
+      "row": "27",
+      "tagVersion": "0.1.2",
+      "version": "0.1.3",
+      "archiveSHA256": "b92f92ab06ffc289f2d7cc3649a17b4c23fe99e1898b5b06ff6b8047ae4c832d",
+      "contentHash": "d1b36cb2c57c8fe52c07d3bd2811880cb800c4b9144d03dff4ab4998051a5d6a",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/27/nextjs-0.1.3.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "node-engineer": {
+      "row": "06",
+      "tagVersion": "0.1.4",
+      "version": "0.1.5",
+      "archiveSHA256": "611248149580902200c08415349d7dc62608a12f4d4819607333956a224bbe8c",
+      "contentHash": "26e48bf2d6e426eb4ee55b3c22cd42183e3e18e86071c37a86128b2164050ce3",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/06/node-engineer-0.1.5.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "payload": {
+      "row": "36",
+      "tagVersion": "0.1.2",
+      "version": "0.1.3",
+      "archiveSHA256": "0f6bcd509744a022b7f5ced07773fa9fb9e7b6f6184274fc7f3b4c92d99067aa",
+      "contentHash": "a36cd1143b87a37dc5681f953826b61cbdfca345634c219de9d6a78301b3de9b",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/36/payload-0.1.3.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "payload-migration": {
+      "row": "37",
+      "tagVersion": "0.1.3",
+      "version": "0.1.4",
+      "archiveSHA256": "ab0214b5d29e754b9dbbf92b2bd415be672f1d74ddd878910e5546318e9a5243",
+      "contentHash": "80d553bd41c4c928b7e4e01e3dad668cbb09b621bdaa77abba074910878acf69",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/37/payload-migration-0.1.4.tar.gz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "pencil-dev": {
+      "row": "20",
+      "tagVersion": "0.2.2",
+      "version": "0.2.2",
+      "archiveSHA256": "930c44406ec52c10833580a788ce291792a91f5cdd26a4746acc4314815f86fa",
+      "contentHash": "e79690eaf86a0917ed3409a263877f8bd71b4f886fab9401658238efa3b1922e",
+      "deferredBaselineMatches": true
+    },
+    "prd-engineer": {
+      "row": "04",
+      "tagVersion": "0.1.8",
+      "version": "0.1.9",
+      "archiveSHA256": "cd8d532dfb84b5aee800e680cfa22071ff916f6c9c41a121bff3f3777c321347",
+      "contentHash": "71e9588dba4702a146645b0a7a3fa19b7bae01f9f43b6b1747dba58d15ea85e4",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/04/prd-engineer-0.1.9.tar.gz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "react-components-engineer": {
+      "row": "18",
+      "tagVersion": "0.2.2",
+      "version": "0.2.3",
+      "archiveSHA256": "298cc8f57a28ea57f19bc5c7d31d73d6183deeeb96d9389c7e564f066c45854f",
+      "contentHash": "d283f936a93770630194803cbc58cc457e6f2f421ea8e4d711136c1d9022dffa",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/18/react-components-engineer-0.2.3.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "react-spa-engineer": {
+      "row": "26",
+      "tagVersion": "0.1.13",
+      "version": "0.1.14",
+      "archiveSHA256": "50a51750c7aadfd5e4334707d29fd87f1d997f92ae99dfb83984470b07e3c8ad",
+      "contentHash": "45a0661fcc3c3ecb7440c70afeb123ac2ec7e496d400ddd2530077c59dd5ac6a",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/26/react-spa-engineer-0.1.14.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "requirements-approval": {
+      "row": "14",
+      "tagVersion": "0.2.3",
+      "version": "0.2.4",
+      "archiveSHA256": "39340ad09def674e19dc51e682f7e35b56669887273383b736137f63612d2e97",
+      "contentHash": "d9522a45df954888bbcb6c7d58362e5299cd7310aebafae576acbf1b54f93be4",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/14/requirements-approval-0.2.4.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "retrospective-analysis": {
+      "row": "38",
+      "tagVersion": "0.1.3",
+      "version": "0.1.4",
+      "archiveSHA256": "01c97bdc38d76175796c9935427b46df5a63c57eaca8903a2c6019a9f11557b1",
+      "contentHash": "d76c624b37bd67ced4aeeb9d0270d1495c8dc54032128fbcfc6e304a6baf0a9a",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/38/retrospective-analysis-0.1.4.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "security-reviewer": {
+      "row": "11",
+      "tagVersion": "0.1.14",
+      "version": "0.1.15",
+      "archiveSHA256": "5cdc31eb72a87f4ffe3150ccd83837f95e46cf86811a18f8bc7cd9b3fca87b1f",
+      "contentHash": "981719ba1264b78f5ced9b92b1c8d9d5ce7fad4077eb4483255de53fe3caaba7",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/11/security-reviewer-0.1.15.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "shadcn": {
+      "row": "34",
+      "tagVersion": "0.2.2",
+      "version": "0.2.3",
+      "archiveSHA256": "09b32f78bcdfd4c4c3783e64abdf5e2bff70babb33306321c32db9d4e7307870",
+      "contentHash": "9073a030bd560872895ee81394df02a426a192af0a9bee51969bf9c04a049d76",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/34/shadcn-0.2.3.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "skill-reviewer": {
+      "row": "01",
+      "tagVersion": "0.2.7",
+      "version": "0.2.8",
+      "archiveSHA256": "0017c3b481fff4c7dc0c7f113a05f86a17256f58e1324549189bf4f6d1d4b411",
+      "contentHash": "69a7f723a6d10a4003db7a85929470045ab616b79373a92f0165b67f78b403aa",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/01/remediation/skill-reviewer-0.2.8.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "skill-source-compiler": {
+      "row": "02",
+      "tagVersion": "0.2.11",
+      "version": "0.2.12",
+      "archiveSHA256": "fd7d0c7a2e0768afe429461d289e7f66e9d65755b6aa1ebbb32fdb9a525d581b",
+      "contentHash": "bd77aed5d00a1717be623fa1041d6fb4493f21d9082a1e1418eeb3495a8d6e87",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/02/skill-source-compiler-0.2.12.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "spec-conformance-reviewer": {
+      "row": "33",
+      "tagVersion": "0.1.8",
+      "version": "0.1.9",
+      "archiveSHA256": "25bad6a93be0d81b7f65184781df1e8d6eb8694859ee56273bf44e9e1e433e4f",
+      "contentHash": "e0ab40dd5b5ab246cc83974328a40560cdd4cb880d2041d0ee441bc21b0aade2",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/33/spec-conformance-reviewer-0.1.9.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "spec-engineer": {
+      "row": "23",
+      "tagVersion": "0.2.15",
+      "version": "0.2.16",
+      "archiveSHA256": "a1499d1f9d9f7548911c24899c80636fe275ec10e0aa779e6d961149afc12f0a",
+      "contentHash": "dfe06e7390c49c8fa98830f77b7f441f54b97b275fe34a8af0075edbc74c5f70",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/23/spec-engineer-0.2.16.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "supabase-engineer": {
+      "row": "21",
+      "tagVersion": "0.1.7",
+      "version": "0.1.8",
+      "archiveSHA256": "ed107cc64c377e1db8c4b2c5eb5cbc0e13d856d4ac44a2216dced0330bfdead0",
+      "contentHash": "dccb1cc1b076d109cd5e74b9ef163e5ca2fdd16f9eddd1784cbf83286c949145",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/21/supabase-engineer-0.1.8.tar.gz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "typescript-engineer": {
+      "row": "05",
+      "tagVersion": "0.2.2",
+      "version": "0.2.3",
+      "archiveSHA256": "abb4bf8cd983671145232bd52859a4e299f3eafc54a5735d3118c8b60e60e1f3",
+      "contentHash": "658e10995fb432f580acd8a93ecac215c7c7a56750dc4358f7d056232330985e",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/05/typescript-engineer-0.2.3.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "typescript-test-engineer": {
+      "row": "16",
+      "tagVersion": "0.1.11",
+      "version": "0.1.12",
+      "archiveSHA256": "18d10bb0af2d75691d33cef3d9cf4cb7c0189dc684628d281265206e1144432a",
+      "contentHash": "06a7135cdf556342aa8dc7531b9b9bbf6f3b8dd8035113a8ef85d30fa08b2f11",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/16/typescript-test-engineer-0.1.12.tar.gz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "web-ui-reviewer": {
+      "row": "25",
+      "tagVersion": "0.2.5",
+      "version": "0.2.6",
+      "archiveSHA256": "9d3acb833945d996da8a8b62eb6793f14a0ca7c98046902a95e0eab4a01727e3",
+      "contentHash": "b156c3b8e71197750c6af3d81b220a5ceeee837ea249a957d353a7341d1ab1e2",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/25/web-ui-reviewer-0.2.6.tgz"
+      ],
+      "compared": "compressed bytes"
+    },
+    "web-ux-engineer": {
+      "row": "09",
+      "tagVersion": "0.1.0",
+      "version": "0.1.1",
+      "archiveSHA256": "a09e7d0d48e6beef406a63ed0c2d3b354cac3dfc818ed8bc076a80d9c78d884f",
+      "contentHash": "9bd90347a1b781d2cf587a1b774b7fc22da99e1b162e6882cc2f1d44de8188b0",
+      "matchingEvidence": [
+        "docs/reviews/gpt-6-2/09/web-ux-engineer-0.1.1.tgz"
+      ],
+      "compared": "compressed bytes"
+    }
+  },
+  "compiler": {
+    "agent-browser": {
+      "exit": 0,
+      "logSHA256": "6b01286103c0a8db506ae7a8668662094318df3ed1454faca025a6fe2adcfc0e"
+    },
+    "architecture-engineer": {
+      "exit": 0,
+      "logSHA256": "9f065dde29d77ed554d9a92d2711d7685a38005a6f3480f7630ffc63cdfc5156"
+    },
+    "cli-engineer": {
+      "exit": 0,
+      "logSHA256": "56ffb0ffa6db4f0434705f13d0395259d4241e210fbfc6957875ed75580f795a"
+    },
+    "code-reviewer": {
+      "exit": 0,
+      "logSHA256": "8af0494e5401f3ae481b8477b606e000115e1650738f0a84919ca2f7c31931a6"
+    },
+    "concept-conformance-reviewer": {
+      "exit": 0,
+      "logSHA256": "68e46769008e8b0db059f8d88f6d6715d74846a7d2949f03bad60dec22a295c8"
+    },
+    "delivery-planner": {
+      "exit": 0,
+      "logSHA256": "2540368ed53f91c7d8fea90ca042bb13e7318a86ff0181815f9767b6c35c3e12"
+    },
+    "documentation": {
+      "exit": 0,
+      "logSHA256": "72de132a12d3b4a482fcbc70f5617157a9f4ead31b0de99674b1624d51075a1d"
+    },
+    "docusaurus-repo": {
+      "exit": 0,
+      "logSHA256": "6a59083cfa501e80aa1114bc32476e240830f6bf5763b5f1977691e94fdfc6e1"
+    },
+    "electron-engineer": {
+      "exit": 0,
+      "logSHA256": "585e489a9bbcb413a5e92b846b89fdc5260f864b9c056b172cb40e0e0379d749"
+    },
+    "error-fixer": {
+      "exit": 0,
+      "logSHA256": "7f38ed40648e8694c097939dd8b25fe62e47d77870f7e369b8d4be3b393513fc"
+    },
+    "financial-calculations-engineer": {
+      "exit": 0,
+      "logSHA256": "0367add0b37daf63476aed89bd58ea1caf8cb5647fd17cc658c7add18b1826c1"
+    },
+    "frontend-design": {
+      "exit": 0,
+      "logSHA256": "6e21e9f92badf3b316db27b4b77e245e192ffa8ace97cef8c7c3b895f435c904"
+    },
+    "gdpr-compliance": {
+      "exit": 0,
+      "logSHA256": "5ea877250da9252d94f318df29680c5b9c12731dc68b38cade4bb179df382629"
+    },
+    "gh-utility": {
+      "exit": 0,
+      "logSHA256": "1c8b22b41c77f9466cb4cc13bb84cb816f1b4e4a77ab8fc29d492d1e8850b7e7"
+    },
+    "git-engineer": {
+      "exit": 0,
+      "logSHA256": "7898135ee59afdef91e0e47d499da95744881e44e1a1e723aea59de6fdbcc7bf"
+    },
+    "hono-engineer": {
+      "exit": 0,
+      "logSHA256": "f2969a3936b1445e3b6c7a8cfcc1f8c88f36d80f63f544317e01f9288c17670e"
+    },
+    "implementation-discipline": {
+      "exit": 0,
+      "logSHA256": "bb2913924475e3aaac93079d140dda4436f7b05d2e0346e5a9c32cc2f2fba307"
+    },
+    "nextjs": {
+      "exit": 0,
+      "logSHA256": "f9b6f24ca07720ef6a3bc91946b9db0ae79b4d405ca83a0af059c4dfc7b068ba"
+    },
+    "node-engineer": {
+      "exit": 0,
+      "logSHA256": "58d6ae7f6cd52a7466371fe325800c9e4995792d7189cca4da2439a3fbd35a9e"
+    },
+    "payload": {
+      "exit": 0,
+      "logSHA256": "21a9b6e241c4696232b12fa5051e97d8dbd07f13958d4586855b129e6c3830c4"
+    },
+    "payload-migration": {
+      "exit": 0,
+      "logSHA256": "281592ca14a1a41f77bbb7206d212c7a07bc91c271981ce163a34b3ee366c26f"
+    },
+    "pencil-dev": {
+      "exit": 0,
+      "logSHA256": "72621c2d612ad7abcbdf2c14c9d833069863967d13b85c3163d1a6c38da835c6"
+    },
+    "prd-engineer": {
+      "exit": 0,
+      "logSHA256": "d7f0c0f0611280ca3985e94f51150deb47840a2d26a1c280ca5e2b6e51fa4760"
+    },
+    "react-components-engineer": {
+      "exit": 0,
+      "logSHA256": "237c638753adafcc5ca03874f5cacf0d636d601bfbf090a24d8af2b2d8b7a97d"
+    },
+    "react-spa-engineer": {
+      "exit": 0,
+      "logSHA256": "3657b96b0ba67c7bfc6406bec232425a45efad06c42b064da1f5bede51277aea"
+    },
+    "requirements-approval": {
+      "exit": 0,
+      "logSHA256": "26276d6e876004c17e6a183298e15e19500b07ee56b1fe0b6235702ed2237678"
+    },
+    "retrospective-analysis": {
+      "exit": 0,
+      "logSHA256": "809d3d6162d2cf3c62f33acb27c7658e605aef59b28e04818fefe3a73f433112"
+    },
+    "security-reviewer": {
+      "exit": 0,
+      "logSHA256": "5e7e2ab869e748e871ce2222d2cf7d3350b5c9acad50e3b59841b419fdd99bae"
+    },
+    "shadcn": {
+      "exit": 0,
+      "logSHA256": "17417c469c28a6fefff37d965f007777bd8ad3e4bf93204a582a8caf2a9ed5ee"
+    },
+    "skill-reviewer": {
+      "exit": 0,
+      "logSHA256": "b004140b0f47f50f61f2da435cc8cafc47e035ef932de53f36210fdab5cf57ae"
+    },
+    "skill-source-compiler": {
+      "exit": 0,
+      "logSHA256": "d6057fe2584fc0f7054f4f17f90bec709a6540cc6853cf5e4d0575109620eac7"
+    },
+    "spec-conformance-reviewer": {
+      "exit": 0,
+      "logSHA256": "0e11832146643b1c3488b60ce58032594697f8491bcb0d9d0a69dc6e7ac7ca2a"
+    },
+    "spec-engineer": {
+      "exit": 0,
+      "logSHA256": "00533b65fb7c0d91b65927492ea2e7b14d3b1403e4c44e52d4a1eaa879dfd0e4"
+    },
+    "supabase-engineer": {
+      "exit": 0,
+      "logSHA256": "bcbc9b929e8448b87193994e970be4bc086b6794384b0f405b520c13fca023d9"
+    },
+    "typescript-engineer": {
+      "exit": 0,
+      "logSHA256": "f56f879e4db2f33cb28a477abf41496ae6273875e284bd8e5514c62d41eaeeae"
+    },
+    "typescript-test-engineer": {
+      "exit": 0,
+      "logSHA256": "11d789af88cc96ef4f3f09461d0748f67914c9f798082a699f331d157026720e"
+    },
+    "web-ui-reviewer": {
+      "exit": 0,
+      "logSHA256": "c04714229550eea5c15dc3521d10fdc942d77b21400b97d37f896a4cacbf68f5"
+    },
+    "web-ux-engineer": {
+      "exit": 0,
+      "logSHA256": "a1b47e85f74866bf1bfdfc8cd0ba2c2f82fab76a9160b2241259c7f3fe3fd3ee"
+    }
+  },
+  "linkCheck": {
+    "snapshot": "1491f923c8c35aa01c193eaa8db86854cd63a51a",
+    "files": 291,
+    "localDestinations": 3930,
+    "distinctGitQualifiedTargets": 7,
+    "absoluteWorkspaceEvidenceLinksExcluded": 0,
+    "missing": []
+  },
+  "preservedFrozenSourceWhitespace": {
+    "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-initial-git-diff.log": {
+      "sha256": "08e6f1dbfc50f025f375a68bce7c87f8ea07e774ec5a8f2b8460c1ebc0fd021f",
+      "waived": "-blank-at-eof",
+      "diagnostics": [
+        "131: new blank line at EOF."
+      ]
+    },
+    "docs/reviews/gpt-6-2/23/document-access/public/desk-client.mjs": {
+      "sha256": "9a503a945b80991f7b6706ed0ff5df6f895562b0fdec9ca28bc7c6df0bc507c5",
+      "waived": "-blank-at-eof",
+      "diagnostics": [
+        "30: new blank line at EOF."
+      ]
+    },
+    "docs/reviews/gpt-6-2/24/formal-verdict-contract.md": {
+      "sha256": "871c44e6152b614cecdb9ddff9a5b3a08ad89d3e4b07d151e726e63144e9c5db",
+      "waived": "-blank-at-eof",
+      "diagnostics": [
+        "74: new blank line at EOF."
+      ]
+    },
+    "docs/reviews/gpt-6-2/30/primary-repair.patch": {
+      "sha256": "f8d291e5a94df9f7bfe0cab64a6defbed05d884d2a00d74824b11f5df78ea55c",
+      "waived": "-blank-at-eol,-blank-at-eof",
+      "diagnostics": [
+        "5: trailing whitespace.",
+        "11: trailing whitespace.",
+        "39: trailing whitespace."
+      ]
+    },
+    "docs/reviews/gpt-6-2/30/trial-to-release.patch": {
+      "sha256": "31b0302ca72d0cf7be8b3b54d3e270563fd189462fe297b30d1d2d4f3c16ea73",
+      "waived": "-blank-at-eol,-blank-at-eof",
+      "diagnostics": [
+        "12: trailing whitespace.",
+        "12: new blank line at EOF."
+      ]
+    },
+    "docs/reviews/gpt-6-2/25/C-release.patch": {
+      "sha256": "e7b76cc6dc4ba705c9094e56c93b3c43b84f97b56994f4a68574f357d9bd6388",
+      "waived": "-blank-at-eol",
+      "diagnostics": [
+        "12: trailing whitespace.",
+        "36: trailing whitespace."
+      ]
+    },
+    "docs/reviews/gpt-6-2/25/owner-replay.patch": {
+      "sha256": "570d32fbe1c0050245bc9c8e10c8435fa9e498380981941fd2a4485dd1bf6299",
+      "waived": "-blank-at-eol",
+      "diagnostics": [
+        "92: trailing whitespace."
+      ]
+    },
+    "docs/reviews/gpt-6-2/25/trial-criteria.md": {
+      "sha256": "73a3da4091018cb1f3a3695248c834c82318c11e6a025bba79b3cb6372618bf6",
+      "waived": "-blank-at-eol",
+      "diagnostics": [
+        "1: trailing whitespace.",
+        "4: trailing whitespace."
+      ]
+    },
+    "docs/reviews/gpt-6-2/28/C-release.patch": {
+      "sha256": "b3e660842ff57d94b4ed1e887bc549d23a7f83191664d2394e52d1db8dc19722",
+      "waived": "-blank-at-eol",
+      "diagnostics": [
+        "17: trailing whitespace.",
+        "28: trailing whitespace.",
+        "31: trailing whitespace.",
+        "36: trailing whitespace."
+      ]
+    },
+    "docs/reviews/gpt-6-2/35/trial-to-release.patch": {
+      "sha256": "a0a570ee3ea819167a7922875b5854b274dae210d7201ef2479f55d3e1dfd0c6",
+      "waived": "-blank-at-eol",
+      "diagnostics": [
+        "12: trailing whitespace.",
+        "15: trailing whitespace.",
+        "20: trailing whitespace.",
+        "24: trailing whitespace.",
+        "27: trailing whitespace.",
+        "40: trailing whitespace.",
+        "43: trailing whitespace.",
+        "47: trailing whitespace.",
+        "50: trailing whitespace.",
+        "60: trailing whitespace.",
+        "63: trailing whitespace.",
+        "82: trailing whitespace.",
+        "94: trailing whitespace.",
+        "97: trailing whitespace.",
+        "100: trailing whitespace.",
+        "104: trailing whitespace.",
+        "111: trailing whitespace.",
+        "124: trailing whitespace.",
+        "127: trailing whitespace.",
+        "132: trailing whitespace.",
+        "136: trailing whitespace."
+      ]
+    },
+    "docs/reviews/gpt-6-2/34/D-release.patch": {
+      "sha256": "d59e0004b6b2c12fc5176cb0492c4a6a7c0926c6aa07c450c7bbc3f3a915e5a3",
+      "waived": "-blank-at-eol",
+      "diagnostics": [
+        "22: trailing whitespace.",
+        "32: trailing whitespace.",
+        "35: trailing whitespace.",
+        "39: trailing whitespace.",
+        "44: trailing whitespace.",
+        "59: trailing whitespace.",
+        "62: trailing whitespace.",
+        "68: trailing whitespace.",
+        "71: trailing whitespace."
+      ]
+    },
+    "docs/reviews/gpt-6-2/31/C-release.patch": {
+      "sha256": "70df13f60a93b96a3fbf0d36315e9d2389babeac5df52cd8eb7edf299cc6ae83",
+      "waived": "-blank-at-eol",
+      "diagnostics": [
+        "15: trailing whitespace.",
+        "20: trailing whitespace.",
+        "26: trailing whitespace.",
+        "57: trailing whitespace.",
+        "59: trailing whitespace.",
+        "65: trailing whitespace.",
+        "67: trailing whitespace.",
+        "71: trailing whitespace.",
+        "73: trailing whitespace.",
+        "76: trailing whitespace.",
+        "78: trailing whitespace.",
+        "80: trailing whitespace.",
+        "82: trailing whitespace."
+      ]
+    },
+    "docs/reviews/gpt-6-2/31/project-commands/ce69-final.patch": {
+      "sha256": "888c247abee1206d949959cc4a2a00a857748a63d8c417c62c2262c4a5fe7291",
+      "waived": "-blank-at-eol",
+      "diagnostics": [
+        "4: trailing whitespace.",
+        "6: trailing whitespace.",
+        "12: trailing whitespace.",
+        "14: trailing whitespace.",
+        "18: trailing whitespace.",
+        "20: trailing whitespace.",
+        "23: trailing whitespace.",
+        "25: trailing whitespace.",
+        "27: trailing whitespace.",
+        "29: trailing whitespace."
+      ]
+    }
+  },
+  "additionalWhitespaceErrors": 0,
+  "publicationInspection": {
+    "examined": {
+      "members": 16002,
+      "archives": 324,
+      "bytes": 165692351,
+      "big": [],
+      "symlinks": 34
+    },
+    "historicalObjectsAndMembersAbsentFromFinalTree": {
+      "members": 45,
+      "archives": 0,
+      "bytes": 589499,
+      "big": [],
+      "symlinks": 0
+    },
+    "highSpecificityPatterns": [
+      "authenticated-url",
+      "github-token",
+      "private-key-header",
+      "service-key"
+    ],
+    "matches": 0
+  },
+  "counts": {
+    "registry": 38,
+    "activeSkills": 37,
+    "structuralChecks": 38,
+    "packagesMatchingReviewFiles": 37
+  }
+}
