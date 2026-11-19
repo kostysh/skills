@@ -1,0 +1,46 @@
+{
+  "browser": "Google Chrome 158.0.8127.36",
+  "agentBrowser": "agent-browser 0.27.3",
+  "homeLink": "/spravochnik/notifications/",
+  "result": {
+    "article": "Содержание этой страницы\nПодтвердить настройки уведомлений\n\nВведите адрес, выберите Weekly и нажмите Review changes. В окне Review your changes проверьте адрес и частоту.\n\nВернуться к редактированию​\n\nНажмите Cancel. Окно закроется, адрес и частота останутся в форме. Чтобы применить их позже, снова откройте Review changes.\n\nПрименить изменения​\n\nНажмите Confirm. Появится окно Applying changes. Пока операция идёт, можно нажать Close. Форма продолжит применять настройки.\n\nДождитесь сообщения Settings applied. Под ним проверьте адрес и значение Frequency: Weekly. Настройки действуют в текущем сеансе.",
+    "documentLanguage": "ru",
+    "images": [
+      {
+        "alt": "Окно Applying changes с доступной кнопкой Close",
+        "dimensions": [
+          390,
+          844
+        ],
+        "src": "/assets/images/applying-130be829ce9c3763eab05a64a939d3e1.png",
+        "httpStatus": 200,
+        "sha256": "e58dd2acdf77534a5eb279c55b378ecf1be87b907fe1189dfed2a6ff73ef8691",
+        "source19": "observations/narrow/applying.png"
+      },
+      {
+        "alt": "Сообщение Settings applied с частотой Weekly",
+        "dimensions": [
+          390,
+          844
+        ],
+        "src": "/assets/images/applied-742853ffdb63d22019bbceb93cde9564.png",
+        "httpStatus": 200,
+        "sha256": "2e195a9f34c9751e41f75f1b328d20d2dab6409d0487b12601ab84ac23467c96",
+        "source19": "observations/narrow/applied.png"
+      }
+    ],
+    "pageWidth": 390,
+    "path": "/spravochnik/notifications/",
+    "viewport": [
+      390,
+      844
+    ]
+  },
+  "cleanup": {
+    "port_open": false,
+    "server_thread_running": false,
+    "browser_socket_exists": false,
+    "observed_processes": 17,
+    "surviving_observed_pids": []
+  }
+}

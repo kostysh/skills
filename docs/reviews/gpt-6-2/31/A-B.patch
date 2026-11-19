@@ -1,0 +1,5 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -44 +44 @@
+-Read-only analysis does not authorize installs, fixes, builds, clearing generated state, servers or publication. For authorized implementation, run applicable repository gates and rendered checks for the changed behavior. A missing environment or external service limits the affected claim; it does not erase verified local work. Report observed facts, hypotheses, performed checks and remaining gaps separately. A build/config alone proves neither search results nor canonical deployment nor a reader's ability to execute documented instructions.
++Read-only analysis does not authorize installs, fixes, builds, clearing generated state, servers or publication. For authorized implementation, run applicable repository gates and rendered checks for the changed behavior. A missing environment or external service limits the affected claim; it does not erase verified local work. Report observed facts, hypotheses, performed checks and remaining gaps separately. A build/config alone proves neither search results nor canonical deployment.

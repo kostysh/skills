@@ -1,0 +1,73 @@
+{
+  "baseline": {
+    "revision": "8468f3fa8c1ac44496fd0ed5b88d901bb2d3a8f0",
+    "name": "docusaurus-repo-0.1.3.tgz",
+    "sha256": "5b6e77d243e284cc4852785b7de5dc4c32ff66fb2795293c97b32b3a397fe7fa",
+    "activeFilesEqualA": true
+  },
+  "release": {
+    "name": "docusaurus-repo",
+    "version": "0.1.4",
+    "contentHash": "527d249389545958cf09f74e5ce6ec283e7aea92c557b8b75a81e315fea945cc",
+    "sha256": "d46687ca9be394fa7d23af94604e1ddd0a939446d088c7c95d0595f13285f1aa"
+  },
+  "actualArchive": "docusaurus-repo-0.1.4.tgz",
+  "sourceVersion": "0.1.4",
+  "frontmatterSourceHash": "161553c7f25750a35e6842f2c8d977931b566944fa59193febd6429e7e798c08",
+  "runtimeSHA256": {
+    "SKILL.md": "698e7641095b3335372a159d3541e22e37302d9be6a72de920779d046777c483",
+    "agents/openai.yaml": "9b8a48731c3bc59fa6fc82a040d3fbde1fd2fb08c5cc020e81384f839e482ecf",
+    "assets/project-files/.github/workflows/docs-quality.yml": "2d1af35f51941c679fee037706fe2a0d42b3da38983585acb99220b0292e894c",
+    "assets/project-files/.markdownlint-cli2.jsonc": "7ffccf5e50464bf990441260ccadb15e71b0e6ae33dfff78105e1f5c29f7bae4",
+    "assets/project-files/.prettierignore": "0e2d69697fed9001df076dc0e14de9ef3ed045a8b945961564b8e0d98a54fc90",
+    "assets/project-files/.prettierrc.json": "8b92ed4e7a6cd9ddcfa606663ab1cf6328da668557adc02510f776ea28991f1c",
+    "assets/project-files/AGENTS.md": "13d5ea46437ffb9e1f99ab9b85b20513139782a22cec546318b128538c2df16d",
+    "references/bootstrap-and-structure.md": "d695e4c71a2788767e1d5b94010932024846fdb95cf1d598697706147f81ff85",
+    "references/config-presets-and-routing.md": "7eab4eb7d7d7090a9b736b7419880a827270b5b23b981716473eb9c524de6c70",
+    "references/content-authoring.md": "890b4c84a5c45c4590a2edd5c80442d3485f3d13eb3e5728f0c23705b95f4630",
+    "references/customization-and-ux.md": "ae6d1d7a79bd4df3345d437a58c7b734c9059af349a820fda4cd6328d7d3de06",
+    "references/deployment-versioning-i18n.md": "caed7743fb340a5285a929e76da88fed187ef1a832f2569a1f4325b6a2342ffe",
+    "references/doc-quality-tooling-and-agents.md": "bbb9ac33e74fca88144c2db54537a5b668144fc1b26bc77c9ee72375a198f929",
+    "references/search-and-ecosystem.md": "197273c8ed4b7afc8ab31469d839408080767567913d45b83e5dc45d762a6bc9"
+  },
+  "controlledC": {
+    "name": "controlled-C.tar.gz",
+    "sha256": "b0d6a7cb1d9c61a05fffc34b8af3f237e92c3df1ef03b4940546cbce8cedc78d",
+    "rootSHA256": "2a1d482534c64d9fe91c0b07184d1d01ab9039e47beec71a887655321048021f"
+  },
+  "releaseDelta": [
+    "SKILL.md",
+    "assets/project-files/.github/workflows/docs-quality.yml",
+    "assets/project-files/.markdownlint-cli2.jsonc",
+    "assets/project-files/AGENTS.md",
+    "references/doc-quality-tooling-and-agents.md"
+  ],
+  "rootBodyEqualsControlledC": true,
+  "compilerInPlaceCheck": "OK",
+  "compilerOutOfPlaceCheck": "OK",
+  "quickValidate": "Skill is valid!",
+  "matchesCompiledAndSource": true,
+  "standaloneExtractionMatches": true,
+  "requiredReferences": 7,
+  "templates": 5,
+  "supportingLogPresentInIndependentCompile": true,
+  "published": false,
+  "intermediateArchive": {
+    "name": "project-commands/baseline-ce69.tgz",
+    "sha256": "ce69d44969d982a8df737055f33316b8acbb2b086e0103d3140f5aa20dc8c75c",
+    "changedFinalFiles": [
+      "assets/project-files/AGENTS.md",
+      "references/doc-quality-tooling-and-agents.md"
+    ],
+    "workflowAndDistUnchanged": true,
+    "CIUpstreamModules": "action-verification.json#upstreamFiles"
+  },
+  "actionRuntimeCheck": {
+    "workflow": "2d1af35f51941c679fee037706fe2a0d42b3da38983585acb99220b0292e894c",
+    "entry": "0afb261fe492f337c1d2a0447cffeecad890b7a7ca7c52570c744e08017748a9",
+    "sourceCommit": "b906affcce14559ad1aafd4ab0e942779e9f58b1",
+    "ciConfirmedParagraphSHA256": "7013feac5491b9134bc425b403225d2ec57800ed1488707cb606390a752b08a3"
+  },
+  "repackedFromFinalSourceAndSupportingLog": true,
+  "quickValidationOfStandaloneExtraction": "Skill is valid!"
+}

@@ -1,0 +1,60 @@
+{
+  "decidedUTC": "2026-11-19T00:33:38.629887+00:00",
+  "abGradeSHA256": "f7183d623eab40e4ee4bb97519d0f744b0b6de0a78b4465c6a224d4f5740ecb8",
+  "decision": "Scope the pnpm instruction to the site and maintainer documentation. Keep owner-supported reader commands in product guides. Retest in the two original roles and in a held-out joint shift note.",
+  "priorOutcome": "A reader FAIL: substituted archive extraction, erroneous literal +, did not invoke installed bin. B reader and both maintainer pages PASS.",
+  "scope": "Two project copies of one canonical template, one matching reference bullet; same ce69 installed entry and rest of package. Separate CI sentence is assessed in ci-confirmation, and is not part of the overlap trial.",
+  "conditions": {
+    "A": {
+      "AGENTS.md": "4d68ac59d3fabc6a829f7f2041fd2f7b555e894d199a97a07deec7ed7623e7bb",
+      "skill/SKILL.md": "698e7641095b3335372a159d3541e22e37302d9be6a72de920779d046777c483",
+      "skill/agents/openai.yaml": "9b8a48731c3bc59fa6fc82a040d3fbde1fd2fb08c5cc020e81384f839e482ecf",
+      "skill/assets/project-files/.github/workflows/docs-quality.yml": "2d1af35f51941c679fee037706fe2a0d42b3da38983585acb99220b0292e894c",
+      "skill/assets/project-files/.markdownlint-cli2.jsonc": "7ffccf5e50464bf990441260ccadb15e71b0e6ae33dfff78105e1f5c29f7bae4",
+      "skill/assets/project-files/.prettierignore": "0e2d69697fed9001df076dc0e14de9ef3ed045a8b945961564b8e0d98a54fc90",
+      "skill/assets/project-files/.prettierrc.json": "8b92ed4e7a6cd9ddcfa606663ab1cf6328da668557adc02510f776ea28991f1c",
+      "skill/assets/project-files/AGENTS.md": "4d68ac59d3fabc6a829f7f2041fd2f7b555e894d199a97a07deec7ed7623e7bb",
+      "skill/references/bootstrap-and-structure.md": "d695e4c71a2788767e1d5b94010932024846fdb95cf1d598697706147f81ff85",
+      "skill/references/config-presets-and-routing.md": "7eab4eb7d7d7090a9b736b7419880a827270b5b23b981716473eb9c524de6c70",
+      "skill/references/content-authoring.md": "890b4c84a5c45c4590a2edd5c80442d3485f3d13eb3e5728f0c23705b95f4630",
+      "skill/references/customization-and-ux.md": "ae6d1d7a79bd4df3345d437a58c7b734c9059af349a820fda4cd6328d7d3de06",
+      "skill/references/deployment-versioning-i18n.md": "caed7743fb340a5285a929e76da88fed187ef1a832f2569a1f4325b6a2342ffe",
+      "skill/references/doc-quality-tooling-and-agents.md": "e271ec39a5c791c5c9c3a9c76a1760f5d1a4e9d2d8469460bb5f8e5a84639b5f",
+      "skill/references/search-and-ecosystem.md": "197273c8ed4b7afc8ab31469d839408080767567913d45b83e5dc45d762a6bc9"
+    },
+    "B": {
+      "AGENTS.md": "44338e07607ffca1556388262f35ff9cf74b4750e563886f5c6eaf61bac63a6a",
+      "skill/SKILL.md": "698e7641095b3335372a159d3541e22e37302d9be6a72de920779d046777c483",
+      "skill/agents/openai.yaml": "9b8a48731c3bc59fa6fc82a040d3fbde1fd2fb08c5cc020e81384f839e482ecf",
+      "skill/assets/project-files/.github/workflows/docs-quality.yml": "2d1af35f51941c679fee037706fe2a0d42b3da38983585acb99220b0292e894c",
+      "skill/assets/project-files/.markdownlint-cli2.jsonc": "7ffccf5e50464bf990441260ccadb15e71b0e6ae33dfff78105e1f5c29f7bae4",
+      "skill/assets/project-files/.prettierignore": "0e2d69697fed9001df076dc0e14de9ef3ed045a8b945961564b8e0d98a54fc90",
+      "skill/assets/project-files/.prettierrc.json": "8b92ed4e7a6cd9ddcfa606663ab1cf6328da668557adc02510f776ea28991f1c",
+      "skill/assets/project-files/AGENTS.md": "44338e07607ffca1556388262f35ff9cf74b4750e563886f5c6eaf61bac63a6a",
+      "skill/references/bootstrap-and-structure.md": "d695e4c71a2788767e1d5b94010932024846fdb95cf1d598697706147f81ff85",
+      "skill/references/config-presets-and-routing.md": "7eab4eb7d7d7090a9b736b7419880a827270b5b23b981716473eb9c524de6c70",
+      "skill/references/content-authoring.md": "890b4c84a5c45c4590a2edd5c80442d3485f3d13eb3e5728f0c23705b95f4630",
+      "skill/references/customization-and-ux.md": "ae6d1d7a79bd4df3345d437a58c7b734c9059af349a820fda4cd6328d7d3de06",
+      "skill/references/deployment-versioning-i18n.md": "caed7743fb340a5285a929e76da88fed187ef1a832f2569a1f4325b6a2342ffe",
+      "skill/references/doc-quality-tooling-and-agents.md": "e271ec39a5c791c5c9c3a9c76a1760f5d1a4e9d2d8469460bb5f8e5a84639b5f",
+      "skill/references/search-and-ecosystem.md": "197273c8ed4b7afc8ab31469d839408080767567913d45b83e5dc45d762a6bc9"
+    },
+    "C": {
+      "AGENTS.md": "13d5ea46437ffb9e1f99ab9b85b20513139782a22cec546318b128538c2df16d",
+      "skill/SKILL.md": "698e7641095b3335372a159d3541e22e37302d9be6a72de920779d046777c483",
+      "skill/agents/openai.yaml": "9b8a48731c3bc59fa6fc82a040d3fbde1fd2fb08c5cc020e81384f839e482ecf",
+      "skill/assets/project-files/.github/workflows/docs-quality.yml": "2d1af35f51941c679fee037706fe2a0d42b3da38983585acb99220b0292e894c",
+      "skill/assets/project-files/.markdownlint-cli2.jsonc": "7ffccf5e50464bf990441260ccadb15e71b0e6ae33dfff78105e1f5c29f7bae4",
+      "skill/assets/project-files/.prettierignore": "0e2d69697fed9001df076dc0e14de9ef3ed045a8b945961564b8e0d98a54fc90",
+      "skill/assets/project-files/.prettierrc.json": "8b92ed4e7a6cd9ddcfa606663ab1cf6328da668557adc02510f776ea28991f1c",
+      "skill/assets/project-files/AGENTS.md": "13d5ea46437ffb9e1f99ab9b85b20513139782a22cec546318b128538c2df16d",
+      "skill/references/bootstrap-and-structure.md": "d695e4c71a2788767e1d5b94010932024846fdb95cf1d598697706147f81ff85",
+      "skill/references/config-presets-and-routing.md": "7eab4eb7d7d7090a9b736b7419880a827270b5b23b981716473eb9c524de6c70",
+      "skill/references/content-authoring.md": "890b4c84a5c45c4590a2edd5c80442d3485f3d13eb3e5728f0c23705b95f4630",
+      "skill/references/customization-and-ux.md": "ae6d1d7a79bd4df3345d437a58c7b734c9059af349a820fda4cd6328d7d3de06",
+      "skill/references/deployment-versioning-i18n.md": "caed7743fb340a5285a929e76da88fed187ef1a832f2569a1f4325b6a2342ffe",
+      "skill/references/doc-quality-tooling-and-agents.md": "157bc54e7b7bd5d1a9575c58e1906b3b1770ff964a191c14470235c7e1598b6f",
+      "skill/references/search-and-ecosystem.md": "197273c8ed4b7afc8ab31469d839408080767567913d45b83e5dc45d762a6bc9"
+    }
+  }
+}

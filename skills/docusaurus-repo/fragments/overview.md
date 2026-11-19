@@ -4,7 +4,7 @@ Help site maintainers deliver the requested Docusaurus routes, content rendering
 
 Bootstrap requirements below apply to new repositories created with this skill. In an existing repository, preserve compatible runtime pins, package manager, quality tools, config language and declared scripts; adapt examples to its workspace commands. Do not upgrade or replace working tools solely to match current defaults. If a required dependency conflicts with the current pin, identify the exact engine/peer conflict and continue supported work; obtain the missing version/scope decision before the conflicting change.
 
-Read-only analysis does not authorize installs, fixes, builds, clearing generated state, servers or publication. For authorized implementation, run applicable repository gates and rendered checks for the changed behavior. A missing environment or external service limits the affected claim; it does not erase verified local work. Report observed facts, hypotheses, performed checks and remaining gaps separately. A build/config alone proves neither search results nor canonical deployment nor a reader's ability to execute documented instructions.
+Read-only analysis does not authorize installs, fixes, builds, clearing generated state, servers or publication. For authorized implementation, run applicable repository gates and rendered checks for the changed behavior. A missing environment or external service limits the affected claim; it does not erase verified local work. Report observed facts, hypotheses, performed checks and remaining gaps separately. A build/config alone proves neither search results nor canonical deployment. Verify the reader can run the documented command.
 
 ## Interop priority
 

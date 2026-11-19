@@ -1,0 +1,39 @@
+{
+  "archives": [
+    {
+      "name": "study-site.tar.gz",
+      "bytes": 513591,
+      "sha256": "06e3e2da13673604e83eb2022482ed2bf1a5ff57a9906c40bf560e838d818570",
+      "files": 55
+    },
+    {
+      "name": "notification-site.tar.gz",
+      "bytes": 530752,
+      "sha256": "d540e054e4ab531b34c449b95747d2f863c35749811c35c97de229fa61b5a39a",
+      "files": 33
+    },
+    {
+      "name": "controlled-C.tar.gz",
+      "bytes": 18127,
+      "sha256": "b0d6a7cb1d9c61a05fffc34b8af3f237e92c3df1ef03b4940546cbce8cedc78d",
+      "files": 14
+    },
+    {
+      "name": "project-commands/published-pnpm-site.tar.gz",
+      "bytes": 925370,
+      "sha256": "c2f3a57f03bcbcad53de6b154c63267722f28e36b9449e132eb69bba3875fa77",
+      "files": 158
+    }
+  ],
+  "studyHTML": {
+    "404.html": "44175e94149aa0aeaf680672cad4c25ec01d13e1b7582a43bba0d21ba74656be",
+    "handbook/1.0/desk/index.html": "cbcd80d8d25b0c49627ff96e4d795753443074915186067e85c0dcb9d4c7af8e",
+    "handbook/2.0/desk/index.html": "e8e539e8c4dbc1522bbbd7828b0310e53e94ac012aebc0c3cc7a6743591f7e6c",
+    "index.html": "197360fda0ebd1e2c4dcff8babdc9a02463d42d7d02a4badaa528572ca578bbc",
+    "it/404.html": "357f99da392219a701d53099e9f67c80e9e5f6e69bcadbb9381afcd968a8bc95",
+    "it/handbook/1.0/desk/index.html": "f7a4f00d751455a65bc7658bd6d33173a82086b6984cf3d9f773e9fbe3d732de",
+    "it/handbook/2.0/desk/index.html": "9eb51fc5b78ecdf5d0ee33d70dff8de49eecf4990b059c3544daeb94f057b740",
+    "it/index.html": "003bef49dff394e798aaee915c6001843384d5e6ae2d302ad74176df1ce0e725"
+  },
+  "notificationForm19SHA256": "02e15da84009fd1765b3e6595ae65ec5caa4cb0a89ec3f350e5f24046eff2420"
+}

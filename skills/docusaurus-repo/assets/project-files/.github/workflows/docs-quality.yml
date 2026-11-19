@@ -16,8 +16,7 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 10
+        # Reads packageManager from package.json. For a project without a pin, set with.version here.
 
       - name: Setup Node.js
         uses: actions/setup-node@v4

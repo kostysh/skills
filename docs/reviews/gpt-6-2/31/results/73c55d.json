@@ -1,0 +1,197 @@
+{
+  "variant": "C",
+  "case": "boundary",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПримени ./SKILL.md. Проверь выдаваемый смене сайт по ticket.md и направь владельцу короткий результат приёмки. Проверка проходит с главной страницы обслуживаемой сборки. Материалы и разрешённые действия описаны в site.md. Сайт, документ и пакет остаются в исходном виде.\n",
+  "input_file_sha256": {
+    "SKILL.md": "2a1d482534c64d9fe91c0b07184d1d01ab9039e47beec71a887655321048021f",
+    "agents/openai.yaml": "9b8a48731c3bc59fa6fc82a040d3fbde1fd2fb08c5cc020e81384f839e482ecf",
+    "assets/project-files/.github/workflows/docs-quality.yml": "968eb18850f0ddec8b5a54d4027c8657e81419d264e7e9a4bf1e81c52696d2af",
+    "assets/project-files/.markdownlint-cli2.jsonc": "25b490a3f41fdc7f032d618b7b29779f325c82a54e29e6ae7a2e06f73ab03bc3",
+    "assets/project-files/.prettierignore": "0e2d69697fed9001df076dc0e14de9ef3ed045a8b945961564b8e0d98a54fc90",
+    "assets/project-files/.prettierrc.json": "8b92ed4e7a6cd9ddcfa606663ab1cf6328da668557adc02510f776ea28991f1c",
+    "assets/project-files/AGENTS.md": "4d68ac59d3fabc6a829f7f2041fd2f7b555e894d199a97a07deec7ed7623e7bb",
+    "build-facts.json": "2a92cae23bd5a0ea6cc1690932bd0105c6a061d6a2fbdb2433811d0bab04d59c",
+    "references/bootstrap-and-structure.md": "d695e4c71a2788767e1d5b94010932024846fdb95cf1d598697706147f81ff85",
+    "references/config-presets-and-routing.md": "7eab4eb7d7d7090a9b736b7419880a827270b5b23b981716473eb9c524de6c70",
+    "references/content-authoring.md": "890b4c84a5c45c4590a2edd5c80442d3485f3d13eb3e5728f0c23705b95f4630",
+    "references/customization-and-ux.md": "ae6d1d7a79bd4df3345d437a58c7b734c9059af349a820fda4cd6328d7d3de06",
+    "references/deployment-versioning-i18n.md": "caed7743fb340a5285a929e76da88fed187ef1a832f2569a1f4325b6a2342ffe",
+    "references/doc-quality-tooling-and-agents.md": "04bb9c7f11ee753ee9e416a603ec02ee64f7cfe5e3b17344ff135a8c4b749707",
+    "references/search-and-ecosystem.md": "197273c8ed4b7afc8ab31469d839408080767567913d45b83e5dc45d762a6bc9",
+    "release/engineering-tally-fixture-1.0.0.tgz": "43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b",
+    "site.md": "720de36dcfc26d2364c336c8256dc665ca4e0753bd1f6bcc4917c948c5fe952a",
+    "ticket.md": "09509ffbbc66d32ab46a6c6d8239b17734f6429446737e6d9638c4dc44ef07b1"
+  },
+  "raw_events_sha256": "4fcecafa2b39ff62b4e5a5a2af8d7a1e23f02b48d6bd8fbcec589fbdc39d0071",
+  "raw_events_bytes": 46704,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Применю `./SKILL.md` и сверю условия приёмки в `ticket.md` и `site.md`. Затем начну проверку с главной страницы сборки."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'pwd && ls -la && for f in AGENTS.md SKILL.md ticket.md site.md; do if test -f \"$f\"; then printf '\"'\\\\n%s\\\\n' \\\"\"'$f\"; cat \"$f\"; fi; done'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"curl --noproxy '*' --silent --show-error --max-time 8 -i http://127.0.0.1:41639/\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"' -g '\"'!.aws'\"' -g '\"'!.codex'\"' -g '\"'!.agents'\"' && cat build-facts.json && cat references/deployment-versioning-i18n.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'tar -tzf release/engineering-tally-fixture-1.0.0.tgz && tar -xOzf release/engineering-tally-fixture-1.0.0.tgz package/package.json && command -v node npm unshare bwrap chromium chromium-browser google-chrome firefox'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"curl --noproxy '*' -fsS -w '\\\\nHTTP %{http_code}\\\\n' http://127.0.0.1:41639/handbook/2.0/desk/ | python -c 'import re,sys; from html import unescape; s=sys.stdin.read(); print(re.search(r\\\"<html[\"'^>]*>\",s)[0]); print(re.search(r\"<title[''^>]*>.*?</title>\",s)[0]); print(unescape(re.sub(r\"<[''^>]+>\",\" \",re.sub(r\"<svg.*?</svg>\",\"\",s[s.find(\"<main\"):],flags=re.S)))); print(*re.findall(r\"<a [''^>]*href='\"\\\\\\\"([\"'^'\"\\\\\\\"]+)\\\\\\\"[\"'^>]*>([''^<]*)</a>\",s),sep=\"'\"\\\\n\\\")'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"for path in /handbook/1.0/desk/ /handbook/1.0/; do curl --noproxy '*' -sS -w '\\\\nHTTP %{http_code}\\\\n' \\\"http://127.0.0.1:41639\"'$path\" | python -c '\"'import re,sys; from html import unescape; s=sys.stdin.read(); print(re.search(r\\\"<html[\"'^>]*>\",s)[0]); print(re.search(r\"<title[''^>]*>.*?</title>\",s)[0]); print(unescape(re.sub(r\"<[''^>]+>\",\" \",re.sub(r\"<svg.*?</svg>\",\"\",s[s.find(\"<main\"):],flags=re.S))))'\"'; done\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Ссылка на архивное руководство открывает английскую версию 2.0. Английская страница 1.0 доступна по прямому адресу. Проверю её команды с выданным архивом."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nfrom shutil import copyfile\nfrom tempfile import TemporaryDirectory\nimport os\nimport subprocess\n\nroot = Path.cwd()\narchive = root / \\\"release/engineering-tally-fixture-1.0.0.tgz\\\"\nwith TemporaryDirectory(dir=root, prefix=\\\".tally-acceptance.\\\") as scratch:\n    copyfile(archive, Path(scratch) / archive.name)\n    env = dict(os.environ, npm_config_cache=str(Path(scratch) / \\\"npm-cache\\\"),\n               npm_config_update_notifier=\\\"false\\\", npm_config_userconfig=\\\"/dev/null\\\",\n               npm_config_globalconfig=\\\"/dev/null\\\")\n    subprocess.run([\\\"npm\\\", \\\"install\\\", \\\"--offline\\\", \\\"--ignore-scripts\\\", \\\"--no-audit\\\",\n                    \\\"--no-fund\\\", \\\"./\\\" + archive.name], cwd=scratch, env=env, check=True)\n    for args, expected in [\n        ([\\\"--version\\\"], (0, \\\"1.0.0\\\\n\\\", \\\"\\\")),\n        ([\\\"sum\\\", \\\"2\\\", \\\"3\\\", \\\"--json\\\"], (0, '{\\\"total\\\":5}\\\\n', \\\"\\\")),\n        ([\\\"sum\\\", \\\"bad\\\", \\\"--json\\\"], (2, \\\"\\\", \\\"Invalid number\\\\n\\\")),\n    ]:\n        result = subprocess.run([\\\"./node_modules/.bin/tally\\\", *args], cwd=scratch,\n                                env=env, capture_output=True, text=True)\n        actual = result.returncode, result.stdout, result.stderr\n        print(args, \\\"exit/stdout/stderr =\\\", actual)\n        assert actual == expected\nPY\nsha256sum release/engineering-tally-fixture-1.0.0.tgz\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"set -e\npython - <<'PY'\nfrom pathlib import Path\nfrom shutil import copyfile\nfrom tempfile import TemporaryDirectory\nimport os\nimport subprocess\n\nroot = Path.cwd()\narchive = root / \\\"release/engineering-tally-fixture-1.0.0.tgz\\\"\nwith TemporaryDirectory(dir=root, prefix=\\\".tally-acceptance.\\\") as scratch:\n    folder = Path(scratch)\n    copyfile(archive, folder / archive.name)\n    env = dict(os.environ, npm_config_cache=str(folder / \\\"npm-cache\\\"),\n               npm_config_update_notifier=\\\"false\\\", npm_config_userconfig=str(folder / \\\"user.npmrc\\\"),\n               npm_config_globalconfig=str(folder / \\\"global.npmrc\\\"))\n    subprocess.run([\\\"npm\\\", \\\"install\\\", \\\"--offline\\\", \\\"--ignore-scripts\\\", \\\"--no-audit\\\",\n                    \\\"--no-fund\\\", \\\"./\\\" + archive.name], cwd=scratch, env=env, check=True)\n    for args, expected in [\n        ([\\\"--version\\\"], (0, \\\"1.0.0\\\\n\\\", \\\"\\\")),\n        ([\\\"sum\\\", \\\"2\\\", \\\"3\\\", \\\"--json\\\"], (0, '{\\\"total\\\":5}\\\\n', \\\"\\\")),\n        ([\\\"sum\\\", \\\"bad\\\", \\\"--json\\\"], (2, \\\"\\\", \\\"Invalid number\\\\n\\\")),\n    ]:\n        result = subprocess.run([\\\"./node_modules/.bin/tally\\\", *args], cwd=scratch,\n                                env=env, capture_output=True, text=True)\n        actual = result.returncode, result.stdout, result.stderr\n        print(args, \\\"exit/stdout/stderr =\\\", actual)\n        assert actual == expected\nPY\nsha256sum release/engineering-tally-fixture-1.0.0.tgz\nls -A\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "**Сайт не прошёл приёмку для предыдущей английской смены.** Ссылка `Archived shift manual 1.0` на главной открывает руководство 2.0 по адресу `/handbook/2.0/desk/`. Оно требует архив Tally 1.1.0, а смене выдан Tally 1.0.0.\n\nПо прямому адресу `/handbook/1.0/desk/` процедура работает с выданным архивом. После установки без сети команда `tally sum 2 3 --json` вернула `{\"total\":5}` с кодом 0. Команда `tally sum bad --json` вывела `Invalid number` в stderr и завершилась с кодом 2.\n\nДля повторной приёмки направьте архивную ссылку на `/handbook/1.0/desk/`."
+    }
+  ],
+  "changed_file_contents": {},
+  "final_response": "**Сайт не прошёл приёмку для предыдущей английской смены.** Ссылка `Archived shift manual 1.0` на главной открывает руководство 2.0 по адресу `/handbook/2.0/desk/`. Оно требует архив Tally 1.1.0, а смене выдан Tally 1.0.0.\n\nПо прямому адресу `/handbook/1.0/desk/` процедура работает с выданным архивом. После установки без сети команда `tally sum 2 3 --json` вернула `{\"total\":5}` с кодом 0. Команда `tally sum bad --json` вывела `Invalid number` в stderr и завершилась с кодом 2.\n\nДля повторной приёмки направьте архивную ссылку на `/handbook/1.0/desk/`.",
+  "input_file_modes": {
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "assets/project-files/.github/workflows/docs-quality.yml": "0644",
+    "assets/project-files/.markdownlint-cli2.jsonc": "0644",
+    "assets/project-files/.prettierignore": "0644",
+    "assets/project-files/.prettierrc.json": "0644",
+    "assets/project-files/AGENTS.md": "0644",
+    "build-facts.json": "0664",
+    "references/bootstrap-and-structure.md": "0644",
+    "references/config-presets-and-routing.md": "0644",
+    "references/content-authoring.md": "0644",
+    "references/customization-and-ux.md": "0644",
+    "references/deployment-versioning-i18n.md": "0644",
+    "references/doc-quality-tooling-and-agents.md": "0644",
+    "references/search-and-ecosystem.md": "0644",
+    "release/engineering-tally-fixture-1.0.0.tgz": "0664",
+    "site.md": "0664",
+    "ticket.md": "0664"
+  },
+  "changed_file_modes": {},
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "sameProductFilesAsObserver": true,
+    "organizerPreflightOnTheseInputs": {
+      "sourcePage": "/",
+      "link": "Archived shift manual 1.0",
+      "href": "/handbook/2.0/desk/",
+      "homeSha256": "197360fda0ebd1e2c4dcff8babdc9a02463d42d7d02a4badaa528572ca578bbc",
+      "response": 200,
+      "documentSha256": "e8e539e8c4dbc1522bbbd7828b0310e53e94ac012aebc0c3cc7a6743591f7e6c",
+      "docCommands": "npm install --offline --ignore-scripts --no-audit --no-fund ./engineering-tally-fixture-1.1.0.tgz./node_modules/.bin/tally sum 2 3 --machine./node_modules/.bin/tally sum bad --machine{\"sum\":5}Number expected",
+      "reader": {
+        "availableAlternate": "/handbook/1.0/desk/",
+        "--machine": [
+          {
+            "exit": 2,
+            "stdout": "",
+            "stderr": "Invalid number\n"
+          },
+          {
+            "exit": 2,
+            "stdout": "",
+            "stderr": "Invalid number\n"
+          }
+        ],
+        "--json": [
+          {
+            "exit": 0,
+            "stdout": "{\"total\":5}\n",
+            "stderr": ""
+          },
+          {
+            "exit": 2,
+            "stdout": "",
+            "stderr": "Invalid number\n"
+          }
+        ]
+      },
+      "cliSha256": "43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b"
+    },
+    "participantCommandsAndResults": [
+      {
+        "command": "/bin/bash -lc \"curl --noproxy '*' --silent --show-error --max-time 8 -i http://127.0.0.1:41639/\"",
+        "exit": 0,
+        "selectOutput": "HTTP/1.0 200 OK\nServer: SimpleHTTP/0.6 Python/3.14.4\nDate: Wed, 18 Nov 2026 22:53:46 GMT\nContent-type: text/html\nContent-Length: 6620\nLast-Modified: Wed, 18 Nov 2026 22:27:22 GMT\n<!doctype html>\n<html lang=\"en\" dir=\"ltr\" class=\"plugin-pages plugin-id-default\" data-has-hydrated=\"false\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"generator\" content=\"Docusaurus v3.10.2\">\n<script src=\"/assets/js/runtime~main.2032b637.js\" defer=\"defer\"></script>\n<script src=\"/assets/js/main.fbdf2759.js\" defer=\"defer\"></script>\n</head>\n<body>\n<svg style=\"display: none;\"><defs>\n<symbol id=\"theme-svg-external-link\" viewBox=\"0 0 24 24\"><path fill=\"currentColor\" d=\"M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z\"/></symbol>\n</defs></svg>\n</body>\n</html>",
+        "fullEventSha": "570392e629567a587f286918eb6f3970b5b048136f644d2c2e37a485d4a84b05"
+      },
+      {
+        "command": "/bin/bash -lc 'tar -tzf release/engineering-tally-fixture-1.0.0.tgz && tar -xOzf release/engineering-tally-fixture-1.0.0.tgz package/package.json && command -v node npm unshare bwrap chromium chromium-browser google-chrome firefox'",
+        "exit": 0,
+        "selectOutput": "package/dist/cli.js\npackage/dist/legacy.js\npackage/package.json\npackage/README.md\n{\n  \"name\": \"engineering-tally-fixture\",\n  \"version\": \"1.0.0\",\n  \"type\": \"module\",\n  \"bin\": {\n    \"tally\": \"dist/cli.js\"\n  },\n  \"files\": [\n    \"dist\"\n  ],\n  \"scripts\": {\n    \"typecheck\": \"tsc -p tsconfig.json --noEmit\",\n    \"build\": \"tsc -p tsconfig.json\",\n    \"test\": \"tsx --test test/*.test.ts\"\n  },\n  \"devDependencies\": {\n    \"typescript\": \"5.9.3\",\n    \"tsx\": \"4.20.5\",\n    \"@types/node\": \"24.0.0\"\n  }\n}\n/home/kostysh/.nvm/versions/node/v24.15.0/bin/node\n/home/kostysh/.nvm/versions/node/v24.15.0/bin/npm\n/usr/bin/unshare\n/usr/bin/bwrap\n/usr/bin/google-chrome\n/usr/bin/firefox",
+        "fullEventSha": "8f6204ef85a4aeacf47de1d2f41573ba744c578279f4c3b8e8369ee3ed07b52c"
+      },
+      {
+        "command": "/bin/bash -lc \"curl --noproxy '*' -fsS -w '\\\\nHTTP %{http_code}\\\\n' http://127.0.0.1:41639/handbook/2.0/desk/ | python -c 'import re,sys; from html import unescape; s=sys.stdin.read(); print(re.search(r\\\"<html[\"'^>]*>\",s)[0]); print(re.search(r\"<title[''^>]*>.*?</title>\",s)[0]); print(unescape(re.sub(r\"<[''^>]+>\",\" \",re.sub(r\"<svg.*?</svg>\",\"\",s[s.find(\"<main\"):],flags=re.S)))); print(*re.findall(r\"<a [''^>]*href='\"\\\\\\\"([\"'^'\"\\\\\\\"]+)\\\\\\\"[\"'^>]*>([''^<]*)</a>\",s),sep=\"'\"\\\\n\\\")'\"",
+        "exit": 0,
+        "selectOutput": "<html lang=\"en\" dir=\"ltr\" class=\"docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-start\" data-has-hydrated=\"false\">\n<title data-rh=\"true\">Tally desk guide 2.0 | Desk handbook</title>\n       Version: 2.0    Tally desk guide 2.0   Use the shift's Tally 1.1.0 archive in a clean folder. Install the attached local file offline. \n      npm install --offline --ignore-scripts --no-audit --no-fund ./engineering-tally-fixture-1.1.0.tgz     ./node_modules/.bin/tally sum 2 3 --machine     ./node_modules/.bin/tally sum bad --machine       \n The result is  {\"sum\":5} . The error prints  Number expected  on stderr and leaves code 2.              \nHTTP 200\n('#__docusaurus_skipToContent_fallback', 'Skip to main content')\n('/', '')",
+        "fullEventSha": "7e4abd9494e2d097fd02db8f46536d319ea3701d17647f871bfdc9af3677c7b1"
+      },
+      {
+        "command": "/bin/bash -lc \"for path in /handbook/1.0/desk/ /handbook/1.0/; do curl --noproxy '*' -sS -w '\\\\nHTTP %{http_code}\\\\n' \\\"http://127.0.0.1:41639\"'$path\" | python -c '\"'import re,sys; from html import unescape; s=sys.stdin.read(); print(re.search(r\\\"<html[\"'^>]*>\",s)[0]); print(re.search(r\"<title[''^>]*>.*?</title>\",s)[0]); print(unescape(re.sub(r\"<[''^>]+>\",\" \",re.sub(r\"<svg.*?</svg>\",\"\",s[s.find(\"<main\"):],flags=re.S))))'\"'; done\"",
+        "exit": 0,
+        "selectOutput": "<html lang=\"en\" dir=\"ltr\" class=\"docs-wrapper plugin-docs plugin-id-default docs-version-1.0 docs-doc-page docs-doc-id-start\" data-has-hydrated=\"false\">\n<title data-rh=\"true\">Tally desk guide 1.0 | Desk handbook</title>\n      This is documentation for  Desk handbook   1.0 , which is no longer actively maintained.  For up-to-date documentation, see the   latest version   ( 2.0 ).     Version: 1.0    Tally desk guide 1.0   Use the shift's Tally 1.0.0 archive in a clean folder. Install the attached local file offline. \n      npm install --offline --ignore-scripts --no-audit --no-fund ./engineering-tally-fixture-1.0.0.tgz     ./node_modules/.bin/tally sum 2 3 --json     ./node_modules/.bin/tally sum bad --json       \n The first command after installation reports  {\"total\":5} . Invalid input sends  Invalid number  to stderr and exits with code 2.              \nHTTP 200\n<html lang=\"en\">\n<title>Directory listing for /handbook/1.0/</title>",
+        "fullEventSha": "37f514d0a038aa4c8f0e68c2294d4d4115d0d2367e5c48e09eb868442e78fa7c"
+      },
+      {
+        "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nfrom shutil import copyfile\nfrom tempfile import TemporaryDirectory\nimport os\nimport subprocess\n\nroot = Path.cwd()\narchive = root / \\\"release/engineering-tally-fixture-1.0.0.tgz\\\"\nwith TemporaryDirectory(dir=root, prefix=\\\".tally-acceptance.\\\") as scratch:\n    copyfile(archive, Path(scratch) / archive.name)\n    env = dict(os.environ, npm_config_cache=str(Path(scratch) / \\\"npm-cache\\\"),\n               npm_config_update_notifier=\\\"false\\\", npm_config_userconfig=\\\"/dev/null\\\",\n               npm_config_globalconfig=\\\"/dev/null\\\")\n    subprocess.run([\\\"npm\\\", \\\"install\\\", \\\"--offline\\\", \\\"--ignore-scripts\\\", \\\"--no-audit\\\",\n                    \\\"--no-fund\\\", \\\"./\\\" + archive.name], cwd=scratch, env=env, check=True)\n    for args, expected in [\n        ([\\\"--version\\\"], (0, \\\"1.0.0\\\\n\\\", \\\"\\\")),\n        ([\\\"sum\\\", \\\"2\\\", \\\"3\\\", \\\"--json\\\"], (0, '{\\\"total\\\":5}\\\\n', \\\"\\\")),\n        ([\\\"sum\\\", \\\"bad\\\", \\\"--json\\\"], (2, \\\"\\\", \\\"Invalid number\\\\n\\\")),\n    ]:\n        result = subprocess.run([\\\"./node_modules/.bin/tally\\\", *args], cwd=scratch,\n                                env=env, capture_output=True, text=True)\n        actual = result.returncode, result.stdout, result.stderr\n        print(args, \\\"exit/stdout/stderr =\\\", actual)\n        assert actual == expected\nPY\nsha256sum release/engineering-tally-fixture-1.0.0.tgz\"",
+        "exit": 0,
+        "selectOutput": "Exit prior to config file resolving\ncause\ndouble-loading config \"/dev/null\" as \"global\", previously loaded as \"user\"\nTraceback (most recent call last):\n  File \"<stdin>\", line 14, in <module>\n  File \"/usr/lib/python3.14/subprocess.py\", line 578, in run\n    raise CalledProcessError(retcode, process.args,\n                             output=stdout, stderr=stderr)\nsubprocess.CalledProcessError: Command '['npm', 'install', '--offline', '--ignore-scripts', '--no-audit', '--no-fund', './engineering-tally-fixture-1.0.0.tgz']' returned non-zero exit status 1.\n43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b  release/engineering-tally-fixture-1.0.0.tgz",
+        "fullEventSha": "0456c65d8e0b753659b6807f2ef2aff109554daa5024f99c71864a737232a0da"
+      },
+      {
+        "command": "/bin/bash -lc \"set -e\npython - <<'PY'\nfrom pathlib import Path\nfrom shutil import copyfile\nfrom tempfile import TemporaryDirectory\nimport os\nimport subprocess\n\nroot = Path.cwd()\narchive = root / \\\"release/engineering-tally-fixture-1.0.0.tgz\\\"\nwith TemporaryDirectory(dir=root, prefix=\\\".tally-acceptance.\\\") as scratch:\n    folder = Path(scratch)\n    copyfile(archive, folder / archive.name)\n    env = dict(os.environ, npm_config_cache=str(folder / \\\"npm-cache\\\"),\n               npm_config_update_notifier=\\\"false\\\", npm_config_userconfig=str(folder / \\\"user.npmrc\\\"),\n               npm_config_globalconfig=str(folder / \\\"global.npmrc\\\"))\n    subprocess.run([\\\"npm\\\", \\\"install\\\", \\\"--offline\\\", \\\"--ignore-scripts\\\", \\\"--no-audit\\\",\n                    \\\"--no-fund\\\", \\\"./\\\" + archive.name], cwd=scratch, env=env, check=True)\n    for args, expected in [\n        ([\\\"--version\\\"], (0, \\\"1.0.0\\\\n\\\", \\\"\\\")),\n        ([\\\"sum\\\", \\\"2\\\", \\\"3\\\", \\\"--json\\\"], (0, '{\\\"total\\\":5}\\\\n', \\\"\\\")),\n        ([\\\"sum\\\", \\\"bad\\\", \\\"--json\\\"], (2, \\\"\\\", \\\"Invalid number\\\\n\\\")),\n    ]:\n        result = subprocess.run([\\\"./node_modules/.bin/tally\\\", *args], cwd=scratch,\n                                env=env, capture_output=True, text=True)\n        actual = result.returncode, result.stdout, result.stderr\n        print(args, \\\"exit/stdout/stderr =\\\", actual)\n        assert actual == expected\nPY\nsha256sum release/engineering-tally-fixture-1.0.0.tgz\nls -A\"",
+        "exit": 0,
+        "selectOutput": "added 1 package in 165ms\n['--version'] exit/stdout/stderr = (0, '1.0.0\\n', '')\n['sum', '2', '3', '--json'] exit/stdout/stderr = (0, '{\"total\":5}\\n', '')\n['sum', 'bad', '--json'] exit/stdout/stderr = (2, '', 'Invalid number\\n')\n43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b  release/engineering-tally-fixture-1.0.0.tgz\n.agents\n.aws\n.codex\n.git\nSKILL.md\nagents\nassets\nbuild-facts.json\nreferences\nrelease\nsite.md\nticket.md",
+        "fullEventSha": "5c8e99e6e34c0282975ae9d30bd8f2a854df3f11c504d2c7482c41a2037e57f0"
+      }
+    ],
+    "changesToInitialFiles": [],
+    "createdFiles": []
+  }
+}

@@ -5,11 +5,11 @@ description: Create and manage Docusaurus documentation repositories. Use for
   docs/blog sites, config, sidebars, MDX, themes, UI customization, search,
   versioning, i18n, deployment, and plugins such as Mermaid or OpenAPI docs.
 metadata:
-  source-version: 0.1.3
+  source-version: 0.1.4
   author: skills-etc
   version: 1.0.0
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 1d8b29e9b300301edc768d149717c9125eb7d142c51090fd64ebad44b558b3df
+  skillforge-source-hash: 161553c7f25750a35e6842f2c8d977931b566944fa59193febd6429e7e798c08
 ---
 
 # docusaurus-repo
@@ -41,7 +41,7 @@ Help site maintainers deliver the requested Docusaurus routes, content rendering
 
 Bootstrap requirements below apply to new repositories created with this skill. In an existing repository, preserve compatible runtime pins, package manager, quality tools, config language and declared scripts; adapt examples to its workspace commands. Do not upgrade or replace working tools solely to match current defaults. If a required dependency conflicts with the current pin, identify the exact engine/peer conflict and continue supported work; obtain the missing version/scope decision before the conflicting change.
 
-Read-only analysis does not authorize installs, fixes, builds, clearing generated state, servers or publication. For authorized implementation, run applicable repository gates and rendered checks for the changed behavior. A missing environment or external service limits the affected claim; it does not erase verified local work. Report observed facts, hypotheses, performed checks and remaining gaps separately. A build/config alone proves neither search results nor canonical deployment nor a reader's ability to execute documented instructions.
+Read-only analysis does not authorize installs, fixes, builds, clearing generated state, servers or publication. For authorized implementation, run applicable repository gates and rendered checks for the changed behavior. A missing environment or external service limits the affected claim; it does not erase verified local work. Report observed facts, hypotheses, performed checks and remaining gaps separately. A build/config alone proves neither search results nor canonical deployment. Verify the reader can run the documented command.
 
 ## Interop priority
 

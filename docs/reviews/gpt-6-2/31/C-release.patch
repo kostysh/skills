@@ -1,0 +1,87 @@
+--- controlled-C/SKILL.md
++++ release/SKILL.md
+@@ -5,11 +5,11 @@
+   docs/blog sites, config, sidebars, MDX, themes, UI customization, search,
+   versioning, i18n, deployment, and plugins such as Mermaid or OpenAPI docs.
+ metadata:
+-  source-version: 0.1.3
++  source-version: 0.1.4
+   author: skills-etc
+   version: 1.0.0
+   skillforge-source-manifest: skill.yaml
+-  skillforge-source-hash: 1d8b29e9b300301edc768d149717c9125eb7d142c51090fd64ebad44b558b3df
++  skillforge-source-hash: 161553c7f25750a35e6842f2c8d977931b566944fa59193febd6429e7e798c08
+ ---
+ 
+ # docusaurus-repo
+--- controlled-C/assets/project-files/.github/workflows/docs-quality.yml
++++ release/assets/project-files/.github/workflows/docs-quality.yml
+@@ -16,8 +16,7 @@
+ 
+       - name: Setup pnpm
+         uses: pnpm/action-setup@v4
+-        with:
+-          version: 10
++        # Reads packageManager from package.json. For a project without a pin, set with.version here.
+ 
+       - name: Setup Node.js
+         uses: actions/setup-node@v4
+--- controlled-C/assets/project-files/.markdownlint-cli2.jsonc
++++ release/assets/project-files/.markdownlint-cli2.jsonc
+@@ -1,18 +1,12 @@
+ {
+   "$schema": "https://raw.githubusercontent.com/DavidAnson/vscode-markdownlint/main/markdownlint-cli2-config-schema.json",
+   "gitignore": ".gitignore",
+-  "globs": [
+-    "**/*.md"
+-  ],
+-  "ignores": [
+-    ".docusaurus/**",
+-    "build/**",
+-    "node_modules/**"
+-  ],
++  "globs": ["**/*.md"],
++  "ignores": [".docusaurus/**", "build/**", "node_modules/**"],
+   "config": {
+     "default": true,
+     "MD013": false,
+     "MD033": false,
+-    "MD041": false
+-  }
++    "MD041": false,
++  },
+ }
+--- controlled-C/assets/project-files/AGENTS.md
++++ release/assets/project-files/AGENTS.md
+@@ -6,9 +6,8 @@
+ 
+ ## Package manager
+ 
+-- Use `pnpm` only.
+-- Add and run tools through `pnpm`.
+-- Do not introduce `npm`, `npx`, `yarn`, `bun`, or `bunx` examples.
++- Use `pnpm` for this site's dependencies, scripts, and examples for maintainers.
++- In product guides, use the reader commands supported by the product owner.
+ 
+ ## Documentation workflow
+ 
+--- controlled-C/references/doc-quality-tooling-and-agents.md
++++ release/references/doc-quality-tooling-and-agents.md
+@@ -2,7 +2,7 @@
+ 
+ ## Scope and runtime
+ 
+-Apply these defaults to new repositories. Preserve existing compatible tooling and equivalent declared checks in established projects; do not overwrite their AGENTS or workflows wholesale. Bootstrap engine selection is owned by [bootstrap-and-structure.md](bootstrap-and-structure.md). Align CI Node and pnpm with package/runtime pins and lockfile; the Node 24/pnpm 10 template is a new-repo example, not an upgrade instruction. Generate and commit the lockfile through the authorized install before relying on frozen CI install. Adapt branch filters and monorepo working directory/cache lockfile location to the actual repo.
++Apply these defaults to new repositories. Preserve existing compatible tooling and equivalent declared checks in established projects; do not overwrite their AGENTS or workflows wholesale. Bootstrap engine selection is owned by [bootstrap-and-structure.md](bootstrap-and-structure.md). Align CI Node and pnpm with the runtime pins and lockfile. The template runs Node 24 and reads the root `package.json` field `packageManager`. Keep one source for the pnpm version. Generate the lockfile with the authorized install. A frozen CI install requires the matching lockfile in the checked-out revision. Adapt branch filters and monorepo working directory/cache lockfile location to the actual repo.
+ 
+ ## Mandatory bootstrap
+ 
+@@ -111,7 +111,7 @@
+ 
+ Seed `AGENTS.md` at repo bootstrap. It should tell future agents:
+ 
+-- use `pnpm` only
++- use `pnpm` for the site's own tooling
+ - run local fixes only within authorized files; adapt broad scripts or inspect their scope before fixing
+ - run `pnpm lint:md:fix` for fixable Markdown issues
+ - run `pnpm docs:quality` before handoff

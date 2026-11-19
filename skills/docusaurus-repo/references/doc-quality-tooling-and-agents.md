@@ -2,7 +2,7 @@
 
 ## Scope and runtime
 
-Apply these defaults to new repositories. Preserve existing compatible tooling and equivalent declared checks in established projects; do not overwrite their AGENTS or workflows wholesale. Bootstrap engine selection is owned by [bootstrap-and-structure.md](bootstrap-and-structure.md). Align CI Node and pnpm with package/runtime pins and lockfile; the Node 24/pnpm 10 template is a new-repo example, not an upgrade instruction. Generate and commit the lockfile through the authorized install before relying on frozen CI install. Adapt branch filters and monorepo working directory/cache lockfile location to the actual repo.
+Apply these defaults to new repositories. Preserve existing compatible tooling and equivalent declared checks in established projects; do not overwrite their AGENTS or workflows wholesale. Bootstrap engine selection is owned by [bootstrap-and-structure.md](bootstrap-and-structure.md). Align CI Node and pnpm with the runtime pins and lockfile. The template runs Node 24 and reads the root `package.json` field `packageManager`. Keep one source for the pnpm version. Generate the lockfile with the authorized install. A frozen CI install requires the matching lockfile in the checked-out revision. Adapt branch filters and monorepo working directory/cache lockfile location to the actual repo.
 
 ## Mandatory bootstrap
 
@@ -111,7 +111,7 @@ This is the safe default for Docusaurus because MDX can contain JSX-heavy constr
 
 Seed `AGENTS.md` at repo bootstrap. It should tell future agents:
 
-- use `pnpm` only
+- use `pnpm` for the site's own tooling
 - run local fixes only within authorized files; adapt broad scripts or inspect their scope before fixing
 - run `pnpm lint:md:fix` for fixable Markdown issues
 - run `pnpm docs:quality` before handoff
