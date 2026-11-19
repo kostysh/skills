@@ -3,6 +3,7 @@
 ## Findings
 
 [blocking] `path/to/file.ts:42` Short title
+<!-- If the project uses closure types, add the applicable type to each finding. -->
 Why: runtime impact
 Evidence: why this is real
 Next: safest correction or investigation direction

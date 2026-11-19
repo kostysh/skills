@@ -5,9 +5,9 @@ description: "Review web UI implementation against project rules and Web
   measured performance. Deliver scoped findings; route task-flow UX audits to
   web-ux-engineer. No implementation or conformance certification."
 metadata:
-  source-version: 0.2.6
+  source-version: 0.2.7
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 49ad02655e47771da5018199c31bf6a5d2f0e89977cafeae990f0c2c9e158fd9
+  skillforge-source-hash: c361315a4ea82c0cf3f16fdd5313e704dab630bf12f23eeacbc8031e911f2bf7
 ---
 
 # web-ui-reviewer
@@ -68,6 +68,14 @@ Then report:
 1. **Review basis** — requested claim, files or artifacts, states and viewports, project authority, browser or measurement evidence, and any live guideline revision used.
 2. **Findings** — group by file or artifact using terse `file:line - finding` entries. Include the evidence-dependent qualifier or short fix hint only when needed.
 3. **Coverage limits and handoffs** — name unassessed behavior and the owner or evidence required next.
+
+When the project uses closure types (a)–(d), label each finding with one type.
+Use **(d)** for an outside-task finding and name its owner. For in-scope
+findings, use **(c)** for a non-blocking finding, **(a)** for a blocker whose
+correction the same test can prove by failing before the fix and passing after
+it through the required operation and transport, or **(b)** for a blocker whose
+correction requires judgment in a delta review. For (a), retain domain review
+of fixes involving security, money, permissions, or migrations.
 
 For a clean file inside a partial review, use `✓ no code-level findings in reviewed scope`, never bare `✓ pass`. Keep the result brief, but do not omit the review basis or coverage limits to satisfy brevity.
 

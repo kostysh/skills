@@ -158,6 +158,14 @@ Rules:
 - `security-reviewer` does not issue an overall merge recommendation. Send confirmed security blockers and residual risk to `code-reviewer`, which owns the merge decision.
 - Review is read-only by default. A domain or implementation owner applies authorized remediation; this skill re-audits the new stable snapshot.
 
+When the project uses closure types (a)–(d), label each confirmed finding with one type.
+Use **(d)** for an outside-task finding and name its owner. For in-scope
+findings, use **(c)** for a non-blocking finding, **(a)** for a blocker whose
+correction the same test can prove by failing before the fix and passing after
+it through the required operation and transport, or **(b)** for a blocker whose
+correction requires judgment in a delta review. For (a), retain domain review
+of fixes involving security, money, permissions, or migrations.
+
 ## Default Output
 
 Begin with one plain-language outcome sentence before severity, confidence, result, or status terminology.

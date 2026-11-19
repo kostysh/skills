@@ -58,6 +58,7 @@ Use `control_evidenced`, `confirmed_gap`, `missing_evidence`, `accountable_or_sp
 
 - Status:
 - Severity:
+<!-- Include the closure type here when the project uses it. -->
 - Affected processing activity:
 - GDPR control:
 - Evidence or missing evidence:

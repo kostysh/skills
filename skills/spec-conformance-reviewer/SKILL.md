@@ -5,9 +5,9 @@ description: Review code against authoritative specs, contracts, ADRs, tickets,
   traceability, identify compliance gaps or ambiguities, and issue an
   implementation-versus-spec verdict limited by source authority and evidence.
 metadata:
-  source-version: 0.1.9
+  source-version: 0.1.10
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: e80ead8df8acb0f96693984ad518db805f9a18201eb0dae9aa33b770cc9e69a7
+  skillforge-source-hash: e6941555868714aef3fceb5317c84f4ce7f141776afa499db3b7d85f1bd6a793
 ---
 
 # spec-conformance-reviewer

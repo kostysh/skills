@@ -5,9 +5,9 @@ description: Perform bounded security review of code, CI, permissions, webhooks,
   triage, or scoped audits. Own threat modeling, confidence gating, attack
   paths, and findings—not scan orchestration, compliance, pentesting, or fixes.
 metadata:
-  source-version: 0.1.15
+  source-version: 0.1.16
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: a12fd8db8b9dd7f396649024b02cb2176def7b37a0a2256296c0335701bd6246
+  skillforge-source-hash: fa8eceada6957311432579714f7d5b72b683539e449994657d30d2250d3c571b
 ---
 
 # security-reviewer

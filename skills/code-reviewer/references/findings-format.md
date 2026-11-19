@@ -12,6 +12,14 @@ Start with one plain-language outcome sentence that says what changed, what rema
 | `[question]` | unresolved assumption or design clarification needed |
 | `[praise]` | optional positive feedback when it adds signal |
 
+When the project uses closure types (a)–(d), label each finding with one type.
+Use **(d)** for an outside-task finding and name its owner. For in-scope
+findings, use **(c)** for a non-blocking finding, **(a)** for a blocker whose
+correction the same test can prove by failing before the fix and passing after
+it through the required operation and transport, or **(b)** for a blocker whose
+correction requires judgment in a delta review. For (a), retain domain review
+of fixes involving security, money, permissions, or migrations.
+
 ## Default Structure
 
 ```markdown

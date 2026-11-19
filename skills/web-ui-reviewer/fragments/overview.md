@@ -31,6 +31,14 @@ Then report:
 2. **Findings** — group by file or artifact using terse `file:line - finding` entries. Include the evidence-dependent qualifier or short fix hint only when needed.
 3. **Coverage limits and handoffs** — name unassessed behavior and the owner or evidence required next.
 
+When the project uses closure types (a)–(d), label each finding with one type.
+Use **(d)** for an outside-task finding and name its owner. For in-scope
+findings, use **(c)** for a non-blocking finding, **(a)** for a blocker whose
+correction the same test can prove by failing before the fix and passing after
+it through the required operation and transport, or **(b)** for a blocker whose
+correction requires judgment in a delta review. For (a), retain domain review
+of fixes involving security, money, permissions, or migrations.
+
 For a clean file inside a partial review, use `✓ no code-level findings in reviewed scope`, never bare `✓ pass`. Keep the result brief, but do not omit the review basis or coverage limits to satisfy brevity.
 
 ## Tools

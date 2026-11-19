@@ -145,6 +145,14 @@ A useful finding has:
 - verification path;
 - legal/DPO escalation when needed.
 
+When the project uses closure types (a)–(d), label each finding with one type.
+Use **(d)** for an outside-task finding and name its owner. For in-scope
+findings, use **(c)** for a non-blocking finding, **(a)** for a blocker whose
+correction the same test can prove by failing before the fix and passing after
+it through the required operation and transport, or **(b)** for a blocker whose
+correction requires judgment in a delta review. For (a), retain domain review
+of fixes involving security, money, permissions, or migrations.
+
 Do not write findings as "missing document" unless the missing document blocks a control decision. Prefer "No enforceable retention expiry for support attachments" over "No retention policy".
 
 ### 6. Handle uncertainty and status

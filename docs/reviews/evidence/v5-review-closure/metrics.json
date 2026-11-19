@@ -1,0 +1,177 @@
+{
+  "skill": "six review subjects (joint task)",
+  "study": "v5-stage-4",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "base": "docs/reviews/evidence/v5-review-closure",
+  "source": "records.json",
+  "runs": {
+    "7ab8f3496534": {
+      "task": "a",
+      "variant": "base",
+      "source": "records.json",
+      "sha256": "152a11bbdff68d3bd93eb4aeabc77dc640449b12717dc3858ba5eec18f51a1e3",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f50d-49fc-7eb0-88ea-5e94fb60697d",
+          "rubric": "v1",
+          "packet": "same-project",
+          "source": "records.json",
+          "score": "PASS"
+        },
+        "second": {
+          "assessor": "01a1f50d-5bc4-7243-90d1-31908201669c",
+          "rubric": "v1",
+          "packet": "same-project",
+          "source": "records.json",
+          "score": "PASS"
+        }
+      }
+    },
+    "32253281c81b": {
+      "task": "a",
+      "variant": "candidate",
+      "source": "records.json",
+      "sha256": "308e2bc0e795d65ecd864de0bb6858defb6d739c74c00746bd1c7a27a1932791",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f50d-49fc-7eb0-88ea-5e94fb60697d",
+          "rubric": "v1",
+          "packet": "same-project",
+          "source": "records.json",
+          "score": "PASS"
+        },
+        "second": {
+          "assessor": "01a1f50d-5bc4-7243-90d1-31908201669c",
+          "rubric": "v1",
+          "packet": "same-project",
+          "source": "records.json",
+          "score": "PASS"
+        }
+      }
+    },
+    "399c1dc9a158": {
+      "task": "b",
+      "variant": "candidate",
+      "source": "records.json",
+      "sha256": "93fb3b561be10ba24445e5ab8e49a53abc17b0160c782c126f7a200997cd9f17",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f50d-49fc-7eb0-88ea-5e94fb60697d",
+          "rubric": "v1",
+          "packet": "same-project",
+          "source": "records.json",
+          "score": "PASS"
+        }
+      }
+    },
+    "6c67bd9a3362": {
+      "task": "b",
+      "variant": "base",
+      "source": "records.json",
+      "sha256": "7a1a6731ca339dc19659adf47b14f0caaa23f77f3fc4d4eeff65f2bd8ac88344",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f50d-49fc-7eb0-88ea-5e94fb60697d",
+          "rubric": "v1",
+          "packet": "same-project",
+          "source": "records.json",
+          "score": "FAIL"
+        }
+      }
+    }
+  },
+  "series": [
+    {
+      "id": "reporting",
+      "comparison": "candidate/base",
+      "phase": "primary",
+      "rubric": "v1",
+      "packet": "same-project",
+      "pairs": [
+        {
+          "id": "a",
+          "task": "a",
+          "right": [
+            "7ab8f3496534",
+            "primary"
+          ],
+          "left": [
+            "32253281c81b",
+            "primary"
+          ]
+        },
+        {
+          "id": "b",
+          "task": "b",
+          "left": [
+            "399c1dc9a158",
+            "primary"
+          ],
+          "right": [
+            "6c67bd9a3362",
+            "primary"
+          ]
+        }
+      ]
+    }
+  ],
+  "agreement": [
+    {
+      "run": "7ab8f3496534",
+      "rubric": "v1",
+      "packet": "same-project",
+      "ratings": [
+        "primary",
+        "second"
+      ]
+    },
+    {
+      "run": "32253281c81b",
+      "rubric": "v1",
+      "packet": "same-project",
+      "ratings": [
+        "primary",
+        "second"
+      ]
+    }
+  ],
+  "attempts": [
+    {
+      "audit": "review closure",
+      "id": "initial",
+      "order": 1,
+      "snapshot": "4777bb27a1b89ad3fb1cfc8c30d0c04bae7c72d03d163f8d423f34c81c9546ad",
+      "source": "records.json",
+      "handed": "2026-11-19T18:24:55Z",
+      "started": "2026-11-19T18:25:06Z",
+      "decided": "2026-11-19T18:26:17Z",
+      "verdict": "BLOCKED",
+      "returned": {
+        "primary": "missing evidence",
+        "finding": "Specific case inputs established after candidate edits; owner exception required.",
+        "source": "records.json"
+      }
+    },
+    {
+      "audit": "review closure",
+      "id": "owner-exception",
+      "order": 2,
+      "snapshot": "4777bb27a1b89ad3fb1cfc8c30d0c04bae7c72d03d163f8d423f34c81c9546ad",
+      "source": "records.json",
+      "handed": "2026-11-19T18:38:35.000Z",
+      "started": "2026-11-19T18:38:45Z",
+      "decided": "2026-11-19T18:38:51Z",
+      "verdict": "PASS"
+    }
+  ],
+  "observation": {
+    "version": "stage4-review-skills",
+    "accepted": "2026-11-19T18:38:51Z",
+    "released": null,
+    "through": "2026-11-19T18:38:51Z",
+    "defects": [],
+    "systematic": false,
+    "source": "records.json"
+  }
+}
