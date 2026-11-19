@@ -1,0 +1,214 @@
+{
+  "incoming": {
+    "assignedModel": "gpt-6.2-sol",
+    "effort": "medium",
+    "memoriesDisabled": true,
+    "mode": "ephemeral",
+    "exactReleaseInstallation": true,
+    "allIssuedBytesAndModesUnchanged": true,
+    "directEvidence": [
+      [
+        "item_1",
+        "exact release instruction"
+      ],
+      [
+        "item_8",
+        "CLI client"
+      ],
+      [
+        "item_6",
+        "CLI client"
+      ],
+      [
+        "item_7",
+        "visit"
+      ],
+      [
+        "item_7",
+        "successful live request"
+      ],
+      [
+        "item_13",
+        "visit"
+      ],
+      [
+        "item_13",
+        "successful live request"
+      ]
+    ],
+    "observedToolCommandCount": 17,
+    "rawAnswerSHA256": "a32a534f74c8d325cd5bdad692dba32465e6420b875cf3937a9b7b8d78239698",
+    "rawEventsSHA256": "21ed6cbfe9c09d1342e33396c3828c565fc5e5dce4afd3d9e226d50aefc543e8",
+    "thread": "01a1f12b-5b25-7b41-8d01-a36ad3b48b9c"
+  },
+  "scoped": {
+    "assignedModel": "gpt-6.2-sol",
+    "effort": "medium",
+    "memoriesDisabled": true,
+    "mode": "ephemeral",
+    "exactReleaseInstallation": true,
+    "allIssuedBytesAndModesUnchanged": true,
+    "directEvidence": [
+      [
+        "item_2",
+        "exact release instruction"
+      ],
+      [
+        "item_6",
+        "CLI client"
+      ],
+      [
+        "item_7",
+        "CLI client"
+      ],
+      [
+        "item_8",
+        "visit"
+      ],
+      [
+        "item_8",
+        "successful live request"
+      ]
+    ],
+    "observedToolCommandCount": 13,
+    "rawAnswerSHA256": "f0e36bcd2a0666b8b46cc34f1c0b98f589dd8a40947e6a930af59b8d7ef08af0",
+    "rawEventsSHA256": "d645e5058d2ab9651699261ad4dcc86c4124304e5279be33449eeff8afc1e9c6",
+    "thread": "01a1f12e-8a16-7032-8d06-f01aaa3097ee"
+  },
+  "paired": {
+    "assignedModel": "gpt-6.2-sol",
+    "effort": "medium",
+    "memoriesDisabled": true,
+    "mode": "ephemeral",
+    "exactReleaseInstallation": true,
+    "allIssuedBytesAndModesUnchanged": true,
+    "directEvidence": [
+      [
+        "item_2",
+        "exact release instruction"
+      ],
+      [
+        "item_7",
+        "successful live request"
+      ],
+      [
+        "item_10",
+        "visit"
+      ],
+      [
+        "item_14",
+        "successful live request"
+      ]
+    ],
+    "observedToolCommandCount": 14,
+    "rawAnswerSHA256": "1014e165726e84becc53b4e0d9588a3111efe6ab6a54c5242bb8c07afd3b44f4",
+    "rawEventsSHA256": "408607a84b68c8f2a9ef6c2d97b9c2a0fc6fd4e53af3c32c9aaa14467ebe9a44",
+    "thread": "01a1f131-6e01-7251-b1ef-ef0de5f816ab"
+  },
+  "keys": {
+    "assignedModel": "gpt-6.2-sol",
+    "effort": "medium",
+    "memoriesDisabled": true,
+    "mode": "ephemeral",
+    "exactReleaseInstallation": true,
+    "allIssuedBytesAndModesUnchanged": true,
+    "directEvidence": [
+      [
+        "item_2",
+        "exact release instruction"
+      ],
+      [
+        "item_12",
+        "CLI client"
+      ],
+      [
+        "item_10",
+        "CLI client"
+      ],
+      [
+        "item_11",
+        "visit"
+      ],
+      [
+        "item_11",
+        "successful live request"
+      ],
+      [
+        "item_13",
+        "DOM keyboard confirmation trace"
+      ]
+    ],
+    "observedToolCommandCount": 21,
+    "rawAnswerSHA256": "4f7c90abbab704fd7a60963fe9b4e76b7d13d0d0feec53921e02b6cfcdf12b9c",
+    "rawEventsSHA256": "b7b9bb03c9a03bf9c198d858a3093378f658b582328e714adef136944fe34bde",
+    "thread": "01a1f139-d283-72f2-8fd8-154389ee23ed"
+  },
+  "before-initial": {
+    "assignedModel": "gpt-6.2-sol",
+    "effort": "medium",
+    "memoriesDisabled": true,
+    "mode": "ephemeral",
+    "exactReleaseInstallation": false,
+    "allIssuedBytesAndModesUnchanged": true,
+    "directEvidence": [],
+    "observedToolCommandCount": 0,
+    "rawAnswerSHA256": "c2f76d73dab3f350d38761c111b2a1141702c499fc7a555a8fb519274a58464a",
+    "rawEventsSHA256": "bd038856e4e5968d175d70ef073f9fe36464762ccc0295ef630232f0c5a0789d",
+    "thread": "01a1f12b-8405-7dd0-92a5-87a61be46946"
+  },
+  "release-initial": {
+    "assignedModel": "gpt-6.2-sol",
+    "effort": "medium",
+    "memoriesDisabled": true,
+    "mode": "ephemeral",
+    "exactReleaseInstallation": false,
+    "allIssuedBytesAndModesUnchanged": true,
+    "directEvidence": [],
+    "observedToolCommandCount": 0,
+    "rawAnswerSHA256": "d6a33ddb96055a225533699f4822d6749400ca8b54e69d4a4239f86ff32bb1f8",
+    "rawEventsSHA256": "34f18b1360b7da97b53aa44450e7021eaf20fbfecb5b3e94297eb26030400f9c",
+    "thread": "01a1f12b-aa63-72b1-b3c7-254f20ca74bd"
+  },
+  "before-read": {
+    "assignedModel": "gpt-6.2-sol",
+    "effort": "medium",
+    "memoriesDisabled": true,
+    "mode": "ephemeral",
+    "exactReleaseInstallation": false,
+    "allIssuedBytesAndModesUnchanged": true,
+    "directEvidence": [
+      [
+        "item_1",
+        "catalog and opaque ids"
+      ]
+    ],
+    "observedToolCommandCount": 1,
+    "rawAnswerSHA256": "f47df7388d838791628ca09c00ea7f8dedf08f4d2fbacc85bf65d0dff555b17e",
+    "rawEventsSHA256": "813af662df17c78cf81873f727bc6b18489f993b673995435f1d6bf2759d6e51",
+    "thread": "01a1f12e-622c-7e91-b815-d1018b761893"
+  },
+  "release-read": {
+    "assignedModel": "gpt-6.2-sol",
+    "effort": "medium",
+    "memoriesDisabled": true,
+    "mode": "ephemeral",
+    "exactReleaseInstallation": false,
+    "allIssuedBytesAndModesUnchanged": true,
+    "directEvidence": [
+      [
+        "item_1",
+        "catalog and opaque ids"
+      ]
+    ],
+    "observedToolCommandCount": 1,
+    "rawAnswerSHA256": "1c6c5668aff520fbe561f9248d1c906abf0e85c51182e0dbab96b954b6dedbef",
+    "rawEventsSHA256": "2788246c3f2cd604950165fbbdcd0bbbf4d32249cb610b618f072a895b7e310b",
+    "thread": "01a1f12e-622c-7551-8541-fc600cb3ee0b"
+  },
+  "archives": {
+    "handoff-inputs.tar.gz": "bccc0d66dff314e897e89df7da6217c7ee7993b521a1dc583761995145e841ce",
+    "selection-inputs.tar.gz": "2e470ccb5ae82f9d87dc68a0eb287639893cc274b4efb1782ba648a467fecc7b",
+    "supplement-records.tar.gz": "02fc3026d65df0d14c021f57e37e5b7c7cd68932ae8d8710f0b5ce68bc29e628"
+  },
+  "access": "Fresh workspace and disabled memory; process argv and local events record actual consumption. The child could technically read other host paths. The initial catalogue sessions issued no file-reading operations. The keyed sessions read the supplied catalog and returned its identifiers."
+}

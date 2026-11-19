@@ -1,0 +1,6 @@
+{
+  "signedAB": "b581b0b4d71ed295dcc14bbb58491ed13722a4201df3fe51db3b2b2dc57fd691",
+  "selected": "4. Preview registry changes against the installed component. For a compatibility review, report the configured primitive, file type, and resolved destination.",
+  "observed": "Все четыре исполнителя исследовали конфигурацию, проверили предложение CLI и верно решили вопрос приёмки. Оценщик не нашёл в итогах сведения о базе, типе файла и привязке пути, необходимые для воспроизведения вывода в этом проекте. Сокращаем подсказку о CLI и уточняем измеримый результат для проверки совместимости.",
+  "selectedAt": "2026-11-18T23:37:00.699743+00:00"
+}

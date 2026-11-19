@@ -1,0 +1,576 @@
+{
+  "rawArchiveSHA256": "9a0b51f9a12f223f586752299827aea3f2f5b7be960d220d48614b0ffa1d2875",
+  "subjects": {
+    "4d9846": {
+      "stage": "ab",
+      "role": "B",
+      "case": "boundary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "10d3d05c8a65adba84ab9f134b4531e1ed394f1cde20a89becbe2e7b325f5633",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "3. **Fetch current APIs.** Run `shadcn docs <components...> --json`, fetch the returned URLs, and inspect local wrappers before choosing props.",
+        "5. **Apply surgically.** Preserve local variants and user changes. Never use `--overwrite` or apply a broad preset without explicit authority."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0,
+            1
+          ],
+          "eventSHA256": "686239f548f41c7312c802eee77868b2eb3969126e19ce24124c829a1f3de85f"
+        }
+      ],
+      "finalAnswerSHA256": "1920bb15bb9a45f64e014a111842ebe340699a1842a603df168615d7fc89f3ca",
+      "eventSHA256": "e11210fe7f6521299bc5038efc523ea37e4976e43c03a66c23fdb1b3e1f81b3b",
+      "exit": 0
+    },
+    "b181d1": {
+      "stage": "ab",
+      "role": "B",
+      "case": "ordinary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "10d3d05c8a65adba84ab9f134b4531e1ed394f1cde20a89becbe2e7b325f5633",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "3. **Fetch current APIs.** Run `shadcn docs <components...> --json`, fetch the returned URLs, and inspect local wrappers before choosing props.",
+        "5. **Apply surgically.** Preserve local variants and user changes. Never use `--overwrite` or apply a broad preset without explicit authority."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0,
+            1
+          ],
+          "eventSHA256": "1c1df7067ceb6129c705036fe8cdcbbb339befbe7fdc03d8ea28f6433fbd1129"
+        }
+      ],
+      "finalAnswerSHA256": "724d796e0b6ac79931b85dc06b083bd66ebc91279d33672a5b2f433fcbf16afb",
+      "eventSHA256": "40d53febc2b3da84688a284b15ee2d7838b2e83aa4255852a43cad0cb711ee95",
+      "exit": 0
+    },
+    "1f103a": {
+      "stage": "ab",
+      "role": "A",
+      "case": "ordinary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "7e04e100c6ba15df9841cbcd3113d58c4b39a46cd90dd00cbdaabaddf1d65502",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "4. **Preview changes.** Use `add --dry-run`, `--diff`, or `--view` before updating installed components or accepting third-party registry code."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_1",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "e8849e547ae2d42d2c62c2f40ddc718d39c6e6c008dcf3ae06e7c11eb43d7778"
+        }
+      ],
+      "finalAnswerSHA256": "f1455f36a2852823a7a815b808a61dc4363d87a1e3222985d2bebfd8a66e3047",
+      "eventSHA256": "9c599ff9c98bc537173ca7e0ac906eb895eb041090fba0c65ca71c32a3f88377",
+      "exit": 0
+    },
+    "81bd1b": {
+      "stage": "ab",
+      "role": "A",
+      "case": "boundary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "7e04e100c6ba15df9841cbcd3113d58c4b39a46cd90dd00cbdaabaddf1d65502",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "4. **Preview changes.** Use `add --dry-run`, `--diff`, or `--view` before updating installed components or accepting third-party registry code."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "5ebb0818445121e0b3ebd7d02c2d9dfc13b4f509673839f348976cb08ebb4973"
+        }
+      ],
+      "finalAnswerSHA256": "a8667d36532b6091df3d90450c5031fa7630af948fd6cbb470c919ce66d3ae6a",
+      "eventSHA256": "d01f47743471c426ee4b76a7647a0c8364dad67ec2bd6484cb261f11dbf73a38",
+      "exit": 0
+    },
+    "4b527e": {
+      "stage": "confirm",
+      "role": "C",
+      "case": "ordinary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "51b537771ebb41e23b116bd94b0a3ac56f9843ea7653598de97d87e8a6aa9d41",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "4. Preview registry changes against the installed component. For a compatibility review, report the configured primitive, file type, and resolved destination."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "347e8d1125d65bb429b186f7d65eb4afead7e57f3090d98b5c486d691a4b25e3"
+        }
+      ],
+      "finalAnswerSHA256": "b98be25bead55f0ecfcbda726361fff1f1fe6ec743be644d5a53019ed1fc21dc",
+      "eventSHA256": "a73997f46d1efb8ee5be454c405b600e073693ebaa55d5ccda84ac0c3897a724",
+      "exit": 0
+    },
+    "22c7b1": {
+      "stage": "confirm",
+      "role": "A",
+      "case": "holdout",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "7e04e100c6ba15df9841cbcd3113d58c4b39a46cd90dd00cbdaabaddf1d65502",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "4. **Preview changes.** Use `add --dry-run`, `--diff`, or `--view` before updating installed components or accepting third-party registry code."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "237de35e73f25ecb201e1661a44df25250f11928b1616d762fd7bd3089bc444a"
+        }
+      ],
+      "finalAnswerSHA256": "b3acda8870b4027e7f57995648dc4a0d9fdafd034d819a6e797fb3ff4f33fe09",
+      "eventSHA256": "ee8203a964c72c3ac08847f9a8225f000f24558a47b526a4bdba03ed1d6550d4",
+      "exit": 0
+    },
+    "9ac4ff": {
+      "stage": "confirm",
+      "role": "C",
+      "case": "holdout",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "51b537771ebb41e23b116bd94b0a3ac56f9843ea7653598de97d87e8a6aa9d41",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "4. Preview registry changes against the installed component. For a compatibility review, report the configured primitive, file type, and resolved destination."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "342d68ff78e173577851e5d79ab22d4561c90f250ad6ad95365441178476246b"
+        }
+      ],
+      "finalAnswerSHA256": "ac72b9ee1de04f289c707299976249b37f6f1ae2719b56e307184303bb65eb80",
+      "eventSHA256": "8c8d43f43810a4fec2b6c0de7ee1bf3b1b4b05002c2f68caed95875506abca92",
+      "exit": 0
+    },
+    "38d330": {
+      "stage": "confirm",
+      "role": "C",
+      "case": "boundary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "51b537771ebb41e23b116bd94b0a3ac56f9843ea7653598de97d87e8a6aa9d41",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "4. Preview registry changes against the installed component. For a compatibility review, report the configured primitive, file type, and resolved destination."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "50baae741806ece1d7b045b39fefacbd7e1b179b8f241679f7a6747b6c3cc2b9"
+        }
+      ],
+      "finalAnswerSHA256": "f7cc2f82103782d3dac583c501b3bc31ed4ce240b1378e298c232ead50fa9d1f",
+      "eventSHA256": "888d96b846b2f5745e70f8ddd9f04a7ad9de3652198b839a7f573565ebc14e1e",
+      "exit": 0
+    }
+  },
+  "graders": {
+    "ab": {
+      "originalReportSHA256": "b581b0b4d71ed295dcc14bbb58491ed13722a4201df3fe51db3b2b2dc57fd691",
+      "portableReportSHA256": "fee0d05432ab3a0dae820bd41664c98eba843c40c8b64baaed9d189ff826ce76",
+      "eventsSHA256": "929b485ac6616239d3aefb49a1e6c745cc03f81392d659741d25308fd4f625cc",
+      "assignment": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"high\"",
+      "deliveredInputs": {
+        "criteria.md": "f6093073181fcfb235629aa81208d0cb5abee5ddef50251d974d479d1eca35df",
+        "81bd1b/actions.json": "c57ebfb39ebed9782e24aa3560dc4da471eec0228004aeea8439998ad9eeae6b",
+        "81bd1b/observer.json": "9cb137efba1c1cd594355c78c24ce76b7e3e23ee06a6b631ce918ae72ac2a74b",
+        "81bd1b/answer.md": "1cb243a98263de579259c6b7e91651ad73274d547c51a7f551c3a5b8686fe48f",
+        "81bd1b/task.md": "642d6cb9eeb06d76830713208cee2690f3c9b7749ca82e628de03e3dad16da4b",
+        "1f103a/actions.json": "d1e4ba1bbdf320ac8f347a5a076dae281bb32335d5199ac1672dd909baff7c44",
+        "1f103a/observer.json": "bdd80f1e0fd73c76de8e0512f705957e056a7360d38199125a25fa94122d92d4",
+        "1f103a/answer.md": "b518600aeb4d240e436c711297c918406e0742664bc6d298f66f1f51cce877eb",
+        "1f103a/task.md": "642d6cb9eeb06d76830713208cee2690f3c9b7749ca82e628de03e3dad16da4b",
+        "b181d1/actions.json": "40dd133720b3b6e7b795cec0dd5668063017c3e684ba9eeef16865db0ee7324d",
+        "b181d1/observer.json": "3700eb5a075aca44042b7da4ca3611fbbfd3a6ebb39db8b6a7c3a9bc67df860c",
+        "b181d1/answer.md": "d63e45b66957639b0bc92b5d73c721c4d9d871d49eff23cbdc63b777748c7889",
+        "b181d1/task.md": "642d6cb9eeb06d76830713208cee2690f3c9b7749ca82e628de03e3dad16da4b",
+        "4d9846/actions.json": "7100e3442eb221ec283701229f0a4eab2329041c8103c10c7ff87c98356247f2",
+        "4d9846/observer.json": "7f0d8595b9d97cf5195a26264f8453dcaee3c95186ce509619735ca40641eede",
+        "4d9846/answer.md": "2e822273c395d202444404192622dc09e52e672c22e8c636869d4bba709006ba",
+        "4d9846/task.md": "642d6cb9eeb06d76830713208cee2690f3c9b7749ca82e628de03e3dad16da4b",
+        "4d9846/after/owner.md": "70542019a4d7b0190243ef306d01b9ad06e31b5d7a4c53fd64daaaae1faac229",
+        "4d9846/after/workplace.md": "2823e7f8d9e2dddaabfcb2cb4b7056eafa1ae85d5c43468554730d980d0e6570",
+        "4d9846/before/owner.md": "70542019a4d7b0190243ef306d01b9ad06e31b5d7a4c53fd64daaaae1faac229",
+        "4d9846/before/workplace.md": "2823e7f8d9e2dddaabfcb2cb4b7056eafa1ae85d5c43468554730d980d0e6570",
+        "4d9846/before/installed/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "4d9846/before/installed/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+        "4d9846/before/registry/button.json": "50399973a9d92604862e1424c1ac29f7e498fd8866b20499e67742a8c6daa827",
+        "4d9846/before/candidate/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "4d9846/before/candidate/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+        "4d9846/before/candidate/src/main.tsx": "4ee5791624724996db3a1a5134508fc202ad76a98c1df33efec514b4b96d0dbe",
+        "4d9846/before/candidate/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "4d9846/before/candidate/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "4d9846/before/candidate/src/components/ui/button.tsx": "76f05a1059499715a389a5138117df3f4a595dec291847d7cfba3672c660c273",
+        "4d9846/before/installed/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+        "4d9846/after/installed/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "4d9846/after/installed/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+        "4d9846/after/registry/button.json": "50399973a9d92604862e1424c1ac29f7e498fd8866b20499e67742a8c6daa827",
+        "4d9846/after/candidate/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "4d9846/after/candidate/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+        "4d9846/after/candidate/src/main.tsx": "4ee5791624724996db3a1a5134508fc202ad76a98c1df33efec514b4b96d0dbe",
+        "4d9846/after/candidate/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "4d9846/after/candidate/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "4d9846/after/candidate/src/components/ui/button.tsx": "76f05a1059499715a389a5138117df3f4a595dec291847d7cfba3672c660c273",
+        "4d9846/after/installed/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+        "b181d1/after/owner.md": "ca133fd2cd60226b030734c92bc84576c97ed869ea1534ea6b50e90b5a83d042",
+        "b181d1/after/workplace.md": "811f7ce01a2e6c33c28db626c172b8ac914a60be3bb0704c6b9f865cee98fb30",
+        "b181d1/before/owner.md": "ca133fd2cd60226b030734c92bc84576c97ed869ea1534ea6b50e90b5a83d042",
+        "b181d1/before/workplace.md": "811f7ce01a2e6c33c28db626c172b8ac914a60be3bb0704c6b9f865cee98fb30",
+        "b181d1/before/installed/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "b181d1/before/installed/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+        "b181d1/before/registry/button.json": "50399973a9d92604862e1424c1ac29f7e498fd8866b20499e67742a8c6daa827",
+        "b181d1/before/candidate/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "b181d1/before/candidate/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+        "b181d1/before/candidate/src/main.tsx": "8d3041df0ce94160838ddeac028193344d67b7b27e1e779791ff1a05fcc9f2e3",
+        "b181d1/before/candidate/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "b181d1/before/candidate/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "b181d1/before/candidate/src/components/ui/button.tsx": "bfa000f447f2fba3d8fa71fbdc8ffc8b97232fd85118f1bc57e5ccf483545f45",
+        "b181d1/before/installed/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+        "b181d1/after/installed/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "b181d1/after/installed/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+        "b181d1/after/registry/button.json": "50399973a9d92604862e1424c1ac29f7e498fd8866b20499e67742a8c6daa827",
+        "b181d1/after/candidate/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "b181d1/after/candidate/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+        "b181d1/after/candidate/src/main.tsx": "8d3041df0ce94160838ddeac028193344d67b7b27e1e779791ff1a05fcc9f2e3",
+        "b181d1/after/candidate/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "b181d1/after/candidate/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "b181d1/after/candidate/src/components/ui/button.tsx": "bfa000f447f2fba3d8fa71fbdc8ffc8b97232fd85118f1bc57e5ccf483545f45",
+        "b181d1/after/installed/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+        "1f103a/after/owner.md": "ca133fd2cd60226b030734c92bc84576c97ed869ea1534ea6b50e90b5a83d042",
+        "1f103a/after/workplace.md": "811f7ce01a2e6c33c28db626c172b8ac914a60be3bb0704c6b9f865cee98fb30",
+        "1f103a/before/owner.md": "ca133fd2cd60226b030734c92bc84576c97ed869ea1534ea6b50e90b5a83d042",
+        "1f103a/before/workplace.md": "811f7ce01a2e6c33c28db626c172b8ac914a60be3bb0704c6b9f865cee98fb30",
+        "1f103a/before/installed/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "1f103a/before/installed/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+        "1f103a/before/registry/button.json": "50399973a9d92604862e1424c1ac29f7e498fd8866b20499e67742a8c6daa827",
+        "1f103a/before/candidate/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "1f103a/before/candidate/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+        "1f103a/before/candidate/src/main.tsx": "8d3041df0ce94160838ddeac028193344d67b7b27e1e779791ff1a05fcc9f2e3",
+        "1f103a/before/candidate/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "1f103a/before/candidate/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "1f103a/before/candidate/src/components/ui/button.tsx": "bfa000f447f2fba3d8fa71fbdc8ffc8b97232fd85118f1bc57e5ccf483545f45",
+        "1f103a/before/installed/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+        "1f103a/after/installed/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "1f103a/after/installed/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+        "1f103a/after/registry/button.json": "50399973a9d92604862e1424c1ac29f7e498fd8866b20499e67742a8c6daa827",
+        "1f103a/after/candidate/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "1f103a/after/candidate/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+        "1f103a/after/candidate/src/main.tsx": "8d3041df0ce94160838ddeac028193344d67b7b27e1e779791ff1a05fcc9f2e3",
+        "1f103a/after/candidate/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "1f103a/after/candidate/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "1f103a/after/candidate/src/components/ui/button.tsx": "bfa000f447f2fba3d8fa71fbdc8ffc8b97232fd85118f1bc57e5ccf483545f45",
+        "1f103a/after/installed/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+        "81bd1b/after/owner.md": "70542019a4d7b0190243ef306d01b9ad06e31b5d7a4c53fd64daaaae1faac229",
+        "81bd1b/after/workplace.md": "2823e7f8d9e2dddaabfcb2cb4b7056eafa1ae85d5c43468554730d980d0e6570",
+        "81bd1b/before/owner.md": "70542019a4d7b0190243ef306d01b9ad06e31b5d7a4c53fd64daaaae1faac229",
+        "81bd1b/before/workplace.md": "2823e7f8d9e2dddaabfcb2cb4b7056eafa1ae85d5c43468554730d980d0e6570",
+        "81bd1b/before/installed/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "81bd1b/before/installed/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+        "81bd1b/before/registry/button.json": "50399973a9d92604862e1424c1ac29f7e498fd8866b20499e67742a8c6daa827",
+        "81bd1b/before/candidate/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "81bd1b/before/candidate/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+        "81bd1b/before/candidate/src/main.tsx": "4ee5791624724996db3a1a5134508fc202ad76a98c1df33efec514b4b96d0dbe",
+        "81bd1b/before/candidate/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "81bd1b/before/candidate/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "81bd1b/before/candidate/src/components/ui/button.tsx": "76f05a1059499715a389a5138117df3f4a595dec291847d7cfba3672c660c273",
+        "81bd1b/before/installed/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+        "81bd1b/after/installed/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "81bd1b/after/installed/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+        "81bd1b/after/registry/button.json": "50399973a9d92604862e1424c1ac29f7e498fd8866b20499e67742a8c6daa827",
+        "81bd1b/after/candidate/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "81bd1b/after/candidate/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+        "81bd1b/after/candidate/src/main.tsx": "4ee5791624724996db3a1a5134508fc202ad76a98c1df33efec514b4b96d0dbe",
+        "81bd1b/after/candidate/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "81bd1b/after/candidate/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "81bd1b/after/candidate/src/components/ui/button.tsx": "76f05a1059499715a389a5138117df3f4a595dec291847d7cfba3672c660c273",
+        "81bd1b/after/installed/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e"
+      },
+      "postSignMapping": [
+        {
+          "role": "B",
+          "case": "boundary",
+          "label": "4d9846"
+        },
+        {
+          "role": "B",
+          "case": "ordinary",
+          "label": "b181d1"
+        },
+        {
+          "role": "A",
+          "case": "ordinary",
+          "label": "1f103a"
+        },
+        {
+          "role": "A",
+          "case": "boundary",
+          "label": "81bd1b"
+        }
+      ]
+    },
+    "confirm": {
+      "originalReportSHA256": "a63497626100257ac4b2ddefa6cf5c4332dc92f088f2b1359737ee05c831009c",
+      "portableReportSHA256": "b5a7f8d253957341442d4573cd6a884d571481f9a5af39d5e6706b123f0ecfbf",
+      "eventsSHA256": "6091fdfcbd0369a047f6a67aafe7c95cd0ffd9895bcfd81fdcbfe6c68aee3599",
+      "assignment": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"high\"",
+      "deliveredInputs": {
+        "criteria.md": "f6093073181fcfb235629aa81208d0cb5abee5ddef50251d974d479d1eca35df",
+        "4b527e/actions.json": "1430106a85e5e902bc429ea55986ca844616ccdab5a25081d364d5629decfc86",
+        "4b527e/observer.json": "e4df236a96f9df8fb611e149062ba683674b5ee7f67a82775ac53d1854d8946b",
+        "4b527e/answer.md": "791b46b2efc75204bf9ee01358c7900de0e946b8ea9e2672a8f61c9fb202a099",
+        "4b527e/task.md": "642d6cb9eeb06d76830713208cee2690f3c9b7749ca82e628de03e3dad16da4b",
+        "9ac4ff/actions.json": "4ee1451ca6ea8fbb0e88bab4d52c25b90979ca4884fecbbaabd1384023af2a5a",
+        "9ac4ff/observer.json": "15b2753f48b2f59475fd0d0743820bfa43c35f8482278b9997e1f5bd4356d99a",
+        "9ac4ff/answer.md": "203109c5b65a9be23fb6e97f0ec3823c5351c6c18560465586fa12403bbcf325",
+        "9ac4ff/task.md": "642d6cb9eeb06d76830713208cee2690f3c9b7749ca82e628de03e3dad16da4b",
+        "22bc54/actions.json": "c57ebfb39ebed9782e24aa3560dc4da471eec0228004aeea8439998ad9eeae6b",
+        "22bc54/observer.json": "9cb137efba1c1cd594355c78c24ce76b7e3e23ee06a6b631ce918ae72ac2a74b",
+        "22bc54/answer.md": "1cb243a98263de579259c6b7e91651ad73274d547c51a7f551c3a5b8686fe48f",
+        "22bc54/task.md": "642d6cb9eeb06d76830713208cee2690f3c9b7749ca82e628de03e3dad16da4b",
+        "c3c32b/actions.json": "d1e4ba1bbdf320ac8f347a5a076dae281bb32335d5199ac1672dd909baff7c44",
+        "c3c32b/observer.json": "bdd80f1e0fd73c76de8e0512f705957e056a7360d38199125a25fa94122d92d4",
+        "c3c32b/answer.md": "b518600aeb4d240e436c711297c918406e0742664bc6d298f66f1f51cce877eb",
+        "c3c32b/task.md": "642d6cb9eeb06d76830713208cee2690f3c9b7749ca82e628de03e3dad16da4b",
+        "38d330/actions.json": "deea6d47d019b2acdce775912fd366a5ee33c1c0c41c8930c753716d7fbb16e7",
+        "38d330/observer.json": "0f14a3c75fe133bce3a12e24562a6e518f90f55bb8ac108c53d95f5de30ca9ee",
+        "38d330/answer.md": "f3e024d5504f96fbc4f2b6e3ecc0f24981af690f1eb3faf5f7be843055b5d889",
+        "38d330/task.md": "642d6cb9eeb06d76830713208cee2690f3c9b7749ca82e628de03e3dad16da4b",
+        "22c7b1/actions.json": "9189b0c430f16ffb4f975e08623dbd4e0e457e3b7f69feb8a16c79e58504cd49",
+        "22c7b1/observer.json": "8f5d1e4f964e779ef55af62fe1d681a8ea939b998be607abaa6ad0f5bd7f5667",
+        "22c7b1/answer.md": "bea4177060c24642f09d5b42439ebc4120cc2d6379c892500950ef625a06927f",
+        "22c7b1/task.md": "642d6cb9eeb06d76830713208cee2690f3c9b7749ca82e628de03e3dad16da4b",
+        "22c7b1/after/owner.md": "44128179ea91f1ac1e2a5a55015ecb59b6fc3f2b8a6099e2fceb1ec3f0fac008",
+        "22c7b1/after/workplace.md": "1999e55f2b74417bb2ba3d2c42aa1562ceaf5ae59825d9d43a3e726feed61105",
+        "22c7b1/before/owner.md": "44128179ea91f1ac1e2a5a55015ecb59b6fc3f2b8a6099e2fceb1ec3f0fac008",
+        "22c7b1/before/workplace.md": "1999e55f2b74417bb2ba3d2c42aa1562ceaf5ae59825d9d43a3e726feed61105",
+        "22c7b1/before/installed/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "22c7b1/before/installed/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+        "22c7b1/before/registry/button.json": "50399973a9d92604862e1424c1ac29f7e498fd8866b20499e67742a8c6daa827",
+        "22c7b1/before/candidate/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "22c7b1/before/candidate/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+        "22c7b1/before/candidate/src/main.tsx": "9972125059e71fecd45c00acb838215d8221c4ce533682399c025d5cd087476a",
+        "22c7b1/before/candidate/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "22c7b1/before/candidate/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "22c7b1/before/candidate/src/components/ui/button.tsx": "4dd35eabadafee46f5a8b47c812471ae1169074e99af4e747f96e46837b8b382",
+        "22c7b1/before/installed/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+        "22c7b1/after/installed/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "22c7b1/after/installed/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+        "22c7b1/after/registry/button.json": "50399973a9d92604862e1424c1ac29f7e498fd8866b20499e67742a8c6daa827",
+        "22c7b1/after/candidate/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "22c7b1/after/candidate/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+        "22c7b1/after/candidate/src/main.tsx": "9972125059e71fecd45c00acb838215d8221c4ce533682399c025d5cd087476a",
+        "22c7b1/after/candidate/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "22c7b1/after/candidate/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "22c7b1/after/candidate/src/components/ui/button.tsx": "4dd35eabadafee46f5a8b47c812471ae1169074e99af4e747f96e46837b8b382",
+        "22c7b1/after/installed/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+        "38d330/after/owner.md": "70542019a4d7b0190243ef306d01b9ad06e31b5d7a4c53fd64daaaae1faac229",
+        "38d330/after/workplace.md": "2823e7f8d9e2dddaabfcb2cb4b7056eafa1ae85d5c43468554730d980d0e6570",
+        "38d330/before/owner.md": "70542019a4d7b0190243ef306d01b9ad06e31b5d7a4c53fd64daaaae1faac229",
+        "38d330/before/workplace.md": "2823e7f8d9e2dddaabfcb2cb4b7056eafa1ae85d5c43468554730d980d0e6570",
+        "38d330/before/installed/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "38d330/before/installed/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+        "38d330/before/registry/button.json": "50399973a9d92604862e1424c1ac29f7e498fd8866b20499e67742a8c6daa827",
+        "38d330/before/candidate/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "38d330/before/candidate/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+        "38d330/before/candidate/src/main.tsx": "4ee5791624724996db3a1a5134508fc202ad76a98c1df33efec514b4b96d0dbe",
+        "38d330/before/candidate/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "38d330/before/candidate/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "38d330/before/candidate/src/components/ui/button.tsx": "76f05a1059499715a389a5138117df3f4a595dec291847d7cfba3672c660c273",
+        "38d330/before/installed/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+        "38d330/after/installed/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "38d330/after/installed/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+        "38d330/after/registry/button.json": "50399973a9d92604862e1424c1ac29f7e498fd8866b20499e67742a8c6daa827",
+        "38d330/after/candidate/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "38d330/after/candidate/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+        "38d330/after/candidate/src/main.tsx": "4ee5791624724996db3a1a5134508fc202ad76a98c1df33efec514b4b96d0dbe",
+        "38d330/after/candidate/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "38d330/after/candidate/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "38d330/after/candidate/src/components/ui/button.tsx": "76f05a1059499715a389a5138117df3f4a595dec291847d7cfba3672c660c273",
+        "38d330/after/installed/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+        "c3c32b/after/owner.md": "ca133fd2cd60226b030734c92bc84576c97ed869ea1534ea6b50e90b5a83d042",
+        "c3c32b/after/workplace.md": "811f7ce01a2e6c33c28db626c172b8ac914a60be3bb0704c6b9f865cee98fb30",
+        "c3c32b/before/owner.md": "ca133fd2cd60226b030734c92bc84576c97ed869ea1534ea6b50e90b5a83d042",
+        "c3c32b/before/workplace.md": "811f7ce01a2e6c33c28db626c172b8ac914a60be3bb0704c6b9f865cee98fb30",
+        "c3c32b/before/installed/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "c3c32b/before/installed/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+        "c3c32b/before/registry/button.json": "50399973a9d92604862e1424c1ac29f7e498fd8866b20499e67742a8c6daa827",
+        "c3c32b/before/candidate/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "c3c32b/before/candidate/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+        "c3c32b/before/candidate/src/main.tsx": "8d3041df0ce94160838ddeac028193344d67b7b27e1e779791ff1a05fcc9f2e3",
+        "c3c32b/before/candidate/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "c3c32b/before/candidate/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "c3c32b/before/candidate/src/components/ui/button.tsx": "bfa000f447f2fba3d8fa71fbdc8ffc8b97232fd85118f1bc57e5ccf483545f45",
+        "c3c32b/before/installed/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+        "c3c32b/after/installed/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "c3c32b/after/installed/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+        "c3c32b/after/registry/button.json": "50399973a9d92604862e1424c1ac29f7e498fd8866b20499e67742a8c6daa827",
+        "c3c32b/after/candidate/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "c3c32b/after/candidate/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+        "c3c32b/after/candidate/src/main.tsx": "8d3041df0ce94160838ddeac028193344d67b7b27e1e779791ff1a05fcc9f2e3",
+        "c3c32b/after/candidate/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "c3c32b/after/candidate/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "c3c32b/after/candidate/src/components/ui/button.tsx": "bfa000f447f2fba3d8fa71fbdc8ffc8b97232fd85118f1bc57e5ccf483545f45",
+        "c3c32b/after/installed/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+        "22bc54/after/owner.md": "70542019a4d7b0190243ef306d01b9ad06e31b5d7a4c53fd64daaaae1faac229",
+        "22bc54/after/workplace.md": "2823e7f8d9e2dddaabfcb2cb4b7056eafa1ae85d5c43468554730d980d0e6570",
+        "22bc54/before/owner.md": "70542019a4d7b0190243ef306d01b9ad06e31b5d7a4c53fd64daaaae1faac229",
+        "22bc54/before/workplace.md": "2823e7f8d9e2dddaabfcb2cb4b7056eafa1ae85d5c43468554730d980d0e6570",
+        "22bc54/before/installed/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "22bc54/before/installed/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+        "22bc54/before/registry/button.json": "50399973a9d92604862e1424c1ac29f7e498fd8866b20499e67742a8c6daa827",
+        "22bc54/before/candidate/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "22bc54/before/candidate/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+        "22bc54/before/candidate/src/main.tsx": "4ee5791624724996db3a1a5134508fc202ad76a98c1df33efec514b4b96d0dbe",
+        "22bc54/before/candidate/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "22bc54/before/candidate/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "22bc54/before/candidate/src/components/ui/button.tsx": "76f05a1059499715a389a5138117df3f4a595dec291847d7cfba3672c660c273",
+        "22bc54/before/installed/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+        "22bc54/after/installed/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "22bc54/after/installed/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+        "22bc54/after/registry/button.json": "50399973a9d92604862e1424c1ac29f7e498fd8866b20499e67742a8c6daa827",
+        "22bc54/after/candidate/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "22bc54/after/candidate/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+        "22bc54/after/candidate/src/main.tsx": "4ee5791624724996db3a1a5134508fc202ad76a98c1df33efec514b4b96d0dbe",
+        "22bc54/after/candidate/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "22bc54/after/candidate/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "22bc54/after/candidate/src/components/ui/button.tsx": "76f05a1059499715a389a5138117df3f4a595dec291847d7cfba3672c660c273",
+        "22bc54/after/installed/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+        "9ac4ff/after/owner.md": "44128179ea91f1ac1e2a5a55015ecb59b6fc3f2b8a6099e2fceb1ec3f0fac008",
+        "9ac4ff/after/workplace.md": "1999e55f2b74417bb2ba3d2c42aa1562ceaf5ae59825d9d43a3e726feed61105",
+        "9ac4ff/before/owner.md": "44128179ea91f1ac1e2a5a55015ecb59b6fc3f2b8a6099e2fceb1ec3f0fac008",
+        "9ac4ff/before/workplace.md": "1999e55f2b74417bb2ba3d2c42aa1562ceaf5ae59825d9d43a3e726feed61105",
+        "9ac4ff/before/installed/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "9ac4ff/before/installed/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+        "9ac4ff/before/registry/button.json": "50399973a9d92604862e1424c1ac29f7e498fd8866b20499e67742a8c6daa827",
+        "9ac4ff/before/candidate/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "9ac4ff/before/candidate/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+        "9ac4ff/before/candidate/src/main.tsx": "9972125059e71fecd45c00acb838215d8221c4ce533682399c025d5cd087476a",
+        "9ac4ff/before/candidate/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "9ac4ff/before/candidate/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "9ac4ff/before/candidate/src/components/ui/button.tsx": "4dd35eabadafee46f5a8b47c812471ae1169074e99af4e747f96e46837b8b382",
+        "9ac4ff/before/installed/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+        "9ac4ff/after/installed/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "9ac4ff/after/installed/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+        "9ac4ff/after/registry/button.json": "50399973a9d92604862e1424c1ac29f7e498fd8866b20499e67742a8c6daa827",
+        "9ac4ff/after/candidate/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "9ac4ff/after/candidate/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+        "9ac4ff/after/candidate/src/main.tsx": "9972125059e71fecd45c00acb838215d8221c4ce533682399c025d5cd087476a",
+        "9ac4ff/after/candidate/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "9ac4ff/after/candidate/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "9ac4ff/after/candidate/src/components/ui/button.tsx": "4dd35eabadafee46f5a8b47c812471ae1169074e99af4e747f96e46837b8b382",
+        "9ac4ff/after/installed/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+        "4b527e/after/owner.md": "ca133fd2cd60226b030734c92bc84576c97ed869ea1534ea6b50e90b5a83d042",
+        "4b527e/after/workplace.md": "811f7ce01a2e6c33c28db626c172b8ac914a60be3bb0704c6b9f865cee98fb30",
+        "4b527e/before/owner.md": "ca133fd2cd60226b030734c92bc84576c97ed869ea1534ea6b50e90b5a83d042",
+        "4b527e/before/workplace.md": "811f7ce01a2e6c33c28db626c172b8ac914a60be3bb0704c6b9f865cee98fb30",
+        "4b527e/before/installed/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "4b527e/before/installed/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+        "4b527e/before/registry/button.json": "50399973a9d92604862e1424c1ac29f7e498fd8866b20499e67742a8c6daa827",
+        "4b527e/before/candidate/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "4b527e/before/candidate/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+        "4b527e/before/candidate/src/main.tsx": "8d3041df0ce94160838ddeac028193344d67b7b27e1e779791ff1a05fcc9f2e3",
+        "4b527e/before/candidate/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "4b527e/before/candidate/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "4b527e/before/candidate/src/components/ui/button.tsx": "bfa000f447f2fba3d8fa71fbdc8ffc8b97232fd85118f1bc57e5ccf483545f45",
+        "4b527e/before/installed/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+        "4b527e/after/installed/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "4b527e/after/installed/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+        "4b527e/after/registry/button.json": "50399973a9d92604862e1424c1ac29f7e498fd8866b20499e67742a8c6daa827",
+        "4b527e/after/candidate/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "4b527e/after/candidate/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+        "4b527e/after/candidate/src/main.tsx": "8d3041df0ce94160838ddeac028193344d67b7b27e1e779791ff1a05fcc9f2e3",
+        "4b527e/after/candidate/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "4b527e/after/candidate/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "4b527e/after/candidate/src/components/ui/button.tsx": "bfa000f447f2fba3d8fa71fbdc8ffc8b97232fd85118f1bc57e5ccf483545f45",
+        "4b527e/after/installed/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e"
+      },
+      "postSignMapping": [
+        {
+          "role": "A",
+          "case": "holdout",
+          "label": "22c7b1"
+        },
+        {
+          "role": "C",
+          "case": "boundary",
+          "label": "38d330"
+        },
+        {
+          "role": "A",
+          "case": "ordinary",
+          "label": "c3c32b",
+          "original_label": "1f103a"
+        },
+        {
+          "role": "A",
+          "case": "boundary",
+          "label": "22bc54",
+          "original_label": "81bd1b"
+        },
+        {
+          "role": "C",
+          "case": "holdout",
+          "label": "9ac4ff"
+        },
+        {
+          "role": "C",
+          "case": "ordinary",
+          "label": "4b527e"
+        }
+      ]
+    }
+  },
+  "limits": "Fresh ephemeral task workspaces with memories disabled. Shared host-level read access remained technically possible. DirectTextObserved records relevant text returned in a recorded tool result; targeted manual examination remains necessary when false."
+}

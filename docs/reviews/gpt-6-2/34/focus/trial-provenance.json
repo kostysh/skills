@@ -1,0 +1,169 @@
+{
+  "subjects": [
+    {
+      "label": "77123f",
+      "case": "boundary",
+      "variant": "D",
+      "issuedRootSHA256": "646068001d490ee3c83f7830bdcaa3fe74992eb77165b7e0f4fd9b7e95e3c25d",
+      "contrastAnchors": [
+        "4. Preview registry updates against the installed component. In compatibility findings, identify the project’s configured style, TSX setting, and alias-resolved file path."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_1",
+          "indexes": [
+            0
+          ],
+          "sha256": "97fbb71fe3dcb52bc652a9c2f7fd36c1a5978a86703955d9e6541ef0287aaf73"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "c2c4930dd0fb3fc51b9eaefff2e98fec5d382aeae57d81a5c9a95d9be63806b9",
+      "eventSHA256": "cf1cdd54cbbc9d7734478edbbab0b43701f2c880575755c9ebb696f4b479c9b9",
+      "unchangedOriginalFiles": true
+    },
+    {
+      "label": "12dbad",
+      "case": "ordinary",
+      "variant": "D",
+      "issuedRootSHA256": "646068001d490ee3c83f7830bdcaa3fe74992eb77165b7e0f4fd9b7e95e3c25d",
+      "contrastAnchors": [
+        "4. Preview registry updates against the installed component. In compatibility findings, identify the project’s configured style, TSX setting, and alias-resolved file path."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_1",
+          "indexes": [
+            0
+          ],
+          "sha256": "e01e8a8f060d5cca1b889342780e020ea7a67fe2303463f9e7b48dfdadb591d5"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "107a23d682d73d124dde8fd745aa7fd4c7578aec0cba3dcfbf3ea2a3f8b91775",
+      "eventSHA256": "20cfdff913f725298eb33eb2620ec073e6674264ed84d3bfe95801104964fbeb",
+      "unchangedOriginalFiles": true
+    },
+    {
+      "label": "865883",
+      "case": "ordinary",
+      "variant": "C",
+      "issuedRootSHA256": "51b537771ebb41e23b116bd94b0a3ac56f9843ea7653598de97d87e8a6aa9d41",
+      "contrastAnchors": [
+        "4. Preview registry changes against the installed component. For a compatibility review, report the configured primitive, file type, and resolved destination."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_2",
+          "indexes": [
+            0
+          ],
+          "sha256": "de9ac961363235f8d6e9deb1e35a180efd95e3ff559b51df42c6daa24891d788"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "5ea0ef032fafd8fec000befca23a8645bf1f458d05b8e2adc8783d5b31c627c5",
+      "eventSHA256": "13fe5bd741aaba9aed3f3aecdf551b370f3f9647294805d061708a8db4a27efe",
+      "unchangedOriginalFiles": true
+    },
+    {
+      "label": "af2f0a",
+      "case": "shift",
+      "variant": "D",
+      "issuedRootSHA256": "646068001d490ee3c83f7830bdcaa3fe74992eb77165b7e0f4fd9b7e95e3c25d",
+      "contrastAnchors": [
+        "4. Preview registry updates against the installed component. In compatibility findings, identify the project’s configured style, TSX setting, and alias-resolved file path."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_1",
+          "indexes": [
+            0
+          ],
+          "sha256": "8a569a1a0891f91e3a3f3d48ea08c653abb110352f4afb78803add847cc7b7c3"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "c9f4a41a0bab7ea2af44f4b9604b63a632f7088ac5ecca3f44378d114949c502",
+      "eventSHA256": "1dc38aefe0027d6ebff8bd1b9adcabef3a70d2e77327f760361fa9ade5bc708b",
+      "unchangedOriginalFiles": true
+    },
+    {
+      "label": "12a457",
+      "case": "holdout",
+      "variant": "D",
+      "issuedRootSHA256": "646068001d490ee3c83f7830bdcaa3fe74992eb77165b7e0f4fd9b7e95e3c25d",
+      "contrastAnchors": [
+        "4. Preview registry updates against the installed component. In compatibility findings, identify the project’s configured style, TSX setting, and alias-resolved file path."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_2",
+          "indexes": [
+            0
+          ],
+          "sha256": "f5c3dd9f952df064a10dfe3f6241e9f9c9b92f45ea20822758192114223e1fd1"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "8e654ebad0c1a24904f05eb378ddeb4286b3e6988e58aa0ec6d2fcde0872cb2d",
+      "eventSHA256": "cb3dc1ea9d7b7e9157fdb8af6c2f2fde3796fc1b4b205acf3c117eedc5289954",
+      "unchangedOriginalFiles": true
+    },
+    {
+      "label": "19c015",
+      "case": "ordinary",
+      "variant": "B",
+      "issuedRootSHA256": "10d3d05c8a65adba84ab9f134b4531e1ed394f1cde20a89becbe2e7b325f5633",
+      "contrastAnchors": [
+        "3. **Fetch current APIs.** Run `shadcn docs <components...> --json`, fetch the returned URLs, and inspect local wrappers before choosing props.",
+        "5. **Apply surgically.** Preserve local variants and user changes. Never use `--overwrite` or apply a broad preset without explicit authority."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_2",
+          "indexes": [
+            0,
+            1
+          ],
+          "sha256": "c9ef64a95dbc81b8ae61719d7ab28c21155ecd8b61d938cee2e075d6df149644"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "20ea5b28ddd9a9bae0eb1ce76c8bc1e42addb919cf84c78ea5bb481e16cc5242",
+      "eventSHA256": "10491fa33e147c0aec9a6004e2e32bac691585e5f058aa49792f0c25ab2e5d1f",
+      "unchangedOriginalFiles": true
+    },
+    {
+      "label": "d92fb2",
+      "case": "ordinary",
+      "variant": "A",
+      "issuedRootSHA256": "7e04e100c6ba15df9841cbcd3113d58c4b39a46cd90dd00cbdaabaddf1d65502",
+      "contrastAnchors": [
+        "4. **Preview changes.** Use `add --dry-run`, `--diff`, or `--view` before updating installed components or accepting third-party registry code."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_2",
+          "indexes": [
+            0
+          ],
+          "sha256": "d4fdc52d4c78711fa899406cabcaed9974183c9e89b90c3e71cee4c17bfe3ad8"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "7875fad7e7c9e66923794b839ce331ed0eb99448c994aca8e6cf8901dca5ebde",
+      "eventSHA256": "0670a47d1cdb549d9b702058fe7759ed5efb82e547451c2e42012d253dc03164",
+      "unchangedOriginalFiles": true
+    }
+  ],
+  "grader": {
+    "signedSHA256": "4dc23c36fba0f2acf524c176586578b6213c48f4dd1a042dafbe398fa459b10c",
+    "eventsSHA256": "693bdbc57aa6fb19b3f0fbf95a9b0c037bcf51568c3b688b77544c06f93c2210",
+    "portableSHA256": "13b79856011a05183ad82ee39927de0490c1e2bae958519d9b86d48132c270f6",
+    "deliveredInputsCount": 225,
+    "packetSHA256": "9dee873b02986fe751bd1915ac0a54a5ffb2db888ad7a875bb13dc94bf7c77bb"
+  },
+  "researchInputsSHA256": "8920216542b44470d98f8c77b36a9ad6838a30e7263827dc6a2545aa36264e3f",
+  "rawRecordsSHA256": "7013fe4436125ee8bb9083e2555937effc6a9baf6547c20eb017c197d705be06"
+}

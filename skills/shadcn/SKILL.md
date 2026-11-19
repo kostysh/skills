@@ -1,14 +1,13 @@
 ---
 name: shadcn
-description: "Build and maintain shadcn/ui projects with Base UI defaults:
-  inspect components.json, use current CLI/docs, add or update registry
-  components safely, compose and theme them, and verify project behavior. Use
-  for shadcn components, registries, presets, configuration, fixes, or
-  debugging."
+description: Build and maintain shadcn/ui projects using the configured base.
+  Inspect components.json and CLI previews, add or update registry components,
+  compose and theme them, and verify project behavior. Use for shadcn
+  components, registries, presets, configuration, fixes, or debugging.
 metadata:
-  source-version: 0.2.2
+  source-version: 0.2.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 7180f90c3decbec46b70b43b576c5a7bae3ec9a6b64d3be09bb4d90b10c87293
+  skillforge-source-hash: 1f84af42c598eb14935bd87ffd8234807e8908c7c3e58975a92fae833fe660ae
 ---
 
 # shadcn
@@ -17,7 +16,7 @@ metadata:
 
 1. Confirm that the task requires shadcn-specific component, registry, preset, configuration, or composition guidance.
 2. Identify the project root and acquire current project context before choosing imports, paths, dependencies, or component APIs.
-3. Treat Base UI as the current default for new shadcn work and use project-resolved documentation for exact APIs.
+3. Identify the configured component base before choosing a composition API.
 4. Load only the active references whose triggers match the task.
 5. Define the observable result and the checks that must pass before changing files.
 
@@ -38,7 +37,7 @@ metadata:
 
 Build and maintain shadcn components as source code inside the user's project. The skill succeeds when the requested UI works in the target project and the strongest claimed status is supported by project or interaction evidence.
 
-Base UI is the default for new shadcn work. Use current project-resolved documentation and installed source for exact component APIs instead of relying on remembered examples.
+Base UI is the current default for a new project. Resolve the API of an existing component from its installed wrapper and the documentation for its base.
 
 ## Inputs and authority
 
@@ -64,7 +63,7 @@ Use this precedence when sources disagree:
 1. **Inspect before adding.** Check installed components and resolved UI paths. Reuse installed source instead of re-adding it.
 2. **Discover deliberately.** Use `shadcn search` for registries. An unqualified official component such as `button` does not need a registry question; ask only when multiple third-party sources could satisfy the request.
 3. **Fetch current APIs.** Run `shadcn docs <components...> --json`, fetch the returned URLs, and inspect local wrappers before choosing props.
-4. **Preview changes.** Use `add --dry-run`, `--diff`, or `--view` before updating installed components or accepting third-party registry code.
+4. Preview registry updates against the installed component. In compatibility findings, identify the project’s configured style, TSX setting, and alias-resolved file path.
 5. **Apply surgically.** Preserve local variants and user changes. Never use `--overwrite` or apply a broad preset without explicit authority.
 6. **Inspect emitted source.** Verify aliases, icon imports, dependencies, composition, accessibility names, and client/server boundaries.
 7. **Prove the result.** Run the narrowest relevant typecheck, lint, tests, or build. Exercise changed interaction through an existing browser test or targeted smoke check when practical.
@@ -181,8 +180,8 @@ Validation:
 ### Source precedence
 Apply operator constraints first, then repository instructions, inspected project configuration and installed source, current CLI help and official docs, and finally static skill examples. Stop on unresolved equal-authority conflicts.
 
-### Base UI default
-Use the current Base UI default for new shadcn work and resolve exact component APIs from the target project and current documentation.
+### Component base
+Existing projects keep their configured base, including Base UI, Radix, or React Aria. When initializing a project without a requested base, use the project CLI default.
 
 ### Mutation safety
 Preview updates and third-party registry content; require explicit approval before overwrite, broad preset application, or replacing customized component source.

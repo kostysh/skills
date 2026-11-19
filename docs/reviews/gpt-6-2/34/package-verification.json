@@ -1,0 +1,159 @@
+{
+  "checks": [
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "0.2.5\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "lint",
+        "skills/shadcn"
+      ],
+      "exit": 0,
+      "stdout": "OK skills/shadcn\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "regenerate",
+        "skills/shadcn"
+      ],
+      "exit": 0,
+      "stdout": "Regenerated {repository}/skills/shadcn\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "skills/shadcn"
+      ],
+      "exit": 0,
+      "stdout": "OK skills/shadcn\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "compile",
+        "skills/shadcn",
+        "--out-dir",
+        "{staging}/isolated"
+      ],
+      "exit": 0,
+      "stdout": "Compiled skills/shadcn -> {staging}/isolated/shadcn\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "{staging}/isolated/shadcn"
+      ],
+      "exit": 0,
+      "stdout": "OK {staging}/isolated/shadcn\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "{system-skills}/skill-creator/scripts/quick_validate.py",
+        "skills/shadcn"
+      ],
+      "exit": 0,
+      "stdout": "Skill is valid!\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "pack:skills",
+        "--root",
+        "{staging}/isolated",
+        "--out",
+        "{staging}/packed",
+        "--release",
+        "skills-row34-local",
+        "--previous",
+        "{coordinator}/base-pack/catalog.json"
+      ],
+      "exit": 0,
+      "stdout": "\n> @kostysh/skills@0.1.3 pack:skills {repository}/cli\n> node src/pack-cli.ts --root {staging}/isolated --out {staging}/packed --release skills-row34-local --previous {coordinator}/base-pack/catalog.json\n\nSkills packed: 1; output: {staging}/packed\n",
+      "stderr": ""
+    }
+  ],
+  "archive": "shadcn-0.2.3.tgz",
+  "archiveSha256": "09b32f78bcdfd4c4c3783e64abdf5e2bff70babb33306321c32db9d4e7307870",
+  "activeSnapshotSha256": "86d8d39726b16b9ced8f8817a3cd3c42d84b5dfb226aec7c529dfbf9189735cc",
+  "releaseMatchedIsolatedAndSource": true,
+  "priorCatalogSha256": "6a27eb907f0335ff4ac1778192f37b368d18c2e5cbea6611e4a61b956a95c749",
+  "inventory": {
+    "SKILL.md": {
+      "sha256": "617af3185516c64b213ca9c0fa79fc5d5a3833514244f8b0053c93c836963026",
+      "bytes": 14346,
+      "mode": "0o644"
+    },
+    "agents/openai.yml": {
+      "sha256": "b17654123dcd8be47942470354ce60837167245ff1b4c45de61c8399bec799fb",
+      "bytes": 313,
+      "mode": "0o644"
+    },
+    "assets/shadcn-small.png": {
+      "sha256": "0ecc62d682727f68fc4937eed19960c706714fa084d44f63028d611ae02bf3d7",
+      "bytes": 1049,
+      "mode": "0o644"
+    },
+    "assets/shadcn.png": {
+      "sha256": "7d60ad6fec4d89a0d44ba5a3c9283d2fea0047af5467f9227040e20d927d39b7",
+      "bytes": 3852,
+      "mode": "0o644"
+    },
+    "references/cli.md": {
+      "sha256": "dc3a0ecc8ec861801e77bda084ba20f2e68cab0b34eeeac7ca6e65ccb89e181b",
+      "bytes": 4517,
+      "mode": "0o644"
+    },
+    "references/customization.md": {
+      "sha256": "04c54b19947c3827fe3e7d437434720252ee6cbbe5b61617501acba9245884ec",
+      "bytes": 2902,
+      "mode": "0o644"
+    },
+    "references/rules/composition.md": {
+      "sha256": "8c88c4395b0578da6bd9887cb6df964deaf5f10be75f1bb0daecca4ad3cfea50",
+      "bytes": 2622,
+      "mode": "0o644"
+    },
+    "references/rules/forms.md": {
+      "sha256": "736a746952d4f50163cab1cd3fb7162b659b8f43093da4652bb9ffb41397e718",
+      "bytes": 2602,
+      "mode": "0o644"
+    },
+    "references/rules/icons.md": {
+      "sha256": "7b79511251df08df996f4b6fcab7a08103bd1ab0f1b97d1a5023a679495c3790",
+      "bytes": 1249,
+      "mode": "0o644"
+    },
+    "references/rules/styling.md": {
+      "sha256": "321f473b67ba2250e850a40cc8b3f939bfa4e37c8a18a3b42e667d2ab353b9f0",
+      "bytes": 2162,
+      "mode": "0o644"
+    }
+  },
+  "measuredLinePresentOnce": true
+}

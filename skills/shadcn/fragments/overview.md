@@ -1,6 +1,6 @@
 Build and maintain shadcn components as source code inside the user's project. The skill succeeds when the requested UI works in the target project and the strongest claimed status is supported by project or interaction evidence.
 
-Base UI is the default for new shadcn work. Use current project-resolved documentation and installed source for exact component APIs instead of relying on remembered examples.
+Base UI is the current default for a new project. Resolve the API of an existing component from its installed wrapper and the documentation for its base.
 
 ## Inputs and authority
 
@@ -26,7 +26,7 @@ Use this precedence when sources disagree:
 1. **Inspect before adding.** Check installed components and resolved UI paths. Reuse installed source instead of re-adding it.
 2. **Discover deliberately.** Use `shadcn search` for registries. An unqualified official component such as `button` does not need a registry question; ask only when multiple third-party sources could satisfy the request.
 3. **Fetch current APIs.** Run `shadcn docs <components...> --json`, fetch the returned URLs, and inspect local wrappers before choosing props.
-4. **Preview changes.** Use `add --dry-run`, `--diff`, or `--view` before updating installed components or accepting third-party registry code.
+4. Preview registry updates against the installed component. In compatibility findings, identify the project’s configured style, TSX setting, and alias-resolved file path.
 5. **Apply surgically.** Preserve local variants and user changes. Never use `--overwrite` or apply a broad preset without explicit authority.
 6. **Inspect emitted source.** Verify aliases, icon imports, dependencies, composition, accessibility names, and client/server boundaries.
 7. **Prove the result.** Run the narrowest relevant typecheck, lint, tests, or build. Exercise changed interaction through an existing browser test or targeted smoke check when practical.

@@ -1,0 +1,26 @@
+[
+  {
+    "role": "C",
+    "case": "ordinary",
+    "label": "4b527e",
+    "receipt": "record-4412860e5c"
+  },
+  {
+    "role": "A",
+    "case": "holdout",
+    "label": "22c7b1",
+    "receipt": "record-25c8882556"
+  },
+  {
+    "role": "C",
+    "case": "holdout",
+    "label": "9ac4ff",
+    "receipt": "record-763450017e"
+  },
+  {
+    "role": "C",
+    "case": "boundary",
+    "label": "38d330",
+    "receipt": "record-b1d3a40f88"
+  }
+]

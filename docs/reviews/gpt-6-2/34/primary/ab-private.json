@@ -1,0 +1,26 @@
+[
+  {
+    "role": "B",
+    "case": "boundary",
+    "label": "4d9846",
+    "receipt": "record-6eacfbe409"
+  },
+  {
+    "role": "B",
+    "case": "ordinary",
+    "label": "b181d1",
+    "receipt": "record-c6537eb39a"
+  },
+  {
+    "role": "A",
+    "case": "ordinary",
+    "label": "1f103a",
+    "receipt": "record-bda75878db"
+  },
+  {
+    "role": "A",
+    "case": "boundary",
+    "label": "81bd1b",
+    "receipt": "record-5b36d7328e"
+  }
+]

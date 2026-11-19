@@ -1,0 +1,5 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -67 +67 @@
+-4. Preview registry changes against the installed component. For a compatibility review, report the configured primitive, file type, and resolved destination.
++4. Preview registry updates against the installed component. In compatibility findings, identify the project’s configured style, TSX setting, and alias-resolved file path.

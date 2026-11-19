@@ -1,0 +1,101 @@
+{
+  "subjects": [
+    {
+      "label": "e2df48",
+      "case": "larch",
+      "variant": "D",
+      "issuedRootSHA256": "646068001d490ee3c83f7830bdcaa3fe74992eb77165b7e0f4fd9b7e95e3c25d",
+      "contrastAnchors": [
+        "4. Preview registry updates against the installed component. In compatibility findings, identify the project’s configured style, TSX setting, and alias-resolved file path."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_4",
+          "indexes": [
+            0
+          ],
+          "sha256": "d833883379644828e13a9e2e7345e894a7661344d2e30dc938c8fbd5c09bb005"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "d49ba1869e977f710d61e8ed440d9c89055b4666f93a81ea4327caf94f8967d8",
+      "eventSHA256": "b3618cefad446c8432fb3070558923d06dbca74418e6e676740161065a9044cd",
+      "unchangedOriginalFiles": true
+    },
+    {
+      "label": "eb3707",
+      "case": "birch",
+      "variant": "A",
+      "issuedRootSHA256": "7e04e100c6ba15df9841cbcd3113d58c4b39a46cd90dd00cbdaabaddf1d65502",
+      "contrastAnchors": [
+        "4. **Preview changes.** Use `add --dry-run`, `--diff`, or `--view` before updating installed components or accepting third-party registry code."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_2",
+          "indexes": [
+            0
+          ],
+          "sha256": "c9578f4c2039dfb37b97c22005bea526f72d04cb84530180547a1e0e6f576da3"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "34acb1235e1a3d2b3db703933b33ece39e665ab580d2325eef0311816e3f75c5",
+      "eventSHA256": "128c51eb3d00e413b41421eb9eb33f25c340c6830bc2ac602df4ace9752a608b",
+      "unchangedOriginalFiles": true
+    },
+    {
+      "label": "5e04b6",
+      "case": "larch",
+      "variant": "A",
+      "issuedRootSHA256": "7e04e100c6ba15df9841cbcd3113d58c4b39a46cd90dd00cbdaabaddf1d65502",
+      "contrastAnchors": [
+        "4. **Preview changes.** Use `add --dry-run`, `--diff`, or `--view` before updating installed components or accepting third-party registry code."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_2",
+          "indexes": [
+            0
+          ],
+          "sha256": "a29d2014e3e6edd23a4fffdbc69d7a102f390f0084eb828187386d2c316bc883"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "6ee8c1a7f41c47de9035233b44816a7ae4b311f5b229e527a30e47a6ee48e661",
+      "eventSHA256": "eb2e7286d92da2e2cf4ed2c209af7dddb1f26e1fe883ff5c6652d05fc11005fa",
+      "unchangedOriginalFiles": true
+    },
+    {
+      "label": "08fde6",
+      "case": "birch",
+      "variant": "D",
+      "issuedRootSHA256": "646068001d490ee3c83f7830bdcaa3fe74992eb77165b7e0f4fd9b7e95e3c25d",
+      "contrastAnchors": [
+        "4. Preview registry updates against the installed component. In compatibility findings, identify the project’s configured style, TSX setting, and alias-resolved file path."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_1",
+          "indexes": [
+            0
+          ],
+          "sha256": "0539650245e57e418ffcc8b7a6200e9c5f902a585aca7b4e73eb25056ccc429c"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "b2b02238ff4cfdfc43af2276d96a1f0e8f68c749026d519dcc3226869aaea176",
+      "eventSHA256": "e464ef3f69462a20337eda77fdb1d653cfdbabbf8888f7b7aad593a3a28d20d1",
+      "unchangedOriginalFiles": true
+    }
+  ],
+  "grader": {
+    "signedSHA256": "9a42da39428f6f6b7ca7d2d2b2e89ffc5ee086918a9d71ace60bd5d1cd23f24d",
+    "eventsSHA256": "903351d0af63c9396ec5368a0c40388e2b14c116d6a9efe2a9f3e17b91d71521",
+    "portableSHA256": "3bcb2367caf8edfd3cab45e96700f84df9f086e985b436d28a60da9a7efbcbb4",
+    "deliveredInputsCount": 185,
+    "packetSHA256": "924a365ad45f23eb761f28c3340a44afa275ea0270532a7cf334bb74d0c5133d"
+  },
+  "researchInputsSHA256": "78f6eb95d319d8f0cdaa63b69a0312fccc7f2a3f471a40ebe04b9ad483f1e4bc",
+  "rawRecordsSHA256": "cb6908f0bd77eaed6fae5bf9cd42689bd5c119b3838ff293a46fcce293ca963e"
+}

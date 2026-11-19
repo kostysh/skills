@@ -1,0 +1,387 @@
+{
+  "variant": "D",
+  "case": "holdout",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПримени локальный ./SKILL.md. Дежурная команда предлагает принять обновление шадсн-компонента для панели. Проверь поставку по owner.md и фактическому проекту, сообщи о готовности, существенных основаниях и необходимом действии. Рабочая копия и локальный запуск описаны в workplace.md. Авторизована проверка на расходной среде, изменение и публикация не поручались.\n",
+  "input_file_sha256": {
+    "SKILL.md": "646068001d490ee3c83f7830bdcaa3fe74992eb77165b7e0f4fd9b7e95e3c25d",
+    "agents/openai.yml": "29e9f74b268f79fe21b9b3daca30fa66151b8580f4545772e6138a22582a96d6",
+    "assets/shadcn-small.png": "0ecc62d682727f68fc4937eed19960c706714fa084d44f63028d611ae02bf3d7",
+    "assets/shadcn.png": "7d60ad6fec4d89a0d44ba5a3c9283d2fea0047af5467f9227040e20d927d39b7",
+    "candidate/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+    "candidate/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+    "candidate/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+    "candidate/src/components/ui/button.tsx": "4dd35eabadafee46f5a8b47c812471ae1169074e99af4e747f96e46837b8b382",
+    "candidate/src/main.tsx": "9972125059e71fecd45c00acb838215d8221c4ce533682399c025d5cd087476a",
+    "candidate/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+    "installed/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+    "installed/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+    "installed/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+    "owner.md": "44128179ea91f1ac1e2a5a55015ecb59b6fc3f2b8a6099e2fceb1ec3f0fac008",
+    "references/cli.md": "dc3a0ecc8ec861801e77bda084ba20f2e68cab0b34eeeac7ca6e65ccb89e181b",
+    "references/customization.md": "04c54b19947c3827fe3e7d437434720252ee6cbbe5b61617501acba9245884ec",
+    "references/rules/composition.md": "9e4ad7ad2861dc8854a61f8e4d0edc56d4def0ce7a603e9b405ca266a563acf8",
+    "references/rules/forms.md": "c33fe220bbdecd471aba8a62439335a362944b212982fdfedfdb9f309473d318",
+    "references/rules/icons.md": "7b79511251df08df996f4b6fcab7a08103bd1ab0f1b97d1a5023a679495c3790",
+    "references/rules/styling.md": "321f473b67ba2250e850a40cc8b3f939bfa4e37c8a18a3b42e667d2ab353b9f0",
+    "registry/button.json": "50399973a9d92604862e1424c1ac29f7e498fd8866b20499e67742a8c6daa827",
+    "workplace.md": "8074dbfce61463f3018466d641effc58df2a90badae87ed50c57c633fd005b9d"
+  },
+  "raw_events_sha256": "cb3dc1ea9d7b7e9157fdb8af6c2f2fde3796fc1b4b205acf3c117eedc5289954",
+  "raw_events_bytes": 72723,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Применю локальный `SKILL.md`, сверю поставку с `owner.md` и проектом, затем проверю поведение в расходной среде в пределах разрешённого."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git'\"' -g '\"'!node_modules'\"'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat SKILL.md owner.md workplace.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'ls -la && ls -la candidate installed registry && git status --short'",
+      "exit_code": 128,
+      "status": "failed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'for p in references/cli.md references/rules/composition.md references/rules/styling.md references/customization.md; do cat \"$p\"; done'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"for p in installed/components.json installed/tsconfig.json installed/src/components/ui/button.tsx registry/button.json candidate/components.json candidate/vite.config.ts candidate/src/main.tsx candidate/src/components/Tooltip.d.ts candidate/src/components/Tooltip.js candidate/src/components/ui/button.tsx; do rg -n '\"'^|$'\"' \\\"\"'$p\"; done'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"curl -q --noproxy '*' --silent --show-error --fail --max-time 25 -H 'Accept: application/json' http://127.0.0.1:46717/willow/preview\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"curl -q --noproxy '*' --silent --show-error --fail --max-time 25 -H 'Accept: application/json' http://127.0.0.1:46717/willow/difference\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"curl -q --noproxy '*' --silent --show-error --fail --max-time 25 -H 'Accept: application/json' http://127.0.0.1:34019/willow/link\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"curl -q --noproxy '*' --silent --show-error --fail --max-time 25 -H 'Accept: application/json' http://127.0.0.1:34019/willow/button\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"curl -q --noproxy '*' --silent --show-error --fail --max-time 25 -H 'Accept: application/json' http://127.0.0.1:46717/willow/compose\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"curl -q --noproxy '*' --silent --show-error --fail --max-time 25 -H 'Accept: application/json' http://127.0.0.1:46717/willow/save\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Предпросмотр shadcn показал, что замена файла удалит `brand`. В Chrome Enter открыл `#record`, а Space на `Keep record` оставил счётчик на нуле. Сверяю кадры фокуса и контрольную сумму исходного файла."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'sha256sum installed/src/components/ui/button.tsx && diff -u installed/src/components/ui/button.tsx candidate/src/components/ui/button.tsx'",
+      "exit_code": 1,
+      "status": "failed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"rg --files --hidden -g 'package.json' -g '*lock*' -g 'AGENTS.md' -g '\"'!assets'\"' && command -v shadcn\"",
+      "exit_code": 1,
+      "status": "failed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"set -o pipefail\ncurl -q --noproxy '*' --silent --show-error --fail --max-time 10 http://127.0.0.1:34019/capture/63045eb6abab/initial.png | sha256sum\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"set -o pipefail\ncurl -q --noproxy '*' --silent --show-error --fail --max-time 10 http://127.0.0.1:34019/capture/10b36ec9fc28/initial.png | sha256sum\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"set -o pipefail\ncurl -q --noproxy '*' --silent --show-error --fail --max-time 10 http://127.0.0.1:34019/capture/63045eb6abab/focused.png | sha256sum\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"set -o pipefail\ncurl -q --noproxy '*' --silent --show-error --fail --max-time 10 http://127.0.0.1:34019/capture/10b36ec9fc28/focused.png | sha256sum\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'command -v shadcn || true\nrg --files --hidden --no-ignore installed candidate'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "**Обновление панели Willow пока не готово к приёмке.** Верните поставку дежурной команде. Нужно перенести только `data-stage=\"ready\"` в установленный `Button`, сохранив нативный `<button>`, композицию ссылки через `Slot.Root` и вариант `brand` с `font-bold`. Затем повторите оба клавиатурных сценария. [Требования владельца]({project}/owner.md)\n\n- **Пакет из реестра удаляет `brand`.** Для проекта с `radix-nova` и TSX псевдоним `~ui/components/ui` разрешается в `src/components/ui`. Предпросмотр и diff в shadcn 4.23.0 показали замену `button.tsx`, которая добавляет `data-stage=\"ready\"` и удаляет локальный `brand`. Контрольная сумма исходного файла совпала до и после проверки. [Конфигурация]({project}/installed/components.json) · [Предложение реестра]({project}/registry/button.json)\n- **Open record прошёл проверку в Chrome.** Tab сфокусировал единственную ссылку `<a>` без вложенного интерактивного элемента, а Enter перевёл текущее окно на `#record`. Оба элемента в кандидате имели `data-stage=\"ready\"` и вычисленный `font-weight: 700`. На обоих был виден индикатор клавиатурного фокуса, что подтвердило сравнение кадров. [Сценарии проверки]({project}/workplace.md)\n- **Keep record не прошёл проверку.** В отдельном чистом окне два Tab сфокусировали `Keep record`. После Space статус остался `Kept: 0` вместо `Kept: 1`. Кандидат заменил нативный `<button>` на `<div role=\"button\" tabindex=\"0\">` без обработчика клавиатурной активации. [Код кандидата]({project}/candidate/src/components/ui/button.tsx:54)\n\nВ предоставленных копиях нет `package.json` и lock-файла, поэтому сборка и проверка типов остались неподтверждёнными. Файлы не менялись, публикации не было."
+    }
+  ],
+  "changed_file_contents": {},
+  "final_response": "**Обновление панели Willow пока не готово к приёмке.** Верните поставку дежурной команде. Нужно перенести только `data-stage=\"ready\"` в установленный `Button`, сохранив нативный `<button>`, композицию ссылки через `Slot.Root` и вариант `brand` с `font-bold`. Затем повторите оба клавиатурных сценария. [Требования владельца]({project}/owner.md)\n\n- **Пакет из реестра удаляет `brand`.** Для проекта с `radix-nova` и TSX псевдоним `~ui/components/ui` разрешается в `src/components/ui`. Предпросмотр и diff в shadcn 4.23.0 показали замену `button.tsx`, которая добавляет `data-stage=\"ready\"` и удаляет локальный `brand`. Контрольная сумма исходного файла совпала до и после проверки. [Конфигурация]({project}/installed/components.json) · [Предложение реестра]({project}/registry/button.json)\n- **Open record прошёл проверку в Chrome.** Tab сфокусировал единственную ссылку `<a>` без вложенного интерактивного элемента, а Enter перевёл текущее окно на `#record`. Оба элемента в кандидате имели `data-stage=\"ready\"` и вычисленный `font-weight: 700`. На обоих был виден индикатор клавиатурного фокуса, что подтвердило сравнение кадров. [Сценарии проверки]({project}/workplace.md)\n- **Keep record не прошёл проверку.** В отдельном чистом окне два Tab сфокусировали `Keep record`. После Space статус остался `Kept: 0` вместо `Kept: 1`. Кандидат заменил нативный `<button>` на `<div role=\"button\" tabindex=\"0\">` без обработчика клавиатурной активации. [Код кандидата]({project}/candidate/src/components/ui/button.tsx:54)\n\nВ предоставленных копиях нет `package.json` и lock-файла, поэтому сборка и проверка типов остались неподтверждёнными. Файлы не менялись, публикации не было.",
+  "input_file_modes": {
+    "SKILL.md": "0644",
+    "agents/openai.yml": "0644",
+    "assets/shadcn-small.png": "0644",
+    "assets/shadcn.png": "0644",
+    "candidate/components.json": "0664",
+    "candidate/src/components/Tooltip.d.ts": "0664",
+    "candidate/src/components/Tooltip.js": "0664",
+    "candidate/src/components/ui/button.tsx": "0664",
+    "candidate/src/main.tsx": "0664",
+    "candidate/vite.config.ts": "0664",
+    "installed/components.json": "0664",
+    "installed/src/components/ui/button.tsx": "0664",
+    "installed/tsconfig.json": "0664",
+    "owner.md": "0664",
+    "references/cli.md": "0644",
+    "references/customization.md": "0644",
+    "references/rules/composition.md": "0644",
+    "references/rules/forms.md": "0644",
+    "references/rules/icons.md": "0644",
+    "references/rules/styling.md": "0644",
+    "registry/button.json": "0664",
+    "workplace.md": "0664"
+  },
+  "changed_file_modes": {},
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "unchangedIssuedFilesAndModes": true,
+    "independentControlOnTheSameBuild": {
+      "link": {
+        "edition": "willow",
+        "steps": [
+          {
+            "op": "key",
+            "key": "Tab"
+          }
+        ],
+        "focused": "open",
+        "style": {
+          "matches": true,
+          "outline": "oklab(0.708 0 0 / 0.5) none 1px",
+          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.708 0 0 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "border": "oklch(0.708 0 0)",
+          "rect": {
+            "x": 0,
+            "y": 24,
+            "w": 106.40625,
+            "h": 32
+          },
+          "viewport": {
+            "w": 780,
+            "h": 493
+          }
+        },
+        "images": {
+          "initial": {
+            "url": "/capture/c00d9126e729/initial.png",
+            "sha256": "68e5da89a8ddb991c6818595736cd165869f102975bee549fc1ac9a8318e6e4c"
+          },
+          "focused": {
+            "url": "/capture/c00d9126e729/focused.png",
+            "sha256": "e64b735bce86df4f25d50ad41dcf2c697b820f7b73e05282078fea72a5c48560"
+          }
+        },
+        "width": 780,
+        "height": 493,
+        "sampledBorderPixels": 1820,
+        "changedBorderPixelsAtLeast12Rgb": 941
+      },
+      "button": {
+        "edition": "willow",
+        "steps": [
+          {
+            "op": "key",
+            "key": "Tab"
+          },
+          {
+            "op": "key",
+            "key": "Tab"
+          }
+        ],
+        "focused": "save",
+        "style": {
+          "matches": true,
+          "outline": "oklab(0.708 0 0 / 0.5) none 1px",
+          "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.708 0 0 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+          "border": "oklch(0.708 0 0)",
+          "rect": {
+            "x": 106.40625,
+            "y": 24,
+            "w": 104.34375,
+            "h": 32
+          },
+          "viewport": {
+            "w": 780,
+            "h": 493
+          }
+        },
+        "images": {
+          "initial": {
+            "url": "/capture/9dcc6dfc8dcf/initial.png",
+            "sha256": "68e5da89a8ddb991c6818595736cd165869f102975bee549fc1ac9a8318e6e4c"
+          },
+          "focused": {
+            "url": "/capture/9dcc6dfc8dcf/focused.png",
+            "sha256": "eda73e779b61298ad3690f9f8d6517a1ab1bf1d9f8416dbc039c1ec6e286394b"
+          }
+        },
+        "width": 780,
+        "height": 493,
+        "sampledBorderPixels": 2002,
+        "changedBorderPixelsAtLeast12Rgb": 1051
+      }
+    },
+    "participantObservations": [
+      {
+        "id": "item_1",
+        "exit": 0,
+        "operation": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git'\"' -g '\"'!node_modules'\"'\"",
+        "selectedOutput": ".\nSKILL.md\ninstalled/components.json\ninstalled/src/components/ui/button.tsx\ninstalled/tsconfig.json\nregistry/button.json\nworkplace.md\nowner.md\nreferences/cli.md\nreferences/customization.md\nreferences/rules/composition.md\nreferences/rules/forms.md\nreferences/rules/icons.md\nreferences/rules/styling.md\nassets/shadcn-small.png\nassets/shadcn.png\ncandidate/components.json\ncandidate/vite.config.ts\ncandidate/src/main.tsx\nagents/openai.yml\ncandidate/src/components/Tooltip.d.ts\ncandidate/src/components/Tooltip.js\ncandidate/src/components/ui/button.tsx\n",
+        "returnedFrames": [],
+        "eventSHA256": "5295709c540988420546daaea5989b1ce9d19d538ac2b9564dcb8487fd0837cf"
+      },
+      {
+        "id": "item_5",
+        "exit": 0,
+        "operation": "/bin/bash -lc \"for p in installed/components.json installed/tsconfig.json installed/src/components/ui/button.tsx registry/button.json candidate/components.json candidate/vite.config.ts candidate/src/main.tsx candidate/src/components/Tooltip.d.ts candidate/src/components/Tooltip.js candidate/src/components/ui/button.tsx; do rg -n '\"'^|$'\"' \\\"\"'$p\"; done'",
+        "selectedOutput": "1:{\n2:  \"$schema\": \"https://ui.shadcn.com/schema.json\",\n3:  \"style\": \"radix-nova\",\n4:  \"rsc\": false,\n5:  \"tsx\": true,\n6:  \"tailwind\": {\n7:    \"config\": \"\",\n8:    \"css\": \"src/index.css\",\n9:    \"baseColor\": \"neutral\",\n10:    \"cssVariables\": true,\n11:    \"prefix\": \"\"\n12:  },\n13:  \"iconLibrary\": \"lucide\",\n14:  \"rtl\": false,\n15:  \"aliases\": {\n16:    \"components\": \"~ui/components\",\n17:    \"utils\": \"~ui/lib/utils\",\n18:    \"ui\": \"~ui/components/ui\",\n19:    \"lib\": \"~ui/lib\",\n20:    \"hooks\": \"~ui/hooks\"\n21:  },\n22:  \"menuColor\": \"default\",\n23:  \"menuAccent\": \"subtle\",\n24:  \"registries\": {}\n25:}\n1:{\n2:  \"files\": [],\n3:  \"references\": [\n4:    { \"path\": \"./tsconfig.app.json\" },\n5:    { \"path\": \"./tsconfig.node.json\" }\n6:  ],\n7:  \"compilerOptions\": {\n8:    \"paths\": {\n9:      \"~ui/*\": [\"./src/*\"]\n10:    }\n11:  }\n12:}\n1:import * as React from \"react\"\n2:import { cva, type VariantProps } from \"class-variance-authority\"\n3:import { cn } from \"cn\"\n4:import { Slot } from \"radix-ui\"\n5:\n6:const buttonVariants = cva(\n7:  \"group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4\",\n8:  {\n9:    variants: {\n10:      variant: {\n11:        brand: \"bg-primary text-primary-foreground font-bold\",\n12:        default: \"bg-primary text-primary-foreground hover:bg-primary/80\",\n13:        outline:\n14:          \"border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50\",\n15:        secondary:\n16:          \"bg-secondary text-secondary-foreground hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary aria-expanded:text-secondary-foreground\",\n17:        ghost:\n18:          \"hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50\",\n19:        destructive:\n20:          \"bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40\",\n21:        link: \"text-primary underline-offset-4 hover:underline\",\n22:      },\n23:      size: {\n24:        default:\n25:          \"h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2\",\n26:        xs: \"h-6 gap-1 rounded-[min(var(--radius-md),10px)] px-2 text-xs in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3\",\n27:        sm: \"h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5\",\n28:        lg: \"h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2\",\n29:        icon: \"size-8\",\n30:        \"icon-xs\":\n31:          \"size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3\",\n32:        \"icon-sm\":\n33:          \"size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg\",\n34:        \"icon-lg\": \"size-9\",\n35:      },\n36:    },\n37:    defaultVariants: {\n38:      variant: \"default\",\n39:      size: \"default\",\n40:    },\n41:  }\n42:)\n43:\n44:function Button({\n45:  className,\n46:  variant = \"default\",\n47:  size = \"default\",\n48:  asChild = false,\n49:  ...props\n50:}: React.ComponentProps<\"button\"> &\n51:  VariantProps<typeof buttonVariants> & {\n52:    asChild?: boolean\n53:  }) {\n54:  const Comp = asChild ? Slot.Root : \"button\"\n55:\n56:  return (\n57:    <Comp\n58:      data-slot=\"button\"\n59:      data-variant={variant}\n60:      data-size={size}\n61:      className={cn(buttonVariants({ variant, size, className }))}\n62:      {...props}\n63:    />\n64:  )\n65:}\n66:\n67:export { Button }\n1:{\n2:  \"$schema\": \"https://ui.shadcn.com/schema/registry-item.json\",\n3:  \"name\": \"button\",\n4:  \"type\": \"registry:ui\",\n5:  \"files\": [\n6:    {\n7:      \"path\": \"ui/button.tsx\",\n8:      \"type\": \"registry:ui\",\n9:      \"content\": \"import * as React from \\\"react\\\"\\nimport { cva, type VariantProps } from \\\"class-variance-authority\\\"\\nimport { cn } from \\\"cn\\\"\\nimport { Slot } from \\\"radix-ui\\\"\\n\\nconst buttonVariants = cva(\\n  \\\"group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-medium whitespace-",
+        "returnedFrames": [],
+        "eventSHA256": "0708b1e85cc1a1200f183da2d35d0aa6d36e2e3d4e5661ea462e93d00d3b76c8"
+      },
+      {
+        "id": "item_7",
+        "exit": 0,
+        "operation": "/bin/bash -lc \"curl -q --noproxy '*' --silent --show-error --fail --max-time 25 -H 'Accept: application/json' http://127.0.0.1:46717/willow/preview\"",
+        "selectedOutput": "{\"cli\": \"shadcn 4.23.0\", \"exit\": 0, \"output\": \"┌ shadcn add http://127.0.0.1:46103/button.json (dry run)\\n│\\n├ Files (1) ~1 overwrite\\n│ ~ src/components/ui/button.tsx  overwrite\\n│\\n⚠ 1 file will be overwritten.\\n│\\n│ 1 file\\n│\\n│ Run with --diff to view changes.\\n│ Run with --view to view file contents.\\n└ Run without --dry-run to apply.\\n- Resolving items.\\n\", \"before\": \"f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e\", \"after\": \"f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e\"}\n",
+        "returnedFrames": [],
+        "eventSHA256": "cf423e1a50a34df052f8d24f53530873c7a87437d0920d0cd9e7a649ee55871c"
+      },
+      {
+        "id": "item_6",
+        "exit": 0,
+        "operation": "/bin/bash -lc \"curl -q --noproxy '*' --silent --show-error --fail --max-time 25 -H 'Accept: application/json' http://127.0.0.1:46717/willow/difference\"",
+        "selectedOutput": "{\"cli\": \"shadcn 4.23.0\", \"exit\": 0, \"output\": \"┌ shadcn add http://127.0.0.1:46103/button.json (dry run)\\n│\\n├ src/components/ui/button.tsx (overwrite)\\n│ ┌──────────────────────────────────────────────\\n│ │ --- a/src/components/ui/button.tsx\\n│ │ +++ b/src/components/ui/button.tsx\\n│ │ @@ -8,7 +8,6 @@\\n│ │    {\\n│ │      variants: {\\n│ │        variant: {\\n│ │ -        brand: \\\"bg-primary text-primary-foreground font-bold\\\",\\n│ │          default: \\\"bg-primary text-primary-foreground hover:bg-primary/80\\\",\\n│ │          outline:\\n│ │            \\\"border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50\\\",\\n│ │ @@ -58,6 +57,7 @@\\n│ │        data-slot=\\\"button\\\"\\n│ │        data-variant={variant}\\n│ │        data-size={size}\\n│ │ +      data-stage=\\\"ready\\\"\\n│ │        className={cn(buttonVariants({ variant, size, className }))}\\n│ │        {...props}\\n│ │      />\\n│ └──────────────────────────────────────────────\\n│\\n└ Run without --dry-run to apply.\\n- Resolving items.\\n\", \"before\": \"f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e\", \"after\": \"f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e\"}\n",
+        "returnedFrames": [],
+        "eventSHA256": "926af335b260363d875c6d50af0dc3566603debd330fcddd843bbfa69ff2693d"
+      },
+      {
+        "id": "item_10",
+        "exit": 0,
+        "operation": "/bin/bash -lc \"curl -q --noproxy '*' --silent --show-error --fail --max-time 25 -H 'Accept: application/json' http://127.0.0.1:34019/willow/link\"",
+        "selectedOutput": "{\"edition\": \"willow\", \"steps\": [{\"op\": \"key\", \"key\": \"Tab\"}], \"focused\": \"open\", \"style\": {\"matches\": true, \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\", \"shadow\": \"rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.708 0 0 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px\", \"border\": \"oklch(0.708 0 0)\", \"rect\": {\"x\": 0, \"y\": 24, \"w\": 106.40625, \"h\": 32}, \"viewport\": {\"w\": 780, \"h\": 493}}, \"images\": {\"initial\": {\"url\": \"/capture/63045eb6abab/initial.png\", \"sha256\": \"68e5da89a8ddb991c6818595736cd165869f102975bee549fc1ac9a8318e6e4c\"}, \"focused\": {\"url\": \"/capture/63045eb6abab/focused.png\", \"sha256\": \"3ad7fed2bdb11f724879443a5a283b1ff3c3ae3bd4011fc603899bb94968ff33\"}}, \"width\": 780, \"height\": 493, \"sampledBorderPixels\": 1820, \"changedBorderPixelsAtLeast12Rgb\": 937}\n",
+        "returnedFrames": [
+          "/capture/63045eb6abab/focused.png",
+          "/capture/63045eb6abab/initial.png"
+        ],
+        "eventSHA256": "01b67718e89882fd5dc047d33acede9e124481d288dec97911c708234f5b62d9"
+      },
+      {
+        "id": "item_11",
+        "exit": 0,
+        "operation": "/bin/bash -lc \"curl -q --noproxy '*' --silent --show-error --fail --max-time 25 -H 'Accept: application/json' http://127.0.0.1:34019/willow/button\"",
+        "selectedOutput": "{\"edition\": \"willow\", \"steps\": [{\"op\": \"key\", \"key\": \"Tab\"}, {\"op\": \"key\", \"key\": \"Tab\"}], \"focused\": \"save\", \"style\": {\"matches\": true, \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\", \"shadow\": \"rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.708 0 0 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px\", \"border\": \"oklch(0.708 0 0)\", \"rect\": {\"x\": 106.40625, \"y\": 24, \"w\": 104.34375, \"h\": 32}, \"viewport\": {\"w\": 780, \"h\": 493}}, \"images\": {\"initial\": {\"url\": \"/capture/10b36ec9fc28/initial.png\", \"sha256\": \"68e5da89a8ddb991c6818595736cd165869f102975bee549fc1ac9a8318e6e4c\"}, \"focused\": {\"url\": \"/capture/10b36ec9fc28/focused.png\", \"sha256\": \"eda73e779b61298ad3690f9f8d6517a1ab1bf1d9f8416dbc039c1ec6e286394b\"}}, \"width\": 780, \"height\": 493, \"sampledBorderPixels\": 2002, \"changedBorderPixelsAtLeast12Rgb\": 1051}\n",
+        "returnedFrames": [
+          "/capture/10b36ec9fc28/focused.png",
+          "/capture/10b36ec9fc28/initial.png"
+        ],
+        "eventSHA256": "78a53cc48495dbfb2a0b47f4b13ad68c67811408be21aef0377722866ad52613"
+      },
+      {
+        "id": "item_8",
+        "exit": 0,
+        "operation": "/bin/bash -lc \"curl -q --noproxy '*' --silent --show-error --fail --max-time 25 -H 'Accept: application/json' http://127.0.0.1:46717/willow/compose\"",
+        "selectedOutput": "{\"actions\": [{\"op\": \"key\", \"key\": \"Tab\"}, {\"op\": \"key\", \"key\": \"Enter\"}], \"requested\": [{\"op\": \"key\", \"key\": \"Tab\"}, {\"op\": \"key\", \"key\": \"Enter\"}], \"timeline\": [{\"action\": {\"op\": \"open\"}, \"state\": {\"heading\": \"Willow desk\", \"focused\": \"BODY\", \"locationHash\": \"\", \"status\": \"Kept: 0\", \"controls\": [{\"id\": \"open\", \"tag\": \"A\", \"role\": null, \"label\": \"Open record\", \"stage\": \"ready\", \"theme\": \"brand\", \"weight\": \"700\", \"composed\": true, \"nested\": false}, {\"id\": \"save\", \"tag\": \"DIV\", \"role\": \"button\", \"label\": \"Keep record\", \"stage\": \"ready\", \"theme\": \"brand\", \"weight\": \"700\", \"composed\": false, \"nested\": false}], \"tooltips\": []}}, {\"action\": {\"op\": \"key\", \"key\": \"Tab\"}, \"state\": {\"heading\": \"Willow desk\", \"focused\": \"open\", \"locationHash\": \"\", \"status\": \"Kept: 0\", \"controls\": [{\"id\": \"open\", \"tag\": \"A\", \"role\": null, \"label\": \"Open record\", \"stage\": \"ready\", \"theme\": \"brand\", \"weight\": \"700\", \"composed\": true, \"nested\": false}, {\"id\": \"save\", \"tag\": \"DIV\", \"role\": \"button\", \"label\": \"Keep record\", \"stage\": \"ready\", \"theme\": \"brand\", \"weight\": \"700\", \"composed\": false, \"nested\": false}], \"tooltips\": []}}, {\"action\": {\"op\": \"key\", \"key\": \"Enter\"}, \"state\": {\"heading\": \"Willow desk\", \"focused\": \"BODY\", \"locationHash\": \"#record\", \"status\": \"Kept: 0\", \"controls\": [{\"id\": \"open\", \"tag\": \"A\", \"role\": null, \"label\": \"Open record\", \"stage\": \"ready\", \"theme\": \"brand\", \"weight\": \"700\", \"composed\": true, \"nested\": false}, {\"id\": \"save\", \"tag\": \"DIV\", \"role\": \"button\", \"label\": \"Keep record\", \"stage\": \"ready\", \"theme\": \"brand\", \"weight\": \"700\", \"composed\": false, \"nested\": false}], \"tooltips\": []}}], \"error\": null, \"screenSha256\": \"5804983db6aa740deab60c1c00a5b0143e79cdae8c176897683d7dd7d4db62dd\"}\n",
+        "returnedFrames": [],
+        "eventSHA256": "080d72b53d04159c0ec0a114ed109801ad7250dc60c15097a304845cb034f6fa"
+      },
+      {
+        "id": "item_9",
+        "exit": 0,
+        "operation": "/bin/bash -lc \"curl -q --noproxy '*' --silent --show-error --fail --max-time 25 -H 'Accept: application/json' http://127.0.0.1:46717/willow/save\"",
+        "selectedOutput": "{\"actions\": [{\"op\": \"key\", \"key\": \"Tab\"}, {\"op\": \"key\", \"key\": \"Tab\"}, {\"op\": \"key\", \"key\": \" \"}, {\"op\": \"look\"}], \"requested\": [{\"op\": \"key\", \"key\": \"Tab\"}, {\"op\": \"key\", \"key\": \"Tab\"}, {\"op\": \"key\", \"key\": \" \"}, {\"op\": \"look\"}], \"timeline\": [{\"action\": {\"op\": \"open\"}, \"state\": {\"heading\": \"Willow desk\", \"focused\": \"BODY\", \"locationHash\": \"\", \"status\": \"Kept: 0\", \"controls\": [{\"id\": \"open\", \"tag\": \"A\", \"role\": null, \"label\": \"Open record\", \"stage\": \"ready\", \"theme\": \"brand\", \"weight\": \"700\", \"composed\": true, \"nested\": false}, {\"id\": \"save\", \"tag\": \"DIV\", \"role\": \"button\", \"label\": \"Keep record\", \"stage\": \"ready\", \"theme\": \"brand\", \"weight\": \"700\", \"composed\": false, \"nested\": false}], \"tooltips\": []}}, {\"action\": {\"op\": \"key\", \"key\": \"Tab\"}, \"state\": {\"heading\": \"Willow desk\", \"focused\": \"open\", \"locationHash\": \"\", \"status\": \"Kept: 0\", \"controls\": [{\"id\": \"open\", \"tag\": \"A\", \"role\": null, \"label\": \"Open record\", \"stage\": \"ready\", \"theme\": \"brand\", \"weight\": \"700\", \"composed\": true, \"nested\": false}, {\"id\": \"save\", \"tag\": \"DIV\", \"role\": \"button\", \"label\": \"Keep record\", \"stage\": \"ready\", \"theme\": \"brand\", \"weight\": \"700\", \"composed\": false, \"nested\": false}], \"tooltips\": []}}, {\"action\": {\"op\": \"key\", \"key\": \"Tab\"}, \"state\": {\"heading\": \"Willow desk\", \"focused\": \"save\", \"locationHash\": \"\", \"status\": \"Kept: 0\", \"controls\": [{\"id\": \"open\", \"tag\": \"A\", \"role\": null, \"label\": \"Open record\", \"stage\": \"ready\", \"theme\": \"brand\", \"weight\": \"700\", \"composed\": true, \"nested\": false}, {\"id\": \"save\", \"tag\": \"DIV\", \"role\": \"button\", \"label\": \"Keep record\", \"stage\": \"ready\", \"theme\": \"brand\", \"weight\": \"700\", \"composed\": false, \"nested\": false}], \"tooltips\": []}}, {\"action\": {\"op\": \"key\", \"key\": \" \"}, \"state\": {\"heading\": \"Willow desk\", \"focused\": \"save\", \"locationHash\": \"\", \"status\": \"Kept: 0\", \"controls\": [{\"id\": \"open\", \"tag\": \"A\", \"role\": null, \"label\": \"Open record\", \"stage\": \"ready\", \"theme\": \"brand\", \"weight\": \"700\", \"composed\": true, \"nested\": false}, {\"id\": \"save\", \"tag\": \"DIV\", \"role\": \"button\", \"label\": \"Keep record\", \"stage\": \"ready\", \"theme\": \"brand\", \"weight\": \"700\", \"composed\": false, \"nested\": false}], \"tooltips\": []}}, {\"action\": {\"op\": \"look\"}, \"state\": {\"heading\": \"Willow desk\", \"focused\": \"save\", \"locationHash\": \"\", \"status\": \"Kept: 0\", \"controls\": [{\"id\": \"open\", \"tag\": \"A\", \"role\": null, \"label\": \"Open record\", \"stage\": \"ready\", \"theme\": \"brand\", \"weight\": \"700\", \"composed\": true, \"nested\": false}, {\"id\": \"save\", \"tag\": \"DIV\", \"role\": \"button\", \"label\": \"Keep record\", \"stage\": \"ready\", \"theme\": \"brand\", \"weight\": \"700\", \"composed\": false, \"nested\": false}], \"tooltips\": []}}], \"error\": null, \"screenSha256\": \"eda73e779b61298ad3690f9f8d6517a1ab1bf1d9f8416dbc039c1ec6e286394b\"}\n",
+        "returnedFrames": [],
+        "eventSHA256": "16c19d88c24730d66a82e9a31aac02f4425d284666ec9ffab056cce1dd90c291"
+      },
+      {
+        "id": "item_14",
+        "exit": 1,
+        "operation": "/bin/bash -lc \"rg --files --hidden -g 'package.json' -g '*lock*' -g 'AGENTS.md' -g '\"'!assets'\"' && command -v shadcn\"",
+        "selectedOutput": "",
+        "returnedFrames": [],
+        "eventSHA256": "41bbd044a201b8d0111b5d9bd5e117969944696b4bd683cf153bf6f128809e09"
+      },
+      {
+        "id": "item_15",
+        "exit": 0,
+        "operation": "/bin/bash -lc \"set -o pipefail\ncurl -q --noproxy '*' --silent --show-error --fail --max-time 10 http://127.0.0.1:34019/capture/63045eb6abab/initial.png | sha256sum\"",
+        "selectedOutput": "68e5da89a8ddb991c6818595736cd165869f102975bee549fc1ac9a8318e6e4c  -\n",
+        "returnedFrames": [],
+        "eventSHA256": "d86a0a07f15e2c7d53050c41645dbc3224a8fce708df0c847b117d5631320305"
+      },
+      {
+        "id": "item_16",
+        "exit": 0,
+        "operation": "/bin/bash -lc \"set -o pipefail\ncurl -q --noproxy '*' --silent --show-error --fail --max-time 10 http://127.0.0.1:34019/capture/10b36ec9fc28/initial.png | sha256sum\"",
+        "selectedOutput": "68e5da89a8ddb991c6818595736cd165869f102975bee549fc1ac9a8318e6e4c  -\n",
+        "returnedFrames": [],
+        "eventSHA256": "815675d4543bbdc46048a1aa747e2010bb8d4deec245e94c81007ca043aaa1eb"
+      },
+      {
+        "id": "item_17",
+        "exit": 0,
+        "operation": "/bin/bash -lc \"set -o pipefail\ncurl -q --noproxy '*' --silent --show-error --fail --max-time 10 http://127.0.0.1:34019/capture/63045eb6abab/focused.png | sha256sum\"",
+        "selectedOutput": "3ad7fed2bdb11f724879443a5a283b1ff3c3ae3bd4011fc603899bb94968ff33  -\n",
+        "returnedFrames": [],
+        "eventSHA256": "b9f10384156a0187e8d6cf544f58dd1c48889a74c73cffb69336db00c3d72319"
+      },
+      {
+        "id": "item_18",
+        "exit": 0,
+        "operation": "/bin/bash -lc \"set -o pipefail\ncurl -q --noproxy '*' --silent --show-error --fail --max-time 10 http://127.0.0.1:34019/capture/10b36ec9fc28/focused.png | sha256sum\"",
+        "selectedOutput": "eda73e779b61298ad3690f9f8d6517a1ab1bf1d9f8416dbc039c1ec6e286394b  -\n",
+        "returnedFrames": [],
+        "eventSHA256": "175f2cacbbb800211db921f6c28678311b0e1288c10e8d8a5e822b67d8b542d0"
+      }
+    ],
+    "note": "project images for matched preflight listed under images/ with initial and keyboard focus for both controls. Participant actions are separate."
+  }
+}
