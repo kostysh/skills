@@ -4,6 +4,7 @@ Supporting maintenance documents are non-normative unless `SKILL.md` explicitly 
 
 ## Журналы реализации
 
+- [implementation-log-20261119-1.md](logs/implementation-log-20261119-1.md) — снятие зависимости от архивированного `pencil-dev`.
 - [implementation-log-20261118-1.md](logs/implementation-log-20261118-1.md) — проверка текущего макета и работающего интерфейса, сравнительные прогоны Sol и передача формы Notification settings.
 - [implementation-log-20261107-1.md](logs/implementation-log-20261107-1.md) — исправление предупреждения размера и lint учебного примера после реализации web-ux-engineer.
 - [implementation-log-20260727-1.md](logs/implementation-log-20260727-1.md) — inventory peer-view capabilities и разделение library/mockup/runtime по #228.

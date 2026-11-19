@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.2.5`
+- Skill source version: `0.2.6`
 
 ## Source files
 - `LICENSE.txt`
@@ -16,6 +16,7 @@ Generated from `skill.yaml`.
 - `docs/logs/implementation-log-20260727-1.md`
 - `docs/logs/implementation-log-20261107-1.md`
 - `docs/logs/implementation-log-20261118-1.md`
+- `docs/logs/implementation-log-20261119-1.md`
 - `fragments/overview.md`
 - `references/anti-patterns.md`
 - `references/strategy-to-implementation.md`
