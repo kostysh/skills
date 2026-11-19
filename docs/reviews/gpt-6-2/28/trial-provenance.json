@@ -1,0 +1,476 @@
+{
+  "rawArchiveSHA256": "048e11e478fcc48aa1e0bf4b6f4b57cd46d1b5b7c9326557d01aa53073599c96",
+  "subjects": {
+    "9238dd": {
+      "stage": "ab",
+      "role": "A",
+      "case": "ordinary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "c7ee9790ad438baec4130a1a336354ca70deb409f292c74fe14204f1cbc5d3d8",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "- **high** — Contract tests validate only exercised responses. Claim runtime response validation only when production code validates the emitted payload and failure behavior is tested."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_4",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "9524226f07515dbf68bf3b6ef5a93d30eb7448a294f6cc48939991f99b8d721b"
+        }
+      ],
+      "finalAnswerSHA256": "7203ddf1d570214d8dcdae0a6bcb11a2e84d1be5d0286fafc0dfa9577fb50511",
+      "eventSHA256": "4e8103ed8ff7e5eaaf95541c8d5b71a2fb24aa7b8e434c0d1754245bbff733c5",
+      "exit": 0
+    },
+    "c40a96": {
+      "stage": "ab",
+      "role": "A",
+      "case": "boundary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "c7ee9790ad438baec4130a1a336354ca70deb409f292c74fe14204f1cbc5d3d8",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "- **high** — Contract tests validate only exercised responses. Claim runtime response validation only when production code validates the emitted payload and failure behavior is tested."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "141fc301d465194669082f516799a3cdf78efbe0e7aff0b72636130a8198580e"
+        }
+      ],
+      "finalAnswerSHA256": "9dafc8e0394babef2f14cbf7e403e57632ba7378c6aa0227dc33369b64ca0110",
+      "eventSHA256": "1a297a1237570872ce649345bd682d87d51872de2f62b7d3e8aa25c5b49521a5",
+      "exit": 0
+    },
+    "262bec": {
+      "stage": "ab",
+      "role": "B",
+      "case": "ordinary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "af23ec7d9dc8028d13a290d06e1383b0eefa0ea118845d7d4f75e6480586d682",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "- **high** — Do not call an endpoint production-ready because a route, schema, OpenAPI entry, generated file, mock, or docs-contract test exists; require evidence at every boundary named by the claim.",
+        "- **high** — Do not rely on remembered Hono, adapter, or runtime APIs for version-sensitive work; verify latest official guidance and reconcile it with installed project versions."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_1",
+          "attestedMarkers": [
+            0,
+            1
+          ],
+          "eventSHA256": "31e0deeee9cf951f3ac552f3aca0369f663775aef51c8941bc0ecfc8e272f0b1"
+        }
+      ],
+      "finalAnswerSHA256": "42c8fbc29963160d169a6c4c2c7fbb538f8117b315a97438e2688e06a2ba01e8",
+      "eventSHA256": "4065c425df0673976395909b3657c792025a71ff553f4380686fc9bf7bc489b8",
+      "exit": 0
+    },
+    "601be5": {
+      "stage": "ab",
+      "role": "B",
+      "case": "boundary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "af23ec7d9dc8028d13a290d06e1383b0eefa0ea118845d7d4f75e6480586d682",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "- **high** — Do not call an endpoint production-ready because a route, schema, OpenAPI entry, generated file, mock, or docs-contract test exists; require evidence at every boundary named by the claim.",
+        "- **high** — Do not rely on remembered Hono, adapter, or runtime APIs for version-sensitive work; verify latest official guidance and reconcile it with installed project versions."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_1",
+          "attestedMarkers": [
+            0,
+            1
+          ],
+          "eventSHA256": "b4d1dfce467872c21bb05ab1b84b188e48d4f4a9b951aad5a298dde215e0468d"
+        }
+      ],
+      "finalAnswerSHA256": "afd1c855bc8846f690b204119232db595d99469326bae8b0a3ff002db88a320e",
+      "eventSHA256": "3c5e6a858b655c6ef240e4e5e930391bf23e81554298f4b890d5b0d0fe725b92",
+      "exit": 0
+    },
+    "227dd6": {
+      "stage": "confirm",
+      "role": "C",
+      "case": "ordinary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "44acfa76be8e438c5275561bd8fb77850cbbf63844f3475faff8ade58f89a66f",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "- **high** — Verify emitted responses on the agreed success and failure paths. Report which checks passed and which concerns remain unverified."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "a85a9bd231a9df466497557ef988438443c5caf865ff80c157e5339225567a7f"
+        }
+      ],
+      "finalAnswerSHA256": "75319d72ff86f7c04e2638aeefb4992a403680d8b6ebf5b25e558ff6667e8b12",
+      "eventSHA256": "98a80695210ce06cfbe8ad65027c228b4b9d626c45719d27e07fa5d24e391242",
+      "exit": 0
+    },
+    "2318f8": {
+      "stage": "confirm",
+      "role": "A",
+      "case": "holdout",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "c7ee9790ad438baec4130a1a336354ca70deb409f292c74fe14204f1cbc5d3d8",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "- **high** — Contract tests validate only exercised responses. Claim runtime response validation only when production code validates the emitted payload and failure behavior is tested."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "264aebf06c174526204f59efc1d1c24c5bdcf94114a9f6ef9aa9bebf7362b5a1"
+        }
+      ],
+      "finalAnswerSHA256": "1537f6a33080c1cb43f1998179089773cadaedefbba6f9c33ba5fe6f5012a1af",
+      "eventSHA256": "966a1beb6ede21164f125c2963ab162351a97eed44eb424acfc4292bf8b3917e",
+      "exit": 0
+    },
+    "f2b5c8": {
+      "stage": "confirm",
+      "role": "C",
+      "case": "boundary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "44acfa76be8e438c5275561bd8fb77850cbbf63844f3475faff8ade58f89a66f",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "- **high** — Verify emitted responses on the agreed success and failure paths. Report which checks passed and which concerns remain unverified."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "9c008d5a6334054684351ec8765a77bce6d747239db536aa8e97394e9e841a94"
+        }
+      ],
+      "finalAnswerSHA256": "3f2d50a070d581949b7f123bce1f8d70b642743581cf55ebf2aa819004fbb55b",
+      "eventSHA256": "4adf3825458db1a4366a12f33663a099701e517d1e37992241b9bb1df56df5b7",
+      "exit": 0
+    },
+    "e349d5": {
+      "stage": "confirm",
+      "role": "C",
+      "case": "holdout",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "44acfa76be8e438c5275561bd8fb77850cbbf63844f3475faff8ade58f89a66f",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "- **high** — Verify emitted responses on the agreed success and failure paths. Report which checks passed and which concerns remain unverified."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "1a4436eb45f70d0964ed13b5932cdcb6af0650164c4739e49c1e9d7a5796fcaf"
+        }
+      ],
+      "finalAnswerSHA256": "285247a67d969aa34ff1334aa2ba0f8576bf1969e895758330ce16965554e736",
+      "eventSHA256": "d3ea409a1a955fedf4c10bda1d4a75a9ba8b09c52f6af0c86dd00f1954d8b44b",
+      "exit": 0
+    }
+  },
+  "graders": {
+    "ab": {
+      "originalReportSHA256": "5bfb899cf8f8d56b6bfb2180b472a0ef39d82c2ad15373dfbd40c2fdb545da7e",
+      "portableReportSHA256": "3f9faebe39e1da71e36f67798c33c85a78a1124d39c2322814de1f831e0b65a2",
+      "eventsSHA256": "875d5befffe35ef1bced45f4c19195039772d66420f8d14bcbd235e5336d7c73",
+      "assignment": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"high\"",
+      "deliveredInputs": {
+        "criteria.md": "ed56423fc5a83deea226a3ca3d4e92cfba9aee94739e09e2a5ae3b5257562811",
+        "601be5/actions.json": "62af1cf02c8281e658c1909c00c406320723914ed84f251e79901bafe73c95aa",
+        "601be5/observer.json": "5764dcc05eff9eacf5b7509d70994dd70b7844d7c095671edd6cbee606fced16",
+        "601be5/answer.md": "97bf2bbdf9da81ed2de036eefe3793c04003958b5785725effb3f58ffbc603d9",
+        "601be5/task.md": "946f0bea1396347208bd3bcf2c530ceed6f073c54c5482ef6ff076a480db45f1",
+        "262bec/actions.json": "d245bda06d0b87ace305609075ee369ac2efcbc5307d6545d40e56470d4cd18a",
+        "262bec/observer.json": "121b849f462ec75de0d3b666bc3278b96cadc9e752b5aa647c06bbfa369c577f",
+        "262bec/answer.md": "f9f1b6ac6b889231f7a86e76fd4fa42bc8994712f9b282ceb32c0c2429a9f5e6",
+        "262bec/task.md": "946f0bea1396347208bd3bcf2c530ceed6f073c54c5482ef6ff076a480db45f1",
+        "c40a96/actions.json": "0a63e19ae85699f3c2b4c79df82e7a8e102142461318102b4a186b7c486befa2",
+        "c40a96/observer.json": "2116a1c579049e1465459f1f49f1d3e0e33393eb513475cdf8e8ce67e370d10c",
+        "c40a96/answer.md": "763d704a7b478cf75b058ec7d2b31a843b2b74019b92ffb5bdc01933a2ad0396",
+        "c40a96/task.md": "946f0bea1396347208bd3bcf2c530ceed6f073c54c5482ef6ff076a480db45f1",
+        "9238dd/actions.json": "a2ecf8152c7906d422b9f18eb192825c9d62ea5e6d09faf59f250a5bd0131c68",
+        "9238dd/observer.json": "246bf6e7a5195cb7946e1ad970137bfda57618e07544db3427ab83e781f30cfa",
+        "9238dd/answer.md": "31ed258f068fe58b3a700dc7950210742197d4c61113a597f39c49c5cc50f324",
+        "9238dd/task.md": "946f0bea1396347208bd3bcf2c530ceed6f073c54c5482ef6ff076a480db45f1",
+        "9238dd/after/README.md": "e0da529c363c6447f3bf13e1d88d4a15601a3db9a28e957bbcec19aad4dcf755",
+        "9238dd/after/contract.md": "46e38267c97e0e98f1749cd47dd0001e02d18bd919d68c8ce9b8f50a6edd0579",
+        "9238dd/after/ci.md": "50482c26daf4869ecfa3c8b1531abadcd9459ba2bf33b65940175061e1d4722b",
+        "9238dd/before/README.md": "e0da529c363c6447f3bf13e1d88d4a15601a3db9a28e957bbcec19aad4dcf755",
+        "9238dd/before/contract.md": "46e38267c97e0e98f1749cd47dd0001e02d18bd919d68c8ce9b8f50a6edd0579",
+        "9238dd/before/ci.md": "50482c26daf4869ecfa3c8b1531abadcd9459ba2bf33b65940175061e1d4722b",
+        "9238dd/before/release/app.mjs": "be731a5878ace0f2a6390de204fa1398f438707a7d1eef44819ac8d528a217d1",
+        "9238dd/before/release/smoke.test.mjs": "461bbacb835ec2a903fa81261e6424848a233e34eaf1f8634b4fe5100c364ac0",
+        "9238dd/before/release/package.json": "1312c8d3fd5a7472e9e840fa838e6125f50c611c147e9e9e27f835f3320f6b72",
+        "9238dd/before/vendor/hono-4.13.19.tgz": "ec0825774aef43124f0ddde51a1883d24a3fa3e174c539eaa175010b77c62ba5",
+        "9238dd/after/release/app.mjs": "be731a5878ace0f2a6390de204fa1398f438707a7d1eef44819ac8d528a217d1",
+        "9238dd/after/release/smoke.test.mjs": "461bbacb835ec2a903fa81261e6424848a233e34eaf1f8634b4fe5100c364ac0",
+        "9238dd/after/release/package.json": "1312c8d3fd5a7472e9e840fa838e6125f50c611c147e9e9e27f835f3320f6b72",
+        "9238dd/after/vendor/hono-4.13.19.tgz": "ec0825774aef43124f0ddde51a1883d24a3fa3e174c539eaa175010b77c62ba5",
+        "c40a96/after/README.md": "e0da529c363c6447f3bf13e1d88d4a15601a3db9a28e957bbcec19aad4dcf755",
+        "c40a96/after/contract.md": "e91136d8aa1c151138c8440771e8218d3dd791ce10d5698b33e809593da7c42d",
+        "c40a96/after/ci.md": "50482c26daf4869ecfa3c8b1531abadcd9459ba2bf33b65940175061e1d4722b",
+        "c40a96/before/README.md": "e0da529c363c6447f3bf13e1d88d4a15601a3db9a28e957bbcec19aad4dcf755",
+        "c40a96/before/contract.md": "e91136d8aa1c151138c8440771e8218d3dd791ce10d5698b33e809593da7c42d",
+        "c40a96/before/ci.md": "50482c26daf4869ecfa3c8b1531abadcd9459ba2bf33b65940175061e1d4722b",
+        "c40a96/before/release/app.mjs": "e16b3d79c6ba743452e721ab2fae0f322d870a10880d7172de59979f4e6be8b0",
+        "c40a96/before/release/smoke.test.mjs": "502da660842d75d77a15113740025876e6e927162c3eabaa2b9d33b18cf47856",
+        "c40a96/before/release/package.json": "1312c8d3fd5a7472e9e840fa838e6125f50c611c147e9e9e27f835f3320f6b72",
+        "c40a96/before/vendor/hono-4.13.19.tgz": "ec0825774aef43124f0ddde51a1883d24a3fa3e174c539eaa175010b77c62ba5",
+        "c40a96/after/release/app.mjs": "e16b3d79c6ba743452e721ab2fae0f322d870a10880d7172de59979f4e6be8b0",
+        "c40a96/after/release/smoke.test.mjs": "502da660842d75d77a15113740025876e6e927162c3eabaa2b9d33b18cf47856",
+        "c40a96/after/release/package.json": "1312c8d3fd5a7472e9e840fa838e6125f50c611c147e9e9e27f835f3320f6b72",
+        "c40a96/after/vendor/hono-4.13.19.tgz": "ec0825774aef43124f0ddde51a1883d24a3fa3e174c539eaa175010b77c62ba5",
+        "262bec/after/README.md": "e0da529c363c6447f3bf13e1d88d4a15601a3db9a28e957bbcec19aad4dcf755",
+        "262bec/after/contract.md": "46e38267c97e0e98f1749cd47dd0001e02d18bd919d68c8ce9b8f50a6edd0579",
+        "262bec/after/ci.md": "50482c26daf4869ecfa3c8b1531abadcd9459ba2bf33b65940175061e1d4722b",
+        "262bec/before/README.md": "e0da529c363c6447f3bf13e1d88d4a15601a3db9a28e957bbcec19aad4dcf755",
+        "262bec/before/contract.md": "46e38267c97e0e98f1749cd47dd0001e02d18bd919d68c8ce9b8f50a6edd0579",
+        "262bec/before/ci.md": "50482c26daf4869ecfa3c8b1531abadcd9459ba2bf33b65940175061e1d4722b",
+        "262bec/before/release/app.mjs": "be731a5878ace0f2a6390de204fa1398f438707a7d1eef44819ac8d528a217d1",
+        "262bec/before/release/smoke.test.mjs": "461bbacb835ec2a903fa81261e6424848a233e34eaf1f8634b4fe5100c364ac0",
+        "262bec/before/release/package.json": "1312c8d3fd5a7472e9e840fa838e6125f50c611c147e9e9e27f835f3320f6b72",
+        "262bec/before/vendor/hono-4.13.19.tgz": "ec0825774aef43124f0ddde51a1883d24a3fa3e174c539eaa175010b77c62ba5",
+        "262bec/after/release/app.mjs": "be731a5878ace0f2a6390de204fa1398f438707a7d1eef44819ac8d528a217d1",
+        "262bec/after/release/smoke.test.mjs": "461bbacb835ec2a903fa81261e6424848a233e34eaf1f8634b4fe5100c364ac0",
+        "262bec/after/release/package.json": "1312c8d3fd5a7472e9e840fa838e6125f50c611c147e9e9e27f835f3320f6b72",
+        "262bec/after/vendor/hono-4.13.19.tgz": "ec0825774aef43124f0ddde51a1883d24a3fa3e174c539eaa175010b77c62ba5",
+        "601be5/after/README.md": "e0da529c363c6447f3bf13e1d88d4a15601a3db9a28e957bbcec19aad4dcf755",
+        "601be5/after/contract.md": "e91136d8aa1c151138c8440771e8218d3dd791ce10d5698b33e809593da7c42d",
+        "601be5/after/ci.md": "50482c26daf4869ecfa3c8b1531abadcd9459ba2bf33b65940175061e1d4722b",
+        "601be5/before/README.md": "e0da529c363c6447f3bf13e1d88d4a15601a3db9a28e957bbcec19aad4dcf755",
+        "601be5/before/contract.md": "e91136d8aa1c151138c8440771e8218d3dd791ce10d5698b33e809593da7c42d",
+        "601be5/before/ci.md": "50482c26daf4869ecfa3c8b1531abadcd9459ba2bf33b65940175061e1d4722b",
+        "601be5/before/release/app.mjs": "e16b3d79c6ba743452e721ab2fae0f322d870a10880d7172de59979f4e6be8b0",
+        "601be5/before/release/smoke.test.mjs": "502da660842d75d77a15113740025876e6e927162c3eabaa2b9d33b18cf47856",
+        "601be5/before/release/package.json": "1312c8d3fd5a7472e9e840fa838e6125f50c611c147e9e9e27f835f3320f6b72",
+        "601be5/before/vendor/hono-4.13.19.tgz": "ec0825774aef43124f0ddde51a1883d24a3fa3e174c539eaa175010b77c62ba5",
+        "601be5/after/release/app.mjs": "e16b3d79c6ba743452e721ab2fae0f322d870a10880d7172de59979f4e6be8b0",
+        "601be5/after/release/smoke.test.mjs": "502da660842d75d77a15113740025876e6e927162c3eabaa2b9d33b18cf47856",
+        "601be5/after/release/package.json": "1312c8d3fd5a7472e9e840fa838e6125f50c611c147e9e9e27f835f3320f6b72",
+        "601be5/after/vendor/hono-4.13.19.tgz": "ec0825774aef43124f0ddde51a1883d24a3fa3e174c539eaa175010b77c62ba5"
+      },
+      "postSignMapping": [
+        {
+          "role": "A",
+          "case": "ordinary",
+          "label": "9238dd"
+        },
+        {
+          "role": "A",
+          "case": "boundary",
+          "label": "c40a96"
+        },
+        {
+          "role": "B",
+          "case": "ordinary",
+          "label": "262bec"
+        },
+        {
+          "role": "B",
+          "case": "boundary",
+          "label": "601be5"
+        }
+      ]
+    },
+    "confirm": {
+      "originalReportSHA256": "0a0a2f78601dcb3ad66d0ed992ca868eb46e6607d1608210c7ffb3884d3dec6a",
+      "portableReportSHA256": "3d4b48c4267dc4b19a686726059ab508b23ca0f2d40184f7fbb27addb857ea82",
+      "eventsSHA256": "14db4288e3e0a7c3505b39522207c40e4b5fb04543d5ce7af40ad717ce35a42d",
+      "assignment": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"high\"",
+      "deliveredInputs": {
+        "criteria.md": "ed56423fc5a83deea226a3ca3d4e92cfba9aee94739e09e2a5ae3b5257562811",
+        "adfa07/actions.json": "a2ecf8152c7906d422b9f18eb192825c9d62ea5e6d09faf59f250a5bd0131c68",
+        "adfa07/observer.json": "246bf6e7a5195cb7946e1ad970137bfda57618e07544db3427ab83e781f30cfa",
+        "adfa07/answer.md": "31ed258f068fe58b3a700dc7950210742197d4c61113a597f39c49c5cc50f324",
+        "adfa07/task.md": "946f0bea1396347208bd3bcf2c530ceed6f073c54c5482ef6ff076a480db45f1",
+        "8656d4/actions.json": "0a63e19ae85699f3c2b4c79df82e7a8e102142461318102b4a186b7c486befa2",
+        "8656d4/observer.json": "2116a1c579049e1465459f1f49f1d3e0e33393eb513475cdf8e8ce67e370d10c",
+        "8656d4/answer.md": "763d704a7b478cf75b058ec7d2b31a843b2b74019b92ffb5bdc01933a2ad0396",
+        "8656d4/task.md": "946f0bea1396347208bd3bcf2c530ceed6f073c54c5482ef6ff076a480db45f1",
+        "e349d5/actions.json": "09296e16bb2759f42eb816cee64935dcff4664338e43145fdcd78c93fc96955a",
+        "e349d5/observer.json": "781b962c09cfab08076ae29810ebe96dd397368ca1701bfa66be4fdcf38c018b",
+        "e349d5/answer.md": "56d8ff1b8dffcc0561e64fea2f2ffcb9e051b9a001ba1842e46c292a4d92c90e",
+        "e349d5/task.md": "946f0bea1396347208bd3bcf2c530ceed6f073c54c5482ef6ff076a480db45f1",
+        "2318f8/actions.json": "7f08cf10246d83efdc22a29833dfaeb467fe641783ee1a7dc2820d829278cf92",
+        "2318f8/observer.json": "6dec015d16355333f9f196c52c130982de497a548407cbe35817524cd8d92275",
+        "2318f8/answer.md": "968e4b893b3761d1f8c7bcc0a8481cebe205488170ffc3a5ba1a7bc4a5868917",
+        "2318f8/task.md": "946f0bea1396347208bd3bcf2c530ceed6f073c54c5482ef6ff076a480db45f1",
+        "f2b5c8/actions.json": "a9c4abd6cf249c5bbcf5e3e5f76fd40625d960bbf2c6022ff233cf0d97c4b402",
+        "f2b5c8/observer.json": "7e94c8c34211827d53bf7fe57d23ae5a6d280795aba16765dcae5deb1dab9e0c",
+        "f2b5c8/answer.md": "d712fc8628278ba6341b16ba0bd38eefca7911d496d12e8721ab4186de676d3f",
+        "f2b5c8/task.md": "946f0bea1396347208bd3bcf2c530ceed6f073c54c5482ef6ff076a480db45f1",
+        "227dd6/actions.json": "344dd640abc09e3c78c84697db62d0b93f011af0251b2e0abad051e1ef5d1bb7",
+        "227dd6/observer.json": "7b6361a9ac5f84856f61357a165829192679200f7a185b7a9cdfa14c40b96486",
+        "227dd6/answer.md": "88cf7f232abe989a249b8bf97cc07d417173f220667ccd03157440e1d508f5e6",
+        "227dd6/task.md": "946f0bea1396347208bd3bcf2c530ceed6f073c54c5482ef6ff076a480db45f1",
+        "227dd6/after/README.md": "e0da529c363c6447f3bf13e1d88d4a15601a3db9a28e957bbcec19aad4dcf755",
+        "227dd6/after/contract.md": "46e38267c97e0e98f1749cd47dd0001e02d18bd919d68c8ce9b8f50a6edd0579",
+        "227dd6/after/ci.md": "50482c26daf4869ecfa3c8b1531abadcd9459ba2bf33b65940175061e1d4722b",
+        "227dd6/before/README.md": "e0da529c363c6447f3bf13e1d88d4a15601a3db9a28e957bbcec19aad4dcf755",
+        "227dd6/before/contract.md": "46e38267c97e0e98f1749cd47dd0001e02d18bd919d68c8ce9b8f50a6edd0579",
+        "227dd6/before/ci.md": "50482c26daf4869ecfa3c8b1531abadcd9459ba2bf33b65940175061e1d4722b",
+        "227dd6/before/release/app.mjs": "be731a5878ace0f2a6390de204fa1398f438707a7d1eef44819ac8d528a217d1",
+        "227dd6/before/release/smoke.test.mjs": "461bbacb835ec2a903fa81261e6424848a233e34eaf1f8634b4fe5100c364ac0",
+        "227dd6/before/release/package.json": "1312c8d3fd5a7472e9e840fa838e6125f50c611c147e9e9e27f835f3320f6b72",
+        "227dd6/before/vendor/hono-4.13.19.tgz": "ec0825774aef43124f0ddde51a1883d24a3fa3e174c539eaa175010b77c62ba5",
+        "227dd6/after/release/app.mjs": "be731a5878ace0f2a6390de204fa1398f438707a7d1eef44819ac8d528a217d1",
+        "227dd6/after/release/smoke.test.mjs": "461bbacb835ec2a903fa81261e6424848a233e34eaf1f8634b4fe5100c364ac0",
+        "227dd6/after/release/package.json": "1312c8d3fd5a7472e9e840fa838e6125f50c611c147e9e9e27f835f3320f6b72",
+        "227dd6/after/vendor/hono-4.13.19.tgz": "ec0825774aef43124f0ddde51a1883d24a3fa3e174c539eaa175010b77c62ba5",
+        "f2b5c8/after/README.md": "e0da529c363c6447f3bf13e1d88d4a15601a3db9a28e957bbcec19aad4dcf755",
+        "f2b5c8/after/contract.md": "e91136d8aa1c151138c8440771e8218d3dd791ce10d5698b33e809593da7c42d",
+        "f2b5c8/after/ci.md": "50482c26daf4869ecfa3c8b1531abadcd9459ba2bf33b65940175061e1d4722b",
+        "f2b5c8/before/README.md": "e0da529c363c6447f3bf13e1d88d4a15601a3db9a28e957bbcec19aad4dcf755",
+        "f2b5c8/before/contract.md": "e91136d8aa1c151138c8440771e8218d3dd791ce10d5698b33e809593da7c42d",
+        "f2b5c8/before/ci.md": "50482c26daf4869ecfa3c8b1531abadcd9459ba2bf33b65940175061e1d4722b",
+        "f2b5c8/before/release/app.mjs": "e16b3d79c6ba743452e721ab2fae0f322d870a10880d7172de59979f4e6be8b0",
+        "f2b5c8/before/release/smoke.test.mjs": "502da660842d75d77a15113740025876e6e927162c3eabaa2b9d33b18cf47856",
+        "f2b5c8/before/release/package.json": "1312c8d3fd5a7472e9e840fa838e6125f50c611c147e9e9e27f835f3320f6b72",
+        "f2b5c8/before/vendor/hono-4.13.19.tgz": "ec0825774aef43124f0ddde51a1883d24a3fa3e174c539eaa175010b77c62ba5",
+        "f2b5c8/after/release/app.mjs": "e16b3d79c6ba743452e721ab2fae0f322d870a10880d7172de59979f4e6be8b0",
+        "f2b5c8/after/release/smoke.test.mjs": "502da660842d75d77a15113740025876e6e927162c3eabaa2b9d33b18cf47856",
+        "f2b5c8/after/release/package.json": "1312c8d3fd5a7472e9e840fa838e6125f50c611c147e9e9e27f835f3320f6b72",
+        "f2b5c8/after/vendor/hono-4.13.19.tgz": "ec0825774aef43124f0ddde51a1883d24a3fa3e174c539eaa175010b77c62ba5",
+        "2318f8/after/README.md": "e0da529c363c6447f3bf13e1d88d4a15601a3db9a28e957bbcec19aad4dcf755",
+        "2318f8/after/contract.md": "a258d4877a3451987f426db9cb59c16735c0edb2119b6c3f37943e56cf4dc34a",
+        "2318f8/after/ci.md": "50482c26daf4869ecfa3c8b1531abadcd9459ba2bf33b65940175061e1d4722b",
+        "2318f8/before/README.md": "e0da529c363c6447f3bf13e1d88d4a15601a3db9a28e957bbcec19aad4dcf755",
+        "2318f8/before/contract.md": "a258d4877a3451987f426db9cb59c16735c0edb2119b6c3f37943e56cf4dc34a",
+        "2318f8/before/ci.md": "50482c26daf4869ecfa3c8b1531abadcd9459ba2bf33b65940175061e1d4722b",
+        "2318f8/before/release/app.mjs": "aea09fc968781ca3e95b04078ad476c2fe40322fefe6f7d16e1c21adc3e1bba2",
+        "2318f8/before/release/smoke.test.mjs": "60d292e131df6ad2a5a01aeb14ca0e72ab11610260e35e8d31e01ea334042db1",
+        "2318f8/before/release/package.json": "1312c8d3fd5a7472e9e840fa838e6125f50c611c147e9e9e27f835f3320f6b72",
+        "2318f8/before/vendor/hono-4.13.19.tgz": "ec0825774aef43124f0ddde51a1883d24a3fa3e174c539eaa175010b77c62ba5",
+        "2318f8/after/release/app.mjs": "aea09fc968781ca3e95b04078ad476c2fe40322fefe6f7d16e1c21adc3e1bba2",
+        "2318f8/after/release/smoke.test.mjs": "60d292e131df6ad2a5a01aeb14ca0e72ab11610260e35e8d31e01ea334042db1",
+        "2318f8/after/release/package.json": "1312c8d3fd5a7472e9e840fa838e6125f50c611c147e9e9e27f835f3320f6b72",
+        "2318f8/after/vendor/hono-4.13.19.tgz": "ec0825774aef43124f0ddde51a1883d24a3fa3e174c539eaa175010b77c62ba5",
+        "e349d5/after/README.md": "e0da529c363c6447f3bf13e1d88d4a15601a3db9a28e957bbcec19aad4dcf755",
+        "e349d5/after/contract.md": "a258d4877a3451987f426db9cb59c16735c0edb2119b6c3f37943e56cf4dc34a",
+        "e349d5/after/ci.md": "50482c26daf4869ecfa3c8b1531abadcd9459ba2bf33b65940175061e1d4722b",
+        "e349d5/before/README.md": "e0da529c363c6447f3bf13e1d88d4a15601a3db9a28e957bbcec19aad4dcf755",
+        "e349d5/before/contract.md": "a258d4877a3451987f426db9cb59c16735c0edb2119b6c3f37943e56cf4dc34a",
+        "e349d5/before/ci.md": "50482c26daf4869ecfa3c8b1531abadcd9459ba2bf33b65940175061e1d4722b",
+        "e349d5/before/release/app.mjs": "aea09fc968781ca3e95b04078ad476c2fe40322fefe6f7d16e1c21adc3e1bba2",
+        "e349d5/before/release/smoke.test.mjs": "60d292e131df6ad2a5a01aeb14ca0e72ab11610260e35e8d31e01ea334042db1",
+        "e349d5/before/release/package.json": "1312c8d3fd5a7472e9e840fa838e6125f50c611c147e9e9e27f835f3320f6b72",
+        "e349d5/before/vendor/hono-4.13.19.tgz": "ec0825774aef43124f0ddde51a1883d24a3fa3e174c539eaa175010b77c62ba5",
+        "e349d5/after/release/app.mjs": "aea09fc968781ca3e95b04078ad476c2fe40322fefe6f7d16e1c21adc3e1bba2",
+        "e349d5/after/release/smoke.test.mjs": "60d292e131df6ad2a5a01aeb14ca0e72ab11610260e35e8d31e01ea334042db1",
+        "e349d5/after/release/package.json": "1312c8d3fd5a7472e9e840fa838e6125f50c611c147e9e9e27f835f3320f6b72",
+        "e349d5/after/vendor/hono-4.13.19.tgz": "ec0825774aef43124f0ddde51a1883d24a3fa3e174c539eaa175010b77c62ba5",
+        "8656d4/after/README.md": "e0da529c363c6447f3bf13e1d88d4a15601a3db9a28e957bbcec19aad4dcf755",
+        "8656d4/after/contract.md": "e91136d8aa1c151138c8440771e8218d3dd791ce10d5698b33e809593da7c42d",
+        "8656d4/after/ci.md": "50482c26daf4869ecfa3c8b1531abadcd9459ba2bf33b65940175061e1d4722b",
+        "8656d4/before/README.md": "e0da529c363c6447f3bf13e1d88d4a15601a3db9a28e957bbcec19aad4dcf755",
+        "8656d4/before/contract.md": "e91136d8aa1c151138c8440771e8218d3dd791ce10d5698b33e809593da7c42d",
+        "8656d4/before/ci.md": "50482c26daf4869ecfa3c8b1531abadcd9459ba2bf33b65940175061e1d4722b",
+        "8656d4/before/release/app.mjs": "e16b3d79c6ba743452e721ab2fae0f322d870a10880d7172de59979f4e6be8b0",
+        "8656d4/before/release/smoke.test.mjs": "502da660842d75d77a15113740025876e6e927162c3eabaa2b9d33b18cf47856",
+        "8656d4/before/release/package.json": "1312c8d3fd5a7472e9e840fa838e6125f50c611c147e9e9e27f835f3320f6b72",
+        "8656d4/before/vendor/hono-4.13.19.tgz": "ec0825774aef43124f0ddde51a1883d24a3fa3e174c539eaa175010b77c62ba5",
+        "8656d4/after/release/app.mjs": "e16b3d79c6ba743452e721ab2fae0f322d870a10880d7172de59979f4e6be8b0",
+        "8656d4/after/release/smoke.test.mjs": "502da660842d75d77a15113740025876e6e927162c3eabaa2b9d33b18cf47856",
+        "8656d4/after/release/package.json": "1312c8d3fd5a7472e9e840fa838e6125f50c611c147e9e9e27f835f3320f6b72",
+        "8656d4/after/vendor/hono-4.13.19.tgz": "ec0825774aef43124f0ddde51a1883d24a3fa3e174c539eaa175010b77c62ba5",
+        "adfa07/after/README.md": "e0da529c363c6447f3bf13e1d88d4a15601a3db9a28e957bbcec19aad4dcf755",
+        "adfa07/after/contract.md": "46e38267c97e0e98f1749cd47dd0001e02d18bd919d68c8ce9b8f50a6edd0579",
+        "adfa07/after/ci.md": "50482c26daf4869ecfa3c8b1531abadcd9459ba2bf33b65940175061e1d4722b",
+        "adfa07/before/README.md": "e0da529c363c6447f3bf13e1d88d4a15601a3db9a28e957bbcec19aad4dcf755",
+        "adfa07/before/contract.md": "46e38267c97e0e98f1749cd47dd0001e02d18bd919d68c8ce9b8f50a6edd0579",
+        "adfa07/before/ci.md": "50482c26daf4869ecfa3c8b1531abadcd9459ba2bf33b65940175061e1d4722b",
+        "adfa07/before/release/app.mjs": "be731a5878ace0f2a6390de204fa1398f438707a7d1eef44819ac8d528a217d1",
+        "adfa07/before/release/smoke.test.mjs": "461bbacb835ec2a903fa81261e6424848a233e34eaf1f8634b4fe5100c364ac0",
+        "adfa07/before/release/package.json": "1312c8d3fd5a7472e9e840fa838e6125f50c611c147e9e9e27f835f3320f6b72",
+        "adfa07/before/vendor/hono-4.13.19.tgz": "ec0825774aef43124f0ddde51a1883d24a3fa3e174c539eaa175010b77c62ba5",
+        "adfa07/after/release/app.mjs": "be731a5878ace0f2a6390de204fa1398f438707a7d1eef44819ac8d528a217d1",
+        "adfa07/after/release/smoke.test.mjs": "461bbacb835ec2a903fa81261e6424848a233e34eaf1f8634b4fe5100c364ac0",
+        "adfa07/after/release/package.json": "1312c8d3fd5a7472e9e840fa838e6125f50c611c147e9e9e27f835f3320f6b72",
+        "adfa07/after/vendor/hono-4.13.19.tgz": "ec0825774aef43124f0ddde51a1883d24a3fa3e174c539eaa175010b77c62ba5"
+      },
+      "postSignMapping": [
+        {
+          "role": "C",
+          "case": "ordinary",
+          "label": "227dd6"
+        },
+        {
+          "role": "C",
+          "case": "boundary",
+          "label": "f2b5c8"
+        },
+        {
+          "role": "A",
+          "case": "holdout",
+          "label": "2318f8"
+        },
+        {
+          "role": "C",
+          "case": "holdout",
+          "label": "e349d5"
+        },
+        {
+          "role": "A",
+          "case": "boundary",
+          "label": "8656d4",
+          "original_label": "c40a96"
+        },
+        {
+          "role": "A",
+          "case": "ordinary",
+          "label": "adfa07",
+          "original_label": "9238dd"
+        }
+      ]
+    }
+  },
+  "limits": "Fresh ephemeral task workspaces with memories disabled. Shared host-level read access remained technically possible. DirectTextObserved records relevant text returned in a recorded tool result; targeted manual examination remains necessary when false."
+}

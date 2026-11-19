@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.9`
+- Skill source version: `0.1.10`
 - CLI package version: `0.1.0`
 
 ## Source files
@@ -33,7 +33,8 @@ Generated from `skill.yaml`.
 - `test/docs-contract.test.mjs`
 
 ## Required references
-- none
+- `references/high-risk-backend-contract.md`
+- `references/framework-currency.md`
 
 ## Warnings
 - none

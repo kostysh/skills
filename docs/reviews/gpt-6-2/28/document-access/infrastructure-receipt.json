@@ -1,0 +1,7 @@
+{
+  "exit": 1,
+  "eventsSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "noProductChanges": true,
+  "error": "Error: failed to initialize in-process app-server client: Read-only file system (os error 30)",
+  "disposition": "Первый запуск остановился до рабочего запроса при инициализации приложения Codex. В опыт вошла новая сессия с разрешением на запись служебной базы."
+}

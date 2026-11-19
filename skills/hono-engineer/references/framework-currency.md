@@ -10,9 +10,11 @@ Use this reference before a version-sensitive Hono, companion-package, adapter, 
 4. If latest guidance and the installed project surface differ, use behavior supported by the installed version unless the request authorizes an upgrade. Report the delta and the evidence needed to migrate.
 5. Stop or provide guidance-only output when the installed version cannot be established and the decision could change runtime behavior.
 
-## Dated adapter compatibility
+## Dated compatibility notes
 
-Checked 2026-09-09: `@hono/node-server` 2.1.1 declares Node >=20 in its published package engines. Some unversioned getting-started examples advertise an older floor; use the installed adapter's engines/source for a Node deployment decision. Preserve a compatible older adapter/runtime pair unless an upgrade is authorized. Core framework compatibility alone does not establish adapter or downstream SDK compatibility.
+On 2026-11-19 the publisher's `latest` tag selected v4 and `next` selected the v5 release candidate. In v4, `onError` takes `(err, c)`. In the v5 candidate, `onError` and `notFound` register routable middleware, and the error is available as `c.error`. Use the installed major's API. [Publisher tags](https://registry.npmjs.org/-/package/hono/dist-tags) · [Hono migration guide](https://hono.dev/docs/guides/migrating-to-v5)
+
+The published `@hono/node-server` 2.1.9 manifest requires Node >=20. Check the installed adapter and downstream SDK for their own Node requirements. [Adapter manifest](https://github.com/honojs/node-server/blob/v2.1.9/package.json)
 
 ## Official source map
 

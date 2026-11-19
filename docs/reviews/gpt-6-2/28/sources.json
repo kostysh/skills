@@ -1,0 +1,77 @@
+{
+  "checkedUtc": "2026-11-18T23:57:51.390294+00:00",
+  "node": "v24.15.0",
+  "sources": {
+    "https://registry.npmjs.org/-/package/hono/dist-tags": {
+      "status": 200,
+      "sha256": "6ddf544881b25d6cc66b202f2ec5808df7d8a4bf08496873adf159087fdc531c",
+      "bytes": 58,
+      "distTags": {
+        "v4": "4.0.0-rc.4",
+        "next": "5.0.0-rc.1",
+        "latest": "4.13.19"
+      }
+    },
+    "https://registry.npmjs.org/hono/4.13.19": {
+      "status": 200,
+      "sha256": "fda4e12e92fbe495754780be103f9dc01080b33a0ac61be39ec02fc7e631749b",
+      "bytes": 20136,
+      "name": "hono",
+      "version": "4.13.19",
+      "engines": {
+        "node": ">=16.9.0"
+      },
+      "archiveIntegrity": "sha512-KmXvQAXwcAHV+muzbIwoJ23niEB5nMoDVr9WcRkU8mvjUECm/1+7v4Jgp7P7a+H6MLFrh+vXrGonGrGS+RQfkA=="
+    },
+    "https://registry.npmjs.org/hono/5.0.0-rc.1": {
+      "status": 200,
+      "sha256": "0e73608f53bc29146d91f9407a6c038258e3b7cfd74cac5feb13969b59cf60df",
+      "bytes": 11271,
+      "name": "hono",
+      "version": "5.0.0-rc.1",
+      "engines": {
+        "node": ">=22.12.0"
+      },
+      "archiveIntegrity": "sha512-vTcfU9yAggXh/+ZSi8zpYbzYDubCgFnSt8d5afCAlgkd38dyYb3CVtOh8YWhS65NkEqBseCsTj/P8mceJ+7KNA=="
+    },
+    "https://registry.npmjs.org/@hono/node-server/2.1.9": {
+      "status": 200,
+      "sha256": "14f80ac53a0b4cbfb5f5ee2d9663124f75ffbffdbe412cdf2aebdc9286ed27d8",
+      "bytes": 3490,
+      "name": "@hono/node-server",
+      "version": "2.1.9",
+      "engines": {
+        "node": ">=20"
+      },
+      "peerDependencies": {
+        "hono": "^4 || ^5.0.0-0"
+      },
+      "archiveIntegrity": "sha512-Sk4NQd3GFY0WZWCzndwFMPwJhtD0y9qjsQ+pjID0/03nK9pxyBCUoUHCho8QYBLBVhi0ssL8UkNPHqbgSOFPIQ=="
+    },
+    "https://raw.githubusercontent.com/honojs/website/main/docs/guides/testing.md": {
+      "status": 200,
+      "sha256": "6fa5a6728f02242c7aac2cc74a7a2dffef7d1612593c02813a4577eef428268f",
+      "bytes": 3494
+    },
+    "https://raw.githubusercontent.com/honojs/website/main/docs/guides/middleware.md": {
+      "status": 200,
+      "sha256": "15b51a21ef0b8c6e3507b952d79360593a8e3b26dffe71d01bb9be1884e3adbc",
+      "bytes": 7093
+    },
+    "https://raw.githubusercontent.com/honojs/website/main/docs/guides/validation.md": {
+      "status": 200,
+      "sha256": "c890616e32c7ac2e4f502ef9d0f0932cc56a8015aec71b6a74b91bbcc34093d4",
+      "bytes": 8161
+    },
+    "https://raw.githubusercontent.com/honojs/website/main/docs/guides/migrating-to-v5.md": {
+      "status": 200,
+      "sha256": "5c929b8a353f6dd0318147f17b2d80465dac61785d63ae1262c6ff725b780b18",
+      "bytes": 7649
+    },
+    "https://developers.openai.com/api/docs/guides/latest-model.md?model=gpt-6.2-astra": {
+      "status": 200,
+      "sha256": "d51a271ccee79b94428bc1d1a1591f9f98c424f2d9d084a37ccc4358dada40c0",
+      "bytes": 15048
+    }
+  }
+}

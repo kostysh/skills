@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "hono-engineer"
-  source-version: "0.1.9"
+  source-version: "0.1.10"
   recommended-skill-md-max-bytes: 24000
   description: >-
     Build, change, and diagnose Hono API services. Use for Hono routing,
@@ -16,13 +16,13 @@ references:
     title: "High-risk Backend Contract"
     source: "references/high-risk-backend-contract.md"
     target: "references/high-risk-backend-contract.md"
-    required: false
+    required: true
     trigger: "Read this for high-risk Hono routes involving a public API, Supabase-backed state, authorization, money, retries, external resources, or required audit evidence."
   - id: "ref-framework-currency"
     title: "Framework Currency"
     source: "references/framework-currency.md"
     target: "references/framework-currency.md"
-    required: false
+    required: true
     trigger: "Read this before a version-sensitive Hono, adapter, or runtime decision, or when installed and latest versions may differ."
   - id: "ref-architecture"
     title: "Architecture"
@@ -145,10 +145,10 @@ supporting:
     description: "Non-normative log for the skill description length update."
 surfaces:
   active:
-    requiredReferences: []
-    optionalReferences:
+    requiredReferences:
       - "ref-high-risk-backend-contract"
       - "ref-framework-currency"
+    optionalReferences:
       - "ref-architecture"
       - "ref-auth"
       - "ref-caching"
@@ -259,7 +259,7 @@ sections:
       text: "Do not call an endpoint production-ready because a route, schema, OpenAPI entry, generated file, mock, or docs-contract test exists; require evidence at every boundary named by the claim."
     - id: "gotcha-output-validation"
       priority: "high"
-      text: "Contract tests validate only exercised responses. Claim runtime response validation only when production code validates the emitted payload and failure behavior is tested."
+      text: "Verify emitted responses on the agreed success and failure paths. Report which checks passed and which concerns remain unverified."
     - id: "gotcha-version-memory"
       priority: "high"
       text: "Do not rely on remembered Hono, adapter, or runtime APIs for version-sensitive work; verify latest official guidance and reconcile it with installed project versions."

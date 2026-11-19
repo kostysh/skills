@@ -1,0 +1,27 @@
+{
+  "node": "v24.15.0",
+  "version": "5.0.0-rc.1",
+  "samples": [
+    {
+      "path": "/records/river",
+      "status": 200,
+      "body": {
+        "title": "River notebook"
+      }
+    },
+    {
+      "path": "/records/delayed",
+      "status": 503,
+      "body": {
+        "error": "record_pending"
+      }
+    },
+    {
+      "path": "/general/delayed",
+      "status": 503,
+      "body": {
+        "error": "general_unavailable"
+      }
+    }
+  ]
+}

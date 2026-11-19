@@ -1,0 +1,239 @@
+{
+  "subjects": {
+    "308b21": {
+      "variant": "C",
+      "case": "holdout",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "memoryFeature": "disabled",
+      "assignedFiles": 27,
+      "initialAndFinalModesAndContentsEqual": true,
+      "directRuleRead": [
+        {
+          "id": "item_1",
+          "command": "/bin/bash -lc \"pwd; rg --files --hidden -g '\"'!.git'\"'; cat ./SKILL.md\"",
+          "outputSha256": "01a964b20ddc7cf45c9af557c5a937d8b9a57e2b891c9032f2c710d7534c8600"
+        }
+      ],
+      "marker": "entire assigned rule",
+      "answerSha256": "4d791836815205a377e3b46264c5628aacdc980748566ea4916bbe9a11087c41",
+      "eventsSha256": "89fbbe74f79888124e85d0b1e26a05f0acb8a08a934a98d481d8f85c4eb2ea25",
+      "observationSha256": "a65ef7914c6c00fc6c7006f28aaa71f2721576b23206306dadb5d3c55e0fdf41",
+      "evaluation": "PASS",
+      "publicReceipt": "results/308b21.json"
+    },
+    "fc0c3f": {
+      "variant": "C",
+      "case": "ordinary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "memoryFeature": "disabled",
+      "assignedFiles": 27,
+      "initialAndFinalModesAndContentsEqual": true,
+      "directRuleRead": [
+        {
+          "id": "item_1",
+          "command": "/bin/bash -lc 'cat SKILL.md contract.md README.md'",
+          "outputSha256": "8837c35d29026f10b73e055d3e76cbf31cab684026090f8cfd0e495218844a0a"
+        }
+      ],
+      "marker": "entire assigned rule",
+      "answerSha256": "88d0815f483e3d184151e4715c96dbae9feba66a95830d81f36bd89b1b0ea2cf",
+      "eventsSha256": "7e0c95c4eef7cf68435b6813b93668fc94f78cd798388f8c83df18a774cd4238",
+      "observationSha256": "eda8bc8a3913d00ef93419a12cbc6f9159d0a6177bed330b0e2da3ee34326132",
+      "evaluation": "PASS",
+      "publicReceipt": "results/fc0c3f.json"
+    },
+    "c0860e": {
+      "variant": "C",
+      "case": "boundary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "memoryFeature": "disabled",
+      "assignedFiles": 27,
+      "initialAndFinalModesAndContentsEqual": true,
+      "directRuleRead": [
+        {
+          "id": "item_2",
+          "command": "/bin/bash -lc 'cat SKILL.md contract.md README.md ci.md'",
+          "outputSha256": "7a3f813920d068b584d0e1cbb9a0bf212d2dab263d55b82c7b2ef456cf360703"
+        }
+      ],
+      "marker": "entire assigned rule",
+      "answerSha256": "2ae576459b26986fd09c21d89e475582f27a34eac826081d12c5b38d235bf0b5",
+      "eventsSha256": "e042949022b2734e23ad137955a9110f7f6f50ee2b5c3af0971a4c885c36ad65",
+      "observationSha256": "c1452949461f9cedd382d46495f5cc0adde4abdf75eca254264a7a89b203e1e5",
+      "evaluation": "PASS",
+      "publicReceipt": "results/c0860e.json"
+    },
+    "93234d": {
+      "variant": "B",
+      "case": "boundary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "memoryFeature": "disabled",
+      "assignedFiles": 27,
+      "initialAndFinalModesAndContentsEqual": true,
+      "directRuleRead": [
+        {
+          "id": "item_2",
+          "command": "/bin/bash -lc 'cat SKILL.md'",
+          "outputSha256": "af23ec7d9dc8028d13a290d06e1383b0eefa0ea118845d7d4f75e6480586d682"
+        }
+      ],
+      "marker": "adjacent original lines around deleted rule",
+      "answerSha256": "5f5d9da2139ce9eb8a614a5ce2f5d4aad5cf21563f18ef071832c58fa5cd1a33",
+      "eventsSha256": "5bad54ca0b5fb5709ddb61eb85ec502cf2403dde0c4d36a052bc81bc3762ad6d",
+      "observationSha256": "6100154ef2513a9229b7aec61f6abe766485a1bbb3be1113973926bb4c7e90b4",
+      "evaluation": "PASS",
+      "publicReceipt": "results/93234d.json"
+    },
+    "f8d1be": {
+      "variant": "A",
+      "case": "ordinary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "memoryFeature": "disabled",
+      "assignedFiles": 27,
+      "initialAndFinalModesAndContentsEqual": true,
+      "directRuleRead": [
+        {
+          "id": "item_2",
+          "command": "/bin/bash -lc 'cat SKILL.md contract.md README.md ci.md'",
+          "outputSha256": "406d54d595f6103343328ad7d65ce2d8567a62029622168961241dfefecf3801"
+        }
+      ],
+      "marker": "entire assigned rule",
+      "answerSha256": "ffbddac926e8c6a5822da6213218e03185fcf9bfc5aff166fbc10668d4d70ccc",
+      "eventsSha256": "2208b1919e2671f20beb50199d9245a8e6f8c59ff5ca70df51f9569c5d1e997f",
+      "observationSha256": "3bdc911adc60d8c03e5f6c5c6ca8f76d00aa70c791b23a504b8badbd3335cedc",
+      "evaluation": "PASS",
+      "publicReceipt": "results/f8d1be.json"
+    },
+    "0bc393": {
+      "variant": "A",
+      "case": "boundary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "memoryFeature": "disabled",
+      "assignedFiles": 27,
+      "initialAndFinalModesAndContentsEqual": true,
+      "directRuleRead": [
+        {
+          "id": "item_2",
+          "command": "/bin/bash -lc 'cat SKILL.md contract.md README.md ci.md release/package.json && wc -l release/*.mjs'",
+          "outputSha256": "a63d6c7c0d0cbcbf4d7ce5b9c1853224f1feeb64bac9c63ef21b1bb76b9be864"
+        }
+      ],
+      "marker": "entire assigned rule",
+      "answerSha256": "e551f59120bb03c219688513db9f97de2df735201ff4406beb6f176e4a664cfd",
+      "eventsSha256": "6afd763c8cdf7e7eab23fa548896b9e67fbf2d5935faa5e944da8e71027099c8",
+      "observationSha256": "2ca38bbf15755ac2e083150bca474833239b3493ad5dbda04da3c45617610027",
+      "evaluation": "PASS",
+      "publicReceipt": "results/0bc393.json"
+    },
+    "16e942": {
+      "variant": "A",
+      "case": "holdout",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "memoryFeature": "disabled",
+      "assignedFiles": 27,
+      "initialAndFinalModesAndContentsEqual": true,
+      "directRuleRead": [
+        {
+          "id": "item_3",
+          "command": "/bin/bash -lc 'cat SKILL.md'",
+          "outputSha256": "c7ee9790ad438baec4130a1a336354ca70deb409f292c74fe14204f1cbc5d3d8"
+        }
+      ],
+      "marker": "entire assigned rule",
+      "answerSha256": "a0fcbf4c63a13698133e661062342dcd698c25ab7b4fabf1970ab6b8d0a43d18",
+      "eventsSha256": "1147390f3405b6f7b0c628064c9aa0b240a3465c75f2391635e1e2930b1049d4",
+      "observationSha256": "f657ca821b5aa3b6f20a438e1758958f35fb947c5a9ae0989315c6046e2ce0f5",
+      "evaluation": "PASS",
+      "publicReceipt": "results/16e942.json"
+    },
+    "ca9719": {
+      "variant": "B",
+      "case": "ordinary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "memoryFeature": "disabled",
+      "assignedFiles": 27,
+      "initialAndFinalModesAndContentsEqual": true,
+      "directRuleRead": [
+        {
+          "id": "item_2",
+          "command": "/bin/bash -lc 'cat SKILL.md README.md contract.md ci.md\ncat release/package.json\nwc -l release/* references/high-risk-backend-contract.md\nls -a'",
+          "outputSha256": "2b80c777dd73cf1bc60265ffc55c9e24cc7f11632420b4c394c9ccf3d10a74c1"
+        }
+      ],
+      "marker": "adjacent original lines around deleted rule",
+      "answerSha256": "c5f50c693ab21e456c6dd34e21076b3c73ddbf1c451c20fe890a5a9f68fcdb13",
+      "eventsSha256": "de94546b3d0bf79b418945901c282665358196579e082e122810a389cde1f938",
+      "observationSha256": "daaa8467b376b003efc94921dc8cf0f5ecde74b85cf155b93a30380c504f2134",
+      "evaluation": "PASS",
+      "publicReceipt": "results/ca9719.json"
+    }
+  },
+  "signedAssessorReportSha256": "1bfca534859b10a01a666091df02f53d3df8c259ba94f80814aa8342f557a4eb",
+  "assessorEventSha256": "a3a0f314f949855ee2c09b97f986859f5e9ce426c28cec28caae9bff32b0c6e9",
+  "portableReportSha256": "c2c3781e7925051dd6d17687dc774f48af87ebd3658658a35e1a11b4c9c92e44",
+  "rawArchiveSha256": "bd659ca34f63b44fcf9fe7181feff378aed6674476ae517981e5b24a41d6cdf3",
+  "localCaseChanges": [
+    "boundary/release/app.mjs",
+    "holdout/release/app.mjs",
+    "ordinary/release/app.mjs"
+  ],
+  "rubricSha256": "ed56423fc5a83deea226a3ca3d4e92cfba9aee94739e09e2a5ae3b5257562811",
+  "postSignKey": [
+    {
+      "label": "308b21",
+      "variant": "C",
+      "case": "holdout"
+    },
+    {
+      "label": "fc0c3f",
+      "variant": "C",
+      "case": "ordinary"
+    },
+    {
+      "label": "c0860e",
+      "variant": "C",
+      "case": "boundary"
+    },
+    {
+      "label": "93234d",
+      "variant": "B",
+      "case": "boundary"
+    },
+    {
+      "label": "f8d1be",
+      "variant": "A",
+      "case": "ordinary"
+    },
+    {
+      "label": "0bc393",
+      "variant": "A",
+      "case": "boundary"
+    },
+    {
+      "label": "16e942",
+      "variant": "A",
+      "case": "holdout"
+    },
+    {
+      "label": "ca9719",
+      "variant": "B",
+      "case": "ordinary"
+    }
+  ],
+  "inputBoundary": "Fresh project and installed variant; task and fixture only. Rubrics, previous answers, case labels and variant key remained in the external organizer directory. The account can technically read other host files. Recorded command outputs show the actual variant or the adjacent lines around its ablation.",
+  "scorerAssignment": [
+    "--model",
+    "gpt-6.2-sol",
+    "-c",
+    "model_reasoning_effort=\"high\""
+  ]
+}

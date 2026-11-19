@@ -1,0 +1,39 @@
+{
+  "node": "v24.15.0",
+  "hooks": [
+    {
+      "version": "4.13.19",
+      "status": 503,
+      "body": {
+        "marker": "scheduled failure",
+        "handled": "hook"
+      },
+      "header": null
+    },
+    {
+      "version": "5.0.0-rc.1",
+      "status": 503,
+      "body": {
+        "marker": "scheduled failure",
+        "handled": "middleware"
+      },
+      "header": "scoped"
+    }
+  ],
+  "requests": [
+    {
+      "version": "4.13.19",
+      "contentType": "application/json",
+      "status": 200,
+      "observed": {
+        "label": "valid"
+      }
+    },
+    {
+      "version": "4.13.19",
+      "contentType": "text/plain",
+      "status": 200,
+      "observed": {}
+    }
+  ]
+}
