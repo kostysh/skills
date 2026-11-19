@@ -1,0 +1,295 @@
+{
+  "revision": "82f225b5cb31a9960342b423e43ae98f905be040d0292162d09f5142c494672c",
+  "browser": "158.0.8127.36",
+  "pageErrors": [],
+  "results": [
+    {
+      "width": 1080,
+      "base": {
+        "peer": {
+          "id": "office",
+          "tag": "button",
+          "text": "Open counter hours",
+          "value": "",
+          "visual": {
+            "bg": "rgb(21, 73, 91)",
+            "color": "rgb(255, 255, 255)",
+            "border": "rgb(21, 73, 91)",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "shadow": "none",
+            "weight": "650",
+            "radius": "3.74px"
+          },
+          "bounds": [
+            203,
+            299.734375,
+            195.90625,
+            41.921875
+          ],
+          "focused": false,
+          "visible": false
+        },
+        "primary": {
+          "id": "send",
+          "tag": "button",
+          "text": "Request arrival",
+          "value": "",
+          "visual": {
+            "bg": "rgb(21, 73, 91)",
+            "color": "rgb(255, 255, 255)",
+            "border": "rgb(21, 73, 91)",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "shadow": "none",
+            "weight": "650",
+            "radius": "3.74px"
+          },
+          "bounds": [
+            282.1875,
+            661.515625,
+            155.296875,
+            41.921875
+          ],
+          "focused": false,
+          "visible": false
+        },
+        "secondary": {
+          "id": "clear",
+          "tag": "button",
+          "text": "Clear",
+          "value": "",
+          "visual": {
+            "bg": "rgb(255, 255, 255)",
+            "color": "rgb(20, 43, 58)",
+            "border": "rgb(138, 162, 161)",
+            "outline": "rgb(20, 43, 58) none 3px",
+            "shadow": "none",
+            "weight": "650",
+            "radius": "3.74px"
+          },
+          "bounds": [
+            203,
+            661.515625,
+            69.84375,
+            41.921875
+          ],
+          "focused": false,
+          "visible": false
+        }
+      },
+      "initial": {
+        "status": "",
+        "traversed": [
+          "slot",
+          "clear",
+          "send"
+        ],
+        "primary": {
+          "id": "send",
+          "tag": "button",
+          "text": "Request arrival",
+          "value": "",
+          "visual": {
+            "bg": "rgb(21, 73, 91)",
+            "color": "rgb(255, 255, 255)",
+            "border": "rgb(21, 73, 91)",
+            "outline": "rgb(177, 77, 31) solid 3px",
+            "shadow": "none",
+            "weight": "650",
+            "radius": "3.74px"
+          },
+          "bounds": [
+            282.1875,
+            661.515625,
+            155.296875,
+            41.921875
+          ],
+          "focused": true,
+          "visible": true
+        },
+        "overflow": false
+      },
+      "error": {
+        "status": "Enter a vessel name.",
+        "traversed": [
+          "slot",
+          "clear",
+          "send"
+        ],
+        "primary": {
+          "id": "send",
+          "tag": "button",
+          "text": "Request arrival",
+          "value": "",
+          "visual": {
+            "bg": "rgb(21, 73, 91)",
+            "color": "rgb(255, 255, 255)",
+            "border": "rgb(21, 73, 91)",
+            "outline": "rgb(177, 77, 31) solid 3px",
+            "shadow": "none",
+            "weight": "650",
+            "radius": "3.74px"
+          },
+          "bounds": [
+            282.1875,
+            662.359375,
+            155.296875,
+            41.921875
+          ],
+          "focused": true,
+          "visible": true
+        },
+        "overflow": false
+      },
+      "persisted": "{\"name\":\"Lumen\",\"slot\":\"Afternoon\"}",
+      "success": "Arrival requested for Lumen · Afternoon.",
+      "reset": {
+        "value": "",
+        "notice": ""
+      }
+    },
+    {
+      "width": 390,
+      "base": {
+        "peer": {
+          "id": "office",
+          "tag": "button",
+          "text": "Open counter hours",
+          "value": "",
+          "visual": {
+            "bg": "rgb(21, 73, 91)",
+            "color": "rgb(255, 255, 255)",
+            "border": "rgb(21, 73, 91)",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "shadow": "none",
+            "weight": "650",
+            "radius": "3.74px"
+          },
+          "bounds": [
+            19.5,
+            299.734375,
+            195.90625,
+            41.921875
+          ],
+          "focused": false,
+          "visible": false
+        },
+        "primary": {
+          "id": "send",
+          "tag": "button",
+          "text": "Request arrival",
+          "value": "",
+          "visual": {
+            "bg": "rgb(21, 73, 91)",
+            "color": "rgb(255, 255, 255)",
+            "border": "rgb(21, 73, 91)",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "shadow": "none",
+            "weight": "650",
+            "radius": "3.74px"
+          },
+          "bounds": [
+            98.6875,
+            661.515625,
+            155.296875,
+            41.921875
+          ],
+          "focused": false,
+          "visible": false
+        },
+        "secondary": {
+          "id": "clear",
+          "tag": "button",
+          "text": "Clear",
+          "value": "",
+          "visual": {
+            "bg": "rgb(255, 255, 255)",
+            "color": "rgb(20, 43, 58)",
+            "border": "rgb(138, 162, 161)",
+            "outline": "rgb(20, 43, 58) none 3px",
+            "shadow": "none",
+            "weight": "650",
+            "radius": "3.74px"
+          },
+          "bounds": [
+            19.5,
+            661.515625,
+            69.84375,
+            41.921875
+          ],
+          "focused": false,
+          "visible": false
+        }
+      },
+      "initial": {
+        "status": "",
+        "traversed": [
+          "slot",
+          "clear",
+          "send"
+        ],
+        "primary": {
+          "id": "send",
+          "tag": "button",
+          "text": "Request arrival",
+          "value": "",
+          "visual": {
+            "bg": "rgb(21, 73, 91)",
+            "color": "rgb(255, 255, 255)",
+            "border": "rgb(21, 73, 91)",
+            "outline": "rgb(177, 77, 31) solid 3px",
+            "shadow": "none",
+            "weight": "650",
+            "radius": "3.74px"
+          },
+          "bounds": [
+            98.6875,
+            661.515625,
+            155.296875,
+            41.921875
+          ],
+          "focused": true,
+          "visible": true
+        },
+        "overflow": false
+      },
+      "error": {
+        "status": "Enter a vessel name.",
+        "traversed": [
+          "slot",
+          "clear",
+          "send"
+        ],
+        "primary": {
+          "id": "send",
+          "tag": "button",
+          "text": "Request arrival",
+          "value": "",
+          "visual": {
+            "bg": "rgb(21, 73, 91)",
+            "color": "rgb(255, 255, 255)",
+            "border": "rgb(21, 73, 91)",
+            "outline": "rgb(177, 77, 31) solid 3px",
+            "shadow": "none",
+            "weight": "650",
+            "radius": "3.74px"
+          },
+          "bounds": [
+            98.6875,
+            662.359375,
+            155.296875,
+            41.921875
+          ],
+          "focused": true,
+          "visible": true
+        },
+        "overflow": false
+      },
+      "persisted": "{\"name\":\"Lumen\",\"slot\":\"Afternoon\"}",
+      "success": "Arrival requested for Lumen · Afternoon.",
+      "reset": {
+        "value": "",
+        "notice": ""
+      }
+    }
+  ]
+}

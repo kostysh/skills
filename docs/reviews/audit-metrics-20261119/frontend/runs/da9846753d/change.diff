@@ -1,0 +1,8 @@
+--- before/index.html
++++ after/index.html
+@@ -3,4 +3,4 @@
+ <section><h2>Counter service</h2><p>Find the office hours for staffed arrivals.</p><button type="button" class="main-action" id="office">Open counter hours</button><output id="hours"></output></section>
+ <section><h2>New arrival</h2><form novalidate><label for="vessel">Vessel name</label><input id="vessel" name="vessel" autocomplete="off">
+ <label for="slot">Arrival window</label><select id="slot"><option>Morning</option><option>Afternoon</option></select><p id="message" role="status"></p>
+-<footer><button type="button" id="clear">Clear</button><button id="send" type="submit">Request arrival</button></footer></form></section></main><script src="desk.js"></script></body></html>
++<footer><button type="button" id="clear">Clear</button><button id="send" type="submit" class="main-action">Request arrival</button></footer></form></section></main><script src="desk.js"></script></body></html>

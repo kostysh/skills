@@ -1,0 +1,28 @@
+{
+  "skill": "repository-rules",
+  "study": "20261118-00",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "base": "docs/reviews/gpt-6-2/00",
+  "source": "assessment.md",
+  "runs": {
+    "birch": {"task":"boundary","variant":"A","source":"results/birch.json","sha256":"8d24dc720b7d2693d9ae8e7962d5351588ee089e0ec2a62ca7a21043f668477b","ratings":{"ab":{"assessor":"grade_runs_juniper","rubric":"trial-criteria.md@41e8f7259ca6","packet":"ab","score":"PASS","source":"assessment.md","label":"birch"},"confirm":{"assessor":"grade_runs_cypress","rubric":"trial-criteria.md@41e8f7259ca6","packet":"confirm","score":"PASS","source":"assessment.md","label":"ash"}}},
+    "brook": {"task":"holdout","variant":"A","source":"results/brook.json","sha256":"79418bfe8f2d031231c70de47d774aa0c5ad28593366727d00183a09f8d8f263","ratings":{"confirm":{"assessor":"grade_runs_cypress","rubric":"trial-criteria.md@41e8f7259ca6","packet":"confirm","score":"PASS","source":"assessment.md","label":"brook"}}},
+    "elm": {"task":"boundary","variant":"C","source":"results/elm.json","sha256":"4fc4c302df81d97b8fdb34918f44de77fbe96de5a16745ab8e207c443a30b221","ratings":{"confirm":{"assessor":"grade_runs_cypress","rubric":"trial-criteria.md@41e8f7259ca6","packet":"confirm","score":"PASS","source":"assessment.md","label":"elm"}}},
+    "fennel": {"task":"ordinary","variant":"B","source":"results/fennel.json","sha256":"ad6cecf5b64b2a1ec0ddc120b67f9034f2bfdd91b451ee32f02af47d84308ca7","ratings":{"ab":{"assessor":"grade_runs_juniper","rubric":"trial-criteria.md@41e8f7259ca6","packet":"ab","score":"PASS","source":"assessment.md","label":"fennel"}}},
+    "maple": {"task":"boundary","variant":"B","source":"results/maple.json","sha256":"1496e3565eebeb627581351b36cfee28d8ba8880006d21a290283c2b4bbe1d35","ratings":{"ab":{"assessor":"grade_runs_juniper","rubric":"trial-criteria.md@41e8f7259ca6","packet":"ab","score":"PASS","source":"assessment.md","label":"maple"}}},
+    "quartz": {"task":"ordinary","variant":"A","source":"results/quartz.json","sha256":"7aa12b4339c719f6d297d03c16e6bc7dfbccf3f2d322f2c2ffd399767d695b1a","ratings":{"ab":{"assessor":"grade_runs_juniper","rubric":"trial-criteria.md@41e8f7259ca6","packet":"ab","score":"PASS","source":"assessment.md","label":"quartz"},"confirm":{"assessor":"grade_runs_cypress","rubric":"trial-criteria.md@41e8f7259ca6","packet":"confirm","score":"PASS","source":"assessment.md","label":"fern"}}},
+    "sage": {"task":"holdout","variant":"C","source":"results/sage.json","sha256":"74fec47b95688736b9b70e0cead6da91b6f9fa1235eefc1f94939c765f8c47a1","ratings":{"confirm":{"assessor":"grade_runs_cypress","rubric":"trial-criteria.md@41e8f7259ca6","packet":"confirm","score":"PASS","source":"assessment.md","label":"sage"}}},
+    "willow": {"task":"ordinary","variant":"C","source":"results/willow.json","sha256":"c6f5bf2a0505029d3e6fc3fcfa0484342485889d4287f78ab76fc6113eb8507e","ratings":{"confirm":{"assessor":"grade_runs_cypress","rubric":"trial-criteria.md@41e8f7259ca6","packet":"confirm","score":"PASS","source":"assessment.md","label":"willow"}}}
+  },
+  "series": [
+    {"id":"ab-primary-A-B","comparison":"A/B","phase":"primary","rubric":"trial-criteria.md@41e8f7259ca6","packet":"ab","source":"assessment.md","pairs":[{"id":"boundary","task":"boundary","left":["birch","ab"],"right":["maple","ab"]},{"id":"ordinary","task":"ordinary","left":["quartz","ab"],"right":["fennel","ab"]}],"bRemoval":"unknown"},
+    {"id":"confirm-confirmation-C-A","comparison":"C/A","phase":"confirmation","rubric":"trial-criteria.md@41e8f7259ca6","packet":"confirm","source":"assessment.md","pairs":[{"id":"ordinary","task":"ordinary","left":["willow","confirm"],"right":["quartz","confirm"]},{"id":"boundary","task":"boundary","left":["elm","confirm"],"right":["birch","confirm"]}]},
+    {"id":"confirm-holdout-C-A","comparison":"C/A","phase":"holdout","rubric":"trial-criteria.md@41e8f7259ca6","packet":"confirm","source":"assessment.md","pairs":[{"id":"holdout","task":"holdout","left":["sage","confirm"],"right":["brook","confirm"]}]}
+  ],
+  "limit": "Изменение строки в сохранённой среде. Полное удаление всех равнозначных подсказок не подтверждено.",
+  "kind": "policy",
+  "attempts": [
+    {"id":"review-1","order":1,"snapshot":"f00d6258740022a8d928ab2a6872ee81e29a2666","verdict":"PASS","source":"independent-audit.md"}
+  ]
+}

@@ -1,0 +1,6 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Quay desk</title><link rel="stylesheet" href="screen.css"></head>
+<body><main><header><p class="brand">North Quay · Berth desk</p><h1>Arrival requests</h1><p>Reserve a time at the launch gate.</p></header>
+<section><h2>Counter service</h2><p>Find the office hours for staffed arrivals.</p><button type="button" class="main-action" id="office">Open counter hours</button><output id="hours"></output></section>
+<section><h2>New arrival</h2><form novalidate><label for="vessel">Vessel name</label><input id="vessel" name="vessel" autocomplete="off">
+<label for="slot">Arrival window</label><select id="slot"><option>Morning</option><option>Afternoon</option></select><p id="message" role="status"></p>
+<footer><button type="button" id="clear">Clear</button><button id="send" type="submit" class="main-action">Request arrival</button></footer></form></section></main><script src="desk.js"></script></body></html>

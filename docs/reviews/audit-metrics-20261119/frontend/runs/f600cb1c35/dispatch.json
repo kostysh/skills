@@ -1,0 +1,62 @@
+{
+  "run": "f600cb1c35",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "workdir": "/tmp/local-form-cnrel62j",
+  "input": {
+    ".agents/skills/frontend-design/LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+    ".agents/skills/frontend-design/SKILL.md": "2debb173bc150faabfdb6cf0152193261e8d8392bb2425483ec7469e54c75db3",
+    ".agents/skills/frontend-design/agents/openai.yaml": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+    ".agents/skills/frontend-design/references/anti-patterns.md": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+    ".agents/skills/frontend-design/references/strategy-to-implementation.md": "d073ae86edad083c4a5c2edb4d69cd0c9d7d5486ab27f5a47a3e4f467d1c4d49",
+    ".agents/skills/frontend-design/references/surface-modes.md": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+    ".agents/skills/frontend-design/references/visual-engines.md": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7",
+    "README.md": "9b62c4cbcbe25c5e12c52757b49ed9e66cf164f186bcf50707cca80579e7483b",
+    "browser.py": "e716bb3c5b8fb03d7817d647ea9372733ca42a058a566e036cfe3342f24d1170",
+    "desk.js": "5103ad9b3fbba678acb48e131e39350386f11181a2a6c2da9f793ff5ba98a2ff",
+    "index.html": "d2e95d71bbd3d1338e27324a9bd6d9eed4e83bdc7960de1d639742f52993168c",
+    "screen.css": "894bc99b3b5afbffb67aee725b196ed21c179712654b7435058ebf3c06353826"
+  },
+  "promptSha256": "7c1065b5e1877c1dbe219fa1fa7152648043cc587381fd0beb796d0dbdca2f13",
+  "startup": {
+    "rawSha256": "466fc2d53868b5cbe2561278c38d1ad79cb5baa1c0d3bf4e853e467cb818e643",
+    "skills": [
+      "frontend-design"
+    ],
+    "namedTargetMentions": 2,
+    "targetFromHome": 0,
+    "runtimeSensitiveMarkers": {
+      "keyboard": 0,
+      "focus-visible": 0,
+      "focus behavior": 0,
+      "audit-metrics-20261119": 0,
+      "grader packet": 0,
+      "trial key": 0,
+      "rubric.md": 0,
+      "Hawthorn Works": 0,
+      "North Quay": 1
+    },
+    "namespaces": [
+      "functions",
+      "clock",
+      "collaboration"
+    ],
+    "browserMcp": 0,
+    "nodeReplMcp": 0,
+    "windowProfile": false
+  },
+  "physical": {
+    "homePackage": false,
+    "sourceWorktree": false,
+    "archiveWithKey": false,
+    "assignments": false,
+    "rubric": false,
+    "auth": false,
+    "homeRules": false,
+    "homeConfig": false,
+    "sibling": false,
+    "procRootHomePackage": false,
+    "projectReadme": true,
+    "projectPackage": true
+  }
+}

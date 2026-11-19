@@ -1,0 +1,647 @@
+{
+  "registeredUtc": "2026-11-19T17:32:35.205671Z",
+  "snapshot": "05d84ce9fc0f57936b3f255fe6fbe4e39d026c8c",
+  "packageSha256": "15ff2849d06f277aede6a988029443deef0b0ba1be2fda0b9b67282cd4649a33",
+  "packageFiles": {
+    "full": {
+      "LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "SKILL.md": "2debb173bc150faabfdb6cf0152193261e8d8392bb2425483ec7469e54c75db3",
+      "agents/openai.yaml": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+      "references/anti-patterns.md": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+      "references/strategy-to-implementation.md": "d073ae86edad083c4a5c2edb4d69cd0c9d7d5486ab27f5a47a3e4f467d1c4d49",
+      "references/surface-modes.md": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+      "references/visual-engines.md": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7"
+    },
+    "A": {
+      "LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "SKILL.md": "2debb173bc150faabfdb6cf0152193261e8d8392bb2425483ec7469e54c75db3",
+      "agents/openai.yaml": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+      "references/anti-patterns.md": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+      "references/strategy-to-implementation.md": "d073ae86edad083c4a5c2edb4d69cd0c9d7d5486ab27f5a47a3e4f467d1c4d49",
+      "references/surface-modes.md": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+      "references/visual-engines.md": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7"
+    },
+    "B": {
+      "LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "SKILL.md": "5882d5244c0f75a260e79e92d2c51723c4c0e4b91b821b3397ac983228694090",
+      "agents/openai.yaml": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+      "references/anti-patterns.md": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+      "references/strategy-to-implementation.md": "de4af807442650bef775c4c021ce22b65b3abe272604376d03ab70ab62d0841d",
+      "references/surface-modes.md": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+      "references/visual-engines.md": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7"
+    },
+    "none": {}
+  },
+  "tasks": {
+    "ordinary": {
+      "full": {
+        ".agents/skills/frontend-design/LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+        ".agents/skills/frontend-design/SKILL.md": "2debb173bc150faabfdb6cf0152193261e8d8392bb2425483ec7469e54c75db3",
+        ".agents/skills/frontend-design/agents/openai.yaml": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+        ".agents/skills/frontend-design/references/anti-patterns.md": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+        ".agents/skills/frontend-design/references/strategy-to-implementation.md": "d073ae86edad083c4a5c2edb4d69cd0c9d7d5486ab27f5a47a3e4f467d1c4d49",
+        ".agents/skills/frontend-design/references/surface-modes.md": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+        ".agents/skills/frontend-design/references/visual-engines.md": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7",
+        "README.md": "9b62c4cbcbe25c5e12c52757b49ed9e66cf164f186bcf50707cca80579e7483b",
+        "browser.py": "4cf50b1828c0e89bd2b320c25153c072eb824aa60282d55122f5083a7b268b88",
+        "desk.js": "5103ad9b3fbba678acb48e131e39350386f11181a2a6c2da9f793ff5ba98a2ff",
+        "index.html": "d2e95d71bbd3d1338e27324a9bd6d9eed4e83bdc7960de1d639742f52993168c",
+        "screen.css": "8fa37bd7778796fd3d5a681f9cf30b171ec095e71058c5377592c2efc91a1d87"
+      },
+      "none": {
+        "README.md": "9b62c4cbcbe25c5e12c52757b49ed9e66cf164f186bcf50707cca80579e7483b",
+        "browser.py": "4cf50b1828c0e89bd2b320c25153c072eb824aa60282d55122f5083a7b268b88",
+        "desk.js": "5103ad9b3fbba678acb48e131e39350386f11181a2a6c2da9f793ff5ba98a2ff",
+        "index.html": "d2e95d71bbd3d1338e27324a9bd6d9eed4e83bdc7960de1d639742f52993168c",
+        "screen.css": "8fa37bd7778796fd3d5a681f9cf30b171ec095e71058c5377592c2efc91a1d87"
+      },
+      "B": {
+        ".agents/skills/frontend-design/LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+        ".agents/skills/frontend-design/SKILL.md": "5882d5244c0f75a260e79e92d2c51723c4c0e4b91b821b3397ac983228694090",
+        ".agents/skills/frontend-design/agents/openai.yaml": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+        ".agents/skills/frontend-design/references/anti-patterns.md": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+        ".agents/skills/frontend-design/references/strategy-to-implementation.md": "de4af807442650bef775c4c021ce22b65b3abe272604376d03ab70ab62d0841d",
+        ".agents/skills/frontend-design/references/surface-modes.md": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+        ".agents/skills/frontend-design/references/visual-engines.md": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7",
+        "README.md": "9b62c4cbcbe25c5e12c52757b49ed9e66cf164f186bcf50707cca80579e7483b",
+        "browser.py": "4cf50b1828c0e89bd2b320c25153c072eb824aa60282d55122f5083a7b268b88",
+        "desk.js": "5103ad9b3fbba678acb48e131e39350386f11181a2a6c2da9f793ff5ba98a2ff",
+        "index.html": "d2e95d71bbd3d1338e27324a9bd6d9eed4e83bdc7960de1d639742f52993168c",
+        "screen.css": "8fa37bd7778796fd3d5a681f9cf30b171ec095e71058c5377592c2efc91a1d87"
+      }
+    },
+    "discriminating": {
+      "full": {
+        ".agents/skills/frontend-design/LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+        ".agents/skills/frontend-design/SKILL.md": "2debb173bc150faabfdb6cf0152193261e8d8392bb2425483ec7469e54c75db3",
+        ".agents/skills/frontend-design/agents/openai.yaml": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+        ".agents/skills/frontend-design/references/anti-patterns.md": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+        ".agents/skills/frontend-design/references/strategy-to-implementation.md": "d073ae86edad083c4a5c2edb4d69cd0c9d7d5486ab27f5a47a3e4f467d1c4d49",
+        ".agents/skills/frontend-design/references/surface-modes.md": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+        ".agents/skills/frontend-design/references/visual-engines.md": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7",
+        "README.md": "9b62c4cbcbe25c5e12c52757b49ed9e66cf164f186bcf50707cca80579e7483b",
+        "browser.py": "4cf50b1828c0e89bd2b320c25153c072eb824aa60282d55122f5083a7b268b88",
+        "desk.js": "5103ad9b3fbba678acb48e131e39350386f11181a2a6c2da9f793ff5ba98a2ff",
+        "index.html": "d2e95d71bbd3d1338e27324a9bd6d9eed4e83bdc7960de1d639742f52993168c",
+        "screen.css": "894bc99b3b5afbffb67aee725b196ed21c179712654b7435058ebf3c06353826"
+      },
+      "none": {
+        "README.md": "9b62c4cbcbe25c5e12c52757b49ed9e66cf164f186bcf50707cca80579e7483b",
+        "browser.py": "4cf50b1828c0e89bd2b320c25153c072eb824aa60282d55122f5083a7b268b88",
+        "desk.js": "5103ad9b3fbba678acb48e131e39350386f11181a2a6c2da9f793ff5ba98a2ff",
+        "index.html": "d2e95d71bbd3d1338e27324a9bd6d9eed4e83bdc7960de1d639742f52993168c",
+        "screen.css": "894bc99b3b5afbffb67aee725b196ed21c179712654b7435058ebf3c06353826"
+      },
+      "B": {
+        ".agents/skills/frontend-design/LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+        ".agents/skills/frontend-design/SKILL.md": "5882d5244c0f75a260e79e92d2c51723c4c0e4b91b821b3397ac983228694090",
+        ".agents/skills/frontend-design/agents/openai.yaml": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+        ".agents/skills/frontend-design/references/anti-patterns.md": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+        ".agents/skills/frontend-design/references/strategy-to-implementation.md": "de4af807442650bef775c4c021ce22b65b3abe272604376d03ab70ab62d0841d",
+        ".agents/skills/frontend-design/references/surface-modes.md": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+        ".agents/skills/frontend-design/references/visual-engines.md": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7",
+        "README.md": "9b62c4cbcbe25c5e12c52757b49ed9e66cf164f186bcf50707cca80579e7483b",
+        "browser.py": "4cf50b1828c0e89bd2b320c25153c072eb824aa60282d55122f5083a7b268b88",
+        "desk.js": "5103ad9b3fbba678acb48e131e39350386f11181a2a6c2da9f793ff5ba98a2ff",
+        "index.html": "d2e95d71bbd3d1338e27324a9bd6d9eed4e83bdc7960de1d639742f52993168c",
+        "screen.css": "894bc99b3b5afbffb67aee725b196ed21c179712654b7435058ebf3c06353826"
+      }
+    },
+    "holdout": {
+      "full": {
+        ".agents/skills/frontend-design/LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+        ".agents/skills/frontend-design/SKILL.md": "2debb173bc150faabfdb6cf0152193261e8d8392bb2425483ec7469e54c75db3",
+        ".agents/skills/frontend-design/agents/openai.yaml": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+        ".agents/skills/frontend-design/references/anti-patterns.md": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+        ".agents/skills/frontend-design/references/strategy-to-implementation.md": "d073ae86edad083c4a5c2edb4d69cd0c9d7d5486ab27f5a47a3e4f467d1c4d49",
+        ".agents/skills/frontend-design/references/surface-modes.md": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+        ".agents/skills/frontend-design/references/visual-engines.md": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7",
+        "README.md": "9b62c4cbcbe25c5e12c52757b49ed9e66cf164f186bcf50707cca80579e7483b",
+        "bench.css": "3a007ca1c70db08965306b29f373a12ae94b2be606ed1d88f9bd7d478f19ac0b",
+        "browser.py": "4cf50b1828c0e89bd2b320c25153c072eb824aa60282d55122f5083a7b268b88",
+        "index.html": "7d21d4a4c0ad0ccf190d1a6e2ac62da0fc637dee93c67186ae185ebaab5d5c10",
+        "register.js": "3c6d5e96fce8aac647d2ebe22711fb9cbe726f92d2b59062d43c418971701682"
+      },
+      "none": {
+        "README.md": "9b62c4cbcbe25c5e12c52757b49ed9e66cf164f186bcf50707cca80579e7483b",
+        "bench.css": "3a007ca1c70db08965306b29f373a12ae94b2be606ed1d88f9bd7d478f19ac0b",
+        "browser.py": "4cf50b1828c0e89bd2b320c25153c072eb824aa60282d55122f5083a7b268b88",
+        "index.html": "7d21d4a4c0ad0ccf190d1a6e2ac62da0fc637dee93c67186ae185ebaab5d5c10",
+        "register.js": "3c6d5e96fce8aac647d2ebe22711fb9cbe726f92d2b59062d43c418971701682"
+      },
+      "B": {
+        ".agents/skills/frontend-design/LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+        ".agents/skills/frontend-design/SKILL.md": "5882d5244c0f75a260e79e92d2c51723c4c0e4b91b821b3397ac983228694090",
+        ".agents/skills/frontend-design/agents/openai.yaml": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+        ".agents/skills/frontend-design/references/anti-patterns.md": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+        ".agents/skills/frontend-design/references/strategy-to-implementation.md": "de4af807442650bef775c4c021ce22b65b3abe272604376d03ab70ab62d0841d",
+        ".agents/skills/frontend-design/references/surface-modes.md": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+        ".agents/skills/frontend-design/references/visual-engines.md": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7",
+        "README.md": "9b62c4cbcbe25c5e12c52757b49ed9e66cf164f186bcf50707cca80579e7483b",
+        "bench.css": "3a007ca1c70db08965306b29f373a12ae94b2be606ed1d88f9bd7d478f19ac0b",
+        "browser.py": "4cf50b1828c0e89bd2b320c25153c072eb824aa60282d55122f5083a7b268b88",
+        "index.html": "7d21d4a4c0ad0ccf190d1a6e2ac62da0fc637dee93c67186ae185ebaab5d5c10",
+        "register.js": "3c6d5e96fce8aac647d2ebe22711fb9cbe726f92d2b59062d43c418971701682"
+      }
+    }
+  },
+  "inputs": {
+    "holdout.txt": "e480ff497d08fe0f8a966e92a18492a7907279d7f79148ddd5e005c862cd568c",
+    "discriminating.txt": "7c1065b5e1877c1dbe219fa1fa7152648043cc587381fd0beb796d0dbdca2f13",
+    "ordinary.txt": "22e4712d618d81d2d79d899408e06e87b201ff59c328239d02c45282fcde915a"
+  },
+  "rubric": "1ab439eafd0e59a4b34f0a73024076dd0dc3930e21be843597c911018f475940",
+  "protocol": "06e8b3ad0166eb0151ab0a0f831518efd488f8fef7862822ec4fd3fd4b1fadbd",
+  "tooling": {
+    "study.py": "b7660aa6ae6cf65c0b1e04a564472c4bdbf92322e19144394cd57f22880af702",
+    "register.py": "e95387c454f30d41fe1d326c0d583abf20d4af49be30efde6fcd8ba751ec2e31",
+    "browser.cjs": "3a38920310cab93c27354f115c422b2125a72c26030e7bc1efd1c6e9206418ec"
+  },
+  "assignments": {
+    "da9846753d": {
+      "task": "ordinary",
+      "variant": "full",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium"
+    },
+    "5245e74360": {
+      "task": "ordinary",
+      "variant": "none",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium"
+    },
+    "4c74465cab": {
+      "task": "ordinary",
+      "variant": "A",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium"
+    },
+    "727eda3aea": {
+      "task": "ordinary",
+      "variant": "B",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium"
+    },
+    "f600cb1c35": {
+      "task": "discriminating",
+      "variant": "full",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium"
+    },
+    "e6ce811126": {
+      "task": "discriminating",
+      "variant": "none",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium"
+    },
+    "4376820b4c": {
+      "task": "discriminating",
+      "variant": "A",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium"
+    },
+    "feac56a170": {
+      "task": "discriminating",
+      "variant": "B",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium"
+    },
+    "31ae2560aa": {
+      "task": "ordinary",
+      "variant": "C",
+      "phase": "conditional",
+      "model": "gpt-6.2-sol",
+      "effort": "medium"
+    },
+    "47be96dbf2": {
+      "task": "ordinary",
+      "variant": "A",
+      "phase": "conditional",
+      "model": "gpt-6.2-sol",
+      "effort": "medium"
+    },
+    "9675c9910a": {
+      "task": "discriminating",
+      "variant": "C",
+      "phase": "conditional",
+      "model": "gpt-6.2-sol",
+      "effort": "medium"
+    },
+    "775a9b16dc": {
+      "task": "discriminating",
+      "variant": "A",
+      "phase": "conditional",
+      "model": "gpt-6.2-sol",
+      "effort": "medium"
+    },
+    "b003e27382": {
+      "task": "holdout",
+      "variant": "C",
+      "phase": "conditional",
+      "model": "gpt-6.2-sol",
+      "effort": "medium"
+    },
+    "b85dee1ac3": {
+      "task": "holdout",
+      "variant": "B",
+      "phase": "conditional",
+      "model": "gpt-6.2-sol",
+      "effort": "medium"
+    },
+    "8a094f0872": {
+      "task": "ordinary",
+      "variant": "C",
+      "phase": "conditional",
+      "model": "gpt-6.1-sol",
+      "effort": "medium"
+    },
+    "fb1ee8759d": {
+      "task": "ordinary",
+      "variant": "B",
+      "phase": "conditional",
+      "model": "gpt-6.1-sol",
+      "effort": "medium"
+    },
+    "84d0138c7f": {
+      "task": "discriminating",
+      "variant": "C",
+      "phase": "conditional",
+      "model": "gpt-6.1-sol",
+      "effort": "medium"
+    },
+    "4f1d9f20d9": {
+      "task": "discriminating",
+      "variant": "B",
+      "phase": "conditional",
+      "model": "gpt-6.1-sol",
+      "effort": "medium"
+    },
+    "9702709ebb": {
+      "task": "holdout",
+      "variant": "C",
+      "phase": "conditional",
+      "model": "gpt-6.1-sol",
+      "effort": "medium"
+    },
+    "679d4f3141": {
+      "task": "holdout",
+      "variant": "B",
+      "phase": "conditional",
+      "model": "gpt-6.1-sol",
+      "effort": "medium"
+    }
+  },
+  "pairs": [
+    {
+      "id": "70e1a47371",
+      "type": "package/none",
+      "task": "ordinary",
+      "model": "gpt-6.2-sol",
+      "phase": "primary",
+      "left": "da9846753d",
+      "right": "5245e74360"
+    },
+    {
+      "id": "dfb4b05880",
+      "type": "A/B",
+      "task": "ordinary",
+      "model": "gpt-6.2-sol",
+      "phase": "primary",
+      "left": "4c74465cab",
+      "right": "727eda3aea"
+    },
+    {
+      "id": "6ac99a2ee0",
+      "type": "package/none",
+      "task": "discriminating",
+      "model": "gpt-6.2-sol",
+      "phase": "primary",
+      "left": "f600cb1c35",
+      "right": "e6ce811126"
+    },
+    {
+      "id": "6ad52bc38a",
+      "type": "A/B",
+      "task": "discriminating",
+      "model": "gpt-6.2-sol",
+      "phase": "primary",
+      "left": "4376820b4c",
+      "right": "feac56a170"
+    },
+    {
+      "id": "2918400a22",
+      "type": "C/A",
+      "task": "ordinary",
+      "model": "gpt-6.2-sol",
+      "phase": "primary",
+      "left": "31ae2560aa",
+      "right": "47be96dbf2",
+      "conditional": true
+    },
+    {
+      "id": "4b869bc16a",
+      "type": "C/B",
+      "task": "ordinary",
+      "model": "gpt-6.2-sol",
+      "phase": "primary",
+      "left": "31ae2560aa",
+      "right": "727eda3aea",
+      "conditional": true
+    },
+    {
+      "id": "72c2102641",
+      "type": "C/A",
+      "task": "discriminating",
+      "model": "gpt-6.2-sol",
+      "phase": "primary",
+      "left": "9675c9910a",
+      "right": "775a9b16dc",
+      "conditional": true
+    },
+    {
+      "id": "d331863d38",
+      "type": "C/B",
+      "task": "discriminating",
+      "model": "gpt-6.2-sol",
+      "phase": "primary",
+      "left": "9675c9910a",
+      "right": "feac56a170",
+      "conditional": true
+    },
+    {
+      "id": "49fa284cf5",
+      "type": "C/B",
+      "task": "holdout",
+      "model": "gpt-6.2-sol",
+      "phase": "holdout",
+      "left": "b003e27382",
+      "right": "b85dee1ac3",
+      "conditional": true
+    },
+    {
+      "id": "1d8dc755ff",
+      "type": "C/B",
+      "task": "ordinary",
+      "model": "gpt-6.1-sol",
+      "phase": "primary",
+      "left": "8a094f0872",
+      "right": "fb1ee8759d",
+      "conditional": true
+    },
+    {
+      "id": "1f90b5486f",
+      "type": "C/B",
+      "task": "discriminating",
+      "model": "gpt-6.1-sol",
+      "phase": "primary",
+      "left": "84d0138c7f",
+      "right": "4f1d9f20d9",
+      "conditional": true
+    },
+    {
+      "id": "b5bc1c6ed6",
+      "type": "C/B",
+      "task": "holdout",
+      "model": "gpt-6.1-sol",
+      "phase": "holdout",
+      "left": "9702709ebb",
+      "right": "679d4f3141",
+      "conditional": true
+    }
+  ],
+  "doubleGrade": [
+    "da9846753d",
+    "727eda3aea",
+    "e6ce811126",
+    "4376820b4c",
+    "b003e27382",
+    "9702709ebb"
+  ],
+  "preflight": {
+    "none": {
+      "gpt-6.2-sol": {
+        "rawSha256": "e5394e7b737296d2f952757d90e9d8697854e79944a3d823780b0daf068598c6",
+        "skillRecords": [],
+        "hostFrontendCount": 0,
+        "skillContexts": 0,
+        "markers": {
+          "Inventory peer views before visual direction": 0,
+          "press Tab": 0,
+          "keyboard and focus behavior": 0,
+          "keyboard/focus behavior": 0,
+          "focus states": 0,
+          "Имена вариантов": 0,
+          "audit-metrics-20261119": 0,
+          "North Quay": 1,
+          "Hawthorn Works": 0
+        },
+        "toolNamespaces": [
+          "functions",
+          "clock",
+          "collaboration"
+        ],
+        "windowPermissionInContext": true,
+        "promptBytes": 69398
+      },
+      "gpt-6.1-sol": {
+        "rawSha256": "b6ad93523bb47baa102b5e7bc15ef5ecfb2147cd11845939284c8e89bb3b6af0",
+        "skillRecords": [],
+        "hostFrontendCount": 0,
+        "skillContexts": 0,
+        "markers": {
+          "Inventory peer views before visual direction": 0,
+          "press Tab": 0,
+          "keyboard and focus behavior": 0,
+          "keyboard/focus behavior": 0,
+          "focus states": 0,
+          "Имена вариантов": 0,
+          "audit-metrics-20261119": 0,
+          "North Quay": 1,
+          "Hawthorn Works": 0
+        },
+        "toolNamespaces": [
+          "functions",
+          "clock",
+          "collaboration"
+        ],
+        "windowPermissionInContext": true,
+        "promptBytes": 62206
+      },
+      "fs": {
+        "homePackage": false,
+        "sourceWorktree": false,
+        "archiveWithKey": false,
+        "assignments": false,
+        "rubric": false,
+        "auth": false,
+        "homeRules": false,
+        "homeConfig": false,
+        "sibling": false,
+        "procRootHomePackage": false,
+        "projectReadme": true,
+        "projectPackage": false
+      }
+    },
+    "full": {
+      "gpt-6.2-sol": {
+        "rawSha256": "53d935f83694fcb3b6bc48a4b8fd92b0c19a5b8f36db5831f0cb226db7307281",
+        "skillRecords": [
+          "frontend-design"
+        ],
+        "hostFrontendCount": 0,
+        "skillContexts": 1,
+        "markers": {
+          "Inventory peer views before visual direction": 0,
+          "press Tab": 0,
+          "keyboard and focus behavior": 0,
+          "keyboard/focus behavior": 0,
+          "focus states": 0,
+          "Имена вариантов": 0,
+          "audit-metrics-20261119": 0,
+          "North Quay": 1,
+          "Hawthorn Works": 0
+        },
+        "toolNamespaces": [
+          "functions",
+          "clock",
+          "collaboration"
+        ],
+        "windowPermissionInContext": true,
+        "promptBytes": 70353
+      },
+      "gpt-6.1-sol": {
+        "rawSha256": "3ff27f079583370a2d8cfc4411d87db8c39e1b5e6affc6473b37820817ad84ba",
+        "skillRecords": [
+          "frontend-design"
+        ],
+        "hostFrontendCount": 0,
+        "skillContexts": 1,
+        "markers": {
+          "Inventory peer views before visual direction": 0,
+          "press Tab": 0,
+          "keyboard and focus behavior": 0,
+          "keyboard/focus behavior": 0,
+          "focus states": 0,
+          "Имена вариантов": 0,
+          "audit-metrics-20261119": 0,
+          "North Quay": 1,
+          "Hawthorn Works": 0
+        },
+        "toolNamespaces": [
+          "functions",
+          "clock",
+          "collaboration"
+        ],
+        "windowPermissionInContext": true,
+        "promptBytes": 63161
+      },
+      "fs": {
+        "homePackage": false,
+        "sourceWorktree": false,
+        "archiveWithKey": false,
+        "assignments": false,
+        "rubric": false,
+        "auth": false,
+        "homeRules": false,
+        "homeConfig": false,
+        "sibling": false,
+        "procRootHomePackage": false,
+        "projectReadme": true,
+        "projectPackage": true
+      }
+    },
+    "B": {
+      "gpt-6.2-sol": {
+        "rawSha256": "1f4dc5816538d7e8aae62d9092a7255e550781d9cb11c53151d9be7f1c832032",
+        "skillRecords": [
+          "frontend-design"
+        ],
+        "hostFrontendCount": 0,
+        "skillContexts": 1,
+        "markers": {
+          "Inventory peer views before visual direction": 0,
+          "press Tab": 0,
+          "keyboard and focus behavior": 0,
+          "keyboard/focus behavior": 0,
+          "focus states": 0,
+          "Имена вариантов": 0,
+          "audit-metrics-20261119": 0,
+          "North Quay": 1,
+          "Hawthorn Works": 0
+        },
+        "toolNamespaces": [
+          "functions",
+          "clock",
+          "collaboration"
+        ],
+        "windowPermissionInContext": true,
+        "promptBytes": 70338
+      },
+      "gpt-6.1-sol": {
+        "rawSha256": "46c3c258de0d8a089bce2a138623fa98fe244306c5401858294d9b982e6c05ca",
+        "skillRecords": [
+          "frontend-design"
+        ],
+        "hostFrontendCount": 0,
+        "skillContexts": 1,
+        "markers": {
+          "Inventory peer views before visual direction": 0,
+          "press Tab": 0,
+          "keyboard and focus behavior": 0,
+          "keyboard/focus behavior": 0,
+          "focus states": 0,
+          "Имена вариантов": 0,
+          "audit-metrics-20261119": 0,
+          "North Quay": 1,
+          "Hawthorn Works": 0
+        },
+        "toolNamespaces": [
+          "functions",
+          "clock",
+          "collaboration"
+        ],
+        "windowPermissionInContext": true,
+        "promptBytes": 63146
+      },
+      "fs": {
+        "homePackage": false,
+        "sourceWorktree": false,
+        "archiveWithKey": false,
+        "assignments": false,
+        "rubric": false,
+        "auth": false,
+        "homeRules": false,
+        "homeConfig": false,
+        "sibling": false,
+        "procRootHomePackage": false,
+        "projectReadme": true,
+        "projectPackage": true
+      }
+    }
+  },
+  "preflightDecision": {
+    "none": {
+      "noHome": true,
+      "rootReadable": true,
+      "packageMatches": true
+    },
+    "full": {
+      "noHome": true,
+      "rootReadable": true,
+      "packageMatches": true
+    },
+    "B": {
+      "noHome": true,
+      "rootReadable": true,
+      "packageMatches": true
+    }
+  }
+}

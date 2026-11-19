@@ -1,0 +1,291 @@
+{
+  "revision": "2241a534ba013b3c7ab6c0731b4afd06d1b9339464381a1c6358be81a66ab4e9",
+  "browser": "158.0.8127.36",
+  "pageErrors": [],
+  "results": [
+    {
+      "width": 1080,
+      "base": {
+        "peer": {
+          "id": "shelf",
+          "tag": "button",
+          "text": "Show shelf guide",
+          "value": "",
+          "visual": {
+            "bg": "rgb(38, 75, 54)",
+            "color": "rgb(255, 255, 255)",
+            "border": "rgb(38, 75, 54)",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "shadow": "none",
+            "weight": "700",
+            "radius": "0px"
+          },
+          "bounds": [
+            128,
+            296.375,
+            166.453125,
+            45.1875
+          ],
+          "focused": false,
+          "visible": false
+        },
+        "primary": {
+          "id": "reserve",
+          "tag": "button",
+          "text": "Reserve part",
+          "value": "",
+          "visual": {
+            "bg": "rgb(255, 255, 255)",
+            "color": "rgb(37, 43, 39)",
+            "border": "rgb(154, 169, 157)",
+            "outline": "rgb(37, 43, 39) none 3px",
+            "shadow": "none",
+            "weight": "700",
+            "radius": "0px"
+          },
+          "bounds": [
+            128,
+            626.328125,
+            132.1875,
+            45.1875
+          ],
+          "focused": false,
+          "visible": false
+        },
+        "secondary": {
+          "id": "cancel",
+          "tag": "button",
+          "text": "Reset",
+          "value": "",
+          "visual": {
+            "bg": "rgb(255, 255, 255)",
+            "color": "rgb(37, 43, 39)",
+            "border": "rgb(154, 169, 157)",
+            "outline": "rgb(37, 43, 39) none 3px",
+            "shadow": "none",
+            "weight": "700",
+            "radius": "0px"
+          },
+          "bounds": [
+            268.1875,
+            626.328125,
+            73.21875,
+            45.1875
+          ],
+          "focused": false,
+          "visible": false
+        }
+      },
+      "initial": {
+        "status": "",
+        "traversed": [
+          "rack",
+          "reserve"
+        ],
+        "primary": {
+          "id": "reserve",
+          "tag": "button",
+          "text": "Reserve part",
+          "value": "",
+          "visual": {
+            "bg": "rgb(255, 255, 255)",
+            "color": "rgb(37, 43, 39)",
+            "border": "rgb(154, 169, 157)",
+            "outline": "rgb(166, 53, 41) solid 3px",
+            "shadow": "none",
+            "weight": "700",
+            "radius": "0px"
+          },
+          "bounds": [
+            128,
+            626.328125,
+            132.1875,
+            45.1875
+          ],
+          "focused": true,
+          "visible": true
+        },
+        "overflow": false
+      },
+      "error": {
+        "status": "A part code is required.",
+        "traversed": [
+          "rack",
+          "reserve"
+        ],
+        "primary": {
+          "id": "reserve",
+          "tag": "button",
+          "text": "Reserve part",
+          "value": "",
+          "visual": {
+            "bg": "rgb(255, 255, 255)",
+            "color": "rgb(37, 43, 39)",
+            "border": "rgb(154, 169, 157)",
+            "outline": "rgba(0, 0, 0, 0) solid 3px",
+            "shadow": "none",
+            "weight": "700",
+            "radius": "0px"
+          },
+          "bounds": [
+            128,
+            626.328125,
+            132.1875,
+            45.1875
+          ],
+          "focused": true,
+          "visible": true
+        },
+        "overflow": false
+      },
+      "persisted": "{\"code\":\"MK-014\",\"location\":\"West yard\"}",
+      "success": "Reserved MK-014 for West yard.",
+      "reset": {
+        "value": "",
+        "notice": ""
+      }
+    },
+    {
+      "width": 390,
+      "base": {
+        "peer": {
+          "id": "shelf",
+          "tag": "button",
+          "text": "Show shelf guide",
+          "value": "",
+          "visual": {
+            "bg": "rgb(38, 75, 54)",
+            "color": "rgb(255, 255, 255)",
+            "border": "rgb(38, 75, 54)",
+            "outline": "rgb(255, 255, 255) none 3px",
+            "shadow": "none",
+            "weight": "700",
+            "radius": "0px"
+          },
+          "bounds": [
+            20,
+            320.375,
+            166.453125,
+            45.1875
+          ],
+          "focused": false,
+          "visible": false
+        },
+        "primary": {
+          "id": "reserve",
+          "tag": "button",
+          "text": "Reserve part",
+          "value": "",
+          "visual": {
+            "bg": "rgb(255, 255, 255)",
+            "color": "rgb(37, 43, 39)",
+            "border": "rgb(154, 169, 157)",
+            "outline": "rgb(37, 43, 39) none 3px",
+            "shadow": "none",
+            "weight": "700",
+            "radius": "0px"
+          },
+          "bounds": [
+            20,
+            650.328125,
+            132.1875,
+            45.1875
+          ],
+          "focused": false,
+          "visible": false
+        },
+        "secondary": {
+          "id": "cancel",
+          "tag": "button",
+          "text": "Reset",
+          "value": "",
+          "visual": {
+            "bg": "rgb(255, 255, 255)",
+            "color": "rgb(37, 43, 39)",
+            "border": "rgb(154, 169, 157)",
+            "outline": "rgb(37, 43, 39) none 3px",
+            "shadow": "none",
+            "weight": "700",
+            "radius": "0px"
+          },
+          "bounds": [
+            160.1875,
+            650.328125,
+            73.21875,
+            45.1875
+          ],
+          "focused": false,
+          "visible": false
+        }
+      },
+      "initial": {
+        "status": "",
+        "traversed": [
+          "rack",
+          "reserve"
+        ],
+        "primary": {
+          "id": "reserve",
+          "tag": "button",
+          "text": "Reserve part",
+          "value": "",
+          "visual": {
+            "bg": "rgb(255, 255, 255)",
+            "color": "rgb(37, 43, 39)",
+            "border": "rgb(154, 169, 157)",
+            "outline": "rgb(166, 53, 41) solid 3px",
+            "shadow": "none",
+            "weight": "700",
+            "radius": "0px"
+          },
+          "bounds": [
+            20,
+            650.328125,
+            132.1875,
+            45.1875
+          ],
+          "focused": true,
+          "visible": true
+        },
+        "overflow": false
+      },
+      "error": {
+        "status": "A part code is required.",
+        "traversed": [
+          "rack",
+          "reserve"
+        ],
+        "primary": {
+          "id": "reserve",
+          "tag": "button",
+          "text": "Reserve part",
+          "value": "",
+          "visual": {
+            "bg": "rgb(255, 255, 255)",
+            "color": "rgb(37, 43, 39)",
+            "border": "rgb(154, 169, 157)",
+            "outline": "rgba(0, 0, 0, 0) solid 3px",
+            "shadow": "none",
+            "weight": "700",
+            "radius": "0px"
+          },
+          "bounds": [
+            20,
+            650.328125,
+            132.1875,
+            45.1875
+          ],
+          "focused": true,
+          "visible": true
+        },
+        "overflow": false
+      },
+      "persisted": "{\"code\":\"MK-014\",\"location\":\"West yard\"}",
+      "success": "Reserved MK-014 for West yard.",
+      "reset": {
+        "value": "",
+        "notice": ""
+      }
+    }
+  ]
+}

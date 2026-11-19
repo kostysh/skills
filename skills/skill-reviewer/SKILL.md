@@ -6,9 +6,9 @@ description: Review agent skills for capability, instruction quality, triggers,
   FAIL, BLOCKED, or PROVISIONAL. Does not edit skills or review ordinary app
   code.
 metadata:
-  source-version: 0.2.8
+  source-version: 0.2.9
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: c6b1c930573c9a9a2bcd0a129d199aa3da695e99dfa32695c1294488969bfcaf
+  skillforge-source-hash: da24cf55ca6807f02cbb9bed660d89016887ec2a24d45b0dae059f6d1e767c05
 ---
 
 # skill-reviewer
@@ -97,7 +97,7 @@ Forward-testing owns case preparation, exposure, execution and assessment. It su
 
 ## Required active references
 - [Skill review methodology](references/methodology.md) — Read this before conducting or reporting any skill review.
-- [Blind forward-testing](references/forward-testing.md) — Read this when collecting or judging behavioral evidence for a material instruction change, a behavior-dependent PASS, or an activation/generalization claim.
+- [Blind forward-testing](references/forward-testing.md) — Read this when collecting or judging behavioral evidence for a material change, a package or instruction comparison, a behavior-dependent PASS, or an activation/generalization claim.
 
 ## Portability rules
 
@@ -110,7 +110,7 @@ Forward-testing owns case preparation, exposure, execution and assessment. It su
 
 - Confirm required references are reachable and the local method is usable without repository history.
 - Confirm metadata represents review scope and assurance without implying remediation authority.
-- Do not claim a runtime, scripts, tests, metrics, or CLI for this documentation-only skill.
+- Keep measurements traceable to observed records. The invoking environment supplies any tools used to collect or summarize them.
 
 ## Supporting and historical surface
 

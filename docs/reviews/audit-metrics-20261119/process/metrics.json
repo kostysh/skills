@@ -1,0 +1,381 @@
+{
+  "skill": "skill-reviewer",
+  "study": "20261119-method",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "base": "docs/reviews/audit-metrics-20261119/process",
+  "source": "protocol.md",
+  "runs": {
+    "73c4fa68": {
+      "task": "routing",
+      "variant": "previous",
+      "sha256": "c5a07c8a46224250b5a19fa3b9998818efda58388cdc9f4c05e8713812bb9786",
+      "source": "study.json",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f4dd-ce4b-7d31-a93c-83b8c81b779a",
+          "rubric": "process-v1",
+          "packet": "primary-inputs",
+          "source": "grades-primary.json",
+          "score": "PASS",
+          "label": "70324d"
+        }
+      }
+    },
+    "5ae9d9fa": {
+      "task": "types",
+      "variant": "previous",
+      "sha256": "dfaaee554f9d29efd7f549cb23f26f67f28ff0c9f2a0aea9b41d1658aac89653",
+      "source": "study.json",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f4dd-ce4b-7d31-a93c-83b8c81b779a",
+          "rubric": "process-v1",
+          "packet": "primary-inputs",
+          "source": "grades-primary.json",
+          "score": "PASS",
+          "label": "a30c35"
+        }
+      }
+    },
+    "db999f37": {
+      "task": "desk",
+      "variant": "previous",
+      "sha256": "645f6b3f4cac1467fad7ca4cdc18b3de0efbf3f7f41552e59e5ff784346016d6",
+      "source": "study.json",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f4dd-ce4b-7d31-a93c-83b8c81b779a",
+          "rubric": "process-v1",
+          "packet": "primary-inputs",
+          "source": "grades-primary.json",
+          "score": "PASS",
+          "label": "6248e1"
+        }
+      }
+    },
+    "54702184": {
+      "task": "records",
+      "variant": "previous",
+      "sha256": "c54bffdbcec1691395b814477206e1d333c40e991ad23ae7f19f764ab91d37b9",
+      "source": "study.json",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f4dd-ce4b-7d31-a93c-83b8c81b779a",
+          "rubric": "process-v1",
+          "packet": "primary-inputs",
+          "source": "grades-primary.json",
+          "score": "FAIL",
+          "label": "8887c2"
+        },
+        "second": {
+          "assessor": "01a1f4dd-ccba-70e1-99c5-7aa6c37f86a2",
+          "rubric": "process-v1",
+          "packet": "primary-inputs",
+          "source": "grades-second.json",
+          "score": "PASS",
+          "label": "043202"
+        },
+        "resolution": {
+          "assessor": "01a1f4e1-6782-7270-9721-ce11cbb042ac",
+          "rubric": "process-v1",
+          "packet": "primary-inputs",
+          "source": "grades-resolution.json",
+          "score": "PASS",
+          "label": "84205b"
+        }
+      }
+    },
+    "229c3de5": {
+      "task": "records",
+      "variant": "candidate",
+      "sha256": "c24b1c8d7aacf91580346f189d5340eb071a9ab1f62fb26ff7c05857a04789a7",
+      "source": "study.json",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f4dd-ce4b-7d31-a93c-83b8c81b779a",
+          "rubric": "process-v1",
+          "packet": "primary-inputs",
+          "source": "grades-primary.json",
+          "score": "PASS",
+          "label": "49541a"
+        },
+        "second": {
+          "assessor": "01a1f4dd-ccba-70e1-99c5-7aa6c37f86a2",
+          "rubric": "process-v1",
+          "packet": "primary-inputs",
+          "source": "grades-second.json",
+          "score": "FAIL",
+          "label": "45ecdd"
+        },
+        "resolution": {
+          "assessor": "01a1f4e1-6782-7270-9721-ce11cbb042ac",
+          "rubric": "process-v1",
+          "packet": "primary-inputs",
+          "source": "grades-resolution.json",
+          "score": "FAIL",
+          "label": "8d6058"
+        }
+      }
+    },
+    "afb29f8b": {
+      "task": "routing",
+      "variant": "candidate",
+      "sha256": "6ea81e38440c6e2e78788a31890529e59086db79facd5057abf67cff9ff5b662",
+      "source": "study.json",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f4dd-ce4b-7d31-a93c-83b8c81b779a",
+          "rubric": "process-v1",
+          "packet": "primary-inputs",
+          "source": "grades-primary.json",
+          "score": "PASS",
+          "label": "134da0"
+        }
+      }
+    },
+    "60e05af5": {
+      "task": "types",
+      "variant": "candidate",
+      "sha256": "25180b3c239fdd79a6f2fff02ed18b3e4bde793c0dcd15dc676827fc858df767",
+      "source": "study.json",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f4dd-ce4b-7d31-a93c-83b8c81b779a",
+          "rubric": "process-v1",
+          "packet": "primary-inputs",
+          "source": "grades-primary.json",
+          "score": "PASS",
+          "label": "67a0c1"
+        }
+      }
+    },
+    "7f11c513": {
+      "task": "desk",
+      "variant": "candidate",
+      "sha256": "e112d766a16a477a2ef5860cfd915619bdc3f04d1f6339120529747802616e70",
+      "source": "study.json",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f4dd-ce4b-7d31-a93c-83b8c81b779a",
+          "rubric": "process-v1",
+          "packet": "primary-inputs",
+          "source": "grades-primary.json",
+          "score": "PASS",
+          "label": "c0f0b6"
+        }
+      }
+    },
+    "74e38c42": {
+      "task": "direction",
+      "variant": "candidate",
+      "sha256": "e2fa67c58570e9c94c02a66386efe166ea3c3a390e7d0437d4c2e3f5fb29a28e",
+      "source": "diagnostics.json",
+      "ratings": {
+        "diagnostic": {
+          "assessor": "01a1f4e5-c948-7c01-a5bf-86bfc4780bce",
+          "rubric": "direction-v1",
+          "packet": "direction-inputs",
+          "score": "PASS",
+          "source": "diagnostic-grades.json",
+          "label": "a56542"
+        }
+      }
+    },
+    "2928e791": {
+      "task": "direction",
+      "variant": "previous",
+      "sha256": "c9c8f4e2edd3435c9e3c81014725cd9caac29382cf1a2cf10dbe6a6468db906e",
+      "source": "diagnostics.json",
+      "ratings": {
+        "diagnostic": {
+          "assessor": "01a1f4e5-c948-7c01-a5bf-86bfc4780bce",
+          "rubric": "direction-v1",
+          "packet": "direction-inputs",
+          "score": "PASS",
+          "source": "diagnostic-grades.json",
+          "label": "c60b86"
+        }
+      }
+    },
+    "1a0c8cd7": {
+      "task": "closure",
+      "variant": "previous",
+      "sha256": "ea6a4a1584bc23729cb0b169e10ed5001b0a9c50ebd2a4326a276abb47f92a0c",
+      "source": "diagnostics.json",
+      "ratings": {
+        "diagnostic": {
+          "assessor": "01a1f4e5-c948-7c01-a5bf-86bfc4780bce",
+          "rubric": "closure-v1",
+          "packet": "closure-inputs",
+          "score": "PASS",
+          "source": "diagnostic-grades.json",
+          "label": "6eb2bc"
+        }
+      }
+    },
+    "f48fa4a3": {
+      "task": "closure",
+      "variant": "candidate",
+      "sha256": "f338278e956f1c152bbbe0a6ccac67915f86fea05374b55e1d819285579eda51",
+      "source": "diagnostics.json",
+      "ratings": {
+        "diagnostic": {
+          "assessor": "01a1f4e5-c948-7c01-a5bf-86bfc4780bce",
+          "rubric": "closure-v1",
+          "packet": "closure-inputs",
+          "score": "PASS",
+          "source": "diagnostic-grades.json",
+          "label": "91d779"
+        }
+      }
+    }
+  },
+  "series": [
+    {
+      "id": "old-new",
+      "phase": "primary",
+      "comparison": "candidate/previous",
+      "rubric": "process-v1",
+      "packet": "primary-inputs",
+      "source": "protocol.md",
+      "pairs": [
+        {
+          "id": "old-new-desk",
+          "task": "desk",
+          "left": [
+            "7f11c513",
+            "primary"
+          ],
+          "right": [
+            "db999f37",
+            "primary"
+          ]
+        },
+        {
+          "id": "old-new-types",
+          "task": "types",
+          "left": [
+            "60e05af5",
+            "primary"
+          ],
+          "right": [
+            "5ae9d9fa",
+            "primary"
+          ]
+        },
+        {
+          "id": "old-new-routing",
+          "task": "routing",
+          "left": [
+            "afb29f8b",
+            "primary"
+          ],
+          "right": [
+            "73c4fa68",
+            "primary"
+          ]
+        },
+        {
+          "id": "old-new-records",
+          "task": "records",
+          "left": [
+            "229c3de5",
+            "primary"
+          ],
+          "right": [
+            "54702184",
+            "primary"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "direction",
+      "phase": "diagnostic",
+      "comparison": "candidate/previous",
+      "rubric": "direction-v1",
+      "packet": "direction-inputs",
+      "source": "direction-registration.md",
+      "pairs": [
+        {
+          "id": "direction-direction",
+          "task": "direction",
+          "left": [
+            "74e38c42",
+            "diagnostic"
+          ],
+          "right": [
+            "2928e791",
+            "diagnostic"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "closure",
+      "phase": "diagnostic",
+      "comparison": "candidate/previous",
+      "rubric": "closure-v1",
+      "packet": "closure-inputs",
+      "source": "closure-registration.md",
+      "pairs": [
+        {
+          "id": "closure-closure",
+          "task": "closure",
+          "left": [
+            "f48fa4a3",
+            "diagnostic"
+          ],
+          "right": [
+            "1a0c8cd7",
+            "diagnostic"
+          ]
+        }
+      ]
+    }
+  ],
+  "agreement": [
+    {
+      "run": "54702184",
+      "rubric": "process-v1",
+      "packet": "primary-inputs",
+      "ratings": [
+        "primary",
+        "second"
+      ],
+      "resolution": "resolution"
+    },
+    {
+      "run": "229c3de5",
+      "rubric": "process-v1",
+      "packet": "primary-inputs",
+      "ratings": [
+        "primary",
+        "second"
+      ],
+      "resolution": "resolution"
+    }
+  ],
+  "attempts": [
+    {
+      "id": "candidate-1",
+      "audit": "0.2.9",
+      "snapshot": "feede9e04ca6",
+      "source": "../method-acceptance.md",
+      "handed": "2026-11-19T17:30:02.298Z",
+      "started": "2026-11-19T17:30:04Z",
+      "decided": "2026-11-19T17:44:51Z",
+      "verdict": "PASS"
+    }
+  ],
+  "observation": {
+    "version": "0.2.9",
+    "accepted": "2026-11-19T17:44:51Z",
+    "released": null,
+    "through": "2026-11-19T17:57:48Z",
+    "systematic": false,
+    "defects": [],
+    "source": "../../implementation-log-20261119-1.md"
+  }
+}

@@ -1,0 +1,464 @@
+{
+  "skill": "frontend-design",
+  "study": "живые формы 2026-11-19",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "taskSet": "frontend-pilot",
+  "source": "docs/reviews/audit-metrics-20261119/frontend/protocol.md",
+  "runs": {
+    "da9846753d": {
+      "task": "ordinary",
+      "variant": "package",
+      "source": "docs/reviews/audit-metrics-20261119/frontend/runs/da9846753d/events.jsonl",
+      "sha256": "d3606fdd5ba004a88c3c63315d75279f95adb0a9fa9d32d4449ccf2b42e5ff4c",
+      "ratings": {
+        "first": {
+          "assessor": "01a1f4ed-47e1-7480-9db2-0b56ad71c9cf",
+          "rubric": "form-v1-P",
+          "packet": "form-observations-v1",
+          "score": "PASS",
+          "source": "docs/reviews/audit-metrics-20261119/frontend/assessments/primary/first/signed.json",
+          "reason": "Обычная форма прошла проверку стилей, фокуса и поведения на 390 и 1080 px. В журнале Tab перевёл фокус на #send при пустом статусе и показал рамку. Загруженная ревизия совпадает с app_revision.",
+          "evidence": [
+            {
+              "label": "Прогон",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/da9846753d/observed/observer.json",
+              "line": 223
+            },
+            {
+              "label": "Tab",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/da9846753d/browser.jsonl",
+              "line": 15
+            }
+          ]
+        },
+        "second": {
+          "assessor": "01a1f4ed-47e1-7520-9c55-fb843a1f8d35",
+          "rubric": "form-v1-P",
+          "packet": "form-observations-v1",
+          "score": "PASS",
+          "source": "docs/reviews/audit-metrics-20261119/frontend/assessments/primary/second/signed.json",
+          "reason": "На исходном экране при 390 и 1080 px обе кнопки видны, Request arrival совпадает с образцом и имеет различимую рамку фокуса. Прогон подтвердил сохранение имени и окна прибытия, сообщение об успехе и очистку. В строке 15 Tab перевёл фокус с #clear на #send до отправки формы. loaded и disk совпали с app_revision. ,",
+          "evidence": [
+            {
+              "label": "Прогон",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/da9846753d/observed/observer.json",
+              "line": 223
+            },
+            {
+              "label": "Tab",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/da9846753d/browser.jsonl",
+              "line": 15
+            }
+          ]
+        }
+      }
+    },
+    "5245e74360": {
+      "task": "ordinary",
+      "variant": "none",
+      "source": "docs/reviews/audit-metrics-20261119/frontend/runs/5245e74360/events.jsonl",
+      "sha256": "8a101f861f36c290d86b01a8e4098dbd4229daa14c40a7abdc0ffdef2145e208",
+      "ratings": {
+        "first": {
+          "assessor": "01a1f4ed-47e1-7480-9db2-0b56ad71c9cf",
+          "rubric": "form-v1-P",
+          "packet": "form-observations-v1",
+          "score": "PASS",
+          "source": "docs/reviews/audit-metrics-20261119/frontend/assessments/primary/first/signed.json",
+          "reason": "На обычном экране при 390 и 1080 px стиль кнопок, видимый фокус, сохранение данных, подтверждение и очистка прошли проверку. Полный журнал финальной ревизии показывает щелчки по #send. При нажатии Enter фокус остался на поле имени.",
+          "evidence": [
+            {
+              "label": "Прогон",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/5245e74360/observed/observer.json",
+              "line": 79
+            },
+            {
+              "label": "Enter",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/5245e74360/browser.jsonl",
+              "line": 8
+            }
+          ]
+        }
+      }
+    },
+    "4c74465cab": {
+      "task": "ordinary",
+      "variant": "A",
+      "source": "docs/reviews/audit-metrics-20261119/frontend/runs/4c74465cab/events.jsonl",
+      "sha256": "1d19b42d7a34948dca1218aeb00890c6c9d1c51c182ea605ec0cd16e935917cc",
+      "ratings": {
+        "first": {
+          "assessor": "01a1f4ed-47e1-7480-9db2-0b56ad71c9cf",
+          "rubric": "form-v1-I",
+          "packet": "form-observations-v1",
+          "score": "PASS",
+          "source": "docs/reviews/audit-metrics-20261119/frontend/assessments/primary/first/signed.json",
+          "reason": "Обычная форма прошла проверку стилей, фокуса и поведения на 390 и 1080 px. На финальной ревизии Tab перевёл фокус на #send с видимой рамкой и пустым статусом в обоих окнах исполнителя.",
+          "evidence": [
+            {
+              "label": "Прогон",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/4c74465cab/observed/observer.json",
+              "line": 79
+            },
+            {
+              "label": "Tab на широком экране",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/4c74465cab/browser.jsonl",
+              "line": 15
+            },
+            {
+              "label": "Tab на узком экране",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/4c74465cab/browser.jsonl",
+              "line": 25
+            }
+          ]
+        }
+      }
+    },
+    "727eda3aea": {
+      "task": "ordinary",
+      "variant": "B",
+      "source": "docs/reviews/audit-metrics-20261119/frontend/runs/727eda3aea/events.jsonl",
+      "sha256": "9127c92b1299af2c3621899f1e0b34f7a1582195b726e78a7352597a818c8094",
+      "ratings": {
+        "first": {
+          "assessor": "01a1f4ed-47e1-7480-9db2-0b56ad71c9cf",
+          "rubric": "form-v1-I",
+          "packet": "form-observations-v1",
+          "score": "PASS",
+          "source": "docs/reviews/audit-metrics-20261119/frontend/assessments/primary/first/signed.json",
+          "reason": "На обеих ширинах основная кнопка соответствует образцу, Clear отличается, фокус виден. Сохранение данных, подтверждение и очистка прошли. В строке 23 Tab перевёл фокус на #send в обычном состоянии. Загруженная ревизия совпадает с app_revision.",
+          "evidence": [
+            {
+              "label": "Прогон",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/727eda3aea/observed/observer.json",
+              "line": 79
+            },
+            {
+              "label": "Tab",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/727eda3aea/browser.jsonl",
+              "line": 23
+            }
+          ]
+        },
+        "second": {
+          "assessor": "01a1f4ed-47e1-7520-9c55-fb843a1f8d35",
+          "rubric": "form-v1-I",
+          "packet": "form-observations-v1",
+          "score": "PASS",
+          "source": "docs/reviews/audit-metrics-20261119/frontend/assessments/primary/second/signed.json",
+          "reason": "На исходном экране при 390 и 1080 px обе кнопки видны, Request arrival совпадает с образцом и имеет различимую рамку фокуса. Прогон подтвердил сохранение имени и окна прибытия, сообщение об успехе и очистку. В строке 23 Tab перевёл фокус с #clear на #send при пустом сообщении статуса. loaded и disk совпали с app_revision. ,",
+          "evidence": [
+            {
+              "label": "Прогон",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/727eda3aea/observed/observer.json",
+              "line": 79
+            },
+            {
+              "label": "Tab",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/727eda3aea/browser.jsonl",
+              "line": 23
+            }
+          ]
+        }
+      },
+      "behavior": {
+        "result": "done",
+        "source": "docs/reviews/audit-metrics-20261119/frontend/runs/727eda3aea/browser.jsonl#L23",
+        "note": "На обеих ширинах основная кнопка соответствует образцу, Clear отличается, фокус виден. Сохранение данных, подтверждение и очистка прошли. В строке 23 Tab перевёл фокус на #send в обычном состоянии. Загруженная ревизия совпадает с app_revision. Журнал действий, строки 23."
+      }
+    },
+    "f600cb1c35": {
+      "task": "discriminating",
+      "variant": "package",
+      "source": "docs/reviews/audit-metrics-20261119/frontend/runs/f600cb1c35/events.jsonl",
+      "sha256": "b10340299748994be8c77c955f0025d6af686c9cc6da2f7d38220a4b2301afea",
+      "ratings": {
+        "first": {
+          "assessor": "01a1f4ed-47e1-7480-9db2-0b56ad71c9cf",
+          "rubric": "form-v1-P",
+          "packet": "form-observations-v1",
+          "score": "PASS",
+          "source": "docs/reviews/audit-metrics-20261119/frontend/assessments/primary/first/signed.json",
+          "reason": "На обеих ширинах после пустой отправки сохраняются стиль кнопок и рамка фокуса. Данные сохраняются, подтверждение и очистка работают. На финальной ревизии Enter вызвал ошибку при уже сфокусированной #send. Затем Shift+Tab перевёл фокус на Clear, где Space очистил форму.",
+          "evidence": [
+            {
+              "label": "Прогон",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/f600cb1c35/observed/observer.json",
+              "line": 255
+            },
+            {
+              "label": "Журнал",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/f600cb1c35/browser.jsonl",
+              "line": 44
+            }
+          ]
+        }
+      }
+    },
+    "e6ce811126": {
+      "task": "discriminating",
+      "variant": "none",
+      "source": "docs/reviews/audit-metrics-20261119/frontend/runs/e6ce811126/events.jsonl",
+      "sha256": "caef0f4d9bde61674d30f28b2aae35842752973ba9f4fbaa19f8a1539e1bfabe",
+      "ratings": {
+        "first": {
+          "assessor": "01a1f4ed-47e1-7480-9db2-0b56ad71c9cf",
+          "rubric": "form-v1-P",
+          "packet": "form-observations-v1",
+          "score": "PASS",
+          "source": "docs/reviews/audit-metrics-20261119/frontend/assessments/primary/first/signed.json",
+          "reason": "После пустой отправки на обеих ширинах кнопки различаются по стилю, на #send видна рамка. Сохранение данных, подтверждение и очистка прошли. В журнале финальной ревизии Tab достигает #send до ошибки. После Enter фокус остаётся на #send до щелчка по Clear.",
+          "evidence": [
+            {
+              "label": "Прогон",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/e6ce811126/observed/observer.json",
+              "line": 255
+            },
+            {
+              "label": "Журнал",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/e6ce811126/browser.jsonl",
+              "line": 22
+            }
+          ]
+        },
+        "second": {
+          "assessor": "01a1f4ed-47e1-7520-9c55-fb843a1f8d35",
+          "rubric": "form-v1-P",
+          "packet": "form-observations-v1",
+          "score": "PASS",
+          "source": "docs/reviews/audit-metrics-20261119/frontend/assessments/primary/second/signed.json",
+          "reason": "На 390 и 1080 px обе кнопки видны, основная совпадает с образцом и сохраняет рамку фокуса после ошибки. Прогон подтвердил сохранение имени и окна прибытия, сообщение об успехе и очистку. На финальной ревизии Tab достиг #send до ошибки. Enter сохранил фокус на кнопке, а следующим действием исполнитель сбросил форму щелчком по Clear. Перехода на #send с клавиатуры при активной ошибке в журнале нет. ,",
+          "evidence": [
+            {
+              "label": "Прогон",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/e6ce811126/observed/observer.json",
+              "line": 111
+            },
+            {
+              "label": "Действия исполнителя",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/e6ce811126/browser.jsonl",
+              "line": 22
+            }
+          ]
+        }
+      }
+    },
+    "4376820b4c": {
+      "task": "discriminating",
+      "variant": "A",
+      "source": "docs/reviews/audit-metrics-20261119/frontend/runs/4376820b4c/events.jsonl",
+      "sha256": "122e2ae118952d9e80327060f4b0853a905006f54a5452914e1eeb20f952d76c",
+      "ratings": {
+        "first": {
+          "assessor": "01a1f4ed-47e1-7480-9db2-0b56ad71c9cf",
+          "rubric": "form-v1-I",
+          "packet": "form-observations-v1",
+          "score": "FAIL",
+          "source": "docs/reviews/audit-metrics-20261119/frontend/assessments/primary/first/signed.json",
+          "reason": "После пустой отправки на 390 и 1080 px основная кнопка сохраняет стиль образца и видимую рамку. Сохранение имени и окна, подтверждение и очистка прошли. На финальной ревизии Tab привёл фокус на #send до ошибки. После ошибки Shift+Tab перевёл фокус на Clear, затем Space очистил форму.",
+          "evidence": [
+            {
+              "label": "Прогон",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/4376820b4c/observed/observer.json",
+              "line": 111
+            },
+            {
+              "label": "Журнал",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/4376820b4c/browser.jsonl",
+              "line": 54
+            }
+          ]
+        },
+        "second": {
+          "assessor": "01a1f4ed-47e1-7520-9c55-fb843a1f8d35",
+          "rubric": "form-v1-I",
+          "packet": "form-observations-v1",
+          "score": "FAIL",
+          "source": "docs/reviews/audit-metrics-20261119/frontend/assessments/primary/second/signed.json",
+          "reason": "На 390 и 1080 px обе кнопки видны, основная совпадает с образцом и сохраняет рамку фокуса после ошибки. Прогон подтвердил сохранение имени и окна прибытия, сообщение об успехе и очистку. На финальной ревизии Tab достиг #send до ошибки. Enter сохранил фокус, а после ошибки Shift+Tab перевёл его на #clear. Возврата на #send в состоянии ошибки в журнале нет. , ,",
+          "evidence": [
+            {
+              "label": "Прогон",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/4376820b4c/observed/observer.json",
+              "line": 111
+            },
+            {
+              "label": "Tab и Enter",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/4376820b4c/browser.jsonl",
+              "line": 45
+            },
+            {
+              "label": "Shift+Tab",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/4376820b4c/browser.jsonl",
+              "line": 54
+            }
+          ]
+        }
+      }
+    },
+    "feac56a170": {
+      "task": "discriminating",
+      "variant": "B",
+      "source": "docs/reviews/audit-metrics-20261119/frontend/runs/feac56a170/events.jsonl",
+      "sha256": "aab627b75e320d54e1a48f43875da482beb0a06b2515e420871e9adfa808491d",
+      "ratings": {
+        "first": {
+          "assessor": "01a1f4ed-47e1-7480-9db2-0b56ad71c9cf",
+          "rubric": "form-v1-I",
+          "packet": "form-observations-v1",
+          "score": "FAIL",
+          "source": "docs/reviews/audit-metrics-20261119/frontend/assessments/primary/first/signed.json",
+          "reason": "Финальный прогон подтверждает стиль и видимую рамку после ошибки на обеих ширинах, сохранение данных, подтверждение и очистку. Tab вернул фокус на #send после ошибки только в строке 8, где loaded и disk отличаются от app_revision. На финальной ревизии Tab дошёл до #send до пустой отправки.",
+          "evidence": [
+            {
+              "label": "Прогон",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/feac56a170/observed/observer.json",
+              "line": 111
+            },
+            {
+              "label": "Старая ревизия",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/feac56a170/browser.jsonl",
+              "line": 8
+            },
+            {
+              "label": "Финальная ревизия",
+              "file": "docs/reviews/audit-metrics-20261119/frontend/runs/feac56a170/browser.jsonl",
+              "line": 18
+            }
+          ]
+        }
+      },
+      "behavior": {
+        "result": "missed",
+        "source": "docs/reviews/audit-metrics-20261119/frontend/runs/feac56a170/browser.jsonl#L18",
+        "note": "Финальный прогон подтверждает стиль и видимую рамку после ошибки на обеих ширинах, сохранение данных, подтверждение и очистку. Tab вернул фокус на #send после ошибки только в строке 8, где loaded и disk отличаются от app_revision. На финальной ревизии Tab дошёл до #send до пустой отправки. Журнал действий, строки 8, 18."
+      }
+    }
+  },
+  "series": [
+    {
+      "id": "package/none-primary",
+      "comparison": "package/none",
+      "phase": "primary",
+      "rubric": "form-v1-P",
+      "packet": "form-observations-v1",
+      "pairs": [
+        {
+          "id": "70e1a47371",
+          "task": "ordinary",
+          "left": [
+            "da9846753d",
+            "first"
+          ],
+          "right": [
+            "5245e74360",
+            "first"
+          ]
+        },
+        {
+          "id": "6ac99a2ee0",
+          "task": "discriminating",
+          "left": [
+            "f600cb1c35",
+            "first"
+          ],
+          "right": [
+            "e6ce811126",
+            "first"
+          ]
+        }
+      ],
+      "source": "docs/reviews/audit-metrics-20261119/frontend/registration.json",
+      "limit": "Два варианта формы North Quay; вывод ограничен этими заданиями."
+    },
+    {
+      "id": "A/B-primary",
+      "comparison": "A/B",
+      "phase": "primary",
+      "rubric": "form-v1-I",
+      "packet": "form-observations-v1",
+      "pairs": [
+        {
+          "id": "dfb4b05880",
+          "task": "ordinary",
+          "left": [
+            "4c74465cab",
+            "first"
+          ],
+          "right": [
+            "727eda3aea",
+            "first"
+          ]
+        },
+        {
+          "id": "6ad52bc38a",
+          "task": "discriminating",
+          "left": [
+            "4376820b4c",
+            "first"
+          ],
+          "right": [
+            "feac56a170",
+            "first"
+          ]
+        }
+      ],
+      "source": "docs/reviews/audit-metrics-20261119/frontend/registration.json",
+      "limit": "Два варианта формы North Quay; вывод ограничен этими заданиями.",
+      "bRemoval": "complete"
+    }
+  ],
+  "agreement": [
+    {
+      "run": "da9846753d",
+      "ratings": [
+        "first",
+        "second"
+      ],
+      "rubric": "form-v1-P",
+      "packet": "form-observations-v1"
+    },
+    {
+      "run": "727eda3aea",
+      "ratings": [
+        "first",
+        "second"
+      ],
+      "rubric": "form-v1-I",
+      "packet": "form-observations-v1"
+    },
+    {
+      "run": "e6ce811126",
+      "ratings": [
+        "first",
+        "second"
+      ],
+      "rubric": "form-v1-P",
+      "packet": "form-observations-v1"
+    },
+    {
+      "run": "4376820b4c",
+      "ratings": [
+        "first",
+        "second"
+      ],
+      "rubric": "form-v1-I",
+      "packet": "form-observations-v1"
+    }
+  ],
+  "technicalStarts": [],
+  "attempts": [
+    {
+      "id": "frontend-pilot-1",
+      "snapshot": "2a28e6a5a89164f14eb63cfbc4775e34f66de865efb701195c557b106bc704ef",
+      "handed": "2026-11-19T17:52:49.005887Z",
+      "source": "docs/reviews/audit-metrics-20261119/frontend/independent-audit.md",
+      "started": "2026-11-19T17:53:14Z",
+      "decided": "2026-11-19T17:57:48Z",
+      "verdict": "PASS",
+      "timelineSource": "docs/reviews/audit-metrics-20261119/frontend/events.jsonl",
+      "scope": "Пользовательский результат P на двух задачах North Quay, frontend-design 0.2.6. Для A и B в различающем задании K/I = FAIL."
+    }
+  ]
+}

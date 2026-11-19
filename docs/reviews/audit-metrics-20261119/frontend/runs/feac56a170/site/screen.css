@@ -1,0 +1,11 @@
+:root { color-scheme:light; --ink:#142b3a; --surface:#f8f5e9; --primary:#15495b; --paper:#fff; --line:#8aa2a1; --ring:#b14d1f; font:17px/1.45 system-ui,sans-serif; }
+* { box-sizing:border-box } body { margin:0; background:var(--surface); color:var(--ink) }
+main { max-width:46rem; margin:0 auto; padding:2rem clamp(1rem,5vw,4rem) }
+header, section { margin:0 0 1.5rem; padding:0 0 1.3rem; border-bottom:1px solid var(--line) }
+h1,h2,p { margin:0 0 .65rem } h1 { font-size:2.3rem } h2 { font-size:1.35rem } .brand { color:var(--primary); font-size:.92rem; font-weight:700 }
+form { max-width:31rem } label { display:block; margin:.7rem 0 .2rem }
+input,select,button { color:var(--ink); font:inherit; border:1px solid var(--line); border-radius:.22rem; background:var(--paper); padding:.45rem .7rem }
+input,select { width:100% } button { cursor:pointer; font-weight:650 }
+.main-action { background:var(--primary); color:var(--paper); border-color:var(--primary) }
+:focus-visible { outline:3px solid var(--ring); outline-offset:2px }
+footer { display:flex; flex-wrap:wrap; gap:.55rem; margin-top:.55rem } output,#message { display:block; min-height:1.4em; margin:.5rem 0 0 }

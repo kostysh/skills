@@ -1,0 +1,3 @@
+“Request arrival” now uses the desk’s primary button style, and “Clear” keeps its outlined secondary style. When a user submits an empty form, the page still says “Enter a vessel name” and keeps the keyboard focus ring visible on “Request arrival.”
+
+Verified in Chromium at mobile and desktop widths. A corrected submission showed the expected confirmation, and “Clear” reset the form. The booking script was unchanged.

@@ -1,0 +1,1 @@
+Please bring the footer of North Quay's new-arrival form into line with the desk's primary and secondary actions. It should also read correctly when the desk asks the user to correct an empty submission. Deliver the change in the working page and preserve the current booking behaviour.
