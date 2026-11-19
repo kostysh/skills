@@ -6,7 +6,7 @@ import { destination, targets } from './model.ts';
 import { download, latestCatalog } from './network.ts';
 import { chooseInstallation, chooseMode } from './prompts.ts';
 
-const help = `kskills ${pkg.version} — install and update skills\n\nRun without a command to open the interactive menu.\n  kskills install <skill...> --target <codex|claude-code|opencode|pi|universal|custom> [--path <directory>]\n  kskills update\n  kskills --help\n  kskills --version\n\nNon-interactive custom and universal targets require --path. Relative paths use the current directory.\nConfiguration: ~/.kskills/setup.json\nExit codes: 0 success; 1 error or partial result; 2 invalid arguments; 130 cancelled.\n`;
+const help = `kskills ${pkg.version} — install and update skills\n\nRun without a command to open the interactive menu.\n  kskills install <skill...> --target <codex|claude-code|opencode|pi|universal|custom> [--path <directory>]\n  kskills update\n  kskills --help\n  kskills --version\n\nNon-interactive custom and universal targets require --path. Relative paths use the current directory.\nConfiguration: ~/.kskills/setup.json\nExit codes: 0 success (including warnings); 1 error; 2 invalid arguments; 130 cancelled.\n`;
 async function run(): Promise<number> {
   let values: { help?: boolean; version?: boolean; target?: string; path?: string };
   let positionals: string[];
@@ -80,12 +80,14 @@ async function run(): Promise<number> {
       ? await installer.install(catalog, selected.names, selected.path, selected.target)
       : await installer.update(catalog);
     for (const changed of result.changed) process.stdout.write(`Installed ${changed}\n`);
+    for (const warning of result.warnings) process.stderr.write(`Warning: ${warning}\n`);
     for (const error of result.errors) process.stderr.write(`${error}\n`);
     if (controller.signal.aborted) {
       process.stderr.write('Cancelled.\n');
       return 130;
     }
-    if (!result.changed.length && !result.errors.length) process.stdout.write('All up to date\n');
+    if (!result.changed.length && !result.warnings.length && !result.errors.length)
+      process.stdout.write('All up to date\n');
     return result.errors.length ? 1 : 0;
   } catch (error) {
     if (controller.signal.aborted) {

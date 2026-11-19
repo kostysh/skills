@@ -50,7 +50,8 @@ Retired skills are kept in [deprecated/](deprecated/). The
 [Pencil skill](deprecated/pencil-dev/SKILL.archived.md) was retired on
 2026-11-19. Its archived entry point is named `SKILL.archived.md` so Codex
 skips it during discovery. If you installed `pencil-dev` earlier,
-`kskills update` keeps your copy and reports its absence from the catalog.
+`kskills update` keeps your copy and warns that the skill is absent from the
+catalog. The command succeeds when no other errors occur.
 
 ## Install from the command line
 
