@@ -1,0 +1,131 @@
+{
+  "verified": "2026-11-18T23:47:50.869157+00:00",
+  "checks": [
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "0.2.5",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "lint",
+        "skills/web-ui-reviewer"
+      ],
+      "exit": 0,
+      "stdout": "OK skills/web-ui-reviewer",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "regenerate",
+        "skills/web-ui-reviewer"
+      ],
+      "exit": 0,
+      "stdout": "Regenerated {repository}/skills/web-ui-reviewer",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "skills/web-ui-reviewer"
+      ],
+      "exit": 0,
+      "stdout": "OK skills/web-ui-reviewer",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "compile",
+        "skills/web-ui-reviewer",
+        "--out-dir",
+        "{work}/compiled"
+      ],
+      "exit": 0,
+      "stdout": "Compiled skills/web-ui-reviewer -> {work}/compiled/web-ui-reviewer",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "{work}/compiled/web-ui-reviewer"
+      ],
+      "exit": 0,
+      "stdout": "OK {work}/compiled/web-ui-reviewer",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "{system-skill-creator}/scripts/quick_validate.py",
+        "skills/web-ui-reviewer"
+      ],
+      "exit": 0,
+      "stdout": "Skill is valid!",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "pack:skills",
+        "--root",
+        "{work}/compiled",
+        "--out",
+        "{work}/packed",
+        "--release",
+        "skills-row25-local",
+        "--previous",
+        "{coordinator}/base-pack/catalog.json"
+      ],
+      "exit": 0,
+      "stdout": "> @kostysh/skills@0.1.3 pack:skills {repository}/cli\n> node src/pack-cli.ts --root {work}/compiled --out {work}/packed --release skills-row25-local --previous {coordinator}/base-pack/catalog.json\n\nSkills packed: 1; output: {work}/packed",
+      "stderr": ""
+    }
+  ],
+  "versions": {
+    "node": "v24.15.0",
+    "pnpm": "10.28.2",
+    "chrome": "Google Chrome 158.0.8127.36",
+    "codex": "codex-cli 0.170.0"
+  },
+  "baselineArchiveSha256": "4f910a921bbce97cda01377baccdd4615812bbd59927bac178623b0f44478bad",
+  "archive": "web-ui-reviewer-0.2.6.tgz",
+  "archiveSha256": "1f53ad6d085aa7cbf160e305786016e67f1ee75bd44e0ecdddae0f1b94bcf0b7",
+  "previousCatalogSha256": "6a27eb907f0335ff4ac1778192f37b368d18c2e5cbea6611e4a61b956a95c749",
+  "activeFiles": {
+    "SKILL.md": {
+      "bytes": 14601,
+      "mode": "0644",
+      "sha256": "398f10734c3f88dec6824edf5ddcb726596d100d1ed1a6bde5f73ada436439c9"
+    },
+    "agents/openai.yaml": {
+      "bytes": 281,
+      "mode": "0644",
+      "sha256": "5edf64ef909bf216945723e6d3d2435a1c23f34ae48df157bde652f4085e230b"
+    },
+    "references/web-interface-guidelines.md": {
+      "bytes": 13038,
+      "mode": "0644",
+      "sha256": "b189f88ba4d37d8f296a602e777e4543138c4ccf9ce53eb8a5c3d3e03bc122f0"
+    }
+  },
+  "trialCandidateDelta": "C-release.patch",
+  "sourceCompiledPackedByteEquality": true
+}

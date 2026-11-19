@@ -1,0 +1,124 @@
+{
+  "skillArchiveSha256": "9d3acb833945d996da8a8b62eb6793f14a0ca7c98046902a95e0eab4a01727e3",
+  "spaArchiveSha256": "1de3fc4e816441efa641bf9d81a1b453347b8a4a118eff8279f5ebf9ab8d127c",
+  "designNoteSha256": "e14c0837be5de434ed4c99d0ba4bf83477144c6d1f3f24704bc2e6e21f4649c7",
+  "appFiles": {
+    "project/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+    "project/dist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2": "2317fa4bb293c9c0b110e18315d529235c47a0ddd3338cea3d8c7955e927899e",
+    "project/dist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2": "6894439694946a589d157ece003086960a6a4013d74a813dab7602efdb3d8c09",
+    "project/dist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2": "824f485b5d26e2f2da3c2b236132ece1bc8e4e43373452950bb0e40548b4313f",
+    "project/dist/assets/geist-latin-wght-normal-BgDaEnEv.woff2": "19f9c92546aa300c312235e3125af1b81394d8db9a4bc4a425cd5b641d2d54e1",
+    "project/dist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2": "8fa40e5d248247735eb97a0bd593b8852440430600d6ba01364c31fe0abc1fe1",
+    "project/dist/assets/index-BbT2wSLy.js": "31c1f7b77946325e18645cd2e0cf5dbc5c5faaf621329f0066b649efe02f8ff9",
+    "project/dist/assets/index-Cjq7RuI-.css": "d58d07de9259d89f5f78f772451387011278e2760815aa1460472afb19a08971",
+    "project/dist/index.html": "a85232e3d9508fdbc650e8adfdc954d6db600b30f08c1e0f208baf89b97a4fee",
+    "project/eslint.config.js": "cf80a7510234dcd5ae594b30b44682b8b45ba13c0fcb5bf8928bea143802aa1c",
+    "project/index.html": "f5ed80cea17c8985d4d40cf5936d0c94aa6f675cade574b7c720264e342589a9",
+    "project/package.json": "9eaf15c5b77077c69c5259996dd5d4e45fa15394874924c4531c75e93d613421",
+    "project/pnpm-lock.yaml": "c96d1706ba1c4b79c27dd567a956f7dbac521ff6ce60c1dd7b998f469a7bca7c",
+    "project/pnpm-workspace.yaml": "1e831b89d4d46e629c888d0ca10abc161e66a953e0778409facb96bcd828d9a0",
+    "project/src/App.tsx": "74e70bf60903b8c277264fc456c73f9031890b30e8265eee2b91f215405d35e6",
+    "project/src/assets/react.svg": "35ef61ed53b323ae94a16a8ec659b3d0af3880698791133f23b084085ab1c2e5",
+    "project/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+    "project/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+    "project/src/components/theme-provider.tsx": "7e9140cbb4471cbcf20f9e6348406a0a9f5f00689982f6f6fae7a63f44d063e3",
+    "project/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+    "project/src/components/ui/dialog.tsx": "84015448e1deacfc38d29ea767c2a62f28c6b61d9a84fce933087c2c7fc9b4e8",
+    "project/src/components/ui/field.tsx": "90cbc96b0de5c836ebb82a2997c45956e81f939566d5e91fc701af007849c92b",
+    "project/src/components/ui/input.tsx": "75418e030b2a54dd017ac0f4588db4bbdbabca7525e88bbc9d84cb3e18bcb905",
+    "project/src/components/ui/label.tsx": "b823de7355666bd6a6a2cf88a6630e436d021b38fdbef5b749fac0921b86f44d",
+    "project/src/components/ui/radio-group.tsx": "e36464d09f7339a1803610f5a016d7822aaa7ecab306230e6fc7c329ec799df9",
+    "project/src/components/ui/separator.tsx": "b5b5460e5337c2d5f361c1512001615b2e5eacb38c7449a4418bb9ddb47c4bba",
+    "project/src/components/ui/switch.tsx": "33647da0cc420551224ecf63921f9cad51fd681d69657af12eb26700a07231cb",
+    "project/src/index.css": "9bde270cb8d0493a24091df8ae292e3a2b3484f91d738fa70a037866fe206d48",
+    "project/src/lib/utils.ts": "14300d758170c270c75b057f38fedb3793a5920ea872f0477e29fb131185e8a7",
+    "project/src/main.tsx": "2d13456bf6657d8ff69c557be5a50c0e9fa67d655e0707878a9258a0d12b85e5",
+    "project/src/notification-api.ts": "2aded38371cffad17817db3830d00ecb7ee8f6e56d055158281eaff749daa5bc",
+    "project/src/notification-query.ts": "f8ec9db3ebfa01a6456d587b6d45bd8736eb566d7feb62377b883a988465624d",
+    "project/src/preserved-note.ts": "63342b08277a771a3f4643af89159820581459bed11554f6164206d0bfd1310b",
+    "project/tsconfig.app.json": "1b10733ad1b7359a2b0b6f58a8bb3a13b95eabf0022b4320856eea0127e9588b",
+    "project/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+    "project/tsconfig.node.json": "90a22c920cbc14624fb4658b58f15c875abf3234224f3933f211849c3ada3242",
+    "project/vite.config.ts": "6dacda89cbdc1209778d7bd8aa2e6f6cf81b8c7a478719fd20092fe61cbe2016",
+    "server.mjs": "665d9f946cf9a5240cb51afd2581f8053e290bad4ac0196902daab5e7b1efe58"
+  },
+  "designFiles": {
+    "BROWSER.md": "50510221aaec46c8b8b05a5c9710db88af38b8212e639c290aad9d32b71f7768",
+    "design-note.md": "e14c0837be5de434ed4c99d0ba4bf83477144c6d1f3f24704bc2e6e21f4649c7",
+    "visits/241aca91-1669-413c-b7b0-4aad25e1d23c.png": "79671a32fd4b81b2368da5d7716c14569b5c1569d5625acbb6d10c96d3b540ad",
+    "visits/4ebaa104-2d06-435a-8593-81756d593353.png": "24dac0504101eed7390922dd8eebe45de82df76bbba99d0e724371b306c451fe",
+    "visits/655c7197-798a-4bff-8837-ea5926569bf9.png": "00cf4c22ba0566146a1d1e89239646565b8cd58ed8a7d52b002d9ff582670cc4",
+    "visits/a991edfe-6f1b-4f24-83df-a127abf8c99a.json": "91a93cbcf0331ed727032a42e3f587d9b7580e3f7529ca9b204a8bc8e9bdb848",
+    "visits/ecafaf41-c009-4b20-896a-31bba6d8b26f.png": "0671c0d4d456302af86b4ab87c375aeecf950a83c35335aff44f1908917fac72",
+    "visits/f32dc88f-a51a-45b4-ae96-9c9bd6fb4e81.png": "2e2a454bf8e1a14d1ab35a728cde0a68dbbd226ed845b7b6476e1fa726e5a9b7"
+  },
+  "playwright": {
+    "package": "1.65.1",
+    "url": "https://registry.npmjs.org/playwright-core/-/playwright-core-1.65.1.tgz",
+    "integrity": "sha512-hqPpz7blSMPxWVdoeE1yiBSzXsKiVOd2k+kjCvmUywD2GPO2Dd9HfcWnq9NN0GHbNZDFgZ9JfBFr+X5/BLo0qw==",
+    "archiveSHA256": "6f5a60be62a4fddfbe7d10c448d8fbd54547da3358f2f8a04211440471ee863e"
+  },
+  "taskSHA256": "e4623c66e0a9c72463db0d926770c8fbc5fba35c23cf9c1dc9f9a7a7699b1e87",
+  "technicalDirectionsSHA256": "443065335096ffa4f34b7dac175a624a3fecf126c01bc5ae00833e9e24c9c12e",
+  "excludedFromRecipient": [
+    "26/observations",
+    "26/replay/verify.mjs",
+    "26/notification-handoff.md",
+    "study records, grades, case and variant keys"
+  ],
+  "firstPackageSha256": "1f53ad6d085aa7cbf160e305786016e67f1ee75bd44e0ecdddae0f1b94bcf0b7",
+  "ownerReadback": {
+    "browser": "158.0.8127.36",
+    "node": "v24.15.0",
+    "routeSHA256": "c7c5ff89e0db5d357a0dd37eb850a7422689303194ebb89d52b64b7852002101",
+    "patchSHA256": "570d32fbe1c0050245bc9c8e10c8435fa9e498380981941fd2a4485dd1bf6299",
+    "observationsSHA256": "4dbe01cfd6ec311835ec544c3b16f2c927734b9bcdccc15d773bf440edfa7588",
+    "screensSHA256": {
+      "cancel-Enter.png": "35be2bf5469e16c90d42da869bc797a3a0d98de8abb6f8ef4f8da59f1b37543d",
+      "cancel-Escape.png": "35be2bf5469e16c90d42da869bc797a3a0d98de8abb6f8ef4f8da59f1b37543d",
+      "closed-via-Close.png": "035ab711a1f2e1bc122ff10a432f2ea761eabf8f579729001fe97aa795ae2b9e",
+      "closed-via-Escape.png": "3c54d80fd8b64fdaf80d1e96c065665e0d42d9ea7836912fcb024187b555b9a8",
+      "invalid.png": "e755819790290cccc92ee3f17acd07ea15f91fdf4a8040417c4e047fd68f2778",
+      "reopened.png": "a8bed8073a10229a7408fdf3ab76c449dd8e3f19eb10c528d90986c692e76c8a",
+      "retry-saved.png": "99d28ae6786e0005d9c67f4bd4158085f2a93753eff15b79daa39ec3e39ac94d",
+      "saved-via-Close.png": "5d183d36f86afb46abf91208b7048d8d5837d816297603937dabb37c97a458dc",
+      "saved-via-Escape.png": "df7581b290b189488b5a483491937d872e29975e90df17b4a90cad0e2af17e83",
+      "write-failed.png": "ba746a2403d96b43fb7ad6fa6b61e44a1e99eb7c9ddcb9d717088033313b5e8f"
+    },
+    "timelineCount": 18,
+    "responseCount": 13,
+    "serverAndBrowserTraceAgree": true,
+    "allDeliveredProjectFilesUnchanged": true,
+    "radioShortKeyProbe": [
+      {
+        "nominalHoldMs": 0,
+        "initial": "daily",
+        "afterArrowFocus": "weekly",
+        "selectedAfterArrow": "false",
+        "selectedAfterSpace": "true"
+      },
+      {
+        "nominalHoldMs": 65,
+        "initial": "daily",
+        "afterArrowFocus": "weekly",
+        "selectedAfterArrow": "true",
+        "selectedAfterSpace": "true"
+      },
+      {
+        "nominalHoldMs": 0,
+        "initial": "daily",
+        "afterArrowFocus": "weekly",
+        "selectedAfterArrow": "true",
+        "selectedAfterSpace": "true"
+      },
+      {
+        "nominalHoldMs": 65,
+        "initial": "daily",
+        "afterArrowFocus": "weekly",
+        "selectedAfterArrow": "true",
+        "selectedAfterSpace": "true"
+      }
+    ],
+    "beforeRecipientExecution": "First sandboxed CLI call stopped before the model started because Codex could not initialize its state. Empty answer and events, exit 1. Excluded."
+  }
+}

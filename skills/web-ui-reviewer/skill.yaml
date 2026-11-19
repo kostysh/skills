@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: web-ui-reviewer
-  source-version: 0.2.5
+  source-version: 0.2.6
   recommended-skill-md-max-bytes: 20000
   description: >-
     Review web UI implementation against project rules and Web Interface Guidelines:
@@ -33,6 +33,10 @@ copies:
     target: evals/fixtures/module-workspace-input.md
     description: Neutral module, peer-view, library, and runtime evidence bundle.
 supporting:
+  - id: supporting-implementation-log-20261119-1
+    source: docs/logs/implementation-log-20261119-1.md
+    target: docs/logs/implementation-log-20261119-1.md
+    description: Evidence for the performance-review rule and the notification form handoff.
   - id: supporting-docs-readme
     source: docs/README.md
     target: docs/README.md
@@ -143,7 +147,7 @@ sections:
       text: Flag design-system drift only when an accepted design system or project convention establishes the expected component, token, or pattern; otherwise label the observation as a non-binding preference.
     - id: gotcha-unmeasured-performance
       priority: high
-      text: Do not turn list size, dependency presence, preload, preconnect, or render patterns into performance defects without scale or measurement evidence; report a validation risk instead.
+      text: Ground performance findings in relevant measurements.
     - id: gotcha-generic-parity-checklist
       priority: high
       text: Do not require search, detail, history, or another peer capability from a generic checklist; require accepted authority, and do not return no-material-findings when that authority exposes an unaddressed omission.

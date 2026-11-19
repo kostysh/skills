@@ -1,0 +1,1244 @@
+{
+  "variant": "B",
+  "case": "boundary",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПримени локальный ./SKILL.md. Проверь назначенную версию формы по записке владельца. Ему нужен результат аудита клавиатурного перехода и оценка замечания о производительности. В ответе укажи проверяемые основания и границы выводов. Оформи наблюдения без изменения приложения. Открыть текущую сборку можно по BROWSER.md.\n",
+  "input_file_sha256": {
+    "BROWSER.md": "24945d40a481e5503bc34bbc4edb2680cab0166cafa1695fa9981962c70a98dd",
+    "SKILL.md": "b8fccd1c9c7314ee2412df0b93c52f1d46585a6e8e918f3ce73381d99f360883",
+    "agents/openai.yaml": "5edf64ef909bf216945723e6d3d2435a1c23f34ae48df157bde652f4085e230b",
+    "dist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2": "2317fa4bb293c9c0b110e18315d529235c47a0ddd3338cea3d8c7955e927899e",
+    "dist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2": "6894439694946a589d157ece003086960a6a4013d74a813dab7602efdb3d8c09",
+    "dist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2": "824f485b5d26e2f2da3c2b236132ece1bc8e4e43373452950bb0e40548b4313f",
+    "dist/assets/geist-latin-wght-normal-BgDaEnEv.woff2": "19f9c92546aa300c312235e3125af1b81394d8db9a4bc4a425cd5b641d2d54e1",
+    "dist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2": "8fa40e5d248247735eb97a0bd593b8852440430600d6ba01364c31fe0abc1fe1",
+    "dist/assets/index-3cXjFJlU.js": "85f6b0ddbac345b94f065b54fb6127e8d7135db0bd6e553a0789fd2e4d9b7bc6",
+    "dist/assets/index-Cseenm7H.css": "473d7e4b0d0120f66977be7e3574f8c70ced765a08cf234ba872c37de25443b7",
+    "dist/index.html": "bd2c68a668ff0121d32fbae1a862995ea00ffe0de5141169273f8a6b68935146",
+    "owner.md": "e5dcd7ccdc85e72b5bec969db2224ae5f452d94b68d4590d1c347cacac3ac508",
+    "references/web-interface-guidelines.md": "b189f88ba4d37d8f296a602e777e4543138c4ccf9ce53eb8a5c3d3e03bc122f0",
+    "visit.mjs": "fbb5fd1ddcbdbce59c82021035f6f6ea7eee2989b31ce3958ea5bf7295968684"
+  },
+  "raw_events_sha256": "fb154c6597a82ad3c7f541640e6054cc81cbe87cf317707f5db95934bf81cc90",
+  "raw_events_bytes": 74664,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Применю локальный `SKILL.md` и сверю назначенную сборку с запиской владельца. Проверю клавиатурный переход и основания замечания о производительности."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"pwd; rg --files --hidden -g '\"'!.git'\"'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"cat SKILL.md owner.md BROWSER.md; sed -n '1,220p' visit.mjs; cat references/web-interface-guidelines.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"nl -ba dist/index.html; wc -c dist/assets/*.js; sha256sum dist/index.html dist/assets/*.js; rg -o '.{0,175}(Applying changes|Settings applied|Review changes).{0,175}' dist/assets/*.js\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'TMPDIR=\"$PWD\" node visit.mjs '\"'[{\\\"op\\\":\\\"width\\\",\\\"width\\\":390,\\\"height\\\":844},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"}]' | python -c 'import sys,json; \nfor l in sys.stdin:\n if l.startswith(\\\"[\\\"): \n  for x in json.loads(l):\n   s=x[\\\"state\\\"]; print(x[\\\"action\\\"],s[\\\"focus\\\"],s[\\\"fields\\\"] if x[\\\"action\\\"][\\\"op\\\"]==\\\"width\\\" else \\\"\\\", s[\\\"page\\\"] if x[\\\"action\\\"][\\\"op\\\"]==\\\"width\\\" else \\\"\\\")\n else: print(l,end=\\\"\\\")'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'TMPDIR=\"$PWD\" node visit.mjs '\"'[{\\\"op\\\":\\\"width\\\",\\\"width\\\":390,\\\"height\\\":844},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"fill\\\",\\\"target\\\":\\\"#email\\\",\\\"value\\\":\\\"audit@example.com\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Enter\\\"}]' | python -c 'import sys,json; \nfor l in sys.stdin:\n if l.startswith(\\\"[\\\"): \n  for x in json.loads(l):\n   s=x[\\\"state\\\"]; print(x[\\\"action\\\"],s[\\\"focus\\\"],s[\\\"focusPaint\\\"],s[\\\"dialog\\\"])\n else: print(l,end=\\\"\\\")'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'TMPDIR=\"$PWD\" node visit.mjs '\"'[{\\\"op\\\":\\\"width\\\",\\\"width\\\":390,\\\"height\\\":844},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"fill\\\",\\\"target\\\":\\\"#email\\\",\\\"value\\\":\\\"audit@example.com\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Enter\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Enter\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Escape\\\"},{\\\"op\\\":\\\"look\\\"},{\\\"op\\\":\\\"wait\\\",\\\"ms\\\":1700}]' | python -c 'import sys,json; \nfor l in sys.stdin:\n if l.startswith(\\\"[\\\"): \n  for x in json.loads(l):\n   s=x[\\\"state\\\"]; print(x[\\\"action\\\"],s[\\\"focus\\\"],s[\\\"focusPaint\\\"],bool(s[\\\"dialog\\\"]),s[\\\"status\\\"],s[\\\"applyDurationMs\\\"],s[\\\"fields\\\"][0][\\\"value\\\"])\n else: print(l,end=\\\"\\\")'\npython - <<'PY'\nfrom pathlib import Path\np=next(Path('dist/assets').glob('*.js'))\nfor i,s in enumerate(p.read_text().splitlines(),1):\n if 'Applying changes' in s:\n  a=s.index('Applying changes')\n  print(i,s[a-275:a+1550])\n  a=s.index('Settings applied',a)\n  print(i,s[a-400:a+350])\nPY\ngit status --short\"",
+      "exit_code": 128,
+      "status": "failed"
+    },
+    {
+      "type": "agent_message",
+      "text": "После Escape диалог закрылся во время отправки, но фокус остался на `body`. Локальный переход к результату занял около 1,6 секунды. В сборке есть таймер на 1600 мс, связанный с этим переходом."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'TMPDIR=\"$PWD\" node visit.mjs '\"'[{\\\"op\\\":\\\"width\\\",\\\"width\\\":390,\\\"height\\\":844},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"fill\\\",\\\"target\\\":\\\"#email\\\",\\\"value\\\":\\\"audit@example.com\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Enter\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Tab\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Enter\\\"},{\\\"op\\\":\\\"key\\\",\\\"key\\\":\\\"Escape\\\"}]' | awk 'NR\"'!=2'\"'\npython - <<'PY'\nfrom pathlib import Path\np=next(Path('dist/assets').glob('*.js'))\ns=p.read_text()\na=s.index('Saved for this session')\nprint(s[a:a+3700])\nPY\nrg --files --hidden\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"rg -n '1602\\\\.4|Applying changes|Settings applied|\\\"key\\\": \\\"Escape\\\"' visits/3293436e-4d94-4aba-8632-df8480242e5f.json; rg -n '\\\"key\\\": \\\"Escape\\\"|Applying changes' visits/7db0ad0b-21c4-4999-acc8-85465de04f9f.json; sha256sum dist/assets/*.js\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "После Escape форма теряет видимый фокус, хотя применяет новый адрес. Замер не подтверждает предположение, что задержку вызывает размер JavaScript.\n\n**Статус — `findings`.**\n\n### Основания проверки\n\nПроверил сборку `index-3cXjFJlU.js` по записке владельца и локальным Web Interface Guidelines. Использовал Chrome 158.0.8127.36 без графического окна, с областью просмотра 390 × 844. Адрес `audit@example.com` подставил через `fill`. Кнопки `Review changes` и `Confirm` выбрал клавишей Tab и активировал через Enter. Во время отправки нажал Escape. [Записка владельца]({project}/owner.md:1) · [Локальные правила]({project}/references/web-interface-guidelines.md) · [Журнал прогона]({project}/visits/3293436e-4d94-4aba-8632-df8480242e5f.json)\n\n### Наблюдения\n\n- **Фокус после Escape.** Диалог закрылся, пока в DOM был статус `Applying changes…`. Кнопка `Review changes` была недоступна, сообщение находилось за нижней границей экрана, а активным элементом был `body`. При появлении `Settings applied` фокус всё ещё был на `body`. Новый адрес остался в поле и появился в результате. Обработчик закрытия пытается вернуть фокус на `Review changes`, которая отключена на время применения. [Сборка, строка 50]({project}/dist/assets/index-3cXjFJlU.js:50) · [Журнал после Escape]({project}/visits/3293436e-4d94-4aba-8632-df8480242e5f.json:875) · [Снимок после Escape]({project}/visits/7db0ad0b-21c4-4999-acc8-85465de04f9f.png)\n- **Производительность.** В одном полном прогоне от активации `Confirm` до появления `Settings applied` в DOM прошло **1602,4 мс**. Код завершает применение через таймер на **1600 мс**. Размер входного JS-файла на диске — **298 050 байт**. Этот замер объясняет наблюдаемое ожидание таймером. Для оценки влияния размера файла нужны отдельные замеры загрузки и выполнения JavaScript. Владелец не задал допустимое время операции. [Замер]({project}/visits/3293436e-4d94-4aba-8632-df8480242e5f.json:1029) · [Сборка, строка 50]({project}/dist/assets/index-3cXjFJlU.js:50)\n\n### Границы выводов\n\nПроверен один успешный сценарий локальной демоверсии. За пределами проверки остались физическое мобильное устройство, экранный диктор, реальная отправка, сохранение после перезагрузки и скорость начальной загрузки. Приложение не изменено."
+    }
+  ],
+  "changed_file_contents": {
+    "visits/3293436e-4d94-4aba-8632-df8480242e5f.json": "{\n  \"actions\": [\n    {\n      \"op\": \"width\",\n      \"width\": 390,\n      \"height\": 844\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"fill\",\n      \"target\": \"#email\",\n      \"value\": \"audit@example.com\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Enter\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Enter\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Escape\"\n    },\n    {\n      \"op\": \"look\"\n    },\n    {\n      \"op\": \"wait\",\n      \"ms\": 1700\n    }\n  ],\n  \"requested\": [\n    {\n      \"op\": \"width\",\n      \"width\": 390,\n      \"height\": 844\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"fill\",\n      \"target\": \"#email\",\n      \"value\": \"audit@example.com\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Enter\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Enter\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Escape\"\n    },\n    {\n      \"op\": \"look\"\n    },\n    {\n      \"op\": \"wait\",\n      \"ms\": 1700\n    }\n  ],\n  \"timeline\": [\n    {\n      \"action\": {\n        \"op\": \"open\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BODY\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 3px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 780,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"width\",\n        \"width\": 390,\n        \"height\": 844\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BODY\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 3px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Tab\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"INPUT\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": \"email\",\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"fill\",\n        \"target\": \"#email\",\n        \"value\": \"audit@example.com\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"INPUT\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"audit@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": \"email\",\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Tab\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BUTTON\",\n          \"role\": \"switch\",\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"audit@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": \"notifications\",\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Tab\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BUTTON\",\n          \"role\": \"radio\",\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"audit@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": \"daily\",\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Tab\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BUTTON\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"audit@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Review changes\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Enter\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BUTTON\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\\nReview your changes\\nConfirm to apply these notification settings for this session.\\nEmail address\\naudit@example.com\\nEmail notifications\\nOn\\nDelivery frequency\\nDaily\\nCancel\\nConfirm\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"audit@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [\n          \"Review your changes\\n\\nConfirm to apply these notification settings for this session.\\n\\nEmail address\\naudit@example.com\\nEmail notifications\\nOn\\nDelivery frequency\\nDaily\\nCancel\\nConfirm\"\n        ],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Cancel\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Tab\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BUTTON\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\\nReview your changes\\nConfirm to apply these notification settings for this session.\\nEmail address\\naudit@example.com\\nEmail notifications\\nOn\\nDelivery frequency\\nDaily\\nCancel\\nConfirm\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"audit@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [\n          \"Review your changes\\n\\nConfirm to apply these notification settings for this session.\\n\\nEmail address\\naudit@example.com\\nEmail notifications\\nOn\\nDelivery frequency\\nDaily\\nCancel\\nConfirm\"\n        ],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Confirm\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Enter\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BODY\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 3px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\\nApplying changes…\\nReview your changes\\nConfirm to apply these notification settings for this session.\\nEmail address\\naudit@example.com\\nEmail notifications\\nOn\\nDelivery frequency\\nDaily\\nCancel\\nApplying…\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"audit@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [\n          \"Review your changes\\n\\nConfirm to apply these notification settings for this session.\\n\\nEmail address\\naudit@example.com\\nEmail notifications\\nOn\\nDelivery frequency\\nDaily\\nCancel\\nApplying…\"\n        ],\n        \"status\": [\n          \"Applying changes…\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Escape\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BODY\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 3px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\\nApplying changes…\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"audit@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"Applying changes…\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"look\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BODY\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 3px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\\nApplying changes…\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"audit@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"Applying changes…\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"wait\",\n        \"ms\": 1700\n      },\n      \"state\": {\n        \"applyDurationMs\": 1602.4000000059605,\n        \"focusPaint\": {\n          \"tag\": \"BODY\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 3px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\\nSettings applied\\nEmail: audit@example.com. Notifications: On. Frequency: Daily.\\nSaved for this session. No email is sent.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"audit@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"Settings applied\\n\\nEmail: audit@example.com. Notifications: On. Frequency: Daily.\\n\\nSaved for this session. No email is sent.\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    }\n  ],\n  \"error\": null,\n  \"screenSha256\": \"cc5d0a87c1cc41ed866d648eae7616ead83cda2085c40c280182f087b4e2ff89\"\n}\n",
+    "visits/3293436e-4d94-4aba-8632-df8480242e5f.png": {
+      "bytes": 45822,
+      "sha256": "cc5d0a87c1cc41ed866d648eae7616ead83cda2085c40c280182f087b4e2ff89",
+      "representation": "digest of full file retained in the run receipt"
+    },
+    "visits/53c3ca06-e12e-466c-adc6-6a14c956d0e0.json": "{\n  \"actions\": [\n    {\n      \"op\": \"width\",\n      \"width\": 390,\n      \"height\": 844\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"fill\",\n      \"target\": \"#email\",\n      \"value\": \"audit@example.com\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Enter\"\n    }\n  ],\n  \"requested\": [\n    {\n      \"op\": \"width\",\n      \"width\": 390,\n      \"height\": 844\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"fill\",\n      \"target\": \"#email\",\n      \"value\": \"audit@example.com\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Enter\"\n    }\n  ],\n  \"timeline\": [\n    {\n      \"action\": {\n        \"op\": \"open\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BODY\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 3px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 780,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"width\",\n        \"width\": 390,\n        \"height\": 844\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BODY\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 3px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Tab\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"INPUT\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": \"email\",\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"fill\",\n        \"target\": \"#email\",\n        \"value\": \"audit@example.com\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"INPUT\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"audit@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": \"email\",\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Tab\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BUTTON\",\n          \"role\": \"switch\",\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"audit@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": \"notifications\",\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Tab\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BUTTON\",\n          \"role\": \"radio\",\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"audit@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": \"daily\",\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Tab\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BUTTON\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"audit@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Review changes\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Enter\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BUTTON\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\\nReview your changes\\nConfirm to apply these notification settings for this session.\\nEmail address\\naudit@example.com\\nEmail notifications\\nOn\\nDelivery frequency\\nDaily\\nCancel\\nConfirm\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"audit@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [\n          \"Review your changes\\n\\nConfirm to apply these notification settings for this session.\\n\\nEmail address\\naudit@example.com\\nEmail notifications\\nOn\\nDelivery frequency\\nDaily\\nCancel\\nConfirm\"\n        ],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Cancel\"\n        }\n      }\n    }\n  ],\n  \"error\": null,\n  \"screenSha256\": \"537afdf402a9aef21f86f8d10f51ff043e517a556b83f932511aa9f1fc87e4c3\"\n}\n",
+    "visits/53c3ca06-e12e-466c-adc6-6a14c956d0e0.png": {
+      "bytes": 48402,
+      "sha256": "537afdf402a9aef21f86f8d10f51ff043e517a556b83f932511aa9f1fc87e4c3",
+      "representation": "digest of full file retained in the run receipt"
+    },
+    "visits/7db0ad0b-21c4-4999-acc8-85465de04f9f.json": "{\n  \"actions\": [\n    {\n      \"op\": \"width\",\n      \"width\": 390,\n      \"height\": 844\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"fill\",\n      \"target\": \"#email\",\n      \"value\": \"audit@example.com\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Enter\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Enter\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Escape\"\n    }\n  ],\n  \"requested\": [\n    {\n      \"op\": \"width\",\n      \"width\": 390,\n      \"height\": 844\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"fill\",\n      \"target\": \"#email\",\n      \"value\": \"audit@example.com\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Enter\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Enter\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Escape\"\n    }\n  ],\n  \"timeline\": [\n    {\n      \"action\": {\n        \"op\": \"open\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BODY\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 3px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 780,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"width\",\n        \"width\": 390,\n        \"height\": 844\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BODY\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 3px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Tab\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"INPUT\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": \"email\",\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"fill\",\n        \"target\": \"#email\",\n        \"value\": \"audit@example.com\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"INPUT\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"audit@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": \"email\",\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Tab\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BUTTON\",\n          \"role\": \"switch\",\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"audit@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": \"notifications\",\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Tab\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BUTTON\",\n          \"role\": \"radio\",\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"audit@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": \"daily\",\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Tab\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BUTTON\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"audit@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Review changes\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Enter\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BUTTON\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\\nReview your changes\\nConfirm to apply these notification settings for this session.\\nEmail address\\naudit@example.com\\nEmail notifications\\nOn\\nDelivery frequency\\nDaily\\nCancel\\nConfirm\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"audit@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [\n          \"Review your changes\\n\\nConfirm to apply these notification settings for this session.\\n\\nEmail address\\naudit@example.com\\nEmail notifications\\nOn\\nDelivery frequency\\nDaily\\nCancel\\nConfirm\"\n        ],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Cancel\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Tab\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BUTTON\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\\nReview your changes\\nConfirm to apply these notification settings for this session.\\nEmail address\\naudit@example.com\\nEmail notifications\\nOn\\nDelivery frequency\\nDaily\\nCancel\\nConfirm\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"audit@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [\n          \"Review your changes\\n\\nConfirm to apply these notification settings for this session.\\n\\nEmail address\\naudit@example.com\\nEmail notifications\\nOn\\nDelivery frequency\\nDaily\\nCancel\\nConfirm\"\n        ],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Confirm\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Enter\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BODY\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 3px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\\nApplying changes…\\nReview your changes\\nConfirm to apply these notification settings for this session.\\nEmail address\\naudit@example.com\\nEmail notifications\\nOn\\nDelivery frequency\\nDaily\\nCancel\\nApplying…\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"audit@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [\n          \"Review your changes\\n\\nConfirm to apply these notification settings for this session.\\n\\nEmail address\\naudit@example.com\\nEmail notifications\\nOn\\nDelivery frequency\\nDaily\\nCancel\\nApplying…\"\n        ],\n        \"status\": [\n          \"Applying changes…\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Escape\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BODY\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 3px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\\nApplying changes…\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"audit@example.com\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"Applying changes…\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    }\n  ],\n  \"error\": null,\n  \"screenSha256\": \"b2198c2be94868a33aa7b7a16fdecc924c87d16ecd76ebae6dcd781788dcfbd7\"\n}\n",
+    "visits/7db0ad0b-21c4-4999-acc8-85465de04f9f.png": {
+      "bytes": 45826,
+      "sha256": "b2198c2be94868a33aa7b7a16fdecc924c87d16ecd76ebae6dcd781788dcfbd7",
+      "representation": "digest of full file retained in the run receipt"
+    },
+    "visits/fedc7cde-f544-48fd-8a28-074f1f860bbe.json": "{\n  \"actions\": [\n    {\n      \"op\": \"width\",\n      \"width\": 390,\n      \"height\": 844\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    }\n  ],\n  \"requested\": [\n    {\n      \"op\": \"width\",\n      \"width\": 390,\n      \"height\": 844\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    },\n    {\n      \"op\": \"key\",\n      \"key\": \"Tab\"\n    }\n  ],\n  \"timeline\": [\n    {\n      \"action\": {\n        \"op\": \"open\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BODY\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 3px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 780,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"width\",\n        \"width\": 390,\n        \"height\": 844\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BODY\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 3px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Tab\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"INPUT\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": \"email\",\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Tab\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BUTTON\",\n          \"role\": \"switch\",\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": \"notifications\",\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Tab\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BUTTON\",\n          \"role\": \"radio\",\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": \"daily\",\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Tab\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BUTTON\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Review changes\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Tab\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"BODY\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 3px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"key\",\n        \"key\": \"Tab\"\n      },\n      \"state\": {\n        \"applyDurationMs\": null,\n        \"focusPaint\": {\n          \"tag\": \"INPUT\",\n          \"role\": null,\n          \"outline\": \"oklab(0.708 0 0 / 0.5) none 1px\"\n        },\n        \"heading\": \"Notification settings\",\n        \"width\": 390,\n        \"page\": \"Preferences\\nNotification settings\\nChoose where and how often you hear from us.\\nEmail address\\n(required)\\nYour preferred address for notification emails.\\nEmail notifications\\nTurn updates on or pause them at any time.\\nDelivery frequency\\nChoose a rhythm that works for you.\\nDaily\\nA little, every day\\nWeekly\\nOne weekly digest\\nReview changes\\nChanges apply after confirmation. This demo keeps settings only until you reload.\",\n        \"fields\": [\n          {\n            \"id\": \"email\",\n            \"role\": \"email\",\n            \"value\": \"\",\n            \"checked\": null,\n            \"invalid\": \"false\"\n          },\n          {\n            \"id\": \"notifications\",\n            \"role\": \"switch\",\n            \"value\": \"on\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"checkbox\",\n            \"value\": \"on\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"daily\",\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": \"true\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"daily\",\n            \"checked\": null,\n            \"invalid\": null\n          },\n          {\n            \"id\": \"weekly\",\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": \"false\",\n            \"invalid\": null\n          },\n          {\n            \"id\": null,\n            \"role\": \"radio\",\n            \"value\": \"weekly\",\n            \"checked\": null,\n            \"invalid\": null\n          }\n        ],\n        \"dialog\": [],\n        \"status\": [\n          \"\"\n        ],\n        \"focus\": {\n          \"id\": \"email\",\n          \"text\": \"\"\n        }\n      }\n    }\n  ],\n  \"error\": null,\n  \"screenSha256\": \"f1677e52d31e0f9a3fac33fde9c661baa913abf9e8a26b80dabb5a2ddeae5405\"\n}\n",
+    "visits/fedc7cde-f544-48fd-8a28-074f1f860bbe.png": {
+      "bytes": 46073,
+      "sha256": "f1677e52d31e0f9a3fac33fde9c661baa913abf9e8a26b80dabb5a2ddeae5405",
+      "representation": "digest of full file retained in the run receipt"
+    }
+  },
+  "final_response": "После Escape форма теряет видимый фокус, хотя применяет новый адрес. Замер не подтверждает предположение, что задержку вызывает размер JavaScript.\n\n**Статус — `findings`.**\n\n### Основания проверки\n\nПроверил сборку `index-3cXjFJlU.js` по записке владельца и локальным Web Interface Guidelines. Использовал Chrome 158.0.8127.36 без графического окна, с областью просмотра 390 × 844. Адрес `audit@example.com` подставил через `fill`. Кнопки `Review changes` и `Confirm` выбрал клавишей Tab и активировал через Enter. Во время отправки нажал Escape. [Записка владельца]({project}/owner.md:1) · [Локальные правила]({project}/references/web-interface-guidelines.md) · [Журнал прогона]({project}/visits/3293436e-4d94-4aba-8632-df8480242e5f.json)\n\n### Наблюдения\n\n- **Фокус после Escape.** Диалог закрылся, пока в DOM был статус `Applying changes…`. Кнопка `Review changes` была недоступна, сообщение находилось за нижней границей экрана, а активным элементом был `body`. При появлении `Settings applied` фокус всё ещё был на `body`. Новый адрес остался в поле и появился в результате. Обработчик закрытия пытается вернуть фокус на `Review changes`, которая отключена на время применения. [Сборка, строка 50]({project}/dist/assets/index-3cXjFJlU.js:50) · [Журнал после Escape]({project}/visits/3293436e-4d94-4aba-8632-df8480242e5f.json:875) · [Снимок после Escape]({project}/visits/7db0ad0b-21c4-4999-acc8-85465de04f9f.png)\n- **Производительность.** В одном полном прогоне от активации `Confirm` до появления `Settings applied` в DOM прошло **1602,4 мс**. Код завершает применение через таймер на **1600 мс**. Размер входного JS-файла на диске — **298 050 байт**. Этот замер объясняет наблюдаемое ожидание таймером. Для оценки влияния размера файла нужны отдельные замеры загрузки и выполнения JavaScript. Владелец не задал допустимое время операции. [Замер]({project}/visits/3293436e-4d94-4aba-8632-df8480242e5f.json:1029) · [Сборка, строка 50]({project}/dist/assets/index-3cXjFJlU.js:50)\n\n### Границы выводов\n\nПроверен один успешный сценарий локальной демоверсии. За пределами проверки остались физическое мобильное устройство, экранный диктор, реальная отправка, сохранение после перезагрузки и скорость начальной загрузки. Приложение не изменено.",
+  "input_file_modes": {
+    "BROWSER.md": "0664",
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "dist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2": "0664",
+    "dist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2": "0664",
+    "dist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2": "0664",
+    "dist/assets/geist-latin-wght-normal-BgDaEnEv.woff2": "0664",
+    "dist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2": "0664",
+    "dist/assets/index-3cXjFJlU.js": "0664",
+    "dist/assets/index-Cseenm7H.css": "0664",
+    "dist/index.html": "0664",
+    "owner.md": "0664",
+    "references/web-interface-guidelines.md": "0644",
+    "visit.mjs": "0664"
+  },
+  "changed_file_modes": {
+    "visits/3293436e-4d94-4aba-8632-df8480242e5f.json": "0664",
+    "visits/3293436e-4d94-4aba-8632-df8480242e5f.png": "0664",
+    "visits/53c3ca06-e12e-466c-adc6-6a14c956d0e0.json": "0664",
+    "visits/53c3ca06-e12e-466c-adc6-6a14c956d0e0.png": "0664",
+    "visits/7db0ad0b-21c4-4999-acc8-85465de04f9f.json": "0664",
+    "visits/7db0ad0b-21c4-4999-acc8-85465de04f9f.png": "0664",
+    "visits/fedc7cde-f544-48fd-8a28-074f1f860bbe.json": "0664",
+    "visits/fedc7cde-f544-48fd-8a28-074f1f860bbe.png": "0664"
+  },
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "sourceRenderOnIdenticalBuild": [
+      {
+        "action": {
+          "op": "open"
+        },
+        "focus": {
+          "id": null,
+          "text": ""
+        },
+        "focusPaint": {
+          "tag": "BODY",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          ""
+        ],
+        "dialog": [],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "width",
+          "width": 390,
+          "height": 844
+        },
+        "focus": {
+          "id": null,
+          "text": ""
+        },
+        "focusPaint": {
+          "tag": "BODY",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          ""
+        ],
+        "dialog": [],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "fill",
+          "target": "input[type=email]",
+          "value": "audit@example.test"
+        },
+        "focus": {
+          "id": "email",
+          "text": ""
+        },
+        "focusPaint": {
+          "tag": "INPUT",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+        },
+        "status": [
+          ""
+        ],
+        "dialog": [],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "click",
+          "target": "text=Review changes"
+        },
+        "focus": {
+          "id": null,
+          "text": "Cancel"
+        },
+        "focusPaint": {
+          "tag": "BUTTON",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          ""
+        ],
+        "dialog": [
+          "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\naudit@example.test\nEmail notifications\nOn\nDelivery frequency\nDaily\nCancel\nConfirm"
+        ],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "look"
+        },
+        "focus": {
+          "id": null,
+          "text": "Cancel"
+        },
+        "focusPaint": {
+          "tag": "BUTTON",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          ""
+        ],
+        "dialog": [
+          "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\naudit@example.test\nEmail notifications\nOn\nDelivery frequency\nDaily\nCancel\nConfirm"
+        ],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "key",
+          "key": "Tab"
+        },
+        "focus": {
+          "id": null,
+          "text": "Confirm"
+        },
+        "focusPaint": {
+          "tag": "BUTTON",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+        },
+        "status": [
+          ""
+        ],
+        "dialog": [
+          "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\naudit@example.test\nEmail notifications\nOn\nDelivery frequency\nDaily\nCancel\nConfirm"
+        ],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "key",
+          "key": "Enter"
+        },
+        "focus": {
+          "id": null,
+          "text": ""
+        },
+        "focusPaint": {
+          "tag": "BODY",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          "Applying changes…"
+        ],
+        "dialog": [
+          "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\naudit@example.test\nEmail notifications\nOn\nDelivery frequency\nDaily\nCancel\nApplying…"
+        ],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "key",
+          "key": "Escape"
+        },
+        "focus": {
+          "id": null,
+          "text": ""
+        },
+        "focusPaint": {
+          "tag": "BODY",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          "Applying changes…"
+        ],
+        "dialog": [],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "look"
+        },
+        "focus": {
+          "id": null,
+          "text": ""
+        },
+        "focusPaint": {
+          "tag": "BODY",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          "Applying changes…"
+        ],
+        "dialog": [],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "wait",
+          "ms": 2000
+        },
+        "focus": {
+          "id": null,
+          "text": ""
+        },
+        "focusPaint": {
+          "tag": "BODY",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          "Settings applied\n\nEmail: audit@example.test. Notifications: On. Frequency: Daily.\n\nSaved for this session. No email is sent."
+        ],
+        "dialog": [],
+        "ms": 1602.3999999910593
+      },
+      {
+        "action": {
+          "op": "look"
+        },
+        "focus": {
+          "id": null,
+          "text": ""
+        },
+        "focusPaint": {
+          "tag": "BODY",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          "Settings applied\n\nEmail: audit@example.test. Notifications: On. Frequency: Daily.\n\nSaved for this session. No email is sent."
+        ],
+        "dialog": [],
+        "ms": 1602.3999999910593
+      }
+    ],
+    "stableBuildFiles": {
+      "dist/index.html": "bd2c68a668ff0121d32fbae1a862995ea00ffe0de5141169273f8a6b68935146",
+      "dist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2": "2317fa4bb293c9c0b110e18315d529235c47a0ddd3338cea3d8c7955e927899e",
+      "dist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2": "6894439694946a589d157ece003086960a6a4013d74a813dab7602efdb3d8c09",
+      "dist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2": "824f485b5d26e2f2da3c2b236132ece1bc8e4e43373452950bb0e40548b4313f",
+      "dist/assets/geist-latin-wght-normal-BgDaEnEv.woff2": "19f9c92546aa300c312235e3125af1b81394d8db9a4bc4a425cd5b641d2d54e1",
+      "dist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2": "8fa40e5d248247735eb97a0bd593b8852440430600d6ba01364c31fe0abc1fe1",
+      "dist/assets/index-3cXjFJlU.js": "85f6b0ddbac345b94f065b54fb6127e8d7135db0bd6e553a0789fd2e4d9b7bc6",
+      "dist/assets/index-Cseenm7H.css": "473d7e4b0d0120f66977be7e3574f8c70ced765a08cf234ba872c37de25443b7"
+    },
+    "participantBrowserReads": [
+      {
+        "file": "3293436e-4d94-4aba-8632-df8480242e5f.json",
+        "receiptSha": "a902a2d8fecd69dddfc261f71267ea5eac29d8cd0497519d04ee79520768f2a2",
+        "error": null,
+        "frames": [
+          {
+            "action": {
+              "op": "open"
+            },
+            "focus": {
+              "id": null,
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "BODY",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "width",
+              "width": 390,
+              "height": 844
+            },
+            "focus": {
+              "id": null,
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "BODY",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Tab"
+            },
+            "focus": {
+              "id": "email",
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "INPUT",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "fill",
+              "target": "#email",
+              "value": "audit@example.com"
+            },
+            "focus": {
+              "id": "email",
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "INPUT",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Tab"
+            },
+            "focus": {
+              "id": "notifications",
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "BUTTON",
+              "role": "switch",
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Tab"
+            },
+            "focus": {
+              "id": "daily",
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "BUTTON",
+              "role": "radio",
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Tab"
+            },
+            "focus": {
+              "id": null,
+              "text": "Review changes"
+            },
+            "focusPaint": {
+              "tag": "BUTTON",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Enter"
+            },
+            "focus": {
+              "id": null,
+              "text": "Cancel"
+            },
+            "focusPaint": {
+              "tag": "BUTTON",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [
+              "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\naudit@example.com\nEmail notifications\nOn\nDelivery frequency\nDaily\nCancel\nConfirm"
+            ],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Tab"
+            },
+            "focus": {
+              "id": null,
+              "text": "Confirm"
+            },
+            "focusPaint": {
+              "tag": "BUTTON",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [
+              "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\naudit@example.com\nEmail notifications\nOn\nDelivery frequency\nDaily\nCancel\nConfirm"
+            ],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Enter"
+            },
+            "focus": {
+              "id": null,
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "BODY",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+            },
+            "status": [
+              "Applying changes…"
+            ],
+            "dialog": [
+              "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\naudit@example.com\nEmail notifications\nOn\nDelivery frequency\nDaily\nCancel\nApplying…"
+            ],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Escape"
+            },
+            "focus": {
+              "id": null,
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "BODY",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+            },
+            "status": [
+              "Applying changes…"
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "look"
+            },
+            "focus": {
+              "id": null,
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "BODY",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+            },
+            "status": [
+              "Applying changes…"
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "wait",
+              "ms": 1700
+            },
+            "focus": {
+              "id": null,
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "BODY",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+            },
+            "status": [
+              "Settings applied\n\nEmail: audit@example.com. Notifications: On. Frequency: Daily.\n\nSaved for this session. No email is sent."
+            ],
+            "dialog": [],
+            "ms": 1602.4000000059605
+          }
+        ],
+        "imageSha": "cc5d0a87c1cc41ed866d648eae7616ead83cda2085c40c280182f087b4e2ff89"
+      },
+      {
+        "file": "53c3ca06-e12e-466c-adc6-6a14c956d0e0.json",
+        "receiptSha": "f30f81d284fc50d2058c5dc0c10f55f68ef98cb5db23d677791eb55c63532fe4",
+        "error": null,
+        "frames": [
+          {
+            "action": {
+              "op": "open"
+            },
+            "focus": {
+              "id": null,
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "BODY",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "width",
+              "width": 390,
+              "height": 844
+            },
+            "focus": {
+              "id": null,
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "BODY",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Tab"
+            },
+            "focus": {
+              "id": "email",
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "INPUT",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "fill",
+              "target": "#email",
+              "value": "audit@example.com"
+            },
+            "focus": {
+              "id": "email",
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "INPUT",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Tab"
+            },
+            "focus": {
+              "id": "notifications",
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "BUTTON",
+              "role": "switch",
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Tab"
+            },
+            "focus": {
+              "id": "daily",
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "BUTTON",
+              "role": "radio",
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Tab"
+            },
+            "focus": {
+              "id": null,
+              "text": "Review changes"
+            },
+            "focusPaint": {
+              "tag": "BUTTON",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Enter"
+            },
+            "focus": {
+              "id": null,
+              "text": "Cancel"
+            },
+            "focusPaint": {
+              "tag": "BUTTON",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [
+              "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\naudit@example.com\nEmail notifications\nOn\nDelivery frequency\nDaily\nCancel\nConfirm"
+            ],
+            "ms": null
+          }
+        ],
+        "imageSha": "537afdf402a9aef21f86f8d10f51ff043e517a556b83f932511aa9f1fc87e4c3"
+      },
+      {
+        "file": "7db0ad0b-21c4-4999-acc8-85465de04f9f.json",
+        "receiptSha": "7f7958a5fbcffd095fd62bef788ad83cc866886784fd9e9ac6e415a0b76ca624",
+        "error": null,
+        "frames": [
+          {
+            "action": {
+              "op": "open"
+            },
+            "focus": {
+              "id": null,
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "BODY",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "width",
+              "width": 390,
+              "height": 844
+            },
+            "focus": {
+              "id": null,
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "BODY",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Tab"
+            },
+            "focus": {
+              "id": "email",
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "INPUT",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "fill",
+              "target": "#email",
+              "value": "audit@example.com"
+            },
+            "focus": {
+              "id": "email",
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "INPUT",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Tab"
+            },
+            "focus": {
+              "id": "notifications",
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "BUTTON",
+              "role": "switch",
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Tab"
+            },
+            "focus": {
+              "id": "daily",
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "BUTTON",
+              "role": "radio",
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Tab"
+            },
+            "focus": {
+              "id": null,
+              "text": "Review changes"
+            },
+            "focusPaint": {
+              "tag": "BUTTON",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Enter"
+            },
+            "focus": {
+              "id": null,
+              "text": "Cancel"
+            },
+            "focusPaint": {
+              "tag": "BUTTON",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [
+              "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\naudit@example.com\nEmail notifications\nOn\nDelivery frequency\nDaily\nCancel\nConfirm"
+            ],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Tab"
+            },
+            "focus": {
+              "id": null,
+              "text": "Confirm"
+            },
+            "focusPaint": {
+              "tag": "BUTTON",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [
+              "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\naudit@example.com\nEmail notifications\nOn\nDelivery frequency\nDaily\nCancel\nConfirm"
+            ],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Enter"
+            },
+            "focus": {
+              "id": null,
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "BODY",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+            },
+            "status": [
+              "Applying changes…"
+            ],
+            "dialog": [
+              "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\naudit@example.com\nEmail notifications\nOn\nDelivery frequency\nDaily\nCancel\nApplying…"
+            ],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Escape"
+            },
+            "focus": {
+              "id": null,
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "BODY",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+            },
+            "status": [
+              "Applying changes…"
+            ],
+            "dialog": [],
+            "ms": null
+          }
+        ],
+        "imageSha": "b2198c2be94868a33aa7b7a16fdecc924c87d16ecd76ebae6dcd781788dcfbd7"
+      },
+      {
+        "file": "fedc7cde-f544-48fd-8a28-074f1f860bbe.json",
+        "receiptSha": "174323521a874c0dc9e5c10ac6e9e919e94a6ab174f64de3f247e7b7dd401519",
+        "error": null,
+        "frames": [
+          {
+            "action": {
+              "op": "open"
+            },
+            "focus": {
+              "id": null,
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "BODY",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "width",
+              "width": 390,
+              "height": 844
+            },
+            "focus": {
+              "id": null,
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "BODY",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Tab"
+            },
+            "focus": {
+              "id": "email",
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "INPUT",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Tab"
+            },
+            "focus": {
+              "id": "notifications",
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "BUTTON",
+              "role": "switch",
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Tab"
+            },
+            "focus": {
+              "id": "daily",
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "BUTTON",
+              "role": "radio",
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Tab"
+            },
+            "focus": {
+              "id": null,
+              "text": "Review changes"
+            },
+            "focusPaint": {
+              "tag": "BUTTON",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Tab"
+            },
+            "focus": {
+              "id": null,
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "BODY",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          },
+          {
+            "action": {
+              "op": "key",
+              "key": "Tab"
+            },
+            "focus": {
+              "id": "email",
+              "text": ""
+            },
+            "focusPaint": {
+              "tag": "INPUT",
+              "role": null,
+              "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+            },
+            "status": [
+              ""
+            ],
+            "dialog": [],
+            "ms": null
+          }
+        ],
+        "imageSha": "f1677e52d31e0f9a3fac33fde9c661baa913abf9e8a26b80dabb5a2ddeae5405"
+      }
+    ],
+    "changedPriorInputs": [],
+    "created": [
+      "visits/3293436e-4d94-4aba-8632-df8480242e5f.json",
+      "visits/3293436e-4d94-4aba-8632-df8480242e5f.png",
+      "visits/53c3ca06-e12e-466c-adc6-6a14c956d0e0.json",
+      "visits/53c3ca06-e12e-466c-adc6-6a14c956d0e0.png",
+      "visits/7db0ad0b-21c4-4999-acc8-85465de04f9f.json",
+      "visits/7db0ad0b-21c4-4999-acc8-85465de04f9f.png",
+      "visits/fedc7cde-f544-48fd-8a28-074f1f860bbe.json",
+      "visits/fedc7cde-f544-48fd-8a28-074f1f860bbe.png"
+    ]
+  }
+}

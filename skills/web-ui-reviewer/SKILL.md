@@ -5,9 +5,9 @@ description: "Review web UI implementation against project rules and Web
   measured performance. Deliver scoped findings; route task-flow UX audits to
   web-ux-engineer. No implementation or conformance certification."
 metadata:
-  source-version: 0.2.5
+  source-version: 0.2.6
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: f652870e8ccd6b0030c0aafcc43023d54eb96112741eb39a0673e88397d7752b
+  skillforge-source-hash: 49ad02655e47771da5018199c31bf6a5d2f0e89977cafeae990f0c2c9e158fd9
 ---
 
 # web-ui-reviewer
@@ -133,7 +133,7 @@ Validation:
 
 - **high** — Do not return no-material-findings from code inspection alone when visual, responsive, focus, overlay, loading, empty, or error behavior is part of the claim.
 - **high** — Flag design-system drift only when an accepted design system or project convention establishes the expected component, token, or pattern; otherwise label the observation as a non-binding preference.
-- **high** — Do not turn list size, dependency presence, preload, preconnect, or render patterns into performance defects without scale or measurement evidence; report a validation risk instead.
+- **high** — Ground performance findings in relevant measurements.
 - **high** — Do not require search, detail, history, or another peer capability from a generic checklist; require accepted authority, and do not return no-material-findings when that authority exposes an unaddressed omission.
 
 ## Policies

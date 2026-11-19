@@ -1,0 +1,289 @@
+{
+  "originalRecipient": "d70b1c",
+  "scriptSha256": "e07550aae1f5bff794ef1f5c4f8dad25816ef0272296037313eb7e0627ad57f1",
+  "matchesOriginal": true,
+  "version": "Chrome 158.0.8127.36 / 390x844",
+  "how": "Unmodified recipient browser script executed in a second empty disposable service/profile; default temporary directory.",
+  "http": [
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": null
+    },
+    {
+      "method": "PUT",
+      "path": "/api/notification-settings",
+      "status": 422
+    },
+    {
+      "method": "PUT",
+      "path": "/api/notification-settings",
+      "status": 204
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": {
+        "email": "weekly@example.com",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": {
+        "email": "weekly@example.com",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/notification-settings",
+      "status": 204
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": {
+        "email": "escape@example.com",
+        "enabled": false,
+        "frequency": "daily"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": {
+        "email": "escape@example.com",
+        "enabled": false,
+        "frequency": "daily"
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/notification-settings",
+      "status": 503,
+      "body": {
+        "error": "write_unavailable"
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/notification-settings",
+      "status": 204
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": {
+        "email": "retry@example.com",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": {
+        "email": "retry@example.com",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    }
+  ],
+  "checkedFrames": [
+    {
+      "step": "05a-accepted-by-form",
+      "email": "x@y",
+      "nativeEmailValid": true,
+      "ariaInvalid": "false",
+      "describedBy": "email-help",
+      "dialog": "Review your changes\n\nConfirm to save these notification settings.\n\nEmail address\nx@y\nEmail notifications\nOn\nDelivery frequency\nDaily\nCancel\nConfirm",
+      "focus": {
+        "tag": "BUTTON",
+        "role": null,
+        "focusVisible": true,
+        "rect": {
+          "x": 40.150001525878906,
+          "y": 555.4749755859375,
+          "width": 309.70001220703125,
+          "height": 41.800048828125
+        },
+        "inViewport": true,
+        "centerExposed": false
+      },
+      "status": ""
+    },
+    {
+      "step": "05a-rejected-by-service",
+      "email": "x@y",
+      "nativeEmailValid": true,
+      "ariaInvalid": "false",
+      "describedBy": "email-help",
+      "dialog": null,
+      "focus": {
+        "tag": "BUTTON",
+        "role": null,
+        "focusVisible": true,
+        "rect": {
+          "x": 41,
+          "y": 779,
+          "width": 308,
+          "height": 44
+        },
+        "inViewport": true,
+        "centerExposed": true
+      },
+      "status": "Settings could not be saved. Review your changes and try again."
+    },
+    {
+      "step": "05a-rejected-by-service-scrolled",
+      "email": "x@y",
+      "nativeEmailValid": true,
+      "ariaInvalid": "false",
+      "describedBy": "email-help",
+      "dialog": null,
+      "focus": {
+        "tag": "BUTTON",
+        "role": null,
+        "focusVisible": true,
+        "rect": {
+          "x": 41,
+          "y": 614,
+          "width": 308,
+          "height": 44
+        },
+        "inViewport": true,
+        "centerExposed": true
+      },
+      "status": "Settings could not be saved. Review your changes and try again."
+    },
+    {
+      "step": "06-close-result",
+      "email": "weekly@example.com",
+      "nativeEmailValid": true,
+      "ariaInvalid": "false",
+      "describedBy": "email-help",
+      "dialog": null,
+      "focus": {
+        "tag": "DIV",
+        "role": "status",
+        "focusVisible": true,
+        "rect": {
+          "x": 20,
+          "y": 760,
+          "width": 350,
+          "height": 143.5
+        },
+        "inViewport": false,
+        "centerExposed": true
+      },
+      "status": "Settings applied\n\nEmail: weekly@example.com. Notifications: On. Frequency: Weekly.\n\nRead from the local settings service. No email is sent."
+    },
+    {
+      "step": "06-close-result-scrolled",
+      "email": "weekly@example.com",
+      "nativeEmailValid": true,
+      "ariaInvalid": "false",
+      "describedBy": "email-help",
+      "dialog": null,
+      "focus": {
+        "tag": "DIV",
+        "role": "status",
+        "focusVisible": true,
+        "rect": {
+          "x": 20,
+          "y": 679,
+          "width": 350,
+          "height": 143.5
+        },
+        "inViewport": true,
+        "centerExposed": true
+      },
+      "status": "Settings applied\n\nEmail: weekly@example.com. Notifications: On. Frequency: Weekly.\n\nRead from the local settings service. No email is sent."
+    },
+    {
+      "step": "12-manual-write-retry-dialog",
+      "email": "retry@example.com",
+      "nativeEmailValid": true,
+      "ariaInvalid": "false",
+      "describedBy": "email-help",
+      "dialog": "Applying changes\n\nYou can close this window. Your changes will continue to apply.\n\nEmail address\nretry@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nClose\nApplying…",
+      "focus": {
+        "tag": "BUTTON",
+        "role": null,
+        "focusVisible": true,
+        "rect": {
+          "x": 38.35162353515625,
+          "y": 566.6354370117188,
+          "width": 313.2967529296875,
+          "height": 42.28546142578125
+        },
+        "inViewport": true,
+        "centerExposed": true
+      },
+      "status": "Applying changes…\n\nPreviously applied settings\n\nEmail: escape@example.com. Notifications: Off. Frequency: Daily (paused).\n\nRead from the local settings service. No email is sent."
+    },
+    {
+      "step": "12-manual-write-retry-pending",
+      "email": "retry@example.com",
+      "nativeEmailValid": true,
+      "ariaInvalid": "false",
+      "describedBy": "email-help",
+      "dialog": null,
+      "focus": {
+        "tag": "DIV",
+        "role": "status",
+        "focusVisible": true,
+        "rect": {
+          "x": 20,
+          "y": 604,
+          "width": 350,
+          "height": 199.5
+        },
+        "inViewport": true,
+        "centerExposed": true
+      },
+      "status": "Applying changes…\n\nPreviously applied settings\n\nEmail: escape@example.com. Notifications: Off. Frequency: Daily (paused).\n\nRead from the local settings service. No email is sent."
+    },
+    {
+      "step": "12-manual-write-retry-result",
+      "email": "retry@example.com",
+      "nativeEmailValid": true,
+      "ariaInvalid": "false",
+      "describedBy": "email-help",
+      "dialog": null,
+      "focus": {
+        "tag": "DIV",
+        "role": "status",
+        "focusVisible": true,
+        "rect": {
+          "x": 20,
+          "y": 660,
+          "width": 350,
+          "height": 143.5
+        },
+        "inViewport": true,
+        "centerExposed": true
+      },
+      "status": "Settings applied\n\nEmail: retry@example.com. Notifications: On. Frequency: Weekly.\n\nRead from the local settings service. No email is sent."
+    }
+  ],
+  "rawBrowserSHA256": "f2a87c9293170ec4c8019955933eaeac567ff3a814e5a567afcd452a80c38725",
+  "rawServiceSHA256": "3ebc920a1eefffadade358b26e2dd8d8144cdb0cff0dc7dcd8431130ee9b5090"
+}
