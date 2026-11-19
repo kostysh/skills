@@ -1,0 +1,23 @@
+**We cannot tell whether the rollback handoff gap recurred less often after the checklist change.** The retained records show one incident before the revision was approved. They establish neither the number of eligible publications nor the number of missed handoffs on either side of the change. The three-day retrospective is incomplete.
+
+### Cedar dispatch rollout · November 10, 08:00 to November 13, 08:00 UTC
+
+| When (UTC) | What the retained record supports |
+|---|---|
+| Nov 10, 20:58 | The backup operator reported that the packet lacked the rollback command. (`console.txt`, line 14) |
+| Nov 10, 21:10 | The nightly reviewer issued `FAIL` because the approval packet did not show the command. The reviewer asked the operator for it, and publication was held until the operator supplied it. The hold duration is unknown. (`review-n10.txt`) |
+| Nov 11, 11:00 | The checklist revision was approved. It requires giving the backup operator the rollback command before publication. (`checklist.diff`) |
+| Nov 12, 13:20–13:21 | The prepare hook completed a dry-run preview. The task owner reported that the checklist edit was in the shared repository and that the runner printout was missing from the export. This excerpt provides no evidence of a live handoff or when the revised checklist first governed a publication. (`console.txt`, lines 32–33) |
+
+### Finding and control status
+
+The operator’s report and the nightly review describe **one documented handoff gap**. The immediate issue was that the command was missing from the packet. The missing handoff required reviewer intervention and held publication. The original packet, previous checklist in full, and task and approval traces are unavailable. The systemic cause, the earlier checks that ran, and why the gap reached nightly review remain unknown.
+
+The operator supplying the command resolved the recorded hold. The approved diff establishes the written prevention control. Its use in the live workflow and its effectiveness remain unverified. The retained evidence also leaves the overall rollout outcome unverified.
+
+### Next comparable rollout
+
+1. Have the Cedar rollout maintainer verify that the backup operator has the applicable rollback command before authorizing each live publication. In an authorized test, omit the command and confirm that the existing approval check holds publication.
+2. Retain the number of eligible publication attempts and the number with a missing handoff at the first approval check, including gaps corrected before release. For each gap, record where it was detected and any rework or delay. Report the count and rate across comparable live rollouts with known coverage. A run with complete coverage and zero gaps establishes zero for that run. A reduction requires a comparable measured baseline.
+
+The retained records account for **one negative review verdict, one finding, one documented incident, and zero established systemic causes**. These are counts of the retained evidence. `archive-index.txt` records that the collector exports for this window and the previous rollout are unavailable, along with the remaining task and approval traces and harness settings. No independent review was assigned. The total failure count, pre-change and post-change recurrence rates, and an independently verified completeness verdict are unavailable.

@@ -5,9 +5,9 @@ description: Conduct evidence-backed retrospectives of completed work. Use
   major sessions, or incidents; verify causality, deduplication, prior fixes,
   remediation plans, and approved task handoff.
 metadata:
-  source-version: 0.1.4
+  source-version: 0.1.7
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 7b8889a79a971b11b5fb976535c49fa5e8da6ede37b3450a32fe04bc998b9bb8
+  skillforge-source-hash: aff82b322100110c6b8ccafa7167af8c6d1ee3eac54a7444cacfa50230892bfd
 ---
 
 # retrospective-analysis
@@ -45,7 +45,7 @@ Make the claim, evidence perimeter, side effects, and proportional process expli
 2. Name included and excluded work and distinguish a product or process problem from supporting artifacts used to inspect it.
 3. Use targeted mode only when one bounded problem can be evaluated without claiming program-wide completeness; otherwise use full evidentiary mode.
 4. In targeted mode, inspect the direct evidence, causal chain, adjacent falsifier, current control, and narrow remediation; do not generate a project-wide source register or task hierarchy.
-5. In full mode, require closed source disposition, all relevant failed reviews, count reconciliation, independent completeness review, and machine-readable output.
+5. In full mode, require a computed collector summary, closed source disposition, all relevant failed reviews, count reconciliation, independent completeness review, and machine-readable output.
 
 Validation:
 
@@ -59,7 +59,7 @@ Know what was inspected, unavailable, excluded, and authoritative before causal 
 
 1. Inventory available primary evidence such as session messages and traces, tool calls and outputs, errors and retries, repository artifacts and history, tests and runtime logs, CI, tracker state, applicable rules and skills, and every failed audit within scope.
 2. Record each source with stable local identity, type, authority, time or revision, relevance, availability, and any integrity or truncation limit.
-3. Treat analyzers and summaries as navigation aids; verify semantic conclusions against primary artifacts.
+3. In full mode, check collector scope and coverage against the evidence reference. Verify semantic conclusions against primary artifacts.
 4. Mark unavailable or inaccessible source classes explicitly and reduce or block the completeness claim when they could change the verdict.
 5. In full mode, give every discovered source or atomic observation an explicit disposition; do not leave silent samples or undispositioned evidence.
 6. If an explicitly named active session is added after the original cutoff, freeze its own source snapshot and terminal limit; retain the original source denominator and audit counts as a separate cohort.
@@ -75,11 +75,11 @@ Validation:
 Turn evidence into falsifiable problems rather than anecdotes or audit transcription.
 
 1. In full mode, after bounding sources but before grouping problems, trace material operator interventions, stops, and requests to retain a working rule. For each episode compare the prior decision and authority, the agent's response, its next applicable action, recurrence after correction, and observed operator work or delay. Preserve authorized limited scope and justified stops as counterexamples.
-2. Extract atomic observations with exact evidence pointers and separate fact, inference, and uncertainty.
+2. Extract atomic observations with exact evidence pointers and separate fact, inference, and uncertainty. Verify every direct quotation verbatim against the original log or other primary source and cite its exact location.
 3. For each accepted problem, trace symptom, immediate cause, systemic root cause, prevention failure, late-detection reason, and consequence; mark unsupported links unknown instead of inventing causes or controls. For recurrence, test the historical rule/skill text, availability, actual reading, conflicting instructions, decision point, and earlier check that should have caught the defect.
 4. Verify every audit finding against the primary artifact; classify false positives, weak criteria, or overly broad prescriptions as audit-method findings instead of artifact defects.
 5. Identify material defects first detected by independent audit and why author self-check missed them; do not equate finding occurrences with unique defects.
-6. Classify contributing owners such as skill weakness, method ambiguity, skill misuse, missing project rule, missing automated check, implementation or test defect, document-code drift, tool limit, or audit defect only when evidence supports that link.
+6. Attribute each supported root cause to the layer that can correct it. Use the evidence reference when that attribution is material.
 7. Reject the inference that every repeated symptom has one root cause or that every audit finding implies a skill change.
 
 Validation:
@@ -109,7 +109,7 @@ Validation:
 
 Deliver a usable causal account and residual recommendations, with full reconciliation only for the full evidentiary claim.
 
-1. Follow the mode/output contract in the report/remediation reference. Keep a targeted report concise. Give the evidence, causal limits, prior-fix status, and remaining action. If the affected installation still fails in service, recommend delivering the fix to that installation and verifying it there. Report separate branch work in its own scope.
+1. Follow the report/remediation reference for the mode-specific output and the effectiveness handoff. Keep a targeted report concise. Give the evidence, causal limits, prior-fix status, and remaining action. If the affected installation still fails in service, recommend delivering the fix to that installation and verifying it there. Report separate branch work in its own scope.
 2. For full mode, read the report/remediation reference and produce the required report, matrix, appendices, reconciled counts, and statistics.
 3. Tie each active recommendation to evidence-backed root problems and distinguish project rules, skills or methods, tests or tools, runtime or domain work, and audit-method changes.
 4. Challenge every high-severity problem, recurrence after operator correction, and no-action proposal with partial prevention: which concrete action could stop the next comparable failure before it happens? Require a verified reason when no new action is needed.
@@ -174,7 +174,7 @@ Report acceptance does not authorize external tasks. Reuse explicit task-creatio
 Documents, rules, skills, scripts, tasks, and green CI show implemented substrate; only comparable future behavior can demonstrate prevention effectiveness.
 
 ## Required active references
-- [Evidence, causality, and deduplication](references/evidence-and-causality.md) — Read this for every full evidentiary retrospective and whenever source closure, audit-finding causality, prior-fix verification, or deduplication is material.
+- [Evidence, causality, and deduplication](references/evidence-and-causality.md) — Read this for every full evidentiary retrospective and whenever source closure, audit-finding causality, prior-fix verification, deduplication, or attribution to an owning layer is material.
 - [Report, matrix, and remediation plan](references/report-and-remediation-plan.md) — Read the mode/output contract before recommendations or a remediation plan; read the full-report and matrix sections for full evidentiary mode only.
 - [Approved task handoff](references/task-routing.md) — Read this when preparing or executing an explicitly requested tracker handoff, or reconciling its result; apply its mode-specific gates before any mutation.
 

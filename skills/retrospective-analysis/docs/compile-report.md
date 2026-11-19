@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.4`
+- Skill source version: `0.1.7`
 
 ## Source files
 - `agents/openai.yaml`
@@ -11,6 +11,7 @@ Generated from `skill.yaml`.
 - `docs/issues/issue-20260727-1.md`
 - `docs/logs/implementation-log-20260727-1.md`
 - `docs/logs/implementation-log-20260923-1.md`
+- `docs/logs/implementation-log-20261119-2.md`
 - `references/evidence-and-causality.md`
 - `references/report-and-remediation-plan.md`
 - `references/task-routing.md`

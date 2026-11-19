@@ -1,0 +1,15 @@
+All four Beacon export handoffs were corrected and accepted on November 12. V1 and V2 recorded two failed audit verdicts and three valid findings across two recurring problems. V3 confirmed acceptance after correction. Each incident had a six-minute interval from failure or omission to acceptance, for 24 minutes summed across incidents. Prevention on a comparable close remains unverified.
+
+| Problem | What happened | Prevention status |
+|---|---|---|
+| **E1–E2 · Receiver rejection** | The active runner pinned uploader 1.8.0, which sent `text/plain` despite a declared `application/json` type. The receiver rejected both requests. Manual uploads cleared the queue. The receiver detected the mismatch at request time. Earlier checks are unverified. | A same-file, same-receiver replay reproduced the mismatch on 1.8.0 and showed the correct type on 1.8.1. Beacon still pins 1.8.0. The earlier draft’s outage claim is unsupported. (`closing.log` 11–14, 21–24; V1/F1, V2/F2; M1) |
+| **E3–E4 · Missing inventory** | Executors followed `close.md` §4, which placed inventory attachment after the approval request. Both packets were accepted after the inventory was added. V2/F3 covers both omissions. The records do not establish who detected them first. | The portable checkpoint puts inventory verification before approval. Beacon adopted the work route and check naming, so release operations must approve the matching change to Beacon’s local procedure. (`closing.log` 31–32, 41–42; V2/F3; `rules.txt`) |
+
+The duplicate-name guard has no open follow-up. The installed preflight rejected a known duplicate with exit 9 and `DUPLICATE_EXPORT_NAME`, accepted an ordinary basename, and ran on all four handoffs. The replay exercises the control directly. The close recorded zero duplicate-name occurrences. (M2; `report-20261112.json`)
+
+### Brief for the delivery planner
+
+Both changes await approval and can proceed independently once approved. The runner update addresses request behavior. The local procedure change addresses approval order through the existing checkpoint.
+
+1. **Build tools · Update Beacon’s active runner pin to 1.8.1.** From the updated runner, send a declared JSON export to the test receiver. Acceptance requires the receiver to observe `application/json` and accept the upload without a manual retry. A test that bypasses the pinned runner leaves the deployment unverified. At the next comparable close, check for content-type rejections and manual retries.
+2. **Beacon release operations · Revise `close.md` §4.** Require the executor to attach and verify `inventory.md` before requesting approval. Walk through a packet with the inventory missing and confirm that the executor holds the request until the file is attached and verified. At the next comparable close, check that each initial approval packet includes its inventory.

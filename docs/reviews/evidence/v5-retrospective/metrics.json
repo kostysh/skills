@@ -1,0 +1,467 @@
+{
+  "skill": "retrospective-analysis",
+  "study": "v5-stage-2-retrospective",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "base": "docs/reviews/evidence/v5-retrospective",
+  "source": "README.md",
+  "runs": {
+    "0d6fba98e9": {
+      "task": "R1",
+      "variant": "0.1.4",
+      "source": "outputs/r1-0d6fba98e9.txt",
+      "sha256": "ad4bbce5f5c06ec5e11a308dd5a07687232649df5d178becdb9e95230b8139ad",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f52c-4b2d-7cc1-8fc1-439c4eaa33c2",
+          "rubric": "initial:case-rubrics",
+          "packet": "initial:anonymous",
+          "source": "scores/initial.json",
+          "score": "FAIL"
+        },
+        "secondary": {
+          "assessor": "01a1f52c-5d14-73f0-9225-fe2acb9aa0e5",
+          "rubric": "initial:case-rubrics",
+          "packet": "initial:anonymous",
+          "source": "scores/initial.json",
+          "score": "FAIL"
+        }
+      }
+    },
+    "2e77cc154b": {
+      "task": "R1",
+      "variant": "0.1.5",
+      "source": "outputs/r1-2e77cc154b.txt",
+      "sha256": "ee290e9201188c472c2a2ce45fc2be95b0011e385d1abd0e6cd3d87c71917140",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f52c-4b2d-7cc1-8fc1-439c4eaa33c2",
+          "rubric": "initial:case-rubrics",
+          "packet": "initial:anonymous",
+          "source": "scores/initial.json",
+          "score": "FAIL"
+        },
+        "secondary": {
+          "assessor": "01a1f52c-5d14-73f0-9225-fe2acb9aa0e5",
+          "rubric": "initial:case-rubrics",
+          "packet": "initial:anonymous",
+          "source": "scores/initial.json",
+          "score": "FAIL"
+        }
+      }
+    },
+    "4dd1c766ff": {
+      "task": "R2",
+      "variant": "0.1.5",
+      "source": "outputs/r2-4dd1c766ff.txt",
+      "sha256": "d16265a00b41cfa3a88888eda13a2fc3c80d57503294f67303e15d8f97431826",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f52c-4b2d-7cc1-8fc1-439c4eaa33c2",
+          "rubric": "initial:case-rubrics",
+          "packet": "initial:anonymous",
+          "source": "scores/initial.json",
+          "score": "PASS"
+        }
+      }
+    },
+    "815e8f1708": {
+      "task": "R2",
+      "variant": "0.1.4",
+      "source": "outputs/r2-815e8f1708.txt",
+      "sha256": "7777c327f5d0bf2d762a7b4df1ce969f2dc0abba3f3931d967b5ad78f8f7b3e4",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f52c-4b2d-7cc1-8fc1-439c4eaa33c2",
+          "rubric": "initial:case-rubrics",
+          "packet": "initial:anonymous",
+          "source": "scores/initial.json",
+          "score": "FAIL"
+        }
+      }
+    },
+    "4517ae5de0": {
+      "task": "H2",
+      "variant": "0.1.6",
+      "source": "outputs/h2-4517ae5de0.txt",
+      "sha256": "db0a329da480fb7f04d8f135a43c5e8176d1c416c13474664d97c20e4b26fc25",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f536-4eae-7ca0-bc4e-981d7327220d",
+          "rubric": "remediation:case-rubrics",
+          "packet": "remediation:anonymous",
+          "source": "scores/remediation.json",
+          "score": "FAIL"
+        },
+        "secondary": {
+          "assessor": "01a1f537-1f84-70a1-a6f5-3850f56e9b5f",
+          "rubric": "remediation:case-rubrics",
+          "packet": "remediation:anonymous",
+          "source": "scores/remediation.json",
+          "score": "FAIL"
+        }
+      }
+    },
+    "a51caca169": {
+      "task": "H2",
+      "variant": "0.1.4",
+      "source": "outputs/h2-a51caca169.txt",
+      "sha256": "3729668e3fed6bb1adad3b9049fa96bbefed9c7e2244dbcb46a74467b4b54531",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f536-4eae-7ca0-bc4e-981d7327220d",
+          "rubric": "remediation:case-rubrics",
+          "packet": "remediation:anonymous",
+          "source": "scores/remediation.json",
+          "score": "FAIL"
+        },
+        "secondary": {
+          "assessor": "01a1f537-1f84-70a1-a6f5-3850f56e9b5f",
+          "rubric": "remediation:case-rubrics",
+          "packet": "remediation:anonymous",
+          "source": "scores/remediation.json",
+          "score": "FAIL"
+        }
+      }
+    },
+    "3313262eac": {
+      "task": "R1",
+      "variant": "0.1.4",
+      "source": "outputs/r1-3313262eac.txt",
+      "sha256": "c60258053c730f513a8a987ac086a7718374fe59fdf93f71e6b7ca84564d331e",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f536-4eae-7ca0-bc4e-981d7327220d",
+          "rubric": "remediation:case-rubrics",
+          "packet": "remediation:anonymous",
+          "source": "scores/remediation.json",
+          "score": "FAIL"
+        }
+      },
+      "repeatOf": "0d6fba98e9"
+    },
+    "3c1d149b6c": {
+      "task": "R1",
+      "variant": "0.1.6",
+      "source": "outputs/r1-3c1d149b6c.txt",
+      "sha256": "fd7ea37e439ecfc80fee7a8271d9b649f30c034f0d59e8a75fd450252756fefa",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f536-4eae-7ca0-bc4e-981d7327220d",
+          "rubric": "remediation:case-rubrics",
+          "packet": "remediation:anonymous",
+          "source": "scores/remediation.json",
+          "score": "PASS"
+        }
+      }
+    },
+    "7e2201c356": {
+      "task": "R2",
+      "variant": "0.1.6",
+      "source": "outputs/r2-7e2201c356.txt",
+      "sha256": "3f1f46d141b1f76ffa669e8e754eb3c6b979e2843afc2a3ff66bdc8db00a0133",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f536-4eae-7ca0-bc4e-981d7327220d",
+          "rubric": "remediation:case-rubrics",
+          "packet": "remediation:anonymous",
+          "source": "scores/remediation.json",
+          "score": "PASS"
+        }
+      }
+    },
+    "a48d65dad0": {
+      "task": "R2",
+      "variant": "0.1.4",
+      "source": "outputs/r2-a48d65dad0.txt",
+      "sha256": "eb8a059a126a31a590bface8b63231ef752014a0b0dfb19138e8d51a93a4a252",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f536-4eae-7ca0-bc4e-981d7327220d",
+          "rubric": "remediation:case-rubrics",
+          "packet": "remediation:anonymous",
+          "source": "scores/remediation.json",
+          "score": "FAIL"
+        }
+      },
+      "repeatOf": "815e8f1708"
+    },
+    "71f0cf1739": {
+      "task": "R2",
+      "variant": "0.1.7",
+      "source": "outputs/r2-71f0cf1739.txt",
+      "sha256": "b9807a2982d7fbf7db2e7a69061aa1f70d5ab3ab60ab514ae1e42c9d974b7001",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f541-0e27-77d2-b73a-a8d7e57a6cc5",
+          "rubric": "confirmation:R2",
+          "packet": "confirmation:anonymous",
+          "source": "scores/confirmation.json",
+          "score": "PASS"
+        }
+      }
+    },
+    "e946a04621": {
+      "task": "H2",
+      "variant": "0.1.6",
+      "source": "outputs/h2-e946a04621.txt",
+      "sha256": "91e51d2e4da4d45baf063b4fdfb402f2f32d981704b9bf7aedbea4dafe7f6f6c",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f541-0e27-77d2-b73a-a8d7e57a6cc5",
+          "rubric": "confirmation:case-rubrics",
+          "packet": "confirmation:anonymous",
+          "source": "scores/confirmation.json",
+          "score": "FAIL"
+        },
+        "secondary": {
+          "assessor": "01a1f541-2517-7692-b5bf-d50db653d0c3",
+          "rubric": "confirmation:case-rubrics",
+          "packet": "confirmation:anonymous",
+          "source": "scores/confirmation.json",
+          "score": "FAIL"
+        }
+      },
+      "repeatOf": "4517ae5de0"
+    },
+    "881440a264": {
+      "task": "R1",
+      "variant": "0.1.7",
+      "source": "outputs/r1-881440a264.txt",
+      "sha256": "d0dcb40aa6a86bef58f999578b66885577ded9f722461e9a752d43f0906390ad",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f541-0e27-77d2-b73a-a8d7e57a6cc5",
+          "rubric": "confirmation:case-rubrics",
+          "packet": "confirmation:anonymous",
+          "source": "scores/confirmation.json",
+          "score": "PASS"
+        }
+      }
+    },
+    "b9c03e328f": {
+      "task": "R1",
+      "variant": "0.1.6",
+      "source": "outputs/r1-b9c03e328f.txt",
+      "sha256": "2f13112344ecf072067ac659aa7d2a53372ad3e5b2c4da3fa6fb654f1196af09",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f541-0e27-77d2-b73a-a8d7e57a6cc5",
+          "rubric": "confirmation:case-rubrics",
+          "packet": "confirmation:anonymous",
+          "source": "scores/confirmation.json",
+          "score": "PASS"
+        }
+      },
+      "repeatOf": "3c1d149b6c"
+    },
+    "553db7e27e": {
+      "task": "H2",
+      "variant": "0.1.7",
+      "source": "outputs/h2-553db7e27e.txt",
+      "sha256": "114f99cb2422f500e14ade805892dc2a5dd75663a09cf663906cf269fdc607b1",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f541-0e27-77d2-b73a-a8d7e57a6cc5",
+          "rubric": "confirmation:case-rubrics",
+          "packet": "confirmation:anonymous",
+          "source": "scores/confirmation.json",
+          "score": "PASS"
+        },
+        "secondary": {
+          "assessor": "01a1f541-2517-7692-b5bf-d50db653d0c3",
+          "rubric": "confirmation:case-rubrics",
+          "packet": "confirmation:anonymous",
+          "source": "scores/confirmation.json",
+          "score": "PASS"
+        }
+      }
+    }
+  },
+  "series": [
+    {
+      "id": "initial",
+      "phase": "primary",
+      "comparison": "0.1.5/0.1.4",
+      "rubric": "initial:case-rubrics",
+      "packet": "initial:anonymous",
+      "pairs": [
+        {
+          "id": "initial-R1",
+          "task": "R1",
+          "left": [
+            "2e77cc154b",
+            "primary"
+          ],
+          "right": [
+            "0d6fba98e9",
+            "primary"
+          ]
+        },
+        {
+          "id": "initial-R2",
+          "task": "R2",
+          "left": [
+            "4dd1c766ff",
+            "primary"
+          ],
+          "right": [
+            "815e8f1708",
+            "primary"
+          ]
+        }
+      ],
+      "source": "records.json",
+      "limit": "Explicit activation on synthetic cases. Confirmation reuses H2."
+    },
+    {
+      "id": "remediation",
+      "phase": "diagnostic",
+      "comparison": "0.1.6/0.1.4",
+      "rubric": "remediation:case-rubrics",
+      "packet": "remediation:anonymous",
+      "pairs": [
+        {
+          "id": "remediation-R1",
+          "task": "R1",
+          "left": [
+            "3c1d149b6c",
+            "primary"
+          ],
+          "right": [
+            "3313262eac",
+            "primary"
+          ]
+        },
+        {
+          "id": "remediation-R2",
+          "task": "R2",
+          "left": [
+            "7e2201c356",
+            "primary"
+          ],
+          "right": [
+            "a48d65dad0",
+            "primary"
+          ]
+        }
+      ],
+      "source": "records.json",
+      "limit": "Explicit activation on synthetic cases. Confirmation reuses H2."
+    },
+    {
+      "id": "held-out",
+      "phase": "holdout",
+      "comparison": "0.1.6/0.1.4",
+      "rubric": "remediation:case-rubrics",
+      "packet": "remediation:anonymous",
+      "pairs": [
+        {
+          "id": "held-out-H2",
+          "task": "H2",
+          "left": [
+            "4517ae5de0",
+            "primary"
+          ],
+          "right": [
+            "a51caca169",
+            "primary"
+          ]
+        }
+      ],
+      "source": "records.json",
+      "limit": "Explicit activation on synthetic cases. Confirmation reuses H2."
+    },
+    {
+      "id": "confirmation",
+      "phase": "confirmation",
+      "comparison": "0.1.7/0.1.6",
+      "rubric": "confirmation:case-rubrics",
+      "packet": "confirmation:anonymous",
+      "pairs": [
+        {
+          "id": "confirmation-R1",
+          "task": "R1",
+          "left": [
+            "881440a264",
+            "primary"
+          ],
+          "right": [
+            "b9c03e328f",
+            "primary"
+          ]
+        },
+        {
+          "id": "confirmation-H2",
+          "task": "H2",
+          "left": [
+            "553db7e27e",
+            "primary"
+          ],
+          "right": [
+            "e946a04621",
+            "primary"
+          ]
+        }
+      ],
+      "source": "records.json",
+      "limit": "Explicit activation on synthetic cases. Confirmation reuses H2."
+    }
+  ],
+  "agreement": [
+    {
+      "run": "0d6fba98e9",
+      "rubric": "initial:case-rubrics",
+      "packet": "initial:anonymous",
+      "ratings": [
+        "primary",
+        "secondary"
+      ]
+    },
+    {
+      "run": "2e77cc154b",
+      "rubric": "initial:case-rubrics",
+      "packet": "initial:anonymous",
+      "ratings": [
+        "primary",
+        "secondary"
+      ]
+    },
+    {
+      "run": "4517ae5de0",
+      "rubric": "remediation:case-rubrics",
+      "packet": "remediation:anonymous",
+      "ratings": [
+        "primary",
+        "secondary"
+      ]
+    },
+    {
+      "run": "a51caca169",
+      "rubric": "remediation:case-rubrics",
+      "packet": "remediation:anonymous",
+      "ratings": [
+        "primary",
+        "secondary"
+      ]
+    },
+    {
+      "run": "e946a04621",
+      "rubric": "confirmation:case-rubrics",
+      "packet": "confirmation:anonymous",
+      "ratings": [
+        "primary",
+        "secondary"
+      ]
+    },
+    {
+      "run": "553db7e27e",
+      "rubric": "confirmation:case-rubrics",
+      "packet": "confirmation:anonymous",
+      "ratings": [
+        "primary",
+        "secondary"
+      ]
+    }
+  ]
+}

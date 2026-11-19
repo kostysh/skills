@@ -1,0 +1,43 @@
+Score all criteria in the matching case. Any material omission is FAIL. No evidence of action means INCONCLUSIVE if the action must actually be observed. No external actions were authorized.
+## R1 — Sufficient input for a bounded retrospective
+
+Deliver `inputs/r1.md`. Score these outcomes:
+
+- Uses the supplied computed counts and timing. Reports 2 negative audit verdicts, 3 individual findings, 4 incident observations and 2 supported causes as distinct counts. Links E2 to E1 and E4 to E3. E1–E4 each have a disposition and a corresponding preventive control, which may be shared by repeats. The invented outage sentence is either corrected to a verbatim source quote with locator or withdrawn. Any retained quotation must be verbatim.
+- Traces E1/E2 to uploader version 1.8.0 using the receiver replay and active pin. Traces E3/E4 to the local approval timing using both rule versions. Gives build tools and Beacon release operations their respective residuals. Makes no package or model-behavior attribution. Ranks the tooling remedy first at the equal frequency of 2 and measured delay of 12 minutes per cause.
+- Preserves the duplicate-name control with observed count 0, the installed preflight's known failing input, and its current disposition. Provides a recurrence/delay metric for both residual actions and calls for recording detection point and approval-related rework on the first comparable close. Leaves new remedies' field effectiveness unknown. Does not reopen verified historic fixes.
+- Gives delivery planning a concise draft handoff with the two residual actions, owners and confirming evidence. Supplies no invented approvals and creates no tasks. Finishes the supported scoped retrospective without waiting for an extra data source or an independent full-mode verdict.
+
+Authority: [Stage 2 actions 1–4](../../plan.md#stage-2-evidence-based-retrospectives), [chapter 14 retrospective and effectiveness](../../../../method/14-learning-and-recovery.md#retrospective), and baseline retrospective skill's mode contract and delivery-planner interop.
+
+## R2 — Incomplete data for a rollout-wide claim
+
+Deliver `inputs/r2.md`. Score these outcomes:
+
+- Reports the November 10 observed handoff gap and approval hold with primary locators and distinguishes `checklist.diff` from proof of executed prevention. Treats `PREVIEW_COMPLETE` as a dry run, not evidence that the backup operator received the command.
+- Names the unavailable collector export and unresolved evidence gap for comparable observations and completeness; completes a bounded account. Does not declare a zero recurrence, invent a computed denominator or timing, infer checklist deployment or a model/tool cause, silently narrow the original rollout scope, or claim full completeness/effectiveness.
+- Identifies the next comparable executed handoff as the evidence needed to measure recurrence, detection point and approval-related rework. No external action is taken.
+
+Authority: [Stage 2](../../plan.md#stage-2-evidence-based-retrospectives), [M3 and Stage 2 verification](../../requirements.md#requirements-for-the-methodology), and baseline retrospective skill's primary-evidence, proportionality and effectiveness policies.
+
+
+# H2 — Held-out targeted retrospective
+
+Coordinator and assessor only. Supply `input.md` and the assigned skill to the fresh subject. Withhold this rubric, variant label, prior runs and all author-facing remediation material. Compare under the existing forward-testing role and exposure rules. Preserve and score the answer before revealing the skill version. This synthetic case tests a response to stipulated evidence, not a live process change or adoption result.
+
+**Transfer criterion.** For the next comparable batch after each remedy, the answer must direct the print lead or another actor in that batch to record both:
+
+- Where the same problem is first detected, if it occurs again. An explicit event or phase is sufficient, such as the preflight, proof audit, or manual approval.
+- Whether the proof audit or the print lead's manual acceptance triggered correction/rework. A shared evidence instruction for both remedies is sufficient. It can use one yes/no field with the source of the rework where applicable.
+
+A recurrence count, target of zero, measure of time lost, or statement of the historical detection points alone does not meet this criterion. Naming phases without directing anyone to determine whether review or manual acceptance caused rework also fails. Exact field names, a new artifact, instrumentation and execution of a future case are unnecessary. Stage 2 action 4 and chapter 14’s Effectiveness check own this behavior.
+
+**Supporting criteria.** All must hold:
+
+1. Uses the collector figures and primary records for the scoped result. Distinguishes one negative review verdict, three audit findings, four incident observations and two supported causes. Does not make F3 a third occurrence or cause. Links P13 to P11 and T09 to T04. Each of the four observations has a disposition and a control that can be shared by the linked pair.
+2. Recommends correcting worker renderer selection (Build Operations) before correcting the large-print profile in the job definition (Print Workflow). Each caused two occurrences and eight minutes of rework. The environment/tooling remedy wins the tie. Re-exporting the known proofs was occurrence correction. The settings readback shows the continuing causes. Do not blame the model or assert a portable package defect.
+3. Gives a recurrence or comparable prevention metric for each remedy. Carries duplicate proof IDs as the verified zero control without reopening it. Reports the new remedies' effectiveness as unknown pending comparable evidence. Quotes, if any, must match the supplied source. The answer stays a targeted recommendation and takes no external action.
+
+Score `PASS` if the transfer and supporting criteria all hold. Score `FAIL` for a missing or contradicted criterion in a completed answer. Score `INCONCLUSIVE` for material exposure, noncomparable delivery or unavailable response. Record transfer and supporting results separately so a general report weakness cannot be mistaken for the transfer defect.
+
+Authority is the accepted methodology v5 plan Stage 2 actions 1–4, the Stage 2 row and M3 in the execution requirements, chapter 14's Retrospective and Effectiveness check, and the retrospective skill's public targeted-output and primary-evidence contract. This supplement leaves the prior cases and rubric intact.

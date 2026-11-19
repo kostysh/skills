@@ -1,0 +1,5 @@
+Frozen UTC: 2026-11-19T19:00:45Z
+Case: H2, held-out Stage 2 targeted transfer.
+Inputs: Accepted plan, public skill contract and prior frozen boundaries.
+Exposure: No candidate material or participant outputs used.
+Trial execution: Pending.

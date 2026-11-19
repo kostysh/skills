@@ -1,0 +1,10 @@
+Before the next branch notice batch, have Build Operations fix the worker’s renderer selection and Print Workflow fix the large-print export profile. All four November 16 proofs were corrected, approved, and sent to print. The production settings still select the renderer and profile that caused the defects. (`production.txt` L37, `settings-readback.txt` S1–S4)
+
+| Owner | Change before the next batch | Verify on the production worker |
+|---|---|---|
+| Build Operations | Update the worker image so the export resolves to bundled `layout` 4.2. The worker’s PATH still selects 4.1, which clipped both return times in a controlled replay. | Confirm the export uses 4.2 and both street-facing proofs show the full return time on the first export. The proof audit found two affected proofs and triggered 8 minutes of rework. Its third finding described the same clipping. (`production.txt` L12/L17, `proof-review.txt` A1–A2, `settings-readback.txt` S1, `collector.json`) |
+| Print Workflow | Change the job definition from `largeprint-short` to `largeprint-full`. The replay produced the required branch headings after that switch. | Confirm the job uses `largeprint-full` and both large-print proofs show the branch heading on the first export. Manual acceptance found two missing headings and triggered 8 minutes of rework. (`production.txt` L23/L31, `settings-readback.txt` S2, `collector.json`) |
+
+On the next comparable batch, record the number of proofs checked, first-export defects by type, and any rework minutes or delay. For each recurrence, record where it was first detected. Aim for zero defects of either type and zero related rework, down from four affected proofs and 16 minutes. The records establish where each defect surfaced, but do not explain why it escaped earlier detection. Effectiveness is still unknown because no comparable batch has run. (`collector.json`, `production.txt` L12–L31, `settings-readback.txt` S4)
+
+Keep the deployed proof-ID check in place. It ran on all four proofs with zero duplicates. The same-build replay rejected a duplicate and accepted distinct IDs. (`collector.json`, `settings-readback.txt` S3)

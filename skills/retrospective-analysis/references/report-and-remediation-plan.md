@@ -13,11 +13,29 @@ The full-report and matrix requirements apply only to `full evidentiary` mode.
   relevant recommendation/step fields below without creating full-mode output.
 - `full evidentiary`: retain the complete report, machine-readable matrix,
   source disposition, mappings, counts, numbered remediation plan, and required
-  independent review specified below. Missing evidence limits this claim; it
-  does not silently switch the task to targeted.
+  independent review specified below. Apply the [computed summary and coverage
+  rules](evidence-and-causality.md#computed-summary-for-full-mode).
+
+When a supplied numeric summary is relevant to a targeted report, give one
+brief sentence with its available counts of negative audit verdicts, finding
+occurrences, distinct observations, and distinct root causes. Give these as
+separate totals in a full report. Count negative verdicts only from issued
+audit decisions. Keep failed or cancelled attempts with no verdict separate.
 
 In both modes, recommendations address only source-supported residual work.
 Creating tasks or implementing recommendations requires its own authority.
+When recommending multiple remedies, state their order by observed frequency
+and time lost. If those tie, give each remedy's cost on a common basis where
+supported. At equal remedy cost, put environment and tooling first and state
+that reason. Name any evidence gap that limits the comparison.
+
+For each remedy in either mode, tell the owner of the next comparable real
+change to record the confirming metric, where the problem was first detected
+if it recurs, whether audit or manual acceptance caused rework, and any delay
+they caused. Use the metric to look for a reduction, ideally to zero. Keep
+effectiveness unknown until comparable real evidence is available. For a rare
+failure, use a known violation in an authorized test to show that the intended
+check fails for it.
 
 ## Human-readable full report
 
@@ -35,6 +53,11 @@ Use the smallest structure that preserves these sections:
 
 Project conventions may rename sections or add frontmatter, but must not weaken
 the information contract.
+
+Include a control row for a previously resolved problem expected to stay at
+zero. Record the prior fix, recurrence measure, observed window and coverage,
+expected zero, and measured result. If no applicable prior problem or adequate
+measurement is available, give the reason and mark the control unavailable.
 
 The main text must stand without the matrix: show a few complete, consequential
 chains from decision and action through late discovery, correction, and any
@@ -75,15 +98,14 @@ preserve, at minimum:
 - source records and unavailable-source records;
 - atomic observations and dispositions;
 - failed audits and individual findings;
-- deduplicated problems;
+- deduplicated problems and the control row;
 - recommendations and their statuses;
 - history-verification evidence;
 - numbered remediation steps;
 - all cross-mappings and reconciled counts.
 
-Do not maintain two independent truths. Generate or check the summary counts and
-mappings from one stable dataset where practical, and compare the Markdown
-claims with the machine copy before review.
+Reconcile the computed figures and mappings against the machine copy before
+review.
 
 Required reconciliation:
 
@@ -120,15 +142,14 @@ fields needed to understand and act on the bounded recommendation:
 - prevention mechanism;
 - priority;
 - expected effect and approximate complexity;
-- acceptance and effectiveness evidence;
+- acceptance evidence and a confirming metric for effectiveness;
 - current disposition.
 
 Before accepting a high-severity problem, recurrence after operator correction,
 or `no_action` with partial prevention, ask what concrete action before the next
 comparable failure would stop it. If work remains, name the owner, change
 location, exact residual after verified fixes, a negative acceptance case that
-would reject an insufficient correction, and an effectiveness check on a later
-comparable task. If no new work is justified, identify the already verified
+would reject an insufficient correction. If no new work is justified, identify the already verified
 control and why it covers that failure path; a written rule, closed issue, audit
 `PASS`, or absence of another case is insufficient. Do not reimplement a fixed
 occurrence or merge different mechanisms merely because they share a symptom.
@@ -172,12 +193,9 @@ Every step contains:
 - effectiveness check;
 - publication, audit, and CI expectations where relevant.
 
-Order steps so that downstream work can use accepted controls:
-
-1. foundational skills and methods when later steps depend on them;
-2. project rules and process;
-3. domain, runtime, and justified tooling work;
-4. a final effectiveness gate on comparable future work.
+Follow prerequisites so downstream steps can use accepted controls. Use the
+recommendation priorities for independent steps. Retain the final
+effectiveness gate on comparable future work.
 
 Combine recommendations only when repository, owner, dependencies, residual
 change, review path, and evidence are compatible. Otherwise preserve independent
@@ -195,8 +213,9 @@ A full report may receive independent audit `PASS` while its program verdict is
 mean the analyzed project was problem-free or that recommendations are already
 implemented.
 
-Report acceptance requires:
+Acceptance of a complete full report requires:
 
+- computed collector summary for the claimed scope and reconciled coverage;
 - closed or explicitly limited source perimeter;
 - all failed audits accounted for;
 - zero undispositioned observations;
