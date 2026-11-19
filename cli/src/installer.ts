@@ -11,6 +11,7 @@ import { download } from './network.ts';
 
 export interface Result {
   changed: string[];
+  warnings: string[];
   errors: string[];
 }
 export class Installer {
@@ -79,12 +80,15 @@ export class Installer {
       if (!config.installations.length)
         throw new Error('No installations found. Install skills first.');
       const tasks: { installation: Config['installations'][number]; skill: Skill }[] = [];
+      const warnings: string[] = [];
       const errors: string[] = [];
       for (const installation of config.installations)
         for (const installed of installation.skills) {
           const available = catalog.skills.find((s) => s.name === installed.name);
           if (!available) {
-            errors.push(`${installed.name}: skill is missing from the catalog.`);
+            warnings.push(
+              `${installed.name} is missing from the current catalog. Local files at ${join(installation.path, installed.name)} were left untouched.`,
+            );
             continue;
           }
           if (semver.lt(available.version, installed.version)) {
@@ -97,14 +101,14 @@ export class Installer {
         }
       const result = await this.perform(config, tasks);
       result.errors.unshift(...errors);
-      return result;
+      return { ...result, warnings };
     });
   }
   private async perform(
     config: Config,
     tasks: { installation: Config['installations'][number]; skill: Skill }[],
   ): Promise<Result> {
-    const result: Result = { changed: [], errors: [] };
+    const result: Result = { changed: [], warnings: [], errors: [] };
     for (const { installation, skill } of tasks) {
       if (this.signal?.aborted) break;
       try {

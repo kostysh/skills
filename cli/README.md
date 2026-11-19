@@ -43,13 +43,17 @@ use `update`.
 Updates check every installation in `~/.kskills/setup.json`. If a skill's
 destination contains local changes or an unmanaged directory, the CLI preserves
 it and reports a conflict with a nonzero exit code. Missing managed skill
-directories are restored from the catalog.
-When all checks succeed and no changes are needed, the CLI prints `All up to date`.
+directories are restored when the skill is available in the catalog. If a
+recorded skill is absent from the current catalog, the CLI warns on stderr,
+keeps the local files and configuration entry, and continues with the other
+skills. The command exits with code 0 when only warnings remain.
+
+The CLI prints `All up to date` when no updates, warnings, or errors occur.
 Without a saved installation, run `install` first.
 
-Exit codes: 0 for success, 1 for an error or partial result, 2 for invalid
-arguments, and 130 for cancellation. Prompts and diagnostics go to stderr;
-results go to stdout.
+Exit code 0 means success, including success with warnings. Any error gives
+code 1. Invalid arguments give code 2 and cancellation gives code 130.
+Results go to stdout. Prompts and diagnostics go to stderr.
 
 The previous skill directory is kept until the new configuration is saved.
 After a crash, `~/.kskills/setup.lock` may remain: remove it only after checking
