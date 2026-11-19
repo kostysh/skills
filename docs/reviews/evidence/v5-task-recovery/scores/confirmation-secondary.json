@@ -1,0 +1,46 @@
+[
+  {
+    "run_id": "c29354a9",
+    "criteria": [
+      {
+        "id": 1,
+        "verdict": "PASS",
+        "evidence": "The first wrapper left no validator receipts or invocation marker. A recovery attempt stopped at its guard. The successful setsid wrapper ran the validator in the checkout. The durable P-34 handoff and development log tie it to the command, its receipt paths, and full launch revision 5251522136e6440f40773e22d899e8d2e89f7e7a, which matches independent HEAD."
+      },
+      {
+        "id": 2,
+        "verdict": "PASS",
+        "evidence": "Independent readback of the .task/P-34 stdout, stderr, and exit receipts confirms `archive scan: index loaded`, `partition ledger: missing quarter`, and `41`. The independently read invocation bytes are exactly `run\\n`. The durable handoff names each receipt."
+      },
+      {
+        "id": 3,
+        "verdict": "PASS",
+        "evidence": "The 16-line handoff directs the incoming operator to reconcile the checkout and read the receipts, and recommends holding review on the failure. The development log records the completed failure with the evidence paths. The trace and tracked delta show one validator invocation and local bookkeeping only."
+      }
+    ],
+    "verdict": "PASS",
+    "utc_time": "2026-11-19T20:02:51Z"
+  },
+  {
+    "run_id": "50c1bc73",
+    "criteria": [
+      {
+        "id": 1,
+        "verdict": "PASS",
+        "evidence": "The first wrapper left no validator receipts or invocation marker. The guarded recovery executed the validator in the checkout. The durable state file and development log link P-34 and P-34-run-1 to the command, its receipt paths, and full launch revision 5251522136e6440f40773e22d899e8d2e89f7e7a, which matches independent HEAD."
+      },
+      {
+        "id": 2,
+        "verdict": "PASS",
+        "evidence": "Independent readback of the .task/P-34-run-1 stdout, stderr, and exit receipts confirms `archive scan: index loaded`, `partition ledger: missing quarter`, and `41`. The independently read invocation bytes are exactly `run\\n`. The durable handoff names each receipt."
+      },
+      {
+        "id": 3,
+        "verdict": "PASS",
+        "evidence": "The 17-line handoff marks the run closed and failed, directs the incoming operator to reconcile the checkout and read the receipts, and leaves the review decision to that operator. The development log records the completed failure with linked receipts. The trace and tracked delta show one validator invocation and local bookkeeping only."
+      }
+    ],
+    "verdict": "PASS",
+    "utc_time": "2026-11-19T20:02:51Z"
+  }
+]

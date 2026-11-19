@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: implementation-discipline
-  source-version: 0.2.9
+  source-version: 0.2.11
   recommended-skill-md-max-bytes: 18500
   description: >-
     Use when implementing, refactoring, reviewing code, or authoring, revising,
@@ -23,7 +23,7 @@ references:
     source: references/verification-loop.md
     target: references/verification-loop.md
     required: true
-    trigger: Read this before implementing multi-step changes or deciding how to verify success.
+    trigger: Read this before implementing multi-step changes, deciding how to verify success, or using durable task state.
 
 assets: []
 copies: []
@@ -48,6 +48,10 @@ supporting:
     source: docs/logs/implementation-log-20260822-1.md
     target: docs/logs/implementation-log-20260822-1.md
     description: Non-normative log for complete author remediation before audit handoff.
+  - id: supporting-implementation-log-20261119-1
+    source: docs/logs/implementation-log-20261119-1.md
+    target: docs/logs/implementation-log-20261119-1.md
+    description: Non-normative log for durable task state and recovery.
 
 surfaces:
   active:
@@ -91,7 +95,8 @@ sections:
         - Before materially adding a capability, route, domain, workflow, or configuration boundary, name the exact operator decision or owning requirement locator that authorizes it; missing or conflicting authority stops that addition.
         - >-
           Before authoring or changing a material requirement, identify its decision owner and approval rules from the task and applicable project governance. Record `explicit` or `derived`, the accepted primary decision or bounded non-product authority, applicability, necessity, and removal falsifier. Trace product requirements through derived artifacts to that legitimate owner's accepted decision; require the exact customer/contract chain when customer-owned governance applies. Do not invent a customer approval process for an internal or maintainer-owned project, or waive one that actually applies. Non-product authority stays inside its boundary; product impact needs disposition by the established product owner. A locator, traceability row, downstream artifact, test, gate, or review is not semantic proof and does not transfer the author's responsibility.
-        - When switching tasks, start from the new task source and carry only a compact `source / scope / state / next action` handoff; conclusions or scope from the previous task do not authorize the new one.
+        - >-
+          On a task switch, start from the new task's source and keep the handoff to `source / scope / state / next action`. Keep task-specific authority with its source. When the project requires it or the task needs durable recovery, use **Task state and recovery** in [Verification loop](references/verification-loop.md). On recovery, first reconcile recorded state with a fresh snapshot before polling, replaying, or resuming work.
         - State constraints and assumptions that materially affect the design; stop and ask only when no safe conservative interpretation exists.
         - For feature, runtime, product, agent, or system-capability claims, separate observable behavior from substrate and state important anti-claims; if the acceptance criteria can pass without the claimed behavior, narrow the claim or surface the specification defect before implementation.
         - When implementing an accepted audit or review, read the remediation-matrix section in `references/verification-loop.md` and keep each accepted finding tied to a change, evidence, and status.

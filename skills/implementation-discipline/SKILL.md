@@ -5,9 +5,9 @@ description: Use when implementing, refactoring, reviewing code, or authoring,
   to keep scope source-authorized, minimize conceptual surface, and require
   proportional evidence.
 metadata:
-  source-version: 0.2.9
+  source-version: 0.2.11
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: b1091bf3537fdc0c6807007e4679eff00280414f4069d7c571a8e8551801e9c9
+  skillforge-source-hash: f1879b76fa03936cb01c80b86baf46439312e60ac6b9d32da02d7c48ecb1a9db
 ---
 
 # implementation-discipline
@@ -49,7 +49,7 @@ Make the requested outcome, source authority, mutation boundary, constraints, an
 6. For a reported bug, inspect the relevant source and record the available failure witness, cause or violated contract, and a falsifying check before mutation. Reproduce the original path when available. If that environment is unavailable but inspected code and authoritative inputs establish the bounded correction, perform the authorized local fix and limit the unreplayed claim; a plausible adjacent hypothesis alone does not justify a change. Treat new behavior clarification as a requirement decision, not automatically as an existing bug.
 7. Before materially adding a capability, route, domain, workflow, or configuration boundary, name the exact operator decision or owning requirement locator that authorizes it; missing or conflicting authority stops that addition.
 8. Before authoring or changing a material requirement, identify its decision owner and approval rules from the task and applicable project governance. Record `explicit` or `derived`, the accepted primary decision or bounded non-product authority, applicability, necessity, and removal falsifier. Trace product requirements through derived artifacts to that legitimate owner's accepted decision; require the exact customer/contract chain when customer-owned governance applies. Do not invent a customer approval process for an internal or maintainer-owned project, or waive one that actually applies. Non-product authority stays inside its boundary; product impact needs disposition by the established product owner. A locator, traceability row, downstream artifact, test, gate, or review is not semantic proof and does not transfer the author's responsibility.
-9. When switching tasks, start from the new task source and carry only a compact `source / scope / state / next action` handoff; conclusions or scope from the previous task do not authorize the new one.
+9. On a task switch, start from the new task's source and keep the handoff to `source / scope / state / next action`. Keep task-specific authority with its source. When the project requires it or the task needs durable recovery, use **Task state and recovery** in [Verification loop](references/verification-loop.md). On recovery, first reconcile recorded state with a fresh snapshot before polling, replaying, or resuming work.
 10. State constraints and assumptions that materially affect the design; stop and ask only when no safe conservative interpretation exists.
 11. For feature, runtime, product, agent, or system-capability claims, separate observable behavior from substrate and state important anti-claims; if the acceptance criteria can pass without the claimed behavior, narrow the claim or surface the specification defect before implementation.
 12. When implementing an accepted audit or review, read the remediation-matrix section in `references/verification-loop.md` and keep each accepted finding tied to a change, evidence, and status.
@@ -176,7 +176,7 @@ Start with a concise result in plain, understandable language. Report outcome, e
 
 ## Required active references
 - [Core principles](references/core-principles.md) — Read this when choosing between materially different designs or when the complexity exception gate applies.
-- [Verification loop](references/verification-loop.md) — Read this before implementing multi-step changes or deciding how to verify success.
+- [Verification loop](references/verification-loop.md) — Read this before implementing multi-step changes, deciding how to verify success, or using durable task state.
 
 ## Portability rules
 

@@ -1,0 +1,21 @@
+# Independent skill review — 2026-11-19
+
+**FAIL.** The new long-run procedure can lose terminal diagnostics when it follows the skill's stated retention and readback instructions. Review mode is change. Assurance is independent. This verdict covers the `implementation-discipline` 0.2.10 task-switch and recovery delta from 0.2.9.
+
+## P2. Long-run recovery can lose stderr and launch attribution
+
+The installed `references/verification-loop.md` text at lines 46–47 directs the agent to retain "stdout and terminal exit status". Lines 58–59 direct it to read "the saved stdout and exit status". The Stage 8 plan actions 3 and 11 require enough saved output and exit evidence to recover a completed run without repeating it. The public recovery contract R4 requires reconciling the operation identity and checkout, then reading saved stdout/stderr and the exit record. The Stage 8 setup guidance also names the launch revision.
+
+The supplied I2 fixture provides a direct witness. Its ledger check exits 42, writes the entire diagnostic to stderr and leaves stdout empty. A new resumable operation that saves only the named streams and fields can recover the exit number but lose the failure reason or its launch binding. The sample demonstrates the effect of missing stderr. Loss of revision binding is the parallel risk when the recorded operation lacks a launch identity or revision. The skill still requires reconciliation and holding dependent actions when facts are missing. The demonstrated impact is incomplete recovery evidence, with no supported path to a false readiness claim in the observed case.
+
+I2 prepared both streams, the exits and launch revision before either subject started. Both correctly read the retained values and held current-head readiness. Their PASS scores stand. I2 exercises recovery from a sufficient packet. It did not exercise the skill's launch preparation.
+
+The author can close this by requiring retained operation identity and launch revision where applicable, output containing both streams, and the terminal exit record. The recovery step should reconcile the recorded operation and revision before using both streams and the exit. A fresh case should require the subject to launch a long operation whose diagnostic appears only on stderr. Verify persisted evidence after simulated loss of session output, its launch binding and the unchanged invocation count on readback. Recheck the changed installed package and adjacent recovery behavior.
+
+## Review basis and checks
+
+- The authorized skill delta aligns step 9 with the project-selected task state and the separate operator checkpoint and puts first-action reconciliation before polling, replay or resumption. The root points to one conditional section in the existing verification reference. The package remains portable written guidance with no added runtime or new dependency. The versioned baseline remains 0.2.9.
+- Archive SHA-256 for 0.2.10 is `2d211e2c12c96fb0b572056f4d9dc0d400e37a3dcd882c9ee7132b172112a8ba`. Catalog content hash is `5db313586d14320e495b673434465c52da616bf9b7cd75e72ac8c881cba0a717`. The source patch SHA-256 is `73df71efe18e4bc605975f851b66eedba95727ce5290db1371d1510070aeec61`. The patch check passed against skills commit `082e6d78720c87e047e2ad08be45a4528259876c`.
+- Verified the patch file digests and source/generated/installed byte parity. Both archives contain the same three active paths. Recomputed their archive and catalog fingerprints from the actual files and verified archive members against the installed bytes. Applied compiler `lint` and `check` to the full author source bundle and `check` to the compiled output. The install archive omits supporting docs and cannot be checked as a full source bundle by that command.
+- Verified the frozen packet checksums, all four trial skill digests, equivalent initial manifests per pair and persisted workspace changes. The locked scores yield one better pair and one pair where both passed. I2 agreement is 2/2. The forms of evidence are structural inspection, the two synthetic cases, and their recorded local actions. The sample does not establish real compaction, hook or collector behavior, natural activation, cross-model transfer or delivery improvement. [Study evidence](README.md) · [Identities and observations](records.json)
+

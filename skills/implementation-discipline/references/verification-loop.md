@@ -1,6 +1,6 @@
 # Verification loop
 
-Read this reference before implementing multi-step changes or when deciding how to prove that a change worked.
+Read this reference before implementing multi-step changes, deciding how to prove that a change worked, or using durable task state.
 
 ## Define proof before expanding the solution
 
@@ -29,6 +29,38 @@ For a multi-step change, keep the loop short:
 A focused unit test, smoke command, or local self-check is sufficient for low-risk logic when it would fail on the relevant regression. Security, privacy, money, data loss, auth, accessibility, release, migration, and production-wiring paths require stronger project or domain evidence at the real boundary.
 
 If the intended check cannot run, use the next-best static or behavioral check and report exactly what remains unproven. Tests, mocks, schemas, wrappers, logs, and documentation prove only their own boundary; they do not prove a broader runtime capability.
+
+## Task state and recovery
+
+Use one compact, rewritable task state file when the project requires it or
+the task needs to survive an interruption or session handoff. Follow the
+project's location and size limit where defined. Keep it out of task commits.
+Record the source and key constraints, scope, current state, next permitted
+action, and relevant open decisions, blockers, or active operations. Include
+counts needed for project limits. Short, uninterrupted work can use the
+ordinary handoff where the project allows it.
+
+Refresh the file at each plan-step boundary, before a long run, handoff, or
+hard stop, and at the end of a stage. On a task switch, save the previous
+task's state before leaving it and load the new task's own file if used.
+Before launching a long run, record its operation ID, worktree, and revision
+in the state file. Set up durable capture of stdout and stderr (separately
+or in a combined log) and of the terminal exit status. Before launch, save
+locators for both streams and the terminal exit record that remain usable
+after a session change.
+
+Put completed checks and operation evidence in the existing development log.
+Put the result and final reconciliation in the operator checkpoint or closure
+report where applicable. A pointer in the state file is sufficient.
+
+After compaction, failure, or a session change, compare the file with a fresh
+snapshot of relevant mutable state and review operator instructions received
+since the last update. If automatic recovery is unavailable, collect the
+current facts directly. Reconcile the recorded operation ID, worktree, and
+revision with the fresh snapshot. Report a missing or oversized file, a
+stale value, or an unavailable required fact. Hold actions that depend on
+the gap until it is resolved. For a completed run, read its saved stdout,
+stderr, and terminal exit record before deciding whether a rerun is needed.
 
 ## Trace material cross-layer claims from producer to reload
 
