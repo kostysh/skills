@@ -1,0 +1,145 @@
+{
+  "subjects": [
+    {
+      "label": "11af0a",
+      "case": "boundary",
+      "variant": "C",
+      "issuedRootSHA256": "0bb619cacfdda4e5599b1371a2e8e093e9c30fd09436356dc83305afe3011fbc",
+      "contrastAnchors": [
+        "- Verify the claimed fix in the affected release."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_1",
+          "indexes": [
+            0
+          ],
+          "sha256": "2aba068fcdf2044874f83dc85769bc24b146c1bef6d5bed851cdf1ab5ee2f30a"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "0a2692d775ea88d5f31f805cc669909c5e3053ccfb076c0302973b5974691ce9",
+      "eventSHA256": "8297e480acb5a9887a3716b493a50959b651b8921f2bf4cb525e8a6ea4a0da36",
+      "unchangedOriginalFiles": true
+    },
+    {
+      "label": "9d6f08",
+      "case": "ordinary",
+      "variant": "D",
+      "issuedRootSHA256": "1dddd58af37548cdd35aab880396980b717f913d1738d46ac041a79430dc7957",
+      "contrastAnchors": [
+        "- Verify the fix on the affected release and name any step still needed there."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_1",
+          "indexes": [
+            0
+          ],
+          "sha256": "fa9c167b23c4ac7bd9300c2fe93ffa3bff3083f9fce766dc2b9156e9f0eb33f1"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "a621aedf1d902d64d3ab26b68abeed48ad1e43220dd44cda53502a5198a27e62",
+      "eventSHA256": "532f5c4acabc4c1e5f469d935d2804aa5a0cbc3c78fe4160bb53e139e205e455",
+      "unchangedOriginalFiles": true
+    },
+    {
+      "label": "e8a69b",
+      "case": "boundary",
+      "variant": "D",
+      "issuedRootSHA256": "1dddd58af37548cdd35aab880396980b717f913d1738d46ac041a79430dc7957",
+      "contrastAnchors": [
+        "- Verify the fix on the affected release and name any step still needed there."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_1",
+          "indexes": [
+            0
+          ],
+          "sha256": "185eb3b5c872dd92745ee5db65c30dcaade53fe2fd595ff2b40bc2208f0642b3"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "4dcdd9a6e086b7450d2e755091172f5c375cdab4f72ea334c498caaffe6a683c",
+      "eventSHA256": "5510c323bc9cc5bc6bc1d6adbad0cc16646c603f338494c87dab7ce6ca429cab",
+      "unchangedOriginalFiles": true
+    },
+    {
+      "label": "88f5ae",
+      "case": "equivalent",
+      "variant": "D",
+      "issuedRootSHA256": "1dddd58af37548cdd35aab880396980b717f913d1738d46ac041a79430dc7957",
+      "contrastAnchors": [
+        "- Verify the fix on the affected release and name any step still needed there."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_1",
+          "indexes": [
+            0
+          ],
+          "sha256": "05ad95bea63f239f19d737f5223e58a4330eaaab4c1e9afafce848eb7d747360"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "c6427bfcd0049f76cad913886df93c6d519463d36158d7cc51ce99d3b3d26636",
+      "eventSHA256": "1cb6e02f3d044f8d44d6f768f752431d7401a6415347034c409e616000ab70f9",
+      "unchangedOriginalFiles": true
+    },
+    {
+      "label": "63730d",
+      "case": "holdout",
+      "variant": "D",
+      "issuedRootSHA256": "1dddd58af37548cdd35aab880396980b717f913d1738d46ac041a79430dc7957",
+      "contrastAnchors": [
+        "- Verify the fix on the affected release and name any step still needed there."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_2",
+          "indexes": [
+            0
+          ],
+          "sha256": "d74c868b883b7f43e8cd0a0d204bcb8d38742f273f8236e65a7337f840f4ee5b"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "cfb75ecae2d5730bd0a4d0e2625b92c189dea73560ac45b6439cb74957218df8",
+      "eventSHA256": "300eccadbae525ff4b21ad953c6691568b0f9e402a8c788e224ffa2ca7dfce91",
+      "unchangedOriginalFiles": true
+    },
+    {
+      "label": "e55a84",
+      "case": "equivalent",
+      "variant": "A",
+      "issuedRootSHA256": "0aadb2d2303b5f4910bc563c6b036fc015ae523260c8dd84f749eb21a9574f97",
+      "contrastAnchors": [
+        "- No commit subject, issue state, or document claim alone proves implementation."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_1",
+          "indexes": [
+            0
+          ],
+          "sha256": "f6829ffdbcb5f5fa914d95cf370666b9392a3622350b8697d2faaba7f4dbe4f3"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "738c84a13e4d82424e42d124087e9b02e219f96927e37ac6fc574f114e7e15e2",
+      "eventSHA256": "b2af0668a8b04e9e4e16893779bf5d59b35ce85571c90e091825a88397c66e06",
+      "unchangedOriginalFiles": true
+    }
+  ],
+  "grader": {
+    "signedSHA256": "da69b5a4dab0cb77a238e10236a9a34cb67d84d954c82e57bf19ab3cccd303d1",
+    "eventsSHA256": "7d5cf28c8397e2ef95273acb5258dbd7390deb8f5f196bdc3f521297173e2e4e",
+    "portableSHA256": "be1788e05999239cb708ec91c865f64e224794a9c7d70d442077c0097338d2b1",
+    "deliveredInputsCount": 97,
+    "packetSHA256": "01cdf83ae5b1025c3281b578e719a43abc2bcea622eb9ef4e87f80ca0983e11a"
+  },
+  "researchInputsSHA256": "38924b7e88d16ac864cd60b08beab6b47361d224a30fb9214224dfb8408794d0",
+  "rawRecordsSHA256": "93b5d7d4afdca89281ba9aaef995e236e1e764d98733e404ec4fc10da550a2c3"
+}

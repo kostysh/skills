@@ -1,0 +1,5 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -105 +105 @@
+-- No commit subject, issue state, or document claim alone proves implementation.
++- Verify the claimed fix in the affected release.

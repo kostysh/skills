@@ -1,0 +1,167 @@
+{
+  "subjects": [
+    {
+      "label": "5ac8e3",
+      "case": "equivalent",
+      "variant": "E",
+      "issuedRootSHA256": "b53c020c287adc96321d4a54fb8c40e614a5c53e562716e604398afa7f68f548",
+      "contrastAnchors": [
+        "1. Follow the mode/output contract in the report/remediation reference. Keep a targeted report concise. Give the evidence, causal limits, prior-fix status, and remaining action. If the affected installation still fails in service, recommend delivering the fix to that installation and verifying it there. Report separate branch work in its own scope."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_1",
+          "indexes": [
+            0
+          ],
+          "sha256": "79dde5dff85b89f49be7bed060811799aef205f9308205e3dbc9fd15a5bd3755"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "93c6439354a14f696b10f7fca3afde305524bfe1c2d22a3d064e60fc8726f3ac",
+      "eventSHA256": "d0038e6a69bbaf3d163066b4b380cb8087de324cd4adb2263dd4254cfcd4ac9d",
+      "unchangedOriginalFiles": true
+    },
+    {
+      "label": "041a5b",
+      "case": "boundary",
+      "variant": "C",
+      "issuedRootSHA256": "0bb619cacfdda4e5599b1371a2e8e093e9c30fd09436356dc83305afe3011fbc",
+      "contrastAnchors": [
+        "1. Follow the mode/output contract in the report/remediation reference. A targeted answer keeps evidence, causality limits, prior-fix status, and a proportionate recommendation concise; it does not require a matrix or a project task hierarchy."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_1",
+          "indexes": [
+            0
+          ],
+          "sha256": "07508376eae7dfd729f241cb799a2c575df353aac3ffdb2686eb02a43b62b764"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "3834fc8f84d4329e58fed9d5109a9b03b33bdf96d1a3c9d829042b8ed9bf88af",
+      "eventSHA256": "e1225d9a64b5f512bf0da3b483d5c51dc19fca29a13a4a90c65e6ccfffa0dfb8",
+      "unchangedOriginalFiles": true
+    },
+    {
+      "label": "e25850",
+      "case": "retired",
+      "variant": "C",
+      "issuedRootSHA256": "0bb619cacfdda4e5599b1371a2e8e093e9c30fd09436356dc83305afe3011fbc",
+      "contrastAnchors": [
+        "1. Follow the mode/output contract in the report/remediation reference. A targeted answer keeps evidence, causality limits, prior-fix status, and a proportionate recommendation concise; it does not require a matrix or a project task hierarchy."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_2",
+          "indexes": [
+            0
+          ],
+          "sha256": "fd2f73ecb3488b09a409a592e07d34985ebc2b94a88167ac0e958d5991aee9c8"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "99568559e70b2d397dc5fabc3507333e62dc2ba955cfc9e3a4764d6c9a6d7c5d",
+      "eventSHA256": "a033215ddf44a591e00d42aabca9badb6066c97693583c2259ea52ab84b1022a",
+      "unchangedOriginalFiles": true
+    },
+    {
+      "label": "c360ef",
+      "case": "holdout",
+      "variant": "E",
+      "issuedRootSHA256": "b53c020c287adc96321d4a54fb8c40e614a5c53e562716e604398afa7f68f548",
+      "contrastAnchors": [
+        "1. Follow the mode/output contract in the report/remediation reference. Keep a targeted report concise. Give the evidence, causal limits, prior-fix status, and remaining action. If the affected installation still fails in service, recommend delivering the fix to that installation and verifying it there. Report separate branch work in its own scope."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_1",
+          "indexes": [
+            0
+          ],
+          "sha256": "9bb7cc1b98a4ad3cdfe54746880a7bc833cb0efc1abf5ca0d3767867a4972650"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "7f17e233dfad81ab2881608fefa5631f2709b3e8d0a58d60c7c31b9f2c86416e",
+      "eventSHA256": "5310b1508c227a15e937ea05ff73059cafcdf8db1d5ef00a595ab0078cd807c0",
+      "unchangedOriginalFiles": true
+    },
+    {
+      "label": "c9b976",
+      "case": "retired",
+      "variant": "E",
+      "issuedRootSHA256": "b53c020c287adc96321d4a54fb8c40e614a5c53e562716e604398afa7f68f548",
+      "contrastAnchors": [
+        "1. Follow the mode/output contract in the report/remediation reference. Keep a targeted report concise. Give the evidence, causal limits, prior-fix status, and remaining action. If the affected installation still fails in service, recommend delivering the fix to that installation and verifying it there. Report separate branch work in its own scope."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_1",
+          "indexes": [
+            0
+          ],
+          "sha256": "c9ea4fe661f535e85a9913ed3fd04cecb3a80d235355eb054b8b871feb1a9246"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "bc74c3c4d19f17d333cf2691a3ce8446723567c2325f1e92a95ff1bcb823a2d9",
+      "eventSHA256": "c0e636f68188f63355cdd14199e40ad381e0807aefa38f6bfa383e29fa153e7f",
+      "unchangedOriginalFiles": true
+    },
+    {
+      "label": "f60e22",
+      "case": "same",
+      "variant": "E",
+      "issuedRootSHA256": "b53c020c287adc96321d4a54fb8c40e614a5c53e562716e604398afa7f68f548",
+      "contrastAnchors": [
+        "1. Follow the mode/output contract in the report/remediation reference. Keep a targeted report concise. Give the evidence, causal limits, prior-fix status, and remaining action. If the affected installation still fails in service, recommend delivering the fix to that installation and verifying it there. Report separate branch work in its own scope."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_1",
+          "indexes": [
+            0
+          ],
+          "sha256": "a57e906f80f707d06f3de240474b6ff43de6eccdfe2e0ebdbf595d67e9f58f89"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "01f22af0ade7bdf204ee831c1e87ca44c0b0ca3464a3d7a9b25a06fd7c1995d9",
+      "eventSHA256": "43e9d5c05ead309b0a7a42457f2d94040fd1253edc769e490e8eba76a9ce2297",
+      "unchangedOriginalFiles": true
+    },
+    {
+      "label": "075c5c",
+      "case": "boundary",
+      "variant": "E",
+      "issuedRootSHA256": "b53c020c287adc96321d4a54fb8c40e614a5c53e562716e604398afa7f68f548",
+      "contrastAnchors": [
+        "1. Follow the mode/output contract in the report/remediation reference. Keep a targeted report concise. Give the evidence, causal limits, prior-fix status, and remaining action. If the affected installation still fails in service, recommend delivering the fix to that installation and verifying it there. Report separate branch work in its own scope."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_1",
+          "indexes": [
+            0
+          ],
+          "sha256": "a7aeeb410f2299a0c5d4936e8455655190a1a3e53a5c39a6b2fa38ca3ca5a79a"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "f0d9a446b034e1bbef3733b38730e5e5273744a6ba10b7c3d4345ea40f5dd242",
+      "eventSHA256": "f58fb8de4885d8156af9beb41a1088d1ce7b825263f06ef40496c0f444989b12",
+      "unchangedOriginalFiles": true
+    }
+  ],
+  "grader": {
+    "signedSHA256": "92e49584383d651e8516c625f3232948cc53e0f51b5b57195c512d3a289b3d14",
+    "eventsSHA256": "d85cba3412f7f2ced4d7f81ddba6b1f42bfbe37b761e225ae7eb3ab0a341479b",
+    "portableSHA256": "7ebf620e1ae451ba853acc0312b3709e18248cee14c33180c64667f279e9f237",
+    "deliveredInputsCount": 121,
+    "packetSHA256": "a8216365e65b613a35d4a1cb4f94a852a39b454b700e73b3fe90b597831733a0"
+  },
+  "researchInputsSHA256": "9cde93d39500a836d9cf1365dfa41171d1269de3b09770996cee64efc947001b",
+  "rawRecordsSHA256": "732e809fe52c4d3963bd67f8086ccd799ddd6c6cf6dd4bfd9b888408500cb1b7"
+}

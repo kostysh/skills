@@ -1,0 +1,5 @@
+--- C/SKILL.md
++++ D/SKILL.md
+@@ -105 +105 @@
+-- Verify the claimed fix in the affected release.
++- Verify the fix on the affected release and name any step still needed there.
