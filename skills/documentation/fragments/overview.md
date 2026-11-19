@@ -14,9 +14,8 @@ architecture is in scope.
 - Capability: produce an actionable document, review, or restructure handoff
   for a named reader and target state, with claims and completion status matched
   to current evidence.
-- Anti-claim: a correct Diataxis category, polished prose, Markdown lint, link
-  check, generated site, or docs build does not prove factual or executable
-  correctness by itself.
+- Anti-claim: form, prose, and structural checks alone cannot prove factual or
+  executable correctness.
 - Use safe editorial assumptions for presentation details only. Never assume
   product behavior, commands, defaults, permissions, errors, version support,
   or rationale.

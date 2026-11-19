@@ -1,0 +1,64 @@
+[
+  {
+    "id": "5030a37939",
+    "case": "c2",
+    "assessed_at_utc": "2026-11-19T20:16:50Z",
+    "criteria": {
+      "1": {
+        "verdict": "PASS",
+        "reason": "The report identifies the prior passing receipt and the required project-wide command at current HEAD. It holds publication because README.md:3 still points to the removed manual.md.",
+        "observations": [
+          "cat .local/check.json showed exit_code 0 and whole-repository scope at the older revision.",
+          "Python subprocess.run invoked sh bin/check-links and reported the child process exit=1 with stderr README.md:3: unresolved local path \"manual.md\". The recorder process itself exited 0.",
+          "The subject saw an empty .local/link-calls before the command and one line after. The independent operator readback confirmed one line at the inspected HEAD."
+        ]
+      },
+      "2": {
+        "verdict": "PASS",
+        "reason": "The current guide's command was exercised successfully, and the report separated that result from the broken start-page navigation.",
+        "observations": [
+          "The numbered read of README.md, PROJECT.md, and guide.md showed the start page's stale link and the current guide's exact command.",
+          "Python subprocess.run invoked node bin/inventory.mjs --list and reported child exit=0, stdout Product A followed by a newline, and empty stderr. Node v24.15.0 and Linux x86_64 were observed."
+        ]
+      }
+    },
+    "overall": "PASS",
+    "source_revisions": {
+      "inspected_head": "32ceec56d0deac3b345ce0c7b9f0d32f0bc09134",
+      "saved_structural_receipt": "cb437d4b675ed806291dc6cc3da243ab1459f744"
+    },
+    "post_run_changes": "Pre-run and post-run git status were clean. One line was appended to ignored .local/link-calls. No other changes or publication actions appear in the observed record.",
+    "limits": "Assessment covers the supplied local fixture, command outputs, clean Git status, and operator readback. The readback reports one receipt hash without providing a labeled pre-run receipt hash in this record."
+  },
+  {
+    "id": "605d25e4c8",
+    "case": "c2",
+    "assessed_at_utc": "2026-11-19T20:16:50Z",
+    "criteria": {
+      "1": {
+        "verdict": "PASS",
+        "reason": "The report identifies the prior passing receipt and the current required link-check failure. It holds publication because README.md:3 still points to the removed manual.md.",
+        "observations": [
+          "Reading .local/check.json showed exit_code 0 and whole-repository scope at the older revision.",
+          "Direct invocation of sh bin/check-links exited 1 with README.md:3: unresolved local path \"manual.md\". A separate file check and Git rename record confirmed manual.md was absent and guide.md present.",
+          "The subject measured .local/link-calls at zero lines before and one after. The independent operator readback confirmed one line at the inspected HEAD."
+        ]
+      },
+      "2": {
+        "verdict": "PASS",
+        "reason": "The report traces the current guide and distinguishes successful execution of its inventory command from the broken route to that guide.",
+        "observations": [
+          "Numbered source reads showed the start-page link, the guide's literal command, and PROJECT.md's expected result.",
+          "node --version && uname -sm && node bin/inventory.mjs --list exited 0 and printed Node v24.15.0, Linux x86_64, and Product A. The inventory invocation was the final element of the successful chain."
+        ]
+      }
+    },
+    "overall": "PASS",
+    "source_revisions": {
+      "inspected_head": "32ceec56d0deac3b345ce0c7b9f0d32f0bc09134",
+      "saved_structural_receipt": "cb437d4b675ed806291dc6cc3da243ab1459f744"
+    },
+    "post_run_changes": "Pre-run and post-run git status were clean. One line was appended to ignored .local/link-calls. The post-run receipt SHA-256 matched the operator readback. No other changes or publication actions appear in the observed record.",
+    "limits": "Assessment covers the supplied local fixture, command outputs, clean Git status, and operator readback. The subject's post-run receipt hash and the operator readback agree. A pre-run hash is unavailable in this record."
+  }
+]

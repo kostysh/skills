@@ -1,0 +1,1 @@
+Review the documentation move in this local checkout for publication. Check the route from the reader’s start page through the documented inventory operation. Use the project’s recorded checks. Give Release a concise readiness decision and evidence. This is a read-only review. You may run the documented local checks and commands. Do not edit or publish the project.

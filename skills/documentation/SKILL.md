@@ -5,11 +5,11 @@ description: Create, review, restructure, and rewrite source-grounded technical
   explanations, docs architecture, and audits of user-need fit, factual support,
   task completion, and maintainability.
 metadata:
-  source-version: 0.2.3
+  source-version: 0.2.4
   tags: documentation, technical-writing, diataxis, tutorials, how-to, reference,
     explanation
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 4f3c6af8435473999b7ddde6f20e7dd6e9ea350fc314965865510f6f6dc6247c
+  skillforge-source-hash: 53588c342aa151910eccf0cef88b30008a3bfdb13b2def17b8ed0a08e99e7b9a
 ---
 
 # documentation
@@ -56,9 +56,8 @@ architecture is in scope.
 - Capability: produce an actionable document, review, or restructure handoff
   for a named reader and target state, with claims and completion status matched
   to current evidence.
-- Anti-claim: a correct Diataxis category, polished prose, Markdown lint, link
-  check, generated site, or docs build does not prove factual or executable
-  correctness by itself.
+- Anti-claim: form, prose, and structural checks alone cannot prove factual or
+  executable correctness.
 - Use safe editorial assumptions for presentation details only. Never assume
   product behavior, commands, defaults, permissions, errors, version support,
   or rationale.
@@ -194,14 +193,13 @@ Match the completion claim to current semantic, factual, executable, and publica
 1. Trace factual claims to authoritative sources and check terminology, language, prerequisites, examples, and expected results against the target version.
 2. For executable CLI or Node/TypeScript documentation, match the handoff to the exact target version and executed artifact, runtime and platform, commands and flags, prerequisites, stdout/stderr, exit codes, and observed success/error evidence as applicable. For packaged CLI instructions, identify the package and installed bin. Use source or typecheck evidence only for its boundary; a source-tree run cannot verify instructions for an untested installed artifact.
 3. For tutorials, safely walk the path end to end when possible; for how-to guides, check the main executable path and material branches; for reference, compare the scoped entries with the authoritative contract; for explanation, check factual claims and attributed rationale.
-4. For moved or published content, run available link, navigation, route, and docs-build checks; treat formatting, lint, file presence, and build success as structural evidence only.
+4. Reuse the adopted full-corpus documentation check for mechanical properties it verified on the exact revision. Cover gaps from missing, stale, or incomplete results. Verify link destination meaning and check affected navigation, routes, redirects, and builds for moves or publication.
 5. Do not execute destructive, production, privileged, or externally visible operations solely to validate documentation without authority; use a safe environment or static evidence and report the gap.
 6. Report structure-reviewed for a structure-only review, draft when material functional checks are missing, verified only when all applicable checks for the requested documentation boundary pass, or blocked when an unresolved authority gap prevents safe delivery.
 
 Validation:
 
-- The final report names mode, form or coordinating role, audience, artifact or findings, sources and assumptions, checks run and not run, status, and unresolved gaps.
-- Diataxis fit, prose quality, lint, generated files, or a green docs build alone cannot establish verified documentation.
+- Report mode, form or coordinating role, audience, artifact or findings, sources and assumptions, checks run or reused, status, and gaps.
 
 ## Interop priority
 

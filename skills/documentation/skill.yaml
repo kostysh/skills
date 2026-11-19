@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: documentation
-  source-version: 0.2.3
+  source-version: 0.2.4
   recommended-skill-md-max-bytes: 20000
   description: >-
     Create, review, restructure, and rewrite source-grounded technical
@@ -47,6 +47,10 @@ supporting:
     source: docs/logs/implementation-log-20261118-1.md
     target: docs/logs/implementation-log-20261118-1.md
     description: Non-normative evidence for checking the supported reader interface and version-scoped workarounds.
+  - id: supporting-implementation-log-20261119-1
+    source: docs/logs/implementation-log-20261119-1.md
+    target: docs/logs/implementation-log-20261119-1.md
+    description: Non-normative evidence for reusing current structural checks.
 surfaces:
   active:
     requiredReferences: []
@@ -117,12 +121,11 @@ sections:
         - Trace factual claims to authoritative sources and check terminology, language, prerequisites, examples, and expected results against the target version.
         - For executable CLI or Node/TypeScript documentation, match the handoff to the exact target version and executed artifact, runtime and platform, commands and flags, prerequisites, stdout/stderr, exit codes, and observed success/error evidence as applicable. For packaged CLI instructions, identify the package and installed bin. Use source or typecheck evidence only for its boundary; a source-tree run cannot verify instructions for an untested installed artifact.
         - For tutorials, safely walk the path end to end when possible; for how-to guides, check the main executable path and material branches; for reference, compare the scoped entries with the authoritative contract; for explanation, check factual claims and attributed rationale.
-        - For moved or published content, run available link, navigation, route, and docs-build checks; treat formatting, lint, file presence, and build success as structural evidence only.
+        - Reuse the adopted full-corpus documentation check for mechanical properties it verified on the exact revision. Cover gaps from missing, stale, or incomplete results. Verify link destination meaning and check affected navigation, routes, redirects, and builds for moves or publication.
         - Do not execute destructive, production, privileged, or externally visible operations solely to validate documentation without authority; use a safe environment or static evidence and report the gap.
         - Report structure-reviewed for a structure-only review, draft when material functional checks are missing, verified only when all applicable checks for the requested documentation boundary pass, or blocked when an unresolved authority gap prevents safe delivery.
       validation:
-        - The final report names mode, form or coordinating role, audience, artifact or findings, sources and assumptions, checks run and not run, status, and unresolved gaps.
-        - Diataxis fit, prose quality, lint, generated files, or a green docs build alone cannot establish verified documentation.
+        - Report mode, form or coordinating role, audience, artifact or findings, sources and assumptions, checks run or reused, status, and gaps.
   interop:
     - id: interop-product-artifacts
       domain: unresolved product scope or acceptance, implementation behavior, and architecture boundaries or trade-offs
