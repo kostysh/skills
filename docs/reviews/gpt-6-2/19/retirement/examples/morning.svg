@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="240" viewBox="0 0 480 240">
+<title>Morning board</title>
+<rect width="480" height="240" fill="#fffaf1"/>
+<text id="heading" x="24" y="55" fill="#192c38" font-family="sans-serif" font-size="32" font-weight="700">Morning dispatch</text>
+<text id="order" x="24" y="108" fill="#29323b" font-family="sans-serif" font-size="16" font-weight="400">Order 214 · Linen stock</text>
+<text id="action" x="24" y="190" fill="#9a4000" font-family="sans-serif" font-size="18" font-weight="700">Print docket</text>
+</svg>

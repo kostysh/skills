@@ -1,0 +1,101 @@
+{
+  "at": "2026-11-19T10:27:56.620977+00:00",
+  "basis": "Row 19 accepted frontend-design 0.2.5, repository HEAD 45197c44d459c15e5b64256a48a0e96342bcf451. All 7 package entries were identical to those working-tree release files when frozen.",
+  "A": {
+    "archive": "../frontend-design-0.2.5.tgz",
+    "archiveSHA256": "ae0f50652bf114c53a0389d44765d49d629ba3252184a007674691678ee8c1bb",
+    "files": {
+      "LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "SKILL.md": "552ce76e43bebf7fbb307b9750f25df2fc68b0303518a52bd12ba384b7a65fff",
+      "agents/openai.yaml": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+      "references/anti-patterns.md": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+      "references/strategy-to-implementation.md": "ef884923fbb5e95e646700be7dfbfaae760b45390530248e558a937c9c1b45c1",
+      "references/surface-modes.md": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+      "references/visual-engines.md": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7"
+    }
+  },
+  "B": {
+    "ruleRemoved": "Both active occurrences of pencil-dev in the full delivered package, with root metadata aligned to A.",
+    "patchSHA256": "9b7022cd300f0ca21fbe854c5019a4696abd92556916c700c179ed2b48d3722c",
+    "files": {
+      "LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "SKILL.md": "049a808a3255df99a2bd3e9d4768b0ef8c67303d114053e2235f9fe3c4b7f0c6",
+      "agents/openai.yaml": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+      "references/anti-patterns.md": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+      "references/strategy-to-implementation.md": "0bcf2629b497f7faeb5cb211cf1c79f6ffb38f98430c7ba2b5544f0c4bc56b92",
+      "references/surface-modes.md": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+      "references/visual-engines.md": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7"
+    }
+  },
+  "inputs": {
+    "STUDIO.md": "e0c34541cc7489158f9e93304845accba62f06acf332f13bd68ca1b7070db397",
+    "build-fixture.py": "acecf53950b16fb3c13580162576460415f339c2579c308a641e48fa2f2d6cfb",
+    "cases.json": "431fb005f3c40981304710a9d5605d39109d79c2193dbe4e4ef3cf3a4daffea1",
+    "criteria.md": "cce7f8bab57b9bf0219492b70523c8f7c6d80b349d8e14da639b55aefd437df8",
+    "studio.py": "3948b1dd8e66f5b8ea37868a1a99133f4ef2b2b173b12711594cf91e996bc1b6"
+  },
+  "fixtureFiles": {
+    "ordinary": {
+      ".studio/connection.json": "3b1857ca54f4c9ea0db7235810d8e443acbafd41fc24a3b57888bf790f3eda25",
+      "STUDIO.md": "e0c34541cc7489158f9e93304845accba62f06acf332f13bd68ca1b7070db397",
+      "press-board.pen": "52d3d2b66288846e73235f5fffb0e9dc16c74aff70f4249393c3d4714b7f8d2c",
+      "press-kit.md": "3897b9a4313dd42a780053464453df6b4fa8f035e4fbb5135c8e41b79fbd0a5d",
+      "studio.py": "3948b1dd8e66f5b8ea37868a1a99133f4ef2b2b173b12711594cf91e996bc1b6"
+    },
+    "boundary": {
+      ".studio/connection.json": "36cb61d4554df495cbe35154e3b2bc93c93c999ec443ffbd0ccce38c0f8d883b",
+      "STUDIO.md": "e0c34541cc7489158f9e93304845accba62f06acf332f13bd68ca1b7070db397",
+      "handover.pen": "e09ce6a562b500c0cf7940a2e49b22864046f45ff549b7b2994ff089b237f851",
+      "last-week.svg": "428a22915b7fd0cb17648fe2440d20de5277652fbcc08d6781c67398a471ebfe",
+      "press-kit.md": "0fe8092ea3f3340ede0c0ed9875751ab220b4e24fece860614e87bdf65df5036",
+      "studio.py": "3948b1dd8e66f5b8ea37868a1a99133f4ef2b2b173b12711594cf91e996bc1b6"
+    },
+    "holdout": {
+      ".studio/connection.json": "18c3d02fb81639718fa95fe582067a6ec70e3fc409aaab051f793eaec458d0e5",
+      ".studio/preview.svg": "379dbfd87e42049979d880fd6e2203e64511e56ffc65b9e779588e82edadbe64",
+      "STUDIO.md": "e0c34541cc7489158f9e93304845accba62f06acf332f13bd68ca1b7070db397",
+      "press-kit.md": "63dffa73423dc90026dbc9847b1d2a24beaa1e9d17dfc2d74626f88580e6fd10",
+      "studio.py": "3948b1dd8e66f5b8ea37868a1a99133f4ef2b2b173b12711594cf91e996bc1b6",
+      "weekly-sheet.pen": "00e5e86e62bdc1c764ea70a75382e5aa3903928361cb017be16500b461c17d70"
+    }
+  },
+  "taskBodies": {
+    "boundary.md": "5c967c6af5662e2314ba3434b14041cad0af48036807605c76f9b034fdbc3030",
+    "holdout.md": "06ef7d2e3ca166d5656fcaf71d4cf64d0fdfedb884cfaff93768ca4383d64377",
+    "ordinary.md": "300c2e788cb60f688a61aa8c0e69455de3f79c3880d3c0fabee5d1a50e8098be"
+  },
+  "cases": {
+    "firstStage": [
+      "ordinary",
+      "boundary"
+    ],
+    "confirm": [
+      "ordinary",
+      "boundary"
+    ],
+    "reserved": [
+      "holdout"
+    ]
+  },
+  "taskPrefix": "Работай только в предоставленном текущем каталоге. \n\n",
+  "assigned": {
+    "subjects": {
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "session": "ephemeral, each context fresh; persistent memories disabled"
+    },
+    "assessor": {
+      "model": "gpt-6.2-sol",
+      "reasoning": "high",
+      "session": "separate ephemeral, persistent memories disabled; receives shuffled code-only observations"
+    }
+  },
+  "equivalentCues": "The remaining root verification workflow, status contract and strategy reference require checking artifacts and exports. The team brief specifies its deliverables; the adapter documents its commands and format/connection. B isolates removal of the two retired ownership cues, not unaided visual behavior.",
+  "studyToolsSHA256": {
+    "trial.py": "93ae9927d24dafc62b50a1690dd548c01dd49319318312a256072d5823322d18",
+    "gradecli.py": "144986274e8c8bad5fb0e0dbc89c1c00510eae8926e0f00c7506dfa305b65084",
+    "slots.py": "e3faa1dfeb1a1666c44dedb9cbce6f7b922b07467cc552e2447e1e5dff187fa5",
+    "study_context.py": "6599e6c7b0f9bb176bc02b107b0c5c9569bf252ee589691fea375d9a0b85fb0a"
+  },
+  "boundaries": "Local simulated adapter on fixture SQLite or detached pointer. Forced active skill. No external editor, production .pen, natural selection, publication, or runtime verification claim. Holdout has separate raw task and is only opened by an executor after C freeze."
+}
