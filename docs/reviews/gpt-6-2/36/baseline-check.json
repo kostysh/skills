@@ -1,0 +1,13 @@
+{
+  "acceptedSourceCommit": "20fdf957aef25e0045d884969bf36f8ce49ffec0",
+  "baselineSourceCompilerCheck": "OK",
+  "installedActiveFileCount": 13,
+  "allInstalledBytesMatchAcceptedSource": true,
+  "archiveSHA256": "fa221f43955d0c2ae3619348a6227272cec87f093bf16dc7b0f388dc90478f12",
+  "initialControlledBytes": {
+    "A": 177928,
+    "B": 177781,
+    "C": 177953
+  },
+  "sourceRuleLocation": "skills/payload/skill.yaml → sections.startHere[6]"
+}

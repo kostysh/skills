@@ -1,0 +1,284 @@
+{
+  "skill_archive_sha256": "c7734e1f452692c65c0f913670d30cd6d82dc9677b4002e1001f830565df146e",
+  "input16": {
+    "archive": "../../16/tally-test-handoff.tar.gz",
+    "sha256": "498f2a4811c4b7169479e2a3fa0a68a8b09ee5a743d61c5c8fcbaab170304d7b",
+    "binding_sha256": "8ffc700923b300b69c262c5b2958c46a323c44febfa766df9d6d99b6ac48d738",
+    "members": {
+      "AGENTS.md": {
+        "sha256": "b556d9fc3d9a07cdffb5d0610f06dad5c46f1fd8036098ec89c97e611a57c214",
+        "mode": "0o664"
+      },
+      "README.md": {
+        "sha256": "ccb6923c0d945a522d0fdec002da558a5d4d2e2e9fb795a8d4491fed2195d01b",
+        "mode": "0o664"
+      },
+      "accepted.md": {
+        "sha256": "d902373d5a39862f8066a9e9f63f70372076da296b52c8c1ddec95404325da77",
+        "mode": "0o664"
+      },
+      "dist/cli.js": {
+        "sha256": "1f6796ddabf7e3d8fcc8780eff35fb31be659633bdda06bf366e0a387b987f90",
+        "mode": "0o664"
+      },
+      "dist/legacy.js": {
+        "sha256": "3c3fad4ba160873d0ab1df465324c3633093e582a5de089ff50248b4749f0902",
+        "mode": "0o664"
+      },
+      "package.json": {
+        "sha256": "718fbb03d4ce95b498dd3e1f2bc9f3c8d50c28b805da6619006649ab3200815e",
+        "mode": "0o664"
+      },
+      "src/cli.ts": {
+        "sha256": "cb0097e7add8a977f998d8d2e0d3ae12b9f7a519ee800d71341d57f5d96b8a1b",
+        "mode": "0o664"
+      },
+      "test/cli.test.ts": {
+        "sha256": "51076f0b746864e2b338de31a4d8aa8f9c0caeec741307300c03160fc148018e",
+        "mode": "0o664"
+      },
+      "test/handoff.test.ts": {
+        "sha256": "bb8b6a5de84e0c93c736e12475b23a45c1bc4dbc4eb14277c5239847759354f9",
+        "mode": "0o644"
+      },
+      "tsconfig.json": {
+        "sha256": "d2984c34bd95977f2dc693263e4135d923250d767c00fba7360573c9ee883753",
+        "mode": "0o664"
+      }
+    }
+  },
+  "runtime06_sha256": "262dce2d97b1747c75f81d9591102ea1acbc25504927c732edfdac7c11d155a5",
+  "consumer_input06_sha256": "262dce2d97b1747c75f81d9591102ea1acbc25504927c732edfdac7c11d155a5",
+  "unchanged_test16": {
+    "sha256": "bb8b6a5de84e0c93c736e12475b23a45c1bc4dbc4eb14277c5239847759354f9",
+    "mode": "0o644"
+  },
+  "changed_source_members": [
+    "README.md",
+    "dist/cli.js",
+    "package.json",
+    "src/cli.ts"
+  ],
+  "environment_extraction_mode_differences": {
+    "AGENTS.md": {
+      "archive_mode": "0o664",
+      "issued_mode": "0644"
+    },
+    "README.md": {
+      "archive_mode": "0o664",
+      "issued_mode": "0644"
+    },
+    "accepted.md": {
+      "archive_mode": "0o664",
+      "issued_mode": "0644"
+    },
+    "dist/cli.js": {
+      "archive_mode": "0o664",
+      "issued_mode": "0644"
+    },
+    "dist/legacy.js": {
+      "archive_mode": "0o664",
+      "issued_mode": "0644"
+    },
+    "package.json": {
+      "archive_mode": "0o664",
+      "issued_mode": "0644"
+    },
+    "src/cli.ts": {
+      "archive_mode": "0o664",
+      "issued_mode": "0644"
+    },
+    "test/cli.test.ts": {
+      "archive_mode": "0o664",
+      "issued_mode": "0644"
+    },
+    "tsconfig.json": {
+      "archive_mode": "0o664",
+      "issued_mode": "0644"
+    }
+  },
+  "subject_changed_original_modes": false,
+  "output_source": {
+    "archive": "tally-source.tar.gz",
+    "sha256": "9e23a8244497ce317498c7ffa23de1f4530f1b6a4d19daaf0cb24a5a0096f463",
+    "members": {
+      "AGENTS.md": {
+        "sha256": "b556d9fc3d9a07cdffb5d0610f06dad5c46f1fd8036098ec89c97e611a57c214",
+        "mode": "0o644"
+      },
+      "README.md": {
+        "sha256": "51aa39b31cffdef3ca112d3f4f96fdcc638d891888b9f0329b508788c786584f",
+        "mode": "0o644"
+      },
+      "accepted.md": {
+        "sha256": "d902373d5a39862f8066a9e9f63f70372076da296b52c8c1ddec95404325da77",
+        "mode": "0o644"
+      },
+      "dist/cli.js": {
+        "sha256": "e5476d535e3bd5529c2d901b4f0b25b96211e9f48050146aa318535f3f6d987f",
+        "mode": "0o644"
+      },
+      "dist/legacy.js": {
+        "sha256": "3c3fad4ba160873d0ab1df465324c3633093e582a5de089ff50248b4749f0902",
+        "mode": "0o644"
+      },
+      "package.json": {
+        "sha256": "b46302565adae3f38cf9164e406d465b585922fa46e4757117ecd98d1fce3723",
+        "mode": "0o644"
+      },
+      "src/cli.ts": {
+        "sha256": "bfcd36e7a69a69cdadcb912b175886f4d43a44a855f300db1783dfa85c095361",
+        "mode": "0o644"
+      },
+      "test/cli.test.ts": {
+        "sha256": "51076f0b746864e2b338de31a4d8aa8f9c0caeec741307300c03160fc148018e",
+        "mode": "0o644"
+      },
+      "test/handoff.test.ts": {
+        "sha256": "bb8b6a5de84e0c93c736e12475b23a45c1bc4dbc4eb14277c5239847759354f9",
+        "mode": "0o644"
+      },
+      "tsconfig.json": {
+        "sha256": "d2984c34bd95977f2dc693263e4135d923250d767c00fba7360573c9ee883753",
+        "mode": "0o644"
+      }
+    }
+  },
+  "received_npm": {
+    "original_name": "engineering-tally-fixture-1.0.0.tgz",
+    "transport_name": "engineering-tally-fixture-1.0.0.tar.gz",
+    "sha256": "7c9f8bff28fee4cb4acd9dfec592b15e688cf040990a001d66a8d1ba73bce0cc",
+    "bytes": 819,
+    "members": {
+      "package/dist/cli.js": {
+        "sha256": "e5476d535e3bd5529c2d901b4f0b25b96211e9f48050146aa318535f3f6d987f",
+        "mode": "0o644"
+      },
+      "package/dist/legacy.js": {
+        "sha256": "3c3fad4ba160873d0ab1df465324c3633093e582a5de089ff50248b4749f0902",
+        "mode": "0o644"
+      },
+      "package/package.json": {
+        "sha256": "b46302565adae3f38cf9164e406d465b585922fa46e4757117ecd98d1fce3723",
+        "mode": "0o644"
+      },
+      "package/README.md": {
+        "sha256": "51aa39b31cffdef3ca112d3f4f96fdcc638d891888b9f0329b508788c786584f",
+        "mode": "0o644"
+      }
+    }
+  },
+  "observer_separate_new_directory": true,
+  "installation": {
+    "argv": [
+      "npm",
+      "install",
+      "--offline",
+      "--no-audit",
+      "--no-fund",
+      "{artifact}/engineering-tally-fixture-1.0.0.tar.gz"
+    ],
+    "status": 0,
+    "stdout": "\nadded 1 package in 204ms\n",
+    "stderr": "",
+    "stdout_hex": "0a61646465642031207061636b61676520696e203230346d730a",
+    "stderr_hex": ""
+  },
+  "resolved_bin": "node_modules/engineering-tally-fixture/dist/cli.js",
+  "installed_entry_sha256": "e5476d535e3bd5529c2d901b4f0b25b96211e9f48050146aa318535f3f6d987f",
+  "stdin": "closed (DEVNULL), captured stdout and stderr as separate pipes",
+  "versions": {
+    "node": "v24.15.0",
+    "npm": "12.0.1",
+    "platform": "Linux x86_64"
+  },
+  "installed_calls": [
+    {
+      "argv": [
+        "./node_modules/.bin/tally",
+        "--help"
+      ],
+      "status": 0,
+      "stdout": "tally 1.0.0\nUsage: tally sum <numbers...> [--json]\n",
+      "stderr": "",
+      "stdout_hex": "74616c6c7920312e302e300a55736167653a2074616c6c792073756d203c6e756d626572732e2e2e3e205b2d2d6a736f6e5d0a",
+      "stderr_hex": ""
+    },
+    {
+      "argv": [
+        "./node_modules/.bin/tally",
+        "--version"
+      ],
+      "status": 0,
+      "stdout": "1.0.0\n",
+      "stderr": "",
+      "stdout_hex": "312e302e300a",
+      "stderr_hex": ""
+    },
+    {
+      "argv": [
+        "./node_modules/.bin/tally",
+        "sum",
+        "2",
+        "3",
+        "--json"
+      ],
+      "status": 0,
+      "stdout": "{\"total\":5}\n",
+      "stderr": "",
+      "stdout_hex": "7b22746f74616c223a357d0a",
+      "stderr_hex": ""
+    },
+    {
+      "argv": [
+        "./node_modules/.bin/tally",
+        "sum",
+        "bad",
+        "--json"
+      ],
+      "status": 2,
+      "stdout": "",
+      "stderr": "Invalid number\n",
+      "stdout_hex": "",
+      "stderr_hex": "496e76616c6964206e756d6265720a"
+    },
+    {
+      "argv": [
+        "./node_modules/.bin/tally",
+        "sum",
+        "8",
+        "-2",
+        "1.5",
+        "--json"
+      ],
+      "status": 0,
+      "stdout": "{\"total\":7.5}\n",
+      "stderr": "",
+      "stdout_hex": "7b22746f74616c223a372e357d0a",
+      "stderr_hex": ""
+    },
+    {
+      "argv": [
+        "./node_modules/.bin/tally",
+        "sum",
+        "8",
+        "bad",
+        "1.5",
+        "--json"
+      ],
+      "status": 2,
+      "stdout": "",
+      "stderr": "Invalid number\n",
+      "stdout_hex": "",
+      "stderr_hex": "496e76616c6964206e756d6265720a"
+    }
+  ],
+  "exact_subject": {
+    "model": "gpt-6.2-sol",
+    "effort": "medium",
+    "raw_events_sha256": "1c12bfe46b22d43a05267b8427bd6b0cc900e1e66aa09917d3acc68e56382d96",
+    "original_dispatch_sha256": "15fb4a53845be7a4ade5c9a54f90603053b2512b7cdaa1917c769fa7507a3c2a",
+    "original_final_sha256": "a8782a8267af93a485e3391e7623bd3ba61c1117033b5f65b5eee555139096f5",
+    "exit": 0
+  }
+}

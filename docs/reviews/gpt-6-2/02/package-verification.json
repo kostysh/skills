@@ -1,0 +1,81 @@
+{
+  "node": "v24.15.0",
+  "pnpm": "10.28.2",
+  "before": {
+    "worktree_ignored_tsc": {
+      "bytes": 1604,
+      "sha256": "6f24d15b8ebc80f869d4397008ed7f43ab620d82152914834d8ed64c69b24ee3"
+    },
+    "private_tsc": {
+      "bytes": 1404,
+      "sha256": "e4af67959e3a1505432e59afac5670d9c5438b3be917359eb3a80242b01a3385"
+    },
+    "shipped_cli": {
+      "bytes": 381731,
+      "sha256": "474821e6e53371e58e47248464a6b01260ceae989fd2319c25b5f2b9a2026163"
+    },
+    "shipped_map": {
+      "bytes": 871621,
+      "sha256": "0655b7c82a679e5371abcb7c3a876484cca1314307afe6001241febedece6ab4"
+    }
+  },
+  "after": {
+    "worktree_ignored_tsc": {
+      "bytes": 1604,
+      "sha256": "6f24d15b8ebc80f869d4397008ed7f43ab620d82152914834d8ed64c69b24ee3"
+    },
+    "private_tsc": {
+      "bytes": 1404,
+      "sha256": "e4af67959e3a1505432e59afac5670d9c5438b3be917359eb3a80242b01a3385"
+    },
+    "rebuilt_cli": {
+      "bytes": 381731,
+      "sha256": "474821e6e53371e58e47248464a6b01260ceae989fd2319c25b5f2b9a2026163"
+    },
+    "rebuilt_map": {
+      "bytes": 871621,
+      "sha256": "0655b7c82a679e5371abcb7c3a876484cca1314307afe6001241febedece6ab4"
+    }
+  },
+  "independent_private_directories": true,
+  "commands": {
+    "linked-fixture-isolation": {
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--test",
+        "--test-name-pattern=checks source bundles without scanning unrelated dev files",
+        "test/check.test.ts"
+      ],
+      "exit": 0,
+      "output": "✔ checkCompiledSkill checks source bundles without scanning unrelated dev files (57.816119ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 179.736121"
+    },
+    "format:check": {
+      "command": [
+        "pnpm",
+        "run",
+        "format:check"
+      ],
+      "exit": 0,
+      "output": "> @kostysh/skill-source-compiler-cli@0.2.5 format:check {scratch}/workspace/skills/skill-source-compiler\n> biome check --files-ignore-unknown=true --formatter-enabled=true --linter-enabled=false --assist-enabled=false src test package.json tsconfig.json vite.config.ts\n\nChecked 19 files in 6ms. No fixes applied."
+    },
+    "lint": {
+      "command": [
+        "pnpm",
+        "run",
+        "lint"
+      ],
+      "exit": 0,
+      "output": "> @kostysh/skill-source-compiler-cli@0.2.5 lint {scratch}/workspace/skills/skill-source-compiler\n> pnpm run lint:biome && pnpm run lint:eslint && pnpm run typecheck\n\n\n> @kostysh/skill-source-compiler-cli@0.2.5 lint:biome {scratch}/workspace/skills/skill-source-compiler\n> biome lint --files-ignore-unknown=true --diagnostic-level=warn --error-on-warnings src test package.json tsconfig.json vite.config.ts\n\nChecked 19 files in 10ms. No fixes applied.\n\n> @kostysh/skill-source-compiler-cli@0.2.5 lint:eslint {scratch}/workspace/skills/skill-source-compiler\n> eslint \"src/**/*.ts\" \"test/**/*.ts\" \"vite.config.ts\"\n\n\n> @kostysh/skill-source-compiler-cli@0.2.5 typecheck {scratch}/workspace/skills/skill-source-compiler\n> tsc --noEmit"
+    },
+    "test": {
+      "command": [
+        "pnpm",
+        "run",
+        "test"
+      ],
+      "exit": 0,
+      "output": "package-tests.txt"
+    }
+  }
+}

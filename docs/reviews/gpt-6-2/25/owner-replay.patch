@@ -1,0 +1,179 @@
+--- a/replay/verify.mjs
++++ b/replay/verify.mjs
+@@ -40,11 +40,33 @@
+   function watchTab(tab) { tab.on("pageerror", (error) => errors.push(error.message)); }
+   page = await context.newPage();
+   watchTab(page);
++  async function tabTo(target) {
++    for (let i = 0; i < 16; i++) {
++      if (await target.evaluate((element) => element === document.activeElement)) return;
++      await page.keyboard.press("Tab");
++    }
++    assert.fail("target unreachable with Tab");
++  }
+   const button = (name) => page.getByRole("button", { name, exact: true });
+   const email = () => page.getByLabel("Email address", { exact: false });
+   const status = () => page.getByRole("status");
+   async function observe(stage, shot = false) {
+-    const result = await page.evaluate(() => ({
++    await page.evaluate(async () => {
++      const inProgress = document.getAnimations().filter((animation) => animation.effect?.getComputedTiming().endTime < 500);
++      await Promise.allSettled(inProgress.map((animation) => animation.finished));
++    });
++    const result = await page.evaluate(() => {
++      const active = document.activeElement;
++      const rect = active.getBoundingClientRect();
++      const style = getComputedStyle(active);
++      const clip = { left: Math.max(0, rect.left), top: Math.max(0, rect.top),
++        right: Math.min(innerWidth, rect.right), bottom: Math.min(innerHeight, rect.bottom) };
++      const intersects = clip.right > clip.left && clip.bottom > clip.top;
++      const hit = intersects && document.elementFromPoint((clip.left + clip.right)/2, (clip.top + clip.bottom)/2);
++      return ({
++      focusPaint: { tag: active.tagName, visible: active.matches(":focus-visible"), outline: style.outlineStyle,
++        width: style.outlineWidth, shadow: style.boxShadow, clip, intersects,
++        hitTag: hit?.tagName, hitText: hit?.textContent?.trim().slice(0,50), rect: rect.toJSON(), sampledPointOnFocus: Boolean(hit && (hit === active || active.contains(hit))) },
+       route: location.pathname, heading: document.querySelector("h1")?.textContent,
+       email: document.querySelector("#email")?.value,
+       weekly: document.querySelector("#weekly")?.getAttribute("aria-checked"),
+@@ -54,16 +76,24 @@
+       dialog: document.querySelector("[role=dialog][data-state=open]")?.innerText,
+       tooltips: [...document.querySelectorAll("[role=tooltip]")].map((el) => ({ id: el.id, text: el.textContent })),
+       viewport: innerWidth, pageWidth: document.documentElement.scrollWidth,
+-    }));
++    }); });
+     timeline.push({ stage, ...result });
++    await writeFile(join(evidence, "steps.json"), JSON.stringify(timeline, null, 2)+"\n");
+     assert.equal(result.viewport, result.pageWidth);
+     if (shot) await page.screenshot({ path: join(evidence, stage + ".png") });
+     return result;
+   }
+   async function review() {
+-    await button("Review changes").click();
++    await tabTo(button("Review changes"));
++    await page.keyboard.press("Enter");
+     await button("Cancel").waitFor();
+     assert.equal(await button("Cancel").evaluate((el) => el === document.activeElement), true);
++  }
++  function statusFocus(row) {
++    assert.equal(row.focus, "status");
++    assert.equal(row.focusPaint.visible, true); assert.equal(row.focusPaint.intersects, true);
++    assert.equal(row.focusPaint.sampledPointOnFocus, true);
++    assert.equal(row.focusPaint.width, "2px"); assert.equal(row.focusPaint.outline, "solid");
+   }
+   async function confirm(close) {
+     await page.keyboard.press("Tab");
+@@ -72,9 +102,13 @@
+     if (close) {
+       await button("Close").waitFor();
+       assert.equal(await button("Close").evaluate((el) => el === document.activeElement), true);
+-      await page.keyboard.press("Enter");
++      const focusOnClose = await observe("dialog-" + close);
++      assert.equal(focusOnClose.focusPaint.visible, true);
++      assert.equal(focusOnClose.focusPaint.sampledPointOnFocus, true);
++      await page.keyboard.press(close === "Escape" ? "Escape" : "Enter");
+       await page.waitForFunction(() => !document.querySelector("[role=dialog]") && document.activeElement?.getAttribute("role") === "status");
+-      const pending = await observe("closed-during", true);
++      const pending = await observe("closed-via-" + close, true);
++      statusFocus(pending);
+       assert.equal(pending.focus, "status");
+       assert.match(pending.status, /Applying changes/);
+     }
+@@ -89,47 +123,77 @@
+   await page.getByRole("link", { name: "Notification settings" }).click();
+   await email().waitFor();
+   assert.equal((await observe("opened")).route, "/settings/notifications");
+-  await button("About these settings").focus();
++  await tabTo(button("About these settings"));
+   const hint = await page.getByRole("tooltip").textContent();
+   assert.equal(hint, "Review your changes before you confirm.");
+   assert.equal(await button("About these settings").getAttribute("aria-describedby"), (await observe("help")).tooltips[0].id);
+   await page.keyboard.press("Escape");
+   await page.getByRole("tooltip").waitFor({ state: "hidden" });
+ 
+-  await email().fill("first@example.test");
+-  await review(); await confirm(false); await applied("first@example.test");
+-  await email().fill("bad"); await page.getByRole("radio", { name: "Weekly" }).click();
+-  await button("Review changes").click();
+-  const invalid = await observe("invalid");
+-  assert.equal(invalid.focus, "email"); assert.equal(invalid.weekly, "true"); assert.ok(invalid.fieldError);
+-  await email().fill("team@example.test"); await review(); await page.keyboard.press("Escape");
+-  await page.waitForFunction(() => !document.querySelector("[role=dialog]") && document.activeElement?.textContent === "Review changes");
+-  const cancelled = await observe("cancelled");
+-  assert.equal(cancelled.focus, "Review changes"); assert.equal(cancelled.email, "team@example.test");
+-  assert.match(cancelled.status, /first@example.test/);
+-  await review(); await confirm(true); await applied("team@example.test");
+-  await observe("saved", true);
++  await email().fill("first@example.test"); await review(); await confirm(false); await applied("first@example.test");
++  await email().fill("bad"); await tabTo(page.getByRole("radio", { name: "Daily" }));
++  await page.keyboard.press("ArrowRight", { delay: 65 });
++  await page.waitForFunction(() => document.activeElement?.id === "weekly" && document.querySelector("#weekly")?.getAttribute("aria-checked") === "true");
++  await tabTo(button("Review changes")); await page.keyboard.press("Enter");
++  await page.getByText("Enter a valid email address.", { exact: true }).waitFor();
++  const invalid = await observe("invalid", true);
++  assert.equal(invalid.focus, "email"); assert.equal(invalid.weekly, "true");
++  assert.equal(invalid.fieldError, "Enter a valid email address.");
++  assert.equal(await email().getAttribute("aria-invalid"), "true");
++  assert.match(await email().getAttribute("aria-describedby"), /(^| )email-error( |$)/);
++
++  await email().fill("team@example.test");
++  for (const key of ["Enter", "Escape"]) {
++    await review();
++    const preview = await observe("preview-" + key);
++    assert.equal(preview.focus, "Cancel"); assert.equal(preview.focusPaint.visible, true);
++    assert.equal(preview.focusPaint.sampledPointOnFocus, true);
++    const writeCount = http.filter((entry) => entry.method === "PUT").length;
++    await page.keyboard.press(key);
++    await page.waitForFunction(() => !document.querySelector("[role=dialog]") && document.activeElement?.textContent === "Review changes");
++    const cancelled = await observe("cancel-" + key, true);
++    assert.equal(cancelled.focus, "Review changes"); assert.equal(cancelled.focusPaint.visible, true);
++    assert.equal(cancelled.focusPaint.sampledPointOnFocus, true);
++    assert.equal(cancelled.weekly, "true"); assert.equal(cancelled.email, "team@example.test"); assert.match(cancelled.status, /first@example.test/);
++    assert.equal(http.filter((entry) => entry.method === "PUT").length, writeCount);
++  }
++  await page.reload(); await applied("first@example.test");
++  const reset = await observe("draft-reset-on-reload");
++  assert.equal(reset.email, "first@example.test"); assert.equal(reset.weekly, "false");
++  await email().fill("team@example.test"); await tabTo(page.getByRole("radio", { name: "Daily" })); await page.keyboard.press("ArrowRight", { delay: 65 });
++  await page.waitForFunction(() => document.activeElement?.id === "weekly" && document.querySelector("#weekly")?.getAttribute("aria-checked") === "true");
++
++  for (const [close, address] of [["Escape", "team@example.test"], ["Close", "close@example.test"]]) {
++    await email().fill(address); await review(); await confirm(close); await applied(address);
++    const success = await observe("saved-via-" + close, true); statusFocus(success);
++    assert.match(success.status, /Frequency: Weekly/);
++    assert.deepEqual(JSON.parse(await readFile(join(state, "settings.json"), "utf8")), { email: address, enabled: true, frequency: "weekly" });
++  }
+   const persisted = JSON.parse(await readFile(join(state, "settings.json"), "utf8"));
+-  assert.deepEqual(persisted, { email: "team@example.test", enabled: true, frequency: "weekly" });
+-
+   await rename(join(state, "pending"), join(state, "paused"));
+   await email().fill("again@example.test"); await review(); await confirm(false);
+   await page.getByText("Settings could not be saved. Review your changes and try again.").waitFor();
+   const failed = await observe("write-failed", true);
+-  assert.match(failed.status, /Previously applied settings/); assert.match(failed.status, /team@example.test/);
++  assert.match(failed.status, /Previously applied settings/); assert.match(failed.status, /close@example.test/);
+   assert.equal(failed.email, "again@example.test");
+   assert.deepEqual(JSON.parse(await readFile(join(state, "settings.json"), "utf8")), persisted);
+-  await page.reload(); await applied("team@example.test");
+-  const prior = await observe("reloaded-after-failure"); assert.equal(prior.email, "team@example.test");
++  const editingTab = page;
++  page = await context.newPage(); watchTab(page);
++  await page.goto(origin + "/settings/notifications"); await applied("close@example.test");
++  const prior = await observe("independent-read-after-failure");
++  assert.equal(prior.email, "close@example.test"); assert.equal(prior.weekly, "true");
++  await page.close(); page = editingTab;
++  assert.equal(await email().inputValue(), "again@example.test");
+   await rename(join(state, "paused"), join(state, "pending"));
+-  await email().fill("again@example.test"); await review(); await confirm(false); await applied("again@example.test");
++  await review(); await confirm(false); await applied("again@example.test");
++  await observe("retry-saved", true);
+   await page.close(); page = await context.newPage(); watchTab(page);
+   await page.goto(origin + "/settings/notifications"); await applied("again@example.test");
+   const reopened = await observe("reopened", true);
+   assert.equal(reopened.email, "again@example.test"); assert.equal(reopened.weekly, "true");
+   const final = JSON.parse(await readFile(join(state, "settings.json"), "utf8"));
+   assert.deepEqual(final, { ...persisted, email: "again@example.test" });
+-  assert.deepEqual(http.filter((entry) => entry.method === "PUT").map((entry) => entry.status), [204, 204, 503, 204]);
++  assert.deepEqual(http.filter((entry) => entry.method === "PUT").map((entry) => entry.status), [204, 204, 204, 503, 204]);
+   assert.deepEqual(service.map((entry) => [entry.method, entry.status]), http.map((entry) => [entry.method, entry.status]));
+   assert.deepEqual(service.at(-1).body, final);
+   assert.deepEqual(errors, []);

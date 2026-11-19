@@ -28,6 +28,8 @@
 
 ## Журналы реализации
 
+- [implementation-log-20261118-1.md](logs/implementation-log-20261118-1.md) — чтение PR и попыток Actions через gh, сравнение Sol и архив 1.2.5. [Запись в репозитории](https://github.com/kostysh/skills/blob/8df5ea79cd24aca8743ee487ff20a7e42229099d/skills/gh-utility/docs/logs/implementation-log-20261118-1.md)
+
 - [implementation-log-20260924-1.md](logs/implementation-log-20260924-1.md) — R-PROC-25: проверка машинных closing references перед merge.
 
 - [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — сокращение описания до 300 code points; independent scoped PASS.

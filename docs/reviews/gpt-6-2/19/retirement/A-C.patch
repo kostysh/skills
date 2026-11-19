@@ -1,0 +1,34 @@
+--- A/SKILL.md
++++ C/SKILL.md
+@@ -5,9 +5,9 @@
+   styling, and motion; express accepted interactions and verify rendered
+   results. Route task-flow choices and UX audits to web-ux-engineer."
+ metadata:
+-  source-version: 0.2.5
++  source-version: 0.2.6
+   skillforge-source-manifest: skill.yaml
+-  skillforge-source-hash: 5b866708098c8463ecc61d0fe0f934584827b5e1e8e5090ac04999ad9eb427b2
++  skillforge-source-hash: aad34a098dd22c8295f12edf3353e6e9dd043e39c9013b4ed152dbecd9cf9d6e
+ ---
+ 
+ # frontend-design
+@@ -261,7 +261,6 @@
+ - **application architecture, state, routing, data, testing, and runtime accessibility mechanics:** The relevant framework skill such as react-spa-engineer. frontend-design owns visual strategy and rendered expression, not framework correctness.
+ - **reusable React component correctness, SSR, hydration, portals, and lifecycle behavior:** react-components-engineer. Visual intent must adapt to component correctness rather than weaken it.
+ - **shadcn registry discovery, component selection, and registry-aware implementation:** shadcn. frontend-design supplies page-level direction while shadcn owns component-system mechanics.
+-- **durable .pen inspection, editing, validation, screenshots, and exports:** pencil-dev. frontend-design defines strategy and frames; pencil-dev owns Pencil MCP mechanics.
+ - **interactive browser diagnostics, screenshots, and terminal-state checks:** agent-browser. frontend-design defines evidence conditions while agent-browser executes exploratory browser verification.
+ - **reproducible scripted browser scenarios and visual, network, or console evidence:** playwright. frontend-design defines evidence conditions while playwright owns repeatable browser automation.
+ - **guidelines-based web UI and accessibility review:** web-ui-reviewer. frontend-design performs design self-checks; web-ui-reviewer owns the review contract, and a separate reviewer context is still required when the verdict must be independent.
+--- A/references/strategy-to-implementation.md
++++ C/references/strategy-to-implementation.md
+@@ -112,8 +112,7 @@
+ - Use framework and component-system skills for code-level architecture,
+   lifecycle, accessibility mechanics, and component APIs. `frontend-design`
+   owns the visual strategy and whether the rendered result expresses it.
+-- Route durable `.pen` creation, inspection, editing, and export mechanics to
+-  `pencil-dev`; the design artifact still follows this strategy contract.
++- Use an available editor that supports the requested format and verify the saved artifact.
+ 
+ ## Verify The Observable Result
+ 

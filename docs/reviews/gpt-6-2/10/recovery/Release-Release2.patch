@@ -1,0 +1,11 @@
+--- Release/SKILL.md
++++ Release2/SKILL.md
+@@ -8 +8 @@
+-  source-version: 0.2.6
++  source-version: 0.2.7
+@@ -10 +10 @@
+-  skillforge-source-hash: 9502c12456d1bf9fd2d061b308c96c76b74060c329951a69f2f210f7322caf27
++  skillforge-source-hash: ce93153d63d2290d4629a85dbc64753ab6bc0abac47ee2d12b7d3fdc4f90b525
+@@ -95 +95 @@
+-3. Open the target, snapshot before using refs, interact, wait for the expected condition, and re-snapshot after navigation or material page changes.
++3. Open the target, snapshot before using refs, interact, wait for the expected condition, and re-snapshot after navigation or material page changes. Wait for a state change to succeed before issuing a dependent action, or use a batch that stops on error (such as `batch --bail`). After a failure, re-snapshot before proceeding.

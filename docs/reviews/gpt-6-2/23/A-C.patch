@@ -1,0 +1,5 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -189 +189 @@
+-- **high** — Do not turn missing architecture decisions into spec requirements; route public contracts, data model, security boundary, tenancy, integration topology, deployment, rollback, or selected pattern changes to architecture.
++- **high** — Route unresolved architecture decisions to the architecture owner.

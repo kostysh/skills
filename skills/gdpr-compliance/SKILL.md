@@ -5,9 +5,9 @@ description: Audit architecture, specs, plans, or systems for EU GDPR risks
   retention, deletion, or sharing of personal data. Produce controls, findings,
   evidence gaps, and handoffs—not legal advice, certification, or policy prose.
 metadata:
-  source-version: 0.2.3
+  source-version: 0.2.4
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 498ba3d381834a281f2cd19dd93327744842e08f0ef15bc3aaf5dfefc9e218ef
+  skillforge-source-hash: 5b6c53fbe81ca47a0eead58da477015b3f4d8dccd90750e094b755efd8fac61e
 ---
 
 # gdpr-compliance
@@ -110,7 +110,7 @@ Establish the review boundary, roles, and legal uncertainty before making archit
 4. Flag special category, criminal-offence, children's, employee, biometric, location, profiling, large-scale monitoring, or automated significant-decision processing.
 5. Distinguish current official law or final regulator guidance, accountable controller decisions, DPO advice, contracts, intended design, and implementation evidence; do not let a lower-authority source override a higher one for the claim being made.
 6. For time-sensitive legal claims, verify current official source status and date when available; label drafts as provisional. If currentness cannot be checked, state the limit and do not claim current legal approval.
-7. Mark legal interpretation for legal counsel and DPO advice for the DPO instead of assigning either the controller's accountable decision.
+7. Separate controller decisions from specialist advice.
 
 Validation:
 

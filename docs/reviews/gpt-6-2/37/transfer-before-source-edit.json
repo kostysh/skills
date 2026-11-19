@@ -1,0 +1,20 @@
+{
+  "time": "2026-11-18T23:59:26.266715+00:00",
+  "frozenBeforeActiveEdits": true,
+  "upstream": "47e9220751c4e37f39d5e1635d9b77701d93f964",
+  "easternReader": "restricted Local API",
+  "inputs": {
+    "criteria.md": "6e0490d4841bc914c145378ccf6ee08d8692027fbeddd970d3bfa68bc70430f0",
+    "input/materials/export.json": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+    "input/materials/handoff.md": "b0b2553e47e1521d074a5c8c3d62e67ddb70ba398552f55d9ee5d12ad1da0212",
+    "input/materials/package-lock.json": "36f6560d7e738daee00e74356fa1bec06c349b492289c8a17e6e1f1ca56378a7",
+    "input/materials/package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+    "input/materials/reader.mjs": "477c445d43ef84562f736040ec955c6141a64793bede7d689c5b1b9c092b9225",
+    "input/materials/target.mjs": "cdb6eced80f4a4cde189a031700557ed5d8979e31463fd071704c960995de0ce",
+    "task.md": "4097a6166ff23edc09336541c8e052f6c054ed7b5ea5cfb8077408fc85939a09"
+  },
+  "nodeSHA256": "a7ec1b37e6ff9d187e4198c5b6df9a4eb1c74dd31804fb3bac55cc4ceca1ac01",
+  "pluginDependencyInTarget": false,
+  "model": "gpt-6.2-sol",
+  "effort": "medium"
+}

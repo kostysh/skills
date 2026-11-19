@@ -1,0 +1,198 @@
+{
+  "checked_utc": "2026-11-18T20:00:30.797424+00:00",
+  "gh": {
+    "argv": [
+      "gh",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "gh version 2.96.0 (2026-07-02)\nhttps://github.com/cli/cli/releases/tag/v2.96.0\n",
+    "stderr": ""
+  },
+  "github_cli_latest_release_read": {
+    "argv": [
+      "gh",
+      "release",
+      "view",
+      "--repo",
+      "github.com/cli/cli",
+      "--json",
+      "tagName,url"
+    ],
+    "exit": 0,
+    "stdout": "{\"tagName\":\"v2.105.0\",\"url\":\"https://github.com/cli/cli/releases/tag/v2.105.0\"}\n",
+    "stderr": ""
+  },
+  "read_only_help": [
+    {
+      "argv": [
+        "gh",
+        "pr",
+        "view",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout_sha256": "30004c2cb22592981d6412dd0a4f25989376103e10c4952557f5e8457f745821",
+      "features_present": {
+        "--repo": true,
+        "--json": true,
+        "baseRefName": true,
+        "baseRefOid": true,
+        "changedFiles": true,
+        "headRefOid": true,
+        "files": true
+      }
+    },
+    {
+      "argv": [
+        "gh",
+        "pr",
+        "checks",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout_sha256": "8fda9c43de95c8f72a78b53cce96b397a972f2f1b2545e3c8d9e279370b3120b",
+      "features_present": {
+        "--repo": true,
+        "--json": true,
+        "bucket": true,
+        "event": true,
+        "state": true,
+        "workflow": true
+      }
+    },
+    {
+      "argv": [
+        "gh",
+        "run",
+        "view",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout_sha256": "bc53445e2dbd82abb6f8b24d34b62b0b6366b260da5d3552c9424c7c651c65fd",
+      "features_present": {
+        "--repo": true,
+        "--json": true,
+        "--attempt": true,
+        "--log-failed": true,
+        "workflowName": true,
+        "headSha": true,
+        "headBranch": true,
+        "event": true,
+        "conclusion": true
+      }
+    },
+    {
+      "argv": [
+        "gh",
+        "project",
+        "view",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout_sha256": "ab246200052dcac041bf1db7da86f8e825b2b2ea9c20bccc5468a42a7866d4aa",
+      "features_present": {
+        "--owner": true,
+        "--format": true,
+        "json": true
+      }
+    },
+    {
+      "argv": [
+        "gh",
+        "skill",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout_sha256": "6ef4d9fb2183c032e8914cc3f0f6aa3174ee64785d7ee4cc8a9a4b8df0c304b3",
+      "features_present": {
+        "preview": true,
+        "publish": true,
+        "install": true,
+        "update": true,
+        "in preview": true
+      }
+    },
+    {
+      "argv": [
+        "gh",
+        "skill",
+        "preview",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout_sha256": "c96002689de643be315972c61584df336455aa4f21513cf8dbf2f0e11c75e76b",
+      "features_present": {
+        "<repository> [<skill>]": true,
+        "@VERSION": true,
+        "git tag, branch, or commit SHA": true
+      }
+    },
+    {
+      "argv": [
+        "gh",
+        "skill",
+        "install",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout_sha256": "d7bc9b17b03cff765380b63003030f82db5574292c1cb12ffa8c108efb5f2057",
+      "features_present": {
+        "--from-local": true,
+        "--agent": true,
+        "--scope": true,
+        "--pin": true,
+        "--force": true
+      }
+    },
+    {
+      "argv": [
+        "gh",
+        "skill",
+        "list",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout_sha256": "1c6fb3a960dd44c5f6f1588199fc59b10e530ab7651caff2fcef36477abb69e7",
+      "features_present": {
+        "--agent": true,
+        "--scope": true,
+        "--json": true,
+        "skillName": true,
+        "sourceURL": true,
+        "pinned": true
+      }
+    },
+    {
+      "argv": [
+        "gh",
+        "skill",
+        "update",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout_sha256": "925fb68cc88ca3f206c8158b6bc76356534df44da1381bbfab9c54debb8853ff",
+      "features_present": {
+        "--dry-run": true,
+        "--force": true,
+        "--unpin": true
+      }
+    },
+    {
+      "argv": [
+        "gh",
+        "skill",
+        "publish",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout_sha256": "43323d597b80cf17bfe850e7331ed3e78e42fe8f294c43a0de5583c1f19c174a",
+      "features_present": {
+        "--dry-run": true,
+        "--fix": true,
+        "--tag": true,
+        "GitHub release": true
+      }
+    }
+  ]
+}

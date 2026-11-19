@@ -6,9 +6,9 @@ description: Build, review, and debug Next.js App Router apps using RSC, Server
   Next.js-specific and version-sensitive behavior, not generic React or
   TypeScript work.
 metadata:
-  source-version: 0.1.2
+  source-version: 0.1.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 86ddf3f6b0f0e6b9ed0bfa7b71936d02aa7e3899c20f9f6dfdb22808fb09bc9b
+  skillforge-source-hash: 58123eb336446547b40df84644fe3d30ac2d5815b829e22f5517428aee815feb
 ---
 
 # nextjs
@@ -41,7 +41,7 @@ Apply this skill when building, changing, reviewing, or debugging Next.js code, 
 
 This skill packages the upstream Vercel Next.js guidance into a portable local skill. Treat the guidance as framework-specific defaults, then verify version-sensitive behavior against the project's installed `next` version and local conventions.
 
-For an existing project, installed versions and version-matched official APIs determine compatibility; do not upgrade just to follow a current example. Next.js 16 requires Node.js >=20.9 and TypeScript >=5.1, but a new deployment should use a compatible supported Node LTS (Node 24 LTS at the 2026-09-09 source check). Next.js 15 remains an existing-project branch. Next-managed React integration is not permission to install standalone React prereleases.
+Check the installed Next.js version and its public APIs before applying a current example. Next.js 16 requires Node.js >=20.9 and TypeScript >=5.1 when using TypeScript. Choose a supported Node LTS that also satisfies the deployment target and installed integrations. Preserve the project’s Next.js 15 and React versions unless the task authorizes migration.
 
 ## Core Operating Rules
 
@@ -126,7 +126,7 @@ Validation:
 
 Prove the framework behavior with the narrowest available project check.
 
-1. Run existing validation that exercises the changed route, build, type surface, or browser behavior.
+1. Verify each claimed outcome. When first-load acceptance covers server-rendered content and interactivity, state in the final answer which expected content the original HTTP HTML contained or lacked and what the hydrated control did.
 2. For build/runtime issues, prefer `next build` or the repo's production-equivalent command when feasible.
 3. If validation cannot run, perform the next-best static check and report the limitation.
 
@@ -178,7 +178,7 @@ Completion requires a concrete check such as build, typecheck, lint, test, or br
 - [Bundling](references/bundling.md) — Read this when debugging server-incompatible packages, CSS imports, ESM/CJS issues, bundle analysis, or Turbopack migration.
 - [Data Patterns](references/data-patterns.md) — Read this when choosing between Server Components, Server Actions, Route Handlers, or client data fetching.
 - [Debug Tricks](references/debug-tricks.md) — Read this when using Next.js development MCP debugging or debug build paths.
-- [Directives](references/directives.md) — Read this when applying 'use client', 'use server', or 'use cache'.
+- [Directives](references/directives.md) — Read this when applying 'use client', 'use server', 'use cache', or the Cache Components configuration.
 - [Error Handling](references/error-handling.md) — Read this when implementing Next.js error boundaries, redirects, not-found behavior, or auth errors.
 - [File Conventions](references/file-conventions.md) — Read this when working with project structure, special files, route segments, route groups, parallel routes, intercepting routes, or proxy/middleware files.
 - [Font Optimization](references/font.md) — Read this when configuring next/font, Google fonts, local fonts, Tailwind font variables, subsets, or display behavior.

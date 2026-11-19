@@ -1,0 +1,290 @@
+{
+  "variant": "C",
+  "case": "holdout",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nОткрой целиком установленную в этом каталоге инструкцию SKILL.md и примени её. Служба поддержки принимает собственное рабочее место. Составь report.md для владельца: какой набор документов поддержка получила сегодня и чем реально заканчивается открытие карточек cedar, dune и missing через предоставленный клиент. Отдельно укажи, какие выводы об интерфейсе кабинета можно сделать по этим результатам.\n",
+  "input_file_sha256": {
+    "README.md": "1953ed10b3962121a10ea0195ae69d28aa9f097a7ff6403cb380a87b10aef526",
+    "SKILL.md": "1519366b339d491741ed3f3a1e51bcdb6f16b59d19211a8e6134a25597eed5d5",
+    "agents/openai.yaml": "f08b004b6312540db55f0be5991f16445925d7cf9a1d30f8558205946a975c8a",
+    "desk-profile.json": "bcf0814951b2ebec5fee735ea95ae62feff78df16fd12ddbb606e9bb1c27e410",
+    "desk.py": "bba211af96f9affd11a7aaddd8ca6b022ac37e04c315cc2f4d5f45f5b4de8972",
+    "documents.json": "e6608361b7b1718ab19546e5bf732abf860565f4e718d2baae2769720799e5a5",
+    "references/architecture.md": "84c9bf4c2444d7680adcd79590220b30ed44d71fee456805b9b9f71c9909aa9d",
+    "references/auth.md": "d955c7263ab57a9cf8e3801929a0232525aa9adf020554662ffd4fda73348942",
+    "references/client-setup.md": "10ff9d7cc4d40f4884511e3032749c125e22f4c19f4e555368975894e821c2b0",
+    "references/data-handling.md": "dd76601cf580a5d95552eb0ffef049c207c8ab676f2e3fae7cba0972532f872b",
+    "references/database.md": "63d43eb9a1d9441ca67f73341d9b0fdf5d7514c5a76fc168e0357c55b89b4c09",
+    "references/db-functions.md": "d1ea67c1ae3208a7d980af990b611c3b04978812e8bd9a769af3c64ff717d94e",
+    "references/edge-functions.md": "2eb8c7f8972cc4dcb624504dae3eb61fa7286317d2df5ce2ee101653dadfdb7a",
+    "references/high-risk-backend-contract.md": "24de22f8621fceed881c6e8821d836b23835da6e1f93bbe478fca065a98f745d",
+    "references/migrations-cli.md": "b22d7cd9f0c66e97130d02da7e5061478b83c81108d62e8d042c92dadaa82223",
+    "references/operations-observability.md": "5358f2e533f93db1fb56391e44a4dcfee66f3a58d0831ce02f675668fd0beed0",
+    "references/operations-release.md": "a43e1f4fab673d1809ce3eca49fa02f3e39f39aabf0b47ec7f3d5dd84194afa8",
+    "references/operations-reliability.md": "f25f48f4657c49bd1bb06fa03d0b26de918db7772979b5615d264113328d9fb3",
+    "references/realtime.md": "013653f997484bb384ee13aebe9b6f58bbc9c1ee7bfedef687a47d1ebd097a59",
+    "references/rls.md": "63c92a4ed7787db0bfc4af6c8d40d10811e985f6b23eca5aea6ad92fa59d094d",
+    "references/security-privileges.md": "50f3a166d9bc3a5bac51fa070453fa362145621bf530c7e41ce9f33a6ee0bae0",
+    "references/storage.md": "c82c523f012ae4eaa91de3025f8282c83e9d2499c59c8b998e70a704c4ad8bfc",
+    "references/troubleshooting.md": "63c61c836531e1d32432c70dc5ad1bb641728ff1d920d32c02d63b0339f2d8af",
+    "references/vector.md": "f85aa0b23763d5432867b40f3562e92ad8b57b92c1fa345ef9c59b30607a671f",
+    "references/webhooks.md": "b98d93838d9aa328ed1937d0c1ed962840d7e308132ed156c63b87cf0e429be9"
+  },
+  "raw_events_sha256": "5f303d8ff125c431ad69f8efeac04b08b8a847c05630b7bd79d80631464b2815",
+  "raw_events_bytes": 40005,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Прочитаю местный SKILL.md целиком и применю его. Затем сверю полученные документы и результаты открытия трёх карточек через предоставленный клиент."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git'\"' && cat SKILL.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat README.md documents.json desk-profile.json'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat references/rls.md references/high-risk-backend-contract.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'python3 desk.py support role && python3 desk.py support list && python3 desk.py support get cedar dune missing'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'python3 desk.py support get cedar && python3 desk.py support get dune && python3 desk.py support get missing'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "file_change",
+      "changes": [
+        {
+          "path": "{project}/report.md",
+          "kind": "add"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python3 - <<'PY'\nimport re\nfrom pathlib import Path\nskill = Path('SKILL.md').read_text()\nassert all(Path(p).is_file() for p in re.findall(r'\\\\((references/[\"'^)]+)'\"\\\\)', skill))\nreport = Path('report.md').read_text()\nassert all(s in report for s in ('9ad5e4301aa94b', '07062043bb6e49', '083fc07ebfa04b', '87b574f1a27140', 'cab624fab53544', 'Что это говорит об интерфейсе кабинета'))\nprint('Ссылки SKILL.md и данные отчёта проверены.')\nPY\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Составил [report.md]({project}/report.md). Сегодня штатный клиент вернул поддержке два документа — `birch` («Май») и `cedar` («Июнь»).\n\nЗапрос `cedar` вернул одну запись с идентификатором. Запросы `dune` и `missing` оба вернули `200`, пустой список и `error: null`. По этим ответам кабинет может сообщить, что карточка недоступна, но причину определить нельзя. Отображение карточек и сообщений в самом кабинете не проверялось."
+    }
+  ],
+  "changed_file_contents": {
+    "report.md": "# Приёмка рабочего места поддержки\n\n**18 ноября 2026 года.** Статус `completed` для проверки штатного клиента. Режим — эксплуатационная проверка чтения в локальной учебной среде.\n\n## Какие документы получила поддержка\n\nВ сессии `support` клиент подтвердил роль базы данных `desk_support` (`identityStatus: 200`). Команда `list` вернула статус `200`, `error: null` и два идентификатора из четырёх учебных документов:\n\n| Идентификатор | Название по `documents.json` |\n| --- | --- |\n| `birch` | Май |\n| `cedar` | Июнь |\n\nВ ответе списка были только идентификаторы. Названия взяты из локального набора данных. Список совпал с набором документов, для которых в `documents.json` указано согласие на доступ поддержки. `amber` и `dune` в списке отсутствовали.\n\n## Чем закончились запросы карточек\n\n| Карточка | Статус | `data` | `error` | Результат |\n| --- | --- | --- | --- | --- |\n| `cedar` | `200` | `[{\"id\":\"cedar\"}]` | `null` | Клиент получил одну запись с идентификатором карточки. |\n| `dune` | `200` | `[]` | `null` | Клиент получил пустой результат. По учебным данным документ существует, согласия на доступ поддержки нет. |\n| `missing` | `200` | `[]` | `null` | Клиент получил пустой результат. По `README.md` этот идентификатор зарезервирован для заведомо отсутствующего документа. |\n\nОдиночные вызовы `python3 desk.py support get ID` и общий вызов `python3 desk.py support get cedar dune missing` дали одинаковые результаты для каждой карточки. Номера запросов `role` и `list` — `515d5337abd546` и `9ad5e4301aa94b`. Номера одиночных запросов в порядке таблицы — `07062043bb6e49`, `083fc07ebfa04b`, `87b574f1a27140`. Номер общего запроса — `cab624fab53544`.\n\n## Что это говорит об интерфейсе кабинета\n\n- Для проверенных карточек статус `200` означает успешное выполнение запроса. Наличие записи определяется по `data`.\n- `dune` и `missing` дают одинаковые статус, данные и ошибку. По этим полям интерфейс может сообщить, что карточка недоступна. Причину по ответу определить нельзя.\n- Клиент вернул для `cedar` только идентификатор. Отображение списка, содержимого карточки и сообщения при пустом результате в самом кабинете остаётся непроверенным.\n\n## Граница проверки\n\nВыполнены реальные чтения через предоставленный клиент и локальный сокет с единственной назначенной в `desk-profile.json` сессией `support`. По `README.md` этот путь использует Supabase JS, PostgREST и таблицу `work.documents`. Наблюдения подтверждают видимость записей для этой сессии на проверенном пути. Определения политик RLS, права базы данных и другие пути доступа отдельно не проверялись. Единственное изменение в каталоге — этот отчёт.\n"
+  },
+  "final_response": "Составил [report.md]({project}/report.md). Сегодня штатный клиент вернул поддержке два документа — `birch` («Май») и `cedar` («Июнь»).\n\nЗапрос `cedar` вернул одну запись с идентификатором. Запросы `dune` и `missing` оба вернули `200`, пустой список и `error: null`. По этим ответам кабинет может сообщить, что карточка недоступна, но причину определить нельзя. Отображение карточек и сообщений в самом кабинете не проверялось.",
+  "input_file_modes": {
+    "README.md": "0664",
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "desk-profile.json": "0664",
+    "desk.py": "0664",
+    "documents.json": "0664",
+    "references/architecture.md": "0644",
+    "references/auth.md": "0644",
+    "references/client-setup.md": "0644",
+    "references/data-handling.md": "0644",
+    "references/database.md": "0644",
+    "references/db-functions.md": "0644",
+    "references/edge-functions.md": "0644",
+    "references/high-risk-backend-contract.md": "0644",
+    "references/migrations-cli.md": "0644",
+    "references/operations-observability.md": "0644",
+    "references/operations-release.md": "0644",
+    "references/operations-reliability.md": "0644",
+    "references/realtime.md": "0644",
+    "references/rls.md": "0644",
+    "references/security-privileges.md": "0644",
+    "references/storage.md": "0644",
+    "references/troubleshooting.md": "0644",
+    "references/vector.md": "0644",
+    "references/webhooks.md": "0644"
+  },
+  "changed_file_modes": {
+    "report.md": "0664"
+  },
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "method": "Server log of the private task-owned gateway correlated with unique IDs received by this project. Responses contain actual results of ordinary SDK requests. The helper records SQL caller via SECURITY INVOKER in the same assigned client. A request rejected for an unassigned session does not contact PostgREST.",
+    "versions": {
+      "client": "@supabase/supabase-js 2.119.1",
+      "http": "PostgREST 16.6",
+      "database": "PostgreSQL 18.4",
+      "schema": "work",
+      "issuer": "fixed local sessions; hosted Auth and cabinet not installed"
+    },
+    "events": [
+      {
+        "session": "support",
+        "operation": "role",
+        "identifiers": [],
+        "reply": {
+          "session": "support",
+          "effectiveDatabaseRole": "desk_support",
+          "identityStatus": 200,
+          "requestId": "515d5337abd546"
+        }
+      },
+      {
+        "session": "support",
+        "operation": "list",
+        "identifiers": [],
+        "reply": {
+          "session": "support",
+          "effectiveDatabaseRole": "desk_support",
+          "identityStatus": 200,
+          "collection": {
+            "status": 200,
+            "data": [
+              {
+                "id": "birch"
+              },
+              {
+                "id": "cedar"
+              }
+            ],
+            "error": null
+          },
+          "requestId": "9ad5e4301aa94b"
+        }
+      },
+      {
+        "session": "support",
+        "operation": "get",
+        "identifiers": [
+          "cedar",
+          "dune",
+          "missing"
+        ],
+        "reply": {
+          "session": "support",
+          "effectiveDatabaseRole": "desk_support",
+          "identityStatus": 200,
+          "records": {
+            "cedar": {
+              "status": 200,
+              "data": [
+                {
+                  "id": "cedar"
+                }
+              ],
+              "error": null
+            },
+            "dune": {
+              "status": 200,
+              "data": [],
+              "error": null
+            },
+            "missing": {
+              "status": 200,
+              "data": [],
+              "error": null
+            }
+          },
+          "requestId": "cab624fab53544"
+        }
+      },
+      {
+        "session": "support",
+        "operation": "get",
+        "identifiers": [
+          "cedar"
+        ],
+        "reply": {
+          "session": "support",
+          "effectiveDatabaseRole": "desk_support",
+          "identityStatus": 200,
+          "records": {
+            "cedar": {
+              "status": 200,
+              "data": [
+                {
+                  "id": "cedar"
+                }
+              ],
+              "error": null
+            }
+          },
+          "requestId": "07062043bb6e49"
+        }
+      },
+      {
+        "session": "support",
+        "operation": "get",
+        "identifiers": [
+          "dune"
+        ],
+        "reply": {
+          "session": "support",
+          "effectiveDatabaseRole": "desk_support",
+          "identityStatus": 200,
+          "records": {
+            "dune": {
+              "status": 200,
+              "data": [],
+              "error": null
+            }
+          },
+          "requestId": "083fc07ebfa04b"
+        }
+      },
+      {
+        "session": "support",
+        "operation": "get",
+        "identifiers": [
+          "missing"
+        ],
+        "reply": {
+          "session": "support",
+          "effectiveDatabaseRole": "desk_support",
+          "identityStatus": 200,
+          "records": {
+            "missing": {
+              "status": 200,
+              "data": [],
+              "error": null
+            }
+          },
+          "requestId": "87b574f1a27140"
+        }
+      }
+    ],
+    "response_ids_visible_in_tool_output": [
+      "07062043bb6e49",
+      "083fc07ebfa04b",
+      "515d5337abd546",
+      "87b574f1a27140",
+      "9ad5e4301aa94b",
+      "cab624fab53544"
+    ],
+    "unmatched_count": 0,
+    "changed_files": [
+      "report.md"
+    ],
+    "observed_cli_actions": [],
+    "query_sql": "SELECT-only policies; client resolves records through .from(\"documents\").select(\"id\").eq(\"id\",id); lists use .order(\"id\").",
+    "raw_events_sha256": "5f303d8ff125c431ad69f8efeac04b08b8a847c05630b7bd79d80631464b2815"
+  }
+}

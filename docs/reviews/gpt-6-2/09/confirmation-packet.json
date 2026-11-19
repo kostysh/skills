@@ -1,0 +1,36 @@
+{
+  "full_packet_files": 251,
+  "full_packet_bytes": 8742348,
+  "full_packet_sha256": "690bb3334d6435608b0a55bbf6b887b49a77371d84d267827e2c3f6c511b3645",
+  "minimized_packet_files": 36,
+  "minimized_packet_bytes": 384233,
+  "minimized_packet_sha256": "32de552b0454881bfcfb177b221be8c153e0f2db73639dbedea5a04ed5e97933",
+  "supplied": [
+    "unchanged frozen criteria, task and full answers",
+    "actual actions and synthetic field/status/focus values before and after transitions",
+    "independent synthetic browser traces, separately labeled",
+    "verified unchanged app SHA before and after and original raw event identities"
+  ],
+  "excluded": [
+    "all repository and skill files, archives, compiled JavaScript, HTML, CSS, fonts and PNGs",
+    "prior grade reports, private mapping, model assignment and variant-instruction hashes",
+    "full shell scripts, local absolute paths and user or account identifiers"
+  ],
+  "scope": "An initial request to dispatch the full confirmation packet was rejected automatically before a grade session started. Observer traces and synthetic grader inputs are local transformations. Actual app bytes and the full original packet are retained locally for source verification.",
+  "initial_automatic_review_reason": "The evaluator would transmit a packet containing the private skill archive and review artifacts to an external Sol session; general approval for blind studies does not specifically authorize exporting this sensitive payload to that destination.",
+  "local_inventory_of_prepared_full_packet": {
+    "archive_or_skill_files": 0,
+    "file_types": {
+      ".css": 14,
+      ".html": 14,
+      ".js": 14,
+      ".json": 55,
+      ".md": 29,
+      ".mjs": 14,
+      ".png": 41,
+      ".woff2": 70
+    },
+    "dispatch": "Denied before external confirmation assessment."
+  },
+  "reduced_unsent_materials_remain_local": true
+}

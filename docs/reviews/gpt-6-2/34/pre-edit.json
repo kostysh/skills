@@ -1,0 +1,33 @@
+{
+  "repoBase": "b157eb54f2add72f5a66e776948b61355b58238e",
+  "originalArchive": "ff4811baa0761a18c171a307202e51c1c4d0d34184201d4c873ee95ad8b5ceab",
+  "originalShipped": {
+    "SKILL.md": "7e04e100c6ba15df9841cbcd3113d58c4b39a46cd90dd00cbdaabaddf1d65502",
+    "agents/openai.yml": "29e9f74b268f79fe21b9b3daca30fa66151b8580f4545772e6138a22582a96d6",
+    "assets/shadcn-small.png": "0ecc62d682727f68fc4937eed19960c706714fa084d44f63028d611ae02bf3d7",
+    "assets/shadcn.png": "7d60ad6fec4d89a0d44ba5a3c9283d2fea0047af5467f9227040e20d927d39b7",
+    "references/cli.md": "dc3a0ecc8ec861801e77bda084ba20f2e68cab0b34eeeac7ca6e65ccb89e181b",
+    "references/customization.md": "04c54b19947c3827fe3e7d437434720252ee6cbbe5b61617501acba9245884ec",
+    "references/rules/composition.md": "9e4ad7ad2861dc8854a61f8e4d0edc56d4def0ce7a603e9b405ca266a563acf8",
+    "references/rules/forms.md": "c33fe220bbdecd471aba8a62439335a362944b212982fdfedfdb9f309473d318",
+    "references/rules/icons.md": "7b79511251df08df996f4b6fcab7a08103bd1ab0f1b97d1a5023a679495c3790",
+    "references/rules/styling.md": "321f473b67ba2250e850a40cc8b3f939bfa4e37c8a18a3b42e667d2ab353b9f0"
+  },
+  "AActiveIdentical": true,
+  "initialCorpora": "ed5490cdbbaeab20d172e78931c5b9ea38908b56a0d2bc1980bcc8b7e2825df2",
+  "exactTestedD": {
+    "SKILL.md": "646068001d490ee3c83f7830bdcaa3fe74992eb77165b7e0f4fd9b7e95e3c25d",
+    "agents/openai.yml": "29e9f74b268f79fe21b9b3daca30fa66151b8580f4545772e6138a22582a96d6",
+    "assets/shadcn-small.png": "0ecc62d682727f68fc4937eed19960c706714fa084d44f63028d611ae02bf3d7",
+    "assets/shadcn.png": "7d60ad6fec4d89a0d44ba5a3c9283d2fea0047af5467f9227040e20d927d39b7",
+    "references/cli.md": "dc3a0ecc8ec861801e77bda084ba20f2e68cab0b34eeeac7ca6e65ccb89e181b",
+    "references/customization.md": "04c54b19947c3827fe3e7d437434720252ee6cbbe5b61617501acba9245884ec",
+    "references/rules/composition.md": "9e4ad7ad2861dc8854a61f8e4d0edc56d4def0ce7a603e9b405ca266a563acf8",
+    "references/rules/forms.md": "c33fe220bbdecd471aba8a62439335a362944b212982fdfedfdb9f309473d318",
+    "references/rules/icons.md": "7b79511251df08df996f4b6fcab7a08103bd1ab0f1b97d1a5023a679495c3790",
+    "references/rules/styling.md": "321f473b67ba2250e850a40cc8b3f939bfa4e37c8a18a3b42e667d2ab353b9f0"
+  },
+  "preReleaseCriteria": "6cea8fce5611b723d54f5fda20f10ad12fcaa2957e6788bb843cc665c2bdec48",
+  "selectionCriteria": "12e78eaa7700ff62c6969f7fa5f240202e50c1506d0ec12bd66c987a58a71d32",
+  "selectionTask": "19ca1ff02c8446e40963fce621c4b1bb30954827f30603c6067283da3054209a"
+}

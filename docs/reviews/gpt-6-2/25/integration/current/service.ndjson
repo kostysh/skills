@@ -1,0 +1,14 @@
+{"origin":"http://127.0.0.1:41077"}
+{"method":"GET","path":"/api/notification-settings","status":200,"body":null}
+{"method":"GET","path":"/api/notification-settings","status":200,"body":null}
+{"method":"PUT","path":"/api/notification-settings","status":422}
+{"method":"PUT","path":"/api/notification-settings","status":204}
+{"method":"GET","path":"/api/notification-settings","status":200,"body":{"email":"weekly@example.com","enabled":true,"frequency":"weekly"}}
+{"method":"GET","path":"/api/notification-settings","status":200,"body":{"email":"weekly@example.com","enabled":true,"frequency":"weekly"}}
+{"method":"PUT","path":"/api/notification-settings","status":204}
+{"method":"GET","path":"/api/notification-settings","status":200,"body":{"email":"escape@example.com","enabled":false,"frequency":"daily"}}
+{"method":"GET","path":"/api/notification-settings","status":200,"body":{"email":"escape@example.com","enabled":false,"frequency":"daily"}}
+{"method":"PUT","path":"/api/notification-settings","status":503,"body":{"error":"write_unavailable"}}
+{"method":"PUT","path":"/api/notification-settings","status":204}
+{"method":"GET","path":"/api/notification-settings","status":200,"body":{"email":"retry@example.com","enabled":true,"frequency":"weekly"}}
+{"method":"GET","path":"/api/notification-settings","status":200,"body":{"email":"retry@example.com","enabled":true,"frequency":"weekly"}}

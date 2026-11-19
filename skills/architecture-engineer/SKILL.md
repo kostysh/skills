@@ -5,9 +5,9 @@ description: Design or revise architecture for AI-agent-driven development. Use
   findings require architectural requirements, boundaries, patterns, trade-offs,
   quality scenarios, spikes, ADRs, or handoff—not implementation backlogs.
 metadata:
-  source-version: 0.1.11
+  source-version: 0.1.13
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: e2a14012e9f7271315614231fd94ce2447589686ef100230f090bd7a3f20f519
+  skillforge-source-hash: e0d6ea1e2131d8b0489c7d0bea465a578f4fd5a22969f2dd9a435b61daedb602
 ---
 
 # architecture-engineer
@@ -174,7 +174,7 @@ Validation:
 Avoid false confidence for high-risk or weak-evidence decisions.
 
 1. Use quality scenarios for known quality attributes such as latency, availability, recoverability, security, privacy, consistency, or operability.
-2. Use spikes for unknown feasibility and keep each spike tied to a decision it will unblock.
+2. Tie each feasibility spike to the decision it unblocks.
 3. Do not write a final ADR before a necessary spike produces evidence.
 
 Validation:

@@ -12,6 +12,8 @@
 
 ## Implementation logs
 
+- [Ревизия GPT‑6.2, 18 ноября](logs/implementation-log-20261118-1.md) — подтверждение сохранения через обычный маршрут и проверка версий Router и Query.
+
 - [implementation-log-20260727-1](logs/implementation-log-20260727-1.md) — mutation lifetime matrix и combined falsifier по #228.
 - [implementation-log-20260612-1](logs/implementation-log-20260612-1.md) — уточнение completion gate для интерактивных SPA-потоков. Статус: PASS.
 - [implementation-log-20260612-2](logs/implementation-log-20260612-2.md) — переносимые правила client SPA audit remediation: feature-based structure, API boundary, CSRF recovery, durable cache hygiene и scenario-level evidence. Статус: PASS.

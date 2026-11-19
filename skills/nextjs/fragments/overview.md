@@ -2,7 +2,7 @@ Apply this skill when building, changing, reviewing, or debugging Next.js code, 
 
 This skill packages the upstream Vercel Next.js guidance into a portable local skill. Treat the guidance as framework-specific defaults, then verify version-sensitive behavior against the project's installed `next` version and local conventions.
 
-For an existing project, installed versions and version-matched official APIs determine compatibility; do not upgrade just to follow a current example. Next.js 16 requires Node.js >=20.9 and TypeScript >=5.1, but a new deployment should use a compatible supported Node LTS (Node 24 LTS at the 2026-09-09 source check). Next.js 15 remains an existing-project branch. Next-managed React integration is not permission to install standalone React prereleases.
+Check the installed Next.js version and its public APIs before applying a current example. Next.js 16 requires Node.js >=20.9 and TypeScript >=5.1 when using TypeScript. Choose a supported Node LTS that also satisfies the deployment target and installed integrations. Preserve the project’s Next.js 15 and React versions unless the task authorizes migration.
 
 ## Core Operating Rules
 

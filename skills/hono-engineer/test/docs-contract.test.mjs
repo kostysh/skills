@@ -27,7 +27,7 @@ test('root contract requires authoritative inputs, current compatibility, and bo
   assert.match(skill, /blocked or unverified work/);
 });
 
-test('latest-oriented currency guidance is optional, reachable, and active/package surfaces do not pin Hono', async () => {
+test('currency and high-risk guidance are required on their triggers and active surfaces do not pin Hono', async () => {
   const [skill, currency, uiMetadata, packageJson, sourceManifest, overviewSource] =
     await Promise.all([
       readSkillFile('SKILL.md'),
@@ -40,9 +40,10 @@ test('latest-oriented currency guidance is optional, reachable, and active/packa
 
   assert.match(skill, /latest official stable Hono guidance/);
   assert.match(skill, /installed project version as a compatibility constraint/);
+  const required = skill.split('## Required active references\n')[1]?.split('\n## ')[0] ?? '';
+  assert.match(required, /\[Framework Currency\]\(references\/framework-currency\.md\).*version-sensitive/);
+  assert.match(required, /\[High-risk Backend Contract\]\(references\/high-risk-backend-contract\.md\).*high-risk Hono routes/);
   assert.match(skill, /## Optional references/);
-  assert.match(skill, /\[Framework Currency\]\(references\/framework-currency\.md\)/);
-  assert.doesNotMatch(skill, /## Required active references/);
   assert.match(currency, /Do not silently upgrade dependencies/);
   assert.match(currency, /https:\/\/hono\.dev\/docs/);
   const referenceNames = await readdir(path.join(skillDir, 'references'));
@@ -113,17 +114,17 @@ test('scoped Context variables do not rely on unsafe global augmentation', async
   assert.doesNotMatch(typing, /^\s*(?:const app = new Hono|app\.(?:use|get|post|route)\()/m);
 });
 
-test('middleware hooks are separate from the canonical chain', async () => {
-  const [skill, pipelines] = await Promise.all([
+test('v4 hook wiring is scoped to that major and the currency reference identifies the v5 change', async () => {
+  const [skill, pipelines, currency] = await Promise.all([
     readSkillFile('SKILL.md'),
     readSkillFile('references/pipelines.md'),
+    readSkillFile('references/framework-currency.md'),
   ]);
 
-  assert.match(
-    skill,
-    /register `app\.onError\(\)` and `notFound\(\)` as hooks, not middleware positions/,
-  );
-  assert.match(pipelines, /not positions in the middleware chain/);
+  for (const text of [skill, pipelines]) {
+    assert.match(text, /On Hono v4, register `app\.onError\(\)` and `app\.notFound\(\)` as hooks outside the middleware chain/);
+  }
+  assert.match(currency, /v5 candidate.*routable middleware.*`c\.error`/);
   assert.doesNotMatch(pipelines, /^\d+\. error handling \(app\.onError\)/m);
 });
 
@@ -133,8 +134,10 @@ test('response runtime validation is not conflated with contract tests or static
     readSkillFile('references/validation-openapi.md'),
   ]);
 
-  assert.match(skill, /Contract tests validate only exercised responses/);
+  assert.match(skill, /Verify emitted responses on the agreed success and failure paths/);
+  assert.match(skill, /which checks passed and which concerns remain unverified/);
   assert.match(validation, /Runtime response validation/);
+  assert.match(validation, /production code validates the actual payload before emission/);
   assert.match(validation, /Contract-test coverage/);
   assert.match(validation, /Static typing only/);
   assert.match(validation, /Do not say "all responses are validated"/);

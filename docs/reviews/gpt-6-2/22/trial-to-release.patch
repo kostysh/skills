@@ -1,0 +1,18 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -8 +8 @@
+-  source-version: 0.3.1
++  source-version: 0.3.2
+@@ -10 +10 @@
+-  skillforge-source-hash: a3f9a1c46960dde29d6de43f5bc88bb06ac69f2330c7d0a77e924fe5047a2c3e
++  skillforge-source-hash: 845aca8ffbb3845aac3b1b06d56eaa839d2cf8e0afb409178706ced0c0d58f68
+--- a/references/database-sql.md
++++ b/references/database-sql.md
+@@ -24 +24 @@
+-| Intermediate arithmetic | Use exact widened arithmetic such as `numeric`, including widened `roundDiv` numerators, or prove inputs cannot overflow before division |
++| Intermediate arithmetic | Widen integer products before they can overflow. Preserve the exact ratio until the specified rounding step, for example with an integer quotient and remainder. PostgreSQL `numeric` division can round a large quotient before an outer `floor` or `round`. |
+--- a/references/money-library-usage.md
++++ b/references/money-library-usage.md
+@@ -37 +37 @@
+-| Built-in engine form | Immutable `EUR` definition with code `EUR` and `minorUnitDigits: 2` when an engine-shaped EUR amount is required |
++| Built-in EUR engine | `EUR` is an immutable `CurrencyEngine<'EUR'>`. Its `EUR.definition` holds `code: 'EUR'` and `minorUnitDigits: 2`. Use `EUR.fromMinorUnits(cents)` for a tagged amount. |

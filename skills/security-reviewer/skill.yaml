@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "security-reviewer"
-  source-version: "0.1.14"
+  source-version: "0.1.15"
   recommended-skill-md-max-bytes: 36000
   description: "Perform bounded security review of code, CI, permissions, webhooks, secrets, data access, and config. Use for vulnerability review, exploitability triage, or scoped audits. Own threat modeling, confidence gating, attack paths, and findings—not scan orchestration, compliance, pentesting, or fixes."
 fragments:
@@ -203,7 +203,7 @@ sections:
       text: "A PASS on an old diff is not evidence for a changed implementation. If files or behavior changed after the audit, perform a delta review on the new scope before reporting PASS."
     - id: "gotcha-incomplete-is-not-fail"
       priority: "high"
-      text: "Do not use FAIL merely because the target, coverage, runtime facts, or evidence are missing; use INCOMPLETE or BLOCKED according to the status contract."
+      text: "Classify gaps in evidence or the review basis using the formal status contract."
     - id: "gotcha-no-merge-verdict"
       priority: "high"
       text: "Do not issue an overall merge recommendation from security-reviewer, especially from MEDIUM-confidence or needs-verification items; route merge guidance to code-reviewer."

@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: supabase-engineer
-  source-version: 0.1.7
+  source-version: 0.1.8
   recommended-skill-md-max-bytes: 20000
   description: Build, review, debug, and operate Supabase across schema, Data API, Auth, RLS, Storage, Realtime, Edge Functions, migrations, and operations. Use for Supabase design, implementation, boundary verification, CLI/MCP workflows, or incidents; pair with domain owners where they determine correctness.
 fragments:
@@ -48,7 +48,7 @@ references:
     title: High-risk Backend Contract
     source: references/high-risk-backend-contract.md
     target: references/high-risk-backend-contract.md
-    required: false
+    required: true
     trigger: Read this for high-risk Supabase-backed commands or reads involving a public API, persistent state, authorization, concurrency, money, external resources, or required audit evidence.
   - id: ref-references-edge-functions
     title: Edge Functions
@@ -61,7 +61,7 @@ references:
     source: references/migrations-cli.md
     target: references/migrations-cli.md
     required: true
-    trigger: Read this before creating, diffing, replaying, or deploying database changes with the Supabase CLI.
+    trigger: Read this before selecting a migration target or inspecting, generating, replaying, or deploying migrations with the Supabase CLI.
   - id: ref-references-operations-observability
     title: Operations Observability
     source: references/operations-observability.md
@@ -129,6 +129,10 @@ copies:
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
 supporting:
+  - id: supporting-implementation-log-20261118-1
+    source: docs/logs/implementation-log-20261118-1.md
+    target: docs/logs/implementation-log-20261118-1.md
+    description: Non-normative evidence for caller-scoped reads and version-specific local migration targets.
   - id: supporting-implementation-log-20260727-1
     source: docs/logs/implementation-log-20260727-1.md
     target: docs/logs/implementation-log-20260727-1.md
@@ -150,6 +154,7 @@ surfaces:
       - ref-references-data-handling
       - ref-references-database
       - ref-references-db-functions
+      - ref-high-risk-backend-contract
       - ref-references-edge-functions
       - ref-references-migrations-cli
       - ref-references-operations-observability
@@ -162,8 +167,7 @@ surfaces:
       - ref-references-troubleshooting
       - ref-references-vector
       - ref-references-webhooks
-    optionalReferences:
-      - ref-high-risk-backend-contract
+    optionalReferences: []
   supportingGlobs:
     - docs/*
 sections:

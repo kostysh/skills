@@ -30,6 +30,7 @@
 | [logs/implementation-log-20260710-1.md](logs/implementation-log-20260710-1.md) | N/A | PASS |
 | [logs/implementation-log-20260713-1.md](logs/implementation-log-20260713-1.md) | N/A | PASS |
 | [logs/implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) | N/A | Independent scoped PASS; standalone `check` warning is out of compilation scope |
+| [logs/implementation-log-20261118-1.md](logs/implementation-log-20261118-1.md) | Общий план, пункт 02 | Сверка схемы и автономного CLI, версия скила 0.2.12 |
 
 | [logs/implementation-log-20260907-1.md](logs/implementation-log-20260907-1.md) | Repository methodology task 2 | Independent CP2 PASS; awaiting operator acceptance |
 

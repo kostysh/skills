@@ -1,0 +1,160 @@
+{
+  "installedArchiveSha256": "ce278c2e4c80c1409c5d560757c64ab486809bc74215649bf8a30a799a1c7da6",
+  "specificationSha256": "d319c49b83390a130fbd6cbc1d62b236a81698e43de1496a8cfcea44a3cb55bb",
+  "upstream23Sha256": "72a56350199a20c4af41f8c0ba2added869fcecc56a2d9b1f2c78d1b085e8ce7",
+  "operator21Sha256": "8f3afe7149eb8cdc4127774d9e50711c5e15a6e0a35de16254e0a45fde196e79",
+  "publicClient21ArchiveSha256": "4c7f0ae8dcb48d68625efed986c80deb0f1bd66a29b7121a7a8083ea1964c692",
+  "publicModuleFileSha256": "9a503a945b80991f7b6706ed0ff5df6f895562b0fdec9ca28bc7c6df0bc507c5",
+  "stand": {
+    "origin": "private Supabase JS client on work.documents",
+    "database": "PostgreSQL 18.4 (Debian 18.4-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+    "api": "PostgREST 16.6",
+    "sdk": "@supabase/supabase-js 2.119.1",
+    "input_sha256": "e6608361b7b1718ab19546e5bf732abf860565f4e718d2baae2769720799e5a5"
+  },
+  "runs": {
+    "version-case": {
+      "case": "version-case",
+      "assessorCode": "f80b2e",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "memoryFeature": "disabled",
+      "publicInputs": {
+        "app.mjs": "5f64d4d224cf3ec68e1ae7e14ab85fa6214fe3aae89edcdf55b1eb0e40eac268",
+        "contract.md": "9448c10d1060a281d6bfeccdd3fb5ca0c2ffdb44eb1ac36e32d5fb25f91b90ce",
+        "package.json": "ffede7e5f56db5b31635652ff36c5c1d928258c47bacc7afda71420be2a3d365"
+      },
+      "requestFromUserSha256": "1a961560f9a53bfb158e7d015be8e8e212e4e777ad04a5e42ee4843c97170f78",
+      "criteriaBeforeDispatchSha256": "5137595f308a52fe25319a16f8fd5e3cb3df77f979069282be45e2a184c5cabd",
+      "rawCommandsSha256": "5e8f4cfd86c1c43e9b7d539d2b5f62ddfd11965f9495c94b2b2fba50494a37fb",
+      "observedRuleReads": {
+        "root": [
+          "item_2"
+        ],
+        "matrix": [],
+        "currency": [
+          "item_5"
+        ]
+      },
+      "rawAnswerSha256": "9e07b944e06794794c7e18c4ec13096c03e748176fc8f91243231a7df552192c",
+      "observationSha256": "e9756bf1d30a207cb91531a12b29e9fd8ad672e4577546044ab710f70b3b3610",
+      "originalAndFinalInstalledMembersIdentical": true,
+      "changedProjectInputs": [
+        "app.mjs"
+      ],
+      "allInputModesUnchanged": true,
+      "behavior": {
+        "actualVersion": "5.0.0-rc.1",
+        "appRequest": 3
+      }
+    },
+    "registered": {
+      "case": "registered",
+      "assessorCode": "a86f13",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "memoryFeature": "disabled",
+      "publicInputs": {
+        "README.md": "9eac42b825b20c7b0950aa5d7431e776a8914f2f8ba417029163e5d86260b474",
+        "app.mjs": "1f7bb229db0b14a4f8ff1e71e97fafd872c42a54502329670c419854debc7c6d",
+        "desk-middleware.mjs": "2466788e9cf5459fc4221a45471c8ca2e18b26f1cbb856f3e9e8d637d18000da",
+        "environment.mjs": "aadaa9c5aff84851d1afda846bacf89fc3f8066e671ace6544e8137309c27fbb",
+        "package-lock.json": "b38fa8cb57a9fe4fe575840459fda5eb2fc9d402f4a07686c7a014f55d23793d",
+        "package.json": "5c599092004bcc83ef5c0ad91e049b118e37dc55bf3d53d30d7cca823c356a9e",
+        "public/desk-client.mjs": "9a503a945b80991f7b6706ed0ff5df6f895562b0fdec9ca28bc7c6df0bc507c5",
+        "readback/contract.md": "eda17b33988955d015de712f81f59885ee863775c8a3bce0e7d4f154d1e4482e",
+        "readback/public-client.tar.gz": "4c7f0ae8dcb48d68625efed986c80deb0f1bd66a29b7121a7a8083ea1964c692",
+        "server.mjs": "6aaad6d7e56792698377f5201cf716193cff259c2f84efbc91ea23029767a7f4",
+        "session.mjs": "d448b862b47e587a42bbd9c944ac148d7525deedb73e6aa05438f213135ffbdd",
+        "sources/case.md": "e365261501f0d5a0b018389bf473b5a7e1769215f3694178fc7e956cf88ca959",
+        "sources/documents.json": "e6608361b7b1718ab19546e5bf732abf860565f4e718d2baae2769720799e5a5",
+        "sources/web-contract.md": "3ccc0e9198fa48e5824f537165be42201964aa87ec2fdc570fbc9313da1745ce",
+        "specification.md": "d319c49b83390a130fbd6cbc1d62b236a81698e43de1496a8cfcea44a3cb55bb"
+      },
+      "requestFromUserSha256": "2ae821d1b01ef45fd71eb1acdb8ee49122845eb6e1f2372dd096790318920d3f",
+      "criteriaBeforeDispatchSha256": "3a1cceabf7329ae52bd7f2def40202149e24cbccbebe86bf746086b0f0bbe903",
+      "rawCommandsSha256": "e3aa66d67688e0621017ac9e47d2edc409a3c29f18c9d93b8569b107b7b7e743",
+      "observedRuleReads": {
+        "root": [
+          "item_3"
+        ],
+        "matrix": [
+          "item_7"
+        ],
+        "currency": []
+      },
+      "rawAnswerSha256": "a18346daa53350d71748629c25926c8839f7f87d4a92c0b38291510ef16cb814",
+      "observationSha256": "3bed4e79c0bc852bb2d65e9ccf342a5de3c82c743e465b58d766739fe20135c7",
+      "originalAndFinalInstalledMembersIdentical": true,
+      "changedProjectInputs": [
+        "app.mjs"
+      ],
+      "allInputModesUnchanged": true,
+      "behavior": {
+        "directChecks": 18,
+        "appRequest": 12,
+        "http": 12,
+        "authDeniedWithoutData": 4,
+        "distinctDBRequests": 38,
+        "measuredMiddlewareSequences": 24
+      }
+    },
+    "joint": {
+      "case": "joint",
+      "assessorCode": "d94c7b",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "memoryFeature": "disabled",
+      "publicInputs": {
+        "README.md": "087e94a68df153f87ed265b1865450cf1215b00a905f3c5be68fa2da34be2976",
+        "app.mjs": "896b6268d7bd848d3ab1e20c18e8bf349c6221ed94b651314cae2a2829794b3e",
+        "environment.mjs": "aadaa9c5aff84851d1afda846bacf89fc3f8066e671ace6544e8137309c27fbb",
+        "package-lock.json": "b38fa8cb57a9fe4fe575840459fda5eb2fc9d402f4a07686c7a014f55d23793d",
+        "package.json": "5c599092004bcc83ef5c0ad91e049b118e37dc55bf3d53d30d7cca823c356a9e",
+        "public/desk-client.mjs": "9a503a945b80991f7b6706ed0ff5df6f895562b0fdec9ca28bc7c6df0bc507c5",
+        "readback/contract.md": "eda17b33988955d015de712f81f59885ee863775c8a3bce0e7d4f154d1e4482e",
+        "server.mjs": "6aaad6d7e56792698377f5201cf716193cff259c2f84efbc91ea23029767a7f4",
+        "session.mjs": "d448b862b47e587a42bbd9c944ac148d7525deedb73e6aa05438f213135ffbdd",
+        "sources/case.md": "e365261501f0d5a0b018389bf473b5a7e1769215f3694178fc7e956cf88ca959",
+        "sources/documents.json": "e6608361b7b1718ab19546e5bf732abf860565f4e718d2baae2769720799e5a5",
+        "sources/web-contract.md": "3ccc0e9198fa48e5824f537165be42201964aa87ec2fdc570fbc9313da1745ce",
+        "specification.md": "d319c49b83390a130fbd6cbc1d62b236a81698e43de1496a8cfcea44a3cb55bb"
+      },
+      "requestFromUserSha256": "2ae821d1b01ef45fd71eb1acdb8ee49122845eb6e1f2372dd096790318920d3f",
+      "criteriaBeforeDispatchSha256": "f81d5ee2a788727e32bf0a36b824f6abababe7a436158e48874cfa59825a8373",
+      "rawCommandsSha256": "919738f66f89f2013e696a94eb022dccaeff27e0d48b48f5fae73f707c8d84fb",
+      "observedRuleReads": {
+        "root": [
+          "item_3"
+        ],
+        "matrix": [
+          "item_6"
+        ],
+        "currency": []
+      },
+      "rawAnswerSha256": "dec22a5b272cd24a4dcb35c9aef86a6c524a92ac3d48c5e1ebae4997ef65e99e",
+      "observationSha256": "9a123e0e34191d0e5a1d1fdfa3279d93f21d6ce35bdd5136d18d7bcd18c8c394",
+      "originalAndFinalInstalledMembersIdentical": true,
+      "changedProjectInputs": [
+        "app.mjs"
+      ],
+      "allInputModesUnchanged": true,
+      "behavior": {
+        "directChecks": 18,
+        "appRequest": 12,
+        "http": 12,
+        "authDeniedWithoutData": 4,
+        "distinctDBRequests": 38
+      }
+    }
+  },
+  "assessor": {
+    "assignment": "gpt-6.2-sol/high, read-only, ephemeral, memory disabled",
+    "signedReportSha256": "8355e5c9caa34633137100a9b54ed0464c1c4fc6ba81b64f87094411c2d7e375",
+    "rawEventsSha256": "f474bcf45bdd1ed81d9d131611798f47e5f8f5cc166574092152f647b93aaba4",
+    "portableReportSha256": "7917312075a3986b97bb5ee3c68ff838c039947307e2f158f70978d1556d533b"
+  },
+  "rawArchiveSha256": "ad6330fb1b3dde7d45dee5586438237a38303a7bb072d18ddbde0abddb29549d",
+  "localAppArchiveSha256": "18b761489903a566510437c47804f1a07e471960f5ac91ce6bf079f75a71de29",
+  "exposure": "Исполнителям выдавались обычные требования, npm-пакеты, публичный модуль и рабочая копия скила. Критерии оценщика, SQL, ключи и файлы оператора отсутствуют из описи входа. Проверены наблюдаемые операции. Глобальный доступ к чтению других каталогов технически оставался возможен."
+}

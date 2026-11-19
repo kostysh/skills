@@ -1,0 +1,229 @@
+{
+  "variant": "release-final",
+  "case": "boundary",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПо локальному SKILL.md architecture-engineer подготовьте для следующей встречи одну архитектурную записку «Кабинет 1» в architecture-note.md. Редакция PRD и её первичные материалы находятся в draft/, запрос хозяина площадки и журналы — в lab/. Дополнительное руководство implementation-discipline доступно в companion/implementation-discipline/.\n\nРазберите, какой профиль можно сейчас рекомендовать для запрошенной репетиции и почему. Читателю нужно проверить ваш вывод по данным и понять, что конкретно могут сделать дальше архитектор, автор спецификации и планировщик. Записку будут передавать дальше вместе с этим пакетом. Сохраните источники и исходные журналы.\n",
+  "input_file_sha256": {
+    "SKILL.md": "b0b942a046fb2f24859d6e2ef98ba708402fdd6fe3016c53f0c27b5f22a2dd28",
+    "agents/openai.yaml": "3420b7777dd1e4ba70e2f1bc7d35332f84601dee6cdc74a107979581a1f7e982",
+    "assets/templates/adr.md": "109d60b90093b5d212e0105cc33a74b588209d6d36150eb3bb0add3d7c36463f",
+    "assets/templates/architecture-brief.md": "023a831cffe60c35834e9b2d22e0e7d7c14b2588f91540b5b5fb4ba6cf40751d",
+    "assets/templates/architecture-check.md": "f47434b4264220ed5c9ab66e74c60f8e50d5c31cb03cba3ee02b459bcf1e3206",
+    "assets/templates/architecture-delta.md": "c565071dfa8e1c55757780f3fd14c850b290fb5634f8bed460ae06d814f56f58",
+    "assets/templates/architecture-handoff-item.yaml": "c7e32bc01e779ace8863a56e6b185d3e78821b5fd0f287d866f6ef18a88c44cc",
+    "assets/templates/architecture-handoff-register.yaml": "ad1a3e7e537c3166e9ec60ceeb94492ec6bc3cbc2dc246f48c86e93764f14d7f",
+    "assets/templates/asr-record.yaml": "78c6a2843059b69941f0b5323a09fa87fb14af20c587e498ba547f8233752a0f",
+    "assets/templates/pattern-decision.md": "04812c6e25accd03f52d0cb01d16dbe7223469a51796fc99379f4db1d1bff329",
+    "assets/templates/quality-scenario.md": "1eae6f37d48e7508b693c35e91a953e5b28243f3dd54fa02581090186a84f425",
+    "assets/templates/spike-brief.md": "4a180513a811e4fae1e5321c139050d40cc0497b31fc26a83b567c37a9a1e2e9",
+    "companion/implementation-discipline/SKILL.md": "fde9d3f957856e325f2e2a725598f8a0984c90dccb1720ef862a3316a5c30729",
+    "companion/implementation-discipline/references/core-principles.md": "fa8a312bb8f580a1224f049f2480605d474b399f14627a55c292b28bbcec5cde",
+    "companion/implementation-discipline/references/verification-loop.md": "659c14086b1829585a006de89a1456a4eb0c15b5aa0f3673a335093ab5d0767e",
+    "draft/materials/decision-intake.md": "e8e3b2c3d64a10719161e30ab8c16056677e41dfc9723352a29580d29fc1f6cc",
+    "draft/materials/report-draft.md": "24379268c335dae167388ee26569924e9672314f566e2979ee9e2fcfe2db54b8",
+    "draft/materials/team-note.md": "4da36f0b60ac31992c503a6a4f85d558491ddb4e84f7e6b2a0613d92fba42221",
+    "draft/product-output.md": "0ad7a0914a8b6a9465160496a60422e1ad23687241f53aaecf502e6285fd38ff",
+    "lab/captures.csv": "4675ff54ecdce92d90abcd8c1f6af0efe987c65fa4ae6ea45151ccd587bfc16e",
+    "lab/events.csv": "f3428e0a4a988e63f0fca3dbf6eddccaa8e0d9c9379d2dd4d4bba813d1ca0869",
+    "lab/mail.csv": "219fb6f1b86e3a77349f269a180662e51e7baab8482a7a30a0ce6a1e0af951ed",
+    "lab/request.md": "df4909cdbeadce11c703e42bf6d1438efc56a18cad02dc95942c1d77c58f7d37",
+    "references/artifact-templates.md": "730a69850982ecd542875d92d50f3e4ee3678c5ed199bbaa6343715756fd9cba",
+    "references/methodology.md": "76483e2cc369594d7b8ed9ac438eb4958ae8a8b8ac3bfc9bf9088e2d3bb34795",
+    "references/pattern-catalog.md": "87e1143448cdbaa05d49d77c2be2384c3db40832e954efb02342e6f6529e3784"
+  },
+  "raw_events_sha256": "d9731660d63b6bb453402ab6b2e0d8e42df3d7c2b11afb1c02f7b06342652b6a",
+  "raw_events_bytes": 197608,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Прочитаю локальный навык architecture-engineer, руководство implementation-discipline и материалы пакета. Затем подготовлю записку с рекомендацией, ссылками на данные и следующими шагами для трёх ролей."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat SKILL.md companion/implementation-discipline/SKILL.md references/methodology.md references/artifact-templates.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'wc -l lab/* draft/*.md draft/materials/* && cat lab/request.md draft/product-output.md draft/materials/*.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'git status --short; ls -la'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"sed -n '230,420p' SKILL.md; cat companion/implementation-discipline/SKILL.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"wc -l references/* companion/implementation-discipline/references/*; rg -n '\"'^#|[Rr]equired|must'\"' references/methodology.md references/artifact-templates.md companion/implementation-discipline/references/*.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'for f in lab/*.csv; do nl -ba \"$f\"; done; sha256sum lab/* draft/*.md draft/materials/*'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"sed -n '1,226p' references/methodology.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"sed -n '238,380p' references/methodology.md; sed -n '491,538p' references/methodology.md; sed -n '1,105p' references/artifact-templates.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"cat references/pattern-catalog.md companion/implementation-discipline/references/core-principles.md; sed -n '1,68p' companion/implementation-discipline/references/verification-loop.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python - <<'PY'\nimport csv\nfrom pathlib import Path\n\ndef records(name):\n    with Path('lab', f'{name}.csv').open() as source:\n        return list(csv.DictReader(source))\n\nevents, mail = records('events'), records('mail')\nfor capture in records('captures'):\n    run = capture['run']\n    ready = [row for row in events if row['run'] == run and row['event'] == 'ready']\n    timestamps = [int(row['ts_ms']) for row in ready]\n    print(run, capture['profile'], 'spread', max(timestamps) - min(timestamps))\n    for row in ready:\n        key = tuple(row[field] for field in ('run', 'report', 'employee'))\n        def matches(entries):\n            return [entry for entry in entries if tuple(entry[field] for field in ('run', 'report', 'employee')) == key]\n        start = int(row['ts_ms'])\n        observations = {entry['event']: int(entry['ts_ms']) - start for entry in matches(events)}\n        print(key, start, start + 1500, observations,\n              'window', int(capture['end_ms']) - start,\n              'mail', [entry['reason'] for entry in matches(mail)])\nPY\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "В D72 у всех трёх отчётов есть серверное подтверждение, а показ в кабинете подтверждён для двух. Запись экрана была выборочной, поэтому по третьему отчёту нельзя установить, увидел ли сотрудник признак вовремя. Проверка почтового экспорта дала ноль отправок о готовности для этих событий."
+    },
+    {
+      "type": "file_change",
+      "changes": [
+        {
+          "path": "{project}/architecture-note.md",
+          "kind": "add"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'sha256sum lab/* draft/*.md draft/materials/*; ls -1'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nimport re\n\nnote = Path('architecture-note.md')\ncontent = note.read_text()\nlinks = set(re.findall(r'\\\\]\\\\(([\"'^)]+)'\"\\\\)', content))\nassert len(links) == 7 and all((note.parent / link).is_file() for link in links), links\nfor line in (\n    '12000 | 19 | 12440 / 440',\n    '12005 | 19 | 12835 / 830',\n    '12010 | 19 | Нет строки | Неизвестно',\n    '7000 | 19 | 7290 / 290',\n    '7010 | 19 | 7520 / 510',\n    '7020 | 19 | 7790 / 770',\n):\n    assert line in content, line\nprint(f'Проверены {len(links)} относительных ссылок и 6 строк замеров.')\nPY\"",
+      "exit_code": 1,
+      "status": "failed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python - <<'PY'\nimport csv\nfrom pathlib import Path\nimport re\n\nnote = Path('architecture-note.md')\ncontent = note.read_text()\nlinks = set(re.findall(r'\\\\]\\\\(([\"'^)]+)'\"\\\\)', content))\nexpected = set(map(str, [*Path('lab').glob('*'), *Path('draft').rglob('*.md')]))\nassert links == expected and all((note.parent / link).is_file() for link in links)\nwith Path('lab/events.csv').open() as source:\n    events = list(csv.DictReader(source))\nfor line in content.splitlines():\n    if not line.startswith(('| D72,', '| D70,')):\n        continue\n    run, key, ready, ack, badge, result = [cell.strip() for cell in line.strip('|').split('|')]\n    report, employee = key.split(', ')\n    observations = {row['event']: int(row['ts_ms']) for row in events\n                    if (row['run'], row['report'], row['employee']) == (run[:3], report, employee)}\n    assert observations['ready'] == int(ready)\n    assert observations['edge_ack'] - int(ready) == int(ack)\n    if 'badge' in observations:\n        timestamp, delay = map(int, badge.split(' / '))\n        assert timestamp == observations['badge'] and delay == timestamp - int(ready)\n        assert delay <= 1500 and result == 'В срок'\n    else:\n        assert badge == 'Нет строки' and result == 'Неизвестно'\nassert sum(line.startswith(('| D72,', '| D70,')) for line in content.splitlines()) == 6\nprint(f'Проверены {len(links)} относительных ссылок и 6 строк замеров.')\nPY\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Подготовил записку [«Кабинет 1»]({project}/architecture-note.md). **Для D72 выбор профиля стоит отложить и первым проверить `common`.** В этом профиле подтверждены два своевременных показа из трёх. По третьему показу данных недостаточно. В наблюдаемом окне писем о готовности не было. По `separate` замеров в пакете нет.\n\nВ записке приведены расчёты, критерии выбора профиля и следующие шаги для архитектора, автора спецификации и планировщика. Для повторной проверки предложены интервалы из исходного прогона D72. Вывод такой проверки будет относиться к этому сценарию.\n\nПроверил восемь ссылок и шесть строк замеров по журналу. Исходные материалы и журналы сохранены без изменений."
+    }
+  ],
+  "changed_file_contents": {
+    "architecture-note.md": "# Кабинет 1\n\n**Архитектурная записка к встрече · репетиция D72**\n\n**Отложить выбор профиля для D72. Первым проверить `common`.** Для этого профиля подтверждены два из трёх своевременных показов. По третьему исход неизвестен. Для `separate` замеров в пакете нет. Хозяин площадки предпочитает `common`, если тот проходит проверку. Для решения достаточно короткой проверки на существующем стенде с полным наблюдением трёх экранных событий. [Заявка](lab/request.md) · [Реестр выгрузок](lab/captures.csv) · [Журнал событий](lab/events.csv)\n\n## Полномочия и архитектурные требования\n\nЭто решение уровня компонента со средним риском для репетиции. Выбор пула влияет на конкуренцию за ресурсы и стоимость, а ошибочная рекомендация может сорвать показ сотруднику. Оба профиля уже доступны. Поручение хозяина охватывает разбор выгрузок и записку. Слот, выполнение новых прогонов и изменения продукта требуют отдельного поручения. Архитектурный вопрос здесь ограничен пригодностью профиля для конкретной репетиции. [Заявка](lab/request.md)\n\n| ASR | Основание, владелец и применимость | Почему влияет на решение и как опровергнуть |\n| --- | --- | --- |\n| ASR-1 · Показ сотруднику в кабинете, без письма о готовности | `source_statement`, явно задано уполномоченным заказчиком в Q-17: «Только в кабинете, email не нужен». Применяется к уведомлению сотрудника о готовности его отчёта. В редакции 0.2 отражено в R2. [Ответ заказчика](draft/materials/decision-intake.md) · [R2](draft/product-output.md) | Граница проходит через экран сотрудника и почтовую отправку. Без этой границы можно зачесть внутреннюю публикацию без показа или пропустить письмо о том же событии. При полном наблюдении отсутствие показа либо отправка письма о готовности опровергают выполнение. Риск для приёмки высокий, уверенность в содержании Q-17 высокая. |\n| ASR-2 · Показ в пределах 1500 мс для каждого из трёх отчётов | `accepted_non_product_authority`, явно задано хозяином стенда для D72. Три разных отчёта достигают `ready` в пределах 20 мс. Для каждого адресата отсчёт идёт от `ready` его отчёта. Канал проверяется для тех же событий. [Технический конверт](lab/request.md) | При совместном пуле подготовка отчётов и публикация могут конкурировать за ресурсы. Без проверки каждого адресата за общий успех можно принять результат, скрывающий отдельный пропуск или опоздание. Любой показ позже срока или отсутствие показа до срока при полном захвате нарушает критерий. Риск для выбора профиля средний, уверенность в лабораторном пороге высокая. |\n\nРешение по каналу принимает заказчик, а конкретную редакцию PRD одобряет владелец продукта. Запись приёма Q-17 фиксирует прежнее состояние «в PRD ещё не внесено». В предоставленной редакции 0.2 решение уже отражено в R2, но сама редакция остаётся `non-authoritative` и `draft-only`. Прежнее разрешение подготовить текст для обсуждения не завершает одобрение 0.2. R1 об открытии отчёта остаётся в черновике, а лабораторные события показывают только уведомление. Q-18 остаётся за заказчиком. Срок хранения и дата ответа неизвестны, 90 дней предложила поддержка. Q-18 не мешает разбору Q-17 или проверке профиля. Продуктовые условия нагрузки и срок показа остаются открытыми. [Первичный черновик и правило одобрения](draft/materials/report-draft.md) · [Приём решений](draft/materials/decision-intake.md) · [Редакция 0.2](draft/product-output.md) · [Заметка поддержки](draft/materials/team-note.md) · [Заявка](lab/request.md)\n\n## Что показывают выгрузки\n\nСопоставление идёт по тройке `run + report + employee`. Идентификаторы отчёта и сотрудника повторяются, а часы отдельных запусков имеют разные эпохи. В таблице задержки рассчитаны от `ready` той же тройки. `edge_ack` фиксирует приём записи внутренней точкой публикации. `badge` фиксирует показ на экране адресата. [Описание полей](lab/request.md) · [Журнал событий](lab/events.csv)\n\n| Запуск, профиль | Отчёт, сотрудник | `ready`, мс | `edge_ack` от `ready`, мс | `badge` — отметка / задержка, мс | Итог по показу |\n| --- | --- | ---: | ---: | ---: | --- |\n| D72, `common` | h81, e70 | 12000 | 19 | 12440 / 440 | В срок |\n| D72, `common` | h82, e68 | 12005 | 19 | 12835 / 830 | В срок |\n| D72, `common` | h83, e46 | 12010 | 19 | Нет строки | Неизвестно |\n| D70, `common` | h81, e70 | 7000 | 19 | 7290 / 290 | В срок |\n| D70, `common` | h82, e68 | 7010 | 19 | 7520 / 510 | В срок |\n| D70, `common` | h83, e46 | 7020 | 19 | 7790 / 770 | В срок |\n\n- **D72.** Разброс `ready` равен 10 мс, так что вход подходит. Сводка «3/3 обслужены» согласуется с тремя внутренними подтверждениями. Для h83/e46 срок показа истёк на отметке 13510 мс, а выгрузка заканчивается на 15500 мс. Окно достаточно по длительности, но экран записывался выборочно. Пропуск строки совместим и с показом, который не попал в захват, и с опозданием или отсутствием показа. По имеющимся данным нельзя установить сбой или его причину. [Заявка](lab/request.md) · [Реестр](lab/captures.csv) · [События](lab/events.csv)\n- **D70.** Контрольный прогон дал три своевременных показа при разбросе 20 мс. Этот результат относится к D70. Строка h83/e46 из D70 не заполняет пробел D72. [Реестр](lab/captures.csv) · [События](lab/events.csv)\n- **Почта.** Для каждого из трёх событий D72 в полном почтовом экспорте окна найдено 0 строк с причиной `report_ready`. Единственная строка, D72/h81/e70, имеет причину `account_digest`. Для трёх событий D70 результат по `report_ready` также 0. Вывод ограничен наблюдаемыми окнами и указанными событиями. [Описание экспорта](lab/request.md) · [Реестр](lab/captures.csv) · [Почта](lab/mail.csv)\n\n## Решение D-1 · выбор профиля отложен\n\n| Профиль | Цена и эксплуатация | Пригодность для D72 |\n| --- | --- | --- |\n| `common` | Существующий общий пул. Проще и дешевле по данным площадки. Возможна конкуренция за ресурсы. | Первый кандидат. Есть два подтверждённых показа и пройденная проверка почты. Один исход открыт. |\n| `separate` | Существующий обособленный пул публикации. Дороже. Изоляция может убрать конкуренцию именно за этот пул. | Резервный кандидат. Выгрузок по профилю нет. Изоляция пула сама по себе ничего не говорит о своевременности показа на экране. |\n\nКонфигурации уже доступны, поэтому проверка обратима на уровне выбора профиля. Для неё достаточно действующего наблюдателя экрана и существующих серверного и почтового экспортов. Новые очереди, ретраи, почтовый резервный канал или производственная инструментализация не нужны для ответа на лабораторный вопрос. Уверенность в выводе о недостаточности данных высокая. Пригодность любого профиля для D72 остаётся неподтверждённой. Окончательный ADR преждевременен. [Заявка](lab/request.md) · [Реестр](lab/captures.csv)\n\n## Проверка, которая позволит выбрать профиль\n\n**Вопрос проверки.** Показывает ли D72 на `common` признак каждому из трёх адресатов в срок, сохраняя канал только в кабинете? После разрешения хозяина инженер стенда воспроизводит на D72 три разных отчёта с разными адресатами. Для сопоставимости с имеющимся D72 целевые смещения составляют 0, 5 и 10 мс. По серверному журналу инженер проверяет фактический разброс ≤ 20 мс. Для каждого адресата наблюдатель фиксирует первый `badge` и подтверждает полноту наблюдения всех трёх экранов от `ready` до индивидуальных сроков. Серверный и полный почтовый экспорты должны покрывать те же события и окно как минимум до последнего срока. Инженер передаёт исходные выгрузки, идентификатор запуска, сборку и профиль, сведения о покрытии и таблицу по тройкам с отметками, задержками и количеством `report_ready`.\n\n- **`common` проходит**, если все три адресата увидели признак в пределах 1500 мс от своего `ready` и для каждой тройки число `report_ready` равно нулю. Тогда архитектор рекомендует `common` в пределах проверенного сценария D72.\n- **Подтверждённый пропуск срока на `common`** даёт основание проверить `separate` на той же сборке, с теми же входными условиями, наблюдением и критерием канала. Рекомендация `separate` возможна только после его полного прохода. Письмо о готовности нарушает ограничение канала независимо от пула. Само это наблюдение не обосновывает изоляцию.\n- **Неполное наблюдение, неверная сборка или выход за входной конверт** оставляют результат непригодным для выбора. Если оба профиля не проходят, пригодный профиль для этого сценария не подтверждён. При изменении сборки или конверта архитектор возвращается к решению D-1. Замер относится к проверенному расположению событий и не устанавливает поведение для всех вариантов разброса или боевой нагрузки.\n\n## Передача работы\n\n| Передача и связь | Состояние и условие | Владелец и ожидаемый результат |\n| --- | --- | --- |\n| H-1 · `spike` · ASR-1, ASR-2 → D-1 | `ready` для подготовки задания, блокеров для оформления нет. Выполнение прогона зависит от поручения хозяина стенда. | `delivery-planner` готовит ограниченное задание на проверку выше. В задании указывает инженера стенда как исполнителя, критерии, состав исходных данных и возврат доказательств в `architecture-engineer`. Замеры проводит инженер стенда. |\n| H-2 · `spec_candidate` · Q-17 → R2 → ASR-1 | `blocked` для нормативной спецификации до одобрения конкретной редакции PRD владельцем продукта. Для обсуждения автор может сверить черновые критерии с Q-17. | `spec-engineer` после одобрения оформляет поведение и карту проверок: событие готовности, показ адресату в кабинете и отсутствие письма для того же события. Проверка различает экранный показ, внутренний приём записи и отправку письма. Порог D72 остаётся лабораторным. Требования к сроку хранения ждут Q-18. |\n| H-3 · `architecture_revisit_trigger` · ASR-1, ASR-2 → D-1 | `ready` как маршрут пересмотра. Для выбора профиля нужны полные результаты H-1. | `architecture-engineer` проверяет сопоставимость, покрытие, все три клиентских исхода и почту. Возвращает рекомендацию с границами применимости или фиксирует, какой факт всё ещё мешает выбору. |\n\nАрхитектура оставляет свободными способ подготовки стендового задания, форму сводной таблицы и внутреннюю реализацию публикации. Источники для передачи — относительные ссылки на исходный пакет. Записка основана на чтении предоставленных выгрузок.\n"
+  },
+  "final_response": "Подготовил записку [«Кабинет 1»]({project}/architecture-note.md). **Для D72 выбор профиля стоит отложить и первым проверить `common`.** В этом профиле подтверждены два своевременных показа из трёх. По третьему показу данных недостаточно. В наблюдаемом окне писем о готовности не было. По `separate` замеров в пакете нет.\n\nВ записке приведены расчёты, критерии выбора профиля и следующие шаги для архитектора, автора спецификации и планировщика. Для повторной проверки предложены интервалы из исходного прогона D72. Вывод такой проверки будет относиться к этому сценарию.\n\nПроверил восемь ссылок и шесть строк замеров по журналу. Исходные материалы и журналы сохранены без изменений.",
+  "input_file_modes": {
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "assets/templates/adr.md": "0644",
+    "assets/templates/architecture-brief.md": "0644",
+    "assets/templates/architecture-check.md": "0644",
+    "assets/templates/architecture-delta.md": "0644",
+    "assets/templates/architecture-handoff-item.yaml": "0644",
+    "assets/templates/architecture-handoff-register.yaml": "0644",
+    "assets/templates/asr-record.yaml": "0644",
+    "assets/templates/pattern-decision.md": "0644",
+    "assets/templates/quality-scenario.md": "0644",
+    "assets/templates/spike-brief.md": "0644",
+    "companion/implementation-discipline/SKILL.md": "0644",
+    "companion/implementation-discipline/references/core-principles.md": "0644",
+    "companion/implementation-discipline/references/verification-loop.md": "0644",
+    "draft/materials/decision-intake.md": "0644",
+    "draft/materials/report-draft.md": "0644",
+    "draft/materials/team-note.md": "0644",
+    "draft/product-output.md": "0644",
+    "lab/captures.csv": "0664",
+    "lab/events.csv": "0664",
+    "lab/mail.csv": "0664",
+    "lab/request.md": "0664",
+    "references/artifact-templates.md": "0644",
+    "references/methodology.md": "0644",
+    "references/pattern-catalog.md": "0644"
+  },
+  "changed_file_modes": {
+    "architecture-note.md": "0664"
+  },
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "method": "On a fresh neutral copy rejoin raw rows by (run, report, employee); take badge minus ready, ready spread and matching report_ready messages. Null denotes missing observation. The paper reproduction uses supplied teaching records only.",
+    "work_product": "architecture-note.md",
+    "work_product_sha256": "2e964a5ac86a5b6b34f7583e3612766026ae8c4134021578f99b60349623070c",
+    "work_product_bytes": 16848,
+    "all_changed_paths": [
+      "architecture-note.md"
+    ],
+    "unchanged_input_record_sha256": {
+      "draft/materials/decision-intake.md": "e8e3b2c3d64a10719161e30ab8c16056677e41dfc9723352a29580d29fc1f6cc",
+      "draft/materials/report-draft.md": "24379268c335dae167388ee26569924e9672314f566e2979ee9e2fcfe2db54b8",
+      "draft/materials/team-note.md": "4da36f0b60ac31992c503a6a4f85d558491ddb4e84f7e6b2a0613d92fba42221",
+      "draft/product-output.md": "0ad7a0914a8b6a9465160496a60422e1ad23687241f53aaecf502e6285fd38ff",
+      "lab/captures.csv": "4675ff54ecdce92d90abcd8c1f6af0efe987c65fa4ae6ea45151ccd587bfc16e",
+      "lab/events.csv": "f3428e0a4a988e63f0fca3dbf6eddccaa8e0d9c9379d2dd4d4bba813d1ca0869",
+      "lab/mail.csv": "219fb6f1b86e3a77349f269a180662e51e7baab8482a7a30a0ce6a1e0af951ed",
+      "lab/request.md": "df4909cdbeadce11c703e42bf6d1438efc56a18cad02dc95942c1d77c58f7d37"
+    },
+    "modified_case_evidence": [],
+    "same_run_calculations": {
+      "D70": {
+        "profile": "common",
+        "window_ends_ms": 9010,
+        "ready_spread_ms": 20,
+        "recipient_badge_delays_ms": {
+          "h81/e70": 290,
+          "h82/e68": 510,
+          "h83/e46": 770
+        },
+        "matched_report_ready_letters": 0,
+        "mail_export": "complete"
+      },
+      "D72": {
+        "profile": "common",
+        "window_ends_ms": 15500,
+        "ready_spread_ms": 10,
+        "recipient_badge_delays_ms": {
+          "h81/e70": 440,
+          "h82/e68": 830,
+          "h83/e46": null
+        },
+        "matched_report_ready_letters": 0,
+        "mail_export": "complete"
+      }
+    }
+  }
+}

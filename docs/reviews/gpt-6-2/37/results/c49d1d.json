@@ -1,0 +1,334 @@
+{
+  "variant": "A",
+  "case": "ordinary",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПримени ./SKILL.md. Владелец просит выполнить разрешённую репетицию импорта на предоставленной версии и решить, можно ли передавать её дежурной смене. Воспроизведи восстановление после прерывания и повторную штатную работу с тем же источником. Используй выданные условия, собственное рабочее место из workplace.md и считываемый получателем результат. В ответе покажи решение и границы. Изменение кода не поручалось.\n",
+  "input_file_sha256": {
+    "SKILL.md": "8e56ba899a16a43b293f710eaa57fd283f098fe2fe6276568d9e1df1060886ee",
+    "agents/openai.yaml": "e1db640a3706e0d13e8250aa4f9a3930c72104fb5dbf4760672d395e5325b0b4",
+    "references/payload-field-reference.md": "d6dbd6fbf642f48ce157470810efb31e53b88347ccd8ba72cd0c3f930248ebf6",
+    "release/edition.mjs": "6b1e9aa83d21518693a6fb39f4522b4b06b1278529bda7cd25e8ae8b87db879e",
+    "release/package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+    "source/acceptance.md": "6acdb9f5f193cc181f0fda8c64456594030f5dcfcd623c840eaea6590c4e74df",
+    "source/export.json": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+    "workplace.md": "67a3d93b0c2231b2939d3cc5ecbc5b304a175f81d809d423a03f82b86459673f"
+  },
+  "raw_events_sha256": "3443f6f5ca15e1768c49dc80eba649d3b7d95dbfeb4f1ff075c2b81779bfa448",
+  "raw_events_bytes": 38628,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Применю `./SKILL.md` и сверю условия репетиции с `workplace.md`. По результатам проверок оценю готовность версии к передаче дежурной смене."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"pwd; rg --files --hidden -g '\"'!.git'\"' -g '\"'!.aws'\"' -g '\"'!.codex'\"' -g '\"'!.agents'\"'; cat ./SKILL.md ./workplace.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"cat source/acceptance.md source/export.json release/package.json; sed -n '1,260p' release/edition.mjs; sed -n '1,50p' references/payload-field-reference.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python - <<'PY'\nimport json\nfrom urllib.request import urlopen, Request\n\nbase = 'http://127.0.0.1:32849/copper/'\ndef call(url, post=False):\n    with urlopen(Request(url, data=b'' if post else None), timeout=45) as response:\n        return json.load(response)\nsession = call(base + 'sessions', post=True)['session']\nprint('session', session, flush=True)\nurl = base + session + '/'\nfor phase, action in [('baseline', None), ('interrupted', 'interrupt'), ('recovered', 'resume'), ('repeated', 'resume')]:\n    if action:\n        print(phase, action, json.dumps(call(url + action, post=True), ensure_ascii=False), flush=True)\n    print(phase, 'inspect', json.dumps(call(url + 'inspect'), ensure_ascii=False), flush=True)\n    print(phase, 'read', json.dumps(call(url + 'read'), ensure_ascii=False), flush=True)\nPY\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "**Версию можно передать дежурной смене для проверенного сценария ОС-47.** Импорт восстановился после прерывания между сохранением карточки и записью контрольной точки. Повторный запуск с тем же экспортом сохранил все ключи, ID и связи. Штатное чтение под оператором `east` вернуло ожидаемые карточки.\n\n| Этап | Создано | Обновлено | Пропущено | Что подтвердило считывание |\n|---|---:|---:|---:|---|\n| Прерывание | 3 | 0 | 0 | Сохранились обе секции и `C-111` с ID `2`. Контрольная точка осталась пустой. |\n| Восстановление | 3 | 3 | 0 | `C-111` сохранила ID `2`. Появились три остальные карточки. Контрольная точка содержит все четыре ключа. |\n| Повтор с тем же экспортом | 0 | 2 | 4 | Импортёр обновил две секции и пропустил четыре карточки. Все считанные значения, ID и связи совпали с состоянием после восстановления. |\n\nСчитанное состояние после повтора. В базе по одной записи на каждый ожидаемый ключ: две импортированные секции, четыре импортированные карточки и исходная локальная пара. Названия карточек совпали с экспортом, включая две отдельные карточки «Акт смены».\n\n| Карточка (ID) | Секция (ID) | Видна оператору `east` |\n|---|---|---|\n| `LOCAL-01` (1) | `LOCAL` (1) | Да |\n| `C-111` (2) | `S-B` (3) | Да |\n| `C-112` (3) | `S-A` (2) | Нет, `draft` |\n| `C-113` (4) | `S-A` (2) | Да |\n| `C-114` (5) | `S-B` (3) | Нет, участок `west` |\n\nРасхождений с условиями приёмки нет. Проверка прошла в отдельной временной сессии Copper на SQLite через Payload Local API с Payload и адаптером SQLite `3.94.0` и Node `24.22.3`. Чтение `east` выполнено отдельным вызовом с `overrideAccess: false`. Вывод ограничен одним последовательным прогоном с неизменным экспортом и заданной точкой прерывания. Параллельные запуски, публичный REST и боевая среда остались за пределами проверки. Код не менялся."
+    }
+  ],
+  "changed_file_contents": {},
+  "final_response": "**Версию можно передать дежурной смене для проверенного сценария ОС-47.** Импорт восстановился после прерывания между сохранением карточки и записью контрольной точки. Повторный запуск с тем же экспортом сохранил все ключи, ID и связи. Штатное чтение под оператором `east` вернуло ожидаемые карточки.\n\n| Этап | Создано | Обновлено | Пропущено | Что подтвердило считывание |\n|---|---:|---:|---:|---|\n| Прерывание | 3 | 0 | 0 | Сохранились обе секции и `C-111` с ID `2`. Контрольная точка осталась пустой. |\n| Восстановление | 3 | 3 | 0 | `C-111` сохранила ID `2`. Появились три остальные карточки. Контрольная точка содержит все четыре ключа. |\n| Повтор с тем же экспортом | 0 | 2 | 4 | Импортёр обновил две секции и пропустил четыре карточки. Все считанные значения, ID и связи совпали с состоянием после восстановления. |\n\nСчитанное состояние после повтора. В базе по одной записи на каждый ожидаемый ключ: две импортированные секции, четыре импортированные карточки и исходная локальная пара. Названия карточек совпали с экспортом, включая две отдельные карточки «Акт смены».\n\n| Карточка (ID) | Секция (ID) | Видна оператору `east` |\n|---|---|---|\n| `LOCAL-01` (1) | `LOCAL` (1) | Да |\n| `C-111` (2) | `S-B` (3) | Да |\n| `C-112` (3) | `S-A` (2) | Нет, `draft` |\n| `C-113` (4) | `S-A` (2) | Да |\n| `C-114` (5) | `S-B` (3) | Нет, участок `west` |\n\nРасхождений с условиями приёмки нет. Проверка прошла в отдельной временной сессии Copper на SQLite через Payload Local API с Payload и адаптером SQLite `3.94.0` и Node `24.22.3`. Чтение `east` выполнено отдельным вызовом с `overrideAccess: false`. Вывод ограничен одним последовательным прогоном с неизменным экспортом и заданной точкой прерывания. Параллельные запуски, публичный REST и боевая среда остались за пределами проверки. Код не менялся.",
+  "input_file_modes": {
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "references/payload-field-reference.md": "0644",
+    "release/edition.mjs": "0664",
+    "release/package.json": "0664",
+    "source/acceptance.md": "0664",
+    "source/export.json": "0664",
+    "workplace.md": "0664"
+  },
+  "changed_file_modes": {},
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "organizerFreshProcessPreflight": {
+      "baseline": {
+        "sections": [
+          {
+            "id": 1,
+            "sourceKey": "LOCAL",
+            "title": "Своя полка"
+          }
+        ],
+        "records": [
+          {
+            "id": 1,
+            "sourceKey": "LOCAL-01",
+            "title": "Местная запись",
+            "sectionID": 1,
+            "sectionKey": "LOCAL",
+            "desk": "east",
+            "state": "issued"
+          }
+        ],
+        "checkpoint": []
+      },
+      "interrupted": {
+        "created": 3,
+        "updated": 0,
+        "skipped": 0,
+        "interrupted": true
+      },
+      "afterInterrupt": {
+        "sections": [
+          {
+            "id": 1,
+            "sourceKey": "LOCAL",
+            "title": "Своя полка"
+          },
+          {
+            "id": 2,
+            "sourceKey": "S-A",
+            "title": "Реестр"
+          },
+          {
+            "id": 3,
+            "sourceKey": "S-B",
+            "title": "Пересчёт"
+          }
+        ],
+        "records": [
+          {
+            "id": 1,
+            "sourceKey": "LOCAL-01",
+            "title": "Местная запись",
+            "sectionID": 1,
+            "sectionKey": "LOCAL",
+            "desk": "east",
+            "state": "issued"
+          },
+          {
+            "id": 2,
+            "sourceKey": "C-111",
+            "title": "Акт смены",
+            "sectionID": 3,
+            "sectionKey": "S-B",
+            "desk": "east",
+            "state": "issued"
+          }
+        ],
+        "checkpoint": []
+      },
+      "resumed": {
+        "created": 3,
+        "updated": 3,
+        "skipped": 0,
+        "interrupted": false
+      },
+      "afterResume": {
+        "sections": [
+          {
+            "id": 1,
+            "sourceKey": "LOCAL",
+            "title": "Своя полка"
+          },
+          {
+            "id": 2,
+            "sourceKey": "S-A",
+            "title": "Реестр"
+          },
+          {
+            "id": 3,
+            "sourceKey": "S-B",
+            "title": "Пересчёт"
+          }
+        ],
+        "records": [
+          {
+            "id": 1,
+            "sourceKey": "LOCAL-01",
+            "title": "Местная запись",
+            "sectionID": 1,
+            "sectionKey": "LOCAL",
+            "desk": "east",
+            "state": "issued"
+          },
+          {
+            "id": 2,
+            "sourceKey": "C-111",
+            "title": "Акт смены",
+            "sectionID": 3,
+            "sectionKey": "S-B",
+            "desk": "east",
+            "state": "issued"
+          },
+          {
+            "id": 3,
+            "sourceKey": "C-112",
+            "title": "Лист смены",
+            "sectionID": 2,
+            "sectionKey": "S-A",
+            "desk": "east",
+            "state": "draft"
+          },
+          {
+            "id": 4,
+            "sourceKey": "C-113",
+            "title": "Акт смены",
+            "sectionID": 2,
+            "sectionKey": "S-A",
+            "desk": "east",
+            "state": "issued"
+          },
+          {
+            "id": 5,
+            "sourceKey": "C-114",
+            "title": "Папка смены",
+            "sectionID": 3,
+            "sectionKey": "S-B",
+            "desk": "west",
+            "state": "issued"
+          }
+        ],
+        "checkpoint": [
+          "C-111",
+          "C-112",
+          "C-113",
+          "C-114"
+        ]
+      },
+      "repeated": {
+        "created": 0,
+        "updated": 2,
+        "skipped": 4,
+        "interrupted": false
+      },
+      "afterRepeat": {
+        "sections": [
+          {
+            "id": 1,
+            "sourceKey": "LOCAL",
+            "title": "Своя полка"
+          },
+          {
+            "id": 2,
+            "sourceKey": "S-A",
+            "title": "Реестр"
+          },
+          {
+            "id": 3,
+            "sourceKey": "S-B",
+            "title": "Пересчёт"
+          }
+        ],
+        "records": [
+          {
+            "id": 1,
+            "sourceKey": "LOCAL-01",
+            "title": "Местная запись",
+            "sectionID": 1,
+            "sectionKey": "LOCAL",
+            "desk": "east",
+            "state": "issued"
+          },
+          {
+            "id": 2,
+            "sourceKey": "C-111",
+            "title": "Акт смены",
+            "sectionID": 3,
+            "sectionKey": "S-B",
+            "desk": "east",
+            "state": "issued"
+          },
+          {
+            "id": 3,
+            "sourceKey": "C-112",
+            "title": "Лист смены",
+            "sectionID": 2,
+            "sectionKey": "S-A",
+            "desk": "east",
+            "state": "draft"
+          },
+          {
+            "id": 4,
+            "sourceKey": "C-113",
+            "title": "Акт смены",
+            "sectionID": 2,
+            "sectionKey": "S-A",
+            "desk": "east",
+            "state": "issued"
+          },
+          {
+            "id": 5,
+            "sourceKey": "C-114",
+            "title": "Папка смены",
+            "sectionID": 3,
+            "sectionKey": "S-B",
+            "desk": "west",
+            "state": "issued"
+          }
+        ],
+        "checkpoint": [
+          "C-111",
+          "C-112",
+          "C-113",
+          "C-114"
+        ]
+      },
+      "read": {
+        "actor": "east",
+        "records": [
+          {
+            "id": 1,
+            "sourceKey": "LOCAL-01",
+            "title": "Местная запись",
+            "sectionID": 1,
+            "sectionKey": "LOCAL",
+            "desk": "east",
+            "state": "issued"
+          },
+          {
+            "id": 2,
+            "sourceKey": "C-111",
+            "title": "Акт смены",
+            "sectionID": 3,
+            "sectionKey": "S-B",
+            "desk": "east",
+            "state": "issued"
+          },
+          {
+            "id": 4,
+            "sourceKey": "C-113",
+            "title": "Акт смены",
+            "sectionID": 2,
+            "sectionKey": "S-A",
+            "desk": "east",
+            "state": "issued"
+          }
+        ]
+      }
+    },
+    "completeIssuedInputsStillIdentical": true,
+    "issuedFilesAndModesStillIdentical": true,
+    "participantObservations": [
+      {
+        "id": "item_3",
+        "endStatus": 0,
+        "operation": "/bin/bash -lc \"python - <<'PY'\nimport json\nfrom urllib.request import urlopen, Request\n\nbase = 'http://127.0.0.1:32849/copper/'\ndef call(url, post=False):\n    with urlopen(Request(url, data=b'' if post else None), timeout=45) as response:\n        return json.load(response)\nsession = call(base + 'sessions', post=True)['session']\nprint('session', session, flush=True)\nurl = base + session + '/'\nfor phase, action in [('baseline', None), ('interrupted', 'interrupt'), ('recovered', 'resume'), ('repeated', 'resume')]:\n    if action:\n        print(phase, action, json.dumps(call(url + action, post=True), ensure_ascii=False), flush=True)\n    print(phase, 'inspect', json.dumps(call(url + 'inspect'), ensure_ascii=False), flush=True)\n    print(phase, 'read', json.dumps(call(url + 'read'), ensure_ascii=False), flush=True)\nPY\"",
+        "observedExcerpt": "session 23d934b7f3101c9568a42b19f1777a69\nbaseline inspect {\"sections\": [{\"id\": 1, \"sourceKey\": \"LOCAL\", \"title\": \"Своя полка\"}], \"records\": [{\"id\": 1, \"sourceKey\": \"LOCAL-01\", \"title\": \"Местная запись\", \"sectionID\": 1, \"sectionKey\": \"LOCAL\", \"desk\": \"east\", \"state\": \"issued\"}], \"checkpoint\": []}\nbaseline read {\"actor\": \"east\", \"records\": [{\"id\": 1, \"sourceKey\": \"LOCAL-01\", \"title\": \"Местная запись\", \"sectionID\": 1, \"sectionKey\": \"LOCAL\", \"desk\": \"east\", \"state\": \"issued\"}]}\ninterrupted interrupt {\"created\": 3, \"updated\": 0, \"skipped\": 0, \"interrupted\": true}\ninterrupted inspect {\"sections\": [{\"id\": 1, \"sourceKey\": \"LOCAL\", \"title\": \"Своя полка\"}, {\"id\": 2, \"sourceKey\": \"S-A\", \"title\": \"Реестр\"}, {\"id\": 3, \"sourceKey\": \"S-B\", \"title\": \"Пересчёт\"}], \"records\": [{\"id\": 1, \"sourceKey\": \"LOCAL-01\", \"title\": \"Местная запись\", \"sectionID\": 1, \"sectionKey\": \"LOCAL\", \"desk\": \"east\", \"state\": \"issued\"}, {\"id\": 2, \"sourceKey\": \"C-111\", \"title\": \"Акт смены\", \"sectionID\": 3, \"sectionKey\": \"S-B\", \"desk\": \"east\", \"state\": \"issued\"}], \"checkpoint\": []}\ninterrupted read {\"actor\": \"east\", \"records\": [{\"id\": 1, \"sourceKey\": \"LOCAL-01\", \"title\": \"Местная запись\", \"sectionID\": 1, \"sectionKey\": \"LOCAL\", \"desk\": \"east\", \"state\": \"issued\"}, {\"id\": 2, \"sourceKey\": \"C-111\", \"title\": \"Акт смены\", \"sectionID\": 3, \"sectionKey\": \"S-B\", \"desk\": \"east\", \"state\": \"issued\"}]}\nrecovered resume {\"created\": 3, \"updated\": 3, \"skipped\": 0, \"interrupted\": false}\nrecovered inspect {\"sections\": [{\"id\": 1, \"sourceKey\": \"LOCAL\", \"title\": \"Своя полка\"}, {\"id\": 2, \"sourceKey\": \"S-A\", \"title\": \"Реестр\"}, {\"id\": 3, \"sourceKey\": \"S-B\", \"title\": \"Пересчёт\"}], \"records\": [{\"id\": 1, \"sourceKey\": \"LOCAL-01\", \"title\": \"Местная запись\", \"sectionID\": 1, \"sectionKey\": \"LOCAL\", \"desk\": \"east\", \"state\": \"issued\"}, {\"id\": 2, \"sourceKey\": \"C-111\", \"title\": \"Акт смены\", \"sectionID\": 3, \"sectionKey\": \"S-B\", \"desk\": \"east\", \"state\": \"issued\"}, {\"id\": 3, \"sourceKey\": \"C-112\", \"title\": \"Лист смены\", \"sectionID\": 2, \"sectionKey\": \"S-A\", \"desk\": \"east\", \"state\": \"draft\"}, {\"id\": 4, \"sourceKey\": \"C-113\", \"title\": \"Акт смены\", \"sectionID\": 2, \"sectionKey\": \"S-A\", \"desk\": \"east\", \"state\": \"issued\"}, {\"id\": 5, \"sourceKey\": \"C-114\", \"title\": \"Папка смены\", \"sectionID\": 3, \"sectionKey\": \"S-B\", \"desk\": \"west\", \"state\": \"issued\"}], \"checkpoint\": [\"C-111\", \"C-112\", \"C-113\", \"C-114\"]}\nrecovered read {\"actor\": \"east\", \"records\": [{\"id\": 1, \"sourceKey\": \"LOCAL-01\", \"title\": \"Местная запись\", \"sectionID\": 1, \"sectionKey\": \"LOCAL\", \"desk\": \"east\", \"state\": \"issued\"}, {\"id\": 2, \"sourceKey\": \"C-111\", \"title\": \"Акт смены\", \"sectionID\": 3, \"sectionKey\": \"S-B\", \"desk\": \"east\", \"state\": \"issued\"}, {\"id\": 4, \"sourceKey\": \"C-113\", \"title\": \"Акт смены\", \"sectionID\": 2, \"sectionKey\": \"S-A\", \"desk\": \"east\", \"state\": \"issued\"}]}\nrepeated resume {\"created\": 0, \"updated\": 2, \"skipped\": 4, \"interrupted\": false}\nrepeated inspect {\"sections\": [{",
+        "eventSHA256": "0c8d1c157eade240233276412877318054535857c5d48a439ab8b74ad8c6ee56"
+      }
+    ],
+    "filesCreatedByParticipant": []
+  }
+}

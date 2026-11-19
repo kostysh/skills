@@ -4,6 +4,8 @@ Supporting maintenance documents are non-normative unless `SKILL.md` explicitly 
 
 ## Журналы реализации
 
+- [implementation-log-20261118-1.md](logs/implementation-log-20261118-1.md) — область финансового решения, тип экспортируемого EUR и проверка PREVIEW-1.
+
 - [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — сокращение описания до 300 code points; independent scoped PASS.
 - [implementation-log-20260716-1.md](logs/implementation-log-20260716-1.md) — capability-first review, authority boundaries, cross-layer evidence и portability remediation.
 - [implementation-log-20260716-2.md](logs/implementation-log-20260716-2.md) — актуализация EUR-first facade и generic currency-engine contract.

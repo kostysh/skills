@@ -1,0 +1,309 @@
+{
+  "frozenSnapshot": "e5d2de20077fcc98ee66206e434cb9d73f838364",
+  "plan": "67f3970",
+  "frozenArchive": "bbe535a1469e14e46c203af1780bc0d0ae786e4027c06c7557019550afcbc1c2",
+  "criterionSha256": "336753ab4949211b081b90c1e7a3212c62d1d0475b34500966cd99268c71b33a",
+  "originalReadme": "Skill supplied by direct local path; active package, cases and launcher traces show forced use. Host file reads technically available; disabled long-term memory is a distinct setting.",
+  "variants": {
+    "A": {
+      "activeFiles": {
+        "SKILL.md": "8f2aa777e134f8fd72d20e753e3ba02a550e46ac91a0ff68b0ac55a128053eaa",
+        "agents/openai.yaml": "bc31e3c34c4307ae3267abfa68d7cd5eddf52e49b3801419fc1daa80baaf5417",
+        "references/accessibility.md": "44aef5b0309b2cc08ad061ef5d7dd4edf9727eaf7e56851b867c144ce6738361",
+        "references/component-architecture.md": "d1620fb939eac5b8b428b03e5c2743fadf3f6565d3aa238ceb3a51cac1e17878",
+        "references/data-fetching.md": "db095fe2545dfce0d3de6b295bea674fa2b0015f204e8daf4bc0670b44d24292",
+        "references/forms-validation.md": "c159c64c11332e162be0cfdab4dda0f87ee3eee392832a5ec6d15f69c3c32997",
+        "references/indexeddb-persistence.md": "026de6cab4c1bafd59721c75797c13f3c15728d9c07c4837bdff86b203acb468",
+        "references/performance.md": "37d9d8d6c4f915c873a83aaa68679a556eab4c80a64a18a2f9d9fccae1ab87dc",
+        "references/persistence-architecture.md": "8b1a21dd865b6e30173d8a7383b81f38a867212f48d39aa0851bd97a9286f21d",
+        "references/routing.md": "68b5dd1c3af68cdcbadcf218ec83492eed4fb8c8581c82d781b5474a93564303",
+        "references/state-management.md": "509f6510f2c2d1eef5dbf97c7c3c9f33034de461dac12a3a65a4b976cb213dd1",
+        "references/testing.md": "7b64b06442e90e3dcd75eacfc3f29efe015b5aa36a73e12a51b11977aac8fa10",
+        "references/typescript-patterns.md": "27ac07e4bd683f123e80b774db4c134f0ca3233b47681e32e3b919249b3d91c4"
+      },
+      "bytes": 86863
+    },
+    "B": {
+      "activeFiles": {
+        "SKILL.md": "7cc5eb3f2eeb306cb21b06b9cfff303c9a552b3a2c007c3d48d6bbd88dc8e0ab",
+        "agents/openai.yaml": "bc31e3c34c4307ae3267abfa68d7cd5eddf52e49b3801419fc1daa80baaf5417",
+        "references/accessibility.md": "44aef5b0309b2cc08ad061ef5d7dd4edf9727eaf7e56851b867c144ce6738361",
+        "references/component-architecture.md": "d1620fb939eac5b8b428b03e5c2743fadf3f6565d3aa238ceb3a51cac1e17878",
+        "references/data-fetching.md": "db095fe2545dfce0d3de6b295bea674fa2b0015f204e8daf4bc0670b44d24292",
+        "references/forms-validation.md": "c159c64c11332e162be0cfdab4dda0f87ee3eee392832a5ec6d15f69c3c32997",
+        "references/indexeddb-persistence.md": "026de6cab4c1bafd59721c75797c13f3c15728d9c07c4837bdff86b203acb468",
+        "references/performance.md": "37d9d8d6c4f915c873a83aaa68679a556eab4c80a64a18a2f9d9fccae1ab87dc",
+        "references/persistence-architecture.md": "8b1a21dd865b6e30173d8a7383b81f38a867212f48d39aa0851bd97a9286f21d",
+        "references/routing.md": "68b5dd1c3af68cdcbadcf218ec83492eed4fb8c8581c82d781b5474a93564303",
+        "references/state-management.md": "509f6510f2c2d1eef5dbf97c7c3c9f33034de461dac12a3a65a4b976cb213dd1",
+        "references/testing.md": "7b64b06442e90e3dcd75eacfc3f29efe015b5aa36a73e12a51b11977aac8fa10",
+        "references/typescript-patterns.md": "27ac07e4bd683f123e80b774db4c134f0ca3233b47681e32e3b919249b3d91c4"
+      },
+      "bytes": 86669
+    },
+    "C": {
+      "activeFiles": {
+        "SKILL.md": "511c06fc975e6799a662e6820fd576d10c9ef063663da810bc7e3445eba9fe23",
+        "agents/openai.yaml": "bc31e3c34c4307ae3267abfa68d7cd5eddf52e49b3801419fc1daa80baaf5417",
+        "references/accessibility.md": "44aef5b0309b2cc08ad061ef5d7dd4edf9727eaf7e56851b867c144ce6738361",
+        "references/component-architecture.md": "d1620fb939eac5b8b428b03e5c2743fadf3f6565d3aa238ceb3a51cac1e17878",
+        "references/data-fetching.md": "db095fe2545dfce0d3de6b295bea674fa2b0015f204e8daf4bc0670b44d24292",
+        "references/forms-validation.md": "c159c64c11332e162be0cfdab4dda0f87ee3eee392832a5ec6d15f69c3c32997",
+        "references/indexeddb-persistence.md": "026de6cab4c1bafd59721c75797c13f3c15728d9c07c4837bdff86b203acb468",
+        "references/performance.md": "37d9d8d6c4f915c873a83aaa68679a556eab4c80a64a18a2f9d9fccae1ab87dc",
+        "references/persistence-architecture.md": "8b1a21dd865b6e30173d8a7383b81f38a867212f48d39aa0851bd97a9286f21d",
+        "references/routing.md": "68b5dd1c3af68cdcbadcf218ec83492eed4fb8c8581c82d781b5474a93564303",
+        "references/state-management.md": "509f6510f2c2d1eef5dbf97c7c3c9f33034de461dac12a3a65a4b976cb213dd1",
+        "references/testing.md": "7b64b06442e90e3dcd75eacfc3f29efe015b5aa36a73e12a51b11977aac8fa10",
+        "references/typescript-patterns.md": "27ac07e4bd683f123e80b774db4c134f0ca3233b47681e32e3b919249b3d91c4"
+      },
+      "bytes": 86727
+    },
+    "release": {
+      "activeFiles": {
+        "SKILL.md": "dc625183b1ad63f0a2d0f24394384dd53cecf9e6cf69e6ebed4481c9a5f13d39",
+        "agents/openai.yaml": "bc31e3c34c4307ae3267abfa68d7cd5eddf52e49b3801419fc1daa80baaf5417",
+        "references/accessibility.md": "44aef5b0309b2cc08ad061ef5d7dd4edf9727eaf7e56851b867c144ce6738361",
+        "references/component-architecture.md": "d1620fb939eac5b8b428b03e5c2743fadf3f6565d3aa238ceb3a51cac1e17878",
+        "references/data-fetching.md": "ec71bf0a73e5c4536b2e4f2cdf3ae2b1fb7381fa201e71a079fe210ec14a5dc5",
+        "references/forms-validation.md": "c159c64c11332e162be0cfdab4dda0f87ee3eee392832a5ec6d15f69c3c32997",
+        "references/indexeddb-persistence.md": "026de6cab4c1bafd59721c75797c13f3c15728d9c07c4837bdff86b203acb468",
+        "references/performance.md": "37d9d8d6c4f915c873a83aaa68679a556eab4c80a64a18a2f9d9fccae1ab87dc",
+        "references/persistence-architecture.md": "8b1a21dd865b6e30173d8a7383b81f38a867212f48d39aa0851bd97a9286f21d",
+        "references/routing.md": "188d8ee8d04f743bd4bff84419fc3143f950e361b37c9fbb36361b5775799103",
+        "references/state-management.md": "509f6510f2c2d1eef5dbf97c7c3c9f33034de461dac12a3a65a4b976cb213dd1",
+        "references/testing.md": "7b64b06442e90e3dcd75eacfc3f29efe015b5aa36a73e12a51b11977aac8fa10",
+        "references/typescript-patterns.md": "27ac07e4bd683f123e80b774db4c134f0ca3233b47681e32e3b919249b3d91c4"
+      },
+      "bytes": 87862
+    }
+  },
+  "patchesReplayedWithZeroFuzz": {
+    "A-B.patch": "5e116d4f51116e91dd6adb90a802e11bbf0c0c6d342448e3cb8a75421e3f3369",
+    "A-C.patch": "166e1d719f47f807b1e3982f6bde1ea8430e6c2b732e247ce0f287e738de3b59",
+    "trial-to-release.patch": "98ee9f8d7502a7a1e7a1f514cecf563f29718ef8f930e369d96c31091f0237ca"
+  },
+  "executions": [
+    {
+      "id": "af7d2d",
+      "variant": "B",
+      "scenario": "ordinary",
+      "rawDispatch": "aa213752f889ebb0dd7d3cb026cc74e30c8cabdbb4a34b51bdb33e8a5052b2e3",
+      "rawEvents": "578c1658a446f418f158460a98d7760ae129aeda9028e7f095dee1f4ffb2ed30",
+      "rawFinal": "1fbc88625fd2541339917b328b5b35183e8024a7efeda041f0e7d4e03a4c91d7",
+      "rawObserver": "671424709c1bd9f2d7e5495a76a9a0a91643c7db52b28e0528753360e8962c8b",
+      "publicReceipt": "d1691f3c594526c2a918766a17301896e3f403342323e0d1008df1fe6fc8df5a",
+      "rawResult": "3ab20170215c19640ba806cd63d42e30e86f885a9ed572999fc8caf2022d64dd",
+      "toolEvents": 9,
+      "visits": 1,
+      "inputShaVerified": true,
+      "inputBytesAndModesUnchanged": true,
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeature": "disabled",
+      "exit": 0,
+      "readback": [
+        {
+          "event": "item_2",
+          "command": "/bin/bash -lc 'cat SKILL.md README.md acceptance.md build.json route.txt visit.mjs'",
+          "outputSha256": "f8a6ddfd9469dc34fee80ad1808a80c05e653f26afd2b8ce561935c4f82fb295",
+          "observation": "validation section after deletion, retained handoff sentence visible"
+        }
+      ]
+    },
+    {
+      "id": "be1a5e",
+      "variant": "A",
+      "scenario": "boundary",
+      "rawDispatch": "9c9b9d956294572281ad8315c19b238604b2ff2f60410e11efc853368cea23bc",
+      "rawEvents": "6057135f97e93fc7c20ec7b1e3bf014d25fbbceeaa720ff6c44095d2e5bdefa5",
+      "rawFinal": "0cfcea3c4e198b260926ece888d3e1f348a289be7328a2684ab7742a28f6de14",
+      "rawObserver": "fd080d7037f2fb308561fa8553c8aeeebfea1f308119d6dd0de6a84ecfb2c6c9",
+      "publicReceipt": "6d59fe6cc009372a521475f6b74326ca6dd52cce5e4ad01fef5ec6ac7223ba0b",
+      "rawResult": "801ee9b40e188e3d0d9b0bf440a6b2b53bf24fab104f15c3aea3fffe46d820b8",
+      "toolEvents": 13,
+      "visits": 2,
+      "inputShaVerified": true,
+      "inputBytesAndModesUnchanged": true,
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeature": "disabled",
+      "exit": 0,
+      "readback": [
+        {
+          "event": "item_4",
+          "command": "/bin/bash -lc 'cat SKILL.md'",
+          "outputSha256": "8f2aa777e134f8fd72d20e753e3ba02a550e46ac91a0ff68b0ac55a128053eaa",
+          "observation": "target sentence in stdout"
+        }
+      ]
+    },
+    {
+      "id": "709cab",
+      "variant": "A",
+      "scenario": "ordinary",
+      "rawDispatch": "1c5e1a95460b9fc82d43974f1a839391eb1e0eafc4a2d8fe9552440f95643e2c",
+      "rawEvents": "18b4e47d76a8de484ae45167106728545d65ecb3297a27e3018f12791f48b3f4",
+      "rawFinal": "98e98adbe066cc5969cfc69633ce918ce9fc38e29361f9ace92664cb7d5dc172",
+      "rawObserver": "9abb7a08abecace4f70170013092f55236416e8f901599ff9e85036108f98891",
+      "publicReceipt": "10962f4ee4a92efd45a042a8226e76b6747b38f7f2b7c2f756588e46add68eff",
+      "rawResult": "4101447c1d4ae1711fa4a8330a8754dbe012578a9a988d5b939d28e001bc906b",
+      "toolEvents": 9,
+      "visits": 2,
+      "inputShaVerified": true,
+      "inputBytesAndModesUnchanged": true,
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeature": "disabled",
+      "exit": 0,
+      "readback": [
+        {
+          "event": "item_2",
+          "command": "/bin/bash -lc 'cat SKILL.md'",
+          "outputSha256": "8f2aa777e134f8fd72d20e753e3ba02a550e46ac91a0ff68b0ac55a128053eaa",
+          "observation": "target sentence in stdout"
+        }
+      ]
+    },
+    {
+      "id": "528471",
+      "variant": "B",
+      "scenario": "boundary",
+      "rawDispatch": "b4396993a6f0b6634373193e4374e0d05c0c6ec55ab860bfabddcfce595cb739",
+      "rawEvents": "ef9311d810b2a22430d0a22f072218a79321f1bf0733329cc1545cce47ea570a",
+      "rawFinal": "0507b1024857c17e0ad1448e56d699849f5f21671be044b59903340f549b70df",
+      "rawObserver": "8fc5cd3469e4443a1d879acd48cf0748577112b9ba45072793dbc55cb0972d88",
+      "publicReceipt": "b90f2d0fbae66854734eabb6e00d21252504649129b40e92988aa96624f6a372",
+      "rawResult": "faeb3cc13df6a33b118b10b22f2e015bc7291c0cdb6483a82389a1eef7ef118f",
+      "toolEvents": 12,
+      "visits": 1,
+      "inputShaVerified": true,
+      "inputBytesAndModesUnchanged": true,
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeature": "disabled",
+      "exit": 0,
+      "readback": [
+        {
+          "event": "item_2",
+          "command": "/bin/bash -lc 'cat SKILL.md README.md acceptance.md build.json route.txt'",
+          "outputSha256": "e4990ef68947fd144b035d73ba401f5fc44d76f71cda6a9fcc642a0e943f3545",
+          "observation": "validation section after deletion, retained handoff sentence visible"
+        }
+      ]
+    },
+    {
+      "id": "acb7d5",
+      "variant": "C",
+      "scenario": "boundary",
+      "rawDispatch": "533dd38d157f0c6c21a5a50096c9f54b0241aefbb8100d950e049e144a22b0af",
+      "rawEvents": "bfea024e561af6d62d4dd146aebe6d61dbf9a9b8d902d3b886e91c1b434eec7f",
+      "rawFinal": "2bbcc750669c86903dcf7d877b1f050cee3d71730302abf78a1d90b1f95a8f59",
+      "rawObserver": "d37069b390af90752f35c0702f657f104fba4fb6abe1ecdb5c40567823c7b169",
+      "publicReceipt": "fd5ac2a1294d348cb32bd1a0104e31a0d8076650ebe61768c7cbbf1772236f53",
+      "rawResult": "4ace73c2e2eeb8c9027429331d63a63ebeacdf743ed33a6edd6029bbbf520eb4",
+      "toolEvents": 10,
+      "visits": 3,
+      "inputShaVerified": true,
+      "inputBytesAndModesUnchanged": true,
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeature": "disabled",
+      "exit": 0,
+      "readback": [
+        {
+          "event": "item_2",
+          "command": "/bin/bash -lc \"cat SKILL.md acceptance.md README.md build.json route.txt && sed -n '1,240p' visit.mjs\"",
+          "outputSha256": "7ee0aac95d68289a81466f4fbe0761ccc5972b7445c7d29c57f9e3e68769e37c",
+          "observation": "target sentence in stdout"
+        }
+      ]
+    },
+    {
+      "id": "f9261d",
+      "variant": "C",
+      "scenario": "holdout",
+      "rawDispatch": "f500d076d0323fb8fd30f7ca51c773f1c5b8bf4d0cadf5a81ac9a6189430a693",
+      "rawEvents": "562bdba82b0685924b04effe44090028f620368ee085f43edd1c0313cb663e1f",
+      "rawFinal": "c588bc71714f448cbcd08c0b9cfd50953bf985bc3a50bc7507fdb968da2f23a2",
+      "rawObserver": "14ecdfc44f3b9a90584caa0285139707172f81eb459fb5fdf34b62efdf0cdc60",
+      "publicReceipt": "73b06d8ef4fea228fbce10f26c140a42fa00c7647ac14cad38b7a2f323a4a980",
+      "rawResult": "fad65bcfdd597fa14676cdba7fc4c3453fa565c29b3f08d4a102845f6d424726",
+      "toolEvents": 10,
+      "visits": 2,
+      "inputShaVerified": true,
+      "inputBytesAndModesUnchanged": true,
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeature": "disabled",
+      "exit": 0,
+      "readback": [
+        {
+          "event": "item_2",
+          "command": "/bin/bash -lc 'cat SKILL.md acceptance.md README.md route.txt build.json visit.mjs'",
+          "outputSha256": "13e88e915bf019fdfd72ee79e74d120c32180e4c9585efe12cf899e2c8d2429b",
+          "observation": "target sentence in stdout"
+        }
+      ]
+    },
+    {
+      "id": "e94a04",
+      "variant": "C",
+      "scenario": "ordinary",
+      "rawDispatch": "6b47c1652119222e1799b131d09fe6406d038fd696756cbba517ac0f1e9647bb",
+      "rawEvents": "7b0508413312c1fc59c7a1dcb7df6270acaffcfba19d306928aa5c643dbee5e2",
+      "rawFinal": "d214de8ae943e2d5d4492f92a54716307fb831ad70a5f87a4087c0682906c3c3",
+      "rawObserver": "e2540545bfc1078c2a832ec4cf24f7f76d79d92850422604a6dc70a4f264156d",
+      "publicReceipt": "37d9f8048ee9bbbebbcd02b7a29422a7669f8ad12f2e58d1d505d0c4472845e8",
+      "rawResult": "58bb9e06b3c1bb69748fb3379a960b6cb5cf1d9b2bee01955b98b74ee3231077",
+      "toolEvents": 14,
+      "visits": 2,
+      "inputShaVerified": true,
+      "inputBytesAndModesUnchanged": true,
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeature": "disabled",
+      "exit": 0,
+      "readback": [
+        {
+          "event": "item_2",
+          "command": "/bin/bash -lc 'cat SKILL.md acceptance.md README.md'",
+          "outputSha256": "a85055dc9b77eafbd3a929bcfd3b4b4e94fe979fe261cd0a5f06d584f2cca72b",
+          "observation": "target sentence in stdout"
+        }
+      ]
+    },
+    {
+      "id": "c4ddcc",
+      "variant": "A",
+      "scenario": "holdout",
+      "rawDispatch": "79d5540862211bd3375dc7cca124154210561ce99b6ee77888a7da1d23594471",
+      "rawEvents": "cffd5238642501b9d622ad7b4f05063ca3bb8ce25dad46b46f0cb89c1f9d40b3",
+      "rawFinal": "5504347db4d894a808330ab758ad5799486c855515450e5ecb5551a84678d282",
+      "rawObserver": "d52bf1d045a7b7a7560ff24d0b6e6e80551ad0401d2698106b66a12535ee0e0f",
+      "publicReceipt": "b0ce4bd35ca0bdf01e45245df00350f3a5baa679756a34e0c660c3951cac2489",
+      "rawResult": "ae7b0d3412a5d627eba86a057f2fe507c8a023d7232fb7cb39524db3a4afa898",
+      "toolEvents": 14,
+      "visits": 3,
+      "inputShaVerified": true,
+      "inputBytesAndModesUnchanged": true,
+      "model": "gpt-6.2-sol",
+      "reasoning": "medium",
+      "memoryFeature": "disabled",
+      "exit": 0,
+      "readback": [
+        {
+          "event": "item_1",
+          "command": "/bin/bash -lc 'cat SKILL.md acceptance.md README.md'",
+          "outputSha256": "506c403d9e1c46a4533b5aba29ff22dfcbc2735b9e17133711510b8b7f19b7d9",
+          "observation": "target sentence in stdout"
+        }
+      ]
+    }
+  ],
+  "browserVisits": {
+    "archiveSha256": "a87b23d1822ac8f73137d0342000a7ff01cb2e1d700cfe4b2eb6896435facb8b",
+    "publishedMembers": 32,
+    "excludes": "Temporary browser profiles. Full primary hashes remain in each result."
+  }
+}

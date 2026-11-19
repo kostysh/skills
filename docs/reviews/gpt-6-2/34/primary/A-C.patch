@@ -1,0 +1,5 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -67 +67 @@
+-4. **Preview changes.** Use `add --dry-run`, `--diff`, or `--view` before updating installed components or accepting third-party registry code.
++4. Preview registry changes against the installed component. For a compatibility review, report the configured primitive, file type, and resolved destination.

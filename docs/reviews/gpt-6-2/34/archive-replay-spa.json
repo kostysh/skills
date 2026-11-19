@@ -1,0 +1,49 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "corepack",
+        "pnpm",
+        "install",
+        "--offline",
+        "--frozen-lockfile",
+        "--ignore-scripts",
+        "--store-dir",
+        "{prepared-store}"
+      ],
+      "exit": 0,
+      "output": "Lockfile is up to date, resolution step is skipped\nProgress: resolved 1, reused 0, downloaded 0, added 0\nPackages: +508\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nProgress: resolved 508, reused 508, downloaded 0, added 508, done\n\ndependencies:\n+ @fontsource-variable/geist 5.3.0\n+ @tailwindcss/vite 4.3.3\n+ @tanstack/react-query 5.108.0\n+ class-variance-authority 0.7.1\n+ cn 0.2.6\n+ lucide-react 1.42.0\n+ radix-ui 1.6.7\n+ react 19.2.8\n+ react-dom 19.2.8\n+ react-router 8.5.2\n+ tailwindcss 4.3.3\n+ tw-animate-css 1.4.0\n\ndevDependencies:\n+ @eslint/js 10.0.1\n+ @types/node 24.13.3\n+ @types/react 19.2.18\n+ @types/react-dom 19.2.7\n+ @vitejs/plugin-react 6.1.1\n+ eslint 10.10.0\n+ eslint-plugin-react-hooks 7.1.1\n+ eslint-plugin-react-refresh 0.5.6\n+ globals 17.12.0\n+ prettier 3.9.6\n+ prettier-plugin-tailwindcss 0.8.1\n+ shadcn 4.21.0\n+ typescript 6.0.3\n+ typescript-eslint 8.70.0\n+ vite 8.2.2\n\nDone in 587ms using pnpm v10.28.2\n"
+    },
+    {
+      "argv": [
+        "corepack",
+        "pnpm",
+        "run",
+        "build"
+      ],
+      "exit": 0,
+      "output": "\n> fixture@0.0.1 build {staging}/spa-rebuild\n> tsc -b && vite build\n\nvite v8.2.2 building client environment for production...\ntransforming...\n✓ 2091 modules transformed.\nrendering chunks...\ncomputing gzip size...\ndist/index.html                                              0.45 kB │ gzip:   0.29 kB\ndist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2    7.42 kB\ndist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2      8.00 kB\ndist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2       15.08 kB\ndist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2      16.51 kB\ndist/assets/geist-latin-wght-normal-BgDaEnEv.woff2          29.40 kB\ndist/assets/index-Cjq7RuI-.css                              47.07 kB │ gzip:   8.54 kB\ndist/assets/index-Durb_D_u.js                              423.75 kB │ gzip: 134.82 kB\n\n✓ built in 176ms\n(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - `__dirname` (vite.config.ts:11:27). Use `import.meta.dirname` instead\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n"
+    }
+  ],
+  "receivedDist": {
+    "assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2": "2317fa4bb293c9c0b110e18315d529235c47a0ddd3338cea3d8c7955e927899e",
+    "assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2": "6894439694946a589d157ece003086960a6a4013d74a813dab7602efdb3d8c09",
+    "assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2": "824f485b5d26e2f2da3c2b236132ece1bc8e4e43373452950bb0e40548b4313f",
+    "assets/geist-latin-wght-normal-BgDaEnEv.woff2": "19f9c92546aa300c312235e3125af1b81394d8db9a4bc4a425cd5b641d2d54e1",
+    "assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2": "8fa40e5d248247735eb97a0bd593b8852440430600d6ba01364c31fe0abc1fe1",
+    "assets/index-Cjq7RuI-.css": "d58d07de9259d89f5f78f772451387011278e2760815aa1460472afb19a08971",
+    "assets/index-Durb_D_u.js": "1657dcba03d5ee1615efd010914e64c8d1a5221b920395f1920629963f3f456a",
+    "index.html": "8b8facaeed3b5ed5d6caf83b8b278f70b5997dc0f3744512ac9fe3ee5f6af4b8"
+  },
+  "rebuiltDist": {
+    "assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2": "2317fa4bb293c9c0b110e18315d529235c47a0ddd3338cea3d8c7955e927899e",
+    "assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2": "6894439694946a589d157ece003086960a6a4013d74a813dab7602efdb3d8c09",
+    "assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2": "824f485b5d26e2f2da3c2b236132ece1bc8e4e43373452950bb0e40548b4313f",
+    "assets/geist-latin-wght-normal-BgDaEnEv.woff2": "19f9c92546aa300c312235e3125af1b81394d8db9a4bc4a425cd5b641d2d54e1",
+    "assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2": "8fa40e5d248247735eb97a0bd593b8852440430600d6ba01364c31fe0abc1fe1",
+    "assets/index-Cjq7RuI-.css": "d58d07de9259d89f5f78f772451387011278e2760815aa1460472afb19a08971",
+    "assets/index-Durb_D_u.js": "1657dcba03d5ee1615efd010914e64c8d1a5221b920395f1920629963f3f456a",
+    "index.html": "8b8facaeed3b5ed5d6caf83b8b278f70b5997dc0f3744512ac9fe3ee5f6af4b8"
+  },
+  "identity": true
+}

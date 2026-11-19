@@ -1,0 +1,216 @@
+{
+  "readerDesktop": {
+    "electron": "45.0.0",
+    "chrome": "156.0.8078.48",
+    "platform": "linux",
+    "archive": true,
+    "isPackaged": false,
+    "access": {
+      "route": "/settings/notifications",
+      "title": "Notification settings",
+      "exposed": [
+        "save"
+      ],
+      "nodeRequire": "undefined"
+    },
+    "isolation": {
+      "sandbox": true,
+      "contextIsolation": true,
+      "nodeIntegration": false
+    },
+    "tooltip": {
+      "trigger": "About these settings",
+      "description": "Review your changes before you confirm.",
+      "role": "tooltip"
+    },
+    "pending": "Review your changes\n\nConfirm to save these notification settings.\n\nEmail address\ndispatcher@example.test\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm",
+    "saved": "Settings applied\n\nEmail: dispatcher@example.test. Notifications: On. Frequency: Weekly.\n\nRead from the local settings service. No email is sent.",
+    "invalid": {
+      "state": "rejected",
+      "reason": "Settings could not be saved."
+    },
+    "fresh": {
+      "status": "Settings applied\n\nEmail: dispatcher@example.test. Notifications: On. Frequency: Weekly.\n\nRead from the local settings service. No email is sent.",
+      "email": "dispatcher@example.test",
+      "weekly": "true"
+    },
+    "calls": [
+      {
+        "sender": "/settings/notifications",
+        "record": {
+          "email": "dispatcher@example.test",
+          "enabled": true,
+          "frequency": "weekly"
+        },
+        "valid": true,
+        "status": 204
+      },
+      {
+        "sender": "/settings/notifications",
+        "record": {
+          "email": "unused@example.test",
+          "enabled": true,
+          "frequency": "monthly"
+        },
+        "valid": false
+      }
+    ],
+    "service": [
+      {
+        "method": "GET",
+        "path": "/api/notification-settings",
+        "status": 200,
+        "body": null
+      },
+      {
+        "method": "PUT",
+        "path": "/api/notification-settings",
+        "status": 204
+      },
+      {
+        "method": "GET",
+        "path": "/api/notification-settings",
+        "status": 200,
+        "body": {
+          "email": "dispatcher@example.test",
+          "enabled": true,
+          "frequency": "weekly"
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/api/notification-settings",
+        "status": 200,
+        "body": {
+          "email": "dispatcher@example.test",
+          "enabled": true,
+          "frequency": "weekly"
+        }
+      }
+    ],
+    "disk": {
+      "email": "dispatcher@example.test",
+      "enabled": true,
+      "frequency": "weekly"
+    }
+  },
+  "readerMaple": [
+    {
+      "platform": "linux",
+      "arch": "x64",
+      "electron": "45.0.0",
+      "chrome": "156.0.8078.48",
+      "packaged": false,
+      "appArchive": true,
+      "sandbox": true,
+      "isolated": true,
+      "observed": {
+        "title": "Maple notifications",
+        "methods": [
+          "save"
+        ],
+        "nodeGlobal": "undefined",
+        "reply": {
+          "status": "fulfilled",
+          "valueType": "undefined"
+        }
+      },
+      "writes": 1,
+      "readBack": {
+        "email": "desk@example.invalid",
+        "enabled": true,
+        "frequency": "daily"
+      }
+    },
+    {
+      "platform": "linux",
+      "arch": "x64",
+      "electron": "45.0.0",
+      "chrome": "156.0.8078.48",
+      "packaged": false,
+      "appArchive": true,
+      "sandbox": true,
+      "isolated": true,
+      "observed": {
+        "title": "Maple notifications",
+        "methods": [
+          "save"
+        ],
+        "nodeGlobal": "undefined",
+        "reply": {
+          "status": "fulfilled",
+          "valueType": "undefined"
+        }
+      },
+      "writes": 1,
+      "readBack": {
+        "email": "desk@example.invalid",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    },
+    {
+      "platform": "linux",
+      "arch": "x64",
+      "electron": "45.0.0",
+      "chrome": "156.0.8078.48",
+      "packaged": false,
+      "appArchive": true,
+      "sandbox": true,
+      "isolated": true,
+      "observed": {
+        "title": "Maple notifications",
+        "methods": [
+          "save"
+        ],
+        "nodeGlobal": "undefined",
+        "reply": {
+          "status": "rejected",
+          "reason": "Settings could not be saved."
+        }
+      },
+      "writes": 0,
+      "readBack": null
+    }
+  ],
+  "selfReplayMatchesReader": true,
+  "observer": "Private Xvfb, independent ephemeral profile and service for each visit. Controls observed via real Electron DOM actions and IPC.",
+  "publicPackageInputs": {
+    "06/node-engineer-0.1.5.tgz": "611248149580902200c08415349d7dc62608a12f4d4819607333956a224bbe8c",
+    "18/react-components-engineer-0.2.3.tgz": "298cc8f57a28ea57f19bc5c7d31d73d6183deeeb96d9389c7e564f066c45854f",
+    "26/react-spa-engineer-0.1.14.tgz": "50a51750c7aadfd5e4334707d29fd87f1d997f92ae99dfb83984470b07e3c8ad",
+    "18/component/handoff.md": "df4f23bbdfbc3b455b7e44a42dc9f800ba32124a5718e41aa164077f232684dd",
+    "18/component/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+    "18/component/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+    "26/notification-spa.tar.gz": "1de3fc4e816441efa641bf9d81a1b453347b8a4a118eff8279f5ebf9ab8d127c",
+    "26/notification-handoff.md": "03bceafa1fcad65fd32fe960a8ffcaa5652750c18f103963a8e261b52fbbb06c"
+  },
+  "desktopAsarSHA256": "b31197084d9dc4a9d9f276d9bf0628bec4e24000dcdbb5f58ebbc95496b1578d",
+  "mapleAsarSHA256": "703fb21f484b58c639cd139ccaa41bce6fd2b0c820f483d7023d0d344bca78bc",
+  "portableHandoffSHA256": "c184dd944d93d52e9bb0ffbadcc8cd94b02b4c9ea40536cd92e60ed807d626f0",
+  "formFileCount": 48,
+  "allFormFilesIdenticalToUpstream": true,
+  "distFilesSHA256": {
+    "project/dist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2": "2317fa4bb293c9c0b110e18315d529235c47a0ddd3338cea3d8c7955e927899e",
+    "project/dist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2": "6894439694946a589d157ece003086960a6a4013d74a813dab7602efdb3d8c09",
+    "project/dist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2": "824f485b5d26e2f2da3c2b236132ece1bc8e4e43373452950bb0e40548b4313f",
+    "project/dist/assets/geist-latin-wght-normal-BgDaEnEv.woff2": "19f9c92546aa300c312235e3125af1b81394d8db9a4bc4a425cd5b641d2d54e1",
+    "project/dist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2": "8fa40e5d248247735eb97a0bd593b8852440430600d6ba01364c31fe0abc1fe1",
+    "project/dist/assets/index-BbT2wSLy.js": "31c1f7b77946325e18645cd2e0cf5dbc5c5faaf621329f0066b649efe02f8ff9",
+    "project/dist/assets/index-Cjq7RuI-.css": "d58d07de9259d89f5f78f772451387011278e2760815aa1460472afb19a08971",
+    "project/dist/index.html": "a85232e3d9508fdbc650e8adfdc954d6db600b30f08c1e0f208baf89b97a4fee"
+  },
+  "serverSHA256": "665d9f946cf9a5240cb51afd2581f8053e290bad4ac0196902daab5e7b1efe58",
+  "runtimeElectronLinuxX64SHA256": "22f6a10bd3f7fef987ddbb379d3375ce664ad0c98a9a50f80c89f1718a0c3e3a",
+  "xvfb": {
+    "package": "xvfb",
+    "version": "2:21.1.22-1ubuntu1.3",
+    "archive_sha256": "e46d389ef552dfd557df22a49a1071fef2ab499951633e9857ebb763d7ae7d24",
+    "isolated_display": [
+      "version number:    11.0",
+      "vendor string:    The X.Org Foundation",
+      "dimensions:    1100x800 pixels (279x203 millimeters)"
+    ]
+  },
+  "asarCLI": "4.3.2"
+}

@@ -1,0 +1,4 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -136 +135,0 @@
+-- **high** — Do not turn list size, dependency presence, preload, preconnect, or render patterns into performance defects without scale or measurement evidence; report a validation risk instead.

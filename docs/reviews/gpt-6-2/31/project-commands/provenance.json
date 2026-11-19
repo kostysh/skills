@@ -1,0 +1,303 @@
+{
+  "frozenRubricSHA256": "8f9b1c08856ddcd5faaa7271fe7d4062efcf6985dcb05f6ae775b106ea2b2109",
+  "trialInputs": {
+    "file": "research-inputs.tar.gz",
+    "files": 60,
+    "sha256": "47554efeeaf84f5d96c30c1b86508f3c10cf3f5ce4236fd44e5041c2b2517147"
+  },
+  "subjects": [
+    {
+      "code": "936ff5",
+      "role": "A",
+      "case": "maintainer",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "fileTarget": "CONTRIBUTING.md",
+      "frozenRoot": "698e7641095b3335372a159d3541e22e37302d9be6a72de920779d046777c483",
+      "projectAGENTS": "4d68ac59d3fabc6a829f7f2041fd2f7b555e894d199a97a07deec7ed7623e7bb",
+      "includedTemplate": "4d68ac59d3fabc6a829f7f2041fd2f7b555e894d199a97a07deec7ed7623e7bb",
+      "readEvidence": [
+        {
+          "event": "item_2",
+          "command": "/bin/bash -lc 'cat skill/SKILL.md AGENTS.md'",
+          "returnedSha256": "dbdde9486ced4a83523e2daa3d0230e59977603015a86be3d4a2b0991cb00c8d"
+        }
+      ],
+      "inputPreserved": true,
+      "changed": [
+        "CONTRIBUTING.md"
+      ],
+      "answerSHA256": "e9cbb41a1cfc54e510e9d3602745fe97a3e6a661d3c8a87dcbfa6d873f420d92",
+      "eventSHA256": "b1595d5f5da801811381432716f11dce6ad711310fa0f780df2b193d8c868ca7",
+      "observerSHA256": "aa34c290b1558e89fd85653b978e9536cb412041a976d0c2766caabb9e3db8ee"
+    },
+    {
+      "code": "2cc271",
+      "role": "B",
+      "case": "reader",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "fileTarget": "docs/guide.md",
+      "frozenRoot": "698e7641095b3335372a159d3541e22e37302d9be6a72de920779d046777c483",
+      "projectAGENTS": "44338e07607ffca1556388262f35ff9cf74b4750e563886f5c6eaf61bac63a6a",
+      "includedTemplate": "44338e07607ffca1556388262f35ff9cf74b4750e563886f5c6eaf61bac63a6a",
+      "readEvidence": [
+        {
+          "event": "item_2",
+          "command": "/bin/bash -lc 'cat AGENTS.md skill/SKILL.md'",
+          "returnedSha256": "9651a339e6b84f865023062f3f5342d919a03f12b87d7907c35fcae23d34c5f2"
+        }
+      ],
+      "inputPreserved": true,
+      "changed": [
+        "docs/guide.md"
+      ],
+      "answerSHA256": "cdd7bbf1573efbf703aefdaa483a6cdcddd746ab683210866fc40b016f47b85b",
+      "eventSHA256": "7a5c4aede6ac816a91ba47dbb20dc92b4481504d6f8fa9870423d7a266f646cc",
+      "observerSHA256": "c7a62fb9d05ff6af25892bf9ada1eb0fb04534f4456206812bdd19be8d9c4187"
+    },
+    {
+      "code": "68502b",
+      "role": "B",
+      "case": "maintainer",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "fileTarget": "CONTRIBUTING.md",
+      "frozenRoot": "698e7641095b3335372a159d3541e22e37302d9be6a72de920779d046777c483",
+      "projectAGENTS": "44338e07607ffca1556388262f35ff9cf74b4750e563886f5c6eaf61bac63a6a",
+      "includedTemplate": "44338e07607ffca1556388262f35ff9cf74b4750e563886f5c6eaf61bac63a6a",
+      "readEvidence": [
+        {
+          "event": "item_2",
+          "command": "/bin/bash -lc 'cat skill/SKILL.md AGENTS.md'",
+          "returnedSha256": "d9a9ebabb4dfac26e418d1f93422e24aab9781df61cc0e4f19eb73661102eb25"
+        }
+      ],
+      "inputPreserved": true,
+      "changed": [
+        "CONTRIBUTING.md"
+      ],
+      "answerSHA256": "09a5ef028b2eebed2e7ccf28fda95372b2a142c8cf6deabb6ed53f8c1365db10",
+      "eventSHA256": "7221a56efbf980a01ba670dcfa75459935d19bec72e34dc90c9754f26fe50f23",
+      "observerSHA256": "d5d3e51d99df6400a18aefaf579b0bdd3036d12727eb1e372efd51f75ceff311"
+    },
+    {
+      "code": "49de4b",
+      "role": "A",
+      "case": "reader",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "fileTarget": "docs/guide.md",
+      "frozenRoot": "698e7641095b3335372a159d3541e22e37302d9be6a72de920779d046777c483",
+      "projectAGENTS": "4d68ac59d3fabc6a829f7f2041fd2f7b555e894d199a97a07deec7ed7623e7bb",
+      "includedTemplate": "4d68ac59d3fabc6a829f7f2041fd2f7b555e894d199a97a07deec7ed7623e7bb",
+      "readEvidence": [
+        {
+          "event": "item_1",
+          "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"' -g '\"'!node_modules'\"'\ncat AGENTS.md skill/SKILL.md handoff/desk-guide.md docs/guide.md\"",
+          "returnedSha256": "2e6ac738186ed0ac88c3f1fe46723369050450cd325a94f585373f1402f2c207"
+        }
+      ],
+      "inputPreserved": true,
+      "changed": [
+        "docs/guide.md"
+      ],
+      "answerSHA256": "683b8fac59633fc2c5649894b177ba4e9eb13e9c94e924f73c5947f5367394d1",
+      "eventSHA256": "141e41f12cb178c35ee8b795c917e0849e4456af7228e1509ce3d69d2385c2e8",
+      "observerSHA256": "3c89644717c5c748d23402a1d51266eb4bb39e3bd41061e1f93535fcebba3723"
+    },
+    {
+      "code": "34b2b0",
+      "role": "C",
+      "case": "joint",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "fileTarget": "docs/shift.md",
+      "frozenRoot": "698e7641095b3335372a159d3541e22e37302d9be6a72de920779d046777c483",
+      "projectAGENTS": "13d5ea46437ffb9e1f99ab9b85b20513139782a22cec546318b128538c2df16d",
+      "includedTemplate": "13d5ea46437ffb9e1f99ab9b85b20513139782a22cec546318b128538c2df16d",
+      "readEvidence": [
+        {
+          "event": "item_2",
+          "command": "/bin/bash -lc 'cat AGENTS.md skill/SKILL.md'",
+          "returnedSha256": "2e455c8563cad4dcf6416ba011c0e47cf37d1d241367c3c60bd4a87f4531e3a7"
+        }
+      ],
+      "inputPreserved": true,
+      "changed": [
+        "docs/shift.md"
+      ],
+      "answerSHA256": "ecb12374d52920f1c0060f6605cb3f7a90ac67f848fcfc6b1f1c6571c6e8c97b",
+      "eventSHA256": "31993238f73fcd1cb7f134aa58c05337041b398170c46f286654b46b15292e2e",
+      "observerSHA256": "8c704cd0d6cf0020fed7e1f2fb1ac342e6a72b0f155ef02bdbd399713fccd85e"
+    },
+    {
+      "code": "a96e87",
+      "role": "C",
+      "case": "maintainer",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "fileTarget": "CONTRIBUTING.md",
+      "frozenRoot": "698e7641095b3335372a159d3541e22e37302d9be6a72de920779d046777c483",
+      "projectAGENTS": "13d5ea46437ffb9e1f99ab9b85b20513139782a22cec546318b128538c2df16d",
+      "includedTemplate": "13d5ea46437ffb9e1f99ab9b85b20513139782a22cec546318b128538c2df16d",
+      "readEvidence": [
+        {
+          "event": "item_4",
+          "command": "/bin/bash -lc 'cat AGENTS.md'",
+          "returnedSha256": "13d5ea46437ffb9e1f99ab9b85b20513139782a22cec546318b128538c2df16d"
+        }
+      ],
+      "inputPreserved": true,
+      "changed": [
+        "CONTRIBUTING.md"
+      ],
+      "answerSHA256": "0b5181fc0c84cc4249c1b26b55de2ad91e3b693453eb76921e40344254aefe6b",
+      "eventSHA256": "837555f5521cc75a9b5db9f0d583b85622622227ad87280761b594e75a7540c3",
+      "observerSHA256": "18e95d9c59270340667268f85531bbb3bda6afad1a86be6ef6ca4de156d8292e"
+    },
+    {
+      "code": "316028",
+      "role": "A",
+      "case": "joint",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "fileTarget": "docs/shift.md",
+      "frozenRoot": "698e7641095b3335372a159d3541e22e37302d9be6a72de920779d046777c483",
+      "projectAGENTS": "4d68ac59d3fabc6a829f7f2041fd2f7b555e894d199a97a07deec7ed7623e7bb",
+      "includedTemplate": "4d68ac59d3fabc6a829f7f2041fd2f7b555e894d199a97a07deec7ed7623e7bb",
+      "readEvidence": [
+        {
+          "event": "item_2",
+          "command": "/bin/bash -lc 'cat AGENTS.md skill/SKILL.md'",
+          "returnedSha256": "fcf7d67336ce65426aed3862c6a80623ec1f20a88b9b92f881e0bfa46220b675"
+        }
+      ],
+      "inputPreserved": true,
+      "changed": [
+        "docs/shift.md"
+      ],
+      "answerSHA256": "9420ba80c15ea91434fe8f8644202186267213dd2f9a5ab7fa6a2c89b7df1d58",
+      "eventSHA256": "0db5f275fe1df3ab94b0883cfb7b84ac48bc9561d4066de57e18d8fd92a4e53d",
+      "observerSHA256": "c6922c6bc16d1d2e566153d58a7d3cf26925af1448646dea5db33331b1eb4ea3"
+    },
+    {
+      "code": "a64ab5",
+      "role": "C",
+      "case": "reader",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "fileTarget": "docs/guide.md",
+      "frozenRoot": "698e7641095b3335372a159d3541e22e37302d9be6a72de920779d046777c483",
+      "projectAGENTS": "13d5ea46437ffb9e1f99ab9b85b20513139782a22cec546318b128538c2df16d",
+      "includedTemplate": "13d5ea46437ffb9e1f99ab9b85b20513139782a22cec546318b128538c2df16d",
+      "readEvidence": [
+        {
+          "event": "item_2",
+          "command": "/bin/bash -lc 'cat AGENTS.md skill/SKILL.md handoff/desk-guide.md docs/desk-intake.md package.json'",
+          "returnedSha256": "ee3f9e492866c94a6e456fd6ee41b7dc04f5c38673c40f5a21d453c13948707b"
+        }
+      ],
+      "inputPreserved": true,
+      "changed": [
+        "docs/guide.md"
+      ],
+      "answerSHA256": "d3f5f8ec3c252d7c3f3a96bef3b78f36e587067c63630e138bd84617f56e3ad1",
+      "eventSHA256": "74729c6fb554c3cf23fcc418bc8a4737e27d4b6ca6bdf2ff48be082b2b441cd3",
+      "observerSHA256": "c7a62fb9d05ff6af25892bf9ada1eb0fb04534f4456206812bdd19be8d9c4187"
+    }
+  ],
+  "A-B": [
+    {
+      "label": "936ff5",
+      "role": "A",
+      "case": "maintainer"
+    },
+    {
+      "label": "2cc271",
+      "role": "B",
+      "case": "reader"
+    },
+    {
+      "label": "68502b",
+      "role": "B",
+      "case": "maintainer"
+    },
+    {
+      "label": "49de4b",
+      "role": "A",
+      "case": "reader"
+    }
+  ],
+  "confirm": [
+    {
+      "code": "74c84b",
+      "subjectCode": "936ff5",
+      "role": "A",
+      "case": "maintainer"
+    },
+    {
+      "code": "e30e60",
+      "subjectCode": "49de4b",
+      "role": "A",
+      "case": "reader"
+    },
+    {
+      "code": "34b2b0",
+      "subjectCode": "34b2b0",
+      "role": "C",
+      "case": "joint"
+    },
+    {
+      "code": "a96e87",
+      "subjectCode": "a96e87",
+      "role": "C",
+      "case": "maintainer"
+    },
+    {
+      "code": "316028",
+      "subjectCode": "316028",
+      "role": "A",
+      "case": "joint"
+    },
+    {
+      "code": "a64ab5",
+      "subjectCode": "a64ab5",
+      "role": "C",
+      "case": "reader"
+    }
+  ],
+  "assessors": {
+    "ab": {
+      "exit": 0,
+      "sha256": "f7183d623eab40e4ee4bb97519d0f744b0b6de0a78b4465c6a224d4f5740ecb8",
+      "events_sha256": "d41e86e3012371bcec5213a62c8aa50f7ca9ba80debe75d671c81409f1ff9438",
+      "packetFiles": 45,
+      "portableViewSHA256": "d0afe0294b33cac535ab07780e6fa6da55f00c7943765427604259d951bdfa59"
+    },
+    "confirm": {
+      "exit": 0,
+      "sha256": "c3543edaf979e99736faa3f83b0f6407b1269f737e48e79d3191f6857548e0da",
+      "events_sha256": "46cf07d65a0bf66d302d981c44822136d57624e20d1994080566211161f59b87",
+      "packetFiles": 75,
+      "portableViewSHA256": "aa32d7d239f7812ae96cacf46a107a7584c99dde522dda2ca462cc1e17e19606"
+    }
+  },
+  "records": {
+    "file": "study-records.tar.gz",
+    "files": 98,
+    "sha256": "1c07038bd27a7edbea059bfd4f5791d2b2e2a1bc2fb719eddb05a716afdd5b75"
+  },
+  "graderInputs": {
+    "file": "grader-inputs.tar.gz",
+    "files": 120,
+    "sha256": "98c3184d0df01f3a353358aa9e54513a137a9d5ac77e3e7eac996030b34bb6c1"
+  },
+  "actualSite": {
+    "file": "published-pnpm-site.tar.gz",
+    "files": 158,
+    "sha256": "c2f3a57f03bcbcad53de6b154c63267722f28e36b9449e132eb69bba3875fa77"
+  },
+  "excludedBeforeModelExecution": "Four launcher failures returned no answer because Codex state storage was read-only. All four were repeated in a new empty temporary directory and excluded from subject counts.",
+  "boundaries": "Dedicated casework directories, issued complete 14-file skill plus copied AGENTS and case data, memory disabled. Host permitted other paths in principle. Tool command traces were checked for grading paths and variants. The scoring packet excludes the variant/project instructions."
+}

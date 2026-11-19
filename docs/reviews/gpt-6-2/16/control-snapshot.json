@@ -1,0 +1,10 @@
+{
+  "beforeAnyTrial": true,
+  "frozenAt": "2026-11-18T21:01:40.751829+00:00",
+  "files": {
+    "initial-freeze.json": "61ef34a8f777f9ca826ea5193fa204110553a8b627161fa6200a7f54e2973c27",
+    "research-inputs.tar.gz": "0d1e433dc8ac308952aa39ea9258ad86a87ac5ddcafa72d67dc9eafa04d02aef",
+    "mutations.json": "5d7d931ad6404b8b99f8b674506f2099bd6c5ebb6de1576b28e63671dcf4daa7",
+    "preflight.json": "7d10873fc4edf63738bbaeff3d7f02c366d28b86437bfba8c755412f17f33c9c"
+  }
+}

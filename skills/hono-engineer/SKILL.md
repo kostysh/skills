@@ -6,9 +6,9 @@ description: Build, change, and diagnose Hono API services. Use for Hono
   testing, security, data, or architecture skills when those domains determine
   correctness.
 metadata:
-  source-version: 0.1.9
+  source-version: 0.1.10
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 9196ac40d503a78f31f3bed94095af3564a1c2a4cefe6502241d141a1b3683fb
+  skillforge-source-hash: f9e1cc2208eb7e835c2235287cc922f3cbf5ab6112b3acce75842a221475fddb
 ---
 
 # hono-engineer
@@ -65,7 +65,7 @@ Recommendations track the latest official stable Hono guidance rather than a pin
 ## Hono baseline decisions
 
 - Preserve the existing compatible app composition. In greenfield application work, do not select structure without authority; use typed factories or `app.route()` only when the accepted composition needs them. Capture chained route return types when Hono RPC or typed test clients consume them.
-- Treat middleware order as behavior. Preserve the compatible project-owned global and route-group composition; register `app.onError()` and `notFound()` as hooks, not middleware positions.
+- Preserve middleware registration order in the project's global and route-group composition. On Hono v4, register `app.onError()` and `app.notFound()` as hooks outside the middleware chain. For other majors, check the installed API before wiring error handling.
 - Keep route handlers focused on the accepted HTTP boundary when that fits the project architecture; do not introduce a new service/domain layering scheme during a narrow Hono change.
 - Keep request-scoped state in Hono Context or explicit parameters, never module-level mutable state.
 - Validate configuration at its accepted boundary and preserve the project's typed Context bindings or variables. On Workers, use current `wrangler types` output only when the project owns generated bindings; do not impose that migration over a different accepted Env boundary.
@@ -168,7 +168,7 @@ Validation:
 ## Gotchas
 
 - **high** — Do not call an endpoint production-ready because a route, schema, OpenAPI entry, generated file, mock, or docs-contract test exists; require evidence at every boundary named by the claim.
-- **high** — Contract tests validate only exercised responses. Claim runtime response validation only when production code validates the emitted payload and failure behavior is tested.
+- **high** — Verify emitted responses on the agreed success and failure paths. Report which checks passed and which concerns remain unverified.
 - **high** — Do not rely on remembered Hono, adapter, or runtime APIs for version-sensitive work; verify latest official guidance and reconcile it with installed project versions.
 - **high** — Do not let predictable validation or service failures escape as raw internal errors. Map only safe, contract-approved details before the response leaves Hono.
 - **high** — A snippet intended for a real application must preserve its accepted contract and whole-boundary placeholders; calling it illustrative does not authorize unknown project choices. Standalone teaching examples follow the Illustrative example boundary policy.
@@ -187,9 +187,11 @@ Match proof to the claim: unit tests cover pure logic, app.request covers Hono i
 ### Output contract
 Report the delivered or proposed HTTP/runtime behavior, changed interfaces, installed-versus-latest compatibility constraints, checks and their boundaries, blocked or unverified work, and residual risk.
 
-## Optional references
+## Required active references
 - [High-risk Backend Contract](references/high-risk-backend-contract.md) — Read this for high-risk Hono routes involving a public API, Supabase-backed state, authorization, money, retries, external resources, or required audit evidence.
 - [Framework Currency](references/framework-currency.md) — Read this before a version-sensitive Hono, adapter, or runtime decision, or when installed and latest versions may differ.
+
+## Optional references
 - [Architecture](references/architecture.md) — Read this when Hono app composition, route type inference, layering, or dependency boundaries are in scope.
 - [Auth](references/auth.md) — Read this when Hono middleware integrates API keys, JWT/JWKS, mTLS metadata, cookie sessions, CSRF, pending sessions, authorization, or protected long-lived endpoints.
 - [Caching](references/caching.md) — Read this when HTTP or runtime cache behavior is part of the requested Hono route.

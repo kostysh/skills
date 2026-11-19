@@ -1,0 +1,606 @@
+{
+  "variant": "C",
+  "case": "ordinary",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nУ сотрудника открыты две подсказки в Workshop help. Проверь на живой странице, какое описание получает каждая кнопка, как обе переживают изменение ширины и что остаётся от второй подсказки после снятия и повторного подключения панели. По локальному руководству ./SKILL.md верни результат владельцу компонента. Для браузера используй BROWSER.md. Работа только по проверке.\n",
+  "input_file_sha256": {
+    "BROWSER.md": "460d72a88352d2fdfe7253a9c8e65024a43a526ef693235aa6d2814955183976",
+    "SKILL.md": "5b9c88b0cd8f74dd6537e21ec81b9d9b32ae5636caed2451f1b7f6bb4259adfd",
+    "agents/openai.yaml": "00053143793ac9ff6808e29f0548f0eb66f75ee2c1d6d14ac8fbeb66ae56a942",
+    "dist/boot.mjs": "4efa75444790dcd1955c61ae95a3dad618d7eef843f2d7661f122a38e744fbc0",
+    "dist/index.html": "5f3375ea6baf80f106117687cf8fa1c7a8b71bef90160f7ae8c5ba95fdc14556",
+    "dist/runtime.js": "72df0e0adf9d8a2b4292eeb804661ad26292d2460cf1ec04535b63e40c2c40f2",
+    "dist/view.mjs": "9cf13ab9d1e7ec85f347c237073a776f6aa4e4c7fec559c0f24409cfedd66769",
+    "references/bulletproof-patterns.md": "31ee8c6f9044f908c682b2f7c47c5c9ab89781dcbd992309d8d772e12cb0b795",
+    "visit.mjs": "3a1cd02e2fbb72af22f061c5dea6d6110925759f0720df4971b5bb7b659e41f8"
+  },
+  "raw_events_sha256": "7aa822c6e1b82ce5189ab3f805ffc18005010069e15b64be625fca543e3f600d",
+  "raw_events_bytes": 56887,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Прочитаю местные инструкции, затем проверю обе подсказки на живой странице. Работаю только на проверку."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git'\"' && cat SKILL.md BROWSER.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Использую местный навык `react-components-engineer`. Сверю описание каждой кнопки, реакцию обеих открытых подсказок на изменение ширины и состояние второй панели после повторного подключения."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'ls -la && cat visit.mjs'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"cat dist/boot.mjs dist/view.mjs && rg -n '\"'^#'\"' references/bulletproof-patterns.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"sed -n '1,74p;171,210p' references/bulletproof-patterns.md && cat dist/index.html\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'TMPDIR=\"$PWD\" node visit.mjs '\"'[{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Operations\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Planning\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Read diagnostics\\\"},{\\\"op\\\":\\\"width\\\",\\\"width\\\":730,\\\"height\\\":800},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Read diagnostics\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Operations\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Planning\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Remove second\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Read diagnostics\\\"},{\\\"op\\\":\\\"width\\\",\\\"width\\\":610,\\\"height\\\":800},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Read diagnostics\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Restore second\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Read diagnostics\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Planning\\\"},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Read diagnostics\\\"},{\\\"op\\\":\\\"width\\\",\\\"width\\\":850,\\\"height\\\":800},{\\\"op\\\":\\\"click\\\",\\\"target\\\":\\\"text=Read diagnostics\\\"}]'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"node --input-type=module -e 'import fs from \\\"node:fs\\\"; const j=JSON.parse(fs.readFileSync(process.argv[1],\\\"utf8\\\")); for(const [i,{action,state}] of j.timeline.entries()) if(action.target===\\\"text=Read diagnostics\\\") console.log(i,state.width,state.page.slice(state.page.indexOf(\\\"{\\\"))); console.log(\\\"error\\\",j.error)' visits/5d4bdfbd-6637-40a7-91e6-deb02a7401a1.json\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "**Владельцу компонента Workshop help. Статус `verified`.** Проверка в живом Chrome на локальной сборке React 19.2.8 прошла без отклонений в запрошенном сценарии.\n\n- При двух открытых подсказках `aria-describedby` кнопки **Operations** ведёт к `Operations notes`, а кнопки **Planning** — к `Planning notes`.\n- При изменении ширины с 780 до 730 px обе подсказки закрылись. Описания исчезли у обеих кнопок, и каждая активная подписка получила одно событие `resize`.\n- После **Remove second** кнопка и открытая подсказка **Planning** исчезли, её подписка была снята. Подсказка **Operations** осталась открытой. При изменении ширины до 610 px она закрылась, а счётчик **Planning** остался на 1.\n- После **Restore second** кнопка **Planning** вернулась без открытой подсказки и без описания. У неё появилась одна активная подписка, а в диагностике сохранился прежний счётчик. Подсказка снова открылась по клику. При изменении ширины до 850 px она закрылась, и счётчик **Planning** вырос с 1 до 2.\n\nДиагностика страницы не зарегистрировала восстанавливаемых ошибок гидратации. Исходные файлы не менялись. [Журнал браузерной проверки]({project}/visits/5d4bdfbd-6637-40a7-91e6-deb02a7401a1.json)"
+    }
+  ],
+  "changed_file_contents": {
+    "visits/5d4bdfbd-6637-40a7-91e6-deb02a7401a1.json": "{\n  \"actions\": [\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Operations\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Planning\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Read diagnostics\"\n    },\n    {\n      \"op\": \"width\",\n      \"width\": 730,\n      \"height\": 800\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Read diagnostics\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Operations\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Planning\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Remove second\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Read diagnostics\"\n    },\n    {\n      \"op\": \"width\",\n      \"width\": 610,\n      \"height\": 800\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Read diagnostics\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Restore second\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Read diagnostics\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Planning\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Read diagnostics\"\n    },\n    {\n      \"op\": \"width\",\n      \"width\": 850,\n      \"height\": 800\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Read diagnostics\"\n    }\n  ],\n  \"requested\": [\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Operations\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Planning\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Read diagnostics\"\n    },\n    {\n      \"op\": \"width\",\n      \"width\": 730,\n      \"height\": 800\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Read diagnostics\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Operations\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Planning\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Remove second\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Read diagnostics\"\n    },\n    {\n      \"op\": \"width\",\n      \"width\": 610,\n      \"height\": 800\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Read diagnostics\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Restore second\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Read diagnostics\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Planning\"\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Read diagnostics\"\n    },\n    {\n      \"op\": \"width\",\n      \"width\": 850,\n      \"height\": 800\n    },\n    {\n      \"op\": \"click\",\n      \"target\": \"text=Read diagnostics\"\n    }\n  ],\n  \"timeline\": [\n    {\n      \"action\": {\n        \"op\": \"open\"\n      },\n      \"state\": {\n        \"heading\": \"Workshop help\",\n        \"width\": 780,\n        \"page\": \"Workshop help\\nPins remain open together until the view changes size.\\nOperations\\nPlanning\\nRemove secondChange teamRead diagnosticsNo observation yet\",\n        \"fields\": [],\n        \"dialog\": [],\n        \"status\": [],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"text=Operations\"\n      },\n      \"state\": {\n        \"heading\": \"Workshop help\",\n        \"width\": 780,\n        \"page\": \"Workshop help\\nPins remain open together until the view changes size.\\nOperationsOperations notes\\nPlanning\\nRemove secondChange teamRead diagnosticsNo observation yet\",\n        \"fields\": [],\n        \"dialog\": [],\n        \"status\": [],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Operations\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"text=Planning\"\n      },\n      \"state\": {\n        \"heading\": \"Workshop help\",\n        \"width\": 780,\n        \"page\": \"Workshop help\\nPins remain open together until the view changes size.\\nOperationsOperations notes\\nPlanningPlanning notes\\nRemove secondChange teamRead diagnosticsNo observation yet\",\n        \"fields\": [],\n        \"dialog\": [],\n        \"status\": [],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Planning\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"text=Read diagnostics\"\n      },\n      \"state\": {\n        \"heading\": \"Workshop help\",\n        \"width\": 780,\n        \"page\": \"Workshop help\\nPins remain open together until the view changes size.\\nOperationsOperations notes\\nPlanningPlanning notes\\nRemove secondChange teamRead diagnostics{\\\"links\\\":[{\\\"button\\\":\\\"Operations\\\",\\\"description\\\":\\\"Operations notes\\\"},{\\\"button\\\":\\\"Planning\\\",\\\"description\\\":\\\"Planning notes\\\"}],\\\"topics\\\":[\\\"Operations\\\",\\\"Planning\\\"],\\\"deliveries\\\":{},\\\"hydration\\\":[]}\",\n        \"fields\": [],\n        \"dialog\": [],\n        \"status\": [],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Read diagnostics\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"width\",\n        \"width\": 730,\n        \"height\": 800\n      },\n      \"state\": {\n        \"heading\": \"Workshop help\",\n        \"width\": 730,\n        \"page\": \"Workshop help\\nPins remain open together until the view changes size.\\nOperations\\nPlanning\\nRemove secondChange teamRead diagnostics{\\\"links\\\":[{\\\"button\\\":\\\"Operations\\\",\\\"description\\\":\\\"Operations notes\\\"},{\\\"button\\\":\\\"Planning\\\",\\\"description\\\":\\\"Planning notes\\\"}],\\\"topics\\\":[\\\"Operations\\\",\\\"Planning\\\"],\\\"deliveries\\\":{},\\\"hydration\\\":[]}\",\n        \"fields\": [],\n        \"dialog\": [],\n        \"status\": [],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Read diagnostics\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"text=Read diagnostics\"\n      },\n      \"state\": {\n        \"heading\": \"Workshop help\",\n        \"width\": 730,\n        \"page\": \"Workshop help\\nPins remain open together until the view changes size.\\nOperations\\nPlanning\\nRemove secondChange teamRead diagnostics{\\\"links\\\":[{\\\"button\\\":\\\"Operations\\\",\\\"description\\\":null},{\\\"button\\\":\\\"Planning\\\",\\\"description\\\":null}],\\\"topics\\\":[\\\"Operations\\\",\\\"Planning\\\"],\\\"deliveries\\\":{\\\"Operations\\\":1,\\\"Planning\\\":1},\\\"hydration\\\":[]}\",\n        \"fields\": [],\n        \"dialog\": [],\n        \"status\": [],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Read diagnostics\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"text=Operations\"\n      },\n      \"state\": {\n        \"heading\": \"Workshop help\",\n        \"width\": 730,\n        \"page\": \"Workshop help\\nPins remain open together until the view changes size.\\nOperationsOperations notes\\nPlanning\\nRemove secondChange teamRead diagnostics{\\\"links\\\":[{\\\"button\\\":\\\"Operations\\\",\\\"description\\\":null},{\\\"button\\\":\\\"Planning\\\",\\\"description\\\":null}],\\\"topics\\\":[\\\"Operations\\\",\\\"Planning\\\"],\\\"deliveries\\\":{\\\"Operations\\\":1,\\\"Planning\\\":1},\\\"hydration\\\":[]}\",\n        \"fields\": [],\n        \"dialog\": [],\n        \"status\": [],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Operations\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"text=Planning\"\n      },\n      \"state\": {\n        \"heading\": \"Workshop help\",\n        \"width\": 730,\n        \"page\": \"Workshop help\\nPins remain open together until the view changes size.\\nOperationsOperations notes\\nPlanningPlanning notes\\nRemove secondChange teamRead diagnostics{\\\"links\\\":[{\\\"button\\\":\\\"Operations\\\",\\\"description\\\":null},{\\\"button\\\":\\\"Planning\\\",\\\"description\\\":null}],\\\"topics\\\":[\\\"Operations\\\",\\\"Planning\\\"],\\\"deliveries\\\":{\\\"Operations\\\":1,\\\"Planning\\\":1},\\\"hydration\\\":[]}\",\n        \"fields\": [],\n        \"dialog\": [],\n        \"status\": [],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Planning\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"text=Remove second\"\n      },\n      \"state\": {\n        \"heading\": \"Workshop help\",\n        \"width\": 730,\n        \"page\": \"Workshop help\\nPins remain open together until the view changes size.\\nOperationsOperations notes\\nRestore secondChange teamRead diagnostics{\\\"links\\\":[{\\\"button\\\":\\\"Operations\\\",\\\"description\\\":null},{\\\"button\\\":\\\"Planning\\\",\\\"description\\\":null}],\\\"topics\\\":[\\\"Operations\\\",\\\"Planning\\\"],\\\"deliveries\\\":{\\\"Operations\\\":1,\\\"Planning\\\":1},\\\"hydration\\\":[]}\",\n        \"fields\": [],\n        \"dialog\": [],\n        \"status\": [],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Restore second\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"text=Read diagnostics\"\n      },\n      \"state\": {\n        \"heading\": \"Workshop help\",\n        \"width\": 730,\n        \"page\": \"Workshop help\\nPins remain open together until the view changes size.\\nOperationsOperations notes\\nRestore secondChange teamRead diagnostics{\\\"links\\\":[{\\\"button\\\":\\\"Operations\\\",\\\"description\\\":\\\"Operations notes\\\"}],\\\"topics\\\":[\\\"Operations\\\"],\\\"deliveries\\\":{\\\"Operations\\\":1,\\\"Planning\\\":1},\\\"hydration\\\":[]}\",\n        \"fields\": [],\n        \"dialog\": [],\n        \"status\": [],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Read diagnostics\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"width\",\n        \"width\": 610,\n        \"height\": 800\n      },\n      \"state\": {\n        \"heading\": \"Workshop help\",\n        \"width\": 610,\n        \"page\": \"Workshop help\\nPins remain open together until the view changes size.\\nOperations\\nRestore secondChange teamRead diagnostics{\\\"links\\\":[{\\\"button\\\":\\\"Operations\\\",\\\"description\\\":\\\"Operations notes\\\"}],\\\"topics\\\":[\\\"Operations\\\"],\\\"deliveries\\\":{\\\"Operations\\\":1,\\\"Planning\\\":1},\\\"hydration\\\":[]}\",\n        \"fields\": [],\n        \"dialog\": [],\n        \"status\": [],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Read diagnostics\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"text=Read diagnostics\"\n      },\n      \"state\": {\n        \"heading\": \"Workshop help\",\n        \"width\": 610,\n        \"page\": \"Workshop help\\nPins remain open together until the view changes size.\\nOperations\\nRestore secondChange teamRead diagnostics{\\\"links\\\":[{\\\"button\\\":\\\"Operations\\\",\\\"description\\\":null}],\\\"topics\\\":[\\\"Operations\\\"],\\\"deliveries\\\":{\\\"Operations\\\":2,\\\"Planning\\\":1},\\\"hydration\\\":[]}\",\n        \"fields\": [],\n        \"dialog\": [],\n        \"status\": [],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Read diagnostics\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"text=Restore second\"\n      },\n      \"state\": {\n        \"heading\": \"Workshop help\",\n        \"width\": 610,\n        \"page\": \"Workshop help\\nPins remain open together until the view changes size.\\nOperations\\nPlanning\\nRemove secondChange teamRead diagnostics{\\\"links\\\":[{\\\"button\\\":\\\"Operations\\\",\\\"description\\\":null}],\\\"topics\\\":[\\\"Operations\\\"],\\\"deliveries\\\":{\\\"Operations\\\":2,\\\"Planning\\\":1},\\\"hydration\\\":[]}\",\n        \"fields\": [],\n        \"dialog\": [],\n        \"status\": [],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Remove second\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"text=Read diagnostics\"\n      },\n      \"state\": {\n        \"heading\": \"Workshop help\",\n        \"width\": 610,\n        \"page\": \"Workshop help\\nPins remain open together until the view changes size.\\nOperations\\nPlanning\\nRemove secondChange teamRead diagnostics{\\\"links\\\":[{\\\"button\\\":\\\"Operations\\\",\\\"description\\\":null},{\\\"button\\\":\\\"Planning\\\",\\\"description\\\":null}],\\\"topics\\\":[\\\"Operations\\\",\\\"Planning\\\"],\\\"deliveries\\\":{\\\"Operations\\\":2,\\\"Planning\\\":1},\\\"hydration\\\":[]}\",\n        \"fields\": [],\n        \"dialog\": [],\n        \"status\": [],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Read diagnostics\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"text=Planning\"\n      },\n      \"state\": {\n        \"heading\": \"Workshop help\",\n        \"width\": 610,\n        \"page\": \"Workshop help\\nPins remain open together until the view changes size.\\nOperations\\nPlanningPlanning notes\\nRemove secondChange teamRead diagnostics{\\\"links\\\":[{\\\"button\\\":\\\"Operations\\\",\\\"description\\\":null},{\\\"button\\\":\\\"Planning\\\",\\\"description\\\":null}],\\\"topics\\\":[\\\"Operations\\\",\\\"Planning\\\"],\\\"deliveries\\\":{\\\"Operations\\\":2,\\\"Planning\\\":1},\\\"hydration\\\":[]}\",\n        \"fields\": [],\n        \"dialog\": [],\n        \"status\": [],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Planning\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"text=Read diagnostics\"\n      },\n      \"state\": {\n        \"heading\": \"Workshop help\",\n        \"width\": 610,\n        \"page\": \"Workshop help\\nPins remain open together until the view changes size.\\nOperations\\nPlanningPlanning notes\\nRemove secondChange teamRead diagnostics{\\\"links\\\":[{\\\"button\\\":\\\"Operations\\\",\\\"description\\\":null},{\\\"button\\\":\\\"Planning\\\",\\\"description\\\":\\\"Planning notes\\\"}],\\\"topics\\\":[\\\"Operations\\\",\\\"Planning\\\"],\\\"deliveries\\\":{\\\"Operations\\\":2,\\\"Planning\\\":1},\\\"hydration\\\":[]}\",\n        \"fields\": [],\n        \"dialog\": [],\n        \"status\": [],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Read diagnostics\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"width\",\n        \"width\": 850,\n        \"height\": 800\n      },\n      \"state\": {\n        \"heading\": \"Workshop help\",\n        \"width\": 850,\n        \"page\": \"Workshop help\\nPins remain open together until the view changes size.\\nOperations\\nPlanning\\nRemove secondChange teamRead diagnostics{\\\"links\\\":[{\\\"button\\\":\\\"Operations\\\",\\\"description\\\":null},{\\\"button\\\":\\\"Planning\\\",\\\"description\\\":\\\"Planning notes\\\"}],\\\"topics\\\":[\\\"Operations\\\",\\\"Planning\\\"],\\\"deliveries\\\":{\\\"Operations\\\":2,\\\"Planning\\\":1},\\\"hydration\\\":[]}\",\n        \"fields\": [],\n        \"dialog\": [],\n        \"status\": [],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Read diagnostics\"\n        }\n      }\n    },\n    {\n      \"action\": {\n        \"op\": \"click\",\n        \"target\": \"text=Read diagnostics\"\n      },\n      \"state\": {\n        \"heading\": \"Workshop help\",\n        \"width\": 850,\n        \"page\": \"Workshop help\\nPins remain open together until the view changes size.\\nOperations\\nPlanning\\nRemove secondChange teamRead diagnostics{\\\"links\\\":[{\\\"button\\\":\\\"Operations\\\",\\\"description\\\":null},{\\\"button\\\":\\\"Planning\\\",\\\"description\\\":null}],\\\"topics\\\":[\\\"Operations\\\",\\\"Planning\\\"],\\\"deliveries\\\":{\\\"Operations\\\":3,\\\"Planning\\\":2},\\\"hydration\\\":[]}\",\n        \"fields\": [],\n        \"dialog\": [],\n        \"status\": [],\n        \"focus\": {\n          \"id\": null,\n          \"text\": \"Read diagnostics\"\n        }\n      }\n    }\n  ],\n  \"error\": null,\n  \"screenSha256\": \"4c58f9e290812889d07334580da27b6d75d68d20180c0286163ff52796585dd9\"\n}\n",
+    "visits/5d4bdfbd-6637-40a7-91e6-deb02a7401a1.png": {
+      "bytes": 33404,
+      "sha256": "4c58f9e290812889d07334580da27b6d75d68d20180c0286163ff52796585dd9",
+      "representation": "digest of full file retained in the run receipt"
+    }
+  },
+  "final_response": "**Владельцу компонента Workshop help. Статус `verified`.** Проверка в живом Chrome на локальной сборке React 19.2.8 прошла без отклонений в запрошенном сценарии.\n\n- При двух открытых подсказках `aria-describedby` кнопки **Operations** ведёт к `Operations notes`, а кнопки **Planning** — к `Planning notes`.\n- При изменении ширины с 780 до 730 px обе подсказки закрылись. Описания исчезли у обеих кнопок, и каждая активная подписка получила одно событие `resize`.\n- После **Remove second** кнопка и открытая подсказка **Planning** исчезли, её подписка была снята. Подсказка **Operations** осталась открытой. При изменении ширины до 610 px она закрылась, а счётчик **Planning** остался на 1.\n- После **Restore second** кнопка **Planning** вернулась без открытой подсказки и без описания. У неё появилась одна активная подписка, а в диагностике сохранился прежний счётчик. Подсказка снова открылась по клику. При изменении ширины до 850 px она закрылась, и счётчик **Planning** вырос с 1 до 2.\n\nДиагностика страницы не зарегистрировала восстанавливаемых ошибок гидратации. Исходные файлы не менялись. [Журнал браузерной проверки]({project}/visits/5d4bdfbd-6637-40a7-91e6-deb02a7401a1.json)",
+  "input_file_modes": {
+    "BROWSER.md": "0664",
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "dist/boot.mjs": "0664",
+    "dist/index.html": "0664",
+    "dist/runtime.js": "0664",
+    "dist/view.mjs": "0664",
+    "references/bulletproof-patterns.md": "0644",
+    "visit.mjs": "0664"
+  },
+  "changed_file_modes": {
+    "visits/5d4bdfbd-6637-40a7-91e6-deb02a7401a1.json": "0664",
+    "visits/5d4bdfbd-6637-40a7-91e6-deb02a7401a1.png": "0664"
+  },
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "realBrowserVisits": [
+      {
+        "file": "5d4bdfbd-6637-40a7-91e6-deb02a7401a1.json",
+        "rawTraceSha256": "7d71208729f26cf9be71620e717ff88bbc070b2d0948a356e597425ce8de9013",
+        "screenSha256": "4c58f9e290812889d07334580da27b6d75d68d20180c0286163ff52796585dd9",
+        "actions": [
+          {
+            "op": "click",
+            "target": "text=Operations"
+          },
+          {
+            "op": "click",
+            "target": "text=Planning"
+          },
+          {
+            "op": "click",
+            "target": "text=Read diagnostics"
+          },
+          {
+            "op": "width",
+            "width": 730,
+            "height": 800
+          },
+          {
+            "op": "click",
+            "target": "text=Read diagnostics"
+          },
+          {
+            "op": "click",
+            "target": "text=Operations"
+          },
+          {
+            "op": "click",
+            "target": "text=Planning"
+          },
+          {
+            "op": "click",
+            "target": "text=Remove second"
+          },
+          {
+            "op": "click",
+            "target": "text=Read diagnostics"
+          },
+          {
+            "op": "width",
+            "width": 610,
+            "height": 800
+          },
+          {
+            "op": "click",
+            "target": "text=Read diagnostics"
+          },
+          {
+            "op": "click",
+            "target": "text=Restore second"
+          },
+          {
+            "op": "click",
+            "target": "text=Read diagnostics"
+          },
+          {
+            "op": "click",
+            "target": "text=Planning"
+          },
+          {
+            "op": "click",
+            "target": "text=Read diagnostics"
+          },
+          {
+            "op": "width",
+            "width": 850,
+            "height": 800
+          },
+          {
+            "op": "click",
+            "target": "text=Read diagnostics"
+          }
+        ],
+        "error": null,
+        "observed": [
+          {
+            "index": 3,
+            "action": {
+              "op": "click",
+              "target": "text=Read diagnostics"
+            },
+            "width": 780,
+            "diagnostics": {
+              "links": [
+                {
+                  "button": "Operations",
+                  "description": "Operations notes"
+                },
+                {
+                  "button": "Planning",
+                  "description": "Planning notes"
+                }
+              ],
+              "topics": [
+                "Operations",
+                "Planning"
+              ],
+              "deliveries": {},
+              "hydration": []
+            }
+          },
+          {
+            "index": 4,
+            "action": {
+              "op": "width",
+              "width": 730,
+              "height": 800
+            },
+            "width": 730,
+            "diagnostics": {
+              "links": [
+                {
+                  "button": "Operations",
+                  "description": "Operations notes"
+                },
+                {
+                  "button": "Planning",
+                  "description": "Planning notes"
+                }
+              ],
+              "topics": [
+                "Operations",
+                "Planning"
+              ],
+              "deliveries": {},
+              "hydration": []
+            }
+          },
+          {
+            "index": 5,
+            "action": {
+              "op": "click",
+              "target": "text=Read diagnostics"
+            },
+            "width": 730,
+            "diagnostics": {
+              "links": [
+                {
+                  "button": "Operations",
+                  "description": null
+                },
+                {
+                  "button": "Planning",
+                  "description": null
+                }
+              ],
+              "topics": [
+                "Operations",
+                "Planning"
+              ],
+              "deliveries": {
+                "Operations": 1,
+                "Planning": 1
+              },
+              "hydration": []
+            }
+          },
+          {
+            "index": 6,
+            "action": {
+              "op": "click",
+              "target": "text=Operations"
+            },
+            "width": 730,
+            "diagnostics": {
+              "links": [
+                {
+                  "button": "Operations",
+                  "description": null
+                },
+                {
+                  "button": "Planning",
+                  "description": null
+                }
+              ],
+              "topics": [
+                "Operations",
+                "Planning"
+              ],
+              "deliveries": {
+                "Operations": 1,
+                "Planning": 1
+              },
+              "hydration": []
+            }
+          },
+          {
+            "index": 7,
+            "action": {
+              "op": "click",
+              "target": "text=Planning"
+            },
+            "width": 730,
+            "diagnostics": {
+              "links": [
+                {
+                  "button": "Operations",
+                  "description": null
+                },
+                {
+                  "button": "Planning",
+                  "description": null
+                }
+              ],
+              "topics": [
+                "Operations",
+                "Planning"
+              ],
+              "deliveries": {
+                "Operations": 1,
+                "Planning": 1
+              },
+              "hydration": []
+            }
+          },
+          {
+            "index": 8,
+            "action": {
+              "op": "click",
+              "target": "text=Remove second"
+            },
+            "width": 730,
+            "diagnostics": {
+              "links": [
+                {
+                  "button": "Operations",
+                  "description": null
+                },
+                {
+                  "button": "Planning",
+                  "description": null
+                }
+              ],
+              "topics": [
+                "Operations",
+                "Planning"
+              ],
+              "deliveries": {
+                "Operations": 1,
+                "Planning": 1
+              },
+              "hydration": []
+            }
+          },
+          {
+            "index": 9,
+            "action": {
+              "op": "click",
+              "target": "text=Read diagnostics"
+            },
+            "width": 730,
+            "diagnostics": {
+              "links": [
+                {
+                  "button": "Operations",
+                  "description": "Operations notes"
+                }
+              ],
+              "topics": [
+                "Operations"
+              ],
+              "deliveries": {
+                "Operations": 1,
+                "Planning": 1
+              },
+              "hydration": []
+            }
+          },
+          {
+            "index": 10,
+            "action": {
+              "op": "width",
+              "width": 610,
+              "height": 800
+            },
+            "width": 610,
+            "diagnostics": {
+              "links": [
+                {
+                  "button": "Operations",
+                  "description": "Operations notes"
+                }
+              ],
+              "topics": [
+                "Operations"
+              ],
+              "deliveries": {
+                "Operations": 1,
+                "Planning": 1
+              },
+              "hydration": []
+            }
+          },
+          {
+            "index": 11,
+            "action": {
+              "op": "click",
+              "target": "text=Read diagnostics"
+            },
+            "width": 610,
+            "diagnostics": {
+              "links": [
+                {
+                  "button": "Operations",
+                  "description": null
+                }
+              ],
+              "topics": [
+                "Operations"
+              ],
+              "deliveries": {
+                "Operations": 2,
+                "Planning": 1
+              },
+              "hydration": []
+            }
+          },
+          {
+            "index": 12,
+            "action": {
+              "op": "click",
+              "target": "text=Restore second"
+            },
+            "width": 610,
+            "diagnostics": {
+              "links": [
+                {
+                  "button": "Operations",
+                  "description": null
+                }
+              ],
+              "topics": [
+                "Operations"
+              ],
+              "deliveries": {
+                "Operations": 2,
+                "Planning": 1
+              },
+              "hydration": []
+            }
+          },
+          {
+            "index": 13,
+            "action": {
+              "op": "click",
+              "target": "text=Read diagnostics"
+            },
+            "width": 610,
+            "diagnostics": {
+              "links": [
+                {
+                  "button": "Operations",
+                  "description": null
+                },
+                {
+                  "button": "Planning",
+                  "description": null
+                }
+              ],
+              "topics": [
+                "Operations",
+                "Planning"
+              ],
+              "deliveries": {
+                "Operations": 2,
+                "Planning": 1
+              },
+              "hydration": []
+            }
+          },
+          {
+            "index": 14,
+            "action": {
+              "op": "click",
+              "target": "text=Planning"
+            },
+            "width": 610,
+            "diagnostics": {
+              "links": [
+                {
+                  "button": "Operations",
+                  "description": null
+                },
+                {
+                  "button": "Planning",
+                  "description": null
+                }
+              ],
+              "topics": [
+                "Operations",
+                "Planning"
+              ],
+              "deliveries": {
+                "Operations": 2,
+                "Planning": 1
+              },
+              "hydration": []
+            }
+          },
+          {
+            "index": 15,
+            "action": {
+              "op": "click",
+              "target": "text=Read diagnostics"
+            },
+            "width": 610,
+            "diagnostics": {
+              "links": [
+                {
+                  "button": "Operations",
+                  "description": null
+                },
+                {
+                  "button": "Planning",
+                  "description": "Planning notes"
+                }
+              ],
+              "topics": [
+                "Operations",
+                "Planning"
+              ],
+              "deliveries": {
+                "Operations": 2,
+                "Planning": 1
+              },
+              "hydration": []
+            }
+          },
+          {
+            "index": 16,
+            "action": {
+              "op": "width",
+              "width": 850,
+              "height": 800
+            },
+            "width": 850,
+            "diagnostics": {
+              "links": [
+                {
+                  "button": "Operations",
+                  "description": null
+                },
+                {
+                  "button": "Planning",
+                  "description": "Planning notes"
+                }
+              ],
+              "topics": [
+                "Operations",
+                "Planning"
+              ],
+              "deliveries": {
+                "Operations": 2,
+                "Planning": 1
+              },
+              "hydration": []
+            }
+          },
+          {
+            "index": 17,
+            "action": {
+              "op": "click",
+              "target": "text=Read diagnostics"
+            },
+            "width": 850,
+            "diagnostics": {
+              "links": [
+                {
+                  "button": "Operations",
+                  "description": null
+                },
+                {
+                  "button": "Planning",
+                  "description": null
+                }
+              ],
+              "topics": [
+                "Operations",
+                "Planning"
+              ],
+              "deliveries": {
+                "Operations": 3,
+                "Planning": 2
+              },
+              "hydration": []
+            }
+          }
+        ]
+      }
+    ],
+    "productSha256": {
+      "dist/runtime.js": "72df0e0adf9d8a2b4292eeb804661ad26292d2460cf1ec04535b63e40c2c40f2",
+      "dist/index.html": "5f3375ea6baf80f106117687cf8fa1c7a8b71bef90160f7ae8c5ba95fdc14556",
+      "dist/view.mjs": "9cf13ab9d1e7ec85f347c237073a776f6aa4e4c7fec559c0f24409cfedd66769",
+      "dist/boot.mjs": "4efa75444790dcd1955c61ae95a3dad618d7eef843f2d7661f122a38e744fbc0"
+    },
+    "sourceAndModePreserved": true,
+    "changedFinal": [
+      "visits/5d4bdfbd-6637-40a7-91e6-deb02a7401a1.json",
+      "visits/5d4bdfbd-6637-40a7-91e6-deb02a7401a1.png"
+    ],
+    "executorExit": 0
+  }
+}

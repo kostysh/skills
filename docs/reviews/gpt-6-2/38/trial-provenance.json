@@ -1,0 +1,456 @@
+{
+  "rawArchiveSHA256": "d60559dab1b5037bf4a76f25f0d53890792e661591c8af38c072774c502ea6c7",
+  "subjects": {
+    "dd3e97": {
+      "stage": "ab",
+      "role": "A",
+      "case": "boundary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "0aadb2d2303b5f4910bc563c6b036fc015ae523260c8dd84f749eb21a9574f97",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "- No commit subject, issue state, or document claim alone proves implementation."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_1",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "cd41ccf0dc7f55e9a64ede568a3677deb9022e76f0c382496d7708de498057dd"
+        }
+      ],
+      "finalAnswerSHA256": "4854fcae65e508be19ff4dfa49e4e2a8a5d2b220c50f7d9344f995e0c095effb",
+      "eventSHA256": "5509c80f708743a146e5c1df1d67557c9f60c74f893b1c9b98ff468ef8fb4b27",
+      "exit": 0
+    },
+    "3c3ede": {
+      "stage": "ab",
+      "role": "A",
+      "case": "ordinary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "0aadb2d2303b5f4910bc563c6b036fc015ae523260c8dd84f749eb21a9574f97",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "- No commit subject, issue state, or document claim alone proves implementation."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_1",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "4bc7f9597345e1add17197233ad2ab7e646dcda4fdfe180992269b24722e9a4e"
+        }
+      ],
+      "finalAnswerSHA256": "2be05d89bdbb8d4350f587fe4d414d9a3b4cf33c1a1e7d8481a4cab15bcea4ba",
+      "eventSHA256": "cc865dcf876aefc641dbb9fe8bc03cd4189dfe89e592ebc63d0fd7eebbd39990",
+      "exit": 0
+    },
+    "94ebc9": {
+      "stage": "ab",
+      "role": "B",
+      "case": "ordinary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "62a3950e861812f2a9b9f0ba035c894aab96d1480d96a3b5b3df2a6b6b35d6e9",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "- Fixed historical problems remain visible without producing duplicate work.",
+        "- Final problem rows have distinct causes and prevention mechanisms."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_1",
+          "attestedMarkers": [
+            0,
+            1
+          ],
+          "eventSHA256": "c740dc2c6e11fe6134e4fe3342bc0b69e752076b1ab5f3255a165d0e071468f5"
+        }
+      ],
+      "finalAnswerSHA256": "9235a4509beb7c97d4f0c2f2d7b27bd47315b758617ca3fcbceeedbf8e652f7e",
+      "eventSHA256": "3888aa6cf6f54c95ee422f1ec13d32e94218c34dad44582b5a11eaab1e0103bd",
+      "exit": 0
+    },
+    "b0ab66": {
+      "stage": "ab",
+      "role": "B",
+      "case": "boundary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "62a3950e861812f2a9b9f0ba035c894aab96d1480d96a3b5b3df2a6b6b35d6e9",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "- Fixed historical problems remain visible without producing duplicate work.",
+        "- Final problem rows have distinct causes and prevention mechanisms."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_1",
+          "attestedMarkers": [
+            0,
+            1
+          ],
+          "eventSHA256": "849a82a30539e8ca634d0fe075a17e0516a3eb78a253a59f50abdbd3e7ee4b43"
+        }
+      ],
+      "finalAnswerSHA256": "b1c60a37a31d17450e9ee0f078e963ffc21c14a2cf484ca7e7c4e0d1db8de6e1",
+      "eventSHA256": "33daae6b6b4a46d8426a861f5b04507cb7a1d77bffabc4ffdfbd66e9f4b929eb",
+      "exit": 0
+    },
+    "027631": {
+      "stage": "confirm",
+      "role": "A",
+      "case": "holdout",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "0aadb2d2303b5f4910bc563c6b036fc015ae523260c8dd84f749eb21a9574f97",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "- No commit subject, issue state, or document claim alone proves implementation."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "79cbd7ee69d4e4f72879e0c091c9bfa4985664ee6eabef6197d5ce5753dcb5f7"
+        }
+      ],
+      "finalAnswerSHA256": "ed498fdb7320ab4f94adc111a2b8f63f990b7ac6df1724f4b1950430bcfac4c9",
+      "eventSHA256": "31cb60146b85f6f8c345b3ef190553e0df6bd79ffb2a577d12b21f23d926f33f",
+      "exit": 0
+    },
+    "4a97e2": {
+      "stage": "confirm",
+      "role": "C",
+      "case": "ordinary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "0bb619cacfdda4e5599b1371a2e8e093e9c30fd09436356dc83305afe3011fbc",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "- Verify the claimed fix in the affected release."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_1",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "fab0eb4030904c5647cbe9c1ed2d2cc15fcd89e721c99ae2920c1d3829d88770"
+        }
+      ],
+      "finalAnswerSHA256": "23f0522887f1a7f71934f878e21af4149e0ef2bfb0cdfa6a67355161ada416f2",
+      "eventSHA256": "2607d43d111969a4077db6094d715897ffe593b8626a5f4aff92efa1ed049756",
+      "exit": 0
+    },
+    "a10444": {
+      "stage": "confirm",
+      "role": "C",
+      "case": "holdout",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "0bb619cacfdda4e5599b1371a2e8e093e9c30fd09436356dc83305afe3011fbc",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "- Verify the claimed fix in the affected release."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_1",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "b469321c2de0a7b7c3aafd4a3819f05934da22119286a3232332262d42f71d64"
+        }
+      ],
+      "finalAnswerSHA256": "261f58831c6dafd1c8ce7cb020cb7fd8c25b45e6661a7d94d3010529cdbb184a",
+      "eventSHA256": "395ba601a72409d3061a0de350a69cb094fb42129989db75abc2282109616df1",
+      "exit": 0
+    },
+    "15725c": {
+      "stage": "confirm",
+      "role": "C",
+      "case": "boundary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "0bb619cacfdda4e5599b1371a2e8e093e9c30fd09436356dc83305afe3011fbc",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "- Verify the claimed fix in the affected release."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_1",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "dc3cf887ecc4d105cc7ab1498c7d2b04d9c93187668f127c3e63d852e7004484"
+        }
+      ],
+      "finalAnswerSHA256": "4c16c344da554335e2368745122c005c1c69e08b0c3da064bad025e930dcfe66",
+      "eventSHA256": "f52756a21215b6509e19de71bfc60e50d8f0487b19fe55aae6d32c76aefbb158",
+      "exit": 0
+    }
+  },
+  "graders": {
+    "ab": {
+      "originalReportSHA256": "c7f69a08efcd826c46ccc8b1399ab261267eb2f1da9e4d59ea24575bdfb360f0",
+      "portableReportSHA256": "a572475d659dc9718d05cfe32939c6c66622c4a0089b307d54fcab99a47669f9",
+      "eventsSHA256": "99ff75b6e40382c56ccd03377dbae3a0c299ee8269e9b74a84979f810c697c34",
+      "assignment": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"high\"",
+      "deliveredInputs": {
+        "criteria.md": "537e59b396e9c8eaeff67fd484ec0103e519b195901d7848e0713ce334ada710",
+        "b0ab66/actions.json": "8c579670d21b5ff0818b3cc4f03fd5c6d12d6a43320f7662bec95ae7340dc8de",
+        "b0ab66/observer.json": "41f530b0844dabc8e179dc9e521e793063f9943f3347f345c21b2fe925c94ae9",
+        "b0ab66/answer.md": "e82b805200a38e2e16704f1de218d983d5e92f82d76c8ee7d481c61a3a9f34fc",
+        "b0ab66/task.md": "b71ea3facdb0a8312f130a15126945fe639ff0b142f2c1aa41c5f11cbb9a6a6c",
+        "94ebc9/actions.json": "50483f997d836c738773c150e61fb7274799ce6d933d0427850806d2f75a8647",
+        "94ebc9/observer.json": "27cc734b5cf6bc3dffd98dfcf8d08b681313ad06bddba8ff2a06882a58c630ba",
+        "94ebc9/answer.md": "d4b897267dcf05f50d3a69ad2d5dd5f08c34548cd629dc2335628f749777a604",
+        "94ebc9/task.md": "b71ea3facdb0a8312f130a15126945fe639ff0b142f2c1aa41c5f11cbb9a6a6c",
+        "3c3ede/actions.json": "562ac468aa4fc694eb627a9c01d5a3c4bbd32ebf33f8f48ca38cfa2995036365",
+        "3c3ede/observer.json": "edf1b6ab8aec87101bc00a4e387f767737b5886fce1f524152344042bbec4932",
+        "3c3ede/answer.md": "933b56991eeb5c9b1cbd95f28634145fb588fd167d7dbfe88eb4516d13b62d5c",
+        "3c3ede/task.md": "b71ea3facdb0a8312f130a15126945fe639ff0b142f2c1aa41c5f11cbb9a6a6c",
+        "dd3e97/actions.json": "2277cdbdd94a34a154ba12fd26824004e6f48abe9d99558a42166e5cb7601da5",
+        "dd3e97/observer.json": "49f678141bace1d8c24f52cd1d647cc08a780577b00c9c61e660003752e8f1fc",
+        "dd3e97/answer.md": "faf4e92ae2505d3451ed29289541f22b99c2292a80c4f9003b5915534594a81f",
+        "dd3e97/task.md": "b71ea3facdb0a8312f130a15126945fe639ff0b142f2c1aa41c5f11cbb9a6a6c",
+        "dd3e97/before/archive/desk.bundle": "850b1bcdf1636b07403ef6303d2b1a4fd5a3fe0d6ffe6b691bf88a2d0a12f74c",
+        "dd3e97/before/archive/sample.json": "29127f58b91c2d5ca7957ade2fb79bf5fb8045956d0674a77301d26fc9345ae8",
+        "dd3e97/before/archive/deployment.json": "16de2291a9970b74ce86fec9831a4b547489ccadcb962799f44b27b4359d86b8",
+        "dd3e97/before/archive/closed-case.md": "973962845a83ac6a0dbf2e60cafc9c4107927de99aa92e325f5d8b3f506a970f",
+        "dd3e97/before/archive/previous-fix.md": "9554137e04a799eb7262401ab190bbf708c4b21ee61d1fe08833e4edd5ab51b1",
+        "dd3e97/before/archive/field-observation.json": "456eeccdfaea32ccadb7a15283e6f46ce2aa7bf6aa1f6fd26421c14563733342",
+        "dd3e97/after/archive/desk.bundle": "850b1bcdf1636b07403ef6303d2b1a4fd5a3fe0d6ffe6b691bf88a2d0a12f74c",
+        "dd3e97/after/archive/sample.json": "29127f58b91c2d5ca7957ade2fb79bf5fb8045956d0674a77301d26fc9345ae8",
+        "dd3e97/after/archive/deployment.json": "16de2291a9970b74ce86fec9831a4b547489ccadcb962799f44b27b4359d86b8",
+        "dd3e97/after/archive/closed-case.md": "973962845a83ac6a0dbf2e60cafc9c4107927de99aa92e325f5d8b3f506a970f",
+        "dd3e97/after/archive/previous-fix.md": "9554137e04a799eb7262401ab190bbf708c4b21ee61d1fe08833e4edd5ab51b1",
+        "dd3e97/after/archive/field-observation.json": "456eeccdfaea32ccadb7a15283e6f46ce2aa7bf6aa1f6fd26421c14563733342",
+        "3c3ede/before/archive/desk.bundle": "850b1bcdf1636b07403ef6303d2b1a4fd5a3fe0d6ffe6b691bf88a2d0a12f74c",
+        "3c3ede/before/archive/sample.json": "29127f58b91c2d5ca7957ade2fb79bf5fb8045956d0674a77301d26fc9345ae8",
+        "3c3ede/before/archive/deployment.json": "b59607c36acfb2d6f377b59006fb50dc67b88f8c5164e26025a1cd6548e5abe6",
+        "3c3ede/before/archive/closed-case.md": "2f46f4c604d71e2dbc7329b9739d35c46445f0fe2e8e97b5508e76f72c86f7ff",
+        "3c3ede/before/archive/previous-fix.md": "9554137e04a799eb7262401ab190bbf708c4b21ee61d1fe08833e4edd5ab51b1",
+        "3c3ede/before/archive/field-observation.json": "4be9d13d4e3e7266843e151c27d4ac1ad1b0d1aa67f9e2ffa7a6115897237eb2",
+        "3c3ede/after/archive/desk.bundle": "850b1bcdf1636b07403ef6303d2b1a4fd5a3fe0d6ffe6b691bf88a2d0a12f74c",
+        "3c3ede/after/archive/sample.json": "29127f58b91c2d5ca7957ade2fb79bf5fb8045956d0674a77301d26fc9345ae8",
+        "3c3ede/after/archive/deployment.json": "b59607c36acfb2d6f377b59006fb50dc67b88f8c5164e26025a1cd6548e5abe6",
+        "3c3ede/after/archive/closed-case.md": "2f46f4c604d71e2dbc7329b9739d35c46445f0fe2e8e97b5508e76f72c86f7ff",
+        "3c3ede/after/archive/previous-fix.md": "9554137e04a799eb7262401ab190bbf708c4b21ee61d1fe08833e4edd5ab51b1",
+        "3c3ede/after/archive/field-observation.json": "4be9d13d4e3e7266843e151c27d4ac1ad1b0d1aa67f9e2ffa7a6115897237eb2",
+        "94ebc9/before/archive/desk.bundle": "850b1bcdf1636b07403ef6303d2b1a4fd5a3fe0d6ffe6b691bf88a2d0a12f74c",
+        "94ebc9/before/archive/sample.json": "29127f58b91c2d5ca7957ade2fb79bf5fb8045956d0674a77301d26fc9345ae8",
+        "94ebc9/before/archive/deployment.json": "b59607c36acfb2d6f377b59006fb50dc67b88f8c5164e26025a1cd6548e5abe6",
+        "94ebc9/before/archive/closed-case.md": "2f46f4c604d71e2dbc7329b9739d35c46445f0fe2e8e97b5508e76f72c86f7ff",
+        "94ebc9/before/archive/previous-fix.md": "9554137e04a799eb7262401ab190bbf708c4b21ee61d1fe08833e4edd5ab51b1",
+        "94ebc9/before/archive/field-observation.json": "4be9d13d4e3e7266843e151c27d4ac1ad1b0d1aa67f9e2ffa7a6115897237eb2",
+        "94ebc9/after/archive/desk.bundle": "850b1bcdf1636b07403ef6303d2b1a4fd5a3fe0d6ffe6b691bf88a2d0a12f74c",
+        "94ebc9/after/archive/sample.json": "29127f58b91c2d5ca7957ade2fb79bf5fb8045956d0674a77301d26fc9345ae8",
+        "94ebc9/after/archive/deployment.json": "b59607c36acfb2d6f377b59006fb50dc67b88f8c5164e26025a1cd6548e5abe6",
+        "94ebc9/after/archive/closed-case.md": "2f46f4c604d71e2dbc7329b9739d35c46445f0fe2e8e97b5508e76f72c86f7ff",
+        "94ebc9/after/archive/previous-fix.md": "9554137e04a799eb7262401ab190bbf708c4b21ee61d1fe08833e4edd5ab51b1",
+        "94ebc9/after/archive/field-observation.json": "4be9d13d4e3e7266843e151c27d4ac1ad1b0d1aa67f9e2ffa7a6115897237eb2",
+        "b0ab66/before/archive/desk.bundle": "850b1bcdf1636b07403ef6303d2b1a4fd5a3fe0d6ffe6b691bf88a2d0a12f74c",
+        "b0ab66/before/archive/sample.json": "29127f58b91c2d5ca7957ade2fb79bf5fb8045956d0674a77301d26fc9345ae8",
+        "b0ab66/before/archive/deployment.json": "16de2291a9970b74ce86fec9831a4b547489ccadcb962799f44b27b4359d86b8",
+        "b0ab66/before/archive/closed-case.md": "973962845a83ac6a0dbf2e60cafc9c4107927de99aa92e325f5d8b3f506a970f",
+        "b0ab66/before/archive/previous-fix.md": "9554137e04a799eb7262401ab190bbf708c4b21ee61d1fe08833e4edd5ab51b1",
+        "b0ab66/before/archive/field-observation.json": "456eeccdfaea32ccadb7a15283e6f46ce2aa7bf6aa1f6fd26421c14563733342",
+        "b0ab66/after/archive/desk.bundle": "850b1bcdf1636b07403ef6303d2b1a4fd5a3fe0d6ffe6b691bf88a2d0a12f74c",
+        "b0ab66/after/archive/sample.json": "29127f58b91c2d5ca7957ade2fb79bf5fb8045956d0674a77301d26fc9345ae8",
+        "b0ab66/after/archive/deployment.json": "16de2291a9970b74ce86fec9831a4b547489ccadcb962799f44b27b4359d86b8",
+        "b0ab66/after/archive/closed-case.md": "973962845a83ac6a0dbf2e60cafc9c4107927de99aa92e325f5d8b3f506a970f",
+        "b0ab66/after/archive/previous-fix.md": "9554137e04a799eb7262401ab190bbf708c4b21ee61d1fe08833e4edd5ab51b1",
+        "b0ab66/after/archive/field-observation.json": "456eeccdfaea32ccadb7a15283e6f46ce2aa7bf6aa1f6fd26421c14563733342"
+      },
+      "postSignMapping": [
+        {
+          "role": "A",
+          "case": "boundary",
+          "label": "dd3e97"
+        },
+        {
+          "role": "A",
+          "case": "ordinary",
+          "label": "3c3ede"
+        },
+        {
+          "role": "B",
+          "case": "ordinary",
+          "label": "94ebc9"
+        },
+        {
+          "role": "B",
+          "case": "boundary",
+          "label": "b0ab66"
+        }
+      ]
+    },
+    "confirm": {
+      "originalReportSHA256": "f21ee4f016eb42b44b7633ed5912867f8f7268c1e364d51f7a1fb16b76d2e0e4",
+      "portableReportSHA256": "99c587952fa1a9afc6e578d4206c9ecbda0a62e404f2fac43887f324ce5f8ab0",
+      "eventsSHA256": "c09bc10f028346dbfe7d0066b0232a63f36079b1b057da7be0880f83b1ecf981",
+      "assignment": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"high\"",
+      "deliveredInputs": {
+        "criteria.md": "537e59b396e9c8eaeff67fd484ec0103e519b195901d7848e0713ce334ada710",
+        "b4abb6/actions.json": "562ac468aa4fc694eb627a9c01d5a3c4bbd32ebf33f8f48ca38cfa2995036365",
+        "b4abb6/observer.json": "edf1b6ab8aec87101bc00a4e387f767737b5886fce1f524152344042bbec4932",
+        "b4abb6/answer.md": "933b56991eeb5c9b1cbd95f28634145fb588fd167d7dbfe88eb4516d13b62d5c",
+        "b4abb6/task.md": "b71ea3facdb0a8312f130a15126945fe639ff0b142f2c1aa41c5f11cbb9a6a6c",
+        "027631/actions.json": "d92f1cf421c4cbf4e7fd29437e80c5eb54b210e91dccda0e4c582add1b3088f0",
+        "027631/observer.json": "3de8854934e0ebc651fcda9bf75202a25fe32ec87b0ad4e34f914771640f9f18",
+        "027631/answer.md": "7ab915af58dc6fb5284282a3cf04ed4fd02dd6985b20d306c8c1813307af0d17",
+        "027631/task.md": "b71ea3facdb0a8312f130a15126945fe639ff0b142f2c1aa41c5f11cbb9a6a6c",
+        "93151a/actions.json": "2277cdbdd94a34a154ba12fd26824004e6f48abe9d99558a42166e5cb7601da5",
+        "93151a/observer.json": "49f678141bace1d8c24f52cd1d647cc08a780577b00c9c61e660003752e8f1fc",
+        "93151a/answer.md": "faf4e92ae2505d3451ed29289541f22b99c2292a80c4f9003b5915534594a81f",
+        "93151a/task.md": "b71ea3facdb0a8312f130a15126945fe639ff0b142f2c1aa41c5f11cbb9a6a6c",
+        "4a97e2/actions.json": "9994b7883e9e559c59244d25356499f212e33649a5ff3563810ef2ac60641743",
+        "4a97e2/observer.json": "f0b996fbc8b581633b2b0feb15e4450b6efd8ecc29b075b4156510c74ddd0835",
+        "4a97e2/answer.md": "58125d9c3c99ac06c664e4215216b7f3f943e88ae65f0d816b3ceca1870fde2b",
+        "4a97e2/task.md": "b71ea3facdb0a8312f130a15126945fe639ff0b142f2c1aa41c5f11cbb9a6a6c",
+        "15725c/actions.json": "5f31765d68007b24ba84de07ddc9422514984ac7e929fb2554754a196a7e7af6",
+        "15725c/observer.json": "0de401e8fda835e440dc6d6343de142cb3fc9a22ad6a2b2e20b0e78051b5175a",
+        "15725c/answer.md": "bade6ffc78d27bfcd731400c3caa0a072ae16cbca68038c3fb11a37125beaa61",
+        "15725c/task.md": "b71ea3facdb0a8312f130a15126945fe639ff0b142f2c1aa41c5f11cbb9a6a6c",
+        "a10444/actions.json": "f22a21e421687aafce914d64acfddb1385e4bb71659e8fc609d22839988c5f26",
+        "a10444/observer.json": "aade916bca88319e8ede2bedbeae4066a850e8347d8706e158ed645a982adc46",
+        "a10444/answer.md": "d757d7c4de85d385e09826017cb8171ada265b06700c029e3c73d8525c450083",
+        "a10444/task.md": "b71ea3facdb0a8312f130a15126945fe639ff0b142f2c1aa41c5f11cbb9a6a6c",
+        "a10444/before/archive/desk.bundle": "850b1bcdf1636b07403ef6303d2b1a4fd5a3fe0d6ffe6b691bf88a2d0a12f74c",
+        "a10444/before/archive/sample.json": "29127f58b91c2d5ca7957ade2fb79bf5fb8045956d0674a77301d26fc9345ae8",
+        "a10444/before/archive/deployment.json": "66669506d0bcc94cfa837901ea8c91fba1b6da59a31946a487ee3bbb87c05be4",
+        "a10444/before/archive/closed-case.md": "015e519e10cb0fcdca540f63ef426f0331c2689c9859598720c3b8d097a49293",
+        "a10444/before/archive/previous-fix.md": "9554137e04a799eb7262401ab190bbf708c4b21ee61d1fe08833e4edd5ab51b1",
+        "a10444/before/archive/field-observation.json": "cd27fe8141dd3c0e43e8153473f920a3b592fbe58a94a8cb4fd79306a24d094a",
+        "a10444/after/archive/desk.bundle": "850b1bcdf1636b07403ef6303d2b1a4fd5a3fe0d6ffe6b691bf88a2d0a12f74c",
+        "a10444/after/archive/sample.json": "29127f58b91c2d5ca7957ade2fb79bf5fb8045956d0674a77301d26fc9345ae8",
+        "a10444/after/archive/deployment.json": "66669506d0bcc94cfa837901ea8c91fba1b6da59a31946a487ee3bbb87c05be4",
+        "a10444/after/archive/closed-case.md": "015e519e10cb0fcdca540f63ef426f0331c2689c9859598720c3b8d097a49293",
+        "a10444/after/archive/previous-fix.md": "9554137e04a799eb7262401ab190bbf708c4b21ee61d1fe08833e4edd5ab51b1",
+        "a10444/after/archive/field-observation.json": "cd27fe8141dd3c0e43e8153473f920a3b592fbe58a94a8cb4fd79306a24d094a",
+        "15725c/before/archive/desk.bundle": "850b1bcdf1636b07403ef6303d2b1a4fd5a3fe0d6ffe6b691bf88a2d0a12f74c",
+        "15725c/before/archive/sample.json": "29127f58b91c2d5ca7957ade2fb79bf5fb8045956d0674a77301d26fc9345ae8",
+        "15725c/before/archive/deployment.json": "16de2291a9970b74ce86fec9831a4b547489ccadcb962799f44b27b4359d86b8",
+        "15725c/before/archive/closed-case.md": "973962845a83ac6a0dbf2e60cafc9c4107927de99aa92e325f5d8b3f506a970f",
+        "15725c/before/archive/previous-fix.md": "9554137e04a799eb7262401ab190bbf708c4b21ee61d1fe08833e4edd5ab51b1",
+        "15725c/before/archive/field-observation.json": "456eeccdfaea32ccadb7a15283e6f46ce2aa7bf6aa1f6fd26421c14563733342",
+        "15725c/after/archive/desk.bundle": "850b1bcdf1636b07403ef6303d2b1a4fd5a3fe0d6ffe6b691bf88a2d0a12f74c",
+        "15725c/after/archive/sample.json": "29127f58b91c2d5ca7957ade2fb79bf5fb8045956d0674a77301d26fc9345ae8",
+        "15725c/after/archive/deployment.json": "16de2291a9970b74ce86fec9831a4b547489ccadcb962799f44b27b4359d86b8",
+        "15725c/after/archive/closed-case.md": "973962845a83ac6a0dbf2e60cafc9c4107927de99aa92e325f5d8b3f506a970f",
+        "15725c/after/archive/previous-fix.md": "9554137e04a799eb7262401ab190bbf708c4b21ee61d1fe08833e4edd5ab51b1",
+        "15725c/after/archive/field-observation.json": "456eeccdfaea32ccadb7a15283e6f46ce2aa7bf6aa1f6fd26421c14563733342",
+        "4a97e2/before/archive/desk.bundle": "850b1bcdf1636b07403ef6303d2b1a4fd5a3fe0d6ffe6b691bf88a2d0a12f74c",
+        "4a97e2/before/archive/sample.json": "29127f58b91c2d5ca7957ade2fb79bf5fb8045956d0674a77301d26fc9345ae8",
+        "4a97e2/before/archive/deployment.json": "b59607c36acfb2d6f377b59006fb50dc67b88f8c5164e26025a1cd6548e5abe6",
+        "4a97e2/before/archive/closed-case.md": "2f46f4c604d71e2dbc7329b9739d35c46445f0fe2e8e97b5508e76f72c86f7ff",
+        "4a97e2/before/archive/previous-fix.md": "9554137e04a799eb7262401ab190bbf708c4b21ee61d1fe08833e4edd5ab51b1",
+        "4a97e2/before/archive/field-observation.json": "4be9d13d4e3e7266843e151c27d4ac1ad1b0d1aa67f9e2ffa7a6115897237eb2",
+        "4a97e2/after/archive/desk.bundle": "850b1bcdf1636b07403ef6303d2b1a4fd5a3fe0d6ffe6b691bf88a2d0a12f74c",
+        "4a97e2/after/archive/sample.json": "29127f58b91c2d5ca7957ade2fb79bf5fb8045956d0674a77301d26fc9345ae8",
+        "4a97e2/after/archive/deployment.json": "b59607c36acfb2d6f377b59006fb50dc67b88f8c5164e26025a1cd6548e5abe6",
+        "4a97e2/after/archive/closed-case.md": "2f46f4c604d71e2dbc7329b9739d35c46445f0fe2e8e97b5508e76f72c86f7ff",
+        "4a97e2/after/archive/previous-fix.md": "9554137e04a799eb7262401ab190bbf708c4b21ee61d1fe08833e4edd5ab51b1",
+        "4a97e2/after/archive/field-observation.json": "4be9d13d4e3e7266843e151c27d4ac1ad1b0d1aa67f9e2ffa7a6115897237eb2",
+        "93151a/before/archive/desk.bundle": "850b1bcdf1636b07403ef6303d2b1a4fd5a3fe0d6ffe6b691bf88a2d0a12f74c",
+        "93151a/before/archive/sample.json": "29127f58b91c2d5ca7957ade2fb79bf5fb8045956d0674a77301d26fc9345ae8",
+        "93151a/before/archive/deployment.json": "16de2291a9970b74ce86fec9831a4b547489ccadcb962799f44b27b4359d86b8",
+        "93151a/before/archive/closed-case.md": "973962845a83ac6a0dbf2e60cafc9c4107927de99aa92e325f5d8b3f506a970f",
+        "93151a/before/archive/previous-fix.md": "9554137e04a799eb7262401ab190bbf708c4b21ee61d1fe08833e4edd5ab51b1",
+        "93151a/before/archive/field-observation.json": "456eeccdfaea32ccadb7a15283e6f46ce2aa7bf6aa1f6fd26421c14563733342",
+        "93151a/after/archive/desk.bundle": "850b1bcdf1636b07403ef6303d2b1a4fd5a3fe0d6ffe6b691bf88a2d0a12f74c",
+        "93151a/after/archive/sample.json": "29127f58b91c2d5ca7957ade2fb79bf5fb8045956d0674a77301d26fc9345ae8",
+        "93151a/after/archive/deployment.json": "16de2291a9970b74ce86fec9831a4b547489ccadcb962799f44b27b4359d86b8",
+        "93151a/after/archive/closed-case.md": "973962845a83ac6a0dbf2e60cafc9c4107927de99aa92e325f5d8b3f506a970f",
+        "93151a/after/archive/previous-fix.md": "9554137e04a799eb7262401ab190bbf708c4b21ee61d1fe08833e4edd5ab51b1",
+        "93151a/after/archive/field-observation.json": "456eeccdfaea32ccadb7a15283e6f46ce2aa7bf6aa1f6fd26421c14563733342",
+        "027631/before/archive/desk.bundle": "850b1bcdf1636b07403ef6303d2b1a4fd5a3fe0d6ffe6b691bf88a2d0a12f74c",
+        "027631/before/archive/sample.json": "29127f58b91c2d5ca7957ade2fb79bf5fb8045956d0674a77301d26fc9345ae8",
+        "027631/before/archive/deployment.json": "66669506d0bcc94cfa837901ea8c91fba1b6da59a31946a487ee3bbb87c05be4",
+        "027631/before/archive/closed-case.md": "015e519e10cb0fcdca540f63ef426f0331c2689c9859598720c3b8d097a49293",
+        "027631/before/archive/previous-fix.md": "9554137e04a799eb7262401ab190bbf708c4b21ee61d1fe08833e4edd5ab51b1",
+        "027631/before/archive/field-observation.json": "cd27fe8141dd3c0e43e8153473f920a3b592fbe58a94a8cb4fd79306a24d094a",
+        "027631/after/archive/desk.bundle": "850b1bcdf1636b07403ef6303d2b1a4fd5a3fe0d6ffe6b691bf88a2d0a12f74c",
+        "027631/after/archive/sample.json": "29127f58b91c2d5ca7957ade2fb79bf5fb8045956d0674a77301d26fc9345ae8",
+        "027631/after/archive/deployment.json": "66669506d0bcc94cfa837901ea8c91fba1b6da59a31946a487ee3bbb87c05be4",
+        "027631/after/archive/closed-case.md": "015e519e10cb0fcdca540f63ef426f0331c2689c9859598720c3b8d097a49293",
+        "027631/after/archive/previous-fix.md": "9554137e04a799eb7262401ab190bbf708c4b21ee61d1fe08833e4edd5ab51b1",
+        "027631/after/archive/field-observation.json": "cd27fe8141dd3c0e43e8153473f920a3b592fbe58a94a8cb4fd79306a24d094a",
+        "b4abb6/before/archive/desk.bundle": "850b1bcdf1636b07403ef6303d2b1a4fd5a3fe0d6ffe6b691bf88a2d0a12f74c",
+        "b4abb6/before/archive/sample.json": "29127f58b91c2d5ca7957ade2fb79bf5fb8045956d0674a77301d26fc9345ae8",
+        "b4abb6/before/archive/deployment.json": "b59607c36acfb2d6f377b59006fb50dc67b88f8c5164e26025a1cd6548e5abe6",
+        "b4abb6/before/archive/closed-case.md": "2f46f4c604d71e2dbc7329b9739d35c46445f0fe2e8e97b5508e76f72c86f7ff",
+        "b4abb6/before/archive/previous-fix.md": "9554137e04a799eb7262401ab190bbf708c4b21ee61d1fe08833e4edd5ab51b1",
+        "b4abb6/before/archive/field-observation.json": "4be9d13d4e3e7266843e151c27d4ac1ad1b0d1aa67f9e2ffa7a6115897237eb2",
+        "b4abb6/after/archive/desk.bundle": "850b1bcdf1636b07403ef6303d2b1a4fd5a3fe0d6ffe6b691bf88a2d0a12f74c",
+        "b4abb6/after/archive/sample.json": "29127f58b91c2d5ca7957ade2fb79bf5fb8045956d0674a77301d26fc9345ae8",
+        "b4abb6/after/archive/deployment.json": "b59607c36acfb2d6f377b59006fb50dc67b88f8c5164e26025a1cd6548e5abe6",
+        "b4abb6/after/archive/closed-case.md": "2f46f4c604d71e2dbc7329b9739d35c46445f0fe2e8e97b5508e76f72c86f7ff",
+        "b4abb6/after/archive/previous-fix.md": "9554137e04a799eb7262401ab190bbf708c4b21ee61d1fe08833e4edd5ab51b1",
+        "b4abb6/after/archive/field-observation.json": "4be9d13d4e3e7266843e151c27d4ac1ad1b0d1aa67f9e2ffa7a6115897237eb2"
+      },
+      "postSignMapping": [
+        {
+          "role": "C",
+          "case": "holdout",
+          "label": "a10444"
+        },
+        {
+          "role": "C",
+          "case": "boundary",
+          "label": "15725c"
+        },
+        {
+          "role": "C",
+          "case": "ordinary",
+          "label": "4a97e2"
+        },
+        {
+          "role": "A",
+          "case": "boundary",
+          "label": "93151a",
+          "original_label": "dd3e97"
+        },
+        {
+          "role": "A",
+          "case": "holdout",
+          "label": "027631"
+        },
+        {
+          "role": "A",
+          "case": "ordinary",
+          "label": "b4abb6",
+          "original_label": "3c3ede"
+        }
+      ]
+    }
+  },
+  "limits": "Fresh ephemeral task workspaces with memories disabled. Shared host-level read access remained technically possible. DirectTextObserved records relevant text returned in a recorded tool result; targeted manual examination remains necessary when false."
+}

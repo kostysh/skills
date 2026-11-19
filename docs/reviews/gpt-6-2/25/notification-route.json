@@ -1,0 +1,914 @@
+{
+  "browser": "158.0.8127.36",
+  "node": "v24.15.0",
+  "timeline": [
+    {
+      "stage": "opened",
+      "focusPaint": {
+        "tag": "BODY",
+        "visible": false,
+        "outline": "none",
+        "width": "3px",
+        "shadow": "none",
+        "clip": {
+          "left": 0,
+          "top": 0,
+          "right": 390,
+          "bottom": 844
+        },
+        "intersects": true,
+        "hitTag": "P",
+        "hitText": "Turn updates on or pause them at any time.",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 959,
+          "top": 0,
+          "right": 390,
+          "bottom": 959,
+          "left": 0
+        },
+        "sampledPointOnFocus": true
+      },
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "",
+      "weekly": "false",
+      "focus": "PreferencesNotification settingsChoose where and how often you hear from us.About these settingsEmail address (required)Your preferred address for notification emails.Email notificationsTurn updates on or pause them at any time.Delivery frequencyChoose a rhythm that works for you.DailyA little, every dayWeeklyOne weekly digestReview changesConfirm to save these settings. You can reopen this page to read them.",
+      "status": "",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "help",
+      "focusPaint": {
+        "tag": "BUTTON",
+        "visible": true,
+        "outline": "auto",
+        "width": "1px",
+        "shadow": "none",
+        "clip": {
+          "left": 20,
+          "top": 146,
+          "right": 171.09375,
+          "bottom": 170
+        },
+        "intersects": true,
+        "hitTag": "BUTTON",
+        "hitText": "About these settings",
+        "rect": {
+          "x": 20,
+          "y": 146,
+          "width": 151.09375,
+          "height": 24,
+          "top": 146,
+          "right": 171.09375,
+          "bottom": 170,
+          "left": 20
+        },
+        "sampledPointOnFocus": true
+      },
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "",
+      "weekly": "false",
+      "focus": "About these settings",
+      "status": "",
+      "tooltips": [
+        {
+          "id": "_r_0_",
+          "text": "Review your changes before you confirm."
+        }
+      ],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "invalid",
+      "focusPaint": {
+        "tag": "INPUT",
+        "visible": true,
+        "outline": "none",
+        "width": "1px",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.577 0.217662 0.112464 / 0.2) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "clip": {
+          "left": 41,
+          "top": 250.25,
+          "right": 349,
+          "bottom": 294.25
+        },
+        "intersects": true,
+        "hitTag": "INPUT",
+        "hitText": "",
+        "rect": {
+          "x": 41,
+          "y": 250.25,
+          "width": 308,
+          "height": 44,
+          "top": 250.25,
+          "right": 349,
+          "bottom": 294.25,
+          "left": 41
+        },
+        "sampledPointOnFocus": true
+      },
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "bad",
+      "weekly": "true",
+      "focus": "email",
+      "status": "Settings applied\n\nEmail: first@example.test. Notifications: On. Frequency: Daily.\n\nRead from the local settings service. No email is sent.",
+      "fieldError": "Enter a valid email address.",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "preview-Enter",
+      "focusPaint": {
+        "tag": "BUTTON",
+        "visible": true,
+        "outline": "none",
+        "width": "1px",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.708 0 0 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "clip": {
+          "left": 32,
+          "top": 562.5,
+          "right": 358,
+          "bottom": 606.5
+        },
+        "intersects": true,
+        "hitTag": "BUTTON",
+        "hitText": "Cancel",
+        "rect": {
+          "x": 32,
+          "y": 562.5,
+          "width": 326,
+          "height": 44,
+          "top": 562.5,
+          "right": 358,
+          "bottom": 606.5,
+          "left": 32
+        },
+        "sampledPointOnFocus": true
+      },
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "team@example.test",
+      "weekly": "true",
+      "focus": "Cancel",
+      "status": "Settings applied\n\nEmail: first@example.test. Notifications: On. Frequency: Daily.\n\nRead from the local settings service. No email is sent.",
+      "dialog": "Review your changes\n\nConfirm to save these notification settings.\n\nEmail address\nteam@example.test\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "cancel-Enter",
+      "focusPaint": {
+        "tag": "BUTTON",
+        "visible": true,
+        "outline": "none",
+        "width": "1px",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.708 0 0 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "clip": {
+          "left": 41,
+          "top": 779,
+          "right": 349,
+          "bottom": 823
+        },
+        "intersects": true,
+        "hitTag": "BUTTON",
+        "hitText": "Review changes",
+        "rect": {
+          "x": 41,
+          "y": 779,
+          "width": 308,
+          "height": 44,
+          "top": 779,
+          "right": 349,
+          "bottom": 823,
+          "left": 41
+        },
+        "sampledPointOnFocus": true
+      },
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "team@example.test",
+      "weekly": "true",
+      "focus": "Review changes",
+      "status": "Settings applied\n\nEmail: first@example.test. Notifications: On. Frequency: Daily.\n\nRead from the local settings service. No email is sent.",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "preview-Escape",
+      "focusPaint": {
+        "tag": "BUTTON",
+        "visible": true,
+        "outline": "none",
+        "width": "1px",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.708 0 0 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "clip": {
+          "left": 32,
+          "top": 562.5,
+          "right": 358,
+          "bottom": 606.5
+        },
+        "intersects": true,
+        "hitTag": "BUTTON",
+        "hitText": "Cancel",
+        "rect": {
+          "x": 32,
+          "y": 562.5,
+          "width": 326,
+          "height": 44,
+          "top": 562.5,
+          "right": 358,
+          "bottom": 606.5,
+          "left": 32
+        },
+        "sampledPointOnFocus": true
+      },
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "team@example.test",
+      "weekly": "true",
+      "focus": "Cancel",
+      "status": "Settings applied\n\nEmail: first@example.test. Notifications: On. Frequency: Daily.\n\nRead from the local settings service. No email is sent.",
+      "dialog": "Review your changes\n\nConfirm to save these notification settings.\n\nEmail address\nteam@example.test\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "cancel-Escape",
+      "focusPaint": {
+        "tag": "BUTTON",
+        "visible": true,
+        "outline": "none",
+        "width": "1px",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.708 0 0 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "clip": {
+          "left": 41,
+          "top": 779,
+          "right": 349,
+          "bottom": 823
+        },
+        "intersects": true,
+        "hitTag": "BUTTON",
+        "hitText": "Review changes",
+        "rect": {
+          "x": 41,
+          "y": 779,
+          "width": 308,
+          "height": 44,
+          "top": 779,
+          "right": 349,
+          "bottom": 823,
+          "left": 41
+        },
+        "sampledPointOnFocus": true
+      },
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "team@example.test",
+      "weekly": "true",
+      "focus": "Review changes",
+      "status": "Settings applied\n\nEmail: first@example.test. Notifications: On. Frequency: Daily.\n\nRead from the local settings service. No email is sent.",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "draft-reset-on-reload",
+      "focusPaint": {
+        "tag": "BODY",
+        "visible": false,
+        "outline": "none",
+        "width": "3px",
+        "shadow": "none",
+        "clip": {
+          "left": 0,
+          "top": 0,
+          "right": 390,
+          "bottom": 844
+        },
+        "intersects": true,
+        "hitTag": "P",
+        "hitText": "Turn updates on or pause them at any time.",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 1102.5,
+          "top": 0,
+          "right": 390,
+          "bottom": 1102.5,
+          "left": 0
+        },
+        "sampledPointOnFocus": true
+      },
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "first@example.test",
+      "weekly": "false",
+      "focus": "PreferencesNotification settingsChoose where and how often you hear from us.About these settingsEmail address (required)Your preferred address for notification emails.Email notificationsTurn updates on or pause them at any time.Delivery frequencyChoose a rhythm that works for you.DailyA little, every dayWeeklyOne weekly digestReview changesConfirm to save these settings. You can reopen this page to read them.Settings appliedEmail: first@example.test. Notifications: On. Frequency: Daily.Read from the local settings service. No email is sent.",
+      "status": "Settings applied\n\nEmail: first@example.test. Notifications: On. Frequency: Daily.\n\nRead from the local settings service. No email is sent.",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "dialog-Escape",
+      "focusPaint": {
+        "tag": "BUTTON",
+        "visible": true,
+        "outline": "none",
+        "width": "1px",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.708 0 0 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "clip": {
+          "left": 32,
+          "top": 572.5,
+          "right": 358,
+          "bottom": 616.5
+        },
+        "intersects": true,
+        "hitTag": "BUTTON",
+        "hitText": "Close",
+        "rect": {
+          "x": 32,
+          "y": 572.5,
+          "width": 326,
+          "height": 44,
+          "top": 572.5,
+          "right": 358,
+          "bottom": 616.5,
+          "left": 32
+        },
+        "sampledPointOnFocus": true
+      },
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "team@example.test",
+      "weekly": "true",
+      "focus": "Close",
+      "status": "Applying changes…\n\nPreviously applied settings\n\nEmail: first@example.test. Notifications: On. Frequency: Daily.\n\nRead from the local settings service. No email is sent.",
+      "dialog": "Applying changes\n\nYou can close this window. Your changes will continue to apply.\n\nEmail address\nteam@example.test\nEmail notifications\nOn\nDelivery frequency\nWeekly\nClose\nApplying…",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "closed-via-Escape",
+      "focusPaint": {
+        "tag": "DIV",
+        "visible": true,
+        "outline": "solid",
+        "width": "2px",
+        "shadow": "none",
+        "clip": {
+          "left": 20,
+          "top": 604,
+          "right": 370,
+          "bottom": 803.5
+        },
+        "intersects": true,
+        "hitTag": "H2",
+        "hitText": "Previously applied settings",
+        "rect": {
+          "x": 20,
+          "y": 604,
+          "width": 350,
+          "height": 199.5,
+          "top": 604,
+          "right": 370,
+          "bottom": 803.5,
+          "left": 20
+        },
+        "sampledPointOnFocus": true
+      },
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "team@example.test",
+      "weekly": "true",
+      "focus": "status",
+      "status": "Applying changes…\n\nPreviously applied settings\n\nEmail: first@example.test. Notifications: On. Frequency: Daily.\n\nRead from the local settings service. No email is sent.",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "saved-via-Escape",
+      "focusPaint": {
+        "tag": "DIV",
+        "visible": true,
+        "outline": "solid",
+        "width": "2px",
+        "shadow": "none",
+        "clip": {
+          "left": 20,
+          "top": 660,
+          "right": 370,
+          "bottom": 803.5
+        },
+        "intersects": true,
+        "hitTag": "P",
+        "hitText": "Email: team@example.test. Notifications: On. Frequ",
+        "rect": {
+          "x": 20,
+          "y": 660,
+          "width": 350,
+          "height": 143.5,
+          "top": 660,
+          "right": 370,
+          "bottom": 803.5,
+          "left": 20
+        },
+        "sampledPointOnFocus": true
+      },
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "team@example.test",
+      "weekly": "true",
+      "focus": "status",
+      "status": "Settings applied\n\nEmail: team@example.test. Notifications: On. Frequency: Weekly.\n\nRead from the local settings service. No email is sent.",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "dialog-Close",
+      "focusPaint": {
+        "tag": "BUTTON",
+        "visible": true,
+        "outline": "none",
+        "width": "1px",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.708 0 0 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "clip": {
+          "left": 32,
+          "top": 572.5,
+          "right": 358,
+          "bottom": 616.5
+        },
+        "intersects": true,
+        "hitTag": "BUTTON",
+        "hitText": "Close",
+        "rect": {
+          "x": 32,
+          "y": 572.5,
+          "width": 326,
+          "height": 44,
+          "top": 572.5,
+          "right": 358,
+          "bottom": 616.5,
+          "left": 32
+        },
+        "sampledPointOnFocus": true
+      },
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "close@example.test",
+      "weekly": "true",
+      "focus": "Close",
+      "status": "Applying changes…\n\nPreviously applied settings\n\nEmail: team@example.test. Notifications: On. Frequency: Weekly.\n\nRead from the local settings service. No email is sent.",
+      "dialog": "Applying changes\n\nYou can close this window. Your changes will continue to apply.\n\nEmail address\nclose@example.test\nEmail notifications\nOn\nDelivery frequency\nWeekly\nClose\nApplying…",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "closed-via-Close",
+      "focusPaint": {
+        "tag": "DIV",
+        "visible": true,
+        "outline": "solid",
+        "width": "2px",
+        "shadow": "none",
+        "clip": {
+          "left": 20,
+          "top": 644,
+          "right": 370,
+          "bottom": 843.5
+        },
+        "intersects": true,
+        "hitTag": "H2",
+        "hitText": "Previously applied settings",
+        "rect": {
+          "x": 20,
+          "y": 644,
+          "width": 350,
+          "height": 199.5,
+          "top": 644,
+          "right": 370,
+          "bottom": 843.5,
+          "left": 20
+        },
+        "sampledPointOnFocus": true
+      },
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "close@example.test",
+      "weekly": "true",
+      "focus": "status",
+      "status": "Applying changes…\n\nPreviously applied settings\n\nEmail: team@example.test. Notifications: On. Frequency: Weekly.\n\nRead from the local settings service. No email is sent.",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "saved-via-Close",
+      "focusPaint": {
+        "tag": "DIV",
+        "visible": true,
+        "outline": "solid",
+        "width": "2px",
+        "shadow": "none",
+        "clip": {
+          "left": 20,
+          "top": 660,
+          "right": 370,
+          "bottom": 803.5
+        },
+        "intersects": true,
+        "hitTag": "P",
+        "hitText": "Email: close@example.test. Notifications: On. Freq",
+        "rect": {
+          "x": 20,
+          "y": 660,
+          "width": 350,
+          "height": 143.5,
+          "top": 660,
+          "right": 370,
+          "bottom": 803.5,
+          "left": 20
+        },
+        "sampledPointOnFocus": true
+      },
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "close@example.test",
+      "weekly": "true",
+      "focus": "status",
+      "status": "Settings applied\n\nEmail: close@example.test. Notifications: On. Frequency: Weekly.\n\nRead from the local settings service. No email is sent.",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "write-failed",
+      "focusPaint": {
+        "tag": "BUTTON",
+        "visible": true,
+        "outline": "none",
+        "width": "1px",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.708 0 0 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "clip": {
+          "left": 41,
+          "top": 520,
+          "right": 349,
+          "bottom": 564
+        },
+        "intersects": true,
+        "hitTag": "BUTTON",
+        "hitText": "Review changes",
+        "rect": {
+          "x": 41,
+          "y": 520,
+          "width": 308,
+          "height": 44,
+          "top": 520,
+          "right": 349,
+          "bottom": 564,
+          "left": 41
+        },
+        "sampledPointOnFocus": true
+      },
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "again@example.test",
+      "weekly": "true",
+      "focus": "Review changes",
+      "status": "Settings could not be saved. Review your changes and try again.\n\nPreviously applied settings\n\nEmail: close@example.test. Notifications: On. Frequency: Weekly.\n\nRead from the local settings service. No email is sent.",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "independent-read-after-failure",
+      "focusPaint": {
+        "tag": "BODY",
+        "visible": false,
+        "outline": "none",
+        "width": "3px",
+        "shadow": "none",
+        "clip": {
+          "left": 0,
+          "top": 0,
+          "right": 390,
+          "bottom": 844
+        },
+        "intersects": true,
+        "hitTag": "P",
+        "hitText": "Turn updates on or pause them at any time.",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 1102.5,
+          "top": 0,
+          "right": 390,
+          "bottom": 1102.5,
+          "left": 0
+        },
+        "sampledPointOnFocus": true
+      },
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "close@example.test",
+      "weekly": "true",
+      "focus": "PreferencesNotification settingsChoose where and how often you hear from us.About these settingsEmail address (required)Your preferred address for notification emails.Email notificationsTurn updates on or pause them at any time.Delivery frequencyChoose a rhythm that works for you.DailyA little, every dayWeeklyOne weekly digestReview changesConfirm to save these settings. You can reopen this page to read them.Settings appliedEmail: close@example.test. Notifications: On. Frequency: Weekly.Read from the local settings service. No email is sent.",
+      "status": "Settings applied\n\nEmail: close@example.test. Notifications: On. Frequency: Weekly.\n\nRead from the local settings service. No email is sent.",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "retry-saved",
+      "focusPaint": {
+        "tag": "BUTTON",
+        "visible": true,
+        "outline": "none",
+        "width": "2px",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.708 0 0 / 0.0875752) 0px 0px 0px 0.525451px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "clip": {
+          "left": 41,
+          "top": 520,
+          "right": 349,
+          "bottom": 564
+        },
+        "intersects": true,
+        "hitTag": "BUTTON",
+        "hitText": "Review changes",
+        "rect": {
+          "x": 41,
+          "y": 520,
+          "width": 308,
+          "height": 44,
+          "top": 520,
+          "right": 349,
+          "bottom": 564,
+          "left": 41
+        },
+        "sampledPointOnFocus": true
+      },
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "again@example.test",
+      "weekly": "true",
+      "focus": "Review changes",
+      "status": "Settings applied\n\nEmail: again@example.test. Notifications: On. Frequency: Weekly.\n\nRead from the local settings service. No email is sent.",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "reopened",
+      "focusPaint": {
+        "tag": "BODY",
+        "visible": false,
+        "outline": "none",
+        "width": "3px",
+        "shadow": "none",
+        "clip": {
+          "left": 0,
+          "top": 0,
+          "right": 390,
+          "bottom": 844
+        },
+        "intersects": true,
+        "hitTag": "P",
+        "hitText": "Turn updates on or pause them at any time.",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 1102.5,
+          "top": 0,
+          "right": 390,
+          "bottom": 1102.5,
+          "left": 0
+        },
+        "sampledPointOnFocus": true
+      },
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "again@example.test",
+      "weekly": "true",
+      "focus": "PreferencesNotification settingsChoose where and how often you hear from us.About these settingsEmail address (required)Your preferred address for notification emails.Email notificationsTurn updates on or pause them at any time.Delivery frequencyChoose a rhythm that works for you.DailyA little, every dayWeeklyOne weekly digestReview changesConfirm to save these settings. You can reopen this page to read them.Settings appliedEmail: again@example.test. Notifications: On. Frequency: Weekly.Read from the local settings service. No email is sent.",
+      "status": "Settings applied\n\nEmail: again@example.test. Notifications: On. Frequency: Weekly.\n\nRead from the local settings service. No email is sent.",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    }
+  ],
+  "http": [
+    {
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "method": "PUT",
+      "status": 204,
+      "input": {
+        "email": "first@example.test",
+        "enabled": true,
+        "frequency": "daily"
+      }
+    },
+    {
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "method": "PUT",
+      "status": 204,
+      "input": {
+        "email": "team@example.test",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    },
+    {
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "method": "PUT",
+      "status": 204,
+      "input": {
+        "email": "close@example.test",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    },
+    {
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "method": "PUT",
+      "status": 503,
+      "input": {
+        "email": "again@example.test",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    },
+    {
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "method": "PUT",
+      "status": 204,
+      "input": {
+        "email": "again@example.test",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    },
+    {
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "status": 200
+    }
+  ],
+  "server": [
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": null
+    },
+    {
+      "method": "PUT",
+      "path": "/api/notification-settings",
+      "status": 204
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": {
+        "email": "first@example.test",
+        "enabled": true,
+        "frequency": "daily"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": {
+        "email": "first@example.test",
+        "enabled": true,
+        "frequency": "daily"
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/notification-settings",
+      "status": 204
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": {
+        "email": "team@example.test",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/notification-settings",
+      "status": 204
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": {
+        "email": "close@example.test",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/notification-settings",
+      "status": 503,
+      "body": {
+        "error": "write_unavailable"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": {
+        "email": "close@example.test",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/notification-settings",
+      "status": 204
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": {
+        "email": "again@example.test",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": {
+        "email": "again@example.test",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    }
+  ],
+  "persisted": {
+    "email": "close@example.test",
+    "enabled": true,
+    "frequency": "weekly"
+  },
+  "final": {
+    "email": "again@example.test",
+    "enabled": true,
+    "frequency": "weekly"
+  },
+  "pageErrors": []
+}

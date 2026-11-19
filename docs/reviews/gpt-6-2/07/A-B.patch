@@ -1,0 +1,4 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -94 +93,0 @@
+-4. Preserve unrelated staged, unstaged, and untracked work. Do not reset, restore, clean, or stash it merely to obtain a clean status.

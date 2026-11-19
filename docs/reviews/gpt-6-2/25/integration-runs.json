@@ -1,0 +1,223 @@
+{
+  "sessions": {
+    "2b65f8": {
+      "unchangedInputsAndModes": true,
+      "initialFiles": 51,
+      "browserCommands": [
+        {
+          "id": "item_7",
+          "exit": 0,
+          "eventSHA256": "4d1861f1b6ee52a4caf9228884c79a239289e3653e5424f8fe263e2a9045be31",
+          "actualBrowserInvocation": "TMPDIR=\"$PWD/scratch\" node observations/review.mjs > observations/browser.log 2>&1"
+        }
+      ],
+      "packageSha256": "9d3acb833945d996da8a8b62eb6793f14a0ca7c98046902a95e0eab4a01727e3",
+      "role": "явный договор",
+      "cmdModel": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"medium\"",
+      "memoriesDisabled": true,
+      "exit": 0,
+      "readEvents": {
+        "root": [
+          {
+            "id": "item_1",
+            "sha256": "890dac94f70522db633a7a95fb158fc35147ef39f2656796b6943b47c093589d"
+          },
+          {
+            "id": "item_3",
+            "sha256": "3df5a28242744dd016b93c02c5d2fe9d562e48ffe3a2b963209e6ac35c66d1d3"
+          }
+        ],
+        "reference": [
+          {
+            "id": "item_3",
+            "sha256": "3df5a28242744dd016b93c02c5d2fe9d562e48ffe3a2b963209e6ac35c66d1d3"
+          }
+        ],
+        "originalNote": []
+      },
+      "answerSHA256": "a41796420b3f977abc930257e52512cf25898aee329c275334264105a75b8ca1",
+      "eventsSHA256": "6c74bb3b88cfec1b6138c2f83639dc8312b90ed95111103e438bca856825218e",
+      "operatorReportSHA256": "eeb6be26444649ccbf1ecf7499cb6a01474f841b60155ede8dafa64f5790d868",
+      "outputs": {
+        "observations/README.md": "eeb6be26444649ccbf1ecf7499cb6a01474f841b60155ede8dafa64f5790d868",
+        "observations/after-reload.png": "e08e7a5141ac09828b4b1aaac3842ae096bec07808269796dfb9ca4cd918f94e",
+        "observations/applying.png": "7879c8647acb210ede269cd688697893836fc0aa87cbf31f9f962dafcb5383d9",
+        "observations/browser.log": "f4bdcdd278336735821fa65d86d4c6171d57ab8eaa192f629f47419f4ef297cd",
+        "observations/review.mjs": "b0de70e0d9f70741ef0b1f71074a783e8c05da46ee7c6efcb2aac6c4803bf5e3"
+      }
+    },
+    "e5b1d3": {
+      "unchangedInputsAndModes": true,
+      "initialFiles": 51,
+      "browserCommands": [
+        {
+          "id": "item_6",
+          "exit": 1,
+          "eventSHA256": "09602297ee5d3f6ae44a53695ef0812ac1c2161460402ddce51effa8d227ca4c",
+          "actualBrowserInvocation": "node observations/review.mjs\""
+        },
+        {
+          "id": "item_9",
+          "exit": 0,
+          "eventSHA256": "f08c6a0017f9a46aa3f8be97f9d6c85a20a605672cfd1c41514d4b4e4bf645eb",
+          "actualBrowserInvocation": "node observations/review.mjs\""
+        },
+        {
+          "id": "item_13",
+          "exit": 0,
+          "eventSHA256": "32fddaf2ae2b01356eeb1fb21e87be9d8e8846e7c3bf0347cd17b3e30ea16dbe",
+          "actualBrowserInvocation": "node observations/review.mjs\""
+        },
+        {
+          "id": "item_15",
+          "exit": 0,
+          "eventSHA256": "f7a867d12e37907865c505f610a1ac737ede5d230e01d8bccdb761566f4b885c",
+          "actualBrowserInvocation": "node --check observations/review.mjs && node observations/review.mjs\""
+        }
+      ],
+      "packageSha256": "1f53ad6d085aa7cbf160e305786016e67f1ee75bd44e0ecdddae0f1b94bcf0b7",
+      "role": "исходная интеграция",
+      "cmdModel": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"medium\"",
+      "memoriesDisabled": true,
+      "exit": 0,
+      "readEvents": {
+        "root": [
+          {
+            "id": "item_1",
+            "sha256": "246a8ae497b28a29e7cc098fd020f553af9d79888c0c9cdcac8d2ffaba4a773b"
+          }
+        ],
+        "reference": [
+          {
+            "id": "item_2",
+            "sha256": "1e49086d6356e0480d90c8a73d37efedbc5ff534feb49ae63c92b5b0983dc2b7"
+          }
+        ],
+        "originalNote": [
+          {
+            "id": "item_1",
+            "sha256": "246a8ae497b28a29e7cc098fd020f553af9d79888c0c9cdcac8d2ffaba4a773b"
+          }
+        ]
+      },
+      "answerSHA256": "87468f402ebb1cd9cd53f54d2277e37ba07ddfb54bc4f1bc79696ca103b10e7c",
+      "eventsSHA256": "014d604424be0936d8831786ad190b117fb076e7acb2a4cf5566f24d44d5e81a",
+      "operatorReportSHA256": "6a29e1419152582465c80419ba7f6b6e0482a2a7613f50aed31a63d45bbc27a0",
+      "outputs": {
+        "observations/journal.jsonl": "7bffe9eb2a4e94c45afb9d1d7ce71c06ae40d01121d855f57de2f46e11267434",
+        "observations/report.md": "6a29e1419152582465c80419ba7f6b6e0482a2a7613f50aed31a63d45bbc27a0",
+        "observations/review.mjs": "e052dd043a4e709460437c3c0426ac18134f1d183600b5c5c35a2c22fa913d98",
+        "scratch/screenshots/19b-reopened-result-scrolled.png": "f104de51e5e2aa1474b148686f0d5d76b70260623a3770bf2ac7eb5adbd65cb8",
+        "scratch/screenshots/18b-retry-result-scrolled.png": "d6209ebc8f3b0b5ba40bc7bddd99459520483b0af19a417b6c87aa867b9b2faa",
+        "scratch/screenshots/frequency-space.png": "bb1294a9621326bd41b58c5298e8f1575fbd7f8fd438e468adbc0d987189b5fd",
+        "scratch/screenshots/frequency-arrow-right.png": "53149069298237d0d21b9c7ea96be26cf75930885a9bfb1aa902a82af19e4a8b",
+        "scratch/screenshots/19-reopened.png": "6cd93826d97b43ec595a2af1db7f9ba2a7c692fde9ff54ad72f5b115485b8618",
+        "scratch/screenshots/18-retry-success.png": "db77bed8fdd0e49a8b9682a217280d3841e7aecf72bf723c88ba99bfb33afa25",
+        "scratch/screenshots/15-rejected.png": "a6fa2d7d965b2c40119a39a9ebbe0060bd1ead20368a55de947984ea826e0110",
+        "scratch/screenshots/14-escape-success.png": "2efaa6bd5b32205ce3ca964842366c4669e47ce5b5c892ffb418ed347c3a3f24",
+        "scratch/screenshots/13-escape-pending.png": "f98c576b6e075856f1ca783f0e526716dd033ec83daf4833da5f791644277b96",
+        "scratch/screenshots/12-close-success.png": "10e851cc5f86611717a4b2ab2a734e7f2d0cc83105b1cf466bd2b964105fe569",
+        "scratch/screenshots/11-close-pending.png": "e6bb657dd06a0ffc03032b14b7663bee2e09e4b816ffed3b8cc2812b67023a1b",
+        "scratch/screenshots/10-pending-dialog.png": "5028f1ed92ce64369ff0ade6cca18051f87ae95635ba71a789234e47c4f6d53e",
+        "scratch/screenshots/07-cancel.png": "75d6c7a28789a454bf637a82c40b2db18de11fed943c4def6a85da6d9aa6099c",
+        "scratch/screenshots/05-confirm-focus.png": "a0cdaab5f9baeaa8777d22fc90308442969038babf0a8de6d5b9afd331c39e88",
+        "scratch/screenshots/04-preview.png": "20ac8c23e7e9c7d5d318dbcd5520a067d7fca2e00ce3dbdae80529e1a593722c",
+        "scratch/screenshots/03-invalid.png": "3a5f20b8822779d06e6a8a68c772fb1766e5b35642fe02d1a7864978ad14019e"
+      }
+    },
+    "d70b1c": {
+      "unchangedInputsAndModes": true,
+      "initialFiles": 51,
+      "browserCommands": [
+        {
+          "id": "item_10",
+          "exit": 1,
+          "eventSHA256": "35ad8e66ccaa4f8c35708ce682561fe16bcc74bdef11193036b8e037a29333c8",
+          "actualBrowserInvocation": "node observations/review.mjs'"
+        },
+        {
+          "id": "item_12",
+          "exit": 1,
+          "eventSHA256": "1fa3716e621bab2bd9fb003bb7d3cd53107bf88798c19c0c7816ec2b0335250c",
+          "actualBrowserInvocation": "mkdir -p scratch/tmp && TMPDIR=\\\"\"'$PWD/scratch/tmp\" node observations/review.mjs'"
+        },
+        {
+          "id": "item_14",
+          "exit": 0,
+          "eventSHA256": "cfe86dcf393c70ab308be161401029b59774bc055491da1c7fc7c520783b5453",
+          "actualBrowserInvocation": "TMPDIR=\\\"\"'$PWD/scratch/tmp\" node observations/review.mjs'"
+        },
+        {
+          "id": "item_17",
+          "exit": 0,
+          "eventSHA256": "1f45ea1f8274e81a92f51176a21114b6607e2c12108a35658f3b634d5045d705",
+          "actualBrowserInvocation": "TMPDIR=\\\"\"'$PWD/scratch/tmp\" node observations/review.mjs'"
+        },
+        {
+          "id": "item_18",
+          "exit": 0,
+          "eventSHA256": "4dcc297448e3d2055275e33e12f4a46048497c3f93f9a7ed25bf20c28b2ac492",
+          "actualBrowserInvocation": "TMPDIR=\\\"\"'$PWD/scratch/tmp\" node observations/review.mjs'"
+        }
+      ],
+      "packageSha256": "9d3acb833945d996da8a8b62eb6793f14a0ca7c98046902a95e0eab4a01727e3",
+      "role": "финальная интеграция",
+      "cmdModel": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"medium\"",
+      "memoriesDisabled": true,
+      "exit": 0,
+      "readEvents": {
+        "root": [
+          {
+            "id": "item_2",
+            "sha256": "d5f5ead5483ac79531d27aa279d053bf40dac5fbdd87b7ce38f42bf30a01f3ac"
+          }
+        ],
+        "reference": [
+          {
+            "id": "item_2",
+            "sha256": "d5f5ead5483ac79531d27aa279d053bf40dac5fbdd87b7ce38f42bf30a01f3ac"
+          }
+        ],
+        "originalNote": [
+          {
+            "id": "item_3",
+            "sha256": "d35d18b836beef26c69d02edc6b515f6b42fb0c76a36c246cd2c9f48302bb438"
+          }
+        ]
+      },
+      "answerSHA256": "21bea40b18e6b46c742a5ac6b12ad8ac7b96c40be435343604c510eec68f5bb5",
+      "eventsSHA256": "52ee3b24c2b41e0b1f9c415d6dc8447984b8c5937b50528674f971e7c9529eb2",
+      "operatorReportSHA256": "d8d4e3131bc902886ded9fd8d68078f5b942df769a122c2d66efb790031838fa",
+      "outputs": {
+        "observations/03-invalid.png": "02edb4dfc333721d6678afd794c9994993b250bf2e21a67648267ad448726857",
+        "observations/04-cancel.png": "75d6c7a28789a454bf637a82c40b2db18de11fed943c4def6a85da6d9aa6099c",
+        "observations/04-preview.png": "20ac8c23e7e9c7d5d318dbcd5520a067d7fca2e00ce3dbdae80529e1a593722c",
+        "observations/05-draft-reload.png": "e08e7a5141ac09828b4b1aaac3842ae096bec07808269796dfb9ca4cd918f94e",
+        "observations/05a-rejected-by-service-scrolled.png": "4fbe57f42b89db0cdd723f7c8c81539c74b9529eae23799b523c3dd9b53a3286",
+        "observations/05a-rejected-by-service.png": "b143a90a43410f7624d1d556c0e47508bae3d31e4b9a1635e988e887c9aa7c46",
+        "observations/06-close-dialog.png": "5028f1ed92ce64369ff0ade6cca18051f87ae95635ba71a789234e47c4f6d53e",
+        "observations/06-close-pending.png": "e6bb657dd06a0ffc03032b14b7663bee2e09e4b816ffed3b8cc2812b67023a1b",
+        "observations/06-close-result-scrolled.png": "c00760965aa4fadb23ce0890460ee329cfa91acf29974503c79fc8a020bbcd5a",
+        "observations/06-close-result.png": "10e851cc5f86611717a4b2ab2a734e7f2d0cc83105b1cf466bd2b964105fe569",
+        "observations/08-reopen-after-close.png": "f4d2c693670bd62e0505a24c8f3168ab5f04402bb324fbb611af01a61f2f3d2b",
+        "observations/09-escape-pending.png": "01c2c75e09d99d14b6dcd56e010ab63fbeeeafe46a2d6e2c417dc0f6ae7f5f9d",
+        "observations/09-escape-result.png": "298c8cd9773bd8b446bf8a7d230d686ca3ff370d04cab12b7a0b9b9a72bc9da1",
+        "observations/09-switch-focus.png": "0824612513fcfd549f94621e679a84527d7556a383118d19d9e6be5e9799de3e",
+        "observations/10-reopen-after-escape.png": "93342fac189cfddee98f86d6ad1560d983fa602ad22459f00448fd291d21a83a",
+        "observations/11-write-failure-result.png": "85fb4684aeaca6bad8d969e4db21f7f4078d6def75ff311ada451e834654c447",
+        "observations/12-manual-write-retry-result.png": "9a276c51ca6b300d46b710ef59a72162db12b162daedf87de6c8d680fd82851b",
+        "observations/13-reopen-after-retry.png": "38b6c075bdbacbf9685ae5ec6207e4e33ffaed0ab3c700edd7cd927b4e6a7e75",
+        "observations/browser.ndjson": "fd0208592660bc53e2e6314ce00636394cd1dfbb378974eab02f8e725535f983",
+        "observations/report.md": "d8d4e3131bc902886ded9fd8d68078f5b942df769a122c2d66efb790031838fa",
+        "observations/review.mjs": "e07550aae1f5bff794ef1f5c4f8dad25816ef0272296037313eb7e0627ad57f1",
+        "observations/service.ndjson": "4edf627654dce22dbffd1149c62212dea1df7530cbff8c413bc73dad4edc62b0"
+      }
+    }
+  },
+  "rawArchiveSHA256": "7f2436e6e790c24a8597a55999f394c3bcfa3a463d8793b6becc5936a2ce95dc",
+  "excludedFromArchive": "Дистрибутив Playwright и распакованная библиотека. В handoff-provenance.json указаны версия, URL и хеш. Рабочие файлы, оригинальные отчёты, действия, созданные сценарии, журналы и снимки включены.",
+  "isolation": "Разные временные каталоги и выключенная память. Хост допускал чтение вне каталога, доступные записи перечисляют фактические обращения. Исходная записка дизайнера касается предшествующего выпуска. В выдачу не вошли готовый сценарий и наблюдения 26, ответы исследований и ключи оценивания."
+}

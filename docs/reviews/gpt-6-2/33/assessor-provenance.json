@@ -1,0 +1,181 @@
+[
+  {
+    "phase": "ab",
+    "session": "01a1f0f3-a536-76c0-bd39-ed2d4eb5f197",
+    "assignedModel": "gpt-6.2-sol",
+    "assignedEffort": "high",
+    "memories": "disabled",
+    "sandbox": "read-only",
+    "rubricSha256": "780a5cb1867860b92b18e43755631b5be1dbf42e1799ff6990ca34d84472fad1",
+    "packetFileCount": 65,
+    "packetInventorySha256": "fb57ed98a7df9b72ad854d94115c01d11576f20d2513f414a6a40ff72d6bf682",
+    "signedGradeSha256": "f28ad513b366c2379bfe5ebd2f622c856bbd774751421c6738e3730aa89fce36",
+    "rawEventsSha256": "f10137e404c8af83964482db177cb7a92638d096a699e7913fb138c492b760a4",
+    "exit": 0,
+    "neutralCodeToPublishedRecord": {
+      "0cc7df": "0cc7df",
+      "76a8f6": "76a8f6",
+      "4d7ef5": "4d7ef5",
+      "398a34": "398a34"
+    },
+    "access": {
+      "keysAndVariantsNotInPacket": true,
+      "allInputsAndModesCurrentlyReadBack": "all original file digests match the final packet; assessor had a read-only sandbox",
+      "operations": [
+        "/bin/bash -c 'rg --files --hidden'",
+        "/bin/bash -c 'cat criteria.md'",
+        "/bin/bash -c \"for item in task.md answer.md actions.json observer.json; do\n  printf '\\\\n%s\\\\n' \\\"\"'$item\"\n  cat \"$item\"\ndone'",
+        "/bin/bash -c \"for item in task.md answer.md actions.json observer.json; do\n  printf '\\\\n%s\\\\n' \\\"\"'$item\"\n  cat \"$item\"\ndone'",
+        "/bin/bash -c \"for item in task.md answer.md actions.json observer.json; do\n  printf '\\\\n%s\\\\n' \\\"\"'$item\"\n  cat \"$item\"\ndone'",
+        "/bin/bash -c \"for item in task.md answer.md actions.json observer.json; do\n  printf '\\\\n%s\\\\n' \\\"\"'$item\"\n  cat \"$item\"\ndone'",
+        "/bin/bash -c \"diff -qr before after\nfor f in task.md before/intake/* before/catalog/README.md before/catalog/src/catalog.mjs before/catalog/test/catalog.test.mjs; do\n  printf '\\\\n%s\\\\n' \\\"\"'$f\"\n  nl -ba \"$f\"\ndone'",
+        "/bin/bash -c \"diff -qr before after\nfor f in task.md before/intake/* before/catalog/README.md before/catalog/src/catalog.mjs before/catalog/test/catalog.test.mjs; do\n  printf '\\\\n%s\\\\n' \\\"\"'$f\"\n  nl -ba \"$f\"\ndone'",
+        "/bin/bash -c \"diff -qr before after\nfor f in task.md before/intake/* before/catalog/README.md before/catalog/src/catalog.mjs before/catalog/test/catalog.test.mjs; do\n  printf '\\\\n%s\\\\n' \\\"\"'$f\"\n  nl -ba \"$f\"\ndone'",
+        "/bin/bash -c \"diff -qr before after\nfor f in task.md before/intake/* before/catalog/README.md before/catalog/src/catalog.mjs before/catalog/test/catalog.test.mjs; do\n  printf '\\\\n%s\\\\n' \\\"\"'$f\"\n  nl -ba \"$f\"\ndone'",
+        "/bin/bash -c 'nl -ba answer.md'",
+        "/bin/bash -c 'nl -ba answer.md'",
+        "/bin/bash -c 'nl -ba answer.md'",
+        "/bin/bash -c \"python3 -B - <<'PY'\nimport json\nfrom pathlib import Path\nfor case in sorted(Path('.').iterdir()):\n    if not case.is_dir():\n        continue\n    print('\\\\n' + case.name)\n    observed = json.loads((case/'observer.json').read_text())\n    actions = json.loads((case/'actions.json').read_text())\n    for key in ('sameProductFilesAsObserver','changesToInitialFiles','createdFiles'):\n        print(key, observed.get(key))\n    print('actions changed', actions['changed'])\n    print('operations')\n    for event in actions['operations']:\n        print(event['exit'], event['command'].splitlines()[0][:220])\n    print('preflight', json.dumps(observed['organizerPreflightOnTheseInputs']['state'], ensure_ascii=False))\n    for event in observed.get('participantCommandsAndResults', []):\n        out = event.get('selectOutput','')\n        if 'loadCatalog' not in out or 'Unknown card\"'`'\"' in out or 'export function' not in out:\n            print('result', event['exit'], out)\nPY\"",
+        "/bin/bash -c \"find . -maxdepth 2 -mindepth 1 -printf '%y %p\\\\n' | sort\nfor case in 0cc7df 398a34 4d7ef5 76a8f6; do\n  printf '\\\\n%s\\\\n' \\\"\"'$case\"\n  diff -qr \"$case/before\" \"$case/after\" || exit\n  (cd \"$case/before\" && find catalog intake -type f -print0 | sort -z | xargs -0 sha256sum | sha256sum)\n  rg -n -o '\"'sameProductFilesAsObserver|organizerPreflightOnTheseInputs|participantCommandsAndResults|changesToInitialFiles|createdFiles|scenario|Repeated id changed records|Process 1:' \\\"\"'$case/observer.json\" | sort -u | head -25\ndone'",
+        "/bin/bash -c \"python3 -B - <<'PY'\nimport json\nfrom pathlib import Path\nfor op in json.loads(Path('actions.json').read_text())['operations']:\n    if '\\\\n' in op['command']:\n        print(op['command'])\nPY\"",
+        "/bin/bash -c \"python3 -B - <<'PY'\nimport json\nfrom pathlib import Path\nfor op in json.loads(Path('actions.json').read_text())['operations']:\n    if '\\\\n' in op['command']:\n        print(op['command'])\nPY\""
+      ],
+      "webActions": []
+    }
+  },
+  {
+    "phase": "confirm",
+    "session": "01a1f0fa-3ecc-7483-b7a9-e8342556be45",
+    "assignedModel": "gpt-6.2-sol",
+    "assignedEffort": "high",
+    "memories": "disabled",
+    "sandbox": "read-only",
+    "rubricSha256": "780a5cb1867860b92b18e43755631b5be1dbf42e1799ff6990ca34d84472fad1",
+    "packetFileCount": 101,
+    "packetInventorySha256": "27f344ca55265226149be708ed5300b4e00637ca4eec3cf7b79f838193e3175c",
+    "signedGradeSha256": "62f05e7ddbfe6b8047a769e60da3790f3627816a84bef568d328f3d04cd91d70",
+    "rawEventsSha256": "5959614288d66a429ab999556ed5d1c4febe763eb8fdb49dfd6b06b6c2b9dbc5",
+    "exit": 0,
+    "neutralCodeToPublishedRecord": {
+      "de2e0b": "4d7ef5",
+      "1282f8": "1282f8",
+      "b5587d": "76a8f6",
+      "92fef2": "92fef2",
+      "2a7e56": "2a7e56",
+      "a53430": "a53430"
+    },
+    "access": {
+      "keysAndVariantsNotInPacket": true,
+      "allInputsAndModesCurrentlyReadBack": "all original file digests match the final packet; assessor had a read-only sandbox",
+      "operations": [
+        "/bin/bash -lc 'rg --files --hidden'",
+        "/bin/bash -lc 'wc -l */task.md */answer.md */actions.json */observer.json'",
+        "/bin/bash -lc 'cat criteria.md'",
+        "/bin/bash -lc \"for d in */; do printf '%s\\\\n' \\\"\"'$d\"; diff -qr \"${d}before\" \"${d}after\"; done'",
+        "/bin/bash -lc \"for f in */actions.json; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+        "/bin/bash -lc \"for f in */task.md */answer.md; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+        "/bin/bash -lc \"for f in */before/intake/*.md */before/catalog/README.md; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+        "/bin/bash -lc \"for d in 92fef2 a53430 b5587d de2e0b; do printf '\\\\n%s\\\\n' \\\"\"'$d\"; cat \"$d/answer.md\"; done'",
+        "/bin/bash -lc \"for d in */; do printf '\\\\n%s\\\\n' \\\"\"'$d\"; cat \"${d}before\"/intake/*.md \"${d}before/catalog/README.md\"; nl -ba \"${d}before/catalog/src/catalog.mjs\"; done'",
+        "/bin/bash -lc 'cat 1282f8/actions.json 2a7e56/actions.json'",
+        "/bin/bash -lc \"for d in 2a7e56 92fef2 de2e0b; do printf '\\\\n%s\\\\n' \\\"\"'$d\"; cat \"$d/observer.json\"; done'",
+        "/bin/bash -lc \"for d in 1282f8 a53430 b5587d; do printf '\\\\n%s\\\\n' \\\"\"'$d\"; cat \"$d/observer.json\"; done'",
+        "/bin/bash -lc \"python3 -B - <<'PY'\nimport json\nfrom pathlib import Path\nfor path in sorted(Path('.').glob('*/observer.json')):\n    print(path)\n    for ev in json.loads(path.read_text())['participantCommandsAndResults']:\n        for line in ev['selectOutput'].splitlines():\n            if any(s in line for s in ('✔','Process ','scenario','label','PASS','FAIL','matches','exploratory','SHA-256','/intake/')):\n                if line.startswith('{'):\n                    n=json.loads(line)\n                    print(n.get('scenario', n.get('label',n.get('name'))), {k:v for k,v in n.items() if k in ('exactMatch','matches','full_reload_matches','fileUnchanged','selectedChanged','orderAndTitles','unchanged','error','status')})\n                else:\n                    print(line)\nPY\"",
+        "/bin/bash -lc \"python3 -B - <<'PY'\nimport hashlib, json\nfrom pathlib import Path\n\nfor case in sorted(Path('.').glob('*/task.md')):\n    case = case.parent\n    print(case)\n    before, after = (case / part for part in ('before', 'after'))\n    def snapshot(root):\n        return {str(f.relative_to(root)): hashlib.sha256(f.read_bytes()).hexdigest() for f in root.rglob('*') if f.is_file()}\n    files = snapshot(before)\n    print('same:', files == snapshot(after), 'files:', len(files))\n    h = hashlib.sha256\n    catalog = {p: digest for p, digest in files.items() if p.startswith('catalog/')}\n    for strip in (0, len('catalog/')):\n        print('catalog hash:', h(''.join(f'{digest}  {p[strip:]}\\\\n' for p,digest in sorted(catalog.items())).encode()).hexdigest())\n    actions = json.loads((case / 'actions.json').read_text())\n    obs = json.loads((case / 'observer.json').read_text())\n    print('change logs:', actions['changed'], obs['changesToInitialFiles'], obs['createdFiles'])\n    events = {(item['command'], item['exit']) for item in actions['operations']}\n    print('all observer events match:', all((e['command'], e['exit']) in events for e in obs['participantCommandsAndResults']))\n    state = obs['organizerPreflightOnTheseInputs']['state']\n    print('preflight:', [[(r['id'], r['title'], r['pinned']) for r in state[key]] for key in ('init','firstRead','secondRead')], state['unknownId'])\nPY\"",
+        "/bin/bash -lc 'tail -n 5 92fef2/answer.md'",
+        "/bin/bash -lc \"python3 -B - <<'PY'\nimport json\nfrom pathlib import Path\nfor p in sorted(Path('.').glob('*/actions.json')):\n    print(p)\n    for i, a in enumerate(json.loads(p.read_text())['operations'],1):\n        print(i, a['exit'], a['command'].splitlines()[0][:185])\nPY\""
+      ],
+      "webActions": []
+    }
+  },
+  {
+    "phase": "scope",
+    "session": "01a1f104-5295-7df0-a3f2-8275a0faa04f",
+    "assignedModel": "gpt-6.2-sol",
+    "assignedEffort": "high",
+    "memories": "disabled",
+    "sandbox": "read-only",
+    "rubricSha256": "76e5bdf8370a9748b31d3f85d2f91ed9bcf566a4171769d0ec01b0f966f5944d",
+    "packetFileCount": 127,
+    "packetInventorySha256": "d579bbbccad0b3bd85fff85fe701b0de37afe9189b782a42013593235a45f888",
+    "signedGradeSha256": "85319fafc11304d79b40d1e2fc4933bcce13f11e6dec95f6993a85a984ded9ee",
+    "rawEventsSha256": "bc0612b3c2a4aea31a739a846d503801b66016e79a04bc31961ed0d6b948afde",
+    "exit": 0,
+    "neutralCodeToPublishedRecord": {
+      "61bc2f": "61bc2f",
+      "5ca662": "5ca662",
+      "e94f57": "e94f57",
+      "d08dac": "d08dac",
+      "aa3e97": "aa3e97",
+      "fd76fa": "92fef2",
+      "08f8d6": "08f8d6"
+    },
+    "access": {
+      "keysAndVariantsNotInPacket": true,
+      "allInputsAndModesCurrentlyReadBack": "all original file digests match the final packet; assessor had a read-only sandbox",
+      "operations": [
+        "/bin/bash -lc \"pwd; rg --files --hidden -g '\"'!.git'\"' | sort; ls -la\"",
+        "/bin/bash -lc 'cat criteria.md; wc -lc */{task.md,answer.md,actions.json,observer.json}'",
+        "/bin/bash -lc \"for d in */; do printf '\\\\n%s\\\\n' \\\"\"'$d\"; diff -qr \"${d}before\" \"${d}after\"; done'",
+        "/bin/bash -lc 'for f in */task.md; do head -v -n 180 \"$f\"; done'",
+        "/bin/bash -lc 'for f in */answer.md; do head -v -n 200 \"$f\"; done'",
+        "/bin/bash -lc 'for f in */before/intake/*; do head -v -n 200 \"$f\"; done'",
+        "/bin/bash -lc 'cat 5ca662/actions.json; cat 5ca662/observer.json'",
+        "/bin/bash -lc 'cat 61bc2f/actions.json; cat 61bc2f/observer.json'",
+        "/bin/bash -lc 'ls -l */observer.json; cat d08dac/answer.md; cat d08dac/actions.json; cat d08dac/observer.json'",
+        "/bin/bash -lc \"python3 - <<'PY'\nfrom pathlib import Path\nimport json\nfor p in sorted(Path('.').glob('*/observer.json')):\n d=json.loads(p.read_text()); a=json.loads((p.parent/'actions.json').read_text()); print('\\\\n',p,'observer:',list(d),'actions:',list(a));\n print('change/status:', {k:d[k] for k in ('subjectExit','changed','inputsAndModesUnchanged','changesToInitialFiles','createdFiles','sameProductFilesAsObserver') if k in d})\n for op in a.get('operations',[]):\n  cmd=op['command']; print(op.get('exit'), cmd.split('\\\\n')[0][:195], str({k:v for k,v in op.items() if k not in ['command','exit']})[:150]);\n for op in d.get('participantOperations',d.get('participantCommandsAndResults',[])):\n  print('observed:',[(k, (str(v)[0:200] if k=='command' else str(v)[0:4500])) for k,v in op.items() if k not in ['eventSha256','eventDigest'] and (k \"'!= '\"'output' or len(v) < 2400)]);\n print('preflight:',json.dumps(d.get('separateOrganizerPreflight',d.get('organizerPreflightOnTheseInputs')),ensure_ascii=False))\nPY\"",
+        "/bin/bash -lc \"jq -r '.operations[].command | select(contains(\\\"node --input-type\\\") or contains(\\\"TemporaryDirectory\\\"))' 08f8d6/actions.json aa3e97/actions.json e94f57/actions.json fd76fa/actions.json\"",
+        "/bin/bash -lc 'cat aa3e97/answer.md e94f57/answer.md; nl -ba aa3e97/after/catalog/src/catalog.mjs; nl -ba 08f8d6/after/catalog/src/catalog.mjs'",
+        "/bin/bash -lc \"python3 - <<'PY'\nfrom pathlib import Path\nimport hashlib, json, stat\nfor case in sorted(p for p in Path('.').iterdir() if p.is_dir()):\n    def state(root):\n        return {str(p.relative_to(root)):(hashlib.sha256(p.read_bytes()).hexdigest(),stat.S_IMODE(p.stat().st_mode)) for p in root.rglob('*') if p.is_file()}\n    before,after = (state(case/s) for s in ('before','after'))\n    observer = json.loads((case/'observer.json').read_text())\n    actions = json.loads((case/'actions.json').read_text())\n    operations = observer.get('participantOperations',observer.get('participantCommandsAndResults'))\n    checked = [(op['command'],op['exit']) in {(a['command'],a['exit']) for a in actions['operations']} for op in operations]\n    admissions = observer.get('caseMatchesAdmission')\n    print(case.name, 'files=',len(before),'same content/modes=',before==after, 'admission match=',None if not admissions else all(before[k][0]==sha for k,sha in admissions.items()) and set(before)==set(admissions),'actions changed=',actions['changed'],'observer operations matching actions=',f'{sum(checked)}/{len(checked)}')\nPY\""
+      ],
+      "webActions": []
+    }
+  },
+  {
+    "phase": "ordinary",
+    "session": "01a1f107-da61-7273-9852-69bc379b3349",
+    "assignedModel": "gpt-6.2-sol",
+    "assignedEffort": "high",
+    "memories": "disabled",
+    "sandbox": "read-only",
+    "rubricSha256": "780a5cb1867860b92b18e43755631b5be1dbf42e1799ff6990ca34d84472fad1",
+    "packetFileCount": 81,
+    "packetInventorySha256": "10e51738ac6c31e535912dbf433a58fd916028e0783b68fc21d5589e3ca3418f",
+    "signedGradeSha256": "04691ee889475c97edbda7fd4311e8dd33c4855095d67a1885c5de7a612ce58d",
+    "rawEventsSha256": "599920676bbf6df1b50c34a8ec2c3c390d5ff57d067040c990425717455ed346",
+    "exit": 0,
+    "neutralCodeToPublishedRecord": {
+      "9814de": "61bc2f",
+      "d1b36f": "76a8f6",
+      "713d6b": "92fef2",
+      "51731b": "d08dac",
+      "d352ef": "398a34"
+    },
+    "access": {
+      "keysAndVariantsNotInPacket": true,
+      "allInputsAndModesCurrentlyReadBack": "all original file digests match the final packet; assessor had a read-only sandbox",
+      "operations": [
+        "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+        "/bin/bash -lc 'head -v -n 180 d352ef/task.md d352ef/answer.md d352ef/observer.json'",
+        "/bin/bash -lc 'cat criteria.md'",
+        "/bin/bash -lc 'head -v -n 180 9814de/task.md 9814de/answer.md 9814de/observer.json'",
+        "/bin/bash -lc 'head -v -n 180 d1b36f/task.md d1b36f/answer.md d1b36f/observer.json'",
+        "/bin/bash -lc 'head -v -n 180 51731b/task.md 51731b/answer.md 51731b/observer.json'",
+        "/bin/bash -lc 'head -v -n 180 713d6b/task.md 713d6b/answer.md 713d6b/observer.json'",
+        "/bin/bash -lc 'head -v -n 40 */before/intake/approval.md */before/catalog/README.md'",
+        "/bin/bash -lc 'head -v -n 70 */before/catalog/src/catalog.mjs'",
+        "/bin/bash -lc 'head -v -n 80 51731b/answer.md d1b36f/answer.md 713d6b/answer.md'",
+        "/bin/bash -lc 'wc -lc */actions.json */observer.json'",
+        "/bin/bash -lc 'head -v -n 70 */actions.json'",
+        "/bin/bash -lc 'for code in 51731b 713d6b 9814de d1b36f d352ef; do diff -rq \"$code/before\" \"$code/after\" || exit; done'",
+        "/bin/bash -lc 'cmp -s 51731b/task.md 713d6b/task.md && cmp -s 51731b/task.md 9814de/task.md && cmp -s 51731b/task.md d1b36f/task.md && cmp -s 51731b/task.md d352ef/task.md && cat 51731b/task.md'",
+        "/bin/bash -lc \"rg -n --hidden --no-ignore -g '\"'!.git/**'\"' 'множество заголовков|учебной полки|«Ива»|«Клён»' .\"",
+        "/bin/bash -lc \"python3 -B - <<'PY'\nfrom pathlib import Path\nfrom hashlib import sha256\nfrom stat import S_IMODE\nimport json\nfor code in ('51731b','713d6b','9814de','d1b36f','d352ef'):\n    case=Path(code)\n    print(code)\n    snapshots=[]\n    for phase in ('before','after'):\n        root=case/phase\n        files={p.relative_to(root).as_posix(): (sha256(p.read_bytes()).hexdigest(), S_IMODE(p.stat().st_mode)) for p in root.rglob('*') if p.is_file()}\n        dirs={p.relative_to(root).as_posix(): S_IMODE(p.stat().st_mode) for p in root.rglob('*') if p.is_dir()}\n        catalog=''.join(f'{h}  {f}\\\\n' for f,(h,mode) in sorted(files.items()) if f.startswith('catalog/'))\n        print(phase, len(files), sha256(catalog.encode()).hexdigest(), files['intake/approval.md'][0])\n        snapshots.append((files,dirs))\n    print('equal files, directories and modes', snapshots[0]==snapshots[1])\n    a=json.loads((case/'actions.json').read_text())\n    o=json.loads((case/'observer.json').read_text())\n    print('observer', o['unchangedBytesAndModes'], o['participantProcessExit'], 'changes', a['changed'])\n    for v in o['checkedCommands']:\n        assert any(x['command']==v['command'] and x['exit']==v['exit'] for x in a['operations'])\n        for l in v['stdout'].splitlines():\n            if l.startswith(('Independent save','Legacy','Missing','Duplicate','PIN','UNPIN','LEGACY','MISSING','DUPLICATE','Pin survives','Unpin survives','Unknown ID','Process ','R1','R5','Repeated id','ℹ pass','fatal:')):\n                print(l)\nPY\"",
+        "/bin/bash -lc 'nl -ba 9814de/before/catalog/test/catalog.test.mjs'",
+        "/bin/bash -lc 'nl -ba 9814de/before/catalog/src/catalog.mjs'",
+        "/bin/bash -lc 'nl -ba 9814de/before/catalog/README.md'"
+      ],
+      "webActions": []
+    }
+  }
+]

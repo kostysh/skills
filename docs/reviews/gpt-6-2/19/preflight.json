@@ -1,0 +1,62 @@
+{
+  "rawPreflightSha256": "812f7b1b259d443b611b4749ec740f37438fd4a896668996e6b7001ae61a462e",
+  "cases": {
+    "ordinary": [
+      {
+        "width": 390,
+        "page": 640,
+        "excursions": [
+          "Notification settings\n\nChoose how the service contacts the duty officer.\n\nContact add",
+          "Review\nRestore saved values",
+          "Contact address for service notifications",
+          "Frequency"
+        ],
+        "exit": 0
+      },
+      {
+        "width": 1180,
+        "page": 1180,
+        "excursions": [],
+        "exit": 0
+      }
+    ],
+    "boundary": [
+      {
+        "width": 390,
+        "page": 640,
+        "excursions": [
+          "Team notification settings\n\nChoose how the service contacts the duty officer.\n\nContac",
+          "Review proposed notification preferences\nRestore saved values",
+          "Contact address for service notifications",
+          "Frequency"
+        ],
+        "exit": 0
+      },
+      {
+        "width": 1180,
+        "page": 1180,
+        "excursions": [],
+        "exit": 0
+      }
+    ],
+    "holdout": [
+      {
+        "width": 320,
+        "page": 640,
+        "excursions": [
+          "Service contact notifications\n\nChoose how the service contacts the duty officer.\n\nCon",
+          "Review departmental contact settings before saving\nRestore saved values",
+          "Contact address for service notifications",
+          "Frequency"
+        ],
+        "exit": 0
+      },
+      {
+        "width": 1180,
+        "page": 1180,
+        "excursions": [],
+        "exit": 0
+      }
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "npm",
+    "install",
+    "--dry-run",
+    "--strict-peer-deps",
+    "--ignore-scripts",
+    "--no-fund",
+    "--no-audit",
+    "vitest@5.1.1",
+    "@cloudflare/vitest-pool-workers@0.23.0"
+  ],
+  "exit": 1,
+  "stdout": "",
+  "stderr": "npm warn Could not write error message to eresolve-report.txt due to Error: ENOENT: no such file or directory, open '[tools]/peer-cache/_logs/2026-11-18T21_39_30_360Z-eresolve-report.txt'\nnpm error code ERESOLVE\nnpm error ERESOLVE unable to resolve dependency tree\nnpm error\nnpm error While resolving: runner-version-probe@1.0.0\nnpm error Found: vitest@5.1.1\nnpm error node_modules/vitest\nnpm error   vitest@\"5.1.1\" from the root project\nnpm error   peer vitest@\"5.1.1\" from @vitest/browser-playwright@5.1.1\nnpm error   node_modules/@vitest/browser-playwright\nnpm error     peerOptional @vitest/browser-playwright@\"5.1.1\" from vitest@5.1.1\nnpm error   7 more (@vitest/browser-preview, ...)\nnpm error\nnpm error Could not resolve dependency:\nnpm error peer vitest@\"^4.1.0\" from @cloudflare/vitest-pool-workers@0.23.0\nnpm error node_modules/@cloudflare/vitest-pool-workers\nnpm error   @cloudflare/vitest-pool-workers@\"0.23.0\" from the root project\nnpm error\nnpm error Fix the upstream dependency conflict, or retry this command with --no-strict-peer-deps, --force, or --legacy-peer-deps to accept an incorrect (and potentially broken) dependency resolution.\nnpm error Log files were not written due to the config logs-max=0\n",
+  "stderr_raw_sha256": "f48250cf51802065f39468793ff7be1d53228fff568d76ec9da10c7cf8f6da22",
+  "artifacts_in_disposable_project": [
+    "package.json"
+  ]
+}

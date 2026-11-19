@@ -1,0 +1,11 @@
+--- A/SKILL.md
++++ B/SKILL.md
+@@ -20 +20 @@
+-4. For non-trivial work, relate the local change to the project purpose only far enough to reject misleading framing or narrow the work; project purpose does not authorize unrequested expansion.
++4. For non-trivial work, relate the local change to the project purpose only far enough to reject misleading framing; project purpose does not authorize unrequested expansion.
+@@ -55 +55 @@
+-12. For non-trivial local work, use project purpose to check whether the request advances the intended flow; use that context to narrow or reject the local task, never to add unrequested work.
++12. For non-trivial local work, use project purpose to check whether the request advances the intended flow; never use that context to add unrequested work.
+@@ -155 +155 @@
+-Project purpose may show that a local task is misleading, insufficient, or unnecessary and may therefore narrow or reject it. It never grants authority to expand the requested scope.
++Project purpose may show that a local task is misleading, insufficient, or unnecessary. It never grants authority to expand the requested scope.

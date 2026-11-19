@@ -1,0 +1,15 @@
+{
+  "image": "postgres@sha256:3a82e1f56c8f0f5616a11103ac3d47e632c3938698946a7ad26da0df1334744a",
+  "isolation": "container network none; private loopback only; no host bind mounts",
+  "intendedPrincipals": [
+    "worker-a",
+    "worker-b",
+    "support"
+  ],
+  "package": "@supabase/supabase-js 2.119.1",
+  "bin": "PostgREST 16.6",
+  "server": "PostgreSQL 18.4 (Debian 18.4-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+  "seedCount": 4,
+  "problem": "client readback failed: 406 PGRST106 Invalid schema: public\n",
+  "containerGone": true
+}

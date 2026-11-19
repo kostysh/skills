@@ -1,0 +1,4 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -171 +170,0 @@
+-- **high** — Contract tests validate only exercised responses. Claim runtime response validation only when production code validates the emitted payload and failure behavior is tested.

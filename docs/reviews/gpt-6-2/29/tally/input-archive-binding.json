@@ -1,0 +1,15 @@
+{
+  "before": {
+    "source": "Immutable accepted Git commit 2d36a9880cf779a7f42ea7226dc78ee62ef85b3d",
+    "git_blob": "0c1855c1bd63960b981446a228a8150f67652d64",
+    "path": "docs/reviews/gpt-6-2/16/tally-test-handoff.tar.gz",
+    "sha256": "498f2a4811c4b7169479e2a3fa0a68a8b09ee5a743d61c5c8fcbaab170304d7b"
+  },
+  "after": {
+    "source": "Working-tree reread following both sessions",
+    "sha256": "498f2a4811c4b7169479e2a3fa0a68a8b09ee5a743d61c5c8fcbaab170304d7b"
+  },
+  "source_owner_binding_sha256": "8ffc700923b300b69c262c5b2958c46a323c44febfa766df9d6d99b6ac48d738",
+  "equal_bytes": true,
+  "session_scope": "Only copies of the ten extracted source files went to either participant. The authoritative archive remained in the owner repository."
+}

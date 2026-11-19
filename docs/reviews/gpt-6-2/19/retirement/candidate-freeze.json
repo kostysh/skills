@@ -1,0 +1,25 @@
+{
+  "usedAfterSignedAB": {
+    "receiptSha256": "4b6619e07ea6c23ae1b22e45ab7436f55e27fdbe6a0051ecf1d87f63529345db",
+    "scoreSha256": "2084789b6d571d4016290a260209c1186e31c3efb4e2e5b545dbfe3a9dff9e3c"
+  },
+  "verifiedAt": "2026-11-19T10:32:59.473122+00:00",
+  "source": "Exact seven entries from the separately frozen frontend-design-0.2.6.tgz supplied by the package owner after the initial input freeze; its bytes were not revised in response to grading.",
+  "archiveSha256": "15ff2849d06f277aede6a988029443deef0b0ba1be2fda0b9b67282cd4649a33",
+  "archiveName": "frontend-design-0.2.6.tgz",
+  "files": {
+    "LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+    "SKILL.md": "2debb173bc150faabfdb6cf0152193261e8d8392bb2425483ec7469e54c75db3",
+    "agents/openai.yaml": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+    "references/anti-patterns.md": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+    "references/strategy-to-implementation.md": "d073ae86edad083c4a5c2edb4d69cd0c9d7d5486ab27f5a47a3e4f467d1c4d49",
+    "references/surface-modes.md": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+    "references/visual-engines.md": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7"
+  },
+  "patches": {
+    "A-C.patch": "7e04118674278b33d16973320a3ddfb2fe0292f32e05abc0b22bf906f24144a7",
+    "B-C.patch": "a74261b6b19e487306b53ace9507766dd8452542e7709d6159e66dbff416d8f3"
+  },
+  "rootMetadata": "Use the emitted archive as is. Exact C header identifies 0.2.6 and its own manifest. Scorers receive no instruction headers or bodies.",
+  "comparison": "C on the two original fixtures plus the held fixture in fresh sessions. Reblind and regrade the actual original A answers on the common fixtures alongside C; no duplicate subjects used as independent repeats."
+}

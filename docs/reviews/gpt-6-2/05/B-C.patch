@@ -1,0 +1,5 @@
+--- B/references/patterns.md
++++ C/references/patterns.md
+@@ -42,0 +43,2 @@
++
++Use the accepted schema's API to derive the input or parsed output type you need.

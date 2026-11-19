@@ -1,0 +1,58 @@
+{
+  "model": "gpt-6.2-sol",
+  "reasoning": "model_reasoning_effort=\"high\"",
+  "sandbox": "read-only",
+  "long_term_memory_feature": "disabled",
+  "raw_grade_sha256": "ad6286c7044a67a64b4f19894a85c30d62548d2f53bc34c56cea73e471258507",
+  "raw_evaluator_events_sha256": "ea6798d5c5910c2196e5572f0ebcdfd53ef3c641773e4421edd1dfe739362dbe",
+  "public_grade_sha256": "aafddaa0af241c96ab6de69f81200290a62b2e67b344d4ddaaa28661913ed0f3",
+  "packet_files": 27,
+  "packet_manifest_sha256": "93d2d976e3532471ad2f0d7dea4c8a3a5c81afbf959028ff014902ee8142f8fd",
+  "blind_access": "Only work product, neutral assignments, precommitted criteria, original task, final answer, recorded actions and evidence supplied in packet. No assignment key or candidate instruction files. Shared host outside read-only directory physically readable; operations reviewed for scope.",
+  "observed_access": [
+    {
+      "command": "/bin/bash -lc 'rg --files --hidden'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'cat cf5ea8/observer.json'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'wc -lc cf5ea8/*.json cf5ea8/after/browser-record.jsonl cf5ea8/{before,after}/lab.py cf5ea8/{before,after}/PREVIEW.md cf5ea8/{before,after}/dist/index.html'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'cat criteria.md cf5ea8/task.md cf5ea8/answer.md'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'cat cf5ea8/actions.json cf5ea8/terminal-transcript.json cf5ea8/before/PREVIEW.md cf5ea8/before/lab.py'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'sha256sum cf5ea8/after/browser-record.jsonl\nhead -n 3 cf5ea8/after/browser-record.jsonl'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"python3 -B - <<'PY'\nimport hashlib,json,pathlib\np=pathlib.Path('cf5ea8/after/browser-record.jsonl')\nobs=json.loads(pathlib.Path('cf5ea8/observer.json').read_text())\ntrans=json.loads(pathlib.Path('cf5ea8/terminal-transcript.json').read_text())\nraw=p.read_bytes()\nprint('hash matches observer:',hashlib.sha256(raw).hexdigest()==obs['browser_record_sha256'])\nprint('hash matches original:',hashlib.sha256(raw).hexdigest()==trans['raw_jsonl_sha256'])\nprint('original event line present:',any(hashlib.sha256(line).hexdigest()==trans['raw_event_line_sha256'] for line in raw.splitlines(keepends=True)))\nevents=list(map(json.loads,raw.splitlines()))\nlast_end=events[0]['time_ns']\nfor i,e in enumerate(events,1):\n    if e['kind']\"'!='\"'browser':\n        print(i,e)\n        continue\n    out=e.get('output')\n    valid=hashlib.sha256(out.encode()).hexdigest()==e['output_sha256'] if out is not None else 'omitted'\n    key=[line.strip() for line in (out or '').splitlines() if any(s in line for s in ('✗','✓','Settings applied','Email: ','Applying…','StaticText \\\"On\\\"','StaticText \\\"Daily\\\"','StaticText \\\"Weekly\\\"','StaticText \\\"brief@example.test\\\"','StaticText \\\"update@example.test\\\"','No email is sent'))]\n    print(i,repr(e['args']),e['exit'],valid,'gap_ms',round((e['start_ns']-last_end)/1e6,3),'elapsed_ms',round((e['time_ns']-e['start_ns'])/1e6,3),key)\n    last_end=e['time_ns']\nidx={e['time_ns']:e for e in events}\npos=0\nfor obs_e in obs['actual_events']:\n    for j in range(pos,len(events)):\n        e=events[j]\n        matches=e.get('args')==obs_e.get('args') and e.get('output_sha256')==obs_e.get('stdout_sha256') and e.get('exit')==obs_e.get('runtime_exit') if 'args' in obs_e else all(e.get(k)==v for k,v in obs_e.items())\n        if matches:\n            if not all(line in (e.get('output') or '').splitlines() for line in obs_e.get('observed_lines',[])):\n                print('mismatched lines',obs_e)\n            pos=j+1\n            break\n    else:\n        print('unmatched',obs_e)\nprint('observer comparison finished')\nPY\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"python3 -B - <<'PY'\nfrom pathlib import Path\np=next(Path('cf5ea8/after/dist/assets').glob('*.js'))\ns=p.read_text()\nfor term in ['Applying…','Settings applied','Review changes','Cancel','setTimeout(']:\n    hits=[i for i in range(len(s)) if s.startswith(term,i)]\n    print(term, len(hits))\n    for i in (hits[-3:] if term == 'setTimeout(' else hits[-1:]):\n        print(s[max(0,i-440):i+520])\nPY\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"nl -ba criteria.md\nnl -ba cf5ea8/task.md\nnl -ba cf5ea8/answer.md\nrg -n --hidden --files -g 'AGENTS.md' -g 'SKILL.md' -g 'task.md' -g 'criteria.md'\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'rg --files --hidden --no-ignore\nfind . -maxdepth 3 -type d -print'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"python3 -B - <<'PY'\nimport json\nfrom pathlib import Path\np=Path('cf5ea8/after/browser-record.jsonl')\nfor i, raw in enumerate(p.read_text().splitlines(),1):\n    x=json.loads(raw)\n    if i in (6,15,16,17,18,19,20,24,25,26,27,28):\n        print(f'{i}: {x.get(\\\"args\\\",x[\\\"kind\\\"])}')\n        print(x.get('output',x.get('observed','')))\nPY\"",
+      "exit": 0
+    }
+  ]
+}

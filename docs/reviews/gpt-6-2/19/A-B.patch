@@ -1,0 +1,4 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -275 +274,0 @@
+-- **medium** — Do not approve a design artifact from a stale export or a runtime implementation from an outdated mockup when current source and rendered behavior disagree.

@@ -1,0 +1,86 @@
+{
+  "ab": [
+    {
+      "code": "d1ca41",
+      "original": "09c00af080ce511cb5df7cdeb42c6dc1670a6641fcbc681f48befed5347105a9",
+      "assessor": "5ab0fedd9d84816a5146d8e77c1f0ca0b36bc1a0e1554c9330976e466fcd155e",
+      "pathOccurrences": 3,
+      "bytesPerSubstitution": 21,
+      "allNormalizedBytesMatch": true
+    },
+    {
+      "code": "1de9a6",
+      "original": "4d58b2eda907446daaf298258280171071bb64c1fed7fc9b2cbcdec5942de599",
+      "assessor": "d80a6b3a77e53ab05008b271c95f21146acf5c8f00887ef06ab93c44aa262139",
+      "pathOccurrences": 3,
+      "bytesPerSubstitution": 21,
+      "allNormalizedBytesMatch": true
+    },
+    {
+      "code": "6ad14f",
+      "original": "a78a2e3153648f3ec86094cf09e0cea2cb21609708e77c17f062f35da22b677b",
+      "assessor": "096b05ce0a9729d0b40b19df05dad46ac651318b36627288dd60a5b6e135e4ef",
+      "pathOccurrences": 3,
+      "bytesPerSubstitution": 21,
+      "allNormalizedBytesMatch": true
+    },
+    {
+      "code": "eb0aaf",
+      "original": "91efe203b34c0b13d0a80f471e77fa3768226c653b4847702d022fdbb9a12c5e",
+      "assessor": "91efe203b34c0b13d0a80f471e77fa3768226c653b4847702d022fdbb9a12c5e",
+      "pathOccurrences": 0,
+      "bytesPerSubstitution": 21,
+      "allNormalizedBytesMatch": true
+    }
+  ],
+  "confirm": [
+    {
+      "code": "bb6730",
+      "original": "16409ad6347b66e5240a803892e93250ba35934f3165916aaef0b6a06a466058",
+      "assessor": "5f95cf00e8c8e048b8caeee15d27b8ec80f3a9b3e54cec99715b3d1c6d260183",
+      "pathOccurrences": 4,
+      "bytesPerSubstitution": 21,
+      "allNormalizedBytesMatch": true
+    },
+    {
+      "code": "a7ad41",
+      "original": "09c00af080ce511cb5df7cdeb42c6dc1670a6641fcbc681f48befed5347105a9",
+      "assessor": "5ab0fedd9d84816a5146d8e77c1f0ca0b36bc1a0e1554c9330976e466fcd155e",
+      "pathOccurrences": 3,
+      "bytesPerSubstitution": 21,
+      "allNormalizedBytesMatch": true
+    },
+    {
+      "code": "f14eea",
+      "original": "91efe203b34c0b13d0a80f471e77fa3768226c653b4847702d022fdbb9a12c5e",
+      "assessor": "91efe203b34c0b13d0a80f471e77fa3768226c653b4847702d022fdbb9a12c5e",
+      "pathOccurrences": 0,
+      "bytesPerSubstitution": 21,
+      "allNormalizedBytesMatch": true
+    },
+    {
+      "code": "567e8b",
+      "original": "7d4acbb6f22320a275a61f4dc48745065558b40254db9fab6577fffbe828fdc3",
+      "assessor": "dfca4024afa52fe3049c14c8102410a9da3d229d79dce92d385c65ae2c83a35c",
+      "pathOccurrences": 3,
+      "bytesPerSubstitution": 21,
+      "allNormalizedBytesMatch": true
+    },
+    {
+      "code": "5ae84c",
+      "original": "a987a1e1b484a4be776fe45abff18dfadeb8201e0fdc20acaa77333101b02a1a",
+      "assessor": "cabe7a90286aad1a4c5e2276999426715abaa660f6041d1cc43876f12c01d364",
+      "pathOccurrences": 2,
+      "bytesPerSubstitution": 21,
+      "allNormalizedBytesMatch": true
+    },
+    {
+      "code": "17da6f",
+      "original": "cebd73ae420cd1632e26b18c976260e28c4afe1652c39bde76738c117eeb2edc",
+      "assessor": "d63702023204ef753cedd0e6878ed56abc2218c92a19d08321eb6c1389868d7b",
+      "pathOccurrences": 3,
+      "bytesPerSubstitution": 21,
+      "allNormalizedBytesMatch": true
+    }
+  ]
+}

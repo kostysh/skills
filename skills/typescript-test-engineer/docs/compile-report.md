@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.11`
+- Skill source version: `0.1.12`
 - CLI package version: `0.1.0`
 
 ## Source files
@@ -16,6 +16,7 @@ Generated from `skill.yaml`.
 - `docs/logs/implementation-log-20260820-1.md`
 - `docs/logs/implementation-log-20260907-1.md`
 - `docs/logs/implementation-log-20261107-1.md`
+- `docs/logs/implementation-log-20261118-1.md`
 - `evals/evals.json`
 - `evals/fixtures/environment-input.md`
 - `evals/fixtures/lifecycle-input.md`

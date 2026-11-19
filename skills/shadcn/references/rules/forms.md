@@ -59,7 +59,7 @@ Use the input-group-specific controls and buttons:
 - Predefined compact choice: `Select`.
 - Searchable choice: `Combobox`.
 
-Current single-selection toggle groups use the documented single mode:
+This example uses a Radix wrapper. A React Aria wrapper uses `selectionMode="single"`. Check the installed wrapper for the matching selection prop.
 
 ```tsx
 <ToggleGroup type="single">

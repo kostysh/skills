@@ -186,7 +186,10 @@ void test('checkCompiledSkill checks source bundles without scanning unrelated d
   const sourceRoot = join(tempRoot, 'skill-source-compiler');
 
   try {
-    await cp(fixtureRoot, sourceRoot, { recursive: true });
+    await cp(fixtureRoot, sourceRoot, {
+      recursive: true,
+      filter: (sourcePath) => sourcePath !== join(fixtureRoot, 'node_modules'),
+    });
     await regenerateSourceBundle(sourceRoot);
     await mkdir(join(sourceRoot, 'node_modules/.bin'), { recursive: true });
     await writeFile(

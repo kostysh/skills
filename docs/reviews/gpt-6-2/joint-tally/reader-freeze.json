@@ -1,0 +1,19 @@
+{
+  "at": "2026-11-18T23:37:26.230444+00:00",
+  "inputs": {
+    "rubric.md": "1e3c18b252026fd2aee786ea241d9a04e45d2463d13553cd2e126e7ebdffc62d",
+    "cases/desk.md": "8d2b55c86ec148d3e8b623aac619715adf9897ba443a1d44e870199408a04c54",
+    "fixture/desk/desk.txt": "d51288de8867604dbde4090bae6cc117f4dee33e1874739590b4aa32dcfd08eb"
+  },
+  "homePageSHA256": "8670fc8dc7bf5897ccb358c296424f7d1146ead3792995b8cafc2a667aaed772",
+  "guidePageSHA256": "23317a58869c64c62d89f62d181262e8c9b0b2e937c1ffd980ecf716117a7e37",
+  "intakePageSHA256": "876203f59d67a30aaa7fa8d8cab5f10c88ab60b406c46f4ca8552be1379f3450",
+  "downloadSHA256": "7c9f8bff28fee4cb4acd9dfec592b15e688cf040990a001d66a8d1ba73bce0cc",
+  "route": {
+    "home": "/",
+    "guide": "/spravochnik/guide/",
+    "intake": "/spravochnik/desk-intake/",
+    "download": "/downloads/engineering-tally-fixture-1.0.0.tar.gz"
+  },
+  "readerInstalledInstructions": []
+}

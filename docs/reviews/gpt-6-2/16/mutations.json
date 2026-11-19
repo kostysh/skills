@@ -1,0 +1,20 @@
+{
+  "ordinary": {
+    "file": "src/count.ts",
+    "from": "process.stdout.write(JSON.stringify({ count: total })",
+    "negative": "process.stdout.write('Preparing\\n');\nprocess.stdout.write(JSON.stringify({ count: total })",
+    "equivalent": "const response = { count: total };\nprocess.stdout.write(JSON.stringify(response)"
+  },
+  "boundary": {
+    "file": "src/quantity.ts",
+    "from": "process.stderr.write('Invalid quantity\\n');",
+    "negative": "process.stdout.write('Invalid quantity\\n');",
+    "equivalent": "const line = 'Invalid quantity' + '\\n';\n  process.stderr.write(line);"
+  },
+  "holdout": {
+    "file": "src/badge.ts",
+    "from": "writeFileSync(file, JSON.stringify({ label }));",
+    "negative": "void label;",
+    "equivalent": "const record = { label };\n  writeFileSync(file, JSON.stringify(record));"
+  }
+}

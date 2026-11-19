@@ -1,0 +1,72 @@
+{
+  "observed_date": "2026-11-18",
+  "official_index": "https://nodejs.org/dist/index.json",
+  "published_as_of_date": {
+    "v22": {
+      "version": "v22.23.5",
+      "date": "2026-11-11",
+      "lts": "Jod"
+    },
+    "v24": {
+      "version": "v24.22.3",
+      "date": "2026-11-10",
+      "lts": "Krypton"
+    },
+    "v26": {
+      "version": "v26.13.1",
+      "date": "2026-11-10",
+      "lts": "Lithium"
+    },
+    "v27": {
+      "version": "v27.0.0-alpha.0.1.1",
+      "date": "2026-11-16",
+      "lts": false
+    }
+  },
+  "installed_versions_help": [
+    {
+      "version": "v22.21.0",
+      "help_options": {
+        "--experimental-transform-types": true,
+        "--no-experimental-strip-types": true,
+        "--disable-warning": true,
+        "--cpu-prof": true,
+        "--heap-prof": true,
+        "--inspect": true
+      }
+    },
+    {
+      "version": "v22.22.0",
+      "help_options": {
+        "--experimental-transform-types": true,
+        "--no-experimental-strip-types": true,
+        "--disable-warning": true,
+        "--cpu-prof": true,
+        "--heap-prof": true,
+        "--inspect": true
+      }
+    },
+    {
+      "version": "v22.22.2",
+      "help_options": {
+        "--experimental-transform-types": true,
+        "--no-experimental-strip-types": true,
+        "--disable-warning": true,
+        "--cpu-prof": true,
+        "--heap-prof": true,
+        "--inspect": true
+      }
+    },
+    {
+      "version": "v24.15.0",
+      "help_options": {
+        "--experimental-transform-types": true,
+        "--no-experimental-strip-types": false,
+        "--disable-warning": true,
+        "--cpu-prof": true,
+        "--heap-prof": true,
+        "--inspect": true
+      }
+    }
+  ]
+}

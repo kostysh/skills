@@ -1,0 +1,126 @@
+{
+  "source": "create-docusaurus 3.10.2 classic --typescript; new site, default future.v4 true.",
+  "lockedRuntime": {
+    "@docusaurus/core": "3.10.2",
+    "@docusaurus/preset-classic": "3.10.2",
+    "@docusaurus/faster": "3.10.2",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "actions": [
+    {
+      "argv": [
+        "pnpm",
+        "install",
+        "--frozen-lockfile"
+      ],
+      "exit": 0,
+      "output": "Lockfile is up to date, resolution step is skipped\nAlready up to date\n\n╭ Warning ─────────────────────────────────────────────────────────────────────╮\n│                                                                              │\n│   Ignored build scripts: @swc/core@1.16.22, core-js@3.51.0.                  │\n│   Run \"pnpm approve-builds\" to pick which dependencies should be allowed     │\n│   to run scripts.                                                            │\n│                                                                              │\n╰──────────────────────────────────────────────────────────────────────────────╯\nDone in 452ms using pnpm v10.28.2\n"
+    },
+    {
+      "argv": [
+        "pnpm",
+        "build"
+      ],
+      "exit": 0,
+      "output": "\n> generated-site@0.0.0 build <pnpm-site>\n> docusaurus build\n\n[INFO] [en] Creating an optimized production build...\n[SUCCESS] Generated static files in \"build\".\n[INFO] Use `npm run serve` command to test your build locally.\n"
+    }
+  ],
+  "bytes": {
+    "sitePackage": "783117dcccb2740188d6781f43d5c62dd1c10e0250ff0ec5a8617d5cc160cb77",
+    "siteLock": "583ccecfd3a66072cc9074043444637562a0e496314d1c3e9a031ccace744219",
+    "installedAGENTS": "13d5ea46437ffb9e1f99ab9b85b20513139782a22cec546318b128538c2df16d",
+    "publishedSource": "03863912c0990e634dab36d3dac8b870397dca00ce5254e213a7e8e4d6caaf12",
+    "approvedReaderSource": "03863912c0990e634dab36d3dac8b870397dca00ce5254e213a7e8e4d6caaf12",
+    "companionSource": "281c52f6e86b0a7a5dfeac0b80997357dc9565ef2a600b5cbd0b986bb4538386",
+    "release": "7c9f8bff28fee4cb4acd9dfec592b15e688cf040990a001d66a8d1ba73bce0cc",
+    "maintainerInstructions": "779fcb3545881889839caf1e8197a1d736d472f5fcf4c46ca24dda10b6ca1bda"
+  },
+  "http": {
+    "home": {
+      "path": "/",
+      "status": 200,
+      "sha256": "44955e9e8ae699f44447c9f2a1b21eaf026d969b9f62bb8cefe574e1e7db0296"
+    },
+    "guide": {
+      "path": "/docs/guide",
+      "status": 200,
+      "sha256": "61e90bddd9a626d3e8d7e272fc5133906c15045399d33fa6820b634e7b6ce8ab"
+    },
+    "intake": {
+      "path": "/docs/desk-intake",
+      "status": 200,
+      "sha256": "45d18c666650723caa1a722a3d063e4fa56059be316ffb2bd154501491c009c4"
+    },
+    "download": {
+      "path": "/downloads/engineering-tally-fixture-1.0.0.tar.gz",
+      "status": 200,
+      "sha256": "7c9f8bff28fee4cb4acd9dfec592b15e688cf040990a001d66a8d1ba73bce0cc"
+    }
+  },
+  "renderedBashBlockSHA256": [
+    "1999ebd21f2e15f6856ce3a6d8b9c0375dac4aaa2dd85a61872698b30d767e82",
+    "75d8b8860d54fc9eb57d0f950b86055d3af583044099e0dea9e9aece987125b5"
+  ],
+  "reader": {
+    "shellExit": 0,
+    "good.stdout": "{\"total\":5}\n",
+    "good.stderr": "",
+    "bad.stdout": "",
+    "bad.stderr": "Invalid number\n",
+    "codes": "0 2"
+  },
+  "serverStopped": true,
+  "serve": "\n> generated-site@0.0.0 serve <pnpm-site>\n> docusaurus serve --port 3100\n\n[SUCCESS] Serving \"build\" directory at: http://localhost:3100/\n ELIFECYCLE  Command failed.\n",
+  "portableSite": {
+    "file": "published-pnpm-site.tar.gz",
+    "files": 158,
+    "sha256": "c2f3a57f03bcbcad53de6b154c63267722f28e36b9449e132eb69bba3875fa77"
+  },
+  "freshMaintainer": {
+    "inputArchiveSHA256": "c2f3a57f03bcbcad53de6b154c63267722f28e36b9449e132eb69bba3875fa77",
+    "nodeModulesBefore": false,
+    "preparedBuildPresent": true,
+    "frozenInstall": {
+      "argv": [
+        "pnpm",
+        "install",
+        "--frozen-lockfile"
+      ],
+      "exit": 0,
+      "stdout": "Lockfile is up to date, resolution step is skipped\nProgress: resolved 1, reused 0, downloaded 0, added 0\nPackages: +1184\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nProgress: resolved 1184, reused 1176, downloaded 0, added 1184, done\n\ndependencies:\n+ @docusaurus/core 3.10.2\n+ @docusaurus/faster 3.10.2\n+ @docusaurus/preset-classic 3.10.2\n+ @mdx-js/react 3.1.1\n+ clsx 2.1.1\n+ prism-react-renderer 2.4.1\n+ react 19.3.1\n+ react-dom 19.3.1\n\ndevDependencies:\n+ @docusaurus/module-type-aliases 3.10.2\n+ @docusaurus/tsconfig 3.10.2\n+ @docusaurus/types 3.10.2\n+ @types/react 19.3.0\n+ typescript 6.0.3\n\n╭ Warning ─────────────────────────────────────────────────────────────────────╮\n│                                                                              │\n│   Ignored build scripts: @swc/core@1.16.22, core-js@3.51.0.                  │\n│   Run \"pnpm approve-builds\" to pick which dependencies should be allowed     │\n│   to run scripts.                                                            │\n│                                                                              │\n╰──────────────────────────────────────────────────────────────────────────────╯\nDone in 770ms using pnpm v10.28.2\n",
+      "stderr": ""
+    },
+    "lockUnchanged": true,
+    "nodeModulesAfter": true,
+    "installedDocusaurus": "3.10.2",
+    "actualHTTP": {
+      "home": {
+        "status": 200,
+        "sha256": "44955e9e8ae699f44447c9f2a1b21eaf026d969b9f62bb8cefe574e1e7db0296"
+      },
+      "guide": {
+        "status": 200,
+        "sha256": "61e90bddd9a626d3e8d7e272fc5133906c15045399d33fa6820b634e7b6ce8ab"
+      },
+      "intake": {
+        "status": 200,
+        "sha256": "45d18c666650723caa1a722a3d063e4fa56059be316ffb2bd154501491c009c4"
+      },
+      "download": {
+        "status": 200,
+        "sha256": "7c9f8bff28fee4cb4acd9dfec592b15e688cf040990a001d66a8d1ba73bce0cc"
+      }
+    },
+    "serveArgv": [
+      "pnpm",
+      "run",
+      "serve",
+      "--port",
+      "3100"
+    ],
+    "serveLog": "\n> generated-site@0.0.0 serve <fresh-owner-copy>\n> docusaurus serve --port 3100\n\n[SUCCESS] Serving \"build\" directory at: http://localhost:3100/\n ELIFECYCLE  Command failed.\n",
+    "buildExecutedByMaintainer": false,
+    "serverStopped": true
+  }
+}

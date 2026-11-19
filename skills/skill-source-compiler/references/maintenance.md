@@ -23,7 +23,6 @@ skill-name/
 Required setup:
 
 - add `skill.source-version` in `skill.yaml`
-- add `skill.recommended-skill-md-max-bytes` in `skill.yaml`
 - define shipped commands in `skill.yaml` only if the runtime actually exposes them
 - define modes, metrics, and configuration surfaces only if the current skill behavior uses them and verification can prove or inspect them
 - include built command runtime files under `copies`; keep source tests in the authoring package unless a test is deliberately shipped and runnable without omitted source or toolchain files

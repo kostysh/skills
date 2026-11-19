@@ -1,0 +1,219 @@
+{
+  "variant": "C",
+  "case": "ordinary",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПримени локальный ./SKILL.md. Владелец принимает штатный маршрут чтения на предоставленной версии. Проверь исполнение договора contract.md, порядок этапов на успехе и одобренных отказах и сообщи, можно ли выдать эту поставку. Разрешена проверка в расходной копии, исправления и публикация не входят в задачу. В README.md описан локальный запуск.\n",
+  "input_file_sha256": {
+    "README.md": "e0da529c363c6447f3bf13e1d88d4a15601a3db9a28e957bbcec19aad4dcf755",
+    "SKILL.md": "44acfa76be8e438c5275561bd8fb77850cbbf63844f3475faff8ade58f89a66f",
+    "agents/openai.yaml": "a0134d8b02c6cb344f83bd01f963979502b051cbd4cf714b1d4251b70e9142bc",
+    "ci.md": "50482c26daf4869ecfa3c8b1531abadcd9459ba2bf33b65940175061e1d4722b",
+    "contract.md": "46e38267c97e0e98f1749cd47dd0001e02d18bd919d68c8ce9b8f50a6edd0579",
+    "references/architecture.md": "e8719afb483a675d7cf7d9786f11cf0b773d25bbc95dadac2a34748f9ec9b266",
+    "references/auth.md": "55ec126f059fb23da4c94ccab20ce456a848abd13d8ffcdfa222dd7b3183efc9",
+    "references/caching.md": "d02f9fc9ee8691e122e3f9f8194b65fca5409257d9df6ae384c34d3e2cf59ddb",
+    "references/contracts-types.md": "6fe56f540454d6a8917e1cd5aabd88672cdb489c5cfffd05cde490810612a03b",
+    "references/errors-logs.md": "314944e33e1e011e64347f5505f063eca50142767fceee59b5f13ea7e61c49ff",
+    "references/framework-currency.md": "065900d093bc1d51e315b3965983ae17f7c5f3c60dcb10ee23e49eeaba25f13b",
+    "references/high-risk-backend-contract.md": "f6d420ab9892541c0a0b84050c93754f3011d536dd755717d0f2944e68a09bc4",
+    "references/observability.md": "604d64c12a258189b17b3e259276094ff0e65046a4a6a65ef86ed886cbd13dd7",
+    "references/perf-security.md": "1afbc790af794e7e5602f204aed24854dc895e6ea8644625ec9dc1883423b47e",
+    "references/pipelines.md": "9d386aaebc7bdc9cbdf53a2f24a811c023b4968e1e9ba8304ba5b71c19894510",
+    "references/rate-limiting.md": "f815aea19eca48ad8eef5266f685407123d4f5f76f7ccac5a7f2c7472d973379",
+    "references/routers.md": "3f8d4992ec22ded988ee4aa3bc0fbba8b38fabfe6177fc53e42adf3b8d22ad2a",
+    "references/security.md": "1425d8c8370e4628c74d2ecccf6db4dbc90954ec8668a48793be79f1454e74a2",
+    "references/supabase.md": "972592f8360bf3929aea1eee6f135be8d2559c1b0f12c3fc758a48ba95f273da",
+    "references/typing.md": "0436b086b3d323568949bcc2969d812dd9955663dc66a3f5b5bddd023d8e69d9",
+    "references/validation-openapi.md": "7fa235b5751dcf8e1ae3e3b314d915d2155f95a3cfeb35e6227ff0f83a517cb0",
+    "references/workers-platform.md": "03d25c2243d4916a498be7d72b3f09bfd363a9591bb01172b81c530cec01c2a6",
+    "references/wrangler.md": "9b891f3250af60e39e6d37cb24e14e148bc85260fe3ba5b219f82dc6ef536b71",
+    "release/app.mjs": "38f5ca25f950e0c02d1869c63d42e684a04f58ee97eac1f7fc068d04b193493c",
+    "release/package.json": "1312c8d3fd5a7472e9e840fa838e6125f50c611c147e9e9e27f835f3320f6b72",
+    "release/smoke.test.mjs": "461bbacb835ec2a903fa81261e6424848a233e34eaf1f8634b4fe5100c364ac0",
+    "vendor/hono-4.13.19.tgz": "ec0825774aef43124f0ddde51a1883d24a3fa3e174c539eaa175010b77c62ba5"
+  },
+  "raw_events_sha256": "7e0c95c4eef7cf68435b6813b93668fc94f78cd798388f8c83df18a774cd4238",
+  "raw_events_bytes": 62484,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Прочитаю локальный `SKILL.md`, договор и README. Затем сверю порядок этапов и результаты проверок с условиями выдачи поставки."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat SKILL.md contract.md README.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git/**'\"'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat ci.md references/pipelines.md references/high-risk-backend-contract.md references/framework-currency.md && ls -la'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'nl -ba release/app.mjs && nl -ba release/smoke.test.mjs && cat release/package.json'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat references/errors-logs.md && nl -ba contract.md && nl -ba README.md && nl -ba ci.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'node --version && npm --version && tar -tzf vendor/hono-4.13.19.tgz | head -45'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"tar -xOzf vendor/hono-4.13.19.tgz package/dist/hono-base.js | rg -n -C 4 'dispatch|request =|onError|compose'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"tar -xOzf vendor/hono-4.13.19.tgz package/dist/compose.js package/dist/hono.js && tar -tvzf vendor/hono-4.13.19.tgz | awk '\"'$1 !~ /''^-/ {print}'\"'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'set -eu\nreview_dir=$(mktemp -d \"$PWD/.desk-review.XXXXXX\")\nprintf '\"'%s\\\\n' \\\"\"'$review_dir\"\ncp -R release/. \"$review_dir/\"\ncd \"$review_dir\"\nnpm install --cache \"$review_dir/.npm-cache\" --offline --ignore-scripts --no-audit --no-fund ../vendor/hono-4.13.19.tgz\nnode -p \"require('\"'./node_modules/hono/package.json').version\\\"\nnpm test\nnode --input-type=module <<'NODE'\nimport assert from 'node:assert/strict';\nimport app from './app.mjs';\n\nconst cases = [\n  { name: 'valid', id: 'a7', session: 'day', status: 200, body: { id: 'a7', title: 'Harbor' }, steps: 'dispatch,session,read' },\n  { name: 'no session', id: 'a7', status: 401, body: { error: 'sign_in' }, steps: 'dispatch,session' },\n  { name: 'missing card', id: 'missing', session: 'day', status: 404, body: { error: 'not_found' }, steps: 'dispatch,session,read' },\n  { name: 'invalid card', id: 'b4', session: 'day', status: 502, body: { error: 'invalid_record' }, steps: 'dispatch,session,read,error' },\n];\nlet failures = 0;\nfor (const entry of cases) {\n  const path = '/desk/' + entry.id;\n  const headers = entry.session ? { 'x-shift': entry.session } : {};\n  try {\n    const response = await app.request(new Request('http://localhost' + path, { method: 'GET', headers }));\n    const contentType = response.headers.get('content-type');\n    const raw = await response.text();\n    console.log(JSON.stringify({ case: entry.name, path, status: response.status, raw, steps: response.headers.get('x-desk-steps'), contentType }));\n    assert.equal(response.status, entry.status);\n    assert.deepEqual(JSON.parse(raw), entry.body);\n    assert.equal(response.headers.get('x-desk-steps'), entry.steps);\n    assert.match(contentType, /\"'^application'\"\\\\/json(?:;|\"'$)/i);\n  } catch (error) {\n    failures++;\n    console.error(error);\n  }\n}\nconsole.log('\"'Contract cases passed: ' + (cases.length - failures) + '/' + cases.length);\nprocess.exitCode = failures > 0 ? 1 : 0;\nNODE\n\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'set -eu\nreview_dir=.desk-review.QJBRLI\ncmp release/app.mjs \"$review_dir/app.mjs\"\ncmp release/smoke.test.mjs \"$review_dir/smoke.test.mjs\"\npython3 - <<'\"'PY'\nfrom pathlib import Path\nfrom shutil import rmtree\n\ncopy = Path(\\\".desk-review.QJBRLI\\\")\nassert copy.is_dir() and not copy.is_symlink()\nrmtree(copy)\nPY\nrg --files --hidden -g '\"'!.git/**'\"' -g '\"'!vendor/**'\"'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "**Поставку можно выдать.** На предоставленной Hono 4.13.19 штатный маршрут `GET /desk/:id` выполнил все четыре сценария договора. [contract.md]({project}/contract.md)\n\n| Сценарий | Статус и JSON | `x-desk-steps` |\n|---|---|---|\n| Карточка `a7`, рабочая сессия | `200` `{\"id\":\"a7\",\"title\":\"Harbor\"}` | `dispatch,session,read` |\n| Сессия отсутствует | `401` `{\"error\":\"sign_in\"}` | `dispatch,session` |\n| Карточка отсутствует, рабочая сессия | `404` `{\"error\":\"not_found\"}` | `dispatch,session,read` |\n| Непригодная карточка `b4`, рабочая сессия | `502` `{\"error\":\"invalid_record\"}` | `dispatch,session,read,error` |\n\nДля `b4` сработал зарегистрированный обработчик Hono `onError`, и этап `error` сохранился в заголовке ответа. [app.mjs]({project}/release/app.mjs:14)\n\nШтатный `npm test` прошёл. Все четыре сценария отдельно проверены через `app.request()` со стандартными `Request` и `Response` в Node.js 24.15.0. Исходные файлы остались без изменений."
+    }
+  ],
+  "changed_file_contents": {},
+  "final_response": "**Поставку можно выдать.** На предоставленной Hono 4.13.19 штатный маршрут `GET /desk/:id` выполнил все четыре сценария договора. [contract.md]({project}/contract.md)\n\n| Сценарий | Статус и JSON | `x-desk-steps` |\n|---|---|---|\n| Карточка `a7`, рабочая сессия | `200` `{\"id\":\"a7\",\"title\":\"Harbor\"}` | `dispatch,session,read` |\n| Сессия отсутствует | `401` `{\"error\":\"sign_in\"}` | `dispatch,session` |\n| Карточка отсутствует, рабочая сессия | `404` `{\"error\":\"not_found\"}` | `dispatch,session,read` |\n| Непригодная карточка `b4`, рабочая сессия | `502` `{\"error\":\"invalid_record\"}` | `dispatch,session,read,error` |\n\nДля `b4` сработал зарегистрированный обработчик Hono `onError`, и этап `error` сохранился в заголовке ответа. [app.mjs]({project}/release/app.mjs:14)\n\nШтатный `npm test` прошёл. Все четыре сценария отдельно проверены через `app.request()` со стандартными `Request` и `Response` в Node.js 24.15.0. Исходные файлы остались без изменений.",
+  "input_file_modes": {
+    "README.md": "0664",
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "ci.md": "0664",
+    "contract.md": "0664",
+    "references/architecture.md": "0644",
+    "references/auth.md": "0644",
+    "references/caching.md": "0644",
+    "references/contracts-types.md": "0644",
+    "references/errors-logs.md": "0644",
+    "references/framework-currency.md": "0644",
+    "references/high-risk-backend-contract.md": "0644",
+    "references/observability.md": "0644",
+    "references/perf-security.md": "0644",
+    "references/pipelines.md": "0644",
+    "references/rate-limiting.md": "0644",
+    "references/routers.md": "0644",
+    "references/security.md": "0644",
+    "references/supabase.md": "0644",
+    "references/typing.md": "0644",
+    "references/validation-openapi.md": "0644",
+    "references/workers-platform.md": "0644",
+    "references/wrangler.md": "0644",
+    "release/app.mjs": "0664",
+    "release/package.json": "0664",
+    "release/smoke.test.mjs": "0664",
+    "vendor/hono-4.13.19.tgz": "0664"
+  },
+  "changed_file_modes": {},
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "sameProductFilesAsObserver": true,
+    "organizerPreflightOnTheseInputs": [
+      {
+        "id": "a7",
+        "session": true,
+        "status": 200,
+        "body": {
+          "id": "a7",
+          "title": "Harbor"
+        },
+        "flow": "dispatch,session,read"
+      },
+      {
+        "id": "b4",
+        "session": true,
+        "status": 502,
+        "body": {
+          "error": "invalid_record"
+        },
+        "flow": "dispatch,session,read,error"
+      },
+      {
+        "id": "absent",
+        "session": true,
+        "status": 404,
+        "body": {
+          "error": "not_found"
+        },
+        "flow": "dispatch,session,read"
+      },
+      {
+        "id": "a7",
+        "session": false,
+        "status": 401,
+        "body": {
+          "error": "sign_in"
+        },
+        "flow": "dispatch,session"
+      }
+    ],
+    "participantCommandsAndResults": [
+      {
+        "command": "/bin/bash -lc 'nl -ba release/app.mjs && nl -ba release/smoke.test.mjs && cat release/package.json'",
+        "exit": 0,
+        "selectOutput": "     1\timport { Hono } from 'hono';\n     2\tconst app = new Hono();\n     3\tapp.use('/desk/*', async (c, next) => {\n     4\t  c.set('flow', ['dispatch']);\n     5\t  await next();\n     6\t  c.header('x-desk-steps', c.get('flow').join(','));\n     7\t});\n     8\tapp.use('/desk/*', async (c, next) => {\n     9\t  c.get('flow').push('session');\n    10\t  if (c.req.header('x-shift') !== 'day') return c.json({error:'sign_in'}, 401);\n    11\t  return next();\n    12\t});\n    13\tconst roster = new Map([[\"a7\", {\"id\": \"a7\", \"title\": \"Harbor\"}], [\"b4\", {\"id\": \"b4\", \"title\": 33}]]);\n    14\tapp.get('/desk/:id', c => {\n    15\t  c.get('flow').push('read');\n    16\t  const record = roster.get(c.req.param('id'));\n    17\t  if (!record) return c.json({error:'not_found'},404);\n    18\t  if (typeof record.title !== 'string' || !record.title.trim()) throw new TypeError('Invalid roster record');\n    19\t  return c.json(record);\n    20\t});\n    21\tapp.onError((err,c) => {c.get('flow').push('error'); return c.json({error:'invalid_record'},502);});\n    22\texport default app;\n     1\timport test from 'node:test';import assert from 'node:assert/strict';import app from './app.mjs';\n     2\ttest('valid title',async()=>{const r=await app.request('/desk/a7',{headers:{'x-shift':'day'}});assert.equal(r.status,200);assert.equal((await r.json()).title,'Harbor');});\n{\n  \"type\": \"module\",\n  \"private\": true,\n  \"scripts\": {\n    \"test\": \"node --test smoke.test.mjs\"\n  }\n}",
+        "fullEventSha": "fddb698842e7373337f1c9f958a47e0efec86cb55f42c93a77845d784de93cd5"
+      },
+      {
+        "command": "/bin/bash -lc 'node --version && npm --version && tar -tzf vendor/hono-4.13.19.tgz | head -45'",
+        "exit": 0,
+        "selectOutput": "v24.15.0\n12.0.1\npackage/LICENSE\npackage/dist/cjs/utils/accept.js\npackage/dist/utils/accept.js\npackage/dist/cjs/helper/accepts/accepts.js\npackage/dist/helper/accepts/accepts.js\npackage/dist/cjs/jsx/base.js\npackage/dist/jsx/base.js\npackage/dist/cjs/utils/basic-auth.js\npackage/dist/utils/basic-auth.js\npackage/dist/cjs/utils/body.js\npackage/dist/utils/body.js\npackage/dist/cjs/utils/buffer.js\npackage/dist/utils/buffer.js\npackage/dist/cjs/jsx/children.js\npackage/dist/jsx/children.js\npackage/dist/cjs/client/client.js\npackage/dist/cjs/jsx/dom/client.js\npackage/dist/client/client.js\npackage/dist/jsx/dom/client.js\npackage/dist/cjs/utils/color.js\npackage/dist/utils/color.js\npackage/dist/cjs/helper/css/common.js\npackage/dist/cjs/jsx/intrinsic-element/common.js\npackage/dist/helper/css/common.js\npackage/dist/jsx/intrinsic-element/common.js\npackage/dist/cjs/jsx/components.js\npackage/dist/cjs/jsx/dom/components.js\npackage/dist/cjs/jsx/dom/intrinsic-element/components.js\npackage/dist/cjs/jsx/intrinsic-element/components.js\npackage/dist/jsx/components.js\npackage/dist/jsx/dom/components.js\npackage/dist/jsx/dom/intrinsic-element/components.js\npackage/dist/jsx/intrinsic-element/components.js\npackage/dist/cjs/compose.js\npackage/dist/compose.js\npackage/dist/cjs/utils/compress.js\npackage/dist/utils/compress.js\npackage/dist/cjs/utils/concurrent.js\npackage/dist/utils/concurrent.js\npackage/dist/adapter/aws-lambda/conninfo.js\npackage/dist/adapter/bun/conninfo.js\npackage/dist/adapter/cloudflare-pages/conninfo.js\npackage/dist/adapter/cloudflare-workers/conninfo.js\npackage/dist/adapter/deno/conninfo.js\npackage/dist/adapter/lambda-edge/conninfo.js\ntar: stdout: write error",
+        "fullEventSha": "705f3ff6132342ac7397d95a6b03873bf0068dcd5a9140334689ad4628212042"
+      },
+      {
+        "command": "/bin/bash -lc \"tar -xOzf vendor/hono-4.13.19.tgz package/dist/hono-base.js | rg -n -C 4 'dispatch|request =|onError|compose'\"",
+        "exit": 0,
+        "selectOutput": "1:import { compose } from \"./compose.js\";\n2-import { getPath, getPathNoStrict, mergePath } from \"./utils/url.js\";\n3-import { Context } from \"./context.js\";\n4-import { routePath } from \"./helper/route/index.js\";\n5-import { METHODS } from \"./router.js\";\n--\n109-\t\tapp.routes.map((r) => {\n110-\t\t\tlet handler;\n111-\t\t\tif (app.errorHandler === errorHandler) handler = r.handler;\n112-\t\t\telse {\n113:\t\t\t\thandler = async (c, next) => (await compose([], app.errorHandler)(c, () => r.handler(c, next))).res;\n114-\t\t\t\thandler[COMPOSED_HANDLER] = r.handler;\n115-\t\t\t}\n116-\t\t\tsubApp.#addRoute(r.method, r.path, handler, r.basePath);\n117-\t\t});\n--\n135-\t\tsubApp._basePath = mergePath(this._basePath, path);\n136-\t\treturn subApp;\n137-\t}\n138-\t/**\n139:\t* `.onError()` handles an error and returns a customized Response.\n140-\t*\n141-\t* @see {@link https://hono.dev/docs/api/hono#error-handling}\n142-\t*\n143-\t* @param {ErrorHandler} handler - request Handler for error\n144-\t* @returns {Hono} changed Hono instance\n145-\t*\n146-\t* @example\n147-\t* ```ts\n148:\t* app.onError((err, c) => {\n149-\t*   console.error(`${err}`)\n150-\t*   return c.text('Custom Error Message', 500)\n151-\t* })\n152-\t* ```\n153-\t*/\n154:\tonError = (handler) => {\n155-\t\tthis.errorHandler = handler;\n156-\t\treturn this;\n157-\t};\n158-\t/**\n--\n257-\t#handleError(err, c) {\n258-\t\tif (err instanceof Error) return this.errorHandler(err, c);\n259-\t\tthrow err;\n260-\t}\n261:\t#dispatch(request, executionCtx, env, method) {\n262:\t\tif (method === \"HEAD\") return (async () => new Response(null, await this.#dispatch(request, executionCtx, env, \"GET\")))();\n263-\t\tconst path = this.getPath(request, { env });\n264-\t\tconst matchResult = this.router.match(method, path);\n265-\t\tconst c = new Context(request, {\n266-\t\t\tpath,\n--\n279-\t\t\t\treturn this.#handleError(err, c);\n280-\t\t\t}\n281-\t\t\treturn res instanceof Promise ? res.then((resolved) => resolved || (c.finalized ? c.res : this.#notFoundHandler(c))).catch((err) => this.#handleError(err, c)) : res ?? this.#notFoundHandler(c);\n282-\t\t}\n283:\t\tconst composed = compose(matchResult[0], this.errorHandler, this.#notFoundHandler);\n284-\t\treturn (async () => {\n285-\t\t\ttry {\n286:\t\t\t\tconst context = await composed(c);",
+        "fullEventSha": "62e2101d2a83219d02b251b8a4e700dc8d81499fcd0c423afa202ceccf9a0f85"
+      },
+      {
+        "command": "/bin/bash -lc 'set -eu\nreview_dir=$(mktemp -d \"$PWD/.desk-review.XXXXXX\")\nprintf '\"'%s\\\\n' \\\"\"'$review_dir\"\ncp -R release/. \"$review_dir/\"\ncd \"$review_dir\"\nnpm install --cache \"$review_dir/.npm-cache\" --offline --ignore-scripts --no-audit --no-fund ../vendor/hono-4.13.19.tgz\nnode -p \"require('\"'./node_modules/hono/package.json').version\\\"\nnpm test\nnode --input-type=module <<'NODE'\nimport assert from 'node:assert/strict';\nimport app from './app.mjs';\n\nconst cases = [\n  { name: 'valid', id: 'a7', session: 'day', status: 200, body: { id: 'a7', title: 'Harbor' }, steps: 'dispatch,session,read' },\n  { name: 'no session', id: 'a7', status: 401, body: { error: 'sign_in' }, steps: 'dispatch,session' },\n  { name: 'missing card', id: 'missing', session: 'day', status: 404, body: { error: 'not_found' }, steps: 'dispatch,session,read' },\n  { name: 'invalid card', id: 'b4', session: 'day', status: 502, body: { error: 'invalid_record' }, steps: 'dispatch,session,read,error' },\n];\nlet failures = 0;\nfor (const entry of cases) {\n  const path = '/desk/' + entry.id;\n  const headers = entry.session ? { 'x-shift': entry.session } : {};\n  try {\n    const response = await app.request(new Request('http://localhost' + path, { method: 'GET', headers }));\n    const contentType = response.headers.get('content-type');\n    const raw = await response.text();\n    console.log(JSON.stringify({ case: entry.name, path, status: response.status, raw, steps: response.headers.get('x-desk-steps'), contentType }));\n    assert.equal(response.status, entry.status);\n    assert.deepEqual(JSON.parse(raw), entry.body);\n    assert.equal(response.headers.get('x-desk-steps'), entry.steps);\n    assert.match(contentType, /\"'^application'\"\\\\/json(?:;|\"'$)/i);\n  } catch (error) {\n    failures++;\n    console.error(error);\n  }\n}\nconsole.log('\"'Contract cases passed: ' + (cases.length - failures) + '/' + cases.length);\nprocess.exitCode = failures > 0 ? 1 : 0;\nNODE\n\"",
+        "exit": 0,
+        "selectOutput": "./.desk-review.QJBRLI\nadded 1 package in 413ms\n4.13.19\nnpm notice run test\nnpm notice run node --test smoke.test.mjs\n✔ valid title (18.640275ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 75.870732\n{\"case\":\"valid\",\"path\":\"/desk/a7\",\"status\":200,\"raw\":\"{\\\"id\\\":\\\"a7\\\",\\\"title\\\":\\\"Harbor\\\"}\",\"steps\":\"dispatch,session,read\",\"contentType\":\"application/json\"}\n{\"case\":\"no session\",\"path\":\"/desk/a7\",\"status\":401,\"raw\":\"{\\\"error\\\":\\\"sign_in\\\"}\",\"steps\":\"dispatch,session\",\"contentType\":\"application/json\"}\n{\"case\":\"missing card\",\"path\":\"/desk/missing\",\"status\":404,\"raw\":\"{\\\"error\\\":\\\"not_found\\\"}\",\"steps\":\"dispatch,session,read\",\"contentType\":\"application/json\"}\n{\"case\":\"invalid card\",\"path\":\"/desk/b4\",\"status\":502,\"raw\":\"{\\\"error\\\":\\\"invalid_record\\\"}\",\"steps\":\"dispatch,session,read,error\",\"contentType\":\"application/json\"}\nContract cases passed: 4/4",
+        "fullEventSha": "fb81edd9e8c7268578acaa75d67f8ca5688e4a514d7254f8918042f5877e5c4d"
+      },
+      {
+        "command": "/bin/bash -lc 'set -eu\nreview_dir=.desk-review.QJBRLI\ncmp release/app.mjs \"$review_dir/app.mjs\"\ncmp release/smoke.test.mjs \"$review_dir/smoke.test.mjs\"\npython3 - <<'\"'PY'\nfrom pathlib import Path\nfrom shutil import rmtree\n\ncopy = Path(\\\".desk-review.QJBRLI\\\")\nassert copy.is_dir() and not copy.is_symlink()\nrmtree(copy)\nPY\nrg --files --hidden -g '\"'!.git/**'\"' -g '\"'!vendor/**'\"'\"",
+        "exit": 0,
+        "selectOutput": "contract.md\nci.md\nREADME.md\nrelease/app.mjs\nrelease/smoke.test.mjs\nrelease/package.json\nreferences/auth.md\nreferences/architecture.md\nreferences/wrangler.md\nagents/openai.yaml\nreferences/workers-platform.md\nSKILL.md\nreferences/validation-openapi.md\nreferences/typing.md\nreferences/supabase.md\nreferences/security.md\nreferences/routers.md\nreferences/rate-limiting.md\nreferences/pipelines.md\nreferences/perf-security.md\nreferences/observability.md\nreferences/high-risk-backend-contract.md\nreferences/framework-currency.md\nreferences/errors-logs.md\nreferences/contracts-types.md\nreferences/caching.md",
+        "fullEventSha": "c983ecb06785e641f7425ed6bffb8a1cdf02ed20f9c00342f60db137dbe8fd6f"
+      }
+    ],
+    "changesToInitialFiles": [],
+    "createdFiles": []
+  }
+}

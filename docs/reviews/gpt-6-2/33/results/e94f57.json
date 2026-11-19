@@ -1,0 +1,217 @@
+{
+  "variant": "D",
+  "case": "defined",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПримени локальное руководство из ./SKILL.md. Для приёмки владельцем выполни формальную проверку поставленной версии catalog против принятого контракта из intake/. Дай заключение в ответе, привяжи каждый существенный вывод к требованию и конкретному проверенному поведению. Саму поставку сохраняй в исходном виде. Разрешено запускать её штатно на расходных локальных данных.\n В частности, проверь переданное поддержкой поведение на её данных и объясни его значение для приёмки.\n",
+  "input_file_sha256": {
+    "SKILL.md": "bd35d8ac34060e97f1158dcca1d4d93cbd354f99bb0d9a9943f4f0faf44f765b",
+    "agents/openai.yaml": "cfb46dd79b7c1dbea6f21726d24c55d1ecde761ced9005f103ffb30629c88b2b",
+    "assets/fixtures/consultant-admission-policy.md": "acc3607c90becff03a87356f0e43e094bb023e28ea1e80af64dbd4577c514b53",
+    "catalog/README.md": "a61923dbfb54a07bfaa42ecd38cf4b114787c3b29e48dac6d33887a1cf7b1cc8",
+    "catalog/fixture/catalog.json": "c1ffa5c0464dc1dbaef19ba17bd3f2b383ad46ffd7c35eed6d06dd9bb1ad3991",
+    "catalog/package.json": "430f45fd1e3827efe0aba6fdf1be5a64b76e0c3362ce37e3bb3de8b96e730432",
+    "catalog/src/catalog.mjs": "47d76d1e7a3f3f3705ce84c8f7b4adc19e6266ab5cfc223dabfbd41ce25fadf5",
+    "catalog/test/catalog.test.mjs": "6a45eae3808cedb55b2f76befc6e5a421c44c303f16c66929a87f2fffe2b6d1d",
+    "intake/approval.md": "e07781f7a5ef9180333acbe6581c65116c73d6ec5f2d7045c4a42d133b0c1175",
+    "intake/observed.json": "3c2123109eb5ec36822f7d50df8380c7dd963af586ae7439904672cb2c07da37",
+    "intake/record.md": "cadc77a900a408b43aafdbf36a784120bebf71e4e779e080bc52b46dab42d414",
+    "intake/support.md": "63cff3711adb8e24db4179d5254ba5df7dbf20b703ebca381a4c22cdd03c1920",
+    "references/methodology.md": "a568814539648a7850c9342be8bab3fdbe50fb699276c33a4887abbd3211fe45",
+    "references/policy-admission-matrix.md": "cfe2cd85876b46cdd71fd982b15bdbe3cff16e4dc95da48ca53a2c3b28578689",
+    "references/reporting.md": "75c49ef2eb6fc501952112b3e3c47dad83ebc7da4f996ba7e0d11e588795bc25"
+  },
+  "raw_events_sha256": "69d755467c0ee0c3dc27d87952bb5f1b6ba258a007652d8be09e9310dc89a75d",
+  "raw_events_bytes": 76548,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Прочитаю локальный `SKILL.md` и контракт из `intake/`. Затем проверю поставку на расходных данных и свяжу выводы с требованиями контракта."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"pwd && ls -la && rg --files --hidden -g '\"'!.git'\"'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"for f in intake/*; do awk 'FNR==1{print FILENAME} {printf \\\"%4d %s\\\\n\\\",FNR,\"'$0}'\"' \\\"\"'$f\"; done'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"for f in catalog/README.md catalog/package.json catalog/src/catalog.mjs catalog/test/catalog.test.mjs; do awk 'FNR==1{print FILENAME} {printf \\\"%4d %s\\\\n\\\",FNR,\"'$0}'\"' \\\"\"'$f\"; done'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat SKILL.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat references/methodology.md references/reporting.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'find catalog intake -type f -print0 | sort -z | xargs -0 sha256sum | tee /dev/stderr | sha256sum; node --version; npm --version; cat catalog/fixture/catalog.json'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat references/policy-admission-matrix.md; find catalog -type f -print0 | sort -z | xargs -0 sha256sum | sha256sum'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Нина отдельно утвердила отказ при повторяющемся `id`, в том числе для загрузки поддержки. Проверю вызов на переданных данных и отдельно проверю сохранение изменений между двумя процессами Node.js."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"set -e\nnode --input-type=module <<'NODE'\nimport assert from 'node:assert/strict';\nimport { execFileSync } from 'node:child_process';\nimport { copyFileSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';\nimport { join } from 'node:path';\nimport { loadCatalog, setPinned, saveCatalog } from './catalog/src/catalog.mjs';\n\nconst directory = mkdtempSync(join(process.cwd(), '.catalog-acceptance-'));\nconst runInNewSession = (script, ...args) => execFileSync(process.execPath, [\n  '--input-type=module', '-e',\n  \\\"import {loadCatalog, setPinned, saveCatalog} from './catalog/src/catalog.mjs';\\\\n\\\" + script,\n  ...args,\n], { encoding: 'utf8' });\ntry {\n  const supplied = JSON.parse(readFileSync('catalog/fixture/catalog.json', 'utf8'));\n  for (const [id, pinned] of [['a', true], ['b', false]]) {\n    const file = join(directory, id + '.json');\n    const expected = supplied.map(card => card.id === id ? { ...card, pinned } : card);\n    copyFileSync('catalog/fixture/catalog.json', file);\n    runInNewSession(\n      'const [file, id, pinned] = process.argv.slice(1); saveCatalog(file, setPinned(loadCatalog(file), id, JSON.parse(pinned)));',\n      file, id, JSON.stringify(pinned),\n    );\n    assert.deepEqual(JSON.parse(readFileSync(file, 'utf8')), expected);\n    const reloaded = JSON.parse(runInNewSession('console.log(JSON.stringify(loadCatalog(process.argv[1])));', file));\n    assert.deepEqual(reloaded, expected);\n    console.log('SAVE + NEW PROCESS RELOAD', id, JSON.stringify(reloaded));\n  }\n\n  const legacy = join(directory, 'legacy.json');\n  writeFileSync(legacy, JSON.stringify([{ id: 'legacy', title: 'Legacy' }, supplied[1]]));\n  const legacyRecords = loadCatalog(legacy);\n  assert.deepEqual(legacyRecords, [{ id: 'legacy', title: 'Legacy', pinned: false }, supplied[1]]);\n  console.log('LEGACY', JSON.stringify(legacyRecords));\n  const cards = loadCatalog('catalog/fixture/catalog.json');\n  assert.throws(() => setPinned(cards, 'missing', true), /Unknown card: missing/);\n  assert.deepEqual(cards, supplied);\n  console.log('MISSING: Unknown card: missing; input preserved');\n\n  const support = join(directory, 'observed.json');\n  copyFileSync('intake/observed.json', support);\n  const originalBytes = readFileSync(support);\n  const originalCards = loadCatalog(support);\n  const before = structuredClone(originalCards);\n  let result;\n  let error;\n  try {\n    result = setPinned(originalCards, 'station-7', true);\n  } catch (caught) {\n    error = caught;\n  }\n  assert.deepEqual(originalCards, before);\n  assert.deepEqual(readFileSync(support), originalBytes);\n  console.log('DUPLICATE', JSON.stringify({ before, error: error?.message ?? null, result }));\n  if (result) {\n    saveCatalog(support, result);\n    const reloaded = JSON.parse(runInNewSession('console.log(JSON.stringify(loadCatalog(process.argv[1])));', support));\n    assert.deepEqual(reloaded, result);\n    console.log('DUPLICATE AFTER SAVE + NEW PROCESS RELOAD', JSON.stringify(reloaded));\n  }\n  assert.ok(error instanceof Error, 'DUPLICATE acceptance: an error is required');\n} finally {\n  rmSync(directory, { recursive: true });\n}\nNODE\"",
+      "exit_code": 1,
+      "status": "failed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'npm_config_logs_max=0 npm_config_update_notifier=false npm test'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"find catalog -type f -print0 | sort -z | xargs -0 sha256sum | sha256sum; find catalog intake -type f -print0 | sort -z | xargs -0 sha256sum | sha256sum; rg --files --hidden -g '\"'!.git'\"' -g '.catalog-acceptance-*/**'\"",
+      "exit_code": 1,
+      "status": "failed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Версия «Сосна» не проходит приёмку. Обычное закрепление и открепление переживают перезапуск, но на данных поддержки `setPinned` успешно меняет две карточки с одинаковым `id`, хотя утверждённый контракт требует ошибки до изменения данных.\n\n## Основание и границы проверки\n\nНина утвердила `catalog/README.md` для обычных локальных вызовов версии «Сосна». Отдельная принятая запись явно распространяет требование об отказе при совпадении `id` на экспериментальную загрузку. Сообщение и JSON поддержки задают проверочный сценарий. Облачная синхронизация относится к другому продукту. [Подтверждение контракта]({project}/intake/approval.md:1) · [Принятое требование]({project}/intake/record.md:1) · [Сообщение поддержки]({project}/intake/support.md:1) · [Данные поддержки]({project}/intake/observed.json:1)\n\nПроверены публичные функции `loadCatalog`, `setPinned` и `saveCatalog`, запись на локальный диск, повторное чтение в новом процессе и штатная команда `npm test`. Проверка выполнена на Node.js 24.15.0 и npm 12.0.1. Для записи использовались расходные копии. Контрольные суммы файлов поставки и `intake/` совпали до и после проверки.\n\n- Сводный SHA‑256 поставки `catalog/` — `28bb8edf6a080b1e5b493b76e7397ba9db81de480755dce84b36e29a90d35e30`\n- Сводный SHA‑256 `catalog/` и `intake/` — `e0a7633fcb066de35ed36b255d3127b11eb283f2a4587a18ed42e4c0829991cc`\n\n## Требования и проверенное поведение\n\nВсе требования в таблице явно сформулированы и обязательны.\n\n| ID | Требование | Проверенное поведение | Статус |\n|---|---|---|---|\n| CAT-01 | Локальный каталог хранится как JSON-массив записей `{ id, title, pinned }`. [Контракт]({project}/catalog/README.md:2) | В обеих сохранённых копиях разобранный JSON целиком совпал с ожидаемым массивом. [Запись файла]({project}/catalog/src/catalog.mjs:13) | Выполнено |\n| CAT-02 | Закрепление сохраняется после завершения сеанса и повторной загрузки. [Контракт]({project}/catalog/README.md:3) | `Alpha` перешла из `false` в `true`. Новый процесс прочитал `true`. [Чтение и изменение]({project}/catalog/src/catalog.mjs:3) | Выполнено |\n| CAT-03 | Открепление сохраняется после завершения сеанса и повторной загрузки. [Контракт]({project}/catalog/README.md:4) | `Beta` перешла из `true` в `false`. Новый процесс прочитал `false`. [Чтение и изменение]({project}/catalog/src/catalog.mjs:3) | Выполнено |\n| CAT-04 | Заголовки, порядок и остальные карточки сохраняются при изменении одной карточки. [Контракт]({project}/catalog/README.md:4) | В обоих сценариях проверено полное содержимое файла и загруженного массива. Изменился только `pinned` выбранной карточки. [Изменение и запись]({project}/catalog/src/catalog.mjs:8) | Выполнено |\n| CAT-05 | Вызов с отсутствующим `id` завершается ошибкой. [Контракт]({project}/catalog/README.md:4) | Вызов с `missing` в непустом каталоге выбросил `Unknown card: missing`. Входной массив сохранился. [Проверка идентификатора]({project}/catalog/src/catalog.mjs:9) | Выполнено |\n| CAT-06 | Запись без `pinned` читается с `pinned: false`. [Контракт]({project}/catalog/README.md:5) | `loadCatalog` вернул `false` для старой записи без поля и сохранил `true` у соседней записи. [Загрузка]({project}/catalog/src/catalog.mjs:3) | Выполнено |\n| CAT-07 | Штатная команда локальной приёмки — `npm test`. [Контракт]({project}/catalog/README.md:6) | Команда завершилась с кодом `0`, прошли оба теста. [Команда]({project}/catalog/package.json:1) · [Тесты]({project}/catalog/test/catalog.test.mjs:5) | Выполнено |\n| CAT-08 | При двух записях с запрошенным `id` вызов завершается ошибкой до изменения данных. [Принятое требование]({project}/intake/record.md:1) | Вызов для `station-7` вернул изменённый массив без ошибки. После сохранения и повторной загрузки обе карточки остались закреплёнными. [Реализация]({project}/catalog/src/catalog.mjs:8) · [Данные поддержки]({project}/intake/observed.json:1) | **Не выполнено** |\n\n## Отклонение, блокирующее приёмку\n\n**CAT-08 (`major`).** На копии данных поддержки вызов `setPinned(cards, 'station-7', true)` вернул `North` и `South` с `pinned: true` вместо исходного `false`. Сам вызов сохранил входной массив и файл в исходном состоянии. Последующий штатный `saveCatalog` записал возвращённый массив, и новый процесс прочитал обе карточки закреплёнными. Причина видна в коде: `some` проверяет наличие хотя бы одного совпадения, после чего `map` меняет все совпавшие записи. Для выполнения CAT-08 реализация должна обнаружить неоднозначный `id` и выбросить ошибку до формирования обновлённого результата. [Принятое требование]({project}/intake/record.md:1) · [Реализация]({project}/catalog/src/catalog.mjs:8)\n\nШтатные тесты проверяют немедленное отображение закреплённой карточки в памяти и отказ для отсутствующего `id`. Сохранение между сеансами, загрузку старой записи и отказ при совпадении `id` проверили отдельными локальными запусками. Последняя проверка завершилась ошибкой приёмочного утверждения. [Штатные тесты]({project}/catalog/test/catalog.test.mjs:5)\n\n**Формальный вердикт — `non-compliant`.** Обязательное требование CAT-08 нарушено на данных, для которых Нина явно подтвердила его применимость. Для повторной приёмки исправление относится к `setPinned`, а решающая проверка — вызов на тех же данных поддержки с ожидаемой ошибкой и сохранением исходных данных."
+    }
+  ],
+  "changed_file_contents": {},
+  "final_response": "Версия «Сосна» не проходит приёмку. Обычное закрепление и открепление переживают перезапуск, но на данных поддержки `setPinned` успешно меняет две карточки с одинаковым `id`, хотя утверждённый контракт требует ошибки до изменения данных.\n\n## Основание и границы проверки\n\nНина утвердила `catalog/README.md` для обычных локальных вызовов версии «Сосна». Отдельная принятая запись явно распространяет требование об отказе при совпадении `id` на экспериментальную загрузку. Сообщение и JSON поддержки задают проверочный сценарий. Облачная синхронизация относится к другому продукту. [Подтверждение контракта]({project}/intake/approval.md:1) · [Принятое требование]({project}/intake/record.md:1) · [Сообщение поддержки]({project}/intake/support.md:1) · [Данные поддержки]({project}/intake/observed.json:1)\n\nПроверены публичные функции `loadCatalog`, `setPinned` и `saveCatalog`, запись на локальный диск, повторное чтение в новом процессе и штатная команда `npm test`. Проверка выполнена на Node.js 24.15.0 и npm 12.0.1. Для записи использовались расходные копии. Контрольные суммы файлов поставки и `intake/` совпали до и после проверки.\n\n- Сводный SHA‑256 поставки `catalog/` — `28bb8edf6a080b1e5b493b76e7397ba9db81de480755dce84b36e29a90d35e30`\n- Сводный SHA‑256 `catalog/` и `intake/` — `e0a7633fcb066de35ed36b255d3127b11eb283f2a4587a18ed42e4c0829991cc`\n\n## Требования и проверенное поведение\n\nВсе требования в таблице явно сформулированы и обязательны.\n\n| ID | Требование | Проверенное поведение | Статус |\n|---|---|---|---|\n| CAT-01 | Локальный каталог хранится как JSON-массив записей `{ id, title, pinned }`. [Контракт]({project}/catalog/README.md:2) | В обеих сохранённых копиях разобранный JSON целиком совпал с ожидаемым массивом. [Запись файла]({project}/catalog/src/catalog.mjs:13) | Выполнено |\n| CAT-02 | Закрепление сохраняется после завершения сеанса и повторной загрузки. [Контракт]({project}/catalog/README.md:3) | `Alpha` перешла из `false` в `true`. Новый процесс прочитал `true`. [Чтение и изменение]({project}/catalog/src/catalog.mjs:3) | Выполнено |\n| CAT-03 | Открепление сохраняется после завершения сеанса и повторной загрузки. [Контракт]({project}/catalog/README.md:4) | `Beta` перешла из `true` в `false`. Новый процесс прочитал `false`. [Чтение и изменение]({project}/catalog/src/catalog.mjs:3) | Выполнено |\n| CAT-04 | Заголовки, порядок и остальные карточки сохраняются при изменении одной карточки. [Контракт]({project}/catalog/README.md:4) | В обоих сценариях проверено полное содержимое файла и загруженного массива. Изменился только `pinned` выбранной карточки. [Изменение и запись]({project}/catalog/src/catalog.mjs:8) | Выполнено |\n| CAT-05 | Вызов с отсутствующим `id` завершается ошибкой. [Контракт]({project}/catalog/README.md:4) | Вызов с `missing` в непустом каталоге выбросил `Unknown card: missing`. Входной массив сохранился. [Проверка идентификатора]({project}/catalog/src/catalog.mjs:9) | Выполнено |\n| CAT-06 | Запись без `pinned` читается с `pinned: false`. [Контракт]({project}/catalog/README.md:5) | `loadCatalog` вернул `false` для старой записи без поля и сохранил `true` у соседней записи. [Загрузка]({project}/catalog/src/catalog.mjs:3) | Выполнено |\n| CAT-07 | Штатная команда локальной приёмки — `npm test`. [Контракт]({project}/catalog/README.md:6) | Команда завершилась с кодом `0`, прошли оба теста. [Команда]({project}/catalog/package.json:1) · [Тесты]({project}/catalog/test/catalog.test.mjs:5) | Выполнено |\n| CAT-08 | При двух записях с запрошенным `id` вызов завершается ошибкой до изменения данных. [Принятое требование]({project}/intake/record.md:1) | Вызов для `station-7` вернул изменённый массив без ошибки. После сохранения и повторной загрузки обе карточки остались закреплёнными. [Реализация]({project}/catalog/src/catalog.mjs:8) · [Данные поддержки]({project}/intake/observed.json:1) | **Не выполнено** |\n\n## Отклонение, блокирующее приёмку\n\n**CAT-08 (`major`).** На копии данных поддержки вызов `setPinned(cards, 'station-7', true)` вернул `North` и `South` с `pinned: true` вместо исходного `false`. Сам вызов сохранил входной массив и файл в исходном состоянии. Последующий штатный `saveCatalog` записал возвращённый массив, и новый процесс прочитал обе карточки закреплёнными. Причина видна в коде: `some` проверяет наличие хотя бы одного совпадения, после чего `map` меняет все совпавшие записи. Для выполнения CAT-08 реализация должна обнаружить неоднозначный `id` и выбросить ошибку до формирования обновлённого результата. [Принятое требование]({project}/intake/record.md:1) · [Реализация]({project}/catalog/src/catalog.mjs:8)\n\nШтатные тесты проверяют немедленное отображение закреплённой карточки в памяти и отказ для отсутствующего `id`. Сохранение между сеансами, загрузку старой записи и отказ при совпадении `id` проверили отдельными локальными запусками. Последняя проверка завершилась ошибкой приёмочного утверждения. [Штатные тесты]({project}/catalog/test/catalog.test.mjs:5)\n\n**Формальный вердикт — `non-compliant`.** Обязательное требование CAT-08 нарушено на данных, для которых Нина явно подтвердила его применимость. Для повторной приёмки исправление относится к `setPinned`, а решающая проверка — вызов на тех же данных поддержки с ожидаемой ошибкой и сохранением исходных данных.",
+  "input_file_modes": {
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "assets/fixtures/consultant-admission-policy.md": "0644",
+    "catalog/README.md": "0664",
+    "catalog/fixture/catalog.json": "0664",
+    "catalog/package.json": "0664",
+    "catalog/src/catalog.mjs": "0664",
+    "catalog/test/catalog.test.mjs": "0664",
+    "intake/approval.md": "0664",
+    "intake/observed.json": "0664",
+    "intake/record.md": "0664",
+    "intake/support.md": "0664",
+    "references/methodology.md": "0644",
+    "references/policy-admission-matrix.md": "0644",
+    "references/reporting.md": "0644"
+  },
+  "changed_file_modes": {},
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "subjectExit": 0,
+    "inputsAndModesUnchanged": true,
+    "changed": [],
+    "caseMatchesAdmission": {
+      "catalog/README.md": "a61923dbfb54a07bfaa42ecd38cf4b114787c3b29e48dac6d33887a1cf7b1cc8",
+      "catalog/fixture/catalog.json": "c1ffa5c0464dc1dbaef19ba17bd3f2b383ad46ffd7c35eed6d06dd9bb1ad3991",
+      "catalog/package.json": "430f45fd1e3827efe0aba6fdf1be5a64b76e0c3362ce37e3bb3de8b96e730432",
+      "catalog/src/catalog.mjs": "47d76d1e7a3f3f3705ce84c8f7b4adc19e6266ab5cfc223dabfbd41ce25fadf5",
+      "catalog/test/catalog.test.mjs": "6a45eae3808cedb55b2f76befc6e5a421c44c303f16c66929a87f2fffe2b6d1d",
+      "intake/approval.md": "e07781f7a5ef9180333acbe6581c65116c73d6ec5f2d7045c4a42d133b0c1175",
+      "intake/observed.json": "3c2123109eb5ec36822f7d50df8380c7dd963af586ae7439904672cb2c07da37",
+      "intake/record.md": "cadc77a900a408b43aafdbf36a784120bebf71e4e779e080bc52b46dab42d414",
+      "intake/support.md": "63cff3711adb8e24db4179d5254ba5df7dbf20b703ebca381a4c22cdd03c1920"
+    },
+    "participantOperations": [
+      {
+        "event": "item_6",
+        "eventSha256": "6f7a0bb0606071d76fed308ae38220e86fcb76deb5f063f6a00acc8b4790e1dd",
+        "command": "/bin/bash -lc 'find catalog intake -type f -print0 | sort -z | xargs -0 sha256sum | tee /dev/stderr | sha256sum; node --version; npm --version; cat catalog/fixture/catalog.json'",
+        "exit": 0,
+        "output": "a61923dbfb54a07bfaa42ecd38cf4b114787c3b29e48dac6d33887a1cf7b1cc8  catalog/README.md\nc1ffa5c0464dc1dbaef19ba17bd3f2b383ad46ffd7c35eed6d06dd9bb1ad3991  catalog/fixture/catalog.json\n430f45fd1e3827efe0aba6fdf1be5a64b76e0c3362ce37e3bb3de8b96e730432  catalog/package.json\n47d76d1e7a3f3f3705ce84c8f7b4adc19e6266ab5cfc223dabfbd41ce25fadf5  catalog/src/catalog.mjs\n6a45eae3808cedb55b2f76befc6e5a421c44c303f16c66929a87f2fffe2b6d1d  catalog/test/catalog.test.mjs\ne07781f7a5ef9180333acbe6581c65116c73d6ec5f2d7045c4a42d133b0c1175  intake/approval.md\n3c2123109eb5ec36822f7d50df8380c7dd963af586ae7439904672cb2c07da37  intake/observed.json\ncadc77a900a408b43aafdbf36a784120bebf71e4e779e080bc52b46dab42d414  intake/record.md\n63cff3711adb8e24db4179d5254ba5df7dbf20b703ebca381a4c22cdd03c1920  intake/support.md\ne0a7633fcb066de35ed36b255d3127b11eb283f2a4587a18ed42e4c0829991cc  -\nv24.15.0\n12.0.1\n[{\"id\":\"a\",\"title\":\"Alpha\",\"pinned\":false},{\"id\":\"b\",\"title\":\"Beta\",\"pinned\":true}]\n"
+      },
+      {
+        "event": "item_10",
+        "eventSha256": "85ff287b5f5d4c361700232459862e24efbcba2fe7c102209d6e3894721f2dc9",
+        "command": "/bin/bash -lc \"set -e\nnode --input-type=module <<'NODE'\nimport assert from 'node:assert/strict';\nimport { execFileSync } from 'node:child_process';\nimport { copyFileSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';\nimport { join } from 'node:path';\nimport { loadCatalog, setPinned, saveCatalog } from './catalog/src/catalog.mjs';\n\nconst directory = mkdtempSync(join(process.cwd(), '.catalog-acceptance-'));\nconst runInNewSession = (script, ...args) => execFileSync(process.execPath, [\n  '--input-type=module', '-e',\n  \\\"import {loadCatalog, setPinned, saveCatalog} from './catalog/src/catalog.mjs';\\\\n\\\" + script,\n  ...args,\n], { encoding: 'utf8' });\ntry {\n  const supplied = JSON.parse(readFileSync('catalog/fixture/catalog.json', 'utf8'));\n  for (const [id, pinned] of [['a', true], ['b', false]]) {\n    const file = join(directory, id + '.json');\n    const expected = supplied.map(card => card.id === id ? { ...card, pinned } : card);\n    copyFileSync('catalog/fixture/catalog.json', file);\n    runInNewSession(\n      'const [file, id, pinned] = process.argv.slice(1); saveCatalog(file, setPinned(loadCatalog(file), id, JSON.parse(pinned)));',\n      file, id, JSON.stringify(pinned),\n    );\n    assert.deepEqual(JSON.parse(readFileSync(file, 'utf8')), expected);\n    const reloaded = JSON.parse(runInNewSession('console.log(JSON.stringify(loadCatalog(process.argv[1])));', file));\n    assert.deepEqual(reloaded, expected);\n    console.log('SAVE + NEW PROCESS RELOAD', id, JSON.stringify(reloaded));\n  }\n\n  const legacy = join(directory, 'legacy.json');\n  writeFileSync(legacy, JSON.stringify([{ id: 'legacy', title: 'Legacy' }, supplied[1]]));\n  const legacyRecords = loadCatalog(legacy);\n  assert.deepEqual(legacyRecords, [{ id: 'legacy', title: 'Legacy', pinned: false }, supplied[1]]);\n  console.log('LEGACY', JSON.stringify(legacyRecords));\n  const cards = loadCatalog('catalog/fixture/catalog.json');\n  assert.throws(() => setPinned(cards, 'missing', true), /Unknown card: missing/);\n  assert.deepEqual(cards, supplied);\n  console.log('MISSING: Unknown card: missing; input preserved');\n\n  const support = join(directory, 'observed.json');\n  copyFileSync('intake/observed.json', support);\n  const originalBytes = readFileSync(support);\n  const originalCards = loadCatalog(support);\n  const before = structuredClone(originalCards);\n  let result;\n  let error;\n  try {\n    result = setPinned(originalCards, 'station-7', true);\n  } catch (caught) {\n    error = caught;\n  }\n  assert.deepEqual(originalCards, before);\n  assert.deepEqual(readFileSync(support), originalBytes);\n  console.log('DUPLICATE', JSON.stringify({ before, error: error?.message ?? null, result }));\n  if (result) {\n    saveCatalog(support, result);\n    const reloaded = JSON.parse(runInNewSession('console.log(JSON.stringify(loadCatalog(process.argv[1])));', support));\n    assert.deepEqual(reloaded, result);\n    console.log('DUPLICATE AFTER SAVE + NEW PROCESS RELOAD', JSON.stringify(reloaded));\n  }\n  assert.ok(error instanceof Error, 'DUPLICATE acceptance: an error is required');\n} finally {\n  rmSync(directory, { recursive: true });\n}\nNODE\"",
+        "exit": 1,
+        "output": "SAVE + NEW PROCESS RELOAD a [{\"id\":\"a\",\"title\":\"Alpha\",\"pinned\":true},{\"id\":\"b\",\"title\":\"Beta\",\"pinned\":true}]\nSAVE + NEW PROCESS RELOAD b [{\"id\":\"a\",\"title\":\"Alpha\",\"pinned\":false},{\"id\":\"b\",\"title\":\"Beta\",\"pinned\":false}]\nLEGACY [{\"id\":\"legacy\",\"title\":\"Legacy\",\"pinned\":false},{\"id\":\"b\",\"title\":\"Beta\",\"pinned\":true}]\nMISSING: Unknown card: missing; input preserved\nDUPLICATE {\"before\":[{\"id\":\"station-7\",\"title\":\"North\",\"pinned\":false},{\"id\":\"station-7\",\"title\":\"South\",\"pinned\":false},{\"id\":\"station-8\",\"title\":\"East\",\"pinned\":true}],\"error\":null,\"result\":[{\"id\":\"station-7\",\"title\":\"North\",\"pinned\":true},{\"id\":\"station-7\",\"title\":\"South\",\"pinned\":true},{\"id\":\"station-8\",\"title\":\"East\",\"pinned\":true}]}\nDUPLICATE AFTER SAVE + NEW PROCESS RELOAD [{\"id\":\"station-7\",\"title\":\"North\",\"pinned\":true},{\"id\":\"station-7\",\"title\":\"South\",\"pinned\":true},{\"id\":\"station-8\",\"title\":\"East\",\"pinned\":true}]\nnode:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: DUPLICATE acceptance: an error is required\n    at file://./[eval1]:60:10\n    at ModuleJob.run (node:internal/modules/esm/module_job:437:25)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async node:internal/modules/esm/loader:246:26\n    at async ModuleLoader.executeModuleJob (node:internal/modules/esm/loader:243:20)\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '==',\n  diff: 'simple'\n}\n\nNode.js v24.15.0\n"
+      },
+      {
+        "event": "item_9",
+        "eventSha256": "da172b4234e523c8af4e28812dbc337f770c047dea2f33a077164c861167dd42",
+        "command": "/bin/bash -lc 'npm_config_logs_max=0 npm_config_update_notifier=false npm test'",
+        "exit": 0,
+        "output": "npm notice run test\nnpm notice run node --test test/*.test.mjs\n✔ smoke: pinned card is visible immediately (0.929265ms)\n✔ unknown card is rejected (0.324613ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 40.976958\n"
+      }
+    ],
+    "separateOrganizerPreflight": {
+      "input": [
+        {
+          "id": "station-7",
+          "title": "North",
+          "pinned": false
+        },
+        {
+          "id": "station-7",
+          "title": "South",
+          "pinned": false
+        },
+        {
+          "id": "station-8",
+          "title": "East",
+          "pinned": true
+        }
+      ],
+      "writeExit": 0,
+      "afterWrite": [
+        {
+          "id": "station-7",
+          "title": "North",
+          "pinned": true
+        },
+        {
+          "id": "station-7",
+          "title": "South",
+          "pinned": true
+        },
+        {
+          "id": "station-8",
+          "title": "East",
+          "pinned": true
+        }
+      ],
+      "readInNewProcess": [
+        {
+          "id": "station-7",
+          "title": "North",
+          "pinned": true
+        },
+        {
+          "id": "station-7",
+          "title": "South",
+          "pinned": true
+        },
+        {
+          "id": "station-8",
+          "title": "East",
+          "pinned": true
+        }
+      ],
+      "acceptedCommandTests": "✔ smoke: pinned card is visible immediately (0.891323ms)\n✔ unknown card is rejected (0.292612ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 40.322282\n"
+    }
+  }
+}

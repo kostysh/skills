@@ -5,9 +5,9 @@ description: "Design and implement visual strategies for web interfaces: landing
   styling, and motion; express accepted interactions and verify rendered
   results. Route task-flow choices and UX audits to web-ux-engineer."
 metadata:
-  source-version: 0.2.4
+  source-version: 0.2.6
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: a084e96b522d3a5327ac12637ac9481884730dfecb998ecc33404b90dbdb245d
+  skillforge-source-hash: aad34a098dd22c8295f12edf3353e6e9dd043e39c9013b4ed152dbecd9cf9d6e
 ---
 
 # frontend-design
@@ -261,7 +261,6 @@ Validation:
 - **application architecture, state, routing, data, testing, and runtime accessibility mechanics:** The relevant framework skill such as react-spa-engineer. frontend-design owns visual strategy and rendered expression, not framework correctness.
 - **reusable React component correctness, SSR, hydration, portals, and lifecycle behavior:** react-components-engineer. Visual intent must adapt to component correctness rather than weaken it.
 - **shadcn registry discovery, component selection, and registry-aware implementation:** shadcn. frontend-design supplies page-level direction while shadcn owns component-system mechanics.
-- **durable .pen inspection, editing, validation, screenshots, and exports:** pencil-dev. frontend-design defines strategy and frames; pencil-dev owns Pencil MCP mechanics.
 - **interactive browser diagnostics, screenshots, and terminal-state checks:** agent-browser. frontend-design defines evidence conditions while agent-browser executes exploratory browser verification.
 - **reproducible scripted browser scenarios and visual, network, or console evidence:** playwright. frontend-design defines evidence conditions while playwright owns repeatable browser automation.
 - **guidelines-based web UI and accessibility review:** web-ui-reviewer. frontend-design performs design self-checks; web-ui-reviewer owns the review contract, and a separate reviewer context is still required when the verdict must be independent.
@@ -272,7 +271,7 @@ Validation:
 - **high** — A strategy, mockup, export, screenshot, Storybook story, component catalog, or source inspection is not integrated runtime evidence.
 - **high** — In system-constrained work, inspect the current runtime component and design-system surface before introducing new primitives or one-off styling.
 - **high** — Do not add motion to satisfy a quota; use only motion that improves hierarchy, continuity, feedback, or affordance and provide reduced behavior for non-essential physical motion.
-- **medium** — Do not approve a design artifact from a stale export or a runtime implementation from an outdated mockup when current source and rendered behavior disagree.
+- **medium** — Verify the result in the current artifact or rendered interface.
 
 ## Policies
 

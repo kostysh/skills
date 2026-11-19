@@ -1,0 +1,172 @@
+{
+  "17e3d6": {
+    "phase": "ab",
+    "case": "boundary",
+    "edition": "A",
+    "assignedModel": "gpt-6.2-sol",
+    "assignedReasoning": "model_reasoning_effort=\"medium\"",
+    "mode": "workspace-write",
+    "memoryFeatureDisabled": true,
+    "activeRootReadEvents": [
+      "item_1"
+    ],
+    "preservedInputBytesAndModes": true,
+    "exit": 0,
+    "rawEventSHA256": "b5d4b1d2c5a0350c0e1e9ce4df7bb665476647a27e2a858176d71a957b03f136",
+    "rawFinalSHA256": "f669e4f96b03e2d8117f1c8a80bcdc6ddf1aa07cd46b7a7188f2451e729fc493",
+    "publicRecord": "results/17e3d6.json"
+  },
+  "1c0b93": {
+    "phase": "ab",
+    "case": "ordinary",
+    "edition": "B",
+    "assignedModel": "gpt-6.2-sol",
+    "assignedReasoning": "model_reasoning_effort=\"medium\"",
+    "mode": "workspace-write",
+    "memoryFeatureDisabled": true,
+    "activeRootReadEvents": [
+      "item_1"
+    ],
+    "preservedInputBytesAndModes": true,
+    "exit": 0,
+    "rawEventSHA256": "c9d9ddc151c9bdbafc81c2ff92bdd403243610538a4f79bdf94eb5da22bbe056",
+    "rawFinalSHA256": "abde11595bdbb9b5a5c52d55884355136909c0eabcf206e858090b02bf002c8a",
+    "publicRecord": "results/1c0b93.json"
+  },
+  "f5ddf0": {
+    "phase": "ab",
+    "case": "boundary",
+    "edition": "B",
+    "assignedModel": "gpt-6.2-sol",
+    "assignedReasoning": "model_reasoning_effort=\"medium\"",
+    "mode": "workspace-write",
+    "memoryFeatureDisabled": true,
+    "activeRootReadEvents": [
+      "item_1"
+    ],
+    "preservedInputBytesAndModes": true,
+    "exit": 0,
+    "rawEventSHA256": "78c07f08b45ff9c9124472dfe5280f8184d978d08f308e88b4f07ce3176e42e0",
+    "rawFinalSHA256": "ec94d61e011fb392dcaa4da9bcdb2a55da93e55cb11a0d47644f6dfed6fe234d",
+    "publicRecord": "results/f5ddf0.json"
+  },
+  "8a9152": {
+    "phase": "ab",
+    "case": "ordinary",
+    "edition": "A",
+    "assignedModel": "gpt-6.2-sol",
+    "assignedReasoning": "model_reasoning_effort=\"medium\"",
+    "mode": "workspace-write",
+    "memoryFeatureDisabled": true,
+    "activeRootReadEvents": [
+      "item_1"
+    ],
+    "preservedInputBytesAndModes": true,
+    "exit": 0,
+    "rawEventSHA256": "0615b3c7501c22a6b14a5a6659826bfde2e177a4c835907c92d1902822ada41b",
+    "rawFinalSHA256": "d6dbe87302fd93d5cbbb517807426ce009a8db23481bf057fe4de14be4ef41d1",
+    "publicRecord": "results/8a9152.json"
+  },
+  "5953d9": {
+    "phase": "confirm",
+    "case": "holdout",
+    "edition": "C",
+    "assignedModel": "gpt-6.2-sol",
+    "assignedReasoning": "model_reasoning_effort=\"medium\"",
+    "mode": "workspace-write",
+    "memoryFeatureDisabled": true,
+    "activeRootReadEvents": [
+      "item_1"
+    ],
+    "preservedInputBytesAndModes": true,
+    "exit": 0,
+    "rawEventSHA256": "b82a9e16928519bd755d2803ad343feeee60bb71d991e11806dade42d9c5955b",
+    "rawFinalSHA256": "910e85c3b7d06bae8dbe0e272682e1b5c8e1cda6cb4f9a3a5707b6a98ba69a20",
+    "publicRecord": "results/5953d9.json"
+  },
+  "3392d0": {
+    "phase": "confirm",
+    "case": "holdout",
+    "edition": "A",
+    "assignedModel": "gpt-6.2-sol",
+    "assignedReasoning": "model_reasoning_effort=\"medium\"",
+    "mode": "workspace-write",
+    "memoryFeatureDisabled": true,
+    "activeRootReadEvents": [
+      "item_1"
+    ],
+    "preservedInputBytesAndModes": true,
+    "exit": 0,
+    "rawEventSHA256": "ed676f9bfb863b4939c09197da5d15324f9c81e1cb4ca817389ccf3849c682a1",
+    "rawFinalSHA256": "da5139973692662ed0c2f6afa7ab7402b167cb32cf1f65cc1a4c50557955148b",
+    "publicRecord": "results/3392d0.json"
+  },
+  "7bc73e": {
+    "phase": "confirm",
+    "case": "boundary",
+    "edition": "C",
+    "assignedModel": "gpt-6.2-sol",
+    "assignedReasoning": "model_reasoning_effort=\"medium\"",
+    "mode": "workspace-write",
+    "memoryFeatureDisabled": true,
+    "activeRootReadEvents": [
+      "item_1"
+    ],
+    "preservedInputBytesAndModes": true,
+    "exit": 0,
+    "rawEventSHA256": "5dfff711bb6e6bc74bd1ca158023554a097c7dcb0e749d23a7c15f8180eb5c54",
+    "rawFinalSHA256": "e23d3c046ac6ca1715639184a3d7c45333fa817b0e1ab801774b3a8fab152315",
+    "publicRecord": "results/7bc73e.json"
+  },
+  "397d9b": {
+    "phase": "confirm",
+    "case": "ordinary",
+    "edition": "C",
+    "assignedModel": "gpt-6.2-sol",
+    "assignedReasoning": "model_reasoning_effort=\"medium\"",
+    "mode": "workspace-write",
+    "memoryFeatureDisabled": true,
+    "activeRootReadEvents": [
+      "item_1"
+    ],
+    "preservedInputBytesAndModes": true,
+    "exit": 0,
+    "rawEventSHA256": "78fcb6f888fa60bd482cc154614c82bb16437e8b9fbe31dbad08a7cc25cadb0b",
+    "rawFinalSHA256": "c07e2925835c9b01f75a5b80fb3d66dff9b4b2f606fd7621fa843e22bc910edc",
+    "publicRecord": "results/397d9b.json"
+  },
+  "ff037b": {
+    "phase": "early-release",
+    "case": "transfer",
+    "edition": "archive",
+    "assignedModel": "gpt-6.2-sol",
+    "assignedReasoning": "model_reasoning_effort=\"medium\"",
+    "mode": "workspace-write",
+    "memoryFeatureDisabled": true,
+    "activeRootReadEvents": [
+      "item_1"
+    ],
+    "preservedInputBytesAndModes": true,
+    "exit": 0,
+    "rawEventSHA256": "03ab418ad6e03d252e8ffb5aa47c72e0e332fa95c3df4ae8140ae25b27fc997d",
+    "rawFinalSHA256": "337fa65e65931ab90fe3f873d4967517ff99dc156821b234432d62786779dd69",
+    "publicRecord": "results/ff037b.json"
+  },
+  "ac3680": {
+    "phase": "release",
+    "case": "transfer",
+    "edition": "final",
+    "assignedModel": "gpt-6.2-sol",
+    "assignedReasoning": "model_reasoning_effort=\"medium\"",
+    "mode": "workspace-write",
+    "memoryFeatureDisabled": true,
+    "activeRootReadEvents": [
+      "item_1"
+    ],
+    "preservedInputBytesAndModes": true,
+    "exit": 0,
+    "rawEventSHA256": "cc687ee8dfdaee828769af1e448e5ec38f3cbfde888f6ba78bc8070e06f37f11",
+    "rawFinalSHA256": "2afd56127210e0d292ac429394a9475c6f1a9fa36c1a4c7e5cd41dd8416012e1",
+    "publicRecord": "results/ac3680.json"
+  }
+}

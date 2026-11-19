@@ -6,9 +6,9 @@ description: Review features, specs, plans, acceptance criteria,
   mistaken for observable capability; not for ordinary spec, code, security, or
   domain review.
 metadata:
-  source-version: 0.2.7
+  source-version: 0.2.8
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 4085368a051462c59c8d4cf05fb6d0258c6b345a9679186cf055a1abaf351de4
+  skillforge-source-hash: dc3e181f4469f2e52eeb6129467dbdb2373069c490e4e19268d00d4a86d44020
 ---
 
 # concept-conformance-reviewer
@@ -160,7 +160,7 @@ Determine whether the claimed capability is forced at design time or demonstrate
 
 1. In design-time mode, find the least-real implementation that could satisfy each criterion and propose behavior-level replacements for exploitable criteria.
 2. In closure-time mode, trace the claimed actor, entry point, behavior, state or effect, feedback, and continuity through current production-shaped evidence.
-3. Treat mocks, snapshots, schemas, routes, files, tests, logs, and screenshots according to what they prove; none proves a broader runtime claim by existence alone.
+3. Tie each artifact to the user outcome it demonstrates.
 4. Record missing, stale, intercepted, simulated, partial, or out-of-scope evidence as an evidence gap rather than assuming success.
 
 Validation:

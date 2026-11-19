@@ -1,0 +1,274 @@
+{
+  "browser": "158.0.8127.36",
+  "node": "v24.15.0",
+  "timeline": [
+    {
+      "stage": "opened",
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "",
+      "weekly": "false",
+      "focus": "PreferencesNotification settingsChoose where and how often you hear from us.About these settingsEmail address (required)Your preferred address for notification emails.Email notificationsTurn updates on or pause them at any time.Delivery frequencyChoose a rhythm that works for you.DailyA little, every dayWeeklyOne weekly digestReview changesConfirm to save these settings. You can reopen this page to read them.",
+      "status": "",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "help",
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "",
+      "weekly": "false",
+      "focus": "About these settings",
+      "status": "",
+      "tooltips": [
+        {
+          "id": "_r_0_",
+          "text": "Review your changes before you confirm."
+        }
+      ],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "invalid",
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "bad",
+      "weekly": "true",
+      "focus": "email",
+      "status": "Settings applied\n\nEmail: first@example.test. Notifications: On. Frequency: Daily.\n\nRead from the local settings service. No email is sent.",
+      "fieldError": "Enter a valid email address.",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "cancelled",
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "team@example.test",
+      "weekly": "true",
+      "focus": "Review changes",
+      "status": "Settings applied\n\nEmail: first@example.test. Notifications: On. Frequency: Daily.\n\nRead from the local settings service. No email is sent.",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "closed-during",
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "team@example.test",
+      "weekly": "true",
+      "focus": "status",
+      "status": "Applying changes…\n\nPreviously applied settings\n\nEmail: first@example.test. Notifications: On. Frequency: Daily.\n\nRead from the local settings service. No email is sent.",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "saved",
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "team@example.test",
+      "weekly": "true",
+      "focus": "status",
+      "status": "Settings applied\n\nEmail: team@example.test. Notifications: On. Frequency: Weekly.\n\nRead from the local settings service. No email is sent.",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "write-failed",
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "again@example.test",
+      "weekly": "true",
+      "focus": "Review changes",
+      "status": "Settings could not be saved. Review your changes and try again.\n\nPreviously applied settings\n\nEmail: team@example.test. Notifications: On. Frequency: Weekly.\n\nRead from the local settings service. No email is sent.",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "reloaded-after-failure",
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "team@example.test",
+      "weekly": "true",
+      "focus": "PreferencesNotification settingsChoose where and how often you hear from us.About these settingsEmail address (required)Your preferred address for notification emails.Email notificationsTurn updates on or pause them at any time.Delivery frequencyChoose a rhythm that works for you.DailyA little, every dayWeeklyOne weekly digestReview changesConfirm to save these settings. You can reopen this page to read them.Settings appliedEmail: team@example.test. Notifications: On. Frequency: Weekly.Read from the local settings service. No email is sent.",
+      "status": "Settings applied\n\nEmail: team@example.test. Notifications: On. Frequency: Weekly.\n\nRead from the local settings service. No email is sent.",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    },
+    {
+      "stage": "reopened",
+      "route": "/settings/notifications",
+      "heading": "Notification settings",
+      "email": "again@example.test",
+      "weekly": "true",
+      "focus": "PreferencesNotification settingsChoose where and how often you hear from us.About these settingsEmail address (required)Your preferred address for notification emails.Email notificationsTurn updates on or pause them at any time.Delivery frequencyChoose a rhythm that works for you.DailyA little, every dayWeeklyOne weekly digestReview changesConfirm to save these settings. You can reopen this page to read them.Settings appliedEmail: again@example.test. Notifications: On. Frequency: Weekly.Read from the local settings service. No email is sent.",
+      "status": "Settings applied\n\nEmail: again@example.test. Notifications: On. Frequency: Weekly.\n\nRead from the local settings service. No email is sent.",
+      "tooltips": [],
+      "viewport": 390,
+      "pageWidth": 390
+    }
+  ],
+  "http": [
+    {
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "method": "PUT",
+      "status": 204,
+      "input": {
+        "email": "first@example.test",
+        "enabled": true,
+        "frequency": "daily"
+      }
+    },
+    {
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "method": "PUT",
+      "status": 204,
+      "input": {
+        "email": "team@example.test",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    },
+    {
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "method": "PUT",
+      "status": 503,
+      "input": {
+        "email": "again@example.test",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    },
+    {
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "method": "PUT",
+      "status": 204,
+      "input": {
+        "email": "again@example.test",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    },
+    {
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "status": 200
+    }
+  ],
+  "server": [
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": null
+    },
+    {
+      "method": "PUT",
+      "path": "/api/notification-settings",
+      "status": 204
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": {
+        "email": "first@example.test",
+        "enabled": true,
+        "frequency": "daily"
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/notification-settings",
+      "status": 204
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": {
+        "email": "team@example.test",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/notification-settings",
+      "status": 503,
+      "body": {
+        "error": "write_unavailable"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": {
+        "email": "team@example.test",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/api/notification-settings",
+      "status": 204
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": {
+        "email": "again@example.test",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": {
+        "email": "again@example.test",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    }
+  ],
+  "persisted": {
+    "email": "team@example.test",
+    "enabled": true,
+    "frequency": "weekly"
+  },
+  "final": {
+    "email": "again@example.test",
+    "enabled": true,
+    "frequency": "weekly"
+  },
+  "pageErrors": []
+}

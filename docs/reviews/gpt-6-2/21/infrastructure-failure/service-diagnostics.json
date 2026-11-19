@@ -1,0 +1,27 @@
+{
+  "cgroup": {
+    "stdout": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0\n",
+    "stderr": "",
+    "exit": 0
+  },
+  "processes": {
+    "stdout": "postgres\npostgres\npostgres\npostgres\npostgres\npostgres\npostgres\npostgres\npostgres\nMainThread\nps\n",
+    "stderr": "",
+    "exit": 0
+  },
+  "health": {
+    "stdout": "127.0.0.1:5432 - accepting connections\n",
+    "stderr": "",
+    "exit": 0
+  },
+  "gateway": {
+    "stdout": "4062 ECONNREFUSED\n4063 404\n",
+    "stderr": "",
+    "exit": 0
+  },
+  "events": {
+    "stdout": "",
+    "stderr": "",
+    "exit": 0
+  }
+}

@@ -1,0 +1,4 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -29 +28,0 @@
+-12. Distinguish parallel implementation from independent acceptance; type dependency edges and require shared acceptance for same-record or shared-race evidence.

@@ -1,0 +1,8 @@
+--- C/SKILL.md
++++ Release/SKILL.md
+@@ -8 +8 @@
+-  source-version: 0.2.8
++  source-version: 0.2.9
+@@ -10 +10 @@
+-  skillforge-source-hash: ac3ad18d168bcd56794ce57d51c03ddb40caa858c2a8c9a8158a52079f72ce0c
++  skillforge-source-hash: b1091bf3537fdc0c6807007e4679eff00280414f4069d7c571a8e8551801e9c9

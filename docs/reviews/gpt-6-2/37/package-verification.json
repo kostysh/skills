@@ -1,0 +1,61 @@
+{
+  "checks": [
+    "source lint, regenerate and check",
+    "compile to independent directory and run check",
+    "source, standalone compile, distributed archive and issued files equal by SHA-256",
+    "archive and issued file modes equal. The source checkout and compiler output are group-writable on this host; all copies have the same nonexecutable classification",
+    "A→B, A→C, B→C, C→final: exact patch applied with zero fuzz and full byte comparison",
+    "baseline package equals A",
+    "scoped pack:skills against original previous catalog"
+  ],
+  "version": "0.1.4",
+  "catalogEntry": {
+    "name": "payload-migration",
+    "description": "Migrate WordPress, Contentful, Strapi, Sanity, Webflow or CSV/JSON content into Payload. Analyze exports, design schemas, map fields, relations, media, rich text and locales; execute authorized imports, recover reruns and reconcile results. Use payload for target runtime mechanics.",
+    "version": "0.1.4",
+    "url": "https://github.com/kostysh/skills/releases/download/skills-row37-local/payload-migration-0.1.4.tgz",
+    "sha256": "ab0214b5d29e754b9dbbf92b2bd415be672f1d74ddd878910e5546318e9a5243",
+    "contentHash": "80d553bd41c4c928b7e4e01e3dad668cbb09b621bdaa77abba074910878acf69"
+  },
+  "previousCatalog": "6a27eb907f0335ff4ac1778192f37b368d18c2e5cbea6611e4a61b956a95c749",
+  "baselineArchiveSHA256": "7ede052bd5dbb5e275260710d5fb4960fba47d3ee1990a211ac64e1577acddf3",
+  "activeFiles": {
+    "SKILL.md": {
+      "sha256": "f1bd3cb7ef88ad58b89b15e022b98ef2c387be6d6f88d5609c81cf96f5fccf7f",
+      "modes": {
+        "workingTree": "0664",
+        "standaloneCompile": "0664",
+        "packaged": "0644",
+        "issued": "0644"
+      }
+    },
+    "agents/openai.yaml": {
+      "sha256": "e1db640a3706e0d13e8250aa4f9a3930c72104fb5dbf4760672d395e5325b0b4",
+      "modes": {
+        "workingTree": "0664",
+        "standaloneCompile": "0664",
+        "packaged": "0644",
+        "issued": "0644"
+      }
+    },
+    "references/payload-field-reference.md": {
+      "sha256": "e76cb91e7584e44e25fad4408ae10615f8aeb8c3470e0b9b3ade19979166b5a8",
+      "modes": {
+        "workingTree": "0664",
+        "standaloneCompile": "0664",
+        "packaged": "0644",
+        "issued": "0644"
+      }
+    }
+  },
+  "supportingExcluded": true,
+  "packageKind": "documentation only",
+  "localReleaseLabel": "skills-row37-local; no remote publication",
+  "targetCommit": "47e9220751c4e37f39d5e1635d9b77701d93f964",
+  "rebuild": {
+    "procedure": "Fresh copy of the final full source bundle, in-place regeneration in that copy, scoped pack:skills using the previous catalog; independent filesystem output directory",
+    "archiveSHA256": "ab0214b5d29e754b9dbbf92b2bd415be672f1d74ddd878910e5546318e9a5243",
+    "catalogSHA256": "1832f9c777a28870b6d43011210d645b3fd8b8882f2f77da165ab7f11df005de",
+    "initialCatalogSHA256": "1832f9c777a28870b6d43011210d645b3fd8b8882f2f77da165ab7f11df005de"
+  }
+}

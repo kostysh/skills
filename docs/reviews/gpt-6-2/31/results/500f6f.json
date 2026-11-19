@@ -1,0 +1,196 @@
+{
+  "variant": "B",
+  "case": "ordinary",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПримени ./SKILL.md. Проверь выдаваемый смене сайт по ticket.md и направь владельцу короткий результат приёмки. Проверка проходит с главной страницы обслуживаемой сборки. Материалы и разрешённые действия описаны в site.md. Сайт, документ и пакет остаются в исходном виде.\n",
+  "input_file_sha256": {
+    "SKILL.md": "667134a75975c74ffaad4fc60a787ed65023857eb9c9d3f2444d010b99e4e827",
+    "agents/openai.yaml": "9b8a48731c3bc59fa6fc82a040d3fbde1fd2fb08c5cc020e81384f839e482ecf",
+    "assets/project-files/.github/workflows/docs-quality.yml": "968eb18850f0ddec8b5a54d4027c8657e81419d264e7e9a4bf1e81c52696d2af",
+    "assets/project-files/.markdownlint-cli2.jsonc": "25b490a3f41fdc7f032d618b7b29779f325c82a54e29e6ae7a2e06f73ab03bc3",
+    "assets/project-files/.prettierignore": "0e2d69697fed9001df076dc0e14de9ef3ed045a8b945961564b8e0d98a54fc90",
+    "assets/project-files/.prettierrc.json": "8b92ed4e7a6cd9ddcfa606663ab1cf6328da668557adc02510f776ea28991f1c",
+    "assets/project-files/AGENTS.md": "4d68ac59d3fabc6a829f7f2041fd2f7b555e894d199a97a07deec7ed7623e7bb",
+    "build-facts.json": "2a92cae23bd5a0ea6cc1690932bd0105c6a061d6a2fbdb2433811d0bab04d59c",
+    "references/bootstrap-and-structure.md": "d695e4c71a2788767e1d5b94010932024846fdb95cf1d598697706147f81ff85",
+    "references/config-presets-and-routing.md": "7eab4eb7d7d7090a9b736b7419880a827270b5b23b981716473eb9c524de6c70",
+    "references/content-authoring.md": "890b4c84a5c45c4590a2edd5c80442d3485f3d13eb3e5728f0c23705b95f4630",
+    "references/customization-and-ux.md": "ae6d1d7a79bd4df3345d437a58c7b734c9059af349a820fda4cd6328d7d3de06",
+    "references/deployment-versioning-i18n.md": "caed7743fb340a5285a929e76da88fed187ef1a832f2569a1f4325b6a2342ffe",
+    "references/doc-quality-tooling-and-agents.md": "04bb9c7f11ee753ee9e416a603ec02ee64f7cfe5e3b17344ff135a8c4b749707",
+    "references/search-and-ecosystem.md": "197273c8ed4b7afc8ab31469d839408080767567913d45b83e5dc45d762a6bc9",
+    "release/engineering-tally-fixture-1.1.0.tgz": "b67a76bc3dd46c43e26070c0dee7841942ffe20e853b08e37774a751fa4600e5",
+    "site.md": "720de36dcfc26d2364c336c8256dc665ca4e0753bd1f6bcc4917c948c5fe952a",
+    "ticket.md": "25ad438afe1bc52b49fece5dda7a897c9b279bbf59b145eb4a28cd8e9ed508d0"
+  },
+  "raw_events_sha256": "f25b4dc57a0d3eae6c9bb96baa682f65e54573e8ea031ca920f1848c70414fc5",
+  "raw_events_bytes": 64237,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Применю `./SKILL.md`, сверю критерии в `ticket.md` с правилами в `site.md` и начну проверку с главной страницы сборки."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git'\"' && cat SKILL.md ticket.md site.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat build-facts.json && cat references/config-presets-and-routing.md references/content-authoring.md && tar -tzf release/engineering-tally-fixture-1.1.0.tgz'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"curl -fsS --noproxy '*' http://127.0.0.1:41639/ | python3 -c 'from html.parser import HTMLParser\nimport sys\nclass Links(HTMLParser):\n def handle_starttag(self,t,a):\n  if t in (\\\"a\\\",\\\"html\\\",\\\"link\\\"): print(t,dict(a))\n def handle_data(self,d):\n  if \\\"Current shift\\\" in d: print(d)\nLinks().feed(sys.stdin.read())'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'for f in package/package.json package/README.md package/dist/cli.js package/dist/legacy.js; do tar -xOzf release/engineering-tally-fixture-1.1.0.tgz \"$f\"; done\ncommand -v node npm pnpm\nls -la'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"curl -fsS -i --noproxy '*' http://127.0.0.1:41639/handbook/2.0/desk/ | python3 -c 'from html.parser import HTMLParser\nimport sys\nclass Page(HTMLParser):\n def handle_starttag(self,t,a):\n  if t in (\\\"a\\\",\\\"html\\\",\\\"link\\\",\\\"script\\\"): print(t,dict(a))\n def handle_data(self,d):\n  if d.strip() and len(d)<4000: print(d)\nPage().feed(sys.stdin.read())'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"curl -fsS --noproxy '*' http://127.0.0.1:41639/ | sed 's/></>\\\\n</g' | tail -65\ncurl -fsS --noproxy '*' http://127.0.0.1:41639/handbook/2.0/desk/ | sed 's/></>\\\\n</g' | tail -95\nfor app in chromium chromium-browser google-chrome playwright agent-browser; do command -v \\\"\"'$app\"; done'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"curl -fsS --noproxy '*' http://127.0.0.1:41639/assets/js/main.fbdf2759.js | rg -o '.{0,170}(handbook/2\\\\.0/desk|handbook/1\\\\.0|Current shift manual|legacy).{0,150}' | cut -c1-350\npython3 -c \\\"import importlib.util as u; print({x:bool(u.find_spec(x)) for x in ('websocket','playwright','selenium')})\\\"\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python3 - <<'PY'\nimport os, pathlib, shutil, subprocess, tempfile\nroot = pathlib.Path.cwd()\nwith tempfile.TemporaryDirectory(prefix=\\\".tally-acceptance-\\\", dir=root) as scratch:\n    archive = \\\"engineering-tally-fixture-1.1.0.tgz\\\"\n    shutil.copyfile(root / \\\"release\\\" / archive, pathlib.Path(scratch) / archive)\n    env = dict(os.environ, npm_config_cache=str(pathlib.Path(scratch) / \\\".npm-cache\\\"))\n    for command in (\n        [\\\"node\\\", \\\"--version\\\"],\n        [\\\"npm\\\", \\\"--version\\\"],\n        [\\\"npm\\\", \\\"install\\\", \\\"--offline\\\", \\\"--ignore-scripts\\\", \\\"--no-audit\\\", \\\"--no-fund\\\", \\\"./\\\" + archive],\n        [\\\"./node_modules/.bin/tally\\\", \\\"--version\\\"],\n        [\\\"./node_modules/.bin/tally\\\", \\\"sum\\\", \\\"2\\\", \\\"3\\\", \\\"--machine\\\"],\n        [\\\"./node_modules/.bin/tally\\\", \\\"sum\\\", \\\"bad\\\", \\\"--machine\\\"],\n    ):\n        result = subprocess.run(command, cwd=scratch, env=env, capture_output=True)\n        print(command, \\\"exit\\\", result.returncode, \\\"stdout\\\", repr(result.stdout), \\\"stderr\\\", repr(result.stderr))\n        if command[:2] == [\\\"npm\\\", \\\"install\\\"]:\n            result.check_returncode()\nPY\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Tally 1.1.0 установился офлайн. Команда суммы вернула `{\"sum\":5}`, а неверный ввод дал `Number expected` в stderr и код 2. Теперь проверю переход с главной в браузере."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python3 - <<'PY'\nimport os, pathlib, subprocess, tempfile\nwith tempfile.TemporaryDirectory(prefix=\\\".browser-acceptance-\\\", dir=pathlib.Path.cwd()) as scratch:\n    script = r\\\"\\\"\\\"\nconst {spawn} = require('node:child_process');\nconst origin = 'http://127.0.0.1:41639';\nconst browser = spawn('google-chrome', [\n    '--headless', '--no-sandbox', '--remote-debugging-pipe',\n    '--disable-background-networking', '--disable-component-update',\n    '--disable-sync', '--no-first-run', '--no-default-browser-check',\n    '--disable-dev-shm-usage', '--no-proxy-server',\n    '--host-resolver-rules=MAP * ~NOTFOUND, EXCLUDE 127.0.0.1',\n    '--user-data-dir=' + process.argv[1], 'about:blank',\n], {stdio:['ignore','ignore','ignore','pipe','pipe']});\nconst pending = new Map();\nlet id = 0;\nlet buffer = '';\nlet sessionId;\nconst timer = setTimeout(() => { console.error('Browser check timed out'); process.exitCode=1; browser.kill(); }, 12000);\nfunction send(method, params={}, session) {\n    const key = ++id;\n    return new Promise((resolve,reject) => {\n        pending.set(key,{resolve,reject});\n        browser.stdio[3].write(JSON.stringify({id:key, method, params,sessionId:session})+'\\\\0');\n    });\n}\nbrowser.stdio[4].setEncoding('utf8').on('data', chunk => {\n    buffer += chunk;\n    for (let end; (end=buffer.indexOf('\\\\0'))>=0; ) {\n        const reply = JSON.parse(buffer.slice(0,end));\n        buffer = buffer.slice(end+1);\n        if (reply.method === 'Fetch.requestPaused') {\n            const {requestId,request:{url}} = reply.params;\n            const allowed = new URL(url).origin === origin;\n            send(allowed?'Fetch.continueRequest':'Fetch.failRequest',\n                allowed?{requestId}:{requestId,errorReason:'BlockedByClient'}, reply.sessionId);\n        }\n        const waiter = pending.get(reply.id);\n        if (waiter) {\n            pending.delete(reply.id);\n            if (reply.error) waiter.reject(reply.error);\n            else waiter.resolve(reply.result);\n        }\n    }\n});\nasync function evaluate(expression) {\n    const reply = await send('Runtime.evaluate',{expression,returnByValue:true}, sessionId);\n    if (reply.exceptionDetails) throw new Error(reply.exceptionDetails.text);\n    return reply.result.value;\n}\nasync function waitFor(expression) {\n    for (let attempt=0; attempt<60; attempt++) {\n        if (await evaluate(expression)) return;\n        await new Promise(resolve=>setTimeout(resolve,100));\n    }\n    throw new Error('Missing browser state: '+expression);\n}\n(async () => {\n    const {targetId} = await send('Target.createTarget',{url:'about:blank'});\n    ({sessionId} = await send('Target.attachToTarget',{targetId,flatten:true}));\n    await send('Fetch.enable',{patterns:[{urlPattern:'*'}]}, sessionId);\n    const navigation=await send('Page.navigate',{url:origin+'/'},sessionId);\n    if (navigation.errorText) throw new Error(navigation.errorText);\n    await waitFor(\\\"document.documentElement.dataset.hasHydrated === 'true' && \"'!!document.querySelector('\"'main a')\\\");\n    const links = await evaluate(\\\"Array.from(document.querySelectorAll('main a'), a=>({text:a.innerText,href:a.getAttribute('href')}))\\\");\n    console.log('Home links:',JSON.stringify(links));\n    await evaluate(\\\"Array.from(document.querySelectorAll('main a')).find(a=>a.innerText==='Current shift manual 2.0').click()\\\");\n    await waitFor(\\\"\"'!!document.querySelector('\"'article h1')\\\");\n    console.log('After click:',JSON.stringify(await evaluate(\\\"({url:location.href,lang:document.documentElement.lang,heading:document.querySelector('article h1').innerText,body:document.querySelector('article').innerText,canonical:document.querySelector('link[rel=canonical]')?.href})\\\")));\n})().catch(error=>{console.error(error);process.exitCode=1;}).finally(()=>{clearTimeout(timer);browser.kill();});\n\\\"\\\"\\\"\n    env = dict(os.environ, XDG_CONFIG_HOME=scratch, XDG_CACHE_HOME=scratch)\n    subprocess.run([\\\"node\\\", \\\"-e\\\", script, scratch], env=env, check=True)\nPY\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "**Приёмка по `ticket.md` пройдена.** В браузере ссылка **Current shift manual 2.0** с главной открыла английское руководство 2.0. По его шагам Tally 1.1.0 установился офлайн.\n\n- `sum 2 3 --machine` вернула `{\"sum\":5}` в stdout с кодом 0.\n- `sum bad --machine` вывела `Number expected` в stderr с кодом 2. Stdout остался пустым.\n\nОтдельное замечание владельцу. Ссылка **Archived shift manual 1.0** тоже ведёт на руководство 2.0. Это не мешает проверенному сценарию смены."
+    }
+  ],
+  "changed_file_contents": {},
+  "final_response": "**Приёмка по `ticket.md` пройдена.** В браузере ссылка **Current shift manual 2.0** с главной открыла английское руководство 2.0. По его шагам Tally 1.1.0 установился офлайн.\n\n- `sum 2 3 --machine` вернула `{\"sum\":5}` в stdout с кодом 0.\n- `sum bad --machine` вывела `Number expected` в stderr с кодом 2. Stdout остался пустым.\n\nОтдельное замечание владельцу. Ссылка **Archived shift manual 1.0** тоже ведёт на руководство 2.0. Это не мешает проверенному сценарию смены.",
+  "input_file_modes": {
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "assets/project-files/.github/workflows/docs-quality.yml": "0644",
+    "assets/project-files/.markdownlint-cli2.jsonc": "0644",
+    "assets/project-files/.prettierignore": "0644",
+    "assets/project-files/.prettierrc.json": "0644",
+    "assets/project-files/AGENTS.md": "0644",
+    "build-facts.json": "0664",
+    "references/bootstrap-and-structure.md": "0644",
+    "references/config-presets-and-routing.md": "0644",
+    "references/content-authoring.md": "0644",
+    "references/customization-and-ux.md": "0644",
+    "references/deployment-versioning-i18n.md": "0644",
+    "references/doc-quality-tooling-and-agents.md": "0644",
+    "references/search-and-ecosystem.md": "0644",
+    "release/engineering-tally-fixture-1.1.0.tgz": "0664",
+    "site.md": "0664",
+    "ticket.md": "0664"
+  },
+  "changed_file_modes": {},
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "sameProductFilesAsObserver": true,
+    "organizerPreflightOnTheseInputs": {
+      "sourcePage": "/",
+      "link": "Current shift manual 2.0",
+      "href": "/handbook/2.0/desk/",
+      "homeSha256": "197360fda0ebd1e2c4dcff8babdc9a02463d42d7d02a4badaa528572ca578bbc",
+      "response": 200,
+      "documentSha256": "e8e539e8c4dbc1522bbbd7828b0310e53e94ac012aebc0c3cc7a6743591f7e6c",
+      "docCommands": "npm install --offline --ignore-scripts --no-audit --no-fund ./engineering-tally-fixture-1.1.0.tgz./node_modules/.bin/tally sum 2 3 --machine./node_modules/.bin/tally sum bad --machine{\"sum\":5}Number expected",
+      "reader": {
+        "--machine": [
+          {
+            "exit": 0,
+            "stdout": "{\"sum\":5}\n",
+            "stderr": ""
+          },
+          {
+            "exit": 2,
+            "stdout": "",
+            "stderr": "Number expected\n"
+          }
+        ]
+      },
+      "cliSha256": "b67a76bc3dd46c43e26070c0dee7841942ffe20e853b08e37774a751fa4600e5"
+    },
+    "participantCommandsAndResults": [
+      {
+        "command": "/bin/bash -lc \"curl -fsS --noproxy '*' http://127.0.0.1:41639/ | python3 -c 'from html.parser import HTMLParser\nimport sys\nclass Links(HTMLParser):\n def handle_starttag(self,t,a):\n  if t in (\\\"a\\\",\\\"html\\\",\\\"link\\\"): print(t,dict(a))\n def handle_data(self,d):\n  if \\\"Current shift\\\" in d: print(d)\nLinks().feed(sys.stdin.read())'\"",
+        "exit": 0,
+        "selectOutput": "html {'lang': 'en', 'dir': 'ltr', 'class': 'plugin-pages plugin-id-default', 'data-has-hydrated': 'false'}\nlink {'data-rh': 'true', 'rel': 'canonical', 'href': 'https://desk.example.invalid/'}\nlink {'data-rh': 'true', 'rel': 'alternate', 'href': 'https://desk.example.invalid/', 'hreflang': 'en'}\nlink {'data-rh': 'true', 'rel': 'alternate', 'href': 'https://desk.example.invalid/it/', 'hreflang': 'it'}\nlink {'data-rh': 'true', 'rel': 'alternate', 'href': 'https://desk.example.invalid/', 'hreflang': 'x-default'}\nlink {'rel': 'stylesheet', 'href': '/assets/css/styles.78e6bda1.css'}\na {'class': 'skipToContent_fXgn', 'href': '#__docusaurus_skipToContent_fallback'}\na {'class': 'navbar__brand', 'href': '/'}\na {'href': '/handbook/2.0/desk/'}\nCurrent shift manual 2.0\na {'href': '/handbook/2.0/desk/'}",
+        "fullEventSha": "87bb55c3663a59bb537e163c3e17ff4d9313e46e520e8a2fdd1b2c42f700816f"
+      },
+      {
+        "command": "/bin/bash -lc 'for f in package/package.json package/README.md package/dist/cli.js package/dist/legacy.js; do tar -xOzf release/engineering-tally-fixture-1.1.0.tgz \"$f\"; done\ncommand -v node npm pnpm\nls -la'",
+        "exit": 0,
+        "selectOutput": "{\n  \"name\": \"engineering-tally-fixture\",\n  \"version\": \"1.1.0\",\n  \"type\": \"module\",\n  \"bin\": {\n    \"tally\": \"dist/cli.js\"\n  },\n  \"files\": [\n    \"dist\"\n  ],\n  \"scripts\": {\n    \"typecheck\": \"tsc -p tsconfig.json --noEmit\",\n    \"build\": \"tsc -p tsconfig.json\",\n    \"test\": \"tsx --test test/*.test.ts\"\n  },\n  \"devDependencies\": {\n    \"typescript\": \"5.9.3\",\n    \"tsx\": \"4.20.5\",\n    \"@types/node\": \"24.0.0\"\n  }\n}\nOffline evaluation package for Tally. The operator handbook is maintained separately.\n#!/usr/bin/env node\nconst args = process.argv.slice(2);\nif (args.includes('--help')) {\n    console.log('tally 1.1.0\\nUsage: tally sum <numbers...> [--machine]');\n}\nelse if (args.includes('--version')) {\n    console.log('1.1.0');\n}\nelse if (args[0] === 'sum') {\n    const json = args.includes('--machine');\n    const values = args.slice(1).filter(x => x !== '--machine').map(Number);\n    if (values.length === 0 || values.some(x => !Number.isFinite(x))) {\n        console.error('Number expected');\n        process.exitCode = 2;\n    }\n    else {\n        const total = values.reduce((a, b) => a + b, 0);\n        console.log(json ? JSON.stringify({ sum: total }) : String(total));\n    }\n}\nelse {\n    console.error('Unknown command');\n    process.exitCode = 2;\n}\nexport {};\n#!/usr/bin/env node\nconsole.log('legacy tally0.1');\n/home/kostysh/.nvm/versions/node/v24.15.0/bin/node\n/home/kostysh/.nvm/versions/node/v24.15.0/bin/npm\n/home/kostysh/.nvm/versions/node/v24.15.0/bin/pnpm\ntotal 28\ndrwxrwxr-x   10 kostysh kostysh   280 Nov 18 23:44 .\ndrwxrwxrwt 1559 nobody  nogroup 63020 Nov 18 23:43 ..\ndr-xr-xr-x    2 kostysh kostysh    40 Nov 18 23:44 .agents\ndr-xr-xr-x    2 kostysh kostysh    40 Nov 18 23:44 .aws\ndr-xr-xr-x    2 kostysh kostysh    40 Nov 18 23:44 .codex\ndr-xr-xr-x    2 kostysh kostysh    40 Nov 18 23:44 .git\n-rw-r--r--    1 kostysh kostysh 14318 Nov 18 23:41 SKILL.md",
+        "fullEventSha": "fc4520d3e8b25e67256c02a1d4c732b4029ca903661eb66dba763506819cbc72"
+      },
+      {
+        "command": "/bin/bash -lc \"curl -fsS -i --noproxy '*' http://127.0.0.1:41639/handbook/2.0/desk/ | python3 -c 'from html.parser import HTMLParser\nimport sys\nclass Page(HTMLParser):\n def handle_starttag(self,t,a):\n  if t in (\\\"a\\\",\\\"html\\\",\\\"link\\\",\\\"script\\\"): print(t,dict(a))\n def handle_data(self,d):\n  if d.strip() and len(d)<4000: print(d)\nPage().feed(sys.stdin.read())'\"",
+        "exit": 0,
+        "selectOutput": "HTTP/1.0 200 OK\nServer: SimpleHTTP/0.6 Python/3.14.4\nDate: Wed, 18 Nov 2026 22:44:06 GMT\nContent-type: text/html\nContent-Length: 7682\nLast-Modified: Wed, 18 Nov 2026 22:27:22 GMT\nhtml {'lang': 'en', 'dir': 'ltr', 'class': 'docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-start', 'data-has-hydrated': 'false'}\nTally desk guide 2.0 | Desk handbook\nlink {'data-rh': 'true', 'rel': 'canonical', 'href': 'https://desk.example.invalid/handbook/2.0/desk/'}\nlink {'data-rh': 'true', 'rel': 'alternate', 'href': 'https://desk.example.invalid/handbook/2.0/desk/', 'hreflang': 'en'}\nlink {'data-rh': 'true', 'rel': 'alternate', 'href': 'https://desk.example.invalid/it/handbook/2.0/desk/', 'hreflang': 'it'}\nlink {'data-rh': 'true', 'rel': 'alternate', 'href': 'https://desk.example.invalid/handbook/2.0/desk/', 'hreflang': 'x-default'}\nlink {'rel': 'stylesheet', 'href': '/assets/css/styles.78e6bda1.css'}\nscript {'src': '/assets/js/runtime~main.2032b637.js', 'defer': 'defer'}\nscript {'src': '/assets/js/main.fbdf2759.js', 'defer': 'defer'}\nscript {}\n!function(){var t=function(){try{return new URLSearchParams(window.location.search).get(\"docusaurus-theme\")}catch(t){}}()||function(){try{return window.localStorage.getItem(\"theme\")}catch(t){}}();document.documentElement.setAttribute(\"data-theme\",t||\"light\"),document.documentElement.setAttribute(\"data-theme-choice\",t||\"light\")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith(\"docusaurus-data-\")){var a=t.replace(\"docusaurus-data-\",\"data-\");document.documentElement.setAttribute(a,e)}}catch(t){}}()\na {'class': 'skipToContent_fXgn', 'href': '#__docusaurus_skipToContent_fallback'}\nSkip to main content\na {'class': 'navbar__brand', 'href': '/'}\nVersion: 2.0\nTally desk guide 2.0\nUse the shift's Tally 1.1.0 archive in a clean folder. Install the attached local file offline.\nnpm install --offline --ignore-scripts --no-audit --no-fund ./engineering-tally-fixture-1.1.0.tgz\n./node_modules/.bin/tally sum 2 3 --machine\n./node_modules/.bin/tally sum bad --machine\nThe result is \n{\"sum\":5}\n. The error prints \nNumber expected\n on stderr and leaves code 2.",
+        "fullEventSha": "af5f369ea5e23bb0c6f4653393b1d00ef8d8ffdf663c7d503d56f2ab6b15dd63"
+      },
+      {
+        "command": "/bin/bash -lc \"curl -fsS --noproxy '*' http://127.0.0.1:41639/ | sed 's/></>\\\\n</g' | tail -65\ncurl -fsS --noproxy '*' http://127.0.0.1:41639/handbook/2.0/desk/ | sed 's/></>\\\\n</g' | tail -95\nfor app in chromium chromium-browser google-chrome playwright agent-browser; do command -v \\\"\"'$app\"; done'",
+        "exit": 0,
+        "selectOutput": "</span>\n</p>\\n</div>\\n',document.body.prepend(n);var e=document.getElementById(\"__docusaurus-base-url-issue-banner-suggestion-container\"),s=window.location.pathname,o=\"/\"===s.substr(-1)?s:s+\"/\";e.textContent=o}document.addEventListener(\"DOMContentLoaded\",function(){void 0===window.docusaurus&&insertBanner()})</script>\n<link rel=\"stylesheet\" href=\"/assets/css/styles.78e6bda1.css\">\n<script src=\"/assets/js/runtime~main.2032b637.js\" defer=\"defer\">\n</script>\n<script src=\"/assets/js/main.fbdf2759.js\" defer=\"defer\">\n</script>\n</head>\n<body>\n<svg style=\"display: none;\">\n<defs>\n<symbol id=\"theme-svg-external-link\" viewBox=\"0 0 24 24\">\n<path fill=\"currentColor\" d=\"M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z\"/>\n</symbol>\n</defs>\n</svg>\n<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get(\"docusaurus-theme\")}catch(t){}}()||function(){try{return window.localStorage.getItem(\"theme\")}catch(t){}}();document.documentElement.setAttribute(\"data-theme\",t||\"light\"),document.documentElement.setAttribute(\"data-theme-choice\",t||\"light\")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith(\"docusaurus-data-\")){var a=t.replace(\"docusaurus-data-\",\"data-\");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script>\n<div id=\"__docusaurus\">\n<div role=\"region\" aria-label=\"Skip to main content\">\n<a class=\"skipToContent_fXgn\" href=\"#__docusaurus_skipToContent_fallback\">Skip to main content</a>\n</div>\n<nav aria-label=\"Main\" class=\"theme-layout-navbar navbar navbar--fixed-top\">\n<div class=\"navbar__inner\">\n<div class=\"theme-layout-navbar-left navbar__items\">\n<a class=\"navbar__brand\" href=\"/\">\n</a>\n</div>\n<div class=\"theme-layout-navbar-right navbar__items navbar__items--right\">\n<div class=\"toggle_vylO colorModeToggle_DEke\">\n<button class=\"clean-btn toggleButton_gllP toggleButtonDisabled_aARS\" type=\"button\" disabled=\"\" title=\"system mode\" aria-label=\"Switch between dark and light mode (currently system mode)\">\n<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\" class=\"toggleIcon_g3eP lightToggleIcon_pyhR\">\n</path>\n</svg>\n<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\" class=\"toggleIcon_g3eP darkToggleIcon_wfgR\">\n<path fill=\"currentColor\" d=\"M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z\">\n</path>\n</svg>\n<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\" aria-hidden=\"true\" class=\"toggleIcon_g3eP systemToggleIcon_QzmC\">\n<path fill=\"currentColor\" d=\"m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z\">\n</path>\n</svg>\n</button>\n</div>\n<div class=\"navbarSearchContainer_Bca1\">\n</div>\n</div>\n</div>\n<div role=\"presentation\" class=\"navbar-sidebar__backdrop\">\n</div>\n</nav>\n<div id=\"__docusaurus_skipToContent_fallback\" class=\"theme-layout-main main-wrapper mainWrapper_z2l0\">\n<main>\n<h1>Desk notes</h1>\n<p>\n<a href=\"/handbook/2.0/desk/\">Current shift manual 2.0</a>\n</p>\n<p>\n<a href=\"/handbook/2.0/desk/\">Archived shift manual 1.0</a>\n</p>\n</main>",
+        "fullEventSha": "aadb892d2dfb9455d73c5e8e979d37e9f6576ad14f225000dc79828b223c0062"
+      },
+      {
+        "command": "/bin/bash -lc \"curl -fsS --noproxy '*' http://127.0.0.1:41639/assets/js/main.fbdf2759.js | rg -o '.{0,170}(handbook/2\\\\.0/desk|handbook/1\\\\.0|Current shift manual|legacy).{0,150}' | cut -c1-350\npython3 -c \\\"import importlib.util as u; print({x:bool(u.find_spec(x)) for x in ('websocket','playwright','selenium')})\\\"\"",
+        "exit": 0,
+        "selectOutput": "rn delete a.__props,(0,s.jsx)(d.W,{value:i,children:(0,s.jsx)(o,Object.assign({},a,l,n))})}})}const p=[{path:\"/handbook/\",component:f(\"/handbook/\",\"9d1\"),routes:[{path:\"/handbook/1.0/\",component:f(\"/handbook/1.0/\",\"f6b\"),routes:[{path:\"/handbook/1.0/\",component:f(\"/handbook/1.0/\",\"d5c\"),routes:[{path:\"/handbook/1.0/desk/\",componen\nt:f(\"/handbook/1.0/desk/\",\"3be\"),exact:!0}]}]},{path:\"/handbook/2.0/\",component:f(\"/handbook/2.0/\",\"024\"),routes:[{path:\"/handbook/2.0/\",component:f(\"/handbook/2.0/\",\"4\n27\"),routes:[{path:\"/handbook/2.0/desk/\",component:f(\"/handbook/2.0/desk/\",\"629\"),exact:!0}]}]}]},{path:\"/\",component:f(\"/\",\"070\"),exact:!0},{path:\"*\",component:f(\"*\")}]},6125(e,t,n){\"use strict\";n.d(t,{o:()=>o,x:()=>i});v\n,C=Symbol.for(\"react.suspense_list\"),_=Symbol.for(\"react.memo\"),T=Symbol.for(\"react.lazy\");Symbol.for(\"react.scope\");var j=Symbol.for(\"react.activity\");Symbol.for(\"react.legacy_hidden\"),Symbol.for(\"react.tracing_marker\");var O=Symbol.for(\"react.memo_cache_sentinel\");Symbol.for(\"react.view_transition\");var P=Symbol.iterator;f\n!==n&&(null===(n=n.dehydrated)||Ld(n)||Rd(n)))return t}else if(19!==t.tag||\"forwards\"!==t.memoizedProps.revealOrder&&\"backwards\"!==t.memoizedProps.revealOrder&&\"unstable_legacy-backwards\"!==t.memoizedProps.revealOrder&&\"together\"!==t.memoizedProps.revealOrder){if(null!==t.child){t.child.return=t,t=t.child;continue}}else if(1\n=(e=n.alternate)&&null===qo(e)&&(a=n),n=n.sibling;null===(n=a)?(a=t.child,t.child=null):(a=n.sibling,n.sibling=null),as(t,!1,a,n,o,r);break;case\"backwards\":case\"unstable_legacy-backwards\":for(n=null,a=t.child,t.child=null;null!==a;){if(null!==(e=a.alternate)&&null===qo(e)){t.child=a;break}e=a.sibling,a.sibling=n,n=a,a=e}as(t\n-docs\":{\"default\":{\"path\":\"/handbook\",\"versions\":[{\"name\":\"current\",\"label\":\"2.0\",\"isLast\":true,\"path\":\"/handbook/2.0\",\"mainDocId\":\"start\",\"docs\":[{\"id\":\"start\",\"path\":\"/handbook/2.0/desk\"}],\"draftIds\":[],\"sidebars\":{}},{\"name\":\"1.0\",\"label\":\"1.0\",\"isLast\":false,\"path\":\"/handbook/1.0\",\"mainDocId\":\"start\",\"docs\":[{\"id\":\"start\",\"path\":\"/\nhandbook/1.0/desk\"}],\"draftIds\":[],\"sidebars\":{}}],\"breadcrumbs\":true}}}'),i=JSON.parse('{\"defaultLocale\":\"en\",\"locales\":[\"en\",\"it\"],\"path\":\"i18n\",\"currentLocale\"\ndefault\",0,z])},2654(e){\"use strict\";e.exports={}},4054(e){\"use strict\";e.exports=JSON.parse('{\"/handbook/-9d1\":{\"__comp\":\"5e95c892\",\"__context\":{\"plugin\":\"aba21aa0\"}},\"/handbook/1.0/-f6b\":{\"__comp\":\"a7bd4aaa\",\"__props\":\"351a3312\"},\"/handbook/1.0/-d5c\":{\"__comp\":\"a94703ab\"},\"/handbook/1.0/desk/-3be\":{\"__comp\":\"17896441\",\"content\":\n\"774d098d\"},\"/handbook/2.0/-024\":{\"__comp\":\"a7bd4aaa\",\"__props\":\"2d740c0e\"},\"/handbook/2.0/-427\":{\"__comp\":\"a94703ab\"},\"/handbook/2.0/desk/-629\":{\"__comp\":\"17896441\",\"content\":\"98ce8162\"},\"/-070\":{\"__comp\":\"9dd8a0d2\",\"__context\":{\"plugin\":\"a7456010\"},\"config\":\"5e9f5e1a\"}}')}},e=>{e.O(0,[\n{'websocket': False, 'playwright': False, 'selenium': False}",
+        "fullEventSha": "53818570a594f075ca22d25916df3983ac236caa5dca00cfabac6486948db496"
+      },
+      {
+        "command": "/bin/bash -lc \"python3 - <<'PY'\nimport os, pathlib, shutil, subprocess, tempfile\nroot = pathlib.Path.cwd()\nwith tempfile.TemporaryDirectory(prefix=\\\".tally-acceptance-\\\", dir=root) as scratch:\n    archive = \\\"engineering-tally-fixture-1.1.0.tgz\\\"\n    shutil.copyfile(root / \\\"release\\\" / archive, pathlib.Path(scratch) / archive)\n    env = dict(os.environ, npm_config_cache=str(pathlib.Path(scratch) / \\\".npm-cache\\\"))\n    for command in (\n        [\\\"node\\\", \\\"--version\\\"],\n        [\\\"npm\\\", \\\"--version\\\"],\n        [\\\"npm\\\", \\\"install\\\", \\\"--offline\\\", \\\"--ignore-scripts\\\", \\\"--no-audit\\\", \\\"--no-fund\\\", \\\"./\\\" + archive],\n        [\\\"./node_modules/.bin/tally\\\", \\\"--version\\\"],\n        [\\\"./node_modules/.bin/tally\\\", \\\"sum\\\", \\\"2\\\", \\\"3\\\", \\\"--machine\\\"],\n        [\\\"./node_modules/.bin/tally\\\", \\\"sum\\\", \\\"bad\\\", \\\"--machine\\\"],\n    ):\n        result = subprocess.run(command, cwd=scratch, env=env, capture_output=True)\n        print(command, \\\"exit\\\", result.returncode, \\\"stdout\\\", repr(result.stdout), \\\"stderr\\\", repr(result.stderr))\n        if command[:2] == [\\\"npm\\\", \\\"install\\\"]:\n            result.check_returncode()\nPY\"",
+        "exit": 0,
+        "selectOutput": "['node', '--version'] exit 0 stdout b'v24.15.0\\n' stderr b''\n['npm', '--version'] exit 0 stdout b'12.0.1\\n' stderr b''\n['npm', 'install', '--offline', '--ignore-scripts', '--no-audit', '--no-fund', './engineering-tally-fixture-1.1.0.tgz'] exit 0 stdout b'\\nadded 1 package in 156ms\\n' stderr b''\n['./node_modules/.bin/tally', '--version'] exit 0 stdout b'1.1.0\\n' stderr b''\n['./node_modules/.bin/tally', 'sum', '2', '3', '--machine'] exit 0 stdout b'{\"sum\":5}\\n' stderr b''\n['./node_modules/.bin/tally', 'sum', 'bad', '--machine'] exit 2 stdout b'' stderr b'Number expected\\n'",
+        "fullEventSha": "9d3f824cc7a1ca239ceb3950da2f22f758d2921e99f04e737c4bb9c279b9a2b1"
+      },
+      {
+        "command": "/bin/bash -lc \"python3 - <<'PY'\nimport os, pathlib, subprocess, tempfile\nwith tempfile.TemporaryDirectory(prefix=\\\".browser-acceptance-\\\", dir=pathlib.Path.cwd()) as scratch:\n    script = r\\\"\\\"\\\"\nconst {spawn} = require('node:child_process');\nconst origin = 'http://127.0.0.1:41639';\nconst browser = spawn('google-chrome', [\n    '--headless', '--no-sandbox', '--remote-debugging-pipe',\n    '--disable-background-networking', '--disable-component-update',\n    '--disable-sync', '--no-first-run', '--no-default-browser-check',\n    '--disable-dev-shm-usage', '--no-proxy-server',\n    '--host-resolver-rules=MAP * ~NOTFOUND, EXCLUDE 127.0.0.1',\n    '--user-data-dir=' + process.argv[1], 'about:blank',\n], {stdio:['ignore','ignore','ignore','pipe','pipe']});\nconst pending = new Map();\nlet id = 0;\nlet buffer = '';\nlet sessionId;\nconst timer = setTimeout(() => { console.error('Browser check timed out'); process.exitCode=1; browser.kill(); }, 12000);\nfunction send(method, params={}, session) {\n    const key = ++id;\n    return new Promise((resolve,reject) => {\n        pending.set(key,{resolve,reject});\n        browser.stdio[3].write(JSON.stringify({id:key, method, params,sessionId:session})+'\\\\0');\n    });\n}\nbrowser.stdio[4].setEncoding('utf8').on('data', chunk => {\n    buffer += chunk;\n    for (let end; (end=buffer.indexOf('\\\\0'))>=0; ) {\n        const reply = JSON.parse(buffer.slice(0,end));\n        buffer = buffer.slice(end+1);\n        if (reply.method === 'Fetch.requestPaused') {\n            const {requestId,request:{url}} = reply.params;\n            const allowed = new URL(url).origin === origin;\n            send(allowed?'Fetch.continueRequest':'Fetch.failRequest',\n                allowed?{requestId}:{requestId,errorReason:'BlockedByClient'}, reply.sessionId);\n        }\n        const waiter = pending.get(reply.id);\n        if (waiter) {\n            pending.delete(reply.id);\n            if (reply.error) waiter.reject(reply.error);\n            else waiter.resolve(reply.result);\n        }\n    }\n});\nasync function evaluate(expression) {\n    const reply = await send('Runtime.evaluate',{expression,returnByValue:true}, sessionId);\n    if (reply.exceptionDetails) throw new Error(reply.exceptionDetails.text);\n    return reply.result.value;\n}\nasync function waitFor(expression) {\n    for (let attempt=0; attempt<60; attempt++) {\n        if (await evaluate(expression)) return;\n        await new Promise(resolve=>setTimeout(resolve,100));\n    }\n    throw new Error('Missing browser state: '+expression);\n}\n(async () => {\n    const {targetId} = await send('Target.createTarget',{url:'about:blank'});\n    ({sessionId} = await send('Target.attachToTarget',{targetId,flatten:true}));\n    await send('Fetch.enable',{patterns:[{urlPattern:'*'}]}, sessionId);\n    const navigation=await send('Page.navigate',{url:origin+'/'},sessionId);\n    if (navigation.errorText) throw new Error(navigation.errorText);\n    await waitFor(\\\"document.documentElement.dataset.hasHydrated === 'true' && \"'!!document.querySelector('\"'main a')\\\");\n    const links = await evaluate(\\\"Array.from(document.querySelectorAll('main a'), a=>({text:a.innerText,href:a.getAttribute('href')}))\\\");\n    console.log('Home links:',JSON.stringify(links));\n    await evaluate(\\\"Array.from(document.querySelectorAll('main a')).find(a=>a.innerText==='Current shift manual 2.0').click()\\\");\n    await waitFor(\\\"\"'!!document.querySelector('\"'article h1')\\\");\n    console.log('After click:',JSON.stringify(await evaluate(\\\"({url:location.href,lang:document.documentElement.lang,heading:document.querySelector('article h1').innerText,body:document.querySelector('article').innerText,canonical:document.querySelector('link[rel=canonical]')?.href})\\\")));\n})().catch(error=>{console.error(error);process.exitCode=1;}).finally(()=>{clearTimeout(timer);browser.kill();});\n\\\"\\\"\\\"\n    env = dict(os.environ, XDG_CONFIG_HOME=scratch, XDG_CACHE_HOME=scratch)\n    subprocess.run([\\\"node\\\", \\\"-e\\\", script, scratch], env=env, check=True)\nPY\"",
+        "exit": 0,
+        "selectOutput": "Home links: [{\"text\":\"Current shift manual 2.0\",\"href\":\"/handbook/2.0/desk/\"},{\"text\":\"Archived shift manual 1.0\",\"href\":\"/handbook/2.0/desk/\"}]\nAfter click: {\"url\":\"http://127.0.0.1:41639/handbook/2.0/desk/\",\"lang\":\"en\",\"heading\":\"Tally desk guide 2.0\",\"body\":\"Version: 2.0\\nTally desk guide 2.0\\n\\nUse the shift's Tally 1.1.0 archive in a clean folder. Install the attached local file offline.\\n\\nnpm install --offline --ignore-scripts --no-audit --no-fund ./engineering-tally-fixture-1.1.0.tgz\\n\\n./node_modules/.bin/tally sum 2 3 --machine\\n\\n./node_modules/.bin/tally sum bad --machine\\n\\n\\nThe result is {\\\"sum\\\":5}. The error prints Number expected on stderr and leaves code 2.\",\"canonical\":\"https://desk.example.invalid/handbook/2.0/desk/\"}",
+        "fullEventSha": "85022e26f09934b64f58b419b41deb7deeaaf312f53de3a923987aa834e12a99"
+      }
+    ],
+    "changesToInitialFiles": [],
+    "createdFiles": []
+  }
+}

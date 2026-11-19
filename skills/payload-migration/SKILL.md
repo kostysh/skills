@@ -5,9 +5,9 @@ description: Migrate WordPress, Contentful, Strapi, Sanity, Webflow or CSV/JSON
   media, rich text and locales; execute authorized imports, recover reruns and
   reconcile results. Use payload for target runtime mechanics.
 metadata:
-  source-version: 0.1.3
+  source-version: 0.1.4
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 564d9d92a5497015432366b96000b975bcb71f313e7c0d517c0d5d1df7e4d7b8
+  skillforge-source-hash: aea29827250f19c31c6b1828633215f48bd3308fdabcf51b521ddb2d8f74b56d
 ---
 
 # payload-migration
@@ -38,7 +38,7 @@ The consumer is the owner of the target Payload application. Deliver the request
 
 ## Version and minimum input boundary
 
-The target examples were checked against **Payload 3.88.0 stable on 2026-09-09**. **4.0.0-canary.33** is a separate prerelease. Inspect the actual installed Payload, editor, database and storage packages; matching `@payloadcms/*` versions and peer compatibility matter. Preserve an existing supported v2 project and its initialization/storage/CLI contracts; do not upgrade it to make a v3 example work. Use exact installed types and official version-matched docs for another version.
+The Local API example targets Payload and `@payloadcms/db-sqlite` 3.94.0 on Node 24.22.3. For the receiving project, check its lockfile, adapter settings and the installed packages’ engines and peers. Follow its Payload, editor and storage versions. An existing v2 project retains its initialization, storage and CLI contracts.
 
 For analysis, samples/schema plus the requested mapping are enough to make supported progress. Actual import additionally needs source access and namespace, accepted target model/environment, write authority, identity/update policy and a verification path. Destructive import, production mutation and cutover require that operation's authority. They do not require new permission when the current conversation already provides it. A missing expert/tool/current source limits only the dependent conclusion; this local method remains usable for supported data work.
 
@@ -46,7 +46,7 @@ For analysis, samples/schema plus the requested mapping are enough to make suppo
 
 Use the source installation/space/dataset/environment, content type and source ID as a deterministic identity; include locale only if the accepted target stores locales as separate documents. Source IDs from different systems must not collide. Preserve the source snapshot/revision or export hash so a resumed run does not silently mix changing datasets.
 
-Prefer an existing importer/identity field. Otherwise persist a unique source key with the target document or an equivalent transactionally safe durable map. The map records target collection/ID and per-record/per-locale/per-phase state, source revision/hash, retries and unresolved errors. A separate checkpoint file alone is insufficient: a crash after the target commit but before the checkpoint must recover the existing target through its source key. Uniqueness must also resolve concurrent create races. Advance a durable checkpoint only after persisted work is known; on uncertain responses reread by identity before retrying. Use a single writer unless the accepted importer handles concurrency.
+Prefer an existing importer/identity field. Otherwise persist a unique source key with the target document or an equivalent transactionally safe durable map. The map records target collection/ID and per-record/per-locale/per-phase state, source revision/hash, retries and unresolved errors. A separate checkpoint file alone is insufficient: a crash after the target commit but before the checkpoint must recover the existing target through its source key. If an existing source-key field lacks a unique constraint, use it with exclusive write access and surface multiple matches as conflicts. Concurrent writers need atomic uniqueness or equivalent coordination. Advance the checkpoint after the target write is confirmed. Reread by identity when the response is uncertain.
 
 State the policy for existing target records: create missing, update the accepted fields, skip unchanged, retry failed phases, and surface conflicts with target edits. Do not delete records or replace unrelated data because they are absent from the current source sample. A retry is not an unbounded loop; distinguish transient transport failures from malformed source, schema violations, denied access and unresolved mappings.
 
@@ -62,7 +62,9 @@ Write each supplied locale explicitly and reread it with `fallbackLocale: false`
 
 Freeze or account for source changes and enumerate all pages. Reconcile complete expected source-key sets against authoritative target queries, including records missed by the checkpoint. Compare counts per collection and explicit locale; detect duplicates, missing/extra imports, failed media, unresolved relations and content differences. Sampling is useful for visual checks but not proof of full ID coverage.
 
-A reliable-rerun claim needs an interrupted/partial run followed by recovery and a repeat run with unchanged source; inspect persisted state for duplicates and omissions. Test the same actor and data path. Payload owns target adapter/API/access mechanisms, TypeScript/test skills own language/test mechanics, and nextjs owns frontend rendering/cache. Supply IDs, expected content and requested routes to those owners and consume their actual observations; their config or build cannot replace migration reconciliation.
+A reliable-rerun claim needs an interrupted/partial run followed by recovery and a repeat run with unchanged source; inspect persisted state for duplicates and omissions. Reconcile all imported identities with an authorized full read. To verify a restricted Local API consumer, reread as its actual `user` with `overrideAccess: false`. The Local API skips access checks by default. [Payload Local API access](https://github.com/payloadcms/payload/blob/v3.94.0/docs/local-api/access-control.mdx)
+
+Payload owns target adapter/API/access mechanisms, TypeScript/test skills own language/test mechanics, and nextjs owns frontend rendering/cache. Supply IDs, expected content and requested routes to those owners and consume their actual observations; their config or build cannot replace migration reconciliation.
 
 The final result names the requested and completed scope, source/target versions/environment, created/updated/skipped/failed counts, full identity reconciliation, unresolved content, rerun/check results and evidence limits. Report partial until every required record, relation, locale, media and node is accounted for. A dry run, generated script, local database import, public API read and rendered page are distinct evidence boundaries.
 
@@ -121,7 +123,7 @@ Establish which source content survived the actual target boundary and what rema
 
 1. Compare full expected and observed source-identity sets and per-collection counts; detect missing, extra and duplicate imports independently of the in-memory checkpoint.
 2. Reread content, relation IDs/cardinality/order, media bytes/metadata and locale fields with fallback disabled; compare explicit source values and agreed transforms.
-3. Exercise interrupted or repeated runs when reliable rerun is claimed, and confirm they do not duplicate or silently omit data.
+3. Verify recovery against persisted records and relationships.
 4. When requested, follow migrated content through public API and the consuming frontend after reload; pair nextjs for routing/cache/rendering and retain exact source-to-page evidence.
 5. Report source/target versions, actions and target, counts and identity reconciliation, failures, rerun results, checks and unverified boundaries with the next supported action.
 
@@ -157,7 +159,7 @@ Ask when a material choice lacks an accepted source; do not reopen an already ac
 Distinguish schema design, import planning, generated scripts, and verified migrated data in final reports.
 
 ## Required active references
-- [Payload Field Reference](references/payload-field-reference.md) — Read this when mapping source fields, nested data, arrays, media, rich text, relationships, auth/upload collections, or CMS-specific patterns to Payload field configs.
+- [Payload Field Reference](references/payload-field-reference.md) — Read this when interpreting a CMS export, mapping fields, relationships, uploads, editors or locales, or using Payload’s import/export plugin.
 
 ## Portability rules
 

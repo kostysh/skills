@@ -1,0 +1,207 @@
+{
+  "baselineFreeze": "initial-freeze.json",
+  "initialStudyArchiveSha256": "7069553ef413ac8e842c7be8746c2bb1b275d2e75276c456055fcf2265d34e0a",
+  "precommittedRubricSha256": "3c7153ac659155ccf720438b037d3613efd56c953721ccb5308523088cde460a",
+  "originalCandidateDecision": {
+    "signedAB": "2d919868570eb5d29cbb1678813f2b1450e4f110bb3972608f336f1d9f2278a0",
+    "selected": "Route unresolved architecture decisions to the architecture owner."
+  },
+  "modelEvidence": "Named launcher assignment; observed distinct thread.started and turn.completed events; no server-side weight attestation.",
+  "access": "Fresh workspace-write participants and separate read-only assessors with --disable memories. No evidence of off-project inputs in observed actions; host is not a filesystem jail. No answer keys or sibling versions supplied to participants.",
+  "patchesSha256": {
+    "A-B.patch": "6faa9c5f3359ac85cb204aba2d3298da7fa71b062c00c9bbfbb5eb6d7b151737",
+    "A-C.patch": "f257e616394451022547cf97a513c14cce30973700561dd01fc106d1df406f4b",
+    "C-Release.patch": "704062457e9c8edf50822e790ed06560c0a9bf497457e3ecc709020245287059"
+  },
+  "originalRuns": [
+    {
+      "phase": "ab",
+      "label": "51cb26",
+      "variant": "A",
+      "case": "ordinary",
+      "studyReceipt": "results/51cb26.json",
+      "thread": "01a1f09e-338b-7a00-ae4b-4add4671b473",
+      "model": "gpt-6.2-sol",
+      "reasoning": "model_reasoning_effort=\"medium\"",
+      "exit": 0,
+      "completionEvent": true,
+      "inputVerifiedAgainstIssuance": true,
+      "inputBytesAndModesUnchanged": true,
+      "receivedComparisonSection": {
+        "command": "/bin/bash -lc \"ls -la && rg --files --hidden -g '\"'!.git'\"' && cat SKILL.md\"",
+        "outputContainsExactSectionWithAdjacentLines": true,
+        "sectionSha256": "034b659290f9aa453f5d582690413caca153c8d5aeefb6eec3372ee1bc8d39b0"
+      },
+      "productSha256": "561805365e10198fc0adcdd0843f1a655a6d21ee5fb54c90ed6177d87b44966a",
+      "originalEventsSha256": "7bae634b3ecccc63c8933aa9f7c2c73d18e90ab7c242e3c57f247892b7bae1c2",
+      "originalLastMessageSha256": "f76f6bd808af0b03c75ed15fda6465b3b9e1fb7f3fffcdc39457499226d95fda",
+      "alsoObservedUnchangedMethodologyStopRule": true
+    },
+    {
+      "phase": "ab",
+      "label": "2ef3d9",
+      "variant": "B",
+      "case": "boundary",
+      "studyReceipt": "results/2ef3d9.json",
+      "thread": "01a1f09f-0ab2-7423-aa25-12c618710633",
+      "model": "gpt-6.2-sol",
+      "reasoning": "model_reasoning_effort=\"medium\"",
+      "exit": 0,
+      "completionEvent": true,
+      "inputVerifiedAgainstIssuance": true,
+      "inputBytesAndModesUnchanged": true,
+      "receivedComparisonSection": {
+        "command": "/bin/bash -lc \"ls -la && rg --files --hidden -g '\"'!.git/**'\"' && cat ./SKILL.md\"",
+        "outputContainsExactSectionWithAdjacentLines": true,
+        "sectionSha256": "68b5c7e927466e1a5634b031f9c5d5529bba45e454f7886221aeb84e0b3aaea8"
+      },
+      "productSha256": "7f765a3d70e44834e3e6a7a387c2d230cfdb50cf6a250136f5dea1705ea8bef0",
+      "originalEventsSha256": "bfe777040e2a2ca6e9b2436df273ebc77bd1dcbadb4a6e1d2e5b220bbd7c4883",
+      "originalLastMessageSha256": "dfe19587acdeeb007c001d3eeb295315831b4f26041ebaec284156adf3530888",
+      "alsoObservedUnchangedMethodologyStopRule": true
+    },
+    {
+      "phase": "ab",
+      "label": "fde781",
+      "variant": "A",
+      "case": "boundary",
+      "studyReceipt": "results/fde781.json",
+      "thread": "01a1f09f-b69d-7f91-8756-580341cbc13a",
+      "model": "gpt-6.2-sol",
+      "reasoning": "model_reasoning_effort=\"medium\"",
+      "exit": 0,
+      "completionEvent": true,
+      "inputVerifiedAgainstIssuance": true,
+      "inputBytesAndModesUnchanged": true,
+      "receivedComparisonSection": {
+        "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"' && cat ./SKILL.md\"",
+        "outputContainsExactSectionWithAdjacentLines": true,
+        "sectionSha256": "034b659290f9aa453f5d582690413caca153c8d5aeefb6eec3372ee1bc8d39b0"
+      },
+      "productSha256": "563f24ed7e5425d0a771f7c0222ee72d30adf2ce106890ff63780e5d6549f570",
+      "originalEventsSha256": "82bee1bb2ebc9c2c3351aeefdeafa5576aa8d86227f4c39131f15cc96fde53e1",
+      "originalLastMessageSha256": "eed3e8b0f18320f0f289b67731646a6bd35d7978789e0e7b44eab98f658bbc0b",
+      "alsoObservedUnchangedMethodologyStopRule": true
+    },
+    {
+      "phase": "ab",
+      "label": "c943dc",
+      "variant": "B",
+      "case": "ordinary",
+      "studyReceipt": "results/c943dc.json",
+      "thread": "01a1f0a0-8284-7f51-a468-a196394cbc49",
+      "model": "gpt-6.2-sol",
+      "reasoning": "model_reasoning_effort=\"medium\"",
+      "exit": 0,
+      "completionEvent": true,
+      "inputVerifiedAgainstIssuance": true,
+      "inputBytesAndModesUnchanged": true,
+      "receivedComparisonSection": {
+        "command": "/bin/bash -lc 'cat SKILL.md'",
+        "outputContainsExactSectionWithAdjacentLines": true,
+        "sectionSha256": "68b5c7e927466e1a5634b031f9c5d5529bba45e454f7886221aeb84e0b3aaea8"
+      },
+      "productSha256": "e48ed2143f3d11c64de71efac0f21f03856b0cd99963adf241edb837043a0e1b",
+      "originalEventsSha256": "00c4b8354dcfb77bcd607bcf8dceb44eb7229b81699c356b8565dbb3ed0ab0f2",
+      "originalLastMessageSha256": "07078382df3500ca92adb2dfbbad76f89c1c085c2c2bfe1d4eeedeade389faf5",
+      "alsoObservedUnchangedMethodologyStopRule": true
+    },
+    {
+      "phase": "confirm",
+      "label": "7c4978",
+      "variant": "C",
+      "case": "boundary",
+      "studyReceipt": "results/7c4978.json",
+      "thread": "01a1f0a9-1660-70b1-9435-857235ba6205",
+      "model": "gpt-6.2-sol",
+      "reasoning": "model_reasoning_effort=\"medium\"",
+      "exit": 0,
+      "completionEvent": true,
+      "inputVerifiedAgainstIssuance": true,
+      "inputBytesAndModesUnchanged": true,
+      "receivedComparisonSection": {
+        "command": "/bin/bash -lc \"ls -la && rg --files --hidden -g '\"'!.git/**'\"' && cat ./SKILL.md\"",
+        "outputContainsExactSectionWithAdjacentLines": true,
+        "sectionSha256": "3fba4a353d3e19cf5ba8deb4cdd2c7599dc58599573785f74d3cf99ba20689ad"
+      },
+      "productSha256": "0e34c43acefea45d72abdf5d7c0ee208dcfc60706d332cc1dec820235fdac010",
+      "originalEventsSha256": "968a58245d6c3a4adc5fa720e1567f155660bf0722469d76cb5a34c2111b7a76",
+      "originalLastMessageSha256": "00c074864e9959998cddfc5034140a3c36b2728fd9581b7c1ad1ccf8d9cd778c",
+      "alsoObservedUnchangedMethodologyStopRule": true
+    },
+    {
+      "phase": "confirm",
+      "label": "7fb13c",
+      "variant": "C",
+      "case": "ordinary",
+      "studyReceipt": "results/7fb13c.json",
+      "thread": "01a1f0a9-aa10-7f53-b052-08dacda5cf46",
+      "model": "gpt-6.2-sol",
+      "reasoning": "model_reasoning_effort=\"medium\"",
+      "exit": 0,
+      "completionEvent": true,
+      "inputVerifiedAgainstIssuance": true,
+      "inputBytesAndModesUnchanged": true,
+      "receivedComparisonSection": {
+        "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git/**'\"' && cat ./SKILL.md\"",
+        "outputContainsExactSectionWithAdjacentLines": true,
+        "sectionSha256": "3fba4a353d3e19cf5ba8deb4cdd2c7599dc58599573785f74d3cf99ba20689ad"
+      },
+      "productSha256": "d825743426488f67f3755c849e3ac1b169bff289f8b33162af7c6f03eb992f42",
+      "originalEventsSha256": "db2350cc36cdc0c5847e58d6c58bf0ed43410eeb3c5e928bc5a338ea2ce4bc85",
+      "originalLastMessageSha256": "879eb5f11a61aad75e9db3bc268768bca60b6f34dd8e5f9634d81ba7c56b3033",
+      "alsoObservedUnchangedMethodologyStopRule": true
+    },
+    {
+      "phase": "confirm",
+      "label": "acf8c8",
+      "variant": "C",
+      "case": "holdout",
+      "studyReceipt": "results/acf8c8.json",
+      "thread": "01a1f0aa-9f6a-7641-a5bd-f1833dd1b23c",
+      "model": "gpt-6.2-sol",
+      "reasoning": "model_reasoning_effort=\"medium\"",
+      "exit": 0,
+      "completionEvent": true,
+      "inputVerifiedAgainstIssuance": true,
+      "inputBytesAndModesUnchanged": true,
+      "receivedComparisonSection": {
+        "command": "/bin/bash -lc 'cat SKILL.md'",
+        "outputContainsExactSectionWithAdjacentLines": true,
+        "sectionSha256": "3fba4a353d3e19cf5ba8deb4cdd2c7599dc58599573785f74d3cf99ba20689ad"
+      },
+      "productSha256": "b80da80a1808edf2ff3bc40c51663cdbcc7a840389c9a8bf3e7806aecf4d781d",
+      "originalEventsSha256": "071a7064bcd84c43332a46d701400aa6122669246ab21c58444e0bc4b6417d86",
+      "originalLastMessageSha256": "bd8b5b68fb822069fd3945736354378697bbe46260b02abfc30edbbf9185eec1",
+      "alsoObservedUnchangedMethodologyStopRule": true
+    },
+    {
+      "phase": "confirm",
+      "label": "85ef84",
+      "variant": "A",
+      "case": "holdout",
+      "studyReceipt": "results/85ef84.json",
+      "thread": "01a1f0ab-9453-7911-909e-088a165afc2a",
+      "model": "gpt-6.2-sol",
+      "reasoning": "model_reasoning_effort=\"medium\"",
+      "exit": 0,
+      "completionEvent": true,
+      "inputVerifiedAgainstIssuance": true,
+      "inputBytesAndModesUnchanged": true,
+      "receivedComparisonSection": {
+        "command": "/bin/bash -lc \"pwd; rg --files --hidden -g '\"'!.git/**'\"'; cat ./SKILL.md\"",
+        "outputContainsExactSectionWithAdjacentLines": true,
+        "sectionSha256": "034b659290f9aa453f5d582690413caca153c8d5aeefb6eec3372ee1bc8d39b0"
+      },
+      "productSha256": "def0134b51afbfc11a028107e95753dd88214868bd2f4e8bb3643f65d7ad886d",
+      "originalEventsSha256": "4f3fea71ab70f5d2087a90cc8072b43b4c28d71f90f8ffee632c4a8b54f20333",
+      "originalLastMessageSha256": "df7c9813a1632a656844eadc13d1cd959843951194a411ba21010fed9808c7d3",
+      "alsoObservedUnchangedMethodologyStopRule": true
+    }
+  ],
+  "retainedMethodologySource": {
+    "file": "references/methodology.md",
+    "section": "Stop rules",
+    "observedInAllEightCompletedCommandOutputs": "the spec would require changing a public contract, data model, auth/security boundary, tenant isolation, integration topology, deployment model, rollback path, or selected architecture pattern not covered by accepted architecture context"
+  }
+}

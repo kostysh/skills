@@ -1,0 +1,6 @@
+{
+  "signedAB": "5bfb899cf8f8d56b6bfb2180b472a0ef39d82c2ad15373dfbd40c2fdb545da7e",
+  "selected": "- **high** \u2014 Verify emitted responses on the agreed success and failure paths. Report which checks passed and which concerns remain unverified.",
+  "observed": "Both A and B exercised all agreed failure paths and distinguished the invalid successful payload. Both ordinary reports conditioned the whole local delivery on a separate source inference that their observations did not establish. The change retains response behavior and makes the observed scope of the decision explicit.",
+  "selectedAt": "2026-11-18T22:53:22.835265+00:00"
+}

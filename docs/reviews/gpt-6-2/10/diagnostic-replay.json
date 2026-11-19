@@ -1,0 +1,24 @@
+{
+  "before": [
+    "spent.pid",
+    "spent.sock",
+    "spent.version"
+  ],
+  "after": [],
+  "command": [
+    "agent-browser",
+    "doctor",
+    "--offline",
+    "--quick",
+    "--json"
+  ],
+  "check": [
+    {
+      "category": "Daemons",
+      "id": "daemon.cleaned.spent",
+      "message": "Cleaned stale files: spent (process gone)",
+      "status": "warn"
+    }
+  ],
+  "exit": 0
+}

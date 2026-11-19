@@ -1,0 +1,23 @@
+{
+  "frozenAt": "2026-11-18T23:06:03.128342+00:00",
+  "archiveSha256": "b92f92ab06ffc289f2d7cc3649a17b4c23fe99e1898b5b06ff6b8047ae4c832d",
+  "inputs": {
+    "cases/configs.md": "2913b288fb7699035f2f6a4147079208ec73821cab2f697a7fef1424a677e77c",
+    "fixture/configs/adapter-manifest.json": "509ab4dd8b54a19fd799a6758e366dd43f3e832adc1e2ed986dd760f25b16db6",
+    "fixture/configs/analyzer-help.txt": "5ddfa57769f9c4347e8c61f20c54e2cce1dd3165569c50a144b88109bcfc01b1",
+    "fixture/configs/candidate-build.txt": "9ce12d4f0f08159c0c65e747197adbfefb5690b4166857521edcece4277dd0ed",
+    "fixture/configs/north/app/api/desk/route.js": "eaa968e907bd922a38c1a22a1978c2e318875690b88210b3dd2d5a7f30efbed7",
+    "fixture/configs/north/app/api/info/route.js": "a0588cbd2977d5285ee8d3b18ade368721733682ed0cd41669423da39ffdd0f8",
+    "fixture/configs/north/build-and-http.json": "18aab4cd74b98e7a5ea4f3fdc2cb0b97d1b00d924b1d70e37d99f5628f4c8ce8",
+    "fixture/configs/north/next.config.mjs": "5e3fe7bc87a96e981fd5fca8a2587c928991aa08296567a6cddc623809153521",
+    "fixture/configs/north/package.json": "66dd7a7a3108cc5dfe75b018079e0d4fbdc489720373370fe58cf36883e14b9d",
+    "fixture/configs/proposed-change.diff": "39f35e94c76f4bcf8cd7f5856242c82b29a6504b80929d642fea400390eb7912",
+    "fixture/configs/request.md": "4c6c7fab22e22ab6dbaab678bc19e5082e151093727dad0b1b2355d5a8d1e53d",
+    "fixture/configs/river/app/api/desk/route.js": "eaa968e907bd922a38c1a22a1978c2e318875690b88210b3dd2d5a7f30efbed7",
+    "fixture/configs/river/app/api/info/route.js": "a0588cbd2977d5285ee8d3b18ade368721733682ed0cd41669423da39ffdd0f8",
+    "fixture/configs/river/build-and-http.json": "c594f95a1230c697aba4c94c2d8d15764d118dcf32388677180e3bd07156d0e5",
+    "fixture/configs/river/next.config.mjs": "70e249c81dd57f8aab1eb0607c090998273cc97cc53ddb9ca9e85271036aa52f",
+    "fixture/configs/river/package.json": "66dd7a7a3108cc5dfe75b018079e0d4fbdc489720373370fe58cf36883e14b9d",
+    "rubric.md": "135f8b1a90c87813b82a90ca35aa947bc9a81fb76f7228c718650fb692e51eb7"
+  }
+}

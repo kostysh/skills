@@ -1,0 +1,189 @@
+{
+  "ordinary": {
+    "http": 200,
+    "headingInServerHTML": "Amber docket",
+    "serverReadyMarker": "no",
+    "htmlSha256": "b4bf975ff6762c002240092d158c8309f2ad31f6cd38f37172f59da5fc8171e2",
+    "browser": [
+      {
+        "action": {
+          "op": "open"
+        },
+        "title": "Amber docket",
+        "ready": "yes",
+        "content": [
+          "Selections: 0"
+        ]
+      },
+      {
+        "action": {
+          "op": "wait",
+          "ms": 600
+        },
+        "title": "Amber docket",
+        "ready": "yes",
+        "content": [
+          "Selections: 0"
+        ]
+      },
+      {
+        "action": {
+          "op": "click",
+          "target": "text=Mark inspected"
+        },
+        "title": "Amber docket",
+        "ready": "yes",
+        "content": [
+          "Selections: 1"
+        ]
+      },
+      {
+        "action": {
+          "op": "click",
+          "target": "text=Mark inspected"
+        },
+        "title": "Amber docket",
+        "ready": "yes",
+        "content": [
+          "Selections: 2"
+        ]
+      }
+    ],
+    "screenshot": "7775d95ee99825612398090eafd061b2dc49b46dc0dea5f5f001da44fb3175ad"
+  },
+  "boundary": {
+    "http": 200,
+    "headingInServerHTML": "Cedar docket",
+    "serverReadyMarker": "no",
+    "htmlSha256": "d5197a94172f45a793838ceb7756f38e1cf94a0eff814f8ef96d9957eb783f53",
+    "browser": [
+      {
+        "action": {
+          "op": "open"
+        },
+        "title": "Cedar docket",
+        "ready": "yes",
+        "content": [
+          "Selections: 0"
+        ]
+      },
+      {
+        "action": {
+          "op": "wait",
+          "ms": 600
+        },
+        "title": "Cedar docket",
+        "ready": "yes",
+        "content": [
+          "Selections: 0"
+        ]
+      },
+      {
+        "action": {
+          "op": "click",
+          "target": "text=Mark inspected"
+        },
+        "title": "Cedar docket",
+        "ready": "yes",
+        "content": [
+          "Selections: 0"
+        ]
+      },
+      {
+        "action": {
+          "op": "click",
+          "target": "text=Mark inspected"
+        },
+        "title": "Cedar docket",
+        "ready": "yes",
+        "content": [
+          "Selections: 0"
+        ]
+      }
+    ],
+    "screenshot": "0faf491e51f9c975c173b6b5232d719bdba7b52184e293cfc18aa498dea84db4"
+  },
+  "holdout": {
+    "http": 200,
+    "headingInServerHTML": "Reed docket",
+    "serverReadyMarker": "no",
+    "htmlSha256": "97dd090ef003247bf0423efa7c98f7cae486c20604442c5f60669968f2daaff2",
+    "browser": [
+      {
+        "action": {
+          "op": "open"
+        },
+        "title": "Reed docket",
+        "ready": "yes",
+        "content": [
+          "Selections: 0"
+        ]
+      },
+      {
+        "action": {
+          "op": "wait",
+          "ms": 600
+        },
+        "title": "Reed docket",
+        "ready": "yes",
+        "content": [
+          "Selections: 0"
+        ]
+      },
+      {
+        "action": {
+          "op": "click",
+          "target": "text=Mark inspected"
+        },
+        "title": "Reed docket",
+        "ready": "yes",
+        "content": [
+          "Selections: 1"
+        ]
+      },
+      {
+        "action": {
+          "op": "click",
+          "target": "text=Mark inspected"
+        },
+        "title": "Reed docket",
+        "ready": "yes",
+        "content": [
+          "Selections: 2"
+        ]
+      },
+      {
+        "action": {
+          "op": "reload"
+        },
+        "title": "Reed docket",
+        "ready": "yes",
+        "content": [
+          "Selections: 0"
+        ]
+      },
+      {
+        "action": {
+          "op": "look"
+        },
+        "title": "Reed docket",
+        "ready": "yes",
+        "content": [
+          "Selections: 0"
+        ]
+      },
+      {
+        "action": {
+          "op": "click",
+          "target": "text=Mark inspected"
+        },
+        "title": "Reed docket",
+        "ready": "yes",
+        "content": [
+          "Selections: 1"
+        ]
+      }
+    ],
+    "screenshot": "578d1671adea9f39e80784743dbb85dedaf331783f6c97b1bbca3239dc85e620"
+  }
+}

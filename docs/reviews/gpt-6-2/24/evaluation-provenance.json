@@ -1,0 +1,360 @@
+{
+  "initialFreeze": "2026-11-18T21:19:45.684195+00:00",
+  "inputsArchiveFileCount": 29,
+  "sourcesAndPatches": [
+    {
+      "patch": "A-B.patch",
+      "sourceSha256": "43b5b7fd639731578eb78c86069c47a3b86f4e3cca4375facd1bb9cd978773cc",
+      "resultSha256": "56d3bbbc69653ef4ff26c2fd7fb9f20c0c9ed4e738aa35f3231b257e37ec3838"
+    },
+    {
+      "patch": "B-C.patch",
+      "sourceSha256": "56d3bbbc69653ef4ff26c2fd7fb9f20c0c9ed4e738aa35f3231b257e37ec3838",
+      "resultSha256": "785c5227b9c174c7655b2d8d120d89c809e32a5be0385516ce37b90785ada43d"
+    },
+    {
+      "patch": "A-C.patch",
+      "sourceSha256": "43b5b7fd639731578eb78c86069c47a3b86f4e3cca4375facd1bb9cd978773cc",
+      "resultSha256": "785c5227b9c174c7655b2d8d120d89c809e32a5be0385516ce37b90785ada43d"
+    },
+    {
+      "patch": "trial-to-release.patch",
+      "sourceSha256": "785c5227b9c174c7655b2d8d120d89c809e32a5be0385516ce37b90785ada43d",
+      "resultSha256": "efe7204acb6caa58661259151e188cb7f8146788f2693e05189dbb6472492f3e"
+    }
+  ],
+  "formalContractSha256": "871c44e6152b614cecdb9ddff9a5b3a08ad89d3e4b07d151e726e63144e9c5db",
+  "invariantBodyMatches": "contract reproduced from the identical formal verdict section in A, B and C",
+  "executors": [
+    {
+      "label": "ffed99",
+      "role": "A",
+      "case": "ordinary",
+      "session": "01a1f088-5fbf-79d2-9089-c23f7a2f78a1",
+      "model": "gpt-6.2-sol",
+      "reasoningEffort": "medium",
+      "longTermMemory": "disabled",
+      "assignedInstructionSha256": "43b5b7fd639731578eb78c86069c47a3b86f4e3cca4375facd1bb9cd978773cc",
+      "readEvidence": [
+        {
+          "eventSha256": "36110e8aefdec8c920f1e5d0a759df76e8445f359a1c8018c24abf6cc03554d4",
+          "fullActiveBodyPresent": true,
+          "exit": 0
+        }
+      ],
+      "taskSha256": "d2cd344dc85115154665e0e0c6d5026efcc3e7519a33792d7ab1b98a388e04e1",
+      "rawAnswerSha256": "69c12447382207d167033ec39cb4fe0144b357e1fddf38e9f06fd207c8a71d29",
+      "rawEventsSha256": "094688e9914ba5a67dc4bbf158b00de4f9c730851ccf1776c82a2874dd5663e7",
+      "publishedRecordSha256": "bcd0e0353925abdceb809dda38ec266a6fa4c7e701a0f4b1ec88014921f683a1",
+      "workspaceChanges": 0,
+      "originalInputBytesAndModesPreserved": true
+    },
+    {
+      "label": "dd84f0",
+      "role": "A",
+      "case": "boundary",
+      "session": "01a1f088-fa8e-7e82-976b-d34356f02e98",
+      "model": "gpt-6.2-sol",
+      "reasoningEffort": "medium",
+      "longTermMemory": "disabled",
+      "assignedInstructionSha256": "43b5b7fd639731578eb78c86069c47a3b86f4e3cca4375facd1bb9cd978773cc",
+      "readEvidence": [
+        {
+          "eventSha256": "d7e7cca19495fc4dee81b446658d9055f60080deafdaba866759cc3e2f7f91df",
+          "fullActiveBodyPresent": true,
+          "exit": 0
+        }
+      ],
+      "taskSha256": "d2cd344dc85115154665e0e0c6d5026efcc3e7519a33792d7ab1b98a388e04e1",
+      "rawAnswerSha256": "0a28af2e0a4b92d81931960e76a0996b3b97838740639ec651be5eaaa2e4adde",
+      "rawEventsSha256": "2573e86295ff08ac93a315995c95c66cbe860df7aecee77233c7e46d97104712",
+      "publishedRecordSha256": "8389d447e1ee94066f27925934bb57163755cac7088e36838685672f1f08cfaf",
+      "workspaceChanges": 0,
+      "originalInputBytesAndModesPreserved": true
+    },
+    {
+      "label": "3ee523",
+      "role": "B",
+      "case": "boundary",
+      "session": "01a1f089-bd5e-7f02-afda-af6f26902738",
+      "model": "gpt-6.2-sol",
+      "reasoningEffort": "medium",
+      "longTermMemory": "disabled",
+      "assignedInstructionSha256": "56d3bbbc69653ef4ff26c2fd7fb9f20c0c9ed4e738aa35f3231b257e37ec3838",
+      "readEvidence": [
+        {
+          "eventSha256": "ef45782f10859f9339af44e5bc024ad80bd76b8ead0a367520cd429f8c26e3d8",
+          "fullActiveBodyPresent": true,
+          "exit": 0
+        }
+      ],
+      "taskSha256": "d2cd344dc85115154665e0e0c6d5026efcc3e7519a33792d7ab1b98a388e04e1",
+      "rawAnswerSha256": "4e40882247446656612c3518625f05c9c457e4ab20ff8ace7c89455862db506a",
+      "rawEventsSha256": "4b90f12bf89af7f4d330d56d6823d0a45a17546a986a3d76e62ad53629f451cb",
+      "publishedRecordSha256": "ee58bc1976e8b243333349900079ac6b7e5bd70346ddbaa82a41aa9dad120425",
+      "workspaceChanges": 0,
+      "originalInputBytesAndModesPreserved": true
+    },
+    {
+      "label": "eb5bfd",
+      "role": "B",
+      "case": "ordinary",
+      "session": "01a1f08a-6062-7821-8fdd-9865199f8ba1",
+      "model": "gpt-6.2-sol",
+      "reasoningEffort": "medium",
+      "longTermMemory": "disabled",
+      "assignedInstructionSha256": "56d3bbbc69653ef4ff26c2fd7fb9f20c0c9ed4e738aa35f3231b257e37ec3838",
+      "readEvidence": [
+        {
+          "eventSha256": "cf2f824a2c96681455cc509aebcff6c1f10e321784260b39a501425e87e985e2",
+          "fullActiveBodyPresent": true,
+          "exit": 0
+        }
+      ],
+      "taskSha256": "d2cd344dc85115154665e0e0c6d5026efcc3e7519a33792d7ab1b98a388e04e1",
+      "rawAnswerSha256": "784b3e61c6de9b71bf336d3898598004bbb80ce49b5ab1c1a4a84f047eafb511",
+      "rawEventsSha256": "164de1f4bb92de91ad0f449f1445dd08304f39e8938e02be58cf6205475fb4e4",
+      "publishedRecordSha256": "b893b4690aa2e08e1509fbe727f5118a88b3d2bdd2d6e991048fcbf65d81e0ba",
+      "workspaceChanges": 0,
+      "originalInputBytesAndModesPreserved": true
+    },
+    {
+      "label": "2f3dfa",
+      "role": "C",
+      "case": "holdout",
+      "session": "01a1f091-b520-7a63-9efb-d835ce78b3e1",
+      "model": "gpt-6.2-sol",
+      "reasoningEffort": "medium",
+      "longTermMemory": "disabled",
+      "assignedInstructionSha256": "785c5227b9c174c7655b2d8d120d89c809e32a5be0385516ce37b90785ada43d",
+      "readEvidence": [
+        {
+          "eventSha256": "51d23d090f1f6c704f4060ee90035919a3b4b3b0e197d2a75c32dcb338a5f1a4",
+          "fullActiveBodyPresent": true,
+          "exit": 0
+        }
+      ],
+      "taskSha256": "d2cd344dc85115154665e0e0c6d5026efcc3e7519a33792d7ab1b98a388e04e1",
+      "rawAnswerSha256": "2c71e3dcb676e6fe3dbb524a3a99474dc58ab38ba5c284f3a109848990453e3d",
+      "rawEventsSha256": "4725ca14ebc273f287dad01f66791315970c8f3f5e7b510ee02cee0d7ba5b005",
+      "publishedRecordSha256": "f8cc8a80d2d39f43f2ea85040ee30468b6eb4ed6dd2b6e986b99a276a2fe6049",
+      "workspaceChanges": 403,
+      "originalInputBytesAndModesPreserved": true
+    },
+    {
+      "label": "6526ce",
+      "role": "C",
+      "case": "boundary",
+      "session": "01a1f092-ceee-7fc3-9ec2-e92ac03e9c9a",
+      "model": "gpt-6.2-sol",
+      "reasoningEffort": "medium",
+      "longTermMemory": "disabled",
+      "assignedInstructionSha256": "785c5227b9c174c7655b2d8d120d89c809e32a5be0385516ce37b90785ada43d",
+      "readEvidence": [
+        {
+          "eventSha256": "8e72856c05c5375f83659d2eb55d96ddcc215a1aa046786833496282ba419459",
+          "fullActiveBodyPresent": true,
+          "exit": 0
+        }
+      ],
+      "taskSha256": "d2cd344dc85115154665e0e0c6d5026efcc3e7519a33792d7ab1b98a388e04e1",
+      "rawAnswerSha256": "ea3d6cd93ff02f82c88fff8bb68e52393e7116973a463f243af895e6eb4f607f",
+      "rawEventsSha256": "0d0746032573d9038e0482f7390c70ddbdf98aef3807c434dfd9f515af23b239",
+      "publishedRecordSha256": "05f53243cd4aa94bb27c25f42923108117334d94359c46cfdd744417cbd7a0d8",
+      "workspaceChanges": 0,
+      "originalInputBytesAndModesPreserved": true
+    },
+    {
+      "label": "a83d78",
+      "role": "A",
+      "case": "holdout",
+      "session": "01a1f093-7eaa-7b01-8a8e-d26c6bf1598b",
+      "model": "gpt-6.2-sol",
+      "reasoningEffort": "medium",
+      "longTermMemory": "disabled",
+      "assignedInstructionSha256": "43b5b7fd639731578eb78c86069c47a3b86f4e3cca4375facd1bb9cd978773cc",
+      "readEvidence": [
+        {
+          "eventSha256": "ae4fcea7e8d341968f306f6fe9874ec6980db822cbd432b5ef08ce7aba2e09fe",
+          "fullActiveBodyPresent": true,
+          "exit": 0
+        }
+      ],
+      "taskSha256": "d2cd344dc85115154665e0e0c6d5026efcc3e7519a33792d7ab1b98a388e04e1",
+      "rawAnswerSha256": "0f8768320d866e063a2632089e55814d0b18d82b0bede839dceec891aa3451d0",
+      "rawEventsSha256": "83e4fe22a6067ccb5cc224fb754a33a22eb111870dba5d4671f74809995292d8",
+      "publishedRecordSha256": "e86a28554873c8c02b923604ec34c7c2b13667a38c84eb71e9e0a4a371063848",
+      "workspaceChanges": 0,
+      "originalInputBytesAndModesPreserved": true
+    },
+    {
+      "label": "f2ffae",
+      "role": "C",
+      "case": "ordinary",
+      "session": "01a1f093-ec0e-75a1-855f-d529c57c3708",
+      "model": "gpt-6.2-sol",
+      "reasoningEffort": "medium",
+      "longTermMemory": "disabled",
+      "assignedInstructionSha256": "785c5227b9c174c7655b2d8d120d89c809e32a5be0385516ce37b90785ada43d",
+      "readEvidence": [
+        {
+          "eventSha256": "53895f302cd61049927325f9bb510018339854dcc84891bb31705cb44798a58d",
+          "fullActiveBodyPresent": true,
+          "exit": 0
+        }
+      ],
+      "taskSha256": "d2cd344dc85115154665e0e0c6d5026efcc3e7519a33792d7ab1b98a388e04e1",
+      "rawAnswerSha256": "550619c9260505bafb6147bef6fe8926ee74c12fe8cdd71197488772b2ce683c",
+      "rawEventsSha256": "22d1da17c55366ef9304d84b5bd3df7fb387d16450e76d1d634328e9c54f8282",
+      "publishedRecordSha256": "4fa8103ea1b363c42991cad1bddedbc1c714fcd1a780964371d8524535881f39",
+      "workspaceChanges": 0,
+      "originalInputBytesAndModesPreserved": true
+    },
+    {
+      "label": "release-holdout",
+      "role": "release",
+      "case": "holdout",
+      "session": "01a1f0d0-2f4a-77f3-9255-713b7151ee05",
+      "model": "gpt-6.2-sol",
+      "reasoningEffort": "medium",
+      "longTermMemory": "disabled",
+      "assignedInstructionSha256": "efe7204acb6caa58661259151e188cb7f8146788f2693e05189dbb6472492f3e",
+      "readEvidence": [
+        {
+          "eventSha256": "9b1edd90de0b40d6ab0bf8774fd50309caa8b32ef898725470382d3493c31fc1",
+          "fullActiveBodyPresent": true,
+          "exit": 0
+        }
+      ],
+      "taskSha256": "d2cd344dc85115154665e0e0c6d5026efcc3e7519a33792d7ab1b98a388e04e1",
+      "rawAnswerSha256": "c1024e6c4e0c71786e7a9edac9d9e2339826dfff32ba41f5caa77dacee1c5c23",
+      "rawEventsSha256": "7b610e5d63f1405bec4fa736c0c2ea5414dfb2ef62d6ad41eef8ddcda0806207",
+      "publishedRecordSha256": "6bffc7156277340134dfcd0d5773da410aae40617da2b3a9b0f09c76c4519039",
+      "workspaceChanges": 0,
+      "originalInputBytesAndModesPreserved": true
+    },
+    {
+      "label": "catalog-consumer",
+      "role": "release",
+      "case": "joint",
+      "session": "01a1f0d0-2e17-7811-873c-99d90506f883",
+      "model": "gpt-6.2-sol",
+      "reasoningEffort": "medium",
+      "longTermMemory": "disabled",
+      "assignedInstructionSha256": "efe7204acb6caa58661259151e188cb7f8146788f2693e05189dbb6472492f3e",
+      "readEvidence": [
+        {
+          "eventSha256": "40ad183d8bd811edb224c725efc149cef0419b6c07056115d2e7d12070334494",
+          "fullActiveBodyPresent": true,
+          "exit": 0
+        }
+      ],
+      "taskSha256": "b881ea167a0be797cb5440455b52c2b6c05e8eb665043f7d9d17469074389ae2",
+      "rawAnswerSha256": "2b283e6d3d6fbf83468d0622c0693328696d50e5c4b7e93c5abb724166469bcf",
+      "rawEventsSha256": "b655383ca22615c65428d648499ae6807b55bb0947b50d250c9c060798b9884e",
+      "publishedRecordSha256": "071c807f6121914be0e5d3245dcfe9b72ab302bb52a7c1752597b86b83df93d7",
+      "workspaceChanges": 0,
+      "originalInputBytesAndModesPreserved": true
+    }
+  ],
+  "signedAssessments": {
+    "ab": {
+      "date": "2026-11-18",
+      "session": "01a1f08d-cc7d-7da2-bc1b-a754d1997218",
+      "model": "gpt-6.2-sol",
+      "reasoningEffort": "high",
+      "sandbox": "read-only",
+      "memoriesDisabled": true,
+      "originalScoreSha256": "d3b49d82b2484db95818ed662a12f40e16e36c26899bcc19c624338eef3ff181",
+      "eventsSha256": "625b09af3dc1e1f336cc7a328fc8edbf63a2b67d262cb2c882c2593555a9fac3",
+      "packetFiles": 81,
+      "packetInputDictionarySha256": "2ea42bad02c297dca94dc5a9fcb97ee47d78218398164380f8aef05ba28951cd",
+      "formalContractIncluded": false,
+      "labelToPrimary": {
+        "ffed99": "ffed99",
+        "dd84f0": "dd84f0",
+        "3ee523": "3ee523",
+        "eb5bfd": "eb5bfd"
+      },
+      "portableReport": "assessment-ab.md"
+    },
+    "confirm": {
+      "date": "2026-11-18",
+      "session": "01a1f098-129e-7763-9a3f-0bf5301be620",
+      "model": "gpt-6.2-sol",
+      "reasoningEffort": "high",
+      "sandbox": "read-only",
+      "memoriesDisabled": true,
+      "originalScoreSha256": "82297093444dbe32210a921e139cc7623cac3f55a10f5528a14893354e62eba4",
+      "eventsSha256": "04a7c3b990f26b608d620842edd4bb99fdb72cac739f52aece262d2fa6fa604a",
+      "packetFiles": 516,
+      "packetInputDictionarySha256": "7d20afb46f99e2b5146a214b182405b5d40949c1a1cb3d53245634aad3ec4eb0",
+      "formalContractIncluded": false,
+      "labelToPrimary": {
+        "6526ce": "6526ce",
+        "1cd570": "dd84f0",
+        "f2ffae": "f2ffae",
+        "c05ab4": "ffed99",
+        "2f3dfa": "2f3dfa",
+        "a83d78": "a83d78"
+      },
+      "portableReport": "assessment-confirm.md"
+    },
+    "contract": {
+      "date": "2026-11-18",
+      "session": "01a1f09c-6738-7951-89ab-f6a0e410a289",
+      "model": "gpt-6.2-sol",
+      "reasoningEffort": "high",
+      "sandbox": "read-only",
+      "memoriesDisabled": true,
+      "originalScoreSha256": "ae45c7708f79fc77b9ddd9b663c7270150882250657a1a0e250625d236bfebd8",
+      "eventsSha256": "0fbab1af806d64e9d777077f0b94540906d5d23040436de0d2b63c994f87666a",
+      "packetFiles": 557,
+      "packetInputDictionarySha256": "84b8e40fbe6809fcf5187841098db5127fb069492a76f51a7670c8ae1581cb46",
+      "formalContractIncluded": true,
+      "labelToPrimary": {
+        "6526ce": "6526ce",
+        "1cd570": "dd84f0",
+        "f2ffae": "f2ffae",
+        "c05ab4": "ffed99",
+        "2f3dfa": "2f3dfa",
+        "a83d78": "a83d78",
+        "9ed765": "3ee523",
+        "12f47a": "eb5bfd"
+      },
+      "portableReport": "assessment-contract.md"
+    },
+    "release-holdout": {
+      "date": "2026-11-18",
+      "session": "01a1f0d3-97e5-70b3-8442-288053f17310",
+      "model": "gpt-6.2-sol",
+      "reasoningEffort": "high",
+      "sandbox": "read-only",
+      "memoriesDisabled": true,
+      "originalScoreSha256": "635d785e7eca2230fd181b3244de670f9ab008548a353b4874f19008c16f81c3",
+      "eventsSha256": "a5acd8f68168982dece4ad1275fb0f3e53e8d1d6a6e6f75effbf1c40c631ea72",
+      "packetFiles": 36,
+      "packetInputDictionarySha256": "cc0e50aef4fb47d9c45635e44e5f5b207a227e9346eb2b6512c98c5de73fdf12",
+      "formalContractIncluded": true,
+      "labelToPrimary": {
+        "5ceb13": "a83d78",
+        "2f7f9a": "release-holdout"
+      },
+      "portableReport": "assessment-release-holdout.md"
+    }
+  },
+  "assessmentPacketsArchive": {
+    "sha256": "0a270a31dbd9fa9d00af18d6df394579ba3d984a1c0bfe31572f417a8efbffde",
+    "scope": "Все выданные текстовые материалы, команды оценщиков, исходные тексты оценок и полная карта хешей. 403 бинарных файла кэша в двух снимках представлены исходными списками, путями и хешами в dispatch, result и observer.",
+    "excludedBinaryCache": true
+  },
+  "assessorPublicSources": {
+    "info": "Точный текст ответов сохранён в архиве. В отдельных Markdown-копиях изменены только ссылки на соответствующие переносимые материалы.",
+    "publicationFile": "assessment-packets.tar.gz"
+  },
+  "executionArchive": {
+    "file": "execution-receipts.tar.gz",
+    "sha256": "56201a7218a13f2ed3e73c1c78eecdf8d90efce011bf5c8e83d09b2202208e98",
+    "scope": "Полные журналы событий и ответов, задания, SHA и режимы файлов. Бинарные побочные продукты не распространяются."
+  }
+}

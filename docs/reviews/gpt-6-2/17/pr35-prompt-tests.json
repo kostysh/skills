@@ -1,0 +1,38 @@
+{
+  "base": {
+    "command": [
+      "node",
+      "--test",
+      "cli/test/prompts.test.ts"
+    ],
+    "exit": 0,
+    "stdout": "✔ arrow keys choose update; Ctrl-C cancels (8.681596ms)\n✔ space selects checkbox, Enter advances, custom project path is resolved (15.880441ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 154.786632\n",
+    "stderr": "",
+    "sourceRevision": "before",
+    "testSource": "before"
+  },
+  "head": {
+    "command": [
+      "node",
+      "--test",
+      "cli/test/prompts.test.ts"
+    ],
+    "exit": 0,
+    "stdout": "✔ arrow keys choose update; Ctrl-C cancels (8.702667ms)\n✔ space selects checkbox, Enter advances, custom project path is resolved (14.78433ms)\n✔ skills list stops at both ends across pages and preserves selections (8.489684ms)\nℹ tests 3\nℹ suites 0\nℹ pass 3\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 169.758266\n",
+    "stderr": "",
+    "sourceRevision": "after",
+    "testSource": "after"
+  },
+  "changedTestWithBaseModule": {
+    "command": [
+      "node",
+      "--test",
+      "cli/test/prompts.test.ts"
+    ],
+    "exit": 1,
+    "stdout": "✔ arrow keys choose update; Ctrl-C cancels (6.13799ms)\n✔ space selects checkbox, Enter advances, custom project path is resolved (14.495004ms)\n✖ skills list stops at both ends across pages and preserves selections (1.716855ms)\nℹ tests 3\nℹ suites 0\nℹ pass 2\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 143.540408\n\n✖ failing tests:\n\ntest at cli/test/prompts.test.ts:60:6\n✖ skills list stops at both ends across pages and preserves selections (1.716855ms)\n  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Description for skill-01/. Input:\n  \n  '? Select skills (Space to select, Enter to continue)\\n' +\n    '❯◯ skill-15 (1.0.0)\\n' +\n    ' ◯ skill-01 (1.0.0)\\n' +\n    ' ◯ skill-02 (1.0.0)\\n' +\n    ' ◯ skill-03 (1.0.0)\\n' +\n    ' ◯ skill-04 (1.0.0)\\n' +\n    ' ◯ skill-05 (1.0.0)\\n' +\n    ' ◯ skill-06 (1.0.0)\\n' +\n    ' ◯ skill-07 (1.0.0)\\n' +\n    ' ◯ skill-08 (1.0.0)\\n' +\n    ' ◯ skill-09 (1.0.0)\\n' +\n    ' ◯ skill-10 (1.0.0)\\n' +\n    ' ◯ skill-11 (1.0.0)\\n' +\n    '\\n' +\n    'Description for skill-15\\n' +\n    '↑↓ navigate • space select • a all • i invert • ⏎ submit'\n  \n      at TestContext.<anonymous> (file://{snapshot}/cli/test/prompts.test.ts:86:10)\n      at async Test.run (node:internal/test_runner/test:1208:7)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: '? Select skills (Space to select, Enter to continue)\\n❯◯ skill-15 (1.0.0)\\n ◯ skill-01 (1.0.0)\\n ◯ skill-02 (1.0.0)\\n ◯ skill-03 (1.0.0)\\n ◯ skill-04 (1.0.0)\\n ◯ skill-05 (1.0.0)\\n ◯ skill-06 (1.0.0)\\n ◯ skill-07 (1.0.0)\\n ◯ skill-08 (1.0.0)\\n ◯ skill-09 (1.0.0)\\n ◯ skill-10 (1.0.0)\\n ◯ skill-11 (1.0.0)\\n\\nDescription for skill-15\\n↑↓ navigate • space select • a all • i invert • ⏎ submit',\n    expected: /Description for skill-01/,\n    operator: 'match',\n    diff: 'simple'\n  }\n",
+    "stderr": "",
+    "sourceRevision": "before",
+    "testSource": "after"
+  }
+}

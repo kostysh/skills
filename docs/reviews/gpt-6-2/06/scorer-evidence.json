@@ -1,0 +1,155 @@
+{
+  "ab": {
+    "stage": "ab",
+    "assigned_model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"high\"",
+    "sandbox": "read-only",
+    "exit": 0,
+    "raw_signed_grade_sha256": "d25dc52ca3106e12308dada01503625c4f0d70b78e7e0d1e4e4c878eecd70c75",
+    "raw_grader_trace_sha256": "1127a707d2203496e963103ca225ebf322dca1194bf8de12accd86bab30c0710",
+    "rubric_sha256": "5fc64aabf26cd96b00dd0b7234b7cbaa470b43ae65d96e882ed2534f2285534e",
+    "packet_top_level": [
+      "0bd85c",
+      "400a01",
+      "8bc4bf",
+      "criteria.md",
+      "e423d9"
+    ],
+    "packet_files": 101,
+    "dispatch_file_hashes_sha256": "7358210c11a9cc7754487981b3b6163760713bd443cccd7b83eab4886e3591bf",
+    "inspected_read_commands": [
+      "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"' | sort\"",
+      "/bin/bash -lc 'cat criteria.md'",
+      "/bin/bash -lc 'wc -l */task.md */answer.md */observer.json */actions.json'",
+      "/bin/bash -lc 'for f in 400a01/{task.md,answer.md,actions.json,observer.json}; do head -v -n 200 \"$f\"; done'",
+      "/bin/bash -lc 'for f in 0bd85c/{task.md,answer.md,actions.json,observer.json}; do head -v -n 200 \"$f\"; done'",
+      "/bin/bash -lc 'for f in e423d9/{task.md,answer.md,actions.json,observer.json}; do head -v -n 200 \"$f\"; done'",
+      "/bin/bash -lc 'for f in 8bc4bf/{task.md,answer.md,actions.json,observer.json}; do head -v -n 200 \"$f\"; done'",
+      "/bin/bash -lc 'cat 400a01/observer.json'",
+      "/bin/bash -lc 'cat 8bc4bf/{task.md,answer.md,actions.json}'",
+      "/bin/bash -lc \"python3 -B - <<'PY'\nfrom pathlib import Path\nimport hashlib,json\nfor b in sorted(Path('.').glob('*/before')):\n a=b.with_name('after')\n snap=lambda p: {str(f.relative_to(p)): f.read_bytes() for f in p.rglob('*') if f.is_file()}\n old,new=snap(b),snap(a)\n print(b.parent, len(old), len(new), 'diff', [f for f in sorted(old.keys()|new.keys()) if old.get(f)\"'!=new.get(f)])\n ci=json.loads(new['\"'ci/typecheck.json']); tc=json.loads(new['tsconfig.json']); print('CI',ci['typescript'],ci['exit'],tc['compilerOptions']['noEmit'],tc['include'],{f:hashlib.sha256(new[f]).hexdigest()==h for f,h in ci['input_sha256'].items()})\n for f in ['package.json','bin/report.cjs','src/codec.mts','src/header.mts','tools/drain.mjs','tools/locate.cjs']:\n  if b.parent.name in ['0bd85c','400a01'] and f in new:\n   print(f, new[f].decode())\nPY\"",
+      "/bin/bash -c 'for c in 0bd85c 400a01 8bc4bf e423d9; do for f in AGENTS.md operator-guidance.md; do head -v -n 100 \"$c/after/$f\"; done; done'",
+      "/bin/bash -c \"python3 -B - <<'PY'\nimport json\nfrom pathlib import Path\nfor case in sorted(p.parent for p in Path('.').glob('*/observer.json')):\n data=json.loads((case/'observer.json').read_text()); actions=json.loads((case/'actions.json').read_text()); events=data['executor_runtime_commands']\n print(case.name, 'actions:',len(actions['operations']), 'executor events:',len(events),'all associated:',all(any((e['command'],e['exit'])==(a['command'],a['exit']) for a in actions['operations']) for e in events), 'changes:',actions['changed'],data['executor_changed'],data['observer_changed_file_count'])\n for key,val in data['readback'].items(): print(key,val['exit'],repr(val['stdout']),repr(val['stderr']))\n for e in events:\n  for line in e['output'].splitlines():\n   if 'typescript' in line and ('strip' in line or 'Version 5' in line) or 'import:' in line or 'tsc: not found' in line or 'v24.15.0' in line: print('event',line)\nPY\"",
+      "/bin/bash -c 'for c in 8bc4bf e423d9; do for f in package.json bin/report.cjs src/codec.mts tools/drain.mjs tools/locate.cjs; do head -v -n 100 \"$c/after/$f\"; done; done\ncat 8bc4bf/after/src/header.mts'"
+    ]
+  },
+  "paired": {
+    "stage": "paired",
+    "assigned_model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"high\"",
+    "sandbox": "read-only",
+    "exit": 0,
+    "raw_signed_grade_sha256": "429e0bf3008bad85e5705d5f8f928949a11f7f35d50eb721187dd97b31ee20c7",
+    "raw_grader_trace_sha256": "b7a938837df9a731970a4492ac2b6ea0c9e3e6f05881b7e96c977364696cce28",
+    "rubric_sha256": "5fc64aabf26cd96b00dd0b7234b7cbaa470b43ae65d96e882ed2534f2285534e",
+    "packet_top_level": [
+      "87e34b",
+      "c54f78",
+      "criteria.md"
+    ],
+    "packet_files": 53,
+    "dispatch_file_hashes_sha256": "d8ad9b2650707a6b3a3c43e3bda2a8c51e2ba15f9902be6be7650950f25fe667",
+    "inspected_read_commands": [
+      "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+      "/bin/bash -lc 'cat criteria.md'",
+      "/bin/bash -lc 'for code in 87e34b c54f78; do diff -ru \"$code/before\" \"$code/after\"; done'",
+      "/bin/bash -lc \"for f in task.md answer.md observer.json actions.json; do rg -n '\"'^'\"' \\\"c54f78/\"'$f\"; done'",
+      "/bin/bash -lc \"for f in task.md answer.md observer.json actions.json; do rg -n '\"'^'\"' \\\"87e34b/\"'$f\"; done'",
+      "/bin/bash -lc 'for code in 87e34b c54f78; do diff -qr \"$code/before\" \"$code/after\" || exit; (cd \"$code/before\" && sha256sum src/codec.mts src/header.mts tsconfig.json) || exit; done'",
+      "/bin/bash -lc 'ls -la . 87e34b c54f78 && rg --files --hidden --no-ignore'",
+      "/bin/bash -lc \"for code in 87e34b c54f78; do for f in package.json AGENTS.md operator-guidance.md README.md ci/typecheck.json tsconfig.json bin/report.cjs tools/drain.mjs tools/locate.cjs src/codec.mts src/header.mts; do rg -n --with-filename '\"'^'\"' \\\"\"'$code/before/$f\"; done; done'"
+    ]
+  },
+  "legacy": {
+    "stage": "legacy",
+    "assigned_model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"high\"",
+    "sandbox": "read-only",
+    "exit": 0,
+    "raw_signed_grade_sha256": "6ed667ff4ddb026806d25889ce8eabcdf8f1435342322fc323e6b1fdca09dfdf",
+    "raw_grader_trace_sha256": "14dc673ab3c3da9fe107a7999413011827eb3a6bb2d9492d8b42d4b12c15933a",
+    "rubric_sha256": "6b7d22dc44088f394b00858cd148f747b272f7f529b6cc4e0114ff323309b184",
+    "packet_top_level": [
+      "161c95",
+      "7c4950",
+      "criteria.md"
+    ],
+    "packet_files": 29,
+    "dispatch_file_hashes_sha256": "116025475bec74e3e4c16b835469b107d7d248ae499c320d83fa1eb6079eb86c",
+    "inspected_read_commands": [
+      "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git'\"'\"",
+      "/bin/bash -lc 'cat criteria.md'",
+      "/bin/bash -lc \"rg -n '\"'^'\"' 7c4950/task.md 7c4950/answer.md 7c4950/observer.json 7c4950/actions.json\"",
+      "/bin/bash -lc \"rg -n '\"'^'\"' 161c95/task.md 161c95/answer.md 161c95/observer.json 161c95/actions.json\"",
+      "/bin/bash -lc 'ls -la && ls -l 7c4950/{before,after}/toolchain/node 161c95/{before,after}/toolchain/node'",
+      "/bin/bash -lc 'nl -ba criteria.md'",
+      "/bin/bash -lc \"find . -printf '%y %m %p\\\\n' | sort\"",
+      "/bin/bash -lc \"diff -r -- 7c4950/before 7c4950/after && sha256sum -- 7c4950/{before,after}/toolchain/node && rg -n '\"'^'\"' 7c4950/before/{AGENTS.md,README.md,package.json,src/index.mts}\"",
+      "/bin/bash -lc \"diff -r -- 161c95/before 161c95/after && sha256sum -- 161c95/{before,after}/toolchain/node && rg -n '\"'^'\"' 161c95/before/{AGENTS.md,README.md,package.json,src/index.mts}\"",
+      "/bin/bash -lc \"for case in 161c95 7c4950; do\n  rg -n 'method|changed|toolchain\\\\/node|stdout:|start exit=|strip-only exit=' \\\"\"'$case/observer.json\" \"$case/actions.json\" --max-columns 260\ndone'",
+      "/bin/bash -lc 'for case in 161c95 7c4950; do\n  for snapshot in before after; do\n    path=\"$case/$snapshot/toolchain/node\"\n    stat --format='\"'%a %s %y %n' -- \\\"\"'$path\"\n    if test -x \"$path\"; then\n      printf '\"'%s\\\\n' 'executable=yes'\n    else\n      printf '%s\\\\n' 'executable=no'\n    fi\n  done\ndone\""
+    ]
+  },
+  "confirm": {
+    "stage": "confirm",
+    "assigned_model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"high\"",
+    "sandbox": "read-only",
+    "exit": 0,
+    "raw_signed_grade_sha256": "dccfe8be681397bb003d7c8221cdf476bb7a8e857388c4a5903683eccdcc992a",
+    "raw_grader_trace_sha256": "fc80381c21ae39e0698ffd0eaf328abe6f579bfd26e8b28822772b6c2c0be022",
+    "rubric_sha256": "5fc64aabf26cd96b00dd0b7234b7cbaa470b43ae65d96e882ed2534f2285534e",
+    "packet_top_level": [
+      "520bc5",
+      "6e1d27",
+      "a51112",
+      "ab1dfc",
+      "af86bd",
+      "criteria.md",
+      "dcf12e",
+      "ec62be"
+    ],
+    "packet_files": 179,
+    "dispatch_file_hashes_sha256": "0c18cb205954e6607bed265fc755d5f97a196e8630e630169bfeb17dc8ef76fa",
+    "inspected_read_commands": [
+      "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+      "/bin/bash -lc \"wc -l */answer.md */actions.json */observer.json; for f in */before/AGENTS.md; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+      "/bin/bash -lc \"cat criteria.md; for f in */task.md; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+      "/bin/bash -lc \"for f in */answer.md; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+      "/bin/bash -lc \"for f in */actions.json; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+      "/bin/bash -lc \"for f in */observer.json; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+      "/bin/bash -lc \"for f in */before/operator-guidance.md; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; cat \"$f\"; done; for d in */before; do printf '\"'\\\\n%s\\\\n' \\\"\"'$d\"; diff -qr \"$d\" \"${d%before}after\"; done; rg --files --hidden --no-ignore -g '\"'\"'!**/.git/**'\"' -g '*SKILL*' -g '*trace*' -g '*log*'\"",
+      "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nimport json\nfor p in sorted(Path('.').glob('*/actions.json')):\n d=json.loads(p.read_text());print('\\\\n',p, 'changed=',d['changed'])\n for n,x in enumerate(d['operations'],1):\n  c=x['command'];o=x.get('output','');print(n,x.get('exit'),c)\n  for l in o.splitlines():\n   if any(t in l for t in ('24.15.0','deadline','ERR_','items','Unexpected token','ENOENT','command not found','Permission denied','not supported')) and len(l)<1500: print(' >',l)\nPY\"",
+      "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nimport json\nfor p in sorted(Path('.').glob('*/observer.json')):\n print('\\\\n',p)\n d=json.loads(p.read_text());print(json.dumps(d,ensure_ascii=False))\nPY\"",
+      "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nimport json\nfor p in sorted(Path('.').glob('*/actions.json')):\n d=json.loads(p.read_text()); print(p, [(list(x),len(x.get('output',''))) for x in d['operations']]); print('obs', [(x.get('exit'),len(x.get('output',''))) for x in json.loads(p.with_name('observer.json').read_text())['executor_runtime_commands']])\nPY\nls -a\"",
+      "/bin/bash -lc \"for d in 520bc5 6e1d27 a51112 ab1dfc af86bd dcf12e ec62be; do printf '\\\\n%s\\\\n' \\\"\"'$d\"; rg -n --glob '\"'*.cjs' --glob '*.mts' --glob 'package.json' --glob 'tsconfig.json' '\"'^'\"' \\\"\"'$d/after\"; done'",
+      "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nimport hashlib,json\nfor p in sorted(Path('.').glob('*/actions.json')):\n a=json.loads(p.read_text()); b=json.loads(p.with_name('observer.json').read_text())\n print('\\\\n',p.parent.name,'independent', {k:(x['exit'],x['stdout'],x['stderr']) for k,x in b['readback'].items()},'changes',a['changed'],b['executor_changed'],b['observer_changed_file_count'])\n for i,x in enumerate(a['operations'],1):\n  matches=[y for y in b['executor_runtime_commands'] if (y['command'],y['exit'])==(x['command'],x['exit'])]\n  for y in matches:\n   outs=y['output']\n   lines=[l for l in outs.splitlines() if any(s in l for s in ('ready','deadline','v24.15.0','exit=', 'ERR_', 'nominal restart','strip-only mode','{\\\"items\\\":5}')) and 'process.' not in l and len(l)<600]\n   print(i,x['exit'], '\\\\n'.join(lines))\n for k in ('before','after'):\n  q=p.parent/k\n  ci=json.loads((q/'ci/typecheck.json').read_text())\n  print(k,'ci hashes',all(hashlib.sha256((q/f).read_bytes()).hexdigest()==h for f,h in ci['input_sha256'].items()))\nPY\""
+    ]
+  },
+  "legacy-regrade": {
+    "stage": "legacy-regrade",
+    "assigned_model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"high\"",
+    "sandbox": "read-only",
+    "exit": 0,
+    "raw_signed_grade_sha256": "9aa7e9c3238388e734ee528888fc9acaa3d3e426e070db06a1e36eb2465fe0c8",
+    "raw_grader_trace_sha256": "be86b9e83daee030a2cacaa7f28970ca3a976021f0e757e03b62e71edd228aec",
+    "rubric_sha256": "6b7d22dc44088f394b00858cd148f747b272f7f529b6cc4e0114ff323309b184",
+    "packet_top_level": [
+      "629438",
+      "65ca54",
+      "criteria.md"
+    ],
+    "packet_files": 29,
+    "dispatch_file_hashes_sha256": "198e41148b338a8b095407e609612821cbcbda38d6c822018d1623bb2229332e",
+    "inspected_read_commands": [
+      "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+      "/bin/bash -lc 'cat criteria.md'",
+      "/bin/bash -lc 'wc -lc 65ca54/task.md 65ca54/answer.md 65ca54/actions.json 65ca54/observer.json 65ca54/{before,after}/{AGENTS.md,README.md,package.json,src/index.mts,toolchain/node} && cat 65ca54/task.md 65ca54/answer.md 65ca54/observer.json'",
+      "/bin/bash -lc 'wc -lc 629438/task.md 629438/answer.md 629438/actions.json 629438/observer.json 629438/{before,after}/{AGENTS.md,README.md,package.json,src/index.mts,toolchain/node} && cat 629438/task.md 629438/answer.md 629438/observer.json'",
+      "/bin/bash -lc \"cat 65ca54/actions.json && cat 65ca54/before/AGENTS.md 65ca54/before/README.md 65ca54/before/package.json 65ca54/before/src/index.mts && diff -qr --no-dereference 65ca54/before 65ca54/after && find 65ca54/before 65ca54/after -printf '%y %m %P\\\\n' | sort && sha256sum 65ca54/{before,after}/toolchain/node\"",
+      "/bin/bash -lc \"cat 629438/actions.json && cat 629438/before/AGENTS.md 629438/before/README.md 629438/before/package.json 629438/before/src/index.mts && diff -qr --no-dereference 629438/before 629438/after && find 629438/before 629438/after -printf '%y %m %P\\\\n' | sort && sha256sum 629438/{before,after}/toolchain/node\"",
+      "/bin/bash -lc \"find . -maxdepth 2 -type f -print | sort && nl -ba criteria.md && rg -n -o 'executor_runtime_commands|executor_changed|observer_changed_file_count|start exit=0|strip-only exit=1|both flags exit=0|stdout: |npm_config_logs_max=0|ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX|v22\\\\.17\\\\.1|\\\"changed\\\"' 629438/{answer.md,actions.json,observer.json} 65ca54/{answer.md,actions.json,observer.json}\""
+    ]
+  }
+}

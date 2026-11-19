@@ -1,0 +1,635 @@
+{
+  "actions": [
+    {
+      "op": "width",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "op": "fill",
+      "target": "#email",
+      "value": "weekly@example.com"
+    },
+    {
+      "op": "click",
+      "target": "#weekly"
+    },
+    {
+      "op": "click",
+      "target": "text=Review changes"
+    },
+    {
+      "op": "click",
+      "target": "text=Confirm"
+    },
+    {
+      "op": "click",
+      "target": "text=Close"
+    },
+    {
+      "op": "wait",
+      "ms": 2100
+    }
+  ],
+  "requested": [
+    {
+      "op": "width",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "op": "fill",
+      "target": "#email",
+      "value": "weekly@example.com"
+    },
+    {
+      "op": "click",
+      "target": "#weekly"
+    },
+    {
+      "op": "click",
+      "target": "text=Review changes"
+    },
+    {
+      "op": "click",
+      "target": "text=Confirm"
+    },
+    {
+      "op": "click",
+      "target": "text=Close"
+    },
+    {
+      "op": "wait",
+      "ms": 2100
+    }
+  ],
+  "timeline": [
+    {
+      "action": {
+        "op": "open"
+      },
+      "state": {
+        "heading": "Notification settings",
+        "width": 780,
+        "page": "Preferences\nNotification settings\nChoose where and how often you hear from us.\nEmail address\n(required)\nYour preferred address for notification emails.\nEmail notifications\nTurn updates on or pause them at any time.\nDelivery frequency\nChoose a rhythm that works for you.\nDaily\nA little, every day\nWeekly\nOne weekly digest\nReview changes\nChanges apply after confirmation. This demo keeps settings only until you reload.",
+        "fields": [
+          {
+            "id": "email",
+            "role": "email",
+            "value": "",
+            "checked": null,
+            "invalid": "false"
+          },
+          {
+            "id": "notifications",
+            "role": "switch",
+            "value": "on",
+            "checked": "true",
+            "invalid": null
+          },
+          {
+            "id": null,
+            "role": "checkbox",
+            "value": "on",
+            "checked": null,
+            "invalid": null
+          },
+          {
+            "id": "daily",
+            "role": "radio",
+            "value": "daily",
+            "checked": "true",
+            "invalid": null
+          },
+          {
+            "id": null,
+            "role": "radio",
+            "value": "daily",
+            "checked": null,
+            "invalid": null
+          },
+          {
+            "id": "weekly",
+            "role": "radio",
+            "value": "weekly",
+            "checked": "false",
+            "invalid": null
+          },
+          {
+            "id": null,
+            "role": "radio",
+            "value": "weekly",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "dialog": [],
+        "status": [
+          ""
+        ],
+        "focus": {
+          "id": null,
+          "text": ""
+        }
+      }
+    },
+    {
+      "action": {
+        "op": "width",
+        "width": 390,
+        "height": 844
+      },
+      "state": {
+        "heading": "Notification settings",
+        "width": 390,
+        "page": "Preferences\nNotification settings\nChoose where and how often you hear from us.\nEmail address\n(required)\nYour preferred address for notification emails.\nEmail notifications\nTurn updates on or pause them at any time.\nDelivery frequency\nChoose a rhythm that works for you.\nDaily\nA little, every day\nWeekly\nOne weekly digest\nReview changes\nChanges apply after confirmation. This demo keeps settings only until you reload.",
+        "fields": [
+          {
+            "id": "email",
+            "role": "email",
+            "value": "",
+            "checked": null,
+            "invalid": "false"
+          },
+          {
+            "id": "notifications",
+            "role": "switch",
+            "value": "on",
+            "checked": "true",
+            "invalid": null
+          },
+          {
+            "id": null,
+            "role": "checkbox",
+            "value": "on",
+            "checked": null,
+            "invalid": null
+          },
+          {
+            "id": "daily",
+            "role": "radio",
+            "value": "daily",
+            "checked": "true",
+            "invalid": null
+          },
+          {
+            "id": null,
+            "role": "radio",
+            "value": "daily",
+            "checked": null,
+            "invalid": null
+          },
+          {
+            "id": "weekly",
+            "role": "radio",
+            "value": "weekly",
+            "checked": "false",
+            "invalid": null
+          },
+          {
+            "id": null,
+            "role": "radio",
+            "value": "weekly",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "dialog": [],
+        "status": [
+          ""
+        ],
+        "focus": {
+          "id": null,
+          "text": ""
+        }
+      }
+    },
+    {
+      "action": {
+        "op": "fill",
+        "target": "#email",
+        "value": "weekly@example.com"
+      },
+      "state": {
+        "heading": "Notification settings",
+        "width": 390,
+        "page": "Preferences\nNotification settings\nChoose where and how often you hear from us.\nEmail address\n(required)\nYour preferred address for notification emails.\nEmail notifications\nTurn updates on or pause them at any time.\nDelivery frequency\nChoose a rhythm that works for you.\nDaily\nA little, every day\nWeekly\nOne weekly digest\nReview changes\nChanges apply after confirmation. This demo keeps settings only until you reload.",
+        "fields": [
+          {
+            "id": "email",
+            "role": "email",
+            "value": "weekly@example.com",
+            "checked": null,
+            "invalid": "false"
+          },
+          {
+            "id": "notifications",
+            "role": "switch",
+            "value": "on",
+            "checked": "true",
+            "invalid": null
+          },
+          {
+            "id": null,
+            "role": "checkbox",
+            "value": "on",
+            "checked": null,
+            "invalid": null
+          },
+          {
+            "id": "daily",
+            "role": "radio",
+            "value": "daily",
+            "checked": "true",
+            "invalid": null
+          },
+          {
+            "id": null,
+            "role": "radio",
+            "value": "daily",
+            "checked": null,
+            "invalid": null
+          },
+          {
+            "id": "weekly",
+            "role": "radio",
+            "value": "weekly",
+            "checked": "false",
+            "invalid": null
+          },
+          {
+            "id": null,
+            "role": "radio",
+            "value": "weekly",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "dialog": [],
+        "status": [
+          ""
+        ],
+        "focus": {
+          "id": "email",
+          "text": ""
+        }
+      }
+    },
+    {
+      "action": {
+        "op": "click",
+        "target": "#weekly"
+      },
+      "state": {
+        "heading": "Notification settings",
+        "width": 390,
+        "page": "Preferences\nNotification settings\nChoose where and how often you hear from us.\nEmail address\n(required)\nYour preferred address for notification emails.\nEmail notifications\nTurn updates on or pause them at any time.\nDelivery frequency\nChoose a rhythm that works for you.\nDaily\nA little, every day\nWeekly\nOne weekly digest\nReview changes\nChanges apply after confirmation. This demo keeps settings only until you reload.",
+        "fields": [
+          {
+            "id": "email",
+            "role": "email",
+            "value": "weekly@example.com",
+            "checked": null,
+            "invalid": "false"
+          },
+          {
+            "id": "notifications",
+            "role": "switch",
+            "value": "on",
+            "checked": "true",
+            "invalid": null
+          },
+          {
+            "id": null,
+            "role": "checkbox",
+            "value": "on",
+            "checked": null,
+            "invalid": null
+          },
+          {
+            "id": "daily",
+            "role": "radio",
+            "value": "daily",
+            "checked": "false",
+            "invalid": null
+          },
+          {
+            "id": null,
+            "role": "radio",
+            "value": "daily",
+            "checked": null,
+            "invalid": null
+          },
+          {
+            "id": "weekly",
+            "role": "radio",
+            "value": "weekly",
+            "checked": "true",
+            "invalid": null
+          },
+          {
+            "id": null,
+            "role": "radio",
+            "value": "weekly",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "dialog": [],
+        "status": [
+          ""
+        ],
+        "focus": {
+          "id": "weekly",
+          "text": ""
+        }
+      }
+    },
+    {
+      "action": {
+        "op": "click",
+        "target": "text=Review changes"
+      },
+      "state": {
+        "heading": "Notification settings",
+        "width": 390,
+        "page": "Preferences\nNotification settings\nChoose where and how often you hear from us.\nEmail address\n(required)\nYour preferred address for notification emails.\nEmail notifications\nTurn updates on or pause them at any time.\nDelivery frequency\nChoose a rhythm that works for you.\nDaily\nA little, every day\nWeekly\nOne weekly digest\nReview changes\nChanges apply after confirmation. This demo keeps settings only until you reload.\nReview your changes\nConfirm to apply these notification settings for this session.\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm",
+        "fields": [
+          {
+            "id": "email",
+            "role": "email",
+            "value": "weekly@example.com",
+            "checked": null,
+            "invalid": "false"
+          },
+          {
+            "id": "notifications",
+            "role": "switch",
+            "value": "on",
+            "checked": "true",
+            "invalid": null
+          },
+          {
+            "id": null,
+            "role": "checkbox",
+            "value": "on",
+            "checked": null,
+            "invalid": null
+          },
+          {
+            "id": "daily",
+            "role": "radio",
+            "value": "daily",
+            "checked": "false",
+            "invalid": null
+          },
+          {
+            "id": null,
+            "role": "radio",
+            "value": "daily",
+            "checked": null,
+            "invalid": null
+          },
+          {
+            "id": "weekly",
+            "role": "radio",
+            "value": "weekly",
+            "checked": "true",
+            "invalid": null
+          },
+          {
+            "id": null,
+            "role": "radio",
+            "value": "weekly",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "dialog": [
+          "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm"
+        ],
+        "status": [
+          ""
+        ],
+        "focus": {
+          "id": null,
+          "text": "Cancel"
+        }
+      }
+    },
+    {
+      "action": {
+        "op": "click",
+        "target": "text=Confirm"
+      },
+      "state": {
+        "heading": "Notification settings",
+        "width": 390,
+        "page": "Preferences\nNotification settings\nChoose where and how often you hear from us.\nEmail address\n(required)\nYour preferred address for notification emails.\nEmail notifications\nTurn updates on or pause them at any time.\nDelivery frequency\nChoose a rhythm that works for you.\nDaily\nA little, every day\nWeekly\nOne weekly digest\nReview changes\nChanges apply after confirmation. This demo keeps settings only until you reload.\nApplying changes…\nApplying changes\nYou can close this window. Your changes will continue to apply.\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nClose\nApplying…",
+        "fields": [
+          {
+            "id": "email",
+            "role": "email",
+            "value": "weekly@example.com",
+            "checked": null,
+            "invalid": "false"
+          },
+          {
+            "id": "notifications",
+            "role": "switch",
+            "value": "on",
+            "checked": "true",
+            "invalid": null
+          },
+          {
+            "id": null,
+            "role": "checkbox",
+            "value": "on",
+            "checked": null,
+            "invalid": null
+          },
+          {
+            "id": "daily",
+            "role": "radio",
+            "value": "daily",
+            "checked": "false",
+            "invalid": null
+          },
+          {
+            "id": null,
+            "role": "radio",
+            "value": "daily",
+            "checked": null,
+            "invalid": null
+          },
+          {
+            "id": "weekly",
+            "role": "radio",
+            "value": "weekly",
+            "checked": "true",
+            "invalid": null
+          },
+          {
+            "id": null,
+            "role": "radio",
+            "value": "weekly",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "dialog": [
+          "Applying changes\n\nYou can close this window. Your changes will continue to apply.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nClose\nApplying…"
+        ],
+        "status": [
+          "Applying changes…"
+        ],
+        "focus": {
+          "id": null,
+          "text": "Close"
+        }
+      }
+    },
+    {
+      "action": {
+        "op": "click",
+        "target": "text=Close"
+      },
+      "state": {
+        "heading": "Notification settings",
+        "width": 390,
+        "page": "Preferences\nNotification settings\nChoose where and how often you hear from us.\nEmail address\n(required)\nYour preferred address for notification emails.\nEmail notifications\nTurn updates on or pause them at any time.\nDelivery frequency\nChoose a rhythm that works for you.\nDaily\nA little, every day\nWeekly\nOne weekly digest\nReview changes\nChanges apply after confirmation. This demo keeps settings only until you reload.\nApplying changes…",
+        "fields": [
+          {
+            "id": "email",
+            "role": "email",
+            "value": "weekly@example.com",
+            "checked": null,
+            "invalid": "false"
+          },
+          {
+            "id": "notifications",
+            "role": "switch",
+            "value": "on",
+            "checked": "true",
+            "invalid": null
+          },
+          {
+            "id": null,
+            "role": "checkbox",
+            "value": "on",
+            "checked": null,
+            "invalid": null
+          },
+          {
+            "id": "daily",
+            "role": "radio",
+            "value": "daily",
+            "checked": "false",
+            "invalid": null
+          },
+          {
+            "id": null,
+            "role": "radio",
+            "value": "daily",
+            "checked": null,
+            "invalid": null
+          },
+          {
+            "id": "weekly",
+            "role": "radio",
+            "value": "weekly",
+            "checked": "true",
+            "invalid": null
+          },
+          {
+            "id": null,
+            "role": "radio",
+            "value": "weekly",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "dialog": [],
+        "status": [
+          "Applying changes…"
+        ],
+        "focus": {
+          "id": null,
+          "text": "Applying changes…"
+        }
+      }
+    },
+    {
+      "action": {
+        "op": "wait",
+        "ms": 2100
+      },
+      "state": {
+        "heading": "Notification settings",
+        "width": 390,
+        "page": "Preferences\nNotification settings\nChoose where and how often you hear from us.\nEmail address\n(required)\nYour preferred address for notification emails.\nEmail notifications\nTurn updates on or pause them at any time.\nDelivery frequency\nChoose a rhythm that works for you.\nDaily\nA little, every day\nWeekly\nOne weekly digest\nReview changes\nChanges apply after confirmation. This demo keeps settings only until you reload.\nSettings applied\nEmail: weekly@example.com. Notifications: On. Frequency: Weekly.\nSaved for this session. No email is sent.",
+        "fields": [
+          {
+            "id": "email",
+            "role": "email",
+            "value": "weekly@example.com",
+            "checked": null,
+            "invalid": "false"
+          },
+          {
+            "id": "notifications",
+            "role": "switch",
+            "value": "on",
+            "checked": "true",
+            "invalid": null
+          },
+          {
+            "id": null,
+            "role": "checkbox",
+            "value": "on",
+            "checked": null,
+            "invalid": null
+          },
+          {
+            "id": "daily",
+            "role": "radio",
+            "value": "daily",
+            "checked": "false",
+            "invalid": null
+          },
+          {
+            "id": null,
+            "role": "radio",
+            "value": "daily",
+            "checked": null,
+            "invalid": null
+          },
+          {
+            "id": "weekly",
+            "role": "radio",
+            "value": "weekly",
+            "checked": "true",
+            "invalid": null
+          },
+          {
+            "id": null,
+            "role": "radio",
+            "value": "weekly",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "dialog": [],
+        "status": [
+          "Settings applied\n\nEmail: weekly@example.com. Notifications: On. Frequency: Weekly.\n\nSaved for this session. No email is sent."
+        ],
+        "focus": {
+          "id": null,
+          "text": "Settings applied\n\nEmail: weekly@example.com. Notifications: On. Freque"
+        }
+      }
+    }
+  ],
+  "error": null,
+  "screenSha256": "f616fb364da04a0641575b39a15cbe76b2ebcf3f66a1020663f4a2d3c541fd97"
+}

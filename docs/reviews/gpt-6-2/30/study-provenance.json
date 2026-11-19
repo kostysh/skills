@@ -1,0 +1,932 @@
+{
+  "subjectModelAssigned": "gpt-6.2-sol",
+  "subjectReasoningAssigned": "medium",
+  "launch": "codex exec --disable memories --ephemeral --sandbox workspace-write",
+  "uniqueExecutors": 10,
+  "records": {
+    "record-d227712e41": {
+      "case": "boundary",
+      "variantForThisRun": "B",
+      "variantRootSha256": "d89ffd5b50d716389f9962427da0fc6b0c1f0f38f82a08207725f8dbf4bd406f",
+      "variantUiSha256": "b2d5c695e87cc8ed0e4ee1067d358b7d8a033430ff292bdb8294efa6a3ed66a5",
+      "projectFileCount": 10,
+      "verifiedWholeInputManifest": true,
+      "visibleRead": [
+        {
+          "line": 5,
+          "rawLineSha256": "092052cab8486867c37b5b9de83e9e051bccf476ec449f70370e0c4567407853",
+          "toolItem": "item_1",
+          "command": "/bin/bash -lc \"pwd; rg --files --hidden -g '\"'!.git/**'\"'; cat SKILL.md\"",
+          "fullInstructionBytesPresent": true
+        }
+      ],
+      "changed": [],
+      "readback": "9c6afad3d8e3409fb571c2b15026bd645c1b3bf69928996fc761bcb987b7cd08",
+      "answer": "7340dc4bbfd353d0574f8ac466364188a7d5e39190197c9d0625419ca0ab5a38",
+      "events": "3e9deec8380318bff5f5131c4b71e79ac9c4356509de842b1881004973fb85fd",
+      "firstEvent": {
+        "type": "thread.started",
+        "thread_id": "01a1f0b6-fa0c-7a22-a7dc-5cb775ffddb0"
+      }
+    },
+    "record-6e6f08a0b5": {
+      "case": "ordinary",
+      "variantForThisRun": "B",
+      "variantRootSha256": "d89ffd5b50d716389f9962427da0fc6b0c1f0f38f82a08207725f8dbf4bd406f",
+      "variantUiSha256": "b2d5c695e87cc8ed0e4ee1067d358b7d8a033430ff292bdb8294efa6a3ed66a5",
+      "projectFileCount": 10,
+      "verifiedWholeInputManifest": true,
+      "visibleRead": [
+        {
+          "line": 5,
+          "rawLineSha256": "593e984c5c79a45c4331a94ff27ea3606277718dd148c3e70b9feced95964c6a",
+          "toolItem": "item_1",
+          "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git'\"' && cat SKILL.md && cat product/owner.md\"",
+          "fullInstructionBytesPresent": true
+        }
+      ],
+      "changed": [
+        "product/src/catalog.mjs",
+        "product/test/catalog.test.mjs"
+      ],
+      "readback": "3e1e1b8897b5dd2e1919e8a08c377221b225245c7336c9fe44778e150dc23e3d",
+      "answer": "b86ce21258c7b2e4ea77e7067966ec897fa73dc9c0bdc057d5623ef8ccdb915b",
+      "events": "97b0158a332e313d412e045727e82f335d29545bd684a73a5baea0f94d116c06",
+      "firstEvent": {
+        "type": "thread.started",
+        "thread_id": "01a1f0b7-4e6d-7a21-bbcc-8f07c1718e8e"
+      }
+    },
+    "record-e6bcf1e480": {
+      "case": "boundary",
+      "variantForThisRun": "A",
+      "variantRootSha256": "5def84d77084d9581c0ce7619502366cd4ac99f5c8f55ae559b0d97d6956de27",
+      "variantUiSha256": "b2d5c695e87cc8ed0e4ee1067d358b7d8a033430ff292bdb8294efa6a3ed66a5",
+      "projectFileCount": 10,
+      "verifiedWholeInputManifest": true,
+      "visibleRead": [
+        {
+          "line": 5,
+          "rawLineSha256": "38ebb2b03690516950368a1a8d8d3dc84a36c603a8a7789bfc31637168b2452e",
+          "toolItem": "item_1",
+          "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git'\"' && cat SKILL.md\"",
+          "fullInstructionBytesPresent": true
+        }
+      ],
+      "changed": [],
+      "readback": "df984303ac34dabde92046cfe3862a4d84b5a4d6be779a99e14b0012bef04657",
+      "answer": "9f4d2941d3ef2579982e0ea43a190ee0800a3cec5248fdd7659f5ebc3e867240",
+      "events": "8f64b7b79f503000e67dab22dd9ac4c4096846609095774065bcfd05ea6122f9",
+      "firstEvent": {
+        "type": "thread.started",
+        "thread_id": "01a1f0b7-7425-73e3-b6db-fdf561be985e"
+      }
+    },
+    "record-53770d64a4": {
+      "case": "ordinary",
+      "variantForThisRun": "A",
+      "variantRootSha256": "5def84d77084d9581c0ce7619502366cd4ac99f5c8f55ae559b0d97d6956de27",
+      "variantUiSha256": "b2d5c695e87cc8ed0e4ee1067d358b7d8a033430ff292bdb8294efa6a3ed66a5",
+      "projectFileCount": 10,
+      "verifiedWholeInputManifest": true,
+      "visibleRead": [
+        {
+          "line": 7,
+          "rawLineSha256": "0608345e35b64164dd16b3e71e393827907d54ff62a5e194ea3c3e9cb39c9a6d",
+          "toolItem": "item_2",
+          "command": "/bin/bash -lc 'cat SKILL.md product/owner.md product/original-contract.md'",
+          "fullInstructionBytesPresent": true
+        }
+      ],
+      "changed": [
+        "product/src/catalog.mjs",
+        "product/test/catalog.test.mjs"
+      ],
+      "readback": "3ba9adbd7c47f6757c4733ec9d8dd55d4a111ca407e1e6604489eb4dbbe667c3",
+      "answer": "0796d89ffa4b960bc55b730a5162e9062120d9486fbb82b8e57fff269030aaa7",
+      "events": "c7e28a2e33675026379d248839131dc97af3342a109242d2291c2107b86fb210",
+      "firstEvent": {
+        "type": "thread.started",
+        "thread_id": "01a1f0b7-f3ba-7c81-ab28-c2cc2ae8bbc4"
+      }
+    },
+    "record-fc73267836": {
+      "case": "ordinary",
+      "variantForThisRun": "B",
+      "variantRootSha256": "9145df76cb37496df56847b680d5567c07ee4914854ad5723c93303933f60848",
+      "variantUiSha256": "b2d5c695e87cc8ed0e4ee1067d358b7d8a033430ff292bdb8294efa6a3ed66a5",
+      "projectFileCount": 10,
+      "verifiedWholeInputManifest": true,
+      "visibleRead": [
+        {
+          "line": 5,
+          "rawLineSha256": "e9190eb3a331e13eaaf148729c78a739790ccd37dc989f0ea8541d51200fd49a",
+          "toolItem": "item_1",
+          "command": "/bin/bash -lc \"pwd && ls -la && cat SKILL.md && rg --files --hidden -g '\"'!.git'\"' -g '\"'!.aws'\"'\"",
+          "fullInstructionBytesPresent": true
+        }
+      ],
+      "changed": [
+        "product/src/catalog.mjs",
+        "product/test/catalog.test.mjs"
+      ],
+      "readback": "aef69064bb5a1df1740bb12a4bb85709fd4e318a3c90a13d79d3e5b1be712696",
+      "answer": "56aaf16b72787045ce3ea5e30b1646c08bc73cdf01d0e256b06b80cee988f824",
+      "events": "ee6ff3c4f04fdc3d28d3dbcc7a9bfd6568fb2849efb5e26ca11b767da7f849f9",
+      "firstEvent": {
+        "type": "thread.started",
+        "thread_id": "01a1f0bd-5667-7092-93d8-39b6b0066e2b"
+      }
+    },
+    "record-4f9cd7ee60": {
+      "case": "boundary",
+      "variantForThisRun": "B",
+      "variantRootSha256": "9145df76cb37496df56847b680d5567c07ee4914854ad5723c93303933f60848",
+      "variantUiSha256": "b2d5c695e87cc8ed0e4ee1067d358b7d8a033430ff292bdb8294efa6a3ed66a5",
+      "projectFileCount": 10,
+      "verifiedWholeInputManifest": true,
+      "visibleRead": [
+        {
+          "line": 5,
+          "rawLineSha256": "59da5862fd97e0f531ce078969377d159061bd3b60f09f6a6fb789a3bd98f79c",
+          "toolItem": "item_1",
+          "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git/**'\"' && cat SKILL.md && cat product/owner.md\"",
+          "fullInstructionBytesPresent": true
+        }
+      ],
+      "changed": [],
+      "readback": "95e8544199f64cb158896c394fc30480c7eb790e6600d9c66fa83b6ef042c1be",
+      "answer": "9ca6fc6c60a2662bb4f9658af532f98a002272c31b0bf87503e05a7ff6249f9a",
+      "events": "8e4140b8d1061b1fa7565df577033e4dfc3aac498d0fa746a16e1b9496255b8b",
+      "firstEvent": {
+        "type": "thread.started",
+        "thread_id": "01a1f0be-0fa3-7972-aa43-f69d394a2db7"
+      }
+    },
+    "record-293505272d": {
+      "case": "boundary",
+      "variantForThisRun": "C",
+      "variantRootSha256": "0422d5233d42815445c6b90611360cba4a3e55d47c7861afed463ed39b81c241",
+      "variantUiSha256": "b2d5c695e87cc8ed0e4ee1067d358b7d8a033430ff292bdb8294efa6a3ed66a5",
+      "projectFileCount": 10,
+      "verifiedWholeInputManifest": true,
+      "visibleRead": [
+        {
+          "line": 5,
+          "rawLineSha256": "c76ec304882dde5e12c5118fc8e66ed0e157e14a67dd5fef0f434b1bb412b271",
+          "toolItem": "item_1",
+          "command": "/bin/bash -lc \"pwd; rg --files --hidden -g '\"'!.git'\"' -g '\"'!.git/**'\"'; cat SKILL.md; cat product/owner.md\"",
+          "fullInstructionBytesPresent": true
+        }
+      ],
+      "changed": [],
+      "readback": "c1537e979ccd29310b74d82ffc19135b1102ab528d284c3698ba71eae7249b05",
+      "answer": "a14595c86ea56396698d0994fae309cd091a7ce627b4152c9f140b0f275ba7d4",
+      "events": "6cf5dee066461418195e75599b59b2ea3484165e958cd5dc0598a878ead0b3ca",
+      "firstEvent": {
+        "type": "thread.started",
+        "thread_id": "01a1f0c3-adc3-7a83-8417-aff6d49335b2"
+      }
+    },
+    "record-f043d795db": {
+      "case": "holdout",
+      "variantForThisRun": "A",
+      "variantRootSha256": "5def84d77084d9581c0ce7619502366cd4ac99f5c8f55ae559b0d97d6956de27",
+      "variantUiSha256": "b2d5c695e87cc8ed0e4ee1067d358b7d8a033430ff292bdb8294efa6a3ed66a5",
+      "projectFileCount": 7,
+      "verifiedWholeInputManifest": true,
+      "visibleRead": [
+        {
+          "line": 5,
+          "rawLineSha256": "5aa5f7381112a4981e1983f64af1af3717adeb7339cdf235320d196802bb8c7d",
+          "toolItem": "item_1",
+          "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git/**'\"' && cat SKILL.md && cat product/owner.md\"",
+          "fullInstructionBytesPresent": true
+        }
+      ],
+      "changed": [
+        "product/desk.mjs",
+        "product/test.mjs"
+      ],
+      "readback": "8463d9ee15bfd30ac63d78911149c0d9c62bc2967c73655563b83a43206384f8",
+      "answer": "3c9bada4141d6cb1cdb04261e4d8b93b7bb09c338c9fc28712fc840681f00c41",
+      "events": "5643b9f95732e058c9e70e93d05c9691ba562c41eaf9b6cbf2817c3f113b7035",
+      "firstEvent": {
+        "type": "thread.started",
+        "thread_id": "01a1f0c4-8594-7de2-ada3-56041cab0012"
+      }
+    },
+    "record-704247daf2": {
+      "case": "holdout",
+      "variantForThisRun": "C",
+      "variantRootSha256": "0422d5233d42815445c6b90611360cba4a3e55d47c7861afed463ed39b81c241",
+      "variantUiSha256": "b2d5c695e87cc8ed0e4ee1067d358b7d8a033430ff292bdb8294efa6a3ed66a5",
+      "projectFileCount": 7,
+      "verifiedWholeInputManifest": true,
+      "visibleRead": [
+        {
+          "line": 7,
+          "rawLineSha256": "f664f392ccdd766c823b2315b22c950b364107670a6ef493bc807d13f8c5c2aa",
+          "toolItem": "item_2",
+          "command": "/bin/bash -lc 'cat SKILL.md product/owner.md product/README.md product/package.json product/desk.mjs product/test.mjs; ls -la product'",
+          "fullInstructionBytesPresent": true
+        }
+      ],
+      "changed": [
+        "product/desk.mjs",
+        "product/test.mjs"
+      ],
+      "readback": "9c7906c9868edd430cb7eab9656c811f64833da2de1b2008ca7fa13e86d2245a",
+      "answer": "26021bdbc838afba67b21121eb3c0021429bf1b39b5a32ac89d086b89f102c97",
+      "events": "d4ac246d4e4f8afd9b129ab700f781160c75ad0a227c76342139a267daad8a8d",
+      "firstEvent": {
+        "type": "thread.started",
+        "thread_id": "01a1f0c4-3f36-7ed2-ad77-4a53fcc8dd89"
+      }
+    },
+    "record-67b027f30b": {
+      "case": "ordinary",
+      "variantForThisRun": "C",
+      "variantRootSha256": "0422d5233d42815445c6b90611360cba4a3e55d47c7861afed463ed39b81c241",
+      "variantUiSha256": "b2d5c695e87cc8ed0e4ee1067d358b7d8a033430ff292bdb8294efa6a3ed66a5",
+      "projectFileCount": 10,
+      "verifiedWholeInputManifest": true,
+      "visibleRead": [
+        {
+          "line": 7,
+          "rawLineSha256": "d65a89e7371c803be730e071ef2e0c2f252e4d351008b4a2cfa52a2f180e0219",
+          "toolItem": "item_2",
+          "command": "/bin/bash -lc 'cat SKILL.md product/owner.md product/original-contract.md product/README.md product/package.json'",
+          "fullInstructionBytesPresent": true
+        }
+      ],
+      "changed": [
+        "product/src/catalog.mjs",
+        "product/test/catalog.test.mjs"
+      ],
+      "readback": "d3a1de4d04405f752a44e6c342610bcd7e43d1417796f363ee83e0d9a71d48e2",
+      "answer": "8daa210c29868df415cc0469225cbe20138b61044848323dd6fbc5276ae270c2",
+      "events": "8c941d62fefc364c9c92cea41930dcbb174675f7efaae5195174b87b1323229d",
+      "firstEvent": {
+        "type": "thread.started",
+        "thread_id": "01a1f0c3-adc3-7e73-adeb-cd1c8629474e"
+      }
+    }
+  },
+  "assignmentAfterGrades": {
+    "exploration": {
+      "7e981a": {
+        "record": "record-d227712e41",
+        "variant": "B",
+        "case": "boundary"
+      },
+      "6f565a": {
+        "record": "record-6e6f08a0b5",
+        "variant": "B",
+        "case": "ordinary"
+      },
+      "461654": {
+        "record": "record-e6bcf1e480",
+        "variant": "A",
+        "case": "boundary"
+      },
+      "e5c497": {
+        "record": "record-53770d64a4",
+        "variant": "A",
+        "case": "ordinary"
+      }
+    },
+    "focused-ab": {
+      "d5ab70": {
+        "record": "record-fc73267836",
+        "variant": "B",
+        "case": "ordinary"
+      },
+      "ec958e": {
+        "record": "record-53770d64a4",
+        "variant": "A",
+        "case": "ordinary"
+      },
+      "794670": {
+        "record": "record-e6bcf1e480",
+        "variant": "A",
+        "case": "boundary"
+      },
+      "589319": {
+        "record": "record-4f9cd7ee60",
+        "variant": "B",
+        "case": "boundary"
+      }
+    },
+    "confirmation": {
+      "734f09": {
+        "record": "record-e6bcf1e480",
+        "variant": "A",
+        "case": "boundary"
+      },
+      "d730c3": {
+        "record": "record-293505272d",
+        "variant": "C",
+        "case": "boundary"
+      },
+      "52a6e6": {
+        "record": "record-f043d795db",
+        "variant": "A",
+        "case": "holdout"
+      },
+      "17f90a": {
+        "record": "record-704247daf2",
+        "variant": "C",
+        "case": "holdout"
+      },
+      "ca9422": {
+        "record": "record-53770d64a4",
+        "variant": "A",
+        "case": "ordinary"
+      },
+      "d348c1": {
+        "record": "record-67b027f30b",
+        "variant": "C",
+        "case": "ordinary"
+      }
+    }
+  },
+  "scorers": {
+    "exploration": {
+      "assignedModel": "gpt-6.2-sol",
+      "assignedEffort": "high",
+      "packetInventoryFiles": 81,
+      "visibleCriterion": [
+        {
+          "line": 7,
+          "rawLineSha256": "2e17b0939bdee009cfc800bea19e6fd8b4cd07ac6492e98f328fcba3bb88657b",
+          "item": "item_2"
+        }
+      ],
+      "visibleWorkByAnonymousCase": {
+        "461654": [
+          {
+            "line": 5,
+            "item": "item_1",
+            "rawLineSha256": "70a06363ae3fd5562564572d15d181bfaffa7d8c40a223204fc3d8bbe9af2893"
+          },
+          {
+            "line": 12,
+            "item": "item_4",
+            "rawLineSha256": "7e86c38259e2b81ca451a661ab4a352cd6c6be3315fc76ff2c1abd04fc6bb519"
+          },
+          {
+            "line": 19,
+            "item": "item_8",
+            "rawLineSha256": "d0067987b3db849ee6ea921617103180e46b58411d764129e17331be058588d2"
+          },
+          {
+            "line": 25,
+            "item": "item_11",
+            "rawLineSha256": "1a0155660f9f88cbcec2470124be7ea73049ce80e96bbf2ba39163a7c557d651"
+          },
+          {
+            "line": 33,
+            "item": "item_15",
+            "rawLineSha256": "904379297524a29923e7467bfe1577547cb1d66fcdd6f1096653a4f0c6431231"
+          },
+          {
+            "line": 36,
+            "item": "item_17",
+            "rawLineSha256": "127d93bd73088b677d4fc6f5340ed58d320eb96a01497dc992b18cc00ddf2f40"
+          }
+        ],
+        "6f565a": [
+          {
+            "line": 5,
+            "item": "item_1",
+            "rawLineSha256": "70a06363ae3fd5562564572d15d181bfaffa7d8c40a223204fc3d8bbe9af2893"
+          },
+          {
+            "line": 12,
+            "item": "item_4",
+            "rawLineSha256": "7e86c38259e2b81ca451a661ab4a352cd6c6be3315fc76ff2c1abd04fc6bb519"
+          },
+          {
+            "line": 21,
+            "item": "item_9",
+            "rawLineSha256": "a07be2abd76b531bedccb000cb38f80306078360ddd659d4ac1e6569996876a4"
+          },
+          {
+            "line": 23,
+            "item": "item_10",
+            "rawLineSha256": "f7eec9e07dbae719a3183c5870fe017ce7f08e4024ea5360d8524b4cceee72ab"
+          },
+          {
+            "line": 25,
+            "item": "item_11",
+            "rawLineSha256": "1a0155660f9f88cbcec2470124be7ea73049ce80e96bbf2ba39163a7c557d651"
+          },
+          {
+            "line": 33,
+            "item": "item_15",
+            "rawLineSha256": "904379297524a29923e7467bfe1577547cb1d66fcdd6f1096653a4f0c6431231"
+          },
+          {
+            "line": 36,
+            "item": "item_17",
+            "rawLineSha256": "127d93bd73088b677d4fc6f5340ed58d320eb96a01497dc992b18cc00ddf2f40"
+          }
+        ],
+        "7e981a": [
+          {
+            "line": 5,
+            "item": "item_1",
+            "rawLineSha256": "70a06363ae3fd5562564572d15d181bfaffa7d8c40a223204fc3d8bbe9af2893"
+          },
+          {
+            "line": 12,
+            "item": "item_4",
+            "rawLineSha256": "7e86c38259e2b81ca451a661ab4a352cd6c6be3315fc76ff2c1abd04fc6bb519"
+          },
+          {
+            "line": 17,
+            "item": "item_7",
+            "rawLineSha256": "7048cc0dec0c2af84afcb179066ea3c61a285be26642a7a73941d310914d0187"
+          },
+          {
+            "line": 25,
+            "item": "item_11",
+            "rawLineSha256": "1a0155660f9f88cbcec2470124be7ea73049ce80e96bbf2ba39163a7c557d651"
+          },
+          {
+            "line": 33,
+            "item": "item_15",
+            "rawLineSha256": "904379297524a29923e7467bfe1577547cb1d66fcdd6f1096653a4f0c6431231"
+          },
+          {
+            "line": 36,
+            "item": "item_17",
+            "rawLineSha256": "127d93bd73088b677d4fc6f5340ed58d320eb96a01497dc992b18cc00ddf2f40"
+          }
+        ],
+        "e5c497": [
+          {
+            "line": 5,
+            "item": "item_1",
+            "rawLineSha256": "70a06363ae3fd5562564572d15d181bfaffa7d8c40a223204fc3d8bbe9af2893"
+          },
+          {
+            "line": 12,
+            "item": "item_4",
+            "rawLineSha256": "7e86c38259e2b81ca451a661ab4a352cd6c6be3315fc76ff2c1abd04fc6bb519"
+          },
+          {
+            "line": 16,
+            "item": "item_6",
+            "rawLineSha256": "a667745fd0d8cccb994989385a19eef4a53f0534827562655369ff722103e3d6"
+          },
+          {
+            "line": 23,
+            "item": "item_10",
+            "rawLineSha256": "f7eec9e07dbae719a3183c5870fe017ce7f08e4024ea5360d8524b4cceee72ab"
+          },
+          {
+            "line": 25,
+            "item": "item_11",
+            "rawLineSha256": "1a0155660f9f88cbcec2470124be7ea73049ce80e96bbf2ba39163a7c557d651"
+          },
+          {
+            "line": 33,
+            "item": "item_15",
+            "rawLineSha256": "904379297524a29923e7467bfe1577547cb1d66fcdd6f1096653a4f0c6431231"
+          },
+          {
+            "line": 36,
+            "item": "item_17",
+            "rawLineSha256": "127d93bd73088b677d4fc6f5340ed58d320eb96a01497dc992b18cc00ddf2f40"
+          }
+        ]
+      },
+      "gradeSha256": "dbe4b91904df7a90a8319ac0032a336a8b28d78ff7cb29f1476e0036b8d72dfb",
+      "eventsSha256": "d3d66696035f87371ddb408125f60f6355fed48ae05423bce33da3c63efb72f5",
+      "neutralCodes": [
+        "461654",
+        "6f565a",
+        "7e981a",
+        "e5c497"
+      ],
+      "rubricSha256": "c9a12f1e2a11da741d054896bada1247697ecd2524df64d64736a2d50a9a6455",
+      "originalPacketInventoryVerified": true,
+      "variantKeysOrInstructionTextInPacket": false
+    },
+    "focused-ab": {
+      "assignedModel": "gpt-6.2-sol",
+      "assignedEffort": "high",
+      "packetInventoryFiles": 81,
+      "visibleCriterion": [
+        {
+          "line": 10,
+          "rawLineSha256": "db518319c9be20e0512db60c544aad60094b420c92536b7c413d92147f77211d",
+          "item": "item_4"
+        }
+      ],
+      "visibleWorkByAnonymousCase": {
+        "589319": [
+          {
+            "line": 7,
+            "item": "item_2",
+            "rawLineSha256": "ca8787dd5971b2480e10877f4942c8238e5d23d6b930d208180925fc1190aff5"
+          },
+          {
+            "line": 16,
+            "item": "item_7",
+            "rawLineSha256": "fc46fbb9ff28d6e17720810c6061d0a84d99efd361514e2fbfb5d91fbdd41f3d"
+          },
+          {
+            "line": 23,
+            "item": "item_10",
+            "rawLineSha256": "9e0905bcf40ba8304c33a6891bb6d6c7879b59eaa7f28775d5d0523b61ea6f14"
+          },
+          {
+            "line": 25,
+            "item": "item_11",
+            "rawLineSha256": "5962817d857d657fa139662989c998aaacbef55c9eb97c67c0023b69694f0000"
+          },
+          {
+            "line": 29,
+            "item": "item_13",
+            "rawLineSha256": "db9f1a0de5e390e5044f0faa9e683deefb82d2eaee51417cf15d9a605b1686c0"
+          },
+          {
+            "line": 34,
+            "item": "item_16",
+            "rawLineSha256": "9ea9183da11c9ecd3d9aca4b8548d4357e6addacfdcb31e0b9c7e3d0bdbecb3f"
+          }
+        ],
+        "794670": [
+          {
+            "line": 7,
+            "item": "item_2",
+            "rawLineSha256": "ca8787dd5971b2480e10877f4942c8238e5d23d6b930d208180925fc1190aff5"
+          },
+          {
+            "line": 20,
+            "item": "item_9",
+            "rawLineSha256": "0fc7ae62d7c0380bad132982ba2fe2aed33bc4d4fec1184be535d3682474b281"
+          },
+          {
+            "line": 23,
+            "item": "item_10",
+            "rawLineSha256": "9e0905bcf40ba8304c33a6891bb6d6c7879b59eaa7f28775d5d0523b61ea6f14"
+          },
+          {
+            "line": 29,
+            "item": "item_13",
+            "rawLineSha256": "db9f1a0de5e390e5044f0faa9e683deefb82d2eaee51417cf15d9a605b1686c0"
+          },
+          {
+            "line": 34,
+            "item": "item_16",
+            "rawLineSha256": "9ea9183da11c9ecd3d9aca4b8548d4357e6addacfdcb31e0b9c7e3d0bdbecb3f"
+          }
+        ],
+        "d5ab70": [
+          {
+            "line": 7,
+            "item": "item_2",
+            "rawLineSha256": "ca8787dd5971b2480e10877f4942c8238e5d23d6b930d208180925fc1190aff5"
+          },
+          {
+            "line": 17,
+            "item": "item_6",
+            "rawLineSha256": "dbe0b9d00ff4189eee4a5411c5d8371bc5b63208b8e678a34e296a6f2736fc18"
+          },
+          {
+            "line": 23,
+            "item": "item_10",
+            "rawLineSha256": "9e0905bcf40ba8304c33a6891bb6d6c7879b59eaa7f28775d5d0523b61ea6f14"
+          },
+          {
+            "line": 25,
+            "item": "item_11",
+            "rawLineSha256": "5962817d857d657fa139662989c998aaacbef55c9eb97c67c0023b69694f0000"
+          },
+          {
+            "line": 29,
+            "item": "item_13",
+            "rawLineSha256": "db9f1a0de5e390e5044f0faa9e683deefb82d2eaee51417cf15d9a605b1686c0"
+          },
+          {
+            "line": 34,
+            "item": "item_16",
+            "rawLineSha256": "9ea9183da11c9ecd3d9aca4b8548d4357e6addacfdcb31e0b9c7e3d0bdbecb3f"
+          }
+        ],
+        "ec958e": [
+          {
+            "line": 7,
+            "item": "item_2",
+            "rawLineSha256": "ca8787dd5971b2480e10877f4942c8238e5d23d6b930d208180925fc1190aff5"
+          },
+          {
+            "line": 21,
+            "item": "item_8",
+            "rawLineSha256": "30454be5598a598f3b4865a850ce71f472f55b63b326c63204e7397f7d8f93c9"
+          },
+          {
+            "line": 23,
+            "item": "item_10",
+            "rawLineSha256": "9e0905bcf40ba8304c33a6891bb6d6c7879b59eaa7f28775d5d0523b61ea6f14"
+          },
+          {
+            "line": 29,
+            "item": "item_13",
+            "rawLineSha256": "db9f1a0de5e390e5044f0faa9e683deefb82d2eaee51417cf15d9a605b1686c0"
+          },
+          {
+            "line": 34,
+            "item": "item_16",
+            "rawLineSha256": "9ea9183da11c9ecd3d9aca4b8548d4357e6addacfdcb31e0b9c7e3d0bdbecb3f"
+          }
+        ]
+      },
+      "gradeSha256": "1f0e7693c19ba6370cb819c95a9945378ab710634b390b1c512f2c09d8c45cd5",
+      "eventsSha256": "572257e147597a55f9ce80754454b566882308faf4b3f67e61526ca795a53c52",
+      "neutralCodes": [
+        "589319",
+        "794670",
+        "d5ab70",
+        "ec958e"
+      ],
+      "rubricSha256": "c9a12f1e2a11da741d054896bada1247697ecd2524df64d64736a2d50a9a6455",
+      "originalPacketInventoryVerified": true,
+      "variantKeysOrInstructionTextInPacket": false
+    },
+    "confirmation": {
+      "assignedModel": "gpt-6.2-sol",
+      "assignedEffort": "high",
+      "packetInventoryFiles": 109,
+      "visibleCriterion": [
+        {
+          "line": 7,
+          "rawLineSha256": "2e17b0939bdee009cfc800bea19e6fd8b4cd07ac6492e98f328fcba3bb88657b",
+          "item": "item_2"
+        }
+      ],
+      "visibleWorkByAnonymousCase": {
+        "17f90a": [
+          {
+            "line": 5,
+            "item": "item_1",
+            "rawLineSha256": "b92f2d75655bb15ae3f9265b982eba494ebbc0ed9abc70e7e288b5643dc8f01e"
+          },
+          {
+            "line": 11,
+            "item": "item_4",
+            "rawLineSha256": "4e7a14356fc4e1eef9e3c5a3d3df343f195cd4a0436ff48e064c7019692af354"
+          },
+          {
+            "line": 17,
+            "item": "item_7",
+            "rawLineSha256": "744dbc37225187df29611a44708e146c4586450ec2ae29ecfea6690115aeec62"
+          },
+          {
+            "line": 21,
+            "item": "item_9",
+            "rawLineSha256": "5694547cd7d035dc7beaa4ccc06c107cbb31a82ea40a6b76be7d05431cea9b22"
+          },
+          {
+            "line": 27,
+            "item": "item_12",
+            "rawLineSha256": "dd9705ffb28c0be137e70ec852741891d2c48e3fadb978cf63406fcff0d2e407"
+          },
+          {
+            "line": 29,
+            "item": "item_13",
+            "rawLineSha256": "090b8932c4f36e8e8368a2e92346de94cb47175eabb75fd8a982bc7e41f16445"
+          },
+          {
+            "line": 33,
+            "item": "item_16",
+            "rawLineSha256": "787792c066e002d3e0d4e078349d82269c3bae1de94d3383573309397a1b754a"
+          },
+          {
+            "line": 34,
+            "item": "item_15",
+            "rawLineSha256": "147043ebd5b1747c01733ce186f30e9d67e42788a0ff389f97c2ab4dd87f1bf6"
+          }
+        ],
+        "52a6e6": [
+          {
+            "line": 5,
+            "item": "item_1",
+            "rawLineSha256": "b92f2d75655bb15ae3f9265b982eba494ebbc0ed9abc70e7e288b5643dc8f01e"
+          },
+          {
+            "line": 11,
+            "item": "item_4",
+            "rawLineSha256": "4e7a14356fc4e1eef9e3c5a3d3df343f195cd4a0436ff48e064c7019692af354"
+          },
+          {
+            "line": 17,
+            "item": "item_7",
+            "rawLineSha256": "744dbc37225187df29611a44708e146c4586450ec2ae29ecfea6690115aeec62"
+          },
+          {
+            "line": 21,
+            "item": "item_9",
+            "rawLineSha256": "5694547cd7d035dc7beaa4ccc06c107cbb31a82ea40a6b76be7d05431cea9b22"
+          },
+          {
+            "line": 29,
+            "item": "item_13",
+            "rawLineSha256": "090b8932c4f36e8e8368a2e92346de94cb47175eabb75fd8a982bc7e41f16445"
+          },
+          {
+            "line": 33,
+            "item": "item_16",
+            "rawLineSha256": "787792c066e002d3e0d4e078349d82269c3bae1de94d3383573309397a1b754a"
+          },
+          {
+            "line": 34,
+            "item": "item_15",
+            "rawLineSha256": "147043ebd5b1747c01733ce186f30e9d67e42788a0ff389f97c2ab4dd87f1bf6"
+          }
+        ],
+        "734f09": [
+          {
+            "line": 5,
+            "item": "item_1",
+            "rawLineSha256": "b92f2d75655bb15ae3f9265b982eba494ebbc0ed9abc70e7e288b5643dc8f01e"
+          },
+          {
+            "line": 11,
+            "item": "item_4",
+            "rawLineSha256": "4e7a14356fc4e1eef9e3c5a3d3df343f195cd4a0436ff48e064c7019692af354"
+          },
+          {
+            "line": 16,
+            "item": "item_6",
+            "rawLineSha256": "c5fc1559d90b902684578cda17d7901ce2067d2139b4ef85256d0f33b73611c3"
+          },
+          {
+            "line": 21,
+            "item": "item_9",
+            "rawLineSha256": "5694547cd7d035dc7beaa4ccc06c107cbb31a82ea40a6b76be7d05431cea9b22"
+          },
+          {
+            "line": 29,
+            "item": "item_13",
+            "rawLineSha256": "090b8932c4f36e8e8368a2e92346de94cb47175eabb75fd8a982bc7e41f16445"
+          },
+          {
+            "line": 33,
+            "item": "item_16",
+            "rawLineSha256": "787792c066e002d3e0d4e078349d82269c3bae1de94d3383573309397a1b754a"
+          },
+          {
+            "line": 34,
+            "item": "item_15",
+            "rawLineSha256": "147043ebd5b1747c01733ce186f30e9d67e42788a0ff389f97c2ab4dd87f1bf6"
+          }
+        ],
+        "ca9422": [
+          {
+            "line": 5,
+            "item": "item_1",
+            "rawLineSha256": "b92f2d75655bb15ae3f9265b982eba494ebbc0ed9abc70e7e288b5643dc8f01e"
+          },
+          {
+            "line": 11,
+            "item": "item_4",
+            "rawLineSha256": "4e7a14356fc4e1eef9e3c5a3d3df343f195cd4a0436ff48e064c7019692af354"
+          },
+          {
+            "line": 13,
+            "item": "item_5",
+            "rawLineSha256": "3e37ca215ffb63fb0c45198ba0ecf527d014e9a3870f266917f94ca6d7851e49"
+          },
+          {
+            "line": 21,
+            "item": "item_9",
+            "rawLineSha256": "5694547cd7d035dc7beaa4ccc06c107cbb31a82ea40a6b76be7d05431cea9b22"
+          },
+          {
+            "line": 23,
+            "item": "item_10",
+            "rawLineSha256": "cdc64c88ecc56578a3c6b119121d0615dac2177834ae80dc122f5f577b8ec041"
+          },
+          {
+            "line": 29,
+            "item": "item_13",
+            "rawLineSha256": "090b8932c4f36e8e8368a2e92346de94cb47175eabb75fd8a982bc7e41f16445"
+          },
+          {
+            "line": 33,
+            "item": "item_16",
+            "rawLineSha256": "787792c066e002d3e0d4e078349d82269c3bae1de94d3383573309397a1b754a"
+          },
+          {
+            "line": 34,
+            "item": "item_15",
+            "rawLineSha256": "147043ebd5b1747c01733ce186f30e9d67e42788a0ff389f97c2ab4dd87f1bf6"
+          }
+        ],
+        "d348c1": [
+          {
+            "line": 5,
+            "item": "item_1",
+            "rawLineSha256": "b92f2d75655bb15ae3f9265b982eba494ebbc0ed9abc70e7e288b5643dc8f01e"
+          },
+          {
+            "line": 11,
+            "item": "item_4",
+            "rawLineSha256": "4e7a14356fc4e1eef9e3c5a3d3df343f195cd4a0436ff48e064c7019692af354"
+          },
+          {
+            "line": 13,
+            "item": "item_5",
+            "rawLineSha256": "3e37ca215ffb63fb0c45198ba0ecf527d014e9a3870f266917f94ca6d7851e49"
+          },
+          {
+            "line": 21,
+            "item": "item_9",
+            "rawLineSha256": "5694547cd7d035dc7beaa4ccc06c107cbb31a82ea40a6b76be7d05431cea9b22"
+          },
+          {
+            "line": 23,
+            "item": "item_10",
+            "rawLineSha256": "cdc64c88ecc56578a3c6b119121d0615dac2177834ae80dc122f5f577b8ec041"
+          },
+          {
+            "line": 29,
+            "item": "item_13",
+            "rawLineSha256": "090b8932c4f36e8e8368a2e92346de94cb47175eabb75fd8a982bc7e41f16445"
+          },
+          {
+            "line": 33,
+            "item": "item_16",
+            "rawLineSha256": "787792c066e002d3e0d4e078349d82269c3bae1de94d3383573309397a1b754a"
+          },
+          {
+            "line": 34,
+            "item": "item_15",
+            "rawLineSha256": "147043ebd5b1747c01733ce186f30e9d67e42788a0ff389f97c2ab4dd87f1bf6"
+          }
+        ],
+        "d730c3": [
+          {
+            "line": 5,
+            "item": "item_1",
+            "rawLineSha256": "b92f2d75655bb15ae3f9265b982eba494ebbc0ed9abc70e7e288b5643dc8f01e"
+          },
+          {
+            "line": 11,
+            "item": "item_4",
+            "rawLineSha256": "4e7a14356fc4e1eef9e3c5a3d3df343f195cd4a0436ff48e064c7019692af354"
+          },
+          {
+            "line": 16,
+            "item": "item_6",
+            "rawLineSha256": "c5fc1559d90b902684578cda17d7901ce2067d2139b4ef85256d0f33b73611c3"
+          },
+          {
+            "line": 21,
+            "item": "item_9",
+            "rawLineSha256": "5694547cd7d035dc7beaa4ccc06c107cbb31a82ea40a6b76be7d05431cea9b22"
+          },
+          {
+            "line": 25,
+            "item": "item_11",
+            "rawLineSha256": "ec34f767c502637f97f7e87a9de8907e80b305b85e201393c742e41001339149"
+          },
+          {
+            "line": 29,
+            "item": "item_13",
+            "rawLineSha256": "090b8932c4f36e8e8368a2e92346de94cb47175eabb75fd8a982bc7e41f16445"
+          },
+          {
+            "line": 33,
+            "item": "item_16",
+            "rawLineSha256": "787792c066e002d3e0d4e078349d82269c3bae1de94d3383573309397a1b754a"
+          },
+          {
+            "line": 34,
+            "item": "item_15",
+            "rawLineSha256": "147043ebd5b1747c01733ce186f30e9d67e42788a0ff389f97c2ab4dd87f1bf6"
+          }
+        ]
+      },
+      "gradeSha256": "d9a9c33c279810ce132d578f09a8db5251783ed9be12633b24a88567dc3930ed",
+      "eventsSha256": "3e2aea0daefd6cc2bc1f05c46b0d1d9fa7245a024c32b5ab004130dfd62411e5",
+      "neutralCodes": [
+        "17f90a",
+        "52a6e6",
+        "734f09",
+        "ca9422",
+        "d348c1",
+        "d730c3"
+      ],
+      "rubricSha256": "c9a12f1e2a11da741d054896bada1247697ecd2524df64d64736a2d50a9a6455",
+      "originalPacketInventoryVerified": true,
+      "variantKeysOrInstructionTextInPacket": false
+    }
+  },
+  "limit": "Назначение модели установлено по argv. Серверная аттестация недоступна. Раздельные сессии и каталоги, ограничение чтения заданием, исходные потоки доступны в study-records.tar.gz. Это не системная изоляция чтения всей ФС."
+}

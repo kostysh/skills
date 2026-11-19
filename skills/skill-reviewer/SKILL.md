@@ -6,9 +6,9 @@ description: Review agent skills for capability, instruction quality, triggers,
   FAIL, BLOCKED, or PROVISIONAL. Does not edit skills or review ordinary app
   code.
 metadata:
-  source-version: 0.2.7
+  source-version: 0.2.8
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 36a99b620a3d90a77155ffcea30de988e726300ddb0e07721a9ba8fe2d9e0945
+  skillforge-source-hash: c6b1c930573c9a9a2bcd0a129d199aa3da695e99dfa32695c1294488969bfcaf
 ---
 
 # skill-reviewer

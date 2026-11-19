@@ -1,0 +1,27 @@
+{
+  "electron-forge --version": {
+    "exit": 0,
+    "stdout": "8.0.1\n",
+    "stderr": "npm notice run npx\nnpm notice run 'electron-forge' --version\n"
+  },
+  "electron-forge make --help": {
+    "exit": 0,
+    "stdout": "Usage: electron-forge-make [options] [dir]\n\nArguments:\n  dir                        Directory to run the command in. (default: current\n                             directory)\n\nOptions:\n  -V, --version              Output the current version.\n  --from-package             Make distributables from the output of a previous\n                             package run, instead of packaging the Electron\n                             application again.\n  -a, --arch [arch]          Target build architecture. (default: \"x64\")\n  -p, --platform [platform]  Target build platform. (default: \"linux\")\n  --targets [targets]        Override your make targets for this run.\n  -h, --help                 Output usage information.\n",
+    "stderr": "npm notice run npx\nnpm notice run 'electron-forge' make --help\n"
+  },
+  "electron-forge release --help": {
+    "exit": 0,
+    "stdout": "Usage: electron-forge-release [options] [dir]\n\nArguments:\n  dir                            Directory to run the command in. (default:\n                                 current directory)\n\nOptions:\n  -V, --version                  Output the current version.\n  --target [target[,target...]]  A comma-separated list of deployment targets.\n                                 (default: all publishers in your Forge config)\n  --from-make                    Release the distributables from a previous\n                                 make run, instead of packaging and making the\n                                 Electron application again.\n  --from-package                 Make and release distributables from the\n                                 output of a previous package run, instead of\n                                 packaging the Electron application again.\n  -h, --help                     Output usage information.\n",
+    "stderr": "npm notice run npx\nnpm notice run 'electron-forge' release --help\n"
+  },
+  "electron-vite --version": {
+    "exit": 0,
+    "stdout": "electron-vite/6.0.0 linux-x64 node-v24.15.0\n",
+    "stderr": "npm notice run npx\nnpm notice run 'electron-vite' --version\n"
+  },
+  "electron-vite preview --help": {
+    "exit": 0,
+    "stdout": "electron-vite/6.0.0\n\nUsage:\n  $ electron-vite preview [root]\n\nOptions:\n  --noSandbox             [boolean] forces renderer process to run un-sandboxed \n  --skipBuild             [boolean] skip build \n  -c, --config <file>     [string] use specified config file \n  -l, --logLevel <level>  [string] info | warn | error | silent \n  --clearScreen           [boolean] allow/disable clear screen when logging \n  -d, --debug [feat]      [string | boolean] show debug logs \n  -f, --filter <filter>   [string] filter debug logs \n  -m, --mode <mode>       [string] set env mode \n  --ignoreConfigWarning   [boolean] ignore config warning \n  --sourcemap             [boolean] output source maps for debug (default: false) \n  --outDir <dir>          [string] output directory (default: out) \n  --entry <file>          [string] specify electron entry file \n  -h, --help              Display this message \n",
+    "stderr": "npm notice run npx\nnpm notice run 'electron-vite' preview --help\n"
+  }
+}

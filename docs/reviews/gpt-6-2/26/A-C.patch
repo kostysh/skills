@@ -1,0 +1,5 @@
+--- a/SKILL.md
++++ c/SKILL.md
+@@ -128 +128 @@
+-- Type, lint, build, mock, route, screenshot, and generated-file evidence is not presented as proof of unexercised interactive, persistence, performance, auth, security, or production behavior.
++- Exercise the boundary each completion claim depends on.

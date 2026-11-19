@@ -1,0 +1,109 @@
+{
+  "subjects": [
+    {
+      "label": "5d9b98",
+      "case": "pinned",
+      "variant": "R",
+      "issuedRootSHA256": "698e7641095b3335372a159d3541e22e37302d9be6a72de920779d046777c483",
+      "contrastFile": "references/doc-quality-tooling-and-agents.md",
+      "contrastFileSHA256": "e271ec39a5c791c5c9c3a9c76a1760f5d1a4e9d2d8469460bb5f8e5a84639b5f",
+      "contrastAnchors": [
+        "Apply these defaults to new repositories. Preserve existing compatible tooling and equivalent declared checks in established projects; do not overwrite their AGENTS or workflows wholesale. Bootstrap engine selection is owned by [bootstrap-and-structure.md](bootstrap-and-structure.md). Align CI Node and pnpm with the runtime pins and lockfile. The template runs Node 24 and reads the root `package.json` field `packageManager`. For a new scaffold, set it to the exact pnpm used to create the lockfile (for example, `pnpm@10.28.2`). If the project keeps that field unset, supply the selected version in the `pnpm/action-setup` input `with.version`. Generate the lockfile with the authorized install. A frozen CI install requires the matching lockfile in the checked-out revision. Adapt branch filters and monorepo working directory/cache lockfile location to the actual repo."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_2",
+          "indexes": [
+            0
+          ],
+          "sha256": "4bd69d3a85508c8813b242c578c43ab628cebb5c14c186bed578d8d133ac7c66"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "2f1f2f5b52ba704d7c20d1c9927b3a629974ec1f7257d5c6b185afc71aef33a6",
+      "eventSHA256": "f02fe94e6bd077b63515cf1b066c976d77d14a253a5c2e4864733e04e38626fa",
+      "unchangedOriginalFiles": false
+    },
+    {
+      "label": "5e8ac0",
+      "case": "unversioned",
+      "variant": "R",
+      "issuedRootSHA256": "698e7641095b3335372a159d3541e22e37302d9be6a72de920779d046777c483",
+      "contrastFile": "references/doc-quality-tooling-and-agents.md",
+      "contrastFileSHA256": "e271ec39a5c791c5c9c3a9c76a1760f5d1a4e9d2d8469460bb5f8e5a84639b5f",
+      "contrastAnchors": [
+        "Apply these defaults to new repositories. Preserve existing compatible tooling and equivalent declared checks in established projects; do not overwrite their AGENTS or workflows wholesale. Bootstrap engine selection is owned by [bootstrap-and-structure.md](bootstrap-and-structure.md). Align CI Node and pnpm with the runtime pins and lockfile. The template runs Node 24 and reads the root `package.json` field `packageManager`. For a new scaffold, set it to the exact pnpm used to create the lockfile (for example, `pnpm@10.28.2`). If the project keeps that field unset, supply the selected version in the `pnpm/action-setup` input `with.version`. Generate the lockfile with the authorized install. A frozen CI install requires the matching lockfile in the checked-out revision. Adapt branch filters and monorepo working directory/cache lockfile location to the actual repo."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_4",
+          "indexes": [
+            0
+          ],
+          "sha256": "c77e8e0659b47269a6f8246d90fcad767cad84b1c1db7b3a83aab30a2b10b1a8"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "ee8cb99f1c8e9c8d969521956195234718a58bc2029188457cf649c833381831",
+      "eventSHA256": "d5b4665fe6f226821eb63a3ed4a6979ebb6a17f7b55649d4ee54b5f68d513c01",
+      "unchangedOriginalFiles": false
+    },
+    {
+      "label": "6a242e",
+      "case": "pinned",
+      "variant": "S",
+      "issuedRootSHA256": "698e7641095b3335372a159d3541e22e37302d9be6a72de920779d046777c483",
+      "contrastFile": "references/doc-quality-tooling-and-agents.md",
+      "contrastFileSHA256": "195f9141992c2c69350f69c300e52d5fcda60314e9b563ed0ee1600ed64a27df",
+      "contrastAnchors": [
+        "Apply these defaults to new repositories. Preserve existing compatible tooling and equivalent declared checks in established projects; do not overwrite their AGENTS or workflows wholesale. Bootstrap engine selection is owned by [bootstrap-and-structure.md](bootstrap-and-structure.md). Align CI Node and pnpm with the runtime pins and lockfile. The template runs Node 24 and reads the root `package.json` field `packageManager`. Generate the lockfile with the authorized install. A frozen CI install requires the matching lockfile in the checked-out revision. Adapt branch filters and monorepo working directory/cache lockfile location to the actual repo."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_5",
+          "indexes": [
+            0
+          ],
+          "sha256": "161920ad20945d52f20877ed297ec6ef2ac3800ffa43d941a238aa8013fe1217"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "edd3393e92c8a24004b43ba4bd5590a326d34fd30fa403eb2d305e8289a7e6dd",
+      "eventSHA256": "4037444103ee0e6d66b8ffc56f99302fb81cc6c27351ca28d5eca4f2dff6bbee",
+      "unchangedOriginalFiles": false
+    },
+    {
+      "label": "a861ef",
+      "case": "unversioned",
+      "variant": "S",
+      "issuedRootSHA256": "698e7641095b3335372a159d3541e22e37302d9be6a72de920779d046777c483",
+      "contrastFile": "references/doc-quality-tooling-and-agents.md",
+      "contrastFileSHA256": "195f9141992c2c69350f69c300e52d5fcda60314e9b563ed0ee1600ed64a27df",
+      "contrastAnchors": [
+        "Apply these defaults to new repositories. Preserve existing compatible tooling and equivalent declared checks in established projects; do not overwrite their AGENTS or workflows wholesale. Bootstrap engine selection is owned by [bootstrap-and-structure.md](bootstrap-and-structure.md). Align CI Node and pnpm with the runtime pins and lockfile. The template runs Node 24 and reads the root `package.json` field `packageManager`. Generate the lockfile with the authorized install. A frozen CI install requires the matching lockfile in the checked-out revision. Adapt branch filters and monorepo working directory/cache lockfile location to the actual repo."
+      ],
+      "directReadHits": [
+        {
+          "event": "item_3",
+          "indexes": [
+            0
+          ],
+          "sha256": "53353904db5379971105402cfc802dcf634ef04a9ddf225f7edf1d5bfe17f47f"
+        }
+      ],
+      "allAnchorsInEvents": true,
+      "answerSHA256": "339391adb3b705a76e73b889152be0bd1feba44ed41beafa94f15d7b2eb16f89",
+      "eventSHA256": "aa3b8e925e1abaf4160f4c10e0229dbc5fb9382e6db0695470685dba247eb256",
+      "unchangedOriginalFiles": false
+    }
+  ],
+  "grader": {
+    "signedSHA256": "841e73df9fc67c350ae893be2fda7d1989b19dfea9d30798d1a786b57ec88626",
+    "eventsSHA256": "d66324c2e09116e032cc0d92abb2db69437dee5c9af03ac999646d81d4bb7fe9",
+    "portableSHA256": "841e73df9fc67c350ae893be2fda7d1989b19dfea9d30798d1a786b57ec88626",
+    "deliveredInputsCount": 49,
+    "packetSHA256": "74a01da1dd6d8d7a9e70dacac0c85c2b6d5f1f71db665d90c91ac3011696f842"
+  },
+  "researchInputsSHA256": "ba636f2b98251082e3c899aae6d310caa5552fb7e98417f1d016bd39c613f224",
+  "rawRecordsSHA256": "818f6b397e8576fb5cbd3f44c911763e2b6258246b3c2526f228d6b7529546a2"
+}

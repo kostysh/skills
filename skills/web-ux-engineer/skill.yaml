@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: web-ux-engineer
-  source-version: 0.1.0
+  source-version: 0.1.1
   recommended-skill-md-max-bytes: 20000
   description: >-
     Design, implement, and audit user flows in web apps and SPAs. Use for
@@ -30,6 +30,10 @@ supporting:
     source: docs/logs/implementation-log-20261107-1.md
     target: docs/logs/implementation-log-20261107-1.md
     description: Implementation, verification, and independent review record.
+  - id: supporting-gpt62-log
+    source: docs/logs/implementation-log-20261118-1.md
+    target: docs/logs/implementation-log-20261118-1.md
+    description: Non-normative record of the GPT-6.2 review and historical file recovery.
   - id: supporting-evidence
     source: docs/forward-tests/20261107/README.md
     target: docs/forward-tests/20261107/README.md
@@ -535,7 +539,7 @@ sections:
       goal: Find where the scenario loses clarity or continuity.
       steps:
         - Follow what users see, decide, enter, and receive. Inspect terminology, information hierarchy, forms, feedback, navigation context, cancel, and recovery with realistic data.
-        - For applicable SPA transitions, trace loading, empty, error, confirmed success, unknown operation outcome, interruption, and return. Preserve useful input and list context; distinguish closing a surface from cancelling an operation.
+        - For applicable SPA transitions, trace loading, empty, error, confirmed success, unknown operation outcome, interruption, and return. Preserve useful input and list context. Check whether dismissal cancels pending work.
         - A timeout can leave the result unknown. Do not assert failure, safe retry, rollback, or successful saving without the API contract and corresponding evidence.
     - id: stage-choose
       title: Choose the interaction

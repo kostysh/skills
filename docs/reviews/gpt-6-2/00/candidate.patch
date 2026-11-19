@@ -1,0 +1,11 @@
+--- A/AGENTS.md
++++ C/AGENTS.md
+@@ -18,7 +18,7 @@
+ - Carry forward permissions already given for the current task. Do authorized inspection, preparation, and reversible work without asking for the same permission again.
+ - A request to implement does not implicitly waive an accepted checkpoint or authorize commit, push, publication, external messages, or merge. Follow the operation-specific user and repository boundaries; use `git-engineer` for Git decisions.
+ - A review request authorizes inspection and reporting, not remediation. Keep the reviewed snapshot unchanged; use a disposable copy for checks that may write locally. Determine command side effects before running it.
+-- Missing information or authority stops the dependent decision or action. Complete useful independent work already authorized; do not invent the missing input or claim the blocked part is complete.
++- Complete what the available facts and authority support. Report any blocked part.
+ - When a rule causes a pause, permission request, or change of direction, identify the exact file and instruction, quote the relevant clause, explain its applicability, and state the smallest missing fact or permission. Separate explicit requirements from interpretation.
+ - Agent delegation requires explicit operator permission for the current task. Once given, reuse it within its scope. If an independent gate needs an agent and permission is absent, finish authorized preparation, request that permission, and stop before the gate. Never substitute an opaque process or author self-review for the requested agent-level independence.
+ - Unresolved same-authority conflicts block only the affected work. Name both sources and the decision owner; do not resolve a conflict by silently promoting an example or historical note.

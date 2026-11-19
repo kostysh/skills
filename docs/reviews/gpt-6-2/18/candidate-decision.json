@@ -1,0 +1,5 @@
+{
+  "initialAssessor": "0936988076269ca1bb03a6dc3ee5dcb4cd90b9c499b497e6222cf35797a0b218",
+  "positiveInstruction": "Keep DOM ownership per instance and clean up its Effects.",
+  "ordinaryAndBoundary": "All four subjects actually visited the live component, checked two descriptions, resize and remount and correctly named working or faulty behavior, even with the late paragraph removed."
+}

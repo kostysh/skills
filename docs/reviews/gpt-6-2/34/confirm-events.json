@@ -1,0 +1,157 @@
+{
+  "browser": "158.0.8127.36",
+  "route": "/settings/notifications",
+  "operations": [
+    "Tab",
+    "Enter"
+  ],
+  "dom": [
+    {
+      "event": "keydown",
+      "key": "Tab",
+      "trusted": true,
+      "target": "Cancel",
+      "tag": "BUTTON",
+      "detail": null,
+      "at": 242.79999999701977
+    },
+    {
+      "event": "focusin",
+      "key": null,
+      "trusted": true,
+      "target": "Confirm",
+      "tag": "BUTTON",
+      "detail": null,
+      "at": 244.20000000298023
+    },
+    {
+      "event": "keyup",
+      "key": "Tab",
+      "trusted": true,
+      "target": "Confirm",
+      "tag": "BUTTON",
+      "detail": null,
+      "at": 244.90000000596046
+    },
+    {
+      "event": "keydown",
+      "key": "Enter",
+      "trusted": true,
+      "target": "Confirm",
+      "tag": "BUTTON",
+      "detail": null,
+      "at": 250.20000000298023
+    },
+    {
+      "event": "click",
+      "key": null,
+      "trusted": true,
+      "target": "Confirm",
+      "tag": "BUTTON",
+      "detail": 0,
+      "at": 250.20000000298023
+    },
+    {
+      "event": "focusin",
+      "key": null,
+      "trusted": true,
+      "target": "Cancel",
+      "tag": "BUTTON",
+      "detail": null,
+      "at": 250.79999999701977
+    },
+    {
+      "event": "keyup",
+      "key": "Enter",
+      "trusted": true,
+      "target": "Close",
+      "tag": "BUTTON",
+      "detail": null,
+      "at": 254.20000000298023
+    },
+    {
+      "event": "focusin",
+      "key": null,
+      "trusted": true,
+      "target": "Review changes",
+      "tag": "BUTTON",
+      "detail": null,
+      "at": 391.1000000089407
+    }
+  ],
+  "timeline": [
+    {
+      "observed": "request",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "observed": "response",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "observed": "request",
+      "method": "PUT",
+      "body": {
+        "email": "registry@example.test",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    },
+    {
+      "observed": "response",
+      "method": "PUT",
+      "status": 204
+    },
+    {
+      "observed": "request",
+      "method": "GET",
+      "body": null
+    },
+    {
+      "observed": "response",
+      "method": "GET",
+      "status": 200
+    }
+  ],
+  "service": [
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": null
+    },
+    {
+      "method": "PUT",
+      "path": "/api/notification-settings",
+      "status": 204
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": {
+        "email": "registry@example.test",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/notification-settings",
+      "status": 200,
+      "body": {
+        "email": "registry@example.test",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    }
+  ],
+  "disk": {
+    "email": "registry@example.test",
+    "enabled": true,
+    "frequency": "weekly"
+  },
+  "fresh": "Settings applied\n\nEmail: registry@example.test. Notifications: On. Frequency: Weekly.\n\nRead from the local settings service. No email is sent."
+}

@@ -6,9 +6,9 @@ description: "Coordinate customer-owned requirements decisions: triage open
   authoritative project documents. Use for approval workflows and «согласование
   требований»."
 metadata:
-  source-version: 0.2.3
+  source-version: 0.2.4
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: f72b7980217b1ce8d52f7ae4fde906f3488d2628bd4b73f1c6568653f87ab810
+  skillforge-source-hash: cc9b167378206d4c3d6a4611409ad078ef419ad0f40b81888e98b84a9f0a6daa
 ---
 
 # requirements-approval
@@ -126,7 +126,7 @@ Determine what a reply authoritatively answers without converting mailbox presen
 1. Read the exact supplied messages through gmail or equivalent exported data without changing mailbox state.
 2. Verify sender/thread identity, the question codes discussed, the named decision owner's authority, and whether the reply is current or superseded.
 3. Read the related approval-item history and authoritative project sources; stop acceptance on unresolved equal-authority conflicts.
-4. If a necessary attachment is unavailable, request that specific attachment and block only the dependent question while continuing independent items.
+4. Request missing attachments by name and advance independent questions.
 5. Classify each reply per question as complete, partial, non-answer, or authority-conflict.
 6. Convert answers into traced obligations for document owners; do not invent product, architecture, specification, or plan decisions.
 

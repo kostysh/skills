@@ -1,0 +1,24 @@
+--- B/SKILL.md
++++ C/SKILL.md
+@@ -5,9 +5,9 @@
+   styling, and motion; express accepted interactions and verify rendered
+   results. Route task-flow choices and UX audits to web-ux-engineer."
+ metadata:
+-  source-version: 0.2.5
++  source-version: 0.2.6
+   skillforge-source-manifest: skill.yaml
+-  skillforge-source-hash: 5b866708098c8463ecc61d0fe0f934584827b5e1e8e5090ac04999ad9eb427b2
++  skillforge-source-hash: aad34a098dd22c8295f12edf3353e6e9dd043e39c9013b4ed152dbecd9cf9d6e
+ ---
+ 
+ # frontend-design
+--- B/references/strategy-to-implementation.md
++++ C/references/strategy-to-implementation.md
+@@ -112,6 +112,7 @@
+ - Use framework and component-system skills for code-level architecture,
+   lifecycle, accessibility mechanics, and component APIs. `frontend-design`
+   owns the visual strategy and whether the rendered result expresses it.
++- Use an available editor that supports the requested format and verify the saved artifact.
+ 
+ ## Verify The Observable Result
+ 

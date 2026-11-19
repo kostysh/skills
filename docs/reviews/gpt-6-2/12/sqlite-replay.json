@@ -1,0 +1,85 @@
+{
+  "ordinary": {
+    "engine": "SQLite 3.46.1",
+    "configuredDays": {
+      "working": 28
+    },
+    "before": {
+      "working": [
+        5,
+        27,
+        28,
+        36
+      ]
+    },
+    "afterNewSQLQuery": {
+      "working": [
+        5,
+        27
+      ]
+    },
+    "matchesFrozenJSON": true,
+    "frozenSha256": "3b6a9d87182c0fe65fefa1bcdb6caf0a11ce20c755601d5cfe41479aa7ffa3b3"
+  },
+  "boundary": {
+    "engine": "SQLite 3.46.1",
+    "configuredDays": {
+      "working": 90
+    },
+    "before": {
+      "working": [
+        14,
+        89,
+        90,
+        120
+      ]
+    },
+    "afterNewSQLQuery": {
+      "working": [
+        14,
+        89
+      ]
+    },
+    "matchesFrozenJSON": true,
+    "frozenSha256": "0f3d1a12f9aab984dd14d6c4d9cad457496513b3b413832d59473931518cbccc"
+  },
+  "holdout": {
+    "engine": "SQLite 3.46.1",
+    "configuredDays": {
+      "working": 14,
+      "export": 30
+    },
+    "before": {
+      "working": [
+        4,
+        13,
+        14,
+        29,
+        30,
+        39
+      ],
+      "export": [
+        4,
+        13,
+        14,
+        29,
+        30,
+        39
+      ]
+    },
+    "afterNewSQLQuery": {
+      "working": [
+        4,
+        13
+      ],
+      "export": [
+        4,
+        13,
+        14,
+        29
+      ]
+    },
+    "matchesFrozenJSON": true,
+    "frozenSha256": "2cd508bdaa298f5a0b12350f0beec3aa8c3cd413ce2dd3f3e3821a381edeea72"
+  }
+}

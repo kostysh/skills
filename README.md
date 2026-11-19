@@ -36,7 +36,7 @@ a relative directory such as `.agents/skills` or `.claude/skills`.
 | --- | --- |
 | Requirements and planning | [prd-engineer](skills/prd-engineer/), [requirements-approval](skills/requirements-approval/), [architecture-engineer](skills/architecture-engineer/), [spec-engineer](skills/spec-engineer/), [delivery-planner](skills/delivery-planner/) |
 | Application development | [typescript-engineer](skills/typescript-engineer/), [node-engineer](skills/node-engineer/), [hono-engineer](skills/hono-engineer/), [react-spa-engineer](skills/react-spa-engineer/), [react-components-engineer](skills/react-components-engineer/), [nextjs](skills/nextjs/), [shadcn](skills/shadcn/), [payload](skills/payload/), [payload-migration](skills/payload-migration/), [supabase-engineer](skills/supabase-engineer/), [financial-calculations-engineer](skills/financial-calculations-engineer/) |
-| Design | [web-ux-engineer](skills/web-ux-engineer/), [frontend-design](skills/frontend-design/), [pencil-dev](skills/pencil-dev/) |
+| Design | [web-ux-engineer](skills/web-ux-engineer/), [frontend-design](skills/frontend-design/) |
 | Tools and delivery | [cli-engineer](skills/cli-engineer/), [electron-engineer](skills/electron-engineer/), [git-engineer](skills/git-engineer/), [gh-utility](skills/gh-utility/), [docusaurus-repo](skills/docusaurus-repo/), [agent-browser](skills/agent-browser/) |
 | Reviews | [code-reviewer](skills/code-reviewer/), [security-reviewer](skills/security-reviewer/), [web-ui-reviewer](skills/web-ui-reviewer/), [spec-conformance-reviewer](skills/spec-conformance-reviewer/), [concept-conformance-reviewer](skills/concept-conformance-reviewer/), [gdpr-compliance](skills/gdpr-compliance/) |
 | Testing and maintenance | [typescript-test-engineer](skills/typescript-test-engineer/), [error-fixer](skills/error-fixer/), [implementation-discipline](skills/implementation-discipline/), [retrospective-analysis](skills/retrospective-analysis/) |
@@ -45,6 +45,12 @@ a relative directory such as `.agents/skills` or `.claude/skills`.
 Open a skill to read its scope and prerequisites. Some workflows require tools
 or connected services; the installer installs skill files, and you configure
 those tools separately.
+
+Retired skills are kept in [deprecated/](deprecated/). The
+[Pencil skill](deprecated/pencil-dev/SKILL.archived.md) was retired on
+2026-11-19. Its archived entry point is named `SKILL.archived.md` so Codex
+skips it during discovery. If you installed `pencil-dev` earlier,
+`kskills update` keeps your copy and reports its absence from the catalog.
 
 ## Install from the command line
 

@@ -1,0 +1,69 @@
+{
+  "acceptedNextCommit": "850a1059d7a4d5047c66736bfb77039f8f269676",
+  "routeFiles": {
+    "app/dossiers/[key]/DeskView.jsx": {
+      "accepted": "853bb7b2cd93bcb784a387c0bf941825ad793f91feafa40e58791bc915ed6557",
+      "consumer": "853bb7b2cd93bcb784a387c0bf941825ad793f91feafa40e58791bc915ed6557"
+    },
+    "app/dossiers/[key]/Tooltip.d.ts": {
+      "accepted": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+      "consumer": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f"
+    },
+    "app/dossiers/[key]/Tooltip.js": {
+      "accepted": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+      "consumer": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313"
+    },
+    "app/dossiers/[key]/page.jsx": {
+      "accepted": "18e213e820cb6cc1de645dcb9e31247a796d9709a07de78bcc94e3d0eb170994",
+      "consumer": "1f17f5f63e124f563039d5c6d2ec409b676a1358a8454ad0fdce37d3fdb9aeec"
+    },
+    "app/layout.jsx": {
+      "accepted": "a84b9d4ebf74b0d00a2a7d8ab84410d5820a36d8a5d6c2629a5ad30a8a48e388",
+      "consumer": "a84b9d4ebf74b0d00a2a7d8ab84410d5820a36d8a5d6c2629a5ad30a8a48e388"
+    },
+    "next.config.mjs": {
+      "accepted": "1d47d4c3c752eb360f20c28f7dda4267f25bef980bee0b9225cd8aa0e1572402",
+      "consumer": "1d47d4c3c752eb360f20c28f7dda4267f25bef980bee0b9225cd8aa0e1572402"
+    },
+    "package-lock.json": {
+      "accepted": "3fc2759e2532d2d29486d4f285544fece7867db1772ac16345656501593e9535",
+      "consumer": "3fc2759e2532d2d29486d4f285544fece7867db1772ac16345656501593e9535"
+    },
+    "package.json": {
+      "accepted": "66dd7a7a3108cc5dfe75b018079e0d4fbdc489720373370fe58cf36883e14b9d",
+      "consumer": "66dd7a7a3108cc5dfe75b018079e0d4fbdc489720373370fe58cf36883e14b9d"
+    }
+  },
+  "targetSchemaSHA256": "cdb6eced80f4a4cde189a031700557ed5d8979e31463fd071704c960995de0ce",
+  "sameCMSCodeUsedByMigrationEditions": [
+    {
+      "source": "migration/edition.mjs",
+      "original": "0cb66c1f1bb8c5528fd9f880fd47fe384dd5466e261d6602aa9f0fda66c35aaa",
+      "commonConfigurationAndInit": "cdb6eced80f4a4cde189a031700557ed5d8979e31463fd071704c960995de0ce",
+      "slicesInOriginal": "1–6, 16–41 incl."
+    },
+    {
+      "source": "migration/editions/Amber/edition.mjs",
+      "original": "79e0c1bf20b20204575a75d94af435d1b184c35dc69c5189f7cd705930b16738",
+      "commonConfigurationAndInit": "cdb6eced80f4a4cde189a031700557ed5d8979e31463fd071704c960995de0ce",
+      "slicesInOriginal": "1–6, 16–41 incl."
+    },
+    {
+      "source": "migration/editions/Copper/edition.mjs",
+      "original": "6b1e9aa83d21518693a6fb39f4522b4b06b1278529bda7cd25e8ae8b87db879e",
+      "commonConfigurationAndInit": "cdb6eced80f4a4cde189a031700557ed5d8979e31463fd071704c960995de0ce",
+      "slicesInOriginal": "1–6, 16–41 incl."
+    },
+    {
+      "source": "migration/editions/Silver/edition.mjs",
+      "original": "219d41d7d78fbc2b3b65f7047132b1a636340b7dbe3928cfcffdd138a811445d",
+      "commonConfigurationAndInit": "cdb6eced80f4a4cde189a031700557ed5d8979e31463fd071704c960995de0ce",
+      "slicesInOriginal": "1–6, 16–41 incl."
+    }
+  ],
+  "sqlitePackageLock": "36f6560d7e738daee00e74356fa1bec06c349b492289c8a17e6e1f1ca56378a7",
+  "nonSecretOutputs": {
+    "roundtrip.json": "c245221fc20aa4342d357fbf5b78fb52af22544b24df7706f1a4aae59c0b4879",
+    "hooks.json": "929d5eb4ca5d33da4b9911106d19280e81e539a05acc94e9339beace2005b94f"
+  }
+}

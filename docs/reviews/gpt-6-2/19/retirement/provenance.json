@@ -1,0 +1,338 @@
+{
+  "inputFreezeSha256": "f4fd16b83ca1fe02ad54af9b3f5b2e9eaef6f49a4f5744ddc8b745872822c352",
+  "candidateFreezeSha256": "3fc92bcea1f14cf7c5745e0e5a0256bfe02025d279283279d9c0e4f3214ce77b",
+  "patchReplay": {
+    "A-B": {
+      "exit": 0,
+      "allSevenFilesIdentical": true
+    },
+    "A-C": {
+      "exit": 0,
+      "allSevenFilesIdentical": true
+    },
+    "B-C": {
+      "exit": 0,
+      "allSevenFilesIdentical": true
+    }
+  },
+  "calibration": {
+    "kind": "case-author calibration on a separate disposable copy, after the blind tasks",
+    "commands": [
+      [
+        "style",
+        "Proof desk",
+        "heading",
+        "Display"
+      ],
+      [
+        "style",
+        "Proof desk",
+        "action",
+        "Amber action"
+      ],
+      [
+        "export",
+        "Proof desk",
+        "cached.svg"
+      ],
+      [
+        "export",
+        "Proof desk",
+        "current.svg",
+        "--current"
+      ]
+    ],
+    "commandExits": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "proofs": {
+      "cached.svg": {
+        "SHA256": "379dbfd87e42049979d880fd6e2203e64511e56ffc65b9e779588e82edadbe64",
+        "headingPx": "16"
+      },
+      "current.svg": {
+        "SHA256": "775b4d1576b1f2e4ce0d030ed74ba2ee5002fb07da1921de22db06ad27840751",
+        "headingPx": "32"
+      }
+    }
+  },
+  "runs": {
+    "99933983": {
+      "variant": "B",
+      "case": "ordinary",
+      "threadId": "01a1f35a-2566-7af1-a330-f7ff28f9a887",
+      "assignedModel": "gpt-6.2-sol",
+      "assignedEffort": "medium",
+      "exit": 0,
+      "inputHashesMatched": true,
+      "readStrategyReference": true,
+      "positiveRuleInObservedReferenceOutput": false,
+      "changed": [
+        ".studio/operations.jsonl",
+        "morning.svg",
+        "press-board.pen"
+      ],
+      "answerSHA256": "5a8c57992d0034b0225a78df924c875ee1648cb240516da0a715c1fbd5e78553",
+      "eventsSHA256": "97af2a5b3d5ba843e8e5a4d0cf4aa89b5b2d5f0a1103d128f031c7a0b864cac3",
+      "stderrSHA256": "882fac3ebfd10d36cbbdba4c8837e4cb48b2f4e08249fe54dbcb4db88220dd96",
+      "record": "subjects/99933983/",
+      "adapterOperationCount": 8
+    },
+    "301e0f88": {
+      "variant": "A",
+      "case": "ordinary",
+      "threadId": "01a1f35a-2566-75f1-9a8b-c107678a2707",
+      "assignedModel": "gpt-6.2-sol",
+      "assignedEffort": "medium",
+      "exit": 0,
+      "inputHashesMatched": true,
+      "readStrategyReference": true,
+      "positiveRuleInObservedReferenceOutput": false,
+      "changed": [
+        ".studio/operations.jsonl",
+        "morning.svg",
+        "press-board.pen"
+      ],
+      "answerSHA256": "ea5ca854eee1afa19976d54a8695f3eb84211bb5aa80a81aac1858d2e4e51242",
+      "eventsSHA256": "fd238e2e28894f0e1f762583a8bdd4f5487cd33070dc84bf615ccd6166becf30",
+      "stderrSHA256": "2a30368e6aaeeed42d8fcfe8a6d15cbdd303024ded7185ef5f190d96e321f76b",
+      "record": "subjects/301e0f88/",
+      "adapterOperationCount": 8
+    },
+    "e2c33b18": {
+      "variant": "B",
+      "case": "boundary",
+      "threadId": "01a1f35a-2566-7721-969b-51631a094aad",
+      "assignedModel": "gpt-6.2-sol",
+      "assignedEffort": "medium",
+      "exit": 0,
+      "inputHashesMatched": true,
+      "readStrategyReference": true,
+      "positiveRuleInObservedReferenceOutput": false,
+      "changed": [
+        ".studio/operations.jsonl",
+        "layout-note.md"
+      ],
+      "answerSHA256": "161516c31688d76510459458e7c6ed29d1af4c9915e08a8dcb9485c68ac63728",
+      "eventsSHA256": "2efeb9e00f954f3bde776074f7925cc971ea1811f3a9332898831c63e90da21e",
+      "stderrSHA256": "900aec24154b3c7ca046503ec45694b461c9482f6acccdccd88a75201226882e",
+      "record": "subjects/e2c33b18/",
+      "adapterOperationCount": 2
+    },
+    "5cf68d05": {
+      "variant": "A",
+      "case": "boundary",
+      "threadId": "01a1f35a-84c6-7220-ab73-fe6250326321",
+      "assignedModel": "gpt-6.2-sol",
+      "assignedEffort": "medium",
+      "exit": 0,
+      "inputHashesMatched": true,
+      "readStrategyReference": true,
+      "positiveRuleInObservedReferenceOutput": false,
+      "changed": [
+        ".studio/operations.jsonl",
+        "layout-note.md"
+      ],
+      "answerSHA256": "8fefecdea635dd02e0efdd3ca4837cbee3e613960fa66528d0a2f2cf17d81dcf",
+      "eventsSHA256": "bbd5e874c40c90a2dd75bf422c7b89c0a9cea292e941207ba6fb98e043ab932b",
+      "stderrSHA256": "99b98ffe2e36b2fd2226ab5c8268a64ea73a1d236d9a5ae3063ef6ebc5bb0b4b",
+      "record": "subjects/5cf68d05/",
+      "adapterOperationCount": 1
+    },
+    "b5773fa4": {
+      "variant": "C",
+      "case": "holdout",
+      "threadId": "01a1f35e-0efe-79a2-bb9d-9229ca5e43b1",
+      "assignedModel": "gpt-6.2-sol",
+      "assignedEffort": "medium",
+      "exit": 0,
+      "inputHashesMatched": true,
+      "readStrategyReference": true,
+      "positiveRuleInObservedReferenceOutput": true,
+      "changed": [
+        ".studio/operations.jsonl",
+        "weekly-sheet.pen",
+        "weekly.svg"
+      ],
+      "answerSHA256": "14eee2692f4697cb4f8ab67afab495a51243afd4cd65c48e4d2d31048f86191d",
+      "eventsSHA256": "686a1d52876c627aaae1278adcd02de84afcdf6f14131ad1c50f99294edef966",
+      "stderrSHA256": "b86c9a71853d09e3249bd0343b06f5b8210eba8b68be714fa46ce3ef84c11057",
+      "record": "subjects/b5773fa4/",
+      "exampleSHA256": "775b4d1576b1f2e4ce0d030ed74ba2ee5002fb07da1921de22db06ad27840751",
+      "subjectExportRequests": [
+        {
+          "document": "weekly-sheet.pen",
+          "command": "export",
+          "frame": "Proof desk",
+          "path": "weekly.svg",
+          "current": true,
+          "revision": 7,
+          "source": "document",
+          "exit": 0
+        }
+      ]
+    },
+    "6e62bd18": {
+      "variant": "C",
+      "case": "boundary",
+      "threadId": "01a1f35e-0f00-70e1-9cfd-1071db9b9bec",
+      "assignedModel": "gpt-6.2-sol",
+      "assignedEffort": "medium",
+      "exit": 0,
+      "inputHashesMatched": true,
+      "readStrategyReference": true,
+      "positiveRuleInObservedReferenceOutput": true,
+      "changed": [
+        ".studio/operations.jsonl",
+        "layout-note.md"
+      ],
+      "answerSHA256": "2795a1be41fbdb10edf69817b531bb5f2cfd3a66ae61fe0e802422ba4015875a",
+      "eventsSHA256": "ae67678a3a2b7eae8cee4e10e5c851b940a03ae6c46a400ffa9854f667bf317a",
+      "stderrSHA256": "d9b4fe0001ec49c4cb3ce8a752931f3ae61c4b88e7cb310290e41863dca74bf5",
+      "record": "subjects/6e62bd18/",
+      "exampleSHA256": "2e950453c92cc0a1cd4a75b7d61758ae245acfaa727580757de8912783091ae0",
+      "adapterOperationCount": 1
+    },
+    "b16a1fa5": {
+      "variant": "C",
+      "case": "ordinary",
+      "threadId": "01a1f35e-0efe-7dc1-aef8-8e690dad66d4",
+      "assignedModel": "gpt-6.2-sol",
+      "assignedEffort": "medium",
+      "exit": 0,
+      "inputHashesMatched": true,
+      "readStrategyReference": true,
+      "positiveRuleInObservedReferenceOutput": true,
+      "changed": [
+        ".studio/operations.jsonl",
+        "morning.svg",
+        "press-board.pen"
+      ],
+      "answerSHA256": "49dfba3b0068e1d467424871079df61a947fa822426555d046e5d26745b08197",
+      "eventsSHA256": "29be6edad6f00174f1f3108040e12cdf4850b25f6cec23329c4714d373fda9fc",
+      "stderrSHA256": "b4dfc4514e7130d008084267e54b13f8b56dcf3b4a4757e96486b82a4db5f0ae",
+      "record": "subjects/b16a1fa5/",
+      "exampleSHA256": "826697c30aa6a765343e72e25c679e0ae7098b5b84aed00e1105e04f74fd6a31",
+      "adapterOperationCount": 8
+    }
+  },
+  "graders": {
+    "ab": {
+      "threadId": "01a1f35c-55f5-7171-b2fc-3e13a24974bc",
+      "assignedModel": "gpt-6.2-sol",
+      "assignedEffort": "high",
+      "exit": 0,
+      "scoresSHA256": "2084789b6d571d4016290a260209c1186e31c3efb4e2e5b545dbfe3a9dff9e3c",
+      "eventsSHA256": "eb65e5cf0f8817e2baa4ac1441629a2d068ba0c55eaa787fbf13a6a94794d6d7",
+      "stderrSHA256": "497898f6497fb0d1f31c8f4b8975ac414a74b98b75e0f6ae3bd02eaafeef22cc",
+      "allPacketFilesMatched": true,
+      "keysAfterGrading": {
+        "f638a8": {
+          "run": "5cf68d05",
+          "variant": "A",
+          "case": "boundary"
+        },
+        "fd5be4": {
+          "run": "99933983",
+          "variant": "B",
+          "case": "ordinary"
+        },
+        "ddd1f6": {
+          "run": "301e0f88",
+          "variant": "A",
+          "case": "ordinary"
+        },
+        "6870a0": {
+          "run": "e2c33b18",
+          "variant": "B",
+          "case": "boundary"
+        }
+      }
+    },
+    "confirm": {
+      "threadId": "01a1f35f-6a07-7722-9989-831792511f0c",
+      "assignedModel": "gpt-6.2-sol",
+      "assignedEffort": "high",
+      "exit": 0,
+      "scoresSHA256": "e4c30b5aca10042b6edced7d718a57e52c16a6e3efc0426c8de9aaa819d291cd",
+      "eventsSHA256": "b72e7e228d2d5e5cf6de60451fec28abca9b3c89e910c2d2f99839a57ecfef7a",
+      "stderrSHA256": "f1d1f14fee1e551f3b04d397463af893c08c3b4e578fbd7026ef7e4f94d2d689",
+      "allPacketFilesMatched": true,
+      "keysAfterGrading": {
+        "ab51ab": {
+          "run": "b16a1fa5",
+          "variant": "C",
+          "case": "ordinary"
+        },
+        "ca0ab0": {
+          "run": "b5773fa4",
+          "variant": "C",
+          "case": "holdout"
+        },
+        "e0d5c9": {
+          "run": "6e62bd18",
+          "variant": "C",
+          "case": "boundary"
+        },
+        "5e774e": {
+          "run": "301e0f88",
+          "variant": "A",
+          "case": "ordinary"
+        },
+        "e29618": {
+          "run": "5cf68d05",
+          "variant": "A",
+          "case": "boundary"
+        }
+      }
+    }
+  },
+  "unscoredInitialStarts": [
+    {
+      "run": "record-301e0f88",
+      "exit": 1,
+      "stdoutBytes": 0,
+      "answerBytes": 0,
+      "changed": [],
+      "message": "Read-only file system when initializing local in-process app-server",
+      "stderrSHA256": "ce6077bd9e46fded2f9e734fc2b67947fc77eea99c57a8b45e74577f5a58c104"
+    },
+    {
+      "run": "record-5cf68d05",
+      "exit": 1,
+      "stdoutBytes": 0,
+      "answerBytes": 0,
+      "changed": [],
+      "message": "Read-only file system when initializing local in-process app-server",
+      "stderrSHA256": "c833a348c5381b196e64ad3d086312e81fe750d4331918002e228359fe225358"
+    },
+    {
+      "run": "record-99933983",
+      "exit": 1,
+      "stdoutBytes": 0,
+      "answerBytes": 0,
+      "changed": [],
+      "message": "Read-only file system when initializing local in-process app-server",
+      "stderrSHA256": "7ff42dc8036626f2ab0536baae0b5c5fa62336c0d5bb5ec9c1c53aa4fc6fb2ed"
+    },
+    {
+      "run": "record-e2c33b18",
+      "exit": 1,
+      "stdoutBytes": 0,
+      "answerBytes": 0,
+      "changed": [],
+      "message": "Read-only file system when initializing local in-process app-server",
+      "stderrSHA256": "016169c326e33d668db40d049c4644342c693d74fa3f4e7939c21cc0f61095bb"
+    }
+  ],
+  "archive": {
+    "file": "records.tar.gz",
+    "files": 178,
+    "bytes": 218645,
+    "sha256": "3c84fbbc37df7529aaaaec1778023f83e291c468eb2ab93f579e74f50a6f7572",
+    "allEntriesReadBack": true
+  }
+}

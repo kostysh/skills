@@ -1,0 +1,158 @@
+{
+  "project_file_delta": [],
+  "working_data_byte_equal": true,
+  "reported_ids": {
+    "commands": [
+      {
+        "args": [
+          "rota.py",
+          "--roster",
+          "probe-rota.json",
+          "day",
+          "wed"
+        ],
+        "exit": 0,
+        "stdout": [
+          "M-14\t09:10\tХор"
+        ],
+        "stderr": []
+      },
+      {
+        "args": [
+          "rota.py",
+          "--roster",
+          "probe-rota.json",
+          "day",
+          "thu"
+        ],
+        "exit": 0,
+        "stdout": [
+          "T-8\t09:20\tЛекция"
+        ],
+        "stderr": []
+      },
+      {
+        "args": [
+          "rota.py",
+          "--roster",
+          "probe-rota.json",
+          "lead",
+          "E-23"
+        ],
+        "exit": 0,
+        "stdout": [
+          "Ирина"
+        ],
+        "stderr": []
+      },
+      {
+        "args": [
+          "rota.py",
+          "--roster",
+          "probe-rota.json",
+          "assign",
+          "E-23",
+          "Анна"
+        ],
+        "exit": 0,
+        "stdout": [
+          "Анна"
+        ],
+        "stderr": []
+      },
+      {
+        "args": [
+          "rota.py",
+          "--roster",
+          "probe-rota.json",
+          "lead",
+          "E-23"
+        ],
+        "exit": 0,
+        "stdout": [
+          "Ирина"
+        ],
+        "stderr": []
+      }
+    ],
+    "changed_by_day": [],
+    "changed_by_assign": []
+  },
+  "independent_data": {
+    "commands": [
+      {
+        "args": [
+          "rota.py",
+          "--roster",
+          "probe-rota.json",
+          "day",
+          "wed"
+        ],
+        "exit": 0,
+        "stdout": [
+          "M-14\t09:10\tХор"
+        ],
+        "stderr": []
+      },
+      {
+        "args": [
+          "rota.py",
+          "--roster",
+          "probe-rota.json",
+          "day",
+          "thu"
+        ],
+        "exit": 0,
+        "stdout": [
+          "T-8\t09:20\tЛекция"
+        ],
+        "stderr": []
+      },
+      {
+        "args": [
+          "rota.py",
+          "--roster",
+          "probe-rota.json",
+          "lead",
+          "X-90"
+        ],
+        "exit": 0,
+        "stdout": [
+          "Ирина"
+        ],
+        "stderr": []
+      },
+      {
+        "args": [
+          "rota.py",
+          "--roster",
+          "probe-rota.json",
+          "assign",
+          "X-90",
+          "Анна"
+        ],
+        "exit": 0,
+        "stdout": [
+          "Анна"
+        ],
+        "stderr": []
+      },
+      {
+        "args": [
+          "rota.py",
+          "--roster",
+          "probe-rota.json",
+          "lead",
+          "X-90"
+        ],
+        "exit": 0,
+        "stdout": [
+          "Ирина"
+        ],
+        "stderr": []
+      }
+    ],
+    "changed_by_day": [],
+    "changed_by_assign": []
+  }
+}

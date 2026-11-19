@@ -18,6 +18,7 @@
 
 ## Logs
 
+- [Ревизия согласованного объёма поручения](logs/implementation-log-20261118-1.md) · [исходный репозиторий](https://github.com/kostysh/skills/blob/55cafe65c033e0f265c27963881c221d57108d21/skills/implementation-discipline/docs/logs/implementation-log-20261118-1.md) — полномочия диагностики и исправления, проверка данных через штатный CLI и независимая оценка по строке 03.
 - [logs/implementation-log-20261021-1.md](logs/implementation-log-20261021-1.md) - существенные условия проверки и реальные границы вывода; независимый PASS, 4/4 слепых случаев.
 - [Проверки 2026-10-21](reviews/20261021-1/README.md): исходные данные, результаты, снимок и независимый отчёт.
 - [logs/implementation-log-20260429-1.md](logs/implementation-log-20260429-1.md) - portable repeated-validation heuristic for adjacent observable cases.

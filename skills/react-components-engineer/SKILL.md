@@ -6,9 +6,9 @@ description: Build, harden, review, and diagnose reusable React components
   route app architecture, styling, test strategy, and security verdicts to their
   owners.
 metadata:
-  source-version: 0.2.2
+  source-version: 0.2.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 333c529b446540f2add1c60ab1a5d0159fbb9bb8e3b9806e25bcfeff0ba5d37b
+  skillforge-source-hash: efc2571710b4cc8d22763fe5aa974f9944e00dfc9577204a4d50486af9fc61e0
 ---
 
 # react-components-engineer
@@ -66,9 +66,9 @@ The evidence column applies to claims about runtime behavior in that context. A 
 | --- | --- | --- |
 | `useId` | Installed React supports it and a component-owned DOM relationship needs an ID | Not for list keys, data identity, cache keys, or async Server Components; multiple roots require owner-coordinated `identifierPrefix` |
 | `cache` | React Server Components are actually used | Request-scoped memoization and shared snapshots only; it is not a concurrency-correctness primitive and framework caching policy still wins |
-| `startTransition` | A non-urgent state update is appropriate | It does not create a View Transition and must not control text inputs; pending UI requires the matching transition API |
+| `startTransition` | A non-urgent state update is appropriate | Marks the update as non-blocking. Keep text input updates urgent. Use `useTransition` for pending state |
 | `<Activity>` | The installed stable React version exposes it and the component uses retained hidden UI | Hidden mode destroys Effects and later recreates them while preserving state; verify any globally scoped DOM or CSS behavior separately |
-| `<ViewTransition>` | The project already uses a React channel that exposes it | Canary/Experimental feature; requires a real `<ViewTransition>` boundary and transition-driven update, never a release-channel upgrade by default |
+| `<ViewTransition>` | Stable since React 19.3, or an earlier installed prerelease that exports it | Observe the requested animation under a participating boundary and a transition-driven update in a supporting browser |
 | Experimental taint APIs | The project already uses a compatible Experimental RSC environment | Optional defense-in-depth after authorization, DTO allowlisting, and isolation; never security closure |
 | `useMemo`, `memo`, `useCallback` | Profiling or a concrete dependency-identity need justifies them | Performance hints only; correctness must survive cache discard or re-render |
 
@@ -133,7 +133,7 @@ Validation:
 - **high** — An imported API, hook, wrapper, Storybook story, mock, typecheck, build, or green unit test can be useful substrate without proving SSR, hydration, cross-document, lifecycle, RSC, performance, or security behavior.
 - **high** — A reusable component must not silently inject a pre-hydration script or suppress a mismatch; app-shell ownership, CSP and escaping, framework support, and identical initial output must be resolved first.
 - **high** — Experimental taint APIs are optional defense-in-depth for supported RSC environments, not a substitute for server authorization, DTO allowlisting, isolation, or a security review.
-- **high** — Do not assume one global window, document, DOM id, mutable singleton, mount, or Effect setup; derive ownership from the component instance and mirror every external setup with cleanup.
+- **high** — Keep DOM ownership per instance and clean up its Effects.
 - **medium** — Use useId for component-owned DOM and accessibility relationships, not list keys, data identities, cache keys, or async Server Components.
 
 ## Policies

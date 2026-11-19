@@ -1,0 +1,501 @@
+{
+  "rawArchiveSHA256": "78aebd563ebdcb48873355ea5934c59724d5b9044d47588005352e3304ab7248",
+  "subjects": {
+    "09d936": {
+      "stage": "ab",
+      "role": "B",
+      "case": "boundary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "b8fccd1c9c7314ee2412df0b93c52f1d46585a6e8e918f3ce73381d99f360883",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "- **high** — Flag design-system drift only when an accepted design system or project convention establishes the expected component, token, or pattern; otherwise label the observation as a non-binding preference.",
+        "- **high** — Do not require search, detail, history, or another peer capability from a generic checklist; require accepted authority, and do not return no-material-findings when that authority exposes an unaddressed omission."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0,
+            1
+          ],
+          "eventSHA256": "032183865c27bf91b06defeb3b9c68d9c85d333a1f5f11b14927b3e0fddd76f2"
+        }
+      ],
+      "finalAnswerSHA256": "18d0ecd7cb69fd2d4de9fc97a591aafc38387ecd8534945f33a2dd2921e519bc",
+      "eventSHA256": "fb154c6597a82ad3c7f541640e6054cc81cbe87cf317707f5db95934bf81cc90",
+      "exit": 0
+    },
+    "ee4546": {
+      "stage": "ab",
+      "role": "A",
+      "case": "ordinary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "7a55235c62083903788578c74f26267843849f8424b3b93d21c6453398a8e324",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "- **high** — Do not turn list size, dependency presence, preload, preconnect, or render patterns into performance defects without scale or measurement evidence; report a validation risk instead."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "1c2ec81450865a0f580564e2bb86c479f305be3e0736807de7e52adb34b5c862"
+        }
+      ],
+      "finalAnswerSHA256": "2d06f3eea74c56b368da9c184d441dce0f566abb94e84641ae2e1d5d4d664d98",
+      "eventSHA256": "b517d4dcf4c9935de4230f7ac75238faf6490d5ef228bd7231430a482faf7a39",
+      "exit": 0
+    },
+    "b482ae": {
+      "stage": "ab",
+      "role": "B",
+      "case": "ordinary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "b8fccd1c9c7314ee2412df0b93c52f1d46585a6e8e918f3ce73381d99f360883",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "- **high** — Flag design-system drift only when an accepted design system or project convention establishes the expected component, token, or pattern; otherwise label the observation as a non-binding preference.",
+        "- **high** — Do not require search, detail, history, or another peer capability from a generic checklist; require accepted authority, and do not return no-material-findings when that authority exposes an unaddressed omission."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_3",
+          "attestedMarkers": [
+            0,
+            1
+          ],
+          "eventSHA256": "a432aa8a90bb6d8ce17f072f0264e111a51f82bd070e52ce40f03c54c023107d"
+        }
+      ],
+      "finalAnswerSHA256": "4bf098d513ec96f8c418dda42e6ef69488c5c674ecd1a5451a2f28701f3bf18b",
+      "eventSHA256": "1a221e8b62af0d19b55093ede428ddff43ea90531d268ee93fedd64f968e0a7d",
+      "exit": 0
+    },
+    "171d14": {
+      "stage": "ab",
+      "role": "A",
+      "case": "boundary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "7a55235c62083903788578c74f26267843849f8424b3b93d21c6453398a8e324",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "- **high** — Do not turn list size, dependency presence, preload, preconnect, or render patterns into performance defects without scale or measurement evidence; report a validation risk instead."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "1c2ec81450865a0f580564e2bb86c479f305be3e0736807de7e52adb34b5c862"
+        }
+      ],
+      "finalAnswerSHA256": "4a235b8b98a6bb6a8fa35046f63b11b69bb4cacce9a4e1b68dbbf0be42ae7a01",
+      "eventSHA256": "8bff0bfa68c684768fa4cfcc75aa27de69aa57aa2d6ad861ef418acbe92c74e2",
+      "exit": 0
+    },
+    "f54fe8": {
+      "stage": "confirm",
+      "role": "A",
+      "case": "holdout",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "7a55235c62083903788578c74f26267843849f8424b3b93d21c6453398a8e324",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "- **high** — Do not turn list size, dependency presence, preload, preconnect, or render patterns into performance defects without scale or measurement evidence; report a validation risk instead."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_6",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "e2340386fd0f4ce08cb9e155ceeef68d5a6ff04c1e92fc531bffbd1048f38108"
+        }
+      ],
+      "finalAnswerSHA256": "cdbf9bad269f8ce1bf02af99ba47ed59adcde7e103e5b1d53419a2c5be5515f1",
+      "eventSHA256": "0ea32b452b543d4be020e344bbaaca16f81f8dd9a31b41456321b4031efc356e",
+      "exit": 0
+    },
+    "65207a": {
+      "stage": "confirm",
+      "role": "C",
+      "case": "boundary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "d0fd25d0455ff97b54e0d3be7d42ed7c0d27418716396ce5f4f459617debcdf1",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "- **high** — Ground performance findings in relevant measurements."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "3b41f9fae65630cf951c5764ab9da2de243c33866a3f31249b7506e7e16acc57"
+        }
+      ],
+      "finalAnswerSHA256": "99efde7f5da72ccebf286dfab4661d49ca9b37bb34191a59350b0e4e189b9008",
+      "eventSHA256": "6d77a58c6963458b0c4352e89ba75045dea546a4d9df049982ac9561e8430c98",
+      "exit": 0
+    },
+    "ade887": {
+      "stage": "confirm",
+      "role": "C",
+      "case": "ordinary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "d0fd25d0455ff97b54e0d3be7d42ed7c0d27418716396ce5f4f459617debcdf1",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "- **high** — Ground performance findings in relevant measurements."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "78180aeb8522974a02317e9547f571707841bcb6f56643da04161e6b2586ba05"
+        }
+      ],
+      "finalAnswerSHA256": "a994bb91cabf962a5158ba68082a2245b5a1450baf7cf87d6c49ba88da8607e3",
+      "eventSHA256": "7e273e01835570f8f3bfa8ddac518da428d529f983ef36f397a2c76ae7d8e0ae",
+      "exit": 0
+    },
+    "f04413": {
+      "stage": "confirm",
+      "role": "C",
+      "case": "holdout",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "d0fd25d0455ff97b54e0d3be7d42ed7c0d27418716396ce5f4f459617debcdf1",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "- **high** — Ground performance findings in relevant measurements."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "167641c3c72733bbe42f068916a61cc3a6dc361beddccbe95697819d550b1631"
+        },
+        {
+          "id": "item_6",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "937d6e1c7fd563bcce5287478c57d973272c840c28d4fe2cc7f2ecc4f1375980"
+        }
+      ],
+      "finalAnswerSHA256": "1ea8557cc8711cda1fe3e7e944946be7bc888c8808a13bd1f3a9f3637d9ff5cd",
+      "eventSHA256": "957efcad425310797273275ba7c54850eaa98526fa867f81c84ca4de39e2ecc4",
+      "exit": 0
+    }
+  },
+  "graders": {
+    "ab": {
+      "originalReportSHA256": "946d403f3b7a309aa5a16355341836a75847b1d968ce5502d3c0c65828322468",
+      "portableReportSHA256": "f9908fdcc068e14e9ca375226ec30d6d8010cd8f98884b43977f23d5fc4d918f",
+      "eventsSHA256": "50813d3f7f54e41fda34f92cee4ce25a43fe94eeef6a4f42a6fc779ccd4bddbb",
+      "assignment": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"high\"",
+      "deliveredInputs": {
+        "criteria.md": "73a3da4091018cb1f3a3695248c834c82318c11e6a025bba79b3cb6372618bf6",
+        "171d14/app-assets.json": "b5ed24a8cf04c3c2ff0b7626618e54551692f517ab2255da616fe6a6ee2a921e",
+        "171d14/actions.json": "ed5db71d0c07c19376cf226510f4ed07ec42abe1a3ebe61fe8b39b52093ac995",
+        "171d14/observer.json": "6ebd556e23ae4892a11c9bc99a86efd38235fa010066895a6efb71f13b2506f8",
+        "171d14/answer.md": "9762eccb091a32c54954954e6fdd61549faf347de0656613c7fb8ebc9d686987",
+        "171d14/task.md": "cfa4282431ddb2da02242be5e303fa489941453795a2bdafe0250fcb75d5e439",
+        "b482ae/app-assets.json": "9fe01cc1ab0d8113c4249c8f6ae91f35bfac67d8c43b22b9f54f57401e53a6f1",
+        "b482ae/actions.json": "1d6fff13289e8737b7a965d0d48fb6d77bc3f460712c5258f6d8b7dc1bc63b33",
+        "b482ae/observer.json": "65b996a384b967d1b041c41fa6658229209daadadfe54c7812b668bf477ea846",
+        "b482ae/answer.md": "4a132914b1842138a7bb32317075d226d056e2d260d0474bb5da73d16d9e9638",
+        "b482ae/task.md": "cfa4282431ddb2da02242be5e303fa489941453795a2bdafe0250fcb75d5e439",
+        "ee4546/app-assets.json": "9fe01cc1ab0d8113c4249c8f6ae91f35bfac67d8c43b22b9f54f57401e53a6f1",
+        "ee4546/actions.json": "664f889ccd63dd09aba8bbecf027fe7cfae29c33c25a4b59f74c53b5e9566033",
+        "ee4546/observer.json": "917d71efb66514d6c4cdcd444e8774d1ca1108afba87f7c60d0b0cc2a0bda906",
+        "ee4546/answer.md": "732df678b8d6755b0d43a13948bd9fa6938e8ba3baa3c1d11e6afe17489e4778",
+        "ee4546/task.md": "cfa4282431ddb2da02242be5e303fa489941453795a2bdafe0250fcb75d5e439",
+        "09d936/app-assets.json": "b5ed24a8cf04c3c2ff0b7626618e54551692f517ab2255da616fe6a6ee2a921e",
+        "09d936/actions.json": "0d616706035c8da8524a25f48d7df5542139b4a35b6309caa20d6a73c78f9967",
+        "09d936/observer.json": "a7179dd205bc84f34c5e3cad0d3ded05105b987ffffa6b129f2d46ae6a5a3ff3",
+        "09d936/answer.md": "96edb6f8409147ce884db1ee4aa361045f2f6450b64e71bc6d51b4e011a0a5a9",
+        "09d936/task.md": "cfa4282431ddb2da02242be5e303fa489941453795a2bdafe0250fcb75d5e439",
+        "09d936/after/BROWSER.md": "24945d40a481e5503bc34bbc4edb2680cab0166cafa1695fa9981962c70a98dd",
+        "09d936/after/visit.mjs": "fbb5fd1ddcbdbce59c82021035f6f6ea7eee2989b31ce3958ea5bf7295968684",
+        "09d936/after/owner.md": "e5dcd7ccdc85e72b5bec969db2224ae5f452d94b68d4590d1c347cacac3ac508",
+        "09d936/before/BROWSER.md": "24945d40a481e5503bc34bbc4edb2680cab0166cafa1695fa9981962c70a98dd",
+        "09d936/before/visit.mjs": "fbb5fd1ddcbdbce59c82021035f6f6ea7eee2989b31ce3958ea5bf7295968684",
+        "09d936/before/owner.md": "e5dcd7ccdc85e72b5bec969db2224ae5f452d94b68d4590d1c347cacac3ac508",
+        "09d936/after/visits/fedc7cde-f544-48fd-8a28-074f1f860bbe.png": "f1677e52d31e0f9a3fac33fde9c661baa913abf9e8a26b80dabb5a2ddeae5405",
+        "09d936/after/visits/fedc7cde-f544-48fd-8a28-074f1f860bbe.json": "174323521a874c0dc9e5c10ac6e9e919e94a6ab174f64de3f247e7b7dd401519",
+        "09d936/after/visits/7db0ad0b-21c4-4999-acc8-85465de04f9f.png": "b2198c2be94868a33aa7b7a16fdecc924c87d16ecd76ebae6dcd781788dcfbd7",
+        "09d936/after/visits/7db0ad0b-21c4-4999-acc8-85465de04f9f.json": "7f7958a5fbcffd095fd62bef788ad83cc866886784fd9e9ac6e415a0b76ca624",
+        "09d936/after/visits/53c3ca06-e12e-466c-adc6-6a14c956d0e0.png": "537afdf402a9aef21f86f8d10f51ff043e517a556b83f932511aa9f1fc87e4c3",
+        "09d936/after/visits/53c3ca06-e12e-466c-adc6-6a14c956d0e0.json": "f30f81d284fc50d2058c5dc0c10f55f68ef98cb5db23d677791eb55c63532fe4",
+        "09d936/after/visits/3293436e-4d94-4aba-8632-df8480242e5f.png": "cc5d0a87c1cc41ed866d648eae7616ead83cda2085c40c280182f087b4e2ff89",
+        "09d936/after/visits/3293436e-4d94-4aba-8632-df8480242e5f.json": "a902a2d8fecd69dddfc261f71267ea5eac29d8cd0497519d04ee79520768f2a2",
+        "ee4546/after/BROWSER.md": "24945d40a481e5503bc34bbc4edb2680cab0166cafa1695fa9981962c70a98dd",
+        "ee4546/after/visit.mjs": "fbb5fd1ddcbdbce59c82021035f6f6ea7eee2989b31ce3958ea5bf7295968684",
+        "ee4546/after/owner.md": "e5dcd7ccdc85e72b5bec969db2224ae5f452d94b68d4590d1c347cacac3ac508",
+        "ee4546/before/BROWSER.md": "24945d40a481e5503bc34bbc4edb2680cab0166cafa1695fa9981962c70a98dd",
+        "ee4546/before/visit.mjs": "fbb5fd1ddcbdbce59c82021035f6f6ea7eee2989b31ce3958ea5bf7295968684",
+        "ee4546/before/owner.md": "e5dcd7ccdc85e72b5bec969db2224ae5f452d94b68d4590d1c347cacac3ac508",
+        "ee4546/after/visits/c0ec0861-ee17-40ec-b916-d9f6edb7bff5.png": "fd38d7a4ac0d514fb907e447ce456689947e39907f26ef44e687f148b2a513e7",
+        "ee4546/after/visits/c0ec0861-ee17-40ec-b916-d9f6edb7bff5.json": "0f0692e268c8dbbf729fe27937e110c8957eaa3606b6ae37da18f10f4e3071c8",
+        "ee4546/after/visits/7cef1443-1b32-485f-baff-292079239f88.png": "0c6e3f00df362e2ca222cc5a09a2fa189175979666c13fd4fd8113322e640768",
+        "ee4546/after/visits/7cef1443-1b32-485f-baff-292079239f88.json": "b1c062f57f2849f4b8b08347e264469f2243881ccc92124ee48e16b7ab08b4f3",
+        "ee4546/after/visits/558e113e-1b2c-46c7-8f2b-934141fafcc0.png": "3036523fa1d3b7c04287fc6af3ce690758358fd1da15cbf17d5e2e8e81933ba7",
+        "ee4546/after/visits/558e113e-1b2c-46c7-8f2b-934141fafcc0.json": "d011afe66a2920bc9920c3820679fb92e4483de02920ad34351afe6833b2df5d",
+        "ee4546/after/visits/48df9ee4-fcb3-4aa4-bd4d-ee9953265e96.png": "91331e409077374b075ee4af065952002f90f0bde98481060efaec256790f7d9",
+        "ee4546/after/visits/48df9ee4-fcb3-4aa4-bd4d-ee9953265e96.json": "7405ece49593de5e9222d4c275cc06897dd61c156bb339f16ef6ce2073e14579",
+        "ee4546/after/visits/2630f8bc-5ab6-4db8-93ec-10009682d754.png": "5ecddd711807beefee319eb902823779277bb92a9971d60d572e2664da63dad9",
+        "ee4546/after/visits/2630f8bc-5ab6-4db8-93ec-10009682d754.json": "5a19b1e193ca0f32974a529098286078104e597ba28d27cc91164aec249d5292",
+        "b482ae/after/BROWSER.md": "24945d40a481e5503bc34bbc4edb2680cab0166cafa1695fa9981962c70a98dd",
+        "b482ae/after/visit.mjs": "fbb5fd1ddcbdbce59c82021035f6f6ea7eee2989b31ce3958ea5bf7295968684",
+        "b482ae/after/owner.md": "e5dcd7ccdc85e72b5bec969db2224ae5f452d94b68d4590d1c347cacac3ac508",
+        "b482ae/before/BROWSER.md": "24945d40a481e5503bc34bbc4edb2680cab0166cafa1695fa9981962c70a98dd",
+        "b482ae/before/visit.mjs": "fbb5fd1ddcbdbce59c82021035f6f6ea7eee2989b31ce3958ea5bf7295968684",
+        "b482ae/before/owner.md": "e5dcd7ccdc85e72b5bec969db2224ae5f452d94b68d4590d1c347cacac3ac508",
+        "b482ae/after/visits/dba7ce67-9491-492b-a897-d5fbc2a0379f.png": "c1e55356dc0cef3f22fa1f83540a6e92e56932c14a925251d3f3fd04e0c113b8",
+        "b482ae/after/visits/dba7ce67-9491-492b-a897-d5fbc2a0379f.json": "2becc39e628e36a34bbc886f4a3589d42ce758183d94bd1aa6d1fede5d9c9a60",
+        "b482ae/after/visits/d6bad54b-0460-46c5-ab40-52355a70fde1.png": "c1e55356dc0cef3f22fa1f83540a6e92e56932c14a925251d3f3fd04e0c113b8",
+        "b482ae/after/visits/d6bad54b-0460-46c5-ab40-52355a70fde1.json": "45d5606575bbaff49ad01fd82777c628c581f0b5f8a2910fe9344894b247cb65",
+        "b482ae/after/visits/d00bcd9a-8bcd-4558-8163-544f7d805aba.png": "f303ea96af3c55d0eb448ff454f07084cd69277e5636119f889fd796f2e039a8",
+        "b482ae/after/visits/d00bcd9a-8bcd-4558-8163-544f7d805aba.json": "22aafc17540f987b70d6a261ac282715fa1cc8c983238259dbf27edfaa690eca",
+        "b482ae/after/visits/08ef26a4-03d5-42fe-8855-0b437d5f3ac7.png": "24183e0e562a04990755c04ad3efa24c128adae446f67bae7a16686c7c2a8b71",
+        "b482ae/after/visits/08ef26a4-03d5-42fe-8855-0b437d5f3ac7.json": "12dee471ba5218e50df70f33a27358018fab00fa2c8f8f8160f4ec4990b2688f",
+        "b482ae/after/visits/0358a9ce-d367-4505-b51d-ac9a3e05623c.png": "f1677e52d31e0f9a3fac33fde9c661baa913abf9e8a26b80dabb5a2ddeae5405",
+        "b482ae/after/visits/0358a9ce-d367-4505-b51d-ac9a3e05623c.json": "98020a80acdefda8474118abe2ba92e1232f44fa9a1ce6621213ee0d9b157309",
+        "171d14/after/BROWSER.md": "24945d40a481e5503bc34bbc4edb2680cab0166cafa1695fa9981962c70a98dd",
+        "171d14/after/visit.mjs": "fbb5fd1ddcbdbce59c82021035f6f6ea7eee2989b31ce3958ea5bf7295968684",
+        "171d14/after/owner.md": "e5dcd7ccdc85e72b5bec969db2224ae5f452d94b68d4590d1c347cacac3ac508",
+        "171d14/before/BROWSER.md": "24945d40a481e5503bc34bbc4edb2680cab0166cafa1695fa9981962c70a98dd",
+        "171d14/before/visit.mjs": "fbb5fd1ddcbdbce59c82021035f6f6ea7eee2989b31ce3958ea5bf7295968684",
+        "171d14/before/owner.md": "e5dcd7ccdc85e72b5bec969db2224ae5f452d94b68d4590d1c347cacac3ac508",
+        "171d14/after/visits/b5188339-bdfb-4006-bcf3-c9b7d0b81cae.png": "d75732d5afd081229fe413dbae82f56d671d7333da7f7a61901dab75c389f6c6",
+        "171d14/after/visits/b5188339-bdfb-4006-bcf3-c9b7d0b81cae.json": "132d83419867e69e30cd4e8883c64eb22234a2e8a1f2ace3a2ff122fccb2ec1b",
+        "171d14/after/visits/afcdac80-be18-4440-93b0-8ab1175ea97b.png": "58425572c0cde10ebc9302cfb2a93d8d2e3b14aa9017e5dbdc991b31f49a9bf3",
+        "171d14/after/visits/afcdac80-be18-4440-93b0-8ab1175ea97b.json": "0bf9ca229557ab3d1653c08371362a35d513a7c49db488fd782fd742a62a60ab",
+        "171d14/after/visits/865d3c7f-09b8-4a3b-a62f-13aba46de217.png": "1a03a4ede5467bf7c93889d18b1325ee8c31259e16543a472950a4d53de3538f",
+        "171d14/after/visits/865d3c7f-09b8-4a3b-a62f-13aba46de217.json": "f19026861a7434049a2f3405efe417287e40619bae8a0eb6878d4f2f3265b9be",
+        "171d14/after/visits/06cc3cc6-e1b7-4208-937d-e328fae0f1d2.png": "58425572c0cde10ebc9302cfb2a93d8d2e3b14aa9017e5dbdc991b31f49a9bf3",
+        "171d14/after/visits/06cc3cc6-e1b7-4208-937d-e328fae0f1d2.json": "094f823e66c810d593f0af81fefc843d22e5d61a1b8471792f9280f0654a1c5b"
+      },
+      "postSignMapping": [
+        {
+          "role": "B",
+          "case": "boundary",
+          "label": "09d936"
+        },
+        {
+          "role": "A",
+          "case": "ordinary",
+          "label": "ee4546"
+        },
+        {
+          "role": "B",
+          "case": "ordinary",
+          "label": "b482ae"
+        },
+        {
+          "role": "A",
+          "case": "boundary",
+          "label": "171d14"
+        }
+      ]
+    },
+    "confirm": {
+      "originalReportSHA256": "7fbc23224af6d6a64cf3888155ac42df941401b3f6e2e31e074537c8a231500d",
+      "portableReportSHA256": "3d7f3a3c62a206fa25e6bd501352a2f2ef899437e8f2ddd2839503384fa31b4f",
+      "eventsSHA256": "a52fc2207da71a2a54bf1764fa303eaec438b2d921f908cee95ffc275e9d6e5e",
+      "assignment": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"high\"",
+      "deliveredInputs": {
+        "criteria.md": "73a3da4091018cb1f3a3695248c834c82318c11e6a025bba79b3cb6372618bf6",
+        "ade887/app-assets.json": "9fe01cc1ab0d8113c4249c8f6ae91f35bfac67d8c43b22b9f54f57401e53a6f1",
+        "ade887/actions.json": "9e44b9b4c2e938bb5ae56ac985ebb7b23953c102977cb7ca6e8c95ce81f19e0f",
+        "ade887/observer.json": "a08bdf1b1d15dd65951a1945287a86d72c2d0bb4c01e29eef81b1849a7c2e2a8",
+        "ade887/answer.md": "cb228fd132db4e2b1b9f72361a562cc22bfd3fbea7f9da66f45eb52bdef72d61",
+        "ade887/task.md": "cfa4282431ddb2da02242be5e303fa489941453795a2bdafe0250fcb75d5e439",
+        "65207a/app-assets.json": "b5ed24a8cf04c3c2ff0b7626618e54551692f517ab2255da616fe6a6ee2a921e",
+        "65207a/actions.json": "99328a2cd1e11b43ebfa7f7f09b1d5baae923e5eb65b62a2f3f3dd5634e52bb4",
+        "65207a/observer.json": "4747536f02cd0a58abfec700b407d0fe275a8420e5158982870d30530e35bb2d",
+        "65207a/answer.md": "b2cf66c8848f0fe9829b944d0f98719ddf3d441862015912f5f0d53bd8dc6bbf",
+        "65207a/task.md": "cfa4282431ddb2da02242be5e303fa489941453795a2bdafe0250fcb75d5e439",
+        "74ab96/app-assets.json": "b5ed24a8cf04c3c2ff0b7626618e54551692f517ab2255da616fe6a6ee2a921e",
+        "74ab96/actions.json": "ed5db71d0c07c19376cf226510f4ed07ec42abe1a3ebe61fe8b39b52093ac995",
+        "74ab96/observer.json": "6ebd556e23ae4892a11c9bc99a86efd38235fa010066895a6efb71f13b2506f8",
+        "74ab96/answer.md": "9762eccb091a32c54954954e6fdd61549faf347de0656613c7fb8ebc9d686987",
+        "74ab96/task.md": "cfa4282431ddb2da02242be5e303fa489941453795a2bdafe0250fcb75d5e439",
+        "f54fe8/app-assets.json": "9fe01cc1ab0d8113c4249c8f6ae91f35bfac67d8c43b22b9f54f57401e53a6f1",
+        "f54fe8/actions.json": "02f0f6ef3e3d25150e7e9110cade481de1bf39ae53c6a3e9f85ec884f51392c9",
+        "f54fe8/observer.json": "899973b1f3a520f0baff51308ba41b402f551875ada988c41d604e3b1f05ea6a",
+        "f54fe8/answer.md": "65a7e53af357c45098bda40532fe90db3575a5f0642441f6ef28d2130f99c744",
+        "f54fe8/task.md": "cfa4282431ddb2da02242be5e303fa489941453795a2bdafe0250fcb75d5e439",
+        "f04413/app-assets.json": "9fe01cc1ab0d8113c4249c8f6ae91f35bfac67d8c43b22b9f54f57401e53a6f1",
+        "f04413/actions.json": "2accb4ef4f96f0bfcc7a15bf17a11b71a107bba69cc39f5a1d79ba3f88392bf6",
+        "f04413/observer.json": "c5260a56ae3d05655c0a661055808ce1195f5ad0d26dbb9e27bd21b94990332a",
+        "f04413/answer.md": "3b54f564d87beb6597a3f41589c6d26a020bac7c1be17044080b9b31159870ce",
+        "f04413/task.md": "cfa4282431ddb2da02242be5e303fa489941453795a2bdafe0250fcb75d5e439",
+        "573829/app-assets.json": "9fe01cc1ab0d8113c4249c8f6ae91f35bfac67d8c43b22b9f54f57401e53a6f1",
+        "573829/actions.json": "664f889ccd63dd09aba8bbecf027fe7cfae29c33c25a4b59f74c53b5e9566033",
+        "573829/observer.json": "917d71efb66514d6c4cdcd444e8774d1ca1108afba87f7c60d0b0cc2a0bda906",
+        "573829/answer.md": "732df678b8d6755b0d43a13948bd9fa6938e8ba3baa3c1d11e6afe17489e4778",
+        "573829/task.md": "cfa4282431ddb2da02242be5e303fa489941453795a2bdafe0250fcb75d5e439",
+        "573829/after/BROWSER.md": "24945d40a481e5503bc34bbc4edb2680cab0166cafa1695fa9981962c70a98dd",
+        "573829/after/visit.mjs": "fbb5fd1ddcbdbce59c82021035f6f6ea7eee2989b31ce3958ea5bf7295968684",
+        "573829/after/owner.md": "e5dcd7ccdc85e72b5bec969db2224ae5f452d94b68d4590d1c347cacac3ac508",
+        "573829/before/BROWSER.md": "24945d40a481e5503bc34bbc4edb2680cab0166cafa1695fa9981962c70a98dd",
+        "573829/before/visit.mjs": "fbb5fd1ddcbdbce59c82021035f6f6ea7eee2989b31ce3958ea5bf7295968684",
+        "573829/before/owner.md": "e5dcd7ccdc85e72b5bec969db2224ae5f452d94b68d4590d1c347cacac3ac508",
+        "573829/after/visits/c0ec0861-ee17-40ec-b916-d9f6edb7bff5.png": "fd38d7a4ac0d514fb907e447ce456689947e39907f26ef44e687f148b2a513e7",
+        "573829/after/visits/c0ec0861-ee17-40ec-b916-d9f6edb7bff5.json": "0f0692e268c8dbbf729fe27937e110c8957eaa3606b6ae37da18f10f4e3071c8",
+        "573829/after/visits/7cef1443-1b32-485f-baff-292079239f88.png": "0c6e3f00df362e2ca222cc5a09a2fa189175979666c13fd4fd8113322e640768",
+        "573829/after/visits/7cef1443-1b32-485f-baff-292079239f88.json": "b1c062f57f2849f4b8b08347e264469f2243881ccc92124ee48e16b7ab08b4f3",
+        "573829/after/visits/558e113e-1b2c-46c7-8f2b-934141fafcc0.png": "3036523fa1d3b7c04287fc6af3ce690758358fd1da15cbf17d5e2e8e81933ba7",
+        "573829/after/visits/558e113e-1b2c-46c7-8f2b-934141fafcc0.json": "d011afe66a2920bc9920c3820679fb92e4483de02920ad34351afe6833b2df5d",
+        "573829/after/visits/48df9ee4-fcb3-4aa4-bd4d-ee9953265e96.png": "91331e409077374b075ee4af065952002f90f0bde98481060efaec256790f7d9",
+        "573829/after/visits/48df9ee4-fcb3-4aa4-bd4d-ee9953265e96.json": "7405ece49593de5e9222d4c275cc06897dd61c156bb339f16ef6ce2073e14579",
+        "573829/after/visits/2630f8bc-5ab6-4db8-93ec-10009682d754.png": "5ecddd711807beefee319eb902823779277bb92a9971d60d572e2664da63dad9",
+        "573829/after/visits/2630f8bc-5ab6-4db8-93ec-10009682d754.json": "5a19b1e193ca0f32974a529098286078104e597ba28d27cc91164aec249d5292",
+        "f04413/after/BROWSER.md": "24945d40a481e5503bc34bbc4edb2680cab0166cafa1695fa9981962c70a98dd",
+        "f04413/after/visit.mjs": "fbb5fd1ddcbdbce59c82021035f6f6ea7eee2989b31ce3958ea5bf7295968684",
+        "f04413/after/owner.md": "26e3843c1fe2c3085dc8c571bb2946353b01055da569e9ac9c21fc816fdf98f3",
+        "f04413/after/local-measurements.json": "4d5ce6e466feab45629bb844202d81f33f23852a52d83e24f03846833ea6520b",
+        "f04413/before/BROWSER.md": "24945d40a481e5503bc34bbc4edb2680cab0166cafa1695fa9981962c70a98dd",
+        "f04413/before/visit.mjs": "fbb5fd1ddcbdbce59c82021035f6f6ea7eee2989b31ce3958ea5bf7295968684",
+        "f04413/before/owner.md": "26e3843c1fe2c3085dc8c571bb2946353b01055da569e9ac9c21fc816fdf98f3",
+        "f04413/before/local-measurements.json": "4d5ce6e466feab45629bb844202d81f33f23852a52d83e24f03846833ea6520b",
+        "f04413/after/visits/c98c8429-2cb4-44b4-a427-f926c6bb8cff.png": "a6320c8aaa574866a4ed0de57cc14482d66b15eae8052f2022712003416e347b",
+        "f04413/after/visits/c98c8429-2cb4-44b4-a427-f926c6bb8cff.json": "2441c573b9dffab3aed23bd9089554f137d629b847a0292656e0566f051fb815",
+        "f04413/after/visits/9282f7fd-dbbc-4173-8a19-69d75fb1d9b7.png": "3d2405beae87f21dffa5268c220b9453a77e8b8b5312157cf095f1ff732746c3",
+        "f04413/after/visits/9282f7fd-dbbc-4173-8a19-69d75fb1d9b7.json": "ab701075512cd9d8185ac78cf34b20c375abb2a1ccadd61d5a08f29777b016b5",
+        "f04413/after/visits/75a9c201-6c22-4aae-929b-603cc561ec94.png": "786021b59e3a39ed06e9aff893d298a7f3f8fab8525ff7dd76eec287c4feddb5",
+        "f04413/after/visits/75a9c201-6c22-4aae-929b-603cc561ec94.json": "92b99c7ba0b8dc10ac1a0a2e8b6fc821594ed44d71f32b18797d9ff7831d9733",
+        "f04413/after/visits/22e89f5c-ef2f-4c0b-b5fc-5f259519fdea.png": "c4764e1444bb2c1d933994300ca30c140b834d81777f01a6e2fc877274d162b4",
+        "f04413/after/visits/22e89f5c-ef2f-4c0b-b5fc-5f259519fdea.json": "1f58ce4e3a2e9296bcf1460826c1f4d3f4a0fab93d78f954f63e1ad54d5f093a",
+        "f54fe8/after/BROWSER.md": "24945d40a481e5503bc34bbc4edb2680cab0166cafa1695fa9981962c70a98dd",
+        "f54fe8/after/visit.mjs": "fbb5fd1ddcbdbce59c82021035f6f6ea7eee2989b31ce3958ea5bf7295968684",
+        "f54fe8/after/owner.md": "26e3843c1fe2c3085dc8c571bb2946353b01055da569e9ac9c21fc816fdf98f3",
+        "f54fe8/after/local-measurements.json": "4d5ce6e466feab45629bb844202d81f33f23852a52d83e24f03846833ea6520b",
+        "f54fe8/before/BROWSER.md": "24945d40a481e5503bc34bbc4edb2680cab0166cafa1695fa9981962c70a98dd",
+        "f54fe8/before/visit.mjs": "fbb5fd1ddcbdbce59c82021035f6f6ea7eee2989b31ce3958ea5bf7295968684",
+        "f54fe8/before/owner.md": "26e3843c1fe2c3085dc8c571bb2946353b01055da569e9ac9c21fc816fdf98f3",
+        "f54fe8/before/local-measurements.json": "4d5ce6e466feab45629bb844202d81f33f23852a52d83e24f03846833ea6520b",
+        "f54fe8/after/visits/6a3e7950-9691-4d6e-9e9d-a3428c59ec81.png": "04c7f0a0d567894b2810bd5be250a53b5f3f1cb2fdaa38f36deded3216549552",
+        "f54fe8/after/visits/6a3e7950-9691-4d6e-9e9d-a3428c59ec81.json": "c9b3d1ffb2cb6437b7bd7eed87fc5ac70fb52e27b3b86090d49bf1b40e9cce62",
+        "f54fe8/after/visits/3ea4d71b-4341-43d5-9247-1f8793f0d796.png": "2cd1e60d7984075c06d485bc532f55e4873377b19e3e2cc317ef67b79d14ceb4",
+        "f54fe8/after/visits/3ea4d71b-4341-43d5-9247-1f8793f0d796.json": "98cd5e04da1acc6843b219b9dc7512fee2f84898c7fad46f5cda4428bc05b7c7",
+        "74ab96/after/BROWSER.md": "24945d40a481e5503bc34bbc4edb2680cab0166cafa1695fa9981962c70a98dd",
+        "74ab96/after/visit.mjs": "fbb5fd1ddcbdbce59c82021035f6f6ea7eee2989b31ce3958ea5bf7295968684",
+        "74ab96/after/owner.md": "e5dcd7ccdc85e72b5bec969db2224ae5f452d94b68d4590d1c347cacac3ac508",
+        "74ab96/before/BROWSER.md": "24945d40a481e5503bc34bbc4edb2680cab0166cafa1695fa9981962c70a98dd",
+        "74ab96/before/visit.mjs": "fbb5fd1ddcbdbce59c82021035f6f6ea7eee2989b31ce3958ea5bf7295968684",
+        "74ab96/before/owner.md": "e5dcd7ccdc85e72b5bec969db2224ae5f452d94b68d4590d1c347cacac3ac508",
+        "74ab96/after/visits/b5188339-bdfb-4006-bcf3-c9b7d0b81cae.png": "d75732d5afd081229fe413dbae82f56d671d7333da7f7a61901dab75c389f6c6",
+        "74ab96/after/visits/b5188339-bdfb-4006-bcf3-c9b7d0b81cae.json": "132d83419867e69e30cd4e8883c64eb22234a2e8a1f2ace3a2ff122fccb2ec1b",
+        "74ab96/after/visits/afcdac80-be18-4440-93b0-8ab1175ea97b.png": "58425572c0cde10ebc9302cfb2a93d8d2e3b14aa9017e5dbdc991b31f49a9bf3",
+        "74ab96/after/visits/afcdac80-be18-4440-93b0-8ab1175ea97b.json": "0bf9ca229557ab3d1653c08371362a35d513a7c49db488fd782fd742a62a60ab",
+        "74ab96/after/visits/865d3c7f-09b8-4a3b-a62f-13aba46de217.png": "1a03a4ede5467bf7c93889d18b1325ee8c31259e16543a472950a4d53de3538f",
+        "74ab96/after/visits/865d3c7f-09b8-4a3b-a62f-13aba46de217.json": "f19026861a7434049a2f3405efe417287e40619bae8a0eb6878d4f2f3265b9be",
+        "74ab96/after/visits/06cc3cc6-e1b7-4208-937d-e328fae0f1d2.png": "58425572c0cde10ebc9302cfb2a93d8d2e3b14aa9017e5dbdc991b31f49a9bf3",
+        "74ab96/after/visits/06cc3cc6-e1b7-4208-937d-e328fae0f1d2.json": "094f823e66c810d593f0af81fefc843d22e5d61a1b8471792f9280f0654a1c5b",
+        "65207a/after/BROWSER.md": "24945d40a481e5503bc34bbc4edb2680cab0166cafa1695fa9981962c70a98dd",
+        "65207a/after/visit.mjs": "fbb5fd1ddcbdbce59c82021035f6f6ea7eee2989b31ce3958ea5bf7295968684",
+        "65207a/after/owner.md": "e5dcd7ccdc85e72b5bec969db2224ae5f452d94b68d4590d1c347cacac3ac508",
+        "65207a/before/BROWSER.md": "24945d40a481e5503bc34bbc4edb2680cab0166cafa1695fa9981962c70a98dd",
+        "65207a/before/visit.mjs": "fbb5fd1ddcbdbce59c82021035f6f6ea7eee2989b31ce3958ea5bf7295968684",
+        "65207a/before/owner.md": "e5dcd7ccdc85e72b5bec969db2224ae5f452d94b68d4590d1c347cacac3ac508",
+        "65207a/after/visits/fee615b8-3f8f-4bbe-a2a1-bce4526ca63f.png": "1a03a4ede5467bf7c93889d18b1325ee8c31259e16543a472950a4d53de3538f",
+        "65207a/after/visits/fee615b8-3f8f-4bbe-a2a1-bce4526ca63f.json": "f19026861a7434049a2f3405efe417287e40619bae8a0eb6878d4f2f3265b9be",
+        "65207a/after/visits/a1f7c0ae-c573-4e35-a7e1-cd5d8a519f42.png": "c8b909fcc588caca21e48b5b06d020a67afe90d60d537db0de5d999e74b9f339",
+        "65207a/after/visits/a1f7c0ae-c573-4e35-a7e1-cd5d8a519f42.json": "bb978529883cddd7d859a29cd24bcaf102bdb974e14652044814bef107bdb112",
+        "65207a/after/visits/8c310779-9cd9-4f15-812c-2a7484cda695.png": "91331e409077374b075ee4af065952002f90f0bde98481060efaec256790f7d9",
+        "65207a/after/visits/8c310779-9cd9-4f15-812c-2a7484cda695.json": "982e2333a5ca7d93b62b19584693f5540f9bac94dda184a9ebeed466d64d85cc",
+        "65207a/after/visits/8269a72e-3f3d-478d-958b-61f73334d122.png": "58425572c0cde10ebc9302cfb2a93d8d2e3b14aa9017e5dbdc991b31f49a9bf3",
+        "65207a/after/visits/8269a72e-3f3d-478d-958b-61f73334d122.json": "cb604d501a10c3fe8b7c0db7faf02a423fddf7daec097876c7643238980f2888",
+        "65207a/after/visits/7db37946-e39b-4bca-81c2-f2f594585b06.png": "58425572c0cde10ebc9302cfb2a93d8d2e3b14aa9017e5dbdc991b31f49a9bf3",
+        "65207a/after/visits/7db37946-e39b-4bca-81c2-f2f594585b06.json": "a779eb8558087d8ada91d2e7751b8f5efb977c5508b7799bc6b1e13806bcdc16",
+        "ade887/after/BROWSER.md": "24945d40a481e5503bc34bbc4edb2680cab0166cafa1695fa9981962c70a98dd",
+        "ade887/after/visit.mjs": "fbb5fd1ddcbdbce59c82021035f6f6ea7eee2989b31ce3958ea5bf7295968684",
+        "ade887/after/owner.md": "e5dcd7ccdc85e72b5bec969db2224ae5f452d94b68d4590d1c347cacac3ac508",
+        "ade887/before/BROWSER.md": "24945d40a481e5503bc34bbc4edb2680cab0166cafa1695fa9981962c70a98dd",
+        "ade887/before/visit.mjs": "fbb5fd1ddcbdbce59c82021035f6f6ea7eee2989b31ce3958ea5bf7295968684",
+        "ade887/before/owner.md": "e5dcd7ccdc85e72b5bec969db2224ae5f452d94b68d4590d1c347cacac3ac508",
+        "ade887/after/visits/aa1febc2-c5d9-4f31-959f-4ea67b8b940e.png": "5ecddd711807beefee319eb902823779277bb92a9971d60d572e2664da63dad9",
+        "ade887/after/visits/aa1febc2-c5d9-4f31-959f-4ea67b8b940e.json": "16816490b6f9d8c0fb7a69de301c351b15d6640450a725315e5854f5705ec07c",
+        "ade887/after/visits/9bfd0760-7788-41bb-9b09-ba765a3afabe.png": "fd38d7a4ac0d514fb907e447ce456689947e39907f26ef44e687f148b2a513e7",
+        "ade887/after/visits/9bfd0760-7788-41bb-9b09-ba765a3afabe.json": "85fdaf352ceeb7eceb264bca8f6b54cb4864860be02d8c6775055399b722bd5b",
+        "ade887/after/visits/8ba7653e-aa5a-4cec-8347-30b3873784bb.png": "fd38d7a4ac0d514fb907e447ce456689947e39907f26ef44e687f148b2a513e7",
+        "ade887/after/visits/8ba7653e-aa5a-4cec-8347-30b3873784bb.json": "d6018192c64381729b1caa273625eaa6bd6bb00d6bf58ff4aca280451bc1c20e",
+        "ade887/after/visits/20e27174-cbde-4449-938d-65605ff1b31c.png": "f1677e52d31e0f9a3fac33fde9c661baa913abf9e8a26b80dabb5a2ddeae5405",
+        "ade887/after/visits/20e27174-cbde-4449-938d-65605ff1b31c.json": "98020a80acdefda8474118abe2ba92e1232f44fa9a1ce6621213ee0d9b157309"
+      },
+      "postSignMapping": [
+        {
+          "role": "A",
+          "case": "ordinary",
+          "label": "573829",
+          "original_label": "ee4546"
+        },
+        {
+          "role": "C",
+          "case": "holdout",
+          "label": "f04413"
+        },
+        {
+          "role": "A",
+          "case": "holdout",
+          "label": "f54fe8"
+        },
+        {
+          "role": "A",
+          "case": "boundary",
+          "label": "74ab96",
+          "original_label": "171d14"
+        },
+        {
+          "role": "C",
+          "case": "boundary",
+          "label": "65207a"
+        },
+        {
+          "role": "C",
+          "case": "ordinary",
+          "label": "ade887"
+        }
+      ]
+    }
+  },
+  "limits": "Fresh ephemeral task workspaces with memories disabled. Shared host-level read access remained technically possible. DirectTextObserved records relevant text returned in a recorded tool result; targeted manual examination remains necessary when false."
+}

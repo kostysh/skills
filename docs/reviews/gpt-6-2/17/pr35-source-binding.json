@@ -1,0 +1,92 @@
+{
+  "sourceArchive": "review-sources.tar.gz",
+  "sourceSha256": "bf518e717f90dc53b4ec5be465b172994aa4e12b9f81367976cb5ea6e20c851b",
+  "fullIndexGitDiffSha256": "cb3a4086eed50a629b8c845610b69d37fb615d37e72a8e981ac04162891eaf5f",
+  "previousOutputs": {
+    "git-facts.json": "14531715d8c1b6735c51183bc5f7703d1d5dbfaf929985731f5c0eda9010ecf0",
+    "github-check.json": "dd571697ed622847b21cc808ed9c517d9d17f3ec6453459cb53a17c81555485d"
+  },
+  "commitsAndChangedBlobs": {
+    "changed": [
+      "cli/docs/implementation-log-20261023-1.md",
+      "cli/package.json",
+      "cli/src/prompts.ts",
+      "cli/test/prompts.test.ts"
+    ],
+    "source": {
+      "before": {
+        "commit": "7334a504b55ab3f8416147f1cc639882a603d0cc",
+        "paths": 25,
+        "fileBlobs": {
+          "cli/docs/implementation-log-20261023-1.md": "697af872d6b75ac994aaa4c2443ea04a96501a30",
+          "cli/package.json": "274ff591cfb817d8c4fd8402c91b5b3615822f9e",
+          "cli/src/prompts.ts": "48773480ea9b4e2b1afc5afe3f2410e3d0e597df",
+          "cli/test/prompts.test.ts": "41b5f04187750ad5790f09e871e03b9a4c67a836"
+        }
+      },
+      "after": {
+        "commit": "f6b1de1cb42ab8c2107ef999bbde5ea3607dd448",
+        "paths": 25,
+        "fileBlobs": {
+          "cli/docs/implementation-log-20261023-1.md": "da6967901bd895a9ad3cc238eb5d4c6ae5c72aba",
+          "cli/package.json": "b7857e841c3c180c1cce461035538dcf5f35dfd6",
+          "cli/src/prompts.ts": "85b3e56811fde2424564e00c3c34a09f9fd0fdd1",
+          "cli/test/prompts.test.ts": "4ef6140aaba06d82368ad040dd7b2674733a4c0b"
+        }
+      }
+    }
+  },
+  "lockfileSha256": "937a5d54fc9fa6b2dc77c468a16c374c8811f77fb7801ed6879a2907eec8b16c",
+  "subjectDependencyArchive": {
+    "sha256": "bb8db15a41e65d3dd94e6144e85384233a5b02a6fab689790b63952dc15d2285",
+    "bytes": 1513340,
+    "versions": {
+      "@inquirer/ansi": "2.0.9",
+      "@inquirer/checkbox": "5.2.7",
+      "@inquirer/confirm": "6.3.4",
+      "@inquirer/core": "12.0.5",
+      "@inquirer/editor": "5.3.5",
+      "@inquirer/expand": "5.1.7",
+      "@inquirer/external-editor": "3.0.6",
+      "@inquirer/figures": "2.0.9",
+      "@inquirer/input": "5.1.8",
+      "@inquirer/number": "4.2.5",
+      "@inquirer/password": "5.2.4",
+      "@inquirer/prompts": "8.7.4",
+      "@inquirer/rawlist": "5.3.7",
+      "@inquirer/search": "4.3.5",
+      "@inquirer/select": "5.2.7",
+      "@inquirer/testing": "3.3.15",
+      "@inquirer/type": "4.2.0",
+      "@xterm/headless": "6.0.0",
+      "chardet": "2.2.0",
+      "cli-width": "4.1.0",
+      "fast-string-truncated-width": "3.0.3",
+      "fast-string-width": "3.0.2",
+      "fast-wrap-ansi": "0.2.2",
+      "iconv-lite": "0.7.3",
+      "mute-stream": "3.0.0",
+      "safer-buffer": "2.1.2",
+      "semver": "7.7.4",
+      "signal-exit": "4.1.0",
+      "zod": "4.3.6"
+    }
+  },
+  "subjectTaskSha256": "d160f299d6f7e3779e9aa0f68f92d0ed0d7f4b1be35806e393f47a5609673d47",
+  "environmentNote": "Для работы без сети приложен архив test-dependencies.tar.gz. Он содержит обычный каталог node_modules с зависимостями модулей CLI и его тестов интерактивных запросов из переданного lockfile. При необходимости распакуйте его рядом с cli/ в расходной копии снимка. Среда Linux/Node 24. Сетевой доступ и установка пакетов для проверки не требуются.\n",
+  "beforeAfterMatchedOriginalGitObjects": true,
+  "predecessors": {
+    "07": {
+      "commit": "4568a98ba2310e17e2f9b1c4c0dbf1a09b3fa407",
+      "original": "docs/reviews/gpt-6-2/07/pr35-facts.json",
+      "asSupplied": "review/git-facts.json",
+      "sha256": "14531715d8c1b6735c51183bc5f7703d1d5dbfaf929985731f5c0eda9010ecf0"
+    },
+    "08": {
+      "commit": "8df5ea79cd24aca8743ee487ff20a7e42229099d",
+      "original": "docs/reviews/gpt-6-2/08/pr35-git-github-handoff.json",
+      "asSupplied": "review/github-check.json",
+      "sha256": "dd571697ed622847b21cc808ed9c517d9d17f3ec6453459cb53a17c81555485d"
+    }
+  }
+}

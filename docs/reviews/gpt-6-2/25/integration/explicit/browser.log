@@ -1,0 +1,9 @@
+API server: {"origin":"http://127.0.0.1:35907"}
+API server: {"method":"GET","path":"/api/notification-settings","status":200,"body":null}
+{"event":"environment","browser":"158.0.8127.36","viewport":{"width":390,"height":844},"url":"http://127.0.0.1:35907/settings/notifications"}
+API server: {"method":"GET","path":"/api/notification-settings","status":200,"body":null}
+{"event":"reload","initial":"","draft":"notification-review@example.test","activated":true,"dialogTypes":[],"staySelected":false,"reloadStatus":200,"navigationType":"reload","after":"","passed":false}
+{"event":"pending","button":{"tag":"BUTTON","text":"Applying…","disabled":true,"ariaBusy":null},"responseReceived":false,"passed":false}
+API server: {"method":"PUT","path":"/api/notification-settings","status":204}
+API server: {"method":"GET","path":"/api/notification-settings","status":200,"body":{"email":"notification-review@example.test","enabled":true,"frequency":"daily"}}
+{"event":"completed","putStatus":204,"displayedEmail":"notification-review@example.test"}

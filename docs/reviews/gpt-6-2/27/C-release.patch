@@ -1,0 +1,69 @@
+--- c/SKILL.md
++++ release/SKILL.md
+@@ -9 +9 @@
+-  source-version: 0.1.2
++  source-version: 0.1.3
+@@ -11 +11 @@
+-  skillforge-source-hash: 86ddf3f6b0f0e6b9ed0bfa7b71936d02aa7e3899c20f9f6dfdb22808fb09bc9b
++  skillforge-source-hash: 58123eb336446547b40df84644fe3d30ac2d5815b829e22f5517428aee815feb
+@@ -44 +44 @@
+-For an existing project, installed versions and version-matched official APIs determine compatibility; do not upgrade just to follow a current example. Next.js 16 requires Node.js >=20.9 and TypeScript >=5.1, but a new deployment should use a compatible supported Node LTS (Node 24 LTS at the 2026-09-09 source check). Next.js 15 remains an existing-project branch. Next-managed React integration is not permission to install standalone React prereleases.
++Check the installed Next.js version and its public APIs before applying a current example. Next.js 16 requires Node.js >=20.9 and TypeScript >=5.1 when using TypeScript. Choose a supported Node LTS that also satisfies the deployment target and installed integrations. Preserve the project’s Next.js 15 and React versions unless the task authorizes migration.
+@@ -129 +129 @@
+-1. Verify each claimed outcome. For interactive routes, report the server response and the hydrated interaction.
++1. Verify each claimed outcome. When first-load acceptance covers server-rendered content and interactivity, state in the final answer which expected content the original HTTP HTML contained or lacked and what the hydrated control did.
+@@ -181 +181 @@
+-- [Directives](references/directives.md) — Read this when applying 'use client', 'use server', or 'use cache'.
++- [Directives](references/directives.md) — Read this when applying 'use client', 'use server', 'use cache', or the Cache Components configuration.
+--- c/references/bundling.md
++++ release/references/bundling.md
+@@ -131 +131 @@
+-Analyze bundle size with the built-in analyzer (Next.js 16.1+):
++Check the installed Next CLI help. Next.js 16.4 exposes the Turbopack analyzer as `next analyze`. Earlier 16.x versions may expose it as `next experimental-analyze` (introduced in 16.1).
+@@ -134 +134 @@
+-next experimental-analyze
++next analyze
+@@ -145 +145 @@
+-next experimental-analyze --output
++next analyze --output
+--- c/references/data-patterns.md
++++ release/references/data-patterns.md
+@@ -122 +122 @@
+-// Next 15+ GET handlers are not cached by default; opt in deliberately
++// This handler reads the actor from the incoming request.
+--- c/references/directives.md
++++ release/references/directives.md
+@@ -69 +69 @@
+-Requires `cacheComponents: true` in `next.config.ts`.
++Check the effective `next.config`. In 16.4, `create-next-app` enables Cache Components for new apps. Existing 16.x apps retain their configured mode. When adopting the 16.4 model, set `cacheComponents: true` and `partialPrefetching: true`. An app migrating from the earlier Cache Components model can explicitly set the latter to `false` during migration. [Next.js 16.4](https://nextjs.org/blog/next-16-4) · [Configuration](https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheComponents)
+@@ -71 +71 @@
+-Cache Components is an opt-in stable Next 16 model, not an automatic migration for Next 15 or legacy caching. Read cookies/headers and other request-time APIs outside a cached scope and pass permitted values explicitly; do not share user-private data through public cache keys. Use `cacheLife`/`cacheTag` from `next/cache` to establish lifetime/tags. [Data Patterns](data-patterns.md) owns mutation freshness and `updateTag` versus `revalidateTag`; an unavailable optional cache specialist does not block this local method.
++For ordinary `'use cache'`, read request-time values such as cookies and headers outside the cached scope. Pass only values appropriate for its caching and access policy. Use `cacheLife` and `cacheTag` from `next/cache` for lifetime and tags. [Data Patterns](data-patterns.md) covers mutation freshness.
+--- c/references/functions.md
++++ release/references/functions.md
+@@ -24 +24 @@
+-| `cookies` | Read/write cookies | [Docs](https://nextjs.org/docs/app/api-reference/functions/cookies) |
++| `cookies` | Read incoming cookies in Server Components. Write outgoing cookies in Server Functions or Route Handlers | [Docs](https://nextjs.org/docs/app/api-reference/functions/cookies) |
+--- c/references/route-handlers.md
++++ release/references/route-handlers.md
+@@ -5 +5,3 @@
+-GET caching is opt-in in Next 15+. Each protected handler validates input and independently authenticates/authorizes the request; a page or Proxy check is insufficient. The app-owned `getAuthorizedUsers`, `createAuthorizedUser` and `getAuthorizedUser` below must implement that contract (including field/ownership checks), with expected failures mapped to the project HTTP status contract. See [Data Patterns](data-patterns.md).
++Inspect the cache mode for GET handlers. With the previous Next 15/16 model, GET caching is opt-in. With Cache Components enabled, Next.js can prerender a handler whose response uses only static or cached data. Request-time data keeps the response dynamic. [Route Handler caching](https://nextjs.org/docs/app/getting-started/route-handlers#with-cache-components)
++
++Each protected handler validates input and independently authenticates/authorizes the request; a page or Proxy check is insufficient. The app-owned `getAuthorizedUsers`, `createAuthorizedUser` and `getAuthorizedUser` below must implement that contract (including field/ownership checks), with expected failures mapped to the project HTTP status contract. See [Data Patterns](data-patterns.md).
+@@ -94,0 +97,2 @@
++import { cookies } from 'next/headers'
++
+--- c/references/runtime-selection.md
++++ release/references/runtime-selection.md
+@@ -5 +5 @@
+-Use the default Node.js runtime for new routes and pages. Only use Edge runtime if the project already uses it or there's a specific requirement.
++Check the app’s Cache Components configuration first. With Cache Components enabled on Next.js 16, use the implicit Node.js runtime and omit the segment’s `runtime` export, including `'nodejs'`. For other configurations, use the default Node.js runtime unless the project requires and supports Edge. [Cache Components configuration](https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheComponents)
+@@ -11 +11 @@
+-// Caution: Only if already used in project or specifically required
++// Only for a supported Edge route with Cache Components disabled
+--- c/references/self-hosting.md
++++ release/references/self-hosting.md
+@@ -148 +148 @@
+-All instances need coherent invalidation, compatible cache namespaces/build identity and consistent Server Action encryption keys where used. Sharing stored values alone cannot guarantee freshness. See the version-matched [cacheHandler API](https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheHandler) and [self-hosting guide](https://nextjs.org/docs/app/guides/self-hosting).
++All instances need coherent invalidation, compatible cache namespaces/build identity and consistent Server Action encryption keys where used. Sharing stored values alone cannot guarantee freshness. See the version-matched [cacheHandler API](https://nextjs.org/docs/app/api-reference/config/next-config-js/incrementalCacheHandlerPath) and [self-hosting guide](https://nextjs.org/docs/app/guides/self-hosting).

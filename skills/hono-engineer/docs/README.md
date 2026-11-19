@@ -18,6 +18,7 @@
 
 | Log | Related issue | Status |
 | --- | --- | --- |
+| [logs/implementation-log-20261119-1.md](logs/implementation-log-20261119-1.md) | Ревизия GPT‑6.2, строка 28 | Версия 0.1.10 передана на независимый аудит |
 | [logs/implementation-log-20260611-1.md](logs/implementation-log-20260611-1.md) | Direct operator request | PASS |
 | [logs/implementation-log-20260612-1.md](logs/implementation-log-20260612-1.md) | Direct operator request | PASS |
 | [logs/implementation-log-20260708-1.md](logs/implementation-log-20260708-1.md) | Direct operator request | PASS |

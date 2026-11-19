@@ -1,0 +1,74 @@
+{
+  "previousPublishedTag": "skills-20261107-2",
+  "previousArchive": {
+    "sha256": "cdb0f944d4354ef3809f725983521c080d4efff5103060b1c54eb4cfe7e37e6d",
+    "files": {
+      "SKILL.md": "8b6cbe076ff9d7a8ae0a2efaffe5de451299a08c565d9c4d409d71f334775dee",
+      "agents/openai.yaml": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+      "references/anti-patterns.md": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+      "references/strategy-to-implementation.md": "ef884923fbb5e95e646700be7dfbfaae760b45390530248e558a937c9c1b45c1",
+      "references/surface-modes.md": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+      "references/visual-engines.md": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7"
+    }
+  },
+  "fixedPackagingBaseline": {
+    "sha256": "815e6dea89344a9e0b08cc46173db651a03c8af2a25e71475a712020a4461468",
+    "files": {
+      "LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "SKILL.md": "8b6cbe076ff9d7a8ae0a2efaffe5de451299a08c565d9c4d409d71f334775dee",
+      "agents/openai.yaml": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+      "references/anti-patterns.md": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+      "references/strategy-to-implementation.md": "ef884923fbb5e95e646700be7dfbfaae760b45390530248e558a937c9c1b45c1",
+      "references/surface-modes.md": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+      "references/visual-engines.md": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7"
+    }
+  },
+  "release": {
+    "archive": "frontend-design-0.2.5.tgz",
+    "sha256": "ae0f50652bf114c53a0389d44765d49d629ba3252184a007674691678ee8c1bb",
+    "contentHash": "c061fe6a881333bb4fb465fe57d58b4015adea417655a941af1ffd213045dbab",
+    "files": {
+      "LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "SKILL.md": "552ce76e43bebf7fbb307b9750f25df2fc68b0303518a52bd12ba384b7a65fff",
+      "agents/openai.yaml": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+      "references/anti-patterns.md": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+      "references/strategy-to-implementation.md": "ef884923fbb5e95e646700be7dfbfaae760b45390530248e558a937c9c1b45c1",
+      "references/surface-modes.md": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+      "references/visual-engines.md": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7"
+    },
+    "secondArchiveSameBytes": true
+  },
+  "structuralChecks": [
+    "compiler lint source: OK",
+    "compiler regenerate source: OK",
+    "compiler check source: OK",
+    "isolated compile + check: OK",
+    "pack:skills from isolated source and compiled root with prior catalog: identical",
+    "unpack then reopen four runtime references: OK",
+    "declared maintenance log opens from compiled docs/README.md: OK",
+    "skill-creator quick_validate.py on the unpacked actual release: Skill is valid!"
+  ],
+  "controlledCSkillVsRelease": "source-version and skillforge-source-hash only",
+  "patchReplay": {
+    "A-B": true,
+    "A-C": true,
+    "B-C": true,
+    "C-Release": true
+  },
+  "licenseMatchesSource": true,
+  "entryBytes": 19831,
+  "declaredBudgetBytes": 20000,
+  "activeLinks": [
+    "references/surface-modes.md",
+    "references/visual-engines.md",
+    "references/strategy-to-implementation.md",
+    "references/anti-patterns.md"
+  ],
+  "packagedCompilerCheck": {
+    "target": "runtime archive unpacked in a directory named frontend-design",
+    "exit": 1,
+    "diagnostic": "missing-compile-report",
+    "reason": "pack:skills excludes maintenance docs/. Compiler check passes on the complete isolated compile. quick_validate, four runtime reference readbacks, content SHA and LICENSE verify the end-user archive."
+  },
+  "finalSupportingLog": "Compiled final log after final scores and checked parity; packaging the final compiled folder again retained the published SHA."
+}

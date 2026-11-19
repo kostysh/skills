@@ -1,0 +1,43 @@
+{
+  "utc": "2026-11-18T20:00:30.565964+00:00",
+  "cwd": "disposable directory outside all Git checkouts",
+  "commands": [
+    {
+      "argv": [
+        "gh",
+        "pr",
+        "checks",
+        "35",
+        "--json",
+        "name,state,bucket,workflow,event",
+        "--jq",
+        "group_by(.event)|map({event:.[0].event,count:length,buckets:(map(.bucket)|unique)})"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": "failed to run git: fatal: not a git repository (or any parent up to mount point /)\nStopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).\n\n"
+    },
+    {
+      "argv": [
+        "gh",
+        "pr",
+        "checks",
+        "35",
+        "--repo",
+        "github.com/kostysh/skills",
+        "--json",
+        "name,state,bucket,workflow,event",
+        "--jq",
+        "group_by(.event)|map({event:.[0].event,count:length,buckets:(map(.bucket)|unique)})"
+      ],
+      "exit": 0,
+      "stdout": "[{\"buckets\":[\"pass\"],\"count\":4,\"event\":\"pull_request\"},{\"buckets\":[\"pass\"],\"count\":4,\"event\":\"push\"}]\n",
+      "stderr": ""
+    }
+  ],
+  "frozen_task_sha256": {
+    "case.md": "6d991e1d315fcf0bf5b024ed6cd1c6d1836deb75503ff451c4f506ae2ceff6b2",
+    "fixture/handoff.md": "1a5291ca06fb7fc79a48a3681b38792680b59b1d6829df0f3b8f0473323a2341",
+    "rubric.md": "b8a48d38242f5d78493b311ae63705258def514c4bb867df825223f7aaedc651"
+  }
+}

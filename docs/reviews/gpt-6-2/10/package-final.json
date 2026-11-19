@@ -1,0 +1,36 @@
+{
+  "candidate_version": "0.2.7",
+  "previous_observed": "0.2.6",
+  "archive": "agent-browser-0.2.7.tgz",
+  "stored_as": "agent-browser-0.2.7.tar.gz",
+  "archive_sha256": "98a91802fb72376a3136ba813679cd9ee23110661ec6c099607d534589655064",
+  "contentHash": "f98f6324afe5812bbea5369f5a890dbb748c97b8fa392e8c9461dd0686c05252",
+  "bytes": 5665,
+  "files": {
+    "SKILL.md": {
+      "sha256": "11ac1d911f4439ef0ef335d3c8ceff4bd76e4ae5b3da81da52833b868bd4120b",
+      "bytes": 10463,
+      "mode": "0644"
+    },
+    "references/cloudflare-access-otp.md": {
+      "sha256": "0e41b39ee811661c01e02fd2d37a903cc088188385a675282fb6c442c023a9fc",
+      "bytes": 4314,
+      "mode": "0644"
+    },
+    "agents/openai.yaml": {
+      "sha256": "d430788f44a61bd7b9fc12b11e57f7230eb5020fc50af605563aa13f14b4b798",
+      "bytes": 115,
+      "mode": "0644"
+    }
+  },
+  "checks": [
+    "compiler lint",
+    "regenerate",
+    "compiler check",
+    "out-of-place compile",
+    "version history checked against 0.2.6",
+    "3 runtime files byte-identical in archive, source and separate output",
+    "supporting navigation, log, compile report byte-identical in separate output",
+    "all six control/release patches replayed"
+  ]
+}

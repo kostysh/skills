@@ -1,0 +1,87 @@
+{
+  "ordinary": {
+    "sourcePage": "/",
+    "link": "Current shift manual 2.0",
+    "href": "/handbook/2.0/desk/",
+    "homeSha256": "197360fda0ebd1e2c4dcff8babdc9a02463d42d7d02a4badaa528572ca578bbc",
+    "response": 200,
+    "documentSha256": "e8e539e8c4dbc1522bbbd7828b0310e53e94ac012aebc0c3cc7a6743591f7e6c",
+    "docCommands": "npm install --offline --ignore-scripts --no-audit --no-fund ./engineering-tally-fixture-1.1.0.tgz./node_modules/.bin/tally sum 2 3 --machine./node_modules/.bin/tally sum bad --machine{\"sum\":5}Number expected",
+    "reader": {
+      "--machine": [
+        {
+          "exit": 0,
+          "stdout": "{\"sum\":5}\n",
+          "stderr": ""
+        },
+        {
+          "exit": 2,
+          "stdout": "",
+          "stderr": "Number expected\n"
+        }
+      ]
+    },
+    "cliSha256": "b67a76bc3dd46c43e26070c0dee7841942ffe20e853b08e37774a751fa4600e5"
+  },
+  "boundary": {
+    "sourcePage": "/",
+    "link": "Archived shift manual 1.0",
+    "href": "/handbook/2.0/desk/",
+    "homeSha256": "197360fda0ebd1e2c4dcff8babdc9a02463d42d7d02a4badaa528572ca578bbc",
+    "response": 200,
+    "documentSha256": "e8e539e8c4dbc1522bbbd7828b0310e53e94ac012aebc0c3cc7a6743591f7e6c",
+    "docCommands": "npm install --offline --ignore-scripts --no-audit --no-fund ./engineering-tally-fixture-1.1.0.tgz./node_modules/.bin/tally sum 2 3 --machine./node_modules/.bin/tally sum bad --machine{\"sum\":5}Number expected",
+    "reader": {
+      "availableAlternate": "/handbook/1.0/desk/",
+      "--machine": [
+        {
+          "exit": 2,
+          "stdout": "",
+          "stderr": "Invalid number\n"
+        },
+        {
+          "exit": 2,
+          "stdout": "",
+          "stderr": "Invalid number\n"
+        }
+      ],
+      "--json": [
+        {
+          "exit": 0,
+          "stdout": "{\"total\":5}\n",
+          "stderr": ""
+        },
+        {
+          "exit": 2,
+          "stdout": "",
+          "stderr": "Invalid number\n"
+        }
+      ]
+    },
+    "cliSha256": "43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b"
+  },
+  "holdout": {
+    "sourcePage": "/it/",
+    "link": "Manuale del turno 2.0",
+    "href": "/it/handbook/2.0/desk/",
+    "homeSha256": "003bef49dff394e798aaee915c6001843384d5e6ae2d302ad74176df1ce0e725",
+    "response": 200,
+    "documentSha256": "9eb51fc5b78ecdf5d0ee33d70dff8de49eecf4990b059c3544daeb94f057b740",
+    "docCommands": "npm install --offline --ignore-scripts --no-audit --no-fund ./engineering-tally-fixture-1.1.0.tgz./node_modules/.bin/tally sum 2 3 --machine./node_modules/.bin/tally sum bad --machine{\"sum\":5}Number expected",
+    "reader": {
+      "--machine": [
+        {
+          "exit": 0,
+          "stdout": "{\"sum\":5}\n",
+          "stderr": ""
+        },
+        {
+          "exit": 2,
+          "stdout": "",
+          "stderr": "Number expected\n"
+        }
+      ]
+    },
+    "cliSha256": "b67a76bc3dd46c43e26070c0dee7841942ffe20e853b08e37774a751fa4600e5"
+  }
+}

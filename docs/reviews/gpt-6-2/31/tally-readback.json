@@ -1,0 +1,34 @@
+{
+  "method": "Author read-only HTTP check and comparison to the separately assessed fresh reader.",
+  "site": "Docusaurus 3.10.2 ru; frozen server",
+  "HTTP": {
+    "home": {
+      "href": "/",
+      "status": 200,
+      "sha256": "8670fc8dc7bf5897ccb358c296424f7d1146ead3792995b8cafc2a667aaed772"
+    },
+    "guide": {
+      "href": "/spravochnik/guide/",
+      "status": 200,
+      "sha256": "23317a58869c64c62d89f62d181262e8c9b0b2e937c1ffd980ecf716117a7e37"
+    },
+    "intake": {
+      "href": "/spravochnik/desk-intake/",
+      "status": 200,
+      "sha256": "876203f59d67a30aaa7fa8d8cab5f10c88ab60b406c46f4ca8552be1379f3450"
+    },
+    "download": {
+      "href": "/downloads/engineering-tally-fixture-1.0.0.tar.gz",
+      "status": 200,
+      "sha256": "7c9f8bff28fee4cb4acd9dfec592b15e688cf040990a001d66a8d1ba73bce0cc"
+    }
+  },
+  "sourceFileSHA256": {
+    "docs/guide.md": "03863912c0990e634dab36d3dac8b870397dca00ce5254e213a7e8e4d6caaf12",
+    "docs/desk-intake.md": "281c52f6e86b0a7a5dfeac0b80997357dc9565ef2a600b5cbd0b986bb4538386",
+    "static/downloads/engineering-tally-fixture-1.0.0.tar.gz": "7c9f8bff28fee4cb4acd9dfec592b15e688cf040990a001d66a8d1ba73bce0cc"
+  },
+  "signedReader": "ddaef49469a9b348fd209c6be01d2137986f075dc4c5185ed7875a82aedf40a3",
+  "readerRecordSHA256": "5170c662cc6fdba285b0e9a76ab8918a1a3d223f2e600e1a585be92180ecabd5",
+  "siteArchiveSHA256": "53f5d1bb1f687a40097b2684cd12fd91ecb96b6ae74e828861ce739fa8976c72"
+}

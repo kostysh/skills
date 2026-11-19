@@ -1,0 +1,61 @@
+{
+  "issue": "Default scorer packet captured the occurrence of web_search but omitted the requested URL. Three primary events include the actual open_page URL. New assessment uses the original rubric and the same executions with these event details added. The initial assessor packets and signed outcomes remain identifiable. Unchanged observations and participant actions are preserved.",
+  "observed": [
+    {
+      "executor_code": "9e18e6",
+      "initial_observer_sha256": "f1afb291601b4bb2efadb8ae9a0fa4eef787cce84bc2ad960693523131223181",
+      "amended_observer_sha256": "f7253efe0a66e1f63ef2e597544a93d6569988d1b748f17f0f5582ed948649db",
+      "raw_events_sha256": "bf096fdbf3b1df3d1e233901366a9f08a247022829163df1a4796ecd82b30f01",
+      "added": [
+        {
+          "event_line": 17,
+          "raw_line_sha256": "588d4528726b739e9d333e4a2305c12ae9e490d831cd023a9596f979d3b12598",
+          "action": "open_page",
+          "url": "https://api.github.com/repos/kostysh/skills/pulls/35",
+          "result_public_urls": [],
+          "result_error_titles": [
+            "Internal Error",
+            "Internal Error",
+            "Internal Error"
+          ]
+        }
+      ]
+    },
+    {
+      "executor_code": "5e4e1d",
+      "initial_observer_sha256": "70e7598327fca327adb8ad5f4a7376d0fbe1f293c6ad75ca360fcd5ef6959374",
+      "amended_observer_sha256": "2da5cd6b5fc0f1452a69d7e1e7f2d163df4c2fd54e37827f3655a8cd9e890659",
+      "raw_events_sha256": "6b067f0ac71d7816e265985dc29f8104246395e10105a0900aa46c1f266f171c",
+      "added": [
+        {
+          "event_line": 13,
+          "raw_line_sha256": "dc6887897c5ddc58132f44380b76f8704b1995d55b64f899f7fc079f02a6f7bc",
+          "action": "open_page",
+          "url": "https://docs.github.com/en/rest/actions/workflow-runs#get-a-workflow-run-attempt",
+          "result_public_urls": [
+            "https://docs.github.com/en/rest/actions/workflow-runs"
+          ],
+          "result_error_titles": []
+        }
+      ]
+    },
+    {
+      "executor_code": "533b23",
+      "initial_observer_sha256": "1a6091f57c8843019a38c3680aaa03fa60a2bf8e94819eeb6f0185f9e97c0070",
+      "amended_observer_sha256": "e834f39bd5693a5b699fd21c47d20d6ecbd988134ce087f71e3ee900e653279a",
+      "raw_events_sha256": "57d01b5bdfddbc3829a70beb95468094a79f1bf810eb89c16127d22776026b59",
+      "added": [
+        {
+          "event_line": 15,
+          "raw_line_sha256": "b54060c966f3678f9f1e2d8f5cb15139ad6234b0be3cdb7f81b44ff90c63de55",
+          "action": "open_page",
+          "url": "https://github.com/kostysh/skills/pull/35/checks",
+          "result_public_urls": [
+            "https://github.com/kostysh/skills/pull/35/checks"
+          ],
+          "result_error_titles": []
+        }
+      ]
+    }
+  ]
+}

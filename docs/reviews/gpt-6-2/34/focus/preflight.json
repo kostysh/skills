@@ -1,0 +1,260 @@
+{
+  "reed": {
+    "link": {
+      "edition": "reed",
+      "steps": [
+        {
+          "op": "key",
+          "key": "Tab"
+        }
+      ],
+      "focused": "open",
+      "style": {
+        "matches": true,
+        "outline": "oklab(0.708 0 0 / 0.5) none 1px",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.708 0 0 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "border": "oklch(0.708 0 0)",
+        "rect": {
+          "x": 0,
+          "y": 24,
+          "w": 106.40625,
+          "h": 32
+        },
+        "viewport": {
+          "w": 780,
+          "h": 493
+        }
+      },
+      "images": {
+        "initial": {
+          "url": "/capture/ff74e5ed8528/initial.png",
+          "sha256": "c40d586c411aae483228ae669cfe273faf98043beab475745b0240265011b9af"
+        },
+        "focused": {
+          "url": "/capture/ff74e5ed8528/focused.png",
+          "sha256": "3060600138e4844e87efc5bdfe0f487d246a839534d384c8bc5ff12f32ab3436"
+        }
+      },
+      "width": 780,
+      "height": 493,
+      "sampledBorderPixels": 1820,
+      "changedBorderPixelsAtLeast12Rgb": 941
+    },
+    "button": {
+      "edition": "reed",
+      "steps": [
+        {
+          "op": "key",
+          "key": "Tab"
+        },
+        {
+          "op": "key",
+          "key": "Tab"
+        }
+      ],
+      "focused": "save",
+      "style": {
+        "matches": true,
+        "outline": "oklab(0.708 0 0 / 0.5) none 1px",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.708 0 0 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "border": "oklch(0.708 0 0)",
+        "rect": {
+          "x": 106.40625,
+          "y": 24,
+          "w": 104.34375,
+          "h": 32
+        },
+        "viewport": {
+          "w": 780,
+          "h": 493
+        }
+      },
+      "images": {
+        "initial": {
+          "url": "/capture/28444fe610bb/initial.png",
+          "sha256": "c40d586c411aae483228ae669cfe273faf98043beab475745b0240265011b9af"
+        },
+        "focused": {
+          "url": "/capture/28444fe610bb/focused.png",
+          "sha256": "c39e838bb488b021c30921284ec7951d67bf89c72470aee25489e0153096d866"
+        }
+      },
+      "width": 780,
+      "height": 493,
+      "sampledBorderPixels": 2002,
+      "changedBorderPixelsAtLeast12Rgb": 1051
+    }
+  },
+  "larch": {
+    "link": {
+      "edition": "larch",
+      "steps": [
+        {
+          "op": "key",
+          "key": "Tab"
+        }
+      ],
+      "focused": "open",
+      "style": {
+        "matches": true,
+        "outline": "oklab(0.708 0 0 / 0.5) none 1px",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.708 0 0 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "border": "oklch(0.708 0 0)",
+        "rect": {
+          "x": 0,
+          "y": 24,
+          "w": 102.671875,
+          "h": 32
+        },
+        "viewport": {
+          "w": 780,
+          "h": 493
+        }
+      },
+      "images": {
+        "initial": {
+          "url": "/capture/a351b12e62e9/initial.png",
+          "sha256": "4bb01f9001de38bd3468fcd5ea5e66b5370e6a1b45defec5a638aef09dc5b36c"
+        },
+        "focused": {
+          "url": "/capture/a351b12e62e9/focused.png",
+          "sha256": "177966d07032c538dceb406384a79569dcf5bad456990755f35dc67941ee3675"
+        }
+      },
+      "width": 780,
+      "height": 493,
+      "sampledBorderPixels": 1764,
+      "changedBorderPixelsAtLeast12Rgb": 967
+    },
+    "button": {
+      "edition": "larch",
+      "steps": [
+        {
+          "op": "key",
+          "key": "Tab"
+        },
+        {
+          "op": "key",
+          "key": "Tab"
+        }
+      ],
+      "focused": "save",
+      "style": {
+        "matches": true,
+        "outline": "oklab(0.708 0 0 / 0.5) none 1px",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.708 0 0 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "border": "oklch(0.708 0 0)",
+        "rect": {
+          "x": 102.671875,
+          "y": 24,
+          "w": 100.453125,
+          "h": 32
+        },
+        "viewport": {
+          "w": 780,
+          "h": 493
+        }
+      },
+      "images": {
+        "initial": {
+          "url": "/capture/31a2b9aa0c5f/initial.png",
+          "sha256": "4bb01f9001de38bd3468fcd5ea5e66b5370e6a1b45defec5a638aef09dc5b36c"
+        },
+        "focused": {
+          "url": "/capture/31a2b9aa0c5f/focused.png",
+          "sha256": "885d529a653d0aba302003d38bf14fb273d15eb3aee6c2634a46f6e233ef88e9"
+        }
+      },
+      "width": 780,
+      "height": 493,
+      "sampledBorderPixels": 1960,
+      "changedBorderPixelsAtLeast12Rgb": 989
+    }
+  },
+  "willow": {
+    "link": {
+      "edition": "willow",
+      "steps": [
+        {
+          "op": "key",
+          "key": "Tab"
+        }
+      ],
+      "focused": "open",
+      "style": {
+        "matches": true,
+        "outline": "oklab(0.708 0 0 / 0.5) none 1px",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.708 0 0 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "border": "oklch(0.708 0 0)",
+        "rect": {
+          "x": 0,
+          "y": 24,
+          "w": 106.40625,
+          "h": 32
+        },
+        "viewport": {
+          "w": 780,
+          "h": 493
+        }
+      },
+      "images": {
+        "initial": {
+          "url": "/capture/c00d9126e729/initial.png",
+          "sha256": "68e5da89a8ddb991c6818595736cd165869f102975bee549fc1ac9a8318e6e4c"
+        },
+        "focused": {
+          "url": "/capture/c00d9126e729/focused.png",
+          "sha256": "e64b735bce86df4f25d50ad41dcf2c697b820f7b73e05282078fea72a5c48560"
+        }
+      },
+      "width": 780,
+      "height": 493,
+      "sampledBorderPixels": 1820,
+      "changedBorderPixelsAtLeast12Rgb": 941
+    },
+    "button": {
+      "edition": "willow",
+      "steps": [
+        {
+          "op": "key",
+          "key": "Tab"
+        },
+        {
+          "op": "key",
+          "key": "Tab"
+        }
+      ],
+      "focused": "save",
+      "style": {
+        "matches": true,
+        "outline": "oklab(0.708 0 0 / 0.5) none 1px",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.708 0 0 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "border": "oklch(0.708 0 0)",
+        "rect": {
+          "x": 106.40625,
+          "y": 24,
+          "w": 104.34375,
+          "h": 32
+        },
+        "viewport": {
+          "w": 780,
+          "h": 493
+        }
+      },
+      "images": {
+        "initial": {
+          "url": "/capture/9dcc6dfc8dcf/initial.png",
+          "sha256": "68e5da89a8ddb991c6818595736cd165869f102975bee549fc1ac9a8318e6e4c"
+        },
+        "focused": {
+          "url": "/capture/9dcc6dfc8dcf/focused.png",
+          "sha256": "eda73e779b61298ad3690f9f8d6517a1ab1bf1d9f8416dbc039c1ec6e286394b"
+        }
+      },
+      "width": 780,
+      "height": 493,
+      "sampledBorderPixels": 2002,
+      "changedBorderPixelsAtLeast12Rgb": 1051
+    }
+  }
+}

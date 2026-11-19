@@ -1,0 +1,5 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -63 +63 @@
+-- For ordinary user work, use a user JWT with RLS or a security-checked RPC. Test direct Data API, RPC, or Storage allow and deny behavior with a publishable key plus user JWT where that is the production boundary.
++- For ordinary user work, use a user JWT with RLS or a security-checked RPC. Verify allowed and denied operations directly as the intended Data API, RPC, or Storage caller.

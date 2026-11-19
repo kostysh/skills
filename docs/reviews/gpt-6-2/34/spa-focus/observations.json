@@ -1,0 +1,126 @@
+{
+  "browser": "158.0.8127.36",
+  "route": "/settings/notifications",
+  "captures": {
+    "received": {
+      "normal": {
+        "tag": "BUTTON",
+        "stage": null,
+        "variant": "brand",
+        "weight": "700",
+        "foreground": "oklch(0.985 0 0)",
+        "background": "oklch(0.205 0 0)",
+        "border": "rgba(0, 0, 0, 0)",
+        "outline": "oklab(0.708 0 0 / 0.5) none 3px",
+        "shadow": "none",
+        "active": false,
+        "focusVisible": false
+      },
+      "focused": {
+        "tag": "BUTTON",
+        "stage": null,
+        "variant": "brand",
+        "weight": "700",
+        "foreground": "oklch(0.985 0 0)",
+        "background": "oklch(0.205 0 0)",
+        "border": "oklch(0.708 0 0)",
+        "outline": "oklab(0.708 0 0 / 0.5) none 1px",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.708 0 0 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "active": true,
+        "focusVisible": true
+      },
+      "clip": {
+        "x": 499,
+        "y": 717,
+        "width": 170,
+        "height": 60
+      },
+      "tabOrder": [
+        {
+          "tag": "A",
+          "name": "Preferences"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "About these settings"
+        },
+        {
+          "tag": "INPUT",
+          "name": "email"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "notifications"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "daily"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Review changes"
+        }
+      ]
+    },
+    "updated": {
+      "normal": {
+        "tag": "BUTTON",
+        "stage": "ready",
+        "variant": "brand",
+        "weight": "700",
+        "foreground": "oklch(0.985 0 0)",
+        "background": "oklch(0.205 0 0)",
+        "border": "rgba(0, 0, 0, 0)",
+        "outline": "oklab(0.708 0 0 / 0.5) none 3px",
+        "shadow": "none",
+        "active": false,
+        "focusVisible": false
+      },
+      "focused": {
+        "tag": "BUTTON",
+        "stage": "ready",
+        "variant": "brand",
+        "weight": "700",
+        "foreground": "oklch(0.985 0 0)",
+        "background": "oklch(0.205 0 0)",
+        "border": "oklch(0.708 0 0)",
+        "outline": "oklab(0.708 0 0 / 0.5) none 1px",
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, oklab(0.708 0 0 / 0.5) 0px 0px 0px 3px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+        "active": true,
+        "focusVisible": true
+      },
+      "clip": {
+        "x": 499,
+        "y": 717,
+        "width": 170,
+        "height": 60
+      },
+      "tabOrder": [
+        {
+          "tag": "A",
+          "name": "Preferences"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "About these settings"
+        },
+        {
+          "tag": "INPUT",
+          "name": "email"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "notifications"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "daily"
+        },
+        {
+          "tag": "BUTTON",
+          "name": "Review changes"
+        }
+      ]
+    }
+  }
+}

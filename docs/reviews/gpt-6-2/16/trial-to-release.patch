@@ -1,0 +1,13 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -9 +9 @@
+-  source-version: 0.1.11
++  source-version: 0.1.12
+@@ -11 +11 @@
+-  skillforge-source-hash: 9e564071d9410154d920f72d80c207c8b8747ed5b3fa9ec7942af34c75b4d6b6
++  skillforge-source-hash: ba5c1767d7f77d1d6e8bd2b9105a7128d98eceed0c7778aefb5de86df8615edb
+--- a/references/testing.md
++++ b/references/testing.md
+@@ -177 +177 @@
+-- For Cloudflare Workers, use `@cloudflare/vitest-pool-workers` for current local runtime unit/integration coverage when repository policy does not select another harness. Treat `unstable_dev` only as a legacy migration case and follow current Cloudflare migration guidance rather than starting new suites on it.
++- For Cloudflare Workers without a project harness, use `@cloudflare/vitest-plugin` for local runtime tests. Check its Vitest peer range against the project runner. Keep a working `@cloudflare/vitest-pool-workers` harness on a compatible Vitest version unless migration is requested. Treat `unstable_dev` only as a legacy migration case. [Cloudflare setup](https://developers.cloudflare.com/workers/testing/vitest-integration/write-your-first-test/).

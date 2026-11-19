@@ -2,7 +2,9 @@
 
 Create API endpoints with `route.ts` files.
 
-GET caching is opt-in in Next 15+. Each protected handler validates input and independently authenticates/authorizes the request; a page or Proxy check is insufficient. The app-owned `getAuthorizedUsers`, `createAuthorizedUser` and `getAuthorizedUser` below must implement that contract (including field/ownership checks), with expected failures mapped to the project HTTP status contract. See [Data Patterns](data-patterns.md).
+Inspect the cache mode for GET handlers. With the previous Next 15/16 model, GET caching is opt-in. With Cache Components enabled, Next.js can prerender a handler whose response uses only static or cached data. Request-time data keeps the response dynamic. [Route Handler caching](https://nextjs.org/docs/app/getting-started/route-handlers#with-cache-components)
+
+Each protected handler validates input and independently authenticates/authorizes the request; a page or Proxy check is insufficient. The app-owned `getAuthorizedUsers`, `createAuthorizedUser` and `getAuthorizedUser` below must implement that contract (including field/ownership checks), with expected failures mapped to the project HTTP status contract. See [Data Patterns](data-patterns.md).
 
 ## Basic Usage
 
@@ -92,6 +94,8 @@ export async function GET(
 ## Request Helpers
 
 ```tsx
+import { cookies } from 'next/headers'
+
 export async function GET(request: Request) {
   // URL and search params
   const { searchParams } = new URL(request.url)

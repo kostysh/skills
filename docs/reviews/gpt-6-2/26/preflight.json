@@ -1,0 +1,676 @@
+{
+  "ordinary": {
+    "frames": [
+      {
+        "operation": {
+          "op": "open"
+        },
+        "status": [
+          "Saved contact: desk@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "desk@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "River desk"
+      },
+      {
+        "operation": {
+          "op": "wait",
+          "ms": 300
+        },
+        "status": [
+          "Saved contact: desk@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "desk@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "River desk"
+      },
+      {
+        "operation": {
+          "op": "look"
+        },
+        "status": [
+          "Saved contact: desk@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "desk@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "River desk"
+      },
+      {
+        "operation": {
+          "op": "fill",
+          "target": "#address",
+          "value": "bad"
+        },
+        "status": [
+          "Saved contact: desk@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "bad",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "River desk"
+      },
+      {
+        "operation": {
+          "op": "click",
+          "target": "text=Save contact"
+        },
+        "status": [
+          "Enter a complete address.",
+          "Saved contact: desk@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "bad",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "River desk"
+      },
+      {
+        "operation": {
+          "op": "look"
+        },
+        "status": [
+          "Enter a complete address.",
+          "Saved contact: desk@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "bad",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "River desk"
+      },
+      {
+        "operation": {
+          "op": "fill",
+          "target": "#address",
+          "value": "river@example.test"
+        },
+        "status": [
+          "Enter a complete address.",
+          "Saved contact: desk@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "river@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "River desk"
+      },
+      {
+        "operation": {
+          "op": "click",
+          "target": "text=Save contact"
+        },
+        "status": [
+          "Saved: river@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "river@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "River desk"
+      },
+      {
+        "operation": {
+          "op": "look"
+        },
+        "status": [
+          "Saved: river@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "river@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "River desk"
+      },
+      {
+        "operation": {
+          "op": "reload"
+        },
+        "status": [
+          "Saved contact: river@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "river@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "River desk"
+      },
+      {
+        "operation": {
+          "op": "look"
+        },
+        "status": [
+          "Saved contact: river@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "river@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "River desk"
+      }
+    ],
+    "screenshotSha256": "83d4be28068b848200abc10c144c381b34f41342b6c8acd10ab45ce396932537"
+  },
+  "boundary": {
+    "frames": [
+      {
+        "operation": {
+          "op": "open"
+        },
+        "status": [
+          "Saved contact: desk@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "desk@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "Cedar desk"
+      },
+      {
+        "operation": {
+          "op": "wait",
+          "ms": 300
+        },
+        "status": [
+          "Saved contact: desk@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "desk@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "Cedar desk"
+      },
+      {
+        "operation": {
+          "op": "look"
+        },
+        "status": [
+          "Saved contact: desk@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "desk@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "Cedar desk"
+      },
+      {
+        "operation": {
+          "op": "fill",
+          "target": "#address",
+          "value": "bad"
+        },
+        "status": [
+          "Saved contact: desk@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "bad",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "Cedar desk"
+      },
+      {
+        "operation": {
+          "op": "click",
+          "target": "text=Save contact"
+        },
+        "status": [
+          "Enter a complete address.",
+          "Saved contact: desk@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "bad",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "Cedar desk"
+      },
+      {
+        "operation": {
+          "op": "look"
+        },
+        "status": [
+          "Enter a complete address.",
+          "Saved contact: desk@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "bad",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "Cedar desk"
+      },
+      {
+        "operation": {
+          "op": "fill",
+          "target": "#address",
+          "value": "cedar@example.test"
+        },
+        "status": [
+          "Enter a complete address.",
+          "Saved contact: desk@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "cedar@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "Cedar desk"
+      },
+      {
+        "operation": {
+          "op": "click",
+          "target": "text=Save contact"
+        },
+        "status": [
+          "Saved: cedar@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "cedar@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "Cedar desk"
+      },
+      {
+        "operation": {
+          "op": "look"
+        },
+        "status": [
+          "Saved: cedar@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "cedar@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "Cedar desk"
+      },
+      {
+        "operation": {
+          "op": "reload"
+        },
+        "status": [
+          "Saved contact: desk@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "desk@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "Cedar desk"
+      },
+      {
+        "operation": {
+          "op": "look"
+        },
+        "status": [
+          "Saved contact: desk@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "desk@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "Cedar desk"
+      }
+    ],
+    "screenshotSha256": "ab9e6d460c5853dcd7cb0101dd5e08bf4bf33740a9d75deb61231dea5dfec2aa"
+  },
+  "holdout": {
+    "frames": [
+      {
+        "operation": {
+          "op": "open"
+        },
+        "status": [
+          "Saved contact: desk@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "desk@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "Harbor desk"
+      },
+      {
+        "operation": {
+          "op": "wait",
+          "ms": 300
+        },
+        "status": [
+          "Saved contact: desk@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "desk@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "Harbor desk"
+      },
+      {
+        "operation": {
+          "op": "look"
+        },
+        "status": [
+          "Saved contact: desk@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "desk@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "Harbor desk"
+      },
+      {
+        "operation": {
+          "op": "fill",
+          "target": "#address",
+          "value": "harbor@example.test"
+        },
+        "status": [
+          "Saved contact: desk@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "harbor@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "Harbor desk"
+      },
+      {
+        "operation": {
+          "op": "click",
+          "target": "text=Save contact"
+        },
+        "status": [
+          "Saved: harbor@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "harbor@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "Harbor desk"
+      },
+      {
+        "operation": {
+          "op": "look"
+        },
+        "status": [
+          "Saved: harbor@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "harbor@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "Harbor desk"
+      },
+      {
+        "operation": {
+          "op": "reload"
+        },
+        "status": [
+          "Saved contact: harbor@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "harbor@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "Harbor desk"
+      },
+      {
+        "operation": {
+          "op": "look"
+        },
+        "status": [
+          "Saved contact: harbor@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "harbor@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "Harbor desk"
+      },
+      {
+        "operation": {
+          "op": "fill",
+          "target": "#address",
+          "value": "paused@example.test"
+        },
+        "status": [
+          "Saved contact: harbor@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "paused@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "Harbor desk"
+      },
+      {
+        "operation": {
+          "op": "click",
+          "target": "text=Save contact"
+        },
+        "status": [
+          "Saving is temporarily unavailable for this address.",
+          "Saved contact: harbor@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "paused@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "Harbor desk"
+      },
+      {
+        "operation": {
+          "op": "look"
+        },
+        "status": [
+          "Saving is temporarily unavailable for this address.",
+          "Saved contact: harbor@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "paused@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "Harbor desk"
+      },
+      {
+        "operation": {
+          "op": "reload"
+        },
+        "status": [
+          "Saved contact: harbor@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "harbor@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "Harbor desk"
+      },
+      {
+        "operation": {
+          "op": "look"
+        },
+        "status": [
+          "Saved contact: harbor@example.test"
+        ],
+        "fields": [
+          {
+            "id": "address",
+            "role": "email",
+            "value": "harbor@example.test",
+            "checked": null,
+            "invalid": null
+          }
+        ],
+        "heading": "Harbor desk"
+      }
+    ],
+    "screenshotSha256": "d405e68fd26b60eba38fab7e990e897e102f0ead471f3e5e3261465ade107c92"
+  }
+}

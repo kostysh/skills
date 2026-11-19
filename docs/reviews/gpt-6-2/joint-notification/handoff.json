@@ -1,0 +1,73 @@
+{
+  "applicationArchive": "02e15da84009fd1765b3e6595ae65ec5caa4cb0a89ec3f350e5f24046eff2420",
+  "skillPackage": "ae0f50652bf114c53a0389d44765d49d629ba3252184a007674691678ee8c1bb",
+  "series": {
+    "first": {
+      "sourceRecords": "5f095577e9a78881e3f80ed887348e7a261031616dab19a4d38343b2df4d17c1",
+      "subjectNote": "84a8bd22d430d10cf4b0b1afbc73965ff32dbd967e620ba784fdaf1639d8d891",
+      "originalSignedGrades": "3d747229f50ea12ae9f9b37c8216575772f9aaa11215002edc9a9e47af8bb8d3",
+      "inputChanged": [],
+      "referencesInNote": [
+        "visits/2e63c206-30a8-4be8-8e3a-f29fbacc7d35.json",
+        "visits/8113bd52-aef2-43ac-a9ee-14e1380d7324.png",
+        "visits/ac8c2e6b-07dd-41d5-8b13-fb7c9baa297a.json",
+        "visits/ac8c2e6b-07dd-41d5-8b13-fb7c9baa297a.png",
+        "visits/fcf3dda5-4760-455d-8df5-ccde38296171.png"
+      ],
+      "visitCount": 8,
+      "keyboardDriver": "e958ade4ed576e71594b0461f0c3cd8c40078dd436dc8ef2f59b801bcdb1b853",
+      "issuedRuntime": [
+        "--disable",
+        "memories",
+        "--ephemeral",
+        "--skip-git-repo-check"
+      ]
+    },
+    "paired": {
+      "sourceRecords": "a7dd646eae6eeb92bff27f1e9e44c21b37a2d36dd29ac63a4fb1c3e0f8c2627e",
+      "subjectNote": "e14c0837be5de434ed4c99d0ba4bf83477144c6d1f3f24704bc2e6e21f4649c7",
+      "originalSignedGrades": "2d50f6ddaaef9d692a5cf06cfed63afb761c24131cc8b44d79958309af90aa7d",
+      "inputChanged": [],
+      "referencesInNote": [
+        "BROWSER.md",
+        "visits/241aca91-1669-413c-b7b0-4aad25e1d23c.png",
+        "visits/4ebaa104-2d06-435a-8593-81756d593353.png",
+        "visits/655c7197-798a-4bff-8837-ea5926569bf9.png",
+        "visits/a991edfe-6f1b-4f24-83df-a127abf8c99a.json",
+        "visits/ecafaf41-c009-4b20-896a-31bba6d8b26f.png",
+        "visits/f32dc88f-a51a-45b4-ae96-9c9bd6fb4e81.png"
+      ],
+      "visitCount": 14,
+      "keyboardDriver": "b2ae091bd70ff7ed3733cde4c8a1a1c094f4344e8f8bc7f952f2956ad9618e3f",
+      "issuedRuntime": [
+        "--disable",
+        "memories",
+        "--ephemeral",
+        "--skip-git-repo-check"
+      ]
+    }
+  },
+  "baseline": {
+    "assigned": "gpt-6.2-sol medium, fresh ephemeral project; memory feature inherited",
+    "issuedInputFilesAndModesMatchOnDirectInspection": 17,
+    "changed": [
+      "design-note.md",
+      "visits/02a80389-fe53-4ac1-9cb4-949bf903ea28.json",
+      "visits/02a80389-fe53-4ac1-9cb4-949bf903ea28.png",
+      "visits/0a6d4c94-7196-4f4f-bf3b-3ccdaf066a0e.json",
+      "visits/0a6d4c94-7196-4f4f-bf3b-3ccdaf066a0e.png",
+      "visits/5b81cd0e-b710-41eb-8d59-fbcfa869c9e8.json",
+      "visits/5b81cd0e-b710-41eb-8d59-fbcfa869c9e8.png",
+      "visits/68ed516b-e722-495a-b035-133409d7af1d.json",
+      "visits/68ed516b-e722-495a-b035-133409d7af1d.png",
+      "visits/715350ba-4ebb-4775-8079-f3e0097e965d.json",
+      "visits/715350ba-4ebb-4775-8079-f3e0097e965d.png",
+      "visits/916d547d-c8dd-4874-8f6a-33db79b99bf1.json",
+      "visits/916d547d-c8dd-4874-8f6a-33db79b99bf1.png",
+      "visits/d71cb6c7-3498-4acc-af32-a9714fa50388.json",
+      "visits/d71cb6c7-3498-4acc-af32-a9714fa50388.png"
+    ],
+    "initialNoteSha256": "40b7669da82d52b5eccb7214fa6e787e4c57e0bcee735a55c8945f1fbfb43c22",
+    "disposition": "Exploratory work product only. The new joint-study receipt will explicitly disable cross-session memory."
+  }
+}

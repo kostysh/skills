@@ -1,0 +1,71 @@
+{
+  "package": "money",
+  "version": "0.0.1",
+  "commit": "4a367e5da44bfd87b68f3fd457c88a7392d8fdbb",
+  "subtree": "0f74233fe5205613b6430aff158698611e139941",
+  "packageClean": true,
+  "inputSourceId": {
+    "package.json": "72e873ee3165739cf1adb435a1599ec129cf93bb",
+    "src/types.ts": "86eaedfc15c1bcfe7b088e810c06b960f8690678",
+    "src/index.ts": "a608502e27565b084c89f419dcb0fbe7dd77d208",
+    "src/currency.ts": "b5017e09ea86f852b468662ac6293c55e27221c9",
+    "test/type-contracts/currency.test-d.ts": "fe5c1c791df01a3d837d90801122ea44926a749d"
+  },
+  "probe": {
+    "invocation": "node --input-type=module - (stdin: profile-probe.mjs, cwd: packages/money)",
+    "sha256": "b3de3b3d502ae8d3f49bd028f9064ccaa7d1c5d5ca8be0287f92aa646182ca56",
+    "exit": 0,
+    "observations": {
+      "node": "v24.15.0",
+      "engineDefinition": {
+        "code": "EUR",
+        "minorUnitDigits": 2
+      },
+      "codeOnEngine": false,
+      "typedAmount": {
+        "currency": "EUR",
+        "minorUnitDigits": 2,
+        "minorUnits": "9007199254740993",
+        "inMemoryType": "bigint"
+      },
+      "legacyDto": {
+        "currency": "EUR",
+        "amountCents": "9007199254740993"
+      },
+      "taggedDto": {
+        "currency": "EUR",
+        "minorUnitDigits": 2,
+        "amountMinorUnits": "9007199254740993"
+      },
+      "bothStrictRoundTrips": true,
+      "rejectsSwappedDtoContracts": true,
+      "rejectsWrongCurrencyOrScale": true,
+      "rejectsRelabelOption": true,
+      "JPY_123_major_in_minor": "123",
+      "KWD_1_234_major_in_minor": "1234",
+      "signedRounding": {
+        "negative5Floor": "-3",
+        "negative5HalfAway": "-3",
+        "positive5Floor": "2",
+        "positive5HalfAway": "3"
+      }
+    }
+  },
+  "typecheck": {
+    "invocation": [
+      "corepack",
+      "pnpm",
+      "exec",
+      "tsc",
+      "-p",
+      "packages/money/tsconfig.contract.json",
+      "--noEmit",
+      "--incremental",
+      "false"
+    ],
+    "version": "Version 6.0.3",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+}

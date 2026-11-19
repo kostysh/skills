@@ -1,0 +1,44 @@
+{
+  "before": {
+    "sections": [
+      {
+        "id": 1,
+        "sourceKey": "LOCAL",
+        "title": "Своя полка"
+      }
+    ],
+    "reader": "east",
+    "records": [
+      {
+        "id": 1,
+        "sourceKey": "LOCAL-01",
+        "title": "Местная запись",
+        "desk": "east",
+        "state": "issued",
+        "section": 1,
+        "sectionKey": "LOCAL"
+      }
+    ]
+  },
+  "afterReopen": {
+    "sections": [
+      {
+        "id": 1,
+        "sourceKey": "LOCAL",
+        "title": "Своя полка"
+      }
+    ],
+    "reader": "east",
+    "records": [
+      {
+        "id": 1,
+        "sourceKey": "LOCAL-01",
+        "title": "Местная запись",
+        "desk": "east",
+        "state": "issued",
+        "section": 1,
+        "sectionKey": "LOCAL"
+      }
+    ]
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "signedAB": "c1d7513e52947f30fc77d9e80e030fc15f2de3f7b2d0cb1a0281631b4a42199e",
+  "selected": "7. Verify the requested behavior through the caller's Payload interface. For access claims, report the acting user, how access was enforced, and any separate query filter.",
+  "observed": "All four A/B cases got the correct business-set comparison through the genuine operator, but the neutral report did not communicate how access enforcement and any additional application filtering differ. Preserve original scores and test this conditional repair on the deficient communication.",
+  "selectedAt": "2026-11-18T23:26:18.623545+00:00"
+}

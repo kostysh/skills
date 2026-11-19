@@ -27,7 +27,7 @@ The rendered component must preserve forwarded props and refs required by the wr
 
 ## Links styled as buttons
 
-Use `buttonVariants` on a real link so link semantics remain intact:
+Keep one real link. Apply `buttonVariants` to the link, as below, or use the installed Button’s composition API, such as Radix `asChild`.
 
 ```tsx
 import { buttonVariants } from "@/components/ui/button"

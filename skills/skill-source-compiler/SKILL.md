@@ -6,9 +6,9 @@ description: Compile structured skill source bundles into portable Agent Skills
   structure, supporting docs, and portability rules.
 license: Apache-2.0
 metadata:
-  source-version: 0.2.11
+  source-version: 0.2.12
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: c2f603131792b868e9578910d8e05cd228c999b8b4b88d6cd1ffa9d5671ba77e
+  skillforge-source-hash: f5d22271b39cbb1e597df3ff9d3e03276f697d6244e911f34b3adc85e426603a
 ---
 
 # skill-source-compiler

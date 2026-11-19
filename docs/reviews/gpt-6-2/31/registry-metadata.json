@@ -1,0 +1,179 @@
+{
+  "generator": {
+    "ownerPackageManifest": "https://registry.npmjs.org/create-docusaurus/3.10.2",
+    "name": "create-docusaurus",
+    "version": "3.10.2",
+    "engines": {
+      "node": ">=20.0"
+    },
+    "peerDependencies": {},
+    "integrity": "sha512-JgJljCp+EUw4MKaGNQMfglGomEUL3SKg417nUBxCih6wkuRM9CGA6eSGx5SX9MLlGCSAhee6h/DEhIcqiumB8w=="
+  },
+  "core": {
+    "ownerPackageManifest": "https://registry.npmjs.org/@docusaurus/core/3.10.2",
+    "name": "@docusaurus/core",
+    "version": "3.10.2",
+    "engines": {
+      "node": ">=20.0"
+    },
+    "peerDependencies": {
+      "react": "^18.0.0 || ^19.0.0",
+      "react-dom": "^18.0.0 || ^19.0.0",
+      "@mdx-js/react": "^3.0.0",
+      "@docusaurus/faster": "*"
+    },
+    "integrity": "sha512-EYByj6nk+aD9KeVxV6Hmo2/nAAT79P21Y82ycTBOBtrmqilloIbIEhgL2/8Xpt2Jz/pgNqHAwyusOGwmbKeJmA=="
+  },
+  "classic": {
+    "ownerPackageManifest": "https://registry.npmjs.org/@docusaurus/preset-classic/3.10.2",
+    "name": "@docusaurus/preset-classic",
+    "version": "3.10.2",
+    "engines": {
+      "node": ">=20.0"
+    },
+    "peerDependencies": {
+      "react": "^18.0.0 || ^19.0.0",
+      "react-dom": "^18.0.0 || ^19.0.0"
+    },
+    "integrity": "sha512-a4B3VczmDl99zK0EufDQYomdJ186WDingjmDXxhN2PNPS9Ty/Y2M5CLFX1KQMRKqRTLiRDKfutzG5IY1FC/ceg=="
+  },
+  "docs": {
+    "ownerPackageManifest": "https://registry.npmjs.org/@docusaurus/plugin-content-docs/3.10.2",
+    "name": "@docusaurus/plugin-content-docs",
+    "version": "3.10.2",
+    "engines": {
+      "node": ">=20.0"
+    },
+    "peerDependencies": {
+      "react": "^18.0.0 || ^19.0.0",
+      "react-dom": "^18.0.0 || ^19.0.0"
+    },
+    "integrity": "sha512-Sqwl4FPoZBDrlY8I2VU2H8O0M91CHp9T8ToMSkTZmjvHCif+1laqfXi6sTk8IfyVS/trN5yNjcWd1bFsGB6W5Q=="
+  },
+  "live": {
+    "ownerPackageManifest": "https://registry.npmjs.org/@docusaurus/theme-live-codeblock/3.10.2",
+    "name": "@docusaurus/theme-live-codeblock",
+    "version": "3.10.2",
+    "engines": {
+      "node": ">=20.0"
+    },
+    "peerDependencies": {
+      "react": "^18.0.0 || ^19.0.0",
+      "react-dom": "^18.0.0 || ^19.0.0"
+    },
+    "integrity": "sha512-rBWmjCFaInkWENi4EjHX4lgwN6uBfVurN8SdK0evZ5LwjIiAdVRTRkmnWNPswiud3UfdSeNalaLQl62Ks9d+pA=="
+  },
+  "mermaid": {
+    "ownerPackageManifest": "https://registry.npmjs.org/@docusaurus/theme-mermaid/3.10.2",
+    "name": "@docusaurus/theme-mermaid",
+    "version": "3.10.2",
+    "engines": {
+      "node": ">=20.0"
+    },
+    "peerDependencies": {
+      "react": "^18.0.0 || ^19.0.0",
+      "react-dom": "^18.0.0 || ^19.0.0",
+      "@mermaid-js/layout-elk": "^0.1.9"
+    },
+    "integrity": "sha512-Stssh5MYQJ+EdYugUXf+ZcpeJFQPKXf0KCd/SWp10o3CmXNaOoh5IEgVjVqY1e1XhQf3on4+Y4BnrMiD95E2SQ=="
+  },
+  "localSearch": {
+    "ownerPackageManifest": "https://registry.npmjs.org/@cmfcmf/docusaurus-search-local/2.0.1",
+    "name": "@cmfcmf/docusaurus-search-local",
+    "version": "2.0.1",
+    "engines": null,
+    "peerDependencies": {
+      "react": "^18 || ^19",
+      "nodejieba": "^2.5.0 || ^3.0.0",
+      "react-dom": "^18 || ^19",
+      "@docusaurus/core": "^3.0.0"
+    },
+    "integrity": "sha512-4Gk313a+9HGetIFB9f087Qrmba5svx0zY9xZ10QKd79Nic0IsY0/JktDqFMZ51IDuL+9yIMOsdeKb313ce2mnw=="
+  },
+  "typesense": {
+    "ownerPackageManifest": "https://registry.npmjs.org/docusaurus-theme-search-typesense/0.27.0",
+    "name": "docusaurus-theme-search-typesense",
+    "version": "0.27.0",
+    "engines": {
+      "node": ">=20"
+    },
+    "peerDependencies": {
+      "react": "^18.0.0 || ^19.0.0",
+      "react-dom": "^18.0.0 || ^19.0.0",
+      "@docusaurus/core": ">=3.9.0 <4.0.0",
+      "@docusaurus/theme-common": ">=3.9.0 <4.0.0"
+    },
+    "integrity": "sha512-GmPZo3lK2p7oaHa5yCxoiCWBX9swqgSaJFHv8c4cbzg+JeQTwpm3eLV30Gcf0x9htIhMaK4gi1mr62m++Bwlcg=="
+  },
+  "openapiPlugin": {
+    "ownerPackageManifest": "https://registry.npmjs.org/docusaurus-plugin-openapi-docs/5.2.0",
+    "name": "docusaurus-plugin-openapi-docs",
+    "version": "5.2.0",
+    "engines": {
+      "node": ">=14"
+    },
+    "peerDependencies": {
+      "react": "^16.8.4 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+      "@docusaurus/utils": "^3.10.0",
+      "@docusaurus/utils-validation": "^3.10.0",
+      "@docusaurus/plugin-content-docs": "^3.10.0"
+    },
+    "integrity": "sha512-MjrfRAMB64uvdxRVz6L9AXWe4QFjCdoBAzYs306yyI3nnXHsFj2lv2FnLA90JV9CAUZaGiYMvvkzBo2Nrkq/9w=="
+  },
+  "openapiTheme": {
+    "ownerPackageManifest": "https://registry.npmjs.org/docusaurus-theme-openapi-docs/5.2.0",
+    "name": "docusaurus-theme-openapi-docs",
+    "version": "5.2.0",
+    "engines": {
+      "node": ">=14"
+    },
+    "peerDependencies": {
+      "react": "^16.8.4 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+      "react-dom": "^16.8.4 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+      "docusaurus-plugin-sass": "^0.2.3",
+      "@docusaurus/theme-common": "^3.10.0",
+      "docusaurus-plugin-openapi-docs": "^5.0.0"
+    },
+    "integrity": "sha512-L0b80LzaMUfr76a9EQXRPCf8nxkEz8Xo6Aknnke1UeE2oXsgoiVki6U+RTE7GmJRjO8zSNKXyckGmGmqqWuHeA=="
+  },
+  "markdownlint": {
+    "ownerPackageManifest": "https://registry.npmjs.org/markdownlint-cli2/0.24.1",
+    "name": "markdownlint-cli2",
+    "version": "0.24.1",
+    "engines": {
+      "node": ">=22"
+    },
+    "peerDependencies": {},
+    "integrity": "sha512-nLhes/MIPJQLm+Gmh+3jQEnwMOaalaN0wfCD2qz1247zNZ7R3r2WDHJB191x4hcy6soKAUTybp1bFK7aJGw/WA=="
+  },
+  "lintHistorical": {
+    "ownerPackageManifest": "https://registry.npmjs.org/markdownlint-cli2/0.23.2",
+    "name": "markdownlint-cli2",
+    "version": "0.23.2",
+    "engines": {
+      "node": ">=22"
+    },
+    "peerDependencies": {},
+    "integrity": "sha512-eUhcnkSpzURo/o4htSqc7LPDszgOOTknhU4eY/sPHvMCLxnTCYscv1gw1/js/idmaZPisv9ECVEIORcllqjTUw=="
+  },
+  "prettier": {
+    "ownerPackageManifest": "https://registry.npmjs.org/prettier/3.10.1",
+    "name": "prettier",
+    "version": "3.10.1",
+    "engines": {
+      "node": ">=14"
+    },
+    "peerDependencies": {},
+    "integrity": "sha512-70vp3ZUYoPlFbF9uiTdXHUUCGEIp7d4+6p+8DYbkm2jP7x/3i/paXVF6dopSI3zd/CEitrZN1rc4i85xWmmXlg=="
+  },
+  "pnpm": {
+    "ownerPackageManifest": "https://registry.npmjs.org/pnpm/10.28.2",
+    "name": "pnpm",
+    "version": "10.28.2",
+    "engines": {
+      "node": ">=18.12"
+    },
+    "peerDependencies": {},
+    "integrity": "sha512-QYcvA3rSL3NI47Heu69+hnz9RI8nJtnPdMCPGVB8MdLI56EVJbmD/rwt9kC1Q43uYCPrsfhO1DzC1lTSvDJiZA=="
+  }
+}

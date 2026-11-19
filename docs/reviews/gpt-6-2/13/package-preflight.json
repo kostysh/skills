@@ -1,0 +1,156 @@
+{
+  "originArchive": "c48eeecd59d2f3b760ed444bb4a58a211f6e7461ae960fcb92f4c0aea31024e7",
+  "changes": "For all cases removed the historic embedded solution README and rebuilt an offline archive. 1.0.1 changes the installed entry. 1.1.0 changes fields, help, flag and error. These two products are synthetic study variants.",
+  "cases": {
+    "ordinary": {
+      "projectArchiveSHA256": "43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b",
+      "sourceEntrySHA256": "466b58c426b8b182723ea3dad781d54587f2b0d9d8ac59ae9532d6fe182f3065",
+      "declaredBin": {
+        "tally": "dist/cli.js"
+      },
+      "observed": [
+        {
+          "argv": [
+            "./node_modules/.bin/tally",
+            "--version"
+          ],
+          "exit": 0,
+          "stdout": "1.0.0\n",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "./node_modules/.bin/tally",
+            "--help"
+          ],
+          "exit": 0,
+          "stdout": "tally 1.0.0\nUsage: tally sum <numbers...> [--json]\n",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "./node_modules/.bin/tally",
+            "sum",
+            "2",
+            "3",
+            "--json"
+          ],
+          "exit": 0,
+          "stdout": "{\"total\":5}\n",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "./node_modules/.bin/tally",
+            "sum",
+            "bad",
+            "--json"
+          ],
+          "exit": 2,
+          "stdout": "",
+          "stderr": "Invalid number\n"
+        }
+      ]
+    },
+    "boundary": {
+      "projectArchiveSHA256": "fc945d08751947095e3e8ea2e7575d8efdfec67f1779ac357362f0c77c751a4b",
+      "sourceEntrySHA256": "79fb5030580fa9887faa6fc99a0c66ba21e4ceef2108c936870967cc6c06a9fa",
+      "declaredBin": {
+        "tally": "dist/legacy.js"
+      },
+      "observed": [
+        {
+          "argv": [
+            "./node_modules/.bin/tally",
+            "--version"
+          ],
+          "exit": 0,
+          "stdout": "legacy tally0.1\n",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "./node_modules/.bin/tally",
+            "--help"
+          ],
+          "exit": 0,
+          "stdout": "legacy tally0.1\n",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "./node_modules/.bin/tally",
+            "sum",
+            "2",
+            "3",
+            "--json"
+          ],
+          "exit": 0,
+          "stdout": "legacy tally0.1\n",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "./node_modules/.bin/tally",
+            "sum",
+            "bad",
+            "--json"
+          ],
+          "exit": 0,
+          "stdout": "legacy tally0.1\n",
+          "stderr": ""
+        }
+      ]
+    },
+    "holdout": {
+      "projectArchiveSHA256": "b67a76bc3dd46c43e26070c0dee7841942ffe20e853b08e37774a751fa4600e5",
+      "sourceEntrySHA256": "04e0e65b8ef11e75bd710796255acfa727315b6d19b279791129809b4dafadda",
+      "declaredBin": {
+        "tally": "dist/cli.js"
+      },
+      "observed": [
+        {
+          "argv": [
+            "./node_modules/.bin/tally",
+            "--version"
+          ],
+          "exit": 0,
+          "stdout": "1.1.0\n",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "./node_modules/.bin/tally",
+            "--help"
+          ],
+          "exit": 0,
+          "stdout": "tally 1.1.0\nUsage: tally sum <numbers...> [--machine]\n",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "./node_modules/.bin/tally",
+            "sum",
+            "2",
+            "3",
+            "--machine"
+          ],
+          "exit": 0,
+          "stdout": "{\"sum\":5}\n",
+          "stderr": ""
+        },
+        {
+          "argv": [
+            "./node_modules/.bin/tally",
+            "sum",
+            "bad",
+            "--machine"
+          ],
+          "exit": 2,
+          "stdout": "",
+          "stderr": "Number expected\n"
+        }
+      ]
+    }
+  }
+}

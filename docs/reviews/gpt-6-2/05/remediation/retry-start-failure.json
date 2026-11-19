@@ -1,0 +1,13 @@
+{
+  "neutral_code": "5d13d7",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "project_case": "calendar",
+  "exit": 1,
+  "raw_events_bytes": 0,
+  "answer_bytes": 0,
+  "changed": [],
+  "error": "failed to initialize in-process app-server client: Read-only file system (os error 30)",
+  "stderr_sha256": "95b51d88f1a9731e9280b77a105fcd67c16f2a16ff9671ff6e74beecd0571194",
+  "status": "Среда не запустила испытуемого. Попытка зарегистрирована отдельно от рабочих сессий и оценок."
+}

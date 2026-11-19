@@ -10,6 +10,10 @@ APIs shared with supported v7 projects unless stated otherwise.
 Unless a block is explicitly labeled copyable, code blocks in this reference
 are conceptual and omit project imports, API contracts, and error behavior.
 
+For a v8 browser data router, import `createBrowserRouter` from `react-router`
+and `RouterProvider` from `react-router/dom`. Check the installed package's
+Node and React peer requirements before a major upgrade.
+
 Official route objects: <https://reactrouter.com/start/data/route-object>
 Official v7 to v8 migration: <https://reactrouter.com/upgrading/v7>
 
@@ -61,21 +65,27 @@ const router = createBrowserRouter([
 
 ## Loader and Query orchestration
 
-Loaders may ensure Query data before route render:
+A loader can read the route's Query data before render. This example uses the
+cache-first entry point in TanStack Query 5.108:
 
 ```tsx
 const orderLoader = ({ params }: LoaderFunctionArgs) => {
   const orderId = parseOrderId(params.orderId);
   const access = readAcceptedClientAccessContext();
 
-  return queryClient.ensureQueryData(orderDetailOptions(access, orderId));
+  return queryClient.query({
+    ...orderDetailOptions(access, orderId),
+    staleTime: 'static',
+  });
 };
 ```
 
 This example is conceptual: parameter validation, client access context, API
 errors, and navigation cancellation semantics come from the project. Reuse one
 Query option factory rather than creating a second loader-only key or query
-function.
+function. A cache-first load can return the existing value. Choose freshness
+and error handling for the claimed read using [Data Fetching](data-fetching.md),
+including when the installed Query version predates `queryClient.query`.
 
 Components may call the same Query options to remain reactive after loader
 prefill. Do not duplicate query keys or query functions between the loader and

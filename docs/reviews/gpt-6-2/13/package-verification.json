@@ -1,0 +1,64 @@
+{
+  "baseline": {
+    "snapshot": "dcd5736c491cf429ba22bf7bc767dccdf912e94e",
+    "name": "documentation-0.2.2.tgz",
+    "sha256": "d2411403d3f1b0a31b83bb60ab0dac730e49c88dffd3d95113a9ac95b59bb699",
+    "filesIdenticalToA": true
+  },
+  "release": {
+    "name": "documentation-0.2.3.tgz",
+    "sha256": "c5ce5b858c774af34eb005a0078b9622bb836e97759195bf51bcf5d281b58293",
+    "bytes": 9280,
+    "installedFiles": {
+      "SKILL.md": "ffefd3ebc73eb2e245392c2c413d8a0e506c1356444fccddd1effc15dabdd35b",
+      "references/diataxis-guide.md": "2fd3a9fcbedd9fde5b4b4b06bd003b65d1b812b124299f1469a6420ed4e49d87"
+    },
+    "equalToCompilerOutputAndSource": true,
+    "catalog": {
+      "name": "documentation",
+      "description": "Create, review, restructure, and rewrite source-grounded technical documentation with Diataxis. Use for tutorials, how-to guides, reference, explanations, docs architecture, and audits of user-need fit, factual support, task completion, and maintainability.",
+      "version": "0.2.3",
+      "sha256": "c5ce5b858c774af34eb005a0078b9622bb836e97759195bf51bcf5d281b58293",
+      "contentHash": "65871107254b00229f6437dbad9d6c6fe28155a1d74094c300b0755fe0c22546"
+    },
+    "evidenceFile": "documentation-0.2.3.tar.gz",
+    "localCandidateOnly": true
+  },
+  "roles": {
+    "C": "first controlled positive rule, same baseline metadata",
+    "C2": "final bounded rule with baseline metadata (comparison only)",
+    "release": "actual archive, dispatched without metadata replacement"
+  },
+  "checks": [
+    "lint and regenerate source",
+    "check generated source",
+    "compile independently and compare active byte contents",
+    "navigation includes new maintenance log; same bytes as source",
+    "every recorded textual patch reapplied to the before image",
+    "check isolated compiler output: OK"
+  ],
+  "toolVersions": {
+    "node": "24.15.0",
+    "npm": "12.0.1",
+    "pnpm": "10.28.2",
+    "packagingCLI": "@kostysh/skills 0.1.3",
+    "skill-source-compiler": "source 0.2.12, CLI 0.2.5"
+  },
+  "packageCommand": "pnpm --filter @kostysh/skills pack:skills --root <compiled> --out <release-dir> --release skills-local-review --previous <baseline-catalog.json>",
+  "finalDistributionTrialRecords": [
+    "da66d4",
+    "7389ce",
+    "52ff2f",
+    "ee8342",
+    "d4260f",
+    "f8f969"
+  ],
+  "finalMaintenanceVerification": {
+    "finalLogByteEqualToIsolatedCompile": true,
+    "activeArchiveRepackedTwiceByteEqual": true,
+    "archiveSHA256": "c5ce5b858c774af34eb005a0078b9622bb836e97759195bf51bcf5d281b58293",
+    "originalPlusNewUniqueParticipants": 20,
+    "readerInputsHaveExactlyTwoVerifiedFiles": true,
+    "markdownLinksCheckedWithinCheckout": true
+  }
+}

@@ -5,9 +5,9 @@ description: Use for repository-aware Git staging, commits, branches, worktrees,
   Conventional Commits with emoji by default, and verify exact refs. Route
   GitHub resources, code review, and CI remediation to their owning skills.
 metadata:
-  source-version: 0.2.1
+  source-version: 0.2.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 034b789db298b9dfd0b7b8331aa4ce54b54b8d64357f0a3b47f85e8c1995f65f
+  skillforge-source-hash: 91bc620d4e5ae483263cd0d67b63b091352a11ca335031e77dd70834c6309f78
 ---
 
 # git-engineer
@@ -91,7 +91,7 @@ Derive an optional scope from repository policy and established history. Do not 
 1. Record the starting branch and `HEAD`, then inspect `git status --porcelain=v2 --branch` and the current index.
 2. Select the intended paths or hunks explicitly. Avoid broad staging when unrelated changes exist.
 3. Inspect `git diff --cached --name-status` and the staged diff before committing. The staged delta must match the requested change.
-4. Preserve unrelated staged, unstaged, and untracked work. Do not reset, restore, clean, or stash it merely to obtain a clean status.
+4. Preserve unrelated staged changes, unstaged edits, and untracked files.
 5. Include tracked generated or synchronized artifacts when repository policy, source/generated parity, release behavior, or the requested change requires them. Exclude dependencies, caches, and incidental build output unless they are intentionally tracked and required.
 6. Split commits when changes have independent purposes, rollback boundaries, or validation evidence. Do not split mechanically by file class when the files jointly implement one outcome.
 7. Run the applicable repository checks unless the operator explicitly accepts the gap.

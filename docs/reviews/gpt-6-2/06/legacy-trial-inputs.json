@@ -1,0 +1,22 @@
+{
+  "registered_before_product_edit": true,
+  "runtime_from": "legacy-flags.json",
+  "inputs_sha256": {
+    "cases/legacy.md": "cbb79a41ae26bea1045e223ca3bbb7c64036e2112dc6a378a028a13d1d3dc1ad",
+    "fixture/legacy/AGENTS.md": "bb1db9ff5b1a7dc74389f5d7e9977a8dd1b4d769d551b7aec84bc6fb764a6abf",
+    "fixture/legacy/README.md": "2585d07e4fbd8aecc902b096f9b0f26e523fd57bcef62b2035c22cf0ef45ab3b",
+    "fixture/legacy/package.json": "5bb762bf2b1b6c5c47980efc96e041f44e71cf50e224c557abfdae863d18a1f2",
+    "fixture/legacy/src/index.mts": "96ae06d71b382c42a858c55e69224d2b44dcbf935ad05c9f6d9d4dd028484aa3",
+    "fixture/legacy/toolchain/node": "e5207b0c9f178fe6b5caf8f5bab550b9f589a3f8e0e802165340e8bbf7f90927",
+    "rubric.md": "6b7d22dc44088f394b00858cd148f747b272f7f529b6cc4e0114ff323309b184"
+  },
+  "text_inputs": {
+    "cases/legacy.md": "Смена обслуживает замороженный снимок ночного учёта. Ей предложили дописать --experimental-strip-types в команду запуска, потому что сервис работает на старом Node. Проверь на этой локальной копии, требуется ли изменение, чем это объясняется и что получает смена при штатном запуске. Применяй выданный tooling/node-engineer/SKILL.md. Файлы, зависимости и конфигурацию сохраняй.\n",
+    "fixture/legacy/AGENTS.md": "В этом снимке подкаталог toolchain содержит исполняемый файл Node для старого локального образа. Проверяй службу его штатной командой в README.\n",
+    "fixture/legacy/README.md": "Ночной учёт запускает npm --silent start. На хосте есть и системный Node, но скрипт запуска службы закрепляет собственный runtime.\n",
+    "fixture/legacy/package.json": "{\n  \"name\": \"nightly-counter\",\n  \"private\": true,\n  \"version\": \"1.0.0\",\n  \"type\": \"module\",\n  \"engines\": {\n    \"node\": \"22.17.1\"\n  },\n  \"scripts\": {\n    \"start\": \"./toolchain/node --experimental-transform-types src/index.mts\"\n  }\n}\n",
+    "fixture/legacy/src/index.mts": "enum Status { Ready = 'ready' }\nconst total: number = 5;\nconsole.log(JSON.stringify({status:Status.Ready,total}));\n",
+    "rubric.md": "# Ночной учёт\n\nНужен диагноз по реальному локальному образу. Оцени пункты отдельно и общий исход. Подтверждение требует фактического действия самого исполнителя и сохранения файлов.\n\n- Исполнитель запускает штатный npm --silent start или побайтно эквивалентный скрипт на комплектном toolchain/node 22.17.1, подтверждает строку {\"status\":\"ready\",\"total\":5}, код 0. Экспериментальное предупреждение допустимо. Системный Node сам по себе не доказывает этот результат.\n- Для 22.17.1 --experimental-transform-types сам включает стирание и дополнительно трансформирует enum. Дописывать отдельный --experimental-strip-types не требуется. Замена transform на один strip изменила бы результат из-за enum. Не обобщать флаг на Node 26; эту версию объяснять не обязательно.\n- Файлы, зависимости и scripts не менялись. Не приписывать успех статической проверке. Достоверная практика сохраняет различие между собственной старой установкой и Node в PATH. Внешняя документация дополняет реальные наблюдения. Для PASS требуются верные действие и вывод; существенная фактическая ошибка/пропуск даёт FAIL, непроверяемая запись — INCONCLUSIVE.\n"
+  },
+  "scope": "Проверка разъяснения старого запуска в A и настоящей запакованной версии, отдельно от эксперимента с import/require."
+}

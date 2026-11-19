@@ -1,0 +1,386 @@
+[
+  {
+    "variant": "A",
+    "case": "ordinary",
+    "label": "e06f4a",
+    "source": "results/e06f4a.json",
+    "argv": [
+      "codex",
+      "exec",
+      "--disable",
+      "memories",
+      "--ephemeral",
+      "--skip-git-repo-check",
+      "--sandbox",
+      "workspace-write",
+      "--model",
+      "gpt-6.2-sol",
+      "-c",
+      "model_reasoning_effort=\"medium\"",
+      "--cd",
+      "{project}",
+      "--json",
+      "--output-last-message",
+      "{answer}",
+      "-"
+    ],
+    "sessionId": "01a1f06a-ea56-7f71-b91f-a8055cdb8ed7",
+    "rawEventSha256": "a1fe0d5b002072e302661a566797cfcd16154d87f8029fee490a50e8132bcf75",
+    "finalAnswerSha256": "c83328ce405c30ce30bb6c0d6fcd5101460e80201a752711da1338f89052347d",
+    "inputCount": 12,
+    "events": 25,
+    "changed": [
+      "handoff.md"
+    ],
+    "allInputModesAndBytesPreserved": true,
+    "observer": {
+      "exit": 0,
+      "added": [
+        "handoff.md"
+      ],
+      "changedInputs": [],
+      "handoff": {
+        "exists": true,
+        "bytes": 3603,
+        "sha256": "a847e931487422ffbd444fe242a794ee402393a82617cdf0953b75aa1c3c95b7"
+      }
+    },
+    "webEvents": 0
+  },
+  {
+    "variant": "A",
+    "case": "boundary",
+    "label": "3350ac",
+    "source": "results/3350ac.json",
+    "argv": [
+      "codex",
+      "exec",
+      "--disable",
+      "memories",
+      "--ephemeral",
+      "--skip-git-repo-check",
+      "--sandbox",
+      "workspace-write",
+      "--model",
+      "gpt-6.2-sol",
+      "-c",
+      "model_reasoning_effort=\"medium\"",
+      "--cd",
+      "{project}",
+      "--json",
+      "--output-last-message",
+      "{answer}",
+      "-"
+    ],
+    "sessionId": "01a1f06b-caaa-7ab1-ad7f-869eb66dee45",
+    "rawEventSha256": "a7b7fe2dc15f6d11bedd8269e95e3f5c6c283648ebb72f0a07219eba15adbe36",
+    "finalAnswerSha256": "2b83eb9af480f6e110bf4beba325cd278eded90d9d43afdfa4d084f1f51f76af",
+    "inputCount": 12,
+    "events": 15,
+    "changed": [
+      "handoff.md"
+    ],
+    "allInputModesAndBytesPreserved": true,
+    "observer": {
+      "exit": 0,
+      "added": [
+        "handoff.md"
+      ],
+      "changedInputs": [],
+      "handoff": {
+        "exists": true,
+        "bytes": 4667,
+        "sha256": "727ab08f8d4421dc1c4bbcadcf6d1938bff1d628132a690fe8cc058820e7c4bb"
+      }
+    },
+    "webEvents": 0
+  },
+  {
+    "variant": "B",
+    "case": "boundary",
+    "label": "597313",
+    "source": "results/597313.json",
+    "argv": [
+      "codex",
+      "exec",
+      "--disable",
+      "memories",
+      "--ephemeral",
+      "--skip-git-repo-check",
+      "--sandbox",
+      "workspace-write",
+      "--model",
+      "gpt-6.2-sol",
+      "-c",
+      "model_reasoning_effort=\"medium\"",
+      "--cd",
+      "{project}",
+      "--json",
+      "--output-last-message",
+      "{answer}",
+      "-"
+    ],
+    "sessionId": "01a1f06c-610e-7391-ab03-e286166aeb63",
+    "rawEventSha256": "649ef4ce7cb0422121930be09f0aa98a5968f8797f0d9c91faf0f599be250b30",
+    "finalAnswerSha256": "d5f10ec1ba1e65c9d148b401f94adf51c8fa32e5b6b47fe98aaa8ac3a91b4903",
+    "inputCount": 12,
+    "events": 21,
+    "changed": [
+      "handoff.md"
+    ],
+    "allInputModesAndBytesPreserved": true,
+    "observer": {
+      "exit": 0,
+      "added": [
+        "handoff.md"
+      ],
+      "changedInputs": [],
+      "handoff": {
+        "exists": true,
+        "bytes": 4619,
+        "sha256": "a9ea4f9a62dc4ea02531083061bba9b00477f4c3f22152976a07c185f75e32f7"
+      }
+    },
+    "webEvents": 0
+  },
+  {
+    "variant": "B",
+    "case": "ordinary",
+    "label": "1c9bc8",
+    "source": "results/1c9bc8.json",
+    "argv": [
+      "codex",
+      "exec",
+      "--disable",
+      "memories",
+      "--ephemeral",
+      "--skip-git-repo-check",
+      "--sandbox",
+      "workspace-write",
+      "--model",
+      "gpt-6.2-sol",
+      "-c",
+      "model_reasoning_effort=\"medium\"",
+      "--cd",
+      "{project}",
+      "--json",
+      "--output-last-message",
+      "{answer}",
+      "-"
+    ],
+    "sessionId": "01a1f06d-0c8f-7571-9d71-d74f2be7bf2a",
+    "rawEventSha256": "3d8deb306d980d768c0671959b7cfe86c0cd6e09ae18aa6a723188f490e3a3d5",
+    "finalAnswerSha256": "5c9ad284e3db8eb98a5b04b84a77fab0567cfa86c5d7e9ef997e01879f16a119",
+    "inputCount": 12,
+    "events": 23,
+    "changed": [
+      "handoff.md"
+    ],
+    "allInputModesAndBytesPreserved": true,
+    "observer": {
+      "exit": 0,
+      "added": [
+        "handoff.md"
+      ],
+      "changedInputs": [],
+      "handoff": {
+        "exists": true,
+        "bytes": 3964,
+        "sha256": "7bc81c82dd5bb443c0e13a07e1aecdcaeacd6ad825a7d1ba3b446c2d1c6114ae"
+      }
+    },
+    "webEvents": 0
+  },
+  {
+    "variant": "A",
+    "case": "holdout",
+    "label": "a34425",
+    "source": "results/a34425.json",
+    "argv": [
+      "codex",
+      "exec",
+      "--disable",
+      "memories",
+      "--ephemeral",
+      "--skip-git-repo-check",
+      "--sandbox",
+      "workspace-write",
+      "--model",
+      "gpt-6.2-sol",
+      "-c",
+      "model_reasoning_effort=\"medium\"",
+      "--cd",
+      "{project}",
+      "--json",
+      "--output-last-message",
+      "{answer}",
+      "-"
+    ],
+    "sessionId": "01a1f072-de42-73a3-9941-490d698f9d6a",
+    "rawEventSha256": "0ffc9ce598b5c6f5f71ee97733b2405e47e53d5eb599921ba5a32868b4a947cc",
+    "finalAnswerSha256": "18646e95ce0f04c3129c6073bd13429e842ace1844d49064eaecded18bfc739b",
+    "inputCount": 12,
+    "events": 19,
+    "changed": [
+      "handoff.md"
+    ],
+    "allInputModesAndBytesPreserved": true,
+    "observer": {
+      "exit": 0,
+      "added": [
+        "handoff.md"
+      ],
+      "changedInputs": [],
+      "handoff": {
+        "exists": true,
+        "bytes": 5753,
+        "sha256": "a562139b2a9a6282ef131f18611640d2c8114b4720b2f7cae97110e60c4aa07c"
+      }
+    },
+    "webEvents": 0
+  },
+  {
+    "variant": "C",
+    "case": "boundary",
+    "label": "efb104",
+    "source": "results/efb104.json",
+    "argv": [
+      "codex",
+      "exec",
+      "--disable",
+      "memories",
+      "--ephemeral",
+      "--skip-git-repo-check",
+      "--sandbox",
+      "workspace-write",
+      "--model",
+      "gpt-6.2-sol",
+      "-c",
+      "model_reasoning_effort=\"medium\"",
+      "--cd",
+      "{project}",
+      "--json",
+      "--output-last-message",
+      "{answer}",
+      "-"
+    ],
+    "sessionId": "01a1f074-05be-7750-83bf-9ce07e1bc7d6",
+    "rawEventSha256": "974a9d53349d720b0999dfdf6bce4dfc4ba28b46b925de4174f80e5f0928b286",
+    "finalAnswerSha256": "4dabb77ec9e0a8071ffee79a7bf48eefa51df149c2585fcdad7e5db6a6fbd0cb",
+    "inputCount": 12,
+    "events": 15,
+    "changed": [
+      "handoff.md"
+    ],
+    "allInputModesAndBytesPreserved": true,
+    "observer": {
+      "exit": 0,
+      "added": [
+        "handoff.md"
+      ],
+      "changedInputs": [],
+      "handoff": {
+        "exists": true,
+        "bytes": 4816,
+        "sha256": "5ccd2e08cdbd1d3e7e24f4bea4abf8f7953b52657cf381a80e747353ab1c491a"
+      }
+    },
+    "webEvents": 0
+  },
+  {
+    "variant": "C",
+    "case": "ordinary",
+    "label": "4cc642",
+    "source": "results/4cc642.json",
+    "argv": [
+      "codex",
+      "exec",
+      "--disable",
+      "memories",
+      "--ephemeral",
+      "--skip-git-repo-check",
+      "--sandbox",
+      "workspace-write",
+      "--model",
+      "gpt-6.2-sol",
+      "-c",
+      "model_reasoning_effort=\"medium\"",
+      "--cd",
+      "{project}",
+      "--json",
+      "--output-last-message",
+      "{answer}",
+      "-"
+    ],
+    "sessionId": "01a1f074-da23-7321-b6f3-dc5763ba8599",
+    "rawEventSha256": "a4f4fa12794eeca07ca24850612c06e244191ae142f86e80b8435de0df9c1387",
+    "finalAnswerSha256": "2a386f703dd4ff32ac0c985dbb3019be52571772d0f3b4356478b43a521761ad",
+    "inputCount": 12,
+    "events": 19,
+    "changed": [
+      "handoff.md"
+    ],
+    "allInputModesAndBytesPreserved": true,
+    "observer": {
+      "exit": 0,
+      "added": [
+        "handoff.md"
+      ],
+      "changedInputs": [],
+      "handoff": {
+        "exists": true,
+        "bytes": 4510,
+        "sha256": "70c3e273ad7e6af5cc629eac81640ea17e027deac90e446852a2898871319c68"
+      }
+    },
+    "webEvents": 0
+  },
+  {
+    "variant": "C",
+    "case": "holdout",
+    "label": "c11249",
+    "source": "results/c11249.json",
+    "argv": [
+      "codex",
+      "exec",
+      "--disable",
+      "memories",
+      "--ephemeral",
+      "--skip-git-repo-check",
+      "--sandbox",
+      "workspace-write",
+      "--model",
+      "gpt-6.2-sol",
+      "-c",
+      "model_reasoning_effort=\"medium\"",
+      "--cd",
+      "{project}",
+      "--json",
+      "--output-last-message",
+      "{answer}",
+      "-"
+    ],
+    "sessionId": "01a1f075-8604-7da2-bed3-b380eac6218d",
+    "rawEventSha256": "4747067c26a1a8c9734e593287882413042bba6bd6e89e5c796404a17bbc4270",
+    "finalAnswerSha256": "73978a2f7107986ec2252f93f160bb4aa3872439c9764c7879cce5fc1ed9232f",
+    "inputCount": 12,
+    "events": 30,
+    "changed": [
+      "handoff.md"
+    ],
+    "allInputModesAndBytesPreserved": true,
+    "observer": {
+      "exit": 0,
+      "added": [
+        "handoff.md"
+      ],
+      "changedInputs": [],
+      "handoff": {
+        "exists": true,
+        "bytes": 5387,
+        "sha256": "f4176140c386f16d0600728b0a217a5445de4bb88a54acc4c901824bd9d8c42a"
+      }
+    },
+    "webEvents": 0
+  }
+]

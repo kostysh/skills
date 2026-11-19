@@ -1,0 +1,152 @@
+{
+  "ordinary": {
+    "version": "1.0.0",
+    "bin": {
+      "tally": "dist/cli.js"
+    },
+    "packageSha256": "43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b",
+    "reads": [
+      {
+        "argv": [
+          "./node_modules/.bin/tally",
+          "--help"
+        ],
+        "exit": 0,
+        "stdout": "tally 1.0.0\nUsage: tally sum <numbers...> [--json]\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "./node_modules/.bin/tally",
+          "--version"
+        ],
+        "exit": 0,
+        "stdout": "1.0.0\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "./node_modules/.bin/tally",
+          "sum",
+          "2",
+          "3",
+          "--json"
+        ],
+        "exit": 0,
+        "stdout": "{\"total\":5}\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "./node_modules/.bin/tally",
+          "sum",
+          "bad",
+          "--json"
+        ],
+        "exit": 2,
+        "stdout": "",
+        "stderr": "Invalid number\n"
+      }
+    ]
+  },
+  "boundary": {
+    "version": "1.2.0",
+    "bin": {
+      "tally": "dist/entry.js"
+    },
+    "packageSha256": "5becc89e02f8be1fb87533130e0ddb46c69a20cfefabcae64e02603757b2638a",
+    "reads": [
+      {
+        "argv": [
+          "./node_modules/.bin/tally",
+          "--help"
+        ],
+        "exit": 0,
+        "stdout": "tally 1.2.0\nUsage: tally sum <numbers...> [--json]\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "./node_modules/.bin/tally",
+          "--version"
+        ],
+        "exit": 0,
+        "stdout": "1.2.0\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "./node_modules/.bin/tally",
+          "sum",
+          "2",
+          "3",
+          "--json"
+        ],
+        "exit": 0,
+        "stdout": "Calculating\n{\"total\":5}\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "./node_modules/.bin/tally",
+          "sum",
+          "bad",
+          "--json"
+        ],
+        "exit": 2,
+        "stdout": "",
+        "stderr": "Invalid number\n"
+      }
+    ]
+  },
+  "holdout": {
+    "version": "1.2.1",
+    "bin": {
+      "tally": "dist/cli.js"
+    },
+    "packageSha256": "a30df8923106a0fe06b0977dc259e91b79c1187f29f2acd0c5e407852bb449f6",
+    "reads": [
+      {
+        "argv": [
+          "./node_modules/.bin/tally",
+          "--help"
+        ],
+        "exit": 0,
+        "stdout": "tally 1.2.1\nUsage: tally sum <numbers...> [--json]\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "./node_modules/.bin/tally",
+          "--version"
+        ],
+        "exit": 0,
+        "stdout": "1.2.1\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "./node_modules/.bin/tally",
+          "sum",
+          "2",
+          "3",
+          "--json"
+        ],
+        "exit": 0,
+        "stdout": "{\"total\":5}\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "./node_modules/.bin/tally",
+          "sum",
+          "bad",
+          "--json"
+        ],
+        "exit": 0,
+        "stdout": "Invalid number\n",
+        "stderr": ""
+      }
+    ]
+  }
+}

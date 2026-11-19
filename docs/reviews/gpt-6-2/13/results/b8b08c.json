@@ -1,0 +1,135 @@
+{
+  "variant": "A",
+  "case": "holdout",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nИспользуй локальное руководство из ./SKILL.md. Для дежурного оператора напиши на русском короткий guide.md по приложенному выпуску Tally. На чистой машине с Node и npm он хочет установить локальный пакет и получить машиночитаемую сумму 2 и 3. Ему также нужно распознать случай с некорректным числом. Укажи в ответе, что удалось проверить в этой среде. Работай локально, сеть и публикация не входят в задачу.\n",
+  "input_file_sha256": {
+    "SKILL.md": "62840325a7575be737e9d123ee6ed9b90481b374c1f78b1fe5069b98f484e283",
+    "ci/summary.md": "f5d6a2cb4d693cc2e51a1bba6d41629b2c8e4ab30200543f3988c556d86477f7",
+    "references/diataxis-guide.md": "2fd3a9fcbedd9fde5b4b4b06bd003b65d1b812b124299f1469a6420ed4e49d87",
+    "release/desk.md": "a1367e9d7611551176d9f83d15052bbe91a5ba00d8ac8220af68c84e7f88f8e3",
+    "release/engineering-tally-fixture-1.1.0.tgz": "b67a76bc3dd46c43e26070c0dee7841942ffe20e853b08e37774a751fa4600e5"
+  },
+  "raw_events_sha256": "46977296f95f4a5bc7e9439751f3cdb5856b7074751e59f63fa9e9f46420a358",
+  "raw_events_bytes": 33141,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Прочитаю локальный `SKILL.md` и проверю выпуск Tally. Затем напишу `guide.md` по результатам локального запуска."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'ls -la && rg --files --hidden && cat ./SKILL.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat release/desk.md ci/summary.md && tar -tvzf release/engineering-tally-fixture-1.1.0.tgz && node --version && npm --version && uname -sm'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'for member in package/package.json package/dist/cli.js package/dist/legacy.js package/README.md; do tar -xOzf release/engineering-tally-fixture-1.1.0.tgz \"$member\"; done'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python3 - <<'PY'\nimport json, os, pathlib, shutil, subprocess, tempfile\n\narchive = pathlib.Path(\\\"release/engineering-tally-fixture-1.1.0.tgz\\\")\nwith tempfile.TemporaryDirectory(prefix=\\\".tally-check-\\\", dir=\\\".\\\") as path:\n    folder = pathlib.Path(path).resolve()\n    shutil.copy2(archive, folder)\n    env = os.environ | {\\\"npm_config_cache\\\": str(folder / \\\".npm-cache\\\"), \\\"TMPDIR\\\": str(folder)}\n    subprocess.run([\\\"npm\\\", \\\"install\\\", \\\"--offline\\\", \\\"--no-audit\\\", \\\"--no-fund\\\", \\\"--ignore-scripts\\\", f\\\"./{archive.name}\\\"], cwd=folder, env=env, check=True)\n    bin_path = \\\"./node_modules/.bin/tally\\\"\n    print(\\\"Installed bin:\\\", (folder / bin_path).readlink())\n    for args in [[\\\"--version\\\"], [\\\"--help\\\"], [\\\"sum\\\", \\\"2\\\", \\\"3\\\", \\\"--machine\\\"], [\\\"sum\\\", \\\"2\\\", \\\"abc\\\", \\\"--machine\\\"], [\\\"sum\\\", \\\"2\\\", \\\"3\\\", \\\"--json\\\"]]:\n        result = subprocess.run([bin_path, *args], cwd=folder, capture_output=True, text=True)\n        print(args, result.returncode, repr(result.stdout), repr(result.stderr))\n        if args == [\\\"sum\\\", \\\"2\\\", \\\"3\\\", \\\"--machine\\\"]:\n            assert result.returncode == 0 and not result.stderr and json.loads(result.stdout) == {\\\"sum\\\": 5}\n        elif args[0] == \\\"sum\\\":\n            assert result.returncode == 2 and not result.stdout and result.stderr == \\\"Number expected\\\\n\\\"\n        else:\n            assert result.returncode == 0 and not result.stderr\nPY\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Установленный Tally 1.1.0 вернул `{\"sum\":5}` с флагом `--machine`. Пример с `abc` завершился с кодом `2`, а флаг `--json` из старой инструкции вызвал ту же ошибку."
+    },
+    {
+      "type": "file_change",
+      "changes": [
+        {
+          "path": "{project}/guide.md",
+          "kind": "add"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python3 - <<'PY'\nimport json, os, pathlib, re, shutil, subprocess, tempfile\n\nguide = pathlib.Path(\\\"guide.md\\\").read_text()\ninstall, success, invalid = re.findall(r\\\"\"'```sh'\"\\\\n(.*?)\\\\n\"'```\", guide, re.S)\nexpected = re.search(r\"```json'\"\\\\n(.*?)\\\\n\"'```\", guide, re.S)[1]\nwith tempfile.TemporaryDirectory(prefix=\".tally-guide-\", dir=\".\") as path:\n    folder = pathlib.Path(path).resolve()\n    shutil.copy2(\"release/engineering-tally-fixture-1.1.0.tgz\", folder)\n    env = os.environ | {\"npm_config_cache\": str(folder / \".npm-cache\"), \"TMPDIR\": str(folder)}\n    def run(block):\n        return subprocess.run([\"sh\", \"-c\", block], cwd=folder, env=env, capture_output=True, text=True)\n    installed = run(install)\n    assert installed.returncode == 0, installed.stderr\n    output = run(success)\n    assert (output.returncode, output.stdout, output.stderr) == (0, expected + \"'\"\\\\n\\\", \\\"\\\")\n    assert json.loads(output.stdout) == {\\\"sum\\\": 5}\n    failure = run(invalid.splitlines()[0])\n    assert (failure.returncode, failure.stdout, failure.stderr) == (2, \\\"\\\", \\\"Number expected\\\\n\\\")\n    example = run(invalid)\n    assert (example.returncode, example.stdout, example.stderr) == (0, \\\"2\\\\n\\\", \\\"Number expected\\\\n\\\")\n    print(\\\"All guide examples passed.\\\")\nPY\nrg --files --hidden\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Написал и проверил [guide.md]({project}/guide.md) для дежурного оператора Tally 1.1.0.\n\nНа Linux x86_64 с Node.js 24.15.0 и npm 12.0.1 установил пакет из приложенного архива в пустую папку и выполнил все команды из руководства в офлайн-режиме.\n\n- `sum 2 3 --machine` вернула `{\"sum\":5}` в stdout и код `0`. stderr остался пустым.\n- `sum 2 abc --machine` вывела `Number expected` в stderr и завершилась с кодом `2`. stdout остался пустым."
+    }
+  ],
+  "changed_file_contents": {
+    "guide.md": "# Как получить сумму в Tally 1.1.0\n\nНа Linux с установленными Node.js и npm поместите архив `engineering-tally-fixture-1.1.0.tgz` в пустую рабочую папку. Откройте терминал в этой папке и установите пакет из архива.\n\n```sh\nnpm install --offline --no-audit --no-fund --ignore-scripts ./engineering-tally-fixture-1.1.0.tgz\n```\n\nЗапустите локальную команду `tally` с флагом `--machine`.\n\n```sh\n./node_modules/.bin/tally sum 2 3 --machine\n```\n\nКод завершения — `0`. В стандартном выводе (stdout) будет одна строка JSON, а поток ошибок (stderr) будет пуст.\n\n```json\n{\"sum\":5}\n```\n\nЧтобы проверить обработку некорректного числа, выполните в терминале:\n\n```sh\n./node_modules/.bin/tally sum 2 abc --machine\necho \"$?\"\n```\n\nКоманда `tally` оставит stdout пустым, выведет `Number expected` в stderr и завершится с кодом `2`. Команда `echo` напечатает этот код.\n"
+  },
+  "final_response": "Написал и проверил [guide.md]({project}/guide.md) для дежурного оператора Tally 1.1.0.\n\nНа Linux x86_64 с Node.js 24.15.0 и npm 12.0.1 установил пакет из приложенного архива в пустую папку и выполнил все команды из руководства в офлайн-режиме.\n\n- `sum 2 3 --machine` вернула `{\"sum\":5}` в stdout и код `0`. stderr остался пустым.\n- `sum 2 abc --machine` вывела `Number expected` в stderr и завершилась с кодом `2`. stdout остался пустым.",
+  "input_file_modes": {
+    "SKILL.md": "0644",
+    "ci/summary.md": "0664",
+    "references/diataxis-guide.md": "0644",
+    "release/desk.md": "0664",
+    "release/engineering-tally-fixture-1.1.0.tgz": "0664"
+  },
+  "changed_file_modes": {
+    "guide.md": "0664"
+  },
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "exit": 0,
+    "changedOriginals": [],
+    "changedFinal": [
+      "guide.md"
+    ],
+    "guideSha256": "058cfa19638040cd92fc1a14d372cb419972b084e4ffeaba960416ecb11b1883",
+    "normalEntryObservations": [
+      {
+        "eventSha256": "c087f6d1ae0e29a239d9ca098f43870feb21981c78f7b4c79b3022ad86ca46a4",
+        "exit": 0,
+        "resultExcerpts": [
+          "Дежурному выдают вложенный архив. Рабочая среда Linux, установлены Node и npm, доступ к сети закрыт. В старой пересылке для программы был указан tally sum 2 3 --json. Оператор работает в новой пустой папке, получает архив и эту инструкцию."
+        ]
+      },
+      {
+        "eventSha256": "391e8195f195c149a9081f34ebfc76411bad90dd51dcd3a14bfb7f261aa32cb0",
+        "exit": 0,
+        "resultExcerpts": [
+          "  \"version\": \"1.1.0\",",
+          "    console.log('tally 1.1.0\\nUsage: tally sum <numbers...> [--machine]');",
+          "    console.log('1.1.0');",
+          "    const json = args.includes('--machine');",
+          "    const values = args.slice(1).filter(x => x !== '--machine').map(Number);",
+          "        console.error('Number expected');",
+          "console.log('legacy tally0.1');"
+        ]
+      },
+      {
+        "eventSha256": "522d06183884d098168b5fbe85b6572b4a3ee5bc1441332f4e36ee3e2cf0665f",
+        "exit": 0,
+        "resultExcerpts": [
+          "['--version'] 0 '1.1.0\\n' ''",
+          "['--help'] 0 'tally 1.1.0\\nUsage: tally sum <numbers...> [--machine]\\n' ''",
+          "['sum', '2', '3', '--machine'] 0 '{\"sum\":5}\\n' ''",
+          "['sum', '2', 'abc', '--machine'] 2 '' 'Number expected\\n'",
+          "['sum', '2', '3', '--json'] 2 '' 'Number expected\\n'"
+        ]
+      },
+      {
+        "eventSha256": "849218e5ac875a478e31e78d2b0f0eb09796b1eefef09c25613289d9e6f4a652",
+        "exit": 0,
+        "resultExcerpts": [
+          "release/engineering-tally-fixture-1.1.0.tgz"
+        ]
+      }
+    ]
+  }
+}

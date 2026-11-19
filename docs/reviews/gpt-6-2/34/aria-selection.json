@@ -1,0 +1,41 @@
+{
+  "officialRegistryItem": "https://ui.shadcn.com/r/styles/aria-nova/toggle-group.json",
+  "registryItemSHA256": "c65aa998e70a1267d4a90629be4b5025efab440caae4d5a05709839906de2e6a",
+  "reactAriaComponents": "1.22.1",
+  "tsc": "6.0.3",
+  "lockSHA256": "5a22159e161abd8439fcbc17649ebac3c98cc86cbe1741596a7492041e42de5e",
+  "cases": {
+    "aria": {
+      "tsx": "import { ToggleButtonGroup } from \"react-aria-components\";\nexport const group = <ToggleButtonGroup selectionMode=\"single\" aria-label=\"View\" />;\n",
+      "command": [
+        "npm",
+        "exec",
+        "--offline",
+        "--",
+        "tsc",
+        "-p",
+        "tsconfig.json",
+        "--pretty",
+        "false"
+      ],
+      "exit": 0,
+      "output": "npm notice run npx\nnpm notice run 'tsc' -p tsconfig.json --pretty false\n"
+    },
+    "radixPropOnAria": {
+      "tsx": "import { ToggleButtonGroup } from \"react-aria-components\";\nexport const group = <ToggleButtonGroup type=\"single\" aria-label=\"View\" />;\n",
+      "command": [
+        "npm",
+        "exec",
+        "--offline",
+        "--",
+        "tsc",
+        "-p",
+        "tsconfig.json",
+        "--pretty",
+        "false"
+      ],
+      "exit": 2,
+      "output": "case.tsx(2,41): error TS2322: Type '{ type: string; \"aria-label\": string; }' is not assignable to type 'IntrinsicAttributes & ToggleButtonGroupProps & RefAttributes<HTMLDivElement>'.\n  Property 'type' does not exist on type 'IntrinsicAttributes & ToggleButtonGroupProps & RefAttributes<HTMLDivElement>'.\nnpm notice run npx\nnpm notice run 'tsc' -p tsconfig.json --pretty false\n"
+    }
+  }
+}

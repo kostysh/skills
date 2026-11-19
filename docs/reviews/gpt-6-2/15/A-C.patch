@@ -1,0 +1,5 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -177 +177 @@
+-2. Use spikes for unknown feasibility and keep each spike tied to a decision it will unblock.
++2. Tie each feasibility spike to the decision it unblocks.

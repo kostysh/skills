@@ -1,0 +1,4 @@
+--- a/guide/gh-utility/references/api-search-and-url-routing.md
++++ b/guide/gh-utility/references/api-search-and-url-routing.md
+@@ -13,0 +14 @@
++| `https://github.com/OWNER/REPO/actions/runs/ID` | `gh run view ID --repo OWNER/REPO`. For a specific attempt, add `--attempt N`. |

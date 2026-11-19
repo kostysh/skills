@@ -1,0 +1,28 @@
+{
+  "frozenAt": "2026-11-18T20:41:39.362766+00:00",
+  "acceptedSnapshot": "4af9221c56defb083ed709ea23b25726daad136c",
+  "archiveSha256": "af8e6edda2830557bf88c10312216b00ac4e180641419e73e31a6b738a45fcbc",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "files": {
+    "A/SKILL.md": "0ac1b78b365d207ca470d53f1a572ecb74fd8401ac2850894b32391939a54757",
+    "A/agents/openai.yaml": "51f2514d7b21571f74146747eb34933f8a0c76416e8999ce5bb82b4ace00b152",
+    "A-B.patch": "3d4cbbb7cd24f0b741ef12b8187496ef61783545e2db872bbdd36ea6354544f5",
+    "B/SKILL.md": "c473ad160d3ecdebdeac59f831348da11d35080fe842c3d6d260960119bf0ec6",
+    "B/agents/openai.yaml": "51f2514d7b21571f74146747eb34933f8a0c76416e8999ce5bb82b4ace00b152",
+    "cases/boundary.md": "f88a92919865a1ada622b1c64721065f108da0f47680d7562789bfabf4d89438",
+    "cases/holdout.md": "f88a92919865a1ada622b1c64721065f108da0f47680d7562789bfabf4d89438",
+    "cases/ordinary.md": "f88a92919865a1ada622b1c64721065f108da0f47680d7562789bfabf4d89438",
+    "fixture/boundary/inbox/2026-11-04.md": "d97a6907b2159b4a0ee7ee420f42fec68a95103127789df21ce7964ee1da2d06",
+    "fixture/boundary/inbox/2026-11-05.md": "126a6521b0a9f89e905cca436fb2f2f7750d4ed67c5d3a73b734db3bf69a90d6",
+    "fixture/boundary/register.md": "38c947aecfceeeb0d68813faac66ca420db0bf05d02d5af03650093c4dc29d73",
+    "fixture/holdout/inbox/2026-11-10.md": "2278d5d7c17164b86383403d1edd8fdcc9ee4f10a7736153e8d70bd741b5950c",
+    "fixture/holdout/inbox/issue-window-r7.csv": "a02cf9b1758a75e8eb6392dcc5503ba56caab3a04208f544fa6df6f798846284",
+    "fixture/holdout/register.md": "7fab7d4b44644c71da32a726be41367edf96be4926432d0d3e9c7121ac68941a",
+    "fixture/ordinary/inbox/2026-11-02.md": "48c8760c5e7762145840ab8f612c5df02dc1c2da861b21f929fdb54f5043904b",
+    "fixture/ordinary/inbox/meeting-notes.md": "41e24655c0e0a79725e9390abfcb9d075c1cfc1d61c89184594910753e3612e9",
+    "fixture/ordinary/inbox/membership-r3.csv": "afefc39085ece687f760bc0ef885bc93325eae96b1993ae093505e7b1cc1e636",
+    "fixture/ordinary/register.md": "9de68c9fd13deca4969c26c5113ed859e2b95330ad09515230c95ae45bf57341",
+    "rubric.md": "f91f6ee4b8dd1932096915e4da325145b467d6b50015c98997fc4c813a074e40"
+  }
+}

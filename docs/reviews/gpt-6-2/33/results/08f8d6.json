@@ -1,0 +1,233 @@
+{
+  "variant": "D",
+  "case": "holdout",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПримени локальное руководство из ./SKILL.md. Для приёмки владельцем выполни формальную проверку поставленной версии catalog против принятого контракта из intake/. Дай заключение в ответе, привяжи каждый существенный вывод к требованию и конкретному проверенному поведению. Саму поставку сохраняй в исходном виде. Разрешено запускать её штатно на расходных локальных данных.\n",
+  "input_file_sha256": {
+    "SKILL.md": "bd35d8ac34060e97f1158dcca1d4d93cbd354f99bb0d9a9943f4f0faf44f765b",
+    "agents/openai.yaml": "cfb46dd79b7c1dbea6f21726d24c55d1ecde761ced9005f103ffb30629c88b2b",
+    "assets/fixtures/consultant-admission-policy.md": "acc3607c90becff03a87356f0e43e094bb023e28ea1e80af64dbd4577c514b53",
+    "catalog/README.md": "a61923dbfb54a07bfaa42ecd38cf4b114787c3b29e48dac6d33887a1cf7b1cc8",
+    "catalog/fixture/catalog.json": "c1ffa5c0464dc1dbaef19ba17bd3f2b383ad46ffd7c35eed6d06dd9bb1ad3991",
+    "catalog/package.json": "430f45fd1e3827efe0aba6fdf1be5a64b76e0c3362ce37e3bb3de8b96e730432",
+    "catalog/src/catalog.mjs": "cd5667c5c8cedd456f4940d40846ec21d759a84d1685b90d2ba33c4142a8585e",
+    "catalog/test/catalog.test.mjs": "6a45eae3808cedb55b2f76befc6e5a421c44c303f16c66929a87f2fffe2b6d1d",
+    "intake/approval.md": "d0df061a230dbf9899a44d79690798502dac8e39324bd6a358d29c4528244bb3",
+    "intake/approved-addendum.md": "09d01560a3b59a692407b28c9110573ed40985e134359e6162cdaca7b6880411",
+    "references/methodology.md": "a568814539648a7850c9342be8bab3fdbe50fb699276c33a4887abbd3211fe45",
+    "references/policy-admission-matrix.md": "cfe2cd85876b46cdd71fd982b15bdbe3cff16e4dc95da48ca53a2c3b28578689",
+    "references/reporting.md": "75c49ef2eb6fc501952112b3e3c47dad83ebc7da4f996ba7e0d11e588795bc25"
+  },
+  "raw_events_sha256": "da0042cad9b9d651a484ef319c9d60476d6a737cc1164fc86e64fe2e2d07458e",
+  "raw_events_bytes": 72852,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Применю локальное руководство из `SKILL.md`, сверю поставку с принятым контрактом и проверю поведение, доступное через штатный запуск. Исходные файлы поставки сохраню."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git'\"' -g '\"'!node_modules'\"'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat SKILL.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat references/methodology.md references/reporting.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'find catalog intake -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'nl -ba intake/approval.md && nl -ba intake/approved-addendum.md && ls -la && ls -la catalog'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'nl -ba catalog/README.md && find catalog -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum | sha256sum && find intake -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum | sha256sum'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'nl -ba catalog/src/catalog.mjs && nl -ba catalog/test/catalog.test.mjs && nl -ba catalog/package.json && nl -ba catalog/fixture/catalog.json'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'node --version && npm --version'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Нина утвердила контракт из `catalog/README.md` и отдельно уточнила, что одинаковые заголовки допустимы. Штатные тесты проверяют закрепление только в памяти, поэтому дополнительно прогоню сохранение и повторное чтение в отдельных процессах."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python3 - <<'PY'\nimport json\nimport subprocess\nimport tempfile\nfrom pathlib import Path\n\nfrom_cli = \\\"import assert from 'node:assert/strict'; import {loadCatalog, setPinned, saveCatalog} from './catalog/src/catalog.mjs'; \\\"\ndef node(code, *args):\n    return subprocess.run(\n        ['node', '--input-type=module', '-e', from_cli + code, *map(str, args)],\n        check=True, capture_output=True, text=True\n    ).stdout.strip()\n\nload = 'console.log(JSON.stringify(loadCatalog(process.argv[1])));'\nsave = \\\"const [path,id,value]=process.argv.slice(1); saveCatalog(path,setPinned(loadCatalog(path),id,value==='true'));\\\"\nmissing = \\\"const path=process.argv[1]; assert.throws(() => saveCatalog(path,setPinned(loadCatalog(path),'missing',true)), /Unknown card: missing/); console.log('Unknown card: missing');\\\"\n\ndef check(label, path, title, prior, requested):\n    initial = [\n        {'id': 'z', 'title': 'Adjacent', 'pinned': not prior},\n        {'id': 'b', 'title': title, 'pinned': prior},\n        {'id': 'a', 'title': 'Target', 'pinned': prior}\n    ]\n    path.write_text(json.dumps(initial))\n    node(save, path, 'a', str(requested).lower())\n    records = json.loads(node(load, path))\n    raw = json.loads(path.read_text())\n    expected = [*initial[:2], {**initial[2], 'pinned': requested}]\n    assert records == raw\n    assert [r['id'] for r in records] == ['z', 'b', 'a']\n    assert [r['title'] for r in records] == [r['title'] for r in initial]\n    assert records[0] == expected[0] and records[2] == expected[2]\n    assert all(set(r) == {'id', 'title', 'pinned'} for r in records)\n    if records \"'!= expected:\n        assert title == '\"'Target'\n        assert records[1] == {**initial[1], 'pinned': requested}\n    print(f'{label}: {\\\"PASS\\\" if records == expected else \\\"FAIL\\\"} expected={json.dumps(expected)} observed={json.dumps(records)}')\n\nwith tempfile.TemporaryDirectory(prefix='.review-catalog.', dir=Path.cwd()) as directory:\n    path = Path(directory) / 'catalog.json'\n    check('unique: pin', path, 'Different', False, True)\n    check('unique: unpin', path, 'Different', True, False)\n    check('duplicate: pin', path, 'Target', False, True)\n    check('duplicate: unpin', path, 'Target', True, False)\n    legacy = [{'id': 'b', 'title': 'Legacy'}, {'id': 'a', 'title': 'Current', 'pinned': True}]\n    path.write_text(json.dumps(legacy))\n    loaded = json.loads(node(load, path))\n    assert loaded == [{**legacy[0], 'pinned': False}, legacy[1]]\n    print(f'legacy: PASS observed={json.dumps(loaded)}')\n    before = path.read_bytes()\n    result = node(missing, path)\n    assert path.read_bytes() == before\n    print(f'missing id: PASS observed={result}; file bytes unchanged')\nPY\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python3 - <<'PY'\nimport os\nimport subprocess\nimport tempfile\nfrom pathlib import Path\n\nwith tempfile.TemporaryDirectory(prefix='.review-npm.', dir=Path.cwd()) as directory:\n    env = dict(os.environ, npm_config_cache=directory, npm_config_update_notifier='false', npm_config_logs_max='0')\n    result = subprocess.run(['npm', 'test'], cwd='catalog', env=env)\n    raise SystemExit(result.returncode)\nPY\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"find catalog -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum | sha256sum && find intake -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum | sha256sum && rg --files --hidden -g '\"'!.git'\"' -g '\"'!node_modules'\"'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "**Поставка `catalog` не соответствует принятому контракту (`non-compliant`).** Закрепление и открепление выбранной карточки переживают сохранение и повторную загрузку, но если у другой карточки тот же заголовок, её состояние тоже меняется. Обязательная команда `npm test` прошла, но этот сценарий штатные тесты пропускают.\n\n### Основание и границы проверки\n\nНина утвердила `catalog/README.md` как контракт автономного выпуска «Клён». Утверждённое дополнение разрешает одинаковые `title`, требует выбора по `id` и сохраняет требование о неизменности остальных карточек. Облачная синхронизация относится к другому продукту. [Решение о приёмке]({project}/intake/approval.md:1) · [Дополнение]({project}/intake/approved-addendum.md:1) · [Контракт]({project}/catalog/README.md:1)\n\nПроверил публичные функции, запись в локальный JSON и повторное чтение в новом процессе Node.js. Сценарии запускал на расходных данных внутри рабочего каталога. Агрегированный SHA-256 `catalog/` — `8349b680d3ec7ba33c91057b1bfaef6e78180cc9f5befaf575fa77f8a9dc4e73`, `intake/` — `6c2dc56d71246c947227e55e047cd6f5a471fe626ef88ab20ab04cb96f808ab7`. Хеши до и после проверки совпали.\n\n### Требования и результаты\n\nВсе требования ниже явно заданы и обязательны.\n\n| ID | Требование и основание | Проверенное поведение | Статус |\n|---|---|---|---|\n| R1 | Каталог хранится в JSON-массиве записей `{ id, title, pinned }`. [Контракт]({project}/catalog/README.md:2) | После сохранения проверил структуру файла и её совпадение с результатом повторной загрузки. [Запись и чтение]({project}/catalog/src/catalog.mjs:3) | `fulfilled` |\n| R2 | Закрепление переживает сохранение и повторную загрузку. [Контракт]({project}/catalog/README.md:3) | В новом процессе у целевой `a` получено `pinned: true` при разных и одинаковых заголовках. [Сохранение]({project}/catalog/src/catalog.mjs:14) | `fulfilled` |\n| R3 | Открепление переживает тот же цикл. [Контракт]({project}/catalog/README.md:4) | В новом процессе у `a` получено `pinned: false` при разных и одинаковых заголовках. [Сохранение]({project}/catalog/src/catalog.mjs:14) | `fulfilled` |\n| R4 | Заголовки сохраняются. [Контракт]({project}/catalog/README.md:4) | Список заголовков совпал с исходным во всех четырёх сценариях изменения. [Запись]({project}/catalog/src/catalog.mjs:14) | `fulfilled` |\n| R5 | Порядок карточек сохраняется. [Контракт]({project}/catalog/README.md:4) | Порядок `z, b, a` сохранился во всех четырёх сценариях. [Изменение и запись]({project}/catalog/src/catalog.mjs:8) | `fulfilled` |\n| R6 | Карточка выбирается по `id`. [Дополнение]({project}/intake/approved-addendum.md:1) | При вызове для `a` обновились и `a`, и `b` с тем же заголовком. Код находит заголовок по `id`, затем обновляет по `title`. [Выбор карточки]({project}/catalog/src/catalog.mjs:8) | `not_fulfilled` |\n| R7 | Остальные карточки сохраняются без изменений, в том числе при одинаковых заголовках. [Контракт]({project}/catalog/README.md:4) · [Дополнение]({project}/intake/approved-addendum.md:1) | При разных заголовках соседние записи сохранились. При совпадении заголовков у `b` сохранилось чужое изменение в обоих направлениях. [Изменение карточек]({project}/catalog/src/catalog.mjs:11) | `not_fulfilled` |\n| R8 | Отсутствующий `id` вызывает ошибку. [Контракт]({project}/catalog/README.md:4) | Для `missing` получена ошибка `Unknown card: missing`. Байты файла остались прежними. [Проверка ID]({project}/catalog/src/catalog.mjs:9) | `fulfilled` |\n| R9 | Старая запись без `pinned` читается как `false`. [Контракт]({project}/catalog/README.md:5) | Запись без поля прочитана с `pinned: false`, соседняя запись с `true` сохранила значение. [Чтение]({project}/catalog/src/catalog.mjs:3) | `fulfilled` |\n| R10 | Приложение работает локально. [Контракт]({project}/catalog/README.md:6) | Штатный цикл выполнен через локальный файл. Чтение и запись используют `node:fs`. [Реализация]({project}/catalog/src/catalog.mjs:1) | `fulfilled` |\n| R11 | Для локальной приёмки используется `npm test`. [Контракт]({project}/catalog/README.md:6) | Команда в `catalog/` завершилась с кодом `0`, прошли 2 теста из 2. [Команда]({project}/catalog/package.json:1) · [Тесты]({project}/catalog/test/catalog.test.mjs:5) | `fulfilled` |\n\n### Блокирующее замечание\n\n**F1 · `major` · R6 и R7.** В двух независимых прогонах карточки `a` и `b` имели одинаковый заголовок. При закреплении `a` значение `b.pinned` после повторной загрузки стало `true` вместо ожидаемого `false`. При откреплении `a` оно стало `false` вместо ожидаемого `true`. Пользователь может изменить состояние чужой карточки обычным вызовом. Владельцу реализации следует ограничить обновление совпадением `id` и подтвердить исправление обоими сценариями после сохранения и повторной загрузки. [Контракт]({project}/catalog/README.md:4) · [Дополнение]({project}/intake/approved-addendum.md:1) · [Причина в коде]({project}/catalog/src/catalog.mjs:8)\n\nШтатные тесты подтверждают немедленную видимость закрепления в памяти и ошибку для отсутствующего `id`. Сохранение, открепление, старые записи и совпадающие заголовки проверены отдельными локальными прогонами. [Штатные тесты]({project}/catalog/test/catalog.test.mjs:5)\n\n**Решение для Нины:** отложить приёмку этой версии до устранения F1. Проверенная поставка и принятые документы сохранены в исходном виде."
+    }
+  ],
+  "changed_file_contents": {},
+  "final_response": "**Поставка `catalog` не соответствует принятому контракту (`non-compliant`).** Закрепление и открепление выбранной карточки переживают сохранение и повторную загрузку, но если у другой карточки тот же заголовок, её состояние тоже меняется. Обязательная команда `npm test` прошла, но этот сценарий штатные тесты пропускают.\n\n### Основание и границы проверки\n\nНина утвердила `catalog/README.md` как контракт автономного выпуска «Клён». Утверждённое дополнение разрешает одинаковые `title`, требует выбора по `id` и сохраняет требование о неизменности остальных карточек. Облачная синхронизация относится к другому продукту. [Решение о приёмке]({project}/intake/approval.md:1) · [Дополнение]({project}/intake/approved-addendum.md:1) · [Контракт]({project}/catalog/README.md:1)\n\nПроверил публичные функции, запись в локальный JSON и повторное чтение в новом процессе Node.js. Сценарии запускал на расходных данных внутри рабочего каталога. Агрегированный SHA-256 `catalog/` — `8349b680d3ec7ba33c91057b1bfaef6e78180cc9f5befaf575fa77f8a9dc4e73`, `intake/` — `6c2dc56d71246c947227e55e047cd6f5a471fe626ef88ab20ab04cb96f808ab7`. Хеши до и после проверки совпали.\n\n### Требования и результаты\n\nВсе требования ниже явно заданы и обязательны.\n\n| ID | Требование и основание | Проверенное поведение | Статус |\n|---|---|---|---|\n| R1 | Каталог хранится в JSON-массиве записей `{ id, title, pinned }`. [Контракт]({project}/catalog/README.md:2) | После сохранения проверил структуру файла и её совпадение с результатом повторной загрузки. [Запись и чтение]({project}/catalog/src/catalog.mjs:3) | `fulfilled` |\n| R2 | Закрепление переживает сохранение и повторную загрузку. [Контракт]({project}/catalog/README.md:3) | В новом процессе у целевой `a` получено `pinned: true` при разных и одинаковых заголовках. [Сохранение]({project}/catalog/src/catalog.mjs:14) | `fulfilled` |\n| R3 | Открепление переживает тот же цикл. [Контракт]({project}/catalog/README.md:4) | В новом процессе у `a` получено `pinned: false` при разных и одинаковых заголовках. [Сохранение]({project}/catalog/src/catalog.mjs:14) | `fulfilled` |\n| R4 | Заголовки сохраняются. [Контракт]({project}/catalog/README.md:4) | Список заголовков совпал с исходным во всех четырёх сценариях изменения. [Запись]({project}/catalog/src/catalog.mjs:14) | `fulfilled` |\n| R5 | Порядок карточек сохраняется. [Контракт]({project}/catalog/README.md:4) | Порядок `z, b, a` сохранился во всех четырёх сценариях. [Изменение и запись]({project}/catalog/src/catalog.mjs:8) | `fulfilled` |\n| R6 | Карточка выбирается по `id`. [Дополнение]({project}/intake/approved-addendum.md:1) | При вызове для `a` обновились и `a`, и `b` с тем же заголовком. Код находит заголовок по `id`, затем обновляет по `title`. [Выбор карточки]({project}/catalog/src/catalog.mjs:8) | `not_fulfilled` |\n| R7 | Остальные карточки сохраняются без изменений, в том числе при одинаковых заголовках. [Контракт]({project}/catalog/README.md:4) · [Дополнение]({project}/intake/approved-addendum.md:1) | При разных заголовках соседние записи сохранились. При совпадении заголовков у `b` сохранилось чужое изменение в обоих направлениях. [Изменение карточек]({project}/catalog/src/catalog.mjs:11) | `not_fulfilled` |\n| R8 | Отсутствующий `id` вызывает ошибку. [Контракт]({project}/catalog/README.md:4) | Для `missing` получена ошибка `Unknown card: missing`. Байты файла остались прежними. [Проверка ID]({project}/catalog/src/catalog.mjs:9) | `fulfilled` |\n| R9 | Старая запись без `pinned` читается как `false`. [Контракт]({project}/catalog/README.md:5) | Запись без поля прочитана с `pinned: false`, соседняя запись с `true` сохранила значение. [Чтение]({project}/catalog/src/catalog.mjs:3) | `fulfilled` |\n| R10 | Приложение работает локально. [Контракт]({project}/catalog/README.md:6) | Штатный цикл выполнен через локальный файл. Чтение и запись используют `node:fs`. [Реализация]({project}/catalog/src/catalog.mjs:1) | `fulfilled` |\n| R11 | Для локальной приёмки используется `npm test`. [Контракт]({project}/catalog/README.md:6) | Команда в `catalog/` завершилась с кодом `0`, прошли 2 теста из 2. [Команда]({project}/catalog/package.json:1) · [Тесты]({project}/catalog/test/catalog.test.mjs:5) | `fulfilled` |\n\n### Блокирующее замечание\n\n**F1 · `major` · R6 и R7.** В двух независимых прогонах карточки `a` и `b` имели одинаковый заголовок. При закреплении `a` значение `b.pinned` после повторной загрузки стало `true` вместо ожидаемого `false`. При откреплении `a` оно стало `false` вместо ожидаемого `true`. Пользователь может изменить состояние чужой карточки обычным вызовом. Владельцу реализации следует ограничить обновление совпадением `id` и подтвердить исправление обоими сценариями после сохранения и повторной загрузки. [Контракт]({project}/catalog/README.md:4) · [Дополнение]({project}/intake/approved-addendum.md:1) · [Причина в коде]({project}/catalog/src/catalog.mjs:8)\n\nШтатные тесты подтверждают немедленную видимость закрепления в памяти и ошибку для отсутствующего `id`. Сохранение, открепление, старые записи и совпадающие заголовки проверены отдельными локальными прогонами. [Штатные тесты]({project}/catalog/test/catalog.test.mjs:5)\n\n**Решение для Нины:** отложить приёмку этой версии до устранения F1. Проверенная поставка и принятые документы сохранены в исходном виде.",
+  "input_file_modes": {
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "assets/fixtures/consultant-admission-policy.md": "0644",
+    "catalog/README.md": "0664",
+    "catalog/fixture/catalog.json": "0664",
+    "catalog/package.json": "0664",
+    "catalog/src/catalog.mjs": "0664",
+    "catalog/test/catalog.test.mjs": "0664",
+    "intake/approval.md": "0664",
+    "intake/approved-addendum.md": "0664",
+    "references/methodology.md": "0644",
+    "references/policy-admission-matrix.md": "0644",
+    "references/reporting.md": "0644"
+  },
+  "changed_file_modes": {},
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "subjectExit": 0,
+    "inputsAndModesUnchanged": true,
+    "changed": [],
+    "caseMatchesAdmission": {
+      "catalog/README.md": "a61923dbfb54a07bfaa42ecd38cf4b114787c3b29e48dac6d33887a1cf7b1cc8",
+      "catalog/fixture/catalog.json": "c1ffa5c0464dc1dbaef19ba17bd3f2b383ad46ffd7c35eed6d06dd9bb1ad3991",
+      "catalog/package.json": "430f45fd1e3827efe0aba6fdf1be5a64b76e0c3362ce37e3bb3de8b96e730432",
+      "catalog/src/catalog.mjs": "cd5667c5c8cedd456f4940d40846ec21d759a84d1685b90d2ba33c4142a8585e",
+      "catalog/test/catalog.test.mjs": "6a45eae3808cedb55b2f76befc6e5a421c44c303f16c66929a87f2fffe2b6d1d",
+      "intake/approval.md": "d0df061a230dbf9899a44d79690798502dac8e39324bd6a358d29c4528244bb3",
+      "intake/approved-addendum.md": "09d01560a3b59a692407b28c9110573ed40985e134359e6162cdaca7b6880411"
+    },
+    "participantOperations": [
+      {
+        "event": "item_1",
+        "eventSha256": "bd765c87114daf2405ca191df2d796da896f3e817c7220473204b33f02126cda",
+        "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git'\"' -g '\"'!node_modules'\"'\"",
+        "exit": 0,
+        "output": ".\ncatalog/README.md\ncatalog/fixture/catalog.json\ncatalog/package.json\ncatalog/src/catalog.mjs\nreferences/methodology.md\nreferences/policy-admission-matrix.md\nreferences/reporting.md\ncatalog/test/catalog.test.mjs\nintake/approval.md\nintake/approved-addendum.md\nSKILL.md\nagents/openai.yaml\nassets/fixtures/consultant-admission-policy.md\n"
+      },
+      {
+        "event": "item_8",
+        "eventSha256": "f82f86e0abb50a94ad731ef00ccd02ee911adc07485c706ed5c6fb8fb5c0c71d",
+        "command": "/bin/bash -lc 'node --version && npm --version'",
+        "exit": 0,
+        "output": "v24.15.0\n12.0.1\n"
+      },
+      {
+        "event": "item_10",
+        "eventSha256": "72b42c2afa4be3f38a47e578c434475484a8272e6b07861d86f0c4257f686033",
+        "command": "/bin/bash -lc \"python3 - <<'PY'\nimport json\nimport subprocess\nimport tempfile\nfrom pathlib import Path\n\nfrom_cli = \\\"import assert from 'node:assert/strict'; import {loadCatalog, setPinned, saveCatalog} from './catalog/src/catalog.mjs'; \\\"\ndef node(code, *args):\n    return subprocess.run(\n        ['node', '--input-type=module', '-e', from_cli + code, *map(str, args)],\n        check=True, capture_output=True, text=True\n    ).stdout.strip()\n\nload = 'console.log(JSON.stringify(loadCatalog(process.argv[1])));'\nsave = \\\"const [path,id,value]=process.argv.slice(1); saveCatalog(path,setPinned(loadCatalog(path),id,value==='true'));\\\"\nmissing = \\\"const path=process.argv[1]; assert.throws(() => saveCatalog(path,setPinned(loadCatalog(path),'missing',true)), /Unknown card: missing/); console.log('Unknown card: missing');\\\"\n\ndef check(label, path, title, prior, requested):\n    initial = [\n        {'id': 'z', 'title': 'Adjacent', 'pinned': not prior},\n        {'id': 'b', 'title': title, 'pinned': prior},\n        {'id': 'a', 'title': 'Target', 'pinned': prior}\n    ]\n    path.write_text(json.dumps(initial))\n    node(save, path, 'a', str(requested).lower())\n    records = json.loads(node(load, path))\n    raw = json.loads(path.read_text())\n    expected = [*initial[:2], {**initial[2], 'pinned': requested}]\n    assert records == raw\n    assert [r['id'] for r in records] == ['z', 'b', 'a']\n    assert [r['title'] for r in records] == [r['title'] for r in initial]\n    assert records[0] == expected[0] and records[2] == expected[2]\n    assert all(set(r) == {'id', 'title', 'pinned'} for r in records)\n    if records \"'!= expected:\n        assert title == '\"'Target'\n        assert records[1] == {**initial[1], 'pinned': requested}\n    print(f'{label}: {\\\"PASS\\\" if records == expected else \\\"FAIL\\\"} expected={json.dumps(expected)} observed={json.dumps(records)}')\n\nwith tempfile.TemporaryDirectory(prefix='.review-catalog.', dir=Path.cwd()) as directory:\n    path = Path(directory) / 'catalog.json'\n    check('unique: pin', path, 'Different', False, True)\n    check('unique: unpin', path, 'Different', True, False)\n    check('duplicate: pin', path, 'Target', False, True)\n    check('duplicate: unpin', path, 'Target', True, False)\n    legacy = [{'id': 'b', 'title': 'Legacy'}, {'id': 'a', 'title': 'Current', 'pinned': True}]\n    path.write_text(json.dumps(legacy))\n    loaded = json.loads(node(load, path))\n    assert loaded == [{**legacy[0], 'pinned': False}, legacy[1]]\n    print(f'legacy: PASS observed={json.dumps(loaded)}')\n    before = path.read_bytes()\n    result = node(missing, path)\n    assert path.read_bytes() == before\n    print(f'missing id: PASS observed={result}; file bytes unchanged')\nPY\"",
+        "exit": 0,
+        "output": "unique: pin: PASS expected=[{\"id\": \"z\", \"title\": \"Adjacent\", \"pinned\": true}, {\"id\": \"b\", \"title\": \"Different\", \"pinned\": false}, {\"id\": \"a\", \"title\": \"Target\", \"pinned\": true}] observed=[{\"id\": \"z\", \"title\": \"Adjacent\", \"pinned\": true}, {\"id\": \"b\", \"title\": \"Different\", \"pinned\": false}, {\"id\": \"a\", \"title\": \"Target\", \"pinned\": true}]\nunique: unpin: PASS expected=[{\"id\": \"z\", \"title\": \"Adjacent\", \"pinned\": false}, {\"id\": \"b\", \"title\": \"Different\", \"pinned\": true}, {\"id\": \"a\", \"title\": \"Target\", \"pinned\": false}] observed=[{\"id\": \"z\", \"title\": \"Adjacent\", \"pinned\": false}, {\"id\": \"b\", \"title\": \"Different\", \"pinned\": true}, {\"id\": \"a\", \"title\": \"Target\", \"pinned\": false}]\nduplicate: pin: FAIL expected=[{\"id\": \"z\", \"title\": \"Adjacent\", \"pinned\": true}, {\"id\": \"b\", \"title\": \"Target\", \"pinned\": false}, {\"id\": \"a\", \"title\": \"Target\", \"pinned\": true}] observed=[{\"id\": \"z\", \"title\": \"Adjacent\", \"pinned\": true}, {\"id\": \"b\", \"title\": \"Target\", \"pinned\": true}, {\"id\": \"a\", \"title\": \"Target\", \"pinned\": true}]\nduplicate: unpin: FAIL expected=[{\"id\": \"z\", \"title\": \"Adjacent\", \"pinned\": false}, {\"id\": \"b\", \"title\": \"Target\", \"pinned\": true}, {\"id\": \"a\", \"title\": \"Target\", \"pinned\": false}] observed=[{\"id\": \"z\", \"title\": \"Adjacent\", \"pinned\": false}, {\"id\": \"b\", \"title\": \"Target\", \"pinned\": false}, {\"id\": \"a\", \"title\": \"Target\", \"pinned\": false}]\nlegacy: PASS observed=[{\"id\": \"b\", \"title\": \"Legacy\", \"pinned\": false}, {\"id\": \"a\", \"title\": \"Current\", \"pinned\": true}]\nmissing id: PASS observed=Unknown card: missing; file bytes unchanged\n"
+      },
+      {
+        "event": "item_11",
+        "eventSha256": "f337cd9b6ae550c4c557037a6980999b2dac8a68d773ee8df35254ba9a178849",
+        "command": "/bin/bash -lc \"python3 - <<'PY'\nimport os\nimport subprocess\nimport tempfile\nfrom pathlib import Path\n\nwith tempfile.TemporaryDirectory(prefix='.review-npm.', dir=Path.cwd()) as directory:\n    env = dict(os.environ, npm_config_cache=directory, npm_config_update_notifier='false', npm_config_logs_max='0')\n    result = subprocess.run(['npm', 'test'], cwd='catalog', env=env)\n    raise SystemExit(result.returncode)\nPY\"",
+        "exit": 0,
+        "output": "npm notice run test\nnpm notice run node --test test/*.test.mjs\n✔ smoke: pinned card is visible immediately (0.901262ms)\n✔ unknown card is rejected (0.292903ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 42.774785\n"
+      },
+      {
+        "event": "item_12",
+        "eventSha256": "ad85879ff9be76a2792b895414dea16d0f2add948a6659ee9921bd29a44a2175",
+        "command": "/bin/bash -lc \"find catalog -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum | sha256sum && find intake -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum | sha256sum && rg --files --hidden -g '\"'!.git'\"' -g '\"'!node_modules'\"'\"",
+        "exit": 0,
+        "output": "8349b680d3ec7ba33c91057b1bfaef6e78180cc9f5befaf575fa77f8a9dc4e73  -\n6c2dc56d71246c947227e55e047cd6f5a471fe626ef88ab20ab04cb96f808ab7  -\ncatalog/README.md\ncatalog/fixture/catalog.json\ncatalog/package.json\ncatalog/src/catalog.mjs\ncatalog/test/catalog.test.mjs\nagents/openai.yaml\nreferences/reporting.md\nreferences/policy-admission-matrix.md\nreferences/methodology.md\nSKILL.md\nintake/approved-addendum.md\nintake/approval.md\nassets/fixtures/consultant-admission-policy.md\n"
+      }
+    ],
+    "separateOrganizerPreflight": {
+      "operatorTests": "✔ smoke: pinned card is visible immediately (1.036468ms)\n✔ unknown card is rejected (0.330775ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 42.732037\n",
+      "state": {
+        "init": [
+          {
+            "id": "a",
+            "title": "Alpha",
+            "pinned": false
+          },
+          {
+            "id": "b",
+            "title": "Alpha",
+            "pinned": true
+          },
+          {
+            "id": "c",
+            "title": "Cedar",
+            "pinned": true
+          }
+        ],
+        "firstRead": [
+          {
+            "id": "a",
+            "title": "Alpha",
+            "pinned": true
+          },
+          {
+            "id": "b",
+            "title": "Alpha",
+            "pinned": true
+          },
+          {
+            "id": "c",
+            "title": "Cedar",
+            "pinned": true
+          }
+        ],
+        "secondRead": [
+          {
+            "id": "a",
+            "title": "Alpha",
+            "pinned": false
+          },
+          {
+            "id": "b",
+            "title": "Alpha",
+            "pinned": false
+          },
+          {
+            "id": "c",
+            "title": "Cedar",
+            "pinned": true
+          }
+        ],
+        "unknownId": "Unknown card: absent"
+      }
+    }
+  }
+}

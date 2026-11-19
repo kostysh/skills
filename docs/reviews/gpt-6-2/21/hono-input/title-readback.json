@@ -1,0 +1,298 @@
+{
+  "method": "Three concurrent assigned callers; one real title-and-ID query per SDK response. Baseline ID-only read ran before exposing the adapter.",
+  "result": {
+    "worker-a": {
+      "list": {
+        "principal": "worker-a",
+        "effectiveDatabaseRole": "desk_employee",
+        "status": 200,
+        "data": [
+          {
+            "id": "amber",
+            "title": "Апрель"
+          },
+          {
+            "id": "cedar",
+            "title": "Июнь"
+          }
+        ],
+        "error": null,
+        "requestId": "eea8f583fc864f"
+      },
+      "cards": {
+        "amber": {
+          "principal": "worker-a",
+          "effectiveDatabaseRole": "desk_employee",
+          "status": 200,
+          "data": [
+            {
+              "id": "amber",
+              "title": "Апрель"
+            }
+          ],
+          "error": null,
+          "requestId": "888587c51c6e4d"
+        },
+        "birch": {
+          "principal": "worker-a",
+          "effectiveDatabaseRole": "desk_employee",
+          "status": 200,
+          "data": [],
+          "error": null,
+          "requestId": "6829d928f1b146"
+        },
+        "cedar": {
+          "principal": "worker-a",
+          "effectiveDatabaseRole": "desk_employee",
+          "status": 200,
+          "data": [
+            {
+              "id": "cedar",
+              "title": "Июнь"
+            }
+          ],
+          "error": null,
+          "requestId": "3cea3b8adec84c"
+        },
+        "dune": {
+          "principal": "worker-a",
+          "effectiveDatabaseRole": "desk_employee",
+          "status": 200,
+          "data": [],
+          "error": null,
+          "requestId": "5dc1e9d29a7a44"
+        },
+        "missing": {
+          "principal": "worker-a",
+          "effectiveDatabaseRole": "desk_employee",
+          "status": 200,
+          "data": [],
+          "error": null,
+          "requestId": "780aa62f4a814d"
+        }
+      }
+    },
+    "worker-b": {
+      "list": {
+        "principal": "worker-b",
+        "effectiveDatabaseRole": "desk_employee",
+        "status": 200,
+        "data": [
+          {
+            "id": "birch",
+            "title": "Май"
+          },
+          {
+            "id": "dune",
+            "title": "Июль"
+          }
+        ],
+        "error": null,
+        "requestId": "90ccdaee50f149"
+      },
+      "cards": {
+        "amber": {
+          "principal": "worker-b",
+          "effectiveDatabaseRole": "desk_employee",
+          "status": 200,
+          "data": [],
+          "error": null,
+          "requestId": "56d5f8e7e2bf4b"
+        },
+        "birch": {
+          "principal": "worker-b",
+          "effectiveDatabaseRole": "desk_employee",
+          "status": 200,
+          "data": [
+            {
+              "id": "birch",
+              "title": "Май"
+            }
+          ],
+          "error": null,
+          "requestId": "b6122ab4223642"
+        },
+        "cedar": {
+          "principal": "worker-b",
+          "effectiveDatabaseRole": "desk_employee",
+          "status": 200,
+          "data": [],
+          "error": null,
+          "requestId": "d04aab91bb5744"
+        },
+        "dune": {
+          "principal": "worker-b",
+          "effectiveDatabaseRole": "desk_employee",
+          "status": 200,
+          "data": [
+            {
+              "id": "dune",
+              "title": "Июль"
+            }
+          ],
+          "error": null,
+          "requestId": "f7691a32e93947"
+        },
+        "missing": {
+          "principal": "worker-b",
+          "effectiveDatabaseRole": "desk_employee",
+          "status": 200,
+          "data": [],
+          "error": null,
+          "requestId": "398239ba125e42"
+        }
+      }
+    },
+    "support": {
+      "list": {
+        "principal": "support",
+        "effectiveDatabaseRole": "desk_support",
+        "status": 200,
+        "data": [
+          {
+            "id": "birch",
+            "title": "Май"
+          },
+          {
+            "id": "cedar",
+            "title": "Июнь"
+          }
+        ],
+        "error": null,
+        "requestId": "116d74f29b154a"
+      },
+      "cards": {
+        "amber": {
+          "principal": "support",
+          "effectiveDatabaseRole": "desk_support",
+          "status": 200,
+          "data": [],
+          "error": null,
+          "requestId": "d30fd06a97914c"
+        },
+        "birch": {
+          "principal": "support",
+          "effectiveDatabaseRole": "desk_support",
+          "status": 200,
+          "data": [
+            {
+              "id": "birch",
+              "title": "Май"
+            }
+          ],
+          "error": null,
+          "requestId": "1c891281c81d44"
+        },
+        "cedar": {
+          "principal": "support",
+          "effectiveDatabaseRole": "desk_support",
+          "status": 200,
+          "data": [
+            {
+              "id": "cedar",
+              "title": "Июнь"
+            }
+          ],
+          "error": null,
+          "requestId": "bb295b5e060a47"
+        },
+        "dune": {
+          "principal": "support",
+          "effectiveDatabaseRole": "desk_support",
+          "status": 200,
+          "data": [],
+          "error": null,
+          "requestId": "2c9e0168ee7f40"
+        },
+        "missing": {
+          "principal": "support",
+          "effectiveDatabaseRole": "desk_support",
+          "status": 200,
+          "data": [],
+          "error": null,
+          "requestId": "e5653970645a46"
+        }
+      }
+    }
+  },
+  "baseline_id_only": {
+    "worker-a": {
+      "role": "desk_employee",
+      "status": 200,
+      "ids": [
+        "amber",
+        "cedar"
+      ],
+      "individual": {
+        "amber": {
+          "status": 200,
+          "ids": [
+            "amber"
+          ]
+        },
+        "birch": {
+          "status": 200,
+          "ids": []
+        },
+        "missing": {
+          "status": 200,
+          "ids": []
+        }
+      }
+    },
+    "worker-b": {
+      "role": "desk_employee",
+      "status": 200,
+      "ids": [
+        "birch",
+        "dune"
+      ],
+      "individual": {
+        "birch": {
+          "status": 200,
+          "ids": [
+            "birch"
+          ]
+        },
+        "amber": {
+          "status": 200,
+          "ids": []
+        },
+        "missing": {
+          "status": 200,
+          "ids": []
+        }
+      }
+    },
+    "support": {
+      "role": "desk_support",
+      "status": 200,
+      "ids": [
+        "birch",
+        "cedar"
+      ],
+      "individual": {
+        "birch": {
+          "status": 200,
+          "ids": [
+            "birch"
+          ]
+        },
+        "amber": {
+          "status": 200,
+          "ids": []
+        },
+        "missing": {
+          "status": 200,
+          "ids": []
+        }
+      }
+    }
+  },
+  "server": "PostgreSQL 18.4 (Debian 18.4-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+  "container_gone": true,
+  "final_rows": 4,
+  "source_sha256": "e6608361b7b1718ab19546e5bf732abf860565f4e718d2baae2769720799e5a5",
+  "adapter_sha256": "9a503a945b80991f7b6706ed0ff5df6f895562b0fdec9ca28bc7c6df0bc507c5",
+  "recorded_gateway_requests": 18
+}

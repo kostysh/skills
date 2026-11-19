@@ -1,0 +1,369 @@
+{
+  "scope": "В каждой записи указан полный исходный файл SKILL.md, зафиксированный в выводе операции. Назначение модели и уровня подтверждено launcher. Просмотр команд не выявил чтения критериев, ключей, других редакций или результатов соседей. Хост позволял чтение файлов вне проекта.",
+  "records": [
+    {
+      "code": "0cc7df",
+      "role": "B",
+      "case": "boundary",
+      "session": "01a1f0ef-8567-75c2-addb-045d44582db8",
+      "rawEventsSha256": "fad7d7f543ca379b433a96646671f534a86d3bc13d7525bee4465d1ba7e7df6f",
+      "answerSha256": "64886999021e0ecc3aaf88590b2f6d7dc5f296571b7f96b5851102b2ff74cf50",
+      "readFullRoot": [
+        {
+          "event": "item_2",
+          "rawLineSha256": "5d7ed60bce3013ea0dc5795df295cd5eb53eaeca49d0c46d15d2841537335dae",
+          "command": "/bin/bash -lc 'cat ./SKILL.md'"
+        }
+      ],
+      "commands": 12,
+      "webOperations": 0,
+      "exit": 0,
+      "allInputsAndModesUnchanged": true,
+      "assignment": {
+        "model": "gpt-6.2-sol",
+        "effort": "medium",
+        "memories": "disabled",
+        "sandbox": "workspace-write",
+        "freshEphemeral": true
+      }
+    },
+    {
+      "code": "76a8f6",
+      "role": "A",
+      "case": "ordinary",
+      "session": "01a1f0ef-8566-7dc0-9756-175496511166",
+      "rawEventsSha256": "1d6b183eca667c4e4d219915f9c556e839744d561ed4887d3c4060c4b48adcbf",
+      "answerSha256": "35347f0893a8849cea9f435d1fe34679a4bbf67ceaf7fba2ed97f31fa6c98195",
+      "readFullRoot": [
+        {
+          "event": "item_1",
+          "rawLineSha256": "300ef4fd814c52f3812faf2a83889db251c14ce2998c7a0333491d56de35c071",
+          "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git/**'\"' && cat SKILL.md\""
+        }
+      ],
+      "commands": 6,
+      "webOperations": 0,
+      "exit": 0,
+      "allInputsAndModesUnchanged": true,
+      "assignment": {
+        "model": "gpt-6.2-sol",
+        "effort": "medium",
+        "memories": "disabled",
+        "sandbox": "workspace-write",
+        "freshEphemeral": true
+      }
+    },
+    {
+      "code": "4d7ef5",
+      "role": "A",
+      "case": "boundary",
+      "session": "01a1f0ef-8568-7cb2-b893-34c7804d8ddc",
+      "rawEventsSha256": "323b82f6d8fa1480156267c45b3964a5093c26482fc818b31a5805f6c19d5ecd",
+      "answerSha256": "8d84896c819f0281633c6ce2dea24bdd091952cd70ea37c379580a5ba82bf783",
+      "readFullRoot": [
+        {
+          "event": "item_1",
+          "rawLineSha256": "71bf802ad794593e98c536307dcbbf11f9bc9dfaeca2de882aff1508b799bdb2",
+          "command": "/bin/bash -lc \"ls -la && rg --files --hidden -g '\"'!.git/**'\"' && cat SKILL.md\""
+        }
+      ],
+      "commands": 7,
+      "webOperations": 0,
+      "exit": 0,
+      "allInputsAndModesUnchanged": true,
+      "assignment": {
+        "model": "gpt-6.2-sol",
+        "effort": "medium",
+        "memories": "disabled",
+        "sandbox": "workspace-write",
+        "freshEphemeral": true
+      }
+    },
+    {
+      "code": "398a34",
+      "role": "B",
+      "case": "ordinary",
+      "session": "01a1f0f0-c4f4-7a92-896d-9d9dd236691e",
+      "rawEventsSha256": "f386b2e6b046283cf39045d1415d4ec16c943027f28202cc9bc4a449c884e1d9",
+      "answerSha256": "9e4f7d20e9e66f81a572a1f432895f1fc7a1a159fdcdfecc0ae7a6ec469b732b",
+      "readFullRoot": [
+        {
+          "event": "item_1",
+          "rawLineSha256": "0f6a0102932ab5550d52a3b8dbf244e3d6ce8ebe48d2facab2764da6d3bceacc",
+          "command": "/bin/bash -lc \"pwd && ls -la && rg --files --hidden -g '\"'!.git'\"' && cat ./SKILL.md\""
+        }
+      ],
+      "commands": 10,
+      "webOperations": 0,
+      "exit": 0,
+      "allInputsAndModesUnchanged": true,
+      "assignment": {
+        "model": "gpt-6.2-sol",
+        "effort": "medium",
+        "memories": "disabled",
+        "sandbox": "workspace-write",
+        "freshEphemeral": true
+      }
+    },
+    {
+      "code": "2a7e56",
+      "role": "C",
+      "case": "boundary",
+      "session": "01a1f0f5-e86a-7e11-ae0c-a306c0564762",
+      "rawEventsSha256": "7dbe42f8091c7bcd2f4e0c8fd0792773ec98c9925c9c1ae279aa450162e15c59",
+      "answerSha256": "46c95bfcaca71915526adc023d905252cb9a970ebb838958fe8ffd0a0b5853bb",
+      "readFullRoot": [
+        {
+          "event": "item_1",
+          "rawLineSha256": "818aca78d0c888cbdca4856945186911f44d0f76fe66da32625dc65f2539c69f",
+          "command": "/bin/bash -lc 'cat ./SKILL.md'"
+        }
+      ],
+      "commands": 9,
+      "webOperations": 0,
+      "exit": 0,
+      "allInputsAndModesUnchanged": true,
+      "assignment": {
+        "model": "gpt-6.2-sol",
+        "effort": "medium",
+        "memories": "disabled",
+        "sandbox": "workspace-write",
+        "freshEphemeral": true
+      }
+    },
+    {
+      "code": "a53430",
+      "role": "C",
+      "case": "holdout",
+      "session": "01a1f0f6-0dec-7e31-8d91-5827c5116fc0",
+      "rawEventsSha256": "6350dd702d9458f4f5def0ec9c91807d00d2e52df4769ef091e142892cfc6220",
+      "answerSha256": "ef15d360e5c191f547866099fda9f8485df0cea250bc793700731753be0d87aa",
+      "readFullRoot": [
+        {
+          "event": "item_1",
+          "rawLineSha256": "818aca78d0c888cbdca4856945186911f44d0f76fe66da32625dc65f2539c69f",
+          "command": "/bin/bash -lc 'cat ./SKILL.md'"
+        }
+      ],
+      "commands": 10,
+      "webOperations": 0,
+      "exit": 0,
+      "allInputsAndModesUnchanged": true,
+      "assignment": {
+        "model": "gpt-6.2-sol",
+        "effort": "medium",
+        "memories": "disabled",
+        "sandbox": "workspace-write",
+        "freshEphemeral": true
+      }
+    },
+    {
+      "code": "92fef2",
+      "role": "C",
+      "case": "ordinary",
+      "session": "01a1f0f7-44d2-7fd0-9ed5-e9280f7a631e",
+      "rawEventsSha256": "841fe4c56ce441d3a30ea08062fb2b629764ccc497a2884ea00d4b88c3d411e7",
+      "answerSha256": "6a5225320ae6ac48d409bda0855b525783301ba0d787980c6a51dfde917bb119",
+      "readFullRoot": [
+        {
+          "event": "item_1",
+          "rawLineSha256": "086bbd939801ee05cada2ab2a3162d8e2a9b2e9faa238efe42d76beef1f97719",
+          "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git/**'\"' && cat ./SKILL.md\""
+        }
+      ],
+      "commands": 8,
+      "webOperations": 0,
+      "exit": 0,
+      "allInputsAndModesUnchanged": true,
+      "assignment": {
+        "model": "gpt-6.2-sol",
+        "effort": "medium",
+        "memories": "disabled",
+        "sandbox": "workspace-write",
+        "freshEphemeral": true
+      }
+    },
+    {
+      "code": "1282f8",
+      "role": "A",
+      "case": "holdout",
+      "session": "01a1f0f7-81fd-76a3-a387-e2409108584e",
+      "rawEventsSha256": "fd6daf198a6b79f8d4b0b82d6794c7dbf0e9dddebfb07093d0fd958235554d0c",
+      "answerSha256": "d95798378803bfaff985edf60197dc1dfe7b413544d21b57e3a11139817b7386",
+      "readFullRoot": [
+        {
+          "event": "item_1",
+          "rawLineSha256": "c9ba9cc436ee320503cab280c50a0b485198fd1ac9e560dd27e4a60486d49b49",
+          "command": "/bin/bash -lc \"ls -la && rg --files --hidden -g '\"'!.git/**'\"' && cat ./SKILL.md\""
+        }
+      ],
+      "commands": 6,
+      "webOperations": 0,
+      "exit": 0,
+      "allInputsAndModesUnchanged": true,
+      "assignment": {
+        "model": "gpt-6.2-sol",
+        "effort": "medium",
+        "memories": "disabled",
+        "sandbox": "workspace-write",
+        "freshEphemeral": true
+      }
+    },
+    {
+      "code": "61bc2f",
+      "role": "D",
+      "case": "ordinary",
+      "session": "01a1f0fe-bae7-7273-8357-fbe4d77fb2cc",
+      "rawEventsSha256": "7c62804bd3d8f813709057bddf24b3f769990526c76076d426f600c6cb81eda3",
+      "answerSha256": "6054a185698c5be3c9faac9d94dc5aa3af2da8baf06583c11f7142c02cd78d73",
+      "readFullRoot": [
+        {
+          "event": "item_1",
+          "rawLineSha256": "c12e5bb395765779ea44fa1f7f2f7da379516375baa5bbeca2c47a79bfb9e8d4",
+          "command": "/bin/bash -lc \"pwd; rg --files --hidden -g '\"'!.git/**'\"'; cat SKILL.md\""
+        }
+      ],
+      "commands": 7,
+      "webOperations": 0,
+      "exit": 0,
+      "allInputsAndModesUnchanged": true,
+      "assignment": {
+        "model": "gpt-6.2-sol",
+        "effort": "medium",
+        "memories": "disabled",
+        "sandbox": "workspace-write",
+        "freshEphemeral": true
+      }
+    },
+    {
+      "code": "5ca662",
+      "role": "D",
+      "case": "open",
+      "session": "01a1f0fe-bae7-7c81-b0d5-afcba2bdd6f1",
+      "rawEventsSha256": "05b8268be8ff02ee908d86752857b86a346d4eee964fe7f4c51fcb1a7036d22f",
+      "answerSha256": "985bfef8cc4fdd5dc9fc333465db5b1d5752c43132b89b5d9973f70dedcbc1e5",
+      "readFullRoot": [
+        {
+          "event": "item_1",
+          "rawLineSha256": "669972c40cdbeb2a8fceadd854d34e887d30ed9a603c7295a922a57ae8b3b443",
+          "command": "/bin/bash -lc \"pwd; rg --files --hidden -g '\"'!.git/**'\"' -g '\"'!.agents/**'\"' -g '\"'!.codex/**'\"' -g '\"'!.aws/**'\"'; cat SKILL.md\""
+        }
+      ],
+      "commands": 5,
+      "webOperations": 0,
+      "exit": 0,
+      "allInputsAndModesUnchanged": true,
+      "assignment": {
+        "model": "gpt-6.2-sol",
+        "effort": "medium",
+        "memories": "disabled",
+        "sandbox": "workspace-write",
+        "freshEphemeral": true
+      }
+    },
+    {
+      "code": "e94f57",
+      "role": "D",
+      "case": "defined",
+      "session": "01a1f100-1517-76e3-a243-49452accdc13",
+      "rawEventsSha256": "69d755467c0ee0c3dc27d87952bb5f1b6ba258a007652d8be09e9310dc89a75d",
+      "answerSha256": "e15fad9f01bf7b1af835ec3065d548a19c2eb09b0f4e412edec2067f0456b43f",
+      "readFullRoot": [
+        {
+          "event": "item_4",
+          "rawLineSha256": "a7235ee3e5ff4f6c83133560552253297f308a6873589f21e99e7ef15df18fdd",
+          "command": "/bin/bash -lc 'cat SKILL.md'"
+        }
+      ],
+      "commands": 10,
+      "webOperations": 0,
+      "exit": 0,
+      "allInputsAndModesUnchanged": true,
+      "assignment": {
+        "model": "gpt-6.2-sol",
+        "effort": "medium",
+        "memories": "disabled",
+        "sandbox": "workspace-write",
+        "freshEphemeral": true
+      }
+    },
+    {
+      "code": "d08dac",
+      "role": "C",
+      "case": "ordinary",
+      "session": "01a1f100-1da2-77b1-8bc6-cdf0f23ef5b1",
+      "rawEventsSha256": "9e276d7e1dbdf49e175df7d09f56ed1315dc52a67c727b1a8ef046c8fe70117a",
+      "answerSha256": "9f5688427b9c190ffcee5cd54b131e9f2b846c312758bed67a00e05559897b84",
+      "readFullRoot": [
+        {
+          "event": "item_1",
+          "rawLineSha256": "2fb2d4aa7568e5b060a02ec523b0e1fe69832bdde03d80c2e81823298715b46f",
+          "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git'\"' && cat ./SKILL.md\""
+        }
+      ],
+      "commands": 10,
+      "webOperations": 0,
+      "exit": 0,
+      "allInputsAndModesUnchanged": true,
+      "assignment": {
+        "model": "gpt-6.2-sol",
+        "effort": "medium",
+        "memories": "disabled",
+        "sandbox": "workspace-write",
+        "freshEphemeral": true
+      }
+    },
+    {
+      "code": "aa3e97",
+      "role": "D",
+      "case": "boundary",
+      "session": "01a1f101-70bc-7ea2-a2e7-b1a67ddd04cc",
+      "rawEventsSha256": "4c7206eb64d32d1ff2b5ac38a0f246d0b358293e3cc2ad612860c82c7997bec0",
+      "answerSha256": "26cc21f1579604361bff24be7aa056e3afdd66e2e933e45596d95753b03767d4",
+      "readFullRoot": [
+        {
+          "event": "item_3",
+          "rawLineSha256": "1d4a24d704ca2e32abe1cce5204761a9c697d177b65e6c24c5acf33381e73e03",
+          "command": "/bin/bash -lc 'cat SKILL.md'"
+        }
+      ],
+      "commands": 9,
+      "webOperations": 0,
+      "exit": 0,
+      "allInputsAndModesUnchanged": true,
+      "assignment": {
+        "model": "gpt-6.2-sol",
+        "effort": "medium",
+        "memories": "disabled",
+        "sandbox": "workspace-write",
+        "freshEphemeral": true
+      }
+    },
+    {
+      "code": "08f8d6",
+      "role": "D",
+      "case": "holdout",
+      "session": "01a1f100-3d62-7c20-b1e6-c67c64d71b7a",
+      "rawEventsSha256": "da0042cad9b9d651a484ef319c9d60476d6a737cc1164fc86e64fe2e2d07458e",
+      "answerSha256": "a96797d54ce6230d60a24b67ef7c5e6158ba1372475a74ff3767448e5bec9d78",
+      "readFullRoot": [
+        {
+          "event": "item_2",
+          "rawLineSha256": "e715257f2fe6e76dfbc9b6e88685552555213a5c7bcaa0beed22902e469702b8",
+          "command": "/bin/bash -lc 'cat SKILL.md'"
+        }
+      ],
+      "commands": 11,
+      "webOperations": 0,
+      "exit": 0,
+      "allInputsAndModesUnchanged": true,
+      "assignment": {
+        "model": "gpt-6.2-sol",
+        "effort": "medium",
+        "memories": "disabled",
+        "sandbox": "workspace-write",
+        "freshEphemeral": true
+      }
+    }
+  ]
+}

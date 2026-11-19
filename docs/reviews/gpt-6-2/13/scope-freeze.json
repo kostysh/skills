@@ -1,0 +1,33 @@
+{
+  "sealedUtc": "2026-11-18T21:42:53.722798+00:00",
+  "source": "same real release/ci fixtures as initial freeze",
+  "files": {
+    "cases/boundary.md": "e5aea1bd89ce1121eeed9786aacf7811abdbe060000691ff10e59554e7c262d6",
+    "cases/exception.md": "5481ae4bac00ef0d02e7479a49854fbe9df281daee523594b44a24b8582bce43",
+    "cases/holdout.md": "e5aea1bd89ce1121eeed9786aacf7811abdbe060000691ff10e59554e7c262d6",
+    "cases/ordinary.md": "e5aea1bd89ce1121eeed9786aacf7811abdbe060000691ff10e59554e7c262d6",
+    "cases/public.md": "29d402fd383956bf94d451c847d4a7ad041bc64fabf1254cd3232c90c6ac80df",
+    "fixture/boundary/ci/summary.md": "f5d6a2cb4d693cc2e51a1bba6d41629b2c8e4ab30200543f3988c556d86477f7",
+    "fixture/boundary/release/desk.md": "a1367e9d7611551176d9f83d15052bbe91a5ba00d8ac8220af68c84e7f88f8e3",
+    "fixture/boundary/release/engineering-tally-fixture-1.0.1.tgz": "fc945d08751947095e3e8ea2e7575d8efdfec67f1779ac357362f0c77c751a4b",
+    "fixture/exception/ci/summary.md": "f5d6a2cb4d693cc2e51a1bba6d41629b2c8e4ab30200543f3988c556d86477f7",
+    "fixture/exception/release/desk.md": "a1367e9d7611551176d9f83d15052bbe91a5ba00d8ac8220af68c84e7f88f8e3",
+    "fixture/exception/release/engineering-tally-fixture-1.0.1.tgz": "fc945d08751947095e3e8ea2e7575d8efdfec67f1779ac357362f0c77c751a4b",
+    "fixture/holdout/ci/summary.md": "f5d6a2cb4d693cc2e51a1bba6d41629b2c8e4ab30200543f3988c556d86477f7",
+    "fixture/holdout/release/desk.md": "a1367e9d7611551176d9f83d15052bbe91a5ba00d8ac8220af68c84e7f88f8e3",
+    "fixture/holdout/release/engineering-tally-fixture-1.1.0.tgz": "b67a76bc3dd46c43e26070c0dee7841942ffe20e853b08e37774a751fa4600e5",
+    "fixture/ordinary/ci/summary.md": "f5d6a2cb4d693cc2e51a1bba6d41629b2c8e4ab30200543f3988c556d86477f7",
+    "fixture/ordinary/release/desk.md": "a1367e9d7611551176d9f83d15052bbe91a5ba00d8ac8220af68c84e7f88f8e3",
+    "fixture/ordinary/release/engineering-tally-fixture-1.0.0.tgz": "43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b",
+    "fixture/public/ci/summary.md": "f5d6a2cb4d693cc2e51a1bba6d41629b2c8e4ab30200543f3988c556d86477f7",
+    "fixture/public/release/desk.md": "a1367e9d7611551176d9f83d15052bbe91a5ba00d8ac8220af68c84e7f88f8e3",
+    "fixture/public/release/engineering-tally-fixture-1.0.1.tgz": "fc945d08751947095e3e8ea2e7575d8efdfec67f1779ac357362f0c77c751a4b",
+    "reader.md": "dba86f18033f3a2697e320cdbcb8f8e41a42898495a1d03048a27e931c5f1640",
+    "rubric.md": "8776e2dc95485df5ed03dd92980181cbeae6bc8a090a50bb23be4c485fabdec7"
+  },
+  "planned": [
+    "C1 on the matched explicit tasks before deciding",
+    "if the shipped instruction changes: original broad case, allowed public-only and workaround tasks and working 1.0.0 and 1.1.0 releases through final packaged skill",
+    "reader receives only newly authored guide and its tarball; durable evidence is checked separately from the author"
+  ]
+}

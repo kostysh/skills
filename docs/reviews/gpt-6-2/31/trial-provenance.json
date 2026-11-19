@@ -1,0 +1,412 @@
+{
+  "rawArchiveSHA256": "39b86b49487d251f9cd83247838b316ccd41b5b837928affa83dd0a71e9eb09e",
+  "subjects": {
+    "597dcf": {
+      "stage": "ab",
+      "role": "A",
+      "case": "boundary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "fb1838a9ad32911ec71a7563f273292eb7c586e3069184fc74d0d0149be9a52c",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "Read-only analysis does not authorize installs, fixes, builds, clearing generated state, servers or publication. For authorized implementation, run applicable repository gates and rendered checks for the changed behavior. A missing environment or external service limits the affected claim; it does not erase verified local work. Report observed facts, hypotheses, performed checks and remaining gaps separately. A build/config alone proves neither search results nor canonical deployment nor a reader's ability to execute documented instructions."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "f7c4ac2e5751f11ea258245a74f84ad12b684473b810f9fce855cedd37950ff8"
+        }
+      ],
+      "finalAnswerSHA256": "316686fc339c6a6e8372e0e074bc778967ccd803472235063cec7a3463d3828c",
+      "eventSHA256": "45154f4334cde08a0647338f1083bfcc8e8ace68ef6196a5a9400b605c90c062",
+      "exit": 0
+    },
+    "550d7a": {
+      "stage": "ab",
+      "role": "A",
+      "case": "ordinary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "fb1838a9ad32911ec71a7563f273292eb7c586e3069184fc74d0d0149be9a52c",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "Read-only analysis does not authorize installs, fixes, builds, clearing generated state, servers or publication. For authorized implementation, run applicable repository gates and rendered checks for the changed behavior. A missing environment or external service limits the affected claim; it does not erase verified local work. Report observed facts, hypotheses, performed checks and remaining gaps separately. A build/config alone proves neither search results nor canonical deployment nor a reader's ability to execute documented instructions."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_1",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "acc6568134937d63a0ff99c6e444cf9b82bda29c43fc581a618cef796286ccd7"
+        }
+      ],
+      "finalAnswerSHA256": "5188d345a3a102cd140a2f5c59adbc3edd5e430c78617bf17b8e588ccde6edb8",
+      "eventSHA256": "32adfe4ade0af8c32e598691f63157bfc6355695124900960c81824230d430f8",
+      "exit": 0
+    },
+    "d15867": {
+      "stage": "ab",
+      "role": "B",
+      "case": "boundary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "667134a75975c74ffaad4fc60a787ed65023857eb9c9d3f2444d010b99e4e827",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "Read-only analysis does not authorize installs, fixes, builds, clearing generated state, servers or publication. For authorized implementation, run applicable repository gates and rendered checks for the changed behavior. A missing environment or external service limits the affected claim; it does not erase verified local work. Report observed facts, hypotheses, performed checks and remaining gaps separately. A build/config alone proves neither search results nor canonical deployment."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "1e360bc3e33cddda7d8dc995e3cb3435dd8deb2d1ca92161ec511b72908c4cd0"
+        }
+      ],
+      "finalAnswerSHA256": "7daa317690ec47d6927ab229d20d3f6114d60bbe3a25e2aea71ea2e2bd738e76",
+      "eventSHA256": "4053eed88fc9a0373dae6f1d0533b6865e4c65956e317bd5ce0d7ab4892de01a",
+      "exit": 0
+    },
+    "500f6f": {
+      "stage": "ab",
+      "role": "B",
+      "case": "ordinary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "667134a75975c74ffaad4fc60a787ed65023857eb9c9d3f2444d010b99e4e827",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "Read-only analysis does not authorize installs, fixes, builds, clearing generated state, servers or publication. For authorized implementation, run applicable repository gates and rendered checks for the changed behavior. A missing environment or external service limits the affected claim; it does not erase verified local work. Report observed facts, hypotheses, performed checks and remaining gaps separately. A build/config alone proves neither search results nor canonical deployment."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_1",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "6213d09988af202d5533c404c82c973ec55932377c0ac9c152cbc550e0065825"
+        }
+      ],
+      "finalAnswerSHA256": "40229ae8a51cbb223476bdc64c6dd289ad72927e729f61d312e8a54b8d1113dd",
+      "eventSHA256": "f25b4dc57a0d3eae6c9bb96baa682f65e54573e8ea031ca920f1848c70414fc5",
+      "exit": 0
+    },
+    "2aeaf6": {
+      "stage": "confirm",
+      "role": "C",
+      "case": "holdout",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "2a1d482534c64d9fe91c0b07184d1d01ab9039e47beec71a887655321048021f",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "Read-only analysis does not authorize installs, fixes, builds, clearing generated state, servers or publication. For authorized implementation, run applicable repository gates and rendered checks for the changed behavior. A missing environment or external service limits the affected claim; it does not erase verified local work. Report observed facts, hypotheses, performed checks and remaining gaps separately. A build/config alone proves neither search results nor canonical deployment. Verify the reader can run the documented command."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_1",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "ff65808abd24db6f4a05f61cf86d6760aae01f1b1b6c8956dcff55b538bb6e8e"
+        }
+      ],
+      "finalAnswerSHA256": "4c328aa975473af8a3fd0f643eb978bd219f27143d5dd0b98ec26cbac6fdbab8",
+      "eventSHA256": "70c5f26887b6b3988228c9b482498c44dd867987b2c88adc8429bda4f0a16f89",
+      "exit": 0
+    },
+    "73c55d": {
+      "stage": "confirm",
+      "role": "C",
+      "case": "boundary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "2a1d482534c64d9fe91c0b07184d1d01ab9039e47beec71a887655321048021f",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "Read-only analysis does not authorize installs, fixes, builds, clearing generated state, servers or publication. For authorized implementation, run applicable repository gates and rendered checks for the changed behavior. A missing environment or external service limits the affected claim; it does not erase verified local work. Report observed facts, hypotheses, performed checks and remaining gaps separately. A build/config alone proves neither search results nor canonical deployment. Verify the reader can run the documented command."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_1",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "728a37f5ebd56a188dbdf5ecf2c6e31827f37ac562583d5d2e272842787744c0"
+        }
+      ],
+      "finalAnswerSHA256": "06b7e9111b9e323110458cd30116e6504753cc89b604ed31cf26ea91825c27df",
+      "eventSHA256": "4fcecafa2b39ff62b4e5a5a2af8d7a1e23f02b48d6bd8fbcec589fbdc39d0071",
+      "exit": 0
+    },
+    "8cbb97": {
+      "stage": "confirm",
+      "role": "A",
+      "case": "holdout",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "fb1838a9ad32911ec71a7563f273292eb7c586e3069184fc74d0d0149be9a52c",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "Read-only analysis does not authorize installs, fixes, builds, clearing generated state, servers or publication. For authorized implementation, run applicable repository gates and rendered checks for the changed behavior. A missing environment or external service limits the affected claim; it does not erase verified local work. Report observed facts, hypotheses, performed checks and remaining gaps separately. A build/config alone proves neither search results nor canonical deployment nor a reader's ability to execute documented instructions."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "a165d1637e31b2e0881c445ee79c163e48983055ef1adbc395e8a3ddb9874e4e"
+        }
+      ],
+      "finalAnswerSHA256": "dbeadd7800c343fac34ff0d98afe5c9e47e4179eb65ec231bcac48c71bcd1e28",
+      "eventSHA256": "c9d4e18db74ec8d9cabfe88cd0eb8aa00ff022dc22aa8599a6b2cd975744c025",
+      "exit": 0
+    },
+    "404521": {
+      "stage": "confirm",
+      "role": "C",
+      "case": "ordinary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "2a1d482534c64d9fe91c0b07184d1d01ab9039e47beec71a887655321048021f",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "Read-only analysis does not authorize installs, fixes, builds, clearing generated state, servers or publication. For authorized implementation, run applicable repository gates and rendered checks for the changed behavior. A missing environment or external service limits the affected claim; it does not erase verified local work. Report observed facts, hypotheses, performed checks and remaining gaps separately. A build/config alone proves neither search results nor canonical deployment. Verify the reader can run the documented command."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_1",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "3d31b307708163a70b39cfe3c750320ae5ccd250bff0ed5574300c06f696d7e1"
+        }
+      ],
+      "finalAnswerSHA256": "59b2d642abfe1beeabf4f21e50cb2342640f1bb1cc7b36ead5acee38de3e04e0",
+      "eventSHA256": "bdd73f7e29f7f3af7c00984841f9bde2a3cc12a1076cd43e1ae0a5ca54adae21",
+      "exit": 0
+    }
+  },
+  "graders": {
+    "ab": {
+      "originalReportSHA256": "84d3b15f549c87620b37652c34eb5f62bccb620f30037c4fbc1f8596ab949b61",
+      "portableReportSHA256": "0f938182ee56ce176fae3a31abdf881d3a4da5a04c906acb6e7699035bfef7ba",
+      "eventsSHA256": "913cc30d43bbc0d97dc47f304321335c9083d883ae877d8463a8df71b81c80fc",
+      "assignment": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"high\"",
+      "deliveredInputs": {
+        "criteria.md": "6aa88be722488315ec54a07890bd945807b3f8560dab8a84dbbd69b15a22d756",
+        "500f6f/actions.json": "42692d2552281bb8a115f914c5864e50e1caabc6436680bf08621bbc4c869d10",
+        "500f6f/observer.json": "3b6e80557568bf235d914b69c916c6272acc7564ca62c2451ef49ea962733ba6",
+        "500f6f/answer.md": "40229ae8a51cbb223476bdc64c6dd289ad72927e729f61d312e8a54b8d1113dd",
+        "500f6f/task.md": "63ea8cf474c596a2fbba3b921f00b548fc4d8ab6ad2dfccbef86041b70249c09",
+        "d15867/actions.json": "cee095170b108bdacf43453c3d76dabf22552c73b47d5c4bb5d456f2a3346bbc",
+        "d15867/observer.json": "11bf1629de4a4ae62d43a31cedb7dcf72cf522980c8741b039a60b78a9350cbc",
+        "d15867/answer.md": "7daa317690ec47d6927ab229d20d3f6114d60bbe3a25e2aea71ea2e2bd738e76",
+        "d15867/task.md": "63ea8cf474c596a2fbba3b921f00b548fc4d8ab6ad2dfccbef86041b70249c09",
+        "550d7a/actions.json": "505955bde2044059b261b7b955291d6cdda62ad7876292f8a0b09883d405e330",
+        "550d7a/observer.json": "c27b939c7f80c3268e0665ef6005b398f3bfd969941597a71da6e719f05e4f54",
+        "550d7a/answer.md": "5188d345a3a102cd140a2f5c59adbc3edd5e430c78617bf17b8e588ccde6edb8",
+        "550d7a/task.md": "63ea8cf474c596a2fbba3b921f00b548fc4d8ab6ad2dfccbef86041b70249c09",
+        "597dcf/actions.json": "c1d44f0e4b5130cf7415a1ed7d0bc4fba5c17538d4056ac0d10f6a7c494280e8",
+        "597dcf/observer.json": "4ec120c9e17f8664a60ee02c0e55ab39bcf357ebf32338f1850948a154b3edd5",
+        "597dcf/answer.md": "316686fc339c6a6e8372e0e074bc778967ccd803472235063cec7a3463d3828c",
+        "597dcf/task.md": "63ea8cf474c596a2fbba3b921f00b548fc4d8ab6ad2dfccbef86041b70249c09",
+        "597dcf/after/ticket.md": "09509ffbbc66d32ab46a6c6d8239b17734f6429446737e6d9638c4dc44ef07b1",
+        "597dcf/after/site.md": "720de36dcfc26d2364c336c8256dc665ca4e0753bd1f6bcc4917c948c5fe952a",
+        "597dcf/after/build-facts.json": "2a92cae23bd5a0ea6cc1690932bd0105c6a061d6a2fbdb2433811d0bab04d59c",
+        "597dcf/before/ticket.md": "09509ffbbc66d32ab46a6c6d8239b17734f6429446737e6d9638c4dc44ef07b1",
+        "597dcf/before/site.md": "720de36dcfc26d2364c336c8256dc665ca4e0753bd1f6bcc4917c948c5fe952a",
+        "597dcf/before/build-facts.json": "2a92cae23bd5a0ea6cc1690932bd0105c6a061d6a2fbdb2433811d0bab04d59c",
+        "597dcf/before/release/engineering-tally-fixture-1.0.0.tgz": "43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b",
+        "597dcf/after/release/engineering-tally-fixture-1.0.0.tgz": "43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b",
+        "550d7a/after/ticket.md": "25ad438afe1bc52b49fece5dda7a897c9b279bbf59b145eb4a28cd8e9ed508d0",
+        "550d7a/after/site.md": "720de36dcfc26d2364c336c8256dc665ca4e0753bd1f6bcc4917c948c5fe952a",
+        "550d7a/after/build-facts.json": "2a92cae23bd5a0ea6cc1690932bd0105c6a061d6a2fbdb2433811d0bab04d59c",
+        "550d7a/before/ticket.md": "25ad438afe1bc52b49fece5dda7a897c9b279bbf59b145eb4a28cd8e9ed508d0",
+        "550d7a/before/site.md": "720de36dcfc26d2364c336c8256dc665ca4e0753bd1f6bcc4917c948c5fe952a",
+        "550d7a/before/build-facts.json": "2a92cae23bd5a0ea6cc1690932bd0105c6a061d6a2fbdb2433811d0bab04d59c",
+        "550d7a/before/release/engineering-tally-fixture-1.1.0.tgz": "b67a76bc3dd46c43e26070c0dee7841942ffe20e853b08e37774a751fa4600e5",
+        "550d7a/after/release/engineering-tally-fixture-1.1.0.tgz": "b67a76bc3dd46c43e26070c0dee7841942ffe20e853b08e37774a751fa4600e5",
+        "d15867/after/ticket.md": "09509ffbbc66d32ab46a6c6d8239b17734f6429446737e6d9638c4dc44ef07b1",
+        "d15867/after/site.md": "720de36dcfc26d2364c336c8256dc665ca4e0753bd1f6bcc4917c948c5fe952a",
+        "d15867/after/build-facts.json": "2a92cae23bd5a0ea6cc1690932bd0105c6a061d6a2fbdb2433811d0bab04d59c",
+        "d15867/before/ticket.md": "09509ffbbc66d32ab46a6c6d8239b17734f6429446737e6d9638c4dc44ef07b1",
+        "d15867/before/site.md": "720de36dcfc26d2364c336c8256dc665ca4e0753bd1f6bcc4917c948c5fe952a",
+        "d15867/before/build-facts.json": "2a92cae23bd5a0ea6cc1690932bd0105c6a061d6a2fbdb2433811d0bab04d59c",
+        "d15867/before/release/engineering-tally-fixture-1.0.0.tgz": "43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b",
+        "d15867/after/release/engineering-tally-fixture-1.0.0.tgz": "43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b",
+        "500f6f/after/ticket.md": "25ad438afe1bc52b49fece5dda7a897c9b279bbf59b145eb4a28cd8e9ed508d0",
+        "500f6f/after/site.md": "720de36dcfc26d2364c336c8256dc665ca4e0753bd1f6bcc4917c948c5fe952a",
+        "500f6f/after/build-facts.json": "2a92cae23bd5a0ea6cc1690932bd0105c6a061d6a2fbdb2433811d0bab04d59c",
+        "500f6f/before/ticket.md": "25ad438afe1bc52b49fece5dda7a897c9b279bbf59b145eb4a28cd8e9ed508d0",
+        "500f6f/before/site.md": "720de36dcfc26d2364c336c8256dc665ca4e0753bd1f6bcc4917c948c5fe952a",
+        "500f6f/before/build-facts.json": "2a92cae23bd5a0ea6cc1690932bd0105c6a061d6a2fbdb2433811d0bab04d59c",
+        "500f6f/before/release/engineering-tally-fixture-1.1.0.tgz": "b67a76bc3dd46c43e26070c0dee7841942ffe20e853b08e37774a751fa4600e5",
+        "500f6f/after/release/engineering-tally-fixture-1.1.0.tgz": "b67a76bc3dd46c43e26070c0dee7841942ffe20e853b08e37774a751fa4600e5"
+      },
+      "postSignMapping": [
+        {
+          "role": "A",
+          "case": "boundary",
+          "label": "597dcf"
+        },
+        {
+          "role": "A",
+          "case": "ordinary",
+          "label": "550d7a"
+        },
+        {
+          "role": "B",
+          "case": "boundary",
+          "label": "d15867"
+        },
+        {
+          "role": "B",
+          "case": "ordinary",
+          "label": "500f6f"
+        }
+      ]
+    },
+    "confirm": {
+      "originalReportSHA256": "12620460e80d80f031a344e06541677282ce4d1243fd0011dca8e30dff45e4a7",
+      "portableReportSHA256": "de3d99661f82570cd14897c98f8a9459584b9fc190ede13f5e32f16a5718cb86",
+      "eventsSHA256": "0bf03ae748fb66965bbf89b1d88535ed6aaddc0a367a3a76ec8fdf781e13a88c",
+      "assignment": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"high\"",
+      "deliveredInputs": {
+        "criteria.md": "6aa88be722488315ec54a07890bd945807b3f8560dab8a84dbbd69b15a22d756",
+        "4cf69b/actions.json": "c1d44f0e4b5130cf7415a1ed7d0bc4fba5c17538d4056ac0d10f6a7c494280e8",
+        "4cf69b/observer.json": "4ec120c9e17f8664a60ee02c0e55ab39bcf357ebf32338f1850948a154b3edd5",
+        "4cf69b/answer.md": "316686fc339c6a6e8372e0e074bc778967ccd803472235063cec7a3463d3828c",
+        "4cf69b/task.md": "63ea8cf474c596a2fbba3b921f00b548fc4d8ab6ad2dfccbef86041b70249c09",
+        "73c55d/actions.json": "f90bb7179ac6163ec48cf7ce38458d85f0b6037aa8e8de465d7a438ca0004c2c",
+        "73c55d/observer.json": "23654d6573a97fd755453fd20baeb4fa67dd68551aedf1cd5fb42f7003c4e8c8",
+        "73c55d/answer.md": "06b7e9111b9e323110458cd30116e6504753cc89b604ed31cf26ea91825c27df",
+        "73c55d/task.md": "63ea8cf474c596a2fbba3b921f00b548fc4d8ab6ad2dfccbef86041b70249c09",
+        "404521/actions.json": "82cd9e852a9a47b060d67f1a31d53e6b670ed3a2c310f6efc3b9426342aa222f",
+        "404521/observer.json": "46eef35f69b969235aa47116a8da1ad800dbd7c959e467109f47cc472870bf7b",
+        "404521/answer.md": "59b2d642abfe1beeabf4f21e50cb2342640f1bb1cc7b36ead5acee38de3e04e0",
+        "404521/task.md": "63ea8cf474c596a2fbba3b921f00b548fc4d8ab6ad2dfccbef86041b70249c09",
+        "2aeaf6/actions.json": "3c85838da721a54468c598c0896ba1cf9ff19e094d8577d8870d33262c379464",
+        "2aeaf6/observer.json": "daf2cfbcb83d6152d07bc1964d0cdb95f436a3c137342b950e85b7fef167aa3d",
+        "2aeaf6/answer.md": "4c328aa975473af8a3fd0f643eb978bd219f27143d5dd0b98ec26cbac6fdbab8",
+        "2aeaf6/task.md": "63ea8cf474c596a2fbba3b921f00b548fc4d8ab6ad2dfccbef86041b70249c09",
+        "bdf674/actions.json": "505955bde2044059b261b7b955291d6cdda62ad7876292f8a0b09883d405e330",
+        "bdf674/observer.json": "c27b939c7f80c3268e0665ef6005b398f3bfd969941597a71da6e719f05e4f54",
+        "bdf674/answer.md": "5188d345a3a102cd140a2f5c59adbc3edd5e430c78617bf17b8e588ccde6edb8",
+        "bdf674/task.md": "63ea8cf474c596a2fbba3b921f00b548fc4d8ab6ad2dfccbef86041b70249c09",
+        "8cbb97/actions.json": "2f4b93a202fc62f253661b193fca95352a3ee9d7a1b39abedf2e072fd8f91a8d",
+        "8cbb97/observer.json": "2778d45c78aab5baca6ea8df9ce9f7907a83b1eb4ad7ba810a9693844ddaca02",
+        "8cbb97/answer.md": "dbeadd7800c343fac34ff0d98afe5c9e47e4179eb65ec231bcac48c71bcd1e28",
+        "8cbb97/task.md": "63ea8cf474c596a2fbba3b921f00b548fc4d8ab6ad2dfccbef86041b70249c09",
+        "8cbb97/after/ticket.md": "3e2d6744252514ca1da6a7356bbff8441d4f0aa8d7dc1a9bc154559add73632b",
+        "8cbb97/after/site.md": "031b1170d740b001625e8cc93ef57370a067d067067eba05587732b43c97eab6",
+        "8cbb97/after/build-facts.json": "2a92cae23bd5a0ea6cc1690932bd0105c6a061d6a2fbdb2433811d0bab04d59c",
+        "8cbb97/before/ticket.md": "3e2d6744252514ca1da6a7356bbff8441d4f0aa8d7dc1a9bc154559add73632b",
+        "8cbb97/before/site.md": "031b1170d740b001625e8cc93ef57370a067d067067eba05587732b43c97eab6",
+        "8cbb97/before/build-facts.json": "2a92cae23bd5a0ea6cc1690932bd0105c6a061d6a2fbdb2433811d0bab04d59c",
+        "8cbb97/before/release/engineering-tally-fixture-1.1.0.tgz": "b67a76bc3dd46c43e26070c0dee7841942ffe20e853b08e37774a751fa4600e5",
+        "8cbb97/after/release/engineering-tally-fixture-1.1.0.tgz": "b67a76bc3dd46c43e26070c0dee7841942ffe20e853b08e37774a751fa4600e5",
+        "bdf674/after/ticket.md": "25ad438afe1bc52b49fece5dda7a897c9b279bbf59b145eb4a28cd8e9ed508d0",
+        "bdf674/after/site.md": "720de36dcfc26d2364c336c8256dc665ca4e0753bd1f6bcc4917c948c5fe952a",
+        "bdf674/after/build-facts.json": "2a92cae23bd5a0ea6cc1690932bd0105c6a061d6a2fbdb2433811d0bab04d59c",
+        "bdf674/before/ticket.md": "25ad438afe1bc52b49fece5dda7a897c9b279bbf59b145eb4a28cd8e9ed508d0",
+        "bdf674/before/site.md": "720de36dcfc26d2364c336c8256dc665ca4e0753bd1f6bcc4917c948c5fe952a",
+        "bdf674/before/build-facts.json": "2a92cae23bd5a0ea6cc1690932bd0105c6a061d6a2fbdb2433811d0bab04d59c",
+        "bdf674/before/release/engineering-tally-fixture-1.1.0.tgz": "b67a76bc3dd46c43e26070c0dee7841942ffe20e853b08e37774a751fa4600e5",
+        "bdf674/after/release/engineering-tally-fixture-1.1.0.tgz": "b67a76bc3dd46c43e26070c0dee7841942ffe20e853b08e37774a751fa4600e5",
+        "2aeaf6/after/ticket.md": "3e2d6744252514ca1da6a7356bbff8441d4f0aa8d7dc1a9bc154559add73632b",
+        "2aeaf6/after/site.md": "031b1170d740b001625e8cc93ef57370a067d067067eba05587732b43c97eab6",
+        "2aeaf6/after/build-facts.json": "2a92cae23bd5a0ea6cc1690932bd0105c6a061d6a2fbdb2433811d0bab04d59c",
+        "2aeaf6/before/ticket.md": "3e2d6744252514ca1da6a7356bbff8441d4f0aa8d7dc1a9bc154559add73632b",
+        "2aeaf6/before/site.md": "031b1170d740b001625e8cc93ef57370a067d067067eba05587732b43c97eab6",
+        "2aeaf6/before/build-facts.json": "2a92cae23bd5a0ea6cc1690932bd0105c6a061d6a2fbdb2433811d0bab04d59c",
+        "2aeaf6/before/release/engineering-tally-fixture-1.1.0.tgz": "b67a76bc3dd46c43e26070c0dee7841942ffe20e853b08e37774a751fa4600e5",
+        "2aeaf6/after/release/engineering-tally-fixture-1.1.0.tgz": "b67a76bc3dd46c43e26070c0dee7841942ffe20e853b08e37774a751fa4600e5",
+        "404521/after/ticket.md": "25ad438afe1bc52b49fece5dda7a897c9b279bbf59b145eb4a28cd8e9ed508d0",
+        "404521/after/site.md": "720de36dcfc26d2364c336c8256dc665ca4e0753bd1f6bcc4917c948c5fe952a",
+        "404521/after/build-facts.json": "2a92cae23bd5a0ea6cc1690932bd0105c6a061d6a2fbdb2433811d0bab04d59c",
+        "404521/before/ticket.md": "25ad438afe1bc52b49fece5dda7a897c9b279bbf59b145eb4a28cd8e9ed508d0",
+        "404521/before/site.md": "720de36dcfc26d2364c336c8256dc665ca4e0753bd1f6bcc4917c948c5fe952a",
+        "404521/before/build-facts.json": "2a92cae23bd5a0ea6cc1690932bd0105c6a061d6a2fbdb2433811d0bab04d59c",
+        "404521/before/release/engineering-tally-fixture-1.1.0.tgz": "b67a76bc3dd46c43e26070c0dee7841942ffe20e853b08e37774a751fa4600e5",
+        "404521/after/release/engineering-tally-fixture-1.1.0.tgz": "b67a76bc3dd46c43e26070c0dee7841942ffe20e853b08e37774a751fa4600e5",
+        "73c55d/after/ticket.md": "09509ffbbc66d32ab46a6c6d8239b17734f6429446737e6d9638c4dc44ef07b1",
+        "73c55d/after/site.md": "720de36dcfc26d2364c336c8256dc665ca4e0753bd1f6bcc4917c948c5fe952a",
+        "73c55d/after/build-facts.json": "2a92cae23bd5a0ea6cc1690932bd0105c6a061d6a2fbdb2433811d0bab04d59c",
+        "73c55d/before/ticket.md": "09509ffbbc66d32ab46a6c6d8239b17734f6429446737e6d9638c4dc44ef07b1",
+        "73c55d/before/site.md": "720de36dcfc26d2364c336c8256dc665ca4e0753bd1f6bcc4917c948c5fe952a",
+        "73c55d/before/build-facts.json": "2a92cae23bd5a0ea6cc1690932bd0105c6a061d6a2fbdb2433811d0bab04d59c",
+        "73c55d/before/release/engineering-tally-fixture-1.0.0.tgz": "43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b",
+        "73c55d/after/release/engineering-tally-fixture-1.0.0.tgz": "43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b",
+        "4cf69b/after/ticket.md": "09509ffbbc66d32ab46a6c6d8239b17734f6429446737e6d9638c4dc44ef07b1",
+        "4cf69b/after/site.md": "720de36dcfc26d2364c336c8256dc665ca4e0753bd1f6bcc4917c948c5fe952a",
+        "4cf69b/after/build-facts.json": "2a92cae23bd5a0ea6cc1690932bd0105c6a061d6a2fbdb2433811d0bab04d59c",
+        "4cf69b/before/ticket.md": "09509ffbbc66d32ab46a6c6d8239b17734f6429446737e6d9638c4dc44ef07b1",
+        "4cf69b/before/site.md": "720de36dcfc26d2364c336c8256dc665ca4e0753bd1f6bcc4917c948c5fe952a",
+        "4cf69b/before/build-facts.json": "2a92cae23bd5a0ea6cc1690932bd0105c6a061d6a2fbdb2433811d0bab04d59c",
+        "4cf69b/before/release/engineering-tally-fixture-1.0.0.tgz": "43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b",
+        "4cf69b/after/release/engineering-tally-fixture-1.0.0.tgz": "43d76d766a6f16f3cfb72ea2818fa0b25a1491646734e1a054c94cde29ee446b"
+      },
+      "postSignMapping": [
+        {
+          "role": "A",
+          "case": "holdout",
+          "label": "8cbb97"
+        },
+        {
+          "role": "A",
+          "case": "ordinary",
+          "label": "bdf674",
+          "original_label": "550d7a"
+        },
+        {
+          "role": "C",
+          "case": "holdout",
+          "label": "2aeaf6"
+        },
+        {
+          "role": "C",
+          "case": "ordinary",
+          "label": "404521"
+        },
+        {
+          "role": "C",
+          "case": "boundary",
+          "label": "73c55d"
+        },
+        {
+          "role": "A",
+          "case": "boundary",
+          "label": "4cf69b",
+          "original_label": "597dcf"
+        }
+      ]
+    }
+  },
+  "limits": "Fresh ephemeral task workspaces with memories disabled. Shared host-level read access remained technically possible. DirectTextObserved records relevant text returned in a recorded tool result; targeted manual examination remains necessary when false."
+}

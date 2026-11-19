@@ -1,0 +1,46 @@
+{
+  "source": "docs/reviews/evidence/engineering-skills/raw-evidence.tar.gz#cases/C17/fixture",
+  "source_archive_sha256": "f3f1577ec5eefbc7e41c16b59fba99e02b103d97144b82802bf80031b90d5d34",
+  "dependency_install": "npm install --ignore-scripts --no-fund --no-audit --package-lock=false (disposable prefix and cache)",
+  "local_dependencies": {
+    "typescript": "5.9.3",
+    "tsx": "4.20.5",
+    "@types/node": "24.0.0"
+  },
+  "node": {
+    "command": "node --version",
+    "exit": 0,
+    "stdout": "v24.15.0\n",
+    "stderr": ""
+  },
+  "checks": [
+    {
+      "command": "npm run typecheck",
+      "exit": 0,
+      "stdout": "",
+      "stderr": "npm notice run engineering-tally-fixture@1.0.0 typecheck\nnpm notice run tsc -p tsconfig.json --noEmit\n"
+    },
+    {
+      "command": "npm run build",
+      "exit": 0,
+      "stdout": "",
+      "stderr": "npm notice run engineering-tally-fixture@1.0.0 build\nnpm notice run tsc -p tsconfig.json\n"
+    }
+  ],
+  "compiler_inputs": [
+    "src/cli.ts"
+  ],
+  "files": {
+    "AGENTS.md": "b556d9fc3d9a07cdffb5d0610f06dad5c46f1fd8036098ec89c97e611a57c214",
+    "README.md": "ccb6923c0d945a522d0fdec002da558a5d4d2e2e9fb795a8d4491fed2195d01b",
+    "accepted.md": "d902373d5a39862f8066a9e9f63f70372076da296b52c8c1ddec95404325da77",
+    "package.json": "718fbb03d4ce95b498dd3e1f2bc9f3c8d50c28b805da6619006649ab3200815e",
+    "tsconfig.json": "d2984c34bd95977f2dc693263e4135d923250d767c00fba7360573c9ee883753",
+    "src/cli.ts": "cb0097e7add8a977f998d8d2e0d3ae12b9f7a519ee800d71341d57f5d96b8a1b",
+    "test/cli.test.ts": "51076f0b746864e2b338de31a4d8aa8f9c0caeec741307300c03160fc148018e",
+    "dist/cli.js": "1f6796ddabf7e3d8fcc8780eff35fb31be659633bdda06bf366e0a387b987f90",
+    "dist/legacy.js": "3c3fad4ba160873d0ab1df465324c3633093e582a5de089ff50248b4749f0902"
+  },
+  "limits": "Проверены типы и выпуск JS из src/cli.ts. У CLI нет внешних импортов. Проверка JS-процесса, тесты и установленный bin переданы их владельцам.",
+  "handoff_sha256": "6168dfdbc4452fbce829d94ac55b26889beb827120dd0d3db651a4503921914b"
+}

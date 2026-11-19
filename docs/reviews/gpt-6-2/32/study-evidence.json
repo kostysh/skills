@@ -1,0 +1,345 @@
+{
+  "frozenInputsArchiveSha256": "31e16d9e2321152ac408ab54da1dc1dc832919a40f5b38a9d47bf0322da58031",
+  "frozenAtUTC": "2026-11-18T22:52:47.089511+00:00",
+  "selectionAfterSignedAB": {
+    "signedAB": "662233d9ac63a312dc716bc127e9c7443b589b3d3b34cc72dbdf679d57d8793a",
+    "selected": "12. Plan independent starts and shared acceptance.",
+    "observed": "Both versions allowed independent ready work, kept identity ownership blocking only dependent integration, and called for acceptance on the same real record. Shared cue retained in the compact root; detailed methodology remains in the issued package.",
+    "selectedAt": "2026-11-18T23:13:50.238815+00:00"
+  },
+  "controlledInstallations": {
+    "A": "delivery-planner@0.2.15; 7 files from the real archive",
+    "B": "A minus Start here 12; next item retained its original number",
+    "C": "A with Start here 12 replaced; original metadata retained"
+  },
+  "receipts": [
+    {
+      "phase": "ab",
+      "code": "4b8163",
+      "role": "A",
+      "case": "boundary",
+      "sessionId": "01a1f0ea-d5db-7101-92ac-fabaca825d24",
+      "assigned": {
+        "model": "gpt-6.2-sol",
+        "effort": "model_reasoning_effort=\"medium\"",
+        "sandbox": "workspace-write",
+        "memoryFeatureDisabled": true
+      },
+      "rawEventsSha256": "c4144c92f92ffca126c0f58972f14fcdd0f7d8917ac6e7513a33e1d8e8f3e14b",
+      "rootSha256": "9fa7a927cc6e8c76cd15ee207b0b21eb6f5107f756770d3670b5b6cef562a326",
+      "planSha256": "01a324c165a994f3414a258d8d88839a90a24c19fda1a96d8853e4183d22ec14",
+      "issuedInputsAndModesPreserved": true,
+      "onlyNewFile": "delivery-plan.md",
+      "access": {
+        "rootExposureAtRawEventLine": 5,
+        "eventSha256ExcludingNewline": "13a71d454ec1c0d972a0b0e0eb7f22486f548882b04ab9bb4231e56041b279ef",
+        "matchedRootLines": [
+          "11. Sequence work to expose architectural, integration, migration, rollback, security, data, tenancy, and operability risk early.",
+          "12. Distinguish parallel implementation from independent acceptance; type dependency edges and require shared acceptance for same-record or shared-race evidence.",
+          "13. Reject tasks whose acceptance can pass through scaffold, metadata, docs, mocks, or wrappers without real observable or verifiable behavior."
+        ],
+        "unchangedCuesReturned": [
+          {
+            "source": "methodology-7",
+            "eventLine": 7
+          },
+          {
+            "source": "root-policy",
+            "eventLine": 5
+          }
+        ],
+        "completedCommands": 6,
+        "webSearchCount": 0,
+        "visibleOtherStudySources": false
+      }
+    },
+    {
+      "phase": "ab",
+      "code": "be63d4",
+      "role": "B",
+      "case": "boundary",
+      "sessionId": "01a1f0eb-e397-7751-b964-c9dd8256952d",
+      "assigned": {
+        "model": "gpt-6.2-sol",
+        "effort": "model_reasoning_effort=\"medium\"",
+        "sandbox": "workspace-write",
+        "memoryFeatureDisabled": true
+      },
+      "rawEventsSha256": "eb0f74e287d5d22687185ac7c71e7501b6b23a830b710d99f59ee4679bc2b95d",
+      "rootSha256": "60459c537a1b5854d5155574d0584086b37f04af72fcd0aa46fa46e3b204128c",
+      "planSha256": "048237891689e951a944255ecf8e67a4252581dd30a8b3c0ced2f63a0da50c6d",
+      "issuedInputsAndModesPreserved": true,
+      "onlyNewFile": "delivery-plan.md",
+      "access": {
+        "rootExposureAtRawEventLine": 5,
+        "eventSha256ExcludingNewline": "bad1f8ba9ee2918cac79e066e60a0b2a24390b13cf886412e120981bc086e5eb",
+        "matchedRootLines": [
+          "11. Sequence work to expose architectural, integration, migration, rollback, security, data, tenancy, and operability risk early.",
+          "13. Reject tasks whose acceptance can pass through scaffold, metadata, docs, mocks, or wrappers without real observable or verifiable behavior.",
+          "14. Reject future-only support tasks unless they name the owner slice/module increment, the evidence they unlock, and the trigger that makes them necessary."
+        ],
+        "unchangedCuesReturned": [
+          {
+            "source": "methodology-7",
+            "eventLine": 9
+          },
+          {
+            "source": "root-policy",
+            "eventLine": 5
+          }
+        ],
+        "completedCommands": 6,
+        "webSearchCount": 0,
+        "visibleOtherStudySources": false
+      }
+    },
+    {
+      "phase": "ab",
+      "code": "04505a",
+      "role": "A",
+      "case": "ordinary",
+      "sessionId": "01a1f0ec-3c6a-7071-95f4-b4b94d218893",
+      "assigned": {
+        "model": "gpt-6.2-sol",
+        "effort": "model_reasoning_effort=\"medium\"",
+        "sandbox": "workspace-write",
+        "memoryFeatureDisabled": true
+      },
+      "rawEventsSha256": "e25fd60115fd8c8d67fd6e8fdcbd111666fec2e5072fc535c8073c9ad3d43548",
+      "rootSha256": "9fa7a927cc6e8c76cd15ee207b0b21eb6f5107f756770d3670b5b6cef562a326",
+      "planSha256": "46fcad8e241add80df334da03131dd3e947d4ee68cdf31826667c9cd4556ca98",
+      "issuedInputsAndModesPreserved": true,
+      "onlyNewFile": "delivery-plan.md",
+      "access": {
+        "rootExposureAtRawEventLine": 5,
+        "eventSha256ExcludingNewline": "81ed45cc100d99007af6068bba1ba1e2aa399562234520cbf258b3eb5cc63adf",
+        "matchedRootLines": [
+          "11. Sequence work to expose architectural, integration, migration, rollback, security, data, tenancy, and operability risk early.",
+          "12. Distinguish parallel implementation from independent acceptance; type dependency edges and require shared acceptance for same-record or shared-race evidence.",
+          "13. Reject tasks whose acceptance can pass through scaffold, metadata, docs, mocks, or wrappers without real observable or verifiable behavior."
+        ],
+        "unchangedCuesReturned": [
+          {
+            "source": "methodology-7",
+            "eventLine": 7
+          },
+          {
+            "source": "root-policy",
+            "eventLine": 5
+          }
+        ],
+        "completedCommands": 6,
+        "webSearchCount": 0,
+        "visibleOtherStudySources": false
+      }
+    },
+    {
+      "phase": "ab",
+      "code": "650af0",
+      "role": "B",
+      "case": "ordinary",
+      "sessionId": "01a1f0ec-ecb4-7113-b806-f81a4ce15f01",
+      "assigned": {
+        "model": "gpt-6.2-sol",
+        "effort": "model_reasoning_effort=\"medium\"",
+        "sandbox": "workspace-write",
+        "memoryFeatureDisabled": true
+      },
+      "rawEventsSha256": "62b66cc5ac59ab420eb9fe18b08a03076995265f8145efcf8339652db76cd3d6",
+      "rootSha256": "60459c537a1b5854d5155574d0584086b37f04af72fcd0aa46fa46e3b204128c",
+      "planSha256": "0c30104dac9cea818b9daa45909429d68b5210aefb020f746283f40924768911",
+      "issuedInputsAndModesPreserved": true,
+      "onlyNewFile": "delivery-plan.md",
+      "access": {
+        "rootExposureAtRawEventLine": 5,
+        "eventSha256ExcludingNewline": "1d42b47fc0367fecc77afe5b4118951b97f31ee99c891dd867c3c21408de6185",
+        "matchedRootLines": [
+          "11. Sequence work to expose architectural, integration, migration, rollback, security, data, tenancy, and operability risk early.",
+          "13. Reject tasks whose acceptance can pass through scaffold, metadata, docs, mocks, or wrappers without real observable or verifiable behavior.",
+          "14. Reject future-only support tasks unless they name the owner slice/module increment, the evidence they unlock, and the trigger that makes them necessary."
+        ],
+        "unchangedCuesReturned": [
+          {
+            "source": "methodology-7",
+            "eventLine": 9
+          },
+          {
+            "source": "root-policy",
+            "eventLine": 5
+          }
+        ],
+        "completedCommands": 9,
+        "webSearchCount": 0,
+        "visibleOtherStudySources": false
+      }
+    },
+    {
+      "phase": "confirmation",
+      "code": "2ab9d0",
+      "role": "A",
+      "case": "holdout",
+      "sessionId": "01a1f0f0-f2bf-7172-af46-f739a4ac667a",
+      "assigned": {
+        "model": "gpt-6.2-sol",
+        "effort": "model_reasoning_effort=\"medium\"",
+        "sandbox": "workspace-write",
+        "memoryFeatureDisabled": true
+      },
+      "rawEventsSha256": "d63d046253870bd64b6fe12053e0da00f37cfc84893b30f0214ee0ead9321a73",
+      "rootSha256": "9fa7a927cc6e8c76cd15ee207b0b21eb6f5107f756770d3670b5b6cef562a326",
+      "planSha256": "05e716dc2bf58c79657f7b99d0077063ef8d87ba10e667dc63265797f1656743",
+      "issuedInputsAndModesPreserved": true,
+      "onlyNewFile": "delivery-plan.md",
+      "access": {
+        "rootExposureAtRawEventLine": 11,
+        "eventSha256ExcludingNewline": "7dba4e971043feea62d8a03c522a1773e4373a65c8af5ce2c6967ad40a1b5393",
+        "matchedRootLines": [
+          "11. Sequence work to expose architectural, integration, migration, rollback, security, data, tenancy, and operability risk early.",
+          "12. Distinguish parallel implementation from independent acceptance; type dependency edges and require shared acceptance for same-record or shared-race evidence.",
+          "13. Reject tasks whose acceptance can pass through scaffold, metadata, docs, mocks, or wrappers without real observable or verifiable behavior."
+        ],
+        "unchangedCuesReturned": [
+          {
+            "source": "methodology-7",
+            "eventLine": 13
+          },
+          {
+            "source": "root-policy",
+            "eventLine": 11
+          }
+        ],
+        "completedCommands": 10,
+        "webSearchCount": 0,
+        "visibleOtherStudySources": false
+      }
+    },
+    {
+      "phase": "confirmation",
+      "code": "99be49",
+      "role": "C",
+      "case": "boundary",
+      "sessionId": "01a1f0f0-e248-7b61-bf25-dec444ef334b",
+      "assigned": {
+        "model": "gpt-6.2-sol",
+        "effort": "model_reasoning_effort=\"medium\"",
+        "sandbox": "workspace-write",
+        "memoryFeatureDisabled": true
+      },
+      "rawEventsSha256": "cabcafd1169890e27ead69f422335fb9e075926b44e29e9e1a9ce6fdd3af2b11",
+      "rootSha256": "ca0c2485dcdaa83051ae933a5aee780ca1ffd00e4ca95d136517a4e4fbe3ea34",
+      "planSha256": "38fef1a03e8ac0a5f7d98bf55d5008ca2ab55248a3c9ead5f19347822cd8b1f9",
+      "issuedInputsAndModesPreserved": true,
+      "onlyNewFile": "delivery-plan.md",
+      "access": {
+        "rootExposureAtRawEventLine": 5,
+        "eventSha256ExcludingNewline": "f01446f1c6efde6f23d0cd8f96262fd4fef00eb9737c8c45978ddb0b06f06164",
+        "matchedRootLines": [
+          "11. Sequence work to expose architectural, integration, migration, rollback, security, data, tenancy, and operability risk early.",
+          "12. Plan independent starts and shared acceptance.",
+          "13. Reject tasks whose acceptance can pass through scaffold, metadata, docs, mocks, or wrappers without real observable or verifiable behavior."
+        ],
+        "unchangedCuesReturned": [
+          {
+            "source": "methodology-7",
+            "eventLine": 9
+          },
+          {
+            "source": "root-policy",
+            "eventLine": 5
+          }
+        ],
+        "completedCommands": 6,
+        "webSearchCount": 0,
+        "visibleOtherStudySources": false
+      }
+    },
+    {
+      "phase": "confirmation",
+      "code": "4cdeca",
+      "role": "C",
+      "case": "holdout",
+      "sessionId": "01a1f0f2-022f-7ea1-b219-5f0476cf17ed",
+      "assigned": {
+        "model": "gpt-6.2-sol",
+        "effort": "model_reasoning_effort=\"medium\"",
+        "sandbox": "workspace-write",
+        "memoryFeatureDisabled": true
+      },
+      "rawEventsSha256": "2a9567052429a146fb9c7b1aae81892cacc6c86e7e14dd6f01dd8208e25ed9b6",
+      "rootSha256": "ca0c2485dcdaa83051ae933a5aee780ca1ffd00e4ca95d136517a4e4fbe3ea34",
+      "planSha256": "00a57ee564838816dfdf3cdd729ac19be577576d3e58ba1e44e3c97bd6a67c4f",
+      "issuedInputsAndModesPreserved": true,
+      "onlyNewFile": "delivery-plan.md",
+      "access": {
+        "rootExposureAtRawEventLine": 5,
+        "eventSha256ExcludingNewline": "c494b284b7d8085bac502d14b5b6513155f6216c6da8b79bc21301fef4c31042",
+        "matchedRootLines": [
+          "11. Sequence work to expose architectural, integration, migration, rollback, security, data, tenancy, and operability risk early.",
+          "12. Plan independent starts and shared acceptance.",
+          "13. Reject tasks whose acceptance can pass through scaffold, metadata, docs, mocks, or wrappers without real observable or verifiable behavior."
+        ],
+        "unchangedCuesReturned": [
+          {
+            "source": "methodology-7",
+            "eventLine": 9
+          },
+          {
+            "source": "root-policy",
+            "eventLine": 5
+          }
+        ],
+        "completedCommands": 7,
+        "webSearchCount": 0,
+        "visibleOtherStudySources": false
+      }
+    },
+    {
+      "phase": "confirmation",
+      "code": "4648eb",
+      "role": "C",
+      "case": "ordinary",
+      "sessionId": "01a1f0f2-44d8-7fd0-995b-bfe50fd253c6",
+      "assigned": {
+        "model": "gpt-6.2-sol",
+        "effort": "model_reasoning_effort=\"medium\"",
+        "sandbox": "workspace-write",
+        "memoryFeatureDisabled": true
+      },
+      "rawEventsSha256": "2330874f1df0adee4b0e849a3fc0066d748fcd9e0a150cbaacefa584f7a84f9a",
+      "rootSha256": "ca0c2485dcdaa83051ae933a5aee780ca1ffd00e4ca95d136517a4e4fbe3ea34",
+      "planSha256": "73f079fe1b5b5b68e6f41bdd097d25a1c236f41f33099b20011c645312565f8f",
+      "issuedInputsAndModesPreserved": true,
+      "onlyNewFile": "delivery-plan.md",
+      "access": {
+        "rootExposureAtRawEventLine": 7,
+        "eventSha256ExcludingNewline": "425718bc8533f63c047a83444609a1788feb06c1e205bcd251fb65ba0e6f42f5",
+        "matchedRootLines": [
+          "11. Sequence work to expose architectural, integration, migration, rollback, security, data, tenancy, and operability risk early.",
+          "12. Plan independent starts and shared acceptance.",
+          "13. Reject tasks whose acceptance can pass through scaffold, metadata, docs, mocks, or wrappers without real observable or verifiable behavior."
+        ],
+        "unchangedCuesReturned": [
+          {
+            "source": "methodology-7",
+            "eventLine": 9
+          },
+          {
+            "source": "root-policy",
+            "eventLine": 7
+          }
+        ],
+        "completedCommands": 7,
+        "webSearchCount": 0,
+        "visibleOtherStudySources": false
+      }
+    }
+  ],
+  "assessmentSignatures": {
+    "A/B": "662233d9ac63a312dc716bc127e9c7443b589b3d3b34cc72dbdf679d57d8793a",
+    "confirmation": "af4cfddf0a7dc0c0b57933f4b54a3fed8e43fb2cc910ee1e94589e9f7b0bf3b9"
+  },
+  "uniqueFreshParticipants": 8,
+  "oldControlsReassignedInConfirmation": 2,
+  "rawArchiveSha256": "cacd0677cddef0e13a01d87e0cd9de16bfe93c98793a2049c94d322e09fa2655",
+  "accessLimit": "Explicit invocation in fresh local Codex sessions; data-limited directories and disabled long-term memory. Host files were technically readable, no observed commands opened another run or keys. CLI assignments are observed, not independent server attestations."
+}

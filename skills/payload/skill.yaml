@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: payload
-  source-version: 0.1.2
+  source-version: 0.1.3
   recommended-skill-md-max-bytes: 32000
   description: >-
     Use when working with Payload CMS projects: payload.config.ts, collections,
@@ -97,6 +97,14 @@ supporting:
     source: docs/logs/implementation-log-20260509-1.md
     target: docs/logs/implementation-log-20260509-1.md
     description: Non-normative implementation log for initial payload skill creation.
+  - id: supporting-implementation-log-20261021-1
+    source: docs/logs/implementation-log-20261021-1.md
+    target: docs/logs/implementation-log-20261021-1.md
+    description: Non-normative implementation record for the frontmatter update.
+  - id: supporting-implementation-log-20261119-1
+    source: docs/logs/implementation-log-20261119-1.md
+    target: docs/logs/implementation-log-20261119-1.md
+    description: Non-normative implementation record for the Payload version and caller-read revision.
 
 surfaces:
   active:
@@ -125,7 +133,7 @@ sections:
     - Compare installed exports/peers with version-matched official docs before current API recommendations; no automatic major upgrade or canary adoption.
     - Load only the reference files that match the touched Payload surface; do not read every reference by default.
     - Preserve existing project conventions unless they conflict with Payload access, transaction, hook, type, or adapter semantics.
-    - Treat config, docs, wrappers, or generated types as substrate until the requested Payload behavior is compiled, tested, or otherwise exercised.
+    - Verify the requested behavior through the caller's Payload interface. For access claims, report the acting user, how access was enforced, and any separate query filter.
   whenToUse:
     - Building, changing, reviewing, or debugging Payload CMS applications.
     - Working on payload.config.ts, collections, globals, fields, hooks, access control, Local API, REST, GraphQL, adapters, endpoints, jobs, plugins, admin components, or generated Payload types.
@@ -162,7 +170,7 @@ sections:
       goal: Prove the changed Payload surface with the narrowest meaningful project check.
       steps:
         - Run existing type generation, typecheck, lint, tests, build, or a targeted API/admin smoke check when available.
-        - For config and collection changes, prefer checks that load Payload config or generate Payload types.
+        - Use a config load or type generation for schema claims. For access, hook, or delivered-data changes, exercise the operation and compare the observed records or side effects with the expected outcome.
         - If validation cannot run, perform the next-best static check and report the limitation.
       validation:
         - The final report names the checks that passed or the exact verification gap.
@@ -170,11 +178,11 @@ sections:
     - id: interop-payload-migration
       domain: source CMS extraction, mapping, authorized import, rerun, and reconciliation
       winner: payload-migration
-      rationale: payload-migration owns the migration result; this skill supplies target schema, Local API, access, adapter, and transaction mechanics without taking over source semantics.
+      rationale: Supply the target version and adapter, accepted fields, source keys and relationship IDs, and a read through the intended caller when needed for reconciliation. payload-migration owns mapping, execution, retries, and reconciliation.
     - id: interop-nextjs
       domain: Next.js routing, React Server Components, Server Actions, metadata, images, fonts, bundling, or self-hosting
       winner: nextjs
-      rationale: Payload v3 integrates with Next.js; nextjs owns frontend routing/cache/rendering and returns actual page readback. Existing v2 projects retain their installed Express architecture.
+      rationale: Payload owns the CMS read for the intended caller. nextjs owns v3 page routing, caching, and rendering. For a page claim, follow the actual document value through the route and a fresh request. Existing v2 projects retain their Express entry point.
     - id: interop-typescript
       domain: TypeScript language, tsconfig, linting, and type-system issues
       winner: typescript-engineer

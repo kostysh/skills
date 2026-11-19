@@ -1,0 +1,232 @@
+{
+  "variant": "A",
+  "case": "ordinary",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПримени ./SKILL.md. Проверь выдаваемый смене сайт по ticket.md и направь владельцу короткий результат приёмки. Проверка проходит с главной страницы обслуживаемой сборки. Материалы и разрешённые действия описаны в site.md. Сайт, документ и пакет остаются в исходном виде.\n",
+  "input_file_sha256": {
+    "SKILL.md": "fb1838a9ad32911ec71a7563f273292eb7c586e3069184fc74d0d0149be9a52c",
+    "agents/openai.yaml": "9b8a48731c3bc59fa6fc82a040d3fbde1fd2fb08c5cc020e81384f839e482ecf",
+    "assets/project-files/.github/workflows/docs-quality.yml": "968eb18850f0ddec8b5a54d4027c8657e81419d264e7e9a4bf1e81c52696d2af",
+    "assets/project-files/.markdownlint-cli2.jsonc": "25b490a3f41fdc7f032d618b7b29779f325c82a54e29e6ae7a2e06f73ab03bc3",
+    "assets/project-files/.prettierignore": "0e2d69697fed9001df076dc0e14de9ef3ed045a8b945961564b8e0d98a54fc90",
+    "assets/project-files/.prettierrc.json": "8b92ed4e7a6cd9ddcfa606663ab1cf6328da668557adc02510f776ea28991f1c",
+    "assets/project-files/AGENTS.md": "4d68ac59d3fabc6a829f7f2041fd2f7b555e894d199a97a07deec7ed7623e7bb",
+    "build-facts.json": "2a92cae23bd5a0ea6cc1690932bd0105c6a061d6a2fbdb2433811d0bab04d59c",
+    "references/bootstrap-and-structure.md": "d695e4c71a2788767e1d5b94010932024846fdb95cf1d598697706147f81ff85",
+    "references/config-presets-and-routing.md": "7eab4eb7d7d7090a9b736b7419880a827270b5b23b981716473eb9c524de6c70",
+    "references/content-authoring.md": "890b4c84a5c45c4590a2edd5c80442d3485f3d13eb3e5728f0c23705b95f4630",
+    "references/customization-and-ux.md": "ae6d1d7a79bd4df3345d437a58c7b734c9059af349a820fda4cd6328d7d3de06",
+    "references/deployment-versioning-i18n.md": "caed7743fb340a5285a929e76da88fed187ef1a832f2569a1f4325b6a2342ffe",
+    "references/doc-quality-tooling-and-agents.md": "04bb9c7f11ee753ee9e416a603ec02ee64f7cfe5e3b17344ff135a8c4b749707",
+    "references/search-and-ecosystem.md": "197273c8ed4b7afc8ab31469d839408080767567913d45b83e5dc45d762a6bc9",
+    "release/engineering-tally-fixture-1.1.0.tgz": "b67a76bc3dd46c43e26070c0dee7841942ffe20e853b08e37774a751fa4600e5",
+    "site.md": "720de36dcfc26d2364c336c8256dc665ca4e0753bd1f6bcc4917c948c5fe952a",
+    "ticket.md": "25ad438afe1bc52b49fece5dda7a897c9b279bbf59b145eb4a28cd8e9ed508d0"
+  },
+  "raw_events_sha256": "32adfe4ade0af8c32e598691f63157bfc6355695124900960c81824230d430f8",
+  "raw_events_bytes": 67060,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Применю `./SKILL.md` и сверю требования приёмки с `ticket.md` и `site.md`. Проверку начну с главной страницы обслуживаемой сборки."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git'\"' && cat SKILL.md ticket.md site.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"cat build-facts.json references/deployment-versioning-i18n.md && curl --noproxy '*' -fsS http://127.0.0.1:41639/ | python -c 'from html.parser import HTMLParser\nimport sys\nclass Links(HTMLParser):\n def handle_starttag(self,t,a):\n  if t==\\\"a\\\": self.href=dict(a).get(\\\"href\\\"); self.parts=[]\n def handle_data(self,d):\n  if getattr(self,\\\"href\\\",None): self.parts.append(d)\n def handle_endtag(self,t):\n  if t==\\\"a\\\" and getattr(self,\\\"href\\\",None): print(self.href, \\\"\\\".join(self.parts).strip()); self.href=None\nLinks().feed(sys.stdin.read())'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"tar -tzf release/engineering-tally-fixture-1.1.0.tgz && tar -xOzf release/engineering-tally-fixture-1.1.0.tgz package/package.json && rg -n -i 'reader|render' references/content-authoring.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"curl --noproxy '*' -sS -D /dev/stderr http://127.0.0.1:41639/handbook/2.0/desk/ | python -c 'from html.parser import HTMLParser\nimport sys\nclass Page(HTMLParser):\n def __init__(self): super().__init__(); self.skip=None\n def handle_starttag(self,t,a):\n  if t in (\\\"script\\\",\\\"style\\\"): self.skip=t\n  if t in (\\\"a\\\",\\\"link\\\",\\\"html\\\") and not self.skip: print(t,dict(a))\n def handle_endtag(self,t):\n  if self.skip==t: self.skip=None\n def handle_data(self,d):\n  if not self.skip and d.strip(): print(d)\nPage().feed(sys.stdin.read())'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'tar -xOzf release/engineering-tally-fixture-1.1.0.tgz package/dist/cli.js && tar -xOzf release/engineering-tally-fixture-1.1.0.tgz package/dist/legacy.js && tar -xOzf release/engineering-tally-fixture-1.1.0.tgz package/README.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"command -v chromium chromium-browser google-chrome firefox playwright playwright-cli agent-browser node npm; curl --noproxy '*' -fsS http://127.0.0.1:41639/ | sed 's/></>\\\\n</g' | rg -n 'script|Current shift|Archived shift'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Главная страница указывает на английское руководство 2.0. Сверю, что видит оператор после перехода в браузере, затем выполню опубликованные команды в пустой папке."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"node --input-type=module <<'NODE'\nimport {spawn} from 'node:child_process';\nimport {mkdtempSync,readFileSync,rmSync} from 'node:fs';\nimport {resolve} from 'node:path';\nimport {setTimeout as delay} from 'node:timers/promises';\nconst origin = 'http://127.0.0.1:41639';\nconst profile = mkdtempSync(resolve('.site-acceptance.'));\nconst browser = spawn('google-chrome', ['--headless','--no-sandbox','--disable-dev-shm-usage','--disable-background-networking','--disable-component-update','--disable-sync','--no-first-run','--proxy-server=http://127.0.0.1:1','--proxy-bypass-list=127.0.0.1:41639','--remote-debugging-port=0','--user-data-dir='+profile,'about:blank'],{stdio:'ignore'});\nlet ws;\ntry {\n  let port;\n  for (let attempt=0; attempt<80 && \"'!port; attempt++) {\n    try {port=readFileSync(profile+'\"'/DevToolsActivePort','utf8').split('\\\\n')[0];}\n    catch {await delay(100);}\n  }\n  if (\"'!port) throw Error('\"'Chrome DevTools unavailable');\n  const [tab] = await (await fetch('http://127.0.0.1:'+port+'/json/list')).json();\n  ws = new WebSocket(tab.webSocketDebuggerUrl);\n  await new Promise((ok,fail)=>{ws.onopen=ok; ws.onerror=fail;});\n  let counter=0;\n  const pending=new Map();\n  ws.onmessage=({data})=>{\n    const message=JSON.parse(data);\n    if (message.method==='Fetch.requestPaused') {\n      const {requestId,request:{url}}=message.params;\n      const allowed=url.startsWith(origin+'/');\n      void send(allowed?'Fetch.continueRequest':'Fetch.failRequest',allowed?{requestId}:{requestId,errorReason:'BlockedByClient'});\n    }\n    const callback=pending.get(message.id);\n    if(callback){pending.delete(message.id);callback(message);}\n  };\n  function send(method,params={}) {\n    return new Promise((ok,fail)=>{\n      const id=++counter;\n      pending.set(id,m=>m.error?fail(Error(JSON.stringify(m.error))):ok(m.result));\n      ws.send(JSON.stringify({id,method,params}));\n    });\n  }\n  const evaluate=async expression=>(await send('Runtime.evaluate',{expression,returnByValue:true})).result.value;\n  async function waitFor(expression) {\n    for (let attempt=0; attempt<60; attempt++) {\n      const result=await evaluate(expression);\n      if (result) return result;\n      await delay(100);\n    }\n    throw Error('Page condition timed out: '+expression);\n  }\n  await send('Fetch.enable',{patterns:[{urlPattern:'*'}]});\n  await send('Page.navigate',{url:origin+'/'});\n  const ready='document.documentElement.getAttribute(\\\"data-has-hydrated\\\")===\\\"true\\\"';\n  await waitFor(ready);\n  const link='[...document.links].find(a=>a.textContent.trim()===\\\"Current shift manual 2.0\\\")';\n  console.log('Home URL and link',await evaluate('[location.href,('+link+').getAttribute(\\\"href\\\")]'));\n  await evaluate('('+link+').click()');\n  await waitFor('location.pathname\"'!==\"/\" && ('\"'+ready+') && \"'!!document.querySelector(\"main h1\")'\"');\n  await delay(350);\n  console.log(await evaluate('JSON.stringify({url:location.href,lang:document.documentElement.lang,body:document.querySelector(\\\"main\\\")?.innerText,code:[...document.querySelectorAll(\\\"main pre code\\\")].map(x=>x.textContent)})'));\n} finally {\n  ws?.close();\n  browser.kill();\n  await Promise.race([new Promise(ok=>browser.once('exit',ok)),delay(1500)]);\n  rmSync(profile,{recursive:true,force:true});\n}\nNODE\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"curl --noproxy '*' -fsS http://127.0.0.1:41639/handbook/2.0/desk/ | sed 's/></>\\\\n</g' | rg -n -C 8 'npm install|tally sum|Copy|clipboard'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python - <<'PY'\nimport os, shutil, subprocess, tempfile\nwith tempfile.TemporaryDirectory(prefix=\\\".tally-acceptance.\\\", dir=os.getcwd()) as check:\n    archive = \\\"engineering-tally-fixture-1.1.0.tgz\\\"\n    shutil.copyfile(\\\"release/\\\" + archive, os.path.join(check, archive))\n    env = dict(os.environ, npm_config_cache=os.path.join(check, \\\".npm-cache\\\"))\n    subprocess.run([\\\"npm\\\",\\\"install\\\",\\\"--offline\\\",\\\"--ignore-scripts\\\",\\\"--no-audit\\\",\\\"--no-fund\\\",\\\"./\\\"+archive], cwd=check, env=env, check=True)\n    for args in ([\\\"--version\\\"],[\\\"sum\\\",\\\"2\\\",\\\"3\\\",\\\"--machine\\\"],[\\\"sum\\\",\\\"bad\\\",\\\"--machine\\\"]):\n        result = subprocess.run([\\\"./node_modules/.bin/tally\\\",*args], cwd=check, capture_output=True, text=True)\n        print(args, result.returncode, repr(result.stdout), repr(result.stderr))\nPY\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"node --input-type=module <<'NODE'\nimport {spawn} from 'node:child_process';\nimport {mkdtempSync,readFileSync,rmSync} from 'node:fs';\nimport {resolve} from 'node:path';\nimport {setTimeout as delay} from 'node:timers/promises';\nconst origin='http://127.0.0.1:41639';\nconst profile=mkdtempSync(resolve('.site-acceptance.'));\nconst browser=spawn('google-chrome',['--headless','--no-sandbox','--disable-dev-shm-usage','--disable-background-networking','--disable-component-update','--no-first-run','--proxy-server=http://127.0.0.1:1','--proxy-bypass-list=127.0.0.1:41639','--remote-debugging-port=0','--user-data-dir='+profile,'about:blank'],{stdio:'ignore'});\nlet ws;\ntry {\n  let port;\n  for(let attempt=0;attempt<70&&\"'!port;attempt++){\n    try {port=readFileSync(profile+'\"'/DevToolsActivePort','utf8').split('\\\\n')[0];}\n    catch {await delay(100);}\n  }\n  const [tab]=await (await fetch('http://127.0.0.1:'+port+'/json/list')).json();\n  ws=new WebSocket(tab.webSocketDebuggerUrl);\n  await new Promise((ok,fail)=>{ws.onopen=ok;ws.onerror=fail;});\n  let id=0;\n  const pending=new Map();\n  const call=(method,params={})=>new Promise((ok,fail)=>{\n    const next=++id;\n    pending.set(next,m=>m.error?fail(Error(JSON.stringify(m.error))):ok(m.result));\n    ws.send(JSON.stringify({id:next,method,params}));\n  });\n  ws.onmessage=({data})=>{\n    const m=JSON.parse(data);\n    if(m.method==='Fetch.requestPaused'){\n      const {requestId,request:{url}}=m.params;\n      void (url.startsWith(origin+'/')?call('Fetch.continueRequest',{requestId}):call('Fetch.failRequest',{requestId,errorReason:'BlockedByClient'}));\n    }\n    pending.get(m.id)?.(m);\n    pending.delete(m.id);\n  };\n  const js=async expression=>(await call('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true,userGesture:true})).result.value;\n  async function waitFor(expression){\n    for(let n=0;n<60;n++){if(await js(expression))return;await delay(100);}\n    throw Error('Page condition timed out '+expression);\n  }\n  await call('Browser.grantPermissions',{origin,permissions:['clipboardReadWrite','clipboardSanitizedWrite']});\n  await call('Fetch.enable',{patterns:[{urlPattern:'*'}]});\n  await call('Page.navigate',{url:origin+'/'});\n  await waitFor('document.documentElement?.dataset.hasHydrated===\\\"true\\\"');\n  console.log('Hydrated home links',await js('[...document.links].filter(a=>a.textContent.includes(\\\"shift manual\\\")).map(a=>[a.textContent,a.getAttribute(\\\"href\\\")])'));\n  await js('[...document.links].find(a=>a.textContent===\\\"Current shift manual 2.0\\\").click()');\n  await waitFor('document.querySelector(\\\"main h1\\\")?.textContent===\\\"Tally desk guide 2.0\\\"');\n  const pre=await js('({lines:[...document.querySelectorAll(\\\"main pre .token-line\\\")].map(e=>e.innerText.trim()), buttons:[...document.querySelectorAll(\\\"main button\\\")].map(e=>[e.title,e.getAttribute(\\\"aria-label\\\"),e.className])})');\n  console.log('Code and controls',JSON.stringify(pre));\n  if(pre.buttons.some(([title,label])=>/copy/i.test(title+' '+label))){\n    await js('[...document.querySelectorAll(\\\"main button\\\")].find(e=>/copy/i.test(e.title+\\\" \\\"+e.getAttribute(\\\"aria-label\\\"))).click()');\n    console.log('Copied code',JSON.stringify(await js('navigator.clipboard.readText()')));\n  }\n} finally {\n  ws?.close();\n  browser.kill();\n  await Promise.race([new Promise(ok=>browser.once('exit',ok)),delay(1500)]);\n  rmSync(profile,{recursive:true,force:true});\n}\nNODE\nrg --files --hidden -g '\"'!.git'\"' -g '.site-acceptance.*/**' -g '.tally-acceptance.*/**'\"",
+      "exit_code": 1,
+      "status": "failed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"curl --noproxy '*' -fsS http://127.0.0.1:41639/handbook/2.0/desk/ | python -c 'import re,sys; s=sys.stdin.read(); print(\\\"\\\\n\\\".join(re.findall(r\\\"<script[\"'^>]*src=[''^>]+>|<link[''^>]*preload[''^>]+>\",s)))'\"'\ncurl --noproxy '*' -fsS http://127.0.0.1:41639/assets/js/runtime~main.2032b637.js | head -c 4200\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python - <<'PY'\nimport re, urllib.request\nopener=urllib.request.build_opener(urllib.request.ProxyHandler({}))\nbase='http://127.0.0.1:41639/assets/js/'\nruntime=opener.open(base+'runtime~main.2032b637.js').read().decode()\nleft,right=re.search(r'r.u=e=>.*?\\\\(\\\\{([\"'^}]+)'\"\\\\}\\\\[e\\\\]\\\\|\\\\|e\\\\)\\\\+\\\"\\\\.\\\"\\\\+\\\\{([\"'^}]+)'\"\\\\}',runtime).groups()\ndef d(s): return dict(re.findall(r'(\\\\d+):\\\"([\"'^\"]+)\"'\"',s))\nurls=[d(left).get(k,k)+'.'+v+'.js' for k,v in d(right).items()]\nfor u in urls:\n    s=opener.open(base+u).read().decode()\n    for needle in ['Current shift manual','Number expected','engineering-tally-fixture','legacy','--machine','clipboard']:\n        m=re.search(re.escape(needle),s)\n        if m: print(u,needle,s[max(0,m.start()-130):m.end()+160])\nPY\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"curl --noproxy '*' -fsS http://127.0.0.1:41639/assets/js/17896441.37c42614.js | python -c 'import sys; s=sys.stdin.read()\nfor k in [\\\"function yn\\\",\\\"writeText\\\",\\\"copyButtonAriaLabel\\\"]:\n p=s.find(k); print(s[max(0,p-120):p+650])'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Приёмка для английской смены пройдена. С главной страницы ссылка **Current shift manual 2.0** открывает английское руководство 2.0.\n\nУстановка приложенного Tally 1.1.0 без сети прошла успешно. По командам из руководства `2 3` дало `{\"sum\":5}` в stdout с кодом `0`, а `bad` дало `Number expected` в stderr с кодом `2`."
+    }
+  ],
+  "changed_file_contents": {},
+  "final_response": "Приёмка для английской смены пройдена. С главной страницы ссылка **Current shift manual 2.0** открывает английское руководство 2.0.\n\nУстановка приложенного Tally 1.1.0 без сети прошла успешно. По командам из руководства `2 3` дало `{\"sum\":5}` в stdout с кодом `0`, а `bad` дало `Number expected` в stderr с кодом `2`.",
+  "input_file_modes": {
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "assets/project-files/.github/workflows/docs-quality.yml": "0644",
+    "assets/project-files/.markdownlint-cli2.jsonc": "0644",
+    "assets/project-files/.prettierignore": "0644",
+    "assets/project-files/.prettierrc.json": "0644",
+    "assets/project-files/AGENTS.md": "0644",
+    "build-facts.json": "0664",
+    "references/bootstrap-and-structure.md": "0644",
+    "references/config-presets-and-routing.md": "0644",
+    "references/content-authoring.md": "0644",
+    "references/customization-and-ux.md": "0644",
+    "references/deployment-versioning-i18n.md": "0644",
+    "references/doc-quality-tooling-and-agents.md": "0644",
+    "references/search-and-ecosystem.md": "0644",
+    "release/engineering-tally-fixture-1.1.0.tgz": "0664",
+    "site.md": "0664",
+    "ticket.md": "0664"
+  },
+  "changed_file_modes": {},
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "sameProductFilesAsObserver": true,
+    "organizerPreflightOnTheseInputs": {
+      "sourcePage": "/",
+      "link": "Current shift manual 2.0",
+      "href": "/handbook/2.0/desk/",
+      "homeSha256": "197360fda0ebd1e2c4dcff8babdc9a02463d42d7d02a4badaa528572ca578bbc",
+      "response": 200,
+      "documentSha256": "e8e539e8c4dbc1522bbbd7828b0310e53e94ac012aebc0c3cc7a6743591f7e6c",
+      "docCommands": "npm install --offline --ignore-scripts --no-audit --no-fund ./engineering-tally-fixture-1.1.0.tgz./node_modules/.bin/tally sum 2 3 --machine./node_modules/.bin/tally sum bad --machine{\"sum\":5}Number expected",
+      "reader": {
+        "--machine": [
+          {
+            "exit": 0,
+            "stdout": "{\"sum\":5}\n",
+            "stderr": ""
+          },
+          {
+            "exit": 2,
+            "stdout": "",
+            "stderr": "Number expected\n"
+          }
+        ]
+      },
+      "cliSha256": "b67a76bc3dd46c43e26070c0dee7841942ffe20e853b08e37774a751fa4600e5"
+    },
+    "participantCommandsAndResults": [
+      {
+        "command": "/bin/bash -lc \"curl --noproxy '*' -sS -D /dev/stderr http://127.0.0.1:41639/handbook/2.0/desk/ | python -c 'from html.parser import HTMLParser\nimport sys\nclass Page(HTMLParser):\n def __init__(self): super().__init__(); self.skip=None\n def handle_starttag(self,t,a):\n  if t in (\\\"script\\\",\\\"style\\\"): self.skip=t\n  if t in (\\\"a\\\",\\\"link\\\",\\\"html\\\") and not self.skip: print(t,dict(a))\n def handle_endtag(self,t):\n  if self.skip==t: self.skip=None\n def handle_data(self,d):\n  if not self.skip and d.strip(): print(d)\nPage().feed(sys.stdin.read())'\"",
+        "exit": 0,
+        "selectOutput": "HTTP/1.0 200 OK\nServer: SimpleHTTP/0.6 Python/3.14.4\nDate: Wed, 18 Nov 2026 22:42:08 GMT\nContent-type: text/html\nContent-Length: 7682\nLast-Modified: Wed, 18 Nov 2026 22:27:22 GMT\nhtml {'lang': 'en', 'dir': 'ltr', 'class': 'docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-start', 'data-has-hydrated': 'false'}\nTally desk guide 2.0 | Desk handbook\nlink {'data-rh': 'true', 'rel': 'canonical', 'href': 'https://desk.example.invalid/handbook/2.0/desk/'}\nlink {'data-rh': 'true', 'rel': 'alternate', 'href': 'https://desk.example.invalid/handbook/2.0/desk/', 'hreflang': 'en'}\nlink {'data-rh': 'true', 'rel': 'alternate', 'href': 'https://desk.example.invalid/it/handbook/2.0/desk/', 'hreflang': 'it'}\nlink {'data-rh': 'true', 'rel': 'alternate', 'href': 'https://desk.example.invalid/handbook/2.0/desk/', 'hreflang': 'x-default'}\nlink {'rel': 'stylesheet', 'href': '/assets/css/styles.78e6bda1.css'}\na {'class': 'skipToContent_fXgn', 'href': '#__docusaurus_skipToContent_fallback'}\nSkip to main content\na {'class': 'navbar__brand', 'href': '/'}\nVersion: 2.0\nTally desk guide 2.0\nUse the shift's Tally 1.1.0 archive in a clean folder. Install the attached local file offline.\nnpm install --offline --ignore-scripts --no-audit --no-fund ./engineering-tally-fixture-1.1.0.tgz\n./node_modules/.bin/tally sum 2 3 --machine\n./node_modules/.bin/tally sum bad --machine\nThe result is \n{\"sum\":5}\n. The error prints \nNumber expected\n on stderr and leaves code 2.",
+        "fullEventSha": "e337d8a7e3c8e9f4e5d6cb0867efe7473aeae88b4d9934122504aad2c86a8672"
+      },
+      {
+        "command": "/bin/bash -lc \"command -v chromium chromium-browser google-chrome firefox playwright playwright-cli agent-browser node npm; curl --noproxy '*' -fsS http://127.0.0.1:41639/ | sed 's/></>\\\\n</g' | rg -n 'script|Current shift|Archived shift'\"",
+        "exit": 0,
+        "selectOutput": "/usr/bin/google-chrome\n/usr/bin/firefox\n/home/kostysh/.nvm/versions/node/v24.15.0/bin/agent-browser\n/home/kostysh/.nvm/versions/node/v24.15.0/bin/node\n/home/kostysh/.nvm/versions/node/v24.15.0/bin/npm\n21:<script data-rh=\"true\">function insertBanner(){var n=document.createElement(\"div\");n.id=\"__docusaurus-base-url-issue-banner-container\";n.innerHTML='\\n<div id=\"__docusaurus-base-url-issue-banner\" style=\"border: thick solid red; background-color: rgb(255, 230, 179); margin: 20px; padding: 20px; font-size: 20px;\">\\n   <p style=\"font-weight: bold; font-size: 30px;\">Your Docusaurus site did not load properly.</p>\\n   <p>A very common reason is a wrong site <a href=\"https://docusaurus.io/docs/docusaurus.config.js/#baseUrl\" style=\"font-weight: bold;\">baseUrl configuration</a>.</p>\\n   <p>Current configured baseUrl = <span style=\"font-weight: bold; color: red;\">/</span>  (default value)</p>\\n   <p>We suggest trying baseUrl = <span id=\"__docusaurus-base-url-issue-banner-suggestion-container\" style=\"font-weight: bold; color: green;\">\n23:</p>\\n</div>\\n',document.body.prepend(n);var e=document.getElementById(\"__docusaurus-base-url-issue-banner-suggestion-container\"),s=window.location.pathname,o=\"/\"===s.substr(-1)?s:s+\"/\";e.textContent=o}document.addEventListener(\"DOMContentLoaded\",function(){void 0===window.docusaurus&&insertBanner()})</script>\n25:<script src=\"/assets/js/runtime~main.2032b637.js\" defer=\"defer\">\n26:</script>\n27:<script src=\"/assets/js/main.fbdf2759.js\" defer=\"defer\">\n28:</script>\n38:<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get(\"docusaurus-theme\")}catch(t){}}()||function(){try{return window.localStorage.getItem(\"theme\")}catch(t){}}();document.documentElement.setAttribute(\"data-theme\",t||\"light\"),document.documentElement.setAttribute(\"data-theme-choice\",t||\"light\")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith(\"docusaurus-data-\")){var a=t.replace(\"docusaurus-data-\",\"data-\");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script>\n77:<a href=\"/handbook/2.0/desk/\">Current shift manual 2.0</a>\n80:<a href=\"/handbook/2.0/desk/\">Archived shift manual 1.0</a>",
+        "fullEventSha": "7632659bbad70bc7b3eed6149e28d5d6428b0f2d8b1ee69d10a795b7e804a3d2"
+      },
+      {
+        "command": "/bin/bash -lc \"node --input-type=module <<'NODE'\nimport {spawn} from 'node:child_process';\nimport {mkdtempSync,readFileSync,rmSync} from 'node:fs';\nimport {resolve} from 'node:path';\nimport {setTimeout as delay} from 'node:timers/promises';\nconst origin = 'http://127.0.0.1:41639';\nconst profile = mkdtempSync(resolve('.site-acceptance.'));\nconst browser = spawn('google-chrome', ['--headless','--no-sandbox','--disable-dev-shm-usage','--disable-background-networking','--disable-component-update','--disable-sync','--no-first-run','--proxy-server=http://127.0.0.1:1','--proxy-bypass-list=127.0.0.1:41639','--remote-debugging-port=0','--user-data-dir='+profile,'about:blank'],{stdio:'ignore'});\nlet ws;\ntry {\n  let port;\n  for (let attempt=0; attempt<80 && \"'!port; attempt++) {\n    try {port=readFileSync(profile+'\"'/DevToolsActivePort','utf8').split('\\\\n')[0];}\n    catch {await delay(100);}\n  }\n  if (\"'!port) throw Error('\"'Chrome DevTools unavailable');\n  const [tab] = await (await fetch('http://127.0.0.1:'+port+'/json/list')).json();\n  ws = new WebSocket(tab.webSocketDebuggerUrl);\n  await new Promise((ok,fail)=>{ws.onopen=ok; ws.onerror=fail;});\n  let counter=0;\n  const pending=new Map();\n  ws.onmessage=({data})=>{\n    const message=JSON.parse(data);\n    if (message.method==='Fetch.requestPaused') {\n      const {requestId,request:{url}}=message.params;\n      const allowed=url.startsWith(origin+'/');\n      void send(allowed?'Fetch.continueRequest':'Fetch.failRequest',allowed?{requestId}:{requestId,errorReason:'BlockedByClient'});\n    }\n    const callback=pending.get(message.id);\n    if(callback){pending.delete(message.id);callback(message);}\n  };\n  function send(method,params={}) {\n    return new Promise((ok,fail)=>{\n      const id=++counter;\n      pending.set(id,m=>m.error?fail(Error(JSON.stringify(m.error))):ok(m.result));\n      ws.send(JSON.stringify({id,method,params}));\n    });\n  }\n  const evaluate=async expression=>(await send('Runtime.evaluate',{expression,returnByValue:true})).result.value;\n  async function waitFor(expression) {\n    for (let attempt=0; attempt<60; attempt++) {\n      const result=await evaluate(expression);\n      if (result) return result;\n      await delay(100);\n    }\n    throw Error('Page condition timed out: '+expression);\n  }\n  await send('Fetch.enable',{patterns:[{urlPattern:'*'}]});\n  await send('Page.navigate',{url:origin+'/'});\n  const ready='document.documentElement.getAttribute(\\\"data-has-hydrated\\\")===\\\"true\\\"';\n  await waitFor(ready);\n  const link='[...document.links].find(a=>a.textContent.trim()===\\\"Current shift manual 2.0\\\")';\n  console.log('Home URL and link',await evaluate('[location.href,('+link+').getAttribute(\\\"href\\\")]'));\n  await evaluate('('+link+').click()');\n  await waitFor('location.pathname\"'!==\"/\" && ('\"'+ready+') && \"'!!document.querySelector(\"main h1\")'\"');\n  await delay(350);\n  console.log(await evaluate('JSON.stringify({url:location.href,lang:document.documentElement.lang,body:document.querySelector(\\\"main\\\")?.innerText,code:[...document.querySelectorAll(\\\"main pre code\\\")].map(x=>x.textContent)})'));\n} finally {\n  ws?.close();\n  browser.kill();\n  await Promise.race([new Promise(ok=>browser.once('exit',ok)),delay(1500)]);\n  rmSync(profile,{recursive:true,force:true});\n}\nNODE\"",
+        "exit": 0,
+        "selectOutput": "Home URL and link [ 'http://127.0.0.1:41639/', '/handbook/2.0/desk/' ]\n{\"url\":\"http://127.0.0.1:41639/handbook/2.0/desk/\",\"lang\":\"en\",\"body\":\"Version: 2.0\\nTally desk guide 2.0\\n\\nUse the shift's Tally 1.1.0 archive in a clean folder. Install the attached local file offline.\\n\\nnpm install --offline --ignore-scripts --no-audit --no-fund ./engineering-tally-fixture-1.1.0.tgz\\n\\n./node_modules/.bin/tally sum 2 3 --machine\\n\\n./node_modules/.bin/tally sum bad --machine\\n\\n\\nThe result is {\\\"sum\\\":5}. The error prints Number expected on stderr and leaves code 2.\",\"code\":[\"npm install --offline --ignore-scripts --no-audit --no-fund ./engineering-tally-fixture-1.1.0.tgz./node_modules/.bin/tally sum 2 3 --machine./node_modules/.bin/tally sum bad --machine\"]}",
+        "fullEventSha": "395b477211b940760e0bebedc70708e5c671b8d1a0e5f5327d78178a097f4e5e"
+      },
+      {
+        "command": "/bin/bash -lc \"curl --noproxy '*' -fsS http://127.0.0.1:41639/handbook/2.0/desk/ | sed 's/></>\\\\n</g' | rg -n -C 8 'npm install|tally sum|Copy|clipboard'\"",
+        "exit": 0,
+        "selectOutput": "88-<h1>Tally desk guide 2.0</h1>\n89-</header>\n90-<p>Use the shift&#x27;s Tally 1.1.0 archive in a clean folder. Install the attached local file offline.</p>\n91-<div class=\"language-sh codeBlockContainer_Ckt0 theme-code-block\" style=\"--prism-color:#bfc7d5;--prism-background-color:#292d3e\">\n92-<div class=\"codeBlockContent_QJqH\">\n93-<pre tabindex=\"0\" class=\"prism-code language-sh codeBlock_bY9V thin-scrollbar\" style=\"color:#bfc7d5;background-color:#292d3e\">\n94-<code class=\"codeBlockLines_e6Vv\">\n95-<div class=\"token-line\" style=\"color:#bfc7d5\">\n96:<span class=\"token plain\">npm install --offline --ignore-scripts --no-audit --no-fund ./engineering-tally-fixture-1.1.0.tgz</span>\n97-<br>\n98-</div>\n99-<div class=\"token-line\" style=\"color:#bfc7d5\">\n100:<span class=\"token plain\">./node_modules/.bin/tally sum 2 3 --machine</span>\n101-<br>\n102-</div>\n103-<div class=\"token-line\" style=\"color:#bfc7d5\">\n104:<span class=\"token plain\">./node_modules/.bin/tally sum bad --machine</span>\n105-<br>\n106-</div>\n107-</code>\n108-</pre>\n109-</div>\n110-</div>\n111-<p>The result is <code>{&quot;sum&quot;:5}</code>. The error prints <code>Number expected</code> on stderr and leaves code 2.</p>\n112-</div>",
+        "fullEventSha": "687673f0d3de42df6716193510198da2d22517528c92de4ab861fbf6ccd45da2"
+      },
+      {
+        "command": "/bin/bash -lc \"python - <<'PY'\nimport os, shutil, subprocess, tempfile\nwith tempfile.TemporaryDirectory(prefix=\\\".tally-acceptance.\\\", dir=os.getcwd()) as check:\n    archive = \\\"engineering-tally-fixture-1.1.0.tgz\\\"\n    shutil.copyfile(\\\"release/\\\" + archive, os.path.join(check, archive))\n    env = dict(os.environ, npm_config_cache=os.path.join(check, \\\".npm-cache\\\"))\n    subprocess.run([\\\"npm\\\",\\\"install\\\",\\\"--offline\\\",\\\"--ignore-scripts\\\",\\\"--no-audit\\\",\\\"--no-fund\\\",\\\"./\\\"+archive], cwd=check, env=env, check=True)\n    for args in ([\\\"--version\\\"],[\\\"sum\\\",\\\"2\\\",\\\"3\\\",\\\"--machine\\\"],[\\\"sum\\\",\\\"bad\\\",\\\"--machine\\\"]):\n        result = subprocess.run([\\\"./node_modules/.bin/tally\\\",*args], cwd=check, capture_output=True, text=True)\n        print(args, result.returncode, repr(result.stdout), repr(result.stderr))\nPY\"",
+        "exit": 0,
+        "selectOutput": "added 1 package in 188ms\n['--version'] 0 '1.1.0\\n' ''\n['sum', '2', '3', '--machine'] 0 '{\"sum\":5}\\n' ''\n['sum', 'bad', '--machine'] 2 '' 'Number expected\\n'",
+        "fullEventSha": "89d21be2bb5e5ad42a5f7ccd5878cb5077ae57a29db080ab12a043b6cccface0"
+      },
+      {
+        "command": "/bin/bash -lc \"node --input-type=module <<'NODE'\nimport {spawn} from 'node:child_process';\nimport {mkdtempSync,readFileSync,rmSync} from 'node:fs';\nimport {resolve} from 'node:path';\nimport {setTimeout as delay} from 'node:timers/promises';\nconst origin='http://127.0.0.1:41639';\nconst profile=mkdtempSync(resolve('.site-acceptance.'));\nconst browser=spawn('google-chrome',['--headless','--no-sandbox','--disable-dev-shm-usage','--disable-background-networking','--disable-component-update','--no-first-run','--proxy-server=http://127.0.0.1:1','--proxy-bypass-list=127.0.0.1:41639','--remote-debugging-port=0','--user-data-dir='+profile,'about:blank'],{stdio:'ignore'});\nlet ws;\ntry {\n  let port;\n  for(let attempt=0;attempt<70&&\"'!port;attempt++){\n    try {port=readFileSync(profile+'\"'/DevToolsActivePort','utf8').split('\\\\n')[0];}\n    catch {await delay(100);}\n  }\n  const [tab]=await (await fetch('http://127.0.0.1:'+port+'/json/list')).json();\n  ws=new WebSocket(tab.webSocketDebuggerUrl);\n  await new Promise((ok,fail)=>{ws.onopen=ok;ws.onerror=fail;});\n  let id=0;\n  const pending=new Map();\n  const call=(method,params={})=>new Promise((ok,fail)=>{\n    const next=++id;\n    pending.set(next,m=>m.error?fail(Error(JSON.stringify(m.error))):ok(m.result));\n    ws.send(JSON.stringify({id:next,method,params}));\n  });\n  ws.onmessage=({data})=>{\n    const m=JSON.parse(data);\n    if(m.method==='Fetch.requestPaused'){\n      const {requestId,request:{url}}=m.params;\n      void (url.startsWith(origin+'/')?call('Fetch.continueRequest',{requestId}):call('Fetch.failRequest',{requestId,errorReason:'BlockedByClient'}));\n    }\n    pending.get(m.id)?.(m);\n    pending.delete(m.id);\n  };\n  const js=async expression=>(await call('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true,userGesture:true})).result.value;\n  async function waitFor(expression){\n    for(let n=0;n<60;n++){if(await js(expression))return;await delay(100);}\n    throw Error('Page condition timed out '+expression);\n  }\n  await call('Browser.grantPermissions',{origin,permissions:['clipboardReadWrite','clipboardSanitizedWrite']});\n  await call('Fetch.enable',{patterns:[{urlPattern:'*'}]});\n  await call('Page.navigate',{url:origin+'/'});\n  await waitFor('document.documentElement?.dataset.hasHydrated===\\\"true\\\"');\n  console.log('Hydrated home links',await js('[...document.links].filter(a=>a.textContent.includes(\\\"shift manual\\\")).map(a=>[a.textContent,a.getAttribute(\\\"href\\\")])'));\n  await js('[...document.links].find(a=>a.textContent===\\\"Current shift manual 2.0\\\").click()');\n  await waitFor('document.querySelector(\\\"main h1\\\")?.textContent===\\\"Tally desk guide 2.0\\\"');\n  const pre=await js('({lines:[...document.querySelectorAll(\\\"main pre .token-line\\\")].map(e=>e.innerText.trim()), buttons:[...document.querySelectorAll(\\\"main button\\\")].map(e=>[e.title,e.getAttribute(\\\"aria-label\\\"),e.className])})');\n  console.log('Code and controls',JSON.stringify(pre));\n  if(pre.buttons.some(([title,label])=>/copy/i.test(title+' '+label))){\n    await js('[...document.querySelectorAll(\\\"main button\\\")].find(e=>/copy/i.test(e.title+\\\" \\\"+e.getAttribute(\\\"aria-label\\\"))).click()');\n    console.log('Copied code',JSON.stringify(await js('navigator.clipboard.readText()')));\n  }\n} finally {\n  ws?.close();\n  browser.kill();\n  await Promise.race([new Promise(ok=>browser.once('exit',ok)),delay(1500)]);\n  rmSync(profile,{recursive:true,force:true});\n}\nNODE\nrg --files --hidden -g '\"'!.git'\"' -g '.site-acceptance.*/**' -g '.tally-acceptance.*/**'\"",
+        "exit": 1,
+        "selectOutput": "Hydrated home links [\n  [ 'Current shift manual 2.0', '/handbook/2.0/desk/' ],\n  [ 'Archived shift manual 1.0', '/handbook/2.0/desk/' ]\n]\nCode and controls {\"lines\":[\"npm install --offline --ignore-scripts --no-audit --no-fund ./engineering-tally-fixture-1.1.0.tgz\",\"./node_modules/.bin/tally sum 2 3 --machine\",\"./node_modules/.bin/tally sum bad --machine\"],\"buttons\":[[\"Toggle word wrap\",\"Toggle word wrap\",\"clean-btn\"],[\"Copy\",\"Copy code to clipboard\",\"clean-btn\"]]}\nCopied code {}",
+        "fullEventSha": "d2d7e9fed1fe96e0656a6ea294c6292514a4f20f79230e80be16b41e9cb7ca90"
+      },
+      {
+        "command": "/bin/bash -lc \"curl --noproxy '*' -fsS http://127.0.0.1:41639/handbook/2.0/desk/ | python -c 'import re,sys; s=sys.stdin.read(); print(\\\"\\\\n\\\".join(re.findall(r\\\"<script[\"'^>]*src=[''^>]+>|<link[''^>]*preload[''^>]+>\",s)))'\"'\ncurl --noproxy '*' -fsS http://127.0.0.1:41639/assets/js/runtime~main.2032b637.js | head -c 4200\"",
+        "exit": 0,
+        "selectOutput": "<script src=\"/assets/js/runtime~main.2032b637.js\" defer=\"defer\">\n<script src=\"/assets/js/main.fbdf2759.js\" defer=\"defer\">",
+        "fullEventSha": "0a3b9155ac12aac4ae9bfd9dedc5f741ca7b7269eb4b12f85fc395a217e947e9"
+      },
+      {
+        "command": "/bin/bash -lc \"python - <<'PY'\nimport re, urllib.request\nopener=urllib.request.build_opener(urllib.request.ProxyHandler({}))\nbase='http://127.0.0.1:41639/assets/js/'\nruntime=opener.open(base+'runtime~main.2032b637.js').read().decode()\nleft,right=re.search(r'r.u=e=>.*?\\\\(\\\\{([\"'^}]+)'\"\\\\}\\\\[e\\\\]\\\\|\\\\|e\\\\)\\\\+\\\"\\\\.\\\"\\\\+\\\\{([\"'^}]+)'\"\\\\}',runtime).groups()\ndef d(s): return dict(re.findall(r'(\\\\d+):\\\"([\"'^\"]+)\"'\"',s))\nurls=[d(left).get(k,k)+'.'+v+'.js' for k,v in d(right).items()]\nfor u in urls:\n    s=opener.open(base+u).read().decode()\n    for needle in ['Current shift manual','Number expected','engineering-tally-fixture','legacy','--machine','clipboard']:\n        m=re.search(re.escape(needle),s)\n        if m: print(u,needle,s[max(0,m.start()-130):m.end()+160])\nPY\"",
+        "exit": 0,
+        "selectOutput": "774d098d.d8bb7572.js engineering-tally-fixture t.pre,{children:(0,o.jsx)(t.code,{className:\"language-sh\",children:\"npm install --offline --ignore-scripts --no-audit --no-fund ./engineering-tally-fixture-1.0.0.tgz\\n./node_modules/.bin/tally sum 2 3 --json\\n./node_modules/.bin/tally sum bad --json\\n\"})}),\"\\n\",(0,o.jsxs)(t.p,{children:[\"The first command after in\n98ce8162.1d438663.js Number expected .jsxs)(t.p,{children:[\"The result is \",(0,r.jsx)(t.code,{children:'{\"sum\":5}'}),\". The error prints \",(0,r.jsx)(t.code,{children:\"Number expected\"}),\" on stderr and leaves code 2.\"]})]})}function u(e={}){const{wrapper:t}={...(0,o.R)(),...e.components};return t?(0,r.jsx)(t,{...e,children:(0,r.jsx)(d,{...e\n98ce8162.1d438663.js engineering-tally-fixture t.pre,{children:(0,r.jsx)(t.code,{className:\"language-sh\",children:\"npm install --offline --ignore-scripts --no-audit --no-fund ./engineering-tally-fixture-1.1.0.tgz\\n./node_modules/.bin/tally sum 2 3 --machine\\n./node_modules/.bin/tally sum bad --machine\\n\"})}),\"\\n\",(0,r.jsxs)(t.p,{children:[\"The result is \",(0,r\n98ce8162.1d438663.js --machine  install --offline --ignore-scripts --no-audit --no-fund ./engineering-tally-fixture-1.1.0.tgz\\n./node_modules/.bin/tally sum 2 3 --machine\\n./node_modules/.bin/tally sum bad --machine\\n\"})}),\"\\n\",(0,r.jsxs)(t.p,{children:[\"The result is \",(0,r.jsx)(t.code,{children:'{\"sum\":5}'}),\". The error print\n17896441.37c42614.js clipboard d\",description:\"The copied button label on code blocks\"}):(0,f.T)({id:\"theme.CodeBlock.copyButtonAriaLabel\",message:\"Copy code to clipboard\",description:\"The ARIA label for copy code blocks button\"})}function yn(){var e;return e=vn().m(function e(n){var a,r;return vn().w(function(e){for(;;)switch(e\n9dd8a0d2.4fdfa589.js Current shift manual  turno\":\"Desk notes\"}),(0,i.jsx)(\"p\",{children:(0,i.jsx)(s.A,{to:\"/handbook/2.0/desk/\",children:\"it\"===e?\"Manuale del turno 2.0\":\"Current shift manual 2.0\"})}),(0,i.jsx)(\"p\",{children:(0,i.jsx)(s.A,{to:\"/handbook/2.0/desk/\",children:\"it\"===e?\"Archivio del turno 1.0\":\"Archived shift manual 1.0\"})})]})})}}}]);",
+        "fullEventSha": "fa610b032901e392b41473c90db99f54657ba52c1cea013c601994e985680c54"
+      },
+      {
+        "command": "/bin/bash -lc \"curl --noproxy '*' -fsS http://127.0.0.1:41639/assets/js/17896441.37c42614.js | python -c 'import sys; s=sys.stdin.read()\nfor k in [\\\"function yn\\\",\\\"writeText\\\",\\\"copyButtonAriaLabel\\\"]:\n p=s.find(k); print(s[max(0,p-120):p+650])'\"",
+        "exit": 0,
+        "selectOutput": "eBlock.copyButtonAriaLabel\",message:\"Copy code to clipboard\",description:\"The ARIA label for copy code blocks button\"})}function yn(){var e;return e=vn().m(function e(n){var a,r;return vn().w(function(e){for(;;)switch(e.n){case 0:if(!navigator.clipboard){e.n=1;break}return e.a(2,navigator.clipboard.writeText(n));case 1:return e.n=2,t.e(436).then(()=>t(3436));case 2:return a=e.v,r=a.default,e.a(2,r(n))}},e)}),yn=function(){var n=this,t=arguments;return new Promise(function(a,r){var s=e.apply(n,t);function i(e){gn(s,a,r,i,o,\"next\",e)}function o(e){gn(s,a,r,i,o,\"throw\",e)}i(void 0)})},yn.apply(this,arguments)}function Cn(){var e=Fe().metadata.code,n=(0,a.useState)(!1),t=n[0],r=n[1],s=(0,a.useRef)(void 0),i=(0,a.useCallback)(function(){(function(e){return yn.apply\nturn vn().w(function(e){for(;;)switch(e.n){case 0:if(!navigator.clipboard){e.n=1;break}return e.a(2,navigator.clipboard.writeText(n));case 1:return e.n=2,t.e(436).then(()=>t(3436));case 2:return a=e.v,r=a.default,e.a(2,r(n))}},e)}),yn=function(){var n=this,t=arguments;return new Promise(function(a,r){var s=e.apply(n,t);function i(e){gn(s,a,r,i,o,\"next\",e)}function o(e){gn(s,a,r,i,o,\"throw\",e)}i(void 0)})},yn.apply(this,arguments)}function Cn(){var e=Fe().metadata.code,n=(0,a.useState)(!1),t=n[0],r=n[1],s=(0,a.useRef)(void 0),i=(0,a.useCallback)(function(){(function(e){return yn.apply(this,arguments)})(e).then(function(){r(!0),s.current=window.setTimeout(function(){r(!1)},1e3)})},[e]);return(0,a.useEffect)(function(){return function(){return window.clearTimeout\n.CodeBlock.copied\",message:\"Copied\",description:\"The copied button label on code blocks\"}):(0,f.T)({id:\"theme.CodeBlock.copyButtonAriaLabel\",message:\"Copy code to clipboard\",description:\"The ARIA label for copy code blocks button\"})}function yn(){var e;return e=vn().m(function e(n){var a,r;return vn().w(function(e){for(;;)switch(e.n){case 0:if(!navigator.clipboard){e.n=1;break}return e.a(2,navigator.clipboard.writeText(n));case 1:return e.n=2,t.e(436).then(()=>t(3436));case 2:return a=e.v,r=a.default,e.a(2,r(n))}},e)}),yn=function(){var n=this,t=arguments;return new Promise(function(a,r){var s=e.apply(n,t);function i(e){gn(s,a,r,i,o,\"next\",e)}function o(e){gn(s,a,r,i,o,\"throw\",e)}i(void 0)})},yn.apply(this,arguments)}function Cn(){var e=Fe().metadata.code,n=(0",
+        "fullEventSha": "87b96d360be88a7611506cac723f8cd2ded32d791358c5b9d60ae9d2f58dfac9"
+      }
+    ],
+    "changesToInitialFiles": [],
+    "createdFiles": []
+  }
+}

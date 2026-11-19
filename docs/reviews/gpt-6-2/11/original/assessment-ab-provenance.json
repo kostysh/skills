@@ -1,0 +1,116 @@
+{
+  "rawSignedAnswerSha256": "578034c4dab2f8c0462179768d4e5dd4d8a10f3cf7aaa011fd9c23cd7b3ee279",
+  "rawEventsSha256": "a86097daeb827df3dc652d40ce3b23ccfc1ba739779cf69be6f85b06533192c6",
+  "rawDispatchSha256": "9ca1018a6e290a2f0d8c1381fab51a76a37c4385ba4f2a7d18911aea92f24388",
+  "criteriaSha256": "84983ac8da803f25d7f6860e01742c047935d481302f7d49da59afbe20bbcda4",
+  "issuedModel": "gpt-6.2-sol",
+  "issuedReasoning": "high",
+  "sandbox": "read-only",
+  "longTermMemoryFeature": "disabled",
+  "exposedFilesSha256": {
+    "criteria.md": "84983ac8da803f25d7f6860e01742c047935d481302f7d49da59afbe20bbcda4",
+    "fead3c/actions.json": "7a2b5a91b104099eb85295d126eb21a7b4e8e4ff9d18e6affea2f6b39d6bb90d",
+    "fead3c/observer.json": "e99eb5d3f2607cc84c5239a44c21ea4157289c6aed6544753d622812319f9fec",
+    "fead3c/answer.md": "c2e0afd7980dc24338fdda37bb7714d85660704334ac5d005425c3cf78dff6b0",
+    "fead3c/task.md": "e7689a59d0516992bde797dee3e2b9b2ce276a404d1605d799a2a979eed5c576",
+    "01a421/actions.json": "3e5d7e9c8fb52e92cc352f49665203b27bffbcc62b7efab7db7fe1b16d8f4705",
+    "01a421/observer.json": "9eb4d8051b481b2c58f09f4741eaf38ed9b94840ee9689182523d6136a253ec2",
+    "01a421/answer.md": "2cf0335af6955436a79025c5ca45634b191144a4f4ac01331e5ec972902c9df1",
+    "01a421/task.md": "e7689a59d0516992bde797dee3e2b9b2ce276a404d1605d799a2a979eed5c576",
+    "9d2a21/actions.json": "55b55a53924868be827fdb676f07a8b741b21d20f45eba3784d2d2b818fb30f3",
+    "9d2a21/observer.json": "653841729cfeb268e39d813b9137e51a87b2da5423d08696bbc5c7a7c5955a40",
+    "9d2a21/answer.md": "8660a22af003ed5525ebbe0f7aafd75a20309448726fc4cf957fd7f985000a21",
+    "9d2a21/task.md": "e7689a59d0516992bde797dee3e2b9b2ce276a404d1605d799a2a979eed5c576",
+    "480789/actions.json": "781e19473e9555ab2fa2a90f2f1532e0d705c77adf8471b75df12bc9cc6209df",
+    "480789/observer.json": "00fe30f3a317730614c022ab0c36ea07da988c8802fe04583df56bd4cd8c6c15",
+    "480789/answer.md": "6561ba951ec0125f5a49b672f7261961db11a3fc9f1ac2a67e6f74cc18f1eb0b",
+    "480789/task.md": "e7689a59d0516992bde797dee3e2b9b2ce276a404d1605d799a2a979eed5c576",
+    "480789/before/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "480789/before/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "480789/before/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "480789/before/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "480789/before/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "480789/after/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "480789/after/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "480789/after/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "480789/after/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "480789/after/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "9d2a21/before/materials/request.md": "b993fe76975a80007c9d8456ef0f398b4e41649c9dc89c717d6ff86e6f7f1e53",
+    "9d2a21/before/materials/change.json": "675d0d144fe00645e6e6f689f2dac842560cc824a0c49047da48f2b7d1452045",
+    "9d2a21/before/materials/index.json": "6cbca66a5ed71a1fca7f5fa68c276a5fa5f44017a017fc73dea5d21452ffad46",
+    "9d2a21/before/materials/effective-54.json": "eca92c2d501449521af184383e0dfe15427345989da176981dd8169ad242ff6f",
+    "9d2a21/before/materials/question.md": "fd9e4175d6421ee25e730855ba160fd0987a148d823d19b9cb07b2d06c35749c",
+    "9d2a21/after/materials/request.md": "b993fe76975a80007c9d8456ef0f398b4e41649c9dc89c717d6ff86e6f7f1e53",
+    "9d2a21/after/materials/change.json": "675d0d144fe00645e6e6f689f2dac842560cc824a0c49047da48f2b7d1452045",
+    "9d2a21/after/materials/index.json": "6cbca66a5ed71a1fca7f5fa68c276a5fa5f44017a017fc73dea5d21452ffad46",
+    "9d2a21/after/materials/effective-54.json": "eca92c2d501449521af184383e0dfe15427345989da176981dd8169ad242ff6f",
+    "9d2a21/after/materials/question.md": "fd9e4175d6421ee25e730855ba160fd0987a148d823d19b9cb07b2d06c35749c",
+    "01a421/before/materials/request.md": "b993fe76975a80007c9d8456ef0f398b4e41649c9dc89c717d6ff86e6f7f1e53",
+    "01a421/before/materials/change.json": "675d0d144fe00645e6e6f689f2dac842560cc824a0c49047da48f2b7d1452045",
+    "01a421/before/materials/index.json": "6cbca66a5ed71a1fca7f5fa68c276a5fa5f44017a017fc73dea5d21452ffad46",
+    "01a421/before/materials/effective-54.json": "eca92c2d501449521af184383e0dfe15427345989da176981dd8169ad242ff6f",
+    "01a421/before/materials/question.md": "fd9e4175d6421ee25e730855ba160fd0987a148d823d19b9cb07b2d06c35749c",
+    "01a421/after/materials/request.md": "b993fe76975a80007c9d8456ef0f398b4e41649c9dc89c717d6ff86e6f7f1e53",
+    "01a421/after/materials/change.json": "675d0d144fe00645e6e6f689f2dac842560cc824a0c49047da48f2b7d1452045",
+    "01a421/after/materials/index.json": "6cbca66a5ed71a1fca7f5fa68c276a5fa5f44017a017fc73dea5d21452ffad46",
+    "01a421/after/materials/effective-54.json": "eca92c2d501449521af184383e0dfe15427345989da176981dd8169ad242ff6f",
+    "01a421/after/materials/question.md": "fd9e4175d6421ee25e730855ba160fd0987a148d823d19b9cb07b2d06c35749c",
+    "fead3c/before/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "fead3c/before/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "fead3c/before/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "fead3c/before/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "fead3c/before/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "fead3c/after/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "fead3c/after/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "fead3c/after/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "fead3c/after/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "fead3c/after/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da"
+  },
+  "observableOperations": [
+    {
+      "command": "/bin/bash -lc 'ls -la'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git/**'\"' .\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba criteria.md'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"for f in 9d2a21/task.md 9d2a21/answer.md 9d2a21/actions.json 9d2a21/observer.json; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; nl -ba \"$f\"; done'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"for f in 480789/task.md 480789/answer.md 480789/actions.json 480789/observer.json; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; nl -ba \"$f\"; done'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"for f in fead3c/task.md fead3c/answer.md fead3c/actions.json fead3c/observer.json; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; nl -ba \"$f\"; done'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"for f in 01a421/task.md 01a421/answer.md 01a421/actions.json 01a421/observer.json; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; nl -ba \"$f\"; done'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"for f in 01a421/before/materials/*; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; nl -ba \"$f\"; done\ndiff --no-dereference -r 01a421/before 01a421/after\nfor side in before after; do find 01a421/\"$side\" -printf '\"'%m %y %P\\\\n' | sort; done\nsha256sum 01a421/answer.md\nwc -c 01a421/answer.md\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"for f in 9d2a21/before/materials/*; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; nl -ba \"$f\"; done\ndiff --no-dereference -r 9d2a21/before 9d2a21/after\nfor side in before after; do find 9d2a21/\"$side\" -printf '\"'%m %y %P\\\\n' | sort; done\nsha256sum 9d2a21/answer.md\nwc -c 9d2a21/answer.md\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"for f in fead3c/before/materials/*; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; nl -ba \"$f\"; done\ndiff --no-dereference -r fead3c/before fead3c/after\nfor side in before after; do find fead3c/\"$side\" -printf '\"'%m %y %P\\\\n' | sort; done\nsha256sum fead3c/answer.md\nwc -c fead3c/answer.md\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc \"for f in 480789/before/materials/*; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; nl -ba \"$f\"; done\ndiff --no-dereference -r 480789/before 480789/after\nfor side in before after; do find 480789/\"$side\" -printf '\"'%m %y %P\\\\n' | sort; done\nsha256sum 480789/answer.md\nwc -c 480789/answer.md\"",
+      "exit": 0
+    }
+  ],
+  "exit": 0
+}

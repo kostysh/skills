@@ -1,0 +1,371 @@
+{
+  "session": "01a1f144-33fb-7f20-835c-70b78d7953cf",
+  "model": "gpt-6.2-sol",
+  "reasoning": "medium",
+  "cliFlags": [
+    "--disable memories",
+    "--enable skip_host_skill_discovery",
+    "--disable skill_search",
+    "--ephemeral",
+    "--sandbox workspace-write"
+  ],
+  "exactInputSetAsInOriginal": true,
+  "distinctInputFiles": 38,
+  "exactInstallationFiles": 5,
+  "unchangedArchiveSha256": "01c97bdc38d76175796c9935427b46df5a63c57eaca8903a2c6019a9f11557b1",
+  "sameContentsAndModesBeforeAndAfter": true,
+  "rawTaskSha256": "2d76257a634ed5643227f2123791f9f8d28953f7c23db995de7bda23e6dc0f05",
+  "frozenTaskSha256": "1f33ff4cb438a309694329b3bad223b9408f6d3e0c094ef7528f27aa60549c4a",
+  "eventsSha256": "d931d4e8e025b25c623536064e5740a68b0f34997f76a1b510892b1b5a8dc623",
+  "rawAnswerSha256": "8eea53201fca9e72d66ec2f911d21659a64da2af7b4094d20515ef924a44471a",
+  "portableAnswerSha256": "21340ff3984cb8b58671fe008770c5da6ae1e76d9f4e3a21956edb62d50ffdd0",
+  "completeInputsInActualOutput": {
+    "SKILL.md": {
+      "sha256": "97b62243b2ec312f8d7e45aa7e5b999daed3e8389bdd08a8a5578f8cec2c8797",
+      "fullFileToolResults": [
+        {
+          "line": 5,
+          "item": "item_1",
+          "rawLineSha256": "7bd4187b89b5784602febe791c4cc2d9768df20367a9b975abdf9469c5045636"
+        }
+      ]
+    },
+    "catalog/17/catalog-review.md": {
+      "sha256": "e8a0c8078ffe58b422122acd5a5d58307fb80d9034aa2892b181bc036466ae74",
+      "fullFileToolResults": [
+        {
+          "line": 11,
+          "item": "item_4",
+          "rawLineSha256": "19c42599f3245a39d6c66a020a8d99d277be30fb9b519bd655b519f513364877"
+        },
+        {
+          "line": 15,
+          "item": "item_6",
+          "rawLineSha256": "a079839263232a6733ef3cd991fe8e961dceb56c130a712a7fc550c7644f9d38"
+        }
+      ]
+    },
+    "catalog/23/catalog-handoff.md": {
+      "sha256": "a84fd2c9b6718d8564a2d6d28d1434ad76e65bbefd75ee9f6c072a620549bb57",
+      "fullFileToolResults": [
+        {
+          "line": 11,
+          "item": "item_4",
+          "rawLineSha256": "19c42599f3245a39d6c66a020a8d99d277be30fb9b519bd655b519f513364877"
+        },
+        {
+          "line": 15,
+          "item": "item_6",
+          "rawLineSha256": "a079839263232a6733ef3cd991fe8e961dceb56c130a712a7fc550c7644f9d38"
+        }
+      ]
+    },
+    "catalog/24/catalog-review.md": {
+      "sha256": "2b283e6d3d6fbf83468d0622c0693328696d50e5c4b7e93c5abb724166469bcf",
+      "fullFileToolResults": [
+        {
+          "line": 11,
+          "item": "item_4",
+          "rawLineSha256": "19c42599f3245a39d6c66a020a8d99d277be30fb9b519bd655b519f513364877"
+        },
+        {
+          "line": 15,
+          "item": "item_6",
+          "rawLineSha256": "a079839263232a6733ef3cd991fe8e961dceb56c130a712a7fc550c7644f9d38"
+        }
+      ]
+    },
+    "catalog/33/catalog-review.md": {
+      "sha256": "183c4e22529393bc4d64068c56a4fe0e59e739914d6e65f2294f590a7d22880e",
+      "fullFileToolResults": [
+        {
+          "line": 11,
+          "item": "item_4",
+          "rawLineSha256": "19c42599f3245a39d6c66a020a8d99d277be30fb9b519bd655b519f513364877"
+        },
+        {
+          "line": 15,
+          "item": "item_6",
+          "rawLineSha256": "a079839263232a6733ef3cd991fe8e961dceb56c130a712a7fc550c7644f9d38"
+        },
+        {
+          "line": 21,
+          "item": "item_9",
+          "rawLineSha256": "aaeefaa630a13fc6d6ccb82d319126b9a44235b20bfe60880a2bb9934ed4c0ad"
+        }
+      ]
+    },
+    "catalog/30/catalog-diagnosis.md": {
+      "sha256": "efa08a2e44f2d8eb5c0f6f437f30429f89531de0ddb8bdad8ea437c14232140e",
+      "fullFileToolResults": [
+        {
+          "line": 11,
+          "item": "item_4",
+          "rawLineSha256": "19c42599f3245a39d6c66a020a8d99d277be30fb9b519bd655b519f513364877"
+        },
+        {
+          "line": 15,
+          "item": "item_6",
+          "rawLineSha256": "a079839263232a6733ef3cd991fe8e961dceb56c130a712a7fc550c7644f9d38"
+        }
+      ]
+    },
+    "catalog/30/catalog-repair.md": {
+      "sha256": "8e803f3bfe44eb45bf079691ce2c1adff9ddd4180ae5803b61fbae1f289ccb05",
+      "fullFileToolResults": [
+        {
+          "line": 11,
+          "item": "item_4",
+          "rawLineSha256": "19c42599f3245a39d6c66a020a8d99d277be30fb9b519bd655b519f513364877"
+        },
+        {
+          "line": 15,
+          "item": "item_6",
+          "rawLineSha256": "a079839263232a6733ef3cd991fe8e961dceb56c130a712a7fc550c7644f9d38"
+        },
+        {
+          "line": 19,
+          "item": "item_8",
+          "rawLineSha256": "9fdcd81d7f64e13b0b673fce5b712572e532a21786d2ce93b580f7b082948596"
+        }
+      ]
+    },
+    "catalog/30/handoff-38.md": {
+      "sha256": "fb4b9e5b0aff684983f1e2c95dec88ed3c372ce1e0045ec38720307b7a23ba6e",
+      "fullFileToolResults": [
+        {
+          "line": 11,
+          "item": "item_4",
+          "rawLineSha256": "19c42599f3245a39d6c66a020a8d99d277be30fb9b519bd655b519f513364877"
+        },
+        {
+          "line": 15,
+          "item": "item_6",
+          "rawLineSha256": "a079839263232a6733ef3cd991fe8e961dceb56c130a712a7fc550c7644f9d38"
+        },
+        {
+          "line": 19,
+          "item": "item_8",
+          "rawLineSha256": "9fdcd81d7f64e13b0b673fce5b712572e532a21786d2ce93b580f7b082948596"
+        }
+      ]
+    },
+    "catalog/30/primary-repair.patch": {
+      "sha256": "f8d291e5a94df9f7bfe0cab64a6defbed05d884d2a00d74824b11f5df78ea55c",
+      "fullFileToolResults": [
+        {
+          "line": 11,
+          "item": "item_4",
+          "rawLineSha256": "19c42599f3245a39d6c66a020a8d99d277be30fb9b519bd655b519f513364877"
+        },
+        {
+          "line": 19,
+          "item": "item_8",
+          "rawLineSha256": "9fdcd81d7f64e13b0b673fce5b712572e532a21786d2ce93b580f7b082948596"
+        }
+      ]
+    },
+    "catalog/history/attempts.md": {
+      "sha256": "744a774c498bdc84f2b5d26ce5f8f647810f2645675b3eea88b5e9df82891aff",
+      "fullFileToolResults": [
+        {
+          "line": 11,
+          "item": "item_4",
+          "rawLineSha256": "19c42599f3245a39d6c66a020a8d99d277be30fb9b519bd655b519f513364877"
+        },
+        {
+          "line": 15,
+          "item": "item_6",
+          "rawLineSha256": "a079839263232a6733ef3cd991fe8e961dceb56c130a712a7fc550c7644f9d38"
+        }
+      ]
+    },
+    "catalog/product/src/catalog.mjs": {
+      "sha256": "92c8be95084318fe6dffd93fc71f5c733abfd335e4870dd6786c653160ebfcaf",
+      "fullFileToolResults": [
+        {
+          "line": 19,
+          "item": "item_8",
+          "rawLineSha256": "9fdcd81d7f64e13b0b673fce5b712572e532a21786d2ce93b580f7b082948596"
+        }
+      ]
+    },
+    "catalog/product/README.md": {
+      "sha256": "a61923dbfb54a07bfaa42ecd38cf4b114787c3b29e48dac6d33887a1cf7b1cc8",
+      "fullFileToolResults": [
+        {
+          "line": 19,
+          "item": "item_8",
+          "rawLineSha256": "9fdcd81d7f64e13b0b673fce5b712572e532a21786d2ce93b580f7b082948596"
+        },
+        {
+          "line": 28,
+          "item": "item_13",
+          "rawLineSha256": "009d68394c19b6d2ac69b15a7cdc55cb43a72eef03edae774a590425488a4e1e"
+        }
+      ]
+    },
+    "planning/jobs.md": {
+      "sha256": "2080f3e83ff7416ec0c7cf66cf99c543a0d0adc33fe526f80f3bf243cf4ffa50",
+      "fullFileToolResults": [
+        {
+          "line": 9,
+          "item": "item_3",
+          "rawLineSha256": "c17d8c7d582a396d4657a858806000858d41703a3a5651f96bc6896ec53360b5"
+        },
+        {
+          "line": 17,
+          "item": "item_7",
+          "rawLineSha256": "3accb9173ab0247600b942c7c08daa6212b4ff7825d425acc1be86ef23baf3f9"
+        },
+        {
+          "line": 23,
+          "item": "item_10",
+          "rawLineSha256": "9c13f8e7fd55ee546dc99cfa1151927d8253398f63a116ef2305c32e49f5cf87"
+        }
+      ]
+    },
+    "planning/decision-intake.md": {
+      "sha256": "b30ccc0677e998fe46befd2605035bd9bf4651950a4d6e4543f62e3efc99e3cd",
+      "fullFileToolResults": [
+        {
+          "line": 9,
+          "item": "item_3",
+          "rawLineSha256": "c17d8c7d582a396d4657a858806000858d41703a3a5651f96bc6896ec53360b5"
+        },
+        {
+          "line": 17,
+          "item": "item_7",
+          "rawLineSha256": "3accb9173ab0247600b942c7c08daa6212b4ff7825d425acc1be86ef23baf3f9"
+        },
+        {
+          "line": 23,
+          "item": "item_10",
+          "rawLineSha256": "9c13f8e7fd55ee546dc99cfa1151927d8253398f63a116ef2305c32e49f5cf87"
+        }
+      ]
+    },
+    "planning/architecture-handoff.md": {
+      "sha256": "88590992721d226d11dc614538a0512e02f9125bb13623064aab44a490059a01",
+      "fullFileToolResults": [
+        {
+          "line": 9,
+          "item": "item_3",
+          "rawLineSha256": "c17d8c7d582a396d4657a858806000858d41703a3a5651f96bc6896ec53360b5"
+        },
+        {
+          "line": 17,
+          "item": "item_7",
+          "rawLineSha256": "3accb9173ab0247600b942c7c08daa6212b4ff7825d425acc1be86ef23baf3f9"
+        },
+        {
+          "line": 23,
+          "item": "item_10",
+          "rawLineSha256": "9c13f8e7fd55ee546dc99cfa1151927d8253398f63a116ef2305c32e49f5cf87"
+        }
+      ]
+    }
+  },
+  "productReplay": [
+    {
+      "line": 26,
+      "item": "item_12",
+      "rawLineSha256": "d2f4c02de700d967964f25bd9310e6a05be742346c7db18fc0eeb144183d7acf",
+      "output": "{issuedDirectory}/catalog/history/catalog.bundle is okay\nThe bundle contains these 4 refs:\n6e78cc7e2b99e267f0e87f4ad186b2ad318b1478 refs/heads/main\nb0244bdcba9416a0a4f40a4f898b21fd6c6990f3 refs/tags/R1\n6e78cc7e2b99e267f0e87f4ad186b2ad318b1478 refs/tags/R2\n6e78cc7e2b99e267f0e87f4ad186b2ad318b1478 HEAD\nThe bundle records a complete history.\nThe bundle uses this hash algorithm: sha1\ndiff --git a/src/catalog.mjs b/src/catalog.mjs\nindex 9ac9777..2fc68ab 100644\n--- a/src/catalog.mjs\n+++ b/src/catalog.mjs\n@@ -11,7 +11,7 @@ export function setPinned(cards, id, pinned) {\n }\n \n export function saveCatalog(path, cards) {\n-  const records = cards.map(({ id, title, pinned }) => ({ id, title, pinned }));\n+  const records = cards.map(({ id, title }) => ({ id, title }));\n   writeFileSync(path, JSON.stringify(records, null, 2));\n }\nR2 matches supplied product: README.md, fixture/catalog.json, package.json, src/catalog.mjs, test/catalog.test.mjs\nR1 README SHA-256 a61923dbfb54a07bfaa42ecd38cf4b114787c3b29e48dac6d33887a1cf7b1cc8 b0244bdcba9416a0a4f40a4f898b21fd6c6990f3\nR2 README SHA-256 a61923dbfb54a07bfaa42ecd38cf4b114787c3b29e48dac6d33887a1cf7b1cc8 6e78cc7e2b99e267f0e87f4ad186b2ad318b1478\nPatch SHA-256 f8d291e5a94df9f7bfe0cab64a6defbed05d884d2a00d74824b11f5df78ea55c\npatching file src/catalog.mjs\npatching file test/catalog.test.mjs\nR1 (supplied CLI) CLI ['[\"Beta\"]', '[\"Alpha\",\"Beta\"]', '[\"Alpha\",\"Beta\"]'] ; \nR2 CLI ['[\"Beta\"]', '[\"Alpha\",\"Beta\"]', '[]'] ; \nR2 + patch CLI ['[\"Beta\"]', '[\"Alpha\",\"Beta\"]', '[\"Alpha\",\"Beta\"]'] ; \nR2 + tests only: \nAll 43 supplied files retain bytes and modes, temporary copies removed\n"
+    },
+    {
+      "line": 30,
+      "item": "item_14",
+      "rawLineSha256": "48e8198213b19457ab1470c5116fff2c460e9b50df0e650e2b821e6e28156969",
+      "output": "original exit 0 ℹ pass 2\nℹ fail 0\npatched exit 0 ℹ pass 6\nℹ fail 0\ntests only exit 1 ✖ desk pin keeps Alpha and Beta pinned after reopening the fixture copy (70.779788ms)\n✖ unpin saves false and preserves the other cards after reopening (43.628576ms)\n✖ desk can pin a legacy card without a pinned field (43.962567ms)\nℹ pass 3\nℹ fail 3\n✖ failing tests:\n✖ desk pin keeps Alpha and Beta pinned after reopening the fixture copy (70.779788ms)\n✖ unpin saves false and preserves the other cards after reopening (43.628576ms)\n✖ desk can pin a legacy card without a pinned field (43.962567ms)\n"
+    }
+  ],
+  "observedCommands": 13,
+  "terminalExit": 0,
+  "receiptArchive": "records.tar.gz",
+  "separatePairedGrading": {
+    "packetSHA256": "5a25b4108130b57026103f97e066309c6dcc90a394e4b472e43c668ecd8ff1f4",
+    "packetFiles": 85,
+    "rawReportSHA256": "902e635ab396196b4650ae881ea84204510249827d6a450b321d1585af9e7e4c",
+    "portableReportSHA256": "9d1ff78aa3421e6e0f3652b2cf8949a45b416118d1ab20b91b69cc5fa92dcb87",
+    "eventsSHA256": "76e3ecdfee56551fb1cb87a08f3f8483100c25702f612d986523f637e461ce5f",
+    "signedCodeMap": {
+      "5dfe33": {
+        "receiver": "executor-02",
+        "taskSha256": "0a55578095c34eee3c88d832ed169d92d491a7b8f5504713a14578dfcf06904e",
+        "rawAnswerSha256": "e6e124a1321194b458f41a3a42fca83ec459b9a64d778840e8d0d4ec94636078",
+        "asScoredAnswerSha256": "5e2011ed47cb6a0478d830f36384114ff6c6c3f97907ea41c8c17c457406e2e6",
+        "actionEvents": [
+          9,
+          12,
+          13,
+          15,
+          17,
+          26,
+          28
+        ]
+      },
+      "c5d0a5": {
+        "receiver": "executor-03",
+        "taskSha256": "2d76257a634ed5643227f2123791f9f8d28953f7c23db995de7bda23e6dc0f05",
+        "rawAnswerSha256": "8eea53201fca9e72d66ec2f911d21659a64da2af7b4094d20515ef924a44471a",
+        "asScoredAnswerSha256": "01c3b796baec408d800ae7eb69cf55225261195b54cf774008b04613f2318a67",
+        "actionEvents": [
+          9,
+          11,
+          13,
+          15,
+          19,
+          21,
+          23,
+          28,
+          30
+        ]
+      }
+    },
+    "postSignatureSourceEvidence": {
+      "5dfe33": {
+        "candidateArchive": "01c97bdc38d76175796c9935427b46df5a63c57eaca8903a2c6019a9f11557b1",
+        "issuedRootSHA256": "97b62243b2ec312f8d7e45aa7e5b999daed3e8389bdd08a8a5578f8cec2c8797",
+        "fullReturnedRoot": [
+          {
+            "eventLine": 7,
+            "item": "item_2",
+            "rawLineSHA256": "261ee9761a8dd6cfe1918850555097740d91332bec788d48ea64138d9c367144",
+            "UTF8ByteOffsetInToolResult": 0,
+            "bytes": 16984,
+            "extractedSHA256": "97b62243b2ec312f8d7e45aa7e5b999daed3e8389bdd08a8a5578f8cec2c8797"
+          }
+        ],
+        "assignedTaskSHA256": "0a55578095c34eee3c88d832ed169d92d491a7b8f5504713a14578dfcf06904e"
+      },
+      "c5d0a5": {
+        "candidateArchive": "01c97bdc38d76175796c9935427b46df5a63c57eaca8903a2c6019a9f11557b1",
+        "issuedRootSHA256": "97b62243b2ec312f8d7e45aa7e5b999daed3e8389bdd08a8a5578f8cec2c8797",
+        "fullReturnedRoot": [
+          {
+            "eventLine": 5,
+            "item": "item_1",
+            "rawLineSHA256": "7bd4187b89b5784602febe791c4cc2d9768df20367a9b975abdf9469c5045636",
+            "UTF8ByteOffsetInToolResult": 1392,
+            "bytes": 16984,
+            "extractedSHA256": "97b62243b2ec312f8d7e45aa7e5b999daed3e8389bdd08a8a5578f8cec2c8797"
+          }
+        ],
+        "assignedTaskSHA256": "2d76257a634ed5643227f2123791f9f8d28953f7c23db995de7bda23e6dc0f05",
+        "readmeComparison": {
+          "eventLine": 26,
+          "item": "item_12",
+          "rawLineSHA256": "d2f4c02de700d967964f25bd9310e6a05be742346c7db18fc0eeb144183d7acf",
+          "status": 0,
+          "resultLines": [
+            "R1 README SHA-256 a61923dbfb54a07bfaa42ecd38cf4b114787c3b29e48dac6d33887a1cf7b1cc8 b0244bdcba9416a0a4f40a4f898b21fd6c6990f3",
+            "R2 README SHA-256 a61923dbfb54a07bfaa42ecd38cf4b114787c3b29e48dac6d33887a1cf7b1cc8 6e78cc7e2b99e267f0e87f4ad186b2ad318b1478"
+          ],
+          "action": "git show for R1:README.md and R2:README.md; both returned byte strings asserted equal to catalog/product/README.md."
+        }
+      }
+    }
+  },
+  "recordsSHA256": "d1262ff81ed8754ba96763f08ca7879e7615b9629e4a3f2e9d4596be3a9d793b"
+}

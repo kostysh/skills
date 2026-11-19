@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: frontend-design
-  source-version: 0.2.4
+  source-version: 0.2.6
   recommended-skill-md-max-bytes: 20000
   description: >-
     Design and implement visual strategies for web interfaces: landing pages,
@@ -47,6 +47,14 @@ copies:
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
 supporting:
+  - id: supporting-implementation-log-20261119-1
+    source: docs/logs/implementation-log-20261119-1.md
+    target: docs/logs/implementation-log-20261119-1.md
+    description: Maintenance record for the retired design editor skill.
+  - id: supporting-implementation-log-20261118-1
+    source: docs/logs/implementation-log-20261118-1.md
+    target: docs/logs/implementation-log-20261118-1.md
+    description: Non-normative record of the current-artifact and rendered-interface revision.
   - id: supporting-implementation-log-20261107-1
     source: docs/logs/implementation-log-20261107-1.md
     target: docs/logs/implementation-log-20261107-1.md
@@ -180,10 +188,6 @@ sections:
       domain: shadcn registry discovery, component selection, and registry-aware implementation
       winner: shadcn
       rationale: frontend-design supplies page-level direction while shadcn owns component-system mechanics.
-    - id: interop-pencil
-      domain: durable .pen inspection, editing, validation, screenshots, and exports
-      winner: pencil-dev
-      rationale: frontend-design defines strategy and frames; pencil-dev owns Pencil MCP mechanics.
     - id: interop-browser
       domain: interactive browser diagnostics, screenshots, and terminal-state checks
       winner: agent-browser
@@ -212,7 +216,7 @@ sections:
       text: Do not add motion to satisfy a quota; use only motion that improves hierarchy, continuity, feedback, or affordance and provide reduced behavior for non-essential physical motion.
     - id: gotcha-stale-artifact
       priority: medium
-      text: Do not approve a design artifact from a stale export or a runtime implementation from an outdated mockup when current source and rendered behavior disagree.
+      text: Verify the result in the current artifact or rendered interface.
   policies:
     - id: policy-interop-lead
       title: Proportional collaboration

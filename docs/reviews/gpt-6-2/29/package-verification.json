@@ -1,0 +1,42 @@
+{
+  "original": {
+    "name": "cli-engineer-0.2.1.tgz",
+    "sha256": "b3d6e779804f5ae044d0a5dbe30f360f14745c41ac50e37b87c6b5afd2a2bb49",
+    "active_members_equal_to_A": true
+  },
+  "release": {
+    "version": "0.2.2",
+    "filename": "cli-engineer-0.2.2.tar.gz",
+    "sha256": "c7734e1f452692c65c0f913670d30cd6d82dc9677b4002e1001f830565df146e",
+    "contentHash": "e7cb760c6f6c6e8c8756f4a9c9b3d92603adc964a6c2970fc56eee737d789595",
+    "active_files": {
+      "SKILL.md": "2f582a0924fd0c0852a48eaccfdfa45eafa36b2486a3f8a3320ab912895efbbf",
+      "agents/openai.yaml": "6636d02bb369b94d4609f716f4d239112e45827f90e0b3925fe6cce2afefe713",
+      "references/architecture-and-layout.md": "b9146bb7ef055a0be35b979e399a0839159f185e24d523b6bbd6b5d40d60b187",
+      "references/clig-baseline.md": "04db969526870771fa235ab3c54baa3eed61e7c473ade9dfdd12bd610e6ce398",
+      "references/framework-selection.md": "404d236d1d93ac474ca34f16cff6320dc3811c5178562d4437f6e021030bccf9",
+      "references/service-backed-clis.md": "b6167536c12de7caddf6c23f57ab91b25550686bbfb7056ab658644ed0790a51",
+      "references/testing-and-release.md": "1242eed806eb5370a7877dff1e8b261256a6bea1063af15d09f3818c04495919",
+      "references/ux-and-security.md": "41ae8b7adb56b8878cf93bd73c2c2348c13dab0ea141d0867832e5d1008e9d84"
+    },
+    "matches_independent_compile_and_source": true
+  },
+  "controlled_C": {
+    "SKILL.md": "ec4b0c979606598123ddb2ccb5e82274a5c6d8aaaf1f6eb67ad3d0f7d8de72e9",
+    "agents/openai.yaml": "6636d02bb369b94d4609f716f4d239112e45827f90e0b3925fe6cce2afefe713",
+    "references/architecture-and-layout.md": "b9146bb7ef055a0be35b979e399a0839159f185e24d523b6bbd6b5d40d60b187",
+    "references/clig-baseline.md": "04db969526870771fa235ab3c54baa3eed61e7c473ade9dfdd12bd610e6ce398",
+    "references/framework-selection.md": "404d236d1d93ac474ca34f16cff6320dc3811c5178562d4437f6e021030bccf9",
+    "references/service-backed-clis.md": "b6167536c12de7caddf6c23f57ab91b25550686bbfb7056ab658644ed0790a51",
+    "references/testing-and-release.md": "1242eed806eb5370a7877dff1e8b261256a6bea1063af15d09f3818c04495919",
+    "references/ux-and-security.md": "41ae8b7adb56b8878cf93bd73c2c2348c13dab0ea141d0867832e5d1008e9d84"
+  },
+  "only_C_to_release_changes": "source-version and manifest hash in SKILL.md",
+  "supporting_log_in_independent_compile": true,
+  "skill_validator": "Skill is valid!",
+  "compiler_lint_regenerate_compile_check": "success",
+  "published": false,
+  "final_repack_sha256": "c7734e1f452692c65c0f913670d30cd6d82dc9677b4002e1001f830565df146e",
+  "compiled_final_log_matches_source": true,
+  "final_compiled_check": "OK"
+}

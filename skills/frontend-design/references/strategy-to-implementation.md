@@ -112,8 +112,7 @@ small visual adjustment that remains clear without one.
 - Use framework and component-system skills for code-level architecture,
   lifecycle, accessibility mechanics, and component APIs. `frontend-design`
   owns the visual strategy and whether the rendered result expresses it.
-- Route durable `.pen` creation, inspection, editing, and export mechanics to
-  `pencil-dev`; the design artifact still follows this strategy contract.
+- Use an available editor that supports the requested format and verify the saved artifact.
 
 ## Verify The Observable Result
 

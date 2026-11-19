@@ -1,0 +1,188 @@
+{
+  "checks": [
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "0.2.5\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "lint",
+        "skills/react-spa-engineer"
+      ],
+      "exit": 0,
+      "stdout": "OK skills/react-spa-engineer\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "regenerate",
+        "skills/react-spa-engineer"
+      ],
+      "exit": 0,
+      "stdout": "Regenerated {repository}/skills/react-spa-engineer\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "skills/react-spa-engineer"
+      ],
+      "exit": 0,
+      "stdout": "OK skills/react-spa-engineer\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "compile",
+        "skills/react-spa-engineer",
+        "--out-dir",
+        "{staging}/compiled"
+      ],
+      "exit": 0,
+      "stdout": "Compiled skills/react-spa-engineer -> {staging}/compiled/react-spa-engineer\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "{staging}/compiled/react-spa-engineer"
+      ],
+      "exit": 0,
+      "stdout": "OK {staging}/compiled/react-spa-engineer\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "{system-skills}/skill-creator/scripts/quick_validate.py",
+        "skills/react-spa-engineer"
+      ],
+      "exit": 0,
+      "stdout": "Skill is valid!\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "pack:skills",
+        "--root",
+        "{staging}/compiled",
+        "--out",
+        "{staging}/packed",
+        "--release",
+        "skills-row26-local",
+        "--previous",
+        "{coordinator}/base-pack/catalog.json"
+      ],
+      "exit": 0,
+      "stdout": "\n> @kostysh/skills@0.1.3 pack:skills {repository}/cli\n> node src/pack-cli.ts --root {staging}/compiled --out {staging}/packed --release skills-row26-local --previous {coordinator}/base-pack/catalog.json\n\nSkills packed: 1; output: {staging}/packed\n",
+      "stderr": ""
+    }
+  ],
+  "archive": "react-spa-engineer-0.1.14.tgz",
+  "archiveSha256": "50a51750c7aadfd5e4334707d29fd87f1d997f92ae99dfb83984470b07e3c8ad",
+  "priorCatalogSha256": "6a27eb907f0335ff4ac1778192f37b368d18c2e5cbea6611e4a61b956a95c749",
+  "archiveMatchesInitialBuildAndExactSubject": true,
+  "activeInventory": {
+    "SKILL.md": {
+      "sha256": "dc625183b1ad63f0a2d0f24394384dd53cecf9e6cf69e6ebed4481c9a5f13d39",
+      "bytes": 17904,
+      "mode": "0644"
+    },
+    "agents/openai.yaml": {
+      "sha256": "bc31e3c34c4307ae3267abfa68d7cd5eddf52e49b3801419fc1daa80baaf5417",
+      "bytes": 310,
+      "mode": "0644"
+    },
+    "references/accessibility.md": {
+      "sha256": "44aef5b0309b2cc08ad061ef5d7dd4edf9727eaf7e56851b867c144ce6738361",
+      "bytes": 5606,
+      "mode": "0644"
+    },
+    "references/component-architecture.md": {
+      "sha256": "d1620fb939eac5b8b428b03e5c2743fadf3f6565d3aa238ceb3a51cac1e17878",
+      "bytes": 3969,
+      "mode": "0644"
+    },
+    "references/data-fetching.md": {
+      "sha256": "ec71bf0a73e5c4536b2e4f2cdf3ae2b1fb7381fa201e71a079fe210ec14a5dc5",
+      "bytes": 7359,
+      "mode": "0644"
+    },
+    "references/forms-validation.md": {
+      "sha256": "c159c64c11332e162be0cfdab4dda0f87ee3eee392832a5ec6d15f69c3c32997",
+      "bytes": 6529,
+      "mode": "0644"
+    },
+    "references/indexeddb-persistence.md": {
+      "sha256": "026de6cab4c1bafd59721c75797c13f3c15728d9c07c4837bdff86b203acb468",
+      "bytes": 6438,
+      "mode": "0644"
+    },
+    "references/performance.md": {
+      "sha256": "37d9d8d6c4f915c873a83aaa68679a556eab4c80a64a18a2f9d9fccae1ab87dc",
+      "bytes": 5659,
+      "mode": "0644"
+    },
+    "references/persistence-architecture.md": {
+      "sha256": "8b1a21dd865b6e30173d8a7383b81f38a867212f48d39aa0851bd97a9286f21d",
+      "bytes": 7117,
+      "mode": "0644"
+    },
+    "references/routing.md": {
+      "sha256": "188d8ee8d04f743bd4bff84419fc3143f950e361b37c9fbb36361b5775799103",
+      "bytes": 6745,
+      "mode": "0644"
+    },
+    "references/state-management.md": {
+      "sha256": "509f6510f2c2d1eef5dbf97c7c3c9f33034de461dac12a3a65a4b976cb213dd1",
+      "bytes": 5707,
+      "mode": "0644"
+    },
+    "references/testing.md": {
+      "sha256": "7b64b06442e90e3dcd75eacfc3f29efe015b5aa36a73e12a51b11977aac8fa10",
+      "bytes": 9018,
+      "mode": "0644"
+    },
+    "references/typescript-patterns.md": {
+      "sha256": "27ac07e4bd683f123e80b774db4c134f0ca3233b47681e32e3b919249b3d91c4",
+      "bytes": 5501,
+      "mode": "0644"
+    }
+  },
+  "releaseEntry": {
+    "name": "react-spa-engineer",
+    "description": "Build, review, and diagnose React SPAs with TypeScript, Vite, TanStack Query, Zustand, React Hook Form, Zod, React Router, and Dexie. Own app integration and runtime correctness; route UX choices, visual direction, and formal UI audits to their owners. Excludes SSR/RSC/Next.js.",
+    "version": "0.1.14",
+    "url": "https://github.com/kostysh/skills/releases/download/skills-row26-local/react-spa-engineer-0.1.14.tgz",
+    "sha256": "50a51750c7aadfd5e4334707d29fd87f1d997f92ae99dfb83984470b07e3c8ad",
+    "contentHash": "45a0661fcc3c3ecb7440c70afeb123ac2ec7e496d400ddd2530077c59dd5ac6a"
+  },
+  "sourceAndIndependentCompiledBytesMatchAllArchiveMembers": true,
+  "copiedSupportingLogSha256": "1942477a60844eba2d0e9cfe9f3c01020ce695b97e02836f3988d9edd771185c",
+  "logReachableFromSeparateCompile": true,
+  "sourceActivation": {
+    "uiMetadataUnchanged": true,
+    "conditionalReferenceCount": 11,
+    "commandsOrAssets": 0
+  }
+}

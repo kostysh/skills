@@ -6,9 +6,9 @@ description: Use when GitHub CLI (`gh`) is required for repos, issues, PRs,
   route Git history, review, CI fixes, security, and skill authoring elsewhere.
 license: MIT
 metadata:
-  source-version: 1.2.4
+  source-version: 1.2.5
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 89883ea0eb867339080be0293551b0a67327c1987cbfddd31d13c2a37d6bbc44
+  skillforge-source-hash: 6575e7e62cca5fc3e0b21a9441eefbeecf923075af1283c1d77e0145ca2b9582
 ---
 
 # gh-utility

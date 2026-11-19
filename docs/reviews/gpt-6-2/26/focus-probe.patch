@@ -1,0 +1,19 @@
+--- a/replay/verify.mjs
++++ b/replay/verify.mjs
+@@ -55,0 +56,5 @@
++      focusVisible: document.activeElement?.matches(":focus-visible"),
++      outlineStyle: getComputedStyle(document.activeElement).outlineStyle,
++      outlineWidth: getComputedStyle(document.activeElement).outlineWidth,
++      focusInViewport: document.activeElement.getBoundingClientRect().bottom > 0 &&
++        document.activeElement.getBoundingClientRect().top < innerHeight,
+@@ -75 +80 @@
+-      await page.keyboard.press("Enter");
++      await page.keyboard.press("Escape");
+@@ -79,0 +85,2 @@
++      assert.equal(pending.focusVisible, true); assert.equal(pending.focusInViewport, true);
++      assert.equal(pending.outlineWidth, "2px"); assert.equal(pending.outlineStyle, "solid");
+@@ -111 +118,3 @@
+-  await observe("saved", true);
++  const success = await observe("saved", true);
++  assert.equal(success.focus, "status"); assert.equal(success.focusVisible, true);
++  assert.equal(success.outlineWidth, "2px"); assert.equal(success.focusInViewport, true);

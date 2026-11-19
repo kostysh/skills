@@ -1,0 +1,230 @@
+[
+  {
+    "group": "initial",
+    "stage": "ab",
+    "code": "935c19",
+    "role": "B",
+    "case": "boundary",
+    "inputRootSha": "da32989bc98b3c43f417970858d42bb3495bd97a0840823db21828a62f1ac143",
+    "visibleMarker": [
+      {
+        "eventSha256": "216d5fc84d93d90528ae6502ee19ff8bfbf087263a263f48da80548b45460722",
+        "marker": "surviving-neighbour-only"
+      }
+    ],
+    "webCalls": 0,
+    "otherProjectReadDetected": false,
+    "allOriginalBytesAndModesUnchanged": true,
+    "eventsSha256": "79d0eae94193017d7a78385f06141b91410ff10157aeeb4683eb3d5eb85719e1",
+    "rawResponseSha256": "a22296a8648df7295d7414d04819143937c517fc285e67178380175ad1e60855"
+  },
+  {
+    "group": "initial",
+    "stage": "ab",
+    "code": "4df335",
+    "role": "A",
+    "case": "ordinary",
+    "inputRootSha": "a8b86fa481a66d016020bb1eecd951ebe04f29a5d2a2ae9182dc0d4eb42f1688",
+    "visibleMarker": [
+      {
+        "eventSha256": "f4305303627bcb6771825367eb6a2db23baf57eee54377dc34b5ec9e20bd68db",
+        "marker": "old"
+      }
+    ],
+    "webCalls": 0,
+    "otherProjectReadDetected": false,
+    "allOriginalBytesAndModesUnchanged": true,
+    "eventsSha256": "53ef976b64d2ffb590e218e2e62351c290c1d59fed3afc678bebf0a1f001cb73",
+    "rawResponseSha256": "a24e0b5d8ac873a7a5083806f13e0a4b29578b7787f990c5cc5a7e5bc25f936a"
+  },
+  {
+    "group": "initial",
+    "stage": "ab",
+    "code": "f23733",
+    "role": "B",
+    "case": "ordinary",
+    "inputRootSha": "da32989bc98b3c43f417970858d42bb3495bd97a0840823db21828a62f1ac143",
+    "visibleMarker": [
+      {
+        "eventSha256": "e197bbde276ba46b4ea3d37a809dbf0287b36ff6e5e1c8bdb397a609aa8105d1",
+        "marker": "surviving-neighbour-only"
+      }
+    ],
+    "webCalls": 0,
+    "otherProjectReadDetected": false,
+    "allOriginalBytesAndModesUnchanged": true,
+    "eventsSha256": "7a9b7583eed2333d027def398281521f2efc61d5f296c07bc5a8e4f9f211960b",
+    "rawResponseSha256": "de95e3db2d45ba00f680a7709b64e9d18e195f2996d193464ff89f2f661a442d"
+  },
+  {
+    "group": "initial",
+    "stage": "ab",
+    "code": "7e90d9",
+    "role": "A",
+    "case": "boundary",
+    "inputRootSha": "a8b86fa481a66d016020bb1eecd951ebe04f29a5d2a2ae9182dc0d4eb42f1688",
+    "visibleMarker": [
+      {
+        "eventSha256": "cb2b522987eedc186b6fb43379cf64bf35dd7d2f9bdc4ae54e82c97bf66ffdd4",
+        "marker": "old"
+      }
+    ],
+    "webCalls": 0,
+    "otherProjectReadDetected": false,
+    "allOriginalBytesAndModesUnchanged": true,
+    "eventsSha256": "9f39d7d9eda564684eab56ca3d642eedbca67c4664bb7714ee6cf8e1953ce8e6",
+    "rawResponseSha256": "e766f538159b511318d8feda184461998a2173882337a894a7fd0f1b3899551f"
+  },
+  {
+    "group": "labeled",
+    "stage": "ab",
+    "code": "26f2f7",
+    "role": "B",
+    "case": "ordinary",
+    "inputRootSha": "da32989bc98b3c43f417970858d42bb3495bd97a0840823db21828a62f1ac143",
+    "visibleMarker": [
+      {
+        "eventSha256": "f9b3d13b1829dd0be5f5d1e5d7ee87afaface4a0ecfbed87b7550ce15c2363ee",
+        "marker": "surviving-neighbour-only"
+      }
+    ],
+    "webCalls": 0,
+    "otherProjectReadDetected": false,
+    "allOriginalBytesAndModesUnchanged": true,
+    "eventsSha256": "2a26d32906223d7dc7dcaba9c62a030dffcbacf5eb1d333d80b3f3d1a6a3c655",
+    "rawResponseSha256": "0962d6b3bc767b31192434cf73d04eb267d8d2b6cdaf8c1ba8e14418d8a375e2"
+  },
+  {
+    "group": "labeled",
+    "stage": "ab",
+    "code": "307dd4",
+    "role": "A",
+    "case": "ordinary",
+    "inputRootSha": "a8b86fa481a66d016020bb1eecd951ebe04f29a5d2a2ae9182dc0d4eb42f1688",
+    "visibleMarker": [
+      {
+        "eventSha256": "ccdb1010cef65ad0fc9d5570b0e127897bd5666df086a0f8315157812f222ef7",
+        "marker": "old"
+      }
+    ],
+    "webCalls": 0,
+    "otherProjectReadDetected": false,
+    "allOriginalBytesAndModesUnchanged": true,
+    "eventsSha256": "ca666ccef6e9df6b4acb8ae780392754a4ddb18556f7876016cada9a11294e5c",
+    "rawResponseSha256": "75357662a48578da3ab2e7f4f821aca7e24d7d31c32880f144b6e0f44f8eec90"
+  },
+  {
+    "group": "labeled",
+    "stage": "ab",
+    "code": "9dcce2",
+    "role": "A",
+    "case": "boundary",
+    "inputRootSha": "a8b86fa481a66d016020bb1eecd951ebe04f29a5d2a2ae9182dc0d4eb42f1688",
+    "visibleMarker": [
+      {
+        "eventSha256": "825b981dc7cf49e79d328ff6698596339f7a8ec5e2a9f25667cabd901733c040",
+        "marker": "old"
+      }
+    ],
+    "webCalls": 0,
+    "otherProjectReadDetected": false,
+    "allOriginalBytesAndModesUnchanged": true,
+    "eventsSha256": "c664b5ec661f059444096aea0189bc9b7cb46c530fa376928c45ff0dce6f7686",
+    "rawResponseSha256": "94b19d11ed6f96078b5f7443348883021254185f8ef75b1d7b16a7f04429fd40"
+  },
+  {
+    "group": "labeled",
+    "stage": "ab",
+    "code": "b6c966",
+    "role": "B",
+    "case": "boundary",
+    "inputRootSha": "da32989bc98b3c43f417970858d42bb3495bd97a0840823db21828a62f1ac143",
+    "visibleMarker": [
+      {
+        "eventSha256": "f8435094cb9e5aee9a3c3452523887b0089a8381f1e6a9ffd7a00a45e107e3e5",
+        "marker": "surviving-neighbour-only"
+      }
+    ],
+    "webCalls": 0,
+    "otherProjectReadDetected": false,
+    "allOriginalBytesAndModesUnchanged": true,
+    "eventsSha256": "8c972ac7ab3a45aeed7b4c9c312ebdbf81064e2b780b04d2073e65413977101a",
+    "rawResponseSha256": "a4660d7d043144d09a09c63afd41eb9e58f10bf34bff986c73f78dbe8151a2f1"
+  },
+  {
+    "group": "labeled",
+    "stage": "confirm",
+    "code": "bfc68a",
+    "role": "C",
+    "case": "boundary",
+    "inputRootSha": "ed482aecbe3a705c0676ebcd0f305135ea791e4b55666a2e7b295649bbff7fe9",
+    "visibleMarker": [
+      {
+        "eventSha256": "9fe642d5f605b6e1db7cef8cd32d8ccf6aefc446ef6614edcf1f597d25b6c758",
+        "marker": "positive"
+      }
+    ],
+    "webCalls": 0,
+    "otherProjectReadDetected": false,
+    "allOriginalBytesAndModesUnchanged": true,
+    "eventsSha256": "6e6ccf99fd06c2f47141203029c582f7a384a8029dcef926e80556e6d16c42ed",
+    "rawResponseSha256": "598046acf9afc951cf4da15a4ff869ca5b7518909bfd03b8a5e0f17b9a146758"
+  },
+  {
+    "group": "labeled",
+    "stage": "confirm",
+    "code": "113cd3",
+    "role": "C",
+    "case": "holdout",
+    "inputRootSha": "ed482aecbe3a705c0676ebcd0f305135ea791e4b55666a2e7b295649bbff7fe9",
+    "visibleMarker": [
+      {
+        "eventSha256": "7a4ceed76e5de3dade8abc450848047cc5d5f1fde5aa26e7514de70923feaab1",
+        "marker": "positive"
+      }
+    ],
+    "webCalls": 0,
+    "otherProjectReadDetected": false,
+    "allOriginalBytesAndModesUnchanged": true,
+    "eventsSha256": "18deee175e57067c5e8f42e46ff0f36cc119e864b56b48db8a4f8d4262b6a528",
+    "rawResponseSha256": "81ec1f7a666d30d94b0f0aa38e25c3d039ddf54390360fa32337c353052b111c"
+  },
+  {
+    "group": "labeled",
+    "stage": "confirm",
+    "code": "0502fa",
+    "role": "C",
+    "case": "ordinary",
+    "inputRootSha": "ed482aecbe3a705c0676ebcd0f305135ea791e4b55666a2e7b295649bbff7fe9",
+    "visibleMarker": [
+      {
+        "eventSha256": "085ec38323181c90406aeffc387b2cc8dffe9f7ac6b07f561d89855fd855ae63",
+        "marker": "positive"
+      }
+    ],
+    "webCalls": 0,
+    "otherProjectReadDetected": false,
+    "allOriginalBytesAndModesUnchanged": true,
+    "eventsSha256": "fadde1b0b9bdfa5eb90307a9bb8101ec9976acb786ad8be026835e0083d05ca0",
+    "rawResponseSha256": "7a1e1b65d5ea32ce985966100e8525d2f11cde80199dd6e44c968ea9a07cc9d5"
+  },
+  {
+    "group": "labeled",
+    "stage": "confirm",
+    "code": "691c42",
+    "role": "A",
+    "case": "holdout",
+    "inputRootSha": "a8b86fa481a66d016020bb1eecd951ebe04f29a5d2a2ae9182dc0d4eb42f1688",
+    "visibleMarker": [
+      {
+        "eventSha256": "48b8e4db6e853dfa29613b8cd81df1aa253b0be0840fc37ee79bd24093999626",
+        "marker": "old"
+      }
+    ],
+    "webCalls": 0,
+    "otherProjectReadDetected": false,
+    "allOriginalBytesAndModesUnchanged": true,
+    "eventsSha256": "73ba7ee4cd66df6f7758ef4128d17b26c8c60cb4e791b46d46c9a20ec68c2fa8",
+    "rawResponseSha256": "bdf6135b2faa1ba0cf9f9c50d4547297e840d497d6144aab9c3bd8ae085a8edd"
+  }
+]

@@ -1,0 +1,26 @@
+{
+  "project": "kostysh/skills",
+  "pr": 35,
+  "remote_git_url": "https://github.com/kostysh/skills.git",
+  "fresh_ls_remote": "f6b1de1cb42ab8c2107ef999bbde5ea3607dd448\trefs/pull/35/head",
+  "isolated_source": "locally available public Git objects, fetched without alternates",
+  "local_refs": [
+    "refs/pr35/base 7334a504b55ab3f8416147f1cc639882a603d0cc",
+    "refs/pr35/head f6b1de1cb42ab8c2107ef999bbde5ea3607dd448",
+    "refs/pr35/merge ba51a6bd604e9d19a10113131f5abf4d5eacbcc9"
+  ],
+  "parents": [
+    "7334a504b55ab3f8416147f1cc639882a603d0cc",
+    "f6b1de1cb42ab8c2107ef999bbde5ea3607dd448"
+  ],
+  "merge_base": "7334a504b55ab3f8416147f1cc639882a603d0cc",
+  "checkout_HEAD": "f6b1de1cb42ab8c2107ef999bbde5ea3607dd448",
+  "porcelain_v2": [],
+  "diff_paths": [
+    "M\tcli/docs/implementation-log-20261023-1.md",
+    "M\tcli/package.json",
+    "M\tcli/src/prompts.ts",
+    "M\tcli/test/prompts.test.ts"
+  ],
+  "git": "git version 2.53.0"
+}

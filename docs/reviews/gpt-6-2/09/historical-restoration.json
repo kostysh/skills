@@ -1,0 +1,68 @@
+{
+  "historical_map_sha256": "5248ed5a12f01bdf2304db6d9e205de59cb6b6e6ca366370fd37c368b691c634",
+  "received_archive_sha256": "b6023f10edec7442f453bb4dafac8ee950c8e6e65c8abbd613f864b6a48f029b",
+  "files": [
+    {
+      "path": "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/dev-server.log",
+      "bytes": 2945,
+      "sha256": "15c5142c71840b31a09c47eb96608f2e4cfd1090527b7ffb081b0ec57b533637"
+    },
+    {
+      "path": "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/preview-server.log",
+      "bytes": 429,
+      "sha256": "7f76b08172a5ba475f699a494a5e77555488211819c84cc0a40045b0fe7cfd66"
+    },
+    {
+      "path": "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/server.log",
+      "bytes": 2945,
+      "sha256": "15c5142c71840b31a09c47eb96608f2e4cfd1090527b7ffb081b0ec57b533637"
+    },
+    {
+      "path": "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-App-lint.log",
+      "bytes": 126,
+      "sha256": "9be826e193488471ca7f25cf55cd1935bc9622b514f9ecdf225e00023db1330f"
+    },
+    {
+      "path": "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-after-checks-integrity.log",
+      "bytes": 111,
+      "sha256": "069e4a14c2dca8f5a3068743ebfb4c0351e5d84916b6b246ec1f751927723e88"
+    },
+    {
+      "path": "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-exact-replacement-check.log",
+      "bytes": 651,
+      "sha256": "e9b2d5c23349dbd7aa07f1b8d2896362afead91acdc55211e88eb175e18d0f0e"
+    },
+    {
+      "path": "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-initial-git-diff.log",
+      "bytes": 7437,
+      "sha256": "08e6f1dbfc50f025f375a68bce7c87f8ea07e774ec5a8f2b8460c1ebc0fd021f"
+    },
+    {
+      "path": "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-lint-fallback.log",
+      "bytes": 383,
+      "sha256": "602ecfbf75e74833e6f43b6f4af4d63b6453962bbf23f3386f4c477fa692f95d"
+    },
+    {
+      "path": "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-lint.log",
+      "bytes": 92,
+      "sha256": "b661ff00d2fd422c6b1a16e5986aed8469fb8ab559aaad0a8701d4fde9e84aa3"
+    },
+    {
+      "path": "skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/final-artifact-check.log",
+      "bytes": 220,
+      "sha256": "b23cb2570a6fde0c9ffe8ff2102c31e99cc859905df878dc2ce4b91151510a6c"
+    }
+  ],
+  "checks": {
+    "before": {
+      "exit": 1,
+      "output": "FAIL web-ux-engineer\n[error] source-render-failed: Could not read docs/forward-tests/20261107/baseline-live/dev-server.log from web-ux-engineer: ENOENT: no such file or directory, open 'web-ux-engineer/docs/forward-tests/20261107/baseline-live/dev-server.log'"
+    },
+    "restored_on_separate_copy": {
+      "exit": 0,
+      "output": "OK web-ux-engineer"
+    }
+  },
+  "meaning": "Original 7 November files recorded by the pre-existing per-path manifest. The before/after compiler checks are 18 November observations.",
+  "author_preflight": "An earlier scratch directory named original-skill produced folder-name-mismatch after the files were restored there. The recorded before/after pair used a separate fresh copy named web-ux-engineer, the required canonical directory name."
+}

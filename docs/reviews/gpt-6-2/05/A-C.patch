@@ -1,0 +1,5 @@
+--- A/references/patterns.md
++++ C/references/patterns.md
+@@ -44 +44 @@
+-When a project already has an authoritative runtime schema, derive the TypeScript type through that library's supported API rather than maintaining a parallel interface. Confirm which side is authoritative and whether transforms, defaults, coercions, or refinements change input and output types.
++Use the accepted schema's API to derive the input or parsed output type you need.

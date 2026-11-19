@@ -1,0 +1,1 @@
+../../../21/hono-input/contract.md

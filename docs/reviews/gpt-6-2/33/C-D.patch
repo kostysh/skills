@@ -1,0 +1,5 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -65 +65 @@
+-- Check what each test demonstrates.
++- Check what each test demonstrates. A failure supports non-conformance when the accepted requirements cover the input and expected behavior.

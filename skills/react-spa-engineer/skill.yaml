@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: react-spa-engineer
-  source-version: 0.1.13
+  source-version: 0.1.14
   recommended-skill-md-max-bytes: 20000
   description: >-
     Build, review, and diagnose React SPAs with TypeScript, Vite, TanStack Query,
@@ -85,6 +85,10 @@ copies:
     target: agents/openai.yaml
     description: Portable UI metadata for react-spa-engineer.
 supporting:
+  - id: supporting-implementation-log-20261118-1
+    source: docs/logs/implementation-log-20261118-1.md
+    target: docs/logs/implementation-log-20261118-1.md
+    description: Revision evidence for the SPA verification rule and version-specific guidance.
   - id: supporting-implementation-log-20260715-1
     source: docs/logs/implementation-log-20260715-1.md
     target: docs/logs/implementation-log-20260715-1.md
@@ -193,7 +197,7 @@ sections:
         - Classify the result as completed, partial, or blocked. Completed requires the claim-matched evidence; implementation without that evidence is partial.
         - Report mode, observable outcome, changed or inspected surface, verification evidence, status, blockers or residual risks, anti-claims, and next owner.
       validation:
-        - Type, lint, build, mock, route, screenshot, and generated-file evidence is not presented as proof of unexercised interactive, persistence, performance, auth, security, or production behavior.
+        - Exercise the boundary each completion claim depends on.
         - The handoff does not require the consumer to invent a missing contract or reinterpret the result status.
   interop:
     - id: interop-ux

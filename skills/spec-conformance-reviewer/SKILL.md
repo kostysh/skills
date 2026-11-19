@@ -5,9 +5,9 @@ description: Review code against authoritative specs, contracts, ADRs, tickets,
   traceability, identify compliance gaps or ambiguities, and issue an
   implementation-versus-spec verdict limited by source authority and evidence.
 metadata:
-  source-version: 0.1.8
+  source-version: 0.1.9
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 14d921a319f6cd28899590bfe9c61dfc160eb7efaee96ad95044b33cb85e2a54
+  skillforge-source-hash: e80ead8df8acb0f96693984ad518db805f9a18201eb0dae9aa33b770cc9e69a7
 ---
 
 # spec-conformance-reviewer
@@ -62,7 +62,7 @@ If sources conflict, cite each source and identify whether one is lower-authorit
 - Check both directions:
   - requirement to code and tests
   - code behavior to requirement basis
-- Treat tests as evidence, not as proof by existence.
+- Check what each test demonstrates. A failure supports non-conformance when the accepted requirements cover the input and expected behavior.
 - Distinguish observable runtime capability from substrate such as schema presence, route registration, OpenAPI entries, mock handlers, in-memory tests, or documentation claims.
 - Let substrate satisfy only an atomic substrate requirement. Use `partially_fulfilled` for a broader runtime requirement only when some required observable behavior is proven.
 - For auth/RBAC requirements, check both API/service behavior and persistence/RLS/direct data-access behavior when the system exposes such a path.

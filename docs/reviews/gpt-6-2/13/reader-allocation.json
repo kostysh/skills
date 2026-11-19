@@ -1,0 +1,37 @@
+{
+  "time": "2026-11-18T21:49:44.234347+00:00",
+  "cases": [
+    "holdout",
+    "exception",
+    "ordinary",
+    "public"
+  ],
+  "initialFiles": "The exact guide produced by the preassigned release author, beside the matching tarball. Reader opens a fresh directory. No desk note, code, skill, key, prior answer, other reports or grading rubric.",
+  "task": "Вы дежурите в Linux. Коллега оставил в этой папке только записку guide.md и архив Tally. Выполните записку как оператор, чтобы получить машиночитаемую сумму 2 и 3 и распознать неправильное число в рамках описанного режима работы. Работайте локально без сети. Сообщите, какие команды вы действительно выполнили, что они вывели и как завершились. Если записка не позволяет продолжить или разрешённая процедура упирается в неисправность, укажите точное место и причину. Сохраните исходные файлы.\n",
+  "mapping": [
+    {
+      "role": "reader",
+      "case": "holdout",
+      "label": "4b204c",
+      "fromAuthorLabel": "ee8342"
+    },
+    {
+      "role": "reader",
+      "case": "exception",
+      "label": "08f87e",
+      "fromAuthorLabel": "7389ce"
+    },
+    {
+      "role": "reader",
+      "case": "ordinary",
+      "label": "1a459e",
+      "fromAuthorLabel": "52ff2f"
+    },
+    {
+      "role": "reader",
+      "case": "public",
+      "label": "69f8d7",
+      "fromAuthorLabel": "da66d4"
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+../../joint-cabinet/owner-condition.md

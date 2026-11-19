@@ -1,0 +1,132 @@
+{
+  "C0/tooling/agent-browser/SKILL.md": {
+    "sha256": "6c4ff08999c12c7d7821e3f68b3b46788ecdacf6ed2aa54e49fa90adbc0bb87a",
+    "size": 10188,
+    "mode": "0o644"
+  },
+  "C0/tooling/agent-browser/agents/openai.yaml": {
+    "sha256": "d430788f44a61bd7b9fc12b11e57f7230eb5020fc50af605563aa13f14b4b798",
+    "size": 115,
+    "mode": "0o644"
+  },
+  "C0/tooling/agent-browser/references/cloudflare-access-otp.md": {
+    "sha256": "0e41b39ee811661c01e02fd2d37a903cc088188385a675282fb6c442c023a9fc",
+    "size": 4314,
+    "mode": "0o644"
+  },
+  "cases/original.md": {
+    "sha256": "56be78382a70af0fec1c197f528b81c16f433c3aea978ac213aebe064be7dab7",
+    "size": 1105,
+    "mode": "0o664"
+  },
+  "cases/single.md": {
+    "sha256": "4b067cdc79c2856338ed99bd50597d3ee073fe3b047eb387038626270d8872d1",
+    "size": 887,
+    "mode": "0o664"
+  },
+  "fixture/original/PREVIEW.md": {
+    "sha256": "c9222e88368db84b5a3d00e00dc2526c8605c6a78f17a334b65c5ed7192acc59",
+    "size": 1959,
+    "mode": "0o664"
+  },
+  "fixture/original/dist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2": {
+    "sha256": "2317fa4bb293c9c0b110e18315d529235c47a0ddd3338cea3d8c7955e927899e",
+    "size": 7420,
+    "mode": "0o664"
+  },
+  "fixture/original/dist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2": {
+    "sha256": "6894439694946a589d157ece003086960a6a4013d74a813dab7602efdb3d8c09",
+    "size": 15084,
+    "mode": "0o664"
+  },
+  "fixture/original/dist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2": {
+    "sha256": "824f485b5d26e2f2da3c2b236132ece1bc8e4e43373452950bb0e40548b4313f",
+    "size": 16512,
+    "mode": "0o664"
+  },
+  "fixture/original/dist/assets/geist-latin-wght-normal-BgDaEnEv.woff2": {
+    "sha256": "19f9c92546aa300c312235e3125af1b81394d8db9a4bc4a425cd5b641d2d54e1",
+    "size": 29400,
+    "mode": "0o664"
+  },
+  "fixture/original/dist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2": {
+    "sha256": "8fa40e5d248247735eb97a0bd593b8852440430600d6ba01364c31fe0abc1fe1",
+    "size": 8004,
+    "mode": "0o664"
+  },
+  "fixture/original/dist/assets/index-3cXjFJlU.js": {
+    "sha256": "85f6b0ddbac345b94f065b54fb6127e8d7135db0bd6e553a0789fd2e4d9b7bc6",
+    "size": 298050,
+    "mode": "0o664"
+  },
+  "fixture/original/dist/assets/index-Cseenm7H.css": {
+    "sha256": "473d7e4b0d0120f66977be7e3574f8c70ced765a08cf234ba872c37de25443b7",
+    "size": 50384,
+    "mode": "0o664"
+  },
+  "fixture/original/dist/index.html": {
+    "sha256": "bd2c68a668ff0121d32fbae1a862995ea00ffe0de5141169273f8a6b68935146",
+    "size": 455,
+    "mode": "0o664"
+  },
+  "fixture/original/lab.py": {
+    "sha256": "5dde6e5054b2243ece2328b81db7fd711963643a2f495afe211f1089378e3a6c",
+    "size": 5167,
+    "mode": "0o664"
+  },
+  "fixture/single/PREVIEW.md": {
+    "sha256": "c9222e88368db84b5a3d00e00dc2526c8605c6a78f17a334b65c5ed7192acc59",
+    "size": 1959,
+    "mode": "0o664"
+  },
+  "fixture/single/dist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2": {
+    "sha256": "2317fa4bb293c9c0b110e18315d529235c47a0ddd3338cea3d8c7955e927899e",
+    "size": 7420,
+    "mode": "0o664"
+  },
+  "fixture/single/dist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2": {
+    "sha256": "6894439694946a589d157ece003086960a6a4013d74a813dab7602efdb3d8c09",
+    "size": 15084,
+    "mode": "0o664"
+  },
+  "fixture/single/dist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2": {
+    "sha256": "824f485b5d26e2f2da3c2b236132ece1bc8e4e43373452950bb0e40548b4313f",
+    "size": 16512,
+    "mode": "0o664"
+  },
+  "fixture/single/dist/assets/geist-latin-wght-normal-BgDaEnEv.woff2": {
+    "sha256": "19f9c92546aa300c312235e3125af1b81394d8db9a4bc4a425cd5b641d2d54e1",
+    "size": 29400,
+    "mode": "0o664"
+  },
+  "fixture/single/dist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2": {
+    "sha256": "8fa40e5d248247735eb97a0bd593b8852440430600d6ba01364c31fe0abc1fe1",
+    "size": 8004,
+    "mode": "0o664"
+  },
+  "fixture/single/dist/assets/index-3cXjFJlU.js": {
+    "sha256": "85f6b0ddbac345b94f065b54fb6127e8d7135db0bd6e553a0789fd2e4d9b7bc6",
+    "size": 298050,
+    "mode": "0o664"
+  },
+  "fixture/single/dist/assets/index-Cseenm7H.css": {
+    "sha256": "473d7e4b0d0120f66977be7e3574f8c70ced765a08cf234ba872c37de25443b7",
+    "size": 50384,
+    "mode": "0o664"
+  },
+  "fixture/single/dist/index.html": {
+    "sha256": "bd2c68a668ff0121d32fbae1a862995ea00ffe0de5141169273f8a6b68935146",
+    "size": 455,
+    "mode": "0o664"
+  },
+  "fixture/single/lab.py": {
+    "sha256": "5dde6e5054b2243ece2328b81db7fd711963643a2f495afe211f1089378e3a6c",
+    "size": 5167,
+    "mode": "0o664"
+  },
+  "rubric.md": {
+    "sha256": "328035790a30ac741ae89b3b862c912cf8b8332d486d930105ead190bc7b96f0",
+    "size": 3158,
+    "mode": "0o664"
+  }
+}

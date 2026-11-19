@@ -1,0 +1,201 @@
+{
+  "variant": "B",
+  "case": "ordinary",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПримени локальный ./SKILL.md. Владелец принимает штатный маршрут чтения на предоставленной версии. Проверь исполнение договора contract.md, порядок этапов на успехе и одобренных отказах и сообщи, можно ли выдать эту поставку. Разрешена проверка в расходной копии, исправления и публикация не входят в задачу. В README.md описан локальный запуск.\n",
+  "input_file_sha256": {
+    "README.md": "e0da529c363c6447f3bf13e1d88d4a15601a3db9a28e957bbcec19aad4dcf755",
+    "SKILL.md": "af23ec7d9dc8028d13a290d06e1383b0eefa0ea118845d7d4f75e6480586d682",
+    "agents/openai.yaml": "a0134d8b02c6cb344f83bd01f963979502b051cbd4cf714b1d4251b70e9142bc",
+    "ci.md": "50482c26daf4869ecfa3c8b1531abadcd9459ba2bf33b65940175061e1d4722b",
+    "contract.md": "46e38267c97e0e98f1749cd47dd0001e02d18bd919d68c8ce9b8f50a6edd0579",
+    "references/architecture.md": "e8719afb483a675d7cf7d9786f11cf0b773d25bbc95dadac2a34748f9ec9b266",
+    "references/auth.md": "55ec126f059fb23da4c94ccab20ce456a848abd13d8ffcdfa222dd7b3183efc9",
+    "references/caching.md": "d02f9fc9ee8691e122e3f9f8194b65fca5409257d9df6ae384c34d3e2cf59ddb",
+    "references/contracts-types.md": "6fe56f540454d6a8917e1cd5aabd88672cdb489c5cfffd05cde490810612a03b",
+    "references/errors-logs.md": "314944e33e1e011e64347f5505f063eca50142767fceee59b5f13ea7e61c49ff",
+    "references/framework-currency.md": "065900d093bc1d51e315b3965983ae17f7c5f3c60dcb10ee23e49eeaba25f13b",
+    "references/high-risk-backend-contract.md": "f6d420ab9892541c0a0b84050c93754f3011d536dd755717d0f2944e68a09bc4",
+    "references/observability.md": "604d64c12a258189b17b3e259276094ff0e65046a4a6a65ef86ed886cbd13dd7",
+    "references/perf-security.md": "1afbc790af794e7e5602f204aed24854dc895e6ea8644625ec9dc1883423b47e",
+    "references/pipelines.md": "9d386aaebc7bdc9cbdf53a2f24a811c023b4968e1e9ba8304ba5b71c19894510",
+    "references/rate-limiting.md": "f815aea19eca48ad8eef5266f685407123d4f5f76f7ccac5a7f2c7472d973379",
+    "references/routers.md": "3f8d4992ec22ded988ee4aa3bc0fbba8b38fabfe6177fc53e42adf3b8d22ad2a",
+    "references/security.md": "1425d8c8370e4628c74d2ecccf6db4dbc90954ec8668a48793be79f1454e74a2",
+    "references/supabase.md": "972592f8360bf3929aea1eee6f135be8d2559c1b0f12c3fc758a48ba95f273da",
+    "references/typing.md": "0436b086b3d323568949bcc2969d812dd9955663dc66a3f5b5bddd023d8e69d9",
+    "references/validation-openapi.md": "7fa235b5751dcf8e1ae3e3b314d915d2155f95a3cfeb35e6227ff0f83a517cb0",
+    "references/workers-platform.md": "03d25c2243d4916a498be7d72b3f09bfd363a9591bb01172b81c530cec01c2a6",
+    "references/wrangler.md": "9b891f3250af60e39e6d37cb24e14e148bc85260fe3ba5b219f82dc6ef536b71",
+    "release/app.mjs": "be731a5878ace0f2a6390de204fa1398f438707a7d1eef44819ac8d528a217d1",
+    "release/package.json": "1312c8d3fd5a7472e9e840fa838e6125f50c611c147e9e9e27f835f3320f6b72",
+    "release/smoke.test.mjs": "461bbacb835ec2a903fa81261e6424848a233e34eaf1f8634b4fe5100c364ac0",
+    "vendor/hono-4.13.19.tgz": "ec0825774aef43124f0ddde51a1883d24a3fa3e174c539eaa175010b77c62ba5"
+  },
+  "raw_events_sha256": "4065c425df0673976395909b3657c792025a71ff553f4380686fc9bf7bc489b8",
+  "raw_events_bytes": 73527,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Применю локальный `SKILL.md`, сверю договор с реализацией и проверю порядок этапов в расходной копии, если это потребуется. По результатам дам вердикт о выдаче поставки."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git/**'\"' && cat SKILL.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat references/high-risk-backend-contract.md references/pipelines.md references/framework-currency.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'nl -ba contract.md && nl -ba README.md && nl -ba ci.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'nl -ba release/app.mjs && nl -ba release/smoke.test.mjs && cat release/package.json'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat references/auth.md references/errors-logs.md references/validation-openapi.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'ls -la && ls -l vendor && tar -tzf vendor/hono-4.13.19.tgz | head -65 && node --version && npm --version'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"tar -xOzf vendor/hono-4.13.19.tgz package/dist/compose.js package/dist/hono-base.js | rg -n -A24 -B5 'onError|request =|request\\\\(' && tar -xOzf vendor/hono-4.13.19.tgz package/package.json | head -35\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'audit_dir=$(mktemp -d \"$PWD/.desk-review.XXXXXX\") &&\ntrap '\"'python3 -c \\\"import shutil,sys; shutil.rmtree(sys.argv[1])\\\" \\\"\"'$audit_dir\"'\"' EXIT &&\ncp -R release/. \\\"\"'$audit_dir/\" &&\ncd \"$audit_dir\" &&\nnpm_config_cache=\"$audit_dir/.npm-cache\" npm install --offline --ignore-scripts --no-audit --no-fund ../vendor/hono-4.13.19.tgz &&\nnpm_config_cache=\"$audit_dir/.npm-cache\" npm test &&\nnode --input-type=module <<'\"'NODE'\nimport assert from 'node:assert/strict';\nimport { readFileSync } from 'node:fs';\nimport app from './app.mjs';\n\nconst {version} = JSON.parse(readFileSync('node_modules/hono/package.json', 'utf8'));\nassert.equal(version, '4.13.19');\nconsole.log({hono: version, node: process.version});\n\nconst checks = [\n  ['valid record', 'a7', true, 200, {id: 'a7', title: 'Harbor'}, 'dispatch,session,read'],\n  ['no session', 'a7', false, 401, {error: 'sign_in'}, 'dispatch,session'],\n  ['missing record', 'missing-card', true, 404, {error: 'not_found'}, 'dispatch,session,read'],\n  ['invalid record', 'b4', true, 502, {error: 'invalid_record'}, 'dispatch,session,read,error'],\n  ['admission before record lookup', 'b4', false, 401, {error: 'sign_in'}, 'dispatch,session'],\n];\n\nfor (const [name, id, signedIn, status, body, steps] of checks) {\n  const response = await app.request(new Request('http://localhost/desk/' + id, {\n    headers: signedIn ? {'x-shift': 'day'} : {},\n  }));\n  assert(response instanceof Response);\n  assert.equal(response.status, status);\n  assert.match(response.headers.get('content-type') ?? '', /\"'^application'\"\\\\/json\\\\b/);\n  assert.deepEqual(await response.json(), body);\n  assert.equal(response.headers.get('x-desk-steps'), steps);\n  console.log(name, status, JSON.stringify(body), steps);\n}\nNODE\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "**Поставку пока нельзя выдать.** Штатное чтение и согласованные отказы прошли проверку. Но договор требует `404 not_found` для любой отсутствующей карточки, а реализация гарантирует это лишь для части идентификаторов. [Договор]({project}/contract.md:1)\n\nВ расходной копии на Hono 4.13.19 и Node.js 24.15.0 прошёл штатный `npm test`. Через `app.request()` я также проверил HTTP-статус, точное тело JSON и заголовок `x-desk-steps`.\n\n| Сценарий | Статус и тело | `x-desk-steps` |\n|---|---|---|\n| `a7` с рабочей сессией | `200 {\"id\":\"a7\",\"title\":\"Harbor\"}` | `dispatch,session,read` |\n| `a7` или `b4` без сессии | `401 {\"error\":\"sign_in\"}` | `dispatch,session` |\n| Отсутствующая карточка с обычным ID | `404 {\"error\":\"not_found\"}` | `dispatch,session,read` |\n| `b4` с рабочей сессией | `502 {\"error\":\"invalid_record\"}` | `dispatch,session,read,error` |\n\nПри чтении `roster[id]` код учитывает унаследованные свойства объекта. Если ID отсутствующей карточки совпадёт с таким свойством, код пропустит ветку `404` и вернёт `502 invalid_record`. Этот дефект выявлен при чтении кода. В таблице приведены результаты фактически выполненных запросов. [Поиск карточки и обработчик ошибки]({project}/release/app.mjs:13)"
+    }
+  ],
+  "changed_file_contents": {},
+  "final_response": "**Поставку пока нельзя выдать.** Штатное чтение и согласованные отказы прошли проверку. Но договор требует `404 not_found` для любой отсутствующей карточки, а реализация гарантирует это лишь для части идентификаторов. [Договор]({project}/contract.md:1)\n\nВ расходной копии на Hono 4.13.19 и Node.js 24.15.0 прошёл штатный `npm test`. Через `app.request()` я также проверил HTTP-статус, точное тело JSON и заголовок `x-desk-steps`.\n\n| Сценарий | Статус и тело | `x-desk-steps` |\n|---|---|---|\n| `a7` с рабочей сессией | `200 {\"id\":\"a7\",\"title\":\"Harbor\"}` | `dispatch,session,read` |\n| `a7` или `b4` без сессии | `401 {\"error\":\"sign_in\"}` | `dispatch,session` |\n| Отсутствующая карточка с обычным ID | `404 {\"error\":\"not_found\"}` | `dispatch,session,read` |\n| `b4` с рабочей сессией | `502 {\"error\":\"invalid_record\"}` | `dispatch,session,read,error` |\n\nПри чтении `roster[id]` код учитывает унаследованные свойства объекта. Если ID отсутствующей карточки совпадёт с таким свойством, код пропустит ветку `404` и вернёт `502 invalid_record`. Этот дефект выявлен при чтении кода. В таблице приведены результаты фактически выполненных запросов. [Поиск карточки и обработчик ошибки]({project}/release/app.mjs:13)",
+  "input_file_modes": {
+    "README.md": "0664",
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "ci.md": "0664",
+    "contract.md": "0664",
+    "references/architecture.md": "0644",
+    "references/auth.md": "0644",
+    "references/caching.md": "0644",
+    "references/contracts-types.md": "0644",
+    "references/errors-logs.md": "0644",
+    "references/framework-currency.md": "0644",
+    "references/high-risk-backend-contract.md": "0644",
+    "references/observability.md": "0644",
+    "references/perf-security.md": "0644",
+    "references/pipelines.md": "0644",
+    "references/rate-limiting.md": "0644",
+    "references/routers.md": "0644",
+    "references/security.md": "0644",
+    "references/supabase.md": "0644",
+    "references/typing.md": "0644",
+    "references/validation-openapi.md": "0644",
+    "references/workers-platform.md": "0644",
+    "references/wrangler.md": "0644",
+    "release/app.mjs": "0664",
+    "release/package.json": "0664",
+    "release/smoke.test.mjs": "0664",
+    "vendor/hono-4.13.19.tgz": "0664"
+  },
+  "changed_file_modes": {},
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "sameProductFilesAsObserver": true,
+    "organizerPreflightOnTheseInputs": [
+      {
+        "id": "a7",
+        "session": true,
+        "status": 200,
+        "body": {
+          "id": "a7",
+          "title": "Harbor"
+        },
+        "flow": "dispatch,session,read"
+      },
+      {
+        "id": "b4",
+        "session": true,
+        "status": 502,
+        "body": {
+          "error": "invalid_record"
+        },
+        "flow": "dispatch,session,read,error"
+      },
+      {
+        "id": "absent",
+        "session": true,
+        "status": 404,
+        "body": {
+          "error": "not_found"
+        },
+        "flow": "dispatch,session,read"
+      },
+      {
+        "id": "a7",
+        "session": false,
+        "status": 401,
+        "body": {
+          "error": "sign_in"
+        },
+        "flow": "dispatch,session"
+      }
+    ],
+    "participantCommandsAndResults": [
+      {
+        "command": "/bin/bash -lc 'nl -ba release/app.mjs && nl -ba release/smoke.test.mjs && cat release/package.json'",
+        "exit": 0,
+        "selectOutput": "     1\timport { Hono } from 'hono';\n     2\tconst app = new Hono();\n     3\tapp.use('/desk/*', async (c, next) => {\n     4\t  c.set('flow', ['dispatch']);\n     5\t  await next();\n     6\t  c.header('x-desk-steps', c.get('flow').join(','));\n     7\t});\n     8\tapp.use('/desk/*', async (c, next) => {\n     9\t  c.get('flow').push('session');\n    10\t  if (c.req.header('x-shift') !== 'day') return c.json({error:'sign_in'}, 401);\n    11\t  return next();\n    12\t});\n    13\tconst roster = {\"a7\": {\"id\": \"a7\", \"title\": \"Harbor\"}, \"b4\": {\"id\": \"b4\", \"title\": 33}};\n    14\tapp.get('/desk/:id', c => {\n    15\t  c.get('flow').push('read');\n    16\t  const record = roster[c.req.param('id')];\n    17\t  if (!record) return c.json({error:'not_found'},404);\n    18\t  if (typeof record.title !== 'string' || !record.title.trim()) throw new TypeError('Invalid roster record');\n    19\t  return c.json(record);\n    20\t});\n    21\tapp.onError((err,c) => {c.get('flow').push('error'); return c.json({error:'invalid_record'},502);});\n    22\texport default app;\n     1\timport test from 'node:test';import assert from 'node:assert/strict';import app from './app.mjs';\n     2\ttest('valid title',async()=>{const r=await app.request('/desk/a7',{headers:{'x-shift':'day'}});assert.equal(r.status,200);assert.equal((await r.json()).title,'Harbor');});\n{\n  \"type\": \"module\",\n  \"private\": true,\n  \"scripts\": {\n    \"test\": \"node --test smoke.test.mjs\"\n  }\n}",
+        "fullEventSha": "6f79f52cab558e074ae42227d955600aa524d4c2a29aff33bb0f80a8774f4afe"
+      },
+      {
+        "command": "/bin/bash -lc 'ls -la && ls -l vendor && tar -tzf vendor/hono-4.13.19.tgz | head -65 && node --version && npm --version'",
+        "exit": 0,
+        "selectOutput": "total 36\ndrwxrwxr-x   10 kostysh kostysh   280 Nov 18 23:46 .\ndrwxrwxrwt 1574 nobody  nogroup 63320 Nov 18 23:46 ..\ndr-xr-xr-x    2 kostysh kostysh    40 Nov 18 23:46 .agents\ndr-xr-xr-x    2 kostysh kostysh    40 Nov 18 23:46 .aws\ndr-xr-xr-x    2 kostysh kostysh    40 Nov 18 23:46 .codex\ndr-xr-xr-x    2 kostysh kostysh    40 Nov 18 23:46 .git\n-rw-rw-r--    1 kostysh kostysh   672 Nov 18 23:34 README.md\n-rw-r--r--    1 kostysh kostysh 22904 Nov 18 23:34 SKILL.md\ndrwxrwxr-x    2 kostysh kostysh    60 Nov 18 23:34 agents\n-rw-rw-r--    1 kostysh kostysh    81 Nov 18 23:34 ci.md\n-rw-rw-r--    1 kostysh kostysh  1020 Nov 18 23:34 contract.md\ndrwxrwxr-x    2 kostysh kostysh   400 Nov 18 23:34 references\ndrwxrwxr-x    2 kostysh kostysh   100 Nov 18 23:34 release\ndrwxrwxr-x    2 kostysh kostysh    60 Nov 18 23:34 vendor\ntotal 244\n-rw-rw-r-- 1 kostysh kostysh 249696 Nov 18 23:34 hono-4.13.19.tgz\npackage/LICENSE\npackage/dist/cjs/utils/accept.js\npackage/dist/utils/accept.js\npackage/dist/cjs/helper/accepts/accepts.js\npackage/dist/helper/accepts/accepts.js\npackage/dist/cjs/jsx/base.js\npackage/dist/jsx/base.js\npackage/dist/cjs/utils/basic-auth.js\npackage/dist/utils/basic-auth.js\npackage/dist/cjs/utils/body.js\npackage/dist/utils/body.js\npackage/dist/cjs/utils/buffer.js\npackage/dist/utils/buffer.js\npackage/dist/cjs/jsx/children.js\npackage/dist/jsx/children.js\npackage/dist/cjs/client/client.js\npackage/dist/cjs/jsx/dom/client.js\npackage/dist/client/client.js\npackage/dist/jsx/dom/client.js\npackage/dist/cjs/utils/color.js\npackage/dist/utils/color.js\npackage/dist/cjs/helper/css/common.js\npackage/dist/cjs/jsx/intrinsic-element/common.js\npackage/dist/helper/css/common.js\npackage/dist/jsx/intrinsic-element/common.js\npackage/dist/cjs/jsx/components.js\npackage/dist/cjs/jsx/dom/components.js\npackage/dist/cjs/jsx/dom/intrinsic-element/components.js\npackage/dist/cjs/jsx/intrinsic-element/components.js\npackage/dist/jsx/components.js\npackage/dist/jsx/dom/components.js\npackage/dist/jsx/dom/intrinsic-element/components.js\npackage/dist/jsx/intrinsic-element/components.js\npackage/dist/cjs/compose.js\npackage/dist/compose.js\npackage/dist/cjs/utils/compress.js\npackage/dist/utils/compress.js\npackage/dist/cjs/utils/concurrent.js\npackage/dist/utils/concurrent.js\npackage/dist/adapter/aws-lambda/conninfo.js\npackage/dist/adapter/bun/conninfo.js\npackage/dist/adapter/cloudflare-pages/conninfo.js\npackage/dist/adapter/cloudflare-workers/conninfo.js",
+        "fullEventSha": "32210b81df2fbe8a2e99dd94dfcef5009da79e360733ef84644596a820bf1b28"
+      },
+      {
+        "command": "/bin/bash -lc \"tar -xOzf vendor/hono-4.13.19.tgz package/dist/compose.js package/dist/hono-base.js | rg -n -A24 -B5 'onError|request =|request\\\\(' && tar -xOzf vendor/hono-4.13.19.tgz package/package.json | head -35\"",
+        "exit": 0,
+        "selectOutput": "3-* Compose middleware functions into a single function based on `koa-compose` package.\n4-*\n5-* @template E - The environment type.\n6-*\n7-* @param {[[Function, unknown], unknown][] | [[Function]][]} middleware - An array of middleware functions and their corresponding parameters.\n8:* @param {ErrorHandler<E>} [onError] - An optional error handler function.\n9-* @param {NotFoundHandler<E>} [onNotFound] - An optional not-found handler function.\n10-*\n11-* @returns {(context: Context, next?: Next) => Promise<Context>} - A composed middleware function.\n12-*/\n13:const compose = (middleware, onError, onNotFound) => {\n14-\treturn (context, next) => {\n15-\t\tlet index = -1;\n16-\t\treturn dispatch(0);\n17-\t\t/**\n18-\t\t* Dispatch the middleware functions.\n19-\t\t*\n20-\t\t* @param {number} i - The current index in the middleware array.\n21-\t\t*\n22-\t\t* @returns {Promise<Context>} - A promise that resolves to the context.\n23-\t\t*/\n24-\t\tasync function dispatch(i) {\n25-\t\t\tif (i <= index) throw new Error(\"next() called multiple times\");\n26-\t\t\tindex = i;\n27-\t\t\tlet res;\n28-\t\t\tlet isError = false;\n29-\t\t\tlet handler;\n30-\t\t\tif (middleware[i]) {\n31-\t\t\t\thandler = middleware[i][0][0];\n32-\t\t\t\tcontext.req.routeIndex = i;\n33-\t\t\t} else handler = i === middleware.length && next || void 0;\n34-\t\t\tif (handler) try {\n35-\t\t\t\tres = await handler(context, () => dispatch(i + 1));\n36-\t\t\t} catch (err) {\n37:\t\t\t\tif (err instanceof Error && onError) {\n38-\t\t\t\t\tcontext.error = err;\n39:\t\t\t\t\tres = await onError(err, context);\n40-\t\t\t\t\tisError = true;\n41-\t\t\t\t} else throw err;\n42-\t\t\t}\n43-\t\t\telse if (context.finalized === false && onNotFound) res = await onNotFound(context);\n44-\t\t\tif (res && (context.finalized === false || isError)) context.res = res;\n45-\t\t\treturn context;\n46-\t\t}\n47-\t};\n48-};\n49-//#endregion\n50-export { compose };\n51-import { compose } from \"./compose.js\";\n52-import { getPath, getPathNoStrict, mergePath } from \"./utils/url.js\";\n53-import { Context } from \"./context.js\";\n54-import { routePath } from \"./helper/route/index.js\";\n55-import { METHODS } from \"./router.js\";\n56-import { COMPOSED_HANDLER } from \"./utils/constants.js\";\n57-import { createMountedRequest } from \"./utils/mount.js\";\n58-//#region src/hono-base.ts\n59-/**\n60-* @module\n61-* This module is the base module for the Hono object.\n62-*/",
+        "fullEventSha": "ec084b07d7f36092a3c380056f560397ff3903a6d85a098c1a4908768be43924"
+      },
+      {
+        "command": "/bin/bash -lc 'audit_dir=$(mktemp -d \"$PWD/.desk-review.XXXXXX\") &&\ntrap '\"'python3 -c \\\"import shutil,sys; shutil.rmtree(sys.argv[1])\\\" \\\"\"'$audit_dir\"'\"' EXIT &&\ncp -R release/. \\\"\"'$audit_dir/\" &&\ncd \"$audit_dir\" &&\nnpm_config_cache=\"$audit_dir/.npm-cache\" npm install --offline --ignore-scripts --no-audit --no-fund ../vendor/hono-4.13.19.tgz &&\nnpm_config_cache=\"$audit_dir/.npm-cache\" npm test &&\nnode --input-type=module <<'\"'NODE'\nimport assert from 'node:assert/strict';\nimport { readFileSync } from 'node:fs';\nimport app from './app.mjs';\n\nconst {version} = JSON.parse(readFileSync('node_modules/hono/package.json', 'utf8'));\nassert.equal(version, '4.13.19');\nconsole.log({hono: version, node: process.version});\n\nconst checks = [\n  ['valid record', 'a7', true, 200, {id: 'a7', title: 'Harbor'}, 'dispatch,session,read'],\n  ['no session', 'a7', false, 401, {error: 'sign_in'}, 'dispatch,session'],\n  ['missing record', 'missing-card', true, 404, {error: 'not_found'}, 'dispatch,session,read'],\n  ['invalid record', 'b4', true, 502, {error: 'invalid_record'}, 'dispatch,session,read,error'],\n  ['admission before record lookup', 'b4', false, 401, {error: 'sign_in'}, 'dispatch,session'],\n];\n\nfor (const [name, id, signedIn, status, body, steps] of checks) {\n  const response = await app.request(new Request('http://localhost/desk/' + id, {\n    headers: signedIn ? {'x-shift': 'day'} : {},\n  }));\n  assert(response instanceof Response);\n  assert.equal(response.status, status);\n  assert.match(response.headers.get('content-type') ?? '', /\"'^application'\"\\\\/json\\\\b/);\n  assert.deepEqual(await response.json(), body);\n  assert.equal(response.headers.get('x-desk-steps'), steps);\n  console.log(name, status, JSON.stringify(body), steps);\n}\nNODE\"",
+        "exit": 0,
+        "selectOutput": "added 1 package in 419ms\nnpm notice\nnpm notice New minor version of npm available! 12.0.1 -> 12.2.3\nnpm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.3\nnpm notice To update run: npm install -g npm@12.2.3\nnpm notice\nnpm notice run test\nnpm notice run node --test smoke.test.mjs\n✔ valid title (14.300961ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 62.373629\n{ hono: '4.13.19', node: 'v24.15.0' }\nvalid record 200 {\"id\":\"a7\",\"title\":\"Harbor\"} dispatch,session,read\nno session 401 {\"error\":\"sign_in\"} dispatch,session\nmissing record 404 {\"error\":\"not_found\"} dispatch,session,read\ninvalid record 502 {\"error\":\"invalid_record\"} dispatch,session,read,error\nadmission before record lookup 401 {\"error\":\"sign_in\"} dispatch,session",
+        "fullEventSha": "2a65d5e8285a6a7f1aea50b4411037509dd83a43e321c1e730fa4bdb738e3b5d"
+      }
+    ],
+    "changesToInitialFiles": [],
+    "createdFiles": []
+  }
+}

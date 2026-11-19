@@ -119,7 +119,7 @@ import { requireUser } from '@/lib/auth';
 import { postInput } from '@/lib/validation';
 import { db } from '@/lib/db';
 
-// Next 15+ GET handlers are not cached by default; opt in deliberately
+// This handler reads the actor from the incoming request.
 export async function GET(request: NextRequest) {
   const user = await requireUser();
   const posts = await db.post.findMany({ where: { authorId: user.id } });

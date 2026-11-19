@@ -1,0 +1,11 @@
+{
+  "at": "2026-11-18T22:55:56.571158+00:00",
+  "skillArchive": "c5ce5b858c774af34eb005a0078b9622bb836e97759195bf51bcf5d281b58293",
+  "tallyPackage": "7c9f8bff28fee4cb4acd9dfec592b15e688cf040990a001d66a8d1ba73bce0cc",
+  "inputs": {
+    "rubric.md": "f4a4f84f9da78eab3fe09f70a8dd1deacfa256cc27cd62a20daeb9611123e398",
+    "cases/shift.md": "f3533111b3cd2c680f045b34ad02aa5c59029613b6b91cd2c712afa1f67ba36c",
+    "fixture/shift/desk-intake.md": "281c52f6e86b0a7a5dfeac0b80997357dc9565ef2a600b5cbd0b986bb4538386",
+    "fixture/shift/engineering-tally-fixture-1.0.0.tar.gz": "7c9f8bff28fee4cb4acd9dfec592b15e688cf040990a001d66a8d1ba73bce0cc"
+  }
+}

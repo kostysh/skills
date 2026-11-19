@@ -14,7 +14,7 @@ For standalone teaching requests, apply the [Illustrative example boundary](../S
 | Authentication/authorization | Preserve the accepted admission order before the protected handler; this reference does not select guards, paths, or roles. |
 | Validation | Run the project validator before consuming `c.req.valid(...)`; preserve its error mapping. |
 | Timeout | Hono timeout middleware is not compatible with streaming responses; select another owner-approved lifecycle for streams. |
-| Error handling | Register `app.onError()` and `app.notFound()` as Hono hooks, not positions in the middleware chain. |
+| Error handling | On Hono v4, register `app.onError()` and `app.notFound()` as hooks outside the middleware chain. For a different major, consult [Framework Currency](framework-currency.md). |
 | Protected long-lived response | Opening admission is insufficient only when the accepted security contract requires later permission changes to take effect; implement its revalidation/invalidation and abort cleanup. |
 | Post-response work on Workers | `c.executionCtx.waitUntil()` is best-effort, not durable delivery; use the platform/architecture owner's accepted durable boundary when loss changes behavior. |
 

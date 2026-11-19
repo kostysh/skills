@@ -1,0 +1,103 @@
+{
+  "observed_utc": "2026-11-18T19:58:46.932700+00:00",
+  "positive": [
+    {
+      "argv": [
+        "gh",
+        "run",
+        "view",
+        "40044930201",
+        "--repo",
+        "github.com/kostysh/skills",
+        "--json",
+        "databaseId,workflowName,attempt,event,headBranch,headSha,status,conclusion"
+      ],
+      "exit": 0,
+      "stdout": "{\"attempt\":1,\"conclusion\":\"success\",\"databaseId\":40044930201,\"event\":\"pull_request\",\"headBranch\":\"codex/cli-list-bounds\",\"headSha\":\"f6b1de1cb42ab8c2107ef999bbde5ea3607dd448\",\"status\":\"completed\",\"workflowName\":\"test\"}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "gh",
+        "run",
+        "view",
+        "40044930201",
+        "--repo",
+        "github.com/kostysh/skills",
+        "--attempt",
+        "1",
+        "--json",
+        "databaseId,workflowName,attempt,event,headBranch,headSha,status,conclusion"
+      ],
+      "exit": 0,
+      "stdout": "{\"attempt\":1,\"conclusion\":\"success\",\"databaseId\":40044930201,\"event\":\"pull_request\",\"headBranch\":\"codex/cli-list-bounds\",\"headSha\":\"f6b1de1cb42ab8c2107ef999bbde5ea3607dd448\",\"status\":\"completed\",\"workflowName\":\"test\"}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "gh",
+        "run",
+        "view",
+        "42397445487",
+        "--repo",
+        "github.com/kostysh/skills",
+        "--attempt",
+        "1",
+        "--json",
+        "databaseId,workflowName,attempt,event,headBranch,headSha,status,conclusion"
+      ],
+      "exit": 0,
+      "stdout": "{\"attempt\":1,\"conclusion\":\"success\",\"databaseId\":42397445487,\"event\":\"push\",\"headBranch\":\"codex/typescript-test-async-determinism\",\"headSha\":\"637e0b81e69c6fada8dd19a108305ab05a327082\",\"status\":\"completed\",\"workflowName\":\"CLI checks\"}\n",
+      "stderr": ""
+    }
+  ],
+  "missing_attempt": {
+    "argv": [
+      "gh",
+      "run",
+      "view",
+      "40044930201",
+      "--repo",
+      "github.com/kostysh/skills",
+      "--attempt",
+      "2",
+      "--json",
+      "databaseId,workflowName,attempt,event,headBranch,headSha,status,conclusion"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": "failed to get run: HTTP 404: Not Found (https://api.github.com/repos/kostysh/skills/actions/runs/40044930201/attempts/2?exclude_pull_requests=true)\n"
+  },
+  "original_actions_url_example": {
+    "argv": [
+      "gh",
+      "run",
+      "view",
+      "40044930201",
+      "--repo",
+      "github.com/kostysh/skills",
+      "--log-failed"
+    ],
+    "exit": 1,
+    "stdout_bytes": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_bytes": 132,
+    "stderr_sha256": "43ce58a17235ebc01ff2a3b9bfcfc1c5cf5d3b67b4964a25c36794b5a6328148",
+    "initial_recheck": {
+      "exit": 1,
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "43ce58a17235ebc01ff2a3b9bfcfc1c5cf5d3b67b4964a25c36794b5a6328148",
+      "diagnostic": "failed to get run log: creating cache entry: open {home}/.cache/gh/run-log-40044930201-1792801549.zip: read-only file system\n",
+      "new_cache_files": null
+    },
+    "fresh_writable_cache": {
+      "exit": 0,
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "diagnostic": "",
+      "new_cache_files": 2
+    }
+  }
+}

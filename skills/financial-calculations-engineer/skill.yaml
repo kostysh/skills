@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: financial-calculations-engineer
-  source-version: 0.3.1
+  source-version: 0.3.2
   recommended-skill-md-max-bytes: 20000
   description: >-
     Design, implement, and review EUR-first money arithmetic and cross-layer
@@ -77,6 +77,10 @@ supporting:
     source: docs/logs/implementation-log-20260716-2.md
     target: docs/logs/implementation-log-20260716-2.md
     description: Non-normative currency-contract remediation and review log.
+  - id: supporting-implementation-log-20261118-1
+    source: docs/logs/implementation-log-20261118-1.md
+    target: docs/logs/implementation-log-20261118-1.md
+    description: Non-normative authority, rounding and API revision log.
 
 surfaces:
   active:
@@ -210,7 +214,7 @@ sections:
   gotchas:
     - id: gotcha-authority
       priority: high
-      text: Do not infer a tax rate, tariff, ledger account, posting rule, or residual-minor-unit policy from a utility example.
+      text: Apply the accepted financial rule to its stated scope.
     - id: gotcha-currency-authority
       priority: high
       text: Do not infer ISO 4217 validity or a currency's minor-unit scale from a structurally accepted three-letter code and `0..20` engine scale; require an authoritative source.

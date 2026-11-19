@@ -1,0 +1,71 @@
+{
+  "official_binary": "https://nodejs.org/download/release/v22.17.1/node-v22.17.1-linux-x64.tar.xz",
+  "sha256_index": "https://nodejs.org/download/release/v22.17.1/SHASUMS256.txt",
+  "verified_archive_sha256": "ff04bc7c3ed7699ceb708dbaaf3580d899ff8bf67f17114f979e83aa74fc5a49",
+  "binaries_installed_globally": false,
+  "fixture": {
+    "index.mts": "const count: number = 5;\nconsole.log(count);\n",
+    "package.json": "{\"name\": \"shift-count\", \"type\": \"module\", \"scripts\": {\"start\": \"node index.mts\"}}\n",
+    "tag.mts": "enum State { Ready = 'ready' }\nconsole.log(State.Ready);\n"
+  },
+  "observations": [
+    {
+      "argv": [
+        "node",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "v22.17.1\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "index.mts"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": "node:internal/modules/esm/get_format:219\n  throw new ERR_UNKNOWN_FILE_EXTENSION(ext, filepath);\n        ^\n\nTypeError [ERR_UNKNOWN_FILE_EXTENSION]: Unknown file extension \".mts\" for {app}/index.mts\n    at Object.getFileProtocolModuleFormat [as file:] (node:internal/modules/esm/get_format:219:9)\n    at defaultGetFormat (node:internal/modules/esm/get_format:245:36)\n    at defaultLoad (node:internal/modules/esm/load:120:22)\n    at async ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:580:32)\n    at async ModuleJob._link (node:internal/modules/esm/module_job:154:19) {\n  code: 'ERR_UNKNOWN_FILE_EXTENSION'\n}\n\nNode.js v22.17.1\n"
+    },
+    {
+      "argv": [
+        "node",
+        "--experimental-strip-types",
+        "index.mts"
+      ],
+      "exit": 0,
+      "stdout": "5\n",
+      "stderr": "(node:75) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+    },
+    {
+      "argv": [
+        "node",
+        "--experimental-transform-types",
+        "index.mts"
+      ],
+      "exit": 0,
+      "stdout": "5\n",
+      "stderr": "(node:86) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+    },
+    {
+      "argv": [
+        "node",
+        "--experimental-strip-types",
+        "tag.mts"
+      ],
+      "exit": 1,
+      "stdout": "",
+      "stderr": "node:internal/modules/typescript:62\n        throw new ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX(error.message);\n              ^\n\nSyntaxError [ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX]:   x TypeScript enum is not supported in strip-only mode\n   ,-[1:1]\n 1 | enum State { Ready = 'ready' }\n   : ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n 2 | console.log(State.Ready);\n   `----\n\n    at parseTypeScript (node:internal/modules/typescript:62:15)\n    at processTypeScriptCode (node:internal/modules/typescript:116:42)\n    at stripTypeScriptModuleTypes (node:internal/modules/typescript:150:10)\n    at ModuleLoader.<anonymous> (node:internal/modules/esm/translators:471:16)\n    at #translate (node:internal/modules/esm/loader:534:12)\n    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:581:27)\n    at async ModuleJob._link (node:internal/modules/esm/module_job:154:19) {\n  code: 'ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX'\n}\n\nNode.js v22.17.1\n"
+    },
+    {
+      "argv": [
+        "node",
+        "--experimental-transform-types",
+        "tag.mts"
+      ],
+      "exit": 0,
+      "stdout": "ready\n",
+      "stderr": "(node:108) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "comparison": "8 px margin around the same rendered button; RGB values at identical coordinates",
+  "frames": {
+    "received-focused.png": "ca1bdf5b0e4057d56f023f4ff13e534a2d6fb514f43ae6e220e0213fb27167e6",
+    "received-normal.png": "47b7cd2ed07035eecb7e9cd15bfbe76a95b9365f5282d3228c5e85caeff818aa",
+    "updated-focused.png": "ca1bdf5b0e4057d56f023f4ff13e534a2d6fb514f43ae6e220e0213fb27167e6",
+    "updated-normal.png": "47b7cd2ed07035eecb7e9cd15bfbe76a95b9365f5282d3228c5e85caeff818aa"
+  },
+  "differences": {
+    "normalAcross": {
+      "size": [
+        170,
+        60
+      ],
+      "changedRGBPixels": 0,
+      "outsideButtonChangedRGBPixels": 0,
+      "boundingBox": null
+    },
+    "focusedAcross": {
+      "size": [
+        170,
+        60
+      ],
+      "changedRGBPixels": 0,
+      "outsideButtonChangedRGBPixels": 0,
+      "boundingBox": null
+    },
+    "focusOnReceived": {
+      "size": [
+        170,
+        60
+      ],
+      "changedRGBPixels": 1604,
+      "outsideButtonChangedRGBPixels": 1072,
+      "boundingBox": [
+        6,
+        6,
+        165,
+        56
+      ]
+    },
+    "focusOnUpdated": {
+      "size": [
+        170,
+        60
+      ],
+      "changedRGBPixels": 1604,
+      "outsideButtonChangedRGBPixels": 1072,
+      "boundingBox": [
+        6,
+        6,
+        165,
+        56
+      ]
+    }
+  }
+}

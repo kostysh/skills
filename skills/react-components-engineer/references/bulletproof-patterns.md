@@ -146,9 +146,9 @@ Official references: [React `cache`](https://react.dev/reference/react/cache), [
 
 ### Transitions
 
-Use `startTransition` or `useTransition` only when the update is non-urgent; do not use Transition updates to control text inputs. `startTransition` marks updates as non-blocking but does not create a browser or React View Transition.
+Use `startTransition` or `useTransition` for non-urgent updates. Keep updates that control text inputs urgent. `useTransition` also exposes pending state.
 
-React `<ViewTransition>` is a Canary/Experimental feature. Use it only when the project already runs a supporting channel and the component contains a real `<ViewTransition>` boundary. Verify enter, exit, update, or shared-element behavior that the task actually claims.
+React 19.3 made `<ViewTransition>` stable for the DOM renderer. Stable React 19.2 does not export it. For earlier prereleases, check the installed export. In a supporting browser, exercise a transition-driven update that changes the boundary and observe the claimed enter, exit, update, or shared-element animation.
 
 ### Activity
 

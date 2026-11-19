@@ -1,0 +1,414 @@
+{
+  "e919f3": {
+    "role": "B",
+    "case": "ordinary",
+    "input_skill_sha256": "c5c107e48dc8b3f2f0bda0d3c3d446ffe8e79d7ee0ccf522d9671a21fe851d15",
+    "task_sha256": "e3a67c4cc1c8e2f589116f9f932fb94c0db41fc65ad874a95423be0119fd46c5",
+    "model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"medium\"",
+    "sandbox": "workspace-write",
+    "memories": "memories",
+    "raw_events_sha256": "e42ce84e48ead1017201f4e3d0151258389b9b63ca45f98190bc31d5284d519e",
+    "raw_answer_sha256": "3dbe368b5aa2ca7ae48e4e085bb59faf405ab08592c3fcd1f13afe4100a986c1",
+    "process_exit": 0,
+    "observed_root_line": true,
+    "line_evidence": [
+      {
+        "event_sha256_with_lf": "d8978628df7218186df841193ba134842256ba0f9c43c6fca0615becdbc76e18",
+        "command": "/bin/bash -lc 'cat SKILL.md'",
+        "observed_line": "5. Keep tests deterministic, behavior-focused, isolated from uncontrolled network calls, and warning-clean."
+      }
+    ],
+    "command_count": 9,
+    "observed_web": [],
+    "changed_originals": [],
+    "changed_paths_count": 1,
+    "results_file": "results/e919f3.json",
+    "normal_project_commands": [
+      {
+        "raw_event_sha256_with_lf": "c0f55add2eb099a33509b6ec6ff65c1ef03734dce3d6c2dcec7ff35eae8643b3",
+        "command": "/bin/bash -lc 'npm test'",
+        "exit": 0,
+        "output": "npm notice run test\nnpm notice run node --test test/*.test.ts\n✔ prints a single JSON report line for the supplied labels (46.264461ms)\n✔ counts values (0.475118ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 103.609573\n"
+      }
+    ]
+  },
+  "d025b8": {
+    "role": "A",
+    "case": "ordinary",
+    "input_skill_sha256": "17dcb75c007706d03c41330ca16b49a6e8b26fb16a74628008fea1573ab752b4",
+    "task_sha256": "e3a67c4cc1c8e2f589116f9f932fb94c0db41fc65ad874a95423be0119fd46c5",
+    "model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"medium\"",
+    "sandbox": "workspace-write",
+    "memories": "memories",
+    "raw_events_sha256": "c8c84e05ba14abe6a3c59af26913f4135643224599b6d13d0cfa260e559c03c1",
+    "raw_answer_sha256": "e7c46cdfea24cc585bd5e272b32597d3b9ff6e853661ea04bd14d7985c69d447",
+    "process_exit": 0,
+    "observed_root_line": true,
+    "line_evidence": [
+      {
+        "event_sha256_with_lf": "e4b1e4ca5d9898fdf816f8b6b31a244aaa54f71df45eda2a9072d68b94f99893",
+        "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git'\"' -g '\"'!node_modules'\"' && cat SKILL.md\"",
+        "observed_line": "5. Keep tests deterministic, behavior-focused, isolated from uncontrolled network calls, and warning-clean; retain each real boundary whose invariant is under test."
+      }
+    ],
+    "command_count": 6,
+    "observed_web": [],
+    "changed_originals": [],
+    "changed_paths_count": 1,
+    "results_file": "results/d025b8.json",
+    "normal_project_commands": [
+      {
+        "raw_event_sha256_with_lf": "a84cd461fa770b94c2e11e9fb59250e4b74119e744af68340dd110d0d1815008",
+        "command": "/bin/bash -lc 'npm test'",
+        "exit": 0,
+        "output": "npm notice run test\nnpm notice run node --test test/*.test.ts\n✔ prints one JSON report line for the supplied labels (42.701837ms)\n✔ counts values (0.485227ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 106.572373\n"
+      }
+    ]
+  },
+  "4d490d": {
+    "role": "B",
+    "case": "boundary",
+    "input_skill_sha256": "c5c107e48dc8b3f2f0bda0d3c3d446ffe8e79d7ee0ccf522d9671a21fe851d15",
+    "task_sha256": "dcbf179b61b58f4c499aaec4de1156abb4c94e7128f125997aa0fa15638d74b2",
+    "model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"medium\"",
+    "sandbox": "workspace-write",
+    "memories": "memories",
+    "raw_events_sha256": "cca81d5274526f4dafb43ed3357e6242045dbba94624f318c01d9817f6922fc8",
+    "raw_answer_sha256": "e5aa65831a876e6ba356994dc90d69dbdbf4ca819ef7cf1b115d0a1f544b9177",
+    "process_exit": 0,
+    "observed_root_line": true,
+    "line_evidence": [
+      {
+        "event_sha256_with_lf": "042b340324b50afa6b750ad9597c743f52c673831b08dc20c8e40352501883ed",
+        "command": "/bin/bash -lc \"pwd; rg --files -g '\"'!node_modules'\"' -g '\"'!package-lock.json'\"' -g '\"'!pnpm-lock.yaml'\"' -g '\"'!yarn.lock'\"' -g 'AGENTS.md' -g 'SKILL.md' -g 'project/**' -g '\"'!project/node_modules/**'\"'; git status --short; cat ./SKILL.md\"",
+        "observed_line": "5. Keep tests deterministic, behavior-focused, isolated from uncontrolled network calls, and warning-clean."
+      }
+    ],
+    "command_count": 6,
+    "observed_web": [],
+    "changed_originals": [],
+    "changed_paths_count": 1,
+    "results_file": "results/4d490d.json",
+    "normal_project_commands": [
+      {
+        "raw_event_sha256_with_lf": "a162d480629cb3fc0f0643021aea39bb8a06cbd64a6801593c9882b3170913dc",
+        "command": "/bin/bash -lc 'npm_config_logs_max=0 npm_config_update_notifier=false npm test'",
+        "exit": 0,
+        "output": "npm notice run test\nnpm notice run node --test test/*.test.ts\n✔ invalid quantity exits with code 2 and reports the error only on stderr (46.010761ms)\n✔ valid integer (0.478094ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 108.125829\n"
+      }
+    ]
+  },
+  "06a4d0": {
+    "role": "A",
+    "case": "boundary",
+    "input_skill_sha256": "17dcb75c007706d03c41330ca16b49a6e8b26fb16a74628008fea1573ab752b4",
+    "task_sha256": "dcbf179b61b58f4c499aaec4de1156abb4c94e7128f125997aa0fa15638d74b2",
+    "model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"medium\"",
+    "sandbox": "workspace-write",
+    "memories": "memories",
+    "raw_events_sha256": "85b3cd94a9b0ad16125c4cc60f2ba6134049cb42a3a8f5fb761828e7165ab6f9",
+    "raw_answer_sha256": "899d3bd4b944307e2e0d7611c72ff058826703a8b9ee2dec6162287f839fb375",
+    "process_exit": 0,
+    "observed_root_line": false,
+    "line_evidence": [],
+    "command_count": 6,
+    "observed_web": [],
+    "changed_originals": [],
+    "changed_paths_count": 1,
+    "results_file": "results/06a4d0.json",
+    "normal_project_commands": [
+      {
+        "raw_event_sha256_with_lf": "3948b2e606a5d4ca91277422f4f04d2c4ab1f93e0138c5508416d2ad587d86e9",
+        "command": "/bin/bash -lc 'npm test'",
+        "exit": 0,
+        "output": "npm notice run test\nnpm notice run node --test test/*.test.ts\n✔ reports an invalid quantity on stderr and exits with code 2 (45.600436ms)\n✔ valid integer (0.588342ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 115.795514\n"
+      }
+    ]
+  },
+  "9accb4": {
+    "role": "C",
+    "case": "holdout",
+    "input_skill_sha256": "144b00cffffff23d5e89692edc9437b66af1b05eadfa28a76604fad714196606",
+    "task_sha256": "7167f4e384b5ca1d45efe72f0a4a186ca0ea3bb585bdd24c482f9690a9c89edd",
+    "model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"medium\"",
+    "sandbox": "workspace-write",
+    "memories": "memories",
+    "raw_events_sha256": "3859f0c5828dfcf9e04740aa7a6b5b1e2e55479c954d8e170c1438878056eca5",
+    "raw_answer_sha256": "d6989a46924ed9f4e589d63b9b8e60a9e03acb7bd114ff9f95e5fd8a75bd0b71",
+    "process_exit": 0,
+    "observed_root_line": true,
+    "line_evidence": [
+      {
+        "event_sha256_with_lf": "5a989ece858e9971526ce70fa653ff67a38a0ba7def2d076a10c19b7caf1b4fc",
+        "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git'\"' && cat SKILL.md\"",
+        "observed_line": "5. Keep tests deterministic, behavior-focused, isolated from uncontrolled network calls, and warning-clean. Exercise the boundary under test."
+      }
+    ],
+    "command_count": 8,
+    "observed_web": [],
+    "changed_originals": [],
+    "changed_paths_count": 1,
+    "results_file": "results/9accb4.json",
+    "normal_project_commands": [
+      {
+        "raw_event_sha256_with_lf": "4d3c899e2a09bce962d95f09f51243e324b1f921631e5290a5ed50134e0d4a02",
+        "command": "/bin/bash -lc 'npm_config_logs_max=0 npm_config_update_notifier=false npm test'",
+        "exit": 0,
+        "output": "npm notice run test\nnpm notice run node --test test/*.test.ts\n✔ shows the saved label on the next launch (133.524625ms)\n✔ display line (0.476821ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 196.310108\n"
+      }
+    ]
+  },
+  "ee7b76": {
+    "role": "C",
+    "case": "boundary",
+    "input_skill_sha256": "144b00cffffff23d5e89692edc9437b66af1b05eadfa28a76604fad714196606",
+    "task_sha256": "dcbf179b61b58f4c499aaec4de1156abb4c94e7128f125997aa0fa15638d74b2",
+    "model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"medium\"",
+    "sandbox": "workspace-write",
+    "memories": "memories",
+    "raw_events_sha256": "a54725331ca43aa229f48f0dd631678160aceb245a492a49a7ea6b3e9fa3faa1",
+    "raw_answer_sha256": "bd3e1b5ed8ada050217b84a6ec5b3041188ae10c013c85641e35f18d77eb75a0",
+    "process_exit": 0,
+    "observed_root_line": true,
+    "line_evidence": [
+      {
+        "event_sha256_with_lf": "f5831770ac93ee6778261be4ff6fced459b6d209598a1016bbe762ecd9023f3d",
+        "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!**/.git/**'\"' && cat SKILL.md\"",
+        "observed_line": "5. Keep tests deterministic, behavior-focused, isolated from uncontrolled network calls, and warning-clean. Exercise the boundary under test."
+      }
+    ],
+    "command_count": 6,
+    "observed_web": [],
+    "changed_originals": [],
+    "changed_paths_count": 1,
+    "results_file": "results/ee7b76.json",
+    "normal_project_commands": [
+      {
+        "raw_event_sha256_with_lf": "bf9a175acd2eb8414fe0a0d8c2eb8f3f953773afb521034ed924b5cefb77d74d",
+        "command": "/bin/bash -lc 'npm_config_logs_max=0 npm test'",
+        "exit": 0,
+        "output": "npm notice run test\nnpm notice run node --test test/*.test.ts\n✔ invalid quantity exits with code 2 and reports the error on stderr (46.306367ms)\n✔ valid integer (0.500987ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 111.16644\n"
+      }
+    ]
+  },
+  "de0d81": {
+    "role": "C",
+    "case": "ordinary",
+    "input_skill_sha256": "144b00cffffff23d5e89692edc9437b66af1b05eadfa28a76604fad714196606",
+    "task_sha256": "e3a67c4cc1c8e2f589116f9f932fb94c0db41fc65ad874a95423be0119fd46c5",
+    "model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"medium\"",
+    "sandbox": "workspace-write",
+    "memories": "memories",
+    "raw_events_sha256": "5cfcc2026275faa4010cf3eec205512967f156d24a57aa8dd221b2132e2d51a4",
+    "raw_answer_sha256": "d20ab8e639a4f8da0520af9c2abbc74b389eedb1f2ace6f63331debd2d7856b8",
+    "process_exit": 0,
+    "observed_root_line": true,
+    "line_evidence": [
+      {
+        "event_sha256_with_lf": "673c122e7a19ad3348b73df233829ef1d2dd724aa094b8df768fa06d207b6b5e",
+        "command": "/bin/bash -lc \"ls -a && rg --files --hidden -g '\"'!.git'\"' && cat SKILL.md\"",
+        "observed_line": "5. Keep tests deterministic, behavior-focused, isolated from uncontrolled network calls, and warning-clean. Exercise the boundary under test."
+      }
+    ],
+    "command_count": 7,
+    "observed_web": [],
+    "changed_originals": [],
+    "changed_paths_count": 1,
+    "results_file": "results/de0d81.json",
+    "normal_project_commands": [
+      {
+        "raw_event_sha256_with_lf": "e92f7b620f5f55355ac79a5aa1364e5a3b2a72825c3bc575f2c331a56027e2bc",
+        "command": "/bin/bash -lc 'npm_config_logs_max=0 npm_config_update_notifier=false npm test'",
+        "exit": 0,
+        "output": "npm notice run test\nnpm notice run node --test test/*.test.ts\n✔ prints exactly one JSON count report followed by a newline (36.495966ms)\n✔ counts values (0.372444ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 90.79583\n"
+      }
+    ]
+  },
+  "71a571": {
+    "role": "A",
+    "case": "holdout",
+    "input_skill_sha256": "17dcb75c007706d03c41330ca16b49a6e8b26fb16a74628008fea1573ab752b4",
+    "task_sha256": "7167f4e384b5ca1d45efe72f0a4a186ca0ea3bb585bdd24c482f9690a9c89edd",
+    "model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"medium\"",
+    "sandbox": "workspace-write",
+    "memories": "memories",
+    "raw_events_sha256": "aff0af801197aa9971aa83be618a827cb4b1f12d08ba0dcd2ac8bd6fdc392618",
+    "raw_answer_sha256": "34b2d65f6d489d8eea16c4456e134da48a65380f4c2f35ad15a6948b576629b1",
+    "process_exit": 0,
+    "observed_root_line": true,
+    "line_evidence": [
+      {
+        "event_sha256_with_lf": "40ee394e85a3f494d1ba81af870c11973905709e67245ec392134fc91a6ec69e",
+        "command": "/bin/bash -lc \"pwd; rg --files --hidden -g '\"'!.git'\"'; cat ./SKILL.md\"",
+        "observed_line": "5. Keep tests deterministic, behavior-focused, isolated from uncontrolled network calls, and warning-clean; retain each real boundary whose invariant is under test."
+      }
+    ],
+    "command_count": 8,
+    "observed_web": [],
+    "changed_originals": [],
+    "changed_paths_count": 1,
+    "results_file": "results/71a571.json",
+    "normal_project_commands": [
+      {
+        "raw_event_sha256_with_lf": "61e6badf648b26e9ed986ec9e46b93ecd2f77d02669b3cf7c3d392b6c5bdc869",
+        "command": "/bin/bash -lc 'npm_config_logs_max=0 npm test'",
+        "exit": 0,
+        "output": "npm notice run test\nnpm notice run node --test test/*.test.ts\n✔ a new badge process shows the label saved to the selected file (131.63786ms)\n✔ display line (0.46544ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 193.957862\n"
+      }
+    ]
+  },
+  "a2e66b": {
+    "role": "A",
+    "case": "boundary",
+    "input_skill_sha256": "17dcb75c007706d03c41330ca16b49a6e8b26fb16a74628008fea1573ab752b4",
+    "task_sha256": "dcbf179b61b58f4c499aaec4de1156abb4c94e7128f125997aa0fa15638d74b2",
+    "model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"medium\"",
+    "sandbox": "workspace-write",
+    "memories": "memories",
+    "raw_events_sha256": "f299a0e81abec8708797bdf2ad52b8a840bd37f09d079207b0be0a48da29d7d9",
+    "raw_answer_sha256": "3a1612f26d8f238824fd0b2c6b1eeec3fef1c2871cd8e81812e29d1066765519",
+    "process_exit": 0,
+    "observed_root_line": true,
+    "line_evidence": [
+      {
+        "event_sha256_with_lf": "d1a6d2c825661357460bf3979854e89f206de5d94db88792bc0747087b33d82e",
+        "command": "/bin/bash -lc \"ls -la && cat ./SKILL.md && rg --files --hidden -g '\"'!.git'\"'\"",
+        "observed_line": "5. Keep tests deterministic, behavior-focused, isolated from uncontrolled network calls, and warning-clean; retain each real boundary whose invariant is under test."
+      }
+    ],
+    "command_count": 6,
+    "observed_web": [],
+    "changed_originals": [],
+    "changed_paths_count": 1,
+    "results_file": "results/a2e66b.json",
+    "normal_project_commands": [
+      {
+        "raw_event_sha256_with_lf": "391259568647873b82e398f9d19984be284518cbfd1407b77e6fea5638610682",
+        "command": "/bin/bash -lc 'npm test'",
+        "exit": 0,
+        "output": "npm notice run test\nnpm notice run node --test test/*.test.ts\n✔ invalid quantity exits with status 2 and reports the error on stderr (45.926373ms)\n✔ valid integer (0.499403ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 112.600998\n"
+      }
+    ]
+  },
+  "exact-tally-first": {
+    "role": "release",
+    "case": "exact-tally-first",
+    "input_skill_sha256": "3e7b262ee957812b059d113e04047823c4b933bd55623607588dcb684942745f",
+    "task_sha256": "5f997c7ebf1f857d88a2f188f042ab2f0b19ae594f56c238682b1ee72c1282cc",
+    "model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"medium\"",
+    "sandbox": "workspace-write",
+    "memories": "memories",
+    "raw_events_sha256": "588552ba6264ac15c44637fc47a07c806bfd2918ed49c51a5ef4a897525fbe2f",
+    "raw_answer_sha256": "21ce72144e483d2e5228f942ee591d6c9b31ab2bff4deebc50ca216ace5c558e",
+    "process_exit": 0,
+    "observed_root_line": true,
+    "line_evidence": [
+      {
+        "event_sha256_with_lf": "20327bb519cae2d5efab57680e96f351119fa5dc5d4a42698021c1187f1fcff2",
+        "command": "/bin/bash -lc \"pwd; rg --files --hidden -g '\"'!.git/**'\"'; cat ./SKILL.md\"",
+        "observed_line": "5. Keep tests deterministic, behavior-focused, isolated from uncontrolled network calls, and warning-clean. Exercise the boundary under test."
+      },
+      {
+        "event_sha256_with_lf": "b81f553d0c7b22baee911d8c45eb56a3f3c7aff69012184f4af87f1d0297d861",
+        "command": "/bin/bash -lc 'cat SKILL.md'",
+        "observed_line": "5. Keep tests deterministic, behavior-focused, isolated from uncontrolled network calls, and warning-clean. Exercise the boundary under test."
+      }
+    ],
+    "command_count": 13,
+    "observed_web": [],
+    "changed_originals": [],
+    "changed_paths_count": 94,
+    "results_file": "results/exact-tally-first.json"
+  },
+  "exact-tally-repeat": {
+    "role": "release",
+    "case": "exact-tally-repeat",
+    "input_skill_sha256": "3e7b262ee957812b059d113e04047823c4b933bd55623607588dcb684942745f",
+    "task_sha256": "5f997c7ebf1f857d88a2f188f042ab2f0b19ae594f56c238682b1ee72c1282cc",
+    "model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"medium\"",
+    "sandbox": "workspace-write",
+    "memories": "memories",
+    "raw_events_sha256": "d0060e9854b75dfe68b785bca36585d2df90e896dce148b9df5fe1a4dae92669",
+    "raw_answer_sha256": "3d4f525469cc699284e6e069b835be04f1bc216b5fa8058da6e1e7b7b1e591d1",
+    "process_exit": 0,
+    "observed_root_line": true,
+    "line_evidence": [
+      {
+        "event_sha256_with_lf": "91ae5df6edaf2bca109e6354ee0d8a3118564d2a82e08556c35115d12d2e8ea6",
+        "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git/**'\"' && cat SKILL.md\"",
+        "observed_line": "5. Keep tests deterministic, behavior-focused, isolated from uncontrolled network calls, and warning-clean. Exercise the boundary under test."
+      }
+    ],
+    "command_count": 10,
+    "observed_web": [],
+    "changed_originals": [],
+    "changed_paths_count": 1,
+    "results_file": "results/exact-tally-repeat.json"
+  },
+  "exact-workers": {
+    "role": "release",
+    "case": "exact-workers",
+    "input_skill_sha256": "3e7b262ee957812b059d113e04047823c4b933bd55623607588dcb684942745f",
+    "task_sha256": "4598900ba78d7e79e843bd4ba905b869f6bd4a5dcdfaf01f901728daf3db0875",
+    "model": "gpt-6.2-sol",
+    "reasoning": "model_reasoning_effort=\"medium\"",
+    "sandbox": "workspace-write",
+    "memories": "memories",
+    "raw_events_sha256": "3d987b5414f33b5afa71e17fa6ebbbfa7869c48969241d939233f8b4309f35c3",
+    "raw_answer_sha256": "5d76d75bb013d2dda79faf0dbe6b4a47917d812dbb7a75734f94c9d6803cf9a5",
+    "process_exit": 0,
+    "observed_root_line": true,
+    "line_evidence": [
+      {
+        "event_sha256_with_lf": "f9924fd3286ad826125938c92e72178068b94dba2b8d441fbd334c9e79c77afa",
+        "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git'\"' -g '\"'!node_modules'\"' && cat SKILL.md\"",
+        "observed_line": "5. Keep tests deterministic, behavior-focused, isolated from uncontrolled network calls, and warning-clean. Exercise the boundary under test."
+      }
+    ],
+    "command_count": 6,
+    "observed_web": [
+      {
+        "query": "site:developers.cloudflare.com Workers Vitest integration cloudflareTest current Vitest 4 wrangler config SELF exports cloudflare workers",
+        "action": {
+          "type": "search",
+          "query": "site:developers.cloudflare.com Workers Vitest integration cloudflareTest current Vitest 4 wrangler config SELF exports cloudflare workers"
+        }
+      },
+      {
+        "query": "https://registry.npmjs.org/@cloudflare%2fvitest-plugin/latest",
+        "action": {
+          "type": "open_page",
+          "url": "https://registry.npmjs.org/@cloudflare%2fvitest-plugin/latest"
+        }
+      },
+      {
+        "query": "@cloudflare/vitest-plugin 1.8.4 vitest 5 ^5.0.0 cloudflare workers-sdk support Vitest 5",
+        "action": {
+          "type": "search",
+          "query": "@cloudflare/vitest-plugin 1.8.4 vitest 5 ^5.0.0 cloudflare workers-sdk support Vitest 5"
+        }
+      },
+      {
+        "query": "https://cdn.jsdelivr.net/npm/@cloudflare/vitest-plugin@1.8.4/package.json",
+        "action": {
+          "type": "open_page",
+          "url": "https://cdn.jsdelivr.net/npm/@cloudflare/vitest-plugin@1.8.4/package.json"
+        }
+      }
+    ],
+    "changed_originals": [],
+    "changed_paths_count": 0,
+    "results_file": "results/exact-workers.json"
+  }
+}

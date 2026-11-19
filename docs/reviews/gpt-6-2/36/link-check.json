@@ -1,0 +1,502 @@
+{
+  "localLinks": [
+    [
+      "SKILL.md",
+      "references/fields.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/access-control.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/queries.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/collections.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/fields.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/fields.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/fields.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/fields.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/queries.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/hooks.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/hooks.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/hooks.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/fields.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/fields.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/hooks.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/queries.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/queries.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/adapters.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/advanced.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/advanced.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/adapters.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/advanced.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/plugin-development.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/plugin-development.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/plugin-development.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/plugin-development.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/field-type-guards.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/queries.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/adapters.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/hooks.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/fields.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/field-type-guards.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/collections.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/hooks.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/access-control.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/access-control-advanced.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/queries.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/endpoints.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/adapters.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/advanced.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/plugin-development.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/access-control.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/access-control-advanced.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/adapters.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/advanced.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/collections.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/endpoints.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/field-type-guards.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/fields.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/hooks.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/plugin-development.md",
+      ""
+    ],
+    [
+      "SKILL.md",
+      "references/queries.md",
+      ""
+    ],
+    [
+      "references/access-control-advanced.md",
+      "references/access-control.md",
+      ""
+    ],
+    [
+      "references/access-control.md",
+      "references/access-control-advanced.md",
+      ""
+    ],
+    [
+      "references/advanced.md",
+      "references/endpoints.md",
+      ""
+    ],
+    [
+      "references/field-type-guards.md",
+      "references/fields.md",
+      "field-type-guards"
+    ],
+    [
+      "references/fields.md",
+      "references/field-type-guards.md",
+      ""
+    ],
+    [
+      "references/hooks.md",
+      "references/adapters.md",
+      "threading-req-through-operations"
+    ],
+    [
+      "references/plugin-development.md",
+      "references/plugin-development.md",
+      "oninit-hook"
+    ],
+    [
+      "references/plugin-development.md",
+      "references/access-control.md",
+      "multi-tenant-access-control"
+    ],
+    [
+      "references/queries.md",
+      "references/adapters.md",
+      "threading-req-through-operations"
+    ],
+    [
+      "references/queries.md",
+      "references/access-control.md",
+      "important-notes"
+    ]
+  ],
+  "remoteLinks": [
+    {
+      "url": "https://registry.npmjs.org/@payloadcms%2fnext/3.94.0",
+      "status": 200,
+      "final": "https://registry.npmjs.org/@payloadcms%2fnext/3.94.0",
+      "from": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "url": "https://github.com/payloadcms/payload/blob/v3.94.0/packages/payload/package.json",
+      "status": 200,
+      "final": "https://github.com/payloadcms/payload/blob/v3.94.0/packages/payload/package.json",
+      "from": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "url": "https://github.com/payloadcms/payload/blob/v2.32.3/packages/payload/src/index.ts",
+      "status": 200,
+      "final": "https://github.com/payloadcms/payload/blob/v2.32.3/packages/payload/src/index.ts",
+      "from": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "url": "https://payloadcms.com/docs/migration-guide/overview",
+      "status": 200,
+      "final": "https://payloadcms.com/docs/migration-guide/overview",
+      "from": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "url": "https://payloadcms.com/llms-full.txt",
+      "status": 200,
+      "final": "https://payloadcms.com/llms-full.txt",
+      "from": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "url": "https://payloadcms.com/docs",
+      "status": 200,
+      "final": "https://payloadcms.com/docs/getting-started/what-is-payload",
+      "from": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "url": "https://github.com/payloadcms/payload",
+      "status": 200,
+      "final": "https://github.com/payloadcms/payload",
+      "from": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "url": "https://github.com/payloadcms/payload/tree/main/examples",
+      "status": 200,
+      "final": "https://github.com/payloadcms/payload/tree/main/examples",
+      "from": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "url": "https://github.com/payloadcms/payload/tree/main/templates",
+      "status": 200,
+      "final": "https://github.com/payloadcms/payload/tree/main/templates",
+      "from": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "url": "https://github.com/payloadcms/payload/blob/v3.94.0/packages/db-sqlite/src/index.ts",
+      "status": 200,
+      "final": "https://github.com/payloadcms/payload/blob/v3.94.0/packages/db-sqlite/src/index.ts",
+      "from": [
+        "references/adapters.md"
+      ]
+    },
+    {
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/index.ts",
+      "status": 200,
+      "final": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/index.ts",
+      "from": [
+        "references/advanced.md"
+      ]
+    },
+    {
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/database/types.ts",
+      "status": 200,
+      "final": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/database/types.ts",
+      "from": [
+        "references/advanced.md"
+      ]
+    },
+    {
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/db-mongodb/src/index.ts",
+      "status": 200,
+      "final": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/db-mongodb/src/index.ts",
+      "from": [
+        "references/advanced.md"
+      ]
+    },
+    {
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/db-postgres/src/index.ts",
+      "status": 200,
+      "final": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/db-postgres/src/index.ts",
+      "from": [
+        "references/advanced.md"
+      ]
+    },
+    {
+      "url": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/richtext-lexical/src/lexical/config/types.ts",
+      "status": 200,
+      "final": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/richtext-lexical/src/lexical/config/types.ts",
+      "from": [
+        "references/advanced.md"
+      ],
+      "sourceSHA256": "acb20d7ffca0a8d30e2f2cc9b52d5d23e33ed297196c397642ebd7aff8fd2324",
+      "confirmedType": "SanitizedServerEditorConfig"
+    },
+    {
+      "url": "https://github.com/payloadcms/payload/blob/v3.94.0/docs/rest-api/overview.mdx#custom-endpoints",
+      "status": 200,
+      "final": "https://github.com/payloadcms/payload/blob/v3.94.0/docs/rest-api/overview.mdx#custom-endpoints",
+      "from": [
+        "references/endpoints.md"
+      ]
+    },
+    {
+      "url": "https://github.com/payloadcms/payload/blob/v3.94.0/docs/local-api/access-control.mdx",
+      "status": 200,
+      "final": "https://github.com/payloadcms/payload/blob/v3.94.0/docs/local-api/access-control.mdx",
+      "from": [
+        "references/endpoints.md",
+        "references/queries.md"
+      ]
+    },
+    {
+      "url": "https://github.com/payloadcms/payload/blob/v3.94.0/packages/payload/src/utilities/addDataAndFileToRequest.ts",
+      "status": 200,
+      "final": "https://github.com/payloadcms/payload/blob/v3.94.0/packages/payload/src/utilities/addDataAndFileToRequest.ts",
+      "from": [
+        "references/endpoints.md"
+      ]
+    },
+    {
+      "url": "https://github.com/payloadcms/payload/blob/v3.94.0/packages/payload/src/fields/baseFields/slug/index.ts",
+      "status": 200,
+      "final": "https://github.com/payloadcms/payload/blob/v3.94.0/packages/payload/src/fields/baseFields/slug/index.ts",
+      "from": [
+        "references/fields.md"
+      ]
+    },
+    {
+      "url": "https://github.com/payloadcms/payload/tree/v3.88.0/packages/",
+      "status": 200,
+      "final": "https://github.com/payloadcms/payload/tree/v3.88.0/packages/",
+      "from": [
+        "references/plugin-development.md"
+      ]
+    },
+    {
+      "url": "https://github.com/payloadcms/payload/tree/v3.88.0/templates/plugin",
+      "status": 200,
+      "final": "https://github.com/payloadcms/payload/tree/v3.88.0/templates/plugin",
+      "from": [
+        "references/plugin-development.md"
+      ]
+    },
+    {
+      "url": "https://github.com/payloadcms/payload/blob/v3.94.0/packages/payload/src/utilities/createLocalReq.ts",
+      "status": 200,
+      "final": "https://github.com/payloadcms/payload/blob/v3.94.0/packages/payload/src/utilities/createLocalReq.ts",
+      "from": [
+        "references/queries.md"
+      ]
+    }
+  ],
+  "correctedOriginal": {
+    "url": "https://github.com/payloadcms/payload/blob/v3.88.0/packages/richtext-lexical/src/exports/server/index.ts",
+    "error": "HTTP Error 404: Not Found",
+    "from": [
+      "references/advanced.md"
+    ]
+  }
+}

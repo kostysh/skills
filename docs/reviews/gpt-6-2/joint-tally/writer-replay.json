@@ -1,0 +1,8 @@
+{
+  "exit": 0,
+  "stdout": "engineering-tally-fixture-1.0.0.tar.gz: OK\n\nadded 1 package in 173ms\n1.0.0\n{\"total\":5}\nBlock status 0\nCLI function status 2\n",
+  "stderr": "Invalid number\nЗапись пропущена. Код завершения: 2\nInvalid number\n",
+  "guideSha256": "03863912c0990e634dab36d3dac8b870397dca00ce5254e213a7e8e4d6caaf12",
+  "packageSha256": "7c9f8bff28fee4cb4acd9dfec592b15e688cf040990a001d66a8d1ba73bce0cc",
+  "detail": "First fenced Bash block run unchanged, second run unchanged and with its documented substitution, then the exit status of the full if and of the CLI function sampled separately."
+}

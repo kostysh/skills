@@ -1,0 +1,478 @@
+{
+  "date": "2026-11-18",
+  "fixture_archive": "runner-probes.tar.gz",
+  "fixture_sha256": "73a90ecb655b4d9189596b684487ef68c59582b0b299aa018edcd2e5ca4d2d22",
+  "fixture_files": {
+    "current/browser.config.mjs": "d7929f61f22fe44fe60d75852a227b75115814066ecf155e843a0592d44fae44",
+    "current/jsdom.config.mjs": "daa4582d3c2e5040e72158a37ee868a741cf4e89c249980c6577edfd066a9c1c",
+    "current/node/check-mock.test.mjs": "8f365f67c5cd0569639086136e2d2353c50a544547fefde242aed39f4749647a",
+    "current/node/dep.mjs": "f2889afacb9e435edc0bb881f4c2af64cf052d985b195f03c33a2ace1f8a64c1",
+    "current/package-lock.json": "9170a1cf93be3dcef873cd45818913667c6d1fef99e6cdc6eaee55c602afdde0",
+    "current/package.json": "d9a4189337aa6352a62402b8d9f3f42854d9fa6b1aed8ba1914c3e59690dd918",
+    "current/react/geometry.browser.test.js": "9d7611f8ce0e1ed53b49aeeaff89a05ef6c059ba5a2389439390bf0067bcf00a",
+    "current/react/interaction.test.js": "e7f20eb1ece8ff5866baec41724a8425067f6d3156b2bf3e7575ee84d92e2b4d",
+    "current/worker.config.mjs": "b131814e73513598751d2467a7b21233f0b61a089b1faeb4b1d5f3e81f4fcd2b",
+    "current/worker/worker.test.ts": "d8135b34563d0a3a35c32668ee5bde0539064bbd8307e0511f2674731a29afa0",
+    "current/worker/worker.ts": "1290fe34031fcf16378f4fd71dc77b331d4454cafe6723868d43c9a9368659fb",
+    "current/worker/wrangler.jsonc": "bcc8a3f5b66355f6dc8b9e3d0d4be5e666329b5377d1e6c4318556879ea76c0a",
+    "legacy/package-lock.json": "b39a73d6b2e7deef698479b0f15a9e39b94b62ea9b45628fbb93dec9029e2d5f",
+    "legacy/package.json": "d6580d61b1de4fa959ac39196cab1c79f9d467edb16835ebb7de016640eb4fb2",
+    "legacy/worker.config.mjs": "06321beade817b71085fd799b56187067406430af1b8f5e7712c703ed42c0350",
+    "legacy/worker/worker.test.ts": "d8135b34563d0a3a35c32668ee5bde0539064bbd8307e0511f2674731a29afa0",
+    "legacy/worker/worker.ts": "1290fe34031fcf16378f4fd71dc77b331d4454cafe6723868d43c9a9368659fb",
+    "legacy/worker/wrangler.jsonc": "bcc8a3f5b66355f6dc8b9e3d0d4be5e666329b5377d1e6c4318556879ea76c0a"
+  },
+  "repository_vitest_resolution": {
+    "checkout": {
+      "argv": [
+        "node",
+        "-p",
+        "require.resolve('vitest/package.json')"
+      ],
+      "exit": 1,
+      "module_not_found": true
+    },
+    "test_skill": {
+      "argv": [
+        "node",
+        "-p",
+        "require.resolve('vitest/package.json')"
+      ],
+      "exit": 1,
+      "module_not_found": true
+    },
+    "cli": {
+      "argv": [
+        "node",
+        "-p",
+        "require.resolve('vitest/package.json')"
+      ],
+      "exit": 1,
+      "module_not_found": true
+    }
+  },
+  "repository_test_command": "node --test test/docs-contract.test.mjs",
+  "repository_engine": ">=22.22.0",
+  "node": {
+    "22.22.0": {
+      "observed_version": "v22.22.0",
+      "binary_sha256": "1bec56ef7cfa9a76f3e0b7c0a87f220eb73f23102b9c0b4c7529a3f7c3ce7c31",
+      "help_sha256": "082631056f52f091f2c0d864fe58f52fa3b8a29a88238be3ce27e09b85f9c1e2",
+      "supported_flags": {
+        "--test-name-pattern": true,
+        "--test-timeout": true,
+        "--experimental-test-module-mocks": true,
+        "--experimental-transform-types": true
+      }
+    },
+    "24.15.0": {
+      "observed_version": "v24.15.0",
+      "binary_sha256": "d1de76d8edf2fededf6f8b30d244e2c0529ac607923a018283b77e9c74bd932c",
+      "help_sha256": "e14491d2a33d619ad53f216979ac97f295a1b38bb1fa7bcca3db2edfeb6c7436",
+      "supported_flags": {
+        "--test-name-pattern": true,
+        "--test-timeout": true,
+        "--experimental-test-module-mocks": true,
+        "--experimental-transform-types": true
+      }
+    },
+    "24.22.3": {
+      "observed_version": "v24.22.3",
+      "binary_sha256": "a7ec1b37e6ff9d187e4198c5b6df9a4eb1c74dd31804fb3bac55cc4ceca1ac01",
+      "help_sha256": "a2820e33afa63bfd57e08989c98260c94c6f730f97a50a15c795e7045693caf3",
+      "supported_flags": {
+        "--test-name-pattern": true,
+        "--test-timeout": true,
+        "--experimental-test-module-mocks": true,
+        "--experimental-transform-types": true
+      }
+    },
+    "26.13.1": {
+      "observed_version": "v26.13.1",
+      "binary_sha256": "d931c649850ffa7155b8ceffb400dc916ef325866e509cc52ae36e33e8fbb9a9",
+      "help_sha256": "9911d8e6086c08f78e510baadbcde2af6d57cd8f0cc750ad758b51aa7600bf1b",
+      "supported_flags": {
+        "--test-name-pattern": true,
+        "--test-timeout": true,
+        "--experimental-test-module-mocks": true,
+        "--experimental-transform-types": false
+      }
+    }
+  },
+  "extra_node_26_distribution": {
+    "url": "https://nodejs.org/dist/v26.13.1/node-v26.13.1-linux-x64.tar.xz",
+    "checksums": "https://nodejs.org/dist/v26.13.1/SHASUMS256.txt",
+    "download_sha256": "5c063e46bab0fbc1c17cc445d7ff129cbdcd0471be6ed83b6ab864f8143bc864",
+    "node_sha256": "d931c649850ffa7155b8ceffb400dc916ef325866e509cc52ae36e33e8fbb9a9",
+    "observed_version": "v26.13.1"
+  },
+  "installed_toolchains": {
+    "current": {
+      "installed": {
+        "vitest": {
+          "version": "5.1.1",
+          "manifest_sha256": "5e6208c4209d526cdd343d2107f411c74bd680cbbc695cd2e270634b01b8309f",
+          "node_engine": "^22.12.0 || ^24.0.0 || >=26.0.0",
+          "vitest_peer": null,
+          "registry": "https://registry.npmjs.org/vitest/5.1.1"
+        },
+        "vite": {
+          "version": "8.3.8",
+          "manifest_sha256": "149cf436b89044371ae3cb35ac0e687ee75c6e8412962c7ce671f3d1a4a09d82",
+          "node_engine": "^20.19.0 || >=22.12.0",
+          "vitest_peer": null,
+          "registry": "https://registry.npmjs.org/vite/8.3.8"
+        },
+        "miniflare": {
+          "version": "5.20261117.0-beta",
+          "manifest_sha256": "0d8af7f85e080f79ad5be02058d42114b4423bc17603d7f9b50481e22558c22f",
+          "node_engine": ">=22.12.0",
+          "vitest_peer": null,
+          "registry": "https://registry.npmjs.org/miniflare/5.20261117.0-beta"
+        },
+        "workerd": {
+          "version": "1.20261117.1",
+          "manifest_sha256": "41820ed2131ef6a185df43c3146df1841bf7ba69da17ee219245ec2d4d8c095b",
+          "node_engine": ">=16",
+          "vitest_peer": null,
+          "registry": "https://registry.npmjs.org/workerd/1.20261117.1"
+        },
+        "wrangler": {
+          "version": "4.164.0",
+          "manifest_sha256": "2e7c654f0599ecbd57b4b8c75647993921143273f71a3612f480e1b8c17ed35e",
+          "node_engine": ">=22.12.0",
+          "vitest_peer": null,
+          "registry": "https://registry.npmjs.org/wrangler/4.164.0"
+        },
+        "@cloudflare/vitest-plugin": {
+          "version": "1.8.4",
+          "manifest_sha256": "3e50ac53c891fe10e4572d5d62ff79e73b80fb596f5e84ed027ca362b4e6f948",
+          "node_engine": null,
+          "vitest_peer": "^4.1.0 || ^5.0.0",
+          "registry": "https://registry.npmjs.org/@cloudflare%2Fvitest-plugin/1.8.4"
+        },
+        "react": {
+          "version": "19.3.1",
+          "manifest_sha256": "9cc9c3de5441a2eea7f41f52f3f2a15a4fc51f90c0b72741f0d7638643a85e67",
+          "node_engine": ">=0.10.0",
+          "vitest_peer": null,
+          "registry": "https://registry.npmjs.org/react/19.3.1"
+        },
+        "react-dom": {
+          "version": "19.3.1",
+          "manifest_sha256": "89d54f11575c9b0f7819962d9d72a31970dfb4d103f07e8b1d1b37e6d1fc3258",
+          "node_engine": null,
+          "vitest_peer": null,
+          "registry": "https://registry.npmjs.org/react-dom/19.3.1"
+        },
+        "jsdom": {
+          "version": "31.0.1",
+          "manifest_sha256": "8608bd84819be83753e6ffd0d72f174bb4c236177c495e885070a8fbd759e955",
+          "node_engine": "^22.22.2 || ^24.15.0 || >=26.0.0",
+          "vitest_peer": null,
+          "registry": "https://registry.npmjs.org/jsdom/31.0.1"
+        },
+        "@testing-library/react": {
+          "version": "16.3.3",
+          "manifest_sha256": "8ec075b66acb20cf1705fc56c7bfeca0ba88eb62f354827c29d65afc25a3d967",
+          "node_engine": ">=18",
+          "vitest_peer": null,
+          "registry": "https://registry.npmjs.org/@testing-library%2Freact/16.3.3"
+        },
+        "@testing-library/dom": {
+          "version": "10.4.2",
+          "manifest_sha256": "dfe7eef49a033ad1fa59b78282cdd81faff64c4c60540f805ef47444a23122f2",
+          "node_engine": ">=18",
+          "vitest_peer": null,
+          "registry": "https://registry.npmjs.org/@testing-library%2Fdom/10.4.2"
+        },
+        "@testing-library/user-event": {
+          "version": "14.6.12",
+          "manifest_sha256": "97a5551f204a31de5c9f7bac3d56812317d6e023ea52d6ca4dbd324781224cae",
+          "node_engine": ">=12",
+          "vitest_peer": null,
+          "registry": "https://registry.npmjs.org/@testing-library%2Fuser-event/14.6.12"
+        },
+        "@vitest/browser-playwright": {
+          "version": "5.1.1",
+          "manifest_sha256": "9ac7263b0b21b9a5c1537cbfd9c3f70bdbc03936ae66395d7beed2988850c03e",
+          "node_engine": null,
+          "vitest_peer": "5.1.1",
+          "registry": "https://registry.npmjs.org/@vitest%2Fbrowser-playwright/5.1.1"
+        },
+        "playwright": {
+          "version": "1.65.1",
+          "manifest_sha256": "66a5c412c28b7fe15902da5cb5d7dd503d1c8604d0afe46797fe31aa7dc1a6e0",
+          "node_engine": ">=20",
+          "vitest_peer": null,
+          "registry": "https://registry.npmjs.org/playwright/1.65.1"
+        }
+      },
+      "vitest_help_sha256": "977eb2e470a84451bc40efb54a7823128b293081a8c2acef75afe892b26a6898",
+      "help_options": [
+        "--browser <name>                                           Run tests in the browser. Equivalent to --browser.enabled (default: false). Use '--help --browser' for more info.",
+        "--environment <name>                                       Specify runner environment, if not running in the browser (default: node)",
+        "--typecheck                                                Enable typechecking alongside tests (default: false). Use '--help --typecheck' for more info."
+      ],
+      "vitest_cli_version": "vitest/5.1.1 linux-x64 node-v24.15.0",
+      "workerd_binary": "workerd 2026-11-17",
+      "workerd_sha256": "2c950df972c039779162ed3803db9fe3f407b70709db2c9ef5a523b36cac4583"
+    },
+    "legacy": {
+      "installed": {
+        "vitest": {
+          "version": "4.1.9",
+          "manifest_sha256": "e12762a5b629bea6cbb2b0540a8a15c50f3098bb3193d3e319293b58b64c4ed9",
+          "node_engine": "^20.0.0 || ^22.0.0 || >=24.0.0",
+          "vitest_peer": null,
+          "registry": "https://registry.npmjs.org/vitest/4.1.9"
+        },
+        "vite": {
+          "version": "8.3.8",
+          "manifest_sha256": "149cf436b89044371ae3cb35ac0e687ee75c6e8412962c7ce671f3d1a4a09d82",
+          "node_engine": "^20.19.0 || >=22.12.0",
+          "vitest_peer": null,
+          "registry": "https://registry.npmjs.org/vite/8.3.8"
+        },
+        "miniflare": {
+          "version": "5.20260815.0-alpha",
+          "manifest_sha256": "0ae647b236ae827feb929d149f63ed107475bdd4dd64eb0f322b82e1ad9ce9c1",
+          "node_engine": ">=22.0.0",
+          "vitest_peer": null,
+          "registry": "https://registry.npmjs.org/miniflare/5.20260815.0-alpha"
+        },
+        "workerd": {
+          "version": "1.20260815.1",
+          "manifest_sha256": "edeaa6dd138cc6f40cfaecd955042cb366afc32f5931313b824b6dd56a6a2e96",
+          "node_engine": ">=16",
+          "vitest_peer": null,
+          "registry": "https://registry.npmjs.org/workerd/1.20260815.1"
+        },
+        "wrangler": {
+          "version": "4.124.0",
+          "manifest_sha256": "919b049ecca92f4357407076036c5ee6b6d2592c319edc82f79f9e5ab65c3829",
+          "node_engine": ">=22.0.0",
+          "vitest_peer": null,
+          "registry": "https://registry.npmjs.org/wrangler/4.124.0"
+        },
+        "@cloudflare/vitest-pool-workers": {
+          "version": "0.23.0",
+          "manifest_sha256": "7f8cff2f906ad298c733870fbc99f39d4603d72567f726c4e193822730e8ef14",
+          "node_engine": null,
+          "vitest_peer": "^4.1.0",
+          "registry": "https://registry.npmjs.org/@cloudflare%2Fvitest-pool-workers/0.23.0"
+        }
+      },
+      "vitest_help_sha256": "7ac5c82f0626b1adad6b7183bb5bb33990f8bae5b5ea51736a5e4d0ecba15abc",
+      "help_options": [
+        "--browser <name>                                           Run tests in the browser. Equivalent to --browser.enabled (default: false). Use '--help --browser' for more info.",
+        "--environment <name>                                       Specify runner environment, if not running in the browser (default: node)",
+        "--typecheck                                                Enable typechecking alongside tests (default: false). Use '--help --typecheck' for more info."
+      ],
+      "vitest_cli_version": "vitest/4.1.9 linux-x64 node-v24.15.0",
+      "workerd_binary": "workerd 2026-08-15",
+      "workerd_sha256": "f90f87804364fdc4e26961bfe446b22fd783f3d382655b9741557de3c6dbf5b1"
+    }
+  },
+  "chrome": "Google Chrome 158.0.8127.36",
+  "runs": {
+    "node22-legacy-initial": {
+      "case": "node22-legacy",
+      "argv": [
+        "{node-22.22.0}",
+        "--experimental-test-module-mocks",
+        "--test",
+        "check-mock.test.mjs"
+      ],
+      "custom_options": {
+        "PROBE_OPTIONS": "old"
+      },
+      "exit": 0,
+      "stdout": "TAP version 13\n# (node:68) ExperimentalWarning: Module mocking is an experimental feature and might change at any time\n# (Use `node --trace-warnings ...` to show where the warning was created)\n# Subtest: uses the selected Node module mock options\nok 1 - uses the selected Node module mock options\n  ---\n  duration_ms: 41.086537\n  type: 'test'\n  ...\n1..1\n# tests 1\n# suites 0\n# pass 1\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 93.466006\n",
+      "stderr": "",
+      "stdout_raw_sha256": "492eb71746b23cdc196982067f8254c77328af3c6f02c197c3fe54b77500609a",
+      "stderr_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "node22-modern-initial": {
+      "case": "node22-modern",
+      "argv": [
+        "{node-22.22.0}",
+        "--experimental-test-module-mocks",
+        "--test",
+        "check-mock.test.mjs"
+      ],
+      "custom_options": {
+        "PROBE_OPTIONS": "new"
+      },
+      "exit": 1,
+      "stdout": "TAP version 13\n# (node:68) ExperimentalWarning: Module mocking is an experimental feature and might change at any time\n# (Use `node --trace-warnings ...` to show where the warning was created)\n# Subtest: uses the selected Node module mock options\nnot ok 1 - uses the selected Node module mock options\n  ---\n  duration_ms: 41.375283\n  type: 'test'\n  location: '{current}/node/check-mock.test.mjs:3:1'\n  failureType: 'testCodeFailure'\n  error: |-\n    Expected values to be strictly equal:\n    \n    undefined !== 17\n    \n  code: 'ERR_ASSERTION'\n  name: 'AssertionError'\n  expected: 17\n  operator: 'strictEqual'\n  stack: |-\n    TestContext.<anonymous> (file://{current}/node/check-mock.test.mjs:8:10)\n    async Test.run (node:internal/test_runner/test:1054:7)\n    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)\n  ...\n1..1\n# tests 1\n# suites 0\n# pass 0\n# fail 1\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 89.542932\n",
+      "stderr": "",
+      "stdout_raw_sha256": "6b9dd89469f145e6f1daefddee5f11f5c3fc1b4fba031ed54403f4a99cdac57c",
+      "stderr_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "node24-modern-initial": {
+      "case": "node24-modern",
+      "argv": [
+        "{node-24.15.0}",
+        "--experimental-test-module-mocks",
+        "--test",
+        "check-mock.test.mjs"
+      ],
+      "custom_options": {
+        "PROBE_OPTIONS": "new"
+      },
+      "exit": 0,
+      "stdout": "(node:68) ExperimentalWarning: Module mocking is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n✔ uses the selected Node module mock options (2.81497ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 50.735101\n",
+      "stderr": "",
+      "stdout_raw_sha256": "6dccfae1cad84f05e274fd6fd187873ddfd6a335eac33272763a0228087dc367",
+      "stderr_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "node24patch-modern-initial": {
+      "case": "node24patch-modern",
+      "argv": [
+        "{node-24.22.3}",
+        "--experimental-test-module-mocks",
+        "--test",
+        "check-mock.test.mjs"
+      ],
+      "custom_options": {
+        "PROBE_OPTIONS": "new"
+      },
+      "exit": 0,
+      "stdout": "(node:68) ExperimentalWarning: Module mocking is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n✔ uses the selected Node module mock options (3.245824ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 51.770277\n",
+      "stderr": "",
+      "stdout_raw_sha256": "a1154a8265a44f08eb2330d57013cf5830d445805662bb9ce9da1b6d8f3b20b1",
+      "stderr_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "node26-modern-initial": {
+      "case": "node26-modern",
+      "argv": [
+        "{node-26.13.1}",
+        "--experimental-test-module-mocks",
+        "--test",
+        "check-mock.test.mjs"
+      ],
+      "custom_options": {
+        "PROBE_OPTIONS": "new"
+      },
+      "exit": 0,
+      "stdout": "(node:68) ExperimentalWarning: Module mocking is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n✔ uses the selected Node module mock options (5.287152ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 36.255788\n",
+      "stderr": "",
+      "stdout_raw_sha256": "c5ce2fbadcc3d4958e1b94e4a146a320e66ecf621005619eee552849d5a2085d",
+      "stderr_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "react-browser-initial": {
+      "case": "react-browser",
+      "argv": [
+        "node_modules/.bin/vitest",
+        "run",
+        "--config",
+        "browser.config.mjs"
+      ],
+      "custom_options": {
+        "ROW16_CHROMIUM": "/usr/bin/google-chrome"
+      },
+      "exit": 1,
+      "stdout": "\n RUN  v5.1.1 {current}\n\n\n Test Files   (2)\n      Tests  no tests\n     Errors  1 error\n   Start at  22:34:19\n   Duration  18ms\n\n",
+      "stderr": "⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯\n\nVitest caught 1 unhandled error during the test run.\nThis might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.\n\n⎯⎯⎯⎯⎯⎯ Unhandled Error ⎯⎯⎯⎯⎯⎯⎯\nError: browserType.launch: Executable doesn't exist at {home}/.cache/ms-playwright/chromium_headless_shell-1255/chrome-headless-shell-linux64/chrome-headless-shell\n╔════════════════════════════════════════════════════════════╗\n║ Looks like Playwright was just installed or updated.       ║\n║ Please run the following command to download new browsers: ║\n║                                                            ║\n║     npx playwright install                                 ║\n║                                                            ║\n║ <3 Playwright Team                                         ║\n╚════════════════════════════════════════════════════════════╝\n ❯ node_modules/@vitest/browser-playwright/dist/index.js:1219:55\n\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯\nSerialized Error: { log: [] }\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯\n\nerror during close browserType.launch: Executable doesn't exist at {home}/.cache/ms-playwright/chromium_headless_shell-1255/chrome-headless-shell-linux64/chrome-headless-shell\n╔════════════════════════════════════════════════════════════╗\n║ Looks like Playwright was just installed or updated.       ║\n║ Please run the following command to download new browsers: ║\n║                                                            ║\n║     npx playwright install                                 ║\n║                                                            ║\n║ <3 Playwright Team                                         ║\n╚════════════════════════════════════════════════════════════╝\n    at {current}/node_modules/@vitest/browser-playwright/dist/index.js:1219:55 {\n  log: [],\n  name: 'Error',\n  type: 'Unhandled Error',\n  stacks: [\n    {\n      method: '',\n      file: '{current}/node_modules/@vitest/browser-playwright/dist/index.js',\n      line: 1219,\n      column: 55\n    }\n  ]\n}\n",
+      "stdout_raw_sha256": "8e75433441747faa1c97fde913f24eeb741ddf6fd234ddefd6e0756e0c0c37cb",
+      "stderr_raw_sha256": "d16b653a3abd8e01011f9a27b4e9f61c1009d8ab43c4c1a7304f827284e72b2a"
+    },
+    "react-browser-runner-settings": {
+      "case": "react-browser",
+      "argv": [
+        "node_modules/.bin/vitest",
+        "run",
+        "--config",
+        "browser.config.mjs"
+      ],
+      "custom_options": {
+        "ROW16_CHROMIUM": "/usr/bin/google-chrome"
+      },
+      "exit": 0,
+      "stdout": "\n RUN  v5.1.1 {current}\n\n\n Test Files  2 passed (2)\n      Tests  3 passed (3)\n   Start at  22:34:54\n   Duration  1.04s (worker 88%, tests 6%, import 6%)\n\n",
+      "stderr": "",
+      "stdout_raw_sha256": "fd8854097500d625c1179e1a94fa3d44f3992428c390b292315c3240f4ca8c5b",
+      "stderr_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "react-jsdom-initial": {
+      "case": "react-jsdom",
+      "argv": [
+        "node_modules/.bin/vitest",
+        "run",
+        "--config",
+        "jsdom.config.mjs"
+      ],
+      "custom_options": {},
+      "exit": 0,
+      "stdout": "\n RUN  v5.1.1 {current}\n\n\n Test Files  1 passed (1)\n      Tests  2 passed (2)\n   Start at  22:34:18\n   Duration  528ms (environment 57%, tests 25%, import 14%, transform 4%, worker 1%)\n\n",
+      "stderr": "",
+      "stdout_raw_sha256": "72ecfa36c71abcdc97a471fe9271eb7aa458b06272aae86e228f3a4cc8b3bb59",
+      "stderr_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "worker-current-initial": {
+      "case": "worker-current",
+      "argv": [
+        "node_modules/.bin/vitest",
+        "run",
+        "--config",
+        "worker.config.mjs"
+      ],
+      "custom_options": {},
+      "exit": 0,
+      "stdout": "\n RUN  v5.1.1 {current}\n\nPWD environment variable doesn't match current directory; pwd = {study}\n\n Test Files  1 passed (1)\n      Tests  1 passed (1)\n   Start at  22:34:19\n   Duration  656ms (transform 39%, worker 24%, tests 21%, import 15%)\n\n",
+      "stderr": "[vitest-plugin] \"node:inspector\", required from \"{current}/node_modules/vitest/dist/chunks/inspector.D6o1NPo1.js\", is not available at this Worker's compatibility date and flags. To resolve this, enable the compatibility flag that provides it (`nodejs_compat` for `node:*` modules), or remove the import. For more details, refer to https://developers.cloudflare.com/workers/configuration/compatibility-flags/\nFallback service failed to fetch module; payload = ; spec = /?specifier=node%3Ainspector&referrer={current-url-encoded}%2Fnode_modules%2Fvitest%2Fdist%2Fchunks%2Finspector.D6o1NPo1.js&rawSpecifier=node%3Ainspector\n",
+      "stdout_raw_sha256": "82ea901ff2c3be947ec0ac64a9f35bf2d16a4a62cd0a2cacb3a469effa2f19da",
+      "stderr_raw_sha256": "f1323cb3a982580cc6f28fe8f19bc32c9e9a3e51c929c89e0f0f49a8cfe9110b"
+    },
+    "worker-current-runner-settings": {
+      "case": "worker-current",
+      "argv": [
+        "node_modules/.bin/vitest",
+        "run",
+        "--config",
+        "worker.config.mjs"
+      ],
+      "custom_options": {},
+      "exit": 0,
+      "stdout": "\n RUN  v5.1.1 {current}\n\n\n Test Files  1 passed (1)\n      Tests  1 passed (1)\n   Start at  22:34:54\n   Duration  671ms (worker 36%, import 28%, tests 20%, transform 16%)\n\n",
+      "stderr": "",
+      "stdout_raw_sha256": "9c16eba84614ea946de6707d1bd1f784d1c66a9157b8cf18e27a866d2263685a",
+      "stderr_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "worker-legacy-initial": {
+      "case": "worker-legacy",
+      "argv": [
+        "node_modules/.bin/vitest",
+        "run",
+        "--config",
+        "worker.config.mjs"
+      ],
+      "custom_options": {},
+      "exit": 0,
+      "stdout": "\n RUN  v4.1.9 {legacy}\n\n\n Test Files  1 passed (1)\n      Tests  1 passed (1)\n   Start at  22:34:19\n   Duration  292ms (transform 10ms, setup 0ms, import 15ms, tests 7ms, environment 0ms)\n\n",
+      "stderr": "\n=======================================================================================\nWARNING: @cloudflare/vitest-pool-workers has been renamed to @cloudflare/vitest-plugin.\nThis package will not receive future updates.\nRun `npx @cloudflare/codemods vitest:pool-workers-to-vitest-plugin` to migrate.\n=======================================================================================\n\n",
+      "stdout_raw_sha256": "0d0c75c06b8f6cb3a5f9e13adbb49119138283c0af5f154009d7a3dccae91a7d",
+      "stderr_raw_sha256": "bf10b458acf53cd76b8fc845ff9bf1bd81b997d4d892d3f65e52b5556e11f0ee"
+    },
+    "worker-legacy-runner-settings": {
+      "case": "worker-legacy",
+      "argv": [
+        "node_modules/.bin/vitest",
+        "run",
+        "--config",
+        "worker.config.mjs"
+      ],
+      "custom_options": {},
+      "exit": 0,
+      "stdout": "\n RUN  v4.1.9 {legacy}\n\n\n Test Files  1 passed (1)\n      Tests  1 passed (1)\n   Start at  22:34:54\n   Duration  325ms (transform 12ms, setup 0ms, import 16ms, tests 10ms, environment 0ms)\n\n",
+      "stderr": "\n=======================================================================================\nWARNING: @cloudflare/vitest-pool-workers has been renamed to @cloudflare/vitest-plugin.\nThis package will not receive future updates.\nRun `npx @cloudflare/codemods vitest:pool-workers-to-vitest-plugin` to migrate.\n=======================================================================================\n\n",
+      "stdout_raw_sha256": "e55154cb53b237ce3533d10d8c3e163aa278d067e33a68154b1e0bf2f0d035b5",
+      "stderr_raw_sha256": "bf10b458acf53cd76b8fc845ff9bf1bd81b997d4d892d3f65e52b5556e11f0ee"
+    }
+  },
+  "original_probe_variations": {
+    "worker-*-initial": "Temporary input lacked nodejs_compat and inherited its outer PWD. The finalized local control uses the same test and fixture with nodejs_compat on each pinned workerd.",
+    "react-browser-initial": "Temporary provider setup used an unsupported option launch on the pinned v5 provider. It sought a missing bundled binary. The final setup uses launchOptions as documented by the installed provider and selects the local Chrome executable."
+  }
+}

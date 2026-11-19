@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: electron-engineer
-  source-version: 0.1.11
+  source-version: 0.1.12
   recommended-skill-md-max-bytes: 24000
   description: >-
     Build, modernize, review, test, package, and release Electron apps for macOS,
@@ -44,7 +44,7 @@ references:
     source: references/build-process.md
     target: references/build-process.md
     required: true
-    trigger: Read this when defining, implementing, reviewing, or debugging the Electron build pipeline, electron-vite scripts, Forge package/make/publish flow, CI build lanes, source-protection build steps, or packaged artifact validation.
+    trigger: Read this when defining, implementing, reviewing, or debugging the Electron build pipeline, electron-vite scripts, Forge packaging, makers and releases, CI build lanes, source-protection build steps, or packaged artifact validation.
   - id: ref-renderer-integration
     title: Renderer Integration
     source: references/renderer-integration.md
@@ -171,7 +171,7 @@ sections:
         - Before finalizing, check correctness, grounding, formatting, and high-impact side effects.
         - Report changed files, validation run, and any unverified platform, signing, notarization, updater, or packaged-runtime risk.
       validation:
-        - Verification matches the changed Electron boundary, not only browser dev mode.
+        - Verify the changed boundary in Electron. For renderer access, report the exposed bridge, sandbox, context isolation, and observed Node access.
         - Final output is concise and names any validation gap.
   interop:
     - id: interop-typescript

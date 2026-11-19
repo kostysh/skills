@@ -1,0 +1,873 @@
+{
+  "node": "v24.15.0",
+  "direct": [
+    {
+      "request": {
+        "principal": "worker-a",
+        "id": null
+      },
+      "reply": {
+        "principal": "worker-a",
+        "effectiveDatabaseRole": "desk_employee",
+        "status": 200,
+        "data": [
+          {
+            "id": "amber",
+            "title": "Апрель"
+          },
+          {
+            "id": "cedar",
+            "title": "Июнь"
+          }
+        ],
+        "error": null,
+        "requestId": "f1a27a19a7a44c"
+      }
+    },
+    {
+      "request": {
+        "principal": "worker-a",
+        "id": "amber"
+      },
+      "reply": {
+        "principal": "worker-a",
+        "effectiveDatabaseRole": "desk_employee",
+        "status": 200,
+        "data": [
+          {
+            "id": "amber",
+            "title": "Апрель"
+          }
+        ],
+        "error": null,
+        "requestId": "0695730313a444"
+      }
+    },
+    {
+      "request": {
+        "principal": "worker-a",
+        "id": "birch"
+      },
+      "reply": {
+        "principal": "worker-a",
+        "effectiveDatabaseRole": "desk_employee",
+        "status": 200,
+        "data": [],
+        "error": null,
+        "requestId": "9544145759ef45"
+      }
+    },
+    {
+      "request": {
+        "principal": "worker-a",
+        "id": "cedar"
+      },
+      "reply": {
+        "principal": "worker-a",
+        "effectiveDatabaseRole": "desk_employee",
+        "status": 200,
+        "data": [
+          {
+            "id": "cedar",
+            "title": "Июнь"
+          }
+        ],
+        "error": null,
+        "requestId": "56eff16359f04d"
+      }
+    },
+    {
+      "request": {
+        "principal": "worker-a",
+        "id": "dune"
+      },
+      "reply": {
+        "principal": "worker-a",
+        "effectiveDatabaseRole": "desk_employee",
+        "status": 200,
+        "data": [],
+        "error": null,
+        "requestId": "804fdc97f1fa44"
+      }
+    },
+    {
+      "request": {
+        "principal": "worker-a",
+        "id": "missing"
+      },
+      "reply": {
+        "principal": "worker-a",
+        "effectiveDatabaseRole": "desk_employee",
+        "status": 200,
+        "data": [],
+        "error": null,
+        "requestId": "1fccd569d26245"
+      }
+    },
+    {
+      "request": {
+        "principal": "worker-b",
+        "id": null
+      },
+      "reply": {
+        "principal": "worker-b",
+        "effectiveDatabaseRole": "desk_employee",
+        "status": 200,
+        "data": [
+          {
+            "id": "birch",
+            "title": "Май"
+          },
+          {
+            "id": "dune",
+            "title": "Июль"
+          }
+        ],
+        "error": null,
+        "requestId": "0178051f043a44"
+      }
+    },
+    {
+      "request": {
+        "principal": "worker-b",
+        "id": "amber"
+      },
+      "reply": {
+        "principal": "worker-b",
+        "effectiveDatabaseRole": "desk_employee",
+        "status": 200,
+        "data": [],
+        "error": null,
+        "requestId": "a4e9ae3c9d7b42"
+      }
+    },
+    {
+      "request": {
+        "principal": "worker-b",
+        "id": "birch"
+      },
+      "reply": {
+        "principal": "worker-b",
+        "effectiveDatabaseRole": "desk_employee",
+        "status": 200,
+        "data": [
+          {
+            "id": "birch",
+            "title": "Май"
+          }
+        ],
+        "error": null,
+        "requestId": "822623614f3c46"
+      }
+    },
+    {
+      "request": {
+        "principal": "worker-b",
+        "id": "cedar"
+      },
+      "reply": {
+        "principal": "worker-b",
+        "effectiveDatabaseRole": "desk_employee",
+        "status": 200,
+        "data": [],
+        "error": null,
+        "requestId": "735351be35fd46"
+      }
+    },
+    {
+      "request": {
+        "principal": "worker-b",
+        "id": "dune"
+      },
+      "reply": {
+        "principal": "worker-b",
+        "effectiveDatabaseRole": "desk_employee",
+        "status": 200,
+        "data": [
+          {
+            "id": "dune",
+            "title": "Июль"
+          }
+        ],
+        "error": null,
+        "requestId": "ac910012b53f45"
+      }
+    },
+    {
+      "request": {
+        "principal": "worker-b",
+        "id": "missing"
+      },
+      "reply": {
+        "principal": "worker-b",
+        "effectiveDatabaseRole": "desk_employee",
+        "status": 200,
+        "data": [],
+        "error": null,
+        "requestId": "8ae95dd97d7b4e"
+      }
+    },
+    {
+      "request": {
+        "principal": "support",
+        "id": null
+      },
+      "reply": {
+        "principal": "support",
+        "effectiveDatabaseRole": "desk_support",
+        "status": 200,
+        "data": [
+          {
+            "id": "birch",
+            "title": "Май"
+          },
+          {
+            "id": "cedar",
+            "title": "Июнь"
+          }
+        ],
+        "error": null,
+        "requestId": "a1d3cf47f4274f"
+      }
+    },
+    {
+      "request": {
+        "principal": "support",
+        "id": "amber"
+      },
+      "reply": {
+        "principal": "support",
+        "effectiveDatabaseRole": "desk_support",
+        "status": 200,
+        "data": [],
+        "error": null,
+        "requestId": "48d45428633d4e"
+      }
+    },
+    {
+      "request": {
+        "principal": "support",
+        "id": "birch"
+      },
+      "reply": {
+        "principal": "support",
+        "effectiveDatabaseRole": "desk_support",
+        "status": 200,
+        "data": [
+          {
+            "id": "birch",
+            "title": "Май"
+          }
+        ],
+        "error": null,
+        "requestId": "46d13c7dbe8748"
+      }
+    },
+    {
+      "request": {
+        "principal": "support",
+        "id": "cedar"
+      },
+      "reply": {
+        "principal": "support",
+        "effectiveDatabaseRole": "desk_support",
+        "status": 200,
+        "data": [
+          {
+            "id": "cedar",
+            "title": "Июнь"
+          }
+        ],
+        "error": null,
+        "requestId": "28a92f913a4640"
+      }
+    },
+    {
+      "request": {
+        "principal": "support",
+        "id": "dune"
+      },
+      "reply": {
+        "principal": "support",
+        "effectiveDatabaseRole": "desk_support",
+        "status": 200,
+        "data": [],
+        "error": null,
+        "requestId": "6169e2ba54884c"
+      }
+    },
+    {
+      "request": {
+        "principal": "support",
+        "id": "missing"
+      },
+      "reply": {
+        "principal": "support",
+        "effectiveDatabaseRole": "desk_support",
+        "status": 200,
+        "data": [],
+        "error": null,
+        "requestId": "dca4a4a6ec4a4c"
+      }
+    }
+  ],
+  "requests": [
+    {
+      "transport": "app.request",
+      "session": "worker-a",
+      "id": "amber",
+      "status": 200,
+      "contentType": "application/json",
+      "wire": "{\"id\":\"amber\",\"title\":\"Апрель\"}",
+      "reads": [
+        {
+          "request": {
+            "principal": "worker-a",
+            "id": "amber"
+          },
+          "reply": {
+            "principal": "worker-a",
+            "effectiveDatabaseRole": "desk_employee",
+            "status": 200,
+            "data": [
+              {
+                "id": "amber",
+                "title": "Апрель"
+              }
+            ],
+            "error": null,
+            "requestId": "ef5c94ad75de48"
+          }
+        }
+      ]
+    },
+    {
+      "transport": "app.request",
+      "session": "worker-a",
+      "id": "birch",
+      "status": 404,
+      "contentType": "application/json",
+      "wire": "{\"error\":\"not_found\"}",
+      "reads": [
+        {
+          "request": {
+            "principal": "worker-a",
+            "id": "birch"
+          },
+          "reply": {
+            "principal": "worker-a",
+            "effectiveDatabaseRole": "desk_employee",
+            "status": 200,
+            "data": [],
+            "error": null,
+            "requestId": "aec3154f697d46"
+          }
+        }
+      ]
+    },
+    {
+      "transport": "app.request",
+      "session": "worker-a",
+      "id": "cedar",
+      "status": 200,
+      "contentType": "application/json",
+      "wire": "{\"id\":\"cedar\",\"title\":\"Июнь\"}",
+      "reads": [
+        {
+          "request": {
+            "principal": "worker-a",
+            "id": "cedar"
+          },
+          "reply": {
+            "principal": "worker-a",
+            "effectiveDatabaseRole": "desk_employee",
+            "status": 200,
+            "data": [
+              {
+                "id": "cedar",
+                "title": "Июнь"
+              }
+            ],
+            "error": null,
+            "requestId": "a2765f733ab544"
+          }
+        }
+      ]
+    },
+    {
+      "transport": "app.request",
+      "session": "worker-a",
+      "id": "dune",
+      "status": 404,
+      "contentType": "application/json",
+      "wire": "{\"error\":\"not_found\"}",
+      "reads": [
+        {
+          "request": {
+            "principal": "worker-a",
+            "id": "dune"
+          },
+          "reply": {
+            "principal": "worker-a",
+            "effectiveDatabaseRole": "desk_employee",
+            "status": 200,
+            "data": [],
+            "error": null,
+            "requestId": "d9e7071c40324a"
+          }
+        }
+      ]
+    },
+    {
+      "transport": "app.request",
+      "session": "worker-a",
+      "id": "missing",
+      "status": 404,
+      "contentType": "application/json",
+      "wire": "{\"error\":\"not_found\"}",
+      "reads": [
+        {
+          "request": {
+            "principal": "worker-a",
+            "id": "missing"
+          },
+          "reply": {
+            "principal": "worker-a",
+            "effectiveDatabaseRole": "desk_employee",
+            "status": 200,
+            "data": [],
+            "error": null,
+            "requestId": "fe13321aaed14c"
+          }
+        }
+      ]
+    },
+    {
+      "transport": "app.request",
+      "session": "worker-b",
+      "id": "amber",
+      "status": 404,
+      "contentType": "application/json",
+      "wire": "{\"error\":\"not_found\"}",
+      "reads": [
+        {
+          "request": {
+            "principal": "worker-b",
+            "id": "amber"
+          },
+          "reply": {
+            "principal": "worker-b",
+            "effectiveDatabaseRole": "desk_employee",
+            "status": 200,
+            "data": [],
+            "error": null,
+            "requestId": "9d51b9457afd4b"
+          }
+        }
+      ]
+    },
+    {
+      "transport": "app.request",
+      "session": "worker-b",
+      "id": "birch",
+      "status": 200,
+      "contentType": "application/json",
+      "wire": "{\"id\":\"birch\",\"title\":\"Май\"}",
+      "reads": [
+        {
+          "request": {
+            "principal": "worker-b",
+            "id": "birch"
+          },
+          "reply": {
+            "principal": "worker-b",
+            "effectiveDatabaseRole": "desk_employee",
+            "status": 200,
+            "data": [
+              {
+                "id": "birch",
+                "title": "Май"
+              }
+            ],
+            "error": null,
+            "requestId": "4bf3c98d48b442"
+          }
+        }
+      ]
+    },
+    {
+      "transport": "app.request",
+      "session": "worker-b",
+      "id": "cedar",
+      "status": 404,
+      "contentType": "application/json",
+      "wire": "{\"error\":\"not_found\"}",
+      "reads": [
+        {
+          "request": {
+            "principal": "worker-b",
+            "id": "cedar"
+          },
+          "reply": {
+            "principal": "worker-b",
+            "effectiveDatabaseRole": "desk_employee",
+            "status": 200,
+            "data": [],
+            "error": null,
+            "requestId": "92c3bd1cc74543"
+          }
+        }
+      ]
+    },
+    {
+      "transport": "app.request",
+      "session": "worker-b",
+      "id": "dune",
+      "status": 200,
+      "contentType": "application/json",
+      "wire": "{\"id\":\"dune\",\"title\":\"Июль\"}",
+      "reads": [
+        {
+          "request": {
+            "principal": "worker-b",
+            "id": "dune"
+          },
+          "reply": {
+            "principal": "worker-b",
+            "effectiveDatabaseRole": "desk_employee",
+            "status": 200,
+            "data": [
+              {
+                "id": "dune",
+                "title": "Июль"
+              }
+            ],
+            "error": null,
+            "requestId": "21923a3453d84a"
+          }
+        }
+      ]
+    },
+    {
+      "transport": "app.request",
+      "session": "worker-b",
+      "id": "missing",
+      "status": 404,
+      "contentType": "application/json",
+      "wire": "{\"error\":\"not_found\"}",
+      "reads": [
+        {
+          "request": {
+            "principal": "worker-b",
+            "id": "missing"
+          },
+          "reply": {
+            "principal": "worker-b",
+            "effectiveDatabaseRole": "desk_employee",
+            "status": 200,
+            "data": [],
+            "error": null,
+            "requestId": "e77227b4ae854a"
+          }
+        }
+      ]
+    },
+    {
+      "transport": "app.request",
+      "session": "absent",
+      "id": "amber",
+      "status": 401,
+      "contentType": null,
+      "wire": "",
+      "reads": []
+    },
+    {
+      "transport": "app.request",
+      "session": "invalid",
+      "id": "amber",
+      "status": 401,
+      "contentType": null,
+      "wire": "",
+      "reads": []
+    },
+    {
+      "transport": "node-http",
+      "session": "worker-a",
+      "id": "amber",
+      "status": 200,
+      "contentType": "application/json",
+      "wire": "{\"id\":\"amber\",\"title\":\"Апрель\"}",
+      "reads": [
+        {
+          "request": {
+            "principal": "worker-a",
+            "id": "amber"
+          },
+          "reply": {
+            "principal": "worker-a",
+            "effectiveDatabaseRole": "desk_employee",
+            "status": 200,
+            "data": [
+              {
+                "id": "amber",
+                "title": "Апрель"
+              }
+            ],
+            "error": null,
+            "requestId": "e7e7fbd10c8a4f"
+          }
+        }
+      ]
+    },
+    {
+      "transport": "node-http",
+      "session": "worker-a",
+      "id": "birch",
+      "status": 404,
+      "contentType": "application/json",
+      "wire": "{\"error\":\"not_found\"}",
+      "reads": [
+        {
+          "request": {
+            "principal": "worker-a",
+            "id": "birch"
+          },
+          "reply": {
+            "principal": "worker-a",
+            "effectiveDatabaseRole": "desk_employee",
+            "status": 200,
+            "data": [],
+            "error": null,
+            "requestId": "2baf839ecd3f4b"
+          }
+        }
+      ]
+    },
+    {
+      "transport": "node-http",
+      "session": "worker-a",
+      "id": "cedar",
+      "status": 200,
+      "contentType": "application/json",
+      "wire": "{\"id\":\"cedar\",\"title\":\"Июнь\"}",
+      "reads": [
+        {
+          "request": {
+            "principal": "worker-a",
+            "id": "cedar"
+          },
+          "reply": {
+            "principal": "worker-a",
+            "effectiveDatabaseRole": "desk_employee",
+            "status": 200,
+            "data": [
+              {
+                "id": "cedar",
+                "title": "Июнь"
+              }
+            ],
+            "error": null,
+            "requestId": "824c821a64764a"
+          }
+        }
+      ]
+    },
+    {
+      "transport": "node-http",
+      "session": "worker-a",
+      "id": "dune",
+      "status": 404,
+      "contentType": "application/json",
+      "wire": "{\"error\":\"not_found\"}",
+      "reads": [
+        {
+          "request": {
+            "principal": "worker-a",
+            "id": "dune"
+          },
+          "reply": {
+            "principal": "worker-a",
+            "effectiveDatabaseRole": "desk_employee",
+            "status": 200,
+            "data": [],
+            "error": null,
+            "requestId": "5f7db3e605ec4b"
+          }
+        }
+      ]
+    },
+    {
+      "transport": "node-http",
+      "session": "worker-a",
+      "id": "missing",
+      "status": 404,
+      "contentType": "application/json",
+      "wire": "{\"error\":\"not_found\"}",
+      "reads": [
+        {
+          "request": {
+            "principal": "worker-a",
+            "id": "missing"
+          },
+          "reply": {
+            "principal": "worker-a",
+            "effectiveDatabaseRole": "desk_employee",
+            "status": 200,
+            "data": [],
+            "error": null,
+            "requestId": "680f42657d104d"
+          }
+        }
+      ]
+    },
+    {
+      "transport": "node-http",
+      "session": "worker-b",
+      "id": "amber",
+      "status": 404,
+      "contentType": "application/json",
+      "wire": "{\"error\":\"not_found\"}",
+      "reads": [
+        {
+          "request": {
+            "principal": "worker-b",
+            "id": "amber"
+          },
+          "reply": {
+            "principal": "worker-b",
+            "effectiveDatabaseRole": "desk_employee",
+            "status": 200,
+            "data": [],
+            "error": null,
+            "requestId": "97d054aa70b144"
+          }
+        }
+      ]
+    },
+    {
+      "transport": "node-http",
+      "session": "worker-b",
+      "id": "birch",
+      "status": 200,
+      "contentType": "application/json",
+      "wire": "{\"id\":\"birch\",\"title\":\"Май\"}",
+      "reads": [
+        {
+          "request": {
+            "principal": "worker-b",
+            "id": "birch"
+          },
+          "reply": {
+            "principal": "worker-b",
+            "effectiveDatabaseRole": "desk_employee",
+            "status": 200,
+            "data": [
+              {
+                "id": "birch",
+                "title": "Май"
+              }
+            ],
+            "error": null,
+            "requestId": "2f921d3dd0214d"
+          }
+        }
+      ]
+    },
+    {
+      "transport": "node-http",
+      "session": "worker-b",
+      "id": "cedar",
+      "status": 404,
+      "contentType": "application/json",
+      "wire": "{\"error\":\"not_found\"}",
+      "reads": [
+        {
+          "request": {
+            "principal": "worker-b",
+            "id": "cedar"
+          },
+          "reply": {
+            "principal": "worker-b",
+            "effectiveDatabaseRole": "desk_employee",
+            "status": 200,
+            "data": [],
+            "error": null,
+            "requestId": "d5012cc452f747"
+          }
+        }
+      ]
+    },
+    {
+      "transport": "node-http",
+      "session": "worker-b",
+      "id": "dune",
+      "status": 200,
+      "contentType": "application/json",
+      "wire": "{\"id\":\"dune\",\"title\":\"Июль\"}",
+      "reads": [
+        {
+          "request": {
+            "principal": "worker-b",
+            "id": "dune"
+          },
+          "reply": {
+            "principal": "worker-b",
+            "effectiveDatabaseRole": "desk_employee",
+            "status": 200,
+            "data": [
+              {
+                "id": "dune",
+                "title": "Июль"
+              }
+            ],
+            "error": null,
+            "requestId": "0a8a12c0e3184d"
+          }
+        }
+      ]
+    },
+    {
+      "transport": "node-http",
+      "session": "worker-b",
+      "id": "missing",
+      "status": 404,
+      "contentType": "application/json",
+      "wire": "{\"error\":\"not_found\"}",
+      "reads": [
+        {
+          "request": {
+            "principal": "worker-b",
+            "id": "missing"
+          },
+          "reply": {
+            "principal": "worker-b",
+            "effectiveDatabaseRole": "desk_employee",
+            "status": 200,
+            "data": [],
+            "error": null,
+            "requestId": "34a20120fb674f"
+          }
+        }
+      ]
+    },
+    {
+      "transport": "node-http",
+      "session": "absent",
+      "id": "amber",
+      "status": 401,
+      "contentType": null,
+      "wire": "",
+      "reads": []
+    },
+    {
+      "transport": "node-http",
+      "session": "invalid",
+      "id": "amber",
+      "status": 401,
+      "contentType": null,
+      "wire": "",
+      "reads": []
+    }
+  ],
+  "uniqueRequestIds": 38
+}

@@ -1,0 +1,71 @@
+{
+  "source_receipt": {
+    "raw_events_sha256": "588552ba6264ac15c44637fc47a07c806bfd2918ed49c51a5ef4a897525fbe2f",
+    "changed_files": 94,
+    "new_test": "bb8b6a5de84e0c93c736e12475b23a45c1bc4dbc4eb14277c5239847759354f9",
+    "extra_cache_files": 93,
+    "changed_input_files": []
+  },
+  "controlled_same_commands": [
+    {
+      "NODE_DISABLE_COMPILE_CACHE": "unset",
+      "TMPDIR": "{project}",
+      "events": [
+        {
+          "argv": [
+            "./node_modules/.bin/tsx",
+            "--test",
+            "test/handoff.test.ts"
+          ],
+          "exit": 1,
+          "new_files": 0,
+          "parent_dirs": [],
+          "stdout_sha256": "d73b1919b82c28208a9f6693377508e6d15f5b58f4e0ccc212ce07461ac7fbf1",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "npm",
+            "test"
+          ],
+          "exit": 1,
+          "new_files": 93,
+          "parent_dirs": [
+            "node-compile-cache/v24.15.0-x64-cf738c9d-1000"
+          ],
+          "stdout_sha256": "fc64c2d91094a7e2dd0b7308e4370280042311a3fc8a18cfce6acb62ebb04a8a",
+          "stderr_sha256": "b824404b43cae14ab62def87fdd163e3748726cfbe78c03ba23c82c7f7e716c1"
+        }
+      ]
+    },
+    {
+      "NODE_DISABLE_COMPILE_CACHE": "1",
+      "TMPDIR": "{project}",
+      "events": [
+        {
+          "argv": [
+            "./node_modules/.bin/tsx",
+            "--test",
+            "test/handoff.test.ts"
+          ],
+          "exit": 1,
+          "new_files": 0,
+          "parent_dirs": [],
+          "stdout_sha256": "25a3ea20616c049a21ef4c7b53ab7eb952b986b22da4f62ee33e95b6c7a896c5",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "argv": [
+            "npm",
+            "test"
+          ],
+          "exit": 1,
+          "new_files": 0,
+          "parent_dirs": [],
+          "stdout_sha256": "3dce3bd05c3a712fcfe78c96bbc99ee762228b80550c04bf30b6823fce91e47d",
+          "stderr_sha256": "b824404b43cae14ab62def87fdd163e3748726cfbe78c03ba23c82c7f7e716c1"
+        }
+      ]
+    }
+  ]
+}

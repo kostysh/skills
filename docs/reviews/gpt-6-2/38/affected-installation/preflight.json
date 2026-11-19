@@ -1,0 +1,236 @@
+{
+  "ordinary": {
+    "packagedRevision": "4a70cd28ae978987d06d4f64e75e66aa21706f22",
+    "commandsInSeparateProcesses": [
+      {
+        "cmd": [
+          "node",
+          "desk.mjs",
+          "sample.json",
+          "mark",
+          "D7"
+        ],
+        "status": 0,
+        "stdout": "D7\n",
+        "stderr": ""
+      },
+      {
+        "cmd": [
+          "node",
+          "desk.mjs",
+          "sample.json",
+          "list"
+        ],
+        "status": 0,
+        "stdout": "[\"D7\",\"D8\"]\n",
+        "stderr": ""
+      }
+    ],
+    "afterWriter": [
+      {
+        "code": "D7",
+        "title": "Alpha",
+        "flagged": true
+      },
+      {
+        "code": "D8",
+        "title": "Beta",
+        "flagged": true
+      }
+    ]
+  },
+  "boundary": {
+    "packagedRevision": "3a9ea9bdd587085a0219902d0bf06ed541cfb396",
+    "commandsInSeparateProcesses": [
+      {
+        "cmd": [
+          "node",
+          "desk.mjs",
+          "sample.json",
+          "mark",
+          "D7"
+        ],
+        "status": 0,
+        "stdout": "D7\n",
+        "stderr": ""
+      },
+      {
+        "cmd": [
+          "node",
+          "desk.mjs",
+          "sample.json",
+          "list"
+        ],
+        "status": 0,
+        "stdout": "[]\n",
+        "stderr": ""
+      }
+    ],
+    "afterWriter": [
+      {
+        "code": "D7",
+        "title": "Alpha"
+      },
+      {
+        "code": "D8",
+        "title": "Beta"
+      }
+    ]
+  },
+  "holdout": {
+    "packagedRevision": "26ce90e497512fee1856ca435a64a791b0bebd3f",
+    "commandsInSeparateProcesses": [
+      {
+        "cmd": [
+          "node",
+          "desk.mjs",
+          "sample.json",
+          "mark",
+          "D7"
+        ],
+        "status": 0,
+        "stdout": "D7\n",
+        "stderr": ""
+      },
+      {
+        "cmd": [
+          "node",
+          "desk.mjs",
+          "sample.json",
+          "list"
+        ],
+        "status": 0,
+        "stdout": "[]\n",
+        "stderr": ""
+      }
+    ],
+    "afterWriter": [
+      {
+        "code": "D7",
+        "title": "Alpha",
+        "flagged": true
+      },
+      {
+        "code": "D8",
+        "title": "Beta",
+        "flagged": false
+      }
+    ]
+  },
+  "equivalent": {
+    "packagedRevision": "9f84563f1c17ee650156825ab5adbfb5f140f5eb",
+    "commandsInSeparateProcesses": [
+      {
+        "cmd": [
+          "node",
+          "desk.mjs",
+          "sample.json",
+          "mark",
+          "D7"
+        ],
+        "status": 0,
+        "stdout": "D7\n",
+        "stderr": ""
+      },
+      {
+        "cmd": [
+          "node",
+          "desk.mjs",
+          "sample.json",
+          "list"
+        ],
+        "status": 0,
+        "stdout": "[\"D7\",\"D8\"]\n",
+        "stderr": ""
+      }
+    ],
+    "afterWriter": [
+      {
+        "code": "D7",
+        "title": "Alpha",
+        "flagged": true
+      },
+      {
+        "code": "D8",
+        "title": "Beta",
+        "flagged": true
+      }
+    ]
+  },
+  "retired": {
+    "packagedRevision": "3a9ea9bdd587085a0219902d0bf06ed541cfb396",
+    "commandsInSeparateProcesses": [
+      {
+        "cmd": [
+          "node",
+          "desk.mjs",
+          "sample.json",
+          "mark",
+          "D7"
+        ],
+        "status": 0,
+        "stdout": "D7\n",
+        "stderr": ""
+      },
+      {
+        "cmd": [
+          "node",
+          "desk.mjs",
+          "sample.json",
+          "list"
+        ],
+        "status": 0,
+        "stdout": "[]\n",
+        "stderr": ""
+      }
+    ],
+    "afterWriter": [
+      {
+        "code": "D7",
+        "title": "Alpha"
+      },
+      {
+        "code": "D8",
+        "title": "Beta"
+      }
+    ]
+  },
+  "same": {
+    "packagedRevision": "3a9ea9bdd587085a0219902d0bf06ed541cfb396",
+    "commandsInSeparateProcesses": [
+      {
+        "cmd": [
+          "node",
+          "desk.mjs",
+          "sample.json",
+          "mark",
+          "D7"
+        ],
+        "status": 0,
+        "stdout": "D7\n",
+        "stderr": ""
+      },
+      {
+        "cmd": [
+          "node",
+          "desk.mjs",
+          "sample.json",
+          "list"
+        ],
+        "status": 0,
+        "stdout": "[]\n",
+        "stderr": ""
+      }
+    ],
+    "afterWriter": [
+      {
+        "code": "D7",
+        "title": "Alpha"
+      },
+      {
+        "code": "D8",
+        "title": "Beta"
+      }
+    ]
+  }
+}

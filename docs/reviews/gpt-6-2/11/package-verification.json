@@ -1,0 +1,91 @@
+{
+  "baseline": {
+    "snapshot": "f4da67d45cd4105200ebafafe8b51fe7680a6da9",
+    "archive": "security-reviewer-0.1.14.tgz",
+    "sha256": "3446bc9a5527ee022b962b52affbc1ebe6d11f5b961b8650ceaf007d4d62f4af",
+    "bytes": 29695,
+    "allMembersEqualResearchA": true
+  },
+  "candidate": {
+    "archive": "security-reviewer-0.1.15.tgz",
+    "sha256": "5cdc31eb72a87f4ffe3150ccd83837f95e46cf86811a18f8bc7cd9b3fca87b1f",
+    "bytes": 29673,
+    "members": {
+      "SKILL.md": "b729a9f764b46c8f643c241e1f201657e4b7d10ab12ec5d6c59d76c6171442f6",
+      "agents/openai.yaml": "d4f95ce6a167349b42743a4270ad2a483d87f2ac1eab8df9105958b7339d97ee",
+      "references/api-auth-input.md": "af207e5692d93e8d403c8ad00631055bd44f8e703d7b7f1d21d80818f7655e8a",
+      "references/data-access-injection.md": "a2906a795948d5eba413fdcb81e2ed0d8dafe5c2c54271d4747f5a9bd938beef",
+      "references/domain-handoffs.md": "937f9cb6706fbab573667811c5b1219296707a49108975b8d376b67d2c40be26",
+      "references/github-actions.md": "3da3ce160c9244033008420e7c999479319951c63f47cc14dae9f455a7cd10e7",
+      "references/methodology.md": "d30a8d3e1df6b990688b048f329d1f2f129cc65b3aec2b22b579707ecfc67ed3",
+      "references/policy-governance-admission.md": "9dd88facc864d2245a5597b7f06f3fe010a2ac01722b06c22053032b2a4ca5ac",
+      "references/secrets-config.md": "8f46d5d2b652a74e17d670686b4d6c6adfc6f6bd59263b47606f204da95d6a36",
+      "references/supabase-rls.md": "6dadce04c0a4d1e9323a64161218c5c0d8a6e601ac1eb0267b1dac657a573b0a",
+      "references/webhooks.md": "ccfc22d57d6f7e8a5250610b59e3243b10ac61f0bf699a592e98b134a79e1dec"
+    },
+    "tarEntryModes": {
+      "SKILL.md": "0644",
+      "agents/openai.yaml": "0644",
+      "references/api-auth-input.md": "0644",
+      "references/data-access-injection.md": "0644",
+      "references/domain-handoffs.md": "0644",
+      "references/github-actions.md": "0644",
+      "references/methodology.md": "0644",
+      "references/policy-governance-admission.md": "0644",
+      "references/secrets-config.md": "0644",
+      "references/supabase-rls.md": "0644",
+      "references/webhooks.md": "0644"
+    },
+    "allBytesEqualEmittedAndOutOfPlaceCompile": true,
+    "controlledCDifferences": [
+      "-   source-version: 0.1.14",
+      "+   source-version: 0.1.15",
+      "-   skillforge-source-hash: 6147bfb4626f3ec2e770e0f1282ff77679fd12c447c86adbf707a776ff6f65c0",
+      "+   skillforge-source-hash: a12fd8db8b9dd7f396649024b02cb2176def7b37a0a2256296c0335701bd6246"
+    ]
+  },
+  "toolchain": {
+    "compilerCLI": "0.2.5",
+    "compilerSkill": "0.2.12",
+    "packager": "@kostysh/skills 0.1.3",
+    "node": "24.15.0",
+    "workspacePnpm": "10.28.2",
+    "codexCLI": "0.170.0"
+  },
+  "packageCommand": "pnpm --filter @kostysh/skills pack:skills --root <isolated-compiled> --out <row-package> --release skills-local-review --previous <baseline-catalog.json>",
+  "structuralChecks": [
+    "lint and check on the 0.1.14 source",
+    "lint on revised source before regenerate",
+    "regenerate revised source",
+    "check regenerated source",
+    "compile out-of-place",
+    "check out-of-place compile",
+    "single-package pack with a previous catalog",
+    "apply all four A/B/C/release patches with --fuzz=0, then compare complete SKILL.md bytes"
+  ],
+  "documentationContractTests": {
+    "release": {
+      "scope": "All eleven release archive files overlaid on a disposable complete maintenance source. Repository test package and skill.yaml are needed by the tests and excluded by the consumer packager.",
+      "command": "pnpm --filter @kostysh/security-reviewer test",
+      "workspacePnpm": "10.28.2",
+      "node": "24.15.0",
+      "package": "@kostysh/security-reviewer@0.1.0",
+      "sourceVersion": "0.1.15",
+      "testFileSha256": "2e733cbea09a009d1c5c3d5932feba86dcee09b9c7e8ae88f08ce7ff8208e29d",
+      "sourceManifestSha256": "d4030a835b097906c4764821f3facfbb44b703ac79ffc7476581b90a0f99d7e0",
+      "passed": 26,
+      "failed": 0,
+      "skipped": 0,
+      "exit": 0
+    },
+    "baseline": {
+      "scope": "A separate disposable maintenance copy with the eleven original 0.1.14 archive files, checked before editing the active source.",
+      "command": "pnpm test",
+      "standalonePnpm": "11.1.2",
+      "node": "24.15.0",
+      "passed": 26,
+      "failed": 0,
+      "exit": 0
+    }
+  }
+}

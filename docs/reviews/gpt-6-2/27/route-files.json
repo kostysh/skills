@@ -1,0 +1,10 @@
+{
+  "app/dossiers/[key]/DeskView.jsx": "853bb7b2cd93bcb784a387c0bf941825ad793f91feafa40e58791bc915ed6557",
+  "app/dossiers/[key]/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+  "app/dossiers/[key]/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+  "app/dossiers/[key]/page.jsx": "18e213e820cb6cc1de645dcb9e31247a796d9709a07de78bcc94e3d0eb170994",
+  "app/layout.jsx": "a84b9d4ebf74b0d00a2a7d8ab84410d5820a36d8a5d6c2629a5ad30a8a48e388",
+  "next.config.mjs": "1d47d4c3c752eb360f20c28f7dda4267f25bef980bee0b9225cd8aa0e1572402",
+  "package-lock.json": "3fc2759e2532d2d29486d4f285544fece7867db1772ac16345656501593e9535",
+  "package.json": "66dd7a7a3108cc5dfe75b018079e0d4fbdc489720373370fe58cf36883e14b9d"
+}

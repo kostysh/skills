@@ -6,9 +6,9 @@ description: Create concise, falsifiable software specs for AI coding agents.
   requirements, acceptance evidence, anti-claims, source authority, and handoff
   readiness.
 metadata:
-  source-version: 0.2.15
+  source-version: 0.2.16
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 46b9751e60ad5a38cf15da90d4d2bc2d397aa3c5a89638225d5c3a875004b0da
+  skillforge-source-hash: 2a8bebe50b5342bc734ca214919d2e6402ca8851fb4148accfd12ae6cd59c996
 ---
 
 # spec-engineer
@@ -186,7 +186,7 @@ Validation:
 - **high** — Do not specify layers, scaffolds, wrappers, config knobs, or extension points for future flexibility unless they are required by current behavior, accepted architecture, or an explicitly labeled substrate task with a dependent capability.
 - **medium** — Examples and Gherkin/BDD scenarios clarify boundaries only when representation-fit justifies them; they do not replace normative rules unless the user explicitly wants executable specifications as the source of truth.
 - **medium** — Do not specify implementation mechanisms such as a specific database, cache, queue, framework, or algorithm unless they are real constraints, externally visible compatibility requirements, or explicitly requested decisions.
-- **high** — Do not turn missing architecture decisions into spec requirements; route public contracts, data model, security boundary, tenancy, integration topology, deployment, rollback, or selected pattern changes to architecture.
+- **high** — Route unresolved architecture decisions to the architecture owner.
 - **medium** — Do not use tests as the default verification answer when inspection, analysis, contract validation, simulation, or conformance suites prove the claim more directly.
 - **high** — Do not introduce or preserve public routes, enum values, statuses, action names, or history events without an owning source, domain meaning, forbidden values, and falsifiers.
 

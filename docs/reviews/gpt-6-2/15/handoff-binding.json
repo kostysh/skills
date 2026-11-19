@@ -1,0 +1,37 @@
+{
+  "case": "Кабинет 1, Q-17/Q-18 and teaching bench D72",
+  "upstream_skill": "prd-engineer 0.1.9",
+  "upstream_accepted_commit": "f2cf357",
+  "upstream_acceptance_commit": "80def25",
+  "upstream_authority": "04 consumed historical G5 A2 output from requirements-approval. The orchestrator's new 14→04 joint run is a separate input.",
+  "architecture_skill": "architecture-engineer 0.1.12",
+  "architecture_archive_sha256": "1babdba177058490fce6b432c3d8b56aaa410fbbe5196649666bf2909f090e86",
+  "skill_archive_matches_runtime_input": true,
+  "runtime": "codex 0.170.0, gpt-6.2-sol / medium, workspace-write, memories disabled",
+  "run_receipt": "results/da7257.json",
+  "run_raw_events_sha256": "6f359f7de7ede401bb06a35a21bcaa1480d7bbd7c200149750a9fe2edaf596fc",
+  "actual_task_sha256": "747fab8987c98c466e41a3c8208efbc5250c4547a7403b19fabb0b9994fe93a4",
+  "actual_final_response_sha256": "72729151c3d30f812b11d2c7de767be2c587043764c03c8770a0797035b4ec99",
+  "architecture_note_sha256": "be9ff3bad2d474782972ff44d8bc9a573768d49049720496bae2974a2ef0893f",
+  "all_transported_files_sha256": {
+    "architecture-note.md": "be9ff3bad2d474782972ff44d8bc9a573768d49049720496bae2974a2ef0893f",
+    "companion/implementation-discipline/SKILL.md": "fde9d3f957856e325f2e2a725598f8a0984c90dccb1720ef862a3316a5c30729",
+    "companion/implementation-discipline/references/core-principles.md": "fa8a312bb8f580a1224f049f2480605d474b399f14627a55c292b28bbcec5cde",
+    "companion/implementation-discipline/references/verification-loop.md": "659c14086b1829585a006de89a1456a4eb0c15b5aa0f3673a335093ab5d0767e",
+    "draft/materials/decision-intake.md": "e8e3b2c3d64a10719161e30ab8c16056677e41dfc9723352a29580d29fc1f6cc",
+    "draft/materials/report-draft.md": "24379268c335dae167388ee26569924e9672314f566e2979ee9e2fcfe2db54b8",
+    "draft/materials/team-note.md": "4da36f0b60ac31992c503a6a4f85d558491ddb4e84f7e6b2a0613d92fba42221",
+    "draft/product-output.md": "0ad7a0914a8b6a9465160496a60422e1ad23687241f53aaecf502e6285fd38ff",
+    "lab/captures.csv": "4675ff54ecdce92d90abcd8c1f6af0efe987c65fa4ae6ea45151ccd587bfc16e",
+    "lab/events.csv": "f3428e0a4a988e63f0fca3dbf6eddccaa8e0d9c9379d2dd4d4bba813d1ca0869",
+    "lab/mail.csv": "219fb6f1b86e3a77349f269a180662e51e7baab8482a7a30a0ce6a1e0af951ed",
+    "lab/request.md": "df4909cdbeadce11c703e42bf6d1438efc56a18cad02dc95942c1d77c58f7d37"
+  },
+  "archive_sha256": "245d6ddb9370e1481932f68e5f6d1be813e459b07f05a0d8fc4303eb09cffb57",
+  "transport": "Byte-preserving file copy; the actual produced architecture-note.md and all supplied case material, including the three read-only companion files linked by the note. No path substitution or text rewrite. All linked relative file paths resolve inside the archive.",
+  "next_consumers": [
+    "23 spec-engineer",
+    "32 delivery-planner"
+  ],
+  "downstream_execution": "The row produces and routes the actual input. Consumer readback and fresh 14→04→15→23→32 have their own evidence."
+}

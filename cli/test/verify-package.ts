@@ -28,10 +28,12 @@ try {
     command('npm', ['pack', '--ignore-scripts', '--json', '--pack-destination', root], cli),
   );
   const { z } = await import('zod');
+  const packageInfo: unknown = Array.isArray(output)
+    ? output[0]
+    : z.record(z.string(), z.unknown()).parse(output)[pkg.name];
   const packed = z
-    .array(z.object({ filename: z.string(), files: z.array(z.object({ path: z.string() })) }))
-    .parse(output)[0];
-  assert.ok(packed);
+    .object({ filename: z.string(), files: z.array(z.object({ path: z.string() })) })
+    .parse(packageInfo);
   for (const file of packed.files)
     assert.ok(
       ['package.json', 'README.md', 'LICENSE', 'dist/cli.mjs', 'dist/cli.mjs.map'].includes(

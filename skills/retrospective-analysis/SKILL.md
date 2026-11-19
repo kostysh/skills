@@ -5,9 +5,9 @@ description: Conduct evidence-backed retrospectives of completed work. Use
   major sessions, or incidents; verify causality, deduplication, prior fixes,
   remediation plans, and approved task handoff.
 metadata:
-  source-version: 0.1.3
+  source-version: 0.1.4
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: f8f1f5e7dbfbd6ac49bbcf922672b98eb6f95ac829efb4fd6f4748c0254fd722
+  skillforge-source-hash: 7b8889a79a971b11b5fb976535c49fa5e8da6ede37b3450a32fe04bc998b9bb8
 ---
 
 # retrospective-analysis
@@ -102,14 +102,14 @@ Avoid reopening completed work while preserving unresolved systemic prevention.
 Validation:
 
 - Fixed historical problems remain visible without producing duplicate work.
-- No commit subject, issue state, or document claim alone proves implementation.
+- Verify the claimed fix in the affected release.
 - Final problem rows have distinct causes and prevention mechanisms.
 
 ### Workflow stage: Produce the mode-appropriate result
 
 Deliver a usable causal account and residual recommendations, with full reconciliation only for the full evidentiary claim.
 
-1. Follow the mode/output contract in the report/remediation reference. A targeted answer keeps evidence, causality limits, prior-fix status, and a proportionate recommendation concise; it does not require a matrix or a project task hierarchy.
+1. Follow the mode/output contract in the report/remediation reference. Keep a targeted report concise. Give the evidence, causal limits, prior-fix status, and remaining action. If the affected installation still fails in service, recommend delivering the fix to that installation and verifying it there. Report separate branch work in its own scope.
 2. For full mode, read the report/remediation reference and produce the required report, matrix, appendices, reconciled counts, and statistics.
 3. Tie each active recommendation to evidence-backed root problems and distinguish project rules, skills or methods, tests or tools, runtime or domain work, and audit-method changes.
 4. Challenge every high-severity problem, recurrence after operator correction, and no-action proposal with partial prevention: which concrete action could stop the next comparable failure before it happens? Require a verified reason when no new action is needed.

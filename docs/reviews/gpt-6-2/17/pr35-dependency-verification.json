@@ -1,0 +1,210 @@
+{
+  "source": "exact PR lockfile and official npm tarballs",
+  "localArchiveSha256": "bb8db15a41e65d3dd94e6144e85384233a5b02a6fab689790b63952dc15d2285",
+  "lockfileSha256": "937a5d54fc9fa6b2dc77c468a16c374c8811f77fb7801ed6879a2907eec8b16c",
+  "packages": {
+    "@inquirer/ansi": {
+      "version": "2.0.9",
+      "distribution": "https://registry.npmjs.org/@inquirer/ansi/-/ansi-2.0.9.tgz",
+      "lockfileIntegrity": "sha512-0Ywt3S8tqM6TWUcsRlBFQ1x+X3/o8kktX0ZiKAnByYb9GFDknnOhse1PVtfiD2BXPI8ar+BWx9PV9R0lQIcygw==",
+      "fileCount": 5,
+      "allMemberFileBytesMatch": true
+    },
+    "@inquirer/checkbox": {
+      "version": "5.2.7",
+      "distribution": "https://registry.npmjs.org/@inquirer/checkbox/-/checkbox-5.2.7.tgz",
+      "lockfileIntegrity": "sha512-/+QmGE/9bvE/EobaZDnzYe+T+QWoJrnmxwBQNtoi2OVSUR9d1znYsNyEoUrOZvFSxDYttrhzRIpXpaLkN+iIsg==",
+      "fileCount": 5,
+      "allMemberFileBytesMatch": true
+    },
+    "@inquirer/confirm": {
+      "version": "6.3.4",
+      "distribution": "https://registry.npmjs.org/@inquirer/confirm/-/confirm-6.3.4.tgz",
+      "lockfileIntegrity": "sha512-ZwnaZZDa1zxsyVrN32s447ydMnKcw7e8WWNT+R+Qsu0zAn8Rs6yi9d1B80Kob1Ul2cfUi7t8JD2t4/K7uEZpqA==",
+      "fileCount": 5,
+      "allMemberFileBytesMatch": true
+    },
+    "@inquirer/core": {
+      "version": "12.0.5",
+      "distribution": "https://registry.npmjs.org/@inquirer/core/-/core-12.0.5.tgz",
+      "lockfileIntegrity": "sha512-c0ZSnO9oVk/IlEGoZK3u8b3IZQeu9I6jUkXJSQnQEVRXsjKvtAq3AGqFL2LgfJhlzMZne08pZHWRWasIcI3Rew==",
+      "fileCount": 43,
+      "allMemberFileBytesMatch": true
+    },
+    "@inquirer/editor": {
+      "version": "5.3.5",
+      "distribution": "https://registry.npmjs.org/@inquirer/editor/-/editor-5.3.5.tgz",
+      "lockfileIntegrity": "sha512-6lU3/pPx5z3lHWejFW061MV4qZooBQYv/+EeGhNOPiP/i+hrYsHfxxBnnDGsAfg8YdLUd69YckoeOjtr3QuAUg==",
+      "fileCount": 5,
+      "allMemberFileBytesMatch": true
+    },
+    "@inquirer/expand": {
+      "version": "5.1.7",
+      "distribution": "https://registry.npmjs.org/@inquirer/expand/-/expand-5.1.7.tgz",
+      "lockfileIntegrity": "sha512-eiJ31YFCaB6fLoJCqLIn8S6eqUyME6vwr8KcP5h8cxmA+bV9RRVPO+kywoxb7G63HduDXV6sN/SM7o2R+ahEcQ==",
+      "fileCount": 5,
+      "allMemberFileBytesMatch": true
+    },
+    "@inquirer/external-editor": {
+      "version": "3.0.6",
+      "distribution": "https://registry.npmjs.org/@inquirer/external-editor/-/external-editor-3.0.6.tgz",
+      "lockfileIntegrity": "sha512-rWmw6WG8JZ7LMn/srXEylYGhL6EXXJeROE7/4x4GREh6NgzqJBDbIgpNGsYoLPfobeb4VZtEYzPGnT5EFNYhiQ==",
+      "fileCount": 9,
+      "allMemberFileBytesMatch": true
+    },
+    "@inquirer/figures": {
+      "version": "2.0.9",
+      "distribution": "https://registry.npmjs.org/@inquirer/figures/-/figures-2.0.9.tgz",
+      "lockfileIntegrity": "sha512-EAWgUTGQ/Umgga51dE3B2PUHbufuXarDfg86uVgoSgNHNNQnyFKcOrQLWVqYMghuSyHh8+2HUH0Js9cTC1WAdg==",
+      "fileCount": 4,
+      "allMemberFileBytesMatch": true
+    },
+    "@inquirer/input": {
+      "version": "5.1.8",
+      "distribution": "https://registry.npmjs.org/@inquirer/input/-/input-5.1.8.tgz",
+      "lockfileIntegrity": "sha512-psOSTgkL8y/OtgJJYbqJ0oISr2QBE0U1Ro/qQdA/EKjeJiwiUTQgQmq8o4ESNzVOWthIeh3YLD7BCUR9dKnR5g==",
+      "fileCount": 5,
+      "allMemberFileBytesMatch": true
+    },
+    "@inquirer/number": {
+      "version": "4.2.5",
+      "distribution": "https://registry.npmjs.org/@inquirer/number/-/number-4.2.5.tgz",
+      "lockfileIntegrity": "sha512-lEy7LWsdF5qHx5QjHZqabUqM9P7i5uTMCt8GRzqxmwXXKbapKJDA+ucVflVVPAyj4snD5DTAD4L+sct85XOlOQ==",
+      "fileCount": 7,
+      "allMemberFileBytesMatch": true
+    },
+    "@inquirer/password": {
+      "version": "5.2.4",
+      "distribution": "https://registry.npmjs.org/@inquirer/password/-/password-5.2.4.tgz",
+      "lockfileIntegrity": "sha512-T7ir3fflSSVCYEVqNyMBq+pIMsilQRtbZcD5gxn6Ewsin5TJWBxrGBdXveWtmeXVAeoInfhS+BhBUZaL4sFSDg==",
+      "fileCount": 5,
+      "allMemberFileBytesMatch": true
+    },
+    "@inquirer/prompts": {
+      "version": "8.7.4",
+      "distribution": "https://registry.npmjs.org/@inquirer/prompts/-/prompts-8.7.4.tgz",
+      "lockfileIntegrity": "sha512-SAJt+QhY5rOJAIgZBw9TrHWfgrp6wsb9cqRCyqax+Hl6EiFfRXmD9EsIWkST8yq/dQ8H46Is2Sr/JG7Ls/LQ+Q==",
+      "fileCount": 5,
+      "allMemberFileBytesMatch": true
+    },
+    "@inquirer/rawlist": {
+      "version": "5.3.7",
+      "distribution": "https://registry.npmjs.org/@inquirer/rawlist/-/rawlist-5.3.7.tgz",
+      "lockfileIntegrity": "sha512-XveEe8v3BHj9ec00n+9i8FHjWhXjS6+jCTizYvXCqKUKtgkrq9xid8S5j3mYGW96qfxG3mwNoud3m3v8GDk9Pw==",
+      "fileCount": 5,
+      "allMemberFileBytesMatch": true
+    },
+    "@inquirer/search": {
+      "version": "4.3.5",
+      "distribution": "https://registry.npmjs.org/@inquirer/search/-/search-4.3.5.tgz",
+      "lockfileIntegrity": "sha512-kIUecMugEN2YTvTmff+uYz0nAE0f9RFNDVZknfrh264vAQM9P8tnsXiUp7z8XbGuNIBEtFMJhvc9QquawpC46A==",
+      "fileCount": 5,
+      "allMemberFileBytesMatch": true
+    },
+    "@inquirer/select": {
+      "version": "5.2.7",
+      "distribution": "https://registry.npmjs.org/@inquirer/select/-/select-5.2.7.tgz",
+      "lockfileIntegrity": "sha512-pRDWO4dTqSAvFQdO8yclKMtXNDm9K9HmvWB5UZmT3clw2OlOBNXveHzhyFmO/0d0yJMqlPcNITus1Jtpm6t8VQ==",
+      "fileCount": 5,
+      "allMemberFileBytesMatch": true
+    },
+    "@inquirer/testing": {
+      "version": "3.3.15",
+      "distribution": "https://registry.npmjs.org/@inquirer/testing/-/testing-3.3.15.tgz",
+      "lockfileIntegrity": "sha512-IolN3gGe3W1WuhuJ3RaGziNHq19pWVtgvh+jiU+hSPfH6+z0MZvyKcYHzJLkBnTjLe8usCma/U/1SRuZrh5FQg==",
+      "fileCount": 15,
+      "allMemberFileBytesMatch": true
+    },
+    "@inquirer/type": {
+      "version": "4.2.0",
+      "distribution": "https://registry.npmjs.org/@inquirer/type/-/type-4.2.0.tgz",
+      "lockfileIntegrity": "sha512-2rnHX8RPo4glJYqnFc/v3nQeIhDcjyRRyaT7MGcfL/8xv/8K03SXYoA2tX06WVSKywWOE/ncbG3dtuzLjR5TCQ==",
+      "fileCount": 8,
+      "allMemberFileBytesMatch": true
+    },
+    "@xterm/headless": {
+      "version": "6.0.0",
+      "distribution": "https://registry.npmjs.org/@xterm/headless/-/headless-6.0.0.tgz",
+      "lockfileIntegrity": "sha512-5Yj1QINYCyzrZtf8OFIHi47iQtI+0qYFPHmouEfG8dHNxbZ9Tb9YGSuLcsEwj9Z+OL75GJqPyJbyoFer80a2Hw==",
+      "fileCount": 7,
+      "allMemberFileBytesMatch": true
+    },
+    "chardet": {
+      "version": "2.2.0",
+      "distribution": "https://registry.npmjs.org/chardet/-/chardet-2.2.0.tgz",
+      "lockfileIntegrity": "sha512-rddelWYNPRrXq6PtNEN2S3f6t9ILzvqaN5pVgi4kqt9jHQaXIial9PznB5iSPVlQSLNaaH22ItWz3EJtQ10+OA==",
+      "fileCount": 39,
+      "allMemberFileBytesMatch": true
+    },
+    "cli-width": {
+      "version": "4.1.0",
+      "distribution": "https://registry.npmjs.org/cli-width/-/cli-width-4.1.0.tgz",
+      "lockfileIntegrity": "sha512-ouuZd4/dm2Sw5Gmqy6bGyNNNe1qt9RpmxveLSO7KcgsTnU7RXfsw+/bukWGo1abgBiMAic068rclZsO4IWmmxQ==",
+      "fileCount": 5,
+      "allMemberFileBytesMatch": true
+    },
+    "fast-string-truncated-width": {
+      "version": "3.0.3",
+      "distribution": "https://registry.npmjs.org/fast-string-truncated-width/-/fast-string-truncated-width-3.0.3.tgz",
+      "lockfileIntegrity": "sha512-0jjjIEL6+0jag3l2XWWizO64/aZVtpiGE3t0Zgqxv0DPuxiMjvB3M24fCyhZUO4KomJQPj3LTSUnDP3GpdwC0g==",
+      "fileCount": 9,
+      "allMemberFileBytesMatch": true
+    },
+    "fast-string-width": {
+      "version": "3.0.2",
+      "distribution": "https://registry.npmjs.org/fast-string-width/-/fast-string-width-3.0.2.tgz",
+      "lockfileIntegrity": "sha512-gX8LrtNEI5hq8DVUfRQMbr5lpaS4nMIWV+7XEbXk2b8kiQIizgnlr12B4dA3ZEx3308ze0O4Q1R+cHts8kyUJg==",
+      "fileCount": 5,
+      "allMemberFileBytesMatch": true
+    },
+    "fast-wrap-ansi": {
+      "version": "0.2.2",
+      "distribution": "https://registry.npmjs.org/fast-wrap-ansi/-/fast-wrap-ansi-0.2.2.tgz",
+      "lockfileIntegrity": "sha512-7F2Fl+TjRSenLqlU3UjSH0iyqopqoZIu7eZVpEirP2g1GtWa2G/ecEmBdgz31+Mxr+ELclgg6sokpSFIQiZ02Q==",
+      "fileCount": 5,
+      "allMemberFileBytesMatch": true
+    },
+    "iconv-lite": {
+      "version": "0.7.3",
+      "distribution": "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.7.3.tgz",
+      "lockfileIntegrity": "sha512-IKXpvIzjnC9XTAUbVBcMfGS0EPaIXtW6v+zr+RRp+hqULEpo0owZax6wyRwPOJbWbzjYspQwusTsfVr0ifh4uQ==",
+      "fileCount": 27,
+      "allMemberFileBytesMatch": true
+    },
+    "mute-stream": {
+      "version": "3.0.0",
+      "distribution": "https://registry.npmjs.org/mute-stream/-/mute-stream-3.0.0.tgz",
+      "lockfileIntegrity": "sha512-dkEJPVvun4FryqBmZ5KhDo0K9iDXAwn08tMLDinNdRBNPcYEDiWYysLcc6k3mjTMlbP9KyylvRpd4wFtwrT9rw==",
+      "fileCount": 4,
+      "allMemberFileBytesMatch": true
+    },
+    "safer-buffer": {
+      "version": "2.1.2",
+      "distribution": "https://registry.npmjs.org/safer-buffer/-/safer-buffer-2.1.2.tgz",
+      "lockfileIntegrity": "sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==",
+      "fileCount": 7,
+      "allMemberFileBytesMatch": true
+    },
+    "semver": {
+      "version": "7.7.4",
+      "distribution": "https://registry.npmjs.org/semver/-/semver-7.7.4.tgz",
+      "lockfileIntegrity": "sha512-vFKC2IEtQnVhpT78h1Yp8wzwrf8CM+MzKMHGJZfBtzhZNycRFnXsHk6E5TxIkkMsgNS7mdX3AGB7x2QM2di4lA==",
+      "fileCount": 52,
+      "allMemberFileBytesMatch": true
+    },
+    "signal-exit": {
+      "version": "4.1.0",
+      "distribution": "https://registry.npmjs.org/signal-exit/-/signal-exit-4.1.0.tgz",
+      "lockfileIntegrity": "sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==",
+      "fileCount": 29,
+      "allMemberFileBytesMatch": true
+    },
+    "zod": {
+      "version": "4.3.6",
+      "distribution": "https://registry.npmjs.org/zod/-/zod-4.3.6.tgz",
+      "lockfileIntegrity": "sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==",
+      "fileCount": 694,
+      "allMemberFileBytesMatch": true
+    }
+  }
+}

@@ -1,0 +1,4 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -136 +135,0 @@
+-- **high** — Do not assume one global window, document, DOM id, mutable singleton, mount, or Effect setup; derive ownership from the component instance and mirror every external setup with cleanup.

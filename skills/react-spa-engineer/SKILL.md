@@ -5,9 +5,9 @@ description: Build, review, and diagnose React SPAs with TypeScript, Vite,
   app integration and runtime correctness; route UX choices, visual direction,
   and formal UI audits to their owners. Excludes SSR/RSC/Next.js.
 metadata:
-  source-version: 0.1.13
+  source-version: 0.1.14
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: dfa136734d437f8d8cec5293c7bd44a2245fbe31bf153b01c68ad43608ed809d
+  skillforge-source-hash: 7bdef438101752327675ffef3ec266648371249950473c3080be5ee53904ffbb
 ---
 
 # react-spa-engineer
@@ -125,7 +125,7 @@ Match the completion claim to observed evidence and leave the next consumer an a
 
 Validation:
 
-- Type, lint, build, mock, route, screenshot, and generated-file evidence is not presented as proof of unexercised interactive, persistence, performance, auth, security, or production behavior.
+- Exercise the boundary each completion claim depends on.
 - The handoff does not require the consumer to invent a missing contract or reinterpret the result status.
 
 ## Interop priority

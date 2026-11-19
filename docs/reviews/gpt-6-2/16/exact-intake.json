@@ -1,0 +1,15 @@
+{
+  "before_execution": true,
+  "package_sha256": "18d10bb0af2d75691d33cef3d9cf4cb7c0189dc684628d281265206e1144432a",
+  "tally": {
+    "task": "b7417e49e9c5e5c9a875e08b2b2b30e4740a067a4d41a33474d1b4c4c210ea38",
+    "compiler_record_sha256": "bd7f811bd20ebcaedba788e60ec21b026df12e5261cec4b2d5d0b3d9ba7d107c",
+    "compiled_tar_sha256": "6168dfdbc4452fbce829d94ac55b26889beb827120dd0d3db651a4503921914b",
+    "runtime_record_sha256": "262dce2d97b1747c75f81d9591102ea1acbc25504927c732edfdac7c11d155a5",
+    "criterion": "A new distinct public-process test checks success across sign and fraction, rejects one invalid argument in a list, and distinguishes the accepted single JSON object from narration without a CLI fix. The unchanged test must fail on the incoming binary, pass after only the narration is removed, and fail when errors are rerouted to stdout. Preserve all original bytes. The installed npm bin belongs to 29."
+  },
+  "workers": {
+    "task": "48a79dd59a2b7b36dbeb21eecad9b1cf8586ca165a04212eccb162571e05c4d4",
+    "criterion": "Select the current compatible Workers plugin for a new Vitest 5.1.1 harness, preserve the working Vitest 4.1.9 environment with the legacy package, and report how to exercise local Worker fetch. Design only; compare decisions to authoritative version metadata and separate real workerd runs."
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "acceptedGit": "4cf6221311a15047152659ea0a64f3a63214ce21",
+  "originalArchiveMatchesGitByPath": true,
+  "lockedResearchInputsSHA256": "24cbf8147d0b24fae0f37764cc0eb18608ae27658149e3bc0aa8844966387d46",
+  "A/B/CDeliveredBytes": {
+    "A": 105601,
+    "B": 105498,
+    "C": 105611
+  },
+  "payloadFileCount": 22,
+  "releasedDeliveredBytes": 106730,
+  "bodyBytes": {
+    "A": 18494,
+    "B": 18391,
+    "C": 18504,
+    "release": 18568
+  },
+  "archivedInputs": 64,
+  "modelCommand": "codex exec --disable memories --ephemeral --sandbox workspace-write --model gpt-6.2-sol -c model_reasoning_effort=\"medium\"",
+  "all64InitialFilesVerifiedAgainstFreeze": true
+}

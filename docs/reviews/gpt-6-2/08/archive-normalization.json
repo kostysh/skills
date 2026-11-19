@@ -1,0 +1,26 @@
+{
+  "change": "Removed Unix account names and timestamp metadata from published research containers. The private original container hashes identify the pre-edit freeze. Every contained path, file byte and Unix mode was compared before and after. The product archive is the untouched output of pack:skills.",
+  "archives": [
+    {
+      "name": "research-inputs.tar.gz",
+      "frozen_original_sha256": "193a395431fc6f97a2067cbcb60277ee9665c0d568c07c79ec1175365f1af18d",
+      "public_sha256": "54fc3404d8586bba0e44863fe6855c4e474aadbd241833099396fc90cd0264b6",
+      "files": 53,
+      "path_content_and_mode_identical": true
+    },
+    {
+      "name": "auth-replay-input.tar.gz",
+      "frozen_original_sha256": "6b27bbba2f4d8f67fa10e86019006c3b2e7f300e30920818e0e21318457ed21e",
+      "public_sha256": "7554875a05580f8078c326add6b3f48b266fe75d23bae758edd0de8de4fb6a78",
+      "files": 3,
+      "path_content_and_mode_identical": true
+    },
+    {
+      "name": "pr-checks-input.tar.gz",
+      "frozen_original_sha256": "8e3410d2dde9d9d2bb65a7fe5a7a2adc41b33d32d5190e305325acd096b61831",
+      "public_sha256": "578518c1cf86bdfff0a56b04cf435b14c2e5773f2c8b6704557639b01f25eec1",
+      "files": 3,
+      "path_content_and_mode_identical": true
+    }
+  ]
+}

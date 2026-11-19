@@ -1,0 +1,143 @@
+{
+  "contract": "PREVIEW-1",
+  "node": "v24.15.0",
+  "fixtureSha256": "9c57942cd805e7917fd9bea3555f2e3db7a3ec153d0f317e8f622de313259195",
+  "results": [
+    {
+      "case": "positive-odd",
+      "id": 1,
+      "row": {
+        "id": 1,
+        "subjectKey": "synthetic-1",
+        "netMinor": "15",
+        "feeMinor": "7",
+        "expiresAt": 2100000061
+      },
+      "export": {
+        "id": 1,
+        "subjectKey": "synthetic-1",
+        "feeMinor": "7"
+      }
+    },
+    {
+      "case": "negative-odd",
+      "id": 2,
+      "row": {
+        "id": 2,
+        "subjectKey": "synthetic-2",
+        "netMinor": "-15",
+        "feeMinor": "-8",
+        "expiresAt": 2100000062
+      },
+      "export": {
+        "id": 2,
+        "subjectKey": "synthetic-2",
+        "feeMinor": "-8"
+      }
+    },
+    {
+      "case": "beyond-double",
+      "id": 3,
+      "row": {
+        "id": 3,
+        "subjectKey": "synthetic-3",
+        "netMinor": "9007199254740993",
+        "feeMinor": "4503599627370496",
+        "expiresAt": 2100000063
+      },
+      "export": {
+        "id": 3,
+        "subjectKey": "synthetic-3",
+        "feeMinor": "4503599627370496"
+      }
+    },
+    {
+      "case": "int64-min",
+      "id": 4,
+      "row": {
+        "id": 4,
+        "subjectKey": "synthetic-4",
+        "netMinor": "-9223372036854775808",
+        "feeMinor": "-4611686018427387904",
+        "expiresAt": 2100000064
+      },
+      "export": {
+        "id": 4,
+        "subjectKey": "synthetic-4",
+        "feeMinor": "-4611686018427387904"
+      }
+    },
+    {
+      "case": "int64-max",
+      "id": 5,
+      "row": {
+        "id": 5,
+        "subjectKey": "synthetic-5",
+        "netMinor": "9223372036854775807",
+        "feeMinor": "4611686018427387903",
+        "expiresAt": 2100000065
+      },
+      "export": {
+        "id": 5,
+        "subjectKey": "synthetic-5",
+        "feeMinor": "4611686018427387903"
+      }
+    },
+    {
+      "case": "zero",
+      "id": 6,
+      "row": {
+        "id": 6,
+        "subjectKey": "synthetic-6",
+        "netMinor": "0",
+        "feeMinor": "0",
+        "expiresAt": 2100000066
+      },
+      "export": {
+        "id": 6,
+        "subjectKey": "synthetic-6",
+        "feeMinor": "0"
+      }
+    },
+    {
+      "case": "positive-net-overflow",
+      "id": 101,
+      "error": "range"
+    },
+    {
+      "case": "negative-net-overflow",
+      "id": 102,
+      "error": "range"
+    },
+    {
+      "case": "unit-out-of-int64",
+      "id": 103,
+      "error": "range"
+    },
+    {
+      "case": "noncanonical-input",
+      "id": 104,
+      "error": "input"
+    },
+    {
+      "case": "wrong-currency",
+      "id": 105,
+      "error": "input"
+    },
+    {
+      "case": "wrong-units",
+      "id": 106,
+      "error": "input"
+    },
+    {
+      "case": "zero-quantity",
+      "id": 107,
+      "error": "input"
+    },
+    {
+      "case": "expired",
+      "id": 108,
+      "error": "input"
+    }
+  ]
+}

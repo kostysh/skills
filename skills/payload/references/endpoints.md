@@ -103,4 +103,4 @@ An endpoint factory can accept typed configuration and return an `Endpoint`; cap
 
 Exercise the real registered HTTP route with success, malformed input, anonymous and forbidden actors; compare permitted record IDs with standard REST access. Read persistence after writes and denial attempts. For uploads verify bytes/metadata and returned ID; for session changes verify browser cookies and a subsequent authenticated request. A direct function call or build proves only that narrower boundary.
 
-Sources: [REST endpoints](https://payloadcms.com/docs/rest-api/overview#custom-endpoints), [Local API access](https://payloadcms.com/docs/local-api/access-control), [3.88.0 request helper](https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/utilities/addDataAndFileToRequest.ts).
+[3.94.0 REST endpoints](https://github.com/payloadcms/payload/blob/v3.94.0/docs/rest-api/overview.mdx#custom-endpoints) · [Local API access](https://github.com/payloadcms/payload/blob/v3.94.0/docs/local-api/access-control.mdx) · [Request helper](https://github.com/payloadcms/payload/blob/v3.94.0/packages/payload/src/utilities/addDataAndFileToRequest.ts)

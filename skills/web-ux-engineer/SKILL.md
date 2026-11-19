@@ -5,9 +5,9 @@ description: Design, implement, and audit user flows in web apps and SPAs. Use
   Deliver verified changes or evidence-backed UX findings; route visual
   direction, UI-rule audits, and framework mechanics to their owners.
 metadata:
-  source-version: 0.1.0
+  source-version: 0.1.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 35380f5c9edc8b15b774cabcfbc41192b873473b9517cdc130dd6c5751e51a45
+  skillforge-source-hash: ad216e1307717b5e9a59aa9d0c8918b962f6a8c6c1fad906de7eb80cff662ef1
 ---
 
 # web-ux-engineer
@@ -42,7 +42,7 @@ Anchor decisions in the user's intended result.
 Find where the scenario loses clarity or continuity.
 
 1. Follow what users see, decide, enter, and receive. Inspect terminology, information hierarchy, forms, feedback, navigation context, cancel, and recovery with realistic data.
-2. For applicable SPA transitions, trace loading, empty, error, confirmed success, unknown operation outcome, interruption, and return. Preserve useful input and list context; distinguish closing a surface from cancelling an operation.
+2. For applicable SPA transitions, trace loading, empty, error, confirmed success, unknown operation outcome, interruption, and return. Preserve useful input and list context. Check whether dismissal cancels pending work.
 3. A timeout can leave the result unknown. Do not assert failure, safe retry, rollback, or successful saving without the API contract and corresponding evidence.
 
 ### Workflow stage: Choose the interaction

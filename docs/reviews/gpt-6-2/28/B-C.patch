@@ -1,0 +1,4 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -170,0 +171 @@
++- **high** — Verify emitted responses on the agreed success and failure paths. Report which checks passed and which concerns remain unverified.

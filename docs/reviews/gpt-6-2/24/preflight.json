@@ -1,0 +1,105 @@
+{
+  "ordinary": [
+    {
+      "argv": [
+        "npm",
+        "test"
+      ],
+      "exit": 0,
+      "stdout": "\u2714 smoke: pinned card is visible immediately (0.946699ms)\n\u2714 unknown card is rejected (0.29601ms)\n\u2139 tests 2\n\u2139 suites 0\n\u2139 pass 2\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 43.347936\n",
+      "stderr": "npm notice run test\nnpm notice run node --test test/*.test.mjs\n"
+    },
+    {
+      "argv": [
+        "node",
+        "desk.mjs",
+        "working.json",
+        "pin",
+        "a"
+      ],
+      "exit": 0,
+      "stdout": "[\"Alpha\",\"Beta\"]\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "desk.mjs",
+        "working.json",
+        "pins"
+      ],
+      "exit": 0,
+      "stdout": "[\"Alpha\",\"Beta\"]\n",
+      "stderr": ""
+    }
+  ],
+  "boundary": [
+    {
+      "argv": [
+        "npm",
+        "test"
+      ],
+      "exit": 0,
+      "stdout": "\u2714 smoke: pinned card is visible immediately (0.935438ms)\n\u2714 unknown card is rejected (0.290198ms)\n\u2139 tests 2\n\u2139 suites 0\n\u2139 pass 2\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 40.967036\n",
+      "stderr": "npm notice run test\nnpm notice run node --test test/*.test.mjs\n"
+    },
+    {
+      "argv": [
+        "node",
+        "desk.mjs",
+        "working.json",
+        "pin",
+        "a"
+      ],
+      "exit": 0,
+      "stdout": "[\"Alpha\",\"Beta\"]\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "desk.mjs",
+        "working.json",
+        "pins"
+      ],
+      "exit": 0,
+      "stdout": "[]\n",
+      "stderr": ""
+    }
+  ],
+  "holdout": [
+    {
+      "argv": [
+        "npm",
+        "test"
+      ],
+      "exit": 0,
+      "stdout": "\u2714 visible desk name serializes (0.515143ms)\n\u2139 tests 1\n\u2139 suites 0\n\u2139 pass 1\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 41.561419\n",
+      "stderr": "npm notice run test\nnpm notice run node --test test.mjs\n"
+    },
+    {
+      "argv": [
+        "node",
+        "desk.mjs",
+        "issue",
+        "ticket.json",
+        "Atrium",
+        "7B"
+      ],
+      "exit": 0,
+      "stdout": "{\"desk\":\"Atrium\",\"sector\":\"7B\"}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "desk.mjs",
+        "open",
+        "ticket.json"
+      ],
+      "exit": 0,
+      "stdout": "{\"desk\":\"Atrium\",\"sector\":null}\n",
+      "stderr": ""
+    }
+  ]
+}

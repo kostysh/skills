@@ -1,0 +1,693 @@
+{
+  "states": {
+    "ordinary": [
+      {
+        "action": {
+          "op": "open"
+        },
+        "focus": {
+          "id": null,
+          "text": ""
+        },
+        "focusPaint": {
+          "tag": "BODY",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          ""
+        ],
+        "dialog": [],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "width",
+          "width": 390,
+          "height": 844
+        },
+        "focus": {
+          "id": null,
+          "text": ""
+        },
+        "focusPaint": {
+          "tag": "BODY",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          ""
+        ],
+        "dialog": [],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "fill",
+          "target": "input[type=email]",
+          "value": "audit@example.test"
+        },
+        "focus": {
+          "id": "email",
+          "text": ""
+        },
+        "focusPaint": {
+          "tag": "INPUT",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+        },
+        "status": [
+          ""
+        ],
+        "dialog": [],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "click",
+          "target": "text=Review changes"
+        },
+        "focus": {
+          "id": null,
+          "text": "Cancel"
+        },
+        "focusPaint": {
+          "tag": "BUTTON",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          ""
+        ],
+        "dialog": [
+          "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\naudit@example.test\nEmail notifications\nOn\nDelivery frequency\nDaily\nCancel\nConfirm"
+        ],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "look"
+        },
+        "focus": {
+          "id": null,
+          "text": "Cancel"
+        },
+        "focusPaint": {
+          "tag": "BUTTON",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          ""
+        ],
+        "dialog": [
+          "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\naudit@example.test\nEmail notifications\nOn\nDelivery frequency\nDaily\nCancel\nConfirm"
+        ],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "key",
+          "key": "Tab"
+        },
+        "focus": {
+          "id": null,
+          "text": "Confirm"
+        },
+        "focusPaint": {
+          "tag": "BUTTON",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+        },
+        "status": [
+          ""
+        ],
+        "dialog": [
+          "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\naudit@example.test\nEmail notifications\nOn\nDelivery frequency\nDaily\nCancel\nConfirm"
+        ],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "key",
+          "key": "Enter"
+        },
+        "focus": {
+          "id": null,
+          "text": "Close"
+        },
+        "focusPaint": {
+          "tag": "BUTTON",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+        },
+        "status": [
+          "Applying changes…"
+        ],
+        "dialog": [
+          "Applying changes\n\nYou can close this window. Your changes will continue to apply.\n\nEmail address\naudit@example.test\nEmail notifications\nOn\nDelivery frequency\nDaily\nClose\nApplying…"
+        ],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "key",
+          "key": "Escape"
+        },
+        "focus": {
+          "id": null,
+          "text": "Applying changes…"
+        },
+        "focusPaint": {
+          "tag": "DIV",
+          "role": "status",
+          "outline": "oklch(0.205 0 0) solid 2px"
+        },
+        "status": [
+          "Applying changes…"
+        ],
+        "dialog": [],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "look"
+        },
+        "focus": {
+          "id": null,
+          "text": "Applying changes…"
+        },
+        "focusPaint": {
+          "tag": "DIV",
+          "role": "status",
+          "outline": "oklch(0.205 0 0) solid 2px"
+        },
+        "status": [
+          "Applying changes…"
+        ],
+        "dialog": [],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "wait",
+          "ms": 2000
+        },
+        "focus": {
+          "id": null,
+          "text": "Settings applied\n\nEmail: audit@example.test. Notifications: On. Freque"
+        },
+        "focusPaint": {
+          "tag": "DIV",
+          "role": "status",
+          "outline": "oklch(0.205 0 0) solid 2px"
+        },
+        "status": [
+          "Settings applied\n\nEmail: audit@example.test. Notifications: On. Frequency: Daily.\n\nSaved for this session. No email is sent."
+        ],
+        "dialog": [],
+        "ms": 1602.7000000029802
+      },
+      {
+        "action": {
+          "op": "look"
+        },
+        "focus": {
+          "id": null,
+          "text": "Settings applied\n\nEmail: audit@example.test. Notifications: On. Freque"
+        },
+        "focusPaint": {
+          "tag": "DIV",
+          "role": "status",
+          "outline": "oklch(0.205 0 0) solid 2px"
+        },
+        "status": [
+          "Settings applied\n\nEmail: audit@example.test. Notifications: On. Frequency: Daily.\n\nSaved for this session. No email is sent."
+        ],
+        "dialog": [],
+        "ms": 1602.7000000029802
+      }
+    ],
+    "boundary": [
+      {
+        "action": {
+          "op": "open"
+        },
+        "focus": {
+          "id": null,
+          "text": ""
+        },
+        "focusPaint": {
+          "tag": "BODY",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          ""
+        ],
+        "dialog": [],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "width",
+          "width": 390,
+          "height": 844
+        },
+        "focus": {
+          "id": null,
+          "text": ""
+        },
+        "focusPaint": {
+          "tag": "BODY",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          ""
+        ],
+        "dialog": [],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "fill",
+          "target": "input[type=email]",
+          "value": "audit@example.test"
+        },
+        "focus": {
+          "id": "email",
+          "text": ""
+        },
+        "focusPaint": {
+          "tag": "INPUT",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+        },
+        "status": [
+          ""
+        ],
+        "dialog": [],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "click",
+          "target": "text=Review changes"
+        },
+        "focus": {
+          "id": null,
+          "text": "Cancel"
+        },
+        "focusPaint": {
+          "tag": "BUTTON",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          ""
+        ],
+        "dialog": [
+          "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\naudit@example.test\nEmail notifications\nOn\nDelivery frequency\nDaily\nCancel\nConfirm"
+        ],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "look"
+        },
+        "focus": {
+          "id": null,
+          "text": "Cancel"
+        },
+        "focusPaint": {
+          "tag": "BUTTON",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          ""
+        ],
+        "dialog": [
+          "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\naudit@example.test\nEmail notifications\nOn\nDelivery frequency\nDaily\nCancel\nConfirm"
+        ],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "key",
+          "key": "Tab"
+        },
+        "focus": {
+          "id": null,
+          "text": "Confirm"
+        },
+        "focusPaint": {
+          "tag": "BUTTON",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+        },
+        "status": [
+          ""
+        ],
+        "dialog": [
+          "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\naudit@example.test\nEmail notifications\nOn\nDelivery frequency\nDaily\nCancel\nConfirm"
+        ],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "key",
+          "key": "Enter"
+        },
+        "focus": {
+          "id": null,
+          "text": ""
+        },
+        "focusPaint": {
+          "tag": "BODY",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          "Applying changes…"
+        ],
+        "dialog": [
+          "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\naudit@example.test\nEmail notifications\nOn\nDelivery frequency\nDaily\nCancel\nApplying…"
+        ],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "key",
+          "key": "Escape"
+        },
+        "focus": {
+          "id": null,
+          "text": ""
+        },
+        "focusPaint": {
+          "tag": "BODY",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          "Applying changes…"
+        ],
+        "dialog": [],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "look"
+        },
+        "focus": {
+          "id": null,
+          "text": ""
+        },
+        "focusPaint": {
+          "tag": "BODY",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          "Applying changes…"
+        ],
+        "dialog": [],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "wait",
+          "ms": 2000
+        },
+        "focus": {
+          "id": null,
+          "text": ""
+        },
+        "focusPaint": {
+          "tag": "BODY",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          "Settings applied\n\nEmail: audit@example.test. Notifications: On. Frequency: Daily.\n\nSaved for this session. No email is sent."
+        ],
+        "dialog": [],
+        "ms": 1602.3999999910593
+      },
+      {
+        "action": {
+          "op": "look"
+        },
+        "focus": {
+          "id": null,
+          "text": ""
+        },
+        "focusPaint": {
+          "tag": "BODY",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          "Settings applied\n\nEmail: audit@example.test. Notifications: On. Frequency: Daily.\n\nSaved for this session. No email is sent."
+        ],
+        "dialog": [],
+        "ms": 1602.3999999910593
+      }
+    ],
+    "holdout": [
+      {
+        "action": {
+          "op": "open"
+        },
+        "focus": {
+          "id": null,
+          "text": ""
+        },
+        "focusPaint": {
+          "tag": "BODY",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          ""
+        ],
+        "dialog": [],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "width",
+          "width": 360,
+          "height": 844
+        },
+        "focus": {
+          "id": null,
+          "text": ""
+        },
+        "focusPaint": {
+          "tag": "BODY",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          ""
+        ],
+        "dialog": [],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "fill",
+          "target": "input[type=email]",
+          "value": "audit@example.test"
+        },
+        "focus": {
+          "id": "email",
+          "text": ""
+        },
+        "focusPaint": {
+          "tag": "INPUT",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+        },
+        "status": [
+          ""
+        ],
+        "dialog": [],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "click",
+          "target": "text=Review changes"
+        },
+        "focus": {
+          "id": null,
+          "text": "Cancel"
+        },
+        "focusPaint": {
+          "tag": "BUTTON",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          ""
+        ],
+        "dialog": [
+          "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\naudit@example.test\nEmail notifications\nOn\nDelivery frequency\nDaily\nCancel\nConfirm"
+        ],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "look"
+        },
+        "focus": {
+          "id": null,
+          "text": "Cancel"
+        },
+        "focusPaint": {
+          "tag": "BUTTON",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 3px"
+        },
+        "status": [
+          ""
+        ],
+        "dialog": [
+          "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\naudit@example.test\nEmail notifications\nOn\nDelivery frequency\nDaily\nCancel\nConfirm"
+        ],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "key",
+          "key": "Tab"
+        },
+        "focus": {
+          "id": null,
+          "text": "Confirm"
+        },
+        "focusPaint": {
+          "tag": "BUTTON",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+        },
+        "status": [
+          ""
+        ],
+        "dialog": [
+          "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\naudit@example.test\nEmail notifications\nOn\nDelivery frequency\nDaily\nCancel\nConfirm"
+        ],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "key",
+          "key": "Enter"
+        },
+        "focus": {
+          "id": null,
+          "text": "Close"
+        },
+        "focusPaint": {
+          "tag": "BUTTON",
+          "role": null,
+          "outline": "oklab(0.708 0 0 / 0.5) none 1px"
+        },
+        "status": [
+          "Applying changes…"
+        ],
+        "dialog": [
+          "Applying changes\n\nYou can close this window. Your changes will continue to apply.\n\nEmail address\naudit@example.test\nEmail notifications\nOn\nDelivery frequency\nDaily\nClose\nApplying…"
+        ],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "key",
+          "key": "Escape"
+        },
+        "focus": {
+          "id": null,
+          "text": "Applying changes…"
+        },
+        "focusPaint": {
+          "tag": "DIV",
+          "role": "status",
+          "outline": "oklch(0.205 0 0) solid 2px"
+        },
+        "status": [
+          "Applying changes…"
+        ],
+        "dialog": [],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "look"
+        },
+        "focus": {
+          "id": null,
+          "text": "Applying changes…"
+        },
+        "focusPaint": {
+          "tag": "DIV",
+          "role": "status",
+          "outline": "oklch(0.205 0 0) solid 2px"
+        },
+        "status": [
+          "Applying changes…"
+        ],
+        "dialog": [],
+        "ms": null
+      },
+      {
+        "action": {
+          "op": "wait",
+          "ms": 2000
+        },
+        "focus": {
+          "id": null,
+          "text": "Settings applied\n\nEmail: audit@example.test. Notifications: On. Freque"
+        },
+        "focusPaint": {
+          "tag": "DIV",
+          "role": "status",
+          "outline": "oklch(0.205 0 0) solid 2px"
+        },
+        "status": [
+          "Settings applied\n\nEmail: audit@example.test. Notifications: On. Frequency: Daily.\n\nSaved for this session. No email is sent."
+        ],
+        "dialog": [],
+        "ms": 1602.5
+      },
+      {
+        "action": {
+          "op": "look"
+        },
+        "focus": {
+          "id": null,
+          "text": "Settings applied\n\nEmail: audit@example.test. Notifications: On. Freque"
+        },
+        "focusPaint": {
+          "tag": "DIV",
+          "role": "status",
+          "outline": "oklch(0.205 0 0) solid 2px"
+        },
+        "status": [
+          "Settings applied\n\nEmail: audit@example.test. Notifications: On. Frequency: Daily.\n\nSaved for this session. No email is sent."
+        ],
+        "dialog": [],
+        "ms": 1602.5
+      }
+    ]
+  },
+  "threeIndependentTimings": [
+    1602.6,
+    1602.7,
+    1602.5
+  ]
+}

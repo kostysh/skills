@@ -1,0 +1,157 @@
+{
+  "variant": "C",
+  "case": "holdout",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПримени руководство в ./SKILL.md. Сотруднику важен результат сохранения подписи, когда он в следующий раз запускает программу. По контракту project/ добавь воспроизводимую проверку в project/test/contract.test.ts и запусти штатный тест. Рабочий код и прежние тесты оставь как есть.\n",
+  "input_file_sha256": {
+    "SKILL.md": "144b00cffffff23d5e89692edc9437b66af1b05eadfa28a76604fad714196606",
+    "agents/openai.yaml": "9fc7def9a8ab00f4acd2d5dfd8c166e5fcd853de375a8d620b24660ea1512a04",
+    "project/README.md": "067fa7cb270aa3b420f690c9144a2fbbbdd1a03f5fe42c703488391272e59088",
+    "project/package.json": "1591d2db0eaf5b500d098ac78a081e14c35add01786826302793d9a085fa79eb",
+    "project/src/badge.ts": "05846ede8ea6041e77b4d983e17135cd4917dd3272a34a6a1f161b16b659fdaf",
+    "project/src/display.ts": "7e563118004b7bff0cd2b655aede736d244b942f7922492d657ca0bf4a96de3d",
+    "project/test/display.test.ts": "2f45dc53fd8772bbff8b0f4a5338f7979607239b81ef9c996ea1daf2a8b20c5d",
+    "references/react-vitest.md": "f618f7263f74cae448445f3059c1fc6ed9bfb597bc7abc937aacc4e503d01db6",
+    "references/tdd.md": "029f55af01dd0a9efb77e71693c3503a89bdd8a75367454e02a93712ed18b957",
+    "references/testing-anti-patterns.md": "2d3b7f8804950eab0d67aadc4ec4301518c1e0b7838ff77b794487e50b7281ca",
+    "references/testing.md": "7452d2904f2740622df10fc23de4b86c962b3f7dd812b285e7268d57e591232d"
+  },
+  "raw_events_sha256": "3859f0c5828dfcf9e04740aa7a6b5b1e2e55479c954d8e170c1438878056eca5",
+  "raw_events_bytes": 104615,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Прочитаю `./SKILL.md` и контракт `project/`, затем добавлю проверку сохранения подписи и запущу штатный тест."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git'\"' && cat SKILL.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'git status --short && node --version && npm --version'",
+      "exit_code": 128,
+      "status": "failed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat references/testing.md references/testing-anti-patterns.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat project/README.md project/package.json project/src/badge.ts project/src/display.ts project/test/display.test.ts'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"sed -n '/\"'^## Async completion/,/''^## [''^#]/p'\"' references/testing.md && sha256sum project/src/*.ts project/test/display.test.ts project/package.json project/README.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"node --version && npm --version && type -a node npm && ls -a project && rg -n '\"'^##'\"' references/testing.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Контракт требует, чтобы отдельный запуск `show` прочитал подпись, записанную командой `set`. Проверю это на временном файле внутри проекта и проверю вывод `Default` для другого, отсутствующего файла. Ошибки ввода-вывода, повторы и параллельные записи контракт не описывает."
+    },
+    {
+      "type": "file_change",
+      "changes": [
+        {
+          "path": "{project}/project/test/contract.test.ts",
+          "kind": "add"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'npm_config_logs_max=0 npm_config_update_notifier=false npm test'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"sha256sum project/src/*.ts project/test/display.test.ts project/package.json project/README.md && rg --files --hidden -g '\"'!.git'\"' project && nl -ba project/test/contract.test.ts\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Добавил [контрактный тест]({project}/project/test/contract.test.ts:21). Он сохраняет подпись через `set` и проверяет, что при следующем запуске `show` выводит сохранённую подпись с переводом строки. Для отсутствующего файла тест ожидает `Default`. Все вызовы должны завершиться с кодом `0`.\n\nШтатный `npm test` в `project/` на Node.js 24.15.0 прошёл без предупреждений. Оба теста прошли. Рабочий код и прежний тест остались без изменений."
+    }
+  ],
+  "changed_file_contents": {
+    "project/test/contract.test.ts": "import assert from 'node:assert/strict';\nimport { spawnSync } from 'node:child_process';\nimport { mkdtempSync, rmSync } from 'node:fs';\nimport { join } from 'node:path';\nimport test from 'node:test';\n\nconst projectDir = join(import.meta.dirname, '..');\n\nfunction runBadge(file: string, operation: string, ...args: string[]) {\n  const result = spawnSync(process.execPath, ['src/badge.ts', file, operation, ...args], {\n    cwd: projectDir,\n    encoding: 'utf8',\n    timeout: 5000,\n  });\n\n  assert.ifError(result.error);\n  assert.equal(result.status, 0, `badge ${operation} failed: ${result.stderr}`);\n  return result.stdout;\n}\n\ntest('shows the saved label on the next launch', (t) => {\n  const directory = mkdtempSync(join(projectDir, '.badge-test-'));\n  t.after(() => rmSync(directory, { recursive: true, force: true }));\n\n  const file = join(directory, 'shift-badge');\n  const label = 'Evening shift';\n\n  runBadge(file, 'set', label);\n\n  assert.equal(runBadge(file, 'show'), `${label}\\n`);\n  assert.equal(runBadge(join(directory, 'missing-badge'), 'show'), 'Default\\n');\n});\n"
+  },
+  "final_response": "Добавил [контрактный тест]({project}/project/test/contract.test.ts:21). Он сохраняет подпись через `set` и проверяет, что при следующем запуске `show` выводит сохранённую подпись с переводом строки. Для отсутствующего файла тест ожидает `Default`. Все вызовы должны завершиться с кодом `0`.\n\nШтатный `npm test` в `project/` на Node.js 24.15.0 прошёл без предупреждений. Оба теста прошли. Рабочий код и прежний тест остались без изменений.",
+  "input_file_modes": {
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "project/README.md": "0664",
+    "project/package.json": "0664",
+    "project/src/badge.ts": "0664",
+    "project/src/display.ts": "0664",
+    "project/test/display.test.ts": "0664",
+    "references/react-vitest.md": "0644",
+    "references/tdd.md": "0644",
+    "references/testing-anti-patterns.md": "0644",
+    "references/testing.md": "0644"
+  },
+  "changed_file_modes": {
+    "project/test/contract.test.ts": "0664"
+  },
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "subjectExit": 0,
+    "newFiles": [
+      "project/test/contract.test.ts"
+    ],
+    "changesToOriginals": [],
+    "testSha256": "d4704fdaf1e4913adb8f08e623065b5e13c5d4dead340e60edeb15540650a6ef",
+    "independentRuns": {
+      "initial": {
+        "cmd": [
+          "node",
+          "--test",
+          "test/contract.test.ts"
+        ],
+        "exit": 0,
+        "stdout": "✔ shows the saved label on the next launch (132.228186ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 195.828097\n",
+        "stderr": ""
+      },
+      "negative": {
+        "cmd": [
+          "node",
+          "--test",
+          "test/contract.test.ts"
+        ],
+        "exit": 1,
+        "stdout": "✖ shows the saved label on the next launch (93.141323ms)\nℹ tests 1\nℹ suites 0\nℹ pass 0\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 157.450083\n\n✖ failing tests:\n\ntest at test/contract.test.ts:21:1\n✖ shows the saved label on the next launch (93.141323ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  + actual - expected\n  \n  + 'Default\\n'\n  - 'Evening shift\\n'\n  \n      at TestContext.<anonymous> (file://./test/contract.test.ts:30:10)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1201:25)\n      at Test.start (node:internal/test_runner/test:1096:17)\n      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 'Default\\n',\n    expected: 'Evening shift\\n',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n",
+        "stderr": ""
+      },
+      "equivalent": {
+        "cmd": [
+          "node",
+          "--test",
+          "test/contract.test.ts"
+        ],
+        "exit": 0,
+        "stdout": "✔ shows the saved label on the next launch (145.992108ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 211.897667\n",
+        "stderr": ""
+      }
+    }
+  }
+}

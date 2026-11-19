@@ -1,0 +1,285 @@
+{
+  "retrievedUTC": "2026-11-19T00:03:33.531927+00:00",
+  "officialSourcesAndActiveURLs": {
+    "plugin": {
+      "source": "https://raw.githubusercontent.com/payloadcms/payload/v3.94.0/docs/plugins/import-export.mdx",
+      "finalURL": "https://raw.githubusercontent.com/payloadcms/payload/v3.94.0/docs/plugins/import-export.mdx",
+      "status": 200,
+      "sha256": "f3389ebf6492b76f99e4226b082efa2f64af7a6b248b49133d3fc773bd2b4475",
+      "matched": {
+        "disableJobsQueue": true,
+        "matchField": true,
+        "JSON array": true,
+        "summary.issues": true
+      }
+    },
+    "lookup": {
+      "source": "https://raw.githubusercontent.com/payloadcms/payload/v3.94.0/packages/plugin-import-export/src/import/batchProcessor.ts",
+      "finalURL": "https://raw.githubusercontent.com/payloadcms/payload/v3.94.0/packages/plugin-import-export/src/import/batchProcessor.ts",
+      "status": 200,
+      "sha256": "fd3653df4e122dca25d4a5782b774ef964a1bb2f215080a7fc75e0ef8b8a2ab4",
+      "matched": {
+        "document[matchField || 'id']": true,
+        "existingDocResult = await req.payload.find": true,
+        "overrideAccess: false": true
+      }
+    },
+    "adapter": {
+      "source": "https://raw.githubusercontent.com/payloadcms/payload/v3.94.0/packages/db-sqlite/src/index.ts",
+      "finalURL": "https://raw.githubusercontent.com/payloadcms/payload/v3.94.0/packages/db-sqlite/src/index.ts",
+      "status": 200,
+      "sha256": "aaa8249da4df74992e60cbed524f45fdf0f6edf072af1443267a17c05f3fca28",
+      "matched": {
+        "args.idType || 'number'": true,
+        "args.allowIDOnCreate ?? false": true
+      }
+    },
+    "reader": {
+      "source": "https://raw.githubusercontent.com/payloadcms/payload/v3.94.0/docs/local-api/access-control.mdx",
+      "finalURL": "https://raw.githubusercontent.com/payloadcms/payload/v3.94.0/docs/local-api/access-control.mdx",
+      "status": 200,
+      "sha256": "52ea45e330adc4252b1f8599fb766561e3e60b5ce42fc8d7ba876a407eedad65",
+      "matched": {
+        "overrideAccess: false": true,
+        "user": true
+      }
+    },
+    "fields": {
+      "source": "https://raw.githubusercontent.com/payloadcms/payload/v3.94.0/packages/payload/src/fields/config/types.ts",
+      "finalURL": "https://raw.githubusercontent.com/payloadcms/payload/v3.94.0/packages/payload/src/fields/config/types.ts",
+      "status": 200,
+      "sha256": "dda65ff77245aff880a23ca0da89b27992c7c9a07d47dba5eb13aff7de5602f0",
+      "matched": {
+        "export type RelationshipField": true,
+        "export type TextField": true
+      }
+    },
+    "core-manifest": {
+      "source": "https://registry.npmjs.org/payload/3.94.0",
+      "finalURL": "https://registry.npmjs.org/payload/3.94.0",
+      "status": 200,
+      "sha256": "34c489268fb292641c498cb0fdbb7d8f41ed11e7126c57578a060bab76e592cf",
+      "matched": {},
+      "fields": {
+        "name": "payload",
+        "version": "3.94.0",
+        "engines": {
+          "node": "^22.23.5 || ^24.22.3 || >=26.13.1"
+        },
+        "peerDependencies": {
+          "graphql": "^16.8.1"
+        }
+      }
+    },
+    "adapter-manifest": {
+      "source": "https://registry.npmjs.org/@payloadcms%2fdb-sqlite/3.94.0",
+      "finalURL": "https://registry.npmjs.org/@payloadcms%2fdb-sqlite/3.94.0",
+      "status": 200,
+      "sha256": "13da2ef093a7dde23ab6f6b76dcc7ff394df1a87f2d66f4514e61142fcb353d1",
+      "matched": {},
+      "fields": {
+        "name": "@payloadcms/db-sqlite",
+        "version": "3.94.0",
+        "engines": null,
+        "peerDependencies": {
+          "payload": "3.94.0"
+        }
+      }
+    },
+    "plugin-manifest": {
+      "source": "https://registry.npmjs.org/@payloadcms%2fplugin-import-export/3.94.0",
+      "finalURL": "https://registry.npmjs.org/@payloadcms%2fplugin-import-export/3.94.0",
+      "status": 200,
+      "sha256": "6d8ac77d8ece919fc875348781a80d83ffbb55a5321bf2736a249a1438697a4a",
+      "matched": {},
+      "fields": {
+        "name": "@payloadcms/plugin-import-export",
+        "version": "3.94.0",
+        "engines": null,
+        "peerDependencies": {
+          "payload": "3.94.0",
+          "@payloadcms/ui": "3.94.0"
+        }
+      }
+    },
+    "channels": {
+      "source": "https://registry.npmjs.org/-/package/payload/dist-tags",
+      "finalURL": "https://registry.npmjs.org/-/package/payload/dist-tags",
+      "status": 200,
+      "sha256": "aff5256e8ee9f6f1d121cbd6c4691e01d7397e9ca519b27d26512bd1687cdf10",
+      "matched": {},
+      "fields": {
+        "payload-2": "2.32.3",
+        "canary": "4.0.0-canary.20261118",
+        "beta": "4.0.0-beta.10",
+        "latest": "3.94.0"
+      }
+    },
+    "wordpress-paging": {
+      "source": "https://developer.wordpress.org/rest-api/using-the-rest-api/pagination/",
+      "finalURL": "https://developer.wordpress.org/rest-api/using-the-rest-api/pagination/",
+      "status": 200,
+      "sha256": "44d192df18816b82d91e677234fe71503701c5dc8a01da4a730067dd787659f0",
+      "matched": {
+        "X-WP-TotalPages": true
+      }
+    },
+    "wordpress-wxr": {
+      "source": "https://developer.wordpress.org/reference/functions/export_wp/",
+      "finalURL": "https://developer.wordpress.org/reference/functions/export_wp/",
+      "status": 200,
+      "sha256": "da6f027d3efc7e328a7092cb1ad40a3821bc7b744cfb9b1db1b1d18a13f739f1",
+      "matched": {
+        "wp:post_id": true,
+        "content:encoded": true
+      }
+    },
+    "release": {
+      "source": "https://api.github.com/repos/payloadcms/payload/releases/tags/v3.91.0",
+      "finalURL": "https://api.github.com/repos/payloadcms/payload/releases/tags/v3.91.0",
+      "status": 200,
+      "sha256": "c9ad85bbdf1e1c541a51eea0baf3000d5ad2e96b792b40b398b5dc3ff9845343",
+      "matched": {
+        "18434": true
+      }
+    },
+    "export-change": {
+      "source": "https://api.github.com/repos/payloadcms/payload/pulls/18434/files",
+      "finalURL": "https://api.github.com/repos/payloadcms/payload/pulls/18434/files",
+      "status": 200,
+      "sha256": "50a0329a515344aa329b776a4656d5b725754cbec60e8b09a3237ebbd879d90d",
+      "matched": {
+        "defaultColumns": true
+      }
+    },
+    "prompting": {
+      "source": "https://developers.openai.com/api/docs/guides/latest-model?model=gpt-6.2-astra",
+      "finalURL": "https://developers.openai.com/api/docs/guides/latest-model?model=gpt-6.2-astra",
+      "status": 200,
+      "sha256": "95c717d1e9e915b1e8560861403d0e9cf3844b9193cca82fc6d89d14bc90c5d6",
+      "matched": {
+        "Prompting best practices": true
+      }
+    },
+    "active-1": {
+      "source": "https://developer.wordpress.org/reference/functions/export_wp/",
+      "finalURL": "https://developer.wordpress.org/reference/functions/export_wp/",
+      "status": 200,
+      "sha256": "ad41e32d267d08cd298cd1b37772ff89dac37fcccdaf792cb790d3be81d890bf",
+      "matched": {}
+    },
+    "active-2": {
+      "source": "https://developer.wordpress.org/rest-api/reference/posts/",
+      "finalURL": "https://developer.wordpress.org/rest-api/reference/posts/",
+      "status": 200,
+      "sha256": "e2247808670a66256e24031299e07603a54f0290dfc69ef9455047312312492b",
+      "matched": {}
+    },
+    "active-3": {
+      "source": "https://developer.wordpress.org/rest-api/using-the-rest-api/pagination/",
+      "finalURL": "https://developer.wordpress.org/rest-api/using-the-rest-api/pagination/",
+      "status": 200,
+      "sha256": "b530022c0c6c65ee470ce36e244e69365e2355541a8a5fc95b98bc01d9b08a02",
+      "matched": {}
+    },
+    "active-4": {
+      "source": "https://docs.strapi.io/cms/backend-customization/models",
+      "finalURL": "https://docs.strapi.io/cms/backend-customization/models",
+      "status": 200,
+      "sha256": "4e585c4be80819cf75db77e5ff2a941c5ec1187454738e61caaf9cda851cf4f3",
+      "matched": {}
+    },
+    "active-5": {
+      "source": "https://github.com/payloadcms/payload/blob/v3.94.0/docs/local-api/access-control.mdx",
+      "finalURL": "https://github.com/payloadcms/payload/blob/v3.94.0/docs/local-api/access-control.mdx",
+      "status": 200,
+      "sha256": "8782cf701bd48c4ac662521119a9134d546250a8ea44e4fdaa75513a19d531e0",
+      "matched": {}
+    },
+    "active-6": {
+      "source": "https://github.com/payloadcms/payload/blob/v3.94.0/docs/plugins/import-export.mdx",
+      "finalURL": "https://github.com/payloadcms/payload/blob/v3.94.0/docs/plugins/import-export.mdx",
+      "status": 200,
+      "sha256": "e6788237333f4ca368fc15965bb86284213d6efc67a7cbe39c7e392dee19fe26",
+      "matched": {}
+    },
+    "active-7": {
+      "source": "https://github.com/payloadcms/payload/blob/v3.94.0/packages/db-sqlite/src/index.ts",
+      "finalURL": "https://github.com/payloadcms/payload/blob/v3.94.0/packages/db-sqlite/src/index.ts",
+      "status": 200,
+      "sha256": "35141996a08aa8c33f5aa24c8b832b8ac9b95f1890986a208f6e5c67235f5bf9",
+      "matched": {}
+    },
+    "active-8": {
+      "source": "https://github.com/payloadcms/payload/blob/v3.94.0/packages/payload/src/fields/config/types.ts",
+      "finalURL": "https://github.com/payloadcms/payload/blob/v3.94.0/packages/payload/src/fields/config/types.ts",
+      "status": 200,
+      "sha256": "8acdc0db495a58751778bc5705d59833ce425fbb81fa1abedd4acd8d4136b767",
+      "matched": {}
+    },
+    "active-9": {
+      "source": "https://github.com/payloadcms/payload/blob/v3.94.0/packages/plugin-import-export/src/import/batchProcessor.ts",
+      "finalURL": "https://github.com/payloadcms/payload/blob/v3.94.0/packages/plugin-import-export/src/import/batchProcessor.ts",
+      "status": 200,
+      "sha256": "0648700f318fb59257299047a4cb922a240efbe88b06a3531bf7a1b59dada12d",
+      "matched": {}
+    },
+    "active-10": {
+      "source": "https://github.com/payloadcms/payload/pull/18434",
+      "finalURL": "https://github.com/payloadcms/payload/pull/18434",
+      "status": 200,
+      "sha256": "10d4399abdb8eaa5f4d31e5b8f2ca4c5981ca13ac253f16dc4e8e26a901769ca",
+      "matched": {}
+    },
+    "active-11": {
+      "source": "https://payloadcms.com/docs/configuration/localization",
+      "finalURL": "https://payloadcms.com/docs/configuration/localization",
+      "status": 200,
+      "sha256": "0c07b58bab29726213f9c72d1415f63103217baaf63e4d014253947666ed63d9",
+      "matched": {}
+    },
+    "active-12": {
+      "source": "https://payloadcms.com/docs/rich-text/converting-html",
+      "finalURL": "https://payloadcms.com/docs/rich-text/converting-html",
+      "status": 200,
+      "sha256": "5e925281167431609a040966d35aa9021a3ad53f1fc6ef817321b9db85b64919",
+      "matched": {}
+    },
+    "active-13": {
+      "source": "https://payloadcms.com/docs/rich-text/converting-markdown",
+      "finalURL": "https://payloadcms.com/docs/rich-text/converting-markdown",
+      "status": 200,
+      "sha256": "071b3b48abd719195cb4f613a0dc5fa5ce1da33a435bd41a798b276a42831188",
+      "matched": {}
+    },
+    "active-14": {
+      "source": "https://www.contentful.com/developers/docs/concepts/links/",
+      "error": "HTTP Error 429: Too Many Requests",
+      "alternateRead": {
+        "method": "web viewer opened same official Contentful URL",
+        "heading": "Entry and asset links",
+        "section": "Link resolution, JSON response and links to entries and assets",
+        "when": "2026-11-19"
+      }
+    },
+    "active-15": {
+      "source": "https://www.sanity.io/docs/developer-guides/beginners-guide-to-portable-text",
+      "finalURL": "https://www.sanity.io/docs/developer-guides/beginners-guide-to-portable-text",
+      "status": 200,
+      "sha256": "656f07a6140490ea04b6e2c0139a04cbc4013315110ce036bfc58b0d7eeefdac",
+      "matched": {}
+    }
+  },
+  "localActiveLinks": [
+    {
+      "from": "SKILL.md",
+      "target": "references/payload-field-reference.md",
+      "exists": true
+    },
+    {
+      "from": "SKILL.md",
+      "target": "references/payload-field-reference.md",
+      "exists": true
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "ab": {
+    "launch_model": "gpt-6.2-sol",
+    "launch_reasoning": "high",
+    "sandbox": "read-only",
+    "feature_flag": [
+      "--disable",
+      "memories"
+    ],
+    "new_ephemeral_session": true,
+    "original_signed_answer_sha256": "902d530dfca67ccd8ddcc2c9cdf0cfb1432cc4f566da7bba9a26f354683c114e",
+    "local_event_stream_sha256": "ffd2912f2b086bf2d524387d652727afa854f9f779318eb5cfc2a947231e6d43",
+    "original_dispatch_sha256": "16bffa1e7b458e42de23a23d9e8860653107fa094f75bde4b7c6547c7e30ede4",
+    "public_report_sha256": "496f977b5eac87877e1746b2e887f77463c70963dc46bf2668540932b61d8c8d",
+    "raw_criteria_sha256": "49e3e19db87d5a208487c58434b7a89deb4fb74a38d4775de117247a097f0226",
+    "files_in_blinded_packet": 561,
+    "commands_reviewed": 28,
+    "observed_access": "Neutral packet and Git within the packet. No observed access to variant mapping, sessions outside the blinded packet, configuration of an arm or private author work. Common host visibility limited the claim to observable accesses.",
+    "raw_exit": 0,
+    "case_codes_and_durable_result_ids": {
+      "12cd7e": "12cd7e",
+      "4f4021": "4f4021",
+      "eaec82": "eaec82",
+      "38dc7d": "38dc7d"
+    }
+  },
+  "confirm": {
+    "launch_model": "gpt-6.2-sol",
+    "launch_reasoning": "high",
+    "sandbox": "read-only",
+    "feature_flag": [
+      "--disable",
+      "memories"
+    ],
+    "new_ephemeral_session": true,
+    "original_signed_answer_sha256": "322e6553dbd15a857a69d847cf5beb1b5f9ef6214a7ab7e9f34afd490526a06c",
+    "local_event_stream_sha256": "c709a775334ae4289b1f32836f5d50c9355485abe259dc0fa1ecf528969191c3",
+    "original_dispatch_sha256": "15924b772860c4990770eb1d6a1cfbb5d15ffb88c4e3e21f3d3d7ce315d8b0d6",
+    "public_report_sha256": "10ec8e115af0372b95a95f60a4869d70ee58a1f558b083f965bf9057497d48c6",
+    "raw_criteria_sha256": "49e3e19db87d5a208487c58434b7a89deb4fb74a38d4775de117247a097f0226",
+    "files_in_blinded_packet": 990,
+    "commands_reviewed": 17,
+    "observed_access": "Neutral packet and Git within the packet. No observed access to variant mapping, sessions outside the blinded packet, configuration of an arm or private author work. Common host visibility limited the claim to observable accesses.",
+    "raw_exit": 0,
+    "case_codes_and_durable_result_ids": {
+      "ae3820": "ae3820",
+      "45f425": "45f425",
+      "74996b": "12cd7e",
+      "b16baf": "38dc7d",
+      "5b42ec": "5b42ec",
+      "a72a32": "a72a32",
+      "4ad449": "4ad449"
+    }
+  }
+}

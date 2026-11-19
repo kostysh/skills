@@ -1,0 +1,78 @@
+{
+  "baseline": {
+    "version": "0.2.3",
+    "archiveSha256": "487b541ceef0c8e192a18b8837a053e2bcfa055b95f31564fbd19a3ba483015d",
+    "snapshot": "4af9221c56defb083ed709ea23b25726daad136c",
+    "unpackedFilesEqualA": true
+  },
+  "release": {
+    "version": "0.2.4",
+    "archiveSha256": "9940231f1da84373ec1f49055c99fe000fdf86e77066bee89c19b2b49172a9db",
+    "archiveBytes": 24452,
+    "archiveFilesSha256": {
+      "SKILL.md": "66beed8c8ae10ed15ce826a4cf07f64803f1a3ee1f2dbba3a078ab46bb50e431",
+      "agents/openai.yaml": "c17ae6395df96fbe8dacc0839bbd44169d296202868a8ca8cbbec11755d3dfb5",
+      "assets/templates/gdpr-architecture-audit.md": "f240b8468ef99ca71fc0e86bf5ba55d2c9700833afa4d5a51a17025035a1aa95",
+      "assets/templates/gdpr-finding.yaml": "695035885b13e42d0c8d3c7957ce6b5fc38007efa8942326df3aa14e46ed75e2",
+      "assets/templates/processing-map.yaml": "8d6f6da984efb7b9b87da2754ba7f64a6618ece3f921d449605661ce85e93ea9",
+      "references/audit-methodology.md": "abbe7be57407c92a9dbfeccc6ac41ca2413a31be4fb3abf2c1ba29a5e1cdad98",
+      "references/control-catalog.md": "9e4aa17f1e6207211ae8890ae417c8474362986e7d63ffdb98e81eb4080bd295",
+      "references/implementation-evidence.md": "8fda9a04060ed0969f7c6b5293f6687656600ac74fa53bf34e7f012d8a4c619f"
+    },
+    "matchesEmittedAndIsolatedCompile": true,
+    "catalogContentHash": "14b4484614bc47fe6cdac619ba5597733ca6a05b6b718d5b50d0eaa15b4fba3f",
+    "evidenceFile": "gdpr-compliance-0.2.4.tar.gz"
+  },
+  "rowsDifferingFromControlledC": [
+    [
+      "  source-version: 0.2.3",
+      "  source-version: 0.2.4"
+    ],
+    [
+      "  skillforge-source-hash: 498ba3d381834a281f2cd19dd93327744842e08f0ef15bc3aaf5dfefc9e218ef",
+      "  skillforge-source-hash: 5b6c53fbe81ca47a0eead58da477015b3f4d8dccd90750e094b755efd8fac61e"
+    ]
+  ],
+  "compilerChecks": [
+    "lint source: OK",
+    "regenerate: completed",
+    "check regenerated source: OK",
+    "compile to independent folder: completed",
+    "check independent emitted copy: OK",
+    "current log reachable through included docs/README.md"
+  ],
+  "scopedPackCommand": "pnpm --filter @kostysh/skills pack:skills --root <compiled-skills> --out <output> --release skills-local-review --previous <previous-catalog.json>",
+  "nativeVersions": {
+    "node": "24.15.0",
+    "codex-cli": "0.170.0",
+    "packagingCLI": "@kostysh/skills 0.1.3",
+    "compiler": "skill-source-compiler 0.2.12",
+    "sqlite": "3.46.1"
+  },
+  "releaseTrial": {
+    "receipt": "results/release-r20.json",
+    "newSessionId": "01a1f083-fc71-7ff2-b845-3e916602651a",
+    "rawEventsSha256": "7c67bff87f5203ca5821d980df0423d64a2878fa9152fb53c7e889dddd803b6e",
+    "finalReportSha256": "0299c99f27be8ea486561010182581aef3d4038d94b3cd4041f63b84b49f887b",
+    "observed": {
+      "exit": 0,
+      "added": [
+        "handoff.md"
+      ],
+      "changedInputs": [],
+      "handoff": {
+        "exists": true,
+        "bytes": 5803,
+        "sha256": "0299c99f27be8ea486561010182581aef3d4038d94b3cd4041f63b84b49f887b"
+      },
+      "packagedFilesIdenticalBeforeDispatch": 8,
+      "preExistingByteHashesAndUnixModesUnchanged": true
+    }
+  },
+  "afterCompletingMaintenanceLog": {
+    "includedLogEqualsCurrentSource": true,
+    "repackedArchiveMatchesBothIndependentExecutions": true,
+    "sha256": "9940231f1da84373ec1f49055c99fe000fdf86e77066bee89c19b2b49172a9db",
+    "candidateFilesSha256": "d4f09a46781779d075c5e9cb7eb0f1c3a146a653219a4f2f51a9284f14b823c1"
+  }
+}

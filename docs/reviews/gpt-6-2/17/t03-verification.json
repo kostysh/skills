@@ -1,0 +1,383 @@
+{
+  "scope": "17, T03 R1 to R2; two disposable clones and external JSON data",
+  "bundleSha256": "c8189d9e0fd248a5101b5fb7adb689660064afd60fd61d1fcfcb155f13b15337",
+  "patchSha256": "56d5a83d61de9b753f5776ad1f225d46d3151fae72aa9d43d1d23d9bffe5575b",
+  "node": "v24.15.0",
+  "npm": "12.0.1",
+  "writer": "import {loadCatalog,setPinned,saveCatalog} from './src/catalog.mjs'; const [p,v]=process.argv.slice(1); const cards=setPinned(loadCatalog(p),'a',v==='true'); saveCatalog(p,cards); console.log(JSON.stringify(cards));",
+  "reader": "import {loadCatalog} from './src/catalog.mjs'; console.log(JSON.stringify(loadCatalog(process.argv[1])));",
+  "cases": {
+    "R1": {
+      "snapshotBefore": {
+        "head": "b0244bdcba9416a0a4f40a4f898b21fd6c6990f3",
+        "status": "",
+        "files": {
+          "README.md": {
+            "sha256": "a61923dbfb54a07bfaa42ecd38cf4b114787c3b29e48dac6d33887a1cf7b1cc8",
+            "mode": "0664"
+          },
+          "fixture/catalog.json": {
+            "sha256": "c1ffa5c0464dc1dbaef19ba17bd3f2b383ad46ffd7c35eed6d06dd9bb1ad3991",
+            "mode": "0664"
+          },
+          "package.json": {
+            "sha256": "430f45fd1e3827efe0aba6fdf1be5a64b76e0c3362ce37e3bb3de8b96e730432",
+            "mode": "0664"
+          },
+          "src/catalog.mjs": {
+            "sha256": "47d76d1e7a3f3f3705ce84c8f7b4adc19e6266ab5cfc223dabfbd41ce25fadf5",
+            "mode": "0664"
+          },
+          "test/catalog.test.mjs": {
+            "sha256": "6a45eae3808cedb55b2f76befc6e5a421c44c303f16c66929a87f2fffe2b6d1d",
+            "mode": "0664"
+          }
+        }
+      },
+      "snapshotAfter": {
+        "head": "b0244bdcba9416a0a4f40a4f898b21fd6c6990f3",
+        "status": "",
+        "files": {
+          "README.md": {
+            "sha256": "a61923dbfb54a07bfaa42ecd38cf4b114787c3b29e48dac6d33887a1cf7b1cc8",
+            "mode": "0664"
+          },
+          "fixture/catalog.json": {
+            "sha256": "c1ffa5c0464dc1dbaef19ba17bd3f2b383ad46ffd7c35eed6d06dd9bb1ad3991",
+            "mode": "0664"
+          },
+          "package.json": {
+            "sha256": "430f45fd1e3827efe0aba6fdf1be5a64b76e0c3362ce37e3bb3de8b96e730432",
+            "mode": "0664"
+          },
+          "src/catalog.mjs": {
+            "sha256": "47d76d1e7a3f3f3705ce84c8f7b4adc19e6266ab5cfc223dabfbd41ce25fadf5",
+            "mode": "0664"
+          },
+          "test/catalog.test.mjs": {
+            "sha256": "6a45eae3808cedb55b2f76befc6e5a421c44c303f16c66929a87f2fffe2b6d1d",
+            "mode": "0664"
+          }
+        }
+      },
+      "changedPaths": [
+        "src/catalog.mjs"
+      ],
+      "test": "✔ smoke: pinned card is visible immediately (0.906232ms)\n✔ unknown card is rejected (0.292443ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 38.909312",
+      "testExit": 0,
+      "roundtrips": [
+        {
+          "setPinned": true,
+          "initial": [
+            {
+              "id": "a",
+              "title": "Alpha"
+            },
+            {
+              "id": "b",
+              "title": "Beta",
+              "pinned": true
+            }
+          ],
+          "immediate": [
+            {
+              "id": "a",
+              "title": "Alpha",
+              "pinned": true
+            },
+            {
+              "id": "b",
+              "title": "Beta",
+              "pinned": true
+            }
+          ],
+          "rawSavedJSON": [
+            {
+              "id": "a",
+              "title": "Alpha",
+              "pinned": true
+            },
+            {
+              "id": "b",
+              "title": "Beta",
+              "pinned": true
+            }
+          ],
+          "freshProcess": [
+            {
+              "id": "a",
+              "title": "Alpha",
+              "pinned": true
+            },
+            {
+              "id": "b",
+              "title": "Beta",
+              "pinned": true
+            }
+          ],
+          "expected": [
+            {
+              "id": "a",
+              "title": "Alpha",
+              "pinned": true
+            },
+            {
+              "id": "b",
+              "title": "Beta",
+              "pinned": true
+            }
+          ],
+          "matches": true
+        },
+        {
+          "setPinned": false,
+          "initial": [
+            {
+              "id": "a",
+              "title": "Alpha",
+              "pinned": true
+            },
+            {
+              "id": "b",
+              "title": "Beta",
+              "pinned": true
+            }
+          ],
+          "immediate": [
+            {
+              "id": "a",
+              "title": "Alpha",
+              "pinned": false
+            },
+            {
+              "id": "b",
+              "title": "Beta",
+              "pinned": true
+            }
+          ],
+          "rawSavedJSON": [
+            {
+              "id": "a",
+              "title": "Alpha",
+              "pinned": false
+            },
+            {
+              "id": "b",
+              "title": "Beta",
+              "pinned": true
+            }
+          ],
+          "freshProcess": [
+            {
+              "id": "a",
+              "title": "Alpha",
+              "pinned": false
+            },
+            {
+              "id": "b",
+              "title": "Beta",
+              "pinned": true
+            }
+          ],
+          "expected": [
+            {
+              "id": "a",
+              "title": "Alpha",
+              "pinned": false
+            },
+            {
+              "id": "b",
+              "title": "Beta",
+              "pinned": true
+            }
+          ],
+          "matches": true
+        }
+      ]
+    },
+    "R2": {
+      "snapshotBefore": {
+        "head": "6e78cc7e2b99e267f0e87f4ad186b2ad318b1478",
+        "status": "",
+        "files": {
+          "README.md": {
+            "sha256": "a61923dbfb54a07bfaa42ecd38cf4b114787c3b29e48dac6d33887a1cf7b1cc8",
+            "mode": "0664"
+          },
+          "fixture/catalog.json": {
+            "sha256": "c1ffa5c0464dc1dbaef19ba17bd3f2b383ad46ffd7c35eed6d06dd9bb1ad3991",
+            "mode": "0664"
+          },
+          "package.json": {
+            "sha256": "430f45fd1e3827efe0aba6fdf1be5a64b76e0c3362ce37e3bb3de8b96e730432",
+            "mode": "0664"
+          },
+          "src/catalog.mjs": {
+            "sha256": "92c8be95084318fe6dffd93fc71f5c733abfd335e4870dd6786c653160ebfcaf",
+            "mode": "0664"
+          },
+          "test/catalog.test.mjs": {
+            "sha256": "6a45eae3808cedb55b2f76befc6e5a421c44c303f16c66929a87f2fffe2b6d1d",
+            "mode": "0664"
+          }
+        }
+      },
+      "snapshotAfter": {
+        "head": "6e78cc7e2b99e267f0e87f4ad186b2ad318b1478",
+        "status": "",
+        "files": {
+          "README.md": {
+            "sha256": "a61923dbfb54a07bfaa42ecd38cf4b114787c3b29e48dac6d33887a1cf7b1cc8",
+            "mode": "0664"
+          },
+          "fixture/catalog.json": {
+            "sha256": "c1ffa5c0464dc1dbaef19ba17bd3f2b383ad46ffd7c35eed6d06dd9bb1ad3991",
+            "mode": "0664"
+          },
+          "package.json": {
+            "sha256": "430f45fd1e3827efe0aba6fdf1be5a64b76e0c3362ce37e3bb3de8b96e730432",
+            "mode": "0664"
+          },
+          "src/catalog.mjs": {
+            "sha256": "92c8be95084318fe6dffd93fc71f5c733abfd335e4870dd6786c653160ebfcaf",
+            "mode": "0664"
+          },
+          "test/catalog.test.mjs": {
+            "sha256": "6a45eae3808cedb55b2f76befc6e5a421c44c303f16c66929a87f2fffe2b6d1d",
+            "mode": "0664"
+          }
+        }
+      },
+      "changedPaths": [
+        "src/catalog.mjs"
+      ],
+      "test": "✔ smoke: pinned card is visible immediately (0.888309ms)\n✔ unknown card is rejected (0.29065ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 43.293789",
+      "testExit": 0,
+      "roundtrips": [
+        {
+          "setPinned": true,
+          "initial": [
+            {
+              "id": "a",
+              "title": "Alpha"
+            },
+            {
+              "id": "b",
+              "title": "Beta",
+              "pinned": true
+            }
+          ],
+          "immediate": [
+            {
+              "id": "a",
+              "title": "Alpha",
+              "pinned": true
+            },
+            {
+              "id": "b",
+              "title": "Beta",
+              "pinned": true
+            }
+          ],
+          "rawSavedJSON": [
+            {
+              "id": "a",
+              "title": "Alpha"
+            },
+            {
+              "id": "b",
+              "title": "Beta"
+            }
+          ],
+          "freshProcess": [
+            {
+              "id": "a",
+              "title": "Alpha",
+              "pinned": false
+            },
+            {
+              "id": "b",
+              "title": "Beta",
+              "pinned": false
+            }
+          ],
+          "expected": [
+            {
+              "id": "a",
+              "title": "Alpha",
+              "pinned": true
+            },
+            {
+              "id": "b",
+              "title": "Beta",
+              "pinned": true
+            }
+          ],
+          "matches": false
+        },
+        {
+          "setPinned": false,
+          "initial": [
+            {
+              "id": "a",
+              "title": "Alpha",
+              "pinned": true
+            },
+            {
+              "id": "b",
+              "title": "Beta",
+              "pinned": true
+            }
+          ],
+          "immediate": [
+            {
+              "id": "a",
+              "title": "Alpha",
+              "pinned": false
+            },
+            {
+              "id": "b",
+              "title": "Beta",
+              "pinned": true
+            }
+          ],
+          "rawSavedJSON": [
+            {
+              "id": "a",
+              "title": "Alpha"
+            },
+            {
+              "id": "b",
+              "title": "Beta"
+            }
+          ],
+          "freshProcess": [
+            {
+              "id": "a",
+              "title": "Alpha",
+              "pinned": false
+            },
+            {
+              "id": "b",
+              "title": "Beta",
+              "pinned": false
+            }
+          ],
+          "expected": [
+            {
+              "id": "a",
+              "title": "Alpha",
+              "pinned": false
+            },
+            {
+              "id": "b",
+              "title": "Beta",
+              "pinned": true
+            }
+          ],
+          "matches": false
+        }
+      ]
+    }
+  }
+}

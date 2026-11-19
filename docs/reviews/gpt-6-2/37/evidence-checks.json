@@ -1,0 +1,446 @@
+{
+  "relativeMarkdownLinks": 86,
+  "missing": [],
+  "links": [
+    {
+      "from": "docs/reviews/gpt-6-2/37/source-review.md",
+      "to": "transfer/materials/export.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/source-review.md",
+      "to": "transfer/materials/handoff.md",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/source-review.md",
+      "to": "../36/independent-audit.md",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/source-review.md",
+      "to": "../36/handoff/package-lock.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/source-review.md",
+      "to": "../36/handoff/target.mjs",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/source-review.md",
+      "to": "../36/handoff/reader.mjs",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/source-review.md",
+      "to": "assessment.md",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/source-review.md",
+      "to": "sources.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment.md",
+      "to": "initial-freeze.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment.md",
+      "to": "trial-criteria.md",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment.md",
+      "to": "transfer-criteria.md",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment.md",
+      "to": "preflight.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment.md",
+      "to": "research-inputs.tar.gz",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment.md",
+      "to": "trial-service/migration_service.py",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment.md",
+      "to": "trial-service/worker.mjs",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment.md",
+      "to": "assessment-ab.md",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment.md",
+      "to": "candidate-decision.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment.md",
+      "to": "assessment-confirm.md",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment.md",
+      "to": "trial-provenance.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment.md",
+      "to": "study-records.tar.gz",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment.md",
+      "to": "A-B.patch",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment.md",
+      "to": "A-C.patch",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment.md",
+      "to": "B-C.patch",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment.md",
+      "to": "C-release.patch",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment.md",
+      "to": "author-self-check.md",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment.md",
+      "to": "source-review.md",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment.md",
+      "to": "package-verification.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment.md",
+      "to": "handoff.md",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment.md",
+      "to": "preflight.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/author-self-check.md",
+      "to": "assessment.md",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/author-self-check.md",
+      "to": "source-review.md",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment-confirm.md",
+      "to": "trial-criteria.md",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment-confirm.md",
+      "to": "results/3578c1.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment-confirm.md",
+      "to": "results/c49d1d.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment-confirm.md",
+      "to": "results/36dc2d.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment-confirm.md",
+      "to": "results/3e5a01.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment-confirm.md",
+      "to": "results/8a9b68.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment-confirm.md",
+      "to": "results/aa4d2c.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment-ab.md",
+      "to": "results/3578c1.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment-ab.md",
+      "to": "results/3578c1.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment-ab.md",
+      "to": "results/6805fc.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment-ab.md",
+      "to": "results/6805fc.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment-ab.md",
+      "to": "results/855d1f.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment-ab.md",
+      "to": "results/855d1f.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment-ab.md",
+      "to": "results/c49d1d.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment-ab.md",
+      "to": "results/c49d1d.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment-ab.md",
+      "to": "trial-criteria.md",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment-ab.md",
+      "to": "results/c49d1d.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/assessment-ab.md",
+      "to": "results/c49d1d.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/handoff.md",
+      "to": "transfer-task.md",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/handoff.md",
+      "to": "transfer-before-source-edit.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/handoff.md",
+      "to": "transfer-original-records.tar.gz",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/handoff.md",
+      "to": "transfer/os47-check-CSGWLo/verification.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/handoff.md",
+      "to": "transfer-observation.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/handoff.md",
+      "to": "transfer-readback.mjs",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/handoff.md",
+      "to": "transfer-replay.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/handoff.md",
+      "to": "../36/handoff.md",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/handoff.md",
+      "to": "transfer/materials/target.mjs",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/handoff.md",
+      "to": "transfer/materials/reader.mjs",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/handoff.md",
+      "to": "transfer/materials/package.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/handoff.md",
+      "to": "transfer/materials/package-lock.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/handoff.md",
+      "to": "transfer/import-os47.mjs",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/handoff.md",
+      "to": "transfer/verify-os47.mjs",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/handoff.md",
+      "to": "from-lock.json",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/handoff.md",
+      "to": "transfer/OS47-operator.md",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/handoff.md",
+      "to": "transfer-criteria.md",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/transfer/OS47-operator.md",
+      "to": "materials/handoff.md",
+      "exists": true
+    },
+    {
+      "from": "docs/reviews/gpt-6-2/37/transfer/OS47-operator.md",
+      "to": "os47-check-CSGWLo/verification.json",
+      "exists": true
+    },
+    {
+      "from": "skills/payload-migration/SKILL.md",
+      "to": "references/payload-field-reference.md",
+      "exists": true
+    },
+    {
+      "from": "skills/payload-migration/SKILL.md",
+      "to": "references/payload-field-reference.md",
+      "exists": true
+    },
+    {
+      "from": "skills/payload-migration/docs/README.md",
+      "to": "logs/implementation-log-20261119-1.md",
+      "exists": true
+    },
+    {
+      "from": "skills/payload-migration/docs/README.md",
+      "to": "logs/implementation-log-20260509-1.md",
+      "exists": true
+    },
+    {
+      "from": "skills/payload-migration/docs/README.md",
+      "to": "logs/implementation-log-20260715-1.md",
+      "exists": true
+    },
+    {
+      "from": "skills/payload-migration/docs/README.md",
+      "to": "../../../docs/logs/implementation-log-20260909-1.md",
+      "exists": true
+    },
+    {
+      "from": "skills/payload-migration/docs/README.md",
+      "to": "logs/implementation-log-20261021-1.md",
+      "exists": true
+    },
+    {
+      "from": "skills/payload-migration/fragments/overview.md",
+      "to": "references/payload-field-reference.md",
+      "exists": true,
+      "resolvedAt": "emitted SKILL.md"
+    },
+    {
+      "from": "skills/payload-migration/docs/logs/implementation-log-20261119-1.md",
+      "to": "../../../../docs/plans/implementation-plan-20261118-1.md",
+      "exists": true
+    },
+    {
+      "from": "skills/payload-migration/docs/logs/implementation-log-20261119-1.md",
+      "to": "../../../../docs/reviews/gpt-6-2/36/handoff.md",
+      "exists": true
+    },
+    {
+      "from": "skills/payload-migration/docs/logs/implementation-log-20261119-1.md",
+      "to": "../../../../docs/reviews/gpt-6-2/37/source-review.md",
+      "exists": true
+    },
+    {
+      "from": "skills/payload-migration/docs/logs/implementation-log-20261119-1.md",
+      "to": "../../../../docs/reviews/gpt-6-2/37/assessment.md",
+      "exists": true
+    },
+    {
+      "from": "skills/payload-migration/docs/logs/implementation-log-20261119-1.md",
+      "to": "../../../../docs/reviews/gpt-6-2/37/author-self-check.md",
+      "exists": true
+    },
+    {
+      "from": "skills/payload-migration/docs/logs/implementation-log-20261119-1.md",
+      "to": "../../../../docs/reviews/gpt-6-2/37/handoff.md",
+      "exists": true
+    },
+    {
+      "from": "skills/payload-migration/docs/logs/implementation-log-20261119-1.md",
+      "to": "../../../../docs/reviews/gpt-6-2/37/package-verification.json",
+      "exists": true
+    },
+    {
+      "from": "skills/payload-migration/docs/logs/implementation-log-20261119-1.md",
+      "to": "../../../../docs/reviews/gpt-6-2/37/from-lock.json",
+      "exists": true
+    },
+    {
+      "from": "skills/payload-migration/docs/logs/implementation-log-20261021-1.md",
+      "to": "../../../../docs/reviews/implementation-log-20261021-remove-compatibility.md",
+      "exists": true
+    },
+    {
+      "from": "skills/payload-migration/docs/logs/implementation-log-20261021-1.md",
+      "to": "../../../../docs/reviews/evidence/remove-compatibility-20261021/source-transformation.json",
+      "exists": true
+    }
+  ],
+  "originalFrozenFilesMatched": 26,
+  "subjectsWithOriginalEventsAndDirectReadHashesMatched": 8,
+  "gradersWithOriginalReportAndEventHashesMatched": 2,
+  "portableGradeReportsMatched": 2,
+  "exactReleaseOriginalEventsMatched": true,
+  "productArchivesIncluded": [
+    "payload-migration-0.1.3.tar.gz",
+    "payload-migration-0.1.4.tar.gz"
+  ]
+}

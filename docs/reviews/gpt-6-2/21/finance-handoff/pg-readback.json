@@ -1,0 +1,333 @@
+{
+  "contract": "PREVIEW-1",
+  "image": "postgres@sha256:3a82e1f56c8f0f5616a11103ac3d47e632c3938698946a7ad26da0df1334744a",
+  "inputs": {
+    "preview-input.json": "9c57942cd805e7917fd9bea3555f2e3db7a3ec153d0f317e8f622de313259195",
+    "preview-node-output.json": "e7393975b00609375cee7a6c0e6d1cdca0e55cf80c4910b8b927234dcd0867ce",
+    "preview-node.mjs": "353381656ac9f53842464a9472ebb47e7f384780ad965b9e1acd0a923bfa30ec"
+  },
+  "sql_sha256": "5ebae8bcdc2eca437629fa22283484d3dbf77f4fe051b66292ca4cd0993f763a",
+  "node": "v24.15.0",
+  "results": [
+    {
+      "case": "positive-odd",
+      "id": 1,
+      "result": {
+        "row": {
+          "id": 1,
+          "feeMinor": "7",
+          "netMinor": "15",
+          "expiresAt": 2100000061,
+          "subjectKey": "synthetic-1"
+        },
+        "export": {
+          "id": 1,
+          "feeMinor": "7",
+          "subjectKey": "synthetic-1"
+        }
+      },
+      "writer": "preview_writer",
+      "connectionPid": 132,
+      "attempts_before": 0,
+      "attempts_after": 2
+    },
+    {
+      "case": "negative-odd",
+      "id": 2,
+      "result": {
+        "row": {
+          "id": 2,
+          "feeMinor": "-8",
+          "netMinor": "-15",
+          "expiresAt": 2100000062,
+          "subjectKey": "synthetic-2"
+        },
+        "export": {
+          "id": 2,
+          "feeMinor": "-8",
+          "subjectKey": "synthetic-2"
+        }
+      },
+      "writer": "preview_writer",
+      "connectionPid": 153,
+      "attempts_before": 2,
+      "attempts_after": 4
+    },
+    {
+      "case": "beyond-double",
+      "id": 3,
+      "result": {
+        "row": {
+          "id": 3,
+          "feeMinor": "4503599627370496",
+          "netMinor": "9007199254740993",
+          "expiresAt": 2100000063,
+          "subjectKey": "synthetic-3"
+        },
+        "export": {
+          "id": 3,
+          "feeMinor": "4503599627370496",
+          "subjectKey": "synthetic-3"
+        }
+      },
+      "writer": "preview_writer",
+      "connectionPid": 175,
+      "attempts_before": 4,
+      "attempts_after": 6
+    },
+    {
+      "case": "int64-min",
+      "id": 4,
+      "result": {
+        "row": {
+          "id": 4,
+          "feeMinor": "-4611686018427387904",
+          "netMinor": "-9223372036854775808",
+          "expiresAt": 2100000064,
+          "subjectKey": "synthetic-4"
+        },
+        "export": {
+          "id": 4,
+          "feeMinor": "-4611686018427387904",
+          "subjectKey": "synthetic-4"
+        }
+      },
+      "writer": "preview_writer",
+      "connectionPid": 196,
+      "attempts_before": 6,
+      "attempts_after": 8
+    },
+    {
+      "case": "int64-max",
+      "id": 5,
+      "result": {
+        "row": {
+          "id": 5,
+          "feeMinor": "4611686018427387903",
+          "netMinor": "9223372036854775807",
+          "expiresAt": 2100000065,
+          "subjectKey": "synthetic-5"
+        },
+        "export": {
+          "id": 5,
+          "feeMinor": "4611686018427387903",
+          "subjectKey": "synthetic-5"
+        }
+      },
+      "writer": "preview_writer",
+      "connectionPid": 217,
+      "attempts_before": 8,
+      "attempts_after": 10
+    },
+    {
+      "case": "zero",
+      "id": 6,
+      "result": {
+        "row": {
+          "id": 6,
+          "feeMinor": "0",
+          "netMinor": "0",
+          "expiresAt": 2100000066,
+          "subjectKey": "synthetic-6"
+        },
+        "export": {
+          "id": 6,
+          "feeMinor": "0",
+          "subjectKey": "synthetic-6"
+        }
+      },
+      "writer": "preview_writer",
+      "connectionPid": 238,
+      "attempts_before": 10,
+      "attempts_after": 12
+    },
+    {
+      "case": "positive-net-overflow",
+      "id": 101,
+      "result": {
+        "error": "range"
+      },
+      "writer": "preview_writer",
+      "connectionPid": 259,
+      "attempts_before": 12,
+      "attempts_after": 12
+    },
+    {
+      "case": "negative-net-overflow",
+      "id": 102,
+      "result": {
+        "error": "range"
+      },
+      "writer": "preview_writer",
+      "connectionPid": 280,
+      "attempts_before": 12,
+      "attempts_after": 12
+    },
+    {
+      "case": "unit-out-of-int64",
+      "id": 103,
+      "result": {
+        "error": "range"
+      },
+      "writer": "preview_writer",
+      "connectionPid": 301,
+      "attempts_before": 12,
+      "attempts_after": 12
+    },
+    {
+      "case": "noncanonical-input",
+      "id": 104,
+      "result": {
+        "error": "input"
+      },
+      "writer": "preview_writer",
+      "connectionPid": 322,
+      "attempts_before": 12,
+      "attempts_after": 12
+    },
+    {
+      "case": "wrong-currency",
+      "id": 105,
+      "result": {
+        "error": "input"
+      },
+      "writer": "preview_writer",
+      "connectionPid": 344,
+      "attempts_before": 12,
+      "attempts_after": 12
+    },
+    {
+      "case": "wrong-units",
+      "id": 106,
+      "result": {
+        "error": "input"
+      },
+      "writer": "preview_writer",
+      "connectionPid": 364,
+      "attempts_before": 12,
+      "attempts_after": 12
+    },
+    {
+      "case": "zero-quantity",
+      "id": 107,
+      "result": {
+        "error": "input"
+      },
+      "writer": "preview_writer",
+      "connectionPid": 385,
+      "attempts_before": 12,
+      "attempts_after": 12
+    },
+    {
+      "case": "expired",
+      "id": 108,
+      "result": {
+        "error": "input"
+      },
+      "writer": "preview_writer",
+      "connectionPid": 406,
+      "attempts_before": 12,
+      "attempts_after": 12
+    }
+  ],
+  "method": "one fresh psql session per query; restricted writer and independent SELECT-only reader",
+  "server": "PostgreSQL 18.4 (Debian 18.4-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+  "naive_division_control": {
+    "net": "9223372036854775807",
+    "floor_exact_half": "4611686018427387903",
+    "floor_default_division": "4611686018427387904"
+  },
+  "readback": {
+    "rows": [
+      {
+        "id": 1,
+        "feeMinor": "7",
+        "netMinor": "15",
+        "expiresAt": 2100000061,
+        "subjectKey": "synthetic-1"
+      },
+      {
+        "id": 2,
+        "feeMinor": "-8",
+        "netMinor": "-15",
+        "expiresAt": 2100000062,
+        "subjectKey": "synthetic-2"
+      },
+      {
+        "id": 3,
+        "feeMinor": "4503599627370496",
+        "netMinor": "9007199254740993",
+        "expiresAt": 2100000063,
+        "subjectKey": "synthetic-3"
+      },
+      {
+        "id": 4,
+        "feeMinor": "-4611686018427387904",
+        "netMinor": "-9223372036854775808",
+        "expiresAt": 2100000064,
+        "subjectKey": "synthetic-4"
+      },
+      {
+        "id": 5,
+        "feeMinor": "4611686018427387903",
+        "netMinor": "9223372036854775807",
+        "expiresAt": 2100000065,
+        "subjectKey": "synthetic-5"
+      },
+      {
+        "id": 6,
+        "feeMinor": "0",
+        "netMinor": "0",
+        "expiresAt": 2100000066,
+        "subjectKey": "synthetic-6"
+      }
+    ],
+    "reader": "preview_reader",
+    "exports": [
+      {
+        "id": 1,
+        "feeMinor": "7",
+        "subjectKey": "synthetic-1"
+      },
+      {
+        "id": 2,
+        "feeMinor": "-8",
+        "subjectKey": "synthetic-2"
+      },
+      {
+        "id": 3,
+        "feeMinor": "4503599627370496",
+        "subjectKey": "synthetic-3"
+      },
+      {
+        "id": 4,
+        "feeMinor": "-4611686018427387904",
+        "subjectKey": "synthetic-4"
+      },
+      {
+        "id": 5,
+        "feeMinor": "4611686018427387903",
+        "subjectKey": "synthetic-5"
+      },
+      {
+        "id": 6,
+        "feeMinor": "0",
+        "subjectKey": "synthetic-6"
+      }
+    ],
+    "connectionPid": 420
+  },
+  "refused_ids_absent_from_both": [
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108
+  ],
+  "total_insert_attempts": 12,
+  "matches_node_and_precommitted_literals": true,
+  "container_gone": true
+}

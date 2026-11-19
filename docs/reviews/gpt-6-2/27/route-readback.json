@@ -1,0 +1,75 @@
+{
+  "browserVersion": "Chrome/158.0.8127.36",
+  "route": "/dossiers/reed",
+  "http": 200,
+  "original": {
+    "heading": "Reed docket",
+    "ready": "no",
+    "count": "Selections: 0",
+    "controls": [
+      "Mark inspected",
+      "Entry help",
+      "Owner help"
+    ]
+  },
+  "clientReady": "yes",
+  "counts": [
+    "Selections: 0",
+    "Selections: 1",
+    "Selections: 2",
+    "Selections: 0",
+    "Selections: 1"
+  ],
+  "mounted": {
+    "ids": [
+      "_R_3qnpfivb_",
+      "_R_4qnpfivb_"
+    ],
+    "descriptions": [
+      [
+        "Entry help",
+        "Use the approved desk entry"
+      ],
+      [
+        "Owner help",
+        "See the owner of this docket"
+      ]
+    ],
+    "afterEscape": [
+      [
+        "Entry help",
+        ""
+      ],
+      [
+        "Owner help",
+        "See the owner of this docket"
+      ]
+    ]
+  },
+  "afterReload": {
+    "ids": [
+      "_R_3qnpfivb_",
+      "_R_4qnpfivb_"
+    ],
+    "descriptions": [
+      [
+        "Entry help",
+        "Use the approved desk entry"
+      ],
+      [
+        "Owner help",
+        "See the owner of this docket"
+      ]
+    ],
+    "afterEscape": [
+      [
+        "Entry help",
+        ""
+      ],
+      [
+        "Owner help",
+        "See the owner of this docket"
+      ]
+    ]
+  }
+}

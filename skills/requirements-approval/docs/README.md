@@ -9,6 +9,7 @@ Supporting documentation for `requirements-approval`. These files are not part o
 - [implementation-log-20260716-1.md](logs/implementation-log-20260716-1.md) — complete: end-to-end authority, mutation, closure, interop, and evidence remediation; independent PASS.
 - [implementation-log-20260727-1.md](logs/implementation-log-20260727-1.md) — RETRO-0003/STEP-02: explicit pre-customer falsification checks and regression evidence.
 - [implementation-log-20260728-1.md](logs/implementation-log-20260728-1.md) — RETRO-0003/STEP-12: durable owning-change/linked-follow-up disposition contract.
+- [Ревизия для GPT-6.2 Sol](logs/implementation-log-20261118-1.md) — исходные ответы, недостающее приложение и передача владельцу PRD.
 
 ## Forward-test evidence
 

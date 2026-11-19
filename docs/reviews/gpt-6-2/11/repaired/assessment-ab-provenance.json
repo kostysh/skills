@@ -1,0 +1,124 @@
+{
+  "rawSignedAnswerSha256": "7609c3fc164dc3dc4f593097676d6ec34f3810f838439132baf7710e0bd7c5dc",
+  "rawEventsSha256": "6e4c6a9e90181ea61f173363eeb836a8e13ae4a62fe6ad4c626b400270373a34",
+  "rawDispatchSha256": "dda6aec7002ef3c65e577a7630eab410e941ecdace26df87cae9743898c38df3",
+  "criteriaSha256": "358b9c88569de016cead6a9325c60a40770c2c5a70026174ad2ae119a001a957",
+  "issuedModel": "gpt-6.2-sol",
+  "issuedReasoning": "high",
+  "sandbox": "read-only",
+  "longTermMemoryFeature": "disabled",
+  "exposedFilesSha256": {
+    "criteria.md": "358b9c88569de016cead6a9325c60a40770c2c5a70026174ad2ae119a001a957",
+    "cb8930/actions.json": "83a20d5f29511a6ac9a31cf0f72e98f16c83b27f4ab8912a132dc008c27b9698",
+    "cb8930/observer.json": "a45b21e53b5da35d76edc84a55b470ff376ea48d72ef0d52a3713f3b8e4e3b31",
+    "cb8930/answer.md": "f3a74b4f00e59c432299c6e780d311116d667fc184998aeb00cdfc672327b726",
+    "cb8930/task.md": "e7689a59d0516992bde797dee3e2b9b2ce276a404d1605d799a2a979eed5c576",
+    "bf8216/actions.json": "8d2f5a9bd658c28baf0a6ee3321f04f19f8c16f029dc07bd87666107a5a64163",
+    "bf8216/observer.json": "5bab706ce0e1f04b3d47120734025ec6c3f7b2f7ae91af7ca59f868fb602f182",
+    "bf8216/answer.md": "9d75a5086ed6d88352bc55ebbf773b00108560236b7f8da7d075dbb51b229374",
+    "bf8216/task.md": "e7689a59d0516992bde797dee3e2b9b2ce276a404d1605d799a2a979eed5c576",
+    "a5dc57/actions.json": "6381fe7f93707a26ab3e6ef28c836c5ec5d59ea6498a766b44482e6745fe74d6",
+    "a5dc57/observer.json": "289c3717472e9a0938f6811229139975a6dfcc945e2b7187e7769eee885c2c18",
+    "a5dc57/answer.md": "07c98b4c50ef101d751f269a5007994e2da6ee96cdc1abfc2d34df7ec1e3058f",
+    "a5dc57/task.md": "e7689a59d0516992bde797dee3e2b9b2ce276a404d1605d799a2a979eed5c576",
+    "e653d1/actions.json": "b48a2ae0e7de20876a99e605016cf2a7d31ce3da864e1bf213c5f99116fddf8b",
+    "e653d1/observer.json": "77b3c63ced9ac2552b96dd8a569bacbd4d10b07bc638b3744ef4b9b1b7e69e8b",
+    "e653d1/answer.md": "5b527c976412ea0d327d51c2ef71b32cef72d31968122abdb40534636c5f7210",
+    "e653d1/task.md": "e7689a59d0516992bde797dee3e2b9b2ce276a404d1605d799a2a979eed5c576",
+    "e653d1/before/materials/question.md": "fd9e4175d6421ee25e730855ba160fd0987a148d823d19b9cb07b2d06c35749c",
+    "e653d1/before/materials/effective-54.json": "eca92c2d501449521af184383e0dfe15427345989da176981dd8169ad242ff6f",
+    "e653d1/before/materials/index.json": "6cbca66a5ed71a1fca7f5fa68c276a5fa5f44017a017fc73dea5d21452ffad46",
+    "e653d1/before/materials/change.json": "675d0d144fe00645e6e6f689f2dac842560cc824a0c49047da48f2b7d1452045",
+    "e653d1/before/materials/request.md": "b993fe76975a80007c9d8456ef0f398b4e41649c9dc89c717d6ff86e6f7f1e53",
+    "e653d1/after/materials/question.md": "fd9e4175d6421ee25e730855ba160fd0987a148d823d19b9cb07b2d06c35749c",
+    "e653d1/after/materials/effective-54.json": "eca92c2d501449521af184383e0dfe15427345989da176981dd8169ad242ff6f",
+    "e653d1/after/materials/index.json": "6cbca66a5ed71a1fca7f5fa68c276a5fa5f44017a017fc73dea5d21452ffad46",
+    "e653d1/after/materials/change.json": "675d0d144fe00645e6e6f689f2dac842560cc824a0c49047da48f2b7d1452045",
+    "e653d1/after/materials/request.md": "b993fe76975a80007c9d8456ef0f398b4e41649c9dc89c717d6ff86e6f7f1e53",
+    "a5dc57/before/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "a5dc57/before/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "a5dc57/before/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "a5dc57/before/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "a5dc57/before/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "a5dc57/before/materials/report-status-v4.json": "94479bbb69a14ebf861b1a6354cbc224a36b76661e7bc346755effca641ec36f",
+    "a5dc57/after/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "a5dc57/after/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "a5dc57/after/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "a5dc57/after/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "a5dc57/after/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "a5dc57/after/materials/report-status-v4.json": "94479bbb69a14ebf861b1a6354cbc224a36b76661e7bc346755effca641ec36f",
+    "bf8216/before/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "bf8216/before/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "bf8216/before/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "bf8216/before/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "bf8216/before/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "bf8216/before/materials/report-status-v4.json": "94479bbb69a14ebf861b1a6354cbc224a36b76661e7bc346755effca641ec36f",
+    "bf8216/after/materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "bf8216/after/materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "bf8216/after/materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "bf8216/after/materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "bf8216/after/materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "bf8216/after/materials/report-status-v4.json": "94479bbb69a14ebf861b1a6354cbc224a36b76661e7bc346755effca641ec36f",
+    "cb8930/before/materials/question.md": "fd9e4175d6421ee25e730855ba160fd0987a148d823d19b9cb07b2d06c35749c",
+    "cb8930/before/materials/effective-54.json": "eca92c2d501449521af184383e0dfe15427345989da176981dd8169ad242ff6f",
+    "cb8930/before/materials/index.json": "6cbca66a5ed71a1fca7f5fa68c276a5fa5f44017a017fc73dea5d21452ffad46",
+    "cb8930/before/materials/change.json": "675d0d144fe00645e6e6f689f2dac842560cc824a0c49047da48f2b7d1452045",
+    "cb8930/before/materials/request.md": "b993fe76975a80007c9d8456ef0f398b4e41649c9dc89c717d6ff86e6f7f1e53",
+    "cb8930/after/materials/question.md": "fd9e4175d6421ee25e730855ba160fd0987a148d823d19b9cb07b2d06c35749c",
+    "cb8930/after/materials/effective-54.json": "eca92c2d501449521af184383e0dfe15427345989da176981dd8169ad242ff6f",
+    "cb8930/after/materials/index.json": "6cbca66a5ed71a1fca7f5fa68c276a5fa5f44017a017fc73dea5d21452ffad46",
+    "cb8930/after/materials/change.json": "675d0d144fe00645e6e6f689f2dac842560cc824a0c49047da48f2b7d1452045",
+    "cb8930/after/materials/request.md": "b993fe76975a80007c9d8456ef0f398b4e41649c9dc89c717d6ff86e6f7f1e53"
+  },
+  "observableOperations": [
+    {
+      "command": "/bin/bash -c 'pwd && rg --files --hidden'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c 'wc -lc */actions.json */before/materials/* */after/materials/*'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c 'cat criteria.md'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c 'for f in */task.md; do head -n 500 -v \"$f\"; done'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c 'for f in */observer.json; do head -n 500 -v \"$f\"; done'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c 'for f in */answer.md; do head -n 500 -v \"$f\"; done'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c 'head -n 500 -v a5dc57/before/materials/* a5dc57/actions.json'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c 'head -n 500 -v e653d1/before/materials/* e653d1/actions.json'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c 'head -n 500 -v cb8930/before/materials/* cb8930/actions.json'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c 'head -n 500 -v bf8216/before/materials/* bf8216/actions.json'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c \"find -P . -printf '%y %m %p\\\\n' | sort\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c \"python3 -B - <<'PY'\nfrom pathlib import Path\nimport hashlib\nimport json\nimport stat\n\nfor case in sorted(Path('.').iterdir()):\n    if not case.is_dir():\n        continue\n    before = case / 'before'\n    after = case / 'after'\n    left = {p.relative_to(before) for p in before.rglob('*')}\n    right = {p.relative_to(after) for p in after.rglob('*')}\n    mode_diffs = [str(p) for p in sorted(left & right) if stat.S_IMODE((before / p).stat().st_mode) \"'!= stat.S_IMODE((after / p).stat().st_mode)]\n    byte_diffs = [str(p) for p in sorted(left & right) if (before / p).is_file() and (before / p).read_bytes() != (after / p).read_bytes()]\n    observer = json.loads((case / '\"'observer.json').read_text())\n    answer = (case / 'answer.md').read_bytes()\n    print(json.dumps({\n        'case': case.name,\n        'material_files': sum((before / p).is_file() for p in left),\n        'paths_differ': sorted(map(str, left \"'^ right)),\n        '\"'modes_differ': mode_diffs,\n        'bytes_differ': byte_diffs,\n        'answer_bytes': len(answer),\n        'answer_bytes_match': len(answer) == observer['normalizedAnswerBytes'],\n        'answer_sha256_match': hashlib.sha256(answer).hexdigest() == observer['normalizedAnswerSha256'],\n        'observer_role_file_list_match': observer['suppliedRoleFiles'] == sorted(str(p) for p in left if (before / p).is_file()),\n    }, ensure_ascii=False))\nPY\"",
+      "exit": 0
+    }
+  ],
+  "exit": 0
+}

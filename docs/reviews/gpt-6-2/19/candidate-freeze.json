@@ -1,0 +1,14 @@
+{
+  "sealedAfterSignedAB": "565a35172dd43f722f30060dd6319033ab270cf84d6159549795f8bc4e92b729",
+  "frozenAt": "2026-11-18T22:13:29.159633+00:00",
+  "files": {
+    "LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+    "SKILL.md": "8dc4a1e3694af4d665738260731c657ea809a2b1bbb6a5619d9b5d185ed71627",
+    "agents/openai.yaml": "e3d200f6466449682f0a8c9d25d7f0d1537f0bffbf505e1dbffb3476071eae6a",
+    "references/anti-patterns.md": "8ae703f79a85174e3888fdc78d072ac230ded756787f0098311a2a845b217449",
+    "references/strategy-to-implementation.md": "ef884923fbb5e95e646700be7dfbfaae760b45390530248e558a937c9c1b45c1",
+    "references/surface-modes.md": "c8bcf33110860429e03cd510843dbf4bc1bc57770e29ed73744fcc2a2c265a82",
+    "references/visual-engines.md": "c0ce8a2da93ef54cf3aff3e418029a63b645210276a139d42917e4eadd7beca7"
+  },
+  "testedModels": "gpt-6.2-sol, medium"
+}

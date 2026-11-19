@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: agent-browser
-  source-version: 0.2.5
+  source-version: 0.2.7
   recommended-skill-md-max-bytes: 20000
   description: Use agent-browser to navigate and interact with rendered web pages, fill forms, take screenshots, extract data, and run browser smoke or diagnostic checks. Verify the requested terminal state and report completed, partial, or blocked; do not replace a formal project E2E suite.
   allowedTools:
@@ -23,6 +23,10 @@ copies:
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
 supporting:
+  - id: supporting-implementation-log-20261118-1
+    source: docs/logs/implementation-log-20261118-1.md
+    target: docs/logs/implementation-log-20261118-1.md
+    description: Non-normative log for terminal-state evidence and diagnostic cleanup scope.
   - id: supporting-implementation-log-20260924-1
     source: docs/logs/implementation-log-20260924-1.md
     target: docs/logs/implementation-log-20260924-1.md
@@ -77,8 +81,8 @@ sections:
       goal: Reach the requested observable result through the rendered page without confusing CLI activity with task completion.
       steps:
         - Apply the governing user, system, and project policies, then the `Guidance and authority` browser-environment check before opening or changing route or identity; this skill does not grant authority for additional external side effects.
-        - Use the installed CLI guidance for command syntax. If the runtime fails, use its help or `agent-browser doctor --offline --quick`; use mutating repair commands only when already authorized, and never add Playwright to the target project merely to prepare agent-browser.
-        - Open the target, snapshot before using refs, interact, wait for the expected condition, and re-snapshot after navigation or material page changes.
+        - Use the installed CLI help for runtime errors. Before running `agent-browser doctor`, check its help and your authority for its side effects. Even `--offline --quick` can remove stale daemon files across the selected socket directory. Run repairs only within existing permissions. Keep Playwright installation out of the target project when preparing agent-browser.
+        - Open the target, snapshot before using refs, interact, wait for the expected condition, and re-snapshot after navigation or material page changes. Wait for a state change to succeed before issuing a dependent action, or use a batch that stops on error (such as `batch --bail`). After a failure, re-snapshot before proceeding.
         - Verify the final URL, visible state, or extracted values that establish the requested result; use console, page-error, network, screenshot, or trace evidence only when relevant.
         - For extraction, verify the requested fields and scope, including pagination or lazy-loading limits; if completeness is not established, report the observed subset as partial.
         - Treat intercepted responses as local UI evidence, not proof of a live API or provider path, and do not infer backend root cause from browser symptoms alone.
@@ -113,9 +117,6 @@ sections:
     - id: gotcha-runtime-guidance-drift
       priority: high
       text: Use the installed CLI's version-matched guidance and help for command syntax; do not maintain or trust a copied command encyclopedia when they disagree.
-    - id: gotcha-browser-substrate-only
-      priority: high
-      text: A successful command, snapshot, screenshot, trace, or intercepted response does not prove the requested user-visible result by itself.
     - id: gotcha-sensitive-or-owned-state
       priority: high
       text: Keep secrets out of shell history and reports, treat browser artifacts as potentially sensitive, and clean up sessions or processes started for the task.

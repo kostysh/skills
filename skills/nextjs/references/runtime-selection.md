@@ -2,13 +2,13 @@
 
 ## Use Node.js Runtime by Default
 
-Use the default Node.js runtime for new routes and pages. Only use Edge runtime if the project already uses it or there's a specific requirement.
+Check the app’s Cache Components configuration first. With Cache Components enabled on Next.js 16, use the implicit Node.js runtime and omit the segment’s `runtime` export, including `'nodejs'`. For other configurations, use the default Node.js runtime unless the project requires and supports Edge. [Cache Components configuration](https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheComponents)
 
 ```tsx
 // Good: Default - no runtime config needed (uses Node.js)
 export default function Page() { ... }
 
-// Caution: Only if already used in project or specifically required
+// Only for a supported Edge route with Cache Components disabled
 export const runtime = 'edge'
 ```
 

@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: delivery-planner
-  source-version: 0.2.15
+  source-version: 0.2.16
   recommended-skill-md-max-bytes: 23500
   description: >-
     Turn accepted product scope and architecture handoff into right-sized executable
@@ -52,6 +52,10 @@ copies:
     description: Portable copy of agents/openai.yaml.
 
 supporting:
+  - id: supporting-implementation-log-20261119-1
+    source: docs/logs/implementation-log-20261119-1.md
+    target: docs/logs/implementation-log-20261119-1.md
+    description: Non-normative log for the independent-start and shared-acceptance study.
   - id: supporting-implementation-log-20260822-1
     source: docs/logs/implementation-log-20260822-1.md
     target: docs/logs/implementation-log-20260822-1.md
@@ -131,7 +135,7 @@ sections:
     - Produce one compact Markdown Delivery Plan by default; do not output YAML or multiple registers unless explicitly requested.
     - Route product gaps to prd-engineer, architecture gaps to architecture-engineer, and behavior/specification gaps to spec-engineer.
     - Sequence work to expose architectural, integration, migration, rollback, security, data, tenancy, and operability risk early.
-    - Distinguish parallel implementation from independent acceptance; type dependency edges and require shared acceptance for same-record or shared-race evidence.
+    - Plan independent starts and shared acceptance.
     - Reject tasks whose acceptance can pass through scaffold, metadata, docs, mocks, or wrappers without real observable or verifiable behavior.
     - Reject future-only support tasks unless they name the owner slice/module increment, the evidence they unlock, and the trigger that makes them necessary.
   whenToUse:

@@ -23,7 +23,7 @@ If sources conflict, cite each source and identify whether one is lower-authorit
 - Check both directions:
   - requirement to code and tests
   - code behavior to requirement basis
-- Treat tests as evidence, not as proof by existence.
+- Check what each test demonstrates. A failure supports non-conformance when the accepted requirements cover the input and expected behavior.
 - Distinguish observable runtime capability from substrate such as schema presence, route registration, OpenAPI entries, mock handlers, in-memory tests, or documentation claims.
 - Let substrate satisfy only an atomic substrate requirement. Use `partially_fulfilled` for a broader runtime requirement only when some required observable behavior is proven.
 - For auth/RBAC requirements, check both API/service behavior and persistence/RLS/direct data-access behavior when the system exposes such a path.

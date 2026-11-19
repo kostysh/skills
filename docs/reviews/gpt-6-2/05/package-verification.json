@@ -1,0 +1,76 @@
+{
+  "source_version": "0.2.3",
+  "compiler_source": "skill-source-compiler 0.2.12",
+  "package_command": "pnpm --filter @kostysh/skills pack:skills --root <compiled> --out <empty> --release skills-row05-local --previous <baseline-catalog>",
+  "checked": [
+    "compiler lint",
+    "regenerate",
+    "check source",
+    "compile outside source",
+    "check compiled",
+    "skill-creator quick_validate.py",
+    "pack:skills",
+    "all archive members equal working files"
+  ],
+  "package_sha256": "abb4bf8cd983671145232bd52859a4e299f3eafc54a5735d3118c8b60e60e1f3",
+  "files": {
+    "SKILL.md": "4c2662d674d2e81c1aedc57590c91a189ba3596d17ad61148ec0caf4a154e8e6",
+    "agents/openai.yaml": "372a72c8d2943c55ba133bbda5e0ed8f46cdfd8f8d4940418beefcbaf62484ab",
+    "references/generics.md": "7201b89492c473093a6818db8bcf0b26e445d2f0689eb84916ff185503c3c4c4",
+    "references/monorepo.md": "a725bf2737a1c0716b2c8f9f2a6d6d79cc0e14a401a06b7de5ed9744166fb5e4",
+    "references/overloads.md": "39494766556c8c7aa46c2aa16aa20718aedcaf7a4ec8cf0a28443324d3c5936b",
+    "references/patterns.md": "ad0135c65606afcaaaf97807020234dc7ab2cd570e9ad5e77eb3c8f3f9ff617e",
+    "references/practices.md": "51f765dcd0f2e1732e00d83504a4a832f177437f96aeed0d992a634e949c827a",
+    "references/runtime-derived-types.md": "fec7e83b236187d5b0a4d6130d57ec87389b727ec6034d173e2af42b7640bcaa",
+    "references/toolchain.md": "3fc58bef11612eef5d35f6c25c05194b581f6ef66a01571c33e91831e8bcbe21",
+    "references/type-debugging.md": "2fb09da3deb9e434b50336644da63a6539503d30f05a0304fa7c9a78d7690304",
+    "references/type-system.md": "6f0548c1cb2cf0133a2610d53037a1ccd6e8368c919af7ffd9c1449996c24c57"
+  },
+  "normalized_C_differs_from_release": [
+    "SKILL.md",
+    "references/runtime-derived-types.md",
+    "references/toolchain.md",
+    "references/type-system.md"
+  ],
+  "trial_installed_files": {
+    "A": {
+      "SKILL.md": "8dccdca0e96b7c9f7caf51baaab9fb909df0bb01345a0ae7fac7c444bb597e86",
+      "agents/openai.yaml": "372a72c8d2943c55ba133bbda5e0ed8f46cdfd8f8d4940418beefcbaf62484ab",
+      "references/generics.md": "7201b89492c473093a6818db8bcf0b26e445d2f0689eb84916ff185503c3c4c4",
+      "references/monorepo.md": "a725bf2737a1c0716b2c8f9f2a6d6d79cc0e14a401a06b7de5ed9744166fb5e4",
+      "references/overloads.md": "39494766556c8c7aa46c2aa16aa20718aedcaf7a4ec8cf0a28443324d3c5936b",
+      "references/patterns.md": "8636aec6c320d894a10ada0db3f452b7d31e9dc608d00a6e0a57e1b5c3aa1f57",
+      "references/practices.md": "51f765dcd0f2e1732e00d83504a4a832f177437f96aeed0d992a634e949c827a",
+      "references/runtime-derived-types.md": "1e1a327d0a2e59792ec25aa5c69bb2cd313273ef2a9d7730014700303e9e4aa0",
+      "references/toolchain.md": "313bb758492c473f47b7d1670fd01ecb605512296ab98edcf36fe59914794771",
+      "references/type-debugging.md": "2fb09da3deb9e434b50336644da63a6539503d30f05a0304fa7c9a78d7690304",
+      "references/type-system.md": "451bec02f0fe0cad7a3967b6d4b8388e98600c4655be7fee51b971f1db0f40e9"
+    },
+    "B": {
+      "SKILL.md": "8dccdca0e96b7c9f7caf51baaab9fb909df0bb01345a0ae7fac7c444bb597e86",
+      "agents/openai.yaml": "372a72c8d2943c55ba133bbda5e0ed8f46cdfd8f8d4940418beefcbaf62484ab",
+      "references/generics.md": "7201b89492c473093a6818db8bcf0b26e445d2f0689eb84916ff185503c3c4c4",
+      "references/monorepo.md": "a725bf2737a1c0716b2c8f9f2a6d6d79cc0e14a401a06b7de5ed9744166fb5e4",
+      "references/overloads.md": "39494766556c8c7aa46c2aa16aa20718aedcaf7a4ec8cf0a28443324d3c5936b",
+      "references/patterns.md": "efce51345dcbc85667f4da16dbe26c4de16003fea08f98d808de5ef40ea26312",
+      "references/practices.md": "51f765dcd0f2e1732e00d83504a4a832f177437f96aeed0d992a634e949c827a",
+      "references/runtime-derived-types.md": "1e1a327d0a2e59792ec25aa5c69bb2cd313273ef2a9d7730014700303e9e4aa0",
+      "references/toolchain.md": "313bb758492c473f47b7d1670fd01ecb605512296ab98edcf36fe59914794771",
+      "references/type-debugging.md": "2fb09da3deb9e434b50336644da63a6539503d30f05a0304fa7c9a78d7690304",
+      "references/type-system.md": "451bec02f0fe0cad7a3967b6d4b8388e98600c4655be7fee51b971f1db0f40e9"
+    },
+    "C": {
+      "SKILL.md": "8dccdca0e96b7c9f7caf51baaab9fb909df0bb01345a0ae7fac7c444bb597e86",
+      "agents/openai.yaml": "372a72c8d2943c55ba133bbda5e0ed8f46cdfd8f8d4940418beefcbaf62484ab",
+      "references/generics.md": "7201b89492c473093a6818db8bcf0b26e445d2f0689eb84916ff185503c3c4c4",
+      "references/monorepo.md": "a725bf2737a1c0716b2c8f9f2a6d6d79cc0e14a401a06b7de5ed9744166fb5e4",
+      "references/overloads.md": "39494766556c8c7aa46c2aa16aa20718aedcaf7a4ec8cf0a28443324d3c5936b",
+      "references/patterns.md": "ad0135c65606afcaaaf97807020234dc7ab2cd570e9ad5e77eb3c8f3f9ff617e",
+      "references/practices.md": "51f765dcd0f2e1732e00d83504a4a832f177437f96aeed0d992a634e949c827a",
+      "references/runtime-derived-types.md": "1e1a327d0a2e59792ec25aa5c69bb2cd313273ef2a9d7730014700303e9e4aa0",
+      "references/toolchain.md": "313bb758492c473f47b7d1670fd01ecb605512296ab98edcf36fe59914794771",
+      "references/type-debugging.md": "2fb09da3deb9e434b50336644da63a6539503d30f05a0304fa7c9a78d7690304",
+      "references/type-system.md": "451bec02f0fe0cad7a3967b6d4b8388e98600c4655be7fee51b971f1db0f40e9"
+    }
+  }
+}

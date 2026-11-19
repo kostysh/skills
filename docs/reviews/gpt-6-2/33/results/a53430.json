@@ -1,0 +1,201 @@
+{
+  "variant": "C",
+  "case": "holdout",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПримени локальное руководство из ./SKILL.md. Для приёмки владельцем выполни формальную проверку поставленной версии catalog против принятого контракта из intake/. Дай заключение в ответе, привяжи каждый существенный вывод к требованию и конкретному проверенному поведению. Саму поставку сохраняй в исходном виде. Разрешено запускать её штатно на расходных локальных данных.\n",
+  "input_file_sha256": {
+    "SKILL.md": "ce3a79e647f3c47f846b375dc08b3423d047e640f5dab2c5074f19184ab1d857",
+    "agents/openai.yaml": "cfb46dd79b7c1dbea6f21726d24c55d1ecde761ced9005f103ffb30629c88b2b",
+    "assets/fixtures/consultant-admission-policy.md": "acc3607c90becff03a87356f0e43e094bb023e28ea1e80af64dbd4577c514b53",
+    "catalog/README.md": "a61923dbfb54a07bfaa42ecd38cf4b114787c3b29e48dac6d33887a1cf7b1cc8",
+    "catalog/fixture/catalog.json": "c1ffa5c0464dc1dbaef19ba17bd3f2b383ad46ffd7c35eed6d06dd9bb1ad3991",
+    "catalog/package.json": "430f45fd1e3827efe0aba6fdf1be5a64b76e0c3362ce37e3bb3de8b96e730432",
+    "catalog/src/catalog.mjs": "cd5667c5c8cedd456f4940d40846ec21d759a84d1685b90d2ba33c4142a8585e",
+    "catalog/test/catalog.test.mjs": "6a45eae3808cedb55b2f76befc6e5a421c44c303f16c66929a87f2fffe2b6d1d",
+    "intake/approval.md": "d0df061a230dbf9899a44d79690798502dac8e39324bd6a358d29c4528244bb3",
+    "intake/approved-addendum.md": "09d01560a3b59a692407b28c9110573ed40985e134359e6162cdaca7b6880411",
+    "references/methodology.md": "a568814539648a7850c9342be8bab3fdbe50fb699276c33a4887abbd3211fe45",
+    "references/policy-admission-matrix.md": "cfe2cd85876b46cdd71fd982b15bdbe3cff16e4dc95da48ca53a2c3b28578689",
+    "references/reporting.md": "75c49ef2eb6fc501952112b3e3c47dad83ebc7da4f996ba7e0d11e588795bc25"
+  },
+  "raw_events_sha256": "6350dd702d9458f4f5def0ec9c91807d00d2e52df4769ef091e142892cfc6220",
+  "raw_events_bytes": 72022,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Применю локальное руководство `SKILL.md`, сверю поставку `catalog` с контрактом из `intake/` и проверю её штатным запуском на расходных данных. Файлы поставки сохраню в исходном виде."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat ./SKILL.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"ls -la && rg --files --hidden -g '\"'!.git/**'\"'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat references/methodology.md references/reporting.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'nl -ba intake/approval.md && nl -ba intake/approved-addendum.md && find catalog intake -type f -print0 | sort -z | xargs -0 sha256sum'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'nl -ba catalog/README.md && find catalog -type f -print0 | sort -z | xargs -0 sha256sum | sha256sum'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'nl -ba catalog/test/catalog.test.mjs && nl -ba catalog/fixture/catalog.json'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'nl -ba catalog/src/catalog.mjs && nl -ba catalog/package.json'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'npm test'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Оба штатных теста прошли. Они проверяют закрепление в памяти и ошибку для неизвестного `id`. Дисковый цикл и случай одинаковых заголовков проверю отдельными запусками."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"node --input-type=module <<'JS'\nimport { spawnSync } from 'node:child_process';\nimport { mkdtempSync, readFileSync, writeFileSync, unlinkSync, rmdirSync } from 'node:fs';\nimport { join } from 'node:path';\nimport { isDeepStrictEqual } from 'node:util';\n\nconst directory = mkdtempSync(join(process.cwd(), '.catalog-review.'));\nconst path = join(directory, 'catalog.json');\nconst actions = \"'`\n  import {loadCatalog, setPinned, saveCatalog} from '\"'./catalog/src/catalog.mjs';\n  const [path, id, pinned] = process.argv.slice(1);\n  saveCatalog(path, setPinned(loadCatalog(path), id, pinned === 'true'));\n\"'`;\nconst reload = `\n  import {loadCatalog} from '\"'./catalog/src/catalog.mjs';\n  console.log(JSON.stringify(loadCatalog(process.argv[1])));\n\"'`;\nfunction run(source, ...args) {\n  return spawnSync(process.execPath, ['\"'--input-type=module', '-e', source, ...args], {encoding: 'utf8'});\n}\nfunction read() {\n  const result = run(reload, path);\n  if (result.status \"'!== 0) throw new Error(result.stderr);\n  return JSON.parse(result.stdout);\n}\ntry {\n  for (const sameTitle of [false, true]) {\n    for (const pinned of [true, false]) {\n      const title = sameTitle ? '\"'Shared' : 'Target';\n      const label = (sameTitle ? 'same-title' : 'distinct') + (pinned ? '/pin' : '/unpin');\n      const initial = [\n        {id: 'peer', title: sameTitle ? title : 'Peer', pinned: \"'!pinned},\n        {id: '\"'target', title, pinned: \"'!pinned},\n        {id: '\"'control', title: 'Control', pinned},\n      ];\n      writeFileSync(path, JSON.stringify(initial));\n      const result = run(actions, path, 'target', String(pinned));\n      if (result.status \"'!== 0) throw new Error(result.stderr);\n      const records = JSON.parse(readFileSync(path, '\"'utf8'));\n      const after = read();\n      const expected = initial.map(card => card.id === 'target' ? {...card, pinned} : card);\n      console.log(JSON.stringify({\n        label, initial, expected, records, reloaded: after,\n        exactMatch: isDeepStrictEqual(records, expected) && isDeepStrictEqual(after, expected),\n        selectedChanged: after.find(card => card.id === 'target').pinned === pinned,\n        orderAndTitles: isDeepStrictEqual(after.map(({id, title}) => ({id, title})), initial.map(({id, title}) => ({id, title}))),\n      }));\n    }\n  }\n  writeFileSync(path, JSON.stringify([{id: 'old', title: 'Legacy'}, {id: 'known', title: 'Known', pinned: true}]));\n  console.log(JSON.stringify({label: 'legacy', reloaded: read()}));\n  const before = readFileSync(path, 'utf8');\n  const missing = run(actions, path, 'missing', 'true');\n  console.log(JSON.stringify({label: 'missing', status: missing.status, error: missing.stderr.match(/Error: Unknown card: .+/)?.[0], unchanged: before === readFileSync(path, 'utf8')}));\n} finally {\n  unlinkSync(path);\n  rmdirSync(directory);\n}\nJS\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'find catalog -type f -print0 | sort -z | xargs -0 sha256sum | sha256sum && sha256sum catalog/README.md intake/approval.md intake/approved-addendum.md && ls -a'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "**Поставка `catalog` не проходит приёмку.** При закреплении и откреплении карточки меняется и другая карточка с тем же заголовком. Лишнее изменение записывается в JSON и сохраняется после загрузки в новом процессе.\n\n### Основание и границы проверки\n\nНина утвердила контракт из `catalog/README.md` для обычных локальных вызовов автономной версии «Клён». Принятое дополнение разрешает одинаковые заголовки и требует выбирать карточку по `id`, сохраняя остальные карточки. Облачная синхронизация относится к другому продукту. [Утверждение контракта]({project}/intake/approval.md:1), [принятое дополнение]({project}/intake/approved-addendum.md:1), [контракт]({project}/catalog/README.md:2).\n\nСовокупный SHA-256 файлов `catalog/` — `8349b680d3ec7ba33c91057b1bfaef6e78180cc9f5befaf575fa77f8a9dc4e73`. Префиксы SHA-256 источников — `a61923dbfb54` для контракта, `d0df061a230d` для утверждения и `09d01560a3b5` для дополнения. Контрольные суммы совпали до и после проверки. Рабочие сценарии запускались на временных данных в текущем каталоге.\n\n### Требования и результаты\n\nВсе требования в таблице явно заданы (`explicit`) и обязательны (`must`). В дисковых сценариях один процесс выполнял `loadCatalog → setPinned → saveCatalog`, а другой повторно открывал тот же JSON.\n\n| ID | Требование | Проверенное поведение | Статус |\n|---|---|---|---|\n| C1 | Локально загрузить и сохранить каталог как JSON-массив записей `{ id, title, pinned }`. [Контракт]({project}/catalog/README.md:2) | Во всех четырёх сценариях файл содержал массив с указанными полями, и новый процесс успешно загрузил его. [Чтение]({project}/catalog/src/catalog.mjs:3), [запись]({project}/catalog/src/catalog.mjs:14). | `fulfilled` |\n| C2 | Сохранить закрепление выбранной карточки после повторной загрузки. [Контракт]({project}/catalog/README.md:4) | `target.pinned` сменилось с `false` на `true` и сохранилось при разных и одинаковых заголовках. [Изменение карточек]({project}/catalog/src/catalog.mjs:8). | `fulfilled` |\n| C3 | Сохранить открепление выбранной карточки после повторной загрузки. [Контракт]({project}/catalog/README.md:4) | `target.pinned` сменилось с `true` на `false` и сохранилось при разных и одинаковых заголовках. [Изменение карточек]({project}/catalog/src/catalog.mjs:8). | `fulfilled` |\n| C4 | Сохранить заголовки и порядок карточек. [Контракт]({project}/catalog/README.md:4) | Во всех четырёх сценариях последовательность пар `(id, title)` после повторной загрузки совпала с исходной. [Запись]({project}/catalog/src/catalog.mjs:14). | `fulfilled` |\n| C5 | Изменить только карточку с выбранным `id`, в том числе при совпадении заголовков. [Контракт]({project}/catalog/README.md:4), [дополнение]({project}/intake/approved-addendum.md:1). | При разных заголовках остальные записи сохранились. При общем заголовке `Shared` карточка `peer` изменилась вместе с `target` в обе стороны. Это видно в записанном JSON и после повторной загрузки. [Условие изменения]({project}/catalog/src/catalog.mjs:11). | `not_fulfilled` |\n| C6 | Вернуть ошибку для отсутствующего `id`. [Контракт]({project}/catalog/README.md:4) | В непустом каталоге вызов завершился с кодом `1` и сообщением `Unknown card: missing`. Файл остался побайтово прежним. Штатный тест также проверил ошибку на пустом каталоге. [Обработка ошибки]({project}/catalog/src/catalog.mjs:9), [тест]({project}/catalog/test/catalog.test.mjs:10). | `fulfilled` |\n| C7 | Прочитать старую запись без поля `pinned` как `false`. [Контракт]({project}/catalog/README.md:5) | Загрузка с диска вернула `false` для записи без поля и сохранила явно заданное `true` у соседней записи. [Чтение]({project}/catalog/src/catalog.mjs:3). | `fulfilled` |\n| C8 | Выполнить штатную локальную команду `npm test`. [Контракт]({project}/catalog/README.md:6) | Команда завершилась успешно, 2 из 2 тестов прошли. [Команда]({project}/catalog/package.json:1). | `fulfilled` |\n\n### Блокирующее отклонение и решение\n\n**C5, существенное отклонение (`major`).** `setPinned` находит карточку по `id`, извлекает её заголовок и затем меняет все карточки с этим заголовком. При закреплении `target` значение `peer.pinned` ошибочно сменилось с `false` на `true`. При откреплении оно ошибочно сменилось с `true` на `false`. Оба изменения пережили закрытие процесса. [Реализация]({project}/catalog/src/catalog.mjs:8), [принятое дополнение]({project}/intake/approved-addendum.md:1).\n\nШтатные тесты проверяют немедленную видимость закрепления в памяти и ошибку для неизвестного `id`. Они не охватывают дисковый цикл или одинаковые заголовки. Эти сценарии проверены отдельными запусками. Блокирующих пробелов в доказательствах для локального контракта не осталось. [Штатные тесты]({project}/catalog/test/catalog.test.mjs:5).\n\n**Формальный вердикт — `non-compliant`.** Для повторной приёмки разработчику поставки нужно ограничить изменение совпадением `id` и повторить оба дисковых сценария с одинаковыми заголовками. Заключение относится к указанному снимку."
+    }
+  ],
+  "changed_file_contents": {},
+  "final_response": "**Поставка `catalog` не проходит приёмку.** При закреплении и откреплении карточки меняется и другая карточка с тем же заголовком. Лишнее изменение записывается в JSON и сохраняется после загрузки в новом процессе.\n\n### Основание и границы проверки\n\nНина утвердила контракт из `catalog/README.md` для обычных локальных вызовов автономной версии «Клён». Принятое дополнение разрешает одинаковые заголовки и требует выбирать карточку по `id`, сохраняя остальные карточки. Облачная синхронизация относится к другому продукту. [Утверждение контракта]({project}/intake/approval.md:1), [принятое дополнение]({project}/intake/approved-addendum.md:1), [контракт]({project}/catalog/README.md:2).\n\nСовокупный SHA-256 файлов `catalog/` — `8349b680d3ec7ba33c91057b1bfaef6e78180cc9f5befaf575fa77f8a9dc4e73`. Префиксы SHA-256 источников — `a61923dbfb54` для контракта, `d0df061a230d` для утверждения и `09d01560a3b5` для дополнения. Контрольные суммы совпали до и после проверки. Рабочие сценарии запускались на временных данных в текущем каталоге.\n\n### Требования и результаты\n\nВсе требования в таблице явно заданы (`explicit`) и обязательны (`must`). В дисковых сценариях один процесс выполнял `loadCatalog → setPinned → saveCatalog`, а другой повторно открывал тот же JSON.\n\n| ID | Требование | Проверенное поведение | Статус |\n|---|---|---|---|\n| C1 | Локально загрузить и сохранить каталог как JSON-массив записей `{ id, title, pinned }`. [Контракт]({project}/catalog/README.md:2) | Во всех четырёх сценариях файл содержал массив с указанными полями, и новый процесс успешно загрузил его. [Чтение]({project}/catalog/src/catalog.mjs:3), [запись]({project}/catalog/src/catalog.mjs:14). | `fulfilled` |\n| C2 | Сохранить закрепление выбранной карточки после повторной загрузки. [Контракт]({project}/catalog/README.md:4) | `target.pinned` сменилось с `false` на `true` и сохранилось при разных и одинаковых заголовках. [Изменение карточек]({project}/catalog/src/catalog.mjs:8). | `fulfilled` |\n| C3 | Сохранить открепление выбранной карточки после повторной загрузки. [Контракт]({project}/catalog/README.md:4) | `target.pinned` сменилось с `true` на `false` и сохранилось при разных и одинаковых заголовках. [Изменение карточек]({project}/catalog/src/catalog.mjs:8). | `fulfilled` |\n| C4 | Сохранить заголовки и порядок карточек. [Контракт]({project}/catalog/README.md:4) | Во всех четырёх сценариях последовательность пар `(id, title)` после повторной загрузки совпала с исходной. [Запись]({project}/catalog/src/catalog.mjs:14). | `fulfilled` |\n| C5 | Изменить только карточку с выбранным `id`, в том числе при совпадении заголовков. [Контракт]({project}/catalog/README.md:4), [дополнение]({project}/intake/approved-addendum.md:1). | При разных заголовках остальные записи сохранились. При общем заголовке `Shared` карточка `peer` изменилась вместе с `target` в обе стороны. Это видно в записанном JSON и после повторной загрузки. [Условие изменения]({project}/catalog/src/catalog.mjs:11). | `not_fulfilled` |\n| C6 | Вернуть ошибку для отсутствующего `id`. [Контракт]({project}/catalog/README.md:4) | В непустом каталоге вызов завершился с кодом `1` и сообщением `Unknown card: missing`. Файл остался побайтово прежним. Штатный тест также проверил ошибку на пустом каталоге. [Обработка ошибки]({project}/catalog/src/catalog.mjs:9), [тест]({project}/catalog/test/catalog.test.mjs:10). | `fulfilled` |\n| C7 | Прочитать старую запись без поля `pinned` как `false`. [Контракт]({project}/catalog/README.md:5) | Загрузка с диска вернула `false` для записи без поля и сохранила явно заданное `true` у соседней записи. [Чтение]({project}/catalog/src/catalog.mjs:3). | `fulfilled` |\n| C8 | Выполнить штатную локальную команду `npm test`. [Контракт]({project}/catalog/README.md:6) | Команда завершилась успешно, 2 из 2 тестов прошли. [Команда]({project}/catalog/package.json:1). | `fulfilled` |\n\n### Блокирующее отклонение и решение\n\n**C5, существенное отклонение (`major`).** `setPinned` находит карточку по `id`, извлекает её заголовок и затем меняет все карточки с этим заголовком. При закреплении `target` значение `peer.pinned` ошибочно сменилось с `false` на `true`. При откреплении оно ошибочно сменилось с `true` на `false`. Оба изменения пережили закрытие процесса. [Реализация]({project}/catalog/src/catalog.mjs:8), [принятое дополнение]({project}/intake/approved-addendum.md:1).\n\nШтатные тесты проверяют немедленную видимость закрепления в памяти и ошибку для неизвестного `id`. Они не охватывают дисковый цикл или одинаковые заголовки. Эти сценарии проверены отдельными запусками. Блокирующих пробелов в доказательствах для локального контракта не осталось. [Штатные тесты]({project}/catalog/test/catalog.test.mjs:5).\n\n**Формальный вердикт — `non-compliant`.** Для повторной приёмки разработчику поставки нужно ограничить изменение совпадением `id` и повторить оба дисковых сценария с одинаковыми заголовками. Заключение относится к указанному снимку.",
+  "input_file_modes": {
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "assets/fixtures/consultant-admission-policy.md": "0644",
+    "catalog/README.md": "0664",
+    "catalog/fixture/catalog.json": "0664",
+    "catalog/package.json": "0664",
+    "catalog/src/catalog.mjs": "0664",
+    "catalog/test/catalog.test.mjs": "0664",
+    "intake/approval.md": "0664",
+    "intake/approved-addendum.md": "0664",
+    "references/methodology.md": "0644",
+    "references/policy-admission-matrix.md": "0644",
+    "references/reporting.md": "0644"
+  },
+  "changed_file_modes": {},
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "sameProductFilesAsObserver": true,
+    "organizerPreflightOnTheseInputs": {
+      "operatorTests": "✔ smoke: pinned card is visible immediately (1.036468ms)\n✔ unknown card is rejected (0.330775ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 42.732037\n",
+      "state": {
+        "init": [
+          {
+            "id": "a",
+            "title": "Alpha",
+            "pinned": false
+          },
+          {
+            "id": "b",
+            "title": "Alpha",
+            "pinned": true
+          },
+          {
+            "id": "c",
+            "title": "Cedar",
+            "pinned": true
+          }
+        ],
+        "firstRead": [
+          {
+            "id": "a",
+            "title": "Alpha",
+            "pinned": true
+          },
+          {
+            "id": "b",
+            "title": "Alpha",
+            "pinned": true
+          },
+          {
+            "id": "c",
+            "title": "Cedar",
+            "pinned": true
+          }
+        ],
+        "secondRead": [
+          {
+            "id": "a",
+            "title": "Alpha",
+            "pinned": false
+          },
+          {
+            "id": "b",
+            "title": "Alpha",
+            "pinned": false
+          },
+          {
+            "id": "c",
+            "title": "Cedar",
+            "pinned": true
+          }
+        ],
+        "unknownId": "Unknown card: absent"
+      }
+    },
+    "participantCommandsAndResults": [
+      {
+        "command": "/bin/bash -lc 'nl -ba catalog/test/catalog.test.mjs && nl -ba catalog/fixture/catalog.json'",
+        "exit": 0,
+        "selectOutput": "     1\timport test from 'node:test';\n     2\timport assert from 'node:assert/strict';\n     3\timport { setPinned, pinnedTitles } from '../src/catalog.mjs';\n     4\t\n     5\ttest('smoke: pinned card is visible immediately', () => {\n     6\t  const cards = [{ id: 'a', title: 'Alpha', pinned: false }, { id: 'b', title: 'Beta', pinned: false }];\n     7\t  assert.deepEqual(pinnedTitles(setPinned(cards, 'a', true)), ['Alpha']);\n     8\t});\n     9\t\n    10\ttest('unknown card is rejected', () => {\n    11\t  assert.throws(() => setPinned([], 'missing', true), /Unknown card/);\n    12\t});\n     1\t[{\"id\":\"a\",\"title\":\"Alpha\",\"pinned\":false},{\"id\":\"b\",\"title\":\"Beta\",\"pinned\":true}]",
+        "fullEventSha": "e95c5a2ba8f7f728c10e0e29910b77897269508254ecbfed0ae8666d7816dda9"
+      },
+      {
+        "command": "/bin/bash -lc 'npm test'",
+        "exit": 0,
+        "selectOutput": "npm notice run test\nnpm notice run node --test test/*.test.mjs\n✔ smoke: pinned card is visible immediately (0.898297ms)\n✔ unknown card is rejected (0.282053ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 46.00357",
+        "fullEventSha": "c13e069cdeee7afeb80d16f497b3a951aadfe75dcdf2cdefc9a6bde88ecf9408"
+      },
+      {
+        "command": "/bin/bash -lc \"node --input-type=module <<'JS'\nimport { spawnSync } from 'node:child_process';\nimport { mkdtempSync, readFileSync, writeFileSync, unlinkSync, rmdirSync } from 'node:fs';\nimport { join } from 'node:path';\nimport { isDeepStrictEqual } from 'node:util';\n\nconst directory = mkdtempSync(join(process.cwd(), '.catalog-review.'));\nconst path = join(directory, 'catalog.json');\nconst actions = \"'`\n  import {loadCatalog, setPinned, saveCatalog} from '\"'./catalog/src/catalog.mjs';\n  const [path, id, pinned] = process.argv.slice(1);\n  saveCatalog(path, setPinned(loadCatalog(path), id, pinned === 'true'));\n\"'`;\nconst reload = `\n  import {loadCatalog} from '\"'./catalog/src/catalog.mjs';\n  console.log(JSON.stringify(loadCatalog(process.argv[1])));\n\"'`;\nfunction run(source, ...args) {\n  return spawnSync(process.execPath, ['\"'--input-type=module', '-e', source, ...args], {encoding: 'utf8'});\n}\nfunction read() {\n  const result = run(reload, path);\n  if (result.status \"'!== 0) throw new Error(result.stderr);\n  return JSON.parse(result.stdout);\n}\ntry {\n  for (const sameTitle of [false, true]) {\n    for (const pinned of [true, false]) {\n      const title = sameTitle ? '\"'Shared' : 'Target';\n      const label = (sameTitle ? 'same-title' : 'distinct') + (pinned ? '/pin' : '/unpin');\n      const initial = [\n        {id: 'peer', title: sameTitle ? title : 'Peer', pinned: \"'!pinned},\n        {id: '\"'target', title, pinned: \"'!pinned},\n        {id: '\"'control', title: 'Control', pinned},\n      ];\n      writeFileSync(path, JSON.stringify(initial));\n      const result = run(actions, path, 'target', String(pinned));\n      if (result.status \"'!== 0) throw new Error(result.stderr);\n      const records = JSON.parse(readFileSync(path, '\"'utf8'));\n      const after = read();\n      const expected = initial.map(card => card.id === 'target' ? {...card, pinned} : card);\n      console.log(JSON.stringify({\n        label, initial, expected, records, reloaded: after,\n        exactMatch: isDeepStrictEqual(records, expected) && isDeepStrictEqual(after, expected),\n        selectedChanged: after.find(card => card.id === 'target').pinned === pinned,\n        orderAndTitles: isDeepStrictEqual(after.map(({id, title}) => ({id, title})), initial.map(({id, title}) => ({id, title}))),\n      }));\n    }\n  }\n  writeFileSync(path, JSON.stringify([{id: 'old', title: 'Legacy'}, {id: 'known', title: 'Known', pinned: true}]));\n  console.log(JSON.stringify({label: 'legacy', reloaded: read()}));\n  const before = readFileSync(path, 'utf8');\n  const missing = run(actions, path, 'missing', 'true');\n  console.log(JSON.stringify({label: 'missing', status: missing.status, error: missing.stderr.match(/Error: Unknown card: .+/)?.[0], unchanged: before === readFileSync(path, 'utf8')}));\n} finally {\n  unlinkSync(path);\n  rmdirSync(directory);\n}\nJS\"",
+        "exit": 0,
+        "selectOutput": "{\"label\":\"distinct/pin\",\"initial\":[{\"id\":\"peer\",\"title\":\"Peer\",\"pinned\":false},{\"id\":\"target\",\"title\":\"Target\",\"pinned\":false},{\"id\":\"control\",\"title\":\"Control\",\"pinned\":true}],\"expected\":[{\"id\":\"peer\",\"title\":\"Peer\",\"pinned\":false},{\"id\":\"target\",\"title\":\"Target\",\"pinned\":true},{\"id\":\"control\",\"title\":\"Control\",\"pinned\":true}],\"records\":[{\"id\":\"peer\",\"title\":\"Peer\",\"pinned\":false},{\"id\":\"target\",\"title\":\"Target\",\"pinned\":true},{\"id\":\"control\",\"title\":\"Control\",\"pinned\":true}],\"reloaded\":[{\"id\":\"peer\",\"title\":\"Peer\",\"pinned\":false},{\"id\":\"target\",\"title\":\"Target\",\"pinned\":true},{\"id\":\"control\",\"title\":\"Control\",\"pinned\":true}],\"exactMatch\":true,\"selectedChanged\":true,\"orderAndTitles\":true}\n{\"label\":\"distinct/unpin\",\"initial\":[{\"id\":\"peer\",\"title\":\"Peer\",\"pinned\":true},{\"id\":\"target\",\"title\":\"Target\",\"pinned\":true},{\"id\":\"control\",\"title\":\"Control\",\"pinned\":false}],\"expected\":[{\"id\":\"peer\",\"title\":\"Peer\",\"pinned\":true},{\"id\":\"target\",\"title\":\"Target\",\"pinned\":false},{\"id\":\"control\",\"title\":\"Control\",\"pinned\":false}],\"records\":[{\"id\":\"peer\",\"title\":\"Peer\",\"pinned\":true},{\"id\":\"target\",\"title\":\"Target\",\"pinned\":false},{\"id\":\"control\",\"title\":\"Control\",\"pinned\":false}],\"reloaded\":[{\"id\":\"peer\",\"title\":\"Peer\",\"pinned\":true},{\"id\":\"target\",\"title\":\"Target\",\"pinned\":false},{\"id\":\"control\",\"title\":\"Control\",\"pinned\":false}],\"exactMatch\":true,\"selectedChanged\":true,\"orderAndTitles\":true}\n{\"label\":\"same-title/pin\",\"initial\":[{\"id\":\"peer\",\"title\":\"Shared\",\"pinned\":false},{\"id\":\"target\",\"title\":\"Shared\",\"pinned\":false},{\"id\":\"control\",\"title\":\"Control\",\"pinned\":true}],\"expected\":[{\"id\":\"peer\",\"title\":\"Shared\",\"pinned\":false},{\"id\":\"target\",\"title\":\"Shared\",\"pinned\":true},{\"id\":\"control\",\"title\":\"Control\",\"pinned\":true}],\"records\":[{\"id\":\"peer\",\"title\":\"Shared\",\"pinned\":true},{\"id\":\"target\",\"title\":\"Shared\",\"pinned\":true},{\"id\":\"control\",\"title\":\"Control\",\"pinned\":true}],\"reloaded\":[{\"id\":\"peer\",\"title\":\"Shared\",\"pinned\":true},{\"id\":\"target\",\"title\":\"Shared\",\"pinned\":true},{\"id\":\"control\",\"title\":\"Control\",\"pinned\":true}],\"exactMatch\":false,\"selectedChanged\":true,\"orderAndTitles\":true}\n{\"label\":\"same-title/unpin\",\"initial\":[{\"id\":\"peer\",\"title\":\"Shared\",\"pinned\":true},{\"id\":\"target\",\"title\":\"Shared\",\"pinned\":true},{\"id\":\"control\",\"title\":\"Control\",\"pinned\":false}],\"expected\":[{\"id\":\"peer\",\"title\":\"Shared\",\"pinned\":true},{\"id\":\"target\",\"title\":\"Shared\",\"pinned\":false},{\"id\":\"control\",\"title\":\"Control\",\"pinned\":false}],\"records\":[{\"id\":\"peer\",\"title\":\"Shared\",\"pinned\":false},{\"id\":\"target\",\"title\":\"Shared\",\"pinned\":false},{\"id\":\"control\",\"title\":\"Control\",\"pinned\":false}],\"reloaded\":[{\"id\":\"peer\",\"title\":\"Shared\",\"pinned\":false},{\"id\":\"target\",\"title\":\"Shared\",\"pinned\":false},{\"id\":\"control\",\"title\":\"Control\",\"pinned\":false}],\"exactMatch\":false,\"selectedChanged\":true,\"orderAndTitles\":true}\n{\"label\":\"legacy\",\"reloaded\":[{\"id\":\"old\",\"title\":\"Legacy\",\"pinned\":false},{\"id\":\"known\",\"title\":\"Known\",\"pinned\":true}]}\n{\"label\":\"missing\",\"status\":1,\"error\":\"Error: Unknown card: missing\",\"unchanged\":true}",
+        "fullEventSha": "504f0567da5657d793d015731086e191339604871591f7a84813ab0ffa809207"
+      }
+    ],
+    "changesToInitialFiles": [],
+    "createdFiles": []
+  }
+}

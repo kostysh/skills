@@ -1,0 +1,129 @@
+{
+  "method": "--help and --version in an unlinked disposable directory, telemetry disabled",
+  "binary_sha256": {
+    "2.76.10": "21e95a382b35ccd7bcc82cd02d1b73c9e2c0d4965c7e5125a33e75af484afd94",
+    "3.2.0": "0ed73393ce16dc967c1cafe824929bd97c8d11de0a5bc41e174710858860d1fe"
+  },
+  "commands": [
+    {
+      "release": "2.76.10",
+      "command": [
+        "supabase",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "2.76.10\n",
+      "stderr": "A new version of Supabase CLI is available: v3.2.0 (currently installed v2.76.10)\nWe recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli\n"
+    },
+    {
+      "release": "2.76.10",
+      "command": [
+        "supabase",
+        "migration",
+        "list",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout": "List local and remote migrations\n\nUsage:\n  supabase migration list [flags]\n\nFlags:\n      --db-url string     Lists migrations of the database specified by the connection string (must be percent-encoded).\n  -h, --help              help for list\n      --linked            Lists migrations applied to the linked project. (default true)\n      --local             Lists migrations applied to the local database.\n  -p, --password string   Password to your remote Postgres database.\n\nGlobal Flags:\n      --create-ticket                                  create a support ticket for any CLI error\n      --debug                                          output debug logs to stderr\n      --dns-resolver [ native | https ]                lookup domain names using the specified resolver (default native)\n      --experimental                                   enable experimental features\n      --network-id string                              use the specified docker network instead of a generated one\n  -o, --output [ env | pretty | json | toml | yaml ]   output format of status variables (default pretty)\n      --profile string                                 use a specific profile for connecting to Supabase API (default \"supabase\")\n      --workdir string                                 path to a Supabase project directory\n      --yes                                            answer yes to all prompts\n",
+      "stderr": "A new version of Supabase CLI is available: v3.2.0 (currently installed v2.76.10)\nWe recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli\n"
+    },
+    {
+      "release": "2.76.10",
+      "command": [
+        "supabase",
+        "migration",
+        "up",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout": "Apply pending migrations to local database\n\nUsage:\n  supabase migration up [flags]\n\nFlags:\n      --db-url string   Applies migrations to the database specified by the connection string (must be percent-encoded).\n  -h, --help            help for up\n      --include-all     Include all migrations not found on remote history table.\n      --linked          Applies pending migrations to the linked project.\n      --local           Applies pending migrations to the local database. (default true)\n\nGlobal Flags:\n      --create-ticket                                  create a support ticket for any CLI error\n      --debug                                          output debug logs to stderr\n      --dns-resolver [ native | https ]                lookup domain names using the specified resolver (default native)\n      --experimental                                   enable experimental features\n      --network-id string                              use the specified docker network instead of a generated one\n  -o, --output [ env | pretty | json | toml | yaml ]   output format of status variables (default pretty)\n      --profile string                                 use a specific profile for connecting to Supabase API (default \"supabase\")\n      --workdir string                                 path to a Supabase project directory\n      --yes                                            answer yes to all prompts\n",
+      "stderr": "A new version of Supabase CLI is available: v3.2.0 (currently installed v2.76.10)\nWe recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli\n"
+    },
+    {
+      "release": "2.76.10",
+      "command": [
+        "supabase",
+        "db",
+        "reset",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout": "Resets the local database to current migrations\n\nUsage:\n  supabase db reset [flags]\n\nFlags:\n      --db-url string    Resets the database specified by the connection string (must be percent-encoded).\n  -h, --help             help for reset\n      --last uint        Reset up to the last n migration versions.\n      --linked           Resets the linked project with local migrations.\n      --local            Resets the local database with local migrations. (default true)\n      --no-seed          Skip running the seed script after reset.\n      --version string   Reset up to the specified version.\n\nGlobal Flags:\n      --create-ticket                                  create a support ticket for any CLI error\n      --debug                                          output debug logs to stderr\n      --dns-resolver [ native | https ]                lookup domain names using the specified resolver (default native)\n      --experimental                                   enable experimental features\n      --network-id string                              use the specified docker network instead of a generated one\n  -o, --output [ env | pretty | json | toml | yaml ]   output format of status variables (default pretty)\n      --profile string                                 use a specific profile for connecting to Supabase API (default \"supabase\")\n      --workdir string                                 path to a Supabase project directory\n      --yes                                            answer yes to all prompts\n",
+      "stderr": "A new version of Supabase CLI is available: v3.2.0 (currently installed v2.76.10)\nWe recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli\n"
+    },
+    {
+      "release": "2.76.10",
+      "command": [
+        "supabase",
+        "db",
+        "schema",
+        "declarative",
+        "sync",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout": "Manage Postgres databases\n\nUsage:\n  supabase db [command]\n\nAvailable Commands:\n  diff        Diffs the local database for schema changes\n  dump        Dumps data or schemas from the remote database\n  lint        Checks local database for typing error\n  pull        Pull schema from the remote database\n  push        Push new migrations to the remote database\n  reset       Resets the local database to current migrations\n  start       Starts local Postgres database\n\nFlags:\n  -h, --help   help for db\n\nGlobal Flags:\n      --create-ticket                                  create a support ticket for any CLI error\n      --debug                                          output debug logs to stderr\n      --dns-resolver [ native | https ]                lookup domain names using the specified resolver (default native)\n      --experimental                                   enable experimental features\n      --network-id string                              use the specified docker network instead of a generated one\n  -o, --output [ env | pretty | json | toml | yaml ]   output format of status variables (default pretty)\n      --profile string                                 use a specific profile for connecting to Supabase API (default \"supabase\")\n      --workdir string                                 path to a Supabase project directory\n      --yes                                            answer yes to all prompts\n\nUse \"supabase db [command] --help\" for more information about a command.\n",
+      "stderr": "A new version of Supabase CLI is available: v3.2.0 (currently installed v2.76.10)\nWe recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli\n"
+    },
+    {
+      "release": "3.2.0",
+      "command": [
+        "supabase",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "3.2.0\n",
+      "stderr": ""
+    },
+    {
+      "release": "3.2.0",
+      "command": [
+        "supabase",
+        "migration",
+        "list",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout": "DESCRIPTION\n  List local migration files and the migration history of the target database.\n\nTARGET\n  Local by default. Pass --remote for the linked project, or --remote=<ref|branch|url>.\n\nUSAGE\n  supabase migration list [flags]\n\nFLAGS\n  --remote[=<ref|branch|url>]    Target a remote database: the linked project, or --remote=<ref|branch|url>.\n  --password, -p string          Database password for the project selected with --remote. Not used for the local database or a database URL.\n\nGLOBAL FLAGS\n  --help, -h                                                          Show help information\n  --version, -v                                                       Show version information\n  --wizard                                                            Start wizard mode for a command\n  --completions <bash|zsh|fish|sh>                                    Print shell completion script (choices: bash, zsh, fish, sh)\n  --log-level <all|trace|debug|info|warn|warning|error|fatal|none>    Sets the minimum log level (choices: all, trace, debug, info, warn, warning, error, fatal, none)\n  --output-format choice                                              Output format: text (default), json, or stream-json (NDJSON) (choices: text, json, stream-json)\n  --output, -o choice                                                 output format of status variables (choices: env, pretty, json, toml, yaml, table, csv)\n  --profile string                                                    use a specific profile for connecting to Supabase API\n  --debug                                                             output debug logs to stderr\n  --workdir string                                                    path to the directory containing your supabase/ folder; used exactly as given, with no ancestor directory search (defaults to searching upward from the current directory)\n  --experimental                                                      enable experimental features\n  --network-id string                                                 use the specified docker network instead of a generated one\n  --yes                                                               answer yes to all prompts; hosted changes only accept this flag or SUPABASE_YES exported in your shell, never supabase/.env or another .env file\n  --dns-resolver choice                                               lookup domain names using the specified resolver (choices: native, https)\n  --agent choice                                                      Override agent detection: yes, no, or auto (default auto) (choices: auto, yes, no)\n\nPERMISSIONS\n  Scoped access token:\n    May be required (with --remote, without --password):\n      database_write\n    May be required (with --remote):\n      database_pooling_config_read\n      projects_read\n    May be required:\n      branching_development_read for a preview branch\n        or branching_production_read for the main branch\n    Optional, with --remote, without --password (command still runs without these):\n      database_network_bans_read\n      database_network_bans_write\n    Optional, with --remote (command still runs without these):\n      project_admin_read\n",
+      "stderr": ""
+    },
+    {
+      "release": "3.2.0",
+      "command": [
+        "supabase",
+        "migration",
+        "up",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout": "DESCRIPTION\n  Apply pending migrations to a database.\n\nTARGET\n  Local by default. Pass --remote for the linked project, or --remote=<ref|branch|url>.\n\nUSAGE\n  supabase migration up [flags]\n\nFLAGS\n  --include-all                  Include all migrations not found in the migration history table.\n  --remote[=<ref|branch|url>]    Target a remote database: the linked project, or --remote=<ref|branch|url>.\n\nGLOBAL FLAGS\n  --help, -h                                                          Show help information\n  --version, -v                                                       Show version information\n  --wizard                                                            Start wizard mode for a command\n  --completions <bash|zsh|fish|sh>                                    Print shell completion script (choices: bash, zsh, fish, sh)\n  --log-level <all|trace|debug|info|warn|warning|error|fatal|none>    Sets the minimum log level (choices: all, trace, debug, info, warn, warning, error, fatal, none)\n  --output-format choice                                              Output format: text (default), json, or stream-json (NDJSON) (choices: text, json, stream-json)\n  --output, -o choice                                                 output format of status variables (choices: env, pretty, json, toml, yaml, table, csv)\n  --profile string                                                    use a specific profile for connecting to Supabase API\n  --debug                                                             output debug logs to stderr\n  --workdir string                                                    path to the directory containing your supabase/ folder; used exactly as given, with no ancestor directory search (defaults to searching upward from the current directory)\n  --experimental                                                      enable experimental features\n  --network-id string                                                 use the specified docker network instead of a generated one\n  --yes                                                               answer yes to all prompts; hosted changes only accept this flag or SUPABASE_YES exported in your shell, never supabase/.env or another .env file\n  --dns-resolver choice                                               lookup domain names using the specified resolver (choices: native, https)\n  --agent choice                                                      Override agent detection: yes, no, or auto (default auto) (choices: auto, yes, no)\n\nPERMISSIONS\n  Scoped access token:\n    May be required (with --remote):\n      database_write\n      database_pooling_config_read\n      projects_read\n    May be required:\n      branching_development_read for a preview branch\n        or branching_production_read for the main branch\n    Optional, with --remote (command still runs without these):\n      database_network_bans_read\n      database_network_bans_write\n      project_admin_read\n",
+      "stderr": ""
+    },
+    {
+      "release": "3.2.0",
+      "command": [
+        "supabase",
+        "db",
+        "reset",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout": "DESCRIPTION\n  Resets a database to current migrations.\n\nTARGET\n  Local by default. Pass --remote for the linked project, or --remote=<ref|branch|url>.\n\nUSAGE\n  supabase db reset [flags]\n\nFLAGS\n  --remote[=<ref|branch|url>]    Target a remote database: the linked project, or --remote=<ref|branch|url>.\n  --no-seed                      Skip running the seed script after reset.\n  --sql-paths string             Override db.seed.sql_paths for this reset. May be repeated; each value accepts a SQL file path or glob pattern relative to the supabase directory and force-enables seeding.\n  --version string               Reset up to the specified version.\n  --last integer                 Reset up to the last n migration versions.\n\nGLOBAL FLAGS\n  --help, -h                                                          Show help information\n  --version, -v                                                       Show version information\n  --wizard                                                            Start wizard mode for a command\n  --completions <bash|zsh|fish|sh>                                    Print shell completion script (choices: bash, zsh, fish, sh)\n  --log-level <all|trace|debug|info|warn|warning|error|fatal|none>    Sets the minimum log level (choices: all, trace, debug, info, warn, warning, error, fatal, none)\n  --output-format choice                                              Output format: text (default), json, or stream-json (NDJSON) (choices: text, json, stream-json)\n  --output, -o choice                                                 output format of status variables (choices: env, pretty, json, toml, yaml, table, csv)\n  --profile string                                                    use a specific profile for connecting to Supabase API\n  --debug                                                             output debug logs to stderr\n  --workdir string                                                    path to the directory containing your supabase/ folder; used exactly as given, with no ancestor directory search (defaults to searching upward from the current directory)\n  --experimental                                                      enable experimental features\n  --network-id string                                                 use the specified docker network instead of a generated one\n  --yes                                                               answer yes to all prompts; hosted changes only accept this flag or SUPABASE_YES exported in your shell, never supabase/.env or another .env file\n  --dns-resolver choice                                               lookup domain names using the specified resolver (choices: native, https)\n  --agent choice                                                      Override agent detection: yes, no, or auto (default auto) (choices: auto, yes, no)\n\nPERMISSIONS\n  Scoped access token:\n    May be required (with --remote):\n      database_write\n      database_pooling_config_read\n      projects_read\n    May be required:\n      branching_development_read for a preview branch\n        or branching_production_read for the main branch\n    Optional, with --remote (command still runs without these):\n      database_network_bans_read\n      database_network_bans_write\n      project_admin_read\n",
+      "stderr": ""
+    },
+    {
+      "release": "3.2.0",
+      "command": [
+        "supabase",
+        "db",
+        "schema",
+        "declarative",
+        "sync",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout": "DESCRIPTION\n  Compares the supabase/migrations baseline with the complete declarative schema tree and writes the difference as migration files. When a legacy export omits known implicit extensions, interactive sync can add declarations and re-plan before writing. Use --no-apply for non-interactive generation without changing the local database; --apply or global --yes applies locally and updates local migration history.\n\nTARGET\n  Local only.\n\nUSAGE\n  supabase db schema declarative sync [flags]\n\nFLAGS\n  --no-cache             Disable catalog cache and force fresh shadow database setup.\n  --strict-coverage      Fail when bundled pg-delta finds schema objects it cannot manage instead of leaving them unmanaged.\n  --schema, -s string    Comma separated list of schema to include.\n  --file, -f string      Saves schema diff to a new migration file.\n  --name string          Name for the generated migration file.\n  --apply                Apply the generated migration to the local database without prompting.\n  --no-apply             Generate the migration file without prompting or applying it to the local database.\n\nGLOBAL FLAGS\n  --help, -h                                                          Show help information\n  --version, -v                                                       Show version information\n  --wizard                                                            Start wizard mode for a command\n  --completions <bash|zsh|fish|sh>                                    Print shell completion script (choices: bash, zsh, fish, sh)\n  --log-level <all|trace|debug|info|warn|warning|error|fatal|none>    Sets the minimum log level (choices: all, trace, debug, info, warn, warning, error, fatal, none)\n  --output-format choice                                              Output format: text (default), json, or stream-json (NDJSON) (choices: text, json, stream-json)\n  --output, -o choice                                                 output format of status variables (choices: env, pretty, json, toml, yaml, table, csv)\n  --profile string                                                    use a specific profile for connecting to Supabase API\n  --debug                                                             output debug logs to stderr\n  --workdir string                                                    path to the directory containing your supabase/ folder; used exactly as given, with no ancestor directory search (defaults to searching upward from the current directory)\n  --experimental                                                      enable experimental features\n  --network-id string                                                 use the specified docker network instead of a generated one\n  --yes                                                               answer yes to all prompts; hosted changes only accept this flag or SUPABASE_YES exported in your shell, never supabase/.env or another .env file\n  --dns-resolver choice                                               lookup domain names using the specified resolver (choices: native, https)\n  --agent choice                                                      Override agent detection: yes, no, or auto (default auto) (choices: auto, yes, no)\n",
+      "stderr": ""
+    }
+  ]
+}

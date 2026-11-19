@@ -1,0 +1,207 @@
+{
+  "ordinary": {
+    "before": {
+      "command": [
+        "node",
+        "desk.mjs",
+        "<temporary>/data.json",
+        "pins"
+      ],
+      "exit": 0,
+      "stdout": "[\"Beta\"]\n",
+      "stderr": ""
+    },
+    "pin": {
+      "command": [
+        "node",
+        "desk.mjs",
+        "<temporary>/data.json",
+        "pin",
+        "a"
+      ],
+      "exit": 0,
+      "stdout": "[\"Alpha\",\"Beta\"]\n",
+      "stderr": ""
+    },
+    "after": {
+      "command": [
+        "node",
+        "desk.mjs",
+        "<temporary>/data.json",
+        "pins"
+      ],
+      "exit": 0,
+      "stdout": "[]\n",
+      "stderr": ""
+    },
+    "legacy": {
+      "command": [
+        "node",
+        "desk.mjs",
+        "<temporary>/legacy.json",
+        "pins"
+      ],
+      "exit": 0,
+      "stdout": "[]\n",
+      "stderr": ""
+    },
+    "saved": [
+      {
+        "id": "a",
+        "title": "Alpha"
+      },
+      {
+        "id": "b",
+        "title": "Beta"
+      }
+    ],
+    "tests": {
+      "command": [
+        "npm",
+        "test",
+        "--offline"
+      ],
+      "exit": 0,
+      "stdout": "✔ smoke: pinned card is visible immediately (0.893437ms)\n✔ unknown card is rejected (0.29149ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 41.26511\n",
+      "stderr": "npm notice run test\nnpm notice run node --test test/*.test.mjs\n"
+    }
+  },
+  "boundary": {
+    "before": {
+      "command": [
+        "node",
+        "desk.mjs",
+        "<temporary>/data.json",
+        "pins"
+      ],
+      "exit": 0,
+      "stdout": "[\"Beta\"]\n",
+      "stderr": ""
+    },
+    "pin": {
+      "command": [
+        "node",
+        "desk.mjs",
+        "<temporary>/data.json",
+        "pin",
+        "a"
+      ],
+      "exit": 0,
+      "stdout": "[\"Alpha\",\"Beta\"]\n",
+      "stderr": ""
+    },
+    "after": {
+      "command": [
+        "node",
+        "desk.mjs",
+        "<temporary>/data.json",
+        "pins"
+      ],
+      "exit": 0,
+      "stdout": "[]\n",
+      "stderr": ""
+    },
+    "legacy": {
+      "command": [
+        "node",
+        "desk.mjs",
+        "<temporary>/legacy.json",
+        "pins"
+      ],
+      "exit": 0,
+      "stdout": "[]\n",
+      "stderr": ""
+    },
+    "saved": [
+      {
+        "id": "a",
+        "title": "Alpha"
+      },
+      {
+        "id": "b",
+        "title": "Beta"
+      }
+    ],
+    "tests": {
+      "command": [
+        "npm",
+        "test",
+        "--offline"
+      ],
+      "exit": 0,
+      "stdout": "✔ smoke: pinned card is visible immediately (0.958069ms)\n✔ unknown card is rejected (0.287523ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 41.710431\n",
+      "stderr": "npm notice run test\nnpm notice run node --test test/*.test.mjs\n"
+    }
+  },
+  "holdout": {
+    "oneWrite": {
+      "command": [
+        "node",
+        "desk.mjs",
+        "issue",
+        "<temporary>/one.json",
+        "North",
+        "R21"
+      ],
+      "exit": 0,
+      "stdout": "{\"desk\":\"North\",\"sector\":\"R21\"}\n",
+      "stderr": ""
+    },
+    "oneRead": {
+      "command": [
+        "node",
+        "desk.mjs",
+        "open",
+        "<temporary>/one.json"
+      ],
+      "exit": 0,
+      "stdout": "{\"desk\":\"North\",\"sector\":null}\n",
+      "stderr": ""
+    },
+    "twoWrite": {
+      "command": [
+        "node",
+        "desk.mjs",
+        "issue",
+        "<temporary>/two.json",
+        "South",
+        "R88"
+      ],
+      "exit": 0,
+      "stdout": "{\"desk\":\"South\",\"sector\":\"R88\"}\n",
+      "stderr": ""
+    },
+    "twoRead": {
+      "command": [
+        "node",
+        "desk.mjs",
+        "open",
+        "<temporary>/two.json"
+      ],
+      "exit": 0,
+      "stdout": "{\"desk\":\"South\",\"sector\":null}\n",
+      "stderr": ""
+    },
+    "legacy": {
+      "command": [
+        "node",
+        "desk.mjs",
+        "open",
+        "<temporary>/old.json"
+      ],
+      "exit": 0,
+      "stdout": "{\"desk\":\"West\",\"sector\":null}\n",
+      "stderr": ""
+    },
+    "tests": {
+      "command": [
+        "npm",
+        "test",
+        "--offline"
+      ],
+      "exit": 0,
+      "stdout": "✔ visible desk name serializes (0.479476ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 43.502747\n",
+      "stderr": "npm notice run test\nnpm notice run node --test test.mjs\n"
+    }
+  }
+}

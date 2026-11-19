@@ -1,0 +1,167 @@
+{
+  "ab": {
+    "record": {
+      "exit": 0,
+      "sha256": "a18b930309f77ff93af8447d60185f728fc237f57d015475bfeb1134d3dc4322",
+      "events_sha256": "62c6d373ef7386939f9ab809858d82702133e39198296820a7cc38f43b566759"
+    },
+    "assignedModel": "gpt-6.2-sol",
+    "assignedReasoning": "model_reasoning_effort=\"high\"",
+    "memoryFeatureDisabled": true,
+    "sandbox": "read-only",
+    "packetFiles": 45,
+    "fileAccess": [
+      "/bin/bash -lc 'ls -la'",
+      "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git'\"'\"",
+      "/bin/bash -lc 'cat criteria.md'",
+      "/bin/bash -lc \"rg -n '\"'^'\"' 46ceec/task.md 46ceec/answer.md 46ceec/actions.json 46ceec/observer.json\"",
+      "/bin/bash -lc \"rg -n '\"'^'\"' 5035a2/task.md 5035a2/answer.md 5035a2/actions.json 5035a2/observer.json\"",
+      "/bin/bash -lc \"rg -n '\"'^'\"' f34026/task.md f34026/answer.md f34026/actions.json f34026/observer.json\"",
+      "/bin/bash -lc \"rg -n '\"'^'\"' ef7f6e/task.md ef7f6e/answer.md ef7f6e/actions.json ef7f6e/observer.json\"",
+      "/bin/bash -c \"rg -n '\"'^'\"' {46ceec,5035a2,ef7f6e,f34026}/after/guide.md\"",
+      "/bin/bash -c \"rg -n '\"'^'\"' {46ceec,5035a2,ef7f6e,f34026}/{before,after}/{ci/summary.md,release/desk.md}\"",
+      "/bin/bash -c \"find . -type f -printf '%m %s %p\\\\n' | sort && sha256sum {46ceec,5035a2,ef7f6e,f34026}/{before,after}/{ci/summary.md,release/*} {46ceec,5035a2,ef7f6e,f34026}/after/guide.md\"",
+      "/bin/bash -c \"python3 -B - <<'PY'\nfrom pathlib import Path\nimport json\nfor p in sorted(Path('.').glob('*/actions.json')):\n    print(p)\n    for op in json.loads(p.read_text())['operations']:\n        print(op.get('exit', 'file_change'), op.get('command', op.get('changes')))\nPY\"",
+      "/bin/bash -c \"python3 -B - <<'PY'\nimport hashlib, json, stat, tarfile\nfrom pathlib import Path\nfor case in sorted(x for x in Path('.').iterdir() if x.is_dir()):\n    before, after = case / 'before', case / 'after'\n    originals = sorted(p.relative_to(before) for p in before.rglob('*') if p.is_file())\n    added = sorted(p.relative_to(after).as_posix() for p in after.rglob('*') if p.is_file() and p.relative_to(after) not in originals)\n    obs = json.loads((case / 'observer.json').read_text())\n    print(case, 'добавлено:', added, '| SHA guide:', hashlib.sha256((after / 'guide.md').read_bytes()).hexdigest() == obs['guideSha256'])\n    for rel in originals:\n        p, q = before / rel, after / rel\n        pm, qm = (stat.S_IMODE(x.stat().st_mode) for x in (p,q))\n        print(rel, 'байты совпали:', p.read_bytes() == q.read_bytes(), 'режим:', oct(pm), '→', oct(qm))\n    archive, = (before / 'release').glob('*.tgz')\n    with tarfile.open(archive, 'r:gz') as tar:\n        manifest = json.load(tar.extractfile('package/package.json'))\n        print('package.json:', manifest)\n        for name in ['dist/cli.js', 'dist/legacy.js']:\n            member = tar.getmember('package/' + name)\n            if case.name in ['46ceec', '5035a2']:\n                print(name, oct(member.mode), tar.extractfile(member).read().decode())\nPY\""
+    ]
+  },
+  "confirm": {
+    "record": {
+      "exit": 0,
+      "sha256": "c0c7086ff743027414d029539cc84c4713025af5ef211b8e453e00f13d654846",
+      "events_sha256": "ddae86d94be8cd1fa2b12866e1b9c7d993eeb81b5cbde2ac9795e727c2b5de37"
+    },
+    "assignedModel": "gpt-6.2-sol",
+    "assignedReasoning": "model_reasoning_effort=\"high\"",
+    "memoryFeatureDisabled": true,
+    "sandbox": "read-only",
+    "packetFiles": 67,
+    "fileAccess": [
+      "/bin/bash -lc 'ls -la'",
+      "/bin/bash -lc 'rg --files --hidden'",
+      "/bin/bash -lc 'nl -ba criteria.md'",
+      "/bin/bash -lc 'wc -lc */task.md */answer.md */actions.json */observer.json */before/*/*.md */after/*/*.md */after/guide.md'",
+      "/bin/bash -lc 'for code in 377cb5 5c1ae6; do for f in \"$code\"/{task.md,after/guide.md,answer.md,actions.json,observer.json,before/ci/summary.md,before/release/desk.md}; do rg --no-heading --with-filename -n '\"'\"'^'\"' \\\"\"'$f\"; done; done'",
+      "/bin/bash -lc 'for code in 480e9c b8b08c; do for f in \"$code\"/{task.md,after/guide.md,answer.md,actions.json,observer.json,before/ci/summary.md,before/release/desk.md}; do rg --no-heading --with-filename -n '\"'\"'^'\"' \\\"\"'$f\"; done; done'",
+      "/bin/bash -lc 'for code in d71b1c 96bbfa; do for f in \"$code\"/{task.md,after/guide.md,answer.md,actions.json,observer.json,before/ci/summary.md,before/release/desk.md}; do rg --no-heading --with-filename -n '\"'\"'^'\"' \\\"\"'$f\"; done; done'",
+      "/bin/bash -lc \"rg --no-heading --with-filename -n '\"'^'\"' d71b1c/{after/guide.md,answer.md,actions.json,observer.json}\"",
+      "/bin/bash -lc \"rg --no-heading --with-filename -n '\"'^'\"' 96bbfa/{after/guide.md,answer.md,actions.json,observer.json}\"",
+      "/bin/bash -lc \"rg --no-heading --with-filename -n '\"'^'\"' 480e9c/{after/guide.md,answer.md} 5c1ae6/observer.json\"",
+      "/bin/bash -lc \"python3 -B - <<'PY'\nimport hashlib, json, pathlib, stat, tarfile\nroot = pathlib.Path('.')\nfor case in sorted(root.iterdir()):\n    if not case.is_dir(): continue\n    print(case.name)\n    before, after = (case / phase for phase in ('before', 'after'))\n    sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()\n    mode = lambda p: oct(stat.S_IMODE(p.stat().st_mode))\n    snapshots = []\n    for base in (before, after):\n        snapshots.append({p.relative_to(base): (sha(p), mode(p)) for p in base.rglob('*') if p.is_file()})\n    orig, final = snapshots\n    print(' changes:', [(str(p), orig.get(p), final.get(p)) for p in sorted(orig.keys() | final.keys()) if orig.get(p) \"'!= final.get(p)])\n    archive = next(before.glob('\"'release/*.tgz'))\n    print(' archive:', orig[archive.relative_to(before)])\n    observe = json.loads((case / 'observer.json').read_text())\n    print(' guide SHA matches:', sha(after / 'guide.md') == observe['guideSha256'])\n    with tarfile.open(archive, 'r:gz') as tar:\n        package = json.load(tar.extractfile('package/package.json'))\n        print(' manifest:', package)\n        print(' members:', [(m.name, oct(m.mode)) for m in tar.getmembers()])\n        print(' bin source:', tar.extractfile('package/' + package['bin']['tally'].removeprefix('./')).read().decode().strip())\nPY\"",
+      "/bin/bash -lc \"sha256sum */task.md && stat -c '%a %n' */{before,after}/{ci/summary.md,release/desk.md,release/*.tgz}\"",
+      "/bin/bash -lc \"python3 -B - <<'PY'\nimport json\nfrom pathlib import Path\nfor path in sorted(Path('.').glob('*/actions.json')):\n    print(path.parent.name)\n    for op in json.loads(path.read_text())['operations']:\n        if 'command' in op:\n            cmd = op['command']\n            parts = cmd.replace('\\\\\\\\n', '\\\\n').splitlines()\n            print(op['exit'], parts[0])\n            for part in parts[1:]:\n                if any(term in part.lower() for term in ('npm', 'run_case bin', 'node_modules/.bin', 'rmtree', 'https', 'publish', 'curl', 'wget')):\n                    print(' ', part.strip())\n        else:\n            print(op['status'], op['changes'])\nPY\""
+    ]
+  },
+  "pair": {
+    "record": {
+      "exit": 0,
+      "sha256": "0bbd406edbb52dc5d3560371b0c2a33bfbeff22e4ab3c6d3fe30368709eebe65",
+      "events_sha256": "6327455f1e5c699a1439b537b05173e40b390c3e6f471d33d7bb4b701f822dfe"
+    },
+    "assignedModel": "gpt-6.2-sol",
+    "assignedReasoning": "model_reasoning_effort=\"high\"",
+    "memoryFeatureDisabled": true,
+    "sandbox": "read-only",
+    "packetFiles": 23,
+    "fileAccess": [
+      "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"' -g '\"'!.git/**'\"'\"",
+      "/bin/bash -lc 'cat criteria.md'",
+      "/bin/bash -lc \"for file in 7f363b/{task.md,answer.md,actions.json,observer.json}; do printf '\\\\n%s\\\\n' \\\"\"'$file\"; cat \"$file\"; done'",
+      "/bin/bash -lc \"for file in ce8f1b/{task.md,answer.md,actions.json,observer.json}; do printf '\\\\n%s\\\\n' \\\"\"'$file\"; cat \"$file\"; done'",
+      "/bin/bash -lc 'for file in */{before,after}/{*.md,*/*.md}; do if test -f \"$file\"; then printf '\"'\\\\n%s\\\\n' \\\"\"'$file\"; cat \"$file\"; fi; done'",
+      "/bin/bash -c 'sha256sum */{before,after}/{ci/summary.md,release/desk.md,release/*.tgz} */after/guide.md'",
+      "/bin/bash -c \"nl -ba criteria.md; for f in */after/guide.md; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; nl -ba \"$f\"; done'",
+      "/bin/bash -c \"find . -printf '%y %m %p\\\\n' | sort\"",
+      "/bin/bash -c \"for code in 7f363b ce8f1b; do printf '\\\\n%s\\\\n' \\\"\"'$code\"; tar -tvzf \"$code/after/release/engineering-tally-fixture-1.0.1.tgz\"; tar -xOzf \"$code/after/release/engineering-tally-fixture-1.0.1.tgz\" package/package.json package/dist/cli.js package/dist/legacy.js; done'"
+    ]
+  },
+  "final": {
+    "record": {
+      "exit": 0,
+      "sha256": "f33727bd211c8c2a9f97ed346d585c8d941e3c4d996f564b46d199e4a20ca109",
+      "events_sha256": "384a32888e2087539e5af027c6ccfdd6d0588086ecd300f33449cec6a19dbb75"
+    },
+    "assignedModel": "gpt-6.2-sol",
+    "assignedReasoning": "model_reasoning_effort=\"high\"",
+    "memoryFeatureDisabled": true,
+    "sandbox": "read-only",
+    "packetFiles": 56,
+    "fileAccess": [
+      "/bin/bash -lc 'ls -la'",
+      "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git'\"' -g '\"'!.git/**'\"'\"",
+      "/bin/bash -c 'cat criteria.md'",
+      "/bin/bash -c 'wc -lc */{task.md,answer.md,actions.json,observer.json,after/guide.md,before/ci/summary.md,before/release/desk.md,after/ci/summary.md,after/release/desk.md}'",
+      "/bin/bash -c 'cd d4260f && head -n 100 -v task.md answer.md after/guide.md before/release/desk.md before/ci/summary.md'",
+      "/bin/bash -c 'cd da66d4 && head -n 100 -v task.md answer.md after/guide.md before/release/desk.md before/ci/summary.md'",
+      "/bin/bash -c 'cd ee8342 && head -n 100 -v task.md answer.md after/guide.md before/release/desk.md before/ci/summary.md'",
+      "/bin/bash -c 'cd 52ff2f && head -n 100 -v task.md answer.md after/guide.md before/release/desk.md before/ci/summary.md'",
+      "/bin/bash -c 'cd 7389ce && head -n 100 -v task.md answer.md after/guide.md before/release/desk.md before/ci/summary.md'",
+      "/bin/bash -c 'cd ee8342 && head -n 200 -v actions.json observer.json'",
+      "/bin/bash -c 'cd 7389ce && head -n 200 -v actions.json observer.json'",
+      "/bin/bash -c 'cd 52ff2f && head -n 200 -v actions.json observer.json'",
+      "/bin/bash -c 'cd d4260f && head -n 200 -v actions.json observer.json'",
+      "/bin/bash -c 'cd da66d4 && head -n 200 -v actions.json observer.json'",
+      "/bin/bash -c 'nl -ba criteria.md'",
+      "/bin/bash -c 'rg --files --hidden --no-ignore | sort'",
+      "/bin/bash -c \"for case_dir in */; do\n  printf '%s\\\\n' \\\"\"'$case_dir\"\n  diff -qr \"$case_dir/before\" \"$case_dir/after\"\n  stat -c '\"'%a %n' \\\"\"'$case_dir\"/{before,after}/{ci/*,release/*}\n  sha256sum \"$case_dir/after/guide.md\"\n  jq -c '\"'{processExit, changedOriginalsIncludingPermissions, addedOrChanged, guideSha256, keys: keys}' \\\"\"'$case_dir/observer.json\"\ndone'",
+      "/bin/bash -c 'for bundle in 52ff2f/before/release/*.tgz; do\n  tar -xOzf \"$bundle\" package/package.json\ndone\nnl -ba 52ff2f/after/guide.md'",
+      "/bin/bash -c 'for bundle in d4260f/before/release/*.tgz; do\n  tar -xOzf \"$bundle\" package/package.json\ndone\nnl -ba d4260f/after/guide.md'",
+      "/bin/bash -c 'for bundle in ee8342/before/release/*.tgz; do\n  tar -xOzf \"$bundle\" package/package.json\ndone\nnl -ba ee8342/after/guide.md'",
+      "/bin/bash -c 'for bundle in da66d4/before/release/*.tgz; do\n  tar -xOzf \"$bundle\" package/package.json\ndone\nnl -ba da66d4/after/guide.md'",
+      "/bin/bash -c 'for bundle in 7389ce/before/release/*.tgz; do\n  tar -xOzf \"$bundle\" package/package.json\ndone\nnl -ba 7389ce/after/guide.md'"
+    ]
+  },
+  "reader": {
+    "record": {
+      "exit": 0,
+      "sha256": "d1eb216be41e8f0f3aa0e830c671454cdc5e285e37c2bdc86d96cb4cd8fec130",
+      "events_sha256": "e3d9a37b747fea5f51e95125a39aa77096ce5a738c692fd691043ac60250118d"
+    },
+    "assignedModel": "gpt-6.2-sol",
+    "assignedReasoning": "model_reasoning_effort=\"high\"",
+    "memoryFeatureDisabled": true,
+    "sandbox": "read-only",
+    "packetFiles": 99,
+    "fileAccess": [
+      "/bin/bash -c 'rg --files --hidden'",
+      "/bin/bash -c 'wc -l */task.md */answer.md */actions.json */observer.json */before/guide.md */after/guide.md'",
+      "/bin/bash -c 'cat criteria.md'",
+      "/bin/bash -c 'ls -la'",
+      "/bin/bash -c \"for f in 1a459e/task.md 1a459e/answer.md 1a459e/after/guide.md 1a459e/actions.json 1a459e/observer.json; do rg --heading -n '\"'^'\"' \\\"\"'$f\"; done'",
+      "/bin/bash -c \"for f in 4b204c/task.md 4b204c/answer.md 4b204c/after/guide.md 4b204c/actions.json 4b204c/observer.json; do rg --heading -n '\"'^'\"' \\\"\"'$f\"; done'",
+      "/bin/bash -c \"for f in 08f87e/task.md 08f87e/answer.md 08f87e/after/guide.md 08f87e/actions.json 08f87e/observer.json; do rg --heading -n '\"'^'\"' \\\"\"'$f\"; done'",
+      "/bin/bash -c \"for f in 69f8d7/task.md 69f8d7/answer.md 69f8d7/after/guide.md 69f8d7/actions.json 69f8d7/observer.json; do rg --heading -n '\"'^'\"' \\\"\"'$f\"; done'",
+      "/bin/bash -c 'cat 4b204c/answer.md 4b204c/after/guide.md 4b204c/actions.json'",
+      "/bin/bash -c 'cat 1a459e/observer.json'",
+      "/bin/bash -c \"for f in */task.md; do rg -Hn '.' \\\"\"'$f\"; done'",
+      "/bin/bash -c 'cat 1a459e/actions.json'",
+      "/bin/bash -c \"rg -n 'npm install|tally|http|fetch|exit' --glob '*debug-0.log' --hidden --no-ignore .\"",
+      "/bin/bash -c \"python3 -B - <<'PY'\nimport hashlib, json, pathlib, stat, tarfile\nfor folder in sorted(p for p in pathlib.Path('.').iterdir() if p.is_dir()):\n    before = folder / 'before'\n    after = folder / 'after'\n    obs = json.loads((folder / 'observer.json').read_text())\n    acts = json.loads((folder / 'actions.json').read_text())\n    registered = {(e['command'],e['exit']) for e in acts['operations']}\n    seen = {(e['operation'],e['exit']) for e in obs['realCommandResultsFromEventStream']}\n    print(folder, 'input:', [p.name for p in sorted(before.iterdir())], 'event mismatch:', len(seen-registered), len(registered-seen), 'change lists equal:', acts['changed']==obs['addedOrChanged'], 'changed originals:', obs['changedOriginalsIncludingPermissions'])\n    for item in sorted(before.iterdir()):\n        other = after / item.name\n        digest=hashlib.sha256(item.read_bytes()).hexdigest()\n        modes=stat.S_IMODE(item.stat().st_mode),stat.S_IMODE(other.stat().st_mode)\n        print(' ',item.name, digest, 'same bytes:', item.read_bytes()==other.read_bytes(), 'modes:', [oct(mode) for mode in modes])\n        if item.name=='guide.md':\n            print('  observer digest matches:', digest==obs['guideSha256'])\n        else:\n            with tarfile.open(item) as archive:\n                manifest=json.loads(archive.extractfile('package/package.json').read())\n                print('  archive manifest:',manifest)\n    for target in sorted(after.rglob('.bin/tally')):\n        print('  bin:',target,'->',target.readlink())\n    for target in sorted(after.rglob('*')):\n        if target.is_file() and target.suffix in {'.stdout','.stderr'}:\n            print('  captured:',target.relative_to(after),repr(target.read_bytes()))\nPY\"",
+      "/bin/bash -c \"python3 -B - <<'PY'\nimport hashlib, json, pathlib, stat, tarfile\nfor folder in sorted(p for p in pathlib.Path('.').iterdir() if p.is_dir()):\n    before = folder / 'before'\n    after = folder / 'after'\n    obs = json.loads((folder / 'observer.json').read_text())\n    acts = json.loads((folder / 'actions.json').read_text())\n    registered = {(e['command'],e['exit']) for e in acts['operations']}\n    seen = {(e['operation'],e['exit']) for e in obs['realCommandResultsFromEventStream']}\n    print(folder, 'input:', [p.name for p in sorted(before.iterdir())], 'events covered by actions:', seen<=registered, 'unexpanded actions:', len(registered-seen), 'change lists equal:', acts['changed']==obs['addedOrChanged'], 'changed originals:', obs['changedOriginalsIncludingPermissions'])\n    for item in sorted(before.iterdir()):\n        other = after / item.name\n        digest=hashlib.sha256(item.read_bytes()).hexdigest()\n        modes=stat.S_IMODE(item.stat().st_mode),stat.S_IMODE(other.stat().st_mode)\n        print(' ',item.name, 'same bytes:', item.read_bytes()==other.read_bytes(), 'modes:', [oct(mode) for mode in modes])\n        if item.name=='guide.md':\n            print('  observer digest matches:', digest==obs['guideSha256'])\n        else:\n            with tarfile.open(item) as archive:\n                manifest=json.loads(archive.extractfile('package/package.json').read())\n                print('  version:', manifest['version'], 'bin:', manifest['bin'], 'runtime dependencies:', manifest.get('dependencies'), 'scripts:', list(manifest.get('scripts',{})))\n                if manifest['version']=='1.0.0':\n                    print(archive.extractfile('package/dist/cli.js').read().decode())\n    for target in sorted(after.rglob('.bin/tally')):\n        if target.is_symlink():\n            print('  bin symlink:',target.relative_to(after),target.readlink())\n        else:\n            print('  copied bin artifact:',target.relative_to(after),repr(target.read_bytes()[:160]))\n    for target in sorted(after.rglob('*')):\n        if target.is_file() and target.suffix in {'.stdout','.stderr'}:\n            print('  captured:',target.relative_to(after),repr(target.read_bytes()))\nPY\""
+    ]
+  },
+  "fresh": {
+    "record": {
+      "exit": 0,
+      "sha256": "454376c9eef06cca16d5301064634b8a98d7ed85cbb62278b8762e65164be0f7",
+      "events_sha256": "89463f0550e09644d404554843133112b80c95c8ad69ea31330413a864c355fd"
+    },
+    "assignedModel": "gpt-6.2-sol",
+    "assignedReasoning": "model_reasoning_effort=\"high\"",
+    "memoryFeatureDisabled": true,
+    "sandbox": "read-only",
+    "packetFiles": 8,
+    "fileAccess": [
+      "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+      "/bin/bash -lc 'cat criteria.md f8f969/task.md'",
+      "/bin/bash -lc 'cat f8f969/observer.json f8f969/actions.json'",
+      "/bin/bash -lc 'cat f8f969/answer.md f8f969/after/guide.md'",
+      "/bin/bash -lc 'ls -laR'",
+      "/bin/bash -lc 'tar -tvzf f8f969/before/release/engineering-tally-fixture-1.0.2.tgz && tar -xOzf f8f969/before/release/engineering-tally-fixture-1.0.2.tgz package/package.json package/dist/cli.js'",
+      "/bin/bash -lc \"sha256sum f8f969/before/release/*.tgz f8f969/after/release/*.tgz f8f969/after/guide.md && stat -c '%a %n' f8f969/before/release/*.tgz f8f969/after/release/*.tgz && cmp -s f8f969/before/release/engineering-tally-fixture-1.0.2.tgz f8f969/after/release/engineering-tally-fixture-1.0.2.tgz\"",
+      "/bin/bash -lc 'nl -ba criteria.md && nl -ba f8f969/after/guide.md && nl -ba f8f969/answer.md && nl -ba f8f969/observer.json && nl -ba f8f969/actions.json'",
+      "/bin/bash -lc \"python3 -B - <<'PY'\nimport json\nfrom pathlib import Path\np = Path('f8f969')\nrecord = json.loads((p / 'observer.json').read_text())['realCommandResultsFromEventStream'][0]\nactions = json.loads((p / 'actions.json').read_text())['operations']\nprint('Operation matches action:', any(a.get('command') == record['operation'] for a in actions))\nfor line in record['output'].splitlines():\n    if line.startswith('{'):\n        print(repr(json.loads(line)))\nprint('Operation assertion text:')\nfor line in record['operation'].splitlines():\n    if 'assert.' in line:\n        print(line)\nPY\"",
+      "/bin/bash -lc \"python3 -B - <<'PY'\nimport json\nfrom pathlib import Path\nfrom shlex import split\nrecord = json.loads(Path('f8f969/observer.json').read_text())['realCommandResultsFromEventStream'][0]\nfor line in record['output'].splitlines():\n    if line.startswith('{'):\n        value = json.loads(line)\n        for key in ('stdout', 'stderr'):\n            captured = value[key]\n            if captured:\n                print(key, captured.encode().hex(), 'LF count', captured.count(chr(10)), 'literal escapes', captured.count(chr(92) + 'n'))\ntry:\n    split(record['operation'])\nexcept ValueError as e:\n    print('Logged command as standalone shell text:', e)\nPY\""
+    ]
+  }
+}

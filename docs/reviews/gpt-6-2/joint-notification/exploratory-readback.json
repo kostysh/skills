@@ -1,0 +1,23 @@
+{
+  "assigned": "gpt-6.2-sol medium, fresh ephemeral project; memory feature inherited",
+  "issuedInputFilesAndModesMatchOnDirectInspection": 17,
+  "changed": [
+    "design-note.md",
+    "visits/02a80389-fe53-4ac1-9cb4-949bf903ea28.json",
+    "visits/02a80389-fe53-4ac1-9cb4-949bf903ea28.png",
+    "visits/0a6d4c94-7196-4f4f-bf3b-3ccdaf066a0e.json",
+    "visits/0a6d4c94-7196-4f4f-bf3b-3ccdaf066a0e.png",
+    "visits/5b81cd0e-b710-41eb-8d59-fbcfa869c9e8.json",
+    "visits/5b81cd0e-b710-41eb-8d59-fbcfa869c9e8.png",
+    "visits/68ed516b-e722-495a-b035-133409d7af1d.json",
+    "visits/68ed516b-e722-495a-b035-133409d7af1d.png",
+    "visits/715350ba-4ebb-4775-8079-f3e0097e965d.json",
+    "visits/715350ba-4ebb-4775-8079-f3e0097e965d.png",
+    "visits/916d547d-c8dd-4874-8f6a-33db79b99bf1.json",
+    "visits/916d547d-c8dd-4874-8f6a-33db79b99bf1.png",
+    "visits/d71cb6c7-3498-4acc-af32-a9714fa50388.json",
+    "visits/d71cb6c7-3498-4acc-af32-a9714fa50388.png"
+  ],
+  "initialNoteSha256": "40b7669da82d52b5eccb7214fa6e787e4c57e0bcee735a55c8945f1fbfb43c22",
+  "disposition": "Exploratory work product only. The new joint-study receipt will explicitly disable cross-session memory."
+}

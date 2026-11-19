@@ -2,7 +2,7 @@ apiVersion: "skillforge/v1alpha1"
 kind: "SkillSource"
 skill:
   name: "typescript-test-engineer"
-  source-version: "0.1.11"
+  source-version: "0.1.12"
   recommended-skill-md-max-bytes: 46000
   description: "Design, implement, review, and diagnose TypeScript tests for Node, React, and edge projects. Use for test strategy, node:test or Vitest, deterministic fixtures and mocks, coverage, CI failures, hanging tests, and evidence quality; keep review and diagnosis read-only unless fixes are requested."
 fragments:
@@ -71,6 +71,10 @@ copies:
     target: "evals/fixtures/lifecycle-input.md"
     description: "Neutral read-only async diagnosis request."
 supporting:
+  - id: "supporting-implementation-log-20261118-1"
+    source: "docs/logs/implementation-log-20261118-1.md"
+    target: "docs/logs/implementation-log-20261118-1.md"
+    description: "Non-normative boundary and runner verification record."
   - id: "supporting-implementation-log-20261107-1"
     source: "docs/logs/implementation-log-20261107-1.md"
     target: "docs/logs/implementation-log-20261107-1.md"
@@ -125,7 +129,7 @@ sections:
     - "Resolve expected behavior from explicit user decisions, accepted specifications or acceptance criteria, and repository contracts; treat current implementation and existing tests as evidence, not authority when sources conflict."
     - "Follow the repository test runner and existing conventions before applying defaults."
     - "For React mutation UI that crosses child or portal remount, entity, route, or access context, read the React reference and require its identity matrix plus one combined lifetime falsifier instead of isolated happy paths."
-    - "Keep tests deterministic, behavior-focused, isolated from uncontrolled network calls, and warning-clean; retain each real boundary whose invariant is under test."
+    - "Keep tests deterministic, behavior-focused, isolated from uncontrolled network calls, and warning-clean. Exercise the boundary under test."
     - "Use the smallest check that proves the behavior, but do not replace high-risk boundary verification with a tiny self-check."
     - "If expected behavior remains missing or contradictory after repository inspection, stop with a blocked or limited result instead of inventing assertions."
     - "Report mode-specific outputs, exact validation evidence, and any unverified production boundary before claiming completion."

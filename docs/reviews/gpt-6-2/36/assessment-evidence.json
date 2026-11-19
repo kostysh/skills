@@ -1,0 +1,124 @@
+{
+  "ab": {
+    "assignedModel": "gpt-6.2-sol",
+    "assignedReasoning": "model_reasoning_effort=\"high\"",
+    "mode": "read-only",
+    "memoryFeatureDisabled": true,
+    "rawReportSHA256": "c1d7513e52947f30fc77d9e80e030fc15f2de3f7b2d0cb1a0281631b4a42199e",
+    "rawEventsSHA256": "120fed2c6d5af8b557eebf683f57d2da51324b2fcc692d72fe3525610dd5ce7b",
+    "linkedReportSHA256": "cbf648cf5979aa1da870a8ce6c6dfaa19c97bc037a103631f01457f8f9b5d5d1",
+    "lookup": [
+      {
+        "observation": "17e3d6",
+        "original": "17e3d6",
+        "edition": "A",
+        "case": "boundary"
+      },
+      {
+        "observation": "1c0b93",
+        "original": "1c0b93",
+        "edition": "B",
+        "case": "ordinary"
+      },
+      {
+        "observation": "f5ddf0",
+        "original": "f5ddf0",
+        "edition": "B",
+        "case": "boundary"
+      },
+      {
+        "observation": "8a9152",
+        "original": "8a9152",
+        "edition": "A",
+        "case": "ordinary"
+      }
+    ]
+  },
+  "confirm": {
+    "assignedModel": "gpt-6.2-sol",
+    "assignedReasoning": "model_reasoning_effort=\"high\"",
+    "mode": "read-only",
+    "memoryFeatureDisabled": true,
+    "rawReportSHA256": "febaf14b52a05d40d947af72832c24490d26b88167e2a91aace9e14365e4dd75",
+    "rawEventsSHA256": "edf68cfaa79faf8ccdf9e3368cf64f13248c1026a4d80b32a18b249511d31edd",
+    "linkedReportSHA256": "85d6608352558fa0205797619897eac65617cfa090f3074a015675e01d6dd151",
+    "lookup": [
+      {
+        "observation": "65f81d",
+        "original": "8a9152",
+        "edition": "A",
+        "case": "ordinary"
+      },
+      {
+        "observation": "7bc73e",
+        "original": "7bc73e",
+        "edition": "C",
+        "case": "boundary"
+      },
+      {
+        "observation": "397d9b",
+        "original": "397d9b",
+        "edition": "C",
+        "case": "ordinary"
+      },
+      {
+        "observation": "5953d9",
+        "original": "5953d9",
+        "edition": "C",
+        "case": "holdout"
+      },
+      {
+        "observation": "3392d0",
+        "original": "3392d0",
+        "edition": "A",
+        "case": "holdout"
+      },
+      {
+        "observation": "74e611",
+        "original": "17e3d6",
+        "edition": "A",
+        "case": "boundary"
+      }
+    ]
+  },
+  "early-release": {
+    "assignedModel": "gpt-6.2-sol",
+    "assignedReasoning": "model_reasoning_effort=\"high\"",
+    "mode": "read-only",
+    "memoryFeatureDisabled": true,
+    "rawReportSHA256": "ea33fe14a3939c51324361a2d92bc7f201210fe33e9e9ca9e028bba405030005",
+    "rawEventsSHA256": "10cbd29992527895773f683730c223fd73912c4251996b1a36a16dedc1d63158",
+    "linkedReportSHA256": "f527b4a1ae088e54ba5c6fafa9111e91d659df648d3d5d3ae92f2a43d08c4039",
+    "lookup": [
+      {
+        "observation": "ff037b",
+        "original": "ff037b",
+        "edition": "archive",
+        "case": "transfer"
+      }
+    ]
+  },
+  "release": {
+    "assignedModel": "gpt-6.2-sol",
+    "assignedReasoning": "model_reasoning_effort=\"high\"",
+    "mode": "read-only",
+    "memoryFeatureDisabled": true,
+    "rawReportSHA256": "351e7593f3d1814fd7600c800300fde8e5efdf80ae1cd475d99a6cb2b23a98a1",
+    "rawEventsSHA256": "7d1092c73b9bb595d903e3e27e82e79b1c55fda2a1e1a7bf4b358634e2e22b97",
+    "linkedReportSHA256": "8bf822e9a607a02a66819f525701c172c0d97c6010f7b87239321f5bbfd3e809",
+    "lookup": [
+      {
+        "observation": "ac3680",
+        "original": "ac3680",
+        "edition": "final",
+        "case": "transfer"
+      },
+      {
+        "observation": "ff037b",
+        "original": "ff037b",
+        "edition": "archive",
+        "case": "transfer"
+      }
+    ]
+  }
+}

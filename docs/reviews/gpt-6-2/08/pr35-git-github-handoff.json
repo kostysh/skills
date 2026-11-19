@@ -1,0 +1,89 @@
+{
+  "observed_utc": "2026-11-18T19:58:41.129202+00:00",
+  "github_cli": {
+    "argv": [
+      "gh",
+      "--version"
+    ],
+    "exit": 0,
+    "stdout": "gh version 2.96.0 (2026-07-02)\nhttps://github.com/cli/cli/releases/tag/v2.96.0\n",
+    "stderr": ""
+  },
+  "github_read": {
+    "argv": [
+      "gh",
+      "pr",
+      "view",
+      "35",
+      "--repo",
+      "github.com/kostysh/skills",
+      "--json",
+      "number,url,state,baseRefName,baseRefOid,headRefName,headRefOid,mergeCommit,changedFiles,files",
+      "--jq",
+      "{number,url,state,baseRefName,baseRefOid,headRefName,headRefOid,mergeCommit:.mergeCommit.oid,changedFiles,files:[.files[].path]}"
+    ],
+    "exit": 0,
+    "stdout": "{\"baseRefName\":\"master\",\"baseRefOid\":\"7334a504b55ab3f8416147f1cc639882a603d0cc\",\"changedFiles\":4,\"files\":[\"cli/docs/implementation-log-20261023-1.md\",\"cli/package.json\",\"cli/src/prompts.ts\",\"cli/test/prompts.test.ts\"],\"headRefName\":\"codex/cli-list-bounds\",\"headRefOid\":\"f6b1de1cb42ab8c2107ef999bbde5ea3607dd448\",\"mergeCommit\":\"ba51a6bd604e9d19a10113131f5abf4d5eacbcc9\",\"number\":35,\"state\":\"MERGED\",\"url\":\"https://github.com/kostysh/skills/pull/35\"}\n",
+    "stderr": ""
+  },
+  "github_stdout_sha256": "c5d6bd6c671c8ea0a5fca278581a6fcc7c381bf2519df7231bb3ee26281263d4",
+  "from_07": {
+    "receipt_basename": "pr35-facts.json",
+    "sha256": "14531715d8c1b6735c51183bc5f7703d1d5dbfaf929985731f5c0eda9010ecf0",
+    "public_git_url": "https://github.com/kostysh/skills.git",
+    "verified_diff_paths": [
+      "M\tcli/docs/implementation-log-20261023-1.md",
+      "M\tcli/package.json",
+      "M\tcli/src/prompts.ts",
+      "M\tcli/test/prompts.test.ts"
+    ],
+    "owner_reported_candidate": {
+      "package": "git-engineer-0.2.2.tgz",
+      "sha256": "b17e018e6951421c9a47f4ea55f063a7e236d4e641c124408a4a72779138a4ce"
+    }
+  },
+  "git_reads_in_07_public_checkout": [
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "refs/pr35/base",
+        "refs/pr35/head",
+        "refs/pr35/merge"
+      ],
+      "exit": 0,
+      "stdout": "7334a504b55ab3f8416147f1cc639882a603d0cc\nf6b1de1cb42ab8c2107ef999bbde5ea3607dd448\nba51a6bd604e9d19a10113131f5abf4d5eacbcc9\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--name-status",
+        "refs/pr35/base...refs/pr35/head"
+      ],
+      "exit": 0,
+      "stdout": "M\tcli/docs/implementation-log-20261023-1.md\nM\tcli/package.json\nM\tcli/src/prompts.ts\nM\tcli/test/prompts.test.ts\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "merge-base",
+        "refs/pr35/base",
+        "refs/pr35/head"
+      ],
+      "exit": 0,
+      "stdout": "7334a504b55ab3f8416147f1cc639882a603d0cc\n",
+      "stderr": ""
+    }
+  ],
+  "target": "https://github.com/kostysh/skills/pull/35",
+  "verifies": "GitHub PR metadata reconciled to exact public Git base/head/merge objects, merge-base and four file names. No code verdict or local edits.",
+  "from_08": {
+    "candidate": "gh-utility-1.2.5.tgz",
+    "sha256": "5745c3e0c8e1ed96726ea2f4ffcaccf9b62b0b3b40b4870dba85805da71815f4",
+    "package_bytes_confirmed_with_executor_input": "results/ebf1ad.json",
+    "pr_check_scope_example": "results/7d23f1.json"
+  }
+}

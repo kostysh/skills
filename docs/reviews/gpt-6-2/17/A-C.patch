@@ -1,0 +1,5 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -66 +66 @@
+-- Account for the full requested scope. For diff review, recover truncated hunks from the files when possible; list unavailable files explicitly and retain supported partial findings under `limited`.
++- Review available changes and name any coverage gaps.

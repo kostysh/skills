@@ -1,0 +1,45 @@
+{
+  "action": "pnpm/action-setup@v4",
+  "sourceCommit": "b906affcce14559ad1aafd4ab0e942779e9f58b1",
+  "distSHA256": "0afb261fe492f337c1d2a0447cffeecad890b7a7ca7c52570c744e08017748a9",
+  "workflowSHA256": "2d1af35f51941c679fee037706fe2a0d42b3da38983585acb99220b0292e894c",
+  "node": "v24.15.0",
+  "boundary": "Local Linux process running the unmodified published dist main, runner input defaults and file commands; no hosted GitHub run. No repository token, service credentials or remote workspace provided.",
+  "results": [
+    {
+      "case": "original-with-pin",
+      "packageManager": "pnpm@10.28.2",
+      "with.version": "10",
+      "exit": 1,
+      "stdout": "::group::Running self-installer...\n::error::Error: Multiple versions of pnpm specified:%0A  - version 10 in the GitHub Action config with the key \"version\"%0A  - version pnpm@10.28.2 in the package.json with the key \"packageManager\"%0ARemove one of these versions to avoid version mismatch errors like ERR_PNPM_BAD_PM_VERSION\n",
+      "stderr": "Error: Multiple versions of pnpm specified:\n  - version 10 in the GitHub Action config with the key \"version\"\n  - version pnpm@10.28.2 in the package.json with the key \"packageManager\"\nRemove one of these versions to avoid version mismatch errors like ERR_PNPM_BAD_PM_VERSION\n    at readTarget (<temp>/setup/dist/index.js:1:7537)\n    at runSelfInstaller (<temp>/setup/dist/index.js:1:6702)\n    at async install (<temp>/setup/dist/index.js:1:5706)\n    at async runMain (<temp>/setup/dist/index.js:1:2804)\n    at async main (<temp>/setup/dist/index.js:1:2726)\n"
+    },
+    {
+      "case": "current-with-pin",
+      "packageManager": "pnpm@10.28.2",
+      "with.version": null,
+      "exit": 0,
+      "stdout": "::group::Running self-installer...\n\n   ╭───────────────────────────────────────────────────────────────────╮\n   │                                                                   │\n   │                Update available! 8.14.3 → 12.21.0.                │\n   │   Changelog: https://github.com/pnpm/pnpm/releases/tag/v12.21.0   │\n   │                 Run \"pnpm add -g pnpm\" to update.                 │\n   │                                                                   │\n   │      Follow @pnpmjs for updates: https://twitter.com/pnpmjs       │\n   │                                                                   │\n   ╰───────────────────────────────────────────────────────────────────╯\n\nProgress: resolved 1, reused 0, downloaded 0, added 0\nPackages: +1\n+\nProgress: resolved 1, reused 0, downloaded 1, added 1, done\n\ndependencies:\n+ pnpm 10.28.2 (12.21.0 is available)\n\nDone in 951ms\n::endgroup::\nInstallation Completed!\n",
+      "stderr": "(node:75) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.\n(Use `node --trace-deprecation ...` to show where the warning was created)\n",
+      "installedPnpm": "10.28.2"
+    },
+    {
+      "case": "unversioned-scaffold-with-explicit-workflow-version",
+      "packageManager": null,
+      "with.version": "10.28.2",
+      "exit": 0,
+      "stdout": "::group::Running self-installer...\n\n   ╭───────────────────────────────────────────────────────────────────╮\n   │                                                                   │\n   │                Update available! 8.14.3 → 12.21.0.                │\n   │   Changelog: https://github.com/pnpm/pnpm/releases/tag/v12.21.0   │\n   │                 Run \"pnpm add -g pnpm\" to update.                 │\n   │                                                                   │\n   │      Follow @pnpmjs for updates: https://twitter.com/pnpmjs       │\n   │                                                                   │\n   ╰───────────────────────────────────────────────────────────────────╯\n\nProgress: resolved 1, reused 0, downloaded 0, added 0\nPackages: +1\n+\nProgress: resolved 1, reused 0, downloaded 1, added 1, done\n\ndependencies:\n+ pnpm 10.28.2 (12.21.0 is available)\n\nDone in 946ms\n::endgroup::\nInstallation Completed!\n",
+      "stderr": "(node:118) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.\n(Use `node --trace-deprecation ...` to show where the warning was created)\n",
+      "installedPnpm": "10.28.2"
+    }
+  ],
+  "upstreamFiles": {
+    "action.yml": "5fb508882756b5d3f2a10531e09acd2006b2cd00e71c2e22361149a2105acec6",
+    "dist/index.js": "0afb261fe492f337c1d2a0447cffeecad890b7a7ca7c52570c744e08017748a9",
+    "dist/pnpm.cjs": "b7bd0e821b0590e6eb23087523e0b74b97147857874d7c199c0827a406e9f22c",
+    "dist/worker.js": "3b162d0c9c4a974c36788c242eba75152ddb2194ccabfeee01dfb41cf0343cc4",
+    "src/index.ts": "ac1a439f7b0fcf088756a9c54fa533bb1ba37a4db260ee67b55ec78192b11d71",
+    "src/inputs/index.ts": "dec28162e76782ee6da033d2135dad24b42b6c4f6f8524a3cdc6e1062466ff3e",
+    "src/install-pnpm/run.ts": "b04d519e08a8da1e70822d68f4f1832931cf9fafb923ca36d75155841f489fba"
+  }
+}

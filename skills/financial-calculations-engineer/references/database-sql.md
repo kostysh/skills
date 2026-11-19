@@ -21,7 +21,7 @@ Do not copy an unchecked rounding helper. A project-owned SQL implementation mus
 | Rate | Enforce the same integer unit and bounds |
 | Currency and scale | Preserve the accepted representation and fail closed before mixed arithmetic |
 | Rounding | Implement only named modes with matching positive and negative tie behavior |
-| Intermediate arithmetic | Use exact widened arithmetic such as `numeric`, including widened `roundDiv` numerators, or prove inputs cannot overflow before division |
+| Intermediate arithmetic | Widen integer products before they can overflow. Preserve the exact ratio until the specified rounding step, for example with an integer quotient and remainder. PostgreSQL `numeric` division can round a large quotient before an outer `floor` or `round`. |
 | Output | Check the final result against the accepted bigint/int64 range before casting |
 | Errors | Preserve an explicit, tested error contract instead of converting invalid input to a value |
 | Allocation | Guarantee sum equality and use an explicit stable business key or ordering for remainder ties |

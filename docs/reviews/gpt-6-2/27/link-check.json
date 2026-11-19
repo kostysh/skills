@@ -1,0 +1,433 @@
+{
+  "originalFailure": {
+    "url": "https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheHandler",
+    "status": 404
+  },
+  "localActiveLinks": {
+    "SKILL.md": [
+      "references/file-conventions.md",
+      "references/app-router-files.md",
+      "references/rsc-boundaries.md",
+      "references/async-patterns.md",
+      "references/runtime-selection.md",
+      "references/directives.md",
+      "references/functions.md",
+      "references/error-handling.md",
+      "references/data-patterns.md",
+      "references/route-handlers.md",
+      "references/metadata.md",
+      "references/image.md",
+      "references/font.md",
+      "references/bundling.md",
+      "references/scripts.md",
+      "references/hydration-error.md",
+      "references/suspense-boundaries.md",
+      "references/parallel-routes.md",
+      "references/self-hosting.md",
+      "references/debug-tricks.md",
+      "references/app-router-files.md",
+      "references/async-patterns.md",
+      "references/bundling.md",
+      "references/data-patterns.md",
+      "references/debug-tricks.md",
+      "references/directives.md",
+      "references/error-handling.md",
+      "references/file-conventions.md",
+      "references/font.md",
+      "references/functions.md",
+      "references/hydration-error.md",
+      "references/image.md",
+      "references/metadata.md",
+      "references/parallel-routes.md",
+      "references/route-handlers.md",
+      "references/rsc-boundaries.md",
+      "references/runtime-selection.md",
+      "references/scripts.md",
+      "references/self-hosting.md",
+      "references/suspense-boundaries.md"
+    ],
+    "references/app-router-files.md": [],
+    "references/async-patterns.md": [
+      "metadata.md"
+    ],
+    "references/bundling.md": [],
+    "references/data-patterns.md": [],
+    "references/debug-tricks.md": [],
+    "references/directives.md": [
+      "data-patterns.md",
+      "data-patterns.md"
+    ],
+    "references/error-handling.md": [],
+    "references/file-conventions.md": [],
+    "references/font.md": [],
+    "references/functions.md": [],
+    "references/hydration-error.md": [],
+    "references/image.md": [],
+    "references/metadata.md": [],
+    "references/parallel-routes.md": [],
+    "references/route-handlers.md": [
+      "data-patterns.md"
+    ],
+    "references/rsc-boundaries.md": [],
+    "references/runtime-selection.md": [],
+    "references/scripts.md": [],
+    "references/self-hosting.md": [],
+    "references/suspense-boundaries.md": []
+  },
+  "officialURLs": [
+    {
+      "url": "https://nextjs.org/blog/next-16-4",
+      "status": 200,
+      "final": "https://nextjs.org/blog/next-16-4",
+      "anchorMatched": null,
+      "references": [
+        "references/directives.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheComponents",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/config/next-config-js/cacheComponents",
+      "anchorMatched": null,
+      "references": [
+        "references/directives.md",
+        "references/runtime-selection.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/config/next-config-js/incrementalCacheHandlerPath",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/config/next-config-js/incrementalCacheHandlerPath",
+      "anchorMatched": null,
+      "references": [
+        "references/self-hosting.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/directives/use-cache",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/directives/use-cache",
+      "anchorMatched": null,
+      "references": [
+        "references/directives.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/file-conventions",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/file-conventions",
+      "anchorMatched": null,
+      "references": [
+        "references/file-conventions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/functions",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/functions",
+      "anchorMatched": null,
+      "references": [
+        "references/functions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/functions/after",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/functions/after",
+      "anchorMatched": null,
+      "references": [
+        "references/functions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/functions/connection",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/functions/connection",
+      "anchorMatched": null,
+      "references": [
+        "references/functions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/functions/cookies",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/functions/cookies",
+      "anchorMatched": null,
+      "references": [
+        "references/functions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/functions/draft-mode",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/functions/draft-mode",
+      "anchorMatched": null,
+      "references": [
+        "references/functions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/functions/generate-image-metadata",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/functions/generate-image-metadata",
+      "anchorMatched": null,
+      "references": [
+        "references/functions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/functions/generate-metadata",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/functions/generate-metadata",
+      "anchorMatched": null,
+      "references": [
+        "references/functions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/functions/generate-sitemaps",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/functions/generate-sitemaps",
+      "anchorMatched": null,
+      "references": [
+        "references/functions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/functions/generate-static-params",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/functions/generate-static-params",
+      "anchorMatched": null,
+      "references": [
+        "references/functions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/functions/generate-viewport",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/functions/generate-viewport",
+      "anchorMatched": null,
+      "references": [
+        "references/functions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/functions/headers",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/functions/headers",
+      "anchorMatched": null,
+      "references": [
+        "references/functions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/functions/image-response",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/functions/image-response",
+      "anchorMatched": null,
+      "references": [
+        "references/functions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/functions/next-request",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/functions/next-request",
+      "anchorMatched": null,
+      "references": [
+        "references/functions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/functions/next-response",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/functions/next-response",
+      "anchorMatched": null,
+      "references": [
+        "references/functions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/functions/redirect#behavior",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/functions/redirect#behavior",
+      "anchorMatched": true,
+      "references": [
+        "references/error-handling.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/functions/use-link-status",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/functions/use-link-status",
+      "anchorMatched": null,
+      "references": [
+        "references/functions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/functions/use-params",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/functions/use-params",
+      "anchorMatched": null,
+      "references": [
+        "references/functions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/functions/use-pathname",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/functions/use-pathname",
+      "anchorMatched": null,
+      "references": [
+        "references/functions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/functions/use-report-web-vitals",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/functions/use-report-web-vitals",
+      "anchorMatched": null,
+      "references": [
+        "references/functions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/functions/use-router",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/functions/use-router",
+      "anchorMatched": null,
+      "references": [
+        "references/functions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/functions/use-search-params",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/functions/use-search-params",
+      "anchorMatched": null,
+      "references": [
+        "references/functions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/functions/use-selected-layout-segment",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/functions/use-selected-layout-segment",
+      "anchorMatched": null,
+      "references": [
+        "references/functions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/functions/use-selected-layout-segments",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/functions/use-selected-layout-segments",
+      "anchorMatched": null,
+      "references": [
+        "references/functions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/api-reference/functions/userAgent",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/api-reference/functions/userAgent",
+      "anchorMatched": null,
+      "references": [
+        "references/functions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/getting-started/error-handling",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/getting-started/error-handling",
+      "anchorMatched": null,
+      "references": [
+        "references/error-handling.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/getting-started/project-structure",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/getting-started/project-structure",
+      "anchorMatched": null,
+      "references": [
+        "references/file-conventions.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/getting-started/project-structure#metadata-file-conventions",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/getting-started/project-structure#metadata-file-conventions",
+      "anchorMatched": true,
+      "references": [
+        "references/metadata.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/getting-started/route-handlers#with-cache-components",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/getting-started/route-handlers#with-cache-components",
+      "anchorMatched": true,
+      "references": [
+        "references/route-handlers.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/guides/mcp",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/guides/mcp",
+      "anchorMatched": null,
+      "references": [
+        "references/debug-tricks.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/guides/package-bundling",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/guides/package-bundling",
+      "anchorMatched": null,
+      "references": [
+        "references/bundling.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/guides/self-hosting",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/guides/self-hosting",
+      "anchorMatched": null,
+      "references": [
+        "references/self-hosting.md"
+      ]
+    },
+    {
+      "url": "https://nextjs.org/docs/app/guides/upgrading/version-16",
+      "status": 200,
+      "final": "https://nextjs.org/docs/app/guides/upgrading/version-16",
+      "anchorMatched": null,
+      "references": [
+        "references/bundling.md"
+      ]
+    },
+    {
+      "url": "https://react.dev/reference/rsc/use-client",
+      "status": 200,
+      "final": "https://react.dev/reference/rsc/use-client",
+      "anchorMatched": null,
+      "references": [
+        "references/directives.md",
+        "references/rsc-boundaries.md"
+      ]
+    },
+    {
+      "url": "https://react.dev/reference/rsc/use-server",
+      "status": 200,
+      "final": "https://react.dev/reference/rsc/use-server",
+      "anchorMatched": null,
+      "references": [
+        "references/directives.md"
+      ]
+    }
+  ],
+  "imagesAndIllustrativeExternalURLs": "outside this check"
+}

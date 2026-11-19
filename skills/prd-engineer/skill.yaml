@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: prd-engineer
-  source-version: 0.1.8
+  source-version: 0.1.9
   recommended-skill-md-max-bytes: 21000
   description: >-
     Create, refine, and review PRDs, product specs, feature and AI requirements.
@@ -36,6 +36,10 @@ copies:
     target: evals/fixtures/source-bundle-input.md
     description: Neutral mixed-format source bundle and incomplete PRD draft.
 supporting:
+  - id: supporting-implementation-log-20261118-1
+    source: docs/logs/implementation-log-20261118-1.md
+    target: docs/logs/implementation-log-20261118-1.md
+    description: Non-normative record of the PRD authority and handoff revision.
   - id: supporting-implementation-log-20260727-1
     source: docs/logs/implementation-log-20260727-1.md
     target: docs/logs/implementation-log-20260727-1.md
@@ -123,7 +127,7 @@ sections:
         - Separate product-source precedence from approval or canonical status of the current PRD version.
         - Apply known precedence; block handoff when equal or unknown authority conflicts could change users, scope, metrics, acceptance, constraints, or the target handoff.
         - Use `authoritative` only when the operator or repository process approves or canonicalizes the current content and version; input authority or prior approval does not transfer.
-        - Keep generated or materially refined output `non-authoritative` until that resulting version is explicitly authorized.
+        - Otherwise mark the current version `non-authoritative`.
         - Treat outcome- or handoff-changing gaps as blockers; give other assumptions or TBDs an owner or decision trigger.
       validation:
         - "`Authority` is explicitly `authoritative` or `non-authoritative` whenever readiness is assessed."

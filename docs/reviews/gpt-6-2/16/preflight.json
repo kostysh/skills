@@ -1,0 +1,89 @@
+{
+  "ordinary": {
+    "initial": {
+      "existingTests": 0,
+      "process": [
+        0,
+        "{\"count\":2}\n",
+        ""
+      ],
+      "matchesAcceptedContract": true
+    },
+    "negative": {
+      "existingTests": 0,
+      "process": [
+        0,
+        "Preparing\n{\"count\":2}\n",
+        ""
+      ],
+      "matchesAcceptedContract": false
+    },
+    "equivalent": {
+      "existingTests": 0,
+      "process": [
+        0,
+        "{\"count\":2}\n",
+        ""
+      ],
+      "matchesAcceptedContract": true
+    }
+  },
+  "boundary": {
+    "initial": {
+      "existingTests": 0,
+      "process": [
+        2,
+        "",
+        "Invalid quantity\n"
+      ],
+      "matchesAcceptedContract": true
+    },
+    "negative": {
+      "existingTests": 0,
+      "process": [
+        2,
+        "Invalid quantity\n",
+        ""
+      ],
+      "matchesAcceptedContract": false
+    },
+    "equivalent": {
+      "existingTests": 0,
+      "process": [
+        2,
+        "",
+        "Invalid quantity\n"
+      ],
+      "matchesAcceptedContract": true
+    }
+  },
+  "holdout": {
+    "initial": {
+      "existingTests": 0,
+      "process": [
+        0,
+        "Evening\n",
+        ""
+      ],
+      "matchesAcceptedContract": true
+    },
+    "negative": {
+      "existingTests": 0,
+      "process": [
+        0,
+        "Default\n",
+        ""
+      ],
+      "matchesAcceptedContract": false
+    },
+    "equivalent": {
+      "existingTests": 0,
+      "process": [
+        0,
+        "Evening\n",
+        ""
+      ],
+      "matchesAcceptedContract": true
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "cases/final.md": "184726b65cc858a48fa590c3565da7a641cc0f9544abc34982167376152ca503",
+  "fixture/final/work/batch.json": "40588d928cdb929fbdb08bf40681b732b30086d804645ccecf7cebe2b2d37db1",
+  "fixture/final/work/lib/CONTRACT.md": "daa075cb795bd41554fe6ba98147160b10611915359430fbae7b62dc1144ed80",
+  "fixture/final/work/lib/money.mjs": "50d8ebb538b2bcebfaf3273570e0abf80b33ab0b22f1b2e5a6d8bd840db6f0c3",
+  "fixture/final/work/lib/package.json": "9f8db1d2f2084d0ffc90b38513c6e9c8a3893f3669e97d1252ba297dadbd87e2",
+  "fixture/final/work/r48.md": "968639b61fc17696adce652c623d254d52687be6c88d6db9b8c607857e8d03bb",
+  "fixture/final/work/sql-contract.md": "415a0ca0d44b0a465b9880ec886f2f5c9f786c289ae28a346e315265dad91f5b",
+  "rubric.md": "134c3d74313611ac2721674453d932ad629738c59f3fbc3eef1ccb5217685541"
+}

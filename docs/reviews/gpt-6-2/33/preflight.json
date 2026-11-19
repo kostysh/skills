@@ -1,0 +1,173 @@
+{
+  "boundary": {
+    "operatorTests": "✔ smoke: pinned card is visible immediately (0.993557ms)\n✔ unknown card is rejected (0.301049ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 46.720493\n",
+    "state": {
+      "init": [
+        {
+          "id": "a",
+          "title": "Alpha",
+          "pinned": false
+        },
+        {
+          "id": "b",
+          "title": "Beta",
+          "pinned": true
+        },
+        {
+          "id": "c",
+          "title": "Cedar",
+          "pinned": true
+        }
+      ],
+      "firstRead": [
+        {
+          "id": "a",
+          "title": "Alpha",
+          "pinned": false
+        },
+        {
+          "id": "b",
+          "title": "Beta",
+          "pinned": false
+        },
+        {
+          "id": "c",
+          "title": "Cedar",
+          "pinned": false
+        }
+      ],
+      "secondRead": [
+        {
+          "id": "a",
+          "title": "Alpha",
+          "pinned": false
+        },
+        {
+          "id": "b",
+          "title": "Beta",
+          "pinned": false
+        },
+        {
+          "id": "c",
+          "title": "Cedar",
+          "pinned": false
+        }
+      ],
+      "unknownId": "Unknown card: absent"
+    }
+  },
+  "holdout": {
+    "operatorTests": "✔ smoke: pinned card is visible immediately (1.036468ms)\n✔ unknown card is rejected (0.330775ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 42.732037\n",
+    "state": {
+      "init": [
+        {
+          "id": "a",
+          "title": "Alpha",
+          "pinned": false
+        },
+        {
+          "id": "b",
+          "title": "Alpha",
+          "pinned": true
+        },
+        {
+          "id": "c",
+          "title": "Cedar",
+          "pinned": true
+        }
+      ],
+      "firstRead": [
+        {
+          "id": "a",
+          "title": "Alpha",
+          "pinned": true
+        },
+        {
+          "id": "b",
+          "title": "Alpha",
+          "pinned": true
+        },
+        {
+          "id": "c",
+          "title": "Cedar",
+          "pinned": true
+        }
+      ],
+      "secondRead": [
+        {
+          "id": "a",
+          "title": "Alpha",
+          "pinned": false
+        },
+        {
+          "id": "b",
+          "title": "Alpha",
+          "pinned": false
+        },
+        {
+          "id": "c",
+          "title": "Cedar",
+          "pinned": true
+        }
+      ],
+      "unknownId": "Unknown card: absent"
+    }
+  },
+  "ordinary": {
+    "operatorTests": "✔ smoke: pinned card is visible immediately (0.809359ms)\n✔ unknown card is rejected (0.262916ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 36.375138\n",
+    "state": {
+      "init": [
+        {
+          "id": "a",
+          "title": "Alpha",
+          "pinned": false
+        },
+        {
+          "id": "b",
+          "title": "Beta",
+          "pinned": true
+        },
+        {
+          "id": "c",
+          "title": "Cedar",
+          "pinned": true
+        }
+      ],
+      "firstRead": [
+        {
+          "id": "a",
+          "title": "Alpha",
+          "pinned": true
+        },
+        {
+          "id": "b",
+          "title": "Beta",
+          "pinned": true
+        },
+        {
+          "id": "c",
+          "title": "Cedar",
+          "pinned": true
+        }
+      ],
+      "secondRead": [
+        {
+          "id": "a",
+          "title": "Alpha",
+          "pinned": true
+        },
+        {
+          "id": "b",
+          "title": "Beta",
+          "pinned": false
+        },
+        {
+          "id": "c",
+          "title": "Cedar",
+          "pinned": true
+        }
+      ],
+      "unknownId": "Unknown card: absent"
+    }
+  }
+}

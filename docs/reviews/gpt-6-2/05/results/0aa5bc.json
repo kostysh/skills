@@ -1,0 +1,259 @@
+{
+  "variant": "C",
+  "case": "holdout",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПримени проектный скил из `.agents/skills/typescript-engineer/SKILL.md`. После обновления календарного адаптера потребитель больше не собирается. Восстанови импорт согласованных периодов и проверь, что получит вызывающий код. В запросе партнёра встречается дата со смещением \"+02:00\". Сообщи поддержке, можно ли принять такой период по действующей договорённости и кто решает судьбу расширения.\n",
+  "input_file_sha256": {
+    ".agents/skills/typescript-engineer/SKILL.md": "8dccdca0e96b7c9f7caf51baaab9fb909df0bb01345a0ae7fac7c444bb597e86",
+    ".agents/skills/typescript-engineer/agents/openai.yaml": "372a72c8d2943c55ba133bbda5e0ed8f46cdfd8f8d4940418beefcbaf62484ab",
+    ".agents/skills/typescript-engineer/references/generics.md": "7201b89492c473093a6818db8bcf0b26e445d2f0689eb84916ff185503c3c4c4",
+    ".agents/skills/typescript-engineer/references/monorepo.md": "a725bf2737a1c0716b2c8f9f2a6d6d79cc0e14a401a06b7de5ed9744166fb5e4",
+    ".agents/skills/typescript-engineer/references/overloads.md": "39494766556c8c7aa46c2aa16aa20718aedcaf7a4ec8cf0a28443324d3c5936b",
+    ".agents/skills/typescript-engineer/references/patterns.md": "ad0135c65606afcaaaf97807020234dc7ab2cd570e9ad5e77eb3c8f3f9ff617e",
+    ".agents/skills/typescript-engineer/references/practices.md": "51f765dcd0f2e1732e00d83504a4a832f177437f96aeed0d992a634e949c827a",
+    ".agents/skills/typescript-engineer/references/runtime-derived-types.md": "1e1a327d0a2e59792ec25aa5c69bb2cd313273ef2a9d7730014700303e9e4aa0",
+    ".agents/skills/typescript-engineer/references/toolchain.md": "313bb758492c473f47b7d1670fd01ecb605512296ab98edcf36fe59914794771",
+    ".agents/skills/typescript-engineer/references/type-debugging.md": "2fb09da3deb9e434b50336644da63a6539503d30f05a0304fa7c9a78d7690304",
+    ".agents/skills/typescript-engineer/references/type-system.md": "451bec02f0fe0cad7a3967b6d4b8388e98600c4655be7fee51b971f1db0f40e9",
+    ".ignore": "16d30e4462189fb14dd611bdb708c510630c576a1f35b9383e89a4352da36c97",
+    "README.md": "86a7eb01583502c5989aedc36100741cedfa7b282634515e37f3fb90702f70e7",
+    "modules/import/src/consumer.ts": "c9fbeccd19679eb4d9df6a47761443591370360e4f28151c3699040af27b0817",
+    "modules/import/src/protocol.ts": "5073ac216a5678c52bc038d2e852dbe1022d7ebc5c83b460772c6556b93293bf",
+    "modules/import/src/public.ts": "8af0eaebda18a5d7c85cdd38400f0f7a22355ad124974befe3a5d60d3c092f2a",
+    "modules/import/tsconfig.json": "63fde31f25a0b0375f009b3a53f568295164dd3386c9e436ccf2cac5bf3a2888",
+    "node_modules/typescript/LICENSE.txt": "a7d00bfd54525bc694b6e32f64c7ebcf5e6b7ae3657be5cc12767bce74654a47",
+    "node_modules/typescript/bin/tsc": "8d5fa5bd883fec0979fc2004f1fe1d99aef40570155d550eadc0b03b55513bf0",
+    "node_modules/typescript/lib/_tsc.js": "e8f349eabd48486bdb2bf9dc1a00c89d58297270c54b745838879e2859194419",
+    "node_modules/typescript/lib/lib.decorators.d.ts": "8e7f8264d0fb4c5339605a15daadb037bf238c10b654bb3eee14208f860a32ea",
+    "node_modules/typescript/lib/lib.decorators.legacy.d.ts": "782dec38049b92d4e85c1585fbea5474a219c6984a35b004963b00beb1aab538",
+    "node_modules/typescript/lib/lib.es5.d.ts": "c430d44666289dae81f30fa7b2edebf186ecc91a2d4c71266ea6ae76388792e1",
+    "node_modules/typescript/lib/tsc.js": "2cffde0b8c6760dfb0b5b0382bbb7e00ba6a8b2d981b9205b256a700a481d983",
+    "node_modules/typescript/package.json": "822ef7ca6452205657b6288b066481ecf508bfbf43455d715cf7d3ec457561e6",
+    "package.json": "80f7779ff8ff4078eb677329bc67f2825a10be0c25ee56b0b6c4e4402c268fe4",
+    "tools/read.mjs": "5b4a5c7deff660df49436ec362ffd14d245745a1bc56b215e1f6782456ae8585",
+    "tsconfig.json": "ebc168860246d8d1846ff35479715f3cfc147d0ef558b1324ae776a069f3eef2"
+  },
+  "raw_events_sha256": "4c97545189e72a30b3d2a75236466478802500405d188c430d9c8f2666f34caf",
+  "raw_events_bytes": 67932,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Применю проектный скил `typescript-engineer`. Проверю, где сломался импорт, что получит вызывающий код и как действующая договорённость трактует смещение `+02:00`."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"pwd && ls -la && rg --files --hidden -g '\"'!.git'\"' && cat .agents/skills/typescript-engineer/SKILL.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"cat README.md package.json tsconfig.json modules/import/tsconfig.json modules/import/src/*.ts tools/read.mjs && ls -la node_modules && rg --files --hidden -g 'AGENTS.md' -g '\"'!.git'\"'\"",
+      "exit_code": 1,
+      "status": "failed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'npm run'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat .agents/skills/typescript-engineer/references/{monorepo,patterns,practices,runtime-derived-types,type-debugging,type-system}.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"npm run --silent read -- '{\\\"day\\\":\\\"2026-11-18\\\"}'\"",
+      "exit_code": 1,
+      "status": "failed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'node --version && node node_modules/typescript/bin/tsc --version && npm run typecheck'",
+      "exit_code": 2,
+      "status": "failed"
+    },
+    {
+      "type": "file_change",
+      "changes": [
+        {
+          "path": "{project}/modules/import/src/public.ts",
+          "kind": "update"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'npm run typecheck && node node_modules/typescript/bin/tsc -p modules/import/tsconfig.json --listFilesOnly'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"node --input-type=module <<'NODE'\nimport assert from 'node:assert/strict';\nimport { execFileSync } from 'node:child_process';\nimport { loadPeriod } from './modules/import/src/public.ts';\nimport { dayNumber } from './modules/import/src/consumer.ts';\n\nconst day = '2026-11-18';\nconst input = { day };\nconst accepted = loadPeriod(input);\nassert.ok(accepted.day instanceof Date);\nassert.deepEqual(accepted, { day: new Date('2026-11-18T00:00:00.000Z'), shifts: 1 });\nassert.equal(dayNumber(input), 18);\nassert.deepEqual(loadPeriod({ day, shifts: 3 }), { ...accepted, shifts: 3 });\n\nconst rejected = { day: day + 'T00:00:00+02:00' };\nfor (const input of [rejected, { day: '2026-02-30' }, { day, shifts: 4 }, { day, shifts: 0 }, { day, shifts: 1.5 }, null]) {\n  assert.equal(loadPeriod(input), null);\n  assert.equal(dayNumber(input), undefined);\n}\nfor (const [input, expected] of [\n  [{ day }, '{\\\"day\\\":\\\"2026-11-18T00:00:00.000Z\\\",\\\"shifts\\\":1}'],\n  [{ day, shifts: 3 }, '{\\\"day\\\":\\\"2026-11-18T00:00:00.000Z\\\",\\\"shifts\\\":3}'],\n  [rejected, 'null'],\n]) {\n  const output = execFileSync('npm', ['run', '--silent', 'read', '--', JSON.stringify(input)], { encoding: 'utf8' }).trim();\n  assert.equal(output, expected);\n  console.log(output);\n}\nconsole.log('loadPeriod, dayNumber and read assertions passed');\nNODE\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Импорт восстановлен и проверен. `loadPeriod` теперь возвращает результат календарного адаптера. Возврат исходного `raw` вызывал ошибку `TS2322` и приводил к сбою при вызове `toISOString()`. [Исправление]({project}/modules/import/src/public.ts:8)\n\nДля `2026-11-18` вызывающий код получает `Date` на `2026-11-18T00:00:00.000Z` и `shifts: 1`, если число смен не указано. Допустимое число смен от 1 до 3 сохраняется. Для отклонённого периода `loadPeriod` возвращает `null`, а `dayNumber` — `undefined`.\n\n`npm run typecheck` прошёл без ошибок и охватил потребителя. В Node.js проверил `loadPeriod`, `dayNumber` и публичную команду `read` на допустимых и отклонённых данных.\n\n**Сообщение для поддержки**\n\n> По действующей договорённости период с датой со смещением `+02:00` принять нельзя. Попросите партнёра передать календарный день в формате `YYYY-MM-DD`. Решение о поддержке смещений принимает редакция календаря смен. Срок поддержки пока не согласован.\n\nКанал поддержки не указан, поэтому сообщение оставил здесь. [Действующая договорённость]({project}/README.md:5)"
+    }
+  ],
+  "changed_file_contents": {
+    "modules/import/src/public.ts": "import { calendarSchema } from \"./protocol.ts\";\n\ntype Parsed = Extract<ReturnType<typeof calendarSchema.decode>, { ok: true }>[\"value\"];\n\nexport function loadPeriod(raw: unknown): Parsed | null {\n  const decoded = calendarSchema.decode(raw);\n  if (!decoded.ok) return null;\n  return decoded.value;\n}\n"
+  },
+  "final_response": "Импорт восстановлен и проверен. `loadPeriod` теперь возвращает результат календарного адаптера. Возврат исходного `raw` вызывал ошибку `TS2322` и приводил к сбою при вызове `toISOString()`. [Исправление]({project}/modules/import/src/public.ts:8)\n\nДля `2026-11-18` вызывающий код получает `Date` на `2026-11-18T00:00:00.000Z` и `shifts: 1`, если число смен не указано. Допустимое число смен от 1 до 3 сохраняется. Для отклонённого периода `loadPeriod` возвращает `null`, а `dayNumber` — `undefined`.\n\n`npm run typecheck` прошёл без ошибок и охватил потребителя. В Node.js проверил `loadPeriod`, `dayNumber` и публичную команду `read` на допустимых и отклонённых данных.\n\n**Сообщение для поддержки**\n\n> По действующей договорённости период с датой со смещением `+02:00` принять нельзя. Попросите партнёра передать календарный день в формате `YYYY-MM-DD`. Решение о поддержке смещений принимает редакция календаря смен. Срок поддержки пока не согласован.\n\nКанал поддержки не указан, поэтому сообщение оставил здесь. [Действующая договорённость]({project}/README.md:5)",
+  "independent_work_product_readback": {
+    "project_delta": [
+      "modules/import/src/public.ts"
+    ],
+    "original_package": {
+      "argv": [
+        "npm",
+        "run",
+        "typecheck"
+      ],
+      "exit": 2,
+      "stdout": "modules/import/src/public.ts(8,3): error TS2322: Type 'unknown' is not assignable to type 'Period | null'.\n",
+      "stderr": "npm notice run calendar-periods@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p modules/import/tsconfig.json --noEmit\n"
+    },
+    "empty_solution": {
+      "argv": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "actual_package": {
+      "argv": [
+        "npm",
+        "run",
+        "typecheck"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": "npm notice run calendar-periods@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p modules/import/tsconfig.json --noEmit\n"
+    },
+    "program_config": {
+      "argv": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "-p",
+        "modules/import/tsconfig.json",
+        "--showConfig"
+      ],
+      "exit": 0,
+      "stdout": "{\n    \"compilerOptions\": {\n        \"strict\": true,\n        \"target\": \"es2022\",\n        \"lib\": [\n            \"es5\"\n        ],\n        \"types\": [],\n        \"module\": \"nodenext\",\n        \"allowImportingTsExtensions\": true,\n        \"noEmit\": true,\n        \"moduleResolution\": \"nodenext\",\n        \"moduleDetection\": \"force\",\n        \"esModuleInterop\": true,\n        \"allowSyntheticDefaultImports\": true,\n        \"resolvePackageJsonExports\": true,\n        \"resolvePackageJsonImports\": true,\n        \"resolveJsonModule\": true,\n        \"useDefineForClassFields\": true,\n        \"noImplicitAny\": true,\n        \"noImplicitThis\": true,\n        \"strictNullChecks\": true,\n        \"strictFunctionTypes\": true,\n        \"strictBindCallApply\": true,\n        \"strictPropertyInitialization\": true,\n        \"strictBuiltinIteratorReturn\": true,\n        \"alwaysStrict\": true,\n        \"useUnknownInCatchVariables\": true\n    },\n    \"files\": [\n        \"./src/consumer.ts\",\n        \"./src/protocol.ts\",\n        \"./src/public.ts\"\n    ],\n    \"include\": [\n        \"src/**/*.ts\"\n    ]\n}\n",
+      "stderr": ""
+    },
+    "entrypoints": [
+      {
+        "argv": [
+          "node",
+          "tools/read.mjs",
+          "{\"day\":\"2026-04-21\"}"
+        ],
+        "exit": 0,
+        "stdout": "{\"day\":\"2026-04-21T00:00:00.000Z\",\"shifts\":1}\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "node",
+          "tools/read.mjs",
+          "{\"day\":\"2024-02-29\",\"shifts\":3}"
+        ],
+        "exit": 0,
+        "stdout": "{\"day\":\"2024-02-29T00:00:00.000Z\",\"shifts\":3}\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "node",
+          "tools/read.mjs",
+          "{\"day\":\"2026-02-29\"}"
+        ],
+        "exit": 0,
+        "stdout": "null\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "node",
+          "tools/read.mjs",
+          "{\"day\":\"2026-02-01\",\"shifts\":0}"
+        ],
+        "exit": 0,
+        "stdout": "null\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "node",
+          "tools/read.mjs",
+          "{\"day\":\"2026-04-21T00:00:00+02:00\"}"
+        ],
+        "exit": 0,
+        "stdout": "null\n",
+        "stderr": ""
+      },
+      {
+        "argv": [
+          "node",
+          "tools/read.mjs",
+          "null"
+        ],
+        "exit": 0,
+        "stdout": "null\n",
+        "stderr": ""
+      }
+    ],
+    "consumer_compile_assertions": {
+      "argv": [
+        "npm",
+        "run",
+        "typecheck"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": "npm notice run calendar-periods@1.0.0 typecheck\nnpm notice run node node_modules/typescript/bin/tsc -p modules/import/tsconfig.json --noEmit\n"
+    },
+    "decoder_substitution": {
+      "input": "{\"day\":\"2026-04-21\"}",
+      "replace": "{ day, shifts }",
+      "with": "{ day, shifts: shifts + 1 }",
+      "result": {
+        "argv": [
+          "node",
+          "tools/read.mjs",
+          "{\"day\":\"2026-04-21\"}"
+        ],
+        "exit": 0,
+        "stdout": "{\"day\":\"2026-04-21T00:00:00.000Z\",\"shifts\":2}\n",
+        "stderr": ""
+      }
+    },
+    "observed_metadata": {
+      "before_file_count": 17,
+      "before_manifest_sha256": "cc088ce427a63f35af42e4ee7225dc7575a2aed2085d724388dfd7223cf2347a",
+      "actual_after_file_count": 17,
+      "actual_after_manifest_sha256": "f8d364b7d560fecd70880a7cbf5d8353faa62296a1b886ede350d6fbd7a360e4",
+      "permissions_changed": {},
+      "local_compiler_bin_modes": [
+        "0775",
+        "0775"
+      ]
+    },
+    "executor_verification_output_lines": []
+  }
+}

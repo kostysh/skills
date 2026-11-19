@@ -1,0 +1,22 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -9 +9 @@
+-  source-version: 0.2.2
++  source-version: 0.2.3
+@@ -11 +11 @@
+-  skillforge-source-hash: 333c529b446540f2add1c60ab1a5d0159fbb9bb8e3b9806e25bcfeff0ba5d37b
++  skillforge-source-hash: efc2571710b4cc8d22763fe5aa974f9944e00dfc9577204a4d50486af9fc61e0
+@@ -69 +69 @@
+-| `startTransition` | A non-urgent state update is appropriate | It does not create a View Transition and must not control text inputs; pending UI requires the matching transition API |
++| `startTransition` | A non-urgent state update is appropriate | Marks the update as non-blocking. Keep text input updates urgent. Use `useTransition` for pending state |
+@@ -71 +71 @@
+-| `<ViewTransition>` | The project already uses a React channel that exposes it | Canary/Experimental feature; requires a real `<ViewTransition>` boundary and transition-driven update, never a release-channel upgrade by default |
++| `<ViewTransition>` | Stable since React 19.3, or an earlier installed prerelease that exports it | Observe the requested animation under a participating boundary and a transition-driven update in a supporting browser |
+--- a/references/bulletproof-patterns.md
++++ b/references/bulletproof-patterns.md
+@@ -149 +149 @@
+-Use `startTransition` or `useTransition` only when the update is non-urgent; do not use Transition updates to control text inputs. `startTransition` marks updates as non-blocking but does not create a browser or React View Transition.
++Use `startTransition` or `useTransition` for non-urgent updates. Keep updates that control text inputs urgent. `useTransition` also exposes pending state.
+@@ -151 +151 @@
+-React `<ViewTransition>` is a Canary/Experimental feature. Use it only when the project already runs a supporting channel and the component contains a real `<ViewTransition>` boundary. Verify enter, exit, update, or shared-element behavior that the task actually claims.
++React 19.3 made `<ViewTransition>` stable for the DOM renderer. Stable React 19.2 does not export it. For earlier prereleases, check the installed export. In a supporting browser, exercise a transition-driven update that changes the boundary and observe the claimed enter, exit, update, or shared-element animation.

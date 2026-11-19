@@ -1,0 +1,5 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -92 +92 @@
+-- The change has a causal basis and a meaningful regression check; diagnosis-only work stops before this repair stage.
++- The change has a causal basis and a meaningful regression check.

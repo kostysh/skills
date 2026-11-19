@@ -1,0 +1,10 @@
+{
+  "ab_scores": "all four passed",
+  "sealed_ab_sha256": "7ae9c8f71ffb24715d46a4397d012de56536818b070306a608c89e428c54cc24",
+  "selection": "Short positive C; single occurrence study with surviving equivalent instructions in the same active package.",
+  "old": "Test direct Data API, RPC, or Storage allow and deny behavior with a publishable key plus user JWT where that is the production boundary.",
+  "new": "Verify allowed and denied operations directly as the intended Data API, RPC, or Storage caller.",
+  "a_root": "63d04dc0dd91685f6ee3987d14de620598e2ee89147790e33fabc1d9fc0d1098",
+  "c_root": "1519366b339d491741ed3f3a1e51bcdb6f16b59d19211a8e6134a25597eed5d5",
+  "holdout_sha256": "cee2c37e64d5018ca0d4ab6ac4a254f9395bd44d7735f6bdbe43d53fc0915a17"
+}

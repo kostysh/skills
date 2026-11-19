@@ -1,0 +1,86 @@
+{
+  "format": {
+    "args": [
+      "corepack",
+      "pnpm@10.28.2",
+      "exec",
+      "prettier",
+      "--check",
+      "AGENTS.md",
+      ".github/workflows/docs-quality.yml",
+      ".markdownlint-cli2.jsonc",
+      ".prettierrc.json"
+    ],
+    "exit": 1,
+    "stdout": "Checking formatting...\n",
+    "stderr": "[warn] .markdownlint-cli2.jsonc\n[warn] Code style issues found in the above file. Run Prettier with --write to fix.\n"
+  },
+  "lintGood": {
+    "args": [
+      "corepack",
+      "pnpm@10.28.2",
+      "lint:md"
+    ],
+    "exit": 0,
+    "stdout": "\n> fixture-docs-controls@1.0.0 lint:md <project>\n> markdownlint-cli2\n\nmarkdownlint-cli2 v0.24.1 (markdownlint v0.42.1)\nFinding: **/*.md !.docusaurus/** !build/** !node_modules/**\nLinting: 2 files\nSummary: 0 issues in 0 files\n",
+    "stderr": ""
+  },
+  "lintKnownDefect": {
+    "args": [
+      "corepack",
+      "pnpm@10.28.2",
+      "lint:md"
+    ],
+    "exit": 1,
+    "stdout": "\n> fixture-docs-controls@1.0.0 lint:md <project>\n> markdownlint-cli2\n\nmarkdownlint-cli2 v0.24.1 (markdownlint v0.42.1)\nFinding: **/*.md !.docusaurus/** !build/** !node_modules/**\nLinting: 2 files\nSummary: 1 issue in 1 file\n ELIFECYCLE  Command failed with exit code 1.\n",
+    "stderr": "research_versioned_docs/version-1/guide.md:7 error MD024/no-duplicate-heading Multiple headings with the same content [Context: \"Repeat\"]\n"
+  },
+  "sourceUnchanged": true,
+  "formatAfter": {
+    "args": [
+      "corepack",
+      "pnpm@10.28.2",
+      "exec",
+      "prettier",
+      "--check",
+      "AGENTS.md",
+      ".github/workflows/docs-quality.yml",
+      ".markdownlint-cli2.jsonc",
+      ".prettierrc.json"
+    ],
+    "exit": 0,
+    "stdout": "Checking formatting...\nAll matched files use Prettier code style!\n",
+    "stderr": ""
+  },
+  "configuration": {
+    "beforeSha256": "25b490a3f41fdc7f032d618b7b29779f325c82a54e29e6ae7a2e06f73ab03bc3",
+    "afterSha256": "7ffccf5e50464bf990441260ccadb15e71b0e6ae33dfff78105e1f5c29f7bae4",
+    "sameParsedObject": true,
+    "lintAfterKnownDefect": 1,
+    "lintAfterGood": 0,
+    "knownDefectDiagnostic": "research_versioned_docs/version-1/guide.md:7 error MD024/no-duplicate-heading Multiple headings with the same content [Context: \"Repeat\"]"
+  },
+  "finalTemplates": {
+    "args": [
+      "corepack",
+      "pnpm@10.28.2",
+      "exec",
+      "prettier",
+      "--check",
+      "AGENTS.md",
+      ".github/workflows/docs-quality.yml",
+      ".markdownlint-cli2.jsonc",
+      ".prettierrc.json"
+    ],
+    "exit": 0,
+    "stdout": "Checking formatting...\nAll matched files use Prettier code style!\n",
+    "stderr": "",
+    "installedFileSHA256": {
+      ".github/workflows/docs-quality.yml": "2d1af35f51941c679fee037706fe2a0d42b3da38983585acb99220b0292e894c",
+      ".markdownlint-cli2.jsonc": "7ffccf5e50464bf990441260ccadb15e71b0e6ae33dfff78105e1f5c29f7bae4",
+      ".prettierignore": "0e2d69697fed9001df076dc0e14de9ef3ed045a8b945961564b8e0d98a54fc90",
+      ".prettierrc.json": "8b92ed4e7a6cd9ddcfa606663ab1cf6328da668557adc02510f776ea28991f1c",
+      "AGENTS.md": "13d5ea46437ffb9e1f99ab9b85b20513139782a22cec546318b128538c2df16d"
+    }
+  }
+}

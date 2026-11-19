@@ -1,0 +1,800 @@
+{
+  "copper": {
+    "baseline": {
+      "sections": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL",
+          "title": "Своя полка"
+        }
+      ],
+      "records": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL-01",
+          "title": "Местная запись",
+          "sectionID": 1,
+          "sectionKey": "LOCAL",
+          "desk": "east",
+          "state": "issued"
+        }
+      ],
+      "checkpoint": []
+    },
+    "interrupted": {
+      "created": 3,
+      "updated": 0,
+      "skipped": 0,
+      "interrupted": true
+    },
+    "afterInterrupt": {
+      "sections": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL",
+          "title": "Своя полка"
+        },
+        {
+          "id": 2,
+          "sourceKey": "S-A",
+          "title": "Реестр"
+        },
+        {
+          "id": 3,
+          "sourceKey": "S-B",
+          "title": "Пересчёт"
+        }
+      ],
+      "records": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL-01",
+          "title": "Местная запись",
+          "sectionID": 1,
+          "sectionKey": "LOCAL",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 2,
+          "sourceKey": "C-111",
+          "title": "Акт смены",
+          "sectionID": 3,
+          "sectionKey": "S-B",
+          "desk": "east",
+          "state": "issued"
+        }
+      ],
+      "checkpoint": []
+    },
+    "resumed": {
+      "created": 3,
+      "updated": 3,
+      "skipped": 0,
+      "interrupted": false
+    },
+    "afterResume": {
+      "sections": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL",
+          "title": "Своя полка"
+        },
+        {
+          "id": 2,
+          "sourceKey": "S-A",
+          "title": "Реестр"
+        },
+        {
+          "id": 3,
+          "sourceKey": "S-B",
+          "title": "Пересчёт"
+        }
+      ],
+      "records": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL-01",
+          "title": "Местная запись",
+          "sectionID": 1,
+          "sectionKey": "LOCAL",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 2,
+          "sourceKey": "C-111",
+          "title": "Акт смены",
+          "sectionID": 3,
+          "sectionKey": "S-B",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 3,
+          "sourceKey": "C-112",
+          "title": "Лист смены",
+          "sectionID": 2,
+          "sectionKey": "S-A",
+          "desk": "east",
+          "state": "draft"
+        },
+        {
+          "id": 4,
+          "sourceKey": "C-113",
+          "title": "Акт смены",
+          "sectionID": 2,
+          "sectionKey": "S-A",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 5,
+          "sourceKey": "C-114",
+          "title": "Папка смены",
+          "sectionID": 3,
+          "sectionKey": "S-B",
+          "desk": "west",
+          "state": "issued"
+        }
+      ],
+      "checkpoint": [
+        "C-111",
+        "C-112",
+        "C-113",
+        "C-114"
+      ]
+    },
+    "repeated": {
+      "created": 0,
+      "updated": 2,
+      "skipped": 4,
+      "interrupted": false
+    },
+    "afterRepeat": {
+      "sections": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL",
+          "title": "Своя полка"
+        },
+        {
+          "id": 2,
+          "sourceKey": "S-A",
+          "title": "Реестр"
+        },
+        {
+          "id": 3,
+          "sourceKey": "S-B",
+          "title": "Пересчёт"
+        }
+      ],
+      "records": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL-01",
+          "title": "Местная запись",
+          "sectionID": 1,
+          "sectionKey": "LOCAL",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 2,
+          "sourceKey": "C-111",
+          "title": "Акт смены",
+          "sectionID": 3,
+          "sectionKey": "S-B",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 3,
+          "sourceKey": "C-112",
+          "title": "Лист смены",
+          "sectionID": 2,
+          "sectionKey": "S-A",
+          "desk": "east",
+          "state": "draft"
+        },
+        {
+          "id": 4,
+          "sourceKey": "C-113",
+          "title": "Акт смены",
+          "sectionID": 2,
+          "sectionKey": "S-A",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 5,
+          "sourceKey": "C-114",
+          "title": "Папка смены",
+          "sectionID": 3,
+          "sectionKey": "S-B",
+          "desk": "west",
+          "state": "issued"
+        }
+      ],
+      "checkpoint": [
+        "C-111",
+        "C-112",
+        "C-113",
+        "C-114"
+      ]
+    },
+    "read": {
+      "actor": "east",
+      "records": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL-01",
+          "title": "Местная запись",
+          "sectionID": 1,
+          "sectionKey": "LOCAL",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 2,
+          "sourceKey": "C-111",
+          "title": "Акт смены",
+          "sectionID": 3,
+          "sectionKey": "S-B",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 4,
+          "sourceKey": "C-113",
+          "title": "Акт смены",
+          "sectionID": 2,
+          "sectionKey": "S-A",
+          "desk": "east",
+          "state": "issued"
+        }
+      ]
+    }
+  },
+  "silver": {
+    "baseline": {
+      "sections": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL",
+          "title": "Своя полка"
+        }
+      ],
+      "records": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL-01",
+          "title": "Местная запись",
+          "sectionID": 1,
+          "sectionKey": "LOCAL",
+          "desk": "east",
+          "state": "issued"
+        }
+      ],
+      "checkpoint": []
+    },
+    "interrupted": {
+      "created": 3,
+      "updated": 0,
+      "skipped": 0,
+      "interrupted": true
+    },
+    "afterInterrupt": {
+      "sections": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL",
+          "title": "Своя полка"
+        },
+        {
+          "id": 2,
+          "sourceKey": "S-A",
+          "title": "Реестр"
+        },
+        {
+          "id": 3,
+          "sourceKey": "S-B",
+          "title": "Пересчёт"
+        }
+      ],
+      "records": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL-01",
+          "title": "Местная запись",
+          "sectionID": 1,
+          "sectionKey": "LOCAL",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 2,
+          "sourceKey": "C-111",
+          "title": "Акт смены",
+          "sectionID": 3,
+          "sectionKey": "S-B",
+          "desk": "east",
+          "state": "issued"
+        }
+      ],
+      "checkpoint": []
+    },
+    "resumed": {
+      "created": 4,
+      "updated": 2,
+      "skipped": 0,
+      "interrupted": false
+    },
+    "afterResume": {
+      "sections": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL",
+          "title": "Своя полка"
+        },
+        {
+          "id": 2,
+          "sourceKey": "S-A",
+          "title": "Реестр"
+        },
+        {
+          "id": 3,
+          "sourceKey": "S-B",
+          "title": "Пересчёт"
+        }
+      ],
+      "records": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL-01",
+          "title": "Местная запись",
+          "sectionID": 1,
+          "sectionKey": "LOCAL",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 2,
+          "sourceKey": "C-111",
+          "title": "Акт смены",
+          "sectionID": 3,
+          "sectionKey": "S-B",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 3,
+          "sourceKey": "C-111",
+          "title": "Акт смены",
+          "sectionID": 3,
+          "sectionKey": "S-B",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 4,
+          "sourceKey": "C-112",
+          "title": "Лист смены",
+          "sectionID": 2,
+          "sectionKey": "S-A",
+          "desk": "east",
+          "state": "draft"
+        },
+        {
+          "id": 5,
+          "sourceKey": "C-113",
+          "title": "Акт смены",
+          "sectionID": 2,
+          "sectionKey": "S-A",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 6,
+          "sourceKey": "C-114",
+          "title": "Папка смены",
+          "sectionID": 3,
+          "sectionKey": "S-B",
+          "desk": "west",
+          "state": "issued"
+        }
+      ],
+      "checkpoint": [
+        "C-111",
+        "C-112",
+        "C-113",
+        "C-114"
+      ]
+    },
+    "repeated": {
+      "created": 0,
+      "updated": 2,
+      "skipped": 4,
+      "interrupted": false
+    },
+    "afterRepeat": {
+      "sections": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL",
+          "title": "Своя полка"
+        },
+        {
+          "id": 2,
+          "sourceKey": "S-A",
+          "title": "Реестр"
+        },
+        {
+          "id": 3,
+          "sourceKey": "S-B",
+          "title": "Пересчёт"
+        }
+      ],
+      "records": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL-01",
+          "title": "Местная запись",
+          "sectionID": 1,
+          "sectionKey": "LOCAL",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 2,
+          "sourceKey": "C-111",
+          "title": "Акт смены",
+          "sectionID": 3,
+          "sectionKey": "S-B",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 3,
+          "sourceKey": "C-111",
+          "title": "Акт смены",
+          "sectionID": 3,
+          "sectionKey": "S-B",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 4,
+          "sourceKey": "C-112",
+          "title": "Лист смены",
+          "sectionID": 2,
+          "sectionKey": "S-A",
+          "desk": "east",
+          "state": "draft"
+        },
+        {
+          "id": 5,
+          "sourceKey": "C-113",
+          "title": "Акт смены",
+          "sectionID": 2,
+          "sectionKey": "S-A",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 6,
+          "sourceKey": "C-114",
+          "title": "Папка смены",
+          "sectionID": 3,
+          "sectionKey": "S-B",
+          "desk": "west",
+          "state": "issued"
+        }
+      ],
+      "checkpoint": [
+        "C-111",
+        "C-112",
+        "C-113",
+        "C-114"
+      ]
+    },
+    "read": {
+      "actor": "east",
+      "records": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL-01",
+          "title": "Местная запись",
+          "sectionID": 1,
+          "sectionKey": "LOCAL",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 2,
+          "sourceKey": "C-111",
+          "title": "Акт смены",
+          "sectionID": 3,
+          "sectionKey": "S-B",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 3,
+          "sourceKey": "C-111",
+          "title": "Акт смены",
+          "sectionID": 3,
+          "sectionKey": "S-B",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 5,
+          "sourceKey": "C-113",
+          "title": "Акт смены",
+          "sectionID": 2,
+          "sectionKey": "S-A",
+          "desk": "east",
+          "state": "issued"
+        }
+      ]
+    }
+  },
+  "amber": {
+    "baseline": {
+      "sections": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL",
+          "title": "Своя полка"
+        }
+      ],
+      "records": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL-01",
+          "title": "Местная запись",
+          "sectionID": 1,
+          "sectionKey": "LOCAL",
+          "desk": "east",
+          "state": "issued"
+        }
+      ],
+      "checkpoint": []
+    },
+    "interrupted": {
+      "created": 3,
+      "updated": 0,
+      "skipped": 0,
+      "interrupted": true
+    },
+    "afterInterrupt": {
+      "sections": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL",
+          "title": "Своя полка"
+        },
+        {
+          "id": 2,
+          "sourceKey": "S-A",
+          "title": "Реестр"
+        },
+        {
+          "id": 3,
+          "sourceKey": "S-B",
+          "title": "Пересчёт"
+        }
+      ],
+      "records": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL-01",
+          "title": "Местная запись",
+          "sectionID": 1,
+          "sectionKey": "LOCAL",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 2,
+          "sourceKey": "C-111",
+          "title": "Акт смены",
+          "sectionID": 3,
+          "sectionKey": "S-B",
+          "desk": "east",
+          "state": "issued"
+        }
+      ],
+      "checkpoint": []
+    },
+    "resumed": {
+      "created": 3,
+      "updated": 3,
+      "skipped": 0,
+      "interrupted": false
+    },
+    "afterResume": {
+      "sections": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL",
+          "title": "Своя полка"
+        },
+        {
+          "id": 2,
+          "sourceKey": "S-A",
+          "title": "Реестр"
+        },
+        {
+          "id": 3,
+          "sourceKey": "S-B",
+          "title": "Пересчёт"
+        }
+      ],
+      "records": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL-01",
+          "title": "Местная запись",
+          "sectionID": 1,
+          "sectionKey": "LOCAL",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 2,
+          "sourceKey": "C-111",
+          "title": "Акт смены",
+          "sectionID": 3,
+          "sectionKey": "S-B",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 3,
+          "sourceKey": "C-112",
+          "title": "Лист смены",
+          "sectionID": 2,
+          "sectionKey": "S-A",
+          "desk": "east",
+          "state": "draft"
+        },
+        {
+          "id": 4,
+          "sourceKey": "C-113",
+          "title": "Акт смены",
+          "sectionID": 3,
+          "sectionKey": "S-B",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 5,
+          "sourceKey": "C-114",
+          "title": "Папка смены",
+          "sectionID": 3,
+          "sectionKey": "S-B",
+          "desk": "west",
+          "state": "issued"
+        }
+      ],
+      "checkpoint": [
+        "C-111",
+        "C-112",
+        "C-113",
+        "C-114"
+      ]
+    },
+    "repeated": {
+      "created": 0,
+      "updated": 2,
+      "skipped": 4,
+      "interrupted": false
+    },
+    "afterRepeat": {
+      "sections": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL",
+          "title": "Своя полка"
+        },
+        {
+          "id": 2,
+          "sourceKey": "S-A",
+          "title": "Реестр"
+        },
+        {
+          "id": 3,
+          "sourceKey": "S-B",
+          "title": "Пересчёт"
+        }
+      ],
+      "records": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL-01",
+          "title": "Местная запись",
+          "sectionID": 1,
+          "sectionKey": "LOCAL",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 2,
+          "sourceKey": "C-111",
+          "title": "Акт смены",
+          "sectionID": 3,
+          "sectionKey": "S-B",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 3,
+          "sourceKey": "C-112",
+          "title": "Лист смены",
+          "sectionID": 2,
+          "sectionKey": "S-A",
+          "desk": "east",
+          "state": "draft"
+        },
+        {
+          "id": 4,
+          "sourceKey": "C-113",
+          "title": "Акт смены",
+          "sectionID": 3,
+          "sectionKey": "S-B",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 5,
+          "sourceKey": "C-114",
+          "title": "Папка смены",
+          "sectionID": 3,
+          "sectionKey": "S-B",
+          "desk": "west",
+          "state": "issued"
+        }
+      ],
+      "checkpoint": [
+        "C-111",
+        "C-112",
+        "C-113",
+        "C-114"
+      ]
+    },
+    "read": {
+      "actor": "east",
+      "records": [
+        {
+          "id": 1,
+          "sourceKey": "LOCAL-01",
+          "title": "Местная запись",
+          "sectionID": 1,
+          "sectionKey": "LOCAL",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 2,
+          "sourceKey": "C-111",
+          "title": "Акт смены",
+          "sectionID": 3,
+          "sectionKey": "S-B",
+          "desk": "east",
+          "state": "issued"
+        },
+        {
+          "id": 4,
+          "sourceKey": "C-113",
+          "title": "Акт смены",
+          "sectionID": 3,
+          "sectionKey": "S-B",
+          "desk": "east",
+          "state": "issued"
+        }
+      ]
+    }
+  }
+}

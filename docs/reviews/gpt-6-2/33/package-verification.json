@@ -1,0 +1,71 @@
+{
+  "baseline": {
+    "version": "0.1.8",
+    "archive": "spec-conformance-reviewer-0.1.8.tgz",
+    "sha256": "c5e151c077425c661b1c401096204972330b1f470d389d7d526d50a3ef8da7b1",
+    "membersEqualA": true
+  },
+  "firstCandidate": {
+    "version": "0.1.9",
+    "stage": "C",
+    "archive": "first-candidate/spec-conformance-reviewer-0.1.9.tgz",
+    "sha256": "ae5a7eac9966e18fbbed4524a9c03231d0e10fa4cbc44ea18a5613d939087fec",
+    "members": {
+      "SKILL.md": "bcc38f5534f4dac94c1c40e4b945794e7e363eefb26e32bb928ccd5ed49cf341",
+      "agents/openai.yaml": "cfb46dd79b7c1dbea6f21726d24c55d1ecde761ced9005f103ffb30629c88b2b",
+      "assets/fixtures/consultant-admission-policy.md": "acc3607c90becff03a87356f0e43e094bb023e28ea1e80af64dbd4577c514b53",
+      "references/methodology.md": "a568814539648a7850c9342be8bab3fdbe50fb699276c33a4887abbd3211fe45",
+      "references/policy-admission-matrix.md": "cfe2cd85876b46cdd71fd982b15bdbe3cff16e4dc95da48ca53a2c3b28578689",
+      "references/reporting.md": "75c49ef2eb6fc501952112b3e3c47dad83ebc7da4f996ba7e0d11e588795bc25"
+    },
+    "studyDelta": "Only source-version and skillforge-source-hash in SKILL.md"
+  },
+  "finalCandidate": {
+    "version": "0.1.9",
+    "stage": "D",
+    "archive": "spec-conformance-reviewer-0.1.9.tgz",
+    "sha256": "25bad6a93be0d81b7f65184781df1e8d6eb8694859ee56273bf44e9e1e433e4f",
+    "members": {
+      "SKILL.md": "3ba64cdeb8addc23343195d9d28e17427c2a969615e5c108c8db198fbfb10a8f",
+      "agents/openai.yaml": "cfb46dd79b7c1dbea6f21726d24c55d1ecde761ced9005f103ffb30629c88b2b",
+      "assets/fixtures/consultant-admission-policy.md": "acc3607c90becff03a87356f0e43e094bb023e28ea1e80af64dbd4577c514b53",
+      "references/methodology.md": "a568814539648a7850c9342be8bab3fdbe50fb699276c33a4887abbd3211fe45",
+      "references/policy-admission-matrix.md": "cfe2cd85876b46cdd71fd982b15bdbe3cff16e4dc95da48ca53a2c3b28578689",
+      "references/reporting.md": "75c49ef2eb6fc501952112b3e3c47dad83ebc7da4f996ba7e0d11e588795bc25"
+    },
+    "studyDelta": "Only source-version and skillforge-source-hash in SKILL.md"
+  },
+  "reasonForSameVersion": "Both candidates remained local and unpublished. The authority manifest and version match between C and D. The content and SHA of SKILL.md and the archive distinguish these candidates.",
+  "tools": {
+    "node": "v24.15.0",
+    "pnpm": "10.28.2",
+    "npm": "12.0.1",
+    "git": "git version 2.53.0",
+    "codex": "codex-cli 0.170.0",
+    "compilerHelp": "skill-source-compiler CLI v0.2.5",
+    "packCLI": "0.1.3"
+  },
+  "priorCatalogSha256": "6a27eb907f0335ff4ac1778192f37b368d18c2e5cbea6611e4a61b956a95c749",
+  "checkOutputs": {
+    "lint": "OK [repository]/skills/spec-conformance-reviewer",
+    "sourceCheck": "OK [repository]/skills/spec-conformance-reviewer",
+    "compile": "Compiled [repository]/skills/spec-conformance-reviewer -> [temporary]/compiled/spec-conformance-reviewer",
+    "compiledCheck": "OK [temporary]/compiled/spec-conformance-reviewer",
+    "quickValidateOnExtractedRelease": "Skill is valid!"
+  },
+  "regenerated": true,
+  "matchedSecondPackFromIndependentSourceAndCompile": {
+    "source": {
+      "archiveSha256": "25bad6a93be0d81b7f65184781df1e8d6eb8694859ee56273bf44e9e1e433e4f",
+      "catalogContentHash": "e0ab40dd5b5ab246cc83974328a40560cdd4cb880d2041d0ee441bc21b0aade2"
+    },
+    "compiled": {
+      "archiveSha256": "25bad6a93be0d81b7f65184781df1e8d6eb8694859ee56273bf44e9e1e433e4f",
+      "catalogContentHash": "e0ab40dd5b5ab246cc83974328a40560cdd4cb880d2041d0ee441bc21b0aade2"
+    }
+  },
+  "compiledLogMatchesSource": true,
+  "allSixReconstructedPatchesMatch": true,
+  "runtimeDependencies": "Six archive members. No skill executable; local T03 tests run by Node. Docs are supporting and omitted by pack:skills.",
+  "published": false
+}

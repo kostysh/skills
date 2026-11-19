@@ -5,9 +5,9 @@ description: Design, implement, and review EUR-first money arithmetic and
   verified project APIs or a local formula for VAT/IVA, rates, allocation, and
   units; never invent FX, tax, or accounting policy.
 metadata:
-  source-version: 0.3.1
+  source-version: 0.3.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: a3f9a1c46960dde29d6de43f5bc88bb06ac69f2330c7d0a77e924fe5047a2c3e
+  skillforge-source-hash: 845aca8ffbb3845aac3b1b06d56eaa839d2cf8e0afb409178706ced0c0d58f68
 ---
 
 # financial-calculations-engineer
@@ -160,7 +160,7 @@ Validation:
 
 ## Gotchas
 
-- **high** — Do not infer a tax rate, tariff, ledger account, posting rule, or residual-minor-unit policy from a utility example.
+- **high** — Apply the accepted financial rule to its stated scope.
 - **high** — Do not infer ISO 4217 validity or a currency's minor-unit scale from a structurally accepted three-letter code and `0..20` engine scale; require an authoritative source.
 - **high** — Do not relabel EUR as another currency, pass arbitrary currency through a EUR formatter, or treat engine construction as FX conversion.
 - **high** — Do not unwrap and combine amounts across currencies or scales; preserve runtime tags and fail closed on either mismatch.

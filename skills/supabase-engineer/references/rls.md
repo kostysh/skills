@@ -9,6 +9,7 @@
 - Treat Data API grants as the reachability layer and RLS as the row layer; both must match the intended operation.
 - Treat views as a separate boundary; prefer `security_invoker = true` for views exposed to end-user queries.
 - For user-scoped capabilities, test direct PostgREST/RPC behavior with publishable key + user JWT; API-route tests alone do not prove RLS.
+- For a filtered collection read, compare the returned IDs for a known visible row and a known hidden row under the same session. A successful empty array can mean either that RLS hid the row or that the ID is absent. Verify an application's HTTP mapping through its own route when that mapping is part of the claim.
 - Keep service-layer auth/RBAC gates and RLS/RPC helper gates aligned for session/context freshness, status, scope/tenant, role, and profile/readiness requirements.
 - Never authorize from `user_metadata`. Use trusted database state or trusted claims such as `app_metadata`, and account for JWT staleness.
 

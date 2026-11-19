@@ -21,7 +21,7 @@ Node's built-in TypeScript support strips types; it does not typecheck and does 
 
 High-risk compatibility facts:
 
-- Node `22.6` through `22.17` requires `--experimental-strip-types`; type stripping is enabled by default from `22.18`.
+- In Node 22.6 through 22.17, enable built-in TypeScript explicitly. `--experimental-strip-types` selects stripping alone. From 22.7, `--experimental-transform-types` also enables stripping. Node 22.18 enables stripping by default.
 - Node 24 enables stripping by default; it is stable from `24.12`.
 - Node 26 keeps stable erasable-syntax stripping but removes `--experimental-transform-types`.
 - `--experimental-transform-types` exists on supported Node 22/24 releases that document it, but must never be extrapolated to another major.

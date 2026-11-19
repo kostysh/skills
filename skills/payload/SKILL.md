@@ -6,9 +6,9 @@ description: "Use when working with Payload CMS projects: payload.config.ts,
   Payload-specific validation, security, relationship, transaction, or hook
   behavior."
 metadata:
-  source-version: 0.1.2
+  source-version: 0.1.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: e3871f6ac431335bd150f0081447bf2eac4005e895fecd404cc3a5657b22010c
+  skillforge-source-hash: 04c6f843ceb054b4dcf70d01e78037459ce928f593eaa8d860100157ecc2668f
 ---
 
 # payload
@@ -21,7 +21,7 @@ metadata:
 4. Compare installed exports/peers with version-matched official docs before current API recommendations; no automatic major upgrade or canary adoption.
 5. Load only the reference files that match the touched Payload surface; do not read every reference by default.
 6. Preserve existing project conventions unless they conflict with Payload access, transaction, hook, type, or adapter semantics.
-7. Treat config, docs, wrappers, or generated types as substrate until the requested Payload behavior is compiled, tested, or otherwise exercised.
+7. Verify the requested behavior through the caller's Payload interface. For access claims, report the acting user, how access was enforced, and any separate query filter.
 
 ## When to use this skill
 
@@ -38,13 +38,13 @@ metadata:
 
 ## Version and input boundary
 
-The API examples target Payload **3.88.0 stable**, checked **2026-09-09**. **4.0.0-canary.33** is a separate prerelease, not an upgrade instruction. Inspect the installed `payload`, all `@payloadcms/*`, Node, Next/React and database/storage packages and the lockfile. Keep Payload packages on matching versions; check exact peer ranges before choosing a new fixture. In 3.88.0, `@payloadcms/next` accepts Next `>=15.2.9 <15.3.0 || >=15.3.9 <15.4.0 || >=15.4.11 <15.5.0 || >=16.2.6 <17.0.0`; the engine range alone does not prove the whole application compatible. Recheck these current facts for another version using installed exports and official tagged sources.
+Start with the installed `payload`, database adapter, Node, and, for a Next.js app, `@payloadcms/next`, Next, and React. Use the lockfile and the published manifests for that release. The examples use Payload v3. The November 2026 reference release is **3.94.0 stable**. The v4 beta channel and the Express-based v2 line have their own entry points and version contracts. Use a prerelease or migrate a major version when the task calls for it.
 
-For an existing v2 application, keep its Express/local initialization, adapter versions, schema and declared commands. Use the official version-matched v2 source and the 2→3 guide only when an upgrade is requested. Do not transplant v3 Web Request handlers, Next routes, storage plugins or experimental fields into v2. If the exact source is unavailable, continue version-independent investigation and identify the affected unknown.
+For **3.94.0**, the published Next adapter peers with Payload 3.94.0. Its supported Next 16 interval is `>=16.4.5 <17.0.0`. The manifest also lists separate Next 15 patch intervals. Both core and the Next adapter declare Node `^22.23.5 || ^24.22.3 || >=26.13.1`. Verify the installed release before choosing an image. Some reference examples retain their explicitly marked 3.88.0 source. [Published adapter](https://registry.npmjs.org/@payloadcms%2fnext/3.94.0) · [Tagged core](https://github.com/payloadcms/payload/blob/v3.94.0/packages/payload/package.json)
 
-Minimum context is the requested behavior, relevant config/source, version and execution authority. Stronger runtime claims additionally need the actual adapter/environment and meaningful checks. Reference examples are independent integration fragments: collection slugs, generated user fields, application helpers, credentials, db/editor and imports must match the host. They are not complete standalone applications.
+For an existing v2 application, keep its Express or standalone Local API initialization, adapter, schema, and project commands. Use the matching tag for v2 behavior. Use the migration guide when an upgrade is requested. If a version fact is unavailable, continue tasks that do not require it. [v2.32.3 initialization](https://github.com/payloadcms/payload/blob/v2.32.3/packages/payload/src/index.ts) · [2→3 guide](https://payloadcms.com/docs/migration-guide/overview)
 
-Sources: [installation](https://payloadcms.com/docs/getting-started/installation), [3.88.0 peers](https://github.com/payloadcms/payload/blob/v3.88.0/packages/next/package.json), [2→3 guide](https://payloadcms.com/docs/migration-guide/overview).
+Reference examples are integration fragments. Match the collection slugs, generated user fields, helpers, database, editor, and imports to the host.
 
 Payload v3 is a Next.js native CMS with TypeScript-first architecture, providing admin panel, database management, REST/GraphQL APIs, authentication, and file storage.
 
@@ -241,7 +241,7 @@ Validation:
 Prove the changed Payload surface with the narrowest meaningful project check.
 
 1. Run existing type generation, typecheck, lint, tests, build, or a targeted API/admin smoke check when available.
-2. For config and collection changes, prefer checks that load Payload config or generate Payload types.
+2. Use a config load or type generation for schema claims. For access, hook, or delivered-data changes, exercise the operation and compare the observed records or side effects with the expected outcome.
 3. If validation cannot run, perform the next-best static check and report the limitation.
 
 Validation:
@@ -250,8 +250,8 @@ Validation:
 
 ## Interop priority
 
-- **source CMS extraction, mapping, authorized import, rerun, and reconciliation:** payload-migration. payload-migration owns the migration result; this skill supplies target schema, Local API, access, adapter, and transaction mechanics without taking over source semantics.
-- **Next.js routing, React Server Components, Server Actions, metadata, images, fonts, bundling, or self-hosting:** nextjs. Payload v3 integrates with Next.js; nextjs owns frontend routing/cache/rendering and returns actual page readback. Existing v2 projects retain their installed Express architecture.
+- **source CMS extraction, mapping, authorized import, rerun, and reconciliation:** payload-migration. Supply the target version and adapter, accepted fields, source keys and relationship IDs, and a read through the intended caller when needed for reconciliation. payload-migration owns mapping, execution, retries, and reconciliation.
+- **Next.js routing, React Server Components, Server Actions, metadata, images, fonts, bundling, or self-hosting:** nextjs. Payload owns the CMS read for the intended caller. nextjs owns v3 page routing, caching, and rendering. For a page claim, follow the actual document value through the route and a fresh request. Existing v2 projects retain their Express entry point.
 - **TypeScript language, tsconfig, linting, and type-system issues:** typescript-engineer. This skill owns Payload APIs and idioms; TypeScript language and toolchain rules belong to typescript-engineer.
 - **TypeScript test design, mocks, fixtures, determinism, and runner behavior:** typescript-test-engineer. This skill names Payload verification targets; TypeScript test structure belongs to typescript-test-engineer.
 - **cross-cutting security review, threat modeling, secrets, webhook verification, and vulnerability triage:** security-reviewer. Use this skill for Payload-specific access semantics; use security-reviewer for broader security audit workflow.

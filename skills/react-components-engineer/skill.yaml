@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: react-components-engineer
-  source-version: 0.2.2
+  source-version: 0.2.3
   recommended-skill-md-max-bytes: 20000
   description: >-
     Build, harden, review, and diagnose reusable React components across SSR,
@@ -33,6 +33,10 @@ supporting:
     source: docs/logs/implementation-log-20260715-2.md
     target: docs/logs/implementation-log-20260715-2.md
     description: Non-normative remediation and review evidence for the capability audit.
+  - id: supporting-implementation-log-20261118-1
+    source: docs/logs/implementation-log-20261118-1.md
+    target: docs/logs/implementation-log-20261118-1.md
+    description: Supporting record for the React version gates and component lifecycle study.
   - id: supporting-docs-readme
     source: docs/README.md
     target: docs/README.md
@@ -143,7 +147,7 @@ sections:
       text: Experimental taint APIs are optional defense-in-depth for supported RSC environments, not a substitute for server authorization, DTO allowlisting, isolation, or a security review.
     - id: gotcha-global-dom
       priority: high
-      text: Do not assume one global window, document, DOM id, mutable singleton, mount, or Effect setup; derive ownership from the component instance and mirror every external setup with cleanup.
+      text: Keep DOM ownership per instance and clean up its Effects.
     - id: gotcha-use-id
       priority: medium
       text: Use useId for component-owned DOM and accessibility relationships, not list keys, data identities, cache keys, or async Server Components.

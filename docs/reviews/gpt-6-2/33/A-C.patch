@@ -1,0 +1,5 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -65 +65 @@
+-- Treat tests as evidence, not as proof by existence.
++- Check what each test demonstrates.

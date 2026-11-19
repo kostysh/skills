@@ -1,0 +1,386 @@
+{
+  "variant": "release",
+  "case": "two-supported-lines",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПримени поставленный ./SKILL.md к двум поддерживаемым сборкам настроек. В обеих после подтверждения иногда всплывает прежний контакт или успех при недоступном чтении. Исправь по одному модулю contact.mjs в каждой линии, сохранив её зависимости. После записи экран должен получить новую версию контакта из источника. Временный отказ чтения передаётся экрану для повтора. Для свежей линии используй действующий API её поставки; для линии сопровождения сохрани её совместимость. В README.md описан локальный воспроизводитель. Проверь результат и передай краткую запись сопровождающему.",
+  "input_file_sha256": {
+    "README.md": "286458f13c6ccfbf50d3266fdfce14173028a86816e20b5c6949c2290c0ad2be",
+    "SKILL.md": "dc625183b1ad63f0a2d0f24394384dd53cecf9e6cf69e6ebed4481c9a5f13d39",
+    "agents/openai.yaml": "bc31e3c34c4307ae3267abfa68d7cd5eddf52e49b3801419fc1daa80baaf5417",
+    "mainline/contact.mjs": "13919dd0c2138e180b651455dc8e57dc484c57428e685b9e7ae734b88593a65c",
+    "mainline/vendor/LICENSE": "a405ee70c632bb938acb7ac5f210e814409b3760ea9d2329d8ed8ffcfd11a0e7",
+    "mainline/vendor/environmentManager.js": "525543e0644bd1f84894c677a0ed94ddf1818874df0c2bfc56c6e8ad6fe12433",
+    "mainline/vendor/focusManager.js": "cc32cf5ad1192c1b73b5478314503d4321e2532e91eede3f0a0726d140ce7c46",
+    "mainline/vendor/hydration.js": "7a8d8a842ce9fb4856bbaa08ecc3a5b9bad832525d9066fbbad3ea88507a97dc",
+    "mainline/vendor/index.js": "20a0db3898d3a5efdbb41c09ca8532026caba5e530570d4c9e6eb43929e2acb3",
+    "mainline/vendor/infiniteQueryBehavior.js": "dd4b89ed4e53efd500e8730000d63cc4841f71f5d75babfd611cd22fa5d7e5ae",
+    "mainline/vendor/infiniteQueryObserver.js": "1c05f37559288eb0b52c89fcf394d63356c2bb343ff908995eb1913d03a485aa",
+    "mainline/vendor/mutation.js": "3e5a7843299b2eaaca99247114e811acad64b71b863fd22416cc34ba746872c4",
+    "mainline/vendor/mutationCache.js": "15e4706c755f877fb1a359d66aee084d12589c1b45a0b20bc3dc228706e10a3e",
+    "mainline/vendor/mutationObserver.js": "69d2d1e0f8fee198a622a16598478779741e74c5db8fb902f270f48ad9c68fbf",
+    "mainline/vendor/notifyManager.js": "29c1176c31de9a2639e24a48ae69f0c185f3e6d42fa56a97de7f4ceae4968ee2",
+    "mainline/vendor/onlineManager.js": "03397e951f5da636f422a10604dc9b27ad40dfb5b774f17e9e86ccbb1e25837f",
+    "mainline/vendor/package.json": "14bee3e0d0634bdbbf42702d859d0e0737b333f3ec2308d6f0d1160852a794b0",
+    "mainline/vendor/queriesObserver.js": "c35bbb975def28c85ac3c74ce2f69c4ec86dad738094e5bc6b16361ed9c0dfa8",
+    "mainline/vendor/query.js": "cdd3c31f504c5f02705f85a6c790db9e5921d5b3ac39fe3672f17113dcf7fff6",
+    "mainline/vendor/queryCache.js": "ca4a202de2046ef6c7bb350b9d1a0cf6866ba52bd892d5357750ca6a8e5eee63",
+    "mainline/vendor/queryClient.js": "73545469ab78f0c41d5839614f515364c8096cc862127ee3cd1905b46ae567ce",
+    "mainline/vendor/queryObserver.js": "e92a7ae938b88266a08ebc93e8218e9248f9ce2fb41fdf7cc724788a150d22b8",
+    "mainline/vendor/removable.js": "7c820def63efd00f55cb83ea44fec0241379d42ee69190db71ddc7eb4f693730",
+    "mainline/vendor/retryer.js": "e7fd0d11ec9e848e16eb8385cc29873565716cae27629f4d3526080a3f97ada6",
+    "mainline/vendor/streamedQuery.js": "d2ce83dbe39eec28b8d674498e3fb19cb68ac66ef987dad0596df4afc33564cd",
+    "mainline/vendor/subscribable.js": "db352836b505d0360e9c7a09f371a919e6c271c8bbc89f22c45ad063ecf6ecb1",
+    "mainline/vendor/timeoutManager.js": "37c77b0d904dd35aea2a5b87653c9555c1ab621b25a691b7366fc840f8d10019",
+    "mainline/vendor/types.js": "f49dc9b07daec99fa91ba00990e23112954db763c1467cc31a94b4ec42ba1b52",
+    "mainline/vendor/utils.js": "6033672b8877c702a457a88c6a3aae810ea8e0a75619252822dca9af82c26a0f",
+    "maintenance/contact.mjs": "13919dd0c2138e180b651455dc8e57dc484c57428e685b9e7ae734b88593a65c",
+    "maintenance/vendor/LICENSE": "a405ee70c632bb938acb7ac5f210e814409b3760ea9d2329d8ed8ffcfd11a0e7",
+    "maintenance/vendor/focusManager.js": "11bff86df6f1a0595266a1e93898be5de9ad0458376defdce8b0fde32e89a4d7",
+    "maintenance/vendor/hydration.js": "e60498ed79e61d78a3ddc4e6a129186837c88936f5962fb730bbe7e3cbd059c6",
+    "maintenance/vendor/index.js": "153ed3f967b7fa3f9a40ed4703bc7ddf4cb8c0fc4047ad71b0ad5c83d81c7a32",
+    "maintenance/vendor/infiniteQueryBehavior.js": "7ee6f6199033ef1a42687bb6839bd2cda5ed7e81a170cd40fb6d49a5b49174e7",
+    "maintenance/vendor/infiniteQueryObserver.js": "8426ae5486b11538bcfc3ca2becddaa435d536e33d5b290cad3557c59bc11dff",
+    "maintenance/vendor/mutation.js": "56b3ba5c873e3eee72bca25ef945ed2def797eeaa594923a0af3464d6cd507b0",
+    "maintenance/vendor/mutationCache.js": "47786567498b16961ffbce96f62704b94015a4d77ca5a3adcf7e7ae6823d4035",
+    "maintenance/vendor/mutationObserver.js": "f69faf4b157a059f0bfcaa77bde1f9df48fd9e9a5f4081f1ce8fe44a943bcdd9",
+    "maintenance/vendor/notifyManager.js": "d38d49a59008327820741debbf18eb467dc057e604e0cb7e6633d81194c2ab8c",
+    "maintenance/vendor/onlineManager.js": "2e4f47779703666aec0a335fb6b90c222e3f5e7e6ac7151f95b6b790bddd6618",
+    "maintenance/vendor/package.json": "4fb5b1588ebfaa49dfd3418e219de58ed59280ee236757e5e0bfec5311561800",
+    "maintenance/vendor/queriesObserver.js": "0f6c5e46ccf54999834c61a852977443cd3006f60bb4a95eac8d733f662c7a61",
+    "maintenance/vendor/query.js": "4bb40e427701f1c8a9684b51933414929cd4d186a7352e478d55f92406546df2",
+    "maintenance/vendor/queryCache.js": "63f42e7789c128b90e4bb3e77501df2847dc95bdca9446d9a67e81b2b4810c64",
+    "maintenance/vendor/queryClient.js": "0e6ed14b21a7f613af25d8c5a28919d0594fd3619c797fcb659a529b2f7b4a50",
+    "maintenance/vendor/queryObserver.js": "61b985e3fdb8e8d817c03133b805a2c4024e0ee39dcc76c32b6b0b73af5da8f8",
+    "maintenance/vendor/removable.js": "61c66b9411fab1ac36457c3e56554c6297c2805d3946a236b2e1998b00d4fd09",
+    "maintenance/vendor/retryer.js": "c45aeadfb1b0b76b329d11dac78f09cb6573b031591e089685c950041b053128",
+    "maintenance/vendor/streamedQuery.js": "0818b81786eface181895e9f5e7386793234e91b55e1ddef14b498ff8a52b2d7",
+    "maintenance/vendor/subscribable.js": "fdc001e3682f0af6b001227a6055a94424bb0fd7ab9105811f8755348e972f9f",
+    "maintenance/vendor/thenable.js": "f93916700a0a8769adea4143e68d78df2a87f2666edbaf326655c4059036347d",
+    "maintenance/vendor/timeoutManager.js": "c5897815e2c2cb6f02401de3425f99d56884732930186d1b8095e6904c5d6589",
+    "maintenance/vendor/types.js": "65bb8b1df7ad2f3f51bea47e3a003ede9474f9a618d36bbb4a4c5ddf5d8dbd64",
+    "maintenance/vendor/utils.js": "9e0d49572ecccee892605be4c3c8352b24ac50dae50cd3f90eda9999574f1316",
+    "references/accessibility.md": "44aef5b0309b2cc08ad061ef5d7dd4edf9727eaf7e56851b867c144ce6738361",
+    "references/component-architecture.md": "d1620fb939eac5b8b428b03e5c2743fadf3f6565d3aa238ceb3a51cac1e17878",
+    "references/data-fetching.md": "ec71bf0a73e5c4536b2e4f2cdf3ae2b1fb7381fa201e71a079fe210ec14a5dc5",
+    "references/forms-validation.md": "c159c64c11332e162be0cfdab4dda0f87ee3eee392832a5ec6d15f69c3c32997",
+    "references/indexeddb-persistence.md": "026de6cab4c1bafd59721c75797c13f3c15728d9c07c4837bdff86b203acb468",
+    "references/performance.md": "37d9d8d6c4f915c873a83aaa68679a556eab4c80a64a18a2f9d9fccae1ab87dc",
+    "references/persistence-architecture.md": "8b1a21dd865b6e30173d8a7383b81f38a867212f48d39aa0851bd97a9286f21d",
+    "references/routing.md": "188d8ee8d04f743bd4bff84419fc3143f950e361b37c9fbb36361b5775799103",
+    "references/state-management.md": "509f6510f2c2d1eef5dbf97c7c3c9f33034de461dac12a3a65a4b976cb213dd1",
+    "references/testing.md": "7b64b06442e90e3dcd75eacfc3f29efe015b5aa36a73e12a51b11977aac8fa10",
+    "references/typescript-patterns.md": "27ac07e4bd683f123e80b774db4c134f0ca3233b47681e32e3b919249b3d91c4",
+    "scenario.mjs": "c9f19b78c2c29c3ffc4baed1026c72485799324f1075a4d87f1ea76a8041a836"
+  },
+  "raw_events_sha256": "14fd23901827cff1f7d4250031568f76fff13edc9d450daadcbb4d357ab572e2",
+  "raw_events_bytes": 87375,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Прочитаю локальный `SKILL.md` и применю его к обеим сборкам. Затем проверю исправления по воспроизводителю из README."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git/**'\"' && git status --short\"",
+      "exit_code": 128,
+      "status": "failed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat SKILL.md README.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat mainline/contact.mjs maintenance/contact.mjs scenario.mjs'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"rg --files --hidden -g AGENTS.md -g '\"'!.git/**'\"'\"",
+      "exit_code": 1,
+      "status": "failed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat references/data-fetching.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat references/testing.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"cat mainline/vendor/package.json maintenance/vendor/package.json && rg -n 'fetchQuery|invalidateQueries|cancelQueries|revalidate|staleTime' {mainline,maintenance}/vendor/queryClient.js\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'node scenario.mjs'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"sed -n '377,435p' mainline/vendor/queryClient.js && sed -n '140,195p' maintenance/vendor/queryClient.js\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"rg -n -A22 'isStaleByTime\\\\(' {mainline,maintenance}/vendor/query.js && rg -n -A25 'fetch\\\\(options' {mainline,maintenance}/vendor/query.js\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Воспроизводитель подтвердил дефект в обеих линиях. Все три вызова вернули старый контакт, а источник не получил ни одного запроса. В каждой поставке есть API, который позволяет дождаться свежего чтения и передать его ошибку вызывающему коду."
+    },
+    {
+      "type": "file_change",
+      "changes": [
+        {
+          "path": "{project}/mainline/contact.mjs",
+          "kind": "update"
+        },
+        {
+          "path": "{project}/maintenance/contact.mjs",
+          "kind": "update"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'node --check mainline/contact.mjs && node --check maintenance/contact.mjs'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"node --input-type=module <<'NODE'\nimport assert from 'node:assert/strict';\n\nfor (const line of ['mainline', 'maintenance']) {\n  const { QueryClient } = await import(\"'`./${line}/vendor/index.js`);\n  const { verifyContact } = await import(`./${line}/contact.mjs`);\n  const client = new QueryClient();\n  const queryKey = ['\"'contact', 'editor'];\n  const relatedKey = [...queryKey, 'related'];\n  const failure = new Error('Contact service unavailable');\n  let finishOldRead;\n  let finishRelatedRead;\n  client.setQueryData(queryKey, 'cached');\n  const oldRead = client.fetchQuery({\n    queryKey,\n    queryFn: () => new Promise(resolve => { finishOldRead = resolve; }),\n  });\n  const cancelled = assert.rejects(oldRead, { message: 'CancelledError' });\n  const relatedRead = client.fetchQuery({\n    queryKey: relatedKey,\n    queryFn: () => new Promise(resolve => { finishRelatedRead = resolve; }),\n  });\n  let reads = 0;\n  let source = 'saved';\n  const options = {\n    queryKey,\n    staleTime: 'static',\n    retry: 3,\n    queryFn: async () => {\n      reads++;\n      if (source === null) throw failure;\n      return source;\n    },\n  };\n  try {\n    assert.equal(await verifyContact(client, options), 'saved');\n    await cancelled;\n    finishOldRead('pre-write');\n    assert.equal(client.getQueryData(queryKey), 'saved');\n    assert.equal(client.getQueryState(relatedKey).fetchStatus, 'fetching');\n    finishRelatedRead('related');\n    assert.equal(await relatedRead, 'related');\n    source = null;\n    await assert.rejects(verifyContact(client, options), error => error === failure);\n    assert.equal(reads, 2);\n    source = 'recovered';\n    assert.equal(await verifyContact(client, options), 'recovered');\n    assert.equal(client.getQueryData(queryKey), 'recovered');\n    assert.equal(reads, 3);\n    console.log(\"'`${line}: freshness, error, retry and in-flight read assertions passed`);\n  } finally {\n    client.clear();\n  }\n}\nNODE'",
+      "exit_code": 1,
+      "status": "failed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'node scenario.mjs'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"rg -n -A29 -B8 'error.revert|error.silent' {mainline,maintenance}/vendor/query.js && sed -n '294,312p' mainline/vendor/queryClient.js\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "file_change",
+      "changes": [
+        {
+          "path": "{project}/mainline/contact.mjs",
+          "kind": "update"
+        },
+        {
+          "path": "{project}/maintenance/contact.mjs",
+          "kind": "update"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'node --check mainline/contact.mjs && node --check maintenance/contact.mjs'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'node scenario.mjs'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"node --input-type=module <<'NODE'\nimport assert from 'node:assert/strict';\nfor (const line of ['mainline', 'maintenance']) {\n  const { QueryClient, isCancelledError } = await import(\"'`./${line}/vendor/index.js`);\n  const { verifyContact } = await import(`./${line}/contact.mjs`);\n  const client = new QueryClient();\n  const queryKey = ['\"'contact', 'editor'];\n  const relatedKey = [...queryKey, 'related'];\n  const failure = new Error('Contact service unavailable');\n  let finishOldRead;\n  let finishRelatedRead;\n  client.setQueryData(queryKey, 'cached');\n  const oldRead = client.fetchQuery({\n    queryKey,\n    queryFn: () => new Promise(resolve => { finishOldRead = resolve; }),\n  });\n  const cancelled = assert.rejects(oldRead, isCancelledError);\n  const relatedRead = client.fetchQuery({\n    queryKey: relatedKey,\n    queryFn: () => new Promise(resolve => { finishRelatedRead = resolve; }),\n  });\n  let reads = 0;\n  let source = 'saved';\n  const options = {\n    queryKey, staleTime: 'static', retry: 3,\n    queryFn: async () => {\n      reads++;\n      if (source === null) throw failure;\n      return source;\n    },\n  };\n  try {\n    assert.equal(await verifyContact(client, options), 'saved');\n    await cancelled;\n    finishOldRead('pre-write');\n    assert.equal(client.getQueryData(queryKey), 'saved');\n    assert.equal(client.getQueryState(relatedKey).fetchStatus, 'fetching');\n    finishRelatedRead('related');\n    assert.equal(await relatedRead, 'related');\n    source = null;\n    await assert.rejects(verifyContact(client, options), error => error === failure);\n    assert.equal(reads, 2);\n    source = 'recovered';\n    assert.equal(await verifyContact(client, options), 'recovered');\n    assert.equal(client.getQueryData(queryKey), 'recovered');\n    assert.equal(reads, 3);\n    console.log(\"'`${line}: freshness, error, retry and in-flight read assertions passed`);\n  } finally {\n    client.clear();\n  }\n}\nNODE'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Исправил оба модуля `contact.mjs`. Основная линия использует `QueryClient.query`, линия сопровождения — `fetchQuery` из своей версии. Зависимости сохранены.\n\n**Запись для сопровождающего.** После записи модуль отменяет незавершённое чтение этого контакта и запрашивает актуальное значение из источника. При отказе чтения экран получает исходную ошибку и может повторить запрос.\n\n`node scenario.mjs` подтвердил в обеих линиях свежий контакт, ошибку при отказе источника и успешный повтор. Дополнительная проверка показала, что запоздавший ответ не перезаписывает новое значение. Проверки выполнены в Node.js с локальной фикстурой источника."
+    }
+  ],
+  "changed_file_contents": {
+    "mainline/contact.mjs": "// The screen uses the same cache entry before and after a write.\nexport async function verifyContact(client, options) {\n  // Discard any read that started before the write completed.\n  await client.cancelQueries({ queryKey: options.queryKey, exact: true }, { revert: false });\n  return client.query({ ...options, staleTime: 0, retry: false });\n}\n",
+    "maintenance/contact.mjs": "// The screen uses the same cache entry before and after a write.\nexport async function verifyContact(client, options) {\n  // Discard any read that started before the write completed.\n  await client.cancelQueries({ queryKey: options.queryKey, exact: true }, { revert: false });\n  return client.fetchQuery({ ...options, staleTime: 0, retry: false });\n}\n"
+  },
+  "final_response": "Исправил оба модуля `contact.mjs`. Основная линия использует `QueryClient.query`, линия сопровождения — `fetchQuery` из своей версии. Зависимости сохранены.\n\n**Запись для сопровождающего.** После записи модуль отменяет незавершённое чтение этого контакта и запрашивает актуальное значение из источника. При отказе чтения экран получает исходную ошибку и может повторить запрос.\n\n`node scenario.mjs` подтвердил в обеих линиях свежий контакт, ошибку при отказе источника и успешный повтор. Дополнительная проверка показала, что запоздавший ответ не перезаписывает новое значение. Проверки выполнены в Node.js с локальной фикстурой источника.",
+  "input_file_modes": {
+    "README.md": "0664",
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "mainline/contact.mjs": "0664",
+    "mainline/vendor/LICENSE": "0664",
+    "mainline/vendor/environmentManager.js": "0664",
+    "mainline/vendor/focusManager.js": "0664",
+    "mainline/vendor/hydration.js": "0664",
+    "mainline/vendor/index.js": "0664",
+    "mainline/vendor/infiniteQueryBehavior.js": "0664",
+    "mainline/vendor/infiniteQueryObserver.js": "0664",
+    "mainline/vendor/mutation.js": "0664",
+    "mainline/vendor/mutationCache.js": "0664",
+    "mainline/vendor/mutationObserver.js": "0664",
+    "mainline/vendor/notifyManager.js": "0664",
+    "mainline/vendor/onlineManager.js": "0664",
+    "mainline/vendor/package.json": "0664",
+    "mainline/vendor/queriesObserver.js": "0664",
+    "mainline/vendor/query.js": "0664",
+    "mainline/vendor/queryCache.js": "0664",
+    "mainline/vendor/queryClient.js": "0664",
+    "mainline/vendor/queryObserver.js": "0664",
+    "mainline/vendor/removable.js": "0664",
+    "mainline/vendor/retryer.js": "0664",
+    "mainline/vendor/streamedQuery.js": "0664",
+    "mainline/vendor/subscribable.js": "0664",
+    "mainline/vendor/timeoutManager.js": "0664",
+    "mainline/vendor/types.js": "0664",
+    "mainline/vendor/utils.js": "0664",
+    "maintenance/contact.mjs": "0664",
+    "maintenance/vendor/LICENSE": "0664",
+    "maintenance/vendor/focusManager.js": "0664",
+    "maintenance/vendor/hydration.js": "0664",
+    "maintenance/vendor/index.js": "0664",
+    "maintenance/vendor/infiniteQueryBehavior.js": "0664",
+    "maintenance/vendor/infiniteQueryObserver.js": "0664",
+    "maintenance/vendor/mutation.js": "0664",
+    "maintenance/vendor/mutationCache.js": "0664",
+    "maintenance/vendor/mutationObserver.js": "0664",
+    "maintenance/vendor/notifyManager.js": "0664",
+    "maintenance/vendor/onlineManager.js": "0664",
+    "maintenance/vendor/package.json": "0664",
+    "maintenance/vendor/queriesObserver.js": "0664",
+    "maintenance/vendor/query.js": "0664",
+    "maintenance/vendor/queryCache.js": "0664",
+    "maintenance/vendor/queryClient.js": "0664",
+    "maintenance/vendor/queryObserver.js": "0664",
+    "maintenance/vendor/removable.js": "0664",
+    "maintenance/vendor/retryer.js": "0664",
+    "maintenance/vendor/streamedQuery.js": "0664",
+    "maintenance/vendor/subscribable.js": "0664",
+    "maintenance/vendor/thenable.js": "0664",
+    "maintenance/vendor/timeoutManager.js": "0664",
+    "maintenance/vendor/types.js": "0664",
+    "maintenance/vendor/utils.js": "0664",
+    "references/accessibility.md": "0644",
+    "references/component-architecture.md": "0644",
+    "references/data-fetching.md": "0644",
+    "references/forms-validation.md": "0644",
+    "references/indexeddb-persistence.md": "0644",
+    "references/performance.md": "0644",
+    "references/persistence-architecture.md": "0644",
+    "references/routing.md": "0644",
+    "references/state-management.md": "0644",
+    "references/testing.md": "0644",
+    "references/typescript-patterns.md": "0644",
+    "scenario.mjs": "0664"
+  },
+  "changed_file_modes": {
+    "mainline/contact.mjs": "0664",
+    "maintenance/contact.mjs": "0664"
+  },
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "baseline": [
+      {
+        "line": "mainline",
+        "example": "saved",
+        "result": "old@example.test",
+        "reads": 0
+      },
+      {
+        "line": "mainline",
+        "example": "unavailable",
+        "result": "old@example.test",
+        "reads": 0
+      },
+      {
+        "line": "mainline",
+        "example": "retry",
+        "result": "old@example.test",
+        "reads": 0
+      },
+      {
+        "line": "maintenance",
+        "example": "saved",
+        "result": "old@example.test",
+        "reads": 0
+      },
+      {
+        "line": "maintenance",
+        "example": "unavailable",
+        "result": "old@example.test",
+        "reads": 0
+      },
+      {
+        "line": "maintenance",
+        "example": "retry",
+        "result": "old@example.test",
+        "reads": 0
+      }
+    ],
+    "modified": [
+      {
+        "line": "mainline",
+        "example": "saved",
+        "result": "new@example.test",
+        "reads": 1
+      },
+      {
+        "line": "mainline",
+        "example": "unavailable",
+        "error": "Contact service unavailable",
+        "reads": 2
+      },
+      {
+        "line": "mainline",
+        "example": "retry",
+        "result": "again@example.test",
+        "reads": 3
+      },
+      {
+        "line": "maintenance",
+        "example": "saved",
+        "result": "new@example.test",
+        "reads": 1
+      },
+      {
+        "line": "maintenance",
+        "example": "unavailable",
+        "error": "Contact service unavailable",
+        "reads": 2
+      },
+      {
+        "line": "maintenance",
+        "example": "retry",
+        "result": "again@example.test",
+        "reads": 3
+      }
+    ],
+    "command": [
+      "node",
+      "scenario.mjs"
+    ],
+    "boundary": "Two shipped QueryClient builds, local synthetic queryFn, no browser or server."
+  }
+}

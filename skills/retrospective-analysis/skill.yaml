@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: retrospective-analysis
-  source-version: 0.1.3
+  source-version: 0.1.4
   recommended-skill-md-max-bytes: 18000
   description: >-
     Conduct evidence-backed retrospectives of completed work. Use targeted mode
@@ -146,13 +146,13 @@ sections:
         - Split superficially similar symptoms when they need different owners or prevention, and run a second pass for missed and over-merged problems.
       validation:
         - Fixed historical problems remain visible without producing duplicate work.
-        - No commit subject, issue state, or document claim alone proves implementation.
+        - Verify the claimed fix in the affected release.
         - Final problem rows have distinct causes and prevention mechanisms.
     - id: stage-synthesize
       title: Produce the mode-appropriate result
       goal: Deliver a usable causal account and residual recommendations, with full reconciliation only for the full evidentiary claim.
       steps:
-        - Follow the mode/output contract in the report/remediation reference. A targeted answer keeps evidence, causality limits, prior-fix status, and a proportionate recommendation concise; it does not require a matrix or a project task hierarchy.
+        - Follow the mode/output contract in the report/remediation reference. Keep a targeted report concise. Give the evidence, causal limits, prior-fix status, and remaining action. If the affected installation still fails in service, recommend delivering the fix to that installation and verifying it there. Report separate branch work in its own scope.
         - For full mode, read the report/remediation reference and produce the required report, matrix, appendices, reconciled counts, and statistics.
         - Tie each active recommendation to evidence-backed root problems and distinguish project rules, skills or methods, tests or tools, runtime or domain work, and audit-method changes.
         - "Challenge every high-severity problem, recurrence after operator correction, and no-action proposal with partial prevention: which concrete action could stop the next comparable failure before it happens? Require a verified reason when no new action is needed."

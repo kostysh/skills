@@ -1,0 +1,253 @@
+{
+  "baseline": {
+    "archive": "retrospective-analysis-0.1.3.tgz",
+    "sha256": "1a48a84057bb71174dd4d94360ca01bb3ad7e20a2e0ed2fc9524454cde99d2a9",
+    "contentHash": "165f65bbf668d3c4043ba3c60e6cebd432ba555e001a2cb6508ff7d2a447ae78",
+    "files": {
+      "SKILL.md": {
+        "sha256": "0aadb2d2303b5f4910bc563c6b036fc015ae523260c8dd84f749eb21a9574f97",
+        "bytes": 16908,
+        "mode": "0644"
+      },
+      "agents/openai.yaml": {
+        "sha256": "128427295b4582ee3cb92628c9a3819c5a30388d5683ddd35c5f27be94b21628",
+        "bytes": 406,
+        "mode": "0644"
+      },
+      "references/evidence-and-causality.md": {
+        "sha256": "0ff3075860dc209f176707e57210da5611bc19caf1c5be63f4b84838fe9305ea",
+        "bytes": 8901,
+        "mode": "0644"
+      },
+      "references/report-and-remediation-plan.md": {
+        "sha256": "d98566427d46d640efbbda92d8f3f541217e3d4862f36b41cadb8672b5e33424",
+        "bytes": 9518,
+        "mode": "0644"
+      },
+      "references/task-routing.md": {
+        "sha256": "4f43a46f0074542fe6d0703d9777461ce1cfbc041e6a4ee05569a3bb061f31c0",
+        "bytes": 4785,
+        "mode": "0644"
+      }
+    }
+  },
+  "release": {
+    "archive": "retrospective-analysis-0.1.4.tgz",
+    "sha256": "01c97bdc38d76175796c9935427b46df5a63c57eaca8903a2c6019a9f11557b1",
+    "contentHash": "d76c624b37bd67ced4aeeb9d0270d1495c8dc54032128fbcfc6e304a6baf0a9a",
+    "files": {
+      "SKILL.md": {
+        "sha256": "97b62243b2ec312f8d7e45aa7e5b999daed3e8389bdd08a8a5578f8cec2c8797",
+        "bytes": 16984,
+        "mode": "0644"
+      },
+      "agents/openai.yaml": {
+        "sha256": "128427295b4582ee3cb92628c9a3819c5a30388d5683ddd35c5f27be94b21628",
+        "bytes": 406,
+        "mode": "0644"
+      },
+      "references/evidence-and-causality.md": {
+        "sha256": "0ff3075860dc209f176707e57210da5611bc19caf1c5be63f4b84838fe9305ea",
+        "bytes": 8901,
+        "mode": "0644"
+      },
+      "references/report-and-remediation-plan.md": {
+        "sha256": "d98566427d46d640efbbda92d8f3f541217e3d4862f36b41cadb8672b5e33424",
+        "bytes": 9518,
+        "mode": "0644"
+      },
+      "references/task-routing.md": {
+        "sha256": "4f43a46f0074542fe6d0703d9777461ce1cfbc041e6a4ee05569a3bb061f31c0",
+        "bytes": 4785,
+        "mode": "0644"
+      }
+    }
+  },
+  "checks": [
+    {
+      "argv": [
+        "node",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "v24.15.0\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "git version 2.53.0\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "codex",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "codex-cli 0.170.0\n",
+      "stderr": "WARNING: proceeding, even though we could not create PATH aliases: Read-only file system (os error 30)\n"
+    },
+    {
+      "argv": [
+        "corepack",
+        "pnpm",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "10.28.2\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "0.2.5\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "lint",
+        "skills/retrospective-analysis"
+      ],
+      "exit": 0,
+      "stdout": "OK skills/retrospective-analysis\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "regenerate",
+        "skills/retrospective-analysis"
+      ],
+      "exit": 0,
+      "stdout": "Regenerated {repository}/skills/retrospective-analysis\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "skills/retrospective-analysis"
+      ],
+      "exit": 0,
+      "stdout": "OK skills/retrospective-analysis\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "compile",
+        "skills/retrospective-analysis",
+        "--out-dir",
+        "{temporary}/compiled"
+      ],
+      "exit": 0,
+      "stdout": "Compiled skills/retrospective-analysis -> {temporary}/compiled/retrospective-analysis\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "{temporary}/compiled/retrospective-analysis"
+      ],
+      "exit": 0,
+      "stdout": "OK {temporary}/compiled/retrospective-analysis\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "{skill-creator}/scripts/quick_validate.py",
+        "{temporary}/compiled/retrospective-analysis"
+      ],
+      "exit": 0,
+      "stdout": "Skill is valid!\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "pack:skills",
+        "--root",
+        "{temporary}/compiled",
+        "--out",
+        "{temporary}/packed",
+        "--release",
+        "skills-row38-local",
+        "--previous",
+        "{study}/published-baseline/catalog.json"
+      ],
+      "exit": 0,
+      "stdout": "\n> @kostysh/skills@0.1.3 pack:skills {repository}/cli\n> node src/pack-cli.ts --root {temporary}/compiled --out {temporary}/packed --release skills-row38-local --previous {study}/published-baseline/catalog.json\n\nSkills packed: 1; output: {temporary}/packed\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "skills/retrospective-analysis"
+      ],
+      "exit": 0,
+      "stdout": "OK skills/retrospective-analysis\n",
+      "stderr": "",
+      "afterDocsIndex": true
+    },
+    {
+      "argv": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "pack:skills",
+        "--root",
+        "{temporary}/authored",
+        "--out",
+        "{temporary}/packed",
+        "--release",
+        "skills-row38-local",
+        "--previous",
+        "{publishedBaselineCatalog}"
+      ],
+      "exit": 0,
+      "stdout": "\n> @kostysh/skills@0.1.3 pack:skills {repository}/cli\n> node src/pack-cli.ts --root {temporary}/authored --out {temporary}/packed --release skills-row38-local --previous {publishedBaselineCatalog}\n\nSkills packed: 1; output: {temporary}/packed\n",
+      "stderr": "",
+      "fromCopyOfAuthoredSkillWithSupportingDocs": true
+    }
+  ],
+  "publishedBaselineCatalogSha256": "405faa964e82c8b79a188ffae73e447786bd6fb6d0560ab1ecc32af93ee37499",
+  "sourceManifestSha256": "94f625cc432102bd9588c381fe5899a833d2e9ffe196b3b9b2aefdd0cb272201",
+  "sourceHashFromGeneratedRoot": "7b8889a79a971b11b5fb976535c49fa5e8da6ede37b3450a32fe04bc998b9bb8",
+  "compileReportEqualsSource": true,
+  "controlledEToRelease": "Only source-version and skillforge-source-hash in SKILL.md differ. The four other installed files are byte-identical.",
+  "actualAuthoringTreeRepack": {
+    "filesInSourceTree": 14,
+    "releaseArchiveByteIdentical": true,
+    "sha256": "01c97bdc38d76175796c9935427b46df5a63c57eaca8903a2c6019a9f11557b1",
+    "generatedCatalogSha256": "648cc4563c4a2db11658cd63aea952075959de54cb0996bdbce1aeb706735fa3"
+  },
+  "publishedBaselineRecord": {
+    "name": "retrospective-analysis",
+    "version": "0.1.3",
+    "sha256": "1a48a84057bb71174dd4d94360ca01bb3ad7e20a2e0ed2fc9524454cde99d2a9",
+    "contentHash": "165f65bbf668d3c4043ba3c60e6cebd432ba555e001a2cb6508ff7d2a447ae78",
+    "url": "https://github.com/kostysh/skills/releases/download/skills-20261107-2/retrospective-analysis-0.1.3.tgz"
+  }
+}

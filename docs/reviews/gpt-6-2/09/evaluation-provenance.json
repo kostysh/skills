@@ -1,0 +1,486 @@
+{
+  "conditions": "Fresh isolated Codex exec sessions. Long-term memory disabled, host reads technically available. Checks cover logged tool use and the files actually dispatched; they are not an OS-level confinement attestation. Only the assigned skill was installed in each neutral project. The host exposes shared request context and the model has prior general knowledge. No skill catalogue selection claim.",
+  "executor_runs": {
+    "c4e863": {
+      "variant": "B",
+      "case": "boundary",
+      "assigned_model": "gpt-6.2-sol",
+      "assigned_reasoning": "medium",
+      "sandbox": "workspace-write",
+      "long_term_memory_feature": "disabled",
+      "app_bytes_and_modes_changed": false,
+      "work_product": {
+        "c4e863/visits/213090a1-3721-4778-99e6-c6253983521a.json": "d9509269a72342e191b6e8e3f2a2c749bb9e8474df00ce728a3baa7e2d274f25",
+        "c4e863/visits/213090a1-3721-4778-99e6-c6253983521a.png": "5425a17e7e63562dec82de2b302ffd6469827f4a158e6ee9453e9bf0388e78e3",
+        "c4e863/visits/4f43869b-795f-46bf-b9c6-212a55003da5.json": "c22ae69c0ae7a087b17acdfe53817d40a98e14f164251abc05d2516141c24b93",
+        "c4e863/visits/4f43869b-795f-46bf-b9c6-212a55003da5.png": "58f8b4a9c0cf97085684782fa26fcd5b5fdc2478fd1eeb6f85dff2a3ba370404",
+        "c4e863/visits/eaae95cd-58b2-47a2-b06b-22e9ab37e970.json": "e5940b70b852c20581c26c6de44e2db3649c2bfd67b00fd0752ee8ba0edcea96",
+        "c4e863/visits/eaae95cd-58b2-47a2-b06b-22e9ab37e970.png": "24908e1dcc9201d465155aa48c61dd2760556406931cf8db2efe2863b6ffaa0c"
+      },
+      "raw_events_sha256": "aa92761899268d124983b625c214ba4f12600ef2b478fa1e76358f9c3e378395",
+      "raw_events_bytes": 37586,
+      "answer_sha256": "89b5db68111bd1881c70c1a4f09cca99407a18528ed9685ab4671554b37af464",
+      "command_receipts": 6,
+      "scope_review_flags": []
+    },
+    "8483d7": {
+      "variant": "A",
+      "case": "ordinary",
+      "assigned_model": "gpt-6.2-sol",
+      "assigned_reasoning": "medium",
+      "sandbox": "workspace-write",
+      "long_term_memory_feature": "disabled",
+      "app_bytes_and_modes_changed": false,
+      "work_product": {
+        "8483d7/visits/2b163d67-4997-4c6c-8c78-819a23cb3613.json": "b332d8c75dc2bbe65d82c25615437035b4957a6ae06709da34c9ed690dadc292",
+        "8483d7/visits/2b163d67-4997-4c6c-8c78-819a23cb3613.png": "cf3eac2f9893b33abe9f7100a69ed6d14641f9c32a926647f47c51c531b2cc47",
+        "8483d7/visits/54cdfbfe-219f-4ce8-9bfd-5aeb7baf3fd3.json": "12f66d2ee8fe08ff294a629fa515ccbbbec82b2a38d563bd9c8be22a4de3a7cd",
+        "8483d7/visits/54cdfbfe-219f-4ce8-9bfd-5aeb7baf3fd3.png": "48f1c47eb7d365dfcdb334e848811007d4f3df3e92501b2b053113173f011422",
+        "8483d7/visits/a67beb3f-9879-4ae1-b4ba-a4836c66c097.json": "f016d1f71156e8022770c3ebe68fc66c80b6457b04514def23e21dc775682125",
+        "8483d7/visits/a67beb3f-9879-4ae1-b4ba-a4836c66c097.png": "27bb9778dd4431235e8da57f483fd1ba10ec77f7687e5a3d7b28d1802912184e",
+        "8483d7/visits/c52b3596-9693-4223-8ae2-396234655770.json": "c22ae69c0ae7a087b17acdfe53817d40a98e14f164251abc05d2516141c24b93",
+        "8483d7/visits/c52b3596-9693-4223-8ae2-396234655770.png": "58f8b4a9c0cf97085684782fa26fcd5b5fdc2478fd1eeb6f85dff2a3ba370404"
+      },
+      "raw_events_sha256": "674eba08faafc9d46f03ba0cfd7064fbd703077b576938b9a31e58bd5b9faccb",
+      "raw_events_bytes": 79159,
+      "answer_sha256": "0f01f03065fec3f082f06453bc8d9e63c1db7df97f6e54a0d22c6d049eafa716",
+      "command_receipts": 7,
+      "scope_review_flags": []
+    },
+    "79f359": {
+      "variant": "A",
+      "case": "boundary",
+      "assigned_model": "gpt-6.2-sol",
+      "assigned_reasoning": "medium",
+      "sandbox": "workspace-write",
+      "long_term_memory_feature": "disabled",
+      "app_bytes_and_modes_changed": false,
+      "work_product": {
+        "79f359/visits/318f1f3d-2286-4a16-a6e2-e60b23fe2138.json": "c22ae69c0ae7a087b17acdfe53817d40a98e14f164251abc05d2516141c24b93",
+        "79f359/visits/318f1f3d-2286-4a16-a6e2-e60b23fe2138.png": "58f8b4a9c0cf97085684782fa26fcd5b5fdc2478fd1eeb6f85dff2a3ba370404",
+        "79f359/visits/5f2150e5-8da3-4ee6-b318-bbea617ef7c1.json": "1ace26409dbac5bd053b57457739e17ba24e68e3b99089405b6309b46bdf614d",
+        "79f359/visits/5f2150e5-8da3-4ee6-b318-bbea617ef7c1.png": "5425a17e7e63562dec82de2b302ffd6469827f4a158e6ee9453e9bf0388e78e3",
+        "79f359/visits/71681353-cb8f-4c07-a515-2f5d468ec32b.json": "32b6fa9991f0d8ba987abf7b2626a00b7fd6cee39532c26121f4c4d69c9886bc",
+        "79f359/visits/71681353-cb8f-4c07-a515-2f5d468ec32b.png": "f758eacf6f6b4b985a22f2115658fd30ce21dc829abac53c5092f1eaba9837f4"
+      },
+      "raw_events_sha256": "2701a08a2289005469fd289a796aa99638cf0fba3c82a97fe043bbf81d21d726",
+      "raw_events_bytes": 54552,
+      "answer_sha256": "a9104bbd2e1b137c9349619663009c11ecb7723f5b588b1520c383aa986fad28",
+      "command_receipts": 6,
+      "scope_review_flags": []
+    },
+    "581cd2": {
+      "variant": "B",
+      "case": "ordinary",
+      "assigned_model": "gpt-6.2-sol",
+      "assigned_reasoning": "medium",
+      "sandbox": "workspace-write",
+      "long_term_memory_feature": "disabled",
+      "app_bytes_and_modes_changed": false,
+      "work_product": {
+        "581cd2/visits/2ed00e31-8b79-43f6-89a8-8ead3cb6a61e.json": "c22ae69c0ae7a087b17acdfe53817d40a98e14f164251abc05d2516141c24b93",
+        "581cd2/visits/2ed00e31-8b79-43f6-89a8-8ead3cb6a61e.png": "58f8b4a9c0cf97085684782fa26fcd5b5fdc2478fd1eeb6f85dff2a3ba370404",
+        "581cd2/visits/3e16ca6f-d624-4039-bc51-487124d9c037.json": "7f16f5266ac0bf394023aaee4093af42127364cdc4eb4d5da9d53f89cd392c0f",
+        "581cd2/visits/3e16ca6f-d624-4039-bc51-487124d9c037.png": "c8d891c443a430d1aa6afb41e3cd7ab08a387f60ea82a0541d029c73cad438ac",
+        "581cd2/visits/82783868-cdc3-4164-9fbd-c107eb3aeff3.json": "60c1c889118e1b5f8ebdc906bc61fc1c0dbe5d7be53d93517cdc3f138ebaefa2",
+        "581cd2/visits/82783868-cdc3-4164-9fbd-c107eb3aeff3.png": "db1571f250b6423abcbd7406c1fd031e33c862550808ee6564281e27d2019f59",
+        "581cd2/visits/868b75bc-6210-47e3-afa7-48036ea055ea.json": "a5247b0178f5babdca8d9cda1eb57f817bad9d403639446101a56836cbba0366",
+        "581cd2/visits/868b75bc-6210-47e3-afa7-48036ea055ea.png": "631b6307324de29606f011d7e4d69def5c69119a83e590f8196d6b2a3b8bf97c",
+        "581cd2/visits/bf215992-18fe-464f-bc9e-b2ffd1c71228.json": "12b7573bb92e2fa7393340a8667b898c43dd2723e9ea695c373f53d06739a74a",
+        "581cd2/visits/bf215992-18fe-464f-bc9e-b2ffd1c71228.png": "f9f21bc288d16938de8b2b1bef0f61fef80212ff58cf5eb4c895a7d77d7d0f27"
+      },
+      "raw_events_sha256": "77399d3c4b1b3b19359f7c2e099b60fc398deced0ad0068cf7e9cda010aa0023",
+      "raw_events_bytes": 68624,
+      "answer_sha256": "714f7a01279a4eb596c647d0588eab119767af6646139b10642b5af0a26dd707",
+      "command_receipts": 10,
+      "scope_review_flags": []
+    },
+    "14f409": {
+      "variant": "C",
+      "case": "holdout",
+      "assigned_model": "gpt-6.2-sol",
+      "assigned_reasoning": "medium",
+      "sandbox": "workspace-write",
+      "long_term_memory_feature": "disabled",
+      "app_bytes_and_modes_changed": false,
+      "work_product": {
+        "14f409/visits/0e54e8ba-650c-4f31-acf8-557c5a40dc98.json": "0136e463f425420f19263a3de328d8a0505826ae2221761baccc99f8ced13425",
+        "14f409/visits/0e54e8ba-650c-4f31-acf8-557c5a40dc98.png": "df70d195b180fa769a8030841168a4037926c6dda6a62c8b2b4b5667aaaf053e",
+        "14f409/visits/1dd053c8-cc63-45d1-85c6-09814c592acd.json": "74dd354f38490cfc2455170487bac93a7077d467ddfee81ad1f52c8b6f76ca5f",
+        "14f409/visits/1dd053c8-cc63-45d1-85c6-09814c592acd.png": "3352cd57cd73da35952c465466ee632eed5fc6fcbbf59dd9fa08942f14ddd842",
+        "14f409/visits/3954590f-1027-4c2c-a23f-000c5b1714d8.json": "b5121735d4962e6b5ac5dc3ee251b6263c5dab867d4bbd571886c7c3bb505ead",
+        "14f409/visits/3954590f-1027-4c2c-a23f-000c5b1714d8.png": "4fa5adc75454ae2583cec074c747d6d3b01f09276fd20d392be48f00e0867873",
+        "14f409/visits/6e58ad34-25df-435c-ac5b-7a8b746f4967.json": "d24f4f20f315dd6048eb81f5bfa3fbea4e0c8847e28a104bad6d346473573605",
+        "14f409/visits/6e58ad34-25df-435c-ac5b-7a8b746f4967.png": "eb666661e49bfa44bd93f2351e380e4417ae47d6b18c15d6283a6e0c0c57099e",
+        "14f409/visits/aae898b9-b245-434c-aa24-4e3cd8818434.json": "045f911f771ffe08f014450f2d89758aec53d1459fdecf55f295c44826f8030c",
+        "14f409/visits/aae898b9-b245-434c-aa24-4e3cd8818434.png": "ced2a594c8b154ee625cb09e1dc49f8472376cf0abb229c462a1bcb950ef3c75",
+        "14f409/visits/c39de652-0444-4ece-8822-52f9152a5cce.json": "c22ae69c0ae7a087b17acdfe53817d40a98e14f164251abc05d2516141c24b93",
+        "14f409/visits/c39de652-0444-4ece-8822-52f9152a5cce.png": "58f8b4a9c0cf97085684782fa26fcd5b5fdc2478fd1eeb6f85dff2a3ba370404",
+        "14f409/visits/e059aa75-f646-4b8d-944c-de7484ce78c5.json": "3ccb1dee9d76028a652c07a76a45312b67b3422fdba0b86e21fe98257d6f64be",
+        "14f409/visits/e059aa75-f646-4b8d-944c-de7484ce78c5.png": "ced2a594c8b154ee625cb09e1dc49f8472376cf0abb229c462a1bcb950ef3c75",
+        "14f409/visits/e15bfe7c-51dc-4d94-b688-7595436d45e2.json": "711e0458ec59737d0bbf3e3e91faf7d02eb1cf562f06b50f3c9bf2f84c1148fa",
+        "14f409/visits/e15bfe7c-51dc-4d94-b688-7595436d45e2.png": "ced2a594c8b154ee625cb09e1dc49f8472376cf0abb229c462a1bcb950ef3c75",
+        "14f409/visits/f191063e-2943-487e-a46e-aa9b693b24b0.json": "b9565592cf3238723a92a3cb144bc18a153d622fd25cac02b6e534764d573e9e",
+        "14f409/visits/f191063e-2943-487e-a46e-aa9b693b24b0.png": "df70d195b180fa769a8030841168a4037926c6dda6a62c8b2b4b5667aaaf053e"
+      },
+      "raw_events_sha256": "5fd8890accb3ad09977bfd9c18b54aee890e36ec6cc8ec328c1f27f3e3a6af9e",
+      "raw_events_bytes": 51234,
+      "answer_sha256": "8ef6a9a8ba06c0cf154f62b80c8131808d87652ae3c3bac4e1d34b89a4c466a6",
+      "command_receipts": 13,
+      "scope_review_flags": []
+    },
+    "0b5288": {
+      "variant": "C",
+      "case": "ordinary",
+      "assigned_model": "gpt-6.2-sol",
+      "assigned_reasoning": "medium",
+      "sandbox": "workspace-write",
+      "long_term_memory_feature": "disabled",
+      "app_bytes_and_modes_changed": false,
+      "work_product": {
+        "0b5288/visits/1daca91a-b794-437b-9af7-a7b831a97ba8.json": "1b24229c91bbe25141e7e3fc089bfe46006484147fb17c0b5397d587c5db60a1",
+        "0b5288/visits/1daca91a-b794-437b-9af7-a7b831a97ba8.png": "69f967ceddf5ff35a141d7c9c841d441246bbcf582dd65c132d520ddb26cb718",
+        "0b5288/visits/2a366a4a-e47a-471b-a18f-edcb350d85f5.json": "24d2f46768c42f6e1fe2659a0cd14c4d18d1ddad460d49af2e99a79e05846792",
+        "0b5288/visits/2a366a4a-e47a-471b-a18f-edcb350d85f5.png": "c397055cc8a78247779f574dc55dc5e550ec4a3919b39b564b7927910412a22e",
+        "0b5288/visits/54ceb251-8a8b-435b-83ea-b91c4e0e244f.json": "d9171ac504445e3e0e03b5b8e7b7022e1f3ac21d055d6fddbf17690ef468d032",
+        "0b5288/visits/54ceb251-8a8b-435b-83ea-b91c4e0e244f.png": "69f967ceddf5ff35a141d7c9c841d441246bbcf582dd65c132d520ddb26cb718",
+        "0b5288/visits/9d07257d-4ec5-442b-9eb7-18fcb76cb5a6.json": "1ad153aced5c6fbbeb7622028181acf860b81568487938eed65197ff112fc10b",
+        "0b5288/visits/9d07257d-4ec5-442b-9eb7-18fcb76cb5a6.png": "045e59d546a41b867a24e00004dd9bb79b981aa47d42205c96395d6b06d512e2",
+        "0b5288/visits/a1989e33-09ea-42a7-a2ac-59fdbfc3b0c6.json": "c22ae69c0ae7a087b17acdfe53817d40a98e14f164251abc05d2516141c24b93",
+        "0b5288/visits/a1989e33-09ea-42a7-a2ac-59fdbfc3b0c6.png": "58f8b4a9c0cf97085684782fa26fcd5b5fdc2478fd1eeb6f85dff2a3ba370404",
+        "0b5288/visits/a9696b23-7ab5-46f0-9078-5bc5e4ad0356.json": "0d80cc5a3846d57d5ef573efe4f4e2a2459c71736aeccef43cf9c383319e3e8f",
+        "0b5288/visits/a9696b23-7ab5-46f0-9078-5bc5e4ad0356.png": "fba6a51355e2d5f92e8ffeb76638f0cd85a77cce8b973148de4ff25b08ed50ca",
+        "0b5288/visits/ce3e9736-fd73-4ea6-b178-685f160a5412.json": "9fb4f08b3015e956dd1d9e226c8abf5f8d42127f6b349746fd55cd3dcf21e880",
+        "0b5288/visits/ce3e9736-fd73-4ea6-b178-685f160a5412.png": "69f967ceddf5ff35a141d7c9c841d441246bbcf582dd65c132d520ddb26cb718",
+        "0b5288/visits/f7d1e62f-2108-4150-b487-0f10b930e6a3.json": "a3fb67ce65f7663646b337eebdbafbd3bca01d59d58b90932807430ba3d52dae",
+        "0b5288/visits/f7d1e62f-2108-4150-b487-0f10b930e6a3.png": "87ddf086f6cf799dc865e6bf9745ce0bff7c86d3e61ab8c9fa38caaf5dddb03a"
+      },
+      "raw_events_sha256": "9cc9fd11d98b21282dbcbf7bc9f993ba3fbaa2faa68a6fe70e98f4006d350eb2",
+      "raw_events_bytes": 169267,
+      "answer_sha256": "6270576d4a2f7996308e9a782bffb9ca5ffe5f3ecbc1176d6e977a7b527e8767",
+      "command_receipts": 13,
+      "scope_review_flags": []
+    },
+    "e02a9a": {
+      "variant": "C",
+      "case": "boundary",
+      "assigned_model": "gpt-6.2-sol",
+      "assigned_reasoning": "medium",
+      "sandbox": "workspace-write",
+      "long_term_memory_feature": "disabled",
+      "app_bytes_and_modes_changed": false,
+      "work_product": {
+        "e02a9a/visits/68c6e8ff-2536-4428-8c02-28aac6f6b1cf.json": "a63fac50a69dede2496537c2b6a63e4ebc803ed40409b637734cdfa084e22865",
+        "e02a9a/visits/68c6e8ff-2536-4428-8c02-28aac6f6b1cf.png": "7b20962fe599439dd45ff7637e4f539fb4bc8d6044b281481ce20dc422b2808a",
+        "e02a9a/visits/7883d1fb-5174-4d9c-b276-1fdf98e1e102.json": "528a1c00825e67344bdfe063190ffcc5af30ce4c25109a6ca89c61d3ccd1bcb4",
+        "e02a9a/visits/7883d1fb-5174-4d9c-b276-1fdf98e1e102.png": "fd3956493e4ef6e0fc8a2b70d2e327e5d02c7cdf92558824a3dfce546bdfd396",
+        "e02a9a/visits/cfa2ab1f-26a9-43a4-80b2-bcf6ae106cdd.json": "c22ae69c0ae7a087b17acdfe53817d40a98e14f164251abc05d2516141c24b93",
+        "e02a9a/visits/cfa2ab1f-26a9-43a4-80b2-bcf6ae106cdd.png": "58f8b4a9c0cf97085684782fa26fcd5b5fdc2478fd1eeb6f85dff2a3ba370404",
+        "e02a9a/visits/f788bf86-8c1f-4431-8fae-5103561c9335.json": "81fbb83686f8f82f40b2a867a8626ed2a5035256b60981ded579d8e282b434e8",
+        "e02a9a/visits/f788bf86-8c1f-4431-8fae-5103561c9335.png": "5425a17e7e63562dec82de2b302ffd6469827f4a158e6ee9453e9bf0388e78e3"
+      },
+      "raw_events_sha256": "9ef97b697a3d1971d1de912e37555d70cf40b65339314208f69e7e98c7014863",
+      "raw_events_bytes": 44680,
+      "answer_sha256": "d07fd7822b1adccef8f78143c6ebbdf5c2f565a7d0398fa4d9de6f5b57bfdf57",
+      "command_receipts": 7,
+      "scope_review_flags": []
+    },
+    "649e27": {
+      "variant": "A",
+      "case": "holdout",
+      "assigned_model": "gpt-6.2-sol",
+      "assigned_reasoning": "medium",
+      "sandbox": "workspace-write",
+      "long_term_memory_feature": "disabled",
+      "app_bytes_and_modes_changed": false,
+      "work_product": {
+        "649e27/visits/8de8c00b-cb92-4898-88a9-0de9529bf796.json": "7208ae2f3ebab8734496e190e9e89f437b57a00052281d9d5abc1588ac8008ef",
+        "649e27/visits/8de8c00b-cb92-4898-88a9-0de9529bf796.png": "ced2a594c8b154ee625cb09e1dc49f8472376cf0abb229c462a1bcb950ef3c75",
+        "649e27/visits/8fadabf0-c197-4d2a-a76f-797a12c6df85.json": "c22ae69c0ae7a087b17acdfe53817d40a98e14f164251abc05d2516141c24b93",
+        "649e27/visits/8fadabf0-c197-4d2a-a76f-797a12c6df85.png": "58f8b4a9c0cf97085684782fa26fcd5b5fdc2478fd1eeb6f85dff2a3ba370404",
+        "649e27/visits/aeaef17f-fd35-4223-8974-5bc06c94d8ad.json": "2fbe2a8f9e32f71462c1b8405dca970f67e98e0bf5d18ec4eb242c42b9f7987a",
+        "649e27/visits/aeaef17f-fd35-4223-8974-5bc06c94d8ad.png": "e304a2c45ee87ff4643f68cd5011c8d7f5bbd57e31feed9f09f021e16be8434a",
+        "649e27/visits/c1ce18ca-4101-4881-9dcb-dbb17eabe20c.json": "b41a15d75d0268e2447bfc1d1aff1663d409fc013105f372f146719730d5abf4",
+        "649e27/visits/c1ce18ca-4101-4881-9dcb-dbb17eabe20c.png": "ced2a594c8b154ee625cb09e1dc49f8472376cf0abb229c462a1bcb950ef3c75",
+        "649e27/visits/c353f15c-e590-4f33-be1d-694790d19b60.json": "5605d78f2103c12b78e8a57c244c1dfad0817c95d6a601e6c64e5dfda73532c7",
+        "649e27/visits/c353f15c-e590-4f33-be1d-694790d19b60.png": "eb666661e49bfa44bd93f2351e380e4417ae47d6b18c15d6283a6e0c0c57099e",
+        "649e27/visits/d9cb4f56-17f0-4406-b913-c4f6f2907763.json": "85a48edcc3301851c3c089d4708a689fdc525e5ed7576471ff943e8da01ec6bc",
+        "649e27/visits/d9cb4f56-17f0-4406-b913-c4f6f2907763.png": "df70d195b180fa769a8030841168a4037926c6dda6a62c8b2b4b5667aaaf053e",
+        "649e27/visits/e516421b-ac26-4234-9422-206d3975a8c7.json": "d7cf614d1b98972ee32098b26548f3a11735f7537839c7be227a2b77f6256c5c",
+        "649e27/visits/e516421b-ac26-4234-9422-206d3975a8c7.png": "f3e47bf7243dee42170b7fa9440a6a285a9eb0cf344c50f80b248d08e9575f7e",
+        "649e27/visits/e5d81d7b-1b11-4675-9229-7e1a2cfd1944.json": "6b265f5d547091cb4d5b6d83d88fde96733f9599111b8d76e2401755871a35ce",
+        "649e27/visits/e5d81d7b-1b11-4675-9229-7e1a2cfd1944.png": "c46c449a02e8942a2a704d6bf599607a3ab770ef6360eddbd790b01965f7bbfa",
+        "649e27/visits/f91f4153-c639-4133-b21a-71b5b0867608.json": "61b12038e41bce07da820d914cae3df7cd92af07f7e36edb718104adb3b3db39",
+        "649e27/visits/f91f4153-c639-4133-b21a-71b5b0867608.png": "f66f588e0cff20c1fe5a9585a1b682b0ec12d282d5a3861f42f316566df53560"
+      },
+      "raw_events_sha256": "ebc6699c91fb8d41b65ef3a2c2eecb1a3a6d1f247109854352645e5012718e88",
+      "raw_events_bytes": 78477,
+      "answer_sha256": "c229cb7b11cb106d9d77e5d8faf9dbf3a9f9806919072027dd1cd19f4b387658",
+      "command_receipts": 16,
+      "scope_review_flags": []
+    },
+    "df38e0": {
+      "variant": "Release",
+      "case": "boundary",
+      "assigned_model": "gpt-6.2-sol",
+      "assigned_reasoning": "medium",
+      "sandbox": "workspace-write",
+      "long_term_memory_feature": "disabled",
+      "app_bytes_and_modes_changed": false,
+      "work_product": {
+        "df38e0/visits/0d56d316-f9e6-4344-8fdb-fde30873d983.json": "ded99814486fdd4182206382340cdc199af3bfe75137c376676837e6551cee9d",
+        "df38e0/visits/0d56d316-f9e6-4344-8fdb-fde30873d983.png": "7b20962fe599439dd45ff7637e4f539fb4bc8d6044b281481ce20dc422b2808a",
+        "df38e0/visits/25d33353-55fe-4e0a-b853-9fcd34f84232.json": "c22ae69c0ae7a087b17acdfe53817d40a98e14f164251abc05d2516141c24b93",
+        "df38e0/visits/25d33353-55fe-4e0a-b853-9fcd34f84232.png": "58f8b4a9c0cf97085684782fa26fcd5b5fdc2478fd1eeb6f85dff2a3ba370404",
+        "df38e0/visits/7d6563c8-34ad-492a-9ecc-1f92d1a7eb71.json": "8840944e22269780b23bd963a42c4a384e1b74b7b58a002c9f7c3f1fa106c8de",
+        "df38e0/visits/7d6563c8-34ad-492a-9ecc-1f92d1a7eb71.png": "24908e1dcc9201d465155aa48c61dd2760556406931cf8db2efe2863b6ffaa0c",
+        "df38e0/visits/8d43e1cf-aaa4-4ad1-ba07-f3e5ba970794.json": "7bfb0caa3abd837b822d17b791f96fc865193e4c46df896d07ba6cd4439902b5",
+        "df38e0/visits/8d43e1cf-aaa4-4ad1-ba07-f3e5ba970794.png": "5425a17e7e63562dec82de2b302ffd6469827f4a158e6ee9453e9bf0388e78e3"
+      },
+      "raw_events_sha256": "e60568fb016c60c9c4c2eff9d299b9b0e0ef4f34317b0da2f3ff077be1b30002",
+      "raw_events_bytes": 62208,
+      "answer_sha256": "c94418e9135ee8cb37855eb72cabb6a494f250ab8c085ef894fc159657c55c06",
+      "command_receipts": 8,
+      "scope_review_flags": []
+    }
+  },
+  "assessors": {
+    "ab": {
+      "assigned_model": "gpt-6.2-sol",
+      "assigned_reasoning": "high",
+      "sandbox": "read-only",
+      "long_term_memory_feature": "disabled",
+      "signed_original_sha256": "d4b8c2db2ecffdab15db2ac6bf5cc1b40872e278f45dbd3fcde79099fdb8fe98",
+      "signed_output_recorded_utc": "2026-11-18T20:39:12+00:00",
+      "raw_events_sha256": "94e5c05453945fbb11ef5fceab64927e38969d24f8121aa59da965fafa0bf58f",
+      "initial_packet_sha256": "7e83c9c6c5293df52493d8dc6c8931be76186ff61e4110067f4fd113f4eeeb06",
+      "packet_files": 127,
+      "postrun_unchanged": true,
+      "public_code_to_work_product": {
+        "c4e863": "c4e863",
+        "8483d7": "8483d7",
+        "79f359": "79f359",
+        "581cd2": "581cd2"
+      },
+      "observed_activities": [
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc pwd",
+          "exit": 0,
+          "raw_event_sha256": "b807234d63ee2d09ef70fd3f141b83326792e9c7e6b17f304c9c227aea4f61e3"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"' -g '\"'!**/.git/**'\"'\"",
+          "exit": 0,
+          "raw_event_sha256": "0d69b37cb47f29f48cc7965ccfa60eb0dd06b0117dad6084cdb80ecb5086ac9c"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc 'wc -lc */actions.json */after/visits/*.json'",
+          "exit": 0,
+          "raw_event_sha256": "c3a62f3436727f192b35ca579538ee5829e42de163f0cf0035d06122cae70e3b"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc 'cat criteria.md'",
+          "exit": 0,
+          "raw_event_sha256": "8f39ee858c8673981edb4e9a50b8421dff6dd1ed3df8d2db4f5dccb58e300b2b"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"for f in 79f359/{task.md,answer.md,observer.json}; do rg -n '\"'^'\"' \\\"\"'$f\"; done'",
+          "exit": 0,
+          "raw_event_sha256": "814d27faaa896fdb45dca823939d46e7d9c20ba3cc002aeef46db8bdc225bdd5"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"for f in c4e863/{task.md,answer.md,observer.json}; do rg -n '\"'^'\"' \\\"\"'$f\"; done'",
+          "exit": 0,
+          "raw_event_sha256": "ee4f84fcb96455afdb2513e40b650676e9e6a16928da64141b98b471e1b310cd"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"for f in 581cd2/{task.md,answer.md,observer.json}; do rg -n '\"'^'\"' \\\"\"'$f\"; done'",
+          "exit": 0,
+          "raw_event_sha256": "6e7f0b6f452cc1f6352f84abf3300508213a8e8e737d69046f6c2dfccd9b5bd5"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"for f in 8483d7/{task.md,answer.md,observer.json}; do rg -n '\"'^'\"' \\\"\"'$f\"; done'",
+          "exit": 0,
+          "raw_event_sha256": "7552c38381e4b26f14742e7815311dfae385d63dd52a0de0fb005f62d213fea2"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"rg -n '\"'^'\"' 8483d7/{task.md,answer.md,actions.json}\"",
+          "exit": 0,
+          "raw_event_sha256": "653e815d8498d5a59a03a63e2abdf8134773f2ec9afd75b6ab646856db5e9aef"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"rg -n '\"'^'\"' c4e863/{task.md,answer.md,actions.json}\"",
+          "exit": 0,
+          "raw_event_sha256": "99db1b268e30c1e139fd3036d4f23d0b825513db8ac9876544f758f3e18bcf41"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"rg -n '\"'^'\"' 79f359/{task.md,answer.md,actions.json}\"",
+          "exit": 0,
+          "raw_event_sha256": "c78b4e4f687979c3f60aa09969105d94721136b7922072defbffe5fee468e466"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"rg -n '\"'^'\"' 581cd2/{task.md,answer.md,actions.json}\"",
+          "exit": 0,
+          "raw_event_sha256": "6354795741f3bc9586c203e70309289c59e7b8400b51232bcfc5dfa598df9185"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc 'cat 581cd2/before/BROWSER.md\nfind . -type l -print\nfind . -maxdepth 6 -type d -print'",
+          "exit": 0,
+          "raw_event_sha256": "07c2dfac59d60e77be6274dc5d4634e1f3db28a97f06bb02b39233483b733be4"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"for c in 581cd2 79f359 8483d7 c4e863; do printf '%s\\\\n' \\\"\"'$c\"; diff -qr \"$c/before\" \"$c/after\"; done'",
+          "exit": 1,
+          "raw_event_sha256": "420afad208e762c806b055678f30eb4ee7134d32e057840ae81ddb246c480ae1"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"python -B - <<'PY'\nimport json\nfrom pathlib import Path\nfor code in ['581cd2','79f359','8483d7','c4e863']:\n    source = Path(code)/'observer.json'\n    data=json.loads(source.read_text())\n    print(code, sorted(data))\n    print('  ', {k:v for k,v in data.items() if k not in {'executor_evidence','independent_screen_readback'}})\n    for title, visits in [('executor',data['executor_evidence']),('independent',[data['independent_screen_readback']])]:\n        for visit in visits:\n            print(f\\\"  {title} {visit.get('file','')} error={visit.get('driver_error')\"'!r}\")\n            for row in visit['\"'timeline']:\n                a, s = row['action'], row['screen']\n                d = (' | dialog: ' + ' '.join(s['dialog']).replace('\\\\n',' ')) if s['dialog'] else ''\n                statuses = [st.replace('\\\\n',' ') for st in s['status'] if st]\n                print('  ', ' '.join(str(v) for v in a.values()), f\\\"=> {s['email']\"'!r} {s['\"'frequency']} invalid={s['email_invalid']}\\\", ' | '.join(statuses), d)\nPY\"",
+          "exit": 0,
+          "raw_event_sha256": "65c91c072839f418fcb452f672c7bbc344e2a46950e8b27c94f637c4929f0996"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"python -B - <<'PY'\nfrom pathlib import Path\nimport re\nfor code in ('581cd2','79f359','8483d7','c4e863'):\n    p=Path(code)\n    doc=(p/'before'/'BROWSER.md').read_text()\n    print(code, 'browser docs', 'There is no network delivery or server account in this demo.' in doc)\n    js=next((p/'after'/'dist'/'assets').glob('*.js')).read_text()\n    start=js.rfind('notification settings')\n    for needle in ('Settings applied','Saved for this session. No email is sent.','Applying changes…','localStorage','sessionStorage', 'writeFile'):\n        print(repr(needle),js.count(needle))\n    i=js.index('Settings applied')\n    print(js[i-1200:i+620])\nPY\"",
+          "exit": 0,
+          "raw_event_sha256": "d22313ad47704ea945ed2479c010e0b28f1fd1f24570d6b4e1bd6766528748e3"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"python -B - <<'PY'\nimport hashlib, json, re\nfrom pathlib import Path\nfor code in ('581cd2','79f359','8483d7','c4e863'):\n    p=Path(code)\n    obs=json.loads((p/'observer.json').read_text())\n    actions=json.loads((p/'actions.json').read_text())\n    after=p/'after'\n    before=p/'before'\n    changed = {str(f.relative_to(after)) for f in after.rglob('*') if f.is_file() and (not (before/f.relative_to(after)).is_file() or f.read_bytes() \"'!= (before/f.relative_to(after)).read_bytes())}\n    removed = {str(f.relative_to(before)) for f in before.rglob('\"'*') if f.is_file() and not (after/f.relative_to(before)).is_file()}\n    print(code, 'changed matches',changed==set(actions['changed']),'removed',removed,'protected',obs['protected_input_changes'])\n    for visit in obs['executor_evidence']:\n        trace=after/visit['file']\n        png=trace.with_suffix('.png')\n        data=json.loads(trace.read_text())\n        if isinstance(data,dict):\n            print('json keys', sorted(data))\n            continue\n        print(trace.name, len(data), 'hashes', hashlib.sha256(trace.read_bytes()).hexdigest()==visit['trace_sha256'], hashlib.sha256(png.read_bytes()).hexdigest()==visit['chrome_screen_sha256'], 'actions', [r['action'] for r in data]==[r['action'] for r in visit['timeline']])\n        if trace.name.startswith(('bf215','a67be','71681','21309')):\n            for i,row in enumerate(data, start=0):\n                a=row['action'];s=row['state']\n                print(i,' '.join(map(str,a.values())), 'focus',s['focus'], 'dialog', bool(s['dialog']), 'status', [x for x in s['status'] if x])\nPY\"",
+          "exit": 0,
+          "raw_event_sha256": "99d4494f60e30f5d578146e2bb370b841148ee6e0572334afba79628355c0478"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"python -B - <<'PY'\nimport hashlib, json, re\nfrom pathlib import Path\nfor code in ('581cd2','79f359','8483d7','c4e863'):\n    p=Path(code)\n    obs=json.loads((p/'observer.json').read_text())\n    operations=json.loads((p/'actions.json').read_text())['operations']\n    requested=[json.loads(re.search(r'\\\\[\\\\{\\\"op\\\":.*?\\\\}\\\\]', op['command']).group(0)) for op in operations if 'node visit.mjs' in op['command']]\n    print(code)\n    for visit in obs['executor_evidence']:\n        trace=p/'after'/visit['file']\n        png=trace.with_suffix('.png')\n        data=json.loads(trace.read_text())\n        print(trace.name, len(data['timeline']), 'trace hash',hashlib.sha256(trace.read_bytes()).hexdigest()==visit['trace_sha256'],'png hash',hashlib.sha256(png.read_bytes()).hexdigest()==visit['chrome_screen_sha256']==data['screenSha256'],'same observed actions', [r['action'] for r in data['timeline']]==[r['action'] for r in visit['timeline']], 'recorded request', data['requested'] in requested,'error', data['error'])\n        if trace.name.startswith(('bf215','a67be','71681','21309')):\n            for i,(row, logged) in enumerate(zip(data['timeline'],visit['timeline']), start=0):\n                a=row['action'];s=row['state']\n                l=logged['screen']\n                fields={field['id']:field for field in s['fields']}\n                assert fields['email']['value']==l['email'] and fields['email']['invalid']==l['email_invalid']\n                assert fields[l['frequency']]['checked']=='true'\n                assert s['dialog']==l['dialog'] and s['status']==l['status'] and s['focus']==l['focus']\n                print(i,' '.join(map(str,a.values())), 'focus',s['focus'],'dialog', bool(s['dialog']), 'status', [v.replace('\\\\n',' ') for v in s['status'] if v])\nPY\"",
+          "exit": 1,
+          "raw_event_sha256": "9349f750beb2beb8942f11aeef0b3a4da06d52a3e2c7230fd0ffd7eabd275e9b"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"python -B - <<'PY'\nimport hashlib, json, re\nfrom pathlib import Path\nfor code in ('581cd2','79f359','8483d7','c4e863'):\n    p=Path(code)\n    obs=json.loads((p/'observer.json').read_text())\n    operations=json.loads((p/'actions.json').read_text())['operations']\n    requested=[]\n    for op in operations:\n        if 'node visit.mjs' in op['command']:\n            cmd=op['command'].replace(chr(92)+chr(34),chr(34))\n            m=re.search(r'\\\\[\\\\{\\\"op\\\":.*?\\\\}\\\\]',cmd)\n            if m: requested.append(json.loads(m.group()))\n    print(code)\n    for visit in obs['executor_evidence']:\n        trace=p/'after'/visit['file']\n        png=trace.with_suffix('.png')\n        data=json.loads(trace.read_text())\n        print(trace.name, len(data['timeline']), 'trace hash',hashlib.sha256(trace.read_bytes()).hexdigest()==visit['trace_sha256'],'png hash',hashlib.sha256(png.read_bytes()).hexdigest()==visit['chrome_screen_sha256']==data['screenSha256'],'same observed actions', [r['action'] for r in data['timeline']]==[r['action'] for r in visit['timeline']], 'recorded request', data['requested'] in requested,'error', data['error'])\n        if trace.name.startswith(('bf215','a67be','71681','21309')):\n            for i,(row, logged) in enumerate(zip(data['timeline'],visit['timeline']), start=0):\n                a=row['action'];s=row['state'];l=logged['screen']\n                fields={field['id']:field for field in s['fields']}\n                print(i,' '.join(map(str,a.values())), 'focus',s['focus'],'dialog', bool(s['dialog']), 'matching screen',fields['email']['value']==l['email'] and fields['email']['invalid']==l['email_invalid'] and fields[l['frequency']]['checked']=='true' and s['dialog']==l['dialog'] and s['status']==l['status'] and s['focus']==l['focus'])\nPY\"",
+          "exit": 0,
+          "raw_event_sha256": "bbfb8b5e1e5a15cb2d850587e2672c9ff0a0d8ed064ade60273425872ebd6b5a"
+        }
+      ]
+    },
+    "confirm": {
+      "assigned_model": "gpt-6.2-sol",
+      "assigned_reasoning": "high",
+      "sandbox": "read-only",
+      "long_term_memory_feature": "disabled",
+      "signed_original_sha256": "11fb968ff969143e536692d081f2409423b14f7aaf31c4b69f3eab2a1aaa3a2e",
+      "signed_output_recorded_utc": "2026-11-18T20:54:52+00:00",
+      "raw_events_sha256": "696cdc90d61fa14d07ef1d0ca311ff86e07a334f6138b721fe71f78508e082f0",
+      "initial_packet_sha256": "32de552b0454881bfcfb177b221be8c153e0f2db73639dbedea5a04ed5e97933",
+      "packet_files": 36,
+      "postrun_unchanged": true,
+      "public_code_to_work_product": {
+        "e02a9a": "e02a9a",
+        "14f409": "14f409",
+        "fc5728": "79f359",
+        "df38e0": "df38e0",
+        "0b5288": "0b5288",
+        "649e27": "649e27",
+        "6b277c": "8483d7"
+      },
+      "observed_activities": [
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+          "exit": 0,
+          "raw_event_sha256": "4e34b4790bcef5cac6b1e7f78f5d8d836ef1ca0b7c4610893e0fdd197570ae75"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc 'wc -lc */* criteria.md'",
+          "exit": 0,
+          "raw_event_sha256": "bd899313258b1b2fb3eecea21161b0d070d347ae4a22b2ae7786014ca0f310a4"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc 'cat criteria.md'",
+          "exit": 0,
+          "raw_event_sha256": "99f7e051c284ea920a33f4ec6268a244914e3ff098efaaa34368d82f65f05621"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"rg --files --hidden --no-ignore -g '\"'!.git'\"'\"",
+          "exit": 0,
+          "raw_event_sha256": "03e152c238da5033d0a807263250e24a77c96f977c7798c4cb1071886f138ffd"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc 'head -n 130 0b5288/screen.json'",
+          "exit": 0,
+          "raw_event_sha256": "c0de86085fe224f55c595b159aa3cb756db9be71cfd83241c733d7dc8d38eba0"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"for f in */before-after.json */actions.json; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+          "exit": 0,
+          "raw_event_sha256": "def8bcaaef38d3b2b2a5ddd8a87bd23b8984717d32228f5458168aa9fea20043"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"for f in */task.md */answer.md; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; nl -ba \"$f\"; done'",
+          "exit": 0,
+          "raw_event_sha256": "44d0600bded269079d8afa06630ffdfa0625f505b321c2edb38892958658af5b"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"for d in df38e0 e02a9a fc5728; do printf '\\\\n%s\\\\n' \\\"\"'$d\"; nl -ba \"$d/answer.md\"; done\nfor f in */before-after.json; do printf '\"'\\\\n%s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+          "exit": 0,
+          "raw_event_sha256": "0912d7cae70ff5d409f16e897a574ff386d82f19f2639df60793a6ccc4e5d8f0"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"python3 - <<'PY'\nimport json\nfrom pathlib import Path\nfor p in sorted(Path('.').glob('*/screen.json')):\n d=json.loads(p.read_text())\n print(p, list(d))\n for k,v in d.items():\n  if isinstance(v,dict): print(' ',k, list(v))\n  if isinstance(v,list): print(' ',k,len(v), [list(item) if isinstance(item,dict) else type(item).__name__ for item in v[:1]])\nPY\"",
+          "exit": 0,
+          "raw_event_sha256": "10e1dc4320e5b617d8f58993ae0e25f1e0378670d7969f6e6710efdc94e13484"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"python3 - <<'PY'\nimport json\nfrom pathlib import Path\nfor p in sorted(Path('.').glob('*/screen.json')):\n d=json.loads(p.read_text())\n print(p.parent, d['raw_event_identity'])\n for v in d['original_executor_visits']:\n  t=v['timeline']\n  print(' ',v['file'], len(t), 'DRIVER ERROR '+str(v['driver_error']) if v['driver_error'] else '', 'raw',len(v['observed_raw_event_sha256']))\n  print('  ', ' | '.join(' '.join(str(z) for z in e['action'].values()) for e in t))\n c=d['independent_control_of_returned_screen']\n print(' ',c['source'],len(c['timeline']))\n print('  ', ' | '.join(' '.join(str(z) for z in e['action'].values()) for e in c['timeline']))\nPY\"",
+          "exit": 0,
+          "raw_event_sha256": "0b5bd327e78bfa26cde0fec19989e0ce89a4f8d8a175cfa4173a53ba60891d8d"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"python3 - <<'PY'\nimport json,re\nfrom pathlib import Path\nmatches={'0b5288':['a9696b23','ce3e9736'],'6b277c':['a67beb3f'],'14f409':['f191063e','e15bfe7c'],'649e27':['d9cb4f56','e516421b','8de8c00b'],'df38e0':['8d43e1cf','0d56d316'],'e02a9a':['f788bf86','68c6e8ff'],'fc5728':['71681353','5f2150e5']}\nfor p in sorted(Path('.').glob('*/screen.json')):\n d=json.loads(p.read_text())\n print('\\\\n',p)\n for v in d['original_executor_visits']+[d['independent_control_of_returned_screen']]:\n  name=v.get('file','independent')\n  if name\"'!='\"'independent' and not any(s in name for s in matches[p.parent.name]): continue\n  print(name)\n  for i,e in enumerate(v['timeline'],1):\n   a,s=e['action'], e['screen']\n   msg=' '.join(s.get('status',[])).replace('\\\\n',' ').strip()\n   dia=' '.join(s.get('dialog',[])).replace('\\\\n',' ').strip()\n   dia=dia.replace('Review your changes  Confirm to apply these notification settings for this session.  Email address ','').replace(' Email notifications On Delivery frequency ','/').replace(' Cancel Confirm',' (review)').replace(' Cancel Applying…',' (Applying…)')\n   if s.get('email_invalid')=='true': msg='INVALID '+msg\n   print(i,' '.join(str(z) for z in a.values()),'|',s.get('email'),s.get('frequency'),s.get('notifications'),'|',dia,'|',msg,'|',s.get('focus'))\nPY\"",
+          "exit": 0,
+          "raw_event_sha256": "b786d83b8abddc0a7f23b216470cd05362f84a9abfa48e7561ad688a81b682f2"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"rg -n 'visits/(a9696b23|a67beb3f|f191063e|d9cb4f56|e516421b|c353f15c|8d43e1cf|0d56d316|f788bf86|68c6e8ff|71681353)|independent_control_of_returned_screen' */screen.json\nnl -ba criteria.md\"",
+          "exit": 0,
+          "raw_event_sha256": "b175fd2c11e9359f5f857da90bf8f5f71bf6e06c7c1c97ab0816ac6df1624ccd"
+        },
+        {
+          "tool": "command_execution",
+          "activity": "/bin/bash -lc \"python3 - <<'PY'\nimport json,re\nfrom pathlib import Path\nfor p in sorted(Path('.').glob('*/screen.json')):\n d=json.loads(p.read_text())\n answer=p.with_name('answer.md').read_text()\n actions=json.loads(p.with_name('actions.json').read_text())['shell_operations_in_order']\n inventory=json.loads(p.with_name('before-after.json').read_text())\n found={Path(v['file']).stem for v in d['original_executor_visits']}\n referenced=set(re.findall(r'visits/([a-z0-9-]+)[.]',answer))\n print(p.parent, 'unmatched cited visit IDs:', sorted(referenced-found), 'operations:',len(actions), 'guidance read:',any(o['activity']=='read assigned guidance' and o['exit']==0 for o in actions),'same app:',inventory['app_after_sha256']==inventory['app_before_sha256'],'static:',inventory['unchanged_static_app_files'],'files/modes:',inventory['unchanged_supplied_files_and_modes'])\n invalid=[(v['file'],i) for v in d['original_executor_visits'] for i,ev in enumerate(v['timeline'],1) if ev['screen'].get('email_invalid')=='true']\n print(' field validation error in own visits:',invalid)\nPY\"",
+          "exit": 0,
+          "raw_event_sha256": "faebc1b80ace5a719d6fd8a7f6c376780e4bc8ed341d02dc1299ceed1af3434e"
+        }
+      ]
+    }
+  },
+  "browser_archive_sha256": "8f6e1f9fdf1512994019b294ae1a7a977157a6eeca4b643f97438994ddc77ff0",
+  "reference_bundle": "Original executor visits and PNGs are indexed by public result code. Author probes have a distinct author-references/ prefix."
+}

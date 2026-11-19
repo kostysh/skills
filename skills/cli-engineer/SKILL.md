@@ -5,9 +5,9 @@ description: Design, review, implement, verify, package, and release
   node:test, command/help/output/error contracts, prompts, terminal UI,
   installability, service-backed commands, and release readiness.
 metadata:
-  source-version: 0.2.1
+  source-version: 0.2.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 11d5db9f414321af49bba1b5623efda81e15daabac81cb82f1bdf82a576dab5b
+  skillforge-source-hash: 7551671c6196e88c5a3719364287072b509acee62d2ae4a12c4ea032e2aa6110
 ---
 
 # cli-engineer
@@ -155,7 +155,7 @@ Validation:
 
 ## Gotchas
 
-- **high** — A Vite build, package scripts, green tests, help output, mock, or stub proves only its exercised boundary; none alone proves the representative installed CLI job or real service integration.
+- **high** — Verify the user’s job through the installed CLI.
 - **high** — A request to prepare, review, configure, or make a CLI release-ready does not authorize npm publication, Git tags or pushes, GitHub releases, or trusted-publisher configuration.
 - **high** — Never hardcode a remembered Node LTS major as this skill's permanent baseline; resolve the current Active LTS and version-specific TypeScript/Vite behavior from official sources when the task runs.
 - **high** — An ordinary CLI fix is not a tooling migration. Do not replace a working test command or rewrite compatible syntax merely to satisfy a new-project default.

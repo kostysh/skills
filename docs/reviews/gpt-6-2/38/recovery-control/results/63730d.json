@@ -1,0 +1,179 @@
+{
+  "variant": "D",
+  "case": "holdout",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПримени ./SKILL.md. Закрытый случай по смене находится в archive/. Владелец просит короткую целевую ретроспективу: что произошло на этой поставке, решена ли причина прежним исправлением и появился ли обоснованный остаток работы. Временное локальное повторение разрешено. Пиши в ответе. Не изменяй архив и не открывай задачи.\n",
+  "input_file_sha256": {
+    "SKILL.md": "1dddd58af37548cdd35aab880396980b717f913d1738d46ac041a79430dc7957",
+    "agents/openai.yaml": "128427295b4582ee3cb92628c9a3819c5a30388d5683ddd35c5f27be94b21628",
+    "archive/closed-case.md": "015e519e10cb0fcdca540f63ef426f0331c2689c9859598720c3b8d097a49293",
+    "archive/deployment.json": "66669506d0bcc94cfa837901ea8c91fba1b6da59a31946a487ee3bbb87c05be4",
+    "archive/desk.bundle": "850b1bcdf1636b07403ef6303d2b1a4fd5a3fe0d6ffe6b691bf88a2d0a12f74c",
+    "archive/field-observation.json": "cd27fe8141dd3c0e43e8153473f920a3b592fbe58a94a8cb4fd79306a24d094a",
+    "archive/previous-fix.md": "9554137e04a799eb7262401ab190bbf708c4b21ee61d1fe08833e4edd5ab51b1",
+    "archive/sample.json": "29127f58b91c2d5ca7957ade2fb79bf5fb8045956d0674a77301d26fc9345ae8",
+    "references/evidence-and-causality.md": "0ff3075860dc209f176707e57210da5611bc19caf1c5be63f4b84838fe9305ea",
+    "references/report-and-remediation-plan.md": "d98566427d46d640efbbda92d8f3f541217e3d4862f36b41cadb8672b5e33424",
+    "references/task-routing.md": "4f43a46f0074542fe6d0703d9777461ce1cfbc041e6a4ee05569a3bb061f31c0"
+  },
+  "raw_events_sha256": "300eccadbae525ff4b21ad953c6691568b0f9e402a8c788e224ffa2ca7dfce91",
+  "raw_events_bytes": 57001,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Применяю локальный `SKILL.md`. Сверю материалы закрытого случая и проверю, что они подтверждают о причине, прежнем исправлении и возможном остатке работы."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"' --sort path\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat ./SKILL.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat references/evidence-and-causality.md references/report-and-remediation-plan.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat archive/closed-case.md archive/deployment.json archive/field-observation.json archive/previous-fix.md archive/sample.json'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'git bundle list-heads archive/desk.bundle && ls -la'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nfrom tempfile import TemporaryDirectory\nimport subprocess\narchive = Path.cwd() / 'archive'\nwith TemporaryDirectory(dir=Path.cwd(), prefix='.retro-') as temp:\n    repo = Path(temp) / 'repo'\n    subprocess.run(['git', 'clone', '--quiet', str(archive / 'desk.bundle'), str(repo)], check=True)\n    for args in [\n        ['log','--all','--graph','--decorate','--oneline'],\n        ['show','--format=fuller','recorded-fix'],\n        ['ls-tree','-r','--name-only','HEAD'],\n        ['show','HEAD:desk.mjs'],\n        ['diff','recorded-fix','HEAD'],\n        ['merge-base','--is-ancestor','recorded-fix','HEAD'],\n    ]:\n        print(args, flush=True)\n        print('exit', subprocess.run(['git', '-C', str(repo), *args]).returncode, flush=True)\nPY\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nfrom tempfile import TemporaryDirectory\nimport json\nimport subprocess\narchive = Path.cwd() / 'archive'\nrelease = json.loads((archive / 'deployment.json').read_text())['releasedCommit']\nexpected_after = json.loads((archive / 'field-observation.json').read_text())['afterWriter']\nwith TemporaryDirectory(dir=Path.cwd(), prefix='.retro-') as temp:\n    work = Path(temp)\n    repo = work / 'repo'\n    subprocess.run(['git', 'clone', '--quiet', str(archive / 'desk.bundle'), str(repo)], check=True)\n    print(subprocess.check_output(['git','-C',str(repo),'log','--all','--format=%h %p %s'], text=True), end='')\n    for label, rev in [('before', 'recorded-fix\"'^'\"'), ('fix', 'recorded-fix'), ('release', release)]:\n        run_dir = work / label\n        run_dir.mkdir()\n        journal = run_dir / 'sample.json'\n        journal.write_bytes((archive / 'sample.json').read_bytes())\n        (run_dir / 'desk.mjs').write_bytes(subprocess.check_output(['git','-C',str(repo),'show',rev+':desk.mjs']))\n        print(label)\n        for args in [['list'], ['mark','D7'], ['list']]:\n            result = subprocess.run(['node','desk.mjs','sample.json',*args], cwd=run_dir, capture_output=True, text=True, check=True)\n            print(args, repr(result.stdout))\n            if args[0] == 'mark':\n                rows = json.loads(journal.read_text())\n                print('disk', rows)\n                if label == 'release':\n                    assert rows == expected_after\nPY\nrg --files --hidden -g '\"'!.git'\"' --sort path\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nfrom tempfile import TemporaryDirectory\nimport json\nimport subprocess\n\narchive = Path.cwd() / 'archive'\nwith TemporaryDirectory(dir=Path.cwd(), prefix='.retro-') as temp:\n    work = Path(temp)\n    repo = work / 'repo'\n    subprocess.run(['git', 'clone', '--quiet', str(archive / 'desk.bundle'), str(repo)], check=True)\n    source = (repo / 'desk.mjs').read_text()\n    assert source.count('Boolean(row.quiet)') == 1\n    (work / 'desk.mjs').write_text(source.replace('Boolean(row.quiet)', 'Boolean(row.flagged)'))\n    journal = work / 'sample.json'\n    journal.write_bytes((archive / 'sample.json').read_bytes())\n    for args, expected in [(['list'], '[\\\"D8\\\"]'), (['mark','D7'], 'D7'), (['list'], '[\\\"D7\\\",\\\"D8\\\"]')]:\n        output = subprocess.check_output(['node', 'desk.mjs', 'sample.json', *args], cwd=work, text=True).strip()\n        assert output == expected, (args, output)\n    assert {r['code']: r['flagged'] for r in json.loads(journal.read_text())} == {'D7': True, 'D8': True}\n    print('Reader correction preserved D8 and exposed both D7 and D8 across separate processes.')\nPY\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "На участке «Луг» прежнее исправление вошло в поставку `26ce90e`, но в этой же поставке появилась регрессия чтения. Остаток работы подтверждён локальным повторением.\n\n- **Что произошло.** `mark D7` записал `flagged: true` для D7 и затёр прежнюю отметку D8. Затем `list` в новом процессе вернул `[]`. В `26ce90e` чтение берёт значение из `quiet`, хотя запись сохраняет его в `flagged`. Локальный прогон на архивном образце повторил и содержимое файла, и пустой список. [Поставка]({project}/archive/deployment.json) · [Наблюдение]({project}/archive/field-observation.json)\n- **Что исправили раньше.** `recorded-fix` (`4a70cd2`) устранил потерю поля `flagged` при записи. На этой ревизии тот же прогон показал D7 и D8 после перезапуска. Патч записи сохранился в поставке. Причина изменения чтения, момент обнаружения и охват других установок по архиву неизвестны. [История и патчи]({project}/archive/desk.bundle) · [Запись об исправлении]({project}/archive/previous-fix.md)\n- **Что осталось.** Сопровождающему журнала нужно восстановить чтение `flagged` и проверить установленную сборку на копии журнала с уже отмеченной D8. После `mark D7` новый процесс должен показать обе карточки, а файл должен сохранить обе отметки. Временная правка чтения прошла эту проверку. Возможность восстановить уже затёртые отметки архив не подтверждает. [Исходный образец]({project}/archive/sample.json)"
+    }
+  ],
+  "changed_file_contents": {},
+  "final_response": "На участке «Луг» прежнее исправление вошло в поставку `26ce90e`, но в этой же поставке появилась регрессия чтения. Остаток работы подтверждён локальным повторением.\n\n- **Что произошло.** `mark D7` записал `flagged: true` для D7 и затёр прежнюю отметку D8. Затем `list` в новом процессе вернул `[]`. В `26ce90e` чтение берёт значение из `quiet`, хотя запись сохраняет его в `flagged`. Локальный прогон на архивном образце повторил и содержимое файла, и пустой список. [Поставка]({project}/archive/deployment.json) · [Наблюдение]({project}/archive/field-observation.json)\n- **Что исправили раньше.** `recorded-fix` (`4a70cd2`) устранил потерю поля `flagged` при записи. На этой ревизии тот же прогон показал D7 и D8 после перезапуска. Патч записи сохранился в поставке. Причина изменения чтения, момент обнаружения и охват других установок по архиву неизвестны. [История и патчи]({project}/archive/desk.bundle) · [Запись об исправлении]({project}/archive/previous-fix.md)\n- **Что осталось.** Сопровождающему журнала нужно восстановить чтение `flagged` и проверить установленную сборку на копии журнала с уже отмеченной D8. После `mark D7` новый процесс должен показать обе карточки, а файл должен сохранить обе отметки. Временная правка чтения прошла эту проверку. Возможность восстановить уже затёртые отметки архив не подтверждает. [Исходный образец]({project}/archive/sample.json)",
+  "input_file_modes": {
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "archive/closed-case.md": "0664",
+    "archive/deployment.json": "0664",
+    "archive/desk.bundle": "0664",
+    "archive/field-observation.json": "0664",
+    "archive/previous-fix.md": "0664",
+    "archive/sample.json": "0664",
+    "references/evidence-and-causality.md": "0644",
+    "references/report-and-remediation-plan.md": "0644",
+    "references/task-routing.md": "0644"
+  },
+  "changed_file_modes": {},
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "originalInputHashAndModesPreserved": true,
+    "operatorSeparateRunOnSameRelease": {
+      "packagedRevision": "26ce90e497512fee1856ca435a64a791b0bebd3f",
+      "commandsInSeparateProcesses": [
+        {
+          "cmd": [
+            "node",
+            "desk.mjs",
+            "sample.json",
+            "mark",
+            "D7"
+          ],
+          "status": 0,
+          "stdout": "D7\n",
+          "stderr": ""
+        },
+        {
+          "cmd": [
+            "node",
+            "desk.mjs",
+            "sample.json",
+            "list"
+          ],
+          "status": 0,
+          "stdout": "[]\n",
+          "stderr": ""
+        }
+      ],
+      "afterWriter": [
+        {
+          "code": "D7",
+          "title": "Alpha",
+          "flagged": true
+        },
+        {
+          "code": "D8",
+          "title": "Beta",
+          "flagged": false
+        }
+      ]
+    },
+    "participantHistory": [
+      {
+        "event": "item_4",
+        "exit": 0,
+        "command": "/bin/bash -lc 'cat archive/closed-case.md archive/deployment.json archive/field-observation.json archive/previous-fix.md archive/sample.json'",
+        "observation": "Архивный участок «Луг». Пользователь локального журнала ранее отмечал D7 и после завершения приложения снова открывал ту же картотеку. Требование — видеть D7 и ранее отмеченную D8. Заявка о потере отметок имеет статус «закрыта». Проверяемое время и конкретный установленный коммит приведены в deployment.json. Разрешена только ретроспектива, воспроизведение в своей расходной папке и краткий вывод для владельца.\n{\n  \"desk\": \"\\u041b\\u0443\\u0433\",\n  \"releasedCommit\": \"26ce90e497512fee1856ca435a64a791b0bebd3f\",\n  \"installation\": \"local journal on this desk\",\n  \"procedure\": \"node desk.mjs <existing-json> mark D7 followed by a new process: node desk.mjs <same-json> list\"\n}\n{\n  \"packagedRevision\": \"26ce90e497512fee1856ca435a64a791b0bebd3f\",\n  \"commandsInSeparateProcesses\": [\n    {\n      \"cmd\": [\n        \"node\",\n        \"desk.mjs\",\n        \"sample.json\",\n        \"mark\",\n        \"D7\"\n      ],\n      \"status\": 0,\n      \"stdout\": \"D7\\n\",\n      \"stderr\": \"\"\n    },\n    {\n      \"cmd\": [\n        \"node\",\n        \"desk.mjs\",\n        \"sample.json\",\n        \"list\"\n      ],\n      \"status\": 0,\n      \"stdout\": \"[]\\n\",\n      \"stderr\": \"\"\n    }\n  ],\n  \"afterWriter\": [\n    {\n      \"code\": \"D7\",\n      \"title\": \"Alpha\",\n      \"flagged\": true\n    },\n    {\n      \"code\": \"D8\",\n      \"title\": \"Beta\",\n      \"flagged\": false\n    }\n  ]\n}\nВ смежной работе ранее исправляли сохранение признака flagged и поставили ссылку recorded-fix. Сопроводительная запись в трекере говорит «исправление готово отдать всем сменам». Участники не приложили запись раскатки. Фактическое дерево, родители и патч доступны в локальном Git bundle. Причина действий людей или охват других установок неизвестны.\n[{\"code\": \"D7\", \"title\": \"Alpha\", \"flagged\": false}, {\"code\": \"D8\", \"title\": \"Beta\", \"flagged\": true}]\n",
+        "eventSHA256": "77da13a542b73017361caf2cdbb6518e2cb9f847f8046a4cf9a489df640a80cf"
+      },
+      {
+        "event": "item_5",
+        "exit": 0,
+        "command": "/bin/bash -lc 'git bundle list-heads archive/desk.bundle && ls -la'",
+        "observation": "26ce90e497512fee1856ca435a64a791b0bebd3f refs/heads/maintenance\n4a70cd28ae978987d06d4f64e75e66aa21706f22 refs/tags/recorded-fix\n26ce90e497512fee1856ca435a64a791b0bebd3f HEAD\ntotal 20\ndrwxrwxr-x    9 kostysh kostysh   200 Nov 19 01:11 .\ndrwxrwxrwt 2100 nobody  nogroup 73840 Nov 19 01:11 ..\ndr-xr-xr-x    2 kostysh kostysh    40 Nov 19 01:11 .agents\ndr-xr-xr-x    2 kostysh kostysh    40 Nov 19 01:11 .aws\ndr-xr-xr-x    2 kostysh kostysh    40 Nov 19 01:11 .codex\ndr-xr-xr-x    2 kostysh kostysh    40 Nov 19 01:11 .git\n-rw-r--r--    1 kostysh kostysh 16906 Nov 19 01:10 SKILL.md\ndrwxrwxr-x    2 kostysh kostysh    60 Nov 19 00:21 agents\ndrwxrwxr-x    2 kostysh kostysh   160 Nov 19 00:21 archive\ndrwxrwxr-x    2 kostysh kostysh   100 Nov 19 00:21 references\n",
+        "eventSHA256": "114cb5bcd4612958e695c181bdd8a4951a0bde6ae1114456ea768a92f0990bba"
+      },
+      {
+        "event": "item_6",
+        "exit": 0,
+        "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nfrom tempfile import TemporaryDirectory\nimport subprocess\narchive = Path.cwd() / 'archive'\nwith TemporaryDirectory(dir=Path.cwd(), prefix='.retro-') as temp:\n    repo = Path(temp) / 'repo'\n    subprocess.run(['git', 'clone', '--quiet', str(archive / 'desk.bundle'), str(repo)], check=True)\n    for args in [\n        ['log','--all','--graph','--decorate','--oneline'],\n        ['show','--format=fuller','recorded-fix'],\n        ['ls-tree','-r','--name-only','HEAD'],\n        ['show','HEAD:desk.mjs'],\n        ['diff','recorded-fix','HEAD'],\n        ['merge-base','--is-ancestor','recorded-fix','HEAD'],\n    ]:\n        print(args, flush=True)\n        print('exit', subprocess.run(['git', '-C', str(repo), *args]).returncode, flush=True)\nPY\"",
+        "observation": "['log', '--all', '--graph', '--decorate', '--oneline']\n* 26ce90e (HEAD -> maintenance, origin/maintenance, origin/HEAD) Map archived cards in the current reader\n* 4a70cd2 (tag: recorded-fix) Persist the flag in the existing journal\n* 3a9ea9b Add the local desk journal\nexit 0\n['show', '--format=fuller', 'recorded-fix']\ncommit 4a70cd28ae978987d06d4f64e75e66aa21706f22\nAuthor:     Archive caretaker <lab@example.invalid>\nAuthorDate: Fri Oct 2 09:00:00 2026 +0000\nCommit:     Archive caretaker <lab@example.invalid>\nCommitDate: Fri Oct 2 09:00:00 2026 +0000\n\n    Persist the flag in the existing journal\n\ndiff --git a/desk.mjs b/desk.mjs\nindex 853e6e1..3dad71e 100644\n--- a/desk.mjs\n+++ b/desk.mjs\n@@ -1,7 +1,7 @@\n import {readFileSync,writeFileSync} from 'node:fs';\n const [file,command,code]=process.argv.slice(2);\n const load=path=>JSON.parse(readFileSync(path,'utf8')).map(row=>({...row,flagged:Boolean(row.flagged)}));\n-const save=(path,rows)=>writeFileSync(path,JSON.stringify(rows.map(({code,title})=>({code,title}))));\n+const save=(path,rows)=>writeFileSync(path,JSON.stringify(rows.map(({code,title,flagged})=>({code,title,flagged}))));\n const rows=load(file);\n if(command==='mark'){const item=rows.find(r=>r.code===code);if(!item)throw Error('Unknown card');item.flagged=true;save(file,rows);console.log(item.code)}\n else if(command==='list')console.log(JSON.stringify(rows.filter(x=>x.flagged).map(x=>x.code)));\nexit 0\n['ls-tree', '-r', '--name-only', 'HEAD']\ndesk.mjs\nexit 0\n['show', 'HEAD:desk.mjs']\nimport {readFileSync,writeFileSync} from 'node:fs';\nconst [file,command,code]=process.argv.slice(2);\nconst load=path=>JSON.parse(readFileSync(path,'utf8')).map(row=>({...row,flagged:Boolean(row.quiet)}));\nconst save=(path,rows)=>writeFileSync(path,JSON.stringify(rows.map(({code,title,flagged})=>({code,title,flagged}))));\nconst rows=load(file);\nif(command==='mark'){const item=rows.find(r=>r.code===code);if(!item)throw Error('Unknown card');item.flagged=true;save(file,rows);console.log(item.code)}\nelse if(command==='list')console.log(JSON.stringify(rows.filter(x=>x.flagged).map(x=>x.code)));\nelse throw Error('Unknown operation');\nexit 0\n['diff', 'recorded-fix', 'HEAD']\ndiff --git a/desk.mjs b/desk.mjs\nindex 3dad71e..f649508 100644\n--- a/desk.mjs\n+++ b/desk.mjs\n@@ -1,6 +1,6 @@\n import {readFileSync,writeFileSync} from 'node:fs';\n const [file,command,code]=process.argv.slice(2);\n-const load=path=>JSON.parse(readFileSync(path,'utf8')).map(row=>({...row,flagged:Boolean(row.flagged)}));\n+const load=path=>JSON.parse(readFileSync(path,'utf8')).map(row=>({...row,flagged:Boolean(row.quiet)}));\n const save=(path,rows)=>writeFileSync(path,JSON.stringify(rows.map(({code,title,flagged})=>({code,title,flagged}))));\n const rows=load(file);\n if(command==='mark'){const item=rows.find(r=>r.code===code);if(!item)throw Error('Unknown card');item.flagged=true;save(file,rows);console.log(item.code)}\nexit 0\n['merge-base', '--is-ancestor', 'recorded-fix', 'HEAD']\nexit 0\n",
+        "eventSHA256": "13af8611215c8e3398a920af8805689a85e99e37a5981263d5e1b8ead985fcc9"
+      },
+      {
+        "event": "item_7",
+        "exit": 0,
+        "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nfrom tempfile import TemporaryDirectory\nimport json\nimport subprocess\narchive = Path.cwd() / 'archive'\nrelease = json.loads((archive / 'deployment.json').read_text())['releasedCommit']\nexpected_after = json.loads((archive / 'field-observation.json').read_text())['afterWriter']\nwith TemporaryDirectory(dir=Path.cwd(), prefix='.retro-') as temp:\n    work = Path(temp)\n    repo = work / 'repo'\n    subprocess.run(['git', 'clone', '--quiet', str(archive / 'desk.bundle'), str(repo)], check=True)\n    print(subprocess.check_output(['git','-C',str(repo),'log','--all','--format=%h %p %s'], text=True), end='')\n    for label, rev in [('before', 'recorded-fix\"'^'\"'), ('fix', 'recorded-fix'), ('release', release)]:\n        run_dir = work / label\n        run_dir.mkdir()\n        journal = run_dir / 'sample.json'\n        journal.write_bytes((archive / 'sample.json').read_bytes())\n        (run_dir / 'desk.mjs').write_bytes(subprocess.check_output(['git','-C',str(repo),'show',rev+':desk.mjs']))\n        print(label)\n        for args in [['list'], ['mark','D7'], ['list']]:\n            result = subprocess.run(['node','desk.mjs','sample.json',*args], cwd=run_dir, capture_output=True, text=True, check=True)\n            print(args, repr(result.stdout))\n            if args[0] == 'mark':\n                rows = json.loads(journal.read_text())\n                print('disk', rows)\n                if label == 'release':\n                    assert rows == expected_after\nPY\nrg --files --hidden -g '\"'!.git'\"' --sort path\"",
+        "observation": "26ce90e 4a70cd2 Map archived cards in the current reader\n4a70cd2 3a9ea9b Persist the flag in the existing journal\n3a9ea9b  Add the local desk journal\nbefore\n['list'] '[\"D8\"]\\n'\n['mark', 'D7'] 'D7\\n'\ndisk [{'code': 'D7', 'title': 'Alpha'}, {'code': 'D8', 'title': 'Beta'}]\n['list'] '[]\\n'\nfix\n['list'] '[\"D8\"]\\n'\n['mark', 'D7'] 'D7\\n'\ndisk [{'code': 'D7', 'title': 'Alpha', 'flagged': True}, {'code': 'D8', 'title': 'Beta', 'flagged': True}]\n['list'] '[\"D7\",\"D8\"]\\n'\nrelease\n['list'] '[]\\n'\n['mark', 'D7'] 'D7\\n'\ndisk [{'code': 'D7', 'title': 'Alpha', 'flagged': True}, {'code': 'D8', 'title': 'Beta', 'flagged': False}]\n['list'] '[]\\n'\nSKILL.md\nagents/openai.yaml\narchive/closed-case.md\narchive/deployment.json\narchive/desk.bundle\narchive/field-observation.json\narchive/previous-fix.md\narchive/sample.json\nreferences/evidence-and-causality.md\nreferences/report-and-remediation-plan.md\nreferences/task-routing.md\n",
+        "eventSHA256": "0a89a63e3e0743b0b30def0715ed096b6a8f5e1b07c811e0bc38712fc3f7c5ca"
+      },
+      {
+        "event": "item_8",
+        "exit": 0,
+        "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nfrom tempfile import TemporaryDirectory\nimport json\nimport subprocess\n\narchive = Path.cwd() / 'archive'\nwith TemporaryDirectory(dir=Path.cwd(), prefix='.retro-') as temp:\n    work = Path(temp)\n    repo = work / 'repo'\n    subprocess.run(['git', 'clone', '--quiet', str(archive / 'desk.bundle'), str(repo)], check=True)\n    source = (repo / 'desk.mjs').read_text()\n    assert source.count('Boolean(row.quiet)') == 1\n    (work / 'desk.mjs').write_text(source.replace('Boolean(row.quiet)', 'Boolean(row.flagged)'))\n    journal = work / 'sample.json'\n    journal.write_bytes((archive / 'sample.json').read_bytes())\n    for args, expected in [(['list'], '[\\\"D8\\\"]'), (['mark','D7'], 'D7'), (['list'], '[\\\"D7\\\",\\\"D8\\\"]')]:\n        output = subprocess.check_output(['node', 'desk.mjs', 'sample.json', *args], cwd=work, text=True).strip()\n        assert output == expected, (args, output)\n    assert {r['code']: r['flagged'] for r in json.loads(journal.read_text())} == {'D7': True, 'D8': True}\n    print('Reader correction preserved D8 and exposed both D7 and D8 across separate processes.')\nPY\"",
+        "observation": "Reader correction preserved D8 and exposed both D7 and D8 across separate processes.\n",
+        "eventSHA256": "9d830a73a51b043deb6868fd4d678388fa4a6ea2ccb37264d6656b78f195ca8b"
+      }
+    ]
+  }
+}

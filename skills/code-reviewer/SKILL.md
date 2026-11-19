@@ -5,9 +5,9 @@ description: Perform read-only review of PRs, diffs, and local branch changes.
   or lightweight intent alignment, and provide evidence-backed merge guidance
   with stable scope, severity, and findings; pair with relevant domain skills.
 metadata:
-  source-version: 0.4.6
+  source-version: 0.4.7
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 51c479059eb6483e48d5c5c9f357d1603412809b849ae62d47675c25a5381a46
+  skillforge-source-hash: 5b8364ba2966bb2ba54bfb4fb5f5b0e336430089710d8680102e03952029204c
 ---
 
 # code-reviewer
@@ -63,7 +63,7 @@ The mode determines which passes apply; common snapshot, read-only, evidence, an
 
 - Read `references/diff-completeness.md`, `references/findings-format.md`, and `references/severity-confidence.md` on every review. Other references are required only when their triggers match.
 - Keep review read-only. If the user also requests fixes, treat implementation as a separate phase and mark the review stale after any mutation.
-- Account for the full requested scope. For diff review, recover truncated hunks from the files when possible; list unavailable files explicitly and retain supported partial findings under `limited`.
+- Review available changes and name any coverage gaps.
 - Separate report scope from research scope:
   - report only on the diff or files under review
   - research the wider codebase when needed to confirm or clear a concern

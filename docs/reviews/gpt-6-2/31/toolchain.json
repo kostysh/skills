@@ -1,0 +1,169 @@
+{
+  "node": {
+    "argv": [
+      "node",
+      "--version"
+    ],
+    "stdout": "v24.15.0",
+    "stderr": "",
+    "exit": 0
+  },
+  "npm": {
+    "argv": [
+      "npm",
+      "--version"
+    ],
+    "stdout": "12.0.1",
+    "stderr": "",
+    "exit": 0
+  },
+  "pnpm": {
+    "argv": [
+      "corepack",
+      "pnpm@10.28.2",
+      "--version"
+    ],
+    "stdout": "10.28.2",
+    "stderr": "",
+    "exit": 0
+  },
+  "scaffold": {
+    "argv": [
+      "corepack",
+      "pnpm@10.28.2",
+      "create",
+      "docusaurus@3.10.2",
+      "generated-site",
+      "classic",
+      "--typescript",
+      "--skip-install"
+    ],
+    "exit": 0,
+    "packageManager": null,
+    "packageJSON": {
+      "name": "generated-site",
+      "version": "0.0.0",
+      "private": true,
+      "scripts": {
+        "docusaurus": "docusaurus",
+        "start": "docusaurus start",
+        "build": "docusaurus build",
+        "swizzle": "docusaurus swizzle",
+        "deploy": "docusaurus deploy",
+        "clear": "docusaurus clear",
+        "serve": "docusaurus serve",
+        "write-translations": "docusaurus write-translations",
+        "write-heading-ids": "docusaurus write-heading-ids",
+        "typecheck": "tsc"
+      },
+      "dependencies": {
+        "@docusaurus/core": "3.10.2",
+        "@docusaurus/faster": "3.10.2",
+        "@docusaurus/preset-classic": "3.10.2",
+        "@mdx-js/react": "^3.0.0",
+        "clsx": "^2.0.0",
+        "prism-react-renderer": "^2.3.0",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0"
+      },
+      "devDependencies": {
+        "@docusaurus/module-type-aliases": "3.10.2",
+        "@docusaurus/tsconfig": "3.10.2",
+        "@docusaurus/types": "3.10.2",
+        "@types/react": "^19.0.0",
+        "typescript": "~6.0.2"
+      },
+      "browserslist": {
+        "production": [
+          ">0.5%",
+          "not dead",
+          "not op_mini all"
+        ],
+        "development": [
+          "last 3 chrome version",
+          "last 3 firefox version",
+          "last 5 safari version"
+        ]
+      },
+      "engines": {
+        "node": ">=20.0"
+      }
+    },
+    "configSHA256": "18ac0769117ff8182a0c8877ec4bf6cc8de26d0e0e79191c33fcff2e49bd6349",
+    "sidebarSHA256": "b0cf84ea3e256d0643f8db9c8ebfdc978fcee8258ed2e7a0e811deac5c5df47b",
+    "futureV4": true,
+    "exampleMDX": [
+      "docs/intro.mdx",
+      "docs/tutorial-basics/congratulations.mdx",
+      "docs/tutorial-basics/create-a-blog-post.mdx",
+      "docs/tutorial-basics/create-a-document.mdx",
+      "docs/tutorial-basics/create-a-page.mdx",
+      "docs/tutorial-basics/deploy-your-site.mdx",
+      "docs/tutorial-basics/markdown-features.mdx",
+      "docs/tutorial-extras/manage-docs-versions.mdx",
+      "docs/tutorial-extras/translate-your-site.mdx"
+    ],
+    "existingComponents": [
+      "src/pages/index.module.css",
+      "src/pages/index.tsx",
+      "src/pages/markdown-page.mdx"
+    ]
+  },
+  "lockVerifiedInstalled": {
+    "@docusaurus/core": "3.10.2",
+    "@docusaurus/preset-classic": "3.10.2",
+    "@docusaurus/plugin-content-docs": "3.10.2",
+    "@docusaurus/plugin-content-pages": "3.10.2",
+    "@docusaurus/theme-classic": "3.10.2",
+    "@docusaurus/theme-search-algolia": "3.10.2",
+    "@mdx-js/react": "3.1.1",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "lockSHA256": "883e39c0d13d4d254835bd4b746c323e8f15afc255bfc4492f62f711c233015a",
+  "commands": {
+    "version": {
+      "argv": [
+        "corepack",
+        "pnpm@10.28.2",
+        "exec",
+        "docusaurus",
+        "--version"
+      ],
+      "stdout": "3.10.2",
+      "stderr": "",
+      "exit": 0
+    },
+    "commands": {
+      "argv": [
+        "corepack",
+        "pnpm@10.28.2",
+        "exec",
+        "docusaurus",
+        "--help"
+      ],
+      "stdout": "Usage: docusaurus <command> [options]\n\nOptions:\n  -V, --version                                            output the version number\n  -h, --help                                               display help for command\n\nCommands:\n  build [options] [siteDir]                                Build website.\n  swizzle [options] [themeName] [componentName] [siteDir]  Wraps or ejects the original theme files into website folder for customization.\n  deploy [options] [siteDir]                               Deploy website to GitHub pages.\n  start [options] [siteDir]                                Start the development server.\n  serve [options] [siteDir]                                Serve website locally.\n  clear [siteDir]                                          Remove build artifacts.\n  write-translations [options] [siteDir]                   Extract required translations of your site.\n  write-heading-ids [options] [siteDir] [files...]         Generate heading ids in Markdown content.\n  docs:version <version>                                   Tag a new docs version",
+      "stderr": "",
+      "exit": 0
+    },
+    "serve": {
+      "argv": [
+        "corepack",
+        "pnpm@10.28.2",
+        "run",
+        "serve",
+        "--help"
+      ],
+      "stdout": "\n> docusaurus3-route-fixture@1.0.0 serve <site>\n> docusaurus serve --help\n\nUsage: docusaurus serve [options] [siteDir]\n\nServe website locally.\n\nOptions:\n  --dir <dir>        the full path for the new output directory, relative to\n                     the current workspace (default: build)\n  --config <config>  path to Docusaurus config file (default:\n                     `[siteDir]/docusaurus.config.js`)\n  -p, --port <port>  use specified port (default: 3000)\n  --build            build website before serving (default: false)\n  -h, --host <host>  use specified host (default: localhost)\n  --no-open          do not open page in the browser (default: false, or true\n                     in CI)\n  --help             display help for command",
+      "stderr": "",
+      "exit": 0
+    }
+  },
+  "nodeDefault": {
+    "Node22": "Further check own support cycle and dependency engines for new repos",
+    "testedNode24": "24.15.0"
+  },
+  "studyConfigSHA256": "ffbb834b87e5a07fcd2c70a9a493b9ec83c9dd2c689292ce6705e2c0515e1578",
+  "registrySnapshot": "registry-metadata.json",
+  "qualityResults": "quality-verification.json"
+}

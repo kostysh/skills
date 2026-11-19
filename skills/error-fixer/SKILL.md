@@ -4,9 +4,9 @@ description: "Diagnose and fix software defects: errors, crashes, failing tests,
   regressions, unexpected behavior, or unsuccessful fixes. Preserve
   diagnosis-only scope. Not for feature work or general code review."
 metadata:
-  source-version: 0.1.0
+  source-version: 0.1.1
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 00da0822c6829dff1cfad3883db5b1a673577d37de90fa3ed2f87cc64ccd68bf
+  skillforge-source-hash: 09547bd189e76b39d25bb33e835159c5d1540c0cc4b5f8e5695da59f519c72ca
 ---
 
 # error-fixer
@@ -89,7 +89,7 @@ Restore the intended behavior within the authorized repair scope.
 
 Validation:
 
-- The change has a causal basis and a meaningful regression check; diagnosis-only work stops before this repair stage.
+- The change has a causal basis and a meaningful regression check. Keep diagnosis read-only.
 
 ### Workflow stage: Verify behavior
 

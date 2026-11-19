@@ -1,0 +1,43 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -8,5 +8,5 @@
+ metadata:
+-  source-version: 0.1.9
++  source-version: 0.1.10
+   skillforge-source-manifest: skill.yaml
+-  skillforge-source-hash: 9196ac40d503a78f31f3bed94095af3564a1c2a4cefe6502241d141a1b3683fb
++  skillforge-source-hash: f9e1cc2208eb7e835c2235287cc922f3cbf5ab6112b3acce75842a221475fddb
+ ---
+@@ -67,3 +67,3 @@
+ - Preserve the existing compatible app composition. In greenfield application work, do not select structure without authority; use typed factories or `app.route()` only when the accepted composition needs them. Capture chained route return types when Hono RPC or typed test clients consume them.
+-- Treat middleware order as behavior. Preserve the compatible project-owned global and route-group composition; register `app.onError()` and `notFound()` as hooks, not middleware positions.
++- Preserve middleware registration order in the project's global and route-group composition. On Hono v4, register `app.onError()` and `app.notFound()` as hooks outside the middleware chain. For other majors, check the installed API before wiring error handling.
+ - Keep route handlers focused on the accepted HTTP boundary when that fits the project architecture; do not introduce a new service/domain layering scheme during a narrow Hono change.
+@@ -189,5 +189,7 @@
+ 
+-## Optional references
++## Required active references
+ - [High-risk Backend Contract](references/high-risk-backend-contract.md) — Read this for high-risk Hono routes involving a public API, Supabase-backed state, authorization, money, retries, external resources, or required audit evidence.
+ - [Framework Currency](references/framework-currency.md) — Read this before a version-sensitive Hono, adapter, or runtime decision, or when installed and latest versions may differ.
++
++## Optional references
+ - [Architecture](references/architecture.md) — Read this when Hono app composition, route type inference, layering, or dependency boundaries are in scope.
+--- a/references/framework-currency.md
++++ b/references/framework-currency.md
+@@ -12,5 +12,7 @@
+ 
+-## Dated adapter compatibility
++## Dated compatibility notes
+ 
+-Checked 2026-09-09: `@hono/node-server` 2.1.1 declares Node >=20 in its published package engines. Some unversioned getting-started examples advertise an older floor; use the installed adapter's engines/source for a Node deployment decision. Preserve a compatible older adapter/runtime pair unless an upgrade is authorized. Core framework compatibility alone does not establish adapter or downstream SDK compatibility.
++On 2026-11-19 the publisher's `latest` tag selected v4 and `next` selected the v5 release candidate. In v4, `onError` takes `(err, c)`. In the v5 candidate, `onError` and `notFound` register routable middleware, and the error is available as `c.error`. Use the installed major's API. [Publisher tags](https://registry.npmjs.org/-/package/hono/dist-tags) · [Hono migration guide](https://hono.dev/docs/guides/migrating-to-v5)
++
++The published `@hono/node-server` 2.1.9 manifest requires Node >=20. Check the installed adapter and downstream SDK for their own Node requirements. [Adapter manifest](https://github.com/honojs/node-server/blob/v2.1.9/package.json)
+ 
+--- a/references/pipelines.md
++++ b/references/pipelines.md
+@@ -16,3 +16,3 @@
+ | Timeout | Hono timeout middleware is not compatible with streaming responses; select another owner-approved lifecycle for streams. |
+-| Error handling | Register `app.onError()` and `app.notFound()` as Hono hooks, not positions in the middleware chain. |
++| Error handling | On Hono v4, register `app.onError()` and `app.notFound()` as hooks outside the middleware chain. For a different major, consult [Framework Currency](framework-currency.md). |
+ | Protected long-lived response | Opening admission is insufficient only when the accepted security contract requires later permission changes to take effect; implement its revalidation/invalidation and abort cleanup. |

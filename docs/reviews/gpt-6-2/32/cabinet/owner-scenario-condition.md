@@ -1,0 +1,1 @@
+../../23/cabinet/owner-scenario-condition.md

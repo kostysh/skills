@@ -1,0 +1,71 @@
+{
+  "source_snapshot": "d4f60df7a8051280c3986d9b4e1dac46b6722c0d plus the prd-engineer 0.1.9 delta",
+  "archive_producer": "pnpm --filter @kostysh/skills pack:skills --root {study}/compiled --out {study}/package --release skills-20261118 --previous {baseline}/catalog.json",
+  "archive_catalog_sha256": "cd8d532dfb84b5aee800e680cfa22071ff916f6c9c41a121bff3f3777c321347",
+  "original_archive_filename": "prd-engineer-0.1.9.tgz",
+  "version": "0.1.9",
+  "archive_files_identical_to_source_and_isolated_compile": {
+    "SKILL.md": "dca1feb4cc607b7c93490a5ba1dcb9a604e825f59bd7dec59571d5a593da1d9a",
+    "agents/openai.yaml": "eab726e197d945488aff0c681ad059775a0b0e47035495b310d437b4434b0662",
+    "references/prd-template.md": "2387759726520e2cbff865dcd7c84f48e101f02f2f9550231f17a8728e9f3f27"
+  },
+  "checks": [
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "--version"
+      ],
+      "exit": 0,
+      "output": "0.2.5"
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "lint",
+        "skills/prd-engineer"
+      ],
+      "exit": 0,
+      "output": "OK skills/prd-engineer"
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "skills/prd-engineer"
+      ],
+      "exit": 0,
+      "output": "OK skills/prd-engineer"
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "{study}/compiled/prd-engineer"
+      ],
+      "exit": 0,
+      "output": "OK {study}/compiled/prd-engineer"
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "{skill-creator}/scripts/quick_validate.py",
+        "skills/prd-engineer"
+      ],
+      "exit": 0,
+      "output": "Skill is valid!"
+    },
+    {
+      "argv": [
+        "/usr/bin/python3",
+        "{skill-creator}/scripts/quick_validate.py",
+        "{inputs}/Release"
+      ],
+      "exit": 0,
+      "output": "Skill is valid!"
+    }
+  ]
+}

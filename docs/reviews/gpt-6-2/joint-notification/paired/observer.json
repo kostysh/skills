@@ -1,0 +1,6551 @@
+{
+  "visits": [
+    {
+      "receipt": "241603a6-6ebe-44a6-8103-89e9eb08a4a6.json",
+      "frames": [
+        {
+          "action": {
+            "op": "open"
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "width",
+            "width": 390
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "fill",
+            "target": "#email",
+            "value": "weekly@example.com"
+          },
+          "focus": {
+            "id": "email",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "#weekly"
+          },
+          "focus": {
+            "id": "weekly",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "text=Review changes"
+          },
+          "focus": {
+            "id": null,
+            "text": "Cancel"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [
+            "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm"
+          ],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "pngSha256": "e5c25dd250f13d4c5bc066bc7908eaddef19d4b9a674fbcb9ace0470b9e3d3f3"
+    },
+    {
+      "receipt": "241aca91-1669-413c-b7b0-4aad25e1d23c.json",
+      "frames": [
+        {
+          "action": {
+            "op": "open"
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "width",
+            "width": 390
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "fill",
+            "target": "#email",
+            "value": "weekly@example.com"
+          },
+          "focus": {
+            "id": "email",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "#weekly"
+          },
+          "focus": {
+            "id": "weekly",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Tab"
+          },
+          "focus": {
+            "id": null,
+            "text": "Review changes"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Enter"
+          },
+          "focus": {
+            "id": null,
+            "text": "Cancel"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [
+            "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm"
+          ],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Enter"
+          },
+          "focus": {
+            "id": null,
+            "text": "Review changes"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "pngSha256": "79671a32fd4b81b2368da5d7716c14569b5c1569d5625acbb6d10c96d3b540ad"
+    },
+    {
+      "receipt": "26e6a27e-6baf-4361-b671-3f6393b5c926.json",
+      "frames": [
+        {
+          "action": {
+            "op": "open"
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "width",
+            "width": 390
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "fill",
+            "target": "#email",
+            "value": "weekly@example.com"
+          },
+          "focus": {
+            "id": "email",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "#weekly"
+          },
+          "focus": {
+            "id": "weekly",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "text=Review changes"
+          },
+          "focus": {
+            "id": null,
+            "text": "Cancel"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [
+            "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm"
+          ],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "text=Cancel"
+          },
+          "focus": {
+            "id": null,
+            "text": "Review changes"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "wait",
+            "ms": 2000
+          },
+          "focus": {
+            "id": null,
+            "text": "Review changes"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "pngSha256": "fe72bc4a289b61e6c64d9f008c285c487aa6d52b22756be981987faaa7ccdf87"
+    },
+    {
+      "receipt": "303668bc-d01f-4f79-8760-9d2cd54af1f5.json",
+      "frames": [
+        {
+          "action": {
+            "op": "open"
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "width",
+            "width": 390,
+            "height": 960
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "fill",
+            "target": "#email",
+            "value": "weekly@example.com"
+          },
+          "focus": {
+            "id": "email",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "#weekly"
+          },
+          "focus": {
+            "id": "weekly",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "text=Review changes"
+          },
+          "focus": {
+            "id": null,
+            "text": "Cancel"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [
+            "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm"
+          ],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Tab"
+          },
+          "focus": {
+            "id": null,
+            "text": "Confirm"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [
+            "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm"
+          ],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Enter"
+          },
+          "focus": {
+            "id": null,
+            "text": "Close"
+          },
+          "status": [
+            "Applying changes…"
+          ],
+          "dialog": [
+            "Applying changes\n\nYou can close this window. Your changes will continue to apply.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nClose\nApplying…"
+          ],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Enter"
+          },
+          "focus": {
+            "id": null,
+            "text": "Applying changes…"
+          },
+          "status": [
+            "Applying changes…"
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "wait",
+            "ms": 2000
+          },
+          "focus": {
+            "id": null,
+            "text": "Settings applied\n\nEmail: weekly@example.com. Notifications: On. Freque"
+          },
+          "status": [
+            "Settings applied\n\nEmail: weekly@example.com. Notifications: On. Frequency: Weekly.\n\nSaved for this session. No email is sent."
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "pngSha256": "e464636ed01907d62e118f4669d55c2157b5cf2213717b234591420ae4683a21"
+    },
+    {
+      "receipt": "3eba204c-8fed-4ed0-aea1-75102ad26ce3.json",
+      "frames": [
+        {
+          "action": {
+            "op": "open"
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "width",
+            "width": 390
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "fill",
+            "target": "#email",
+            "value": "weekly@example.com"
+          },
+          "focus": {
+            "id": "email",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "#weekly"
+          },
+          "focus": {
+            "id": "weekly",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "text=Review changes"
+          },
+          "focus": {
+            "id": null,
+            "text": "Cancel"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [
+            "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm"
+          ],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "text=Confirm"
+          },
+          "focus": {
+            "id": null,
+            "text": "Close"
+          },
+          "status": [
+            "Applying changes…"
+          ],
+          "dialog": [
+            "Applying changes\n\nYou can close this window. Your changes will continue to apply.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nClose\nApplying…"
+          ],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Escape"
+          },
+          "focus": {
+            "id": null,
+            "text": "Applying changes…"
+          },
+          "status": [
+            "Applying changes…"
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "wait",
+            "ms": 2000
+          },
+          "focus": {
+            "id": null,
+            "text": "Settings applied\n\nEmail: weekly@example.com. Notifications: On. Freque"
+          },
+          "status": [
+            "Settings applied\n\nEmail: weekly@example.com. Notifications: On. Frequency: Weekly.\n\nSaved for this session. No email is sent."
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "pngSha256": "cd340f707a7096e68207c152bfb039b89aae8bcaab8b123b90a47400c96b999a"
+    },
+    {
+      "receipt": "4ebaa104-2d06-435a-8593-81756d593353.json",
+      "frames": [
+        {
+          "action": {
+            "op": "open"
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "width",
+            "width": 390
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "fill",
+            "target": "#email",
+            "value": "weekly@example.com"
+          },
+          "focus": {
+            "id": "email",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "#weekly"
+          },
+          "focus": {
+            "id": "weekly",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Tab"
+          },
+          "focus": {
+            "id": null,
+            "text": "Review changes"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Enter"
+          },
+          "focus": {
+            "id": null,
+            "text": "Cancel"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [
+            "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm"
+          ],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "pngSha256": "24dac0504101eed7390922dd8eebe45de82df76bbba99d0e724371b306c451fe"
+    },
+    {
+      "receipt": "655c7197-798a-4bff-8837-ea5926569bf9.json",
+      "frames": [
+        {
+          "action": {
+            "op": "open"
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "width",
+            "width": 390
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "fill",
+            "target": "#email",
+            "value": "weekly@example.com"
+          },
+          "focus": {
+            "id": "email",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "#weekly"
+          },
+          "focus": {
+            "id": "weekly",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "text=Review changes"
+          },
+          "focus": {
+            "id": null,
+            "text": "Cancel"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [
+            "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm"
+          ],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "text=Confirm"
+          },
+          "focus": {
+            "id": null,
+            "text": "Close"
+          },
+          "status": [
+            "Applying changes…"
+          ],
+          "dialog": [
+            "Applying changes\n\nYou can close this window. Your changes will continue to apply.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nClose\nApplying…"
+          ],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "pngSha256": "00cf4c22ba0566146a1d1e89239646565b8cd58ed8a7d52b002d9ff582670cc4"
+    },
+    {
+      "receipt": "8f7b12fa-7dee-4175-ac48-e3effd0e0196.json",
+      "frames": [
+        {
+          "action": {
+            "op": "open"
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "width",
+            "width": 390
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "look"
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "pngSha256": "f18a5dce1552db61731d4497b8043f612b8cf39fb3357aeb051e43d2eb0910ba"
+    },
+    {
+      "receipt": "9b21ac2c-3c09-4e23-9562-eb3efa20bd87.json",
+      "frames": [
+        {
+          "action": {
+            "op": "open"
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "width",
+            "width": 390
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "fill",
+            "target": "#email",
+            "value": "weekly@example.com"
+          },
+          "focus": {
+            "id": "email",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "#weekly"
+          },
+          "focus": {
+            "id": "weekly",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "text=Review changes"
+          },
+          "focus": {
+            "id": null,
+            "text": "Cancel"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [
+            "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm"
+          ],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Tab"
+          },
+          "focus": {
+            "id": null,
+            "text": "Confirm"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [
+            "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm"
+          ],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Enter"
+          },
+          "focus": {
+            "id": null,
+            "text": "Close"
+          },
+          "status": [
+            "Applying changes…"
+          ],
+          "dialog": [
+            "Applying changes\n\nYou can close this window. Your changes will continue to apply.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nClose\nApplying…"
+          ],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Escape"
+          },
+          "focus": {
+            "id": null,
+            "text": "Applying changes…"
+          },
+          "status": [
+            "Applying changes…"
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "wait",
+            "ms": 2000
+          },
+          "focus": {
+            "id": null,
+            "text": "Settings applied\n\nEmail: weekly@example.com. Notifications: On. Freque"
+          },
+          "status": [
+            "Settings applied\n\nEmail: weekly@example.com. Notifications: On. Frequency: Weekly.\n\nSaved for this session. No email is sent."
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "pngSha256": "cd340f707a7096e68207c152bfb039b89aae8bcaab8b123b90a47400c96b999a"
+    },
+    {
+      "receipt": "a35bd1d6-53e2-47cc-8b9c-6f8db59ed79f.json",
+      "frames": [
+        {
+          "action": {
+            "op": "open"
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "width",
+            "width": 390
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "fill",
+            "target": "#email",
+            "value": "weekly@example.com"
+          },
+          "focus": {
+            "id": "email",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "#weekly"
+          },
+          "focus": {
+            "id": "weekly",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "text=Review changes"
+          },
+          "focus": {
+            "id": null,
+            "text": "Cancel"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [
+            "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm"
+          ],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Enter"
+          },
+          "focus": {
+            "id": null,
+            "text": "Review changes"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "wait",
+            "ms": 2000
+          },
+          "focus": {
+            "id": null,
+            "text": "Review changes"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "pngSha256": "79671a32fd4b81b2368da5d7716c14569b5c1569d5625acbb6d10c96d3b540ad"
+    },
+    {
+      "receipt": "a991edfe-6f1b-4f24-83df-a127abf8c99a.json",
+      "frames": [
+        {
+          "action": {
+            "op": "open"
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "width",
+            "width": 390
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "fill",
+            "target": "#email",
+            "value": "weekly@example.com"
+          },
+          "focus": {
+            "id": "email",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "#weekly"
+          },
+          "focus": {
+            "id": "weekly",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "text=Review changes"
+          },
+          "focus": {
+            "id": null,
+            "text": "Cancel"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [
+            "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm"
+          ],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "text=Confirm"
+          },
+          "focus": {
+            "id": null,
+            "text": "Close"
+          },
+          "status": [
+            "Applying changes…"
+          ],
+          "dialog": [
+            "Applying changes\n\nYou can close this window. Your changes will continue to apply.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nClose\nApplying…"
+          ],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "text=Close"
+          },
+          "focus": {
+            "id": null,
+            "text": "Applying changes…"
+          },
+          "status": [
+            "Applying changes…"
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "wait",
+            "ms": 2000
+          },
+          "focus": {
+            "id": null,
+            "text": "Settings applied\n\nEmail: weekly@example.com. Notifications: On. Freque"
+          },
+          "status": [
+            "Settings applied\n\nEmail: weekly@example.com. Notifications: On. Frequency: Weekly.\n\nSaved for this session. No email is sent."
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "pngSha256": "6deb62c8babbbddb2be994c1ae7955963117bf80d7cc669f61be5f2ffe874273"
+    },
+    {
+      "receipt": "d4b1a90b-ad2e-4787-8644-d6913822e38c.json",
+      "frames": [
+        {
+          "action": {
+            "op": "open"
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "width",
+            "width": 390
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "fill",
+            "target": "#email",
+            "value": "weekly@example.com"
+          },
+          "focus": {
+            "id": "email",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "#weekly"
+          },
+          "focus": {
+            "id": "weekly",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "text=Review changes"
+          },
+          "focus": {
+            "id": null,
+            "text": "Cancel"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [
+            "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm"
+          ],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Escape"
+          },
+          "focus": {
+            "id": null,
+            "text": "Review changes"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "wait",
+            "ms": 2000
+          },
+          "focus": {
+            "id": null,
+            "text": "Review changes"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "pngSha256": "79671a32fd4b81b2368da5d7716c14569b5c1569d5625acbb6d10c96d3b540ad"
+    },
+    {
+      "receipt": "ecafaf41-c009-4b20-896a-31bba6d8b26f.json",
+      "frames": [
+        {
+          "action": {
+            "op": "open"
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "width",
+            "width": 390,
+            "height": 1120
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "fill",
+            "target": "#email",
+            "value": "weekly@example.com"
+          },
+          "focus": {
+            "id": "email",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "#weekly"
+          },
+          "focus": {
+            "id": "weekly",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "text=Review changes"
+          },
+          "focus": {
+            "id": null,
+            "text": "Cancel"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [
+            "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm"
+          ],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Tab"
+          },
+          "focus": {
+            "id": null,
+            "text": "Confirm"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [
+            "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm"
+          ],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Enter"
+          },
+          "focus": {
+            "id": null,
+            "text": "Close"
+          },
+          "status": [
+            "Applying changes…"
+          ],
+          "dialog": [
+            "Applying changes\n\nYou can close this window. Your changes will continue to apply.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nClose\nApplying…"
+          ],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Enter"
+          },
+          "focus": {
+            "id": null,
+            "text": "Applying changes…"
+          },
+          "status": [
+            "Applying changes…"
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "wait",
+            "ms": 2000
+          },
+          "focus": {
+            "id": null,
+            "text": "Settings applied\n\nEmail: weekly@example.com. Notifications: On. Freque"
+          },
+          "status": [
+            "Settings applied\n\nEmail: weekly@example.com. Notifications: On. Frequency: Weekly.\n\nSaved for this session. No email is sent."
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "pngSha256": "0671c0d4d456302af86b4ab87c375aeecf950a83c35335aff44f1908917fac72"
+    },
+    {
+      "receipt": "f32dc88f-a51a-45b4-ae96-9c9bd6fb4e81.json",
+      "frames": [
+        {
+          "action": {
+            "op": "open"
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "width",
+            "width": 390
+          },
+          "focus": {
+            "id": null,
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "fill",
+            "target": "#email",
+            "value": "weekly@example.com"
+          },
+          "focus": {
+            "id": "email",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "#weekly"
+          },
+          "focus": {
+            "id": "weekly",
+            "text": ""
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "text=Review changes"
+          },
+          "focus": {
+            "id": null,
+            "text": "Cancel"
+          },
+          "status": [
+            ""
+          ],
+          "dialog": [
+            "Review your changes\n\nConfirm to apply these notification settings for this session.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nCancel\nConfirm"
+          ],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "text=Confirm"
+          },
+          "focus": {
+            "id": null,
+            "text": "Close"
+          },
+          "status": [
+            "Applying changes…"
+          ],
+          "dialog": [
+            "Applying changes\n\nYou can close this window. Your changes will continue to apply.\n\nEmail address\nweekly@example.com\nEmail notifications\nOn\nDelivery frequency\nWeekly\nClose\nApplying…"
+          ],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        },
+        {
+          "action": {
+            "op": "click",
+            "target": "text=Close"
+          },
+          "focus": {
+            "id": null,
+            "text": "Applying changes…"
+          },
+          "status": [
+            "Applying changes…"
+          ],
+          "dialog": [],
+          "formValues": [
+            {
+              "id": "email",
+              "role": "email",
+              "value": "weekly@example.com",
+              "checked": null,
+              "invalid": "false"
+            },
+            {
+              "id": "notifications",
+              "role": "switch",
+              "value": "on",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "checkbox",
+              "value": "on",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "daily",
+              "role": "radio",
+              "value": "daily",
+              "checked": "false",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "daily",
+              "checked": null,
+              "invalid": null
+            },
+            {
+              "id": "weekly",
+              "role": "radio",
+              "value": "weekly",
+              "checked": "true",
+              "invalid": null
+            },
+            {
+              "id": null,
+              "role": "radio",
+              "value": "weekly",
+              "checked": null,
+              "invalid": null
+            }
+          ]
+        }
+      ],
+      "error": null,
+      "pngSha256": "2e2a454bf8e1a14d1ab35a728cde0a68dbbd226ed845b7b6476e1fa726e5a9b7"
+    }
+  ],
+  "changesToIssuedFiles": [],
+  "newFiles": [
+    "design-note.md",
+    "visits/241603a6-6ebe-44a6-8103-89e9eb08a4a6.json",
+    "visits/241603a6-6ebe-44a6-8103-89e9eb08a4a6.png",
+    "visits/241aca91-1669-413c-b7b0-4aad25e1d23c.json",
+    "visits/241aca91-1669-413c-b7b0-4aad25e1d23c.png",
+    "visits/26e6a27e-6baf-4361-b671-3f6393b5c926.json",
+    "visits/26e6a27e-6baf-4361-b671-3f6393b5c926.png",
+    "visits/303668bc-d01f-4f79-8760-9d2cd54af1f5.json",
+    "visits/303668bc-d01f-4f79-8760-9d2cd54af1f5.png",
+    "visits/3eba204c-8fed-4ed0-aea1-75102ad26ce3.json",
+    "visits/3eba204c-8fed-4ed0-aea1-75102ad26ce3.png",
+    "visits/4ebaa104-2d06-435a-8593-81756d593353.json",
+    "visits/4ebaa104-2d06-435a-8593-81756d593353.png",
+    "visits/655c7197-798a-4bff-8837-ea5926569bf9.json",
+    "visits/655c7197-798a-4bff-8837-ea5926569bf9.png",
+    "visits/8f7b12fa-7dee-4175-ac48-e3effd0e0196.json",
+    "visits/8f7b12fa-7dee-4175-ac48-e3effd0e0196.png",
+    "visits/9b21ac2c-3c09-4e23-9562-eb3efa20bd87.json",
+    "visits/9b21ac2c-3c09-4e23-9562-eb3efa20bd87.png",
+    "visits/a35bd1d6-53e2-47cc-8b9c-6f8db59ed79f.json",
+    "visits/a35bd1d6-53e2-47cc-8b9c-6f8db59ed79f.png",
+    "visits/a991edfe-6f1b-4f24-83df-a127abf8c99a.json",
+    "visits/a991edfe-6f1b-4f24-83df-a127abf8c99a.png",
+    "visits/d4b1a90b-ad2e-4787-8644-d6913822e38c.json",
+    "visits/d4b1a90b-ad2e-4787-8644-d6913822e38c.png",
+    "visits/ecafaf41-c009-4b20-896a-31bba6d8b26f.json",
+    "visits/ecafaf41-c009-4b20-896a-31bba6d8b26f.png",
+    "visits/f32dc88f-a51a-45b4-ae96-9c9bd6fb4e81.json",
+    "visits/f32dc88f-a51a-45b4-ae96-9c9bd6fb4e81.png"
+  ],
+  "submittedNoteSha256": "e14c0837be5de434ed4c99d0ba4bf83477144c6d1f3f24704bc2e6e21f4649c7"
+}

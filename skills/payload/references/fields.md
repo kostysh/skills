@@ -42,7 +42,7 @@ const customTitle: TextField = {
 
 ### Slug Field Helper
 
-`slugField` is experimental in 3.88.0. Use it only when the installed export and the project permit experimental helpers; preserve an existing text+hook slug implementation on older versions.
+`slugField` is marked experimental in the [3.94.0 source](https://github.com/payloadcms/payload/blob/v3.94.0/packages/payload/src/fields/baseFields/slug/index.ts). Use it only when the installed export and the project permit experimental helpers; preserve an existing text+hook slug implementation on older versions.
 
 ```ts
 import { slugField } from 'payload'

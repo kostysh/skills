@@ -6,3 +6,4 @@
 - [Общий журнал четырёх скилов](logs/implementation-log-20261107-1.md).
 - [Свидетельства проверок](forward-tests/20261107/README.md).
 - [Последующее исправление размера frontend-design и lint примера](../../frontend-design/docs/logs/implementation-log-20261107-1.md).
+- [Ревизия GPT-6.2 и восстановление исторических файлов](logs/implementation-log-20261118-1.md).

@@ -1,0 +1,74 @@
+{
+  "frozenAtUTC": "2026-11-19T00:18:01.734015+00:00",
+  "inputs": {
+    "joint": {
+      "instructions": {
+        "SKILL.md": "617af3185516c64b213ca9c0fa79fc5d5a3833514244f8b0053c93c836963026",
+        "agents/openai.yml": "b17654123dcd8be47942470354ce60837167245ff1b4c45de61c8399bec799fb",
+        "assets/shadcn-small.png": "0ecc62d682727f68fc4937eed19960c706714fa084d44f63028d611ae02bf3d7",
+        "assets/shadcn.png": "7d60ad6fec4d89a0d44ba5a3c9283d2fea0047af5467f9227040e20d927d39b7",
+        "references/cli.md": "dc3a0ecc8ec861801e77bda084ba20f2e68cab0b34eeeac7ca6e65ccb89e181b",
+        "references/customization.md": "04c54b19947c3827fe3e7d437434720252ee6cbbe5b61617501acba9245884ec",
+        "references/rules/composition.md": "8c88c4395b0578da6bd9887cb6df964deaf5f10be75f1bb0daecca4ad3cfea50",
+        "references/rules/forms.md": "736a746952d4f50163cab1cd3fb7162b659b8f43093da4652bb9ffb41397e718",
+        "references/rules/icons.md": "7b79511251df08df996f4b6fcab7a08103bd1ab0f1b97d1a5023a679495c3790",
+        "references/rules/styling.md": "321f473b67ba2250e850a40cc8b3f939bfa4e37c8a18a3b42e667d2ab353b9f0"
+      },
+      "case": {
+        "delivery.md": "d11ff2689db1ddcb02aeb44a761fb8bdef9bd2c1b64430c3aed059d338292020",
+        "received-next/app/dossiers/[key]/DeskView.jsx": "853bb7b2cd93bcb784a387c0bf941825ad793f91feafa40e58791bc915ed6557",
+        "received-next/app/dossiers/[key]/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "received-next/app/dossiers/[key]/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "received-next/app/dossiers/[key]/page.jsx": "18e213e820cb6cc1de645dcb9e31247a796d9709a07de78bcc94e3d0eb170994",
+        "received-next/app/layout.jsx": "a84b9d4ebf74b0d00a2a7d8ab84410d5820a36d8a5d6c2629a5ad30a8a48e388",
+        "received-next/next.config.mjs": "1d47d4c3c752eb360f20c28f7dda4267f25bef980bee0b9225cd8aa0e1572402",
+        "received-next/package.json": "66dd7a7a3108cc5dfe75b018079e0d4fbdc489720373370fe58cf36883e14b9d",
+        "received-spa/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "received-spa/package.json": "9eaf15c5b77077c69c5259996dd5d4e45fa15394874924c4531c75e93d613421",
+        "received-spa/pnpm-lock.yaml": "c96d1706ba1c4b79c27dd567a956f7dbac521ff6ce60c1dd7b998f469a7bca7c",
+        "received-spa/src/App.tsx": "74e70bf60903b8c277264fc456c73f9031890b30e8265eee2b91f215405d35e6",
+        "received-spa/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "received-spa/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "received-spa/src/components/ui/button.tsx": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+        "received-spa/src/main.tsx": "2d13456bf6657d8ff69c557be5a50c0e9fa67d655e0707878a9258a0d12b85e5",
+        "received-spa/src/notification-api.ts": "2aded38371cffad17817db3830d00ecb7ee8f6e56d055158281eaff749daa5bc",
+        "received-spa/tsconfig.app.json": "1b10733ad1b7359a2b0b6f58a8bb3a13b95eabf0022b4320856eea0127e9588b",
+        "received-spa/tsconfig.json": "2965de75cf6e26328a036728bcaebc9b25f04bec480b4e51a45fa580835ad83d",
+        "registry/button.json": "50399973a9d92604862e1424c1ac29f7e498fd8866b20499e67742a8c6daa827",
+        "release-next/app/components/button.tsx": "bfa000f447f2fba3d8fa71fbdc8ffc8b97232fd85118f1bc57e5ccf483545f45",
+        "release-next/app/dossiers/[key]/DeskView.jsx": "e4b357bb82e722f1ef071a2c6cbd7e07df244cd8f429948e5aaf641d0c9e1af4",
+        "release-next/app/dossiers/[key]/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "release-next/app/dossiers/[key]/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "release-next/app/dossiers/[key]/page.jsx": "18e213e820cb6cc1de645dcb9e31247a796d9709a07de78bcc94e3d0eb170994",
+        "release-next/app/layout.jsx": "0227bbbfbc3d2018efa329e4ce5aa4ec79e8fc6a57118a7fc4c6486c4b1cf8ea",
+        "release-next/package.json": "7016a7914f246ddb70b559bb424672cf1f670f0493fefe39c0c0d59c16da53b2",
+        "release-spa/components.json": "cd351e37123821b92e36919175894123d38f80c32e69687664d3c9517fff8fe0",
+        "release-spa/src/App.tsx": "74e70bf60903b8c277264fc456c73f9031890b30e8265eee2b91f215405d35e6",
+        "release-spa/src/components/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "release-spa/src/components/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "release-spa/src/components/ui/button.tsx": "bfa000f447f2fba3d8fa71fbdc8ffc8b97232fd85118f1bc57e5ccf483545f45",
+        "shared/Tooltip.d.ts": "71db6bd3785b5f25539ebb628e4d84c571c4bc07f94fedf918b6cac304c4426f",
+        "shared/Tooltip.js": "2dbb9773d492a717df9ddbcd804187d258d8d4b8c6bc26b8010c2b1047a60313",
+        "workplace.md": "d6ef7d394d366a02168c6355349a4f6ba4661a72ba3e50db8f32af9ca5b301b8"
+      },
+      "taskSHA256": "bc1f9b1596c7b3f158737531a69ad259562c38aca7b7772b96f462070214c56f",
+      "criteriaSHA256": "6cea8fce5611b723d54f5fda20f10ad12fcaa2957e6788bb843cc665c2bdec48"
+    },
+    "selection-before": {
+      "instructions": {
+        "catalog.md": "c11f77dd0ac213f7151b652db763affd13ff20440b9f6f19d16375fc4c957609"
+      },
+      "case": {},
+      "taskSHA256": "19ca1ff02c8446e40963fce621c4b1bb30954827f30603c6067283da3054209a",
+      "criteriaSHA256": "12e78eaa7700ff62c6969f7fa5f240202e50c1506d0ec12bd66c987a58a71d32"
+    },
+    "selection-after": {
+      "instructions": {
+        "catalog.md": "29febbc0424a42ffea9baba5fa7c52a44fe90e6e5c71773087ac945a3150a9c3"
+      },
+      "case": {},
+      "taskSHA256": "19ca1ff02c8446e40963fce621c4b1bb30954827f30603c6067283da3054209a",
+      "criteriaSHA256": "12e78eaa7700ff62c6969f7fa5f240202e50c1506d0ec12bd66c987a58a71d32"
+    }
+  }
+}

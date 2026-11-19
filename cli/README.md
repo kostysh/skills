@@ -128,9 +128,10 @@ pnpm --filter @kostysh/skills verify:package
 pnpm --filter @kostysh/skills pack:skills --out ../skills-release --release skills-YYYYMMDD --previous-latest
 ```
 
-The packer reads built `SKILL.md` files and runtime resources; it does not run
-the skill compiler. It excludes development docs, source bundles, tests, and
-maintenance instructions. Runtime templates in `assets/`, including `AGENTS.md`,
+Skill compilation runs separately. The packer reads built `SKILL.md` files and
+runtime resources, including a skill’s root `LICENSE` or `LICENSE.txt` when
+present. Development docs, source bundles, tests, and maintenance instructions
+stay in the repository. Runtime templates in `assets/`, including `AGENTS.md`,
 are preserved. The catalog's contentHash history prevents reusing a version
 with different contents. For manual packaging, use `--previous <catalog.json>`
 or `--previous-latest` to check published versions; the release workflow does

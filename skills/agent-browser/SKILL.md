@@ -5,9 +5,9 @@ description: Use agent-browser to navigate and interact with rendered web pages,
   diagnostic checks. Verify the requested terminal state and report completed,
   partial, or blocked; do not replace a formal project E2E suite.
 metadata:
-  source-version: 0.2.5
+  source-version: 0.2.7
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 723a2d0e23f15a6aef15cbf444c8cd4fd34e780824fa2c1590ad3b90a97c622f
+  skillforge-source-hash: ce93153d63d2290d4629a85dbc64753ab6bc0abac47ee2d12b7d3fdc4f90b525
 allowed-tools: Bash(agent-browser:*)
 ---
 
@@ -74,10 +74,6 @@ relevant subcommand help.
 - Diagnosis: browser requests, responses, console, and page errors are evidence;
   another domain owner must establish backend or provider root cause.
 
-A screenshot, snapshot, trace, successful command, or healthy runtime is useful
-evidence only when it supports the requested result. It is not completion by
-itself.
-
 ## Setup boundary
 
 Agent-browser owns its browser runtime. Do not install Playwright packages in the
@@ -95,8 +91,8 @@ and recordings as potentially sensitive.
 Reach the requested observable result through the rendered page without confusing CLI activity with task completion.
 
 1. Apply the governing user, system, and project policies, then the `Guidance and authority` browser-environment check before opening or changing route or identity; this skill does not grant authority for additional external side effects.
-2. Use the installed CLI guidance for command syntax. If the runtime fails, use its help or `agent-browser doctor --offline --quick`; use mutating repair commands only when already authorized, and never add Playwright to the target project merely to prepare agent-browser.
-3. Open the target, snapshot before using refs, interact, wait for the expected condition, and re-snapshot after navigation or material page changes.
+2. Use the installed CLI help for runtime errors. Before running `agent-browser doctor`, check its help and your authority for its side effects. Even `--offline --quick` can remove stale daemon files across the selected socket directory. Run repairs only within existing permissions. Keep Playwright installation out of the target project when preparing agent-browser.
+3. Open the target, snapshot before using refs, interact, wait for the expected condition, and re-snapshot after navigation or material page changes. Wait for a state change to succeed before issuing a dependent action, or use a batch that stops on error (such as `batch --bail`). After a failure, re-snapshot before proceeding.
 4. Verify the final URL, visible state, or extracted values that establish the requested result; use console, page-error, network, screenshot, or trace evidence only when relevant.
 5. For extraction, verify the requested fields and scope, including pagination or lazy-loading limits; if completeness is not established, report the observed subset as partial.
 6. Treat intercepted responses as local UI evidence, not proof of a live API or provider path, and do not infer backend root cause from browser symptoms alone.
@@ -128,7 +124,6 @@ Validation:
 ## Gotchas
 
 - **high** — Use the installed CLI's version-matched guidance and help for command syntax; do not maintain or trust a copied command encyclopedia when they disagree.
-- **high** — A successful command, snapshot, screenshot, trace, or intercepted response does not prove the requested user-visible result by itself.
 - **high** — Keep secrets out of shell history and reports, treat browser artifacts as potentially sensitive, and clean up sessions or processes started for the task.
 - **high** — Never substitute Wrangler login, a Cloudflare API token, or an Access service token for a human Cloudflare Access browser login; report blocked when the authorized browser identity or confidential OTP path is unavailable.
 

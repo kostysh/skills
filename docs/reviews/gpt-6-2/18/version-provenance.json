@@ -1,0 +1,87 @@
+{
+  "criteriaSha256": "7e38183165b7cfe1e15490a59ae4df17b5ea155ccf563e12906ffdf7d005de4a",
+  "taskSha256": "599b4bcc41d87e2d81ae28bc0eff041521c63bf1715f782a83afc40dacb8907a",
+  "frozenBeforeSubjectDispatch": "2026-11-18T21:59:10.568874+00:00",
+  "initialFiles": {
+    "criteria.md": "7e38183165b7cfe1e15490a59ae4df17b5ea155ccf563e12906ffdf7d005de4a",
+    "fixture/BROWSER.md": "92c12325c8a07da0d335bc6349fbc206837e6429aa96b1d70952fe2f56b481c2",
+    "fixture/desk/boot.mjs": "ee4681b2415010d3e8b12aca07f6a347ec2eb0e0eade8ce677a5d49bb160d005",
+    "fixture/desk/dist/boot.js": "47ad9afa3995ca3c1c2a22ffaf36a3c593222989229e96599c300185164e6349",
+    "fixture/desk/dist/index.html": "ca1a55c96ce1c97e238e187668fff0bfef7222e626028d351830b38e7a056185",
+    "fixture/desk/package.json": "0ae0d954d9c1e4963dcba9a62f151492f572f76ad4035b9766c51f9735a862af",
+    "fixture/desk/view.mjs": "94e41ba07c7dd6d503f2702e75ec58d12cc91bf7cf7094bbaa3c0b080b3a984f",
+    "fixture/desk/visit.mjs": "fc9abfa7b01cf0c2cfef6011c561ae18a01e664d9bdf01b39abee27e2a752e61",
+    "fixture/hall/boot.mjs": "ee4681b2415010d3e8b12aca07f6a347ec2eb0e0eade8ce677a5d49bb160d005",
+    "fixture/hall/dist/boot.js": "0aeff4964924cd18a783a956c52f63e5921ad59aa1b270da0b5e5fdd9f195d5e",
+    "fixture/hall/dist/index.html": "ca1a55c96ce1c97e238e187668fff0bfef7222e626028d351830b38e7a056185",
+    "fixture/hall/package.json": "cb8a67bc17fc6ce67c8d99be8cb67791b40fd00bfc97d3ad5e067222ac00460a",
+    "fixture/hall/view.mjs": "94e41ba07c7dd6d503f2702e75ec58d12cc91bf7cf7094bbaa3c0b080b3a984f",
+    "fixture/hall/visit.mjs": "fc9abfa7b01cf0c2cfef6011c561ae18a01e664d9bdf01b39abee27e2a752e61",
+    "task.md": "599b4bcc41d87e2d81ae28bc0eff041521c63bf1715f782a83afc40dacb8907a"
+  },
+  "researchInputArchiveSha256": "30821f44d4d5ab5af009bf825941960fe282b975a17d989d4083008e6ebe65d6",
+  "primaryVisitsArchiveSha256": "e9d2ad7375f03cf343a36d557b385cffa3ac52bd8df1b81bfa3c1248bc94e122",
+  "releaseArchiveSha256": "298cc8f57a28ea57f19bc5c7d31d73d6183deeeb96d9389c7e564f066c45854f",
+  "executor": {
+    "id": "7d9508",
+    "model": "gpt-6.2-sol",
+    "reasoning": "medium",
+    "memories": "disabled",
+    "sandbox": "workspace-write",
+    "exit": 0,
+    "rawDispatch": "738e556fbf4c208dda7a5f786aa02084dad7808e2b72e503c399edf021e47c51",
+    "rawAnswer": "35f67e7872b3a0a51e08c3d79599956ecf47e7c9279d4491c808866f0c06e6ba",
+    "rawEvents": "f3262d0dede7006ec0babce4d75aaaf3b85b8eb5362153eae37e40a454155750",
+    "rawFinalSnapshot": "3571094e4d178ca13fcb17303c8c6fd32860c819018d6132e82ebcc555e0afe3",
+    "archiveFilesMatchInitial": true,
+    "sourceAndPermissionsPreserved": true,
+    "seenVersionReferenceInEvents": [
+      "item_5",
+      "item_7"
+    ],
+    "incomingMaterial": "Only the extracted archive, one assignment and the two given Schedule installations.",
+    "countsRealBrowserVisits": {
+      "desk": 1,
+      "hall": 2
+    }
+  },
+  "assessor": {
+    "model": "gpt-6.2-sol",
+    "reasoning": "high",
+    "memories": "disabled",
+    "sandbox": "read-only",
+    "signedTextSha256": "bc773467de22704254e7fd04209efaf3cb1403451433da93da99113ffe826d7a",
+    "rawEventsSha256": "281c8d496e25d7a05dea9731861dbd5e5b6cace853e81d9ca8e6d8a7d467af69",
+    "rawDispatchSha256": "11bf3947a83d53c4e9ba490a3640447d364527e364dd4163d81975442f53abca",
+    "deliveredFiles": {
+      "criteria.md": "7e38183165b7cfe1e15490a59ae4df17b5ea155ccf563e12906ffdf7d005de4a",
+      "7d9508/observations.json": "94fd233fe39a3ba4092996d47c27b8e66ef1942145b72664402a64cfdb3065aa",
+      "7d9508/actions.json": "8e0a8f33459440a8c4893ad47d59815bdcb1a88676ea223c2feef94531d98cee",
+      "7d9508/assignment.md": "439fdd33208794fc65dfe3bf26b4380d645c075dff3292b4b3a074cdb42b81e8",
+      "7d9508/answer.md": "ad438d0eed78ceb431727d200e5860a70aa4b4511b797c41074cd87680805add",
+      "7d9508/hall/package.json": "cb8a67bc17fc6ce67c8d99be8cb67791b40fd00bfc97d3ad5e067222ac00460a",
+      "7d9508/hall/boot.mjs": "ee4681b2415010d3e8b12aca07f6a347ec2eb0e0eade8ce677a5d49bb160d005",
+      "7d9508/hall/view.mjs": "94e41ba07c7dd6d503f2702e75ec58d12cc91bf7cf7094bbaa3c0b080b3a984f",
+      "7d9508/desk/package.json": "0ae0d954d9c1e4963dcba9a62f151492f572f76ad4035b9766c51f9735a862af",
+      "7d9508/desk/boot.mjs": "ee4681b2415010d3e8b12aca07f6a347ec2eb0e0eade8ce677a5d49bb160d005",
+      "7d9508/desk/view.mjs": "94e41ba07c7dd6d503f2702e75ec58d12cc91bf7cf7094bbaa3c0b080b3a984f",
+      "7d9508/desk/dist/index.html": "ca1a55c96ce1c97e238e187668fff0bfef7222e626028d351830b38e7a056185",
+      "7d9508/hall/dist/index.html": "ca1a55c96ce1c97e238e187668fff0bfef7222e626028d351830b38e7a056185"
+    },
+    "operations": [
+      "/bin/bash -lc 'rg --files --hidden'",
+      "/bin/bash -lc 'cat criteria.md 7d9508/assignment.md 7d9508/answer.md'",
+      "/bin/bash -lc 'ls -laR .'",
+      "/bin/bash -lc 'wc -lc 7d9508/actions.json 7d9508/observations.json 7d9508/desk/boot.mjs 7d9508/desk/view.mjs 7d9508/desk/package.json 7d9508/desk/dist/index.html 7d9508/hall/boot.mjs 7d9508/hall/view.mjs 7d9508/hall/package.json 7d9508/hall/dist/index.html'",
+      "/bin/bash -lc 'nl -ba 7d9508/actions.json'",
+      "/bin/bash -lc 'nl -ba 7d9508/answer.md'",
+      "/bin/bash -lc 'nl -ba 7d9508/observations.json'",
+      "/bin/bash -lc \"for f in 7d9508/{desk,hall}/{package.json,boot.mjs,view.mjs,dist/index.html}; do rg -n '\"'^'\"' \\\"\"'$f\"; done'",
+      "/bin/bash -lc 'nl -ba criteria.md'",
+      "/bin/bash -lc 'sha256sum 7d9508/{desk,hall}/{view.mjs,boot.mjs,package.json,dist/index.html}'",
+      "/bin/bash -lc \"rg -n 'initialFilesAndModesPreserved|changed|screenSha256|Chrome|development' 7d9508\""
+    ],
+    "criteriaAndHashesVerifiedAgainstDispatch": true,
+    "variantKeyInPacket": false
+  }
+}

@@ -1,0 +1,6 @@
+--- A/SKILL.md
++++ B/SKILL.md
+@@ -100,2 +100 @@
+-4. Keep generated or materially refined output `non-authoritative` until that resulting version is explicitly authorized.
+-5. Treat outcome- or handoff-changing gaps as blockers; give other assumptions or TBDs an owner or decision trigger.
++4. Treat outcome- or handoff-changing gaps as blockers; give other assumptions or TBDs an owner or decision trigger.

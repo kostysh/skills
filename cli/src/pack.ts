@@ -109,15 +109,13 @@ export async function packSkills(
     const meta = frontmatterSchema.parse(parse(match[1]));
     if (meta.name !== name) throw new Error(`${name}: name does not match SKILL.md.`);
     const files = ['SKILL.md'];
-    for (const dir of ['references', 'assets', 'scripts', 'agents']) {
-      const entry = join(folder, dir);
-      try {
-        await lstat(entry);
-      } catch (error) {
-        if ((error as NodeJS.ErrnoException).code === 'ENOENT') continue;
-        throw error;
+    for (const entry of await readdir(folder, { withFileTypes: true })) {
+      if (['references', 'assets', 'scripts', 'agents'].includes(entry.name)) {
+        files.push(...(await regularFiles(folder, entry.name)));
+      } else if (entry.name === 'LICENSE' || entry.name === 'LICENSE.txt') {
+        if (!entry.isFile()) throw new Error(`${name}: expected a regular file at ${entry.name}.`);
+        files.push(entry.name);
       }
-      files.push(...(await regularFiles(folder, dir)));
     }
     const selected = files.filter(shippable).sort();
     selected.forEach(safeRelative);

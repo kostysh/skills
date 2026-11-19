@@ -1,0 +1,1127 @@
+{
+  "ordinary": {
+    "preview": {
+      "cli": "shadcn 4.23.0",
+      "exit": 0,
+      "output": "┌ shadcn add http://127.0.0.1:46103/button.json (dry run)\n│\n├ Files (1) ~1 overwrite\n│ ~ src/components/ui/button.tsx  overwrite\n│\n⚠ 1 file will be overwritten.\n│\n│ 1 file\n│\n│ Run with --diff to view changes.\n│ Run with --view to view file contents.\n└ Run without --dry-run to apply.\n- Resolving items.\n",
+      "before": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+      "after": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e"
+    },
+    "difference": {
+      "cli": "shadcn 4.23.0",
+      "exit": 0,
+      "output": "┌ shadcn add http://127.0.0.1:46103/button.json (dry run)\n│\n├ src/components/ui/button.tsx (overwrite)\n│ ┌──────────────────────────────────────────────\n│ │ --- a/src/components/ui/button.tsx\n│ │ +++ b/src/components/ui/button.tsx\n│ │ @@ -8,7 +8,6 @@\n│ │    {\n│ │      variants: {\n│ │        variant: {\n│ │ -        brand: \"bg-primary text-primary-foreground font-bold\",\n│ │          default: \"bg-primary text-primary-foreground hover:bg-primary/80\",\n│ │          outline:\n│ │            \"border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50\",\n│ │ @@ -58,6 +57,7 @@\n│ │        data-slot=\"button\"\n│ │        data-variant={variant}\n│ │        data-size={size}\n│ │ +      data-stage=\"ready\"\n│ │        className={cn(buttonVariants({ variant, size, className }))}\n│ │        {...props}\n│ │      />\n│ └──────────────────────────────────────────────\n│\n└ Run without --dry-run to apply.\n- Resolving items.\n",
+      "before": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+      "after": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e"
+    },
+    "compose": {
+      "actions": [
+        {
+          "op": "key",
+          "key": "Tab"
+        },
+        {
+          "op": "key",
+          "key": "Enter"
+        }
+      ],
+      "requested": [
+        {
+          "op": "key",
+          "key": "Tab"
+        },
+        {
+          "op": "key",
+          "key": "Enter"
+        }
+      ],
+      "timeline": [
+        {
+          "action": {
+            "op": "open"
+          },
+          "state": {
+            "heading": "Reed desk",
+            "focused": "BODY",
+            "locationHash": "",
+            "status": "Kept: 0",
+            "controls": [
+              {
+                "id": "open",
+                "tag": "A",
+                "role": null,
+                "label": "Open record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": true,
+                "nested": false
+              },
+              {
+                "id": "save",
+                "tag": "BUTTON",
+                "role": null,
+                "label": "Keep record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": false,
+                "nested": false
+              }
+            ],
+            "tooltips": []
+          }
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Tab"
+          },
+          "state": {
+            "heading": "Reed desk",
+            "focused": "open",
+            "locationHash": "",
+            "status": "Kept: 0",
+            "controls": [
+              {
+                "id": "open",
+                "tag": "A",
+                "role": null,
+                "label": "Open record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": true,
+                "nested": false
+              },
+              {
+                "id": "save",
+                "tag": "BUTTON",
+                "role": null,
+                "label": "Keep record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": false,
+                "nested": false
+              }
+            ],
+            "tooltips": []
+          }
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Enter"
+          },
+          "state": {
+            "heading": "Reed desk",
+            "focused": "BODY",
+            "locationHash": "#record",
+            "status": "Kept: 0",
+            "controls": [
+              {
+                "id": "open",
+                "tag": "A",
+                "role": null,
+                "label": "Open record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": true,
+                "nested": false
+              },
+              {
+                "id": "save",
+                "tag": "BUTTON",
+                "role": null,
+                "label": "Keep record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": false,
+                "nested": false
+              }
+            ],
+            "tooltips": []
+          }
+        }
+      ],
+      "error": null,
+      "screenSha256": "765029fbb4338cc73e6ce4bc929347cc16eb5387673e44369e55abd246cb0bad"
+    },
+    "save": {
+      "actions": [
+        {
+          "op": "key",
+          "key": "Tab"
+        },
+        {
+          "op": "key",
+          "key": "Tab"
+        },
+        {
+          "op": "key",
+          "key": " "
+        },
+        {
+          "op": "look"
+        }
+      ],
+      "requested": [
+        {
+          "op": "key",
+          "key": "Tab"
+        },
+        {
+          "op": "key",
+          "key": "Tab"
+        },
+        {
+          "op": "key",
+          "key": " "
+        },
+        {
+          "op": "look"
+        }
+      ],
+      "timeline": [
+        {
+          "action": {
+            "op": "open"
+          },
+          "state": {
+            "heading": "Reed desk",
+            "focused": "BODY",
+            "locationHash": "",
+            "status": "Kept: 0",
+            "controls": [
+              {
+                "id": "open",
+                "tag": "A",
+                "role": null,
+                "label": "Open record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": true,
+                "nested": false
+              },
+              {
+                "id": "save",
+                "tag": "BUTTON",
+                "role": null,
+                "label": "Keep record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": false,
+                "nested": false
+              }
+            ],
+            "tooltips": []
+          }
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Tab"
+          },
+          "state": {
+            "heading": "Reed desk",
+            "focused": "open",
+            "locationHash": "",
+            "status": "Kept: 0",
+            "controls": [
+              {
+                "id": "open",
+                "tag": "A",
+                "role": null,
+                "label": "Open record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": true,
+                "nested": false
+              },
+              {
+                "id": "save",
+                "tag": "BUTTON",
+                "role": null,
+                "label": "Keep record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": false,
+                "nested": false
+              }
+            ],
+            "tooltips": []
+          }
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Tab"
+          },
+          "state": {
+            "heading": "Reed desk",
+            "focused": "save",
+            "locationHash": "",
+            "status": "Kept: 0",
+            "controls": [
+              {
+                "id": "open",
+                "tag": "A",
+                "role": null,
+                "label": "Open record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": true,
+                "nested": false
+              },
+              {
+                "id": "save",
+                "tag": "BUTTON",
+                "role": null,
+                "label": "Keep record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": false,
+                "nested": false
+              }
+            ],
+            "tooltips": []
+          }
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": " "
+          },
+          "state": {
+            "heading": "Reed desk",
+            "focused": "save",
+            "locationHash": "",
+            "status": "Kept: 1",
+            "controls": [
+              {
+                "id": "open",
+                "tag": "A",
+                "role": null,
+                "label": "Open record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": true,
+                "nested": false
+              },
+              {
+                "id": "save",
+                "tag": "BUTTON",
+                "role": null,
+                "label": "Keep record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": false,
+                "nested": false
+              }
+            ],
+            "tooltips": []
+          }
+        },
+        {
+          "action": {
+            "op": "look"
+          },
+          "state": {
+            "heading": "Reed desk",
+            "focused": "save",
+            "locationHash": "",
+            "status": "Kept: 1",
+            "controls": [
+              {
+                "id": "open",
+                "tag": "A",
+                "role": null,
+                "label": "Open record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": true,
+                "nested": false
+              },
+              {
+                "id": "save",
+                "tag": "BUTTON",
+                "role": null,
+                "label": "Keep record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": false,
+                "nested": false
+              }
+            ],
+            "tooltips": []
+          }
+        }
+      ],
+      "error": null,
+      "screenSha256": "418d5170fb870f059da36effa855358ea8aeecf4ffd9c404c6325dccbd8e2866"
+    }
+  },
+  "boundary": {
+    "preview": {
+      "cli": "shadcn 4.23.0",
+      "exit": 0,
+      "output": "┌ shadcn add http://127.0.0.1:46103/button.json (dry run)\n│\n├ Files (1) ~1 overwrite\n│ ~ src/components/ui/button.tsx  overwrite\n│\n⚠ 1 file will be overwritten.\n│\n│ 1 file\n│\n│ Run with --diff to view changes.\n│ Run with --view to view file contents.\n└ Run without --dry-run to apply.\n- Resolving items.\n",
+      "before": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+      "after": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e"
+    },
+    "difference": {
+      "cli": "shadcn 4.23.0",
+      "exit": 0,
+      "output": "┌ shadcn add http://127.0.0.1:46103/button.json (dry run)\n│\n├ src/components/ui/button.tsx (overwrite)\n│ ┌──────────────────────────────────────────────\n│ │ --- a/src/components/ui/button.tsx\n│ │ +++ b/src/components/ui/button.tsx\n│ │ @@ -8,7 +8,6 @@\n│ │    {\n│ │      variants: {\n│ │        variant: {\n│ │ -        brand: \"bg-primary text-primary-foreground font-bold\",\n│ │          default: \"bg-primary text-primary-foreground hover:bg-primary/80\",\n│ │          outline:\n│ │            \"border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50\",\n│ │ @@ -58,6 +57,7 @@\n│ │        data-slot=\"button\"\n│ │        data-variant={variant}\n│ │        data-size={size}\n│ │ +      data-stage=\"ready\"\n│ │        className={cn(buttonVariants({ variant, size, className }))}\n│ │        {...props}\n│ │      />\n│ └──────────────────────────────────────────────\n│\n└ Run without --dry-run to apply.\n- Resolving items.\n",
+      "before": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+      "after": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e"
+    },
+    "compose": {
+      "actions": [
+        {
+          "op": "key",
+          "key": "Tab"
+        },
+        {
+          "op": "key",
+          "key": "Enter"
+        }
+      ],
+      "requested": [
+        {
+          "op": "key",
+          "key": "Tab"
+        },
+        {
+          "op": "key",
+          "key": "Enter"
+        }
+      ],
+      "timeline": [
+        {
+          "action": {
+            "op": "open"
+          },
+          "state": {
+            "heading": "Larch desk",
+            "focused": "BODY",
+            "locationHash": "",
+            "status": "Kept: 0",
+            "controls": [
+              {
+                "id": "open",
+                "tag": "A",
+                "role": null,
+                "label": "Open record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "500",
+                "composed": true,
+                "nested": false
+              },
+              {
+                "id": "save",
+                "tag": "BUTTON",
+                "role": null,
+                "label": "Keep record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "500",
+                "composed": false,
+                "nested": false
+              }
+            ],
+            "tooltips": []
+          }
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Tab"
+          },
+          "state": {
+            "heading": "Larch desk",
+            "focused": "open",
+            "locationHash": "",
+            "status": "Kept: 0",
+            "controls": [
+              {
+                "id": "open",
+                "tag": "A",
+                "role": null,
+                "label": "Open record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "500",
+                "composed": true,
+                "nested": false
+              },
+              {
+                "id": "save",
+                "tag": "BUTTON",
+                "role": null,
+                "label": "Keep record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "500",
+                "composed": false,
+                "nested": false
+              }
+            ],
+            "tooltips": []
+          }
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Enter"
+          },
+          "state": {
+            "heading": "Larch desk",
+            "focused": "BODY",
+            "locationHash": "#record",
+            "status": "Kept: 0",
+            "controls": [
+              {
+                "id": "open",
+                "tag": "A",
+                "role": null,
+                "label": "Open record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "500",
+                "composed": true,
+                "nested": false
+              },
+              {
+                "id": "save",
+                "tag": "BUTTON",
+                "role": null,
+                "label": "Keep record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "500",
+                "composed": false,
+                "nested": false
+              }
+            ],
+            "tooltips": []
+          }
+        }
+      ],
+      "error": null,
+      "screenSha256": "4bb01f9001de38bd3468fcd5ea5e66b5370e6a1b45defec5a638aef09dc5b36c"
+    },
+    "save": {
+      "actions": [
+        {
+          "op": "key",
+          "key": "Tab"
+        },
+        {
+          "op": "key",
+          "key": "Tab"
+        },
+        {
+          "op": "key",
+          "key": " "
+        },
+        {
+          "op": "look"
+        }
+      ],
+      "requested": [
+        {
+          "op": "key",
+          "key": "Tab"
+        },
+        {
+          "op": "key",
+          "key": "Tab"
+        },
+        {
+          "op": "key",
+          "key": " "
+        },
+        {
+          "op": "look"
+        }
+      ],
+      "timeline": [
+        {
+          "action": {
+            "op": "open"
+          },
+          "state": {
+            "heading": "Larch desk",
+            "focused": "BODY",
+            "locationHash": "",
+            "status": "Kept: 0",
+            "controls": [
+              {
+                "id": "open",
+                "tag": "A",
+                "role": null,
+                "label": "Open record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "500",
+                "composed": true,
+                "nested": false
+              },
+              {
+                "id": "save",
+                "tag": "BUTTON",
+                "role": null,
+                "label": "Keep record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "500",
+                "composed": false,
+                "nested": false
+              }
+            ],
+            "tooltips": []
+          }
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Tab"
+          },
+          "state": {
+            "heading": "Larch desk",
+            "focused": "open",
+            "locationHash": "",
+            "status": "Kept: 0",
+            "controls": [
+              {
+                "id": "open",
+                "tag": "A",
+                "role": null,
+                "label": "Open record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "500",
+                "composed": true,
+                "nested": false
+              },
+              {
+                "id": "save",
+                "tag": "BUTTON",
+                "role": null,
+                "label": "Keep record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "500",
+                "composed": false,
+                "nested": false
+              }
+            ],
+            "tooltips": []
+          }
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Tab"
+          },
+          "state": {
+            "heading": "Larch desk",
+            "focused": "save",
+            "locationHash": "",
+            "status": "Kept: 0",
+            "controls": [
+              {
+                "id": "open",
+                "tag": "A",
+                "role": null,
+                "label": "Open record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "500",
+                "composed": true,
+                "nested": false
+              },
+              {
+                "id": "save",
+                "tag": "BUTTON",
+                "role": null,
+                "label": "Keep record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "500",
+                "composed": false,
+                "nested": false
+              }
+            ],
+            "tooltips": []
+          }
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": " "
+          },
+          "state": {
+            "heading": "Larch desk",
+            "focused": "save",
+            "locationHash": "",
+            "status": "Kept: 1",
+            "controls": [
+              {
+                "id": "open",
+                "tag": "A",
+                "role": null,
+                "label": "Open record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "500",
+                "composed": true,
+                "nested": false
+              },
+              {
+                "id": "save",
+                "tag": "BUTTON",
+                "role": null,
+                "label": "Keep record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "500",
+                "composed": false,
+                "nested": false
+              }
+            ],
+            "tooltips": []
+          }
+        },
+        {
+          "action": {
+            "op": "look"
+          },
+          "state": {
+            "heading": "Larch desk",
+            "focused": "save",
+            "locationHash": "",
+            "status": "Kept: 1",
+            "controls": [
+              {
+                "id": "open",
+                "tag": "A",
+                "role": null,
+                "label": "Open record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "500",
+                "composed": true,
+                "nested": false
+              },
+              {
+                "id": "save",
+                "tag": "BUTTON",
+                "role": null,
+                "label": "Keep record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "500",
+                "composed": false,
+                "nested": false
+              }
+            ],
+            "tooltips": []
+          }
+        }
+      ],
+      "error": null,
+      "screenSha256": "f4139eb8aab63723aa232d8b29dcd40b1a13f52611c6f0d7ccc1b8f7f31e4e8b"
+    }
+  },
+  "holdout": {
+    "preview": {
+      "cli": "shadcn 4.23.0",
+      "exit": 0,
+      "output": "┌ shadcn add http://127.0.0.1:46103/button.json (dry run)\n│\n├ Files (1) ~1 overwrite\n│ ~ src/components/ui/button.tsx  overwrite\n│\n⚠ 1 file will be overwritten.\n│\n│ 1 file\n│\n│ Run with --diff to view changes.\n│ Run with --view to view file contents.\n└ Run without --dry-run to apply.\n- Resolving items.\n",
+      "before": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+      "after": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e"
+    },
+    "difference": {
+      "cli": "shadcn 4.23.0",
+      "exit": 0,
+      "output": "┌ shadcn add http://127.0.0.1:46103/button.json (dry run)\n│\n├ src/components/ui/button.tsx (overwrite)\n│ ┌──────────────────────────────────────────────\n│ │ --- a/src/components/ui/button.tsx\n│ │ +++ b/src/components/ui/button.tsx\n│ │ @@ -8,7 +8,6 @@\n│ │    {\n│ │      variants: {\n│ │        variant: {\n│ │ -        brand: \"bg-primary text-primary-foreground font-bold\",\n│ │          default: \"bg-primary text-primary-foreground hover:bg-primary/80\",\n│ │          outline:\n│ │            \"border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50\",\n│ │ @@ -58,6 +57,7 @@\n│ │        data-slot=\"button\"\n│ │        data-variant={variant}\n│ │        data-size={size}\n│ │ +      data-stage=\"ready\"\n│ │        className={cn(buttonVariants({ variant, size, className }))}\n│ │        {...props}\n│ │      />\n│ └──────────────────────────────────────────────\n│\n└ Run without --dry-run to apply.\n- Resolving items.\n",
+      "before": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e",
+      "after": "f49a8e27c68ea5598761efcd2a94dea8d8e3d4f3509e091031b6ad1c0682077e"
+    },
+    "compose": {
+      "actions": [
+        {
+          "op": "key",
+          "key": "Tab"
+        },
+        {
+          "op": "key",
+          "key": "Enter"
+        }
+      ],
+      "requested": [
+        {
+          "op": "key",
+          "key": "Tab"
+        },
+        {
+          "op": "key",
+          "key": "Enter"
+        }
+      ],
+      "timeline": [
+        {
+          "action": {
+            "op": "open"
+          },
+          "state": {
+            "heading": "Willow desk",
+            "focused": "BODY",
+            "locationHash": "",
+            "status": "Kept: 0",
+            "controls": [
+              {
+                "id": "open",
+                "tag": "A",
+                "role": null,
+                "label": "Open record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": true,
+                "nested": false
+              },
+              {
+                "id": "save",
+                "tag": "DIV",
+                "role": "button",
+                "label": "Keep record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": false,
+                "nested": false
+              }
+            ],
+            "tooltips": []
+          }
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Tab"
+          },
+          "state": {
+            "heading": "Willow desk",
+            "focused": "open",
+            "locationHash": "",
+            "status": "Kept: 0",
+            "controls": [
+              {
+                "id": "open",
+                "tag": "A",
+                "role": null,
+                "label": "Open record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": true,
+                "nested": false
+              },
+              {
+                "id": "save",
+                "tag": "DIV",
+                "role": "button",
+                "label": "Keep record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": false,
+                "nested": false
+              }
+            ],
+            "tooltips": []
+          }
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Enter"
+          },
+          "state": {
+            "heading": "Willow desk",
+            "focused": "BODY",
+            "locationHash": "#record",
+            "status": "Kept: 0",
+            "controls": [
+              {
+                "id": "open",
+                "tag": "A",
+                "role": null,
+                "label": "Open record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": true,
+                "nested": false
+              },
+              {
+                "id": "save",
+                "tag": "DIV",
+                "role": "button",
+                "label": "Keep record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": false,
+                "nested": false
+              }
+            ],
+            "tooltips": []
+          }
+        }
+      ],
+      "error": null,
+      "screenSha256": "b4130f6526ef5bd6d718cfcfbc499b96c92d19e2317c2ff7878a214952123deb"
+    },
+    "save": {
+      "actions": [
+        {
+          "op": "key",
+          "key": "Tab"
+        },
+        {
+          "op": "key",
+          "key": "Tab"
+        },
+        {
+          "op": "key",
+          "key": " "
+        },
+        {
+          "op": "look"
+        }
+      ],
+      "requested": [
+        {
+          "op": "key",
+          "key": "Tab"
+        },
+        {
+          "op": "key",
+          "key": "Tab"
+        },
+        {
+          "op": "key",
+          "key": " "
+        },
+        {
+          "op": "look"
+        }
+      ],
+      "timeline": [
+        {
+          "action": {
+            "op": "open"
+          },
+          "state": {
+            "heading": "Willow desk",
+            "focused": "BODY",
+            "locationHash": "",
+            "status": "Kept: 0",
+            "controls": [
+              {
+                "id": "open",
+                "tag": "A",
+                "role": null,
+                "label": "Open record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": true,
+                "nested": false
+              },
+              {
+                "id": "save",
+                "tag": "DIV",
+                "role": "button",
+                "label": "Keep record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": false,
+                "nested": false
+              }
+            ],
+            "tooltips": []
+          }
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Tab"
+          },
+          "state": {
+            "heading": "Willow desk",
+            "focused": "open",
+            "locationHash": "",
+            "status": "Kept: 0",
+            "controls": [
+              {
+                "id": "open",
+                "tag": "A",
+                "role": null,
+                "label": "Open record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": true,
+                "nested": false
+              },
+              {
+                "id": "save",
+                "tag": "DIV",
+                "role": "button",
+                "label": "Keep record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": false,
+                "nested": false
+              }
+            ],
+            "tooltips": []
+          }
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": "Tab"
+          },
+          "state": {
+            "heading": "Willow desk",
+            "focused": "save",
+            "locationHash": "",
+            "status": "Kept: 0",
+            "controls": [
+              {
+                "id": "open",
+                "tag": "A",
+                "role": null,
+                "label": "Open record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": true,
+                "nested": false
+              },
+              {
+                "id": "save",
+                "tag": "DIV",
+                "role": "button",
+                "label": "Keep record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": false,
+                "nested": false
+              }
+            ],
+            "tooltips": []
+          }
+        },
+        {
+          "action": {
+            "op": "key",
+            "key": " "
+          },
+          "state": {
+            "heading": "Willow desk",
+            "focused": "save",
+            "locationHash": "",
+            "status": "Kept: 0",
+            "controls": [
+              {
+                "id": "open",
+                "tag": "A",
+                "role": null,
+                "label": "Open record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": true,
+                "nested": false
+              },
+              {
+                "id": "save",
+                "tag": "DIV",
+                "role": "button",
+                "label": "Keep record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": false,
+                "nested": false
+              }
+            ],
+            "tooltips": []
+          }
+        },
+        {
+          "action": {
+            "op": "look"
+          },
+          "state": {
+            "heading": "Willow desk",
+            "focused": "save",
+            "locationHash": "",
+            "status": "Kept: 0",
+            "controls": [
+              {
+                "id": "open",
+                "tag": "A",
+                "role": null,
+                "label": "Open record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": true,
+                "nested": false
+              },
+              {
+                "id": "save",
+                "tag": "DIV",
+                "role": "button",
+                "label": "Keep record",
+                "stage": "ready",
+                "theme": "brand",
+                "weight": "700",
+                "composed": false,
+                "nested": false
+              }
+            ],
+            "tooltips": []
+          }
+        }
+      ],
+      "error": null,
+      "screenSha256": "eda73e779b61298ad3690f9f8d6517a1ab1bf1d9f8416dbc039c1ec6e286394b"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "typescript": {
+    "exit": 0,
+    "output": ""
+  },
+  "vite": {
+    "exit": 0,
+    "output": "vite v8.2.2 building client environment for production...\ntransforming...\n✓ 123 modules transformed.\nrendering chunks...\ncomputing gzip size...\ndist/index.html                                              0.28 kB │ gzip:  0.21 kB\ndist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2    7.42 kB\ndist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2      8.00 kB\ndist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2       15.08 kB\ndist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2      16.51 kB\ndist/assets/geist-latin-wght-normal-BgDaEnEv.woff2          29.40 kB\ndist/assets/index-Bg09D6_j.css                              21.68 kB │ gzip:  4.68 kB\ndist/assets/index-1RJmZYmD.js                              223.79 kB │ gzip: 73.29 kB\n\n✓ built in 104ms\n(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - `__dirname` (vite.config.ts:11:27). Use `import.meta.dirname` instead\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\n"
+  }
+}

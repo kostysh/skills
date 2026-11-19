@@ -49,7 +49,7 @@ Portable heuristic baseline, synchronized with the upstream `command.md` at revi
 - `<button>` for actions, `<a>`/`<Link>` for navigation (not `<div onClick>`)
 - Images need `alt` (or `alt=""` if decorative)
 - Decorative icons need `aria-hidden="true"`
-- Async updates (toasts, validation) need `aria-live="polite"`
+- For status messages that appear without taking focus, check that assistive technology can identify the update. A status role can communicate progress and success.
 - Use semantic HTML (`<button>`, `<a>`, `<label>`, `<table>`) before ARIA
 - Headings hierarchical `<h1>`–`<h6>`; include skip link for main content
 - `scroll-margin-top` on heading anchors
@@ -75,13 +75,13 @@ Portable heuristic baseline, synchronized with the upstream `command.md` at revi
 - Labels clickable (`htmlFor` or wrapping control)
 - Disable spellcheck on emails, codes, usernames (`spellCheck={false}`)
 - Checkboxes/radios: label + control share single hit target (no dead zones)
-- Submit button stays enabled until request starts; spinner during request
+- Check that users can tell when a submission is in progress and when they can act again.
 - Errors inline next to fields; focus first error on submit
 - Placeholders end with `…` and show example pattern
 - Use the correct `autocomplete` purpose token for personal or authentication data; for unrelated fields that trigger password managers incorrectly, use a specific non-auth token or `autocomplete="off"` only when appropriate
-- Warn before navigation with unsaved changes (`beforeunload` or router guard)
+- Check what happens to edits on navigation or reload. Report a missing warning when the product requires one, or describe the observed loss and its impact when those expectations are unclear.
 - Mutation forms preserve entered values on server/network error and clear only after success
-- Pending submit buttons expose `aria-busy="true"` while the request is active
+- `aria-busy` can defer announcements while a region changes. For a pending button, assess the feedback users receive and any explicit component requirement.
 - Repeated field/error ids are stable per component instance; use `useId` or equivalent, not hardcoded ids reused across rows/forms
 
 ### OTP and One-Time Code UI
@@ -209,7 +209,7 @@ Apply these as findings only when an accepted product or style source adopts the
 - Lists with measured or clearly demonstrated rendering cost and no suitable containment or virtualization
 - Form inputs without labels
 - Icon buttons without `aria-label`
-- Pending buttons without `aria-busy`
+- Submission progress or results that users cannot perceive
 - Reused hardcoded ids for field help/error text
 - Mutation forms clearing user input on error
 - OTP failures clearing digits with no recovery path

@@ -1,0 +1,40 @@
+[
+  {
+    "role": "A",
+    "case": "holdout",
+    "label": "22c7b1",
+    "receipt": "record-25c8882556"
+  },
+  {
+    "role": "C",
+    "case": "boundary",
+    "label": "38d330",
+    "receipt": "record-b1d3a40f88"
+  },
+  {
+    "role": "A",
+    "case": "ordinary",
+    "label": "c3c32b",
+    "receipt": "record-bda75878db",
+    "original_label": "1f103a"
+  },
+  {
+    "role": "A",
+    "case": "boundary",
+    "label": "22bc54",
+    "receipt": "record-5b36d7328e",
+    "original_label": "81bd1b"
+  },
+  {
+    "role": "C",
+    "case": "holdout",
+    "label": "9ac4ff",
+    "receipt": "record-763450017e"
+  },
+  {
+    "role": "C",
+    "case": "ordinary",
+    "label": "4b527e",
+    "receipt": "record-4412860e5c"
+  }
+]

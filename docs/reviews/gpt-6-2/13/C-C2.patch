@@ -1,0 +1,5 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -222 +222 @@
+-- **high** — Verify success and failure through the reader's supported entry point. Identify any tested workaround separately.
++- **high** — Test the reader's supported entry point for success and relevant errors. If it fails, tell the reader what must change for that path to work. Offer a tested workaround when it fits the task and state its limits.

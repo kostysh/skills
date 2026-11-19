@@ -1,0 +1,85 @@
+{
+  "process": {
+    "node": "v24.22.3",
+    "npm": "12.0.1",
+    "args": [
+      "npm",
+      "ci",
+      "--prefix",
+      "materials",
+      "--no-audit",
+      "--no-fund",
+      "--offline",
+      "--cache",
+      "<cache of npm registry packages>"
+    ],
+    "exit": 0,
+    "stdout": "\nadded 136 packages in 1s\n",
+    "stderr": "npm warn deprecated @esbuild-kit/esm-loader@2.6.5: Merged into tsx: https://tsx.hirok.io\nnpm warn deprecated @esbuild-kit/core-utils@3.3.2: Merged into tsx: https://tsx.hirok.io\nnpm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead\nnpm warn install-scripts 3 packages had install scripts blocked because they are not covered by allowScripts:\nnpm warn install-scripts   esbuild@0.18.20 (postinstall: node install.js)\nnpm warn install-scripts   esbuild@0.25.12 (postinstall: node install.js)\nnpm warn install-scripts   esbuild@0.28.2 (postinstall: node install.js)\nnpm warn install-scripts\nnpm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.\n"
+  },
+  "lockedDependencySHA256": "36f6560d7e738daee00e74356fa1bec06c349b492289c8a17e6e1f1ca56378a7",
+  "verificationCommand": "node verify-os47.mjs",
+  "verificationExit": 0,
+  "verificationReportSHA256": "536c9751f0c602fc11557ca91fa0cb426e3c7338593063599a796427e6211a62",
+  "matchedBothPreviousRuns": true,
+  "signal": "SIGKILL",
+  "interruptedCheckpointCards": [],
+  "resumeActions": {
+    "sha256": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+    "counts": {
+      "sections": {
+        "created": 0,
+        "recovered": 0,
+        "skipped": 2
+      },
+      "records": {
+        "created": 3,
+        "recovered": 1,
+        "skipped": 0
+      }
+    },
+    "failed": 0
+  },
+  "repeatActions": {
+    "sha256": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+    "counts": {
+      "sections": {
+        "created": 0,
+        "recovered": 0,
+        "skipped": 2
+      },
+      "records": {
+        "created": 0,
+        "recovered": 0,
+        "skipped": 4
+      }
+    },
+    "failed": 0
+  },
+  "east": [
+    {
+      "id": 1,
+      "sourceKey": "LOCAL-01",
+      "title": "Местная запись",
+      "desk": "east",
+      "state": "issued",
+      "section": 1
+    },
+    {
+      "id": 2,
+      "sourceKey": "C-111",
+      "title": "Акт смены",
+      "desk": "east",
+      "state": "issued",
+      "section": 3
+    },
+    {
+      "id": 4,
+      "sourceKey": "C-113",
+      "title": "Акт смены",
+      "desk": "east",
+      "state": "issued",
+      "section": 2
+    }
+  ]
+}

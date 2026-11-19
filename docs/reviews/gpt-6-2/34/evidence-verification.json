@@ -1,0 +1,36 @@
+{
+  "evidenceChecked": {
+    "primary": {
+      "uniqueExecutors": 8,
+      "rawFilesRead": 56,
+      "inputsRead": 61,
+      "scorerDocumentAndEventsMatched": true
+    },
+    "focus": {
+      "uniqueExecutors": 7,
+      "rawFilesRead": 46,
+      "inputsRead": 93,
+      "scorerDocumentAndEventsMatched": true
+    },
+    "typed": {
+      "uniqueExecutors": 4,
+      "rawFilesRead": 28,
+      "inputsRead": 61,
+      "scorerDocumentAndEventsMatched": true
+    },
+    "supplement-first": {
+      "hashesOfGraderInputsVerified": 131,
+      "signedReportAndEventsMatched": true
+    },
+    "supplement-final": {
+      "hashesOfGraderInputsVerified": 92,
+      "signedReportAndEventsMatched": true
+    }
+  },
+  "authoredFilesWithLinksChecked": 9,
+  "localLinksResolvedExcludingSelfIndex": 101,
+  "applicationsArchiveBytes": 408833,
+  "activeArchiveBytes": 15938,
+  "activeFilesRechecked": 10,
+  "all": true
+}

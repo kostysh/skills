@@ -1,0 +1,407 @@
+{
+  "variant": "C",
+  "case": "holdout",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПримени ./SKILL.md. Владелец просит выполнить разрешённую репетицию импорта на предоставленной версии и решить, можно ли передавать её дежурной смене. Воспроизведи восстановление после прерывания и повторную штатную работу с тем же источником. Используй выданные условия, собственное рабочее место из workplace.md и считываемый получателем результат. В ответе покажи решение и границы. Изменение кода не поручалось.\n",
+  "input_file_sha256": {
+    "SKILL.md": "a77e8c800102deccbfae8c85ac88630d356ec9569066a9833417897a1a2bdf9c",
+    "agents/openai.yaml": "e1db640a3706e0d13e8250aa4f9a3930c72104fb5dbf4760672d395e5325b0b4",
+    "references/payload-field-reference.md": "d6dbd6fbf642f48ce157470810efb31e53b88347ccd8ba72cd0c3f930248ebf6",
+    "release/edition.mjs": "79e0c1bf20b20204575a75d94af435d1b184c35dc69c5189f7cd705930b16738",
+    "release/package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+    "source/acceptance.md": "6acdb9f5f193cc181f0fda8c64456594030f5dcfcd623c840eaea6590c4e74df",
+    "source/export.json": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+    "workplace.md": "a927c3174fe2298410442ff445d21d6a2b1402441850854d2458a083f7307387"
+  },
+  "raw_events_sha256": "f1ae41da70a10a5b6701fe2466205ec7ff05c5a5b2d499480b22485a842c1fdd",
+  "raw_events_bytes": 68812,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Применю `./SKILL.md`. Сначала прочитаю условия репетиции и `workplace.md`, затем проверю восстановление и повторный импорт."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"pwd\nrg --files --hidden -g '\"'!.git'\"'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat SKILL.md workplace.md source/acceptance.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat release/package.json\nwc -l release/edition.mjs source/export.json references/payload-field-reference.md\nls -la'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat source/export.json release/edition.mjs\nsha256sum source/export.json release/edition.mjs'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"rg -n '\"'^(#{1,4} )'\"' references/payload-field-reference.md\ncat agents/openai.yaml\nls -la release\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"sed -n '1,60p;250,313p;350,409p;962,1007p' references/payload-field-reference.md\ncat -n workplace.md source/acceptance.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python3 - <<'PY'\nimport json\nimport re\nfrom pathlib import Path\nfrom urllib.request import Request, ProxyHandler, build_opener\n\nbase = \\\"http://127.0.0.1:32849/amber\\\"\nclient = build_opener(ProxyHandler({}))\nevidence = {}\n\ndef call(label, url, method=\\\"GET\\\"):\n    request = Request(url, data=b\\\"\\\" if method == \\\"POST\\\" else None, method=method)\n    with client.open(request, timeout=45) as response:\n        body = json.load(response)\n        evidence[label] = {\\\"http\\\": response.status, \\\"body\\\": body}\n    print(label, json.dumps(body, ensure_ascii=False), flush=True)\n    return body\n\ntry:\n    session = call(\\\"session\\\", f\\\"{base}/sessions\\\", \\\"POST\\\")[\\\"session\\\"]\n    if not re.fullmatch(r\\\"[A-Za-z0-9_-]+\\\", session):\n        raise ValueError(\\\"Unexpected session format\\\")\n    url = f\\\"{base}/{session}\\\"\n    call(\\\"baseline_inspect\\\", f\\\"{url}/inspect\\\")\n    call(\\\"baseline_read\\\", f\\\"{url}/read\\\")\n    call(\\\"interrupt\\\", f\\\"{url}/interrupt\\\", \\\"POST\\\")\n    call(\\\"interrupted_inspect\\\", f\\\"{url}/inspect\\\")\n    call(\\\"recover\\\", f\\\"{url}/resume\\\", \\\"POST\\\")\n    call(\\\"recovered_inspect\\\", f\\\"{url}/inspect\\\")\n    call(\\\"recovered_read\\\", f\\\"{url}/read\\\")\n    call(\\\"repeat\\\", f\\\"{url}/resume\\\", \\\"POST\\\")\n    call(\\\"repeated_inspect\\\", f\\\"{url}/inspect\\\")\n    call(\\\"repeated_read\\\", f\\\"{url}/read\\\")\nfinally:\n    Path(\\\"amber-evidence.json\\\").write_text(\n        json.dumps(evidence, ensure_ascii=False, indent=2) + \\\"\\\\n\\\", encoding=\\\"utf-8\\\"\n    )\nPY\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "После восстановления на месте все четыре карточки. Обычное чтение оператора `east` показало, что `C-113` привязана к `S-B`. Повторный импорт сохранил эту связь, хотя в экспорте указана `S-A`. Сверю остальные записи и их ID."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"sha256sum source/export.json release/edition.mjs\nnl -ba release/edition.mjs | sed -n '45,72p'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python3 - <<'PY'\nimport json\nfrom pathlib import Path\nfrom collections import Counter\n\npath = Path(\\\"amber-evidence.json\\\")\ncapture = json.loads(path.read_text())\nassert all(result[\\\"http\\\"] == 200 for result in capture.values())\nsource = json.loads(Path(\\\"source/export.json\\\").read_text())\ndef body(stage):\n    return capture[stage][\\\"body\\\"]\ndef index(rows):\n    return {row[\\\"sourceKey\\\"]: row for row in rows}\n\nbaseline = body(\\\"baseline_inspect\\\")\ninterrupted = body(\\\"interrupted_inspect\\\")\nrecovered = body(\\\"recovered_inspect\\\")\nrepeated = body(\\\"repeated_inspect\\\")\nassert interrupted[\\\"checkpoint\\\"] == []\nassert Counter(row[\\\"sourceKey\\\"] for row in interrupted[\\\"records\\\"]) == Counter([\\\"LOCAL-01\\\", \\\"C-111\\\"])\nassert recovered == repeated\nassert set(recovered[\\\"checkpoint\\\"]) == {row[\\\"key\\\"] for row in source[\\\"records\\\"]}\nfor collection in (\\\"sections\\\", \\\"records\\\"):\n    local = baseline[collection]\n    seen = repeated[collection]\n    assert Counter(row[\\\"sourceKey\\\"] for row in seen) == Counter(\n        [row[\\\"sourceKey\\\"] for row in local] + [row[\\\"key\\\"] for row in source[collection]]\n    )\n    final_by_key = index(seen)\n    assert all(final_by_key[row[\\\"sourceKey\\\"]] == row for row in interrupted[collection])\n    assert all(final_by_key[row[\\\"sourceKey\\\"]] == row for row in local)\n    for row in source[collection]:\n        actual = final_by_key[row[\\\"key\\\"]]\n        assert all(actual[field] == row[field] for field in (\\\"title\\\", \\\"desk\\\", \\\"state\\\") if field in row)\n\nsections = index(repeated[\\\"sections\\\"])\nrecords = index(repeated[\\\"records\\\"])\ndifferences = [\n    (row[\\\"key\\\"], row[\\\"section\\\"], sections[row[\\\"section\\\"]][\\\"id\\\"], records[row[\\\"key\\\"]][\\\"sectionKey\\\"], records[row[\\\"key\\\"]][\\\"sectionID\\\"])\n    for row in source[\\\"records\\\"]\n    if records[row[\\\"key\\\"]][\\\"sectionID\\\"] \"'!= sections[row[\"section\"]][\"id\"]\n]\nassert differences == [(\"C-113\", \"S-A\", 2, \"S-B\", 3)]\nfor stage, state in ((\"baseline\", baseline), (\"recovered\", recovered), (\"repeated\", repeated)):\n    read = body(f\"{stage}_read\")\n    assert read[\"actor\"] == \"east\"\n    assert read[\"records\"] == [row for row in state[\"records\"] if row[\"desk\"] == \"east\" and row[\"state\"] == \"issued\"]\nprint(\"Verified all source and local keys, counts, fields, IDs, relations, checkpoint and operator visibility.\")\nprint(\"Relation mismatch (key, expected section and ID, observed section and ID):\", differences)\ncapture[\"session\"][\"body\"][\"session\"] = \"[redacted]\"\npath.write_text(json.dumps(capture, ensure_ascii=False, indent=2) + \"'\"\\\\n\\\")\nPY\"",
+      "exit_code": 1,
+      "status": "failed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python3 - <<'PY'\nimport json\nfrom pathlib import Path\nfrom collections import Counter\n\npath = Path(\\\"amber-evidence.json\\\")\ncapture = json.loads(path.read_text())\nprint({stage: item[\\\"http\\\"] for stage, item in capture.items()})\nassert all(200 <= item[\\\"http\\\"] < 300 for item in capture.values())\nsource = json.loads(Path(\\\"source/export.json\\\").read_text())\ndef body(stage):\n    return capture[stage][\\\"body\\\"]\ndef index(rows):\n    return {row[\\\"sourceKey\\\"]: row for row in rows}\n\nbaseline = body(\\\"baseline_inspect\\\")\ninterrupted = body(\\\"interrupted_inspect\\\")\nrecovered = body(\\\"recovered_inspect\\\")\nrepeated = body(\\\"repeated_inspect\\\")\nassert interrupted[\\\"checkpoint\\\"] == []\nassert Counter(row[\\\"sourceKey\\\"] for row in interrupted[\\\"records\\\"]) == Counter([\\\"LOCAL-01\\\", \\\"C-111\\\"])\nassert recovered == repeated\nassert set(recovered[\\\"checkpoint\\\"]) == {row[\\\"key\\\"] for row in source[\\\"records\\\"]}\nfor collection in (\\\"sections\\\", \\\"records\\\"):\n    seen = repeated[collection]\n    assert Counter(row[\\\"sourceKey\\\"] for row in seen) == Counter(\n        [row[\\\"sourceKey\\\"] for row in baseline[collection]] + [row[\\\"key\\\"] for row in source[collection]]\n    )\n    final_by_key = index(seen)\n    assert all(final_by_key[row[\\\"sourceKey\\\"]] == row for row in interrupted[collection])\n    assert all(final_by_key[row[\\\"sourceKey\\\"]] == row for row in baseline[collection])\n    for row in source[collection]:\n        actual = final_by_key[row[\\\"key\\\"]]\n        assert all(actual[field] == row[field] for field in (\\\"title\\\", \\\"desk\\\", \\\"state\\\") if field in row)\n\nsections = index(repeated[\\\"sections\\\"])\nrecords = index(repeated[\\\"records\\\"])\ndifferences = [\n    (row[\\\"key\\\"], row[\\\"section\\\"], sections[row[\\\"section\\\"]][\\\"id\\\"], records[row[\\\"key\\\"]][\\\"sectionKey\\\"], records[row[\\\"key\\\"]][\\\"sectionID\\\"])\n    for row in source[\\\"records\\\"]\n    if records[row[\\\"key\\\"]][\\\"sectionID\\\"] \"'!= sections[row[\"section\"]][\"id\"]\n]\nassert differences == [(\"C-113\", \"S-A\", 2, \"S-B\", 3)]\nfor stage, state in ((\"baseline\", baseline), (\"recovered\", recovered), (\"repeated\", repeated)):\n    read = body(f\"{stage}_read\")\n    assert read[\"actor\"] == \"east\"\n    assert read[\"records\"] == [row for row in state[\"records\"] if row[\"desk\"] == \"east\" and row[\"state\"] == \"issued\"]\nprint(\"Verified all source and local keys, counts, fields, IDs, relations, checkpoint and operator visibility.\")\nprint(\"Relation mismatch (key, expected section and ID, observed section and ID):\", differences)\ncapture[\"session\"][\"body\"][\"session\"] = \"[redacted]\"\npath.write_text(json.dumps(capture, ensure_ascii=False, indent=2) + \"'\"\\\\n\\\")\nPY\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "**Версию дежурной смене не передавать.** Карточка `C-113` (ID `4`) должна быть связана с секцией `S-A` (ID `2`). После восстановления и повторного импорта оператор `east` видит её в `S-B` (ID `3`). Это единственное расхождение с экспортом ОС-47. [Экспорт]({project}/source/export.json) · [Считанное состояние]({project}/amber-evidence.json)\n\n| Этап | Создано | Обновлено | Пропущено | Что показало чтение |\n|---|---:|---:|---:|---|\n| Прерывание | 3 | 0 | 0 | Обе секции и `C-111` (ID `2`) уже сохранены. Контрольная точка пуста. |\n| Восстановление | 3 | 3 | 0 | `C-111` сохранила ID `2`. На месте обе секции и все четыре карточки экспорта. |\n| Повтор с тем же источником | 0 | 2 | 4 | Обновились две секции. Дубликатов нет. ID и фактические связи сохранились, включая ошибочную связь `C-113`. |\n\nСверка по всем исходным ключам подтвердила, что `LOCAL-01` (ID `1`) сохранила связь с `LOCAL` (ID `1`). Обычное чтение `east` после восстановления и повтора вернуло ровно `LOCAL-01`, `C-111` и `C-113`. Черновик `C-112` и карточка участка `west` `C-114` в выдачу не попали.\n\nПроверка охватила одну частную базу Amber, один экспорт и последовательные запуски через Payload Local API на SQLite. Версии стенда по условиям репетиции — Payload и `@payloadcms/db-sqlite` 3.94.0, Node 24.22.3. Публичный REST, боевой контур и параллельные запуски вне границ проверки. Код остался без изменений. [Условия репетиции]({project}/workplace.md)"
+    }
+  ],
+  "changed_file_contents": {
+    "amber-evidence.json": "{\n  \"session\": {\n    \"http\": 201,\n    \"body\": {\n      \"session\": \"[redacted]\"\n    }\n  },\n  \"baseline_inspect\": {\n    \"http\": 200,\n    \"body\": {\n      \"sections\": [\n        {\n          \"id\": 1,\n          \"sourceKey\": \"LOCAL\",\n          \"title\": \"Своя полка\"\n        }\n      ],\n      \"records\": [\n        {\n          \"id\": 1,\n          \"sourceKey\": \"LOCAL-01\",\n          \"title\": \"Местная запись\",\n          \"sectionID\": 1,\n          \"sectionKey\": \"LOCAL\",\n          \"desk\": \"east\",\n          \"state\": \"issued\"\n        }\n      ],\n      \"checkpoint\": []\n    }\n  },\n  \"baseline_read\": {\n    \"http\": 200,\n    \"body\": {\n      \"actor\": \"east\",\n      \"records\": [\n        {\n          \"id\": 1,\n          \"sourceKey\": \"LOCAL-01\",\n          \"title\": \"Местная запись\",\n          \"sectionID\": 1,\n          \"sectionKey\": \"LOCAL\",\n          \"desk\": \"east\",\n          \"state\": \"issued\"\n        }\n      ]\n    }\n  },\n  \"interrupt\": {\n    \"http\": 200,\n    \"body\": {\n      \"created\": 3,\n      \"updated\": 0,\n      \"skipped\": 0,\n      \"interrupted\": true\n    }\n  },\n  \"interrupted_inspect\": {\n    \"http\": 200,\n    \"body\": {\n      \"sections\": [\n        {\n          \"id\": 1,\n          \"sourceKey\": \"LOCAL\",\n          \"title\": \"Своя полка\"\n        },\n        {\n          \"id\": 2,\n          \"sourceKey\": \"S-A\",\n          \"title\": \"Реестр\"\n        },\n        {\n          \"id\": 3,\n          \"sourceKey\": \"S-B\",\n          \"title\": \"Пересчёт\"\n        }\n      ],\n      \"records\": [\n        {\n          \"id\": 1,\n          \"sourceKey\": \"LOCAL-01\",\n          \"title\": \"Местная запись\",\n          \"sectionID\": 1,\n          \"sectionKey\": \"LOCAL\",\n          \"desk\": \"east\",\n          \"state\": \"issued\"\n        },\n        {\n          \"id\": 2,\n          \"sourceKey\": \"C-111\",\n          \"title\": \"Акт смены\",\n          \"sectionID\": 3,\n          \"sectionKey\": \"S-B\",\n          \"desk\": \"east\",\n          \"state\": \"issued\"\n        }\n      ],\n      \"checkpoint\": []\n    }\n  },\n  \"recover\": {\n    \"http\": 200,\n    \"body\": {\n      \"created\": 3,\n      \"updated\": 3,\n      \"skipped\": 0,\n      \"interrupted\": false\n    }\n  },\n  \"recovered_inspect\": {\n    \"http\": 200,\n    \"body\": {\n      \"sections\": [\n        {\n          \"id\": 1,\n          \"sourceKey\": \"LOCAL\",\n          \"title\": \"Своя полка\"\n        },\n        {\n          \"id\": 2,\n          \"sourceKey\": \"S-A\",\n          \"title\": \"Реестр\"\n        },\n        {\n          \"id\": 3,\n          \"sourceKey\": \"S-B\",\n          \"title\": \"Пересчёт\"\n        }\n      ],\n      \"records\": [\n        {\n          \"id\": 1,\n          \"sourceKey\": \"LOCAL-01\",\n          \"title\": \"Местная запись\",\n          \"sectionID\": 1,\n          \"sectionKey\": \"LOCAL\",\n          \"desk\": \"east\",\n          \"state\": \"issued\"\n        },\n        {\n          \"id\": 2,\n          \"sourceKey\": \"C-111\",\n          \"title\": \"Акт смены\",\n          \"sectionID\": 3,\n          \"sectionKey\": \"S-B\",\n          \"desk\": \"east\",\n          \"state\": \"issued\"\n        },\n        {\n          \"id\": 3,\n          \"sourceKey\": \"C-112\",\n          \"title\": \"Лист смены\",\n          \"sectionID\": 2,\n          \"sectionKey\": \"S-A\",\n          \"desk\": \"east\",\n          \"state\": \"draft\"\n        },\n        {\n          \"id\": 4,\n          \"sourceKey\": \"C-113\",\n          \"title\": \"Акт смены\",\n          \"sectionID\": 3,\n          \"sectionKey\": \"S-B\",\n          \"desk\": \"east\",\n          \"state\": \"issued\"\n        },\n        {\n          \"id\": 5,\n          \"sourceKey\": \"C-114\",\n          \"title\": \"Папка смены\",\n          \"sectionID\": 3,\n          \"sectionKey\": \"S-B\",\n          \"desk\": \"west\",\n          \"state\": \"issued\"\n        }\n      ],\n      \"checkpoint\": [\n        \"C-111\",\n        \"C-112\",\n        \"C-113\",\n        \"C-114\"\n      ]\n    }\n  },\n  \"recovered_read\": {\n    \"http\": 200,\n    \"body\": {\n      \"actor\": \"east\",\n      \"records\": [\n        {\n          \"id\": 1,\n          \"sourceKey\": \"LOCAL-01\",\n          \"title\": \"Местная запись\",\n          \"sectionID\": 1,\n          \"sectionKey\": \"LOCAL\",\n          \"desk\": \"east\",\n          \"state\": \"issued\"\n        },\n        {\n          \"id\": 2,\n          \"sourceKey\": \"C-111\",\n          \"title\": \"Акт смены\",\n          \"sectionID\": 3,\n          \"sectionKey\": \"S-B\",\n          \"desk\": \"east\",\n          \"state\": \"issued\"\n        },\n        {\n          \"id\": 4,\n          \"sourceKey\": \"C-113\",\n          \"title\": \"Акт смены\",\n          \"sectionID\": 3,\n          \"sectionKey\": \"S-B\",\n          \"desk\": \"east\",\n          \"state\": \"issued\"\n        }\n      ]\n    }\n  },\n  \"repeat\": {\n    \"http\": 200,\n    \"body\": {\n      \"created\": 0,\n      \"updated\": 2,\n      \"skipped\": 4,\n      \"interrupted\": false\n    }\n  },\n  \"repeated_inspect\": {\n    \"http\": 200,\n    \"body\": {\n      \"sections\": [\n        {\n          \"id\": 1,\n          \"sourceKey\": \"LOCAL\",\n          \"title\": \"Своя полка\"\n        },\n        {\n          \"id\": 2,\n          \"sourceKey\": \"S-A\",\n          \"title\": \"Реестр\"\n        },\n        {\n          \"id\": 3,\n          \"sourceKey\": \"S-B\",\n          \"title\": \"Пересчёт\"\n        }\n      ],\n      \"records\": [\n        {\n          \"id\": 1,\n          \"sourceKey\": \"LOCAL-01\",\n          \"title\": \"Местная запись\",\n          \"sectionID\": 1,\n          \"sectionKey\": \"LOCAL\",\n          \"desk\": \"east\",\n          \"state\": \"issued\"\n        },\n        {\n          \"id\": 2,\n          \"sourceKey\": \"C-111\",\n          \"title\": \"Акт смены\",\n          \"sectionID\": 3,\n          \"sectionKey\": \"S-B\",\n          \"desk\": \"east\",\n          \"state\": \"issued\"\n        },\n        {\n          \"id\": 3,\n          \"sourceKey\": \"C-112\",\n          \"title\": \"Лист смены\",\n          \"sectionID\": 2,\n          \"sectionKey\": \"S-A\",\n          \"desk\": \"east\",\n          \"state\": \"draft\"\n        },\n        {\n          \"id\": 4,\n          \"sourceKey\": \"C-113\",\n          \"title\": \"Акт смены\",\n          \"sectionID\": 3,\n          \"sectionKey\": \"S-B\",\n          \"desk\": \"east\",\n          \"state\": \"issued\"\n        },\n        {\n          \"id\": 5,\n          \"sourceKey\": \"C-114\",\n          \"title\": \"Папка смены\",\n          \"sectionID\": 3,\n          \"sectionKey\": \"S-B\",\n          \"desk\": \"west\",\n          \"state\": \"issued\"\n        }\n      ],\n      \"checkpoint\": [\n        \"C-111\",\n        \"C-112\",\n        \"C-113\",\n        \"C-114\"\n      ]\n    }\n  },\n  \"repeated_read\": {\n    \"http\": 200,\n    \"body\": {\n      \"actor\": \"east\",\n      \"records\": [\n        {\n          \"id\": 1,\n          \"sourceKey\": \"LOCAL-01\",\n          \"title\": \"Местная запись\",\n          \"sectionID\": 1,\n          \"sectionKey\": \"LOCAL\",\n          \"desk\": \"east\",\n          \"state\": \"issued\"\n        },\n        {\n          \"id\": 2,\n          \"sourceKey\": \"C-111\",\n          \"title\": \"Акт смены\",\n          \"sectionID\": 3,\n          \"sectionKey\": \"S-B\",\n          \"desk\": \"east\",\n          \"state\": \"issued\"\n        },\n        {\n          \"id\": 4,\n          \"sourceKey\": \"C-113\",\n          \"title\": \"Акт смены\",\n          \"sectionID\": 3,\n          \"sectionKey\": \"S-B\",\n          \"desk\": \"east\",\n          \"state\": \"issued\"\n        }\n      ]\n    }\n  }\n}\n"
+  },
+  "final_response": "**Версию дежурной смене не передавать.** Карточка `C-113` (ID `4`) должна быть связана с секцией `S-A` (ID `2`). После восстановления и повторного импорта оператор `east` видит её в `S-B` (ID `3`). Это единственное расхождение с экспортом ОС-47. [Экспорт]({project}/source/export.json) · [Считанное состояние]({project}/amber-evidence.json)\n\n| Этап | Создано | Обновлено | Пропущено | Что показало чтение |\n|---|---:|---:|---:|---|\n| Прерывание | 3 | 0 | 0 | Обе секции и `C-111` (ID `2`) уже сохранены. Контрольная точка пуста. |\n| Восстановление | 3 | 3 | 0 | `C-111` сохранила ID `2`. На месте обе секции и все четыре карточки экспорта. |\n| Повтор с тем же источником | 0 | 2 | 4 | Обновились две секции. Дубликатов нет. ID и фактические связи сохранились, включая ошибочную связь `C-113`. |\n\nСверка по всем исходным ключам подтвердила, что `LOCAL-01` (ID `1`) сохранила связь с `LOCAL` (ID `1`). Обычное чтение `east` после восстановления и повтора вернуло ровно `LOCAL-01`, `C-111` и `C-113`. Черновик `C-112` и карточка участка `west` `C-114` в выдачу не попали.\n\nПроверка охватила одну частную базу Amber, один экспорт и последовательные запуски через Payload Local API на SQLite. Версии стенда по условиям репетиции — Payload и `@payloadcms/db-sqlite` 3.94.0, Node 24.22.3. Публичный REST, боевой контур и параллельные запуски вне границ проверки. Код остался без изменений. [Условия репетиции]({project}/workplace.md)",
+  "input_file_modes": {
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "references/payload-field-reference.md": "0644",
+    "release/edition.mjs": "0664",
+    "release/package.json": "0664",
+    "source/acceptance.md": "0664",
+    "source/export.json": "0664",
+    "workplace.md": "0664"
+  },
+  "changed_file_modes": {
+    "amber-evidence.json": "0664"
+  },
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "organizerFreshProcessPreflight": {
+      "baseline": {
+        "sections": [
+          {
+            "id": 1,
+            "sourceKey": "LOCAL",
+            "title": "Своя полка"
+          }
+        ],
+        "records": [
+          {
+            "id": 1,
+            "sourceKey": "LOCAL-01",
+            "title": "Местная запись",
+            "sectionID": 1,
+            "sectionKey": "LOCAL",
+            "desk": "east",
+            "state": "issued"
+          }
+        ],
+        "checkpoint": []
+      },
+      "interrupted": {
+        "created": 3,
+        "updated": 0,
+        "skipped": 0,
+        "interrupted": true
+      },
+      "afterInterrupt": {
+        "sections": [
+          {
+            "id": 1,
+            "sourceKey": "LOCAL",
+            "title": "Своя полка"
+          },
+          {
+            "id": 2,
+            "sourceKey": "S-A",
+            "title": "Реестр"
+          },
+          {
+            "id": 3,
+            "sourceKey": "S-B",
+            "title": "Пересчёт"
+          }
+        ],
+        "records": [
+          {
+            "id": 1,
+            "sourceKey": "LOCAL-01",
+            "title": "Местная запись",
+            "sectionID": 1,
+            "sectionKey": "LOCAL",
+            "desk": "east",
+            "state": "issued"
+          },
+          {
+            "id": 2,
+            "sourceKey": "C-111",
+            "title": "Акт смены",
+            "sectionID": 3,
+            "sectionKey": "S-B",
+            "desk": "east",
+            "state": "issued"
+          }
+        ],
+        "checkpoint": []
+      },
+      "resumed": {
+        "created": 3,
+        "updated": 3,
+        "skipped": 0,
+        "interrupted": false
+      },
+      "afterResume": {
+        "sections": [
+          {
+            "id": 1,
+            "sourceKey": "LOCAL",
+            "title": "Своя полка"
+          },
+          {
+            "id": 2,
+            "sourceKey": "S-A",
+            "title": "Реестр"
+          },
+          {
+            "id": 3,
+            "sourceKey": "S-B",
+            "title": "Пересчёт"
+          }
+        ],
+        "records": [
+          {
+            "id": 1,
+            "sourceKey": "LOCAL-01",
+            "title": "Местная запись",
+            "sectionID": 1,
+            "sectionKey": "LOCAL",
+            "desk": "east",
+            "state": "issued"
+          },
+          {
+            "id": 2,
+            "sourceKey": "C-111",
+            "title": "Акт смены",
+            "sectionID": 3,
+            "sectionKey": "S-B",
+            "desk": "east",
+            "state": "issued"
+          },
+          {
+            "id": 3,
+            "sourceKey": "C-112",
+            "title": "Лист смены",
+            "sectionID": 2,
+            "sectionKey": "S-A",
+            "desk": "east",
+            "state": "draft"
+          },
+          {
+            "id": 4,
+            "sourceKey": "C-113",
+            "title": "Акт смены",
+            "sectionID": 3,
+            "sectionKey": "S-B",
+            "desk": "east",
+            "state": "issued"
+          },
+          {
+            "id": 5,
+            "sourceKey": "C-114",
+            "title": "Папка смены",
+            "sectionID": 3,
+            "sectionKey": "S-B",
+            "desk": "west",
+            "state": "issued"
+          }
+        ],
+        "checkpoint": [
+          "C-111",
+          "C-112",
+          "C-113",
+          "C-114"
+        ]
+      },
+      "repeated": {
+        "created": 0,
+        "updated": 2,
+        "skipped": 4,
+        "interrupted": false
+      },
+      "afterRepeat": {
+        "sections": [
+          {
+            "id": 1,
+            "sourceKey": "LOCAL",
+            "title": "Своя полка"
+          },
+          {
+            "id": 2,
+            "sourceKey": "S-A",
+            "title": "Реестр"
+          },
+          {
+            "id": 3,
+            "sourceKey": "S-B",
+            "title": "Пересчёт"
+          }
+        ],
+        "records": [
+          {
+            "id": 1,
+            "sourceKey": "LOCAL-01",
+            "title": "Местная запись",
+            "sectionID": 1,
+            "sectionKey": "LOCAL",
+            "desk": "east",
+            "state": "issued"
+          },
+          {
+            "id": 2,
+            "sourceKey": "C-111",
+            "title": "Акт смены",
+            "sectionID": 3,
+            "sectionKey": "S-B",
+            "desk": "east",
+            "state": "issued"
+          },
+          {
+            "id": 3,
+            "sourceKey": "C-112",
+            "title": "Лист смены",
+            "sectionID": 2,
+            "sectionKey": "S-A",
+            "desk": "east",
+            "state": "draft"
+          },
+          {
+            "id": 4,
+            "sourceKey": "C-113",
+            "title": "Акт смены",
+            "sectionID": 3,
+            "sectionKey": "S-B",
+            "desk": "east",
+            "state": "issued"
+          },
+          {
+            "id": 5,
+            "sourceKey": "C-114",
+            "title": "Папка смены",
+            "sectionID": 3,
+            "sectionKey": "S-B",
+            "desk": "west",
+            "state": "issued"
+          }
+        ],
+        "checkpoint": [
+          "C-111",
+          "C-112",
+          "C-113",
+          "C-114"
+        ]
+      },
+      "read": {
+        "actor": "east",
+        "records": [
+          {
+            "id": 1,
+            "sourceKey": "LOCAL-01",
+            "title": "Местная запись",
+            "sectionID": 1,
+            "sectionKey": "LOCAL",
+            "desk": "east",
+            "state": "issued"
+          },
+          {
+            "id": 2,
+            "sourceKey": "C-111",
+            "title": "Акт смены",
+            "sectionID": 3,
+            "sectionKey": "S-B",
+            "desk": "east",
+            "state": "issued"
+          },
+          {
+            "id": 4,
+            "sourceKey": "C-113",
+            "title": "Акт смены",
+            "sectionID": 3,
+            "sectionKey": "S-B",
+            "desk": "east",
+            "state": "issued"
+          }
+        ]
+      }
+    },
+    "completeIssuedInputsStillIdentical": true,
+    "issuedFilesAndModesStillIdentical": true,
+    "participantObservations": [
+      {
+        "id": "item_4",
+        "endStatus": 0,
+        "operation": "/bin/bash -lc 'cat source/export.json release/edition.mjs\nsha256sum source/export.json release/edition.mjs'",
+        "observedExcerpt": "{\n  \"sections\": [\n    {\n      \"key\": \"S-A\",\n      \"title\": \"Реестр\"\n    },\n    {\n      \"key\": \"S-B\",\n      \"title\": \"Пересчёт\"\n    }\n  ],\n  \"records\": [\n    {\n      \"key\": \"C-111\",\n      \"title\": \"Акт смены\",\n      \"section\": \"S-B\",\n      \"desk\": \"east\",\n      \"state\": \"issued\"\n    },\n    {\n      \"key\": \"C-112\",\n      \"title\": \"Лист смены\",\n      \"section\": \"S-A\",\n      \"desk\": \"east\",\n      \"state\": \"draft\"\n    },\n    {\n      \"key\": \"C-113\",\n      \"title\": \"Акт смены\",\n      \"section\": \"S-A\",\n      \"desk\": \"east\",\n      \"state\": \"issued\"\n    },\n    {\n      \"key\": \"C-114\",\n      \"title\": \"Папка смены\",\n      \"section\": \"S-B\",\n      \"desk\": \"west\",\n      \"state\": \"issued\"\n    }\n  ]\n}\nimport {randomBytes} from 'node:crypto'\nimport {readFile,writeFile} from 'node:fs/promises'\nimport {join} from 'node:path'\nimport {buildConfig,getPayload} from 'payload'\nimport {sqliteAdapter} from '@payloadcms/db-sqlite'\n\nexport const sections=[\n {key:'S-A',title:'Реестр'}, {key:'S-B',title:'Пересчёт'}\n]\nexport const records=[\n {key:'C-111',title:'Акт смены',section:'S-B',desk:'east',state:'issued'},\n {key:'C-112',title:'Лист смены',section:'S-A',desk:'east',state:'draft'},\n {key:'C-113',title:'Акт смены',section:'S-A',desk:'east',state:'issued'},\n {key:'C-114',title:'Папка смены',section:'S-B',desk:'west',state:'issued'}\n]\nconst limited=({req})=>req.user?{and:[{desk:{equals:req.user.desk}},{state:{equals:'issued'}}]}:false\nconst collections=[\n {slug:'operators',auth:true,fields:[{name:'desk',type:'text',required:true}]},\n {slug:'sections',fields:[{name:'sourceKey',type:'text',required:true},{name:'title',type:'text',required:true}]},\n {slug:'records',access:{read:limited},fields:[\n  {name:'sourceKey',type:'text',required:true},{name:'title',type:'text',required:true},\n  {name:'section',type:'relationship',relationTo:'sections',required:true},{name:'desk',type:'text',required:true},\n  {name:'state',type:'select',options:['issued','draft'],required:true}\n ]}\n]\nexport async function open(local){\n let secret\n try{secret=await readFile(join(local,'session'), 'utf8')}catch{secret=randomBytes(32).toString('hex');await writeFile(join(local,'session'),secret,{mode:0o600})}\n const config=buildConfig({secret,telemetry:false,typescript:{autoGenerate:false},db:sqliteAdapter({client:{url:'file:'+join(local,'working.sqlite')},push:true}),collections})\n return getPayload({config})\n}\nasync function all(cms,coll){\n return (await cms.find({collection:coll,limit:100,depth:0,sort:'id'})).docs\n}\nexport async function init(cms){\n if((await all(cms,'operators')).length===0){\n  await cms.create({collection:'operators',data:{email:'east@example.invalid',password:randomBytes(24).toString('hex'),desk:'east'}})\n  const other=await cms.create({collection:'sections',data:{sourceKey:'LOCAL',title:'Своя полка'}})\n  await cms.create({collection:'records',data:{sourceKey:'LOCAL-01',title:'Местная запис",
+        "eventSHA256": "000cf5ef1098deb8a85de4c11d249469cec114608dfd9c298a98253bdc76c950"
+      },
+      {
+        "id": "item_7",
+        "endStatus": 0,
+        "operation": "/bin/bash -lc \"python3 - <<'PY'\nimport json\nimport re\nfrom pathlib import Path\nfrom urllib.request import Request, ProxyHandler, build_opener\n\nbase = \\\"http://127.0.0.1:32849/amber\\\"\nclient = build_opener(ProxyHandler({}))\nevidence = {}\n\ndef call(label, url, method=\\\"GET\\\"):\n    request = Request(url, data=b\\\"\\\" if method == \\\"POST\\\" else None, method=method)\n    with client.open(request, timeout=45) as response:\n        body = json.load(response)\n        evidence[label] = {\\\"http\\\": response.status, \\\"body\\\": body}\n    print(label, json.dumps(body, ensure_ascii=False), flush=True)\n    return body\n\ntry:\n    session = call(\\\"session\\\", f\\\"{base}/sessions\\\", \\\"POST\\\")[\\\"session\\\"]\n    if not re.fullmatch(r\\\"[A-Za-z0-9_-]+\\\", session):\n        raise ValueError(\\\"Unexpected session format\\\")\n    url = f\\\"{base}/{session}\\\"\n    call(\\\"baseline_inspect\\\", f\\\"{url}/inspect\\\")\n    call(\\\"baseline_read\\\", f\\\"{url}/read\\\")\n    call(\\\"interrupt\\\", f\\\"{url}/interrupt\\\", \\\"POST\\\")\n    call(\\\"interrupted_inspect\\\", f\\\"{url}/inspect\\\")\n    call(\\\"recover\\\", f\\\"{url}/resume\\\", \\\"POST\\\")\n    call(\\\"recovered_inspect\\\", f\\\"{url}/inspect\\\")\n    call(\\\"recovered_read\\\", f\\\"{url}/read\\\")\n    call(\\\"repeat\\\", f\\\"{url}/resume\\\", \\\"POST\\\")\n    call(\\\"repeated_inspect\\\", f\\\"{url}/inspect\\\")\n    call(\\\"repeated_read\\\", f\\\"{url}/read\\\")\nfinally:\n    Path(\\\"amber-evidence.json\\\").write_text(\n        json.",
+        "observedExcerpt": "session {\"session\": \"a5d2d841132a8a8a03f8df501b897116\"}\nbaseline_inspect {\"sections\": [{\"id\": 1, \"sourceKey\": \"LOCAL\", \"title\": \"Своя полка\"}], \"records\": [{\"id\": 1, \"sourceKey\": \"LOCAL-01\", \"title\": \"Местная запись\", \"sectionID\": 1, \"sectionKey\": \"LOCAL\", \"desk\": \"east\", \"state\": \"issued\"}], \"checkpoint\": []}\nbaseline_read {\"actor\": \"east\", \"records\": [{\"id\": 1, \"sourceKey\": \"LOCAL-01\", \"title\": \"Местная запись\", \"sectionID\": 1, \"sectionKey\": \"LOCAL\", \"desk\": \"east\", \"state\": \"issued\"}]}\ninterrupt {\"created\": 3, \"updated\": 0, \"skipped\": 0, \"interrupted\": true}\ninterrupted_inspect {\"sections\": [{\"id\": 1, \"sourceKey\": \"LOCAL\", \"title\": \"Своя полка\"}, {\"id\": 2, \"sourceKey\": \"S-A\", \"title\": \"Реестр\"}, {\"id\": 3, \"sourceKey\": \"S-B\", \"title\": \"Пересчёт\"}], \"records\": [{\"id\": 1, \"sourceKey\": \"LOCAL-01\", \"title\": \"Местная запись\", \"sectionID\": 1, \"sectionKey\": \"LOCAL\", \"desk\": \"east\", \"state\": \"issued\"}, {\"id\": 2, \"sourceKey\": \"C-111\", \"title\": \"Акт смены\", \"sectionID\": 3, \"sectionKey\": \"S-B\", \"desk\": \"east\", \"state\": \"issued\"}], \"checkpoint\": []}\nrecover {\"created\": 3, \"updated\": 3, \"skipped\": 0, \"interrupted\": false}\nrecovered_inspect {\"sections\": [{\"id\": 1, \"sourceKey\": \"LOCAL\", \"title\": \"Своя полка\"}, {\"id\": 2, \"sourceKey\": \"S-A\", \"title\": \"Реестр\"}, {\"id\": 3, \"sourceKey\": \"S-B\", \"title\": \"Пересчёт\"}], \"records\": [{\"id\": 1, \"sourceKey\": \"LOCAL-01\", \"title\": \"Местная запись\", \"sectionID\": 1, \"sectionKey\": \"LOCAL\", \"desk\": \"east\", \"state\": \"issued\"}, {\"id\": 2, \"sourceKey\": \"C-111\", \"title\": \"Акт смены\", \"sectionID\": 3, \"sectionKey\": \"S-B\", \"desk\": \"east\", \"state\": \"issued\"}, {\"id\": 3, \"sourceKey\": \"C-112\", \"title\": \"Лист смены\", \"sectionID\": 2, \"sectionKey\": \"S-A\", \"desk\": \"east\", \"state\": \"draft\"}, {\"id\": 4, \"sourceKey\": \"C-113\", \"title\": \"Акт смены\", \"sectionID\": 3, \"sectionKey\": \"S-B\", \"desk\": \"east\", \"state\": \"issued\"}, {\"id\": 5, \"sourceKey\": \"C-114\", \"title\": \"Папка смены\", \"sectionID\": 3, \"sectionKey\": \"S-B\", \"desk\": \"west\", \"state\": \"issued\"}], \"checkpoint\": [\"C-111\", \"C-112\", \"C-113\", \"C-114\"]}\nrecovered_read {\"actor\": \"east\", \"records\": [{\"id\": 1, \"sourceKey\": \"LOCAL-01\", \"title\": \"Местная запись\", \"sectionID\": 1, \"sectionKey\": \"LOCAL\", \"desk\": \"east\", \"state\": \"issued\"}, {\"id\": 2, \"sourceKey\": \"C-111\", \"title\": \"Акт смены\", \"sectionID\": 3, \"sectionKey\": \"S-B\", \"desk\": \"east\", \"state\": \"issued\"}, {\"id\": 4, \"sourceKey\": \"C-113\", \"title\": \"Акт смены\", \"sectionID\": 3, \"sectionKey\": \"S-B\", \"desk\": \"east\", \"state\": \"issued\"}]}\nrepeat {\"created\": 0, \"updated\": 2, \"skipped\": 4, \"interrupted\": false}\nrepeated_inspect {\"sections\": [{\"id\": 1, \"sourceKey\": \"LOCAL\", \"title\": \"Своя полка\"}, {\"id\": 2, \"sourceKey\": \"S-A\", \"title\": \"Реестр\"}, {\"id\": 3, \"sourceKey\": \"S-B\", \"title\": \"Пересчёт\"}], \"records\": [{\"id\": 1, \"sourceKey\": \"LOCAL-01\", \"title\": \"Местная запись\", \"sectionID\": 1, \"sectionKey\": \"LOCAL\", \"desk\": \"east\", \"state\": \"issued\"}, {\"id\": 2, \"sourceKey",
+        "eventSHA256": "1b01a7aeceec2c84a130fdf841450365e26144d5432fdc6dd808ffe3792f4faa"
+      },
+      {
+        "id": "item_9",
+        "endStatus": 0,
+        "operation": "/bin/bash -lc \"sha256sum source/export.json release/edition.mjs\nnl -ba release/edition.mjs | sed -n '45,72p'\"",
+        "observedExcerpt": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc  source/export.json\n79e0c1bf20b20204575a75d94af435d1b184c35dc69c5189f7cd705930b16738  release/edition.mjs\n    45\t existing=await stored(cms,collection,key)\n    46\t if(existing){await cms.update({collection,id:existing.id,data});return 'updated'}\n    47\t await cms.create({collection,data});return 'created'\n    48\t}\n    49\texport async function run(cms,dir,edition,interrupt){\n    50\t let seen=[]\n    51\t try{seen=JSON.parse(await readFile(join(dir,'checkpoint.json'),'utf8'))}catch{}\n    52\t const counts={created:0,updated:0,skipped:0,interrupted:false}\n    53\t for(const s of sections){counts[await persist(cms,'sections',s.key,{sourceKey:s.key,title:s.title},edition)]++}\n    54\t for(const row of records){\n    55\t  if(seen.includes(row.key)){counts.skipped++;continue}\n    56\t  const relationKey=row.title==='Акт смены'?'S-B':row.section\n    57\t  const relation=await stored(cms,'sections',relationKey)\n    58\t  const data={sourceKey:row.key,title:row.title,section:relation.id,desk:row.desk,state:row.state}\n    59\t  counts[await persist(cms,'records',row.key,data,edition)]++\n    60\t  if(interrupt){counts.interrupted=true;break}\n    61\t  seen.push(row.key);await writeFile(join(dir,'checkpoint.json'),JSON.stringify(seen))\n    62\t }\n    63\t return counts\n    64\t}\n    65\texport async function inspect(cms,dir,limitedRead){\n    66\t const sections=(await all(cms,'sections')).map(({id,sourceKey,title})=>({id,sourceKey,title}));const byId=new Map(sections.map(s=>[s.id,s.sourceKey]))\n    67\t const who=(await all(cms,'operators'))[0]\n    68\t const rows=limitedRead?(await cms.find({collection:'records',user:{...who,collection:'operators'},overrideAccess:false,depth:0,limit:100,sort:'id'})).docs:await all(cms,'records')\n    69\t const records=rows.map(({id,sourceKey,title,section,desk,state})=>({id,sourceKey,title,sectionID:section,sectionKey:byId.get(section),desk,state}))\n    70\t let checkpoint=[];try{checkpoint=JSON.parse(await readFile(join(dir,'checkpoint.json'),'utf8'))}catch{}\n    71\t return limitedRead?{actor:'east',records}:{sections,records,checkpoint}\n    72\t}\n",
+        "eventSHA256": "64caa68790607ee1398ce2e18d24669e0c471c496761dd4deb34bd90f7564474"
+      },
+      {
+        "id": "item_11",
+        "endStatus": 0,
+        "operation": "/bin/bash -lc \"python3 - <<'PY'\nimport json\nfrom pathlib import Path\nfrom collections import Counter\n\npath = Path(\\\"amber-evidence.json\\\")\ncapture = json.loads(path.read_text())\nprint({stage: item[\\\"http\\\"] for stage, item in capture.items()})\nassert all(200 <= item[\\\"http\\\"] < 300 for item in capture.values())\nsource = json.loads(Path(\\\"source/export.json\\\").read_text())\ndef body(stage):\n    return capture[stage][\\\"body\\\"]\ndef index(rows):\n    return {row[\\\"sourceKey\\\"]: row for row in rows}\n\nbaseline = body(\\\"baseline_inspect\\\")\ninterrupted = body(\\\"interrupted_inspect\\\")\nrecovered = body(\\\"recovered_inspect\\\")\nrepeated = body(\\\"repeated_inspect\\\")\nassert interrupted[\\\"checkpoint\\\"] == []\nassert Counter(row[\\\"sourceKey\\\"] for row in interrupted[\\\"records\\\"]) == Counter([\\\"LOCAL-01\\\", \\\"C-111\\\"])\nassert recovered == repeated\nassert set(recovered[\\\"checkpoint\\\"]) == {row[\\\"key\\\"] for row in source[\\\"records\\\"]}\nfor collection in (\\\"sections\\\", \\\"records\\\"):\n    seen = repeated[collection]\n    assert Counter(row[\\\"sourceKey\\\"] for row in seen) == Counter(\n        [row[\\\"sourceKey\\\"] for row in baseline[collection]] + [row[\\\"key\\\"] for row in source[collection]]\n    )\n    final_by_key = index(seen)\n    assert all(final_by_key[row[\\\"sourceKey\\\"]] == row for row in interrupted[collection])\n    assert all(final_by_key[row[\\\"sourceKey\\\"]] == row for row in baseline[collection])\n    f",
+        "observedExcerpt": "{'session': 201, 'baseline_inspect': 200, 'baseline_read': 200, 'interrupt': 200, 'interrupted_inspect': 200, 'recover': 200, 'recovered_inspect': 200, 'recovered_read': 200, 'repeat': 200, 'repeated_inspect': 200, 'repeated_read': 200}\nVerified all source and local keys, counts, fields, IDs, relations, checkpoint and operator visibility.\nRelation mismatch (key, expected section and ID, observed section and ID): [('C-113', 'S-A', 2, 'S-B', 3)]\n",
+        "eventSHA256": "eb682dfce312be522fddb7fb76b9eee5b7eddaa2971ee6b2f2b29e374e72937b"
+      }
+    ],
+    "filesCreatedByParticipant": [
+      "amber-evidence.json"
+    ]
+  }
+}

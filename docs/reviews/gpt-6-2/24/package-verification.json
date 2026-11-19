@@ -1,0 +1,178 @@
+{
+  "compilerVersion": "0.2.5",
+  "checks": [
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout": "0.2.5\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "lint",
+        "skills/concept-conformance-reviewer"
+      ],
+      "exit": 0,
+      "stdout": "OK skills/concept-conformance-reviewer\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "regenerate",
+        "skills/concept-conformance-reviewer"
+      ],
+      "exit": 0,
+      "stdout": "Regenerated {repository}/skills/concept-conformance-reviewer\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "skills/concept-conformance-reviewer"
+      ],
+      "exit": 0,
+      "stdout": "OK skills/concept-conformance-reviewer\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "compile",
+        "skills/concept-conformance-reviewer",
+        "--out-dir",
+        "{temporary}/compiled"
+      ],
+      "exit": 0,
+      "stdout": "Compiled skills/concept-conformance-reviewer -> {temporary}/compiled/concept-conformance-reviewer\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "{temporary}/compiled/concept-conformance-reviewer"
+      ],
+      "exit": 0,
+      "stdout": "OK {temporary}/compiled/concept-conformance-reviewer\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "python3",
+        "{skill-creator}/scripts/quick_validate.py",
+        "{temporary}/compiled/concept-conformance-reviewer"
+      ],
+      "exit": 0,
+      "stdout": "Skill is valid!\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "pack:skills",
+        "--root",
+        "{temporary}/compiled",
+        "--out",
+        "{temporary}/packed",
+        "--release",
+        "skills-row24-local",
+        "--previous",
+        "{baseline}/catalog.json"
+      ],
+      "exit": 0,
+      "stdout": "\n> @kostysh/skills@0.1.3 pack:skills {repository}/cli\n> node src/pack-cli.ts --root {temporary}/compiled --out {temporary}/packed --release skills-row24-local --previous {baseline}/catalog.json\n\nSkills packed: 1; output: {temporary}/packed\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "compile",
+        "skills/concept-conformance-reviewer",
+        "--out-dir",
+        "{temporary}/final-compiled"
+      ],
+      "exit": 0,
+      "stdout": "Compiled skills/concept-conformance-reviewer -> {temporary}/final-compiled/concept-conformance-reviewer\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "{temporary}/final-compiled/concept-conformance-reviewer"
+      ],
+      "exit": 0,
+      "stdout": "OK {temporary}/final-compiled/concept-conformance-reviewer\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "corepack",
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "pack:skills",
+        "--root",
+        "{temporary}/final-compiled",
+        "--out",
+        "{temporary}/final-packed",
+        "--release",
+        "skills-row24-local",
+        "--previous",
+        "{baseline}/catalog.json"
+      ],
+      "exit": 0,
+      "stdout": "\n> @kostysh/skills@0.1.3 pack:skills {repository}/cli\n> node src/pack-cli.ts --root {temporary}/final-compiled --out {temporary}/final-packed --release skills-row24-local --previous {baseline}/catalog.json\n\nSkills packed: 1; output: {temporary}/final-packed\n",
+      "stderr": ""
+    }
+  ],
+  "compiledLogMatchesSource": true,
+  "previousCatalogSha256": "6a27eb907f0335ff4ac1778192f37b368d18c2e5cbea6611e4a61b956a95c749",
+  "releaseCatalogSha256": "166f913b3f5ad5fe943d39a382fa1ff4b02e28b586c44f5cd822cd4c0c13e037",
+  "controlledVariantSha256": "785c5227b9c174c7655b2d8d120d89c809e32a5be0385516ce37b90785ada43d",
+  "baseline": {
+    "archive": "concept-conformance-reviewer-0.2.7.tgz",
+    "sha256": "cc17d040431c476b5a06c44ec2da16944afb6cdfcfab3c98060c7c43efde9cb9",
+    "files": {
+      "SKILL.md": {
+        "sha256": "43b5b7fd639731578eb78c86069c47a3b86f4e3cca4375facd1bb9cd978773cc",
+        "mode": "0o644",
+        "bytes": 19951
+      }
+    },
+    "contentHash": "a700ed040b7fcf5ddbcdbab8c5a5e1c327f71feb95c0a0dd0c6ee61eb579c856"
+  },
+  "release": {
+    "archive": "concept-conformance-reviewer-0.2.8.tgz",
+    "sha256": "55d34f2832ec2fb548b09d8c52dd715208725bf25d64a93b6999c9eba9e0a584",
+    "files": {
+      "SKILL.md": {
+        "sha256": "efe7204acb6caa58661259151e188cb7f8146788f2693e05189dbb6472492f3e",
+        "mode": "0o644",
+        "bytes": 19843
+      }
+    },
+    "contentHash": "d51e10e9a4b8b0a96aab5885ab9918262616b2303849a456186e3a609212fc82"
+  },
+  "trialToRelease": "only source-version and skillforge-source-hash",
+  "otherDeliveryFiles": [],
+  "finalSupportingLogSha256": "2e17ee7c03f43d55502e1e13a41dc8dfaf255fac7ffb736ac7c038c7c9350b90",
+  "independentRepackAfterFinalLog": "55d34f2832ec2fb548b09d8c52dd715208725bf25d64a93b6999c9eba9e0a584"
+}

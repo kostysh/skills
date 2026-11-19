@@ -2,13 +2,14 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.2.2`
+- Skill source version: `0.2.3`
 
 ## Source files
 - `agents/openai.yaml`
 - `docs/README.md`
 - `docs/logs/implementation-log-20260715-1.md`
 - `docs/logs/implementation-log-20260715-2.md`
+- `docs/logs/implementation-log-20261118-1.md`
 - `fragments/overview.md`
 - `references/bulletproof-patterns.md`
 - `skill.yaml`

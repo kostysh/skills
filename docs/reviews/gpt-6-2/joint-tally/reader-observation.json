@@ -1,0 +1,73 @@
+{
+  "actualDownloadedArchive": "7c9f8bff28fee4cb4acd9dfec592b15e688cf040990a001d66a8d1ba73bce0cc",
+  "issuedDownload": "7c9f8bff28fee4cb4acd9dfec592b15e688cf040990a001d66a8d1ba73bce0cc",
+  "onlyIssuedInput": [
+    "desk.txt"
+  ],
+  "artifactsReadFromActualReaderWorkspace": {
+    "3.stdout": {
+      "data": "{\"total\":5}\n",
+      "sha256": "bdd9ce8ffec16749dfe545b1ee2f4944b3ef8f8a16cf9d0190aaab4e36cd4284"
+    },
+    "3.stderr": {
+      "data": "",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "bad.stdout": {
+      "data": "",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "bad.stderr": {
+      "data": "Invalid number\nЗапись пропущена. Код завершения: 2\n",
+      "sha256": "7f0cce2db804a919aaf1f05e7d449fa4123a380c25c6e9b5548a6b572eb0a30d"
+    }
+  },
+  "httpRoutes": {
+    "home": "/",
+    "guide": "/spravochnik/guide/",
+    "intake": "/spravochnik/desk-intake/",
+    "download": "/downloads/engineering-tally-fixture-1.0.0.tar.gz"
+  },
+  "participantEvents": [
+    {
+      "id": "item_1",
+      "exit": 0,
+      "sha256": "a3cbed5338afbb2b5bc8cd24746f990147767ef02c2c7167ef747d3d0a4da87f"
+    },
+    {
+      "id": "item_2",
+      "exit": 0,
+      "sha256": "f7e8fbfa8ff4fadea00a5e21459f4caec09561bfdc2584d523187fb031b84e55"
+    },
+    {
+      "id": "item_3",
+      "exit": 0,
+      "sha256": "90a5ae1608a3a2050000ce57f331a249754f58582316944acd1ed89e08e65510"
+    },
+    {
+      "id": "item_4",
+      "exit": 0,
+      "sha256": "05165767b1e51fa51189e26879c5805dfeaa6af3d2c57ec723a841e7cbf7c05c"
+    },
+    {
+      "id": "item_5",
+      "exit": 0,
+      "sha256": "7d79b37d27c2293db059cc3d6be328b28d3fc8969c373201ec2ba9d5f3c48c3f"
+    },
+    {
+      "id": "item_6",
+      "exit": 0,
+      "sha256": "8fe7555386f65c5cd47bca1824e314eca022fd079018ce4544ae9dee5ca2ddaa"
+    },
+    {
+      "id": "item_7",
+      "exit": 0,
+      "sha256": "b339e7ff4ff5b338cd7f1fdd28d644f9c6f75a1f27db94b62e39b2ac49f0fed5"
+    },
+    {
+      "id": "item_8",
+      "exit": 0,
+      "sha256": "719f183b0b16895a665d686dcf7c79f4dcbd30bbbf4bbe9859719cad8c3618e2"
+    }
+  ]
+}

@@ -6,9 +6,9 @@ description: Design, implement, review, and diagnose TypeScript tests for Node,
   evidence quality; keep review and diagnosis read-only unless fixes are
   requested.
 metadata:
-  source-version: 0.1.11
+  source-version: 0.1.12
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 9e564071d9410154d920f72d80c207c8b8747ed5b3fa9ec7942af34c75b4d6b6
+  skillforge-source-hash: ba5c1767d7f77d1d6e8bd2b9105a7128d98eceed0c7778aefb5de86df8615edb
 ---
 
 # typescript-test-engineer
@@ -19,7 +19,7 @@ metadata:
 2. Resolve expected behavior from explicit user decisions, accepted specifications or acceptance criteria, and repository contracts; treat current implementation and existing tests as evidence, not authority when sources conflict.
 3. Follow the repository test runner and existing conventions before applying defaults.
 4. For React mutation UI that crosses child or portal remount, entity, route, or access context, read the React reference and require its identity matrix plus one combined lifetime falsifier instead of isolated happy paths.
-5. Keep tests deterministic, behavior-focused, isolated from uncontrolled network calls, and warning-clean; retain each real boundary whose invariant is under test.
+5. Keep tests deterministic, behavior-focused, isolated from uncontrolled network calls, and warning-clean. Exercise the boundary under test.
 6. Use the smallest check that proves the behavior, but do not replace high-risk boundary verification with a tiny self-check.
 7. If expected behavior remains missing or contradictory after repository inspection, stop with a blocked or limited result instead of inventing assertions.
 8. Report mode-specific outputs, exact validation evidence, and any unverified production boundary before claiming completion.

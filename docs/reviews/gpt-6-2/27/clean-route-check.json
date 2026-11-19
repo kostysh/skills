@@ -1,0 +1,73 @@
+{
+  "node": "v24.22.3",
+  "npm": "12.0.1",
+  "install": "\nadded 22 packages in 3s\n",
+  "build": "▲ Next.js 16.4.6 (Turbopack)\n✓ Running next.config.mjs took 10ms\n⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache\n- Experiments (use with caution):\n  · cpus: 1\n\n  Creating an optimized production build ...\n✓ Compiled successfully in 1153ms\n  Running TypeScript ...\n  Finished TypeScript in 1ms ...\n  Collecting page data using 1 worker ...\n  Generating static pages using 1 worker (0/2) ...\n✓ Generating static pages using 1 worker (2/2) in 45ms\n  Finalizing page optimization ...\n\nRoute (app)\n┌ ○ /_not-found\n└ ƒ /dossiers/[key]\n\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\nnpm notice run next16-route-fixture@1.0.0 build\nnpm notice run next build\n",
+  "initial": {
+    "http": 200,
+    "heading": "Reed docket",
+    "ready": "no",
+    "htmlSha256": "dc880cf86b87eb51368be4bb268b69a93de44a3b753b455b3663b98f6dcd9f01"
+  },
+  "browser": [
+    {
+      "action": {
+        "op": "open"
+      },
+      "value": [
+        "Selections: 0"
+      ],
+      "ready": "yes"
+    },
+    {
+      "action": {
+        "op": "wait",
+        "ms": 600
+      },
+      "value": [
+        "Selections: 0"
+      ],
+      "ready": "yes"
+    },
+    {
+      "action": {
+        "op": "click",
+        "target": "text=Mark inspected"
+      },
+      "value": [
+        "Selections: 1"
+      ],
+      "ready": "yes"
+    },
+    {
+      "action": {
+        "op": "click",
+        "target": "text=Mark inspected"
+      },
+      "value": [
+        "Selections: 2"
+      ],
+      "ready": "yes"
+    },
+    {
+      "action": {
+        "op": "reload"
+      },
+      "value": [
+        "Selections: 0"
+      ],
+      "ready": "yes"
+    },
+    {
+      "action": {
+        "op": "click",
+        "target": "text=Mark inspected"
+      },
+      "value": [
+        "Selections: 1"
+      ],
+      "ready": "yes"
+    }
+  ],
+  "screenshotSha256": "578d1671adea9f39e80784743dbb85dedaf331783f6c97b1bbca3239dc85e620"
+}

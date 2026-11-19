@@ -34,7 +34,7 @@ When the discovered package publicly exposes this profile with matching contract
 | Need | Public API and contract |
 | --- | --- |
 | Canonical EUR amount | `MoneyCents = bigint`, representing EUR cents |
-| Built-in engine form | Immutable `EUR` definition with code `EUR` and `minorUnitDigits: 2` when an engine-shaped EUR amount is required |
+| Built-in EUR engine | `EUR` is an immutable `CurrencyEngine<'EUR'>`. Its `EUR.definition` holds `code: 'EUR'` and `minorUnitDigits: 2`. Use `EUR.fromMinorUnits(cents)` for a tagged amount. |
 | Parse human EUR input | `parseEurToCents`: strict major-unit string to cents |
 | Format EUR | `formatEurCents(cents, { locale? })`; currency is always EUR |
 | EUR DTO | `EurCentsDto` with `{ currency: 'EUR', amountCents }`, plus public strict parse/serialize helpers when exported |

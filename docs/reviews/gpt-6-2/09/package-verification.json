@@ -1,0 +1,98 @@
+{
+  "baseline_archive_sha256": "23a6185634e98deb5c04d047014a479fe4a88e3132d0073067d53e24a30a934c",
+  "release_archive": "web-ux-engineer-0.1.1.tgz",
+  "release_archive_sha256": "a09e7d0d48e6beef406a63ed0c2d3b354cac3dfc818ed8bc076a80d9c78d884f",
+  "catalog_content_hash": "9bd90347a1b781d2cf587a1b774b7fc22da99e1b162e6882cc2f1d44de8188b0",
+  "source_sha256": "3ef59172c947dd5ec6f490a92128044d72f9f9f191532f83b96b3e7f0f60092c",
+  "release_files": {
+    "SKILL.md": "dc8edbd42476810745eb6896cc843a21dae618cfe07ec4c181e8dff443c91ea4",
+    "agents/openai.yaml": "725f2bc1ce78f271048df1547a0840b9d06c08637308067a70844cf8a50ccf92"
+  },
+  "compiled_files_count": 126,
+  "controlled_C_to_release": [
+    "SKILL.md: source-version",
+    "SKILL.md: skillforge-source-hash"
+  ],
+  "patch_replay_sha256": {
+    "A-B.patch": "d4b5e1ee1a5e37d08ebb49310655751c1a04fcf6ab83d47df870e8804c5537ec",
+    "A-C.patch": "e0c008c93f07f1424210c91a67263ab03527c2330d5901994268e80a22c8e7e7",
+    "B-C.patch": "1d9b294035e1855f73d17e0a1c57da892696833cf84b1361061ba73fdfc3d3c0",
+    "C-Release.patch": "ca134bdc7ce3e2c958c39add68963203faf22c2cb82745715a91161e203fcb42"
+  },
+  "checks": [
+    {
+      "action": "node skills/skill-source-compiler/scripts/skill-source-compiler.mjs lint skills/web-ux-engineer",
+      "exit": 0,
+      "observation": "OK skills/web-ux-engineer"
+    },
+    {
+      "action": "node skills/skill-source-compiler/scripts/skill-source-compiler.mjs check skills/web-ux-engineer",
+      "exit": 0,
+      "observation": "OK skills/web-ux-engineer"
+    },
+    {
+      "action": "node skills/skill-source-compiler/scripts/skill-source-compiler.mjs compile skills/web-ux-engineer --out-dir RESEARCH/compiled",
+      "exit": 0,
+      "observation": "Compiled skills/web-ux-engineer -> RESEARCH/compiled/web-ux-engineer"
+    },
+    {
+      "action": "node skills/skill-source-compiler/scripts/skill-source-compiler.mjs check RESEARCH/compiled/web-ux-engineer",
+      "exit": 0,
+      "observation": "OK RESEARCH/compiled/web-ux-engineer"
+    },
+    {
+      "action": "python3 skill-creator/scripts/quick_validate.py RESEARCH/compiled/web-ux-engineer",
+      "exit": 0,
+      "observation": "Skill is valid!"
+    },
+    {
+      "action": "npm run pack:skills -- --root RESEARCH/compiled --out RESEARCH/packed --previous BASE/catalog.json --release skills-20261118-ux09",
+      "exit": 0,
+      "observation": "Skills packed: 1; output: RESEARCH/packed\nnpm notice run @kostysh/skills@0.1.3 pack:skills\nnpm notice run node src/pack-cli.ts --root RESEARCH/compiled --out RESEARCH/packed --previous STUDY/base-pack/catalog.json --release skills-20261118-ux09"
+    }
+  ],
+  "checks_scope": "Source-bundle checks include historical supporting files. Consumer archive has exactly two files. No publication.",
+  "baseline_git_ref": "fd0f519922a37d272b31e87d8015bad6d1c80e4a",
+  "baseline_git_to_dispatched_files": {
+    "SKILL.md": "bc5bd84ea445ba3ce596dca6a74c66091d1430a59be7ca253c575ad947cc491d",
+    "agents/openai.yaml": "725f2bc1ce78f271048df1547a0840b9d06c08637308067a70844cf8a50ccf92"
+  },
+  "pack_usage": {
+    "source": "repo cli package script, no args",
+    "exit": 1,
+    "verified_usage": "pack:skills --out <directory> --release skills-<version> [--root <skills>] [--previous <catalog.json> | --previous-latest]",
+    "help_flag_observation": "--help is rejected as an unknown option. The no-argument path prints the usage shown above."
+  },
+  "accepted_dependencies": {
+    "AGENTS.md": {
+      "accepted_ref": "f00d625",
+      "matched_sha256": "894576dbf653d284175811107d026cf24250158102ebc34364e93fbdc49ec824"
+    },
+    "docs/skill-standard.md": {
+      "accepted_ref": "f00d625",
+      "matched_sha256": "cb7fe13fe8c65144b9ae5fdef6d9b9f598fbc1a05523e674a0282aec942a8f67"
+    },
+    "skills/skill-reviewer/SKILL.md": {
+      "accepted_ref": "e298147",
+      "matched_sha256": "4da5aafa7f127ea4b9c2bc82159259993b4c641675d2ce580d7a159e1180a334"
+    },
+    "skills/skill-source-compiler/scripts/skill-source-compiler.mjs": {
+      "accepted_ref": "d4f60df",
+      "matched_sha256": "474821e6e53371e58e47248464a6b01260ceae989fd2319c25b5f2b9a2026163"
+    },
+    "skills/implementation-discipline/SKILL.md": {
+      "accepted_ref": "d4f60df",
+      "matched_sha256": "fde9d3f957856e325f2e2a725598f8a0984c90dccb1720ef862a3316a5c30729"
+    }
+  },
+  "final_post_log_readback": {
+    "output": [
+      "OK skills/web-ux-engineer",
+      "Compiled skills/web-ux-engineer -> RESEARCH/author/final-compiler/web-ux-engineer",
+      "OK RESEARCH/author/final-compiler/web-ux-engineer",
+      "npm notice run @kostysh/skills@0.1.3 pack:skills\nnpm notice run node src/pack-cli.ts --root RESEARCH/author/final-compiler --out RESEARCH/author/final-release --release skills-20261118-ux09 --previous STUDY/base-pack/catalog.json\nSkills packed: 1; output: RESEARCH/author/final-release"
+    ],
+    "compiled_log_sha256": "813eb7a73b836cca60dc9610311d817ff6b18a026f42462ac93cb4d08ea3ae9e",
+    "release_identical": true
+  }
+}

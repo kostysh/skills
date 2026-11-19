@@ -1,0 +1,31 @@
+{
+  "bundleSha256": "c8189d9e0fd248a5101b5fb7adb689660064afd60fd61d1fcfcb155f13b15337",
+  "base": "b0244bdcba9416a0a4f40a4f898b21fd6c6990f3",
+  "head": "6e78cc7e2b99e267f0e87f4ad186b2ad318b1478",
+  "historicInitialSource": "92c8be95084318fe6dffd93fc71f5c733abfd335e4870dd6786c653160ebfcaf",
+  "historicCorrectedSource": "47d76d1e7a3f3f3705ce84c8f7b4adc19e6266ab5cfc223dabfbd41ce25fadf5",
+  "projectContractSHA256": "a61923dbfb54a07bfaa42ecd38cf4b114787c3b29e48dac6d33887a1cf7b1cc8",
+  "shipmentClaimOwner": "owner.md, original owner role card for this controlled case",
+  "installationSHA256": "efe7204acb6caa58661259151e188cb7f8146788f2693e05189dbb6472492f3e",
+  "fixtureSHA256": "42f3a3f738d205516073b40455e60efaec31c32c1f803305473df3de6d26c209",
+  "inputs": {
+    "R1/README.md": "a61923dbfb54a07bfaa42ecd38cf4b114787c3b29e48dac6d33887a1cf7b1cc8",
+    "R1/desk.mjs": "34d726a8ed161ce3de2c8ce430dc2128b039bb2386e9e259891d59842b8ce393",
+    "R1/fixture/catalog.json": "c1ffa5c0464dc1dbaef19ba17bd3f2b383ad46ffd7c35eed6d06dd9bb1ad3991",
+    "R1/package.json": "430f45fd1e3827efe0aba6fdf1be5a64b76e0c3362ce37e3bb3de8b96e730432",
+    "R1/src/catalog.mjs": "47d76d1e7a3f3f3705ce84c8f7b4adc19e6266ab5cfc223dabfbd41ce25fadf5",
+    "R1/test/catalog.test.mjs": "6a45eae3808cedb55b2f76befc6e5a421c44c303f16c66929a87f2fffe2b6d1d",
+    "R2/README.md": "a61923dbfb54a07bfaa42ecd38cf4b114787c3b29e48dac6d33887a1cf7b1cc8",
+    "R2/desk.mjs": "34d726a8ed161ce3de2c8ce430dc2128b039bb2386e9e259891d59842b8ce393",
+    "R2/fixture/catalog.json": "c1ffa5c0464dc1dbaef19ba17bd3f2b383ad46ffd7c35eed6d06dd9bb1ad3991",
+    "R2/package.json": "430f45fd1e3827efe0aba6fdf1be5a64b76e0c3362ce37e3bb3de8b96e730432",
+    "R2/src/catalog.mjs": "92c8be95084318fe6dffd93fc71f5c733abfd335e4870dd6786c653160ebfcaf",
+    "R2/test/catalog.test.mjs": "6a45eae3808cedb55b2f76befc6e5a421c44c303f16c66929a87f2fffe2b6d1d",
+    "cli-guide.md": "514fefe85a9a7d42b52398f3c8429ba8aa349352269e34728433e3287aec150f",
+    "closure-request.md": "83eeeacf7803caa8785872fdb30b3c5c85c738ed761840296ed233f3ca9f3ce0",
+    "owner.md": "2ef40295df8c6877cd3c2689c922fff72a3bfc4563699a8df2c2fbb7e931ac1c",
+    "review-17/catalog-review.md": "e8a0c8078ffe58b422122acd5a5d58307fb80d9034aa2892b181bc036466ae74",
+    "review-17/t03-verification.json": "cefb58fa7296f1cc0f4f01bab796db0785125491362c242a8c7672c7bfccbf81",
+    "revisions.json": "8aa8ff03344ea10d980796a8589ced15dbd2acce88f50dc1f91f55d8b12c1052"
+  }
+}

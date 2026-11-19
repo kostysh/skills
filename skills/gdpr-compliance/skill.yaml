@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: gdpr-compliance
-  source-version: 0.2.3
+  source-version: 0.2.4
   recommended-skill-md-max-bytes: 24000
   description: >-
     Audit architecture, specs, plans, or systems for EU GDPR risks involving
@@ -56,6 +56,10 @@ copies:
     description: Portable copy of agents/openai.yaml.
 
 supporting:
+  - id: supporting-implementation-log-20261118-1
+    source: docs/logs/implementation-log-20261118-1.md
+    target: docs/logs/implementation-log-20261118-1.md
+    description: Non-normative record of the controller-accountability instruction trials.
   - id: supporting-implementation-log-20260727-1
     source: docs/logs/implementation-log-20260727-1.md
     target: docs/logs/implementation-log-20260727-1.md
@@ -129,7 +133,7 @@ sections:
         - Flag special category, criminal-offence, children's, employee, biometric, location, profiling, large-scale monitoring, or automated significant-decision processing.
         - Distinguish current official law or final regulator guidance, accountable controller decisions, DPO advice, contracts, intended design, and implementation evidence; do not let a lower-authority source override a higher one for the claim being made.
         - For time-sensitive legal claims, verify current official source status and date when available; label drafts as provisional. If currentness cannot be checked, state the limit and do not claim current legal approval.
-        - Mark legal interpretation for legal counsel and DPO advice for the DPO instead of assigning either the controller's accountable decision.
+        - Separate controller decisions from specialist advice.
       validation:
         - Scope assumptions, unknowns, and role evidence are explicit.
         - High-risk categories cannot be silently treated as ordinary personal data.

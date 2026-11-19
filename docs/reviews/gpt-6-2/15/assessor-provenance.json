@@ -1,0 +1,285 @@
+{
+  "ab": {
+    "assigned_model": "gpt-6.2-sol",
+    "reasoning": "high",
+    "sandbox": "read-only",
+    "ephemeral": true,
+    "long_term_memory": "disabled",
+    "raw_signed_assessment_sha256": "8479f0d1026d15d0c558ef2b5417371e88332f025146d9ba4b65536ceaf22b7a",
+    "raw_event_stream_sha256": "7d9d893c071c819490fea998e773bc29778523c787c282d5cfc57af32b3c971d",
+    "exit": 0,
+    "public_assessment_sha256": "7b4b2c9d865967ab7b0d5c8a3d008bb334b9e3363612c70b97dc229b79fb475a",
+    "criteria_sha256": "4d60f76969b946f9ae25c26fea43ad85006c68d6fc573de2ec534b6dd30dde10",
+    "issued_packet_files": 85,
+    "issued_packet_tree_sha256": "19c5910e027af7a5c617a0335309b3936f524b133f1d7ed0a744ebd58e43a946",
+    "issued_packet_filenames": [
+      "actions.json",
+      "answer.md",
+      "architecture-note.md",
+      "captures.csv",
+      "criteria.md",
+      "decision-intake.md",
+      "events.csv",
+      "mail.csv",
+      "observer.json",
+      "product-output.md",
+      "report-draft.md",
+      "request.md",
+      "task.md",
+      "team-note.md"
+    ],
+    "labels_and_control_origin": {
+      "1aeb87": "1aeb87",
+      "0093e6": "0093e6",
+      "1164de": "1164de",
+      "daf25e": "daf25e"
+    },
+    "tool_commands": [
+      {
+        "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"' | sort\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"cat criteria.md; for d in 0093e6 1164de 1aeb87 daf25e; do sed -n '1,220p' \\\"\"'$d/task.md\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'ls -la; find . -type l -print'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'for d in 0093e6 1164de 1aeb87 daf25e; do wc -lc \"$d/answer.md\" \"$d/observer.json\" \"$d/actions.json\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'for f in answer.md observer.json after/architecture-note.md before/lab/request.md before/lab/events.csv before/lab/captures.csv before/lab/mail.csv; do\n  nl -ba \"daf25e/$f\" | sed \"1s|''^|'\"\\\\n\"'$f'\"\\\\n|\\\"\ndone\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'for f in answer.md observer.json after/architecture-note.md before/lab/request.md before/lab/events.csv before/lab/captures.csv before/lab/mail.csv; do\n  nl -ba \"1aeb87/$f\" | sed \"1s|''^|'\"\\\\n\"'$f'\"\\\\n|\\\"\ndone\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'for f in answer.md observer.json after/architecture-note.md before/lab/request.md before/lab/events.csv before/lab/captures.csv before/lab/mail.csv; do\n  nl -ba \"1164de/$f\" | sed \"1s|''^|'\"\\\\n\"'$f'\"\\\\n|\\\"\ndone\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'for f in answer.md observer.json after/architecture-note.md before/lab/request.md before/lab/events.csv before/lab/captures.csv before/lab/mail.csv; do\n  nl -ba \"0093e6/$f\" | sed \"1s|''^|'\"\\\\n\"'$f'\"\\\\n|\\\"\ndone\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c 'nl -ba 1aeb87/after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c 'nl -ba 1164de/after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c \"nl -ba 0093e6/after/architecture-note.md | sed -n '43,130p'\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c \"for f in 0093e6/before/draft/product-output.md 0093e6/before/draft/materials/*.md; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c \"for d in 0093e6 1164de 1aeb87 daf25e; do printf '\\\\n%s\\\\n' \\\"\"'$d\"; cat \"$d/answer.md\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c \"python -B -c 'import json,pathlib; files=sorted(pathlib.Path(\\\".\\\").glob(\\\"*/actions.json\\\")); print(*[(str(f),type(a:=json.loads(f.read_bytes())).__name__,[(k,type(v).__name__,len(v) if isinstance(v,(str,list,dict)) else v) for k,v in a.items()] if isinstance(a,dict) else [(type(v).__name__,list(v) if isinstance(v,dict) else v) for v in a]) for f in files],sep=\\\"\\\\n\\\")'\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c \"python -B - <<'PY'\nfrom pathlib import Path\nimport json\nfor f in sorted(Path('.').glob('*/actions.json')):\n    data=json.loads(f.read_bytes())\n    print(f, data['changed'])\n    for i, op in enumerate(data['operations'],1):\n        def brief(v):\n            if isinstance(v, str):\n                return v if len(v)<=540 else v[:380]+' … '+v[-100:]\n            if isinstance(v, dict):\n                return {k:brief(val) for k,val in v.items()}\n            if isinstance(v, list):\n                return [brief(val) for val in v]\n            return v\n        print(i,brief(op))\nPY\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c \"for d in 0093e6 1164de 1aeb87 daf25e; do\n  printf '\\\\n%s\\\\n' \\\"\"'$d\"\n  rg -n '\"'Нужная сборка|кадр|20 мс' \\\"\"'$d/before/lab/request.md\"\ndone'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c \"python -B - <<'PY'\nfrom pathlib import Path\nimport json\nfor f in sorted(Path('.').glob('*/actions.json')):\n    print(f)\n    ops = json.loads(f.read_bytes())['operations']\n    for op in ops[-3:]:\n        v = op.get('command','')\n        if 'assert ' in v and 'EOF' not in v:\n            print(v)\nPY\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c \"python -B - <<'PY'\nfrom pathlib import Path\nfrom collections import defaultdict\nimport csv, json, hashlib, re\n\ndef sha(path):\n    return hashlib.sha256(path.read_bytes()).hexdigest()\n\ndef read_csv(path):\n    with path.open(newline='') as f:\n        return list(csv.DictReader(f))\n\nfor case in sorted(Path('.').glob('*/observer.json')):\n    d = case.parent\n    before, after = d/'before', d/'after'\n    obs = json.loads(case.read_bytes())\n    actions = json.loads((d/'actions.json').read_bytes())\n    paths = [{p.relative_to(s) for p in s.rglob('*') if p.is_file()} for s in (before, after)]\n    common = paths[0]&paths[1]\n    modified = sorted(str(p) for p in common if sha(before/p) \"'!= sha(after/p))\n    differences = sorted(str(p) for p in paths[0]''^paths[1])\n    note = after/obs['\"'work_product']\n    hashes = all(sha(before/p) == sha(after/p) == v for p,v in obs['unchanged_input_record_sha256'].items())\n    missing_links = sorted({p for p in re.findall(r'\\\\]\\\\(([\"'^()]+)'\"\\\\)',note.read_text()) if not (after/p).is_file()})\n    print(d, 'input_count', len(common), 'modified', modified, 'added/deleted', differences, 'matches_records', len(common)==len(obs['unchanged_input_record_sha256']) and hashes and obs['all_changed_paths']==actions['changed']==differences==[obs['work_product']] and sha(note)==obs['work_product_sha256'] and note.stat().st_size==obs['work_product_bytes'], 'absent_from_package', missing_links)\n    captures, events, mail = [read_csv(before/'lab'/n) for n in ('captures.csv','events.csv','mail.csv')]\n    print('captures and events',len(captures),len(events),'mail',len(mail))\n    for capture in captures:\n        run = capture['run']\n        grouped = defaultdict(dict)\n        for e in events:\n            if e['run'] == run:\n                key = e['report'] + '/' + e['employee']\n                assert e['event'] not in grouped[key]\n                grouped[key][e['event']] = int(e['ts_ms'])\n        ready = [v['ready'] for v in grouped.values()]\n        delays = {k: v['badge']-v['ready'] if 'badge' in v else None for k,v in grouped.items()}\n        ack = {k: v['edge_ack']-v['ready'] for k,v in grouped.items()}\n        letters = sum(m['run']==run and m['report']+'/'+m['employee'] in grouped and m['reason']=='report_ready' for m in mail)\n        actual = dict(profile=capture['profile'], window_ends_ms=int(capture['end_ms']), ready_spread_ms=max(ready)-min(ready), recipient_badge_delays_ms=delays, matched_report_ready_letters=letters, mail_export=capture['mail_export'])\n        print(run, 'matches_observer', actual==obs['same_run_calculations'][run],actual,'edge_ack',ack,'capture',capture)\nPY\"",
+        "exit": 0
+      }
+    ]
+  },
+  "confirm": {
+    "assigned_model": "gpt-6.2-sol",
+    "reasoning": "high",
+    "sandbox": "read-only",
+    "ephemeral": true,
+    "long_term_memory": "disabled",
+    "raw_signed_assessment_sha256": "d86b1895576c01d6bfba55473f1f6f0523145aac32e43a8c36ea2375f1d9ef83",
+    "raw_event_stream_sha256": "96365a58cc89b58bcea95d68741d77fe9385b80a36f6c206971f2e867037dccc",
+    "exit": 0,
+    "public_assessment_sha256": "77e3848c2c755b2e143f6cf7a5938d340a840fc210078ad28324f7eaf7ec3ba7",
+    "criteria_sha256": "4d60f76969b946f9ae25c26fea43ad85006c68d6fc573de2ec534b6dd30dde10",
+    "issued_packet_files": 148,
+    "issued_packet_tree_sha256": "c99e5cf3a412e0a7613620a745d42f1322d3613ad4b1c6eeafa9b1b4c269f0e2",
+    "issued_packet_filenames": [
+      "actions.json",
+      "answer.md",
+      "architecture-note.md",
+      "captures.csv",
+      "criteria.md",
+      "decision-intake.md",
+      "events.csv",
+      "mail.csv",
+      "observer.json",
+      "product-output.md",
+      "report-draft.md",
+      "request.md",
+      "task.md",
+      "team-note.md"
+    ],
+    "labels_and_control_origin": {
+      "9c599d": "0093e6",
+      "891b3d": "891b3d",
+      "0537da": "0537da",
+      "56a3ca": "56a3ca",
+      "da7257": "da7257",
+      "bedd40": "bedd40",
+      "ff5283": "1164de"
+    },
+    "tool_commands": [
+      {
+        "command": "/bin/bash -lc 'rg --files --hidden'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'cat criteria.md; wc -lc */{task.md,answer.md,actions.json,observer.json,after/architecture-note.md}'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'sha256sum */task.md; cat 0537da/task.md; sha256sum */before/lab/* */before/draft/product-output.md */before/draft/materials/*'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"for d in */; do printf '\\\\n### %s\\\\n' \\\"\"'$d\"; jq '\"'map(del(.output, .result, .input, .patch, .content, .text))' \\\"\"'$d/actions.json\" | cut -c1-320; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"for d in */; do printf '\\\\n### %s\\\\n' \\\"\"'$d\"; cat \"$d/answer.md\" \"$d/observer.json\"; diff -qr \"$d/before\" \"$d/after\"; done'",
+        "exit": 1
+      },
+      {
+        "command": "/bin/bash -lc \"for d in */; do printf '\\\\n### %s\\\\n' \\\"\"'$d\"; jq '\"'to_entries | map({key, type:(.value|type), keys:(.value|keys)})' \\\"\"'$d/actions.json\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"for d in 56a3ca 0537da 891b3d; do printf '\\\\n### %s\\\\n' \\\"\"'$d\"; for f in \"$d\"/before/lab/*; do printf '\"'\\\\n%s\\\\n' \\\"\"'$f\"; nl -ba \"$f\"; done; done; for f in 0537da/before/draft/product-output.md 0537da/before/draft/materials/*; do printf '\"'\\\\n%s\\\\n' \\\"\"'$f\"; nl -ba \"$f\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'nl -ba da7257/after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'nl -ba bedd40/after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'nl -ba 891b3d/after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'nl -ba 0537da/after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'nl -ba 9c599d/after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'nl -ba 56a3ca/after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'nl -ba ff5283/after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"python -B - <<'PY'\nfrom pathlib import Path\nimport json\nfor path in sorted(Path('.').glob('*/actions.json')):\n    print('\\\\n', path)\n    log = json.loads(path.read_text())\n    print('changed:', log['changed'])\n    for i, op in enumerate(log['operations'], 1):\n        fields = str(op)\n        if len(fields) > 560:\n            fields = fields[:560] + ' …'\n        print(i, fields)\nPY\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"python -B - <<'PY'\nfrom pathlib import Path\nimport json\nfor p in sorted(Path('.').glob('*/actions.json')):\n    print('\\\\n' + str(p))\n    for i, op in enumerate(json.loads(p.read_text())['operations'], 1):\n        s = op.get('command','')\n        if 'architecture-note.md' in s and 'cat >' not in s or op.get('exit') not in (0, None):\n            print(i, op)\nPY\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"python -B - <<'PY'\nimport csv\nimport json\nimport re\nfrom collections import defaultdict\nfrom hashlib import sha256\nfrom pathlib import Path\ndef digest(path):\n    return sha256(path.read_bytes()).hexdigest()\ndef rows(path):\n    with path.open(newline='') as stream:\n        return list(csv.DictReader(stream))\nfor so in sorted(Path('.').glob('*/observer.json')):\n    case = so.parent\n    before, after = case / 'before', case / 'after'\n    obs = json.loads(so.read_text())\n    paths = lambda base: {str(f.relative_to(base)): digest(f) for f in base.rglob('*') if f.is_file()}\n    old, new = paths(before), paths(after)\n    changes = sorted(k for k in old.keys() | new.keys() if old.get(k) \"'!= new.get(k))\n    assert changes == obs['\"'all_changed_paths'] == json.loads((case / 'actions.json').read_text())['changed']\n    assert old == obs['unchanged_input_record_sha256']\n    note = after / 'architecture-note.md'\n    assert digest(note) == obs['work_product_sha256'] and note.stat().st_size == obs['work_product_bytes']\n    ev = defaultdict(dict)\n    lab = before / 'lab'\n    for row in rows(lab / 'events.csv'):\n        ev[row['run'], row['report'], row['employee']][row['event']] = int(row['ts_ms'])\n    mail = rows(lab / 'mail.csv')\n    print(case, 'state/sha OK')\n    for cap in rows(lab / 'captures.csv'):\n        run = cap['run']\n        relevant = {k: times for k, times in ev.items() if k[0] == run and 'ready' in times}\n        delays = {'/'.join(k[1:]): (t['badge'] - t['ready'] if 'badge' in t else None) for k,t in relevant.items()}\n        ready = [t['ready'] for t in relevant.values()]\n        outgoing = sum(1 for m in mail if m['reason'] == 'report_ready' and (m['run'],m['report'],m['employee']) in relevant)\n        got = dict(profile=cap['profile'], window_ends_ms=int(cap['end_ms']), ready_spread_ms=max(ready)-min(ready), recipient_badge_delays_ms=delays, matched_report_ready_letters=outgoing, mail_export=cap['mail_export'])\n        assert got == obs['same_run_calculations'][run], (case, run, got)\n        print(run, got)\n    missing = sorted({x.partition('#')[0] for x in re.findall(r'\\\\]\\\\(([\"'^)]*)'\"\\\\)', note.read_text()) if not (after / x.partition('#')[0]).is_file()})\n    print('References outside supplied snapshots:', ', '.join(missing) or 'none')\nPY\"",
+        "exit": 0
+      }
+    ]
+  },
+  "open-load": {
+    "assigned_model": "gpt-6.2-sol",
+    "reasoning": "high",
+    "sandbox": "read-only",
+    "ephemeral": true,
+    "long_term_memory": "disabled",
+    "raw_signed_assessment_sha256": "d17e480cc662c89fc3778e3d4e8561dee25b6d5a6e13c0e0493fdf7c8e981d17",
+    "raw_event_stream_sha256": "c5e040e018d0f69dace744a4a13e62b69374320b90f9a98f205ba6ebd060db70",
+    "exit": 0,
+    "public_assessment_sha256": "08925c170ea9b7e382da2181e394c3d78fc79a89a95eb74046816aef880e0759",
+    "criteria_sha256": "7fc179f81df4072e7b62639551dac41f21de7acdac1eff12d9d970a87c8a8cd7",
+    "issued_packet_files": 18,
+    "issued_packet_filenames": [
+      "actions.json",
+      "answer.md",
+      "architecture-note.md",
+      "criteria.md",
+      "decision-intake.md",
+      "engineering.md",
+      "events.csv",
+      "observer.json",
+      "product-output.md",
+      "report-draft.md",
+      "task.md",
+      "team-note.md"
+    ],
+    "labels_and_control_origin": {
+      "dc960a": "dc960a"
+    },
+    "tool_commands": [
+      {
+        "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git'\"'\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'nl -ba dc960a/observer.json && nl -ba dc960a/actions.json'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'nl -ba criteria.md && nl -ba dc960a/task.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"find . -maxdepth 7 -printf '%y %p\\\\n' | sort && wc -cl criteria.md dc960a/{task,answer}.md dc960a/*.json && nl -ba dc960a/answer.md\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'nl -ba dc960a/after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'diff -ru dc960a/before dc960a/after; sha256sum dc960a/after/architecture-note.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"for file in dc960a/before/draft/*.md dc960a/before/draft/materials/*.md dc960a/before/intake/*; do rg -n '\"'^'\"' \\\"\"'$file\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"python3 -B - <<'PY'\nfrom pathlib import Path\nfrom collections import defaultdict\nimport csv\nimport hashlib\nimport json\n\ncase = Path('dc960a')\nwith (case / 'before/intake/events.csv').open(newline='') as source:\n    events = defaultdict(dict)\n    for row in csv.DictReader(source):\n        key = '/'.join(row[field] for field in ('session', 'report', 'employee'))\n        events[key][row['event']] = int(row['t_ms'])\nobserver = json.loads((case / 'observer.json').read_text())\ndelays = {key: times['accepted'] - times['ready'] for key, times in events.items()}\nprint('K12:', delays, 'ordered events:', sorted(t for pair in events.values() for t in pair.values()))\nassert delays == observer['raw_event_delays_ms']\nassert sorted({kind for pair in events.values() for kind in pair}) == observer['observed_event_kinds']\nsnapshots = []\nfor name in ('before', 'after'):\n    root = case / name\n    snapshots.append({str(path.relative_to(root)): path.read_bytes() for path in root.rglob('*') if path.is_file()})\nbefore, after = snapshots\nchanged = sorted(path for path in before.keys() | after.keys() if before.get(path) \"'!= after.get(path))\nactions = json.loads((case / '\"'actions.json').read_text())\nassert changed == observer['all_changed_paths'] == actions['changed']\nassert hashlib.sha256(after['architecture-note.md']).hexdigest() == observer['work_product_sha256']\nprint('Unchanged sources:', len(before), 'changed paths:', changed, 'SHA-256 matches observer')\nPY\"",
+        "exit": 0
+      }
+    ]
+  }
+}

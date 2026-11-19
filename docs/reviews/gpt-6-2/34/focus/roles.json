@@ -1,0 +1,37 @@
+[
+  {
+    "case": "boundary",
+    "role": "D",
+    "label": "77123f"
+  },
+  {
+    "case": "ordinary",
+    "role": "D",
+    "label": "12dbad"
+  },
+  {
+    "case": "ordinary",
+    "role": "C",
+    "label": "865883"
+  },
+  {
+    "case": "shift",
+    "role": "D",
+    "label": "af2f0a"
+  },
+  {
+    "case": "holdout",
+    "role": "D",
+    "label": "12a457"
+  },
+  {
+    "case": "ordinary",
+    "role": "B",
+    "label": "19c015"
+  },
+  {
+    "case": "ordinary",
+    "role": "A",
+    "label": "d92fb2"
+  }
+]

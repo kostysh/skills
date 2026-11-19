@@ -1,0 +1,17 @@
+ed6a11422c0b94d508df6ff0b3bbcd19c6643dda08f9818b709cf19e7bfaee0c  skills/web-ux-engineer/AGENTS.md
+dc8edbd42476810745eb6896cc843a21dae618cfe07ec4c181e8dff443c91ea4  skills/web-ux-engineer/SKILL.md
+725f2bc1ce78f271048df1547a0840b9d06c08637308067a70844cf8a50ccf92  skills/web-ux-engineer/agents/openai.yaml
+79243e86bd5c562d7c852511e0d29139731376b143a8580398bf5aefd0e66085  skills/web-ux-engineer/docs/README.md
+804fbb25ecc5f9f1d9bbb418f922939864e2f8e34738b52e6acba2e9b9caafb3  skills/web-ux-engineer/docs/compile-report.md
+15c5142c71840b31a09c47eb96608f2e4cfd1090527b7ffb081b0ec57b533637  skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/dev-server.log
+7f76b08172a5ba475f699a494a5e77555488211819c84cc0a40045b0fe7cfd66  skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/preview-server.log
+15c5142c71840b31a09c47eb96608f2e4cfd1090527b7ffb081b0ec57b533637  skills/web-ux-engineer/docs/forward-tests/20261107/baseline-live/server.log
+9be826e193488471ca7f25cf55cd1935bc9622b514f9ecdf225e00023db1330f  skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-App-lint.log
+069e4a14c2dca8f5a3068743ebfb4c0351e5d84916b6b246ec1f751927723e88  skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-after-checks-integrity.log
+e9b2d5c23349dbd7aa07f1b8d2896362afead91acdc55211e88eb175e18d0f0e  skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-exact-replacement-check.log
+08e6f1dbfc50f025f375a68bce7c87f8ea07e774ec5a8f2b8460c1ebc0fd021f  skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-initial-git-diff.log
+602ecfbf75e74833e6f43b6f4af4d63b6453962bbf23f3386f4c477fa692f95d  skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-lint-fallback.log
+b661ff00d2fd422c6b1a16e5986aed8469fb8ab559aaad0a8701d4fde9e84aa3  skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/D-lint.log
+b23cb2570a6fde0c9ffe8ff2102c31e99cc859905df878dc2ce4b91151510a6c  skills/web-ux-engineer/docs/forward-tests/20261107/baseline-tasks/final-artifact-check.log
+813eb7a73b836cca60dc9610311d817ff6b18a026f42462ac93cb4d08ea3ae9e  skills/web-ux-engineer/docs/logs/implementation-log-20261118-1.md
+3ef59172c947dd5ec6f490a92128044d72f9f9f191532f83b96b3e7f0f60092c  skills/web-ux-engineer/skill.yaml

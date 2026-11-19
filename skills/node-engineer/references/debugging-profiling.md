@@ -34,7 +34,7 @@ ESM:
 node --input-type=module -e "console.log(import.meta.resolve('package-name'))"
 ```
 
-Interpret the result with package exports and conditions. A successful `require.resolve()` does not prove an ESM import works, and `import.meta.resolve()` does not execute or validate the target's runtime format. Reproduce the actual import/require path after inspection.
+Interpret the result with package exports and conditions. Verify loading by executing the consumer's actual `import` or `require`.
 
 For relative ESM imports, verify explicit extensions, URL semantics, package `type`, and the executed source-versus-output artifact. Route TypeScript compiler configuration to `typescript-engineer` after the Node runtime path is established.
 

@@ -1,0 +1,159 @@
+{
+  "source": "skills/nextjs/skill.yaml",
+  "sourceVersion": "0.1.3",
+  "oldSourceVersion": "0.1.2",
+  "isolated": true,
+  "checks": [
+    "compiler lint source",
+    "compiler regenerate source",
+    "compiler check source",
+    "compiler compile source --out-dir fresh",
+    "compiler check compiled/nextjs",
+    "pnpm --dir cli run pack:skills --root <compiled> --out <pack> --release skills-row27-local --previous <a-priori-catalog>",
+    "all archive payload files byte-identical to authoring folder, isolated compile, and extracted R",
+    "A/B A/C C/release zero-context patches replayed onto temporary copies"
+  ],
+  "catalogEntry": {
+    "name": "nextjs",
+    "description": "Build, review, and debug Next.js App Router apps using RSC, Server Actions, Route Handlers, async request APIs, metadata, image/font optimization, bundling, hydration, parallel routes, or self-hosting. Use for Next.js-specific and version-sensitive behavior, not generic React or TypeScript work.",
+    "version": "0.1.3",
+    "url": "https://github.com/kostysh/skills/releases/download/skills-row27-local/nextjs-0.1.3.tgz",
+    "sha256": "b92f92ab06ffc289f2d7cc3649a17b4c23fe99e1898b5b06ff6b8047ae4c832d",
+    "contentHash": "d1b36cb2c57c8fe52c07d3bd2811880cb800c4b9144d03dff4ab4998051a5d6a"
+  },
+  "previousCatalogSHA256": "6a27eb907f0335ff4ac1778192f37b368d18c2e5cbea6611e4a61b956a95c749",
+  "baselineReleaseSha256": "06e04d23ad490f0ec3a94b6361ea1985c3a45b24817e383a721e4d764097e71b",
+  "releaseSHA256": "b92f92ab06ffc289f2d7cc3649a17b4c23fe99e1898b5b06ff6b8047ae4c832d",
+  "files": {
+    "SKILL.md": {
+      "sha256": "0e3dd88c034ddf9f3b7e33c168be16120c3ae9da7d39d38f7613c677532326f2",
+      "size": 18568,
+      "mode": "0644"
+    },
+    "agents/openai.yaml": {
+      "sha256": "0574da0d2953839f600e3f4d89fd67949d54aa990fd06a8268b7d580e57ed62b",
+      "size": 177,
+      "mode": "0644"
+    },
+    "references/app-router-files.md": {
+      "sha256": "c63eba1ce9319aee2f5a66593ef3006096b4dd43612075df5867c00f9c440978",
+      "size": 2725,
+      "mode": "0644"
+    },
+    "references/async-patterns.md": {
+      "sha256": "d14b061fdbae17949fb2fbf438c6c0c1a851e05283c09eb25341e0dad0452dd0",
+      "size": 2027,
+      "mode": "0644"
+    },
+    "references/bundling.md": {
+      "sha256": "ef93ea0918f4351ad2612d6e327c80873daeecdb29ab579da1c703cbe0858037",
+      "size": 4763,
+      "mode": "0644"
+    },
+    "references/data-patterns.md": {
+      "sha256": "ce808ea2d930499bd47d85161d375d71f6e734ccd5a152fc4532e1523286a00d",
+      "size": 8910,
+      "mode": "0644"
+    },
+    "references/debug-tricks.md": {
+      "sha256": "3670d1ff19e040ef1715a24d3f8cde6185c37970c99583ae82ef3ec70eb8cace",
+      "size": 3469,
+      "mode": "0644"
+    },
+    "references/directives.md": {
+      "sha256": "9ee32fb4c43f77de254a3c27d4faa8deed4c09314f8f462620d67a246e81c0e3",
+      "size": 2325,
+      "mode": "0644"
+    },
+    "references/error-handling.md": {
+      "sha256": "d46e65588c1bfceecfc396c16133e38585a6dc6c77c3f5e5590dfc2271f5d225",
+      "size": 4537,
+      "mode": "0644"
+    },
+    "references/file-conventions.md": {
+      "sha256": "cd01f69a82c228baa00fa4ee96415c5a4fe02f7ed4454fcbf25083358504d765",
+      "size": 3771,
+      "mode": "0644"
+    },
+    "references/font.md": {
+      "sha256": "6d34e758abbda707d6aaec42fb28457b8f809b3d475ad8260007d4813fccce1c",
+      "size": 5824,
+      "mode": "0644"
+    },
+    "references/functions.md": {
+      "sha256": "553a029f5a2fa71b5c03c660d4b72faafadf381fbd178152941a785999886507",
+      "size": 4598,
+      "mode": "0644"
+    },
+    "references/hydration-error.md": {
+      "sha256": "d4baec07ab818045e284c45dd24422685ac934a38ea325139651f664a94eff57",
+      "size": 1801,
+      "mode": "0644"
+    },
+    "references/image.md": {
+      "sha256": "9c9b6ac01b0165e27437e452b423b141ecc32b3b037f7cde8b804a40cffdde61",
+      "size": 4688,
+      "mode": "0644"
+    },
+    "references/metadata.md": {
+      "sha256": "1914e1c4fa8773ecc3713d9972061dec4c103c9432239252efc4fa8ffffb017f",
+      "size": 7475,
+      "mode": "0644"
+    },
+    "references/parallel-routes.md": {
+      "sha256": "3939016162bcf62584dd315ea5c8be0fda4d868008f58c9d8b671729358d0882",
+      "size": 7482,
+      "mode": "0644"
+    },
+    "references/route-handlers.md": {
+      "sha256": "15c3f06055912158089454811006c9c4175fbb826d9abda4264519f93dc05d65",
+      "size": 4223,
+      "mode": "0644"
+    },
+    "references/rsc-boundaries.md": {
+      "sha256": "79c10cfbbabe97a19eb65ed8d411870f86c76c5d7aafb7352b72cf47f7f24ef6",
+      "size": 4214,
+      "mode": "0644"
+    },
+    "references/runtime-selection.md": {
+      "sha256": "7c4834a56d7c1854f887ad38daa58f3bf1b392f05bc7f48efa20c7d70b2aaf7f",
+      "size": 1385,
+      "mode": "0644"
+    },
+    "references/scripts.md": {
+      "sha256": "44afa084a5ce3fe373f5318f682267a429d93332efce54842b7c4e5c9bd2e6bb",
+      "size": 3842,
+      "mode": "0644"
+    },
+    "references/self-hosting.md": {
+      "sha256": "34304da86b3970bdb9b77b78f926efd7c476b2bfa16d257a5e7c8987dfbc8f78",
+      "size": 8022,
+      "mode": "0644"
+    },
+    "references/suspense-boundaries.md": {
+      "sha256": "0f0d711cd3f129b69c2472dddba7177ebfc741ad913200843d09e0b1873adfde",
+      "size": 1904,
+      "mode": "0644"
+    }
+  },
+  "trialVsReleaseChanged": [
+    "SKILL.md",
+    "references/bundling.md",
+    "references/data-patterns.md",
+    "references/directives.md",
+    "references/functions.md",
+    "references/route-handlers.md",
+    "references/runtime-selection.md",
+    "references/self-hosting.md"
+  ],
+  "CSourceSHA256": "ef02149a2056ae2b4d9e6339619e9cfaa18b7820d4a947b1061f9246c2c666a5",
+  "supportingLogIncludedInSeparateCompile": true,
+  "published": false,
+  "AfterFinalSupportingChanges": {
+    "driftCheckOnSourceAndCompile": true,
+    "isolatedCompileCopiedUpdatedLogSHA256": "b60bf1303becf6863022eac5398a50774b62a8c8933f4aeb93a695998cf3693c",
+    "allSupportingNavigationLinksResolve": true,
+    "samePackedBytes": true,
+    "sha256": "b92f92ab06ffc289f2d7cc3649a17b4c23fe99e1898b5b06ff6b8047ae4c832d"
+  }
+}

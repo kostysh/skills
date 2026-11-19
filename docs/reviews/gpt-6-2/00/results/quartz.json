@@ -1,0 +1,100 @@
+{
+  "variant": "A",
+  "case": "ordinary",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. Применяй общие рабочие инструкции из operator-guidance.md и правила проекта из AGENTS.md. \n\nСверка комплекта L-17 закончилась. Подготовь передачу следующей смене в этой рабочей копии по нашему порядку в handoff/WORKFLOW.md. Отрази результат в существующем журнале по его шаблону и сообщи, в каком состоянии передача.\n",
+  "input_file_sha256": {
+    "AGENTS.md": "352814c81ff9696f7202205acd4855d642c01df69a0d8d030e96999687d148bd",
+    "README.md": "e37d3f99e271aca7a45b6bb5f3dbcb2ed1235f43c87c045153dff8d952dc1a75",
+    "docs/skill-standard.md": "cb7fe13fe8c65144b9ae5fdef6d9b9f598fbc1a05523e674a0282aec942a8f67",
+    "docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md": "dfa1ed124770b60bb7ae4594a14cea6643f88a6ff6e57e7cf203a269ff7812fb",
+    "docs/templates/IMPLEMENTATION_PLAN_TEMPLATE.md": "c1666e23ad1f1552fbd1a320f04f93995ff869fb80fc94953889addf6e0046c1",
+    "docs/templates/ISSUE_TEMPLATE.md": "0f2d706b3c034b0416c0a598994b745209881d36f937ff5a5496c78b82d2817c",
+    "handoff/WORKFLOW.md": "bac7dd326fafe1161df329d070086307718c22d31d66ff75e41ad879b5d81879",
+    "handoff/cards/L-17.md": "4aca15ceada648a324f7eec0636ac9c60044fa2fc1b21e114f071da788b0504a",
+    "handoff/log.md": "f9cf5b3ca7a2fd5742be98662e2d90db3a750f9f03139522d71fd893725bfa97",
+    "handoff/receipts.txt": "e02372d09d4ee3090110a88f99710b7809bb067d5d3dea221dd6fe97cefb81b5",
+    "handoff/registry.tsv": "aea884d3791aa19cb6e44e80ea134c1f765acb66fe30b07690eee6ea0ab606fe",
+    "handoff/shift.md": "1d7ccf84d6f753b8b10aaffeb15d55498bf0131250b269cfb597637e5275df58",
+    "operator-guidance.md": "bfcdd0faf2df864b9141a7039c2f251c5bae3008dffd3d9ce590b7015fb1addd"
+  },
+  "raw_events_sha256": "7aa12b4339c719f6d297d03c16e6bc7dfbccf3f2d322f2c2ffd399767d695b1a",
+  "raw_events_bytes": 35629,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Проверю инструкции, материалы сверки L-17 и шаблон журнала, затем оформлю передачу в рабочей копии."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"pwd && rg --files --hidden -g '\"'!.git/**'\"'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat operator-guidance.md AGENTS.md handoff/WORKFLOW.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'git status --short && cat handoff/shift.md handoff/receipts.txt handoff/cards/L-17.md handoff/registry.tsv handoff/log.md README.md'",
+      "exit_code": 128,
+      "status": "failed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"for f in handoff/shift.md handoff/receipts.txt handoff/cards/L-17.md handoff/registry.tsv handoff/log.md docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md README.md; do rg -n '\"'^|''^$'\"' \\\"\"'$f\" --with-filename; done'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "file_change",
+      "changes": [
+        {
+          "path": "{project}/handoff/cards/L-17.md",
+          "kind": "update"
+        },
+        {
+          "path": "{project}/handoff/log.md",
+          "kind": "update"
+        },
+        {
+          "path": "{project}/handoff/registry.tsv",
+          "kind": "update"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "type": "file_change",
+      "changes": [
+        {
+          "path": "{project}/handoff/log.md",
+          "kind": "update"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python3 - <<'PY'\nimport csv\nfrom pathlib import Path\n\nroot = Path('handoff')\nreceipt, package, revision, count, checksums = (root / 'receipts.txt').read_text().strip().split(' | ')\ndecision = next(line for line in (root / 'shift.md').read_text().splitlines() if line.startswith('15:45 Анна Лукина'))\nassert f'{package} редакции {revision}' in decision\nlane = decision.removesuffix('.').rsplit(' ', 1)[-1]\nwith (root / 'registry.tsv').open() as registry:\n    assert list(csv.reader(registry, delimiter='\\\\t')) == [\n        ['package', 'revision', 'lane'],\n        ['K-09', 'v1', 'evening'],\n        ['T-28', 'v4', 'night'],\n        [package, revision, lane],\n    ]\ncard = (root / 'cards' / f'{package}.md').read_text()\nlog = (root / 'log.md').read_text()\nfor record in (card, log):\n    for value in (receipt, revision, count, 'Контрольные суммы совпали.'):\n        assert value in record, value\nassert f'\"'`{lane}`'\"' in log\nassert 'Запись добавил Виктор' in log\nprint(f'{package} {revision} → {lane}. Квитанция {receipt} совпадает с записью в карточке и журнале.')\nPY\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "**L-17 v3 поставлен в локальную очередь `daytime`** по решению Анны Лукиной. Передача оформлена в рабочей копии, приём следующей сменой пока не подтверждён. [Реестр](handoff/registry.tsv)\n\nПо квитанции KVT-813 сверены все 7 файлов, контрольные суммы совпали. Результат внесён в карточку и журнал. Проверил, что записи соответствуют квитанции и решению о маршруте. [Карточка L-17](handoff/cards/L-17.md) · [Журнал](handoff/log.md)"
+    }
+  ],
+  "changed_file_contents": {
+    "handoff/cards/L-17.md": "# Комплект L-17\n\nРедакция v3.\n\n## Результат сверки\n\nПо [квитанции KVT-813](../receipts.txt) сверено 7 из 7 файлов. Контрольные суммы совпали.\n",
+    "handoff/log.md": "# Журнал подготовки комплектов\n\n## Поручение\n\nОформить передачу L-17 v3 следующей смене по результату сверки. Журнал ведёт дежурный. [Порядок передачи](WORKFLOW.md)\n\n## Решения\n\nПо K-09 Анна Лукина сохранила очередь evening. Запись добавил Виктор, материалы остаются у следующей смены.\n\nВ 15:45 Анна Лукина утвердила очередь `daytime` для L-17 v3. [Лист решений смены](shift.md)\n\n## Изменения\n\nВ [карточку L-17](cards/L-17.md) внесён результат сверки. Запись в [реестре](registry.tsv) поставила комплект в локальную очередь следующей смены.\n\n## Выполненные проверки\n\nПо [квитанции KVT-813](receipts.txt) сверено 7 из 7 файлов. Контрольные суммы совпали. Редакция `v3` совпадает в квитанции, карточке и решении о маршруте.\n\n## Текущий результат\n\nПередача L-17 v3 оформлена в рабочей копии. Комплект в очереди `daytime`, ожидается приём следующей сменой.\n",
+    "handoff/registry.tsv": "package\trevision\tlane\nK-09\tv1\tevening\nT-28\tv4\tnight\nL-17\tv3\tdaytime\n"
+  },
+  "final_response": "**L-17 v3 поставлен в локальную очередь `daytime`** по решению Анны Лукиной. Передача оформлена в рабочей копии, приём следующей сменой пока не подтверждён. [Реестр](handoff/registry.tsv)\n\nПо квитанции KVT-813 сверены все 7 файлов, контрольные суммы совпали. Результат внесён в карточку и журнал. Проверил, что записи соответствуют квитанции и решению о маршруте. [Карточка L-17](handoff/cards/L-17.md) · [Журнал](handoff/log.md)"
+}

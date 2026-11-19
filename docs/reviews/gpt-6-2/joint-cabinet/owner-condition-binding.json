@@ -1,0 +1,6 @@
+{
+  "syntheticOwnerInputSha256": "e58cd49b056294863041c92e92e348eb7f68edbe97740b4b1800760af261d559",
+  "productDraftBound": "cbde84dc9574af18a9727755a4e43cf74422fb8fddbdbe6c1c16f32589b0e7b7",
+  "architectureOutputSha256": "88590992721d226d11dc614538a0512e02f9125bb13623064aab44a490059a01",
+  "readback": "PRD 0.3 assigns Q-17 to the in-app notice and excludes email. Q-18 is open. Earlier approval was draft-only. This separate synthetic owner condition now authorizes only the Q-17 spec; its two local implementation parcels may start only after the notification contract is agreed."
+}

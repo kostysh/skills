@@ -1,0 +1,380 @@
+{
+  "ab": {
+    "argv": [
+      "codex",
+      "exec",
+      "--disable",
+      "memories",
+      "--ephemeral",
+      "--skip-git-repo-check",
+      "--sandbox",
+      "read-only",
+      "--model",
+      "gpt-6.2-sol",
+      "-c",
+      "model_reasoning_effort=\"high\"",
+      "--cd",
+      "{packet}",
+      "--json",
+      "--output-last-message",
+      "{sealed-assessment}",
+      "-"
+    ],
+    "task": "Ты независимый оценщик. Работай только в текущем каталоге. Используй закрытые до опыта критерии criteria.md, выданные по нейтральным кодам задания, материалы до/после, реальные ответы, операции и независимые проверки, если они приложены. Сопоставь действия и наблюдаемое состояние каждого случая с критериями. Зачти эквивалентное решение. Для каждого кода зафиксируй необходимые аспекты, PASS/FAIL/INCONCLUSIVE по ним и общий исход с конкретными основаниями. Оцени заявленные возможности в пределах фактической среды. Не обращайся к другим каталогам и не пытайся определить неизвестное соответствие редакций. Ничего не изменяй. Выдай таблицу и основание каждого результата по-русски в финальном ответе. Подпиши его как независимый оценщик.",
+    "packetInputs": {
+      "criteria.md": "19c5c80f7a1b1ce32744280bdee212c3d298b8bff0a07b4108ef8ef9f5ec8f1e",
+      "1c9bc8/actions.json": "269c41e020301bd9f0c90199dc11903975c16e8f31da3a3ee64c8ed38ced993e",
+      "1c9bc8/observer.json": "203e705df11a7b3fb3cb4dcecd88ee0a7185d2b0455e19bb0cf745934b43d9b1",
+      "1c9bc8/answer.md": "e7e8c9fb8f4b16abeba2e7a8e6c15d6bedb2cf8d947e364ec259b67e241886bd",
+      "1c9bc8/task.md": "b6f2c022b2d7a09516c6926be7938b49676edf12d00705e5eab55a180f41cf2a",
+      "597313/actions.json": "c31d23609de6cbb54d911ea7582ce4f3846b3c8b55c09e9763b7fe1fb23e3d40",
+      "597313/observer.json": "c0ed8b60e834dc7ca82c885ba088cea52666dbba6133fc9f7352b22b428a3295",
+      "597313/answer.md": "2a7a213c47ff05cf65de1f420aff6c711f55a258932145967a8f7748878932f8",
+      "597313/task.md": "b6f2c022b2d7a09516c6926be7938b49676edf12d00705e5eab55a180f41cf2a",
+      "3350ac/actions.json": "7ddc41eced6144fb3a72d048d490e58ca9c104b6cd6eff8910b658e3d7e5d0e1",
+      "3350ac/observer.json": "a437d8726211f762835c7c34c856a81d2e9804e00c232dfcb9523f262ffac7da",
+      "3350ac/answer.md": "92be64426a969b24d31543e1a7d7ddd9a90e02570c05e7f789b1550300915948",
+      "3350ac/task.md": "b6f2c022b2d7a09516c6926be7938b49676edf12d00705e5eab55a180f41cf2a",
+      "e06f4a/actions.json": "e0ec505a32f2acd84e6f61420a99ccabdbd0c0b0ec2fb8ce9ea76c9d2f5c65ce",
+      "e06f4a/observer.json": "efd1b94920080340a96fe37389aac78ee620df62141a58b34d6a884b69a59611",
+      "e06f4a/answer.md": "78eba13724dba21d1cb2b2222204e44b4d6d78dd9246564b21034bd0d99e5a6f",
+      "e06f4a/task.md": "b6f2c022b2d7a09516c6926be7938b49676edf12d00705e5eab55a180f41cf2a",
+      "e06f4a/after/handoff.md": "a847e931487422ffbd444fe242a794ee402393a82617cdf0953b75aa1c3c95b7",
+      "e06f4a/before/scope/roles.md": "18c6d0bd3a618664acdcfed3b3c4276ca9bd9938e7f122e7b2078ae8bb69dd5c",
+      "e06f4a/before/scope/meeting.md": "263a734012077239d3dfc986c422977fa60b68f61de1be9049ffa7aa5ecb5513",
+      "e06f4a/before/evidence/processing.json": "3b6a9d87182c0fe65fefa1bcdb6caf0a11ce20c755601d5cfe41479aa7ffa3b3",
+      "e06f4a/before/sources/regulation.md": "69b12872a5f6d46e1d7c735e32cc1172d9786f00a5685c9addc22c7862ff2662",
+      "e06f4a/after/scope/roles.md": "18c6d0bd3a618664acdcfed3b3c4276ca9bd9938e7f122e7b2078ae8bb69dd5c",
+      "e06f4a/after/scope/meeting.md": "263a734012077239d3dfc986c422977fa60b68f61de1be9049ffa7aa5ecb5513",
+      "e06f4a/after/evidence/processing.json": "3b6a9d87182c0fe65fefa1bcdb6caf0a11ce20c755601d5cfe41479aa7ffa3b3",
+      "e06f4a/after/sources/regulation.md": "69b12872a5f6d46e1d7c735e32cc1172d9786f00a5685c9addc22c7862ff2662",
+      "3350ac/after/handoff.md": "727ab08f8d4421dc1c4bbcadcf6d1938bff1d628132a690fe8cc058820e7c4bb",
+      "3350ac/before/scope/roles.md": "18c6d0bd3a618664acdcfed3b3c4276ca9bd9938e7f122e7b2078ae8bb69dd5c",
+      "3350ac/before/scope/meeting.md": "a0e6ed37cb20a59d6da33a38b6454d85843c8171bcd640dffed19e0f7f0b5b74",
+      "3350ac/before/evidence/processing.json": "0f3d1a12f9aab984dd14d6c4d9cad457496513b3b413832d59473931518cbccc",
+      "3350ac/before/sources/regulation.md": "69b12872a5f6d46e1d7c735e32cc1172d9786f00a5685c9addc22c7862ff2662",
+      "3350ac/after/scope/roles.md": "18c6d0bd3a618664acdcfed3b3c4276ca9bd9938e7f122e7b2078ae8bb69dd5c",
+      "3350ac/after/scope/meeting.md": "a0e6ed37cb20a59d6da33a38b6454d85843c8171bcd640dffed19e0f7f0b5b74",
+      "3350ac/after/evidence/processing.json": "0f3d1a12f9aab984dd14d6c4d9cad457496513b3b413832d59473931518cbccc",
+      "3350ac/after/sources/regulation.md": "69b12872a5f6d46e1d7c735e32cc1172d9786f00a5685c9addc22c7862ff2662",
+      "597313/after/handoff.md": "a9ea4f9a62dc4ea02531083061bba9b00477f4c3f22152976a07c185f75e32f7",
+      "597313/before/scope/roles.md": "18c6d0bd3a618664acdcfed3b3c4276ca9bd9938e7f122e7b2078ae8bb69dd5c",
+      "597313/before/scope/meeting.md": "a0e6ed37cb20a59d6da33a38b6454d85843c8171bcd640dffed19e0f7f0b5b74",
+      "597313/before/evidence/processing.json": "0f3d1a12f9aab984dd14d6c4d9cad457496513b3b413832d59473931518cbccc",
+      "597313/before/sources/regulation.md": "69b12872a5f6d46e1d7c735e32cc1172d9786f00a5685c9addc22c7862ff2662",
+      "597313/after/scope/roles.md": "18c6d0bd3a618664acdcfed3b3c4276ca9bd9938e7f122e7b2078ae8bb69dd5c",
+      "597313/after/scope/meeting.md": "a0e6ed37cb20a59d6da33a38b6454d85843c8171bcd640dffed19e0f7f0b5b74",
+      "597313/after/evidence/processing.json": "0f3d1a12f9aab984dd14d6c4d9cad457496513b3b413832d59473931518cbccc",
+      "597313/after/sources/regulation.md": "69b12872a5f6d46e1d7c735e32cc1172d9786f00a5685c9addc22c7862ff2662",
+      "1c9bc8/after/handoff.md": "7bc81c82dd5bb443c0e13a07e1aecdcaeacd6ad825a7d1ba3b446c2d1c6114ae",
+      "1c9bc8/before/scope/roles.md": "18c6d0bd3a618664acdcfed3b3c4276ca9bd9938e7f122e7b2078ae8bb69dd5c",
+      "1c9bc8/before/scope/meeting.md": "263a734012077239d3dfc986c422977fa60b68f61de1be9049ffa7aa5ecb5513",
+      "1c9bc8/before/evidence/processing.json": "3b6a9d87182c0fe65fefa1bcdb6caf0a11ce20c755601d5cfe41479aa7ffa3b3",
+      "1c9bc8/before/sources/regulation.md": "69b12872a5f6d46e1d7c735e32cc1172d9786f00a5685c9addc22c7862ff2662",
+      "1c9bc8/after/scope/roles.md": "18c6d0bd3a618664acdcfed3b3c4276ca9bd9938e7f122e7b2078ae8bb69dd5c",
+      "1c9bc8/after/scope/meeting.md": "263a734012077239d3dfc986c422977fa60b68f61de1be9049ffa7aa5ecb5513",
+      "1c9bc8/after/evidence/processing.json": "3b6a9d87182c0fe65fefa1bcdb6caf0a11ce20c755601d5cfe41479aa7ffa3b3",
+      "1c9bc8/after/sources/regulation.md": "69b12872a5f6d46e1d7c735e32cc1172d9786f00a5685c9addc22c7862ff2662"
+    },
+    "packetFileCount": 53,
+    "roleCaseMappingAfterSealing": [
+      {
+        "role": "A",
+        "case": "ordinary",
+        "label": "e06f4a"
+      },
+      {
+        "role": "A",
+        "case": "boundary",
+        "label": "3350ac"
+      },
+      {
+        "role": "B",
+        "case": "boundary",
+        "label": "597313"
+      },
+      {
+        "role": "B",
+        "case": "ordinary",
+        "label": "1c9bc8"
+      }
+    ],
+    "initialAssessmentSha256UsedToSelectC": "f4884f29f121946e9830ab8f59a7327a4c6723cc4b47a1fa16359a94d301b848",
+    "originalGradeSha256": "f4884f29f121946e9830ab8f59a7327a4c6723cc4b47a1fa16359a94d301b848",
+    "originalEventStreamSha256": "b128172cde21dd086404a98fce95919ff4f902e8aa8c803ce101fac711f0ea18",
+    "publishedGradeSha256": "f9d85b507171c237c2f768f338a87b600730f1d8e9fbe49dcc70e99688ffa8f9",
+    "exit": 0,
+    "operations": [
+      {
+        "command": "/bin/bash -lc 'rg --files --hidden --no-ignore'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'cat criteria.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'wc -lc criteria.md */*.md */*.json */after/handoff.md */before/*/* */after/*/*'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"for f in 1c9bc8/task.md 1c9bc8/before/scope/roles.md 1c9bc8/before/scope/meeting.md 1c9bc8/before/sources/regulation.md 1c9bc8/before/evidence/processing.json 1c9bc8/answer.md 1c9bc8/after/handoff.md 1c9bc8/observer.json 1c9bc8/actions.json; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"for f in 597313/task.md 597313/before/scope/roles.md 597313/before/scope/meeting.md 597313/before/sources/regulation.md 597313/before/evidence/processing.json 597313/answer.md 597313/after/handoff.md 597313/observer.json 597313/actions.json; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"for f in 3350ac/task.md 3350ac/before/scope/roles.md 3350ac/before/scope/meeting.md 3350ac/before/sources/regulation.md 3350ac/before/evidence/processing.json 3350ac/answer.md 3350ac/after/handoff.md 3350ac/observer.json 3350ac/actions.json; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"for f in e06f4a/task.md e06f4a/before/scope/roles.md e06f4a/before/scope/meeting.md e06f4a/before/sources/regulation.md e06f4a/before/evidence/processing.json e06f4a/answer.md e06f4a/after/handoff.md e06f4a/observer.json e06f4a/actions.json; do printf '\\\\n%s\\\\n' \\\"\"'$f\"; cat \"$f\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc 'cat 3350ac/after/handoff.md 3350ac/observer.json 3350ac/actions.json'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"rg -n --hidden 'R20|chmod|chown|curl|wget|https?://|git status|changedInputs' --glob '\"'!sources/regulation.md'\"' --glob '\"'!regulation.md'\"' --glob '\"'!criteria.md'\"' .\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"for c in 1c9bc8 3350ac 597313 e06f4a; do printf '\\\\n%s\\\\n' \\\"\"'$c\"; diff -qr \"$c/before\" \"$c/after\"; sha256sum \"$c/after/handoff.md\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nimport json, hashlib, re, stat\nfor p in sorted(Path('.').iterdir()):\n    if not p.is_dir():\n        continue\n    b, a = p / 'before', p / 'after'\n    base = {q.relative_to(b): q for q in b.rglob('*') if q.is_file()}\n    out = {q.relative_to(a): q for q in a.rglob('*') if q.is_file()}\n    h = a/'handoff.md'\n    h_bytes = h.read_bytes()\n    o = json.loads((p/'observer.json').read_text())\n    evidence = json.loads((b/'evidence'/'processing.json').read_text())\n    print(p.name, 'add', sorted(map(str, out.keys()-base.keys())), 'remove', sorted(map(str, base.keys()-out.keys())), 'mod bytes', [str(q) for q in base.keys() & out.keys() if base[q].read_bytes() \"'!= out[q].read_bytes()], '\"'mod snapshot modes', [str(q) for q in base.keys() & out.keys() if stat.S_IMODE(base[q].stat().st_mode) \"'!= stat.S_IMODE(out[q].stat().st_mode)], '\"'observer bytes+sha match', (len(h_bytes), hashlib.sha256(h_bytes).hexdigest()) == (o['handoff']['bytes'], o['handoff']['sha256']))\n    print('ages', {k:{t:[row['age_days'] for row in rows] for t, rows in evidence[k].items()} for k in ['before','after_new_query']})\n    print('meeting', (b/'scope'/'meeting.md').read_text().split()[0:8])\n    print('unavailable local refs in evaluated snapshot', [link for link in re.findall(r'\\\\]\\\\(([\"'^)]+)'\"\\\\)', h.read_text()) if not (a/link.split('#')[0]).is_file()])\nPY\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -lc \"python - <<'PY'\nfrom pathlib import Path\nimport json\nfor d in sorted(Path('.').iterdir()):\n    if not d.is_dir():\n        continue\n    print(d.name)\n    print((d/'answer.md').read_text().strip())\n    for op in json.loads((d/'actions.json').read_text())['operations']:\n        command=op.get('command')\n        if command:\n            print(op['exit'], command.splitlines()[0][:300], '…' if len(command.splitlines()) > 1 else '')\n        else:\n            print(op)\nPY\"",
+        "exit": 0
+      }
+    ],
+    "webEvents": 0,
+    "observedFileChanges": 0
+  },
+  "confirm": {
+    "argv": [
+      "codex",
+      "exec",
+      "--disable",
+      "memories",
+      "--ephemeral",
+      "--skip-git-repo-check",
+      "--sandbox",
+      "read-only",
+      "--model",
+      "gpt-6.2-sol",
+      "-c",
+      "model_reasoning_effort=\"high\"",
+      "--cd",
+      "{packet}",
+      "--json",
+      "--output-last-message",
+      "{sealed-assessment}",
+      "-"
+    ],
+    "task": "Ты независимый оценщик. Работай только в текущем каталоге. Используй закрытые до опыта критерии criteria.md, выданные по нейтральным кодам задания, материалы до/после, реальные ответы, операции и независимые проверки, если они приложены. Сопоставь действия и наблюдаемое состояние каждого случая с критериями. Зачти эквивалентное решение. Для каждого кода зафиксируй необходимые аспекты, PASS/FAIL/INCONCLUSIVE по ним и общий исход с конкретными основаниями. Оцени заявленные возможности в пределах фактической среды. Не обращайся к другим каталогам и не пытайся определить неизвестное соответствие редакций. Ничего не изменяй. Выдай таблицу и основание каждого результата по-русски в финальном ответе. Подпиши его как независимый оценщик.",
+    "packetInputs": {
+      "criteria.md": "19c5c80f7a1b1ce32744280bdee212c3d298b8bff0a07b4108ef8ef9f5ec8f1e",
+      "4cc642/actions.json": "2313b2c8712b76c7eaaf5ee29f8508a3b4c757713d15906a26e392ea6366e16c",
+      "4cc642/observer.json": "db42826a02f123dd4fdfefe4a4ee0677fb36b3aa787047656b27aa29a434a252",
+      "4cc642/answer.md": "24835a82693a344063f8d9ace8f91e1bb6782e400dd9c1e3a85220b113686dff",
+      "4cc642/task.md": "b6f2c022b2d7a09516c6926be7938b49676edf12d00705e5eab55a180f41cf2a",
+      "9c8b9a/actions.json": "7ddc41eced6144fb3a72d048d490e58ca9c104b6cd6eff8910b658e3d7e5d0e1",
+      "9c8b9a/observer.json": "a437d8726211f762835c7c34c856a81d2e9804e00c232dfcb9523f262ffac7da",
+      "9c8b9a/answer.md": "92be64426a969b24d31543e1a7d7ddd9a90e02570c05e7f789b1550300915948",
+      "9c8b9a/task.md": "b6f2c022b2d7a09516c6926be7938b49676edf12d00705e5eab55a180f41cf2a",
+      "a34425/actions.json": "e17ec5526fc85d5d0869433d1d0b3628c8844cc62d634a6f18ad4220b7296c3b",
+      "a34425/observer.json": "a9b3761e7e293334be0f1e79d4ceeca8c43688ce44105898761ee0b91bb00460",
+      "a34425/answer.md": "cbd027718508fd3c9b20e47554b72fc030703c34ff26804bf708463812d60c56",
+      "a34425/task.md": "b6f2c022b2d7a09516c6926be7938b49676edf12d00705e5eab55a180f41cf2a",
+      "c11249/actions.json": "f93997ed6997ac249f3fff097746d946497c106c4462334081e8ae17ae98421f",
+      "c11249/observer.json": "b003442c5fb8c786523754330e8eb6d475fd08f41ca3f0b20660c3e7c2989f22",
+      "c11249/answer.md": "0055eedf3f3271b034ad640062530dd6343d34cfa7bc09ae2b80d9745a014bdd",
+      "c11249/task.md": "b6f2c022b2d7a09516c6926be7938b49676edf12d00705e5eab55a180f41cf2a",
+      "efb104/actions.json": "fe62c7883de027207e5da6676ce870a95117e4cb1af98fecd6d273521d222033",
+      "efb104/observer.json": "f0af8ea480ff0aecd730143796db35ce03c1074e1ae40befb9439e884c7935c2",
+      "efb104/answer.md": "a4e0c2647195f9592baad6fecc555347c25d45304ebe1666f1329b8c11b0e1c3",
+      "efb104/task.md": "b6f2c022b2d7a09516c6926be7938b49676edf12d00705e5eab55a180f41cf2a",
+      "4d0daf/actions.json": "e0ec505a32f2acd84e6f61420a99ccabdbd0c0b0ec2fb8ce9ea76c9d2f5c65ce",
+      "4d0daf/observer.json": "efd1b94920080340a96fe37389aac78ee620df62141a58b34d6a884b69a59611",
+      "4d0daf/answer.md": "78eba13724dba21d1cb2b2222204e44b4d6d78dd9246564b21034bd0d99e5a6f",
+      "4d0daf/task.md": "b6f2c022b2d7a09516c6926be7938b49676edf12d00705e5eab55a180f41cf2a",
+      "4d0daf/after/handoff.md": "a847e931487422ffbd444fe242a794ee402393a82617cdf0953b75aa1c3c95b7",
+      "4d0daf/before/scope/roles.md": "18c6d0bd3a618664acdcfed3b3c4276ca9bd9938e7f122e7b2078ae8bb69dd5c",
+      "4d0daf/before/scope/meeting.md": "263a734012077239d3dfc986c422977fa60b68f61de1be9049ffa7aa5ecb5513",
+      "4d0daf/before/evidence/processing.json": "3b6a9d87182c0fe65fefa1bcdb6caf0a11ce20c755601d5cfe41479aa7ffa3b3",
+      "4d0daf/before/sources/regulation.md": "69b12872a5f6d46e1d7c735e32cc1172d9786f00a5685c9addc22c7862ff2662",
+      "4d0daf/after/scope/roles.md": "18c6d0bd3a618664acdcfed3b3c4276ca9bd9938e7f122e7b2078ae8bb69dd5c",
+      "4d0daf/after/scope/meeting.md": "263a734012077239d3dfc986c422977fa60b68f61de1be9049ffa7aa5ecb5513",
+      "4d0daf/after/evidence/processing.json": "3b6a9d87182c0fe65fefa1bcdb6caf0a11ce20c755601d5cfe41479aa7ffa3b3",
+      "4d0daf/after/sources/regulation.md": "69b12872a5f6d46e1d7c735e32cc1172d9786f00a5685c9addc22c7862ff2662",
+      "efb104/after/handoff.md": "5ccd2e08cdbd1d3e7e24f4bea4abf8f7953b52657cf381a80e747353ab1c491a",
+      "efb104/before/scope/roles.md": "18c6d0bd3a618664acdcfed3b3c4276ca9bd9938e7f122e7b2078ae8bb69dd5c",
+      "efb104/before/scope/meeting.md": "a0e6ed37cb20a59d6da33a38b6454d85843c8171bcd640dffed19e0f7f0b5b74",
+      "efb104/before/evidence/processing.json": "0f3d1a12f9aab984dd14d6c4d9cad457496513b3b413832d59473931518cbccc",
+      "efb104/before/sources/regulation.md": "69b12872a5f6d46e1d7c735e32cc1172d9786f00a5685c9addc22c7862ff2662",
+      "efb104/after/scope/roles.md": "18c6d0bd3a618664acdcfed3b3c4276ca9bd9938e7f122e7b2078ae8bb69dd5c",
+      "efb104/after/scope/meeting.md": "a0e6ed37cb20a59d6da33a38b6454d85843c8171bcd640dffed19e0f7f0b5b74",
+      "efb104/after/evidence/processing.json": "0f3d1a12f9aab984dd14d6c4d9cad457496513b3b413832d59473931518cbccc",
+      "efb104/after/sources/regulation.md": "69b12872a5f6d46e1d7c735e32cc1172d9786f00a5685c9addc22c7862ff2662",
+      "c11249/after/handoff.md": "f4176140c386f16d0600728b0a217a5445de4bb88a54acc4c901824bd9d8c42a",
+      "c11249/before/scope/roles.md": "18c6d0bd3a618664acdcfed3b3c4276ca9bd9938e7f122e7b2078ae8bb69dd5c",
+      "c11249/before/scope/meeting.md": "4adcfca42186aead30da3ad20b6087ee5cd0c80ca9e70b5cde1bc1979a428b48",
+      "c11249/before/evidence/processing.json": "2cd508bdaa298f5a0b12350f0beec3aa8c3cd413ce2dd3f3e3821a381edeea72",
+      "c11249/before/sources/regulation.md": "69b12872a5f6d46e1d7c735e32cc1172d9786f00a5685c9addc22c7862ff2662",
+      "c11249/after/scope/roles.md": "18c6d0bd3a618664acdcfed3b3c4276ca9bd9938e7f122e7b2078ae8bb69dd5c",
+      "c11249/after/scope/meeting.md": "4adcfca42186aead30da3ad20b6087ee5cd0c80ca9e70b5cde1bc1979a428b48",
+      "c11249/after/evidence/processing.json": "2cd508bdaa298f5a0b12350f0beec3aa8c3cd413ce2dd3f3e3821a381edeea72",
+      "c11249/after/sources/regulation.md": "69b12872a5f6d46e1d7c735e32cc1172d9786f00a5685c9addc22c7862ff2662",
+      "a34425/after/handoff.md": "a562139b2a9a6282ef131f18611640d2c8114b4720b2f7cae97110e60c4aa07c",
+      "a34425/before/scope/roles.md": "18c6d0bd3a618664acdcfed3b3c4276ca9bd9938e7f122e7b2078ae8bb69dd5c",
+      "a34425/before/scope/meeting.md": "4adcfca42186aead30da3ad20b6087ee5cd0c80ca9e70b5cde1bc1979a428b48",
+      "a34425/before/evidence/processing.json": "2cd508bdaa298f5a0b12350f0beec3aa8c3cd413ce2dd3f3e3821a381edeea72",
+      "a34425/before/sources/regulation.md": "69b12872a5f6d46e1d7c735e32cc1172d9786f00a5685c9addc22c7862ff2662",
+      "a34425/after/scope/roles.md": "18c6d0bd3a618664acdcfed3b3c4276ca9bd9938e7f122e7b2078ae8bb69dd5c",
+      "a34425/after/scope/meeting.md": "4adcfca42186aead30da3ad20b6087ee5cd0c80ca9e70b5cde1bc1979a428b48",
+      "a34425/after/evidence/processing.json": "2cd508bdaa298f5a0b12350f0beec3aa8c3cd413ce2dd3f3e3821a381edeea72",
+      "a34425/after/sources/regulation.md": "69b12872a5f6d46e1d7c735e32cc1172d9786f00a5685c9addc22c7862ff2662",
+      "9c8b9a/after/handoff.md": "727ab08f8d4421dc1c4bbcadcf6d1938bff1d628132a690fe8cc058820e7c4bb",
+      "9c8b9a/before/scope/roles.md": "18c6d0bd3a618664acdcfed3b3c4276ca9bd9938e7f122e7b2078ae8bb69dd5c",
+      "9c8b9a/before/scope/meeting.md": "a0e6ed37cb20a59d6da33a38b6454d85843c8171bcd640dffed19e0f7f0b5b74",
+      "9c8b9a/before/evidence/processing.json": "0f3d1a12f9aab984dd14d6c4d9cad457496513b3b413832d59473931518cbccc",
+      "9c8b9a/before/sources/regulation.md": "69b12872a5f6d46e1d7c735e32cc1172d9786f00a5685c9addc22c7862ff2662",
+      "9c8b9a/after/scope/roles.md": "18c6d0bd3a618664acdcfed3b3c4276ca9bd9938e7f122e7b2078ae8bb69dd5c",
+      "9c8b9a/after/scope/meeting.md": "a0e6ed37cb20a59d6da33a38b6454d85843c8171bcd640dffed19e0f7f0b5b74",
+      "9c8b9a/after/evidence/processing.json": "0f3d1a12f9aab984dd14d6c4d9cad457496513b3b413832d59473931518cbccc",
+      "9c8b9a/after/sources/regulation.md": "69b12872a5f6d46e1d7c735e32cc1172d9786f00a5685c9addc22c7862ff2662",
+      "4cc642/after/handoff.md": "70c3e273ad7e6af5cc629eac81640ea17e027deac90e446852a2898871319c68",
+      "4cc642/before/scope/roles.md": "18c6d0bd3a618664acdcfed3b3c4276ca9bd9938e7f122e7b2078ae8bb69dd5c",
+      "4cc642/before/scope/meeting.md": "263a734012077239d3dfc986c422977fa60b68f61de1be9049ffa7aa5ecb5513",
+      "4cc642/before/evidence/processing.json": "3b6a9d87182c0fe65fefa1bcdb6caf0a11ce20c755601d5cfe41479aa7ffa3b3",
+      "4cc642/before/sources/regulation.md": "69b12872a5f6d46e1d7c735e32cc1172d9786f00a5685c9addc22c7862ff2662",
+      "4cc642/after/scope/roles.md": "18c6d0bd3a618664acdcfed3b3c4276ca9bd9938e7f122e7b2078ae8bb69dd5c",
+      "4cc642/after/scope/meeting.md": "263a734012077239d3dfc986c422977fa60b68f61de1be9049ffa7aa5ecb5513",
+      "4cc642/after/evidence/processing.json": "3b6a9d87182c0fe65fefa1bcdb6caf0a11ce20c755601d5cfe41479aa7ffa3b3",
+      "4cc642/after/sources/regulation.md": "69b12872a5f6d46e1d7c735e32cc1172d9786f00a5685c9addc22c7862ff2662"
+    },
+    "packetFileCount": 79,
+    "roleCaseMappingAfterSealing": [
+      {
+        "role": "A",
+        "case": "ordinary",
+        "label": "4d0daf",
+        "original_label": "e06f4a"
+      },
+      {
+        "role": "C",
+        "case": "boundary",
+        "label": "efb104"
+      },
+      {
+        "role": "C",
+        "case": "holdout",
+        "label": "c11249"
+      },
+      {
+        "role": "A",
+        "case": "holdout",
+        "label": "a34425"
+      },
+      {
+        "role": "A",
+        "case": "boundary",
+        "label": "9c8b9a",
+        "original_label": "3350ac"
+      },
+      {
+        "role": "C",
+        "case": "ordinary",
+        "label": "4cc642"
+      }
+    ],
+    "initialAssessmentSha256UsedToSelectC": null,
+    "originalGradeSha256": "86579a249b0a5d299f593b9e1d7abe91139ca05a24df91d4b04f037f094522c1",
+    "originalEventStreamSha256": "312c4deaee775aa7c5901824138974913ea79dfe4832914a9955daa0ad5514fb",
+    "publishedGradeSha256": "28be792b8bc4cb30d5bbfb9941c226e225ec6719fac7a161b882f95aaa49d6a3",
+    "exit": 0,
+    "operations": [
+      {
+        "command": "/bin/bash -c \"rg --files --hidden -g '\"'!.git/**'\"' -g '\"'!**/.git/**'\"' .\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c 'cat criteria.md'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c \"rg --files --hidden -g '\"'!.git/**'\"' -g '\"'!**/.git/**'\"' -0 . | xargs -0 wc -lc\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c \"for f in c11249/task.md c11249/before/scope/meeting.md c11249/before/scope/roles.md c11249/before/sources/regulation.md c11249/before/evidence/processing.json c11249/after/handoff.md c11249/answer.md c11249/observer.json; do rg -n --no-heading --with-filename '\"'^'\"' \\\"\"'$f\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c \"for f in a34425/task.md a34425/before/scope/meeting.md a34425/before/scope/roles.md a34425/before/sources/regulation.md a34425/before/evidence/processing.json a34425/after/handoff.md a34425/answer.md a34425/observer.json; do rg -n --no-heading --with-filename '\"'^'\"' \\\"\"'$f\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c \"for f in efb104/task.md efb104/before/scope/meeting.md efb104/before/scope/roles.md efb104/before/sources/regulation.md efb104/before/evidence/processing.json efb104/after/handoff.md efb104/answer.md efb104/observer.json; do rg -n --no-heading --with-filename '\"'^'\"' \\\"\"'$f\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c \"for f in 4cc642/task.md 4cc642/before/scope/meeting.md 4cc642/before/scope/roles.md 4cc642/before/sources/regulation.md 4cc642/before/evidence/processing.json 4cc642/after/handoff.md 4cc642/answer.md 4cc642/observer.json; do rg -n --no-heading --with-filename '\"'^'\"' \\\"\"'$f\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c \"for f in 9c8b9a/task.md 9c8b9a/before/scope/meeting.md 9c8b9a/before/scope/roles.md 9c8b9a/before/sources/regulation.md 9c8b9a/before/evidence/processing.json 9c8b9a/after/handoff.md 9c8b9a/answer.md 9c8b9a/observer.json; do rg -n --no-heading --with-filename '\"'^'\"' \\\"\"'$f\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c \"for f in 4d0daf/task.md 4d0daf/before/scope/meeting.md 4d0daf/before/scope/roles.md 4d0daf/before/sources/regulation.md 4d0daf/before/evidence/processing.json 4d0daf/after/handoff.md 4d0daf/answer.md 4d0daf/observer.json; do rg -n --no-heading --with-filename '\"'^'\"' \\\"\"'$f\"; done'",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c \"python3 -B - <<'PY'\nimport json, pathlib, hashlib\nfor d in sorted(p for p in pathlib.Path('.').iterdir() if (p/'observer.json').is_file()):\n print('\\\\n',d)\n o=json.loads((d/'observer.json').read_text()); a=json.loads((d/'actions.json').read_text()); print('observer',o)\n print('action type',type(a).__name__)\n for e in a:\n  if isinstance(e,dict):\n   for k,v in e.items():\n    if isinstance(v,str) and len(v)>550:\n     print(f'{k}={v[:380]} ... {v[-110:]} ({len(v)})',end=' | ')\n    else: print(f'{k}={v}',end=' | ')\n   print()\n  else: print(e)\n before={str(f.relative_to(d/'before')):(f.read_bytes(),f.stat().st_mode) for f in (d/'before').rglob('*') if f.is_file()}\n after={str(f.relative_to(d/'after')):(f.read_bytes(),f.stat().st_mode) for f in (d/'after').rglob('*') if f.is_file()}\n h=after.pop('handoff.md')[0]\n print('same before and after bytes and modes', before==after, 'hash',hashlib.sha256(h).hexdigest()==o['handoff']['sha256'])\n e=json.loads(before['evidence/processing.json'][0]); print('evidence',e['configured_days'],{s:{n:[x['age_days'] for x in v] for n,v in e[s].items()} for s in ['before','after_new_query']})\nPY\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c \"python3 -B - <<'PY'\nimport json, pathlib\nfor p in sorted(pathlib.Path('.').glob('*/actions.json')):\n d=json.loads(p.read_text()); print('\\\\n',p, 'changed:',d['changed'])\n for e in d['operations']:\n  if isinstance(e,dict):\n   for k,v in e.items():\n    if isinstance(v,str) and len(v)>1150:\n     print(f'{k}={v[:500]} ... {v[-250:]} ({len(v)})',end=' | ')\n    else: print(f'{k}={v}',end=' | ')\n   print()\n  else: print(e)\nPY\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c \"rg -n --no-heading --with-filename '\"'^'\"' 4cc642/before/scope/meeting.md 4cc642/after/handoff.md 4cc642/answer.md\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c \"rg -n --no-heading --with-filename '\"'^'\"' a34425/before/scope/meeting.md a34425/after/handoff.md a34425/answer.md\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c \"rg -n --no-heading --with-filename '\"'^'\"' 9c8b9a/before/scope/meeting.md 9c8b9a/after/handoff.md 9c8b9a/answer.md\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c \"rg -n --no-heading --with-filename '\"'^'\"' efb104/before/scope/meeting.md efb104/after/handoff.md efb104/answer.md\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c \"rg -n --no-heading '\"'^'\"' criteria.md\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c \"python3 -B - <<'PY'\nimport json, pathlib, stat\nfor p in sorted(pathlib.Path('.').glob('*/actions.json')):\n d=p.parent\n print('\\\\n',d)\n trees=[]\n for phase in ('before','after'):\n  root=d/phase\n  trees.append({str(f.relative_to(root)): (f.lstat().st_mode,f.lstat().st_uid,f.lstat().st_gid) for f in [root,*root.rglob('*')] if str(f.relative_to(root)) \"'!= '\"'handoff.md'})\n print('metadata equal for original entries:',trees[0]==trees[1])\n observer=json.loads((d/'observer.json').read_text()); print('bytes match:',observer['handoff']['bytes']==(d/'after/handoff.md').stat().st_size)\n actions=json.loads(p.read_text())\n for operation in actions['operations']:\n  c=operation.get('command','')\n  if '<<' in c and len(c)>1200:\n   if '\\\\nEOF\\\\n' in c:\n    start,end=c.split('\\\\nEOF\\\\n',1); print('write prefix:',start.splitlines()[:5]); print('post-write:',end)\n   else: print(c)\nPY\"",
+        "exit": 0
+      },
+      {
+        "command": "/bin/bash -c \"rg -n --no-heading '\"'^Работай|''^Примени'\"' */task.md\"",
+        "exit": 0
+      }
+    ],
+    "webEvents": 0,
+    "observedFileChanges": 0
+  }
+}

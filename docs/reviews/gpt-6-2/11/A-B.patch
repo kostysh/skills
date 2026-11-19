@@ -1,0 +1,4 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -301 +300,0 @@
+-- **high** — Do not use FAIL merely because the target, coverage, runtime facts, or evidence are missing; use INCOMPLETE or BLOCKED according to the status contract.

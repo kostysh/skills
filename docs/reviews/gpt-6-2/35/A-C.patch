@@ -1,0 +1,5 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -163 +163 @@
+-- Verification matches the changed Electron boundary, not only browser dev mode.
++- Verify the changed boundary in Electron. For renderer access, report the exposed bridge, sandbox, context isolation, and observed Node access.

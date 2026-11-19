@@ -1,0 +1,70 @@
+{
+  "model": "gpt-6.2-sol",
+  "reasoning": "model_reasoning_effort=\"high\"",
+  "sandbox": "read-only",
+  "long_term_memory_feature": "disabled",
+  "raw_grade_sha256": "09166d1babb224cd7297aff7ce1fd1737c5b41e2567fbdc4a56d6679cd42bf1d",
+  "raw_evaluator_events_sha256": "d9e98d43c7c6ef19bf8077a394fc7580f440373afc8d6369a95c4ead355d679c",
+  "public_grade_sha256": "8e1b4a3311279d8b6bd04f4d14d21ef355e40ebc29839114667b1a1bfad5f65c",
+  "packet_files": 101,
+  "packet_manifest_sha256": "91215fcea6a8db2b090fd8b31c138348e17508673118ba0ee6cfe12feb489b6a",
+  "blind_access": "Only work product, neutral assignments, precommitted criteria, original task, final answer, recorded actions and evidence supplied in packet. No assignment key or candidate instruction files. Shared host outside read-only directory physically readable; operations reviewed for scope.",
+  "observed_access": [
+    {
+      "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"' -g '\"'!.git/**'\"'\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'cat criteria.md'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'wc -lc */task.md */answer.md */observer.json */actions.json */after/browser-record.jsonl */before/lab.py */after/lab.py */before/PREVIEW.md */after/PREVIEW.md'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'for file in task.md answer.md actions.json observer.json; do head -v -n 300 \"$file\"; done'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'for file in task.md answer.md actions.json observer.json; do head -v -n 300 \"$file\"; done'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'for file in task.md answer.md actions.json observer.json; do head -v -n 300 \"$file\"; done'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'for file in task.md answer.md actions.json observer.json; do head -v -n 300 \"$file\"; done'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'cat 5bc846/task.md 5bc846/answer.md 5bc846/actions.json'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'cat 1f267f/before/PREVIEW.md 1f267f/before/lab.py'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -lc 'head -n 3 1f267f/after/browser-record.jsonl'",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c \"python3 -B - <<'PY'\nfrom pathlib import Path\nfor code in ('1aa046','1f267f','5bc846','761870'):\n    for task_file in ('task.md','answer.md','actions.json'):\n        text=(Path(code)/task_file).read_text()\n        print(f\\\"{code}/{task_file}\\\\n{text}\\\")\nPY\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c \"python3 -B - <<'PY'\nimport json,hashlib\nfrom pathlib import Path\nfor folder in sorted(Path('.').glob('*/task.md')):\n    case=folder.parent\n    observer=json.loads((case/'observer.json').read_text())\n    path=case/'after/browser-record.jsonl'\n    record=path.read_bytes()\n    lines=[json.loads(line) for line in record.splitlines()]\n    print(f'\\\\n{case} RECORD sha256={hashlib.sha256(record).hexdigest()==observer[\\\"browser_record_sha256\\\"]}')\n    snapshots=[i for i,event in enumerate(lines,1) if event.get('args',[''])[0]=='snapshot']\n    for i,e in enumerate(lines,1):\n        cmd=e.get('args')\n        if cmd is None:\n            print(i,e)\n            continue\n        print(i,e['exit'],' '.join(cmd), '' if 'output' in e else f'output_bytes={e[\\\"output_bytes\\\"]}')\n        if i in snapshots:\n            for l in e['output'].splitlines():\n                if any(term in l for term in ('textbox','switch','radio \\\"Daily\\\"','radio \\\"Weekly\\\"','dialog','button \\\"Cancel\\\"','Confirm','Applying','Settings applied','Email:','Saved for',' - status','StaticText \\\"desk-news','StaticText \\\"digest-office','StaticText \\\"On\\\"','StaticText \\\"Daily\\\"','StaticText \\\"Weekly\\\"')):\n                    print('  ',l.strip())\n    before,after=case/'before',case/'after'\n    check=lambda f:{p.relative_to(f).as_posix():hashlib.sha256(p.read_bytes()).digest() for p in f.rglob('*') if p.is_file()}\n    b,a=check(before),check(after)\n    print('files before/after modification:', [p for p in b.keys() & a.keys() if b[p]\"'!=a[p]], '\"'added:',sorted(a.keys()-b.keys()),'removed:',sorted(b.keys()-a.keys()))\n    digest_mismatches=[i for i,e in enumerate(lines,1) if 'output' in e and hashlib.sha256(e['output'].encode()).hexdigest()\"'!=e['\"'output_sha256']]\n    print('stdout digest mismatches:',digest_mismatches)\n    subset=[e for e in lines if 'output' in e or e['kind']\"'!='\"'browser']\n    verification=[]\n    for ob,e in zip(observer['actual_events'],subset):\n        if e['kind']\"'!='\"'browser':\n            verification.append(ob==e)\n        else:\n            verification.append(ob['args']==e['args'] and ob['runtime_exit']==e['exit'] and ob['stdout_sha256']==e['output_sha256'] and all(l in e['output'].splitlines() for l in ob['observed_lines']))\n    print('observer agrees with raw:',all(verification),len(subset),len(observer['actual_events']))\nPY\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c \"find . -mindepth 1 -maxdepth 2 -printf '%y %p\\\\n'\"",
+      "exit": 0
+    },
+    {
+      "command": "/bin/bash -c \"python3 -B - <<'PY'\nfrom pathlib import Path\nfor case in sorted(Path('.').glob('*/task.md')):\n    root=case.parent/'before'\n    bundle=next((root/'dist/assets').glob('index-*.js')).read_text()\n    print(case.parent)\n    for term in ('This demo keeps settings only until you reload','Saved for this session. No email is sent.','Settings applied'):\n        i=bundle.find(term)\n        print(bundle[max(0,i-95):i+len(term)+75] if i\"'!=-1 else '\"'<absent>')\n    i=bundle.find('Confirm to apply these notification settings for this session.')\n    print(bundle[max(0,i-70):i+130])\n    i=bundle.find('Delivery frequency')\n    print(bundle[max(0,i-2600):max(0,i-2150)])\nPY\"",
+      "exit": 0
+    }
+  ]
+}

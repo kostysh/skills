@@ -1,0 +1,72 @@
+--- research-D/SKILL.md
++++ release/SKILL.md
+@@ -1,13 +1,12 @@
+ ---
+ name: shadcn
+-description: "Build and maintain shadcn/ui projects with Base UI defaults:
+-  inspect components.json, use current CLI/docs, add or update registry
+-  components safely, compose and theme them, and verify project behavior. Use
+-  for shadcn components, registries, presets, configuration, fixes, or
+-  debugging."
++description: Build and maintain shadcn/ui projects using the configured base.
++  Inspect components.json and CLI previews, add or update registry components,
++  compose and theme them, and verify project behavior. Use for shadcn
++  components, registries, presets, configuration, fixes, or debugging.
+ metadata:
+-  source-version: 0.2.2
++  source-version: 0.2.3
+   skillforge-source-manifest: skill.yaml
+-  skillforge-source-hash: 7180f90c3decbec46b70b43b576c5a7bae3ec9a6b64d3be09bb4d90b10c87293
++  skillforge-source-hash: 1f84af42c598eb14935bd87ffd8234807e8908c7c3e58975a92fae833fe660ae
+ ---
+ 
+@@ -18,5 +17,5 @@
+ 1. Confirm that the task requires shadcn-specific component, registry, preset, configuration, or composition guidance.
+ 2. Identify the project root and acquire current project context before choosing imports, paths, dependencies, or component APIs.
+-3. Treat Base UI as the current default for new shadcn work and use project-resolved documentation for exact APIs.
++3. Identify the configured component base before choosing a composition API.
+ 4. Load only the active references whose triggers match the task.
+ 5. Define the observable result and the checks that must pass before changing files.
+@@ -39,5 +38,5 @@
+ Build and maintain shadcn components as source code inside the user's project. The skill succeeds when the requested UI works in the target project and the strongest claimed status is supported by project or interaction evidence.
+ 
+-Base UI is the default for new shadcn work. Use current project-resolved documentation and installed source for exact component APIs instead of relying on remembered examples.
++Base UI is the current default for a new project. Resolve the API of an existing component from its installed wrapper and the documentation for its base.
+ 
+ ## Inputs and authority
+@@ -182,6 +181,6 @@
+ Apply operator constraints first, then repository instructions, inspected project configuration and installed source, current CLI help and official docs, and finally static skill examples. Stop on unresolved equal-authority conflicts.
+ 
+-### Base UI default
+-Use the current Base UI default for new shadcn work and resolve exact component APIs from the target project and current documentation.
++### Component base
++Existing projects keep their configured base, including Base UI, Radix, or React Aria. When initializing a project without a requested base, use the project CLI default.
+ 
+ ### Mutation safety
+--- research-D/agents/openai.yml
++++ release/agents/openai.yml
+@@ -1,5 +1,5 @@
+ interface:
+   display_name: "shadcn/ui"
+-  short_description: "Builds and maintains shadcn/ui Base UI projects."
++  short_description: "Builds and maintains components for the project’s shadcn/ui base."
+   icon_small: "./assets/shadcn-small.png"
+   icon_large: "./assets/shadcn.png"
+--- research-D/references/rules/composition.md
++++ release/references/rules/composition.md
+@@ -28,5 +28,5 @@
+ ## Links styled as buttons
+ 
+-Use `buttonVariants` on a real link so link semantics remain intact:
++Keep one real link. Apply `buttonVariants` to the link, as below, or use the installed Button’s composition API, such as Radix `asChild`.
+ 
+ ```tsx
+--- research-D/references/rules/forms.md
++++ release/references/rules/forms.md
+@@ -60,5 +60,5 @@
+ - Searchable choice: `Combobox`.
+ 
+-Current single-selection toggle groups use the documented single mode:
++This example uses a Radix wrapper. A React Aria wrapper uses `selectionMode="single"`. Check the installed wrapper for the matching selection prop.
+ 
+ ```tsx

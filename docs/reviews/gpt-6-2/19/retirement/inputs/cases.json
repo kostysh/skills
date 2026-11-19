@@ -1,0 +1,17 @@
+{
+  "ordinary": {
+    "task": "Примени ./SKILL.md. В макете press-board.pen на экране «Morning board» заголовок теряется рядом со строкой заказа, а действие «Print docket» похоже на обычный текст. Приведи экран к утверждённым стилям из press-kit.md. Нам нужны редактируемый оригинал и SVG-проба morning.svg для печатника. Сохрани тексты, расположение элементов и соседний экран. Команда работает с этим проектом через локальный адаптер, описанный в STUDIO.md.",
+    "document": "press-board.pen", "target": "Morning board", "sibling": "Evening board", "title": "Morning dispatch", "detail": "Order 214 · Linen stock", "action": "Print docket",
+    "title_token": "Display", "action_token": "Amber action", "proof": "morning.svg", "connection": "attached", "cache": false
+  },
+  "boundary": {
+    "task": "Примени ./SKILL.md. Подготовь карточку выдачи для вечерней смены. В handover.pen для экрана «Counter slip» нужны стили из press-kit.md, редактируемый оригинал и SVG-проба counter.svg. В отдельном layout-note.md оставь короткие указания для верстальщика по иерархии текста и действия. Эту записку он заберёт отдельно. Тексты и сценарий согласованы. Предыдущую пробу приложили для контекста. Локальный рабочий стол описан в STUDIO.md.",
+    "document": "handover.pen", "target": "Counter slip", "sibling": "Archive slip", "title": "Evening handover", "detail": "Collection 516 · Upper counter", "action": "Confirm pickup",
+    "title_token": "Display", "action_token": "Amber action", "proof": "counter.svg", "connection": "detached", "cache": false
+  },
+  "holdout": {
+    "task": "Примени ./SKILL.md. Для еженедельного тиража исправь только визуальный приоритет на экране «Proof desk» в weekly-sheet.pen по согласованному press-kit.md. Нужны исходник для следующей смены и SVG weekly.svg, который типография получит вместе с ним. Соседний экран служит отдельной группе. Команда использует локальный рабочий стол из STUDIO.md.",
+    "document": "weekly-sheet.pen", "target": "Proof desk", "sibling": "Dispatch desk", "title": "Weekly proof sheet", "detail": "Batch 782 · Soft finish", "action": "Release proof",
+    "title_token": "Display", "action_token": "Amber action", "proof": "weekly.svg", "connection": "attached", "cache": true
+  }
+}

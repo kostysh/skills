@@ -1,0 +1,121 @@
+{
+  "ordinary": [
+    {
+      "id": "a7",
+      "session": true,
+      "status": 200,
+      "body": {
+        "id": "a7",
+        "title": "Harbor"
+      },
+      "flow": "dispatch,session,read"
+    },
+    {
+      "id": "b4",
+      "session": true,
+      "status": 502,
+      "body": {
+        "error": "invalid_record"
+      },
+      "flow": "dispatch,session,read,error"
+    },
+    {
+      "id": "absent",
+      "session": true,
+      "status": 404,
+      "body": {
+        "error": "not_found"
+      },
+      "flow": "dispatch,session,read"
+    },
+    {
+      "id": "a7",
+      "session": false,
+      "status": 401,
+      "body": {
+        "error": "sign_in"
+      },
+      "flow": "dispatch,session"
+    }
+  ],
+  "boundary": [
+    {
+      "id": "k8",
+      "session": true,
+      "status": 200,
+      "body": {
+        "id": "k8",
+        "title": "River"
+      },
+      "flow": "dispatch,session,read"
+    },
+    {
+      "id": "m3",
+      "session": true,
+      "status": 200,
+      "body": {
+        "id": "m3",
+        "title": 33
+      },
+      "flow": "dispatch,session,read"
+    },
+    {
+      "id": "absent",
+      "session": true,
+      "status": 404,
+      "body": {
+        "error": "not_found"
+      },
+      "flow": "dispatch,session,read"
+    },
+    {
+      "id": "k8",
+      "session": false,
+      "status": 401,
+      "body": {
+        "error": "sign_in"
+      },
+      "flow": "dispatch,session"
+    }
+  ],
+  "holdout": [
+    {
+      "id": "f2",
+      "session": true,
+      "status": 200,
+      "body": {
+        "id": "f2",
+        "title": "North"
+      },
+      "flow": "dispatch,session,read"
+    },
+    {
+      "id": "r9",
+      "session": true,
+      "status": 200,
+      "body": {
+        "id": "r9",
+        "title": ""
+      },
+      "flow": "dispatch,session,read"
+    },
+    {
+      "id": "absent",
+      "session": true,
+      "status": 404,
+      "body": {
+        "error": "not_found"
+      },
+      "flow": "dispatch,session,read"
+    },
+    {
+      "id": "f2",
+      "session": false,
+      "status": 401,
+      "body": {
+        "error": "sign_in"
+      },
+      "flow": "dispatch,session"
+    }
+  ]
+}

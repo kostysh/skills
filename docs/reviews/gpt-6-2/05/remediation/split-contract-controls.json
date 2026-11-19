@@ -1,0 +1,53 @@
+{
+  "only-named-output": {
+    "case": "boundary",
+    "public_module": "import * as v from \"valibot\";\nimport { parcelSchema } from \"./protocol.ts\";\nexport function readLabel(raw: unknown) {\n  const parsed = v.safeParse(parcelSchema, raw);\n  return parsed.success ? parsed.output : null;\n}\nexport type Parcel = { zone: \"north\" | \"south\"; position: number };\n",
+    "current_working_client_exit": 0,
+    "revised_consumer": {
+      "argv": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "-p",
+        "tsconfig.revision.json"
+      ],
+      "exit": 2,
+      "stdout": "src/revision-client.ts(2,73): error TS2339: Property 'scanned' does not exist on type 'Parcel'.\n",
+      "stderr": ""
+    },
+    "revised_runtime_green": true
+  },
+  "only-return-output": {
+    "case": "boundary",
+    "public_module": "import * as v from \"valibot\";\nimport { parcelSchema } from \"./protocol.ts\";\nexport type Parcel = v.InferOutput<typeof parcelSchema>;\nexport function readLabel(raw: unknown): { zone: \"north\" | \"south\"; position: number } | null {\n  const parsed = v.safeParse(parcelSchema, raw);\n  return parsed.success ? parsed.output : null;\n}\n",
+    "current_working_client_exit": 0,
+    "revised_consumer": {
+      "argv": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "-p",
+        "tsconfig.revision.json"
+      ],
+      "exit": 2,
+      "stdout": "src/consumer.ts(9,46): error TS2345: Argument of type '{ zone: \"north\" | \"south\"; position: number; }' is not assignable to parameter of type '{ zone: \"north\" | \"south\"; position: number; scanned: boolean; }'.\n  Property 'scanned' is missing in type '{ zone: \"north\" | \"south\"; position: number; }' but required in type '{ zone: \"north\" | \"south\"; position: number; scanned: boolean; }'.\nsrc/revision-client.ts(5,42): error TS2339: Property 'scanned' does not exist on type '{ zone: \"north\" | \"south\"; position: number; }'.\n",
+      "stderr": ""
+    },
+    "revised_runtime_green": true
+  },
+  "only-public-input": {
+    "case": "holdout",
+    "public_module": "import * as v from \"valibot\";\nimport { periodSchema } from \"./protocol.ts\";\nexport type PeriodRequest = { day: string; shifts?: number | undefined };\nexport type Period = v.InferOutput<typeof periodSchema>;\nexport function readPeriod(raw: unknown): Period | null {\n  const parsed = v.safeParse(periodSchema, raw);\n  return parsed.success ? parsed.output : null;\n}\n",
+    "current_working_client_exit": 0,
+    "revised_consumer": {
+      "argv": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "-p",
+        "tsconfig.revision.json"
+      ],
+      "exit": 2,
+      "stdout": "src/revision-client.ts(8,67): error TS2353: Object literal may only specify known properties, and 'desk' does not exist in type 'PeriodRequest'.\n",
+      "stderr": ""
+    },
+    "revised_runtime_green": true
+  }
+}

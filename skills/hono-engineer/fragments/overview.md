@@ -25,7 +25,7 @@ Recommendations track the latest official stable Hono guidance rather than a pin
 ## Hono baseline decisions
 
 - Preserve the existing compatible app composition. In greenfield application work, do not select structure without authority; use typed factories or `app.route()` only when the accepted composition needs them. Capture chained route return types when Hono RPC or typed test clients consume them.
-- Treat middleware order as behavior. Preserve the compatible project-owned global and route-group composition; register `app.onError()` and `notFound()` as hooks, not middleware positions.
+- Preserve middleware registration order in the project's global and route-group composition. On Hono v4, register `app.onError()` and `app.notFound()` as hooks outside the middleware chain. For other majors, check the installed API before wiring error handling.
 - Keep route handlers focused on the accepted HTTP boundary when that fits the project architecture; do not introduce a new service/domain layering scheme during a narrow Hono change.
 - Keep request-scoped state in Hono Context or explicit parameters, never module-level mutable state.
 - Validate configuration at its accepted boundary and preserve the project's typed Context bindings or variables. On Workers, use current `wrangler types` output only when the project owns generated bindings; do not impose that migration over a different accepted Env boundary.

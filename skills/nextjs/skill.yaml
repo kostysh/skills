@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: nextjs
-  source-version: 0.1.2
+  source-version: 0.1.3
   recommended-skill-md-max-bytes: 20000
   description: >-
     Build, review, and debug Next.js App Router apps using RSC, Server Actions,
@@ -50,7 +50,7 @@ references:
     source: references/directives.md
     target: references/directives.md
     required: true
-    trigger: Read this when applying 'use client', 'use server', or 'use cache'.
+    trigger: Read this when applying 'use client', 'use server', 'use cache', or the Cache Components configuration.
   - id: ref-error-handling
     title: Error Handling
     source: references/error-handling.md
@@ -143,6 +143,10 @@ copies:
     target: agents/openai.yaml
     description: Portable copy of agents/openai.yaml.
 supporting:
+  - id: supporting-implementation-log-20261118-1
+    source: docs/logs/implementation-log-20261118-1.md
+    target: docs/logs/implementation-log-20261118-1.md
+    description: Supporting record of the App Router and first-load acceptance revision.
   - id: supporting-implementation-log-20260715-1
     source: docs/logs/implementation-log-20260715-1.md
     target: docs/logs/implementation-log-20260715-1.md
@@ -226,7 +230,7 @@ sections:
       title: Verify Next.js behavior
       goal: Prove the framework behavior with the narrowest available project check.
       steps:
-        - Run existing validation that exercises the changed route, build, type surface, or browser behavior.
+        - Verify each claimed outcome. When first-load acceptance covers server-rendered content and interactivity, state in the final answer which expected content the original HTTP HTML contained or lacked and what the hydrated control did.
         - For build/runtime issues, prefer `next build` or the repo's production-equivalent command when feasible.
         - If validation cannot run, perform the next-best static check and report the limitation.
       validation:

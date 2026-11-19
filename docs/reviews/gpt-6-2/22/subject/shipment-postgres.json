@@ -1,0 +1,89 @@
+{
+  "image": "postgres@sha256:3a82e1f56c8f0f5616a11103ac3d47e632c3938698946a7ad26da0df1334744a",
+  "submissionSha256": "493b32191fc9ca38dc3e46cd95983907337137abd630326746265b78920736b9",
+  "server": "PostgreSQL 18.4 (Debian 18.4-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+  "output": [
+    {
+      "reader": "trial_reader",
+      "ref": "K1",
+      "net": "5",
+      "fee": "2",
+      "types": [
+        "text",
+        "text"
+      ]
+    },
+    {
+      "reader": "trial_reader",
+      "ref": "K2",
+      "net": "-5",
+      "fee": "-3",
+      "types": [
+        "text",
+        "text"
+      ]
+    },
+    {
+      "reader": "trial_reader",
+      "ref": "K3",
+      "net": "9223372036854775807",
+      "fee": "4611686018427387903",
+      "types": [
+        "text",
+        "text"
+      ]
+    },
+    {
+      "reader": "trial_reader",
+      "ref": "K4",
+      "net": "-9223372036854775807",
+      "fee": "-4611686018427387904",
+      "types": [
+        "text",
+        "text"
+      ]
+    },
+    {
+      "reader": "trial_reader",
+      "ref": "K5",
+      "net": "19",
+      "fee": null,
+      "types": [
+        "text",
+        "text"
+      ]
+    },
+    {
+      "reader": "trial_reader",
+      "ref": "X1",
+      "net": "-1",
+      "fee": "-1",
+      "types": [
+        "text",
+        "text"
+      ]
+    },
+    {
+      "reader": "trial_reader",
+      "ref": "X2",
+      "net": "4",
+      "fee": "2",
+      "types": [
+        "text",
+        "text"
+      ]
+    },
+    {
+      "reader": "trial_reader",
+      "ref": "X3",
+      "net": "-42",
+      "fee": null,
+      "types": [
+        "text",
+        "text"
+      ]
+    }
+  ],
+  "matchesFixedLiteralsAndTypes": true,
+  "containerGone": true
+}

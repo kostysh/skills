@@ -1,0 +1,46 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -8 +8 @@
+-  source-version: 0.1.3
++  source-version: 0.1.4
+@@ -10 +10 @@
+-  skillforge-source-hash: 564d9d92a5497015432366b96000b975bcb71f313e7c0d517c0d5d1df7e4d7b8
++  skillforge-source-hash: aea29827250f19c31c6b1828633215f48bd3308fdabcf51b521ddb2d8f74b56d
+@@ -41 +41 @@
+-The target examples were checked against **Payload 3.88.0 stable on 2026-09-09**. **4.0.0-canary.33** is a separate prerelease. Inspect the actual installed Payload, editor, database and storage packages; matching `@payloadcms/*` versions and peer compatibility matter. Preserve an existing supported v2 project and its initialization/storage/CLI contracts; do not upgrade it to make a v3 example work. Use exact installed types and official version-matched docs for another version.
++The Local API example targets Payload and `@payloadcms/db-sqlite` 3.94.0 on Node 24.22.3. For the receiving project, check its lockfile, adapter settings and the installed packages’ engines and peers. Follow its Payload, editor and storage versions. An existing v2 project retains its initialization, storage and CLI contracts.
+@@ -49 +49 @@
+-Prefer an existing importer/identity field. Otherwise persist a unique source key with the target document or an equivalent transactionally safe durable map. The map records target collection/ID and per-record/per-locale/per-phase state, source revision/hash, retries and unresolved errors. A separate checkpoint file alone is insufficient: a crash after the target commit but before the checkpoint must recover the existing target through its source key. Uniqueness must also resolve concurrent create races. Advance a durable checkpoint only after persisted work is known; on uncertain responses reread by identity before retrying. Use a single writer unless the accepted importer handles concurrency.
++Prefer an existing importer/identity field. Otherwise persist a unique source key with the target document or an equivalent transactionally safe durable map. The map records target collection/ID and per-record/per-locale/per-phase state, source revision/hash, retries and unresolved errors. A separate checkpoint file alone is insufficient: a crash after the target commit but before the checkpoint must recover the existing target through its source key. If an existing source-key field lacks a unique constraint, use it with exclusive write access and surface multiple matches as conflicts. Concurrent writers need atomic uniqueness or equivalent coordination. Advance the checkpoint after the target write is confirmed. Reread by identity when the response is uncertain.
+@@ -65 +65,3 @@
+-A reliable-rerun claim needs an interrupted/partial run followed by recovery and a repeat run with unchanged source; inspect persisted state for duplicates and omissions. Test the same actor and data path. Payload owns target adapter/API/access mechanisms, TypeScript/test skills own language/test mechanics, and nextjs owns frontend rendering/cache. Supply IDs, expected content and requested routes to those owners and consume their actual observations; their config or build cannot replace migration reconciliation.
++A reliable-rerun claim needs an interrupted/partial run followed by recovery and a repeat run with unchanged source; inspect persisted state for duplicates and omissions. Reconcile all imported identities with an authorized full read. To verify a restricted Local API consumer, reread as its actual `user` with `overrideAccess: false`. The Local API skips access checks by default. [Payload Local API access](https://github.com/payloadcms/payload/blob/v3.94.0/docs/local-api/access-control.mdx)
++
++Payload owns target adapter/API/access mechanisms, TypeScript/test skills own language/test mechanics, and nextjs owns frontend rendering/cache. Supply IDs, expected content and requested routes to those owners and consume their actual observations; their config or build cannot replace migration reconciliation.
+@@ -160 +162 @@
+-- [Payload Field Reference](references/payload-field-reference.md) — Read this when mapping source fields, nested data, arrays, media, rich text, relationships, auth/upload collections, or CMS-specific patterns to Payload field configs.
++- [Payload Field Reference](references/payload-field-reference.md) — Read this when interpreting a CMS export, mapping fields, relationships, uploads, editors or locales, or using Payload’s import/export plugin.
+--- a/references/payload-field-reference.md
++++ b/references/payload-field-reference.md
+@@ -921 +921,5 @@
+-First distinguish WordPress REST v2 from a database/WXR export. Do not mix their keys. REST has `id`, `title.rendered`, `content.rendered`, `excerpt.rendered`, `author`, `featured_media`, `status`, `date` and `date_gmt`; DB exports instead use keys such as `ID`, `post_title`, `post_content`, `post_author`, `post_status`, `post_date_gmt` and attachment metadata. Preserve the source installation/content-type namespace.
++Identify the WordPress source and retain its installation and content type in the source identity.
++
++- REST v2 posts expose `id`, `title.rendered`, `content.rendered`, `excerpt.rendered`, `author`, `featured_media`, `status`, `date` and `date_gmt`. Enumerate the pages for the authorized query and reconcile `X-WP-Total` and `X-WP-TotalPages`. [REST pagination](https://developer.wordpress.org/rest-api/using-the-rest-api/pagination/)
++- A WXR XML item carries `wp:post_id`, `content:encoded`, `wp:status` and, for an attachment, `wp:attachment_url`. [WordPress WXR writer](https://developer.wordpress.org/reference/functions/export_wp/)
++- Database exports use columns such as `ID`, `post_title`, `post_content`, `post_author`, `post_status` and `post_date_gmt`, with attachment data in the related tables.
+@@ -971,0 +976,6 @@
++## Payload import/export plugin
++
++When the project already uses `@payloadcms/plugin-import-export`, inspect the installed plugin and the actual export. In 3.94.0 JSON import expects an array of documents for one collection. CSV uses flattened column names such as `group_value` and `array_0_field`. Verify that the export includes the identity and relationship fields needed for the transfer. The export field picker excludes disabled fields. Map a custom multi-collection envelope to the receiving collections before submitting it. [Format and options](https://github.com/payloadcms/payload/blob/v3.94.0/docs/plugins/import-export.mdx) · [Field selection change](https://github.com/payloadcms/payload/pull/18434)
++
++The plugin defaults to `create`. For `update` or `upsert`, choose an unambiguous `matchField` present in each input row. It defaults to `id`, and the match query applies the import actor’s access rules. Check the actor can see existing matches before treating an upsert as safe to repeat. A queued import needs a running jobs processor. A collection configured with `disableJobsQueue: true` imports synchronously. Inspect the completed job or import record, its row errors and the target data. [Import modes and jobs](https://github.com/payloadcms/payload/blob/v3.94.0/docs/plugins/import-export.mdx) · [Match query](https://github.com/payloadcms/payload/blob/v3.94.0/packages/plugin-import-export/src/import/batchProcessor.ts)
++
+@@ -976 +986 @@
+-1. **Identify collections** - Each distinct content type becomes a collection
++1. **Identify schema owners** - Map to the accepted collection, global or nested field. Propose a new collection when the source entities need independent documents.
+@@ -1007 +1017,3 @@
+-Target sources: [field types at 3.88.0](https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/fields/config/types.ts), [HTML conversion](https://payloadcms.com/docs/rich-text/converting-html), [Markdown conversion](https://payloadcms.com/docs/rich-text/converting-markdown), [localization](https://payloadcms.com/docs/configuration/localization).
++For Local API writes, keep the source key and the ID returned by the receiving adapter. A relationship to a single collection stores the related target ID. For example, SQLite 3.94.0 defaults to numeric IDs and `allowIDOnCreate: false`. Check the target's configured ID type and use its returned values when resolving references. [SQLite adapter defaults](https://github.com/payloadcms/payload/blob/v3.94.0/packages/db-sqlite/src/index.ts)
++
++Target sources: [field types at 3.94.0](https://github.com/payloadcms/payload/blob/v3.94.0/packages/payload/src/fields/config/types.ts), [HTML conversion](https://payloadcms.com/docs/rich-text/converting-html), [Markdown conversion](https://payloadcms.com/docs/rich-text/converting-markdown), [localization](https://payloadcms.com/docs/configuration/localization).

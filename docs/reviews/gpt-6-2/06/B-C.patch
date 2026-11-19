@@ -1,0 +1,5 @@
+--- B/references/debugging-profiling.md
++++ C/references/debugging-profiling.md
+@@ -37 +37 @@
+-Interpret the result with package exports and conditions.
++Interpret the result with package exports and conditions. Verify loading by executing the consumer's actual `import` or `require`.

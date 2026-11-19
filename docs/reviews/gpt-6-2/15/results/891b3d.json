@@ -1,0 +1,217 @@
+{
+  "variant": "C",
+  "case": "holdout",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПо локальному SKILL.md architecture-engineer подготовьте для следующей встречи одну архитектурную записку «Кабинет 1» в architecture-note.md. Редакция PRD и её первичные материалы находятся в draft/, запрос хозяина площадки и журналы — в lab/. Дополнительное руководство implementation-discipline доступно в companion/implementation-discipline/.\n\nРазберите, какой профиль можно сейчас рекомендовать для запрошенной репетиции и почему. Читателю нужно проверить ваш вывод по данным и понять, что конкретно могут сделать дальше архитектор, автор спецификации и планировщик. Записку будут передавать дальше вместе с этим пакетом. Сохраните источники и исходные журналы.\n",
+  "input_file_sha256": {
+    "SKILL.md": "9d10f3328c44d2b5cfba557d79585fe73e6f8bb4a21930e610d5b08214a1f11e",
+    "agents/openai.yaml": "3420b7777dd1e4ba70e2f1bc7d35332f84601dee6cdc74a107979581a1f7e982",
+    "assets/templates/adr.md": "109d60b90093b5d212e0105cc33a74b588209d6d36150eb3bb0add3d7c36463f",
+    "assets/templates/architecture-brief.md": "023a831cffe60c35834e9b2d22e0e7d7c14b2588f91540b5b5fb4ba6cf40751d",
+    "assets/templates/architecture-check.md": "f47434b4264220ed5c9ab66e74c60f8e50d5c31cb03cba3ee02b459bcf1e3206",
+    "assets/templates/architecture-delta.md": "c565071dfa8e1c55757780f3fd14c850b290fb5634f8bed460ae06d814f56f58",
+    "assets/templates/architecture-handoff-item.yaml": "c7e32bc01e779ace8863a56e6b185d3e78821b5fd0f287d866f6ef18a88c44cc",
+    "assets/templates/architecture-handoff-register.yaml": "ad1a3e7e537c3166e9ec60ceeb94492ec6bc3cbc2dc246f48c86e93764f14d7f",
+    "assets/templates/asr-record.yaml": "78c6a2843059b69941f0b5323a09fa87fb14af20c587e498ba547f8233752a0f",
+    "assets/templates/pattern-decision.md": "04812c6e25accd03f52d0cb01d16dbe7223469a51796fc99379f4db1d1bff329",
+    "assets/templates/quality-scenario.md": "1eae6f37d48e7508b693c35e91a953e5b28243f3dd54fa02581090186a84f425",
+    "assets/templates/spike-brief.md": "4a180513a811e4fae1e5321c139050d40cc0497b31fc26a83b567c37a9a1e2e9",
+    "companion/implementation-discipline/SKILL.md": "fde9d3f957856e325f2e2a725598f8a0984c90dccb1720ef862a3316a5c30729",
+    "companion/implementation-discipline/references/core-principles.md": "fa8a312bb8f580a1224f049f2480605d474b399f14627a55c292b28bbcec5cde",
+    "companion/implementation-discipline/references/verification-loop.md": "659c14086b1829585a006de89a1456a4eb0c15b5aa0f3673a335093ab5d0767e",
+    "draft/materials/decision-intake.md": "e8e3b2c3d64a10719161e30ab8c16056677e41dfc9723352a29580d29fc1f6cc",
+    "draft/materials/report-draft.md": "24379268c335dae167388ee26569924e9672314f566e2979ee9e2fcfe2db54b8",
+    "draft/materials/team-note.md": "4da36f0b60ac31992c503a6a4f85d558491ddb4e84f7e6b2a0613d92fba42221",
+    "draft/product-output.md": "0ad7a0914a8b6a9465160496a60422e1ad23687241f53aaecf502e6285fd38ff",
+    "lab/captures.csv": "eb3e15ba6838b16245c27a960216dc4f2b45acd54797b985a7368253999c9d21",
+    "lab/events.csv": "9db6426b35aeabfb43e8c9145dd364a3eb22c74748b313dd21dacff7071e03fb",
+    "lab/mail.csv": "b8202d539f3cd5385ab4c55f6a83abd657c4d0d8cdccfdd75884509ef5b31f98",
+    "lab/request.md": "adb5516279cd72e879292c0959fbf31582bffea871caca0b96179e159cfbe103",
+    "references/artifact-templates.md": "730a69850982ecd542875d92d50f3e4ee3678c5ed199bbaa6343715756fd9cba",
+    "references/methodology.md": "d1e03ecc93166eb8e203e353ac92c96db382a5adfeb6883a8d0f2869ca9629cb",
+    "references/pattern-catalog.md": "87e1143448cdbaa05d49d77c2be2384c3db40832e954efb02342e6f6529e3784"
+  },
+  "raw_events_sha256": "8a670c81a36b2ef0cad8cdb9fa6bed00e668044012eec34d4fd4d97d31e7b92a",
+  "raw_events_bytes": 198044,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Применю локальные руководства architecture-engineer и implementation-discipline. Сначала сверю запрос на репетицию с редакцией PRD, первичными материалами и журналами, затем подготовлю записку для встречи."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"ls -la && rg --files --hidden -g '\"'!.git'\"'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat SKILL.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat companion/implementation-discipline/SKILL.md && wc -l draft/*.md draft/materials/* lab/* && cat draft/product-output.md draft/materials/*.md lab/request.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat references/artifact-templates.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat companion/implementation-discipline/SKILL.md companion/implementation-discipline/references/{core-principles,verification-loop}.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"sed -n '250,520p' SKILL.md && cat references/methodology.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat lab/{captures,events,mail}.csv && sha256sum draft/product-output.md draft/materials/* lab/*'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"sed -n '1,249p' SKILL.md; sed -n '155,295p' references/methodology.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat references/pattern-catalog.md; nl -ba lab/request.md; nl -ba draft/product-output.md; nl -ba draft/materials/decision-intake.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "В D93 три отчёта готовы в нужном интервале, но один признак появился позже порога. В S94 все три показа быстрые, однако события готовности разнесены на семь секунд. В записке покажу расчёт по каждому отчёту и укажу, какой замер позволит решить вопрос с S94."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python - <<'PY'\nimport csv\nfrom collections import defaultdict\nfrom pathlib import Path\nimport hashlib\n\ndef read(name):\n    with Path('lab', name + '.csv').open(newline='') as stream:\n        return list(csv.DictReader(stream))\n\ndef key(row):\n    return tuple(row[field] for field in ('run','report','employee'))\n\nevents = defaultdict(dict)\nmail = defaultdict(list)\nfor row in read('events'):\n    assert row['event'] not in events[key(row)]\n    events[key(row)][row['event']] = int(row['ts_ms'])\nfor row in read('mail'):\n    mail[key(row)].append(row['reason'])\nassert set(mail) <= set(events)\nfor capture in read('captures'):\n    run = capture['run']\n    rows = sorted((k, v) for k, v in events.items() if k[0] == run)\n    assert len({k[1] for k, _ in rows}) == 3\n    assert capture['server_export'] == capture['mail_export'] == 'complete'\n    end = int(capture['end_ms'])\n    ready_times = [v['ready'] for k, v in rows]\n    span = max(ready_times) - min(ready_times)\n    assert end >= max(ready_times) + 1500\n    print(run, capture['profile'], 'span', span, 'window through', end)\n    for k, v in rows:\n        assert v['ready'] <= v['edge_ack'] <= v['badge'] <= end\n        print(*k[1:], v['ready'], v['edge_ack'], v['badge'], v['badge']-v['ready'], mail[k].count('report_ready'), *mail[k])\n    assert (span, [v['badge']-v['ready'] for _, v in rows]) == {\n        'D93': (10, [510, 785, 1910]),\n        'S94': (7000, [600, 600, 600]),\n    }[run]\n    assert all('report_ready' not in mail[k] for k, _ in rows)\n\npaths = sorted([path for folder in ('draft', 'lab') for path in Path(folder).rglob('*') if path.is_file()])\nfor path in paths:\n    print(hashlib.sha256(path.read_bytes()).hexdigest(), path)\nPY\"",
+      "exit_code": 1,
+      "status": "failed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python - <<'PY'\nimport csv\nfrom collections import defaultdict\nfrom pathlib import Path\n\ndef read(name):\n    with Path('lab', name + '.csv').open(newline='') as stream:\n        return list(csv.DictReader(stream))\n\ndef key(row):\n    return tuple(row[field] for field in ('run','report','employee'))\n\nevents = defaultdict(dict)\nmail = defaultdict(list)\nfor row in read('events'):\n    assert row['event'] not in events[key(row)]\n    events[key(row)][row['event']] = int(row['ts_ms'])\nfor row in read('mail'):\n    mail[key(row)].append(row['reason'])\nassert set(mail) <= set(events)\nfor capture in read('captures'):\n    run = capture['run']\n    rows = sorted((k, v) for k, v in events.items() if k[0] == run)\n    assert len({k[1] for k, _ in rows}) == 3\n    assert capture['server_export'] == capture['mail_export'] == 'complete'\n    end = int(capture['end_ms'])\n    ready_times = [v['ready'] for k, v in rows]\n    span = max(ready_times) - min(ready_times)\n    assert end >= max(ready_times) + 1500\n    print(run, capture['profile'], 'span', span, 'last deadline', max(ready_times) + 1500, 'end', end)\n    for k, v in rows:\n        assert v['ready'] <= v['edge_ack'] <= v['badge'] <= end\n        print(*k[1:], v['ready'], v['edge_ack'], v['badge'], v['badge']-v['ready'], mail[k].count('report_ready'), *mail[k])\n    assert (span, [v['badge']-v['ready'] for _, v in rows]) == {\n        'D93': (10, [510, 785, 1900]),\n        'S94': (7000, [600, 600, 600]),\n    }[run]\n    assert all('report_ready' not in mail[k] for k, _ in rows)\nPY\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "file_change",
+      "changes": [
+        {
+          "path": "{project}/architecture-note.md",
+          "kind": "add"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"python - <<'PY'\nimport csv\nimport re\nfrom collections import defaultdict\nfrom hashlib import sha256\nfrom pathlib import Path\n\ndef rows(filename):\n    with Path('lab', filename).open(newline='') as f:\n        return list(csv.DictReader(f))\n\ndef key(row):\n    return tuple(row[field] for field in ('run', 'report', 'employee'))\n\nnote = Path('architecture-note.md').read_text()\nprofiles = {row['run']: row['profile'] for row in rows('captures.csv')}\nevents = defaultdict(dict)\nfor row in rows('events.csv'):\n    events[key(row)][row['event']] = int(row['ts_ms'])\nmail = rows('mail.csv')\nexpected = set()\nfor (run, report, employee), event in events.items():\n    number_of_ready_emails = sum(key(row) == (run, report, employee) and row['reason'] == 'report_ready' for row in mail)\n    expected.add((run, profiles[run], report, employee, event['ready'], event['edge_ack'], event['badge'], event['badge']-event['ready'], number_of_ready_emails))\npattern = r'\"'^'\"\\\\| (D93|S94) / \"'`(common|separate)` '\"\\\\| (\\\\w+) / (\\\\w+) \\\\| (\\\\d+) \\\\| (\\\\d+) \\\\| (\\\\d+) \\\\| \\\\*{0,2}(\\\\d+)\\\\*{0,2} \\\\| (\\\\d+) \\\\|\"'$'\"'\nactual = {(*match[:4], *map(int, match[4:])) for match in re.findall(pattern, note, flags=re.M)}\nassert actual == expected\nfor link in re.findall(r'\\\\]\\\\(([\"'^)]+)'\"\\\\)', note):\n    path, _, anchor = link.partition('#')\n    source = Path(path)\n    assert source.is_file(), path\n    if anchor:\n        headings = [heading.strip().lower().replace(' ', '-') for heading in re.findall(r'\"'^#+ (.+)$'\"', source.read_text(), flags=re.M)]\n        assert anchor in headings, link\nprint(f'Проверены {len(actual)} строк расчёта и все относительные ссылки.')\nPY\nsha256sum draft/product-output.md draft/materials/* lab/*\nls -l architecture-note.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Подготовил архитектурную записку [«Кабинет 1»]({project}/architecture-note.md). **Для запрошенной репетиции пока нельзя рекомендовать ни один профиль.**\n\n- **D93 / `common`** получил три события готовности за 10 мс, но один сотрудник увидел признак через 1900 мс при пороге 1500 мс.\n- **S94 / `separate`** показал каждый признак за 600 мс, но события готовности разнесены на 7000 мс при допустимых 20 мс.\n- По этим событиям полные почтовые выгрузки подтверждают ноль отправок о готовности в наблюдаемых окнах.\n\nВ записке есть расчёт по каждому отчёту и условия замера S94, который позволит решить вопрос о профиле. Планировщик может подготовить задание инженеру стенда, архитектор — пересмотреть рекомендацию по результатам, а автор спецификации — обсудить критерии на встрече. Запуск продуктовой спецификации требует одобрения конкретной редакции PRD.\n\nРасчёты и ссылки сверены. Источники и исходные журналы сохранены без изменений. Новых прогонов не было."
+    }
+  ],
+  "changed_file_contents": {
+    "architecture-note.md": "# Кабинет 1\n\n**К запрошенной репетиции пока нельзя рекомендовать ни один профиль.** D93 / `common` получил три события готовности за 10 мс, но сотрудник e62 увидел признак через 1900 мс при пороге 1500 мс. В S94 / `separate` каждый показ занял 600 мс, но три события готовности разнесены на 7000 мс при допустимых 20 мс. В полных почтовых выгрузках по этим событиям ноль отправок о готовности. Для выбора достаточно вынести на встречу предложение проверить S94 / `separate` в заданном сценарии. [Заявка площадки](lab/request.md) · [События](lab/events.csv) · [Реестр выгрузок](lab/captures.csv) · [Почта](lab/mail.csv)\n\n## Полномочия и требования\n\nРешение D-1 касается существующих профилей публикации на учебном стенде. Это решение уровня компонента со средним риском для репетиции. Общий пул дешевле, но в наблюдаемом прогоне пропущен срок показа. Для более дорогого обособленного пула пригодность в заданных условиях пока неизвестна. Хозяин площадки определяет условия репетиции и принимает решение о её проведении. Текущее поручение разрешает анализ выгрузок и подготовку записки. Для запуска нового замера требуется отдельное разрешение хозяина. [Заявка площадки](lab/request.md)\n\n| Требование и основание | Что оно определяет и как его проверить |\n| --- | --- |\n| **A-1 · R2 / Q-17.** Прямое продуктовое решение уполномоченного заказчика (`source_statement`): «Только в кабинете, email не нужен». Оно относится к уведомлению сотрудника о готовности его отчёта. Содержание решения определено. [Первичный ответ, строка Q-17](draft/materials/decision-intake.md) · [PRD 0.2, R2](draft/product-output.md#требования-и-приёмка) | Граница проходит по двум наблюдаемым результатам одного события. Сотрудник видит признак в своём кабинете, и это событие даёт ноль отправок email о готовности. Если убрать любую часть, проверка пропустит непоказанное уведомление или лишнее письмо. |\n| **A-2 · Условия репетиции.** Прямое требование хозяина стенда (`accepted_non_product_authority`) для указанных пар сборка / профиль. Три разных отчёта готовы в пределах 20 мс. По каждому сотрудник видит признак в течение 1500 мс от своего `ready`. Проверка канала относится к тем же событиям. При подтверждённой пригодности хозяин предпочитает `common`. [Заявка, абз. 2–4](lab/request.md) | Короткий интервал между `ready` проверяет показ при одновременной работе с несколькими отчётами. Без этого ограничения разнесённые события могли бы дать ложное основание для выбора. Порог показа относится только к стенду. Продуктовый срок показа и боевая нагрузка в пакете не заданы. |\n\nR1 описывает отдельный результат для сотрудника — открыть готовый отчёт в своём кабинете. Выгрузки показывают признак готовности. Открытие отчёта в них не наблюдалось. По Q-18 заказчик ещё не выбрал срок хранения и не назвал дату ответа. 90 дней — предложение поддержки. Этот вопрос ограничивает решения о хранении и соответствующую приёмку R1. Анализ A-1 и выбор профиля для стенда от ответа по Q-18 не зависят. [PRD 0.2, R1 и Q-18](draft/product-output.md) · [Ответ по Q-18](draft/materials/decision-intake.md) · [Заметка поддержки](draft/materials/team-note.md)\n\nВ записи приёма ответа сказано, что Q-17 ещё не внесён. В предоставленной редакции 0.2 он уже отражён в R2 и критерии приёмки. Редакция помечена `non-authoritative` и `draft-only`. Одобрение подготовки текста для обсуждения было дано ранее. Для запуска спецификации и разработки владелец продукта должен одобрить конкретную редакцию PRD. [Запись приёма ответа](draft/materials/decision-intake.md) · [Редакция 0.2](draft/product-output.md) · [Правило одобрения](draft/materials/report-draft.md)\n\n## Проверка выгрузок\n\nСопоставление по тройке `(run, report, employee)` удерживает события в одном запуске и у адресата из `ready`. Идентификаторы в запусках повторяются, а часы имеют разные начала отсчёта. Внутри запуска разброс готовности равен `max(ready) − min(ready)`. Задержка показа по каждому отчёту равна `badge − ready`. `edge_ack` отмечает приём записи внутренней точкой публикации. Во всех шести строках он наступает через 19 мс, тогда как фактический показ фиксирует наблюдатель экрана через `badge`. [Семантика журналов](lab/request.md) · [События](lab/events.csv)\n\n| Запуск / профиль | Отчёт / сотрудник | `ready`, мс | `edge_ack`, мс | `badge`, мс | До показа, мс | Отправки `report_ready` |\n| --- | --- | ---: | ---: | ---: | ---: | ---: |\n| D93 / `common` | m91 / e26 | 9000 | 9019 | 9510 | 510 | 0 |\n| D93 / `common` | m92 / e48 | 9005 | 9024 | 9790 | 785 | 0 |\n| D93 / `common` | m93 / e62 | 9010 | 9029 | 10910 | **1900** | 0 |\n| S94 / `separate` | m91 / e26 | 2000 | 2019 | 2600 | 600 | 0 |\n| S94 / `separate` | m92 / e48 | 5500 | 5519 | 6100 | 600 | 0 |\n| S94 / `separate` | m93 / e62 | 9000 | 9019 | 9600 | 600 | 0 |\n\nОбе записи в реестре имеют `server_export=complete` и `mail_export=complete`. Для D93 окно закрыто на 14000 мс, после последнего дедлайна 10510 мс. Для S94 — на 13000 мс, после последнего дедлайна 10500 мс. Единственная почтовая строка относится к S94 / m91 / e26 и имеет причину `account_digest`. По причине `report_ready` строк нет, поэтому ноль отправок установлен в пределах наблюдаемых окон. [Реестр выгрузок](lab/captures.csv) · [Почта](lab/mail.csv) · [Правила интерпретации](lab/request.md)\n\n**D-1 · Выбор отложен до замера.** Для D93 есть прямой контрпример: `9010 − 9000 = 10` мс, но m93 показан на 400 мс позже дедлайна. В S94 `9000 − 2000 = 7000` мс. Наблюдение оператора о трёх быстрых показах верно для этого ввода. Утверждение о пригодности к репетиции остаётся без сопоставимого замера. Уверенность в этих выводах по журналам высокая. Различия сборок и входной нагрузки оставляют причину задержки и эффект обособления пула неопределёнными. Для решения достаточно имеющихся профилей, наблюдения экрана и полных выгрузок. Применимость результатов ограничена проверенной парой сборка / профиль и сценарием стенда. [Заявка площадки](lab/request.md) · [События](lab/events.csv)\n\n## Короткий замер для решения D-1\n\nПроверить S94 / `separate` через обычный кабинет на стенде. Инженер стенда получает три разных отчёта с `max(ready) − min(ready) ≤ 20` мс в одном запуске. Для каждого он сопоставляет `ready` с показом у указанного сотрудника и почтой по тому же ключу. Успех требует три `badge` с задержкой от 0 до 1500 мс включительно и ноль `report_ready` по этим событиям. Поздний или отсутствующий к дедлайну показ при полном наблюдении либо письмо о готовности опровергают пригодность. При другом вводе, неполном окне или неполной выгрузке пригодность остаётся неподтверждённой.\n\nИнженер возвращает архитектору идентификатор запуска, сборку и профиль, исходные события и почтовую выгрузку, отметки полноты и конца окна и расчёт по трём ключам. Наблюдение должно охватывать все три дедлайна. При прохождении архитектор может рекомендовать S94 / `separate` для этой репетиции. При провале или недостатке данных рекомендация остаётся открытой. Если позже появится сопоставимый успешный замер D93 / `common`, архитектор учитывает предпочтение хозяина для общего пула. [Основание и роли](lab/request.md)\n\n## Передача после встречи\n\n| Пункт, основание и статус | Владелец и ожидаемый результат |\n| --- | --- |\n| **H-1 · Замер** · A-1, A-2 → D-1 · `ready` для подготовки задания, блокеров для этого шага нет | Методист планирования (`delivery-planner`) оформляет задание инженеру стенда по сценарию выше. В задании указывает исполнителя, условие отдельного разрешения на прогон, критерии и состав выгрузок. Результаты замера готовит инженер после разрешения и возвращает архитектору (`evidence_return_to: architecture-engineer`). |\n| **H-2 · Пересмотр** · A-1, A-2 → D-1 · `blocked` для положительной рекомендации до годного замера | Архитектор (`architecture-engineer`) может сейчас представить расчёт и сверить условия замера с хозяином. По получении данных проверяет их по критериям D-1 и обновляет рекомендацию с указанием проверенной пары. При изменении сборки, профиля или условий применимость оценивается заново. |\n| **H-3 · Спецификация** · R1, R2 / Q-17 → A-1 · `blocked` для запуска до одобрения конкретной редакции PRD владельцем продукта | Автор спецификации (`spec-engineer`) может на встрече обсудить критерии проверки. После одобрения оформляет проверяемое поведение и карту проверок: сотрудник открывает готовый отчёт в своём кабинете, видит там уведомление, а проверка почтовой отправки по тому же событию даёт ноль писем о готовности. Критерии хранения ждут решения заказчика по Q-18. Выбор пула, порог 1500 мс и форма лабораторного ввода в продуктовую спецификацию из этой записки не переносятся. |\n\nСхемы, API и способ реализации публикации остаются вне решения D-1 (`not_prescribed`). Профили, внутренние подтверждения и материалы замера дают основания для решения о репетиции. Приёмка готового продукта требует отдельно наблюдать поведение по R1 и R2 на утверждённой редакции. [PRD 0.2](draft/product-output.md) · [Заявка площадки](lab/request.md)\n"
+  },
+  "final_response": "Подготовил архитектурную записку [«Кабинет 1»]({project}/architecture-note.md). **Для запрошенной репетиции пока нельзя рекомендовать ни один профиль.**\n\n- **D93 / `common`** получил три события готовности за 10 мс, но один сотрудник увидел признак через 1900 мс при пороге 1500 мс.\n- **S94 / `separate`** показал каждый признак за 600 мс, но события готовности разнесены на 7000 мс при допустимых 20 мс.\n- По этим событиям полные почтовые выгрузки подтверждают ноль отправок о готовности в наблюдаемых окнах.\n\nВ записке есть расчёт по каждому отчёту и условия замера S94, который позволит решить вопрос о профиле. Планировщик может подготовить задание инженеру стенда, архитектор — пересмотреть рекомендацию по результатам, а автор спецификации — обсудить критерии на встрече. Запуск продуктовой спецификации требует одобрения конкретной редакции PRD.\n\nРасчёты и ссылки сверены. Источники и исходные журналы сохранены без изменений. Новых прогонов не было.",
+  "input_file_modes": {
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "assets/templates/adr.md": "0644",
+    "assets/templates/architecture-brief.md": "0644",
+    "assets/templates/architecture-check.md": "0644",
+    "assets/templates/architecture-delta.md": "0644",
+    "assets/templates/architecture-handoff-item.yaml": "0644",
+    "assets/templates/architecture-handoff-register.yaml": "0644",
+    "assets/templates/asr-record.yaml": "0644",
+    "assets/templates/pattern-decision.md": "0644",
+    "assets/templates/quality-scenario.md": "0644",
+    "assets/templates/spike-brief.md": "0644",
+    "companion/implementation-discipline/SKILL.md": "0644",
+    "companion/implementation-discipline/references/core-principles.md": "0644",
+    "companion/implementation-discipline/references/verification-loop.md": "0644",
+    "draft/materials/decision-intake.md": "0644",
+    "draft/materials/report-draft.md": "0644",
+    "draft/materials/team-note.md": "0644",
+    "draft/product-output.md": "0644",
+    "lab/captures.csv": "0664",
+    "lab/events.csv": "0664",
+    "lab/mail.csv": "0664",
+    "lab/request.md": "0664",
+    "references/artifact-templates.md": "0644",
+    "references/methodology.md": "0644",
+    "references/pattern-catalog.md": "0644"
+  },
+  "changed_file_modes": {
+    "architecture-note.md": "0664"
+  },
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "method": "On a fresh neutral copy rejoin raw rows by (run, report, employee); take badge minus ready, ready spread and matching report_ready messages. Null denotes missing observation. The paper reproduction uses supplied teaching records only.",
+    "work_product": "architecture-note.md",
+    "work_product_sha256": "1abf9dfe6c5e3c18a6e606d82849cf4b6c56e5760c70361caf5a1d3c6e9a1b22",
+    "work_product_bytes": 14642,
+    "all_changed_paths": [
+      "architecture-note.md"
+    ],
+    "unchanged_input_record_sha256": {
+      "draft/materials/decision-intake.md": "e8e3b2c3d64a10719161e30ab8c16056677e41dfc9723352a29580d29fc1f6cc",
+      "draft/materials/report-draft.md": "24379268c335dae167388ee26569924e9672314f566e2979ee9e2fcfe2db54b8",
+      "draft/materials/team-note.md": "4da36f0b60ac31992c503a6a4f85d558491ddb4e84f7e6b2a0613d92fba42221",
+      "draft/product-output.md": "0ad7a0914a8b6a9465160496a60422e1ad23687241f53aaecf502e6285fd38ff",
+      "lab/captures.csv": "eb3e15ba6838b16245c27a960216dc4f2b45acd54797b985a7368253999c9d21",
+      "lab/events.csv": "9db6426b35aeabfb43e8c9145dd364a3eb22c74748b313dd21dacff7071e03fb",
+      "lab/mail.csv": "b8202d539f3cd5385ab4c55f6a83abd657c4d0d8cdccfdd75884509ef5b31f98",
+      "lab/request.md": "adb5516279cd72e879292c0959fbf31582bffea871caca0b96179e159cfbe103"
+    },
+    "modified_case_evidence": [],
+    "same_run_calculations": {
+      "D93": {
+        "profile": "common",
+        "window_ends_ms": 14000,
+        "ready_spread_ms": 10,
+        "recipient_badge_delays_ms": {
+          "m91/e26": 510,
+          "m92/e48": 785,
+          "m93/e62": 1900
+        },
+        "matched_report_ready_letters": 0,
+        "mail_export": "complete"
+      },
+      "S94": {
+        "profile": "separate",
+        "window_ends_ms": 13000,
+        "ready_spread_ms": 7000,
+        "recipient_badge_delays_ms": {
+          "m91/e26": 600,
+          "m92/e48": 600,
+          "m93/e62": 600
+        },
+        "matched_report_ready_letters": 0,
+        "mail_export": "complete"
+      }
+    }
+  }
+}

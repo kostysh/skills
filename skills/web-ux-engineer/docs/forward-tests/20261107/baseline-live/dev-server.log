@@ -1,0 +1,28 @@
+$ vite --host 127.0.0.1 --port 4317 --strictPort
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - `__dirname` (vite.config.ts:11:27). Use `import.meta.dirname` instead
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+  VITE v8.2.2  ready in 196 ms
+
+  ➜  Local:   http://127.0.0.1:4317/
+The request id "/tmp/web-ux-20261107-xaye7ceb/baseline/project/node_modules/.pnpm/@fontsource-variable+geist@5.3.0/node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2" is outside of Vite serving allow list.
+
+- /tmp/web-ux-20261107-xaye7ceb/baseline/live-project
+- /tmp/web-ux-20261107-xaye7ceb/baseline/project/node_modules/.pnpm/vite@8.2.2_@types+node@24.13.3_jiti@2.7.0/node_modules/vite/dist/client
+
+Refer to docs https://vite.dev/config/server-options.html#server-fs-allow for configurations and more details.
+
+7:04:05 PM [vite] (client) hmr update /src/App.tsx, /src/index.css
+The request id "/tmp/web-ux-20261107-xaye7ceb/baseline/project/node_modules/.pnpm/@fontsource-variable+geist@5.3.0/node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2" is outside of Vite serving allow list.
+The request id "/tmp/web-ux-20261107-xaye7ceb/baseline/project/node_modules/.pnpm/@fontsource-variable+geist@5.3.0/node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2" is outside of Vite serving allow list.
+7:05:17 PM [vite] (client) hmr update /src/App.tsx, /src/index.css
+The request id "/tmp/web-ux-20261107-xaye7ceb/baseline/project/node_modules/.pnpm/@fontsource-variable+geist@5.3.0/node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2" is outside of Vite serving allow list.
+7:12:21 PM [vite] (client) hmr update /src/App.tsx, /src/index.css
+The request id "/tmp/web-ux-20261107-xaye7ceb/baseline/project/node_modules/.pnpm/@fontsource-variable+geist@5.3.0/node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2" is outside of Vite serving allow list.
+7:13:01 PM [vite] (client) hmr update /src/App.tsx, /src/index.css
+The request id "/tmp/web-ux-20261107-xaye7ceb/baseline/project/node_modules/.pnpm/@fontsource-variable+geist@5.3.0/node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2" is outside of Vite serving allow list.
+7:14:11 PM [vite] (client) hmr update /src/App.tsx, /src/index.css
+The request id "/tmp/web-ux-20261107-xaye7ceb/baseline/project/node_modules/.pnpm/@fontsource-variable+geist@5.3.0/node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2" is outside of Vite serving allow list.
+The request id "/tmp/web-ux-20261107-xaye7ceb/baseline/project/node_modules/.pnpm/@fontsource-variable+geist@5.3.0/node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2" is outside of Vite serving allow list.
+[ELIFECYCLE] Command failed.

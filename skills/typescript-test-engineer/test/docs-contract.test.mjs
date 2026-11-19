@@ -145,7 +145,8 @@ test('Node and Cloudflare defaults follow current supported paths', async () => 
   assert.match(reference, /built-in type stripping/);
   assert.match(reference, /does not type-check, read `tsconfig\.json`, rewrite path aliases/);
   assert.match(reference, /do not add `--experimental-strip-types` by default/);
-  assert.match(reference, /@cloudflare\/vitest-pool-workers/);
+  assert.match(reference, /without a project harness, use `@cloudflare\/vitest-plugin`/);
+  assert.match(reference, /Keep a working `@cloudflare\/vitest-pool-workers` harness on a compatible Vitest version/);
   assert.match(reference, /Treat `unstable_dev` only as a legacy migration case/);
 });
 

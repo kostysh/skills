@@ -1,0 +1,8 @@
+{
+  "utc": "2026-11-18T20:02:42.142051+00:00",
+  "auth_ordinary_sha256": "869c5a12072e1e81afd7dd2fe57da3beeeeff7872f48a211c6e233709f912ee0",
+  "auth_rubric_same_as_original": "6b23ce5005e2158c04e861459bff377e1decc46e1841efba3d054e48b889c247",
+  "only_added_task_sentence": "Уже настроенный доступ gh к github.com разрешён для чтения открытых данных этого репозитория.",
+  "auth_inputs_sha256": "6b27bbba2f4d8f67fa10e86019006c3b2e7f300e30920818e0e21318457ed21e",
+  "additional_pr_inputs_sha256": "8e3410d2dde9d9d2bb65a7fe5a7a2adc41b33d32d5190e305325acd096b61831"
+}

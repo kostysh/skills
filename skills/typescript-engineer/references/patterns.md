@@ -41,7 +41,7 @@ The local assertion exposes properties only after the preceding object/null chec
 
 ## Schema-derived types
 
-When a project already has an authoritative runtime schema, derive the TypeScript type through that library's supported API rather than maintaining a parallel interface. Confirm which side is authoritative and whether transforms, defaults, coercions, or refinements change input and output types.
+Use the accepted schema's API to derive the input or parsed output type you need.
 
 Do not claim runtime validation because a derived type exists. Verify that the schema actually runs on the production boundary through the framework or validation owner.
 

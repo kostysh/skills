@@ -1,0 +1,5 @@
+--- C/SKILL.md
++++ E/SKILL.md
+@@ -112 +112 @@
+-1. Follow the mode/output contract in the report/remediation reference. A targeted answer keeps evidence, causality limits, prior-fix status, and a proportionate recommendation concise; it does not require a matrix or a project task hierarchy.
++1. Follow the mode/output contract in the report/remediation reference. Keep a targeted report concise. Give the evidence, causal limits, prior-fix status, and remaining action. If the affected installation still fails in service, recommend delivering the fix to that installation and verifying it there. Report separate branch work in its own scope.

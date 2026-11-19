@@ -1,0 +1,157 @@
+{
+  "browser": "158.0.8127.36",
+  "spa": {
+    "route": "/settings/notifications",
+    "component": {
+      "tag": "BUTTON",
+      "stage": "ready",
+      "variant": "brand",
+      "weight": "700",
+      "indicator": false,
+      "nested": false
+    },
+    "tooltip": "Review your changes before you confirm.",
+    "service": [
+      {
+        "method": "GET",
+        "path": "/api/notification-settings",
+        "status": 200,
+        "body": null
+      },
+      {
+        "method": "PUT",
+        "path": "/api/notification-settings",
+        "status": 204
+      },
+      {
+        "method": "GET",
+        "path": "/api/notification-settings",
+        "status": 200,
+        "body": {
+          "email": "registry@example.test",
+          "enabled": true,
+          "frequency": "weekly"
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/api/notification-settings",
+        "status": 200,
+        "body": {
+          "email": "registry@example.test",
+          "enabled": true,
+          "frequency": "weekly"
+        }
+      }
+    ],
+    "disk": {
+      "email": "registry@example.test",
+      "enabled": true,
+      "frequency": "weekly"
+    },
+    "fresh": "Settings applied\n\nEmail: registry@example.test. Notifications: On. Frequency: Weekly.\n\nRead from the local settings service. No email is sent."
+  },
+  "next": {
+    "route": "/dossiers/reed",
+    "serverView": {
+      "heading": "Reed docket",
+      "ready": "no",
+      "count": "Selections: 0",
+      "mark": "ready",
+      "href": "#ledger"
+    },
+    "originalInteraction": {
+      "browserVersion": "Chrome/158.0.8127.36",
+      "route": "/dossiers/reed",
+      "http": 200,
+      "original": {
+        "heading": "Reed docket",
+        "ready": "no",
+        "count": "Selections: 0",
+        "controls": [
+          "Mark inspected",
+          "Entry help",
+          "Owner help"
+        ]
+      },
+      "clientReady": "yes",
+      "counts": [
+        "Selections: 0",
+        "Selections: 1",
+        "Selections: 2",
+        "Selections: 0",
+        "Selections: 1"
+      ],
+      "mounted": {
+        "ids": [
+          "_R_fav5ubtb_",
+          "_R_jav5ubtb_"
+        ],
+        "descriptions": [
+          [
+            "Entry help",
+            "Use the approved desk entry"
+          ],
+          [
+            "Owner help",
+            "See the owner of this docket"
+          ]
+        ],
+        "afterEscape": [
+          [
+            "Entry help",
+            ""
+          ],
+          [
+            "Owner help",
+            "See the owner of this docket"
+          ]
+        ]
+      },
+      "afterReload": {
+        "ids": [
+          "_R_fav5ubtb_",
+          "_R_jav5ubtb_"
+        ],
+        "descriptions": [
+          [
+            "Entry help",
+            "Use the approved desk entry"
+          ],
+          [
+            "Owner help",
+            "See the owner of this docket"
+          ]
+        ],
+        "afterEscape": [
+          [
+            "Entry help",
+            ""
+          ],
+          [
+            "Owner help",
+            "See the owner of this docket"
+          ]
+        ]
+      }
+    },
+    "nativeButton": {
+      "tag": "BUTTON",
+      "stage": "ready",
+      "variant": "brand",
+      "weight": "700",
+      "indicator": true,
+      "nested": false
+    },
+    "spaceCount": "Selections: 1",
+    "composedLink": {
+      "tag": "A",
+      "stage": "ready",
+      "variant": "brand",
+      "weight": "700",
+      "indicator": true,
+      "nested": false
+    },
+    "enterHash": "#ledger"
+  }
+}

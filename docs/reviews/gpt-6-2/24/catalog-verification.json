@@ -1,0 +1,63 @@
+{
+  "source": "Ответ отдельной сессии из восстановленного архива. Режим совместного потребления включает предшествующее техническое заключение.",
+  "session": "01a1f0d0-2e17-7811-873c-99d90506f883",
+  "assignedModel": "gpt-6.2-sol",
+  "assignedEffort": "medium",
+  "rawEventsSha256": "b655383ca22615c65428d648499ae6807b55bb0947b50d250c9c060798b9884e",
+  "rawAnswerSha256": "2b283e6d3d6fbf83468d0622c0693328696d50e5c4b7e93c5abb724166469bcf",
+  "caseFilesReadAsInput": {
+    "owner.md": "2ef40295df8c6877cd3c2689c922fff72a3bfc4563699a8df2c2fbb7e931ac1c",
+    "R1/README.md": "a61923dbfb54a07bfaa42ecd38cf4b114787c3b29e48dac6d33887a1cf7b1cc8",
+    "R2/README.md": "a61923dbfb54a07bfaa42ecd38cf4b114787c3b29e48dac6d33887a1cf7b1cc8",
+    "SKILL.md": "efe7204acb6caa58661259151e188cb7f8146788f2693e05189dbb6472492f3e",
+    "review-17/catalog-review.md": "e8a0c8078ffe58b422122acd5a5d58307fb80d9034aa2892b181bc036466ae74",
+    "review-17/t03-verification.json": "cefb58fa7296f1cc0f4f01bab796db0785125491362c242a8c7672c7bfccbf81"
+  },
+  "readEventSha256": "40ad183d8bd811edb224c725efc149cef0419b6c07056115d2e7d12070334494",
+  "operationEventSha256": "af619bef9c82bc0919ede3b878ff42dad9c007af834d4115eed54edc43f4639f",
+  "command": "/bin/bash -lc \"python3 - <<'PY'\nimport hashlib\nimport json\nimport os\nfrom pathlib import Path\nimport shutil\nimport subprocess\nimport tempfile\n\nroot = Path.cwd()\nversions = ('R1', 'R2')\ndef digest(path):\n    return hashlib.sha256(path.read_bytes()).hexdigest()\n\ndef snapshot():\n    return {\n        str(path.relative_to(root)): (path.stat().st_mode, digest(path) if path.is_file() else None)\n        for tree in (*versions, 'review-17')\n        for path in [root / tree, *(root / tree).rglob('*')]\n    }\n\nbefore = snapshot()\nprior = json.loads(Path('review-17/t03-verification.json').read_text())\nrevisions = json.loads(Path('revisions.json').read_text())\nassert prior['bundleSha256'] == revisions['bundleSha256']\nwith tempfile.TemporaryDirectory(dir=root, prefix='.catalog-check.') as temporary:\n    for version in versions:\n        old = prior['cases'][version]['snapshotBefore']\n        assert old['head'] == revisions[version]\n        for relative, attrs in old['files'].items():\n            assert digest(Path(version) / relative) == attrs['sha256'], (version, relative)\n        print(f'\\\\n{version}: revision label and {len(old[\\\"files\\\"])} file hashes match T03', flush=True)\n        copy = shutil.copytree(version, Path(temporary) / version)\n        for scenario in ('fixture', 'legacy'):\n            working = copy / 'work.json'\n            shutil.copyfile(copy / 'fixture/catalog.json', working)\n            if scenario == 'legacy':\n                rows = json.loads(working.read_text())\n                del rows[0]['pinned']\n                working.write_text(json.dumps(rows))\n            for name, args in [('pins before', ['pins']), ('pin a', ['pin', 'a']), ('fresh pins', ['pins'])]:\n                result = subprocess.run(['node', 'desk.mjs', 'work.json', *args], cwd=copy, text=True, capture_output=True, check=True)\n                print(f'{scenario} {name} (exit {result.returncode}): {result.stdout.strip()}')\n            print(f'{scenario} saved JSON: {json.dumps(json.loads(working.read_text()))}')\n        data_before = digest(working)\n        result = subprocess.run(['node', 'desk.mjs', 'work.json', 'pin', 'missing'], cwd=copy, text=True, capture_output=True)\n        error = next((line for line in result.stderr.splitlines() if line.startswith('Error:')), '')\n        print(f'Unknown ID exit {result.returncode}: {error}; file unchanged: {digest(working) == data_before}')\n        env = dict(os.environ, npm_config_cache=str(Path(temporary) / 'npm-cache'))\n        result = subprocess.run(['npm', 'test'], cwd=copy, env=env, text=True, capture_output=True)\n        print(f'npm test exit {result.returncode}\\\\n{result.stdout}{result.stderr}', flush=True)\nassert before == snapshot()\nprint('\\\\nOriginal trees and reports: hashes and modes unchanged')\nPY\nrg --files --hidden -g '\"'!.git'\"'\"",
+  "commandExit": 0,
+  "stdout": "\nR1: revision label and 5 file hashes match T03\nfixture pins before (exit 0): [\"Beta\"]\nfixture pin a (exit 0): [\"Alpha\",\"Beta\"]\nfixture fresh pins (exit 0): [\"Alpha\",\"Beta\"]\nfixture saved JSON: [{\"id\": \"a\", \"title\": \"Alpha\", \"pinned\": true}, {\"id\": \"b\", \"title\": \"Beta\", \"pinned\": true}]\nlegacy pins before (exit 0): [\"Beta\"]\nlegacy pin a (exit 0): [\"Alpha\",\"Beta\"]\nlegacy fresh pins (exit 0): [\"Alpha\",\"Beta\"]\nlegacy saved JSON: [{\"id\": \"a\", \"title\": \"Alpha\", \"pinned\": true}, {\"id\": \"b\", \"title\": \"Beta\", \"pinned\": true}]\nUnknown ID exit 1: Error: Unknown card: missing; file unchanged: True\nnpm test exit 0\n✔ smoke: pinned card is visible immediately (0.893839ms)\n✔ unknown card is rejected (0.282974ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 45.206434\nnpm notice run test\nnpm notice run node --test test/*.test.mjs\n\n\nR2: revision label and 5 file hashes match T03\nfixture pins before (exit 0): [\"Beta\"]\nfixture pin a (exit 0): [\"Alpha\",\"Beta\"]\nfixture fresh pins (exit 0): []\nfixture saved JSON: [{\"id\": \"a\", \"title\": \"Alpha\"}, {\"id\": \"b\", \"title\": \"Beta\"}]\nlegacy pins before (exit 0): [\"Beta\"]\nlegacy pin a (exit 0): [\"Alpha\",\"Beta\"]\nlegacy fresh pins (exit 0): []\nlegacy saved JSON: [{\"id\": \"a\", \"title\": \"Alpha\"}, {\"id\": \"b\", \"title\": \"Beta\"}]\nUnknown ID exit 1: Error: Unknown card: missing; file unchanged: True\nnpm test exit 0\n✔ smoke: pinned card is visible immediately (1.053721ms)\n✔ unknown card is rejected (0.341745ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 42.352031\nnpm notice run test\nnpm notice run node --test test/*.test.mjs\n\n\nOriginal trees and reports: hashes and modes unchanged\nrevisions.json\ncli-guide.md\nclosure-request.md\nowner.md\nR2/desk.mjs\nR2/test/catalog.test.mjs\nR2/src/catalog.mjs\nR2/package.json\nSKILL.md\nR2/fixture/catalog.json\nR2/README.md\nreview-17/catalog-review.md\nreview-17/t03-verification.json\nR1/desk.mjs\nR1/package.json\nR1/test/catalog.test.mjs\nR1/README.md\nR1/fixture/catalog.json\nR1/src/catalog.mjs\n",
+  "rawOutputSha256": "2123ba89b712227592ce1f8d149f5d4b8ead3820d22c796eeff967a659284428",
+  "perVersion": {
+    "R1": {
+      "base": "b0244bdcba9416a0a4f40a4f898b21fd6c6990f3",
+      "initial": [
+        "Beta"
+      ],
+      "pin": [
+        "Alpha",
+        "Beta"
+      ],
+      "freshPins": [
+        "Alpha",
+        "Beta"
+      ],
+      "testsPassed": 2,
+      "status": "assessable",
+      "closure": "capability-demonstrated",
+      "fakeRisk": "low",
+      "decision": "proceed"
+    },
+    "R2": {
+      "head": "6e78cc7e2b99e267f0e87f4ad186b2ad318b1478",
+      "initial": [
+        "Beta"
+      ],
+      "pin": [
+        "Alpha",
+        "Beta"
+      ],
+      "freshPins": [],
+      "testsPassed": 2,
+      "status": "assessable",
+      "closure": "claim-not-demonstrated",
+      "fakeRisk": "high",
+      "decision": "reject"
+    }
+  },
+  "scope": "Own pin + fresh pins on Linux CLI. Unpin using the module comes from review 17.",
+  "processExit": 0,
+  "allDeliveredBytesAndModesUnchanged": true,
+  "remainingWorkspaceChanges": []
+}

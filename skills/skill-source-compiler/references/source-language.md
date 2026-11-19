@@ -6,9 +6,7 @@ A source bundle starts with `skill.yaml` and may include local fragment files, a
 
 - `apiVersion`
 - `kind`
-- `skill`
-- `skill.source-version`
-- `skill.recommended-skill-md-max-bytes`
+- `skill` with `name`, `source-version`, and `description`
 - `surfaces`
 - `sections`
 
@@ -42,8 +40,7 @@ Keep a conditionally mandatory reference in the required classification with an 
 - `skill.description` should not exceed 300 Unicode code points after YAML parsing and trimming
 - lint and compile emit a warning rather than an error when the description exceeds that recommendation
 - astral characters such as emoji count as one code point; combining marks count separately
-- `skill.recommended-skill-md-max-bytes` defines the recommended maximum UTF-8 size for the generated `SKILL.md`
-- compile should emit a warning, not a hard error, when the generated `SKILL.md` exceeds this limit
+- Generation warns when the UTF-8 size of `SKILL.md` exceeds `20000` bytes by default. Set `skill.recommended-skill-md-max-bytes` to a positive integer to use a different threshold.
 - the default `20000` bytes is an approximate stand-in for the public recommendation to keep `SKILL.md` around `5000` tokens and under `500` lines
 - raise the limit only when progressive disclosure through `references/*` cannot reasonably reduce the size
 

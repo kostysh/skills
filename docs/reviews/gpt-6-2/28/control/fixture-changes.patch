@@ -1,0 +1,33 @@
+--- a/boundary/release/app.mjs
++++ b/boundary/release/app.mjs
+@@ -12,6 +12,6 @@
+ });
+-const roster = {"k8": {"id": "k8", "title": "River"}, "m3": {"id": "m3", "title": 33}};
++const roster = new Map([["k8", {"id": "k8", "title": "River"}], ["m3", {"id": "m3", "title": 33}]]);
+ app.get('/desk/:id', c => {
+   c.get('flow').push('read');
+-  const record = roster[c.req.param('id')];
++  const record = roster.get(c.req.param('id'));
+   if (!record) return c.json({error:'not_found'},404);
+--- a/holdout/release/app.mjs
++++ b/holdout/release/app.mjs
+@@ -12,6 +12,6 @@
+ });
+-const roster = {"f2": {"id": "f2", "title": "North"}, "r9": {"id": "r9", "title": ""}};
++const roster = new Map([["f2", {"id": "f2", "title": "North"}], ["r9", {"id": "r9", "title": ""}]]);
+ app.get('/desk/:id', c => {
+   c.get('flow').push('read');
+-  const record = roster[c.req.param('id')];
++  const record = roster.get(c.req.param('id'));
+   if (!record) return c.json({error:'not_found'},404);
+--- a/ordinary/release/app.mjs
++++ b/ordinary/release/app.mjs
+@@ -12,6 +12,6 @@
+ });
+-const roster = {"a7": {"id": "a7", "title": "Harbor"}, "b4": {"id": "b4", "title": 33}};
++const roster = new Map([["a7", {"id": "a7", "title": "Harbor"}], ["b4", {"id": "b4", "title": 33}]]);
+ app.get('/desk/:id', c => {
+   c.get('flow').push('read');
+-  const record = roster[c.req.param('id')];
++  const record = roster.get(c.req.param('id'));
+   if (!record) return c.json({error:'not_found'},404);

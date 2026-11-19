@@ -6,9 +6,8 @@ This template describes a new pnpm repository. Adapt commands, runtime pins and 
 
 ## Package manager
 
-- Use `pnpm` only.
-- Add and run tools through `pnpm`.
-- Do not introduce `npm`, `npx`, `yarn`, `bun`, or `bunx` examples.
+- Use `pnpm` for this site's dependencies, scripts, and examples for maintainers.
+- In product guides, use the reader commands supported by the product owner.
 
 ## Documentation workflow
 

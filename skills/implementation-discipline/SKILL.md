@@ -5,9 +5,9 @@ description: Use when implementing, refactoring, reviewing code, or authoring,
   to keep scope source-authorized, minimize conceptual surface, and require
   proportional evidence.
 metadata:
-  source-version: 0.2.8
+  source-version: 0.2.9
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: ac3ad18d168bcd56794ce57d51c03ddb40caa858c2a8c9a8158a52079f72ce0c
+  skillforge-source-hash: b1091bf3537fdc0c6807007e4679eff00280414f4069d7c571a8e8551801e9c9
 ---
 
 # implementation-discipline
@@ -17,7 +17,7 @@ metadata:
 1. Confirm that the task involves implementation, code review, or non-trivial authoring, revision, or review of a PRD, architecture, software specification, or delivery plan.
 2. Classify the task as implementation/remediation, code-review-only, or design/authoring; code-review-only is read-only, and design/authoring never authorizes code or runtime mutations.
 3. Before scope, design shape, acceptance, verification depth, or process depth, record the observable outcome or invariant, actor or consumer and claim boundary, source-authorized scope and non-goals, permitted outputs or mutations, simplest direct or existing primitive, and narrowest falsifying check.
-4. For non-trivial work, relate the local change to the project purpose only far enough to reject misleading framing or narrow the work; project purpose does not authorize unrequested expansion.
+4. For non-trivial work, check [project-purpose fit](#project-purpose-fit-policy).
 5. Prefer the direct or existing path with the least conceptual surface that satisfies current correctness, security, compatibility, and source requirements.
 6. Pass the complexity exception gate before adding a new concept, and repeat the scope-and-simplicity gate after any material delta that adds a boundary, lifecycle, output, or verification contour.
 7. Change only the authorized surface, run proportional verification, report evidence and remaining risk, then stop.
@@ -52,8 +52,7 @@ Make the requested outcome, source authority, mutation boundary, constraints, an
 9. When switching tasks, start from the new task source and carry only a compact `source / scope / state / next action` handoff; conclusions or scope from the previous task do not authorize the new one.
 10. State constraints and assumptions that materially affect the design; stop and ask only when no safe conservative interpretation exists.
 11. For feature, runtime, product, agent, or system-capability claims, separate observable behavior from substrate and state important anti-claims; if the acceptance criteria can pass without the claimed behavior, narrow the claim or surface the specification defect before implementation.
-12. For non-trivial local work, use project purpose to check whether the request advances the intended flow; use that context to narrow or reject the local task, never to add unrequested work.
-13. When implementing an accepted audit or review, read the remediation-matrix section in `references/verification-loop.md` and keep each accepted finding tied to a change, evidence, and status.
+12. When implementing an accepted audit or review, read the remediation-matrix section in `references/verification-loop.md` and keep each accepted finding tied to a change, evidence, and status.
 
 Validation:
 
@@ -152,7 +151,7 @@ Complexity bears the burden of proof. Add an abstraction, dependency, layer, con
 Derived artifacts, risk, evidence, audits, and adjacent defects do not expand scope. Use the established decision owner and primary accepted source under the outcome workflow; preserve customer approval where applicable without inventing it elsewhere. Non-product authority cannot silently change product scope or behavior. Missing or conflicting authority blocks only the affected work.
 
 ### Project-purpose fit policy
-Project purpose may show that a local task is misleading, insufficient, or unnecessary and may therefore narrow or reject it. It never grants authority to expand the requested scope.
+Keep agreed scope. Flag concrete conflicts with project purpose. Bring material new evidence for a scope change to the decision owner.
 
 ### Surgical-diff policy
 Every changed hunk should trace to the requested outcome or a protected constraint; unrelated cleanup belongs in another change set.

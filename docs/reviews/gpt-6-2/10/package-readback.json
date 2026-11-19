@@ -1,0 +1,28 @@
+{
+  "baseline_package": "0.2.5",
+  "baseline_archive_sha256": "a9209c73068d3a4c144b92c11d7b80dff387145483f0b019ce3af09ee084c208",
+  "candidate_version": "0.2.6",
+  "archive": "agent-browser-0.2.6.tgz",
+  "archive_sha256": "6d34f400ca0d18c10ce127d96c08e5e911b92063427da545d682748663934c34",
+  "contentHash": "22c3cb94bb8f83f6d1163a40ef1bcd551276c7345578b5c3fdd2086515cee4ae",
+  "bytes": 5596,
+  "files": {
+    "SKILL.md": {
+      "bytes": 10284,
+      "sha256": "2081565ca5c660f864d1af931be24c640e6477b36beab7e8421fbfd291065bda",
+      "mode": "0644"
+    },
+    "references/cloudflare-access-otp.md": {
+      "bytes": 4314,
+      "sha256": "0e41b39ee811661c01e02fd2d37a903cc088188385a675282fb6c442c023a9fc",
+      "mode": "0644"
+    },
+    "agents/openai.yaml": {
+      "bytes": 115,
+      "sha256": "d430788f44a61bd7b9fc12b11e57f7230eb5020fc50af605563aa13f14b4b798",
+      "mode": "0644"
+    }
+  },
+  "parity": "All three archived files are byte-identical to the authoritative regenerated tree and the independent compiler output. The isolated compile contains the new supporting log and its navigation.",
+  "stored_as": "agent-browser-0.2.6.tar.gz"
+}

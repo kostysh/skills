@@ -1,0 +1,53 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -8 +8 @@
+-  source-version: 0.1.13
++  source-version: 0.1.14
+@@ -10 +10 @@
+-  skillforge-source-hash: dfa136734d437f8d8cec5293c7bd44a2245fbe31bf153b01c68ad43608ed809d
++  skillforge-source-hash: 7bdef438101752327675ffef3ec266648371249950473c3080be5ee53904ffbb
+--- a/references/data-fetching.md
++++ b/references/data-fetching.md
+@@ -23,3 +23,2 @@
+-- React Router loaders may call `ensureQueryData` or prefetch Query options when
+-  route timing matters; Router actions/fetchers are not a second project-server
+-  mutation path in this skill's architecture.
++- React Router loaders may use the same Query options as the screen when route
++  timing matters. This architecture assigns project-server mutations to Query.
+@@ -127,0 +127,5 @@
++- In v5, `invalidateQueries` normally refetches active matches and resolves
++  even after a refetch error. If confirmation requires a fresh read, request
++  the specific record with a freshness policy that fetches, await it, and
++  handle its error. An inactive query, paused fetch, or fresh cache hit can
++  leave the write unverified.
+@@ -160 +164 @@
+-  queryClient.ensureQueryData(orderDetailOptions(accessFromSession(), params.orderId!));
++  queryClient.query({ ...orderDetailOptions(accessFromSession(), params.orderId!), staleTime: 0 });
+@@ -161,0 +166,5 @@
++
++TanStack Query 5.108 supports `queryClient.query(options)`. A stale read
++fetches and propagates errors. With `staleTime: 'static'` it reuses an existing
++value. For an earlier installed v5 without this method, choose `fetchQuery`
++for a freshness-aware read or `ensureQueryData` for cache-first entry.
+--- a/references/routing.md
++++ b/references/routing.md
+@@ -12,0 +13,4 @@
++For a v8 browser data router, import `createBrowserRouter` from `react-router`
++and `RouterProvider` from `react-router/dom`. Check the installed package's
++Node and React peer requirements before a major upgrade.
++
+@@ -64 +68,2 @@
+-Loaders may ensure Query data before route render:
++A loader can read the route's Query data before render. This example uses the
++cache-first entry point in TanStack Query 5.108:
+@@ -71 +76,4 @@
+-  return queryClient.ensureQueryData(orderDetailOptions(access, orderId));
++  return queryClient.query({
++    ...orderDetailOptions(access, orderId),
++    staleTime: 'static',
++  });
+@@ -78 +86,3 @@
+-function.
++function. A cache-first load can return the existing value. Choose freshness
++and error handling for the claimed read using [Data Fetching](data-fetching.md),
++including when the installed Query version predates `queryClient.query`.

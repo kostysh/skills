@@ -1,0 +1,237 @@
+{
+  "variant": "archive",
+  "case": "final",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПримени ./SKILL.md. Инженеру расчётов передана партия K в work/. Вычисли согласованные суммы через публичный локальный модуль и сохрани settlement.json в виде массива {ref,netMinor,feeMinor}. В этом отчёте суммы — канонические десятичные строки минимальных единиц, для открытого сбора принято null. Подготовь fees.sql, который инженер базы сможет выполнить для любой партии по тому же контракту. Назови ему остающееся предметное решение. Работай локально, отдельный сервер он проверит сам.\n",
+  "input_file_sha256": {
+    "SKILL.md": "5c23543debfc9fc66aa3c885bf088573d4a87c25120c5c0ba8689d60fa3eb407",
+    "agents/openai.yaml": "4da3f3bff93560df92c578996a9d14ed73b9e7cd712fff8b24b4e1ce6bf811a9",
+    "references/browser.md": "18417de9467220e1d78efa75109999daac767ca21325dbe244dfeca3c59bb8de",
+    "references/database-sql.md": "d9721995bfd3b4222f88282627dcb0f920fe30e7c16c1a969b28e2506f48714a",
+    "references/money-library-usage.md": "aaa0efa537858b30c5dd54765e65bf8cdc3979e81a445f39811e68d8b3d6b52c",
+    "references/parity-testing.md": "d44c5851f0984186620a238d3dd38bb5856a983f582b46d318debceb6fe6f576",
+    "references/server-backend.md": "b1380337d84c5f49252ea41319880897400bacdb0137d14b9eb669cebf8ff3bf",
+    "references/vat-iva.md": "018bb80be5b2016c737976df63548955051b1d10db407b13d8b8504f361506cc",
+    "work/batch.json": "40588d928cdb929fbdb08bf40681b732b30086d804645ccecf7cebe2b2d37db1",
+    "work/lib/CONTRACT.md": "daa075cb795bd41554fe6ba98147160b10611915359430fbae7b62dc1144ed80",
+    "work/lib/money.mjs": "50d8ebb538b2bcebfaf3273570e0abf80b33ab0b22f1b2e5a6d8bd840db6f0c3",
+    "work/lib/package.json": "9f8db1d2f2084d0ffc90b38513c6e9c8a3893f3669e97d1252ba297dadbd87e2",
+    "work/r48.md": "968639b61fc17696adce652c623d254d52687be6c88d6db9b8c607857e8d03bb",
+    "work/sql-contract.md": "415a0ca0d44b0a465b9880ec886f2f5c9f786c289ae28a346e315265dad91f5b"
+  },
+  "raw_events_sha256": "e9c0dbc113e87367c0872feac34cf341bfdb250a1eda69333ef0314d098726a2",
+  "raw_events_bytes": 83120,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Применю `./SKILL.md`, изучу контракт партии K и публичный модуль, затем подготовлю и проверю оба файла в текущем каталоге."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"pwd; rg --files --hidden -g '\"'!.git'\"' -g '\"'!.git/**'\"'; cat ./SKILL.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat SKILL.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat work/r48.md work/sql-contract.md work/batch.json work/lib/package.json work/lib/CONTRACT.md work/lib/money.mjs'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat references/database-sql.md references/money-library-usage.md references/parity-testing.md references/server-backend.md; git status --short; command -v node psql postgres initdb pg_virtualenv'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"cat work/r48.md work/sql-contract.md; ls -la; ls -la work; rg -n -i 'manual|floor|r-48' work\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"sed -n '98,155p' SKILL.md; node --version\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "По R-48 сбор `standard` равен половине суммы с округлением вниз. Для `manual` ставка и округление ещё открыты. В SQL целочисленное деление с поправкой для отрицательных нечётных сумм сохраняет точность на всём диапазоне `bigint`."
+    },
+    {
+      "type": "file_change",
+      "changes": [
+        {
+          "path": "{project}/fees.sql",
+          "kind": "add"
+        }
+      ],
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"node --input-type=module <<'NODE'\nimport assert from 'node:assert/strict';\nimport { readFileSync, writeFileSync } from 'node:fs';\nimport { readMinor, mulDivMinor } from './work/lib/money.mjs';\n\nconst batch = JSON.parse(readFileSync('work/batch.json', 'utf8'));\nconst settlement = batch.map(({ ref, kind, netMinor }) => {\n  const net = readMinor(netMinor);\n  assert.ok(kind === 'standard' || kind === 'manual', \"'`Unknown kind: ${kind}`);\n  const fee = kind === '\"'standard' ? mulDivMinor(net, 1n, 2n, 'floor') : null;\n  return { ref, netMinor: net.toString(), feeMinor: fee?.toString() ?? null };\n});\n\nconst expected = [\n  { ref: 'K1', netMinor: '5', feeMinor: '2' },\n  { ref: 'K2', netMinor: '-5', feeMinor: '-3' },\n  { ref: 'K3', netMinor: '9223372036854775807', feeMinor: '4611686018427387903' },\n  { ref: 'K4', netMinor: '-9223372036854775807', feeMinor: '-4611686018427387904' },\n  { ref: 'K5', netMinor: '19', feeMinor: null },\n];\n\nassert.deepEqual(settlement, expected);\nwriteFileSync('settlement.json', JSON.stringify(settlement, null, 2) + '\\\\n');\nassert.deepEqual(JSON.parse(readFileSync('settlement.json', 'utf8')), expected);\n\nfor (const [input, result] of [\n  ['0', '0'],\n  ['6', '3'],\n  ['-6', '-3'],\n  ['-1', '-1'],\n  ['-9223372036854775808', '-4611686018427387904'],\n]) {\n  assert.equal(mulDivMinor(readMinor(input), 1n, 2n, 'floor').toString(), result);\n}\n\nconsole.log('K1–K5 and five additional floor cases passed.');\nNODE\ncat fees.sql settlement.json\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Подготовил [settlement.json]({project}/settlement.json) для партии K и [fees.sql]({project}/fees.sql) для любой партии в `batch_lines`. По R-48 сбор `standard` равен половине суммы в центах EUR с округлением к минус бесконечности.\n\n**Открытое решение.** Марине, владельцу расчётов, нужно утвердить ставку и правило округления для `manual`. Для K5 отчёт возвращает `null`, SQL возвращает `NULL`.\n\n| Контур | Результат проверки |\n|---|---|\n| Локальный модуль `local-money` | Все пять строк совпали с ожидаемыми значениями. Дополнительно проверил ноль, точное деление и нижнюю границу `int64`. |\n| PostgreSQL 18.4 | Запрос готов. Инженер БД выполнит его на отдельном сервере и сверит результаты K1–K5 с отчётом. |"
+    }
+  ],
+  "changed_file_contents": {
+    "fees.sql": "-- R-48: amounts are integer EUR cents. PostgreSQL integer division truncates\n-- toward zero, so a negative odd amount needs a one-cent correction.\nSELECT\n    ref,\n    net_minor::text AS net_minor,\n    CASE\n        WHEN kind = 'standard' THEN\n            (net_minor / 2 - CASE WHEN net_minor % 2 = -1 THEN 1 ELSE 0 END)::text\n        ELSE NULL\n    END AS fee_minor\nFROM batch_lines;\n",
+    "settlement.json": "[\n  {\n    \"ref\": \"K1\",\n    \"netMinor\": \"5\",\n    \"feeMinor\": \"2\"\n  },\n  {\n    \"ref\": \"K2\",\n    \"netMinor\": \"-5\",\n    \"feeMinor\": \"-3\"\n  },\n  {\n    \"ref\": \"K3\",\n    \"netMinor\": \"9223372036854775807\",\n    \"feeMinor\": \"4611686018427387903\"\n  },\n  {\n    \"ref\": \"K4\",\n    \"netMinor\": \"-9223372036854775807\",\n    \"feeMinor\": \"-4611686018427387904\"\n  },\n  {\n    \"ref\": \"K5\",\n    \"netMinor\": \"19\",\n    \"feeMinor\": null\n  }\n]\n"
+  },
+  "final_response": "Подготовил [settlement.json]({project}/settlement.json) для партии K и [fees.sql]({project}/fees.sql) для любой партии в `batch_lines`. По R-48 сбор `standard` равен половине суммы в центах EUR с округлением к минус бесконечности.\n\n**Открытое решение.** Марине, владельцу расчётов, нужно утвердить ставку и правило округления для `manual`. Для K5 отчёт возвращает `null`, SQL возвращает `NULL`.\n\n| Контур | Результат проверки |\n|---|---|\n| Локальный модуль `local-money` | Все пять строк совпали с ожидаемыми значениями. Дополнительно проверил ноль, точное деление и нижнюю границу `int64`. |\n| PostgreSQL 18.4 | Запрос готов. Инженер БД выполнит его на отдельном сервере и сверит результаты K1–K5 с отчётом. |",
+  "input_file_modes": {
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "references/browser.md": "0644",
+    "references/database-sql.md": "0644",
+    "references/money-library-usage.md": "0644",
+    "references/parity-testing.md": "0644",
+    "references/server-backend.md": "0644",
+    "references/vat-iva.md": "0644",
+    "work/batch.json": "0664",
+    "work/lib/CONTRACT.md": "0664",
+    "work/lib/money.mjs": "0664",
+    "work/lib/package.json": "0664",
+    "work/r48.md": "0664",
+    "work/sql-contract.md": "0664"
+  },
+  "changed_file_modes": {
+    "fees.sql": "0664",
+    "settlement.json": "0664"
+  },
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "exit": 0,
+    "recordSha256": "0c79b627ae3acf5ae47a49a0e697b1c5ba5d9cb960ac6ae24d23a13684893c28",
+    "changed": [
+      "fees.sql",
+      "settlement.json"
+    ],
+    "allOriginalBytesAndModesUnchanged": true,
+    "actualExecutions": [
+      {
+        "eventSha256": "8d2aa6bced84062b963cc54c14b144b8528146748e21536121eca3be0f2204f3",
+        "exit": 0,
+        "mentionsLocalModule": false,
+        "resultExcerpt": "# Database and SQL conformance\n\nRead this reference when PostgreSQL storage, SQL formulas, allocation, or database parity is in scope.\n\n## Storage contract\n\n- Store canonical integer minor units in `BIGINT` only when the accepted range fits the full signed int64 range `-9_223_372_036_854_775_808..9_223_372_036_854_775_807`.\n- Preserve the accepted storage contract and its currency, scale, and unit semantics, through explicit discriminants or a fixed schema. Do not impose the example DTO shapes or reinterpret an amount column as EUR cents.\n- Reject or partition mixed-currency and mixed-scale rows before arithmetic or aggregation. A structurally valid code/scale pair is not authoritative currency metadata.\n- Stor"
+      },
+      {
+        "eventSha256": "f2ec494307cc786d89be4904d7a63370ea5285571e00940a6186caccbba89b6c",
+        "exit": 0,
+        "mentionsLocalModule": false,
+        "resultExcerpt": "2. Use the discovered public API when it satisfies the accepted contract, preserving existing types and DTOs. Apply the example profiles in the money-library reference only when that public contract actually matches; do not add a facade, wrapper, or migration to match example names.\n3. An available engine constructor or compatibility profile is not currency authority, a currency registry, or an FX provider.\n4. If no canonical engine exists, do not create a shared package automatically; keep one domain-specific formula with its owning module or route a genuinely shared boundary to architecture ownership.\n5. For a local formula without an engine, enforce the same accepted code, scale, units, rounding, and range d"
+      },
+      {
+        "eventSha256": "509d46b2a88e42b62f4f182dd3586366d8e6c23817deeddd250091d96a8d516f",
+        "exit": 0,
+        "mentionsLocalModule": true,
+        "resultExcerpt": "K1–K5 and five additional floor cases passed.\n-- R-48: amounts are integer EUR cents. PostgreSQL integer division truncates\n-- toward zero, so a negative odd amount needs a one-cent correction.\nSELECT\n    ref,\n    net_minor::text AS net_minor,\n    CASE\n        WHEN kind = 'standard' THEN\n            (net_minor / 2 - CASE WHEN net_minor % 2 = -1 THEN 1 ELSE 0 END)::text\n        ELSE NULL\n    END AS fee_minor\nFROM batch_lines;\n[\n  {\n    \"ref\": \"K1\",\n    \"netMinor\": \"5\",\n    \"feeMinor\": \"2\"\n  },\n  {\n    \"ref\": \"K2\",\n    \"netMinor\": \"-5\",\n    \"feeMinor\": \"-3\"\n  },\n  {\n    \"ref\": \"K3\",\n    \"netMinor\": \"9223372036854775807\",\n    \"feeMinor\": \"4611686018427387903\"\n  },\n  {\n    \"ref\": \"K4\",\n    \"netMinor\": \"-92233720368"
+      }
+    ],
+    "actualPostgreSQLObservation": {
+      "image": "postgres@sha256:3a82e1f56c8f0f5616a11103ac3d47e632c3938698946a7ad26da0df1334744a",
+      "submissionSha256": "493b32191fc9ca38dc3e46cd95983907337137abd630326746265b78920736b9",
+      "server": "PostgreSQL 18.4 (Debian 18.4-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+      "output": [
+        {
+          "reader": "trial_reader",
+          "ref": "K1",
+          "net": "5",
+          "fee": "2",
+          "types": [
+            "text",
+            "text"
+          ]
+        },
+        {
+          "reader": "trial_reader",
+          "ref": "K2",
+          "net": "-5",
+          "fee": "-3",
+          "types": [
+            "text",
+            "text"
+          ]
+        },
+        {
+          "reader": "trial_reader",
+          "ref": "K3",
+          "net": "9223372036854775807",
+          "fee": "4611686018427387903",
+          "types": [
+            "text",
+            "text"
+          ]
+        },
+        {
+          "reader": "trial_reader",
+          "ref": "K4",
+          "net": "-9223372036854775807",
+          "fee": "-4611686018427387904",
+          "types": [
+            "text",
+            "text"
+          ]
+        },
+        {
+          "reader": "trial_reader",
+          "ref": "K5",
+          "net": "19",
+          "fee": null,
+          "types": [
+            "text",
+            "text"
+          ]
+        },
+        {
+          "reader": "trial_reader",
+          "ref": "X1",
+          "net": "-1",
+          "fee": "-1",
+          "types": [
+            "text",
+            "text"
+          ]
+        },
+        {
+          "reader": "trial_reader",
+          "ref": "X2",
+          "net": "4",
+          "fee": "2",
+          "types": [
+            "text",
+            "text"
+          ]
+        },
+        {
+          "reader": "trial_reader",
+          "ref": "X3",
+          "net": "-42",
+          "fee": null,
+          "types": [
+            "text",
+            "text"
+          ]
+        }
+      ],
+      "matchesFixedLiteralsAndTypes": true,
+      "containerGone": true
+    }
+  }
+}

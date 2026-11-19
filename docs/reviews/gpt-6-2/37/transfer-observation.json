@@ -1,0 +1,332 @@
+{
+  "observedUTC": "2026-11-19T00:11:25.771270+00:00",
+  "type": "read-only SQL read of original data file after subject finished, separate read through unmodified upstream reader on an SQLite backup, second execution of archived subject scripts in a second initially empty private directory",
+  "sourceSHA256": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+  "subjectProduct": {
+    "archiveSHA256": "ab0214b5d29e754b9dbbf92b2bd415be672f1d74ddd878910e5546318e9a5243",
+    "model": "gpt-6.2-sol",
+    "effort": "medium",
+    "memoriesDisabled": true,
+    "externalCompanionReads": [
+      "item_2",
+      "item_4",
+      "item_7",
+      "item_8"
+    ],
+    "externalCompanions": "The installed host payload 0.1.2 and implementation-discipline 0.2.8 plus their references were consulted; the tested payload-migration root and reference were the issued 0.1.4 files. No private study evidence appeared in recorded command paths.",
+    "orderedCommandEventHashes": [
+      {
+        "id": "item_1",
+        "exited": 0,
+        "eventSHA256": "8dd037eeaa0604d5e593d0d7837ac4c25900fb551c6e8079440d1ea26ae74b69"
+      },
+      {
+        "id": "item_2",
+        "exited": 0,
+        "eventSHA256": "9734bba8d57d9785f51d191ece214b9464a629bd611546544416aaf58e6fbf08"
+      },
+      {
+        "id": "item_3",
+        "exited": 1,
+        "eventSHA256": "3b993ebaba3914272749dd0af2b700c4968aac5fffe660b57920420a54042d05"
+      },
+      {
+        "id": "item_4",
+        "exited": 0,
+        "eventSHA256": "bad463c014317975d00905543e2032d0df2187c9be23db2cd735328d3dd2fbbf"
+      },
+      {
+        "id": "item_5",
+        "exited": 0,
+        "eventSHA256": "d2e296f24810be855d602359a1eaab6fd19408320a2980713fc11f0a8c3aa55f"
+      },
+      {
+        "id": "item_7",
+        "exited": 0,
+        "eventSHA256": "bbdbe3cf48fb6b7acb60a82878d59e200eab8851d31d050a03d54203d92938dd"
+      },
+      {
+        "id": "item_8",
+        "exited": 0,
+        "eventSHA256": "22723e994a7d8c38a272e6f473330ffd6071d0a71f93592384456567f5f5cb2e"
+      },
+      {
+        "id": "item_9",
+        "exited": 0,
+        "eventSHA256": "40a3f53a5fc01769404daba03b96db4983cfdf94cb2a40af04c328989963c2a5"
+      },
+      {
+        "id": "item_12",
+        "exited": 0,
+        "eventSHA256": "d0981a92da0a970ee9a1f8dced466972c45fe454a983448e2dd1bb6f80c40eda"
+      },
+      {
+        "id": "item_13",
+        "exited": 1,
+        "eventSHA256": "9da6ab215d2837b225a46c5ecbfb2eed89af43f4f84f954cc908395eb31110bf"
+      },
+      {
+        "id": "item_14",
+        "exited": 0,
+        "eventSHA256": "7d353f6c14471a88d7d0d8be80cd94ef3be0a5219661f2b18e680a964e48fd3e"
+      },
+      {
+        "id": "item_17",
+        "exited": 0,
+        "eventSHA256": "2bb928894233a4ec61b4b8c8b01badaddbfdaeb4c2b02381fa8bfa883ec9bcd1"
+      },
+      {
+        "id": "item_18",
+        "exited": 0,
+        "eventSHA256": "7036112851a82d5ace4d56c421fe2b167e45e2a0009da639a6bb42af3a505e10"
+      }
+    ],
+    "inputContentsIdenticalToDispatch": true,
+    "directReaderAndLocalApiObserved": true,
+    "reportSHA256": "ae65e2f7882572e1a2212ed5e96fa04c87758f01d059749bdec615dc865c6128"
+  },
+  "provider36": {
+    "target.mjs": "cdb6eced80f4a4cde189a031700557ed5d8979e31463fd071704c960995de0ce",
+    "reader.mjs": "477c445d43ef84562f736040ec955c6141a64793bede7d689c5b1b9c092b9225",
+    "package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+    "package-lock.json": "36f6560d7e738daee00e74356fa1bec06c349b492289c8a17e6e1f1ca56378a7"
+  },
+  "process": {
+    "node": "v24.22.3",
+    "binarySHA256": "a7ec1b37e6ff9d187e4198c5b6df9a4eb1c74dd31804fb3bac55cc4ceca1ac01",
+    "installedAndLocked": {
+      "payload": "3.94.0",
+      "@payloadcms/db-sqlite": "3.94.0",
+      "graphql": "16.11.0",
+      "@payloadcms/drizzle": "3.94.0",
+      "@libsql/client": "0.14.0",
+      "drizzle-orm": "0.45.2"
+    }
+  },
+  "sqliteOriginal": {
+    "sections": [
+      {
+        "id": 1,
+        "sourceKey": "LOCAL",
+        "title": "Своя полка"
+      },
+      {
+        "id": 2,
+        "sourceKey": "S-A",
+        "title": "Реестр"
+      },
+      {
+        "id": 3,
+        "sourceKey": "S-B",
+        "title": "Пересчёт"
+      }
+    ],
+    "records": [
+      {
+        "id": 1,
+        "sourceKey": "LOCAL-01",
+        "title": "Местная запись",
+        "section": 1,
+        "sectionKey": "LOCAL",
+        "desk": "east",
+        "state": "issued"
+      },
+      {
+        "id": 2,
+        "sourceKey": "C-111",
+        "title": "Акт смены",
+        "section": 3,
+        "sectionKey": "S-B",
+        "desk": "east",
+        "state": "issued"
+      },
+      {
+        "id": 3,
+        "sourceKey": "C-112",
+        "title": "Лист смены",
+        "section": 2,
+        "sectionKey": "S-A",
+        "desk": "east",
+        "state": "draft"
+      },
+      {
+        "id": 4,
+        "sourceKey": "C-113",
+        "title": "Акт смены",
+        "section": 2,
+        "sectionKey": "S-A",
+        "desk": "east",
+        "state": "issued"
+      },
+      {
+        "id": 5,
+        "sourceKey": "C-114",
+        "title": "Папка смены",
+        "section": 3,
+        "sectionKey": "S-B",
+        "desk": "west",
+        "state": "issued"
+      }
+    ],
+    "userIndexes": {
+      "sections": [
+        {
+          "name": "sections_created_at_idx",
+          "unique": 0
+        },
+        {
+          "name": "sections_updated_at_idx",
+          "unique": 0
+        }
+      ],
+      "records": [
+        {
+          "name": "records_created_at_idx",
+          "unique": 0
+        },
+        {
+          "name": "records_updated_at_idx",
+          "unique": 0
+        },
+        {
+          "name": "records_section_idx",
+          "unique": 0
+        }
+      ]
+    }
+  },
+  "observerReadThroughHandoff": {
+    "node": "v24.22.3",
+    "sections": [
+      {
+        "id": 1,
+        "sourceKey": "LOCAL",
+        "title": "Своя полка"
+      },
+      {
+        "id": 2,
+        "sourceKey": "S-A",
+        "title": "Реестр"
+      },
+      {
+        "id": 3,
+        "sourceKey": "S-B",
+        "title": "Пересчёт"
+      }
+    ],
+    "records": [
+      {
+        "id": 1,
+        "sourceKey": "LOCAL-01",
+        "title": "Местная запись",
+        "section": 1,
+        "sectionKey": "LOCAL",
+        "desk": "east",
+        "state": "issued"
+      },
+      {
+        "id": 2,
+        "sourceKey": "C-111",
+        "title": "Акт смены",
+        "section": 3,
+        "sectionKey": "S-B",
+        "desk": "east",
+        "state": "issued"
+      },
+      {
+        "id": 3,
+        "sourceKey": "C-112",
+        "title": "Лист смены",
+        "section": 2,
+        "sectionKey": "S-A",
+        "desk": "east",
+        "state": "draft"
+      },
+      {
+        "id": 4,
+        "sourceKey": "C-113",
+        "title": "Акт смены",
+        "section": 2,
+        "sectionKey": "S-A",
+        "desk": "east",
+        "state": "issued"
+      },
+      {
+        "id": 5,
+        "sourceKey": "C-114",
+        "title": "Папка смены",
+        "section": 3,
+        "sectionKey": "S-B",
+        "desk": "west",
+        "state": "issued"
+      }
+    ],
+    "desk": "east",
+    "east": [
+      {
+        "id": 1,
+        "sourceKey": "LOCAL-01",
+        "title": "Местная запись",
+        "section": 1,
+        "sectionKey": "LOCAL",
+        "desk": "east",
+        "state": "issued"
+      },
+      {
+        "id": 2,
+        "sourceKey": "C-111",
+        "title": "Акт смены",
+        "section": 3,
+        "sectionKey": "S-B",
+        "desk": "east",
+        "state": "issued"
+      },
+      {
+        "id": 4,
+        "sourceKey": "C-113",
+        "title": "Акт смены",
+        "section": 2,
+        "sectionKey": "S-A",
+        "desk": "east",
+        "state": "issued"
+      }
+    ]
+  },
+  "replayedInSecondDirectory": {
+    "allPersistedBusinessFieldsAndIdsEqual": true,
+    "actualReportSHA256": "3c8c6febc92bd1a0934f711802eba6c62618cfa34541f96bc904f5c3e331871b",
+    "signal": "SIGKILL",
+    "resume": {
+      "sha256": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+      "counts": {
+        "sections": {
+          "created": 0,
+          "recovered": 0,
+          "skipped": 2
+        },
+        "records": {
+          "created": 3,
+          "recovered": 1,
+          "skipped": 0
+        }
+      },
+      "failed": 0
+    },
+    "repeat": {
+      "sha256": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+      "counts": {
+        "sections": {
+          "created": 0,
+          "recovered": 0,
+          "skipped": 2
+        },
+        "records": {
+          "created": 0,
+          "recovered": 0,
+          "skipped": 4
+        }
+      },
+      "failed": 0
+    }
+  }
+}

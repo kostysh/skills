@@ -1,0 +1,82 @@
+{
+  "sha256": "fe855c0ea34a30bc7559ddf2b5532cacebb4ed50df92c45da4d12e34e0e5f281",
+  "restore_command": "python3 restore-dependencies.py",
+  "exact_file_count_per_physical_project": {
+    "typescript": 132,
+    "valibot": 9
+  },
+  "registry": "https://registry.npmjs.org",
+  "both_pinned_packages_restored_and_sha_checked_in_each_project": true,
+  "discriminating_case": [
+    {
+      "method": "manual",
+      "base_typecheck": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "revised_consumer": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.revision.json"
+        ],
+        "exit": 2,
+        "stdout": "src/revision-client.ts(2,73): error TS2339: Property 'scanned' does not exist on type 'Parcel'.\nsrc/revision-client.ts(5,42): error TS2339: Property 'scanned' does not exist on type 'Parcel'.\n",
+        "stderr": ""
+      },
+      "checks": {
+        "initial_package": true,
+        "initial_runtime": true,
+        "initial_type_contract": true,
+        "revised_consumer_typecheck": false,
+        "revised_type_contract": false,
+        "revised_runtime": true,
+        "revised_client_runtime": true,
+        "revised_request": true
+      }
+    },
+    {
+      "method": "inferred",
+      "base_typecheck": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.probe.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "revised_consumer": {
+        "argv": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-p",
+          "tsconfig.revision.json"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "checks": {
+        "initial_package": true,
+        "initial_runtime": true,
+        "initial_type_contract": true,
+        "revised_consumer_typecheck": true,
+        "revised_type_contract": true,
+        "revised_runtime": true,
+        "revised_client_runtime": true,
+        "revised_request": true
+      }
+    }
+  ]
+}

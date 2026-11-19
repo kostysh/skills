@@ -1,0 +1,114 @@
+{
+  "variant": "B",
+  "case": "ordinary",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nИспользуй локальное руководство из ./SKILL.md и выдай команде заключение по приложенному запросу и снимкам разрешений. Здесь требуется формальная проверка предоставленных материалов. Работай только на чтение, ответ верни в чат.\n",
+  "input_file_sha256": {
+    "SKILL.md": "75f94a761bae2653c200434d59b0707326d26089866ceda982fa34471c94a7ee",
+    "agents/openai.yaml": "d4f95ce6a167349b42743a4270ad2a483d87f2ac1eab8df9105958b7339d97ee",
+    "materials/change.json": "9ecb29bd900d7c68723514d9843aca5670a676247e09324bef6357cd7b599eb2",
+    "materials/help-card.md": "5650ba9ce0a751847bcc1b0ca5631e7adf82dd61fdbefbff9d6cb53e79a7d6da",
+    "materials/north-20-effective.json": "854ce35f320d357fabda15ca4fb037d9b13636b07073305873adf770b7fd9064",
+    "materials/report-status-v4.json": "94479bbb69a14ebf861b1a6354cbc224a36b76661e7bc346755effca641ec36f",
+    "materials/request.md": "55b0d22d88dc0033dd1531ee5052a71681f4b5c896704dc418b4eb8f9052f18f",
+    "materials/subject.json": "13369d4ec50bc4ce86c7e94f5cab8a2c998ab9ff1efbfc761ac0298b49a4e859",
+    "references/api-auth-input.md": "af207e5692d93e8d403c8ad00631055bd44f8e703d7b7f1d21d80818f7655e8a",
+    "references/data-access-injection.md": "a2906a795948d5eba413fdcb81e2ed0d8dafe5c2c54271d4747f5a9bd938beef",
+    "references/domain-handoffs.md": "937f9cb6706fbab573667811c5b1219296707a49108975b8d376b67d2c40be26",
+    "references/github-actions.md": "3da3ce160c9244033008420e7c999479319951c63f47cc14dae9f455a7cd10e7",
+    "references/methodology.md": "d30a8d3e1df6b990688b048f329d1f2f129cc65b3aec2b22b579707ecfc67ed3",
+    "references/policy-governance-admission.md": "9dd88facc864d2245a5597b7f06f3fe010a2ac01722b06c22053032b2a4ca5ac",
+    "references/secrets-config.md": "8f46d5d2b652a74e17d670686b4d6c6adfc6f6bd59263b47606f204da95d6a36",
+    "references/supabase-rls.md": "6dadce04c0a4d1e9323a64161218c5c0d8a6e601ac1eb0267b1dac657a573b0a",
+    "references/webhooks.md": "ccfc22d57d6f7e8a5250610b59e3243b10ac61f0bf699a592e98b134a79e1dec"
+  },
+  "raw_events_sha256": "ba39726a29dc14452ea450bd431facd98cfd13f2727f598818a1ce0d7606e541",
+  "raw_events_bytes": 67132,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Прочитаю локальное руководство `SKILL.md`, затем сверю запрос со снимками разрешений. Заключение верну в чат, файлы открываю только для чтения."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat ./SKILL.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git/**'\"'\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"rg -n '\"'^'\"' materials\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat references/methodology.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat references/api-auth-input.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'sha256sum materials/*'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "Помощник не может менять статус по карте `north-20`, но сама карта расширяет право владельца на чтение статусов по сравнению с исходной политикой.\n\n**Статус `FAIL`** для статического аудита поставки `north-20` на учебном стенде North. Проверены исходная политика `report-status-v4` и привязанный к ней экспорт эффективных ролей. [Заявка]({project}/materials/request.md:1) · [Привязка снимков]({project}/materials/subject.json:2)\n\n### SR-001. Карта разрешает владельцу читать статусы чужих отчётов в назначенном подразделении\n\n**Серьёзность Medium. Уверенность HIGH для снимков.**\n\n- **Доказательство.** Исходная политика ограничивает `owner.read` собственным отчётом (`owned report`). В эффективной карте `owner.read` задан для назначенного подразделения (`assigned department`), без условия владения отчётом. [Исходная политика]({project}/materials/report-status-v4.json:10) · [Эффективная карта]({project}/materials/north-20-effective.json:9)\n- **Последствие.** Карта включает в область чтения владельца статус отчёта другого владельца, если отчёт находится в назначенном подразделении.\n- **Исправление.** Команде, которая формирует карту ролей, следует сохранить условие владения при формировании `owner.read`. Минимальная проверка карты должна подтвердить разрешение на чтение своего отчёта и отказ для чужого отчёта в том же подразделении.\n\n### Ответ по правам помощника\n\nЧтение ограничено назначенным подразделением, а `assistant.edit` равен `false` в обоих снимках. Эффективная карта разрешает владельцу редактировать только собственный статус. [Исходная политика]({project}/materials/report-status-v4.json:6) · [Эффективная карта]({project}/materials/north-20-effective.json:5)\n\nВывод относится к разрешениям в предоставленных снимках. Фактическое применение карты живым сервисом было вне объёма проверки."
+    }
+  ],
+  "changed_file_contents": {},
+  "final_response": "Помощник не может менять статус по карте `north-20`, но сама карта расширяет право владельца на чтение статусов по сравнению с исходной политикой.\n\n**Статус `FAIL`** для статического аудита поставки `north-20` на учебном стенде North. Проверены исходная политика `report-status-v4` и привязанный к ней экспорт эффективных ролей. [Заявка]({project}/materials/request.md:1) · [Привязка снимков]({project}/materials/subject.json:2)\n\n### SR-001. Карта разрешает владельцу читать статусы чужих отчётов в назначенном подразделении\n\n**Серьёзность Medium. Уверенность HIGH для снимков.**\n\n- **Доказательство.** Исходная политика ограничивает `owner.read` собственным отчётом (`owned report`). В эффективной карте `owner.read` задан для назначенного подразделения (`assigned department`), без условия владения отчётом. [Исходная политика]({project}/materials/report-status-v4.json:10) · [Эффективная карта]({project}/materials/north-20-effective.json:9)\n- **Последствие.** Карта включает в область чтения владельца статус отчёта другого владельца, если отчёт находится в назначенном подразделении.\n- **Исправление.** Команде, которая формирует карту ролей, следует сохранить условие владения при формировании `owner.read`. Минимальная проверка карты должна подтвердить разрешение на чтение своего отчёта и отказ для чужого отчёта в том же подразделении.\n\n### Ответ по правам помощника\n\nЧтение ограничено назначенным подразделением, а `assistant.edit` равен `false` в обоих снимках. Эффективная карта разрешает владельцу редактировать только собственный статус. [Исходная политика]({project}/materials/report-status-v4.json:6) · [Эффективная карта]({project}/materials/north-20-effective.json:5)\n\nВывод относится к разрешениям в предоставленных снимках. Фактическое применение карты живым сервисом было вне объёма проверки.",
+  "input_file_modes": {
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "materials/change.json": "0664",
+    "materials/help-card.md": "0664",
+    "materials/north-20-effective.json": "0664",
+    "materials/report-status-v4.json": "0664",
+    "materials/request.md": "0664",
+    "materials/subject.json": "0664",
+    "references/api-auth-input.md": "0644",
+    "references/data-access-injection.md": "0644",
+    "references/domain-handoffs.md": "0644",
+    "references/github-actions.md": "0644",
+    "references/methodology.md": "0644",
+    "references/policy-governance-admission.md": "0644",
+    "references/secrets-config.md": "0644",
+    "references/supabase-rls.md": "0644",
+    "references/webhooks.md": "0644"
+  },
+  "changed_file_modes": {},
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "exit": 0,
+    "allInputsAndModesUnchanged": true,
+    "changedPaths": [],
+    "normalizedAnswerBytes": 2900,
+    "normalizedAnswerSha256": "9d75a5086ed6d88352bc55ebbf773b00108560236b7f8da7d075dbb51b229374",
+    "suppliedRoleFiles": [
+      "materials/change.json",
+      "materials/help-card.md",
+      "materials/north-20-effective.json",
+      "materials/report-status-v4.json",
+      "materials/request.md",
+      "materials/subject.json"
+    ]
+  }
+}
