@@ -1,0 +1,7 @@
+:root { --forest:#264b36; --white:#fff; --type:#252b27; --mark:#a63529; --edge:#9aa99d; font:16px/1.5 Georgia,serif; color:var(--type); background:#eff0ea }
+* { box-sizing:border-box } body { margin:0 } .page { max-width:54rem; margin:auto; padding:1.25rem }
+nav { display:flex; justify-content:space-between; padding:1rem 0; border-bottom:3px solid var(--forest) } h1 { margin:1.4rem 0; font-size:2.5rem } h2 { margin:0; font-size:1.45rem } article { padding:1.3rem 0; border-top:1px solid var(--edge) }
+form { max-width:28rem } label { display:block; margin-top:.75rem } input,select,button { border:1px solid var(--edge); background:var(--white); color:var(--type); padding:.6rem .8rem; font:inherit }
+input,select { width:100% } button { cursor:pointer; font-weight:bold } .solid { background:var(--forest); color:var(--white); border-color:var(--forest) }
+:focus-visible { outline:3px solid var(--mark); outline-offset:3px } .commands { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1rem } .notes { margin-top:.5rem; min-height:1.5em }
+form.attention .commands button:first-child:focus-visible { outline-color:transparent }

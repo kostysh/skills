@@ -1,0 +1,3 @@
+Updated the [new-arrival form](/tmp/local-form-uxewhvaa/index.html:6). **Request arrival** now matches the desk’s primary action, and **Clear** keeps the secondary style. An empty submission displays “Enter a vessel name.” while the focused submit button keeps its visible keyboard outline.
+
+Verified the footer and correction state in Chromium at desktop and mobile widths. A corrected submission still confirms the selected arrival window, and Clear still resets the form.

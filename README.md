@@ -109,3 +109,20 @@ skill declares its maintenance source. Start with the [repository instructions](
 and [skill standard](docs/skill-standard.md). Record templates are in
 [`docs/templates/`](docs/templates/). CLI development and release instructions
 are in the [CLI guide](cli/README.md#development-and-releases).
+
+For a paired skill audit, register the tasks and variants before dispatch.
+Record each execution once and attach each assessor's rating to that execution.
+The [comparison procedure](skills/skill-reviewer/references/forward-testing.md)
+defines the outcomes. A [worked example](docs/reviews/audit-metrics-20261119/history/02.json)
+includes both a lost pair and a later assessment of an existing answer.
+Generate the Markdown report from one or more study files:
+
+```sh
+node scripts/audit-metrics.mjs docs/reviews/audit-metrics-20261119/history/02.json
+```
+
+Report links are relative to the directory where you run the command. The
+[record format](docs/reviews/audit-metrics-20261119/history/README.md)
+describes how to register incomplete pairs, repeated ratings and review times.
+The [pilot log](docs/reviews/implementation-log-20261119-1.md) links the
+registered tasks, original decisions and limits of the results.

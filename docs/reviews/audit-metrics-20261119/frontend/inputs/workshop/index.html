@@ -1,0 +1,6 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bench register</title><link rel="stylesheet" href="bench.css"></head>
+<body><div class="page"><nav aria-label="Workshop"><strong>Hawthorn Works</strong><span>Repair intake</span></nav>
+<main><h1>Parts register</h1><article><h2>Current stock</h2><p>Inspect the shelf catalogue before registering an incoming part.</p><button class="solid" id="shelf">Show shelf guide</button><span id="guide"></span></article>
+<article><h2>Reserve a part</h2><form novalidate><div><label for="part">Part code</label><input id="part" maxlength="18"></div>
+<div><label for="rack">Collection site</label><select id="rack"><option>Mill</option><option>West yard</option></select></div>
+<div class="notes" role="status" id="feedback"></div><div class="commands"><button type="submit" id="reserve">Reserve part</button><button type="button" id="cancel">Reset</button></div></form></article></main></div><script src="register.js"></script></body></html>

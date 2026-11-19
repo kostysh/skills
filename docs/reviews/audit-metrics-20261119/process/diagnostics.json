@@ -1,0 +1,84 @@
+{
+  "subjects": {
+    "direction": {
+      "74e38c42": {
+        "dispatch": "2026-11-19T17:39:40.808Z",
+        "returned": "2026-11-19T17:40:42.566Z",
+        "model": "gpt-6.2-sol",
+        "effort": "medium",
+        "exit": 0,
+        "events_sha256": "e2fa67c58570e9c94c02a66386efe166ea3c3a390e7d0437d4c2e3f5fb29a28e",
+        "prompt": "Вы работаете одним из исполнителей локальной очереди. Используйте только материалы текущей рабочей папки. Сначала прочтите manual/AGENTS.md и выданный manual/skills/skill-reviewer/SKILL.md с применимыми references, затем inbox/order.md и его приложения. manual/docs содержит местные шаблоны и стандарт. Выполните поручение в пределах указанной роли. Отправьте работу адресату через outbox: один Markdown-файл на фактическую передачу, у каждого файла один адресат (один пакет может включать несколько предметов), укажите ссылки на наблюдения. Если требуется отдельный журнал, сохраните его в records/. Завершите кратким подтверждением в чате. Записывать можно только в outbox/ и records/. Речь идёт о работе в данной очереди: не обращайтесь за её пределы, к домашним каталогам, сети, другим агентам или Git. Не редактируйте присланные файлы. Рабочий язык — русский.",
+        "arm": "candidate",
+        "files": {
+          "outbox/comparison-summary.md": "f45ce5829b591940b2524e48781645c7ed1ba040adaf2c45934a1d9c773bb3b7"
+        },
+        "publicEventsSha256": "7a387fa0c609a59269bc93be8006f1a15ebe482b78f9e286cc9069d56600548a"
+      },
+      "2928e791": {
+        "dispatch": "2026-11-19T17:39:40.808Z",
+        "returned": "2026-11-19T17:40:27.982Z",
+        "model": "gpt-6.2-sol",
+        "effort": "medium",
+        "exit": 0,
+        "events_sha256": "c9c8f4e2edd3435c9e3c81014725cd9caac29382cf1a2cf10dbe6a6468db906e",
+        "prompt": "Вы работаете одним из исполнителей локальной очереди. Используйте только материалы текущей рабочей папки. Сначала прочтите manual/AGENTS.md и выданный manual/skills/skill-reviewer/SKILL.md с применимыми references, затем inbox/order.md и его приложения. manual/docs содержит местные шаблоны и стандарт. Выполните поручение в пределах указанной роли. Отправьте работу адресату через outbox: один Markdown-файл на фактическую передачу, у каждого файла один адресат (один пакет может включать несколько предметов), укажите ссылки на наблюдения. Если требуется отдельный журнал, сохраните его в records/. Завершите кратким подтверждением в чате. Записывать можно только в outbox/ и records/. Речь идёт о работе в данной очереди: не обращайтесь за её пределы, к домашним каталогам, сети, другим агентам или Git. Не редактируйте присланные файлы. Рабочий язык — русский.",
+        "arm": "previous",
+        "files": {
+          "outbox/comparison.md": "f47bd7330ce5b8d1e4599970a90a7fa6b38ef6a93584d7c8a898b61156be0337"
+        },
+        "publicEventsSha256": "4ada059d716508dd2f24f9fa8bcedc86024bbccd3374fafb4759e378f1905695"
+      }
+    },
+    "closure": {
+      "1a0c8cd7": {
+        "dispatch": "2026-11-19T17:38:48.265Z",
+        "returned": "2026-11-19T17:39:44.669Z",
+        "model": "gpt-6.2-sol",
+        "effort": "medium",
+        "exit": 0,
+        "events_sha256": "ea6a4a1584bc23729cb0b169e10ed5001b0a9c50ebd2a4326a276abb47f92a0c",
+        "prompt": "Вы координатор местной очереди. Прочтите выданные manual/AGENTS.md, применимые шаблоны manual/docs/templates и inbox/order.md. Выполните поручение в текущем каталоге. Владелец увидит файлы в work/ и в outbox/. Пишите только туда, сохраняя полученные документы в inbox/ и manual/. Не обращайтесь за пределы рабочей папки, к сети или другим агентам. Завершите краткой квитанцией.",
+        "arm": "previous",
+        "files": {
+          "work/implementation-plan.md": "58dac971793707dc6be522051e992cde4458d9ca804439742a01998fd47835e6",
+          "work/issue.md": "a690b96dd22090d08579eaad97abc40dcc17bebd2493664c9c377acc52ef2b4a",
+          "work/log.md": "4f3ce763a01d2a841402dff9d881aaf25607e06027d15f7708a68a841d7fc325",
+          "outbox/receipt.md": "4af9dfb06c885e492404b5c767ee0f272e38a76eb13b0a557d2a20c52c6a13e7"
+        },
+        "publicEventsSha256": "c854ac370772ecd65884d357fb80c3ef96ff4f43c29d31868e7f90d04b0c6f9a"
+      },
+      "f48fa4a3": {
+        "dispatch": "2026-11-19T17:38:48.265Z",
+        "returned": "2026-11-19T17:39:35.547Z",
+        "model": "gpt-6.2-sol",
+        "effort": "medium",
+        "exit": 0,
+        "events_sha256": "f338278e956f1c152bbbe0a6ccac67915f86fea05374b55e1d819285579eda51",
+        "prompt": "Вы координатор местной очереди. Прочтите выданные manual/AGENTS.md, применимые шаблоны manual/docs/templates и inbox/order.md. Выполните поручение в текущем каталоге. Владелец увидит файлы в work/ и в outbox/. Пишите только туда, сохраняя полученные документы в inbox/ и manual/. Не обращайтесь за пределы рабочей папки, к сети или другим агентам. Завершите краткой квитанцией.",
+        "arm": "candidate",
+        "files": {
+          "work/implementation-plan.md": "58dac971793707dc6be522051e992cde4458d9ca804439742a01998fd47835e6",
+          "work/issue.md": "a690b96dd22090d08579eaad97abc40dcc17bebd2493664c9c377acc52ef2b4a",
+          "work/log.md": "fae1234ce6109aefea8770aa818ffc11ae2d0ea36306f506342e31673747d703"
+        },
+        "publicEventsSha256": "c5c6049620bbfdaf45198102d33074ed60c48f3bcc1d957f750eae954cf488bd"
+      }
+    }
+  },
+  "assessor": {
+    "mapAfterScoring": {
+      "c60b86": "2928e791",
+      "6eb2bc": "1a0c8cd7",
+      "a56542": "74e38c42",
+      "91d779": "f48fa4a3"
+    },
+    "model": "gpt-6.2-sol",
+    "effort": "high",
+    "dispatched": "2026-11-19T17:41:02.320Z",
+    "decided": "2026-11-19T17:42:58.771Z",
+    "thread": "01a1f4e5-c948-7c01-a5bf-86bfc4780bce",
+    "publicEventsSha256": "36b59dea72f612a641b82bd42feefaa31d9f21139a269dce985d3f0873228f6f"
+  },
+  "archive": "b35cdf16edf9eb473e4f579e920d5dba255e31e4d66a5d5bf85b5e559cd3bbf1"
+}

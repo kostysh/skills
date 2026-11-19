@@ -1,0 +1,202 @@
+{
+  "methodArchives": {
+    "method-candidate.tar.gz": "0c7824d6e3f1f560a973e81e933bd7299b2f7ba2d02ec6d3a3fc4cc61b5e3bf8",
+    "method-previous.tar.gz": "fd6fde28448c08e06f1ee10e0a2daf9a5b646c505a25ff74b58e74b0a73f3d4c"
+  },
+  "caseInputs": "e5b96556b0604ca6c806a753dcfdd61c77a77bfff08321653167bf868fe52673",
+  "protocol": "bdb08c6798f341857273ecf627a1e67b798f75a1e11656036d951e4b4a762460",
+  "subjects": {
+    "73c4fa68": {
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "dispatch": "2026-11-19T17:25:06.657Z",
+      "returned": "2026-11-19T17:25:57.091Z",
+      "exit": 0,
+      "events_sha256": "c5a07c8a46224250b5a19fa3b9998818efda58388cdc9f4c05e8713812bb9786",
+      "case": "routing",
+      "arm": "previous",
+      "thread": "01a1f4d7-3432-7d31-b6f2-3d9c09a587f6",
+      "exportSha256": "3fe42c6250b120706253c565fafa3e5578c5e09a198bff76e3c77d5609b1d151",
+      "elapsedSeconds": 50.434,
+      "materialized": {
+        "outbox/T02-independent-audits.md": "9c86b6a88e594cacc286b8cac94a3e082be4b723e2ab38b9ca5df4732da7c664"
+      },
+      "inputTreeSHA256": "58ec605f6c4714d3effc7353184f627d3a51a9f4cb3217949498f2672e466e65"
+    },
+    "5ae9d9fa": {
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "dispatch": "2026-11-19T17:25:06.657Z",
+      "returned": "2026-11-19T17:26:29.666Z",
+      "exit": 0,
+      "events_sha256": "dfaaee554f9d29efd7f549cb23f26f67f28ff0c9f2a0aea9b41d1658aac89653",
+      "case": "types",
+      "arm": "previous",
+      "thread": "01a1f4d7-3432-7751-8772-1104e74cb900",
+      "exportSha256": "bd04be9a1d49ca872ba9a89cac765b89f686902d1b38491db1d476640dd7fa8d",
+      "elapsedSeconds": 83.009,
+      "materialized": {
+        "outbox/decision-for-rule-owner.md": "982f069cd6e9ebad0c120700146625e5bdaed66663a33bdc6aedb0e61c050baa"
+      },
+      "inputTreeSHA256": "3e52239c525bcd7e13f0bdea1a101207573f4a5bcb63428dc13360fab2d92c6f"
+    },
+    "db999f37": {
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "dispatch": "2026-11-19T17:25:06.657Z",
+      "returned": "2026-11-19T17:27:41.239Z",
+      "exit": 0,
+      "events_sha256": "645f6b3f4cac1467fad7ca4cdc18b3de0efbf3f7f41552e59e5ff784346016d6",
+      "case": "desk",
+      "arm": "previous",
+      "thread": "01a1f4d7-3432-75e2-95a6-5f544887db57",
+      "exportSha256": "0d7e28101086437514782f04f15077f0070efde05a1c39561f0451d45ac8c1ed",
+      "elapsedSeconds": 154.582,
+      "materialized": {
+        "outbox/birch-marina.md": "2557d926b9e67f307a6d52bc611dd1e7b02e50dadb679e9112130801eb707146",
+        "outbox/cedar-vera.md": "a1e5f753141beb17496a2b1159de3ba0fb288494b95234b3e4bb79a559134f6a",
+        "outbox/maple-marina.md": "dc12fa65bb5869f4afc5db3227701af65dc3d39c08e7bd510d33fc71363e836b"
+      },
+      "inputTreeSHA256": "fb377988ffc9ab8107d7b1d66c0fb379a2a0caa1d2f84e256b1889ff516c19b3"
+    },
+    "54702184": {
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "dispatch": "2026-11-19T17:25:57.092Z",
+      "returned": "2026-11-19T17:26:44.284Z",
+      "exit": 0,
+      "events_sha256": "c54bffdbcec1691395b814477206e1d333c40e991ad23ae7f19f764ab91d37b9",
+      "case": "records",
+      "arm": "previous",
+      "thread": "01a1f4d7-f936-74c2-8227-4857221fcb98",
+      "exportSha256": "9e9dc11d3718fdeda2c5ece3040dec53270b629f46c802388899c2f3d7e3e063",
+      "elapsedSeconds": 47.192,
+      "materialized": {
+        "outbox/catalog-comparison.md": "878d36163ef9aa001671716faf81061ba195d6ec0912da8426770421fd985321"
+      },
+      "inputTreeSHA256": "fe3fd9f15569fe7fc8c1b3ab39f538362ab26bc9e2b3ccde7f8ce039b4538b87"
+    },
+    "229c3de5": {
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "dispatch": "2026-11-19T17:27:53.118Z",
+      "returned": "2026-11-19T17:28:49.566Z",
+      "exit": 0,
+      "events_sha256": "c24b1c8d7aacf91580346f189d5340eb071a9ab1f62fb26ff7c05857a04789a7",
+      "case": "records",
+      "arm": "candidate",
+      "thread": "01a1f4d9-be74-7b90-b495-0b9856acf63b",
+      "exportSha256": "462be2daa9dc920affc6026f38799bce629180bec7b735826f703414a04f37c4",
+      "elapsedSeconds": 56.448,
+      "materialized": {
+        "outbox/comparison-summary.md": "168c3713f2afa1b20bb7329cdd2cd17ddc3b6b5f9dcb049931a33736a17fda99"
+      },
+      "inputTreeSHA256": "0789f2e5ae355235d2a03d130261d8ae758ef9425fc2e5b7a531314d2022cc6b"
+    },
+    "afb29f8b": {
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "dispatch": "2026-11-19T17:27:53.118Z",
+      "returned": "2026-11-19T17:28:57.534Z",
+      "exit": 0,
+      "events_sha256": "6ea81e38440c6e2e78788a31890529e59086db79facd5057abf67cff9ff5b662",
+      "case": "routing",
+      "arm": "candidate",
+      "thread": "01a1f4d9-be73-75c3-87c6-b81f7516f20d",
+      "exportSha256": "6ea81e38440c6e2e78788a31890529e59086db79facd5057abf67cff9ff5b662",
+      "elapsedSeconds": 64.416,
+      "materialized": {
+        "outbox/t02-p1-document-audit.md": "8a1b911910d1d48349db9e542aeb24d9ed5e07cf1209d2d0260b290fa376ed13",
+        "records/t02-p1-dispatch.md": "738ab6682d232ab3890b3b43d36830e9ae5335e65024b3220e23014146db235f"
+      },
+      "inputTreeSHA256": "6ac68f82a94fcafffe36cee4b3eda3451421b8acc2c463324b0319135b500496"
+    },
+    "60e05af5": {
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "dispatch": "2026-11-19T17:27:53.118Z",
+      "returned": "2026-11-19T17:29:24.299Z",
+      "exit": 0,
+      "events_sha256": "25180b3c239fdd79a6f2fff02ed18b3e4bde793c0dcd15dc676827fc858df767",
+      "case": "types",
+      "arm": "candidate",
+      "thread": "01a1f4d9-be75-7890-99a8-51eb556f7da4",
+      "exportSha256": "fcd0afeb2c1ae58d35cc279a0b9419c7716bad8359e4436c3af9a0afda65c972",
+      "elapsedSeconds": 91.181,
+      "materialized": {
+        "outbox/schema-linked-public-type.md": "549777623954c40748a341e09ab6fe2cc7beb07c21298e5ba06584ed0421923e"
+      },
+      "inputTreeSHA256": "a0ca3f1c23a625286080209f3338af09610b2f58c0782e82cd0878c20764a55e"
+    },
+    "7f11c513": {
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "dispatch": "2026-11-19T17:28:49.567Z",
+      "returned": "2026-11-19T17:31:53.470Z",
+      "exit": 0,
+      "events_sha256": "e112d766a16a477a2ef5860cfd915619bdc3f04d1f6339120529747802616e70",
+      "case": "desk",
+      "arm": "candidate",
+      "thread": "01a1f4da-9af1-7cf3-937b-041a274145d1",
+      "exportSha256": "50804576fd92f3a465bdead9bd4b4d8773b4afd2bba259078367cc15bdf967ec",
+      "elapsedSeconds": 183.903,
+      "materialized": {
+        "outbox/birch.md": "1a1bf797a9ee512319fbdc6373d20d790638edc7bf9a2b278990d70c86f8002c",
+        "outbox/cedar.md": "4cca37dd9d6b483b49943c7a7e4334722775258952bbfa8367de3222f12850e4",
+        "outbox/maple.md": "98393007adb6cca4e600b2d8493545b808ecdd4b28988c867d55934fe0a9f1d7"
+      },
+      "inputTreeSHA256": "d96fc9d7879475dcc667b913ea7ce201106d9aa6b2e1edfa79158e7b3214bbe1"
+    }
+  },
+  "assessors": {
+    "primary": {
+      "mappingAfterScoring": {
+        "70324d": "73c4fa68",
+        "6248e1": "db999f37",
+        "c0f0b6": "7f11c513",
+        "8887c2": "54702184",
+        "134da0": "afb29f8b",
+        "49541a": "229c3de5",
+        "a30c35": "5ae9d9fa",
+        "67a0c1": "60e05af5"
+      },
+      "workedAt": "2026-11-19T17:32:19.317Z",
+      "signedAt": "2026-11-19T17:34:44.226Z",
+      "model": "gpt-6.2-sol",
+      "effort": "high",
+      "eventsSha256": "3283c6b319d700fdbe7198cea4c3ccade17d990eca847e3ef008119344dc8cc7",
+      "exportSha256": "3283c6b319d700fdbe7198cea4c3ccade17d990eca847e3ef008119344dc8cc7",
+      "thread": "01a1f4dd-ce4b-7d31-a93c-83b8c81b779a",
+      "gradesSha256": "1c059a0bdba7b8e6731a1216f44e338e44b62180cd2f0333b7badb565e842dcb"
+    },
+    "second": {
+      "mappingAfterScoring": {
+        "45ecdd": "229c3de5",
+        "043202": "54702184"
+      },
+      "workedAt": "2026-11-19T17:32:18.914Z",
+      "signedAt": "2026-11-19T17:33:18.617Z",
+      "model": "gpt-6.2-sol",
+      "effort": "high",
+      "eventsSha256": "5c782adf19b8ab93f85409760c768d0420f1d7f904995578df7d389bd1604a95",
+      "exportSha256": "7af4c0273086c90b900c549ec666f0822362e2a4f6bff33a54d8bf12517da387",
+      "thread": "01a1f4dd-ccba-70e1-99c5-7aa6c37f86a2",
+      "gradesSha256": "82fd30e68350e7dae4877337907d837cbcc42d73bf2683021e85d10a37b345eb"
+    },
+    "resolution": {
+      "mappingAfterScoring": {
+        "8d6058": "229c3de5",
+        "84205b": "54702184"
+      },
+      "workedAt": "2026-11-19T17:36:15.146Z",
+      "signedAt": "2026-11-19T17:36:51.899Z",
+      "model": "gpt-6.2-sol",
+      "effort": "high",
+      "eventsSha256": "f662bd00acb22e61b9555cfd4b980b008c8cc99727e3c841060fec381a098586",
+      "exportSha256": "f662bd00acb22e61b9555cfd4b980b008c8cc99727e3c841060fec381a098586",
+      "thread": "01a1f4e1-6782-7270-9721-ce11cbb042ac",
+      "gradesSha256": "872b15233c78b58745c78350a17adf68e39f463ad9f19747e771b33f3e9e76a6"
+    }
+  },
+  "sessionEvidence": "af35d544b40928f662a8838c203d4f000ac0db3affa78300e95193b5899092da"
+}

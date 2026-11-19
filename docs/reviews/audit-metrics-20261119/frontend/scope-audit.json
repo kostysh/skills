@@ -1,0 +1,70 @@
+{
+  "utc": "2026-11-19T17:44:34.004597Z",
+  "note": "The historic windowProfile field searched for a literal profile NAME. The CLI reports a managed permission profile; its effective explicit grants are inspected here. Exact-byte search covers the allowed system programs and CLI distribution. Base instruction counts refer to the locally cached model metadata; server-internal text is not observable.",
+  "inputRegistration": "76cfee5ba30f01af3c50ebdfdd0641b0042aca17f91ccf3942d512615da4b130",
+  "priorSurfaceDiscovery": "ac0ac15bc1d525b0f5bb8a23017d1d85ca6ba679e8843350e1635f81334b63c2",
+  "fifoPrelaunch": "2c44ad7f74afd301e8e694a74daecebb8ac8ed1a95a016b74cd36eb6a53c6715",
+  "runner": {
+    "stage.py": "1a172e7228afedca71866536109b4a852f1b7f0a8091f9cf57cb74f152560f85",
+    "judge_session.py": "c0a1592c0f7c538d0f40e87a4cc4a7975ce961b183cbfd2021261e1b0379e60d",
+    "session.py": "adaa3ae009ebcb4dc1c785021660415357614c1cee019409919a5490e18236a2",
+    "study.py": "b7660aa6ae6cf65c0b1e04a564472c4bdbf92322e19144394cd57f22880af702",
+    "exposure.py": "064e1b019365dd7710e74781eb1d44d0c45dca5cdffa401485f3694e10541512",
+    "grade.py": "835827c79db5cb7fc9b2bc754d33912c6801905654517c152cc89aee42361521",
+    "register.py": "e95387c454f30d41fe1d326c0d583abf20d4af49be30efde6fcd8ba751ec2e31",
+    "prelaunch.py": "d7f2ae4d5272ed4359708a47b1362dffb0fb80e54a471bcd8c3cf89d9996d626",
+    "normalize.py": "6e4720ee77383f1736f80ace2d3de4ee51a412949cb150e973ea4abbb5e27cf2",
+    "run_case.py": "cc508bb552aaa3a0dfe890bc185981916ac06232144b93299ecf07e144a5d538",
+    "browser.cjs": "4ca77c8be48d0a499acbc09839bcff73e1e2307c40bc216577261ebd9f100d4e",
+    "scope_audit.py": "1456c8f32b6c9751b995a4013134b7125fabd345e20580af8307a207948cf732"
+  },
+  "startup": {
+    "gpt-6.2-sol": {
+      "type": "managed",
+      "allowsPlatformMinimum": true,
+      "allowsWholeFileSystem": false,
+      "systemLibrariesListed": true,
+      "cliBinaryListed": true,
+      "onlyCurrentProjectInManifest": true,
+      "homeSkillsInCatalog": false,
+      "inputSha256": "079cc5547df4042d23110fa46e19be01508993910bb2737430a3c7c0ab691b95"
+    },
+    "gpt-6.1-sol": {
+      "type": "managed",
+      "allowsPlatformMinimum": true,
+      "allowsWholeFileSystem": false,
+      "systemLibrariesListed": true,
+      "cliBinaryListed": true,
+      "onlyCurrentProjectInManifest": true,
+      "homeSkillsInCatalog": false,
+      "inputSha256": "4cc55cb81ea5243860d98f24668b345f0f1cc1d12629b8c4945e59c942c3ad99"
+    }
+  },
+  "allowedSystemFiles": {
+    "filesVisited": 226070,
+    "namedCandidates": [],
+    "matchingBytes": []
+  },
+  "localModelMetadata": {
+    "gpt-6.2-sol": {
+      "sha256": "fa3c836fe767086705623ac62524b7c72e961b794c453b1478b3aa8ea8080fb3",
+      "knownDirectPhrases": {
+        "keyboard": 0,
+        "focus-visible": 0,
+        "focus states": 0,
+        "keyboard and focus": 0,
+        "press tab": 0
+      }
+    },
+    "gpt-6.1-sol": {
+      "sha256": "e265c7a07792aa35e1d95ea31ffe09625028b89316e7985d76175acb9805c636",
+      "knownDirectPhrases": {
+        "keyboard": 0,
+        "focus-visible": 0,
+        "focus states": 0,
+        "keyboard and focus": 0,
+        "press tab": 0
+      }
+    }
+  }
+}

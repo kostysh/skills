@@ -1,0 +1,3 @@
+Updated the [New arrival footer](/tmp/local-form-cnrel62j/index.html:8). **Request arrival** now uses the desk’s primary button style, and **Clear** stays secondary. After an empty submission, “Enter a vessel name.” appears and the submit button keeps its visible keyboard focus ring.
+
+Verified in Chromium at desktop and mobile widths. Valid submissions, booking confirmation, and form reset still work.

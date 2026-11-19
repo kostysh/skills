@@ -1,0 +1,28 @@
+{
+  "skill": "skill-source-compiler",
+  "study": "20261118-02",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "base": "docs/reviews/gpt-6-2/02",
+  "source": "assessment.md",
+  "runs": {
+    "056f9b": {"task":"boundary","variant":"A","source":"results/056f9b.json","sha256":"78f5549965aa448cebd900c4103c4b947ea9efbc5fc28c0008aaff992dbf1260","ratings":{"ab":{"assessor":"assess_packages_lime","rubric":"trial-criteria.md@e37bafca29c1","packet":"ab","score":"PASS","source":"assessment-ab.md","label":"056f9b"},"confirm":{"assessor":"assess_packages_willow","rubric":"trial-criteria.md@e37bafca29c1","packet":"confirm","score":"PASS","source":"assessment-confirm.md","label":"4281dc"}}},
+    "1679a6": {"task":"holdout","variant":"C","source":"results/1679a6.json","sha256":"ed97cd92c552fa89a1a9cc7a1148d273edcb30ecae27f958de55a1e7999dbdc5","ratings":{"confirm":{"assessor":"assess_packages_willow","rubric":"trial-criteria.md@e37bafca29c1","packet":"confirm","score":"PASS","source":"assessment-confirm.md","label":"1679a6"}}},
+    "1fc9a3": {"task":"ordinary","variant":"release","source":"results/1fc9a3.json","sha256":"f13046380827a5c578caa6e3e6e79b156202e2db207ccc1523889031deedbfd2","ratings":{"confirm":{"assessor":"assess_packages_willow","rubric":"trial-criteria.md@e37bafca29c1","packet":"confirm","score":"PASS","source":"assessment-confirm.md","label":"1fc9a3"}}},
+    "43a9a7": {"task":"boundary","variant":"C","source":"results/43a9a7.json","sha256":"d616ba52704cf87177eb072b8ce7f1aaaeaa52e48c5c39a82c0a0d95c8f0e285","ratings":{"confirm":{"assessor":"assess_packages_willow","rubric":"trial-criteria.md@e37bafca29c1","packet":"confirm","score":"PASS","source":"assessment-confirm.md","label":"43a9a7"}}},
+    "492c6f": {"task":"holdout","variant":"A","source":"results/492c6f.json","sha256":"ba55605d09b91ff47b2b8e651a92c1fea295c6ed54126747eb01f80f52689dd0","ratings":{"confirm":{"assessor":"assess_packages_willow","rubric":"trial-criteria.md@e37bafca29c1","packet":"confirm","score":"PASS","source":"assessment-confirm.md","label":"492c6f"}}},
+    "74f1b7": {"task":"ordinary","variant":"B","source":"results/74f1b7.json","sha256":"13c1f03d9439f6ae5c9fe7b43a39e5537219aa09d3f43ea403757a0c9f506bf4","ratings":{"ab":{"assessor":"assess_packages_lime","rubric":"trial-criteria.md@e37bafca29c1","packet":"ab","score":"PASS","source":"assessment-ab.md","label":"74f1b7"}},"behavior":{"result":"done","note":"Собрал комплект и назвал три обязательных поля и порог предупреждения.","source":"results/74f1b7.json"}},
+    "b3c32e": {"task":"ordinary","variant":"C","source":"results/b3c32e.json","sha256":"cd4fe8c929c2eccd64d00b9b40dba278c0e8868fe1bd8bb538a8755f584e2c10","ratings":{"confirm":{"assessor":"assess_packages_willow","rubric":"trial-criteria.md@e37bafca29c1","packet":"confirm","score":"PASS","source":"assessment-confirm.md","label":"b3c32e"}}},
+    "d621ab": {"task":"boundary","variant":"B","source":"results/d621ab.json","sha256":"570f801e4e189aaecceccd25b138f28071f2ddda198b90f00608cbd1da938101","ratings":{"ab":{"assessor":"assess_packages_lime","rubric":"trial-criteria.md@e37bafca29c1","packet":"ab","score":"PASS","source":"assessment-ab.md","label":"d621ab"}},"behavior":{"result":"done","note":"Сохранил манифест без поля размера и объяснил значение по умолчанию.","source":"results/d621ab.json"}},
+    "f88243": {"task":"ordinary","variant":"A","source":"results/f88243.json","sha256":"53b17c450bf00c59c9450808dfcd54b88ff9369702fa6162e23d204bc1ba8ba8","ratings":{"ab":{"assessor":"assess_packages_lime","rubric":"trial-criteria.md@e37bafca29c1","packet":"ab","score":"FAIL","source":"assessment-ab.md","label":"f88243"},"confirm":{"assessor":"assess_packages_willow","rubric":"trial-criteria.md@e37bafca29c1","packet":"confirm","score":"FAIL","source":"assessment-confirm.md","label":"05e2c2"}}}
+  },
+  "series": [
+    {"id":"ab-primary","comparison":"A/B","phase":"primary","rubric":"trial-criteria.md@e37bafca29c1","packet":"ab","source":"assessment-ab.md","pairs":[{"id":"boundary","task":"boundary","left":["056f9b","ab"],"right":["d621ab","ab"]},{"id":"ordinary","task":"ordinary","left":["f88243","ab"],"right":["74f1b7","ab"]}],"bRemoval":"partial"},
+    {"id":"confirm-confirmation","comparison":"C/A","phase":"confirmation","rubric":"trial-criteria.md@e37bafca29c1","packet":"confirm","source":"assessment-confirm.md","pairs":[{"id":"boundary","task":"boundary","left":["43a9a7","confirm"],"right":["056f9b","confirm"]},{"id":"ordinary","task":"ordinary","left":["b3c32e","confirm"],"right":["f88243","confirm"]}]},
+    {"id":"confirm-holdout","comparison":"C/A","phase":"holdout","rubric":"trial-criteria.md@e37bafca29c1","packet":"confirm","source":"assessment-confirm.md","pairs":[{"id":"holdout","task":"holdout","left":["1679a6","confirm"],"right":["492c6f","confirm"]}]}
+  ],
+  "limit": "B удаляет строку. CLI и другие указания о манифесте остались.",
+  "attempts": [
+    {"id":"review-1","order":1,"snapshot":"d4f60df7a8051280c3986d9b4e1dac46b6722c0d","verdict":"PASS","source":"independent-audit.md"}
+  ]
+}

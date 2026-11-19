@@ -1,0 +1,31 @@
+{
+  "skill": "frontend-design",
+  "study": "20261119-19-retirement",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "base": "docs/reviews/gpt-6-2/19/retirement",
+  "source": "assessment.md",
+  "runs": {
+    "99933983": {"task":"ordinary","variant":"B","source":"provenance.json","sha256":"97af2a5b3d5ba843e8e5a4d0cf4aa89b5b2d5f0a1103d128f031c7a0b864cac3","ratings":{"ab":{"assessor":"01a1f35c-55f5-7171-b2fc-3e13a24974bc","rubric":"inputs/criteria.md@cce7f8bab57b","packet":"ab","score":"PASS","source":"ratings-ab.md","label":"fd5be4"}},"behavior":{"result":"done","note":"Изменил два стиля, проверил сохранённый экран и актуальный SVG.","source":"ratings-ab.md"}},
+    "301e0f88": {"task":"ordinary","variant":"A","source":"provenance.json","sha256":"fd238e2e28894f0e1f762583a8bdd4f5487cd33070dc84bf615ccd6166becf30","ratings":{"ab":{"assessor":"01a1f35c-55f5-7171-b2fc-3e13a24974bc","rubric":"inputs/criteria.md@cce7f8bab57b","packet":"ab","score":"PASS","source":"ratings-ab.md","label":"ddd1f6"},"confirm":{"assessor":"01a1f35f-6a07-7722-9989-831792511f0c","rubric":"inputs/criteria.md@cce7f8bab57b","packet":"confirm","score":"PASS","source":"ratings-confirm.md","label":"5e774e"}}},
+    "e2c33b18": {"task":"boundary","variant":"B","source":"provenance.json","sha256":"2efeb9e00f954f3bde776074f7925cc971ea1811f3a9332898831c63e90da21e","ratings":{"ab":{"assessor":"01a1f35c-55f5-7171-b2fc-3e13a24974bc","rubric":"inputs/criteria.md@cce7f8bab57b","packet":"ab","score":"PASS","source":"ratings-ab.md","label":"6870a0"}},"behavior":{"result":"done","note":"Проверил отсоединение, сохранил записку и назвал условие для правки и экспорта.","source":"ratings-ab.md"}},
+    "5cf68d05": {"task":"boundary","variant":"A","source":"provenance.json","sha256":"bbd5e874c40c90a2dd75bf422c7b89c0a9cea292e941207ba6fb98e043ab932b","ratings":{"ab":{"assessor":"01a1f35c-55f5-7171-b2fc-3e13a24974bc","rubric":"inputs/criteria.md@cce7f8bab57b","packet":"ab","score":"PASS","source":"ratings-ab.md","label":"f638a8"},"confirm":{"assessor":"01a1f35f-6a07-7722-9989-831792511f0c","rubric":"inputs/criteria.md@cce7f8bab57b","packet":"confirm","score":"PASS","source":"ratings-confirm.md","label":"e29618"}}},
+    "b5773fa4": {"task":"holdout","variant":"C","source":"provenance.json","sha256":"686a1d52876c627aaae1278adcd02de84afcdf6f14131ad1c50f99294edef966","ratings":{"confirm":{"assessor":"01a1f35f-6a07-7722-9989-831792511f0c","rubric":"inputs/criteria.md@cce7f8bab57b","packet":"confirm","score":"PASS","source":"ratings-confirm.md","label":"ca0ab0"}}},
+    "6e62bd18": {"task":"boundary","variant":"C","source":"provenance.json","sha256":"ae67678a3a2b7eae8cee4e10e5c851b940a03ae6c46a400ffa9854f667bf317a","ratings":{"confirm":{"assessor":"01a1f35f-6a07-7722-9989-831792511f0c","rubric":"inputs/criteria.md@cce7f8bab57b","packet":"confirm","score":"PASS","source":"ratings-confirm.md","label":"e0d5c9"}}},
+    "b16a1fa5": {"task":"ordinary","variant":"C","source":"provenance.json","sha256":"29be6edad6f00174f1f3108040e12cdf4850b25f6cec23329c4714d373fda9fc","ratings":{"confirm":{"assessor":"01a1f35f-6a07-7722-9989-831792511f0c","rubric":"inputs/criteria.md@cce7f8bab57b","packet":"confirm","score":"PASS","source":"ratings-confirm.md","label":"ab51ab"}}}
+  },
+  "series": [
+    {"id":"ab-primary-A-B","comparison":"A/B","phase":"primary","rubric":"inputs/criteria.md@cce7f8bab57b","packet":"ab","source":"ratings-ab.md","pairs":[{"id":"ordinary","task":"ordinary","left":["301e0f88","ab"],"right":["99933983","ab"]},{"id":"boundary","task":"boundary","left":["5cf68d05","ab"],"right":["e2c33b18","ab"]}],"bRemoval":"partial"},
+    {"id":"confirm-confirmation-C-A","comparison":"C/A","phase":"confirmation","rubric":"inputs/criteria.md@cce7f8bab57b","packet":"confirm","source":"ratings-confirm.md","pairs":[{"id":"boundary","task":"boundary","left":["6e62bd18","confirm"],"right":["5cf68d05","confirm"]},{"id":"ordinary","task":"ordinary","left":["b16a1fa5","confirm"],"right":["301e0f88","confirm"]}]}
+  ],
+  "limit": "B удаляет две ссылки на pencil-dev; оставшиеся правила и справка редактора задают общие действия.",
+  "technicalStarts": [
+    {"id":"record-301e0f88","source":"provenance.json","reason":"Сессия не запустилась, байтов событий и ответа 0."},
+    {"id":"record-5cf68d05","source":"provenance.json","reason":"Сессия не запустилась, байтов событий и ответа 0."},
+    {"id":"record-99933983","source":"provenance.json","reason":"Сессия не запустилась, байтов событий и ответа 0."},
+    {"id":"record-e2c33b18","source":"provenance.json","reason":"Сессия не запустилась, байтов событий и ответа 0."}
+  ],
+  "attempts": [
+    {"id":"review-1","order":1,"snapshot":"4182d35845d65c1f3216fde6e4487a782965c0e2","verdict":"PASS","source":"independent-audit.md"}
+  ]
+}

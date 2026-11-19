@@ -1,0 +1,14 @@
+{
+  "files": {
+    "brief.txt": "7c1065b5e1877c1dbe219fa1fa7152648043cc587381fd0beb796d0dbdca2f13",
+    "change.diff": "d4aa29d4d5c0b48b331e7e7df2fbdc1e3ac37b604c806a65875ea4fd06306922",
+    "integrity.json": "858ea5a403334b05d2fdd881fb9a0011d9783147ec30baea3cc58b2ec6a05128",
+    "operator-actions.jsonl": "07ce9694f02a692f164133c46d29eeb5a33cf7e993e1a77d4d60b5fc43669dbf",
+    "replay/1080-error.png": "d2e7dabad7133afcbb427f0b6ac5d89a7c7e70c56ff102e6aa2cf699cc1c2691",
+    "replay/1080-initial.png": "bda0f4fb09261b5dcb2b93fc055a27f0d79fca2cc12654c4d393721d8da523e9",
+    "replay/390-error.png": "3559a3ae302c03c0cfbe0a71f866cdcaa778890f4dd7a75dffef50b4646c61df",
+    "replay/390-initial.png": "1f9c7f183b697355bf92ca82f7bea97fa29d274f2d4a2e6a507c41a2f05dcd61",
+    "replay/observer.json": "35e612c6fa87baacb535458c64a8ed3b016b8d1fcf5c7aa54cb17e0f93c49580",
+    "response.md": "7fff8ac26f9e2d9416bda4a9b9ba4bef3dd1366f0634c6fc653987adfa0b2f56"
+  }
+}

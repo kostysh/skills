@@ -1,0 +1,13 @@
+[
+  {
+    "id": "frontend-pilot-1",
+    "snapshot": "2a28e6a5a89164f14eb63cfbc4775e34f66de865efb701195c557b106bc704ef",
+    "handed": "2026-11-19T17:52:49.005887Z",
+    "source": "docs/reviews/audit-metrics-20261119/frontend/independent-audit.md",
+    "started": "2026-11-19T17:53:14Z",
+    "decided": "2026-11-19T17:57:48Z",
+    "verdict": "PASS",
+    "timelineSource": "docs/reviews/audit-metrics-20261119/frontend/events.jsonl",
+    "scope": "Пользовательский результат P на двух задачах North Quay, frontend-design 0.2.6. Для A и B в различающем задании K/I = FAIL."
+  }
+]

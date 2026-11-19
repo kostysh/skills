@@ -1,0 +1,14 @@
+{
+  "files": {
+    "brief.txt": "22e4712d618d81d2d79d899408e06e87b201ff59c328239d02c45282fcde915a",
+    "change.diff": "f331da23bca151a9389cdf64934c5a5582131e55c380f260a8d78935033e555e",
+    "integrity.json": "858ea5a403334b05d2fdd881fb9a0011d9783147ec30baea3cc58b2ec6a05128",
+    "operator-actions.jsonl": "7cb1b75c54885dd3244ca642da93ab038b2e3096433ab11868abdba09fe941c8",
+    "replay/1080-error.png": "d2e7dabad7133afcbb427f0b6ac5d89a7c7e70c56ff102e6aa2cf699cc1c2691",
+    "replay/1080-initial.png": "bda0f4fb09261b5dcb2b93fc055a27f0d79fca2cc12654c4d393721d8da523e9",
+    "replay/390-error.png": "3559a3ae302c03c0cfbe0a71f866cdcaa778890f4dd7a75dffef50b4646c61df",
+    "replay/390-initial.png": "1f9c7f183b697355bf92ca82f7bea97fa29d274f2d4a2e6a507c41a2f05dcd61",
+    "replay/observer.json": "35e612c6fa87baacb535458c64a8ed3b016b8d1fcf5c7aa54cb17e0f93c49580",
+    "response.md": "c99199325fc4468fa7b9dd439ce4e641554574c5899db9f7133a827400f0aa23"
+  }
+}

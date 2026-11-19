@@ -1,0 +1,9 @@
+{
+  "receivedUtc": "2026-11-19T17:46:24.695667Z",
+  "acceptedMethodUtc": "2026-11-19T17:44:51Z",
+  "authority": "Руководитель кампании передал допуск после двух независимых PASS.",
+  "source": "docs/reviews/audit-metrics-20261119/method-acceptance.md",
+  "acceptanceSha256": "1c9b071c224fc05a48d3d69d2b5bbc4868da29a9a02a6d069494671fb2cc88cf",
+  "registrationSha256": "76cfee5ba30f01af3c50ebdfdd0641b0042aca17f91ccf3942d512615da4b130",
+  "scopeSha256": "e73709e5022523d730e1edff094d550676d544bcb2b1e1fc418dbb975220e58a"
+}

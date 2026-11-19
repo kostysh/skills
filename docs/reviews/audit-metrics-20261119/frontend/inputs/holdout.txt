@@ -1,0 +1,1 @@
+The parts register at Hawthorn Works needs a clearer action hierarchy. Give “Reserve part” the same treatment as the existing primary action, including when staff correct an incomplete reservation. Keep the existing reservation and reset behaviour.

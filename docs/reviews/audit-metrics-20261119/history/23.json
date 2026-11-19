@@ -1,0 +1,27 @@
+{
+  "skill": "spec-engineer",
+  "study": "20261118-23",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "base": "docs/reviews/gpt-6-2/23",
+  "source": "assessment.md",
+  "runs": {
+    "2ef3d9": {"task":"boundary","variant":"B","source":"results/2ef3d9.json","sha256":"bfe777040e2a2ca6e9b2436df273ebc77bd1dcbadb4a6e1d2e5b220bbd7c4883","ratings":{"ab":{"assessor":"ab-assessment","rubric":"trial-criteria.md@3c7153ac6591","packet":"ab","score":"PASS","source":"ab-assessment.md","label":"2ef3d9"}}},
+    "51cb26": {"task":"ordinary","variant":"A","source":"results/51cb26.json","sha256":"7bae634b3ecccc63c8933aa9f7c2c73d18e90ab7c242e3c57f247892b7bae1c2","ratings":{"ab":{"assessor":"ab-assessment","rubric":"trial-criteria.md@3c7153ac6591","packet":"ab","score":"PASS","source":"ab-assessment.md","label":"51cb26"},"confirmation":{"assessor":"confirmation-assessment","rubric":"trial-criteria.md@3c7153ac6591","packet":"confirmation","score":"PASS","source":"confirmation-assessment.md","label":"1c4377"}}},
+    "7c4978": {"task":"boundary","variant":"C","source":"results/7c4978.json","sha256":"968a58245d6c3a4adc5fa720e1567f155660bf0722469d76cb5a34c2111b7a76","ratings":{"confirmation":{"assessor":"confirmation-assessment","rubric":"trial-criteria.md@3c7153ac6591","packet":"confirmation","score":"PASS","source":"confirmation-assessment.md","label":"7c4978"}}},
+    "7fb13c": {"task":"ordinary","variant":"C","source":"results/7fb13c.json","sha256":"db2350cc36cdc0c5847e58d6c58bf0ed43410eeb3c5e928bc5a338ea2ce4bc85","ratings":{"confirmation":{"assessor":"confirmation-assessment","rubric":"trial-criteria.md@3c7153ac6591","packet":"confirmation","score":"PASS","source":"confirmation-assessment.md","label":"7fb13c"}}},
+    "85ef84": {"task":"holdout","variant":"A","source":"results/85ef84.json","sha256":"4f3fea71ab70f5d2087a90cc8072b43b4c28d71f90f8ffee632c4a8b54f20333","ratings":{"confirmation":{"assessor":"confirmation-assessment","rubric":"trial-criteria.md@3c7153ac6591","packet":"confirmation","score":"PASS","source":"confirmation-assessment.md","label":"85ef84"}}},
+    "acf8c8": {"task":"holdout","variant":"C","source":"results/acf8c8.json","sha256":"071a7064bcd84c43332a46d701400aa6122669246ab21c58444e0bc4b6417d86","ratings":{"confirmation":{"assessor":"confirmation-assessment","rubric":"trial-criteria.md@3c7153ac6591","packet":"confirmation","score":"PASS","source":"confirmation-assessment.md","label":"acf8c8"}}},
+    "c943dc": {"task":"ordinary","variant":"B","source":"results/c943dc.json","sha256":"00c4b8354dcfb77bcd607bcf8dceb44eb7229b81699c356b8565dbb3ed0ab0f2","ratings":{"ab":{"assessor":"ab-assessment","rubric":"trial-criteria.md@3c7153ac6591","packet":"ab","score":"PASS","source":"ab-assessment.md","label":"c943dc"}}},
+    "fde781": {"task":"boundary","variant":"A","source":"results/fde781.json","sha256":"82bee1bb2ebc9c2c3351aeefdeafa5576aa8d86227f4c39131f15cc96fde53e1","ratings":{"ab":{"assessor":"ab-assessment","rubric":"trial-criteria.md@3c7153ac6591","packet":"ab","score":"PASS","source":"ab-assessment.md","label":"fde781"},"confirmation":{"assessor":"confirmation-assessment","rubric":"trial-criteria.md@3c7153ac6591","packet":"confirmation","score":"PASS","source":"confirmation-assessment.md","label":"d6172b"}}}
+  },
+  "series": [
+    {"id":"ab-primary","comparison":"A/B","phase":"primary","rubric":"trial-criteria.md@3c7153ac6591","packet":"ab","source":"ab-assessment.md","pairs":[{"id":"boundary","task":"boundary","left":["fde781","ab"],"right":["2ef3d9","ab"]},{"id":"ordinary","task":"ordinary","left":["51cb26","ab"],"right":["c943dc","ab"]}],"bRemoval":"unknown"},
+    {"id":"confirmation-confirmation","comparison":"C/A","phase":"confirmation","rubric":"trial-criteria.md@3c7153ac6591","packet":"confirmation","source":"confirmation-assessment.md","pairs":[{"id":"boundary","task":"boundary","left":["7c4978","confirmation"],"right":["fde781","confirmation"]},{"id":"ordinary","task":"ordinary","left":["7fb13c","confirmation"],"right":["51cb26","confirmation"]}]},
+    {"id":"confirmation-holdout","comparison":"C/A","phase":"holdout","rubric":"trial-criteria.md@3c7153ac6591","packet":"confirmation","source":"confirmation-assessment.md","pairs":[{"id":"holdout","task":"holdout","left":["acf8c8","confirmation"],"right":["85ef84","confirmation"]}]}
+  ],
+  "limit": "Изменение строки в сохранённой среде. Полное удаление всех равнозначных подсказок не подтверждено.",
+  "attempts": [
+    {"id":"review-1","order":1,"snapshot":"9f6cfa0a1e8b7016838cceafaaf7471583b8ddc6","verdict":"PASS","source":"independent-audit.md"}
+  ]
+}

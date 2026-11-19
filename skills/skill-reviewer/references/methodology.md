@@ -104,4 +104,6 @@ Changes to active instructions, relevant source/generated/runtime/test/UI surfac
 
 Start with the outcome and material findings. In the smallest usable format, include mode/assurance, snapshot/scope, capability/consumer and anti-claims, relevant surfaces and reviewer actions, findings with their evidence and impact, checks/readback and unavailable evidence, verdict/rationale, and the next owner or smallest missing decision. For re-audit include the correction-to-evidence mapping. Group related facts or link durable evidence; no fixed number of sections is required.
 
+For a paired comparison, link the assigned-pair table and underlying runs. Give coverage, unresolved pairs and the limit of the conclusion for the sampled tasks and models. A trial score describes an execution. Issue the formal verdict separately for the reviewed snapshot under the ordered rules above.
+
 Do not report unrun tests as executed, compiler success as independent approval, or review recommendations as implemented. Domain correctness, structural validity, instruction quality and behavioral confidence remain distinct. Stop at the authorized review boundary and leave remediation to its owner.

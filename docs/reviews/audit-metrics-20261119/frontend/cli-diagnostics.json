@@ -1,0 +1,65 @@
+{
+  "unit": "CLI auxiliary stderr, successful local runs",
+  "counts": {
+    "runs/4376820b4c": {
+      "sha256": "afe5310de844fde6c873fe2af4d363c6643c35f665a76d203df10f751bb46bad",
+      "sandboxDenialsWithoutPath": 2,
+      "fileWatcherShutdown": 1,
+      "lines": 3
+    },
+    "runs/feac56a170": {
+      "sha256": "ce1439d5ba3c2876a57b8cc39453b08f1f14d3e59ac4216d2077180e98f9a40f",
+      "sandboxDenialsWithoutPath": 1,
+      "fileWatcherShutdown": 1,
+      "lines": 2
+    },
+    "runs/f600cb1c35": {
+      "sha256": "ae81b231990ecfe0ef1257b5bc8e8efae9625e5f5e88c5422f9a27f8327b6ba5",
+      "sandboxDenialsWithoutPath": 0,
+      "fileWatcherShutdown": 1,
+      "lines": 1
+    },
+    "runs/4c74465cab": {
+      "sha256": "ceb63f77b5ea19b0c56b57cd1f7607ad494914c71d883ef0c0423571caf56afc",
+      "sandboxDenialsWithoutPath": 0,
+      "fileWatcherShutdown": 1,
+      "lines": 1
+    },
+    "runs/e6ce811126": {
+      "sha256": "b6af1c30c93b4997ff888e311edae06501c8ba4810b3c46c828e57d7b638a7ac",
+      "sandboxDenialsWithoutPath": 1,
+      "fileWatcherShutdown": 1,
+      "lines": 2
+    },
+    "runs/727eda3aea": {
+      "sha256": "9dd5667ef46aec302cabbbd9130f16872f30b15b129248d3a3fd2cf6f7ca2b0d",
+      "sandboxDenialsWithoutPath": 1,
+      "fileWatcherShutdown": 1,
+      "lines": 2
+    },
+    "runs/5245e74360": {
+      "sha256": "c362f69e9f5739c1760d62534c7c3c8787cd34e5b8b1abf4ef681228d79c08a5",
+      "sandboxDenialsWithoutPath": 1,
+      "fileWatcherShutdown": 1,
+      "lines": 2
+    },
+    "runs/da9846753d": {
+      "sha256": "1cff005ea84cc5f1af42e2571dc00308c8c413238774da9676ca68902822bce7",
+      "sandboxDenialsWithoutPath": 0,
+      "fileWatcherShutdown": 1,
+      "lines": 1
+    },
+    "assessments/primary/first": {
+      "sha256": "1d49fb16a9bf5401c564f457496b0ac9d6cec8be18da0009bc9020c57f364acf",
+      "sandboxDenialsWithoutPath": 0,
+      "fileWatcherShutdown": 1,
+      "lines": 1
+    },
+    "assessments/primary/second": {
+      "sha256": "c511068ea131388cad7d2ba560b08142f6442d5d7ee8d7fdc19afd5de898e071",
+      "sandboxDenialsWithoutPath": 0,
+      "fileWatcherShutdown": 1,
+      "lines": 1
+    }
+  }
+}

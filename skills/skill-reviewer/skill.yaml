@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: skill-reviewer
-  source-version: 0.2.8
+  source-version: 0.2.9
   recommended-skill-md-max-bytes: 22000
   description: >-
     Review agent skills for capability, instruction quality, triggers, contracts,
@@ -26,7 +26,7 @@ references:
     source: references/forward-testing.md
     target: references/forward-testing.md
     required: true
-    trigger: Read this when collecting or judging behavioral evidence for a material instruction change, a behavior-dependent PASS, or an activation/generalization claim.
+    trigger: Read this when collecting or judging behavioral evidence for a material change, a package or instruction comparison, a behavior-dependent PASS, or an activation/generalization claim.
 
 assets: []
 copies:
@@ -163,4 +163,4 @@ sections:
     checklist:
       - Confirm required references are reachable and the local method is usable without repository history.
       - Confirm metadata represents review scope and assurance without implying remediation authority.
-      - Do not claim a runtime, scripts, tests, metrics, or CLI for this documentation-only skill.
+      - Keep measurements traceable to observed records. The invoking environment supplies any tools used to collect or summarize them.

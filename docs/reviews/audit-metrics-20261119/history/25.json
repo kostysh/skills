@@ -1,0 +1,31 @@
+{
+  "skill": "web-ui-reviewer",
+  "study": "20261118-25",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "base": "docs/reviews/gpt-6-2/25",
+  "source": "assessment.md",
+  "runs": {
+    "09d936": {"task":"boundary","variant":"B","source":"results/09d936.json","sha256":"fb154c6597a82ad3c7f541640e6054cc81cbe87cf317707f5db95934bf81cc90","ratings":{"ab":{"assessor":"assessment-ab","rubric":"trial-criteria.md@73a3da409101","packet":"ab","score":"PASS","source":"assessment-ab.md","label":"09d936"}}},
+    "171d14": {"task":"boundary","variant":"A","source":"results/171d14.json","sha256":"8bff0bfa68c684768fa4cfcc75aa27de69aa57aa2d6ad861ef418acbe92c74e2","ratings":{"ab":{"assessor":"assessment-ab","rubric":"trial-criteria.md@73a3da409101","packet":"ab","score":"PASS","source":"assessment-ab.md","label":"171d14"},"confirm":{"assessor":"assessment-confirm","rubric":"trial-criteria.md@73a3da409101","packet":"confirm","score":"PASS","source":"assessment-confirm.md","label":"74ab96"}}},
+    "65207a": {"task":"boundary","variant":"C","source":"results/65207a.json","sha256":"6d77a58c6963458b0c4352e89ba75045dea546a4d9df049982ac9561e8430c98","ratings":{"confirm":{"assessor":"assessment-confirm","rubric":"trial-criteria.md@73a3da409101","packet":"confirm","score":"PASS","source":"assessment-confirm.md","label":"65207a"}}},
+    "ade887": {"task":"ordinary","variant":"C","source":"results/ade887.json","sha256":"7e273e01835570f8f3bfa8ddac518da428d529f983ef36f397a2c76ae7d8e0ae","ratings":{"confirm":{"assessor":"assessment-confirm","rubric":"trial-criteria.md@73a3da409101","packet":"confirm","score":"PASS","source":"assessment-confirm.md","label":"ade887"}}},
+    "b482ae": {"task":"ordinary","variant":"B","source":"results/b482ae.json","sha256":"1a221e8b62af0d19b55093ede428ddff43ea90531d268ee93fedd64f968e0a7d","ratings":{"ab":{"assessor":"assessment-ab","rubric":"trial-criteria.md@73a3da409101","packet":"ab","score":"PASS","source":"assessment-ab.md","label":"b482ae"}}},
+    "ee4546": {"task":"ordinary","variant":"A","source":"results/ee4546.json","sha256":"b517d4dcf4c9935de4230f7ac75238faf6490d5ef228bd7231430a482faf7a39","ratings":{"ab":{"assessor":"assessment-ab","rubric":"trial-criteria.md@73a3da409101","packet":"ab","score":"PASS","source":"assessment-ab.md","label":"ee4546"},"confirm":{"assessor":"assessment-confirm","rubric":"trial-criteria.md@73a3da409101","packet":"confirm","score":"PASS","source":"assessment-confirm.md","label":"573829"}}},
+    "f04413": {"task":"holdout","variant":"C","source":"results/f04413.json","sha256":"957efcad425310797273275ba7c54850eaa98526fa867f81c84ca4de39e2ecc4","ratings":{"confirm":{"assessor":"assessment-confirm","rubric":"trial-criteria.md@73a3da409101","packet":"confirm","score":"PASS","source":"assessment-confirm.md","label":"f04413"}}},
+    "f54fe8": {"task":"holdout","variant":"A","source":"results/f54fe8.json","sha256":"0ea32b452b543d4be020e344bbaaca16f81f8dd9a31b41456321b4031efc356e","ratings":{"confirm":{"assessor":"assessment-confirm","rubric":"trial-criteria.md@73a3da409101","packet":"confirm","score":"PASS","source":"assessment-confirm.md","label":"f54fe8"}}},
+    "2b65f8": {"task":"explicit","variant":"final","source":"integration-runs.json","sha256":"6c74bb3b88cfec1b6138c2f83639dc8312b90ed95111103e438bca856825218e","ratings":{"local":{"assessor":"local-assessment/assessment","rubric":"local-assessment/criteria.md@cb3b2aa36c47","packet":"local","score":"PASS","source":"local-assessment/assessment.md","label":"c91d4b"}}},
+    "e5b1d3": {"task":"notification","variant":"first","source":"integration-runs.json","sha256":"014d604424be0936d8831786ad190b117fb076e7acb2a4cf5566f24d44d5e81a","ratings":{"local":{"assessor":"local-assessment/assessment","rubric":"local-assessment/criteria.md@cb3b2aa36c47","packet":"local","score":"FAIL","source":"local-assessment/assessment.md","label":"1cd51b"}}},
+    "d70b1c": {"task":"notification","variant":"final","source":"integration-runs.json","sha256":"52ee3b24c2b41e0b1f9c415d6dc8447984b8c5937b50528674f971e7c9529eb2","ratings":{"local":{"assessor":"local-assessment/assessment","rubric":"local-assessment/criteria.md@cb3b2aa36c47","packet":"local","score":"PASS","source":"local-assessment/assessment.md","label":"a9b2a8"}}}
+  },
+  "series": [
+    {"id":"ab-primary","comparison":"A/B","phase":"primary","rubric":"trial-criteria.md@73a3da409101","packet":"ab","source":"assessment-ab.md","pairs":[{"id":"boundary","task":"boundary","left":["171d14","ab"],"right":["09d936","ab"]},{"id":"ordinary","task":"ordinary","left":["ee4546","ab"],"right":["b482ae","ab"]}],"bRemoval":"unknown"},
+    {"id":"confirm-confirmation","comparison":"C/A","phase":"confirmation","rubric":"trial-criteria.md@73a3da409101","packet":"confirm","source":"assessment-confirm.md","pairs":[{"id":"boundary","task":"boundary","left":["65207a","confirm"],"right":["171d14","confirm"]},{"id":"ordinary","task":"ordinary","left":["ade887","confirm"],"right":["ee4546","confirm"]}]},
+    {"id":"confirm-holdout","comparison":"C/A","phase":"holdout","rubric":"trial-criteria.md@73a3da409101","packet":"confirm","source":"assessment-confirm.md","pairs":[{"id":"holdout","task":"holdout","left":["f04413","confirm"],"right":["f54fe8","confirm"]}]},
+    {"id":"local-diagnostic-final-first","comparison":"final/first","phase":"diagnostic","rubric":"local-assessment/criteria.md@cb3b2aa36c47","packet":"local","source":"remediation.md","pairs":[{"id":"notification","task":"notification","left":["d70b1c","local"],"right":["e5b1d3","local"]}]}
+  ],
+  "limit": "Изменение строки в сохранённой среде. Полное удаление всех равнозначных подсказок не подтверждено.",
+  "attempts": [
+    {"id":"review-1","order":1,"snapshot":"e77314fee53ba0839db9bd5d3622d11500b94e7f","verdict":"PASS","source":"independent-audit.md"}
+  ]
+}

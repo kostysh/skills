@@ -1,6 +1,6 @@
 # Blind forward-testing
 
-Read when collecting or assessing behavioral evidence for a material instruction change, a behavior-dependent PASS, or an activation/generalization claim. This reference produces evidence, not the final review verdict.
+Read when collecting or assessing behavioral evidence for a material change, a package or instruction comparison, a behavior-dependent PASS, or an activation/generalization claim. The formal verdict belongs to the review methodology.
 
 ## Applicability and roles
 
@@ -41,14 +41,35 @@ Separate two claims:
 
 Reuse the same raw task inputs and constraints for baseline/candidate. A user clarification may be tested as an actual later message or as supplied conversation history; record which was used and do not claim live-delivery behavior from a static replay.
 
-## Contribution of one rule
+## What to compare
 
-When deciding whether one instruction is needed or can be shortened, test its effect on an observable decision.
+Choose the comparison that answers the operator's decision. In each pair keep the task, inputs, project, general rules, tools, rights and executor settings the same.
 
-1. Freeze the full materials an executor receives with the rule (A) and with only that rule removed (B). Trace equivalent cues in the task, governing instructions, metadata, references and generated copies. If an independent requirement or a copy derived from the rule still supplies it, success in B shows at most that this occurrence is redundant in that setting. To test unaided behavior, withhold equivalent cues where the setting permits it. For portability, test the complete package under the target environment’s actual rules.
-2. Before editing, fix the criteria from accepted requirements, an ordinary case and one that exposes a wrong decision. Reserve a different case until the wording has been chosen. Run A and B on the first two cases in fresh contexts with the same inputs, tools and executor settings. Give an assessor who does not know the version key the criteria and shuffled, anonymously coded actions and outputs. Reveal the key after the assessor records a judgment for each case.
-3. If B consistently succeeds on both cases, choose the shortest positive instruction (C) that preserves the required action, binding obligations and material exceptions. If A already meets that minimum, record C = A. In both cases, compare the fixed C with A on the original cases, then test C on the reserved case. Accept C when both checks support it.
-4. If A succeeds and B fails, retain the detail that prevented the error and recheck that path after any edit. If A fails, correct the defect, test the original failure and a fresh case, and also test minimal C if B consistently succeeds. Investigate mixed results against a specific explanation before deciding whether to keep the rule.
+- **Value of the whole skill.** Compare the exact installable package with a control that has no access to the skill. Check both deliveries, including copies and access through neighbors. A remaining copy or unverifiable control leaves the whole-skill pair insufficient. Record shared external cues. Give both sides the same ordinary request. A claim about catalog selection also needs the selection trial above.
+- **Contribution of one instruction (A/B).** Keep the rest of the skill available. A supplies the original instruction. For complete removal B must lack every equivalent cue in the accessible task, metadata, examples, governing rules, linked references and generated copies. If optional shared material gives the answer, remove that cue on both sides in a separate matched series. Keep binding environment rules in force. A remaining cue limits the result to the occurrence removed. An unverified delivery leaves unaided behavior unproven. Compare an ordinary task and one that can expose a wrong decision. Define the observable action before execution. For B, check what the executor actually did in the artifact or action log under the same rubric as A.
+- **Value of a short hint (C).** If B consistently succeeds on both cases, select the shortest positive instruction that preserves the action, obligations and exceptions. Record C = A when A is already minimal. Compare the fixed C with A and with B on the original tasks and a fresh case held back until the wording was chosen. Accept C only when these checks support it, including when C = A. Full removal is an experimental control. If the claim includes help on a second model, name that model and reasoning setting in advance and repeat C/B on the same tasks. Report the models separately and leave transfer open if the second is unavailable.
+
+If A succeeds and B fails, retain the detail that prevented the error and recheck that path after an edit. If A fails, correct the defect, test the original failure and a fresh case, and also test minimal C if B consistently succeeds. Investigate mixed results against a specific explanation.
+
+## Assigned pairs and scoring
+
+Before execution the coordinator records the comparison, input/package snapshots, case, pair and repeat IDs, executor model/reasoning, and closed rubric version. Distinguish primary, planned repeat, diagnostic and held-out series. Keep assignments and the version key private. Give each fresh executor only its task and materials. Bind each actual execution to a unique run ID, its actions or artifact, and the hash of its raw record. Give the assessor the rubric and shuffled anonymous outputs with the evidence needed to score them. Have assessors sign their individual scores and reasons before revealing the key. Link the run, assessor, score, limits and raw evidence after scoring.
+
+Count each assigned pair once, with the evaluated variant on the left. Report all five counts and their sum.
+
+| Pair outcome | Left / right case scores |
+| --- | --- |
+| Better | PASS / FAIL |
+| Worse | FAIL / PASS |
+| Both passed | PASS / PASS |
+| Both failed | FAIL / FAIL |
+| Insufficient | Missing side, inconclusive or disputed score, exposed key, or incomparable conditions |
+
+Use all assigned pairs in the series as the denominator, including insufficient pairs. Exclude unassigned experiments. Keep a first failure when a repeat succeeds. A technical start with no task output supplies no case score. A fresh execution gets a new run ID. Another assessment of the same answer is another score on its original run. Never create pairs by recombining matching-looking historical runs. If an assignment cannot be reconstructed, state what is unknown. A changed rubric or changed evidence supplied to scorers needs a separate series.
+
+Report coverage by skill, model and reasoning, comparison and series, with distinct task counts. For B report, per model, how many assigned tasks showed the defined action, missed it, or lacked usable evidence. Link the observed actions and paired outcomes. Keep repeats separate. On small samples give counts and cases and limit conclusions to those tasks.
+
+For assessor agreement, preassign a subset for two independent scores on the same output, rubric and evidence. Report the subset size, missing scores, disagreements, and original agreements out of cases with two usable scores. Preserve both scores. On disagreement an independent adjudicator uses the same rubric and evidence. Until resolved, count the affected pair as insufficient.
 
 ## Assessment and evidence
 
@@ -58,6 +79,6 @@ Inspect actual outputs and relevant tool events or persisted state, not only the
 
 Compare correctness, material finding coverage, false PASS/BLOCKED, invented requirements, evidence completeness and permitted side effects. Assess each case as `PASS`, `FAIL`, or `INCONCLUSIVE` under the closed criteria; these are trial results, not the skill's formal verdict. Investigate inconsistent results with repeated or varied cases against a hypothesis rather than selecting only a favorable run.
 
-Record case/snapshot, task and artifact locations, assigned model/settings and exposure, actual output, rubric result, limits and baseline comparison. Distinguish assigned settings from independently observed runtime metadata. Measure tokens, latency, tool calls or cost only when available and comparable; lower text size or a single faster run is not evidence of improvement by itself.
+For each sample preserve the task and snapshot, artifact location, assigned executor settings, exposure, outcome and limits. Distinguish assigned settings from observed runtime metadata. Measure tokens, latency, tool calls or cost only when available and comparable; lower text size or a single faster run is not evidence of improvement by itself.
 
 Samples do not prove universal reliability. Combine them with source inspection, structural and package readback, specialized authority and real-boundary evidence only where the claim needs those checks. When sufficient evidence supports the requested boundary, stop rather than inventing a permanent harness or unrelated tests.

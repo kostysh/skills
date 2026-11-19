@@ -1,0 +1,53 @@
+{
+  "run": "5245e74360",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "workdir": "/tmp/local-form-rnfalq5_",
+  "input": {
+    "README.md": "9b62c4cbcbe25c5e12c52757b49ed9e66cf164f186bcf50707cca80579e7483b",
+    "browser.py": "e716bb3c5b8fb03d7817d647ea9372733ca42a058a566e036cfe3342f24d1170",
+    "desk.js": "5103ad9b3fbba678acb48e131e39350386f11181a2a6c2da9f793ff5ba98a2ff",
+    "index.html": "d2e95d71bbd3d1338e27324a9bd6d9eed4e83bdc7960de1d639742f52993168c",
+    "screen.css": "8fa37bd7778796fd3d5a681f9cf30b171ec095e71058c5377592c2efc91a1d87"
+  },
+  "promptSha256": "22e4712d618d81d2d79d899408e06e87b201ff59c328239d02c45282fcde915a",
+  "startup": {
+    "rawSha256": "9575c560caa24a17d9a07463b8ed952543c60091eb2908691e4457fa649141cc",
+    "skills": [],
+    "namedTargetMentions": 0,
+    "targetFromHome": 0,
+    "runtimeSensitiveMarkers": {
+      "keyboard": 0,
+      "focus-visible": 0,
+      "focus behavior": 0,
+      "audit-metrics-20261119": 0,
+      "grader packet": 0,
+      "trial key": 0,
+      "rubric.md": 0,
+      "Hawthorn Works": 0,
+      "North Quay": 1
+    },
+    "namespaces": [
+      "functions",
+      "clock",
+      "collaboration"
+    ],
+    "browserMcp": 0,
+    "nodeReplMcp": 0,
+    "windowProfile": false
+  },
+  "physical": {
+    "homePackage": false,
+    "sourceWorktree": false,
+    "archiveWithKey": false,
+    "assignments": false,
+    "rubric": false,
+    "auth": false,
+    "homeRules": false,
+    "homeConfig": false,
+    "sibling": false,
+    "procRootHomePackage": false,
+    "projectReadme": true,
+    "projectPackage": false
+  }
+}

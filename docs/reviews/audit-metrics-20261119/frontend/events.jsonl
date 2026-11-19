@@ -1,0 +1,37 @@
+{"utc": "2026-11-19T17:32:35.225223Z", "event": "registration", "sha256": "76cfee5ba30f01af3c50ebdfdd0641b0042aca17f91ccf3942d512615da4b130", "subjectRuns": 0}
+{"utc": "2026-11-19T17:46:24.695667Z", "event": "coordinator-authorized-live", "authoritySha256": "1c9b071c224fc05a48d3d69d2b5bbc4868da29a9a02a6d069494671fb2cc88cf"}
+{"utc": "2026-11-19T17:46:34.987812Z", "event": "handed", "run": "5245e74360"}
+{"utc": "2026-11-19T17:46:35.456819Z", "event": "started", "run": "5245e74360"}
+{"utc": "2026-11-19T17:46:35.467142Z", "event": "handed", "run": "4c74465cab"}
+{"utc": "2026-11-19T17:46:35.938129Z", "event": "started", "run": "4c74465cab"}
+{"utc": "2026-11-19T17:46:40.039121Z", "event": "handed", "run": "4376820b4c"}
+{"utc": "2026-11-19T17:46:40.653135Z", "event": "started", "run": "4376820b4c"}
+{"utc": "2026-11-19T17:46:59.085359Z", "event": "executor-finished", "run": "5245e74360", "exit": 0}
+{"utc": "2026-11-19T17:47:05.094533Z", "event": "handed", "run": "727eda3aea"}
+{"utc": "2026-11-19T17:47:05.712852Z", "event": "started", "run": "727eda3aea"}
+{"utc": "2026-11-19T17:47:08.806138Z", "event": "executor-finished", "run": "4c74465cab", "exit": 0}
+{"utc": "2026-11-19T17:47:11.215168Z", "event": "handed", "run": "da9846753d"}
+{"utc": "2026-11-19T17:47:11.760041Z", "event": "started", "run": "da9846753d"}
+{"utc": "2026-11-19T17:47:42.824351Z", "event": "executor-finished", "run": "4376820b4c", "exit": 0}
+{"utc": "2026-11-19T17:47:44.771099Z", "event": "handed", "run": "e6ce811126"}
+{"utc": "2026-11-19T17:47:45.244935Z", "event": "started", "run": "e6ce811126"}
+{"utc": "2026-11-19T17:47:45.429936Z", "event": "executor-finished", "run": "da9846753d", "exit": 0}
+{"utc": "2026-11-19T17:47:47.746781Z", "event": "handed", "run": "f600cb1c35"}
+{"utc": "2026-11-19T17:47:48.237635Z", "event": "started", "run": "f600cb1c35"}
+{"utc": "2026-11-19T17:47:52.847371Z", "event": "executor-finished", "run": "727eda3aea", "exit": 0}
+{"utc": "2026-11-19T17:47:55.317315Z", "event": "handed", "run": "feac56a170"}
+{"utc": "2026-11-19T17:47:55.801121Z", "event": "started", "run": "feac56a170"}
+{"utc": "2026-11-19T17:48:31.123736Z", "event": "executor-finished", "run": "e6ce811126", "exit": 0}
+{"utc": "2026-11-19T17:48:37.889807Z", "event": "executor-finished", "run": "f600cb1c35", "exit": 0}
+{"utc": "2026-11-19T17:48:41.949543Z", "event": "executor-finished", "run": "feac56a170", "exit": 0}
+{"utc": "2026-11-19T17:49:13.443268Z", "event": "assessment-handoff", "role": "first", "stage": "primary"}
+{"utc": "2026-11-19T17:49:13.443301Z", "event": "assessment-start", "role": "first", "stage": "primary"}
+{"utc": "2026-11-19T17:49:13.449877Z", "event": "assessment-handoff", "role": "second", "stage": "primary"}
+{"utc": "2026-11-19T17:49:13.449925Z", "event": "assessment-start", "role": "second", "stage": "primary"}
+{"utc": "2026-11-19T17:50:35.684913Z", "event": "assessment-answer", "role": "first", "stage": "primary", "exit": 0}
+{"utc": "2026-11-19T17:50:35.685661Z", "event": "assessment-signed", "role": "first", "stage": "primary"}
+{"utc": "2026-11-19T17:50:45.760537Z", "event": "assessment-answer", "role": "second", "stage": "primary", "exit": 0}
+{"utc": "2026-11-19T17:50:45.761146Z", "event": "assessment-signed", "role": "second", "stage": "primary"}
+{"utc": "2026-11-19T17:52:49.005887Z", "event": "formal-audit-handed-to-coordinator", "snapshot": "2a28e6a5a89164f14eb63cfbc4775e34f66de865efb701195c557b106bc704ef", "closure": "B met K and I on one of two cases; conditional C withheld."}
+{"utc": "2026-11-19T17:53:14Z", "event": "independent-formal-audit-started", "snapshot": "2a28e6a5a89164f14eb63cfbc4775e34f66de865efb701195c557b106bc704ef"}
+{"utc": "2026-11-19T17:57:48Z", "event": "formal-audit-decided", "verdict": "PASS", "scope": "P on the two registered scenarios; K/I fails on the discriminating case.", "source": "docs/reviews/audit-metrics-20261119/frontend/independent-audit.md", "snapshot": "2a28e6a5a89164f14eb63cfbc4775e34f66de865efb701195c557b106bc704ef"}

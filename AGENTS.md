@@ -26,18 +26,13 @@ Apply higher-priority platform and environment instructions first, then explicit
 
 ## Instruction quality gate
 
-After substantial changes to a skill, perform the author self-check from the `Audit instruction quality` workflow stage in `skill-source-compiler`, then obtain an independent `skill-reviewer` assessment against a stable snapshot. Apply the standard's criteria; compiler success and author self-check are not independent behavioral `PASS`.
+Choose the shortest route that covers the change and every applicable mandatory check.
 
-A change is substantial when it can alter agent decisions or the instruction contract, including:
+- **Editorial.** Record the exact diff, why decisions and outputs stay the same, and a narrow check that could catch an error. This rationale can justify omitting behavioral trials.
+- **Behavioral.** Treat changes to authority, activation, required reading, workflow, commands, interop, outputs or other decisions as substantial, including changes through structured sources. Perform the `skill-source-compiler` author self-check, then obtain an independent `skill-reviewer` assessment of the stable package. Use blind trials with an ordinary correct case and one that can expose the error. Exercise a neighboring skill's handoff when its contract changes.
+- **Remediation.** Preserve the initial result. Verify the original failure and affected adjacent decisions on the corrected snapshot. Fix findings and repeat the independent review until `PASS`. A recurring material defect requires investigation of its cause and original failure path before another correction.
 
-- new or materially rewritten root sections, workflow, policies, commands, or output contracts;
-- new active references or changes to their loading conditions;
-- active/supporting boundaries, interop ownership, tool triggers, validation, fallback, stop rules, or reporting;
-- structured-source changes that affect emitted instructions or runtime behavior.
-
-Use risk-based blind forward-tests for material behavior changes. A demonstrably non-behavioral change may omit them only with a recorded rationale; the owning review methodology determines whether the evidence supports the requested claim. Do not require a runtime or a permanent test harness merely because a skill is documentation-only.
-
-Fix review findings and repeat the independent review until `PASS`. If the same or a related blocker survives remediation, investigate the root cause and original failure path before another point fix. Record the stable scope/snapshot, results, limits, and remediation evidence in the implementation log. Material changes invalidate the prior verdict for the changed surface and require renewed review or a justified bounded delta audit.
+Link prior evidence with its snapshot, rubric and scope when the relevant behavior, inputs and exposure are comparable. A rerun needs a specific reason such as a behavior change, fixture fault, exposed key, disagreement or hypothesis. Stop when mandatory checks and the claimed scope have sufficient evidence. A material change requires fresh review of the affected surface or a justified bounded delta audit. The skill standard and the reviewer govern evidence strength.
 
 Changes to repository-wide instruction policy require an independent source-grounded review and proportionate behavioral checks before acceptance. Keep authority for the change separate from the candidate rules being tested; final compatibility with dependent skills must follow the accepted implementation plan.
 
@@ -52,9 +47,14 @@ Use the existing templates; they record evidence and do not introduce additional
 | Skill implementation log | `skills/<name>/docs/logs/implementation-log-<YYYYMMDD>-<N>.md`; [log template](docs/templates/IMPLEMENTATION_LOG_TEMPLATE.md) |
 | Repository-wide report or plan | Operator-specified location; current navigation is in [README.md](README.md) |
 
-Every created issue requires an independent audit for problem completeness, sufficiency of proposed resolutions, and destructive side effects. Every created plan requires an independent audit against its issue, when present, and the owning problem sources. Correct findings and repeat until `PASS`; identify the reviewed snapshot and evidence. Creating a plan from a direct operator request does not require manufacturing a separate issue.
+Use a sufficient direct operator request as the basis for a plan. An issue records the problem and observable signs of correction. A plan owns the sequence and acceptance criteria. Independently audit every created issue for problem completeness, proposed resolution and destructive effects, and every created plan against its issue (if present) and owning problem sources for sufficiency and safety. If both snapshots are ready and no intervening decision is required, one independent auditor may review them in one handoff. Record a separate verdict for each snapshot. Keep a required issue decision ahead of the dependent plan review. Audit stays pending until the auditor decides. Correct findings and repeat until each passes.
 
-Keep an implementation log for every implementation. For repository-wide work, use the operator's location or a supporting record linked from the plan; do not assign common-rule work to an unrelated skill. Maintain each affected skill's `docs/README.md` when creating or changing its issues, plans, or logs. Group related fields and link evidence to keep records compact without omitting applicable requirements.
+Keep an implementation log for every implementation. Record actual results, deviations, decisions and limits. Store the verdict, snapshot and evidence together once and link them from related records. For repository-wide work, use the operator's location or a supporting record linked from the plan. Update the affected skill's `docs/README.md` when its issues, plans or logs change.
+
+For a skill audit, the orchestrator records assigned pairs and actual review events in the existing audit evidence. Use the [paired comparison method](skills/skill-reviewer/references/forward-testing.md) when it applies. A documentary audit needs only its process events and the reason behavioral measures do not apply. The repository's [summary script](scripts/audit-metrics.mjs) uses the same records for a single-skill report or an agreed catalog sample.
+
+- Record UTC handoff, review start and verdict per attempt. Link a return to the snapshot, finding and primary cause (skill, rubric, fixture or missing evidence), retaining other causes. Report queue, review and return-to-next-handoff intervals, first-handoff-to-last-decision elapsed time, and active effort only from measured work intervals excluding pauses. For a catalog give medians with complete-observation counts, skills needing re-audit out of those with a first verdict, and open returns.
+- From acceptance of each version, record each confirmed later defect once in its existing issue or log, with evidence, affected rule and whether the audit covered the scenario. Give release date and observation cutoff, separate pre-release and post-release findings, and mark unsystematic follow-up unknown.
 
 ## Verification and handoff
 

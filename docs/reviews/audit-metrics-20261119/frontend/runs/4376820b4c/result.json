@@ -1,0 +1,20 @@
+{
+  "exit": 0,
+  "complete": true,
+  "recordedUtc": "2026-11-19T17:47:43.944869Z",
+  "eventsSha256": "122e2ae118952d9e80327060f4b0853a905006f54a5452914e1eeb20f952d76c",
+  "browserSha256": "cd3d8c179660f8667b1174b342f13d73f65e00661e44d1da49be0d86c5d36458",
+  "answerSha256": "1cde1fbc7627178259bcbd4fc4bb659bf04583b2e40861b1d81a65a1d82401cb",
+  "changed": [
+    ".window-lock",
+    ".window-ready",
+    "index.html",
+    "screen.css"
+  ],
+  "unexpectedInputEdits": [],
+  "site": {
+    "desk.js": "5103ad9b3fbba678acb48e131e39350386f11181a2a6c2da9f793ff5ba98a2ff",
+    "index.html": "b5226e2308be670c2b12900b8dee427a55d31e0100c28bf93c3f51022dbff138",
+    "screen.css": "8fa37bd7778796fd3d5a681f9cf30b171ec095e71058c5377592c2efc91a1d87"
+  }
+}

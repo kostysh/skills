@@ -1,0 +1,32 @@
+{
+  "thread": "01a1f4ea-debb-7293-831c-904ad316ba2a",
+  "sha256": "8a101f861f36c290d86b01a8e4098dbd4229daa14c40a7abdc0ffdef2145e208",
+  "rootReadLines": [],
+  "strategyReadLines": [],
+  "delegationEvents": [],
+  "nativeCommandLines": [
+    {
+      "line": 5,
+      "command": "/bin/bash -lc 'cat index.html screen.css'",
+      "exit": 0
+    },
+    {
+      "line": 7,
+      "command": "/bin/bash -lc \"cat README.md desk.js && sed -n '1,210p' browser.py\"",
+      "exit": 0
+    },
+    {
+      "line": 11,
+      "command": "/bin/bash -lc 'python3 browser.py open'",
+      "exit": 0
+    },
+    {
+      "line": 13,
+      "command": "/bin/bash -lc \"python3 browser.py inspect '#office' && python3 browser.py inspect '#send' && python3 browser.py inspect '#clear' && python3 browser.py click '#send' && python3 browser.py fill '#vessel' 'Test Vessel' && python3 browser.py select '#slot' Afternoon && python3 browser.py press Enter && python3 browser.py click '#send' && python3 browser.py click '#clear' && python3 browser.py view\"",
+      "exit": 0
+    }
+  ],
+  "subjectBrowserOps": 11,
+  "currentRevisionOps": 11,
+  "browserLogSha256": "5861bc5d461cf20f9f7bb239302778e06a03c8fa6a3fb3df55d9768c3428dcfa"
+}

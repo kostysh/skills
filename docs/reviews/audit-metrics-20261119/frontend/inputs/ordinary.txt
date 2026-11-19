@@ -1,0 +1,1 @@
+Please improve the visual hierarchy of North Quay's new-arrival form. “Request arrival” should look like the desk's existing primary action, with “Clear” remaining secondary. Make the change in the working page and keep the current form behaviour.

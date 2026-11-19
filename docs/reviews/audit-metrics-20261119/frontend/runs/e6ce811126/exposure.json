@@ -1,0 +1,37 @@
+{
+  "thread": "01a1f4eb-ef5f-7220-8782-1bac55c41fd8",
+  "sha256": "caef0f4d9bde61674d30f28b2aae35842752973ba9f4fbaa19f8a1539e1bfabe",
+  "rootReadLines": [],
+  "strategyReadLines": [],
+  "delegationEvents": [],
+  "nativeCommandLines": [
+    {
+      "line": 6,
+      "command": "/bin/bash -lc \"pwd; rg --files --hidden -g '\"'!.git'\"' -g '\"'!node_modules'\"'\"",
+      "exit": 0
+    },
+    {
+      "line": 7,
+      "command": "/bin/bash -lc 'git status --short; ls -la'",
+      "exit": 0
+    },
+    {
+      "line": 9,
+      "command": "/bin/bash -lc 'cat README.md index.html desk.js screen.css browser.py'",
+      "exit": 0
+    },
+    {
+      "line": 11,
+      "command": "/bin/bash -lc \"python3 browser.py open 390 844 && python3 browser.py view && python3 browser.py inspect '#office' && python3 browser.py inspect '#send' && python3 browser.py inspect '#clear' && python3 browser.py press Tab && python3 browser.py press Tab && python3 browser.py press Tab && python3 browser.py press Tab && python3 browser.py press Tab && python3 browser.py press Enter && python3 browser.py view && python3 browser.py inspect '#send'\"",
+      "exit": 0
+    },
+    {
+      "line": 16,
+      "command": "/bin/bash -lc \"python3 - <<'PY'\nimport json\nimport subprocess\n\ndef browser(*args):\n    return json.loads(subprocess.check_output([\\\"python3\\\", \\\"browser.py\\\", *args], text=True))\n\nfor width, height in [(\\\"390\\\", \\\"844\\\"), (\\\"1024\\\", \\\"900\\\")]:\n    browser(\\\"open\\\", width, height)\n    office = browser(\\\"inspect\\\", \\\"#office\\\")[\\\"result\\\"][\\\"visual\\\"]\n    submit = browser(\\\"inspect\\\", \\\"#send\\\")[\\\"result\\\"][\\\"visual\\\"]\n    clear = browser(\\\"inspect\\\", \\\"#clear\\\")[\\\"result\\\"][\\\"visual\\\"]\n    for prop in (\\\"bg\\\", \\\"color\\\", \\\"border\\\", \\\"weight\\\", \\\"radius\\\"):\n        assert submit[prop] == office[prop], (width, prop)\n    assert clear[\\\"bg\\\"] \"'!= submit[\"bg\"] and clear[\"border\"] != submit[\"border\"]\n    for control in (\"office\", \"vessel\", \"slot\", \"clear\", \"send\"):\n        active = browser(\"press\", \"Tab\")[\"active\"]\n        assert active[\"id\"] == control, (width, active)\n        assert \"solid 3px\" in active[\"visual\"][\"outline\"], (width, control)\n    empty = browser(\"press\", \"Enter\")\n    assert empty[\"status\"] == \"Enter a vessel name.\", empty\n    assert empty[\"active\"][\"id\"] == \"send\", empty\n    assert empty[\"active\"][\"visual\"][\"outline\"] == active[\"visual\"][\"outline\"], empty\n    assert empty[\"active\"][\"visual\"][\"bg\"] == office[\"bg\"], empty\n    cleared = browser(\"click\", \"#clear\")\n    assert cleared[\"status\"] == \"\", cleared\n    print(f\"{width}px: action styles, keyboard order, correction message and focus, clear correction\")\n\nbrowser(\"fill\", \"#vessel\", \"   \")\nassert browser(\"click\", \"#send\")[\"status\"] == \"Enter a vessel name.\"\nbrowser(\"fill\", \"#vessel\", \"  Quay Test Vessel  \")\nbrowser(\"select\", \"#slot\", \"Afternoon\")\nassert browser(\"click\", \"#send\")[\"status\"] == \"Arrival requested for Quay Test Vessel · Afternoon.\"\nassert browser(\"click\", \"#clear\")[\"status\"] == \"\"\nassert browser(\"inspect\", \"#vessel\")[\"result\"][\"value\"] == \"\"\nassert browser(\"inspect\", \"#slot\")[\"result\"][\"value\"] == \"Morning\"\nbrowser(\"click\", \"#office\")\nassert \"Open Monday to Friday, 08:00–17:00.\" in browser(\"view\")[\"result\"][\"text\"]\nbrowser(\"open\")\nprint(\"Whitespace validation, corrected submission, form reset, and counter hours passed\")\nPY'",
+      "exit": 0
+    }
+  ],
+  "subjectBrowserOps": 46,
+  "currentRevisionOps": 33,
+  "browserLogSha256": "7635e47dc26437eb58e5aeef57506c4c26af9854bdc975944642d5f96eacfbe7"
+}
