@@ -1,0 +1,5 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -124 +124 @@
+-3. Exercise interrupted or repeated runs when reliable rerun is claimed, and confirm they do not duplicate or silently omit data.
++3. Verify recovery against persisted records and relationships.

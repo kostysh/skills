@@ -918,7 +918,11 @@ const users: CollectionConfig = {
 
 ### WordPress to Payload
 
-First distinguish WordPress REST v2 from a database/WXR export. Do not mix their keys. REST has `id`, `title.rendered`, `content.rendered`, `excerpt.rendered`, `author`, `featured_media`, `status`, `date` and `date_gmt`; DB exports instead use keys such as `ID`, `post_title`, `post_content`, `post_author`, `post_status`, `post_date_gmt` and attachment metadata. Preserve the source installation/content-type namespace.
+Identify the WordPress source and retain its installation and content type in the source identity.
+
+- REST v2 posts expose `id`, `title.rendered`, `content.rendered`, `excerpt.rendered`, `author`, `featured_media`, `status`, `date` and `date_gmt`. Enumerate the pages for the authorized query and reconcile `X-WP-Total` and `X-WP-TotalPages`. [REST pagination](https://developer.wordpress.org/rest-api/using-the-rest-api/pagination/)
+- A WXR XML item carries `wp:post_id`, `content:encoded`, `wp:status` and, for an attachment, `wp:attachment_url`. [WordPress WXR writer](https://developer.wordpress.org/reference/functions/export_wp/)
+- Database exports use columns such as `ID`, `post_title`, `post_content`, `post_author`, `post_status` and `post_date_gmt`, with attachment data in the related tables.
 
 | Source meaning | Payload transform |
 |---|---|
@@ -969,11 +973,17 @@ Official sources: [WordPress posts](https://developer.wordpress.org/rest-api/ref
 
 ---
 
+## Payload import/export plugin
+
+When the project already uses `@payloadcms/plugin-import-export`, inspect the installed plugin and the actual export. In 3.94.0 JSON import expects an array of documents for one collection. CSV uses flattened column names such as `group_value` and `array_0_field`. Verify that the export includes the identity and relationship fields needed for the transfer. The export field picker excludes disabled fields. Map a custom multi-collection envelope to the receiving collections before submitting it. [Format and options](https://github.com/payloadcms/payload/blob/v3.94.0/docs/plugins/import-export.mdx) · [Field selection change](https://github.com/payloadcms/payload/pull/18434)
+
+The plugin defaults to `create`. For `update` or `upsert`, choose an unambiguous `matchField` present in each input row. It defaults to `id`, and the match query applies the import actor’s access rules. Check the actor can see existing matches before treating an upsert as safe to repeat. A queued import needs a running jobs processor. A collection configured with `disableJobsQueue: true` imports synchronously. Inspect the completed job or import record, its row errors and the target data. [Import modes and jobs](https://github.com/payloadcms/payload/blob/v3.94.0/docs/plugins/import-export.mdx) · [Match query](https://github.com/payloadcms/payload/blob/v3.94.0/packages/plugin-import-export/src/import/batchProcessor.ts)
+
 ## AI Instructions
 
 When analyzing source data to generate Payload config:
 
-1. **Identify collections** - Each distinct content type becomes a collection
+1. **Identify schema owners** - Map to the accepted collection, global or nested field. Propose a new collection when the source entities need independent documents.
 2. **Detect relationships** - ID references between types become `relationship` fields
 3. **Infer field types** - Use the patterns above to match data to Payload types
 4. **Preserve structure** - Nested objects become `group`, arrays of objects become `array`
@@ -1004,4 +1014,6 @@ Point data is a pair `[longitude, latitude]`, not a GeoJSON object. Validate coo
 
 Use the root recovery/reconciliation method for full identity sets, locale-without-fallback reads, cyclic links and interrupted imports. A valid schema or preserved raw source is not a completed import.
 
-Target sources: [field types at 3.88.0](https://github.com/payloadcms/payload/blob/v3.88.0/packages/payload/src/fields/config/types.ts), [HTML conversion](https://payloadcms.com/docs/rich-text/converting-html), [Markdown conversion](https://payloadcms.com/docs/rich-text/converting-markdown), [localization](https://payloadcms.com/docs/configuration/localization).
+For Local API writes, keep the source key and the ID returned by the receiving adapter. A relationship to a single collection stores the related target ID. For example, SQLite 3.94.0 defaults to numeric IDs and `allowIDOnCreate: false`. Check the target's configured ID type and use its returned values when resolving references. [SQLite adapter defaults](https://github.com/payloadcms/payload/blob/v3.94.0/packages/db-sqlite/src/index.ts)
+
+Target sources: [field types at 3.94.0](https://github.com/payloadcms/payload/blob/v3.94.0/packages/payload/src/fields/config/types.ts), [HTML conversion](https://payloadcms.com/docs/rich-text/converting-html), [Markdown conversion](https://payloadcms.com/docs/rich-text/converting-markdown), [localization](https://payloadcms.com/docs/configuration/localization).

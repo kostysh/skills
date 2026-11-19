@@ -2,13 +2,15 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.1.3`
+- Skill source version: `0.1.4`
 
 ## Source files
 - `agents/openai.yaml`
 - `docs/README.md`
 - `docs/logs/implementation-log-20260509-1.md`
 - `docs/logs/implementation-log-20260715-1.md`
+- `docs/logs/implementation-log-20261021-1.md`
+- `docs/logs/implementation-log-20261119-1.md`
 - `fragments/overview.md`
 - `references/payload-field-reference.md`
 - `skill.yaml`

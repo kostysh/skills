@@ -1,0 +1,32 @@
+{
+  "namespace": "ОС-47",
+  "sha256": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+  "sections": [
+    {
+      "sourceKey": "S-A",
+      "id": 2
+    },
+    {
+      "sourceKey": "S-B",
+      "id": 3
+    }
+  ],
+  "records": [
+    {
+      "sourceKey": "C-111",
+      "id": 2
+    },
+    {
+      "sourceKey": "C-112",
+      "id": 3
+    },
+    {
+      "sourceKey": "C-113",
+      "id": 4
+    },
+    {
+      "sourceKey": "C-114",
+      "id": 5
+    }
+  ]
+}

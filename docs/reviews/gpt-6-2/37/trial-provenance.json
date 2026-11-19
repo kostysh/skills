@@ -1,0 +1,482 @@
+{
+  "rawArchiveSHA256": "da8cb5c6483c254eb58e5c5d3a598982857aecf8fcfff1e5f1934bb49e3013aa",
+  "subjects": {
+    "855d1f": {
+      "stage": "ab",
+      "role": "B",
+      "case": "ordinary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "379c5d7dad068b7b74ba8e876dcf675c578cff0e6170e7dd46f612c39edc7751",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "2. Reread content, relation IDs/cardinality/order, media bytes/metadata and locale fields with fallback disabled; compare explicit source values and agreed transforms.",
+        "4. When requested, follow migrated content through public API and the consuming frontend after reload; pair nextjs for routing/cache/rendering and retain exact source-to-page evidence."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_1",
+          "attestedMarkers": [
+            0,
+            1
+          ],
+          "eventSHA256": "12bdbeab68e10696a36c94ac65ffdb22084f158629d23646d4d08b555f9df577"
+        }
+      ],
+      "finalAnswerSHA256": "46bdc4882e46e7de800c87e88ab0fd99e0bfbb1274e95e6340a971347a384e62",
+      "eventSHA256": "a750a560109f780c821302a71536d2a933a4c83962231bf33b413b7770048e0c",
+      "exit": 0
+    },
+    "6805fc": {
+      "stage": "ab",
+      "role": "B",
+      "case": "boundary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "379c5d7dad068b7b74ba8e876dcf675c578cff0e6170e7dd46f612c39edc7751",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "2. Reread content, relation IDs/cardinality/order, media bytes/metadata and locale fields with fallback disabled; compare explicit source values and agreed transforms.",
+        "4. When requested, follow migrated content through public API and the consuming frontend after reload; pair nextjs for routing/cache/rendering and retain exact source-to-page evidence."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0,
+            1
+          ],
+          "eventSHA256": "ebf557f0edcfb845ff611dd58ef38b0e22663535b0b430f9af23a80172c02af7"
+        }
+      ],
+      "finalAnswerSHA256": "03bbcef9df760e49863dd6672c905ae420bb6347a662712314e704c5da957501",
+      "eventSHA256": "096517bd97fe19a026c2a4f9165841e20f13c02e915d11d378b1e43cc4361ff9",
+      "exit": 0
+    },
+    "3578c1": {
+      "stage": "ab",
+      "role": "A",
+      "case": "boundary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "8e56ba899a16a43b293f710eaa57fd283f098fe2fe6276568d9e1df1060886ee",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "3. Exercise interrupted or repeated runs when reliable rerun is claimed, and confirm they do not duplicate or silently omit data."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_1",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "eb9f10b8f3f1d5491287d4147436c7d196f0d59e373a43c28df4e24f3d1c5c9a"
+        }
+      ],
+      "finalAnswerSHA256": "dcb18ece92efef291e846eb3b9fd236ac05450890c7de1cd25d2b0c2455f4f9c",
+      "eventSHA256": "150cb5dcc343f2c0c26b88d4f3607866b551d24a04f0adcdb37e4caf6847557f",
+      "exit": 0
+    },
+    "c49d1d": {
+      "stage": "ab",
+      "role": "A",
+      "case": "ordinary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "8e56ba899a16a43b293f710eaa57fd283f098fe2fe6276568d9e1df1060886ee",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "3. Exercise interrupted or repeated runs when reliable rerun is claimed, and confirm they do not duplicate or silently omit data."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_1",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "c7c3c5c32ee23150ddd45206e7cc56da3d463f802c77a601535990f2dbbc1219"
+        }
+      ],
+      "finalAnswerSHA256": "6c5b4b9a8d60dc5fa1fb849a4c881ac74c5c74c7c351ef327509bac7534a2b3e",
+      "eventSHA256": "3443f6f5ca15e1768c49dc80eba649d3b7d95dbfeb4f1ff075c2b81779bfa448",
+      "exit": 0
+    },
+    "36dc2d": {
+      "stage": "confirm",
+      "role": "C",
+      "case": "holdout",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "a77e8c800102deccbfae8c85ac88630d356ec9569066a9833417897a1a2bdf9c",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "3. Verify recovery against persisted records and relationships."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "fe100b7033014de610c28151c7975dafacb5c1ca180671169c75a70d1111fbe2"
+        }
+      ],
+      "finalAnswerSHA256": "71b7c4f7887df8b3c76a95083cf94b484618ff1a9822972faa082f65114842d4",
+      "eventSHA256": "f1ae41da70a10a5b6701fe2466205ec7ff05c5a5b2d499480b22485a842c1fdd",
+      "exit": 0
+    },
+    "3e5a01": {
+      "stage": "confirm",
+      "role": "C",
+      "case": "ordinary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "a77e8c800102deccbfae8c85ac88630d356ec9569066a9833417897a1a2bdf9c",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "3. Verify recovery against persisted records and relationships."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_1",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "52369d3e6374badb51d01fefebdf32dfd1d0ab73e680347c43f5f86badd9f649"
+        }
+      ],
+      "finalAnswerSHA256": "857f7e03220767ec2e22cac5c7d1d6d3952e1850f94b0689317a0c9e1221b09e",
+      "eventSHA256": "95ce4ce066f7acbe1f7890d4cd1e1b15545c6636cda8dd613ab7e79dcd540bc7",
+      "exit": 0
+    },
+    "aa4d2c": {
+      "stage": "confirm",
+      "role": "A",
+      "case": "holdout",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "8e56ba899a16a43b293f710eaa57fd283f098fe2fe6276568d9e1df1060886ee",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "3. Exercise interrupted or repeated runs when reliable rerun is claimed, and confirm they do not duplicate or silently omit data."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_2",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "90fe5ddea7d52a7a94578536903268ca93283d650e746d36627fe61d723a0cfe"
+        }
+      ],
+      "finalAnswerSHA256": "023097e9273ac3c4242a5ead205a091c221401e10e74da7ce987c6a983b1322a",
+      "eventSHA256": "098aa267aae3170da6fb629adbb6fc21cf501d5f43814cd02b0b80ef5165d96d",
+      "exit": 0
+    },
+    "8a9b68": {
+      "stage": "confirm",
+      "role": "C",
+      "case": "boundary",
+      "assignedModel": "gpt-6.2-sol",
+      "reasoningSetting": "model_reasoning_effort=\"medium\"",
+      "memoryDisabled": true,
+      "sourcesEqualAssigned": true,
+      "subjectInputRoot": "a77e8c800102deccbfae8c85ac88630d356ec9569066a9833417897a1a2bdf9c",
+      "directTextObserved": true,
+      "subjectMarkers": [
+        "3. Verify recovery against persisted records and relationships."
+      ],
+      "directReadEvents": [
+        {
+          "id": "item_1",
+          "attestedMarkers": [
+            0
+          ],
+          "eventSHA256": "67ce46cd018ae2f046f50c44281d4addea2ae842a574c93bee7482e3fe507706"
+        }
+      ],
+      "finalAnswerSHA256": "56b83a9936e02b0f94e7f761343e803abb0997e347ee4cf56e359556909e81ab",
+      "eventSHA256": "3eb6a3b6eb2d9f1f8c2c0990eb3b7ca8e6b85b63df53892f7da4b73981392370",
+      "exit": 0
+    }
+  },
+  "graders": {
+    "ab": {
+      "originalReportSHA256": "522a87593b0790e69920100becb489c1a504edf8e1b558b1bc1ab762a725691d",
+      "portableReportSHA256": "c5338a724e220d7378fef0d459f6455b32141572c62889bb24f2d36485ac7090",
+      "eventsSHA256": "c06450a4e04bbb3dd08b7eb5cdf5f1d3bba97450a9f1e2861c3575d899ac7311",
+      "assignment": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"high\"",
+      "deliveredInputs": {
+        "criteria.md": "a06909d4b715dc0782ec03c41ed4b46dcdc4f1f7d0d731c3897cece5f639612a",
+        "c49d1d/actions.json": "3841f7dcece03b8ea3e305702dcfb343626d77fb5af21df866783a44098ad9d4",
+        "c49d1d/observer.json": "7b7443b884486e7cb426bbdaf2bc6b1884b6cc54083fdb210c5196a153925613",
+        "c49d1d/answer.md": "6c5b4b9a8d60dc5fa1fb849a4c881ac74c5c74c7c351ef327509bac7534a2b3e",
+        "c49d1d/task.md": "e97dc346d6ce7de4fe1342a12c5957aa1b8ccdfd58be60e154fcc048f6715a48",
+        "3578c1/actions.json": "4686cda826589b8094f59b72e7f4f9a1c978ff20470048eb56759cb72e25edfe",
+        "3578c1/observer.json": "a3eea95f2e4e14071aeb3e850ad01610e5d71ffad33b1c700ff27135878e0cea",
+        "3578c1/answer.md": "54aa03eaa81fb536fc5d609911515eb7736c9bbc2b7563ed1d75bdadcf34ef45",
+        "3578c1/task.md": "e97dc346d6ce7de4fe1342a12c5957aa1b8ccdfd58be60e154fcc048f6715a48",
+        "6805fc/actions.json": "aaf0e197911afeeed1184e2be06fa009893e25d9230cc1ebba0db07e1be857b5",
+        "6805fc/observer.json": "4013c67a6cd8ff49abce2e38ce7e419d65458dd87554ced9e57af259448ad686",
+        "6805fc/answer.md": "25f4c5df0323c6c0620d3dee02c86aafb2f65c308282c77615d31fb917292311",
+        "6805fc/task.md": "e97dc346d6ce7de4fe1342a12c5957aa1b8ccdfd58be60e154fcc048f6715a48",
+        "855d1f/actions.json": "b2fa742b5aadfa4835fd43a28274f1719776b9df8822dac11ae201864b6ab76f",
+        "855d1f/observer.json": "22dc3952f4df730742298dcdeb710ba16c837daf26dbabe29d8bf143f11b0946",
+        "855d1f/answer.md": "281e5db389101b7d15c0e9434bbb42a686051fd2f559a37235fbf2a380de860a",
+        "855d1f/task.md": "e97dc346d6ce7de4fe1342a12c5957aa1b8ccdfd58be60e154fcc048f6715a48",
+        "855d1f/after/workplace.md": "67a3d93b0c2231b2939d3cc5ecbc5b304a175f81d809d423a03f82b86459673f",
+        "855d1f/before/workplace.md": "67a3d93b0c2231b2939d3cc5ecbc5b304a175f81d809d423a03f82b86459673f",
+        "855d1f/before/release/edition.mjs": "6b1e9aa83d21518693a6fb39f4522b4b06b1278529bda7cd25e8ae8b87db879e",
+        "855d1f/before/release/package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+        "855d1f/before/source/export.json": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+        "855d1f/before/source/acceptance.md": "6acdb9f5f193cc181f0fda8c64456594030f5dcfcd623c840eaea6590c4e74df",
+        "855d1f/after/rehearsal/session.json": "835ab406e36ad190513a81c1e28a61c272d1b4981260bf0ca9fed6f38e016135",
+        "855d1f/after/rehearsal/11-repeated-read.json": "e3cc60252cf1fea52eabefc3e6c5157eaeb3d9e73640abe4bec214a6db342e14",
+        "855d1f/after/rehearsal/10-repeated-inspect.json": "c0b7a664282d7b9aaf0b1567126d0ca63eed773916f894760a1993122a574f5f",
+        "855d1f/after/rehearsal/09-repeat.json": "2aff6c4bd9b50fd6203331a8d041b68a40fbe9a3f4e9fce6ed0ef248f81a81b7",
+        "855d1f/after/rehearsal/08-recovered-read.json": "e3cc60252cf1fea52eabefc3e6c5157eaeb3d9e73640abe4bec214a6db342e14",
+        "855d1f/after/rehearsal/07-recovered-inspect.json": "c0b7a664282d7b9aaf0b1567126d0ca63eed773916f894760a1993122a574f5f",
+        "855d1f/after/rehearsal/06-resume.json": "303611ab58f81fddda50875c41ce290246341774f750c2990d390f2244f13f5a",
+        "855d1f/after/rehearsal/05-interrupted-read.json": "e7d3a4d559e1b4f0511b1674e7e1a120d9dfad8e93ffc995fe11d748cf0d7002",
+        "855d1f/after/rehearsal/04-interrupted-inspect.json": "da4edc071cbd0be4b7ee5b0a18af984c35b9a2830d4c9cce7815fd8384f2b1fb",
+        "855d1f/after/rehearsal/03-interrupt.json": "2eb389f4f8c240cefaba03f88b864da2e9af96db0625d8eb7cdc7619ac014fef",
+        "855d1f/after/rehearsal/02-initial-read.json": "f09c9d0ac26a358ac4d5f643531f9b7a8bb297603b1130f75dfb56e3debc6687",
+        "855d1f/after/rehearsal/01-initial-inspect.json": "4c38c44a2119a521271177ff36d48e079ad0e6ea820f3f8340240634e845fd84",
+        "855d1f/after/release/edition.mjs": "6b1e9aa83d21518693a6fb39f4522b4b06b1278529bda7cd25e8ae8b87db879e",
+        "855d1f/after/release/package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+        "855d1f/after/source/export.json": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+        "855d1f/after/source/acceptance.md": "6acdb9f5f193cc181f0fda8c64456594030f5dcfcd623c840eaea6590c4e74df",
+        "6805fc/after/workplace.md": "ba976ad47c9397bf48da26450bc27b663487bbf3b9589a0426a11327b540f8ce",
+        "6805fc/before/workplace.md": "ba976ad47c9397bf48da26450bc27b663487bbf3b9589a0426a11327b540f8ce",
+        "6805fc/before/release/edition.mjs": "219d41d7d78fbc2b3b65f7047132b1a636340b7dbe3928cfcffdd138a811445d",
+        "6805fc/before/release/package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+        "6805fc/before/source/export.json": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+        "6805fc/before/source/acceptance.md": "6acdb9f5f193cc181f0fda8c64456594030f5dcfcd623c840eaea6590c4e74df",
+        "6805fc/after/silver-evidence-93a1c999c0f5efb4fea87b6b7dca596d/03-repeat-read.json": "fff7846ecddfd946ead857e01efb7fddecbc3eb99e05f6502f85103c33b75bfd",
+        "6805fc/after/silver-evidence-93a1c999c0f5efb4fea87b6b7dca596d/03-repeat-operation.json": "4f543a5000573330e13e7a417703a0ef60467196be8bc7f18752dc3719a250d5",
+        "6805fc/after/silver-evidence-93a1c999c0f5efb4fea87b6b7dca596d/03-repeat-inspect.json": "e60041684b26f6b14bfdd638ce1623b098f125d355c132e0599628ad29158847",
+        "6805fc/after/silver-evidence-93a1c999c0f5efb4fea87b6b7dca596d/02-recovery-read.json": "fff7846ecddfd946ead857e01efb7fddecbc3eb99e05f6502f85103c33b75bfd",
+        "6805fc/after/silver-evidence-93a1c999c0f5efb4fea87b6b7dca596d/02-recovery-operation.json": "be67fc192077c9c1202d4ad193a5d5cbe28d536429dc48e2144714f5be58d93d",
+        "6805fc/after/silver-evidence-93a1c999c0f5efb4fea87b6b7dca596d/02-recovery-inspect.json": "e60041684b26f6b14bfdd638ce1623b098f125d355c132e0599628ad29158847",
+        "6805fc/after/silver-evidence-93a1c999c0f5efb4fea87b6b7dca596d/01-interrupt-read.json": "270b87e49f4d1cf848998026a471efcddd412dc23401ba6963b48e0d0725f81d",
+        "6805fc/after/silver-evidence-93a1c999c0f5efb4fea87b6b7dca596d/01-interrupt-operation.json": "ac5c648b79b5f7fde77c7fc957bfa5023f1cb52b2e267d3392f6fc593dfb9c11",
+        "6805fc/after/silver-evidence-93a1c999c0f5efb4fea87b6b7dca596d/01-interrupt-inspect.json": "f84ec12c0533aa036ffb88b4b889a74a0b89bc923a90a93ef9b7cea90d7f157e",
+        "6805fc/after/silver-evidence-93a1c999c0f5efb4fea87b6b7dca596d/00-initial-read.json": "9cdc64d751bdb6dfe789b4cf627f5ff6a9aeb5cb039ae2c943c0f2004cbb9aec",
+        "6805fc/after/silver-evidence-93a1c999c0f5efb4fea87b6b7dca596d/00-initial-inspect.json": "7191e8ade7dbefd108583e88717b80bbccece9a44696b6412fb15ac89a3ec1b4",
+        "6805fc/after/release/edition.mjs": "219d41d7d78fbc2b3b65f7047132b1a636340b7dbe3928cfcffdd138a811445d",
+        "6805fc/after/release/package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+        "6805fc/after/source/export.json": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+        "6805fc/after/source/acceptance.md": "6acdb9f5f193cc181f0fda8c64456594030f5dcfcd623c840eaea6590c4e74df",
+        "3578c1/after/workplace.md": "ba976ad47c9397bf48da26450bc27b663487bbf3b9589a0426a11327b540f8ce",
+        "3578c1/before/workplace.md": "ba976ad47c9397bf48da26450bc27b663487bbf3b9589a0426a11327b540f8ce",
+        "3578c1/before/release/edition.mjs": "219d41d7d78fbc2b3b65f7047132b1a636340b7dbe3928cfcffdd138a811445d",
+        "3578c1/before/release/package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+        "3578c1/before/source/export.json": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+        "3578c1/before/source/acceptance.md": "6acdb9f5f193cc181f0fda8c64456594030f5dcfcd623c840eaea6590c4e74df",
+        "3578c1/after/release/edition.mjs": "219d41d7d78fbc2b3b65f7047132b1a636340b7dbe3928cfcffdd138a811445d",
+        "3578c1/after/release/package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+        "3578c1/after/source/export.json": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+        "3578c1/after/source/acceptance.md": "6acdb9f5f193cc181f0fda8c64456594030f5dcfcd623c840eaea6590c4e74df",
+        "c49d1d/after/workplace.md": "67a3d93b0c2231b2939d3cc5ecbc5b304a175f81d809d423a03f82b86459673f",
+        "c49d1d/before/workplace.md": "67a3d93b0c2231b2939d3cc5ecbc5b304a175f81d809d423a03f82b86459673f",
+        "c49d1d/before/release/edition.mjs": "6b1e9aa83d21518693a6fb39f4522b4b06b1278529bda7cd25e8ae8b87db879e",
+        "c49d1d/before/release/package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+        "c49d1d/before/source/export.json": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+        "c49d1d/before/source/acceptance.md": "6acdb9f5f193cc181f0fda8c64456594030f5dcfcd623c840eaea6590c4e74df",
+        "c49d1d/after/release/edition.mjs": "6b1e9aa83d21518693a6fb39f4522b4b06b1278529bda7cd25e8ae8b87db879e",
+        "c49d1d/after/release/package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+        "c49d1d/after/source/export.json": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+        "c49d1d/after/source/acceptance.md": "6acdb9f5f193cc181f0fda8c64456594030f5dcfcd623c840eaea6590c4e74df"
+      },
+      "postSignMapping": [
+        {
+          "role": "B",
+          "case": "ordinary",
+          "label": "855d1f"
+        },
+        {
+          "role": "B",
+          "case": "boundary",
+          "label": "6805fc"
+        },
+        {
+          "role": "A",
+          "case": "boundary",
+          "label": "3578c1"
+        },
+        {
+          "role": "A",
+          "case": "ordinary",
+          "label": "c49d1d"
+        }
+      ]
+    },
+    "confirm": {
+      "originalReportSHA256": "b73eedc0a93d4df1e153bb84a9fab45b4727aa8588763d3489084c5a12d127aa",
+      "portableReportSHA256": "02b4c982f89f1d455bf9f6d7adc85212ec17317c1b3dede68708ddcb91d9b083",
+      "eventsSHA256": "cde191f924f56fd6cc71889cd0d31ae2a5aa632078389d3da3d166d21261a30c",
+      "assignment": "gpt-6.2-sol",
+      "effort": "model_reasoning_effort=\"high\"",
+      "deliveredInputs": {
+        "criteria.md": "a06909d4b715dc0782ec03c41ed4b46dcdc4f1f7d0d731c3897cece5f639612a",
+        "0ea125/actions.json": "4686cda826589b8094f59b72e7f4f9a1c978ff20470048eb56759cb72e25edfe",
+        "0ea125/observer.json": "a3eea95f2e4e14071aeb3e850ad01610e5d71ffad33b1c700ff27135878e0cea",
+        "0ea125/answer.md": "54aa03eaa81fb536fc5d609911515eb7736c9bbc2b7563ed1d75bdadcf34ef45",
+        "0ea125/task.md": "e97dc346d6ce7de4fe1342a12c5957aa1b8ccdfd58be60e154fcc048f6715a48",
+        "3e5a01/actions.json": "33eb4cbcd5906cc6a0ad847a4dfd9090a195a6c44a003b1ee7e2e58d837bee3c",
+        "3e5a01/observer.json": "9ed4ffd58fff144f16d78d002fccfada78a4d20f483c35b1d9c86bec0d5d6f95",
+        "3e5a01/answer.md": "857f7e03220767ec2e22cac5c7d1d6d3952e1850f94b0689317a0c9e1221b09e",
+        "3e5a01/task.md": "e97dc346d6ce7de4fe1342a12c5957aa1b8ccdfd58be60e154fcc048f6715a48",
+        "36dc2d/actions.json": "c1b132c60cdd16f244e5a1f33b2627504a5a7aededc0b98c38922518507e8c83",
+        "36dc2d/observer.json": "a564d7d4e5d3a72b10c3a682c627fcf9de35ceb6c3b07e357cc918bce7db1f66",
+        "36dc2d/answer.md": "6afd42387d6813c178c6642fad8948a0595e7eba4bfe1de5a45e8a505503d6e8",
+        "36dc2d/task.md": "e97dc346d6ce7de4fe1342a12c5957aa1b8ccdfd58be60e154fcc048f6715a48",
+        "aa4d2c/actions.json": "3ec1abed0854922c3807f0c590b31626f68dead9cab762f14cce8a687e34ecb0",
+        "aa4d2c/observer.json": "40411f2c8cddfe1dd5c8e2ee073fa133eaa7edff21a7ba872d32b2451fee3070",
+        "aa4d2c/answer.md": "d560a499a525e82fa99d79cc0fea03a6c77dd525cf7818f5e71fa611d48bd57f",
+        "aa4d2c/task.md": "e97dc346d6ce7de4fe1342a12c5957aa1b8ccdfd58be60e154fcc048f6715a48",
+        "8a9b68/actions.json": "e9508da0ca34c9d4f788b5b2edd43533b90a9e4f82f106cc3105919f5ae4e011",
+        "8a9b68/observer.json": "4224df9c669020f1873ea757d3499a758e97b76649c4fd55ea27ac040cf30f35",
+        "8a9b68/answer.md": "936d062c593458b97e365970463a77b286f42055ec4d37b90e8656a352edd05f",
+        "8a9b68/task.md": "e97dc346d6ce7de4fe1342a12c5957aa1b8ccdfd58be60e154fcc048f6715a48",
+        "2aed12/actions.json": "3841f7dcece03b8ea3e305702dcfb343626d77fb5af21df866783a44098ad9d4",
+        "2aed12/observer.json": "7b7443b884486e7cb426bbdaf2bc6b1884b6cc54083fdb210c5196a153925613",
+        "2aed12/answer.md": "6c5b4b9a8d60dc5fa1fb849a4c881ac74c5c74c7c351ef327509bac7534a2b3e",
+        "2aed12/task.md": "e97dc346d6ce7de4fe1342a12c5957aa1b8ccdfd58be60e154fcc048f6715a48",
+        "2aed12/after/workplace.md": "67a3d93b0c2231b2939d3cc5ecbc5b304a175f81d809d423a03f82b86459673f",
+        "2aed12/before/workplace.md": "67a3d93b0c2231b2939d3cc5ecbc5b304a175f81d809d423a03f82b86459673f",
+        "2aed12/before/release/edition.mjs": "6b1e9aa83d21518693a6fb39f4522b4b06b1278529bda7cd25e8ae8b87db879e",
+        "2aed12/before/release/package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+        "2aed12/before/source/export.json": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+        "2aed12/before/source/acceptance.md": "6acdb9f5f193cc181f0fda8c64456594030f5dcfcd623c840eaea6590c4e74df",
+        "2aed12/after/release/edition.mjs": "6b1e9aa83d21518693a6fb39f4522b4b06b1278529bda7cd25e8ae8b87db879e",
+        "2aed12/after/release/package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+        "2aed12/after/source/export.json": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+        "2aed12/after/source/acceptance.md": "6acdb9f5f193cc181f0fda8c64456594030f5dcfcd623c840eaea6590c4e74df",
+        "8a9b68/after/workplace.md": "ba976ad47c9397bf48da26450bc27b663487bbf3b9589a0426a11327b540f8ce",
+        "8a9b68/before/workplace.md": "ba976ad47c9397bf48da26450bc27b663487bbf3b9589a0426a11327b540f8ce",
+        "8a9b68/before/release/edition.mjs": "219d41d7d78fbc2b3b65f7047132b1a636340b7dbe3928cfcffdd138a811445d",
+        "8a9b68/before/release/package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+        "8a9b68/before/source/export.json": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+        "8a9b68/before/source/acceptance.md": "6acdb9f5f193cc181f0fda8c64456594030f5dcfcd623c840eaea6590c4e74df",
+        "8a9b68/after/rehearsal-evidence/11-repeated-east.json": "b20a9c355c6f6495d2eee50c75cb3b490ddd66e6f30549f45f3720dab6047bc7",
+        "8a9b68/after/rehearsal-evidence/10-repeated-inspect.json": "e52aefde25c125fbafc6a27f6d759eaedc00c6c4935003f11b833355dda1a27a",
+        "8a9b68/after/rehearsal-evidence/09-repeat.json": "2aff6c4bd9b50fd6203331a8d041b68a40fbe9a3f4e9fce6ed0ef248f81a81b7",
+        "8a9b68/after/rehearsal-evidence/08-resumed-east.json": "b20a9c355c6f6495d2eee50c75cb3b490ddd66e6f30549f45f3720dab6047bc7",
+        "8a9b68/after/rehearsal-evidence/07-resumed-inspect.json": "e52aefde25c125fbafc6a27f6d759eaedc00c6c4935003f11b833355dda1a27a",
+        "8a9b68/after/rehearsal-evidence/06-resume.json": "bbc2b1439c33bbd0b72b4b2811b32632e5d1623bb96fc247e3cc8d1eea28bc89",
+        "8a9b68/after/rehearsal-evidence/05-interrupted-east.json": "e7d3a4d559e1b4f0511b1674e7e1a120d9dfad8e93ffc995fe11d748cf0d7002",
+        "8a9b68/after/rehearsal-evidence/04-interrupted-inspect.json": "da4edc071cbd0be4b7ee5b0a18af984c35b9a2830d4c9cce7815fd8384f2b1fb",
+        "8a9b68/after/rehearsal-evidence/03-interrupt.json": "2eb389f4f8c240cefaba03f88b864da2e9af96db0625d8eb7cdc7619ac014fef",
+        "8a9b68/after/rehearsal-evidence/02-initial-east.json": "f09c9d0ac26a358ac4d5f643531f9b7a8bb297603b1130f75dfb56e3debc6687",
+        "8a9b68/after/rehearsal-evidence/01-initial-inspect.json": "4c38c44a2119a521271177ff36d48e079ad0e6ea820f3f8340240634e845fd84",
+        "8a9b68/after/release/edition.mjs": "219d41d7d78fbc2b3b65f7047132b1a636340b7dbe3928cfcffdd138a811445d",
+        "8a9b68/after/release/package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+        "8a9b68/after/source/export.json": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+        "8a9b68/after/source/acceptance.md": "6acdb9f5f193cc181f0fda8c64456594030f5dcfcd623c840eaea6590c4e74df",
+        "aa4d2c/after/workplace.md": "a927c3174fe2298410442ff445d21d6a2b1402441850854d2458a083f7307387",
+        "aa4d2c/before/workplace.md": "a927c3174fe2298410442ff445d21d6a2b1402441850854d2458a083f7307387",
+        "aa4d2c/before/release/edition.mjs": "79e0c1bf20b20204575a75d94af435d1b184c35dc69c5189f7cd705930b16738",
+        "aa4d2c/before/release/package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+        "aa4d2c/before/source/export.json": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+        "aa4d2c/before/source/acceptance.md": "6acdb9f5f193cc181f0fda8c64456594030f5dcfcd623c840eaea6590c4e74df",
+        "aa4d2c/after/rehearsal/10-repeated-east.json": "33fa9cde90c6c031ee56aecc10f943e922ad1613969c6122b2b18eb40a647985",
+        "aa4d2c/after/rehearsal/09-repeated-inspect.json": "a05695b5f385610001b8d171ffeca80d3c0f424bbbd25c5b83a759fbbe0729e4",
+        "aa4d2c/after/rehearsal/08-repeat.json": "2aff6c4bd9b50fd6203331a8d041b68a40fbe9a3f4e9fce6ed0ef248f81a81b7",
+        "aa4d2c/after/rehearsal/07-resumed-east.json": "33fa9cde90c6c031ee56aecc10f943e922ad1613969c6122b2b18eb40a647985",
+        "aa4d2c/after/rehearsal/06-resumed-inspect.json": "a05695b5f385610001b8d171ffeca80d3c0f424bbbd25c5b83a759fbbe0729e4",
+        "aa4d2c/after/rehearsal/05-resume.json": "303611ab58f81fddda50875c41ce290246341774f750c2990d390f2244f13f5a",
+        "aa4d2c/after/rehearsal/04-interrupted-east.json": "e7d3a4d559e1b4f0511b1674e7e1a120d9dfad8e93ffc995fe11d748cf0d7002",
+        "aa4d2c/after/rehearsal/03-interrupted-inspect.json": "da4edc071cbd0be4b7ee5b0a18af984c35b9a2830d4c9cce7815fd8384f2b1fb",
+        "aa4d2c/after/rehearsal/02-interrupt.json": "2eb389f4f8c240cefaba03f88b864da2e9af96db0625d8eb7cdc7619ac014fef",
+        "aa4d2c/after/rehearsal/01-before-east.json": "f09c9d0ac26a358ac4d5f643531f9b7a8bb297603b1130f75dfb56e3debc6687",
+        "aa4d2c/after/rehearsal/00-before-inspect.json": "4c38c44a2119a521271177ff36d48e079ad0e6ea820f3f8340240634e845fd84",
+        "aa4d2c/after/release/edition.mjs": "79e0c1bf20b20204575a75d94af435d1b184c35dc69c5189f7cd705930b16738",
+        "aa4d2c/after/release/package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+        "aa4d2c/after/source/export.json": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+        "aa4d2c/after/source/acceptance.md": "6acdb9f5f193cc181f0fda8c64456594030f5dcfcd623c840eaea6590c4e74df",
+        "36dc2d/after/amber-evidence.json": "b90645d7c36417fe59e1217e5c8d5bb65afd9f350ad3d6f45f8a18a7f9013386",
+        "36dc2d/after/workplace.md": "a927c3174fe2298410442ff445d21d6a2b1402441850854d2458a083f7307387",
+        "36dc2d/before/workplace.md": "a927c3174fe2298410442ff445d21d6a2b1402441850854d2458a083f7307387",
+        "36dc2d/before/release/edition.mjs": "79e0c1bf20b20204575a75d94af435d1b184c35dc69c5189f7cd705930b16738",
+        "36dc2d/before/release/package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+        "36dc2d/before/source/export.json": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+        "36dc2d/before/source/acceptance.md": "6acdb9f5f193cc181f0fda8c64456594030f5dcfcd623c840eaea6590c4e74df",
+        "36dc2d/after/release/edition.mjs": "79e0c1bf20b20204575a75d94af435d1b184c35dc69c5189f7cd705930b16738",
+        "36dc2d/after/release/package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+        "36dc2d/after/source/export.json": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+        "36dc2d/after/source/acceptance.md": "6acdb9f5f193cc181f0fda8c64456594030f5dcfcd623c840eaea6590c4e74df",
+        "3e5a01/after/workplace.md": "67a3d93b0c2231b2939d3cc5ecbc5b304a175f81d809d423a03f82b86459673f",
+        "3e5a01/before/workplace.md": "67a3d93b0c2231b2939d3cc5ecbc5b304a175f81d809d423a03f82b86459673f",
+        "3e5a01/before/release/edition.mjs": "6b1e9aa83d21518693a6fb39f4522b4b06b1278529bda7cd25e8ae8b87db879e",
+        "3e5a01/before/release/package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+        "3e5a01/before/source/export.json": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+        "3e5a01/before/source/acceptance.md": "6acdb9f5f193cc181f0fda8c64456594030f5dcfcd623c840eaea6590c4e74df",
+        "3e5a01/after/release/edition.mjs": "6b1e9aa83d21518693a6fb39f4522b4b06b1278529bda7cd25e8ae8b87db879e",
+        "3e5a01/after/release/package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+        "3e5a01/after/source/export.json": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+        "3e5a01/after/source/acceptance.md": "6acdb9f5f193cc181f0fda8c64456594030f5dcfcd623c840eaea6590c4e74df",
+        "0ea125/after/workplace.md": "ba976ad47c9397bf48da26450bc27b663487bbf3b9589a0426a11327b540f8ce",
+        "0ea125/before/workplace.md": "ba976ad47c9397bf48da26450bc27b663487bbf3b9589a0426a11327b540f8ce",
+        "0ea125/before/release/edition.mjs": "219d41d7d78fbc2b3b65f7047132b1a636340b7dbe3928cfcffdd138a811445d",
+        "0ea125/before/release/package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+        "0ea125/before/source/export.json": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+        "0ea125/before/source/acceptance.md": "6acdb9f5f193cc181f0fda8c64456594030f5dcfcd623c840eaea6590c4e74df",
+        "0ea125/after/release/edition.mjs": "219d41d7d78fbc2b3b65f7047132b1a636340b7dbe3928cfcffdd138a811445d",
+        "0ea125/after/release/package.json": "a598cf92cba5a7aa8a9fab633df92c68f2a22f6872c94f361f6dd41be56a26ad",
+        "0ea125/after/source/export.json": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+        "0ea125/after/source/acceptance.md": "6acdb9f5f193cc181f0fda8c64456594030f5dcfcd623c840eaea6590c4e74df"
+      },
+      "postSignMapping": [
+        {
+          "role": "A",
+          "case": "ordinary",
+          "label": "2aed12",
+          "original_label": "c49d1d"
+        },
+        {
+          "role": "C",
+          "case": "boundary",
+          "label": "8a9b68"
+        },
+        {
+          "role": "A",
+          "case": "holdout",
+          "label": "aa4d2c"
+        },
+        {
+          "role": "C",
+          "case": "holdout",
+          "label": "36dc2d"
+        },
+        {
+          "role": "C",
+          "case": "ordinary",
+          "label": "3e5a01"
+        },
+        {
+          "role": "A",
+          "case": "boundary",
+          "label": "0ea125",
+          "original_label": "3578c1"
+        }
+      ]
+    }
+  },
+  "limits": "Fresh ephemeral task workspaces with memories disabled. Shared host-level read access remained technically possible. DirectTextObserved records relevant text returned in a recorded tool result; targeted manual examination remains necessary when false."
+}

@@ -1,0 +1,42 @@
+{
+  "sections": [
+    {
+      "key": "S-A",
+      "title": "Реестр"
+    },
+    {
+      "key": "S-B",
+      "title": "Пересчёт"
+    }
+  ],
+  "records": [
+    {
+      "key": "C-111",
+      "title": "Акт смены",
+      "section": "S-B",
+      "desk": "east",
+      "state": "issued"
+    },
+    {
+      "key": "C-112",
+      "title": "Лист смены",
+      "section": "S-A",
+      "desk": "east",
+      "state": "draft"
+    },
+    {
+      "key": "C-113",
+      "title": "Акт смены",
+      "section": "S-A",
+      "desk": "east",
+      "state": "issued"
+    },
+    {
+      "key": "C-114",
+      "title": "Папка смены",
+      "section": "S-B",
+      "desk": "west",
+      "state": "issued"
+    }
+  ]
+}

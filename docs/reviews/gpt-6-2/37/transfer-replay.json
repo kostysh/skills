@@ -1,0 +1,420 @@
+{
+  "node": "v24.22.3",
+  "sha256": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+  "baseline": {
+    "sections": [
+      {
+        "id": 1,
+        "sourceKey": "LOCAL",
+        "title": "Своя полка",
+        "updatedAt": "2026-11-19T00:09:23.803Z",
+        "createdAt": "2026-11-19T00:09:23.803Z"
+      }
+    ],
+    "records": [
+      {
+        "id": 1,
+        "sourceKey": "LOCAL-01",
+        "title": "Местная запись",
+        "section": 1,
+        "desk": "east",
+        "state": "issued",
+        "updatedAt": "2026-11-19T00:09:23.804Z",
+        "createdAt": "2026-11-19T00:09:23.804Z"
+      }
+    ],
+    "east": [
+      {
+        "id": 1,
+        "sourceKey": "LOCAL-01",
+        "title": "Местная запись",
+        "desk": "east",
+        "state": "issued",
+        "section": 1
+      }
+    ]
+  },
+  "interrupted": {
+    "signal": "SIGKILL",
+    "checkpoint": {
+      "namespace": "ОС-47",
+      "sha256": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+      "sections": [
+        {
+          "sourceKey": "S-A",
+          "id": 2
+        },
+        {
+          "sourceKey": "S-B",
+          "id": 3
+        }
+      ],
+      "records": []
+    },
+    "sections": [
+      {
+        "id": 1,
+        "sourceKey": "LOCAL",
+        "title": "Своя полка",
+        "updatedAt": "2026-11-19T00:09:23.803Z",
+        "createdAt": "2026-11-19T00:09:23.803Z"
+      },
+      {
+        "id": 2,
+        "sourceKey": "S-A",
+        "title": "Реестр",
+        "updatedAt": "2026-11-19T00:09:24.542Z",
+        "createdAt": "2026-11-19T00:09:24.541Z"
+      },
+      {
+        "id": 3,
+        "sourceKey": "S-B",
+        "title": "Пересчёт",
+        "updatedAt": "2026-11-19T00:09:24.546Z",
+        "createdAt": "2026-11-19T00:09:24.546Z"
+      }
+    ],
+    "records": [
+      {
+        "id": 1,
+        "sourceKey": "LOCAL-01",
+        "title": "Местная запись",
+        "section": 1,
+        "desk": "east",
+        "state": "issued",
+        "updatedAt": "2026-11-19T00:09:23.804Z",
+        "createdAt": "2026-11-19T00:09:23.804Z"
+      },
+      {
+        "id": 2,
+        "sourceKey": "C-111",
+        "title": "Акт смены",
+        "section": 3,
+        "desk": "east",
+        "state": "issued",
+        "updatedAt": "2026-11-19T00:09:24.548Z",
+        "createdAt": "2026-11-19T00:09:24.548Z"
+      }
+    ],
+    "east": [
+      {
+        "id": 1,
+        "sourceKey": "LOCAL-01",
+        "title": "Местная запись",
+        "desk": "east",
+        "state": "issued",
+        "section": 1
+      },
+      {
+        "id": 2,
+        "sourceKey": "C-111",
+        "title": "Акт смены",
+        "desk": "east",
+        "state": "issued",
+        "section": 3
+      }
+    ]
+  },
+  "resumed": {
+    "import": {
+      "sha256": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+      "counts": {
+        "sections": {
+          "created": 0,
+          "recovered": 0,
+          "skipped": 2
+        },
+        "records": {
+          "created": 3,
+          "recovered": 1,
+          "skipped": 0
+        }
+      },
+      "failed": 0
+    },
+    "checkpoint": {
+      "namespace": "ОС-47",
+      "sha256": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+      "sections": [
+        {
+          "sourceKey": "S-A",
+          "id": 2
+        },
+        {
+          "sourceKey": "S-B",
+          "id": 3
+        }
+      ],
+      "records": [
+        {
+          "sourceKey": "C-111",
+          "id": 2
+        },
+        {
+          "sourceKey": "C-112",
+          "id": 3
+        },
+        {
+          "sourceKey": "C-113",
+          "id": 4
+        },
+        {
+          "sourceKey": "C-114",
+          "id": 5
+        }
+      ]
+    },
+    "sections": [
+      {
+        "id": 1,
+        "sourceKey": "LOCAL",
+        "title": "Своя полка",
+        "updatedAt": "2026-11-19T00:09:23.803Z",
+        "createdAt": "2026-11-19T00:09:23.803Z"
+      },
+      {
+        "id": 2,
+        "sourceKey": "S-A",
+        "title": "Реестр",
+        "updatedAt": "2026-11-19T00:09:24.542Z",
+        "createdAt": "2026-11-19T00:09:24.541Z"
+      },
+      {
+        "id": 3,
+        "sourceKey": "S-B",
+        "title": "Пересчёт",
+        "updatedAt": "2026-11-19T00:09:24.546Z",
+        "createdAt": "2026-11-19T00:09:24.546Z"
+      }
+    ],
+    "records": [
+      {
+        "id": 1,
+        "sourceKey": "LOCAL-01",
+        "title": "Местная запись",
+        "section": 1,
+        "desk": "east",
+        "state": "issued",
+        "updatedAt": "2026-11-19T00:09:23.804Z",
+        "createdAt": "2026-11-19T00:09:23.804Z"
+      },
+      {
+        "id": 2,
+        "sourceKey": "C-111",
+        "title": "Акт смены",
+        "section": 3,
+        "desk": "east",
+        "state": "issued",
+        "updatedAt": "2026-11-19T00:09:24.548Z",
+        "createdAt": "2026-11-19T00:09:24.548Z"
+      },
+      {
+        "id": 3,
+        "sourceKey": "C-112",
+        "title": "Лист смены",
+        "section": 2,
+        "desk": "east",
+        "state": "draft",
+        "updatedAt": "2026-11-19T00:09:26.020Z",
+        "createdAt": "2026-11-19T00:09:26.019Z"
+      },
+      {
+        "id": 4,
+        "sourceKey": "C-113",
+        "title": "Акт смены",
+        "section": 2,
+        "desk": "east",
+        "state": "issued",
+        "updatedAt": "2026-11-19T00:09:26.023Z",
+        "createdAt": "2026-11-19T00:09:26.023Z"
+      },
+      {
+        "id": 5,
+        "sourceKey": "C-114",
+        "title": "Папка смены",
+        "section": 3,
+        "desk": "west",
+        "state": "issued",
+        "updatedAt": "2026-11-19T00:09:26.025Z",
+        "createdAt": "2026-11-19T00:09:26.025Z"
+      }
+    ],
+    "east": [
+      {
+        "id": 1,
+        "sourceKey": "LOCAL-01",
+        "title": "Местная запись",
+        "desk": "east",
+        "state": "issued",
+        "section": 1
+      },
+      {
+        "id": 2,
+        "sourceKey": "C-111",
+        "title": "Акт смены",
+        "desk": "east",
+        "state": "issued",
+        "section": 3
+      },
+      {
+        "id": 4,
+        "sourceKey": "C-113",
+        "title": "Акт смены",
+        "desk": "east",
+        "state": "issued",
+        "section": 2
+      }
+    ]
+  },
+  "repeated": {
+    "import": {
+      "sha256": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+      "counts": {
+        "sections": {
+          "created": 0,
+          "recovered": 0,
+          "skipped": 2
+        },
+        "records": {
+          "created": 0,
+          "recovered": 0,
+          "skipped": 4
+        }
+      },
+      "failed": 0
+    },
+    "checkpoint": {
+      "namespace": "ОС-47",
+      "sha256": "46be3674807791e2d814ace1f6a3a4829fa717067b2699da688053911eee4bdc",
+      "sections": [
+        {
+          "sourceKey": "S-A",
+          "id": 2
+        },
+        {
+          "sourceKey": "S-B",
+          "id": 3
+        }
+      ],
+      "records": [
+        {
+          "sourceKey": "C-111",
+          "id": 2
+        },
+        {
+          "sourceKey": "C-112",
+          "id": 3
+        },
+        {
+          "sourceKey": "C-113",
+          "id": 4
+        },
+        {
+          "sourceKey": "C-114",
+          "id": 5
+        }
+      ]
+    },
+    "sections": [
+      {
+        "id": 1,
+        "sourceKey": "LOCAL",
+        "title": "Своя полка",
+        "updatedAt": "2026-11-19T00:09:23.803Z",
+        "createdAt": "2026-11-19T00:09:23.803Z"
+      },
+      {
+        "id": 2,
+        "sourceKey": "S-A",
+        "title": "Реестр",
+        "updatedAt": "2026-11-19T00:09:24.542Z",
+        "createdAt": "2026-11-19T00:09:24.541Z"
+      },
+      {
+        "id": 3,
+        "sourceKey": "S-B",
+        "title": "Пересчёт",
+        "updatedAt": "2026-11-19T00:09:24.546Z",
+        "createdAt": "2026-11-19T00:09:24.546Z"
+      }
+    ],
+    "records": [
+      {
+        "id": 1,
+        "sourceKey": "LOCAL-01",
+        "title": "Местная запись",
+        "section": 1,
+        "desk": "east",
+        "state": "issued",
+        "updatedAt": "2026-11-19T00:09:23.804Z",
+        "createdAt": "2026-11-19T00:09:23.804Z"
+      },
+      {
+        "id": 2,
+        "sourceKey": "C-111",
+        "title": "Акт смены",
+        "section": 3,
+        "desk": "east",
+        "state": "issued",
+        "updatedAt": "2026-11-19T00:09:24.548Z",
+        "createdAt": "2026-11-19T00:09:24.548Z"
+      },
+      {
+        "id": 3,
+        "sourceKey": "C-112",
+        "title": "Лист смены",
+        "section": 2,
+        "desk": "east",
+        "state": "draft",
+        "updatedAt": "2026-11-19T00:09:26.020Z",
+        "createdAt": "2026-11-19T00:09:26.019Z"
+      },
+      {
+        "id": 4,
+        "sourceKey": "C-113",
+        "title": "Акт смены",
+        "section": 2,
+        "desk": "east",
+        "state": "issued",
+        "updatedAt": "2026-11-19T00:09:26.023Z",
+        "createdAt": "2026-11-19T00:09:26.023Z"
+      },
+      {
+        "id": 5,
+        "sourceKey": "C-114",
+        "title": "Папка смены",
+        "section": 3,
+        "desk": "west",
+        "state": "issued",
+        "updatedAt": "2026-11-19T00:09:26.025Z",
+        "createdAt": "2026-11-19T00:09:26.025Z"
+      }
+    ],
+    "east": [
+      {
+        "id": 1,
+        "sourceKey": "LOCAL-01",
+        "title": "Местная запись",
+        "desk": "east",
+        "state": "issued",
+        "section": 1
+      },
+      {
+        "id": 2,
+        "sourceKey": "C-111",
+        "title": "Акт смены",
+        "desk": "east",
+        "state": "issued",
+        "section": 3
+      },
+      {
+        "id": 4,
+        "sourceKey": "C-113",
+        "title": "Акт смены",
+        "desk": "east",
+        "state": "issued",
+        "section": 2
+      }
+    ]
+  }
+}

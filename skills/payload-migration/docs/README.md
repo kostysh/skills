@@ -8,10 +8,12 @@ No issues have been created for this skill.
 
 ## Implementation Logs
 
+- [Ревизия восстановления импорта (2026-11-19)](logs/implementation-log-20261119-1.md) — форматы экспорта, приёмка данных и ограниченное чтение на переданной схеме Payload.
+
 - [implementation-log-20260509-1.md](logs/implementation-log-20260509-1.md) - initial `payload-migration` skill creation.
 - [implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) — описание сокращено до 300 code points; independent scoped PASS.
 
-- [Framework/platform implementation log (2026-09-09)](../../../../docs/logs/implementation-log-20260909-1.md) — общий supporting record; не runtime-зависимость скилла.
+- [Framework/platform implementation log (2026-09-09)](../../../docs/logs/implementation-log-20260909-1.md) — общий supporting record; не runtime-зависимость скилла.
 
 ## Совместимость frontmatter — 2026-10-21
 

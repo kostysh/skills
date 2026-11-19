@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: payload-migration
-  source-version: 0.1.3
+  source-version: 0.1.4
   recommended-skill-md-max-bytes: 20000
   description: >-
     Migrate WordPress, Contentful, Strapi, Sanity, Webflow or CSV/JSON content into
@@ -20,7 +20,7 @@ references:
     source: references/payload-field-reference.md
     target: references/payload-field-reference.md
     required: true
-    trigger: Read this when mapping source fields, nested data, arrays, media, rich text, relationships, auth/upload collections, or CMS-specific patterns to Payload field configs.
+    trigger: Read this when interpreting a CMS export, mapping fields, relationships, uploads, editors or locales, or using Payload’s import/export plugin.
 
 assets: []
 copies:
@@ -41,6 +41,14 @@ supporting:
     source: docs/logs/implementation-log-20260509-1.md
     target: docs/logs/implementation-log-20260509-1.md
     description: Non-normative implementation log for initial payload-migration skill creation.
+  - id: supporting-implementation-log-20261021-1
+    source: docs/logs/implementation-log-20261021-1.md
+    target: docs/logs/implementation-log-20261021-1.md
+    description: Non-normative record of the frontmatter compatibility change.
+  - id: supporting-implementation-log-20261119-1
+    source: docs/logs/implementation-log-20261119-1.md
+    target: docs/logs/implementation-log-20261119-1.md
+    description: Non-normative record of import formats, recovery and restricted Local API readback.
 
 surfaces:
   active:
@@ -107,7 +115,7 @@ sections:
       steps:
         - Compare full expected and observed source-identity sets and per-collection counts; detect missing, extra and duplicate imports independently of the in-memory checkpoint.
         - Reread content, relation IDs/cardinality/order, media bytes/metadata and locale fields with fallback disabled; compare explicit source values and agreed transforms.
-        - Exercise interrupted or repeated runs when reliable rerun is claimed, and confirm they do not duplicate or silently omit data.
+        - Verify recovery against persisted records and relationships.
         - When requested, follow migrated content through public API and the consuming frontend after reload; pair nextjs for routing/cache/rendering and retain exact source-to-page evidence.
         - Report source/target versions, actions and target, counts and identity reconciliation, failures, rerun results, checks and unverified boundaries with the next supported action.
       validation:
