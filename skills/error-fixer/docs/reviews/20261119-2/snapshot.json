@@ -1,0 +1,30 @@
+{
+  "convention": "SHA-256 of unmodified file bytes; relative to skills/error-fixer",
+  "base": "dc55578598f2af1f60da6bf80e6889fcfff40ea6",
+  "source_and_generated": {
+    "skill.yaml": "d9adec75489c544b7eb9b9cd34c77797a565cabe6f1f41bd93432004826bdb5a",
+    "fragments/overview.md": "c68fb3b1f6646d1310c21c9842361c72acf91a97b5eaf578ca0ed08aa251f2c1",
+    "agents/openai.yaml": "b2d5c695e87cc8ed0e4ee1067d358b7d8a033430ff292bdb8294efa6a3ed66a5",
+    "SKILL.md": "0199758451ceeb035de5230c4db998a21259a13c7d3aa6571b195d22e0682e96",
+    "docs/compile-report.md": "9969136981f7d8ab105b204839a717ab8fa0685be167928c2bbc02315b151ecb"
+  },
+  "packages": {
+    "A": {
+      "version": "0.1.1",
+      "tgz_sha256": "b1fa9ec92a49959eda9c648347b67691a051a10091d37c263e80f2d84548b627",
+      "files": {
+        "SKILL.md": "9243e2fb1fc844b2f64569cba93bb6bf37660d326a6538f9a2063957627a5a92",
+        "agents/openai.yaml": "b2d5c695e87cc8ed0e4ee1067d358b7d8a033430ff292bdb8294efa6a3ed66a5"
+      }
+    },
+    "C": {
+      "version": "0.1.2",
+      "tgz_sha256": "1ba93e0ec29fd3fc8a389099a62b4c857079395bff63753d24203819b1ba1c9d",
+      "files": {
+        "SKILL.md": "0199758451ceeb035de5230c4db998a21259a13c7d3aa6571b195d22e0682e96",
+        "agents/openai.yaml": "b2d5c695e87cc8ed0e4ee1067d358b7d8a033430ff292bdb8294efa6a3ed66a5"
+      }
+    }
+  },
+  "criteria_sha256": "074a5da0f54c78594f9cdd46b42d4dce52e4f2bc97c55ee5d5c3b727962c508b"
+}

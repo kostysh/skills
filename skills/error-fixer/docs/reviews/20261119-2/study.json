@@ -1,0 +1,287 @@
+{
+  "skill": "error-fixer",
+  "study": "20261119-second-look",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "base": "skills/error-fixer/docs/reviews/20261119-2",
+  "source": "assessment.md",
+  "runs": {
+    "h27": {
+      "task": "p34",
+      "variant": "A",
+      "sha256": "6835db181aaa3c15dd0c90620e449fd373e79874831c48908705b7c3b2eee9ac",
+      "source": "evidence.tar.gz",
+      "ratings": {
+        "judge_sorrel": {
+          "assessor": "judge_sorrel",
+          "rubric": "criteria.md@074a5da0f54c",
+          "packet": "assigned-evidence-v1",
+          "score": "PASS",
+          "source": "assessment.md",
+          "label": "T41"
+        }
+      }
+    },
+    "n58": {
+      "task": "p34",
+      "variant": "C",
+      "sha256": "c7414f6fba4b60f5ce5672578402139dca7b4740e436e46986be8873ec0938c9",
+      "source": "evidence.tar.gz",
+      "ratings": {
+        "judge_sorrel": {
+          "assessor": "judge_sorrel",
+          "rubric": "criteria.md@074a5da0f54c",
+          "packet": "assigned-evidence-v1",
+          "score": "PASS",
+          "source": "assessment.md",
+          "label": "E72"
+        }
+      }
+    },
+    "c46": {
+      "task": "k83",
+      "variant": "A",
+      "sha256": "3cc5eab88bceaa5d5398f8cd62f6faf3d21b8f8f7b8712a6591dfde028d3a3b9",
+      "source": "evidence.tar.gz",
+      "ratings": {
+        "judge_sorrel": {
+          "assessor": "judge_sorrel",
+          "rubric": "criteria.md@074a5da0f54c",
+          "packet": "assigned-evidence-v1",
+          "score": "FAIL",
+          "source": "assessment.md",
+          "label": "P35"
+        },
+        "judge_amber": {
+          "assessor": "judge_amber",
+          "rubric": "criteria.md@074a5da0f54c",
+          "packet": "assigned-evidence-v1",
+          "score": "FAIL",
+          "source": "assessment.md",
+          "label": "P35"
+        }
+      }
+    },
+    "p61": {
+      "task": "k83",
+      "variant": "C",
+      "sha256": "ce66b10827ab50d93ca4bcdb2b5a204f25573f051282e6d13eb7ed1960dcac45",
+      "source": "evidence.tar.gz",
+      "ratings": {
+        "judge_sorrel": {
+          "assessor": "judge_sorrel",
+          "rubric": "criteria.md@074a5da0f54c",
+          "packet": "assigned-evidence-v1",
+          "score": "PASS",
+          "source": "assessment.md",
+          "label": "V24"
+        },
+        "judge_amber": {
+          "assessor": "judge_amber",
+          "rubric": "criteria.md@074a5da0f54c",
+          "packet": "assigned-evidence-v1",
+          "score": "PASS",
+          "source": "assessment.md",
+          "label": "V24"
+        }
+      }
+    },
+    "t84": {
+      "task": "v19",
+      "variant": "C",
+      "sha256": "bc19b3e802349b2c4b0c0a50ddb73c59a63afe979d39a8fe95cfc36e0c6ba584",
+      "source": "evidence.tar.gz",
+      "ratings": {
+        "judge_sorrel": {
+          "assessor": "judge_sorrel",
+          "rubric": "criteria.md@074a5da0f54c",
+          "packet": "assigned-evidence-v1",
+          "score": "PASS",
+          "source": "assessment.md",
+          "label": "K63"
+        }
+      }
+    },
+    "s93": {
+      "task": "k83",
+      "variant": "C",
+      "sha256": "81e864d65bf6b7b4fa2e88e58d5168f79f953000b8b93b8d0fb86ce0d645c432",
+      "source": "evidence.tar.gz",
+      "ratings": {
+        "judge_sorrel": {
+          "assessor": "judge_sorrel",
+          "rubric": "criteria.md@074a5da0f54c",
+          "packet": "assigned-evidence-v1",
+          "score": "PASS",
+          "source": "assessment.md",
+          "label": "J57"
+        },
+        "judge_amber": {
+          "assessor": "judge_amber",
+          "rubric": "criteria.md@074a5da0f54c",
+          "packet": "assigned-evidence-v1",
+          "score": "PASS",
+          "source": "assessment.md",
+          "label": "J57"
+        }
+      },
+      "repeatOf": "p61"
+    },
+    "d72": {
+      "task": "k83",
+      "variant": "A",
+      "sha256": "bd0b73fafb9a7cf2a15df1b534b8fe522fd9162c28c3e424fc5f9926f36d4a07",
+      "source": "evidence.tar.gz",
+      "ratings": {
+        "judge_sorrel": {
+          "assessor": "judge_sorrel",
+          "rubric": "criteria.md@074a5da0f54c",
+          "packet": "assigned-evidence-v1",
+          "score": "FAIL",
+          "source": "assessment.md",
+          "label": "A82"
+        },
+        "judge_amber": {
+          "assessor": "judge_amber",
+          "rubric": "criteria.md@074a5da0f54c",
+          "packet": "assigned-evidence-v1",
+          "score": "FAIL",
+          "source": "assessment.md",
+          "label": "A82"
+        }
+      },
+      "repeatOf": "c46"
+    }
+  },
+  "series": [
+    {
+      "id": "first",
+      "comparison": "C/A",
+      "phase": "primary",
+      "rubric": "criteria.md@074a5da0f54c",
+      "packet": "assigned-evidence-v1",
+      "pairs": [
+        {
+          "id": "p34",
+          "task": "p34",
+          "left": [
+            "n58",
+            "judge_sorrel"
+          ],
+          "right": [
+            "h27",
+            "judge_sorrel"
+          ]
+        },
+        {
+          "id": "k83",
+          "task": "k83",
+          "left": [
+            "p61",
+            "judge_sorrel"
+          ],
+          "right": [
+            "c46",
+            "judge_sorrel"
+          ],
+          "reason": "V24 увидел прежнюю чужую оценку. Первичная пара исключена из строгого сравнения при изоляции от других сессий."
+        }
+      ],
+      "source": "assessment.md"
+    },
+    {
+      "id": "repeat-boundary",
+      "comparison": "C/A",
+      "phase": "confirmation",
+      "rubric": "criteria.md@074a5da0f54c",
+      "packet": "assigned-evidence-v1",
+      "pairs": [
+        {
+          "id": "k83-clean",
+          "task": "k83",
+          "left": [
+            "s93",
+            "judge_sorrel"
+          ],
+          "right": [
+            "d72",
+            "judge_sorrel"
+          ]
+        }
+      ],
+      "source": "assessment.md",
+      "limit": "Проверка при явно исключённой навигации по статусам других сессий."
+    }
+  ],
+  "agreement": [
+    {
+      "run": "c46",
+      "rubric": "criteria.md@074a5da0f54c",
+      "packet": "assigned-evidence-v1",
+      "ratings": [
+        "judge_sorrel",
+        "judge_amber"
+      ]
+    },
+    {
+      "run": "p61",
+      "rubric": "criteria.md@074a5da0f54c",
+      "packet": "assigned-evidence-v1",
+      "ratings": [
+        "judge_sorrel",
+        "judge_amber"
+      ]
+    },
+    {
+      "run": "s93",
+      "rubric": "criteria.md@074a5da0f54c",
+      "packet": "assigned-evidence-v1",
+      "ratings": [
+        "judge_sorrel",
+        "judge_amber"
+      ]
+    },
+    {
+      "run": "d72",
+      "rubric": "criteria.md@074a5da0f54c",
+      "packet": "assigned-evidence-v1",
+      "ratings": [
+        "judge_sorrel",
+        "judge_amber"
+      ]
+    }
+  ],
+  "limit": "Синтетические случаи, принудительное применение скила. Исполнитель V24 увидел вывод по прежнему несвязанному исследованию. Повтор на k83 отдельно зафиксирован.",
+  "attempts": [
+    {
+      "id": "review-1",
+      "audit": "0.1.2-second-look",
+      "order": 1,
+      "snapshot": "0199758451ce",
+      "source": "independent-review.md",
+      "handed": "2026-11-19T19:25:08.160Z",
+      "started": "2026-11-19T19:25:20Z",
+      "decided": "2026-11-19T19:29:05.401Z",
+      "verdict": "PASS"
+    }
+  ],
+  "observation": {
+    "version": "0.1.2",
+    "accepted": "2026-11-19T19:29:05.401Z",
+    "through": "2026-11-19T19:29:05.401Z",
+    "released": null,
+    "systematic": false,
+    "defects": [],
+    "source": "independent-review.md"
+  },
+  "reviewer_event": {
+    "role": "independent_audit",
+    "recorded_model": "gpt-6.2-astra",
+    "recorded_effort": "max",
+    "session_start": "2026-11-19T19:25:10.257Z",
+    "first_answer_sha256": "9dfdf916b1cdc724f78bfcf4b3e0569063c2b804af2882d3a5ab946283f227df",
+    "evidence_archive_sha256": "7c43ef2af0380179263722faaac33b55b45059abe5071d3373aa2b20fffb298b",
+    "scope": "stable active bundle and observed trial evidence; supporting clarification of complete_package_read after PASS",
+    "active_effort": "unmeasured"
+  }
+}

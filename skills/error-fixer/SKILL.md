@@ -4,9 +4,9 @@ description: "Diagnose and fix software defects: errors, crashes, failing tests,
   regressions, unexpected behavior, or unsuccessful fixes. Preserve
   diagnosis-only scope. Not for feature work or general code review."
 metadata:
-  source-version: 0.1.1
+  source-version: 0.1.2
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 09547bd189e76b39d25bb33e835159c5d1540c0cc4b5f8e5695da59f519c72ca
+  skillforge-source-hash: eb749fba8450169463ccc1908d8f9e78734a58cb13531958fe285a080ea1d140
 ---
 
 # error-fixer
@@ -74,6 +74,7 @@ Establish a causal explanation for the violated contract.
 2. Before selecting a correction, check available related fixes, working implementations, and results of prior attempts, bounded to the current failure; inspect any explicitly identified predecessor. Read the actual change or diff and its verification evidence, and compare the conditions behind its result with the current conditions.
 3. Reuse, adapt, or reject that prior solution against the current contract. For rejection, briefly state the concrete incompatibility or new evidence; if no applicable predecessor is available, continue causal diagnosis without blocking on history.
 4. If the original environment is unavailable, inspected code and authoritative inputs may still justify a bounded local correction. A plausible adjacent hypothesis alone does not; leave the unreplayed environment explicitly unverified.
+5. **Optional second look.** Consider independent review when inexpensive checks leave competing causes or conflicting observations and choosing the wrong repair would be costly or hard to reverse. Under [Authority](#authority), give an independent person or fresh agent the symptom, proposed cause, primary evidence and pending decision. Ask what could disprove the cause and which observation would distinguish the alternatives. Use the cited evidence to retain, revise or qualify the diagnosis. If review is unavailable or unauthorized, continue diagnosis within scope and state what remains uncertain.
 
 Validation:
 
