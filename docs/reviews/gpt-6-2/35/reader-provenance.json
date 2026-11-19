@@ -1,0 +1,138 @@
+{
+  "receiptArchiveSHA256": "1ed1b000214957a4bd8bfa6cf8b1e66da79f2c2c373f04b4d34b2b506cb9dbbb",
+  "stages": {
+    "preliminary": {
+      "archiveSHA256": "94fb03f3a073262620097888c42d01c2103d689781438565da35aae947b40e5b",
+      "assignedModel": "gpt-6.2-sol",
+      "assignedEffort": "medium",
+      "memoriesDisabled": true,
+      "exit": 0,
+      "changed": [],
+      "inputModesEqualOutputModes": true,
+      "allInstalledMembersMatched": true,
+      "taskSHA256": "7e23a3bd7ed4e193bb0315d28167099b3a6c54c411164876ed6c05adaa8aa4df",
+      "rawAnswerSHA256": "43e3ac9cefe8a53e7c89940f98c9853752963a17d5691453cce91f26d35327ca",
+      "rawEventsSHA256": "efab577dd77c03ee507d71b756c12b6c109189fdc44d3dfa086c46a45405f555",
+      "commands": [
+        {
+          "id": "item_1",
+          "exit": 0
+        },
+        {
+          "id": "item_2",
+          "exit": 0
+        },
+        {
+          "id": "item_3",
+          "exit": 0
+        },
+        {
+          "id": "item_4",
+          "exit": 0
+        },
+        {
+          "id": "item_5",
+          "exit": 0
+        },
+        {
+          "id": "item_6",
+          "exit": 0
+        },
+        {
+          "id": "item_7",
+          "exit": 0
+        },
+        {
+          "id": "item_8",
+          "exit": 0
+        },
+        {
+          "id": "item_9",
+          "exit": 0
+        },
+        {
+          "id": "item_10",
+          "exit": 1
+        }
+      ],
+      "directRootRead": "item_1"
+    },
+    "final": {
+      "archiveSHA256": "170e382eba8a4716428fe92055db6729d7c4fb9227d37edde70d22c045570aea",
+      "assignedModel": "gpt-6.2-sol",
+      "assignedEffort": "medium",
+      "memoriesDisabled": true,
+      "exit": 0,
+      "changed": [],
+      "inputModesEqualOutputModes": true,
+      "allInstalledMembersMatched": true,
+      "taskSHA256": "d16e50ca2572f0d07b7c7ffb3b7f77747f3ecd498892b11e6fa7366c32211bdb",
+      "rawAnswerSHA256": "652310ebce458b1a3986590e60b3fc30e83bb9fbef1223c2e74ad5a4f091324a",
+      "rawEventsSHA256": "43d7161059b99db4661ed197fbc262ce87460ab99741cd77a7bab5888e7b6af2",
+      "commands": [
+        {
+          "id": "item_1",
+          "exit": 0
+        },
+        {
+          "id": "item_2",
+          "exit": 0
+        },
+        {
+          "id": "item_3",
+          "exit": 0
+        },
+        {
+          "id": "item_4",
+          "exit": 0
+        },
+        {
+          "id": "item_5",
+          "exit": 0
+        },
+        {
+          "id": "item_6",
+          "exit": 0
+        },
+        {
+          "id": "item_7",
+          "exit": 0
+        },
+        {
+          "id": "item_8",
+          "exit": 0
+        },
+        {
+          "id": "item_10",
+          "exit": 0
+        },
+        {
+          "id": "item_9",
+          "exit": 0
+        },
+        {
+          "id": "item_11",
+          "exit": 0
+        },
+        {
+          "id": "item_13",
+          "exit": 0
+        },
+        {
+          "id": "item_14",
+          "exit": 0
+        }
+      ],
+      "directRootRead": "item_2",
+      "liveDesktopEvent": "item_10",
+      "liveMapleEvent": "item_9",
+      "formParityEvent": "item_11"
+    }
+  },
+  "technicalAttempt": {
+    "exit": 1,
+    "answerBytes": 0,
+    "reason": "The outer sandbox made the local Codex state database read-only. The runner exited before opening any model session. The recorded successful sessions used the host launcher and workspace-write for the fresh task."
+  },
+  "limits": "Explicit invocation with memory disabled. The host read boundary was shared. The supplied upstream archive contains its own browser observations. This is a guided interop run with a real window, separate from blind scoring. No evidence of reads of grading keys or previous answers in the tool transcript."
+}

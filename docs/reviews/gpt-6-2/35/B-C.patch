@@ -1,0 +1,4 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -162,0 +163 @@
++- Verify the changed boundary in Electron. For renderer access, report the exposed bridge, sandbox, context isolation, and observed Node access.

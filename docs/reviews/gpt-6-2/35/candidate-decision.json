@@ -1,0 +1,6 @@
+{
+  "signedAB": "ff22ade36d13c79de23948ceed8f222c46617e24ff652517317266d86d1e8175",
+  "selected": "- Verify the changed boundary in Electron. For renderer access, report the exposed bridge, sandbox, context isolation, and observed Node access.",
+  "observed": "Во всех четырёх исходных опытах реальный ASAR использовал IPC и состояние на диске. В трёх готовых заключениях отсутствовали подтверждённые сведения, которые требовались владельцу для приёмки renderer. Сохраняем проверку в самом Electron и уточняем состав отчёта только для этой границы.",
+  "selectedAt": "2026-11-18T23:34:57.102331+00:00"
+}

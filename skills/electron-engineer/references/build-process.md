@@ -1,6 +1,6 @@
 # Build Process
 
-Use this reference when defining, implementing, reviewing, or debugging the Electron build pipeline, electron-vite scripts, Forge package/make/publish flow, CI build lanes, source-protection build steps, or packaged artifact validation.
+Use this reference when defining, implementing, reviewing, or debugging the Electron build pipeline, electron-vite scripts, Forge packaging, makers and releases, CI build lanes, source-protection build steps, or packaged artifact validation.
 
 ## Canonical Stack
 
@@ -19,7 +19,7 @@ Do not introduce another packaging or build framework unless:
 
 ## Command Contract
 
-Standard package scripts:
+Example package scripts for electron-vite and Forge 8:
 
 ```json
 {
@@ -29,19 +29,27 @@ Standard package scripts:
     "build": "electron-vite build --outDir=dist",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "publish": "electron-forge publish"
+    "release": "electron-forge release"
   }
 }
 ```
 
-Invoke declared scripts explicitly with the repository package manager (`pnpm run`, `npm run`, or `yarn run`). In particular, bare `pnpm publish` is the registry publisher, not the Forge `publish` script. Keep the semantic contract:
+Invoke the project's declared scripts with its package manager. Forge 7 projects commonly declare `"publish": "electron-forge publish"`. Use `pnpm run publish` to invoke that script. Bare `pnpm publish` publishes the npm package.
 
-- `dev` starts Electron with main/preload builds and renderer dev server.
+- `dev` starts Electron with main/preload builds and a renderer dev server.
 - `preview` builds main, preload, and renderer, then starts Electron against built output.
 - `build` creates production source bundles only.
-- `package` creates the platform app bundle from built output.
-- `make` normally runs package again, then creates installers/archives; `--skip-package` reuses an existing package only when intentionally verified.
-- `publish` normally runs package and make before upload. `--dry-run` saves prepared artifact state without upload; `--from-dry-run` publishes that saved state. Do not hide a prebuild or source-changing lifecycle hook in the latter path.
+- `package` creates the platform app from built output.
+- `make` normally packages the app before running makers. A plain Forge release or publish normally runs make before upload.
+
+Select commands from the installed Forge CLI. The examples use the script names above.
+
+| Installed CLI | Prepare distributables locally | Reuse a previously verified platform app when making | Upload the saved distributables with publication authority |
+| --- | --- | --- | --- |
+| Forge 8.0.1 | `pnpm run make` saves the results of the makers | `pnpm run make --from-package` | `pnpm run release --from-make` |
+| Forge 7.11.x | `pnpm run publish --dry-run` prepares artifacts and saves dry-run state | `pnpm run make --skip-package` | `pnpm run publish --from-dry-run` |
+
+Forge 8.0.1 retains the old command and flags as deprecated aliases. Its `release --from-package` still runs makers. Use the saved make results when the distributable bytes have already been verified.
 
 If Forge output and electron-vite output directories conflict, set electron-vite `outDir` to a stable build directory such as `dist` and keep Forge output in its own `out` directory.
 
@@ -51,14 +59,14 @@ Use this order when the release must publish the verified bytes:
 
 1. Install from the lockfile. For pnpm/Forge use project-local `node-linker=hoisted` as described in [Tooling](tooling-project-structure.md), then validate the dependency layout.
 2. Run applicable lint, process typecheck and tests. Run `pnpm build` (or the repository equivalent) once to produce main/preload/renderer source bundles, including authorized source-protection transforms. Inspect the output.
-3. Run the installed Forge publish dry-run path, e.g. `pnpm run publish --dry-run`. It performs package/make and saves state without upload. Review publisher/hooks for side effects and use only the authorized target/channel. This is a local preparation command, not upload permission.
-4. Perform signing/notarization at the lifecycle stage required by the selected packager/maker (Forge package can sign/notarize the app before make). All byte-changing transforms/signing must precede final hashes. Freeze the resulting package and distributables plus saved dry-run metadata; record hashes, target, versions and source revision.
+3. Inspect the project's scripts and hooks for side effects. Prepare the distributables locally with the command for the installed Forge version in the table.
+4. Perform signing/notarization at the lifecycle stage required by the selected packager/maker (Forge package can sign/notarize the app before make). All byte-changing transforms/signing must precede final hashes. Freeze the resulting package and distributables plus saved make results or dry-run metadata; record hashes, target, versions and source revision.
 5. Audit ASAR, native modules, fuses/integrity, resources and exposure. Smoke-test the exact final app and installer/archive payload where applicable; verify signatures and update metadata. Checks must not alter the frozen artifact. Missing target credentials/runtime leaves that release claim unverified.
-6. Only with existing publication authority, recheck the saved hashes and run `pnpm run publish --from-dry-run` with no source build/prepublish transformation. Verify the published artifact/metadata against those hashes. If bytes change, repeat validation of the changed artifacts before upload.
+6. Only with publication authority for the target and channel, recheck hashes and use the installed CLI's upload command for saved distributables. Keep source builds and byte-changing hooks out of this step. If any bytes change, verify the changed artifacts before upload. Check the published artifacts and metadata against the recorded hashes.
 
-An equivalent immutable-artifact promotion flow is valid. Ordinary local package/make work can run a source build followed by package or make; do not confuse it with a frozen release. Running plain make after package smoke or plain publish after make may recreate the app and invalidate the earlier evidence. Use `--skip-package` only with an intentionally retained package; it alone does not make a later plain publish immutable. Verify flags and saved-state behavior with the installed Forge CLI.
+An equivalent process that promotes the same verified bytes is valid. For local package or make tasks, stop after the requested artifact and checks. Plain make after package smoke or plain release after make may rebuild the artifact that passed verification.
 
-Sources: [Forge CLI](https://www.electronforge.io/cli), [build lifecycle](https://www.electronforge.io/core-concepts/build-lifecycle).
+[Forge 8 make](https://github.com/electron/forge/blob/48f38bb11debbd16737071f20784ff9c09ec502c/packages/api/core/src/api/make.ts), [Forge 8 release](https://github.com/electron/forge/blob/48f38bb11debbd16737071f20784ff9c09ec502c/packages/api/core/src/api/release.ts), [Forge 7 CLI](https://www.electronforge.io/cli).
 
 ## electron-vite Practices
 
@@ -105,11 +113,7 @@ Use [Source Protection](source-protection.md) for the full threat model and audi
 
 ## Forge Packaging and Distribution
 
-Use Forge after the electron-vite source build:
-
-- `package` creates the OS app bundle.
-- `make` packages again by default; the command contract above owns intentional reuse.
-- `publish` normally packages/makes again; the frozen dry-run/from-dry-run flow above owns publishing verified bytes.
+Use Forge after the electron-vite source build. Follow the command table above for artifact reuse and publication.
 
 Forge is also the place to wire platform makers, publishers, signing/notarization hooks, icons, native module rebuilds, and package lifecycle hooks. Keep custom logic small and documented; if source bundling logic grows, move it back to electron-vite config or a prebuild step rather than hiding it inside Forge hooks.
 
@@ -124,7 +128,7 @@ Recommended lanes:
 | PR | install, lint, typecheck, unit/IPC/preload/renderer tests, `electron-vite build` |
 | Nightly | PR lane plus `electron-forge package`, source exposure audit, packaged smoke |
 | Beta | signed prerelease package, `electron-forge make`, fake update feed, staged channel |
-| Stable | source build, prepared/signed dry-run artifacts, hashes/SBOM/provenance, exact-artifact smoke, authorized saved-state publication |
+| Stable | source build, prepared/signed distributables, hashes/SBOM/provenance, exact-artifact smoke, authorized saved-state publication |
 | Hotfix | same release gates as stable, scoped to the patched branch |
 | Dry run | stable lane without public publish |
 

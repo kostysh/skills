@@ -5,9 +5,9 @@ description: Build, modernize, review, test, package, and release Electron apps
   IPC, security, protocols, OS integration, storage, source exposure, builds,
   performance, observability, signing, notarization, updates, and migrations.
 metadata:
-  source-version: 0.1.11
+  source-version: 0.1.12
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: eccda75bd49ae062fd6feb093e54e67ec255d2d9fd0053a3164aa3d932479c93
+  skillforge-source-hash: 1797e802e210e3303255595aba9e0800ef91b93dbc4a433b6dcde012ee691841
 ---
 
 # electron-engineer
@@ -47,7 +47,9 @@ Use the first boundary-safe desktop surface: built-in Electron APIs, native OS b
 
 ## Version and Evidence Boundary
 
-Inspect installed Electron, electron-vite, Forge, package manager and target OS/architecture before choosing APIs. The 2026-09-09 official check uses Electron 44 stable, electron-vite 5 and Forge 7.11; this is a source baseline, not an upgrade instruction. Keep existing Electron 43/electron-vite 4 branches when applicable. Electron 44 requires macOS 13+ and removes 32-bit Linux/Windows targets; verify the actual distribution matrix before proposing a bump. Distinguish the Node host running CLI/install scripts (Electron package requires >=22.12) from Electron bundled Node/V8. electron-vite 5 declares Node ^20.19 or >=22.12 and Vite 5/6/7 compatibility; new hosts should use a compatible supported Node LTS.
+Inspect the project's Electron and build-tool versions, package manager, OS and architecture before choosing APIs. Keep the installed supported branch unless the task calls for an upgrade. For example, Electron 44 raised the macOS minimum to 13 and stopped publishing Windows x86 and Linux armv7l binaries. Check the distribution targets before changing majors.
+
+Check build tools against the host Node version. Electron 45.0.0's npm installer requires Node >=22.12.0 and Forge CLI 8.0.1 requires >=22.13.0. Electron 45.0.0 itself embeds Node 24.22.0. Both electron-vite 5.0.0 and 6.0.0 declare Node `^20.19.0 || >=22.12.0`. Their Vite peers are 5–7 and 6–8 respectively. Use a supported host Node LTS that meets the installed tools' requirements.
 
 ## Default Architecture
 
@@ -97,7 +99,7 @@ For normal app renderers:
 
 ## Tooling Defaults
 
-Use the canonical split from [Build Process](references/build-process.md): electron-vite owns dev/preview/build for main, preload, and renderer source; Electron Forge owns package/make/publish for distributable artifacts. Use another build or packaging stack only when the existing project already commits to it or a documented product constraint requires it.
+Use the canonical split from [Build Process](references/build-process.md): electron-vite owns dev/preview/build for main, preload, and renderer source; Electron Forge packages the built app, makes distributables, and handles publication. Use another build or packaging stack only when the existing project already commits to it or a documented product constraint requires it.
 
 ## Reference Navigation
 
@@ -160,7 +162,7 @@ Prove the changed boundary and produce a concise, useful final answer.
 
 Validation:
 
-- Verification matches the changed Electron boundary, not only browser dev mode.
+- Verify the changed boundary in Electron. For renderer access, report the exposed bridge, sandbox, context isolation, and observed Node access.
 - Final output is concise and names any validation gap.
 
 ## Interop priority
@@ -217,7 +219,7 @@ Maintain this skill through skill.yaml, fragments, references, and skill-source-
 - [Security, IPC, and Preload](references/security-ipc-preload.md) — Read this when configuring BrowserWindow security, preload APIs, IPC contracts, sender validation, CSP, navigation policy, or external URL handling.
 - [Tooling and Project Structure](references/tooling-project-structure.md) — Read this when shaping project layout, package boundaries, ESM/CJS strategy, monorepo layout, or native-module boundaries.
 - [TypeScript in Electron](references/typescript-in-electron.md) — Read this when configuring TypeScript for Electron main, preload, renderer, utility, or shared code; designing typed IPC/preload/window APIs; choosing tsconfig/moduleResolution/types; typing electron-vite env/imports/assets; handling ESM/CJS output; using decorators; or setting typecheck gates.
-- [Build Process](references/build-process.md) — Read this when defining, implementing, reviewing, or debugging the Electron build pipeline, electron-vite scripts, Forge package/make/publish flow, CI build lanes, source-protection build steps, or packaged artifact validation.
+- [Build Process](references/build-process.md) — Read this when defining, implementing, reviewing, or debugging the Electron build pipeline, electron-vite scripts, Forge packaging, makers and releases, CI build lanes, source-protection build steps, or packaged artifact validation.
 - [Renderer Integration](references/renderer-integration.md) — Read this when integrating React, Vite, routing, custom app protocols, dev/prod renderer origins, CSP differences, or renderer test doubles.
 - [Native OS Integration](references/native-os-integration.md) — Read this when designing or reviewing menus, tray, dock/taskbar, shortcuts, dialogs, clipboard, downloads, drag-and-drop, notifications, desktop capture, screen/display behavior, power APIs, dark mode, accessibility, or other native OS features.
 - [Data, Storage, and Native Integration](references/data-storage-native.md) — Read this when handling app paths, config files, local state, secrets, SQLite, safeStorage, file import/export, or native modules.

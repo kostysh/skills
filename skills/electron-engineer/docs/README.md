@@ -27,5 +27,6 @@
 | [logs/implementation-log-20260428-7.md](logs/implementation-log-20260428-7.md) | N/A | PASS |
 | [logs/implementation-log-20260622-1.md](logs/implementation-log-20260622-1.md) | N/A | PASS |
 | [logs/implementation-log-20260715-1.md](logs/implementation-log-20260715-1.md) | Direct operator request | Independent scoped PASS |
+| [Ревизия для GPT‑6.2](logs/implementation-log-20261119-1.md) | Строка 35 общего плана | Авторская проверка и рабочий стык 26 → 35 завершены. |
 
 - [Общий журнал FRAMEWORKS-20260909-v1](../../../docs/logs/implementation-log-20260909-1.md) — текущая доработка; supporting repository record, не зависимость установленного скилла.

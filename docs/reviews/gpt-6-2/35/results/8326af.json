@@ -1,0 +1,303 @@
+{
+  "variant": "C",
+  "case": "holdout",
+  "launcher": "codex exec --ephemeral --sandbox workspace-write",
+  "assigned_model": "gpt-6.2-sol",
+  "assigned_reasoning": "medium",
+  "task": "Работай только в предоставленном текущем каталоге. \n\nПримени локальный ./SKILL.md. Владелец поручил проверить выпуск формы по desk.md и решить, готов ли он для названной смены. В launch.md есть способ выполнить обычные действия в собранном приложении. Используй выданные сборку и тестовые значения. Нужны наблюдаемые результаты, граница проверки и решение в ответе. Разрешена локальная проверка, без правок или публикации.\n",
+  "input_file_sha256": {
+    "SKILL.md": "603319b75d2852f54155ad17249a9b4dd5e785b39a72f04e62928cec066b6cb3",
+    "agents/openai.yaml": "8f2b928a552d3f18cd33811d6fadd4c67bffd91015fd5a383d2404fc0b8fe2f1",
+    "desk.md": "d26e117753b96f565adec843350791f2d7a2042048565d256657593f5785851d",
+    "distribution/index.html": "5060b1357d7cf1becf0c3bd849915e86de2b8f12cec640c081808cf21eee9088",
+    "distribution/main.cjs": "3ab79dd46783c7dd411f10b7487359c8355a2df437910b30759d7e7e932259be",
+    "distribution/package.json": "4ad754552033141128352fdb26a9bc32004c9cd6ab91c73773e49f7cdf33b512",
+    "distribution/preload.cjs": "3c326a6f8a99a67e0941eeda2179e9e431d341c6243a0b122b154fd784ac5a69",
+    "distribution/shift.asar": "784f4a3075c7b3c0e100160befabf7756c34788df0f208ab2fd730811b170687",
+    "launch.md": "a5947f593ad8a13770e0f414a0fadf33b9ed784b1e2196591bd63657c6e4c85e",
+    "references/architecture.md": "fa05f1ef09e5e2b1da643f4298a87f024f09717daf28fee44cf33a5d4606829f",
+    "references/build-process.md": "bf877a1a454c1dc7abc2a33e5d4ede011bcb6976404024d06072a76318f58dc3",
+    "references/data-storage-native.md": "3550a1b033af8b47c795347a1f9150e641d0aff21ca130bc30c8eac7f5e11014",
+    "references/native-os-integration.md": "0f2e1bf401ede8bbb3d5dc1c10a6007acf24be8df55b9310fd3781044eece2c0",
+    "references/packaging-release-updates.md": "bcaeb046d68ca89f4b757df71cfc198528a64061c157219effcd8042d752dbef",
+    "references/renderer-integration.md": "6b0f11b08f6bd86c1c67d54b40247c9062b23a1904341c45ebbdcfc4e3525e32",
+    "references/review-playbooks.md": "0763e2b7e151dce7ba22f40af60a83b0e99774d7585186426cc111ac65d06b38",
+    "references/security-ipc-preload.md": "66ac17e8574a3162cfaa28e4179539d02e2da53990f0de3943dbd74e990368fe",
+    "references/source-protection.md": "8439e0ce6939ca2ea17e80be4ae740b2aa1ac58a2731f86c8fa97a6c4fd066d2",
+    "references/testing-observability.md": "171d5165855befceb04a59c51bf51e7e3f88693a725cae3edf18465b88488781",
+    "references/tooling-project-structure.md": "83e54f30c968daafcbf606beece9406982889e480d5db6aedcbba15fa1187bc1",
+    "references/typescript-in-electron.md": "ca0b281529f8095e02f5ffbc5462d782a16dcbd5707409090266b2b578bb4e30"
+  },
+  "raw_events_sha256": "4bd57bda517e4840e2f92f8e19d4ff3a673cba517ac3aad337b22090344831fb",
+  "raw_events_bytes": 53397,
+  "process_exit": 0,
+  "tool_and_message_events": [
+    {
+      "type": "agent_message",
+      "text": "Применю локальный `SKILL.md`, сверю условия выпуска в `desk.md` и проверю собранную форму по `launch.md`. Работаю только в текущем каталоге, без правок и публикации."
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"pwd\nrg --files --hidden -g '\"'!.git'\"'\ncat SKILL.md desk.md launch.md\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat references/testing-observability.md references/review-playbooks.md'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc 'cat distribution/package.json\nls -la\nfile distribution/shift.asar\nsha256sum distribution/shift.asar'",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"curl --noproxy '*' -sS -i --max-time 20 http://127.0.0.1:42957/oak/weekly\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"curl --noproxy '*' -sS -i --max-time 20 http://127.0.0.1:42957/oak/monthly\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"curl --noproxy '*' -sS -i --max-time 20 http://127.0.0.1:42957/oak/daily\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "command_execution",
+      "command": "/bin/bash -lc \"cat distribution/main.cjs distribution/preload.cjs distribution/index.html\npython -B - <<'PY'\nimport json, pathlib, struct\nroot=pathlib.Path('distribution')\ndata=(root/'shift.asar').read_bytes()\n_, header_size, _, json_size=struct.unpack_from('<4I', data)\nfor name, entry in json.loads(data[16:16+json_size])['files'].items():\n    start=8+header_size+int(entry['offset'])\n    content=data[start:start+entry['size']]\n    print(name, 'matches adjacent file:', (root/name).is_file() and (root/name).read_bytes()==content)\nPY\"",
+      "exit_code": 0,
+      "status": "completed"
+    },
+    {
+      "type": "agent_message",
+      "text": "**Выпуск Oak для указанной смены не готов.** Сборка отклоняет допустимую частоту `weekly`. Кроме того, в HTML выданного ASAR есть заголовок `Oak notifications`, а полей формы и кнопки сохранения нет. [Критерии приёмки]({project}/desk.md) · [HTML окна]({project}/distribution/index.html:1)\n\n| Частота | Результат `notificationSettings.save` | Повторное чтение в `main` |\n|---|---|---|\n| `daily` | Промис разрешился со значением `undefined` | Одна запись с точными значениями `desk@example.invalid`, `true`, `daily` |\n| `weekly` | Промис отклонён с сообщением `Settings could not be saved.` | Ноль записей. По условиям приёмки запись должна сохраниться |\n| `monthly` | Промис отклонён с тем же сообщением | Ноль записей, как и требуется |\n\nВ ASAR обработчик сохранения допускает только `daily`. Во всех трёх запусках объект `notificationSettings` показал один метод `save`, `window.require` был `undefined`, песочница и изоляция контекста были включены. [Обработчик сохранения]({project}/distribution/main.cjs:10)\n\n**Граница проверки.** Локальный диспетчер запустил выданный ASAR в Electron 45.0.0 на Linux x64 с пустым профилем для каждого варианта. Он вызвал метод из renderer и повторно прочитал данные в `main`. Диспетчер вернул `appArchive: true` и `packaged: false`, поэтому результат относится к запуску ASAR. Установочный пакет не проверялся. Подпись и другие платформы вне приёмки. [Порядок запуска]({project}/launch.md)"
+    }
+  ],
+  "changed_file_contents": {},
+  "final_response": "**Выпуск Oak для указанной смены не готов.** Сборка отклоняет допустимую частоту `weekly`. Кроме того, в HTML выданного ASAR есть заголовок `Oak notifications`, а полей формы и кнопки сохранения нет. [Критерии приёмки]({project}/desk.md) · [HTML окна]({project}/distribution/index.html:1)\n\n| Частота | Результат `notificationSettings.save` | Повторное чтение в `main` |\n|---|---|---|\n| `daily` | Промис разрешился со значением `undefined` | Одна запись с точными значениями `desk@example.invalid`, `true`, `daily` |\n| `weekly` | Промис отклонён с сообщением `Settings could not be saved.` | Ноль записей. По условиям приёмки запись должна сохраниться |\n| `monthly` | Промис отклонён с тем же сообщением | Ноль записей, как и требуется |\n\nВ ASAR обработчик сохранения допускает только `daily`. Во всех трёх запусках объект `notificationSettings` показал один метод `save`, `window.require` был `undefined`, песочница и изоляция контекста были включены. [Обработчик сохранения]({project}/distribution/main.cjs:10)\n\n**Граница проверки.** Локальный диспетчер запустил выданный ASAR в Electron 45.0.0 на Linux x64 с пустым профилем для каждого варианта. Он вызвал метод из renderer и повторно прочитал данные в `main`. Диспетчер вернул `appArchive: true` и `packaged: false`, поэтому результат относится к запуску ASAR. Установочный пакет не проверялся. Подпись и другие платформы вне приёмки. [Порядок запуска]({project}/launch.md)",
+  "input_file_modes": {
+    "SKILL.md": "0644",
+    "agents/openai.yaml": "0644",
+    "desk.md": "0664",
+    "distribution/index.html": "0664",
+    "distribution/main.cjs": "0664",
+    "distribution/package.json": "0664",
+    "distribution/preload.cjs": "0664",
+    "distribution/shift.asar": "0664",
+    "launch.md": "0664",
+    "references/architecture.md": "0644",
+    "references/build-process.md": "0644",
+    "references/data-storage-native.md": "0644",
+    "references/native-os-integration.md": "0644",
+    "references/packaging-release-updates.md": "0644",
+    "references/renderer-integration.md": "0644",
+    "references/review-playbooks.md": "0644",
+    "references/security-ipc-preload.md": "0644",
+    "references/source-protection.md": "0644",
+    "references/testing-observability.md": "0644",
+    "references/tooling-project-structure.md": "0644",
+    "references/typescript-in-electron.md": "0644"
+  },
+  "changed_file_modes": {},
+  "long_term_memory_feature": "disabled",
+  "independent_work_product_readback": {
+    "sameProductFilesAsObserver": true,
+    "organizerPreflightOnTheseInputs": {
+      "daily": {
+        "platform": "linux",
+        "arch": "x64",
+        "electron": "45.0.0",
+        "chrome": "156.0.8078.48",
+        "packaged": false,
+        "appArchive": true,
+        "sandbox": true,
+        "isolated": true,
+        "observed": {
+          "title": "Oak notifications",
+          "methods": [
+            "save"
+          ],
+          "nodeGlobal": "undefined",
+          "reply": {
+            "status": "fulfilled",
+            "valueType": "undefined"
+          }
+        },
+        "writes": 1,
+        "readBack": {
+          "email": "desk@example.invalid",
+          "enabled": true,
+          "frequency": "daily"
+        }
+      },
+      "weekly": {
+        "platform": "linux",
+        "arch": "x64",
+        "electron": "45.0.0",
+        "chrome": "156.0.8078.48",
+        "packaged": false,
+        "appArchive": true,
+        "sandbox": true,
+        "isolated": true,
+        "observed": {
+          "title": "Oak notifications",
+          "methods": [
+            "save"
+          ],
+          "nodeGlobal": "undefined",
+          "reply": {
+            "status": "rejected",
+            "reason": "Settings could not be saved."
+          }
+        },
+        "writes": 0,
+        "readBack": null
+      },
+      "monthly": {
+        "platform": "linux",
+        "arch": "x64",
+        "electron": "45.0.0",
+        "chrome": "156.0.8078.48",
+        "packaged": false,
+        "appArchive": true,
+        "sandbox": true,
+        "isolated": true,
+        "observed": {
+          "title": "Oak notifications",
+          "methods": [
+            "save"
+          ],
+          "nodeGlobal": "undefined",
+          "reply": {
+            "status": "rejected",
+            "reason": "Settings could not be saved."
+          }
+        },
+        "writes": 0,
+        "readBack": null
+      }
+    },
+    "participantCommandsAndResults": [
+      {
+        "command": "/bin/bash -lc \"curl --noproxy '*' -sS -i --max-time 20 http://127.0.0.1:42957/oak/weekly\"",
+        "exit": 0,
+        "selectOutput": "HTTP/1.0 200 OK\nServer: BaseHTTP/0.6 Python/3.14.4\nDate: Wed, 18 Nov 2026 23:36:22 GMT\nContent-Type: application/json\nContent-Length: 358\n{\"platform\": \"linux\", \"arch\": \"x64\", \"electron\": \"45.0.0\", \"chrome\": \"156.0.8078.48\", \"packaged\": false, \"appArchive\": true, \"sandbox\": true, \"isolated\": true, \"observed\": {\"title\": \"Oak notifications\", \"methods\": [\"save\"], \"nodeGlobal\": \"undefined\", \"reply\": {\"status\": \"rejected\", \"reason\": \"Settings could not be saved.\"}}, \"writes\": 0, \"readBack\": null}",
+        "fullEventSha": "beb9e511e1d73bc76a8f4c0f2e4fe73069a78abe677dc3379a3d755af1f2efbb"
+      },
+      {
+        "command": "/bin/bash -lc \"curl --noproxy '*' -sS -i --max-time 20 http://127.0.0.1:42957/oak/monthly\"",
+        "exit": 0,
+        "selectOutput": "HTTP/1.0 200 OK\nServer: BaseHTTP/0.6 Python/3.14.4\nDate: Wed, 18 Nov 2026 23:36:23 GMT\nContent-Type: application/json\nContent-Length: 358\n{\"platform\": \"linux\", \"arch\": \"x64\", \"electron\": \"45.0.0\", \"chrome\": \"156.0.8078.48\", \"packaged\": false, \"appArchive\": true, \"sandbox\": true, \"isolated\": true, \"observed\": {\"title\": \"Oak notifications\", \"methods\": [\"save\"], \"nodeGlobal\": \"undefined\", \"reply\": {\"status\": \"rejected\", \"reason\": \"Settings could not be saved.\"}}, \"writes\": 0, \"readBack\": null}",
+        "fullEventSha": "70e5ea02c7fc74ca4b9f0d048cc227e4c4dd7346455e5e0f602e6915b9a42a1f"
+      },
+      {
+        "command": "/bin/bash -lc \"curl --noproxy '*' -sS -i --max-time 20 http://127.0.0.1:42957/oak/daily\"",
+        "exit": 0,
+        "selectOutput": "HTTP/1.0 200 OK\nServer: BaseHTTP/0.6 Python/3.14.4\nDate: Wed, 18 Nov 2026 23:36:23 GMT\nContent-Type: application/json\nContent-Length: 411\n{\"platform\": \"linux\", \"arch\": \"x64\", \"electron\": \"45.0.0\", \"chrome\": \"156.0.8078.48\", \"packaged\": false, \"appArchive\": true, \"sandbox\": true, \"isolated\": true, \"observed\": {\"title\": \"Oak notifications\", \"methods\": [\"save\"], \"nodeGlobal\": \"undefined\", \"reply\": {\"status\": \"fulfilled\", \"valueType\": \"undefined\"}}, \"writes\": 1, \"readBack\": {\"email\": \"desk@example.invalid\", \"enabled\": true, \"frequency\": \"daily\"}}",
+        "fullEventSha": "80c33936a68d1272a2954e4cab67a7682a8d4d41e3e38e94033a9cc6996aeef4"
+      },
+      {
+        "command": "/bin/bash -lc \"cat distribution/main.cjs distribution/preload.cjs distribution/index.html\npython -B - <<'PY'\nimport json, pathlib, struct\nroot=pathlib.Path('distribution')\ndata=(root/'shift.asar').read_bytes()\n_, header_size, _, json_size=struct.unpack_from('<4I', data)\nfor name, entry in json.loads(data[16:16+json_size])['files'].items():\n    start=8+header_size+int(entry['offset'])\n    content=data[start:start+entry['size']]\n    print(name, 'matches adjacent file:', (root/name).is_file() and (root/name).read_bytes()==content)\nPY\"",
+        "exit": 0,
+        "selectOutput": "const { app, BrowserWindow, ipcMain } = require('electron')\nconst { existsSync,readFileSync,writeFileSync } = require('node:fs')\nconst { join } = require('node:path')\napp.enableSandbox()\nconst sessionData=process.argv[2], countMode=process.argv[3]\napp.setPath('userData',sessionData)\napp.whenReady().then(async()=>{\n const win=new BrowserWindow({show:false,webPreferences:{sandbox:true,contextIsolation:true,nodeIntegration:false,preload:join(__dirname,'preload.cjs')}})\n const file=join(sessionData,'settings.json')\n const writes=[]\n ipcMain.handle('notification:save',async(event,input)=>{\n   if(event.senderFrame!==win.webContents.mainFrame) return {ok:false,reason:'invalid_window'}\n   if(!input || typeof input.email!=='string' || typeof input.enabled!=='boolean' || !['daily'].includes(input.frequency))return {ok:false,reason:'frequency_or_shape'}\n   const record={email:input.email,enabled:input.enabled,frequency:input.frequency}\n   writeFileSync(file,JSON.stringify(record));writes.push(record)\n   return {ok:true}\n })\n await win.loadFile(join(__dirname,'index.html'))\n const choices={daily:{email:'desk@example.invalid',enabled:true,frequency:'daily'},weekly:{email:'desk@example.invalid',enabled:true,frequency:'weekly'},monthly:{email:'desk@example.invalid',enabled:true,frequency:'monthly'}}\n if(!Object.hasOwn(choices,countMode))throw Error('Unknown sample')\n const sample=choices[countMode]\n const observed=await win.webContents.executeJavaScript('(async()=>({title:document.querySelector(\"h1\").textContent,methods:Object.keys(window.notificationSettings),nodeGlobal:typeof window.require,reply:await window.notificationSettings.save('+JSON.stringify(sample)+').then(value=>({status:\"fulfilled\",valueType:typeof value}),error=>({status:\"rejected\",reason:error.message}))}))()')\n console.log('DESKTOP_READ '+JSON.stringify({platform:process.platform,arch:process.arch,electron:process.versions.electron,chrome:process.versions.chrome,packaged:app.isPackaged,appArchive:app.getAppPath().endsWith('.asar'),sandbox:win.webContents.getLastWebPreferences().sandbox,isolated:win.webContents.getLastWebPreferences().contextIsolation,observed,writes:writes.length,readBack:existsSync(file)?JSON.parse(readFileSync(file,'utf8')):null}))\n win.destroy();app.quit()\n}).catch(error=>{console.error(error.message);app.exit(1)})\nconst {contextBridge,ipcRenderer}=require('electron')\ncontextBridge.exposeInMainWorld('notificationSettings',{save:async record=>{\n  const result=await ipcRenderer.invoke('notification:save',record)\n  if(!result.ok) throw new Error('Settings could not be saved.')\n}})\n<!doctype html><html lang=\"en\"><meta charset=\"utf-8\"><meta http-equiv=\"Content-Security-Policy\" content=\"default-src 'self'\"><main><h1>Oak notifications</h1></main></html>\nindex.html matches adjacent file: True\nmain.cjs matches adjacent file: True\npackage.json matches adjacent file: True\npreload.cjs matches adjacent file: True",
+        "fullEventSha": "8e0735c898566a9e0e744d6dc8ef9fcfd1479f0354a34a35469dc094a6935427"
+      }
+    ],
+    "changesToInitialFiles": [],
+    "createdFiles": [],
+    "structuredParticipantObservations": [
+      {
+        "rawEventSHA256": "beb9e511e1d73bc76a8f4c0f2e4fe73069a78abe677dc3379a3d755af1f2efbb",
+        "actualReturnedValue": {
+          "platform": "linux",
+          "arch": "x64",
+          "electron": "45.0.0",
+          "chrome": "156.0.8078.48",
+          "packaged": false,
+          "appArchive": true,
+          "sandbox": true,
+          "isolated": true,
+          "observed": {
+            "title": "Oak notifications",
+            "methods": [
+              "save"
+            ],
+            "nodeGlobal": "undefined",
+            "reply": {
+              "status": "rejected",
+              "reason": "Settings could not be saved."
+            }
+          },
+          "writes": 0,
+          "readBack": null
+        }
+      },
+      {
+        "rawEventSHA256": "70e5ea02c7fc74ca4b9f0d048cc227e4c4dd7346455e5e0f602e6915b9a42a1f",
+        "actualReturnedValue": {
+          "platform": "linux",
+          "arch": "x64",
+          "electron": "45.0.0",
+          "chrome": "156.0.8078.48",
+          "packaged": false,
+          "appArchive": true,
+          "sandbox": true,
+          "isolated": true,
+          "observed": {
+            "title": "Oak notifications",
+            "methods": [
+              "save"
+            ],
+            "nodeGlobal": "undefined",
+            "reply": {
+              "status": "rejected",
+              "reason": "Settings could not be saved."
+            }
+          },
+          "writes": 0,
+          "readBack": null
+        }
+      },
+      {
+        "rawEventSHA256": "80c33936a68d1272a2954e4cab67a7682a8d4d41e3e38e94033a9cc6996aeef4",
+        "actualReturnedValue": {
+          "platform": "linux",
+          "arch": "x64",
+          "electron": "45.0.0",
+          "chrome": "156.0.8078.48",
+          "packaged": false,
+          "appArchive": true,
+          "sandbox": true,
+          "isolated": true,
+          "observed": {
+            "title": "Oak notifications",
+            "methods": [
+              "save"
+            ],
+            "nodeGlobal": "undefined",
+            "reply": {
+              "status": "fulfilled",
+              "valueType": "undefined"
+            }
+          },
+          "writes": 1,
+          "readBack": {
+            "email": "desk@example.invalid",
+            "enabled": true,
+            "frequency": "daily"
+          }
+        }
+      }
+    ]
+  }
+}

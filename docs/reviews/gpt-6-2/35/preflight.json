@@ -1,0 +1,239 @@
+{
+  "ordinary": {
+    "daily": {
+      "platform": "linux",
+      "arch": "x64",
+      "electron": "45.0.0",
+      "chrome": "156.0.8078.48",
+      "packaged": false,
+      "appArchive": true,
+      "sandbox": true,
+      "isolated": true,
+      "observed": {
+        "title": "Maple notifications",
+        "methods": [
+          "save"
+        ],
+        "nodeGlobal": "undefined",
+        "reply": {
+          "status": "fulfilled",
+          "valueType": "undefined"
+        }
+      },
+      "writes": 1,
+      "readBack": {
+        "email": "desk@example.invalid",
+        "enabled": true,
+        "frequency": "daily"
+      }
+    },
+    "weekly": {
+      "platform": "linux",
+      "arch": "x64",
+      "electron": "45.0.0",
+      "chrome": "156.0.8078.48",
+      "packaged": false,
+      "appArchive": true,
+      "sandbox": true,
+      "isolated": true,
+      "observed": {
+        "title": "Maple notifications",
+        "methods": [
+          "save"
+        ],
+        "nodeGlobal": "undefined",
+        "reply": {
+          "status": "fulfilled",
+          "valueType": "undefined"
+        }
+      },
+      "writes": 1,
+      "readBack": {
+        "email": "desk@example.invalid",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    },
+    "monthly": {
+      "platform": "linux",
+      "arch": "x64",
+      "electron": "45.0.0",
+      "chrome": "156.0.8078.48",
+      "packaged": false,
+      "appArchive": true,
+      "sandbox": true,
+      "isolated": true,
+      "observed": {
+        "title": "Maple notifications",
+        "methods": [
+          "save"
+        ],
+        "nodeGlobal": "undefined",
+        "reply": {
+          "status": "rejected",
+          "reason": "Settings could not be saved."
+        }
+      },
+      "writes": 0,
+      "readBack": null
+    }
+  },
+  "boundary": {
+    "daily": {
+      "platform": "linux",
+      "arch": "x64",
+      "electron": "45.0.0",
+      "chrome": "156.0.8078.48",
+      "packaged": false,
+      "appArchive": true,
+      "sandbox": true,
+      "isolated": true,
+      "observed": {
+        "title": "Alder notifications",
+        "methods": [
+          "save"
+        ],
+        "nodeGlobal": "undefined",
+        "reply": {
+          "status": "fulfilled",
+          "valueType": "undefined"
+        }
+      },
+      "writes": 1,
+      "readBack": {
+        "email": "desk@example.invalid",
+        "enabled": true,
+        "frequency": "daily"
+      }
+    },
+    "weekly": {
+      "platform": "linux",
+      "arch": "x64",
+      "electron": "45.0.0",
+      "chrome": "156.0.8078.48",
+      "packaged": false,
+      "appArchive": true,
+      "sandbox": true,
+      "isolated": true,
+      "observed": {
+        "title": "Alder notifications",
+        "methods": [
+          "save"
+        ],
+        "nodeGlobal": "undefined",
+        "reply": {
+          "status": "fulfilled",
+          "valueType": "undefined"
+        }
+      },
+      "writes": 1,
+      "readBack": {
+        "email": "desk@example.invalid",
+        "enabled": true,
+        "frequency": "weekly"
+      }
+    },
+    "monthly": {
+      "platform": "linux",
+      "arch": "x64",
+      "electron": "45.0.0",
+      "chrome": "156.0.8078.48",
+      "packaged": false,
+      "appArchive": true,
+      "sandbox": true,
+      "isolated": true,
+      "observed": {
+        "title": "Alder notifications",
+        "methods": [
+          "save"
+        ],
+        "nodeGlobal": "undefined",
+        "reply": {
+          "status": "fulfilled",
+          "valueType": "undefined"
+        }
+      },
+      "writes": 1,
+      "readBack": {
+        "email": "desk@example.invalid",
+        "enabled": true,
+        "frequency": "monthly"
+      }
+    }
+  },
+  "holdout": {
+    "daily": {
+      "platform": "linux",
+      "arch": "x64",
+      "electron": "45.0.0",
+      "chrome": "156.0.8078.48",
+      "packaged": false,
+      "appArchive": true,
+      "sandbox": true,
+      "isolated": true,
+      "observed": {
+        "title": "Oak notifications",
+        "methods": [
+          "save"
+        ],
+        "nodeGlobal": "undefined",
+        "reply": {
+          "status": "fulfilled",
+          "valueType": "undefined"
+        }
+      },
+      "writes": 1,
+      "readBack": {
+        "email": "desk@example.invalid",
+        "enabled": true,
+        "frequency": "daily"
+      }
+    },
+    "weekly": {
+      "platform": "linux",
+      "arch": "x64",
+      "electron": "45.0.0",
+      "chrome": "156.0.8078.48",
+      "packaged": false,
+      "appArchive": true,
+      "sandbox": true,
+      "isolated": true,
+      "observed": {
+        "title": "Oak notifications",
+        "methods": [
+          "save"
+        ],
+        "nodeGlobal": "undefined",
+        "reply": {
+          "status": "rejected",
+          "reason": "Settings could not be saved."
+        }
+      },
+      "writes": 0,
+      "readBack": null
+    },
+    "monthly": {
+      "platform": "linux",
+      "arch": "x64",
+      "electron": "45.0.0",
+      "chrome": "156.0.8078.48",
+      "packaged": false,
+      "appArchive": true,
+      "sandbox": true,
+      "isolated": true,
+      "observed": {
+        "title": "Oak notifications",
+        "methods": [
+          "save"
+        ],
+        "nodeGlobal": "undefined",
+        "reply": {
+          "status": "rejected",
+          "reason": "Settings could not be saved."
+        }
+      },
+      "writes": 0,
+      "readBack": null
+    }
+  }
+}

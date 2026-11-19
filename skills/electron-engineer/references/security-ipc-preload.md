@@ -121,6 +121,8 @@ Payload validation does not replace sender validation. A valid payload from the 
 
 ## Preload Design
 
+In Electron 45, a sandboxed preload's `require` loads only `electron`, `electron/renderer`, and `electron/common`. Electron 45 removed the bundled `events`, `timers`, and `url` modules and the `Buffer`, `setImmediate`, and `clearImmediate` globals. For an affected preload, use an equivalent Web API or bundle the required polyfill. Instance methods such as `ipcRenderer.on`, `.once`, and `.off` still work. Check the installed major when maintaining an older app. [Electron 45 sandbox](https://github.com/electron/electron/blob/v45.0.0/docs/tutorial/sandbox.md#preload-scripts)
+
 Good preload APIs are:
 
 - role-specific

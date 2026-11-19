@@ -1,0 +1,118 @@
+{
+  "checkedUTC": "2026-11-19T00:22:23.415084+00:00",
+  "pinnedPackageManifests": {
+    "electron": {
+      "name": "electron",
+      "version": "45.0.0",
+      "engines": {
+        "node": ">= 22.12.0"
+      },
+      "url": "https://registry.npmjs.org/electron/45.0.0",
+      "tarball": "https://registry.npmjs.org/electron/-/electron-45.0.0.tgz",
+      "integrity": "sha512-yjz4uhMBcO6L5X7CWgRMobf2EMJPnb9j4zuf+nu/TU/6E4Sqfx7fn/a2eACo4qngjml/0JnsoZhxYroJLxLd2w=="
+    },
+    "electron-vite": {
+      "name": "electron-vite",
+      "version": "6.0.0",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "peerDependencies": {
+        "vite": "^6.0.0 || ^7.0.0 || ^8.0.0",
+        "@swc/core": "^1.0.0"
+      },
+      "gitHead": "23d7bfc8ba4a0f877ed4ef8ab193f2baedea50c2",
+      "url": "https://registry.npmjs.org/electron-vite/6.0.0",
+      "tarball": "https://registry.npmjs.org/electron-vite/-/electron-vite-6.0.0.tgz",
+      "integrity": "sha512-zafg2uizgll7jdx0BNDkkzO/SowsUBsiHqYN3v9Ieq7XPDHreRGZ4G9IRY/+RslgBktpLOjLM4jlP+IVpV0BGw==",
+      "publishedBytesVerified": true
+    },
+    "@electron-forge/cli": {
+      "name": "@electron-forge/cli",
+      "version": "8.0.1",
+      "engines": {
+        "node": ">= 22.13.0"
+      },
+      "gitHead": "48f38bb11debbd16737071f20784ff9c09ec502c",
+      "url": "https://registry.npmjs.org/@electron-forge/cli/8.0.1",
+      "tarball": "https://registry.npmjs.org/@electron-forge/cli/-/cli-8.0.1.tgz",
+      "integrity": "sha512-zbkmgt7vtL8OBY7YDwVizhCfAHJLpmQtA35iOKGWPpLWRZbGADVyIUZz3QZrbc2V81/BkrBerURIBXdd/fnyhQ==",
+      "publishedBytesVerified": true
+    },
+    "@electron/asar": {
+      "name": "@electron/asar",
+      "version": "4.3.2",
+      "engines": {
+        "node": ">=22.12.0"
+      },
+      "gitHead": "e6217019ed4bcf2b4c274123abfc749e94897c9f",
+      "url": "https://registry.npmjs.org/@electron/asar/4.3.2",
+      "tarball": "https://registry.npmjs.org/@electron/asar/-/asar-4.3.2.tgz",
+      "integrity": "sha512-2nwyO3OgmLgkYQe6TzB8FmyrBKGgmXzSO51ozoG2BpHOLPTPdQpBt/zD0MdPkhQr4UqVgw3u09y4uYxgZKhmtg=="
+    },
+    "electron-vite(legacy)": {
+      "name": "electron-vite",
+      "version": "5.0.0",
+      "engines": {
+        "node": "^20.19.0 || >=22.12.0"
+      },
+      "peerDependencies": {
+        "vite": "^5.0.0 || ^6.0.0 || ^7.0.0",
+        "@swc/core": "^1.0.0"
+      },
+      "gitHead": "91368b665518b9ceecf7240ed93c1078bfa54447",
+      "url": "https://registry.npmjs.org/electron-vite/5.0.0",
+      "tarball": "https://registry.npmjs.org/electron-vite/-/electron-vite-5.0.0.tgz",
+      "integrity": "sha512-OHp/vjdlubNlhNkPkL/+3JD34ii5ov7M0GpuXEVdQeqdQ3ulvVR7Dg/rNBLfS5XPIFwgoBLDf9sjjrL+CuDyRQ=="
+    }
+  },
+  "registryLatestAtCheck": {
+    "electron": "45.3.4",
+    "electron-vite": "6.0.0",
+    "@electron-forge/cli": "8.0.1"
+  },
+  "legacyForgeCLI": {
+    "7.11.0": {
+      "url": "https://registry.npmjs.org/@electron-forge/cli/7.11.0",
+      "tarball": "https://registry.npmjs.org/@electron-forge/cli/-/cli-7.11.0.tgz",
+      "integrity": "sha512-N3DeflrbRxgE+qbJcw0Z8piqm2bJbZjvnLCa5S8Jl+28UWFb51+HkOiRWi+Yu2PLJB4pmubaQJU/NOZXw1Udyg==",
+      "gitHead": "55ddb0b5d9eba8e6e15c43315b5c21aa5ed11077",
+      "entries": {
+        "electron-forge-make.js": {
+          "flags": [
+            "--skip-package"
+          ],
+          "sha256": "8948eaf30735b94cab376d66237274dcdc6ae9ad55edb7232d0c849cf4b0de9f"
+        },
+        "electron-forge-publish.js": {
+          "flags": [
+            "--dry-run",
+            "--from-dry-run"
+          ],
+          "sha256": "b90ab2e4d548b9d41b8dece2823e20241e4b9bddfbd457555cfebaef57752248"
+        }
+      }
+    },
+    "7.11.2": {
+      "url": "https://registry.npmjs.org/@electron-forge/cli/7.11.2",
+      "tarball": "https://registry.npmjs.org/@electron-forge/cli/-/cli-7.11.2.tgz",
+      "integrity": "sha512-c+C4ndLfHbxwZuCn9G8iT9wD/woLdaVkoSVjAIbj+0nJhi8UmiVsz/+Gxlj4cvhMRTzBMBxudstLU7RocMikfg==",
+      "gitHead": "f2a3ec8aa9c836aff95fcd83ce9c99842f0cda8a",
+      "entries": {
+        "electron-forge-make.js": {
+          "flags": [
+            "--skip-package"
+          ],
+          "sha256": "8948eaf30735b94cab376d66237274dcdc6ae9ad55edb7232d0c849cf4b0de9f"
+        },
+        "electron-forge-publish.js": {
+          "flags": [
+            "--dry-run",
+            "--from-dry-run"
+          ],
+          "sha256": "b90ab2e4d548b9d41b8dece2823e20241e4b9bddfbd457555cfebaef57752248"
+        }
+      }
+    }
+  }
+}

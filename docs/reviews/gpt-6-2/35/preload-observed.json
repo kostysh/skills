@@ -1,0 +1,46 @@
+{
+  "versions": {
+    "electron": "45.0.0",
+    "chrome": "156.0.8078.48",
+    "node": "24.22.0",
+    "v8": "15.6.75.19-electron.0"
+  },
+  "platform": "linux",
+  "arch": "x64",
+  "preload": {
+    "modules": {
+      "electron": true,
+      "electron/renderer": true,
+      "electron/common": true,
+      "events": false,
+      "timers": false,
+      "url": false
+    },
+    "globals": {
+      "buffer": "undefined",
+      "setImmediate": "undefined",
+      "clearImmediate": "undefined",
+      "process": "object",
+      "global": "object"
+    },
+    "listenerMethods": {
+      "on": "function",
+      "once": "function",
+      "off": "function"
+    },
+    "sandboxed": true,
+    "contextIsolated": true
+  },
+  "renderer": {
+    "require": "undefined",
+    "process": "undefined",
+    "Buffer": "undefined"
+  },
+  "input": {
+    "index.html": "<!doctype html><meta http-equiv=\"Content-Security-Policy\" content=\"default-src 'none'\"><title>Compatibility</title>",
+    "main.cjs": "const { app, BrowserWindow } = require('electron');\nconst path = require('node:path');\napp.setPath('userData', process.argv[2]);\napp.enableSandbox();\napp.whenReady().then(async () => {\n  const w = new BrowserWindow({show:false, webPreferences:{preload:path.join(__dirname,'preload.cjs'),sandbox:true,contextIsolation:true,nodeIntegration:false}});\n  await w.loadFile(path.join(__dirname,'index.html'));\n  const result = await w.webContents.executeJavaScript(\"({ preload: window.compatibility, renderer: { require: typeof window.require, process: typeof window.process, Buffer: typeof window.Buffer } })\");\n  console.log('PROBE '+JSON.stringify({ versions: {electron:process.versions.electron, chrome:process.versions.chrome, node:process.versions.node, v8:process.versions.v8}, platform:process.platform,arch:process.arch,...result }));\n  app.quit();\n}).catch(error=>{ console.error(error); app.exit(1); });\n",
+    "package.json": "{\"name\":\"preload-compatibility-probe\",\"version\":\"1.0.0\",\"main\":\"main.cjs\"}\n",
+    "preload.cjs": "const { contextBridge, ipcRenderer } = require('electron');\nconst modules = {};\nfor (const name of ['electron', 'electron/renderer', 'electron/common', 'events', 'timers', 'url']) {\n  try { require(name); modules[name] = true; } catch { modules[name] = false; }\n}\ncontextBridge.exposeInMainWorld('compatibility', {\n  modules,\n  globals: { buffer: typeof Buffer, setImmediate: typeof setImmediate, clearImmediate: typeof clearImmediate, process: typeof process, global: typeof global },\n  listenerMethods: { on: typeof ipcRenderer.on, once: typeof ipcRenderer.once, off: typeof ipcRenderer.off },\n  sandboxed: process.sandboxed,\n  contextIsolated: process.contextIsolated,\n});\n"
+  },
+  "comment": "Compatibility probe used a distinct unsigned source-folder window, profile, and Xvfb. The production ASAR observations are tracked separately."
+}

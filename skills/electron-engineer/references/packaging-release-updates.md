@@ -4,7 +4,7 @@ Use this reference when signing, notarizing, choosing distribution targets, conf
 
 ## Packaging Baseline
 
-Release behavior is product behavior. Treat packaging config as code that needs review and tests. The source build precedes artifact preparation; publish must consume the frozen verified artifacts without rebuilding. [Build Process](build-process.md) owns the Forge cascades, signing placement and dry-run/from-dry-run sequence.
+Release behavior is product behavior. Treat packaging config as code that needs review and tests. The source build precedes artifact preparation; publish must consume the frozen verified artifacts without rebuilding. [Build Process](build-process.md) owns the Forge cascades, signing placement and version-specific commands for preparing and releasing verified artifacts.
 
 Baseline:
 
