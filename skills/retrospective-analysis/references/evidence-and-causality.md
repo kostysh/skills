@@ -56,6 +56,21 @@ unavailable metrics, and mark the full retrospective incomplete. When coverage
 is partial, label the affected measures partial or unavailable. Identify the
 missing sources or intervals and limit dependent conclusions. An observed zero requires adequate coverage.
 
+## Solo decision receipts
+
+When the scope includes adopted solo decisions, reconcile the collector with
+the stable decision IDs, class, original choice and owner receipts. Count each
+distinct applied decision once. A batch message, replay, confirmation and
+linked rework can refer to the same decision. Count a reversal once when an
+owner changes that decision. Keep held proposals and pending items separate
+from changed decisions. A passing check on an old head provides no evidence
+that the replacement was verified.
+
+Use source coverage for the denominator and observed owner dispositions for
+the changed share and time to confirmation. Use the actual blocked intervals
+for operator wait. When a receipt, time or coverage is missing, show the
+known counts and identify the affected metric as partial or unavailable.
+
 ## Atomic observations
 
 An observation records one evidence-backed event, mismatch, omission, repeated

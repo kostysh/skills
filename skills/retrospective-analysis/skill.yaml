@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: retrospective-analysis
-  source-version: 0.1.7
+  source-version: 0.1.8
   recommended-skill-md-max-bytes: 18000
   description: >-
     Conduct evidence-backed retrospectives of completed work. Use targeted mode
@@ -17,7 +17,7 @@ references:
     source: references/evidence-and-causality.md
     target: references/evidence-and-causality.md
     required: true
-    trigger: Read this for every full evidentiary retrospective and whenever source closure, audit-finding causality, prior-fix verification, deduplication, or attribution to an owning layer is material.
+    trigger: Read for full retrospectives and targeted work on source closure, audit causality, prior fixes, deduplication, solo decision receipts or cause ownership.
   - id: ref-report-remediation
     title: Report, matrix, and remediation plan
     source: references/report-and-remediation-plan.md

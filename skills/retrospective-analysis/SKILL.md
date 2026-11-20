@@ -5,9 +5,9 @@ description: Conduct evidence-backed retrospectives of completed work. Use
   major sessions, or incidents; verify causality, deduplication, prior fixes,
   remediation plans, and approved task handoff.
 metadata:
-  source-version: 0.1.7
+  source-version: 0.1.8
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: aff82b322100110c6b8ccafa7167af8c6d1ee3eac54a7444cacfa50230892bfd
+  skillforge-source-hash: c003db2f10360f694441a447de24cc0eeb84c746220c44e986e006eddc61a85b
 ---
 
 # retrospective-analysis
@@ -174,7 +174,7 @@ Report acceptance does not authorize external tasks. Reuse explicit task-creatio
 Documents, rules, skills, scripts, tasks, and green CI show implemented substrate; only comparable future behavior can demonstrate prevention effectiveness.
 
 ## Required active references
-- [Evidence, causality, and deduplication](references/evidence-and-causality.md) — Read this for every full evidentiary retrospective and whenever source closure, audit-finding causality, prior-fix verification, deduplication, or attribution to an owning layer is material.
+- [Evidence, causality, and deduplication](references/evidence-and-causality.md) — Read for full retrospectives and targeted work on source closure, audit causality, prior fixes, deduplication, solo decision receipts or cause ownership.
 - [Report, matrix, and remediation plan](references/report-and-remediation-plan.md) — Read the mode/output contract before recommendations or a remediation plan; read the full-report and matrix sections for full evidentiary mode only.
 - [Approved task handoff](references/task-routing.md) — Read this when preparing or executing an explicitly requested tracker handoff, or reconciling its result; apply its mode-specific gates before any mutation.
 
