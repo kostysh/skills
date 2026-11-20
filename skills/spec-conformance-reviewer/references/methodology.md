@@ -105,6 +105,15 @@ Resolve source authority in this order:
 
 Tickets and delivery issue bodies are normative only when the project explicitly grants them that authority. Otherwise, use them to locate the owning source and classify unmatched ticket wording as lower-authority context.
 
+For an adopted solo decision policy, tie a material choice to its accepted
+requirement, explicit owner confirmation, or recorded delegated class. Verify
+the class boundary, exclusions and applicable pending limit against the policy
+at the decision. Keep authority to apply a pending choice separate from
+authority to merge the affected head. A missing or contradicted required record
+is an authority finding. After an owner changes a choice, trace the rework
+and the required checks on the replacement head. Earlier results cover their
+original revision.
+
 If sources conflict:
 
 - cite both sources and their identity, owner, status, and applicability;
