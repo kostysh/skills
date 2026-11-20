@@ -1,5 +1,6 @@
 id: GDPR-001
 severity: # P0 | P1 | P2 | P3
+# For projects using closure types, include closure_type with value a, b, c, or d.
 title:
 status: # control_evidenced | confirmed_gap | missing_evidence | accountable_or_specialist_decision_needed | assumption | not_in_scope
 affected_processing_activity:

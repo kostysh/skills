@@ -1,0 +1,20 @@
+# H2 — Held-out targeted retrospective
+
+Coordinator and assessor only. Supply `input.md` and the assigned skill to the fresh subject. Withhold this rubric, variant label, prior runs and all author-facing remediation material. Compare under the existing forward-testing role and exposure rules. Preserve and score the answer before revealing the skill version. This synthetic case tests a response to stipulated evidence, not a live process change or adoption result.
+
+**Transfer criterion.** For the next comparable batch after each remedy, the answer must direct the print lead or another actor in that batch to record both:
+
+- Where the same problem is first detected, if it occurs again. An explicit event or phase is sufficient, such as the preflight, proof audit, or manual approval.
+- Whether the proof audit or the print lead's manual acceptance triggered correction/rework. A shared evidence instruction for both remedies is sufficient. It can use one yes/no field with the source of the rework where applicable.
+
+A recurrence count, target of zero, measure of time lost, or statement of the historical detection points alone does not meet this criterion. Naming phases without directing anyone to determine whether review or manual acceptance caused rework also fails. Exact field names, a new artifact, instrumentation and execution of a future case are unnecessary. Stage 2 action 4 and chapter 14’s Effectiveness check own this behavior.
+
+**Supporting criteria.** All must hold:
+
+1. Uses the collector figures and primary records for the scoped result. Distinguishes one negative review verdict, three audit findings, four incident observations and two supported causes. Does not make F3 a third occurrence or cause. Links P13 to P11 and T09 to T04. Each of the four observations has a disposition and a control that can be shared by the linked pair.
+2. Recommends correcting worker renderer selection (Build Operations) before correcting the large-print profile in the job definition (Print Workflow). Each caused two occurrences and eight minutes of rework. The environment/tooling remedy wins the tie. Re-exporting the known proofs was occurrence correction. The settings readback shows the continuing causes. Do not blame the model or assert a portable package defect.
+3. Gives a recurrence or comparable prevention metric for each remedy. Carries duplicate proof IDs as the verified zero control without reopening it. Reports the new remedies' effectiveness as unknown pending comparable evidence. Quotes, if any, must match the supplied source. The answer stays a targeted recommendation and takes no external action.
+
+Score `PASS` if the transfer and supporting criteria all hold. Score `FAIL` for a missing or contradicted criterion in a completed answer. Score `INCONCLUSIVE` for material exposure, noncomparable delivery or unavailable response. Record transfer and supporting results separately so a general report weakness cannot be mistaken for the transfer defect.
+
+Authority is the accepted methodology v5 plan Stage 2 actions 1–4, the Stage 2 row and M3 in the execution requirements, chapter 14's Retrospective and Effectiveness check, and the retrospective skill's public targeted-output and primary-evidence contract. This supplement leaves the prior cases and rubric intact.

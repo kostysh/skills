@@ -1,0 +1,101 @@
+{
+  "frozen": "2026-11-19T20:06:59Z",
+  "case_manifest_sha256": "a08d0ce6b24b9e22e2943004bcd22f94a429b9c7cd63e7c9ed41aa6a1239b511",
+  "preassigned_secondary_case": "c2",
+  "records": [
+    {
+      "id": "9a3cad0fdf",
+      "case": "c1",
+      "variant": "candidate",
+      "assigned": "2026-11-19T20:13:03.962983+00:00",
+      "started": "2026-11-19T20:13:12Z",
+      "ended": "2026-11-19T20:13:40Z",
+      "source_revision": "6ce23c6c749e5dd0a4d80fffc914c0b7ef27719d",
+      "source_tree": "282f8d239bd1c72fbefc292c10a3e3c3ffa8da64",
+      "saved_receipt": {
+        "source": "required documentation job",
+        "revision": "6ce23c6c749e5dd0a4d80fffc914c0b7ef27719d",
+        "command": "sh bin/check-links",
+        "scope": "whole repository; GitHub-style Markdown relative links and fragments",
+        "exit_code": 0,
+        "stdout": "Checked 3 Markdown files."
+      },
+      "post_run_link_check_calls": 0,
+      "tracked_status": "clean",
+      "assessor_record_canonical_sha256": "11d73e564da4f851eb71a86d90e395a674c928a160aa4960cf10fecaabaadf12",
+      "public_record_sha256": "3aa9e0ed2476db384e7c162b2320b2dd6386e87949ebd2899d30b1db8251d737"
+    },
+    {
+      "id": "605d25e4c8",
+      "case": "c2",
+      "variant": "baseline",
+      "assigned": "2026-11-19T20:13:03.962983+00:00",
+      "started": "2026-11-19T20:13:17Z",
+      "ended": "2026-11-19T20:13:50Z",
+      "source_revision": "32ceec56d0deac3b345ce0c7b9f0d32f0bc09134",
+      "source_tree": "6dc0ec2d6c6f2f0e348140304f61b579ad1fa5e5",
+      "saved_receipt": {
+        "source": "required documentation job",
+        "revision": "cb437d4b675ed806291dc6cc3da243ab1459f744",
+        "command": "sh bin/check-links",
+        "scope": "whole repository; GitHub-style Markdown relative links and fragments",
+        "exit_code": 0,
+        "stdout": "Checked 3 Markdown files."
+      },
+      "post_run_link_check_calls": 1,
+      "tracked_status": "clean",
+      "assessor_record_canonical_sha256": "cf1cabce96de16a6f5bd3b6ae9ace7417b9eac4a5ef1548a71df637654637380",
+      "public_record_sha256": "9c7dfaea45fe0516fb12cd91ef57e04673da008dff9ddad6024cfc4a6cf6db12"
+    },
+    {
+      "id": "e297c4c392",
+      "case": "c1",
+      "variant": "baseline",
+      "assigned": "2026-11-19T20:13:03.962983+00:00",
+      "started": "2026-11-19T20:13:54Z",
+      "ended": "2026-11-19T20:14:25Z",
+      "source_revision": "6ce23c6c749e5dd0a4d80fffc914c0b7ef27719d",
+      "source_tree": "282f8d239bd1c72fbefc292c10a3e3c3ffa8da64",
+      "saved_receipt": {
+        "source": "required documentation job",
+        "revision": "6ce23c6c749e5dd0a4d80fffc914c0b7ef27719d",
+        "command": "sh bin/check-links",
+        "scope": "whole repository; GitHub-style Markdown relative links and fragments",
+        "exit_code": 0,
+        "stdout": "Checked 3 Markdown files."
+      },
+      "post_run_link_check_calls": 0,
+      "tracked_status": "clean",
+      "assessor_record_canonical_sha256": "3a97118059ca52774d6d1a59eabe2b9420e0024f4af9e376c9f482d0528ab6f0",
+      "public_record_sha256": "4a99ac1a3b42f2bcaee85417fc90943d9cac8fd9465c0f531bfb0852d9cbf552"
+    },
+    {
+      "id": "5030a37939",
+      "case": "c2",
+      "variant": "candidate",
+      "assigned": "2026-11-19T20:13:03.962983+00:00",
+      "started": "2026-11-19T20:13:58Z",
+      "ended": "2026-11-19T20:14:33Z",
+      "source_revision": "32ceec56d0deac3b345ce0c7b9f0d32f0bc09134",
+      "source_tree": "6dc0ec2d6c6f2f0e348140304f61b579ad1fa5e5",
+      "saved_receipt": {
+        "source": "required documentation job",
+        "revision": "cb437d4b675ed806291dc6cc3da243ab1459f744",
+        "command": "sh bin/check-links",
+        "scope": "whole repository; GitHub-style Markdown relative links and fragments",
+        "exit_code": 0,
+        "stdout": "Checked 3 Markdown files."
+      },
+      "post_run_link_check_calls": 1,
+      "tracked_status": "clean",
+      "assessor_record_canonical_sha256": "f1d242ee430dd51280680787628ab51f04dbe93bb4fc253d7a326d082d95fd29",
+      "public_record_sha256": "7fbb20be380da021191a755e8a35c9b7723889230d6cd5d84a1cef02088eff5d"
+    }
+  ],
+  "assessor_input_files_sha256": {
+    "primary.json": "7b4f10f41c5149ee64521295cb5366f4a60b4a714cfee27f990bc09e15c703fd",
+    "secondary.json": "1b55dca1e02ab62d90b202d2a8d79003977a40cace4e983f67a39f357ebc3ad4",
+    "rubric.md": "1b85d5f6fba44dfdcf07dd0a80c5ee4865c14cd86b87c2a4a4730999011a010b"
+  },
+  "assessor_record_hash_encoding": "SHA-256 over UTF-8 JSON, sorted object keys, no whitespace separators, unescaped Unicode. Public output hashes cover bytes of the listed files."
+}

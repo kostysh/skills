@@ -1,0 +1,15 @@
+All four export handoffs were accepted on November 12 after correction. Each took six minutes from rejection or incomplete submission to acceptance, for 24 minutes across the four handoffs. That is elapsed time, and the records do not measure staff effort. V3 confirmed acceptance. Both causes remain open, and there has been no comparable close to measure recurrence.
+
+| Finding | Cause and status |
+|---|---|
+| **Receiver rejected E1 and E2** | The runner’s uploader 1.8.0 sent `text/plain` for files declared as `application/json`. The receiver rejected both requests, and manual uploads cleared both handoffs. A replay held the file, declared type, and test receiver constant. Version 1.8.1 sent the correct header, but Beacon’s active runner still pins 1.8.0. The receiver rejection also contradicts the earlier draft’s claim that the service was offline. (`closing.log:11–14,21–24`, `review.log:V1/F1,V2/F2`, `maintenance.log:M1`) |
+| **Inventory was absent from E3 and E4** | Executors followed `close.md` §4, which directs them to request approval before attaching `inventory.md`. Both packets were accepted after the inventory was added. The portable package’s inventory-first checkpoint illustrates a way to prevent this, but Beacon adopted only its work route and check naming. The controlling rule to change is Beacon’s local procedure. (`closing.log:31–32,41–42`, `review.log:V2/F3`, `rules.txt`) |
+
+The primary records reconcile the collector’s two failed audit verdicts and three findings to four occurrences and two causes. The records do not establish whether an earlier author check could have caught either cause. Duplicate names need no follow-up. All four handoffs used the installed preflight, and M2 verified that it rejects a duplicate basename and accepts an ordinary one. (`report-20261112.json`, `review.log:V1–V3`, `maintenance.log:M2`)
+
+**Brief for the delivery planner**
+
+Two independent changes are proposed before the next comparable close. Each is pending approval.
+
+1. **Build tools — update Beacon’s active runner pin to uploader 1.8.1.** The client fix already passed the header replay. The remaining work is to deploy it to Beacon’s runner, confirm the version in use, and verify that a representative JSON export reaches the receiver with `application/json` and succeeds through the ordinary upload path. A standalone test of 1.8.1 leaves deployment unverified. At the next comparable close, check for content-type rejections and manual upload fallback.
+2. **Beacon release operations — revise `close.md` §4.** Require the executor to attach and verify `inventory.md` before requesting approval. Walk through a packet with missing inventory and confirm that the approval request waits until the inventory is attached. At the next comparable close, verify that each packet contained its inventory when approval was first requested.

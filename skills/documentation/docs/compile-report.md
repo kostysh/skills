@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.2.3`
+- Skill source version: `0.2.4`
 
 ## Source files
 - `docs/README.md`
@@ -11,6 +11,7 @@ Generated from `skill.yaml`.
 - `docs/logs/implementation-log-20260716-1.md`
 - `docs/logs/implementation-log-20260908-1.md`
 - `docs/logs/implementation-log-20261118-1.md`
+- `docs/logs/implementation-log-20261119-1.md`
 - `fragments/overview.md`
 - `references/diataxis-guide.md`
 - `skill.yaml`

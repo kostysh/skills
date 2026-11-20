@@ -1,0 +1,164 @@
+{
+  "skill": "documentation",
+  "study": "v5-documentation-controls",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "base": "docs/reviews/evidence/v5-documentation-controls",
+  "source": "records.json",
+  "runs": {
+    "9a3cad0fdf": {
+      "task": "c1",
+      "variant": "candidate",
+      "source": "outputs/9a3cad0fdf.json",
+      "sha256": "3aa9e0ed2476db384e7c162b2320b2dd6386e87949ebd2899d30b1db8251d737",
+      "ratings": {
+        "primary": {
+          "assessor": "assessor-primary",
+          "rubric": "1b85d5f6fba44dfdcf07dd0a80c5ee4865c14cd86b87c2a4a4730999011a010b",
+          "packet": "fixed-v1",
+          "source": "scores/primary.json",
+          "score": "PASS"
+        }
+      }
+    },
+    "605d25e4c8": {
+      "task": "c2",
+      "variant": "baseline",
+      "source": "outputs/605d25e4c8.json",
+      "sha256": "9c7dfaea45fe0516fb12cd91ef57e04673da008dff9ddad6024cfc4a6cf6db12",
+      "ratings": {
+        "primary": {
+          "assessor": "assessor-primary",
+          "rubric": "1b85d5f6fba44dfdcf07dd0a80c5ee4865c14cd86b87c2a4a4730999011a010b",
+          "packet": "fixed-v1",
+          "source": "scores/primary.json",
+          "score": "PASS"
+        },
+        "secondary": {
+          "assessor": "assessor-secondary",
+          "rubric": "1b85d5f6fba44dfdcf07dd0a80c5ee4865c14cd86b87c2a4a4730999011a010b",
+          "packet": "fixed-v1",
+          "source": "scores/secondary.json",
+          "score": "PASS"
+        }
+      }
+    },
+    "e297c4c392": {
+      "task": "c1",
+      "variant": "baseline",
+      "source": "outputs/e297c4c392.json",
+      "sha256": "4a99ac1a3b42f2bcaee85417fc90943d9cac8fd9465c0f531bfb0852d9cbf552",
+      "ratings": {
+        "primary": {
+          "assessor": "assessor-primary",
+          "rubric": "1b85d5f6fba44dfdcf07dd0a80c5ee4865c14cd86b87c2a4a4730999011a010b",
+          "packet": "fixed-v1",
+          "source": "scores/primary.json",
+          "score": "PASS"
+        }
+      }
+    },
+    "5030a37939": {
+      "task": "c2",
+      "variant": "candidate",
+      "source": "outputs/5030a37939.json",
+      "sha256": "7fbb20be380da021191a755e8a35c9b7723889230d6cd5d84a1cef02088eff5d",
+      "ratings": {
+        "primary": {
+          "assessor": "assessor-primary",
+          "rubric": "1b85d5f6fba44dfdcf07dd0a80c5ee4865c14cd86b87c2a4a4730999011a010b",
+          "packet": "fixed-v1",
+          "source": "scores/primary.json",
+          "score": "PASS"
+        },
+        "secondary": {
+          "assessor": "assessor-secondary",
+          "rubric": "1b85d5f6fba44dfdcf07dd0a80c5ee4865c14cd86b87c2a4a4730999011a010b",
+          "packet": "fixed-v1",
+          "source": "scores/secondary.json",
+          "score": "PASS"
+        }
+      }
+    }
+  },
+  "series": [
+    {
+      "id": "control-reuse",
+      "comparison": "candidate/baseline",
+      "phase": "primary",
+      "rubric": "1b85d5f6fba44dfdcf07dd0a80c5ee4865c14cd86b87c2a4a4730999011a010b",
+      "packet": "fixed-v1",
+      "pairs": [
+        {
+          "id": "c1",
+          "task": "c1",
+          "left": [
+            "9a3cad0fdf",
+            "primary"
+          ],
+          "right": [
+            "e297c4c392",
+            "primary"
+          ]
+        },
+        {
+          "id": "c2",
+          "task": "c2",
+          "left": [
+            "5030a37939",
+            "primary"
+          ],
+          "right": [
+            "605d25e4c8",
+            "primary"
+          ]
+        }
+      ]
+    }
+  ],
+  "agreement": [
+    {
+      "run": "605d25e4c8",
+      "rubric": "1b85d5f6fba44dfdcf07dd0a80c5ee4865c14cd86b87c2a4a4730999011a010b",
+      "packet": "fixed-v1",
+      "ratings": [
+        "primary",
+        "secondary"
+      ]
+    },
+    {
+      "run": "5030a37939",
+      "rubric": "1b85d5f6fba44dfdcf07dd0a80c5ee4865c14cd86b87c2a4a4730999011a010b",
+      "packet": "fixed-v1",
+      "ratings": [
+        "primary",
+        "secondary"
+      ]
+    }
+  ],
+  "technicalStarts": [],
+  "attempts": [
+    {
+      "audit": "documentation control reuse",
+      "id": "change-review",
+      "order": 1,
+      "source": "README.md",
+      "snapshot": "c147baa9c5f7441d6ae7c3bc834355b4b49b57557fdb22ea2c3240a13c7f2609",
+      "handed": "2026-11-19T20:17:50Z",
+      "started": "2026-11-19T20:17:57Z",
+      "decided": "2026-11-19T20:21:15Z",
+      "verdict": "PASS",
+      "active": null,
+      "returned": null
+    }
+  ],
+  "observation": {
+    "version": "0.2.4",
+    "accepted": "2026-11-19T20:21:15Z",
+    "through": "2026-11-19T20:21:15Z",
+    "released": null,
+    "defects": [],
+    "systematic": false,
+    "source": "README.md"
+  }
+}

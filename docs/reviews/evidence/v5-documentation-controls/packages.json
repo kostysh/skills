@@ -1,0 +1,43 @@
+{
+  "baseline": {
+    "version": "0.2.3",
+    "archive_sha256": "c5ce5b858c774af34eb005a0078b9622bb836e97759195bf51bcf5d281b58293",
+    "content_hash": "65871107254b00229f6437dbad9d6c6fe28155a1d74094c300b0755fe0c22546",
+    "source_hash": "4f3c6af8435473999b7ddde6f20e7dd6e9ea350fc314965865510f6f6dc6247c",
+    "active_files": {
+      "SKILL.md": {
+        "bytes": 19176,
+        "words": 2652,
+        "sha256": "ffefd3ebc73eb2e245392c2c413d8a0e506c1356444fccddd1effc15dabdd35b"
+      },
+      "references/diataxis-guide.md": {
+        "bytes": 6737,
+        "words": 957,
+        "sha256": "2fd3a9fcbedd9fde5b4b4b06bd003b65d1b812b124299f1469a6420ed4e49d87"
+      }
+    }
+  },
+  "candidate": {
+    "version": "0.2.4",
+    "archive_sha256": "a236cfb898ff393c3d6d43e7e9c2790f42d987f9aa5838d87548ad5e3814b2c4",
+    "content_hash": "c147baa9c5f7441d6ae7c3bc834355b4b49b57557fdb22ea2c3240a13c7f2609",
+    "source_hash": "53588c342aa151910eccf0cef88b30008a3bfdb13b2def17b8ed0a08e99e7b9a",
+    "active_files": {
+      "SKILL.md": {
+        "bytes": 19054,
+        "words": 2631,
+        "sha256": "6337d470e119ab918e6363ef30f819b89179f455e22df6ac0081d3a44b8a3a6a"
+      },
+      "references/diataxis-guide.md": {
+        "bytes": 6737,
+        "words": 957,
+        "sha256": "1473bb2c59e2db5902eeeaf5793143dca8c75ae8b7eb66ebddc017b28dd37528"
+      }
+    }
+  },
+  "basis": {
+    "baseline_git_revision": "53beaffbc97c65e0a33d26071353fb7f1fd674b4",
+    "patch_sha256": "e07725424a401cc996a1fcc2b1b9fe15f1f85b31a75db2ba8735cc4a2efe8880",
+    "compiler_sha256_reported_by_author": "474821e6e53371e58e47248464a6b01260ceae989fd2319c25b5f2b9a2026163"
+  }
+}

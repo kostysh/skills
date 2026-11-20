@@ -63,4 +63,6 @@ Otherwise return the smallest useful review containing:
 6. fake-risk when assessable or limited;
 7. one primary decision, the next owner, and the smallest required artifact, decision, or evidence.
 
+If the project uses closure types, tag each finding (a) test-verifiable blocker, (b) judgment blocker, (c) non-blocking, or (d) outside task (name owner).
+
 Every material conclusion must trace to the concept source, reviewed target, acceptance criterion, or evidence supplied. Keep the review concise unless the user requests a formal report.

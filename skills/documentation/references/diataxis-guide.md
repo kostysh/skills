@@ -120,7 +120,7 @@ project:
 
 1. Select the smallest page or cluster that has a concrete user problem.
 2. Identify its audience, primary need, target state, and authoritative sources.
-3. Apply one bounded improvement and verify its links and user promise.
+3. Apply one bounded improvement and verify it using the main workflow.
 4. Update navigation or companion content only when the change requires it.
 5. Let repeated improvements reveal the durable hierarchy.
 

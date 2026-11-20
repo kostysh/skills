@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: code-reviewer
-  source-version: 0.4.7
+  source-version: 0.4.9
   recommended-skill-md-max-bytes: 20000
   description: >-
     Perform read-only review of PRs, diffs, and local branch changes. Use to find
@@ -59,7 +59,7 @@ references:
     source: references/spec-pass.md
     target: references/spec-pass.md
     required: true
-    trigger: Read this when a linked issue, acceptance criteria, contract, ADR, migration note, or other normative source exists.
+    trigger: Read when a normative source exists or an adopted solo decision policy applies to the diff.
   - id: ref-references-complexity-only
     title: Complexity-only Review
     source: references/complexity-only.md

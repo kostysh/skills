@@ -1,8 +1,8 @@
 # Evidence, causality, and deduplication
 
 Read this reference for every `full evidentiary` retrospective and whenever
-source closure, prior-fix verification, audit causality, or deduplication is
-material.
+source closure, prior-fix verification, audit causality, deduplication, or
+attribution to an owning layer is material.
 
 For targeted work, use the relevant evidence and causal checks with concise
 locators and explicit unknowns. Full source/observation registers, exhaustive
@@ -42,6 +42,35 @@ Unavailable sources are evidence limits. If a missing class could reverse a
 full-retro verdict, the result is `blocked` or explicitly incomplete rather than
 `PASS`.
 
+## Computed summary for full mode
+
+Use an independently computed collector summary for the analyzed scope and
+window. Take figures from the summary and use primary evidence to interpret
+them and verify the underlying classifications. If the summary lacks an
+aggregate, compute it deterministically from its records or the reconciled
+matrix. Reconcile differences in coverage and classification before reporting
+a complete count.
+
+When the summary is missing, deliver supported observations, identify the
+unavailable metrics, and mark the full retrospective incomplete. When coverage
+is partial, label the affected measures partial or unavailable. Identify the
+missing sources or intervals and limit dependent conclusions. An observed zero requires adequate coverage.
+
+## Solo decision receipts
+
+When the scope includes adopted solo decisions, reconcile the collector with
+the stable decision IDs, class, original choice and owner receipts. Count each
+distinct applied decision once. A batch message, replay, confirmation and
+linked rework can refer to the same decision. Count a reversal once when an
+owner changes that decision. Keep held proposals and pending items separate
+from changed decisions. A passing check on an old head provides no evidence
+that the replacement was verified.
+
+Use source coverage for the denominator and observed owner dispositions for
+the changed share and time to confirmation. Use the actual blocked intervals
+for operator wait. When a receipt, time or coverage is missing, show the
+known counts and identify the affected metric as partial or unavailable.
+
 ## Atomic observations
 
 An observation records one evidence-backed event, mismatch, omission, repeated
@@ -54,7 +83,10 @@ attempt, or control. Keep these fields:
 - inference, if any, separately labeled;
 - affected outcome and consequence;
 - status: accepted, duplicate occurrence, rejected, or unresolved;
-- linked problem ID or rejection reason.
+- linked problem ID, original observation ID for a duplicate, or reason for
+  rejection or unresolved status;
+- control that closes the observation, with verification evidence or the check
+  still needed. For a rejection, cite the evidence that disposes of it.
 
 An observation must not combine several causes merely because they appeared in
 one audit paragraph or session episode.
@@ -119,10 +151,17 @@ does not by itself explain the mechanism. If the traces cannot distinguish
 memory loss, interpretation, tool availability, or deliberate bypass, record
 the mechanism as `unknown` and limit the remedy to what the evidence supports.
 
-Possible contributing classes include weak or absent skill instruction, ambiguous
-method, incorrect skill application, missing project rule, absent automated
-check, implementation or test defect, document/code drift, tool limitation, and
-audit-method defect. Assign a class only when primary evidence supports it.
+Assign the supported cause to the responsible layer and route the remedy to
+its owner. Check the environment and tools, harness configuration, portable
+methodology, project adaptation, skill, and requirements or specification.
+In partial adoption, compare the local rule with the actual package rule
+effective for the work before attributing a defect to the package. Cite the
+relevant rule and adoption boundary. Attribute the cause to model behavior
+only when evidence supports it and rules out the other plausible layers. If
+the evidence cannot distinguish them, leave the attribution unknown.
+
+Use more specific tags where helpful, such as skill misuse, a missing automated
+check, implementation or test defect, document/code drift, or audit-method defect.
 
 ## Failed-audit analysis
 
@@ -139,8 +178,9 @@ For every finding:
 For material valid findings, identify whether the independent auditor was the
 first to detect the defect. Compare the author's self-check and its actual
 oracle or scope with the finding's falsifier; do not infer a missing self-check
-merely from a later audit failure. Count audit findings as occurrences, not
-unique bugs, and preserve duplicates and false positives.
+merely from a later audit failure. Keep every finding occurrence, including
+repeats and false positives. Link repeated findings to their original
+observation.
 
 Do not assume every valid artifact defect is caused by the skill used to create
 it. Conversely, repeated findings across artifacts may support a skill or

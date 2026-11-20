@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: gdpr-compliance
-  source-version: 0.2.4
+  source-version: 0.2.5
   recommended-skill-md-max-bytes: 24000
   description: >-
     Audit architecture, specs, plans, or systems for EU GDPR risks involving

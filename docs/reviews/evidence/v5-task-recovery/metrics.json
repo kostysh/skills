@@ -1,0 +1,268 @@
+{
+  "skill": "implementation-discipline",
+  "study": "v5-stage-8-task-recovery",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "base": "docs/reviews/evidence/v5-task-recovery",
+  "source": "README.md",
+  "runs": {
+    "a0bbe55e": {
+      "task": "I1",
+      "variant": "0.2.9",
+      "source": "outputs/i1-a0bbe55e.md",
+      "sha256": "5b948d2917301ed5b297bc1fcf93bc7a400ef2dcf2940c0bec2519173c460904",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f554-1bb6-7491-b62f-098a9ed5a804",
+          "rubric": "initial:I1-I2-frozen",
+          "packet": "initial:anonymous",
+          "source": "scores/primary.json",
+          "score": "FAIL"
+        }
+      }
+    },
+    "e0ff8680": {
+      "task": "I1",
+      "variant": "0.2.10",
+      "source": "outputs/i1-e0ff8680.md",
+      "sha256": "26fd573b319846c0a44ebcc16301578df51e0dfc057cf551b6da2021fe9999f4",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f554-1bb6-7491-b62f-098a9ed5a804",
+          "rubric": "initial:I1-I2-frozen",
+          "packet": "initial:anonymous",
+          "source": "scores/primary.json",
+          "score": "PASS"
+        }
+      }
+    },
+    "e37de62e": {
+      "task": "I2",
+      "variant": "0.2.10",
+      "source": "outputs/i2-e37de62e.md",
+      "sha256": "b7894c17a6197b90cb3972b90a471cb3573c4860495cf54bfa14d50c73afab02",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f554-1bb6-7491-b62f-098a9ed5a804",
+          "rubric": "initial:I1-I2-frozen",
+          "packet": "initial:anonymous",
+          "source": "scores/primary.json",
+          "score": "PASS"
+        },
+        "secondary": {
+          "assessor": "01a1f555-97c8-7ae3-bb22-dd74b1f390d3",
+          "rubric": "initial:I1-I2-frozen",
+          "packet": "initial:anonymous",
+          "source": "scores/secondary.json",
+          "score": "PASS"
+        }
+      }
+    },
+    "fea34916": {
+      "task": "I2",
+      "variant": "0.2.9",
+      "source": "outputs/i2-fea34916.md",
+      "sha256": "106c327319ae302f3162d0814e71745e7c0ef7eb605b88e4ef3fc8fe956b21e2",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f554-1bb6-7491-b62f-098a9ed5a804",
+          "rubric": "initial:I1-I2-frozen",
+          "packet": "initial:anonymous",
+          "source": "scores/primary.json",
+          "score": "PASS"
+        },
+        "secondary": {
+          "assessor": "01a1f555-97c8-7ae3-bb22-dd74b1f390d3",
+          "rubric": "initial:I1-I2-frozen",
+          "packet": "initial:anonymous",
+          "source": "scores/secondary.json",
+          "score": "PASS"
+        }
+      }
+    },
+    "50c1bc73": {
+      "task": "H8",
+      "variant": "0.2.11",
+      "source": "outputs/h8-50c1bc73.md",
+      "sha256": "cb1cb3e7522ec47cd160926fa77791915f0a0d81d7d35cd2baae4b3b21d0f028",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f565-e6cf-7162-8b55-1f641c828d87",
+          "rubric": "confirmation:H8-I2-frozen",
+          "packet": "confirmation:anonymous",
+          "source": "scores/confirmation-primary.json",
+          "score": "PASS"
+        },
+        "secondary": {
+          "assessor": "01a1f567-2f12-7130-bc25-ea770b1d1e8c",
+          "rubric": "confirmation:H8-I2-frozen",
+          "packet": "confirmation:anonymous",
+          "source": "scores/confirmation-secondary.json",
+          "score": "PASS"
+        }
+      }
+    },
+    "7a96c271": {
+      "task": "I2",
+      "variant": "0.2.11",
+      "source": "outputs/i2-7a96c271.md",
+      "sha256": "28643a65ef15df9710d36da9fa778f2163ceae51620ff1bb364ad57db8e33471",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f565-e6cf-7162-8b55-1f641c828d87",
+          "rubric": "confirmation:H8-I2-frozen",
+          "packet": "confirmation:anonymous",
+          "source": "scores/confirmation-primary.json",
+          "score": "PASS"
+        }
+      }
+    },
+    "c29354a9": {
+      "task": "H8",
+      "variant": "0.2.10",
+      "source": "outputs/h8-c29354a9.md",
+      "sha256": "aefc98754ebf82e534e7c3e8393d4d5d16f1061fda59b854af7c49d20bd6d3cc",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1f565-e6cf-7162-8b55-1f641c828d87",
+          "rubric": "confirmation:H8-I2-frozen",
+          "packet": "confirmation:anonymous",
+          "source": "scores/confirmation-primary.json",
+          "score": "PASS"
+        },
+        "secondary": {
+          "assessor": "01a1f567-2f12-7130-bc25-ea770b1d1e8c",
+          "rubric": "confirmation:H8-I2-frozen",
+          "packet": "confirmation:anonymous",
+          "source": "scores/confirmation-secondary.json",
+          "score": "PASS"
+        }
+      }
+    }
+  },
+  "series": [
+    {
+      "id": "initial",
+      "phase": "primary",
+      "comparison": "0.2.10/0.2.9",
+      "rubric": "initial:I1-I2-frozen",
+      "packet": "initial:anonymous",
+      "pairs": [
+        {
+          "id": "initial-I1",
+          "task": "I1",
+          "left": [
+            "e0ff8680",
+            "primary"
+          ],
+          "right": [
+            "a0bbe55e",
+            "primary"
+          ]
+        },
+        {
+          "id": "initial-I2",
+          "task": "I2",
+          "left": [
+            "e37de62e",
+            "primary"
+          ],
+          "right": [
+            "fea34916",
+            "primary"
+          ]
+        }
+      ],
+      "source": "records.json",
+      "limit": "Two synthetic cases with explicit activation. I2 supplies finished checks and tests recovery, with no check-launch coverage."
+    },
+    {
+      "id": "confirmation",
+      "phase": "confirmation",
+      "comparison": "0.2.11/0.2.10",
+      "rubric": "confirmation:H8-I2-frozen",
+      "packet": "confirmation:anonymous",
+      "pairs": [
+        {
+          "id": "confirmation-H8",
+          "task": "H8",
+          "left": [
+            "50c1bc73",
+            "primary"
+          ],
+          "right": [
+            "c29354a9",
+            "primary"
+          ]
+        }
+      ],
+      "source": "records.json",
+      "limit": "One matched synthetic launch case. The separate I2 recovery regression is unpaired and excluded from pair totals."
+    }
+  ],
+  "agreement": [
+    {
+      "run": "e37de62e",
+      "rubric": "initial:I1-I2-frozen",
+      "packet": "initial:anonymous",
+      "ratings": [
+        "primary",
+        "secondary"
+      ]
+    },
+    {
+      "run": "fea34916",
+      "rubric": "initial:I1-I2-frozen",
+      "packet": "initial:anonymous",
+      "ratings": [
+        "primary",
+        "secondary"
+      ]
+    },
+    {
+      "run": "50c1bc73",
+      "rubric": "confirmation:H8-I2-frozen",
+      "packet": "confirmation:anonymous",
+      "ratings": [
+        "primary",
+        "secondary"
+      ]
+    },
+    {
+      "run": "c29354a9",
+      "rubric": "confirmation:H8-I2-frozen",
+      "packet": "confirmation:anonymous",
+      "ratings": [
+        "primary",
+        "secondary"
+      ]
+    }
+  ],
+  "attempts": [
+    {
+      "id": "01a1f556-630d-7422-b556-3d166583a9e4",
+      "audit": "v5-stage-8-implementation-discipline",
+      "order": 1,
+      "snapshot": "0.2.10",
+      "handed": "2026-11-19T19:44:01Z",
+      "decided": "2026-11-19T19:48:17Z",
+      "verdict": "FAIL",
+      "source": "review.md",
+      "returned": {
+        "primary": "skill",
+        "finding": "P2. Long-run recovery can lose stderr and launch attribution",
+        "source": "review.md#p2-long-run-recovery-can-lose-stderr-and-launch-attribution"
+      }
+    },
+    {
+      "id": "01a1f567-ddbf-7a92-9681-66abe28c648a",
+      "audit": "v5-stage-8-implementation-discipline",
+      "order": 2,
+      "snapshot": "0.2.11",
+      "started": "2026-11-19T20:03:07Z",
+      "decided": "2026-11-19T20:06:23Z",
+      "verdict": "PASS",
+      "source": "review-0.2.11.md"
+    }
+  ]
+}

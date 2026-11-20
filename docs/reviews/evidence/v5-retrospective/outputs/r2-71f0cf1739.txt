@@ -1,0 +1,65 @@
+# Cedar dispatch rollout retrospective
+
+**The retained records cannot establish whether the rollback handoff gap recurred less often after the checklist change.** They show one pre-change handoff gap that held publication, an approved checklist revision, and a later dry-run preview. They provide neither the number of comparable publication attempts before and after the change nor the handoff outcomes for those attempts.
+
+The rollout is closed. This account covers November 10 at 08:00 through November 13 at 08:00 UTC. The full retrospective remains incomplete because the collector exports for Cedar and the previous rollout, the remaining task and approval traces, and the harness settings are unavailable. Independent review was unassigned. The records establish the disposition of one publication hold. They leave the overall delivery result, rollout-wide process performance, and checklist effectiveness unknown. (`archive-index.txt`)
+
+## What happened
+
+| UTC | Retained evidence | What it establishes |
+|---|---|---|
+| Nov 10, 20:58 | `console.txt`, line 14 | The backup operator reported that the packet lacked the rollback command. |
+| Nov 10, 21:10 | `review-n10.txt` | The review issued a `FAIL` for the missing command. The reviewer asked the operator for it, and publication was held until the operator supplied it. This is the same documented handoff gap as the console report. The hold duration and eventual publication outcome are unknown. |
+| Nov 11, 11:00 | `checklist.diff` | The approved revision added a requirement to give the backup operator the rollback command before publication. The older checklist is available only through this diff. |
+| Nov 12, 13:20–13:21 | `console.txt`, lines 32–33 | The prepare hook recorded `PREVIEW_COMPLETE` on `queue=dry-run`. The task owner reported that the edit was in the shared repository and that the runner printout was missing from the export. These records establish neither checklist use by the runner nor delivery of the command on a real publication attempt. |
+
+The immediate problem was that the backup operator lacked the command in the packet, so the reviewer had to request it before publication could proceed. Supplying the command resolved the documented hold. The earlier requirements, why the command was omitted, and whether any check should have caught the omission sooner are unknown. The approved revision addresses the handoff directly. Its presence in the shared repository was reported, and its use during a real release remains unverified.
+
+## Check on the next comparable release
+
+1. **Maintainer and release owner.** Use the existing publication approval record to capture whether the backup operator received the rollback command before publication. Confirm during an authorized rehearsal that a missing handoff keeps publication on hold. For comparable real publication attempts, record the number with a missing handoff and the total with a known outcome. Report unknown outcomes separately. For any gap, capture where it was detected, whether review or manual acceptance caused rework, and the resulting delay. Use the same definition across releases. Aim for zero missed handoffs and treat the first well-covered release as a baseline if the historical records remain unavailable.
+
+The retained records contain **one issued negative review verdict, one finding, and one distinct handoff episode**. They establish no systemic root-cause count. The expected result after the revision is zero missed handoffs. The observed result and coverage for comparable post-change attempts are unavailable.
+
+<details>
+<summary>Machine-readable evidence and disposition</summary>
+
+```json
+{
+  "schema": "cedar-dispatch-retrospective",
+  "window_utc": {"start": "Nov 10 08:00", "end": "Nov 13 08:00"},
+  "status": "full retrospective incomplete",
+  "sources": {
+    "archive-index.txt": "Scope and retention authority; independent review unassigned",
+    "checklist.diff": "Approved requirement change; complete earlier checklist unavailable",
+    "review-n10.txt": "Retained issued FAIL and reported disposition of publication hold",
+    "console.txt": "Partial excerpts; operator report, dry-run event, and task-owner statement"
+  },
+  "unavailable": [
+    "Cedar and previous-rollout collector exports",
+    "Remaining task and approval traces",
+    "Harness runtime settings and runner printout",
+    "Independent completeness review"
+  ],
+  "observations": [
+    {"id": "O1", "source": "console.txt:14", "status": "accepted", "problem": "P1", "fact": "Backup operator reported the missing command"},
+    {"id": "O2", "source": "review-n10.txt, Nov 10 21:10 UTC", "status": "same episode as O1", "problem": "P1", "fact": "Review failed; reviewer requested command; publication held until operator supplied it"},
+    {"id": "O3", "source": "checklist.diff, Nov 11 11:00 UTC", "status": "accepted control change", "problem": "P1", "fact": "Pre-publication handoff requirement approved"},
+    {"id": "O4", "source": "console.txt:32", "status": "accepted preview; excluded from live recurrence measure", "problem": "P1", "fact": "PREVIEW_COMPLETE on dry-run queue"},
+    {"id": "O5", "source": "console.txt:33", "status": "accepted report; runtime use unresolved", "problem": "P1", "fact": "Task owner reported shared-repository edit and missing runner printout"}
+  ],
+  "failed_reviews": [
+    {"id": "F1", "source": "review-n10.txt", "verdict": "FAIL", "finding": "Rollback command absent from approval packet", "observation": "O2", "problem": "P1"}
+  ],
+  "problems": [
+    {"id": "P1", "class": "release process", "title": "Missing rollback command at handoff", "observed_impact": "publication held", "severity": "rollout-wide severity unassessed", "systemic_root_cause": null, "historical_status": "documented hold addressed", "prevention_status": "checklist revision approved; live application unverified", "effectiveness": "unknown", "confidence": "high for the documented episode; insufficient for systemic attribution", "recommendation": "R1"}
+  ],
+  "control": {"problem": "P1", "expected_missed_handoffs": 0, "post_change_live_coverage": null, "measured_missed_handoffs": null},
+  "recommendations": [
+    {"id": "R1", "status": "proposed", "owner": "maintainer and release owner", "step": 1, "action": "Verify the publication hold on an omitted handoff and measure missed handoffs per comparable real publication attempt"}
+  ],
+  "counts": {"retained_sources": 4, "observation_records": 5, "same_episode_corroborations": 1, "issued_negative_verdicts_retained": 1, "findings_retained": 1, "distinct_handoff_episodes_retained": 1, "systemic_root_cause_total": null, "recommendations": 1, "steps": 1}
+}
+```
+
+</details>

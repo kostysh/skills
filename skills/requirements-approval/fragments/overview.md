@@ -1,21 +1,20 @@
 ## Outcome and anti-claims
 
-Coordinate an unresolved customer-owned requirement into a traceable accepted decision, consistent project artifacts, and evidence-calibrated workflow state.
+Turn an unresolved decision into a traced owner disposition and consistent owning artifacts.
 
-This documentation-only skill does not grant product or architecture authority, send email, implement document-owner changes, enforce GitHub state, or prove closure from artifacts alone. It orchestrates owners and reports only what current evidence supports.
+Coordinate document owners and report observed state. Product and architecture decisions, email delivery, document edits and GitHub enforcement stay with their authorized owners.
 
 ## Inputs and readiness
 
-Assessment or drafting requires the question source, available project context, and requested scope. Execution additionally requires:
+For assessment or drafting, identify the question source, context and scope. Before execution, identify the decision ID, owner, applicable authority, operation and exact target.
 
-- stable question codes, decision owner, authoritative sources, and precedence;
-- customer language and supplied message/thread data;
-- affected owners, publication rules, exact GitHub targets, and inspected status mapping;
-- explicit authority for each external mutation.
+- For local register or document changes, inspect the current artifact and its owning rules.
+- Use the customer language for requests and the supplied messages for reply assessment.
+- For GitHub, inspect status mappings when used. Apply publication rules when publishing.
 
-Missing execution inputs permit a useful draft, not external writes or verified closure.
+Confirm authority and read back each local or external write. Hold the dependent action when inputs are missing. Continue independent authorized work and draft held actions as useful.
 
-Continue the supported stage using available sources and the user's latest scope or language clarification. Reuse permissions already given for the same action and target; ask only for a material missing input. If a rule prevents a requested transition, name its exact source, applicability, decision owner, and unblock condition rather than requesting generic confirmation.
+Use the latest scope and language clarification. Reuse permissions for the same action and target. If a rule blocks the requested transition, give its source, applicability, owner and missing input.
 
 Workflow authority controls which actions the agent may take. It does not transfer product, architecture, specification, planning, document-version, or customer-decision authority.
 

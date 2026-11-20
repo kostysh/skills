@@ -1,0 +1,10 @@
+## November 16 branch notice retrospective
+
+All four corrected proofs were approved and sent to print after 16 minutes of rework. Two production settings still need correction before the next batch. The proof audit recorded three findings for two clipped return times. Its third finding described the same clipping across both street-facing proofs. The print lead found two missing headings during manual acceptance. The records do not establish why either defect escaped earlier detection. (`collector.json`, `production.txt` L12–L37, `proof-review.txt` A1–A2, `settings-readback.txt` S4)
+
+- **Build Operations** should update the worker image so the production job resolves the bundled renderer 4.2 ahead of 4.1. The controlled replay reproduced clipping on both branches with 4.1 and showed both return times with 4.2. Run a proof through the normal worker path before the batch and reject it if the job resolves 4.1 or either return time is clipped. (`production.txt` L12–L17, `settings-readback.txt` S1)
+- **Print Workflow** should change the large-print job definition to `largeprint-full`. The replay showed that this profile restores the required branch headings. Run both large-print proofs through the normal job and reject the run if it uses `largeprint-short` or either heading is absent. (`production.txt` L23–L31, `settings-readback.txt` S2)
+
+On the next comparable batch, check the first exports before any rework. Look for zero clipped return times and zero missing headings, down from two each, and zero re-export minutes for those defects, down from 16. The replay supports both changes. The next batch will show whether they prevent recurrence in production. (`collector.json`, `settings-readback.txt` S1–S2, S4)
+
+Keep the existing proof-ID check. It ran on all four proofs, and the same-build replay rejected duplicate IDs and accepted distinct IDs. (`settings-readback.txt` S3)

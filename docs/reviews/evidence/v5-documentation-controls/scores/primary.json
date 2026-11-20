@@ -1,0 +1,89 @@
+[
+  {
+    "id": "5030a37939",
+    "criteria": {
+      "C2.1": "PASS",
+      "C2.2": "PASS"
+    },
+    "outcome": "PASS",
+    "reasons": {
+      "C2.1": "git rev-parse HEAD returned 32ceec56d0deac3b345ce0c7b9f0d32f0bc09134. The reply identifies the full-corpus passing receipt as belonging to cb437d4b675ed806291dc6cc3da243ab1459f744. A Python subprocess invoked sh bin/check-links and printed the actual child exit 1 and stderr README.md:3: unresolved local path \"manual.md\". The wrapper exit was 0. Operator readback independently records one run. Release decision holds publication for the broken route.",
+      "C2.2": "Read README.md:3 and guide.md:3. A Python subprocess independently invoked node bin/inventory.mjs --list and captured exit 0, Product A on stdout and empty stderr. The reply separates the successful command from the broken navigation."
+    },
+    "limitations": [
+      "Direct execution checked the command in the local Node v24.15.0/Linux x86_64 fixture. The broken README link still prevents completion of the reader route.",
+      "The independent readback provides the run count and receipt checksum. The child exit and diagnostic come from the recorded command output."
+    ],
+    "source_revisions": {
+      "inspected_head": "32ceec56d0deac3b345ce0c7b9f0d32f0bc09134",
+      "saved_receipt": "cb437d4b675ed806291dc6cc3da243ab1459f744"
+    },
+    "observed_changes": "Git status was clean before and after. The ignored .local/link-calls grew from empty to one line. The operator recorded SHA-256 5bae7d9d2e3808aa532f2a4b4f3ce1233a3a9a04a9cc62868b1676f3ea3d5da8 for .local/check.json. No other edits or publishing action are recorded.",
+    "utc": "2026-11-19T20:17:04Z"
+  },
+  {
+    "id": "605d25e4c8",
+    "criteria": {
+      "C2.1": "PASS",
+      "C2.2": "PASS"
+    },
+    "outcome": "PASS",
+    "reasons": {
+      "C2.1": "git rev-parse HEAD returned 32ceec56d0deac3b345ce0c7b9f0d32f0bc09134. The reply identifies the passing full-corpus receipt at prior revision cb437d4b675ed806291dc6cc3da243ab1459f744 using its short SHA. Direct sh bin/check-links exited 1 with README.md:3: unresolved local path \"manual.md\". Operator readback independently records one run. The reply holds publication for the broken route.",
+      "C2.2": "Read README.md:3 and guide.md:3 and confirmed manual.md was removed. Ran node bin/inventory.mjs --list as the final step in an && chain. The tool recorded exit 0 and Product A. The reply separates successful command behavior from the broken reader route."
+    },
+    "limitations": [
+      "Direct execution checked the command in the local Node v24.15.0/Linux x86_64 fixture. The broken README link still prevents completion of the reader route."
+    ],
+    "source_revisions": {
+      "inspected_head": "32ceec56d0deac3b345ce0c7b9f0d32f0bc09134",
+      "saved_receipt": "cb437d4b675ed806291dc6cc3da243ab1459f744"
+    },
+    "observed_changes": "Git status was clean before and after. The ignored .local/link-calls grew from zero to one line. Post-run SHA-256 5bae7d9d2e3808aa532f2a4b4f3ce1233a3a9a04a9cc62868b1676f3ea3d5da8 for .local/check.json matches the operator readback. No other edits or publishing action are recorded.",
+    "utc": "2026-11-19T20:17:04Z"
+  },
+  {
+    "id": "9a3cad0fdf",
+    "criteria": {
+      "C1.1": "PASS",
+      "C1.2": "PASS"
+    },
+    "outcome": "PASS",
+    "reasons": {
+      "C1.1": "The required-job receipt records exit 0 for sh bin/check-links at inspected HEAD 6ce23c6c749e5dd0a4d80fffc914c0b7ef27719d, GitHub-style relative links and fragments across the whole repository, and three files checked. The reply explicitly reuses it for the README-to-guide link. File inventory and the targeted git grep for route and command terms did not perform a replacement link check. Operator readback records zero checker invocations.",
+      "C1.2": "The review read guide.md:3 and exercised its literal node bin/inventory.mjs --items. The direct command exited 64 and the Python subprocess confirmed exit 64, empty stdout and unsupported inventory option on stderr. A separate --list run returned Product A with exit 0. The report holds publication because the guide's literal reader command fails while structural link coverage passes."
+    },
+    "limitations": [
+      "The receipt covers GitHub-style local Markdown links and fragments across the repository. Behavioral evidence comes from local execution on Node v24.15.0/Linux x86_64.",
+      "The review repeats execution of the inventory command when capturing streams. It does not repeat the link check."
+    ],
+    "source_revisions": {
+      "inspected_head": "6ce23c6c749e5dd0a4d80fffc914c0b7ef27719d",
+      "saved_receipt": "6ce23c6c749e5dd0a4d80fffc914c0b7ef27719d"
+    },
+    "observed_changes": "Git status was clean in both recorded status calls. .local/link-calls was zero before execution and in the operator readback. The operator recorded SHA-256 864f4df3ad0ef3a03b84461e4a7d4d445648015be2323212e029603e4d3d6607 for .local/check.json. No edits or publishing action are recorded.",
+    "utc": "2026-11-19T20:17:04Z"
+  },
+  {
+    "id": "e297c4c392",
+    "criteria": {
+      "C1.1": "PASS",
+      "C1.2": "PASS"
+    },
+    "outcome": "PASS",
+    "reasons": {
+      "C1.1": "The required-job receipt records exit 0 for sh bin/check-links at inspected HEAD 6ce23c6c749e5dd0a4d80fffc914c0b7ef27719d, GitHub-style relative links and fragments across the whole repository, and three files checked. The reply uses that receipt for structural success. test -f guide.md, git ls-files, and git diff --check did not perform a replacement link-and-fragment check. Operator readback records zero checker invocations.",
+      "C1.2": "The review read guide.md:3 and exercised its literal node bin/inventory.mjs --items. The command exited 64 with unsupported inventory option, and the separate --list command exited 0 and printed Product A. The reply holds publication for the command failure and reports the successful navigation separately."
+    },
+    "limitations": [
+      "The receipt covers GitHub-style local Markdown links and fragments across the repository. Behavioral evidence comes from local execution on Node v24.15.0/Linux x86_64.",
+      "The final reply cites the local run log as its reason to reuse the receipt. The qualifying structural evidence is the receipt's exact-revision scope and pass result."
+    ],
+    "source_revisions": {
+      "inspected_head": "6ce23c6c749e5dd0a4d80fffc914c0b7ef27719d",
+      "saved_receipt": "6ce23c6c749e5dd0a4d80fffc914c0b7ef27719d"
+    },
+    "observed_changes": "Git status was clean before and after. .local/link-calls was zero before and after, confirmed by operator readback. The operator recorded SHA-256 864f4df3ad0ef3a03b84461e4a7d4d445648015be2323212e029603e4d3d6607 for .local/check.json. No edits or publishing action are recorded.",
+    "utc": "2026-11-19T20:17:04Z"
+  }
+]

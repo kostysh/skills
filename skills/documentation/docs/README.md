@@ -18,3 +18,4 @@
 - [logs/implementation-log-20260908-1.md](logs/implementation-log-20260908-1.md) — interop и обнаружение DOCX/PDF-владельца; авторская реализация, независимая приёмка в общем контуре.
 - [logs/implementation-log-20260912-1.md](logs/implementation-log-20260912-1.md) — ASTRA-3-SKILLS-v2, source-only журнал исправления P2-02; результаты проверок и независимого аудита см. в журнале. Не входит в emitted package.
 - [logs/implementation-log-20261118-1.md](logs/implementation-log-20261118-1.md) — проверка штатной команды и разрешённого временного обхода на Tally.
+- [logs/implementation-log-20261119-1.md](logs/implementation-log-20261119-1.md) — reuse of current full-corpus structural checks. Independent change review passed.

@@ -1,0 +1,3 @@
+Recorded **D-001** in [decisions.md](/tmp/v5-local-project-taqpiexk/decisions.md) and verified the linked [morning handoff](/tmp/v5-local-project-taqpiexk/morning.md). Use “Save failed” for unknown save errors.
+
+D-001 occupies the available solo batch slot and awaits owner confirmation. Recommend confirming the wording for any later implementation.

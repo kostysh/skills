@@ -1,0 +1,59 @@
+{
+  "case": "I2",
+  "runs": [
+    {
+      "run_id": "fea34916",
+      "criteria": [
+        {
+          "id": "I2.1",
+          "verdict": "PASS",
+          "grounds": "The trace loads the brief, profile, refreshed snapshot, and prior task state before opening the saved receipts or editing files. The checkpoint identifies the launch head 8ec9044 and the current head 83db922, explains the current-head CI timeout, and holds readiness."
+        },
+        {
+          "id": "I2.2",
+          "verdict": "PASS",
+          "grounds": "The receipt read shows archive stdout reporting the subtotal line with exit 0 and ledger stderr reporting the missing quarter column with exit 42, both for 8ec9044. The development log records the results with receipt paths. The 11-line state records the terminal run, summarizes the results, and tracks pending readiness."
+        },
+        {
+          "id": "I2.3",
+          "verdict": "PASS",
+          "grounds": "The complete trace shows zero subject invocations and local edits limited to the state and development log. The final invocation log is exactly archive followed by ledger, each with a terminal newline. All original receipts are verified unchanged, and the trace shows no remote mutation."
+        },
+        {
+          "id": "I2.4",
+          "verdict": "PASS",
+          "grounds": "The local development-log checkpoint addresses Reports directly, identifies both old-head outcomes and the current-head CI timeout, and states that current-head local evidence and CI confirmation are needed. The state gives that next action explicitly. Recovery precedes checkpoint creation."
+        }
+      ],
+      "verdict": "PASS",
+      "graded_at_utc": "2026-11-19T19:43:38Z"
+    },
+    {
+      "run_id": "e37de62e",
+      "criteria": [
+        {
+          "id": "I2.1",
+          "verdict": "PASS",
+          "grounds": "The trace loads the brief, profile, refreshed snapshot, and prior task state before reading the saved receipt contents or editing files. Directory discovery lists receipt files without opening them. The checkpoint identifies the change from 8ec9044 to 83db922 and holds readiness on the current head because CI status is unavailable."
+        },
+        {
+          "id": "I2.2",
+          "verdict": "PASS",
+          "grounds": "The development log records the archived stdout message with exit 0 and the ledger stderr message with exit 42, associates both with 8ec9044, and links to their receipts. The six-line state records completion, links to the evidence, and tracks pending readiness."
+        },
+        {
+          "id": "I2.3",
+          "verdict": "PASS",
+          "grounds": "The complete trace shows zero subject invocations and edits limited to local bookkeeping. The final invocation log is exactly archive followed by ledger, each with a terminal newline. All original receipts are verified unchanged, and the trace shows no remote mutation."
+        },
+        {
+          "id": "I2.4",
+          "verdict": "PASS",
+          "grounds": "The linked local checkpoint for Reports distinguishes the old-head archive pass and ledger failure, current head 83db922, and the CI timeout. The checkpoint calls for current-head local evidence and CI confirmation, and the task state directs handoff and subsequent reassessment. Recovery precedes checkpoint creation."
+        }
+      ],
+      "verdict": "PASS",
+      "graded_at_utc": "2026-11-19T19:43:38Z"
+    }
+  ]
+}

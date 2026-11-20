@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: web-ui-reviewer
-  source-version: 0.2.6
+  source-version: 0.2.7
   recommended-skill-md-max-bytes: 20000
   description: >-
     Review web UI implementation against project rules and Web Interface Guidelines:

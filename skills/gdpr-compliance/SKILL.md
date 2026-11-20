@@ -5,9 +5,9 @@ description: Audit architecture, specs, plans, or systems for EU GDPR risks
   retention, deletion, or sharing of personal data. Produce controls, findings,
   evidence gaps, and handoffs—not legal advice, certification, or policy prose.
 metadata:
-  source-version: 0.2.4
+  source-version: 0.2.5
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 5b6c53fbe81ca47a0eead58da477015b3f4d8dccd90750e094b755efd8fac61e
+  skillforge-source-hash: a7aa6e93e00693517b1c6ae23117fddde4da1bd60488507cc79882b463315c8d
 ---
 
 # gdpr-compliance

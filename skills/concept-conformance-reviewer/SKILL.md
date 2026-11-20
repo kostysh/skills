@@ -6,9 +6,9 @@ description: Review features, specs, plans, acceptance criteria,
   mistaken for observable capability; not for ordinary spec, code, security, or
   domain review.
 metadata:
-  source-version: 0.2.8
+  source-version: 0.2.9
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: dc3e181f4469f2e52eeb6129467dbdb2373069c490e4e19268d00d4a86d44020
+  skillforge-source-hash: 56b282cdf49f8dcdca59c9ee07298cb6265dbd943ad88163751516d59001454d
 ---
 
 # concept-conformance-reviewer
@@ -101,6 +101,8 @@ Otherwise return the smallest useful review containing:
 5. anti-claims;
 6. fake-risk when assessable or limited;
 7. one primary decision, the next owner, and the smallest required artifact, decision, or evidence.
+
+If the project uses closure types, tag each finding (a) test-verifiable blocker, (b) judgment blocker, (c) non-blocking, or (d) outside task (name owner).
 
 Every material conclusion must trace to the concept source, reviewed target, acceptance criterion, or evidence supplied. Keep the review concise unless the user requests a formal report.
 

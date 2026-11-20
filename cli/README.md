@@ -142,11 +142,28 @@ or `--previous-latest` to check published versions; the release workflow does
 this automatically. Replace `YYYYMMDD` with the release date and use an empty
 output directory.
 
-Two independent workflows handle releases: `skills-*` tags publish skill archives
-and a catalog to GitHub Releases; `cli-v<version>` tags publish only the CLI to
-public npm. The CLI selects the stable skills release with the latest publication
-time, ignoring CLI releases and prereleases. The CLI tag must match the package
-version. Tags and publication require an operator command.
+Ordinary `skills-*` tags publish skill archives and a catalog to GitHub
+Releases. The `skills-v5.0.0` tag runs the dedicated methodology workflow.
+It packs the catalog and archives once, installs every archive for validation
+and retains those bytes with `SHA256SUMS` and `SOURCE-COMMIT`. The publish job
+uploads the retained assets as a named prerelease and verifies their readback.
+On retry the built publisher resumes an exact draft by checking present assets
+and uploading missing ones. It checks an already published prerelease without
+changing it. Existing bytes must match the verified distribution.
+Run the workflow manually to obtain the checked archive set in CI without
+publishing it. To build the v5 commands and validate an archive set locally
+before adding release metadata, run:
+
+```sh
+pnpm --filter @kostysh/skills build:release
+pnpm --filter @kostysh/skills pack:skills:v5 --out "$ABSOLUTE_ARCHIVE_DIR" --release skills-v5.0.0 --previous-latest
+pnpm --filter @kostysh/skills verify:skills-release "$ABSOLUTE_ARCHIVE_DIR" skills-v5.0.0
+```
+
+The `cli-v<version>` tags publish the CLI to public npm. The CLI selects the
+latest published stable skills release and skips CLI releases and prereleases.
+Use the named v5 release assets directly for methodology v5. The CLI tag must
+match the package version. Tags and publication require an operator command.
 
 The npm owner must register the package if needed and configure a Trusted
 Publisher for `kostysh/skills`, workflow `publish-cli.yml`, allowing `npm publish`.

@@ -2,15 +2,22 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: requirements-approval
-  source-version: 0.2.4
+  source-version: 0.2.6
   recommended-skill-md-max-bytes: 15000
   description: >-
-    Coordinate customer-owned requirements decisions: triage open questions,
-    research resolvable facts, prepare approval requests, process supplied or
-    Gmail replies, and route accepted decisions into GitHub and authoritative
-    project documents. Use for approval workflows and «согласование требований».
+    Coordinate customer requirements and authorized solo confirmation batches.
+    Triage questions, research facts, prepare requests, process supplied or Gmail
+    replies, and route decisions to project documents and GitHub. Use for approval
+    workflows and «согласование требований».
 fragments:
   overview: fragments/overview.md
+references:
+  - id: ref-solo-batches
+    title: Solo decision batches
+    source: references/solo-batches.md
+    target: references/solo-batches.md
+    required: true
+    trigger: Read for proposed defaults, handoffs or owner batches under an adopted solo decision policy.
 copies:
   - id: copy-agents-openai
     source: agents/openai.yaml
@@ -87,7 +94,7 @@ supporting:
     description: Non-normative blind forward-test prompts, outputs, rubric, and evidence limits.
 surfaces:
   active:
-    requiredReferences: []
+    requiredReferences: [ref-solo-batches]
     optionalReferences: []
   supportingGlobs:
     - docs/*
@@ -96,7 +103,7 @@ surfaces:
 sections:
   startHere:
     - Confirm whether the request is assessment/drafting or authorizes external execution against exact targets.
-    - Match success to the requested stage using the state/output contract; an actionable draft does not require workflow closure.
+    - Use the state/output contract for the requested stage.
     - Identify each question's decision owner, authority, affected artifacts, and downstream owners before interpretation or closure.
     - Use repository-defined source precedence; unresolved equal-authority conflicts block acceptance instead of being resolved by recency or convenience.
     - Route document content and authority decisions to their owning skills; requirements-approval owns triage, traceability, and the closure gate.
@@ -107,9 +114,10 @@ sections:
     - Processing supplied or Gmail customer replies against stable question codes and decision authority.
     - Coordinating accepted decisions through project artifacts, Git, and approval-task state.
     - Auditing approval-item evidence for honest closure.
+    - Preparing or processing a confirmation batch under an adopted solo decision policy.
   whenNotToUse:
     - Non-approval PRD authoring; explicitly hand it to prd-engineer, and route other artifacts to their named owners.
-    - Internal research or issue triage when no decision is customer-owned.
+    - Internal research or triage outside an adopted solo decision policy.
     - Discovery, sales proposals, or optional scope expansion.
     - Sending customer email; this skill only prepares request text.
     - External execution without the required target, authorization, credentials, or source data; return a draft or blocked handoff.

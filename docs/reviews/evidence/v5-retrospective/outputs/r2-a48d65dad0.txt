@@ -1,0 +1,88 @@
+## Cedar dispatch rollout retrospective
+
+The retained evidence confirms **one rollback handoff gap before the checklist revision**. It cannot establish whether the gap recurred less often after the revision. The record covers November 10 at 08:00 through November 13 at 08:00 UTC. The rollout is closed. This retrospective covers that full window with incomplete evidence, and it has no independent completeness review.
+
+### What happened
+
+| UTC | Retained evidence | What it establishes |
+|---|---|---|
+| Nov 10, 20:58 | The backup operator reported that the packet did not contain the rollback command. `console.txt`, line 14 | The backup operator lacked the command in the packet. |
+| Nov 10, 21:10 | The nightly review recorded a `FAIL`. The reviewer asked for the command and held publication until the operator supplied it. `review-n10.txt` | The review caught the same gap and the operator corrected it for that publication attempt. The duration of the hold and the subsequent publication result are unknown. |
+| Nov 11, 11:00 | An approved checklist diff added a requirement to give the backup operator the rollback command before publication. `checklist.diff` | The approved wording changed. The record does not show when the live runner first used it. |
+| Nov 12, 13:20–13:21 | The prepare hook logged `PREVIEW_COMPLETE queue=dry-run`. The task owner reported that the edit was in the shared repository and that the runner printout was missing from the export. `console.txt`, lines 32–33 | A preview completed. The owner’s statement records a repository update and an evidence gap. These entries establish neither a live handoff nor the checklist revision used by the runner. |
+
+### Finding
+
+The missing command in the approval packet led to manual follow-up and a publication hold. The backup operator’s report and the nightly review describe **one occurrence**. The packet itself is unavailable. The records do not explain why the command was missing, which earlier check should have caught the omission, or why it did not. The nightly review is the only retained failed review. Its operational finding is corroborated by the console excerpt, while the exact pre-revision checklist criterion cannot be reconstructed from the approved diff alone.
+
+The operator supplied the command for the observed occurrence. The checklist revision was approved, but its application in a live handoff and its effect on recurrence remain unverified. The archive lacks the process collector exports for Cedar and the previous rollout, the remaining task and approval traces, and the harness runtime settings. There is no reliable count of eligible live handoffs before or after the change and no verified post-change handoff outcome. The dry-run preview supplies neither.
+
+### Follow-up for the maintainer
+
+1. For the next comparable rollout, verify the existing checklist step at the live publication gate. Keep the applied checklist revision and the backup operator’s acknowledgment with the existing approval record. A live attempt without acknowledgment should be held. A repository edit or a completed preview supplies no acceptance evidence for that gate.
+2. Use the same checkpoint for each comparable period. Record how many eligible live publication attempts reached it and how many reached it with the rollback command still unconfirmed. Count attempts held and corrected at that checkpoint as gaps. Compare rates only when both periods have reliable counts. This can test future effectiveness. The Cedar archive cannot supply a baseline rate.
+
+### Evidence reconciliation
+
+The four retained source records support one failed review, one confirmed handoff gap, and one approved checklist revision. The number of post-revision gaps is unknown. The matrix below records the evidence and follow-up for the single confirmed problem.
+
+```json
+{
+  "schema": "cedar-retrospective-v1",
+  "scope": {
+    "rollout": "Cedar dispatch",
+    "start_utc": "Nov 10 08:00",
+    "end_utc": "Nov 13 08:00",
+    "rollout_status": "closed",
+    "scope_complete": false,
+    "independently_reviewed": false
+  },
+  "sources": [
+    {"id": "S1", "record": "archive-index.txt", "authority": "retention and scope record", "disposition": "sets the rollout boundary and identifies missing evidence"},
+    {"id": "S2", "record": "checklist.diff", "authority": "approved wording change", "disposition": "O3"},
+    {"id": "S3", "record": "review-n10.txt", "authority": "contemporaneous review", "disposition": "O2, A1"},
+    {"id": "S4", "record": "console.txt", "authority": "contemporaneous console excerpts and attributed statements", "disposition": "O1, O4, O5, O6"}
+  ],
+  "unavailable": [
+    "Process collector exports for Cedar and the previous rollout",
+    "Remaining task and approval traces",
+    "Harness runtime settings",
+    "Complete pre-revision checklist and reviewed packet",
+    "Runner printout referenced on Nov 12",
+    "Independent retrospective review"
+  ],
+  "observations": [
+    {"id": "O1", "source": "S4 line 14", "fact": "Backup operator reported the command missing from the packet", "disposition": "corroborates the same occurrence", "problem": "P1"},
+    {"id": "O2", "source": "S3 Nov 10 21:10 UTC", "fact": "Review failed and publication was held until the operator supplied the command", "disposition": "confirmed occurrence and correction", "problem": "P1"},
+    {"id": "O3", "source": "S2 Nov 11 11:00 UTC", "fact": "Checklist revision approved", "disposition": "evidence of approved prevention wording", "problem": "P1"},
+    {"id": "O4", "source": "S4 line 32", "fact": "Dry-run preview completed", "disposition": "excluded from live handoff counts"},
+    {"id": "O5", "source": "S4 line 33", "fact": "Task owner reported the edit was in the shared repository", "disposition": "reported repository state, live use unverified", "problem": "P1"},
+    {"id": "O6", "source": "S4 line 33", "fact": "Task owner reported the runner printout missing from the export", "disposition": "limits verification of live use", "problem": "P1"}
+  ],
+  "failed_audits": [
+    {"id": "A1", "source": "S3", "finding": "Rollback command missing from approval packet", "problem": "P1", "verification": "corroborated by O1, exact original review criterion unavailable"}
+  ],
+  "problems": [
+    {"id": "P1", "title": "Rollback command missing at publication approval", "class": "publication handoff", "severity": "observed publication hold, wider severity undetermined", "systemic_root_cause": "unknown", "historical_occurrence": "corrected per A1", "prevention": "wording approved, live application unverified", "effectiveness": "undetermined", "confidence": "high for the occurrence and hold", "observations": ["O1", "O2", "O3", "O5", "O6"], "audits": ["A1"], "recommendations": ["R1", "R2"]}
+  ],
+  "recommendations": [
+    {"id": "R1", "problem": "P1", "status": "proposed", "step": 1, "owner": "rollout maintainer", "acceptance": "live approval records checklist revision and backup acknowledgment, and holds attempts without acknowledgment"},
+    {"id": "R2", "problem": "P1", "status": "proposed", "step": 2, "owner": "rollout maintainer", "acceptance": "comparable live periods have counts of eligible attempts and unconfirmed handoffs at the same checkpoint"}
+  ],
+  "counts": {
+    "retained_sources": 4,
+    "observations": 6,
+    "corroborating_duplicate_occurrences": 1,
+    "observations_excluded_from_live_counts": 1,
+    "retained_failed_reviews": 1,
+    "retained_review_findings": 1,
+    "confirmed_pre_revision_gaps": 1,
+    "post_revision_gaps": null,
+    "eligible_live_handoffs_before_revision": null,
+    "eligible_live_handoffs_after_revision": null,
+    "problems": 1,
+    "proposed_recommendations": 2,
+    "proposed_steps": 2
+  }
+}
+```

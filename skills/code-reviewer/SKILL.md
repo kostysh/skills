@@ -5,9 +5,9 @@ description: Perform read-only review of PRs, diffs, and local branch changes.
   or lightweight intent alignment, and provide evidence-backed merge guidance
   with stable scope, severity, and findings; pair with relevant domain skills.
 metadata:
-  source-version: 0.4.7
+  source-version: 0.4.9
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 5b8364ba2966bb2ba54bfb4fb5f5b0e336430089710d8680102e03952029204c
+  skillforge-source-hash: 65a184ebb4b1725b85060503c55cc311e3b5dc69b9180a890caea00321eaa169
 ---
 
 # code-reviewer
@@ -211,7 +211,7 @@ Every review states the target, applicable base, snapshot, scope accounting, act
 - [Methodology](references/methodology.md) — Read this for a broad, formal, high-risk, or large review that needs the full pass order and completeness audit.
 - [Policy Admission Merge Risk](references/policy-admission-merge-risk.md) — Read this when changed files or linked review intent touch policy gates, admission-before-side-effect flow, decision or audit persistence, active scope, idempotency, replay, or freshness checks.
 - [Runtime Gate Deployed Path](references/runtime-gate-deployed-path.md) — Read this when changed behavior depends on external-contract states, types, identity, or transitions, or touches runtime gates through a shipped lifecycle, production construction, deployed wiring, invocation boundary, idempotency locks, or deployment/cell identity binding.
-- [Spec Pass](references/spec-pass.md) — Read this when a linked issue, acceptance criteria, contract, ADR, migration note, or other normative source exists.
+- [Spec Pass](references/spec-pass.md) — Read when a normative source exists or an adopted solo decision policy applies to the diff.
 - [Complexity-only Review](references/complexity-only.md) — Read this only when the user explicitly asks to review for over-engineering, simplification, unnecessary dependencies, dead flexibility, or what can be deleted.
 
 ## Bundled assets

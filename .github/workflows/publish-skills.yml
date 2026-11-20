@@ -1,7 +1,7 @@
 name: Publish skills
 on:
   push:
-    tags: ['skills-*']
+    tags: ['skills-*', '!skills-v5.0.0']
 permissions:
   contents: read
 concurrency:

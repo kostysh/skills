@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: spec-conformance-reviewer
-  source-version: 0.1.9
+  source-version: 0.1.11
   recommended-skill-md-max-bytes: 20000
   description: >-
     Review code against authoritative specs, contracts, ADRs, tickets, PRDs, RFCs,

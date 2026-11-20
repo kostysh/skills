@@ -2,7 +2,7 @@
 Generated from `skill.yaml`.
 
 ## Versions
-- Skill source version: `0.2.4`
+- Skill source version: `0.2.6`
 
 ## Source files
 - `agents/openai.yaml`
@@ -24,10 +24,11 @@ Generated from `skill.yaml`.
 - `evals/fixtures/reply-input.md`
 - `evals/fixtures/triage-falsifiers-input.md`
 - `fragments/overview.md`
+- `references/solo-batches.md`
 - `skill.yaml`
 
 ## Required references
-- none
+- `references/solo-batches.md`
 
 ## Warnings
 - none

@@ -109,6 +109,8 @@ skill declares its maintenance source. Start with the [repository instructions](
 and [skill standard](docs/skill-standard.md). Record templates are in
 [`docs/templates/`](docs/templates/). CLI development and release instructions
 are in the [CLI guide](cli/README.md#development-and-releases).
+The [v5 implementation record](docs/reviews/implementation-log-20261120-v5.md)
+records the solo decision changes and archive verification.
 
 For a paired skill audit, register the tasks and variants before dispatch.
 Record each execution once and attach each assessor's rating to that execution.

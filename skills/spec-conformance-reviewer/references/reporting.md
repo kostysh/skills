@@ -24,6 +24,14 @@ Begin every result with one plain-language outcome sentence that states which re
 | `minor` | partial coverage, local inconsistency, missing edge-case handling, or limited contract mismatch |
 | `note` | non-blocking ambiguity, evidence gap, or risk that does not prove non-compliance on its own |
 
+When the project uses closure types (a)–(d), label each finding with one type.
+Use **(d)** for an outside-task finding and name its owner. For in-scope
+findings, use **(c)** for a non-blocking finding, **(a)** for a blocker whose
+correction the same test can prove by failing before the fix and passing after
+it through the required operation and transport, or **(b)** for a blocker whose
+correction requires judgment in a delta review. For (a), retain domain review
+of fixes involving security, money, permissions, or migrations.
+
 ## Policy/Admission Reporting
 
 Use these rules only for reviews that have a normative policy/admission trigger.
@@ -114,6 +122,7 @@ Outcome: <plain-language statement of what is closed, what remains, and what the
 ## 5. Findings
 ### F-1: <Title>
 - Severity:
+<!-- Include the closure type here when the project uses it. -->
 - Requirement IDs:
 - Spec basis:
 - Implementation evidence:

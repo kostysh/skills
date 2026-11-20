@@ -1,0 +1,95 @@
+# Cedar dispatch rollout retrospective
+
+**The retained records establish one rollback handoff gap before the checklist revision. They cannot establish whether the gap recurred less often afterward.** This retrospective covers the closed rollout from November 10 at 08:00 UTC to November 13 at 08:00 UTC. Its completeness remains unverified because the collector data, operational traces, and independent review are unavailable.
+
+## What happened
+
+On November 10 at 20:58 UTC, the backup operator reported that their approval packet lacked the rollback command. At 21:10 UTC, the nightly review recorded a `FAIL` on that omission. The reviewer asked the operator for the command, and publication was held until the operator supplied it. These records describe one episode. The review records that the command was supplied, while the backup operator’s eventual receipt and the final publication outcome remain unverified. The duration of the hold is unknown. [`console.txt`, line 14 and `review-n10.txt`, November 10 21:10 UTC](TASK.md)
+
+The immediate failure was a missing command in the packet used for the backup handoff. The backup operator detected the gap, and the nightly review enforced the publication hold. The older checklist survives only as a diff, and the task and approval traces are unavailable. The evidence cannot establish how the omission entered the packet, which earlier check applied, or why it did not catch the omission. No systemic cause can be assigned. [`archive-index.txt`, `checklist.diff`, `console.txt`, line 14 and `review-n10.txt`](TASK.md)
+
+On November 11 at 11:00 UTC, the approved checklist revision required the rollback command to be given to the backup operator before publication. On November 12 at 13:20 UTC, a prepare hook recorded `PREVIEW_COMPLETE` on the dry-run queue. At 13:21 UTC, the task owner reported that the checklist edit was in the shared repository and that the runner printout was missing from the export. The approval verifies the wording change. The records leave open when the revised checklist governed a real publication, whether anyone checked the handoff, and whether the backup operator received the command. [`checklist.diff` and `console.txt`, lines 32–33](TASK.md)
+
+## Evidence and verdict
+
+| Retained source | What it establishes | Limit |
+|---|---|---|
+| `archive-index.txt` | The three-day boundary and the retained and missing source classes | The collector export for this rollout and the previous one is unavailable. No independent review was assigned. |
+| `checklist.diff`, November 11 11:00 UTC | The wording and approval time of the new handoff rule | The full prior checklist, live adoption time, and use are unverified. |
+| `review-n10.txt`, November 10 21:10 UTC | The sole retained failed review and finding, the reviewer’s intervention, and the publication hold until the operator supplied the command | The packet and approval history are unavailable. |
+| `console.txt`, lines 14, 32–33 | The backup operator’s report, a dry-run preview, and the task owner’s report of the repo edit and missing printout | The excerpts contain no verified real publication under the revised rule. Harness settings and remaining task and approval traces are unavailable. |
+
+- **Rollout result.** The rollout is closed. The retained records do not establish its final publication or acceptance outcome.
+- **Process.** One pre-revision handoff gap and one publication hold are verified. The reviewer’s intervention addressed the recorded omission. There is no verified count of eligible publication attempts, handoff gaps, or successful handoffs in either comparable period.
+- **Prevention.** The checklist amendment was approved. Its application in real publication and its effectiveness remain unverified. The post-change count is unknown. The previous rollout also lacks the coverage needed to serve as a baseline. The expected-zero control for a previously resolved problem is unavailable for the same reason.
+
+## Follow-up for the maintainer
+
+1. **Verify and measure the handoff at the existing publication gate.** On the next comparable rollout, use the existing approval record to capture each eligible real publication attempt, the checklist revision in use, and confirmation from the backup operator that they have the rollback command. If the gate already checks this, verify it in place. If it does not, make that confirmation part of the gate. Use an authorized negative check to confirm that a missing handoff blocks publication. On comparable real work, record gaps before correction, whether the gate caught them or publication proceeded, and any resulting holds or rework. Compare gaps per eligible attempt only across periods with complete, comparable coverage. This step checks the documented failure path and leaves the closed rollout untouched.
+
+## Reconciled evidence matrix
+
+These counts describe the retained records. Rollout-wide totals and rates remain unavailable.
+
+```json
+{
+  "schema": "cedar-rollout-retrospective-1",
+  "boundary_utc": ["Nov 10 08:00", "Nov 13 08:00"],
+  "status": "incomplete",
+  "sources": {
+    "S1": {"pointer": "archive-index.txt", "disposition": "scope and coverage"},
+    "S2": {"pointer": "checklist.diff, Nov 11 11:00", "observations": ["O4"]},
+    "S3": {"pointer": "review-n10.txt, Nov 10 21:10", "observations": ["O2", "O3"]},
+    "S4": {"pointer": "console.txt, lines 14, 32–33", "observations": ["O1", "O5", "O6"]}
+  },
+  "unavailable": [
+    "Current and previous rollout collector exports",
+    "Remaining task and approval traces",
+    "Harness runtime settings and runner printout",
+    "Full old checklist and verified live revision",
+    "Independent retrospective review"
+  ],
+  "observations": {
+    "O1": {"source": "S4:14", "fact": "Backup operator reported no command in packet", "disposition": "accepted", "problem": "P1"},
+    "O2": {"source": "S3", "fact": "Review failed for missing packet command and reviewer requested it", "disposition": "accepted", "problem": "P1", "same_occurrence_as": "O1"},
+    "O3": {"source": "S3", "fact": "Publication held until operator supplied command", "disposition": "accepted", "problem": "P1"},
+    "O4": {"source": "S2", "fact": "Pre-publication handoff rule approved", "disposition": "accepted control change", "problem": "P1"},
+    "O5": {"source": "S4:32", "fact": "Dry-run preview completed", "disposition": "excluded from real publication measure", "reason": "dry-run queue"},
+    "O6": {"source": "S4:33", "fact": "Task owner reported repository edit and missing runner printout", "disposition": "live adoption unresolved", "problem": "P1"}
+  },
+  "failed_review": {"id": "A1", "source": "S3", "verdict": "FAIL", "finding": "Command absent from approval packet", "observation": "O2", "problem": "P1"},
+  "problem": {
+    "id": "P1",
+    "class": "project process",
+    "title": "Rollback handoff gap",
+    "retained_occurrences": 1,
+    "observations": ["O1", "O2", "O3", "O4", "O6"],
+    "severity": "moderate based on the observed publication hold",
+    "systemic_cause": "unknown",
+    "historical_status": "command supplied after intervention, backup receipt unverified",
+    "prevention_status": "rule approved, live use unverified",
+    "effectiveness": "unknown",
+    "confidence": "high for the recorded gap and hold, insufficient for root cause and recurrence",
+    "recommendation": "R1"
+  },
+  "expected_zero_control": {"status": "unavailable", "reason": "Comparable exposure and closure evidence unavailable"},
+  "recommendation": {"id": "R1", "owner": "rollout maintainer", "status": "proposed", "step": 1, "problem": "P1"},
+  "retained_counts": {
+    "sources": 4,
+    "atomic_observations": 6,
+    "failed_review_verdicts": 1,
+    "review_findings": 1,
+    "distinct_handoff_gaps": 1,
+    "distinct_confirmed_systemic_root_causes": 0,
+    "problem_rows": 1,
+    "recommendations": 1,
+    "steps": 1
+  },
+  "rollout_metrics": {
+    "eligible_pre_change_attempts": null,
+    "eligible_post_change_attempts": null,
+    "post_change_handoff_gaps": null,
+    "comparative_recurrence_rate": null
+  }
+}
+```
