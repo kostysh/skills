@@ -1,14 +1,13 @@
 ---
 name: requirements-approval
-description: "Coordinate customer-owned requirements decisions: triage open
-  questions, research resolvable facts, prepare approval requests, process
-  supplied or Gmail replies, and route accepted decisions into GitHub and
-  authoritative project documents. Use for approval workflows and «согласование
-  требований»."
+description: Coordinate customer requirements and authorized solo confirmation
+  batches. Triage questions, research facts, prepare requests, process supplied
+  or Gmail replies, and route decisions to project documents and GitHub. Use for
+  approval workflows and «согласование требований».
 metadata:
-  source-version: 0.2.4
+  source-version: 0.2.6
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: cc9b167378206d4c3d6a4611409ad078ef419ad0f40b81888e98b84a9f0a6daa
+  skillforge-source-hash: 73acbf29278b052572b1c26a07596e6528aa5c6c0c736ccd79d415dfd95d2110
 ---
 
 # requirements-approval
@@ -16,7 +15,7 @@ metadata:
 ## Start here
 
 1. Confirm whether the request is assessment/drafting or authorizes external execution against exact targets.
-2. Match success to the requested stage using the state/output contract; an actionable draft does not require workflow closure.
+2. Use the state/output contract for the requested stage.
 3. Identify each question's decision owner, authority, affected artifacts, and downstream owners before interpretation or closure.
 4. Use repository-defined source precedence; unresolved equal-authority conflicts block acceptance instead of being resolved by recency or convenience.
 5. Route document content and authority decisions to their owning skills; requirements-approval owns triage, traceability, and the closure gate.
@@ -29,33 +28,33 @@ metadata:
 - Processing supplied or Gmail customer replies against stable question codes and decision authority.
 - Coordinating accepted decisions through project artifacts, Git, and approval-task state.
 - Auditing approval-item evidence for honest closure.
+- Preparing or processing a confirmation batch under an adopted solo decision policy.
 
 ## When NOT to use this skill
 
 - Non-approval PRD authoring; explicitly hand it to prd-engineer, and route other artifacts to their named owners.
-- Internal research or issue triage when no decision is customer-owned.
+- Internal research or triage outside an adopted solo decision policy.
 - Discovery, sales proposals, or optional scope expansion.
 - Sending customer email; this skill only prepares request text.
 - External execution without the required target, authorization, credentials, or source data; return a draft or blocked handoff.
 
 ## Outcome and anti-claims
 
-Coordinate an unresolved customer-owned requirement into a traceable accepted decision, consistent project artifacts, and evidence-calibrated workflow state.
+Turn an unresolved decision into a traced owner disposition and consistent owning artifacts.
 
-This documentation-only skill does not grant product or architecture authority, send email, implement document-owner changes, enforce GitHub state, or prove closure from artifacts alone. It orchestrates owners and reports only what current evidence supports.
+Coordinate document owners and report observed state. Product and architecture decisions, email delivery, document edits and GitHub enforcement stay with their authorized owners.
 
 ## Inputs and readiness
 
-Assessment or drafting requires the question source, available project context, and requested scope. Execution additionally requires:
+For assessment or drafting, identify the question source, context and scope. Before execution, identify the decision ID, owner, applicable authority, operation and exact target.
 
-- stable question codes, decision owner, authoritative sources, and precedence;
-- customer language and supplied message/thread data;
-- affected owners, publication rules, exact GitHub targets, and inspected status mapping;
-- explicit authority for each external mutation.
+- For local register or document changes, inspect the current artifact and its owning rules.
+- Use the customer language for requests and the supplied messages for reply assessment.
+- For GitHub, inspect status mappings when used. Apply publication rules when publishing.
 
-Missing execution inputs permit a useful draft, not external writes or verified closure.
+Confirm authority and read back each local or external write. Hold the dependent action when inputs are missing. Continue independent authorized work and draft held actions as useful.
 
-Continue the supported stage using available sources and the user's latest scope or language clarification. Reuse permissions already given for the same action and target; ask only for a material missing input. If a rule prevents a requested transition, name its exact source, applicability, decision owner, and unblock condition rather than requesting generic confirmation.
+Use the latest scope and language clarification. Reuse permissions for the same action and target. If a rule blocks the requested transition, give its source, applicability, owner and missing input.
 
 Workflow authority controls which actions the agent may take. It does not transfer product, architecture, specification, planning, document-version, or customer-decision authority.
 
@@ -177,6 +176,9 @@ Validation:
 
 ### Conservative customer language
 Ask only for decisions required by current scope, in plain customer language, without embedding optional enhancements or a preferred answer.
+
+## Required active references
+- [Solo decision batches](references/solo-batches.md) — Read for proposed defaults, handoffs or owner batches under an adopted solo decision policy.
 
 ## Portability rules
 
