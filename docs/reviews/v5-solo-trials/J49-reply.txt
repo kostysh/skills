@@ -1,0 +1,1 @@
+Recorded and verified SD-001 in [decisions.md](/tmp/v5-local-project-wzubend1/decisions.md) and [morning.md](/tmp/v5-local-project-wzubend1/morning.md). The existing wording `Save failed` applies to unknown save errors. The decision occupies the single open slot and awaits owner confirmation. Only the two local files changed.
