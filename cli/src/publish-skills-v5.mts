@@ -1,7 +1,6 @@
 import { createHash } from 'node:crypto';
 import { readFile, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
-import { pathToFileURL } from 'node:url';
 
 const tag = 'skills-v5.0.0';
 const sha = /^[a-f0-9]{40}$/u;
@@ -256,7 +255,7 @@ export async function publishSkills({
   return 'Published and verified v5 archives.';
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (import.meta.main) {
   const [directory, source] = process.argv.slice(2);
   try {
     console.log(

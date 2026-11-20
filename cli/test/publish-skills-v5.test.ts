@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { copyFile, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { copyFile, mkdir, mkdtemp, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { test, type TestContext } from 'node:test';
@@ -264,14 +264,21 @@ void test('corrupt local assets block before the first GitHub request', async (t
 
   const writer = await mkdtemp(join(tmpdir(), 'isolated-skills-writer-'));
   t.after(() => rm(writer, { recursive: true, force: true }));
-  const script = join(writer, 'publish-skills-v5.mjs');
-  await copyFile(new URL(publisher), script);
-  const result = spawnSync(process.execPath, [script, asset.directory, source], {
-    cwd: writer,
-    encoding: 'utf8',
-    timeout: 5000,
-    env: { ...process.env, GH_TOKEN: token, GH_REPO: repository },
-  });
+  const physical = join(writer, 'physical');
+  const launch = join(writer, 'launch');
+  await mkdir(physical);
+  await symlink(physical, launch, 'junction');
+  await copyFile(new URL(publisher), join(physical, 'publish-skills-v5.mjs'));
+  const result = spawnSync(
+    process.execPath,
+    [join(launch, 'publish-skills-v5.mjs'), asset.directory, source],
+    {
+      cwd: writer,
+      encoding: 'utf8',
+      timeout: 5000,
+      env: { ...process.env, GH_TOKEN: token, GH_REPO: repository },
+    },
+  );
   assert.ifError(result.error);
   assert.equal(result.status, 1);
   assert.match(result.stderr, /Local checksum mismatch/u);

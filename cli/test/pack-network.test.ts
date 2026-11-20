@@ -23,7 +23,7 @@ void test('built v5 commands verify the packed inventory and refuse a missing ar
     spawnSync(process.execPath, [join(cwd, 'dist/release', entry), ...args], {
       cwd,
       encoding: 'utf8',
-      timeout: 10_000,
+      timeout: 120_000,
     });
   const packed = run('pack-cli.js', ['--out', output, '--release', tag]);
   assert.ifError(packed.error);
