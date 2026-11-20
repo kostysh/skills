@@ -25,7 +25,7 @@ Before writing findings:
    - policy gates, admission flow, decision or audit persistence, active-scope activation, idempotency, replay, or freshness checks
    - runtime gates in shipped lifecycle paths, production construction, deployed dependency wiring, request or tick execution, invocation boundaries, idempotency locks, or deployment/cell identity binding
    - long-lived protected streams, subscriptions, SSE, or WebSocket-like endpoints
-6. If a linked issue, acceptance criteria, contract, ADR, or other normative source exists, run the lightweight pass from `references/spec-pass.md` before finalizing findings.
+6. Run the lightweight pass from `references/spec-pass.md` before finalizing findings when a normative source exists or an adopted solo decision policy applies to the diff.
 7. If changed files or linked intent touch policy/admission surfaces, run the bounded pass from `references/policy-admission-merge-risk.md`.
 8. If changed files or linked intent touch runtime gates in a shipped lifecycle, run the deployed-path pass from `references/runtime-gate-deployed-path.md`.
 

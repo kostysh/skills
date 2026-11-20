@@ -1,6 +1,6 @@
 # Lightweight Spec Pass
 
-Use this pass when a review has a linked issue, acceptance criteria, API contract, ADR, migration note, or other normative source, but the user did not ask for a full implementation-vs-spec audit.
+Use this pass for a review with a normative source or an adopted solo decision policy. Route a full implementation-versus-spec audit to `spec-conformance-reviewer`.
 
 ## Goal
 
@@ -27,6 +27,16 @@ Catch intent drift early without turning every PR review into full requirement t
    - silent coercion or error suppression
    - new side effects
 5. Decide whether to stay in `code-reviewer` or escalate.
+
+## Authority for solo decisions
+
+When the project has adopted a solo decision policy, trace each material choice
+in the diff to an accepted requirement, an explicit owner confirmation, or a
+recorded delegated class that covers this exact choice. Check class exclusions,
+capacity at the decision, pending status and the permission for the proposed
+merge. Report an unrecorded or out-of-class material choice as an authority
+finding under that policy even if the code works. A changed choice needs its
+rework link and current-head verification before a dependent merge.
 
 ## Output Rules
 
