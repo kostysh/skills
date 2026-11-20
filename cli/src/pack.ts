@@ -87,6 +87,17 @@ async function checkLinks(root: string, files: string[]): Promise<void> {
     }
   }
 }
+
+export async function verifyPayload(folder: string, name: string, files: string[]) {
+  const text = await readFile(join(folder, 'SKILL.md'), 'utf8');
+  const match = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/.exec(text);
+  if (!match?.[1]) throw new Error(`${name}: missing frontmatter.`);
+  const meta = frontmatterSchema.parse(parse(match[1]));
+  if (meta.name !== name) throw new Error(`${name}: name does not match SKILL.md.`);
+  await checkLinks(folder, files);
+  return meta;
+}
+
 export async function packSkills(
   root: string,
   output: string,
@@ -103,11 +114,6 @@ export async function packSkills(
   for (const name of (await readdir(root)).sort()) {
     const folder = join(root, name);
     if (!(await lstat(folder)).isDirectory()) continue;
-    const text = await readFile(join(folder, 'SKILL.md'), 'utf8');
-    const match = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/.exec(text);
-    if (!match?.[1]) throw new Error(`${name}: missing frontmatter.`);
-    const meta = frontmatterSchema.parse(parse(match[1]));
-    if (meta.name !== name) throw new Error(`${name}: name does not match SKILL.md.`);
     const files = ['SKILL.md'];
     for (const entry of await readdir(folder, { withFileTypes: true })) {
       if (['references', 'assets', 'scripts', 'agents'].includes(entry.name)) {
@@ -119,7 +125,7 @@ export async function packSkills(
     }
     const selected = files.filter(shippable).sort();
     selected.forEach(safeRelative);
-    await checkLinks(folder, selected);
+    const meta = await verifyPayload(folder, name, selected);
     const contentHash = await fingerprint(folder, selected);
     const key = `${name}@${meta.metadata['source-version']}`;
     if (history.has(key) && history.get(key)?.contentHash !== contentHash)

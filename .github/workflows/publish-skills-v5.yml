@@ -1,0 +1,85 @@
+name: Publish methodology v5 skills
+
+on:
+  push:
+    tags: ['skills-v5.0.0']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-skills
+  cancel-in-progress: false
+
+env:
+  RELEASE_TAG: skills-v5.0.0
+
+jobs:
+  pack:
+    runs-on: ubuntu-latest
+    outputs:
+      source: ${{ steps.archive.outputs.source }}
+      publisher: ${{ steps.archive.outputs.publisher }}
+      checksums: ${{ steps.archive.outputs.checksums }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24.15.0'
+      - run: pnpm install --frozen-lockfile --ignore-scripts
+      - run: pnpm --filter @kostysh/skills build:release
+      - name: Check generated sources
+        run: |
+          git ls-tree -d --name-only HEAD:skills > "$RUNNER_TEMP/skills-inventory"
+          test -s "$RUNNER_TEMP/skills-inventory"
+          while IFS= read -r skill; do
+            node skills/skill-source-compiler/scripts/skill-source-compiler.mjs check "skills/$skill"
+          done < "$RUNNER_TEMP/skills-inventory"
+      - name: Pack once and verify installed archives
+        id: archive
+        run: |
+          output="$RUNNER_TEMP/skills-release"
+          pnpm --filter @kostysh/skills pack:skills:v5 --out "$output/assets" --release "$RELEASE_TAG" --previous-latest
+          pnpm --filter @kostysh/skills verify:skills-release "$output/assets" "$RELEASE_TAG"
+          git rev-parse --verify HEAD > "$output/assets/SOURCE-COMMIT"
+          printf 'source=%s\n' "$(cat "$output/assets/SOURCE-COMMIT")" >> "$GITHUB_OUTPUT"
+          cp cli/dist/release/publish-skills-v5.mjs "$output/"
+          printf 'publisher=%s\n' "$(sha256sum "$output/publish-skills-v5.mjs" | cut -d ' ' -f 1)" >> "$GITHUB_OUTPUT"
+          cd "$output/assets"
+          sha256sum -- *.tgz catalog.json SOURCE-COMMIT > SHA256SUMS
+          printf 'checksums=%s\n' "$(sha256sum SHA256SUMS | cut -d ' ' -f 1)" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: skills-v5.0.0-verified
+          path: ${{ runner.temp }}/skills-release/
+          if-no-files-found: error
+  publish:
+    if: github.event_name == 'push'
+    needs: pack
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24.15.0'
+      - uses: actions/download-artifact@v4
+        with:
+          name: skills-v5.0.0-verified
+          path: ${{ runner.temp }}/skills-release
+      - name: Publish tested v5 bytes as a named prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          EXPECTED_SOURCE: ${{ needs.pack.outputs.source }}
+          EXPECTED_PUBLISHER: ${{ needs.pack.outputs.publisher }}
+          EXPECTED_CHECKSUMS: ${{ needs.pack.outputs.checksums }}
+        run: |
+          cd "$RUNNER_TEMP/skills-release"
+          printf '%s  publish-skills-v5.mjs\n' "$EXPECTED_PUBLISHER" | sha256sum --strict --check
+          printf '%s  assets/SHA256SUMS\n' "$EXPECTED_CHECKSUMS" | sha256sum --strict --check
+          node publish-skills-v5.mjs assets "$EXPECTED_SOURCE"

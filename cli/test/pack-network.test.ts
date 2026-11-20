@@ -1,14 +1,51 @@
 import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { test } from 'node:test';
+import { fileURLToPath } from 'node:url';
 import { gzipSync } from 'node:zlib';
 import * as tar from 'tar';
 import { extract } from '../src/archive.ts';
-import { sha256 } from '../src/model.ts';
+import { regularFiles } from '../src/files.ts';
+import { catalogSchema, sha256 } from '../src/model.ts';
 import { latestCatalog } from '../src/network.ts';
-import { packSkills } from '../src/pack.ts';
+import { packSkills, verifyPayload } from '../src/pack.ts';
 import { release, sandbox } from './helpers.ts';
+
+void test('built v5 commands verify the packed inventory and refuse a missing archive', async (t) => {
+  const root = await sandbox();
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const output = join(root, 'release');
+  const tag = 'skills-v5.0.0';
+  const cwd = fileURLToPath(new URL('../', import.meta.url));
+  const run = (entry: string, args: string[]) =>
+    spawnSync(process.execPath, [join(cwd, 'dist/release', entry), ...args], {
+      cwd,
+      encoding: 'utf8',
+      timeout: 10_000,
+    });
+  const packed = run('pack-cli.js', ['--out', output, '--release', tag]);
+  assert.ifError(packed.error);
+  assert.equal(packed.status, 0, packed.stderr);
+  const catalog = catalogSchema.parse(
+    JSON.parse(await readFile(join(output, 'catalog.json'), 'utf8')),
+  );
+  const checked = run('verify-skills-release.js', [output, tag]);
+  assert.ifError(checked.error);
+  assert.equal(checked.status, 0, checked.stderr);
+  assert.equal(
+    checked.stdout,
+    `Installed and verified ${catalog.skills.length} release archives.\n`,
+  );
+  const first = catalog.skills[0];
+  assert.ok(first);
+  await rm(join(output, `${first.name}-${first.version}.tgz`));
+  const rejected = run('verify-skills-release.js', [output, tag]);
+  assert.ifError(rejected.error);
+  assert.equal(rejected.status, 1);
+  assert.match(rejected.stderr, /Missing or extra assets/u);
+});
 
 void test('pack is deterministic, excludes development files and binds a version to content', async (t) => {
   const root = await sandbox();
@@ -55,6 +92,17 @@ void test('the archive preserves root license files and binds them to the skill 
   await extract(await readFile(join(output, 'example-1.0.0.tgz')), installed, skill);
   for (const [name, text] of Object.entries(licenses))
     assert.equal(await readFile(join(installed, name), 'utf8'), text);
+  assert.equal(
+    (await verifyPayload(installed, 'example', await regularFiles(installed))).metadata[
+      'source-version'
+    ],
+    '1.0.0',
+  );
+  await rm(join(installed, 'references/method.md'));
+  await assert.rejects(
+    verifyPayload(installed, 'example', await regularFiles(installed)),
+    /missing runtime link references\/method.md/,
+  );
   await assert.rejects(
     packSkills(source, join(root, 'same-version'), 'skills-test', original.catalog),
     /without a version bump/,
