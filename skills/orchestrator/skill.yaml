@@ -1,0 +1,35 @@
+apiVersion: skillforge/v1alpha1
+kind: SkillSource
+skill:
+  name: orchestrator
+  source-version: 0.1.0
+  description: Coordinate agents working toward one requested outcome. Use when delegating work, managing dependencies between assignments, or combining agent handoffs. Leave standalone tasks and delivery planning to their usual owners.
+surfaces:
+  active: {}
+sections:
+  startHere:
+    - Identify the requested outcome, how to check it, and which actions are authorized. You own the combined result.
+  whenToUse:
+    - Work needs separate contributors or an independent check, or you are taking over existing agent assignments.
+  whenNotToUse:
+    - Handle a small self-contained task directly. A request for a plan alone belongs with the planner.
+  workflow:
+    - id: assign
+      title: Assign ready work
+      goal: Split work only where a separate contribution is useful.
+      steps:
+        - Identify what each assignment consumes and produces. Start independent assignments together when useful. Hold dependent work until its input is agreed, then give consumers the same version. Assign one writer per shared output and sequence overlapping changes.
+        - Give each agent a brief with its deliverable, source, allowed actions and evidence to return. Pass along relevant project rules and specialist guidance. Keep a required reviewer independent of the author.
+        - Track the owner, current input and outstanding handoff in the conversation or existing project record. Continue your own ready work while agents run. Wait when the next action needs their result.
+    - id: reconcile
+      title: Reconcile the results
+      goal: Check the assembled work against the original request.
+      steps:
+        - On a changed input, notify affected owners, reopen stale results and resume them on the agreed version. Keep unrelated work moving. Before reassigning interrupted work, check what the first owner already did and whether they can still write.
+        - Inspect each returned result and its evidence. Resolve gaps with the responsible agent or within your authority. Verify that the pieces work together and cover every requested outcome.
+  portability:
+    required: true
+    rules:
+      - Use the available agent and messaging facilities within existing permissions. If delegation is unavailable, do the authorized work directly and leave any required independent decision with its owner.
+    checklist:
+      - Give the requester the combined result, the evidence that supports it, and any open dependency or decision with its owner. Respect the requested stopping point.

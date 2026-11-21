@@ -1,0 +1,32 @@
+{
+  "skill": "orchestrator",
+  "study": "baseline-20261121-1",
+  "model": "gpt-6.2-astra",
+  "effort": "ultra",
+  "base": "skills/orchestrator/docs/logs",
+  "source": "trial-evidence-20261121-1.md",
+  "runs": {},
+  "series": [],
+  "limit": "Три непарных сценария проверяют решения кандидата. Сравнение вариантов не проводилось.",
+  "attempts": [
+    {
+      "id": "package_review",
+      "order": 1,
+      "snapshot": "3d9b428e191ba59bb723720d5118093559edc102401ba876c1afe97ac7ab254e",
+      "handed": "2026-11-21T12:53:25Z",
+      "started": "2026-11-21T12:53:39Z",
+      "decided": "2026-11-21T12:54:27Z",
+      "verdict": "PASS",
+      "source": "implementation-log-20261121-1.md"
+    }
+  ],
+  "observation": {
+    "version": "0.1.0",
+    "accepted": "2026-11-21T12:54:27Z",
+    "released": null,
+    "through": "2026-11-21T12:54:27Z",
+    "systematic": false,
+    "defects": [],
+    "source": "implementation-log-20261121-1.md"
+  }
+}
