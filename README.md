@@ -7,7 +7,8 @@ references, scripts, or templates needed for its work.
 Use the **`@kostysh/skills` CLI** to choose skills, install them for your agent
 or a single project, and update them later.
 
-[Browse the skills](skills/) · [CLI guide](cli/README.md) ·
+[Browse the skills](skills/) · [Blind trial dashboard](docs/reviews/blind-trial-dashboard.md) ·
+[CLI guide](cli/README.md) ·
 [npm package](https://www.npmjs.com/package/@kostysh/skills) ·
 [Skill releases](https://github.com/kostysh/skills/releases?q=skills-&expanded=true)
 
@@ -128,3 +129,15 @@ Report links are relative to the directory where you run the command. The
 describes how to register incomplete pairs, repeated ratings and review times.
 The [pilot log](docs/reviews/implementation-log-20261119-1.md) links the
 registered tasks, original decisions and limits of the results.
+
+After a full review, rebuild the catalog dashboard from the repository root.
+
+```sh
+node scripts/blind-trial-dashboard.mjs
+```
+
+The command reads `skills/*/SKILL.md` and writes the linked dashboard in place.
+It collects audit-metrics study records named `metrics.json`, `metrics-*.json`
+or `study.json` under `docs/reviews/` and `skills/*/docs/reviews/`, plus the
+JSON files in `docs/reviews/audit-metrics-*/history/`. A file can contain one
+study or an array of studies.

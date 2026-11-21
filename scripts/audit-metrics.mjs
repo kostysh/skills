@@ -12,7 +12,7 @@ const gradeValues = ['PASS', 'FAIL', 'INCONCLUSIVE'];
 const definite = (value) => value === 'PASS' || value === 'FAIL';
 const key = (...fields) => JSON.stringify(fields);
 const cell = (value) => String(value).replaceAll('|', '&#124;').replaceAll('\n', ' ');
-const table = (head, rows) =>
+export const table = (head, rows) =>
   [
     '| ' + head.join(' | ') + ' |',
     '| ' + head.map(() => '---').join(' | ') + ' |',
@@ -24,7 +24,7 @@ function requireText(value, field) {
   return value;
 }
 
-function link(doc, source, label) {
+export function link(doc, source, label, directory = process.cwd()) {
   requireText(source, 'source');
   const [file, anchor] = source.split('#');
   const absolute = path.resolve(root, doc.base ?? '.', file);
@@ -33,7 +33,7 @@ function link(doc, source, label) {
     `Путь за пределами репозитория: ${source}`,
   );
   const target = path
-    .relative(process.cwd(), absolute)
+    .relative(directory, absolute)
     .split(path.sep)
     .map((part) => encodeURIComponent(part).replaceAll('(', '%28').replaceAll(')', '%29'))
     .join('/');
@@ -148,6 +148,7 @@ function study(doc, allHashes, allTasks, resolvedTasks) {
   }
   const { counts, rows: opinions, decisions } = agreement(doc, runIds);
   const sums = outcomes.map(() => 0);
+  const seriesResults = [];
   const localTasks = new Set();
   const groupRows = [],
     pairRows = [],
@@ -266,6 +267,7 @@ function study(doc, allHashes, allTasks, resolvedTasks) {
       results.forEach((n, i) => {
         sums[i] += n;
       });
+    seriesResults.push({ series: s, results });
     groupRows.push([
       s.id,
       s.comparison,
@@ -376,6 +378,8 @@ function study(doc, allHashes, allTasks, resolvedTasks) {
       table(['Работа', 'Рубрика', 'Выдача', 'Оценщик 1', 'Оценщик 2', 'Разбор'], opinions),
     );
   return {
+    doc,
+    seriesResults,
     sums,
     runs: runs.length,
     ratings,
@@ -574,7 +578,7 @@ function processReport(docs) {
   ];
 }
 
-export function summarize(documents) {
+export function analyzeStudies(documents) {
   const datasets = new Map();
   for (const doc of documents) {
     for (const field of ['skill', 'study', 'model', 'effort', 'source'])
@@ -589,8 +593,18 @@ export function summarize(documents) {
     tasks = new Set(),
     resolvedTasks = new Set();
   const studies = docs.map((doc) => study(doc, hashes, tasks, resolvedTasks));
+  return { studies, tasks, resolvedTasks };
+}
+
+export function totalOutcomes(studies) {
+  return outcomes.map((_, i) => studies.reduce((n, s) => n + s.sums[i], 0));
+}
+
+export function summarize(documents) {
+  const { studies, tasks, resolvedTasks } = analyzeStudies(documents);
+  const docs = studies.map((s) => s.doc);
   const sum = (key) => studies.reduce((n, s) => n + s[key], 0);
-  const totals = outcomes.map((_, i) => studies.reduce((n, s) => n + s.sums[i], 0));
+  const totals = totalOutcomes(studies);
   const [assigned, eligible, agree, disagree, pending] = Array.from({ length: 5 }, (_, i) =>
     studies.reduce((n, s) => n + s.agreement[i], 0),
   );

@@ -4,6 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { summarize } from './audit-metrics.mjs';
+import { renderDashboard } from './blind-trial-dashboard.mjs';
 
 const source = 'scripts/audit-metrics.test.mjs';
 
@@ -215,4 +216,24 @@ test('Исторические контрольные случаи через CL
   assert.match(fromHistory, /Исполнений 11, оценок 15, технических стартов 1/);
   assert.match(fromHistory, /b7c2c8[^\n]+FAIL/);
   assert.match(fromHistory, /3a6239[^\n]+b7c2c8[^\n]+PASS/);
+});
+
+test('Catalog coverage distinguishes missing studies, insufficient pairs and reassessments', () => {
+  const partial = study('lost', 'incomplete');
+  pair(partial, 'unscored control', 'PASS', null);
+  const complete = study('paired', 'tested');
+  pair(complete, 'normal', 'FAIL', 'PASS');
+  complete.series.push({ ...complete.series[0], id: 'again', phase: 'regrade' });
+  const joint = study('shared', 'joint subjects');
+  pair(joint, 'joint task', 'PASS', 'FAIL');
+  const catalog = new Map([['new-skill', '1.0'], ['incomplete', '2.0'], ['tested', '3.0']]);
+  const records = new Map([partial, complete, joint].map((doc) => [doc, source]));
+  const report = renderDashboard(catalog, records);
+  assert.match(report, /1 of 3 active skills.*Assigned pairs appear for 2 of 3 skills/);
+  assert.match(report, /\| 2 \| 0 \| 1 \| 0 \| 0 \| 1 \|/);
+  assert.match(report, /\| new-skill \| 1.0 \| 0 \| 0 \| 0 \| 0 \| 0 \| 0 \| Planned for the next review \|/);
+  assert.match(report, /\[incomplete\]\(#incomplete\) \| 2.0 \| 1 \| 0 \| 0 \| 0 \| 0 \| 1 \| \[Study\]/);
+  assert.match(report, /Reassessments of existing pairs appear separately \(1\)/);
+  assert.match(report, /\| A\/B \| regrade \| 1 \| 0 \| 1 \|/);
+  assert.match(report, /## Studies outside individual skill totals[\s\S]*### joint subjects/);
 });
