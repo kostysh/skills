@@ -1,0 +1,202 @@
+{
+  "agent-browser": {
+    "version": "0.2.7",
+    "source": "docs/reviews/gpt-6-2/10/independent-audit.md",
+    "snapshot": "3847cd95e67765bffc4b1b054fbc5ac710eb0fa3"
+  },
+  "architecture-engineer": {
+    "version": "0.1.13",
+    "source": "docs/reviews/gpt-6-2/15/recovery/independent-audit.md",
+    "snapshot": "9f81c66e8e5e35a8459682ba9757b91d3cdbe55d"
+  },
+  "cli-engineer": {
+    "version": "0.2.2",
+    "source": "docs/reviews/gpt-6-2/29/independent-audit.md",
+    "snapshot": "dfab5f9a37d545f9851eeb62eb05dfb3e9f7e53e"
+  },
+  "code-reviewer": {
+    "version": "0.4.9",
+    "source": "docs/reviews/v5-solo-independent-reaudit.md",
+    "verdict": "PASS",
+    "scope": "joint"
+  },
+  "concept-conformance-reviewer": {
+    "version": "0.2.9",
+    "source": "docs/reviews/implementation-log-20261119-2.md",
+    "verdict": "PASS",
+    "scope": "joint"
+  },
+  "delivery-planner": {
+    "version": "0.2.16",
+    "source": "docs/reviews/gpt-6-2/32/independent-audit.md",
+    "snapshot": "97442f518e0959ad0dc63f48c8100df41a03e41b"
+  },
+  "docusaurus-repo": {
+    "version": "0.1.4",
+    "source": "docs/reviews/gpt-6-2/31/independent-audit.md",
+    "snapshot": "d7c61c1d8c524701ac3a9054ca1bb7c13fd2563e"
+  },
+  "electron-engineer": {
+    "version": "0.1.12",
+    "source": "docs/reviews/gpt-6-2/35/independent-audit.md",
+    "snapshot": "3abe3b7860c4bbcdfc51b6c05eb2a63b3b8c252c"
+  },
+  "financial-calculations-engineer": {
+    "version": "0.3.2",
+    "source": "docs/reviews/gpt-6-2/22/independent-audit.md",
+    "snapshot": "8468f3fa8c1ac44496fd0ed5b88d901bb2d3a8f0"
+  },
+  "frontend-design": {
+    "version": "0.2.6",
+    "source": "docs/reviews/audit-metrics-20261119/frontend/independent-audit.md",
+    "study": "живые формы 2026-11-19",
+    "variants": [
+      "package",
+      "A"
+    ],
+    "check": "Both forms worked, but the tested skill missed a keyboard-focus check. Repeat that check on the final form after an empty submission.",
+    "snapshot": "2a28e6a5a89164f14eb63cfbc4775e34f66de865efb701195c557b106bc704ef"
+  },
+  "gdpr-compliance": {
+    "version": "0.2.5",
+    "source": "docs/reviews/implementation-log-20261119-2.md",
+    "verdict": "PASS",
+    "scope": "joint"
+  },
+  "gh-utility": {
+    "version": "1.3.0",
+    "source": "skills/gh-utility/docs/reviews/20261121-1/package-audit-02.md",
+    "verdict": "PASS"
+  },
+  "git-engineer": {
+    "version": "0.2.2",
+    "source": "docs/reviews/gpt-6-2/07/independent-audit.md",
+    "snapshot": "4568a98ba2310e17e2f9b1c4c0dbf1a09b3fa407"
+  },
+  "hono-engineer": {
+    "version": "0.1.10",
+    "source": "docs/reviews/gpt-6-2/28/independent-audit.md",
+    "snapshot": "b157eb54f2add72f5a66e776948b61355b58238e"
+  },
+  "implementation-discipline": {
+    "version": "0.2.18",
+    "source": "skills/implementation-discipline/docs/logs/implementation-log-20261121-3.md",
+    "verdict": "PASS"
+  },
+  "nextjs": {
+    "version": "0.1.3",
+    "source": "docs/reviews/gpt-6-2/27/independent-audit.md",
+    "snapshot": "850a1059d7a4d5047c66736bfb77039f8f269676"
+  },
+  "node-engineer": {
+    "version": "0.1.5",
+    "source": "docs/reviews/gpt-6-2/06/independent-audit.md",
+    "snapshot": "2835b7574b06a6210b2b2d96465c7e46e7c60d97"
+  },
+  "orchestrator": {
+    "version": "0.1.2",
+    "source": "skills/orchestrator/docs/logs/implementation-log-20261121-3.md",
+    "study": "simplicity-final-package-extension",
+    "variants": ["candidate"],
+    "snapshot": "c0235cde079846ca5e6a85937b74624281027a90f343215434e1a9ed4d8cc253"
+  },
+  "payload": {
+    "version": "0.1.3",
+    "source": "docs/reviews/gpt-6-2/36/independent-audit.md",
+    "snapshot": "47e9220751c4e37f39d5e1635d9b77701d93f964"
+  },
+  "payload-migration": {
+    "version": "0.1.4",
+    "source": "docs/reviews/gpt-6-2/37/independent-audit.md",
+    "snapshot": "f7940d9f941340721257664fc3e96b9d5c27641e"
+  },
+  "prd-engineer": {
+    "version": "0.1.9",
+    "source": "docs/reviews/gpt-6-2/04/independent-audit.md",
+    "snapshot": "f2cf3571fce05180a50477606f2e49af41589dc3"
+  },
+  "react-components-engineer": {
+    "version": "0.2.3",
+    "source": "docs/reviews/gpt-6-2/18/independent-audit.md",
+    "snapshot": "92c91006025928ace02b8bc6ab9c605f64cd7464"
+  },
+  "react-spa-engineer": {
+    "version": "0.1.14",
+    "source": "docs/reviews/gpt-6-2/26/independent-audit.md",
+    "snapshot": "703207bf6b1692d12c2dd915f8eb0206f0a2dca7"
+  },
+  "requirements-approval": {
+    "version": "0.2.6",
+    "source": "docs/reviews/v5-solo-independent-reaudit.md",
+    "verdict": "PASS"
+  },
+  "retrospective-analysis": {
+    "version": "0.1.8",
+    "source": "docs/reviews/v5-solo-independent-reaudit.md",
+    "verdict": "PASS",
+    "scope": "joint"
+  },
+  "security-reviewer": {
+    "version": "0.1.16",
+    "source": "docs/reviews/implementation-log-20261119-2.md",
+    "verdict": "PASS",
+    "scope": "joint"
+  },
+  "shadcn": {
+    "version": "0.2.3",
+    "source": "docs/reviews/gpt-6-2/34/independent-audit.md",
+    "snapshot": "d4310f8534083516639c2c0468cec70f164ee815"
+  },
+  "skill-reviewer": {
+    "version": "0.2.9",
+    "source": "docs/reviews/audit-metrics-20261119/method-acceptance.md",
+    "study": "20261119-method",
+    "variants": [
+      "candidate"
+    ],
+    "check": "The reviewer lost one comparison with ambiguous column labels. Both variants passed with explicit labels. Recheck how it reports the direction of a comparison.",
+    "snapshot": "feede9e04ca6"
+  },
+  "skill-source-compiler": {
+    "version": "0.2.12",
+    "source": "docs/reviews/gpt-6-2/02/independent-audit.md",
+    "snapshot": "d4f60df7a8051280c3986d9b4e1dac46b6722c0d"
+  },
+  "spec-conformance-reviewer": {
+    "version": "0.1.11",
+    "source": "docs/reviews/v5-solo-independent-reaudit.md",
+    "verdict": "PASS",
+    "scope": "joint"
+  },
+  "spec-engineer": {
+    "version": "0.2.16",
+    "source": "docs/reviews/gpt-6-2/23/independent-audit.md",
+    "snapshot": "9f6cfa0a1e8b7016838cceafaaf7471583b8ddc6"
+  },
+  "supabase-engineer": {
+    "version": "0.1.8",
+    "source": "docs/reviews/gpt-6-2/21/independent-audit.md",
+    "snapshot": "64538ac47a813ac89bc5cf692a15b6459caa1854"
+  },
+  "typescript-engineer": {
+    "version": "0.2.3",
+    "source": "docs/reviews/gpt-6-2/05/remediation/independent-audit.md",
+    "snapshot": "67eb46a3aa617e8bcf22a5d4733c283b8124f2b2"
+  },
+  "typescript-test-engineer": {
+    "version": "0.1.12",
+    "source": "docs/reviews/gpt-6-2/16/independent-audit.md",
+    "snapshot": "2d36a9880cf779a7f42ea7226dc78ee62ef85b3d"
+  },
+  "web-ui-reviewer": {
+    "version": "0.2.7",
+    "source": "docs/reviews/implementation-log-20261119-2.md",
+    "verdict": "PASS",
+    "scope": "joint"
+  },
+  "web-ux-engineer": {
+    "version": "0.1.1",
+    "source": "docs/reviews/gpt-6-2/09/independent-audit.md",
+    "snapshot": "f4da67d45cd4105200ebafafe8b51fe7680a6da9"
+  }
+}

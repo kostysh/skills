@@ -12,7 +12,7 @@ const gradeValues = ['PASS', 'FAIL', 'INCONCLUSIVE'];
 const definite = (value) => value === 'PASS' || value === 'FAIL';
 const key = (...fields) => JSON.stringify(fields);
 const cell = (value) => String(value).replaceAll('|', '&#124;').replaceAll('\n', ' ');
-const table = (head, rows) =>
+export const table = (head, rows) =>
   [
     '| ' + head.join(' | ') + ' |',
     '| ' + head.map(() => '---').join(' | ') + ' |',
@@ -24,7 +24,7 @@ function requireText(value, field) {
   return value;
 }
 
-function link(doc, source, label) {
+export function link(doc, source, label, directory = process.cwd()) {
   requireText(source, 'source');
   const [file, anchor] = source.split('#');
   const absolute = path.resolve(root, doc.base ?? '.', file);
@@ -33,7 +33,7 @@ function link(doc, source, label) {
     `Путь за пределами репозитория: ${source}`,
   );
   const target = path
-    .relative(process.cwd(), absolute)
+    .relative(directory, absolute)
     .split(path.sep)
     .map((part) => encodeURIComponent(part).replaceAll('(', '%28').replaceAll(')', '%29'))
     .join('/');
@@ -148,6 +148,7 @@ function study(doc, allHashes, allTasks, resolvedTasks) {
   }
   const { counts, rows: opinions, decisions } = agreement(doc, runIds);
   const sums = outcomes.map(() => 0);
+  const seriesResults = [];
   const localTasks = new Set();
   const groupRows = [],
     pairRows = [],
@@ -266,6 +267,7 @@ function study(doc, allHashes, allTasks, resolvedTasks) {
       results.forEach((n, i) => {
         sums[i] += n;
       });
+    seriesResults.push({ series: s, results });
     groupRows.push([
       s.id,
       s.comparison,
@@ -376,6 +378,8 @@ function study(doc, allHashes, allTasks, resolvedTasks) {
       table(['Работа', 'Рубрика', 'Выдача', 'Оценщик 1', 'Оценщик 2', 'Разбор'], opinions),
     );
   return {
+    doc,
+    seriesResults,
     sums,
     runs: runs.length,
     ratings,
@@ -386,16 +390,8 @@ function study(doc, allHashes, allTasks, resolvedTasks) {
   };
 }
 
-function processReport(docs) {
-  const chains = new Map(),
-    defects = new Map(),
-    observations = [],
-    audits = new Set(),
-    repeated = new Set(),
-    required = new Set();
-  const rows = [],
-    overall = [],
-    byMetric = Array.from({ length: 6 }, () => []);
+export function auditChains(docs) {
+  const chains = new Map();
   for (const doc of docs) {
     for (const a of doc.attempts ?? []) {
       for (const f of ['id', 'snapshot', 'source']) requireText(a[f], f);
@@ -405,6 +401,39 @@ function processReport(docs) {
       assert(!list.some((prev) => prev.a.id === a.id), `Повтор попытки: ${a.id}`);
       list.push({ a, doc });
     }
+  }
+  for (const list of chains.values()) {
+    // A manifest preserves assignment order. Across files a measured handoff or explicit
+    // sequence is required; lexicographic filenames and timestamps of Git commits are not audit events.
+    const separate = new Set(list.map((entry) => entry.doc)).size > 1;
+    if (list.every(({ a }) => Number.isInteger(a.order))) {
+      assert(
+        new Set(list.map(({ a }) => a.order)).size === list.length,
+        'Номера попыток аудита должны различаться',
+      );
+      list.sort((x, y) => x.a.order - y.a.order);
+    } else if (list.every(({ a }) => a.handed != null)) {
+      if (separate)
+        assert(
+          new Set(list.map(({ a }) => timing(a.handed))).size === list.length,
+          'При одновременной передаче укажите order',
+        );
+      list.sort((x, y) => timing(x.a.handed) - timing(y.a.handed));
+    } else assert(!separate, 'Попытки одного аудита в нескольких файлах требуют handed или order');
+  }
+  return chains.values();
+}
+
+function processReport(docs) {
+  const defects = new Map(),
+    observations = [],
+    audits = new Set(),
+    repeated = new Set(),
+    required = new Set();
+  const rows = [],
+    overall = [],
+    byMetric = Array.from({ length: 6 }, () => []);
+  for (const doc of docs) {
     const o = doc.observation;
     if (!o) continue;
     const accepted = timing(o.accepted),
@@ -450,24 +479,7 @@ function processReport(docs) {
     ]);
   }
   let open = 0;
-  for (const list of chains.values()) {
-    // A manifest preserves assignment order. Across files a measured handoff or explicit
-    // sequence is required; lexicographic filenames and timestamps of Git commits are not audit events.
-    const separate = new Set(list.map((entry) => entry.doc)).size > 1;
-    if (list.every(({ a }) => Number.isInteger(a.order))) {
-      assert(
-        new Set(list.map(({ a }) => a.order)).size === list.length,
-        'Номера попыток аудита должны различаться',
-      );
-      list.sort((x, y) => x.a.order - y.a.order);
-    } else if (list.every(({ a }) => a.handed != null)) {
-      if (separate)
-        assert(
-          new Set(list.map(({ a }) => timing(a.handed))).size === list.length,
-          'При одновременной передаче укажите order',
-        );
-      list.sort((x, y) => timing(x.a.handed) - timing(y.a.handed));
-    } else assert(!separate, 'Попытки одного аудита в нескольких файлах требуют handed или order');
+  for (const list of auditChains(docs)) {
     const { doc } = list[0];
     if (list[0].a.verdict && doc.kind !== 'policy') audits.add(doc.skill);
     if (list[0].a.verdict && list.length > 1 && doc.kind !== 'policy') repeated.add(doc.skill);
@@ -574,7 +586,7 @@ function processReport(docs) {
   ];
 }
 
-export function summarize(documents) {
+export function analyzeStudies(documents) {
   const datasets = new Map();
   for (const doc of documents) {
     for (const field of ['skill', 'study', 'model', 'effort', 'source'])
@@ -589,8 +601,18 @@ export function summarize(documents) {
     tasks = new Set(),
     resolvedTasks = new Set();
   const studies = docs.map((doc) => study(doc, hashes, tasks, resolvedTasks));
+  return { studies, tasks, resolvedTasks };
+}
+
+export function totalOutcomes(studies) {
+  return outcomes.map((_, i) => studies.reduce((n, s) => n + s.sums[i], 0));
+}
+
+export function summarize(documents) {
+  const { studies, tasks, resolvedTasks } = analyzeStudies(documents);
+  const docs = studies.map((s) => s.doc);
   const sum = (key) => studies.reduce((n, s) => n + s[key], 0);
-  const totals = outcomes.map((_, i) => studies.reduce((n, s) => n + s.sums[i], 0));
+  const totals = totalOutcomes(studies);
   const [assigned, eligible, agree, disagree, pending] = Array.from({ length: 5 }, (_, i) =>
     studies.reduce((n, s) => n + s.agreement[i], 0),
   );

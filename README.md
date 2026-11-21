@@ -7,7 +7,8 @@ references, scripts, or templates needed for its work.
 Use the **`@kostysh/skills` CLI** to choose skills, install them for your agent
 or a single project, and update them later.
 
-[Browse the skills](skills/) · [CLI guide](cli/README.md) ·
+[Browse the skills](skills/) · [Blind trial dashboard](docs/reviews/blind-trial-dashboard.md) ·
+[CLI guide](cli/README.md) ·
 [npm package](https://www.npmjs.com/package/@kostysh/skills) ·
 [Skill releases](https://github.com/kostysh/skills/releases?q=skills-&expanded=true)
 
@@ -129,3 +130,25 @@ Report links are relative to the directory where you run the command. The
 describes how to register incomplete pairs, repeated ratings and review times.
 The [pilot log](docs/reviews/implementation-log-20261119-1.md) links the
 registered tasks, original decisions and limits of the results.
+
+After a full catalog review, finalize the audit JSON records and any version
+bindings they need, then rebuild the dashboard from the repository root.
+
+```sh
+node scripts/blind-trial-dashboard.mjs
+```
+
+The command reads `skills/*/SKILL.md` and writes the linked dashboard in place.
+It collects audit-metrics study records named `metrics.json`, `metrics-*.json`
+or `study.json` under `docs/reviews/` and `skills/*/docs/reviews/`. It also reads
+`skills/*/docs/logs/audit-*.json` and `docs/reviews/audit-metrics-*/history/*.json`.
+A file can contain one study or an array of studies.
+
+In **Results by skill**, the indicator and linked health status apply to the
+current catalog version. The pair counts include all recorded variants.
+
+The generator recognizes version labels in comparisons and audit snapshots,
+and matches a versioned acceptance observation to its decision time. The
+[review index](docs/reviews/blind-trial-review-index.json) links older opaque
+snapshots and named variants to their reviewed versions. It also cites decisions
+recorded only in prose. Add a binding there when a new record needs one.

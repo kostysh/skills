@@ -3,7 +3,9 @@ import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
-import { summarize } from './audit-metrics.mjs';
+import { analyzeStudies, summarize } from './audit-metrics.mjs';
+import { renderDashboard } from './blind-trial-dashboard.mjs';
+import { assessSkill } from './blind-trial-health.mjs';
 
 const source = 'scripts/audit-metrics.test.mjs';
 
@@ -215,4 +217,91 @@ test('Исторические контрольные случаи через CL
   assert.match(fromHistory, /Исполнений 11, оценок 15, технических стартов 1/);
   assert.match(fromHistory, /b7c2c8[^\n]+FAIL/);
   assert.match(fromHistory, /3a6239[^\n]+b7c2c8[^\n]+PASS/);
+});
+
+test('Catalog coverage distinguishes missing studies, insufficient pairs and reassessments', () => {
+  const partial = study('lost', 'incomplete');
+  pair(partial, 'unscored control', 'PASS', null);
+  const complete = study('paired', 'tested');
+  pair(complete, 'normal', 'FAIL', 'PASS');
+  complete.series.push({ ...complete.series[0], id: 'again', phase: 'regrade' });
+  const joint = study('shared', 'joint subjects');
+  pair(joint, 'joint task', 'PASS', 'FAIL');
+  const catalog = new Map([['new-skill', '1.0'], ['incomplete', '2.0'], ['tested', '3.0']]);
+  const records = new Map([partial, complete, joint].map((doc) => [doc, source]));
+  const report = renderDashboard(catalog, records);
+  assert.match(report, /1 of 3 active skills.*Assigned pairs appear for 2 of 3 skills/);
+  assert.match(report, /\| 2 \| 0 \| 1 \| 0 \| 0 \| 1 \|/);
+  assert.match(report, /\| ⚪ \| new-skill \| 1\.0 \| Evidence needed \| 0 \| 0 \| 0 \| 0 \| 0 \| 0 \| Planned for the next review \|/);
+  assert.match(report, /\| ⚪ \| \[incomplete\]\(#incomplete\) \| 2\.0 \| \[Evidence needed\]\([^)]+\) \| 1 \| 0 \| 0 \| 0 \| 0 \| 1 \| \[Study\]/);
+  assert.match(report, /Reassessments of existing pairs appear separately \(1\)/);
+  assert.match(report, /\| A\/B \| regrade \| 1 \| 0 \| 1 \|/);
+  assert.match(report, /## Studies outside individual skill totals[\s\S]*### joint subjects/);
+});
+
+test('The legend explains every health indicator and each skill has one indicator in its results row', () => {
+  const doc = study();
+  const version = '1.2.0';
+  const catalog = new Map([[doc.skill, version]]);
+  const records = new Map([[doc, source]]);
+  for (const [verdict, icon, status] of [
+    ['FAIL', '🔴', 'Needs attention'],
+    ['BLOCKED', '🟠', 'Recheck'],
+    [undefined, '⚪', 'Evidence needed'],
+    ['PASS', '🟢', 'In good shape'],
+  ]) {
+    const report = renderDashboard(catalog, records, { example: { version, verdict, source } });
+    const results = report.split('## Results by skill\n')[1].split('\n## ')[0];
+    const [legend, rows] = results.split('| Indicator | Skill |');
+    assert.ok(legend.includes(`- ${icon} **${status}** — `), status);
+    assert.deepEqual(legend.match(/[🔴🟠⚪🟢]/gu), ['🔴', '🟠', '⚪', '🟢']);
+    assert.ok(rows.includes(`| ${icon} | [example](#example) | 1.2.0 | [${status}](`), status);
+    assert.deepEqual(report.replace(legend, '').match(/[🔴🟠⚪🟢]/gu), [icon]);
+    assert.deepEqual(report.match(/^### .+$/gm), ['### example']);
+  }
+});
+
+test('Current health follows the version and the final decision in each audit chain', () => {
+  const doc = study();
+  const version = '1.2.0';
+  const decision = { id: 'initial', order: 1, snapshot: version, source, verdict: 'FAIL' };
+  doc.attempts = [decision];
+  const status = (index) => assessSkill(version, analyzeStudies([doc]).studies, index).status;
+  assert.equal(status(), 'Needs attention');
+  doc.attempts.push({ ...decision, id: 'repair', order: 2, verdict: 'PASS' });
+  doc.attempts.reverse();
+  assert.equal(status(), 'In good shape');
+  doc.attempts.push({ ...decision, id: 'experiment', order: 3, snapshot: '1.3.0' });
+  assert.equal(status(), 'In good shape');
+  doc.attempts.push({ ...decision, id: 'other', audit: 'different task', verdict: 'BLOCKED' });
+  assert.equal(status(), 'Recheck');
+  doc.attempts = [];
+  assert.equal(status({ version: '1.1.0', verdict: 'PASS', source }), 'Evidence needed');
+  assert.equal(status({ version, verdict: 'PASS', source, scope: 'joint' }), 'Evidence needed');
+  doc.observation = { version, defects: [{ source }] };
+  assert.equal(status({ version, verdict: 'PASS', source }), 'Needs attention');
+});
+
+test('Current trial outcomes follow the tested side and exclude regrades and unknown variants', () => {
+  const doc = study();
+  const version = '1.2.0';
+  pair(doc, 'case', 'FAIL', 'PASS');
+  const note = { version, verdict: 'PASS', source };
+  const status = () => assessSkill(version, analyzeStudies([doc]).studies, note).status;
+  assert.equal(status(), 'In good shape');
+  doc.series[0].comparison = version + '/1.1.0';
+  doc.runs['1a'].variant = version;
+  doc.runs['1b'].variant = '1.1.0';
+  assert.equal(status(), 'Recheck');
+  doc.series[0].phase = 'regrade';
+  assert.equal(status(), 'In good shape');
+  doc.series[0].phase = 'primary';
+  doc.series[0].comparison = '1.1.0/' + version;
+  doc.runs['1a'].variant = '1.1.0';
+  doc.runs['1b'].variant = version;
+  assert.equal(status(), 'In good shape');
+  doc.runs['1b'].ratings.first.score = 'FAIL';
+  assert.equal(status(), 'Recheck');
+  doc.series[0].pairs[0].left = null;
+  assert.equal(status(), 'Evidence needed');
 });
