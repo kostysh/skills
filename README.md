@@ -35,6 +35,7 @@ a relative directory such as `.agents/skills` or `.claude/skills`.
 
 | Work | Skills |
 | --- | --- |
+| Agent coordination | [orchestrator](skills/orchestrator/) |
 | Requirements and planning | [prd-engineer](skills/prd-engineer/), [requirements-approval](skills/requirements-approval/), [architecture-engineer](skills/architecture-engineer/), [spec-engineer](skills/spec-engineer/), [delivery-planner](skills/delivery-planner/) |
 | Application development | [typescript-engineer](skills/typescript-engineer/), [node-engineer](skills/node-engineer/), [hono-engineer](skills/hono-engineer/), [react-spa-engineer](skills/react-spa-engineer/), [react-components-engineer](skills/react-components-engineer/), [nextjs](skills/nextjs/), [shadcn](skills/shadcn/), [payload](skills/payload/), [payload-migration](skills/payload-migration/), [supabase-engineer](skills/supabase-engineer/), [financial-calculations-engineer](skills/financial-calculations-engineer/) |
 | Design | [web-ux-engineer](skills/web-ux-engineer/), [frontend-design](skills/frontend-design/) |
