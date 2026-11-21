@@ -141,3 +141,15 @@ It collects audit-metrics study records named `metrics.json`, `metrics-*.json`
 or `study.json` under `docs/reviews/` and `skills/*/docs/reviews/`, plus the
 JSON files in `docs/reviews/audit-metrics-*/history/`. A file can contain one
 study or an array of studies.
+
+The health summary uses the version in the catalog. A failed current audit or a
+recorded post-acceptance defect calls for attention. A failed task on the
+current variant calls for a recheck. An individual PASS supports “In good shape”
+within the review's scope. Joint-only or missing evidence gets its own group.
+The historical totals below the summary cover all recorded variants.
+
+The generator recognizes version labels in comparisons and audit snapshots,
+and matches a versioned acceptance observation to its decision time. The
+[review index](docs/reviews/blind-trial-review-index.json) links older opaque
+snapshots and named variants to their reviewed versions. It also cites decisions
+recorded only in prose. Add a binding there when a new record needs one.

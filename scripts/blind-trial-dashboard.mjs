@@ -4,6 +4,7 @@ import { globSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { analyzeStudies, link, table, totalOutcomes } from './audit-metrics.mjs';
+import { assessSkill, healthSection } from './blind-trial-health.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const directory = path.join(root, 'docs/reviews');
@@ -65,7 +66,7 @@ function studyDetails({ doc, seriesResults }, file) {
   return blocks.join('\n\n');
 }
 
-export function renderDashboard(catalog, records) {
+export function renderDashboard(catalog, records, reviewIndex = {}) {
   const { studies } = analyzeStudies([...records.keys()]);
   const active = [];
   const outside = [];
@@ -75,11 +76,14 @@ export function renderDashboard(catalog, records) {
     else outside.push(study);
   }
   const rows = [];
+  const health = [];
   const details = [];
   let covered = 0;
   let withAssignments = 0;
   for (const [skill, version] of catalog) {
     const trials = active.filter(({ doc }) => doc.skill === skill);
+    const assessment = assessSkill(version, trials, reviewIndex[skill]);
+    health.push({ skill, version, ...assessment });
     const outcomes = totalOutcomes(trials);
     const result = counts(outcomes);
     if (result[0]) withAssignments++;
@@ -89,7 +93,7 @@ export function renderDashboard(catalog, records) {
     );
     if (!result[0] && !trials.some((trial) => trial.regrades)) evidence.push(planned);
     const name = trials.length ? `[${skill}](#${skill})` : skill;
-    rows.push([name, version, ...result, evidence.join(' · ')]);
+    rows.push([name, version, assessment.status, ...result, evidence.join(' · ')]);
     if (trials.length) {
       details.push(`### ${skill}`);
       for (const trial of trials) details.push(studyDetails(trial, records.get(trial.doc)));
@@ -98,6 +102,8 @@ export function renderDashboard(catalog, records) {
   const regrades = active.reduce((n, trial) => n + trial.regrades, 0);
   const blocks = [
     '# Blind trial dashboard',
+    healthSection(health, directory),
+    '## Trial coverage',
     `**${covered} of ${catalog.size} active skills** have at least one conclusive pair. ` +
       `Assigned pairs appear for ${withAssignments} of ${catalog.size} skills. The catalog totals cover ${active.length} individual skill studies.`,
     table(columns, [counts(totalOutcomes(active))]),
@@ -115,7 +121,7 @@ export function renderDashboard(catalog, records) {
     `**Coverage** counts a skill once it has any conclusive pair, including **Both failed**. Reassessments of existing pairs appear separately (${regrades}) in rows marked **regrade**.`,
     '## Results by skill',
     'Catalog versions come from this checkout. Results include earlier trials. Select a skill to see the variants and evidence for each series.',
-    table(['Skill', 'Catalog version', ...columns, 'Trial evidence'], rows),
+    table(['Skill', 'Catalog version', 'Current health', ...columns, 'Trial evidence'], rows),
     '## Comparison series',
     'Read each series in the context of its tasks and variants. In instruction-removal trials, A/B compares the original with the removal variant. Numeric labels identify the tested versions. Open the linked study for its criteria and evidence.',
     ...details,
@@ -133,6 +139,7 @@ export function renderDashboard(catalog, records) {
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const report = renderDashboard(readCatalog(), readRecords());
+  const reviewIndex = JSON.parse(readFileSync(path.join(directory, 'blind-trial-review-index.json'), 'utf8'));
+  const report = renderDashboard(readCatalog(), readRecords(), reviewIndex);
   writeFileSync(path.join(directory, 'blind-trial-dashboard.md'), report);
 }

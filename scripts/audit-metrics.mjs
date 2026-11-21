@@ -390,16 +390,8 @@ function study(doc, allHashes, allTasks, resolvedTasks) {
   };
 }
 
-function processReport(docs) {
-  const chains = new Map(),
-    defects = new Map(),
-    observations = [],
-    audits = new Set(),
-    repeated = new Set(),
-    required = new Set();
-  const rows = [],
-    overall = [],
-    byMetric = Array.from({ length: 6 }, () => []);
+export function auditChains(docs) {
+  const chains = new Map();
   for (const doc of docs) {
     for (const a of doc.attempts ?? []) {
       for (const f of ['id', 'snapshot', 'source']) requireText(a[f], f);
@@ -409,6 +401,39 @@ function processReport(docs) {
       assert(!list.some((prev) => prev.a.id === a.id), `Повтор попытки: ${a.id}`);
       list.push({ a, doc });
     }
+  }
+  for (const list of chains.values()) {
+    // A manifest preserves assignment order. Across files a measured handoff or explicit
+    // sequence is required; lexicographic filenames and timestamps of Git commits are not audit events.
+    const separate = new Set(list.map((entry) => entry.doc)).size > 1;
+    if (list.every(({ a }) => Number.isInteger(a.order))) {
+      assert(
+        new Set(list.map(({ a }) => a.order)).size === list.length,
+        'Номера попыток аудита должны различаться',
+      );
+      list.sort((x, y) => x.a.order - y.a.order);
+    } else if (list.every(({ a }) => a.handed != null)) {
+      if (separate)
+        assert(
+          new Set(list.map(({ a }) => timing(a.handed))).size === list.length,
+          'При одновременной передаче укажите order',
+        );
+      list.sort((x, y) => timing(x.a.handed) - timing(y.a.handed));
+    } else assert(!separate, 'Попытки одного аудита в нескольких файлах требуют handed или order');
+  }
+  return chains.values();
+}
+
+function processReport(docs) {
+  const defects = new Map(),
+    observations = [],
+    audits = new Set(),
+    repeated = new Set(),
+    required = new Set();
+  const rows = [],
+    overall = [],
+    byMetric = Array.from({ length: 6 }, () => []);
+  for (const doc of docs) {
     const o = doc.observation;
     if (!o) continue;
     const accepted = timing(o.accepted),
@@ -454,24 +479,7 @@ function processReport(docs) {
     ]);
   }
   let open = 0;
-  for (const list of chains.values()) {
-    // A manifest preserves assignment order. Across files a measured handoff or explicit
-    // sequence is required; lexicographic filenames and timestamps of Git commits are not audit events.
-    const separate = new Set(list.map((entry) => entry.doc)).size > 1;
-    if (list.every(({ a }) => Number.isInteger(a.order))) {
-      assert(
-        new Set(list.map(({ a }) => a.order)).size === list.length,
-        'Номера попыток аудита должны различаться',
-      );
-      list.sort((x, y) => x.a.order - y.a.order);
-    } else if (list.every(({ a }) => a.handed != null)) {
-      if (separate)
-        assert(
-          new Set(list.map(({ a }) => timing(a.handed))).size === list.length,
-          'При одновременной передаче укажите order',
-        );
-      list.sort((x, y) => timing(x.a.handed) - timing(y.a.handed));
-    } else assert(!separate, 'Попытки одного аудита в нескольких файлах требуют handed или order');
+  for (const list of auditChains(docs)) {
     const { doc } = list[0];
     if (list[0].a.verdict && doc.kind !== 'policy') audits.add(doc.skill);
     if (list[0].a.verdict && list.length > 1 && doc.kind !== 'policy') repeated.add(doc.skill);

@@ -1,5 +1,33 @@
 # Blind trial dashboard
 
+## Current skill health
+
+| 🔴 Needs attention | 🟠 Recheck | ⚪ Evidence needed | 🟢 In good shape |
+| --- | --- | --- | --- |
+| 0 | 2 | 7 | 28 |
+
+**Needs attention** flags a failed audit or a defect recorded after acceptance for the current version. **Recheck** flags a specific trial result or review decision to investigate.
+
+### 🟠 Recheck
+
+[frontend-design 0.2.6](audit-metrics-20261119/frontend/independent-audit.md) — Both forms worked, but the tested skill missed a keyboard-focus check. Repeat that check on the final form after an empty submission.
+
+[skill-reviewer 0.2.9](audit-metrics-20261119/method-acceptance.md) — The reviewer lost one comparison with ambiguous column labels. Both variants passed with explicit labels. Recheck how it reports the direction of a comparison.
+
+### ⚪ Evidence needed
+
+These versions passed a joint review. Test each skill separately to measure its own contribution.
+
+[code-reviewer 0.4.9](v5-solo-independent-reaudit.md), [concept-conformance-reviewer 0.2.9](implementation-log-20261119-2.md), [gdpr-compliance 0.2.5](implementation-log-20261119-2.md), [retrospective-analysis 0.1.8](v5-solo-independent-reaudit.md), [security-reviewer 0.1.16](implementation-log-20261119-2.md), [spec-conformance-reviewer 0.1.11](v5-solo-independent-reaudit.md), [web-ui-reviewer 0.2.7](implementation-log-20261119-2.md).
+
+### 🟢 In good shape
+
+These versions passed individual review in the tested scope.
+
+[agent-browser 0.2.7](gpt-6-2/10/independent-audit.md), [architecture-engineer 0.1.13](gpt-6-2/15/recovery/independent-audit.md), [cli-engineer 0.2.2](gpt-6-2/29/independent-audit.md), [delivery-planner 0.2.16](gpt-6-2/32/independent-audit.md), [documentation 0.2.4](evidence/v5-documentation-controls/README.md), [docusaurus-repo 0.1.4](gpt-6-2/31/independent-audit.md), [electron-engineer 0.1.12](gpt-6-2/35/independent-audit.md), [error-fixer 0.1.2](../../skills/error-fixer/docs/reviews/20261119-2/independent-review.md), [financial-calculations-engineer 0.3.2](gpt-6-2/22/independent-audit.md), [gh-utility 1.3.0](../../skills/gh-utility/docs/reviews/20261121-1/package-audit-02.md), [git-engineer 0.2.2](gpt-6-2/07/independent-audit.md), [hono-engineer 0.1.10](gpt-6-2/28/independent-audit.md), [implementation-discipline 0.2.18](../../skills/implementation-discipline/docs/logs/implementation-log-20261121-3.md), [nextjs 0.1.3](gpt-6-2/27/independent-audit.md), [node-engineer 0.1.5](gpt-6-2/06/independent-audit.md), [payload 0.1.3](gpt-6-2/36/independent-audit.md), [payload-migration 0.1.4](gpt-6-2/37/independent-audit.md), [prd-engineer 0.1.9](gpt-6-2/04/independent-audit.md), [react-components-engineer 0.2.3](gpt-6-2/18/independent-audit.md), [react-spa-engineer 0.1.14](gpt-6-2/26/independent-audit.md), [requirements-approval 0.2.6](v5-solo-independent-reaudit.md), [shadcn 0.2.3](gpt-6-2/34/independent-audit.md), [skill-source-compiler 0.2.12](gpt-6-2/02/independent-audit.md), [spec-engineer 0.2.16](gpt-6-2/23/independent-audit.md), [supabase-engineer 0.1.8](gpt-6-2/21/independent-audit.md), [typescript-engineer 0.2.3](gpt-6-2/05/remediation/independent-audit.md), [typescript-test-engineer 0.1.12](gpt-6-2/16/independent-audit.md), [web-ux-engineer 0.1.1](gpt-6-2/09/independent-audit.md).
+
+## Trial coverage
+
 **37 of 37 active skills** have at least one conclusive pair. Assigned pairs appear for 37 of 37 skills. The catalog totals cover 46 individual skill studies.
 
 | Assigned | Better | Worse | Both passed | Both failed | Insufficient |
@@ -28,45 +56,45 @@ A **pair** compares two variants on the same task. When **Left / right** shows `
 
 Catalog versions come from this checkout. Results include earlier trials. Select a skill to see the variants and evidence for each series.
 
-| Skill | Catalog version | Assigned | Better | Worse | Both passed | Both failed | Insufficient | Trial evidence |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| [agent-browser](#agent-browser) | 0.2.7 | 7 | 0 | 1 | 6 | 0 | 0 | [Study](gpt-6-2/10/assessment.md) |
-| [architecture-engineer](#architecture-engineer) | 0.1.13 | 9 | 2 | 0 | 6 | 1 | 0 | [Study](gpt-6-2/15/assessment.md) |
-| [cli-engineer](#cli-engineer) | 0.2.2 | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/29/assessment.md) |
-| [code-reviewer](#code-reviewer) | 0.4.9 | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/17/assessment.md) |
-| [concept-conformance-reviewer](#concept-conformance-reviewer) | 0.2.9 | 6 | 2 | 0 | 1 | 0 | 3 | [Study](gpt-6-2/24/assessment.md) |
-| [delivery-planner](#delivery-planner) | 0.2.16 | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/32/assessment.md) |
-| [documentation](#documentation) | 0.2.4 | 7 | 0 | 0 | 5 | 2 | 0 | [Study 1](gpt-6-2/13/assessment.md) · [Study 2](evidence/v5-documentation-controls/records.json) |
-| [docusaurus-repo](#docusaurus-repo) | 0.1.4 | 13 | 2 | 1 | 10 | 0 | 0 | [Study](gpt-6-2/31/assessment.md) |
-| [electron-engineer](#electron-engineer) | 0.1.12 | 5 | 3 | 0 | 1 | 1 | 0 | [Study](gpt-6-2/35/assessment.md) |
-| [error-fixer](#error-fixer) | 0.1.2 | 10 | 1 | 0 | 8 | 0 | 1 | [Study 1](gpt-6-2/30/assessment.md) · [Study 2](../../skills/error-fixer/docs/reviews/20261119-2/assessment.md) |
-| [financial-calculations-engineer](#financial-calculations-engineer) | 0.3.2 | 8 | 0 | 0 | 7 | 0 | 1 | [Study](gpt-6-2/22/assessment.md) |
-| [frontend-design](#frontend-design) | 0.2.6 | 13 | 2 | 1 | 9 | 1 | 0 | [Study 1](gpt-6-2/19/assessment.md) · [Study 2](gpt-6-2/19/retirement/assessment.md) · [Study 3](audit-metrics-20261119/frontend/protocol.md) |
-| [gdpr-compliance](#gdpr-compliance) | 0.2.5 | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/12/assessment.md) |
-| [gh-utility](#gh-utility) | 1.3.0 | 7 | 0 | 0 | 5 | 0 | 2 | [Study](gpt-6-2/08/assessment.md) |
-| [git-engineer](#git-engineer) | 0.2.2 | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/07/assessment.md) |
-| [hono-engineer](#hono-engineer) | 0.1.10 | 10 | 0 | 0 | 8 | 2 | 0 | [Study](gpt-6-2/28/assessment.md) |
-| [implementation-discipline](#implementation-discipline) | 0.2.18 | 10 | 1 | 0 | 9 | 0 | 0 | [Study 1](gpt-6-2/03/assessment.md) · [Study 2](../../skills/implementation-discipline/docs/logs/implementation-log-20261121-1.md) · [Study 3](evidence/v5-task-recovery/README.md) |
-| [nextjs](#nextjs) | 0.1.3 | 7 | 1 | 0 | 5 | 1 | 0 | [Study](gpt-6-2/27/assessment.md) |
-| [node-engineer](#node-engineer) | 0.1.5 | 7 | 1 | 0 | 5 | 0 | 1 | [Study](gpt-6-2/06/assessment.md) |
-| [payload](#payload) | 0.1.3 | 6 | 4 | 0 | 0 | 2 | 0 | [Study](gpt-6-2/36/assessment.md) |
-| [payload-migration](#payload-migration) | 0.1.4 | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/37/assessment.md) |
-| [prd-engineer](#prd-engineer) | 0.1.9 | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/04/assessment.md) |
-| [react-components-engineer](#react-components-engineer) | 0.2.3 | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/18/assessment.md) |
-| [react-spa-engineer](#react-spa-engineer) | 0.1.14 | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/26/assessment.md) |
-| [requirements-approval](#requirements-approval) | 0.2.6 | 6 | 0 | 0 | 6 | 0 | 0 | [Study](gpt-6-2/14/assessment.md) |
-| [retrospective-analysis](#retrospective-analysis) | 0.1.8 | 16 | 5 | 0 | 6 | 3 | 2 | [Study 1](gpt-6-2/38/assessment.md) · [Study 2](evidence/v5-retrospective/README.md) |
-| [security-reviewer](#security-reviewer) | 0.1.16 | 12 | 0 | 0 | 10 | 0 | 2 | [Study](gpt-6-2/11/assessment.md) |
-| [shadcn](#shadcn) | 0.2.3 | 12 | 1 | 0 | 3 | 5 | 3 | [Study](gpt-6-2/34/assessment.md) |
-| [skill-reviewer](#skill-reviewer) | 0.2.9 | 24 | 6 | 1 | 6 | 8 | 3 | [Study 1](gpt-6-2/01/assessment.md) · [Study 2](audit-metrics-20261119/process/protocol.md) |
-| [skill-source-compiler](#skill-source-compiler) | 0.2.12 | 5 | 1 | 1 | 3 | 0 | 0 | [Study](gpt-6-2/02/assessment.md) |
-| [spec-conformance-reviewer](#spec-conformance-reviewer) | 0.1.11 | 6 | 1 | 1 | 4 | 0 | 0 | [Study](gpt-6-2/33/assessment.md) |
-| [spec-engineer](#spec-engineer) | 0.2.16 | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/23/assessment.md) |
-| [supabase-engineer](#supabase-engineer) | 0.1.8 | 6 | 0 | 0 | 5 | 0 | 1 | [Study](gpt-6-2/21/assessment.md) |
-| [typescript-engineer](#typescript-engineer) | 0.2.3 | 12 | 0 | 0 | 6 | 0 | 6 | [Study 1](gpt-6-2/05/assessment.md) · [Study 2](gpt-6-2/05/remediation/assessment.md) |
-| [typescript-test-engineer](#typescript-test-engineer) | 0.1.12 | 6 | 0 | 0 | 6 | 0 | 0 | [Study](gpt-6-2/16/assessment.md) |
-| [web-ui-reviewer](#web-ui-reviewer) | 0.2.7 | 6 | 1 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/25/assessment.md) |
-| [web-ux-engineer](#web-ux-engineer) | 0.1.1 | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/09/assessment.md) |
+| Skill | Catalog version | Current health | Assigned | Better | Worse | Both passed | Both failed | Insufficient | Trial evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [agent-browser](#agent-browser) | 0.2.7 | In good shape | 7 | 0 | 1 | 6 | 0 | 0 | [Study](gpt-6-2/10/assessment.md) |
+| [architecture-engineer](#architecture-engineer) | 0.1.13 | In good shape | 9 | 2 | 0 | 6 | 1 | 0 | [Study](gpt-6-2/15/assessment.md) |
+| [cli-engineer](#cli-engineer) | 0.2.2 | In good shape | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/29/assessment.md) |
+| [code-reviewer](#code-reviewer) | 0.4.9 | Evidence needed | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/17/assessment.md) |
+| [concept-conformance-reviewer](#concept-conformance-reviewer) | 0.2.9 | Evidence needed | 6 | 2 | 0 | 1 | 0 | 3 | [Study](gpt-6-2/24/assessment.md) |
+| [delivery-planner](#delivery-planner) | 0.2.16 | In good shape | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/32/assessment.md) |
+| [documentation](#documentation) | 0.2.4 | In good shape | 7 | 0 | 0 | 5 | 2 | 0 | [Study 1](gpt-6-2/13/assessment.md) · [Study 2](evidence/v5-documentation-controls/records.json) |
+| [docusaurus-repo](#docusaurus-repo) | 0.1.4 | In good shape | 13 | 2 | 1 | 10 | 0 | 0 | [Study](gpt-6-2/31/assessment.md) |
+| [electron-engineer](#electron-engineer) | 0.1.12 | In good shape | 5 | 3 | 0 | 1 | 1 | 0 | [Study](gpt-6-2/35/assessment.md) |
+| [error-fixer](#error-fixer) | 0.1.2 | In good shape | 10 | 1 | 0 | 8 | 0 | 1 | [Study 1](gpt-6-2/30/assessment.md) · [Study 2](../../skills/error-fixer/docs/reviews/20261119-2/assessment.md) |
+| [financial-calculations-engineer](#financial-calculations-engineer) | 0.3.2 | In good shape | 8 | 0 | 0 | 7 | 0 | 1 | [Study](gpt-6-2/22/assessment.md) |
+| [frontend-design](#frontend-design) | 0.2.6 | Recheck | 13 | 2 | 1 | 9 | 1 | 0 | [Study 1](gpt-6-2/19/assessment.md) · [Study 2](gpt-6-2/19/retirement/assessment.md) · [Study 3](audit-metrics-20261119/frontend/protocol.md) |
+| [gdpr-compliance](#gdpr-compliance) | 0.2.5 | Evidence needed | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/12/assessment.md) |
+| [gh-utility](#gh-utility) | 1.3.0 | In good shape | 7 | 0 | 0 | 5 | 0 | 2 | [Study](gpt-6-2/08/assessment.md) |
+| [git-engineer](#git-engineer) | 0.2.2 | In good shape | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/07/assessment.md) |
+| [hono-engineer](#hono-engineer) | 0.1.10 | In good shape | 10 | 0 | 0 | 8 | 2 | 0 | [Study](gpt-6-2/28/assessment.md) |
+| [implementation-discipline](#implementation-discipline) | 0.2.18 | In good shape | 10 | 1 | 0 | 9 | 0 | 0 | [Study 1](gpt-6-2/03/assessment.md) · [Study 2](../../skills/implementation-discipline/docs/logs/implementation-log-20261121-1.md) · [Study 3](evidence/v5-task-recovery/README.md) |
+| [nextjs](#nextjs) | 0.1.3 | In good shape | 7 | 1 | 0 | 5 | 1 | 0 | [Study](gpt-6-2/27/assessment.md) |
+| [node-engineer](#node-engineer) | 0.1.5 | In good shape | 7 | 1 | 0 | 5 | 0 | 1 | [Study](gpt-6-2/06/assessment.md) |
+| [payload](#payload) | 0.1.3 | In good shape | 6 | 4 | 0 | 0 | 2 | 0 | [Study](gpt-6-2/36/assessment.md) |
+| [payload-migration](#payload-migration) | 0.1.4 | In good shape | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/37/assessment.md) |
+| [prd-engineer](#prd-engineer) | 0.1.9 | In good shape | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/04/assessment.md) |
+| [react-components-engineer](#react-components-engineer) | 0.2.3 | In good shape | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/18/assessment.md) |
+| [react-spa-engineer](#react-spa-engineer) | 0.1.14 | In good shape | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/26/assessment.md) |
+| [requirements-approval](#requirements-approval) | 0.2.6 | In good shape | 6 | 0 | 0 | 6 | 0 | 0 | [Study](gpt-6-2/14/assessment.md) |
+| [retrospective-analysis](#retrospective-analysis) | 0.1.8 | Evidence needed | 16 | 5 | 0 | 6 | 3 | 2 | [Study 1](gpt-6-2/38/assessment.md) · [Study 2](evidence/v5-retrospective/README.md) |
+| [security-reviewer](#security-reviewer) | 0.1.16 | Evidence needed | 12 | 0 | 0 | 10 | 0 | 2 | [Study](gpt-6-2/11/assessment.md) |
+| [shadcn](#shadcn) | 0.2.3 | In good shape | 12 | 1 | 0 | 3 | 5 | 3 | [Study](gpt-6-2/34/assessment.md) |
+| [skill-reviewer](#skill-reviewer) | 0.2.9 | Recheck | 24 | 6 | 1 | 6 | 8 | 3 | [Study 1](gpt-6-2/01/assessment.md) · [Study 2](audit-metrics-20261119/process/protocol.md) |
+| [skill-source-compiler](#skill-source-compiler) | 0.2.12 | In good shape | 5 | 1 | 1 | 3 | 0 | 0 | [Study](gpt-6-2/02/assessment.md) |
+| [spec-conformance-reviewer](#spec-conformance-reviewer) | 0.1.11 | Evidence needed | 6 | 1 | 1 | 4 | 0 | 0 | [Study](gpt-6-2/33/assessment.md) |
+| [spec-engineer](#spec-engineer) | 0.2.16 | In good shape | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/23/assessment.md) |
+| [supabase-engineer](#supabase-engineer) | 0.1.8 | In good shape | 6 | 0 | 0 | 5 | 0 | 1 | [Study](gpt-6-2/21/assessment.md) |
+| [typescript-engineer](#typescript-engineer) | 0.2.3 | In good shape | 12 | 0 | 0 | 6 | 0 | 6 | [Study 1](gpt-6-2/05/assessment.md) · [Study 2](gpt-6-2/05/remediation/assessment.md) |
+| [typescript-test-engineer](#typescript-test-engineer) | 0.1.12 | In good shape | 6 | 0 | 0 | 6 | 0 | 0 | [Study](gpt-6-2/16/assessment.md) |
+| [web-ui-reviewer](#web-ui-reviewer) | 0.2.7 | Evidence needed | 6 | 1 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/25/assessment.md) |
+| [web-ux-engineer](#web-ux-engineer) | 0.1.1 | In good shape | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/09/assessment.md) |
 
 ## Comparison series
 
