@@ -5,22 +5,24 @@ description: Use when implementing, refactoring, reviewing code, or authoring,
   to keep scope source-authorized, minimize conceptual surface, and require
   proportional evidence.
 metadata:
-  source-version: 0.2.11
+  source-version: 0.2.18
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: f1879b76fa03936cb01c80b86baf46439312e60ac6b9d32da02d7c48ecb1a9db
+  skillforge-source-hash: c3db30c3b6913f9364eabd3521784216f5557c0afbcbd89f56bbec20a3a37982
 ---
 
 # implementation-discipline
 
 ## Start here
 
-1. Confirm that the task involves implementation, code review, or non-trivial authoring, revision, or review of a PRD, architecture, software specification, or delivery plan.
-2. Classify the task as implementation/remediation, code-review-only, or design/authoring; code-review-only is read-only, and design/authoring never authorizes code or runtime mutations.
-3. Before scope, design shape, acceptance, verification depth, or process depth, record the observable outcome or invariant, actor or consumer and claim boundary, source-authorized scope and non-goals, permitted outputs or mutations, simplest direct or existing primitive, and narrowest falsifying check.
-4. For non-trivial work, check [project-purpose fit](#project-purpose-fit-policy).
-5. Prefer the direct or existing path with the least conceptual surface that satisfies current correctness, security, compatibility, and source requirements.
-6. Pass the complexity exception gate before adding a new concept, and repeat the scope-and-simplicity gate after any material delta that adds a boundary, lifecycle, output, or verification contour.
-7. Change only the authorized surface, run proportional verification, report evidence and remaining risk, then stop.
+1. Start the first proposal with the owner's path to the final action. To automate existing work, show how today's operation could run with its existing authorization under the requested conditions and what consent it needs.
+2. Before adding a service, role, permission, or procedure to a PRD, architecture, specification, plan, or implementation, show what fails on that path or which agreed guarantee the owner loses. Omit unsupported additions. In review, flag them for simplification.
+3. If this file is incomplete, read the missing sections. Read applicable references separately and retry truncated output in smaller ranges.
+4. Confirm that the task involves implementation, code review, or non-trivial authoring, revision, or review of a PRD, architecture, software specification, or delivery plan.
+5. Classify the task as implementation/remediation, code-review-only, or design/authoring; code-review-only is read-only, and design/authoring never authorizes code or runtime mutations.
+6. Before scope, design shape, acceptance, verification depth, or process depth, record the observable outcome or invariant, actor or consumer and claim boundary, source-authorized scope and non-goals, permitted outputs or mutations, simplest direct or existing primitive, and narrowest falsifying check.
+7. For non-trivial work, check [project-purpose fit](#project-purpose-fit-policy).
+8. Repeat the opening comparison when a later choice adds a boundary, lifecycle, output, or verification step.
+9. Change only the authorized surface, run proportional verification, report evidence and remaining risk, then stop.
 
 ## When to use this skill
 
@@ -68,15 +70,14 @@ Validation:
 
 Deliver the current requirement with the least new conceptual surface that remains correct and maintainable in the existing system.
 
-1. Prefer no change when the need is speculative; otherwise prefer a direct local change or an existing language, runtime, platform, or project primitive that keeps the total design smaller.
-2. Judge simplicity by concepts introduced and behavior that must be understood, not by line count or by whether code is reused.
+1. For new work without a current path, start with a direct local solution. Compare the benefit of a justified addition with the cost to understand, set up, maintain, and recover it.
+2. Preserve necessary boundaries, including separate rights when existing access would violate an agreed restriction. Technical ability alone cannot authorize use.
 3. Use an installed dependency only when it reduces total complexity for this task; installed is not automatically simpler than direct code.
 4. Reject flexibility, configurability, indirection, or defensive branches for hypothetical future requirements.
 5. Treat artifacts created or materially revised in the same session as outputs, not higher-authority sources that can authorize their own expansion.
 6. Record adjacent defects as findings, blockers, or follow-ups unless a current source explicitly places their remediation in scope.
 7. Missing evidence does not authorize a broader defensive design; choose the narrowest source-supported option or block the decision that depends on the missing fact.
-8. Before adding an abstraction, dependency, layer, provider, registry, queue, retry mechanism, factory, interface, wrapper, configuration surface, persistent state, background process, harness, runner, instrumentation, or extension point, name the current source requirement or protected boundary it serves and why a direct or existing option is insufficient.
-9. If that concrete justification does not exist, choose the simpler design. Do not require an alternatives essay for an ordinary direct change.
+8. If only another proposed choice needs the addition, test that choice first. Recheck inherited mechanisms when their original guarantee weakens. An ordinary direct change needs no alternatives report.
 
 Validation:
 
@@ -109,7 +110,7 @@ Prove the behavior proportionally and finish without adding post-success scope.
 4. Use stronger project or domain verification for security, privacy, money, data loss, auth, accessibility, release, migration, or production-wiring boundaries.
 5. If a bug was fixed, repeat the same recorded actor and steps or path and re-check the relevant observable, network, or persisted-state boundary; when repeated independent signals indicate a defect class, also check adjacent observable cases.
 6. If the intended verification cannot run, use the next-best check and state the evidence gap.
-7. Report the completed outcome, checks run, checks not run, and remaining risk.
+7. Report the outcome, checks run or missed, and remaining risk.
 8. Once the simplest sufficient solution is implemented and verified, stop; do not add speculative cleanup, extensibility, or future-proofing.
 
 Validation:

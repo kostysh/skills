@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: implementation-discipline
-  source-version: 0.2.11
+  source-version: 0.2.18
   recommended-skill-md-max-bytes: 18500
   description: >-
     Use when implementing, refactoring, reviewing code, or authoring, revising,
@@ -65,12 +65,14 @@ surfaces:
 
 sections:
   startHere:
+    - Start the first proposal with the owner's path to the final action. To automate existing work, show how today's operation could run with its existing authorization under the requested conditions and what consent it needs.
+    - Before adding a service, role, permission, or procedure to a PRD, architecture, specification, plan, or implementation, show what fails on that path or which agreed guarantee the owner loses. Omit unsupported additions. In review, flag them for simplification.
+    - If this file is incomplete, read the missing sections. Read applicable references separately and retry truncated output in smaller ranges.
     - Confirm that the task involves implementation, code review, or non-trivial authoring, revision, or review of a PRD, architecture, software specification, or delivery plan.
     - Classify the task as implementation/remediation, code-review-only, or design/authoring; code-review-only is read-only, and design/authoring never authorizes code or runtime mutations.
     - Before scope, design shape, acceptance, verification depth, or process depth, record the observable outcome or invariant, actor or consumer and claim boundary, source-authorized scope and non-goals, permitted outputs or mutations, simplest direct or existing primitive, and narrowest falsifying check.
     - For non-trivial work, check [project-purpose fit](#project-purpose-fit-policy).
-    - Prefer the direct or existing path with the least conceptual surface that satisfies current correctness, security, compatibility, and source requirements.
-    - Pass the complexity exception gate before adding a new concept, and repeat the scope-and-simplicity gate after any material delta that adds a boundary, lifecycle, output, or verification contour.
+    - Repeat the opening comparison when a later choice adds a boundary, lifecycle, output, or verification step.
     - Change only the authorized surface, run proportional verification, report evidence and remaining risk, then stop.
   whenToUse:
     - Implement or modify code where minimal complexity and explicit verification matter.
@@ -112,15 +114,14 @@ sections:
       title: Choose the simplest sufficient design
       goal: Deliver the current requirement with the least new conceptual surface that remains correct and maintainable in the existing system.
       steps:
-        - Prefer no change when the need is speculative; otherwise prefer a direct local change or an existing language, runtime, platform, or project primitive that keeps the total design smaller.
-        - Judge simplicity by concepts introduced and behavior that must be understood, not by line count or by whether code is reused.
+        - For new work without a current path, start with a direct local solution. Compare the benefit of a justified addition with the cost to understand, set up, maintain, and recover it.
+        - Preserve necessary boundaries, including separate rights when existing access would violate an agreed restriction. Technical ability alone cannot authorize use.
         - Use an installed dependency only when it reduces total complexity for this task; installed is not automatically simpler than direct code.
         - Reject flexibility, configurability, indirection, or defensive branches for hypothetical future requirements.
         - Treat artifacts created or materially revised in the same session as outputs, not higher-authority sources that can authorize their own expansion.
         - Record adjacent defects as findings, blockers, or follow-ups unless a current source explicitly places their remediation in scope.
         - Missing evidence does not authorize a broader defensive design; choose the narrowest source-supported option or block the decision that depends on the missing fact.
-        - Before adding an abstraction, dependency, layer, provider, registry, queue, retry mechanism, factory, interface, wrapper, configuration surface, persistent state, background process, harness, runner, instrumentation, or extension point, name the current source requirement or protected boundary it serves and why a direct or existing option is insufficient.
-        - If that concrete justification does not exist, choose the simpler design. Do not require an alternatives essay for an ordinary direct change.
+        - If only another proposed choice needs the addition, test that choice first. Recheck inherited mechanisms when their original guarantee weakens. An ordinary direct change needs no alternatives report.
       validation:
         - The design satisfies the requested behavior and protected constraints.
         - Every new concept is necessary for a current requirement or real boundary such as security, compatibility, transactionality, a public contract, or established repeated use.
@@ -147,7 +148,7 @@ sections:
         - Use stronger project or domain verification for security, privacy, money, data loss, auth, accessibility, release, migration, or production-wiring boundaries.
         - If a bug was fixed, repeat the same recorded actor and steps or path and re-check the relevant observable, network, or persisted-state boundary; when repeated independent signals indicate a defect class, also check adjacent observable cases.
         - If the intended verification cannot run, use the next-best check and state the evidence gap.
-        - Report the completed outcome, checks run, checks not run, and remaining risk.
+        - Report the outcome, checks run or missed, and remaining risk.
         - Once the simplest sufficient solution is implemented and verified, stop; do not add speculative cleanup, extensibility, or future-proofing.
       validation:
         - Evidence matches the strength of the completion claim.

@@ -15,6 +15,8 @@ Compare candidate designs by everything a maintainer must understand after the c
 
 Prefer an existing primitive only when it makes that whole surface smaller. An installed dependency, shared helper, or existing abstraction may be more complex than direct local code when it adds unrelated behavior or indirection.
 
+On transfer, check permissions per action. A mechanism needed for an earlier independent check can keep that function while a different actor performs the final action. Technical ability makes a route worth considering. Agreed restrictions govern its use until their owner changes them.
+
 ## Apply the complexity exception gate
 
 For each proposed abstraction, dependency, layer, provider, factory, interface, wrapper, configuration surface, persistent state, background process, or extension point, answer:
@@ -22,7 +24,7 @@ For each proposed abstraction, dependency, layer, provider, factory, interface, 
 1. Which current requirement or protected boundary requires it?
 2. Why is a direct local change or existing primitive insufficient?
 
-If either answer is missing, remove the concept. Real protected boundaries include security and compatibility boundaries, transactions, public contracts, and established repeated use. Possible future reuse is not established repeated use.
+An author leaves an unsupported concept out of the first draft. A reviewer flags the unsupported addition and the existing route to assess. Real protected boundaries include security and compatibility boundaries, transactions, public contracts, and established repeated use. Possible future reuse is not established repeated use.
 
 Do not require this defense for an ordinary direct change.
 

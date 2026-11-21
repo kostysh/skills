@@ -1,0 +1,143 @@
+{
+  "skill": "implementation-discipline",
+  "study": "20261121-existing-path",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "base": "skills/implementation-discipline/docs/reviews/20261121-1",
+  "source": "../../logs/implementation-log-20261121-1.md",
+  "runs": {
+    "r17": {
+      "task": "K",
+      "variant": "0.2.11",
+      "source": "evidence.json",
+      "sha256": "85aa5ca1837824fd7c1ea8e9a493fd4c7c8851c39f5fa323ec18f3a6d7778ea7",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1fec5-793b-7a31-970d-5be2c98cdcf8",
+          "rubric": "album-v1",
+          "packet": "album-v1-anonymous",
+          "label": "Q2",
+          "score": "PASS",
+          "source": "evidence.json"
+        }
+      }
+    },
+    "r62": {
+      "task": "M",
+      "variant": "0.2.11",
+      "source": "evidence.json",
+      "sha256": "af24e252a3102bfe5d99c41eb6db3b97f44de60ef6a4df36dd171b08f8d1c05a",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1fec5-793b-7a31-970d-5be2c98cdcf8",
+          "rubric": "album-v1",
+          "packet": "album-v1-anonymous",
+          "label": "V4",
+          "score": "PASS",
+          "source": "evidence.json"
+        }
+      }
+    },
+    "r38": {
+      "task": "M",
+      "variant": "0.2.12",
+      "source": "evidence.json",
+      "sha256": "925499407dd336ca976188ce23081c0dfd71c330aafde8f97086874998d3c9e8",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1fec5-793b-7a31-970d-5be2c98cdcf8",
+          "rubric": "album-v1",
+          "packet": "album-v1-anonymous",
+          "label": "J8",
+          "score": "PASS",
+          "source": "evidence.json"
+        },
+        "secondary": {
+          "assessor": "01a1fec5-9599-7bc2-9ab4-9a52c3527d75",
+          "rubric": "album-v1",
+          "packet": "album-v1-anonymous",
+          "label": "J8",
+          "score": "PASS",
+          "source": "evidence.json"
+        }
+      }
+    },
+    "r94": {
+      "task": "K",
+      "variant": "0.2.12",
+      "source": "evidence.json",
+      "sha256": "7946192aef6c47c61d52b9a6f1d814fc443f407377d59b466f2bf7085640b2ef",
+      "ratings": {
+        "primary": {
+          "assessor": "01a1fec5-793b-7a31-970d-5be2c98cdcf8",
+          "rubric": "album-v1",
+          "packet": "album-v1-anonymous",
+          "label": "C7",
+          "score": "PASS",
+          "source": "evidence.json"
+        }
+      }
+    }
+  },
+  "series": [
+    {
+      "id": "album",
+      "phase": "primary",
+      "comparison": "0.2.12/0.2.11",
+      "rubric": "album-v1",
+      "packet": "album-v1-anonymous",
+      "pairs": [
+        {
+          "id": "album-K",
+          "task": "K",
+          "left": [
+            "r94",
+            "primary"
+          ],
+          "right": [
+            "r17",
+            "primary"
+          ]
+        },
+        {
+          "id": "album-M",
+          "task": "M",
+          "left": [
+            "r38",
+            "primary"
+          ],
+          "right": [
+            "r62",
+            "primary"
+          ]
+        }
+      ],
+      "source": "assignment.json",
+      "limit": "Два сценария проектирования, явный вызов скила, по одному исполнению каждой версии в каждом сценарии."
+    }
+  ],
+  "agreement": [
+    {
+      "run": "r38",
+      "rubric": "album-v1",
+      "packet": "album-v1-anonymous",
+      "ratings": [
+        "primary",
+        "secondary"
+      ]
+    }
+  ],
+  "attempts": [
+    {
+      "id": "01a1fec6-9779-7240-8bb6-f706a49d614a",
+      "audit": "20261121-existing-path",
+      "order": 1,
+      "snapshot": "0.2.12 archive sha256:fa79fdafe503a11842025c2294f152c1d0d4fc9a6d139a1a90a71ac12aebd74d",
+      "handed": "2026-11-21T15:43:10.188Z",
+      "started": "2026-11-21T15:43:23Z",
+      "decided": "2026-11-21T15:44:07Z",
+      "verdict": "PASS",
+      "source": "../../logs/implementation-log-20261121-1.md#независимая-проверка"
+    }
+  ]
+}
