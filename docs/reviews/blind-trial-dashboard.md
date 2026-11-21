@@ -6,7 +6,23 @@
 | --- | --- | --- | --- | --- | --- |
 | 291 | 34 | 6 | 200 | 26 | 25 |
 
-Each assigned pair counts once, including pairs with insufficient evidence. Reassessments of existing pairs appear separately (11).
+## How to read the results
+
+A **pair** compares two variants on the same task. When **Left / right** shows `A/B`, A is the variant being tested and B is the comparison. A run passes when it meets the criteria for that task.
+
+**Assigned** counts all pairs scheduled for comparison. The five outcome columns add up to that total.
+
+| Outcome | How to read one pair |
+| --- | --- |
+| Better | Only the left variant passed. |
+| Worse | Only the right variant passed. |
+| Both passed | Both variants met the task criteria. |
+| Both failed | Neither variant met the task criteria. |
+| Insufficient | A run or score is missing, the evidence is incomparable, or the outcome is uncertain. The pair still counts as assigned. |
+
+**Example.** In a `package/none` row, **2 assigned, 2 both passed** means both tasks passed with the skill and without it. Neither variant had a pass/fail advantage on those tasks.
+
+**Coverage** counts a skill once it has any conclusive pair, including **Both failed**. Reassessments of existing pairs appear separately (11) in rows marked **regrade**.
 
 ## Results by skill
 
@@ -54,9 +70,7 @@ Catalog versions come from this checkout. Results include earlier trials. Select
 
 ## Comparison series
 
-Read each comparison from left to right. Better means PASS/FAIL, worse means FAIL/PASS. Both passed and both failed are conclusive outcomes. Missing, disputed or incomparable evidence counts as insufficient.
-
-Variant labels belong to each study. For example, package/none compares the whole skill with no skill. In instruction-removal trials, A/B compares the original with the removal variant. Numeric labels identify the tested versions. Each regrade row counts reassessed pairs separately from the catalog totals.
+Read each series in the context of its tasks and variants. In instruction-removal trials, A/B compares the original with the removal variant. Numeric labels identify the tested versions. Open the linked study for its criteria and evidence.
 
 ### agent-browser
 
