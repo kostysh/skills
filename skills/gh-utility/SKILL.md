@@ -6,9 +6,9 @@ description: Use when GitHub CLI (`gh`) is required for repos, issues, PRs,
   route Git history, review, CI fixes, security, and skill authoring elsewhere.
 license: MIT
 metadata:
-  source-version: 1.2.5
+  source-version: 1.3.0
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 6575e7e62cca5fc3e0b21a9441eefbeecf923075af1283c1d77e0145ca2b9582
+  skillforge-source-hash: be0ef94e33def4ce9e56f8f612b0ca5702016f26f9f4f71dab20b1eea2ce95c2
 ---
 
 # gh-utility
@@ -92,6 +92,7 @@ Validation:
 ## Gotchas
 
 - **high** — gh command families, flags, and JSON fields vary by installed version; check gh help before using uncertain syntax.
+- **high** — Authenticated gh commands may refresh stored OAuth credentials. When the task must preserve credentials, follow the credential-preserving reads procedure in references/auth-and-scopes.md.
 - **high** — Use explicit --repo or --hostname when the current checkout or host could select the wrong target.
 - **medium** — GitHub may expose only a link for external CI; report that boundary instead of claiming external-provider state.
 
@@ -111,11 +112,11 @@ Report command output and fresh post-action reads honestly; help, dry-run, or va
 
 ## Required active references
 - [Safety rules](references/safety-rules.md) — Read whenever a task may mutate GitHub state, touch secrets/keys, publish releases, change branch protection/rulesets, or run bulk operations.
-- [Auth and scopes](references/auth-and-scopes.md) — Read when gh is missing, unauthenticated, on the wrong host, or lacks permission.
-- [API, search, and URL routing](references/api-search-and-url-routing.md) — Read for GitHub URLs, cross-repository search, gh api, GraphQL, pagination, or rate limits.
-- [Repository, issue, and pull request use cases](references/repo-issue-pr-playbook.md) — Read for repository metadata, issues, labels, milestones, or pull requests.
-- [PR, CI, and review inspection](references/pr-ci-review-loop.md) — Read for GitHub-side PR checks, review state, threads, merge, or monitoring.
-- [Admin and security use cases](references/admin-security-playbook.md) — Read for rulesets, branch protection, settings, secrets, variables, keys, or organization administration.
+- [Auth and scopes](references/auth-and-scopes.md) — Read when gh is unavailable, when diagnosing or changing authentication, credentials, scopes, or host, or when a task must preserve stored credentials.
+- [API, search, and URL routing](references/api-search-and-url-routing.md) — Read for GitHub URLs, repository contents, cross-repository search, gh api, GraphQL, pagination, or rate limits.
+- [Repository, issue, and pull request use cases](references/repo-issue-pr-playbook.md) — Read for repository metadata, issues and their artifacts, labels, milestones, or pull requests.
+- [PR, CI, and review inspection](references/pr-ci-review-loop.md) — Read for GitHub-side PR checks, review state, threads, merge, monitoring, or event subscriptions.
+- [Admin and security use cases](references/admin-security-playbook.md) — Read for rulesets, branch protection, repository settings or deletion, secrets, variables, keys, or organization administration.
 - [Bulk operations](references/bulk-operations.md) — Read when one request affects multiple repositories or independent GitHub resources.
 - [GitHub Projects](references/projects-playbook.md) — Read for GitHub Projects schema, items, fields, exports, or updates.
 - [Releases](references/release-playbook.md) — Read for release inspection, drafts, publication, assets, attestations, or recovery.

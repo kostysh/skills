@@ -14,10 +14,13 @@ Use this reference when the task spans multiple `gh` command families or when yo
 
 | Family | Remote read / inspect | Remote mutation or local side effect | Notes |
 |---|---|---|---|
-| `auth` | `gh auth status` | `login`, `logout`, `refresh`, `switch`, `setup-git` (writes Git credential-helper config) | Never run token-retrieval commands in observable agent/tool contexts. Prefer browser/device login. Verify configuration after `setup-git`. |
-| `repo` | `view`, `list`, `license`, `gitignore`, `deploy-key list`, `autolink list` | `clone` (local files), `fork` (creates remote repo; may also change local remotes), `create`, `edit`, `delete`, `archive`, `unarchive`, `rename`, `sync`, `deploy-key add/delete`, `autolink create/delete` | Repo fork/delete/archive/visibility/default branch changes are remote mutations. |
-| `issue` | `list`, `view`, `status` | `create`, `edit`, `comment`, `close`, `reopen`, `lock`, `unlock`, `pin`, `unpin`, `transfer`, `develop` | Use `--body-file` for long text. |
+| `auth` | [Scoped status check](auth-and-scopes.md#first-checks) | `login`, `logout`, `refresh`, `switch`, `setup-git` (writes Git credential-helper config) | Status can refresh stored credentials when run without `--no-refresh`. |
+| `repo` | `view`, `list`, `license`, `gitignore`, `read-file`, `read-dir`, `deploy-key list`, `autolink list` | `read-file --output`, `clone` (local files), `fork` (creates remote repo and may change local remotes), `create`, `edit`, `delete`, `archive`, `unarchive`, `rename`, `sync`, `deploy-key add/delete`, `autolink create/delete` | For deletion, check [cascade scope](admin-security-playbook.md#repository-deletion). |
+| `issue` | `list`, `view`, `status`, `develop --list` | `create`, `edit`, `comment`, `close`, `reopen`, `lock`, `unlock`, `pin`, `unpin`, `transfer`, `develop` to create a linked branch | `develop --checkout` can write local Git state. Use `--body-file` for long text. |
+| `issue artifact` | `list`, `view`, `download --output -` for one artifact | `create`, `edit`, `delete`, `download` to local files | Preview. Use the artifact's number on its issue or its URL. |
+| `discussion` | `list`, `view` | `create`, `edit`, `comment` | Preview. |
 | `pr` | `list`, `view`, `status`, `diff`, `checks` | `checkout` (local Git state; defer to `git-engineer`), `create`, `edit`, `comment`, `review`, `ready`, `merge`, `close`, `reopen`, `lock`, `unlock`, `update-branch`, `revert` | Merge, close, force update, and thread resolution require exact authorization. |
+| `event` | `subscription list`, `subscription view`, `listen --subscription ID` | `subscription create`, `subscription delete`, `listen --resource` (can create a subscription) | [PR events preview and fallback](pr-ci-review-loop.md#pr-events-preview). |
 | `run` | `list`, `view`, `watch` | `download` (local files), `rerun`, `cancel`, `delete` | Prefer `gh run view --log-failed` for CI debugging. |
 | `workflow` | `list`, `view` | `run`, `enable`, `disable` | Dispatching production workflows requires exact authorization and input review. |
 | `cache` | `list` | `delete` | Cache delete can affect CI performance; require exact authorization for the selected caches. |
@@ -38,7 +41,7 @@ Use this reference when the task spans multiple `gh` command families or when yo
 | `alias` | `list` | `set`, `delete`, `import` | Alias can hide dangerous commands; inspect values. |
 | `extension` | `list`, `search`, `browse` | `install`, `remove`, `upgrade`, `exec`, `create` | Extensions execute code; inspect source before install/exec. |
 | `config` | `list`, `get` | `set`, `clear-cache` | Avoid changing global config unless user asked. |
-| `skill` | `search`, `preview`, `update --dry-run` | `install`, `update`, `publish` | Preview and pin skills; they can contain scripts/instructions. |
+| `skill` | `search --json`, `list`, `preview`, `update --dry-run`, `publish --dry-run` | `install`, `update`, `publish`, `publish --fix`, install from interactive search | Inspect the source, version, and destination before installation. |
 | `attestation` | `verify`, `trusted-root` | `download` (local files) | Use for release artifact provenance checks. |
 | `browse` | opens URLs | browser side effect | Safe but may not work in headless environments. |
 | `status` | dashboard summary | none | Good first command for personal GitHub status. |

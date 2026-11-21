@@ -7,24 +7,26 @@ Use this file when a `gh` workflow fails, returns unexpected data, or cannot fin
 ```bash
 command -v gh
 gh --version
-gh auth status
-gh repo view --json nameWithOwner,url,viewerPermission,defaultBranchRef
-gh api rate_limit
 ```
+
+Use the [scoped authentication check](auth-and-scopes.md#first-checks) for the target account.
+If the task requires preserving credentials, apply the
+[credential-preserving read guidance](auth-and-scopes.md#credential-preserving-reads) before
+running repo reads or rate-limit queries.
 
 ## Common errors
 
 | Error/symptom | Likely cause | Fix |
 |---|---|---|
 | `gh: command not found` | GitHub CLI missing from PATH | Install `gh` or use a host-provided environment with `gh`. |
-| `You are not logged into any GitHub hosts` | No stored token | `gh auth login`. |
-| `HTTP 401` | Expired/invalid token | `gh auth status`, then refresh or login. |
-| `HTTP 403 Resource not accessible by integration` | Insufficient token permissions, GitHub Actions token too narrow, SSO not authorized | Refresh scopes or set workflow `permissions:`; authorize SSO. |
-| `GraphQL: Could not resolve to a Repository` | Wrong host, owner/repo typo, private repo inaccessible | `gh repo view OWNER/REPO`; confirm host and permission. |
+| `You are not logged into any GitHub hosts` | No stored token | Identify the account and host for authorized login. |
+| `HTTP 401` | Expired/invalid token | Use scoped status and follow the credential-preserving procedure when applicable. |
+| `HTTP 403 Resource not accessible by integration` | Insufficient token permissions, GitHub Actions token too narrow, SSO not authorized | Inspect the selected account and required permissions. Apply authorized changes for the confirmed cause. |
+| `GraphQL: Could not resolve to a Repository` | Wrong host, owner/repo typo, private repo inaccessible | Check the target and permissions with a scoped repository read. |
 | `Field 'x' doesn't exist on type` | API schema drift or wrong GraphQL object | Reduce query, inspect docs or use top-level command. |
 | `Unknown JSON field` | `gh --json` field drift across versions | Rerun command without `--json` or with fields suggested by error. |
 | Empty `gh pr checks` | No PR for branch, external CI, or permissions | `gh pr view`, inspect PR URL, use external check URL if present. |
-| `gh project` fails | Missing `project` scope or org permissions | `gh auth refresh -s project`; confirm project owner. |
+| `gh project` fails | Missing `project` scope or org permissions | Confirm project owner and cause before expanding scope. |
 | `gh secret set` fails for org | Missing org admin role/scope/visibility repo mismatch | Confirm org permissions and selected repos. |
 | Rate limit exceeded | Broad search/API loop | Narrow query, partition date/repo, wait, or reduce pagination. |
 
@@ -49,6 +51,9 @@ echo "$GH_HOST"
 Prefer explicit `--repo OWNER/REPO` in scripts and examples.
 If local remote configuration itself is suspect, hand that inspection to `git-engineer`; do not
 change local Git configuration as part of GitHub transport troubleshooting.
+When an unexpected API hostname persists, inspect `gh config get api_host --host HOST` if
+supported. The experimental override can redirect API traffic while login, Git remotes and
+browser URLs still use the canonical host. Requests may still reach that host.
 
 ## Check installed extensions
 

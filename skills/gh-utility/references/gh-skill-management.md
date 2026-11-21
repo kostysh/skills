@@ -4,6 +4,14 @@ Use this reference for the preview-stage `gh skill` command family. It is subjec
 notice. Start with `gh skill --help` and command-local help from the installed CLI; do not reuse
 syntax from an older session without checking it.
 
+## Search
+
+```bash
+gh skill search terraform --limit 5 --json skillName,repo,path
+```
+
+Use structured output for a read-only search. Interactive search can offer to install a result.
+
 ## Preview and inspect
 
 Preview fetches and renders a remote skill without installation:
@@ -34,6 +42,7 @@ gh skill install ./skills-repository gh-utility --from-local --agent codex --sco
 ```
 
 The default non-interactive scope and agent may differ from the operator's intent. Specify both.
+For a custom installation, `--dir` overrides the agent and scope destination.
 Installing or forcing replacement changes agent instructions and may introduce executable code;
 require exact authorization for the source, skill, agent, scope, pin, and overwrite behavior.
 
@@ -48,13 +57,16 @@ gh skill update gh-utility
 `--dry-run` reports available updates without applying them. Pinned skills are skipped unless the
 operator explicitly authorizes unpinning. A forced update can overwrite local modifications, so
 inspect provenance and diff implications first.
+An update by name scans known project and user locations by default. Check the paths with
+`gh skill list` and use `--dir` to confine the update to the intended custom directory when
+supported. Apply the [Authorization policy](../SKILL.md#authorization) to every affected copy.
 
 ## Validate and publish
 
-Run validation from the repository discovery root, not from an individual skill folder:
+Pass the repository or skills discovery directory to validate the intended set:
 
 ```bash
-gh skill publish skills --dry-run
+gh skill publish . --dry-run
 ```
 
 The dry-run validates Agent Skills packaging rules. It does not prove instruction quality,

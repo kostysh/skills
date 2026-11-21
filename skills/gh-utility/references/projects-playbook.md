@@ -4,19 +4,18 @@ Use this file for GitHub Projects setup, inspection, field updates, draft issues
 
 ## Auth and target
 
-Projects commonly require the `project` scope:
-
-```bash
-gh auth status
-gh auth refresh -s project
-```
+Use the selected host and project owner. Diagnose permission failures with the
+[scoped authentication check](auth-and-scopes.md#first-checks). A missing `project` OAuth scope
+may need an authorized scope change on that account. For tasks that require unchanged
+credentials, apply the [credential-preserving read guidance](auth-and-scopes.md#credential-preserving-reads)
+to project reads.
 
 Identify only the inputs required by the actual installed command:
 
 - List projects: owner login/org.
 - Create a project: owner and requested title; no future project or item IDs.
 - View, link, or list fields/items: owner and existing project number, plus the repository for linking.
-- Edit an item field: project, item, and field IDs; option ID only for a single-select update. Other item edits use their command-specific inputs.
+- Edit a field of a linked issue or PR: project owner and number, issue or PR URL, field, and requested value. If using the ID form, supply the applicable project, item, field, and value IDs. Draft items use their command-specific inputs.
 
 Discover existing IDs through native reads. Missing inputs stop only the dependent operation;
 continue supported inspection without inventing future IDs.
@@ -64,7 +63,15 @@ Prefer draft items for planning work not tied to a repo. Prefer issues when work
 
 ## Update item fields
 
-`gh project item-edit` often needs IDs:
+With name-based addressing in installed help, use the project owner and number and the linked
+issue or PR URL. The repository owner in that URL can differ from the project owner.
+
+```bash
+gh project item-edit 1 --owner OWNER --url https://github.com/OWNER/REPO/issues/123 --field Status --value "In Progress"
+```
+
+Pass the explicit option name for a single-select field. Use the ID form for draft items without
+a URL, older CLI versions, or stable IDs in automation.
 
 ```bash
 gh project item-edit --id ITEM_ID --project-id PROJECT_ID --field-id FIELD_ID --single-select-option-id OPTION_ID
@@ -72,10 +79,12 @@ gh project item-edit --id ITEM_ID --project-id PROJECT_ID --field-id FIELD_ID --
 
 Workflow:
 
-1. `field-list` to find field ID and option IDs.
-2. `item-list` to find item ID.
-3. Update one field at a time.
-4. Re-run `item-list` to verify.
+1. Use `field-list` to check the field and value. Resolve IDs with `field-list` and `item-list`
+   when using the ID form.
+2. Update one field at a time for a linked issue or PR.
+3. Re-run `item-list` for the same owner and project and match the issue/PR URL or item ID.
+   In text output, `--field Status` adds the field column when supported. Confirm the current
+   value and account for output limits before concluding the item is missing.
 
 ## Bulk updates
 

@@ -3,7 +3,7 @@ kind: SkillSource
 
 skill:
   name: gh-utility
-  source-version: 1.2.5
+  source-version: 1.3.0
   recommended-skill-md-max-bytes: 16000
   description: >-
     Use when GitHub CLI (`gh`) is required for repos, issues, PRs, Actions, releases,
@@ -28,31 +28,31 @@ references:
     source: references/auth-and-scopes.md
     target: references/auth-and-scopes.md
     required: true
-    trigger: Read when gh is missing, unauthenticated, on the wrong host, or lacks permission.
+    trigger: Read when gh is unavailable, when diagnosing or changing authentication, credentials, scopes, or host, or when a task must preserve stored credentials.
   - id: ref-api-search-routing
     title: API, search, and URL routing
     source: references/api-search-and-url-routing.md
     target: references/api-search-and-url-routing.md
     required: true
-    trigger: Read for GitHub URLs, cross-repository search, gh api, GraphQL, pagination, or rate limits.
+    trigger: Read for GitHub URLs, repository contents, cross-repository search, gh api, GraphQL, pagination, or rate limits.
   - id: ref-repo-issue-pr
     title: Repository, issue, and pull request use cases
     source: references/repo-issue-pr-playbook.md
     target: references/repo-issue-pr-playbook.md
     required: true
-    trigger: Read for repository metadata, issues, labels, milestones, or pull requests.
+    trigger: Read for repository metadata, issues and their artifacts, labels, milestones, or pull requests.
   - id: ref-pr-ci-review
     title: PR, CI, and review inspection
     source: references/pr-ci-review-loop.md
     target: references/pr-ci-review-loop.md
     required: true
-    trigger: Read for GitHub-side PR checks, review state, threads, merge, or monitoring.
+    trigger: Read for GitHub-side PR checks, review state, threads, merge, monitoring, or event subscriptions.
   - id: ref-admin-security
     title: Admin and security use cases
     source: references/admin-security-playbook.md
     target: references/admin-security-playbook.md
     required: true
-    trigger: Read for rulesets, branch protection, settings, secrets, variables, keys, or organization administration.
+    trigger: Read for rulesets, branch protection, repository settings or deletion, secrets, variables, keys, or organization administration.
   - id: ref-bulk-operations
     title: Bulk operations
     source: references/bulk-operations.md
@@ -245,6 +245,9 @@ sections:
     - id: gotcha-version-drift
       priority: high
       text: gh command families, flags, and JSON fields vary by installed version; check gh help before using uncertain syntax.
+    - id: gotcha-credential-refresh
+      priority: high
+      text: Authenticated gh commands may refresh stored OAuth credentials. When the task must preserve credentials, follow the credential-preserving reads procedure in references/auth-and-scopes.md.
     - id: gotcha-context
       priority: high
       text: Use explicit --repo or --hostname when the current checkout or host could select the wrong target.
