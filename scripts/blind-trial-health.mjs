@@ -1,12 +1,5 @@
 import path from 'node:path';
-import { auditChains, link, table } from './audit-metrics.mjs';
-
-const statusLabels = {
-  'Needs attention': '🔴 Needs attention',
-  Recheck: '🟠 Recheck',
-  'Evidence needed': '⚪ Evidence needed',
-  'In good shape': '🟢 In good shape',
-};
+import { auditChains } from './audit-metrics.mjs';
 
 function matchesVersion({ a, doc }, version, note) {
   const observation = doc.observation;
@@ -76,13 +69,13 @@ export function assessSkill(version, studies, indexedReview) {
   }
   const pass = reviews.find((r) => r.scope !== 'joint');
   if (pass) {
-    return assessment('In good shape', 'These versions passed individual review in the tested scope.', pass);
+    return assessment('In good shape', 'This version passed individual review in the tested scope.', pass);
   }
   if (incomplete) {
     return assessment('Evidence needed', 'Complete the inconclusive comparison for this version.', incomplete);
   }
   if (reviews.length) {
-    return assessment('Evidence needed', 'These versions passed a joint review. Test each skill separately to measure its own contribution.', reviews[0]);
+    return assessment('Evidence needed', 'This version passed a joint review. An individual trial is needed to measure its contribution.', reviews[0]);
   }
   if (tested) {
     return assessment('Evidence needed', 'The current variant passed its recorded tasks. Confirm its individual audit decision.', tested);
@@ -90,30 +83,4 @@ export function assessSkill(version, studies, indexedReview) {
   const doc = studies[0]?.doc;
   if (!doc) return assessment('Evidence needed', 'Planned for the next review');
   return assessment('Evidence needed', 'Link a review or trial to the current catalog version.', { doc, source: doc.source });
-}
-
-export function healthSection(entries, directory) {
-  const groups = Object.entries(statusLabels).map(([status, label]) => ({
-    label, skills: entries.filter((entry) => entry.status === status),
-  }));
-  const blocks = [
-    '## Current skill health',
-    table(groups.map((group) => group.label), [groups.map((group) => group.skills.length)]),
-    '**Needs attention** flags a failed audit or a defect recorded after acceptance for the current version. **Recheck** flags a specific trial result or review decision to investigate.',
-  ];
-  for (const { label, skills } of groups) {
-    if (!skills.length) continue;
-    blocks.push(`### ${label}`);
-    const byReason = new Map();
-    for (const { skill, version, doc, source, reason } of skills) {
-      const label = `${skill} ${version}`;
-      const name = source ? link(doc ?? {}, source, label, directory) : label;
-      if (!byReason.has(reason)) byReason.set(reason, []);
-      byReason.get(reason).push(name);
-    }
-    for (const [reason, names] of byReason) {
-      blocks.push(names.length === 1 ? `${names[0]} — ${reason}` : `${reason}\n\n${names.join(', ')}.`);
-    }
-  }
-  return blocks.join('\n\n');
 }

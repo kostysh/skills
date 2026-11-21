@@ -232,11 +232,33 @@ test('Catalog coverage distinguishes missing studies, insufficient pairs and rea
   const report = renderDashboard(catalog, records);
   assert.match(report, /1 of 3 active skills.*Assigned pairs appear for 2 of 3 skills/);
   assert.match(report, /\| 2 \| 0 \| 1 \| 0 \| 0 \| 1 \|/);
-  assert.match(report, /\| new-skill \| 1.0 \| Evidence needed \| 0 \| 0 \| 0 \| 0 \| 0 \| 0 \| Planned for the next review \|/);
-  assert.match(report, /\[incomplete\]\(#incomplete\) \| 2.0 \| Evidence needed \| 1 \| 0 \| 0 \| 0 \| 0 \| 1 \| \[Study\]/);
+  assert.match(report, /\| ⚪ \| new-skill \| 1\.0 \| Evidence needed \| 0 \| 0 \| 0 \| 0 \| 0 \| 0 \| Planned for the next review \|/);
+  assert.match(report, /\| ⚪ \| \[incomplete\]\(#incomplete\) \| 2\.0 \| \[Evidence needed\]\([^)]+\) \| 1 \| 0 \| 0 \| 0 \| 0 \| 1 \| \[Study\]/);
   assert.match(report, /Reassessments of existing pairs appear separately \(1\)/);
   assert.match(report, /\| A\/B \| regrade \| 1 \| 0 \| 1 \|/);
   assert.match(report, /## Studies outside individual skill totals[\s\S]*### joint subjects/);
+});
+
+test('The legend explains every health indicator and each skill has one indicator in its results row', () => {
+  const doc = study();
+  const version = '1.2.0';
+  const catalog = new Map([[doc.skill, version]]);
+  const records = new Map([[doc, source]]);
+  for (const [verdict, icon, status] of [
+    ['FAIL', '🔴', 'Needs attention'],
+    ['BLOCKED', '🟠', 'Recheck'],
+    [undefined, '⚪', 'Evidence needed'],
+    ['PASS', '🟢', 'In good shape'],
+  ]) {
+    const report = renderDashboard(catalog, records, { example: { version, verdict, source } });
+    const results = report.split('## Results by skill\n')[1].split('\n## ')[0];
+    const [legend, rows] = results.split('| Indicator | Skill |');
+    assert.ok(legend.includes(`- ${icon} **${status}** — `), status);
+    assert.deepEqual(legend.match(/[🔴🟠⚪🟢]/gu), ['🔴', '🟠', '⚪', '🟢']);
+    assert.ok(rows.includes(`| ${icon} | [example](#example) | 1.2.0 | [${status}](`), status);
+    assert.deepEqual(report.replace(legend, '').match(/[🔴🟠⚪🟢]/gu), [icon]);
+    assert.deepEqual(report.match(/^### .+$/gm), ['### example']);
+  }
 });
 
 test('Current health follows the version and the final decision in each audit chain', () => {

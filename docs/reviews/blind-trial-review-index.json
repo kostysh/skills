@@ -93,6 +93,13 @@
     "source": "docs/reviews/gpt-6-2/06/independent-audit.md",
     "snapshot": "2835b7574b06a6210b2b2d96465c7e46e7c60d97"
   },
+  "orchestrator": {
+    "version": "0.1.2",
+    "source": "skills/orchestrator/docs/logs/implementation-log-20261121-3.md",
+    "study": "simplicity-final-package-extension",
+    "variants": ["candidate"],
+    "snapshot": "c0235cde079846ca5e6a85937b74624281027a90f343215434e1a9ed4d8cc253"
+  },
   "payload": {
     "version": "0.1.3",
     "source": "docs/reviews/gpt-6-2/36/independent-audit.md",

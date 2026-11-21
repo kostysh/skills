@@ -4,12 +4,18 @@ import { globSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { analyzeStudies, link, table, totalOutcomes } from './audit-metrics.mjs';
-import { assessSkill, healthSection } from './blind-trial-health.mjs';
+import { assessSkill } from './blind-trial-health.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const directory = path.join(root, 'docs/reviews');
 const columns = ['Assigned', 'Better', 'Worse', 'Both passed', 'Both failed', 'Insufficient'];
 const planned = 'Planned for the next review';
+const healthLegend = {
+  'Needs attention': { icon: '🔴', meaning: 'A current audit failed or a defect was recorded after acceptance.' },
+  Recheck: { icon: '🟠', meaning: 'A specific trial result or an open audit decision needs another check.' },
+  'Evidence needed': { icon: '⚪', meaning: 'Individual evidence for this version is missing or inconclusive.' },
+  'In good shape': { icon: '🟢', meaning: 'This version passed its individual review in the tested scope.' },
+};
 
 function readCatalog() {
   const catalog = new Map();
@@ -30,6 +36,7 @@ function readRecords() {
   const patterns = [
     'docs/reviews/audit-metrics-*/history/*.json',
     '{docs/reviews,skills/*/docs/reviews}/**/{metrics,metrics-*,study}.json',
+    'skills/*/docs/logs/audit-*.json',
   ];
   const records = new Map();
   for (const file of globSync(patterns, { cwd: root }).sort()) {
@@ -47,14 +54,22 @@ function counts(outcomes) {
   return [outcomes.reduce((total, n) => total + n, 0), ...outcomes];
 }
 
+function trialSource(doc) {
+  // Some records cite the plan, while every run links to an entry in the same trial report.
+  const sources = Object.values(doc.runs).map((run) => run.source);
+  const file = sources[0]?.split('#')[0];
+  return file && sources.every((source) => source.startsWith(`${file}#`)) ? file : doc.source;
+}
+
 function studyDetails({ doc, seriesResults }, file) {
   const record = link({}, file, 'Study record', directory);
-  const evidence = link(doc, doc.source, 'Trial evidence', directory);
+  const source = trialSource(doc);
+  const evidence = link(doc, source, 'Trial evidence', directory);
   const version = doc.observation?.version ? ` · Accepted version ${doc.observation.version}` : '';
   const blocks = [`${record} · ${evidence} · Executor ${doc.model} / ${doc.effort}${version}`];
   if (seriesResults.length) {
     const rows = seriesResults.map(({ series, results }) => [
-      link(doc, series.source ?? doc.source, series.id, directory),
+      link(doc, series.source ?? source, series.id, directory),
       series.comparison,
       series.phase,
       ...counts(results),
@@ -76,37 +91,43 @@ export function renderDashboard(catalog, records, reviewIndex = {}) {
     else outside.push(study);
   }
   const rows = [];
-  const health = [];
   const details = [];
   let covered = 0;
   let withAssignments = 0;
   for (const [skill, version] of catalog) {
     const trials = active.filter(({ doc }) => doc.skill === skill);
     const assessment = assessSkill(version, trials, reviewIndex[skill]);
-    health.push({ skill, version, ...assessment });
     const outcomes = totalOutcomes(trials);
     const result = counts(outcomes);
     if (result[0]) withAssignments++;
     if (outcomes.slice(0, 4).some(Boolean)) covered++;
     const evidence = trials.map(({ doc }, i) =>
-      link(doc, doc.source, trials.length > 1 ? `Study ${i + 1}` : 'Study', directory),
+      link(doc, trialSource(doc), trials.length > 1 ? `Study ${i + 1}` : 'Study', directory),
     );
     if (!result[0] && !trials.some((trial) => trial.regrades)) evidence.push(planned);
     const name = trials.length ? `[${skill}](#${skill})` : skill;
-    rows.push([name, version, assessment.status, ...result, evidence.join(' · ')]);
+    const { status, source } = assessment;
+    const health = source ? link(assessment.doc ?? {}, source, status, directory) : status;
+    rows.push([healthLegend[status].icon, name, version, health, ...result, evidence.join(' · ')]);
     if (trials.length) {
       details.push(`### ${skill}`);
+      if (status !== 'In good shape') details.push(assessment.reason);
       for (const trial of trials) details.push(studyDetails(trial, records.get(trial.doc)));
     }
   }
   const regrades = active.reduce((n, trial) => n + trial.regrades, 0);
   const blocks = [
     '# Blind trial dashboard',
-    healthSection(health, directory),
     '## Trial coverage',
     `**${covered} of ${catalog.size} active skills** have at least one conclusive pair. ` +
       `Assigned pairs appear for ${withAssignments} of ${catalog.size} skills. The catalog totals cover ${active.length} individual skill studies.`,
     table(columns, [counts(totalOutcomes(active))]),
+    '<a name="current-skill-health"></a>',
+    '## Results by skill',
+    '**Indicator legend for the current catalog version**',
+    Object.entries(healthLegend).map(([status, { icon, meaning }]) => `- ${icon} **${status}** — ${meaning}`).join('\n'),
+    'Select a skill for its comparison series or a linked health status for the supporting evidence. Pair counts include earlier versions. [How to read the trial counts](#how-to-read-the-results)',
+    table(['Indicator', 'Skill', 'Catalog version', 'Current health', ...columns, 'Trial evidence'], rows),
     '## How to read the results',
     'A **pair** compares two variants on the same task. When **Left / right** shows `A/B`, A is the variant being tested and B is the comparison. A run passes when it meets the criteria for that task.',
     '**Assigned** counts all pairs scheduled for comparison. The five outcome columns add up to that total.',
@@ -119,9 +140,6 @@ export function renderDashboard(catalog, records, reviewIndex = {}) {
     ]),
     '**Example.** In a `package/none` row, **2 assigned, 2 both passed** means both tasks passed with the skill and without it. Neither variant had a pass/fail advantage on those tasks.',
     `**Coverage** counts a skill once it has any conclusive pair, including **Both failed**. Reassessments of existing pairs appear separately (${regrades}) in rows marked **regrade**.`,
-    '## Results by skill',
-    'Catalog versions come from this checkout. Results include earlier trials. Select a skill to see the variants and evidence for each series.',
-    table(['Skill', 'Catalog version', 'Current health', ...columns, 'Trial evidence'], rows),
     '## Comparison series',
     'Read each series in the context of its tasks and variants. In instruction-removal trials, A/B compares the original with the removal variant. Numeric labels identify the tested versions. Open the linked study for its criteria and evidence.',
     ...details,

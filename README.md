@@ -131,7 +131,8 @@ describes how to register incomplete pairs, repeated ratings and review times.
 The [pilot log](docs/reviews/implementation-log-20261119-1.md) links the
 registered tasks, original decisions and limits of the results.
 
-After a full review, rebuild the catalog dashboard from the repository root.
+After a full catalog review, finalize the audit JSON records and any version
+bindings they need, then rebuild the dashboard from the repository root.
 
 ```sh
 node scripts/blind-trial-dashboard.mjs
@@ -139,15 +140,12 @@ node scripts/blind-trial-dashboard.mjs
 
 The command reads `skills/*/SKILL.md` and writes the linked dashboard in place.
 It collects audit-metrics study records named `metrics.json`, `metrics-*.json`
-or `study.json` under `docs/reviews/` and `skills/*/docs/reviews/`, plus the
-JSON files in `docs/reviews/audit-metrics-*/history/`. A file can contain one
-study or an array of studies.
+or `study.json` under `docs/reviews/` and `skills/*/docs/reviews/`. It also reads
+`skills/*/docs/logs/audit-*.json` and `docs/reviews/audit-metrics-*/history/*.json`.
+A file can contain one study or an array of studies.
 
-The health summary uses the version in the catalog. A failed current audit or a
-recorded post-acceptance defect calls for attention. A failed task on the
-current variant calls for a recheck. An individual PASS supports “In good shape”
-within the review's scope. Joint-only or missing evidence gets its own group.
-The historical totals below the summary cover all recorded variants.
+In **Results by skill**, the indicator and linked health status apply to the
+current catalog version. The pair counts include all recorded variants.
 
 The generator recognizes version labels in comparisons and audit snapshots,
 and matches a versioned acceptance observation to its decision time. The
