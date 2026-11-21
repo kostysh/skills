@@ -1,0 +1,72 @@
+{
+  "skill": "orchestrator",
+  "study": "change-20261121-2",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "base": "skills/orchestrator/docs/logs",
+  "source": "trial-evidence-20261121-2.md",
+  "runs": {},
+  "series": [],
+  "limit": "Два непарных сценария проверяют изменённые решения. Критерии закрыты от участников. В сравнении скорости эта версия не участвовала.",
+  "attempts": [
+    {
+      "id": "revision_package_audit_initial",
+      "order": 1,
+      "snapshot": "f9953e26d608aa67b6a3dd98fd6ac9a00aeb03d8a9365113b1d5477b57e4568a",
+      "handed": "2026-11-21T15:34:17Z",
+      "started": "2026-11-21T15:34:57Z",
+      "decided": "2026-11-21T15:40:04Z",
+      "verdict": "BLOCKED",
+      "returned": {
+        "primary": "missing evidence",
+        "finding": "В рабочем канале скрыты содержание поручения и подтверждение автора до записи.",
+        "source": "trial-evidence-20261121-2.md"
+      },
+      "source": "implementation-log-20261121-2.md"
+    },
+    {
+      "id": "revision_package_audit_visible",
+      "order": 2,
+      "snapshot": "f9953e26d608aa67b6a3dd98fd6ac9a00aeb03d8a9365113b1d5477b57e4568a",
+      "handed": "2026-11-21T15:44:12Z",
+      "started": "2026-11-21T15:44:37Z",
+      "decided": "2026-11-21T15:45:15Z",
+      "verdict": "PASS",
+      "source": "implementation-log-20261121-2.md"
+    },
+    {
+      "id": "revision_check_owner",
+      "order": 3,
+      "snapshot": "6f04945b93c877136b9f349f53a44d17fde8085748720251bab74ce96fee5451",
+      "handed": "2026-11-21T15:49:26Z",
+      "started": "2026-11-21T15:49:50Z",
+      "decided": "2026-11-21T15:52:15Z",
+      "verdict": "FAIL",
+      "returned": {
+        "primary": "skill",
+        "finding": "P2. Полностью переисполнен действующий протокол V-28. В соседнем случае повторена заблокированная команда.",
+        "source": "trial-evidence-20261121-2.md"
+      },
+      "source": "implementation-log-20261121-2.md"
+    },
+    {
+      "id": "revision_check_owner_reaudit",
+      "order": 4,
+      "snapshot": "412ee61c5b9d37e176767d5b5588cad471ef1eb7716f398941224429d32423d8",
+      "handed": "2026-11-21T15:54:25Z",
+      "started": "2026-11-21T15:54:52Z",
+      "decided": "2026-11-21T15:56:42Z",
+      "verdict": "PASS",
+      "source": "implementation-log-20261121-2.md"
+    }
+  ],
+  "observation": {
+    "version": "0.1.1",
+    "accepted": "2026-11-21T15:56:42Z",
+    "released": null,
+    "through": "2026-11-21T15:56:42Z",
+    "systematic": false,
+    "defects": [],
+    "source": "implementation-log-20261121-2.md"
+  }
+}
