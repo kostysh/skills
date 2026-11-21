@@ -1,0 +1,850 @@
+{
+  "skill": "orchestrator",
+  "study": "simplicity-original-package-corrected-evidence",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "taskSet": "registered-orchestrator-simplicity",
+  "source": "../issues/implementation-plan-20261121-3.md",
+  "runs": {
+    "2f5c48329bdb7a58": {
+      "variant": "candidate",
+      "task": "case1",
+      "sha256": "07177b29abfa0f0da1cc532b9d82c6538ddcf4161f7fedfef241a8f3323a9ef6",
+      "source": "trial-evidence-20261121-3.md#r-2f5c48329bdb7a58",
+      "ratings": {
+        "primary": {
+          "assessor": "j-6faf49727a9061ad",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-2f5c48329bdb7a58",
+          "score": "INCONCLUSIVE",
+          "axes": {
+            "A": "PASS",
+            "P": "PASS",
+            "D": "INCONCLUSIVE"
+          },
+          "rubricSha256": "501e3608572ee1cc8cd36554d2d0c8a7f3da76dfaded7ae8d0f96ac79742a2a2",
+          "packetSha256": "8418520959a044bcc7bd686f1c201a69cd14fe50a9566fb30daa0e3efb2409b8",
+          "signedSha256": "c2eedd18bcbdbff3b95ff4adcfefcfa3b9e30773a77c67986a22377fbc90cb67",
+          "assignmentKind": "fact-finding"
+        }
+      },
+      "selected": "primary",
+      "blindJob": "996991053cc1532f"
+    },
+    "f9a77e1c46e933ca": {
+      "variant": "prior",
+      "task": "case1",
+      "sha256": "76ba23b4447868bde2eefa22348c5939f323de762595b0ca85964c03d0aad4d3",
+      "source": "trial-evidence-20261121-3.md#r-f9a77e1c46e933ca",
+      "ratings": {
+        "primary": {
+          "assessor": "j-6faf49727a9061ad",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-f9a77e1c46e933ca",
+          "score": "PASS",
+          "axes": {
+            "A": "PASS",
+            "P": "PASS",
+            "D": "PASS"
+          },
+          "rubricSha256": "501e3608572ee1cc8cd36554d2d0c8a7f3da76dfaded7ae8d0f96ac79742a2a2",
+          "packetSha256": "9d8418f4b3c956ca73b24b07405012a0715a7b2d0a6f70f73145c93433e7316d",
+          "signedSha256": "c2eedd18bcbdbff3b95ff4adcfefcfa3b9e30773a77c67986a22377fbc90cb67",
+          "assignmentKind": "fact-finding"
+        }
+      },
+      "selected": "primary",
+      "blindJob": "ca9a1aaa7eb8ed71"
+    },
+    "37d99873ff3456db": {
+      "variant": "none",
+      "task": "case1",
+      "sha256": "b45a732ad1eb33504dcf5a9e12131a0ee266f9e9ebb476b79b3507e205721f37",
+      "source": "trial-evidence-20261121-3.md#r-37d99873ff3456db",
+      "ratings": {
+        "primary": {
+          "assessor": "j-6faf49727a9061ad",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-37d99873ff3456db",
+          "score": "PASS",
+          "axes": {
+            "A": "PASS",
+            "P": "PASS",
+            "D": "PASS"
+          },
+          "rubricSha256": "501e3608572ee1cc8cd36554d2d0c8a7f3da76dfaded7ae8d0f96ac79742a2a2",
+          "packetSha256": "17fdb164ae4d2c25b062273ff69414ae8b3e8b8b1223caca54eea6b6a66eb130",
+          "signedSha256": "c2eedd18bcbdbff3b95ff4adcfefcfa3b9e30773a77c67986a22377fbc90cb67",
+          "assignmentKind": "fact-finding"
+        },
+        "second": {
+          "assessor": "j-b9b11e23d58ded6d",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-37d99873ff3456db",
+          "score": "PASS",
+          "axes": {
+            "A": "PASS",
+            "P": "PASS",
+            "D": "PASS"
+          },
+          "rubricSha256": "501e3608572ee1cc8cd36554d2d0c8a7f3da76dfaded7ae8d0f96ac79742a2a2",
+          "packetSha256": "17fdb164ae4d2c25b062273ff69414ae8b3e8b8b1223caca54eea6b6a66eb130",
+          "signedSha256": "642facf779cb3a3a73570525c34eb92787beb64a589754cd2ef62d631e677541",
+          "assignmentKind": "fact-finding"
+        }
+      },
+      "selected": "primary",
+      "blindJob": "c3d0f6dc55f18ea0"
+    },
+    "19e82232aa1e4f66": {
+      "variant": "prior",
+      "task": "case2",
+      "sha256": "9022940b0f366fbfb60f7ca7d34ec8dac0bc9457ec15ba72c01ba71009583026",
+      "source": "trial-evidence-20261121-3.md#r-19e82232aa1e4f66",
+      "ratings": {
+        "primary": {
+          "assessor": "j-345d34e771f1dd1f",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-19e82232aa1e4f66",
+          "score": "PASS",
+          "axes": {
+            "A": "PASS",
+            "P": "PASS",
+            "D": "PASS"
+          },
+          "rubricSha256": "5b6f023b5edf6386e07d553bab40f0df7c69a892124cf05ef77db66e9c423451",
+          "packetSha256": "95005d93f3d031a3a57032a4dfbc9019e01038ab4e3e2710dd683ffa2484efb1",
+          "signedSha256": "f3eb8ac47ba2ea173c57913c6b78d0c471c2ad27dc845196123400885686f1fa",
+          "assignmentKind": "fact-finding"
+        },
+        "second": {
+          "assessor": "j-b9b11e23d58ded6d",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-19e82232aa1e4f66",
+          "score": "PASS",
+          "axes": {
+            "A": "PASS",
+            "P": "PASS",
+            "D": "PASS"
+          },
+          "rubricSha256": "5b6f023b5edf6386e07d553bab40f0df7c69a892124cf05ef77db66e9c423451",
+          "packetSha256": "95005d93f3d031a3a57032a4dfbc9019e01038ab4e3e2710dd683ffa2484efb1",
+          "signedSha256": "642facf779cb3a3a73570525c34eb92787beb64a589754cd2ef62d631e677541",
+          "assignmentKind": "fact-finding"
+        }
+      },
+      "selected": "primary",
+      "blindJob": "459660467afff2c3"
+    },
+    "d0a5012d0412ef39": {
+      "variant": "none",
+      "task": "case2",
+      "sha256": "2b7a08b96b548ec79b5838e641f36648e2c107c207c73e6945491b206728a715",
+      "source": "trial-evidence-20261121-3.md#r-d0a5012d0412ef39",
+      "ratings": {
+        "primary": {
+          "assessor": "j-345d34e771f1dd1f",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-d0a5012d0412ef39",
+          "score": "PASS",
+          "axes": {
+            "A": "PASS",
+            "P": "PASS",
+            "D": "PASS"
+          },
+          "rubricSha256": "5b6f023b5edf6386e07d553bab40f0df7c69a892124cf05ef77db66e9c423451",
+          "packetSha256": "d9a01d6b633006d58fbc00ea26fd7dc0ee6475f2648ef18f61319af96b791ebd",
+          "signedSha256": "f3eb8ac47ba2ea173c57913c6b78d0c471c2ad27dc845196123400885686f1fa",
+          "assignmentKind": "fact-finding"
+        }
+      },
+      "selected": "primary",
+      "blindJob": "5ae4c35a3cf145c6"
+    },
+    "ddd737facf4001ad": {
+      "variant": "candidate",
+      "task": "case2",
+      "sha256": "24404c819695fe394d3fd0728757ed2d3935cdac92de7141cfcd70396504e24d",
+      "source": "trial-evidence-20261121-3.md#r-ddd737facf4001ad",
+      "ratings": {
+        "primary": {
+          "assessor": "j-345d34e771f1dd1f",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-ddd737facf4001ad",
+          "score": "PASS",
+          "axes": {
+            "A": "PASS",
+            "P": "PASS",
+            "D": "PASS"
+          },
+          "rubricSha256": "5b6f023b5edf6386e07d553bab40f0df7c69a892124cf05ef77db66e9c423451",
+          "packetSha256": "16997f4e8334462ebf74c6b064823d99997c1f0470c2252c6c35148f5eccdd60",
+          "signedSha256": "f3eb8ac47ba2ea173c57913c6b78d0c471c2ad27dc845196123400885686f1fa",
+          "assignmentKind": "fact-finding"
+        }
+      },
+      "selected": "primary",
+      "blindJob": "b3e19804e34c91ad"
+    },
+    "4c28810e4cfd492d": {
+      "variant": "none",
+      "task": "case3",
+      "sha256": "d8cb01034f300116adf608dea0b81c91cd80fa2de49bfa96c65b71847954d6d8",
+      "source": "trial-evidence-20261121-3.md#r-4c28810e4cfd492d",
+      "ratings": {
+        "primary": {
+          "assessor": "j-db14d831bf3dcef0",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-4c28810e4cfd492d",
+          "score": "FAIL",
+          "axes": {
+            "A": "PASS",
+            "P": "FAIL",
+            "D": "PASS"
+          },
+          "rubricSha256": "1ba3a9b81351d645a12ac118e928f5e227d2378cfa2f5a06295d4ac450c76db5",
+          "packetSha256": "09ca133091998f2f43a4bf4f259dad8140fc812f31b25d7085206b292235d57c",
+          "signedSha256": "a894b02768c34b22b4d5425ea8db0864e21ac7353b5b828a215f17a73e71699a",
+          "assignmentKind": "fact-finding"
+        }
+      },
+      "selected": "primary",
+      "blindJob": "a27b8031206d6214"
+    },
+    "d5fab388db1c3b34": {
+      "variant": "candidate",
+      "task": "case3",
+      "sha256": "1e0e3bce6003a5715a88c47e6a4d6a279fc6599c9318e089a52ac02a43399eac",
+      "source": "trial-evidence-20261121-3.md#r-d5fab388db1c3b34",
+      "ratings": {
+        "primary": {
+          "assessor": "j-db14d831bf3dcef0",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-d5fab388db1c3b34",
+          "score": "PASS",
+          "axes": {
+            "A": "PASS",
+            "P": "PASS",
+            "D": "PASS"
+          },
+          "rubricSha256": "1ba3a9b81351d645a12ac118e928f5e227d2378cfa2f5a06295d4ac450c76db5",
+          "packetSha256": "bdd645321222d5d02cb740216cb88ed1d593fe1048d58ef25aafb847efafe692",
+          "signedSha256": "a894b02768c34b22b4d5425ea8db0864e21ac7353b5b828a215f17a73e71699a",
+          "assignmentKind": "fact-finding"
+        }
+      },
+      "selected": "primary",
+      "blindJob": "d1fc285da6cd002d"
+    },
+    "8493093ab99c08fd": {
+      "variant": "prior",
+      "task": "case3",
+      "sha256": "b545467685540e870afc9203ad97df02cf41fe339e04d33237f201668ba4d01e",
+      "source": "trial-evidence-20261121-3.md#r-8493093ab99c08fd",
+      "ratings": {
+        "adjudication": {
+          "assessor": "j-40b25ea4dd2ea616",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-8493093ab99c08fd",
+          "score": "FAIL",
+          "axes": {
+            "A": "PASS",
+            "P": "FAIL",
+            "D": "PASS"
+          },
+          "rubricSha256": "1ba3a9b81351d645a12ac118e928f5e227d2378cfa2f5a06295d4ac450c76db5",
+          "packetSha256": "6f2ddad0214d3d4ee2aa5b16ccb0b23d1258784205dd39def80764a715e1d16d",
+          "signedSha256": "07cd23b04ffc1819fb7738f89be577a16cdec880e23b523ab48253c6d377ae1d",
+          "assignmentKind": "fact-finding"
+        },
+        "second": {
+          "assessor": "j-b9b11e23d58ded6d",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-8493093ab99c08fd",
+          "score": "PASS",
+          "axes": {
+            "A": "PASS",
+            "P": "PASS",
+            "D": "PASS"
+          },
+          "rubricSha256": "1ba3a9b81351d645a12ac118e928f5e227d2378cfa2f5a06295d4ac450c76db5",
+          "packetSha256": "6f2ddad0214d3d4ee2aa5b16ccb0b23d1258784205dd39def80764a715e1d16d",
+          "signedSha256": "642facf779cb3a3a73570525c34eb92787beb64a589754cd2ef62d631e677541",
+          "assignmentKind": "fact-finding"
+        },
+        "primary": {
+          "assessor": "j-db14d831bf3dcef0",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-8493093ab99c08fd",
+          "score": "FAIL",
+          "axes": {
+            "A": "PASS",
+            "P": "FAIL",
+            "D": "PASS"
+          },
+          "rubricSha256": "1ba3a9b81351d645a12ac118e928f5e227d2378cfa2f5a06295d4ac450c76db5",
+          "packetSha256": "6f2ddad0214d3d4ee2aa5b16ccb0b23d1258784205dd39def80764a715e1d16d",
+          "signedSha256": "a894b02768c34b22b4d5425ea8db0864e21ac7353b5b828a215f17a73e71699a",
+          "assignmentKind": "fact-finding"
+        }
+      },
+      "selected": "adjudication",
+      "blindJob": "89ad7ccb9495fe9b"
+    },
+    "8df22a947eca49da": {
+      "variant": "prior",
+      "task": "case1",
+      "sha256": "e3d49209385604173a655f639113079f385fdb0b65e6df440222f2f75831b948",
+      "source": "trial-evidence-20261121-3.md#r-8df22a947eca49da",
+      "ratings": {
+        "primary": {
+          "assessor": "j-8d50e0adbab101a7",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-8df22a947eca49da",
+          "score": "PASS",
+          "axes": {
+            "A": "PASS",
+            "P": "PASS",
+            "D": "PASS"
+          },
+          "rubricSha256": "501e3608572ee1cc8cd36554d2d0c8a7f3da76dfaded7ae8d0f96ac79742a2a2",
+          "packetSha256": "6ef05b59e647e1bf752d3fbd5069884e925020e3b77bdf222d57b062737b1e64",
+          "signedSha256": "81a485d2cf680f74ff9b880a28326b8c21ca707f198e54e64afed208ec867a59",
+          "assignmentKind": "fact-finding"
+        },
+        "second": {
+          "assessor": "j-da52eeed5bdd3215",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-8df22a947eca49da",
+          "score": "PASS",
+          "axes": {
+            "A": "PASS",
+            "P": "PASS",
+            "D": "PASS"
+          },
+          "rubricSha256": "501e3608572ee1cc8cd36554d2d0c8a7f3da76dfaded7ae8d0f96ac79742a2a2",
+          "packetSha256": "6ef05b59e647e1bf752d3fbd5069884e925020e3b77bdf222d57b062737b1e64",
+          "signedSha256": "8c28a53fedce7daf34076094d78e3c90b4a278ee4085726dc68bee4807e7feba",
+          "assignmentKind": "fact-finding"
+        }
+      },
+      "selected": "primary",
+      "repeatOf": "f9a77e1c46e933ca",
+      "blindJob": "386a6aebdca1198e"
+    },
+    "da0dd691217b4c7c": {
+      "variant": "none",
+      "task": "case1",
+      "sha256": "b61e86201a5d8ce7cfd81897aaeea9ab0bc526619143e0a50de9b8691fdb840b",
+      "source": "trial-evidence-20261121-3.md#r-da0dd691217b4c7c",
+      "ratings": {
+        "primary": {
+          "assessor": "j-8d50e0adbab101a7",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-da0dd691217b4c7c",
+          "score": "INCONCLUSIVE",
+          "axes": {
+            "A": "PASS",
+            "P": "PASS",
+            "D": "INCONCLUSIVE"
+          },
+          "rubricSha256": "501e3608572ee1cc8cd36554d2d0c8a7f3da76dfaded7ae8d0f96ac79742a2a2",
+          "packetSha256": "5ab949ce11a113c30e4a41e0275795c9f0cdb28d974827f85f5efa2eaec2aaf8",
+          "signedSha256": "81a485d2cf680f74ff9b880a28326b8c21ca707f198e54e64afed208ec867a59",
+          "assignmentKind": "fact-finding"
+        }
+      },
+      "selected": "primary",
+      "repeatOf": "37d99873ff3456db",
+      "blindJob": "fa2c1fce412edd81"
+    },
+    "9d10bbd1eb5cd5a7": {
+      "variant": "candidate",
+      "task": "case1",
+      "sha256": "58e278ad275cdedd9ec1dde1d9af8e23e55f8307866529d994eebb8cb55e5688",
+      "source": "trial-evidence-20261121-3.md#r-9d10bbd1eb5cd5a7",
+      "ratings": {
+        "primary": {
+          "assessor": "j-8d50e0adbab101a7",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-9d10bbd1eb5cd5a7",
+          "score": "PASS",
+          "axes": {
+            "A": "PASS",
+            "P": "PASS",
+            "D": "PASS"
+          },
+          "rubricSha256": "501e3608572ee1cc8cd36554d2d0c8a7f3da76dfaded7ae8d0f96ac79742a2a2",
+          "packetSha256": "7443094748de5e8e2a642c5ade246416d7b0d50eb6fdd2d96e4696060bcab4c8",
+          "signedSha256": "81a485d2cf680f74ff9b880a28326b8c21ca707f198e54e64afed208ec867a59",
+          "assignmentKind": "fact-finding"
+        }
+      },
+      "selected": "primary",
+      "repeatOf": "2f5c48329bdb7a58",
+      "blindJob": "63de880b20a71c0d"
+    },
+    "1dfeac5c1dd70895": {
+      "variant": "none",
+      "task": "case2",
+      "sha256": "3f7bb7903a0ca2f930d37b852ef3ff28fe2f68e3781c94647227bb758982b6a9",
+      "source": "trial-evidence-20261121-3.md#r-1dfeac5c1dd70895",
+      "ratings": {
+        "primary": {
+          "assessor": "j-4a4fd5ac451e87af",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-1dfeac5c1dd70895",
+          "score": "PASS",
+          "axes": {
+            "A": "PASS",
+            "P": "PASS",
+            "D": "PASS"
+          },
+          "rubricSha256": "5b6f023b5edf6386e07d553bab40f0df7c69a892124cf05ef77db66e9c423451",
+          "packetSha256": "263159d867f02c890dd3b7f6849be313365f0bf49bbeba402312015a3f9a44d4",
+          "signedSha256": "686c99e9c54c5d558bede56e79c700d21d29174711e1d73b2bd0443ac3f775ef",
+          "assignmentKind": "fact-finding"
+        }
+      },
+      "selected": "primary",
+      "repeatOf": "d0a5012d0412ef39",
+      "blindJob": "16c6b23224c2cbe6"
+    },
+    "be826627f35dd818": {
+      "variant": "candidate",
+      "task": "case2",
+      "sha256": "cb266a8d5beb461892dcd05b413819100f069a2e8a631ce0bef907e7af580b47",
+      "source": "trial-evidence-20261121-3.md#r-be826627f35dd818",
+      "ratings": {
+        "primary": {
+          "assessor": "j-4a4fd5ac451e87af",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-be826627f35dd818",
+          "score": "PASS",
+          "axes": {
+            "A": "PASS",
+            "P": "PASS",
+            "D": "PASS"
+          },
+          "rubricSha256": "5b6f023b5edf6386e07d553bab40f0df7c69a892124cf05ef77db66e9c423451",
+          "packetSha256": "1a55559870014b3abf06cc50a247711702850bfe6e05ac4c2c7125c44df699e9",
+          "signedSha256": "686c99e9c54c5d558bede56e79c700d21d29174711e1d73b2bd0443ac3f775ef",
+          "assignmentKind": "fact-finding"
+        }
+      },
+      "selected": "primary",
+      "repeatOf": "ddd737facf4001ad",
+      "blindJob": "93f9b32480fcea35"
+    },
+    "bf487605c2569767": {
+      "variant": "prior",
+      "task": "case2",
+      "sha256": "c8ee23c4c0aed006b1889b0d21eb94588d4862d6f1ce14f1092811ac46e5de0b",
+      "source": "trial-evidence-20261121-3.md#r-bf487605c2569767",
+      "ratings": {
+        "primary": {
+          "assessor": "j-4a4fd5ac451e87af",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-bf487605c2569767",
+          "score": "PASS",
+          "axes": {
+            "A": "PASS",
+            "P": "PASS",
+            "D": "PASS"
+          },
+          "rubricSha256": "5b6f023b5edf6386e07d553bab40f0df7c69a892124cf05ef77db66e9c423451",
+          "packetSha256": "487eb4dd80b2f688cc568894ab1be1fa4b75cc9581abb15aa4757f02834991d6",
+          "signedSha256": "686c99e9c54c5d558bede56e79c700d21d29174711e1d73b2bd0443ac3f775ef",
+          "assignmentKind": "fact-finding"
+        },
+        "second": {
+          "assessor": "j-da52eeed5bdd3215",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-bf487605c2569767",
+          "score": "PASS",
+          "axes": {
+            "A": "PASS",
+            "P": "PASS",
+            "D": "PASS"
+          },
+          "rubricSha256": "5b6f023b5edf6386e07d553bab40f0df7c69a892124cf05ef77db66e9c423451",
+          "packetSha256": "487eb4dd80b2f688cc568894ab1be1fa4b75cc9581abb15aa4757f02834991d6",
+          "signedSha256": "8c28a53fedce7daf34076094d78e3c90b4a278ee4085726dc68bee4807e7feba",
+          "assignmentKind": "fact-finding"
+        }
+      },
+      "selected": "primary",
+      "repeatOf": "19e82232aa1e4f66",
+      "blindJob": "29715f5776418b82"
+    },
+    "e6196bb74755a73e": {
+      "variant": "candidate",
+      "task": "case3",
+      "sha256": "8a44743e90467a040bfdf737cdb0a310a6410e7432997eb5f49feafb207a3762",
+      "source": "trial-evidence-20261121-3.md#r-e6196bb74755a73e",
+      "ratings": {
+        "primary": {
+          "assessor": "j-becb2b7b4a64028b",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-e6196bb74755a73e",
+          "score": "FAIL",
+          "axes": {
+            "A": "PASS",
+            "P": "FAIL",
+            "D": "PASS"
+          },
+          "rubricSha256": "1ba3a9b81351d645a12ac118e928f5e227d2378cfa2f5a06295d4ac450c76db5",
+          "packetSha256": "9ef7d728b8602a6fba253780a34c442b90bcbad0f55a9aea8b4623894ed11dec",
+          "signedSha256": "f49a8176716a08c573fe4b2365b3618ebcf5e8f30f5091cb07c3d9079e4acf64",
+          "assignmentKind": "fact-finding"
+        }
+      },
+      "selected": "primary",
+      "repeatOf": "d5fab388db1c3b34",
+      "blindJob": "8f6c14cfa2f9e52b"
+    },
+    "2e748bc587fc2e16": {
+      "variant": "prior",
+      "task": "case3",
+      "sha256": "be7712952e2586a5f18257d76b116feee842f1f6bd63c29a8c2f15080ed1a3cd",
+      "source": "trial-evidence-20261121-3.md#r-2e748bc587fc2e16",
+      "ratings": {
+        "primary": {
+          "assessor": "j-becb2b7b4a64028b",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-2e748bc587fc2e16",
+          "score": "FAIL",
+          "axes": {
+            "A": "PASS",
+            "P": "FAIL",
+            "D": "PASS"
+          },
+          "rubricSha256": "1ba3a9b81351d645a12ac118e928f5e227d2378cfa2f5a06295d4ac450c76db5",
+          "packetSha256": "91862c263372930f9d27030e1a555085060722aa649e11ff8d36cdb3bd2bf962",
+          "signedSha256": "f49a8176716a08c573fe4b2365b3618ebcf5e8f30f5091cb07c3d9079e4acf64",
+          "assignmentKind": "fact-finding"
+        },
+        "second": {
+          "assessor": "j-da52eeed5bdd3215",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-2e748bc587fc2e16",
+          "score": "FAIL",
+          "axes": {
+            "A": "PASS",
+            "P": "FAIL",
+            "D": "PASS"
+          },
+          "rubricSha256": "1ba3a9b81351d645a12ac118e928f5e227d2378cfa2f5a06295d4ac450c76db5",
+          "packetSha256": "91862c263372930f9d27030e1a555085060722aa649e11ff8d36cdb3bd2bf962",
+          "signedSha256": "8c28a53fedce7daf34076094d78e3c90b4a278ee4085726dc68bee4807e7feba",
+          "assignmentKind": "fact-finding"
+        }
+      },
+      "selected": "primary",
+      "repeatOf": "8493093ab99c08fd",
+      "blindJob": "d8bd69315b48433a"
+    },
+    "f1983d00f6c4125d": {
+      "variant": "none",
+      "task": "case3",
+      "sha256": "3e8f9c11f5e6518c531370267573447f4e83fc74e23bb87927fa43f0a26990b6",
+      "source": "trial-evidence-20261121-3.md#r-f1983d00f6c4125d",
+      "ratings": {
+        "primary": {
+          "assessor": "j-becb2b7b4a64028b",
+          "rubric": "closed-a01c9e896e97f13a",
+          "packet": "sealed-blind-job-v1",
+          "source": "trial-evidence-20261121-3.md#r-f1983d00f6c4125d",
+          "score": "FAIL",
+          "axes": {
+            "A": "PASS",
+            "P": "FAIL",
+            "D": "PASS"
+          },
+          "rubricSha256": "1ba3a9b81351d645a12ac118e928f5e227d2378cfa2f5a06295d4ac450c76db5",
+          "packetSha256": "5e87cfcdf6c207539045d230342c762497f33923caf27535673b650263fdd1b4",
+          "signedSha256": "f49a8176716a08c573fe4b2365b3618ebcf5e8f30f5091cb07c3d9079e4acf64",
+          "assignmentKind": "fact-finding"
+        }
+      },
+      "selected": "primary",
+      "repeatOf": "4c28810e4cfd492d",
+      "blindJob": "046dab0975a8d122"
+    }
+  },
+  "agreement": [
+    {
+      "run": "37d99873ff3456db",
+      "rubric": "closed-a01c9e896e97f13a",
+      "packet": "sealed-blind-job-v1",
+      "ratings": [
+        "primary",
+        "second"
+      ],
+      "resolution": null
+    },
+    {
+      "run": "19e82232aa1e4f66",
+      "rubric": "closed-a01c9e896e97f13a",
+      "packet": "sealed-blind-job-v1",
+      "ratings": [
+        "primary",
+        "second"
+      ],
+      "resolution": null
+    },
+    {
+      "run": "8493093ab99c08fd",
+      "rubric": "closed-a01c9e896e97f13a",
+      "packet": "sealed-blind-job-v1",
+      "ratings": [
+        "primary",
+        "second"
+      ],
+      "resolution": "adjudication"
+    },
+    {
+      "run": "8df22a947eca49da",
+      "rubric": "closed-a01c9e896e97f13a",
+      "packet": "sealed-blind-job-v1",
+      "ratings": [
+        "primary",
+        "second"
+      ],
+      "resolution": null
+    },
+    {
+      "run": "bf487605c2569767",
+      "rubric": "closed-a01c9e896e97f13a",
+      "packet": "sealed-blind-job-v1",
+      "ratings": [
+        "primary",
+        "second"
+      ],
+      "resolution": null
+    },
+    {
+      "run": "2e748bc587fc2e16",
+      "rubric": "closed-a01c9e896e97f13a",
+      "packet": "sealed-blind-job-v1",
+      "ratings": [
+        "primary",
+        "second"
+      ],
+      "resolution": null
+    }
+  ],
+  "series": [
+    {
+      "id": "prior-primary",
+      "comparison": "candidate/prior",
+      "phase": "primary",
+      "rubric": "closed-a01c9e896e97f13a",
+      "packet": "sealed-blind-job-v1",
+      "pairs": [
+        {
+          "id": "case1-b1-prior",
+          "task": "case1",
+          "left": [
+            "2f5c48329bdb7a58",
+            "primary"
+          ],
+          "right": [
+            "f9a77e1c46e933ca",
+            "primary"
+          ]
+        },
+        {
+          "id": "case2-b1-prior",
+          "task": "case2",
+          "left": [
+            "ddd737facf4001ad",
+            "primary"
+          ],
+          "right": [
+            "19e82232aa1e4f66",
+            "primary"
+          ]
+        },
+        {
+          "id": "case3-b1-prior",
+          "task": "case3",
+          "left": [
+            "d5fab388db1c3b34",
+            "primary"
+          ],
+          "right": [
+            "8493093ab99c08fd",
+            "adjudication"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "prior-planned-repeat",
+      "comparison": "candidate/prior",
+      "phase": "planned-repeat",
+      "rubric": "closed-a01c9e896e97f13a",
+      "packet": "sealed-blind-job-v1",
+      "pairs": [
+        {
+          "id": "case1-b2-prior",
+          "task": "case1",
+          "left": [
+            "9d10bbd1eb5cd5a7",
+            "primary"
+          ],
+          "right": [
+            "8df22a947eca49da",
+            "primary"
+          ]
+        },
+        {
+          "id": "case2-b2-prior",
+          "task": "case2",
+          "left": [
+            "be826627f35dd818",
+            "primary"
+          ],
+          "right": [
+            "bf487605c2569767",
+            "primary"
+          ]
+        },
+        {
+          "id": "case3-b2-prior",
+          "task": "case3",
+          "left": [
+            "e6196bb74755a73e",
+            "primary"
+          ],
+          "right": [
+            "2e748bc587fc2e16",
+            "primary"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "none-primary",
+      "comparison": "candidate/none",
+      "phase": "primary",
+      "rubric": "closed-a01c9e896e97f13a",
+      "packet": "sealed-blind-job-v1",
+      "pairs": [
+        {
+          "id": "case1-b1-none",
+          "task": "case1",
+          "left": [
+            "2f5c48329bdb7a58",
+            "primary"
+          ],
+          "right": [
+            "37d99873ff3456db",
+            "primary"
+          ]
+        },
+        {
+          "id": "case2-b1-none",
+          "task": "case2",
+          "left": [
+            "ddd737facf4001ad",
+            "primary"
+          ],
+          "right": [
+            "d0a5012d0412ef39",
+            "primary"
+          ]
+        },
+        {
+          "id": "case3-b1-none",
+          "task": "case3",
+          "left": [
+            "d5fab388db1c3b34",
+            "primary"
+          ],
+          "right": [
+            "4c28810e4cfd492d",
+            "primary"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "none-planned-repeat",
+      "comparison": "candidate/none",
+      "phase": "planned-repeat",
+      "rubric": "closed-a01c9e896e97f13a",
+      "packet": "sealed-blind-job-v1",
+      "pairs": [
+        {
+          "id": "case1-b2-none",
+          "task": "case1",
+          "left": [
+            "9d10bbd1eb5cd5a7",
+            "primary"
+          ],
+          "right": [
+            "da0dd691217b4c7c",
+            "primary"
+          ]
+        },
+        {
+          "id": "case2-b2-none",
+          "task": "case2",
+          "left": [
+            "be826627f35dd818",
+            "primary"
+          ],
+          "right": [
+            "1dfeac5c1dd70895",
+            "primary"
+          ]
+        },
+        {
+          "id": "case3-b2-none",
+          "task": "case3",
+          "left": [
+            "e6196bb74755a73e",
+            "primary"
+          ],
+          "right": [
+            "f1983d00f6c4125d",
+            "primary"
+          ]
+        }
+      ]
+    }
+  ],
+  "technicalStarts": [],
+  "limit": "V2 — исправленная выдача свидетельств тех же 18 команд первоначальной версии. Каждое из трёх заданий повторено во втором блоке. Два сравнения используют шесть общих исполнений кандидата.",
+  "base": "skills/orchestrator/docs/logs",
+  "packageSnapshots": {
+    "prior": "412ee61c5b9d37e176767d5b5588cad471ef1eb7716f398941224429d32423d8",
+    "candidate": "7a54463137b101357d91c77b096feec72880474412c442713c43d312511b6472"
+  }
+}
