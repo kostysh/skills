@@ -62,7 +62,7 @@ File copy can exfiltrate or inject sensitive data. Confirm paths and redact secr
 
 | Symptom | Check |
 |---|---|
-| Codespace not listed | auth scope/account/host; repo access; `gh auth status` |
+| Codespace not listed | Check scope, account, host and repo access with the [scoped authentication check](auth-and-scopes.md#first-checks). |
 | Devcontainer build failed | `gh codespace logs`; inspect `.devcontainer/devcontainer.json` |
 | Service inaccessible | `gh codespace ports`; service bind address (`0.0.0.0` vs localhost) |
 | SSH fails | `gh auth setup-git`, key setup, codespace state |

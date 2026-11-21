@@ -11,6 +11,7 @@
 
 | Plan | Related issue | Status |
 | --- | --- | --- |
+| [implementation-plan-20261121-1](issues/implementation-plan-20261121-1.md) | Прямой запрос оператора | [Независимый аудит PASS](reviews/20261121-1/plan-audit-02.md) |
 
 ## Logs
 
@@ -27,6 +28,8 @@
 - `docs/compile-report.md` при наличии является generated/non-normative артефактом.
 
 ## Журналы реализации
+
+- [implementation-log-20261121-1.md](logs/implementation-log-20261121-1.md) — скилл 1.3.0, сверка с GitHub CLI 2.105.0 и [независимый PASS](reviews/20261121-1/package-audit-02.md).
 
 - [implementation-log-20261118-1.md](logs/implementation-log-20261118-1.md) — чтение PR и попыток Actions через gh, сравнение Sol и архив 1.2.5. [Запись в репозитории](https://github.com/kostysh/skills/blob/8df5ea79cd24aca8743ee487ff20a7e42229099d/skills/gh-utility/docs/logs/implementation-log-20261118-1.md)
 

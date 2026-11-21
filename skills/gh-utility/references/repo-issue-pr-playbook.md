@@ -25,14 +25,19 @@ host, rate-limit, or permission failure. Do not mask the inspection exit code wi
 
 After repo creation, recommend immediate baseline: default branch, branch protection/ruleset, CODEOWNERS, PR template, labels, security settings, Actions permissions, Dependabot/Renovate, and README/license.
 
+For repository deletion, read [Repository deletion](admin-security-playbook.md#repository-deletion).
+
 ## Issues
 
 ### Inspect
 
 ```bash
 gh issue list --repo OWNER/REPO --state open --limit 50 --json number,title,author,labels,assignees,milestone,updatedAt,url
-gh issue view 123 --repo OWNER/REPO --comments --json number,title,body,author,labels,assignees,milestone,state,url,comments
+gh issue view 123 --repo OWNER/REPO --json number,title,body,author,labels,assignees,milestone,state,url,comments
 ```
+
+For text output use `--comments` by itself. In a terminal it adds comments to the issue view.
+When piped, it returns only the comments. For structured output select the `comments` JSON field.
 
 ### Create/edit
 
@@ -45,6 +50,26 @@ gh issue comment 123 --repo OWNER/REPO --body-file comment.md
 ```
 
 Closing/transferring/locking/pinning issues changes collaboration state; apply the root [Authorization policy](../SKILL.md#authorization) to the exact action and target.
+
+### Issue artifacts (preview)
+
+Issue artifacts are versioned documents and links on an issue. Check the installed
+`gh issue artifact --help` and preview access on the target. For GitHub Actions artifacts, use
+`gh run download`.
+
+```bash
+gh issue artifact list 123 --repo OWNER/REPO --json number,name,type,url
+gh issue artifact view 123 2 --repo OWNER/REPO --json number,name,body,versions
+gh issue artifact view 123 2 --repo OWNER/REPO --version 1
+```
+
+Select the artifact by its number on the issue or its artifact URL. Use a separate `--version`
+read for earlier content. `download --output -` prints one artifact's content. A disk path or
+`--dir` writes files locally. Apply the [Authorization policy](../SKILL.md#authorization)
+to `create`, `edit`, `edit --restore-version`, and `delete`. Restore saves a new version.
+After a partial create failure, read the issue's list and match each result to its source.
+Retry the creates that failed. If an artifact was created with missing attachments, repair
+that artifact by number to avoid duplicates.
 
 ## Pull requests
 
@@ -112,6 +137,25 @@ gh pr comment 123 --repo OWNER/REPO --body-file comment.md
 gh pr review 123 --repo OWNER/REPO --comment --body-file review.md
 ```
 
+### Image and video attachments
+
+With supported `gh` and repository write access on GitHub.com or GHE.com, `--attach PATH`
+uploads local media for issue or PR create/edit/comment. Repeat the flag for multiple files.
+Issue artifact create/edit also supports attachments in Markdown documents. Check the installed
+command's format and flag restrictions. For example, PR creation with `--attach` is incompatible
+with `--dry-run` and `--web`.
+
+```bash
+gh pr comment 123 --repo OWNER/REPO --body-file comment.md --attach './capture.png#Error dialog'
+```
+
+Use a reviewed local file and apply the [Authorization policy](../SKILL.md#authorization) to
+the upload and accompanying write. If the Markdown references an attached file, `gh` replaces
+the local reference with the uploaded URL. Otherwise it can append the attachment. Relative
+Markdown paths from `--body-file` resolve against the body file's directory first. An upload
+failure can leave a posted body with some files attached. Re-read the exact resource and uploaded
+links before retrying any part.
+
 ### Merge readiness
 
 Check three independent dimensions:
@@ -146,6 +190,21 @@ workflow to `gh-address-comments`. Reply before resolving when resolution is app
 Route rebase, force-with-lease, commit, worktree, and local branch-history decisions to
 `git-engineer`. After the owning workflow updates and pushes the branch, `gh-utility` may refresh
 PR/check state and monitor GitHub-side verification.
+
+For a requested isolated checkout, confirm the existing repository, branch, worktree path, and
+preservation of local Git state with `git-engineer`. On a version with `--worktree`, run the
+approved checkout from the target repository and verify the worktree path, branch and PR head SHA.
+
+```bash
+gh pr checkout 123 --branch review-123 --worktree .worktrees/review-123
+```
+
+If checkout cannot fetch the PR head, pass the PR, resolved head SHA, selected path and
+error to `git-engineer` to choose a supported recovery.
+
+`gh issue develop 123 --list --repo OWNER/REPO` reads linked branches. Creating one with
+`gh issue develop 123 --checkout --worktree PATH` from the target checkout both creates a linked
+remote branch and checks it out locally. Confirm both effects and verify the link and worktree.
 
 ## Labels
 

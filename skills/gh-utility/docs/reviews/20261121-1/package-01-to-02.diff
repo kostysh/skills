@@ -1,0 +1,199 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -11 +11 @@
+-  skillforge-source-hash: 24e8bf180449be2eeaa8b5291edadfc0e9198da958986210d3b5bf4329e64b1c
++  skillforge-source-hash: be0ef94e33def4ce9e56f8f612b0ca5702016f26f9f4f71dab20b1eea2ce95c2
+@@ -94,0 +95 @@
++- **high** — Authenticated gh commands may refresh stored OAuth credentials. When the task must preserve credentials, follow the credential-preserving reads procedure in references/auth-and-scopes.md.
+@@ -114 +115 @@
+-- [Auth and scopes](references/auth-and-scopes.md) — Read when gh is unavailable or when diagnosing or changing authentication, credentials, scopes, or host.
++- [Auth and scopes](references/auth-and-scopes.md) — Read when gh is unavailable, when diagnosing or changing authentication, credentials, scopes, or host, or when a task must preserve stored credentials.
+--- a/references/auth-and-scopes.md
++++ b/references/auth-and-scopes.md
+@@ -3 +3,2 @@
+-Use this file when `gh` is missing, unauthenticated, pointed at the wrong host, or lacking scopes.
++Use this file for authentication, scopes, host selection, and operations that must preserve stored
++credentials.
+@@ -10,2 +11 @@
+-gh auth status --no-refresh
+-gh repo view --json nameWithOwner,url,viewerPermission,defaultBranchRef
++gh auth status --hostname HOST --active --no-refresh
+@@ -14,6 +14,5 @@
+-Check installed help for `--no-refresh` and use it for status diagnosis when credentials must
+-remain untouched. Plain `gh auth status` and authenticated API reads can automatically refresh
+-expired or near-expiry stored OAuth credentials. In JSON mode inspect the selected account's
+-result because nonfatal authentication failures can have exit code zero.
+-When credential rotation is outside the task scope, use a confirmed non-refreshable credential
+-for any subsequent authenticated calls or leave those calls pending.
++Use the target host, including the exact Enterprise hostname for an Enterprise task. Check
++installed help for `--no-refresh`. Plain status can refresh the accounts it checks. If the flag is
++unavailable, use status without it only when the installed release or credential source is
++known to prevent refresh for the selected account. In JSON mode inspect the account's result
++because nonfatal authentication failures can have exit code zero.
+@@ -21 +20 @@
+-For GitHub Enterprise:
++## Credential-preserving reads
+@@ -23,4 +22,10 @@
+-```bash
+-gh auth status --hostname enterprise.internal --no-refresh
+-gh auth login --hostname enterprise.internal
+-```
++`--no-refresh` applies only to the status command. A later authenticated API call can refresh
++expired or near-expiry stored OAuth credentials. When the task must preserve credentials,
++continue API reads only with an authorized source that `gh` will not refresh. Reuse confirmation
++for the same host, account and environment if already supplied. The scoped status above can
++inspect the active credential. Use `--json hosts` to check its state and refreshability when
++supported, and filter retained output to the needed fields.
++
++If the only available credential may refresh, finish supported local diagnosis and leave the
++dependent API read pending. Run login, refresh, account switches and scope changes only when
++their effects are covered by the [Authorization policy](../SKILL.md#authorization).
+@@ -31 +36,2 @@
+-- If no credential store is available, `gh` may fall back to plaintext token storage; `gh auth status` reports where credentials are stored.
++- If no credential store is available, `gh` may fall back to plaintext token storage. The
++  scoped status command reports where credentials are stored.
+@@ -49 +55 @@
+-| Task | Typical scope/remediation |
++| Task | Typical OAuth scope |
+@@ -51,7 +57,7 @@
+-| Private repo read/write | `gh auth refresh -s repo` |
+-| Workflow files, workflow dispatch, Actions permissions | `gh auth refresh -s workflow` |
+-| GitHub Projects | `gh auth refresh -s project` |
+-| Organization/team metadata | `gh auth refresh -s read:org` |
+-| Organization secrets or settings | `gh auth refresh -s admin:org` plus admin role |
+-| Gists | `gh auth refresh -s gist` |
+-| Codespaces | `gh auth refresh -s codespace` if host supports it |
++| Private repo read/write | `repo` |
++| Workflow file changes | `workflow` |
++| GitHub Projects | `project` |
++| Organization/team metadata | `read:org` |
++| Organization secrets or settings | `admin:org` plus admin role |
++| Gists | `gist` |
++| Codespaces | `codespace` if host supports it |
+@@ -62,0 +69,3 @@
++
++For API reads, apply the [credential-preserving read guidance](#credential-preserving-reads)
++if the task requires it.
+@@ -77,4 +86,4 @@
+-| `HTTP 401` | expired/missing token | `gh auth status`, then `gh auth login` or refresh token. |
+-| `HTTP 403 Resource not accessible` | missing scope/role or SSO | Refresh scope, authorize SSO, or ask repo/org admin. |
+-| Project commands fail | missing `project` scope | `gh auth refresh -s project`. |
+-| Workflow edit/dispatch fails | missing `workflow` scope or workflow permissions | `gh auth refresh -s workflow`; inspect repo Actions settings. |
++| `HTTP 401` | expired/missing token | Use scoped status. Apply the credential-preserving procedure if changes are excluded. |
++| `HTTP 403 Resource not accessible` | missing scope/role or SSO | Check the selected account, role or SSO need. Use authorized remediation for the cause. |
++| Project commands fail | missing scope or project permission | Confirm owner and scope before choosing remediation. |
++| Workflow edit/dispatch fails | missing token or Actions permissions | Inspect required token permissions and repo Actions settings. |
+@@ -86 +95,2 @@
+-When unauthenticated, do not attempt to collect a token from the user. Say exactly what to run locally:
++When unauthenticated, identify the needed action and host without collecting the token.
++For login or scope expansion covered by the task, use the appropriate targeted command:
+@@ -89 +99 @@
+-gh auth login
++gh auth login --hostname HOST
+@@ -91 +101 @@
+-gh auth refresh -s project
++gh auth refresh --hostname HOST -s project
+--- a/references/codespaces-and-dev-envs.md
++++ b/references/codespaces-and-dev-envs.md
+@@ -65 +65 @@
+-| Codespace not listed | auth scope/account/host; repo access; `gh auth status` |
++| Codespace not listed | Check scope, account, host and repo access with the [scoped authentication check](auth-and-scopes.md#first-checks). |
+--- a/references/command-map.md
++++ b/references/command-map.md
+@@ -17 +17 @@
+-| `auth` | `gh auth status --no-refresh` where supported | `login`, `logout`, `refresh`, `switch`, `setup-git` (writes Git credential-helper config) | Plain status may refresh stored credentials. Keep tokens out of observable contexts. |
++| `auth` | [Scoped status check](auth-and-scopes.md#first-checks) | `login`, `logout`, `refresh`, `switch`, `setup-git` (writes Git credential-helper config) | Status can refresh stored credentials when run without `--no-refresh`. |
+--- a/references/pr-ci-review-loop.md
++++ b/references/pr-ci-review-loop.md
+@@ -63,0 +64,6 @@
++Keep one deadline when the task gives a time limit. Count connection, reconnects, fallback and
++state reads against that limit. Reserve time for a final read and use the latest available
++snapshot if the deadline prevents it. For a bounded wait, apply an external deadline to each
++watch or repeat separate bounded reads. Pass only the remaining budget for that step to the
++shell or tool. The native watches below have no deadline flag.
++
+@@ -88 +94,5 @@
+-`gh pr view` reads for review or PR state.
++`gh pr view` reads for review or PR state. Use the same deadline rules for fallback.
++
++The subscription ID and list commands use the current GitHub host. Set `GH_HOST=github.com`
++for those calls to select Event Streams without changing stored configuration. Replace
++`DURATION` with the time available for listening after reserving time for the final read.
+@@ -91 +101,2 @@
+-gh event listen --subscription SUBSCRIPTION_ID --timeout 15m
++GH_HOST=github.com gh event subscription view SUBSCRIPTION_ID --json id,resourceUrl,eventTypes,expiresAt
++GH_HOST=github.com gh event listen --subscription SUBSCRIPTION_ID --timeout DURATION
+@@ -93 +104 @@
+-  --event com.github.pull_request.check_suite.status.changed.v1 --timeout 15m
++  --event com.github.pull_request.check_suite.status.changed.v1 --timeout DURATION
+@@ -97,6 +108,7 @@
+-`listen` can create an account subscription, as can `gh event subscription create`. Apply the
+-[Authorization policy](../SKILL.md#authorization) to that effect. Separate creation uses the same
+-`--resource` and `--event` flags and prints the ID. Use `gh event subscription list` or
+-`gh event subscription view ID` to check `id,resourceUrl,eventTypes,expiresAt` with `--json`.
+-Subscriptions expire after 24 hours and count toward an account limit. Use
+-`gh event subscription delete ID` only for an authorized removal and verify it with a fresh read.
++`listen` can create an account subscription and recreate it after expiry. Apply the
++[Authorization policy](../SKILL.md#authorization) to that effect. Separate creation with
++`gh event subscription create` uses the same `--resource` and `--event` flags and prints the ID.
++Use `GH_HOST=github.com gh event subscription list` to inspect existing subscriptions.
++Subscriptions expire after 24 hours and count toward an account limit. Run
++`GH_HOST=github.com gh event subscription delete ID` only for an authorized removal and verify
++it with a fresh read.
+@@ -116 +128,2 @@
+-Exit code 8 from the listener means the timeout elapsed. Read current state before reporting.
++Exit code 8 from the listener means the timeout elapsed. Apply the deadline to the final read
++and report the latest available state.
+--- a/references/projects-playbook.md
++++ b/references/projects-playbook.md
+@@ -7,6 +7,5 @@
+-Projects commonly require the `project` scope:
+-
+-```bash
+-gh auth status
+-gh auth refresh -s project
+-```
++Use the selected host and project owner. Diagnose permission failures with the
++[scoped authentication check](auth-and-scopes.md#first-checks). A missing `project` OAuth scope
++may need an authorized scope change on that account. For tasks that require unchanged
++credentials, apply the [credential-preserving read guidance](auth-and-scopes.md#credential-preserving-reads)
++to project reads.
+--- a/references/safety-rules.md
++++ b/references/safety-rules.md
+@@ -18 +18 @@
+-### Read-only
++### Resource reads
+@@ -22 +22,4 @@
+-No approval needed beyond ordinary tool execution, unless the output may expose sensitive metadata. Redact tokens and secret values.
++Ordinary tool authorization covers resource reads when their credential and disclosure effects
++are in scope. For tasks that require preserving stored credentials, follow
++[Credential-preserving reads](auth-and-scopes.md#credential-preserving-reads) before making
++authenticated calls. Redact tokens and secret values.
+@@ -53 +56,2 @@
+-- Use `gh auth status` for authentication inspection. Never run `gh auth token` or another token-retrieval command in an observable agent/tool context.
++- Use the [scoped authentication check](auth-and-scopes.md#first-checks). Never run `gh auth token`
++  or another token-retrieval command in an observable agent/tool context.
+--- a/references/troubleshooting.md
++++ b/references/troubleshooting.md
+@@ -10,3 +9,0 @@
+-gh auth status --no-refresh
+-gh repo view --json nameWithOwner,url,viewerPermission,defaultBranchRef
+-gh api rate_limit
+@@ -15 +12,4 @@
+-See [Auth and scopes](auth-and-scopes.md#first-checks) for CLI version and refresh behavior.
++Use the [scoped authentication check](auth-and-scopes.md#first-checks) for the target account.
++If the task requires preserving credentials, apply the
++[credential-preserving read guidance](auth-and-scopes.md#credential-preserving-reads) before
++running repo reads or rate-limit queries.
+@@ -22,4 +22,4 @@
+-| `You are not logged into any GitHub hosts` | No stored token | `gh auth login`. |
+-| `HTTP 401` | Expired/invalid token | `gh auth status`, then refresh or login. |
+-| `HTTP 403 Resource not accessible by integration` | Insufficient token permissions, GitHub Actions token too narrow, SSO not authorized | Refresh scopes or set workflow `permissions:`; authorize SSO. |
+-| `GraphQL: Could not resolve to a Repository` | Wrong host, owner/repo typo, private repo inaccessible | `gh repo view OWNER/REPO`; confirm host and permission. |
++| `You are not logged into any GitHub hosts` | No stored token | Identify the account and host for authorized login. |
++| `HTTP 401` | Expired/invalid token | Use scoped status and follow the credential-preserving procedure when applicable. |
++| `HTTP 403 Resource not accessible by integration` | Insufficient token permissions, GitHub Actions token too narrow, SSO not authorized | Inspect the selected account and required permissions. Apply authorized changes for the confirmed cause. |
++| `GraphQL: Could not resolve to a Repository` | Wrong host, owner/repo typo, private repo inaccessible | Check the target and permissions with a scoped repository read. |
+@@ -29 +29 @@
+-| `gh project` fails | Missing `project` scope or org permissions | `gh auth refresh -s project`; confirm project owner. |
++| `gh project` fails | Missing `project` scope or org permissions | Confirm project owner and cause before expanding scope. |

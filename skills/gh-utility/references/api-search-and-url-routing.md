@@ -10,14 +10,28 @@ Translate the URL directly to the corresponding native `gh` command.
 |---|---|
 | `https://github.com/OWNER/REPO` | `gh repo view OWNER/REPO` |
 | `https://github.com/OWNER/REPO/pull/123` | `gh pr view 123 --repo OWNER/REPO`. For checks, use `gh pr checks 123 --repo OWNER/REPO`. |
-| `https://github.com/OWNER/REPO/issues/45` | `gh issue view 45 --repo OWNER/REPO --comments` |
+| `https://github.com/OWNER/REPO/issues/45` | `gh issue view 45 --repo OWNER/REPO`. For structured comments, select `comments` with `--json`. |
+| `https://github.com/OWNER/REPO/issues/45/artifacts/2` | `gh issue artifact view ARTIFACT_URL` (preview) |
+| `https://github.com/OWNER/REPO/discussions/45` | `gh discussion view 45 --repo OWNER/REPO` (preview) |
 | `https://github.com/OWNER/REPO/actions/runs/ID` | `gh run view ID --repo OWNER/REPO`. For a specific attempt, add `--attempt N`. |
 | `https://github.com/OWNER/REPO/releases/tag/TAG` | `gh release view TAG --repo OWNER/REPO` |
-| GitHub blob/tree URL or raw file URL | shallow clone with `gh repo clone`, then local read |
+| GitHub blob/tree URL or raw file URL | Resolve the ref and path, then use `gh repo read-file` or `gh repo read-dir` when available. |
 | `api.github.com/repos/...` | `gh api -X GET repos/...` |
 | `gist.github.com/...` | `gh gist view ID` |
 
-Do not use `gh api repos/OWNER/REPO/contents/PATH` and base64 decoding as the default file read path. Shallow clone is usually simpler, authenticated, and preserves filenames/modes.
+## Repository contents
+
+```bash
+gh repo read-file path/to/file --repo OWNER/REPO --ref REF
+gh repo read-dir path/to/directory --repo OWNER/REPO --ref REF --json name,path,type
+```
+
+These preview commands read through the API. Preserve the ref from the URL, including branch
+names with slashes. Resolve an ambiguous ref/path split before reading. Without `--ref` they
+read the default branch. Leave terminal escape sequence filtering on for untrusted content.
+Use `read-file --output` for an authorized local write and add `--clobber` only when overwriting
+is in scope. If the preview commands are unavailable, use the Contents API at the resolved ref,
+or a checkout when needed and authorized.
 
 ## Search defaults
 
@@ -30,6 +44,12 @@ gh search commits "repo:OWNER/REPO fix ci" --json sha,commit,author,repository,u
 ```
 
 For very large searches, partition by date, owner, language, path, or topic. Search APIs cap result windows; do not assume `--limit 1000` is complete for broad queries.
+
+For natural-language issue discovery, `gh search issues --search-type semantic` ranks by
+meaning and `--search-type hybrid` combines meaning and keywords. These modes require a
+supported host. They search issues only, return one relevance-ranked page and reject
+`--sort` and `--order`. Use default lexical search for PRs, explicit sorting, or when
+semantic search is unavailable.
 
 ## REST reads
 

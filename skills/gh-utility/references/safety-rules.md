@@ -15,11 +15,14 @@ Use this file whenever a task may mutate GitHub state, touch secrets/keys, publi
 
 ## Risk tiers
 
-### Read-only
+### Resource reads
 
 Examples: `gh repo view`, `gh pr view`, `gh pr checks`, `gh run view --log-failed`, `gh release view`, `gh project item-list`, `gh secret list`, `gh ruleset list`, `gh codespace list`.
 
-No approval needed beyond ordinary tool execution, unless the output may expose sensitive metadata. Redact tokens and secret values.
+Ordinary tool authorization covers resource reads when their credential and disclosure effects
+are in scope. For tasks that require preserving stored credentials, follow
+[Credential-preserving reads](auth-and-scopes.md#credential-preserving-reads) before making
+authenticated calls. Redact tokens and secret values.
 
 ### Low-risk mutation
 
@@ -50,7 +53,8 @@ Apply the root Authorization policy, including exact destructive and secret-hand
 ## Secret handling
 
 - Never print token/secret values. Do not include them in Markdown, logs, command echoes, or JSON artifacts.
-- Use `gh auth status` for authentication inspection. Never run `gh auth token` or another token-retrieval command in an observable agent/tool context.
+- Use the [scoped authentication check](auth-and-scopes.md#first-checks). Never run `gh auth token`
+  or another token-retrieval command in an observable agent/tool context.
 - Prefer `gh secret set NAME` interactive prompt or guarded stdin. Use `gh secret set -f .env` only for a reviewed file, an explicit target, and non-empty intended values.
 - In plans, show only: secret name, target, app, environment/org/repo/user, visibility, selected repos, and whether the value is empty/unknown.
 - For variables, values may be visible; still avoid printing production credentials accidentally stored as variables.

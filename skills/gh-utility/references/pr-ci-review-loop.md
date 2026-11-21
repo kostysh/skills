@@ -9,7 +9,7 @@ or `gh-fix-ci` when available.
 
 ```bash
 gh repo view --json nameWithOwner -q .nameWithOwner
-gh pr view --json number,title,url,headRefName,baseRefName,isDraft,mergeable,mergeStateStatus,reviewDecision
+gh pr view --json number,title,url,headRefName,headRefOid,baseRefName,isDraft,mergeable,mergeStateStatus,reviewDecision
 gh pr checks
 ```
 
@@ -58,13 +58,75 @@ with a fresh query.
 
 ## Monitoring
 
+Wait only when the user requested monitoring. Select the check scope for the request. In watch
+mode, use `--fail-fast` only if the first failure is enough to finish the task.
+
+Keep one deadline when the task gives a time limit. Count connection, reconnects, fallback and
+state reads against that limit. Reserve time for a final read and use the latest available
+snapshot if the deadline prevents it. For a bounded wait, apply an external deadline to each
+watch or repeat separate bounded reads. Pass only the remaining budget for that step to the
+shell or tool. The native watches below have no deadline flag.
+
 ```bash
-gh pr checks 123 --repo OWNER/REPO --watch --fail-fast
+gh pr checks 123 --repo OWNER/REPO --watch
 gh run watch RUN_ID --repo OWNER/REPO --exit-status
 ```
 
-Wait only when the user requested monitoring. Human review gates, draft readiness, and informational
-bots are not technical failures; report them separately.
+PR watch follows the checks GitHub has reported. It can exit with no pending checks before an
+expected check appears. Read the checks separately with `gh pr checks --json name,bucket` for
+structured results. Inspect the buckets for status.
+
+To report completion for all checks, confirm the expected set for the same PR head SHA and
+observe a terminal state for each. If the head changes, re-evaluate the set for the requested
+head. An expected check missing from the response keeps the result incomplete. Continue bounded
+reads if watch exits early. If the expected set is unknown, report the outcome of the observed
+checks and say that the full set is unverified.
+
+Human review gates, draft readiness, and informational bots are not technical failures. Report
+them separately.
+
+### PR events (preview)
+
+Use installed `gh event` for an event-driven wait on a GitHub.com PR when the account has
+[Event Streams access](https://docs.github.com/en/integrations/how-tos/using-github-event-streams).
+Check installed help. If the command, host, or preview access is unavailable, use
+`gh pr checks --watch` for PR checks, `gh run watch` for a known Actions run, or bounded
+`gh pr view` reads for review or PR state. Use the same deadline rules for fallback.
+
+The subscription ID and list commands use the current GitHub host. Set `GH_HOST=github.com`
+for those calls to select Event Streams without changing stored configuration. Replace
+`DURATION` with the time available for listening after reserving time for the final read.
+
+```bash
+GH_HOST=github.com gh event subscription view SUBSCRIPTION_ID --json id,resourceUrl,eventTypes,expiresAt
+GH_HOST=github.com gh event listen --subscription SUBSCRIPTION_ID --timeout DURATION
+gh event listen --resource https://github.com/OWNER/REPO/pull/123 \
+  --event com.github.pull_request.check_suite.status.changed.v1 --timeout DURATION
+```
+
+Use the existing subscription ID when its PR and event types match. With `--resource`,
+`listen` can create an account subscription and recreate it after expiry. Apply the
+[Authorization policy](../SKILL.md#authorization) to that effect. Separate creation with
+`gh event subscription create` uses the same `--resource` and `--event` flags and prints the ID.
+Use `GH_HOST=github.com gh event subscription list` to inspect existing subscriptions.
+Subscriptions expire after 24 hours and count toward an account limit. Run
+`GH_HOST=github.com gh event subscription delete ID` only for an authorized removal and verify
+it with a fresh read.
+
+Choose the event for the requested change. `com.github.pull_request.review.submitted.v1` signals
+a submitted review. `com.github.pull_request.state.changed.v1` includes merge, close, reopen,
+draft and ready transitions. Installed help also lists head change and conflict events.
+
+The listener prints one CloudEvent JSON object per line. It exits after one event by default.
+Use `--count N` or `--follow` for multiple events and bound the wait to the task. An event can
+carry `data.api_url` for a more specific read. A check-suite event covers only one suite.
+
+Wait for stderr to show the stream is attached, then read the current PR or checks for the
+requested head SHA. Events before attachment or during reconnect are missed. Read current state
+again on every reconnect and relevant event. Apply the monitoring criteria above to the new
+snapshot. If the result is still incomplete after a one-event run, attach again within the remaining time.
+Exit code 8 from the listener means the timeout elapsed. Apply the deadline to the final read
+and report the latest available state.
 
 ## Merge transport
 

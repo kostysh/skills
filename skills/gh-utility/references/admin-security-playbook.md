@@ -37,6 +37,19 @@ gh api -X GET repos/OWNER/REPO --jq '{allow_auto_merge,delete_branch_on_merge,al
 
 Changing visibility, default branch, archive/delete, merge methods, or auto-merge policy needs explicit authorization for the exact repository and change.
 
+### Repository deletion
+
+Inspect the exact host and repository, its visibility and whether it is a fork. Deleting a
+private or internal upstream repository can also delete forks the acting account cannot see.
+An empty listing of visible forks does not establish that the deletion is isolated.
+
+In GitHub CLI versions with cascade confirmation, `gh repo delete OWNER/REPO --yes` confirms
+the named repository only. If the CLI detects a cascade, headless deletion also requires
+`--accept-cascading-deletion-of-private-forks`. Use that flag only when the operator's authority
+covers the cascade. Resolve any requirement to preserve forks before deleting. The CLI ignores
+both confirmation flags when the repository argument is omitted. Verify the authorized deletion
+with a fresh read that distinguishes absence from lack of access.
+
 ## Secrets
 
 Read names only:
