@@ -4,7 +4,7 @@ import { globSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { analyzeStudies, link, table, totalOutcomes } from './audit-metrics.mjs';
-import { assessSkill } from './blind-trial-health.mjs';
+import { assessSkill, matchesIndexedStudy } from './blind-trial-health.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const directory = path.join(root, 'docs/reviews');
@@ -12,7 +12,7 @@ const columns = ['Assigned', 'Better', 'Worse', 'Both passed', 'Both failed', 'I
 const planned = 'Planned for the next review';
 const healthLegend = {
   'Needs attention': { icon: '🔴', meaning: 'A current audit failed or a defect was recorded after acceptance.' },
-  Recheck: { icon: '🟠', meaning: 'A specific trial result or an open audit decision needs another check.' },
+  Recheck: { icon: '🟠', meaning: 'An audit decision, a requested follow-up, or a failed trial still needs review.' },
   'Evidence needed': { icon: '⚪', meaning: 'Individual evidence for this version is missing or inconclusive.' },
   'In good shape': { icon: '🟢', meaning: 'This version passed its individual review in the tested scope.' },
 };
@@ -61,12 +61,13 @@ function trialSource(doc) {
   return file && sources.every((source) => source.startsWith(`${file}#`)) ? file : doc.source;
 }
 
-function studyDetails({ doc, seriesResults }, file) {
+function studyDetails({ doc, seriesResults }, file, review) {
   const record = link({}, file, 'Study record', directory);
   const source = trialSource(doc);
   const evidence = link(doc, source, 'Trial evidence', directory);
   const version = doc.observation?.version ? ` · Accepted version ${doc.observation.version}` : '';
   const blocks = [`${record} · ${evidence} · Executor ${doc.model} / ${doc.effort}${version}`];
+  if (review?.summary && matchesIndexedStudy(doc, review)) blocks.push(review.summary);
   if (seriesResults.length) {
     const rows = seriesResults.map(({ series, results }) => [
       link(doc, series.source ?? source, series.id, directory),
@@ -96,7 +97,8 @@ export function renderDashboard(catalog, records, reviewIndex = {}) {
   let withAssignments = 0;
   for (const [skill, version] of catalog) {
     const trials = active.filter(({ doc }) => doc.skill === skill);
-    const assessment = assessSkill(version, trials, reviewIndex[skill]);
+    const review = reviewIndex[skill];
+    const assessment = assessSkill(version, trials, review);
     const outcomes = totalOutcomes(trials);
     const result = counts(outcomes);
     if (result[0]) withAssignments++;
@@ -112,7 +114,7 @@ export function renderDashboard(catalog, records, reviewIndex = {}) {
     if (trials.length) {
       details.push(`### ${skill}`);
       if (status !== 'In good shape') details.push(assessment.reason);
-      for (const trial of trials) details.push(studyDetails(trial, records.get(trial.doc)));
+      for (const trial of trials) details.push(studyDetails(trial, records.get(trial.doc), review));
     }
   }
   const regrades = active.reduce((n, trial) => n + trial.regrades, 0);

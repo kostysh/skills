@@ -1,6 +1,14 @@
 import path from 'node:path';
 import { auditChains } from './audit-metrics.mjs';
 
+function matchesIndexedAudit(a, doc, note) {
+  return note?.snapshot === a.snapshot && path.posix.join(doc.base ?? '.', a.source) === note.source;
+}
+
+export function matchesIndexedStudy(doc, note) {
+  return note?.study === doc.study && doc.attempts?.some((a) => a.snapshot === note.snapshot);
+}
+
 function matchesVersion({ a, doc }, version, note) {
   const observation = doc.observation;
   const snapshot = a.snapshot.split(/\s+/)[0];
@@ -8,7 +16,7 @@ function matchesVersion({ a, doc }, version, note) {
   if (observation && Date.parse(a.decided) === Date.parse(observation.accepted)) {
     return observation.version === version;
   }
-  return note?.snapshot === a.snapshot && path.posix.join(doc.base ?? '.', a.source) === note.source;
+  return matchesIndexedAudit(a, doc, note);
 }
 
 function assessment(status, reason, evidence) {
@@ -18,10 +26,20 @@ function assessment(status, reason, evidence) {
 export function assessSkill(version, studies, indexedReview) {
   const note = indexedReview?.version === version ? indexedReview : undefined;
   const reviews = [];
+  const acceptedStudies = new Set();
+  let openCheck = note?.study ? undefined : note?.check;
   if (note?.verdict) reviews.push({ verdict: note.verdict, source: note.source, scope: note.scope });
   for (const chain of auditChains(studies.map(({ doc }) => doc))) {
-    const latest = chain.findLast((entry) => matchesVersion(entry, version, note));
-    if (latest) reviews.push({ verdict: latest.a.verdict, doc: latest.doc, source: latest.a.source });
+    const current = chain.filter((entry) => matchesVersion(entry, version, note));
+    if (!current.length) continue;
+    const { a, doc } = current.at(-1);
+    const indexedSource = path.posix.join(doc.base ?? '.', a.source) === note?.source;
+    const scope = a.scope ?? (indexedSource ? note.scope : undefined);
+    reviews.push({ verdict: a.verdict, doc, source: a.source, scope });
+    if (doc.study === note?.study && matchesIndexedAudit(a, doc, note)) openCheck = note.check;
+    if (a.verdict === 'PASS' && scope !== 'joint') {
+      for (const entry of current) acceptedStudies.add(entry.doc);
+    }
   }
 
   const failed = reviews.find((r) => r.verdict === 'FAIL');
@@ -40,13 +58,13 @@ export function assessSkill(version, studies, indexedReview) {
   if (pending) {
     return assessment('Recheck', 'Confirm the outstanding audit decision for this version.', pending);
   }
+  if (openCheck) return assessment('Recheck', openCheck, note);
 
   let incomplete;
   let tested;
   for (const { doc, seriesResults } of studies) {
-    const mappedStudy =
-      note?.study === doc.study && doc.attempts?.some((a) => a.snapshot === note.snapshot);
-    const variants = new Set([version, ...(mappedStudy ? note.variants : [])]);
+    const aliases = matchesIndexedStudy(doc, note) ? note.variants : undefined;
+    const variants = new Set([version, ...(aliases ?? [])]);
     for (const { series, results } of seriesResults) {
       if (series.phase === 'regrade') continue;
       const [left, right] = series.comparison.split('/');
@@ -55,12 +73,12 @@ export function assessSkill(version, studies, indexedReview) {
       if (!onLeft && !onRight) continue;
       const evidence = { doc, source: series.source ?? doc.source };
       const [better, worse, bothPassed, bothFailed, insufficient] = results;
-      if ((onLeft && worse) || (onRight && better) || bothFailed) {
-        if (mappedStudy && note.check) return assessment('Recheck', note.check, note);
-        return assessment('Recheck', 'Repeat the task that this version failed.', evidence);
+      const failedTrial = (onLeft && worse) || (onRight && better) || bothFailed;
+      if (failedTrial && !acceptedStudies.has(doc)) {
+        return assessment('Recheck', 'Review the failed trial that has no final individual decision.', evidence);
       }
       if (insufficient) incomplete = evidence;
-      if (better || worse || bothPassed) tested = evidence;
+      if (better || worse || bothPassed || bothFailed) tested = evidence;
     }
   }
 
