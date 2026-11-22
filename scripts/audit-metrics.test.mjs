@@ -305,3 +305,45 @@ test('Current trial outcomes follow the tested side and exclude regrades and unk
   doc.series[0].pairs[0].left = null;
   assert.equal(status(), 'Evidence needed');
 });
+
+test('A final individual audit closes its study and preserves the original and diagnostic outcomes', () => {
+  const doc = study();
+  const version = '1.2.0';
+  const note = { version, study: doc.study, snapshot: 'reviewed-package', variants: ['A'], source };
+  pair(doc, 'ambiguous labels', 'FAIL', 'PASS');
+  pair(doc, 'keyboard focus', 'FAIL', 'FAIL');
+  pair(doc, 'explicit labels', 'PASS', 'PASS');
+  doc.series[2].phase = 'diagnostic';
+  const decision = { id: 'review', snapshot: note.snapshot, source };
+  doc.attempts = [decision];
+  const catalog = new Map([[doc.skill, version]]);
+  const records = new Map([[doc, source]]);
+  const render = () => renderDashboard(catalog, records, { example: note });
+  assert.match(render(), /🟠 \| \[example\].*\[Recheck\]/);
+
+  decision.verdict = 'PASS';
+  const accepted = render();
+  assert.match(accepted, /🟢 \| \[example\].*\[In good shape\].*\| 3 \| 0 \| 1 \| 1 \| 1 \| 0 \|/);
+  assert.match(accepted, /A\/B \| primary \| 1 \| 0 \| 1 \| 0 \| 0 \| 0/);
+  assert.match(accepted, /A\/B \| primary \| 1 \| 0 \| 0 \| 0 \| 1 \| 0/);
+  assert.match(accepted, /A\/B \| diagnostic \| 1 \| 0 \| 0 \| 1 \| 0 \| 0/);
+
+  note.check = 'Check another keyboard layout requested by the auditor.';
+  assert.match(render(), /🟠 \| \[example\].*\[Recheck\]/);
+  assert.ok(render().includes(note.check));
+
+  // A later decision in this audit closes the check attached to the earlier snapshot.
+  decision.order = 1;
+  const closure = study('final decision');
+  closure.attempts = [{ id: 'closed', audit: doc.study, order: 2, verdict: 'PASS', snapshot: version, source }];
+  records.set(closure, source);
+  assert.match(render(), /🟢 \| \[example\].*\[In good shape\]/);
+  assert.ok(!render().includes(note.check));
+
+  const later = study('new trial');
+  pair(later, 'separate task', 'FAIL', 'PASS');
+  later.series[0].comparison = version + '/B';
+  later.runs['1a'].variant = version;
+  records.set(later, source);
+  assert.match(render(), /🟠 \| \[example\].*\[Recheck\]/);
+});

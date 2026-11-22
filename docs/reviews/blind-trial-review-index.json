@@ -54,7 +54,7 @@
       "package",
       "A"
     ],
-    "check": "Both forms worked, but the tested skill missed a keyboard-focus check. Repeat that check on the final form after an empty submission.",
+    "summary": "All final forms passed the browser checks. After an empty submission, both A and B missed the required keyboard return to the submit button. The auditor accepted version 0.2.6 with its focus instruction in place.",
     "snapshot": "2a28e6a5a89164f14eb63cfbc4775e34f66de865efb701195c557b106bc704ef"
   },
   "gdpr-compliance": {
@@ -154,7 +154,7 @@
     "variants": [
       "candidate"
     ],
-    "check": "The reviewer lost one comparison with ambiguous column labels. Both variants passed with explicit labels. Recheck how it reports the direction of a comparison.",
+    "summary": "Version 0.2.9 lost one comparison with ambiguous column labels. Both variants reported the correct direction in the follow-up with explicit labels. The auditor accepted version 0.2.9.",
     "snapshot": "feede9e04ca6"
   },
   "skill-source-compiler": {

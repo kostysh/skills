@@ -145,10 +145,15 @@ or `study.json` under `docs/reviews/` and `skills/*/docs/reviews/`. It also read
 A file can contain one study or an array of studies.
 
 In **Results by skill**, the indicator and linked health status apply to the
-current catalog version. The pair counts include all recorded variants.
+current catalog version. An individual `PASS` closes the trials covered by
+that audit. An open audit decision, an outstanding check, or a failed trial
+outside an accepted audit still triggers **Recheck**. All original outcomes
+and diagnostic repeats remain in the comparison series and pair counts.
 
 The generator recognizes version labels in comparisons and audit snapshots,
 and matches a versioned acceptance observation to its decision time. The
 [review index](docs/reviews/blind-trial-review-index.json) links older opaque
 snapshots and named variants to their reviewed versions. It also cites decisions
-recorded only in prose. Add a binding there when a new record needs one.
+recorded only in prose. Use `check` for a follow-up that the cited review leaves
+open and `summary` for the history of a study. Add a binding when a new record
+needs one.

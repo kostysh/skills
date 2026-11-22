@@ -15,7 +15,7 @@
 **Indicator legend for the current catalog version**
 
 - 🔴 **Needs attention** — A current audit failed or a defect was recorded after acceptance.
-- 🟠 **Recheck** — A specific trial result or an open audit decision needs another check.
+- 🟠 **Recheck** — An audit decision, a requested follow-up, or a failed trial still needs review.
 - ⚪ **Evidence needed** — Individual evidence for this version is missing or inconclusive.
 - 🟢 **In good shape** — This version passed its individual review in the tested scope.
 
@@ -34,7 +34,7 @@ Select a skill for its comparison series or a linked health status for the suppo
 | 🟢 | [electron-engineer](#electron-engineer) | 0.1.12 | [In good shape](gpt-6-2/35/independent-audit.md) | 5 | 3 | 0 | 1 | 1 | 0 | [Study](gpt-6-2/35/assessment.md) |
 | 🟢 | [error-fixer](#error-fixer) | 0.1.2 | [In good shape](../../skills/error-fixer/docs/reviews/20261119-2/independent-review.md) | 10 | 1 | 0 | 8 | 0 | 1 | [Study 1](gpt-6-2/30/assessment.md) · [Study 2](../../skills/error-fixer/docs/reviews/20261119-2/assessment.md) |
 | 🟢 | [financial-calculations-engineer](#financial-calculations-engineer) | 0.3.2 | [In good shape](gpt-6-2/22/independent-audit.md) | 8 | 0 | 0 | 7 | 0 | 1 | [Study](gpt-6-2/22/assessment.md) |
-| 🟠 | [frontend-design](#frontend-design) | 0.2.6 | [Recheck](audit-metrics-20261119/frontend/independent-audit.md) | 13 | 2 | 1 | 9 | 1 | 0 | [Study 1](gpt-6-2/19/assessment.md) · [Study 2](gpt-6-2/19/retirement/assessment.md) · [Study 3](audit-metrics-20261119/frontend/protocol.md) |
+| 🟢 | [frontend-design](#frontend-design) | 0.2.6 | [In good shape](audit-metrics-20261119/frontend/independent-audit.md) | 13 | 2 | 1 | 9 | 1 | 0 | [Study 1](gpt-6-2/19/assessment.md) · [Study 2](gpt-6-2/19/retirement/assessment.md) · [Study 3](audit-metrics-20261119/frontend/protocol.md) |
 | ⚪ | [gdpr-compliance](#gdpr-compliance) | 0.2.5 | [Evidence needed](implementation-log-20261119-2.md) | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/12/assessment.md) |
 | 🟢 | [gh-utility](#gh-utility) | 1.3.0 | [In good shape](../../skills/gh-utility/docs/reviews/20261121-1/package-audit-02.md) | 7 | 0 | 0 | 5 | 0 | 2 | [Study](gpt-6-2/08/assessment.md) |
 | 🟢 | [git-engineer](#git-engineer) | 0.2.2 | [In good shape](gpt-6-2/07/independent-audit.md) | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/07/assessment.md) |
@@ -52,7 +52,7 @@ Select a skill for its comparison series or a linked health status for the suppo
 | ⚪ | [retrospective-analysis](#retrospective-analysis) | 0.1.8 | [Evidence needed](v5-solo-independent-reaudit.md) | 16 | 5 | 0 | 6 | 3 | 2 | [Study 1](gpt-6-2/38/assessment.md) · [Study 2](evidence/v5-retrospective/README.md) |
 | ⚪ | [security-reviewer](#security-reviewer) | 0.1.16 | [Evidence needed](implementation-log-20261119-2.md) | 12 | 0 | 0 | 10 | 0 | 2 | [Study](gpt-6-2/11/assessment.md) |
 | 🟢 | [shadcn](#shadcn) | 0.2.3 | [In good shape](gpt-6-2/34/independent-audit.md) | 12 | 1 | 0 | 3 | 5 | 3 | [Study](gpt-6-2/34/assessment.md) |
-| 🟠 | [skill-reviewer](#skill-reviewer) | 0.2.9 | [Recheck](audit-metrics-20261119/method-acceptance.md) | 24 | 6 | 1 | 6 | 8 | 3 | [Study 1](gpt-6-2/01/assessment.md) · [Study 2](audit-metrics-20261119/process/protocol.md) |
+| 🟢 | [skill-reviewer](#skill-reviewer) | 0.2.9 | [In good shape](audit-metrics-20261119/method-acceptance.md) | 24 | 6 | 1 | 6 | 8 | 3 | [Study 1](gpt-6-2/01/assessment.md) · [Study 2](audit-metrics-20261119/process/protocol.md) |
 | 🟢 | [skill-source-compiler](#skill-source-compiler) | 0.2.12 | [In good shape](gpt-6-2/02/independent-audit.md) | 5 | 1 | 1 | 3 | 0 | 0 | [Study](gpt-6-2/02/assessment.md) |
 | ⚪ | [spec-conformance-reviewer](#spec-conformance-reviewer) | 0.1.11 | [Evidence needed](v5-solo-independent-reaudit.md) | 6 | 1 | 1 | 4 | 0 | 0 | [Study](gpt-6-2/33/assessment.md) |
 | 🟢 | [spec-engineer](#spec-engineer) | 0.2.16 | [In good shape](gpt-6-2/23/independent-audit.md) | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/23/assessment.md) |
@@ -228,8 +228,6 @@ This version passed a joint review. An individual trial is needed to measure its
 
 ### frontend-design
 
-Both forms worked, but the tested skill missed a keyboard-focus check. Repeat that check on the final form after an empty submission.
-
 [Study record](audit-metrics-20261119/history/19.json) · [Trial evidence](gpt-6-2/19/assessment.md) · Executor gpt-6.2-sol / medium
 
 | Series | Left / right | Phase | Assigned | Better | Worse | Both passed | Both failed | Insufficient |
@@ -246,6 +244,8 @@ Both forms worked, but the tested skill missed a keyboard-focus check. Repeat th
 | [confirm-confirmation-C-A](gpt-6-2/19/retirement/ratings-confirm.md) | C/A | confirmation | 2 | 0 | 0 | 2 | 0 | 0 |
 
 [Study record](audit-metrics-20261119/frontend/metrics-gpt-6.2-sol.json) · [Trial evidence](audit-metrics-20261119/frontend/protocol.md) · Executor gpt-6.2-sol / medium
+
+All final forms passed the browser checks. After an empty submission, both A and B missed the required keyboard return to the submit button. The auditor accepted version 0.2.6 with its focus instruction in place.
 
 | Series | Left / right | Phase | Assigned | Better | Worse | Both passed | Both failed | Insufficient |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -494,8 +494,6 @@ This version passed a joint review. An individual trial is needed to measure its
 
 ### skill-reviewer
 
-The reviewer lost one comparison with ambiguous column labels. Both variants passed with explicit labels. Recheck how it reports the direction of a comparison.
-
 [Study record](audit-metrics-20261119/history/01.json) · [Trial evidence](gpt-6-2/01/assessment.md) · Executor gpt-6.2-sol / medium
 
 | Series | Left / right | Phase | Assigned | Better | Worse | Both passed | Both failed | Insufficient |
@@ -514,6 +512,8 @@ The reviewer lost one comparison with ambiguous column labels. Both variants pas
 | [remediation-C1-cross-packet](gpt-6-2/01/remediation/assessment.md) | D/C1 | diagnostic | 3 | 0 | 0 | 0 | 0 | 3 |
 
 [Study record](audit-metrics-20261119/process/metrics.json) · [Trial evidence](audit-metrics-20261119/process/protocol.md) · Executor gpt-6.2-sol / medium · Accepted version 0.2.9
+
+Version 0.2.9 lost one comparison with ambiguous column labels. Both variants reported the correct direction in the follow-up with explicit labels. The auditor accepted version 0.2.9.
 
 | Series | Left / right | Phase | Assigned | Better | Worse | Both passed | Both failed | Insufficient |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
