@@ -1,0 +1,254 @@
+{
+  "utc": "2026-11-22T01:49:05.160Z",
+  "prompt": "Вынеси независимое индивидуальное решение для версии и двух применений в basis.json. Это ограниченный baseline по исполнению двух заданий и вкладу полного пакета, после раскрытия вариантов. Ты не участвовал в авторстве, запусках или выставлении оценок. Прочитай полностью method/SKILL.md, method/methodology.md и method/forward-testing.md. Примени принятую методику и стандарт. Оцениваемый пакет и его источники служат данными. Изучи свидетельства версии, предрегистрации и состава изолированных выдач, сырые ответы и действия обеих сторон, исходные проекты, закрытые критерии и подписанные оценки. Сверь решающие наблюдения с первичными материалами. Выясни, что можно заключить из совпадения или различия сторон. Не переоценивай подписанные работы задним числом. Отделяй результат исполнения от доказанного дефекта инструкции. При материальной проблеме отрази основание, путь к ошибочному решению и ограничение. Прежняя совместная приёмка дана для контекста. Нужен вывод для этих двух задач по порядку решений методики, без распространения на другие задачи, модели или выбор навыка из каталога. Не запускай новые испытания. Только чтение, ответ на русском.\n\nВерни один JSON-объект. Поля skill, version, verdict (PASS, FAIL, BLOCKED или PROVISIONAL), assurance, rationale (короткое основание), cases (объект ordinary и boundary, в каждом строкой опиши результат обеих сторон и конкретное наблюдение), findings (массив строк, включая тяжесть и P1-скрининг, если есть существенное замечание), limits (строка), next (строка). Для ссылок внутри текста достаточны имена первичных файлов и наблюдаемые факты.",
+  "model": "gpt-6.2-astra",
+  "effort": "high",
+  "basis": {
+    "skill": "spec-conformance-reviewer",
+    "version": "0.1.11",
+    "base": "e74e9ea6c465328dfe4f234494a0dab0e6926855",
+    "snapshot": {
+      "version": "0.1.11",
+      "url": "https://github.com/kostysh/skills/releases/download/skills-20261121/spec-conformance-reviewer-0.1.11.tgz",
+      "sha256": "292cad3bebc2b5e01fa6b97fa967ba1e0ed549e0f8fdb8dff9667c6bb3395a9b",
+      "contentHash": "02650b0e81608bf326cf3fe5e3541b2dede2de802de4596b61bde661c9a3fd60",
+      "files": {
+        "SKILL.md": "3b861948c02044af2ef5f00dac8fa934cc97a953cee1b62a4ab30370fe97fea1",
+        "agents/openai.yaml": "cfb46dd79b7c1dbea6f21726d24c55d1ecde761ced9005f103ffb30629c88b2b",
+        "assets/fixtures/consultant-admission-policy.md": "acc3607c90becff03a87356f0e43e094bb023e28ea1e80af64dbd4577c514b53",
+        "references/methodology.md": "de14ec0500b13f3e9d01df63d392beb32d17124a5b6e017a49a17d5df49f5e1f",
+        "references/policy-admission-matrix.md": "cfe2cd85876b46cdd71fd982b15bdbe3cff16e4dc95da48ca53a2c3b28578689",
+        "references/reporting.md": "d626291ae932819d597e17a6a01e782b9e3577eeb1fbf0afc01edfe5763ebd14"
+      }
+    },
+    "inputManifest": {
+      "version": "0.1.11",
+      "archive": "292cad3bebc2b5e01fa6b97fa967ba1e0ed549e0f8fdb8dff9667c6bb3395a9b",
+      "rubric": "91a0a4026fce0547d6f9ba2d047e4e158a12f211899ade10872826a3af86c86e",
+      "cases": {
+        "ordinary": {
+          "prompt": "899afa1db726746946074fc71e6cc438faee70b2ec69d6d88e47d2c67a59f437",
+          "project": {
+            "SHA256SUMS": "ff521308f266f91d9f3e7784fa0dc05f12ba7c2ae7933b381701b9be31ba0079",
+            "check_cli.py": "066c47c012a843150ca0fd2573736c845082d50c972eeccd0555ebeb8643f5c9",
+            "delivery.txt": "d9db754b986dd9043fbdae2d69722f13fd8e0f5f98068f588f3d7f4678f9b8fd",
+            "route_tag.py": "78c00e919b979214cd818c7dca505a06af1ceb2be3ba8631db30ed3414d16e28",
+            "spec.md": "ae4fca728f3e24e31af2846a43d80bdcfab6f3ca636da23d09b014eb06d571b1"
+          }
+        },
+        "boundary": {
+          "prompt": "a06106e0afe22303a0f5f0584bcac447ec1fe247f5313f920b60161820c2a53a",
+          "project": {
+            "SHA256SUMS": "f297be7edffbcb996d828028eb23bd2f27e1f5d581e0d7452f2dcdf5cd6e8f9c",
+            "check_notice.py": "9cea39b48a284e4a43b4dbf98f27e0660b96e34c10e7f9e7904a72d897c59c0d",
+            "delivery.txt": "121653e627263a26873b039b36b3dc4e810e31b972bdc39841acabf9abfe4492",
+            "notice.py": "6746283e2600d36309685de3b71e00d40383e4a4e9fa61bf863e50a77775fdeb",
+            "requirements.md": "363fd4fa514b5357e3cee8601dc0cd28abf5d6da27029011784e3d4a1eb73754",
+            "support-note.md": "aadd72c68dc6f2e3e101436acd5ec8f0ebde7f020942ee259b6ddb64f5d2e2ae"
+          }
+        }
+      }
+    },
+    "executions": {
+      "40cb27975101": {
+        "case": "ordinary",
+        "variant": "0.1.11",
+        "label": "57e30aa310",
+        "score": "FAIL",
+        "behavior": "done",
+        "reason": "Решение принять K-17 по LT-1–LT-3 редакции 3 обосновано. Однако ответ заявляет, что суммы трёх файлов совпали с манифестом до и после проверки. До запуска вычислены только суммы delivery.txt и самого манифеста. Сверка трёх файлов с манифестом зафиксирована лишь после запуска.",
+        "behaviorReason": "Ответ разрешает приёмку. Прямые вызовы route_tag.py для yard, bay и gate вывели соответственно Y, B и G с завершающим LF и кодом 0 каждый. Запуск check_cli.py также завершился с кодом 0.",
+        "ratings": {
+          "first": {
+            "label": "57e30aa310",
+            "score": "FAIL",
+            "reason": "Решение принять K-17 по LT-1–LT-3 редакции 3 обосновано. Однако ответ заявляет, что суммы трёх файлов совпали с манифестом до и после проверки. До запуска вычислены только суммы delivery.txt и самого манифеста. Сверка трёх файлов с манифестом зафиксирована лишь после запуска.",
+            "behavior": "done",
+            "behaviorReason": "Ответ разрешает приёмку. Прямые вызовы route_tag.py для yard, bay и gate вывели соответственно Y, B и G с завершающим LF и кодом 0 каждый. Запуск check_cli.py также завершился с кодом 0."
+          }
+        },
+        "rawEventsSha256": "3f4209a2e904589fe6821ed13bb85bc41ea46ce45c469658968d5e73707a4a42",
+        "answerSha256": "c24185e6a21793389baea05ecb72e96f6803b97dec83f9d5f5eaa253fb9b6227"
+      },
+      "d31ec390efdc": {
+        "case": "ordinary",
+        "variant": "B",
+        "label": "d981e89ac9",
+        "score": "PASS",
+        "behavior": "done",
+        "reason": "Ответ разрешает приёмку K-17 по утверждённой редакции 3. Для каждого требования LT-1–LT-3 таблица указывает канал, точный stdout с завершающим LF и код завершения. Журнал подтверждает прямые вызовы публичной команды, успешный запуск check_cli.py и совпадение трёх контрольных сумм.",
+        "behaviorReason": "Решение о приёмке связано с тремя наблюдаемыми вызовами route_tag.py. Для yard получено Y\\n, для bay — B\\n, для gate — G\\n. Каждый вызов завершился с кодом 0.",
+        "ratings": {
+          "first": {
+            "label": "d981e89ac9",
+            "score": "PASS",
+            "reason": "Ответ разрешает приёмку K-17 по утверждённой редакции 3. Для каждого требования LT-1–LT-3 таблица указывает канал, точный stdout с завершающим LF и код завершения. Журнал подтверждает прямые вызовы публичной команды, успешный запуск check_cli.py и совпадение трёх контрольных сумм.",
+            "behavior": "done",
+            "behaviorReason": "Решение о приёмке связано с тремя наблюдаемыми вызовами route_tag.py. Для yard получено Y\\n, для bay — B\\n, для gate — G\\n. Каждый вызов завершился с кодом 0."
+          },
+          "second": {
+            "label": "d981e89ac9",
+            "score": "PASS",
+            "reason": "Ответ обоснованно разрешает приёмку K-17 по утверждённой редакции 3. Для LT-1, LT-2 и LT-3 указаны канал, точный stdout с завершающим LF и код завершения. Все результаты совпадают со спецификацией.",
+            "behavior": "done",
+            "behaviorReason": "Ответ связывает решение о приёмке с публичной командой. В P1 зафиксированы три прямых вызова route_tag.py. Для yard, bay и gate получены соответственно Y\\n, B\\n и G\\n, каждый вызов завершился с кодом 0. Запуск python3 -B check_cli.py также зафиксирован и завершился с кодом 0."
+          }
+        },
+        "rawEventsSha256": "248c0eb0ad7639f79ea15a8b16fe14bfa18e397daa1fb711d7146357c257d958",
+        "answerSha256": "03a38a2c6fcf01d57f141cec45acce6dbffe2468a3f0c8c73610d871d6dd4bd2"
+      },
+      "c742f41d4d8e": {
+        "case": "boundary",
+        "variant": "0.1.11",
+        "label": "bf20fd111f",
+        "score": "PASS",
+        "behavior": "done",
+        "reason": "Ответ подтверждает PN-1 по передаче job через make_record и отказывает в приёмке N-42 по PN-2. Редакция 4 требует пустую строку при None, а реализация и штатная проверка используют строку «0». Ответ учитывает статус D-51, указывает исправление и определяет нужное свидетельство для PN-3 — отчёт оператора о чтении по тому же идентификатору после перезапуска без повторной отправки.",
+        "behaviorReason": "Штатная проверка прошла. Отдельная проверка сохранила идентификатор lot-07 и завершилась с кодом 1 при сравнении mass с пустой строкой. Ответ признал нарушение PN-2 достаточным для отказа. По PN-3 он ограничил вывод записью в словарь в памяти и указал, что чтение после перезапуска штатного терминала остаётся неподтверждённым.",
+        "ratings": {
+          "first": {
+            "label": "bf20fd111f",
+            "score": "PASS",
+            "reason": "Ответ подтверждает PN-1 по передаче job через make_record и отказывает в приёмке N-42 по PN-2. Редакция 4 требует пустую строку при None, а реализация и штатная проверка используют строку «0». Ответ учитывает статус D-51, указывает исправление и определяет нужное свидетельство для PN-3 — отчёт оператора о чтении по тому же идентификатору после перезапуска без повторной отправки.",
+            "behavior": "done",
+            "behaviorReason": "Штатная проверка прошла. Отдельная проверка сохранила идентификатор lot-07 и завершилась с кодом 1 при сравнении mass с пустой строкой. Ответ признал нарушение PN-2 достаточным для отказа. По PN-3 он ограничил вывод записью в словарь в памяти и указал, что чтение после перезапуска штатного терминала остаётся неподтверждённым."
+          }
+        },
+        "rawEventsSha256": "98b09590108d08df6a10a38c734c6bba7bccacba9409521cc3a311d9e11ca626",
+        "answerSha256": "ff23f2bc9c6d01aef518e771506c21a088d54eda35d10f6717c22dec999ac43c"
+      },
+      "f08e766c12a9": {
+        "case": "boundary",
+        "variant": "B",
+        "label": "a4d0585e43",
+        "score": "PASS",
+        "behavior": "done",
+        "reason": "Отказ в приёмке N-42 обоснован нарушением PN-2 редакции 4. При None функция make_record возвращает строку «0» вместо пустой строки, а штатная проверка ожидает «0». Заявка D-51 ещё не утверждена. По PN-1 подтверждено сохранение идентификатора с пробелами. Владелец получил конкретные действия для исправления функции и проверки, а также для подтверждения PN-3 на терминале.",
+        "behaviorReason": "Штатная проверка завершилась с кодом 0. Прямой вызов сохранил job и вернул mass со значением «0», поэтому проверка PN-2 завершилась с кодом 1. Ответ отказал в приёмке по PN-2 и оставил PN-3 неподтверждённым. DeskArchive сохраняет запись в словаре одного процесса, а для чтения после перезапуска терминала запрошен отдельный прогон.",
+        "ratings": {
+          "first": {
+            "label": "a4d0585e43",
+            "score": "PASS",
+            "reason": "Отказ в приёмке N-42 обоснован нарушением PN-2 редакции 4. При None функция make_record возвращает строку «0» вместо пустой строки, а штатная проверка ожидает «0». Заявка D-51 ещё не утверждена. По PN-1 подтверждено сохранение идентификатора с пробелами. Владелец получил конкретные действия для исправления функции и проверки, а также для подтверждения PN-3 на терминале.",
+            "behavior": "done",
+            "behaviorReason": "Штатная проверка завершилась с кодом 0. Прямой вызов сохранил job и вернул mass со значением «0», поэтому проверка PN-2 завершилась с кодом 1. Ответ отказал в приёмке по PN-2 и оставил PN-3 неподтверждённым. DeskArchive сохраняет запись в словаре одного процесса, а для чтения после перезапуска терминала запрошен отдельный прогон."
+          }
+        },
+        "rawEventsSha256": "d4d505fab9f9abc808ea8b071f613663b123e41dd2974251c88d9a64509135f5",
+        "answerSha256": "340fdc8f1fd8d4a739d624d47844cbf388b0bcfa40ae597c06018bed7749d61c"
+      }
+    },
+    "jointSource": "docs/reviews/v5-solo-independent-reaudit.md",
+    "reviewMethodVersion": "0.2.9",
+    "scope": "baseline для двух зарегистрированных задач, после явной загрузки",
+    "sideEffects": "project read-only, scope probes and post-run hashes in runs/*/delivery.json and result.json",
+    "time": "UTC; signed scores before reveal",
+    "scoreSeal": "2a7fd91e24b98779ba85ca4f54873eff5340ee23f7b95539e7d8dd89cd0e0397"
+  },
+  "files": {
+    "archive.tar.gz": "292cad3bebc2b5e01fa6b97fa967ba1e0ed549e0f8fdb8dff9667c6bb3395a9b",
+    "assessments/first/answer.md": "cf738493ab3c8b3c2abcac11fa3d831fc20c99a5cd1de60c360d0eb5c892e983",
+    "assessments/first/delivery.json": "684ed22e362a3710858ae6acef5d50e6f7b48482a2992ea540b031155bd339ac",
+    "assessments/first/events.jsonl.gz": "07b7d9545d1a85ac4f9fb876c7fa8dac9ec57a127128d9d6ea6c487bb9325bd6",
+    "assessments/first/result.json": "57e4875203e0aba29c08c8f9954a81953fd2594d238c3e6214b7cb58fefd48a9",
+    "assessments/first/signed.json": "0a579a351ecf5067e68e8e62fff21805dbbd2b77ca5047f1129f0a7002ae5e30",
+    "assessments/packets/57e30aa310.json": "b476315f730a36347776028d3feba78e712affc35ffdc61f99fcead3760700b6",
+    "assessments/packets/a4d0585e43.json": "aec96f47920b897cd2894c4b49bd4133a04f203663fa3c7a96a60faefaca27cd",
+    "assessments/packets/bf20fd111f.json": "a6f407fb901688467cec29beb97a4cc0dbc9426ada8848a70895c636414f651d",
+    "assessments/packets/d981e89ac9.json": "2990c691b45d570174565e2d97068fb79aa6d96e1f563ff72512b55901996377",
+    "assessments/second/answer.md": "448bc19369281a84301e55ac8a7bce437b6d7b7a867cd3979696e178b04a5a51",
+    "assessments/second/delivery.json": "e66fecd9b3f74080fb79e6a6e4d5b2fe3ec814fce27b3460e176e4aeb7c9eab1",
+    "assessments/second/events.jsonl.gz": "0fbc66c8f6a222b43edf4e0062a00d25a498a3acd8c5d1ca1a429d00a6ba2e9a",
+    "assessments/second/result.json": "3890ad38380fd50de937d9fdb4c96f895e3c4c620668793136e0fe9f16776979",
+    "assessments/second/signed.json": "7f7eff65e554ef6bba5f71cb4abe3290368be00ff93aa66d41320973fba7d33d",
+    "basis.json": "6d24fa42ad193bd8a90d535b0e989b231fac8e07ae69713b8c4cc5a74e4b5c05",
+    "checks.json": "a1d8b71cb333502aaf6be234410b7a6c28139266b3a3209e32aa7da1ac76aaef",
+    "criteria.md": "91a0a4026fce0547d6f9ba2d047e4e158a12f211899ade10872826a3af86c86e",
+    "inputs/boundary/project/SHA256SUMS": "f297be7edffbcb996d828028eb23bd2f27e1f5d581e0d7452f2dcdf5cd6e8f9c",
+    "inputs/boundary/project/check_notice.py": "9cea39b48a284e4a43b4dbf98f27e0660b96e34c10e7f9e7904a72d897c59c0d",
+    "inputs/boundary/project/delivery.txt": "121653e627263a26873b039b36b3dc4e810e31b972bdc39841acabf9abfe4492",
+    "inputs/boundary/project/notice.py": "6746283e2600d36309685de3b71e00d40383e4a4e9fa61bf863e50a77775fdeb",
+    "inputs/boundary/project/requirements.md": "363fd4fa514b5357e3cee8601dc0cd28abf5d6da27029011784e3d4a1eb73754",
+    "inputs/boundary/project/support-note.md": "aadd72c68dc6f2e3e101436acd5ec8f0ebde7f020942ee259b6ddb64f5d2e2ae",
+    "inputs/boundary/task.md": "a06106e0afe22303a0f5f0584bcac447ec1fe247f5313f920b60161820c2a53a",
+    "inputs/ordinary/project/SHA256SUMS": "ff521308f266f91d9f3e7784fa0dc05f12ba7c2ae7933b381701b9be31ba0079",
+    "inputs/ordinary/project/check_cli.py": "066c47c012a843150ca0fd2573736c845082d50c972eeccd0555ebeb8643f5c9",
+    "inputs/ordinary/project/delivery.txt": "d9db754b986dd9043fbdae2d69722f13fd8e0f5f98068f588f3d7f4678f9b8fd",
+    "inputs/ordinary/project/route_tag.py": "78c00e919b979214cd818c7dca505a06af1ceb2be3ba8631db30ed3414d16e28",
+    "inputs/ordinary/project/spec.md": "ae4fca728f3e24e31af2846a43d80bdcfab6f3ca636da23d09b014eb06d571b1",
+    "inputs/ordinary/task.md": "899afa1db726746946074fc71e6cc438faee70b2ec69d6d88e47d2c67a59f437",
+    "joint.md": "09f3627ee1d09e51dafaec005c531d65adfc2206e956b59863766e31f440f9f8",
+    "method/SKILL.md": "ef4b95adcb438268de9c169b47ae36c0d0a9afc3de00db4a0b767f9a2420867c",
+    "method/forward-testing.md": "dd6892c96fe24606227dfd93cc9567ef0cce1a9413f68e32c91324f371d9a1f2",
+    "method/methodology.md": "136243ed09056567bedf3cb0c506b531a94fd1268b7d48702273f0f15f2adca8",
+    "method/standard.md": "cb7fe13fe8c65144b9ae5fdef6d9b9f598fbc1a05523e674a0282aec942a8f67",
+    "package/SKILL.md": "3b861948c02044af2ef5f00dac8fa934cc97a953cee1b62a4ab30370fe97fea1",
+    "package/agents/openai.yaml": "cfb46dd79b7c1dbea6f21726d24c55d1ecde761ced9005f103ffb30629c88b2b",
+    "package/assets/fixtures/consultant-admission-policy.md": "acc3607c90becff03a87356f0e43e094bb023e28ea1e80af64dbd4577c514b53",
+    "package/references/methodology.md": "de14ec0500b13f3e9d01df63d392beb32d17124a5b6e017a49a17d5df49f5e1f",
+    "package/references/policy-admission-matrix.md": "cfe2cd85876b46cdd71fd982b15bdbe3cff16e4dc95da48ca53a2c3b28578689",
+    "package/references/reporting.md": "d626291ae932819d597e17a6a01e782b9e3577eeb1fbf0afc01edfe5763ebd14",
+    "protocol.md": "08c9cc36778a5297babc064d8e349bd8299eea44f3d244524d1c5ac0f8206d54",
+    "registration.json": "b2dba4ebc448ea5008128ee8c2ab561e1b2a13d53f746e98e4a6bdf9c554fd5c",
+    "reveal.json": "e200e2691986ebd7db755b149b551227483e6e3a07a5c845a5dd089fc75546eb",
+    "runs/40cb27975101/answer.md": "c24185e6a21793389baea05ecb72e96f6803b97dec83f9d5f5eaa253fb9b6227",
+    "runs/40cb27975101/delivery.json": "98ab17bc372344a208ea1f0e19b2ce479a646dd496add113d62ce0131968e679",
+    "runs/40cb27975101/events.jsonl.gz": "6869ceda7c938563d6a7818ac9b16123fe4fc15ccdf805ab103a432f3479b806",
+    "runs/40cb27975101/result.json": "27d276778680bb5320393c1f5a0d6406c245a6938bc9635331c44099b30fc78b",
+    "runs/c742f41d4d8e/answer.md": "ff23f2bc9c6d01aef518e771506c21a088d54eda35d10f6717c22dec999ac43c",
+    "runs/c742f41d4d8e/delivery.json": "5bbd3fea82aa700c09799c1a61d0fbe15cf40188c29389dc263fa5ebd013aa74",
+    "runs/c742f41d4d8e/events.jsonl.gz": "652d3a0190b51e0ba7513f01f07b0ec192271344602f1c754036b2b82d121225",
+    "runs/c742f41d4d8e/result.json": "f0e9947745fd700ae0fd96e3d19afb2ce49e08747bf781ece7fb563db1431be3",
+    "runs/d31ec390efdc/answer.md": "03a38a2c6fcf01d57f141cec45acce6dbffe2468a3f0c8c73610d871d6dd4bd2",
+    "runs/d31ec390efdc/delivery.json": "10df4aaae460d634bb9d15f1709b20c96ebec77a4982e9a6226def29e1e469f4",
+    "runs/d31ec390efdc/events.jsonl.gz": "72db3769b558358da655cd08db3f9a098be662979dc445a4c0a06e196db19ce6",
+    "runs/d31ec390efdc/result.json": "fcf1480677f65efd9a0e1f1a24fe75b16963c82370f11989225139eab8ff3581",
+    "runs/f08e766c12a9/answer.md": "340fdc8f1fd8d4a739d624d47844cbf388b0bcfa40ae597c06018bed7749d61c",
+    "runs/f08e766c12a9/delivery.json": "2eb76311f479b5e188fbc5c4030bad812613bf9bcc623e72f4e98dec4249a34e",
+    "runs/f08e766c12a9/events.jsonl.gz": "2551daba910ff576f6015636230b8838999b59b4b4e112d9769ce2dbc4e1dfc7",
+    "runs/f08e766c12a9/result.json": "cc16a8ce9805139ca200dfc464d3299841cb269f41beabf0f02d7e465be6ca0d",
+    "sealed-scores.json": "2a7fd91e24b98779ba85ca4f54873eff5340ee23f7b95539e7d8dd89cd0e0397",
+    "source/agents/openai.yaml": "cfb46dd79b7c1dbea6f21726d24c55d1ecde761ced9005f103ffb30629c88b2b",
+    "source/assets/fixtures/consultant-admission-policy.md": "acc3607c90becff03a87356f0e43e094bb023e28ea1e80af64dbd4577c514b53",
+    "source/fragments/overview.md": "196787e6002cd22e5ae426708ed2b14d35a03fa1d41345761997ff8bd3dcfdc1",
+    "source/references/methodology.md": "de14ec0500b13f3e9d01df63d392beb32d17124a5b6e017a49a17d5df49f5e1f",
+    "source/references/policy-admission-matrix.md": "cfe2cd85876b46cdd71fd982b15bdbe3cff16e4dc95da48ca53a2c3b28578689",
+    "source/references/reporting.md": "d626291ae932819d597e17a6a01e782b9e3577eeb1fbf0afc01edfe5763ebd14",
+    "source/skill.yaml": "671a747d8838fa55f6a45c2d5e40d069c8e308fcf92f7351a996304a43d5dde9",
+    "system-scope.json": "5b910de28c0aed1814d47d023deef96deef117f86fb07d6b37a68cd605d93f07"
+  },
+  "startup": {
+    "promptInputSha256": "e6f87a5c6e7247cdc2725ac15de47e2d475bcb878d1188c3e191cc77bedf67f5",
+    "catalog": [],
+    "activeTextDelivered": {},
+    "allExpectedTexts": true,
+    "namedTargetInControl": [],
+    "historyOrKeyInContext": false,
+    "toolNames": [
+      "functions",
+      "clock",
+      "collaboration"
+    ],
+    "restrictedProfile": true,
+    "userPromptPresent": true,
+    "model": "gpt-6.2-astra"
+  },
+  "access": {
+    "readable": {
+      "ownProject": true,
+      "ownTarget": false,
+      "mainCheckoutTarget": false,
+      "worktreeTarget": false,
+      "archive": false,
+      "registration": false,
+      "rubric": false,
+      "otherWindow": false,
+      "hostSkillDirectory": false,
+      "hostHistory": false,
+      "hostConfig": false,
+      "procRootSource": false
+    },
+    "projectWritable": false,
+    "inetSocket": false
+  }
+}

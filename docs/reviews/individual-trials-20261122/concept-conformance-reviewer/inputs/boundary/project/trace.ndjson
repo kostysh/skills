@@ -1,0 +1,7 @@
+{"run":91,"step":1,"actor":"shift-A","terminal":"west","event":"submit","method":"POST","path":"/handover","duty":"D71","assignee":"shift-B"}
+{"run":91,"step":2,"component":"station-qa/42","event":"commit","storage":"handover_events","id":"E902","duty":"D71","assignee":"shift-B"}
+{"run":91,"step":3,"actor":"shift-A","terminal":"west","event":"response","status":201,"receipt":"E902"}
+{"run":91,"step":4,"actor":"shift-B","terminal":"east","session":"s1","event":"open","path":"/desk/inbox","profile":"review-station-4","rendered":["D71"]}
+{"run":91,"step":5,"actor":"shift-B","terminal":"east","session":"s1","event":"sign-out"}
+{"run":91,"step":6,"actor":"shift-B","terminal":"east","session":"s2","event":"sign-in"}
+{"run":91,"step":7,"actor":"shift-B","terminal":"east","session":"s2","event":"open","path":"/desk/inbox","profile":"review-station-4","rendered":["D71"]}

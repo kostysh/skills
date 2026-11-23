@@ -1,0 +1,263 @@
+{
+  "skill": "retrospective-analysis",
+  "study": "Индивидуальные испытания 2026-11-22",
+  "base": "docs/reviews/individual-trials-20261122/retrospective-analysis",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "source": "results.md",
+  "taskSet": "retrospective-analysis-individual-20261122",
+  "registration": "../registration.json",
+  "archiveSha256": "50cc6f9318a459b5f2d25469014433433be181c3dca9e16e67df90240ea67837",
+  "runs": {
+    "c28040444112": {
+      "task": "ordinary",
+      "variant": "0.1.8",
+      "sha256": "73cb7f9ce3bfbd716a35679f2ebc0a5df37b445bca7a1bf5bdf13e0971e93bea",
+      "source": "runs/c28040444112/events.jsonl.gz",
+      "answer": "runs/c28040444112/answer.md",
+      "delivery": "runs/c28040444112/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-4448773d",
+          "thread": "01a200ed-6576-7523-b3f5-d73d452e53ec",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "cce056e71707d5a5ca668dda774642656d1045ac65eb406ee3f76b743b14619d",
+          "score": "PASS",
+          "source": "assessments/first/signed.json",
+          "label": "b70cd986c8",
+          "reason": "Указана причина выпуска G41 без листа обозначений: профиль G-12 требовал только карту. Ответ отдельно подтверждает приёмку исправленного G41R и действие нового контроля. По журналу G-13 остановил неполный G47 до отправки и пропустил полный G50, который принял получатель. Закрытие случая обосновано в пределах учебной модели участка G до G50.",
+          "behavior": "missed",
+          "behaviorReason": "Зафиксирован просмотр журнала, состава заказов, профилей и кода `station.py`. Вывод о G47 и G50 опирается на готовые записи. Запуск модели для сверки в представленных действиях отсутствует."
+        }
+      },
+      "behavior": {
+        "result": "done",
+        "note": "Автор отдельно указал, что получатель принял доукомплектованный заказ G41R. Работу нового профиля G-13 он подтвердил на следующем заказе G47, который склад остановил до отправки из-за отсутствия листа обозначений.",
+        "source": "assessments/behavior-check/adjudication/signed.json"
+      },
+      "primaryBehavior": {
+        "result": "missed",
+        "note": "Зафиксирован просмотр журнала, состава заказов, профилей и кода `station.py`. Вывод о G47 и G50 опирается на готовые записи. Запуск модели для сверки в представленных действиях отсутствует.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "cb76cd32aa08": {
+      "task": "ordinary",
+      "variant": "B",
+      "sha256": "30604e289bf3031f59cc4945159d47fc3034128fbfa7ec296707da3a6d91b10b",
+      "source": "runs/cb76cd32aa08/events.jsonl.gz",
+      "answer": "runs/cb76cd32aa08/answer.md",
+      "delivery": "runs/cb76cd32aa08/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-4448773d",
+          "thread": "01a200ed-6576-7523-b3f5-d73d452e53ec",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "d3b341b69c51aa73a36692adbfdb1366eacf2df34b8c8f59437649fc4f85d3ea",
+          "score": "PASS",
+          "source": "assessments/first/signed.json",
+          "label": "dc8a55defd",
+          "reason": "Ответ связывает возврат G41 с правилом G-12, которое разрешало отправку без листа обозначений. Приёмка доукомплектованного G41R закрыла исходный заказ. Действие G-13 подтверждено отдельно на участке G. Склад задержал неполный G47 до отправки, а полный G50 получатель принял. Вывод об отсутствии дальнейшей работы ограничен этим случаем до G50 включительно.",
+          "behavior": "missed",
+          "behaviorReason": "В представленных действиях зафиксировано чтение `station.py`, входных данных, профилей и журнала. Команды запуска модели и сравнения её вывода с журналом нет."
+        },
+        "second": {
+          "assessor": "second-cad02e35",
+          "thread": "01a200ed-9c4a-7e72-ac74-f3196f3d0942",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "d3b341b69c51aa73a36692adbfdb1366eacf2df34b8c8f59437649fc4f85d3ea",
+          "score": "PASS",
+          "source": "assessments/second/signed.json",
+          "label": "dc8a55defd",
+          "reason": "Ответ верно объясняет возврат G41: профиль G-12 разрешал отправить карту без обязательного для получателя листа обозначений. Получатель принял доукомплектованный G41R. При новом профиле G-13 склад остановил неполный G47 до отправки, а полный G50 дошёл до получателя и был принят. Вывод о закрытии случая обоснован и ограничен участком G до рейса G50 включительно.",
+          "behavior": "done",
+          "behaviorReason": "Автор отдельно обосновал исправление заказа приёмкой G41R, а действие нового контроля — остановкой G47 до отправки. В представленных действиях зафиксировано чтение профилей, состава заказов, кода модели и журнала. Запуск модели не зафиксирован."
+        },
+        "adjudicator": {
+          "assessor": "adjudicator-2990c310",
+          "thread": "01a200ef-056d-7931-bb8b-c4de6869edeb",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "d3b341b69c51aa73a36692adbfdb1366eacf2df34b8c8f59437649fc4f85d3ea",
+          "score": "PASS",
+          "source": "assessments/adjudicator/signed.json",
+          "label": "dc8a55defd",
+          "reason": "Ответ объясняет возврат G41: профиль G-12 разрешал отправить одну карту, а получателю требовался ещё и лист обозначений. Получатель принял доукомплектованный G41R. Вывод о том, что дополнительная работа по O-41 не требуется, обоснован и ограничен участком G до рейса G50 включительно.",
+          "behavior": "done",
+          "behaviorReason": "Автор отделил исправление заказа G41R от проверки профиля G-13 по журналу: склад остановил неполный G47 до отправки, а полный G50 отправил, и получатель его принял. Представленные команды подтверждают чтение входных данных, профилей, кода и журнала. Отдельный запуск station.py не зафиксирован."
+        }
+      },
+      "behavior": {
+        "result": "done",
+        "note": "Автор связал приёмку G41R с тем, что склад добавил лист обозначений в исходный заказ. Действие профиля G-13 он подтвердил отдельным наблюдением: склад задержал новый заказ G47 без листа обозначений до отправки получателю.",
+        "source": "assessments/behavior-check/signed.json"
+      },
+      "primaryBehavior": {
+        "result": "done",
+        "note": "Автор отделил исправление заказа G41R от проверки профиля G-13 по журналу: склад остановил неполный G47 до отправки, а полный G50 отправил, и получатель его принял. Представленные команды подтверждают чтение входных данных, профилей, кода и журнала. Отдельный запуск station.py не зафиксирован.",
+        "source": "assessments/adjudicator/signed.json"
+      }
+    },
+    "3905b2c44d06": {
+      "task": "boundary",
+      "variant": "0.1.8",
+      "sha256": "0065a2abe8392263de782d20221bd6dbfdea4e564dbae3d72562eda246e40440",
+      "source": "runs/3905b2c44d06/events.jsonl.gz",
+      "answer": "runs/3905b2c44d06/answer.md",
+      "delivery": "runs/3905b2c44d06/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-4448773d",
+          "thread": "01a200ed-6576-7523-b3f5-d73d452e53ec",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "9d3e63369665fdff63ccc018912455f04c3e5cdc74a38102254e4ca34903fb30",
+          "score": "PASS",
+          "source": "assessments/first/signed.json",
+          "label": "d4c28169fd",
+          "reason": "Показано, как числовой профиль превратил «087» в «87» на S12 и как ручная перепечатка закрыла заказ S12R. На одинаковом входе «032» кандидат прошёл приёмку на C88, а рабочая линия получила возврат на S18. Причина выбора профиля оставлена открытой. Начальнику смены предложено запросить установку проверенного профиля, сверить SHA-256 установленного файла и подтвердить автоматическую печать и приёмку на самой линии.",
+          "behavior": "done",
+          "behaviorReason": "Команда проверки запустила `printer.py`, разобрала его вывод и журнал как записи JSON и сравнила их. Проверка завершилась с кодом 0 и сообщила о совпадении всех четырёх записей, включая контрольные суммы и результаты выдачи."
+        }
+      },
+      "behavior": {
+        "result": "done",
+        "note": "Автор сопоставил принятую бирку «032» в C88 с возвратом бирки «32» в S18. Он предложил запросить установку проверенного профиля на рабочую линию, затем сверить его SHA-256 и проверить на этой линии автоматическую печать и приёмку бирок «087» и «032».",
+        "source": "assessments/behavior-check/signed.json"
+      },
+      "primaryBehavior": {
+        "result": "done",
+        "note": "Команда проверки запустила `printer.py`, разобрала его вывод и журнал как записи JSON и сравнила их. Проверка завершилась с кодом 0 и сообщила о совпадении всех четырёх записей, включая контрольные суммы и результаты выдачи.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "e6d39f3d7e1b": {
+      "task": "boundary",
+      "variant": "B",
+      "sha256": "7a3059d14d96819f1ff3ff7922beec1d52d9a0f5c16e56c6c02429f4be3b9299",
+      "source": "runs/e6d39f3d7e1b/events.jsonl.gz",
+      "answer": "runs/e6d39f3d7e1b/answer.md",
+      "delivery": "runs/e6d39f3d7e1b/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-4448773d",
+          "thread": "01a200ed-6576-7523-b3f5-d73d452e53ec",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "6e3da6a3d47d153362fc215842bdcef2b9733222122f90d29104ed59a02c8c0d",
+          "score": "FAIL",
+          "source": "assessments/first/signed.json",
+          "label": "fbf6491aec",
+          "reason": "Ответ верно различает три результата. После ручной перепечатки S12R приняли, кандидат на C88 сохранил «032», а рабочая линия на S18 напечатала «32» и получила возврат. Существенный пропуск касается следующего шага. Предложены сверка контрольной суммы и пробная печать, но пропущено поручение ответственному установить или активировать на линии проверенный профиль. Расхождение профилей уже подтверждено.",
+          "behavior": "done",
+          "behaviorReason": "Выполнена команда `python3 -B printer.py | diff -u observed.ndjson -`. Сравнение завершилось с кодом 0 без вывода. Все четыре записи модели совпали с журналом."
+        }
+      },
+      "behavior": {
+        "result": "missed",
+        "note": "Автор указал, что при C88 кандидат напечатал «032», а при S18 рабочая линия напечатала «32». Он предложил сверить контрольную сумму и проверить печать и приёмку бирки «087» на линии, но пропустил установку или активацию проверенного профиля перед этой проверкой.",
+        "source": "assessments/behavior-check/adjudication/signed.json"
+      },
+      "primaryBehavior": {
+        "result": "done",
+        "note": "Выполнена команда `python3 -B printer.py | diff -u observed.ndjson -`. Сравнение завершилось с кодом 0 без вывода. Все четыре записи модели совпали с журналом.",
+        "source": "assessments/first/signed.json"
+      }
+    }
+  },
+  "series": [
+    {
+      "id": "Версия / без пакета",
+      "comparison": "0.1.8/B",
+      "phase": "primary",
+      "rubric": "R1",
+      "packet": "P1",
+      "bRemoval": "complete",
+      "source": "results.md#pairs",
+      "limit": "Две локальные задачи, явная загрузка, gpt-6.2-sol / medium.",
+      "pairs": [
+        {
+          "id": "ordinary-1",
+          "task": "ordinary",
+          "left": [
+            "c28040444112",
+            "first"
+          ],
+          "right": [
+            "cb76cd32aa08",
+            "first"
+          ]
+        },
+        {
+          "id": "boundary-1",
+          "task": "boundary",
+          "left": [
+            "3905b2c44d06",
+            "first"
+          ],
+          "right": [
+            "e6d39f3d7e1b",
+            "first"
+          ]
+        }
+      ]
+    }
+  ],
+  "agreement": [
+    {
+      "run": "cb76cd32aa08",
+      "rubric": "R1",
+      "packet": "P1",
+      "ratings": [
+        "first",
+        "second"
+      ],
+      "resolution": "adjudicator",
+      "reason": "Первичные оценки расходились только по наблюдаемому действию K."
+    }
+  ],
+  "attempts": [
+    {
+      "id": "individual-1",
+      "order": 1,
+      "snapshot": "0.1.8 archive-sha256 50cc6f9318a459b5f2d25469014433433be181c3dca9e16e67df90240ea67837",
+      "scope": "individual",
+      "source": "audit/signed.json",
+      "verdict": "PASS",
+      "timelineSource": "audit/result.json",
+      "handed": "2026-11-22T01:48:47.051Z",
+      "started": "2026-11-22T01:48:47.524Z",
+      "decided": "2026-11-22T01:50:20.771Z"
+    },
+    {
+      "id": "K-delta-2",
+      "order": 2,
+      "snapshot": "0.1.8 archive-sha256 50cc6f9318a459b5f2d25469014433433be181c3dca9e16e67df90240ea67837",
+      "scope": "individual",
+      "source": "results.md#decision",
+      "verdict": "PASS",
+      "timelineSource": "audit-delta/result.json",
+      "handed": "2026-11-22T01:54:39.595Z",
+      "started": "2026-11-22T01:54:40.061Z",
+      "decided": "2026-11-22T01:55:44.007Z"
+    }
+  ],
+  "observation": {
+    "version": "0.1.8",
+    "accepted": "2026-11-22T01:55:44.007Z",
+    "released": "2026-11-20T17:57:27Z",
+    "through": "2026-11-22T01:55:44.007Z",
+    "systematic": false,
+    "defects": [],
+    "source": "../README.md#limits"
+  },
+  "behaviorSupplement": {
+    "scope": "Только K на четырёх исходных работах",
+    "registration": "assessments/behavior-check/registration.json",
+    "signed": "assessments/behavior-check/signed.json",
+    "arbitration": "assessments/behavior-check/adjudication/signed.json"
+  }
+}

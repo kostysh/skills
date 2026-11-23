@@ -1,0 +1,211 @@
+{
+  "skill": "spec-conformance-reviewer",
+  "study": "Повторная проверка двух ревьюеров 2026-11-23",
+  "base": "docs/reviews/reviewer-remediation-20261123/spec-conformance-reviewer",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "source": "results.md",
+  "taskSet": "spec-conformance-reviewer-remediation-20261123",
+  "registration": "../registration.json",
+  "archiveSha256": "e111920c6e6734e47eac6584a2765fff764228e0c27181395ba1b6474da86d77",
+  "baselineArchiveSha256": "292cad3bebc2b5e01fa6b97fa967ba1e0ed549e0f8fdb8dff9667c6bb3395a9b",
+  "runs": {
+    "9317c5c5bd0a": {
+      "task": "original",
+      "variant": "0.1.12",
+      "sha256": "db75e8e766564d8c7e36e580e95196e4335cc076a917fd61fb1a7430c668e7bd",
+      "source": "runs/9317c5c5bd0a/events.jsonl.gz",
+      "delivery": "runs/9317c5c5bd0a/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-5c533cfd",
+          "thread": "01a2082e-3ffb-7b62-8894-39916e8ef9d6",
+          "rubric": "R2",
+          "packet": "P2",
+          "packetSha256": "29dad37c679c1618ed7b721b60ee3bb06666100b2455a29af37f92f8817b8577",
+          "source": "assessments/first/signed.json",
+          "label": "3f46798819",
+          "score": "PASS",
+          "reason": "Решение принять K-17 охватывает все требования редакции 3. Для yard, bay и gate указаны соответственно Y, B и G, ровно один завершающий LF и код 0. Ответ верно ограничивает приёмку этими тремя каналами.",
+          "behavior": "done",
+          "behaviorReason": "Журнал подтверждает три прямых вызова с точными значениями stdout и кодами 0, а также успешный запуск check_cli.py. До прямых вызовов и после штатной проверки команда sha256sum -c SHA256SUMS подтвердила совпадение check_cli.py, route_tag.py и spec.md с ведомостью."
+        },
+        "second": {
+          "assessor": "second-39cb0654",
+          "thread": "01a2082e-707e-7350-b7da-96abe38b0007",
+          "rubric": "R2",
+          "packet": "P2",
+          "packetSha256": "29dad37c679c1618ed7b721b60ee3bb06666100b2455a29af37f92f8817b8577",
+          "source": "assessments/second/signed.json",
+          "label": "3f46798819",
+          "score": "PASS",
+          "reason": "Решение принять K-17 соответствует редакции 3 спецификации. Ответ верно разобрал LT-1, LT-2 и LT-3: для yard, bay и gate команда вывела соответственно Y, B и G, каждый раз с одним завершающим LF и кодом 0.",
+          "behavior": "done",
+          "behaviorReason": "Журнал подтверждает три прямых вызова route_tag.py с указанными результатами и запуск python3 -B check_cli.py с кодом 0. До прямых вызовов и после штатной проверки команда sha256sum -c SHA256SUMS подтвердила совпадение контрольных сумм всех трёх файлов: check_cli.py, route_tag.py и spec.md."
+        }
+      },
+      "answer": "runs/9317c5c5bd0a/answer.md",
+      "behavior": {
+        "result": "done",
+        "note": "Журнал подтверждает три прямых вызова с точными значениями stdout и кодами 0, а также успешный запуск check_cli.py. До прямых вызовов и после штатной проверки команда sha256sum -c SHA256SUMS подтвердила совпадение check_cli.py, route_tag.py и spec.md с ведомостью.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "6c97cdc895f2": {
+      "task": "original",
+      "variant": "0.1.11",
+      "sha256": "457180841764dde82d05771897b64239e8d32087b0e6123843f80d45f9cb29a7",
+      "source": "runs/6c97cdc895f2/events.jsonl.gz",
+      "delivery": "runs/6c97cdc895f2/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-5c533cfd",
+          "thread": "01a2082e-3ffb-7b62-8894-39916e8ef9d6",
+          "rubric": "R2",
+          "packet": "P2",
+          "packetSha256": "8d5bc31b0f77d448660ebdbcb496c7c24373e6170069c46682da6b8f38e9535f",
+          "source": "assessments/first/signed.json",
+          "label": "32ddbad622",
+          "score": "PASS",
+          "reason": "Решение принять K-17 обосновано по LT-1–LT-3 редакции 3. Для yard, bay и gate указаны точные результаты Y, B и G соответственно. Каждый вызов вывел один завершающий LF и завершился с кодом 0.",
+          "behavior": "done",
+          "behaviorReason": "Журнал фиксирует три прямых вызова route_tag.py с указанными байтами stdout и кодами 0. Отдельный запуск check_cli.py завершился с кодом 0. Команда sha256sum -c SHA256SUMS подтвердила совпадение всех трёх файлов с манифестом."
+        }
+      },
+      "answer": "runs/6c97cdc895f2/answer.md",
+      "behavior": {
+        "result": "done",
+        "note": "Журнал фиксирует три прямых вызова route_tag.py с указанными байтами stdout и кодами 0. Отдельный запуск check_cli.py завершился с кодом 0. Команда sha256sum -c SHA256SUMS подтвердила совпадение всех трёх файлов с манифестом.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "f20af8f28dc8": {
+      "task": "fresh",
+      "variant": "0.1.12",
+      "sha256": "56d0f098b8c08ece5e9467be0485fd9016beb68ca67fc9fd62c319c8c23e5042",
+      "source": "runs/f20af8f28dc8/events.jsonl.gz",
+      "delivery": "runs/f20af8f28dc8/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-5c533cfd",
+          "thread": "01a2082e-3ffb-7b62-8894-39916e8ef9d6",
+          "rubric": "R2",
+          "packet": "P2",
+          "packetSha256": "2393a1492d4b942dc3148eb720bc492a2083a21cde2d9383586b61bd145e54e2",
+          "source": "assessments/first/signed.json",
+          "label": "a1b5c2b384",
+          "score": "PASS",
+          "reason": "Окончательная приёмка G-64 по редакции 2 обоснованно отложена. Значение caption в переданном профиле подтверждает G1, а запись A429 о штатном включении VT-204 после сборки подтверждает G2. Для G3 предложено найти подходящую запись в полном журнале и провести проверку, если такой записи нет.",
+          "behavior": "done",
+          "behaviorReason": "Исполнитель прочитал профиль и выписку. Для G3 он учёл, что A416 сделана до окончания сборки, A424 относится к VT-203, а M221 составила группа монтажа. Наблюдение A429 верно отнесено к контролёру отдела приёмки. Журнал команд подтверждает как совпадение SHA-256 профиля с паспортом, так и заявленный хеш списка контрольных сумм четырёх файлов."
+        }
+      },
+      "answer": "runs/f20af8f28dc8/answer.md",
+      "behavior": {
+        "result": "done",
+        "note": "Исполнитель прочитал профиль и выписку. Для G3 он учёл, что A416 сделана до окончания сборки, A424 относится к VT-203, а M221 составила группа монтажа. Наблюдение A429 верно отнесено к контролёру отдела приёмки. Журнал команд подтверждает как совпадение SHA-256 профиля с паспортом, так и заявленный хеш списка контрольных сумм четырёх файлов.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "d65a958ae83a": {
+      "task": "fresh",
+      "variant": "0.1.11",
+      "sha256": "8715ba95be404a9c3bcd9b4fdf46c16d606454ba3d6dc19ef9ffc0f1c03efb9b",
+      "source": "runs/d65a958ae83a/events.jsonl.gz",
+      "delivery": "runs/d65a958ae83a/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-5c533cfd",
+          "thread": "01a2082e-3ffb-7b62-8894-39916e8ef9d6",
+          "rubric": "R2",
+          "packet": "P2",
+          "packetSha256": "f7b94bdcd4268a4a42274f98729b44e52bc128ca077226b5531154575fa7d354",
+          "source": "assessments/first/signed.json",
+          "label": "405c863ff6",
+          "score": "PASS",
+          "reason": "По редакции 2 G1 подтверждено значением GALLERY 4 в профиле, G2 — записью A429 о штатном включении VT-204 в 09:27 UTC после сборки. Полная приёмка отложена до подтверждения G3. Владельцу предложено сначала найти запись контролёра и при её отсутствии провести 60-секундное обесточивание с повторным включением.",
+          "behavior": "done",
+          "behaviorReason": "Журнал фиксирует чтение профиля, паспорта и стендовой выписки. Вычисленный SHA-256 профиля совпал с паспортным. Исполнитель отнёс A429 к наблюдению отдела приёмки и оставил G3 открытым по трём конкретным причинам. A416 предшествует окончанию сборки в 09:00 UTC, A424 относится к VT-203, а автор M221 входит в группу монтажа."
+        }
+      },
+      "answer": "runs/d65a958ae83a/answer.md",
+      "behavior": {
+        "result": "done",
+        "note": "Журнал фиксирует чтение профиля, паспорта и стендовой выписки. Вычисленный SHA-256 профиля совпал с паспортным. Исполнитель отнёс A429 к наблюдению отдела приёмки и оставил G3 открытым по трём конкретным причинам. A416 предшествует окончанию сборки в 09:00 UTC, A424 относится к VT-203, а автор M221 входит в группу монтажа.",
+        "source": "assessments/first/signed.json"
+      }
+    }
+  },
+  "series": [
+    {
+      "id": "Исправленная и прежняя версии",
+      "comparison": "0.1.12/0.1.11",
+      "phase": "confirmation",
+      "rubric": "R2",
+      "packet": "P2",
+      "source": "results.md#pairs",
+      "limit": "Два локальных задания на gpt-6.2-sol / medium.",
+      "pairs": [
+        {
+          "id": "original-1",
+          "task": "original",
+          "left": [
+            "9317c5c5bd0a",
+            "first"
+          ],
+          "right": [
+            "6c97cdc895f2",
+            "first"
+          ]
+        },
+        {
+          "id": "fresh-1",
+          "task": "fresh",
+          "left": [
+            "f20af8f28dc8",
+            "first"
+          ],
+          "right": [
+            "d65a958ae83a",
+            "first"
+          ]
+        }
+      ]
+    }
+  ],
+  "agreement": [
+    {
+      "run": "9317c5c5bd0a",
+      "rubric": "R2",
+      "packet": "P2",
+      "ratings": [
+        "first",
+        "second"
+      ]
+    }
+  ],
+  "attempts": [
+    {
+      "id": "remediation-2",
+      "audit": "Индивидуальные испытания 2026-11-22",
+      "order": 2,
+      "snapshot": "0.1.12 archive-sha256 e111920c6e6734e47eac6584a2765fff764228e0c27181395ba1b6474da86d77",
+      "scope": "individual",
+      "source": "results.md#decision",
+      "verdict": "PASS",
+      "timelineSource": "audit/result.json",
+      "handed": "2026-11-23T11:36:49.984Z",
+      "started": "2026-11-23T11:36:51.173Z",
+      "decided": "2026-11-23T11:38:50.719Z"
+    }
+  ],
+  "observation": {
+    "version": "0.1.12",
+    "accepted": "2026-11-23T11:38:50.719Z",
+    "released": null,
+    "through": "2026-11-23T11:38:50.719Z",
+    "systematic": false,
+    "defects": [],
+    "source": "results.md#decision"
+  }
+}

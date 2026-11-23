@@ -1,0 +1,220 @@
+{
+  "frozenUtc": "2026-11-23T12:09:07.101Z",
+  "base": "e3834f833edeeb4309e63b8eb2b6d94673d4855b",
+  "baseKind": "Сохранённая исходная ревизия пакета 0.4.12 в методе третьей серии. В данной фиксации 15 установочных файлов рабочего дерева побайтно совпали с архивом.",
+  "preparedBy": "cases_c",
+  "targetActiveFilesMatchPreviousArchive": true,
+  "versions": {
+    "candidate": "0.4.13",
+    "baseline": "0.4.12"
+  },
+  "reason": {
+    "run": "bcbd25d84b5e",
+    "source": "docs/reviews/reviewer-remediation-20261123-third/code-reviewer/assessments/first/signed.json",
+    "signedSha256": "4fdb472ce3a8ddc9a0037013e7b623efa0f5f8b54dc5387b6567459b57545d5d",
+    "observation": "Заявление «сравнение таблиц подтвердило единственную замену из патча» не подтверждено. В полном журнале есть подсчёт строк и байтов, вычисление Git blob SHA-1 и сверка SHA-256. Содержимое строк таблиц или патча исполнитель не проверил. Поэтому сохранение порядка и остальных полей осталось без заявленного обоснования."
+  },
+  "hashConvention": "SHA-256 сырых байтов; для набора SHA-256 последовательности строк '<SHA-256>  <relative path> LF', упорядоченных по пути.",
+  "protocol": {
+    "path": "docs/reviews/reviewer-remediation-20261123-fourth/protocol.md",
+    "sha256": "b3cd548dff4e67383e78891b4135213c59b0e4e8186a19264d5521998290983e"
+  },
+  "skills": {
+    "code-reviewer": {
+      "R1": {
+        "path": "docs/reviews/individual-trials-20261122/code-reviewer/rubric.md",
+        "sha256": "c11f9bdecd4601600279c90fa8f9d475ee129c2cb346e636c518256e7bf71eec"
+      },
+      "R2": {
+        "path": "docs/reviews/reviewer-remediation-20261123/code-reviewer/rubric.md",
+        "sha256": "c8259ce4a7b6b0220a14fcff60c2f114edfa18008ae2596e44049a17d39dcce7"
+      },
+      "R3": {
+        "path": "docs/reviews/reviewer-remediation-20261123-second/code-reviewer/rubric.md",
+        "sha256": "5fe0d291790768df4b625494e321d3f8df7f25e6d42fb77ea5d206ec17c29f2e"
+      },
+      "original": {
+        "id": "P-84",
+        "path": "docs/reviews/individual-trials-20261122/code-reviewer/inputs/boundary",
+        "files": {
+          "project/base/counter.py": "1014f6d751ecb17eac72e8c338a6e6a2b3e1d91f0c1166b746ed709c498af40a",
+          "project/changes.diff": "1be7e5f2b5ae4e1f289cada39e6a632695cf99ed3d6ccbeed70177b9a45d16b6",
+          "project/head/counter.py": "ab224a8bc113c8e61ced42f27ebdc0a1bc6162bae04648a5b5b880277764ce66",
+          "project/snapshot.md": "c4ad90715e2d255821a82c37c5d6462d6d94f333857b2e4652452bd46d82c8cb",
+          "project/ticket.md": "160d7f9310edda96cc309979ee8863ce6f094f5c8e8cafae565df5979fa1954e",
+          "task.md": "faf89d490bcdd65f75b496b637ca9fa7390eb1fb5742a7857284996e56145320"
+        },
+        "sha256": "10056b3bfe24fc7d311653c02667bf2230c4ffea567b3b28145785ac0b6a7a9f"
+      },
+      "fresh": {
+        "id": "F-31",
+        "path": "docs/reviews/reviewer-remediation-20261123/code-reviewer/inputs/fresh",
+        "files": {
+          "project/acceptance.md": "82351301ab8bf1f6923b2fcd7a59520a05171d3cfe9038c292ce4255987affcf",
+          "project/base/slip.py": "7e1254d7aa6dca5bd109280626db7aa91dc46684ad28470c398b4dc2af0049f2",
+          "project/changes.diff": "5f5ee32bab7191474fdc69fd73b69ec8f3162ddbf2434379d00e893a0e6cd6a2",
+          "project/control/reader_v3.py": "a7f24b8336dac6d02e3939f6e23f202659d54abaf3b4db1174ad33d000490869",
+          "project/head/slip.py": "074c44f34377750ae98c41ceedc93d27e427f27163617b4cee5231dfead77bfc",
+          "project/request.md": "219aa829060baad0c8f7fcd7f19b82c0e22b3d41a445f0220d8c59084878f865",
+          "project/snapshot.md": "281380afa3f55f49170328cf0c6150ff126c6048ce0214fdc5dc746cd0dd44ca",
+          "task.md": "5129c212d81005b71be375327474212291651a1e83f026edb7f22ce63917b566"
+        },
+        "sha256": "a817e1639abc58cfbceeb2f8600ab9c78dca3dd32c92f485753d9b0e2ede926d"
+      },
+      "transfer": {
+        "id": "M-56",
+        "path": "docs/reviews/reviewer-remediation-20261123-second/code-reviewer/inputs/transfer",
+        "files": {
+          "project/SHA256SUMS": "bca89a2045b5ad07c101d342861d1c5851d3aaeeeb98d8fd84a5b6cc42994b20",
+          "project/base/stops.tsv": "43a090183e952384ba4c25521b83282b21c4e1f7c052890f2e65da890d47890d",
+          "project/changes.diff": "9d886ccc700c0c3057e272120d2d741c156ce971763a6734f6282aea9aad7f61",
+          "project/head/stops.tsv": "57d7f7c243aabeaa0dd56c165140c40dbc9a8eea82539f4088d3834f1f2bd603",
+          "project/order.md": "cb794b0c8664c079ee665445e644d3dfeccd22b8a6e2713008d365b1feb47e7b",
+          "project/snapshot.md": "6ef9c4dcbcc30c8e00d3bde24443dae12d8cbce25d042645b55cc68f48a67a87",
+          "task.md": "c8a5bba0f31cf71e39063019a2a6eca04999ed5fb4c1f9387f587fd15eea15fa"
+        },
+        "sha256": "3050bded8763e74a4c77a4d9c34e00238fcdbc55b612f6146e23e22b3717041d"
+      },
+      "R4": {
+        "path": "docs/reviews/reviewer-remediation-20261123-fourth/code-reviewer/rubric.md",
+        "sha256": "caa8379d619def63b3250f8aa73ac3f21deb6017a1254f30c398a72d2c32cd56"
+      },
+      "schedule": {
+        "id": "L-27",
+        "path": "docs/reviews/reviewer-remediation-20261123-fourth/code-reviewer/inputs/schedule",
+        "files": {
+          "project/SHA256SUMS": "9573760eab64940567efed63166035e6cea5d2762f99439b29f81bdb8d3abcae",
+          "project/base/rooms.ini": "d4a86deb6886fba0b1c3a8bd83dccda31f1c5b4b03f72882ca9176920e96ecd4",
+          "project/changes.diff": "32c5c0642c52e6629f67b5798dab7d3a4bf727c718f9123110ac408c75c6b2ee",
+          "project/head/rooms.ini": "587043c24cf0dc81c32561ca74cdf20a5a603095d3e838b023bc3980a08bd58a",
+          "project/request.md": "7fd67c2eb2ed0a0299042c5e5cf153b3c89c16027228dc3abab3c1f6edda34a2",
+          "project/snapshot.md": "30e66c7622376481c93f248d137c3a1da70519530576cc1e2479bf443e396fd2",
+          "task.md": "f2c52195b14937911dbe2ed5c0e79e3ac18ddd5a8613c218117088d29af0e5f2"
+        },
+        "sha256": "99ee1bab964271b8339c75b8f9499fdbf2f3d34134e1856ec5b567fb9cb52a3e"
+      },
+      "baseline": {
+        "path": "docs/reviews/reviewer-remediation-20261123-third/packages/code-reviewer-0.4.12.tar.gz",
+        "sha256": "a7434d2dfdd4c484fc13eaabf7992fffd4f318b0f1014bc31a455fc3f194f0e0"
+      }
+    }
+  },
+  "models": {
+    "executor": [
+      "gpt-6.2-sol",
+      "medium"
+    ],
+    "reviewer": [
+      "gpt-6.2-astra",
+      "high"
+    ]
+  },
+  "assignments": {
+    "698ee1ede4cc": {
+      "skill": "code-reviewer",
+      "case": "schedule",
+      "pair": "schedule-1",
+      "variant": "0.4.13",
+      "label": "a5960a436c"
+    },
+    "27df8d5695d4": {
+      "skill": "code-reviewer",
+      "case": "schedule",
+      "pair": "schedule-1",
+      "variant": "0.4.12",
+      "label": "d55690e340"
+    },
+    "92e176a15284": {
+      "skill": "code-reviewer",
+      "case": "transfer",
+      "pair": "transfer-1",
+      "variant": "0.4.12",
+      "label": "971777e243"
+    },
+    "72ab7d7dabff": {
+      "skill": "code-reviewer",
+      "case": "transfer",
+      "pair": "transfer-1",
+      "variant": "0.4.13",
+      "label": "a0580a22b1"
+    },
+    "27282e9d3e35": {
+      "skill": "code-reviewer",
+      "case": "original",
+      "pair": "original-1",
+      "variant": "0.4.13",
+      "label": "185c09634f"
+    },
+    "c3ed229a505a": {
+      "skill": "code-reviewer",
+      "case": "original",
+      "pair": "original-1",
+      "variant": "0.4.12",
+      "label": "d8622d3780"
+    },
+    "cba2a5c17fe8": {
+      "skill": "code-reviewer",
+      "case": "fresh",
+      "pair": "fresh-1",
+      "variant": "0.4.12",
+      "label": "8b6179facb"
+    },
+    "8831168d3a11": {
+      "skill": "code-reviewer",
+      "case": "fresh",
+      "pair": "fresh-1",
+      "variant": "0.4.13",
+      "label": "3e180482fd"
+    }
+  },
+  "executionOrder": [
+    "698ee1ede4cc",
+    "27df8d5695d4",
+    "92e176a15284",
+    "72ab7d7dabff",
+    "27282e9d3e35",
+    "c3ed229a505a",
+    "cba2a5c17fe8",
+    "8831168d3a11"
+  ],
+  "gradingOrder": [
+    "27df8d5695d4",
+    "27282e9d3e35",
+    "698ee1ede4cc",
+    "cba2a5c17fe8",
+    "92e176a15284",
+    "72ab7d7dabff",
+    "c3ed229a505a",
+    "8831168d3a11"
+  ],
+  "doubleRating": {
+    "code-reviewer": "8831168d3a11"
+  },
+  "packet": "P4",
+  "rubric": "R4",
+  "phase": "confirmation",
+  "calibration": {
+    "case": "L-27",
+    "gitBlobSha1": [
+      "2fe056471cb601d6d56ce2b5f6c79f862a46bd9f",
+      "d73f56b9322d86b5c4fe66c697549a50c87e8427"
+    ],
+    "sha256ManifestVerified": true,
+    "patchRebuildsBothSnapshots": true,
+    "baseAndHead": {
+      "bytes": 67,
+      "lines": 6
+    },
+    "counterfactualSameByteAndLineCounts": true,
+    "unauthorizedDelta": [
+      "ST-73",
+      "D-04",
+      "E-11"
+    ],
+    "targetUnchanged": [
+      "ST-28",
+      "B-12"
+    ],
+    "wrongRowAbsentFromOrderDeliveryAndTask": true
+  }
+}

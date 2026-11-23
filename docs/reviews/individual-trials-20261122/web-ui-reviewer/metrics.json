@@ -1,0 +1,210 @@
+{
+  "skill": "web-ui-reviewer",
+  "study": "Индивидуальные испытания 2026-11-22",
+  "base": "docs/reviews/individual-trials-20261122/web-ui-reviewer",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "source": "results.md",
+  "taskSet": "web-ui-reviewer-individual-20261122",
+  "registration": "../registration.json",
+  "archiveSha256": "e26a7fa854c79826506705ed823408fcfab01b3aaaae3e3088dc408bdaf78075",
+  "runs": {
+    "32ef3fc3d147": {
+      "task": "ordinary",
+      "variant": "0.2.7",
+      "sha256": "4c6379488c4bb8a5e0d7bdeb74680fc5343416b30d60a20158f97510b9e98399",
+      "source": "runs/32ef3fc3d147/events.jsonl.gz",
+      "answer": "runs/32ef3fc3d147/answer.md",
+      "delivery": "runs/32ef3fc3d147/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-7fb9b31a",
+          "thread": "01a200ee-459a-7660-b321-1d234f193c93",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "69545a69f3fed5e17ddbb4aeb2c056f7d68cbbe3a83e2330631e55bf4dbe6ac3",
+          "score": "PASS",
+          "source": "assessments/first/signed.json",
+          "label": "72beb7fe1c",
+          "reason": "Ответ подтверждает U-17 для второго ряда в записанном сценарии Chromium при 1000 × 720. Указаны все три результата после Escape: окно закрылось, позывной «Ветер» сохранился, фокус вернулся на кнопку «Изменить второй ряд».",
+          "behavior": "done",
+          "behaviorReason": "Прочитаны запись прогона и HTML. До открытия окна и после Escape журнал показывает фокус на edit-2. Эта кнопка принадлежит второму ряду. Ответ отдельно учитывает отмену ввода: в поле было «Быстрый», а в ряду осталось «Ветер». Чтение SKILL.md и references/web-interface-guidelines.md в P1 не зафиксировано."
+        }
+      },
+      "behavior": {
+        "result": "done",
+        "note": "Прочитаны запись прогона и HTML. До открытия окна и после Escape журнал показывает фокус на edit-2. Эта кнопка принадлежит второму ряду. Ответ отдельно учитывает отмену ввода: в поле было «Быстрый», а в ряду осталось «Ветер». Чтение SKILL.md и references/web-interface-guidelines.md в P1 не зафиксировано.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "790ee5e53eca": {
+      "task": "ordinary",
+      "variant": "B",
+      "sha256": "f29dead41cee93f5c148aee738175526f974e10cd4d930f1a6c00912028a5f47",
+      "source": "runs/790ee5e53eca/events.jsonl.gz",
+      "answer": "runs/790ee5e53eca/answer.md",
+      "delivery": "runs/790ee5e53eca/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-7fb9b31a",
+          "thread": "01a200ee-459a-7660-b321-1d234f193c93",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "dc7f019404080f5997affc14a3eab3571392b5bd7d46875dd39565a0e753d1ea",
+          "score": "PASS",
+          "source": "assessments/first/signed.json",
+          "label": "c444cee4d8",
+          "reason": "Вывод о выполнении U-17 привязан ко второму ряду J-17 и записи Chromium при 1000 × 720. Ответ сообщает, что после Escape окно закрылось, в ряду остался «Ветер», а фокус вернулся на кнопку «Изменить второй ряд».",
+          "behavior": "done",
+          "behaviorReason": "Прочитаны требование, журнал исполнения и разметка кнопки edit-2. Журнал фиксирует переход фокуса с edit-2 в поле позывного и обратно после Escape. Ответ различает введённое значение «Быстрый» и сохранённое значение «Ветер». Чтение SKILL.md и references/web-interface-guidelines.md в P1 не зафиксировано."
+        }
+      },
+      "behavior": {
+        "result": "done",
+        "note": "Прочитаны требование, журнал исполнения и разметка кнопки edit-2. Журнал фиксирует переход фокуса с edit-2 в поле позывного и обратно после Escape. Ответ различает введённое значение «Быстрый» и сохранённое значение «Ветер». Чтение SKILL.md и references/web-interface-guidelines.md в P1 не зафиксировано.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "e0b6c8be3869": {
+      "task": "boundary",
+      "variant": "0.2.7",
+      "sha256": "a416c910ca5f0bf200ffa86f7f670b550711c9cd77ab34889a78dde290cd5fce",
+      "source": "runs/e0b6c8be3869/events.jsonl.gz",
+      "answer": "runs/e0b6c8be3869/answer.md",
+      "delivery": "runs/e0b6c8be3869/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-7fb9b31a",
+          "thread": "01a200ee-459a-7660-b321-1d234f193c93",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "5de54acf59cff803b4fa20e02642f5150373e1c790a7578ca4b1fb3afa2d5861",
+          "score": "PASS",
+          "source": "assessments/first/signed.json",
+          "label": "8bfbc18e29",
+          "reason": "Ответ точно называет недоступное действие и его расположение: из строки барометра в «Резерве» нельзя открыть карточку. Для обеих строк подтверждён список, для весов — карточка и журнал. Учтено исключение для журнала в резерве. Вопрос о точности даты помещён в список расхождений, но текст прямо указывает на неопределённость требования. Подтверждённый вывод ограничен текущей сборкой.",
+          "behavior": "done",
+          "behaviorReason": "Прочитаны таблица, запись Chromium и HTML. Ответ связывает раскрытие карточки и журнала весов с записью прогона, а отсутствие карточки барометра — с пустым списком элементов управления и разметкой резервной строки. Журнал для резерва исключён согласно таблице. Чтение SKILL.md и references/web-interface-guidelines.md в P1 не зафиксировано."
+        },
+        "second": {
+          "assessor": "second-e5db860e",
+          "thread": "01a200ee-70a1-7de1-a8e1-de2858ff7bbd",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "5de54acf59cff803b4fa20e02642f5150373e1c790a7578ca4b1fb3afa2d5861",
+          "score": "PASS",
+          "source": "assessments/second/signed.json",
+          "label": "8bfbc18e29",
+          "reason": "Ответ верно указывает одно подтверждённое расхождение. Обе записи видны. В «Работающих» из строки «П-04 · Весы» открываются карточка и журнал измерений. В «Резерве» из строки «П-08 · Барометр» нельзя открыть обязательную карточку. Журнал для резерва исключён утверждённой таблицей. Точность даты ввода оставлена открытым вопросом. Вывод ограничен проверенными состояниями настольной страницы.",
+          "behavior": "done",
+          "behaviorReason": "В действиях зафиксированы чтение таблицы, записи Chromium и HTML, а также сверка хеша страницы. Ответ сопоставляет раскрытые карточку и журнал весов с пустым списком элементов управления у барометра и учитывает исключение для журнала. Чтение SKILL.md и references/web-interface-guidelines.md в представленных действиях не зафиксировано."
+        }
+      },
+      "behavior": {
+        "result": "done",
+        "note": "Прочитаны таблица, запись Chromium и HTML. Ответ связывает раскрытие карточки и журнала весов с записью прогона, а отсутствие карточки барометра — с пустым списком элементов управления и разметкой резервной строки. Журнал для резерва исключён согласно таблице. Чтение SKILL.md и references/web-interface-guidelines.md в P1 не зафиксировано.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "3ca1ee34aea3": {
+      "task": "boundary",
+      "variant": "B",
+      "sha256": "9ed6e78eff1e714434806fb5bf060311192d9ae5aa8f0c56bbc3df2d35d2de8e",
+      "source": "runs/3ca1ee34aea3/events.jsonl.gz",
+      "answer": "runs/3ca1ee34aea3/answer.md",
+      "delivery": "runs/3ca1ee34aea3/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-7fb9b31a",
+          "thread": "01a200ee-459a-7660-b321-1d234f193c93",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "c71311138dd38887727015133cdcb47a18db2aef6ad4d085a91b6af7cbcfa224",
+          "score": "PASS",
+          "source": "assessments/first/signed.json",
+          "label": "cf712ec4da",
+          "reason": "Ответ указывает одно подтверждённое расхождение на текущей странице P-08: из строки «П-08 · Барометр» в «Резерве» нельзя открыть обязательную карточку. Обе записи видны, у весов открываются карточка и журнал. Для резервного прибора журнал по таблице не применяется. Точность даты ввода весов оставлена вопросом владельцу.",
+          "behavior": "done",
+          "behaviorReason": "Прочитаны таблица владельца, HTML и запись Chromium. В ответе сопоставлены возможности обоих разделов. Для весов запись показывает раскрытые карточку и журнал, для барометра — строку без элементов управления. Исключение для журнала учтено отдельно. Чтение SKILL.md и references/web-interface-guidelines.md в P1 не зафиксировано."
+        }
+      },
+      "behavior": {
+        "result": "done",
+        "note": "Прочитаны таблица владельца, HTML и запись Chromium. В ответе сопоставлены возможности обоих разделов. Для весов запись показывает раскрытые карточку и журнал, для барометра — строку без элементов управления. Исключение для журнала учтено отдельно. Чтение SKILL.md и references/web-interface-guidelines.md в P1 не зафиксировано.",
+        "source": "assessments/first/signed.json"
+      }
+    }
+  },
+  "series": [
+    {
+      "id": "Версия / без пакета",
+      "comparison": "0.2.7/B",
+      "phase": "primary",
+      "rubric": "R1",
+      "packet": "P1",
+      "bRemoval": "complete",
+      "source": "results.md#pairs",
+      "limit": "Две локальные задачи, явная загрузка, gpt-6.2-sol / medium.",
+      "pairs": [
+        {
+          "id": "ordinary-1",
+          "task": "ordinary",
+          "left": [
+            "32ef3fc3d147",
+            "first"
+          ],
+          "right": [
+            "790ee5e53eca",
+            "first"
+          ]
+        },
+        {
+          "id": "boundary-1",
+          "task": "boundary",
+          "left": [
+            "e0b6c8be3869",
+            "first"
+          ],
+          "right": [
+            "3ca1ee34aea3",
+            "first"
+          ]
+        }
+      ]
+    }
+  ],
+  "agreement": [
+    {
+      "run": "e0b6c8be3869",
+      "rubric": "R1",
+      "packet": "P1",
+      "ratings": [
+        "first",
+        "second"
+      ]
+    }
+  ],
+  "attempts": [
+    {
+      "id": "individual-1",
+      "order": 1,
+      "snapshot": "0.2.7 archive-sha256 e26a7fa854c79826506705ed823408fcfab01b3aaaae3e3088dc408bdaf78075",
+      "scope": "individual",
+      "source": "results.md#decision",
+      "verdict": "PASS",
+      "timelineSource": "audit/result.json",
+      "handed": "2026-11-22T01:49:53.405Z",
+      "started": "2026-11-22T01:49:53.930Z",
+      "decided": "2026-11-22T01:51:12.302Z"
+    }
+  ],
+  "observation": {
+    "version": "0.2.7",
+    "accepted": "2026-11-22T01:51:12.302Z",
+    "released": "2026-11-20T17:57:27Z",
+    "through": "2026-11-22T01:55:44.007Z",
+    "systematic": false,
+    "defects": [],
+    "source": "../README.md#limits"
+  }
+}

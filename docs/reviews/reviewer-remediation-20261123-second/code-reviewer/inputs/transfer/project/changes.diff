@@ -1,0 +1,10 @@
+diff --git a/catalog/stops.tsv b/catalog/stops.tsv
+index 42aa49b66bb59a162fd126742ff26c023b7c6ea9..f18b14dd42d4d60e6c2dc39ed824c5ede7284271 100644
+--- a/catalog/stops.tsv
++++ b/catalog/stops.tsv
+@@ -1,4 +1,4 @@
+ stop	title	audio
+ A02	Старый док	en_dock_v1
+-B07	Лодочная мастерская	en_boat_v1
++B07	Лодочная мастерская	en_boat_v2
+ C04	Речной склад	en_store_v3

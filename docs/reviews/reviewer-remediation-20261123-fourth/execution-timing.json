@@ -1,0 +1,159 @@
+{
+  "recorded": "2026-11-23T12:20:51.283Z",
+  "registrationSha256": "8dcaba821daba4cbf03450e46967d608282ebc663eae47c1578a6706161f9813",
+  "method": "registeredOrder — очередь диспетчера. handed фиксируется в session.py непосредственно перед запуском процесса модели. Два параллельных процесса могут достичь этого места в ином порядке.",
+  "globalAssignedOrder": [
+    "698ee1ede4cc",
+    "27df8d5695d4",
+    "92e176a15284",
+    "72ab7d7dabff",
+    "27282e9d3e35",
+    "c3ed229a505a",
+    "cba2a5c17fe8",
+    "8831168d3a11"
+  ],
+  "globalHandoffOrder": [
+    "27df8d5695d4",
+    "698ee1ede4cc",
+    "92e176a15284",
+    "72ab7d7dabff",
+    "27282e9d3e35",
+    "c3ed229a505a",
+    "cba2a5c17fe8",
+    "8831168d3a11"
+  ],
+  "pairs": [
+    {
+      "pair": "schedule-1",
+      "registeredOrder": [
+        "698ee1ede4cc",
+        "27df8d5695d4"
+      ],
+      "recordedHandoffOrder": [
+        "27df8d5695d4",
+        "698ee1ede4cc"
+      ],
+      "firstAssignedVersion": "0.4.13",
+      "firstHandedVersion": "0.4.12",
+      "timings": [
+        {
+          "run": "698ee1ede4cc",
+          "variant": "0.4.13",
+          "deliveryRecorded": "2026-11-23T12:15:08.577Z",
+          "handed": "2026-11-23T12:15:08.577Z",
+          "finished": "2026-11-23T12:15:47.078Z",
+          "source": "code-reviewer/runs/698ee1ede4cc/result.json",
+          "sourceSha256": "93de364c298230aaf307b7da792c9bf5299825aa477595fdf57c823ab176b4c5"
+        },
+        {
+          "run": "27df8d5695d4",
+          "variant": "0.4.12",
+          "deliveryRecorded": "2026-11-23T12:15:08.334Z",
+          "handed": "2026-11-23T12:15:08.334Z",
+          "finished": "2026-11-23T12:15:52.238Z",
+          "source": "code-reviewer/runs/27df8d5695d4/result.json",
+          "sourceSha256": "9694ce27baec0b76edf923a7f87390acfcc1dde58185b98e6fa7f1d8cc29b463"
+        }
+      ]
+    },
+    {
+      "pair": "transfer-1",
+      "registeredOrder": [
+        "92e176a15284",
+        "72ab7d7dabff"
+      ],
+      "recordedHandoffOrder": [
+        "92e176a15284",
+        "72ab7d7dabff"
+      ],
+      "firstAssignedVersion": "0.4.12",
+      "firstHandedVersion": "0.4.12",
+      "timings": [
+        {
+          "run": "92e176a15284",
+          "variant": "0.4.12",
+          "deliveryRecorded": "2026-11-23T12:15:48.505Z",
+          "handed": "2026-11-23T12:15:48.505Z",
+          "finished": "2026-11-23T12:16:29.762Z",
+          "source": "code-reviewer/runs/92e176a15284/result.json",
+          "sourceSha256": "6edbc466a48a615bed2c7fd5da671c95b90a48f7ebb609c9bd51b705fb253a79"
+        },
+        {
+          "run": "72ab7d7dabff",
+          "variant": "0.4.13",
+          "deliveryRecorded": "2026-11-23T12:15:55.033Z",
+          "handed": "2026-11-23T12:15:55.033Z",
+          "finished": "2026-11-23T12:16:38.891Z",
+          "source": "code-reviewer/runs/72ab7d7dabff/result.json",
+          "sourceSha256": "cc4fe0ae49c363d11aeddd9059a2a70065ac3d0bb99cdb9a1e4f4a28bee72a8e"
+        }
+      ]
+    },
+    {
+      "pair": "original-1",
+      "registeredOrder": [
+        "27282e9d3e35",
+        "c3ed229a505a"
+      ],
+      "recordedHandoffOrder": [
+        "27282e9d3e35",
+        "c3ed229a505a"
+      ],
+      "firstAssignedVersion": "0.4.13",
+      "firstHandedVersion": "0.4.13",
+      "timings": [
+        {
+          "run": "27282e9d3e35",
+          "variant": "0.4.13",
+          "deliveryRecorded": "2026-11-23T12:16:35.225Z",
+          "handed": "2026-11-23T12:16:35.225Z",
+          "finished": "2026-11-23T12:17:26.853Z",
+          "source": "code-reviewer/runs/27282e9d3e35/result.json",
+          "sourceSha256": "18ef363a84f922222fd148b8cdf682299ae7633cde752510d9b868728bca9720"
+        },
+        {
+          "run": "c3ed229a505a",
+          "variant": "0.4.12",
+          "deliveryRecorded": "2026-11-23T12:16:44.736Z",
+          "handed": "2026-11-23T12:16:44.736Z",
+          "finished": "2026-11-23T12:17:30.859Z",
+          "source": "code-reviewer/runs/c3ed229a505a/result.json",
+          "sourceSha256": "2c599a11938bc13a8ac0ab39ef2c60b2900a3d16fea6b7312ed67d7848a7a44e"
+        }
+      ]
+    },
+    {
+      "pair": "fresh-1",
+      "registeredOrder": [
+        "cba2a5c17fe8",
+        "8831168d3a11"
+      ],
+      "recordedHandoffOrder": [
+        "cba2a5c17fe8",
+        "8831168d3a11"
+      ],
+      "firstAssignedVersion": "0.4.12",
+      "firstHandedVersion": "0.4.12",
+      "timings": [
+        {
+          "run": "cba2a5c17fe8",
+          "variant": "0.4.12",
+          "deliveryRecorded": "2026-11-23T12:17:28.229Z",
+          "handed": "2026-11-23T12:17:28.230Z",
+          "finished": "2026-11-23T12:18:19.811Z",
+          "source": "code-reviewer/runs/cba2a5c17fe8/result.json",
+          "sourceSha256": "df739fcfe43bee9c65d75f628650bb1ca19e86e39f2e45e9a2a223abb42efaed"
+        },
+        {
+          "run": "8831168d3a11",
+          "variant": "0.4.13",
+          "deliveryRecorded": "2026-11-23T12:17:32.263Z",
+          "handed": "2026-11-23T12:17:32.263Z",
+          "finished": "2026-11-23T12:18:19.638Z",
+          "source": "code-reviewer/runs/8831168d3a11/result.json",
+          "sourceSha256": "d46798875a27fefca1fd0475ac9f461e7f5bc46ebce17ea42b08e8f41263d824"
+        }
+      ]
+    }
+  ]
+}

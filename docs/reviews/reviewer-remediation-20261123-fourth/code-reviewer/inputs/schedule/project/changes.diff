@@ -1,0 +1,10 @@
+--- a/signup/rooms.ini
++++ b/signup/rooms.ini
+@@ -1,6 +1,6 @@
+ [workshops]
+ ST-15=A-08
+ ST-28=B-12
+ ST-46=H-07
+-ST-73=D-04
++ST-73=E-11
+ ST-90=F-10

@@ -1,0 +1,28 @@
+{
+  "release": "skills-20261123",
+  "packages": {
+    "code-reviewer": {
+      "version": "0.4.11",
+      "sha256": "44d896dd7731c7e8730112b3729236feb6ab53dd9c069bd5781f5d643f6c45c0",
+      "contentHash": "0f9ac41b2aec99899017845cf158f03b72f8a83391ede7ffab7a2663baf330f4",
+      "files": {
+        "SKILL.md": "2dba7dedfeed08c1eafcc7035cc63ade27fb8040c5fb01d046166c71cf6166ec",
+        "agents/openai.yaml": "04ffae6319cbefd3d74507e3be353bae081e22b65bdbc8c003c646ff4e72279a",
+        "assets/fixtures/policy-admission-review.md": "1a474f2391e00f7c0cd5c86de4d6b1b0b27ecce618aef203c2e8cba49fa54f2b",
+        "assets/fixtures/runtime-gate-deployed-path-review.md": "16936898bf81546b8a974d790fd0efa8d081ebef4c9eb458dc3bcc29a6d28646",
+        "assets/pr-review-template.md": "fff1b427e594c9b59ba6cc857d9a47db2aaae613fde371d6135b10c1170bb0cb",
+        "assets/review-checklist.md": "98c7ca18eb8d5bf30e7f142ddea8f122b88ad3e7f3da5fed2d48d0d735aa788a",
+        "references/complexity-only.md": "b058c376f2e41582006c96fad4de174d48ca02b5631e323ad5444431b89aabf4",
+        "references/diff-completeness.md": "adf787f154848e62dccb37daa363aded519cc281dc78b68d393b265e92998c90",
+        "references/domain-routing.md": "6ae9f975e69c60368e099317906439c66ffc7972e711d7481231b2770ab082b8",
+        "references/findings-format.md": "d345856763d5d634019172e35b3af4ac5c37dba52d89123cc7e45376f1deec9c",
+        "references/methodology.md": "2f594fd8352bcb3fe04fa77fb59c2a5753e6b63d9c71be83c8f641c14b504cd8",
+        "references/policy-admission-merge-risk.md": "96e6a2ffa7d47c86e955de9dd521fca1325636aa0a103bf67005df37dfcf79a6",
+        "references/runtime-gate-deployed-path.md": "9b98df5833a0a776f17daff12b2ef57230c873b92545054e707e913cb5b5b6f9",
+        "references/severity-confidence.md": "0cede58ece812426647e84e3c5b1a2a4e6ce75073c71e70d7dcb14b806e7bcb4",
+        "references/spec-pass.md": "85732c5c085b77815c2fa2175740cd8d1f532cc86de4f91f4294c684d79b65a7"
+      }
+    }
+  },
+  "previousManifest": "docs/reviews/reviewer-remediation-20261123/packages/manifest.json"
+}

@@ -1,0 +1,207 @@
+{
+  "skill": "code-reviewer",
+  "study": "Индивидуальные испытания 2026-11-22",
+  "base": "docs/reviews/individual-trials-20261122/code-reviewer",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "source": "results.md",
+  "taskSet": "code-reviewer-individual-20261122",
+  "registration": "../registration.json",
+  "archiveSha256": "a490a6d30de61f5af69a76ccaa35c6fefd4030da0b33f5ad988e8c2e006bb41d",
+  "runs": {
+    "866771bd5e6e": {
+      "task": "ordinary",
+      "variant": "0.4.9",
+      "sha256": "2ccfebf181a74564a81925b87006357e09e494929b35114dc3f3876c201f2651",
+      "source": "runs/866771bd5e6e/events.jsonl.gz",
+      "answer": "runs/866771bd5e6e/answer.md",
+      "delivery": "runs/866771bd5e6e/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-c172204a",
+          "thread": "01a200ec-e125-7700-a9bc-da80388ee800",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "5571d5d832196dfddd74596b2969dc84b5dc70ae1bb9a5475e404ac8133863dc",
+          "score": "PASS",
+          "source": "assessments/first/signed.json",
+          "label": "d8827d04d7",
+          "reason": "Решение по Q-27 привязано к обоим деревьям и учитывает изменения в labels.py и check_labels.py. Штатный тест прошёл, включая проверки пустой очереди и сохранения входного порядка. Дополнительный запуск подтвердил, что «2» остаётся перед «0002». Предложение усилить штатный тест не блокирует слияние.",
+          "behavior": "done",
+          "behaviorReason": "Автор разрешил слияние и указал, что при сортировке по числовому ключу задания с равными номерами сохраняют порядок поступления."
+        },
+        "second": {
+          "assessor": "second-1ff7d329",
+          "thread": "01a200ec-e124-7e52-81ed-a6aa3b8b82b3",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "5571d5d832196dfddd74596b2969dc84b5dc70ae1bb9a5475e404ac8133863dc",
+          "score": "PASS",
+          "source": "assessments/second/signed.json",
+          "label": "d8827d04d7",
+          "reason": "Решение о слиянии Q-27 привязано к обоим деревьям выгрузки и учитывает изменения в labels.py и check_labels.py. Числовой ключ ставит «2» перед «10», а исходная очередь сохраняет порядок. Журнал подтверждает успешный запуск штатного теста, включая проверку пустой очереди. Замечание к тесту точное и не блокирует слияние: входной порядок «02», «2» совпадает со строковым и потому не выявит лишнюю сортировку по строке при равенстве числовых ключей.",
+          "behavior": "done",
+          "behaviorReason": "Исполнитель разрешил слияние и указал, что при сортировке по числовому ключу задания с равными номерами сохраняют порядок поступления. В дополнительном запуске на предложенном снимке «2» осталось перед «0002» в исходном порядке."
+        }
+      },
+      "behavior": {
+        "result": "done",
+        "note": "Автор разрешил слияние и указал, что при сортировке по числовому ключу задания с равными номерами сохраняют порядок поступления.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "db6e902f9b88": {
+      "task": "ordinary",
+      "variant": "B",
+      "sha256": "80c52aec820ca80038f970cf3716578d2a72dfc87fbddc3ffc859359c0e5df7d",
+      "source": "runs/db6e902f9b88/events.jsonl.gz",
+      "answer": "runs/db6e902f9b88/answer.md",
+      "delivery": "runs/db6e902f9b88/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-c172204a",
+          "thread": "01a200ec-e125-7700-a9bc-da80388ee800",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "4afb53ba075fc22faaf87869b5263870295ff483b7fdd0e5c95add322794cf15",
+          "score": "PASS",
+          "source": "assessments/first/signed.json",
+          "label": "27c56c5dfa",
+          "reason": "Автор разрешил слияние Q-27 со ссылками на снимок, реализацию и штатный тест. Журнал подтверждает совпадение хешей обоих деревьев и успешный запуск обеих проверок. Они охватывают числовой порядок, ведущие нули, равные номера, пустую очередь и сохранение порядка исходного списка.",
+          "behavior": "done",
+          "behaviorReason": "Автор разрешил слияние и прямо указал, что «02» и «2» имеют равный числовой ключ и сохраняют порядок поступления."
+        }
+      },
+      "behavior": {
+        "result": "done",
+        "note": "Автор разрешил слияние и прямо указал, что «02» и «2» имеют равный числовой ключ и сохраняют порядок поступления.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "46722400d865": {
+      "task": "boundary",
+      "variant": "0.4.9",
+      "sha256": "a5b5e7b754cc6fb69d16fe17681ba05c8110fd5aad6f29f0e20c48a61c47b7d1",
+      "source": "runs/46722400d865/events.jsonl.gz",
+      "answer": "runs/46722400d865/answer.md",
+      "delivery": "runs/46722400d865/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-c172204a",
+          "thread": "01a200ec-e125-7700-a9bc-da80388ee800",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "c68886aac7c50dc48b6b058520e475dcc76b718f1ef9a35f8c815236e63e2fa9",
+          "score": "FAIL",
+          "source": "assessments/first/signed.json",
+          "label": "bf66d0c719",
+          "reason": "Локальный запуск подтвердил регрессию P-84: для 0 базовый форматтер вернул «0», а предложенный вернул «—». Автор указал оба дерева и предложил явную проверку на None. Ошибка в решении для релиза — обязательный прогон на печатном терминале для None, 0 и 42. R1 требует исправить форматтер и завершить проверку макета, но не предписывает испытание на оборудовании.",
+          "behavior": "done",
+          "behaviorReason": "Автор указал, что нулевой остаток выглядит как невыполненный пересчёт, и оставил проверку sheet.pmf открытой, поскольку содержимое и предпросмотр отсутствуют."
+        }
+      },
+      "behavior": {
+        "result": "done",
+        "note": "Автор указал, что нулевой остаток выглядит как невыполненный пересчёт, и оставил проверку sheet.pmf открытой, поскольку содержимое и предпросмотр отсутствуют.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "057f8337e97f": {
+      "task": "boundary",
+      "variant": "B",
+      "sha256": "dcf98d867d92989931307a39f3228b8d072534db26a9f92399e814180bdad622",
+      "source": "runs/057f8337e97f/events.jsonl.gz",
+      "answer": "runs/057f8337e97f/answer.md",
+      "delivery": "runs/057f8337e97f/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-c172204a",
+          "thread": "01a200ec-e125-7700-a9bc-da80388ee800",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "cf3eee4fa94288efc5180dba773a4506a8dc1174f583b0894611cf6df00e492a",
+          "score": "FAIL",
+          "source": "assessments/first/signed.json",
+          "label": "d6d205c1ef",
+          "reason": "Решение удержать P-84 привязано к snapshot.md. Запуск обеих версий подтвердил ошибку для 0 и заявленные результаты для None, 7 и 123. Автор предложил корректное исправление, но сделал печать этих значений на терминале обязательным условием слияния. Это лишнее требование сверх проверки исправленного форматтера и доступного для ревью макета.",
+          "behavior": "done",
+          "behaviorReason": "Автор показал, что предложенный форматтер выводит «—» и для 0, и для None. Он также указал, что идентификаторы подтверждают изменение sheet.pmf, а оценка содержимого макета остаётся открытой."
+        }
+      },
+      "behavior": {
+        "result": "done",
+        "note": "Автор показал, что предложенный форматтер выводит «—» и для 0, и для None. Он также указал, что идентификаторы подтверждают изменение sheet.pmf, а оценка содержимого макета остаётся открытой.",
+        "source": "assessments/first/signed.json"
+      }
+    }
+  },
+  "series": [
+    {
+      "id": "Версия / без пакета",
+      "comparison": "0.4.9/B",
+      "phase": "primary",
+      "rubric": "R1",
+      "packet": "P1",
+      "bRemoval": "complete",
+      "source": "results.md#pairs",
+      "limit": "Две локальные задачи, явная загрузка, gpt-6.2-sol / medium.",
+      "pairs": [
+        {
+          "id": "ordinary-1",
+          "task": "ordinary",
+          "left": [
+            "866771bd5e6e",
+            "first"
+          ],
+          "right": [
+            "db6e902f9b88",
+            "first"
+          ]
+        },
+        {
+          "id": "boundary-1",
+          "task": "boundary",
+          "left": [
+            "46722400d865",
+            "first"
+          ],
+          "right": [
+            "057f8337e97f",
+            "first"
+          ]
+        }
+      ]
+    }
+  ],
+  "agreement": [
+    {
+      "run": "866771bd5e6e",
+      "rubric": "R1",
+      "packet": "P1",
+      "ratings": [
+        "first",
+        "second"
+      ]
+    }
+  ],
+  "attempts": [
+    {
+      "id": "individual-1",
+      "order": 1,
+      "snapshot": "0.4.9 archive-sha256 a490a6d30de61f5af69a76ccaa35c6fefd4030da0b33f5ad988e8c2e006bb41d",
+      "scope": "individual",
+      "source": "results.md#decision",
+      "verdict": "FAIL",
+      "timelineSource": "audit/result.json",
+      "handed": "2026-11-22T01:47:31.486Z",
+      "started": "2026-11-22T01:47:32.056Z",
+      "decided": "2026-11-22T01:49:04.084Z",
+      "returned": {
+        "primary": "evidence",
+        "finding": "P-84. У обязательной проверки на оборудовании отсутствует основание в заявке.",
+        "source": "results.md#decision",
+        "limit": "Основание или действие исполнителя. Причинный дефект инструкции не установлен."
+      }
+    }
+  ]
+}

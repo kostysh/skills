@@ -1,0 +1,18 @@
+{
+  "snapshot": "M-38",
+  "groups": {
+    "editors": [
+      "B16"
+    ],
+    "shift-aides": [
+      "H03"
+    ],
+    "desk-roster": [
+      "editors",
+      "shift-aides"
+    ],
+    "visitors": [
+      "V28"
+    ]
+  }
+}

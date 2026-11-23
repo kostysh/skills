@@ -1,0 +1,48 @@
+{
+  "utc": "2026-11-22T01:42:50.315Z",
+  "workdir": "/tmp/local-review-1th8t2vv/project",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "registration": "b2dba4ebc448ea5008128ee8c2ab561e1b2a13d53f746e98e4a6bdf9c554fd5c",
+  "projectSha256": {
+    "directory.json": "3d2dfe497dab053bb7e4fce290cbcf960ace89c9cc0308f833ae2acddc8be174",
+    "publication.md": "2c5f4cd14259db00c7491372d7b2c6e28fa99d1ffede9406b20b269c8f9088e3",
+    "views.json": "c800c12ed688c38a3ca77e4ea09d78e9519a2431a6f6d0127c901328ff1211c2"
+  },
+  "installed": {},
+  "promptSha256": "314b474985e06d03cd5a4a2c0d70cc8c7a94837ee3b4253ad9fa217fdf75addc",
+  "startup": {
+    "promptInputSha256": "2fdc57bfca251da3233cb452b658e90c723621683529bc842aa9c924b8e0ac37",
+    "catalog": [],
+    "activeTextDelivered": {},
+    "allExpectedTexts": true,
+    "namedTargetInControl": [],
+    "historyOrKeyInContext": false,
+    "toolNames": [
+      "functions",
+      "clock",
+      "collaboration"
+    ],
+    "restrictedProfile": true,
+    "userPromptPresent": true,
+    "model": "gpt-6.2-sol"
+  },
+  "access": {
+    "readable": {
+      "ownProject": true,
+      "ownTarget": false,
+      "mainCheckoutTarget": false,
+      "worktreeTarget": false,
+      "archive": false,
+      "registration": false,
+      "rubric": false,
+      "otherWindow": false,
+      "hostSkillDirectory": false,
+      "hostHistory": false,
+      "hostConfig": false,
+      "procRootSource": false
+    },
+    "projectWritable": false,
+    "inetSocket": false
+  }
+}

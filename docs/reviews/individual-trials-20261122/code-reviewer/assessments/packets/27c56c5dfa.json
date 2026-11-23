@@ -1,0 +1,45 @@
+{
+  "label": "27c56c5dfa",
+  "case": "ordinary",
+  "answer": "**Q-27 можно сливать. Замечаний нет.**\n\nЭтикетки сортируются по числовому номеру полки. При равных номерах, например `02` и `2`, сохраняется порядок поступления. Исходная очередь сохраняет свой порядок, а для пустой очереди результат пуст. [Требования](ticket.md#L3) · [Реализация](head/labels.py#L2)\n\nШтатная проверка и дополнительная проверка на номерах с ведущими нулями и номере `9999` прошли. Хеши обоих локальных деревьев совпали с указанными в выгрузке. [Штатная проверка](head/check_labels.py) · [Выгрузка](snapshot.md)",
+  "actions": [
+    {
+      "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+      "exit": 0,
+      "output": "changes.diff\nsnapshot.md\nbase/labels.py\nticket.md\nbase/check_labels.py\nhead/labels.py\nhead/check_labels.py"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba changes.diff'",
+      "exit": 0,
+      "output": "     1\tdiff --git a/check_labels.py b/check_labels.py\n     2\tindex 2f5df550a47bf7ed2324fbd10753d99f94f24f33..60114fa877a3f46b09d7dc071ef447d918fe201d 100644\n     3\t--- a/check_labels.py\n     4\t+++ b/check_labels.py\n     5\t@@ -3 +3,10 @@\n     6\t assert ordered_labels([]) == []\n     7\t+rows = [\n     8\t+    {\"shelf\": \"10\", \"job\": \"A\"},\n     9\t+    {\"shelf\": \"02\", \"job\": \"B\"},\n    10\t+    {\"shelf\": \"2\", \"job\": \"C\"},\n    11\t+    {\"shelf\": \"0\", \"job\": \"D\"},\n    12\t+]\n    13\t+expected_order = [rows[3], rows[1], rows[2], rows[0]]\n    14\t+assert ordered_labels(rows) == expected_order\n    15\t+assert [row[\"job\"] for row in rows] == [\"A\", \"B\", \"C\", \"D\"]\n    16\tdiff --git a/labels.py b/labels.py\n    17\tindex c56a73dea2048deae1788de90cd18e4ef73bee1e..93993cf09296565f5536b82c3de3791c36d1be65 100644\n    18\t--- a/labels.py\n    19\t+++ b/labels.py\n    20\t@@ -1,2 +1,2 @@\n    21\t def ordered_labels(rows):\n    22\t-    return sorted(rows, key=lambda row: row[\"shelf\"])\n    23\t+    return sorted(rows, key=lambda row: int(row[\"shelf\"]))"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba ticket.md; nl -ba snapshot.md'",
+      "exit": 0,
+      "output": "     1\t# Q-27. Порядок печати\n     2\t\n     3\tСогласовано владельцем очереди. Номера полок приходят строками из 1–4 десятичных цифр ASCII. Печатать этикетки нужно по числовому возрастанию номера. Для разных записей с одинаковым числовым номером сохраните исходный порядок. Переданная очередь должна остаться в первоначальном порядке; для пустой очереди результат пуст.\n     1\t# Выгрузка изменений Q-27\n     2\t\n     3\tВладелец релиза передал снимки деревьев Git для полного изменения Q-27. Пути в деревьях отсчитываются от корня модуля. Таблица содержит все изменённые файлы. Идентификаторы деревьев и blob приведены в формате Git SHA-1.\n     4\t\n     5\t- Базовое дерево: `322f27a0f9b9ada9c399c4fba1ee28ff9fbd22c5` (`base/`).\n     6\t- Предложенное дерево: `1ef63334bc8d5371bb869e4f326286a047397a42` (`head/`).\n     7\t\n     8\t| Файл | Базовый blob | Предложенный blob |\n     9\t| --- | --- | --- |\n    10\t| `check_labels.py` | `2f5df550a47bf7ed2324fbd10753d99f94f24f33` | `60114fa877a3f46b09d7dc071ef447d918fe201d` |\n    11\t| `labels.py` | `c56a73dea2048deae1788de90cd18e4ef73bee1e` | `93993cf09296565f5536b82c3de3791c36d1be65` |\n    12\t\n    13\tТекстовые деревья выгружены полностью. Проверки модуля запускаются командой `python3 -B head/check_labels.py` из каталога выгрузки."
+    },
+    {
+      "command": "/bin/bash -lc 'git hash-object -- base/check_labels.py base/labels.py head/check_labels.py head/labels.py'",
+      "exit": 0,
+      "output": "2f5df550a47bf7ed2324fbd10753d99f94f24f33\nc56a73dea2048deae1788de90cd18e4ef73bee1e\n60114fa877a3f46b09d7dc071ef447d918fe201d\n93993cf09296565f5536b82c3de3791c36d1be65"
+    },
+    {
+      "command": "/bin/bash -lc 'python3 -B head/check_labels.py'",
+      "exit": 0,
+      "output": ""
+    },
+    {
+      "command": "/bin/bash -lc \"python3 -B - <<'PY'\nfrom runpy import run_path\nordered_labels = run_path('head/labels.py')['ordered_labels']\nrows = [dict(shelf=shelf) for shelf in ('9999', '2', '0002', '0000', '0', '1000')]\nresult = ordered_labels(rows)\nassert [row['shelf'] for row in result] == ['0000', '0', '2', '0002', '1000', '9999']\nassert [row['shelf'] for row in rows] == ['9999', '2', '0002', '0000', '0', '1000']\nPY\"",
+      "exit": 0,
+      "output": ""
+    },
+    {
+      "command": "/bin/bash -lc \"python3 -B - <<'PY'\nfrom hashlib import sha1\nfrom pathlib import Path\n\ndef object_hash(kind, data):\n    return sha1(f'{kind} {len(data)}\\\\0'.encode() + data).digest()\n\nexpected = {\n    'base': '322f27a0f9b9ada9c399c4fba1ee28ff9fbd22c5',\n    'head': '1ef63334bc8d5371bb869e4f326286a047397a42',\n}\nfor directory, expected_hash in expected.items():\n    data = b''\n    for file in sorted(Path(directory).iterdir()):\n        assert file.is_file() and not file.is_symlink() and file.stat().st_mode & 0o111 == 0\n        data += f'100644 {file.name}\\\\0'.encode() + object_hash('blob', file.read_bytes())\n    actual = object_hash('tree', data).hex()\n    print(directory, actual)\n    assert actual == expected_hash\nPY\"",
+      "exit": 0,
+      "output": "base 322f27a0f9b9ada9c399c4fba1ee28ff9fbd22c5\nhead 1ef63334bc8d5371bb869e4f326286a047397a42"
+    }
+  ],
+  "changedProjectFiles": [],
+  "exit": 0,
+  "lastEvent": "turn.completed"
+}

@@ -1,0 +1,54 @@
+{
+  "utc": "2026-11-23T11:34:22.206Z",
+  "seal": "f943e7188de542618c2c45ee509b485df53a72a9b3e1efd01cc43e84de734d4c",
+  "labels": {
+    "3f0393c464": {
+      "run": "05cdb5d86753",
+      "case": "original",
+      "skill": "code-reviewer",
+      "variant": "0.4.10"
+    },
+    "c7c83d77e6": {
+      "run": "c14a5c467fe2",
+      "case": "original",
+      "skill": "code-reviewer",
+      "variant": "0.4.9"
+    },
+    "b31bd18a0b": {
+      "run": "64a5f942119f",
+      "case": "fresh",
+      "skill": "code-reviewer",
+      "variant": "0.4.10"
+    },
+    "4b719e0f3f": {
+      "run": "28eeed03f44e",
+      "case": "fresh",
+      "skill": "code-reviewer",
+      "variant": "0.4.9"
+    },
+    "3f46798819": {
+      "run": "9317c5c5bd0a",
+      "case": "original",
+      "skill": "spec-conformance-reviewer",
+      "variant": "0.1.12"
+    },
+    "32ddbad622": {
+      "run": "6c97cdc895f2",
+      "case": "original",
+      "skill": "spec-conformance-reviewer",
+      "variant": "0.1.11"
+    },
+    "a1b5c2b384": {
+      "run": "f20af8f28dc8",
+      "case": "fresh",
+      "skill": "spec-conformance-reviewer",
+      "variant": "0.1.12"
+    },
+    "405c863ff6": {
+      "run": "d65a958ae83a",
+      "case": "fresh",
+      "skill": "spec-conformance-reviewer",
+      "variant": "0.1.11"
+    }
+  }
+}

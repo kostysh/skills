@@ -1,0 +1,26 @@
+{
+  "utc": "2026-11-23T11:34:22.206Z",
+  "registration": "3629ee9a29e8040533f6c1d7251f296853094c6480adb2e7311ec1112237ac8a",
+  "signed": {
+    "code-reviewer/first": {
+      "signedUtc": "2026-11-23T11:33:10.030Z",
+      "sha256": "e57ae2015c8430abe3bc798bcd098525efbed30e1294b76dbb4ddaee9a3c74de",
+      "thread": "01a2082d-d0e4-7891-b408-6ff3932ba028"
+    },
+    "code-reviewer/second": {
+      "signedUtc": "2026-11-23T11:32:57.079Z",
+      "sha256": "cd9d93befc0f57ca7c1270d20582b736867f9b6bc8d651671771695115e29daa",
+      "thread": "01a2082d-d0e3-7973-89c5-7ce0eac7c51e"
+    },
+    "spec-conformance-reviewer/first": {
+      "signedUtc": "2026-11-23T11:33:37.508Z",
+      "sha256": "2eb12b51a89772ac26c9ad05ce97abbecc3d886702cbf4d657e67b2ad9d40dc8",
+      "thread": "01a2082e-3ffb-7b62-8894-39916e8ef9d6"
+    },
+    "spec-conformance-reviewer/second": {
+      "signedUtc": "2026-11-23T11:33:32.295Z",
+      "sha256": "7ad2be3a873a605e391dd4227ffc4fab609512200359ab7c048cc600c6cfc4a6",
+      "thread": "01a2082e-707e-7350-b7da-96abe38b0007"
+    }
+  }
+}

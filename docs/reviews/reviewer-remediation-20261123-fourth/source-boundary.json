@@ -1,0 +1,228 @@
+{
+  "recorded": "2026-11-23T12:23:06.677Z",
+  "case": "L-27",
+  "searchedExactValues": [
+    "ST-73",
+    "D-04",
+    "E-11"
+  ],
+  "inputOccurrences": {
+    "project/SHA256SUMS": [],
+    "project/base/rooms.ini": [
+      "ST-73",
+      "D-04"
+    ],
+    "project/changes.diff": [
+      "ST-73",
+      "D-04",
+      "E-11"
+    ],
+    "project/head/rooms.ini": [
+      "ST-73",
+      "E-11"
+    ],
+    "project/request.md": [],
+    "project/snapshot.md": [],
+    "task.md": []
+  },
+  "runs": {
+    "0.4.13": {
+      "run": "698ee1ede4cc",
+      "eventsSha256": "08d9879197efe8577485a2c1be8eba2e8ee9c3655b93591c781c2e4bbfb4527f",
+      "packageSha256": "e47d4c382dfb9d8ebbf8f14b29781534ba85596760dce826c4a23ac6ba295f22",
+      "packageOccurrences": {},
+      "receipt": "code-reviewer/runs/698ee1ede4cc/delivery.json",
+      "debugPromptPreflightSha256": "e64e49fea111fb382b56cf0f8349fb04032b867eb501bb86243e4ca4cff0343e",
+      "eventOccurrences": [
+        {
+          "id": "item_0",
+          "type": "agent_message",
+          "commandTerms": [],
+          "outputTerms": [],
+          "messageTerms": []
+        },
+        {
+          "id": "item_1",
+          "type": "command_execution",
+          "commandTerms": [],
+          "outputTerms": [],
+          "messageTerms": []
+        },
+        {
+          "id": "item_2",
+          "type": "command_execution",
+          "commandTerms": [],
+          "outputTerms": [],
+          "messageTerms": []
+        },
+        {
+          "id": "item_3",
+          "type": "command_execution",
+          "commandTerms": [],
+          "outputTerms": [],
+          "messageTerms": []
+        },
+        {
+          "id": "item_5",
+          "type": "command_execution",
+          "commandTerms": [],
+          "outputTerms": [],
+          "messageTerms": []
+        },
+        {
+          "id": "item_4",
+          "type": "command_execution",
+          "commandTerms": [],
+          "outputTerms": [],
+          "messageTerms": []
+        },
+        {
+          "id": "item_6",
+          "type": "command_execution",
+          "commandTerms": [],
+          "outputTerms": [],
+          "messageTerms": []
+        },
+        {
+          "id": "item_8",
+          "type": "command_execution",
+          "commandTerms": [],
+          "outputTerms": [],
+          "messageTerms": []
+        },
+        {
+          "id": "item_7",
+          "type": "command_execution",
+          "commandTerms": [],
+          "outputTerms": [
+            "ST-73",
+            "D-04",
+            "E-11"
+          ],
+          "messageTerms": []
+        },
+        {
+          "id": "item_9",
+          "type": "command_execution",
+          "commandTerms": [],
+          "outputTerms": [],
+          "messageTerms": []
+        },
+        {
+          "id": "item_10",
+          "type": "command_execution",
+          "commandTerms": [],
+          "outputTerms": [
+            "ST-73",
+            "D-04",
+            "E-11"
+          ],
+          "messageTerms": []
+        },
+        {
+          "id": "item_11",
+          "type": "command_execution",
+          "commandTerms": [],
+          "outputTerms": [],
+          "messageTerms": []
+        },
+        {
+          "id": "item_12",
+          "type": "command_execution",
+          "commandTerms": [],
+          "outputTerms": [],
+          "messageTerms": []
+        },
+        {
+          "id": "item_13",
+          "type": "agent_message",
+          "commandTerms": [],
+          "outputTerms": [],
+          "messageTerms": [
+            "ST-73",
+            "D-04",
+            "E-11"
+          ]
+        }
+      ]
+    },
+    "0.4.12": {
+      "run": "27df8d5695d4",
+      "eventsSha256": "dbfec9bb90a425ac51ee5dfdbded46084e8d8f70488c8259a3929d0350127a78",
+      "packageSha256": "a7434d2dfdd4c484fc13eaabf7992fffd4f318b0f1014bc31a455fc3f194f0e0",
+      "packageOccurrences": {},
+      "receipt": "code-reviewer/runs/27df8d5695d4/delivery.json",
+      "debugPromptPreflightSha256": "f72595d67f19569960332c75bd5a9949d151089ec6c84c44abd8d25332828269",
+      "eventOccurrences": [
+        {
+          "id": "item_0",
+          "type": "agent_message",
+          "commandTerms": [],
+          "outputTerms": [],
+          "messageTerms": []
+        },
+        {
+          "id": "item_1",
+          "type": "command_execution",
+          "commandTerms": [],
+          "outputTerms": [],
+          "messageTerms": []
+        },
+        {
+          "id": "item_2",
+          "type": "command_execution",
+          "commandTerms": [],
+          "outputTerms": [],
+          "messageTerms": []
+        },
+        {
+          "id": "item_3",
+          "type": "command_execution",
+          "commandTerms": [],
+          "outputTerms": [],
+          "messageTerms": []
+        },
+        {
+          "id": "item_4",
+          "type": "command_execution",
+          "commandTerms": [],
+          "outputTerms": [],
+          "messageTerms": []
+        },
+        {
+          "id": "item_5",
+          "type": "command_execution",
+          "commandTerms": [],
+          "outputTerms": [],
+          "messageTerms": []
+        },
+        {
+          "id": "item_6",
+          "type": "command_execution",
+          "commandTerms": [],
+          "outputTerms": [],
+          "messageTerms": []
+        },
+        {
+          "id": "item_7",
+          "type": "command_execution",
+          "commandTerms": [],
+          "outputTerms": [],
+          "messageTerms": []
+        },
+        {
+          "id": "item_8",
+          "type": "agent_message",
+          "commandTerms": [],
+          "outputTerms": [],
+          "messageTerms": [
+            "ST-73",
+            "D-04",
+            "E-11"
+          ]
+        }
+      ]
+    }
+  },
+  "limit": "В ответе .12 значения верны. Их источник по сохранённой выдаче и событиям команд определить нельзя. Предположение о конкретном канале получения значений этими данными не проверяется. Балл и K разнесены по заранее зафиксированному требованию о наблюдаемом содержательном основании."
+}

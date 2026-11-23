@@ -1,0 +1,135 @@
+{
+  "recorded": "2026-11-23T11:53:58.660526+00:00",
+  "node": "v24.15.0",
+  "pnpm": "10.28.2",
+  "workspace": "Одноразовое дерево с кандидатами 0.4.12 и 0.1.12; pnpm-lock.yaml исходной базы.",
+  "testsPassed": 146,
+  "installedArchives": 38,
+  "previousRelease": "skills-20261121-3",
+  "releaseTag": "skills-20261123",
+  "candidateCatalogSha256": "8b009f812c062ebbf33bc988f06b0327d3535d9010dd65606be1a903327ef2eb",
+  "changedArchives": {
+    "code-reviewer": {
+      "from": "0.4.9",
+      "to": "0.4.12",
+      "sha256": "a7434d2dfdd4c484fc13eaabf7992fffd4f318b0f1014bc31a455fc3f194f0e0"
+    },
+    "spec-conformance-reviewer": {
+      "from": "0.1.11",
+      "to": "0.1.12",
+      "sha256": "e111920c6e6734e47eac6584a2765fff764228e0c27181395ba1b6474da86d77"
+    }
+  },
+  "commands": {
+    "pack-v12": {
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "pack:skills",
+        "--out",
+        "../release-v12",
+        "--release",
+        "skills-20261123",
+        "--previous",
+        "../catalog-previous/catalog.json"
+      ],
+      "started": "2026-11-23T11:53:08.698925+00:00",
+      "finished": "2026-11-23T11:53:09.459954+00:00",
+      "exit": 0,
+      "sha256": "978994c36d0aa055aad3757e7920776977442a73669240dffb4aa734844ecf28",
+      "raw": "checks/pack-v12.log.gz"
+    },
+    "compiler-code-v12": {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "skills/code-reviewer"
+      ],
+      "started": "2026-11-23T11:53:49.267499+00:00",
+      "finished": "2026-11-23T11:53:49.323505+00:00",
+      "exit": 0,
+      "sha256": "8af0494e5401f3ae481b8477b606e000115e1650738f0a84919ca2f7c31931a6",
+      "raw": "checks/compiler-code-v12.log.gz"
+    },
+    "compiler-spec-v12": {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "skills/spec-conformance-reviewer"
+      ],
+      "started": "2026-11-23T11:53:49.342558+00:00",
+      "finished": "2026-11-23T11:53:49.400837+00:00",
+      "exit": 0,
+      "sha256": "0e11832146643b1c3488b60ce58032594697f8491bcb0d9d0a69dc6e7ac7ca2a",
+      "raw": "checks/compiler-spec-v12.log.gz"
+    },
+    "suite-v12": {
+      "argv": [
+        "pnpm",
+        "test:ci"
+      ],
+      "started": "2026-11-23T11:53:49.421298+00:00",
+      "finished": "2026-11-23T11:53:52.637775+00:00",
+      "exit": 0,
+      "sha256": "cc72c3cccf0a218abaf02ffad65df610743dbb0499e96472d32a3ce131fe389b",
+      "raw": "checks/suite-v12.log.gz"
+    },
+    "format-v12": {
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "format:check"
+      ],
+      "started": "2026-11-23T11:53:52.656331+00:00",
+      "finished": "2026-11-23T11:53:53.146791+00:00",
+      "exit": 0,
+      "sha256": "97c9926c4a0664dd26f17eab434a31e1e9bf90f73263b351ea058e220e54dd15",
+      "raw": "checks/format-v12.log.gz"
+    },
+    "lint-v12": {
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "lint"
+      ],
+      "started": "2026-11-23T11:53:53.166861+00:00",
+      "finished": "2026-11-23T11:53:55.927248+00:00",
+      "exit": 0,
+      "sha256": "59cd7b7d59468252e3070cc79a75235cdceecb56413db328f9897130aca9fd8e",
+      "raw": "checks/lint-v12.log.gz"
+    },
+    "cli-v12": {
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "verify:package"
+      ],
+      "started": "2026-11-23T11:53:55.945633+00:00",
+      "finished": "2026-11-23T11:53:57.955989+00:00",
+      "exit": 0,
+      "sha256": "f81951c7ff50be58eb0e08f401372c57ba2a3d05c9ec6214cf683063cac33e87",
+      "raw": "checks/cli-v12.log.gz"
+    },
+    "archives-v12": {
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "verify:skills-release",
+        "<disposable-tree>/release-v12",
+        "skills-20261123"
+      ],
+      "started": "2026-11-23T11:53:57.974416+00:00",
+      "finished": "2026-11-23T11:53:58.651977+00:00",
+      "exit": 0,
+      "sha256": "a1513112e77e62f09424d04d0b328637417e90c3559431b5b297a1ece6422b17",
+      "raw": "checks/archives-v12.log.gz"
+    }
+  }
+}

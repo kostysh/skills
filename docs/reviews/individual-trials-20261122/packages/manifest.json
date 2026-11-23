@@ -1,0 +1,113 @@
+{
+  "release": "skills-20261121",
+  "catalogUrl": "https://github.com/kostysh/skills/releases/download/skills-20261121/catalog.json",
+  "catalogSha256": "2863ff9c67b44f1a6cf01acd0e3b990c08dfa87943ca0e779d0a76bd7c8e1f38",
+  "base": "e74e9ea6c465328dfe4f234494a0dab0e6926855",
+  "packages": {
+    "code-reviewer": {
+      "version": "0.4.9",
+      "url": "https://github.com/kostysh/skills/releases/download/skills-20261121/code-reviewer-0.4.9.tgz",
+      "sha256": "a490a6d30de61f5af69a76ccaa35c6fefd4030da0b33f5ad988e8c2e006bb41d",
+      "contentHash": "8387488acaee367e51f9811f1c4cb2348fdac2d5b622a2d37f3167146f0a9237",
+      "files": {
+        "SKILL.md": "9c8f73500414ce97513b1f1113bd0f967f6940ff22f4a85c5e9dfe2f03e3b846",
+        "agents/openai.yaml": "04ffae6319cbefd3d74507e3be353bae081e22b65bdbc8c003c646ff4e72279a",
+        "assets/fixtures/policy-admission-review.md": "1a474f2391e00f7c0cd5c86de4d6b1b0b27ecce618aef203c2e8cba49fa54f2b",
+        "assets/fixtures/runtime-gate-deployed-path-review.md": "16936898bf81546b8a974d790fd0efa8d081ebef4c9eb458dc3bcc29a6d28646",
+        "assets/pr-review-template.md": "fff1b427e594c9b59ba6cc857d9a47db2aaae613fde371d6135b10c1170bb0cb",
+        "assets/review-checklist.md": "98c7ca18eb8d5bf30e7f142ddea8f122b88ad3e7f3da5fed2d48d0d735aa788a",
+        "references/complexity-only.md": "b058c376f2e41582006c96fad4de174d48ca02b5631e323ad5444431b89aabf4",
+        "references/diff-completeness.md": "078d87a26c1eecd8b9e746ef3793fcfcca41e81a1838fbe96146a24fca8b4e29",
+        "references/domain-routing.md": "6ae9f975e69c60368e099317906439c66ffc7972e711d7481231b2770ab082b8",
+        "references/findings-format.md": "0ac383d2a53f8ffdf5fceab464609e621f93cd91e5661de0e9026862f5b36824",
+        "references/methodology.md": "2f594fd8352bcb3fe04fa77fb59c2a5753e6b63d9c71be83c8f641c14b504cd8",
+        "references/policy-admission-merge-risk.md": "96e6a2ffa7d47c86e955de9dd521fca1325636aa0a103bf67005df37dfcf79a6",
+        "references/runtime-gate-deployed-path.md": "9b98df5833a0a776f17daff12b2ef57230c873b92545054e707e913cb5b5b6f9",
+        "references/severity-confidence.md": "0cede58ece812426647e84e3c5b1a2a4e6ce75073c71e70d7dcb14b806e7bcb4",
+        "references/spec-pass.md": "85732c5c085b77815c2fa2175740cd8d1f532cc86de4f91f4294c684d79b65a7"
+      }
+    },
+    "concept-conformance-reviewer": {
+      "version": "0.2.9",
+      "url": "https://github.com/kostysh/skills/releases/download/skills-20261121/concept-conformance-reviewer-0.2.9.tgz",
+      "sha256": "22ac97853260727ce7911882643adf1f3dd7b71b53363212459c4c06731510a4",
+      "contentHash": "06d74ebf09835aed6d6094525fec6094a178ce8688245afb966417f559a95f00",
+      "files": {
+        "SKILL.md": "a87f9f567af7c454d802403fa8d21062f1cb3371131635921809dc6609d4d6be"
+      }
+    },
+    "gdpr-compliance": {
+      "version": "0.2.5",
+      "url": "https://github.com/kostysh/skills/releases/download/skills-20261121/gdpr-compliance-0.2.5.tgz",
+      "sha256": "23d3acd3574cf0ad54b805458b2c8a65fe527e016c720662dce1839bcb8be751",
+      "contentHash": "306907933767e65b7d83940e02ce8161ef426d4cffbc24804d8cade91dbc6a7d",
+      "files": {
+        "SKILL.md": "99e46e0b98baa783f6d8e4b9c2731624a8f69ea7b89dd97c4bad4f614725bef8",
+        "agents/openai.yaml": "c17ae6395df96fbe8dacc0839bbd44169d296202868a8ca8cbbec11755d3dfb5",
+        "assets/templates/gdpr-architecture-audit.md": "5e63bef42c56ff96540b04fb9e8d8e8053bc68eff341f7f87112212dbc8656e7",
+        "assets/templates/gdpr-finding.yaml": "315a970751c7cfd70f1ec7339b101c2895bae4d4e10f5e76b027dede88286441",
+        "assets/templates/processing-map.yaml": "8d6f6da984efb7b9b87da2754ba7f64a6618ece3f921d449605661ce85e93ea9",
+        "references/audit-methodology.md": "5de03e236bed5b1f6d426928cc0a0a9ebd27d7d6b1ae32f2a3b6cff24393fa78",
+        "references/control-catalog.md": "9e4aa17f1e6207211ae8890ae417c8474362986e7d63ffdb98e81eb4080bd295",
+        "references/implementation-evidence.md": "8fda9a04060ed0969f7c6b5293f6687656600ac74fa53bf34e7f012d8a4c619f"
+      }
+    },
+    "retrospective-analysis": {
+      "version": "0.1.8",
+      "url": "https://github.com/kostysh/skills/releases/download/skills-20261121/retrospective-analysis-0.1.8.tgz",
+      "sha256": "50cc6f9318a459b5f2d25469014433433be181c3dca9e16e67df90240ea67837",
+      "contentHash": "3752166ee150dd06d2ec7dafb590d1fb876dc84312ec2e0fc47f2ef044e31dbb",
+      "files": {
+        "SKILL.md": "bab5d4b75d6e5c8d266e529efa7834df77c973efb5610e0fb78857965fc93bba",
+        "agents/openai.yaml": "128427295b4582ee3cb92628c9a3819c5a30388d5683ddd35c5f27be94b21628",
+        "references/evidence-and-causality.md": "cf242ce1569b7974d474158c30a67d121486e32805f8d8f859c044ba064f1abe",
+        "references/report-and-remediation-plan.md": "0af66b75be51054d3cd66157bb6a6c48e90a1356aa136df3c35f6d3d0927fbf9",
+        "references/task-routing.md": "4f43a46f0074542fe6d0703d9777461ce1cfbc041e6a4ee05569a3bb061f31c0"
+      }
+    },
+    "security-reviewer": {
+      "version": "0.1.16",
+      "url": "https://github.com/kostysh/skills/releases/download/skills-20261121/security-reviewer-0.1.16.tgz",
+      "sha256": "3dbdea3e92a2b3cb4efb50ec5285c003ac223b60403ad981c429fc7b68b9ebf0",
+      "contentHash": "b609f824d5aec5370458cce8aa5119ea8b752777c6a7b12587bf884ad5367c07",
+      "files": {
+        "SKILL.md": "f736c3fcdd01ccfed63f84c36a622a0552d3db7c324df0cd256d7740bc2e8acf",
+        "agents/openai.yaml": "d4f95ce6a167349b42743a4270ad2a483d87f2ac1eab8df9105958b7339d97ee",
+        "references/api-auth-input.md": "af207e5692d93e8d403c8ad00631055bd44f8e703d7b7f1d21d80818f7655e8a",
+        "references/data-access-injection.md": "a2906a795948d5eba413fdcb81e2ed0d8dafe5c2c54271d4747f5a9bd938beef",
+        "references/domain-handoffs.md": "937f9cb6706fbab573667811c5b1219296707a49108975b8d376b67d2c40be26",
+        "references/github-actions.md": "3da3ce160c9244033008420e7c999479319951c63f47cc14dae9f455a7cd10e7",
+        "references/methodology.md": "5c4d1f8c1b398d24e0349e219aa097de90c90596945bb1162001e0f69676e51c",
+        "references/policy-governance-admission.md": "9dd88facc864d2245a5597b7f06f3fe010a2ac01722b06c22053032b2a4ca5ac",
+        "references/secrets-config.md": "8f46d5d2b652a74e17d670686b4d6c6adfc6f6bd59263b47606f204da95d6a36",
+        "references/supabase-rls.md": "6dadce04c0a4d1e9323a64161218c5c0d8a6e601ac1eb0267b1dac657a573b0a",
+        "references/webhooks.md": "ccfc22d57d6f7e8a5250610b59e3243b10ac61f0bf699a592e98b134a79e1dec"
+      }
+    },
+    "spec-conformance-reviewer": {
+      "version": "0.1.11",
+      "url": "https://github.com/kostysh/skills/releases/download/skills-20261121/spec-conformance-reviewer-0.1.11.tgz",
+      "sha256": "292cad3bebc2b5e01fa6b97fa967ba1e0ed549e0f8fdb8dff9667c6bb3395a9b",
+      "contentHash": "02650b0e81608bf326cf3fe5e3541b2dede2de802de4596b61bde661c9a3fd60",
+      "files": {
+        "SKILL.md": "3b861948c02044af2ef5f00dac8fa934cc97a953cee1b62a4ab30370fe97fea1",
+        "agents/openai.yaml": "cfb46dd79b7c1dbea6f21726d24c55d1ecde761ced9005f103ffb30629c88b2b",
+        "assets/fixtures/consultant-admission-policy.md": "acc3607c90becff03a87356f0e43e094bb023e28ea1e80af64dbd4577c514b53",
+        "references/methodology.md": "de14ec0500b13f3e9d01df63d392beb32d17124a5b6e017a49a17d5df49f5e1f",
+        "references/policy-admission-matrix.md": "cfe2cd85876b46cdd71fd982b15bdbe3cff16e4dc95da48ca53a2c3b28578689",
+        "references/reporting.md": "d626291ae932819d597e17a6a01e782b9e3577eeb1fbf0afc01edfe5763ebd14"
+      }
+    },
+    "web-ui-reviewer": {
+      "version": "0.2.7",
+      "url": "https://github.com/kostysh/skills/releases/download/skills-20261121/web-ui-reviewer-0.2.7.tgz",
+      "sha256": "e26a7fa854c79826506705ed823408fcfab01b3aaaae3e3088dc408bdaf78075",
+      "contentHash": "c56524e12db40b3b417a78b19bde6dd4fd4910f4d1f252883e4ed9a3bf66d8b0",
+      "files": {
+        "SKILL.md": "b27580092caea24ce9888a4c3a507b689469fe15cab8145c526be3dca459f551",
+        "agents/openai.yaml": "5edf64ef909bf216945723e6d3d2435a1c23f34ae48df157bde652f4085e230b",
+        "references/web-interface-guidelines.md": "11aff16e201095f0435b55824c7d37cf4f1a272e4394dce7fd2e4d845371ea62"
+      }
+    }
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "utc": "2026-11-23T11:30:37.746101+00:00",
+  "node": "v24.15.0",
+  "pnpm": "10.28.2",
+  "workspace": "Одноразовое дерево базового Git-снимка с двумя обновлёнными каталогами навыков; зависимости из pnpm-lock.yaml.",
+  "pack": "pnpm --filter @kostysh/skills pack:skills --out ../release-candidates --release skills-20261123 --previous ../catalog-previous/catalog.json",
+  "previousRelease": "skills-20261121-3",
+  "candidateCatalogSha256": "dded7bd3d8602714948f25d84d2dfcabc00e8c196c753e5a11c5fb9aacd9ab16",
+  "previousCatalogSha256": "f06ac6bbff228a544f119eaf534b0825d28a99ca4096f873d2f35e16505917cf",
+  "changedArchives": {
+    "code-reviewer": [
+      "0.4.9",
+      "0.4.10"
+    ],
+    "spec-conformance-reviewer": [
+      "0.1.11",
+      "0.1.12"
+    ]
+  },
+  "installedArchives": 38,
+  "testsPassed": 146,
+  "commands": {
+    "suite": {
+      "argv": [
+        "pnpm",
+        "test:ci"
+      ],
+      "exit": 0,
+      "started": "2026-11-23T11:28:28.177123+00:00",
+      "finished": "2026-11-23T11:28:31.428652+00:00",
+      "raw": "checks/suite.log.gz",
+      "sha256": "b96a635298e28862be3a51e743521c62204b77724a2badc86066db68d668ebc6"
+    },
+    "format": {
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "format:check"
+      ],
+      "exit": 0,
+      "started": "2026-11-23T11:28:31.449474+00:00",
+      "finished": "2026-11-23T11:28:31.919243+00:00",
+      "raw": "checks/format.log.gz",
+      "sha256": "97c9926c4a0664dd26f17eab434a31e1e9bf90f73263b351ea058e220e54dd15"
+    },
+    "lint": {
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "lint"
+      ],
+      "exit": 0,
+      "started": "2026-11-23T11:28:31.938254+00:00",
+      "finished": "2026-11-23T11:28:34.778652+00:00",
+      "raw": "checks/lint.log.gz",
+      "sha256": "188ebef3df4d9594c3a52adc7786a6d77cc11c95943e526e2a36fba9ff28931f"
+    },
+    "install-cli": {
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "verify:package"
+      ],
+      "exit": 0,
+      "started": "2026-11-23T11:28:34.802867+00:00",
+      "finished": "2026-11-23T11:28:36.836552+00:00",
+      "raw": "checks/install-cli.log.gz",
+      "sha256": "f81951c7ff50be58eb0e08f401372c57ba2a3d05c9ec6214cf683063cac33e87"
+    },
+    "install-archives": {
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "verify:skills-release",
+        "${DISPOSABLE_TREE}/release-candidates",
+        "skills-20261123"
+      ],
+      "exit": 0,
+      "started": "2026-11-23T11:28:36.858183+00:00",
+      "finished": "2026-11-23T11:28:37.584241+00:00",
+      "raw": "checks/install-archives.log.gz",
+      "sha256": "f7d295efc1b982548d22ff47a24edca1a3ea1ac618c51f2b3c72f07d498b38d2"
+    }
+  }
+}

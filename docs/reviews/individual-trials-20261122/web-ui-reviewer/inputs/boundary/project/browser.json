@@ -1,0 +1,47 @@
+{
+  "htmlSha256": "a5bbe961b4badff0d4f140e15ed31d46e3ea6c413e49c80aac8e13f42fea0084",
+  "source": "index.html",
+  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36",
+  "viewport": [
+    1000,
+    720
+  ],
+  "steps": [
+    {
+      "action": "open page",
+      "observed": {
+        "controlsInRow": [
+          "Карточка",
+          "Журнал измерений"
+        ],
+        "expanded": [],
+        "heading": "Работающие",
+        "visibleText": "Работающие\nП-04 · Весы\nКарточка\nЖурнал измерений"
+      }
+    },
+    {
+      "action": "open Карточка and Журнал измерений",
+      "observed": {
+        "controlsInRow": [
+          "Карточка",
+          "Журнал измерений"
+        ],
+        "expanded": [
+          "Карточка",
+          "Журнал измерений"
+        ],
+        "heading": "Работающие",
+        "visibleText": "Работающие\nП-04 · Весы\nКарточка\nЦех 2. Введён в 2022 году.\nЖурнал измерений\n12 марта · 2,8 кг."
+      }
+    },
+    {
+      "action": "open Резерв",
+      "observed": {
+        "controlsInRow": [],
+        "expanded": [],
+        "heading": "Резерв",
+        "visibleText": "Резерв\nП-08 · Барометр"
+      }
+    }
+  ]
+}

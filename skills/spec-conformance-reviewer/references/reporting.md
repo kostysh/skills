@@ -143,6 +143,7 @@ Outcome: <plain-language statement of what is closed, what remains, and what the
 
 ## Wording Rules
 
+- Match claims about your checks to what you actually examined, when, and with what result. Attribute supplied results to their source. Qualify or omit an unsupported detail and keep any conformance conclusion supported by other evidence.
 - Keep every serious finding tied to a requirement ID and source.
 - Separate non-compliance from missing proof.
 - Call out conflicting sources explicitly; do not pick a winner silently.

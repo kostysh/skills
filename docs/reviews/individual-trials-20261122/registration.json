@@ -1,0 +1,551 @@
+{
+  "utc": "2026-11-22T01:39:16.166Z",
+  "base": "e74e9ea6c465328dfe4f234494a0dab0e6926855",
+  "branch": "codex/seven-skill-trials",
+  "worktree": "/home/kostysh/.codex/skills/custom/.worktrees/seven-skill-trials",
+  "cli": "codex-cli 0.171.0",
+  "study": "individual-trials-20261122",
+  "rubricVersion": "R1",
+  "packetVersion": "P1",
+  "protocolSha256": "08c9cc36778a5297babc064d8e349bd8299eea44f3d244524d1c5ac0f8206d54",
+  "deliveryScripts": {
+    "grading-instructions.md": "db23ac8b7620d2b44cb21ae1dd43399ece6470caa87c376f6c69394b08b75fea",
+    "session.py": "37b691d048b50b197e1b85e65d210a3b84c1b03722c4d00d139aa0114b05c1c4",
+    "trial.py": "43b0fbb0a6c9bd57d573c212c3de8b44288ac32948b57c3d7aa528e3ced82bac"
+  },
+  "packageManifest": "ccb9b555922e451bda8f95b39dad51c0ec2542d443d0cd40e4c2e215be23f8e0",
+  "skills": {
+    "code-reviewer": {
+      "version": "0.4.9",
+      "archive": "a490a6d30de61f5af69a76ccaa35c6fefd4030da0b33f5ad988e8c2e006bb41d",
+      "rubric": "c11f9bdecd4601600279c90fa8f9d475ee129c2cb346e636c518256e7bf71eec",
+      "cases": {
+        "ordinary": {
+          "prompt": "7d3b85e52aa3c65fe494bd4f8d030aa017a465d2127f3f47248583ac9ac6afc1",
+          "project": {
+            "base/check_labels.py": "a5c85a978774c62aa212be314a44214c84a2718eafae3d73febea3638da870b9",
+            "base/labels.py": "6be4adc03828e45476b06cb2d62cd8cd3d766f59ffbbcda19e7ac8cc58015246",
+            "changes.diff": "89f3b994996f526f068a51443c4704853e682ae2fa971166b7b86e9843252562",
+            "head/check_labels.py": "75e5e62d8c15271438521466f27d01116deacf2a8a986b3a96335f6c415a84b5",
+            "head/labels.py": "7e962c36d68d6388e540191ada362e14ee71364417e28a2caae5236468e8dc2f",
+            "snapshot.md": "ac2c9a0d947756672a337d79e17894c8491cf12bd364d257bab99106a16c6f60",
+            "ticket.md": "d918244b7c1a37a1e24ca3a43d4ff5a5c1de8056788c7a9135c8a8bab165f1ce"
+          }
+        },
+        "boundary": {
+          "prompt": "faf89d490bcdd65f75b496b637ca9fa7390eb1fb5742a7857284996e56145320",
+          "project": {
+            "base/counter.py": "1014f6d751ecb17eac72e8c338a6e6a2b3e1d91f0c1166b746ed709c498af40a",
+            "changes.diff": "1be7e5f2b5ae4e1f289cada39e6a632695cf99ed3d6ccbeed70177b9a45d16b6",
+            "head/counter.py": "ab224a8bc113c8e61ced42f27ebdc0a1bc6162bae04648a5b5b880277764ce66",
+            "snapshot.md": "c4ad90715e2d255821a82c37c5d6462d6d94f333857b2e4652452bd46d82c8cb",
+            "ticket.md": "160d7f9310edda96cc309979ee8863ce6f094f5c8e8cafae565df5979fa1954e"
+          }
+        }
+      }
+    },
+    "concept-conformance-reviewer": {
+      "version": "0.2.9",
+      "archive": "22ac97853260727ce7911882643adf1f3dd7b71b53363212459c4c06731510a4",
+      "rubric": "eb952597cbb388ab1ba8de001a8fda41e2878bc314f57cdad0170e6fbc647873",
+      "cases": {
+        "ordinary": {
+          "prompt": "b5d43ff09b2632e352da8e82e457b1efce5bac4eda90807d63440191d517616e",
+          "project": {
+            "product.md": "fc40c00b0a92904a9fb32fa95b853c940ba1c32b27ae95621f8eff36b27d4701",
+            "t-14.md": "8d47175eda83a10c64b4a352fab5d4e22e305b3423b9117ea0d021f247482e4c"
+          }
+        },
+        "boundary": {
+          "prompt": "e9e41695dbf13534b44148f89720573e54e3f9903b5f1d1dcadfe30a3aa07e5e",
+          "project": {
+            "charter.md": "2c5065d5de6f8fc33ca78727aa3598762d9bf6e9d14869621da8db3287fc216b",
+            "delivery.md": "381e4ae3cd56a8ff83d95de885bad474aee2bb9f77f2df3fcff1f866b328a54d",
+            "station-profile.json": "93fe1f792cd380a0d46b79b0b9fe0aef1f7edefdd388feebc73963a40ced1771",
+            "trace.ndjson": "63222cca360a2e8d229985df9c4bb6ab85ca9ff76171dc8c028a570e5959aebd"
+          }
+        }
+      }
+    },
+    "gdpr-compliance": {
+      "version": "0.2.5",
+      "archive": "23d3acd3574cf0ad54b805458b2c8a65fe527e016c720662dce1839bcb8be751",
+      "rubric": "183b0da5e94d64147b5adf551cb60098e41078c7855163cea8e38adfd24f4e48",
+      "cases": {
+        "ordinary": {
+          "prompt": "b23e8780f82d6b9eb0c25f549f5f1fb6d16be0a5bb587c552d4ec2c046d52eb7",
+          "project": {
+            "c14.md": "ce0cdb96a0123299949b0b621303f54eba0cb30e282e302c856a5f4788f0fd20",
+            "installation.json": "5981b5bfff77b0129d1bfb239a2dd3f529059b4863c93ab4021db53ca7aa8293",
+            "readback.csv": "be135871d89a7d9bc0124dbc86a8798822a7cf43314b35be7f9593705660b651"
+          }
+        },
+        "boundary": {
+          "prompt": "26198c3218396687950df8625964e2cb2cc5a4e11a428695ed7ae788e2fa7cfc",
+          "project": {
+            "events.ndjson": "aea69be467548ca9cf30066a35af10a0d28765c3eb81bac47137334bd9db2741",
+            "m7.md": "4d04b301b0f2212e6f0edd2db587ca071ee6a099237d3eb2246b7b55e6f0bd42",
+            "rollout.json": "076342b1bdc4f25420de8068a8caa506c75927746bb022d0d484a168dedde29d"
+          }
+        }
+      }
+    },
+    "retrospective-analysis": {
+      "version": "0.1.8",
+      "archive": "50cc6f9318a459b5f2d25469014433433be181c3dca9e16e67df90240ea67837",
+      "rubric": "e175b52f12ba59f4222db7d982f558cf00508afc9d3c847e973dc9858461a818",
+      "cases": {
+        "ordinary": {
+          "prompt": "b12e562b2a36717be401ece46a7015c1fa20583042272be31aaa214e49e8c11a",
+          "project": {
+            "loads.json": "01e09920542475400a70bb828c0400e4bf7d4f1d4dadac45d68d9e7016cd846a",
+            "o-41.md": "d82035db073c344e81c555c972040f0f809046410fdfcfca2ada497ab45b7a2b",
+            "observed.ndjson": "30887a82297ec30c5e59a659021b5513630dfa1d62e1fd0503fee9f48926dd81",
+            "profiles.json": "046f7cdcaed37c3325d1747629622cd5f03b8f8791b48ce4f66ab06469580ba8",
+            "station.py": "1703b4f5fff7ca3e27c1654c20099fc8fed9c42ae4b269d80e59805673276176"
+          }
+        },
+        "boundary": {
+          "prompt": "4d2606a4dc8d59997ef01567383aa351207b92fc43d2f18a0e25a5ad756ecc2b",
+          "project": {
+            "candidate.json": "527dbab4d2be68c27bf542c199688e9410f805f79ababcbb1321a17d53b3208f",
+            "line.json": "c72ffc2d285e7767e4961b435c0cf8f16c658c3973b22f86068c1b6f0dc36006",
+            "observed.ndjson": "7fd7e251948500d19444a0f2af025c1b34cf6b3d00d59d874cc438b1ae952824",
+            "printer.py": "3002bb907985eb34da19f9f7f6082528aaca931a455aaafc5af26a915ee563df",
+            "shift.md": "36014e70dba9567759f6165d8a153b1a8e6e979e62e3c2462534d0da39520656",
+            "shots.json": "206ad76f456d585c5f16037b5f2d61bb0372eaedcf1dde55e86d52d1887b1d1e"
+          }
+        }
+      }
+    },
+    "security-reviewer": {
+      "version": "0.1.16",
+      "archive": "3dbdea3e92a2b3cb4efb50ec5285c003ac223b60403ad981c429fc7b68b9ebf0",
+      "rubric": "7d822842e8cdab26f2e262aae4ca1a656775bf92f61463d2183e3bdd5afd761d",
+      "cases": {
+        "ordinary": {
+          "prompt": "529c616d2f26ad696ca1e244a95ce0d2cc8118c5e4ca3a0f5b0a2a2d920e8d7d",
+          "project": {
+            "board.md": "e3bacdcb846881e45665e45b517c7eb4b6b2c83b10b38c8c697042dc00d1955e",
+            "operations.json": "de1c9b1bbaad3283170ecda6798b86edeaaa1407a90e84a715cc8b5c954da7d9",
+            "roster.csv": "632ee410e78bdefb6176f9070e29b86a93d6152db84c70f1b346654e717de409"
+          }
+        },
+        "boundary": {
+          "prompt": "314b474985e06d03cd5a4a2c0d70cc8c7a94837ee3b4253ad9fa217fdf75addc",
+          "project": {
+            "directory.json": "3d2dfe497dab053bb7e4fce290cbcf960ace89c9cc0308f833ae2acddc8be174",
+            "publication.md": "2c5f4cd14259db00c7491372d7b2c6e28fa99d1ffede9406b20b269c8f9088e3",
+            "views.json": "c800c12ed688c38a3ca77e4ea09d78e9519a2431a6f6d0127c901328ff1211c2"
+          }
+        }
+      }
+    },
+    "spec-conformance-reviewer": {
+      "version": "0.1.11",
+      "archive": "292cad3bebc2b5e01fa6b97fa967ba1e0ed549e0f8fdb8dff9667c6bb3395a9b",
+      "rubric": "91a0a4026fce0547d6f9ba2d047e4e158a12f211899ade10872826a3af86c86e",
+      "cases": {
+        "ordinary": {
+          "prompt": "899afa1db726746946074fc71e6cc438faee70b2ec69d6d88e47d2c67a59f437",
+          "project": {
+            "SHA256SUMS": "ff521308f266f91d9f3e7784fa0dc05f12ba7c2ae7933b381701b9be31ba0079",
+            "check_cli.py": "066c47c012a843150ca0fd2573736c845082d50c972eeccd0555ebeb8643f5c9",
+            "delivery.txt": "d9db754b986dd9043fbdae2d69722f13fd8e0f5f98068f588f3d7f4678f9b8fd",
+            "route_tag.py": "78c00e919b979214cd818c7dca505a06af1ceb2be3ba8631db30ed3414d16e28",
+            "spec.md": "ae4fca728f3e24e31af2846a43d80bdcfab6f3ca636da23d09b014eb06d571b1"
+          }
+        },
+        "boundary": {
+          "prompt": "a06106e0afe22303a0f5f0584bcac447ec1fe247f5313f920b60161820c2a53a",
+          "project": {
+            "SHA256SUMS": "f297be7edffbcb996d828028eb23bd2f27e1f5d581e0d7452f2dcdf5cd6e8f9c",
+            "check_notice.py": "9cea39b48a284e4a43b4dbf98f27e0660b96e34c10e7f9e7904a72d897c59c0d",
+            "delivery.txt": "121653e627263a26873b039b36b3dc4e810e31b972bdc39841acabf9abfe4492",
+            "notice.py": "6746283e2600d36309685de3b71e00d40383e4a4e9fa61bf863e50a77775fdeb",
+            "requirements.md": "363fd4fa514b5357e3cee8601dc0cd28abf5d6da27029011784e3d4a1eb73754",
+            "support-note.md": "aadd72c68dc6f2e3e101436acd5ec8f0ebde7f020942ee259b6ddb64f5d2e2ae"
+          }
+        }
+      }
+    },
+    "web-ui-reviewer": {
+      "version": "0.2.7",
+      "archive": "e26a7fa854c79826506705ed823408fcfab01b3aaaae3e3088dc408bdaf78075",
+      "rubric": "02825e8a2523f7f09713232dda142096dab044071c4275db916f8364396fac5c",
+      "cases": {
+        "ordinary": {
+          "prompt": "318ff36fa8b39bf338f88d5e25dc074936ceab159cb577482386c9ad2b2a64fe",
+          "project": {
+            "browser.json": "a8c482d8fac44409eb05de1fee90f826c06dc2f85793b9eb573f672823cce7d1",
+            "desk.md": "4252e0ab1606b484d05aa8c5a60ab9c5d29c1ab629d043de560a6763b388a886",
+            "index.html": "9cf52f33b332780da306b7e7316517932607df5e30fa93b65a7df1f71873c3bc"
+          }
+        },
+        "boundary": {
+          "prompt": "28a76642f5fbbae2403b5d39a4ca5904982d42a5b4aa328c915d6f217af3d242",
+          "project": {
+            "browser.json": "f1dfffde3df13bbbc2bce6ebc4b82b5e502d8c77108d1f9a725777647bbf4845",
+            "catalog.md": "5e6426234009002998c1e2bdcd4b8858676aaa011099cee4f29158e2796b5614",
+            "index.html": "a5bbe961b4badff0d4f140e15ed31d46e3ea6c413e49c80aac8e13f42fea0084"
+          }
+        }
+      }
+    }
+  },
+  "assignments": {
+    "866771bd5e6e": {
+      "skill": "code-reviewer",
+      "case": "ordinary",
+      "pair": "ordinary-1",
+      "variant": "0.4.9",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "d8827d04d7"
+    },
+    "db6e902f9b88": {
+      "skill": "code-reviewer",
+      "case": "ordinary",
+      "pair": "ordinary-1",
+      "variant": "B",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "27c56c5dfa"
+    },
+    "46722400d865": {
+      "skill": "code-reviewer",
+      "case": "boundary",
+      "pair": "boundary-1",
+      "variant": "0.4.9",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "bf66d0c719"
+    },
+    "057f8337e97f": {
+      "skill": "code-reviewer",
+      "case": "boundary",
+      "pair": "boundary-1",
+      "variant": "B",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "d6d205c1ef"
+    },
+    "d31591553cda": {
+      "skill": "concept-conformance-reviewer",
+      "case": "ordinary",
+      "pair": "ordinary-1",
+      "variant": "0.2.9",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "c9586a90c4"
+    },
+    "b7bb6bc650b6": {
+      "skill": "concept-conformance-reviewer",
+      "case": "ordinary",
+      "pair": "ordinary-1",
+      "variant": "B",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "0a02853532"
+    },
+    "be5069bde360": {
+      "skill": "concept-conformance-reviewer",
+      "case": "boundary",
+      "pair": "boundary-1",
+      "variant": "0.2.9",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "183e94f001"
+    },
+    "e66f0069fdd2": {
+      "skill": "concept-conformance-reviewer",
+      "case": "boundary",
+      "pair": "boundary-1",
+      "variant": "B",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "91ac4bacba"
+    },
+    "044389965528": {
+      "skill": "gdpr-compliance",
+      "case": "ordinary",
+      "pair": "ordinary-1",
+      "variant": "0.2.5",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "40193e2be0"
+    },
+    "c21501285cd1": {
+      "skill": "gdpr-compliance",
+      "case": "ordinary",
+      "pair": "ordinary-1",
+      "variant": "B",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "a940d61cc2"
+    },
+    "1774d3ee0463": {
+      "skill": "gdpr-compliance",
+      "case": "boundary",
+      "pair": "boundary-1",
+      "variant": "0.2.5",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "30526fe2ba"
+    },
+    "34229e4aa1d9": {
+      "skill": "gdpr-compliance",
+      "case": "boundary",
+      "pair": "boundary-1",
+      "variant": "B",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "0741e0afcb"
+    },
+    "c28040444112": {
+      "skill": "retrospective-analysis",
+      "case": "ordinary",
+      "pair": "ordinary-1",
+      "variant": "0.1.8",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "b70cd986c8"
+    },
+    "cb76cd32aa08": {
+      "skill": "retrospective-analysis",
+      "case": "ordinary",
+      "pair": "ordinary-1",
+      "variant": "B",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "dc8a55defd"
+    },
+    "3905b2c44d06": {
+      "skill": "retrospective-analysis",
+      "case": "boundary",
+      "pair": "boundary-1",
+      "variant": "0.1.8",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "d4c28169fd"
+    },
+    "e6d39f3d7e1b": {
+      "skill": "retrospective-analysis",
+      "case": "boundary",
+      "pair": "boundary-1",
+      "variant": "B",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "fbf6491aec"
+    },
+    "78d262e78f1b": {
+      "skill": "security-reviewer",
+      "case": "ordinary",
+      "pair": "ordinary-1",
+      "variant": "0.1.16",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "6d0b3e37be"
+    },
+    "a271ec94b78c": {
+      "skill": "security-reviewer",
+      "case": "ordinary",
+      "pair": "ordinary-1",
+      "variant": "B",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "a2ec6d5be5"
+    },
+    "8b17f42fc550": {
+      "skill": "security-reviewer",
+      "case": "boundary",
+      "pair": "boundary-1",
+      "variant": "0.1.16",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "0af09229b1"
+    },
+    "41542d9ee0a3": {
+      "skill": "security-reviewer",
+      "case": "boundary",
+      "pair": "boundary-1",
+      "variant": "B",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "0cabac8219"
+    },
+    "40cb27975101": {
+      "skill": "spec-conformance-reviewer",
+      "case": "ordinary",
+      "pair": "ordinary-1",
+      "variant": "0.1.11",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "57e30aa310"
+    },
+    "d31ec390efdc": {
+      "skill": "spec-conformance-reviewer",
+      "case": "ordinary",
+      "pair": "ordinary-1",
+      "variant": "B",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "d981e89ac9"
+    },
+    "c742f41d4d8e": {
+      "skill": "spec-conformance-reviewer",
+      "case": "boundary",
+      "pair": "boundary-1",
+      "variant": "0.1.11",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "bf20fd111f"
+    },
+    "f08e766c12a9": {
+      "skill": "spec-conformance-reviewer",
+      "case": "boundary",
+      "pair": "boundary-1",
+      "variant": "B",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "a4d0585e43"
+    },
+    "32ef3fc3d147": {
+      "skill": "web-ui-reviewer",
+      "case": "ordinary",
+      "pair": "ordinary-1",
+      "variant": "0.2.7",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "72beb7fe1c"
+    },
+    "790ee5e53eca": {
+      "skill": "web-ui-reviewer",
+      "case": "ordinary",
+      "pair": "ordinary-1",
+      "variant": "B",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "c444cee4d8"
+    },
+    "e0b6c8be3869": {
+      "skill": "web-ui-reviewer",
+      "case": "boundary",
+      "pair": "boundary-1",
+      "variant": "0.2.7",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "8bfbc18e29"
+    },
+    "3ca1ee34aea3": {
+      "skill": "web-ui-reviewer",
+      "case": "boundary",
+      "pair": "boundary-1",
+      "variant": "B",
+      "phase": "primary",
+      "model": "gpt-6.2-sol",
+      "effort": "medium",
+      "label": "cf712ec4da"
+    }
+  },
+  "executionOrder": [
+    "3905b2c44d06",
+    "34229e4aa1d9",
+    "8b17f42fc550",
+    "b7bb6bc650b6",
+    "40cb27975101",
+    "be5069bde360",
+    "057f8337e97f",
+    "a271ec94b78c",
+    "e66f0069fdd2",
+    "d31591553cda",
+    "044389965528",
+    "32ef3fc3d147",
+    "3ca1ee34aea3",
+    "790ee5e53eca",
+    "1774d3ee0463",
+    "c28040444112",
+    "e0b6c8be3869",
+    "c21501285cd1",
+    "cb76cd32aa08",
+    "d31ec390efdc",
+    "c742f41d4d8e",
+    "e6d39f3d7e1b",
+    "db6e902f9b88",
+    "78d262e78f1b",
+    "46722400d865",
+    "41542d9ee0a3",
+    "866771bd5e6e",
+    "f08e766c12a9"
+  ],
+  "gradingOrder": [
+    "40cb27975101",
+    "1774d3ee0463",
+    "866771bd5e6e",
+    "32ef3fc3d147",
+    "8b17f42fc550",
+    "f08e766c12a9",
+    "e6d39f3d7e1b",
+    "d31ec390efdc",
+    "e66f0069fdd2",
+    "b7bb6bc650b6",
+    "be5069bde360",
+    "3905b2c44d06",
+    "d31591553cda",
+    "cb76cd32aa08",
+    "044389965528",
+    "c28040444112",
+    "a271ec94b78c",
+    "78d262e78f1b",
+    "41542d9ee0a3",
+    "46722400d865",
+    "c742f41d4d8e",
+    "3ca1ee34aea3",
+    "790ee5e53eca",
+    "e0b6c8be3869",
+    "057f8337e97f",
+    "c21501285cd1",
+    "34229e4aa1d9",
+    "db6e902f9b88"
+  ],
+  "doubleRating": {
+    "code-reviewer": "866771bd5e6e",
+    "concept-conformance-reviewer": "b7bb6bc650b6",
+    "gdpr-compliance": "34229e4aa1d9",
+    "retrospective-analysis": "cb76cd32aa08",
+    "security-reviewer": "78d262e78f1b",
+    "spec-conformance-reviewer": "d31ec390efdc",
+    "web-ui-reviewer": "e0b6c8be3869"
+  },
+  "gradingModel": "gpt-6.2-astra",
+  "gradingEffort": "high",
+  "decisionModel": "gpt-6.2-astra",
+  "decisionEffort": "high"
+}

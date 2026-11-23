@@ -1,0 +1,19 @@
+{
+  "recorded": "2026-11-23T12:19:40.992Z",
+  "methodSha256": "60ff2545a4ee77cb5bbe9ed42126d858735dc2ba4b5f8a16fd79ff175b849b5f",
+  "reason": "Штатная подготовка остановилась на одном смешанном чтении. До выдачи оценщикам выделены команда wc и её точный вывод. Отброшенный хвост совпал с полным текстом поставленного справочника. Исходное исполнение сохранено.",
+  "run": "27df8d5695d4",
+  "event": "item_3",
+  "eventsSha256": "dbfec9bb90a425ac51ee5dfdbded46084e8d8f70488c8259a3929d0350127a78",
+  "combinedShellExit": 0,
+  "keptCommand": "wc -l changes.diff base/rooms.ini head/rooms.ini",
+  "retainedOutput": [
+    " 10 changes.diff",
+    "  6 base/rooms.ini",
+    "  6 head/rooms.ini",
+    " 22 total"
+  ],
+  "omittedPackageFile": "references/spec-pass.md",
+  "omittedPackageSha256": "85732c5c085b77815c2fa2175740cd8d1f532cc86de4f91f4294c684d79b65a7",
+  "packetSha256": "fe839c143aca426533698782394843a48062a73418edb8b69de5e8a66fa8adce"
+}

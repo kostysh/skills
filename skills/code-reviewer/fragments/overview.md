@@ -44,7 +44,7 @@ The mode determines which passes apply; common snapshot, read-only, evidence, an
 1. Establish the review basis using `references/diff-completeness.md`:
    - authoritative target, base, scope, starting snapshot identity, linked issue, user intent, and any available normative source
    - note risky file classes: migrations, auth, CI, runtime config, state, tests, runtime gates
-2. Read the available diff and account for every touched file, distinguishing inspected content from unavailable content.
+2. Read the available diff or compare the base and head contents. Check what actually changed against the requested behavior. Account for each touched file and identify any unavailable content.
 3. If normative context exists, run the lightweight pass from `references/spec-pass.md`.
 4. Resolve completeness limits through `references/diff-completeness.md`; do not discard a finding established on a stable accessible part because another file is unavailable.
 5. Route by file type and load only the relevant domain skill. See `references/domain-routing.md`.

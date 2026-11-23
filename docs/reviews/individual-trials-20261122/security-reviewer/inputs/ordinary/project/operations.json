@@ -1,0 +1,22 @@
+{
+  "snapshot": "N-24",
+  "board": "north",
+  "resource": "weekly-north",
+  "rules": [
+    {
+      "operation": "preview",
+      "site": "*",
+      "role": "*"
+    },
+    {
+      "operation": "prepare",
+      "site": "north",
+      "role": "editor"
+    },
+    {
+      "operation": "publish",
+      "site": "north",
+      "role": "dispatcher"
+    }
+  ]
+}

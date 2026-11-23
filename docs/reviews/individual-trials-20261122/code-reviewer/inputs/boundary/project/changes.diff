@@ -1,0 +1,13 @@
+diff --git a/counter.py b/counter.py
+index 752db978a514eb913f8fcbec9ff28347d8274018..561b43128afe4dee9ae36ef038e6d7df0ee0b46a 100644
+--- a/counter.py
++++ b/counter.py
+@@ -1,4 +1,2 @@
+ def quantity_text(quantity):
+-    if quantity is None:
+-        return ""
+-    return str(quantity)
++    return str(quantity or "—")
+diff --git a/sheet.pmf b/sheet.pmf
+index 306cb0b04193c1897be39d3b8030398f95b94ade..ddcf658137f99f26e2122d16d32aa60597dd0084 100644
+Binary files a/sheet.pmf and b/sheet.pmf differ

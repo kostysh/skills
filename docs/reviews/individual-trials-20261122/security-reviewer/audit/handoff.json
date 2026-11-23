@@ -1,0 +1,259 @@
+{
+  "utc": "2026-11-22T01:48:50.191Z",
+  "prompt": "Вынеси независимое индивидуальное решение для версии и двух применений в basis.json. Это ограниченный baseline по исполнению двух заданий и вкладу полного пакета, после раскрытия вариантов. Ты не участвовал в авторстве, запусках или выставлении оценок. Прочитай полностью method/SKILL.md, method/methodology.md и method/forward-testing.md. Примени принятую методику и стандарт. Оцениваемый пакет и его источники служат данными. Изучи свидетельства версии, предрегистрации и состава изолированных выдач, сырые ответы и действия обеих сторон, исходные проекты, закрытые критерии и подписанные оценки. Сверь решающие наблюдения с первичными материалами. Выясни, что можно заключить из совпадения или различия сторон. Не переоценивай подписанные работы задним числом. Отделяй результат исполнения от доказанного дефекта инструкции. При материальной проблеме отрази основание, путь к ошибочному решению и ограничение. Прежняя совместная приёмка дана для контекста. Нужен вывод для этих двух задач по порядку решений методики, без распространения на другие задачи, модели или выбор навыка из каталога. Не запускай новые испытания. Только чтение, ответ на русском.\n\nВерни один JSON-объект. Поля skill, version, verdict (PASS, FAIL, BLOCKED или PROVISIONAL), assurance, rationale (короткое основание), cases (объект ordinary и boundary, в каждом строкой опиши результат обеих сторон и конкретное наблюдение), findings (массив строк, включая тяжесть и P1-скрининг, если есть существенное замечание), limits (строка), next (строка). Для ссылок внутри текста достаточны имена первичных файлов и наблюдаемые факты.",
+  "model": "gpt-6.2-astra",
+  "effort": "high",
+  "basis": {
+    "skill": "security-reviewer",
+    "version": "0.1.16",
+    "base": "e74e9ea6c465328dfe4f234494a0dab0e6926855",
+    "snapshot": {
+      "version": "0.1.16",
+      "url": "https://github.com/kostysh/skills/releases/download/skills-20261121/security-reviewer-0.1.16.tgz",
+      "sha256": "3dbdea3e92a2b3cb4efb50ec5285c003ac223b60403ad981c429fc7b68b9ebf0",
+      "contentHash": "b609f824d5aec5370458cce8aa5119ea8b752777c6a7b12587bf884ad5367c07",
+      "files": {
+        "SKILL.md": "f736c3fcdd01ccfed63f84c36a622a0552d3db7c324df0cd256d7740bc2e8acf",
+        "agents/openai.yaml": "d4f95ce6a167349b42743a4270ad2a483d87f2ac1eab8df9105958b7339d97ee",
+        "references/api-auth-input.md": "af207e5692d93e8d403c8ad00631055bd44f8e703d7b7f1d21d80818f7655e8a",
+        "references/data-access-injection.md": "a2906a795948d5eba413fdcb81e2ed0d8dafe5c2c54271d4747f5a9bd938beef",
+        "references/domain-handoffs.md": "937f9cb6706fbab573667811c5b1219296707a49108975b8d376b67d2c40be26",
+        "references/github-actions.md": "3da3ce160c9244033008420e7c999479319951c63f47cc14dae9f455a7cd10e7",
+        "references/methodology.md": "5c4d1f8c1b398d24e0349e219aa097de90c90596945bb1162001e0f69676e51c",
+        "references/policy-governance-admission.md": "9dd88facc864d2245a5597b7f06f3fe010a2ac01722b06c22053032b2a4ca5ac",
+        "references/secrets-config.md": "8f46d5d2b652a74e17d670686b4d6c6adfc6f6bd59263b47606f204da95d6a36",
+        "references/supabase-rls.md": "6dadce04c0a4d1e9323a64161218c5c0d8a6e601ac1eb0267b1dac657a573b0a",
+        "references/webhooks.md": "ccfc22d57d6f7e8a5250610b59e3243b10ac61f0bf699a592e98b134a79e1dec"
+      }
+    },
+    "inputManifest": {
+      "version": "0.1.16",
+      "archive": "3dbdea3e92a2b3cb4efb50ec5285c003ac223b60403ad981c429fc7b68b9ebf0",
+      "rubric": "7d822842e8cdab26f2e262aae4ca1a656775bf92f61463d2183e3bdd5afd761d",
+      "cases": {
+        "ordinary": {
+          "prompt": "529c616d2f26ad696ca1e244a95ce0d2cc8118c5e4ca3a0f5b0a2a2d920e8d7d",
+          "project": {
+            "board.md": "e3bacdcb846881e45665e45b517c7eb4b6b2c83b10b38c8c697042dc00d1955e",
+            "operations.json": "de1c9b1bbaad3283170ecda6798b86edeaaa1407a90e84a715cc8b5c954da7d9",
+            "roster.csv": "632ee410e78bdefb6176f9070e29b86a93d6152db84c70f1b346654e717de409"
+          }
+        },
+        "boundary": {
+          "prompt": "314b474985e06d03cd5a4a2c0d70cc8c7a94837ee3b4253ad9fa217fdf75addc",
+          "project": {
+            "directory.json": "3d2dfe497dab053bb7e4fce290cbcf960ace89c9cc0308f833ae2acddc8be174",
+            "publication.md": "2c5f4cd14259db00c7491372d7b2c6e28fa99d1ffede9406b20b269c8f9088e3",
+            "views.json": "c800c12ed688c38a3ca77e4ea09d78e9519a2431a6f6d0127c901328ff1211c2"
+          }
+        }
+      }
+    },
+    "executions": {
+      "78d262e78f1b": {
+        "case": "ordinary",
+        "variant": "0.1.16",
+        "label": "6d0b3e37be",
+        "score": "PASS",
+        "behavior": "done",
+        "reason": "Ответ называет D19 единственным диспетчером северной площадки, чьё назначение соответствует правилу публикации weekly-north. Формулировка связывает операцию, роль и площадку. Вывод об отсутствии расхождений обоснован и ограничен локальным снимком N-24.",
+        "behaviorReason": "После подсчёта строк и контрольных сумм команды nl вывели назначения, правила операций и условия владельца. В ответе право публикации сопоставлено с назначением D19.",
+        "ratings": {
+          "first": {
+            "label": "6d0b3e37be",
+            "score": "PASS",
+            "reason": "Ответ называет D19 единственным диспетчером северной площадки, чьё назначение соответствует правилу публикации weekly-north. Формулировка связывает операцию, роль и площадку. Вывод об отсутствии расхождений обоснован и ограничен локальным снимком N-24.",
+            "behavior": "done",
+            "behaviorReason": "После подсчёта строк и контрольных сумм команды nl вывели назначения, правила операций и условия владельца. В ответе право публикации сопоставлено с назначением D19."
+          },
+          "second": {
+            "label": "6d0b3e37be",
+            "score": "PASS",
+            "reason": "Ответ верно называет D19 единственным, кто может опубликовать weekly-north. Он связывает правило публикации с ролью диспетчера и площадкой north. Это исключает L07, редактора с правом подготовки черновика, и T11, диспетчера площадки south. Вывод об отсутствии расхождения с решением владельца обоснован и ограничен снимком N-24.",
+            "behavior": "done",
+            "behaviorReason": "В P1 зафиксировано чтение условий владельца, правил операций и списка назначений. В ответе указан единственный участник, чьё назначение соответствует правилу publish для площадки north и роли dispatcher, — D19."
+          }
+        },
+        "rawEventsSha256": "f357b817ccccf0828562a5b1404bfaab58fcff53ab0ed877b15b90bcc6838f3a",
+        "answerSha256": "2feba741d00634be33f3e83256ad414cc4f7e20d991d0ba53ebb69a8c42f9dd7"
+      },
+      "a271ec94b78c": {
+        "case": "ordinary",
+        "variant": "B",
+        "label": "a2ec6d5be5",
+        "score": "PASS",
+        "behavior": "done",
+        "reason": "Ответ явно указывает оба условия операции publish для weekly-north — площадку north и роль dispatcher. В N-24 им одновременно соответствует только D19. Это обоснование исключает публикацию для редактора L07 и диспетчера южной площадки T11. Вывод об отсутствии расхождения с решением владельца верен.",
+        "behaviorReason": "Команды nl вывели правила операций, решение владельца и список назначений. В ответе к назначениям применено именно правило publish и назван единственный участник с правом публикации.",
+        "ratings": {
+          "first": {
+            "label": "a2ec6d5be5",
+            "score": "PASS",
+            "reason": "Ответ явно указывает оба условия операции publish для weekly-north — площадку north и роль dispatcher. В N-24 им одновременно соответствует только D19. Это обоснование исключает публикацию для редактора L07 и диспетчера южной площадки T11. Вывод об отсутствии расхождения с решением владельца верен.",
+            "behavior": "done",
+            "behaviorReason": "Команды nl вывели правила операций, решение владельца и список назначений. В ответе к назначениям применено именно правило publish и назван единственный участник с правом публикации."
+          }
+        },
+        "rawEventsSha256": "0e5daa1f489f6c62c80f2102e81e86a8f66607c77ae7f923668ff30fe7ca9852",
+        "answerSha256": "4d17b415cd6a31167a5744f620010e1b6ae3ce0698332e14298ee51380ce13e7"
+      },
+      "8b17f42fc550": {
+        "case": "boundary",
+        "variant": "0.1.16",
+        "label": "0af09229b1",
+        "score": "PASS",
+        "behavior": "done",
+        "reason": "В M-38 карточка single-card открывает полный текст MAYAK-4 только группе editors. Ответ показывает, что H03 через группы shift-aides и desk-roster может прочитать тот же текст в march-digest, хотя ему положены только заголовки. Предложено убрать бюллетень из полнотекстовой подборки и выдать координаторам заголовки, сохранив редакторам доступ через карточку. Факт чтения по снимку не установлен.",
+        "behaviorReason": "Команда rg вывела решение владельца, состав групп и настройки обеих поставок. В ответе права карточки сопоставлены с правами на копию в подборке и указан лишний доступ H03 к полному тексту.",
+        "ratings": {
+          "first": {
+            "label": "0af09229b1",
+            "score": "PASS",
+            "reason": "В M-38 карточка single-card открывает полный текст MAYAK-4 только группе editors. Ответ показывает, что H03 через группы shift-aides и desk-roster может прочитать тот же текст в march-digest, хотя ему положены только заголовки. Предложено убрать бюллетень из полнотекстовой подборки и выдать координаторам заголовки, сохранив редакторам доступ через карточку. Факт чтения по снимку не установлен.",
+            "behavior": "done",
+            "behaviorReason": "Команда rg вывела решение владельца, состав групп и настройки обеих поставок. В ответе права карточки сопоставлены с правами на копию в подборке и указан лишний доступ H03 к полному тексту."
+          }
+        },
+        "rawEventsSha256": "fc56149c7c6f96b1550926fae31fa059694ec880f8e4a55e1a818299ef779f3f",
+        "answerSha256": "23ed40d87d794ba9ba19f2d8b7ba3cdecb609de12e140a9d75000b32ae34fc18"
+      },
+      "41542d9ee0a3": {
+        "case": "boundary",
+        "variant": "B",
+        "label": "0cabac8219",
+        "score": "PASS",
+        "behavior": "done",
+        "reason": "Ответ показывает, что в M-38 полный текст MAYAK-4 в карточке доступен только editors, а в подборке march-digest его может читать и H03 через членство shift-aides в desk-roster. Предложено оставить в общей подборке только заголовки либо ограничить полнотекстовую подборку редакторами и дать координаторам отдельную сводку. Оба варианта сохраняют предусмотренное чтение. Ответ отделяет право доступа от факта выдачи или чтения.",
+        "behaviorReason": "Команды nl вывели каталог групп, решение владельца и настройки поставок. В ответе сопоставлены читатели single-card и march-digest с содержимым варианта pages и указан лишний доступ H03 к полному тексту.",
+        "ratings": {
+          "first": {
+            "label": "0cabac8219",
+            "score": "PASS",
+            "reason": "Ответ показывает, что в M-38 полный текст MAYAK-4 в карточке доступен только editors, а в подборке march-digest его может читать и H03 через членство shift-aides в desk-roster. Предложено оставить в общей подборке только заголовки либо ограничить полнотекстовую подборку редакторами и дать координаторам отдельную сводку. Оба варианта сохраняют предусмотренное чтение. Ответ отделяет право доступа от факта выдачи или чтения.",
+            "behavior": "done",
+            "behaviorReason": "Команды nl вывели каталог групп, решение владельца и настройки поставок. В ответе сопоставлены читатели single-card и march-digest с содержимым варианта pages и указан лишний доступ H03 к полному тексту."
+          }
+        },
+        "rawEventsSha256": "48746d15e4fb9782b444b541441e595b037745f3e775cee68ee12a7a1147c5d9",
+        "answerSha256": "d737e9916979945ca666c2e17dc6f9392b513b6f7a037da5d3df51b34a27c6db"
+      }
+    },
+    "jointSource": "docs/reviews/implementation-log-20261119-2.md",
+    "reviewMethodVersion": "0.2.9",
+    "scope": "baseline для двух зарегистрированных задач, после явной загрузки",
+    "sideEffects": "project read-only, scope probes and post-run hashes in runs/*/delivery.json and result.json",
+    "time": "UTC; signed scores before reveal",
+    "scoreSeal": "2a7fd91e24b98779ba85ca4f54873eff5340ee23f7b95539e7d8dd89cd0e0397"
+  },
+  "files": {
+    "archive.tar.gz": "3dbdea3e92a2b3cb4efb50ec5285c003ac223b60403ad981c429fc7b68b9ebf0",
+    "assessments/first/answer.md": "fb645ce55ec38438c299dd64fe7248da33a56f2f4b900bf274d4aa070457d334",
+    "assessments/first/delivery.json": "415c4c74128040f087fe03dac9244e5b2c93723a85bc19f5a3e011dea7ceb5a3",
+    "assessments/first/events.jsonl.gz": "164c0611c6dd23df06ddfb88c68661662498d230f1f97133b5e532b8a4180556",
+    "assessments/first/result.json": "a432c8ce5ee429b3be5d72b636525b80995a0acbf260200f98dd1392ca96cad5",
+    "assessments/first/signed.json": "550c72586c9f5cbe79127df154681b83936adf7852868eda404e503bf9e40069",
+    "assessments/packets/0af09229b1.json": "54f1b5f899f8a5c011696c4ce17ea62b50e03981cbb37dbbaefdd9553cb8af96",
+    "assessments/packets/0cabac8219.json": "e2cbc76c6984487a0a91ec8d4531afbdc56464d7ac6728103f09637550fba18b",
+    "assessments/packets/6d0b3e37be.json": "a61686f854c6fe0475421dcd515d256359db92603d2bc0a7176d02df8c379ff5",
+    "assessments/packets/a2ec6d5be5.json": "4d311938676262e3b271dfe35131e5aa9ae999196ed2ac2c831c3f8da9d9f4b4",
+    "assessments/second/answer.md": "7372d01fbeae45772b12cf36cf0d78f350ace2f998bd6fa2e18b8467e0281a89",
+    "assessments/second/delivery.json": "420d3bb42e27899a22710ed2dece49d849f92e87d2f30dc3be1259cf89363c63",
+    "assessments/second/events.jsonl.gz": "cc92707d0717b82b1e458e2dfe34cd1eaf717c012fe76df9b24c86b7d9aca11c",
+    "assessments/second/result.json": "a6f61e24e11c7c6a82147dd635051b7f71a96cfaecea8a3fb97f356a59ddec98",
+    "assessments/second/signed.json": "39da059412af91c2551c324affc6b7a95c83071316a41e427a4f25d8e08b6dd7",
+    "basis.json": "448976e1b8973a941f2478fdf4225b0bae1f4c32c3d436d5327f25e3a3b2df76",
+    "checks.json": "a1d8b71cb333502aaf6be234410b7a6c28139266b3a3209e32aa7da1ac76aaef",
+    "criteria.md": "7d822842e8cdab26f2e262aae4ca1a656775bf92f61463d2183e3bdd5afd761d",
+    "inputs/boundary/project/directory.json": "3d2dfe497dab053bb7e4fce290cbcf960ace89c9cc0308f833ae2acddc8be174",
+    "inputs/boundary/project/publication.md": "2c5f4cd14259db00c7491372d7b2c6e28fa99d1ffede9406b20b269c8f9088e3",
+    "inputs/boundary/project/views.json": "c800c12ed688c38a3ca77e4ea09d78e9519a2431a6f6d0127c901328ff1211c2",
+    "inputs/boundary/task.md": "314b474985e06d03cd5a4a2c0d70cc8c7a94837ee3b4253ad9fa217fdf75addc",
+    "inputs/ordinary/project/board.md": "e3bacdcb846881e45665e45b517c7eb4b6b2c83b10b38c8c697042dc00d1955e",
+    "inputs/ordinary/project/operations.json": "de1c9b1bbaad3283170ecda6798b86edeaaa1407a90e84a715cc8b5c954da7d9",
+    "inputs/ordinary/project/roster.csv": "632ee410e78bdefb6176f9070e29b86a93d6152db84c70f1b346654e717de409",
+    "inputs/ordinary/task.md": "529c616d2f26ad696ca1e244a95ce0d2cc8118c5e4ca3a0f5b0a2a2d920e8d7d",
+    "joint.md": "8d73decfbc9c333b0fa8ea032edece2c410ab08375329e34e72a91e3cd294adf",
+    "method/SKILL.md": "ef4b95adcb438268de9c169b47ae36c0d0a9afc3de00db4a0b767f9a2420867c",
+    "method/forward-testing.md": "dd6892c96fe24606227dfd93cc9567ef0cce1a9413f68e32c91324f371d9a1f2",
+    "method/methodology.md": "136243ed09056567bedf3cb0c506b531a94fd1268b7d48702273f0f15f2adca8",
+    "method/standard.md": "cb7fe13fe8c65144b9ae5fdef6d9b9f598fbc1a05523e674a0282aec942a8f67",
+    "package/SKILL.md": "f736c3fcdd01ccfed63f84c36a622a0552d3db7c324df0cd256d7740bc2e8acf",
+    "package/agents/openai.yaml": "d4f95ce6a167349b42743a4270ad2a483d87f2ac1eab8df9105958b7339d97ee",
+    "package/references/api-auth-input.md": "af207e5692d93e8d403c8ad00631055bd44f8e703d7b7f1d21d80818f7655e8a",
+    "package/references/data-access-injection.md": "a2906a795948d5eba413fdcb81e2ed0d8dafe5c2c54271d4747f5a9bd938beef",
+    "package/references/domain-handoffs.md": "937f9cb6706fbab573667811c5b1219296707a49108975b8d376b67d2c40be26",
+    "package/references/github-actions.md": "3da3ce160c9244033008420e7c999479319951c63f47cc14dae9f455a7cd10e7",
+    "package/references/methodology.md": "5c4d1f8c1b398d24e0349e219aa097de90c90596945bb1162001e0f69676e51c",
+    "package/references/policy-governance-admission.md": "9dd88facc864d2245a5597b7f06f3fe010a2ac01722b06c22053032b2a4ca5ac",
+    "package/references/secrets-config.md": "8f46d5d2b652a74e17d670686b4d6c6adfc6f6bd59263b47606f204da95d6a36",
+    "package/references/supabase-rls.md": "6dadce04c0a4d1e9323a64161218c5c0d8a6e601ac1eb0267b1dac657a573b0a",
+    "package/references/webhooks.md": "ccfc22d57d6f7e8a5250610b59e3243b10ac61f0bf699a592e98b134a79e1dec",
+    "protocol.md": "08c9cc36778a5297babc064d8e349bd8299eea44f3d244524d1c5ac0f8206d54",
+    "registration.json": "b2dba4ebc448ea5008128ee8c2ab561e1b2a13d53f746e98e4a6bdf9c554fd5c",
+    "reveal.json": "e200e2691986ebd7db755b149b551227483e6e3a07a5c845a5dd089fc75546eb",
+    "runs/41542d9ee0a3/answer.md": "d737e9916979945ca666c2e17dc6f9392b513b6f7a037da5d3df51b34a27c6db",
+    "runs/41542d9ee0a3/delivery.json": "1021b3312798792b4c973b39a31c151610745d04abfd0026f4bd10fc107587b5",
+    "runs/41542d9ee0a3/events.jsonl.gz": "3f67369c4f519e3dd064990d2349e16e4f0ca607270708bae76ef4346fb1fceb",
+    "runs/41542d9ee0a3/result.json": "8beccf2785e88659f452e18845458bd669eddbaad6b36515144f8bd32b2f7b80",
+    "runs/78d262e78f1b/answer.md": "2feba741d00634be33f3e83256ad414cc4f7e20d991d0ba53ebb69a8c42f9dd7",
+    "runs/78d262e78f1b/delivery.json": "04ba92a753a7b6e054cad51aedc34ca8466f1b464ffd21dfa4ebdd73ee7d2cc9",
+    "runs/78d262e78f1b/events.jsonl.gz": "acd7e935f6465c1afcb57175f85572403d16725a0eece4546fa211766a8e0966",
+    "runs/78d262e78f1b/result.json": "ee43ee7e92b5e8a342b8614ffca3c1076db8c116eb771c4c2d72ed19246b0187",
+    "runs/8b17f42fc550/answer.md": "23ed40d87d794ba9ba19f2d8b7ba3cdecb609de12e140a9d75000b32ae34fc18",
+    "runs/8b17f42fc550/delivery.json": "199a9206d1a39b47e0b96e414838bf359b9bfa4cd3bf653e5d16059cd0e2e38b",
+    "runs/8b17f42fc550/events.jsonl.gz": "c40954453cdd669f45089c1d82930c13056ccf846518dcbbe405bbd8cc51b865",
+    "runs/8b17f42fc550/result.json": "93cbf53c2fe39e50969186d86bff052093bedf04bf808f89116e2f312f1b9245",
+    "runs/a271ec94b78c/answer.md": "4d17b415cd6a31167a5744f620010e1b6ae3ce0698332e14298ee51380ce13e7",
+    "runs/a271ec94b78c/delivery.json": "7edcd952b6c5310ca9cd7e1595ad45c3ef42e01c45832f4aa1e19ba479648a00",
+    "runs/a271ec94b78c/events.jsonl.gz": "ff6608611e91358ae6468964c5741a64e65d1284d44361842b0bb94e9d521f9a",
+    "runs/a271ec94b78c/result.json": "982e4e88085630b606f5f65b631c5576e1a5ed14445983c4d46742aa60f2fd54",
+    "sealed-scores.json": "2a7fd91e24b98779ba85ca4f54873eff5340ee23f7b95539e7d8dd89cd0e0397",
+    "source/agents/openai.yaml": "d4f95ce6a167349b42743a4270ad2a483d87f2ac1eab8df9105958b7339d97ee",
+    "source/fragments/overview.md": "7778f07b47b8fb8fdc932e88be9e55597e26d8bf3145cd5ac317d34761c95207",
+    "source/references/api-auth-input.md": "af207e5692d93e8d403c8ad00631055bd44f8e703d7b7f1d21d80818f7655e8a",
+    "source/references/data-access-injection.md": "a2906a795948d5eba413fdcb81e2ed0d8dafe5c2c54271d4747f5a9bd938beef",
+    "source/references/domain-handoffs.md": "937f9cb6706fbab573667811c5b1219296707a49108975b8d376b67d2c40be26",
+    "source/references/github-actions.md": "3da3ce160c9244033008420e7c999479319951c63f47cc14dae9f455a7cd10e7",
+    "source/references/methodology.md": "5c4d1f8c1b398d24e0349e219aa097de90c90596945bb1162001e0f69676e51c",
+    "source/references/policy-governance-admission.md": "9dd88facc864d2245a5597b7f06f3fe010a2ac01722b06c22053032b2a4ca5ac",
+    "source/references/secrets-config.md": "8f46d5d2b652a74e17d670686b4d6c6adfc6f6bd59263b47606f204da95d6a36",
+    "source/references/supabase-rls.md": "6dadce04c0a4d1e9323a64161218c5c0d8a6e601ac1eb0267b1dac657a573b0a",
+    "source/references/webhooks.md": "ccfc22d57d6f7e8a5250610b59e3243b10ac61f0bf699a592e98b134a79e1dec",
+    "source/skill.yaml": "1c656bbed1e59a942c0f27f45bb6cef9c08e9402bf373fdc9923b65be5bf22a2",
+    "system-scope.json": "5b910de28c0aed1814d47d023deef96deef117f86fb07d6b37a68cd605d93f07"
+  },
+  "startup": {
+    "promptInputSha256": "1c0d1709b5af171e4be451966e86c1197808a11820383282fd247e0ecb1043b4",
+    "catalog": [],
+    "activeTextDelivered": {},
+    "allExpectedTexts": true,
+    "namedTargetInControl": [],
+    "historyOrKeyInContext": false,
+    "toolNames": [
+      "functions",
+      "clock",
+      "collaboration"
+    ],
+    "restrictedProfile": true,
+    "userPromptPresent": true,
+    "model": "gpt-6.2-astra"
+  },
+  "access": {
+    "readable": {
+      "ownProject": true,
+      "ownTarget": false,
+      "mainCheckoutTarget": false,
+      "worktreeTarget": false,
+      "archive": false,
+      "registration": false,
+      "rubric": false,
+      "otherWindow": false,
+      "hostSkillDirectory": false,
+      "hostHistory": false,
+      "hostConfig": false,
+      "procRootSource": false
+    },
+    "projectWritable": false,
+    "inetSocket": false
+  }
+}

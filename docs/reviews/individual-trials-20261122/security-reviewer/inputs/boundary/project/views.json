@@ -1,0 +1,22 @@
+{
+  "snapshot": "M-38",
+  "views": [
+    {
+      "id": "single-card",
+      "readers": "editors",
+      "variant": "pages",
+      "items": [
+        "MAYAK-4"
+      ]
+    },
+    {
+      "id": "march-digest",
+      "readers": "desk-roster",
+      "variant": "pages",
+      "items": [
+        "VEST-2",
+        "MAYAK-4"
+      ]
+    }
+  ]
+}

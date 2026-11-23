@@ -18,7 +18,7 @@ An explicit snippet or repository scope can be reviewed without a comparison bas
 ## Read-only and Snapshot Rules
 
 - Review is read-only by default.
-- For an immutable commit, PR head/base pair, or commit range, record the exact identities.
+- For an immutable commit, PR head/base pair, or commit range, record the exact identities and their source. Report identity evidence using the [evidence footer](findings-format.md#mandatory-evidence-footer).
 - For a working tree, record the base, all staged, unstaged, and in-scope untracked files, the changed-file list or diffstat, and an aggregate content hash or equivalent reproducible snapshot identity.
 - Capture identity before reviewing and compare it again immediately before reporting.
 - For a combined review-and-fix request, complete the review first. The first remediation mutation makes that verdict stale and requires a fresh or bounded delta review.

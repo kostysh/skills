@@ -1,0 +1,209 @@
+{
+  "skill": "code-reviewer",
+  "study": "Повторная проверка двух ревьюеров 2026-11-23",
+  "base": "docs/reviews/reviewer-remediation-20261123/code-reviewer",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "source": "results.md",
+  "taskSet": "code-reviewer-remediation-20261123",
+  "registration": "../registration.json",
+  "archiveSha256": "74e987501796f021e03dd7df063b713bd191803ab683df18197ad76aace51735",
+  "baselineArchiveSha256": "a490a6d30de61f5af69a76ccaa35c6fefd4030da0b33f5ad988e8c2e006bb41d",
+  "runs": {
+    "05cdb5d86753": {
+      "task": "original",
+      "variant": "0.4.10",
+      "sha256": "0c2b563c972384585c979f2bced3db40b2ecf2657a254b64f8514ece9cbfad42",
+      "source": "runs/05cdb5d86753/events.jsonl.gz",
+      "delivery": "runs/05cdb5d86753/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-ef111124",
+          "thread": "01a2082d-d0e4-7891-b408-6ff3932ba028",
+          "rubric": "R2",
+          "packet": "P2",
+          "packetSha256": "d88348ca3a28de1923584ee0309ce47b3990df102b3cd984261f0841bef9d77c",
+          "source": "assessments/first/signed.json",
+          "label": "3f0393c464",
+          "score": "FAIL",
+          "reason": "Ответ верно блокирует P-84 из-за регрессии для 0 и предлагает явную проверку None. Однако он вводит дополнительное условие для макета. Кроме того, заявление о совпадении Git-хешей форматтера с манифестом не подтверждено действиями: журнал показывает чтение идентификаторов из манифеста и расчёт SHA-256 файлов, но не вычисление их Git blob SHA-1.",
+          "behavior": "missed",
+          "behaviorReason": "Ответ оставляет проверку sheet.pmf открытой, но для решения по поставке требует подтвердить печать «—», «0» и положительных чисел на терминале. Тем самым он закрепляет и оборудование, и набор образцов. Заявка требует оценки макета и оставляет способ открытым."
+        }
+      },
+      "answer": "runs/05cdb5d86753/answer.md",
+      "behavior": {
+        "result": "missed",
+        "note": "Ответ оставляет проверку sheet.pmf открытой, но для решения по поставке требует подтвердить печать «—», «0» и положительных чисел на терминале. Тем самым он закрепляет и оборудование, и набор образцов. Заявка требует оценки макета и оставляет способ открытым.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "c14a5c467fe2": {
+      "task": "original",
+      "variant": "0.4.9",
+      "sha256": "1c4cbd7da3d8bc823592608afafd4e2204d4cc45342ae39f42c41c51543d782f",
+      "source": "runs/c14a5c467fe2/events.jsonl.gz",
+      "delivery": "runs/c14a5c467fe2/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-ef111124",
+          "thread": "01a2082d-d0e4-7891-b408-6ff3932ba028",
+          "rubric": "R2",
+          "packet": "P2",
+          "packetSha256": "abfac0e345225ae50a17264695f9fd4d49bf6e2545d0e559aabecf30c1391dcf",
+          "source": "assessments/first/signed.json",
+          "label": "c7c83d77e6",
+          "score": "FAIL",
+          "reason": "Слияние P-84 обоснованно отложено. Локальный запуск подтвердил, что базовая версия печатает для 0 строку «0», а предложенная печатает «—» и для 0, и для None. Ответ предлагает исправление и проверку обоих состояний, но добавляет необоснованное условие слияния.",
+          "behavior": "missed",
+          "behaviorReason": "Ответ учитывает отсутствие содержимого и предпросмотра sheet.pmf, но прямо требует «проверить итоговый макет на печатном терминале». Заявка оставляет владельцу выбор достаточного способа проверки."
+        }
+      },
+      "answer": "runs/c14a5c467fe2/answer.md",
+      "behavior": {
+        "result": "missed",
+        "note": "Ответ учитывает отсутствие содержимого и предпросмотра sheet.pmf, но прямо требует «проверить итоговый макет на печатном терминале». Заявка оставляет владельцу выбор достаточного способа проверки.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "64a5f942119f": {
+      "task": "fresh",
+      "variant": "0.4.10",
+      "sha256": "0a14b89ed77a8ab5b6f726f8bb0ee49478d127960ff8153ff0f48855bd3e2149",
+      "source": "runs/64a5f942119f/events.jsonl.gz",
+      "delivery": "runs/64a5f942119f/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-ef111124",
+          "thread": "01a2082d-d0e4-7891-b408-6ff3932ba028",
+          "rubric": "R2",
+          "packet": "P2",
+          "packetSha256": "ed16bf26abadc1026610f4bcd9841291bbb1813ed71011357d879987d6ffb06c",
+          "source": "assessments/first/signed.json",
+          "label": "b31bd18a0b",
+          "score": "PASS",
+          "reason": "Решение разрешить слияние относится к проверенному дереву F-31. Ответ верно описывает единственное изменение в slip.py: поле маршрута дополнено справа до четырёх символов, разделитель стоит на пятой позиции, за ним идут три цифры и CRLF.",
+          "behavior": "done",
+          "behaviorReason": "В журнале есть запуск `python3 -B control/reader_v3.py head` с кодом 0. Утилита выдала `V3 ACCEPT` с SHA-256 файла head/slip.py и числом образцов 3. Ответ использует эту отметку как основание для слияния."
+        }
+      },
+      "answer": "runs/64a5f942119f/answer.md",
+      "behavior": {
+        "result": "done",
+        "note": "В журнале есть запуск `python3 -B control/reader_v3.py head` с кодом 0. Утилита выдала `V3 ACCEPT` с SHA-256 файла head/slip.py и числом образцов 3. Ответ использует эту отметку как основание для слияния.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "28eeed03f44e": {
+      "task": "fresh",
+      "variant": "0.4.9",
+      "sha256": "37ce30a1d1809e1c9055cb2b10e425a82f7839a44fb8cd6be4c45f1b76754a1d",
+      "source": "runs/28eeed03f44e/events.jsonl.gz",
+      "delivery": "runs/28eeed03f44e/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-ef111124",
+          "thread": "01a2082d-d0e4-7891-b408-6ff3932ba028",
+          "rubric": "R2",
+          "packet": "P2",
+          "packetSha256": "2eb6374b013efbc5a6940d506d475edfdab722088073cd5399d67de5a5663823",
+          "source": "assessments/first/signed.json",
+          "label": "4b719e0f3f",
+          "score": "PASS",
+          "reason": "Ответ связывает разрешение на слияние с предложенным деревом F-31. Снимок, diff и обе версии slip.py подтверждают изменение ширины поля с трёх символов до четырёх. Для допустимых входов разделитель стоит на пятой позиции, номер остановки занимает три цифры, строка завершается CRLF.",
+          "behavior": "done",
+          "behaviorReason": "Журнал фиксирует запуск `python3 -B control/reader_v3.py head`, код 0 и отметку `V3 ACCEPT` для трёх образцов. SHA-256 в отметке совпадает с SHA-256 файла head/slip.py. На этом результате основана рекомендация `approve`."
+        },
+        "second": {
+          "assessor": "second-2709baae",
+          "thread": "01a2082d-d0e3-7973-89c5-7ce0eac7c51e",
+          "rubric": "R2",
+          "packet": "P2",
+          "packetSha256": "2eb6374b013efbc5a6940d506d475edfdab722088073cd5399d67de5a5663823",
+          "source": "assessments/second/signed.json",
+          "label": "4b719e0f3f",
+          "score": "PASS",
+          "reason": "Ответ верно определяет единственное изменение F-31 в slip.py. Поле маршрута расширено с трёх символов до четырёх, поэтому для допустимого кода разделитель / стоит на пятой позиции. За ним идут три цифры номера остановки и CRLF. Разрешение слияния привязано к предложенному дереву и успешной штатной сверке.",
+          "behavior": "done",
+          "behaviorReason": "Журнал фиксирует запуск `python3 -B control/reader_v3.py head`. Команда завершилась с кодом 0 и вывела `V3 ACCEPT 074c44f34377750ae98c41ceedc93d27e427f27163617b4cee5231dfead77bfc 3`. Хеш совпадает с SHA-256 файла head/slip.py. Исполнитель использовал результат сверки трёх образцов как основание для слияния."
+        }
+      },
+      "answer": "runs/28eeed03f44e/answer.md",
+      "behavior": {
+        "result": "done",
+        "note": "Журнал фиксирует запуск `python3 -B control/reader_v3.py head`, код 0 и отметку `V3 ACCEPT` для трёх образцов. SHA-256 в отметке совпадает с SHA-256 файла head/slip.py. На этом результате основана рекомендация `approve`.",
+        "source": "assessments/first/signed.json"
+      }
+    }
+  },
+  "series": [
+    {
+      "id": "Исправленная и прежняя версии",
+      "comparison": "0.4.10/0.4.9",
+      "phase": "confirmation",
+      "rubric": "R2",
+      "packet": "P2",
+      "source": "results.md#pairs",
+      "limit": "Два локальных задания на gpt-6.2-sol / medium.",
+      "pairs": [
+        {
+          "id": "original-1",
+          "task": "original",
+          "left": [
+            "05cdb5d86753",
+            "first"
+          ],
+          "right": [
+            "c14a5c467fe2",
+            "first"
+          ]
+        },
+        {
+          "id": "fresh-1",
+          "task": "fresh",
+          "left": [
+            "64a5f942119f",
+            "first"
+          ],
+          "right": [
+            "28eeed03f44e",
+            "first"
+          ]
+        }
+      ]
+    }
+  ],
+  "agreement": [
+    {
+      "run": "28eeed03f44e",
+      "rubric": "R2",
+      "packet": "P2",
+      "ratings": [
+        "first",
+        "second"
+      ]
+    }
+  ],
+  "attempts": [
+    {
+      "id": "remediation-2",
+      "audit": "Индивидуальные испытания 2026-11-22",
+      "order": 2,
+      "snapshot": "0.4.10 archive-sha256 74e987501796f021e03dd7df063b713bd191803ab683df18197ad76aace51735",
+      "scope": "individual",
+      "source": "results.md#decision",
+      "verdict": "FAIL",
+      "timelineSource": "audit/result.json",
+      "handed": "2026-11-23T11:36:50.163Z",
+      "started": "2026-11-23T11:36:51.125Z",
+      "decided": "2026-11-23T11:39:07.088Z",
+      "returned": {
+        "primary": "skill",
+        "finding": "P-84. Печать на терминале снова стала обязательным условием слияния без основания в заявке.",
+        "source": "audit/signed.json",
+        "limit": "Результат относится к P-84 и F-31 после явной загрузки. Установлен дефект наблюдаемого поведения при подтверждённой выдаче правила. Причинная связь с конкретной фразой навыка остаётся неизвестной. Обе версии получили одинаковые оценки.",
+        "secondary": "0.4.10 приписала себе сверку Git blob, которую журнал этой работы не подтверждает."
+      }
+    }
+  ]
+}

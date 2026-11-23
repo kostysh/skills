@@ -1,0 +1,6 @@
+[
+  {"job":"S12","station":"line","source":"line.json","action":"automatic","id":"087"},
+  {"job":"S12R","station":"line","source":"line.json","action":"manual","id":"087"},
+  {"job":"C88","station":"verification","source":"candidate.json","action":"automatic","id":"032"},
+  {"job":"S18","station":"line","source":"line.json","action":"automatic","id":"032"}
+]

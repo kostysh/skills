@@ -1,0 +1,47 @@
+{
+  "htmlSha256": "9cf52f33b332780da306b7e7316517932607df5e30fa93b65a7df1f71873c3bc",
+  "source": "index.html",
+  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36",
+  "viewport": [
+    1000,
+    720
+  ],
+  "steps": [
+    {
+      "action": "open page",
+      "observed": {
+        "activeElement": "BODY",
+        "dialogOpen": false,
+        "fieldValue": "",
+        "savedInSecondRow": "Ветер"
+      }
+    },
+    {
+      "action": "Tab, Tab",
+      "observed": {
+        "activeElement": "edit-2",
+        "dialogOpen": false,
+        "fieldValue": "",
+        "savedInSecondRow": "Ветер"
+      }
+    },
+    {
+      "action": "Enter, then fill Позывной with Быстрый",
+      "observed": {
+        "activeElement": "callsign",
+        "dialogOpen": true,
+        "fieldValue": "Быстрый",
+        "savedInSecondRow": "Ветер"
+      }
+    },
+    {
+      "action": "Escape",
+      "observed": {
+        "activeElement": "edit-2",
+        "dialogOpen": false,
+        "fieldValue": "Быстрый",
+        "savedInSecondRow": "Ветер"
+      }
+    }
+  ]
+}

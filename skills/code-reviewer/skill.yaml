@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: code-reviewer
-  source-version: 0.4.9
+  source-version: 0.4.13
   recommended-skill-md-max-bytes: 20000
   description: >-
     Perform read-only review of PRs, diffs, and local branch changes. Use to find
@@ -115,9 +115,9 @@ surfaces:
 sections:
   startHere:
     - Select normal merge-risk review, explicit complexity-only review, or a combined request; preserve the requested mode and leave specialized verdicts with their owners.
-    - Read diff-completeness, findings-format, and severity-confidence on every review; freeze the target and scope plus the applicable base and snapshot. Explicit snippet or repository scope need not have a diff base.
-    - Load only conditional references and available domain skills whose triggers match the changed behavior.
-    - Recheck snapshot identity before reporting and return an evidence-calibrated recommendation with explicit limits.
+    - Read diff-completeness, findings-format, and severity-confidence on every review. Establish the target, scope, applicable base, and starting snapshot.
+    - Open the changed hunks or compare base and head. Check the observed changes against the request, including changes it did not mention. For an explicit snippet or repository scope, read the scoped content without inventing a base.
+    - Load matching conditional references and available domain skills. Recheck snapshot identity before reporting a recommendation with explicit limits.
   whenToUse:
     - Reviewing a pull request, diff, branch, or changed file set
     - '"Review my changes", "find bugs in this patch", "what should block this merge"'
@@ -154,7 +154,7 @@ sections:
       text: Compare the ending snapshot identity to the starting identity. Any reviewed-surface mutation makes the prior result stale and requires a fresh or bounded delta review before approval.
     - id: gotcha-behaviorless-pass
       priority: high
-      text: Do not pass a change only because types/tests/docs look correct when the requested outcome is runtime behavior, browser behavior, security behavior, or data persistence that was not exercised.
+      text: Match the evidence to the claim for each changed item. A claim about runtime, browser, security, or persistence behavior needs evidence from the path that exercises it. When an item's contents are unavailable, use the partial-review handoff in `references/findings-format.md`.
   policies:
     - id: policy-read-only-review
       title: Read-only review boundary

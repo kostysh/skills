@@ -1,0 +1,13 @@
+{
+  "handed": "2026-11-23T11:32:29.973Z",
+  "finished": "2026-11-23T11:33:10.030Z",
+  "exit": 0,
+  "thread": "01a2082d-d0e4-7891-b408-6ff3932ba028",
+  "eventsSha256": "fccc16d0360b1ca802448462cec51bcd339ab6af782f10af99b69acb18077cb8",
+  "events": 23,
+  "stderrSha256": "aada0694dbba42bcbbf8c5c1925788a1651c85a4b3cb539991c96830e8edbb08",
+  "stderrLines": 1,
+  "lastEvent": "turn.completed",
+  "answerSha256": "f54e6baaba350c19de43e47e97bc5478fbaf3a150f1693b4b2b948078a585596",
+  "projectChanged": false
+}

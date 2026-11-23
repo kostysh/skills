@@ -1,0 +1,18 @@
+{
+  "utc": "2026-11-23T11:32:16.825Z",
+  "stage": "before any assessor handoff",
+  "reason": "Git указал случайный родительский временный каталог в сообщении о границе монтирования. Штатная проверка анонимности остановила выдачу. Удалён только идентификатор каталога. Команда, код и смысл сообщения сохранены.",
+  "registeredMethod": "a9e4c5dadfec9cd39fc16e64d01e274645f9748a05765c7adfe1145bed6c810d",
+  "preparation": "70d3282c844efb5a08889b741e459db6bddb7e7e43472e2863d7a1412042cfb6",
+  "packets": {
+    "code-reviewer/assessments/packets/4b719e0f3f.json": "2eb6374b013efbc5a6940d506d475edfdab722088073cd5399d67de5a5663823",
+    "code-reviewer/assessments/packets/c7c83d77e6.json": "abfac0e345225ae50a17264695f9fd4d49bf6e2545d0e559aabecf30c1391dcf",
+    "code-reviewer/assessments/packets/b31bd18a0b.json": "ed16bf26abadc1026610f4bcd9841291bbb1813ed71011357d879987d6ffb06c",
+    "code-reviewer/assessments/packets/3f0393c464.json": "d88348ca3a28de1923584ee0309ce47b3990df102b3cd984261f0841bef9d77c",
+    "spec-conformance-reviewer/assessments/packets/3f46798819.json": "29dad37c679c1618ed7b721b60ee3bb06666100b2455a29af37f92f8817b8577",
+    "spec-conformance-reviewer/assessments/packets/32ddbad622.json": "8d5bc31b0f77d448660ebdbcb496c7c24373e6170069c46682da6b8f38e9535f",
+    "spec-conformance-reviewer/assessments/packets/a1b5c2b384.json": "2393a1492d4b942dc3148eb720bc492a2083a21cde2d9383586b61bd145e54e2",
+    "spec-conformance-reviewer/assessments/packets/405c863ff6.json": "f7b94bdcd4268a4a42274f98729b44e52bc128ca077226b5531154575fa7d354"
+  },
+  "taskRubricAndScoresChanged": false
+}

@@ -1,0 +1,8 @@
+{
+  "profile": "review-station-4",
+  "backend": "station-qa/42",
+  "browserRoutes": [
+    {"method": "GET", "path": "/desk/inbox", "action": "fulfill-local", "body": {"items": [{"duty": "D71", "assignee": "shift-B"}]} }
+  ],
+  "otherwise": "forward"
+}

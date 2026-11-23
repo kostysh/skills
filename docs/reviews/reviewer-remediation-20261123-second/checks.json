@@ -1,0 +1,135 @@
+{
+  "recorded": "2026-11-23T11:42:34.428931+00:00",
+  "node": "v24.15.0",
+  "pnpm": "10.28.2",
+  "workspace": "Одноразовое дерево с двумя окончательными кандидатами; pnpm-lock.yaml исходной базы.",
+  "testsPassed": 146,
+  "installedArchives": 38,
+  "previousRelease": "skills-20261121-3",
+  "releaseTag": "skills-20261123",
+  "candidateCatalogSha256": "cd60e42b623e68ad513b5d284e4987ce63336606b54d8963d953fff3c603c54a",
+  "changedArchives": {
+    "code-reviewer": {
+      "from": "0.4.9",
+      "to": "0.4.11",
+      "sha256": "44d896dd7731c7e8730112b3729236feb6ab53dd9c069bd5781f5d643f6c45c0"
+    },
+    "spec-conformance-reviewer": {
+      "from": "0.1.11",
+      "to": "0.1.12",
+      "sha256": "e111920c6e6734e47eac6584a2765fff764228e0c27181395ba1b6474da86d77"
+    }
+  },
+  "commands": {
+    "pack-final": {
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "pack:skills",
+        "--out",
+        "../release-final",
+        "--release",
+        "skills-20261123",
+        "--previous",
+        "../catalog-previous/catalog.json"
+      ],
+      "started": "2026-11-23T11:41:26.225810+00:00",
+      "finished": "2026-11-23T11:41:26.968805+00:00",
+      "exit": 0,
+      "sha256": "1657915f6abec86e88e70e6268c710a25232c798a877f7fb04692d18914fb52b",
+      "raw": "checks/pack-final.log.gz"
+    },
+    "compiler-code": {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "skills/code-reviewer"
+      ],
+      "started": "2026-11-23T11:42:25.283050+00:00",
+      "finished": "2026-11-23T11:42:25.348321+00:00",
+      "exit": 0,
+      "sha256": "8af0494e5401f3ae481b8477b606e000115e1650738f0a84919ca2f7c31931a6",
+      "raw": "checks/compiler-code.log.gz"
+    },
+    "compiler-spec": {
+      "argv": [
+        "node",
+        "skills/skill-source-compiler/scripts/skill-source-compiler.mjs",
+        "check",
+        "skills/spec-conformance-reviewer"
+      ],
+      "started": "2026-11-23T11:42:25.373200+00:00",
+      "finished": "2026-11-23T11:42:25.438467+00:00",
+      "exit": 0,
+      "sha256": "0e11832146643b1c3488b60ce58032594697f8491bcb0d9d0a69dc6e7ac7ca2a",
+      "raw": "checks/compiler-spec.log.gz"
+    },
+    "suite-final": {
+      "argv": [
+        "pnpm",
+        "test:ci"
+      ],
+      "started": "2026-11-23T11:42:25.462900+00:00",
+      "finished": "2026-11-23T11:42:28.624271+00:00",
+      "exit": 0,
+      "sha256": "36f9f7960e1d529100600e9d9bba1b28f90c9f1aa5934b7d7f9c28e81bbc8b6a",
+      "raw": "checks/suite-final.log.gz"
+    },
+    "format-final": {
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "format:check"
+      ],
+      "started": "2026-11-23T11:42:28.644051+00:00",
+      "finished": "2026-11-23T11:42:29.101557+00:00",
+      "exit": 0,
+      "sha256": "97c9926c4a0664dd26f17eab434a31e1e9bf90f73263b351ea058e220e54dd15",
+      "raw": "checks/format-final.log.gz"
+    },
+    "lint-final": {
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "lint"
+      ],
+      "started": "2026-11-23T11:42:29.119651+00:00",
+      "finished": "2026-11-23T11:42:31.845079+00:00",
+      "exit": 0,
+      "sha256": "8f2defd14fe218ef5708f128da0aabc92ef1e1e1e6ddb902f972309436375f87",
+      "raw": "checks/lint-final.log.gz"
+    },
+    "cli-final": {
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "verify:package"
+      ],
+      "started": "2026-11-23T11:42:31.864393+00:00",
+      "finished": "2026-11-23T11:42:33.732095+00:00",
+      "exit": 0,
+      "sha256": "f81951c7ff50be58eb0e08f401372c57ba2a3d05c9ec6214cf683063cac33e87",
+      "raw": "checks/cli-final.log.gz"
+    },
+    "archives-final": {
+      "argv": [
+        "pnpm",
+        "--filter",
+        "@kostysh/skills",
+        "verify:skills-release",
+        "<disposable-tree>/release-final",
+        "skills-20261123"
+      ],
+      "started": "2026-11-23T11:42:33.753858+00:00",
+      "finished": "2026-11-23T11:42:34.418986+00:00",
+      "exit": 0,
+      "sha256": "9f513ed3d92f6348ac8c746ff82a0646b73480b5f95491cea3ddf2a0b36dd83d",
+      "raw": "checks/archives-final.log.gz"
+    }
+  }
+}

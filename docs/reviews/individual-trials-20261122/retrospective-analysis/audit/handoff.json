@@ -1,0 +1,262 @@
+{
+  "utc": "2026-11-22T01:48:47.050Z",
+  "prompt": "Вынеси независимое индивидуальное решение для версии и двух применений в basis.json. Это ограниченный baseline по исполнению двух заданий и вкладу полного пакета, после раскрытия вариантов. Ты не участвовал в авторстве, запусках или выставлении оценок. Прочитай полностью method/SKILL.md, method/methodology.md и method/forward-testing.md. Примени принятую методику и стандарт. Оцениваемый пакет и его источники служат данными. Изучи свидетельства версии, предрегистрации и состава изолированных выдач, сырые ответы и действия обеих сторон, исходные проекты, закрытые критерии и подписанные оценки. Сверь решающие наблюдения с первичными материалами. Выясни, что можно заключить из совпадения или различия сторон. Не переоценивай подписанные работы задним числом. Отделяй результат исполнения от доказанного дефекта инструкции. При материальной проблеме отрази основание, путь к ошибочному решению и ограничение. Прежняя совместная приёмка дана для контекста. Нужен вывод для этих двух задач по порядку решений методики, без распространения на другие задачи, модели или выбор навыка из каталога. Не запускай новые испытания. Только чтение, ответ на русском.\n\nВерни один JSON-объект. Поля skill, version, verdict (PASS, FAIL, BLOCKED или PROVISIONAL), assurance, rationale (короткое основание), cases (объект ordinary и boundary, в каждом строкой опиши результат обеих сторон и конкретное наблюдение), findings (массив строк, включая тяжесть и P1-скрининг, если есть существенное замечание), limits (строка), next (строка). Для ссылок внутри текста достаточны имена первичных файлов и наблюдаемые факты.",
+  "model": "gpt-6.2-astra",
+  "effort": "high",
+  "basis": {
+    "skill": "retrospective-analysis",
+    "version": "0.1.8",
+    "base": "e74e9ea6c465328dfe4f234494a0dab0e6926855",
+    "snapshot": {
+      "version": "0.1.8",
+      "url": "https://github.com/kostysh/skills/releases/download/skills-20261121/retrospective-analysis-0.1.8.tgz",
+      "sha256": "50cc6f9318a459b5f2d25469014433433be181c3dca9e16e67df90240ea67837",
+      "contentHash": "3752166ee150dd06d2ec7dafb590d1fb876dc84312ec2e0fc47f2ef044e31dbb",
+      "files": {
+        "SKILL.md": "bab5d4b75d6e5c8d266e529efa7834df77c973efb5610e0fb78857965fc93bba",
+        "agents/openai.yaml": "128427295b4582ee3cb92628c9a3819c5a30388d5683ddd35c5f27be94b21628",
+        "references/evidence-and-causality.md": "cf242ce1569b7974d474158c30a67d121486e32805f8d8f859c044ba064f1abe",
+        "references/report-and-remediation-plan.md": "0af66b75be51054d3cd66157bb6a6c48e90a1356aa136df3c35f6d3d0927fbf9",
+        "references/task-routing.md": "4f43a46f0074542fe6d0703d9777461ce1cfbc041e6a4ee05569a3bb061f31c0"
+      }
+    },
+    "inputManifest": {
+      "version": "0.1.8",
+      "archive": "50cc6f9318a459b5f2d25469014433433be181c3dca9e16e67df90240ea67837",
+      "rubric": "e175b52f12ba59f4222db7d982f558cf00508afc9d3c847e973dc9858461a818",
+      "cases": {
+        "ordinary": {
+          "prompt": "b12e562b2a36717be401ece46a7015c1fa20583042272be31aaa214e49e8c11a",
+          "project": {
+            "loads.json": "01e09920542475400a70bb828c0400e4bf7d4f1d4dadac45d68d9e7016cd846a",
+            "o-41.md": "d82035db073c344e81c555c972040f0f809046410fdfcfca2ada497ab45b7a2b",
+            "observed.ndjson": "30887a82297ec30c5e59a659021b5513630dfa1d62e1fd0503fee9f48926dd81",
+            "profiles.json": "046f7cdcaed37c3325d1747629622cd5f03b8f8791b48ce4f66ab06469580ba8",
+            "station.py": "1703b4f5fff7ca3e27c1654c20099fc8fed9c42ae4b269d80e59805673276176"
+          }
+        },
+        "boundary": {
+          "prompt": "4d2606a4dc8d59997ef01567383aa351207b92fc43d2f18a0e25a5ad756ecc2b",
+          "project": {
+            "candidate.json": "527dbab4d2be68c27bf542c199688e9410f805f79ababcbb1321a17d53b3208f",
+            "line.json": "c72ffc2d285e7767e4961b435c0cf8f16c658c3973b22f86068c1b6f0dc36006",
+            "observed.ndjson": "7fd7e251948500d19444a0f2af025c1b34cf6b3d00d59d874cc438b1ae952824",
+            "printer.py": "3002bb907985eb34da19f9f7f6082528aaca931a455aaafc5af26a915ee563df",
+            "shift.md": "36014e70dba9567759f6165d8a153b1a8e6e979e62e3c2462534d0da39520656",
+            "shots.json": "206ad76f456d585c5f16037b5f2d61bb0372eaedcf1dde55e86d52d1887b1d1e"
+          }
+        }
+      }
+    },
+    "executions": {
+      "c28040444112": {
+        "case": "ordinary",
+        "variant": "0.1.8",
+        "label": "b70cd986c8",
+        "score": "PASS",
+        "behavior": "missed",
+        "reason": "Указана причина выпуска G41 без листа обозначений: профиль G-12 требовал только карту. Ответ отдельно подтверждает приёмку исправленного G41R и действие нового контроля. По журналу G-13 остановил неполный G47 до отправки и пропустил полный G50, который принял получатель. Закрытие случая обосновано в пределах учебной модели участка G до G50.",
+        "behaviorReason": "Зафиксирован просмотр журнала, состава заказов, профилей и кода `station.py`. Вывод о G47 и G50 опирается на готовые записи. Запуск модели для сверки в представленных действиях отсутствует.",
+        "ratings": {
+          "first": {
+            "label": "b70cd986c8",
+            "score": "PASS",
+            "reason": "Указана причина выпуска G41 без листа обозначений: профиль G-12 требовал только карту. Ответ отдельно подтверждает приёмку исправленного G41R и действие нового контроля. По журналу G-13 остановил неполный G47 до отправки и пропустил полный G50, который принял получатель. Закрытие случая обосновано в пределах учебной модели участка G до G50.",
+            "behavior": "missed",
+            "behaviorReason": "Зафиксирован просмотр журнала, состава заказов, профилей и кода `station.py`. Вывод о G47 и G50 опирается на готовые записи. Запуск модели для сверки в представленных действиях отсутствует."
+          }
+        },
+        "rawEventsSha256": "73cb7f9ce3bfbd716a35679f2ebc0a5df37b445bca7a1bf5bdf13e0971e93bea",
+        "answerSha256": "0e65c227dcd14e934c2355d8e5ccc7d2dc142b9d96d6fcec701636fcfd7db33f"
+      },
+      "cb76cd32aa08": {
+        "case": "ordinary",
+        "variant": "B",
+        "label": "dc8a55defd",
+        "score": "PASS",
+        "behavior": "done",
+        "reason": "Ответ объясняет возврат G41: профиль G-12 разрешал отправить одну карту, а получателю требовался ещё и лист обозначений. Получатель принял доукомплектованный G41R. Вывод о том, что дополнительная работа по O-41 не требуется, обоснован и ограничен участком G до рейса G50 включительно.",
+        "behaviorReason": "Автор отделил исправление заказа G41R от проверки профиля G-13 по журналу: склад остановил неполный G47 до отправки, а полный G50 отправил, и получатель его принял. Представленные команды подтверждают чтение входных данных, профилей, кода и журнала. Отдельный запуск station.py не зафиксирован.",
+        "ratings": {
+          "first": {
+            "label": "dc8a55defd",
+            "score": "PASS",
+            "reason": "Ответ связывает возврат G41 с правилом G-12, которое разрешало отправку без листа обозначений. Приёмка доукомплектованного G41R закрыла исходный заказ. Действие G-13 подтверждено отдельно на участке G. Склад задержал неполный G47 до отправки, а полный G50 получатель принял. Вывод об отсутствии дальнейшей работы ограничен этим случаем до G50 включительно.",
+            "behavior": "missed",
+            "behaviorReason": "В представленных действиях зафиксировано чтение `station.py`, входных данных, профилей и журнала. Команды запуска модели и сравнения её вывода с журналом нет."
+          },
+          "second": {
+            "label": "dc8a55defd",
+            "score": "PASS",
+            "reason": "Ответ верно объясняет возврат G41: профиль G-12 разрешал отправить карту без обязательного для получателя листа обозначений. Получатель принял доукомплектованный G41R. При новом профиле G-13 склад остановил неполный G47 до отправки, а полный G50 дошёл до получателя и был принят. Вывод о закрытии случая обоснован и ограничен участком G до рейса G50 включительно.",
+            "behavior": "done",
+            "behaviorReason": "Автор отдельно обосновал исправление заказа приёмкой G41R, а действие нового контроля — остановкой G47 до отправки. В представленных действиях зафиксировано чтение профилей, состава заказов, кода модели и журнала. Запуск модели не зафиксирован."
+          },
+          "adjudicator": {
+            "label": "dc8a55defd",
+            "score": "PASS",
+            "reason": "Ответ объясняет возврат G41: профиль G-12 разрешал отправить одну карту, а получателю требовался ещё и лист обозначений. Получатель принял доукомплектованный G41R. Вывод о том, что дополнительная работа по O-41 не требуется, обоснован и ограничен участком G до рейса G50 включительно.",
+            "behavior": "done",
+            "behaviorReason": "Автор отделил исправление заказа G41R от проверки профиля G-13 по журналу: склад остановил неполный G47 до отправки, а полный G50 отправил, и получатель его принял. Представленные команды подтверждают чтение входных данных, профилей, кода и журнала. Отдельный запуск station.py не зафиксирован."
+          }
+        },
+        "rawEventsSha256": "30604e289bf3031f59cc4945159d47fc3034128fbfa7ec296707da3a6d91b10b",
+        "answerSha256": "a469eb8c293f3f8f41cda501da0e5ae37323c73039b901f679af47703cd8f669"
+      },
+      "3905b2c44d06": {
+        "case": "boundary",
+        "variant": "0.1.8",
+        "label": "d4c28169fd",
+        "score": "PASS",
+        "behavior": "done",
+        "reason": "Показано, как числовой профиль превратил «087» в «87» на S12 и как ручная перепечатка закрыла заказ S12R. На одинаковом входе «032» кандидат прошёл приёмку на C88, а рабочая линия получила возврат на S18. Причина выбора профиля оставлена открытой. Начальнику смены предложено запросить установку проверенного профиля, сверить SHA-256 установленного файла и подтвердить автоматическую печать и приёмку на самой линии.",
+        "behaviorReason": "Команда проверки запустила `printer.py`, разобрала его вывод и журнал как записи JSON и сравнила их. Проверка завершилась с кодом 0 и сообщила о совпадении всех четырёх записей, включая контрольные суммы и результаты выдачи.",
+        "ratings": {
+          "first": {
+            "label": "d4c28169fd",
+            "score": "PASS",
+            "reason": "Показано, как числовой профиль превратил «087» в «87» на S12 и как ручная перепечатка закрыла заказ S12R. На одинаковом входе «032» кандидат прошёл приёмку на C88, а рабочая линия получила возврат на S18. Причина выбора профиля оставлена открытой. Начальнику смены предложено запросить установку проверенного профиля, сверить SHA-256 установленного файла и подтвердить автоматическую печать и приёмку на самой линии.",
+            "behavior": "done",
+            "behaviorReason": "Команда проверки запустила `printer.py`, разобрала его вывод и журнал как записи JSON и сравнила их. Проверка завершилась с кодом 0 и сообщила о совпадении всех четырёх записей, включая контрольные суммы и результаты выдачи."
+          }
+        },
+        "rawEventsSha256": "0065a2abe8392263de782d20221bd6dbfdea4e564dbae3d72562eda246e40440",
+        "answerSha256": "ea2a016e095b4a8706c022dec30b69a33b519f63b4c54f6d5ac91c619d7c46ad"
+      },
+      "e6d39f3d7e1b": {
+        "case": "boundary",
+        "variant": "B",
+        "label": "fbf6491aec",
+        "score": "FAIL",
+        "behavior": "done",
+        "reason": "Ответ верно различает три результата. После ручной перепечатки S12R приняли, кандидат на C88 сохранил «032», а рабочая линия на S18 напечатала «32» и получила возврат. Существенный пропуск касается следующего шага. Предложены сверка контрольной суммы и пробная печать, но пропущено поручение ответственному установить или активировать на линии проверенный профиль. Расхождение профилей уже подтверждено.",
+        "behaviorReason": "Выполнена команда `python3 -B printer.py | diff -u observed.ndjson -`. Сравнение завершилось с кодом 0 без вывода. Все четыре записи модели совпали с журналом.",
+        "ratings": {
+          "first": {
+            "label": "fbf6491aec",
+            "score": "FAIL",
+            "reason": "Ответ верно различает три результата. После ручной перепечатки S12R приняли, кандидат на C88 сохранил «032», а рабочая линия на S18 напечатала «32» и получила возврат. Существенный пропуск касается следующего шага. Предложены сверка контрольной суммы и пробная печать, но пропущено поручение ответственному установить или активировать на линии проверенный профиль. Расхождение профилей уже подтверждено.",
+            "behavior": "done",
+            "behaviorReason": "Выполнена команда `python3 -B printer.py | diff -u observed.ndjson -`. Сравнение завершилось с кодом 0 без вывода. Все четыре записи модели совпали с журналом."
+          }
+        },
+        "rawEventsSha256": "7a3059d14d96819f1ff3ff7922beec1d52d9a0f5c16e56c6c02429f4be3b9299",
+        "answerSha256": "43b03428a3591dd735c65e1787b8a329a2c80ea5a7ff6907840806deba0f5ac5"
+      }
+    },
+    "jointSource": "docs/reviews/v5-solo-independent-reaudit.md",
+    "reviewMethodVersion": "0.2.9",
+    "scope": "baseline для двух зарегистрированных задач, после явной загрузки",
+    "sideEffects": "project read-only, scope probes and post-run hashes in runs/*/delivery.json and result.json",
+    "time": "UTC; signed scores before reveal",
+    "scoreSeal": "2a7fd91e24b98779ba85ca4f54873eff5340ee23f7b95539e7d8dd89cd0e0397"
+  },
+  "files": {
+    "archive.tar.gz": "50cc6f9318a459b5f2d25469014433433be181c3dca9e16e67df90240ea67837",
+    "assessments/adjudicator/answer.md": "6231fe8ea040a277da8d2dc0e7c45dd0244034246d71c27ee56bfe89cc8ad223",
+    "assessments/adjudicator/delivery.json": "733aa4e6793b67e68b9a2585d15a7445f8d17c4a86ddfb1510c872f19c0a35dc",
+    "assessments/adjudicator/events.jsonl.gz": "5203c967b97497e5e00f895a5a2973774f95d8baefeb24579a04a397bd191473",
+    "assessments/adjudicator/result.json": "0e664b376875dcbed5a1801c37db8c9985d336a7aae84c225dd68ccd7248aea9",
+    "assessments/adjudicator/signed.json": "95bd9cbdd41f6f07e4774780cc0619e290579939eb0a7cffa10199afdd3a074d",
+    "assessments/first/answer.md": "8e6bbd03d259e69d32759545d01c30c04872a6fe4bcee479fd348bea75817971",
+    "assessments/first/delivery.json": "ec71ca069ef5623b2e64b2a83adf6db6d783ec4bdd924a4c09d31f74fd58e266",
+    "assessments/first/events.jsonl.gz": "e2672d9e4c44078679738aacaff1cf93cd72644c173340f9ca724ef4c1861851",
+    "assessments/first/result.json": "fc133cffd3a768c1e64ee978dc778cb5281448759127c42aedd252d21711a8de",
+    "assessments/first/signed.json": "315727ba831a932b89060a83025b8d16d629150e400a22915e2ba742703ffcf8",
+    "assessments/packets/b70cd986c8.json": "cce056e71707d5a5ca668dda774642656d1045ac65eb406ee3f76b743b14619d",
+    "assessments/packets/d4c28169fd.json": "9d3e63369665fdff63ccc018912455f04c3e5cdc74a38102254e4ca34903fb30",
+    "assessments/packets/dc8a55defd.json": "d3b341b69c51aa73a36692adbfdb1366eacf2df34b8c8f59437649fc4f85d3ea",
+    "assessments/packets/fbf6491aec.json": "6e3da6a3d47d153362fc215842bdcef2b9733222122f90d29104ed59a02c8c0d",
+    "assessments/second/answer.md": "5dc7d36ad9131381abda495f66e3b11509a30e2b032306b650cd2b9ddc3da95a",
+    "assessments/second/delivery.json": "cba5647d49e2d67e50a88717a17a6e4692666ef512408642ca06341d674b76a7",
+    "assessments/second/events.jsonl.gz": "ad0687cf0a870930232e7da53989469bf7e53d2e95a98d48908e4d8104339805",
+    "assessments/second/result.json": "b14a95c51a9c96766437abf7f522fa94db77e7d871c698212653d081bf24e36c",
+    "assessments/second/signed.json": "4e74d22646bb037de68b475f9f9f8886b5988565ca9f943ff2ff2d86b63768ac",
+    "basis.json": "654b326142ee54d0cb2210126a2aab8d417c8d68a5a52cdf2c66df492bfa93be",
+    "checks.json": "a1d8b71cb333502aaf6be234410b7a6c28139266b3a3209e32aa7da1ac76aaef",
+    "criteria.md": "e175b52f12ba59f4222db7d982f558cf00508afc9d3c847e973dc9858461a818",
+    "inputs/boundary/project/candidate.json": "527dbab4d2be68c27bf542c199688e9410f805f79ababcbb1321a17d53b3208f",
+    "inputs/boundary/project/line.json": "c72ffc2d285e7767e4961b435c0cf8f16c658c3973b22f86068c1b6f0dc36006",
+    "inputs/boundary/project/observed.ndjson": "7fd7e251948500d19444a0f2af025c1b34cf6b3d00d59d874cc438b1ae952824",
+    "inputs/boundary/project/printer.py": "3002bb907985eb34da19f9f7f6082528aaca931a455aaafc5af26a915ee563df",
+    "inputs/boundary/project/shift.md": "36014e70dba9567759f6165d8a153b1a8e6e979e62e3c2462534d0da39520656",
+    "inputs/boundary/project/shots.json": "206ad76f456d585c5f16037b5f2d61bb0372eaedcf1dde55e86d52d1887b1d1e",
+    "inputs/boundary/task.md": "4d2606a4dc8d59997ef01567383aa351207b92fc43d2f18a0e25a5ad756ecc2b",
+    "inputs/ordinary/project/loads.json": "01e09920542475400a70bb828c0400e4bf7d4f1d4dadac45d68d9e7016cd846a",
+    "inputs/ordinary/project/o-41.md": "d82035db073c344e81c555c972040f0f809046410fdfcfca2ada497ab45b7a2b",
+    "inputs/ordinary/project/observed.ndjson": "30887a82297ec30c5e59a659021b5513630dfa1d62e1fd0503fee9f48926dd81",
+    "inputs/ordinary/project/profiles.json": "046f7cdcaed37c3325d1747629622cd5f03b8f8791b48ce4f66ab06469580ba8",
+    "inputs/ordinary/project/station.py": "1703b4f5fff7ca3e27c1654c20099fc8fed9c42ae4b269d80e59805673276176",
+    "inputs/ordinary/task.md": "b12e562b2a36717be401ece46a7015c1fa20583042272be31aaa214e49e8c11a",
+    "joint.md": "09f3627ee1d09e51dafaec005c531d65adfc2206e956b59863766e31f440f9f8",
+    "method/SKILL.md": "ef4b95adcb438268de9c169b47ae36c0d0a9afc3de00db4a0b767f9a2420867c",
+    "method/forward-testing.md": "dd6892c96fe24606227dfd93cc9567ef0cce1a9413f68e32c91324f371d9a1f2",
+    "method/methodology.md": "136243ed09056567bedf3cb0c506b531a94fd1268b7d48702273f0f15f2adca8",
+    "method/standard.md": "cb7fe13fe8c65144b9ae5fdef6d9b9f598fbc1a05523e674a0282aec942a8f67",
+    "package/SKILL.md": "bab5d4b75d6e5c8d266e529efa7834df77c973efb5610e0fb78857965fc93bba",
+    "package/agents/openai.yaml": "128427295b4582ee3cb92628c9a3819c5a30388d5683ddd35c5f27be94b21628",
+    "package/references/evidence-and-causality.md": "cf242ce1569b7974d474158c30a67d121486e32805f8d8f859c044ba064f1abe",
+    "package/references/report-and-remediation-plan.md": "0af66b75be51054d3cd66157bb6a6c48e90a1356aa136df3c35f6d3d0927fbf9",
+    "package/references/task-routing.md": "4f43a46f0074542fe6d0703d9777461ce1cfbc041e6a4ee05569a3bb061f31c0",
+    "protocol.md": "08c9cc36778a5297babc064d8e349bd8299eea44f3d244524d1c5ac0f8206d54",
+    "registration.json": "b2dba4ebc448ea5008128ee8c2ab561e1b2a13d53f746e98e4a6bdf9c554fd5c",
+    "reveal.json": "e200e2691986ebd7db755b149b551227483e6e3a07a5c845a5dd089fc75546eb",
+    "runs/3905b2c44d06/answer.md": "ea2a016e095b4a8706c022dec30b69a33b519f63b4c54f6d5ac91c619d7c46ad",
+    "runs/3905b2c44d06/delivery.json": "ccb77b11639234f49cff26fcc994bb816d5c0857dc79fb3b2d7d019b3b827ab3",
+    "runs/3905b2c44d06/events.jsonl.gz": "1aab15702a597682503c0f025f8a46b784e82d206d710c2905266a010976f316",
+    "runs/3905b2c44d06/result.json": "d9e864a25cbfbf543abb0ab5acb79a82410c990c659976a7e1a18188953c7432",
+    "runs/c28040444112/answer.md": "0e65c227dcd14e934c2355d8e5ccc7d2dc142b9d96d6fcec701636fcfd7db33f",
+    "runs/c28040444112/delivery.json": "39a324d745420998fa1b659df4c5fc6abd5cccdfa3204f4474d0a7413bb2defa",
+    "runs/c28040444112/events.jsonl.gz": "150e0e93c5b101dfd0896b16cd20e6796df7638800877664b39949068f5a2206",
+    "runs/c28040444112/result.json": "ee6138343f909a70650b89395c3a72ecae9c5e473b6f4190200119e0676bac66",
+    "runs/cb76cd32aa08/answer.md": "a469eb8c293f3f8f41cda501da0e5ae37323c73039b901f679af47703cd8f669",
+    "runs/cb76cd32aa08/delivery.json": "9bf1ea45123ce9781cdf063d468b9a4bd1dbbc3e12b5bb03517b7d098b832b9b",
+    "runs/cb76cd32aa08/events.jsonl.gz": "aecb6461d402b27631f5d64084328876a4df54744367b798245ac2988919013b",
+    "runs/cb76cd32aa08/result.json": "1c8483da38985641727ae496cc27602ac4225b74a6285b1bfd6abe6aa9ac30d2",
+    "runs/e6d39f3d7e1b/answer.md": "43b03428a3591dd735c65e1787b8a329a2c80ea5a7ff6907840806deba0f5ac5",
+    "runs/e6d39f3d7e1b/delivery.json": "6a55b32ae83ea2daa377fb0033f5e12c382e1f0b87bf2fbbba24503e18fdde6b",
+    "runs/e6d39f3d7e1b/events.jsonl.gz": "e7de341f553ae36e1612e1695c08ecf9101ac5f7fd7e0ae1888820a538bc8ec1",
+    "runs/e6d39f3d7e1b/result.json": "d2bf579e57774a997d237e1b5dad29d576e49d8fed6df20bff9ffe45cfc42c3c",
+    "sealed-scores.json": "2a7fd91e24b98779ba85ca4f54873eff5340ee23f7b95539e7d8dd89cd0e0397",
+    "source/agents/openai.yaml": "128427295b4582ee3cb92628c9a3819c5a30388d5683ddd35c5f27be94b21628",
+    "source/references/evidence-and-causality.md": "cf242ce1569b7974d474158c30a67d121486e32805f8d8f859c044ba064f1abe",
+    "source/references/report-and-remediation-plan.md": "0af66b75be51054d3cd66157bb6a6c48e90a1356aa136df3c35f6d3d0927fbf9",
+    "source/references/task-routing.md": "4f43a46f0074542fe6d0703d9777461ce1cfbc041e6a4ee05569a3bb061f31c0",
+    "source/skill.yaml": "edcfd4c9d8a48096562aac31896ae001dfc9124811e5bc89b0029233417692a6",
+    "system-scope.json": "5b910de28c0aed1814d47d023deef96deef117f86fb07d6b37a68cd605d93f07"
+  },
+  "startup": {
+    "promptInputSha256": "d948b95b6bf5b8f2878d944881f2daaca556c6f55145518ebe3bd12ea0abb5ad",
+    "catalog": [],
+    "activeTextDelivered": {},
+    "allExpectedTexts": true,
+    "namedTargetInControl": [],
+    "historyOrKeyInContext": false,
+    "toolNames": [
+      "functions",
+      "clock",
+      "collaboration"
+    ],
+    "restrictedProfile": true,
+    "userPromptPresent": true,
+    "model": "gpt-6.2-astra"
+  },
+  "access": {
+    "readable": {
+      "ownProject": true,
+      "ownTarget": false,
+      "mainCheckoutTarget": false,
+      "worktreeTarget": false,
+      "archive": false,
+      "registration": false,
+      "rubric": false,
+      "otherWindow": false,
+      "hostSkillDirectory": false,
+      "hostHistory": false,
+      "hostConfig": false,
+      "procRootSource": false
+    },
+    "projectWritable": false,
+    "inetSocket": false
+  }
+}

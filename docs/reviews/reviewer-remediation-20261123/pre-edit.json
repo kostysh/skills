@@ -1,0 +1,113 @@
+{
+  "frozenUtc": "2026-11-23T11:23:41.823154Z",
+  "base": "5acfd9ba3e4c26f3f20a8dd2bb29fa0104a88076",
+  "preparedBy": "cases_a",
+  "targetPackageChangesAtFreeze": [],
+  "comparison": "Одинаковые R2 и материалы для исходной и исправленной версий каждой пары. Первичные решения R1 относятся к прежней серии.",
+  "hashConvention": "SHA-256 каждого файла. Для комплекта SHA-256 от строк <hex>  <путь от каталога случая> LF, пути по возрастанию.",
+  "skills": {
+    "code-reviewer": {
+      "baseline": {
+        "path": "docs/reviews/individual-trials-20261122/packages/code-reviewer-0.4.9.tar.gz",
+        "sha256": "a490a6d30de61f5af69a76ccaa35c6fefd4030da0b33f5ad988e8c2e006bb41d"
+      },
+      "R1": {
+        "path": "docs/reviews/individual-trials-20261122/code-reviewer/rubric.md",
+        "sha256": "c11f9bdecd4601600279c90fa8f9d475ee129c2cb346e636c518256e7bf71eec"
+      },
+      "R2": {
+        "path": "docs/reviews/reviewer-remediation-20261123/code-reviewer/rubric.md",
+        "sha256": "c8259ce4a7b6b0220a14fcff60c2f114edfa18008ae2596e44049a17d39dcce7"
+      },
+      "original": {
+        "id": "P-84",
+        "path": "docs/reviews/individual-trials-20261122/code-reviewer/inputs/boundary",
+        "files": {
+          "project/base/counter.py": "1014f6d751ecb17eac72e8c338a6e6a2b3e1d91f0c1166b746ed709c498af40a",
+          "project/changes.diff": "1be7e5f2b5ae4e1f289cada39e6a632695cf99ed3d6ccbeed70177b9a45d16b6",
+          "project/head/counter.py": "ab224a8bc113c8e61ced42f27ebdc0a1bc6162bae04648a5b5b880277764ce66",
+          "project/snapshot.md": "c4ad90715e2d255821a82c37c5d6462d6d94f333857b2e4652452bd46d82c8cb",
+          "project/ticket.md": "160d7f9310edda96cc309979ee8863ce6f094f5c8e8cafae565df5979fa1954e",
+          "task.md": "faf89d490bcdd65f75b496b637ca9fa7390eb1fb5742a7857284996e56145320"
+        },
+        "sha256": "10056b3bfe24fc7d311653c02667bf2230c4ffea567b3b28145785ac0b6a7a9f"
+      },
+      "fresh": {
+        "id": "F-31",
+        "path": "docs/reviews/reviewer-remediation-20261123/code-reviewer/inputs/fresh",
+        "files": {
+          "project/acceptance.md": "82351301ab8bf1f6923b2fcd7a59520a05171d3cfe9038c292ce4255987affcf",
+          "project/base/slip.py": "7e1254d7aa6dca5bd109280626db7aa91dc46684ad28470c398b4dc2af0049f2",
+          "project/changes.diff": "5f5ee32bab7191474fdc69fd73b69ec8f3162ddbf2434379d00e893a0e6cd6a2",
+          "project/control/reader_v3.py": "a7f24b8336dac6d02e3939f6e23f202659d54abaf3b4db1174ad33d000490869",
+          "project/head/slip.py": "074c44f34377750ae98c41ceedc93d27e427f27163617b4cee5231dfead77bfc",
+          "project/request.md": "219aa829060baad0c8f7fcd7f19b82c0e22b3d41a445f0220d8c59084878f865",
+          "project/snapshot.md": "281380afa3f55f49170328cf0c6150ff126c6048ce0214fdc5dc746cd0dd44ca",
+          "task.md": "5129c212d81005b71be375327474212291651a1e83f026edb7f22ce63917b566"
+        },
+        "sha256": "a817e1639abc58cfbceeb2f8600ab9c78dca3dd32c92f485753d9b0e2ede926d"
+      }
+    },
+    "spec-conformance-reviewer": {
+      "baseline": {
+        "path": "docs/reviews/individual-trials-20261122/packages/spec-conformance-reviewer-0.1.11.tar.gz",
+        "sha256": "292cad3bebc2b5e01fa6b97fa967ba1e0ed549e0f8fdb8dff9667c6bb3395a9b"
+      },
+      "R1": {
+        "path": "docs/reviews/individual-trials-20261122/spec-conformance-reviewer/rubric.md",
+        "sha256": "91a0a4026fce0547d6f9ba2d047e4e158a12f211899ade10872826a3af86c86e"
+      },
+      "R2": {
+        "path": "docs/reviews/reviewer-remediation-20261123/spec-conformance-reviewer/rubric.md",
+        "sha256": "29634d145ed171738ffbb7376ee25f9d7d0334c54d0130df1427140f20235c0b"
+      },
+      "original": {
+        "id": "K-17",
+        "path": "docs/reviews/individual-trials-20261122/spec-conformance-reviewer/inputs/ordinary",
+        "files": {
+          "project/SHA256SUMS": "ff521308f266f91d9f3e7784fa0dc05f12ba7c2ae7933b381701b9be31ba0079",
+          "project/check_cli.py": "066c47c012a843150ca0fd2573736c845082d50c972eeccd0555ebeb8643f5c9",
+          "project/delivery.txt": "d9db754b986dd9043fbdae2d69722f13fd8e0f5f98068f588f3d7f4678f9b8fd",
+          "project/route_tag.py": "78c00e919b979214cd818c7dca505a06af1ceb2be3ba8631db30ed3414d16e28",
+          "project/spec.md": "ae4fca728f3e24e31af2846a43d80bdcfab6f3ca636da23d09b014eb06d571b1",
+          "task.md": "899afa1db726746946074fc71e6cc438faee70b2ec69d6d88e47d2c67a59f437"
+        },
+        "sha256": "3070130a2bd70162103682f40d0561a37e61c5388033b18489ff62b8a3d55664"
+      },
+      "fresh": {
+        "id": "G-64",
+        "path": "docs/reviews/reviewer-remediation-20261123/spec-conformance-reviewer/inputs/fresh",
+        "files": {
+          "project/bench.tsv": "8043f2d778cc566105c3885c1e5a2f7a11ab04dab1e4fa949bf322995fd42621",
+          "project/contract.md": "f4021b6629aedb8d149f75352a2a6fbddb76c53d64ee437f4c026225b304b9ef",
+          "project/passport.md": "ec9b09f12edf820e3d0342ff2ecc4a93546c4edd58f779cb4d344c808c928875",
+          "project/profile.json": "e30c5880d4f0867bc570426ff18ca0f4e93ee111081b01d0f5c1b2e220fe571a",
+          "task.md": "dbfdea4c5af96d94b29fe10a6358e8d28ed1f8a8c1f8fcf49594cac1c515470e"
+        },
+        "sha256": "229a88fbf5eb20c47a14ece7efaa5862db914a7982fe61cac973860fd26172c4"
+      }
+    }
+  },
+  "authorCalibration": {
+    "F-31": {
+      "head": {
+        "exit": 0,
+        "stdout": "V3 ACCEPT 074c44f34377750ae98c41ceedc93d27e427f27163617b4cee5231dfead77bfc 3"
+      },
+      "base": {
+        "exit": 1,
+        "stdout": "V3 REJECT F 0 b'F  /000\\r\\n'"
+      }
+    },
+    "G-64": {
+      "profileSha256": "e30c5880d4f0867bc570426ff18ca0f4e93ee111081b01d0f5c1b2e220fe571a",
+      "applies": "A429",
+      "scopeLimits": {
+        "A416": "до окончательной сборки",
+        "A424": "другой экземпляр",
+        "M221": "наблюдатель монтажной группы"
+      }
+    },
+    "scope": "Локальная калибровка автора случаев. Модель не запускалась; физическое оборудование не использовалось."
+  }
+}

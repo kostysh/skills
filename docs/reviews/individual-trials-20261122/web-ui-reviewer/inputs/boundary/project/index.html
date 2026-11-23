@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Каталог приборов</title>
+<main>
+  <h1>Каталог приборов</h1>
+  <nav aria-label="Разделы каталога">
+    <a href="#working" data-section="working">Работающие</a>
+    <a href="#reserve" data-section="reserve">Резерв</a>
+  </nav>
+
+  <section id="working" aria-labelledby="w-heading">
+    <h2 id="w-heading">Работающие</h2>
+    <ul><li>П-04 · Весы
+      <details><summary>Карточка</summary>Цех 2. Введён в 2022 году.</details>
+      <details><summary>Журнал измерений</summary>12 марта · 2,8 кг.</details>
+    </li></ul>
+  </section>
+  <section id="reserve" aria-labelledby="r-heading" hidden>
+    <h2 id="r-heading">Резерв</h2>
+    <ul><li>П-08 · Барометр</li></ul>
+  </section>
+</main>
+<script>
+  function showSection() {
+    const active = location.hash === '#reserve' ? 'reserve' : 'working';
+    document.querySelectorAll('section').forEach(section => {
+      section.hidden = section.id !== active;
+    });
+  }
+  window.addEventListener('hashchange', showSection);
+  showSection();
+</script>
+</html>

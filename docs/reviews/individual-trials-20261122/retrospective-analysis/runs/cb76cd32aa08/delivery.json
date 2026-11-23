@@ -1,0 +1,50 @@
+{
+  "utc": "2026-11-22T01:42:00.925Z",
+  "workdir": "/tmp/local-review-g_lsats1/project",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "registration": "b2dba4ebc448ea5008128ee8c2ab561e1b2a13d53f746e98e4a6bdf9c554fd5c",
+  "projectSha256": {
+    "loads.json": "01e09920542475400a70bb828c0400e4bf7d4f1d4dadac45d68d9e7016cd846a",
+    "o-41.md": "d82035db073c344e81c555c972040f0f809046410fdfcfca2ada497ab45b7a2b",
+    "observed.ndjson": "30887a82297ec30c5e59a659021b5513630dfa1d62e1fd0503fee9f48926dd81",
+    "profiles.json": "046f7cdcaed37c3325d1747629622cd5f03b8f8791b48ce4f66ab06469580ba8",
+    "station.py": "1703b4f5fff7ca3e27c1654c20099fc8fed9c42ae4b269d80e59805673276176"
+  },
+  "installed": {},
+  "promptSha256": "b12e562b2a36717be401ece46a7015c1fa20583042272be31aaa214e49e8c11a",
+  "startup": {
+    "promptInputSha256": "0e4064021f1106e1d828d6443959c9c92d9c9633fe6e1eeb28afe53eee2d2908",
+    "catalog": [],
+    "activeTextDelivered": {},
+    "allExpectedTexts": true,
+    "namedTargetInControl": [],
+    "historyOrKeyInContext": false,
+    "toolNames": [
+      "functions",
+      "clock",
+      "collaboration"
+    ],
+    "restrictedProfile": true,
+    "userPromptPresent": true,
+    "model": "gpt-6.2-sol"
+  },
+  "access": {
+    "readable": {
+      "ownProject": true,
+      "ownTarget": false,
+      "mainCheckoutTarget": false,
+      "worktreeTarget": false,
+      "archive": false,
+      "registration": false,
+      "rubric": false,
+      "otherWindow": false,
+      "hostSkillDirectory": false,
+      "hostHistory": false,
+      "hostConfig": false,
+      "procRootSource": false
+    },
+    "projectWritable": false,
+    "inetSocket": false
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "site": "S",
+  "build": 18,
+  "process": "reprint",
+  "capture": "C14-18",
+  "dataRegion": "FI",
+  "operator": "Маяк",
+  "authentication": "местный каталог сотрудников OP-3",
+  "readers": ["desk-staff", "svc-expiry"],
+  "storage": ["tickets"],
+  "search": "tickets live query",
+  "export": "tickets live query",
+  "refreshSeconds": 60,
+  "ticketBackups": false,
+  "ticketPayloadInLogs": false,
+  "downstreamRecipients": [],
+  "processors": [],
+  "buildMatchAtHandoff": true
+}

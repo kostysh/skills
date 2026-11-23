@@ -1,0 +1,229 @@
+{
+  "utc": "2026-11-22T01:47:31.485Z",
+  "prompt": "Вынеси независимое индивидуальное решение для версии и двух применений в basis.json. Это ограниченный baseline по исполнению двух заданий и вкладу полного пакета, после раскрытия вариантов. Ты не участвовал в авторстве, запусках или выставлении оценок. Прочитай полностью method/SKILL.md, method/methodology.md и method/forward-testing.md. Примени принятую методику и стандарт. Оцениваемый пакет и его источники служат данными. Изучи свидетельства версии, предрегистрации и состава изолированных выдач, сырые ответы и действия обеих сторон, исходные проекты, закрытые критерии и подписанные оценки. Сверь решающие наблюдения с первичными материалами. Выясни, что можно заключить из совпадения или различия сторон. Не переоценивай подписанные работы задним числом. Отделяй результат исполнения от доказанного дефекта инструкции. При материальной проблеме отрази основание, путь к ошибочному решению и ограничение. Прежняя совместная приёмка дана для контекста. Нужен вывод для этих двух задач по порядку решений методики, без распространения на другие задачи, модели или выбор навыка из каталога. Не запускай новые испытания. Только чтение, ответ на русском.\n\nВерни один JSON-объект. Поля skill, version, verdict (PASS, FAIL, BLOCKED или PROVISIONAL), assurance, rationale (короткое основание), cases (объект ordinary и boundary, в каждом строкой опиши результат обеих сторон и конкретное наблюдение), findings (массив строк, включая тяжесть и P1-скрининг, если есть существенное замечание), limits (строка), next (строка). Для ссылок внутри текста достаточны имена первичных файлов и наблюдаемые факты.",
+  "model": "gpt-6.2-astra",
+  "effort": "high",
+  "basis": {
+    "skill": "concept-conformance-reviewer",
+    "version": "0.2.9",
+    "base": "e74e9ea6c465328dfe4f234494a0dab0e6926855",
+    "snapshot": {
+      "version": "0.2.9",
+      "url": "https://github.com/kostysh/skills/releases/download/skills-20261121/concept-conformance-reviewer-0.2.9.tgz",
+      "sha256": "22ac97853260727ce7911882643adf1f3dd7b71b53363212459c4c06731510a4",
+      "contentHash": "06d74ebf09835aed6d6094525fec6094a178ce8688245afb966417f559a95f00",
+      "files": {
+        "SKILL.md": "a87f9f567af7c454d802403fa8d21062f1cb3371131635921809dc6609d4d6be"
+      }
+    },
+    "inputManifest": {
+      "version": "0.2.9",
+      "archive": "22ac97853260727ce7911882643adf1f3dd7b71b53363212459c4c06731510a4",
+      "rubric": "eb952597cbb388ab1ba8de001a8fda41e2878bc314f57cdad0170e6fbc647873",
+      "cases": {
+        "ordinary": {
+          "prompt": "b5d43ff09b2632e352da8e82e457b1efce5bac4eda90807d63440191d517616e",
+          "project": {
+            "product.md": "fc40c00b0a92904a9fb32fa95b853c940ba1c32b27ae95621f8eff36b27d4701",
+            "t-14.md": "8d47175eda83a10c64b4a352fab5d4e22e305b3423b9117ea0d021f247482e4c"
+          }
+        },
+        "boundary": {
+          "prompt": "e9e41695dbf13534b44148f89720573e54e3f9903b5f1d1dcadfe30a3aa07e5e",
+          "project": {
+            "charter.md": "2c5065d5de6f8fc33ca78727aa3598762d9bf6e9d14869621da8db3287fc216b",
+            "delivery.md": "381e4ae3cd56a8ff83d95de885bad474aee2bb9f77f2df3fcff1f866b328a54d",
+            "station-profile.json": "93fe1f792cd380a0d46b79b0b9fe0aef1f7edefdd388feebc73963a40ced1771",
+            "trace.ndjson": "63222cca360a2e8d229985df9c4bb6ab85ca9ff76171dc8c028a570e5959aebd"
+          }
+        }
+      }
+    },
+    "executions": {
+      "d31591553cda": {
+        "case": "ordinary",
+        "variant": "0.2.9",
+        "label": "c9586a90c4",
+        "score": "PASS",
+        "behavior": "done",
+        "reason": "Предложенная приёмка признана готовой к передаче в разработку. Ответ указывает, как запись обмена подтвердит позицию после M2 в первом запросе, а сверка журналов — обработку M3 и M4 по порядку и ровно по одному разу. Те же условия действуют на границе страниц и за секунду до истечения суток. Работа реализации остаётся предметом будущих прогонов.",
+        "behaviorReason": "Исполнитель прочитал концепцию и проект приёмки, разрешил команде взять T-14 в работу и назвал конкретные наблюдения у штатной службы табло после восстановления. Представленные команды выполняли только поиск и чтение.",
+        "ratings": {
+          "first": {
+            "label": "c9586a90c4",
+            "score": "PASS",
+            "reason": "Предложенная приёмка признана готовой к передаче в разработку. Ответ указывает, как запись обмена подтвердит позицию после M2 в первом запросе, а сверка журналов — обработку M3 и M4 по порядку и ровно по одному разу. Те же условия действуют на границе страниц и за секунду до истечения суток. Работа реализации остаётся предметом будущих прогонов.",
+            "behavior": "done",
+            "behaviorReason": "Исполнитель прочитал концепцию и проект приёмки, разрешил команде взять T-14 в работу и назвал конкретные наблюдения у штатной службы табло после восстановления. Представленные команды выполняли только поиск и чтение."
+          }
+        },
+        "rawEventsSha256": "915f0935d6216180de7c53502dc355a03778f691160dc1f6f6c9a10d7552e4a9",
+        "answerSha256": "867e124b922dfc75eb39e2add18cf6d4d55ab5d6cd2b07645a85d7b954f9f515"
+      },
+      "b7bb6bc650b6": {
+        "case": "ordinary",
+        "variant": "B",
+        "label": "0a02853532",
+        "score": "PASS",
+        "behavior": "done",
+        "reason": "Ответ разрешает передать T-14 в разработку в утверждённых границах. Первый запрос службы табло после перезапуска должен содержать позицию после M2. Журнал должен показать M3 и M4 по порядку, без пропусков и повторов, в том числе у границы суток. Результаты прогонов ещё предстоит получить.",
+        "behaviorReason": "Исполнитель прочитал решение совета и проект приёмки. Разрешение на передачу в разработку он связал с будущей проверкой запроса и журнала штатного потребителя после восстановления. В журнале действий зафиксированы поиск и чтение документов.",
+        "ratings": {
+          "first": {
+            "label": "0a02853532",
+            "score": "PASS",
+            "reason": "Ответ разрешает передать T-14 в разработку в утверждённых границах. Первый запрос службы табло после перезапуска должен содержать позицию после M2. Журнал должен показать M3 и M4 по порядку, без пропусков и повторов, в том числе у границы суток. Результаты прогонов ещё предстоит получить.",
+            "behavior": "done",
+            "behaviorReason": "Исполнитель прочитал решение совета и проект приёмки. Разрешение на передачу в разработку он связал с будущей проверкой запроса и журнала штатного потребителя после восстановления. В журнале действий зафиксированы поиск и чтение документов."
+          },
+          "second": {
+            "label": "0a02853532",
+            "score": "PASS",
+            "reason": "Проект приёмки соответствует границам T-14. После разрыва связи и перезапуска первый запрос службы табло должен содержать сохранённую позицию после M2. Журнал должен показать M3 и M4 по порядку, без пропусков и повторов, и по одной записи M1 и M2. Ответ сохраняет эти условия для проверки за секунду до истечения суток и верно относит пассажирский экран к T-22.",
+            "behavior": "done",
+            "behaviorReason": "Исполнитель разрешил передать T-14 в разработку с предложенной приёмкой и связал решение с будущей проверкой запроса и журнала штатной службы табло. В P1 зафиксированы только поиск и чтение материалов проекта. Приёмочный прогон не запускался, файлы не менялись."
+          }
+        },
+        "rawEventsSha256": "694146102b3f3035081c7ebdf9a7585d0a89b48d81ef263339b80fa057da3f97",
+        "answerSha256": "41898d87dedc70d4a6525278035eba31596c18fbb9b53bcf7f0ed34fd81edd46"
+      },
+      "be5069bde360": {
+        "case": "boundary",
+        "variant": "0.2.9",
+        "label": "183e94f001",
+        "score": "PASS",
+        "behavior": "done",
+        "reason": "В итог итерации включены запись передачи E902 и выдача квитанции отправителю. Ответ верно объясняет, что D71 в обеих сессиях поступило из фиксированного ответа профиля. D-8 остаётся открытым, поскольку доступность назначения в рабочей очереди получателя после повторного входа ещё предстоит подтвердить.",
+        "behaviorReason": "Исполнитель прочитал профиль стенда и события прогона. Из-за подстановки он отложил закрытие и предложил связать оба ответа штатного сервера с новым назначением, которое получатель открывает на другом терминале до и после повторного входа. Зафиксирован разбор документов. Новый прогон в журнале действий отсутствует.",
+        "ratings": {
+          "first": {
+            "label": "183e94f001",
+            "score": "PASS",
+            "reason": "В итог итерации включены запись передачи E902 и выдача квитанции отправителю. Ответ верно объясняет, что D71 в обеих сессиях поступило из фиксированного ответа профиля. D-8 остаётся открытым, поскольку доступность назначения в рабочей очереди получателя после повторного входа ещё предстоит подтвердить.",
+            "behavior": "done",
+            "behaviorReason": "Исполнитель прочитал профиль стенда и события прогона. Из-за подстановки он отложил закрытие и предложил связать оба ответа штатного сервера с новым назначением, которое получатель открывает на другом терминале до и после повторного входа. Зафиксирован разбор документов. Новый прогон в журнале действий отсутствует."
+          }
+        },
+        "rawEventsSha256": "04d2aa2998269d1c030b82b2fafaf12c8a2a53d89a5cc79deb2bfe2d1e7b59ca",
+        "answerSha256": "b59095e36e055b52c7cd9ecf48f911b8f74e051c8206c285f9f50672075eca40"
+      },
+      "e66f0069fdd2": {
+        "case": "boundary",
+        "variant": "B",
+        "label": "91ac4bacba",
+        "score": "PASS",
+        "behavior": "done",
+        "reason": "D-8 обоснованно оставлен открытым. Запись E902 и ответ 201 с квитанцией подтверждают приём команды передачи. На шагах 4 и 7 профиль стенда подставил один и тот же ответ на GET /desk/inbox. Получение D71 через штатную очередь остаётся непроверенным.",
+        "behaviorReason": "Исполнитель прочитал профиль и протокол прогона 91, связал оба показа D71 с подстановкой и указал проверку для закрытия. Получатель должен увидеть свежее назначение с другого терминала до и после повторного входа, оба раза по ответу сервера. В журнале действий зафиксировано только чтение материалов.",
+        "ratings": {
+          "first": {
+            "label": "91ac4bacba",
+            "score": "PASS",
+            "reason": "D-8 обоснованно оставлен открытым. Запись E902 и ответ 201 с квитанцией подтверждают приём команды передачи. На шагах 4 и 7 профиль стенда подставил один и тот же ответ на GET /desk/inbox. Получение D71 через штатную очередь остаётся непроверенным.",
+            "behavior": "done",
+            "behaviorReason": "Исполнитель прочитал профиль и протокол прогона 91, связал оба показа D71 с подстановкой и указал проверку для закрытия. Получатель должен увидеть свежее назначение с другого терминала до и после повторного входа, оба раза по ответу сервера. В журнале действий зафиксировано только чтение материалов."
+          }
+        },
+        "rawEventsSha256": "17134331efd68ed5215fa8f141cbad28623903ef541408490c3f5f8a327b6f9f",
+        "answerSha256": "bdd4afcace7c8097aa91c526de254eba281c8f4e6b3a13966aa565f298aa563f"
+      }
+    },
+    "jointSource": "docs/reviews/implementation-log-20261119-2.md",
+    "reviewMethodVersion": "0.2.9",
+    "scope": "baseline для двух зарегистрированных задач, после явной загрузки",
+    "sideEffects": "project read-only, scope probes and post-run hashes in runs/*/delivery.json and result.json",
+    "time": "UTC; signed scores before reveal",
+    "scoreSeal": "2a7fd91e24b98779ba85ca4f54873eff5340ee23f7b95539e7d8dd89cd0e0397"
+  },
+  "files": {
+    "archive.tar.gz": "22ac97853260727ce7911882643adf1f3dd7b71b53363212459c4c06731510a4",
+    "assessments/first/answer.md": "674937bc8f96e92316ddeb4d1ed8ad0e6a6df10a308954093fe9ab7d726c2f37",
+    "assessments/first/delivery.json": "855197073ad6731edbf325561a44988e262935ec0457073044303d263b21130e",
+    "assessments/first/events.jsonl.gz": "8d7f454c3e4453996cccc31c59a2fa769ebc687ae99f9874919aaf687e52b6b2",
+    "assessments/first/result.json": "f28ff289d2d05e1abf3033813d39b19a2f170cb7e859c9ffaf7df16b058546d4",
+    "assessments/first/signed.json": "d79acf481eea9790ecca474030947362c59c76c0365d97aa6b1f3ae6ecc84ca2",
+    "assessments/packets/0a02853532.json": "9dc7d2dc360ac0a0670788520e670baa8b3b1ebbd0175587f03970bf66fae2cc",
+    "assessments/packets/183e94f001.json": "a7a017ae67779f105b0058f9aac45bd8023bacd80078b8abe62177b537e25ced",
+    "assessments/packets/91ac4bacba.json": "b64e60e7932ef7f0d09ddd623fc0ece48812b8e27270802248ac6034cdb99938",
+    "assessments/packets/c9586a90c4.json": "9a2799a0a9f160be47028707e3d93bbcacaa0bb126bf784fb3a2b40d67ce9c34",
+    "assessments/second/answer.md": "d37c477aac2ab1be36e425e7c574d474b4270cf9aebd72d586e8de1c85c46583",
+    "assessments/second/delivery.json": "fc857b711f3823c328bc9635db21412e7f53d2eb7d5e6b2833ac6d02532e6558",
+    "assessments/second/events.jsonl.gz": "767ce06c99a9be23d537ca690eef7a8c9312bdfe3de6113d13c6cbc2685b194e",
+    "assessments/second/result.json": "c9863b8d4a17512267adb442461e232351973059753bf629d5b077b824b108da",
+    "assessments/second/signed.json": "a2363cdbb6fed6071ed0ff3ec44835847b15a82f93d651787a4e780ad3979d56",
+    "basis.json": "6a4cae5d5d850ec33e1afbc6f0e08577853910918d4fc5eeedbb6f19b03d2ca4",
+    "checks.json": "a1d8b71cb333502aaf6be234410b7a6c28139266b3a3209e32aa7da1ac76aaef",
+    "criteria.md": "eb952597cbb388ab1ba8de001a8fda41e2878bc314f57cdad0170e6fbc647873",
+    "inputs/boundary/project/charter.md": "2c5065d5de6f8fc33ca78727aa3598762d9bf6e9d14869621da8db3287fc216b",
+    "inputs/boundary/project/delivery.md": "381e4ae3cd56a8ff83d95de885bad474aee2bb9f77f2df3fcff1f866b328a54d",
+    "inputs/boundary/project/station-profile.json": "93fe1f792cd380a0d46b79b0b9fe0aef1f7edefdd388feebc73963a40ced1771",
+    "inputs/boundary/project/trace.ndjson": "63222cca360a2e8d229985df9c4bb6ab85ca9ff76171dc8c028a570e5959aebd",
+    "inputs/boundary/task.md": "e9e41695dbf13534b44148f89720573e54e3f9903b5f1d1dcadfe30a3aa07e5e",
+    "inputs/ordinary/project/product.md": "fc40c00b0a92904a9fb32fa95b853c940ba1c32b27ae95621f8eff36b27d4701",
+    "inputs/ordinary/project/t-14.md": "8d47175eda83a10c64b4a352fab5d4e22e305b3423b9117ea0d021f247482e4c",
+    "inputs/ordinary/task.md": "b5d43ff09b2632e352da8e82e457b1efce5bac4eda90807d63440191d517616e",
+    "joint.md": "8d73decfbc9c333b0fa8ea032edece2c410ab08375329e34e72a91e3cd294adf",
+    "method/SKILL.md": "ef4b95adcb438268de9c169b47ae36c0d0a9afc3de00db4a0b767f9a2420867c",
+    "method/forward-testing.md": "dd6892c96fe24606227dfd93cc9567ef0cce1a9413f68e32c91324f371d9a1f2",
+    "method/methodology.md": "136243ed09056567bedf3cb0c506b531a94fd1268b7d48702273f0f15f2adca8",
+    "method/standard.md": "cb7fe13fe8c65144b9ae5fdef6d9b9f598fbc1a05523e674a0282aec942a8f67",
+    "package/SKILL.md": "a87f9f567af7c454d802403fa8d21062f1cb3371131635921809dc6609d4d6be",
+    "protocol.md": "08c9cc36778a5297babc064d8e349bd8299eea44f3d244524d1c5ac0f8206d54",
+    "registration.json": "b2dba4ebc448ea5008128ee8c2ab561e1b2a13d53f746e98e4a6bdf9c554fd5c",
+    "reveal.json": "e200e2691986ebd7db755b149b551227483e6e3a07a5c845a5dd089fc75546eb",
+    "runs/b7bb6bc650b6/answer.md": "41898d87dedc70d4a6525278035eba31596c18fbb9b53bcf7f0ed34fd81edd46",
+    "runs/b7bb6bc650b6/delivery.json": "bde010880538444c2933406567ba6ce6240373f230d99c5d54c8f3abb96f4af2",
+    "runs/b7bb6bc650b6/events.jsonl.gz": "a52f8953c0ee84c3c37a504f7873a8cd42b6eae3ae74a82de2933329521ed50f",
+    "runs/b7bb6bc650b6/result.json": "f41e088406321eb717bd89281158aedfbaf0ae6b8dae0fe1638346104afb43d8",
+    "runs/be5069bde360/answer.md": "b59095e36e055b52c7cd9ecf48f911b8f74e051c8206c285f9f50672075eca40",
+    "runs/be5069bde360/delivery.json": "8b54200e5260bcff618b0190185b171c9bb09c031478e27e706caba0ee6badbf",
+    "runs/be5069bde360/events.jsonl.gz": "c4d37a1ebc78a2b417397298a7eecac9f3ed9afda33c976c73b62178c38f6e94",
+    "runs/be5069bde360/result.json": "f003ed30d8bd3d67f8b257c17754fcfd8d75bb39bc15a4f48b245f859f6b83e3",
+    "runs/d31591553cda/answer.md": "867e124b922dfc75eb39e2add18cf6d4d55ab5d6cd2b07645a85d7b954f9f515",
+    "runs/d31591553cda/delivery.json": "377533a029dad1d6ebe5d5a010931c53ffe61a88a51ff84a2d01a6601560e979",
+    "runs/d31591553cda/events.jsonl.gz": "cf3bf709fbf774db3912f38dfbfd4dbd76b683fcb59e2d39b7aaedb72035ee6f",
+    "runs/d31591553cda/result.json": "e12f1b7af4b62d51458e79f3d22dd52440ea47724bd944a16e7cef77e91c2bdb",
+    "runs/e66f0069fdd2/answer.md": "bdd4afcace7c8097aa91c526de254eba281c8f4e6b3a13966aa565f298aa563f",
+    "runs/e66f0069fdd2/delivery.json": "014e043796aeb914cb6060d7c184acb8758c5be5246f15971d33ce36d8dbfe52",
+    "runs/e66f0069fdd2/events.jsonl.gz": "669c5fddfe63faa6d8f32387dd13619b0ef78a6c4a8c8a582def315f012ec6f8",
+    "runs/e66f0069fdd2/result.json": "39525746cc5fd93953ebf0df64d3337dea0c88029ac2ff04d01b7e2e26471097",
+    "sealed-scores.json": "2a7fd91e24b98779ba85ca4f54873eff5340ee23f7b95539e7d8dd89cd0e0397",
+    "source/fragments/overview.md": "95e418a61f926fac5ffda491eb0a30ae9459062b33a93d96917933a1bb953471",
+    "source/skill.yaml": "8236ca8d20ddbe69a60213afac1e6b160f253d20331d5fba70d67b0f60d287c4",
+    "system-scope.json": "5b910de28c0aed1814d47d023deef96deef117f86fb07d6b37a68cd605d93f07"
+  },
+  "startup": {
+    "promptInputSha256": "959112506bebc1fec0d1aacc05a19c97541a5a648787ef9c051a6df76ffdec85",
+    "catalog": [],
+    "activeTextDelivered": {},
+    "allExpectedTexts": true,
+    "namedTargetInControl": [],
+    "historyOrKeyInContext": false,
+    "toolNames": [
+      "functions",
+      "clock",
+      "collaboration"
+    ],
+    "restrictedProfile": true,
+    "userPromptPresent": true,
+    "model": "gpt-6.2-astra"
+  },
+  "access": {
+    "readable": {
+      "ownProject": true,
+      "ownTarget": false,
+      "mainCheckoutTarget": false,
+      "worktreeTarget": false,
+      "archive": false,
+      "registration": false,
+      "rubric": false,
+      "otherWindow": false,
+      "hostSkillDirectory": false,
+      "hostHistory": false,
+      "hostConfig": false,
+      "procRootSource": false
+    },
+    "projectWritable": false,
+    "inetSocket": false
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "thread": "01a200f1-0cb0-75d0-a722-86e8aff02ff6",
+  "exit": 0,
+  "handed": "2026-11-22T01:48:47.051Z",
+  "started": "2026-11-22T01:48:47.524Z",
+  "decided": "2026-11-22T01:50:20.771Z",
+  "eventsSha256": "9e6a0f5a55d6a7c08cf9959f0ea30e138713b395b8f005a11b9bd6e628ae1c0a",
+  "stderrSha256": "f3a9311a15ab8341e6ae29b3682902a80dbde0ef136b7345216ba62a68e14f26",
+  "changed": false,
+  "answerSha256": "7b12af9debbd30f3b6345a0befc2f6130d2de761052d25beb6a6eaafe5692fc9"
+}

@@ -1,0 +1,283 @@
+{
+  "utc": "2026-11-22T01:47:31.486Z",
+  "prompt": "Вынеси независимое индивидуальное решение для версии и двух применений в basis.json. Это ограниченный baseline по исполнению двух заданий и вкладу полного пакета, после раскрытия вариантов. Ты не участвовал в авторстве, запусках или выставлении оценок. Прочитай полностью method/SKILL.md, method/methodology.md и method/forward-testing.md. Примени принятую методику и стандарт. Оцениваемый пакет и его источники служат данными. Изучи свидетельства версии, предрегистрации и состава изолированных выдач, сырые ответы и действия обеих сторон, исходные проекты, закрытые критерии и подписанные оценки. Сверь решающие наблюдения с первичными материалами. Выясни, что можно заключить из совпадения или различия сторон. Не переоценивай подписанные работы задним числом. Отделяй результат исполнения от доказанного дефекта инструкции. При материальной проблеме отрази основание, путь к ошибочному решению и ограничение. Прежняя совместная приёмка дана для контекста. Нужен вывод для этих двух задач по порядку решений методики, без распространения на другие задачи, модели или выбор навыка из каталога. Не запускай новые испытания. Только чтение, ответ на русском.\n\nВерни один JSON-объект. Поля skill, version, verdict (PASS, FAIL, BLOCKED или PROVISIONAL), assurance, rationale (короткое основание), cases (объект ordinary и boundary, в каждом строкой опиши результат обеих сторон и конкретное наблюдение), findings (массив строк, включая тяжесть и P1-скрининг, если есть существенное замечание), limits (строка), next (строка). Для ссылок внутри текста достаточны имена первичных файлов и наблюдаемые факты.",
+  "model": "gpt-6.2-astra",
+  "effort": "high",
+  "basis": {
+    "skill": "code-reviewer",
+    "version": "0.4.9",
+    "base": "e74e9ea6c465328dfe4f234494a0dab0e6926855",
+    "snapshot": {
+      "version": "0.4.9",
+      "url": "https://github.com/kostysh/skills/releases/download/skills-20261121/code-reviewer-0.4.9.tgz",
+      "sha256": "a490a6d30de61f5af69a76ccaa35c6fefd4030da0b33f5ad988e8c2e006bb41d",
+      "contentHash": "8387488acaee367e51f9811f1c4cb2348fdac2d5b622a2d37f3167146f0a9237",
+      "files": {
+        "SKILL.md": "9c8f73500414ce97513b1f1113bd0f967f6940ff22f4a85c5e9dfe2f03e3b846",
+        "agents/openai.yaml": "04ffae6319cbefd3d74507e3be353bae081e22b65bdbc8c003c646ff4e72279a",
+        "assets/fixtures/policy-admission-review.md": "1a474f2391e00f7c0cd5c86de4d6b1b0b27ecce618aef203c2e8cba49fa54f2b",
+        "assets/fixtures/runtime-gate-deployed-path-review.md": "16936898bf81546b8a974d790fd0efa8d081ebef4c9eb458dc3bcc29a6d28646",
+        "assets/pr-review-template.md": "fff1b427e594c9b59ba6cc857d9a47db2aaae613fde371d6135b10c1170bb0cb",
+        "assets/review-checklist.md": "98c7ca18eb8d5bf30e7f142ddea8f122b88ad3e7f3da5fed2d48d0d735aa788a",
+        "references/complexity-only.md": "b058c376f2e41582006c96fad4de174d48ca02b5631e323ad5444431b89aabf4",
+        "references/diff-completeness.md": "078d87a26c1eecd8b9e746ef3793fcfcca41e81a1838fbe96146a24fca8b4e29",
+        "references/domain-routing.md": "6ae9f975e69c60368e099317906439c66ffc7972e711d7481231b2770ab082b8",
+        "references/findings-format.md": "0ac383d2a53f8ffdf5fceab464609e621f93cd91e5661de0e9026862f5b36824",
+        "references/methodology.md": "2f594fd8352bcb3fe04fa77fb59c2a5753e6b63d9c71be83c8f641c14b504cd8",
+        "references/policy-admission-merge-risk.md": "96e6a2ffa7d47c86e955de9dd521fca1325636aa0a103bf67005df37dfcf79a6",
+        "references/runtime-gate-deployed-path.md": "9b98df5833a0a776f17daff12b2ef57230c873b92545054e707e913cb5b5b6f9",
+        "references/severity-confidence.md": "0cede58ece812426647e84e3c5b1a2a4e6ce75073c71e70d7dcb14b806e7bcb4",
+        "references/spec-pass.md": "85732c5c085b77815c2fa2175740cd8d1f532cc86de4f91f4294c684d79b65a7"
+      }
+    },
+    "inputManifest": {
+      "version": "0.4.9",
+      "archive": "a490a6d30de61f5af69a76ccaa35c6fefd4030da0b33f5ad988e8c2e006bb41d",
+      "rubric": "c11f9bdecd4601600279c90fa8f9d475ee129c2cb346e636c518256e7bf71eec",
+      "cases": {
+        "ordinary": {
+          "prompt": "7d3b85e52aa3c65fe494bd4f8d030aa017a465d2127f3f47248583ac9ac6afc1",
+          "project": {
+            "base/check_labels.py": "a5c85a978774c62aa212be314a44214c84a2718eafae3d73febea3638da870b9",
+            "base/labels.py": "6be4adc03828e45476b06cb2d62cd8cd3d766f59ffbbcda19e7ac8cc58015246",
+            "changes.diff": "89f3b994996f526f068a51443c4704853e682ae2fa971166b7b86e9843252562",
+            "head/check_labels.py": "75e5e62d8c15271438521466f27d01116deacf2a8a986b3a96335f6c415a84b5",
+            "head/labels.py": "7e962c36d68d6388e540191ada362e14ee71364417e28a2caae5236468e8dc2f",
+            "snapshot.md": "ac2c9a0d947756672a337d79e17894c8491cf12bd364d257bab99106a16c6f60",
+            "ticket.md": "d918244b7c1a37a1e24ca3a43d4ff5a5c1de8056788c7a9135c8a8bab165f1ce"
+          }
+        },
+        "boundary": {
+          "prompt": "faf89d490bcdd65f75b496b637ca9fa7390eb1fb5742a7857284996e56145320",
+          "project": {
+            "base/counter.py": "1014f6d751ecb17eac72e8c338a6e6a2b3e1d91f0c1166b746ed709c498af40a",
+            "changes.diff": "1be7e5f2b5ae4e1f289cada39e6a632695cf99ed3d6ccbeed70177b9a45d16b6",
+            "head/counter.py": "ab224a8bc113c8e61ced42f27ebdc0a1bc6162bae04648a5b5b880277764ce66",
+            "snapshot.md": "c4ad90715e2d255821a82c37c5d6462d6d94f333857b2e4652452bd46d82c8cb",
+            "ticket.md": "160d7f9310edda96cc309979ee8863ce6f094f5c8e8cafae565df5979fa1954e"
+          }
+        }
+      }
+    },
+    "executions": {
+      "866771bd5e6e": {
+        "case": "ordinary",
+        "variant": "0.4.9",
+        "label": "d8827d04d7",
+        "score": "PASS",
+        "behavior": "done",
+        "reason": "Решение по Q-27 привязано к обоим деревьям и учитывает изменения в labels.py и check_labels.py. Штатный тест прошёл, включая проверки пустой очереди и сохранения входного порядка. Дополнительный запуск подтвердил, что «2» остаётся перед «0002». Предложение усилить штатный тест не блокирует слияние.",
+        "behaviorReason": "Автор разрешил слияние и указал, что при сортировке по числовому ключу задания с равными номерами сохраняют порядок поступления.",
+        "ratings": {
+          "first": {
+            "label": "d8827d04d7",
+            "score": "PASS",
+            "reason": "Решение по Q-27 привязано к обоим деревьям и учитывает изменения в labels.py и check_labels.py. Штатный тест прошёл, включая проверки пустой очереди и сохранения входного порядка. Дополнительный запуск подтвердил, что «2» остаётся перед «0002». Предложение усилить штатный тест не блокирует слияние.",
+            "behavior": "done",
+            "behaviorReason": "Автор разрешил слияние и указал, что при сортировке по числовому ключу задания с равными номерами сохраняют порядок поступления."
+          },
+          "second": {
+            "label": "d8827d04d7",
+            "score": "PASS",
+            "reason": "Решение о слиянии Q-27 привязано к обоим деревьям выгрузки и учитывает изменения в labels.py и check_labels.py. Числовой ключ ставит «2» перед «10», а исходная очередь сохраняет порядок. Журнал подтверждает успешный запуск штатного теста, включая проверку пустой очереди. Замечание к тесту точное и не блокирует слияние: входной порядок «02», «2» совпадает со строковым и потому не выявит лишнюю сортировку по строке при равенстве числовых ключей.",
+            "behavior": "done",
+            "behaviorReason": "Исполнитель разрешил слияние и указал, что при сортировке по числовому ключу задания с равными номерами сохраняют порядок поступления. В дополнительном запуске на предложенном снимке «2» осталось перед «0002» в исходном порядке."
+          }
+        },
+        "rawEventsSha256": "2ccfebf181a74564a81925b87006357e09e494929b35114dc3f3876c201f2651",
+        "answerSha256": "dbf7184ef14d6b4ae0f9685f86d2f0418ccf3604f59f599125ab7320e8bdaa68"
+      },
+      "db6e902f9b88": {
+        "case": "ordinary",
+        "variant": "B",
+        "label": "27c56c5dfa",
+        "score": "PASS",
+        "behavior": "done",
+        "reason": "Автор разрешил слияние Q-27 со ссылками на снимок, реализацию и штатный тест. Журнал подтверждает совпадение хешей обоих деревьев и успешный запуск обеих проверок. Они охватывают числовой порядок, ведущие нули, равные номера, пустую очередь и сохранение порядка исходного списка.",
+        "behaviorReason": "Автор разрешил слияние и прямо указал, что «02» и «2» имеют равный числовой ключ и сохраняют порядок поступления.",
+        "ratings": {
+          "first": {
+            "label": "27c56c5dfa",
+            "score": "PASS",
+            "reason": "Автор разрешил слияние Q-27 со ссылками на снимок, реализацию и штатный тест. Журнал подтверждает совпадение хешей обоих деревьев и успешный запуск обеих проверок. Они охватывают числовой порядок, ведущие нули, равные номера, пустую очередь и сохранение порядка исходного списка.",
+            "behavior": "done",
+            "behaviorReason": "Автор разрешил слияние и прямо указал, что «02» и «2» имеют равный числовой ключ и сохраняют порядок поступления."
+          }
+        },
+        "rawEventsSha256": "80c52aec820ca80038f970cf3716578d2a72dfc87fbddc3ffc859359c0e5df7d",
+        "answerSha256": "d604f4554bc3b794c6d8760890d08625da9e128a20f979ec6e14dabe37bec670"
+      },
+      "46722400d865": {
+        "case": "boundary",
+        "variant": "0.4.9",
+        "label": "bf66d0c719",
+        "score": "FAIL",
+        "behavior": "done",
+        "reason": "Локальный запуск подтвердил регрессию P-84: для 0 базовый форматтер вернул «0», а предложенный вернул «—». Автор указал оба дерева и предложил явную проверку на None. Ошибка в решении для релиза — обязательный прогон на печатном терминале для None, 0 и 42. R1 требует исправить форматтер и завершить проверку макета, но не предписывает испытание на оборудовании.",
+        "behaviorReason": "Автор указал, что нулевой остаток выглядит как невыполненный пересчёт, и оставил проверку sheet.pmf открытой, поскольку содержимое и предпросмотр отсутствуют.",
+        "ratings": {
+          "first": {
+            "label": "bf66d0c719",
+            "score": "FAIL",
+            "reason": "Локальный запуск подтвердил регрессию P-84: для 0 базовый форматтер вернул «0», а предложенный вернул «—». Автор указал оба дерева и предложил явную проверку на None. Ошибка в решении для релиза — обязательный прогон на печатном терминале для None, 0 и 42. R1 требует исправить форматтер и завершить проверку макета, но не предписывает испытание на оборудовании.",
+            "behavior": "done",
+            "behaviorReason": "Автор указал, что нулевой остаток выглядит как невыполненный пересчёт, и оставил проверку sheet.pmf открытой, поскольку содержимое и предпросмотр отсутствуют."
+          }
+        },
+        "rawEventsSha256": "a5b5e7b754cc6fb69d16fe17681ba05c8110fd5aad6f29f0e20c48a61c47b7d1",
+        "answerSha256": "4c2eedd484b148028f5d7f75fc11218fb3c9ff044bfe6e551510caac57c32969"
+      },
+      "057f8337e97f": {
+        "case": "boundary",
+        "variant": "B",
+        "label": "d6d205c1ef",
+        "score": "FAIL",
+        "behavior": "done",
+        "reason": "Решение удержать P-84 привязано к snapshot.md. Запуск обеих версий подтвердил ошибку для 0 и заявленные результаты для None, 7 и 123. Автор предложил корректное исправление, но сделал печать этих значений на терминале обязательным условием слияния. Это лишнее требование сверх проверки исправленного форматтера и доступного для ревью макета.",
+        "behaviorReason": "Автор показал, что предложенный форматтер выводит «—» и для 0, и для None. Он также указал, что идентификаторы подтверждают изменение sheet.pmf, а оценка содержимого макета остаётся открытой.",
+        "ratings": {
+          "first": {
+            "label": "d6d205c1ef",
+            "score": "FAIL",
+            "reason": "Решение удержать P-84 привязано к snapshot.md. Запуск обеих версий подтвердил ошибку для 0 и заявленные результаты для None, 7 и 123. Автор предложил корректное исправление, но сделал печать этих значений на терминале обязательным условием слияния. Это лишнее требование сверх проверки исправленного форматтера и доступного для ревью макета.",
+            "behavior": "done",
+            "behaviorReason": "Автор показал, что предложенный форматтер выводит «—» и для 0, и для None. Он также указал, что идентификаторы подтверждают изменение sheet.pmf, а оценка содержимого макета остаётся открытой."
+          }
+        },
+        "rawEventsSha256": "dcf98d867d92989931307a39f3228b8d072534db26a9f92399e814180bdad622",
+        "answerSha256": "62dc3682fcad58080bf33d324148d096118314cd9c6b0cccb650b7c76a037222"
+      }
+    },
+    "jointSource": "docs/reviews/v5-solo-independent-reaudit.md",
+    "reviewMethodVersion": "0.2.9",
+    "scope": "baseline для двух зарегистрированных задач, после явной загрузки",
+    "sideEffects": "project read-only, scope probes and post-run hashes in runs/*/delivery.json and result.json",
+    "time": "UTC; signed scores before reveal",
+    "scoreSeal": "2a7fd91e24b98779ba85ca4f54873eff5340ee23f7b95539e7d8dd89cd0e0397"
+  },
+  "files": {
+    "archive.tar.gz": "a490a6d30de61f5af69a76ccaa35c6fefd4030da0b33f5ad988e8c2e006bb41d",
+    "assessments/first/answer.md": "b32ac906899490284cdf7d0acb06a6db564dfa098cd77313419c96a1b0c489d5",
+    "assessments/first/delivery.json": "344398d82a6fe899f394585cd2b5e467e27f0b2f17eb7cb99693acca8e312e78",
+    "assessments/first/events.jsonl.gz": "49fab975c93d1882fa94da2abc62beee32513d2e1359d4cfa3f6d72726616ea4",
+    "assessments/first/result.json": "b1c77c7608578829c9c5b9ffedbee5086992fa0d6d16f8ef6e612cbe9c1a8a58",
+    "assessments/first/signed.json": "3f4dba34af17fc2a0d7703c33bf3b43362ce5c79d2ac4b422869e8fe54b89a94",
+    "assessments/packets/27c56c5dfa.json": "4afb53ba075fc22faaf87869b5263870295ff483b7fdd0e5c95add322794cf15",
+    "assessments/packets/bf66d0c719.json": "c68886aac7c50dc48b6b058520e475dcc76b718f1ef9a35f8c815236e63e2fa9",
+    "assessments/packets/d6d205c1ef.json": "cf3eee4fa94288efc5180dba773a4506a8dc1174f583b0894611cf6df00e492a",
+    "assessments/packets/d8827d04d7.json": "5571d5d832196dfddd74596b2969dc84b5dc70ae1bb9a5475e404ac8133863dc",
+    "assessments/second/answer.md": "c82661b0596d0c1d94539c75b4fff53ad528c0c1907067caa2db74b9f5d1eba7",
+    "assessments/second/delivery.json": "8880fb510d0ce22e49c404d3a0ce3039c792d9c703fea5d1bc6f32264204c835",
+    "assessments/second/events.jsonl.gz": "fa99f1c8509294b12e1ee475c2a05da876c8faee488aa6245c100a0207ec651e",
+    "assessments/second/result.json": "cb4df9d4cfdb7995102baf4c4af410712304464e76297a3972443357c7692a4c",
+    "assessments/second/signed.json": "ffa4002baf49a8fe5f55aa96a88a642dacb9531e727b868e807a6a9dd325b8b8",
+    "basis.json": "b017718127c95f160f06b9733df208e42af7b5bc6c47aa33c29fe33eb8d9128e",
+    "checks.json": "a1d8b71cb333502aaf6be234410b7a6c28139266b3a3209e32aa7da1ac76aaef",
+    "criteria.md": "c11f9bdecd4601600279c90fa8f9d475ee129c2cb346e636c518256e7bf71eec",
+    "inputs/boundary/project/base/counter.py": "1014f6d751ecb17eac72e8c338a6e6a2b3e1d91f0c1166b746ed709c498af40a",
+    "inputs/boundary/project/changes.diff": "1be7e5f2b5ae4e1f289cada39e6a632695cf99ed3d6ccbeed70177b9a45d16b6",
+    "inputs/boundary/project/head/counter.py": "ab224a8bc113c8e61ced42f27ebdc0a1bc6162bae04648a5b5b880277764ce66",
+    "inputs/boundary/project/snapshot.md": "c4ad90715e2d255821a82c37c5d6462d6d94f333857b2e4652452bd46d82c8cb",
+    "inputs/boundary/project/ticket.md": "160d7f9310edda96cc309979ee8863ce6f094f5c8e8cafae565df5979fa1954e",
+    "inputs/boundary/task.md": "faf89d490bcdd65f75b496b637ca9fa7390eb1fb5742a7857284996e56145320",
+    "inputs/ordinary/project/base/check_labels.py": "a5c85a978774c62aa212be314a44214c84a2718eafae3d73febea3638da870b9",
+    "inputs/ordinary/project/base/labels.py": "6be4adc03828e45476b06cb2d62cd8cd3d766f59ffbbcda19e7ac8cc58015246",
+    "inputs/ordinary/project/changes.diff": "89f3b994996f526f068a51443c4704853e682ae2fa971166b7b86e9843252562",
+    "inputs/ordinary/project/head/check_labels.py": "75e5e62d8c15271438521466f27d01116deacf2a8a986b3a96335f6c415a84b5",
+    "inputs/ordinary/project/head/labels.py": "7e962c36d68d6388e540191ada362e14ee71364417e28a2caae5236468e8dc2f",
+    "inputs/ordinary/project/snapshot.md": "ac2c9a0d947756672a337d79e17894c8491cf12bd364d257bab99106a16c6f60",
+    "inputs/ordinary/project/ticket.md": "d918244b7c1a37a1e24ca3a43d4ff5a5c1de8056788c7a9135c8a8bab165f1ce",
+    "inputs/ordinary/task.md": "7d3b85e52aa3c65fe494bd4f8d030aa017a465d2127f3f47248583ac9ac6afc1",
+    "joint.md": "09f3627ee1d09e51dafaec005c531d65adfc2206e956b59863766e31f440f9f8",
+    "method/SKILL.md": "ef4b95adcb438268de9c169b47ae36c0d0a9afc3de00db4a0b767f9a2420867c",
+    "method/forward-testing.md": "dd6892c96fe24606227dfd93cc9567ef0cce1a9413f68e32c91324f371d9a1f2",
+    "method/methodology.md": "136243ed09056567bedf3cb0c506b531a94fd1268b7d48702273f0f15f2adca8",
+    "method/standard.md": "cb7fe13fe8c65144b9ae5fdef6d9b9f598fbc1a05523e674a0282aec942a8f67",
+    "package/SKILL.md": "9c8f73500414ce97513b1f1113bd0f967f6940ff22f4a85c5e9dfe2f03e3b846",
+    "package/agents/openai.yaml": "04ffae6319cbefd3d74507e3be353bae081e22b65bdbc8c003c646ff4e72279a",
+    "package/assets/fixtures/policy-admission-review.md": "1a474f2391e00f7c0cd5c86de4d6b1b0b27ecce618aef203c2e8cba49fa54f2b",
+    "package/assets/fixtures/runtime-gate-deployed-path-review.md": "16936898bf81546b8a974d790fd0efa8d081ebef4c9eb458dc3bcc29a6d28646",
+    "package/assets/pr-review-template.md": "fff1b427e594c9b59ba6cc857d9a47db2aaae613fde371d6135b10c1170bb0cb",
+    "package/assets/review-checklist.md": "98c7ca18eb8d5bf30e7f142ddea8f122b88ad3e7f3da5fed2d48d0d735aa788a",
+    "package/references/complexity-only.md": "b058c376f2e41582006c96fad4de174d48ca02b5631e323ad5444431b89aabf4",
+    "package/references/diff-completeness.md": "078d87a26c1eecd8b9e746ef3793fcfcca41e81a1838fbe96146a24fca8b4e29",
+    "package/references/domain-routing.md": "6ae9f975e69c60368e099317906439c66ffc7972e711d7481231b2770ab082b8",
+    "package/references/findings-format.md": "0ac383d2a53f8ffdf5fceab464609e621f93cd91e5661de0e9026862f5b36824",
+    "package/references/methodology.md": "2f594fd8352bcb3fe04fa77fb59c2a5753e6b63d9c71be83c8f641c14b504cd8",
+    "package/references/policy-admission-merge-risk.md": "96e6a2ffa7d47c86e955de9dd521fca1325636aa0a103bf67005df37dfcf79a6",
+    "package/references/runtime-gate-deployed-path.md": "9b98df5833a0a776f17daff12b2ef57230c873b92545054e707e913cb5b5b6f9",
+    "package/references/severity-confidence.md": "0cede58ece812426647e84e3c5b1a2a4e6ce75073c71e70d7dcb14b806e7bcb4",
+    "package/references/spec-pass.md": "85732c5c085b77815c2fa2175740cd8d1f532cc86de4f91f4294c684d79b65a7",
+    "protocol.md": "08c9cc36778a5297babc064d8e349bd8299eea44f3d244524d1c5ac0f8206d54",
+    "registration.json": "b2dba4ebc448ea5008128ee8c2ab561e1b2a13d53f746e98e4a6bdf9c554fd5c",
+    "reveal.json": "e200e2691986ebd7db755b149b551227483e6e3a07a5c845a5dd089fc75546eb",
+    "runs/057f8337e97f/answer.md": "62dc3682fcad58080bf33d324148d096118314cd9c6b0cccb650b7c76a037222",
+    "runs/057f8337e97f/delivery.json": "78b051192dfbed8a8529cf7c9ae05d9d23874ff052a8069e2c5f346e8795d960",
+    "runs/057f8337e97f/events.jsonl.gz": "379ce2710f86b6ea1b70dbf5fd2bb3be4a2c66323253fd1b1a9bb87f501f8ead",
+    "runs/057f8337e97f/result.json": "da731df3b8e531e60ccc9874a55aa57aa47ac102780a7e708adb42706c34d2d8",
+    "runs/46722400d865/answer.md": "4c2eedd484b148028f5d7f75fc11218fb3c9ff044bfe6e551510caac57c32969",
+    "runs/46722400d865/delivery.json": "fceaedbe853d47648c749b267ef4de4645aefa390e9ad3567325300ee622249d",
+    "runs/46722400d865/events.jsonl.gz": "5adfc4ec572af402910949f1b72c2911d6f5aba68d472248f4a4f69ab2c262b0",
+    "runs/46722400d865/result.json": "01bcb1a96432f2d940f52b09159957c71bde1798f0a0843ec11da25936d23e07",
+    "runs/866771bd5e6e/answer.md": "dbf7184ef14d6b4ae0f9685f86d2f0418ccf3604f59f599125ab7320e8bdaa68",
+    "runs/866771bd5e6e/delivery.json": "9733dcc5c0139d633b4c92b8d751cdaa7d363e3a315d73853e2387b1a752f48a",
+    "runs/866771bd5e6e/events.jsonl.gz": "cb0ffcbf1d7bd4bc7324fe02f9ebce5f9063c1757a234de690e97505e10dd862",
+    "runs/866771bd5e6e/result.json": "bbbd211ec61e5443ac3b8af2e39b2b13a715902b29290d4d1178061d4dff25ff",
+    "runs/db6e902f9b88/answer.md": "d604f4554bc3b794c6d8760890d08625da9e128a20f979ec6e14dabe37bec670",
+    "runs/db6e902f9b88/delivery.json": "6bcd903043bde0f3c0759ce8ee9f99a0f48ae2a5decb6e59eb7c39e1bfdacc06",
+    "runs/db6e902f9b88/events.jsonl.gz": "49d9ef9cfaad3eb64f33771787bbc9b136765f40ba88512bea379290579ba50b",
+    "runs/db6e902f9b88/result.json": "f37fc61f8f9644bed7170d9fcd7913a59635907380fe3260a53e2745bdebef81",
+    "sealed-scores.json": "2a7fd91e24b98779ba85ca4f54873eff5340ee23f7b95539e7d8dd89cd0e0397",
+    "source/agents/openai.yaml": "04ffae6319cbefd3d74507e3be353bae081e22b65bdbc8c003c646ff4e72279a",
+    "source/assets/fixtures/policy-admission-review.md": "1a474f2391e00f7c0cd5c86de4d6b1b0b27ecce618aef203c2e8cba49fa54f2b",
+    "source/assets/fixtures/runtime-gate-deployed-path-review.md": "16936898bf81546b8a974d790fd0efa8d081ebef4c9eb458dc3bcc29a6d28646",
+    "source/assets/pr-review-template.md": "fff1b427e594c9b59ba6cc857d9a47db2aaae613fde371d6135b10c1170bb0cb",
+    "source/assets/review-checklist.md": "98c7ca18eb8d5bf30e7f142ddea8f122b88ad3e7f3da5fed2d48d0d735aa788a",
+    "source/fragments/overview.md": "c1217e6dfd84134e5adab6c7b441c0803cc61ae27c2592a0b6b26a9a87f91031",
+    "source/references/complexity-only.md": "b058c376f2e41582006c96fad4de174d48ca02b5631e323ad5444431b89aabf4",
+    "source/references/diff-completeness.md": "078d87a26c1eecd8b9e746ef3793fcfcca41e81a1838fbe96146a24fca8b4e29",
+    "source/references/domain-routing.md": "6ae9f975e69c60368e099317906439c66ffc7972e711d7481231b2770ab082b8",
+    "source/references/findings-format.md": "0ac383d2a53f8ffdf5fceab464609e621f93cd91e5661de0e9026862f5b36824",
+    "source/references/methodology.md": "2f594fd8352bcb3fe04fa77fb59c2a5753e6b63d9c71be83c8f641c14b504cd8",
+    "source/references/policy-admission-merge-risk.md": "96e6a2ffa7d47c86e955de9dd521fca1325636aa0a103bf67005df37dfcf79a6",
+    "source/references/runtime-gate-deployed-path.md": "9b98df5833a0a776f17daff12b2ef57230c873b92545054e707e913cb5b5b6f9",
+    "source/references/severity-confidence.md": "0cede58ece812426647e84e3c5b1a2a4e6ce75073c71e70d7dcb14b806e7bcb4",
+    "source/references/spec-pass.md": "85732c5c085b77815c2fa2175740cd8d1f532cc86de4f91f4294c684d79b65a7",
+    "source/skill.yaml": "4fff79c8ed2cb9f2827b2c93043396051acd6672796201f07ab51c8e182e72e7",
+    "system-scope.json": "5b910de28c0aed1814d47d023deef96deef117f86fb07d6b37a68cd605d93f07"
+  },
+  "startup": {
+    "promptInputSha256": "6c013b126ab67685ab920ff4b1cd73144d2b779a74b04e0a7789cad34cb2724e",
+    "catalog": [],
+    "activeTextDelivered": {},
+    "allExpectedTexts": true,
+    "namedTargetInControl": [],
+    "historyOrKeyInContext": false,
+    "toolNames": [
+      "functions",
+      "clock",
+      "collaboration"
+    ],
+    "restrictedProfile": true,
+    "userPromptPresent": true,
+    "model": "gpt-6.2-astra"
+  },
+  "access": {
+    "readable": {
+      "ownProject": true,
+      "ownTarget": false,
+      "mainCheckoutTarget": false,
+      "worktreeTarget": false,
+      "archive": false,
+      "registration": false,
+      "rubric": false,
+      "otherWindow": false,
+      "hostSkillDirectory": false,
+      "hostHistory": false,
+      "hostConfig": false,
+      "procRootSource": false
+    },
+    "projectWritable": false,
+    "inetSocket": false
+  }
+}

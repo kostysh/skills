@@ -1,0 +1,16 @@
+{
+  "utc": "2026-11-23T12:04:16.709Z",
+  "registration": "1177c81d377e80866a0b22d1fa5eb05e365b0dd2c572ab8f021bafee7234e986",
+  "signed": {
+    "code-reviewer/first": {
+      "signedUtc": "2026-11-23T12:04:03.218Z",
+      "sha256": "4fdb472ce3a8ddc9a0037013e7b623efa0f5f8b54dc5387b6567459b57545d5d",
+      "thread": "01a20849-9481-7971-9995-08ce127e584a"
+    },
+    "code-reviewer/second": {
+      "signedUtc": "2026-11-23T12:03:12.887Z",
+      "sha256": "38a7935f77002dfe22b1a73742e94dd679ad6a9f405c5f73fe648c4681681f6e",
+      "thread": "01a20849-9418-7f50-b80c-00ad6605bd49"
+    }
+  }
+}

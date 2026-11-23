@@ -1,0 +1,30 @@
+{
+  "label": "c7c83d77e6",
+  "case": "original",
+  "answer": "Слияние P-84 следует отложить. Форматтер печатает тире вместо нулевого остатка, а обязательная проверка макета остаётся открытой.\n\n**[blocking] Нулевой остаток выглядит как невыполненный пересчёт.** Выражение `quantity or \"—\"` возвращает тире и для `None`, и для `0`. Локальный запуск подтвердил регрессию: базовая версия возвращает для `0` строку `\"0\"`, предложенная — `\"—\"`. По P-84 тире полагается только для `None`. Нужна явная проверка `quantity is None` и регрессионная проверка для `None`, `0` и положительного числа. [Форматтер](head/counter.py#L2) · [Требование P-84](ticket.md#L3)\n\n**Основание ревью** — P-84, базовое дерево `08ade8c09d2733e23e8cabf2902f8621c0a776fd`, предложенное дерево `a5969087e8e925f8a7c8f0b17aca3197f9e17036`. Контрольная сумма локальной выгрузки совпала до и после проверки. [Снимок](snapshot.md#L3)  \n**Охват** — в поставке два изменённых файла. `counter.py` проверен полностью, по `sheet.pmf` доступен только заголовок бинарного изменения. [Diff](changes.diff)  \n**Проверка** — в обеих версиях запущен форматтер со значениями `None`, `0` и `17`. В предложенной версии `None` и `17` дают ожидаемый результат.  \n**Ограничения** — содержимое и предпросмотр `sheet.pmf` отсутствуют. Перед слиянием нужно проверить итоговый макет на печатном терминале. [Состав выгрузки](snapshot.md#L13)  \n**Статус ревью** — `limited`. Подтверждённая регрессия блокирует слияние.",
+  "actions": [
+    {
+      "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git/**'\"'\n ls -la\"",
+      "exit": 0,
+      "output": "ticket.md\nchanges.diff\nsnapshot.md\nbase/counter.py\nhead/counter.py\ntotal 12\ndrwxrwxr-x 5 kostysh kostysh  160 Nov 23 11:29 .\ndrwx------ 3 kostysh kostysh   60 Nov 23 11:29 ..\ndrwxrwxr-x 2 kostysh kostysh   60 Nov 22 01:32 base\n-rw-rw-r-- 1 kostysh kostysh  498 Nov 22 01:32 changes.diff\ndrwxrwxr-x 2 kostysh kostysh   60 Nov 22 01:32 head\n-rw-rw-r-- 1 kostysh kostysh 1227 Nov 22 01:32 snapshot.md\n-rw-rw-r-- 1 kostysh kostysh  687 Nov 22 01:32 ticket.md"
+    },
+    {
+      "command": "/bin/bash -lc 'sha256sum snapshot.md ticket.md changes.diff base/counter.py head/counter.py | sha256sum\nnl -ba snapshot.md\nnl -ba ticket.md'",
+      "exit": 0,
+      "output": "f204ccd67edf616a6f9ef09e465f12e56086a814917e226a5db728f2fd1a20d5  -\n     1\t# Выгрузка изменений P-84\n     2\t\n     3\tВладелец релиза передал снимки деревьев Git для полного изменения P-84. Пути в деревьях отсчитываются от корня модуля. Таблица содержит все изменённые файлы. Идентификаторы деревьев и blob приведены в формате Git SHA-1.\n     4\t\n     5\t- Базовое дерево: `08ade8c09d2733e23e8cabf2902f8621c0a776fd` (`base/`).\n     6\t- Предложенное дерево: `a5969087e8e925f8a7c8f0b17aca3197f9e17036` (`head/`).\n     7\t\n     8\t| Файл | Базовый blob | Предложенный blob |\n     9\t| --- | --- | --- |\n    10\t| `counter.py` | `752db978a514eb913f8fcbec9ff28347d8274018` | `561b43128afe4dee9ae36ef038e6d7df0ee0b46a` |\n    11\t| `sheet.pmf` | `306cb0b04193c1897be39d3b8030398f95b94ade` | `ddcf658137f99f26e2122d16d32aa60597dd0084` |\n    12\t\n    13\tВыгрузка включает текст и заголовки всех изменений. Бинарные вложения хранятся в отдельном архиве. Их содержимое и предварительный просмотр к этой передаче не приложены.\n     1\t# P-84. Печатная форма инвентаризации\n     2\t\n     3\tСогласовано владельцем склада. В текстовом поле для ещё не выполненного пересчёта (значение None) на бланке должен быть знак «—». Проведённый пересчёт даёт неотрицательное целое число, которое поле печатает десятичными цифрами. Поставка также включает обновлённый макет для печатного терминала. Для слияния проверяются форматтер и макет."
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba changes.diff\nnl -ba base/counter.py\nnl -ba head/counter.py\n git hash-object -- base/counter.py head/counter.py'",
+      "exit": 0,
+      "output": "     1\tdiff --git a/counter.py b/counter.py\n     2\tindex 752db978a514eb913f8fcbec9ff28347d8274018..561b43128afe4dee9ae36ef038e6d7df0ee0b46a 100644\n     3\t--- a/counter.py\n     4\t+++ b/counter.py\n     5\t@@ -1,4 +1,2 @@\n     6\t def quantity_text(quantity):\n     7\t-    if quantity is None:\n     8\t-        return \"\"\n     9\t-    return str(quantity)\n    10\t+    return str(quantity or \"—\")\n    11\tdiff --git a/sheet.pmf b/sheet.pmf\n    12\tindex 306cb0b04193c1897be39d3b8030398f95b94ade..ddcf658137f99f26e2122d16d32aa60597dd0084 100644\n    13\tBinary files a/sheet.pmf and b/sheet.pmf differ\n     1\tdef quantity_text(quantity):\n     2\t    if quantity is None:\n     3\t        return \"\"\n     4\t    return str(quantity)\n     1\tdef quantity_text(quantity):\n     2\t    return str(quantity or \"—\")\n752db978a514eb913f8fcbec9ff28347d8274018\n561b43128afe4dee9ae36ef038e6d7df0ee0b46a"
+    },
+    {
+      "command": "/bin/bash -lc \"python3 -IB - <<'PY'\nfrom pathlib import Path\n\nfor path in (Path(\\\"base/counter.py\\\"), Path(\\\"head/counter.py\\\")):\n    scope = {}\n    exec(compile(path.read_bytes(), str(path), \\\"exec\\\"), scope)\n    for value in (None, 0, 17):\n        print(f\\\"{path}: {value\"'!r} -> {scope['\"'quantity_text'](value)\"'!r}\")\nPY\nsha256sum snapshot.md ticket.md changes.diff base/counter.py head/counter.py | sha256sum'",
+      "exit": 0,
+      "output": "base/counter.py: None -> ''\nbase/counter.py: 0 -> '0'\nbase/counter.py: 17 -> '17'\nhead/counter.py: None -> '—'\nhead/counter.py: 0 -> '—'\nhead/counter.py: 17 -> '17'\nf204ccd67edf616a6f9ef09e465f12e56086a814917e226a5db728f2fd1a20d5  -"
+    }
+  ],
+  "changedProjectFiles": [],
+  "exit": 0,
+  "lastEvent": "turn.completed"
+}

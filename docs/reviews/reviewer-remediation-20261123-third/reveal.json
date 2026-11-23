@@ -1,0 +1,42 @@
+{
+  "utc": "2026-11-23T12:04:16.709Z",
+  "seal": "314c9204361d6e48167e808a63255e1af97b3d473d1c9df695285084cb7945a3",
+  "labels": {
+    "69d1906c58": {
+      "run": "bcbd25d84b5e",
+      "case": "transfer",
+      "skill": "code-reviewer",
+      "variant": "0.4.12"
+    },
+    "e04399632c": {
+      "run": "26e55f7e3229",
+      "case": "transfer",
+      "skill": "code-reviewer",
+      "variant": "0.4.11"
+    },
+    "1939367830": {
+      "run": "4eed92a1723f",
+      "case": "original",
+      "skill": "code-reviewer",
+      "variant": "0.4.11"
+    },
+    "6593d040f3": {
+      "run": "ba5423ff0f71",
+      "case": "original",
+      "skill": "code-reviewer",
+      "variant": "0.4.12"
+    },
+    "2297805f68": {
+      "run": "6539f39eab03",
+      "case": "fresh",
+      "skill": "code-reviewer",
+      "variant": "0.4.12"
+    },
+    "2a0b5b7af3": {
+      "run": "7362c181fb08",
+      "case": "fresh",
+      "skill": "code-reviewer",
+      "variant": "0.4.11"
+    }
+  }
+}
