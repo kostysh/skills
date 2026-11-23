@@ -1,0 +1,75 @@
+{
+  "label": "e04399632c",
+  "case": "transfer",
+  "answer": "**M-56 можно слить.** В остановке B07 «Лодочная мастерская» поле `audio` меняется с `en_boat_v1` на согласованную запись `en_boat_v2`. Ключ остановки, порядок строк и остальные поля сохранены. Замечаний к правке нет. [Задание](order.md#L3) · [Патч](changes.diff#L5)\n\n**Для ввода в эксплуатацию** после слияния выпускающий может включить принятую таблицу в общий пакет экспозиции. Для ввода маршрута смотритель проверяет воспроизведение записей на плеере зала и подписывает акт. В выгрузке есть только материалы правки каталога, поэтому готовность пакета и воспроизведение в зале остаются неподтверждёнными. [Порядок ввода](order.md#L5)\n\n- **Основание и охват.** M-56, базовая редакция MR-118, предлагаемая MR-119. Проверен весь заявленный объём — один файл `catalog/stops.tsv` в двух выгруженных редакциях. [Описание выгрузки](snapshot.md#L3) · [База](base/stops.tsv) · [Правка](head/stops.tsv)\n- **Проверка снимка.** Патч точно соответствует обеим таблицам. Вычисленные Git blob SHA-1 совпали с указанными в выгрузке. Контрольные суммы SHA-256 совпали до и после проверки. [Идентификаторы](snapshot.md#L5) · [Ведомость](SHA256SUMS)\n- **Рекомендация по слиянию** — `approve`.",
+  "actions": [
+    {
+      "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+      "exit": 0,
+      "output": "changes.diff\nsnapshot.md\nbase/stops.tsv\nhead/stops.tsv\nSHA256SUMS\norder.md"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba order.md'",
+      "exit": 0,
+      "output": "     1\t# Каталог аудиомаршрута · M-56\n     2\t\n     3\tРедактор выставки согласовал одну замену в каталоге остановок. При выборе остановки B07 «Лодочная мастерская» каталог должен указывать на утверждённую запись `en_boat_v2` вместо `en_boat_v1`. Ключ остановки, порядок строк и значения остальных полей сохраняются.\n     4\t\n     5\tРевью M-56 завершает редакторскую работу над таблицей. Из принятых таблиц выпускающий собирает общий пакет экспозиции. Затем смотритель на этапе ввода проверяет воспроизведение записей на плеере зала и подписывает акт ввода. В эту выгрузку входят материалы редактора для изменения одного файла каталога."
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba snapshot.md'",
+      "exit": 0,
+      "output": "     1\t# Выгрузка M-56 · редактор каталога\n     2\t\n     3\tБазовая редакция таблицы — MR-118, предложенная — MR-119. Полный состав изменения MR-118 → MR-119 включает один файл `catalog/stops.tsv`. Для передачи он скопирован по путям `base/stops.tsv` и `head/stops.tsv`. Патч приведён в `changes.diff`.\n     4\t\n     5\t| Путь в выгрузке | Git blob SHA-1 |\n     6\t| --- | --- |\n     7\t| `base/stops.tsv` | `42aa49b66bb59a162fd126742ff26c023b7c6ea9` |\n     8\t| `head/stops.tsv` | `f18b14dd42d4d60e6c2dc39ed824c5ede7284271` |\n     9\t\n    10\tДля сверки доставки приложена ведомость SHA-256 по байтам файлов. Версии MR-118 и MR-119 обозначают редакции каталога в архиве редактора."
+    },
+    {
+      "command": "/bin/bash -lc 'sha256sum SHA256SUMS snapshot.md order.md base/stops.tsv head/stops.tsv changes.diff'",
+      "exit": 0,
+      "output": "bca89a2045b5ad07c101d342861d1c5851d3aaeeeb98d8fd84a5b6cc42994b20  SHA256SUMS\n6ef9c4dcbcc30c8e00d3bde24443dae12d8cbce25d042645b55cc68f48a67a87  snapshot.md\ncb794b0c8664c079ee665445e644d3dfeccd22b8a6e2713008d365b1feb47e7b  order.md\n43a090183e952384ba4c25521b83282b21c4e1f7c052890f2e65da890d47890d  base/stops.tsv\n57d7f7c243aabeaa0dd56c165140c40dbc9a8eea82539f4088d3834f1f2bd603  head/stops.tsv\n9d886ccc700c0c3057e272120d2d741c156ce971763a6734f6282aea9aad7f61  changes.diff"
+    },
+    {
+      "command": "/bin/bash -lc 'sha256sum -c SHA256SUMS'",
+      "exit": 0,
+      "output": "base/stops.tsv: OK\nchanges.diff: OK\nhead/stops.tsv: OK\norder.md: OK\nsnapshot.md: OK"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba changes.diff'",
+      "exit": 0,
+      "output": "     1\tdiff --git a/catalog/stops.tsv b/catalog/stops.tsv\n     2\tindex 42aa49b66bb59a162fd126742ff26c023b7c6ea9..f18b14dd42d4d60e6c2dc39ed824c5ede7284271 100644\n     3\t--- a/catalog/stops.tsv\n     4\t+++ b/catalog/stops.tsv\n     5\t@@ -1,4 +1,4 @@\n     6\t stop\ttitle\taudio\n     7\t A02\tСтарый док\ten_dock_v1\n     8\t-B07\tЛодочная мастерская\ten_boat_v1\n     9\t+B07\tЛодочная мастерская\ten_boat_v2\n    10\t C04\tРечной склад\ten_store_v3"
+    },
+    {
+      "command": "/bin/bash -lc 'git hash-object --no-filters base/stops.tsv head/stops.tsv'",
+      "exit": 0,
+      "output": "42aa49b66bb59a162fd126742ff26c023b7c6ea9\nf18b14dd42d4d60e6c2dc39ed824c5ede7284271"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba head/stops.tsv'",
+      "exit": 0,
+      "output": "     1\tstop\ttitle\taudio\n     2\tA02\tСтарый док\ten_dock_v1\n     3\tB07\tЛодочная мастерская\ten_boat_v2\n     4\tC04\tРечной склад\ten_store_v3"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba base/stops.tsv'",
+      "exit": 0,
+      "output": "     1\tstop\ttitle\taudio\n     2\tA02\tСтарый док\ten_dock_v1\n     3\tB07\tЛодочная мастерская\ten_boat_v1\n     4\tC04\tРечной склад\ten_store_v3"
+    },
+    {
+      "command": "/bin/bash -lc \"rg --files --hidden --no-ignore -g '\"'!.git'\"'\"",
+      "exit": 0,
+      "output": "changes.diff\nsnapshot.md\norder.md\nbase/stops.tsv\nhead/stops.tsv\nSHA256SUMS"
+    },
+    {
+      "command": "/bin/bash -lc \"python3 -B - <<'PY'\nfrom pathlib import Path\nfrom io import BytesIO\nimport csv\n\nbase = Path('base/stops.tsv').read_bytes()\nhead = Path('head/stops.tsv').read_bytes()\npatch = Path('changes.diff').read_bytes().splitlines(keepends=True)\nassert sum(line.startswith(b'diff --git ') for line in patch) == 1\nassert patch[0] == b'diff --git a/catalog/stops.tsv b/catalog/stops.tsv\\\\n'\nassert patch[4] == b'@@ -1,4 +1,4 @@\\\\n'\nfor version, marker in ((base, b'-'), (head, b'+')):\n    assert version == b''.join(line[1:] for line in patch[5:] if line[:1] in (b' ', marker))\ncolumns, *before = csv.reader(base.decode().splitlines(), delimiter='\\\\t')\ncolumns_after, *after = csv.reader(head.decode().splitlines(), delimiter='\\\\t')\nassert columns == columns_after == ['stop', 'title', 'audio']\nassert len(before) == len(after) == 3\nassert all(len(row) == len(columns) for row in before + after)\nassert sum(row[0] == 'B07' for row in before) == 1\nassert before[1] == ['B07', 'Лодочная мастерская', 'en_boat_v1']\nbefore[1][columns.index('audio')] = 'en_boat_v2'\nassert before == after\nprint('Patch matches both complete files. The only field change is B07/audio.')\nPY\"",
+      "exit": 0,
+      "output": "Patch matches both complete files. The only field change is B07/audio."
+    },
+    {
+      "command": "/bin/bash -lc 'sha256sum SHA256SUMS snapshot.md order.md base/stops.tsv head/stops.tsv changes.diff'",
+      "exit": 0,
+      "output": "bca89a2045b5ad07c101d342861d1c5851d3aaeeeb98d8fd84a5b6cc42994b20  SHA256SUMS\n6ef9c4dcbcc30c8e00d3bde24443dae12d8cbce25d042645b55cc68f48a67a87  snapshot.md\ncb794b0c8664c079ee665445e644d3dfeccd22b8a6e2713008d365b1feb47e7b  order.md\n43a090183e952384ba4c25521b83282b21c4e1f7c052890f2e65da890d47890d  base/stops.tsv\n57d7f7c243aabeaa0dd56c165140c40dbc9a8eea82539f4088d3834f1f2bd603  head/stops.tsv\n9d886ccc700c0c3057e272120d2d741c156ce971763a6734f6282aea9aad7f61  changes.diff"
+    },
+    {
+      "command": "/bin/bash -lc 'sha256sum -c SHA256SUMS'",
+      "exit": 0,
+      "output": "base/stops.tsv: OK\nchanges.diff: OK\nhead/stops.tsv: OK\norder.md: OK\nsnapshot.md: OK"
+    }
+  ],
+  "changedProjectFiles": [],
+  "exit": 0,
+  "lastEvent": "turn.completed"
+}

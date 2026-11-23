@@ -1,0 +1,159 @@
+{
+  "frozenUtc": "2026-11-23T11:50:15.762Z",
+  "base": "e86b72815a639a38cf92f72de9ff79e04616cce8",
+  "preparedBy": "cases_a",
+  "targetActiveFilesMatchPreviousArchive": true,
+  "versions": {
+    "candidate": "0.4.12",
+    "baseline": "0.4.11"
+  },
+  "reason": {
+    "run": "f93a6d71fd73",
+    "source": "docs/reviews/reviewer-remediation-20261123-second/code-reviewer/assessments/first/signed.json",
+    "signedSha256": "f69ca5279fe50034f5528b7434d84d2040025593971d67c7fd5dbf88ee0c024c",
+    "observation": "Побайтовое сопоставление патча с таблицами подтвердило единственную замену B07 с en_boat_v1 на en_boat_v2. Однако автор также заявил о совпадении Git-хешей обеих копий. Полный журнал показывает чтение идентификаторов из описания и проверку SHA-256 файлов. Вычисление Git blob SHA-1 обеих таблиц в журнале отсутствует."
+  },
+  "hashConvention": "SHA-256 сырых байтов и отсортированных строк <SHA-256>  <relative path> LF для комплекта.",
+  "protocol": {
+    "path": "docs/reviews/reviewer-remediation-20261123-third/protocol.md",
+    "sha256": "e4d5fbf9c203f15715f0548bb78cfaab4f023cdcf4fcf1289519a8ce3e9a40f1"
+  },
+  "skills": {
+    "code-reviewer": {
+      "R1": {
+        "path": "docs/reviews/individual-trials-20261122/code-reviewer/rubric.md",
+        "sha256": "c11f9bdecd4601600279c90fa8f9d475ee129c2cb346e636c518256e7bf71eec"
+      },
+      "R2": {
+        "path": "docs/reviews/reviewer-remediation-20261123/code-reviewer/rubric.md",
+        "sha256": "c8259ce4a7b6b0220a14fcff60c2f114edfa18008ae2596e44049a17d39dcce7"
+      },
+      "R3": {
+        "path": "docs/reviews/reviewer-remediation-20261123-second/code-reviewer/rubric.md",
+        "sha256": "5fe0d291790768df4b625494e321d3f8df7f25e6d42fb77ea5d206ec17c29f2e"
+      },
+      "original": {
+        "id": "P-84",
+        "path": "docs/reviews/individual-trials-20261122/code-reviewer/inputs/boundary",
+        "files": {
+          "project/base/counter.py": "1014f6d751ecb17eac72e8c338a6e6a2b3e1d91f0c1166b746ed709c498af40a",
+          "project/changes.diff": "1be7e5f2b5ae4e1f289cada39e6a632695cf99ed3d6ccbeed70177b9a45d16b6",
+          "project/head/counter.py": "ab224a8bc113c8e61ced42f27ebdc0a1bc6162bae04648a5b5b880277764ce66",
+          "project/snapshot.md": "c4ad90715e2d255821a82c37c5d6462d6d94f333857b2e4652452bd46d82c8cb",
+          "project/ticket.md": "160d7f9310edda96cc309979ee8863ce6f094f5c8e8cafae565df5979fa1954e",
+          "task.md": "faf89d490bcdd65f75b496b637ca9fa7390eb1fb5742a7857284996e56145320"
+        },
+        "sha256": "10056b3bfe24fc7d311653c02667bf2230c4ffea567b3b28145785ac0b6a7a9f"
+      },
+      "fresh": {
+        "id": "F-31",
+        "path": "docs/reviews/reviewer-remediation-20261123/code-reviewer/inputs/fresh",
+        "files": {
+          "project/acceptance.md": "82351301ab8bf1f6923b2fcd7a59520a05171d3cfe9038c292ce4255987affcf",
+          "project/base/slip.py": "7e1254d7aa6dca5bd109280626db7aa91dc46684ad28470c398b4dc2af0049f2",
+          "project/changes.diff": "5f5ee32bab7191474fdc69fd73b69ec8f3162ddbf2434379d00e893a0e6cd6a2",
+          "project/control/reader_v3.py": "a7f24b8336dac6d02e3939f6e23f202659d54abaf3b4db1174ad33d000490869",
+          "project/head/slip.py": "074c44f34377750ae98c41ceedc93d27e427f27163617b4cee5231dfead77bfc",
+          "project/request.md": "219aa829060baad0c8f7fcd7f19b82c0e22b3d41a445f0220d8c59084878f865",
+          "project/snapshot.md": "281380afa3f55f49170328cf0c6150ff126c6048ce0214fdc5dc746cd0dd44ca",
+          "task.md": "5129c212d81005b71be375327474212291651a1e83f026edb7f22ce63917b566"
+        },
+        "sha256": "a817e1639abc58cfbceeb2f8600ab9c78dca3dd32c92f485753d9b0e2ede926d"
+      },
+      "transfer": {
+        "id": "M-56",
+        "path": "docs/reviews/reviewer-remediation-20261123-second/code-reviewer/inputs/transfer",
+        "files": {
+          "project/SHA256SUMS": "bca89a2045b5ad07c101d342861d1c5851d3aaeeeb98d8fd84a5b6cc42994b20",
+          "project/base/stops.tsv": "43a090183e952384ba4c25521b83282b21c4e1f7c052890f2e65da890d47890d",
+          "project/changes.diff": "9d886ccc700c0c3057e272120d2d741c156ce971763a6734f6282aea9aad7f61",
+          "project/head/stops.tsv": "57d7f7c243aabeaa0dd56c165140c40dbc9a8eea82539f4088d3834f1f2bd603",
+          "project/order.md": "cb794b0c8664c079ee665445e644d3dfeccd22b8a6e2713008d365b1feb47e7b",
+          "project/snapshot.md": "6ef9c4dcbcc30c8e00d3bde24443dae12d8cbce25d042645b55cc68f48a67a87",
+          "task.md": "c8a5bba0f31cf71e39063019a2a6eca04999ed5fb4c1f9387f587fd15eea15fa"
+        },
+        "sha256": "3050bded8763e74a4c77a4d9c34e00238fcdbc55b612f6146e23e22b3717041d"
+      },
+      "baseline": {
+        "path": "docs/reviews/reviewer-remediation-20261123-second/packages/code-reviewer-0.4.11.tar.gz",
+        "sha256": "44d896dd7731c7e8730112b3729236feb6ab53dd9c069bd5781f5d643f6c45c0"
+      }
+    }
+  },
+  "models": {
+    "executor": [
+      "gpt-6.2-sol",
+      "medium"
+    ],
+    "reviewer": [
+      "gpt-6.2-astra",
+      "high"
+    ]
+  },
+  "assignments": {
+    "bcbd25d84b5e": {
+      "skill": "code-reviewer",
+      "case": "transfer",
+      "pair": "transfer-1",
+      "variant": "0.4.12",
+      "label": "69d1906c58"
+    },
+    "26e55f7e3229": {
+      "skill": "code-reviewer",
+      "case": "transfer",
+      "pair": "transfer-1",
+      "variant": "0.4.11",
+      "label": "e04399632c"
+    },
+    "4eed92a1723f": {
+      "skill": "code-reviewer",
+      "case": "original",
+      "pair": "original-1",
+      "variant": "0.4.11",
+      "label": "1939367830"
+    },
+    "ba5423ff0f71": {
+      "skill": "code-reviewer",
+      "case": "original",
+      "pair": "original-1",
+      "variant": "0.4.12",
+      "label": "6593d040f3"
+    },
+    "6539f39eab03": {
+      "skill": "code-reviewer",
+      "case": "fresh",
+      "pair": "fresh-1",
+      "variant": "0.4.12",
+      "label": "2297805f68"
+    },
+    "7362c181fb08": {
+      "skill": "code-reviewer",
+      "case": "fresh",
+      "pair": "fresh-1",
+      "variant": "0.4.11",
+      "label": "2a0b5b7af3"
+    }
+  },
+  "executionOrder": [
+    "bcbd25d84b5e",
+    "26e55f7e3229",
+    "4eed92a1723f",
+    "ba5423ff0f71",
+    "6539f39eab03",
+    "7362c181fb08"
+  ],
+  "gradingOrder": [
+    "7362c181fb08",
+    "4eed92a1723f",
+    "26e55f7e3229",
+    "bcbd25d84b5e",
+    "6539f39eab03",
+    "ba5423ff0f71"
+  ],
+  "doubleRating": {
+    "code-reviewer": "ba5423ff0f71"
+  },
+  "packet": "P3",
+  "rubric": "R3",
+  "phase": "confirmation"
+}

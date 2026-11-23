@@ -1,0 +1,75 @@
+{
+  "label": "1939367830",
+  "case": "original",
+  "answer": "**P-84 пока не следует сливать.** Форматтер печатает тире вместо нулевого остатка, а содержимое обновлённого макета недоступно для проверки. По условиям P-84 перед слиянием нужно проверить оба файла. [Критерии P-84](ticket.md#L3)\n\n- **[blocking] Нулевой остаток выглядит как невыполненный пересчёт.** Выражение `quantity or \"—\"` возвращает тире и для `None`, и для `0`. Локальный вызов подтвердил регрессию: базовая версия возвращает `\"0\"`, предложенная — `\"—\"`. Нужно проверять `quantity is None` явно и закрепить примеры `None → \"—\"`, `0 → \"0\"` и `17 → \"17\"`. [Форматтер](head/counter.py#L2)\n- **Макет `sheet.pmf` остаётся непроверенным.** В выгрузке есть заголовок бинарного изменения и идентификатор предложенного blob `ddcf658137f99f26e2122d16d32aa60597dd0084`. Для ревью нужна именно эта ревизия макета в доступном для просмотра виде. [Манифест](snapshot.md#L11) · [Бинарный diff](changes.diff#L11)\n\n**Основание ревью.** В манифесте указаны деревья `08ade8c09d2733e23e8cabf2902f8621c0a776fd` → `a5969087e8e925f8a7c8f0b17aca3197f9e17036`. SHA-256 локальной выгрузки совпал до и после ревью: `84ed3f65b1aefc7bdfe07c93a8a5756440f7b694b2d59825e746e1b914482b5b`. [Манифест](snapshot.md#L5)  \n**Охват и проверки.** Из двух изменённых файлов проверены обе версии `counter.py`, их Git blob-хеши и результаты прямых вызовов. Для `sheet.pmf` доступны только метаданные.  \n**Рекомендация по всей поставке — `limited`.** Ревью частичное, и подтверждённого дефекта форматтера уже достаточно, чтобы отложить слияние.",
+  "actions": [
+    {
+      "command": "/bin/bash -lc 'ls -la'",
+      "exit": 0,
+      "output": "total 12\ndrwxrwxr-x 5 kostysh kostysh  160 Nov 23 11:54 .\ndrwx------ 3 kostysh kostysh   60 Nov 23 11:55 ..\ndrwxrwxr-x 2 kostysh kostysh   60 Nov 22 01:32 base\n-rw-rw-r-- 1 kostysh kostysh  498 Nov 22 01:32 changes.diff\ndrwxrwxr-x 2 kostysh kostysh   60 Nov 22 01:32 head\n-rw-rw-r-- 1 kostysh kostysh 1227 Nov 22 01:32 snapshot.md\n-rw-rw-r-- 1 kostysh kostysh  687 Nov 22 01:32 ticket.md"
+    },
+    {
+      "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"' ",
+      "exit": 0,
+      "output": "changes.diff\nsnapshot.md\nhead/counter.py\nticket.md\nbase/counter.py"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba snapshot.md'",
+      "exit": 0,
+      "output": "     1\t# Выгрузка изменений P-84\n     2\t\n     3\tВладелец релиза передал снимки деревьев Git для полного изменения P-84. Пути в деревьях отсчитываются от корня модуля. Таблица содержит все изменённые файлы. Идентификаторы деревьев и blob приведены в формате Git SHA-1.\n     4\t\n     5\t- Базовое дерево: `08ade8c09d2733e23e8cabf2902f8621c0a776fd` (`base/`).\n     6\t- Предложенное дерево: `a5969087e8e925f8a7c8f0b17aca3197f9e17036` (`head/`).\n     7\t\n     8\t| Файл | Базовый blob | Предложенный blob |\n     9\t| --- | --- | --- |\n    10\t| `counter.py` | `752db978a514eb913f8fcbec9ff28347d8274018` | `561b43128afe4dee9ae36ef038e6d7df0ee0b46a` |\n    11\t| `sheet.pmf` | `306cb0b04193c1897be39d3b8030398f95b94ade` | `ddcf658137f99f26e2122d16d32aa60597dd0084` |\n    12\t\n    13\tВыгрузка включает текст и заголовки всех изменений. Бинарные вложения хранятся в отдельном архиве. Их содержимое и предварительный просмотр к этой передаче не приложены."
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba ticket.md'",
+      "exit": 0,
+      "output": "     1\t# P-84. Печатная форма инвентаризации\n     2\t\n     3\tСогласовано владельцем склада. В текстовом поле для ещё не выполненного пересчёта (значение None) на бланке должен быть знак «—». Проведённый пересчёт даёт неотрицательное целое число, которое поле печатает десятичными цифрами. Поставка также включает обновлённый макет для печатного терминала. Для слияния проверяются форматтер и макет."
+    },
+    {
+      "command": "/bin/bash -lc 'sha256sum base/counter.py head/counter.py changes.diff snapshot.md ticket.md | sha256sum'",
+      "exit": 0,
+      "output": "84ed3f65b1aefc7bdfe07c93a8a5756440f7b694b2d59825e746e1b914482b5b  -"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba base/counter.py'",
+      "exit": 0,
+      "output": "     1\tdef quantity_text(quantity):\n     2\t    if quantity is None:\n     3\t        return \"\"\n     4\t    return str(quantity)"
+    },
+    {
+      "command": "/bin/bash -lc 'ls -la base head'",
+      "exit": 0,
+      "output": "base:\ntotal 4\ndrwxrwxr-x 2 kostysh kostysh  60 Nov 22 01:32 .\ndrwxrwxr-x 5 kostysh kostysh 160 Nov 23 11:54 ..\n-rw-rw-r-- 1 kostysh kostysh  97 Nov 22 01:32 counter.py\n\nhead:\ntotal 4\ndrwxrwxr-x 2 kostysh kostysh  60 Nov 22 01:32 .\ndrwxrwxr-x 5 kostysh kostysh 160 Nov 23 11:54 ..\n-rw-rw-r-- 1 kostysh kostysh  63 Nov 22 01:32 counter.py"
+    },
+    {
+      "command": "/bin/bash -lc 'git hash-object --no-filters base/counter.py head/counter.py'",
+      "exit": 0,
+      "output": "752db978a514eb913f8fcbec9ff28347d8274018\n561b43128afe4dee9ae36ef038e6d7df0ee0b46a"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba head/counter.py'",
+      "exit": 0,
+      "output": "     1\tdef quantity_text(quantity):\n     2\t    return str(quantity or \"—\")"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba changes.diff'",
+      "exit": 0,
+      "output": "     1\tdiff --git a/counter.py b/counter.py\n     2\tindex 752db978a514eb913f8fcbec9ff28347d8274018..561b43128afe4dee9ae36ef038e6d7df0ee0b46a 100644\n     3\t--- a/counter.py\n     4\t+++ b/counter.py\n     5\t@@ -1,4 +1,2 @@\n     6\t def quantity_text(quantity):\n     7\t-    if quantity is None:\n     8\t-        return \"\"\n     9\t-    return str(quantity)\n    10\t+    return str(quantity or \"—\")\n    11\tdiff --git a/sheet.pmf b/sheet.pmf\n    12\tindex 306cb0b04193c1897be39d3b8030398f95b94ade..ddcf658137f99f26e2122d16d32aa60597dd0084 100644\n    13\tBinary files a/sheet.pmf and b/sheet.pmf differ"
+    },
+    {
+      "command": "/bin/bash -lc \"python3 -IB - <<'PY'\nfrom pathlib import Path\n\nfor revision in (\\\"base\\\", \\\"head\\\"):\n    path = Path(revision, \\\"counter.py\\\")\n    namespace = {}\n    exec(compile(path.read_bytes(), str(path), \\\"exec\\\"), namespace)\n    for value, expected in ((None, \\\"—\\\"), (0, \\\"0\\\"), (17, \\\"17\\\")):\n        result = namespace[\\\"quantity_text\\\"](value)\n        print(f\\\"{path}: {value\"'!r} -> {result!r}; expected {expected!r}\")\nPY'",
+      "exit": 0,
+      "output": "base/counter.py: None -> ''; expected '—'\nbase/counter.py: 0 -> '0'; expected '0'\nbase/counter.py: 17 -> '17'; expected '17'\nhead/counter.py: None -> '—'; expected '—'\nhead/counter.py: 0 -> '—'; expected '0'\nhead/counter.py: 17 -> '17'; expected '17'"
+    },
+    {
+      "command": "/bin/bash -lc \"rg --files --hidden ",
+      "exit": 0,
+      "output": "changes.diff\nsnapshot.md\nticket.md\nbase/counter.py\nhead/counter.py"
+    },
+    {
+      "command": "/bin/bash -lc 'sha256sum base/counter.py head/counter.py changes.diff snapshot.md ticket.md | sha256sum'",
+      "exit": 0,
+      "output": "84ed3f65b1aefc7bdfe07c93a8a5756440f7b694b2d59825e746e1b914482b5b  -"
+    }
+  ],
+  "changedProjectFiles": [],
+  "exit": 0,
+  "lastEvent": "turn.completed"
+}
