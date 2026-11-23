@@ -1,0 +1,12 @@
+{
+  "utc": "2026-11-23T11:45:36.243+00:00",
+  "method": "Применена ранее зафиксированная нейтрализация пути временного каталога и технических строк пакета. В шести выдачах отсутствовали номера версий, run ID, путь рабочего дерева и видимые названия пакета. Команды, коды и относящиеся к заданию результаты сохранены.",
+  "packets": {
+    "code-reviewer/assessments/packets/cfa48d88de.json": "553cb95c45a847043a30af4a428e1e17bfa5a160971b7547c13aa2fe6b64b031",
+    "code-reviewer/assessments/packets/9ec0ead849.json": "4e43ad47894480ddf06cbeda720777eeac8081b112672b3fcea5c71ecd77b30c",
+    "code-reviewer/assessments/packets/3b07ef188c.json": "019b47639704f0cc7b4ec507329ca0668609759058d99408144486f63db719cc",
+    "code-reviewer/assessments/packets/f19c89213c.json": "89ce4bf1aec51ff6196b36a5cd1b3285a9a63edbdf9ccfedd6323e03ac8439e9",
+    "code-reviewer/assessments/packets/9ebd8cb4aa.json": "a65faae1db83c85afa9a65815ad370731f59979a37fe448c4971d6c33cfe7bc1",
+    "code-reviewer/assessments/packets/b003049d51.json": "99e8a5557247e8a45746f87e5770284df36ca1fc5c6bf7070ab4671bd9de2f12"
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "utc": "2026-11-23T11:44:13.662Z",
+  "workdir": "/tmp/local-review-iyyfs4om/project",
+  "registration": "1bee12f4f6256ab3585476b8b4534e229b2a52ddc991556f3bf5c1fd2e524f84",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "projectSha256": {
+    "SHA256SUMS": "bca89a2045b5ad07c101d342861d1c5851d3aaeeeb98d8fd84a5b6cc42994b20",
+    "base/stops.tsv": "43a090183e952384ba4c25521b83282b21c4e1f7c052890f2e65da890d47890d",
+    "changes.diff": "9d886ccc700c0c3057e272120d2d741c156ce971763a6734f6282aea9aad7f61",
+    "head/stops.tsv": "57d7f7c243aabeaa0dd56c165140c40dbc9a8eea82539f4088d3834f1f2bd603",
+    "order.md": "cb794b0c8664c079ee665445e644d3dfeccd22b8a6e2713008d365b1feb47e7b",
+    "snapshot.md": "6ef9c4dcbcc30c8e00d3bde24443dae12d8cbce25d042645b55cc68f48a67a87"
+  },
+  "promptSha256": "c8a5bba0f31cf71e39063019a2a6eca04999ed5fb4c1f9387f587fd15eea15fa",
+  "installed": {
+    "SKILL.md": "2dba7dedfeed08c1eafcc7035cc63ade27fb8040c5fb01d046166c71cf6166ec",
+    "agents/openai.yaml": "04ffae6319cbefd3d74507e3be353bae081e22b65bdbc8c003c646ff4e72279a",
+    "assets/fixtures/policy-admission-review.md": "1a474f2391e00f7c0cd5c86de4d6b1b0b27ecce618aef203c2e8cba49fa54f2b",
+    "assets/fixtures/runtime-gate-deployed-path-review.md": "16936898bf81546b8a974d790fd0efa8d081ebef4c9eb458dc3bcc29a6d28646",
+    "assets/pr-review-template.md": "fff1b427e594c9b59ba6cc857d9a47db2aaae613fde371d6135b10c1170bb0cb",
+    "assets/review-checklist.md": "98c7ca18eb8d5bf30e7f142ddea8f122b88ad3e7f3da5fed2d48d0d735aa788a",
+    "references/complexity-only.md": "b058c376f2e41582006c96fad4de174d48ca02b5631e323ad5444431b89aabf4",
+    "references/diff-completeness.md": "adf787f154848e62dccb37daa363aded519cc281dc78b68d393b265e92998c90",
+    "references/domain-routing.md": "6ae9f975e69c60368e099317906439c66ffc7972e711d7481231b2770ab082b8",
+    "references/findings-format.md": "d345856763d5d634019172e35b3af4ac5c37dba52d89123cc7e45376f1deec9c",
+    "references/methodology.md": "2f594fd8352bcb3fe04fa77fb59c2a5753e6b63d9c71be83c8f641c14b504cd8",
+    "references/policy-admission-merge-risk.md": "96e6a2ffa7d47c86e955de9dd521fca1325636aa0a103bf67005df37dfcf79a6",
+    "references/runtime-gate-deployed-path.md": "9b98df5833a0a776f17daff12b2ef57230c873b92545054e707e913cb5b5b6f9",
+    "references/severity-confidence.md": "0cede58ece812426647e84e3c5b1a2a4e6ce75073c71e70d7dcb14b806e7bcb4",
+    "references/spec-pass.md": "85732c5c085b77815c2fa2175740cd8d1f532cc86de4f91f4294c684d79b65a7"
+  },
+  "startup": {
+    "promptInputSha256": "d5dc1914924450b02295a1d8e05a2a9c0b361f51330c90da00d99d0171cef8d1",
+    "catalog": [
+      "code-reviewer"
+    ],
+    "activeTextDelivered": {
+      "SKILL.md": "2dba7dedfeed08c1eafcc7035cc63ade27fb8040c5fb01d046166c71cf6166ec",
+      "references/complexity-only.md": "b058c376f2e41582006c96fad4de174d48ca02b5631e323ad5444431b89aabf4",
+      "references/diff-completeness.md": "adf787f154848e62dccb37daa363aded519cc281dc78b68d393b265e92998c90",
+      "references/domain-routing.md": "6ae9f975e69c60368e099317906439c66ffc7972e711d7481231b2770ab082b8",
+      "references/findings-format.md": "d345856763d5d634019172e35b3af4ac5c37dba52d89123cc7e45376f1deec9c",
+      "references/methodology.md": "2f594fd8352bcb3fe04fa77fb59c2a5753e6b63d9c71be83c8f641c14b504cd8",
+      "references/policy-admission-merge-risk.md": "96e6a2ffa7d47c86e955de9dd521fca1325636aa0a103bf67005df37dfcf79a6",
+      "references/runtime-gate-deployed-path.md": "9b98df5833a0a776f17daff12b2ef57230c873b92545054e707e913cb5b5b6f9",
+      "references/severity-confidence.md": "0cede58ece812426647e84e3c5b1a2a4e6ce75073c71e70d7dcb14b806e7bcb4",
+      "references/spec-pass.md": "85732c5c085b77815c2fa2175740cd8d1f532cc86de4f91f4294c684d79b65a7"
+    },
+    "allExpectedTexts": true,
+    "namedTargetInControl": [],
+    "historyOrKeyInContext": false,
+    "toolNames": [
+      "functions",
+      "clock",
+      "collaboration"
+    ],
+    "restrictedProfile": true,
+    "userPromptPresent": true,
+    "model": "gpt-6.2-sol"
+  },
+  "access": {
+    "readable": {
+      "ownProject": true,
+      "ownTarget": true,
+      "mainCheckoutTarget": false,
+      "worktreeTarget": false,
+      "archive": false,
+      "registration": false,
+      "rubric": false,
+      "otherWindow": false,
+      "hostSkillDirectory": false,
+      "hostHistory": false,
+      "hostConfig": false,
+      "procRootSource": false
+    },
+    "projectWritable": false,
+    "inetSocket": false
+  },
+  "privateSourcesDenied": true,
+  "candidateAndBaselineArchivesDenied": true,
+  "currentAndEarlierEvidenceDenied": true
+}

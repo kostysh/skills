@@ -1,0 +1,50 @@
+{
+  "label": "b003049d51",
+  "case": "transfer",
+  "answer": "**Правку M-56 можно сливать.** Для остановки B07 «Лодочная мастерская» значение `audio` меняется с `en_boat_v1` на согласованное `en_boat_v2`. Ключ остановки, порядок строк и все остальные поля сохранены. Замечаний к правке нет. [Задание](order.md#L3) · [Правка](changes.diff) · [Итоговая таблица](head/stops.tsv#L3)\n\n**Для ввода в эксплуатацию** слияние завершает редакторский этап и позволяет выпускающему включить таблицу в общий пакет экспозиции. Затем смотритель проверяет воспроизведение записей на плеере зала и подписывает акт ввода. В локальной выгрузке есть материалы для проверки каталога. Воспроизведение и наличие подписанного акта по ней подтвердить нельзя. [Порядок ввода](order.md#L5)\n\n**Основание ревью** — M-56, редакции MR-118 → MR-119. Проверен весь заявленный объём, один файл `catalog/stops.tsv`. Обе стороны патча совпали с выгруженными таблицами, Git-хеши таблиц совпали с указанными в описании, а контрольные суммы файлов сошлись до и после проверки. [Описание снимка](snapshot.md) · [Контрольные суммы](SHA256SUMS)\n\n**Рекомендация** — `approve`.",
+  "actions": [
+    {
+      "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git/**'\"'\"",
+      "exit": 0,
+      "output": "SHA256SUMS\nchanges.diff\nsnapshot.md\norder.md\nbase/stops.tsv\nhead/stops.tsv"
+    },
+    {
+      "command": "/bin/bash -lc 'cat snapshot.md order.md'",
+      "exit": 0,
+      "output": "# Выгрузка M-56 · редактор каталога\n\nБазовая редакция таблицы — MR-118, предложенная — MR-119. Полный состав изменения MR-118 → MR-119 включает один файл `catalog/stops.tsv`. Для передачи он скопирован по путям `base/stops.tsv` и `head/stops.tsv`. Патч приведён в `changes.diff`.\n\n| Путь в выгрузке | Git blob SHA-1 |\n| --- | --- |\n| `base/stops.tsv` | `42aa49b66bb59a162fd126742ff26c023b7c6ea9` |\n| `head/stops.tsv` | `f18b14dd42d4d60e6c2dc39ed824c5ede7284271` |\n\nДля сверки доставки приложена ведомость SHA-256 по байтам файлов. Версии MR-118 и MR-119 обозначают редакции каталога в архиве редактора.\n# Каталог аудиомаршрута · M-56\n\nРедактор выставки согласовал одну замену в каталоге остановок. При выборе остановки B07 «Лодочная мастерская» каталог должен указывать на утверждённую запись `en_boat_v2` вместо `en_boat_v1`. Ключ остановки, порядок строк и значения остальных полей сохраняются.\n\nРевью M-56 завершает редакторскую работу над таблицей. Из принятых таблиц выпускающий собирает общий пакет экспозиции. Затем смотритель на этапе ввода проверяет воспроизведение записей на плеере зала и подписывает акт ввода. В эту выгрузку входят материалы редактора для изменения одного файла каталога."
+    },
+    {
+      "command": "/bin/bash -lc 'sha256sum -c SHA256SUMS && sha256sum SHA256SUMS'",
+      "exit": 0,
+      "output": "base/stops.tsv: OK\nchanges.diff: OK\nhead/stops.tsv: OK\norder.md: OK\nsnapshot.md: OK\nbca89a2045b5ad07c101d342861d1c5851d3aaeeeb98d8fd84a5b6cc42994b20  SHA256SUMS"
+    },
+    {
+      "command": "/bin/bash -lc 'cat changes.diff && wc -l base/stops.tsv head/stops.tsv'",
+      "exit": 0,
+      "output": "diff --git a/catalog/stops.tsv b/catalog/stops.tsv\nindex 42aa49b66bb59a162fd126742ff26c023b7c6ea9..f18b14dd42d4d60e6c2dc39ed824c5ede7284271 100644\n--- a/catalog/stops.tsv\n+++ b/catalog/stops.tsv\n@@ -1,4 +1,4 @@\n stop\ttitle\taudio\n A02\tСтарый док\ten_dock_v1\n-B07\tЛодочная мастерская\ten_boat_v1\n+B07\tЛодочная мастерская\ten_boat_v2\n C04\tРечной склад\ten_store_v3\n  4 base/stops.tsv\n  4 head/stops.tsv\n  8 total"
+    },
+    {
+      "command": "/bin/bash -lc 'git hash-object --no-filters base/stops.tsv head/stops.tsv'",
+      "exit": 0,
+      "output": "42aa49b66bb59a162fd126742ff26c023b7c6ea9\nf18b14dd42d4d60e6c2dc39ed824c5ede7284271"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba order.md && nl -ba snapshot.md && nl -ba head/stops.tsv'",
+      "exit": 0,
+      "output": "     1\t# Каталог аудиомаршрута · M-56\n     2\t\n     3\tРедактор выставки согласовал одну замену в каталоге остановок. При выборе остановки B07 «Лодочная мастерская» каталог должен указывать на утверждённую запись `en_boat_v2` вместо `en_boat_v1`. Ключ остановки, порядок строк и значения остальных полей сохраняются.\n     4\t\n     5\tРевью M-56 завершает редакторскую работу над таблицей. Из принятых таблиц выпускающий собирает общий пакет экспозиции. Затем смотритель на этапе ввода проверяет воспроизведение записей на плеере зала и подписывает акт ввода. В эту выгрузку входят материалы редактора для изменения одного файла каталога.\n     1\t# Выгрузка M-56 · редактор каталога\n     2\t\n     3\tБазовая редакция таблицы — MR-118, предложенная — MR-119. Полный состав изменения MR-118 → MR-119 включает один файл `catalog/stops.tsv`. Для передачи он скопирован по путям `base/stops.tsv` и `head/stops.tsv`. Патч приведён в `changes.diff`.\n     4\t\n     5\t| Путь в выгрузке | Git blob SHA-1 |\n     6\t| --- | --- |\n     7\t| `base/stops.tsv` | `42aa49b66bb59a162fd126742ff26c023b7c6ea9` |\n     8\t| `head/stops.tsv` | `f18b14dd42d4d60e6c2dc39ed824c5ede7284271` |\n     9\t\n    10\tДля сверки доставки приложена ведомость SHA-256 по байтам файлов. Версии MR-118 и MR-119 обозначают редакции каталога в архиве редактора.\n     1\tstop\ttitle\taudio\n     2\tA02\tСтарый док\ten_dock_v1\n     3\tB07\tЛодочная мастерская\ten_boat_v2\n     4\tC04\tРечной склад\ten_store_v3"
+    },
+    {
+      "command": "/bin/bash -lc \"python3 -B - <<'PY'\nfrom pathlib import Path\nbase = Path(\\\"base/stops.tsv\\\").read_bytes()\nhead = Path(\\\"head/stops.tsv\\\").read_bytes()\nassert base.count(b'en_boat_v1') == 1\nassert head == base.replace(b'en_boat_v1', b'en_boat_v2', 1)\npatch = Path(\\\"changes.diff\\\").read_bytes().splitlines(keepends=True)\nhunk = patch[5:]\nassert b''.join(line[1:] for line in hunk if line[:1] in (b' ', b'-')) == base\nassert b''.join(line[1:] for line in hunk if line[:1] in (b' ', b'+')) == head\nprint(\\\"Both patch sides and exact field replacement verified\\\")\nPY\"",
+      "exit": 0,
+      "output": "Both patch sides and exact field replacement verified"
+    },
+    {
+      "command": "/bin/bash -lc 'sha256sum -c SHA256SUMS && sha256sum SHA256SUMS'",
+      "exit": 0,
+      "output": "base/stops.tsv: OK\nchanges.diff: OK\nhead/stops.tsv: OK\norder.md: OK\nsnapshot.md: OK\nbca89a2045b5ad07c101d342861d1c5851d3aaeeeb98d8fd84a5b6cc42994b20  SHA256SUMS"
+    }
+  ],
+  "changedProjectFiles": [],
+  "exit": 0,
+  "lastEvent": "turn.completed"
+}

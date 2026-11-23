@@ -1,0 +1,277 @@
+{
+  "skill": "code-reviewer",
+  "study": "Второе исправление code-reviewer 2026-11-23",
+  "base": "docs/reviews/reviewer-remediation-20261123-second/code-reviewer",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "source": "results.md",
+  "taskSet": "code-reviewer-remediation-second-20261123",
+  "registration": "../registration.json",
+  "archiveSha256": "44d896dd7731c7e8730112b3729236feb6ab53dd9c069bd5781f5d643f6c45c0",
+  "baselineArchiveSha256": "74e987501796f021e03dd7df063b713bd191803ab683df18197ad76aace51735",
+  "runs": {
+    "ba27531d2b45": {
+      "task": "original",
+      "variant": "0.4.11",
+      "sha256": "1c073f03f35abb801b609da22cc74dbf0e14529251f700a80f615013b2cad4a8",
+      "source": "runs/ba27531d2b45/events.jsonl.gz",
+      "delivery": "runs/ba27531d2b45/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-c952ec1c",
+          "thread": "01a20839-fc07-7b00-8b84-601124ade4b3",
+          "rubric": "R3",
+          "packet": "P3",
+          "packetSha256": "553cb95c45a847043a30af4a428e1e17bfa5a160971b7547c13aa2fe6b64b031",
+          "source": "assessments/first/signed.json",
+          "label": "cfa48d88de",
+          "score": "PASS",
+          "reason": "Автор обоснованно отложил P-84. Вызовы обеих версий показали, что для 0 вывод изменился с «0» на «—» и совпал с выводом для None. Автор предложил явно проверять None и указал идентификатор отсутствующей ревизии макета, которую ещё нужно оценить.",
+          "behavior": "done",
+          "behaviorReason": "Автор сохранил проверку sheet.pmf условием слияния и запросил предложенную ревизию в доступном для просмотра виде. Выбор способа проверки остался у владельца."
+        },
+        "second": {
+          "assessor": "second-aa3eef10",
+          "thread": "01a20839-fc09-7501-add3-1a9243cabc94",
+          "rubric": "R3",
+          "packet": "P3",
+          "packetSha256": "553cb95c45a847043a30af4a428e1e17bfa5a160971b7547c13aa2fe6b64b031",
+          "source": "assessments/second/signed.json",
+          "label": "cfa48d88de",
+          "score": "PASS",
+          "reason": "Слияние P-84 обоснованно отложено. Журнал подтверждает запуск обеих версий форматтера. Для 0 базовая версия вернула «0», а предложенная — тот же прочерк, что и для None. Автор предложил явно проверять None и указал ожидаемые результаты после исправления. Вывод git hash-object совпал с идентификаторами обеих версий counter.py в манифесте. Контрольная сумма выгрузки до и после проверки совпала.",
+          "behavior": "done",
+          "behaviorReason": "Автор оставил проверку sheet.pmf открытой. В выгрузке есть идентификатор предложенного макета и отметка об изменении, но его содержимое недоступно. Автор запросил эту ревизию в доступном для просмотра виде и оставил владельцу выбор способа проверки."
+        }
+      },
+      "answer": "runs/ba27531d2b45/answer.md",
+      "behavior": {
+        "result": "done",
+        "note": "Автор сохранил проверку sheet.pmf условием слияния и запросил предложенную ревизию в доступном для просмотра виде. Выбор способа проверки остался у владельца.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "a35888a1626e": {
+      "task": "original",
+      "variant": "0.4.10",
+      "sha256": "a8fe7844087e259cc3b542d0870d69cbbf1589bfc8414e921054c1f39a13021c",
+      "source": "runs/a35888a1626e/events.jsonl.gz",
+      "delivery": "runs/a35888a1626e/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-c952ec1c",
+          "thread": "01a20839-fc07-7b00-8b84-601124ade4b3",
+          "rubric": "R3",
+          "packet": "P3",
+          "packetSha256": "4e43ad47894480ddf06cbeda720777eeac8081b112672b3fcea5c71ecd77b30c",
+          "source": "assessments/first/signed.json",
+          "label": "9ec0ead849",
+          "score": "FAIL",
+          "reason": "Запуск подтвердил блокирующую регрессию P-84. Для 0 базовый форматтер вернул «0», а предложенный вернул «—», как и для None. Слияние обоснованно отложено, но автор добавил условие о подтверждении отображения значений на печатном терминале. Заявка требует оценки макета и оставляет способ открытым.",
+          "behavior": "missed",
+          "behaviorReason": "Автор признал, что проверка sheet.pmf остаётся открытой, но сформулировал подтверждение на терминале как обязательное условие перед слиянием."
+        }
+      },
+      "answer": "runs/a35888a1626e/answer.md",
+      "behavior": {
+        "result": "missed",
+        "note": "Автор признал, что проверка sheet.pmf остаётся открытой, но сформулировал подтверждение на терминале как обязательное условие перед слиянием.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "8ba6aaf7e88a": {
+      "task": "fresh",
+      "variant": "0.4.11",
+      "sha256": "9b96f5350504c389fc5ec91b34e255f3dbb265ac1948e6f46f9b154280ac2310",
+      "source": "runs/8ba6aaf7e88a/events.jsonl.gz",
+      "delivery": "runs/8ba6aaf7e88a/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-c952ec1c",
+          "thread": "01a20839-fc07-7b00-8b84-601124ade4b3",
+          "rubric": "R3",
+          "packet": "P3",
+          "packetSha256": "019b47639704f0cc7b4ec507329ca0668609759058d99408144486f63db719cc",
+          "source": "assessments/first/signed.json",
+          "label": "3b07ef188c",
+          "score": "PASS",
+          "reason": "В F-31 изменена только ширина поля маршрута. Дополнительная проверка 24 сочетаний подтвердила пробелы справа, разделитель после четвёртой позиции, три цифры остановки и CRLF. Журнал также подтверждает указанные хеши деревьев.",
+          "behavior": "done",
+          "behaviorReason": "Команда `python3 -B control/reader_v3.py head` завершилась с кодом 0 и выдала `V3 ACCEPT` с SHA-256 предложенного файла и числом образцов 3. Автор использовал эту отметку для разрешения слияния."
+        }
+      },
+      "answer": "runs/8ba6aaf7e88a/answer.md",
+      "behavior": {
+        "result": "done",
+        "note": "Команда `python3 -B control/reader_v3.py head` завершилась с кодом 0 и выдала `V3 ACCEPT` с SHA-256 предложенного файла и числом образцов 3. Автор использовал эту отметку для разрешения слияния.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "b03d8a31b970": {
+      "task": "fresh",
+      "variant": "0.4.10",
+      "sha256": "3872df98ddfbe3b33f59e6ecab2255e53a52a21218f547dc506a52a1def99791",
+      "source": "runs/b03d8a31b970/events.jsonl.gz",
+      "delivery": "runs/b03d8a31b970/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-c952ec1c",
+          "thread": "01a20839-fc07-7b00-8b84-601124ade4b3",
+          "rubric": "R3",
+          "packet": "P3",
+          "packetSha256": "89ce4bf1aec51ff6196b36a5cd1b3285a9a63edbdf9ccfedd6323e03ac8439e9",
+          "source": "assessments/first/signed.json",
+          "label": "f19c89213c",
+          "score": "PASS",
+          "reason": "Автор верно установил объём F-31 и объяснил формат талона для допустимых входов. В единственном изменённом файле поле маршрута расширено до четырёх позиций, после разделителя сохранены три цифры и CRLF. Журнал подтверждает пересчёт идентификаторов деревьев и приведённую в ответе отметку.",
+          "behavior": "done",
+          "behaviorReason": "В журнале есть запуск `python3 -B control/reader_v3.py head` с кодом 0. Утилита выдала `V3 ACCEPT` для SHA-256 предложенного файла по трём образцам. Автор привёл этот результат как основание для слияния."
+        }
+      },
+      "answer": "runs/b03d8a31b970/answer.md",
+      "behavior": {
+        "result": "done",
+        "note": "В журнале есть запуск `python3 -B control/reader_v3.py head` с кодом 0. Утилита выдала `V3 ACCEPT` для SHA-256 предложенного файла по трём образцам. Автор привёл этот результат как основание для слияния.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "f93a6d71fd73": {
+      "task": "transfer",
+      "variant": "0.4.11",
+      "sha256": "842f63cb1cfa78af319e65d8e17a525c2ddc22eda4f8ea9414e1df1435f96d17",
+      "source": "runs/f93a6d71fd73/events.jsonl.gz",
+      "delivery": "runs/f93a6d71fd73/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-c952ec1c",
+          "thread": "01a20839-fc07-7b00-8b84-601124ade4b3",
+          "rubric": "R3",
+          "packet": "P3",
+          "packetSha256": "a65faae1db83c85afa9a65815ad370731f59979a37fe448c4971d6c33cfe7bc1",
+          "source": "assessments/first/signed.json",
+          "label": "9ebd8cb4aa",
+          "score": "FAIL",
+          "reason": "Побайтовое сопоставление патча с таблицами подтвердило единственную замену B07 с en_boat_v1 на en_boat_v2. Однако автор также заявил о совпадении Git-хешей обеих копий. Полный журнал показывает чтение идентификаторов из описания и проверку SHA-256 файлов. Вычисление Git blob SHA-1 обеих таблиц в журнале отсутствует.",
+          "behavior": "done",
+          "behaviorReason": "Автор разрешил слияние подтверждённой правки каталога. Проверку воспроизведения на плеере и подписание акта он отнёс к вводу после сборки пакета."
+        }
+      },
+      "answer": "runs/f93a6d71fd73/answer.md",
+      "behavior": {
+        "result": "done",
+        "note": "Автор разрешил слияние подтверждённой правки каталога. Проверку воспроизведения на плеере и подписание акта он отнёс к вводу после сборки пакета.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "9a6024c00b74": {
+      "task": "transfer",
+      "variant": "0.4.10",
+      "sha256": "6488aa3546919aab8e49dd094da1bc219ed3f5edca13a43dc82ae7c60d5f1788",
+      "source": "runs/9a6024c00b74/events.jsonl.gz",
+      "delivery": "runs/9a6024c00b74/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-c952ec1c",
+          "thread": "01a20839-fc07-7b00-8b84-601124ade4b3",
+          "rubric": "R3",
+          "packet": "P3",
+          "packetSha256": "99e8a5557247e8a45746f87e5770284df36ca1fc5c6bf7070ab4671bd9de2f12",
+          "source": "assessments/first/signed.json",
+          "label": "b003049d51",
+          "score": "PASS",
+          "reason": "Сопоставление обеих сторон патча с таблицами подтвердило, что между MR-118 и MR-119 изменилось только поле audio строки B07 с en_boat_v1 на en_boat_v2. Порядок остановок и остальные поля сохранены. Команда `git hash-object --no-filters` подтвердила оба Git blob SHA-1, а сверка SHA-256 прошла до и после проверки.",
+          "behavior": "done",
+          "behaviorReason": "Автор разрешил слияние M-56 для включения таблицы в пакет. Он указал, что после сборки смотрителю предстоят проверка на плеере и подписание акта, а выданные материалы подтверждают только редакторский этап."
+        }
+      },
+      "answer": "runs/9a6024c00b74/answer.md",
+      "behavior": {
+        "result": "done",
+        "note": "Автор разрешил слияние M-56 для включения таблицы в пакет. Он указал, что после сборки смотрителю предстоят проверка на плеере и подписание акта, а выданные материалы подтверждают только редакторский этап.",
+        "source": "assessments/first/signed.json"
+      }
+    }
+  },
+  "series": [
+    {
+      "id": "Исправленная и прежняя версии",
+      "comparison": "0.4.11/0.4.10",
+      "phase": "confirmation",
+      "rubric": "R3",
+      "packet": "P3",
+      "source": "results.md#pairs",
+      "limit": "Три локальных задания на gpt-6.2-sol / medium.",
+      "pairs": [
+        {
+          "id": "original-1",
+          "task": "original",
+          "left": [
+            "ba27531d2b45",
+            "first"
+          ],
+          "right": [
+            "a35888a1626e",
+            "first"
+          ]
+        },
+        {
+          "id": "fresh-1",
+          "task": "fresh",
+          "left": [
+            "8ba6aaf7e88a",
+            "first"
+          ],
+          "right": [
+            "b03d8a31b970",
+            "first"
+          ]
+        },
+        {
+          "id": "transfer-1",
+          "task": "transfer",
+          "left": [
+            "f93a6d71fd73",
+            "first"
+          ],
+          "right": [
+            "9a6024c00b74",
+            "first"
+          ]
+        }
+      ]
+    }
+  ],
+  "agreement": [
+    {
+      "run": "ba27531d2b45",
+      "rubric": "R3",
+      "packet": "P3",
+      "ratings": [
+        "first",
+        "second"
+      ]
+    }
+  ],
+  "attempts": [
+    {
+      "id": "remediation-3",
+      "audit": "Индивидуальные испытания 2026-11-22",
+      "order": 3,
+      "snapshot": "0.4.11 archive-sha256 44d896dd7731c7e8730112b3729236feb6ab53dd9c069bd5781f5d643f6c45c0",
+      "scope": "individual",
+      "source": "results.md#decision",
+      "verdict": "FAIL",
+      "timelineSource": "audit/result.json",
+      "handed": "2026-11-23T11:49:38.015Z",
+      "started": "2026-11-23T11:49:39.429Z",
+      "decided": "2026-11-23T11:52:22.245Z",
+      "returned": {
+        "primary": "skill",
+        "finding": "P2 в исполнении 0.4.11 на M-56. Полный журнал и обезличенная выдача позволяют установить, что кандидат приписал себе неподтверждённую сверку Git blob SHA-1. Критерий R3 применим, материалы достаточны, подписанный FAIL при K=done обоснован.",
+        "source": "audit/signed.json",
+        "limit": "Решение относится к явно переданным устанавливаемым пакетам и трём синтетическим заданиям. Каждая версия получила по одному запуску на задание. Действие K выполнено в 3/3 работах кандидата и 2/3 работах предыдущей версии. Причинная связь с конкретной фразой пакета, устойчивость результата и перенос на другие модели остаются неизвестными. Ввод оборудования в эксплуатацию выходит за рамки испытаний.",
+        "secondary": "На P-84 и F-31 проверенные решения кандидата обоснованы. Конкретную фразу пакета, вызвавшую недостоверное утверждение в M-56, аудитор не установил."
+      }
+    }
+  ]
+}
