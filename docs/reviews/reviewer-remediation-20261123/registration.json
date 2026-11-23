@@ -1,0 +1,168 @@
+{
+  "utc": "2026-11-23T11:27:21.646Z",
+  "base": "5acfd9ba3e4c26f3f20a8dd2bb29fa0104a88076",
+  "method": {
+    "docs/reviews/reviewer-remediation-20261123/study.py": "a9e4c5dadfec9cd39fc16e64d01e274645f9748a05765c7adfe1145bed6c810d",
+    "docs/reviews/individual-trials-20261122/method/session.py": "37b691d048b50b197e1b85e65d210a3b84c1b03722c4d00d139aa0114b05c1c4",
+    "docs/reviews/individual-trials-20261122/method/assess.py": "fc63c36c90dc2101bf273d084349c225add87806ab2b1f92a11a35184794388c",
+    "docs/reviews/individual-trials-20261122/method/grading-instructions.md": "db23ac8b7620d2b44cb21ae1dd43399ece6470caa87c376f6c69394b08b75fea"
+  },
+  "protocol": "ad0cdf7bc8bab7ce32ebf4ab01ad247b1b3f96cd50dec843eb08160d5d3c6909",
+  "casesFrozen": "28fc343f1e0332a708b8160efa41f77676a80360206a506e222c2f81a2978a4d",
+  "rubric": "R2",
+  "packet": "P2",
+  "skills": {
+    "code-reviewer": {
+      "rubric": "c8259ce4a7b6b0220a14fcff60c2f114edfa18008ae2596e44049a17d39dcce7",
+      "cases": {
+        "original": {
+          "prompt": "faf89d490bcdd65f75b496b637ca9fa7390eb1fb5742a7857284996e56145320",
+          "project": {
+            "base/counter.py": "1014f6d751ecb17eac72e8c338a6e6a2b3e1d91f0c1166b746ed709c498af40a",
+            "changes.diff": "1be7e5f2b5ae4e1f289cada39e6a632695cf99ed3d6ccbeed70177b9a45d16b6",
+            "head/counter.py": "ab224a8bc113c8e61ced42f27ebdc0a1bc6162bae04648a5b5b880277764ce66",
+            "snapshot.md": "c4ad90715e2d255821a82c37c5d6462d6d94f333857b2e4652452bd46d82c8cb",
+            "ticket.md": "160d7f9310edda96cc309979ee8863ce6f094f5c8e8cafae565df5979fa1954e"
+          }
+        },
+        "fresh": {
+          "prompt": "5129c212d81005b71be375327474212291651a1e83f026edb7f22ce63917b566",
+          "project": {
+            "acceptance.md": "82351301ab8bf1f6923b2fcd7a59520a05171d3cfe9038c292ce4255987affcf",
+            "base/slip.py": "7e1254d7aa6dca5bd109280626db7aa91dc46684ad28470c398b4dc2af0049f2",
+            "changes.diff": "5f5ee32bab7191474fdc69fd73b69ec8f3162ddbf2434379d00e893a0e6cd6a2",
+            "control/reader_v3.py": "a7f24b8336dac6d02e3939f6e23f202659d54abaf3b4db1174ad33d000490869",
+            "head/slip.py": "074c44f34377750ae98c41ceedc93d27e427f27163617b4cee5231dfead77bfc",
+            "request.md": "219aa829060baad0c8f7fcd7f19b82c0e22b3d41a445f0220d8c59084878f865",
+            "snapshot.md": "281380afa3f55f49170328cf0c6150ff126c6048ce0214fdc5dc746cd0dd44ca"
+          }
+        }
+      },
+      "archives": {
+        "0.4.10": "74e987501796f021e03dd7df063b713bd191803ab683df18197ad76aace51735",
+        "0.4.9": "a490a6d30de61f5af69a76ccaa35c6fefd4030da0b33f5ad988e8c2e006bb41d"
+      }
+    },
+    "spec-conformance-reviewer": {
+      "rubric": "29634d145ed171738ffbb7376ee25f9d7d0334c54d0130df1427140f20235c0b",
+      "cases": {
+        "original": {
+          "prompt": "899afa1db726746946074fc71e6cc438faee70b2ec69d6d88e47d2c67a59f437",
+          "project": {
+            "SHA256SUMS": "ff521308f266f91d9f3e7784fa0dc05f12ba7c2ae7933b381701b9be31ba0079",
+            "check_cli.py": "066c47c012a843150ca0fd2573736c845082d50c972eeccd0555ebeb8643f5c9",
+            "delivery.txt": "d9db754b986dd9043fbdae2d69722f13fd8e0f5f98068f588f3d7f4678f9b8fd",
+            "route_tag.py": "78c00e919b979214cd818c7dca505a06af1ceb2be3ba8631db30ed3414d16e28",
+            "spec.md": "ae4fca728f3e24e31af2846a43d80bdcfab6f3ca636da23d09b014eb06d571b1"
+          }
+        },
+        "fresh": {
+          "prompt": "dbfdea4c5af96d94b29fe10a6358e8d28ed1f8a8c1f8fcf49594cac1c515470e",
+          "project": {
+            "bench.tsv": "8043f2d778cc566105c3885c1e5a2f7a11ab04dab1e4fa949bf322995fd42621",
+            "contract.md": "f4021b6629aedb8d149f75352a2a6fbddb76c53d64ee437f4c026225b304b9ef",
+            "passport.md": "ec9b09f12edf820e3d0342ff2ecc4a93546c4edd58f779cb4d344c808c928875",
+            "profile.json": "e30c5880d4f0867bc570426ff18ca0f4e93ee111081b01d0f5c1b2e220fe571a"
+          }
+        }
+      },
+      "archives": {
+        "0.1.12": "e111920c6e6734e47eac6584a2765fff764228e0c27181395ba1b6474da86d77",
+        "0.1.11": "292cad3bebc2b5e01fa6b97fa967ba1e0ed549e0f8fdb8dff9667c6bb3395a9b"
+      }
+    }
+  },
+  "models": {
+    "executor": [
+      "gpt-6.2-sol",
+      "medium"
+    ],
+    "reviewer": [
+      "gpt-6.2-astra",
+      "high"
+    ]
+  },
+  "assignments": {
+    "05cdb5d86753": {
+      "skill": "code-reviewer",
+      "case": "original",
+      "pair": "original-1",
+      "variant": "0.4.10",
+      "label": "3f0393c464"
+    },
+    "c14a5c467fe2": {
+      "skill": "code-reviewer",
+      "case": "original",
+      "pair": "original-1",
+      "variant": "0.4.9",
+      "label": "c7c83d77e6"
+    },
+    "64a5f942119f": {
+      "skill": "code-reviewer",
+      "case": "fresh",
+      "pair": "fresh-1",
+      "variant": "0.4.10",
+      "label": "b31bd18a0b"
+    },
+    "28eeed03f44e": {
+      "skill": "code-reviewer",
+      "case": "fresh",
+      "pair": "fresh-1",
+      "variant": "0.4.9",
+      "label": "4b719e0f3f"
+    },
+    "9317c5c5bd0a": {
+      "skill": "spec-conformance-reviewer",
+      "case": "original",
+      "pair": "original-1",
+      "variant": "0.1.12",
+      "label": "3f46798819"
+    },
+    "6c97cdc895f2": {
+      "skill": "spec-conformance-reviewer",
+      "case": "original",
+      "pair": "original-1",
+      "variant": "0.1.11",
+      "label": "32ddbad622"
+    },
+    "f20af8f28dc8": {
+      "skill": "spec-conformance-reviewer",
+      "case": "fresh",
+      "pair": "fresh-1",
+      "variant": "0.1.12",
+      "label": "a1b5c2b384"
+    },
+    "d65a958ae83a": {
+      "skill": "spec-conformance-reviewer",
+      "case": "fresh",
+      "pair": "fresh-1",
+      "variant": "0.1.11",
+      "label": "405c863ff6"
+    }
+  },
+  "doubleRating": {
+    "code-reviewer": "28eeed03f44e",
+    "spec-conformance-reviewer": "9317c5c5bd0a"
+  },
+  "executionOrder": [
+    "05cdb5d86753",
+    "64a5f942119f",
+    "9317c5c5bd0a",
+    "f20af8f28dc8",
+    "d65a958ae83a",
+    "c14a5c467fe2",
+    "6c97cdc895f2",
+    "28eeed03f44e"
+  ],
+  "gradingOrder": [
+    "64a5f942119f",
+    "c14a5c467fe2",
+    "28eeed03f44e",
+    "6c97cdc895f2",
+    "f20af8f28dc8",
+    "05cdb5d86753",
+    "9317c5c5bd0a",
+    "d65a958ae83a"
+  ],
+  "cli": "codex-cli 0.171.0"
+}

@@ -1,0 +1,40 @@
+{
+  "release": "skills-20261123",
+  "packages": {
+    "code-reviewer": {
+      "version": "0.4.10",
+      "sha256": "74e987501796f021e03dd7df063b713bd191803ab683df18197ad76aace51735",
+      "contentHash": "e5a3eb02b363daf0cf5266e359552ad1bcd50634a96ac2b7832351ebb842a992",
+      "files": {
+        "SKILL.md": "1969a890478100dfd9cf80518bf0e828019984b0220a51605296022454e7e147",
+        "agents/openai.yaml": "04ffae6319cbefd3d74507e3be353bae081e22b65bdbc8c003c646ff4e72279a",
+        "assets/fixtures/policy-admission-review.md": "1a474f2391e00f7c0cd5c86de4d6b1b0b27ecce618aef203c2e8cba49fa54f2b",
+        "assets/fixtures/runtime-gate-deployed-path-review.md": "16936898bf81546b8a974d790fd0efa8d081ebef4c9eb458dc3bcc29a6d28646",
+        "assets/pr-review-template.md": "fff1b427e594c9b59ba6cc857d9a47db2aaae613fde371d6135b10c1170bb0cb",
+        "assets/review-checklist.md": "98c7ca18eb8d5bf30e7f142ddea8f122b88ad3e7f3da5fed2d48d0d735aa788a",
+        "references/complexity-only.md": "b058c376f2e41582006c96fad4de174d48ca02b5631e323ad5444431b89aabf4",
+        "references/diff-completeness.md": "078d87a26c1eecd8b9e746ef3793fcfcca41e81a1838fbe96146a24fca8b4e29",
+        "references/domain-routing.md": "6ae9f975e69c60368e099317906439c66ffc7972e711d7481231b2770ab082b8",
+        "references/findings-format.md": "21df9e576f42e53b497104f5394e523dea90cecc4cb44cab9391a5dd45e3ab9e",
+        "references/methodology.md": "2f594fd8352bcb3fe04fa77fb59c2a5753e6b63d9c71be83c8f641c14b504cd8",
+        "references/policy-admission-merge-risk.md": "96e6a2ffa7d47c86e955de9dd521fca1325636aa0a103bf67005df37dfcf79a6",
+        "references/runtime-gate-deployed-path.md": "9b98df5833a0a776f17daff12b2ef57230c873b92545054e707e913cb5b5b6f9",
+        "references/severity-confidence.md": "0cede58ece812426647e84e3c5b1a2a4e6ce75073c71e70d7dcb14b806e7bcb4",
+        "references/spec-pass.md": "85732c5c085b77815c2fa2175740cd8d1f532cc86de4f91f4294c684d79b65a7"
+      }
+    },
+    "spec-conformance-reviewer": {
+      "version": "0.1.12",
+      "sha256": "e111920c6e6734e47eac6584a2765fff764228e0c27181395ba1b6474da86d77",
+      "contentHash": "3effc7acf027828b1b43c150e77e5a9d10345b4f4c32f75b36a33bb05c35a9ee",
+      "files": {
+        "SKILL.md": "005aeef5f6b185093c91ffeb2d44a6bf52ebdb172acbffe459f36dbeedb38f7f",
+        "agents/openai.yaml": "cfb46dd79b7c1dbea6f21726d24c55d1ecde761ced9005f103ffb30629c88b2b",
+        "assets/fixtures/consultant-admission-policy.md": "acc3607c90becff03a87356f0e43e094bb023e28ea1e80af64dbd4577c514b53",
+        "references/methodology.md": "de14ec0500b13f3e9d01df63d392beb32d17124a5b6e017a49a17d5df49f5e1f",
+        "references/policy-admission-matrix.md": "cfe2cd85876b46cdd71fd982b15bdbe3cff16e4dc95da48ca53a2c3b28578689",
+        "references/reporting.md": "35de1ebc9ead6e2d609b0c3ab067a794acc25fbcdc3a5005e1967eec846591f0"
+      }
+    }
+  }
+}

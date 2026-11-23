@@ -1,0 +1,7 @@
+diff --git a/slip.py b/slip.py
+index 0e5dd98c6c5d0bbb0472be4f5ee01495744412e5..4fdf116a23e77cfbb2fd94cf33ad63cdbfcb3f0d 100644
+--- a/slip.py
++++ b/slip.py
+@@ -5 +5 @@
+-    return f"{route:<3}/{stop:03d}\r\n".encode("ascii")
++    return f"{route:<4}/{stop:03d}\r\n".encode("ascii")
