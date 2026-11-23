@@ -5,9 +5,9 @@ description: Perform read-only review of PRs, diffs, and local branch changes.
   or lightweight intent alignment, and provide evidence-backed merge guidance
   with stable scope, severity, and findings; pair with relevant domain skills.
 metadata:
-  source-version: 0.4.12
+  source-version: 0.4.13
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: d7d86123a1001a456e35b0f90ed2875df77b66e4d14f5349773db2e5760d33df
+  skillforge-source-hash: 4499f58e331f462c2223dc9f96bcff624f73e22e980a13388bd6f33166e24c2c
 ---
 
 # code-reviewer
@@ -15,9 +15,9 @@ metadata:
 ## Start here
 
 1. Select normal merge-risk review, explicit complexity-only review, or a combined request; preserve the requested mode and leave specialized verdicts with their owners.
-2. Read diff-completeness, findings-format, and severity-confidence on every review; freeze the target and scope plus the applicable base and snapshot. Explicit snippet or repository scope need not have a diff base.
-3. Load only conditional references and available domain skills whose triggers match the changed behavior.
-4. Recheck snapshot identity before reporting and return an evidence-calibrated recommendation with explicit limits.
+2. Read diff-completeness, findings-format, and severity-confidence on every review. Establish the target, scope, applicable base, and starting snapshot.
+3. Open the changed hunks or compare base and head. Check the observed changes against the request, including changes it did not mention. For an explicit snippet or repository scope, read the scoped content without inventing a base.
+4. Load matching conditional references and available domain skills. Recheck snapshot identity before reporting a recommendation with explicit limits.
 
 ## When to use this skill
 
@@ -86,7 +86,7 @@ The mode determines which passes apply; common snapshot, read-only, evidence, an
 1. Establish the review basis using `references/diff-completeness.md`:
    - authoritative target, base, scope, starting snapshot identity, linked issue, user intent, and any available normative source
    - note risky file classes: migrations, auth, CI, runtime config, state, tests, runtime gates
-2. Read the available diff and account for every touched file, distinguishing inspected content from unavailable content.
+2. Read the available diff or compare the base and head contents. Check what actually changed against the requested behavior. Account for each touched file and identify any unavailable content.
 3. If normative context exists, run the lightweight pass from `references/spec-pass.md`.
 4. Resolve completeness limits through `references/diff-completeness.md`; do not discard a finding established on a stable accessible part because another file is unavailable.
 5. Route by file type and load only the relevant domain skill. See `references/domain-routing.md`.

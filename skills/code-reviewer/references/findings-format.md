@@ -45,12 +45,12 @@ Use this footer for every review, including terse and clean reviews:
 ```markdown
 Review basis: <target and base>; snapshot <ID from named source or identity established by your check>
 Scope: <changed-file accounting and explicit exclusions>
-Evidence: <actual check, object or behavioral path examined, and observed result>
+Evidence: <what you observed in the changed hunk or scoped content, where you read it, and any further checks and results>
 Limits: <untested or unassessed user/API/data/domain paths, or "none identified">
 Recommendation: approve | request changes | limited | blocked
 ```
 
-For an ID read from a manifest or diff, write `ID from <source>`. Matching `index` and manifest values shows agreement between those records. To say “the file matches this Git blob ID”, compute the blob ID from the file's bytes in the source's object format (for example, `git hash-object --no-filters -- <file>`) and compare it with the stated ID. A successful `sha256sum -c SHA256SUMS` verifies only the listed files against their SHA-256 entries.
+If the request or file metadata is your only basis for a content claim, open the available patch or compare the versions before reporting it. A checksum identifies bytes. Attribute supplied IDs to their source. Claim a verified match only when the ID calculated from those bytes matches the stated ID.
 
 - `approve` requires accounted scope and evidence sufficient for the stated merge boundary.
 - `request changes` requires at least one confirmed blocking finding.
