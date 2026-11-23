@@ -1,0 +1,239 @@
+{
+  "utc": "2026-11-22T01:58:32.178Z",
+  "baseline": "e74e9ea6c465328dfe4f234494a0dab0e6926855",
+  "skills": {
+    "code-reviewer": {
+      "version": "0.4.9",
+      "archiveSha256": "a490a6d30de61f5af69a76ccaa35c6fefd4030da0b33f5ad988e8c2e006bb41d",
+      "verdict": "FAIL",
+      "status": "Needs attention",
+      "assigned": 2,
+      "outcomes": [
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      "scores": {
+        "ordinary": [
+          "PASS",
+          "PASS"
+        ],
+        "boundary": [
+          "FAIL",
+          "FAIL"
+        ]
+      },
+      "jointDecision": "docs/reviews/v5-solo-independent-reaudit.md",
+      "finalDecision": "results.md#decision"
+    },
+    "concept-conformance-reviewer": {
+      "version": "0.2.9",
+      "archiveSha256": "22ac97853260727ce7911882643adf1f3dd7b71b53363212459c4c06731510a4",
+      "verdict": "PASS",
+      "status": "In good shape",
+      "assigned": 2,
+      "outcomes": [
+        0,
+        0,
+        2,
+        0,
+        0
+      ],
+      "scores": {
+        "ordinary": [
+          "PASS",
+          "PASS"
+        ],
+        "boundary": [
+          "PASS",
+          "PASS"
+        ]
+      },
+      "jointDecision": "docs/reviews/implementation-log-20261119-2.md",
+      "finalDecision": "results.md#decision"
+    },
+    "gdpr-compliance": {
+      "version": "0.2.5",
+      "archiveSha256": "23d3acd3574cf0ad54b805458b2c8a65fe527e016c720662dce1839bcb8be751",
+      "verdict": "PASS",
+      "status": "In good shape",
+      "assigned": 2,
+      "outcomes": [
+        0,
+        0,
+        2,
+        0,
+        0
+      ],
+      "scores": {
+        "ordinary": [
+          "PASS",
+          "PASS"
+        ],
+        "boundary": [
+          "PASS",
+          "PASS"
+        ]
+      },
+      "jointDecision": "docs/reviews/implementation-log-20261119-2.md",
+      "finalDecision": "results.md#decision"
+    },
+    "retrospective-analysis": {
+      "version": "0.1.8",
+      "archiveSha256": "50cc6f9318a459b5f2d25469014433433be181c3dca9e16e67df90240ea67837",
+      "verdict": "PASS",
+      "status": "In good shape",
+      "assigned": 2,
+      "outcomes": [
+        1,
+        0,
+        1,
+        0,
+        0
+      ],
+      "scores": {
+        "ordinary": [
+          "PASS",
+          "PASS"
+        ],
+        "boundary": [
+          "PASS",
+          "FAIL"
+        ]
+      },
+      "jointDecision": "docs/reviews/v5-solo-independent-reaudit.md",
+      "finalDecision": "results.md#decision"
+    },
+    "security-reviewer": {
+      "version": "0.1.16",
+      "archiveSha256": "3dbdea3e92a2b3cb4efb50ec5285c003ac223b60403ad981c429fc7b68b9ebf0",
+      "verdict": "PASS",
+      "status": "In good shape",
+      "assigned": 2,
+      "outcomes": [
+        0,
+        0,
+        2,
+        0,
+        0
+      ],
+      "scores": {
+        "ordinary": [
+          "PASS",
+          "PASS"
+        ],
+        "boundary": [
+          "PASS",
+          "PASS"
+        ]
+      },
+      "jointDecision": "docs/reviews/implementation-log-20261119-2.md",
+      "finalDecision": "results.md#decision"
+    },
+    "spec-conformance-reviewer": {
+      "version": "0.1.11",
+      "archiveSha256": "292cad3bebc2b5e01fa6b97fa967ba1e0ed549e0f8fdb8dff9667c6bb3395a9b",
+      "verdict": "FAIL",
+      "status": "Needs attention",
+      "assigned": 2,
+      "outcomes": [
+        0,
+        1,
+        1,
+        0,
+        0
+      ],
+      "scores": {
+        "ordinary": [
+          "FAIL",
+          "PASS"
+        ],
+        "boundary": [
+          "PASS",
+          "PASS"
+        ]
+      },
+      "jointDecision": "docs/reviews/v5-solo-independent-reaudit.md",
+      "finalDecision": "results.md#decision"
+    },
+    "web-ui-reviewer": {
+      "version": "0.2.7",
+      "archiveSha256": "e26a7fa854c79826506705ed823408fcfab01b3aaaae3e3088dc408bdaf78075",
+      "verdict": "PASS",
+      "status": "In good shape",
+      "assigned": 2,
+      "outcomes": [
+        0,
+        0,
+        2,
+        0,
+        0
+      ],
+      "scores": {
+        "ordinary": [
+          "PASS",
+          "PASS"
+        ],
+        "boundary": [
+          "PASS",
+          "PASS"
+        ]
+      },
+      "jointDecision": "docs/reviews/implementation-log-20261119-2.md",
+      "finalDecision": "results.md#decision"
+    }
+  },
+  "newPairs": 14,
+  "order": [
+    "better",
+    "worse",
+    "bothPassed",
+    "bothFailed",
+    "insufficient"
+  ],
+  "newCounts": [
+    1,
+    1,
+    11,
+    1,
+    0
+  ],
+  "catalogPairCounts": [
+    321,
+    37,
+    7,
+    220,
+    29,
+    28
+  ],
+  "oldActiveStudies": 50,
+  "newActiveStudies": 57,
+  "unrelatedDashboardRowsIdentical": 31,
+  "priorStudySourceFilesIdentical": 51,
+  "preservedComparisonRows": 200,
+  "uniqueNewSeries": 7,
+  "priorIndexSha256": "6a4f28e4578dfa2f2356acace53ed53b642a23c54308c1673f7bb419dc659db1",
+  "allPreviousTrackedEvidenceExceptGeneratedDashboardByteUnchanged": true,
+  "caseExecutions": 28,
+  "distinctCliSessionsIncludingAssessmentAndAudit": 53,
+  "primaryAgreementPassFail": "7/7",
+  "primaryAgreementK": "6/7",
+  "referencesChecked": 498,
+  "rawEventsAndAnswersRehashed": 53,
+  "oldCounts": [
+    307,
+    36,
+    6,
+    209,
+    28,
+    28
+  ],
+  "metricsRegressions": {
+    "command": "node --test scripts/audit-metrics.test.mjs",
+    "passed": 11,
+    "failed": 0,
+    "exit": 0
+  }
+}

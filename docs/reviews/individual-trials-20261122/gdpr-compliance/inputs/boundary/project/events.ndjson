@@ -1,0 +1,3 @@
+{"utc":"2026-10-12T16:01:00Z","environment":"test","build":27,"event":"catalog.row.added","visit":"J91","sections":["home","maps","rail"]}
+{"utc":"2026-10-14T16:01:21Z","environment":"test","build":27,"event":"catalog.row.expired","visit":"J91"}
+{"utc":"2026-10-14T16:02:00Z","environment":"test","build":27,"event":"catalog.lookup","visit":"J91","rows":0}

@@ -1,0 +1,5 @@
+principal,site,role
+D19,north,dispatcher
+L07,north,editor
+T11,south,dispatcher
+K02,north,reader

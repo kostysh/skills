@@ -1,0 +1,55 @@
+{
+  "utcRecorded": "2026-11-22T01:44:55.642Z",
+  "sourceBase": "e74e9ea6c465328dfe4f234494a0dab0e6926855",
+  "releaseCatalog": "skills-20261121",
+  "commands": {
+    "pnpm test:ci": {
+      "exit": 0,
+      "raw": "checks/ci-1.txt.gz",
+      "sha256": "a421c68ec75bed386a7eb3b574847a2f85f3fbcbce46597347d3378e754d58a8"
+    },
+    "pnpm --filter @kostysh/skills format:check": {
+      "exit": 0,
+      "raw": "checks/ci-2.txt.gz",
+      "sha256": "6b771a21bfc830ba57bf6f270557c8f4cfd861a57a4efe6797b4549bd6627d33"
+    },
+    "pnpm --filter @kostysh/skills lint": {
+      "exit": 0,
+      "raw": "checks/ci-3.txt.gz",
+      "sha256": "efcfe470067270d133aa4b62048b1092a2926860209124cf0cb578154316d097"
+    },
+    "pnpm --filter @kostysh/skills verify:package": {
+      "exit": 0,
+      "raw": "checks/ci-4.txt.gz",
+      "sha256": "a38bb3ac0e6576d8cf919b1c385727974c1658ec0d3364343856bc8e75ab5814"
+    }
+  },
+  "node": "v24.15.0",
+  "pnpm": "10.28.2",
+  "workspace": "одноразовая распаковка git archive HEAD, Linux",
+  "install": "pnpm install --frozen-lockfile --ignore-scripts (exit 0, 144 packages)",
+  "buildRelease": "pnpm --filter @kostysh/skills build:release (exit 0)",
+  "pack": "pnpm --filter @kostysh/skills pack:skills:v5 --out ../archives --release skills-localcheck (exit 0, 38)",
+  "verify": "pnpm --filter @kostysh/skills verify:skills-release ../archives skills-localcheck (exit 0, 38)",
+  "publishedArchiveEqualsLocal": {
+    "code-reviewer": true,
+    "concept-conformance-reviewer": true,
+    "gdpr-compliance": true,
+    "retrospective-analysis": true,
+    "security-reviewer": true,
+    "spec-conformance-reviewer": true,
+    "web-ui-reviewer": true
+  },
+  "compiler": {
+    "command": "node skills/skill-source-compiler/scripts/skill-source-compiler.mjs check skills/<name>",
+    "exitBySkill": {
+      "code-reviewer": 0,
+      "concept-conformance-reviewer": 0,
+      "gdpr-compliance": 0,
+      "retrospective-analysis": 0,
+      "security-reviewer": 0,
+      "spec-conformance-reviewer": 0,
+      "web-ui-reviewer": 0
+    }
+  }
+}

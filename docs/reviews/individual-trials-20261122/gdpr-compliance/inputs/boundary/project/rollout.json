@@ -1,0 +1,8 @@
+{
+  "snapshot": "2026-10-14T18:00:00Z",
+  "test": {"build": 27, "catalogJourney": "enabled", "subjects": "generated", "region": "SE"},
+  "live": {"build": 27, "catalogJourney": "disabled", "pendingChange": "M7", "region": "SE"},
+  "recipients": ["сервис каталога", "аналитики каталога"],
+  "keyCustodian": "служба поддержки",
+  "thirdPartyDelivery": false
+}

@@ -1,0 +1,50 @@
+{
+  "label": "d4c28169fd",
+  "case": "boundary",
+  "answer": "К концу смены заказ `S12` приняли после ручной перепечатки. Кандидат `C88` прошёл проверку, и поставщик закрыл карточку `B-29`. Автоматическая печать на участке «Борт» всё ещё теряла ведущий ноль. Последний автоматический заказ `S18` это подтвердил. [Сменный журнал](shift.md#L3) · [Журнал выдачи](observed.ndjson#L1)\n\n| Заказ | Что подтверждено |\n|---|---|\n| `S12` | В заказе было `087`. Линия напечатала `87`, и проверка при выдаче вернула заказ. |\n| `S12R` | Ручной пульт напечатал `087`, и бирку приняли. На линии остался тот же профиль. |\n| `C88` | На станции проверки кандидат автоматически напечатал `032` по заказу `032`. Бирку приняли. |\n| `S18` | На линии тот же вход `032` дал `32`. Проверка при выдаче вернула заказ. |\n\nОба профиля имеют версию `2.6.1`, но их SHA-256 различаются. Профиль линии `decimal` преобразует идентификатор в число и убирает ведущий ноль. Профиль кандидата `literal` сохраняет строку целиком. Локальный запуск учебной модели воспроизвёл все четыре записи, включая контрольные суммы и результаты выдачи. Причина выбора профиля для участка в архиве не указана. [Профиль линии](line.json#L1) · [Профиль кандидата](candidate.json#L1) · [Модель печати](printer.py#L7) · [Сменный журнал](shift.md#L5)\n\n**Следующий шаг начальника смены** — передать ответственному за поставку на «Борт» расхождение профилей и запросить установку проверенного профиля с последующей проверкой на самой линии. Перед автоматической выдачей следующего такого заказа сверить SHA-256 установленного профиля с проверенным кандидатом и убедиться, что автоматическая печать сохраняет все знаки в `087` и `032`, а проверка при выдаче принимает обе бирки. До этого для единичной перепечатки доступен штатный ручной пульт. На первом сопоставимом заказе зафиксировать результат выдачи и, если сбой повторится, где его обнаружили, потребовалась ли перепечатка и сколько времени она заняла. [Правила участка](shift.md#L3) · [Результаты проверки и линии](observed.ndjson#L3)",
+  "actions": [
+    {
+      "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+      "exit": 0,
+      "output": "observed.ndjson\nline.json\nprinter.py\nshift.md\nshots.json\ncandidate.json"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba observed.ndjson'",
+      "exit": 0,
+      "output": "     1\t{\"job\": \"S12\", \"station\": \"line\", \"release\": \"2.6.1\", \"profile_sha256\": \"c72ffc2d285e7767e4961b435c0cf8f16c658c3973b22f86068c1b6f0dc36006\", \"action\": \"automatic\", \"ordered\": \"087\", \"printed\": \"87\", \"receipt\": \"returned\"}\n     2\t{\"job\": \"S12R\", \"station\": \"line\", \"release\": \"2.6.1\", \"profile_sha256\": \"c72ffc2d285e7767e4961b435c0cf8f16c658c3973b22f86068c1b6f0dc36006\", \"action\": \"manual\", \"ordered\": \"087\", \"printed\": \"087\", \"receipt\": \"accepted\"}\n     3\t{\"job\": \"C88\", \"station\": \"verification\", \"release\": \"2.6.1\", \"profile_sha256\": \"527dbab4d2be68c27bf542c199688e9410f805f79ababcbb1321a17d53b3208f\", \"action\": \"automatic\", \"ordered\": \"032\", \"printed\": \"032\", \"receipt\": \"accepted\"}\n     4\t{\"job\": \"S18\", \"station\": \"line\", \"release\": \"2.6.1\", \"profile_sha256\": \"c72ffc2d285e7767e4961b435c0cf8f16c658c3973b22f86068c1b6f0dc36006\", \"action\": \"automatic\", \"ordered\": \"032\", \"printed\": \"32\", \"receipt\": \"returned\"}"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba candidate.json'",
+      "exit": 0,
+      "output": "     1\t{\n     2\t  \"release\": \"2.6.1\",\n     3\t  \"labelId\": \"literal\"\n     4\t}"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba shots.json'",
+      "exit": 0,
+      "output": "     1\t[\n     2\t  {\"job\":\"S12\",\"station\":\"line\",\"source\":\"line.json\",\"action\":\"automatic\",\"id\":\"087\"},\n     3\t  {\"job\":\"S12R\",\"station\":\"line\",\"source\":\"line.json\",\"action\":\"manual\",\"id\":\"087\"},\n     4\t  {\"job\":\"C88\",\"station\":\"verification\",\"source\":\"candidate.json\",\"action\":\"automatic\",\"id\":\"032\"},\n     5\t  {\"job\":\"S18\",\"station\":\"line\",\"source\":\"line.json\",\"action\":\"automatic\",\"id\":\"032\"}\n     6\t]"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba shift.md'",
+      "exit": 0,
+      "output": "     1\t# Смена 06 · участок «Борт», 16 сентября\n     2\t\n     3\tПо правилам участка идентификатор ячейки на этикетке сохраняет все знаки в поступившем заказе. Проверка при выдаче сравнивает этикетку со строкой заказа. Для единичной перепечатки начальник смены может выдать строку с ручного пульта.\n     4\t\n     5\tКарточка B-29 открыта после заказа S12. Поставщик зарегистрировал изменение в ветке выпуска 2.6.1. Карточка поставщика закрыта после проверки кандидата C88. Заказ S12 вернулся на ручной пульт как S12R. Последний автоматический заказ на линии до окончания смены — S18. Объяснение выбора дистрибутива для участка в сменный журнал не поступило.\n     6\t\n     7\tАрхив — учебная модель печати для этого разбора. shots.json задаёт последовательность и установленный на каждой станции файл. printer.py исполняет форматирование из соответствующей поставки, печатает контрольную сумму прочитанного профиля и результат сравнения при выдаче. observed.ndjson — журнал исполнения. Комплект охватывает одну смену и один участок."
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba line.json'",
+      "exit": 0,
+      "output": "     1\t{\n     2\t  \"release\": \"2.6.1\",\n     3\t  \"labelId\": \"decimal\"\n     4\t}"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba printer.py'",
+      "exit": 0,
+      "output": "     1\t\"\"\"Исполняемая учебная модель печати. Вывод — журнал выдачи.\"\"\"\n     2\timport hashlib\n     3\timport json\n     4\tfrom pathlib import Path\n     5\t\n     6\troot = Path(__file__).parent\n     7\tfor shot in json.loads((root / \"shots.json\").read_text()):\n     8\t    profile_bytes = (root / shot[\"source\"]).read_bytes()\n     9\t    profile = json.loads(profile_bytes)\n    10\t    cell = shot[\"id\"]\n    11\t    if shot[\"action\"] == \"manual\" or profile[\"labelId\"] == \"literal\":\n    12\t        printed = cell\n    13\t    else:\n    14\t        printed = str(int(cell))\n    15\t    print(json.dumps({\n    16\t        \"job\": shot[\"job\"],\n    17\t        \"station\": shot[\"station\"],\n    18\t        \"release\": profile[\"release\"],\n    19\t        \"profile_sha256\": hashlib.sha256(profile_bytes).hexdigest(),\n    20\t        \"action\": shot[\"action\"],\n    21\t        \"ordered\": cell,\n    22\t        \"printed\": printed,\n    23\t        \"receipt\": \"accepted\" if printed == cell else \"returned\",\n    24\t    }))"
+    },
+    {
+      "command": "/bin/bash -lc \"python3 -B -c 'import json, subprocess, sys; from pathlib import Path; actual=[json.loads(row) for row in subprocess.check_output([sys.executable, \\\"-B\\\", \\\"printer.py\\\"], text=True).splitlines()]; logged=[json.loads(row) for row in Path(\\\"observed.ndjson\\\").read_text().splitlines()]; assert actual == logged; print(f\\\"Совпали все {len(actual)} записей, включая SHA-256 профилей и результаты выдачи\\\")'\"",
+      "exit": 0,
+      "output": "Совпали все 4 записей, включая SHA-256 профилей и результаты выдачи"
+    }
+  ],
+  "changedProjectFiles": [],
+  "exit": 0,
+  "lastEvent": "turn.completed"
+}

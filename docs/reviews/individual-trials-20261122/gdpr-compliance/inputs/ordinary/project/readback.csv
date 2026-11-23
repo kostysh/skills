@@ -1,0 +1,9 @@
+capture,build,site,utc,actor,operation,ticket,result
+C14-18,18,S,2026-10-12T08:00:00Z,desk-staff,issue,T17,CREATED
+C14-18,18,S,2026-10-12T08:08:00Z,desk-staff,issue,T18,CREATED
+C14-18,18,S,2026-10-13T07:59:59Z,desk-staff,lookup,T17,FOUND
+C14-18,18,S,2026-10-13T07:59:59Z,visitor,lookup,T17,DENIED
+C14-18,18,S,2026-10-13T08:00:00Z,desk-staff,lookup,T17,ABSENT
+C14-18,18,S,2026-10-13T08:00:00Z,desk-staff,export,ALL,T18
+C14-18,18,S,2026-10-13T08:00:41Z,svc-expiry,cycle,T17,REMOVED
+C14-18,18,S,2026-10-13T08:00:42Z,svc-expiry,stored_ticket_ids,ALL,T18

@@ -1,0 +1,73 @@
+{
+  "utc": "2026-11-22T01:42:46.361Z",
+  "workdir": "/tmp/local-review-m1u9e98m/project",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "registration": "b2dba4ebc448ea5008128ee8c2ab561e1b2a13d53f746e98e4a6bdf9c554fd5c",
+  "projectSha256": {
+    "board.md": "e3bacdcb846881e45665e45b517c7eb4b6b2c83b10b38c8c697042dc00d1955e",
+    "operations.json": "de1c9b1bbaad3283170ecda6798b86edeaaa1407a90e84a715cc8b5c954da7d9",
+    "roster.csv": "632ee410e78bdefb6176f9070e29b86a93d6152db84c70f1b346654e717de409"
+  },
+  "installed": {
+    "SKILL.md": "f736c3fcdd01ccfed63f84c36a622a0552d3db7c324df0cd256d7740bc2e8acf",
+    "agents/openai.yaml": "d4f95ce6a167349b42743a4270ad2a483d87f2ac1eab8df9105958b7339d97ee",
+    "references/api-auth-input.md": "af207e5692d93e8d403c8ad00631055bd44f8e703d7b7f1d21d80818f7655e8a",
+    "references/data-access-injection.md": "a2906a795948d5eba413fdcb81e2ed0d8dafe5c2c54271d4747f5a9bd938beef",
+    "references/domain-handoffs.md": "937f9cb6706fbab573667811c5b1219296707a49108975b8d376b67d2c40be26",
+    "references/github-actions.md": "3da3ce160c9244033008420e7c999479319951c63f47cc14dae9f455a7cd10e7",
+    "references/methodology.md": "5c4d1f8c1b398d24e0349e219aa097de90c90596945bb1162001e0f69676e51c",
+    "references/policy-governance-admission.md": "9dd88facc864d2245a5597b7f06f3fe010a2ac01722b06c22053032b2a4ca5ac",
+    "references/secrets-config.md": "8f46d5d2b652a74e17d670686b4d6c6adfc6f6bd59263b47606f204da95d6a36",
+    "references/supabase-rls.md": "6dadce04c0a4d1e9323a64161218c5c0d8a6e601ac1eb0267b1dac657a573b0a",
+    "references/webhooks.md": "ccfc22d57d6f7e8a5250610b59e3243b10ac61f0bf699a592e98b134a79e1dec"
+  },
+  "promptSha256": "529c616d2f26ad696ca1e244a95ce0d2cc8118c5e4ca3a0f5b0a2a2d920e8d7d",
+  "startup": {
+    "promptInputSha256": "daf84b4fa418314b8606f3aa79f95c9ae7d24ba5c19f508c3ca363d514371ed2",
+    "catalog": [
+      "security-reviewer"
+    ],
+    "activeTextDelivered": {
+      "SKILL.md": "f736c3fcdd01ccfed63f84c36a622a0552d3db7c324df0cd256d7740bc2e8acf",
+      "references/api-auth-input.md": "af207e5692d93e8d403c8ad00631055bd44f8e703d7b7f1d21d80818f7655e8a",
+      "references/data-access-injection.md": "a2906a795948d5eba413fdcb81e2ed0d8dafe5c2c54271d4747f5a9bd938beef",
+      "references/domain-handoffs.md": "937f9cb6706fbab573667811c5b1219296707a49108975b8d376b67d2c40be26",
+      "references/github-actions.md": "3da3ce160c9244033008420e7c999479319951c63f47cc14dae9f455a7cd10e7",
+      "references/methodology.md": "5c4d1f8c1b398d24e0349e219aa097de90c90596945bb1162001e0f69676e51c",
+      "references/policy-governance-admission.md": "9dd88facc864d2245a5597b7f06f3fe010a2ac01722b06c22053032b2a4ca5ac",
+      "references/secrets-config.md": "8f46d5d2b652a74e17d670686b4d6c6adfc6f6bd59263b47606f204da95d6a36",
+      "references/supabase-rls.md": "6dadce04c0a4d1e9323a64161218c5c0d8a6e601ac1eb0267b1dac657a573b0a",
+      "references/webhooks.md": "ccfc22d57d6f7e8a5250610b59e3243b10ac61f0bf699a592e98b134a79e1dec"
+    },
+    "allExpectedTexts": true,
+    "namedTargetInControl": [],
+    "historyOrKeyInContext": false,
+    "toolNames": [
+      "functions",
+      "clock",
+      "collaboration"
+    ],
+    "restrictedProfile": true,
+    "userPromptPresent": true,
+    "model": "gpt-6.2-sol"
+  },
+  "access": {
+    "readable": {
+      "ownProject": true,
+      "ownTarget": true,
+      "mainCheckoutTarget": false,
+      "worktreeTarget": false,
+      "archive": false,
+      "registration": false,
+      "rubric": false,
+      "otherWindow": false,
+      "hostSkillDirectory": false,
+      "hostHistory": false,
+      "hostConfig": false,
+      "procRootSource": false
+    },
+    "projectWritable": false,
+    "inetSocket": false
+  }
+}

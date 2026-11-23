@@ -1,0 +1,50 @@
+{
+  "label": "c0506e1236",
+  "case": "boundary",
+  "answer": "К концу смены бирку для S12 приняли после ручной перепечатки. Автоматическая печать на участке «Борт» всё ещё теряла ведущий ноль, поэтому участок не готов автоматически печатать следующий заказ с номером `087`. [Журнал выдачи](observed.ndjson)\n\n| Событие | Что подтверждено |\n|---|---|\n| S12 → S12R | По заказу `087` линия напечатала `87`, и проверка вернула бирку. С ручного пульта напечатали `087`, и проверка приняла бирку. [Записи S12 и S12R](observed.ndjson#L1) |\n| B-29 и C88 | Поставщик закрыл карточку после проверки кандидата. На проверочной станции кандидат автоматически напечатал `032` для заказа `032`, и проверка приняла бирку. [Сменный журнал](shift.md#L5) · [Запись C88](observed.ndjson#L3) |\n| S18, последний автоматический заказ | Линия напечатала `32` для заказа `032`, и проверка вернула бирку. Контрольная сумма профиля линии совпала с S12 и отличалась от C88. Оба профиля имели версию `2.6.1`. Причина выбора дистрибутива для участка в журнале отсутствует. [Запись S18](observed.ndjson#L4) · [Сменный журнал](shift.md#L5) |\n\nЛокальный прогон учебной модели совпал с журналом по всем четырём записям. Профиль линии преобразует идентификатор в число и теряет ведущий ноль. Ручной режим и профиль кандидата сохраняют строку заказа целиком. [Модель печати](printer.py#L7) · [Профиль линии](line.json) · [Профиль кандидата](candidate.json)\n\n**Следующий шаг начальника смены** — перед автоматической выдачей сверить контрольную сумму профиля на рабочей линии с проверенным кандидатом и провести контрольный заказ `087` по штатному маршруту. Критерий готовности — автоматическая печать `087` и приём бирки при выдаче. Если до успешной проверки потребуется единичная перепечатка, правила участка разрешают выдать строку заказа с ручного пульта и сверить бирку с заказом. [Правила участка](shift.md#L3)",
+  "actions": [
+    {
+      "command": "/bin/bash -lc 'ls -la'",
+      "exit": 0,
+      "output": "total 24\ndrwxrwxr-x 3 kostysh kostysh  180 Nov 22 01:42 .\ndrwx------ 3 kostysh kostysh   60 Nov 22 01:42 ..\n-rw-rw-r-- 1 kostysh kostysh   49 Nov 22 01:35 candidate.json\n-rw-rw-r-- 1 kostysh kostysh   49 Nov 22 01:35 line.json\n-rw-rw-r-- 1 kostysh kostysh  892 Nov 22 01:36 observed.ndjson\n-rw-rw-r-- 1 kostysh kostysh  865 Nov 22 01:35 printer.py\n-rw-rw-r-- 1 kostysh kostysh 1741 Nov 22 01:35 shift.md\n-rw-rw-r-- 1 kostysh kostysh  362 Nov 22 01:35 shots.json"
+    },
+    {
+      "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+      "exit": 0,
+      "output": "shift.md\nshots.json\ncandidate.json\nobserved.ndjson\nline.json\nprinter.py"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba shift.md'",
+      "exit": 0,
+      "output": "     1\t# Смена 06 · участок «Борт», 16 сентября\n     2\t\n     3\tПо правилам участка идентификатор ячейки на этикетке сохраняет все знаки в поступившем заказе. Проверка при выдаче сравнивает этикетку со строкой заказа. Для единичной перепечатки начальник смены может выдать строку с ручного пульта.\n     4\t\n     5\tКарточка B-29 открыта после заказа S12. Поставщик зарегистрировал изменение в ветке выпуска 2.6.1. Карточка поставщика закрыта после проверки кандидата C88. Заказ S12 вернулся на ручной пульт как S12R. Последний автоматический заказ на линии до окончания смены — S18. Объяснение выбора дистрибутива для участка в сменный журнал не поступило.\n     6\t\n     7\tАрхив — учебная модель печати для этого разбора. shots.json задаёт последовательность и установленный на каждой станции файл. printer.py исполняет форматирование из соответствующей поставки, печатает контрольную сумму прочитанного профиля и результат сравнения при выдаче. observed.ndjson — журнал исполнения. Комплект охватывает одну смену и один участок."
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba printer.py'",
+      "exit": 0,
+      "output": "     1\t\"\"\"Исполняемая учебная модель печати. Вывод — журнал выдачи.\"\"\"\n     2\timport hashlib\n     3\timport json\n     4\tfrom pathlib import Path\n     5\t\n     6\troot = Path(__file__).parent\n     7\tfor shot in json.loads((root / \"shots.json\").read_text()):\n     8\t    profile_bytes = (root / shot[\"source\"]).read_bytes()\n     9\t    profile = json.loads(profile_bytes)\n    10\t    cell = shot[\"id\"]\n    11\t    if shot[\"action\"] == \"manual\" or profile[\"labelId\"] == \"literal\":\n    12\t        printed = cell\n    13\t    else:\n    14\t        printed = str(int(cell))\n    15\t    print(json.dumps({\n    16\t        \"job\": shot[\"job\"],\n    17\t        \"station\": shot[\"station\"],\n    18\t        \"release\": profile[\"release\"],\n    19\t        \"profile_sha256\": hashlib.sha256(profile_bytes).hexdigest(),\n    20\t        \"action\": shot[\"action\"],\n    21\t        \"ordered\": cell,\n    22\t        \"printed\": printed,\n    23\t        \"receipt\": \"accepted\" if printed == cell else \"returned\",\n    24\t    }))"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba observed.ndjson'",
+      "exit": 0,
+      "output": "     1\t{\"job\": \"S12\", \"station\": \"line\", \"release\": \"2.6.1\", \"profile_sha256\": \"c72ffc2d285e7767e4961b435c0cf8f16c658c3973b22f86068c1b6f0dc36006\", \"action\": \"automatic\", \"ordered\": \"087\", \"printed\": \"87\", \"receipt\": \"returned\"}\n     2\t{\"job\": \"S12R\", \"station\": \"line\", \"release\": \"2.6.1\", \"profile_sha256\": \"c72ffc2d285e7767e4961b435c0cf8f16c658c3973b22f86068c1b6f0dc36006\", \"action\": \"manual\", \"ordered\": \"087\", \"printed\": \"087\", \"receipt\": \"accepted\"}\n     3\t{\"job\": \"C88\", \"station\": \"verification\", \"release\": \"2.6.1\", \"profile_sha256\": \"527dbab4d2be68c27bf542c199688e9410f805f79ababcbb1321a17d53b3208f\", \"action\": \"automatic\", \"ordered\": \"032\", \"printed\": \"032\", \"receipt\": \"accepted\"}\n     4\t{\"job\": \"S18\", \"station\": \"line\", \"release\": \"2.6.1\", \"profile_sha256\": \"c72ffc2d285e7767e4961b435c0cf8f16c658c3973b22f86068c1b6f0dc36006\", \"action\": \"automatic\", \"ordered\": \"032\", \"printed\": \"32\", \"receipt\": \"returned\"}"
+    },
+    {
+      "command": "/bin/bash -lc 'for f in line.json candidate.json shots.json; do ls \"$f\" && nl -ba \"$f\"; done'",
+      "exit": 0,
+      "output": "line.json\n     1\t{\n     2\t  \"release\": \"2.6.1\",\n     3\t  \"labelId\": \"decimal\"\n     4\t}\ncandidate.json\n     1\t{\n     2\t  \"release\": \"2.6.1\",\n     3\t  \"labelId\": \"literal\"\n     4\t}\nshots.json\n     1\t[\n     2\t  {\"job\":\"S12\",\"station\":\"line\",\"source\":\"line.json\",\"action\":\"automatic\",\"id\":\"087\"},\n     3\t  {\"job\":\"S12R\",\"station\":\"line\",\"source\":\"line.json\",\"action\":\"manual\",\"id\":\"087\"},\n     4\t  {\"job\":\"C88\",\"station\":\"verification\",\"source\":\"candidate.json\",\"action\":\"automatic\",\"id\":\"032\"},\n     5\t  {\"job\":\"S18\",\"station\":\"line\",\"source\":\"line.json\",\"action\":\"automatic\",\"id\":\"032\"}\n     6\t]"
+    },
+    {
+      "command": "/bin/bash -lc 'sha256sum line.json candidate.json'",
+      "exit": 0,
+      "output": "c72ffc2d285e7767e4961b435c0cf8f16c658c3973b22f86068c1b6f0dc36006  line.json\n527dbab4d2be68c27bf542c199688e9410f805f79ababcbb1321a17d53b3208f  candidate.json"
+    },
+    {
+      "command": "/bin/bash -lc 'python3 -B printer.py | diff -u observed.ndjson -'",
+      "exit": 0,
+      "output": ""
+    }
+  ],
+  "changedProjectFiles": [],
+  "exit": 0,
+  "lastEvent": "turn.completed"
+}

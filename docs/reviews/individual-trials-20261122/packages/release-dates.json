@@ -1,0 +1,62 @@
+{
+  "method": "Earliest public stable release containing the exact archive SHA-256 in the GitHub Releases inventory at acquisition.",
+  "source": "https://api.github.com/repos/kostysh/skills/releases?per_page=100&page=1",
+  "pages": [
+    {
+      "page": 1,
+      "sha256": "174da180a01562fa77e4e25956fda4f908dcac6472d9bef272236850499ca43f",
+      "count": 11
+    }
+  ],
+  "skills": {
+    "code-reviewer": {
+      "version": "0.4.9",
+      "earliestMatchingPublicStable": "2026-11-20T17:57:27Z",
+      "tag": "skills-20261120",
+      "source": "https://github.com/kostysh/skills/releases/tag/skills-20261120",
+      "matchingPublishedReleases": 4
+    },
+    "concept-conformance-reviewer": {
+      "version": "0.2.9",
+      "earliestMatchingPublicStable": "2026-11-20T17:57:27Z",
+      "tag": "skills-20261120",
+      "source": "https://github.com/kostysh/skills/releases/tag/skills-20261120",
+      "matchingPublishedReleases": 4
+    },
+    "gdpr-compliance": {
+      "version": "0.2.5",
+      "earliestMatchingPublicStable": "2026-11-20T17:57:27Z",
+      "tag": "skills-20261120",
+      "source": "https://github.com/kostysh/skills/releases/tag/skills-20261120",
+      "matchingPublishedReleases": 4
+    },
+    "retrospective-analysis": {
+      "version": "0.1.8",
+      "earliestMatchingPublicStable": "2026-11-20T17:57:27Z",
+      "tag": "skills-20261120",
+      "source": "https://github.com/kostysh/skills/releases/tag/skills-20261120",
+      "matchingPublishedReleases": 4
+    },
+    "security-reviewer": {
+      "version": "0.1.16",
+      "earliestMatchingPublicStable": "2026-11-20T17:57:27Z",
+      "tag": "skills-20261120",
+      "source": "https://github.com/kostysh/skills/releases/tag/skills-20261120",
+      "matchingPublishedReleases": 4
+    },
+    "spec-conformance-reviewer": {
+      "version": "0.1.11",
+      "earliestMatchingPublicStable": "2026-11-20T17:57:27Z",
+      "tag": "skills-20261120",
+      "source": "https://github.com/kostysh/skills/releases/tag/skills-20261120",
+      "matchingPublishedReleases": 4
+    },
+    "web-ui-reviewer": {
+      "version": "0.2.7",
+      "earliestMatchingPublicStable": "2026-11-20T17:57:27Z",
+      "tag": "skills-20261120",
+      "source": "https://github.com/kostysh/skills/releases/tag/skills-20261120",
+      "matchingPublishedReleases": 4
+    }
+  }
+}

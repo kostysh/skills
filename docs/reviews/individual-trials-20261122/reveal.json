@@ -1,0 +1,174 @@
+{
+  "utc": "2026-11-22T01:47:21.635Z",
+  "sealed": "2a7fd91e24b98779ba85ca4f54873eff5340ee23f7b95539e7d8dd89cd0e0397",
+  "labels": {
+    "d8827d04d7": {
+      "run": "866771bd5e6e",
+      "skill": "code-reviewer",
+      "case": "ordinary",
+      "variant": "0.4.9"
+    },
+    "27c56c5dfa": {
+      "run": "db6e902f9b88",
+      "skill": "code-reviewer",
+      "case": "ordinary",
+      "variant": "B"
+    },
+    "bf66d0c719": {
+      "run": "46722400d865",
+      "skill": "code-reviewer",
+      "case": "boundary",
+      "variant": "0.4.9"
+    },
+    "d6d205c1ef": {
+      "run": "057f8337e97f",
+      "skill": "code-reviewer",
+      "case": "boundary",
+      "variant": "B"
+    },
+    "c9586a90c4": {
+      "run": "d31591553cda",
+      "skill": "concept-conformance-reviewer",
+      "case": "ordinary",
+      "variant": "0.2.9"
+    },
+    "0a02853532": {
+      "run": "b7bb6bc650b6",
+      "skill": "concept-conformance-reviewer",
+      "case": "ordinary",
+      "variant": "B"
+    },
+    "183e94f001": {
+      "run": "be5069bde360",
+      "skill": "concept-conformance-reviewer",
+      "case": "boundary",
+      "variant": "0.2.9"
+    },
+    "91ac4bacba": {
+      "run": "e66f0069fdd2",
+      "skill": "concept-conformance-reviewer",
+      "case": "boundary",
+      "variant": "B"
+    },
+    "40193e2be0": {
+      "run": "044389965528",
+      "skill": "gdpr-compliance",
+      "case": "ordinary",
+      "variant": "0.2.5"
+    },
+    "a940d61cc2": {
+      "run": "c21501285cd1",
+      "skill": "gdpr-compliance",
+      "case": "ordinary",
+      "variant": "B"
+    },
+    "30526fe2ba": {
+      "run": "1774d3ee0463",
+      "skill": "gdpr-compliance",
+      "case": "boundary",
+      "variant": "0.2.5"
+    },
+    "0741e0afcb": {
+      "run": "34229e4aa1d9",
+      "skill": "gdpr-compliance",
+      "case": "boundary",
+      "variant": "B"
+    },
+    "b70cd986c8": {
+      "run": "c28040444112",
+      "skill": "retrospective-analysis",
+      "case": "ordinary",
+      "variant": "0.1.8"
+    },
+    "dc8a55defd": {
+      "run": "cb76cd32aa08",
+      "skill": "retrospective-analysis",
+      "case": "ordinary",
+      "variant": "B"
+    },
+    "d4c28169fd": {
+      "run": "3905b2c44d06",
+      "skill": "retrospective-analysis",
+      "case": "boundary",
+      "variant": "0.1.8"
+    },
+    "fbf6491aec": {
+      "run": "e6d39f3d7e1b",
+      "skill": "retrospective-analysis",
+      "case": "boundary",
+      "variant": "B"
+    },
+    "6d0b3e37be": {
+      "run": "78d262e78f1b",
+      "skill": "security-reviewer",
+      "case": "ordinary",
+      "variant": "0.1.16"
+    },
+    "a2ec6d5be5": {
+      "run": "a271ec94b78c",
+      "skill": "security-reviewer",
+      "case": "ordinary",
+      "variant": "B"
+    },
+    "0af09229b1": {
+      "run": "8b17f42fc550",
+      "skill": "security-reviewer",
+      "case": "boundary",
+      "variant": "0.1.16"
+    },
+    "0cabac8219": {
+      "run": "41542d9ee0a3",
+      "skill": "security-reviewer",
+      "case": "boundary",
+      "variant": "B"
+    },
+    "57e30aa310": {
+      "run": "40cb27975101",
+      "skill": "spec-conformance-reviewer",
+      "case": "ordinary",
+      "variant": "0.1.11"
+    },
+    "d981e89ac9": {
+      "run": "d31ec390efdc",
+      "skill": "spec-conformance-reviewer",
+      "case": "ordinary",
+      "variant": "B"
+    },
+    "bf20fd111f": {
+      "run": "c742f41d4d8e",
+      "skill": "spec-conformance-reviewer",
+      "case": "boundary",
+      "variant": "0.1.11"
+    },
+    "a4d0585e43": {
+      "run": "f08e766c12a9",
+      "skill": "spec-conformance-reviewer",
+      "case": "boundary",
+      "variant": "B"
+    },
+    "72beb7fe1c": {
+      "run": "32ef3fc3d147",
+      "skill": "web-ui-reviewer",
+      "case": "ordinary",
+      "variant": "0.2.7"
+    },
+    "c444cee4d8": {
+      "run": "790ee5e53eca",
+      "skill": "web-ui-reviewer",
+      "case": "ordinary",
+      "variant": "B"
+    },
+    "8bfbc18e29": {
+      "run": "e0b6c8be3869",
+      "skill": "web-ui-reviewer",
+      "case": "boundary",
+      "variant": "0.2.7"
+    },
+    "cf712ec4da": {
+      "run": "3ca1ee34aea3",
+      "skill": "web-ui-reviewer",
+      "case": "boundary",
+      "variant": "B"
+    }
+  }
+}

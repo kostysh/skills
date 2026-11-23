@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Журнал рейсов</title>
+<main>
+  <h1>Журнал рейсов</h1>
+  <ol>
+    <li><span>Чайка</span> <button id="edit-1" type="button">Изменить первый ряд</button></li>
+    <li><span>Ветер</span> <button id="edit-2" type="button">Изменить второй ряд</button></li>
+  </ol>
+</main>
+<dialog id="editor" aria-labelledby="editor-heading">
+  <h2 id="editor-heading">Позывной рейса</h2>
+  <form method="dialog">
+    <label for="callsign">Позывной</label>
+    <input id="callsign" autofocus>
+    <button value="save">Сохранить</button>
+    <button value="cancel">Отмена</button>
+  </form>
+</dialog>
+<script>
+  const editor = document.querySelector('#editor');
+  const field = document.querySelector('#callsign');
+  let selectedRow;
+  document.querySelectorAll('li button').forEach(button => {
+    button.addEventListener('click', () => {
+      selectedRow = button.closest('li');
+      field.value = selectedRow.querySelector('span').textContent;
+      editor.returnValue = '';
+      editor.showModal();
+    });
+  });
+  editor.addEventListener('close', () => {
+    if (editor.returnValue === 'save') {
+      selectedRow.querySelector('span').textContent = field.value;
+    }
+  });
+</script>
+</html>

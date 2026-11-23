@@ -1,0 +1,35 @@
+{
+  "label": "c444cee4d8",
+  "case": "ordinary",
+  "answer": "**U-17 выполнен для второго ряда** в настольной сборке J-17. После ввода «Быстрый» и нажатия Escape окно редактирования закрылось, во втором ряду остался позывной «Ветер», а фокус вернулся на кнопку «Изменить второй ряд».\n\nРезультат подтверждён записью прогона Chromium при 1000 × 720. Хеш страницы совпадает с хешем в записи. [Запись прогона](browser.json) · [Страница сборки](index.html)",
+  "actions": [
+    {
+      "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+      "exit": 0,
+      "output": "index.html\ndesk.md\nbrowser.json"
+    },
+    {
+      "command": "/bin/bash -lc 'cat browser.json'",
+      "exit": 0,
+      "output": "{\n  \"htmlSha256\": \"9cf52f33b332780da306b7e7316517932607df5e30fa93b65a7df1f71873c3bc\",\n  \"source\": \"index.html\",\n  \"userAgent\": \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36\",\n  \"viewport\": [\n    1000,\n    720\n  ],\n  \"steps\": [\n    {\n      \"action\": \"open page\",\n      \"observed\": {\n        \"activeElement\": \"BODY\",\n        \"dialogOpen\": false,\n        \"fieldValue\": \"\",\n        \"savedInSecondRow\": \"Ветер\"\n      }\n    },\n    {\n      \"action\": \"Tab, Tab\",\n      \"observed\": {\n        \"activeElement\": \"edit-2\",\n        \"dialogOpen\": false,\n        \"fieldValue\": \"\",\n        \"savedInSecondRow\": \"Ветер\"\n      }\n    },\n    {\n      \"action\": \"Enter, then fill Позывной with Быстрый\",\n      \"observed\": {\n        \"activeElement\": \"callsign\",\n        \"dialogOpen\": true,\n        \"fieldValue\": \"Быстрый\",\n        \"savedInSecondRow\": \"Ветер\"\n      }\n    },\n    {\n      \"action\": \"Escape\",\n      \"observed\": {\n        \"activeElement\": \"edit-2\",\n        \"dialogOpen\": false,\n        \"fieldValue\": \"Быстрый\",\n        \"savedInSecondRow\": \"Ветер\"\n      }\n    }\n  ]\n}"
+    },
+    {
+      "command": "/bin/bash -lc 'cat index.html'",
+      "exit": 0,
+      "output": "<!doctype html>\n<html lang=\"ru\">\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Журнал рейсов</title>\n<main>\n  <h1>Журнал рейсов</h1>\n  <ol>\n    <li><span>Чайка</span> <button id=\"edit-1\" type=\"button\">Изменить первый ряд</button></li>\n    <li><span>Ветер</span> <button id=\"edit-2\" type=\"button\">Изменить второй ряд</button></li>\n  </ol>\n</main>\n<dialog id=\"editor\" aria-labelledby=\"editor-heading\">\n  <h2 id=\"editor-heading\">Позывной рейса</h2>\n  <form method=\"dialog\">\n    <label for=\"callsign\">Позывной</label>\n    <input id=\"callsign\" autofocus>\n    <button value=\"save\">Сохранить</button>\n    <button value=\"cancel\">Отмена</button>\n  </form>\n</dialog>\n<script>\n  const editor = document.querySelector('#editor');\n  const field = document.querySelector('#callsign');\n  let selectedRow;\n  document.querySelectorAll('li button').forEach(button => {\n    button.addEventListener('click', () => {\n      selectedRow = button.closest('li');\n      field.value = selectedRow.querySelector('span').textContent;\n      editor.returnValue = '';\n      editor.showModal();\n    });\n  });\n  editor.addEventListener('close', () => {\n    if (editor.returnValue === 'save') {\n      selectedRow.querySelector('span').textContent = field.value;\n    }\n  });\n</script>\n</html>"
+    },
+    {
+      "command": "/bin/bash -lc 'cat desk.md'",
+      "exit": 0,
+      "output": "# Журнал рейсов. Сборка J-17\n\nВладелец журнала утвердил пункт U-17. Диспетчер открывает изменение позывного у выбранного ряда. Если он вводит новый позывной и нажимает Escape, окно закрывается, в ряду остаётся прежний позывной и фокус возвращается на кнопку редактирования этого же ряда.\n\nВ этом пакете проверяется второй ряд на настольном стенде 1000 × 720. Файл `index.html` содержит автономную страницу. В `browser.json` сохранены шаги оператора и наблюдения локального Chromium на этой странице. Сетевых служб у примера нет."
+    },
+    {
+      "command": "/bin/bash -lc 'sha256sum index.html'",
+      "exit": 0,
+      "output": "9cf52f33b332780da306b7e7316517932607df5e30fa93b65a7df1f71873c3bc  index.html"
+    }
+  ],
+  "changedProjectFiles": [],
+  "exit": 0,
+  "lastEvent": "turn.completed"
+}

@@ -1,0 +1,35 @@
+{
+  "label": "72beb7fe1c",
+  "case": "ordinary",
+  "answer": "U-17 подтверждён для второго ряда в сборке J-17. После ввода «Быстрый» и нажатия Escape окно закрылось, в ряду остался позывной «Ветер», а фокус вернулся на кнопку «Изменить второй ряд». [Требование](desk.md#L3) · [Запись прогона](browser.json#L28)\n\nСтатус `no-material-findings` в пределах записанного сценария в Chromium при 1000 × 720. SHA-256 файла сборки совпадает с указанным в записи. [Сборка](index.html) · [Параметры прогона](browser.json#L2)",
+  "actions": [
+    {
+      "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+      "exit": 0,
+      "output": "index.html\ndesk.md\nbrowser.json"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba browser.json'",
+      "exit": 0,
+      "output": "     1\t{\n     2\t  \"htmlSha256\": \"9cf52f33b332780da306b7e7316517932607df5e30fa93b65a7df1f71873c3bc\",\n     3\t  \"source\": \"index.html\",\n     4\t  \"userAgent\": \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36\",\n     5\t  \"viewport\": [\n     6\t    1000,\n     7\t    720\n     8\t  ],\n     9\t  \"steps\": [\n    10\t    {\n    11\t      \"action\": \"open page\",\n    12\t      \"observed\": {\n    13\t        \"activeElement\": \"BODY\",\n    14\t        \"dialogOpen\": false,\n    15\t        \"fieldValue\": \"\",\n    16\t        \"savedInSecondRow\": \"Ветер\"\n    17\t      }\n    18\t    },\n    19\t    {\n    20\t      \"action\": \"Tab, Tab\",\n    21\t      \"observed\": {\n    22\t        \"activeElement\": \"edit-2\",\n    23\t        \"dialogOpen\": false,\n    24\t        \"fieldValue\": \"\",\n    25\t        \"savedInSecondRow\": \"Ветер\"\n    26\t      }\n    27\t    },\n    28\t    {\n    29\t      \"action\": \"Enter, then fill Позывной with Быстрый\",\n    30\t      \"observed\": {\n    31\t        \"activeElement\": \"callsign\",\n    32\t        \"dialogOpen\": true,\n    33\t        \"fieldValue\": \"Быстрый\",\n    34\t        \"savedInSecondRow\": \"Ветер\"\n    35\t      }\n    36\t    },\n    37\t    {\n    38\t      \"action\": \"Escape\",\n    39\t      \"observed\": {\n    40\t        \"activeElement\": \"edit-2\",\n    41\t        \"dialogOpen\": false,\n    42\t        \"fieldValue\": \"Быстрый\",\n    43\t        \"savedInSecondRow\": \"Ветер\"\n    44\t      }\n    45\t    }\n    46\t  ]\n    47\t}"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba index.html'",
+      "exit": 0,
+      "output": "     1\t<!doctype html>\n     2\t<html lang=\"ru\">\n     3\t<meta charset=\"utf-8\">\n     4\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n     5\t<title>Журнал рейсов</title>\n     6\t<main>\n     7\t  <h1>Журнал рейсов</h1>\n     8\t  <ol>\n     9\t    <li><span>Чайка</span> <button id=\"edit-1\" type=\"button\">Изменить первый ряд</button></li>\n    10\t    <li><span>Ветер</span> <button id=\"edit-2\" type=\"button\">Изменить второй ряд</button></li>\n    11\t  </ol>\n    12\t</main>\n    13\t<dialog id=\"editor\" aria-labelledby=\"editor-heading\">\n    14\t  <h2 id=\"editor-heading\">Позывной рейса</h2>\n    15\t  <form method=\"dialog\">\n    16\t    <label for=\"callsign\">Позывной</label>\n    17\t    <input id=\"callsign\" autofocus>\n    18\t    <button value=\"save\">Сохранить</button>\n    19\t    <button value=\"cancel\">Отмена</button>\n    20\t  </form>\n    21\t</dialog>\n    22\t<script>\n    23\t  const editor = document.querySelector('#editor');\n    24\t  const field = document.querySelector('#callsign');\n    25\t  let selectedRow;\n    26\t  document.querySelectorAll('li button').forEach(button => {\n    27\t    button.addEventListener('click', () => {\n    28\t      selectedRow = button.closest('li');\n    29\t      field.value = selectedRow.querySelector('span').textContent;\n    30\t      editor.returnValue = '';\n    31\t      editor.showModal();\n    32\t    });\n    33\t  });\n    34\t  editor.addEventListener('close', () => {\n    35\t    if (editor.returnValue === 'save') {\n    36\t      selectedRow.querySelector('span').textContent = field.value;\n    37\t    }\n    38\t  });\n    39\t</script>\n    40\t</html>"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba desk.md'",
+      "exit": 0,
+      "output": "     1\t# Журнал рейсов. Сборка J-17\n     2\t\n     3\tВладелец журнала утвердил пункт U-17. Диспетчер открывает изменение позывного у выбранного ряда. Если он вводит новый позывной и нажимает Escape, окно закрывается, в ряду остаётся прежний позывной и фокус возвращается на кнопку редактирования этого же ряда.\n     4\t\n     5\tВ этом пакете проверяется второй ряд на настольном стенде 1000 × 720. Файл `index.html` содержит автономную страницу. В `browser.json` сохранены шаги оператора и наблюдения локального Chromium на этой странице. Сетевых служб у примера нет."
+    },
+    {
+      "command": "/bin/bash -lc 'sha256sum index.html'",
+      "exit": 0,
+      "output": "9cf52f33b332780da306b7e7316517932607df5e30fa93b65a7df1f71873c3bc  index.html"
+    }
+  ],
+  "changedProjectFiles": [],
+  "exit": 0,
+  "lastEvent": "turn.completed"
+}

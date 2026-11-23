@@ -1,0 +1,4 @@
+{
+  "G-12": {"dispatchRequires": ["map"]},
+  "G-13": {"dispatchRequires": ["map", "legend"]}
+}

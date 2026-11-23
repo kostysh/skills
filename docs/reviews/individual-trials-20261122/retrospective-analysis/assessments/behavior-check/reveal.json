@@ -1,0 +1,34 @@
+{
+  "utc": "2026-11-22T01:50:56.489Z",
+  "signature": "52a330039f70bd45ddc86b0dd65df4269d468a2f93c96e913bca754cd17c3510",
+  "assignments": [
+    {
+      "freshLabel": "c0506e1236",
+      "baseLabel": "fbf6491aec",
+      "case": "boundary",
+      "sourceSha256": "6e3da6a3d47d153362fc215842bdcef2b9733222122f90d29104ed59a02c8c0d",
+      "packetSha256": "43571091ceb4251b734d421ab5dc4b6c28ac039ed446bdf1a8855286902f4853"
+    },
+    {
+      "freshLabel": "a13a2df92f",
+      "baseLabel": "d4c28169fd",
+      "case": "boundary",
+      "sourceSha256": "9d3e63369665fdff63ccc018912455f04c3e5cdc74a38102254e4ca34903fb30",
+      "packetSha256": "e9f07d8b14fbe02a5d7c25520021d5e9e098289916d96ccc38f03a3c6162fa9a"
+    },
+    {
+      "freshLabel": "84ab8a64a1",
+      "baseLabel": "dc8a55defd",
+      "case": "ordinary",
+      "sourceSha256": "d3b341b69c51aa73a36692adbfdb1366eacf2df34b8c8f59437649fc4f85d3ea",
+      "packetSha256": "45bf0c476e17bdb6e2b37a8f1892081e006579ac5248207ad9d0e542782bce8a"
+    },
+    {
+      "freshLabel": "0761e93109",
+      "baseLabel": "b70cd986c8",
+      "case": "ordinary",
+      "sourceSha256": "cce056e71707d5a5ca668dda774642656d1045ac65eb406ee3f76b743b14619d",
+      "packetSha256": "ed64d2342f2578ecd04c46596e6d9fc0b6c531821be89e29701a24b5a11e6fe4"
+    }
+  ]
+}

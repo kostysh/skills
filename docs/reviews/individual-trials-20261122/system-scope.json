@@ -1,0 +1,29 @@
+{
+  "utc": "2026-11-22T01:38:51.895Z",
+  "systemRoots": [
+    "/usr/bin",
+    "/usr/lib",
+    "/usr/lib64",
+    "/usr/share/locale",
+    "/usr/share/zoneinfo",
+    "/bin",
+    "/lib",
+    "/lib64",
+    "/etc/ld.so.cache",
+    "/home/kostysh/.codex/packages/standalone/releases/0.171.0-x86_64-unknown-linux-musl",
+    "/home/kostysh/.nvm/versions/node/v24.15.0/bin/node"
+  ],
+  "source": "method/trial.py",
+  "checkedRootAndReferencesAndArchive": [
+    "code-reviewer",
+    "concept-conformance-reviewer",
+    "gdpr-compliance",
+    "retrospective-analysis",
+    "security-reviewer",
+    "spec-conformance-reviewer",
+    "web-ui-reviewer"
+  ],
+  "visited": 56922,
+  "named": [],
+  "exact": []
+}

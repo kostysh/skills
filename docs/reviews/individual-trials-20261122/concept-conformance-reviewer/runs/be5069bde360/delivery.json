@@ -1,0 +1,55 @@
+{
+  "utc": "2026-11-22T01:40:27.331Z",
+  "workdir": "/tmp/local-review-wm8aewnt/project",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "registration": "b2dba4ebc448ea5008128ee8c2ab561e1b2a13d53f746e98e4a6bdf9c554fd5c",
+  "projectSha256": {
+    "charter.md": "2c5065d5de6f8fc33ca78727aa3598762d9bf6e9d14869621da8db3287fc216b",
+    "delivery.md": "381e4ae3cd56a8ff83d95de885bad474aee2bb9f77f2df3fcff1f866b328a54d",
+    "station-profile.json": "93fe1f792cd380a0d46b79b0b9fe0aef1f7edefdd388feebc73963a40ced1771",
+    "trace.ndjson": "63222cca360a2e8d229985df9c4bb6ab85ca9ff76171dc8c028a570e5959aebd"
+  },
+  "installed": {
+    "SKILL.md": "a87f9f567af7c454d802403fa8d21062f1cb3371131635921809dc6609d4d6be"
+  },
+  "promptSha256": "e9e41695dbf13534b44148f89720573e54e3f9903b5f1d1dcadfe30a3aa07e5e",
+  "startup": {
+    "promptInputSha256": "e0738fcb94c2d76a8d49a95b4a70be7cc1ab806051d0af792040678f8ebfdccc",
+    "catalog": [
+      "concept-conformance-reviewer"
+    ],
+    "activeTextDelivered": {
+      "SKILL.md": "a87f9f567af7c454d802403fa8d21062f1cb3371131635921809dc6609d4d6be"
+    },
+    "allExpectedTexts": true,
+    "namedTargetInControl": [],
+    "historyOrKeyInContext": false,
+    "toolNames": [
+      "functions",
+      "clock",
+      "collaboration"
+    ],
+    "restrictedProfile": true,
+    "userPromptPresent": true,
+    "model": "gpt-6.2-sol"
+  },
+  "access": {
+    "readable": {
+      "ownProject": true,
+      "ownTarget": true,
+      "mainCheckoutTarget": false,
+      "worktreeTarget": false,
+      "archive": false,
+      "registration": false,
+      "rubric": false,
+      "otherWindow": false,
+      "hostSkillDirectory": false,
+      "hostHistory": false,
+      "hostConfig": false,
+      "procRootSource": false
+    },
+    "projectWritable": false,
+    "inetSocket": false
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "label": "6d0b3e37be",
+  "case": "ordinary",
+  "answer": "По снимку N‑24 недельное объявление `weekly-north` может опубликовать только **D19**, диспетчер северной площадки. Это единственное назначение, которое соответствует правилу публикации и условиям, утверждённым владельцем доски. [Правило публикации](operations.json#L16) · [Список назначений](roster.csv#L2) · [Условия доступа](board.md#L3)\n\nПодтверждённых замечаний к доступу нет. Вывод относится к локальной модели N‑24. Сведений о развёртывании в выгрузке нет. [Границы проверки](board.md#L7)",
+  "actions": [
+    {
+      "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+      "exit": 0,
+      "output": "board.md\noperations.json\nroster.csv"
+    },
+    {
+      "command": "/bin/bash -lc 'wc -l board.md operations.json roster.csv'",
+      "exit": 0,
+      "output": "   7 board.md\n  22 operations.json\n   5 roster.csv\n  34 total"
+    },
+    {
+      "command": "/bin/bash -lc 'sha256sum board.md operations.json roster.csv'",
+      "exit": 0,
+      "output": "e3bacdcb846881e45665e45b517c7eb4b6b2c83b10b38c8c697042dc00d1955e  board.md\nde1c9b1bbaad3283170ecda6798b86edeaaa1407a90e84a715cc8b5c954da7d9  operations.json\n632ee410e78bdefb6176f9070e29b86a93d6152db84c70f1b346654e717de409  roster.csv"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba roster.csv'",
+      "exit": 0,
+      "output": "     1\tprincipal,site,role\n     2\tD19,north,dispatcher\n     3\tL07,north,editor\n     4\tT11,south,dispatcher\n     5\tK02,north,reader"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba operations.json'",
+      "exit": 0,
+      "output": "     1\t{\n     2\t  \"snapshot\": \"N-24\",\n     3\t  \"board\": \"north\",\n     4\t  \"resource\": \"weekly-north\",\n     5\t  \"rules\": [\n     6\t    {\n     7\t      \"operation\": \"preview\",\n     8\t      \"site\": \"*\",\n     9\t      \"role\": \"*\"\n    10\t    },\n    11\t    {\n    12\t      \"operation\": \"prepare\",\n    13\t      \"site\": \"north\",\n    14\t      \"role\": \"editor\"\n    15\t    },\n    16\t    {\n    17\t      \"operation\": \"publish\",\n    18\t      \"site\": \"north\",\n    19\t      \"role\": \"dispatcher\"\n    20\t    }\n    21\t  ]\n    22\t}"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba board.md'",
+      "exit": 0,
+      "output": "     1\t# Доска смен. Снимок N-24\n     2\t\n     3\tВ этом учебном комплекте используются вымышленные назначения. Предмет проверки — настройки публикации объявления `weekly-north` на доске `north`. Владелец доски утвердил публикацию для диспетчеров своей площадки. Все сотрудники могут просматривать черновики.\n     4\t\n     5\tКаталог `roster.csv` содержит все действующие именные назначения снимка. У каждого сотрудника одна пара «площадка, роль». Сотрудники не меняют назначения сами. В `operations.json` приведён полный список правил доски. Для совпадения должны одновременно подходить операция, площадка и роль. Звёздочка означает любое значение в этом поле. По умолчанию доступ закрыт. Операции независимы. Просмотр и подготовка черновика не меняют опубликованную версию.\n     6\t\n     7\tОтдельный путь публикации в этой модели отсутствует. Выгрузка описывает локальную модель настроек. Сведения о развёртывании в комплект не входят."
+    }
+  ],
+  "changedProjectFiles": [],
+  "exit": 0,
+  "lastEvent": "turn.completed"
+}

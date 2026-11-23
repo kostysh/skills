@@ -1,0 +1,64 @@
+{
+  "utc": "2026-11-22T01:41:32.465Z",
+  "workdir": "/tmp/local-review-toe8rjrn/project",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "registration": "b2dba4ebc448ea5008128ee8c2ab561e1b2a13d53f746e98e4a6bdf9c554fd5c",
+  "projectSha256": {
+    "events.ndjson": "aea69be467548ca9cf30066a35af10a0d28765c3eb81bac47137334bd9db2741",
+    "m7.md": "4d04b301b0f2212e6f0edd2db587ca071ee6a099237d3eb2246b7b55e6f0bd42",
+    "rollout.json": "076342b1bdc4f25420de8068a8caa506c75927746bb022d0d484a168dedde29d"
+  },
+  "installed": {
+    "SKILL.md": "99e46e0b98baa783f6d8e4b9c2731624a8f69ea7b89dd97c4bad4f614725bef8",
+    "agents/openai.yaml": "c17ae6395df96fbe8dacc0839bbd44169d296202868a8ca8cbbec11755d3dfb5",
+    "assets/templates/gdpr-architecture-audit.md": "5e63bef42c56ff96540b04fb9e8d8e8053bc68eff341f7f87112212dbc8656e7",
+    "assets/templates/gdpr-finding.yaml": "315a970751c7cfd70f1ec7339b101c2895bae4d4e10f5e76b027dede88286441",
+    "assets/templates/processing-map.yaml": "8d6f6da984efb7b9b87da2754ba7f64a6618ece3f921d449605661ce85e93ea9",
+    "references/audit-methodology.md": "5de03e236bed5b1f6d426928cc0a0a9ebd27d7d6b1ae32f2a3b6cff24393fa78",
+    "references/control-catalog.md": "9e4aa17f1e6207211ae8890ae417c8474362986e7d63ffdb98e81eb4080bd295",
+    "references/implementation-evidence.md": "8fda9a04060ed0969f7c6b5293f6687656600ac74fa53bf34e7f012d8a4c619f"
+  },
+  "promptSha256": "26198c3218396687950df8625964e2cb2cc5a4e11a428695ed7ae788e2fa7cfc",
+  "startup": {
+    "promptInputSha256": "324f771345d2714e97f2fcbc966ce6ff76075d09ea24fce445a9ea4f226e07f1",
+    "catalog": [
+      "gdpr-compliance"
+    ],
+    "activeTextDelivered": {
+      "SKILL.md": "99e46e0b98baa783f6d8e4b9c2731624a8f69ea7b89dd97c4bad4f614725bef8",
+      "references/audit-methodology.md": "5de03e236bed5b1f6d426928cc0a0a9ebd27d7d6b1ae32f2a3b6cff24393fa78",
+      "references/control-catalog.md": "9e4aa17f1e6207211ae8890ae417c8474362986e7d63ffdb98e81eb4080bd295",
+      "references/implementation-evidence.md": "8fda9a04060ed0969f7c6b5293f6687656600ac74fa53bf34e7f012d8a4c619f"
+    },
+    "allExpectedTexts": true,
+    "namedTargetInControl": [],
+    "historyOrKeyInContext": false,
+    "toolNames": [
+      "functions",
+      "clock",
+      "collaboration"
+    ],
+    "restrictedProfile": true,
+    "userPromptPresent": true,
+    "model": "gpt-6.2-sol"
+  },
+  "access": {
+    "readable": {
+      "ownProject": true,
+      "ownTarget": true,
+      "mainCheckoutTarget": false,
+      "worktreeTarget": false,
+      "archive": false,
+      "registration": false,
+      "rubric": false,
+      "otherWindow": false,
+      "hostSkillDirectory": false,
+      "hostHistory": false,
+      "hostConfig": false,
+      "procRootSource": false
+    },
+    "projectWritable": false,
+    "inetSocket": false
+  }
+}

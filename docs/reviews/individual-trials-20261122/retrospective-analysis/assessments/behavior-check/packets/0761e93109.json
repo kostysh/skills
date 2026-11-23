@@ -1,0 +1,45 @@
+{
+  "label": "0761e93109",
+  "case": "ordinary",
+  "answer": "**Случай O-41 закрыт. По материалам участка G до рейса G50 дополнительная работа не требуется.** Заказ доставили в полном составе, а исправленный складской контроль проверили на двух следующих заказах.\n\n- **Что произошло.** В G41 был только лист карты. Склад выпустил комплект, потому что профиль G-12 требовал только этот лист. Получатель проверял наличие обоих листов и вернул комплект без листа обозначений. [Карточка O-41](o-41.md) · [Профили](profiles.json) · [Журнал](observed.ndjson)\n- **Что исправили.** Склад добавил лист обозначений и повторно отправил тот же заказ как G41R. Получатель принял комплект. Затем на этапе выпуска ввели профиль G-13, который требует оба листа. [Карточка O-41](o-41.md) · [Поступления](loads.json) · [Профили](profiles.json) · [Журнал](observed.ndjson)\n- **Как проверили.** В учебной модели участка G склад остановил следующий неполный заказ G47 до отправки. Полный заказ G50 прошёл складской контроль и приёмку. Материалы подтверждают работу исправления в пределах этой модели до G50. [Модель контроля](station.py) · [Поступления](loads.json) · [Журнал](observed.ndjson)",
+  "actions": [
+    {
+      "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+      "exit": 0,
+      "output": "station.py\no-41.md\nobserved.ndjson\nloads.json\nprofiles.json"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba o-41.md'",
+      "exit": 0,
+      "output": "     1\t# Карточка O-41 · экспедиция «Атлас», участок G\n     2\t\n     3\tПолучателю нужны лист карты map и лист обозначений legend. Склад должен остановить неполный комплект до отправки. Работа экспедиции по O-41 закончена. Начальнику нужен разбор одного случая до рейса G50 включительно.\n     4\t\n     5\tАрхив содержит учебную модель участка. loads.json задаёт поступления по порядку, station.py исполняет контроль склада и приёмку у получателя. В каждой записи указан фактически выбранный профиль. После возврата G41 склад укомплектовал и повторно предъявил тот же заказ как G41R. Правку действующего профиля этапа выпуска провели между G41R и G47. G47 и G50 — последующие самостоятельные заказы от поставщика. Журнал observed.ndjson получен запуском модели с этими входами. Данные не охватывают другие участки."
+    },
+    {
+      "command": "/bin/bash -lc 'wc -l station.py observed.ndjson loads.json profiles.json && ls -la'",
+      "exit": 0,
+      "output": "  22 station.py\n   7 observed.ndjson\n   6 loads.json\n   4 profiles.json\n  39 total\ntotal 20\ndrwxrwxr-x 3 kostysh kostysh  160 Nov 22 01:41 .\ndrwx------ 3 kostysh kostysh   60 Nov 22 01:41 ..\n-rw-rw-r-- 1 kostysh kostysh  300 Nov 22 01:35 loads.json\n-rw-rw-r-- 1 kostysh kostysh 1350 Nov 22 01:35 o-41.md\n-rw-rw-r-- 1 kostysh kostysh  382 Nov 22 01:36 observed.ndjson\n-rw-rw-r-- 1 kostysh kostysh   95 Nov 22 01:35 profiles.json\n-rw-rw-r-- 1 kostysh kostysh  748 Nov 22 01:35 station.py"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba profiles.json'",
+      "exit": 0,
+      "output": "     1\t{\n     2\t  \"G-12\": {\"dispatchRequires\": [\"map\"]},\n     3\t  \"G-13\": {\"dispatchRequires\": [\"map\", \"legend\"]}\n     4\t}"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba observed.ndjson'",
+      "exit": 0,
+      "output": "     1\t{\"job\": \"G41\", \"step\": \"dispatch\", \"result\": \"sent\"}\n     2\t{\"job\": \"G41\", \"step\": \"receipt\", \"result\": \"returned\"}\n     3\t{\"job\": \"G41R\", \"step\": \"dispatch\", \"result\": \"sent\"}\n     4\t{\"job\": \"G41R\", \"step\": \"receipt\", \"result\": \"accepted\"}\n     5\t{\"job\": \"G47\", \"step\": \"dispatch\", \"result\": \"held\"}\n     6\t{\"job\": \"G50\", \"step\": \"dispatch\", \"result\": \"sent\"}\n     7\t{\"job\": \"G50\", \"step\": \"receipt\", \"result\": \"accepted\"}"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba loads.json'",
+      "exit": 0,
+      "output": "     1\t[\n     2\t  {\"job\": \"G41\", \"site\": \"G\", \"profile\": \"G-12\", \"pieces\": [\"map\"]},\n     3\t  {\"job\": \"G41R\", \"site\": \"G\", \"profile\": \"G-12\", \"pieces\": [\"map\", \"legend\"]},\n     4\t  {\"job\": \"G47\", \"site\": \"G\", \"profile\": \"G-13\", \"pieces\": [\"map\"]},\n     5\t  {\"job\": \"G50\", \"site\": \"G\", \"profile\": \"G-13\", \"pieces\": [\"map\", \"legend\"]}\n     6\t]"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba station.py'",
+      "exit": 0,
+      "output": "     1\t\"\"\"Исполняемая учебная модель участка G. Вывод — журнал событий.\"\"\"\n     2\timport json\n     3\tfrom pathlib import Path\n     4\t\n     5\troot = Path(__file__).parent\n     6\tprofiles = json.loads((root / \"profiles.json\").read_text())\n     7\tloads = json.loads((root / \"loads.json\").read_text())\n     8\t\n     9\t\n    10\tdef record(job, step, result):\n    11\t    print(json.dumps({\"job\": job, \"step\": step, \"result\": result}))\n    12\t\n    13\t\n    14\tfor load in loads:\n    15\t    job = load[\"job\"]\n    16\t    pieces = set(load[\"pieces\"])\n    17\t    required = set(profiles[load[\"profile\"]][\"dispatchRequires\"])\n    18\t    if required - pieces:\n    19\t        record(job, \"dispatch\", \"held\")\n    20\t        continue\n    21\t    record(job, \"dispatch\", \"sent\")\n    22\t    record(job, \"receipt\", \"accepted\" if {\"map\", \"legend\"} <= pieces else \"returned\")"
+    }
+  ],
+  "changedProjectFiles": [],
+  "exit": 0,
+  "lastEvent": "turn.completed"
+}

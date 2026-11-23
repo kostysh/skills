@@ -1,0 +1,23 @@
+diff --git a/check_labels.py b/check_labels.py
+index 2f5df550a47bf7ed2324fbd10753d99f94f24f33..60114fa877a3f46b09d7dc071ef447d918fe201d 100644
+--- a/check_labels.py
++++ b/check_labels.py
+@@ -3 +3,10 @@
+ assert ordered_labels([]) == []
++rows = [
++    {"shelf": "10", "job": "A"},
++    {"shelf": "02", "job": "B"},
++    {"shelf": "2", "job": "C"},
++    {"shelf": "0", "job": "D"},
++]
++expected_order = [rows[3], rows[1], rows[2], rows[0]]
++assert ordered_labels(rows) == expected_order
++assert [row["job"] for row in rows] == ["A", "B", "C", "D"]
+diff --git a/labels.py b/labels.py
+index c56a73dea2048deae1788de90cd18e4ef73bee1e..93993cf09296565f5536b82c3de3791c36d1be65 100644
+--- a/labels.py
++++ b/labels.py
+@@ -1,2 +1,2 @@
+ def ordered_labels(rows):
+-    return sorted(rows, key=lambda row: row["shelf"])
++    return sorted(rows, key=lambda row: int(row["shelf"]))

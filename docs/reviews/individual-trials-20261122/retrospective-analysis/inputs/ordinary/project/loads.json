@@ -1,0 +1,6 @@
+[
+  {"job": "G41", "site": "G", "profile": "G-12", "pieces": ["map"]},
+  {"job": "G41R", "site": "G", "profile": "G-12", "pieces": ["map", "legend"]},
+  {"job": "G47", "site": "G", "profile": "G-13", "pieces": ["map"]},
+  {"job": "G50", "site": "G", "profile": "G-13", "pieces": ["map", "legend"]}
+]

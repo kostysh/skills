@@ -1,0 +1,35 @@
+{
+  "label": "cf712ec4da",
+  "case": "boundary",
+  "answer": "**Комплект P-08 неполон.** В разделе «Резерв» из строки «П-08 · Барометр» нельзя открыть обязательную карточку. В разделе «Работающие» доступны все три возможности из таблицы, но в карточке весов указан только год ввода в эксплуатацию.\n\n| Раздел | Список с номером и названием | Карточка из строки | Журнал измерений из строки |\n|---|---|---|---|\n| Работающие | Есть, «П-04 · Весы» | Открывается. Указаны «Цех 2» и 2022 год. В требованиях указана дата ввода, её точность не уточнена. | Открывается, видна запись «12 марта · 2,8 кг». |\n| Резерв | Есть, «П-08 · Барометр» | Отсутствует. Из строки недоступны место размещения и дата ввода. | Не применяется по утверждённой таблице. |\n\nБригаде следует зафиксировать отсутствие карточки барометра как расхождение. Для карточки весов нужно уточнить, достаточно ли года для выполнения требования о дате ввода. [Таблица возможностей](catalog.md) · [Интерфейс](index.html)\n\nСверка опирается на исходный HTML и приложенную запись Chromium при 1000 × 720. SHA-256 файла совпадает с хешем в записи. [Запись прогона](browser.json)",
+  "actions": [
+    {
+      "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"'\"",
+      "exit": 0,
+      "output": "catalog.md\nbrowser.json\nindex.html"
+    },
+    {
+      "command": "/bin/bash -lc 'cat catalog.md'",
+      "exit": 0,
+      "output": "# Каталог приборов. Сборка P-08\n\nВладелец утвердил таблицу возможностей для настольной страницы.\n\n| Раздел | Список с номером и названием | Открыть карточку прибора из строки | Журнал измерений из строки |\n| --- | --- | --- | --- |\n| Работающие | Да | Да | Да |\n| Резерв | Да | Да | Не применяется. Измерения возобновляются после возврата в работу. |\n\nКарточка содержит место размещения и дату ввода в эксплуатацию. Номер и название в списке этих данных не заменяют. `index.html` содержит полную автономную реализацию этой страницы. В текущем комплекте в каждом разделе по одной записи. `browser.json` показывает фактические состояния этих разделов в Chromium при размере 1000 × 720."
+    },
+    {
+      "command": "/bin/bash -lc 'cat index.html'",
+      "exit": 0,
+      "output": "<!doctype html>\n<html lang=\"ru\">\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Каталог приборов</title>\n<main>\n  <h1>Каталог приборов</h1>\n  <nav aria-label=\"Разделы каталога\">\n    <a href=\"#working\" data-section=\"working\">Работающие</a>\n    <a href=\"#reserve\" data-section=\"reserve\">Резерв</a>\n  </nav>\n\n  <section id=\"working\" aria-labelledby=\"w-heading\">\n    <h2 id=\"w-heading\">Работающие</h2>\n    <ul><li>П-04 · Весы\n      <details><summary>Карточка</summary>Цех 2. Введён в 2022 году.</details>\n      <details><summary>Журнал измерений</summary>12 марта · 2,8 кг.</details>\n    </li></ul>\n  </section>\n  <section id=\"reserve\" aria-labelledby=\"r-heading\" hidden>\n    <h2 id=\"r-heading\">Резерв</h2>\n    <ul><li>П-08 · Барометр</li></ul>\n  </section>\n</main>\n<script>\n  function showSection() {\n    const active = location.hash === '#reserve' ? 'reserve' : 'working';\n    document.querySelectorAll('section').forEach(section => {\n      section.hidden = section.id !== active;\n    });\n  }\n  window.addEventListener('hashchange', showSection);\n  showSection();\n</script>\n</html>"
+    },
+    {
+      "command": "/bin/bash -lc 'cat browser.json'",
+      "exit": 0,
+      "output": "{\n  \"htmlSha256\": \"a5bbe961b4badff0d4f140e15ed31d46e3ea6c413e49c80aac8e13f42fea0084\",\n  \"source\": \"index.html\",\n  \"userAgent\": \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36\",\n  \"viewport\": [\n    1000,\n    720\n  ],\n  \"steps\": [\n    {\n      \"action\": \"open page\",\n      \"observed\": {\n        \"controlsInRow\": [\n          \"Карточка\",\n          \"Журнал измерений\"\n        ],\n        \"expanded\": [],\n        \"heading\": \"Работающие\",\n        \"visibleText\": \"Работающие\\nП-04 · Весы\\nКарточка\\nЖурнал измерений\"\n      }\n    },\n    {\n      \"action\": \"open Карточка and Журнал измерений\",\n      \"observed\": {\n        \"controlsInRow\": [\n          \"Карточка\",\n          \"Журнал измерений\"\n        ],\n        \"expanded\": [\n          \"Карточка\",\n          \"Журнал измерений\"\n        ],\n        \"heading\": \"Работающие\",\n        \"visibleText\": \"Работающие\\nП-04 · Весы\\nКарточка\\nЦех 2. Введён в 2022 году.\\nЖурнал измерений\\n12 марта · 2,8 кг.\"\n      }\n    },\n    {\n      \"action\": \"open Резерв\",\n      \"observed\": {\n        \"controlsInRow\": [],\n        \"expanded\": [],\n        \"heading\": \"Резерв\",\n        \"visibleText\": \"Резерв\\nП-08 · Барометр\"\n      }\n    }\n  ]\n}"
+    },
+    {
+      "command": "/bin/bash -lc 'sha256sum index.html'",
+      "exit": 0,
+      "output": "a5bbe961b4badff0d4f140e15ed31d46e3ea6c413e49c80aac8e13f42fea0084  index.html"
+    }
+  ],
+  "changedProjectFiles": [],
+  "exit": 0,
+  "lastEvent": "turn.completed"
+}

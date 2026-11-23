@@ -1,0 +1,55 @@
+{
+  "label": "d8827d04d7",
+  "case": "ordinary",
+  "answer": "Q-27 можно сливать. Очередь печати сортируется по числовому номеру полки, сохраняет порядок заданий с равными номерами и оставляет исходную очередь без изменений.\n\n- **[nit]** В штатном тесте `02` уже стоит перед `2`, поэтому тест пропустит ошибочную дополнительную сортировку по строке. Поменяйте эти записи местами во входных данных и проверьте, что `2` остаётся перед `02` после сортировки. [head/check_labels.py, строка 6](head/check_labels.py#L6)\n\n**Основа ревью** — база `322f27a0f9b9ada9c399c4fba1ee28ff9fbd22c5`, снимок `1ef63334bc8d5371bb869e4f326286a047397a42`. Хеши деревьев совпали с выгрузкой, файлы за время ревью не изменились. [snapshot.md](snapshot.md)  \n**Охват** — оба изменённых файла, реализация и тесты. [changes.diff](changes.diff)  \n**Проверка** — штатный тест прошёл. Дополнительный сценарий с `2` перед `0002`, нулём и `9999` дал ожидаемый порядок в Q-27 и неверный порядок в базе.  \n**Пределы** — проверен модуль очереди по локальной выгрузке. Фактическую печать на оборудовании не проверял.  \n**Рекомендация** — `approve`.",
+  "actions": [
+    {
+      "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git/**'\"'\"",
+      "exit": 0,
+      "output": "changes.diff\nsnapshot.md\nbase/labels.py\nbase/check_labels.py\nticket.md\nhead/labels.py\nhead/check_labels.py"
+    },
+    {
+      "command": "/bin/bash -lc 'cat snapshot.md ticket.md'",
+      "exit": 0,
+      "output": "# Выгрузка изменений Q-27\n\nВладелец релиза передал снимки деревьев Git для полного изменения Q-27. Пути в деревьях отсчитываются от корня модуля. Таблица содержит все изменённые файлы. Идентификаторы деревьев и blob приведены в формате Git SHA-1.\n\n- Базовое дерево: `322f27a0f9b9ada9c399c4fba1ee28ff9fbd22c5` (`base/`).\n- Предложенное дерево: `1ef63334bc8d5371bb869e4f326286a047397a42` (`head/`).\n\n| Файл | Базовый blob | Предложенный blob |\n| --- | --- | --- |\n| `check_labels.py` | `2f5df550a47bf7ed2324fbd10753d99f94f24f33` | `60114fa877a3f46b09d7dc071ef447d918fe201d` |\n| `labels.py` | `c56a73dea2048deae1788de90cd18e4ef73bee1e` | `93993cf09296565f5536b82c3de3791c36d1be65` |\n\nТекстовые деревья выгружены полностью. Проверки модуля запускаются командой `python3 -B head/check_labels.py` из каталога выгрузки.\n# Q-27. Порядок печати\n\nСогласовано владельцем очереди. Номера полок приходят строками из 1–4 десятичных цифр ASCII. Печатать этикетки нужно по числовому возрастанию номера. Для разных записей с одинаковым числовым номером сохраните исходный порядок. Переданная очередь должна остаться в первоначальном порядке; для пустой очереди результат пуст."
+    },
+    {
+      "command": "/bin/bash -lc 'sha256sum snapshot.md ticket.md changes.diff base/* head/*'",
+      "exit": 0,
+      "output": "ac2c9a0d947756672a337d79e17894c8491cf12bd364d257bab99106a16c6f60  snapshot.md\nd918244b7c1a37a1e24ca3a43d4ff5a5c1de8056788c7a9135c8a8bab165f1ce  ticket.md\n89f3b994996f526f068a51443c4704853e682ae2fa971166b7b86e9843252562  changes.diff\na5c85a978774c62aa212be314a44214c84a2718eafae3d73febea3638da870b9  base/check_labels.py\n6be4adc03828e45476b06cb2d62cd8cd3d766f59ffbbcda19e7ac8cc58015246  base/labels.py\n75e5e62d8c15271438521466f27d01116deacf2a8a986b3a96335f6c415a84b5  head/check_labels.py\n7e962c36d68d6388e540191ada362e14ee71364417e28a2caae5236468e8dc2f  head/labels.py"
+    },
+    {
+      "command": "/bin/bash -lc 'cat changes.diff'",
+      "exit": 0,
+      "output": "diff --git a/check_labels.py b/check_labels.py\nindex 2f5df550a47bf7ed2324fbd10753d99f94f24f33..60114fa877a3f46b09d7dc071ef447d918fe201d 100644\n--- a/check_labels.py\n+++ b/check_labels.py\n@@ -3 +3,10 @@\n assert ordered_labels([]) == []\n+rows = [\n+    {\"shelf\": \"10\", \"job\": \"A\"},\n+    {\"shelf\": \"02\", \"job\": \"B\"},\n+    {\"shelf\": \"2\", \"job\": \"C\"},\n+    {\"shelf\": \"0\", \"job\": \"D\"},\n+]\n+expected_order = [rows[3], rows[1], rows[2], rows[0]]\n+assert ordered_labels(rows) == expected_order\n+assert [row[\"job\"] for row in rows] == [\"A\", \"B\", \"C\", \"D\"]\ndiff --git a/labels.py b/labels.py\nindex c56a73dea2048deae1788de90cd18e4ef73bee1e..93993cf09296565f5536b82c3de3791c36d1be65 100644\n--- a/labels.py\n+++ b/labels.py\n@@ -1,2 +1,2 @@\n def ordered_labels(rows):\n-    return sorted(rows, key=lambda row: row[\"shelf\"])\n+    return sorted(rows, key=lambda row: int(row[\"shelf\"]))"
+    },
+    {
+      "command": "/bin/bash -lc 'git hash-object base/check_labels.py base/labels.py head/check_labels.py head/labels.py'",
+      "exit": 0,
+      "output": "2f5df550a47bf7ed2324fbd10753d99f94f24f33\nc56a73dea2048deae1788de90cd18e4ef73bee1e\n60114fa877a3f46b09d7dc071ef447d918fe201d\n93993cf09296565f5536b82c3de3791c36d1be65"
+    },
+    {
+      "command": "/bin/bash -lc 'for f in base/labels.py base/check_labels.py head/labels.py head/check_labels.py; do nl -ba \"$f\"; done'",
+      "exit": 0,
+      "output": "     1\tdef ordered_labels(rows):\n     2\t    return sorted(rows, key=lambda row: row[\"shelf\"])\n     1\tfrom labels import ordered_labels\n     2\t\n     3\tassert ordered_labels([]) == []\n     1\tdef ordered_labels(rows):\n     2\t    return sorted(rows, key=lambda row: int(row[\"shelf\"]))\n     1\tfrom labels import ordered_labels\n     2\t\n     3\tassert ordered_labels([]) == []\n     4\trows = [\n     5\t    {\"shelf\": \"10\", \"job\": \"A\"},\n     6\t    {\"shelf\": \"02\", \"job\": \"B\"},\n     7\t    {\"shelf\": \"2\", \"job\": \"C\"},\n     8\t    {\"shelf\": \"0\", \"job\": \"D\"},\n     9\t]\n    10\texpected_order = [rows[3], rows[1], rows[2], rows[0]]\n    11\tassert ordered_labels(rows) == expected_order\n    12\tassert [row[\"job\"] for row in rows] == [\"A\", \"B\", \"C\", \"D\"]"
+    },
+    {
+      "command": "/bin/bash -lc 'python3 -B head/check_labels.py'",
+      "exit": 0,
+      "output": ""
+    },
+    {
+      "command": "/bin/bash -lc \"python3 -B - <<'PY'\nimport runpy\nfrom pathlib import Path\nfrom hashlib import sha1\n\ndef git_hash(kind, data):\n    return sha1(f\\\"{kind} {len(data)}\\\\0\\\".encode() + data).digest()\n\nfor version in ('base', 'head'):\n    entries = []\n    for path in sorted(Path(version).iterdir()):\n        entries.append(b'100644 ' + path.name.encode() + b'\\\\0' + git_hash('blob', path.read_bytes()))\n    print(version, git_hash('tree', b''.join(entries)).hex())\n\nrows = [{'shelf': shelf, 'job': job} for job, shelf in enumerate(('9999', '2', '0002', '10', '0000', '0', '0001'))]\nexpected = [4, 5, 6, 1, 2, 3, 0]\nfor version in ('base', 'head'):\n    ordered_labels = runpy.run_path(f'{version}/labels.py')['ordered_labels']\n    result = [r['job'] for r in ordered_labels(rows)]\n    print(version, result)\n    assert (result == expected) == (version == 'head')\n    assert [r['job'] for r in rows] == list(range(7))\nPY\"",
+      "exit": 0,
+      "output": "base 322f27a0f9b9ada9c399c4fba1ee28ff9fbd22c5\nhead 1ef63334bc8d5371bb869e4f326286a047397a42\nbase [5, 4, 6, 2, 3, 1, 0]\nhead [4, 5, 6, 1, 2, 3, 0]"
+    },
+    {
+      "command": "/bin/bash -lc 'sha256sum snapshot.md ticket.md changes.diff base/* head/*'",
+      "exit": 0,
+      "output": "ac2c9a0d947756672a337d79e17894c8491cf12bd364d257bab99106a16c6f60  snapshot.md\nd918244b7c1a37a1e24ca3a43d4ff5a5c1de8056788c7a9135c8a8bab165f1ce  ticket.md\n89f3b994996f526f068a51443c4704853e682ae2fa971166b7b86e9843252562  changes.diff\na5c85a978774c62aa212be314a44214c84a2718eafae3d73febea3638da870b9  base/check_labels.py\n6be4adc03828e45476b06cb2d62cd8cd3d766f59ffbbcda19e7ac8cc58015246  base/labels.py\n75e5e62d8c15271438521466f27d01116deacf2a8a986b3a96335f6c415a84b5  head/check_labels.py\n7e962c36d68d6388e540191ada362e14ee71364417e28a2caae5236468e8dc2f  head/labels.py"
+    }
+  ],
+  "changedProjectFiles": [],
+  "exit": 0,
+  "lastEvent": "turn.completed"
+}

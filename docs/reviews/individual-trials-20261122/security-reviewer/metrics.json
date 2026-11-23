@@ -1,0 +1,210 @@
+{
+  "skill": "security-reviewer",
+  "study": "Индивидуальные испытания 2026-11-22",
+  "base": "docs/reviews/individual-trials-20261122/security-reviewer",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "source": "results.md",
+  "taskSet": "security-reviewer-individual-20261122",
+  "registration": "../registration.json",
+  "archiveSha256": "3dbdea3e92a2b3cb4efb50ec5285c003ac223b60403ad981c429fc7b68b9ebf0",
+  "runs": {
+    "78d262e78f1b": {
+      "task": "ordinary",
+      "variant": "0.1.16",
+      "sha256": "f357b817ccccf0828562a5b1404bfaab58fcff53ab0ed877b15b90bcc6838f3a",
+      "source": "runs/78d262e78f1b/events.jsonl.gz",
+      "answer": "runs/78d262e78f1b/answer.md",
+      "delivery": "runs/78d262e78f1b/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-f8c1b550",
+          "thread": "01a200ed-ccf7-7be0-992e-f6257078a08c",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "a61686f854c6fe0475421dcd515d256359db92603d2bc0a7176d02df8c379ff5",
+          "score": "PASS",
+          "source": "assessments/first/signed.json",
+          "label": "6d0b3e37be",
+          "reason": "Ответ называет D19 единственным диспетчером северной площадки, чьё назначение соответствует правилу публикации weekly-north. Формулировка связывает операцию, роль и площадку. Вывод об отсутствии расхождений обоснован и ограничен локальным снимком N-24.",
+          "behavior": "done",
+          "behaviorReason": "После подсчёта строк и контрольных сумм команды nl вывели назначения, правила операций и условия владельца. В ответе право публикации сопоставлено с назначением D19."
+        },
+        "second": {
+          "assessor": "second-3fcec638",
+          "thread": "01a200ed-dbe8-77b1-9385-62c2569ada2a",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "a61686f854c6fe0475421dcd515d256359db92603d2bc0a7176d02df8c379ff5",
+          "score": "PASS",
+          "source": "assessments/second/signed.json",
+          "label": "6d0b3e37be",
+          "reason": "Ответ верно называет D19 единственным, кто может опубликовать weekly-north. Он связывает правило публикации с ролью диспетчера и площадкой north. Это исключает L07, редактора с правом подготовки черновика, и T11, диспетчера площадки south. Вывод об отсутствии расхождения с решением владельца обоснован и ограничен снимком N-24.",
+          "behavior": "done",
+          "behaviorReason": "В P1 зафиксировано чтение условий владельца, правил операций и списка назначений. В ответе указан единственный участник, чьё назначение соответствует правилу publish для площадки north и роли dispatcher, — D19."
+        }
+      },
+      "behavior": {
+        "result": "done",
+        "note": "После подсчёта строк и контрольных сумм команды nl вывели назначения, правила операций и условия владельца. В ответе право публикации сопоставлено с назначением D19.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "a271ec94b78c": {
+      "task": "ordinary",
+      "variant": "B",
+      "sha256": "0e5daa1f489f6c62c80f2102e81e86a8f66607c77ae7f923668ff30fe7ca9852",
+      "source": "runs/a271ec94b78c/events.jsonl.gz",
+      "answer": "runs/a271ec94b78c/answer.md",
+      "delivery": "runs/a271ec94b78c/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-f8c1b550",
+          "thread": "01a200ed-ccf7-7be0-992e-f6257078a08c",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "4d311938676262e3b271dfe35131e5aa9ae999196ed2ac2c831c3f8da9d9f4b4",
+          "score": "PASS",
+          "source": "assessments/first/signed.json",
+          "label": "a2ec6d5be5",
+          "reason": "Ответ явно указывает оба условия операции publish для weekly-north — площадку north и роль dispatcher. В N-24 им одновременно соответствует только D19. Это обоснование исключает публикацию для редактора L07 и диспетчера южной площадки T11. Вывод об отсутствии расхождения с решением владельца верен.",
+          "behavior": "done",
+          "behaviorReason": "Команды nl вывели правила операций, решение владельца и список назначений. В ответе к назначениям применено именно правило publish и назван единственный участник с правом публикации."
+        }
+      },
+      "behavior": {
+        "result": "done",
+        "note": "Команды nl вывели правила операций, решение владельца и список назначений. В ответе к назначениям применено именно правило publish и назван единственный участник с правом публикации.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "8b17f42fc550": {
+      "task": "boundary",
+      "variant": "0.1.16",
+      "sha256": "fc56149c7c6f96b1550926fae31fa059694ec880f8e4a55e1a818299ef779f3f",
+      "source": "runs/8b17f42fc550/events.jsonl.gz",
+      "answer": "runs/8b17f42fc550/answer.md",
+      "delivery": "runs/8b17f42fc550/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-f8c1b550",
+          "thread": "01a200ed-ccf7-7be0-992e-f6257078a08c",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "54f1b5f899f8a5c011696c4ce17ea62b50e03981cbb37dbbaefdd9553cb8af96",
+          "score": "PASS",
+          "source": "assessments/first/signed.json",
+          "label": "0af09229b1",
+          "reason": "В M-38 карточка single-card открывает полный текст MAYAK-4 только группе editors. Ответ показывает, что H03 через группы shift-aides и desk-roster может прочитать тот же текст в march-digest, хотя ему положены только заголовки. Предложено убрать бюллетень из полнотекстовой подборки и выдать координаторам заголовки, сохранив редакторам доступ через карточку. Факт чтения по снимку не установлен.",
+          "behavior": "done",
+          "behaviorReason": "Команда rg вывела решение владельца, состав групп и настройки обеих поставок. В ответе права карточки сопоставлены с правами на копию в подборке и указан лишний доступ H03 к полному тексту."
+        }
+      },
+      "behavior": {
+        "result": "done",
+        "note": "Команда rg вывела решение владельца, состав групп и настройки обеих поставок. В ответе права карточки сопоставлены с правами на копию в подборке и указан лишний доступ H03 к полному тексту.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "41542d9ee0a3": {
+      "task": "boundary",
+      "variant": "B",
+      "sha256": "48746d15e4fb9782b444b541441e595b037745f3e775cee68ee12a7a1147c5d9",
+      "source": "runs/41542d9ee0a3/events.jsonl.gz",
+      "answer": "runs/41542d9ee0a3/answer.md",
+      "delivery": "runs/41542d9ee0a3/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-f8c1b550",
+          "thread": "01a200ed-ccf7-7be0-992e-f6257078a08c",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "e2cbc76c6984487a0a91ec8d4531afbdc56464d7ac6728103f09637550fba18b",
+          "score": "PASS",
+          "source": "assessments/first/signed.json",
+          "label": "0cabac8219",
+          "reason": "Ответ показывает, что в M-38 полный текст MAYAK-4 в карточке доступен только editors, а в подборке march-digest его может читать и H03 через членство shift-aides в desk-roster. Предложено оставить в общей подборке только заголовки либо ограничить полнотекстовую подборку редакторами и дать координаторам отдельную сводку. Оба варианта сохраняют предусмотренное чтение. Ответ отделяет право доступа от факта выдачи или чтения.",
+          "behavior": "done",
+          "behaviorReason": "Команды nl вывели каталог групп, решение владельца и настройки поставок. В ответе сопоставлены читатели single-card и march-digest с содержимым варианта pages и указан лишний доступ H03 к полному тексту."
+        }
+      },
+      "behavior": {
+        "result": "done",
+        "note": "Команды nl вывели каталог групп, решение владельца и настройки поставок. В ответе сопоставлены читатели single-card и march-digest с содержимым варианта pages и указан лишний доступ H03 к полному тексту.",
+        "source": "assessments/first/signed.json"
+      }
+    }
+  },
+  "series": [
+    {
+      "id": "Версия / без пакета",
+      "comparison": "0.1.16/B",
+      "phase": "primary",
+      "rubric": "R1",
+      "packet": "P1",
+      "bRemoval": "complete",
+      "source": "results.md#pairs",
+      "limit": "Две локальные задачи, явная загрузка, gpt-6.2-sol / medium.",
+      "pairs": [
+        {
+          "id": "ordinary-1",
+          "task": "ordinary",
+          "left": [
+            "78d262e78f1b",
+            "first"
+          ],
+          "right": [
+            "a271ec94b78c",
+            "first"
+          ]
+        },
+        {
+          "id": "boundary-1",
+          "task": "boundary",
+          "left": [
+            "8b17f42fc550",
+            "first"
+          ],
+          "right": [
+            "41542d9ee0a3",
+            "first"
+          ]
+        }
+      ]
+    }
+  ],
+  "agreement": [
+    {
+      "run": "78d262e78f1b",
+      "rubric": "R1",
+      "packet": "P1",
+      "ratings": [
+        "first",
+        "second"
+      ]
+    }
+  ],
+  "attempts": [
+    {
+      "id": "individual-1",
+      "order": 1,
+      "snapshot": "0.1.16 archive-sha256 3dbdea3e92a2b3cb4efb50ec5285c003ac223b60403ad981c429fc7b68b9ebf0",
+      "scope": "individual",
+      "source": "results.md#decision",
+      "verdict": "PASS",
+      "timelineSource": "audit/result.json",
+      "handed": "2026-11-22T01:48:50.192Z",
+      "started": "2026-11-22T01:48:50.661Z",
+      "decided": "2026-11-22T01:49:52.247Z"
+    }
+  ],
+  "observation": {
+    "version": "0.1.16",
+    "accepted": "2026-11-22T01:49:52.247Z",
+    "released": "2026-11-20T17:57:27Z",
+    "through": "2026-11-22T01:55:44.007Z",
+    "systematic": false,
+    "defects": [],
+    "source": "../README.md#limits"
+  }
+}

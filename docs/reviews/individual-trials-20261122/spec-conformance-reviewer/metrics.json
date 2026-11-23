@@ -1,0 +1,207 @@
+{
+  "skill": "spec-conformance-reviewer",
+  "study": "Индивидуальные испытания 2026-11-22",
+  "base": "docs/reviews/individual-trials-20261122/spec-conformance-reviewer",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "source": "results.md",
+  "taskSet": "spec-conformance-reviewer-individual-20261122",
+  "registration": "../registration.json",
+  "archiveSha256": "292cad3bebc2b5e01fa6b97fa967ba1e0ed549e0f8fdb8dff9667c6bb3395a9b",
+  "runs": {
+    "40cb27975101": {
+      "task": "ordinary",
+      "variant": "0.1.11",
+      "sha256": "3f4209a2e904589fe6821ed13bb85bc41ea46ce45c469658968d5e73707a4a42",
+      "source": "runs/40cb27975101/events.jsonl.gz",
+      "answer": "runs/40cb27975101/answer.md",
+      "delivery": "runs/40cb27975101/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-230ad89a",
+          "thread": "01a200ee-09d7-7811-853e-ed17ca89cd76",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "b476315f730a36347776028d3feba78e712affc35ffdc61f99fcead3760700b6",
+          "score": "FAIL",
+          "source": "assessments/first/signed.json",
+          "label": "57e30aa310",
+          "reason": "Решение принять K-17 по LT-1–LT-3 редакции 3 обосновано. Однако ответ заявляет, что суммы трёх файлов совпали с манифестом до и после проверки. До запуска вычислены только суммы delivery.txt и самого манифеста. Сверка трёх файлов с манифестом зафиксирована лишь после запуска.",
+          "behavior": "done",
+          "behaviorReason": "Ответ разрешает приёмку. Прямые вызовы route_tag.py для yard, bay и gate вывели соответственно Y, B и G с завершающим LF и кодом 0 каждый. Запуск check_cli.py также завершился с кодом 0."
+        }
+      },
+      "behavior": {
+        "result": "done",
+        "note": "Ответ разрешает приёмку. Прямые вызовы route_tag.py для yard, bay и gate вывели соответственно Y, B и G с завершающим LF и кодом 0 каждый. Запуск check_cli.py также завершился с кодом 0.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "d31ec390efdc": {
+      "task": "ordinary",
+      "variant": "B",
+      "sha256": "248c0eb0ad7639f79ea15a8b16fe14bfa18e397daa1fb711d7146357c257d958",
+      "source": "runs/d31ec390efdc/events.jsonl.gz",
+      "answer": "runs/d31ec390efdc/answer.md",
+      "delivery": "runs/d31ec390efdc/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-230ad89a",
+          "thread": "01a200ee-09d7-7811-853e-ed17ca89cd76",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "2990c691b45d570174565e2d97068fb79aa6d96e1f563ff72512b55901996377",
+          "score": "PASS",
+          "source": "assessments/first/signed.json",
+          "label": "d981e89ac9",
+          "reason": "Ответ разрешает приёмку K-17 по утверждённой редакции 3. Для каждого требования LT-1–LT-3 таблица указывает канал, точный stdout с завершающим LF и код завершения. Журнал подтверждает прямые вызовы публичной команды, успешный запуск check_cli.py и совпадение трёх контрольных сумм.",
+          "behavior": "done",
+          "behaviorReason": "Решение о приёмке связано с тремя наблюдаемыми вызовами route_tag.py. Для yard получено Y\\n, для bay — B\\n, для gate — G\\n. Каждый вызов завершился с кодом 0."
+        },
+        "second": {
+          "assessor": "second-d92e5264",
+          "thread": "01a200ee-2586-77e2-a767-13151ba86c99",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "2990c691b45d570174565e2d97068fb79aa6d96e1f563ff72512b55901996377",
+          "score": "PASS",
+          "source": "assessments/second/signed.json",
+          "label": "d981e89ac9",
+          "reason": "Ответ обоснованно разрешает приёмку K-17 по утверждённой редакции 3. Для LT-1, LT-2 и LT-3 указаны канал, точный stdout с завершающим LF и код завершения. Все результаты совпадают со спецификацией.",
+          "behavior": "done",
+          "behaviorReason": "Ответ связывает решение о приёмке с публичной командой. В P1 зафиксированы три прямых вызова route_tag.py. Для yard, bay и gate получены соответственно Y\\n, B\\n и G\\n, каждый вызов завершился с кодом 0. Запуск python3 -B check_cli.py также зафиксирован и завершился с кодом 0."
+        }
+      },
+      "behavior": {
+        "result": "done",
+        "note": "Решение о приёмке связано с тремя наблюдаемыми вызовами route_tag.py. Для yard получено Y\\n, для bay — B\\n, для gate — G\\n. Каждый вызов завершился с кодом 0.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "c742f41d4d8e": {
+      "task": "boundary",
+      "variant": "0.1.11",
+      "sha256": "98b09590108d08df6a10a38c734c6bba7bccacba9409521cc3a311d9e11ca626",
+      "source": "runs/c742f41d4d8e/events.jsonl.gz",
+      "answer": "runs/c742f41d4d8e/answer.md",
+      "delivery": "runs/c742f41d4d8e/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-230ad89a",
+          "thread": "01a200ee-09d7-7811-853e-ed17ca89cd76",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "a6f407fb901688467cec29beb97a4cc0dbc9426ada8848a70895c636414f651d",
+          "score": "PASS",
+          "source": "assessments/first/signed.json",
+          "label": "bf20fd111f",
+          "reason": "Ответ подтверждает PN-1 по передаче job через make_record и отказывает в приёмке N-42 по PN-2. Редакция 4 требует пустую строку при None, а реализация и штатная проверка используют строку «0». Ответ учитывает статус D-51, указывает исправление и определяет нужное свидетельство для PN-3 — отчёт оператора о чтении по тому же идентификатору после перезапуска без повторной отправки.",
+          "behavior": "done",
+          "behaviorReason": "Штатная проверка прошла. Отдельная проверка сохранила идентификатор lot-07 и завершилась с кодом 1 при сравнении mass с пустой строкой. Ответ признал нарушение PN-2 достаточным для отказа. По PN-3 он ограничил вывод записью в словарь в памяти и указал, что чтение после перезапуска штатного терминала остаётся неподтверждённым."
+        }
+      },
+      "behavior": {
+        "result": "done",
+        "note": "Штатная проверка прошла. Отдельная проверка сохранила идентификатор lot-07 и завершилась с кодом 1 при сравнении mass с пустой строкой. Ответ признал нарушение PN-2 достаточным для отказа. По PN-3 он ограничил вывод записью в словарь в памяти и указал, что чтение после перезапуска штатного терминала остаётся неподтверждённым.",
+        "source": "assessments/first/signed.json"
+      }
+    },
+    "f08e766c12a9": {
+      "task": "boundary",
+      "variant": "B",
+      "sha256": "d4d505fab9f9abc808ea8b071f613663b123e41dd2974251c88d9a64509135f5",
+      "source": "runs/f08e766c12a9/events.jsonl.gz",
+      "answer": "runs/f08e766c12a9/answer.md",
+      "delivery": "runs/f08e766c12a9/delivery.json",
+      "ratings": {
+        "first": {
+          "assessor": "first-230ad89a",
+          "thread": "01a200ee-09d7-7811-853e-ed17ca89cd76",
+          "rubric": "R1",
+          "packet": "P1",
+          "packetSha256": "aec96f47920b897cd2894c4b49bd4133a04f203663fa3c7a96a60faefaca27cd",
+          "score": "PASS",
+          "source": "assessments/first/signed.json",
+          "label": "a4d0585e43",
+          "reason": "Отказ в приёмке N-42 обоснован нарушением PN-2 редакции 4. При None функция make_record возвращает строку «0» вместо пустой строки, а штатная проверка ожидает «0». Заявка D-51 ещё не утверждена. По PN-1 подтверждено сохранение идентификатора с пробелами. Владелец получил конкретные действия для исправления функции и проверки, а также для подтверждения PN-3 на терминале.",
+          "behavior": "done",
+          "behaviorReason": "Штатная проверка завершилась с кодом 0. Прямой вызов сохранил job и вернул mass со значением «0», поэтому проверка PN-2 завершилась с кодом 1. Ответ отказал в приёмке по PN-2 и оставил PN-3 неподтверждённым. DeskArchive сохраняет запись в словаре одного процесса, а для чтения после перезапуска терминала запрошен отдельный прогон."
+        }
+      },
+      "behavior": {
+        "result": "done",
+        "note": "Штатная проверка завершилась с кодом 0. Прямой вызов сохранил job и вернул mass со значением «0», поэтому проверка PN-2 завершилась с кодом 1. Ответ отказал в приёмке по PN-2 и оставил PN-3 неподтверждённым. DeskArchive сохраняет запись в словаре одного процесса, а для чтения после перезапуска терминала запрошен отдельный прогон.",
+        "source": "assessments/first/signed.json"
+      }
+    }
+  },
+  "series": [
+    {
+      "id": "Версия / без пакета",
+      "comparison": "0.1.11/B",
+      "phase": "primary",
+      "rubric": "R1",
+      "packet": "P1",
+      "bRemoval": "complete",
+      "source": "results.md#pairs",
+      "limit": "Две локальные задачи, явная загрузка, gpt-6.2-sol / medium.",
+      "pairs": [
+        {
+          "id": "ordinary-1",
+          "task": "ordinary",
+          "left": [
+            "40cb27975101",
+            "first"
+          ],
+          "right": [
+            "d31ec390efdc",
+            "first"
+          ]
+        },
+        {
+          "id": "boundary-1",
+          "task": "boundary",
+          "left": [
+            "c742f41d4d8e",
+            "first"
+          ],
+          "right": [
+            "f08e766c12a9",
+            "first"
+          ]
+        }
+      ]
+    }
+  ],
+  "agreement": [
+    {
+      "run": "d31ec390efdc",
+      "rubric": "R1",
+      "packet": "P1",
+      "ratings": [
+        "first",
+        "second"
+      ]
+    }
+  ],
+  "attempts": [
+    {
+      "id": "individual-1",
+      "order": 1,
+      "snapshot": "0.1.11 archive-sha256 292cad3bebc2b5e01fa6b97fa967ba1e0ed549e0f8fdb8dff9667c6bb3395a9b",
+      "scope": "individual",
+      "source": "results.md#decision",
+      "verdict": "FAIL",
+      "timelineSource": "audit/result.json",
+      "handed": "2026-11-22T01:49:05.160Z",
+      "started": "2026-11-22T01:49:05.755Z",
+      "decided": "2026-11-22T01:50:27.890Z",
+      "returned": {
+        "primary": "evidence",
+        "finding": "K-17. Журнал не подтверждает заявленную предварительную сверку контрольных сумм.",
+        "source": "results.md#decision",
+        "limit": "Основание или действие исполнителя. Причинный дефект инструкции не установлен."
+      }
+    }
+  ]
+}

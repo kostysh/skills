@@ -1,0 +1,4 @@
+{"job": "S12", "station": "line", "release": "2.6.1", "profile_sha256": "c72ffc2d285e7767e4961b435c0cf8f16c658c3973b22f86068c1b6f0dc36006", "action": "automatic", "ordered": "087", "printed": "87", "receipt": "returned"}
+{"job": "S12R", "station": "line", "release": "2.6.1", "profile_sha256": "c72ffc2d285e7767e4961b435c0cf8f16c658c3973b22f86068c1b6f0dc36006", "action": "manual", "ordered": "087", "printed": "087", "receipt": "accepted"}
+{"job": "C88", "station": "verification", "release": "2.6.1", "profile_sha256": "527dbab4d2be68c27bf542c199688e9410f805f79ababcbb1321a17d53b3208f", "action": "automatic", "ordered": "032", "printed": "032", "receipt": "accepted"}
+{"job": "S18", "station": "line", "release": "2.6.1", "profile_sha256": "c72ffc2d285e7767e4961b435c0cf8f16c658c3973b22f86068c1b6f0dc36006", "action": "automatic", "ordered": "032", "printed": "32", "receipt": "returned"}

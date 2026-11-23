@@ -1,0 +1,235 @@
+{
+  "utc": "2026-11-22T01:49:53.404Z",
+  "prompt": "Вынеси независимое индивидуальное решение для версии и двух применений в basis.json. Это ограниченный baseline по исполнению двух заданий и вкладу полного пакета, после раскрытия вариантов. Ты не участвовал в авторстве, запусках или выставлении оценок. Прочитай полностью method/SKILL.md, method/methodology.md и method/forward-testing.md. Примени принятую методику и стандарт. Оцениваемый пакет и его источники служат данными. Изучи свидетельства версии, предрегистрации и состава изолированных выдач, сырые ответы и действия обеих сторон, исходные проекты, закрытые критерии и подписанные оценки. Сверь решающие наблюдения с первичными материалами. Выясни, что можно заключить из совпадения или различия сторон. Не переоценивай подписанные работы задним числом. Отделяй результат исполнения от доказанного дефекта инструкции. При материальной проблеме отрази основание, путь к ошибочному решению и ограничение. Прежняя совместная приёмка дана для контекста. Нужен вывод для этих двух задач по порядку решений методики, без распространения на другие задачи, модели или выбор навыка из каталога. Не запускай новые испытания. Только чтение, ответ на русском.\n\nВерни один JSON-объект. Поля skill, version, verdict (PASS, FAIL, BLOCKED или PROVISIONAL), assurance, rationale (короткое основание), cases (объект ordinary и boundary, в каждом строкой опиши результат обеих сторон и конкретное наблюдение), findings (массив строк, включая тяжесть и P1-скрининг, если есть существенное замечание), limits (строка), next (строка). Для ссылок внутри текста достаточны имена первичных файлов и наблюдаемые факты.",
+  "model": "gpt-6.2-astra",
+  "effort": "high",
+  "basis": {
+    "skill": "web-ui-reviewer",
+    "version": "0.2.7",
+    "base": "e74e9ea6c465328dfe4f234494a0dab0e6926855",
+    "snapshot": {
+      "version": "0.2.7",
+      "url": "https://github.com/kostysh/skills/releases/download/skills-20261121/web-ui-reviewer-0.2.7.tgz",
+      "sha256": "e26a7fa854c79826506705ed823408fcfab01b3aaaae3e3088dc408bdaf78075",
+      "contentHash": "c56524e12db40b3b417a78b19bde6dd4fd4910f4d1f252883e4ed9a3bf66d8b0",
+      "files": {
+        "SKILL.md": "b27580092caea24ce9888a4c3a507b689469fe15cab8145c526be3dca459f551",
+        "agents/openai.yaml": "5edf64ef909bf216945723e6d3d2435a1c23f34ae48df157bde652f4085e230b",
+        "references/web-interface-guidelines.md": "11aff16e201095f0435b55824c7d37cf4f1a272e4394dce7fd2e4d845371ea62"
+      }
+    },
+    "inputManifest": {
+      "version": "0.2.7",
+      "archive": "e26a7fa854c79826506705ed823408fcfab01b3aaaae3e3088dc408bdaf78075",
+      "rubric": "02825e8a2523f7f09713232dda142096dab044071c4275db916f8364396fac5c",
+      "cases": {
+        "ordinary": {
+          "prompt": "318ff36fa8b39bf338f88d5e25dc074936ceab159cb577482386c9ad2b2a64fe",
+          "project": {
+            "browser.json": "a8c482d8fac44409eb05de1fee90f826c06dc2f85793b9eb573f672823cce7d1",
+            "desk.md": "4252e0ab1606b484d05aa8c5a60ab9c5d29c1ab629d043de560a6763b388a886",
+            "index.html": "9cf52f33b332780da306b7e7316517932607df5e30fa93b65a7df1f71873c3bc"
+          }
+        },
+        "boundary": {
+          "prompt": "28a76642f5fbbae2403b5d39a4ca5904982d42a5b4aa328c915d6f217af3d242",
+          "project": {
+            "browser.json": "f1dfffde3df13bbbc2bce6ebc4b82b5e502d8c77108d1f9a725777647bbf4845",
+            "catalog.md": "5e6426234009002998c1e2bdcd4b8858676aaa011099cee4f29158e2796b5614",
+            "index.html": "a5bbe961b4badff0d4f140e15ed31d46e3ea6c413e49c80aac8e13f42fea0084"
+          }
+        }
+      }
+    },
+    "executions": {
+      "32ef3fc3d147": {
+        "case": "ordinary",
+        "variant": "0.2.7",
+        "label": "72beb7fe1c",
+        "score": "PASS",
+        "behavior": "done",
+        "reason": "Ответ подтверждает U-17 для второго ряда в записанном сценарии Chromium при 1000 × 720. Указаны все три результата после Escape: окно закрылось, позывной «Ветер» сохранился, фокус вернулся на кнопку «Изменить второй ряд».",
+        "behaviorReason": "Прочитаны запись прогона и HTML. До открытия окна и после Escape журнал показывает фокус на edit-2. Эта кнопка принадлежит второму ряду. Ответ отдельно учитывает отмену ввода: в поле было «Быстрый», а в ряду осталось «Ветер». Чтение SKILL.md и references/web-interface-guidelines.md в P1 не зафиксировано.",
+        "ratings": {
+          "first": {
+            "label": "72beb7fe1c",
+            "score": "PASS",
+            "reason": "Ответ подтверждает U-17 для второго ряда в записанном сценарии Chromium при 1000 × 720. Указаны все три результата после Escape: окно закрылось, позывной «Ветер» сохранился, фокус вернулся на кнопку «Изменить второй ряд».",
+            "behavior": "done",
+            "behaviorReason": "Прочитаны запись прогона и HTML. До открытия окна и после Escape журнал показывает фокус на edit-2. Эта кнопка принадлежит второму ряду. Ответ отдельно учитывает отмену ввода: в поле было «Быстрый», а в ряду осталось «Ветер». Чтение SKILL.md и references/web-interface-guidelines.md в P1 не зафиксировано."
+          }
+        },
+        "rawEventsSha256": "4c6379488c4bb8a5e0d7bdeb74680fc5343416b30d60a20158f97510b9e98399",
+        "answerSha256": "dc7fc9f3063dcd3b6bc576499a84278d1ac8d1da5115e9f64e10039f6b78b029"
+      },
+      "790ee5e53eca": {
+        "case": "ordinary",
+        "variant": "B",
+        "label": "c444cee4d8",
+        "score": "PASS",
+        "behavior": "done",
+        "reason": "Вывод о выполнении U-17 привязан ко второму ряду J-17 и записи Chromium при 1000 × 720. Ответ сообщает, что после Escape окно закрылось, в ряду остался «Ветер», а фокус вернулся на кнопку «Изменить второй ряд».",
+        "behaviorReason": "Прочитаны требование, журнал исполнения и разметка кнопки edit-2. Журнал фиксирует переход фокуса с edit-2 в поле позывного и обратно после Escape. Ответ различает введённое значение «Быстрый» и сохранённое значение «Ветер». Чтение SKILL.md и references/web-interface-guidelines.md в P1 не зафиксировано.",
+        "ratings": {
+          "first": {
+            "label": "c444cee4d8",
+            "score": "PASS",
+            "reason": "Вывод о выполнении U-17 привязан ко второму ряду J-17 и записи Chromium при 1000 × 720. Ответ сообщает, что после Escape окно закрылось, в ряду остался «Ветер», а фокус вернулся на кнопку «Изменить второй ряд».",
+            "behavior": "done",
+            "behaviorReason": "Прочитаны требование, журнал исполнения и разметка кнопки edit-2. Журнал фиксирует переход фокуса с edit-2 в поле позывного и обратно после Escape. Ответ различает введённое значение «Быстрый» и сохранённое значение «Ветер». Чтение SKILL.md и references/web-interface-guidelines.md в P1 не зафиксировано."
+          }
+        },
+        "rawEventsSha256": "f29dead41cee93f5c148aee738175526f974e10cd4d930f1a6c00912028a5f47",
+        "answerSha256": "ec6a05c8aa726b6846536219128459cbbfcc0ff07792e90d32d24bd5e6b334fc"
+      },
+      "e0b6c8be3869": {
+        "case": "boundary",
+        "variant": "0.2.7",
+        "label": "8bfbc18e29",
+        "score": "PASS",
+        "behavior": "done",
+        "reason": "Ответ точно называет недоступное действие и его расположение: из строки барометра в «Резерве» нельзя открыть карточку. Для обеих строк подтверждён список, для весов — карточка и журнал. Учтено исключение для журнала в резерве. Вопрос о точности даты помещён в список расхождений, но текст прямо указывает на неопределённость требования. Подтверждённый вывод ограничен текущей сборкой.",
+        "behaviorReason": "Прочитаны таблица, запись Chromium и HTML. Ответ связывает раскрытие карточки и журнала весов с записью прогона, а отсутствие карточки барометра — с пустым списком элементов управления и разметкой резервной строки. Журнал для резерва исключён согласно таблице. Чтение SKILL.md и references/web-interface-guidelines.md в P1 не зафиксировано.",
+        "ratings": {
+          "first": {
+            "label": "8bfbc18e29",
+            "score": "PASS",
+            "reason": "Ответ точно называет недоступное действие и его расположение: из строки барометра в «Резерве» нельзя открыть карточку. Для обеих строк подтверждён список, для весов — карточка и журнал. Учтено исключение для журнала в резерве. Вопрос о точности даты помещён в список расхождений, но текст прямо указывает на неопределённость требования. Подтверждённый вывод ограничен текущей сборкой.",
+            "behavior": "done",
+            "behaviorReason": "Прочитаны таблица, запись Chromium и HTML. Ответ связывает раскрытие карточки и журнала весов с записью прогона, а отсутствие карточки барометра — с пустым списком элементов управления и разметкой резервной строки. Журнал для резерва исключён согласно таблице. Чтение SKILL.md и references/web-interface-guidelines.md в P1 не зафиксировано."
+          },
+          "second": {
+            "label": "8bfbc18e29",
+            "score": "PASS",
+            "reason": "Ответ верно указывает одно подтверждённое расхождение. Обе записи видны. В «Работающих» из строки «П-04 · Весы» открываются карточка и журнал измерений. В «Резерве» из строки «П-08 · Барометр» нельзя открыть обязательную карточку. Журнал для резерва исключён утверждённой таблицей. Точность даты ввода оставлена открытым вопросом. Вывод ограничен проверенными состояниями настольной страницы.",
+            "behavior": "done",
+            "behaviorReason": "В действиях зафиксированы чтение таблицы, записи Chromium и HTML, а также сверка хеша страницы. Ответ сопоставляет раскрытые карточку и журнал весов с пустым списком элементов управления у барометра и учитывает исключение для журнала. Чтение SKILL.md и references/web-interface-guidelines.md в представленных действиях не зафиксировано."
+          }
+        },
+        "rawEventsSha256": "a416c910ca5f0bf200ffa86f7f670b550711c9cd77ab34889a78dde290cd5fce",
+        "answerSha256": "2e8a1304d367b1b8cf8870495b8e51ac3f2c52e1dd01b4147ca3fff555ec4822"
+      },
+      "3ca1ee34aea3": {
+        "case": "boundary",
+        "variant": "B",
+        "label": "cf712ec4da",
+        "score": "PASS",
+        "behavior": "done",
+        "reason": "Ответ указывает одно подтверждённое расхождение на текущей странице P-08: из строки «П-08 · Барометр» в «Резерве» нельзя открыть обязательную карточку. Обе записи видны, у весов открываются карточка и журнал. Для резервного прибора журнал по таблице не применяется. Точность даты ввода весов оставлена вопросом владельцу.",
+        "behaviorReason": "Прочитаны таблица владельца, HTML и запись Chromium. В ответе сопоставлены возможности обоих разделов. Для весов запись показывает раскрытые карточку и журнал, для барометра — строку без элементов управления. Исключение для журнала учтено отдельно. Чтение SKILL.md и references/web-interface-guidelines.md в P1 не зафиксировано.",
+        "ratings": {
+          "first": {
+            "label": "cf712ec4da",
+            "score": "PASS",
+            "reason": "Ответ указывает одно подтверждённое расхождение на текущей странице P-08: из строки «П-08 · Барометр» в «Резерве» нельзя открыть обязательную карточку. Обе записи видны, у весов открываются карточка и журнал. Для резервного прибора журнал по таблице не применяется. Точность даты ввода весов оставлена вопросом владельцу.",
+            "behavior": "done",
+            "behaviorReason": "Прочитаны таблица владельца, HTML и запись Chromium. В ответе сопоставлены возможности обоих разделов. Для весов запись показывает раскрытые карточку и журнал, для барометра — строку без элементов управления. Исключение для журнала учтено отдельно. Чтение SKILL.md и references/web-interface-guidelines.md в P1 не зафиксировано."
+          }
+        },
+        "rawEventsSha256": "9ed6e78eff1e714434806fb5bf060311192d9ae5aa8f0c56bbc3df2d35d2de8e",
+        "answerSha256": "9ee58937fd7144ac3e4466728448740ecbde7c23b27801e8ea1f1cc0ef7d80f7"
+      }
+    },
+    "jointSource": "docs/reviews/implementation-log-20261119-2.md",
+    "reviewMethodVersion": "0.2.9",
+    "scope": "baseline для двух зарегистрированных задач, после явной загрузки",
+    "sideEffects": "project read-only, scope probes and post-run hashes in runs/*/delivery.json and result.json",
+    "time": "UTC; signed scores before reveal",
+    "scoreSeal": "2a7fd91e24b98779ba85ca4f54873eff5340ee23f7b95539e7d8dd89cd0e0397"
+  },
+  "files": {
+    "archive.tar.gz": "e26a7fa854c79826506705ed823408fcfab01b3aaaae3e3088dc408bdaf78075",
+    "assessments/first/answer.md": "ecda2fa9de0bf06ac581080a1f7fc7a78e0ffcd84561d3cb48926b6a4505a8d2",
+    "assessments/first/delivery.json": "6d9e5de3cbf6bb9032c77ae2550829c904b9f1a66994e66631f011a25f5eefaf",
+    "assessments/first/events.jsonl.gz": "d9e557ea4254c466f2bf3da2bed4f14be69c1f84d1612ccf8dfaa36c57b2c3df",
+    "assessments/first/result.json": "06c8179b0abb90fd844284e28d3c392b528d65eb74e99d23763a67edbf333a06",
+    "assessments/first/signed.json": "f24aa9eb682c102b73309779751ba5eddb6e5bf5b325db123b6d2db128758798",
+    "assessments/packets/72beb7fe1c.json": "69545a69f3fed5e17ddbb4aeb2c056f7d68cbbe3a83e2330631e55bf4dbe6ac3",
+    "assessments/packets/8bfbc18e29.json": "5de54acf59cff803b4fa20e02642f5150373e1c790a7578ca4b1fb3afa2d5861",
+    "assessments/packets/c444cee4d8.json": "dc7f019404080f5997affc14a3eab3571392b5bd7d46875dd39565a0e753d1ea",
+    "assessments/packets/cf712ec4da.json": "c71311138dd38887727015133cdcb47a18db2aef6ad4d085a91b6af7cbcfa224",
+    "assessments/second/answer.md": "0dfcb663649a2f5227a3e90f2b27a02bf5f3daf2a124151987eb266746fe4fcd",
+    "assessments/second/delivery.json": "36a5a07dddb8dd26f4197b137a26c5a2c8e8c4c5457b279462632ea97cd198be",
+    "assessments/second/events.jsonl.gz": "1d8e95ee16f8babf376a5ef50f9ec37b6b9da79db4735c0718d1ff53cfddf7ef",
+    "assessments/second/result.json": "1f1567fe3ea7bfa259b5f0c5ebae6464f0625615f6508c9906f8849e8553eb04",
+    "assessments/second/signed.json": "d79d1f62297789c1d2e2bdfe032e3ba08409eec2af2d441c61d50edd94a25bbd",
+    "basis.json": "0423d809e712bb2a620661b975716baf350985bd4407c565a9612ea6e57659c6",
+    "checks.json": "a1d8b71cb333502aaf6be234410b7a6c28139266b3a3209e32aa7da1ac76aaef",
+    "criteria.md": "02825e8a2523f7f09713232dda142096dab044071c4275db916f8364396fac5c",
+    "inputs/boundary/project/browser.json": "f1dfffde3df13bbbc2bce6ebc4b82b5e502d8c77108d1f9a725777647bbf4845",
+    "inputs/boundary/project/catalog.md": "5e6426234009002998c1e2bdcd4b8858676aaa011099cee4f29158e2796b5614",
+    "inputs/boundary/project/index.html": "a5bbe961b4badff0d4f140e15ed31d46e3ea6c413e49c80aac8e13f42fea0084",
+    "inputs/boundary/task.md": "28a76642f5fbbae2403b5d39a4ca5904982d42a5b4aa328c915d6f217af3d242",
+    "inputs/ordinary/project/browser.json": "a8c482d8fac44409eb05de1fee90f826c06dc2f85793b9eb573f672823cce7d1",
+    "inputs/ordinary/project/desk.md": "4252e0ab1606b484d05aa8c5a60ab9c5d29c1ab629d043de560a6763b388a886",
+    "inputs/ordinary/project/index.html": "9cf52f33b332780da306b7e7316517932607df5e30fa93b65a7df1f71873c3bc",
+    "inputs/ordinary/task.md": "318ff36fa8b39bf338f88d5e25dc074936ceab159cb577482386c9ad2b2a64fe",
+    "joint.md": "8d73decfbc9c333b0fa8ea032edece2c410ab08375329e34e72a91e3cd294adf",
+    "method/SKILL.md": "ef4b95adcb438268de9c169b47ae36c0d0a9afc3de00db4a0b767f9a2420867c",
+    "method/forward-testing.md": "dd6892c96fe24606227dfd93cc9567ef0cce1a9413f68e32c91324f371d9a1f2",
+    "method/methodology.md": "136243ed09056567bedf3cb0c506b531a94fd1268b7d48702273f0f15f2adca8",
+    "method/standard.md": "cb7fe13fe8c65144b9ae5fdef6d9b9f598fbc1a05523e674a0282aec942a8f67",
+    "package/SKILL.md": "b27580092caea24ce9888a4c3a507b689469fe15cab8145c526be3dca459f551",
+    "package/agents/openai.yaml": "5edf64ef909bf216945723e6d3d2435a1c23f34ae48df157bde652f4085e230b",
+    "package/references/web-interface-guidelines.md": "11aff16e201095f0435b55824c7d37cf4f1a272e4394dce7fd2e4d845371ea62",
+    "protocol.md": "08c9cc36778a5297babc064d8e349bd8299eea44f3d244524d1c5ac0f8206d54",
+    "registration.json": "b2dba4ebc448ea5008128ee8c2ab561e1b2a13d53f746e98e4a6bdf9c554fd5c",
+    "reveal.json": "e200e2691986ebd7db755b149b551227483e6e3a07a5c845a5dd089fc75546eb",
+    "runs/32ef3fc3d147/answer.md": "dc7fc9f3063dcd3b6bc576499a84278d1ac8d1da5115e9f64e10039f6b78b029",
+    "runs/32ef3fc3d147/delivery.json": "b87bda853fc8889d9ae12d5cc3ec6bdb26c6da7b75e32b28e2d454d82ce2f9ec",
+    "runs/32ef3fc3d147/events.jsonl.gz": "67622c13b635b78251db420ab1b24581d4016445099ebaa41f9b1db2642ae64d",
+    "runs/32ef3fc3d147/result.json": "e3f6c2b997a97b1992ca095b6b5fb5ddb9c56bebe9868bd7d3f2fea49282a58a",
+    "runs/3ca1ee34aea3/answer.md": "9ee58937fd7144ac3e4466728448740ecbde7c23b27801e8ea1f1cc0ef7d80f7",
+    "runs/3ca1ee34aea3/delivery.json": "cb6885a2eaf92ffb4ad72f9d45016bf13e4362ab5b692ebd3076fe7be29c2470",
+    "runs/3ca1ee34aea3/events.jsonl.gz": "7de1b0d16c5b7bfa6893e3fa6f8036a1847626c2dbfda9c5c2db6d9423c35ec2",
+    "runs/3ca1ee34aea3/result.json": "64c21a83a219739fcde0cd1b736faa06734f091201a61adaefa8d8e619e63d56",
+    "runs/790ee5e53eca/answer.md": "ec6a05c8aa726b6846536219128459cbbfcc0ff07792e90d32d24bd5e6b334fc",
+    "runs/790ee5e53eca/delivery.json": "905ceb3f6d2326fa74db389d49b58e3d2e5a6f3a57242b231fd0bae66399b8ae",
+    "runs/790ee5e53eca/events.jsonl.gz": "2d7637d9f2889b1a106c2b521237d7f0d98ffe3dd3fe4f2248cb6cfb1e58f5cf",
+    "runs/790ee5e53eca/result.json": "6cabb1d7b49b077d0f02fbc6f3edc8c5fc4dec6f3a0d31e6dd60382d18b35ca0",
+    "runs/e0b6c8be3869/answer.md": "2e8a1304d367b1b8cf8870495b8e51ac3f2c52e1dd01b4147ca3fff555ec4822",
+    "runs/e0b6c8be3869/delivery.json": "440ab44486b4948f29ec3b4892924db9d8adb302d568e34d70450f52f429eff9",
+    "runs/e0b6c8be3869/events.jsonl.gz": "fbc8f4c88780b47460096d7f1aa704c033c70dfd2cb2067acdda22f95998c0d2",
+    "runs/e0b6c8be3869/result.json": "5216eb3b85ad50acc9cb17fe0b3ce28dfbc2c13ed8082617f15cf90972e63028",
+    "sealed-scores.json": "2a7fd91e24b98779ba85ca4f54873eff5340ee23f7b95539e7d8dd89cd0e0397",
+    "source/agents/openai.yaml": "5edf64ef909bf216945723e6d3d2435a1c23f34ae48df157bde652f4085e230b",
+    "source/fragments/overview.md": "3eb088b4cb3253d6593e2c30a4c380d2ce80793d6d3aa637eaf8ac858be6bee1",
+    "source/references/web-interface-guidelines.md": "11aff16e201095f0435b55824c7d37cf4f1a272e4394dce7fd2e4d845371ea62",
+    "source/skill.yaml": "5d45c40acd5374283e14b5d4c02c7d72b6e1dcbc55c77a7fe9c484b64dffc530",
+    "system-scope.json": "5b910de28c0aed1814d47d023deef96deef117f86fb07d6b37a68cd605d93f07"
+  },
+  "startup": {
+    "promptInputSha256": "424a853a69646d67fc5c7a3febea4ffb9de602a177960d848fc5a5aaa1ad8938",
+    "catalog": [],
+    "activeTextDelivered": {},
+    "allExpectedTexts": true,
+    "namedTargetInControl": [],
+    "historyOrKeyInContext": false,
+    "toolNames": [
+      "functions",
+      "clock",
+      "collaboration"
+    ],
+    "restrictedProfile": true,
+    "userPromptPresent": true,
+    "model": "gpt-6.2-astra"
+  },
+  "access": {
+    "readable": {
+      "ownProject": true,
+      "ownTarget": false,
+      "mainCheckoutTarget": false,
+      "worktreeTarget": false,
+      "archive": false,
+      "registration": false,
+      "rubric": false,
+      "otherWindow": false,
+      "hostSkillDirectory": false,
+      "hostHistory": false,
+      "hostConfig": false,
+      "procRootSource": false
+    },
+    "projectWritable": false,
+    "inetSocket": false
+  }
+}

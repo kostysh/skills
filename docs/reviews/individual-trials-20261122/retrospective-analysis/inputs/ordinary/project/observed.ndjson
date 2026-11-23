@@ -1,0 +1,7 @@
+{"job": "G41", "step": "dispatch", "result": "sent"}
+{"job": "G41", "step": "receipt", "result": "returned"}
+{"job": "G41R", "step": "dispatch", "result": "sent"}
+{"job": "G41R", "step": "receipt", "result": "accepted"}
+{"job": "G47", "step": "dispatch", "result": "held"}
+{"job": "G50", "step": "dispatch", "result": "sent"}
+{"job": "G50", "step": "receipt", "result": "accepted"}

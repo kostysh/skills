@@ -1,0 +1,52 @@
+{
+  "utc": "2026-11-22T01:42:24.887Z",
+  "workdir": "/tmp/local-review-edpurpg1/project",
+  "model": "gpt-6.2-sol",
+  "effort": "medium",
+  "registration": "b2dba4ebc448ea5008128ee8c2ab561e1b2a13d53f746e98e4a6bdf9c554fd5c",
+  "projectSha256": {
+    "base/check_labels.py": "a5c85a978774c62aa212be314a44214c84a2718eafae3d73febea3638da870b9",
+    "base/labels.py": "6be4adc03828e45476b06cb2d62cd8cd3d766f59ffbbcda19e7ac8cc58015246",
+    "changes.diff": "89f3b994996f526f068a51443c4704853e682ae2fa971166b7b86e9843252562",
+    "head/check_labels.py": "75e5e62d8c15271438521466f27d01116deacf2a8a986b3a96335f6c415a84b5",
+    "head/labels.py": "7e962c36d68d6388e540191ada362e14ee71364417e28a2caae5236468e8dc2f",
+    "snapshot.md": "ac2c9a0d947756672a337d79e17894c8491cf12bd364d257bab99106a16c6f60",
+    "ticket.md": "d918244b7c1a37a1e24ca3a43d4ff5a5c1de8056788c7a9135c8a8bab165f1ce"
+  },
+  "installed": {},
+  "promptSha256": "7d3b85e52aa3c65fe494bd4f8d030aa017a465d2127f3f47248583ac9ac6afc1",
+  "startup": {
+    "promptInputSha256": "d894fd8f0bee6374965bc57b6cd97dcd73b7a22b35e83d4c9c8765ce5460eb6e",
+    "catalog": [],
+    "activeTextDelivered": {},
+    "allExpectedTexts": true,
+    "namedTargetInControl": [],
+    "historyOrKeyInContext": false,
+    "toolNames": [
+      "functions",
+      "clock",
+      "collaboration"
+    ],
+    "restrictedProfile": true,
+    "userPromptPresent": true,
+    "model": "gpt-6.2-sol"
+  },
+  "access": {
+    "readable": {
+      "ownProject": true,
+      "ownTarget": false,
+      "mainCheckoutTarget": false,
+      "worktreeTarget": false,
+      "archive": false,
+      "registration": false,
+      "rubric": false,
+      "otherWindow": false,
+      "hostSkillDirectory": false,
+      "hostHistory": false,
+      "hostConfig": false,
+      "procRootSource": false
+    },
+    "projectWritable": false,
+    "inetSocket": false
+  }
+}
