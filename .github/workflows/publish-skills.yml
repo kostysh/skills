@@ -19,6 +19,7 @@ jobs:
       - run: pnpm install --frozen-lockfile --ignore-scripts
       - name: Package already-built skills and verify version history
         env:
+          GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ github.ref_name }}
         run: pnpm --filter @kostysh/skills pack:skills --out ../skills-release --release "$RELEASE_TAG" --previous-latest
       - uses: actions/upload-artifact@v4
