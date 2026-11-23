@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: code-reviewer
-  source-version: 0.4.10
+  source-version: 0.4.11
   recommended-skill-md-max-bytes: 20000
   description: >-
     Perform read-only review of PRs, diffs, and local branch changes. Use to find
@@ -154,7 +154,7 @@ sections:
       text: Compare the ending snapshot identity to the starting identity. Any reviewed-surface mutation makes the prior result stale and requires a fresh or bounded delta review before approval.
     - id: gotcha-behaviorless-pass
       priority: high
-      text: Do not pass a change only because types/tests/docs look correct when the requested outcome is runtime behavior, browser behavior, security behavior, or data persistence that was not exercised.
+      text: Match the evidence to the claim for each changed item. A claim about runtime, browser, security, or persistence behavior needs evidence from the path that exercises it. When an item's contents are unavailable, use the partial-review handoff in `references/findings-format.md`.
   policies:
     - id: policy-read-only-review
       title: Read-only review boundary

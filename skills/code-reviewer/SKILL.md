@@ -5,9 +5,9 @@ description: Perform read-only review of PRs, diffs, and local branch changes.
   or lightweight intent alignment, and provide evidence-backed merge guidance
   with stable scope, severity, and findings; pair with relevant domain skills.
 metadata:
-  source-version: 0.4.10
+  source-version: 0.4.11
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 72bf5e0f891448bb138f6fb7bb2eb100558e362a75f5f7df3f3d1f43676cd7d8
+  skillforge-source-hash: 53ce9a8908840a0d6876966f4b9c66f5885f5bd3898dfbf52369479a645d9aba
 ---
 
 # code-reviewer
@@ -193,7 +193,7 @@ Validation:
 ## Gotchas
 
 - **high** — Compare the ending snapshot identity to the starting identity. Any reviewed-surface mutation makes the prior result stale and requires a fresh or bounded delta review before approval.
-- **high** — Do not pass a change only because types/tests/docs look correct when the requested outcome is runtime behavior, browser behavior, security behavior, or data persistence that was not exercised.
+- **high** — Match the evidence to the claim for each changed item. A claim about runtime, browser, security, or persistence behavior needs evidence from the path that exercises it. When an item's contents are unavailable, use the partial-review handoff in `references/findings-format.md`.
 
 ## Policies
 
