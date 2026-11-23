@@ -13,6 +13,48 @@ import { latestCatalog } from '../src/network.ts';
 import { packSkills, verifyPayload } from '../src/pack.ts';
 import { release, sandbox } from './helpers.ts';
 
+void test('pack --previous-latest authenticates release discovery and keeps version history', async (t) => {
+  const root = await sandbox();
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const first = await release(root);
+  await release(root, '1.1.0');
+  const apiToken = 'fixture-read-token';
+  const fixture = join(root, 'fixture.json');
+  await writeFile(fixture, JSON.stringify({ ...first, apiToken }));
+  const output = join(root, 'packed');
+  const run = (token: string) =>
+    spawnSync(
+      process.execPath,
+      [
+        '--import',
+        new URL('./http-fixture.ts', import.meta.url).href,
+        fileURLToPath(new URL('../src/pack-cli.ts', import.meta.url)),
+        '--root',
+        join(root, 'source-1.1.0'),
+        '--out',
+        output,
+        '--release',
+        'skills-next',
+        '--previous-latest',
+      ],
+      { env: { ...process.env, GH_TOKEN: token, KSKILLS_TEST_FIXTURE: fixture }, encoding: 'utf8' },
+    );
+  const denied = run('');
+  assert.ifError(denied.error);
+  assert.equal(denied.status, 1);
+  assert.match(denied.stderr, /HTTP 403 \(api\.github\.com\)/u);
+  const packed = run(apiToken);
+  assert.ifError(packed.error);
+  assert.equal(packed.status, 0, packed.stderr);
+  const catalog = catalogSchema.parse(
+    JSON.parse(await readFile(join(output, 'catalog.json'), 'utf8')),
+  );
+  assert.deepEqual(
+    catalog.versions.map((entry) => entry.version),
+    ['1.0.0', '1.1.0'],
+  );
+});
+
 void test('built v5 commands verify the packed inventory and refuse a missing archive', async (t) => {
   const root = await sandbox();
   t.after(() => rm(root, { recursive: true, force: true }));

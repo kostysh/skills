@@ -5,11 +5,14 @@ import { z } from 'zod';
 import { catalogSchema } from '../src/model.ts';
 
 const fixture = z
-  .object({ catalog: catalogSchema, out: z.string() })
+  .object({ catalog: catalogSchema, out: z.string(), apiToken: z.string().optional() })
   .parse(JSON.parse(await readFile(process.env.KSKILLS_TEST_FIXTURE ?? '', 'utf8')));
-globalThis.fetch = async (input) => {
+globalThis.fetch = async (input, options) => {
   const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
-  if (url.startsWith('https://api.github.com/repos/kostysh/skills/releases?'))
+  const authorization = new Headers(options?.headers).get('authorization');
+  if (url.startsWith('https://api.github.com/repos/kostysh/skills/releases?')) {
+    const expected = fixture.apiToken ? `Bearer ${fixture.apiToken}` : null;
+    if (authorization !== expected) return new Response(null, { status: 403 });
     return Response.json([
       {
         tag_name: fixture.catalog.release,
@@ -18,6 +21,8 @@ globalThis.fetch = async (input) => {
         prerelease: false,
       },
     ]);
+  }
+  if (authorization !== null) throw new Error('Public assets received an Authorization header.');
   if (
     url ===
     `https://github.com/kostysh/skills/releases/download/${fixture.catalog.release}/catalog.json`

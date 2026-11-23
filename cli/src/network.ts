@@ -7,10 +7,17 @@ export const download = async (
   url: string,
   limit = 8 * 1024 * 1024,
   signal?: AbortSignal,
+  githubToken?: string,
 ): Promise<Buffer> => {
+  const headers = new Headers({
+    'User-Agent': '@kostysh/skills',
+    Accept: 'application/vnd.github+json',
+  });
+  if (githubToken && new URL(url).origin === 'https://api.github.com')
+    headers.set('Authorization', `Bearer ${githubToken}`);
   const response = await fetch(url, {
     signal: AbortSignal.any([AbortSignal.timeout(60_000), ...(signal ? [signal] : [])]),
-    headers: { 'User-Agent': '@kostysh/skills', Accept: 'application/vnd.github+json' },
+    headers,
   });
   if (!response.ok)
     throw new Error(`Download failed: HTTP ${response.status} (${new URL(url).hostname}).`);
