@@ -1,0 +1,40 @@
+{
+  "recorded": "2026-11-23T12:22:04.755Z",
+  "extractSourceSha256": "76e55bf4ac08166d2488c15508f03a09d774f43905056c453e4bd1a0992e0690",
+  "run": "27df8d5695d4",
+  "neutralLabel": "d55690e340",
+  "event": "item_3",
+  "rawEventLineSha256IncludingLf": "95d52f29e3b56817b807df0c8a82137da7427952048a1243b52fd325c644fd90",
+  "rawEventsSha256": "dbfec9bb90a425ac51ee5dfdbded46084e8d8f70488c8259a3929d0350127a78",
+  "archivePath": "docs/reviews/reviewer-remediation-20261123-third/packages/code-reviewer-0.4.12.tar.gz",
+  "archiveSha256": "a7434d2dfdd4c484fc13eaabf7992fffd4f318b0f1014bc31a455fc3f194f0e0",
+  "exactSuffix": {
+    "packageEntry": "references/spec-pass.md",
+    "sha256": "85732c5c085b77815c2fa2175740cd8d1f532cc86de4f91f4294c684d79b65a7",
+    "matches": true
+  },
+  "packetSha256": "fe839c143aca426533698782394843a48062a73418edb8b69de5e8a66fa8adce",
+  "extractRecorded": "2026-11-23T12:19:40.992Z",
+  "deliveries": [
+    {
+      "role": "first",
+      "receivedPacket": true,
+      "handed": "2026-11-23T12:19:52.844Z",
+      "signed": "2026-11-23T12:20:57.659Z",
+      "receipt": "code-reviewer/assessments/first/delivery.json",
+      "receiptSha256": "91ac22dfba21193ba005fcde1a82fb9b619669761f3137cca484cd3cc04a540b",
+      "deliveredPacketSha256": "fe839c143aca426533698782394843a48062a73418edb8b69de5e8a66fa8adce"
+    },
+    {
+      "role": "second",
+      "receivedPacket": false,
+      "handed": "2026-11-23T12:19:52.906Z",
+      "signed": "2026-11-23T12:20:19.979Z",
+      "receipt": "code-reviewer/assessments/second/delivery.json",
+      "receiptSha256": "6a44c03299f53ae9c8fb79089419f75d24e1bf1f8ae35a919ce036f4cc300ac0",
+      "deliveredPacketSha256": null
+    }
+  ],
+  "sealedScoresSha256": "1adb50aa5924bdaf94faa34bdc91898892ed6e5960d6712da59bfbca914ed0b2",
+  "limits": "Код завершения 0 относится к целой команде. Сохранены реально выведенные три размера в строках и итог, отдельно взятый код wc отсутствует."
+}

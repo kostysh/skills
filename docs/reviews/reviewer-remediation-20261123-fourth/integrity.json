@@ -1,0 +1,26 @@
+{
+  "skills": 38,
+  "targetVersions": {
+    "code-reviewer": "0.4.13",
+    "concept-conformance-reviewer": "0.2.9",
+    "gdpr-compliance": "0.2.5",
+    "retrospective-analysis": "0.1.8",
+    "security-reviewer": "0.1.16",
+    "spec-conformance-reviewer": "0.1.12",
+    "web-ui-reviewer": "0.2.7"
+  },
+  "historicalPairs": 307,
+  "afterSeven": 321,
+  "afterRemediation": 335,
+  "totalStudies": 62,
+  "otherRowsByteIdentical": 36,
+  "originalStudyFilesByteIdentical": 394,
+  "recordedUtc": "2026-11-23T12:28:52.123584+00:00",
+  "independentSessionReceipts": {
+    "reviewer-remediation-20261123": 14,
+    "reviewer-remediation-20261123-second": 9,
+    "reviewer-remediation-20261123-third": 9,
+    "reviewer-remediation-20261123-fourth": 11
+  },
+  "openReturns": 0
+}

@@ -1,0 +1,14 @@
+{
+  "utc": "2026-11-23T12:19:40.992Z",
+  "method": "Нейтрализованы технические чтения пакета и адреса временной среды; проверено отсутствие ключа, версии, run ID и пути рабочего дерева.",
+  "packets": {
+    "code-reviewer/assessments/packets/a5960a436c.json": "bbedeb2a05e336b55579719d4e75cd85974e2543a71b09c10262ca0c5aa6d00a",
+    "code-reviewer/assessments/packets/d55690e340.json": "fe839c143aca426533698782394843a48062a73418edb8b69de5e8a66fa8adce",
+    "code-reviewer/assessments/packets/971777e243.json": "5b2146766def23a05796cea82ce6fab59bf6fbfaeae7ebe79bbce8acc480c723",
+    "code-reviewer/assessments/packets/a0580a22b1.json": "0967c28e2648ac6a4d398d48b9647e74b5653995f5ed4943b7fa4ed89ee78b56",
+    "code-reviewer/assessments/packets/185c09634f.json": "57d05d6de6f1924edfec525abc2dfd7346823d7c5599cfada0a397cf95a05240",
+    "code-reviewer/assessments/packets/d8622d3780.json": "8674d6b53e87461e5d03978ef42060932316222cce840d678f8335fb54a13cd4",
+    "code-reviewer/assessments/packets/8b6179facb.json": "52a418af7bd8b1aae22832d837e4227557a2c3bc62f2913b7886e2766a9cd083",
+    "code-reviewer/assessments/packets/3e180482fd.json": "0dd4fd5ff4d4dcb17b5e6ccb7ecbf45a26deee06a27ff8b7edafee561f6e141e"
+  }
+}

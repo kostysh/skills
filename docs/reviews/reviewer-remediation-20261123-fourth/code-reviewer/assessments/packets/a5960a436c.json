@@ -1,0 +1,65 @@
+{
+  "label": "a5960a436c",
+  "case": "schedule",
+  "answer": "**L-27 в текущем виде сливать нельзя.** После применения правки участники ST-28 по-прежнему получат в подтверждении зал B-12, хотя занятие перенесли в C-06. Участники ST-73 получат E-11 вместо согласованного D-04.\n\n- **[blocking] Правка меняет зал другого занятия.** Задание требует обновить только ST-28. В предложенной редакции нужно указать `ST-28=C-06` и восстановить `ST-73=D-04`. [Задание](request.md#L3) · [Предложенная конфигурация](head/rooms.ini#L3) · [Патч](changes.diff#L8)\n\n**Основание и объём.** Проверена L-27, редакция WS-106 относительно WS-105. `signup/rooms.ini` — единственный изменённый файл по выгрузке. [Описание снимка](snapshot.md#L3)\n\n**Проверка.** Прямое сравнение копий совпало с патчем. SHA-256 вложений и Git-хеши обеих копий совпали с ведомостью и метаданными. Хеш WS-106 — `d73f56b9322d86b5c4fe66c697549a50c87e8427`. [Ведомость](SHA256SUMS) · [Хеши редакций](snapshot.md#L5)\n\n**Ограничение.** Влияние на подтверждения следует из описанного в задании правила подстановки зала. Работу формы и рассылки не проверял. [Правило подстановки](request.md#L5)\n\n**Рекомендация — `request changes`.**",
+  "actions": [
+    {
+      "command": "/bin/bash -lc \"rg --files --hidden -g '\"'!.git'\"' | sort\"",
+      "exit": 0,
+      "output": "SHA256SUMS\nbase/rooms.ini\nchanges.diff\nhead/rooms.ini\nrequest.md\nsnapshot.md"
+    },
+    {
+      "command": "/bin/bash -lc 'ls -la'",
+      "exit": 0,
+      "output": "total 16\ndrwxrwxr-x 5 kostysh kostysh 180 Nov 23 12:15 .\ndrwx------ 3 kostysh kostysh  60 Nov 23 12:15 ..\n-rw-rw-r-- 1 kostysh kostysh 396 Nov 23 12:09 SHA256SUMS\ndrwxrwxr-x 2 kostysh kostysh  60 Nov 23 12:08 base\n-rw-rw-r-- 1 kostysh kostysh 147 Nov 23 12:09 changes.diff\ndrwxrwxr-x 2 kostysh kostysh  60 Nov 23 12:08 head\n-rw-rw-r-- 1 kostysh kostysh 592 Nov 23 12:08 request.md\n-rw-rw-r-- 1 kostysh kostysh 598 Nov 23 12:09 snapshot.md"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba request.md'",
+      "exit": 0,
+      "output": "     1\t# L-27 · Залы мастерских\n     2\t\n     3\tКоординатор согласовал перенос занятия ST-28 из зала B-12 в C-06. Для него нужно обновить зал в подтверждении записи. Остальные занятия остаются в своих залах.\n     4\t\n     5\tФорма подставляет в подтверждение значение из `signup/rooms.ini` по идентификатору занятия. Состав программы и механизм рассылки в объём правки не входят."
+    },
+    {
+      "command": "/bin/bash -lc 'sha256sum -c SHA256SUMS'",
+      "exit": 0,
+      "output": "base/rooms.ini: OK\nchanges.diff: OK\nhead/rooms.ini: OK\nrequest.md: OK\nsnapshot.md: OK"
+    },
+    {
+      "command": "/bin/bash -lc 'cat SHA256SUMS'",
+      "exit": 0,
+      "output": "d4a86deb6886fba0b1c3a8bd83dccda31f1c5b4b03f72882ca9176920e96ecd4  base/rooms.ini\n32c5c0642c52e6629f67b5798dab7d3a4bf727c718f9123110ac408c75c6b2ee  changes.diff\n587043c24cf0dc81c32561ca74cdf20a5a603095d3e838b023bc3980a08bd58a  head/rooms.ini\n7fd67c2eb2ed0a0299042c5e5cf153b3c89c16027228dc3abab3c1f6edda34a2  request.md\n30e66c7622376481c93f248d137c3a1da70519530576cc1e2479bf443e396fd2  snapshot.md"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba snapshot.md'",
+      "exit": 0,
+      "output": "     1\t# Экспорт правки L-27\n     2\t\n     3\tБазовая редакция — WS-105, предложенная — WS-106. Полная разница содержит один файл `signup/rooms.ini`. В выгрузке приложены обе копии и `changes.diff`.\n     4\t\n     5\t| Копия | Git blob SHA-1 по данным хранилища |\n     6\t| --- | --- |\n     7\t| `base/rooms.ini` | `2fe056471cb601d6d56ce2b5f6c79f862a46bd9f` |\n     8\t| `head/rooms.ini` | `d73f56b9322d86b5c4fe66c697549a50c87e8427` |\n     9\t\n    10\tДля проверки доставки вложений приложена ведомость SHA-256."
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba changes.diff'",
+      "exit": 0,
+      "output": "     1\t--- a/signup/rooms.ini\n     2\t+++ b/signup/rooms.ini\n     3\t@@ -1,6 +1,6 @@\n     4\t [workshops]\n     5\t ST-15=A-08\n     6\t ST-28=B-12\n     7\t ST-46=H-07\n     8\t-ST-73=D-04\n     9\t+ST-73=E-11\n    10\t ST-90=F-10"
+    },
+    {
+      "command": "/bin/bash -lc 'git hash-object --no-filters base/rooms.ini head/rooms.ini'",
+      "exit": 0,
+      "output": "2fe056471cb601d6d56ce2b5f6c79f862a46bd9f\nd73f56b9322d86b5c4fe66c697549a50c87e8427"
+    },
+    {
+      "command": "/bin/bash -lc 'nl -ba base/rooms.ini; nl -ba head/rooms.ini'",
+      "exit": 0,
+      "output": "     1\t[workshops]\n     2\tST-15=A-08\n     3\tST-28=B-12\n     4\tST-46=H-07\n     5\tST-73=D-04\n     6\tST-90=F-10\n     1\t[workshops]\n     2\tST-15=A-08\n     3\tST-28=B-12\n     4\tST-46=H-07\n     5\tST-73=E-11\n     6\tST-90=F-10"
+    },
+    {
+      "command": "/bin/bash -lc 'sha256sum -c SHA256SUMS'",
+      "exit": 0,
+      "output": "base/rooms.ini: OK\nchanges.diff: OK\nhead/rooms.ini: OK\nrequest.md: OK\nsnapshot.md: OK"
+    },
+    {
+      "command": "/bin/bash -lc 'git hash-object --no-filters base/rooms.ini head/rooms.ini'",
+      "exit": 0,
+      "output": "2fe056471cb601d6d56ce2b5f6c79f862a46bd9f\nd73f56b9322d86b5c4fe66c697549a50c87e8427"
+    }
+  ],
+  "changedProjectFiles": [],
+  "exit": 0,
+  "lastEvent": "turn.completed"
+}

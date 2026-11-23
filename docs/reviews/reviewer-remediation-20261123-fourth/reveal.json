@@ -1,0 +1,54 @@
+{
+  "utc": "2026-11-23T12:21:56.497Z",
+  "seal": "1adb50aa5924bdaf94faa34bdc91898892ed6e5960d6712da59bfbca914ed0b2",
+  "labels": {
+    "a5960a436c": {
+      "run": "698ee1ede4cc",
+      "case": "schedule",
+      "skill": "code-reviewer",
+      "variant": "0.4.13"
+    },
+    "d55690e340": {
+      "run": "27df8d5695d4",
+      "case": "schedule",
+      "skill": "code-reviewer",
+      "variant": "0.4.12"
+    },
+    "971777e243": {
+      "run": "92e176a15284",
+      "case": "transfer",
+      "skill": "code-reviewer",
+      "variant": "0.4.12"
+    },
+    "a0580a22b1": {
+      "run": "72ab7d7dabff",
+      "case": "transfer",
+      "skill": "code-reviewer",
+      "variant": "0.4.13"
+    },
+    "185c09634f": {
+      "run": "27282e9d3e35",
+      "case": "original",
+      "skill": "code-reviewer",
+      "variant": "0.4.13"
+    },
+    "d8622d3780": {
+      "run": "c3ed229a505a",
+      "case": "original",
+      "skill": "code-reviewer",
+      "variant": "0.4.12"
+    },
+    "8b6179facb": {
+      "run": "cba2a5c17fe8",
+      "case": "fresh",
+      "skill": "code-reviewer",
+      "variant": "0.4.12"
+    },
+    "3e180482fd": {
+      "run": "8831168d3a11",
+      "case": "fresh",
+      "skill": "code-reviewer",
+      "variant": "0.4.13"
+    }
+  }
+}

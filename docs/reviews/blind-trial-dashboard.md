@@ -2,11 +2,11 @@
 
 ## Trial coverage
 
-**38 of 38 active skills** have at least one conclusive pair. Assigned pairs appear for 38 of 38 skills. The catalog totals cover 57 individual skill studies.
+**38 of 38 active skills** have at least one conclusive pair. Assigned pairs appear for 38 of 38 skills. The catalog totals cover 62 individual skill studies.
 
 | Assigned | Better | Worse | Both passed | Both failed | Insufficient |
 | --- | --- | --- | --- | --- | --- |
-| 321 | 37 | 7 | 220 | 29 | 28 |
+| 335 | 40 | 9 | 228 | 30 | 28 |
 
 <a name="current-skill-health"></a>
 
@@ -26,7 +26,7 @@ Select a skill for its comparison series or a linked health status for the suppo
 | 🟢 | [agent-browser](#agent-browser) | 0.2.7 | [In good shape](gpt-6-2/10/independent-audit.md) | 7 | 0 | 1 | 6 | 0 | 0 | [Study](gpt-6-2/10/assessment.md) |
 | 🟢 | [architecture-engineer](#architecture-engineer) | 0.1.13 | [In good shape](gpt-6-2/15/recovery/independent-audit.md) | 9 | 2 | 0 | 6 | 1 | 0 | [Study](gpt-6-2/15/assessment.md) |
 | 🟢 | [cli-engineer](#cli-engineer) | 0.2.2 | [In good shape](gpt-6-2/29/independent-audit.md) | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/29/assessment.md) |
-| 🔴 | [code-reviewer](#code-reviewer) | 0.4.9 | [Needs attention](individual-trials-20261122/code-reviewer/results.md#decision) | 7 | 0 | 0 | 6 | 1 | 0 | [Study 1](gpt-6-2/17/assessment.md) · [Study 2](individual-trials-20261122/code-reviewer/results.md) |
+| 🟢 | [code-reviewer](#code-reviewer) | 0.4.13 | [In good shape](reviewer-remediation-20261123-fourth/code-reviewer/results.md#decision) | 19 | 3 | 2 | 12 | 2 | 0 | [Study 1](gpt-6-2/17/assessment.md) · [Study 2](reviewer-remediation-20261123-second/code-reviewer/results.md) · [Study 3](individual-trials-20261122/code-reviewer/results.md) · [Study 4](reviewer-remediation-20261123/code-reviewer/results.md) · [Study 5](reviewer-remediation-20261123-third/code-reviewer/results.md) · [Study 6](reviewer-remediation-20261123-fourth/code-reviewer/results.md) |
 | 🟢 | [concept-conformance-reviewer](#concept-conformance-reviewer) | 0.2.9 | [In good shape](individual-trials-20261122/concept-conformance-reviewer/results.md#decision) | 8 | 2 | 0 | 3 | 0 | 3 | [Study 1](gpt-6-2/24/assessment.md) · [Study 2](individual-trials-20261122/concept-conformance-reviewer/results.md) |
 | 🟢 | [delivery-planner](#delivery-planner) | 0.2.16 | [In good shape](gpt-6-2/32/independent-audit.md) | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/32/assessment.md) |
 | 🟢 | [documentation](#documentation) | 0.2.4 | [In good shape](evidence/v5-documentation-controls/README.md) | 7 | 0 | 0 | 5 | 2 | 0 | [Study 1](gpt-6-2/13/assessment.md) · [Study 2](evidence/v5-documentation-controls/records.json) |
@@ -54,7 +54,7 @@ Select a skill for its comparison series or a linked health status for the suppo
 | 🟢 | [shadcn](#shadcn) | 0.2.3 | [In good shape](gpt-6-2/34/independent-audit.md) | 12 | 1 | 0 | 3 | 5 | 3 | [Study](gpt-6-2/34/assessment.md) |
 | 🟢 | [skill-reviewer](#skill-reviewer) | 0.2.9 | [In good shape](audit-metrics-20261119/method-acceptance.md) | 24 | 6 | 1 | 6 | 8 | 3 | [Study 1](gpt-6-2/01/assessment.md) · [Study 2](audit-metrics-20261119/process/protocol.md) |
 | 🟢 | [skill-source-compiler](#skill-source-compiler) | 0.2.12 | [In good shape](gpt-6-2/02/independent-audit.md) | 5 | 1 | 1 | 3 | 0 | 0 | [Study](gpt-6-2/02/assessment.md) |
-| 🔴 | [spec-conformance-reviewer](#spec-conformance-reviewer) | 0.1.11 | [Needs attention](individual-trials-20261122/spec-conformance-reviewer/results.md#decision) | 8 | 1 | 2 | 5 | 0 | 0 | [Study 1](gpt-6-2/33/assessment.md) · [Study 2](individual-trials-20261122/spec-conformance-reviewer/results.md) |
+| 🟢 | [spec-conformance-reviewer](#spec-conformance-reviewer) | 0.1.12 | [In good shape](reviewer-remediation-20261123/spec-conformance-reviewer/results.md#decision) | 10 | 1 | 2 | 7 | 0 | 0 | [Study 1](gpt-6-2/33/assessment.md) · [Study 2](individual-trials-20261122/spec-conformance-reviewer/results.md) · [Study 3](reviewer-remediation-20261123/spec-conformance-reviewer/results.md) |
 | 🟢 | [spec-engineer](#spec-engineer) | 0.2.16 | [In good shape](gpt-6-2/23/independent-audit.md) | 5 | 0 | 0 | 5 | 0 | 0 | [Study](gpt-6-2/23/assessment.md) |
 | 🟢 | [supabase-engineer](#supabase-engineer) | 0.1.8 | [In good shape](gpt-6-2/21/independent-audit.md) | 6 | 0 | 0 | 5 | 0 | 1 | [Study](gpt-6-2/21/assessment.md) |
 | 🟢 | [typescript-engineer](#typescript-engineer) | 0.2.3 | [In good shape](gpt-6-2/05/remediation/independent-audit.md) | 12 | 0 | 0 | 6 | 0 | 6 | [Study 1](gpt-6-2/05/assessment.md) · [Study 2](gpt-6-2/05/remediation/assessment.md) |
@@ -121,8 +121,6 @@ Read each series in the context of its tasks and variants. In instruction-remova
 
 ### code-reviewer
 
-Resolve the finding in the current-version audit.
-
 [Study record](audit-metrics-20261119/history/17.json) · [Trial evidence](gpt-6-2/17/assessment.md) · Executor gpt-6.2-sol / medium
 
 | Series | Left / right | Phase | Assigned | Better | Worse | Both passed | Both failed | Insufficient |
@@ -131,11 +129,36 @@ Resolve the finding in the current-version audit.
 | [confirm-confirmation](gpt-6-2/17/assessment-confirm.md) | C/A | confirmation | 2 | 0 | 0 | 2 | 0 | 0 |
 | [confirm-holdout](gpt-6-2/17/assessment-confirm.md) | C/A | holdout | 1 | 0 | 0 | 1 | 0 | 0 |
 
+[Study record](reviewer-remediation-20261123-second/code-reviewer/metrics.json) · [Trial evidence](reviewer-remediation-20261123-second/code-reviewer/results.md) · Executor gpt-6.2-sol / medium
+
+| Series | Left / right | Phase | Assigned | Better | Worse | Both passed | Both failed | Insufficient |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [Исправленная и прежняя версии](reviewer-remediation-20261123-second/code-reviewer/results.md#pairs) | 0.4.11/0.4.10 | confirmation | 3 | 1 | 1 | 1 | 0 | 0 |
+
 [Study record](individual-trials-20261122/code-reviewer/metrics.json) · [Trial evidence](individual-trials-20261122/code-reviewer/results.md) · Executor gpt-6.2-sol / medium
 
 | Series | Left / right | Phase | Assigned | Better | Worse | Both passed | Both failed | Insufficient |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [Версия / без пакета](individual-trials-20261122/code-reviewer/results.md#pairs) | 0.4.9/B | primary | 2 | 0 | 0 | 1 | 1 | 0 |
+
+[Study record](reviewer-remediation-20261123/code-reviewer/metrics.json) · [Trial evidence](reviewer-remediation-20261123/code-reviewer/results.md) · Executor gpt-6.2-sol / medium
+
+| Series | Left / right | Phase | Assigned | Better | Worse | Both passed | Both failed | Insufficient |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [Исправленная и прежняя версии](reviewer-remediation-20261123/code-reviewer/results.md#pairs) | 0.4.10/0.4.9 | confirmation | 2 | 0 | 0 | 1 | 1 | 0 |
+
+[Study record](reviewer-remediation-20261123-third/code-reviewer/metrics.json) · [Trial evidence](reviewer-remediation-20261123-third/code-reviewer/results.md) · Executor gpt-6.2-sol / medium
+
+| Series | Left / right | Phase | Assigned | Better | Worse | Both passed | Both failed | Insufficient |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [Исправленная и прежняя версии](reviewer-remediation-20261123-third/code-reviewer/results.md#pairs) | 0.4.12/0.4.11 | confirmation | 3 | 0 | 1 | 2 | 0 | 0 |
+
+[Study record](reviewer-remediation-20261123-fourth/code-reviewer/metrics.json) · [Trial evidence](reviewer-remediation-20261123-fourth/code-reviewer/results.md) · Executor gpt-6.2-sol / medium · Accepted version 0.4.13
+
+| Series | Left / right | Phase | Assigned | Better | Worse | Both passed | Both failed | Insufficient |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [Повтор P-84, F-31 и M-56](reviewer-remediation-20261123-fourth/code-reviewer/results.md#pairs) | 0.4.13/0.4.12 | confirmation | 3 | 1 | 0 | 2 | 0 | 0 |
+| [Новый перенос L-27](reviewer-remediation-20261123-fourth/code-reviewer/results.md#pairs) | 0.4.13/0.4.12 | confirmation | 1 | 1 | 0 | 0 | 0 | 0 |
 
 ### concept-conformance-reviewer
 
@@ -555,8 +578,6 @@ Version 0.2.9 lost one comparison with ambiguous column labels. Both variants re
 
 ### spec-conformance-reviewer
 
-Resolve the finding in the current-version audit.
-
 [Study record](audit-metrics-20261119/history/33.json) · [Trial evidence](gpt-6-2/33/assessment.md) · Executor gpt-6.2-sol / medium
 
 | Series | Left / right | Phase | Assigned | Better | Worse | Both passed | Both failed | Insufficient |
@@ -574,6 +595,12 @@ Resolve the finding in the current-version audit.
 | Series | Left / right | Phase | Assigned | Better | Worse | Both passed | Both failed | Insufficient |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [Версия / без пакета](individual-trials-20261122/spec-conformance-reviewer/results.md#pairs) | 0.1.11/B | primary | 2 | 0 | 1 | 1 | 0 | 0 |
+
+[Study record](reviewer-remediation-20261123/spec-conformance-reviewer/metrics.json) · [Trial evidence](reviewer-remediation-20261123/spec-conformance-reviewer/results.md) · Executor gpt-6.2-sol / medium · Accepted version 0.1.12
+
+| Series | Left / right | Phase | Assigned | Better | Worse | Both passed | Both failed | Insufficient |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| [Исправленная и прежняя версии](reviewer-remediation-20261123/spec-conformance-reviewer/results.md#pairs) | 0.1.12/0.1.11 | confirmation | 2 | 0 | 0 | 2 | 0 | 0 |
 
 ### spec-engineer
 
