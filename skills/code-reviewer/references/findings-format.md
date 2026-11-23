@@ -43,12 +43,14 @@ If no finding is confirmed, write `No findings.`; never use an empty findings se
 Use this footer for every review, including terse and clean reviews:
 
 ```markdown
-Review basis: <target and base>; snapshot <immutable ids or working-tree hash>
+Review basis: <target and base>; snapshot <ID from named source or identity established by your check>
 Scope: <changed-file accounting and explicit exclusions>
-Evidence: <checks and behavioral paths actually assessed>
+Evidence: <actual check, object or behavioral path examined, and observed result>
 Limits: <untested or unassessed user/API/data/domain paths, or "none identified">
 Recommendation: approve | request changes | limited | blocked
 ```
+
+For an ID read from a manifest or diff, write `ID from <source>`. Matching `index` and manifest values shows agreement between those records. To say “the file matches this Git blob ID”, compute the blob ID from the file's bytes in the source's object format (for example, `git hash-object --no-filters -- <file>`) and compare it with the stated ID. A successful `sha256sum -c SHA256SUMS` verifies only the listed files against their SHA-256 entries.
 
 - `approve` requires accounted scope and evidence sufficient for the stated merge boundary.
 - `request changes` requires at least one confirmed blocking finding.

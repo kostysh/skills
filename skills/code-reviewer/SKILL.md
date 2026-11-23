@@ -5,9 +5,9 @@ description: Perform read-only review of PRs, diffs, and local branch changes.
   or lightweight intent alignment, and provide evidence-backed merge guidance
   with stable scope, severity, and findings; pair with relevant domain skills.
 metadata:
-  source-version: 0.4.11
+  source-version: 0.4.12
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 53ce9a8908840a0d6876966f4b9c66f5885f5bd3898dfbf52369479a645d9aba
+  skillforge-source-hash: d7d86123a1001a456e35b0f90ed2875df77b66e4d14f5349773db2e5760d33df
 ---
 
 # code-reviewer

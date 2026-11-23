@@ -16,8 +16,8 @@ Next: safest correction or investigation direction
 
 ## Review Evidence
 
-Review basis: <target and base>; snapshot <immutable ids or working-tree hash>
+Review basis: <target and base>; snapshot <ID from named source or identity established by your check>
 Scope: <changed-file accounting and explicit exclusions>
-Evidence: <checks and behavioral paths actually assessed>
+Evidence: <actual check, object or behavioral path examined, and observed result>
 Limits: <untested or unassessed user/API/data/domain paths, or "none identified">
 Recommendation: approve | request changes | limited | blocked
