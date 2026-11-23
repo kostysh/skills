@@ -58,6 +58,8 @@ Recommendation: approve | request changes | limited | blocked
 
 For a stable partial scope, use `limited` and retain every confirmed finding from the assessable part, including blocking findings. State that known blockers still prevent merge. Inaccessible content cannot support either an invented finding or clean approval of the whole target.
 
+When a merge check is still open, state the result the evidence must show. Require a particular verification method only when an applicable requirement prescribes it or the changed behavior can only be verified that way. Cite the requirement or explain the technical dependency. Otherwise, present the method as one option and accept evidence that demonstrates the same result.
+
 If a follow-up review repeats the same or a materially related blocker after remediation, set `Next` to root-cause investigation of assumptions, the full failure path, adjacent surfaces, and remediation scope before more fixes.
 
 ## Good Finding Traits
