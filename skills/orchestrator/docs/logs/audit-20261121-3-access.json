@@ -333,10 +333,18 @@
   "observation": {
     "version": "0.1.2",
     "accepted": "2026-11-21T18:46:52Z",
-    "released": null,
-    "through": "2026-11-21T18:52:28Z",
+    "released": "2026-11-21T19:07:32Z",
+    "through": "2026-11-24T15:59:33Z",
     "systematic": false,
-    "defects": [],
+    "defects": [
+      {
+        "id": "task-questions-bypassed-coordinator",
+        "at": "2026-11-24T15:59:33Z",
+        "rule": "Выдача поручений. Адресат вопросов и обратный канал не были заданы.",
+        "covered": false,
+        "source": "implementation-log-20261124-1.md#наблюдение-после-выпуска-012"
+      }
+    ],
     "source": "implementation-log-20261121-3.md"
   }
 }

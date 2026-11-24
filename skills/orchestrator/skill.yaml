@@ -2,7 +2,7 @@ apiVersion: skillforge/v1alpha1
 kind: SkillSource
 skill:
   name: orchestrator
-  source-version: 0.1.2
+  source-version: 0.1.3
   description: Coordinate agents working toward one requested outcome. Use when delegating work, managing dependencies between assignments, or combining agent handoffs. Leave standalone tasks and delivery planning to their usual owners.
 surfaces:
   active: {}
@@ -22,6 +22,7 @@ sections:
       steps:
         - Identify what each assignment consumes and produces. Start independent assignments together when useful. Hold dependent work until its input is agreed, then give consumers the same version. Assign one writer per shared output and sequence overlapping changes.
         - Give each agent its deliverable, inputs, allowed actions and evidence to return. Assign each check to one owner. Share only relevant guidance. Keep a required reviewer independent of the author.
+        - In every assignment, including to a separate session, tell the agent to direct all task communication to you, including questions, blockers and results. Give it an authorized channel or name a shared handoff you will read. Answer what you can. Ask the operator yourself when their input is needed, then relay the answer.
         - Track owners, input versions and handoffs in the conversation or existing project record. Continue ready work and wait only for a blocking result or decision. Use a stable handoff as soon as its required checks pass, even if its author is still running.
     - id: reconcile
       title: Reconcile the results
