@@ -4,9 +4,9 @@ description: Coordinate agents working toward one requested outcome. Use when
   delegating work, managing dependencies between assignments, or combining agent
   handoffs. Leave standalone tasks and delivery planning to their usual owners.
 metadata:
-  source-version: 0.1.2
+  source-version: 0.1.3
   skillforge-source-manifest: skill.yaml
-  skillforge-source-hash: 930f0105dddfe7303ceae72a662c9dab056ba9ed4648aa457439824d71e117ee
+  skillforge-source-hash: bae95891497f86a025eef3c92f856d09dfb334f3c8e5738dab2c57e58d678d40
 ---
 
 # orchestrator
@@ -33,7 +33,8 @@ Before assigning work that grants or expands access or introduces a role, tool o
 
 1. Identify what each assignment consumes and produces. Start independent assignments together when useful. Hold dependent work until its input is agreed, then give consumers the same version. Assign one writer per shared output and sequence overlapping changes.
 2. Give each agent its deliverable, inputs, allowed actions and evidence to return. Assign each check to one owner. Share only relevant guidance. Keep a required reviewer independent of the author.
-3. Track owners, input versions and handoffs in the conversation or existing project record. Continue ready work and wait only for a blocking result or decision. Use a stable handoff as soon as its required checks pass, even if its author is still running.
+3. In every assignment, including to a separate session, tell the agent to direct all task communication to you, including questions, blockers and results. Give it an authorized channel or name a shared handoff you will read. Answer what you can. Ask the operator yourself when their input is needed, then relay the answer.
+4. Track owners, input versions and handoffs in the conversation or existing project record. Continue ready work and wait only for a blocking result or decision. Use a stable handoff as soon as its required checks pass, even if its author is still running.
 
 ### Workflow stage: Reconcile the results
 

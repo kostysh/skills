@@ -7,4 +7,6 @@
 - [План изменения первого предложения и поручений](issues/implementation-plan-20261121-3.md)
 - [Журнал изменения и проверки 0.1.2](logs/implementation-log-20261121-3.md)
 - [Слепое сравнение решений о простоте](logs/trial-evidence-20261121-3.md)
+- [План исправления маршрута вопросов](issues/implementation-plan-20261124-1.md)
+- [Исправление и слепые испытания 0.1.3](logs/implementation-log-20261124-1.md)
 - [Отчёт компилятора](compile-report.md)
